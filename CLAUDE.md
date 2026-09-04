@@ -80,9 +80,24 @@ so find out rather than assuming:
 - **Claude Code on Innes's machine** — push works. It uses his own git
   credentials with no proxy in between. Commit and push; ignore the whole
   uploader section below.
-- **A cloud Cowork session** — push fails with a proxy 403, *"not in this
-  session's authorized repository set."* That is a session-startup setting and
-  cannot be fixed from inside the session. Use one of the two routes below.
+- **A cloud Cowork session** — push works **only if this repository was added
+  as a source when the task was created**. The sandbox has no GitHub
+  credential of its own; the egress proxy injects one per request, and it
+  only does so for repositories in the session's source list. A session
+  started without the repo can still *clone* (the repo is public) but every
+  push fails with a proxy 403, *"Inneski/forbes-english is not in this
+  session's authorized repository set … add the repository to the session's
+  sources."* That list is fixed at startup and cannot be changed from inside
+  the session — not by a token, not by a remote URL, not by retrying.
+
+  **Innes: when starting a cloud task that will touch this repo, add
+  `Inneski/forbes-english` as a GitHub source on the new-task screen before
+  sending the first message.** The Claude GitHub app
+  (github.com/apps/claude) must have access to the repository for it to be
+  offered. If a session started without it, the fastest recovery is to ask
+  for a `git bundle` of the commits (one file, applied locally with
+  `git fetch <bundle> HEAD:from-cloud && git merge from-cloud && git push`)
+  rather than a file-by-file upload.
 
 If you are pushing directly, note that everything downstream is unchanged: the
 live site still follows `origin/main`, `tools/seo.py` still runs last, and
