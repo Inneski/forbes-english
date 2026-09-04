@@ -78,7 +78,7 @@ ALLOW = {
 # gate, so they match the tense classes too. Keep this list and
 # build_descent.py's AUX_TENSE in step: a class in one and not the other is a
 # blind spot in exactly the place the checker exists to watch.
-AUXC = r'(?:aux|t-ps|t-pc|t-past|t-pastc|t-pperf|t-gt|t-fs)'
+AUXC = r'(?:aux|t-ps|t-pc|t-past|t-pastc|t-pperf|t-gt|t-fs|t-ppf)'
 # Two of the AUXJOB rules test a claim that ONLY the auxiliary colour makes.
 # Wearing .aux says "I am a helper"; wearing a TENSE colour says "I carry the
 # tense", which is exactly what a main verb does - 'have -> had', 'we had two
