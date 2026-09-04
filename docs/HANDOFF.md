@@ -12,7 +12,7 @@ stale copy.
 
 ---
 
-## 2026-09-04 — Block Camp hub remade dark (built in a cloud session, NOT yet pushed)
+## 2026-09-04 — Block Camp hub remade dark (pushed, live on origin/main)
 
 Innes: "remake block camp hub so it looks snazzy", direction chosen: dark and
 immersive. `block-camp.html` is now the one page in the line that matches the
@@ -56,16 +56,30 @@ file in the repo; screenshots at 1280 and 390 wide; the top band unchanged.
 `seo.py` was NOT run — nothing it writes changed, and a cloud run against the
 stale `tools/lessons.json` cache is the documented way to lose entries.
 
-**Push was blocked** (repo not attached as a session source — see CLAUDE.md
-"When push is blocked"). The commit is handed over as a git bundle; the
-handoff for the session that applies it is `docs/HANDOFF-block-camp-hub.md`.
+**Applied and pushed** by a cloud session on 2026-09-04, following
+`docs/HANDOFF-block-camp-hub.md`: bundle verified, fast-forwarded onto
+`origin/main` (0906b02), all checks in the handoff re-run and passing
+(missing refs: none; SEO/nav bands untouched; builder reproduces the
+committed page byte-for-byte), pushed as `2c7cf4e`. The live-site fetch
+check in that handoff's step 3 could not be run from this sandbox (egress
+policy blocks `forbesenglish.com`) — someone with unrestricted network
+should confirm `https://forbesenglish.com/block-camp.html` and
+`https://forbesenglish.com/BlockCamp/hub-hero.jpg` load, per that doc.
+
+**The Past Perfect trio has NOT landed as of this writing.** No
+`past-perfect-camp` branch or bundle has reached this repo yet — the
+collision described below did not happen. Innes says three Past Perfect
+docs are coming: **active, passive, and the 41-pager.** When any of them
+lands and touches `block-camp.html`, re-read the collision note just below
+before merging.
 
 **It collides with the Past Perfect trio** (branch `past-perfect-camp`, its
-own bundle, also unpushed as of this writing — see the section below and
-`claude/past-perfect-camp-build.md`). That branch adds three cards to the OLD
-hub markup: camp 9, station 17 and the ninth reference. Whichever bundle lands
-second will conflict in `block-camp.html`. The resolution is not a merge of
-the HTML: **take this hub's version and re-run the builder.** Its data tables
+own bundle — see `claude/past-perfect-camp-build.md`). That branch adds three
+cards to the OLD hub markup: camp 9, station 17 and the ninth reference. Since
+this hub bundle landed first, resolve any future conflict by taking THIS
+hub's version of `block-camp.html` (`--ours` if rebasing the Past Perfect
+branch onto `main`) and re-running the builder — do not hand-merge the three
+`<li>` cards, they carry the old classes and render unstyled. Its data tables
 already list camp 9 (`#d66d77`, the deck's own ink), station 17 and the ninth
 reference, and each card is emitted only when its page exists in the repo —
 tested both ways in the sandbox. The tally strip, the section notes and the
@@ -76,6 +90,9 @@ Not done, deliberately, and worth asking Innes about: the eight "More
 Minecraft Lessons" cards are the weakest artwork on the page (older heroes,
 mixed aspect ratios); a parallax or lantern glint on the hero was offered but
 not built. Both are small, incremental steps if he wants them.
+
+**Dracula is done** — already uploaded and published as *Blocula*
+(`2b42dc1` and earlier, on `origin/main`); no action needed.
 
 ---
 
