@@ -17,6 +17,12 @@ questions about audience, level, tone, length or scope** — the audience is his
 students, the level is on the lesson, the tone and length are defined in the
 house style, and the scope is "the whole lesson, brought up to standard."
 
+**A standalone RPG export (one HTML file, pictures inlined, a
+`window.*_GAME_DATA` object) means: rebuild it as a Block Camp RPG.** The
+standard — glowing object on every picture, text that pops out of it,
+Monocraft, big type, hub card, library entry — and the pipeline are in
+`lesson-template/build/rpg/README.md`. Same rule: start immediately.
+
 Read the lesson, audit it, build it, check it, ship it, then report what you
 found and what you changed. `lesson-template/HOUSE-STYLE.md` §14 lists the four
 situations that genuinely warrant a question. Everything else: apply the

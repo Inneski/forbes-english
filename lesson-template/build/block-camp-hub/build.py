@@ -131,7 +131,41 @@ def ref_cards():
 def count_refs():
     return sum(present(h) for _,_,h,_,_,_ in REFS)
 
-WORDS = {8:'eight',9:'nine',16:'sixteen',17:'seventeen',18:'eighteen',24:'twenty-four',25:'twenty-five',26:'twenty-six',27:'twenty-seven'}
+
+# The adventures — the Block Camp RPGs under block-camp/. Built by
+# lesson-template/build/rpg/ (see its README); a card appears once its page
+# exists, and the tally strip / lede counts follow. `chips` are the grammar
+# chips in order; `tag` is the coloured lead chip (start / new) or None.
+ADVENTURES = [
+ ('block-camp/last-train-home-rpg.html','block-camp/last-train-home-rpg/01_cover.webp','The Last Train Home',
+  'A cyberpunk megacity, a curfew closing in, and one train left before the checkpoints seal the district. Every route out is a prediction about what will happen next.',
+  ('Future Simple',),'A1&ndash;A2','pro','start'),
+ ('block-camp/dracula-castle-of-if.html','block-camp/dracula-castle-of-if/01_cover.webp','Dracula: The Castle of If',
+  'Bram Stoker&rsquo;s castle, reimagined as a branching grammar nightmare &mdash; every escape route runs on a conditional, and every guard&rsquo;s report comes back in the passive voice.',
+  ('Conditionals','Passive'),'B2','pro','new'),
+ ('block-camp/long-way-home-rpg.html','block-camp/long-way-home-rpg/00_cover.webp','The Long Way Home',
+  'Homer&rsquo;s Odyssey rebuilt block by block. Thirty-six scenes of storm and monster where the tense you choose decides what happened first &mdash; and losing the thread costs you the crew.',
+  ('Narrative Tenses',),'B1','pro','new'),
+ ('block-camp/lost-yellow-road-rpg.html','block-camp/lost-yellow-road-rpg/01_cover.webp','The Lost Yellow Road',
+  'A voxel Oz. The Witch has scattered four tiles of the yellow road, and every one comes back as a question about what was happening at that moment &mdash; click the glowing object in each scene to read.',
+  ('Past Continuous',),'A1&ndash;A2','pro','new'),
+]
+
+def adventure_cards():
+    out=[]
+    for href,img,title,desc,gram,lvl,acc,tag in ADVENTURES:
+        if not present(href): continue
+        lead = {'start':'<span class="chip chip-start">Start here</span>','new':'<span class="chip chip-new">New</span>'}.get(tag,'')
+        pro = ('<span class="chip chip-free">Free</span>' if acc=='free' else
+               '<span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span>')
+        chipset = lead + ''.join(f'<span class="chip">{g}</span>' for g in gram) + f'<span class="chip">{lvl}</span>' + pro
+        out.append(f'      <li><a class="card" href="{href}">\n        <span class="thumb"><img src="{img}" alt="" loading="lazy"></span>\n        <span class="body">\n          <span class="card-title">{title}</span>\n          <span class="desc">{desc}</span>\n          <span class="chips">{chipset}</span>\n        </span>\n      </a></li>')
+    return '\n'.join(out)
+
+def count_adv():
+    return sum(present(h) for h,*_ in ADVENTURES)
+
+WORDS = {3:'three',4:'four',5:'five',8:'eight',9:'nine',16:'sixteen',17:'seventeen',18:'eighteen',24:'twenty-four',25:'twenty-five',26:'twenty-six',27:'twenty-seven'}
 
 def more_cards():
     return '\n'.join(card(h,i,0,'',t,l,'pro') for t,h,i,l in MORE)
@@ -145,6 +179,9 @@ def build(inline):
               .replace('{{DESCENT}}', descent_cards())
               .replace('{{REFS}}', ref_cards())
               .replace('{{MORE}}', more_cards())
+              .replace('{{ADV}}', adventure_cards())
+              .replace('{{N_ADV}}', str(count_adv()))
+              .replace('{{W_ADV}}', WORDS.get(count_adv(), str(count_adv())))
               .replace('{{N_CLIMB}}', str(count_climb()))
               .replace('{{N_DESCENT}}', str(count_descent()))
               .replace('{{N_REFS}}', str(count_refs()))

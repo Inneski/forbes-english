@@ -12,6 +12,87 @@ stale copy.
 
 ---
 
+## 2026-09-05 — The Lost Yellow Road: a fourth Block Camp RPG, and the RPG standard written down
+
+Innes sent a standalone export — `Wizard_of_Oz_Past_Continuous_RPG_Sherpa_Yellow_Standalone_V1_4_fixedfont.html`,
+4 MB, 23 pictures inlined, the game in `window.OZ_GAME_DATA` — with one
+line: *"Text should be bigger and pop up when a glowing object is clicked,
+you should save instructions for future to make these rpgs standard like the
+others in Block Camp with Monocraft."*
+
+Built to the standard his own Blocula rebuild set (`e6056ab`, object
+hotspots): **`block-camp/lost-yellow-road-rpg.html`**, pictures in
+`block-camp/lost-yellow-road-rpg/`. Past Continuous, A1–A2, EN + ES + DE,
+27 scenes (cover, rules briefing, 18 questions, 3 route choices, 4 endings),
+15 questions on any path, 75 points, 4 road tiles, 3 chances — the export's
+scoring, unchanged. What changed:
+
+- **Every scene has a glowing object; the text pops out of it.** Hotspots
+  are in the builder's `HOT` table as % of the picture, picked from gridded
+  contact sheets; every one was screenshotted closed and checked.
+- **Type is Monocraft, both weights embedded (8 KB each), and a step bigger
+  than Blocula** — story 1.65cqw / options 1.4cqw / title 3cqw on a 46%
+  panel, against 1.36 / 1.04 / 3.6 on 42%. The export ran 15–17px Carlito.
+- **A rules briefing** (five form cards + note) before the first question
+  and **an explanation line under every answer**, both in three languages
+  — the export had neither, and its chapter kickers were English-only in
+  the ES/DE modes; translated.
+- Dark glass panel, camp 4's `#F1D779` as the single accent, HUD, translate
+  menu, fullscreen, keys 1–3 / L / F, corner help — the Blocula chrome.
+- A portrait phone slides the picture so the hotspot stays on screen
+  (Blocula centres the crop and can lose the object off the edge); an
+  answered question scrolls its panel to the feedback and CONTINUE.
+
+**The engine and the instructions are in the repo:**
+`lesson-template/build/rpg/` — `rpg.py` (the page: CSS, engine, `assemble()`
+with validation), `extract_standalone.py` (export → pictures + `data.json`),
+`fonts/` (Monocraft subsets + the script that made them), and **`README.md`,
+which is the standard**: what an RPG is, the pipeline, how to pick
+hotspots, the Playwright check, publishing, the spec. The lesson's own
+builder is `lesson-template/build/build_lost_yellow_road.py`; copy it for the
+next export. A rebuild keeps the SEO block, and is byte-identical.
+
+**On Monocraft:** the note above (2026-09-04, Past Perfect trio) records that
+the camp decks and references run Pixelify Sans + Silkscreen and only the hub
+uses Monocraft. Innes has now said the RPGs should be "with Monocraft", so
+that is the RPG standard from here; it does not touch the decks, and the
+three older RPGs (Pixelify Sans headings, Courier New body) are unchanged —
+moving them onto `rpg.py` is a separate job, listed under Open.
+
+**Wired in:** hub card (the Adventures section of
+`block-camp-hub/build.py` is now an `ADVENTURES` table, counted like the
+climb — "4 Adventures", "four branching adventures" — and the plates sit
+2×2), `library.html` `LESSON_IMAGES` (`check-library.js --vs-origin`
+passed), `tools/lessons.json` row, `seo.py` run last with the four-index
+diff read: additions only. Pushed to `claude/glowing-object-text-popup-fxo141`.
+
+### To publish (Innes)
+
+Merge the branch. Then, **after** the page is live on `origin/main`:
+
+```sql
+insert into lessons (file, title, level, access, deck, video, sort_order) values
+ ('block-camp/lost-yellow-road-rpg.html', 'The Lost Yellow Road — Past Continuous Voxel Oz RPG (A1-A2)', 'A1-A2', 'pro', false, false, 0);
+```
+
+`sort_order 0` puts it with the other three RPGs (−2, −1, 0) at the head of
+the library; change it if the fourth should sit elsewhere. The cache row in
+`tools/lessons.json` says the same and will be overwritten by the next
+live `seo.py` run on your machine.
+
+### Open
+
+- **Move the three older RPGs onto `rpg.py`** so the line is uniform —
+  Monocraft, one engine, one hotspot table each. Blocula already has its
+  `HOT` table (frame-percent, 16:9 — convert to picture-percent); Last Train
+  Home and Long Way Home have none and need the contact-sheet pass. Long
+  Way Home also has a "codex" modal (narrative-tense reference) that the
+  engine's `rules` kind covers.
+- The engine embeds Latin + Cyrillic Monocraft only. An RPG with Arabic or
+  CJK glosses needs a fallback face for those glyphs before it ships.
+
+---
+
 ## 2026-09-05 — LEGO Prepositions & Phrasal Verbs, Part 2: rebuilt as a deck
 
 Innes sent the URL for `forbes-english-lego-lesson-part2.html` — a five-tab
