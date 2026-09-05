@@ -233,8 +233,28 @@ insert into lessons (file, title, level, access, deck, video) values
 
 - **Part 2 of camp 9** (PPF3–PPF5: backshift, third conditional, wish) —
   the cover's `partLink` points at the route map until it exists.
-- The route maps (`block-camp-map.html`, `block-camp-descent-map.html`) do
-  not know camp 9 / station 17 yet — the hub does.
+- **The route maps now know camp 9 / station 17 — as far as the art allows.**
+  A later cloud session added both to the climb page's accessible "every
+  camp" list and its narrow-viewport station nav (correct hrefs, maroon
+  `#6E0B24`, no fabricated Part 2 link for camp 9), and fixed every hardcoded
+  count that was still saying "eight" (both maps' pills, the climb list's
+  lesson-toggle total, the hub's two hand-written "eight tenses" lines — now
+  driven by a computed `{{W_TENSES}}` in `build_camp_hub/build.py` instead of
+  a literal string).
+  **What's still missing: a 9th pin on the climb trail and a 17th on the
+  descent trail.** Checked the actual source art, not just a cropped render
+  — `BlockCamp/hub-hero.jpg` (1600×900) ends at the lookout tower with dense
+  tree canopy and no ground beyond it; `BlockCampDescent/watchtower-far-side.jpg`
+  (1664×936) ends the same way, the drawn SVG route line stopping exactly
+  where the canyon recedes into the tree line. Both hero images are closed
+  compositions — start to end, tent-to-tower and balcony-to-canyon — with
+  nothing to place a marker on past the last existing pin. Also: camp 9's
+  own art (the Maroon Memory Vault, a dusk castle gate) doesn't match either
+  trail's daytime Minecraft-forest style anyway, so even a placeholder pin
+  would look grafted on. This needs a decision from Innes, not a guess:
+  either a new/extended hero commissioned for one or both maps, or accept
+  that camp 9 and station 17 stay list-only (already fully reachable) until
+  one exists.
 - `library.html`'s Tenses category regex: check that "past perfect" lands in
   Tenses (the doc for the family flags the same gap for every new tense).
 - The eight older stations could take a `tr` table each now that the builder
