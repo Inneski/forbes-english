@@ -241,20 +241,26 @@ insert into lessons (file, title, level, access, deck, video) values
   lesson-toggle total, the hub's two hand-written "eight tenses" lines — now
   driven by a computed `{{W_TENSES}}` in `build_camp_hub/build.py` instead of
   a literal string).
-  **What's still missing: a 9th pin on the climb trail and a 17th on the
-  descent trail.** Checked the actual source art, not just a cropped render
-  — `BlockCamp/hub-hero.jpg` (1600×900) ends at the lookout tower with dense
-  tree canopy and no ground beyond it; `BlockCampDescent/watchtower-far-side.jpg`
-  (1664×936) ends the same way, the drawn SVG route line stopping exactly
-  where the canyon recedes into the tree line. Both hero images are closed
-  compositions — start to end, tent-to-tower and balcony-to-canyon — with
-  nothing to place a marker on past the last existing pin. Also: camp 9's
-  own art (the Maroon Memory Vault, a dusk castle gate) doesn't match either
-  trail's daytime Minecraft-forest style anyway, so even a placeholder pin
-  would look grafted on. This needs a decision from Innes, not a guess:
-  either a new/extended hero commissioned for one or both maps, or accept
-  that camp 9 and station 17 stay list-only (already fully reachable) until
-  one exists.
+  **Update: both pins landed, no new art needed after all.** A later
+  session found the room this one missed — camp 9 sits on TOP of the
+  existing lookout tower (the trail's short new spur climbs the tower
+  itself, not the ground beyond it: `#6E0B24`, "The lookout · looking
+  back"), and station 17 extends the descent's route line past the canyon
+  rim into the sky at the frame's edge, reading as the path continuing out
+  of view. Same source images as before, no commission needed. The SVG
+  route paths on both maps were extended with real bezier segments (not
+  just a floating dot), the descent's interactive panel/progress-bar JS had
+  its hardcoded `8`/`7` limits generalized to `nodes.length` so it isn't
+  the next place someone forgets the count changed, and the descent's
+  milestone fractions were re-measured off the actual SVG path length
+  (`getPointAtLength`) instead of hand-typed guesses. Merged as `6a4248a`.
+
+  One more thing this surfaced: the hub's own copy called the descent "the
+  same trail back down" in three places, which was never true — it's a
+  second trail on the far side of the watchtower, a different valley, not
+  the climb retraced. Innes caught it; fixed in `334bdad` (also replaced a
+  fourth hardcoded "eight stations" with the existing `{{W_DESCENT}}`
+  placeholder while in there).
 - `library.html`'s Tenses category regex: check that "past perfect" lands in
   Tenses (the doc for the family flags the same gap for every new tense).
 - The eight older stations could take a `tr` table each now that the builder
