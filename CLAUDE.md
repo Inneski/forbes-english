@@ -28,6 +28,21 @@ found and what you changed. `lesson-template/HOUSE-STYLE.md` §14 lists the four
 situations that genuinely warrant a question. Everything else: apply the
 standard and say what you did.
 
+## Handing a file to a cloud session
+
+A cloud session cannot see Innes's Downloads folder, and the Google Drive
+connector cannot move a file of any real size (a 7.5 MB RPG export killed
+the connection three times on 2026-09-05; drive.google.com itself is blocked
+by the sandbox proxy). Two routes work, and nothing else does:
+
+- **Attach the file to the chat message** — drag it into the message box.
+  This is how the 4 MB Oz export arrived, and it is the fastest.
+- **Upload it to the repository** on GitHub ("Add files via upload", as with
+  `61a32b2`) and say which file. Anything in the repo a session can fetch.
+
+A forbesenglish.com URL works because the site is public. A link to a file
+on Innes's machine never will.
+
 ## Read these two, in this order
 
 1. **`lesson-template/HOUSE-STYLE.md`** — binding. The six rules, the palette
