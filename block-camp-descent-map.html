@@ -498,8 +498,8 @@
     </header>
 
     <svg class="route-layer" viewBox="0 0 1664 936" preserveAspectRatio="none" aria-hidden="true">
-      <path class="route-base" pathLength="1000" d="M170 790 C340 746 475 770 690 720 C805 693 845 676 902 650 C980 614 1016 574 1048 520 C1080 470 1128 432 1188 401 C1245 372 1292 351 1352 331"></path>
-      <path id="route-progress-path" class="route-progress" pathLength="1000" d="M170 790 C340 746 475 770 690 720 C805 693 845 676 902 650 C980 614 1016 574 1048 520 C1080 470 1128 432 1188 401 C1245 372 1292 351 1352 331"></path>
+      <path class="route-base" pathLength="1000" d="M170 790 C340 746 475 770 690 720 C805 693 845 676 902 650 C980 614 1016 574 1048 520 C1080 470 1128 432 1188 401 C1245 372 1292 351 1352 331 C1382 321 1400 300 1420 282"></path>
+      <path id="route-progress-path" class="route-progress" pathLength="1000" d="M170 790 C340 746 475 770 690 720 C805 693 845 676 902 650 C980 614 1016 574 1048 520 C1080 470 1128 432 1188 401 C1245 372 1292 351 1352 331 C1382 321 1400 300 1420 282"></path>
     </svg>
 
     <div class="route-nodes" id="route-nodes" aria-label="Passive voice route stations">
@@ -511,6 +511,7 @@
       <button class="route-node" style="--x:67%;--y:54%;--depth:.79;--tense:#F0723F;--tense-ink:#0a1f1c" data-index="5" data-short="Future simple passive" aria-label="Station 14: Future simple passive"><span>14</span></button>
       <button class="route-node" style="--x:72%;--y:47%;--depth:.74;--tense:#2E7D65;--tense-ink:#fff4d6" data-index="6" data-short="Present perfect passive" aria-label="Station 15: Present perfect passive"><span>15</span></button>
       <button class="route-node" style="--x:78%;--y:40%;--depth:.7;--tense:#46B0AB;--tense-ink:#0a1f1c" data-index="7" data-short="The Trial" aria-label="Station 16: The Trial"><span>16</span></button>
+      <button class="route-node" style="--x:85%;--y:30%;--depth:.66;--tense:#6E0B24;--tense-ink:#fff4d6" data-index="8" data-short="Past perfect passive" aria-label="Station 17: Past perfect passive"><span>17</span></button>
     </div>
 
     <div class="camper-token" id="camper-token" aria-hidden="true">
@@ -591,10 +592,19 @@
           structure: "EVERY TENSE · BOTH VOICES · NO LABELS",
           href: "blockcamp-passive-trial.html",
           copy: "Voice first, then tense. Choose for yourself, with nothing on the slide telling you which."
+        },
+        {
+          kicker: "Station 17 · Camp nine, coming down",
+          title: "Past Perfect Passive",
+          structure: "HAD BEEN + PAST PARTICIPLE",
+          href: "blockcamp-passive-past-perfect.html",
+          copy: "The earlier action, the other way round: the gate had been locked by the time we arrived."
         }
       ];
 
-      const milestones = [0, .15, .30, .44, .57, .70, .83, 1];
+      // Fraction of the route path nearest each marker, measured off the SVG
+      // (getPointAtLength) rather than guessed - the old list was hand-typed.
+      const milestones = [0, .215, .385, .522, .63, .72, .805, .892, 1];
       const nodes = [...document.querySelectorAll(".route-node")];
       const camper = document.getElementById("camper-token");
       const title = document.getElementById("panel-title");
@@ -605,8 +615,8 @@
       const panel = document.getElementById("lesson-panel");
       const panelClose = document.getElementById("panel-close");
       const progressPath = document.getElementById("route-progress-path");
-      let completed = Math.max(0, Math.min(8, Number(new URLSearchParams(location.search).get("completed")) || 0));
-      let selected = Math.min(completed, 7);
+      let completed = Math.max(0, Math.min(nodes.length, Number(new URLSearchParams(location.search).get("completed")) || 0));
+      let selected = Math.min(completed, nodes.length - 1);
 
       function renderPanel(index) {
         const lesson = lessons[index];
@@ -625,8 +635,8 @@
       function closePanel() { panel.classList.remove("is-open"); }
 
       function render() {
-        const currentIndex = Math.min(Math.max(completed, selected), 7);
-        const progress = completed === 8 ? 1 : milestones[currentIndex];
+        const currentIndex = Math.min(Math.max(completed, selected), nodes.length - 1);
+        const progress = completed === nodes.length ? 1 : milestones[currentIndex];
         document.documentElement.style.setProperty("--progress", progress.toFixed(3));
         progressPath.style.strokeDashoffset = (1000 * (1 - progress)).toFixed(2);
 
@@ -664,8 +674,8 @@
 
       window.BlockCampPassiveProgress = Object.freeze({
         setCompleted(value) {
-          completed = Math.max(completed, Math.min(8, Math.floor(Number(value) || 0)));
-          selected = Math.min(completed, 7);
+          completed = Math.max(completed, Math.min(nodes.length, Math.floor(Number(value) || 0)));
+          selected = Math.min(completed, nodes.length - 1);
           renderPanel(selected);
           render();
           openPanel();
