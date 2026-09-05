@@ -12,6 +12,55 @@ stale copy.
 
 ---
 
+## 2026-09-05 — LEGO Prepositions & Phrasal Verbs, Part 2: rebuilt as a deck
+
+Innes sent the URL for `forbes-english-lego-lesson-part2.html` — a five-tab
+scrolling quiz, not a deck, and unrelated to the already-rebuilt Lego Car
+Building pair (`forbes-lego-b2.html` / `forbes-lego-b2-part2.html`) despite
+the similar filenames. Same house-style gap as both of those: 27 scored items
+(6 MC, 5 fill-in-the-blank, 6 true/false, 5 matching, 5 error-correction) and
+zero pre-teaching — every rule lived only in the per-answer feedback.
+
+Rebuilt to a 27-slide deck (cover, 3 teach slides, then the five activities,
+results, activate). All 27 items survive; nothing recounts, unlike the Lego
+Car Building pair — this page's error-correction was already 4-option
+multiple choice, so there was nothing to convert into gap rows. True/false
+became six two-option MC slides (`options=['True','False']`, never
+translated — see below); there is no dedicated true/false slide type.
+
+New builder trio: `lesson-template/build/{build_legoprep2,legoprep2_data,
+i18n_legoprep2}.py`. Hero and background are the lesson's own existing
+`LegoPart2/lego-dice-brick.jpg` (cover) and `LegoPart2/lego-brick-wall.jpg`
+(background swap on the teach/match/EC slides) — both already 1600×896, no
+new artwork needed. Palette is `extract-palette.py`'s unedited output, dark
+pink/red, every contrast row PASS. `library.html` needed no edit: the
+existing `LegoPart2/lego-part2-thumb.jpg` thumbnail entry and card-title link
+carried over untouched, and `tools/seo.py` reused them.
+
+Ships en/de/es (the 2026-09-04 minimum), six-item teach cards. Checker is
+fully clean: LAYOUT, ANSWERS, BANK, EXPLAIN, I18N, ACTIVATION, LOGO, HEAD,
+ART, RUNTIME all PASS. Verified by screenshot at every activity type
+(cover, teach ×3, MC, gap, true/false, match, error-correction, results,
+activate) and with the language switched to German — nothing left in English
+that shouldn't be.
+
+`tools/seo.py` hit the cloud-session Supabase-unreachable fallback (see the
+CLAUDE.md warning); diffed `lesson-meta.json` / `llms.txt` / `sitemap.xml`
+before committing and confirmed the only changes were this lesson's own
+description text and `lastmod` bumps — no other lesson dropped.
+
+**Playwright had to be installed locally** (`npm install playwright
+--no-save`) for `check-lesson.js` to run in this sandbox — it is gitignored
+via `node_modules/`, so nothing to clean up.
+
+**Still open:** Part 1 of this pair (`forbes-english-lego-lesson.html`, B1)
+is the same old scrolling format and has not been touched — its
+`library.html` thumbnail is also currently `lego/lego-b2-scene-a.jpg`, art
+that belongs to the unrelated Lego Car Building deck, worth fixing whenever
+Part 1 is rebuilt.
+
+---
+
 ## 2026-09-04 — Block Camp hub remade dark (pushed, live on origin/main)
 
 Innes: "remake block camp hub so it looks snazzy", direction chosen: dark and
