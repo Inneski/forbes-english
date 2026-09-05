@@ -107,6 +107,9 @@ def climb_cards():
 def count_climb():
     return sum(present(f'blockcamp-{s}.html') + present(f'blockcamp-{s}-2.html') for _,_,s,_,_ in CLIMB)
 
+def count_tenses():
+    return sum(present(f'blockcamp-{s}.html') for _,_,s,_,_ in CLIMB)
+
 def descent_cards():
     out=[]
     for st,camp,name,slug,lvl,acc in DESCENT:
@@ -148,6 +151,7 @@ def build(inline):
               .replace('{{W_CLIMB}}', WORDS.get(count_climb(), str(count_climb())))
               .replace('{{W_DESCENT}}', WORDS.get(count_descent(), str(count_descent())))
               .replace('{{W_REFS}}', WORDS.get(count_refs(), str(count_refs())))
+              .replace('{{W_TENSES}}', WORDS.get(count_tenses(), str(count_tenses())))
               .replace('{{N_TOTAL}}', WORDS.get(count_climb()+count_descent(), str(count_climb()+count_descent()))))
     if inline:
         def sub(m):
