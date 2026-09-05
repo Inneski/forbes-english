@@ -72,8 +72,21 @@ python3 tools/seo.py                                   # ALWAYS last — and rea
 ```
 
 `<slug>` is `<name>-rpg` (`last-train-home-rpg`, `long-way-home-rpg`,
-`lost-yellow-road-rpg`); Blocula's `dracula-castle-of-if` predates the
-convention. The page and its picture folder share the slug.
+`lost-yellow-road-rpg`, `wonderland-stolen-now-rpg`); Blocula's
+`dracula-castle-of-if` predates the convention. The page and its picture
+folder share the slug.
+
+**Two generators have sent exports so far, and they differ.** The Oz kind
+(`Sherpa_Yellow_Standalone`) holds the game in one `window.*_GAME_DATA`
+JSON object with `local.es/.de` blocks — `extract_standalone.py` handles it.
+The Wonderland kind (`…_V1.html`, `EMBEDDED_SCENES` + `const ACT_ONE = [q(…)]`
+tables, 16:9 pictures, 10 points a question and repair-until-correct) keeps
+its text in JavaScript; `build_wonderland_stolen_now.py`'s docstring says
+how it was pulled out (slice the script from `const q =` to
+`function resetState`, run it in node, print the tables as JSON) and the
+cover / prologue / fork / briefing prose, which lives in its render
+functions, was transcribed by hand. A third kind means: read its script
+first, then decide which of the two it is closer to.
 
 Every page is **generated**: edit the builder, re-run it. The builder keeps
 the fenced SEO block from the file on disk, so a re-run without `seo.py`
@@ -194,14 +207,24 @@ wraps to at most two lines; the German is not longer than the panel.
 | `labels` | overrides for `rpg.LABELS` (HUD words, CONTINUE, PLAY AGAIN …) |
 | `start`, `scenes`, `endings` | first scene id; the scenes; `{master, complete, missing, failed}` → ending scene ids |
 | `max`, `points`, `tiles`, `chances`, `complete_score` | the scoring — 75 / 5 / 4 / 3 / 65 for a 15-question path |
+| `img_w`, `img_h` | picture size when it is not 1536×1024 (Wonderland is 1536×864) |
+| `repair`, `total` | `repair: True` = a wrong answer explains and lets the learner try again, points on the first try only, no chances (set `chances: 0`); `total` = questions on any path, shown as a progress badge |
+| `tags` | the two half-labels for split options, `{'a': {en,…}, 'b': {en,…}}` (pink NOW / blue USUAL) |
 
 Scene kinds: `intro` (cover: `rules` chips, `start` button, `small` line),
-`rules` (form cards + `note`), `story` (text + CONTINUE), `question`
-(`clue`, `prompt`, `opts`, `answer`, `fb`, `points`, `relic`, `final`,
-`next`), `choice` (`routes`: name, desc, route, target), `ending`
-(`success`). A question's `next` of `'resolve'` picks the ending from the
-score, the tiles and whether the final question was right. Chances run out
-→ the failed ending on the next CONTINUE.
+`rules` (form cards + `note`, optional `button` text), `story` (text,
+optional `rules` cards and `note`, optional `button`), `question` (`clue`,
+`prompt`, `opts`, `answer`, `fb`, `points`, `relic`, `final`, `next`),
+`choice` (`routes`: name, desc, route, target — a route may carry `min`
+and `else`: below `min` points it goes to `else` instead), `ending`. A
+question's `next` of `'resolve'` picks the ending from the score, the tiles
+and whether the final question was right. Chances run out → the failed
+ending on the next CONTINUE.
+
+An option is `{en, es, de}` (glosses optional — options are the English
+being taught and the check skips them) or, for a two-blank item,
+`{parts: ['stays', 'is getting'], kinds: ['b', 'a']}`: two coloured halves
+labelled from `tags`, first half for the first blank.
 
 ## 7. What is deliberately not here
 

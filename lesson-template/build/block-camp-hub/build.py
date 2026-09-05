@@ -149,6 +149,9 @@ ADVENTURES = [
  ('block-camp/lost-yellow-road-rpg.html','block-camp/lost-yellow-road-rpg/01_cover.webp','The Lost Yellow Road',
   'A voxel Oz. The Witch has scattered four tiles of the yellow road, and every one comes back as a question about what was happening at that moment &mdash; click the glowing object in each scene to read.',
   ('Past Continuous',),'A1&ndash;A2','pro','new'),
+ ('block-camp/wonderland-stolen-now-rpg.html','block-camp/wonderland-stolen-now-rpg/00_cover.webp','Wonderland: The Stolen Now',
+  'The last afternoon is looping and the palace clock is counting down. Two branching acts, a pink-or-blue cake trial that splits what is happening now from what always happens, and three endings.',
+  ('Present Continuous',),'A1&ndash;A2','pro','new'),
 ]
 
 def adventure_cards():

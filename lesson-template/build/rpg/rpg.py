@@ -51,6 +51,12 @@ LABELS = {
     'answerWas':  {'en': 'Correct answer:', 'es': 'Respuesta correcta:', 'de': 'Richtige Antwort:'},
     'finalScore': {'en': 'FINAL SCORE', 'es': 'PUNTUACIÓN FINAL', 'de': 'ENDPUNKTZAHL'},
     'route':      {'en': 'ROUTE', 'es': 'RUTA', 'de': 'ROUTE'},
+    'progress':   {'en': 'SPELLS', 'es': 'HECHIZOS', 'de': 'ZAUBER'},
+    'repaired':   {'en': 'SPELL REPAIRED', 'es': 'HECHIZO REPARADO', 'de': 'ZAUBER REPARIERT'},
+    'tryAgain':   {'en': 'NOT YET · TRY ANOTHER', 'es': 'TODAVÍA NO · PRUEBA OTRA', 'de': 'NOCH NICHT · VERSUCH ES ANDERS'},
+    'firstTry':   {'en': 'first try', 'es': 'a la primera', 'de': 'beim ersten Versuch'},
+    'review':     {'en': 'REVIEW THE REPAIRED SPELLS', 'es': 'REPASA LOS HECHIZOS REPARADOS', 'de': 'DIE REPARIERTEN ZAUBER ANSEHEN'},
+    'perfect':    {'en': 'Perfect first-try grammar. Every spell held.', 'es': 'Gramática perfecta a la primera. Todos los hechizos aguantaron.', 'de': 'Perfekte Grammatik beim ersten Versuch. Jeder Zauber hat gehalten.'},
     'help':       {'en': 'click the glowing object or ENTER to read · ESC hide · 1–3 choose · L language · F fullscreen',
                    'es': 'pulsa el objeto que brilla o ENTER para leer · ESC ocultar · 1–3 elegir · L idioma · F pantalla completa',
                    'de': 'klicke das leuchtende Objekt oder ENTER zum Lesen · ESC ausblenden · 1–3 wählen · L Sprache · F Vollbild'},
@@ -136,7 +142,13 @@ button{font:inherit}
 .option .key{display:grid;place-items:center;width:2.4cqw;height:2.4cqw;border:1px solid var(--accent);color:var(--accent);font-weight:700}
 .option.correct{background:rgba(25,102,69,.9);border-color:var(--good)}.option.wrong{background:rgba(131,12,34,.93);border-color:var(--bad)}
 .option:disabled{cursor:default;transform:none}.option .translation{font-size:1.05cqw}
-.right .option{text-align:right;grid-template-columns:1fr 2.6cqw}.right .option .key{order:2}
+.option.split{grid-template-columns:2.6cqw 1fr 1fr;gap:.5cqw}.option .half{display:flex;flex-direction:column;gap:.15cqw;padding:.45cqw .6cqw;border:1px solid rgba(255,246,217,.25)}
+.option .half small{font-size:.8cqw;letter-spacing:.08em;opacity:.85}.option .half b{font-size:1.35cqw}
+.option .half.a{background:rgba(207,52,125,.55)}.option .half.b{background:rgba(36,121,173,.55)}
+.badge[hidden]{display:none}
+.review{display:grid;gap:.45cqw;text-align:left}.review div{border-left:.25cqw solid var(--accent);padding:.4cqw .7cqw;background:rgba(255,235,160,.1);font-size:1.15cqw;line-height:1.3}.review b{color:var(--accent)}
+.option.wrong:disabled{opacity:.7}
+.right .option{text-align:right;grid-template-columns:1fr 2.6cqw}.right .option .key{order:2}.right .option.split{grid-template-columns:1fr 1fr 2.6cqw}.right .option.split .key{order:3}.option .half{text-align:left}
 .feedback{display:none;padding:.8cqw .9cqw;border:1px solid rgba(255,246,217,.3);background:rgba(20,14,4,.85);font-size:1.35cqw;line-height:1.32}
 .feedback.show{display:block}.feedback.good{border-color:var(--good)}.feedback.bad{border-color:var(--bad)}
 .feedback strong{color:var(--accent)}.feedback .translation{font-size:1.05cqw}
@@ -163,7 +175,7 @@ button{font:inherit}
 /* portrait / square-ish windows */
 @media(max-aspect-ratio:4/3){.content{width:60%}.center .content{width:84%}.hot-label{font-size:1.8cqw}.lang-menu{min-width:30cqw}.lang-item{font-size:1.4cqw}.lang-item b{font-size:1.3cqw}.title{font-size:4.4cqw}.story,.prompt{font-size:2.1cqw}.option,.feedback{font-size:1.75cqw}.translation{font-size:1.35cqw}.badge{font-size:1.5cqw}.lang-btn,.utility{font-size:1.4cqw}.clue{font-size:1.7cqw}}
 /* phones: the panel is a sheet across the bottom, sizes in px */
-@media(max-width:700px){.hud{top:8px;left:8px;right:8px}.badge{font-size:11px;padding:5px 6px}.lang-btn,.utility{font-size:11px;padding:5px 6px}.zone{top:58px;bottom:10px;left:3%;right:3%;align-items:flex-end!important;justify-content:center!important}.content,.center .content,.tr-on .content{width:100%!important;margin:0!important;max-height:100%;text-align:left;padding:14px;gap:9px}.right .content{text-align:left}.right .clue{border-right:0;border-left:4px solid var(--accent)}.right .option{text-align:left;grid-template-columns:24px 1fr}.right .option .key{order:0}.right .continue,.right .start,.right .restart,.center .continue,.center .start,.center .restart{align-self:flex-start}.right .hide-btn{align-self:flex-end}.hot{min-width:44px;min-height:44px}.hot i,.hot::before{inset:-4px}.hot i{box-shadow:0 0 0 2px #fff,0 0 0 4px rgba(70,45,0,.55),0 0 14px 3px rgba(255,240,170,.85)}.hot::before{border-width:2px}.hot-label{font-size:13px}.lang-menu{min-width:200px;padding:6px;gap:3px}.lang-item{font-size:13px;padding:6px 8px;grid-template-columns:32px 1fr}.lang-item b{font-size:12px}.hide-btn{font-size:12px}.title,.tr-on .title{font-size:26px}.cover-title{font-size:22px}.kicker{font-size:12px}.story,.prompt{font-size:17px}.clue{font-size:15px;padding:8px 10px;border-left-width:4px}.translation,.title .translation{font-size:13px}.option,.feedback{font-size:15px;padding:9px 10px}.option{grid-template-columns:24px 1fr;gap:8px}.option .key{width:22px;height:22px}.option .translation,.route .translation,.rule-card .translation,.feedback .translation{font-size:12px}.route-options,.rules-intro{grid-template-columns:1fr}.rule-card:last-child{grid-column:auto}.rule-card,.rule-note,.route{font-size:14px;padding:9px}.rule-card b,.route b{font-size:14px}.rules-chips span{font-size:11px;padding:4px 7px}.final-score{font-size:19px}.small{font-size:12px}.continue,.start,.restart{font-size:14px;padding:11px 16px}.corner-help{display:none}}
+@media(max-width:700px){.hud{top:8px;left:8px;right:8px}.badge{font-size:11px;padding:5px 6px}.lang-btn,.utility{font-size:11px;padding:5px 6px}.zone{top:58px;bottom:10px;left:3%;right:3%;align-items:flex-end!important;justify-content:center!important}.content,.center .content,.tr-on .content{width:100%!important;margin:0!important;max-height:100%;text-align:left;padding:14px;gap:9px}.right .content{text-align:left}.right .clue{border-right:0;border-left:4px solid var(--accent)}.right .option{text-align:left;grid-template-columns:24px 1fr}.right .option .key{order:0}.right .continue,.right .start,.right .restart,.center .continue,.center .start,.center .restart{align-self:flex-start}.right .hide-btn{align-self:flex-end}.hot{min-width:44px;min-height:44px}.hot i,.hot::before{inset:-4px}.hot i{box-shadow:0 0 0 2px #fff,0 0 0 4px rgba(70,45,0,.55),0 0 14px 3px rgba(255,240,170,.85)}.hot::before{border-width:2px}.hot-label{font-size:13px}.lang-menu{min-width:200px;padding:6px;gap:3px}.lang-item{font-size:13px;padding:6px 8px;grid-template-columns:32px 1fr}.lang-item b{font-size:12px}.hide-btn{font-size:12px}.title,.tr-on .title{font-size:26px}.cover-title{font-size:22px}.kicker{font-size:12px}.story,.prompt{font-size:17px}.clue{font-size:15px;padding:8px 10px;border-left-width:4px}.translation,.title .translation{font-size:13px}.option,.feedback{font-size:15px;padding:9px 10px}.option{grid-template-columns:24px 1fr;gap:8px}.option .key{width:22px;height:22px}.option .translation,.route .translation,.rule-card .translation,.feedback .translation{font-size:12px}.option.split{grid-template-columns:24px 1fr 1fr;gap:6px}.option .half{padding:6px 8px}.option .half small{font-size:10px}.option .half b{font-size:14px}.review div{font-size:13px;padding:6px 8px}.route-options,.rules-intro{grid-template-columns:1fr}.rule-card:last-child{grid-column:auto}.rule-card,.rule-note,.route{font-size:14px;padding:9px}.rule-card b,.route b{font-size:14px}.rules-chips span{font-size:11px;padding:4px 7px}.final-score{font-size:19px}.small{font-size:12px}.continue,.start,.restart{font-size:14px;padding:11px 16px}.corner-help{display:none}}
 """
 
 BODY = r"""
@@ -175,7 +187,8 @@ BODY = r"""
       <div class="hud-group">
         <div class="badge"><span id="lblPoints">POINTS</span> <b id="score">0</b>/{{MAX}}</div>
         <div class="badge"><span id="lblTiles">TILES</span> <b id="tiles"></b></div>
-        <div class="badge"><span id="lblChances">CHANCES</span> <b id="chances"></b></div>
+        <div class="badge" id="chancesBadge"><span id="lblChances">CHANCES</span> <b id="chances"></b></div>
+        <div class="badge" id="progressBadge" hidden><span id="lblProgress">SPELLS</span> <b id="progress"></b></div>
       </div>
       <div class="hud-group">
         <div class="langs">
@@ -195,7 +208,7 @@ JS = r"""
 const G = {{GAME}};
 const LANGS = G.langs, RTL = ['ar'];
 let state = fresh('off');
-function fresh(lang){return {scene:G.start,score:0,chances:G.chances,tiles:0,lang,open:false,route:[],results:{},finalCorrect:null}}
+function fresh(lang){return {scene:G.start,score:0,chances:G.chances,tiles:0,lang,open:false,route:[],results:{},attempts:{},mistakes:[],answered:0,finalCorrect:null}}
 const frame=document.getElementById('frame'), content=document.getElementById('content'), sceneImage=document.getElementById('sceneImage');
 const hot=document.getElementById('hot'), hotLabel=document.getElementById('hotLabel'), zone=document.getElementById('zone');
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -203,7 +216,10 @@ const tx=(o,l)=>o?(l&&o[l]?o[l]:o.en):'';
 function ui(key,vars){let s=tx(G.labels[key],state.lang==='off'?null:state.lang);if(vars)for(const k in vars)s=s.replace('{'+k+'}',vars[k]);return s}
 function line(obj,cls=''){if(!obj)return '';const en=esc(obj.en);if(state.lang==='off'||!obj[state.lang])return `<span class="${cls}">${en}</span>`;return `<span class="${cls}">${en}<span class="translation">${esc(obj[state.lang])}</span></span>`}
 function label(obj){if(!obj)return '';return state.lang==='off'||!obj[state.lang]?esc(obj.en):`${esc(obj.en)}<span class="translation">${esc(obj[state.lang])}</span>`}
-function updateHUD(){document.getElementById('score').textContent=state.score;document.getElementById('tiles').textContent='◆'.repeat(state.tiles)+'◇'.repeat(Math.max(0,G.tiles-state.tiles));document.getElementById('chances').textContent='♥'.repeat(state.chances)+'♡'.repeat(Math.max(0,G.chances-state.chances));document.getElementById('lblPoints').textContent=ui('points');document.getElementById('lblTiles').textContent=ui('tiles');document.getElementById('lblChances').textContent=ui('chances');document.getElementById('help').textContent=ui('help')}
+/* an option is {en,…} or, for a two-blank item, {parts:[a,b], kinds:['a'|'b',…], tags:[{en,…},{en,…}]} — two coloured halves */
+function optText(o){return o.parts?o.parts.join(' / '):o.en}
+function optMarkup(o){if(!o.parts)return `<span>${label(o)}</span>`;return o.parts.map((p,i)=>`<span class="half ${o.kinds[i]}"><small>${label(G.tags[o.kinds[i]])}</small><b>${esc(p)}</b></span>`).join('')}
+function updateHUD(){document.getElementById('score').textContent=state.score;document.getElementById('tiles').textContent='◆'.repeat(state.tiles)+'◇'.repeat(Math.max(0,G.tiles-state.tiles));document.getElementById('chances').textContent='♥'.repeat(state.chances)+'♡'.repeat(Math.max(0,G.chances-state.chances));document.getElementById('lblPoints').textContent=ui('points');document.getElementById('lblTiles').textContent=ui('tiles');document.getElementById('lblChances').textContent=ui('chances');document.getElementById('chancesBadge').hidden=!G.chances;document.getElementById('progressBadge').hidden=!G.total;if(G.total){document.getElementById('lblProgress').textContent=ui('progress');document.getElementById('progress').textContent=`${state.answered}/${G.total}`}document.getElementById('help').textContent=ui('help')}
 function head(s){const t=s.kind==='intro'?`<span class="big">${label(s.title)}</span>`:label(s.title);return `${line(s.k,'kicker')}<h1 class="title ${s.kind==='intro'?'cover-title':''}">${t}</h1>${line(s.story,'story')}`}
 /* HOT = [cx, cy, w, h] as % of the PICTURE (3:2). The picture is object-fit:cover in the frame, so convert picture space to frame pixels; a phone shows a narrow central slice and the object stays on it. */
 function placeHot(h){const W=frame.clientWidth,H=frame.clientHeight,sc=Math.max(W/G.imgW,H/G.imgH),dw=G.imgW*sc,dh=G.imgH*sc;
@@ -219,11 +235,11 @@ function closePanel(){if(state.open)setOpen(false)}
 function render(){const s=G.scenes[state.scene];frame.className=`frame ${s.pos||'left'} v-${s.v||'center'}${RTL.includes(state.lang)?' rtl':''}`;sceneImage.src=G.dir+s.img;sceneImage.alt=s.title.en;placeHot(s.hot);const tr=state.lang!=='off';frame.classList.toggle('tr-on',tr);content.style.width=((s.width||(s.pos==='center'?64:46))+(tr?8:0))+'%';content.style.marginLeft=s.pos==='left'&&s.inset?s.inset+'%':'';content.style.marginRight=s.pos==='right'&&s.inset?s.inset+'%':'';
   let html=`<button class="hide-btn" onclick="closePanel()" title="Esc">✕ ${ui('hide')}</button>`+head(s);
   if(s.kind==='intro'){html+=`${s.rules?`<div class="rules-chips">${s.rules.map(r=>`<span>${label(r)}</span>`).join('')}</div>`:''}<button class="start" onclick="go('${s.next}')">${label(s.start)}</button>${s.small?`<div class="small">${label(s.small)}</div>`:''}`}
-  else if(s.kind==='rules'){html+=`<div class="rules-intro">${s.rules.map(r=>`<div class="rule-card"><b>${label(r.name)}</b>${label(r.form)}</div>`).join('')}</div>${s.note?`<div class="rule-note">${label(s.note)}</div>`:''}<button class="continue" onclick="go('${s.next}')">${ui('begin')}</button>`}
-  else if(s.kind==='story'){html+=`${s.note?`<div class="rule-note">${label(s.note)}</div>`:''}<button class="continue" onclick="go('${s.next}')">${ui('continue')}</button>`}
-  else if(s.kind==='question'){html+=`${s.clue?`<div class="clue"><b>${ui('visual')}</b><br>${label(s.clue)}</div>`:''}<div class="prompt">${label(s.prompt)}</div><div class="options">${s.opts.map((o,i)=>`<button class="option" data-i="${i}" onclick="answer(${i})"><span class="key">${i+1}</span><span>${label(o)}</span></button>`).join('')}</div><div id="feedback" class="feedback"></div><button id="continue" class="continue" hidden onclick="advance()">${ui('continue')}</button>`}
+  else if(s.kind==='rules'){html+=`<div class="rules-intro">${s.rules.map(r=>`<div class="rule-card"><b>${label(r.name)}</b>${label(r.form)}</div>`).join('')}</div>${s.note?`<div class="rule-note">${label(s.note)}</div>`:''}<button class="continue" onclick="go('${s.next}')">${s.button?label(s.button):ui('begin')}</button>`}
+  else if(s.kind==='story'){html+=`${s.rules?`<div class="rules-intro">${s.rules.map(r=>`<div class="rule-card"><b>${label(r.name)}</b>${label(r.form)}</div>`).join('')}</div>`:''}${s.note?`<div class="rule-note">${label(s.note)}</div>`:''}<button class="continue" onclick="go('${s.next}')">${s.button?label(s.button):ui('continue')}</button>`}
+  else if(s.kind==='question'){html+=`${s.clue?`<div class="clue"><b>${ui('visual')}</b><br>${label(s.clue)}</div>`:''}<div class="prompt">${label(s.prompt)}</div><div class="options">${s.opts.map((o,i)=>`<button class="option${o.parts?' split':''}" data-i="${i}" onclick="answer(${i})"><span class="key">${i+1}</span>${optMarkup(o)}</button>`).join('')}</div><div id="feedback" class="feedback"></div><button id="continue" class="continue" hidden onclick="advance()">${ui('continue')}</button>`}
   else if(s.kind==='choice'){html+=`<div class="route-options">${s.routes.map((r,i)=>`<button class="route" onclick="chooseRoute(${i})"><b>${i+1} · ${label(r.name)}</b>${label(r.desc)}</button>`).join('')}</div>`}
-  else if(s.kind==='ending'){html+=`<div class="final-score">${ui('finalScore')} ${state.score}/${G.max} · ${'◆'.repeat(state.tiles)}${'◇'.repeat(Math.max(0,G.tiles-state.tiles))}</div>${state.route.length?`<div class="small">${ui('route')}: ${esc(state.route.join(' · ').toUpperCase())}</div>`:''}<button class="restart" onclick="restart()">${ui('restart')}</button>`}
+  else if(s.kind==='ending'){const rev=G.repair?(state.mistakes.length?`<div class="review">${state.mistakes.map(id=>{const m=G.scenes[id];return `<div>${esc(m.prompt.en)}<br><b>${esc(optText(m.opts[m.answer]))}</b> — ${label(m.fb)}</div>`}).join('')}</div>`:`<div class="small">${ui('perfect')}</div>`):'';const ft=G.repair?` · ${state.score/(G.points||1)}/${G.total} ${ui('firstTry')}`:'';html+=`<div class="final-score">${ui('finalScore')} ${state.score}/${G.max}${ft} · ${'◆'.repeat(state.tiles)}${'◇'.repeat(Math.max(0,G.tiles-state.tiles))}</div>${rev}${state.route.length?`<div class="small">${ui('route')}: ${esc(state.route.join(' · ').toUpperCase())}</div>`:''}<button class="restart" onclick="restart()">${ui('restart')}</button>`}
   content.innerHTML=html;content.scrollTop=0;updateHUD();setOpen(s.kind==='intro'||s.kind==='ending');
   if(s.kind==='question'&&Object.prototype.hasOwnProperty.call(state.results,state.scene))setTimeout(()=>displayAnswer(state.results[state.scene],false),0)}
 hot.addEventListener('click',e=>{e.stopPropagation();openPanel()});
@@ -233,14 +249,17 @@ const langMenu=document.getElementById('langMenu'), langBtn=document.getElementB
 function closeMenu(){langMenu.hidden=true;langBtn.setAttribute('aria-expanded','false')}
 function toggleMenu(){langMenu.hidden=!langMenu.hidden;langBtn.setAttribute('aria-expanded',String(!langMenu.hidden))}
 function go(id){state.scene=id;render()}
-function displayAnswer(i,apply){const s=G.scenes[state.scene];const buttons=[...document.querySelectorAll('.option')];buttons.forEach(b=>b.disabled=true);const ok=i===s.answer;buttons[i]?.classList.add(ok?'correct':'wrong');buttons[s.answer]?.classList.add('correct');const p=s.points||G.points;
-  if(apply){if(ok){state.score+=p;if(s.relic)state.tiles=Math.min(G.tiles,state.tiles+1)}else{state.chances=Math.max(0,state.chances-1)}if(s.final)state.finalCorrect=ok}
-  const fb=document.getElementById('feedback');const l=state.lang==='off'?null:state.lang;const head=ok?ui(s.relic?'relic':'correct',{p}):ui('wrong');const was=ok?'':`<br>${ui('answerWas')} ${esc(s.opts[s.answer].en)}`;const expl=s.fb?`<br>${label(s.fb)}`:'';
+function displayAnswer(i,apply){const s=G.scenes[state.scene];const buttons=[...document.querySelectorAll('.option')];const ok=i===s.answer;const p=s.points||G.points;const fb=document.getElementById('feedback');const expl=s.fb?`<br>${label(s.fb)}`:'';
+  if(G.repair&&!ok){/* repair mode: mark it, explain, let them try again */buttons[i].classList.add('wrong');buttons[i].disabled=true;fb.innerHTML=`<strong>${ui('tryAgain')}</strong>${expl}`;fb.className='feedback show bad';if(apply)requestAnimationFrame(()=>content.scrollTo({top:content.scrollHeight,behavior:'smooth'}));return}
+  buttons.forEach(b=>b.disabled=true);buttons[i]?.classList.add(ok?'correct':'wrong');buttons[s.answer]?.classList.add('correct');
+  const retried=G.repair&&(state.attempts[state.scene]||0)>0;
+  if(apply){if(ok&&!retried){state.score+=p}if(ok&&s.relic)state.tiles=Math.min(G.tiles,state.tiles+1);if(!ok)state.chances=Math.max(0,state.chances-1);if(s.final)state.finalCorrect=ok;if(G.repair)state.answered++}
+  const head=ok?(retried?ui('repaired'):ui(s.relic?'relic':'correct',{p})):ui('wrong');const was=ok?'':`<br>${ui('answerWas')} ${esc(optText(s.opts[s.answer]))}`;
   fb.innerHTML=`<strong>${head}</strong>${was}${expl}`;fb.className=`feedback show ${ok?'good':'bad'}`;document.getElementById('continue').hidden=false;updateHUD();if(apply)requestAnimationFrame(()=>content.scrollTo({top:content.scrollHeight,behavior:'smooth'}))}
-function answer(i){if(Object.prototype.hasOwnProperty.call(state.results,state.scene))return;state.results[state.scene]=i;displayAnswer(i,true)}
+function answer(i){if(Object.prototype.hasOwnProperty.call(state.results,state.scene))return;const s=G.scenes[state.scene];if(G.repair&&i!==s.answer){if(!(state.attempts[state.scene]||0))state.mistakes.push(state.scene);state.attempts[state.scene]=(state.attempts[state.scene]||0)+1;displayAnswer(i,true);return}state.results[state.scene]=i;displayAnswer(i,true)}
 function resolve(){const full=state.tiles>=G.tiles&&state.chances>0;if(state.finalCorrect&&full&&state.score>=G.max)return G.endings.master;if(state.finalCorrect&&full&&state.score>=G.completeScore)return G.endings.complete;if(state.finalCorrect&&state.tiles<G.tiles)return G.endings.missing;return G.endings.failed}
 function advance(){const s=G.scenes[state.scene];if(state.chances<=0&&state.results[state.scene]!==s.answer){go(G.endings.failed);return}if(s.next==='resolve'){go(resolve());return}go(s.next)}
-function chooseRoute(i){const r=G.scenes[state.scene].routes[i];state.route.push(r.route);go(r.target)}
+function chooseRoute(i){const r=G.scenes[state.scene].routes[i];if(r.route)state.route.push(r.route);go(r.min!=null&&state.score<r.min?r.else:r.target)}
 function restart(){state=fresh(state.lang);render()}
 (function(){['off',...LANGS].forEach(l=>{const b=document.createElement('button');b.className='lang-item';b.dataset.lang=l;b.innerHTML=l==='off'?`<b>OFF</b><span>${esc(G.labels.off.en)}</span>`:`<b>${l.toUpperCase()}</b><span>${esc(G.names[l])}</span>`;b.addEventListener('click',()=>{state.lang=l;closeMenu();setLang()});langMenu.appendChild(b)});langBtn.addEventListener('click',e=>{e.stopPropagation();toggleMenu()});document.addEventListener('click',e=>{if(!langMenu.hidden&&!langMenu.contains(e.target))closeMenu()})})();
 function setLang(){const wasOpen=state.open;render();if(wasOpen)setOpen(true)}
@@ -304,6 +323,9 @@ def validate(spec):
         if not os.path.exists(img):
             raise SystemExit('scene %s: no picture at %s' % (sid, img))
         if s['kind'] == 'question':
+            for o in s['opts']:
+                if not (('en' in o) or ('parts' in o and 'kinds' in o)):
+                    raise SystemExit('scene %s: option %r needs en or parts+kinds' % (sid, o))
             if not (0 <= s['answer'] < len(s['opts'])):
                 raise SystemExit('scene %s: answer index out of range' % sid)
             nxt = s['next']
@@ -311,7 +333,7 @@ def validate(spec):
                 raise SystemExit('scene %s: next %r does not exist' % (sid, nxt))
         elif s['kind'] == 'choice':
             for r in s['routes']:
-                if r['target'] not in scenes:
+                if r['target'] not in scenes or ('else' in r and r['else'] not in scenes):
                     raise SystemExit('scene %s: route target %r missing' % (sid, r['target']))
         elif s['kind'] in ('intro', 'rules', 'story'):
             if s['next'] not in scenes:
@@ -321,8 +343,12 @@ def validate(spec):
             raise SystemExit('ending %s -> %s is not an ending scene' % (key, sid))
     labels = dict(LABELS, **spec.get('labels', {}))
     _check_langs(labels, langs, 'labels')
-    _check_langs({k: {kk: vv for kk, vv in s.items() if kk in TEXT_KEYS or kk in ('opts', 'rules', 'routes')}
+    # `opts` are left out on purpose: they are the English being taught, and
+    # a gloss under an option is optional (HOUSE-STYLE §8 — never translate the
+    # target language; Blocula glosses, the Wonderland export does not).
+    _check_langs({k: {kk: vv for kk, vv in s.items() if kk in TEXT_KEYS or kk in ('rules', 'routes', 'button')}
                   for k, s in scenes.items()}, langs, 'scenes')
+    _check_langs(spec.get('tags', {}), langs, 'tags')
     return labels
 
 
@@ -338,6 +364,8 @@ def assemble(spec, out=None):
         'start': spec['start'], 'scenes': spec['scenes'], 'endings': spec['endings'],
         'max': spec['max'], 'points': spec.get('points', 5), 'tiles': spec['tiles'],
         'chances': spec['chances'], 'completeScore': spec.get('complete_score', spec['max']),
+        'repair': bool(spec.get('repair')), 'total': spec.get('total', 0),
+        'tags': spec.get('tags', {'a': {'en': 'NOW'}, 'b': {'en': 'USUALLY'}}),
     }
     css = (CSS.replace('{{ACCENT}}', spec['accent']).replace('{{ACCENT_INK}}', spec.get('accent_ink', '#1a1200'))
               .replace('{{DEEP}}', spec.get('deep', '#1a1200')).replace('{{PANEL}}', spec.get('panel', 'rgba(20,14,4,.88)')))

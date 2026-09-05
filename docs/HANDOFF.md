@@ -12,6 +12,53 @@ stale copy.
 
 ---
 
+## 2026-09-05 — Wonderland: The Stolen Now — a fifth RPG, on the same engine
+
+The second export of the day — `Wonderland_The_Stolen_Now_Present_Continuous_V1 (2).html`,
+7.5 MB, 34 pictures at 1536×864, Present Continuous, A1–A2. It reached the
+session only as a chat attachment: Google Drive found it but the connector
+dropped the connection three times on the size, and drive.google.com is
+blocked by the sandbox proxy (now in CLAUDE.md, "Handing a file to a cloud
+session").
+
+**A different generator from the Oz one.** No `*_GAME_DATA` object; the
+game is `const ACT_ONE = [q(...)]` tables in the script, with a two-blank
+"cake" item (pink half = present continuous, blue half = present simple), a
+repair-until-correct rule (10 points first try, a mistake explains and you
+try again, 16 questions on any route, 160 points), two forks of two routes,
+a boss round and a final decision with three endings (Restore → true ending
+at 120+ points, hopeful below; Break → freedom). The export already had a
+"time shard" glow-to-reveal and Monocraft — it had been through the "Font
+styling for block camp RPGs" session earlier that day — but a fixed shard
+position, not an object, and the standalone chrome.
+
+Built as **`block-camp/wonderland-stolen-now-rpg.html`** on `rpg.py`, which
+grew what the game needed and Oz did not: `repair` mode, a `total` progress
+badge, split options with `tags`, `min`/`else` on a route, a per-scene
+`button`, `img_w/img_h`, and a mistakes review on the ending (first-try
+count, each repaired item with its rule). Options are now exempt from the
+language check — they are the English being taught; a gloss is optional.
+Oz rebuilt clean on the new engine (checked by screenshot).
+
+What the export lacked and the page has: Spanish and German for all 24
+question titles, prompts, explanations, kickers, route names and ending
+labels (the export translated only the story lines and endings); a rules
+briefing on the prologue plate; a hotspot on every one of the 35 scenes,
+each checked closed. Wired in like Oz: hub plate (five adventures now, the
+grid is `auto-fit`), library thumbnail, catalogue cache row, `seo.py` last —
+additions only in the four indexes.
+
+### To publish (Innes)
+
+Same branch as Oz. After the merge is live:
+
+```sql
+insert into lessons (file, title, level, access, deck, video, sort_order) values
+ ('block-camp/wonderland-stolen-now-rpg.html', 'Wonderland: The Stolen Now — Present Continuous Voxel RPG (A1-A2)', 'A1-A2', 'pro', false, false, 0);
+```
+
+---
+
 ## 2026-09-05 — The Lost Yellow Road: a fourth Block Camp RPG, and the RPG standard written down
 
 Innes sent a standalone export — `Wizard_of_Oz_Past_Continuous_RPG_Sherpa_Yellow_Standalone_V1_4_fixedfont.html`,
