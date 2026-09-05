@@ -41,16 +41,23 @@ second answer, which its own explanation concedes, and question twelve's
 <em>seized upon</em> collocates perfectly well with <em>potential</em>. Both
 would need a rewrite rather than a re-key.
 
-**Artwork.** The flat-vector Minecraft set is spoken for by Past Modals and
-Tense Review, so this deck uses three voxel studies from Innes's Downloads,
-photographed with a shallow depth of field: a voxel Odysseus for the cover, a
-warrior, and a group of creatures. They read as objects made of blocks rather
-than as screenshots, which suits a lesson about Minecraft as something a
-scholar writes about rather than something a player is inside. Three
-backgrounds over twenty-one slides is thin and a fourth would help.
+**Artwork, replaced 2026-09-05.** The three images this deck shipped with were
+wrong: `hero.jpg` and `warrior.jpg` were photoreal voxel-diorama renders of a
+classical Greek/Trojan warrior (a Corinthian-style helmet, a shield with a
+ship emblem, bokeh-blurred ruins) &mdash; stray art, not Minecraft, that had
+landed in this folder by a naming mix-up. Only `creatures.jpg`, a flat-vector
+Minecraft mob collage, was actually right. All three are now flat-vector
+Minecraft illustration, matching the rest of the site's house style: `hero.jpg`
+is a single blocky player on a cliff at sunset (the cover), `warrior.jpg` is a
+creeper-and-skeleton night confrontation, and a fourth image, `structure.jpg`
+(an interior view onto a built village), was added because three backgrounds
+over twenty-one slides was thin.
 
 `--void` is lifted off the derived near-black to a grey, per Innes's standing
-preference. Every other token is `extract-palette.py` output unedited.
+preference. Every other token is `extract-palette.py` output unedited, run
+without a hue rotation this time &mdash; the new hero's own blue reads cleanly
+against the Forbes wordmark, unlike the old terracotta hero that forced the
+teal rotation.
 """
 import sys
 sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
@@ -61,37 +68,30 @@ TPL = 'lesson-template/lesson-template.html'
 OUT = 'forbes-english-minecraft-c1.html'
 F = 'MinecraftC1'
 
-# python3 lesson-template/extract-palette.py MinecraftC1/hero.jpg \
-#            --accent-hue=190 --accent-sat=0.7
-#
-# The honest derivation returns a terracotta accent, which is the hero itself:
-# the Forbes wordmark on the cover sat in the same colour as the figure behind
-# it and all but vanished. Rotating to the teal that is already in the shield
-# and the sky separates them without hand-picking anything. Every contrast row
-# still passes.
+# python3 lesson-template/extract-palette.py MinecraftC1/hero.jpg
 PALETTE = '''  --hero: url('%s/hero.jpg');
 
-  --void          : #2d2d26;
-  --surface       : #232216;
-  --surface2      : #2f2e1e;
-  --border        : #1e4047;
-  --text          : #f2f5f5;
-  --text-dim      : #a3bbbf;
-  --accent        : #1e95ad;
-  --accent-bright : #30c5e3;
-  --accent-dim    : #13505c;
-  --secondary     : #9a5531;
-  --contrast      : #f26390;''' % F
+  --void          : #0f120c;
+  --surface       : #1a2114;
+  --surface2      : #242d1c;
+  --border        : #607683;
+  --text          : #f2f4f5;
+  --text-dim      : #a3b5bf;
+  --accent        : #7bafce;
+  --accent-bright : #accfe5;
+  --accent-dim    : #4683a7;
+  --secondary     : #e69771;
+  --contrast      : #e66f7c;''' % F
 
 CHIPS = ['constitutes', 'characterised by', 'underpins', 'serves as',
          'is regarded as', 'adhere to', 'procedurally generated',
          'is perhaps best evidenced by']
 
 REG_BG = ['warrior.jpg', 'creatures.jpg', 'hero.jpg',
+          'structure.jpg', 'warrior.jpg', 'creatures.jpg']
+COL_BG = ['creatures.jpg', 'hero.jpg', 'structure.jpg',
           'warrior.jpg', 'creatures.jpg', 'hero.jpg']
-COL_BG = ['creatures.jpg', 'hero.jpg', 'warrior.jpg',
-          'creatures.jpg', 'hero.jpg', 'warrior.jpg']
-FIB_BG = ['hero.jpg', 'warrior.jpg', 'creatures.jpg']
+FIB_BG = ['hero.jpg', 'structure.jpg', 'warrior.jpg']
 
 
 def build():
@@ -213,7 +213,7 @@ def build():
                   for chunks, why in ORDER)
 
         + D.results('resNext', 'You can read the register. Now write in it &rarr;',
-                    folder=F, bg='hero.jpg')
+                    folder=F, bg='structure.jpg')
 
         + D.activate('Present the case', 'Use at least four:', CHIPS,
                      'Roleplay &middot; in pairs',

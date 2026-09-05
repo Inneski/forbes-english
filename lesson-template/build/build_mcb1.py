@@ -42,6 +42,11 @@ the three rendered in-game scenes this deck shipped with, which were a stopgap:
 they were the only Minecraft images on disk not already spoken for by Past
 Modals or Tense Review.
 
+**Fourth background added 2026-09-05:** `village.jpg`, an interior view through
+a crafting-table window onto a built desert village, in the same warm pastel
+register as the rest of the set. Three backgrounds cycled twice over eighteen
+slides was thin; this breaks the repeat.
+
 The accent is rotated to rose because the honest derivation returns the same
 warm sand as Tense Review's, and two decks cannot share one palette and still
 read as two decks. Everything else is `extract-palette.py --light` output
@@ -78,9 +83,9 @@ PALETTE = '''  --hero: url('%s/hero.jpg');
 CHIPS = ['you have to', 'otherwise', 'I have just', 'for two hours',
          'when I find', 'take damage', 'spawn point', 'first, then, after that']
 
-MC_BG = ['grove.jpg', 'reef.jpg', 'hero.jpg', 'grove.jpg', 'reef.jpg', 'hero.jpg']
-FIB_BG = ['reef.jpg', 'grove.jpg', 'hero.jpg']
-DD_BG = ['grove.jpg', 'hero.jpg', 'reef.jpg']
+MC_BG = ['grove.jpg', 'reef.jpg', 'hero.jpg', 'village.jpg', 'grove.jpg', 'reef.jpg']
+FIB_BG = ['reef.jpg', 'village.jpg', 'grove.jpg']
+DD_BG = ['grove.jpg', 'hero.jpg', 'village.jpg']
 
 
 def build():
@@ -207,7 +212,7 @@ def build():
                   for chunks, why in ORDER)
 
         + D.results('resNext', 'You survived the night. Now explain it &rarr;',
-                    folder=F, bg='hero.jpg')
+                    folder=F, bg='village.jpg')
 
         + D.activate('Tell someone how to survive', 'Use at least four:', CHIPS,
                      'Roleplay &middot; in pairs',

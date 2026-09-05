@@ -489,10 +489,50 @@ What that gave the two decks that were on stopgaps:
 - **Minecraft C1** is unchanged — three voxel studies in `MinecraftC1/`, accent
   rotated to teal.
 
-**Still to clean up:** `MinecraftB1/temple.jpg` and `MinecraftB1/rex.jpg` are
-deleted locally but still on `origin/main`. The GitHub web uploader cannot
-delete, so they need a `git rm` from a session that can push, or deleting
-through the GitHub UI. Nothing references them.
+**`MinecraftB1/temple.jpg` and `MinecraftB1/rex.jpg` removed 2026-09-05** —
+`git rm`, actually pushed this time. Nothing referenced them.
+
+### Minecraft C1's "voxel studies" were the wrong art, fixed 2026-09-05
+
+Innes flagged it directly: new Minecraft art existed but wasn't in any deck,
+and some of what *was* live "wasn't very Minecraft." Investigation confirmed
+both halves.
+
+**The repeat pattern is structural.** Every one of the three live Minecraft
+decks (B1, C1, Ed) drew backgrounds from a 3-image folder, cycled twice across
+six activity slides (`[a, b, c, a, b, c]`). The 2026-09-04 note above already
+flagged this for C1 ("a fourth would help") but didn't fix it.
+
+**C1's `hero.jpg` and `warrior.jpg` were not Minecraft at all.** They were
+photoreal voxel-diorama renders of a classical Greek/Trojan warrior — a
+Corinthian-style helmet, a shield with a ship emblem, bokeh-blurred ruins —
+described in the builder's own docstring as "a voxel Odysseus for the cover."
+That was apparently deliberate at the time, but it doesn't match the site's
+flat-vector house style and Innes doesn't want it. Only `creatures.jpg` (a
+genuine flat-vector Minecraft mob collage) was actually right.
+
+**Fixed:** `MinecraftC1/hero.jpg` and `warrior.jpg` replaced with flat-vector
+Minecraft art (a player on a cliff at sunset; a creeper-and-skeleton night
+confrontation), plus a fourth image, `structure.jpg`. `MinecraftB1/` also
+got a fourth, `village.jpg`. Both builders' `*_BG` lists now spread four
+images across the slide count instead of cycling three twice; `build_mcc1.py`
+and `build_mcb1.py` docstrings carry the detail. `MinecraftEd/` still only
+has three (`hero.jpg`, `dusk.jpg`, `ridge.jpg`) — a fourth for it is still
+needed, same repeat-pattern defect, unfixed.
+
+**Delivery note for next time:** getting art from a chat-pasted image into
+the repo doesn't work — a cloud session has no filesystem path to an inline
+image, no matter how many are pasted. What worked: Innes saved the Midjourney
+exports as JPG (GitHub's web uploader caps drag-and-drop at 25MB/file, well
+under git's own 100MB limit, so raw PNG upscales need converting/downsizing
+first) and used the web uploader — but pointed at the **repo root**, not the
+target subfolder, landing all seven files as `blackisler_<prompt-text>_<seed>_<n>.jpg`
+at `/`. A session with push access then had to `git checkout origin/main --
+<file>` to pull them onto disk, sort them by content (not filename — the
+prompt text names don't tell you which variant, of several near-duplicate
+renders per prompt, actually reads as the intended composition), rename to
+what the builder expects, and `git rm` the unused variants and the two wrong
+old files.
 
 **Do not use the three Twin Peaks images in `minecraft/`.** They are a
 recognisable homage — the Red Room, identifiable characters, and a "Welcome
