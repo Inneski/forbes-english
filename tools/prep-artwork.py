@@ -30,6 +30,10 @@ Usage:
 
     --into <dir>      destination lesson folder (created if absent)
     --names a,b,c     final basenames, in order, instead of <folder>-01.jpg
+    --keep-names      keep each source's own filename (sanitised) instead of
+                      numbering. Use it when staging a batch for review: a
+                      Midjourney filename carries the prompt, which says what
+                      the picture was meant to be.
     --dry-run         report only, write nothing
     --force           write even the files flagged as duplicates
     --width N         long edge, default 2000
@@ -44,6 +48,7 @@ import argparse
 import json
 import warnings
 import os
+import re
 import subprocess
 import sys
 import importlib.util
@@ -68,6 +73,23 @@ ahash, THRESH_SAME = image_audit.ahash, image_audit.THRESH_SAME
 AR_LO, AR_HI = 1.70, 1.86
 # Mean luminance below this is too dark for a light-theme deck (HOUSE-STYLE §4).
 DARK_BELOW = 90
+
+
+def safe_stem(path, limit=70):
+    """A source filename made safe for the repo, keeping the prompt words.
+
+    Midjourney stems are long, repeat the author handle and carry a UUID; the
+    words in the middle are the only part worth keeping."""
+    stem = os.path.splitext(os.path.basename(path))[0]
+    stem = re.sub(r'^blackisler_', '', stem)
+    # Stop at the underscore: [A-Za-z0-9_]* would greedily eat the prompt words.
+    stem = re.sub(r'https?s?\.mj\.run[A-Za-z0-9]*', '', stem)
+    stem = re.sub(r'[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}', '', stem)
+    stem = re.sub(r'[^A-Za-z0-9]+', '-', stem).strip('-').lower()
+    stem = stem[:limit].rstrip('-')
+    # A stem that is all UUID and handle carries no information — let the
+    # caller fall back to numbering rather than write a file called "1.jpg".
+    return stem if len(re.findall(r'[a-z]', stem)) >= 3 else None
 
 
 def show(path):
@@ -170,6 +192,7 @@ def main():
     ap.add_argument('src', nargs='*')
     ap.add_argument('--into')
     ap.add_argument('--names')
+    ap.add_argument('--keep-names', action='store_true')
     ap.add_argument('--width', type=int, default=2000)
     ap.add_argument('--quality', type=int, default=85)
     ap.add_argument('--min-width', type=int, default=1400)
@@ -210,7 +233,7 @@ def main():
     print()
 
     # Decide on every file first, so a --dry-run says exactly what a real run does.
-    plan, kept_hashes = [], []
+    plan, kept_hashes, taken = [], [], set()
     for i, p in enumerate(src):
         try:
             w, h, lum = stats(p)
@@ -240,9 +263,21 @@ def main():
         if lum < DARK_BELOW:
             notes.append(f"mean luminance {lum:.0f} — too dark for a light-theme deck")
 
-        out_name = (names[i] if names else f"{os.path.basename(dest)}-{i + 1:02d}")
+        if names:
+            out_name = names[i]
+        elif a.keep_names:
+            out_name = safe_stem(p) or f"{os.path.basename(dest)}-{i + 1:02d}"
+        else:
+            out_name = f"{os.path.basename(dest)}-{i + 1:02d}"
         if not out_name.lower().endswith('.jpg'):
             out_name += '.jpg'
+        if out_name in taken:
+            base = out_name[:-4]
+            n = 2
+            while f"{base}-{n}.jpg" in taken:
+                n += 1
+            out_name = f"{base}-{n}.jpg"
+        taken.add(out_name)
         if verdict and not a.force:
             plan.append((p, None, verdict, notes))
         else:
