@@ -173,11 +173,18 @@ the submerged cave, the strata cliffs, the excavation trench.
 
 ## Still not covered
 
-Nothing in the set shows **rain**, a **locked door**, or a **boat on open
-water** — three Must & Have To briefs. They are the only gaps left, and the
-substitutes above (furnace, ravine, night treeline) carry the same grammar.
+Nothing in the set shows **rain** or a **boat on open water** — two Must &
+Have To briefs. They are the only gaps left, and the substitutes above
+(furnace, ravine, night treeline) carry the same grammar.
 
-A later batch closed the fourth: **a player leaning over a lit campfire**,
-which is the "figure at a furnace" brief with a character in it rather than
-just the object. Use it as `MustHaveTo/hero.jpg` in preference to the empty
-furnace — an obligation lesson wants somebody under the obligation.
+Later batches closed two of the four:
+
+- **A player leaning over a lit campfire** — the "figure at a furnace" brief
+  with a character in it rather than just the object. Use it as
+  `MustHaveTo/hero.jpg` ahead of the empty furnace: an obligation lesson
+  wants somebody under the obligation.
+- **A locked door**, twice — one padlocked iron door, one plain dark door
+  with a keyhole against a pale green ground. The plain one is the stronger
+  slide (more air around the subject, nothing competing with the card) and
+  takes `MustHaveTo/locked.jpg`. It is the deck's prohibition picture:
+  *you mustn't go in* rather than *you don't have to*.
