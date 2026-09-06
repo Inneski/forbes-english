@@ -4,9 +4,9 @@
 Three passes, cheapest first:
 
   1. MD5        — byte-identical copies of the same file under two names.
-  2. ahash      — a 256-bit 16x16 average hash. Distance <= 20 means the same
-                  picture (a re-encode, a resize, or a slightly different crop);
-                  <= 42 means "look at it before you trust it".
+  2. dhash + colour — a 256-bit gradient hash (which way brightness steps,
+                  not how bright) plus an 8x8 RGB signature. A pair counts as
+                  the same picture only when BOTH agree.
   3. data-bg    — how many distinct pictures each deck actually shows, and how
                   many times each one repeats.
 
@@ -14,6 +14,23 @@ Run pass 1 and 2 over any candidate artwork BEFORE adopting it into a lesson
 folder. On 2026-09-04 three "fresh" scenes were pulled from Downloads into
 MinecraftB1/ that turned out to be the same pictures Tense Review and Past
 Modals were already using, under different Midjourney filenames.
+
+**Why not an average hash.** The first version of this tool used a 16x16 ahash
+and it was worthless on this site's artwork, which is flat minimalist
+illustration: a wide gradient sky over a dark horizontal mass, over and over.
+Measured on 2026-09-06 against six known-identical pairs and four confirmed
+false positives:
+
+    metric     true duplicates   false positives
+    ahash            0 - 4            4 - 20      <- overlapping, useless
+    dhash            2 - 6           98 - 107
+    colour         0.2 - 2.3        130 - 181
+
+ahash rated a boat on open water and a figure on a road at sunset as distance
+4 — closer than two genuine crops of the same picture. It throws away colour
+and encodes only "is this pixel above the mean", which for this style is the
+same answer everywhere. dhash and colour each separate the two classes by an
+order of magnitude, so both are required to agree.
 
 Usage:
     python3 tools/image-audit.py <folder-or-image> [more...]
@@ -23,7 +40,10 @@ Needs Pillow.
 """
 import sys, os, re, glob, hashlib, itertools, collections
 
-THRESH_SAME, THRESH_LOOK = 20, 42
+# Measured margins are enormous (see the table above), so these sit in the gap
+# rather than near either class.
+THRESH_SAME, THRESH_LOOK = 12, 24   # dhash bits
+THRESH_COLOUR = 20                  # mean per-channel RGB distance, 0-765
 
 
 def images(args):
@@ -37,13 +57,47 @@ def images(args):
     return out
 
 
-def ahash(path):
+def _data(im):
+    return list(im.get_flattened_data() if hasattr(im, 'get_flattened_data')
+                else im.getdata())
+
+
+def dhash(path, s=16):
+    """Gradient hash: which way brightness steps, not how bright it is."""
     from PIL import Image
     Image.MAX_IMAGE_PIXELS = None
-    im = Image.open(path).convert('L').resize((16, 16))
-    px = list(im.get_flattened_data() if hasattr(im, 'get_flattened_data') else im.getdata())
-    avg = sum(px) / len(px)
-    return sum(1 << i for i, v in enumerate(px) if v > avg)
+    px = _data(Image.open(path).convert('L').resize((s + 1, s)))
+    bits = 0
+    for i, (r, c) in enumerate((r, c) for r in range(s) for c in range(s)):
+        if px[r * (s + 1) + c] > px[r * (s + 1) + c + 1]:
+            bits |= 1 << i
+    return bits
+
+
+def colour_sig(path, s=8):
+    """8x8 RGB thumbnail. ahash discards colour entirely; this is why it failed."""
+    from PIL import Image
+    Image.MAX_IMAGE_PIXELS = None
+    return _data(Image.open(path).convert('RGB').resize((s, s)))
+
+
+def colour_dist(a, b):
+    return sum(abs(x[0] - y[0]) + abs(x[1] - y[1]) + abs(x[2] - y[2])
+               for x, y in zip(a, b)) / len(a)
+
+
+def signature(path):
+    """Both halves. A pair is the same picture only when both agree."""
+    return {'d': dhash(path), 'c': colour_sig(path)}
+
+
+def compare(sa, sb):
+    return bin(sa['d'] ^ sb['d']).count('1'), colour_dist(sa['c'], sb['c'])
+
+
+def same(sa, sb):
+    d, c = compare(sa, sb)
+    return d <= THRESH_SAME and c <= THRESH_COLOUR
 
 
 def audit_images(paths):
@@ -60,20 +114,21 @@ def audit_images(paths):
     H = {}
     for p in paths:
         try:
-            H[p] = ahash(p)
+            H[p] = signature(p)
         except Exception as e:
             print(f"   skip {p}: {e}")
     pairs = []
     for a, b in itertools.combinations(sorted(H), 2):
-        d = bin(H[a] ^ H[b]).count('1')
-        if d <= THRESH_LOOK:
-            pairs.append((d, a, b))
-    print(f"\nNEAR-DUPLICATE PAIRS (<= {THRESH_SAME} is the same picture):")
+        d, c = compare(H[a], H[b])
+        if d <= THRESH_LOOK and c <= THRESH_COLOUR:
+            pairs.append((d, c, a, b))
+    print(f"\nNEAR-DUPLICATE PAIRS (dhash <= {THRESH_SAME} and colour "
+          f"<= {THRESH_COLOUR} is the same picture):")
     if not pairs:
         print("   none")
-    for d, a, b in sorted(pairs):
+    for d, c, a, b in sorted(pairs):
         mark = "SAME  " if d <= THRESH_SAME else "check "
-        print(f"   {mark}d={d:3d}  {a}\n              {b}")
+        print(f"   {mark}d={d:3d} col={c:5.1f}  {a}\n                        {b}")
 
 
 def audit_decks(files):

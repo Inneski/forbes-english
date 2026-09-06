@@ -67,7 +67,8 @@ _spec = importlib.util.spec_from_file_location(
     'image_audit', os.path.join(HERE, 'image-audit.py'))
 image_audit = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(image_audit)
-ahash, THRESH_SAME = image_audit.ahash, image_audit.THRESH_SAME
+signature, same_picture = image_audit.signature, image_audit.same
+compare, THRESH_SAME = image_audit.compare, image_audit.THRESH_SAME
 
 # 16:9 is 1.778. Anything outside this band letterboxes or crops on the deck.
 AR_LO, AR_HI = 1.70, 1.86
@@ -96,10 +97,6 @@ def show(path):
     """Repo-relative where that reads better, absolute where it does not."""
     rel = os.path.relpath(path, ROOT)
     return path if rel.startswith('..') else rel
-
-
-def dist(a, b):
-    return bin(a ^ b).count('1')
 
 
 def stats(path):
@@ -133,10 +130,15 @@ def repo_images(extra):
     return sorted(set(out))
 
 
+CACHE_VERSION = 2   # 1 = ahash (int); 2 = dhash + colour signature (dict)
+
+
 def load_cache():
+    """Discard a cache written by an older signature rather than crash on it."""
     try:
         with open(CACHE) as f:
-            return json.load(f)
+            c = json.load(f)
+        return c.get('entries', {}) if c.get('version') == CACHE_VERSION else {}
     except Exception:
         return {}
 
@@ -159,16 +161,16 @@ def hashes_for(paths, cache):
         print(f"  hashing {len(misses)} new or changed image(s)...", flush=True)
     for p, key, stamp in misses:
         try:
-            h = ahash(p)
+            h = signature(p)
         except Exception:
             continue
         out[p] = h
-        cache[key] = {'stamp': stamp, 'hash': h}
+        cache[key] = {'stamp': stamp, 'hash': {'d': h['d'], 'c': h['c']}}
         fresh += 1
     if fresh:
         try:
             with open(CACHE, 'w') as f:
-                json.dump(cache, f)
+                json.dump({'version': CACHE_VERSION, 'entries': cache}, f)
         except OSError:
             pass
     return out
@@ -243,14 +245,19 @@ def main():
         hv, notes, verdict = incoming.get(p), [], None
 
         if hv is not None:
-            match = min(((dist(hv, existing[q]), q) for q in existing),
-                        default=(999, None))
-            if match[0] <= THRESH_SAME:
-                verdict = f"SKIP  already in the repo as {show(match[1])} (d={match[0]})"
+            hits = [(compare(hv, existing[q]), q) for q in existing
+                    if same_picture(hv, existing[q])]
+            if hits:
+                (d, c), q = min(hits)
+                verdict = (f"SKIP  already in the repo as {show(q)} "
+                           f"(dhash={d}, colour={c:.0f})")
             else:
-                twin = min(((dist(hv, k), n) for k, n in kept_hashes), default=(999, None))
-                if twin[0] <= THRESH_SAME:
-                    verdict = f"SKIP  same picture as {twin[1]} earlier in this batch (d={twin[0]})"
+                twins = [(compare(hv, k), n) for k, n in kept_hashes
+                         if same_picture(hv, k)]
+                if twins:
+                    (d, c), n = min(twins)
+                    verdict = (f"SKIP  same picture as {n} earlier in this "
+                               f"batch (dhash={d}, colour={c:.0f})")
 
         if w < a.min_width:
             # Also a note, so --force never writes an under-size file silently
