@@ -52,14 +52,16 @@ LABELS = {
     'finalScore': {'en': 'FINAL SCORE', 'es': 'PUNTUACIÓN FINAL', 'de': 'ENDPUNKTZAHL'},
     'route':      {'en': 'ROUTE', 'es': 'RUTA', 'de': 'ROUTE'},
     'progress':   {'en': 'SPELLS', 'es': 'HECHIZOS', 'de': 'ZAUBER'},
+    'soundOn':    {'en': 'SOUND ON', 'es': 'SONIDO SÍ', 'de': 'TON AN'},
+    'soundOff':   {'en': 'SOUND OFF', 'es': 'SONIDO NO', 'de': 'TON AUS'},
     'repaired':   {'en': 'SPELL REPAIRED', 'es': 'HECHIZO REPARADO', 'de': 'ZAUBER REPARIERT'},
     'tryAgain':   {'en': 'NOT YET · TRY ANOTHER', 'es': 'TODAVÍA NO · PRUEBA OTRA', 'de': 'NOCH NICHT · VERSUCH ES ANDERS'},
     'firstTry':   {'en': 'first try', 'es': 'a la primera', 'de': 'beim ersten Versuch'},
     'review':     {'en': 'REVIEW THE REPAIRED SPELLS', 'es': 'REPASA LOS HECHIZOS REPARADOS', 'de': 'DIE REPARIERTEN ZAUBER ANSEHEN'},
     'perfect':    {'en': 'Perfect first-try grammar. Every spell held.', 'es': 'Gramática perfecta a la primera. Todos los hechizos aguantaron.', 'de': 'Perfekte Grammatik beim ersten Versuch. Jeder Zauber hat gehalten.'},
-    'help':       {'en': 'click the glowing object or ENTER to read · ESC hide · 1–3 choose · L language · F fullscreen',
-                   'es': 'pulsa el objeto que brilla o ENTER para leer · ESC ocultar · 1–3 elegir · L idioma · F pantalla completa',
-                   'de': 'klicke das leuchtende Objekt oder ENTER zum Lesen · ESC ausblenden · 1–3 wählen · L Sprache · F Vollbild'},
+    'help':       {'en': 'click the glowing object or ENTER to read · ESC hide · 1–3 choose · L language · S sound · F fullscreen',
+                   'es': 'pulsa el objeto que brilla o ENTER para leer · ESC ocultar · 1–3 elegir · L idioma · S sonido · F pantalla completa',
+                   'de': 'klicke das leuchtende Objekt oder ENTER zum Lesen · ESC ausblenden · 1–3 wählen · L Sprache · S Ton · F Vollbild'},
 }
 
 TEXT_KEYS = ('k', 'title', 'story', 'clue', 'prompt', 'fb', 'note', 'small', 'start')
@@ -79,7 +81,12 @@ def font_css():
 CSS = r"""
 :root{--accent:{{ACCENT}};--accent-ink:{{ACCENT_INK}};--deep:{{DEEP}};--panel:{{PANEL}};--bone:#fff6d9;--muted:#d9ccb0;--soft:#efe2c0;--good:#77efb4;--bad:#ff6f82;--shadow:rgba(0,0,0,.55)}
 *{box-sizing:border-box}
-html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#0a0703;color:var(--bone);font-family:'Monocraft','Courier New',Courier,monospace}
+html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#0a0703;color:var(--bone);font-family:"Courier New",Courier,monospace}
+/* Monocraft is the display face — titles, kickers, HUD, buttons, labels. The
+   reading text (story, clue, prompt, options, feedback, glosses) stays in
+   Courier New, as Blocula has it: a pixel face at paragraph length is hard
+   work, and Innes asked for the split on 2026-09-06. */
+.title,.kicker,.badge,.lang-btn,.utility,.lang-item b,.hot-label,.hide-btn,.option .key,.continue,.start,.restart,.rules-chips span,.rule-card b,.route b,.final-score,.feedback strong,.corner-help,.option .half small,.clue b{font-family:'Monocraft',"Courier New",Courier,monospace}
 button{font:inherit}
 .game{position:fixed;inset:0;background:#0a0703}
 .frame{position:absolute;inset:0;overflow:hidden;container-type:inline-size}
@@ -132,9 +139,9 @@ button{font:inherit}
 .clue b{color:var(--accent)}
 .right .clue{border-left:0;border-right:.3cqw solid var(--accent)}.center .clue{border-right:.3cqw solid var(--accent)}
 .prompt{color:#fff;font-weight:700;font-size:1.65cqw;line-height:1.28}
-.translation{display:block;color:var(--muted);font-size:1.1cqw;line-height:1.28;margin-top:.22cqw;font-weight:400;unicode-bidi:plaintext}
+.translation{display:block;color:var(--muted);font-size:1.1cqw;line-height:1.28;margin-top:.22cqw;font-weight:400;font-style:italic;unicode-bidi:plaintext}
 .rtl .translation{direction:rtl;text-align:right}
-.title .translation{font-size:1.25cqw;letter-spacing:0;color:var(--soft);margin-top:.4cqw;text-shadow:none}
+.title .translation,.kicker .translation{font-family:"Courier New",Courier,monospace}.title .translation{font-size:1.25cqw;letter-spacing:0;color:var(--soft);margin-top:.4cqw;text-shadow:none}
 .kicker .translation{font-size:.9cqw;letter-spacing:.05em}
 .options{display:grid;gap:.55cqw;margin-top:.15cqw}
 .option{display:grid;grid-template-columns:2.6cqw 1fr;align-items:center;gap:.65cqw;width:100%;border:1px solid rgba(255,246,217,.36);background:rgba(20,14,4,.8);color:var(--bone);padding:.7cqw .8cqw;text-align:left;cursor:pointer;font-size:1.4cqw;line-height:1.26;transition:.16s}
@@ -195,6 +202,7 @@ BODY = r"""
           <button id="langBtn" class="lang-btn" aria-haspopup="true" aria-expanded="false">🌐 <span id="langWord">TRANSLATE</span> · <b id="langCur">OFF</b> ▾</button>
           <div id="langMenu" class="lang-menu" hidden></div>
         </div>
+        <button id="sound" class="utility" title="S" aria-pressed="false">🔈 <span id="soundLabel">SOUND OFF</span></button>
         <button id="fullscreen" class="utility fs" title="F">⛶ <span id="fsLabel">FULLSCREEN</span></button>
       </div>
     </header>
@@ -208,6 +216,10 @@ JS = r"""
 const G = {{GAME}};
 const LANGS = G.langs, RTL = ['ar'];
 let state = fresh('off');
+let sound=false;try{sound=localStorage.getItem('rpg-sound')==='1'}catch(_){}
+/* two short tones, right and wrong — the Wonderland export's, kept */
+function beep(ok){if(!sound)return;try{const c=new (window.AudioContext||window.webkitAudioContext)();const o=c.createOscillator(),g=c.createGain();o.type=ok?'square':'sawtooth';o.frequency.value=ok?620:180;g.gain.value=.03;o.connect(g);g.connect(c.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.16);o.stop(c.currentTime+.18);o.onended=()=>c.close()}catch(_){}}
+function setSound(on){sound=!!on;try{localStorage.setItem('rpg-sound',sound?'1':'0')}catch(_){}const b=document.getElementById('sound');b.setAttribute('aria-pressed',String(sound));b.firstChild.textContent=(sound?'🔊':'🔈')+' ';document.getElementById('soundLabel').textContent=ui(sound?'soundOn':'soundOff')}
 function fresh(lang){return {scene:G.start,score:0,chances:G.chances,tiles:0,lang,open:false,route:[],results:{},attempts:{},mistakes:[],answered:0,finalCorrect:null}}
 const frame=document.getElementById('frame'), content=document.getElementById('content'), sceneImage=document.getElementById('sceneImage');
 const hot=document.getElementById('hot'), hotLabel=document.getElementById('hotLabel'), zone=document.getElementById('zone');
@@ -227,7 +239,7 @@ function placeHot(h){const W=frame.clientWidth,H=frame.clientHeight,sc=Math.max(
   const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));const ox=dw>W?clamp(W/2-h[0]/100*dw,W-dw,0):(W-dw)/2,oy=dh>H?clamp(H/2-h[1]/100*dh,H-dh,0):(H-dh)/2;
   sceneImage.style.objectPosition=`${dw>W?ox/(W-dw)*100:50}% ${dh>H?oy/(H-dh)*100:50}%`;
   const cx=ox+h[0]/100*dw,cy=oy+h[1]/100*dh,w=h[2]/100*dw,hh=h[3]/100*dh;hot.style.left=cx+'px';hot.style.top=cy+'px';hot.style.width=w+'px';hot.style.height=hh+'px';hot.classList.toggle('above',cy+hh/2>H*.84);hotLabel.textContent=ui('read');
-  document.getElementById('fsLabel').textContent=ui('fullscreen');document.getElementById('langWord').textContent=ui('translate');document.getElementById('langCur').textContent=state.lang==='off'?'OFF':G.names[state.lang];
+  document.getElementById('fsLabel').textContent=ui('fullscreen');document.getElementById('soundLabel').textContent=ui(sound?'soundOn':'soundOff');document.getElementById('langWord').textContent=ui('translate');document.getElementById('langCur').textContent=state.lang==='off'?'OFF':G.names[state.lang];
   document.querySelectorAll('.lang-item').forEach(b=>b.classList.toggle('active',b.dataset.lang===state.lang))}
 function setOpen(on){state.open=!!on;if(on){const hr=hot.getBoundingClientRect(),zr=zone.getBoundingClientRect();const cl=zr.left+content.offsetLeft,ct=zr.top+content.offsetTop;content.style.transformOrigin=`${hr.left+hr.width/2-cl}px ${hr.top+hr.height/2-ct}px`}frame.classList.toggle('open',state.open)}
 function openPanel(){if(!state.open)setOpen(true)}
@@ -250,6 +262,7 @@ function closeMenu(){langMenu.hidden=true;langBtn.setAttribute('aria-expanded','
 function toggleMenu(){langMenu.hidden=!langMenu.hidden;langBtn.setAttribute('aria-expanded',String(!langMenu.hidden))}
 function go(id){state.scene=id;render()}
 function displayAnswer(i,apply){const s=G.scenes[state.scene];const buttons=[...document.querySelectorAll('.option')];const ok=i===s.answer;const p=s.points||G.points;const fb=document.getElementById('feedback');const expl=s.fb?`<br>${label(s.fb)}`:'';
+  if(apply)beep(ok);
   if(G.repair&&!ok){/* repair mode: mark it, explain, let them try again */buttons[i].classList.add('wrong');buttons[i].disabled=true;fb.innerHTML=`<strong>${ui('tryAgain')}</strong>${expl}`;fb.className='feedback show bad';if(apply)requestAnimationFrame(()=>content.scrollTo({top:content.scrollHeight,behavior:'smooth'}));return}
   buttons.forEach(b=>b.disabled=true);buttons[i]?.classList.add(ok?'correct':'wrong');buttons[s.answer]?.classList.add('correct');
   const retried=G.repair&&(state.attempts[state.scene]||0)>0;
@@ -263,9 +276,10 @@ function chooseRoute(i){const r=G.scenes[state.scene].routes[i];if(r.route)state
 function restart(){state=fresh(state.lang);render()}
 (function(){['off',...LANGS].forEach(l=>{const b=document.createElement('button');b.className='lang-item';b.dataset.lang=l;b.innerHTML=l==='off'?`<b>OFF</b><span>${esc(G.labels.off.en)}</span>`:`<b>${l.toUpperCase()}</b><span>${esc(G.names[l])}</span>`;b.addEventListener('click',()=>{state.lang=l;closeMenu();setLang()});langMenu.appendChild(b)});langBtn.addEventListener('click',e=>{e.stopPropagation();toggleMenu()});document.addEventListener('click',e=>{if(!langMenu.hidden&&!langMenu.contains(e.target))closeMenu()})})();
 function setLang(){const wasOpen=state.open;render();if(wasOpen)setOpen(true)}
+document.getElementById('sound').addEventListener('click',()=>{setSound(!sound);beep(true)});
 document.getElementById('fullscreen').addEventListener('click',()=>{if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();else document.exitFullscreen?.()});
-document.addEventListener('keydown',e=>{const k=e.key;if(k.toLowerCase()==='l'){const all=['off',...LANGS];state.lang=all[(all.indexOf(state.lang)+1)%all.length];setLang();return}if(k==='Escape'){if(!langMenu.hidden){closeMenu();return}closePanel();return}if(k.toLowerCase()==='f'){document.getElementById('fullscreen').click();return}if(!state.open&&(k==='Enter'||['1','2','3'].includes(k))){openPanel();return}const s=G.scenes[state.scene];if(['1','2','3'].includes(k)){const i=Number(k)-1;if(s.kind==='question')document.querySelector(`.option[data-i="${i}"]`)?.click();if(s.kind==='choice')document.querySelectorAll('.route')[i]?.click();return}if(k==='Enter')document.querySelector('.continue:not([hidden]),.start,.restart')?.click()});
-render();
+document.addEventListener('keydown',e=>{const k=e.key;if(k.toLowerCase()==='l'){const all=['off',...LANGS];state.lang=all[(all.indexOf(state.lang)+1)%all.length];setLang();return}if(k==='Escape'){if(!langMenu.hidden){closeMenu();return}closePanel();return}if(k.toLowerCase()==='f'){document.getElementById('fullscreen').click();return}if(k.toLowerCase()==='s'){document.getElementById('sound').click();return}if(!state.open&&(k==='Enter'||['1','2','3'].includes(k))){openPanel();return}const s=G.scenes[state.scene];if(['1','2','3'].includes(k)){const i=Number(k)-1;if(s.kind==='question')document.querySelector(`.option[data-i="${i}"]`)?.click();if(s.kind==='choice')document.querySelectorAll('.route')[i]?.click();return}if(k==='Enter')document.querySelector('.continue:not([hidden]),.start,.restart')?.click()});
+setSound(sound);render();
 """
 
 PAGE = """<!doctype html>

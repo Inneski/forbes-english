@@ -29,19 +29,25 @@ Camp with Monocraft."*
   bigger. Phones get a bottom sheet in fixed px. Do not shrink these to
   make a long scene fit; widen the panel for that scene (`width`) or cut the
   copy.
-- **Monocraft everywhere.** Both weights are embedded from
-  `fonts/` (8 KB each), so the page makes no font request. The hub uses
-  the same face for its headings; the 24 camp decks stay in Pixelify Sans +
-  Silkscreen — that is deck chrome, not RPG chrome, and is not up for
-  change here.
+- **Monocraft for the display, Courier New for the reading.** Titles,
+  kickers, HUD badges, buttons, keys and the hotspot label are Monocraft
+  (both weights embedded from `fonts/`, 8 KB each, no font request). The
+  story, clue, prompt, options, feedback and glosses are Courier New — the
+  split Blocula has, and the one Innes asked for on 2026-09-06 after the
+  first two shipped all-Monocraft: a pixel face at paragraph length is hard
+  work. The 24 camp decks stay in Pixelify Sans + Silkscreen — that is deck
+  chrome, not RPG chrome.
+- **Sound.** A HUD toggle (and the S key) with two short tones, right and
+  wrong — the Wonderland export's. Off by default, remembered per browser.
 - **The camp colour is the accent.** Title, kicker, chips, hotspot label,
   the buttons — one colour, taken from the route map's stop for the tense
   (`CAMP` in `block-camp-hub/build.py`: Past Continuous is `#F1D779`,
   Future Simple `#F0723F`, …). A conditionals or narrative-tenses RPG with
   no single camp uses the hub's gold `#e8c04a`. Never a second accent.
-- **HUD: points · tiles · chances**, translate menu, fullscreen. Keys 1–3
-  answer, L cycles the language, F toggles fullscreen. The corner help
-  line names all of that and is itself translated.
+- **HUD: points · tiles · chances**, translate menu, sound, fullscreen.
+  Keys 1–3 answer, L cycles the language, S toggles sound, F toggles
+  fullscreen. The corner help line names all of that and is itself
+  translated.
 - **English on top, gloss beneath.** Every learner-facing string is
   `{en, es, de, …}`; the engine prints the English and the gloss under it,
   never the gloss alone. Options are glossed too (Blocula does the same) —

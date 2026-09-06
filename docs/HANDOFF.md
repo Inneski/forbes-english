@@ -12,6 +12,24 @@ stale copy.
 
 ---
 
+## 2026-09-06 — RPG engine: reading text in Courier New, sound toggle back
+
+Innes, on the live pages: *"what happened to the sound effects? Also reading
+text see Dracula for example — it's different to the monocraft header
+text."* Two engine changes in `rpg.py`, both lessons rebuilt:
+
+- **Reading text is Courier New now**, as in Blocula; Monocraft stays on the
+  titles, kickers, HUD, buttons, keys and hotspot label. The first two RPGs
+  shipped all-Monocraft on a reading of "with Monocraft" that was too
+  literal — a pixel face at paragraph length is hard work.
+- **Sound is back**: the Wonderland export's two tones (square for right,
+  sawtooth for wrong) behind a HUD toggle and the S key, off by default,
+  remembered in localStorage. Oz never had sound; it has it now, the same
+  way.
+
+`rpg/README.md` §1 says both. The standard is therefore: **Monocraft for
+display, Courier New for reading, sound toggle present.**
+
 ## 2026-09-05 — Wonderland: The Stolen Now — a fifth RPG, on the same engine
 
 The second export of the day — `Wonderland_The_Stolen_Now_Present_Continuous_V1 (2).html`,
