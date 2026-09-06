@@ -71,27 +71,27 @@ F = 'MinecraftC1'
 # python3 lesson-template/extract-palette.py MinecraftC1/hero.jpg
 PALETTE = '''  --hero: url('%s/hero.jpg');
 
-  --void          : #0f120c;
-  --surface       : #1a2114;
-  --surface2      : #242d1c;
-  --border        : #607683;
-  --text          : #f2f4f5;
-  --text-dim      : #a3b5bf;
-  --accent        : #7bafce;
-  --accent-bright : #accfe5;
-  --accent-dim    : #4683a7;
-  --secondary     : #e69771;
-  --contrast      : #e66f7c;''' % F
+  --void          : #d8b7ac;
+  --surface       : #e1ccc4;
+  --surface2      : #dcc1b8;
+  --border        : #964d4a;
+  --text          : #2a1211;
+  --text-dim      : #5e302e;
+  --accent        : #aa201a;
+  --accent-bright : #85110c;
+  --accent-dim    : #d86a65;
+  --secondary     : #0b1921;
+  --contrast      : #0d4f32;''' % F
 
 CHIPS = ['constitutes', 'characterised by', 'underpins', 'serves as',
          'is regarded as', 'adhere to', 'procedurally generated',
          'is perhaps best evidenced by']
 
-REG_BG = ['warrior.jpg', 'creatures.jpg', 'hero.jpg',
-          'structure.jpg', 'warrior.jpg', 'creatures.jpg']
-COL_BG = ['creatures.jpg', 'hero.jpg', 'structure.jpg',
-          'warrior.jpg', 'creatures.jpg', 'hero.jpg']
-FIB_BG = ['hero.jpg', 'structure.jpg', 'warrior.jpg']
+REG_BG = ['redstone.jpg', 'crowd.jpg', 'archive.jpg',
+          'structure.jpg', 'tower.jpg', 'mind.jpg']
+COL_BG = ['bridge.jpg', 'archive.jpg', 'tower.jpg',
+          'mind.jpg', 'crowd.jpg', 'structure.jpg']
+FIB_BG = ['mind.jpg', 'bridge.jpg', 'archive.jpg']
 
 
 def build():
@@ -153,7 +153,7 @@ def build():
                     'and would not be understood.',
                     'co3n', 'When a field has a term, the near-synonym is not a stylistic '
                             'choice.')],
-                  folder=F, bg='warrior.jpg')
+                  folder=F, bg='redstone.jpg')
 
         + D.teach('lxEyebrow', 'The lexis',
                   'lxTitle', 'Words that only work in one grammar',
@@ -178,7 +178,7 @@ def build():
                     'significance beyond the original field.',
                     'lx3n', 'All three are formal, all three have plain equivalents, and '
                             'the register is the point.')],
-                  folder=F, bg='creatures.jpg')
+                  folder=F, bg='crowd.jpg')
 
         + "".join(D.mc(i + 1, 6, MC[i], 'mcEyebrow', 'Activity 1 &middot; Register',
                        'mcTitle', 'Which sentence would survive in an essay?',
@@ -209,7 +209,7 @@ def build():
                           'ordTitle', 'Build the argued paragraph',
                           'ordHint', 'Click a sentence to place it, click a placed '
                                      'sentence to take it back.',
-                          why, folder=F, bg='warrior.jpg')
+                          why, folder=F, bg='tower.jpg')
                   for chunks, why in ORDER)
 
         + D.results('resNext', 'You can read the register. Now write in it &rarr;',
@@ -235,7 +235,7 @@ def build():
                      'currently holds. Hedge what deserves hedging and let no clause slip '
                      'into speech.',
                      'Minecraft constitutes an unusually productive object of study because…',
-                     folder=F, bg='creatures.jpg')
+                     folder=F, bg='bridge.jpg')
     )
 
     import i18n_mcc1 as I

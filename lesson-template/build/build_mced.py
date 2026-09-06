@@ -73,24 +73,24 @@ F = 'MinecraftEd'
 # python3 lesson-template/extract-palette.py MinecraftEd/hero.jpg
 PALETTE = '''  --hero: url('%s/hero.jpg');
 
-  --void          : #26302f;
-  --surface       : #131b1b;
-  --surface2      : #1b2727;
-  --border        : #d9b460;
-  --text          : #f5f4f2;
-  --text-dim      : #bfb7a3;
-  --accent        : #fbe0a4;
-  --accent-bright : #ffc035;
-  --accent-dim    : #f2c051;
-  --secondary     : #8aa6af;
-  --contrast      : #1dc1ed;''' % F
+  --void          : #d8baac;
+  --surface       : #e1cdc4;
+  --surface2      : #dcc3b8;
+  --border        : #4a7496;
+  --text          : #111e2a;
+  --text-dim      : #2e485e;
+  --accent        : #325572;
+  --accent-bright : #1d3b55;
+  --accent-dim    : #7392ac;
+  --secondary     : #e56f4b;
+  --contrast      : #962c2e;''' % F
 
 CHIPS = ['turns into', 'is created when', 'can only be obtained by',
          'despite having', 'even though', 'up to', 'exactly', 'only then']
 
-TRIV_BG = ['ridge.jpg', 'dusk.jpg', 'hero.jpg', 'city.jpg', 'ridge.jpg', 'dusk.jpg']
-COMP_BG = ['dusk.jpg', 'hero.jpg', 'city.jpg', 'ridge.jpg', 'dusk.jpg', 'hero.jpg']
-FIB_BG = ['hero.jpg', 'city.jpg', 'ridge.jpg']
+TRIV_BG = ['smelt.jpg', 'meet.jpg', 'grow.jpg', 'bake.jpg', 'ore.jpg', 'block.jpg']
+COMP_BG = ['meet.jpg', 'grow.jpg', 'city.jpg', 'smelt.jpg', 'block.jpg', 'ore.jpg']
+FIB_BG = ['bake.jpg', 'block.jpg', 'meet.jpg']
 
 
 def build():
@@ -151,7 +151,7 @@ def build():
                     '<em>-ing</em>; <em>even though</em> takes a clause.',
                     'op3n', '<em>Despite having</em> the lowest durability &mdash; not '
                             '<em>despite it has</em>.')],
-                  folder=F, bg='ridge.jpg')
+                  folder=F, bg='smelt.jpg')
 
         + D.teach('nuEyebrow', 'The detail',
                   'nuTitle', 'Numbers, and the words hung in front of nouns',
@@ -176,7 +176,7 @@ def build():
                     'and predictable.',
                     'nu3n', 'It is the same <em>re-</em> as in <em>rebuild</em>, '
                             '<em>retry</em> and <em>reload</em>.')],
-                  folder=F, bg='dusk.jpg')
+                  folder=F, bg='meet.jpg')
 
         + "".join(D.mc(i + 1, 6, MC[i], 'mcEyebrow', 'Activity 1 &middot; Trivia',
                        'mcTitle', 'What does a player actually know?',
@@ -200,13 +200,13 @@ def build():
         + D.match(MATCH, 'matchEyebrow', 'Activity 4 &middot; The strange facts',
                   'matchTitle', 'Match the thing to what is odd about it',
                   'matchHint', 'Click a name, then click the fact.',
-                  'matchWhy', folder=F, bg='hero.jpg')
+                  'matchWhy', folder=F, bg='grow.jpg')
 
         + "".join(D.order(chunks, 'ordEyebrow', 'Activity 5 &middot; The run',
                           'ordTitle', 'Put the seven steps in order',
                           'ordHint', 'Click a step to place it, click a placed step to '
                                      'take it back.',
-                          why, folder=F, bg='ridge.jpg')
+                          why, folder=F, bg='ore.jpg')
                   for chunks, why in ORDER)
 
         + D.results('resNext', 'You know the facts. Now tell them &rarr;',
@@ -230,7 +230,7 @@ def build():
                      'least one turn on a concession &mdash; the surprising part is what '
                      'makes a fact worth telling.',
                      'Despite being the weakest tool in the game, the gold pickaxe…',
-                     folder=F, bg='dusk.jpg')
+                     folder=F, bg='bake.jpg')
     )
 
     import i18n_mced as I

@@ -46,24 +46,24 @@ F = 'TenseReview'
 # python3 lesson-template/extract-palette.py TenseReview/hero.jpg --light
 PALETTE = '''  --hero: url('%s/hero.jpg');
 
-  --void          : #d8c6ac;
-  --surface       : #e1d5c4;
-  --surface2      : #dccdb8;
-  --border        : #96594a;
-  --text          : #2a1611;
-  --text-dim      : #5e372e;
-  --accent        : #b22909;
-  --accent-bright : #881a00;
-  --accent-dim    : #e76b4e;
-  --secondary     : #bdd7df;
-  --contrast      : #08543e;''' % F
+  --void          : #d8c4ac;
+  --surface       : #e1d4c4;
+  --surface2      : #dccbb8;
+  --border        : #96614a;
+  --text          : #2a1811;
+  --text-dim      : #5e3c2e;
+  --accent        : #a13000;
+  --accent-bright : #6e2100;
+  --accent-dim    : #ef662c;
+  --secondary     : #6f9db8;
+  --contrast      : #075547;''' % F
 
 CHIPS = ['had already', 'have been -ing', 'by the time', 'while I was',
          'since then', 'will have been', 'as soon as', 'it turned out that']
 
-MC_BG = ['mesa.jpg', 'deep.jpg', 'coast.jpg', 'pig.jpg', 'mesa.jpg', 'coast.jpg']
-FIB_BG = ['coast.jpg', 'pig.jpg', 'mesa.jpg', 'deep.jpg']
-EC_BG = ['pig.jpg', 'mesa.jpg', 'coast.jpg']
+MC_BG = ['ravine.jpg', 'dusk.jpg', 'tracks.jpg', 'bed.jpg', 'sapling.jpg', 'rails.jpg']
+FIB_BG = ['lake.jpg', 'ravine.jpg', 'dusk.jpg', 'tracks.jpg']
+EC_BG = ['rails.jpg', 'lake.jpg', 'ravine.jpg']
 
 
 def build():
@@ -98,7 +98,7 @@ def build():
                     '<em>will have built</em> before a future point.',
                     'ax3n', 'Twelve tenses is three times two times two. Nothing else '
                             'is going on.')],
-                  folder=F, bg='mesa.jpg')
+                  folder=F, bg='sapling.jpg')
 
         + D.teach('pcEyebrow', 'The family learners avoid',
                   'pcTitle', 'Perfect continuous: how long, up to when',
@@ -122,7 +122,7 @@ def build():
                     'continuous.',
                     'pc3n', 'No duration in the sentence? Then the simple perfect is '
                             'almost always right.')],
-                  folder=F, bg='coast.jpg')
+                  folder=F, bg='rails.jpg')
 
         + D.teach('trEyebrow', 'The two traps',
                   'trTitle', 'Where B2 loses the marks',
@@ -146,7 +146,7 @@ def build():
                     'Creeper, the Ghast &mdash; is a single event and takes the simple.',
                     'tr3n', '<em>While the Wither has destroyed</em> fails on this; it '
                             'wants <em>was destroying</em>.')],
-                  folder=F, bg='pig.jpg')
+                  folder=F, bg='lake.jpg')
 
         + "".join(D.mc(i + 1, len(MC), q, 'mcEyebrow',
                        'Activity 1 &middot; Multiple choice',
@@ -167,12 +167,12 @@ def build():
                        'sortTitle', 'Is the sentence sound, or is the tense wrong?',
                        'sortHint', 'Click a sentence to place it, click a placed '
                                    'sentence to take it back.',
-                       'sortWhy', folder=F, bg='deep.jpg')
+                       'sortWhy', folder=F, bg='bed.jpg')
 
         + D.match(MATCH, 'matchEyebrow', 'Activity 4 &middot; The register',
                   'matchTitle', 'Match the term to what it means',
                   'matchHint', 'Click a term, then click its meaning.',
-                  'matchWhy', folder=F, bg='mesa.jpg')
+                  'matchWhy', folder=F, bg='sapling.jpg')
 
         + "".join(D.gap(n + 1, 3, part, None,
                         'ecEyebrow', 'Activity 5 &middot; Repair the sentence',
@@ -206,7 +206,7 @@ def build():
                      'and what you will have finished by day 50. Use at least six '
                      'different tenses and make each one earn its place.',
                      'Day 47. Before I logged off last night I had already&hellip;',
-                     folder=F, bg='coast.jpg')
+                     folder=F, bg='dusk.jpg')
     )
 
     import i18n_tensereview as I

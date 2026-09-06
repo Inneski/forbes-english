@@ -68,24 +68,24 @@ F = 'MinecraftB1'
 #            --accent-hue=340 --accent-sat=0.65
 PALETTE = '''  --hero: url('%s/hero.jpg');
 
-  --void          : #d8c6ac;
-  --surface       : #e1d5c4;
-  --surface2      : #dccdb8;
-  --border        : #964a63;
-  --text          : #2a1119;
-  --text-dim      : #5e2e3e;
-  --accent        : #bc003f;
-  --accent-bright : #89002e;
-  --accent-dim    : #f1457f;
-  --secondary     : #c4d7dd;
-  --contrast      : #075515;''' % F
+  --void          : #d8caac;
+  --surface       : #e1d8c4;
+  --surface2      : #dcd0b8;
+  --border        : #96584a;
+  --text          : #2a1611;
+  --text-dim      : #5e372e;
+  --accent        : #aa2b0d;
+  --accent-bright : #811b03;
+  --accent-dim    : #e26b4f;
+  --secondary     : #9cbdcf;
+  --contrast      : #0a523d;''' % F
 
 CHIPS = ['you have to', 'otherwise', 'I have just', 'for two hours',
          'when I find', 'take damage', 'spawn point', 'first, then, after that']
 
-MC_BG = ['grove.jpg', 'reef.jpg', 'hero.jpg', 'village.jpg', 'grove.jpg', 'reef.jpg']
-FIB_BG = ['reef.jpg', 'village.jpg', 'grove.jpg']
-DD_BG = ['grove.jpg', 'hero.jpg', 'village.jpg']
+MC_BG = ['wake.jpg', 'tree.jpg', 'cave.jpg', 'stall.jpg', 'rails.jpg', 'home.jpg']
+FIB_BG = ['tree.jpg', 'village.jpg', 'cave.jpg']
+DD_BG = ['stall.jpg', 'rails.jpg', 'home.jpg']
 
 
 def build():
@@ -148,7 +148,7 @@ def build():
                     'lower register.',
                     'co3n', 'It always points forward to a consequence, and the '
                             'consequence is always the bad one.')],
-                  folder=F, bg='grove.jpg')
+                  folder=F, bg='wake.jpg')
 
         + D.teach('vcEyebrow', 'The vocabulary',
                   'vcTitle', 'Game words that are ordinary English underneath',
@@ -173,7 +173,7 @@ def build():
                     'carrying.',
                     'vc3n', '<em>Biome</em> and <em>inventory</em> are used unchanged in '
                             'geography and in business.')],
-                  folder=F, bg='reef.jpg')
+                  folder=F, bg='tree.jpg')
 
         + "".join(D.mc(i + 1, len(MC), q, 'mcEyebrow',
                        'Activity 1 &middot; Multiple choice',
@@ -201,14 +201,14 @@ def build():
         + D.match(MATCH, 'matchEyebrow', 'Activity 4 &middot; The glossary',
                   'matchTitle', 'Match the term to its meaning',
                   'matchHint', 'Click a term, then click what it means.',
-                  'matchWhy', folder=F, bg='grove.jpg')
+                  'matchWhy', folder=F, bg='cave.jpg')
 
         + "".join(D.order(chunks, 'ordEyebrow',
                           'Activity 5 &middot; The first night',
                           'ordTitle', 'Put the seven steps in order',
                           'ordHint', 'Click a step to place it, click a placed step to '
                                      'take it back.',
-                          why, folder=F, bg='reef.jpg')
+                          why, folder=F, bg='stall.jpg')
                   for chunks, why in ORDER)
 
         + D.results('resNext', 'You survived the night. Now explain it &rarr;',
@@ -233,7 +233,7 @@ def build():
                      'simple for the rules and the present perfect for your own '
                      'experience.',
                      'The first thing you have to do is…',
-                     folder=F, bg='grove.jpg')
+                     folder=F, bg='home.jpg')
     )
 
     import i18n_mcb1 as I

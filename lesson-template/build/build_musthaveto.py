@@ -57,17 +57,17 @@ F = 'MustHaveTo'
 #            --accent-hue=130 --accent-sat=0.55
 PALETTE = '''  --hero: url('%s/hero.jpg');
 
-  --void          : #0a0d0d;
-  --surface       : #131b1b;
-  --surface2      : #1b2727;
-  --border        : #83b58c;
-  --text          : #f2f5f2;
-  --text-dim      : #a3bfa8;
-  --accent        : #b5e9bd;
-  --accent-bright : #4fe468;
-  --accent-dim    : #72d082;
-  --secondary     : #fae0a4;
-  --contrast      : #c468ee;''' % F
+  --void          : #d8beac;
+  --surface       : #e1d0c4;
+  --surface2      : #dcc6b8;
+  --border        : #965f4a;
+  --text          : #2a1811;
+  --text-dim      : #5e3b2e;
+  --accent        : #a13109;
+  --accent-bright : #772000;
+  --accent-dim    : #e56c3f;
+  --secondary     : #3a4f62;
+  --contrast      : #085444;''' % F
 
 CHIPS = ['must', 'have to', "mustn't", "don't have to", 'had to', 'will have to']
 
@@ -164,7 +164,7 @@ def build():
                     'tr2n', 'Opposites in meaning, not just in form. Confusing '
                             'these two is the single most common mistake with '
                             'this grammar.')],
-                  folder=F, bg='desert.jpg')
+                  folder=F, bg='stall.jpg')
 
         + D.teach('pfEyebrow', 'Other times',
                   'pfTitle', 'Must has no past — and no future',
@@ -180,12 +180,12 @@ def build():
                     'new seed.</em>',
                     'pf2n', 'Never <em>will must</em> — two modal-like forms '
                             'never stack.')],
-                  folder=F, bg='hillside.jpg')
+                  folder=F, bg='chest.jpg')
 
         + "".join(D.mc(i + 1, len(MC), q, 'mcEyebrow', 'Activity 1 &middot; Which form?',
                        'mcTitle', 'Choose the correct word', folder=F, bg=bg)
                   for i, (q, bg) in enumerate(zip(MC,
-                      ['hero.jpg', 'desert.jpg', 'hillside.jpg', 'pig.jpg', 'hero.jpg', 'desert.jpg'])))
+                      ['locked.jpg', 'rain.jpg', 'boat.jpg', 'ravine.jpg', 'night.jpg', 'stall.jpg'])))
 
         + "".join(D.gap(n + 1, 3, part, None,
                         'gapEyebrow', 'Activity 2 &middot; Type it in',
@@ -196,15 +196,15 @@ def build():
                         width=180, size=18)
                   for n, (part, bg) in enumerate(zip(
                       [GAPS[:2], GAPS[2:4], GAPS[4:]],
-                      ['hillside.jpg', 'pig.jpg', 'hero.jpg'])))
+                      ['chest.jpg', 'locked.jpg', 'rain.jpg'])))
 
         + D.match(MATCH, 'matchEyebrow', 'Activity 3 &middot; The six forms',
                   'matchTitle', 'Match the form to what it means',
                   'matchHint', 'Click a form, then click what it means.',
-                  'matchWhy', folder=F, bg='desert.jpg')
+                  'matchWhy', folder=F, bg='boat.jpg')
 
         + D.results('resNext', 'You can pick the right form. Now use it &rarr;',
-                    folder=F, bg='pig.jpg')
+                    folder=F, bg='ravine.jpg')
 
         + D.activate('Explain the rules of your world', 'Use at least four:', CHIPS,
                      'Speaking &middot; in pairs',
@@ -225,7 +225,7 @@ def build():
                      'at least one sentence with <em>had to</em>, about '
                      'something that has already happened to you.',
                      'The first thing you have to do is…',
-                     folder=F, bg='hero.jpg')
+                     folder=F, bg='night.jpg')
     )
 
     import i18n_musthaveto as I
