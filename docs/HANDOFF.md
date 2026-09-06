@@ -23,6 +23,13 @@ catalogue SQL, the traps, and a table of where everything is. The README
 stays binding; the handoff is the walk-through. `CLAUDE.md` now points to
 both from the RPG default-action paragraph.
 
+Also `docs/CHATGPT-RPG-BRIEF.md`: the prompt Innes pastes into ChatGPT so
+the export it writes arrives in the Oz data shape with the parts the old
+exports lacked (briefing, explanation per answer, hotspot suggestion per
+picture, nine languages in `local`, one object on one side of every
+picture). The tail of that file says which field feeds which part of the
+spec.
+
 ---
 
 ## 2026-09-06 — The RPG standard, stated: sound effects and nine languages
