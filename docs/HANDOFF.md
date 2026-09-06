@@ -48,14 +48,14 @@ each checked closed. Wired in like Oz: hub plate (five adventures now, the
 grid is `auto-fit`), library thumbnail, catalogue cache row, `seo.py` last —
 additions only in the four indexes.
 
-### To publish (Innes)
+### Published — 2026-09-06
 
-Same branch as Oz. After the merge is live:
-
-```sql
-insert into lessons (file, title, level, access, deck, video, sort_order) values
- ('block-camp/wonderland-stolen-now-rpg.html', 'Wonderland: The Stolen Now — Present Continuous Voxel RPG (A1-A2)', 'A1-A2', 'pro', false, false, 0);
-```
+PR #4 merged to main as `3f84b3e`; the Supabase row is in (id 308, `sort_order`
+0). **Nothing left to run.** A note on the "vanished" report that prompted the
+merge: Cloudflare Pages builds a preview of every PR branch
+(`<branch>.forbes-english.pages.dev`, linked from the PR's bot comment), so a
+lesson can be seen "on the site" before it is on forbesenglish.com. The live
+site is `origin/main` only.
 
 ---
 
@@ -113,19 +113,10 @@ climb — "4 Adventures", "four branching adventures" — and the plates sit
 passed), `tools/lessons.json` row, `seo.py` run last with the four-index
 diff read: additions only. Pushed to `claude/glowing-object-text-popup-fxo141`.
 
-### To publish (Innes)
+### Published — 2026-09-06
 
-Merge the branch. Then, **after** the page is live on `origin/main`:
-
-```sql
-insert into lessons (file, title, level, access, deck, video, sort_order) values
- ('block-camp/lost-yellow-road-rpg.html', 'The Lost Yellow Road — Past Continuous Voxel Oz RPG (A1-A2)', 'A1-A2', 'pro', false, false, 0);
-```
-
-`sort_order 0` puts it with the other three RPGs (−2, −1, 0) at the head of
-the library; change it if the fourth should sit elsewhere. The cache row in
-`tools/lessons.json` says the same and will be overwritten by the next
-live `seo.py` run on your machine.
+PR #4 merged to main as `3f84b3e`; the Supabase row is in (id 307, `sort_order`
+0, with the other RPGs at the head of the library). **Nothing left to run.**
 
 ### Open
 
