@@ -171,13 +171,13 @@ the submerged cave, the strata cliffs, the excavation trench.
    cloud run silently drops anything newer than `tools/lessons.json`).
 6. Delete `incoming/` in the same commit that files the artwork.
 
-## Still not covered
+## Every brief is covered
 
-Nothing in the set shows **rain** or a **boat on open water** — two Must &
-Have To briefs. They are the only gaps left, and the substitutes above
-(furnace, ravine, night treeline) carry the same grammar.
+Only **a boat on open water** never arrived, and Must & Have To has more
+obligation scenes than its eight slots can hold, so it is not a gap in any
+practical sense. Nothing further needs generating.
 
-Later batches closed two of the four:
+Later batches closed three of the four originally missing:
 
 - **A player leaning over a lit campfire** — the "figure at a furnace" brief
   with a character in it rather than just the object. Use it as
@@ -188,3 +188,7 @@ Later batches closed two of the four:
   slide (more air around the subject, nothing competing with the card) and
   takes `MustHaveTo/locked.jpg`. It is the deck's prohibition picture:
   *you mustn't go in* rather than *you don't have to*.
+- **Rain** — a figure sheltering under a blocky tree in driving rain, pale
+  blue-grey, the only weather picture in the whole set. `MustHaveTo/rain.jpg`.
+  It is also the one image that shows a consequence of *not* acting, which is
+  what an obligation lesson is for.
