@@ -17,10 +17,31 @@ questions about audience, level, tone, length or scope** — the audience is his
 students, the level is on the lesson, the tone and length are defined in the
 house style, and the scope is "the whole lesson, brought up to standard."
 
+**A standalone RPG export (one HTML file, pictures inlined, a
+`window.*_GAME_DATA` object) means: rebuild it as a Block Camp RPG.** The
+standard — glowing object on every picture, text that pops out of it,
+Monocraft, big type, hub card, library entry — and the pipeline are in
+`lesson-template/build/rpg/README.md`. Same rule: start immediately.
+
 Read the lesson, audit it, build it, check it, ship it, then report what you
 found and what you changed. `lesson-template/HOUSE-STYLE.md` §14 lists the four
 situations that genuinely warrant a question. Everything else: apply the
 standard and say what you did.
+
+## Handing a file to a cloud session
+
+A cloud session cannot see Innes's Downloads folder, and the Google Drive
+connector cannot move a file of any real size (a 7.5 MB RPG export killed
+the connection three times on 2026-09-05; drive.google.com itself is blocked
+by the sandbox proxy). Two routes work, and nothing else does:
+
+- **Attach the file to the chat message** — drag it into the message box.
+  This is how the 4 MB Oz export arrived, and it is the fastest.
+- **Upload it to the repository** on GitHub ("Add files via upload", as with
+  `61a32b2`) and say which file. Anything in the repo a session can fetch.
+
+A forbesenglish.com URL works because the site is public. A link to a file
+on Innes's machine never will.
 
 ## Read these two, in this order
 
