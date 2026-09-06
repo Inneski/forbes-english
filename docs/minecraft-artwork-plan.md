@@ -176,3 +176,8 @@ the submerged cave, the strata cliffs, the excavation trench.
 Nothing in the set shows **rain**, a **locked door**, or a **boat on open
 water** — three Must & Have To briefs. They are the only gaps left, and the
 substitutes above (furnace, ravine, night treeline) carry the same grammar.
+
+A later batch closed the fourth: **a player leaning over a lit campfire**,
+which is the "figure at a furnace" brief with a character in it rather than
+just the object. Use it as `MustHaveTo/hero.jpg` in preference to the empty
+furnace — an obligation lesson wants somebody under the obligation.
