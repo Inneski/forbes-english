@@ -48,13 +48,20 @@ Camp with Monocraft."*
   Keys 1–3 answer, L cycles the language, S toggles sound, F toggles
   fullscreen. The corner help line names all of that and is itself
   translated.
-- **English on top, gloss beneath.** Every learner-facing string is
-  `{en, es, de, …}`; the engine prints the English and the gloss under it,
-  never the gloss alone. Options are glossed too (Blocula does the same) —
-  the English stays. **Spanish and German are the minimum**
-  (HOUSE-STYLE §8); ship only languages you have finished, because
-  `assemble()` refuses a string with a missing language and the menu is
-  built from what ships.
+- **English on top, gloss beneath, in all nine languages.** Every
+  learner-facing string is `{en, es, de, fr, it, pt, ru, ar, zh, ja}`; the
+  engine prints the English and the gloss under it, never the gloss alone.
+  The nine are HOUSE-STYLE §8's full set and, since 2026-09-06, the RPG
+  standard — Innes asked for them on both shipped RPGs. The export gives
+  you Spanish and German at best; the rest go in
+  `rpg/<lesson>/translations/<lang>.json`, one file per language, keyed by
+  the English string (§6), and `apply_translations()` fills them in.
+  `assemble()` lists every string still missing a language and refuses to
+  build until none is; the menu is built from what ships. Arabic is
+  right-to-left (`RTL` in the engine); Chinese and Japanese fall back to
+  the system face for their glyphs, which is fine at gloss size. Options
+  are glossed when the export glossed them (Oz); when it did not
+  (Wonderland) they stay English — they are the language being taught.
 - **A rules briefing before the first question** (kind `rules`: up to five
   form cards and a note), and **one explanation line under every answer**
   (`fb`), right or wrong. The exports have neither; both are the difference
@@ -216,6 +223,14 @@ wraps to at most two lines; the German is not longer than the panel.
 | `img_w`, `img_h` | picture size when it is not 1536×1024 (Wonderland is 1536×864) |
 | `repair`, `total` | `repair: True` = a wrong answer explains and lets the learner try again, points on the first try only, no chances (set `chances: 0`); `total` = questions on any path, shown as a progress badge |
 | `tags` | the two half-labels for split options, `{'a': {en,…}, 'b': {en,…}}` (pink NOW / blue USUAL) |
+
+Translations: `rpg.apply_translations(spec, '<dir>')` reads every
+`<lang>.json` in the directory — a flat `{"English string": "translation"}`
+map — and fills each `{en: …}` dict for the languages in `spec['langs']`
+that it does not already carry. Inline `es`/`de` from an export win. To
+get the list of strings to translate, build the spec and collect every
+dict with an `en` key; the first build after adding a language prints
+exactly what is still missing.
 
 Scene kinds: `intro` (cover: `rules` chips, `start` button, `small` line),
 `rules` (form cards + `note`, optional `button` text), `story` (text,

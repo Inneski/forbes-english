@@ -31,7 +31,7 @@ import rpg
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 DATA = json.load(open(os.path.join(HERE, 'rpg', 'wonderland-stolen-now', 'data.json'), encoding='utf-8'))
-LANGS = ['es', 'de']
+LANGS = rpg.NINE   # es, de inline; the other seven from rpg/wonderland-stolen-now/translations/
 IMG = lambda n: n + '.webp'
 
 
@@ -364,4 +364,4 @@ def build():
 
 
 if __name__ == '__main__':
-    rpg.assemble(build())
+    rpg.assemble(rpg.apply_translations(build(), os.path.join(HERE, 'rpg', 'wonderland-stolen-now', 'translations')))

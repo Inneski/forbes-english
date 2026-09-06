@@ -26,7 +26,7 @@ import rpg
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 DATA = json.load(open(os.path.join(HERE, 'rpg', 'lost-yellow-road', 'data.json'), encoding='utf-8'))
-LANGS = ['es', 'de']
+LANGS = rpg.NINE   # es, de from the export; the other seven from rpg/lost-yellow-road/translations/
 
 # ── hotspots: [cx, cy, w, h] in % of the 1536×1024 picture, then panel side,
 # vertical anchor, optional panel width %. Picked from a gridded contact
@@ -234,14 +234,11 @@ def build():
             'story': T(e['text'], el['es']['text'], el['de']['text'])})
 
     u = DATA['ui']
+    # Only the labels that differ from the engine's: the export's Spanish and
+    # German for the tile words; the other seven languages come from the
+    # translations directory (keyed by the English).
     labels = {
-        'points':     T('POINTS', u['es']['points'], u['de']['points']),
         'tiles':      T('ROAD TILES', u['es']['tiles'], u['de']['tiles']),
-        'chances':    T('CHANCES', u['es']['chances'], u['de']['chances']),
-        'visual':     T('VISUAL CLUE', u['es']['evidence'], u['de']['evidence']),
-        'continue':   T('CONTINUE', u['es']['continue'], u['de']['continue']),
-        'restart':    T('PLAY AGAIN', u['es']['playAgain'], u['de']['playAgain']),
-        'finalScore': T('FINAL SCORE', u['es']['finalScore'], u['de']['finalScore']),
         'relic':      T('TILE RECOVERED · +{p} POINTS', u['es']['recovered'] + ' · +{p} ' + u['es']['points'], u['de']['recovered'] + ' · +{p} ' + u['de']['points']),
         'begin':      T('FOLLOW THE YELLOW ROAD', cl['es']['start'], cl['de']['start']),
     }
@@ -263,4 +260,4 @@ def build():
 
 
 if __name__ == '__main__':
-    rpg.assemble(build())
+    rpg.assemble(rpg.apply_translations(build(), os.path.join(HERE, 'rpg', 'lost-yellow-road', 'translations')))

@@ -33,38 +33,77 @@ LANG_NAMES = {'es': 'Español', 'de': 'Deutsch', 'fr': 'Français', 'it': 'Itali
 # Chrome strings every RPG needs. A spec may override any key (and must add
 # every gloss language it ships — assemble() refuses a half-translated set).
 LABELS = {
-    'read':       {'en': 'CLICK TO READ', 'es': 'PULSA PARA LEER', 'de': 'KLICKEN ZUM LESEN'},
-    'hide':       {'en': 'HIDE', 'es': 'OCULTAR', 'de': 'AUSBLENDEN'},
-    'continue':   {'en': 'CONTINUE', 'es': 'CONTINUAR', 'de': 'WEITER'},
-    'begin':      {'en': 'BEGIN', 'es': 'EMPEZAR', 'de': 'LOSLEGEN'},
-    'restart':    {'en': 'PLAY AGAIN', 'es': 'JUGAR OTRA VEZ', 'de': 'NOCH EINMAL SPIELEN'},
-    'fullscreen': {'en': 'FULLSCREEN', 'es': 'PANTALLA COMPLETA', 'de': 'VOLLBILD'},
-    'translate':  {'en': 'TRANSLATE', 'es': 'TRADUCIR', 'de': 'ÜBERSETZEN'},
-    'off':        {'en': 'English only', 'es': 'Solo inglés', 'de': 'Nur Englisch'},
-    'visual':     {'en': 'VISUAL CLUE', 'es': 'PISTA VISUAL', 'de': 'BILDHINWEIS'},
-    'points':     {'en': 'POINTS', 'es': 'PUNTOS', 'de': 'PUNKTE'},
-    'tiles':      {'en': 'TILES', 'es': 'BALDOSAS', 'de': 'PLATTEN'},
-    'chances':    {'en': 'CHANCES', 'es': 'OPORTUNIDADES', 'de': 'CHANCEN'},
-    'correct':    {'en': 'CORRECT · +{p} POINTS', 'es': 'CORRECTO · +{p} PUNTOS', 'de': 'RICHTIG · +{p} PUNKTE'},
-    'relic':      {'en': 'TILE RECOVERED · +{p} POINTS', 'es': 'BALDOSA RECUPERADA · +{p} PUNTOS', 'de': 'PLATTE GEBORGEN · +{p} PUNKTE'},
-    'wrong':      {'en': 'NO POINTS · −1 CHANCE', 'es': 'SIN PUNTOS · −1 OPORTUNIDAD', 'de': 'KEINE PUNKTE · −1 CHANCE'},
-    'answerWas':  {'en': 'Correct answer:', 'es': 'Respuesta correcta:', 'de': 'Richtige Antwort:'},
-    'finalScore': {'en': 'FINAL SCORE', 'es': 'PUNTUACIÓN FINAL', 'de': 'ENDPUNKTZAHL'},
-    'route':      {'en': 'ROUTE', 'es': 'RUTA', 'de': 'ROUTE'},
-    'progress':   {'en': 'SPELLS', 'es': 'HECHIZOS', 'de': 'ZAUBER'},
-    'soundOn':    {'en': 'SOUND ON', 'es': 'SONIDO SÍ', 'de': 'TON AN'},
-    'soundOff':   {'en': 'SOUND OFF', 'es': 'SONIDO NO', 'de': 'TON AUS'},
-    'repaired':   {'en': 'SPELL REPAIRED', 'es': 'HECHIZO REPARADO', 'de': 'ZAUBER REPARIERT'},
-    'tryAgain':   {'en': 'NOT YET · TRY ANOTHER', 'es': 'TODAVÍA NO · PRUEBA OTRA', 'de': 'NOCH NICHT · VERSUCH ES ANDERS'},
-    'firstTry':   {'en': 'first try', 'es': 'a la primera', 'de': 'beim ersten Versuch'},
-    'review':     {'en': 'REVIEW THE REPAIRED SPELLS', 'es': 'REPASA LOS HECHIZOS REPARADOS', 'de': 'DIE REPARIERTEN ZAUBER ANSEHEN'},
-    'perfect':    {'en': 'Perfect first-try grammar. Every spell held.', 'es': 'Gramática perfecta a la primera. Todos los hechizos aguantaron.', 'de': 'Perfekte Grammatik beim ersten Versuch. Jeder Zauber hat gehalten.'},
+    'read':       {'en': 'CLICK TO READ', 'es': 'PULSA PARA LEER', 'de': 'KLICKEN ZUM LESEN', 'fr': 'CLIQUE POUR LIRE', 'it': 'CLICCA PER LEGGERE', 'pt': 'CLIQUE PARA LER', 'ru': 'НАЖМИ, ЧТОБЫ ЧИТАТЬ', 'ar': 'انقر للقراءة', 'zh': '点击阅读', 'ja': 'クリックして読む'},
+    'hide':       {'en': 'HIDE', 'es': 'OCULTAR', 'de': 'AUSBLENDEN', 'fr': 'MASQUER', 'it': 'NASCONDI', 'pt': 'OCULTAR', 'ru': 'СКРЫТЬ', 'ar': 'إخفاء', 'zh': '隐藏', 'ja': '隠す'},
+    'continue':   {'en': 'CONTINUE', 'es': 'CONTINUAR', 'de': 'WEITER', 'fr': 'CONTINUER', 'it': 'CONTINUA', 'pt': 'CONTINUAR', 'ru': 'ДАЛЕЕ', 'ar': 'متابعة', 'zh': '继续', 'ja': '続ける'},
+    'begin':      {'en': 'BEGIN', 'es': 'EMPEZAR', 'de': 'LOSLEGEN', 'fr': 'COMMENCER', 'it': 'INIZIA', 'pt': 'COMEÇAR', 'ru': 'НАЧАТЬ', 'ar': 'ابدأ', 'zh': '开始', 'ja': '始める'},
+    'restart':    {'en': 'PLAY AGAIN', 'es': 'JUGAR OTRA VEZ', 'de': 'NOCH EINMAL SPIELEN', 'fr': 'REJOUER', 'it': 'GIOCA ANCORA', 'pt': 'JOGAR DE NOVO', 'ru': 'ИГРАТЬ СНОВА', 'ar': 'العب مرة أخرى', 'zh': '再玩一次', 'ja': 'もう一度遊ぶ'},
+    'fullscreen': {'en': 'FULLSCREEN', 'es': 'PANTALLA COMPLETA', 'de': 'VOLLBILD', 'fr': 'PLEIN ÉCRAN', 'it': 'SCHERMO INTERO', 'pt': 'ECRÃ INTEIRO', 'ru': 'ВО ВЕСЬ ЭКРАН', 'ar': 'ملء الشاشة', 'zh': '全屏', 'ja': '全画面'},
+    'translate':  {'en': 'TRANSLATE', 'es': 'TRADUCIR', 'de': 'ÜBERSETZEN', 'fr': 'TRADUIRE', 'it': 'TRADUCI', 'pt': 'TRADUZIR', 'ru': 'ПЕРЕВОД', 'ar': 'ترجمة', 'zh': '翻译', 'ja': '翻訳'},
+    'off':        {'en': 'English only', 'es': 'Solo inglés', 'de': 'Nur Englisch', 'fr': 'Anglais seulement', 'it': 'Solo inglese', 'pt': 'Só inglês', 'ru': 'Только английский', 'ar': 'الإنجليزية فقط', 'zh': '仅英语', 'ja': '英語のみ'},
+    'visual':     {'en': 'VISUAL CLUE', 'es': 'PISTA VISUAL', 'de': 'BILDHINWEIS', 'fr': 'INDICE VISUEL', 'it': 'INDIZIO VISIVO', 'pt': 'PISTA VISUAL', 'ru': 'ВИЗУАЛЬНАЯ ПОДСКАЗКА', 'ar': 'دليل بصري', 'zh': '视觉线索', 'ja': '視覚ヒント'},
+    'points':     {'en': 'POINTS', 'es': 'PUNTOS', 'de': 'PUNKTE', 'fr': 'POINTS', 'it': 'PUNTI', 'pt': 'PONTOS', 'ru': 'ОЧКИ', 'ar': 'نقاط', 'zh': '分数', 'ja': 'ポイント'},
+    'tiles':      {'en': 'TILES', 'es': 'BALDOSAS', 'de': 'PLATTEN', 'fr': 'DALLES', 'it': 'PIASTRELLE', 'pt': 'LADRILHOS', 'ru': 'ПЛИТКИ', 'ar': 'بلاطات', 'zh': '砖块', 'ja': 'タイル'},
+    'chances':    {'en': 'CHANCES', 'es': 'OPORTUNIDADES', 'de': 'CHANCEN', 'fr': 'CHANCES', 'it': 'TENTATIVI', 'pt': 'CHANCES', 'ru': 'ПОПЫТКИ', 'ar': 'فرص', 'zh': '机会', 'ja': 'チャンス'},
+    'correct':    {'en': 'CORRECT · +{p} POINTS', 'es': 'CORRECTO · +{p} PUNTOS', 'de': 'RICHTIG · +{p} PUNKTE', 'fr': 'CORRECT · +{p} POINTS', 'it': 'CORRETTO · +{p} PUNTI', 'pt': 'CORRETO · +{p} PONTOS', 'ru': 'ВЕРНО · +{p} ОЧКОВ', 'ar': 'صحيح · +{p} نقاط', 'zh': '正确 · +{p} 分', 'ja': '正解 · +{p} ポイント'},
+    'relic':      {'en': 'TILE RECOVERED · +{p} POINTS', 'es': 'BALDOSA RECUPERADA · +{p} PUNTOS', 'de': 'PLATTE GEBORGEN · +{p} PUNKTE', 'fr': 'DALLE RÉCUPÉRÉE · +{p} POINTS', 'it': 'PIASTRELLA RECUPERATA · +{p} PUNTI', 'pt': 'LADRILHO RECUPERADO · +{p} PONTOS', 'ru': 'ПЛИТКА НАЙДЕНА · +{p} ОЧКОВ', 'ar': 'استُعيدت البلاطة · +{p} نقاط', 'zh': '找回砖块 · +{p} 分', 'ja': 'タイル回収 · +{p} ポイント'},
+    'wrong':      {'en': 'NO POINTS · −1 CHANCE', 'es': 'SIN PUNTOS · −1 OPORTUNIDAD', 'de': 'KEINE PUNKTE · −1 CHANCE', 'fr': 'AUCUN POINT · −1 CHANCE', 'it': 'NESSUN PUNTO · −1 TENTATIVO', 'pt': 'SEM PONTOS · −1 CHANCE', 'ru': 'НЕТ ОЧКОВ · −1 ПОПЫТКА', 'ar': 'لا نقاط · −1 فرصة', 'zh': '没有分数 · −1 机会', 'ja': 'ポイントなし · チャンス −1'},
+    'answerWas':  {'en': 'Correct answer:', 'es': 'Respuesta correcta:', 'de': 'Richtige Antwort:', 'fr': 'Bonne réponse :', 'it': 'Risposta corretta:', 'pt': 'Resposta certa:', 'ru': 'Правильный ответ:', 'ar': 'الإجابة الصحيحة:', 'zh': '正确答案：', 'ja': '正解：'},
+    'finalScore': {'en': 'FINAL SCORE', 'es': 'PUNTUACIÓN FINAL', 'de': 'ENDPUNKTZAHL', 'fr': 'SCORE FINAL', 'it': 'PUNTEGGIO FINALE', 'pt': 'PONTUAÇÃO FINAL', 'ru': 'ИТОГОВЫЙ СЧЁТ', 'ar': 'النتيجة النهائية', 'zh': '最终得分', 'ja': '最終スコア'},
+    'route':      {'en': 'ROUTE', 'es': 'RUTA', 'de': 'ROUTE', 'fr': 'ROUTE', 'it': 'PERCORSO', 'pt': 'ROTA', 'ru': 'МАРШРУТ', 'ar': 'المسار', 'zh': '路线', 'ja': 'ルート'},
+    'progress':   {'en': 'SPELLS', 'es': 'HECHIZOS', 'de': 'ZAUBER', 'fr': 'SORTS', 'it': 'INCANTESIMI', 'pt': 'FEITIÇOS', 'ru': 'ЗАКЛИНАНИЯ', 'ar': 'تعويذات', 'zh': '咒语', 'ja': '呪文'},
+    'soundOn':    {'en': 'SOUND ON', 'es': 'SONIDO SÍ', 'de': 'TON AN', 'fr': 'SON ACTIVÉ', 'it': 'AUDIO ON', 'pt': 'SOM LIGADO', 'ru': 'ЗВУК ВКЛ', 'ar': 'الصوت مفعّل', 'zh': '声音开', 'ja': 'サウンドON'},
+    'soundOff':   {'en': 'SOUND OFF', 'es': 'SONIDO NO', 'de': 'TON AUS', 'fr': 'SON COUPÉ', 'it': 'AUDIO OFF', 'pt': 'SOM DESLIGADO', 'ru': 'ЗВУК ВЫКЛ', 'ar': 'الصوت مغلق', 'zh': '声音关', 'ja': 'サウンドOFF'},
+    'repaired':   {'en': 'SPELL REPAIRED', 'es': 'HECHIZO REPARADO', 'de': 'ZAUBER REPARIERT', 'fr': 'SORT RÉPARÉ', 'it': 'INCANTESIMO RIPARATO', 'pt': 'FEITIÇO REPARADO', 'ru': 'ЗАКЛИНАНИЕ ИСПРАВЛЕНО', 'ar': 'أُصلحت التعويذة', 'zh': '咒语已修复', 'ja': '呪文を修復した'},
+    'tryAgain':   {'en': 'NOT YET · TRY ANOTHER', 'es': 'TODAVÍA NO · PRUEBA OTRA', 'de': 'NOCH NICHT · VERSUCH ES ANDERS', 'fr': 'PAS ENCORE · ESSAIE AUTRE CHOSE', 'it': 'NON ANCORA · PROVA UN\'ALTRA', 'pt': 'AINDA NÃO · TENTA OUTRA', 'ru': 'ПОКА НЕТ · ПОПРОБУЙ ДРУГОЙ', 'ar': 'ليس بعد · جرّب إجابة أخرى', 'zh': '还不对 · 再试一个', 'ja': 'まだ · 別の答えを試そう'},
+    'firstTry':   {'en': 'first try', 'es': 'a la primera', 'de': 'beim ersten Versuch', 'fr': 'du premier coup', 'it': 'al primo tentativo', 'pt': 'à primeira', 'ru': 'с первой попытки', 'ar': 'من المحاولة الأولى', 'zh': '一次答对', 'ja': '一発正解'},
+    'review':     {'en': 'REVIEW THE REPAIRED SPELLS', 'es': 'REPASA LOS HECHIZOS REPARADOS', 'de': 'DIE REPARIERTEN ZAUBER ANSEHEN', 'fr': 'REVOIR LES SORTS RÉPARÉS', 'it': 'RIVEDI GLI INCANTESIMI RIPARATI', 'pt': 'REVER OS FEITIÇOS REPARADOS', 'ru': 'ПОВТОРИТЬ ИСПРАВЛЕННЫЕ ЗАКЛИНАНИЯ', 'ar': 'راجع التعويذات المُصلحة', 'zh': '复习已修复的咒语', 'ja': '修復した呪文を復習'},
+    'perfect':    {'en': 'Perfect first-try grammar. Every spell held.', 'es': 'Gramática perfecta a la primera. Todos los hechizos aguantaron.', 'de': 'Perfekte Grammatik beim ersten Versuch. Jeder Zauber hat gehalten.', 'fr': 'Grammaire parfaite du premier coup. Tous les sorts ont tenu.', 'it': 'Grammatica perfetta al primo tentativo. Ogni incantesimo ha retto.', 'pt': 'Gramática perfeita à primeira. Todos os feitiços aguentaram.', 'ru': 'Идеальная грамматика с первой попытки. Все заклинания выдержали.', 'ar': 'قواعد مثالية من المحاولة الأولى. صمدت كل التعويذات.', 'zh': '一次全对，语法完美。每个咒语都成功了。', 'ja': '一発で完璧な文法。すべての呪文が成功した。'},
     'help':       {'en': 'click the glowing object or ENTER to read · ESC hide · 1–3 choose · L language · S sound · F fullscreen',
                    'es': 'pulsa el objeto que brilla o ENTER para leer · ESC ocultar · 1–3 elegir · L idioma · S sonido · F pantalla completa',
-                   'de': 'klicke das leuchtende Objekt oder ENTER zum Lesen · ESC ausblenden · 1–3 wählen · L Sprache · S Ton · F Vollbild'},
+                   'de': 'klicke das leuchtende Objekt oder ENTER zum Lesen · ESC ausblenden · 1–3 wählen · L Sprache · S Ton · F Vollbild',
+                   'fr': 'clique sur l\'objet lumineux ou ENTRÉE pour lire · ÉCHAP masquer · 1–3 choisir · L langue · S son · F plein écran',
+                   'it': 'clicca l\'oggetto luminoso o INVIO per leggere · ESC nascondi · 1–3 scegli · L lingua · S audio · F schermo intero',
+                   'pt': 'clica no objeto brilhante ou ENTER para ler · ESC ocultar · 1–3 escolher · L idioma · S som · F ecrã inteiro',
+                   'ru': 'нажми на светящийся предмет или ENTER, чтобы читать · ESC скрыть · 1–3 выбрать · L язык · S звук · F во весь экран',
+                   'ar': 'انقر على الشيء المتوهج أو ENTER للقراءة · ESC إخفاء · 1–3 اختيار · L اللغة · S الصوت · F ملء الشاشة',
+                   'zh': '点击发光物体或按 ENTER 阅读 · ESC 隐藏 · 1–3 选择 · L 语言 · S 声音 · F 全屏',
+                   'ja': '光る物をクリックか ENTER で読む · ESC 隠す · 1–3 選ぶ · L 言語 · S サウンド · F 全画面'},
 }
 
 TEXT_KEYS = ('k', 'title', 'story', 'clue', 'prompt', 'fb', 'note', 'small', 'start')
+
+
+NINE = ['es', 'de', 'fr', 'it', 'pt', 'ru', 'ar', 'zh', 'ja']   # HOUSE-STYLE §8's full set
+
+
+def apply_translations(spec, path):
+    """Fill every learner-facing string from a translations file.
+
+    The file maps language -> {English string: translation}. Keying by the
+    English text keeps the file flat and lets one entry serve every place a
+    line repeats ("Choose the correct question."). Strings the file lacks
+    stay untouched, so validate() names them; a lesson ships the languages
+    in spec['langs'] and nothing else."""
+    if os.path.isdir(path):      # one <lang>.json per language
+        table = {os.path.splitext(f)[0]: json.load(open(os.path.join(path, f), encoding='utf-8'))
+                 for f in sorted(os.listdir(path)) if f.endswith('.json')}
+    else:
+        table = json.load(open(path, encoding='utf-8'))
+    def walk(o):
+        if isinstance(o, dict):
+            if 'en' in o and isinstance(o['en'], str):
+                for lang, m in table.items():
+                    if lang in spec['langs'] and not o.get(lang) and o['en'] in m:
+                        o[lang] = m[o['en']]
+            else:
+                for v in o.values():
+                    walk(v)
+        elif isinstance(o, list):
+            for v in o:
+                walk(v)
+    walk(spec['scenes']); walk(spec.get('labels', {})); walk(spec.get('tags', {}))
+    return spec
 
 
 def font_css():
@@ -226,8 +265,10 @@ const hot=document.getElementById('hot'), hotLabel=document.getElementById('hotL
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const tx=(o,l)=>o?(l&&o[l]?o[l]:o.en):'';
 function ui(key,vars){let s=tx(G.labels[key],state.lang==='off'?null:state.lang);if(vars)for(const k in vars)s=s.replace('{'+k+'}',vars[k]);return s}
-function line(obj,cls=''){if(!obj)return '';const en=esc(obj.en);if(state.lang==='off'||!obj[state.lang])return `<span class="${cls}">${en}</span>`;return `<span class="${cls}">${en}<span class="translation">${esc(obj[state.lang])}</span></span>`}
-function label(obj){if(!obj)return '';return state.lang==='off'||!obj[state.lang]?esc(obj.en):`${esc(obj.en)}<span class="translation">${esc(obj[state.lang])}</span>`}
+/* a gloss identical to the English (a formula, a name) is not shown — it would only repeat the line */
+const gloss=obj=>state.lang!=='off'&&obj[state.lang]&&obj[state.lang]!==obj.en?obj[state.lang]:'';
+function line(obj,cls=''){if(!obj)return '';const en=esc(obj.en),g=gloss(obj);return g?`<span class="${cls}">${en}<span class="translation">${esc(g)}</span></span>`:`<span class="${cls}">${en}</span>`}
+function label(obj){if(!obj)return '';const g=gloss(obj);return g?`${esc(obj.en)}<span class="translation">${esc(g)}</span>`:esc(obj.en)}
 /* an option is {en,…} or, for a two-blank item, {parts:[a,b], kinds:['a'|'b',…], tags:[{en,…},{en,…}]} — two coloured halves */
 function optText(o){return o.parts?o.parts.join(' / '):o.en}
 function optMarkup(o){if(!o.parts)return `<span>${label(o)}</span>`;return o.parts.map((p,i)=>`<span class="half ${o.kinds[i]}"><small>${label(G.tags[o.kinds[i]])}</small><b>${esc(p)}</b></span>`).join('')}
@@ -307,14 +348,18 @@ PAGE = """<!doctype html>
 """
 
 
+_MISSING = []
+
+
 def _check_langs(obj, langs, path):
     """Every learner-facing string must carry `en` and every gloss language —
     a menu entry that falls back to English halfway down the panel is the
-    half-finished screen HOUSE-STYLE §8 exists to prevent."""
+    half-finished screen HOUSE-STYLE §8 exists to prevent. Misses are
+    collected and reported together, so one build run lists them all."""
     if isinstance(obj, dict) and 'en' in obj:
         missing = [l for l in langs if not obj.get(l)]
         if missing:
-            raise SystemExit('%s: missing %s for %r' % (path, ','.join(missing), obj['en'][:50]))
+            _MISSING.append('%s: missing %s for %r' % (path, ','.join(missing), obj['en'][:70]))
         return
     if isinstance(obj, dict):
         for k, v in obj.items():
@@ -363,6 +408,8 @@ def validate(spec):
     _check_langs({k: {kk: vv for kk, vv in s.items() if kk in TEXT_KEYS or kk in ('rules', 'routes', 'button')}
                   for k, s in scenes.items()}, langs, 'scenes')
     _check_langs(spec.get('tags', {}), langs, 'tags')
+    if _MISSING:
+        raise SystemExit('%d untranslated strings:\n  ' % len(_MISSING) + '\n  '.join(_MISSING))
     return labels
 
 
