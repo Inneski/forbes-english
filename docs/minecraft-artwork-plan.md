@@ -89,9 +89,16 @@ carry time:
 | `sapling.jpg` | the sapling beside the full-grown blocky tree |
 | `lake.jpg` | the blocky lake with the heron and the reflection |
 | `ravine.jpg` | the ravine with the tiny figure on the near edge |
-| `canyon.jpg` | the red terraced canyon with blue mountains |
-| `strata.jpg` | the sediment cliff face with visible bands |
+| `tracks.jpg` | footprints in snow leading away behind a walking figure |
+| `bed.jpg` | the bed on open ground under a rising moon |
 | `dusk.jpg` | the fort on the hill under the great white sun |
+
+`tracks.jpg` and `bed.jpg` arrived late and are the two briefs the first pass
+wrote out longhand — *snow with footprints leading away behind a figure*, and
+*a bed and a rising moon*. Nothing else in the set carries "before" and "after"
+as plainly: the footprints are the past visible in the present, the bed is the
+full stop. They displace the red canyon and the strata cliff, which go to
+DinoCraft Pt II where geology is the subject rather than the metaphor.
 
 ### `minecraft-lesson.html` — MustHaveTo/ (8, currently 4 distinct, 0 unique, all low-res copies)
 
