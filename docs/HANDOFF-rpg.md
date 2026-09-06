@@ -114,6 +114,10 @@ The page and its picture folder share it.
   and decision prose live in its render functions and are transcribed by
   hand. Builder to copy: `build_wonderland_stolen_now.py`. Pass
   `img_w`/`img_h` in the spec.
+- **ChatGPT kind** (made from `docs/CHATGPT-RPG-BRIEF.md`): the Oz kind
+  plus `meta`, `briefing`, per-scene `hotspot` and `explanation`, and nine
+  languages in `local`. Extract as Oz; the tail of the brief says which
+  field feeds which part of the spec.
 - **A third kind:** read its whole script before anything else. Find
   where the pictures are (base64 map), where the questions are (a table or
   an object), what the scoring rule is, and which of the two builders is

@@ -22,7 +22,9 @@ house style, and the scope is "the whole lesson, brought up to standard."
 standard — glowing object on every picture, text that pops out of it,
 Monocraft, big type, hub card, library entry — and the pipeline are in
 `lesson-template/build/rpg/README.md`; the step-by-step walk-through for a
-fresh session is `docs/HANDOFF-rpg.md`. Same rule: start immediately.
+fresh session is `docs/HANDOFF-rpg.md`; the brief Innes gives ChatGPT to
+produce the export in the first place is `docs/CHATGPT-RPG-BRIEF.md`. Same
+rule: start immediately.
 
 Read the lesson, audit it, build it, check it, ship it, then report what you
 found and what you changed. `lesson-template/HOUSE-STYLE.md` §14 lists the four
