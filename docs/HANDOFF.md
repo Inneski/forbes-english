@@ -130,9 +130,24 @@ minimum, saved JPEG q85 optimised. No text in the picture, no centred subject
 that fights the cover lockup: put the subject off-centre, keep the middle
 readable.
 
-**Run `python3 tools/image-audit.py <new-folder> MinecraftB1 MinecraftC1
-MinecraftEd PastModals TenseReview MustHaveTo minecraft` before adopting
-anything.** Distance <= 20 means it is a picture already in the set.
+**Do not commit raw Midjourney PNGs.** `.git` is already ~700 MB with no LFS
+and git never forgets a blob: 34 raw files add ~150 MB permanently, the same
+34 at house spec add ~10 MB. Run them through
+
+    python3 tools/prep-artwork.py <incoming-folder> --into <LessonFolder>
+
+which resizes to 2000px q85 optimised, refuses anything that matches an image
+already in the repo *or* another file in the same batch (Midjourney's four-up
+variants), and flags a wrong aspect ratio or a picture too dark for a light
+deck. Add `--dry-run` to see the decisions without writing, `--names a,b,c` to
+set the final basenames, `--force` to override a refusal.
+
+It hashes all ~1100 images in the repo on first run (about a minute) and caches
+them in `tools/.artwork-hashes.json` keyed by mtime, so later runs are instant.
+The cache is gitignored; delete it to rebuild.
+
+`tools/image-audit.py` is the read-only version — use it to inspect a set
+without converting anything. Both share one `ahash` implementation.
 
 #### Free — already on disk or pure re-encode, zero new artwork
 
@@ -144,10 +159,23 @@ anything.** Distance <= 20 means it is a picture already in the set.
    and `MustHaveTo/desert.jpg` (534 -> 264 KB).
 3. Re-cut `MustHaveTo/` from the full-size originals in `minecraft/` — the
    shipped copies are the small web versions (1200-1400px).
-4. Adopt the seven unused painterly canyon/sunset PNGs in `PastModals/` if
-   the style shift is acceptable. That covers Past Modals outright.
+4. Adopt the seven unused painterly canyon/sunset PNGs in `PastModals/` —
+   **but they are not a drop-in swap.** Measured mean luminance: 66, 71, 74,
+   74, 89, 100, 100. Five of the seven fall under the ~90 a light deck needs,
+   so taking this set means flipping Past Modals to the **dark** theme
+   (`extract-palette.py` without `--light`, `data-theme="dark"`), not just
+   changing the filenames. Two of the seven are usable as-is. Decide the theme
+   first; the artwork follows.
 5. Adopt the five unused pixel-art dinosaur PNGs in `minecraft/` for DinoCraft.
 6. Delete or archive the rest of the unused PNGs — 60 MB across the two folders.
+7. **27 MB of byte-identical duplicates sit at the repo root**, each a second
+   copy of a file already in a subfolder: `forbes Eng final 3.png` (also in
+   `HOUSE STYLE/`), three of the big `PastModals/` PNGs, `brutalism-skyline-hero.png`
+   (`Brutalism/brutalism-1-hero.png`), and nine more shadowing `FORBES ENGLISH/`.
+   Deleting the root copies does not shrink `.git` history, but it stops the
+   tree growing and stops the audit tools reporting phantom matches. Found by
+   `prep-artwork.py` refusing a file as "already in the repo" — as itself, at
+   the root.
 
 #### To generate — 34 flat-vector scenes (26 if Past Modals takes the free set)
 
