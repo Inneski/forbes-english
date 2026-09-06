@@ -514,11 +514,27 @@ genuine flat-vector Minecraft mob collage) was actually right.
 **Fixed:** `MinecraftC1/hero.jpg` and `warrior.jpg` replaced with flat-vector
 Minecraft art (a player on a cliff at sunset; a creeper-and-skeleton night
 confrontation), plus a fourth image, `structure.jpg`. `MinecraftB1/` also
-got a fourth, `village.jpg`. Both builders' `*_BG` lists now spread four
-images across the slide count instead of cycling three twice; `build_mcc1.py`
-and `build_mcb1.py` docstrings carry the detail. `MinecraftEd/` still only
-has three (`hero.jpg`, `dusk.jpg`, `ridge.jpg`) — a fourth for it is still
-needed, same repeat-pattern defect, unfixed.
+got a fourth, `village.jpg`. `MinecraftEd/` got a fourth too, `city.jpg`
+(2026-09-06, a blocky figure on a ruined city street under a moon, same cool
+nocturnal register as its other three). All three builders' `*_BG` lists now
+spread four images across the slide count instead of cycling three twice;
+`build_mcc1.py`, `build_mcb1.py` and `build_mced.py` docstrings carry the
+detail.
+
+**Same audit widened, 2026-09-06.** Innes asked about "these lessons" more
+broadly; a scan of every `*_BG` list across all builders found `PastModals`
+and `TenseReview` in the same thin state (3-4 images stretched over 5-6
+slides). `TenseReview` already uses its 4 non-hero images efficiently enough
+(only 2 repeats across 6 slots) to leave alone. **`PastModals` still needs a
+fourth image** — only 3 activity backgrounds (`dusk.jpg`, `enderman.jpg`,
+`golem.jpg`), `hero.jpg` held back for the cover — and two upload attempts for
+it have both missed: the first landed nothing in `PastModals/`, the second
+put two candidates in the repo root but they were painterly digital-art
+renders (visible brushwork, atmospheric gradients) against a canyon, not the
+flat hard-edged silhouette style `PastModals/hero.jpg` actually uses. Subject
+matched, medium didn't — same lesson `MinecraftC1` already taught once with
+the "voxel Odysseus." Don't accept a new image on subject match alone; open
+it and compare rendering style against the folder's existing files.
 
 **Delivery note for next time:** getting art from a chat-pasted image into
 the repo doesn't work — a cloud session has no filesystem path to an inline

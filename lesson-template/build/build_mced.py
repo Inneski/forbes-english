@@ -53,6 +53,11 @@ and a lone figure on a rise at sunset. They are darker and cooler
 than Minecraft B1's, which keeps the two apart on screen and suits a
 trivia deck whose long options want a quiet ground.
 
+**Fourth background added 2026-09-06:** `city.jpg`, a blocky figure walking a
+ruined city street under a large pale moon, same cool nocturnal register as
+the rest of the set. Three backgrounds cycled twice over eighteen slides was
+thin; this breaks the repeat.
+
 `--void` is lifted off the derived near-black to a grey, per Innes's standing
 preference. Everything else is `extract-palette.py` output unedited.
 """
@@ -83,9 +88,9 @@ PALETTE = '''  --hero: url('%s/hero.jpg');
 CHIPS = ['turns into', 'is created when', 'can only be obtained by',
          'despite having', 'even though', 'up to', 'exactly', 'only then']
 
-TRIV_BG = ['ridge.jpg', 'dusk.jpg', 'hero.jpg', 'ridge.jpg', 'dusk.jpg', 'hero.jpg']
-COMP_BG = ['dusk.jpg', 'hero.jpg', 'ridge.jpg', 'dusk.jpg', 'hero.jpg', 'ridge.jpg']
-FIB_BG = ['hero.jpg', 'ridge.jpg', 'dusk.jpg']
+TRIV_BG = ['ridge.jpg', 'dusk.jpg', 'hero.jpg', 'city.jpg', 'ridge.jpg', 'dusk.jpg']
+COMP_BG = ['dusk.jpg', 'hero.jpg', 'city.jpg', 'ridge.jpg', 'dusk.jpg', 'hero.jpg']
+FIB_BG = ['hero.jpg', 'city.jpg', 'ridge.jpg']
 
 
 def build():
@@ -205,7 +210,7 @@ def build():
                   for chunks, why in ORDER)
 
         + D.results('resNext', 'You know the facts. Now tell them &rarr;',
-                    folder=F, bg='hero.jpg')
+                    folder=F, bg='city.jpg')
 
         + D.activate('Tell them the thing they do not know', 'Use at least four:', CHIPS,
                      'Roleplay &middot; in pairs',
