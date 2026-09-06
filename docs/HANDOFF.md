@@ -12,6 +12,31 @@ stale copy.
 
 ---
 
+## 2026-09-06 — The RPG standard, stated: sound effects and nine languages
+
+Innes: *"add sound FX to handoff record and the nine language
+translations."* Both are now part of the RPG standard in
+`lesson-template/build/rpg/README.md` §1, and both RPGs carry them:
+
+- **Sound effects are required.** Every RPG has the two tones (square for
+  right, sawtooth for wrong) behind the HUD toggle and the S key, off by
+  default, remembered per browser. The engine provides them; a builder
+  cannot leave them out.
+- **Nine languages are required**: Spanish, German, French, Italian,
+  Portuguese, Russian, Arabic, Chinese, Japanese — HOUSE-STYLE §8's full
+  set, not just its ES+DE minimum. `rpg.NINE` is the list; the engine's own
+  chrome (27 labels) carries all nine; each lesson keeps
+  `rpg/<lesson>/translations/<lang>.json`, keyed by the English string, and
+  the builder calls `apply_translations()`. The validator now lists every
+  missing string at once instead of stopping at the first.
+
+The Lost Yellow Road: 225 strings × 7 new languages (options glossed, as
+the export glossed ES/DE). Wonderland: 231 strings × 7 (options left
+English, as the export had them). Both checked by screenshot in Japanese,
+Arabic (right-to-left), Russian and Chinese. Pages are now 183 KB and
+209 KB — still self-contained, no font request; CJK and Arabic glosses use
+the system face.
+
 ## 2026-09-06 — RPG engine: reading text in Courier New, sound toggle back
 
 Innes, on the live pages: *"what happened to the sound effects? Also reading
