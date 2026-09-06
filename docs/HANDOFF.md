@@ -114,6 +114,91 @@ Only two of the 26 have builders (`lesson-template/camp/camp09.py` and
 `descent/station17.py`), which is the Past Perfect pair — the worst offender
 and the one that can actually be re-run. The other 24 remain unbuildable.
 
+### The shopping list
+
+Style stem for anything new, taken from the filenames that produced the
+existing family (`blackisler_flat_vector_illustration_cel-shaded_solid_flat_col_*`,
+`*_A_flat_minimalist_illustration_*`, `*_Noma_Bar_style_*`):
+
+    flat vector illustration, cel-shaded, solid flat colour, minimalist,
+    Noma Bar style, wide landscape, cream and dusty pink and coral with
+    slate-blue and black silhouettes --ar 16:9
+
+All six decks are `data-theme="light"`, so keep it **bright and airy** — a
+dark or muddy scene forces the deck dark and breaks the set. 16:9, 2000px+
+minimum, saved JPEG q85 optimised. No text in the picture, no centred subject
+that fights the cover lockup: put the subject off-centre, keep the middle
+readable.
+
+**Run `python3 tools/image-audit.py <new-folder> MinecraftB1 MinecraftC1
+MinecraftEd PastModals TenseReview MustHaveTo minecraft` before adopting
+anything.** Distance <= 20 means it is a picture already in the set.
+
+#### Free — already on disk or pure re-encode, zero new artwork
+
+1. Re-allocate the Past Perfect pair's backgrounds so camp 9 and station 17
+   stop sharing 19 of 21. Both have builders (`camp/camp09.py`,
+   `descent/station17.py`); the pool holds 41. Target: <= 2 shared.
+2. Re-encode `MinecraftC1/` to house spec (2000px, q85, optimised):
+   5.5 MB -> 1.8 MB. Same pass on `MinecraftB1/village.jpg` (931 -> 268 KB)
+   and `MustHaveTo/desert.jpg` (534 -> 264 KB).
+3. Re-cut `MustHaveTo/` from the full-size originals in `minecraft/` — the
+   shipped copies are the small web versions (1200-1400px).
+4. Adopt the seven unused painterly canyon/sunset PNGs in `PastModals/` if
+   the style shift is acceptable. That covers Past Modals outright.
+5. Adopt the five unused pixel-art dinosaur PNGs in `minecraft/` for DinoCraft.
+6. Delete or archive the rest of the unused PNGs — 60 MB across the two folders.
+
+#### To generate — 34 flat-vector scenes (26 if Past Modals takes the free set)
+
+Eight per deck brings maximum reuse down from 6x to 3x. Briefs are tied to
+what each deck teaches, so the background carries the grammar rather than
+decorating it.
+
+**Tense Review (B2) — 8.** *Twelve tenses, and the three decisions that pick
+between them.* Scenes that carry time: sunrise on a bare plain with one block
+placed; a half-built tower with blocks still in the air; a finished castle at
+golden hour with the tools down; a rail line curving to the horizon; rain on a
+plateau, a figure under an overhang; a cave mouth with torchlight going in;
+snow with footprints leading away behind a figure; a bed and a rising moon.
+
+**Must & Have To (A2) — 8.** *Two ways to say you have no choice.* Obligation
+and prohibition: a figure at a lit furnace; a locked iron door and its lever;
+a shelter going up with the sun already low; the lip of a ravine; a crafting
+grid mid-recipe; rain driving a figure under a tree; a boat on open water with
+no land; a treeline at dusk with shapes in it.
+
+**Past Modals (B2) — 8, or 0.** *What you should have done.* Take the free
+painterly set, or generate aftermath scenes: a creeper crater; a burnt shelter;
+an inventory scattered on the ground; bubbles over deep water; lava spilling at
+a mine mouth; a broken bridge over a chasm; an open chest left in the open; a
+wolf disappearing into trees.
+
+**Editorial / Trivia (B1) — 7** (keeps `city.jpg`). *How anything turns into
+anything else.* Transformation: a furnace smelting; a crafting grid resolving;
+water meeting lava and making stone; a sapling and the full tree beside it;
+ore to ingot to tool laid in a row; wheat becoming bread; a villager trade stall.
+
+**Minecraft B1 — 7** (keeps `village.jpg`). *The tenses a player needs to tell
+the story.* A story arc in order: waking on a beach; the first tree falling;
+the first night in a dirt hut; a cave descent; arriving at a village; a
+mineshaft with rails; coming home at dawn with a full inventory.
+
+**Minecraft C1 — 4.** *The same game, described by a player and by a scholar.*
+Flat-vector replacements for the two photoreal renders (`creatures`,
+`structure`), plus two: a redstone mechanism read like a diagram; a megabuild
+in silhouette against sky; a server hub with many small figures; an archive
+room of labelled chests.
+
+**DinoCraft Pt I — 5, Pt II — 6**, mostly covered by the five pixel-art PNGs
+on disk. Remainder in the same blocky style: an excavation trench; a field lab
+tent; a specimen drawer; a storm over a nesting ground; a sediment cliff face
+with visible strata; a submerged cave.
+
+Order to do them in: the free items first (they cost nothing and item 1 fixes
+the single worst repeat on the site), then Tense Review and Must & Have To,
+which are the two decks with no artwork of their own at all.
+
 ---
 
 ## 2026-09-06 — RPG walk-through for a fresh session: `docs/HANDOFF-rpg.md`
