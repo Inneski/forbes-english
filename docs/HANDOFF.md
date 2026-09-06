@@ -12,6 +12,24 @@ stale copy.
 
 ---
 
+## 2026-09-06 — RPG engine: reading text in Courier New, sound toggle back
+
+Innes, on the live pages: *"what happened to the sound effects? Also reading
+text see Dracula for example — it's different to the monocraft header
+text."* Two engine changes in `rpg.py`, both lessons rebuilt:
+
+- **Reading text is Courier New now**, as in Blocula; Monocraft stays on the
+  titles, kickers, HUD, buttons, keys and hotspot label. The first two RPGs
+  shipped all-Monocraft on a reading of "with Monocraft" that was too
+  literal — a pixel face at paragraph length is hard work.
+- **Sound is back**: the Wonderland export's two tones (square for right,
+  sawtooth for wrong) behind a HUD toggle and the S key, off by default,
+  remembered in localStorage. Oz never had sound; it has it now, the same
+  way.
+
+`rpg/README.md` §1 says both. The standard is therefore: **Monocraft for
+display, Courier New for reading, sound toggle present.**
+
 ## 2026-09-05 — Wonderland: The Stolen Now — a fifth RPG, on the same engine
 
 The second export of the day — `Wonderland_The_Stolen_Now_Present_Continuous_V1 (2).html`,
@@ -48,14 +66,14 @@ each checked closed. Wired in like Oz: hub plate (five adventures now, the
 grid is `auto-fit`), library thumbnail, catalogue cache row, `seo.py` last —
 additions only in the four indexes.
 
-### To publish (Innes)
+### Published — 2026-09-06
 
-Same branch as Oz. After the merge is live:
-
-```sql
-insert into lessons (file, title, level, access, deck, video, sort_order) values
- ('block-camp/wonderland-stolen-now-rpg.html', 'Wonderland: The Stolen Now — Present Continuous Voxel RPG (A1-A2)', 'A1-A2', 'pro', false, false, 0);
-```
+PR #4 merged to main as `3f84b3e`; the Supabase row is in (id 308, `sort_order`
+0). **Nothing left to run.** A note on the "vanished" report that prompted the
+merge: Cloudflare Pages builds a preview of every PR branch
+(`<branch>.forbes-english.pages.dev`, linked from the PR's bot comment), so a
+lesson can be seen "on the site" before it is on forbesenglish.com. The live
+site is `origin/main` only.
 
 ---
 
@@ -113,19 +131,10 @@ climb — "4 Adventures", "four branching adventures" — and the plates sit
 passed), `tools/lessons.json` row, `seo.py` run last with the four-index
 diff read: additions only. Pushed to `claude/glowing-object-text-popup-fxo141`.
 
-### To publish (Innes)
+### Published — 2026-09-06
 
-Merge the branch. Then, **after** the page is live on `origin/main`:
-
-```sql
-insert into lessons (file, title, level, access, deck, video, sort_order) values
- ('block-camp/lost-yellow-road-rpg.html', 'The Lost Yellow Road — Past Continuous Voxel Oz RPG (A1-A2)', 'A1-A2', 'pro', false, false, 0);
-```
-
-`sort_order 0` puts it with the other three RPGs (−2, −1, 0) at the head of
-the library; change it if the fourth should sit elsewhere. The cache row in
-`tools/lessons.json` says the same and will be overwritten by the next
-live `seo.py` run on your machine.
+PR #4 merged to main as `3f84b3e`; the Supabase row is in (id 307, `sort_order`
+0, with the other RPGs at the head of the library). **Nothing left to run.**
 
 ### Open
 

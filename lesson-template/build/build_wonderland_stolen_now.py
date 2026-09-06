@@ -183,7 +183,7 @@ def question(qd, act, nxt, relic=False):
     if qd['type'] == 'cake':
         opts = [{'parts': o['parts'], 'kinds': ['a' if c == 'pink' else 'b' for c in o['colours']]} for o in qd['options']]
     else:
-        opts = [T(o) for o in qd['options']]
+        opts = [{'en': o} for o in qd['options']]   # the English being taught — no gloss (the export had none)
     s = {'kind': 'question', 'img': IMG(qd['id']), 'k': KICKER[act],
          'title': T(qd['title'].upper(), es_t, de_t),
          'story': T(qd['story'], qd['es'], qd['de']),
