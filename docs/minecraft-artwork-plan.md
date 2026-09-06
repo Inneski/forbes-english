@@ -173,11 +173,8 @@ the submerged cave, the strata cliffs, the excavation trench.
 
 ## Every brief is covered
 
-Only **a boat on open water** never arrived, and Must & Have To has more
-obligation scenes than its eight slots can hold, so it is not a gap in any
-practical sense. Nothing further needs generating.
-
-Later batches closed three of the four originally missing:
+Nothing on the shopping list is missing. Later batches closed all four of the
+briefs the first pass could not fill:
 
 - **A player leaning over a lit campfire** — the "figure at a furnace" brief
   with a character in it rather than just the object. Use it as
@@ -192,3 +189,12 @@ Later batches closed three of the four originally missing:
   blue-grey, the only weather picture in the whole set. `MustHaveTo/rain.jpg`.
   It is also the one image that shows a consequence of *not* acting, which is
   what an obligation lesson is for.
+- **A boat on open water**, four ways — an empty rowing boat, one under sail,
+  one with a player at the oars, one with a figure lying in it. Take the
+  player at the oars: `MustHaveTo/boat.jpg`. Water to the horizon on every
+  side is the picture of having no choice but to keep going, and the three
+  empty boats say the same thing with nobody in them to say it about.
+
+**Stop generating.** Roughly 145 images arrived, resolving to about 55 distinct
+pictures against a shopping list of 34. Every deck can now have artwork that
+nothing else on the site uses, which was the whole point of the audit.
