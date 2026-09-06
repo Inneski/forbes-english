@@ -12,6 +12,41 @@ stale copy.
 
 ---
 
+## 2026-09-06 — Must & Have To (Minecraft, A2): rebuilt as a deck
+
+`minecraft-lesson.html` was hand-built (custom pixel-art CSS, tab-based, not
+the shared template) with Polish as its only L1 support, glossed inline
+inside the English sentences rather than through `LANGS`/`UI_I18N`. Innes
+decided the language question (see "Polish" under Still open, below):
+standard EN + DE + ES, Polish dropped, no shared-template changes. Rebuilt
+on `build_musthaveto.py` / `i18n_musthaveto.py`.
+
+Also fixed along the way: gap-fills were compared with plain `===` (a known
+defect class on this site — `mustn't` typed as `must not` scored wrong; both
+now accepted via pipe-separated answers). The eight-question quiz reused the
+same four options (must / have to / mustn't / don't have to) almost every
+time, and `don't have to` — 13 characters against `must`'s 4 — was the
+correct, uniquely-longest option in three of those items, which is exactly
+the ANSWERS-gate defect class documented elsewhere in this file. Six MC
+items now vary the option pool per question, each with a same-length-or-longer
+plausible distractor. The static comparison table is now a six-pair match
+activity instead — the same information, but answered rather than read.
+
+Artwork: four flat-vector images from the shared `minecraft/` folder, none
+of them claimed by Past Modals/Tense Review/Minecraft B1's dedicated
+folders — `giant-golem-moonrise.jpg` (kept as the hero; it was the page's
+original cover and already suits an obligation lesson), plus
+`creeper-hillside-dusk.jpg`, `enderman-desert-landscape.jpg`,
+`pig-creeper-building-hero.jpg`, copied into a new `MustHaveTo/` folder.
+Accent rotated to creeper green (`--accent-hue=130`) — the honest derivation
+is the same gold/amber Past Modals and Minecraft Editorial already use.
+
+`library.html`'s `LESSON_IMAGES` entry and the block-camp hub thumbnail both
+still point at `minecraft/giant-golem-moonrise.jpg` directly; untouched,
+since the deck uses a copy of the same file rather than moving it.
+
+---
+
 ## 2026-09-05 — Wonderland: The Stolen Now — a fifth RPG, on the same engine
 
 The second export of the day — `Wonderland_The_Stolen_Now_Present_Continuous_V1 (2).html`,
@@ -705,13 +740,16 @@ stem.
 
 ### Still open
 
-- **Polish.** `must-have-to-lego-polish.html` and `minecraft-lesson.html`
-  both carry Polish as their only L1 support. Polish is not one of the site's
-  nine languages, is not in `chrome_i18n.py`, and is not in the template's
-  `LANGS`. Adding it touches the shared template and all 100 decks.
-  `must-have-to-lego-polish.html` is the stronger case: it has the best
-  pre-teaching of any Lego page and a complete ten-language `UI_I18N` of its
-  own. **Innes has not decided.** Do not convert either page until he has.
+- **Polish, resolved for one of the two pages.** `must-have-to-lego-polish.html`
+  and `minecraft-lesson.html` both carried Polish as their only L1 support.
+  Innes decided, 2026-09-06: standard EN + DE + ES like every other deck,
+  Polish dropped, no changes to `chrome_i18n.py` or the template's `LANGS`.
+  `minecraft-lesson.html` is rebuilt on that basis — see below.
+  `must-have-to-lego-polish.html` is still open and still carries the
+  stronger case for keeping Polish (best pre-teaching of any Lego page, a
+  complete ten-language `UI_I18N` of its own) — this decision was made
+  per-page, not site-wide, so don't assume it extends there without asking
+  again.
 - Two live scoring bugs on `must-have-to-lego-polish.html`, which is still
   the scrolling page: `checkFill()` selects all ten `input.fi` on the page,
   so Exercise 1's Check button scores and reveals Exercise 4's four answers
