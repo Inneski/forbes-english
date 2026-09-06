@@ -12,6 +12,67 @@ stale copy.
 
 ---
 
+## 2026-09-06 — The five decks rebuilt on their own artwork (pushed)
+
+Done, on `claude/minecraft-lessons-image-analysis-yse4f4`. Every one of the
+five flat-vector Minecraft decks now has eight pictures of its own and shares
+none with any other deck.
+
+| deck | distinct | max reuse | was |
+|---|---|---|---|
+| Tense Review | 8 | 3x | 3 distinct, 0 unique |
+| Must & Have To | 8 | 2x | 4, all byte-identical copies |
+| Editorial / Trivia | 8 | 4x | 4 |
+| Minecraft B1 | 8 | 3x | 4 |
+| Minecraft C1 | 8 | 3x | 4, in three art styles |
+
+41 images across the five folders, zero near-duplicate pairs.
+
+Palettes all re-derived `--light` from the new heroes; every contrast row
+passes. `check-lesson.js` clean on all five. Twelve superseded images deleted.
+
+### The duplicate checker was wrong, and the fix is measured
+
+`tools/image-audit.py` used a 16x16 average hash. On this site's artwork —
+flat minimalist illustration, a wide gradient sky over a dark mass — it is
+worthless. It rated a boat on open water and a figure on a road at sunset as
+distance 4, closer than two genuine crops of the same picture, and flagged 45
+of the 173 uploads as duplicates when only 8 were.
+
+    metric     true duplicates   false positives
+    ahash            0 - 4            4 - 20      <- overlapping
+    dhash            2 - 6           98 - 107
+    colour         0.2 - 2.3        130 - 181
+
+Now dhash (gradient) plus an 8x8 RGB signature, both required to agree.
+**If you add another perceptual check anywhere, measure it against a labelled
+set before trusting it.** An average hash cannot tell this artwork apart.
+
+### Things a future session should know
+
+- **A cloud session cannot see chat attachments as files.** They arrive as
+  images on screen only — `/mnt/attach` stays empty. Innes dragged ~150
+  pictures into the chat on my instruction and not one of them could be
+  written to disk. The routes that work are the two in CLAUDE.md: GitHub's
+  web uploader, or `git push` from his own machine. Do not tell him to drag
+  files into the chat.
+- **`check-lesson.js` needs the `playwright` npm package**, which is not in
+  the container by default. `npm install playwright` is enough — the browser
+  itself is already at `/opt/pw-browsers`, so do not run `playwright install`.
+- **`seo.py` hit the Supabase fallback**, as CLAUDE.md warns. The diff on the
+  four index files was checked by hand and nothing was dropped.
+- **`check-library.js --vs-origin` reports a FAIL** for Editorial and Must &
+  Have To. That is correct and intended: both cards pointed at pictures those
+  decks no longer use, and now point at their own heroes.
+
+### Open: 694 MB of raw PNG in main's history
+
+The 173 uploads went in raw. At house spec the same artwork is 32 MB. The
+working tree is clean now (`incoming/` deleted) but the blobs are in history
+for good unless it is rewritten. Innes's call; nothing is broken either way.
+
+---
+
 ## 2026-09-06 — Minecraft artwork audit: nine pictures are doing twenty-four jobs
 
 Innes asked which Minecraft lessons repeat images. Measured, not eyeballed:
