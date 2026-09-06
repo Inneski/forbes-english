@@ -393,6 +393,7 @@ async function handleCreateCheckoutSession(request, env) {
 
   const params = new URLSearchParams({
     mode: "subscription",
+        "managed_payments[enabled]": "false",
     "line_items[0][price]": priceId,
     "line_items[0][quantity]": "1",
     customer_email: userEmail,
