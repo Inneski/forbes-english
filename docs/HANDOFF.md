@@ -12,6 +12,19 @@ stale copy.
 
 ---
 
+## 2026-09-06 — RPG walk-through for a fresh session: `docs/HANDOFF-rpg.md`
+
+Innes: *"give me a handoff to explain to another chat how to make the RPGs
+in the perfect house style."* That document is `docs/HANDOFF-rpg.md`: what
+the style is (ten points, against the two shipped references), the
+pipeline in order, the two export kinds and how to read a third, hotspots,
+the nine translations, the Playwright checks, shipping with the guarded
+catalogue SQL, the traps, and a table of where everything is. The README
+stays binding; the handoff is the walk-through. `CLAUDE.md` now points to
+both from the RPG default-action paragraph.
+
+---
+
 ## 2026-09-06 — The RPG standard, stated: sound effects and nine languages
 
 Innes: *"add sound FX to handoff record and the nine language
