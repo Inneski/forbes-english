@@ -12,6 +12,110 @@ stale copy.
 
 ---
 
+## 2026-09-06 — Minecraft artwork audit: nine pictures are doing twenty-four jobs
+
+Innes asked which Minecraft lessons repeat images. Measured, not eyeballed:
+MD5 for byte-identical files, a 256-bit average-hash for visual near-duplicates,
+then a contact sheet to confirm each cluster by eye. Script pattern is in the
+commit; the finding is below.
+
+### The headline
+
+The six flat-vector Minecraft decks have **24 background slots filled by 9
+distinct pictures.** Five of those nine appear in two or three different
+lessons, under three or four different filenames.
+
+| picture | files | lessons using it |
+|---|---|---|
+| Golem + moon over a ruined city | `MinecraftEd/hero`, `MustHaveTo/hero`, `PastModals/golem`, `minecraft/giant-golem-moonrise` | Editorial, Must/Have To, Past Modals |
+| Creeper on a hillside, poplars, pink sun | `MustHaveTo/hillside`, `PastModals/dusk`, `MinecraftEd/ridge`, `minecraft/creeper-hillside-dusk` | Must/Have To, Past Modals, Editorial |
+| Enderman in red coral scrub | `MinecraftB1/grove`, `MustHaveTo/desert`, `PastModals/enderman`, `minecraft/enderman-desert-landscape` | B1, Must/Have To, Past Modals |
+| Steve + bicycle, pastel sky | `MinecraftB1/hero`, `TenseReview/hero`, `TenseReview/mesa`, `TenseReview/coast` | B1, Tense Review |
+| Steve with sword, yellow sun | `MinecraftEd/dusk`, `PastModals/hero` | Editorial, Past Modals |
+| Pig close-up on a dune | `MustHaveTo/pig`, `TenseReview/pig`, `minecraft/pig-creeper-building-hero` | Must/Have To, Tense Review |
+| Underwater, turtle, dissolving block | `MinecraftB1/reef`, `TenseReview/deep`, `minecraft/lost-biome-illustration` | B1, Tense Review |
+| Village interior with pool | `MinecraftB1/village` | B1 only |
+| Blue-lit mob, dark ruined city | `MinecraftEd/city` | Editorial only |
+
+Per deck, distinct pictures / of which unique to that deck:
+
+- `tense-review-minecraft.html` — **3 / 0.** Worst. `hero`, `mesa` and `coast`
+  are three crops of one picture; `deep` and `pig` are both shared elsewhere.
+  Twenty-one slides, effectively two scenes.
+- `forbes-english-past-modals-minecraft.html` — 4 / 0.
+- `minecraft-lesson.html` (Must & Have To) — 4 / 0, and all four are
+  **byte-identical copies** of files already in `minecraft/` (MD5 match).
+- `forbes-english-minecraft-editorial.html` — 4 / 1.
+- `forbes-english-minecraft-b1.html` — 4 / 1.
+- `forbes-english-minecraft-c1.html` — 4 / 4. The only clean one — but see
+  the style note below.
+- `forbes-english-dinosaur-minecraft.html` — 11 distinct over 16 bg slides. Fine.
+- `forbes-english-dinosaur-minecraft-part2.html` — 10 over 16. Fine.
+- `DinoCraft0/amber.jpg` is a re-encode of `minecraft/dc1-amber2.jpg`
+  (ahash distance 0, different bytes).
+
+### The 2026-09-04 "shortage resolved" note above is wrong
+
+That entry says `MinecraftB1/` got three fresh scenes from Downloads so the
+Minecraft decks "do not read as one deck twice". They are not fresh:
+`MinecraftB1/hero` is `TenseReview/coast`, `MinecraftB1/grove` is
+`PastModals/enderman`, `MinecraftB1/reef` is `TenseReview/deep`. Searching
+Downloads by style words re-found the same pictures under different
+Midjourney filenames. **Hash new artwork against the existing set before
+adopting it** — `ahash` at 16x16, distance <= 20 means it is the same picture.
+
+### Three problems that are not repetition
+
+1. **`MinecraftC1` mixes three art styles.** `hero` and `warrior` are flat
+   vector; `creatures` and `structure` are photoreal 3D renders. It is the
+   only deck with four distinct pictures and it still does not read as one
+   deck.
+2. **Page weight.** `MinecraftC1` ships 5.5 MB of artwork for 24 slides
+   (`hero` alone is 2.4 MB at 2944x1648). Re-encoding the set to the house
+   spec — 2000px wide, JPEG q85, optimised — brings it to 1.8 MB with no
+   visible loss. `MinecraftB1/village` 931 KB -> 268 KB the same way.
+3. **`MustHaveTo` is under-resolution.** `hero` and `hillside` are 1400x783,
+   `pig` is 1200x671, against a 2000-2944px house norm. They are the small
+   web copies, not the originals — the full-size versions are in `minecraft/`.
+
+### There is unused artwork already in the repo
+
+Sixteen images sit in `PastModals/` and `minecraft/` referenced by nothing:
+
+- **Seven painterly canyon/sunset scenes** in `PastModals/*.png`, 2944x1648,
+  16:9, a coherent set — a different style from the flat-vector family
+  (cinematic, warm, high contrast). Enough to re-skin one whole deck with
+  zero new artwork, if the style shift is acceptable.
+- **Five blocky/pixel-art dinosaur scenes** in `minecraft/*.png` — usable for
+  the DinoCraft line.
+- Four Twin Peaks / underwater scenes, off-theme.
+
+They are also 60 MB of unoptimised PNG (`PastModals/` alone is 42 MB). Convert
+what gets used, delete or archive the rest.
+
+### Block Camp is a different problem
+
+The 26 Block Camp decks are healthy within a deck — one image per slide, 19-22
+distinct each, from per-tense pools of 41-43. The repetition is **across** the
+three decks that share a pool (active, `-2`, passive):
+
+| pool | worst pair | shared |
+|---|---|---|
+| `past-perfect-time-signals` | `blockcamp-past-perfect` x `blockcamp-passive-past-perfect` | **19 of 21** |
+| `present-continuous-time-signals` | active-2 x passive | 17 of 21 |
+| `future-simple-will` | `future-simple-2` x `future-simple` | 15 of 20 |
+| `going-to-infinitive` | `going-to-2` x passive | 13 of 21 |
+
+A 41-image pool comfortably supports 21 + 21 with one overlap — and
+`present-simple-2` x `present-simple` already achieves exactly that (1 shared),
+so this is an allocation bug, not a shortage. **No new artwork needed.**
+
+Only two of the 26 have builders (`lesson-template/camp/camp09.py` and
+`descent/station17.py`), which is the Past Perfect pair — the worst offender
+and the one that can actually be re-run. The other 24 remain unbuildable.
+
+---
+
 ## 2026-09-06 — RPG walk-through for a fresh session: `docs/HANDOFF-rpg.md`
 
 Innes: *"give me a handoff to explain to another chat how to make the RPGs
