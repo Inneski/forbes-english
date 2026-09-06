@@ -49,6 +49,15 @@ still use the derived `--surface`, so the contrast between card and canvas is
 what carries the layout. Body text still measures about 12:1 on it.
 **A rebuild will not revert this — but re-deriving the palette would, so lift
 it again if you re-run extract-palette.py.**
+
+`--surface` / `--surface2` are a second manual override, 2026-09-06: Innes
+asked for the text boxes to read as dark green rather than the derived
+near-black (`#151919`/`#1e2424`, essentially neutral — the hero's own greens
+sit in shadow silhouette, too dark to survive the darkening step honestly).
+Lifted to `#11251c` / `#1a3226`, matched in lightness to the originals so
+contrast holds (`text` on `--surface` 14.5:1, `accent` 6.5:1, `border` 3.4:1
+— all still clear of their floors). Same caveat: re-deriving the palette
+reverts this.
 """
 import sys
 sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
@@ -64,8 +73,8 @@ F = 'DinoCraft0'
 PALETTE = '''  --hero: url('%s/hero.jpg');
 
   --void          : #2e312e;
-  --surface       : #151919;
-  --surface2      : #1e2424;
+  --surface       : #11251c;
+  --surface2      : #1a3226;
   --border        : #bb913e;
   --text          : #f5f4f2;
   --text-dim      : #bfb6a3;
