@@ -121,7 +121,12 @@ function lessonFileFor(pathname) {
   }
   p = p.replace(/^\/+/, "");
   if (!p || p.endsWith("/")) return null;
-  if (p.includes("/")) return null;            // lessons all sit at the root
+  // Lessons sit at the root or one directory down (block-camp/<slug>.html --
+  // the RPGs). The catalogue stores that path with its directory, so the
+  // returned name has to keep it. Until 2026-09-08 any path with a slash
+  // returned null here, which meant every Pro RPG was served ungated while
+  // wearing a Pro badge. Deeper paths are picture and slide directories.
+  if (p.split("/").length > 2) return null;
   if (p.toLowerCase().endsWith(".html")) return p;
   if (/\.[a-z0-9]{2,5}$/i.test(p)) return null; // an image, a PDF, a script
   return `${p}.html`;

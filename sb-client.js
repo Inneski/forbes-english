@@ -97,17 +97,20 @@ async function sbGetProfile(userId) {
 
 // --- lesson library helpers used by library.html ---
 
-// Grid order is sort_order first, then id. sort_order is NULL on almost every
-// row: those are unpinned and keep their historical id order, which is what
-// the library has always shown. Give a row a low sort_order to pin it to the
-// front without renumbering ids -- the ids are referenced by lesson-meta.json,
-// the sitemap and the gate pages, so renumbering them is not a safe reorder.
-// nullsFirst: false is what keeps the unpinned rows behind the pinned ones;
+// Fetch order is sort_order first, then id -- the same order tools/seo.py
+// uses for the crawlable list, so the two never disagree. The shelf itself
+// re-sorts in library.html's render(): a sort_order of zero or below pins a
+// row to the front, and everything else runs newest first by created_at,
+// which is why created_at is selected here. Positive sort_order values are
+// left in the data but no longer move a card on the shelf. Renumbering ids
+// is still not a safe reorder -- lesson-meta.json, the sitemap and the gate
+// pages reference them.
+// nullsFirst: false keeps the unpinned rows behind the pinned ones;
 // Postgres sorts NULLs first by default on ascending, which would invert this.
 async function sbGetLessons() {
   const { data, error } = await window.sb
     .from("lessons")
-    .select("file, title, level, video, deck, access, sort_order")
+    .select("file, title, level, video, deck, access, sort_order, created_at")
     .order("sort_order", { ascending: true, nullsFirst: false })
     .order("id", { ascending: true });
   if (error) {

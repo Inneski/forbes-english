@@ -12,6 +12,58 @@ stale copy.
 
 ---
 
+## 2026-09-08 — The shelf runs newest first, and the RPGs are behind the paywall
+
+Innes asked for new lessons at the top of the library, the RPGs pushed up,
+and the Star Wars / franchise decks off the top. Two changes, both small,
+both measured.
+
+### `library.html` — three bands, newest first
+
+Until now the shelf ran in catalogue id order, so the newest lesson sorted
+**last**, and `render()` pinned every `-deck-viewer.html` file (Star Wars,
+Twin Peaks, Breaking Bad, Harry Potter, Stranger Things) to a top band. The
+band sort is now:
+
+1. **Pinned** — `sort_order` of zero or below on the catalogue row. Today
+   that is the five Block Camp RPGs (−2, −1, 0, 0, 0). Within the band,
+   `sort_order` ascending, then newest.
+2. **Everything else finished, newest first** by `created_at`. A lesson
+   goes to the top the moment its row exists — nothing to set.
+3. **Coming soon**, unchanged.
+
+**Positive `sort_order` values no longer move a card on the shelf.** They
+were relative order under the old id-ordered shelf (eight Minecraft time-
+signal lessons at 2–7, the Stranger Things deck at 1) and would otherwise
+have held those above whatever was published this week. They still order
+the static crawlable list `seo.py` writes, which is why the fetch order in
+`sb-client.js` is untouched. `sbGetLessons()` now selects `created_at`.
+
+The franchise decks are not hidden — they are ordinary lessons now and sit
+by date. Measured against `tools/lessons.json` and then in the browser
+against live Supabase, same answer: IP decks at positions 55, 61, 62, 97
+and 102 of 294; first coming-soon at 247 with nothing finished after it.
+To actually remove one from the shelf, the only mechanism is still deleting
+its `LESSON_IMAGES` line, which turns it into a "Coming soon" card — not a
+hide, and not done.
+
+### `src/index.js` — the RPGs were served ungated
+
+`lessonFileFor()` returned null for any path containing a slash ("lessons
+all sit at the root"). The five `block-camp/*-rpg.html` rows are `pro`,
+wear a Pro badge in the library and on the hub, and were served to anyone.
+It now accepts one directory level; deeper paths (picture and slide
+folders) are still not lessons. `deploy/test-paywall.mjs` has four new
+cases; against the old Worker the two gating ones fail, against the new
+one all 20 pass. **Run that file after any change to `src/index.js`.**
+
+Not yet done from the same audit: the four older RPG hub cards still use
+raw covers, `check-glosses.js` has not run over four RPGs, and
+`block-camp/frankenstein-green-prometheus-rpg.html` exists on disk and on
+the hub but has no catalogue row, so it is not on the shelf at all.
+
+---
+
 ## 2026-09-07 — Blocula takes the V7 draft: five new scenes, glass panels, and a gloss checker
 
 Innes sent `Dracula_…_Standalone_Draft_V7.html` (122 MB, pictures inlined,

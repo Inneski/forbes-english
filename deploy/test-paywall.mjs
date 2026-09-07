@@ -10,7 +10,7 @@ import { readFileSync } from 'fs';
 const src = readFileSync('src/index.js', 'utf8');
 const mod = await import('data:text/javascript;base64,' + Buffer.from(src).toString('base64'));
 
-const PRO = ['forbes-c1-negotiation.html', 'koolhas & Lamb.html', 'Race Day - The Falcon Racing Story (B1 F1 RPG).html'];
+const PRO = ['forbes-c1-negotiation.html', 'koolhas & Lamb.html', 'Race Day - The Falcon Racing Story (B1 F1 RPG).html', 'block-camp/last-train-home-rpg.html'];
 const env = {
   SITE_URL: 'https://x.test',
   SUPABASE_URL: 'https://sb.test',
@@ -67,6 +67,13 @@ const cases = [
   ['/koolhas%20%26%20Lamb.html',  null, 'gate', 'percent-encoded space and ampersand'],
   ['/koolhas%20%26%20Lamb',       null, 'gate', 'percent-encoded, no extension'],
   ['/Race%20Day%20-%20The%20Falcon%20Racing%20Story%20(B1%20F1%20RPG)', null, 'gate', 'parens and spaces, no extension'],
+  // The RPGs live one directory down. Until 2026-09-08 lessonFileFor()
+  // returned null for any path with a slash, so every Pro RPG was served
+  // ungated while wearing a Pro badge.
+  ['/block-camp/last-train-home-rpg.html', null, 'gate', 'pro RPG in block-camp/, no session'],
+  ['/block-camp/last-train-home-rpg',      null, 'gate', 'pro RPG in block-camp/, no extension'],
+  ['/block-camp/last-train-home-rpg.html', 'fe_at=good-token', 'lesson', 'pro RPG, subscriber'],
+  ['/block-camp/last-train-home-rpg/01_cover.webp', null, 'lesson', 'picture inside an RPG folder'],
   ['/snack-attack-a1.html',       null, 'lesson', 'free lesson, no session'],
   ['/library.html',               null, 'lesson', 'library is never gated'],
   ['/',                           null, 'lesson', 'root'],
