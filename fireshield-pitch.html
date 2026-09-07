@@ -20,272 +20,364 @@
     --secondary:#161f24;
     --contrast:#195c55;
 
-    /* One property per layout constant — see CLAUDE.md, "things that have bitten us" */
-    --wrap-w:720px;
-    --card-r:12px;
-    --bg-wash:0.14;
+    /* Every layout constant gets ONE property. The same bug class has bitten
+       this repo twice: a media query moves one hardcoded value and leaves
+       three others behind. (CLAUDE.md, "things that have bitten us") */
+    --slide-w:1280px;
+    --slide-h:720px;
+    --pad:44px;
+    --bar-h:58px;
+    --card-r:14px;
+    --bg-wash:0.13;
   }
   *{box-sizing:border-box;}
+  html,body{height:100%;}
   body{
     margin:0; background:var(--void); color:var(--text);
-    font-family:'Inter',sans-serif; line-height:1.6;
+    font-family:'Inter',sans-serif; line-height:1.55;
+    overflow:hidden;                    /* house rule 1: a deck never scrolls */
   }
 
-  /* Cover — house rule 2: landscape hero, stacked logo, title over it */
-  .cover{
-    position:relative; min-height:min(56vw,420px);
-    background:url('FireShield/hero.jpg') center/cover no-repeat;
-    display:flex; align-items:flex-start; padding:34px 26px;
+  /* The stage is pinned top-left and centred arithmetically in fitStage().
+     Do NOT reintroduce place-items:center on .stage-wrap — an item wider than
+     its track aligns to start, not overflowed both sides, which put every
+     deck off the right edge below 1280px. */
+  .stage-wrap{position:fixed; inset:0; overflow:hidden;}
+  .stage{
+    position:absolute; left:0; top:0;
+    width:var(--slide-w); height:var(--slide-h);
+    transform-origin:top left; overflow:hidden;
+    background:var(--void);
+    box-shadow:0 24px 80px rgba(0,0,0,.45);
   }
-  .cover::after{
-    content:''; position:absolute; inset:0;
-    background:linear-gradient(105deg, var(--surface) 0%, transparent 62%);
-    opacity:.86;
+
+  /* Act artwork, swapped rather than pasted as a box (house rule 5b). */
+  .bg-layer{
+    position:absolute; inset:0; z-index:0;
+    background-image:var(--act-bg,none); background-size:cover;
+    background-position:center; opacity:var(--bg-wash);
+    transition:background-image .45s ease, opacity .45s ease;
   }
-  .cover-inner{position:relative; z-index:1; max-width:var(--wrap-w);}
-  .logo{margin-bottom:18px;}
+
+  .slide{
+    position:absolute; inset:0; z-index:1; display:none;
+    flex-direction:column; padding:var(--pad);
+  }
+  .slide.is-active{display:flex; animation:slide-in .32s ease both;}
+  @keyframes slide-in{from{opacity:0; transform:translateY(10px);}
+                       to{opacity:1; transform:none;}}
+  @media (prefers-reduced-motion:reduce){
+    .slide.is-active{animation:none;}
+    .trust-fill{transition:none;}
+  }
+
   .fe-logo{width:152px; height:auto; display:block;}
   .fe-logo-mark{color:var(--logo-mark, var(--accent));}
   .fe-logo-word{fill:var(--secondary);}
-  .cover h1{
-    font-family:'Fraunces',serif; font-size:clamp(1.7rem,4.6vw,2.7rem);
-    margin:0 0 10px; font-weight:700; color:var(--secondary); max-width:14ch;
-    line-height:1.08; letter-spacing:-.01em;
+  .slide[data-type="cover"] .fe-logo{width:232px;}
+
+  /* ── COVER ── */
+  .slide[data-type="cover"]{
+    padding:0; justify-content:flex-end;
+    background:url('FireShield/hero.jpg') center/cover no-repeat;
   }
-  .cover .kicker{margin:0; font-size:.86rem; color:var(--text-dim);
+  /* A pseudo-element, not a child: check-lesson.js sums the heights of a
+     slide's direct children, so an absolutely-positioned scrim div reads as
+     720px of extra stack and the cover "overflows" by exactly one canvas. */
+  .slide[data-type="cover"]::before{
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(100deg, var(--surface) 4%, transparent 66%);
+    opacity:.9;
+  }
+  .cover-inner{
+    position:relative; z-index:1; padding:var(--pad);
+    display:flex; flex-direction:column; align-items:flex-start;
+    justify-content:center; height:100%; max-width:660px; gap:2px;
+  }
+  .cover-title{
+    font-family:'Fraunces',serif; font-size:58px; font-weight:700;
+    line-height:1.04; letter-spacing:-.015em; color:var(--secondary);
+    margin:22px 0 0;
+  }
+  .cover-sub{font-size:18px; color:var(--text-dim); margin-top:14px;
     letter-spacing:.03em; font-weight:600;}
-  .langbar{margin-top:14px; display:flex; align-items:center; gap:8px;}
-  .langbar label{font-size:.74rem; text-transform:uppercase; letter-spacing:.08em;
-    font-weight:700; color:var(--text-dim);}
-  .langbar select{
-    font-family:'Inter',sans-serif; font-size:.86rem; font-weight:600;
-    color:var(--text); background:var(--surface); border:1.5px solid var(--border);
-    border-radius:8px; padding:5px 10px; cursor:pointer;
-  }
-  .langbar select:focus{outline:2px solid var(--accent); outline-offset:1px;}
+  .cover-meta{display:flex; gap:9px; margin-top:24px; flex-wrap:wrap;}
 
-  /* Act background — swapped, never pasted as a box (house rule 5b) */
-  .stage{position:relative;}
-  .stage::before{
-    content:''; position:fixed; inset:0; z-index:-1;
-    background-image:var(--act-bg,none);
-    background-size:cover; background-position:center;
-    opacity:var(--bg-wash); transition:background-image .4s, opacity .4s;
+  /* ── TOP BAR ── */
+  .deck-bar{
+    flex:none; height:var(--bar-h); display:flex; align-items:center;
+    gap:22px; margin-bottom:18px;
   }
-
-  .trust-wrap{
-    position:sticky; top:0; z-index:5; background:var(--surface);
-    padding:10px 20px 8px; border-bottom:1px solid var(--border);
-  }
+  .deck-bar .fe-logo{width:104px;}
+  .trust{flex:1; min-width:0;}
   .trust-label{
-    display:flex; justify-content:space-between; font-size:.74rem;
-    color:var(--text-dim); font-weight:700; letter-spacing:.05em;
-    text-transform:uppercase; max-width:var(--wrap-w); margin:0 auto 5px;
+    display:flex; justify-content:space-between; font-size:11px;
+    text-transform:uppercase; letter-spacing:.1em; font-weight:700;
+    color:var(--text-dim); margin-bottom:5px;
   }
   .trust-track{
-    max-width:var(--wrap-w); margin:0 auto; height:8px; background:var(--void);
-    border-radius:6px; overflow:hidden; border:1px solid var(--border);
+    height:8px; background:var(--void); border:1px solid var(--border);
+    border-radius:6px; overflow:hidden;
   }
   .trust-fill{height:100%; background:var(--accent); width:50%;
     transition:width .45s cubic-bezier(.4,0,.2,1);}
   .act-pips{
-    max-width:var(--wrap-w); margin:6px auto 0; display:flex; gap:6px;
-    font-size:.68rem; text-transform:uppercase; letter-spacing:.1em;
-    color:var(--text-dim); font-weight:700;
+    display:flex; gap:14px; margin-top:6px; font-size:10.5px;
+    text-transform:uppercase; letter-spacing:.12em; font-weight:700;
+    color:var(--text-dim);
   }
-  .act-pips span{opacity:.35;}
+  .act-pips span{opacity:.32;}
   .act-pips span.on{opacity:1; color:var(--accent-bright);}
+  .langbar{display:flex; align-items:center; gap:8px; flex:none;}
+  .langbar label{font-size:10.5px; text-transform:uppercase;
+    letter-spacing:.1em; font-weight:700; color:var(--text-dim);}
+  .langbar select{
+    font-family:'Inter',sans-serif; font-size:13px; font-weight:600;
+    color:var(--text); background:var(--surface);
+    border:1.5px solid var(--border); border-radius:8px; padding:5px 9px;
+    cursor:pointer;
+  }
+  .langbar select:focus{outline:2px solid var(--accent); outline-offset:1px;}
 
-  .wrap{max-width:var(--wrap-w); margin:0 auto; padding:24px 20px 80px;}
-
+  /* ── SCENE BODY ── */
+  .body{flex:1; min-height:0; display:flex; flex-direction:column;}
   .card{
     background:var(--surface); border:1px solid var(--border);
-    border-radius:var(--card-r); padding:24px; margin-top:18px;
-    animation:rise .38s cubic-bezier(.2,.7,.3,1) both;
+    border-radius:var(--card-r); padding:26px 30px; flex:1; min-height:0;
+    display:flex; flex-direction:column; justify-content:center;
   }
-  @keyframes rise{from{opacity:0; transform:translateY(10px);}
-                   to{opacity:1; transform:none;}}
-  @media (prefers-reduced-motion:reduce){
-    .card{animation:none;} .trust-fill{transition:none;}
+  /* A checkpoint reads left, answers right — one screen, no scrolling. */
+  .card.two-col{
+    display:grid; grid-template-columns:1.02fr 1fr; gap:30px;
+    align-items:center;
   }
-
+  .col{min-width:0; display:flex; flex-direction:column;}
   .tag{
-    font-family:'Fraunces',serif; font-size:.74rem; text-transform:uppercase;
-    letter-spacing:.1em; color:var(--accent-bright); margin-bottom:10px;
-    font-weight:700;
+    font-family:'Fraunces',serif; font-size:12px; text-transform:uppercase;
+    letter-spacing:.11em; color:var(--accent-bright); font-weight:700;
+    margin-bottom:12px; flex:none;
   }
-  .narrative{font-size:1.02rem; margin:0 0 16px;}
+  .narrative{font-size:18.5px; line-height:1.55; margin:0 0 14px;}
   .narrative i{color:var(--accent-bright); font-style:italic;}
+  .q-stem{font-size:19px; font-weight:700; margin:2px 0 14px;
+    line-height:1.4;}
 
   .choice-btn, .opt{
     display:block; width:100%; text-align:left; background:var(--surface2);
-    border:1.5px solid var(--border); border-radius:9px; padding:13px 15px;
-    margin-bottom:10px; font-size:.97rem; font-family:'Inter',sans-serif;
-    cursor:pointer; color:var(--text); line-height:1.45;
-    transition:border-color .15s, background .15s, transform .1s;
+    border:1.5px solid var(--border); border-radius:10px;
+    padding:12px 15px; margin-bottom:9px; font-size:16.5px;
+    font-family:'Inter',sans-serif; cursor:pointer; color:var(--text);
+    line-height:1.4; transition:border-color .15s, background .15s;
   }
+  .choice-btn{font-size:17px;}
   .choice-btn:hover, .opt:hover:not(:disabled){
     border-color:var(--accent); background:var(--void);
   }
-  .choice-btn:active{transform:translateY(1px);}
   .opt:disabled{cursor:default;}
-  .opt.correct{border-color:var(--contrast); color:var(--contrast); font-weight:700;}
+  .opt.correct{border-color:var(--contrast); color:var(--contrast);
+    font-weight:700;}
   .opt.wrong{border-color:var(--accent-bright); color:var(--accent-bright);
-    opacity:.65; text-decoration:line-through;}
+    opacity:.6; text-decoration:line-through;}
 
   .feedback{
-    margin-top:12px; padding:13px 15px; border-radius:9px; font-size:.93rem;
-    display:none; border-left:4px solid var(--contrast); background:var(--surface2);
+    margin-top:10px; padding:12px 14px; border-radius:9px; font-size:15px;
+    line-height:1.5; display:none; border-left:4px solid var(--contrast);
+    background:var(--surface2);
   }
   .feedback.show{display:block;}
 
   .btn{
-    margin-top:16px; background:var(--secondary); color:var(--surface);
-    border:none; padding:11px 24px; border-radius:24px; font-size:.93rem;
-    font-weight:700; cursor:pointer; font-family:'Inter',sans-serif;
+    align-self:flex-start; margin-top:14px; background:var(--secondary);
+    color:var(--surface); border:none; padding:11px 24px; border-radius:24px;
+    font-size:15px; font-weight:700; cursor:pointer;
+    font-family:'Inter',sans-serif; flex:none;
   }
   .btn:hover{background:var(--accent-bright);}
   .btn.ghost{background:transparent; color:var(--accent-bright);
     border:1.5px solid var(--border);}
-  .btn.ghost:hover{background:var(--surface2); color:var(--accent-bright);}
-  .btn[disabled]{opacity:.35; pointer-events:none;}
+  .btn.ghost:hover{background:var(--surface2);}
+  .btn[disabled]{opacity:.32; pointer-events:none;}
+  .btn-row{display:flex; gap:10px; align-items:center;}
 
-  .interlude{text-align:left; border-left:5px solid var(--accent);}
-  .interlude h2, .ending-card h2{
-    font-family:'Fraunces',serif; font-size:1.35rem; margin:6px 0 12px;
-    color:var(--secondary); line-height:1.25;
+  /* ── INTERLUDE / ENDING ── */
+  .interlude{border-left:5px solid var(--accent); justify-content:center;}
+  .interlude h2{
+    font-family:'Fraunces',serif; font-size:30px; line-height:1.2;
+    margin:6px 0 14px; color:var(--secondary); max-width:22ch;
   }
+  .interlude .narrative{max-width:60ch; font-size:19px;}
   .carry{
-    margin-top:14px; padding-top:12px; border-top:1px solid var(--border);
-    font-size:.82rem; color:var(--text-dim); font-weight:600;
-    text-transform:uppercase; letter-spacing:.05em;
+    margin-top:16px; padding-top:12px; border-top:1px solid var(--border);
+    font-size:12px; color:var(--text-dim); font-weight:700;
+    text-transform:uppercase; letter-spacing:.06em; max-width:40ch;
   }
-  .carry b{color:var(--accent-bright); font-size:1.05rem;}
+  .carry b{color:var(--accent-bright); font-size:17px;}
 
-  /* Activation stage — house rule 6 */
-  .activate{margin-top:26px;}
-  .activate h2{
-    font-family:'Fraunces',serif; font-size:1.5rem; margin:0 0 4px;
-    color:var(--secondary);
-  }
-  .chips{margin:14px 0 22px;}
-  .chips-intro{font-size:.82rem; color:var(--text-dim); font-weight:700;
-    text-transform:uppercase; letter-spacing:.05em; margin-bottom:8px;}
+  /* ── ACTIVATION (house rule 6) ── */
+  .act-head{flex:none;}
+  .act-head h2{font-family:'Fraunces',serif; font-size:26px; margin:0;
+    color:var(--secondary);}
+  .chips{flex:none; margin:10px 0 14px;}
+  .chips-intro{font-size:11px; color:var(--text-dim); font-weight:700;
+    text-transform:uppercase; letter-spacing:.08em; margin-bottom:7px;}
   .chip{
-    display:inline-block; background:var(--surface2); border:1px solid var(--border);
-    border-radius:20px; padding:4px 12px; margin:0 6px 7px 0; font-size:.86rem;
-    color:var(--accent-bright); font-weight:600;
+    display:inline-block; background:var(--surface2);
+    border:1px solid var(--border); border-radius:999px; padding:3px 11px;
+    margin:0 5px 5px 0; font-size:13px; color:var(--accent-bright);
+    font-weight:600;
   }
-  .track{margin-bottom:22px;}
-  .track h3{
-    font-family:'Fraunces',serif; font-size:1.05rem; margin:0 0 10px;
-    color:var(--secondary);
-  }
-  .track ol{margin:0; padding-left:20px;}
+  .tracks{flex:1; min-height:0; display:grid;
+    grid-template-columns:1fr 1fr; gap:26px;}
+  .track{min-width:0; display:flex; flex-direction:column; min-height:0;}
+  .track h3{font-family:'Fraunces',serif; font-size:17px; margin:0 0 9px;
+    color:var(--secondary); flex:none;}
+  .track ol{margin:0; padding-left:19px; font-size:15px; line-height:1.5;}
   .track li{margin-bottom:9px;}
-  .brief{margin:0 0 12px;}
+  .brief{margin:0 0 10px; font-size:15px; line-height:1.5;}
   textarea{
-    width:100%; min-height:190px; padding:14px; border-radius:9px;
+    flex:1; min-height:0; width:100%; padding:12px; border-radius:9px;
     border:1.5px solid var(--border); background:var(--surface2);
-    color:var(--text); font-family:'Inter',sans-serif; font-size:.96rem;
-    line-height:1.6; resize:vertical;
+    color:var(--text); font-family:'Inter',sans-serif; font-size:15px;
+    line-height:1.55; resize:none;
   }
   textarea:focus{outline:2px solid var(--accent); outline-offset:1px;}
-  .writing-foot{
-    display:flex; align-items:center; gap:14px; margin-top:10px; flex-wrap:wrap;
-  }
-  .counter{font-size:.84rem; color:var(--text-dim); font-weight:700;}
+  .writing-foot{display:flex; align-items:center; gap:12px; margin-top:8px;
+    flex:none;}
+  .writing-foot .btn{margin-top:0;}
+  .counter{font-size:13px; color:var(--text-dim); font-weight:700;}
   .counter.ok{color:var(--contrast);}
-  .hidden{display:none;}
-  @media print{
-    .trust-wrap,.btn{display:none;}
-    .print-mirror{display:block; white-space:pre-wrap;}
-  }
+
+  /* A textarea's value does not print, so the PDF gets a mirror of it. */
   .print-mirror{display:none;}
+  @media print{
+    body{overflow:visible;}
+    .stage-wrap{position:static; display:block;}
+    .stage{position:static; transform:none !important;
+      width:1280px; height:auto; overflow:visible; box-shadow:none;}
+    .slide{position:static; display:flex !important; page-break-after:always;
+      height:720px;}
+    .bg-layer,.deck-bar,.btn,.langbar{display:none !important;}
+    .print-mirror{display:block; white-space:pre-wrap; font-size:14px;}
+    textarea{display:none;}
+  }
 </style>
 </head>
 <body>
 
-<header class="cover">
-  <div class="cover-inner">
-    <div class="logo">
+<div class="stage-wrap">
+<div class="stage" id="stage">
+  <div class="bg-layer" id="bgLayer"></div>
+
+  <!-- 0 — cover: landscape hero, stacked lockup, title over it (rule 2) -->
+  <section class="slide" data-type="cover">
+    <div class="cover-inner">
       <svg class="fe-logo" viewBox="0 0 200 78" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Forbes English">
           <g class="fe-logo-mark" transform="translate(-42.74,-30.22) scale(0.099477)"><g transform="translate(0,1504) scale(0.1,-0.1)" fill="currentColor" stroke="none"><path d="M14940 11379 c-58 -10 -226 -34 -375 -54 -148 -20 -305 -41 -348 -47 l-78 -10 3 -146 3 -146 76 -12 c42 -6 85 -17 97 -23 27 -15 66 -67 82 -111 21 -57 27 -487 25 -1635 -2 -832 -6 -1120 -18 -1295 -8 -124 -14 -226 -13 -227 9 -9 462 -54 473 -47 7 5 40 61 72 124 32 63 63 116 68 117 6 2 43 -24 84 -58 105 -89 177 -133 272 -167 125 -45 205 -57 372 -57 316 1 518 82 725 294 141 144 224 297 285 521 74 276 91 648 42 925 -32 176 -68 310 -113 418 -164 392 -526 609 -944 565 -204 -21 -372 -97 -522 -237 l-48 -44 0 656 0 655 -31 31 c-35 36 -40 36 -189 10z m788 -1611 c112 -42 190 -158 236 -353 43 -182 55 -299 51 -525 -6 -382 -71 -618 -205 -744 -76 -71 -126 -91 -235 -91 -57 0 -110 6 -145 17 -71 22 -169 81 -225 135 l-45 43 0 669 0 669 54 49 c84 77 226 144 331 156 51 6 127 -4 183 -25z"/><path d="M6896 11053 c-4 -71 -3 -141 2 -158 8 -28 13 -31 89 -46 44 -9 95 -21 112 -29 43 -17 88 -72 98 -117 11 -50 10 -2471 0 -2545 -5 -31 -18 -72 -30 -89 -26 -39 -95 -76 -157 -84 -25 -3 -62 -8 -82 -11 l-38 -6 0 -159 0 -159 755 0 755 0 -2 163 -3 162 -87 7 c-175 13 -250 55 -284 158 -16 49 -18 108 -22 558 l-3 502 236 0 c344 0 346 -1 410 -267 l18 -73 168 0 169 0 -2 553 -3 552 -167 3 c-167 2 -168 2 -172 -20 -2 -13 -9 -54 -16 -93 -21 -126 -70 -206 -139 -225 -20 -5 -141 -10 -268 -10 l-233 0 0 555 0 556 428 -3 c473 -3 469 -3 540 -71 46 -44 78 -108 132 -267 l46 -135 203 -3 203 -2 -6 67 c-3 38 -15 205 -26 373 -11 168 -22 347 -26 398 l-6 92 -1293 0 -1292 0 -7 -127z"/><path d="M10520 10306 c-503 -73 -861 -361 -1014 -817 -51 -153 -68 -261 -73 -477 -6 -224 4 -336 43 -502 62 -263 143 -419 296 -569 255 -249 547 -361 939 -361 298 0 517 60 724 198 282 187 439 437 517 823 20 100 23 142 23 339 -1 205 -3 236 -27 350 -76 353 -203 581 -425 759 -147 119 -353 211 -551 247 -120 22 -335 26 -452 10z m325 -436 c141 -69 239 -258 297 -571 20 -108 22 -158 23 -384 0 -288 -10 -379 -57 -540 -52 -176 -121 -278 -224 -330 -47 -24 -73 -30 -145 -33 -171 -8 -285 53 -372 199 -95 161 -150 473 -142 809 10 449 121 745 315 845 58 30 81 34 170 32 67 -2 96 -7 135 -27z"/><path d="M18255 10313 c-141 -16 -204 -29 -292 -58 -271 -90 -467 -237 -611 -458 -182 -280 -257 -619 -223 -1007 37 -415 159 -696 387 -893 253 -218 538 -317 914 -317 341 1 615 84 815 247 60 49 185 177 191 195 4 14 -19 57 -77 144 -45 69 -86 127 -91 130 -5 3 -43 -17 -86 -44 -164 -106 -284 -154 -430 -173 -168 -22 -350 5 -497 76 -134 64 -216 161 -275 323 -33 90 -77 320 -67 347 6 13 94 15 776 15 l769 0 7 113 c7 120 -6 307 -31 447 -62 340 -198 580 -413 723 -95 64 -242 133 -334 156 -127 33 -318 48 -432 34z m221 -427 c132 -62 228 -270 241 -528 l6 -118 -408 0 -408 0 7 68 c25 246 110 453 221 538 87 66 245 85 341 40z"/><path d="M20656 10309 c-301 -29 -581 -166 -723 -354 -56 -73 -116 -197 -140 -285 -13 -48 -17 -103 -17 -210 0 -129 3 -155 28 -235 35 -114 68 -174 134 -246 129 -140 318 -226 797 -364 192 -55 255 -84 317 -146 106 -107 103 -287 -8 -389 -84 -78 -192 -107 -357 -97 -209 13 -353 92 -403 223 -10 27 -32 101 -49 164 l-30 115 -219 3 -219 2 6 -256 c4 -142 7 -304 7 -360 0 -122 -15 -107 173 -170 263 -88 487 -124 781 -124 205 0 315 10 436 41 164 41 281 102 392 207 155 146 233 326 245 562 12 245 -69 470 -218 604 -123 111 -266 178 -599 281 -385 119 -458 152 -515 234 -28 40 -30 49 -29 124 1 125 43 190 154 241 111 51 254 56 389 14 121 -37 177 -121 236 -353 l20 -80 205 0 205 0 3 346 2 347 -112 40 c-318 112 -594 149 -892 121z"/><path d="M12620 10249 c-223 -32 -411 -61 -417 -64 -10 -3 -13 -42 -13 -149 l0 -144 58 -7 c111 -13 183 -65 199 -143 4 -20 8 -397 8 -837 0 -787 0 -801 -21 -840 -26 -52 -87 -83 -177 -92 l-67 -6 0 -41 c0 -23 -3 -94 -7 -158 l-6 -118 702 0 701 0 0 159 0 158 -83 6 c-146 12 -214 43 -253 119 -27 51 -37 294 -30 722 7 428 12 470 69 579 82 157 210 228 407 226 76 0 166 -18 278 -54 12 -4 22 -3 22 1 0 5 20 167 44 359 25 193 41 353 38 356 -14 14 -115 29 -188 29 -112 0 -217 -25 -319 -75 -170 -83 -273 -193 -362 -382 -26 -56 -51 -103 -55 -103 -5 0 -8 15 -8 33 0 18 -7 134 -15 258 -15 218 -16 225 -41 247 -14 12 -33 22 -42 21 -9 0 -199 -27 -422 -60z"/></g></g>
           <text class="fe-logo-word" x="100" y="72.6" text-anchor="middle" font-family="'DM Sans', Arial, sans-serif" font-size="20.8" font-weight="600" letter-spacing="8">ENGLISH</text>
         </svg>
+      <h1 class="cover-title">The FireShield Pitch</h1>
+      <p class="cover-sub" data-i18n="kicker">Forbes English &middot; B2 &middot; Branching sales roleplay</p>
+      <div class="cover-meta">
+        <span class="chip">B2</span>
+        <span class="chip">Forbes Membranes</span>
+        <span class="chip">3 acts</span>
+      </div>
+      <button class="btn" id="coverBtn" data-i18n="btnBegin">Begin &rarr;</button>
     </div>
-    <h1>The FireShield Pitch</h1>
-    <p class="kicker" data-i18n="kicker">Forbes English &middot; B2 &middot; Branching sales roleplay</p>
-    <div class="langbar">
-      <label for="langSel" data-i18n="langLabel">Language</label>
-      <select id="langSel" aria-label="Language"></select>
+  </section>
+
+  <!-- 1 — briefing -->
+  <section class="slide" data-type="teach">
+    <div class="deck-bar">
+      <svg class="fe-logo" viewBox="0 0 200 78" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Forbes English">
+          <g class="fe-logo-mark" transform="translate(-42.74,-30.22) scale(0.099477)"><g transform="translate(0,1504) scale(0.1,-0.1)" fill="currentColor" stroke="none"><path d="M14940 11379 c-58 -10 -226 -34 -375 -54 -148 -20 -305 -41 -348 -47 l-78 -10 3 -146 3 -146 76 -12 c42 -6 85 -17 97 -23 27 -15 66 -67 82 -111 21 -57 27 -487 25 -1635 -2 -832 -6 -1120 -18 -1295 -8 -124 -14 -226 -13 -227 9 -9 462 -54 473 -47 7 5 40 61 72 124 32 63 63 116 68 117 6 2 43 -24 84 -58 105 -89 177 -133 272 -167 125 -45 205 -57 372 -57 316 1 518 82 725 294 141 144 224 297 285 521 74 276 91 648 42 925 -32 176 -68 310 -113 418 -164 392 -526 609 -944 565 -204 -21 -372 -97 -522 -237 l-48 -44 0 656 0 655 -31 31 c-35 36 -40 36 -189 10z m788 -1611 c112 -42 190 -158 236 -353 43 -182 55 -299 51 -525 -6 -382 -71 -618 -205 -744 -76 -71 -126 -91 -235 -91 -57 0 -110 6 -145 17 -71 22 -169 81 -225 135 l-45 43 0 669 0 669 54 49 c84 77 226 144 331 156 51 6 127 -4 183 -25z"/><path d="M6896 11053 c-4 -71 -3 -141 2 -158 8 -28 13 -31 89 -46 44 -9 95 -21 112 -29 43 -17 88 -72 98 -117 11 -50 10 -2471 0 -2545 -5 -31 -18 -72 -30 -89 -26 -39 -95 -76 -157 -84 -25 -3 -62 -8 -82 -11 l-38 -6 0 -159 0 -159 755 0 755 0 -2 163 -3 162 -87 7 c-175 13 -250 55 -284 158 -16 49 -18 108 -22 558 l-3 502 236 0 c344 0 346 -1 410 -267 l18 -73 168 0 169 0 -2 553 -3 552 -167 3 c-167 2 -168 2 -172 -20 -2 -13 -9 -54 -16 -93 -21 -126 -70 -206 -139 -225 -20 -5 -141 -10 -268 -10 l-233 0 0 555 0 556 428 -3 c473 -3 469 -3 540 -71 46 -44 78 -108 132 -267 l46 -135 203 -3 203 -2 -6 67 c-3 38 -15 205 -26 373 -11 168 -22 347 -26 398 l-6 92 -1293 0 -1292 0 -7 -127z"/><path d="M10520 10306 c-503 -73 -861 -361 -1014 -817 -51 -153 -68 -261 -73 -477 -6 -224 4 -336 43 -502 62 -263 143 -419 296 -569 255 -249 547 -361 939 -361 298 0 517 60 724 198 282 187 439 437 517 823 20 100 23 142 23 339 -1 205 -3 236 -27 350 -76 353 -203 581 -425 759 -147 119 -353 211 -551 247 -120 22 -335 26 -452 10z m325 -436 c141 -69 239 -258 297 -571 20 -108 22 -158 23 -384 0 -288 -10 -379 -57 -540 -52 -176 -121 -278 -224 -330 -47 -24 -73 -30 -145 -33 -171 -8 -285 53 -372 199 -95 161 -150 473 -142 809 10 449 121 745 315 845 58 30 81 34 170 32 67 -2 96 -7 135 -27z"/><path d="M18255 10313 c-141 -16 -204 -29 -292 -58 -271 -90 -467 -237 -611 -458 -182 -280 -257 -619 -223 -1007 37 -415 159 -696 387 -893 253 -218 538 -317 914 -317 341 1 615 84 815 247 60 49 185 177 191 195 4 14 -19 57 -77 144 -45 69 -86 127 -91 130 -5 3 -43 -17 -86 -44 -164 -106 -284 -154 -430 -173 -168 -22 -350 5 -497 76 -134 64 -216 161 -275 323 -33 90 -77 320 -67 347 6 13 94 15 776 15 l769 0 7 113 c7 120 -6 307 -31 447 -62 340 -198 580 -413 723 -95 64 -242 133 -334 156 -127 33 -318 48 -432 34z m221 -427 c132 -62 228 -270 241 -528 l6 -118 -408 0 -408 0 7 68 c25 246 110 453 221 538 87 66 245 85 341 40z"/><path d="M20656 10309 c-301 -29 -581 -166 -723 -354 -56 -73 -116 -197 -140 -285 -13 -48 -17 -103 -17 -210 0 -129 3 -155 28 -235 35 -114 68 -174 134 -246 129 -140 318 -226 797 -364 192 -55 255 -84 317 -146 106 -107 103 -287 -8 -389 -84 -78 -192 -107 -357 -97 -209 13 -353 92 -403 223 -10 27 -32 101 -49 164 l-30 115 -219 3 -219 2 6 -256 c4 -142 7 -304 7 -360 0 -122 -15 -107 173 -170 263 -88 487 -124 781 -124 205 0 315 10 436 41 164 41 281 102 392 207 155 146 233 326 245 562 12 245 -69 470 -218 604 -123 111 -266 178 -599 281 -385 119 -458 152 -515 234 -28 40 -30 49 -29 124 1 125 43 190 154 241 111 51 254 56 389 14 121 -37 177 -121 236 -353 l20 -80 205 0 205 0 3 346 2 347 -112 40 c-318 112 -594 149 -892 121z"/><path d="M12620 10249 c-223 -32 -411 -61 -417 -64 -10 -3 -13 -42 -13 -149 l0 -144 58 -7 c111 -13 183 -65 199 -143 4 -20 8 -397 8 -837 0 -787 0 -801 -21 -840 -26 -52 -87 -83 -177 -92 l-67 -6 0 -41 c0 -23 -3 -94 -7 -158 l-6 -118 702 0 701 0 0 159 0 158 -83 6 c-146 12 -214 43 -253 119 -27 51 -37 294 -30 722 7 428 12 470 69 579 82 157 210 228 407 226 76 0 166 -18 278 -54 12 -4 22 -3 22 1 0 5 20 167 44 359 25 193 41 353 38 356 -14 14 -115 29 -188 29 -112 0 -217 -25 -319 -75 -170 -83 -273 -193 -362 -382 -26 -56 -51 -103 -55 -103 -5 0 -8 15 -8 33 0 18 -7 134 -15 258 -15 218 -16 225 -41 247 -14 12 -33 22 -42 21 -9 0 -199 -27 -422 -60z"/></g></g>
+          <text class="fe-logo-word" x="100" y="72.6" text-anchor="middle" font-family="'DM Sans', Arial, sans-serif" font-size="20.8" font-weight="600" letter-spacing="8">ENGLISH</text>
+        </svg>
+      <div class="trust"></div>
+      <div class="langbar">
+        <label for="langSel" data-i18n="langLabel">Language</label>
+        <select id="langSel" aria-label="Language"></select>
+      </div>
     </div>
-  </div>
-</header>
+    <div class="body"><div class="card">
+      <div class="tag" data-i18n="briefing">Briefing</div>
+      <div class="narrative">
+        <p data-i18n="intro0">You are Alex Rowntree, a sales rep for Forbes Membranes. Over three meetings and eighteen months you have to sell FireShield HX — a fire-retardant vapour barrier — to a buyer who has been let down before, then keep her when a rival's product fails, then defend the whole story in public.</p>
+        <p data-i18n="intro1">Every choice moves Priya's trust. Vocabulary checkpoints move it too, but only if you get them right first time. Where you finish depends on what you actually did, not on how the last meeting is summarised.</p>
+      </div>
+      <button class="btn" id="startBtn" data-i18n="btnStart">Take the meeting</button>
+    </div></div>
+  </section>
 
-<div class="trust-wrap hidden" id="trustWrap">
-  <div class="trust-label"><span data-i18n="trustLabel">Priya&rsquo;s trust</span><span id="trustNum">50</span></div>
-  <div class="trust-track"><div class="trust-fill" id="trustFill"></div></div>
-  <div class="act-pips" id="actPips">
-    <span data-act="1">I &middot; Manchester</span>
-    <span data-act="2">II &middot; Leeds</span>
-    <span data-act="3">III &middot; Dublin</span>
-  </div>
-</div>
+  <!-- 2 — the roleplay itself; the engine renders one scene at a time here -->
+  <section class="slide" data-type="scene">
+    <div class="deck-bar">
+      <svg class="fe-logo" viewBox="0 0 200 78" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Forbes English">
+          <g class="fe-logo-mark" transform="translate(-42.74,-30.22) scale(0.099477)"><g transform="translate(0,1504) scale(0.1,-0.1)" fill="currentColor" stroke="none"><path d="M14940 11379 c-58 -10 -226 -34 -375 -54 -148 -20 -305 -41 -348 -47 l-78 -10 3 -146 3 -146 76 -12 c42 -6 85 -17 97 -23 27 -15 66 -67 82 -111 21 -57 27 -487 25 -1635 -2 -832 -6 -1120 -18 -1295 -8 -124 -14 -226 -13 -227 9 -9 462 -54 473 -47 7 5 40 61 72 124 32 63 63 116 68 117 6 2 43 -24 84 -58 105 -89 177 -133 272 -167 125 -45 205 -57 372 -57 316 1 518 82 725 294 141 144 224 297 285 521 74 276 91 648 42 925 -32 176 -68 310 -113 418 -164 392 -526 609 -944 565 -204 -21 -372 -97 -522 -237 l-48 -44 0 656 0 655 -31 31 c-35 36 -40 36 -189 10z m788 -1611 c112 -42 190 -158 236 -353 43 -182 55 -299 51 -525 -6 -382 -71 -618 -205 -744 -76 -71 -126 -91 -235 -91 -57 0 -110 6 -145 17 -71 22 -169 81 -225 135 l-45 43 0 669 0 669 54 49 c84 77 226 144 331 156 51 6 127 -4 183 -25z"/><path d="M6896 11053 c-4 -71 -3 -141 2 -158 8 -28 13 -31 89 -46 44 -9 95 -21 112 -29 43 -17 88 -72 98 -117 11 -50 10 -2471 0 -2545 -5 -31 -18 -72 -30 -89 -26 -39 -95 -76 -157 -84 -25 -3 -62 -8 -82 -11 l-38 -6 0 -159 0 -159 755 0 755 0 -2 163 -3 162 -87 7 c-175 13 -250 55 -284 158 -16 49 -18 108 -22 558 l-3 502 236 0 c344 0 346 -1 410 -267 l18 -73 168 0 169 0 -2 553 -3 552 -167 3 c-167 2 -168 2 -172 -20 -2 -13 -9 -54 -16 -93 -21 -126 -70 -206 -139 -225 -20 -5 -141 -10 -268 -10 l-233 0 0 555 0 556 428 -3 c473 -3 469 -3 540 -71 46 -44 78 -108 132 -267 l46 -135 203 -3 203 -2 -6 67 c-3 38 -15 205 -26 373 -11 168 -22 347 -26 398 l-6 92 -1293 0 -1292 0 -7 -127z"/><path d="M10520 10306 c-503 -73 -861 -361 -1014 -817 -51 -153 -68 -261 -73 -477 -6 -224 4 -336 43 -502 62 -263 143 -419 296 -569 255 -249 547 -361 939 -361 298 0 517 60 724 198 282 187 439 437 517 823 20 100 23 142 23 339 -1 205 -3 236 -27 350 -76 353 -203 581 -425 759 -147 119 -353 211 -551 247 -120 22 -335 26 -452 10z m325 -436 c141 -69 239 -258 297 -571 20 -108 22 -158 23 -384 0 -288 -10 -379 -57 -540 -52 -176 -121 -278 -224 -330 -47 -24 -73 -30 -145 -33 -171 -8 -285 53 -372 199 -95 161 -150 473 -142 809 10 449 121 745 315 845 58 30 81 34 170 32 67 -2 96 -7 135 -27z"/><path d="M18255 10313 c-141 -16 -204 -29 -292 -58 -271 -90 -467 -237 -611 -458 -182 -280 -257 -619 -223 -1007 37 -415 159 -696 387 -893 253 -218 538 -317 914 -317 341 1 615 84 815 247 60 49 185 177 191 195 4 14 -19 57 -77 144 -45 69 -86 127 -91 130 -5 3 -43 -17 -86 -44 -164 -106 -284 -154 -430 -173 -168 -22 -350 5 -497 76 -134 64 -216 161 -275 323 -33 90 -77 320 -67 347 6 13 94 15 776 15 l769 0 7 113 c7 120 -6 307 -31 447 -62 340 -198 580 -413 723 -95 64 -242 133 -334 156 -127 33 -318 48 -432 34z m221 -427 c132 -62 228 -270 241 -528 l6 -118 -408 0 -408 0 7 68 c25 246 110 453 221 538 87 66 245 85 341 40z"/><path d="M20656 10309 c-301 -29 -581 -166 -723 -354 -56 -73 -116 -197 -140 -285 -13 -48 -17 -103 -17 -210 0 -129 3 -155 28 -235 35 -114 68 -174 134 -246 129 -140 318 -226 797 -364 192 -55 255 -84 317 -146 106 -107 103 -287 -8 -389 -84 -78 -192 -107 -357 -97 -209 13 -353 92 -403 223 -10 27 -32 101 -49 164 l-30 115 -219 3 -219 2 6 -256 c4 -142 7 -304 7 -360 0 -122 -15 -107 173 -170 263 -88 487 -124 781 -124 205 0 315 10 436 41 164 41 281 102 392 207 155 146 233 326 245 562 12 245 -69 470 -218 604 -123 111 -266 178 -599 281 -385 119 -458 152 -515 234 -28 40 -30 49 -29 124 1 125 43 190 154 241 111 51 254 56 389 14 121 -37 177 -121 236 -353 l20 -80 205 0 205 0 3 346 2 347 -112 40 c-318 112 -594 149 -892 121z"/><path d="M12620 10249 c-223 -32 -411 -61 -417 -64 -10 -3 -13 -42 -13 -149 l0 -144 58 -7 c111 -13 183 -65 199 -143 4 -20 8 -397 8 -837 0 -787 0 -801 -21 -840 -26 -52 -87 -83 -177 -92 l-67 -6 0 -41 c0 -23 -3 -94 -7 -158 l-6 -118 702 0 701 0 0 159 0 158 -83 6 c-146 12 -214 43 -253 119 -27 51 -37 294 -30 722 7 428 12 470 69 579 82 157 210 228 407 226 76 0 166 -18 278 -54 12 -4 22 -3 22 1 0 5 20 167 44 359 25 193 41 353 38 356 -14 14 -115 29 -188 29 -112 0 -217 -25 -319 -75 -170 -83 -273 -193 -362 -382 -26 -56 -51 -103 -55 -103 -5 0 -8 15 -8 33 0 18 -7 134 -15 258 -15 218 -16 225 -41 247 -14 12 -33 22 -42 21 -9 0 -199 -27 -422 -60z"/></g></g>
+          <text class="fe-logo-word" x="100" y="72.6" text-anchor="middle" font-family="'DM Sans', Arial, sans-serif" font-size="20.8" font-weight="600" letter-spacing="8">ENGLISH</text>
+        </svg>
+      <div class="trust">
+        <div class="trust-label">
+          <span data-i18n="trustLabel">Priya&rsquo;s trust</span>
+          <span id="trustNum">50</span>
+        </div>
+        <div class="trust-track"><div class="trust-fill" id="trustFill"></div></div>
+        <div class="act-pips" id="actPips">
+          <span data-act="1">I &middot; Manchester</span>
+          <span data-act="2">II &middot; Leeds</span>
+          <span data-act="3">III &middot; Dublin</span>
+        </div>
+      </div>
+    </div>
+    <div class="body" id="gameArea"></div>
+  </section>
 
-<div class="stage" id="stage">
-<div class="wrap">
-
-  <div class="card" id="introCard">
-    <div class="tag" data-i18n="briefing">Briefing</div>
-    <p data-i18n="intro0">You are Alex Rowntree, a sales rep for Forbes Membranes. Over three meetings and eighteen months you have to sell FireShield HX — a fire-retardant vapour barrier — to a buyer who has been let down before, then keep her when a rival's product fails, then defend the whole story in public.</p>
-    <p data-i18n="intro1">Every choice moves Priya's trust. Vocabulary checkpoints move it too, but only if you get them right first time. Where you finish depends on what you actually did, not on how the last meeting is summarised.</p>
-    <button class="btn" id="startBtn" data-i18n="btnStart">Take the meeting</button>
-  </div>
-
-  <div id="gameArea"></div>
-
-  <div class="activate card hidden" id="activate" data-type="activate">
-    <h2 data-i18n="actHeading">Now use the language</h2>
+  <!-- 3 — activation: speaking and writing, both live (rule 6) -->
+  <section class="slide" data-type="activate">
+    <div class="act-head">
+      <h2 data-i18n="actHeading">Now use the language</h2>
+    </div>
     <div class="chips">
       <div class="chips-intro" data-i18n="actChips">Use at least three of these, in English:</div>
       <span class="chip">shortfall</span>
-      <span class="chip">trade-off</span>
-      <span class="chip">trial</span>
-      <span class="chip">requirement</span>
-      <span class="chip">precaution</span>
-      <span class="chip">assumption</span>
-      <span class="chip">liability</span>
-      <span class="chip">accountable</span>
-      <span class="chip">moisture</span>
-      <span class="chip">resilient</span>
-      <span class="chip">hazardous</span>
-      <span class="chip">persuade</span>
-      <span class="chip">provoke</span>
-      <span class="chip">conduct an audit</span>
-      <span class="chip">ad hoc</span>
-      <span class="chip">reliable</span>
-      <span class="chip">affordable</span>
+          <span class="chip">trade-off</span>
+          <span class="chip">trial</span>
+          <span class="chip">requirement</span>
+          <span class="chip">precaution</span>
+          <span class="chip">assumption</span>
+          <span class="chip">liability</span>
+          <span class="chip">accountable</span>
+          <span class="chip">moisture</span>
+          <span class="chip">resilient</span>
+          <span class="chip">hazardous</span>
+          <span class="chip">persuade</span>
+          <span class="chip">provoke</span>
+          <span class="chip">conduct an audit</span>
+          <span class="chip">ad hoc</span>
+          <span class="chip">reliable</span>
+          <span class="chip">affordable</span>
     </div>
-    <div class="track">
-      <h3 data-i18n="actSpeak">🗣 Discussion</h3>
-      <ol>
-      <li data-i18n="speak0">You are Alex. Priya asks you point-blank whether FireShield HX could fail the way the rival's product did. You cannot say &lsquo;no&rsquo; and you cannot say &lsquo;yes&rsquo;. Answer her out loud, in under a minute.</li>
-      <li data-i18n="speak1">Your competitor is 8% cheaper and your buyer has said so. Argue for the higher price without once calling your product &lsquo;better&rsquo; — talk about risk, liability, and what a failure would actually cost her.</li>
-      <li data-i18n="speak2">A journalist asks you a question built on a false premise, in public. Correct the premise without sounding defensive, and take the room with you.</li>
-      </ol>
-    </div>
-    <div class="track">
-      <h3 data-i18n="actWrite">✍️ Writing</h3>
-      <p class="brief" data-i18n="writeBrief">Priya has emailed asking, in writing, for reassurance about the mould story before her director will sign. Write the reply in English. Give evidence rather than assurance, name what you will be accountable for, and propose a concrete next step. 150&ndash;250 words.</p>
-      <textarea id="writing" aria-label="Writing task"></textarea>
-      <div class="print-mirror" id="writingMirror"></div>
-      <div class="writing-foot">
-        <span class="counter" id="counter">0 words</span>
-        <button class="btn ghost" id="copyBtn" data-i18n="btnCopy">Copy</button>
+    <div class="tracks">
+      <div class="track">
+        <h3 data-i18n="actSpeak">🗣 Discussion</h3>
+        <ol>
+          <li data-i18n="speak0">You are Alex. Priya asks you point-blank whether FireShield HX could fail the way the rival's product did. You cannot say &lsquo;no&rsquo; and you cannot say &lsquo;yes&rsquo;. Answer her out loud, in under a minute.</li>
+          <li data-i18n="speak1">Your competitor is 8% cheaper and your buyer has said so. Argue for the higher price without once calling your product &lsquo;better&rsquo; — talk about risk, liability, and what a failure would actually cost her.</li>
+          <li data-i18n="speak2">A journalist asks you a question built on a false premise, in public. Correct the premise without sounding defensive, and take the room with you.</li>
+        </ol>
+      </div>
+      <div class="track">
+        <h3 data-i18n="actWrite">✍️ Writing</h3>
+        <p class="brief" data-i18n="writeBrief">Priya has emailed asking, in writing, for reassurance about the mould story before her director will sign. Write the reply in English. Give evidence rather than assurance, name what you will be accountable for, and propose a concrete next step. 150&ndash;250 words.</p>
+        <textarea id="writing" aria-label="Writing task"></textarea>
+        <div class="print-mirror" id="writingMirror"></div>
+        <div class="writing-foot">
+          <span class="counter" id="counter">0 words</span>
+          <button class="btn ghost" id="copyBtn" data-i18n="btnCopy">Copy</button>
+        </div>
       </div>
     </div>
-  </div>
+  </section>
 
 </div>
 </div>
@@ -324,11 +416,11 @@ const SCENES = {
   "narrative": "You open your laptop and start talking through fire ratings and moisture permeability figures. Priya cuts in: &lsquo;Before I look at numbers — has this actually been tested on a live site, or just in a lab?&rsquo;",
   "question": "Which sentence is correct?",
   "options": [
+   "We are making a full test on three sites last year.",
    "We made a full test on three sites last year.",
-   "We did a full test on three sites last year.",
-   "We are making a full test on three sites last year."
+   "We did a full test on three sites last year."
   ],
-  "correct": 1,
+  "correct": 2,
   "explain": "&lsquo;Do a test&rsquo; is the natural collocation — &lsquo;make a test&rsquo; is a common but incorrect translation — and the finished action needs Past Simple.",
   "trustOnCorrect": 10,
   "next": "a1_shortfall"
@@ -341,11 +433,11 @@ const SCENES = {
   "narrative": "Priya's shoulders drop slightly. &lsquo;Our last supplier promised weekly deliveries. For two months ___ fine — then the shipments just stopped and we lost three weeks of work.&rsquo;",
   "question": "Which fits the gap?",
   "options": [
-   "we were coping",
    "we coped",
-   "we have been coping"
+   "we have been coping",
+   "we were coping"
   ],
-  "correct": 0,
+  "correct": 2,
   "explain": "Past Continuous (&lsquo;we were coping&rsquo;) sets the ongoing background situation that the Past Simple event (&lsquo;the shipments stopped&rsquo;) interrupted.",
   "trustOnCorrect": 10,
   "next": "a1_shortfall"
@@ -358,12 +450,12 @@ const SCENES = {
   "narrative": "Priya leans back. &lsquo;Here is my real problem — I have a ___ of about 400 square metres between what my current supplier can deliver this month and what the schedule needs. Your competitor, Northline, is offering something similar for 8% less.&rsquo;",
   "question": "Which word fits the gap?",
   "options": [
+   "contingency plan",
    "shortfall",
    "trade-off",
-   "contingency plan",
    "threshold"
   ],
-  "correct": 0,
+  "correct": 1,
   "explain": "A &lsquo;shortfall&rsquo; is exactly this — the gap between what is needed and what is actually available.",
   "trustOnCorrect": 5,
   "next": "a1_objection"
@@ -400,12 +492,12 @@ const SCENES = {
   "narrative": "&lsquo;One wing, fully documented, before you commit to the rest — no risk to your schedule if it does not perform.&rsquo; Priya raises an eyebrow, interested.",
   "question": "Which word best describes what you have just proposed?",
   "options": [
-   "a trial",
-   "a precedent",
    "an assumption",
-   "a concession"
+   "a precedent",
+   "a concession",
+   "a trial"
   ],
-  "correct": 0,
+  "correct": 3,
   "explain": "A &lsquo;trial&rsquo; is a small-scale test of performance or suitability before full commitment — exactly what you have offered.",
   "trustOnCorrect": 10,
   "next": "a1_close"
@@ -418,12 +510,12 @@ const SCENES = {
   "narrative": "You agree to match Northline's price. Your regional manager will not be pleased, but Priya nods slowly.",
   "question": "Matching the price on the spot is really a ___ between margin and winning the contract.",
   "options": [
-   "trade-off",
    "shortfall",
    "precaution",
-   "requirement"
+   "requirement",
+   "trade-off"
   ],
-  "correct": 0,
+  "correct": 3,
   "explain": "A &lsquo;trade-off&rsquo; is exchanging one thing of value (margin) for another (the contract) — exactly what is happening here.",
   "trustOnCorrect": 5,
   "next": "a1_close"
@@ -436,12 +528,12 @@ const SCENES = {
   "narrative": "Before you leave, you draft a short follow-up email confirming next steps. You want it convincing, without sounding pushy.",
   "question": "Which word describes writing convincingly, using reasoning rather than pressure?",
   "options": [
-   "persuasive",
+   "compromised",
    "exaggerated",
    "arduous",
-   "compromised"
+   "persuasive"
   ],
-  "correct": 0,
+  "correct": 3,
   "explain": "&lsquo;Persuasive&rsquo; means effective at convincing through reasoning — the register you want here, as opposed to exaggerating or pressuring.",
   "trustOnCorrect": 10,
   "next": "int1"
@@ -502,8 +594,8 @@ const SCENES = {
   "question": "Which word describes water present in small quantity within a material or on a surface?",
   "options": [
    "moisture",
-   "threshold",
    "firmness",
+   "threshold",
    "precaution"
   ],
   "correct": 0,
@@ -519,12 +611,12 @@ const SCENES = {
   "narrative": "Your email lands — all confidence, no evidence. Priya replies within the hour: &lsquo;That is not really an answer.&rsquo;",
   "question": "Priya felt your email offered reassurance with no evidence. Which word describes that?",
   "options": [
+   "a requirement",
    "an assumption",
    "a precaution",
-   "a requirement",
    "a trade-off"
   ],
-  "correct": 0,
+  "correct": 1,
   "explain": "An &lsquo;assumption&rsquo; is something accepted as true without proof — exactly what an unsupported reassurance amounts to.",
   "trustOnCorrect": 5,
   "next": "a2_resilient"
@@ -537,12 +629,12 @@ const SCENES = {
   "narrative": "Priya likes the idea of independent verification, but wants to know it will not drag on for months.",
   "question": "Which phrase describes something arranged for a specific purpose, as needed, without a long-term structure?",
   "options": [
-   "ad hoc",
    "post hoc",
-   "homogeneous",
-   "in perpetuity"
+   "in perpetuity",
+   "ad hoc",
+   "homogeneous"
   ],
-  "correct": 0,
+  "correct": 2,
   "explain": "&lsquo;Ad hoc&rsquo; describes something set up for a specific purpose as it is needed, rather than as a permanent structure.",
   "trustOnCorrect": 10,
   "next": "a2_resilient"
@@ -598,9 +690,9 @@ const SCENES = {
   "question": "Which word means &lsquo;a condition that must be met&rsquo;?",
   "options": [
    "requirement",
-   "assumption",
    "threshold",
-   "shortfall"
+   "shortfall",
+   "assumption"
   ],
   "correct": 0,
   "explain": "A &lsquo;requirement&rsquo; is a condition that must be met — here, the monitoring the director insists on.",
@@ -615,12 +707,12 @@ const SCENES = {
   "narrative": "You offer to help cover the retrofit cost on the failed site, even though it was not your product that failed. Your finance director asks, carefully, whether you have just admitted something.",
   "question": "Which word describes legal responsibility for a cost or a fault?",
   "options": [
-   "liability",
-   "requirement",
    "precaution",
-   "shortfall"
+   "shortfall",
+   "liability",
+   "requirement"
   ],
-  "correct": 0,
+  "correct": 2,
   "explain": "&lsquo;Liability&rsquo; is legal responsibility for something, especially a cost — which is why paying for a failure that was not yours has to be worded as goodwill, not as an admission.",
   "trustOnCorrect": 5,
   "next": "a2_close"
@@ -633,12 +725,12 @@ const SCENES = {
   "narrative": "You draft the final proposal for the five-site framework. The director's one real fear is that nobody will own the outcome if a site goes wrong.",
   "question": "Which word describes being required to explain and take responsibility for your actions?",
   "options": [
-   "accountable",
    "affordable",
    "monotonous",
+   "accountable",
    "provisional"
   ],
-  "correct": 0,
+  "correct": 2,
   "explain": "To be &lsquo;accountable&rsquo; is to be required to explain and answer for what you do — the assurance the director is actually buying.",
   "trustOnCorrect": 10,
   "next": "int2"
@@ -698,12 +790,12 @@ const SCENES = {
   "narrative": "You lead with numbers: fire ratings, permeability figures, third-party sign-off. Heads nod, but nobody looks moved yet.",
   "question": "Which word fits: &lsquo;The safety audit was ___ by an independent inspector, not by us.&rsquo;",
   "options": [
-   "conducted",
-   "persuaded",
+   "located",
    "provoked",
-   "located"
+   "persuaded",
+   "conducted"
   ],
-  "correct": 0,
+  "correct": 3,
   "explain": "To &lsquo;conduct&rsquo; is to carry out or organise — an audit is conducted, and saying who conducted it is what gives the result its independence.",
   "trustOnCorrect": 10,
   "next": "a3_provoke"
@@ -716,12 +808,12 @@ const SCENES = {
   "narrative": "You tell the room about Priya's original hesitation, the trial wing, and the way the relationship grew. A few buyers lean forward.",
   "question": "Which word means &lsquo;convince someone to do something&rsquo; — what a good story does better than a spreadsheet?",
   "options": [
+   "reassess",
    "persuade",
-   "provoke",
    "startle",
-   "reassess"
+   "provoke"
   ],
-  "correct": 0,
+  "correct": 1,
   "explain": "&lsquo;Persuade&rsquo; is convincing someone through reasoning, evidence or emotion — a customer story does this more naturally than raw data.",
   "trustOnCorrect": 10,
   "next": "a3_provoke"
@@ -734,12 +826,12 @@ const SCENES = {
   "narrative": "&lsquo;Some of you will have heard about a membrane failure on a site near one of ours,&rsquo; you say. &lsquo;Let us talk about it before you ask.&rsquo; The room goes quiet, then attentive.",
   "question": "Which word fits: &lsquo;A membrane installed incorrectly can become ___ over time — ours passed every follow-up inspection.&rsquo;",
   "options": [
-   "hazardous",
-   "affordable",
    "monotonous",
-   "homogeneous"
+   "affordable",
+   "homogeneous",
+   "hazardous"
   ],
-  "correct": 0,
+  "correct": 3,
   "explain": "&lsquo;Hazardous&rsquo; means risky or dangerous. Naming the real risk honestly, then showing it did not apply to you, is what earns credibility.",
   "trustOnCorrect": 10,
   "next": "a3_provoke"
@@ -752,12 +844,12 @@ const SCENES = {
   "narrative": "In the Q&amp;A the journalist stands up: &lsquo;Is it not true that a Forbes membrane failed just months ago?&rsquo; It is not true — it was a rival's — and every eye in the room is on you.",
   "question": "Which word describes what her question is really trying to do?",
   "options": [
-   "provoke",
    "persuade",
-   "reassess",
-   "conduct"
+   "conduct",
+   "provoke",
+   "reassess"
   ],
-  "correct": 0,
+  "correct": 2,
   "explain": "To &lsquo;provoke&rsquo; is to deliberately cause a reaction — she is testing whether you will get flustered on stage, not asking for facts.",
   "trustOnCorrect": 5,
   "next": "a3_objection"
@@ -794,12 +886,12 @@ const SCENES = {
   "narrative": "&lsquo;A written guarantee, backed by the audit you saw today. No extra risk on your side.&rsquo; She is listening properly now.",
   "question": "Which word describes a measure taken in advance to prevent something unpleasant — which is what a guarantee is, for her?",
   "options": [
-   "precaution",
-   "requirement",
+   "trade-off",
    "assumption",
-   "trade-off"
+   "requirement",
+   "precaution"
   ],
-  "correct": 0,
+  "correct": 3,
   "explain": "A &lsquo;precaution&rsquo; is arranged in advance to prevent a problem — the guarantee protects her against exactly the risk she is worried about.",
   "trustOnCorrect": 10,
   "next": "a3_close"
@@ -812,12 +904,12 @@ const SCENES = {
   "narrative": "You agree to match the competitor's number. It makes the listing easier for her to justify internally, and you already know what it does to your margin.",
   "question": "Matching the price makes the offer more ___, at the cost of your margin.",
   "options": [
+   "persuasive",
    "affordable",
    "reliable",
-   "persuasive",
    "accountable"
   ],
-  "correct": 0,
+  "correct": 1,
   "explain": "&lsquo;Affordable&rsquo; means reasonably priced. You have made the offer cheaper — a different lever from proving the product is worth the money.",
   "trustOnCorrect": 5,
   "next": "a3_close"
@@ -831,8 +923,8 @@ const SCENES = {
   "question": "Which word describes something that can be trusted to work well, every time?",
   "options": [
    "reliable",
-   "exaggerated",
    "provisional",
+   "exaggerated",
    "agitated"
   ],
   "correct": 0,
@@ -896,16 +988,12 @@ const SCENES = {
   "rewind": "a3_objection"
  }
 };
-const BG = {
-  intro:"FireShield/bg-intro.jpg", act1:"FireShield/bg-act1.jpg",
-  act2:"FireShield/bg-act2.jpg",   act3:"FireShield/bg-act3.jpg",
-  end:"FireShield/bg-end.jpg"
-};
 const UI_I18N = {
  "en": {
   "kicker": "Forbes English &middot; B2 &middot; Branching sales roleplay",
   "trustLabel": "Priya&rsquo;s trust",
   "briefing": "Briefing",
+  "btnBegin": "Begin &rarr;",
   "btnStart": "Take the meeting",
   "btnContinue": "Continue",
   "btnNextAct": "Six months later &rarr;",
@@ -948,6 +1036,7 @@ const UI_I18N = {
   "kicker": "Forbes English &middot; B2 &middot; Verzweigtes Verkaufs-Rollenspiel",
   "trustLabel": "Priyas Vertrauen",
   "briefing": "Briefing",
+  "btnBegin": "Beginnen &rarr;",
   "btnStart": "Zum Termin",
   "btnContinue": "Weiter",
   "btnNextAct": "Sechs Monate später &rarr;",
@@ -990,6 +1079,7 @@ const UI_I18N = {
   "kicker": "Forbes English &middot; B2 &middot; Juego de rol de ventas ramificado",
   "trustLabel": "La confianza de Priya",
   "briefing": "Instrucciones",
+  "btnBegin": "Empezar &rarr;",
   "btnStart": "Entrar a la reunión",
   "btnContinue": "Continuar",
   "btnNextAct": "Seis meses después &rarr;",
@@ -1029,10 +1119,16 @@ const UI_I18N = {
   "writeBrief": "Priya te ha escrito pidiendo por escrito garantías sobre la historia del moho antes de que su director firme. Escribe la respuesta en inglés. Da pruebas en lugar de promesas, di de qué te haces responsable y propón un siguiente paso concreto. 150&ndash;250 palabras."
  }
 };
+const BG = {
+  cover:"FireShield/bg-intro.jpg", act1:"FireShield/bg-act1.jpg",
+  act2:"FireShield/bg-act2.jpg",   act3:"FireShield/bg-act3.jpg",
+  end:"FireShield/bg-end.jpg"
+};
 
-/* §8: offer a language only if it defines every key English defines. A
-   half-done pass stays in the table and simply is not listed. */
-const LANG_NAMES = {en:"English", de:"Deutsch", es:"Español"};
+/* ── i18n ──
+   §8: offer a language only if it defines every key English defines. A
+   half-done pass stays in the table and is simply not listed. */
+const LANG_NAMES = {en:"English", de:"Deutsch", es:"Espa\u00f1ol"};
 let LANG = "en";
 function T(k){
   const row = UI_I18N[LANG] || {};
@@ -1042,53 +1138,71 @@ function completeLangs(){
   const need = Object.keys(UI_I18N.en).length;
   return Object.keys(UI_I18N).filter(l => Object.keys(UI_I18N[l]).length >= need);
 }
-function applyI18n(){
-  document.documentElement.lang = LANG;
-  document.querySelectorAll("[data-i18n]").forEach(el => {
-    el.innerHTML = T(el.dataset.i18n);
-  });
-  const c = document.getElementById("counter");
-  const n = ta.value.trim() ? ta.value.trim().split(/\s+/).length : 0;
-  c.textContent = n + " " + T("actWords");
-  if (SCENES[current] && document.getElementById("gameArea").children.length) render();
+
+/* ── Stage ── */
+const stage = document.getElementById("stage");
+const slides = [...document.querySelectorAll(".slide")];
+let idx = 0;
+
+function fitStage(){
+  const s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+  // Centre explicitly. Relying on the wrapper to centre an oversized child is
+  // what put the stage off-screen on every viewport under 1280px wide.
+  const x = (window.innerWidth  - 1280 * s) / 2;
+  const y = (window.innerHeight -  720 * s) / 2;
+  stage.style.transform = `translate(${x}px, ${y}px) scale(${s})`;
+}
+addEventListener("resize", fitStage);
+fitStage();
+
+function show(n){
+  idx = Math.max(0, Math.min(slides.length - 1, n));
+  slides.forEach((s, i) => s.classList.toggle("is-active", i === idx));
 }
 
-let current = "a1_open", answered = false;
-
-/* Trust is EARNED against trust AVAILABLE, per act and overall. An absolute
+/* ── Scoring ──
+   Trust is EARNED against trust AVAILABLE, per act and overall. An absolute
    running total saturates at 100 and stops discriminating — 84% of simulated
    playthroughs reached the best ending under that scheme, and the worst was
    unreachable. A ratio cannot saturate.
 
    The bar the learner watches is the same number, so the meter can never
-   disagree with the ending it leads to. PRIOR smooths the first few clicks,
-   which would otherwise swing the bar from 50 to 100 and back. */
+   disagree with the ending it leads to. PRIOR smooths the first few clicks. */
 const PRIOR = 20;
-let log = [];
+let log = [], current = "a1_open", missed = false;
 
 function record(act, delta, max){ log.push({act:act, delta:delta, max:max}); }
-
 function totals(act){
   const rows = act ? log.filter(r => r.act === act) : log;
   let got = 0, max = 0;
   for (const r of rows){ got += r.delta; max += r.max; }
   return {got: got, max: max};
 }
-
-/* Raw performance, 0-1. Picks the endings. */
 function ratio(act){
   const t = totals(act);
   return t.max <= 0 ? 0 : Math.max(0, Math.min(1, t.got / t.max));
 }
-
-/* Smoothed, 0-100. What the bar shows. Reads 50 before the first decision. */
 function meter(){
   const t = totals(null);
   const v = (t.got + PRIOR / 2) / (t.max + PRIOR);
   return Math.round(100 * Math.max(0, Math.min(1, v)));
 }
-const stage = document.getElementById("stage");
-const area  = document.getElementById("gameArea");
+
+/* Fisher-Yates. The authored options put the key first in 19 of 20
+   checkpoints — inherited from the three originals — so a learner could score
+   full marks by always clicking the top button without reading. Shuffling at
+   render time is what makes the key move. */
+function shuffled(options, correct){
+  const a = options.map((text, i) => ({text: text, key: i === correct}));
+  for (let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+const area = document.getElementById("gameArea");
+const bgLayer = document.getElementById("bgLayer");
 
 function paint(){
   const trust = meter();
@@ -1099,57 +1213,56 @@ function paint(){
     s.classList.toggle("on", Number(s.dataset.act) === act);
   });
   const bg = SCENES[current] && SCENES[current].bg;
-  if (bg && BG[bg]) stage.style.setProperty("--act-bg", `url('${BG[bg]}')`);
+  if (bg && BG[bg]) bgLayer.style.setProperty("--act-bg", `url('${BG[bg]}')`);
 }
 
 function startGame(){
-  document.getElementById("introCard").classList.add("hidden");
-  document.getElementById("trustWrap").classList.remove("hidden");
-  document.getElementById("activate").classList.add("hidden");
-  current = "a1_open"; log = []; answered = false;
-  paint(); render();
+  log = []; current = "a1_open"; missed = false;
+  show(2); paint(); render();
 }
-
-function go(next){ current = next; paint(); render();
-  area.scrollIntoView({behavior:"smooth", block:"start"}); }
+function go(next){ current = next; paint(); render(); }
 
 function render(){
   const s = SCENES[current];
 
-  if (s.type === "story") {
-    area.innerHTML = `<div class="card"><div class="tag">${T(s.tagKey)}</div>
-      <p class="narrative">${s.narrative}</p><div id="choiceBox"></div></div>`;
+  if (s.type === "story"){
+    area.innerHTML = `<div class="card">
+      <div class="tag">${T(s.tagKey)}</div>
+      <p class="narrative">${s.narrative}</p>
+      <div id="choiceBox"></div></div>`;
     const box = document.getElementById("choiceBox");
+    const best = Math.max.apply(null, s.choices.map(x => x.trust));
     s.choices.forEach(c => {
       const b = document.createElement("button");
       b.className = "choice-btn"; b.innerHTML = c.label;
-      const best = Math.max.apply(null, s.choices.map(x => x.trust));
-      b.addEventListener("click", () => {
-        record(s.act, c.trust, best);
-        go(c.next);
-      });
+      b.addEventListener("click", () => { record(s.act, c.trust, best); go(c.next); });
       box.appendChild(b);
     });
   }
 
-  else if (s.type === "checkpoint") {
-    answered = false;
-    area.innerHTML = `<div class="card"><div class="tag">${T(s.tagKey)}</div>
-      <p class="narrative">${s.narrative}</p>
-      <p class="narrative"><b>${s.question}</b></p>
-      <div id="optsBox"></div>
-      <div class="feedback" id="feedbackBox"></div>
-      <button class="btn" id="nextBtn" disabled>${T("btnContinue")}</button></div>`;
+  else if (s.type === "checkpoint"){
+    missed = false;
+    area.innerHTML = `<div class="card two-col">
+      <div class="col">
+        <div class="tag">${T(s.tagKey)}</div>
+        <p class="narrative">${s.narrative}</p>
+        <p class="q-stem">${s.question}</p>
+      </div>
+      <div class="col">
+        <div id="optsBox"></div>
+        <div class="feedback" id="feedbackBox"></div>
+        <button class="btn" id="nextBtn" disabled>${T("btnContinue")}</button>
+      </div></div>`;
     const box = document.getElementById("optsBox");
-    s.options.forEach((opt, i) => {
+    shuffled(s.options, s.correct).forEach(o => {
       const b = document.createElement("button");
-      b.className = "opt"; b.textContent = opt;
+      b.className = "opt"; b.textContent = o.text;
       b.addEventListener("click", () => {
-        if (i === s.correct) {
+        if (o.key){
           document.querySelectorAll("#optsBox .opt").forEach(x => x.disabled = true);
           b.classList.add("correct");
           /* First attempt only — a retry earns the explanation, not the trust. */
-          record(s.act, answered ? 0 : s.trustOnCorrect, s.trustOnCorrect);
+          record(s.act, missed ? 0 : s.trustOnCorrect, s.trustOnCorrect);
           paint();
           const fb = document.getElementById("feedbackBox");
           fb.innerHTML = s.explain; fb.classList.add("show");
@@ -1157,7 +1270,7 @@ function render(){
           nb.disabled = false;
           nb.addEventListener("click", () => go(s.next));
         } else {
-          answered = true;
+          missed = true;
           b.classList.add("wrong"); b.disabled = true;
         }
       });
@@ -1165,26 +1278,35 @@ function render(){
     });
   }
 
-  else if (s.type === "interlude") {
+  else if (s.type === "interlude"){
     const r = s.final ? ratio(null) : ratio(s.act);
     const tier = s.tiers.find(t => r >= t.min) || s.tiers[s.tiers.length - 1];
-    area.innerHTML = `<div class="card interlude"><div class="tag">${T(s.tagKey)}</div>
-      <h2>${tier.title}</h2><p class="narrative">${tier.body}</p>
+    area.innerHTML = `<div class="card interlude">
+      <div class="tag">${T(s.tagKey)}</div>
+      <h2>${tier.title}</h2>
+      <p class="narrative">${tier.body}</p>
       <div class="carry">${T("carry")}: <b>${meter()}</b></div>
       <button class="btn" id="nextBtn">${s.final ? T("btnActivate") : T("btnNextAct")}</button>
       </div>`;
     document.getElementById("nextBtn").addEventListener("click", () => {
-      if (s.final) { showActivation(); return; }
+      if (s.final){
+        bgLayer.style.setProperty("--act-bg", `url('${BG.end}')`);
+        show(3); return;
+      }
       go(s.next);
     });
   }
 
-  else if (s.type === "ending") {
-    area.innerHTML = `<div class="card ending-card"><div class="tag">${T(s.tagKey)}</div>
-      <h2>${s.title}</h2><p class="narrative">${s.body}</p>
-      ${s.rewind ? `<button class="btn" id="rewindBtn">${T("btnRewind")}</button> ` : ""}
-      <button class="btn ghost" id="restartBtn">${T("btnRestart")}</button></div>`;
-    if (s.rewind) {
+  else if (s.type === "ending"){
+    area.innerHTML = `<div class="card interlude">
+      <div class="tag">${T(s.tagKey)}</div>
+      <h2>${s.title}</h2>
+      <p class="narrative">${s.body}</p>
+      <div class="btn-row">
+        ${s.rewind ? `<button class="btn" id="rewindBtn">${T("btnRewind")}</button>` : ""}
+        <button class="btn ghost" id="restartBtn">${T("btnRestart")}</button>
+      </div></div>`;
+    if (s.rewind){
       document.getElementById("rewindBtn").addEventListener("click", () => {
         log.pop();               /* un-take it; the meter follows the log */
         go(s.rewind);
@@ -1194,25 +1316,17 @@ function render(){
   }
 }
 
-function showActivation(){
-  area.innerHTML = "";
-  document.getElementById("trustWrap").classList.add("hidden");
-  const a = document.getElementById("activate");
-  a.classList.remove("hidden");
-  a.scrollIntoView({behavior:"smooth", block:"start"});
-}
-
-/* Activation — live word counter, copy out, and a print mirror because a
-   textarea's value does not print. */
+/* ── Activation ── */
 const ta = document.getElementById("writing");
 const counter = document.getElementById("counter");
 const mirror = document.getElementById("writingMirror");
-ta.addEventListener("input", () => {
+function countWords(){
   const n = ta.value.trim() ? ta.value.trim().split(/\s+/).length : 0;
   counter.textContent = n + " " + T("actWords");
   counter.classList.toggle("ok", n >= 150 && n <= 250);
   mirror.textContent = ta.value;
-});
+}
+ta.addEventListener("input", countWords);
 document.getElementById("copyBtn").addEventListener("click", async () => {
   try {
     await navigator.clipboard.writeText(ta.value);
@@ -1222,12 +1336,19 @@ document.getElementById("copyBtn").addEventListener("click", async () => {
   } catch (e) { ta.select(); }
 });
 
-/* Build the switcher from UI_I18N. A language short of English's key count
-   never appears, so a selected option can never fall back mid-screen. */
+function applyI18n(){
+  document.documentElement.lang = LANG;
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    el.innerHTML = T(el.dataset.i18n);
+  });
+  countWords();
+  if (idx === 2 && area.children.length) render();
+}
+
 (function initLang(){
   const sel = document.getElementById("langSel");
   const langs = completeLangs();
-  if (langs.length < 2) { sel.closest(".langbar").hidden = true; return; }
+  if (langs.length < 2){ sel.closest(".langbar").hidden = true; return; }
   langs.forEach(l => {
     const o = document.createElement("option");
     o.value = l; o.textContent = LANG_NAMES[l] || l;
@@ -1237,7 +1358,10 @@ document.getElementById("copyBtn").addEventListener("click", async () => {
   sel.addEventListener("change", () => { LANG = sel.value; applyI18n(); });
 })();
 
+document.getElementById("coverBtn").addEventListener("click", () => show(1));
 document.getElementById("startBtn").addEventListener("click", startGame);
+bgLayer.style.setProperty("--act-bg", `url('${BG.cover}')`);
+show(0);
 </script>
 
 </body>

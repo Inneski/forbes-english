@@ -42,6 +42,19 @@ Why the merge changed the mechanics, not just the file count:
    'reliable' each appeared twice, so Act II now teaches 'liability' and
    'accountable' in those slots.
 
+6. The key was the FIRST option in 19 of the 20 checkpoints, inherited from
+   all three originals — a learner could score full marks by always clicking
+   the top button without reading. Options are now Fisher-Yates shuffled at
+   render time AND deterministically pre-shuffled in the source, because
+   check-lesson.js is explicit that an authored key-first order still leaks
+   through print and PDF export.
+
+7. It is a real 16:9 deck now: four slides on a 1280x720 stage, one scene per
+   screen, using the template's own fitStage() centring. The branching never
+   needed scrolling — it needed state. tools/fit_fireshield.js renders all 32
+   scenes in all three languages and measures each against the canvas, because
+   check-lesson.js can only measure whichever scene happens to be on screen.
+
 Artwork: FireShield/*.jpg, cropped from the Midjourney originals uploaded in
 6d6cbe9. Palette derived mechanically:
 
@@ -50,8 +63,10 @@ Artwork: FireShield/*.jpg, cropped from the Midjourney originals uploaded in
 Build:
 
     python3 lesson-template/build/build_fireshield.py
+    node   tools/simulate_fireshield.js      # endings stay reachable
+    node   tools/fit_fireshield.js           # every scene fits the canvas
     node   lesson-template/check-lesson.js fireshield-pitch.html
-    python3 tools/seo.py
+    python3 tools/seo.py                     # last, always
 """
 
 import html
@@ -105,6 +120,7 @@ I18N = {
         "kicker": "Forbes English &middot; B2 &middot; Branching sales roleplay",
         "trustLabel": "Priya&rsquo;s trust",
         "briefing": "Briefing",
+        "btnBegin": "Begin &rarr;",
         "btnStart": "Take the meeting",
         "btnContinue": "Continue",
         "btnNextAct": "Six months later &rarr;",
@@ -125,6 +141,7 @@ I18N = {
         "kicker": "Forbes English &middot; B2 &middot; Verzweigtes Verkaufs-Rollenspiel",
         "trustLabel": "Priyas Vertrauen",
         "briefing": "Briefing",
+        "btnBegin": "Beginnen &rarr;",
         "btnStart": "Zum Termin",
         "btnContinue": "Weiter",
         "btnNextAct": "Sechs Monate später &rarr;",
@@ -145,6 +162,7 @@ I18N = {
         "kicker": "Forbes English &middot; B2 &middot; Juego de rol de ventas ramificado",
         "trustLabel": "La confianza de Priya",
         "briefing": "Instrucciones",
+        "btnBegin": "Empezar &rarr;",
         "btnStart": "Entrar a la reunión",
         "btnContinue": "Continuar",
         "btnNextAct": "Seis meses después &rarr;",
@@ -897,6 +915,24 @@ def t(node, lang="en"):
     return node
 
 
+def preshuffle(key, options, correct):
+    """Move the key out of first position in the SOURCE, deterministically.
+
+    The engine shuffles at render time, but check-lesson.js is explicit that
+    the authored order still leaks through print and PDF export. 19 of these
+    20 checkpoints were authored key-first, inherited from the three original
+    files, so a learner reading a printout could score full marks by always
+    taking the top option.
+
+    Seeded on the scene key so a rebuild is byte-identical.
+    """
+    import random
+    rng = random.Random("fireshield:" + key)
+    order = list(range(len(options)))
+    rng.shuffle(order)
+    return [options[i] for i in order], order.index(correct)
+
+
 _TAG_BY_EN = {v["en"]: k for k, v in TAGS.items()}
 
 
@@ -923,8 +959,9 @@ def js_scenes(lang="en"):
         elif s["type"] == "checkpoint":
             o["narrative"] = t(s["narrative"], lang)
             o["question"] = t(s["question"], lang)
-            o["options"] = t(s["options"], lang)
-            o["correct"] = s["correct"]
+            opts, corr = preshuffle(key, t(s["options"], lang), s["correct"])
+            o["options"] = opts
+            o["correct"] = corr
             o["explain"] = t(s["explain"], lang)
             o["trustOnCorrect"] = s["trustOnCorrect"]
             o["next"] = s["next"]
@@ -974,14 +1011,14 @@ def build(lang="en"):
     logo = D.logo_from(TPL)
     # Anything translatable carries data-i18n; anything without it will never
     # translate (HOUSE-STYLE §8 — the usual cause of a stubbornly English button).
-    intro_ps = "\n    ".join(
+    intro_ps = "\n        ".join(
         f'<p data-i18n="intro{i}">{x}</p>' for i, x in enumerate(INTRO["en"]))
-    speak = "\n      ".join(
+    speak = "\n          ".join(
         f'<li data-i18n="speak{i}">{x}</li>'
         for i, x in enumerate(ACTIVATION["speaking"]["en"]))
     # Target-language chips stay English by rule — no data-i18n on them.
-    chips = "\n      ".join(f'<span class="chip">{html.escape(c)}</span>'
-                            for c in TARGET_LANGUAGE)
+    chips = "\n          ".join(f'<span class="chip">{html.escape(c)}</span>'
+                               for c in TARGET_LANGUAGE)
 
     return f"""<!DOCTYPE html>
 <html lang="{lang}">
@@ -1005,266 +1042,353 @@ def build(lang="en"):
     --secondary:{p['secondary']};
     --contrast:{p['contrast']};
 
-    /* One property per layout constant — see CLAUDE.md, "things that have bitten us" */
-    --wrap-w:720px;
-    --card-r:12px;
-    --bg-wash:0.14;
+    /* Every layout constant gets ONE property. The same bug class has bitten
+       this repo twice: a media query moves one hardcoded value and leaves
+       three others behind. (CLAUDE.md, "things that have bitten us") */
+    --slide-w:1280px;
+    --slide-h:720px;
+    --pad:44px;
+    --bar-h:58px;
+    --card-r:14px;
+    --bg-wash:0.13;
   }}
   *{{box-sizing:border-box;}}
+  html,body{{height:100%;}}
   body{{
     margin:0; background:var(--void); color:var(--text);
-    font-family:'Inter',sans-serif; line-height:1.6;
+    font-family:'Inter',sans-serif; line-height:1.55;
+    overflow:hidden;                    /* house rule 1: a deck never scrolls */
   }}
 
-  /* Cover — house rule 2: landscape hero, stacked logo, title over it */
-  .cover{{
-    position:relative; min-height:min(56vw,420px);
-    background:url('FireShield/hero.jpg') center/cover no-repeat;
-    display:flex; align-items:flex-start; padding:34px 26px;
+  /* The stage is pinned top-left and centred arithmetically in fitStage().
+     Do NOT reintroduce place-items:center on .stage-wrap — an item wider than
+     its track aligns to start, not overflowed both sides, which put every
+     deck off the right edge below 1280px. */
+  .stage-wrap{{position:fixed; inset:0; overflow:hidden;}}
+  .stage{{
+    position:absolute; left:0; top:0;
+    width:var(--slide-w); height:var(--slide-h);
+    transform-origin:top left; overflow:hidden;
+    background:var(--void);
+    box-shadow:0 24px 80px rgba(0,0,0,.45);
   }}
-  .cover::after{{
-    content:''; position:absolute; inset:0;
-    background:linear-gradient(105deg, var(--surface) 0%, transparent 62%);
-    opacity:.86;
+
+  /* Act artwork, swapped rather than pasted as a box (house rule 5b). */
+  .bg-layer{{
+    position:absolute; inset:0; z-index:0;
+    background-image:var(--act-bg,none); background-size:cover;
+    background-position:center; opacity:var(--bg-wash);
+    transition:background-image .45s ease, opacity .45s ease;
   }}
-  .cover-inner{{position:relative; z-index:1; max-width:var(--wrap-w);}}
-  .logo{{margin-bottom:18px;}}
+
+  .slide{{
+    position:absolute; inset:0; z-index:1; display:none;
+    flex-direction:column; padding:var(--pad);
+  }}
+  .slide.is-active{{display:flex; animation:slide-in .32s ease both;}}
+  @keyframes slide-in{{from{{opacity:0; transform:translateY(10px);}}
+                       to{{opacity:1; transform:none;}}}}
+  @media (prefers-reduced-motion:reduce){{
+    .slide.is-active{{animation:none;}}
+    .trust-fill{{transition:none;}}
+  }}
+
   .fe-logo{{width:152px; height:auto; display:block;}}
   .fe-logo-mark{{color:var(--logo-mark, var(--accent));}}
   .fe-logo-word{{fill:var(--secondary);}}
-  .cover h1{{
-    font-family:'Fraunces',serif; font-size:clamp(1.7rem,4.6vw,2.7rem);
-    margin:0 0 10px; font-weight:700; color:var(--secondary); max-width:14ch;
-    line-height:1.08; letter-spacing:-.01em;
+  .slide[data-type="cover"] .fe-logo{{width:232px;}}
+
+  /* ── COVER ── */
+  .slide[data-type="cover"]{{
+    padding:0; justify-content:flex-end;
+    background:url('FireShield/hero.jpg') center/cover no-repeat;
   }}
-  .cover .kicker{{margin:0; font-size:.86rem; color:var(--text-dim);
+  /* A pseudo-element, not a child: check-lesson.js sums the heights of a
+     slide's direct children, so an absolutely-positioned scrim div reads as
+     720px of extra stack and the cover "overflows" by exactly one canvas. */
+  .slide[data-type="cover"]::before{{
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(100deg, var(--surface) 4%, transparent 66%);
+    opacity:.9;
+  }}
+  .cover-inner{{
+    position:relative; z-index:1; padding:var(--pad);
+    display:flex; flex-direction:column; align-items:flex-start;
+    justify-content:center; height:100%; max-width:660px; gap:2px;
+  }}
+  .cover-title{{
+    font-family:'Fraunces',serif; font-size:58px; font-weight:700;
+    line-height:1.04; letter-spacing:-.015em; color:var(--secondary);
+    margin:22px 0 0;
+  }}
+  .cover-sub{{font-size:18px; color:var(--text-dim); margin-top:14px;
     letter-spacing:.03em; font-weight:600;}}
-  .langbar{{margin-top:14px; display:flex; align-items:center; gap:8px;}}
-  .langbar label{{font-size:.74rem; text-transform:uppercase; letter-spacing:.08em;
-    font-weight:700; color:var(--text-dim);}}
-  .langbar select{{
-    font-family:'Inter',sans-serif; font-size:.86rem; font-weight:600;
-    color:var(--text); background:var(--surface); border:1.5px solid var(--border);
-    border-radius:8px; padding:5px 10px; cursor:pointer;
-  }}
-  .langbar select:focus{{outline:2px solid var(--accent); outline-offset:1px;}}
+  .cover-meta{{display:flex; gap:9px; margin-top:24px; flex-wrap:wrap;}}
 
-  /* Act background — swapped, never pasted as a box (house rule 5b) */
-  .stage{{position:relative;}}
-  .stage::before{{
-    content:''; position:fixed; inset:0; z-index:-1;
-    background-image:var(--act-bg,none);
-    background-size:cover; background-position:center;
-    opacity:var(--bg-wash); transition:background-image .4s, opacity .4s;
+  /* ── TOP BAR ── */
+  .deck-bar{{
+    flex:none; height:var(--bar-h); display:flex; align-items:center;
+    gap:22px; margin-bottom:18px;
   }}
-
-  .trust-wrap{{
-    position:sticky; top:0; z-index:5; background:var(--surface);
-    padding:10px 20px 8px; border-bottom:1px solid var(--border);
-  }}
+  .deck-bar .fe-logo{{width:104px;}}
+  .trust{{flex:1; min-width:0;}}
   .trust-label{{
-    display:flex; justify-content:space-between; font-size:.74rem;
-    color:var(--text-dim); font-weight:700; letter-spacing:.05em;
-    text-transform:uppercase; max-width:var(--wrap-w); margin:0 auto 5px;
+    display:flex; justify-content:space-between; font-size:11px;
+    text-transform:uppercase; letter-spacing:.1em; font-weight:700;
+    color:var(--text-dim); margin-bottom:5px;
   }}
   .trust-track{{
-    max-width:var(--wrap-w); margin:0 auto; height:8px; background:var(--void);
-    border-radius:6px; overflow:hidden; border:1px solid var(--border);
+    height:8px; background:var(--void); border:1px solid var(--border);
+    border-radius:6px; overflow:hidden;
   }}
   .trust-fill{{height:100%; background:var(--accent); width:50%;
     transition:width .45s cubic-bezier(.4,0,.2,1);}}
   .act-pips{{
-    max-width:var(--wrap-w); margin:6px auto 0; display:flex; gap:6px;
-    font-size:.68rem; text-transform:uppercase; letter-spacing:.1em;
-    color:var(--text-dim); font-weight:700;
+    display:flex; gap:14px; margin-top:6px; font-size:10.5px;
+    text-transform:uppercase; letter-spacing:.12em; font-weight:700;
+    color:var(--text-dim);
   }}
-  .act-pips span{{opacity:.35;}}
+  .act-pips span{{opacity:.32;}}
   .act-pips span.on{{opacity:1; color:var(--accent-bright);}}
+  .langbar{{display:flex; align-items:center; gap:8px; flex:none;}}
+  .langbar label{{font-size:10.5px; text-transform:uppercase;
+    letter-spacing:.1em; font-weight:700; color:var(--text-dim);}}
+  .langbar select{{
+    font-family:'Inter',sans-serif; font-size:13px; font-weight:600;
+    color:var(--text); background:var(--surface);
+    border:1.5px solid var(--border); border-radius:8px; padding:5px 9px;
+    cursor:pointer;
+  }}
+  .langbar select:focus{{outline:2px solid var(--accent); outline-offset:1px;}}
 
-  .wrap{{max-width:var(--wrap-w); margin:0 auto; padding:24px 20px 80px;}}
-
+  /* ── SCENE BODY ── */
+  .body{{flex:1; min-height:0; display:flex; flex-direction:column;}}
   .card{{
     background:var(--surface); border:1px solid var(--border);
-    border-radius:var(--card-r); padding:24px; margin-top:18px;
-    animation:rise .38s cubic-bezier(.2,.7,.3,1) both;
+    border-radius:var(--card-r); padding:26px 30px; flex:1; min-height:0;
+    display:flex; flex-direction:column; justify-content:center;
   }}
-  @keyframes rise{{from{{opacity:0; transform:translateY(10px);}}
-                   to{{opacity:1; transform:none;}}}}
-  @media (prefers-reduced-motion:reduce){{
-    .card{{animation:none;}} .trust-fill{{transition:none;}}
+  /* A checkpoint reads left, answers right — one screen, no scrolling. */
+  .card.two-col{{
+    display:grid; grid-template-columns:1.02fr 1fr; gap:30px;
+    align-items:center;
   }}
-
+  .col{{min-width:0; display:flex; flex-direction:column;}}
   .tag{{
-    font-family:'Fraunces',serif; font-size:.74rem; text-transform:uppercase;
-    letter-spacing:.1em; color:var(--accent-bright); margin-bottom:10px;
-    font-weight:700;
+    font-family:'Fraunces',serif; font-size:12px; text-transform:uppercase;
+    letter-spacing:.11em; color:var(--accent-bright); font-weight:700;
+    margin-bottom:12px; flex:none;
   }}
-  .narrative{{font-size:1.02rem; margin:0 0 16px;}}
+  .narrative{{font-size:18.5px; line-height:1.55; margin:0 0 14px;}}
   .narrative i{{color:var(--accent-bright); font-style:italic;}}
+  .q-stem{{font-size:19px; font-weight:700; margin:2px 0 14px;
+    line-height:1.4;}}
 
   .choice-btn, .opt{{
     display:block; width:100%; text-align:left; background:var(--surface2);
-    border:1.5px solid var(--border); border-radius:9px; padding:13px 15px;
-    margin-bottom:10px; font-size:.97rem; font-family:'Inter',sans-serif;
-    cursor:pointer; color:var(--text); line-height:1.45;
-    transition:border-color .15s, background .15s, transform .1s;
+    border:1.5px solid var(--border); border-radius:10px;
+    padding:12px 15px; margin-bottom:9px; font-size:16.5px;
+    font-family:'Inter',sans-serif; cursor:pointer; color:var(--text);
+    line-height:1.4; transition:border-color .15s, background .15s;
   }}
+  .choice-btn{{font-size:17px;}}
   .choice-btn:hover, .opt:hover:not(:disabled){{
     border-color:var(--accent); background:var(--void);
   }}
-  .choice-btn:active{{transform:translateY(1px);}}
   .opt:disabled{{cursor:default;}}
-  .opt.correct{{border-color:var(--contrast); color:var(--contrast); font-weight:700;}}
+  .opt.correct{{border-color:var(--contrast); color:var(--contrast);
+    font-weight:700;}}
   .opt.wrong{{border-color:var(--accent-bright); color:var(--accent-bright);
-    opacity:.65; text-decoration:line-through;}}
+    opacity:.6; text-decoration:line-through;}}
 
   .feedback{{
-    margin-top:12px; padding:13px 15px; border-radius:9px; font-size:.93rem;
-    display:none; border-left:4px solid var(--contrast); background:var(--surface2);
+    margin-top:10px; padding:12px 14px; border-radius:9px; font-size:15px;
+    line-height:1.5; display:none; border-left:4px solid var(--contrast);
+    background:var(--surface2);
   }}
   .feedback.show{{display:block;}}
 
   .btn{{
-    margin-top:16px; background:var(--secondary); color:var(--surface);
-    border:none; padding:11px 24px; border-radius:24px; font-size:.93rem;
-    font-weight:700; cursor:pointer; font-family:'Inter',sans-serif;
+    align-self:flex-start; margin-top:14px; background:var(--secondary);
+    color:var(--surface); border:none; padding:11px 24px; border-radius:24px;
+    font-size:15px; font-weight:700; cursor:pointer;
+    font-family:'Inter',sans-serif; flex:none;
   }}
   .btn:hover{{background:var(--accent-bright);}}
   .btn.ghost{{background:transparent; color:var(--accent-bright);
     border:1.5px solid var(--border);}}
-  .btn.ghost:hover{{background:var(--surface2); color:var(--accent-bright);}}
-  .btn[disabled]{{opacity:.35; pointer-events:none;}}
+  .btn.ghost:hover{{background:var(--surface2);}}
+  .btn[disabled]{{opacity:.32; pointer-events:none;}}
+  .btn-row{{display:flex; gap:10px; align-items:center;}}
 
-  .interlude{{text-align:left; border-left:5px solid var(--accent);}}
-  .interlude h2, .ending-card h2{{
-    font-family:'Fraunces',serif; font-size:1.35rem; margin:6px 0 12px;
-    color:var(--secondary); line-height:1.25;
+  /* ── INTERLUDE / ENDING ── */
+  .interlude{{border-left:5px solid var(--accent); justify-content:center;}}
+  .interlude h2{{
+    font-family:'Fraunces',serif; font-size:30px; line-height:1.2;
+    margin:6px 0 14px; color:var(--secondary); max-width:22ch;
   }}
+  .interlude .narrative{{max-width:60ch; font-size:19px;}}
   .carry{{
-    margin-top:14px; padding-top:12px; border-top:1px solid var(--border);
-    font-size:.82rem; color:var(--text-dim); font-weight:600;
-    text-transform:uppercase; letter-spacing:.05em;
+    margin-top:16px; padding-top:12px; border-top:1px solid var(--border);
+    font-size:12px; color:var(--text-dim); font-weight:700;
+    text-transform:uppercase; letter-spacing:.06em; max-width:40ch;
   }}
-  .carry b{{color:var(--accent-bright); font-size:1.05rem;}}
+  .carry b{{color:var(--accent-bright); font-size:17px;}}
 
-  /* Activation stage — house rule 6 */
-  .activate{{margin-top:26px;}}
-  .activate h2{{
-    font-family:'Fraunces',serif; font-size:1.5rem; margin:0 0 4px;
-    color:var(--secondary);
-  }}
-  .chips{{margin:14px 0 22px;}}
-  .chips-intro{{font-size:.82rem; color:var(--text-dim); font-weight:700;
-    text-transform:uppercase; letter-spacing:.05em; margin-bottom:8px;}}
+  /* ── ACTIVATION (house rule 6) ── */
+  .act-head{{flex:none;}}
+  .act-head h2{{font-family:'Fraunces',serif; font-size:26px; margin:0;
+    color:var(--secondary);}}
+  .chips{{flex:none; margin:10px 0 14px;}}
+  .chips-intro{{font-size:11px; color:var(--text-dim); font-weight:700;
+    text-transform:uppercase; letter-spacing:.08em; margin-bottom:7px;}}
   .chip{{
-    display:inline-block; background:var(--surface2); border:1px solid var(--border);
-    border-radius:20px; padding:4px 12px; margin:0 6px 7px 0; font-size:.86rem;
-    color:var(--accent-bright); font-weight:600;
+    display:inline-block; background:var(--surface2);
+    border:1px solid var(--border); border-radius:999px; padding:3px 11px;
+    margin:0 5px 5px 0; font-size:13px; color:var(--accent-bright);
+    font-weight:600;
   }}
-  .track{{margin-bottom:22px;}}
-  .track h3{{
-    font-family:'Fraunces',serif; font-size:1.05rem; margin:0 0 10px;
-    color:var(--secondary);
-  }}
-  .track ol{{margin:0; padding-left:20px;}}
+  .tracks{{flex:1; min-height:0; display:grid;
+    grid-template-columns:1fr 1fr; gap:26px;}}
+  .track{{min-width:0; display:flex; flex-direction:column; min-height:0;}}
+  .track h3{{font-family:'Fraunces',serif; font-size:17px; margin:0 0 9px;
+    color:var(--secondary); flex:none;}}
+  .track ol{{margin:0; padding-left:19px; font-size:15px; line-height:1.5;}}
   .track li{{margin-bottom:9px;}}
-  .brief{{margin:0 0 12px;}}
+  .brief{{margin:0 0 10px; font-size:15px; line-height:1.5;}}
   textarea{{
-    width:100%; min-height:190px; padding:14px; border-radius:9px;
+    flex:1; min-height:0; width:100%; padding:12px; border-radius:9px;
     border:1.5px solid var(--border); background:var(--surface2);
-    color:var(--text); font-family:'Inter',sans-serif; font-size:.96rem;
-    line-height:1.6; resize:vertical;
+    color:var(--text); font-family:'Inter',sans-serif; font-size:15px;
+    line-height:1.55; resize:none;
   }}
   textarea:focus{{outline:2px solid var(--accent); outline-offset:1px;}}
-  .writing-foot{{
-    display:flex; align-items:center; gap:14px; margin-top:10px; flex-wrap:wrap;
-  }}
-  .counter{{font-size:.84rem; color:var(--text-dim); font-weight:700;}}
+  .writing-foot{{display:flex; align-items:center; gap:12px; margin-top:8px;
+    flex:none;}}
+  .writing-foot .btn{{margin-top:0;}}
+  .counter{{font-size:13px; color:var(--text-dim); font-weight:700;}}
   .counter.ok{{color:var(--contrast);}}
-  .hidden{{display:none;}}
-  @media print{{
-    .trust-wrap,.btn{{display:none;}}
-    .print-mirror{{display:block; white-space:pre-wrap;}}
-  }}
+
+  /* A textarea's value does not print, so the PDF gets a mirror of it. */
   .print-mirror{{display:none;}}
+  @media print{{
+    body{{overflow:visible;}}
+    .stage-wrap{{position:static; display:block;}}
+    .stage{{position:static; transform:none !important;
+      width:1280px; height:auto; overflow:visible; box-shadow:none;}}
+    .slide{{position:static; display:flex !important; page-break-after:always;
+      height:720px;}}
+    .bg-layer,.deck-bar,.btn,.langbar{{display:none !important;}}
+    .print-mirror{{display:block; white-space:pre-wrap; font-size:14px;}}
+    textarea{{display:none;}}
+  }}
 </style>
 </head>
 <body>
 
-<header class="cover">
-  <div class="cover-inner">
-    <div class="logo">
-      {logo}
-    </div>
-    <h1>{title}</h1>
-    <p class="kicker" data-i18n="kicker">{I18N['en']['kicker']}</p>
-    <div class="langbar">
-      <label for="langSel" data-i18n="langLabel">{I18N['en']['langLabel']}</label>
-      <select id="langSel" aria-label="{I18N['en']['langLabel']}"></select>
-    </div>
-  </div>
-</header>
-
-<div class="trust-wrap hidden" id="trustWrap">
-  <div class="trust-label"><span data-i18n="trustLabel">{I18N['en']['trustLabel']}</span><span id="trustNum">50</span></div>
-  <div class="trust-track"><div class="trust-fill" id="trustFill"></div></div>
-  <div class="act-pips" id="actPips">
-    <span data-act="1">I &middot; Manchester</span>
-    <span data-act="2">II &middot; Leeds</span>
-    <span data-act="3">III &middot; Dublin</span>
-  </div>
-</div>
-
+<div class="stage-wrap">
 <div class="stage" id="stage">
-<div class="wrap">
+  <div class="bg-layer" id="bgLayer"></div>
 
-  <div class="card" id="introCard">
-    <div class="tag" data-i18n="briefing">{I18N['en']['briefing']}</div>
-    {intro_ps}
-    <button class="btn" id="startBtn" data-i18n="btnStart">{I18N['en']['btnStart']}</button>
-  </div>
+  <!-- 0 — cover: landscape hero, stacked lockup, title over it (rule 2) -->
+  <section class="slide" data-type="cover">
+    <div class="cover-inner">
+      {logo}
+      <h1 class="cover-title">{title}</h1>
+      <p class="cover-sub" data-i18n="kicker">{I18N['en']['kicker']}</p>
+      <div class="cover-meta">
+        <span class="chip">B2</span>
+        <span class="chip">Forbes Membranes</span>
+        <span class="chip">3 acts</span>
+      </div>
+      <button class="btn" id="coverBtn" data-i18n="btnBegin">{I18N['en']['btnBegin']}</button>
+    </div>
+  </section>
 
-  <div id="gameArea"></div>
+  <!-- 1 — briefing -->
+  <section class="slide" data-type="teach">
+    <div class="deck-bar">
+      {logo}
+      <div class="trust"></div>
+      <div class="langbar">
+        <label for="langSel" data-i18n="langLabel">{I18N['en']['langLabel']}</label>
+        <select id="langSel" aria-label="Language"></select>
+      </div>
+    </div>
+    <div class="body"><div class="card">
+      <div class="tag" data-i18n="briefing">{I18N['en']['briefing']}</div>
+      <div class="narrative">
+        {intro_ps}
+      </div>
+      <button class="btn" id="startBtn" data-i18n="btnStart">{I18N['en']['btnStart']}</button>
+    </div></div>
+  </section>
 
-  <div class="activate card hidden" id="activate" data-type="activate">
-    <h2 data-i18n="actHeading">{I18N['en']['actHeading']}</h2>
+  <!-- 2 — the roleplay itself; the engine renders one scene at a time here -->
+  <section class="slide" data-type="scene">
+    <div class="deck-bar">
+      {logo}
+      <div class="trust">
+        <div class="trust-label">
+          <span data-i18n="trustLabel">{I18N['en']['trustLabel']}</span>
+          <span id="trustNum">50</span>
+        </div>
+        <div class="trust-track"><div class="trust-fill" id="trustFill"></div></div>
+        <div class="act-pips" id="actPips">
+          <span data-act="1">I &middot; Manchester</span>
+          <span data-act="2">II &middot; Leeds</span>
+          <span data-act="3">III &middot; Dublin</span>
+        </div>
+      </div>
+    </div>
+    <div class="body" id="gameArea"></div>
+  </section>
+
+  <!-- 3 — activation: speaking and writing, both live (rule 6) -->
+  <section class="slide" data-type="activate">
+    <div class="act-head">
+      <h2 data-i18n="actHeading">{I18N['en']['actHeading']}</h2>
+    </div>
     <div class="chips">
       <div class="chips-intro" data-i18n="actChips">{I18N['en']['actChips']}</div>
       {chips}
     </div>
-    <div class="track">
-      <h3 data-i18n="actSpeak">{I18N['en']['actSpeak']}</h3>
-      <ol>
-      {speak}
-      </ol>
-    </div>
-    <div class="track">
-      <h3 data-i18n="actWrite">{I18N['en']['actWrite']}</h3>
-      <p class="brief" data-i18n="writeBrief">{ACTIVATION['writing_brief']['en']}</p>
-      <textarea id="writing" aria-label="Writing task"></textarea>
-      <div class="print-mirror" id="writingMirror"></div>
-      <div class="writing-foot">
-        <span class="counter" id="counter">0 {I18N['en']['actWords']}</span>
-        <button class="btn ghost" id="copyBtn" data-i18n="btnCopy">{I18N['en']['btnCopy']}</button>
+    <div class="tracks">
+      <div class="track">
+        <h3 data-i18n="actSpeak">{I18N['en']['actSpeak']}</h3>
+        <ol>
+          {speak}
+        </ol>
+      </div>
+      <div class="track">
+        <h3 data-i18n="actWrite">{I18N['en']['actWrite']}</h3>
+        <p class="brief" data-i18n="writeBrief">{ACTIVATION['writing_brief']['en']}</p>
+        <textarea id="writing" aria-label="Writing task"></textarea>
+        <div class="print-mirror" id="writingMirror"></div>
+        <div class="writing-foot">
+          <span class="counter" id="counter">0 {I18N['en']['actWords']}</span>
+          <button class="btn ghost" id="copyBtn" data-i18n="btnCopy">{I18N['en']['btnCopy']}</button>
+        </div>
       </div>
     </div>
-  </div>
+  </section>
 
 </div>
 </div>
 
 <script>
 const SCENES = {js_scenes(lang)};
+const UI_I18N = {js_i18n()};
 const BG = {{
-  intro:"FireShield/bg-intro.jpg", act1:"FireShield/bg-act1.jpg",
+  cover:"FireShield/bg-intro.jpg", act1:"FireShield/bg-act1.jpg",
   act2:"FireShield/bg-act2.jpg",   act3:"FireShield/bg-act3.jpg",
   end:"FireShield/bg-end.jpg"
 }};
-const UI_I18N = {js_i18n()};
 
-/* §8: offer a language only if it defines every key English defines. A
-   half-done pass stays in the table and simply is not listed. */
-const LANG_NAMES = {{en:"English", de:"Deutsch", es:"Espa\u00f1ol"}};
+/* ── i18n ──
+   §8: offer a language only if it defines every key English defines. A
+   half-done pass stays in the table and is simply not listed. */
+const LANG_NAMES = {{en:"English", de:"Deutsch", es:"Espa\\u00f1ol"}};
 let LANG = "en";
 function T(k){{
   const row = UI_I18N[LANG] || {{}};
@@ -1274,53 +1398,71 @@ function completeLangs(){{
   const need = Object.keys(UI_I18N.en).length;
   return Object.keys(UI_I18N).filter(l => Object.keys(UI_I18N[l]).length >= need);
 }}
-function applyI18n(){{
-  document.documentElement.lang = LANG;
-  document.querySelectorAll("[data-i18n]").forEach(el => {{
-    el.innerHTML = T(el.dataset.i18n);
-  }});
-  const c = document.getElementById("counter");
-  const n = ta.value.trim() ? ta.value.trim().split(/\s+/).length : 0;
-  c.textContent = n + " " + T("actWords");
-  if (SCENES[current] && document.getElementById("gameArea").children.length) render();
+
+/* ── Stage ── */
+const stage = document.getElementById("stage");
+const slides = [...document.querySelectorAll(".slide")];
+let idx = 0;
+
+function fitStage(){{
+  const s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+  // Centre explicitly. Relying on the wrapper to centre an oversized child is
+  // what put the stage off-screen on every viewport under 1280px wide.
+  const x = (window.innerWidth  - 1280 * s) / 2;
+  const y = (window.innerHeight -  720 * s) / 2;
+  stage.style.transform = `translate(${{x}}px, ${{y}}px) scale(${{s}})`;
+}}
+addEventListener("resize", fitStage);
+fitStage();
+
+function show(n){{
+  idx = Math.max(0, Math.min(slides.length - 1, n));
+  slides.forEach((s, i) => s.classList.toggle("is-active", i === idx));
 }}
 
-let current = "a1_open", answered = false;
-
-/* Trust is EARNED against trust AVAILABLE, per act and overall. An absolute
+/* ── Scoring ──
+   Trust is EARNED against trust AVAILABLE, per act and overall. An absolute
    running total saturates at 100 and stops discriminating — 84% of simulated
    playthroughs reached the best ending under that scheme, and the worst was
    unreachable. A ratio cannot saturate.
 
    The bar the learner watches is the same number, so the meter can never
-   disagree with the ending it leads to. PRIOR smooths the first few clicks,
-   which would otherwise swing the bar from 50 to 100 and back. */
+   disagree with the ending it leads to. PRIOR smooths the first few clicks. */
 const PRIOR = 20;
-let log = [];
+let log = [], current = "a1_open", missed = false;
 
 function record(act, delta, max){{ log.push({{act:act, delta:delta, max:max}}); }}
-
 function totals(act){{
   const rows = act ? log.filter(r => r.act === act) : log;
   let got = 0, max = 0;
   for (const r of rows){{ got += r.delta; max += r.max; }}
   return {{got: got, max: max}};
 }}
-
-/* Raw performance, 0-1. Picks the endings. */
 function ratio(act){{
   const t = totals(act);
   return t.max <= 0 ? 0 : Math.max(0, Math.min(1, t.got / t.max));
 }}
-
-/* Smoothed, 0-100. What the bar shows. Reads 50 before the first decision. */
 function meter(){{
   const t = totals(null);
   const v = (t.got + PRIOR / 2) / (t.max + PRIOR);
   return Math.round(100 * Math.max(0, Math.min(1, v)));
 }}
-const stage = document.getElementById("stage");
-const area  = document.getElementById("gameArea");
+
+/* Fisher-Yates. The authored options put the key first in 19 of 20
+   checkpoints — inherited from the three originals — so a learner could score
+   full marks by always clicking the top button without reading. Shuffling at
+   render time is what makes the key move. */
+function shuffled(options, correct){{
+  const a = options.map((text, i) => ({{text: text, key: i === correct}}));
+  for (let i = a.length - 1; i > 0; i--){{
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }}
+  return a;
+}}
+
+const area = document.getElementById("gameArea");
+const bgLayer = document.getElementById("bgLayer");
 
 function paint(){{
   const trust = meter();
@@ -1331,57 +1473,56 @@ function paint(){{
     s.classList.toggle("on", Number(s.dataset.act) === act);
   }});
   const bg = SCENES[current] && SCENES[current].bg;
-  if (bg && BG[bg]) stage.style.setProperty("--act-bg", `url('${{BG[bg]}}')`);
+  if (bg && BG[bg]) bgLayer.style.setProperty("--act-bg", `url('${{BG[bg]}}')`);
 }}
 
 function startGame(){{
-  document.getElementById("introCard").classList.add("hidden");
-  document.getElementById("trustWrap").classList.remove("hidden");
-  document.getElementById("activate").classList.add("hidden");
-  current = "a1_open"; log = []; answered = false;
-  paint(); render();
+  log = []; current = "a1_open"; missed = false;
+  show(2); paint(); render();
 }}
-
-function go(next){{ current = next; paint(); render();
-  area.scrollIntoView({{behavior:"smooth", block:"start"}}); }}
+function go(next){{ current = next; paint(); render(); }}
 
 function render(){{
   const s = SCENES[current];
 
-  if (s.type === "story") {{
-    area.innerHTML = `<div class="card"><div class="tag">${{T(s.tagKey)}}</div>
-      <p class="narrative">${{s.narrative}}</p><div id="choiceBox"></div></div>`;
+  if (s.type === "story"){{
+    area.innerHTML = `<div class="card">
+      <div class="tag">${{T(s.tagKey)}}</div>
+      <p class="narrative">${{s.narrative}}</p>
+      <div id="choiceBox"></div></div>`;
     const box = document.getElementById("choiceBox");
+    const best = Math.max.apply(null, s.choices.map(x => x.trust));
     s.choices.forEach(c => {{
       const b = document.createElement("button");
       b.className = "choice-btn"; b.innerHTML = c.label;
-      const best = Math.max.apply(null, s.choices.map(x => x.trust));
-      b.addEventListener("click", () => {{
-        record(s.act, c.trust, best);
-        go(c.next);
-      }});
+      b.addEventListener("click", () => {{ record(s.act, c.trust, best); go(c.next); }});
       box.appendChild(b);
     }});
   }}
 
-  else if (s.type === "checkpoint") {{
-    answered = false;
-    area.innerHTML = `<div class="card"><div class="tag">${{T(s.tagKey)}}</div>
-      <p class="narrative">${{s.narrative}}</p>
-      <p class="narrative"><b>${{s.question}}</b></p>
-      <div id="optsBox"></div>
-      <div class="feedback" id="feedbackBox"></div>
-      <button class="btn" id="nextBtn" disabled>${{T("btnContinue")}}</button></div>`;
+  else if (s.type === "checkpoint"){{
+    missed = false;
+    area.innerHTML = `<div class="card two-col">
+      <div class="col">
+        <div class="tag">${{T(s.tagKey)}}</div>
+        <p class="narrative">${{s.narrative}}</p>
+        <p class="q-stem">${{s.question}}</p>
+      </div>
+      <div class="col">
+        <div id="optsBox"></div>
+        <div class="feedback" id="feedbackBox"></div>
+        <button class="btn" id="nextBtn" disabled>${{T("btnContinue")}}</button>
+      </div></div>`;
     const box = document.getElementById("optsBox");
-    s.options.forEach((opt, i) => {{
+    shuffled(s.options, s.correct).forEach(o => {{
       const b = document.createElement("button");
-      b.className = "opt"; b.textContent = opt;
+      b.className = "opt"; b.textContent = o.text;
       b.addEventListener("click", () => {{
-        if (i === s.correct) {{
+        if (o.key){{
           document.querySelectorAll("#optsBox .opt").forEach(x => x.disabled = true);
           b.classList.add("correct");
           /* First attempt only — a retry earns the explanation, not the trust. */
-          record(s.act, answered ? 0 : s.trustOnCorrect, s.trustOnCorrect);
+          record(s.act, missed ? 0 : s.trustOnCorrect, s.trustOnCorrect);
           paint();
           const fb = document.getElementById("feedbackBox");
           fb.innerHTML = s.explain; fb.classList.add("show");
@@ -1389,7 +1530,7 @@ function render(){{
           nb.disabled = false;
           nb.addEventListener("click", () => go(s.next));
         }} else {{
-          answered = true;
+          missed = true;
           b.classList.add("wrong"); b.disabled = true;
         }}
       }});
@@ -1397,26 +1538,35 @@ function render(){{
     }});
   }}
 
-  else if (s.type === "interlude") {{
+  else if (s.type === "interlude"){{
     const r = s.final ? ratio(null) : ratio(s.act);
     const tier = s.tiers.find(t => r >= t.min) || s.tiers[s.tiers.length - 1];
-    area.innerHTML = `<div class="card interlude"><div class="tag">${{T(s.tagKey)}}</div>
-      <h2>${{tier.title}}</h2><p class="narrative">${{tier.body}}</p>
+    area.innerHTML = `<div class="card interlude">
+      <div class="tag">${{T(s.tagKey)}}</div>
+      <h2>${{tier.title}}</h2>
+      <p class="narrative">${{tier.body}}</p>
       <div class="carry">${{T("carry")}}: <b>${{meter()}}</b></div>
       <button class="btn" id="nextBtn">${{s.final ? T("btnActivate") : T("btnNextAct")}}</button>
       </div>`;
     document.getElementById("nextBtn").addEventListener("click", () => {{
-      if (s.final) {{ showActivation(); return; }}
+      if (s.final){{
+        bgLayer.style.setProperty("--act-bg", `url('${{BG.end}}')`);
+        show(3); return;
+      }}
       go(s.next);
     }});
   }}
 
-  else if (s.type === "ending") {{
-    area.innerHTML = `<div class="card ending-card"><div class="tag">${{T(s.tagKey)}}</div>
-      <h2>${{s.title}}</h2><p class="narrative">${{s.body}}</p>
-      ${{s.rewind ? `<button class="btn" id="rewindBtn">${{T("btnRewind")}}</button> ` : ""}}
-      <button class="btn ghost" id="restartBtn">${{T("btnRestart")}}</button></div>`;
-    if (s.rewind) {{
+  else if (s.type === "ending"){{
+    area.innerHTML = `<div class="card interlude">
+      <div class="tag">${{T(s.tagKey)}}</div>
+      <h2>${{s.title}}</h2>
+      <p class="narrative">${{s.body}}</p>
+      <div class="btn-row">
+        ${{s.rewind ? `<button class="btn" id="rewindBtn">${{T("btnRewind")}}</button>` : ""}}
+        <button class="btn ghost" id="restartBtn">${{T("btnRestart")}}</button>
+      </div></div>`;
+    if (s.rewind){{
       document.getElementById("rewindBtn").addEventListener("click", () => {{
         log.pop();               /* un-take it; the meter follows the log */
         go(s.rewind);
@@ -1426,25 +1576,17 @@ function render(){{
   }}
 }}
 
-function showActivation(){{
-  area.innerHTML = "";
-  document.getElementById("trustWrap").classList.add("hidden");
-  const a = document.getElementById("activate");
-  a.classList.remove("hidden");
-  a.scrollIntoView({{behavior:"smooth", block:"start"}});
-}}
-
-/* Activation — live word counter, copy out, and a print mirror because a
-   textarea's value does not print. */
+/* ── Activation ── */
 const ta = document.getElementById("writing");
 const counter = document.getElementById("counter");
 const mirror = document.getElementById("writingMirror");
-ta.addEventListener("input", () => {{
+function countWords(){{
   const n = ta.value.trim() ? ta.value.trim().split(/\\s+/).length : 0;
   counter.textContent = n + " " + T("actWords");
   counter.classList.toggle("ok", n >= 150 && n <= 250);
   mirror.textContent = ta.value;
-}});
+}}
+ta.addEventListener("input", countWords);
 document.getElementById("copyBtn").addEventListener("click", async () => {{
   try {{
     await navigator.clipboard.writeText(ta.value);
@@ -1454,12 +1596,19 @@ document.getElementById("copyBtn").addEventListener("click", async () => {{
   }} catch (e) {{ ta.select(); }}
 }});
 
-/* Build the switcher from UI_I18N. A language short of English's key count
-   never appears, so a selected option can never fall back mid-screen. */
+function applyI18n(){{
+  document.documentElement.lang = LANG;
+  document.querySelectorAll("[data-i18n]").forEach(el => {{
+    el.innerHTML = T(el.dataset.i18n);
+  }});
+  countWords();
+  if (idx === 2 && area.children.length) render();
+}}
+
 (function initLang(){{
   const sel = document.getElementById("langSel");
   const langs = completeLangs();
-  if (langs.length < 2) {{ sel.closest(".langbar").hidden = true; return; }}
+  if (langs.length < 2){{ sel.closest(".langbar").hidden = true; return; }}
   langs.forEach(l => {{
     const o = document.createElement("option");
     o.value = l; o.textContent = LANG_NAMES[l] || l;
@@ -1469,7 +1618,10 @@ document.getElementById("copyBtn").addEventListener("click", async () => {{
   sel.addEventListener("change", () => {{ LANG = sel.value; applyI18n(); }});
 }})();
 
+document.getElementById("coverBtn").addEventListener("click", () => show(1));
 document.getElementById("startBtn").addEventListener("click", startGame);
+bgLayer.style.setProperty("--act-bg", `url('${{BG.cover}}')`);
+show(0);
 </script>
 
 </body>

@@ -102,21 +102,42 @@ artwork, which reads well — no `--accent-hue` rotation needed.
 
 ### What is left
 
-1. **It is a scrolling page, not a 16:9 deck — house rule 1.** So were all
-   three originals, so this is not a new deviation, but it is a real gap. The
-   branching does not require scrolling: each scene could be a fixed 1280x720
-   frame, one scene per screen, with the state machine untouched. That is the
-   right next job and it is a layout rework, not a rewrite.
-   `check-lesson.js` reports this as "0 slides", "page scrolls" and "no
-   `data-type="activate"` slide" — three faces of the same gap. The
-   activation stage does exist; the checker looks for `.slide` elements.
-2. **`tools/seo.py` has not been run.** With Supabase unreachable (403 at the
+1. ~~It is a scrolling page, not a 16:9 deck.~~ **Done.** Four slides on a
+   1280x720 stage — cover, briefing, the roleplay, activation — using the
+   template's own `fitStage()` centring. The branching never needed scrolling,
+   it needed state, so the state machine is untouched; a checkpoint reads left
+   and answers right so it fits one screen. `check-lesson.js` now passes
+   LAYOUT, no-scrolling, ACTIVATION and LOGO.
+
+   Two things worth keeping in mind if you build another branching lesson:
+
+   - **`check-lesson.js` can only measure the scene that happens to be on
+     screen.** One slide re-rendered 32 times means the whole deck budget goes
+     unchecked in the lesson whose content varies most.
+     `tools/fit_fireshield.js` renders every scene in every offered language
+     and measures each against the canvas. German runs ~15% longer than
+     English and is what overflows first.
+   - **An absolutely-positioned direct child of `.slide` reads as overflow.**
+     The LAYOUT check sums the heights of a slide's children, so a
+     `<div class="cover-scrim">` pinned with `inset:0` counted a full 720px of
+     stack and the cover "overflowed by exactly one canvas". Use a
+     pseudo-element for scrims.
+
+2. **The answer key was first in 19 of 20 checkpoints.** Inherited from all
+   three originals: a learner could score full marks by always clicking the
+   top button without reading. Options are now Fisher-Yates shuffled at render
+   time *and* deterministically pre-shuffled in the source (seeded on the
+   scene key, so rebuilds stay byte-identical) — the checker's own note says
+   an authored key-first order still leaks through print and PDF export.
+   **Worth auditing the other hand-authored roleplays for the same thing.**
+
+3. **`tools/seo.py` has not been run.** With Supabase unreachable (403 at the
    sandbox proxy) it falls back to `tools/lessons.json`, where this lesson
    does not appear, so it reports `would rewrite 0 page(s)` and gives the page
    no SEO block at all. It needs a Supabase row first. **No production
    database write was made from this session** — the lesson is not ready to
    go live and that is not a cloud session's call to make.
-3. **The three old pages are untouched and still live.** No redirects yet, and
+4. **The three old pages are untouched and still live.** No redirects yet, and
    `library.html` still lists all three. Do that when the merge actually
    replaces them, and re-read `library.html` from `origin/main` immediately
    before editing it — the `LESSON_IMAGES` clobber has now happened twice.
