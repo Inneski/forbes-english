@@ -23,6 +23,10 @@ const path = require("path");
 const file = path.join(__dirname, "..", "fireshield-pitch.html");
 const src = fs.readFileSync(file, "utf8");
 const S = JSON.parse(src.match(/const SCENES = (\{[\s\S]*?\n\});/)[1]);
+// Eyebrows are i18n keys now; resolve them through the English table so the
+// report still reads as words rather than as "failStory".
+const I18N = JSON.parse(src.match(/const UI_I18N = (\{[\s\S]*?\n\});/)[1]);
+const label = k => (I18N.en[k] || k).replace("Ending — ", "");
 
 const endings = {};
 let complete = 0, meterLo = 999, meterHi = -999;
@@ -82,7 +86,7 @@ function walk(k, log, depth) {
   }
 
   if (v.type === "ending") {
-    tally("FAIL — " + v.tag.replace("Ending — ", ""));
+    tally("FAIL — " + label(v.tagKey));
     return;
   }
 }
@@ -102,7 +106,7 @@ for (const [k, n] of rows) {
 // Every authored ending must be reachable.
 const authored = [];
 for (const v of Object.values(S)) {
-  if (v.type === "ending") authored.push("FAIL — " + v.tag.replace("Ending — ", ""));
+  if (v.type === "ending") authored.push("FAIL — " + label(v.tagKey));
   if (v.type === "interlude" && v.final) {
     for (const t of v.tiers) authored.push(t.title.replace(/&[a-z]+;/g, "'").slice(0, 52));
   }
@@ -136,7 +140,7 @@ function archetype(pick, cpRate) {
       if (v.final) return { r, m: meter(log), end: t.title.replace(/&[a-z]+;/g, "'") };
       k = v.next; continue;
     }
-    if (v.type === "ending") return { r: 0, m: meter(log), end: "FAIL " + v.tag };
+    if (v.type === "ending") return { r: 0, m: meter(log), end: "FAIL " + label(v.tagKey) };
   }
 }
 
