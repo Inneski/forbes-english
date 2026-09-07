@@ -163,6 +163,52 @@ Neither is Blocula-specific; they bite anyone running that builder locally.
 verify whether any of them actually corrupts output — `seo.py` ran clean here
 — so they were left alone rather than changed speculatively.
 
+### Third pass, same day: opacity, no scrolling, and the hotspots
+
+Innes, looking at the shipped page: *"Remove black boxes behind text —
+opacity down. NO scrolling. Locate clickable glowing objects on actual
+objects e.g. fireplace. change name on library card."*
+
+**Opacity.** The panel veil went 78% → 34%, and legibility moved off the
+plate and onto the text: `--halo`, a three-stop text-shadow every text node
+in the panel carries. That is what makes a third-opacity panel readable over
+a sunrise. Backdrop blur went to 26px with `brightness(.62)`, so the picture
+still reads through but never competes. If a future scene looks washed out,
+raise `brightness`, not the veil.
+
+**No scrolling — the panel now fits itself.** `.content` is
+`overflow:hidden`, and `fitPanel()` steps a `--fit` multiplier down until
+`scrollHeight <= clientHeight`. Every size inside the panel is
+`calc(N * var(--u))` where `--u` is `1cqw * var(--fit)` — a **custom
+property, not `em`**, because the glosses are nested inside `.story` and
+`.option` and `em` would compound them. It is wired into `render`, `setOpen`
+(the panel can only be measured once it is open — wiring `render` alone
+measures a closed, zero-height box), `displayAnswer` and `resize`.
+
+Measured across all 39 scenes × {en, de, ru, ar, ja}, answered and
+unanswered: **nothing scrolls**, and the worst case only needed 0.775 —
+comfortably above the 0.5 floor. The old scroll-CONTINUE-into-view patch is
+gone; there is nothing left to scroll.
+
+**Hotspots.** About a dozen markers sat next to their object or on empty
+space — `last_chance` was on pure black, `choice1` on empty sky beside the
+moon, `dinner` on a dark figure with the fireplace blazing next to it,
+`mirror` and `blue_fire` a clear step to one side. All 39 were re-read off
+gridded contact sheets and the `HOT` comments now name the object each one
+sits on. Two scenes changed side so the panel stops covering the object it
+grew out of (`mirror` → left, `courtyard_carts` → left/bottom).
+
+**Do not eyeball this.** Draw the marker on the picture and look at it —
+three rounds were needed because reading percentages off a composite sheet
+is unreliable; the second round still had `train` and `inn` a few percent
+out. The loop that generates the sheets is in the 2026-09-07 scratch work;
+`rpg/README.md` §3 has the canonical snippet.
+
+**Card name.** The catalogue title is now *Blocula — Conditionals & Passive
+Voice RPG (B2)*, dropping "Grammar Stoker's". Changed in Supabase **and**
+mirrored into `tools/lessons.json`; `seo.py` then propagated it to
+`library.html`, `llms.txt`, `lesson-meta.json` and the page's own title.
+
 ### Still to do
 
 - `check-glosses.js` has not been run over `last-train-home-rpg`,
