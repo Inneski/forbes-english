@@ -79,13 +79,13 @@ HOT = {
  'rules':            (60, 74, 20, 18, 'left',   'center', 58),    # the open journal
  'train':            (67, 54,  8, 11, 'left',   'center'),        # the letter in his hands
  'inn':              (25, 48,  6, 10, 'right',  'center'),        # the crucifix she holds out
- 'coach':            (76, 30,  8, 12, 'left',   'top', 36),       # the coachman's red eyes
+ 'coach':            (66, 31,  8, 11, 'left',   'top', 36),       # the coach's lit window
  'blue_fire':        (75, 66, 12, 18, 'left',   'top'),           # the blue flame itself
  'choice1':          (82, 49,  7, 11, 'center', 'top'),           # the blue fire at the fork
  'blue_treasure':    (80, 74, 13, 14, 'left',   'top', 34),       # the iron chest
  'blue_cross':       (30, 38,  7, 11, 'right',  'center'),        # the crucifix
  'wolves':           (83, 34,  9, 18, 'left',   'center'),        # the coachman's raised hand
- 'coach_rescue':     (68, 42,  9, 20, 'left',   'top', 32),       # the coachman, hand raised
+ 'coach_rescue':     (60, 42,  8, 14, 'left',   'top', 32),       # the hooded coachman, red-eyed
  'castle_gate':      (72, 58,  7, 15, 'left',   'top', 38),       # the gate, lit from within
  'dinner':           (84, 60, 12, 18, 'left',   'center'),        # the fireplace
  'mirror':           (54, 33, 11, 20, 'left',   'center', 34),    # the mirror he holds up
@@ -100,7 +100,7 @@ HOT = {
  'shipping_plan':    (46, 72, 22, 15, 'left',   'center'),        # the shipping ledger
  'earth_boxes':      (72, 42,  9, 11, 'left',   'center'),        # the open earth box
  'box_moved':        (56, 53, 15,  9, 'left',   'top', 34),       # the sealed coffin
- 'stolen_clothes':   (86, 52,  7, 18, 'left',   'center'),        # the bloodied cuff
+ 'stolen_clothes':   (79, 45,  8, 22, 'left',   'center'),        # the bloodied shirt in the wardrobe
  'last_chance':      (33, 42, 10, 22, 'right',  'center'),        # the cliff window
  'escape_plan':      (66, 55,  6, 34, 'left',   'bottom'),        # the sheet-rope
  'choice3':          (15, 45, 15, 32, 'center', 'top'),           # the broken chapel window
@@ -108,11 +108,11 @@ HOT = {
  'stake_decision':   (75, 63, 12, 13, 'left',   'center'),        # the open coffin
  'crypt_chase':      (17, 22, 10, 14, 'right',  'bottom', 38),    # the dawn through the cracked window
  'courtyard_carts':  (75, 60, 14, 14, 'left',   'bottom', 38),    # the loaded wagon
- 'carriage_sabotage':(48, 62, 15, 22, 'left',   'top', 32),       # the wheel and its pin
- 'courtyard_escape': (77, 73, 16, 22, 'left',   'top'),           # the broken wheel
+ 'carriage_sabotage':(26, 63, 12, 22, 'right',  'center', 34),    # the wheel and its pin
+ 'courtyard_escape': (85, 75, 13, 20, 'left',   'top'),           # the broken wheel
  'final_escape':     (87, 14,  9, 13, 'left',   'center'),        # Dracula at the parapet
  'success':          (18, 52, 10, 13, 'right',  'top'),           # the sun reaching the valley
- 'failure':          (56, 70, 12, 32, 'left',   'top'),           # Dracula at the closed gate
+ 'failure':          (72, 53,  8, 16, 'left',   'top'),           # Dracula, pale against the red gate
  'epilogue':         (75, 60, 18, 18, 'left',   'center'),        # the earth boxes on deck
 }
 

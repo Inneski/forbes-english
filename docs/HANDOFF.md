@@ -221,6 +221,25 @@ glow. Where a scene's own object *is* a light the two agree, which is why
 to the dawn through the cracked window — that scene is called "Dawn Breaks
 In", and the hammer was almost invisible at marker size.
 
+**A marker can be on the right object and still look wrong, if the object
+is too dark to see.** Innes sent two screenshots — `coach` and
+`stolen_clothes` — with "no object under glow". `stolen_clothes` was simply
+7% right of the shirt, on the wardrobe frame. `coach` was on the coachman's
+face, which is correct content and almost pure black on screen; the lit
+coach window beside him is the part a player can actually see.
+
+That defect class now has a measurement, `darkcheck` (in the 2026-09-07
+scratch work, worth folding into a checker): for each marker it compares the
+brightness and the edge energy under the marker against the picture's own
+average. `coach` scored 0.50 detail / 0.38 brightness, bottom of 39 — it
+found the reported bug without being told. Six markers were below the line
+and all six moved: coach, stolen_clothes, coach_rescue, failure,
+carriage_sabotage, courtyard_escape.
+
+Two scenes score low and are fine: `success` (0.46 detail) is the sun, a
+smooth bright disc with no edges, and `wall_crawl` is Dracula head-down on a
+moonlit wall. Read the numbers, then look.
+
 **"I can't see any difference" usually means a cached page.** The live site
 was confirmed serving the new build (39 scenes, `fitPanel`, the 0.34 veil)
 while it still looked unchanged in the browser. Check
