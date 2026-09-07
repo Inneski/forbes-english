@@ -123,13 +123,53 @@ animated flex container and the browser resolves `block:'nearest'` to no
 scroll at all. `content.scrollTo({top: scrollHeight})` does. If you find
 yourself reaching for `scrollIntoView` in one of these panels, don't.
 
+### The cards (done the same day, second pass)
+
+`LibraryCards/dracula-castle-of-if.jpg`, 1200×512, cut from
+`38_crypt_chase.webp` — the Count rising from the sarcophagus with the dawn
+shaft across him. Both `library.html` and the hub card were still pointing at
+`01_cover.webp`, and the hub card was still titled *Dracula: The Castle of
+If*, which is the pre-Blocula name. Both now use the new card; the hub title
+and blurb are updated in `block-camp-hub/build.py` so they survive a rebuild.
+
+**The crop is not the obvious one, and here is why.** Both the library grid
+and the hub apply `object-fit:cover` on a `16/9` box, so a 1200×512 card is
+centre-cropped again on the way in — only the middle 910px of 1200 is ever
+seen. A card cut from the full 1536-wide frame put Dracula's face right on
+that cut line and sliced it in half. The card is therefore cut from source
+x 0–1200, not the full width: the Count sits inside the 16:9 window, and
+Jonathan fleeing survives at the right edge only on surfaces that show the
+whole card. **If you re-cut any 1200×512 card, check it at 16:9 as well** —
+render the middle 910px and look at that, not just the card.
+
+### Two Windows bugs in the hub builder, both fixed
+
+Neither is Blocula-specific; they bite anyone running that builder locally.
+
+1. **It read its template with the platform default encoding**, which is
+   cp1252 on Windows, so every em-dash and box-drawing rule in
+   `template.html` came back as mojibake. It had survived only because the
+   *write* was cp1252 too and undid the damage — adding an explicit
+   `encoding='utf-8'` to the write alone made it visible. Both ends are
+   explicit now.
+2. **It wrote with the default newline translation**, turning all 569 lines
+   CRLF, so a one-line blurb edit came back as a whole-file diff — exactly
+   the trap CLAUDE.md describes under "Working from Windows". Now
+   `newline='\n'`.
+
+**Not fixed, and worth a look:** the same unencoded-read pattern is in
+`lesson-template/build/build_sailing.py` (2), `lesson-template/build/rpg/rpg.py`
+(1), `tools/image-audit.py` (1) and `tools/seo.py` (1). This session did not
+verify whether any of them actually corrupts output — `seo.py` ran clean here
+— so they were left alone rather than changed speculatively.
+
 ### Still to do
 
-- **The hub card and library thumbnail are untouched.** Blocula was already
-  published, so its row and card exist — but the card still shows the old
-  cover and the blurb does not mention the new branches. Worth a look.
 - `check-glosses.js` has not been run over `last-train-home-rpg`,
   `long-way-home-rpg`, `lost-yellow-road-rpg` or `wonderland-stolen-now-rpg`.
+- The other four RPG hub cards still use their raw `01_cover.webp` rather
+  than a 1200×512 `LibraryCards/` crop. Blocula is now the odd one out, in
+  the direction of the house convention; the other four could follow.
 - `.claude/launch.json` is new — a `py -m http.server` config so the Browser
   pane can serve the site for screenshot QA. `file://` does not work: the
   preview loads local files as a `data:` URL and every relative image path

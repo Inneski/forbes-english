@@ -140,8 +140,8 @@ ADVENTURES = [
  ('block-camp/last-train-home-rpg.html','block-camp/last-train-home-rpg/01_cover.webp','The Last Train Home',
   'A cyberpunk megacity, a curfew closing in, and one train left before the checkpoints seal the district. Every route out is a prediction about what will happen next.',
   ('Future Simple',),'A1&ndash;A2','pro','start'),
- ('block-camp/dracula-castle-of-if.html','block-camp/dracula-castle-of-if/01_cover.webp','Dracula: The Castle of If',
-  'Bram Stoker&rsquo;s castle, reimagined as a branching grammar nightmare &mdash; every escape route runs on a conditional, and every guard&rsquo;s report comes back in the passive voice.',
+ ('block-camp/dracula-castle-of-if.html','LibraryCards/dracula-castle-of-if.jpg','Grammar Stoker&rsquo;s Blocula',
+  'Bram Stoker&rsquo;s castle as a branching grammar nightmare. The west door is locked, the iron key hangs on the Count&rsquo;s coat, and the last act asks whether you go down to the crypt or out through the courtyard &mdash; every route runs on a conditional, every report comes back in the passive.',
   ('Conditionals','Passive'),'B2','pro','new'),
  ('block-camp/long-way-home-rpg.html','block-camp/long-way-home-rpg/00_cover.webp','The Long Way Home',
   'Homer&rsquo;s Odyssey rebuilt block by block. Thirty-six scenes of storm and monster where the tense you choose decides what happened first &mdash; and losing the thread costs you the crew.',
@@ -174,10 +174,14 @@ def more_cards():
     return '\n'.join(card(h,i,0,'',t,l,'pro') for t,h,i,l in MORE)
 
 def build(inline):
-    tpl = open(os.path.join(HERE,'template.html')).read()
-    tpl = (tpl.replace('{{SEO}}', open(os.path.join(HERE,'seo.html')).read())
-              .replace('{{MONOCRAFT}}', open(os.path.join(HERE,'monocraft.css')).read())
-              .replace('{{NAV}}', open(os.path.join(HERE,'nav.html')).read())
+    # Every read is explicitly utf-8: on Windows the default is cp1252, which
+    # turns every em-dash and box-drawing rule in the template into mojibake.
+    # It used to survive only because the write was cp1252 too and undid it.
+    rd = lambda n: open(os.path.join(HERE,n), encoding='utf-8').read()
+    tpl = rd('template.html')
+    tpl = (tpl.replace('{{SEO}}', rd('seo.html'))
+              .replace('{{MONOCRAFT}}', rd('monocraft.css'))
+              .replace('{{NAV}}', rd('nav.html'))
               .replace('{{CLIMB}}', climb_cards())
               .replace('{{DESCENT}}', descent_cards())
               .replace('{{REFS}}', ref_cards())
@@ -211,8 +215,12 @@ def build(inline):
     return tpl
 
 if __name__ == '__main__':
+    # newline='\n' matters: this repo is LF throughout, and on Windows the
+    # default translates every \n to \r\n, so a one-line blurb edit comes back
+    # as all 569 lines changed (CLAUDE.md, "Working from Windows").
     site = build(False)
-    open(os.path.join(REPO,'block-camp.html'),'w').write(site)
+    open(os.path.join(REPO,'block-camp.html'),'w',encoding='utf-8',newline='\n').write(site)
     prev = build(True)
-    open(os.path.join(os.environ.get('PREVIEW_DIR') or tempfile.gettempdir(), 'block-camp-hub-preview.html'),'w').write(prev)
+    open(os.path.join(os.environ.get('PREVIEW_DIR') or tempfile.gettempdir(), 'block-camp-hub-preview.html'),
+         'w',encoding='utf-8',newline='\n').write(prev)
     print('site', len(site), 'preview', len(prev))
