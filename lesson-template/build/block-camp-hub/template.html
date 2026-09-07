@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Block Camp | Forbes English</title>
 {{SEO}}
-<meta name="theme-color" content="#0b1a12">
+<meta name="theme-color" content="#0a1830">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Lato:wght@400;700&display=swap" rel="stylesheet">
@@ -18,10 +18,15 @@
    full-bleed behind the title, deep forest green everywhere else, and every
    card wearing its camp's colour - the same eight the map's stops wear. */
 :root {
-  --bg:        #0b1a12;
-  --bg-2:      #0f2419;
-  --panel:     rgba(255,255,255,.045);
-  --panel-2:   rgba(255,255,255,.075);
+  /* The page is navy; the CARDS stay forest green (--green-deep/-lift and
+     the --panel fills below). --bg-rgb exists because the hero overlay and
+     two other gradients need this exact colour with an alpha, and writing
+     it out by hand five times is how one of them gets missed on a repaint. */
+  --bg:        #0a1830;
+  --bg-rgb:    10, 24, 48;
+  --bg-2:      #0e2140;
+  --panel:     rgba(20, 48, 31, .72);    /* --green-deep, held against navy */
+  --panel-2:   rgba(35, 74, 51, .82);    /* --green-lift, for the hover */
   --line:      rgba(255,255,255,.10);
   --cream:     #f2f7f3;
   --paper:     #fff4d6;     /* the map's glass-panel cream */
@@ -42,8 +47,8 @@ html { background: var(--bg); }
 body {
   margin: 0; font-family: 'Lato', sans-serif; color: var(--cream);
   background:
-    radial-gradient(900px 520px at 85% 30%, rgba(112,164,58,.08), transparent 60%),
-    radial-gradient(700px 500px at 5% 80%, rgba(70,176,171,.06), transparent 60%),
+    radial-gradient(900px 520px at 85% 30%, rgba(64,118,196,.10), transparent 60%),
+    radial-gradient(700px 500px at 5% 80%, rgba(70,176,171,.07), transparent 60%),
     var(--bg);
   -webkit-font-smoothing: antialiased;
 }
@@ -106,8 +111,8 @@ img { display: block; }
 .hero::before {
   content: ""; position: absolute; inset: 0; z-index: -1;
   background:
-    linear-gradient(90deg, rgba(11,26,18,.96) 0%, rgba(11,26,18,.86) 32%, rgba(11,26,18,.42) 60%, rgba(11,26,18,.08) 100%),
-    linear-gradient(180deg, rgba(11,26,18,.55) 0%, rgba(11,26,18,0) 28%, rgba(11,26,18,0) 62%, var(--bg) 100%);
+    linear-gradient(90deg, rgba(var(--bg-rgb),.94) 0%, rgba(var(--bg-rgb),.80) 32%, rgba(var(--bg-rgb),.26) 60%, rgba(var(--bg-rgb),0) 100%),
+    linear-gradient(180deg, rgba(var(--bg-rgb),.46) 0%, rgba(var(--bg-rgb),0) 28%, rgba(var(--bg-rgb),0) 62%, var(--bg) 100%);
 }
 /* On a phone there is no "left side" to hide the copy on - the whole plate
    is behind the words - so the overlay goes near-solid and the art lives
@@ -116,7 +121,7 @@ img { display: block; }
   .hero { min-height: 0; }
   .hero-art { background-position: center 35%; }
   .hero::before { background:
-    linear-gradient(180deg, rgba(11,26,18,.9) 0%, rgba(11,26,18,.86) 55%, rgba(11,26,18,.5) 80%, var(--bg) 100%); }
+    linear-gradient(180deg, rgba(var(--bg-rgb),.80) 0%, rgba(var(--bg-rgb),.72) 55%, rgba(var(--bg-rgb),.40) 80%, var(--bg) 100%); }
 }
 .hero-inner {
   width: 100%; max-width: 1180px; margin: 0 auto;
@@ -146,7 +151,7 @@ img { display: block; }
 .btn-gold:hover { background: var(--gold-pale); box-shadow: 0 14px 36px rgba(232,192,74,.4); }
 .btn-glass {
   color: var(--paper); border: 1px solid rgba(255,244,214,.45);
-  background: rgba(11,26,18,.45); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  background: rgba(var(--bg-rgb),.45); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
 }
 .btn-glass:hover { background: rgba(255,244,214,.12); }
 .btn svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
@@ -197,7 +202,7 @@ img { display: block; }
 .map-strip .art { position: absolute; inset: 0; z-index: -2; background-size: cover; background-repeat: no-repeat; transition: transform 6s ease; }
 .map-strip:hover .art { transform: scale(1.04); }
 .map-strip::before { content: ""; position: absolute; inset: 0; z-index: -1;
-  background: linear-gradient(90deg, rgba(11,26,18,.92) 0%, rgba(11,26,18,.6) 45%, rgba(11,26,18,.15) 100%); }
+  background: linear-gradient(90deg, rgba(var(--bg-rgb),.92) 0%, rgba(var(--bg-rgb),.6) 45%, rgba(var(--bg-rgb),.15) 100%); }
 .ms-title { display: block; font-size: clamp(1.1rem,2vw,1.5rem); }
 .ms-sub { display: block; font-size: .95rem; color: #cfdcd3; margin-top: 6px; max-width: 52ch; }
 .ms-go { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; font-size: .8rem;
