@@ -63,6 +63,15 @@ before doing any of those steps by hand.
 
 Use cloud sessions for anything that starts from what is already in git.
 
+**A cloud session cannot see the live site either.** Measured 2026-09-07:
+`curl https://forbesenglish.com/...` fails with `CONNECT tunnel failed, 403`
+at the sandbox proxy, and the docs fetcher returns `EGRESS_BLOCKED` for the
+domain. So "open the live URL and click through it" is not a step a cloud
+session can perform — the deploy was verified only by what is on
+`origin/main`. Innes or a local session has to load the page. (A lesson's
+*content* can still be read from the repo, which is where a forbesenglish.com
+URL should be resolved to in a cloud session: `<slug>.html` in the root.)
+
 ## Read these two, in this order
 
 1. **`lesson-template/HOUSE-STYLE.md`** — binding. The six rules, the palette
