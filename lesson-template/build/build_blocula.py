@@ -103,10 +103,10 @@ HOT = {
  'stolen_clothes':   (86, 52,  7, 18, 'left',   'center'),        # the bloodied cuff
  'last_chance':      (33, 42, 10, 22, 'right',  'center'),        # the cliff window
  'escape_plan':      (66, 55,  6, 34, 'left',   'bottom'),        # the sheet-rope
- 'choice3':          (12, 45, 15, 32, 'center', 'top'),           # the broken chapel window
+ 'choice3':          (15, 45, 15, 32, 'center', 'top'),           # the broken chapel window
  'crypt_tomb':       (72, 55, 16, 14, 'left',   'top'),           # the stone sarcophagus
  'stake_decision':   (75, 63, 12, 13, 'left',   'center'),        # the open coffin
- 'crypt_chase':      (55, 77,  8,  7, 'right',  'bottom', 38),    # the dropped hammer
+ 'crypt_chase':      (17, 22, 10, 14, 'right',  'bottom', 38),    # the dawn through the cracked window
  'courtyard_carts':  (75, 60, 14, 14, 'left',   'bottom', 38),    # the loaded wagon
  'carriage_sabotage':(48, 62, 15, 22, 'left',   'top', 32),       # the wheel and its pin
  'courtyard_escape': (77, 73, 16, 22, 'left',   'top'),           # the broken wheel
@@ -115,6 +115,11 @@ HOT = {
  'failure':          (56, 70, 12, 32, 'left',   'top'),           # Dracula at the closed gate
  'epilogue':         (75, 60, 18, 18, 'left',   'center'),        # the earth boxes on deck
 }
+
+# Scenes whose marked object is a blue flame rather than a warm light. The
+# marker takes the flame's colour there, so it reads as the fire itself and
+# not as a gold pin dropped on top of one.
+COOL = ('blue_fire', 'choice1', 'blue_treasure')
 
 # ------------------------------------------------------------------ style
 # One string, replacing everything between `:root{` and `</style>`. The
@@ -133,7 +138,12 @@ STYLE = """:root{--blood:#d21f3c;--deep:#16040a;--bone:#f5ead7;--ice:#a7ddf2;--g
   --tint:color-mix(in srgb,var(--blood) 20%,transparent);
   --tint-lit:color-mix(in srgb,var(--blood) 52%,transparent);
   --cast:color-mix(in srgb,var(--deep) 58%,transparent);
-  --good:#77efb4;--bad:#ff6f82;--r:.85cqw}
+  --good:#77efb4;--bad:#ff6f82;--r:.85cqw;
+  /* The marker glow. It defaults to the lesson's gold, but a scene whose
+     object is itself a light takes that light's colour — the blue fire
+     scenes glow blue, so the marker reads as the flame and not as a
+     gold pin dropped on top of one. */
+  --glow:#f0c878;--glow-core:#fff0be;--glow-sheen:#fffae1}
 *{box-sizing:border-box} html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#050306;color:var(--bone);font-family:"Courier New",Courier,monospace}
 button{font:inherit}.game{position:fixed;inset:0;background:#050306}.frame{position:absolute;inset:0;overflow:hidden;container-type:inline-size}
 .scene-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;filter:saturate(1.04) contrast(1.03)}
@@ -147,10 +157,14 @@ button{font:inherit}.game{position:fixed;inset:0;background:#050306}.frame{posit
 .v-top .zone{align-items:flex-start}.v-center .zone{align-items:center}.v-bottom .zone{align-items:flex-end}
 .hide-btn{align-self:flex-end;order:-1;margin:calc(-.5*var(--u)) calc(-.6*var(--u)) calc(-.3*var(--u)) 0;border:0;background:none;color:var(--muted);font-size:calc(.82*var(--u));letter-spacing:.08em;cursor:pointer;padding:calc(.25*var(--u)) calc(.4*var(--u))}.hide-btn:hover{color:var(--bone)}.left .hide-btn,.center .hide-btn{align-self:flex-end}.right .hide-btn{align-self:flex-start}
 .hot{position:absolute;z-index:6;left:50%;top:50%;width:10%;height:14%;transform:translate(-50%,-50%);border:0;background:none;padding:0;cursor:pointer;transition:opacity .25s;min-width:3.6cqw;min-height:3.6cqw}
-.hot i{position:absolute;inset:-.4cqw;border-radius:38%;background:linear-gradient(115deg,transparent 28%,rgba(255,240,190,.28) 42%,rgba(255,250,225,.62) 50%,rgba(255,240,190,.28) 58%,transparent 72%);background-size:260% 260%;mix-blend-mode:screen;box-shadow:0 0 0 .14cqw rgba(240,200,120,.9),0 0 1.4cqw .25cqw rgba(240,200,120,.55),inset 0 0 1.4cqw rgba(255,235,170,.35);animation:shimmer 2.2s linear infinite,pulse 1.8s ease-in-out infinite}
-.hot::before{content:"";position:absolute;inset:-.4cqw;border-radius:38%;border:.16cqw solid rgba(255,240,190,.9);opacity:0;animation:ring 1.8s ease-out infinite}
-.hot:hover i{animation-duration:1s,1.8s;box-shadow:0 0 0 .18cqw #fff3c4,0 0 2.2cqw .5cqw rgba(240,200,120,.85),inset 0 0 1.8cqw rgba(255,235,170,.5)}
-.hot-label{position:absolute;left:50%;top:calc(100% + .7cqw);transform:translateX(-50%);white-space:nowrap;color:var(--gold);font-family:'Pixelify Sans','Courier New',monospace;font-size:1.15cqw;letter-spacing:.04em;text-shadow:-.09em -.09em 0 var(--deep),0 -.09em 0 var(--deep),.09em -.09em 0 var(--deep),-.09em 0 0 var(--deep),.09em 0 0 var(--deep),-.09em .09em 0 var(--deep),0 .09em 0 var(--deep),.09em .09em 0 var(--deep),0 .14em .5em rgba(5,3,7,.9);pointer-events:none}
+.hot i{position:absolute;inset:-.4cqw;border-radius:38%;background:linear-gradient(115deg,transparent 28%,color-mix(in srgb,var(--glow-core) 28%,transparent) 42%,color-mix(in srgb,var(--glow-sheen) 62%,transparent) 50%,color-mix(in srgb,var(--glow-core) 28%,transparent) 58%,transparent 72%);background-size:260% 260%;mix-blend-mode:screen;box-shadow:0 0 0 .14cqw color-mix(in srgb,var(--glow) 90%,transparent),0 0 1.4cqw .25cqw color-mix(in srgb,var(--glow) 55%,transparent),inset 0 0 1.4cqw color-mix(in srgb,var(--glow-core) 35%,transparent);animation:shimmer 2.2s linear infinite,pulse 1.8s ease-in-out infinite}
+.hot::before{content:"";position:absolute;inset:-.4cqw;border-radius:38%;border:.16cqw solid color-mix(in srgb,var(--glow-core) 90%,transparent);opacity:0;animation:ring 1.8s ease-out infinite}
+.hot:hover i{animation-duration:1s,1.8s;box-shadow:0 0 0 .18cqw var(--glow-core),0 0 2.2cqw .5cqw color-mix(in srgb,var(--glow) 85%,transparent),inset 0 0 1.8cqw color-mix(in srgb,var(--glow-core) 50%,transparent)}
+/* A scene whose object is a blue flame: the marker takes the flame's
+   colour, and its label with it. */
+.hot.cool{--glow:#5fc9f8;--glow-core:#cdeeff;--glow-sheen:#eafaff}
+.hot.cool .hot-label{color:var(--ice)}
+.hot-label{position:absolute;left:50%;top:calc(100% + .7cqw);transform:translateX(-50%);white-space:nowrap;color:var(--glow);font-family:'Pixelify Sans','Courier New',monospace;font-size:1.15cqw;letter-spacing:.04em;text-shadow:-.09em -.09em 0 var(--deep),0 -.09em 0 var(--deep),.09em -.09em 0 var(--deep),-.09em 0 0 var(--deep),.09em 0 0 var(--deep),-.09em .09em 0 var(--deep),0 .09em 0 var(--deep),.09em .09em 0 var(--deep),0 .14em .5em rgba(5,3,7,.9);pointer-events:none}
 .hot.above .hot-label{top:auto;bottom:calc(100% + .7cqw)}
 .langs{position:relative}.lang-btn{display:flex;align-items:center;gap:.3cqw;white-space:nowrap}.lang-btn b{color:var(--gold)}
 .lang-menu[hidden]{display:none}.lang-menu{position:absolute;right:0;top:calc(100% + .4cqw);z-index:20;display:grid;grid-template-columns:1fr 1fr;gap:.25cqw;min-width:22cqw;padding:.5cqw;background:var(--veil-deep);border:1px solid var(--hair);border-radius:var(--r);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 1cqw 3cqw var(--cast)}
@@ -235,11 +249,18 @@ def build():
     b = page.index('\nconst HOT=', a)
     page = page[:a] + body + page[b:]
 
-    # ---- 4. HOT
+    # ---- 4. HOT, and the scenes whose marker glows blue
     hot = {k: list(v) for k, v in HOT.items()}
     page = re.sub(r'const HOT=\{.*?\};',
-                  'const HOT=' + json.dumps(hot, ensure_ascii=False) + ';',
+                  'const HOT=' + json.dumps(hot, ensure_ascii=False) + ';'
+                  + 'const COOL=' + json.dumps(list(COOL)) + ';',
                   page, count=1, flags=re.S)
+    page = re.sub(r'const COOL=\[[^\]]*\];(const COOL=\[[^\]]*\];)+',
+                  lambda m: m.group(0)[:m.group(0).index('];') + 2], page, flags=re.S)
+    if "hot.classList.toggle('cool'" not in page:
+        page = page.replace('function placeHot(h){',
+                            "function placeHot(h){hot.classList.toggle('cool',COOL.includes(state.scene));", 1)
+    assert "hot.classList.toggle('cool'" in page, 'the blue-marker class was not wired in'
 
     # ---- 5. fit the panel to the frame. The panel must never scroll, so
     # after anything that changes its content — a new scene, a revealed

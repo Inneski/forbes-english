@@ -204,6 +204,29 @@ is unreliable; the second round still had `train` and `inn` a few percent
 out. The loop that generates the sheets is in the 2026-09-07 scratch work;
 `rpg/README.md` §3 has the canonical snippet.
 
+**The marker takes its object's colour.** Innes: *"change the light to blue
+when on top of the blue flames and try keep it content aware."* The glow was
+a fixed gold pin, which looked wrong sitting on a blue flame. It is now three
+palette tokens (`--glow`, `--glow-core`, `--glow-sheen`) and a `.hot.cool`
+override; `COOL` in the builder lists the scenes that take it —
+`blue_fire`, `choice1`, `blue_treasure` — and `placeHot` toggles the class.
+The hotspot label follows the same colour. To add a scene, put its id in
+`COOL`; to add a third colour, add a class beside `.hot.cool`.
+
+**Content-aware, not brightest-thing.** A pass that moved every marker onto
+the nearest lantern was written and thrown away: Innes asked to keep it
+content aware, and the object the clue talks about is the one that must
+glow. Where a scene's own object *is* a light the two agree, which is why
+`dinner` is on the fireplace and `crypt_chase` moved from the dropped hammer
+to the dawn through the cracked window — that scene is called "Dawn Breaks
+In", and the hammer was almost invisible at marker size.
+
+**"I can't see any difference" usually means a cached page.** The live site
+was confirmed serving the new build (39 scenes, `fitPanel`, the 0.34 veil)
+while it still looked unchanged in the browser. Check
+`https://forbesenglish.com/block-camp/dracula-castle-of-if.html` in the
+console before re-doing any work.
+
 **Card name.** The catalogue title is now *Blocula — Conditionals & Passive
 Voice RPG (B2)*, dropping "Grammar Stoker's". Changed in Supabase **and**
 mirrored into `tools/lessons.json`; `seo.py` then propagated it to
