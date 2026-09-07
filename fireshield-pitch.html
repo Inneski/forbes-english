@@ -54,6 +54,15 @@
   }
   .cover .kicker{margin:0; font-size:.86rem; color:var(--text-dim);
     letter-spacing:.03em; font-weight:600;}
+  .langbar{margin-top:14px; display:flex; align-items:center; gap:8px;}
+  .langbar label{font-size:.74rem; text-transform:uppercase; letter-spacing:.08em;
+    font-weight:700; color:var(--text-dim);}
+  .langbar select{
+    font-family:'Inter',sans-serif; font-size:.86rem; font-weight:600;
+    color:var(--text); background:var(--surface); border:1.5px solid var(--border);
+    border-radius:8px; padding:5px 10px; cursor:pointer;
+  }
+  .langbar select:focus{outline:2px solid var(--accent); outline-offset:1px;}
 
   /* Act background — swapped, never pasted as a box (house rule 5b) */
   .stage{position:relative;}
@@ -206,12 +215,16 @@
         </svg>
     </div>
     <h1>The FireShield Pitch</h1>
-    <p class="kicker">Forbes English &middot; B2 &middot; Branching sales roleplay</p>
+    <p class="kicker" data-i18n="kicker">Forbes English &middot; B2 &middot; Branching sales roleplay</p>
+    <div class="langbar">
+      <label for="langSel" data-i18n="langLabel">Language</label>
+      <select id="langSel" aria-label="Language"></select>
+    </div>
   </div>
 </header>
 
 <div class="trust-wrap hidden" id="trustWrap">
-  <div class="trust-label"><span>Priya&rsquo;s trust</span><span id="trustNum">50</span></div>
+  <div class="trust-label"><span data-i18n="trustLabel">Priya&rsquo;s trust</span><span id="trustNum">50</span></div>
   <div class="trust-track"><div class="trust-fill" id="trustFill"></div></div>
   <div class="act-pips" id="actPips">
     <span data-act="1">I &middot; Manchester</span>
@@ -224,18 +237,18 @@
 <div class="wrap">
 
   <div class="card" id="introCard">
-    <div class="tag">Briefing</div>
-    <p>You are Alex Rowntree, a sales rep for Forbes Membranes. Over three meetings and eighteen months you have to sell FireShield HX — a fire-retardant vapour barrier — to a buyer who has been let down before, then keep her when a rival's product fails, then defend the whole story in public.</p>
-    <p>Every choice moves Priya's trust. Vocabulary checkpoints move it too, but only if you get them right first time. Where you finish depends on what you actually did, not on how the last meeting is summarised.</p>
-    <button class="btn" id="startBtn">Take the meeting</button>
+    <div class="tag" data-i18n="briefing">Briefing</div>
+    <p data-i18n="intro0">You are Alex Rowntree, a sales rep for Forbes Membranes. Over three meetings and eighteen months you have to sell FireShield HX — a fire-retardant vapour barrier — to a buyer who has been let down before, then keep her when a rival's product fails, then defend the whole story in public.</p>
+    <p data-i18n="intro1">Every choice moves Priya's trust. Vocabulary checkpoints move it too, but only if you get them right first time. Where you finish depends on what you actually did, not on how the last meeting is summarised.</p>
+    <button class="btn" id="startBtn" data-i18n="btnStart">Take the meeting</button>
   </div>
 
   <div id="gameArea"></div>
 
   <div class="activate card hidden" id="activate" data-type="activate">
-    <h2>Now use the language</h2>
+    <h2 data-i18n="actHeading">Now use the language</h2>
     <div class="chips">
-      <div class="chips-intro">Use at least three of these:</div>
+      <div class="chips-intro" data-i18n="actChips">Use at least three of these, in English:</div>
       <span class="chip">shortfall</span>
       <span class="chip">trade-off</span>
       <span class="chip">trial</span>
@@ -255,21 +268,21 @@
       <span class="chip">affordable</span>
     </div>
     <div class="track">
-      <h3>🗣 Discussion</h3>
+      <h3 data-i18n="actSpeak">🗣 Discussion</h3>
       <ol>
-      <li>You are Alex. Priya asks you point-blank whether FireShield HX could fail the way the rival's product did. You cannot say &lsquo;no&rsquo; and you cannot say &lsquo;yes&rsquo;. Answer her out loud, in under a minute.</li>
-      <li>Your competitor is 8% cheaper and your buyer has said so. Argue for the higher price without once mentioning quality as a vague virtue — talk about risk, liability and what a failure would actually cost her.</li>
-      <li>A journalist asks you a question built on a false premise, in public. Correct the premise without sounding defensive, and take the room with you.</li>
+      <li data-i18n="speak0">You are Alex. Priya asks you point-blank whether FireShield HX could fail the way the rival's product did. You cannot say &lsquo;no&rsquo; and you cannot say &lsquo;yes&rsquo;. Answer her out loud, in under a minute.</li>
+      <li data-i18n="speak1">Your competitor is 8% cheaper and your buyer has said so. Argue for the higher price without once calling your product &lsquo;better&rsquo; — talk about risk, liability, and what a failure would actually cost her.</li>
+      <li data-i18n="speak2">A journalist asks you a question built on a false premise, in public. Correct the premise without sounding defensive, and take the room with you.</li>
       </ol>
     </div>
     <div class="track">
-      <h3>✍️ Writing</h3>
-      <p class="brief">Priya has emailed asking, in writing, for reassurance about the mould story before her director will sign. Write the reply. Give evidence rather than assurance, name what you will be accountable for, and propose a concrete next step. 150&ndash;250 words.</p>
-      <textarea id="writing" aria-label="✍️ Writing"></textarea>
+      <h3 data-i18n="actWrite">✍️ Writing</h3>
+      <p class="brief" data-i18n="writeBrief">Priya has emailed asking, in writing, for reassurance about the mould story before her director will sign. Write the reply in English. Give evidence rather than assurance, name what you will be accountable for, and propose a concrete next step. 150&ndash;250 words.</p>
+      <textarea id="writing" aria-label="Writing task"></textarea>
       <div class="print-mirror" id="writingMirror"></div>
       <div class="writing-foot">
         <span class="counter" id="counter">0 words</span>
-        <button class="btn ghost" id="copyBtn">Copy</button>
+        <button class="btn ghost" id="copyBtn" data-i18n="btnCopy">Copy</button>
       </div>
     </div>
   </div>
@@ -282,7 +295,7 @@ const SCENES = {
  "a1_open": {
   "type": "story",
   "act": 1,
-  "tag": "Scene 1 — The Opening",
+  "tagKey": "sc1",
   "bg": "act1",
   "narrative": "Meridian Construction's site office, Manchester. Priya Shah greets you with a firm handshake and the look of someone who has heard enough sales pitches to last a lifetime. Her last supplier caused a <i>shortfall</i> that cost her three weeks of work. You have twenty minutes.",
   "choices": [
@@ -306,7 +319,7 @@ const SCENES = {
  "a1_tech": {
   "type": "checkpoint",
   "act": 1,
-  "tag": "Checkpoint — Collocation and tense",
+  "tagKey": "cpColl",
   "bg": "act1",
   "narrative": "You open your laptop and start talking through fire ratings and moisture permeability figures. Priya cuts in: &lsquo;Before I look at numbers — has this actually been tested on a live site, or just in a lab?&rsquo;",
   "question": "Which sentence is correct?",
@@ -323,7 +336,7 @@ const SCENES = {
  "a1_consult": {
   "type": "checkpoint",
   "act": 1,
-  "tag": "Checkpoint — Past Continuous",
+  "tagKey": "cpPast",
   "bg": "act1",
   "narrative": "Priya's shoulders drop slightly. &lsquo;Our last supplier promised weekly deliveries. For two months ___ fine — then the shipments just stopped and we lost three weeks of work.&rsquo;",
   "question": "Which fits the gap?",
@@ -340,7 +353,7 @@ const SCENES = {
  "a1_shortfall": {
   "type": "checkpoint",
   "act": 1,
-  "tag": "Checkpoint — Vocabulary",
+  "tagKey": "cpVocab",
   "bg": "act1",
   "narrative": "Priya leans back. &lsquo;Here is my real problem — I have a ___ of about 400 square metres between what my current supplier can deliver this month and what the schedule needs. Your competitor, Northline, is offering something similar for 8% less.&rsquo;",
   "question": "Which word fits the gap?",
@@ -358,7 +371,7 @@ const SCENES = {
  "a1_objection": {
   "type": "story",
   "act": 1,
-  "tag": "Scene 2 — The Objection",
+  "tagKey": "sc2",
   "bg": "act1",
   "narrative": "Priya is waiting for your answer, and the Northline quote is face-up on the desk between you.",
   "choices": [
@@ -382,7 +395,7 @@ const SCENES = {
  "a1_trial": {
   "type": "checkpoint",
   "act": 1,
-  "tag": "Checkpoint — Vocabulary",
+  "tagKey": "cpVocab",
   "bg": "act1",
   "narrative": "&lsquo;One wing, fully documented, before you commit to the rest — no risk to your schedule if it does not perform.&rsquo; Priya raises an eyebrow, interested.",
   "question": "Which word best describes what you have just proposed?",
@@ -400,7 +413,7 @@ const SCENES = {
  "a1_match": {
   "type": "checkpoint",
   "act": 1,
-  "tag": "Checkpoint — Vocabulary",
+  "tagKey": "cpVocab",
   "bg": "act1",
   "narrative": "You agree to match Northline's price. Your regional manager will not be pleased, but Priya nods slowly.",
   "question": "Matching the price on the spot is really a ___ between margin and winning the contract.",
@@ -418,7 +431,7 @@ const SCENES = {
  "a1_close": {
   "type": "checkpoint",
   "act": 1,
-  "tag": "Checkpoint — Register",
+  "tagKey": "cpReg",
   "bg": "act1",
   "narrative": "Before you leave, you draft a short follow-up email confirming next steps. You want it convincing, without sounding pushy.",
   "question": "Which word describes writing convincingly, using reasoning rather than pressure?",
@@ -436,7 +449,7 @@ const SCENES = {
  "int1": {
   "type": "interlude",
   "act": 1,
-  "tag": "End of Act I — Manchester",
+  "tagKey": "endA1",
   "tiers": [
    {
     "min": 0.78,
@@ -459,7 +472,7 @@ const SCENES = {
  "a2_open": {
   "type": "story",
   "act": 2,
-  "tag": "Scene 3 — The New Ask",
+  "tagKey": "sc3",
   "bg": "act2",
   "narrative": "Six months on. Meridian's regional director wants a framework agreement covering five new sites in Leeds — ten times the size of the original order. But a rival's membrane failed on a nearby site last month: mould appeared behind the cladding, and every supplier is under suspicion. Priya calls you: &lsquo;Before anyone signs anything, I need to know FireShield HX will not do the same thing.&rsquo;",
   "choices": [
@@ -483,7 +496,7 @@ const SCENES = {
  "a2_walk": {
   "type": "checkpoint",
   "act": 2,
-  "tag": "Checkpoint — Vocabulary",
+  "tagKey": "cpVocab",
   "bg": "act2",
   "narrative": "You and Priya inspect the failed site together. The membrane itself looks intact, but the fixing points show damp staining.",
   "question": "Which word describes water present in small quantity within a material or on a surface?",
@@ -501,7 +514,7 @@ const SCENES = {
  "a2_assure": {
   "type": "checkpoint",
   "act": 2,
-  "tag": "Checkpoint — Vocabulary",
+  "tagKey": "cpVocab",
   "bg": "act2",
   "narrative": "Your email lands — all confidence, no evidence. Priya replies within the hour: &lsquo;That is not really an answer.&rsquo;",
   "question": "Priya felt your email offered reassurance with no evidence. Which word describes that?",
@@ -519,7 +532,7 @@ const SCENES = {
  "a2_adhoc": {
   "type": "checkpoint",
   "act": 2,
-  "tag": "Checkpoint — Vocabulary",
+  "tagKey": "cpVocab",
   "bg": "act2",
   "narrative": "Priya likes the idea of independent verification, but wants to know it will not drag on for months.",
   "question": "Which phrase describes something arranged for a specific purpose, as needed, without a long-term structure?",
@@ -537,7 +550,7 @@ const SCENES = {
  "a2_resilient": {
   "type": "checkpoint",
   "act": 2,
-  "tag": "Checkpoint — Vocabulary",
+  "tagKey": "cpVocab",
   "bg": "act2",
   "narrative": "The audit confirms it: the rival's failure was caused by poor installation trapping moisture behind the membrane, not by a flaw in the material. Still, the regional director is nervous about signing a five-site agreement while that story is circulating.",
   "question": "Which word means &lsquo;able to withstand or recover quickly from difficult conditions&rsquo; — exactly what you need your reputation to be?",
@@ -555,7 +568,7 @@ const SCENES = {
  "a2_objection": {
   "type": "story",
   "act": 2,
-  "tag": "Scene 4 — The Framework",
+  "tagKey": "sc4",
   "bg": "act2",
   "narrative": "The director puts a number on the table: a five-site framework, but only if you can guarantee installation quality, not just material quality.",
   "choices": [
@@ -579,7 +592,7 @@ const SCENES = {
  "a2_pilot": {
   "type": "checkpoint",
   "act": 2,
-  "tag": "Checkpoint — Vocabulary",
+  "tagKey": "cpVocab",
   "bg": "act2",
   "narrative": "&lsquo;One site, fully monitored, before the rest&rsquo; — the director likes that it limits their risk without questioning your product.",
   "question": "Which word means &lsquo;a condition that must be met&rsquo;?",
@@ -597,7 +610,7 @@ const SCENES = {
  "a2_liability": {
   "type": "checkpoint",
   "act": 2,
-  "tag": "Checkpoint — Vocabulary",
+  "tagKey": "cpVocab",
   "bg": "act2",
   "narrative": "You offer to help cover the retrofit cost on the failed site, even though it was not your product that failed. Your finance director asks, carefully, whether you have just admitted something.",
   "question": "Which word describes legal responsibility for a cost or a fault?",
@@ -615,7 +628,7 @@ const SCENES = {
  "a2_close": {
   "type": "checkpoint",
   "act": 2,
-  "tag": "Checkpoint — Vocabulary",
+  "tagKey": "cpVocab",
   "bg": "act2",
   "narrative": "You draft the final proposal for the five-site framework. The director's one real fear is that nobody will own the outcome if a site goes wrong.",
   "question": "Which word describes being required to explain and take responsibility for your actions?",
@@ -633,7 +646,7 @@ const SCENES = {
  "int2": {
   "type": "interlude",
   "act": 2,
-  "tag": "End of Act II — Leeds",
+  "tagKey": "endA2",
   "tiers": [
    {
     "min": 0.78,
@@ -656,7 +669,7 @@ const SCENES = {
  "a3_open": {
   "type": "story",
   "act": 3,
-  "tag": "Scene 5 — The Conference",
+  "tagKey": "sc5",
   "bg": "act3",
   "narrative": "A year later, Dublin. Meridian's parent company has put you on stage in front of fifty construction buyers, with a rep from Kavanagh — the distributor you want — in the front row. Somewhere in the room is a trade journalist who has read about the mould story.",
   "choices": [
@@ -680,7 +693,7 @@ const SCENES = {
  "a3_data": {
   "type": "checkpoint",
   "act": 3,
-  "tag": "Checkpoint — Vocabulary",
+  "tagKey": "cpVocab",
   "bg": "act3",
   "narrative": "You lead with numbers: fire ratings, permeability figures, third-party sign-off. Heads nod, but nobody looks moved yet.",
   "question": "Which word fits: &lsquo;The safety audit was ___ by an independent inspector, not by us.&rsquo;",
@@ -698,7 +711,7 @@ const SCENES = {
  "a3_story": {
   "type": "checkpoint",
   "act": 3,
-  "tag": "Checkpoint — Vocabulary",
+  "tagKey": "cpVocab",
   "bg": "act3",
   "narrative": "You tell the room about Priya's original hesitation, the trial wing, and the way the relationship grew. A few buyers lean forward.",
   "question": "Which word means &lsquo;convince someone to do something&rsquo; — what a good story does better than a spreadsheet?",
@@ -716,7 +729,7 @@ const SCENES = {
  "a3_headon": {
   "type": "checkpoint",
   "act": 3,
-  "tag": "Checkpoint — Vocabulary",
+  "tagKey": "cpVocab",
   "bg": "act3",
   "narrative": "&lsquo;Some of you will have heard about a membrane failure on a site near one of ours,&rsquo; you say. &lsquo;Let us talk about it before you ask.&rsquo; The room goes quiet, then attentive.",
   "question": "Which word fits: &lsquo;A membrane installed incorrectly can become ___ over time — ours passed every follow-up inspection.&rsquo;",
@@ -734,7 +747,7 @@ const SCENES = {
  "a3_provoke": {
   "type": "checkpoint",
   "act": 3,
-  "tag": "Checkpoint — Vocabulary",
+  "tagKey": "cpVocab",
   "bg": "act3",
   "narrative": "In the Q&amp;A the journalist stands up: &lsquo;Is it not true that a Forbes membrane failed just months ago?&rsquo; It is not true — it was a rival's — and every eye in the room is on you.",
   "question": "Which word describes what her question is really trying to do?",
@@ -752,7 +765,7 @@ const SCENES = {
  "a3_objection": {
   "type": "story",
   "act": 3,
-  "tag": "Scene 6 — The Distributor",
+  "tagKey": "sc6",
   "bg": "act3",
   "narrative": "Afterwards, Kavanagh's rep finds you by the coffee stand. &lsquo;Honestly, your product looks the same as everything else on the market, and it is a lot cheaper to stay with our current supplier.&rsquo;",
   "choices": [
@@ -776,7 +789,7 @@ const SCENES = {
  "a3_guarantee": {
   "type": "checkpoint",
   "act": 3,
-  "tag": "Checkpoint — Vocabulary",
+  "tagKey": "cpVocab",
   "bg": "act3",
   "narrative": "&lsquo;A written guarantee, backed by the audit you saw today. No extra risk on your side.&rsquo; She is listening properly now.",
   "question": "Which word describes a measure taken in advance to prevent something unpleasant — which is what a guarantee is, for her?",
@@ -794,7 +807,7 @@ const SCENES = {
  "a3_afford": {
   "type": "checkpoint",
   "act": 3,
-  "tag": "Checkpoint — Vocabulary",
+  "tagKey": "cpVocab",
   "bg": "act3",
   "narrative": "You agree to match the competitor's number. It makes the listing easier for her to justify internally, and you already know what it does to your margin.",
   "question": "Matching the price makes the offer more ___, at the cost of your margin.",
@@ -812,7 +825,7 @@ const SCENES = {
  "a3_close": {
   "type": "checkpoint",
   "act": 3,
-  "tag": "Checkpoint — Vocabulary",
+  "tagKey": "cpVocab",
   "bg": "act3",
   "narrative": "You send Kavanagh a follow-up proposal for national distribution across Ireland — confident, not pushy. Eighteen months of work comes down to one quality the reader has to believe in.",
   "question": "Which word describes something that can be trusted to work well, every time?",
@@ -830,7 +843,7 @@ const SCENES = {
  "final": {
   "type": "interlude",
   "act": 3,
-  "tag": "End of Act III — Dublin",
+  "tagKey": "endA3",
   "tiers": [
    {
     "min": 0.85,
@@ -858,7 +871,7 @@ const SCENES = {
  "end_lie1": {
   "type": "ending",
   "act": 1,
-  "tag": "Ending — Contract Cancelled",
+  "tagKey": "failCancel",
   "bg": "end",
   "title": "Three weeks into installation, Meridian's fire safety consultant flags the discrepancy.",
   "body": "The certification does not match what you claimed. The contract is cancelled on the spot, and word travels fast around the Manchester construction scene. There is no Act II — but you can go back and take that decision again.",
@@ -867,7 +880,7 @@ const SCENES = {
  "end_deflect": {
   "type": "ending",
   "act": 2,
-  "tag": "Ending — Deal Off the Table",
+  "tagKey": "failDeal",
   "bg": "end",
   "title": "&lsquo;That is not the answer I needed to hear.&rsquo;",
   "body": "The director ends the call within a minute of you deflecting responsibility. Meridian issues a tender for all five sites the following week, and Forbes is not on the list of invited suppliers.",
@@ -876,7 +889,7 @@ const SCENES = {
  "end_lie3": {
   "type": "ending",
   "act": 3,
-  "tag": "Ending — Story Confirmed",
+  "tagKey": "failStory",
   "bg": "end",
   "title": "&lsquo;Never failed, anywhere, ever?&rsquo; the journalist repeats, pen already moving.",
   "body": "The trade press runs a story questioning Forbes' honesty rather than its product. Kavanagh's rep stops returning your calls, and the Dublin expansion is quietly shelved.",
@@ -888,14 +901,157 @@ const BG = {
   act2:"FireShield/bg-act2.jpg",   act3:"FireShield/bg-act3.jpg",
   end:"FireShield/bg-end.jpg"
 };
-const UI = {
-  cont:'Continue',
-  nextAct:'Six months later &rarr;',
-  rewind:'Rewind to that decision',
-  restart:'Play the whole thing again',
-  toActivation:'Now use the language &rarr;',
-  carry:'Priya’s trust now stands at'
+const UI_I18N = {
+ "en": {
+  "kicker": "Forbes English &middot; B2 &middot; Branching sales roleplay",
+  "trustLabel": "Priya&rsquo;s trust",
+  "briefing": "Briefing",
+  "btnStart": "Take the meeting",
+  "btnContinue": "Continue",
+  "btnNextAct": "Six months later &rarr;",
+  "btnRewind": "Rewind to that decision",
+  "btnRestart": "Play the whole thing again",
+  "btnActivate": "Now use the language &rarr;",
+  "carry": "Priya&rsquo;s trust now stands at",
+  "langLabel": "Language",
+  "actHeading": "Now use the language",
+  "actChips": "Use at least three of these, in English:",
+  "actSpeak": "🗣 Discussion",
+  "actWrite": "✍️ Writing",
+  "actWords": "words",
+  "btnCopy": "Copy",
+  "btnCopied": "Copied",
+  "sc1": "Scene 1 — The Opening",
+  "sc2": "Scene 2 — The Objection",
+  "sc3": "Scene 3 — The New Ask",
+  "sc4": "Scene 4 — The Framework",
+  "sc5": "Scene 5 — The Conference",
+  "sc6": "Scene 6 — The Distributor",
+  "cpVocab": "Checkpoint — Vocabulary",
+  "cpColl": "Checkpoint — Collocation and tense",
+  "cpPast": "Checkpoint — Past Continuous",
+  "cpReg": "Checkpoint — Register",
+  "endA1": "End of Act I — Manchester",
+  "endA2": "End of Act II — Leeds",
+  "endA3": "End of Act III — Dublin",
+  "failCancel": "Ending — Contract Cancelled",
+  "failDeal": "Ending — Deal Off the Table",
+  "failStory": "Ending — Story Confirmed",
+  "intro0": "You are Alex Rowntree, a sales rep for Forbes Membranes. Over three meetings and eighteen months you have to sell FireShield HX — a fire-retardant vapour barrier — to a buyer who has been let down before, then keep her when a rival's product fails, then defend the whole story in public.",
+  "intro1": "Every choice moves Priya's trust. Vocabulary checkpoints move it too, but only if you get them right first time. Where you finish depends on what you actually did, not on how the last meeting is summarised.",
+  "speak0": "You are Alex. Priya asks you point-blank whether FireShield HX could fail the way the rival's product did. You cannot say &lsquo;no&rsquo; and you cannot say &lsquo;yes&rsquo;. Answer her out loud, in under a minute.",
+  "speak1": "Your competitor is 8% cheaper and your buyer has said so. Argue for the higher price without once calling your product &lsquo;better&rsquo; — talk about risk, liability, and what a failure would actually cost her.",
+  "speak2": "A journalist asks you a question built on a false premise, in public. Correct the premise without sounding defensive, and take the room with you.",
+  "writeBrief": "Priya has emailed asking, in writing, for reassurance about the mould story before her director will sign. Write the reply in English. Give evidence rather than assurance, name what you will be accountable for, and propose a concrete next step. 150&ndash;250 words."
+ },
+ "de": {
+  "kicker": "Forbes English &middot; B2 &middot; Verzweigtes Verkaufs-Rollenspiel",
+  "trustLabel": "Priyas Vertrauen",
+  "briefing": "Briefing",
+  "btnStart": "Zum Termin",
+  "btnContinue": "Weiter",
+  "btnNextAct": "Sechs Monate später &rarr;",
+  "btnRewind": "Zu dieser Entscheidung zurück",
+  "btnRestart": "Alles noch einmal spielen",
+  "btnActivate": "Jetzt selbst anwenden &rarr;",
+  "carry": "Priyas Vertrauen steht jetzt bei",
+  "langLabel": "Sprache",
+  "actHeading": "Jetzt selbst anwenden",
+  "actChips": "Verwenden Sie mindestens drei davon, auf Englisch:",
+  "actSpeak": "🗣 Diskussion",
+  "actWrite": "✍️ Schreiben",
+  "actWords": "Wörter",
+  "btnCopy": "Kopieren",
+  "btnCopied": "Kopiert",
+  "sc1": "Szene 1 — Der Einstieg",
+  "sc2": "Szene 2 — Der Einwand",
+  "sc3": "Szene 3 — Die neue Forderung",
+  "sc4": "Szene 4 — Der Rahmenvertrag",
+  "sc5": "Szene 5 — Die Konferenz",
+  "sc6": "Szene 6 — Der Händler",
+  "cpVocab": "Zwischenstopp — Wortschatz",
+  "cpColl": "Zwischenstopp — Kollokation und Zeitform",
+  "cpPast": "Zwischenstopp — Past Continuous",
+  "cpReg": "Zwischenstopp — Register",
+  "endA1": "Ende von Akt I — Manchester",
+  "endA2": "Ende von Akt II — Leeds",
+  "endA3": "Ende von Akt III — Dublin",
+  "failCancel": "Ende — Vertrag gekündigt",
+  "failDeal": "Ende — Der Auftrag ist weg",
+  "failStory": "Ende — Die Geschichte bestätigt sich",
+  "intro0": "Sie sind Alex Rowntree, Vertriebsmitarbeiter bei Forbes Membranes. In drei Terminen über achtzehn Monate müssen Sie FireShield HX — eine flammhemmende Dampfsperre — an eine Einkäuferin verkaufen, die schon einmal enttäuscht wurde; sie halten, wenn das Produkt eines Konkurrenten versagt; und die ganze Geschichte öffentlich vertreten.",
+  "intro1": "Jede Entscheidung verändert Priyas Vertrauen. Die Wortschatz-Stopps auch — aber nur, wenn Sie sie beim ersten Versuch richtig lösen. Wo Sie landen, hängt davon ab, was Sie tatsächlich getan haben.",
+  "speak0": "Sie sind Alex. Priya fragt Sie direkt, ob FireShield HX genauso versagen könnte wie das Konkurrenzprodukt. Sie können weder &lsquo;nein&rsquo; noch &lsquo;ja&rsquo; sagen. Antworten Sie laut, in unter einer Minute.",
+  "speak1": "Der Wettbewerber ist 8% günstiger, und Ihre Kundin hat das gesagt. Begründen Sie den höheren Preis, ohne Ihr Produkt ein einziges Mal &lsquo;besser&rsquo; zu nennen — sprechen Sie über Risiko, Haftung und die tatsächlichen Kosten eines Schadens.",
+  "speak2": "Eine Journalistin stellt Ihnen öffentlich eine Frage, die auf einer falschen Annahme beruht. Korrigieren Sie die Annahme, ohne defensiv zu wirken, und nehmen Sie den Saal mit.",
+  "writeBrief": "Priya hat Ihnen geschrieben und bittet schriftlich um eine Zusicherung zur Schimmel-Geschichte, bevor ihr Direktor unterschreibt. Schreiben Sie die Antwort auf Englisch. Liefern Sie Belege statt Beteuerungen, benennen Sie, wofür Sie geradestehen, und schlagen Sie einen konkreten nächsten Schritt vor. 150&ndash;250 Wörter."
+ },
+ "es": {
+  "kicker": "Forbes English &middot; B2 &middot; Juego de rol de ventas ramificado",
+  "trustLabel": "La confianza de Priya",
+  "briefing": "Instrucciones",
+  "btnStart": "Entrar a la reunión",
+  "btnContinue": "Continuar",
+  "btnNextAct": "Seis meses después &rarr;",
+  "btnRewind": "Volver a esa decisión",
+  "btnRestart": "Jugar todo otra vez",
+  "btnActivate": "Ahora usa el idioma &rarr;",
+  "carry": "La confianza de Priya ahora está en",
+  "langLabel": "Idioma",
+  "actHeading": "Ahora usa el idioma",
+  "actChips": "Usa al menos tres de estas, en inglés:",
+  "actSpeak": "🗣 Debate",
+  "actWrite": "✍️ Escritura",
+  "actWords": "palabras",
+  "btnCopy": "Copiar",
+  "btnCopied": "Copiado",
+  "sc1": "Escena 1 — La apertura",
+  "sc2": "Escena 2 — La objeción",
+  "sc3": "Escena 3 — La nueva petición",
+  "sc4": "Escena 4 — El acuerdo marco",
+  "sc5": "Escena 5 — La conferencia",
+  "sc6": "Escena 6 — El distribuidor",
+  "cpVocab": "Punto de control — Vocabulario",
+  "cpColl": "Punto de control — Colocación y tiempo verbal",
+  "cpPast": "Punto de control — Past Continuous",
+  "cpReg": "Punto de control — Registro",
+  "endA1": "Fin del Acto I — Manchester",
+  "endA2": "Fin del Acto II — Leeds",
+  "endA3": "Fin del Acto III — Dublín",
+  "failCancel": "Final — Contrato cancelado",
+  "failDeal": "Final — El acuerdo se retira",
+  "failStory": "Final — La historia confirmada",
+  "intro0": "Eres Alex Rowntree, comercial de Forbes Membranes. A lo largo de tres reuniones y dieciocho meses tienes que vender FireShield HX —una barrera de vapor ignífuga— a una compradora a la que ya le fallaron una vez, mantenerla cuando el producto de un rival falla, y después defender toda la historia en público.",
+  "intro1": "Cada decisión mueve la confianza de Priya. Los puntos de control de vocabulario también, pero solo si aciertas a la primera. Dónde acabas depende de lo que hiciste de verdad.",
+  "speak0": "Eres Alex. Priya te pregunta sin rodeos si FireShield HX podría fallar igual que el producto del rival. No puedes decir &lsquo;no&rsquo; ni puedes decir &lsquo;sí&rsquo;. Respóndele en voz alta, en menos de un minuto.",
+  "speak1": "Tu competidor es un 8% más barato y tu compradora lo ha dicho. Defiende el precio más alto sin llamar ni una sola vez &lsquo;mejor&rsquo; a tu producto: habla de riesgo, de responsabilidad y de lo que le costaría un fallo.",
+  "speak2": "Una periodista te hace en público una pregunta basada en una premisa falsa. Corrige la premisa sin sonar a la defensiva, y llévate a la sala contigo.",
+  "writeBrief": "Priya te ha escrito pidiendo por escrito garantías sobre la historia del moho antes de que su director firme. Escribe la respuesta en inglés. Da pruebas en lugar de promesas, di de qué te haces responsable y propón un siguiente paso concreto. 150&ndash;250 palabras."
+ }
 };
+
+/* §8: offer a language only if it defines every key English defines. A
+   half-done pass stays in the table and simply is not listed. */
+const LANG_NAMES = {en:"English", de:"Deutsch", es:"Español"};
+let LANG = "en";
+function T(k){
+  const row = UI_I18N[LANG] || {};
+  return (row[k] !== undefined ? row[k] : UI_I18N.en[k]);
+}
+function completeLangs(){
+  const need = Object.keys(UI_I18N.en).length;
+  return Object.keys(UI_I18N).filter(l => Object.keys(UI_I18N[l]).length >= need);
+}
+function applyI18n(){
+  document.documentElement.lang = LANG;
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    el.innerHTML = T(el.dataset.i18n);
+  });
+  const c = document.getElementById("counter");
+  const n = ta.value.trim() ? ta.value.trim().split(/\s+/).length : 0;
+  c.textContent = n + " " + T("actWords");
+  if (SCENES[current] && document.getElementById("gameArea").children.length) render();
+}
 
 let current = "a1_open", answered = false;
 
@@ -961,7 +1117,7 @@ function render(){
   const s = SCENES[current];
 
   if (s.type === "story") {
-    area.innerHTML = `<div class="card"><div class="tag">${s.tag}</div>
+    area.innerHTML = `<div class="card"><div class="tag">${T(s.tagKey)}</div>
       <p class="narrative">${s.narrative}</p><div id="choiceBox"></div></div>`;
     const box = document.getElementById("choiceBox");
     s.choices.forEach(c => {
@@ -978,12 +1134,12 @@ function render(){
 
   else if (s.type === "checkpoint") {
     answered = false;
-    area.innerHTML = `<div class="card"><div class="tag">${s.tag}</div>
+    area.innerHTML = `<div class="card"><div class="tag">${T(s.tagKey)}</div>
       <p class="narrative">${s.narrative}</p>
       <p class="narrative"><b>${s.question}</b></p>
       <div id="optsBox"></div>
       <div class="feedback" id="feedbackBox"></div>
-      <button class="btn" id="nextBtn" disabled>${UI.cont}</button></div>`;
+      <button class="btn" id="nextBtn" disabled>${T("btnContinue")}</button></div>`;
     const box = document.getElementById("optsBox");
     s.options.forEach((opt, i) => {
       const b = document.createElement("button");
@@ -1012,10 +1168,10 @@ function render(){
   else if (s.type === "interlude") {
     const r = s.final ? ratio(null) : ratio(s.act);
     const tier = s.tiers.find(t => r >= t.min) || s.tiers[s.tiers.length - 1];
-    area.innerHTML = `<div class="card interlude"><div class="tag">${s.tag}</div>
+    area.innerHTML = `<div class="card interlude"><div class="tag">${T(s.tagKey)}</div>
       <h2>${tier.title}</h2><p class="narrative">${tier.body}</p>
-      <div class="carry">${UI.carry}: <b>${meter()}</b></div>
-      <button class="btn" id="nextBtn">${s.final ? UI.toActivation : UI.nextAct}</button>
+      <div class="carry">${T("carry")}: <b>${meter()}</b></div>
+      <button class="btn" id="nextBtn">${s.final ? T("btnActivate") : T("btnNextAct")}</button>
       </div>`;
     document.getElementById("nextBtn").addEventListener("click", () => {
       if (s.final) { showActivation(); return; }
@@ -1024,10 +1180,10 @@ function render(){
   }
 
   else if (s.type === "ending") {
-    area.innerHTML = `<div class="card ending-card"><div class="tag">${s.tag}</div>
+    area.innerHTML = `<div class="card ending-card"><div class="tag">${T(s.tagKey)}</div>
       <h2>${s.title}</h2><p class="narrative">${s.body}</p>
-      ${s.rewind ? `<button class="btn" id="rewindBtn">${UI.rewind}</button> ` : ""}
-      <button class="btn ghost" id="restartBtn">${UI.restart}</button></div>`;
+      ${s.rewind ? `<button class="btn" id="rewindBtn">${T("btnRewind")}</button> ` : ""}
+      <button class="btn ghost" id="restartBtn">${T("btnRestart")}</button></div>`;
     if (s.rewind) {
       document.getElementById("rewindBtn").addEventListener("click", () => {
         log.pop();               /* un-take it; the meter follows the log */
@@ -1053,7 +1209,7 @@ const counter = document.getElementById("counter");
 const mirror = document.getElementById("writingMirror");
 ta.addEventListener("input", () => {
   const n = ta.value.trim() ? ta.value.trim().split(/\s+/).length : 0;
-  counter.textContent = n + " words";
+  counter.textContent = n + " " + T("actWords");
   counter.classList.toggle("ok", n >= 150 && n <= 250);
   mirror.textContent = ta.value;
 });
@@ -1061,10 +1217,25 @@ document.getElementById("copyBtn").addEventListener("click", async () => {
   try {
     await navigator.clipboard.writeText(ta.value);
     const b = document.getElementById("copyBtn");
-    b.textContent = 'Copied';
-    setTimeout(() => b.textContent = 'Copy', 1400);
+    b.textContent = T("btnCopied");
+    setTimeout(() => b.textContent = T("btnCopy"), 1400);
   } catch (e) { ta.select(); }
 });
+
+/* Build the switcher from UI_I18N. A language short of English's key count
+   never appears, so a selected option can never fall back mid-screen. */
+(function initLang(){
+  const sel = document.getElementById("langSel");
+  const langs = completeLangs();
+  if (langs.length < 2) { sel.closest(".langbar").hidden = true; return; }
+  langs.forEach(l => {
+    const o = document.createElement("option");
+    o.value = l; o.textContent = LANG_NAMES[l] || l;
+    sel.appendChild(o);
+  });
+  sel.value = LANG;
+  sel.addEventListener("change", () => { LANG = sel.value; applyI18n(); });
+})();
 
 document.getElementById("startBtn").addEventListener("click", startGame);
 </script>

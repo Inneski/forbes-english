@@ -84,7 +84,136 @@ PALETTE = {
     "contrast": "#195c55",
 }
 
-LANGS = ("en",)  # es/de land here once their content is complete (house rule 5)
+# House rule 5 / §8: a language shows in the menu only if it defines every key
+# English defines. Partial is a failure, not a work in progress.
+LANGS = ("en", "de", "es")
+
+# --------------------------------------------------------------------------
+# Translation scope — HOUSE-STYLE §8, and deck.py's mc() confirms it: only the
+# eyebrow and the title carry data-i18n there; the question stem, the options
+# and the explanation carry none.
+#
+# So the app's chrome translates. The English being taught does NOT: the story
+# prose, the choices Alex makes, the question stems, the options, the
+# explanations and the ending text are the B2 reading input this lesson exists
+# to deliver. Translating them would leave a learner reading Spanish and
+# practising nothing. The activation stage follows the same line — the task
+# instructions translate, the target-language chips do not.
+# --------------------------------------------------------------------------
+I18N = {
+    "en": {
+        "kicker": "Forbes English &middot; B2 &middot; Branching sales roleplay",
+        "trustLabel": "Priya&rsquo;s trust",
+        "briefing": "Briefing",
+        "btnStart": "Take the meeting",
+        "btnContinue": "Continue",
+        "btnNextAct": "Six months later &rarr;",
+        "btnRewind": "Rewind to that decision",
+        "btnRestart": "Play the whole thing again",
+        "btnActivate": "Now use the language &rarr;",
+        "carry": "Priya&rsquo;s trust now stands at",
+        "langLabel": "Language",
+        "actHeading": "Now use the language",
+        "actChips": "Use at least three of these, in English:",
+        "actSpeak": "🗣 Discussion",
+        "actWrite": "✍️ Writing",
+        "actWords": "words",
+        "btnCopy": "Copy",
+        "btnCopied": "Copied",
+    },
+    "de": {
+        "kicker": "Forbes English &middot; B2 &middot; Verzweigtes Verkaufs-Rollenspiel",
+        "trustLabel": "Priyas Vertrauen",
+        "briefing": "Briefing",
+        "btnStart": "Zum Termin",
+        "btnContinue": "Weiter",
+        "btnNextAct": "Sechs Monate später &rarr;",
+        "btnRewind": "Zu dieser Entscheidung zurück",
+        "btnRestart": "Alles noch einmal spielen",
+        "btnActivate": "Jetzt selbst anwenden &rarr;",
+        "carry": "Priyas Vertrauen steht jetzt bei",
+        "langLabel": "Sprache",
+        "actHeading": "Jetzt selbst anwenden",
+        "actChips": "Verwenden Sie mindestens drei davon, auf Englisch:",
+        "actSpeak": "🗣 Diskussion",
+        "actWrite": "✍️ Schreiben",
+        "actWords": "Wörter",
+        "btnCopy": "Kopieren",
+        "btnCopied": "Kopiert",
+    },
+    "es": {
+        "kicker": "Forbes English &middot; B2 &middot; Juego de rol de ventas ramificado",
+        "trustLabel": "La confianza de Priya",
+        "briefing": "Instrucciones",
+        "btnStart": "Entrar a la reunión",
+        "btnContinue": "Continuar",
+        "btnNextAct": "Seis meses después &rarr;",
+        "btnRewind": "Volver a esa decisión",
+        "btnRestart": "Jugar todo otra vez",
+        "btnActivate": "Ahora usa el idioma &rarr;",
+        "carry": "La confianza de Priya ahora está en",
+        "langLabel": "Idioma",
+        "actHeading": "Ahora usa el idioma",
+        "actChips": "Usa al menos tres de estas, en inglés:",
+        "actSpeak": "🗣 Debate",
+        "actWrite": "✍️ Escritura",
+        "actWords": "palabras",
+        "btnCopy": "Copiar",
+        "btnCopied": "Copiado",
+    },
+}
+
+# Scene eyebrows — the one part of a scene that is chrome rather than content.
+TAGS = {
+    "sc1":   {"en": "Scene 1 — The Opening",
+              "de": "Szene 1 — Der Einstieg",
+              "es": "Escena 1 — La apertura"},
+    "sc2":   {"en": "Scene 2 — The Objection",
+              "de": "Szene 2 — Der Einwand",
+              "es": "Escena 2 — La objeción"},
+    "sc3":   {"en": "Scene 3 — The New Ask",
+              "de": "Szene 3 — Die neue Forderung",
+              "es": "Escena 3 — La nueva petición"},
+    "sc4":   {"en": "Scene 4 — The Framework",
+              "de": "Szene 4 — Der Rahmenvertrag",
+              "es": "Escena 4 — El acuerdo marco"},
+    "sc5":   {"en": "Scene 5 — The Conference",
+              "de": "Szene 5 — Die Konferenz",
+              "es": "Escena 5 — La conferencia"},
+    "sc6":   {"en": "Scene 6 — The Distributor",
+              "de": "Szene 6 — Der Händler",
+              "es": "Escena 6 — El distribuidor"},
+    "cpVocab": {"en": "Checkpoint — Vocabulary",
+                "de": "Zwischenstopp — Wortschatz",
+                "es": "Punto de control — Vocabulario"},
+    "cpColl": {"en": "Checkpoint — Collocation and tense",
+               "de": "Zwischenstopp — Kollokation und Zeitform",
+               "es": "Punto de control — Colocación y tiempo verbal"},
+    "cpPast": {"en": "Checkpoint — Past Continuous",
+               "de": "Zwischenstopp — Past Continuous",
+               "es": "Punto de control — Past Continuous"},
+    "cpReg":  {"en": "Checkpoint — Register",
+               "de": "Zwischenstopp — Register",
+               "es": "Punto de control — Registro"},
+    "endA1":  {"en": "End of Act I — Manchester",
+               "de": "Ende von Akt I — Manchester",
+               "es": "Fin del Acto I — Manchester"},
+    "endA2":  {"en": "End of Act II — Leeds",
+               "de": "Ende von Akt II — Leeds",
+               "es": "Fin del Acto II — Leeds"},
+    "endA3":  {"en": "End of Act III — Dublin",
+               "de": "Ende von Akt III — Dublin",
+               "es": "Fin del Acto III — Dublín"},
+    "failCancel": {"en": "Ending — Contract Cancelled",
+                   "de": "Ende — Vertrag gekündigt",
+                   "es": "Final — Contrato cancelado"},
+    "failDeal":   {"en": "Ending — Deal Off the Table",
+                   "de": "Ende — Der Auftrag ist weg",
+                   "es": "Final — El acuerdo se retira"},
+    "failStory":  {"en": "Ending — Story Confirmed",
+                   "de": "Ende — Die Geschichte bestätigt sich",
+                   "es": "Final — La historia confirmada"},
+}
 
 # --------------------------------------------------------------------------
 # Chrome strings
@@ -114,7 +243,27 @@ INTRO = {
         "Every choice moves Priya's trust. Vocabulary checkpoints move it too, "
         "but only if you get them right first time. Where you finish depends "
         "on what you actually did, not on how the last meeting is summarised.",
-    ]
+    ],
+    "de": [
+        "Sie sind Alex Rowntree, Vertriebsmitarbeiter bei Forbes Membranes. In "
+        "drei Terminen über achtzehn Monate müssen Sie FireShield HX — eine "
+        "flammhemmende Dampfsperre — an eine Einkäuferin verkaufen, die schon "
+        "einmal enttäuscht wurde; sie halten, wenn das Produkt eines "
+        "Konkurrenten versagt; und die ganze Geschichte öffentlich vertreten.",
+        "Jede Entscheidung verändert Priyas Vertrauen. Die Wortschatz-Stopps "
+        "auch — aber nur, wenn Sie sie beim ersten Versuch richtig lösen. Wo "
+        "Sie landen, hängt davon ab, was Sie tatsächlich getan haben.",
+    ],
+    "es": [
+        "Eres Alex Rowntree, comercial de Forbes Membranes. A lo largo de tres "
+        "reuniones y dieciocho meses tienes que vender FireShield HX —una "
+        "barrera de vapor ignífuga— a una compradora a la que ya le fallaron "
+        "una vez, mantenerla cuando el producto de un rival falla, y después "
+        "defender toda la historia en público.",
+        "Cada decisión mueve la confianza de Priya. Los puntos de control de "
+        "vocabulario también, pero solo si aciertas a la primera. Dónde acabas "
+        "depende de lo que hiciste de verdad.",
+    ],
 }
 
 # --------------------------------------------------------------------------
@@ -678,31 +827,67 @@ TARGET_LANGUAGE = ["shortfall", "trade-off", "trial", "requirement", "precaution
                    "reliable", "affordable"]
 
 ACTIVATION = {
-    "heading": {"en": "Now use the language"},
-    "chips_intro": {"en": "Use at least three of these:"},
-    "speaking_heading": {"en": "🗣 Discussion"},
-    "speaking": {"en": [
-        "You are Alex. Priya asks you point-blank whether FireShield HX could fail "
-        "the way the rival's product did. You cannot say &lsquo;no&rsquo; and you "
-        "cannot say &lsquo;yes&rsquo;. Answer her out loud, in under a minute.",
-        "Your competitor is 8% cheaper and your buyer has said so. Argue for the "
-        "higher price without once mentioning quality as a vague virtue — talk "
-        "about risk, liability and what a failure would actually cost her.",
-        "A journalist asks you a question built on a false premise, in public. "
-        "Correct the premise without sounding defensive, and take the room with "
-        "you.",
-    ]},
-    "writing_heading": {"en": "✍️ Writing"},
-    "writing_brief": {"en":
-        "Priya has emailed asking, in writing, for reassurance about the mould "
-        "story before her director will sign. Write the reply. Give evidence "
-        "rather than assurance, name what you will be accountable for, and propose "
-        "a concrete next step. 150&ndash;250 words."},
-    "words": {"en": "words"},
-    "copy": {"en": "Copy"},
-    "copied": {"en": "Copied"},
+    "speaking": {
+        "en": [
+            "You are Alex. Priya asks you point-blank whether FireShield HX could "
+            "fail the way the rival's product did. You cannot say &lsquo;no&rsquo; "
+            "and you cannot say &lsquo;yes&rsquo;. Answer her out loud, in under a "
+            "minute.",
+            "Your competitor is 8% cheaper and your buyer has said so. Argue for "
+            "the higher price without once calling your product &lsquo;better&rsquo; "
+            "— talk about risk, liability, and what a failure would actually cost "
+            "her.",
+            "A journalist asks you a question built on a false premise, in public. "
+            "Correct the premise without sounding defensive, and take the room with "
+            "you.",
+        ],
+        "de": [
+            "Sie sind Alex. Priya fragt Sie direkt, ob FireShield HX genauso "
+            "versagen könnte wie das Konkurrenzprodukt. Sie können weder "
+            "&lsquo;nein&rsquo; noch &lsquo;ja&rsquo; sagen. Antworten Sie laut, in "
+            "unter einer Minute.",
+            "Der Wettbewerber ist 8% günstiger, und Ihre Kundin hat das gesagt. "
+            "Begründen Sie den höheren Preis, ohne Ihr Produkt ein einziges Mal "
+            "&lsquo;besser&rsquo; zu nennen — sprechen Sie über Risiko, Haftung und "
+            "die tatsächlichen Kosten eines Schadens.",
+            "Eine Journalistin stellt Ihnen öffentlich eine Frage, die auf einer "
+            "falschen Annahme beruht. Korrigieren Sie die Annahme, ohne defensiv zu "
+            "wirken, und nehmen Sie den Saal mit.",
+        ],
+        "es": [
+            "Eres Alex. Priya te pregunta sin rodeos si FireShield HX podría fallar "
+            "igual que el producto del rival. No puedes decir &lsquo;no&rsquo; ni "
+            "puedes decir &lsquo;sí&rsquo;. Respóndele en voz alta, en menos de un "
+            "minuto.",
+            "Tu competidor es un 8% más barato y tu compradora lo ha dicho. Defiende "
+            "el precio más alto sin llamar ni una sola vez &lsquo;mejor&rsquo; a tu "
+            "producto: habla de riesgo, de responsabilidad y de lo que le costaría "
+            "un fallo.",
+            "Una periodista te hace en público una pregunta basada en una premisa "
+            "falsa. Corrige la premisa sin sonar a la defensiva, y llévate a la sala "
+            "contigo.",
+        ],
+    },
+    "writing_brief": {
+        "en":
+            "Priya has emailed asking, in writing, for reassurance about the mould "
+            "story before her director will sign. Write the reply in English. Give "
+            "evidence rather than assurance, name what you will be accountable for, "
+            "and propose a concrete next step. 150&ndash;250 words.",
+        "de":
+            "Priya hat Ihnen geschrieben und bittet schriftlich um eine Zusicherung "
+            "zur Schimmel-Geschichte, bevor ihr Direktor unterschreibt. Schreiben "
+            "Sie die Antwort auf Englisch. Liefern Sie Belege statt Beteuerungen, "
+            "benennen Sie, wofür Sie geradestehen, und schlagen Sie einen konkreten "
+            "nächsten Schritt vor. 150&ndash;250 Wörter.",
+        "es":
+            "Priya te ha escrito pidiendo por escrito garantías sobre la historia "
+            "del moho antes de que su director firme. Escribe la respuesta en "
+            "inglés. Da pruebas en lugar de promesas, di de qué te haces "
+            "responsable y propón un siguiente paso concreto. 150&ndash;250 "
+            "palabras.",
+    },
 }
-
 
 # --------------------------------------------------------------------------
 def t(node, lang="en"):
@@ -712,12 +897,23 @@ def t(node, lang="en"):
     return node
 
 
+_TAG_BY_EN = {v["en"]: k for k, v in TAGS.items()}
+
+
+def tag_key(scene):
+    """Scene eyebrows are chrome, so they carry an i18n key rather than text."""
+    en = scene.get("tag", {}).get("en", "")
+    if en not in _TAG_BY_EN:
+        raise KeyError("no TAGS entry for eyebrow %r — add one so it translates" % en)
+    return _TAG_BY_EN[en]
+
+
 def js_scenes(lang="en"):
     """Emit the scene graph as a JS object literal for one language."""
     import json
     out = {}
     for key, s in SCENES.items():
-        o = {"type": s["type"], "act": s.get("act"), "tag": t(s.get("tag", {}), lang)}
+        o = {"type": s["type"], "act": s.get("act"), "tagKey": tag_key(s)}
         if s.get("bg"):
             o["bg"] = s["bg"]
         if s["type"] == "story":
@@ -749,14 +945,43 @@ def js_scenes(lang="en"):
     return json.dumps(out, ensure_ascii=False, indent=1)
 
 
+def js_i18n():
+    """UI_I18N = chrome strings + scene eyebrows, per language.
+
+    §8: the switcher is built from this at runtime and skips any language
+    whose key count is short of English, so a half-done pass is never offered.
+    """
+    import json
+    table = {}
+    for lang in LANGS:
+        row = dict(I18N[lang])
+        for key, forms in TAGS.items():
+            if lang in forms:
+                row[key] = forms[lang]
+        for i, para in enumerate(INTRO.get(lang, [])):
+            row["intro%d" % i] = para
+        for i, prompt in enumerate(ACTIVATION["speaking"].get(lang, [])):
+            row["speak%d" % i] = prompt
+        if lang in ACTIVATION["writing_brief"]:
+            row["writeBrief"] = ACTIVATION["writing_brief"][lang]
+        table[lang] = row
+    return json.dumps(table, ensure_ascii=False, indent=1)
+
+
 def build(lang="en"):
     p = PALETTE
     title = t(UI["title"], lang)
-    intro_ps = "\n    ".join(f"<p>{x}</p>" for x in INTRO[lang])
     logo = D.logo_from(TPL)
+    # Anything translatable carries data-i18n; anything without it will never
+    # translate (HOUSE-STYLE §8 — the usual cause of a stubbornly English button).
+    intro_ps = "\n    ".join(
+        f'<p data-i18n="intro{i}">{x}</p>' for i, x in enumerate(INTRO["en"]))
+    speak = "\n      ".join(
+        f'<li data-i18n="speak{i}">{x}</li>'
+        for i, x in enumerate(ACTIVATION["speaking"]["en"]))
+    # Target-language chips stay English by rule — no data-i18n on them.
     chips = "\n      ".join(f'<span class="chip">{html.escape(c)}</span>'
                             for c in TARGET_LANGUAGE)
-    speak = "\n      ".join(f"<li>{x}</li>" for x in t(ACTIVATION["speaking"], lang))
 
     return f"""<!DOCTYPE html>
 <html lang="{lang}">
@@ -814,6 +1039,15 @@ def build(lang="en"):
   }}
   .cover .kicker{{margin:0; font-size:.86rem; color:var(--text-dim);
     letter-spacing:.03em; font-weight:600;}}
+  .langbar{{margin-top:14px; display:flex; align-items:center; gap:8px;}}
+  .langbar label{{font-size:.74rem; text-transform:uppercase; letter-spacing:.08em;
+    font-weight:700; color:var(--text-dim);}}
+  .langbar select{{
+    font-family:'Inter',sans-serif; font-size:.86rem; font-weight:600;
+    color:var(--text); background:var(--surface); border:1.5px solid var(--border);
+    border-radius:8px; padding:5px 10px; cursor:pointer;
+  }}
+  .langbar select:focus{{outline:2px solid var(--accent); outline-offset:1px;}}
 
   /* Act background — swapped, never pasted as a box (house rule 5b) */
   .stage{{position:relative;}}
@@ -963,12 +1197,16 @@ def build(lang="en"):
       {logo}
     </div>
     <h1>{title}</h1>
-    <p class="kicker">{t(UI['kicker'], lang)}</p>
+    <p class="kicker" data-i18n="kicker">{I18N['en']['kicker']}</p>
+    <div class="langbar">
+      <label for="langSel" data-i18n="langLabel">{I18N['en']['langLabel']}</label>
+      <select id="langSel" aria-label="{I18N['en']['langLabel']}"></select>
+    </div>
   </div>
 </header>
 
 <div class="trust-wrap hidden" id="trustWrap">
-  <div class="trust-label"><span>{t(UI['trust_label'], lang)}</span><span id="trustNum">50</span></div>
+  <div class="trust-label"><span data-i18n="trustLabel">{I18N['en']['trustLabel']}</span><span id="trustNum">50</span></div>
   <div class="trust-track"><div class="trust-fill" id="trustFill"></div></div>
   <div class="act-pips" id="actPips">
     <span data-act="1">I &middot; Manchester</span>
@@ -981,33 +1219,33 @@ def build(lang="en"):
 <div class="wrap">
 
   <div class="card" id="introCard">
-    <div class="tag">{t(UI['briefing'], lang)}</div>
+    <div class="tag" data-i18n="briefing">{I18N['en']['briefing']}</div>
     {intro_ps}
-    <button class="btn" id="startBtn">{t(UI['start'], lang)}</button>
+    <button class="btn" id="startBtn" data-i18n="btnStart">{I18N['en']['btnStart']}</button>
   </div>
 
   <div id="gameArea"></div>
 
   <div class="activate card hidden" id="activate" data-type="activate">
-    <h2>{t(ACTIVATION['heading'], lang)}</h2>
+    <h2 data-i18n="actHeading">{I18N['en']['actHeading']}</h2>
     <div class="chips">
-      <div class="chips-intro">{t(ACTIVATION['chips_intro'], lang)}</div>
+      <div class="chips-intro" data-i18n="actChips">{I18N['en']['actChips']}</div>
       {chips}
     </div>
     <div class="track">
-      <h3>{t(ACTIVATION['speaking_heading'], lang)}</h3>
+      <h3 data-i18n="actSpeak">{I18N['en']['actSpeak']}</h3>
       <ol>
       {speak}
       </ol>
     </div>
     <div class="track">
-      <h3>{t(ACTIVATION['writing_heading'], lang)}</h3>
-      <p class="brief">{t(ACTIVATION['writing_brief'], lang)}</p>
-      <textarea id="writing" aria-label="{t(ACTIVATION['writing_heading'], lang)}"></textarea>
+      <h3 data-i18n="actWrite">{I18N['en']['actWrite']}</h3>
+      <p class="brief" data-i18n="writeBrief">{ACTIVATION['writing_brief']['en']}</p>
+      <textarea id="writing" aria-label="Writing task"></textarea>
       <div class="print-mirror" id="writingMirror"></div>
       <div class="writing-foot">
-        <span class="counter" id="counter">0 {t(ACTIVATION['words'], lang)}</span>
-        <button class="btn ghost" id="copyBtn">{t(ACTIVATION['copy'], lang)}</button>
+        <span class="counter" id="counter">0 {I18N['en']['actWords']}</span>
+        <button class="btn ghost" id="copyBtn" data-i18n="btnCopy">{I18N['en']['btnCopy']}</button>
       </div>
     </div>
   </div>
@@ -1022,14 +1260,30 @@ const BG = {{
   act2:"FireShield/bg-act2.jpg",   act3:"FireShield/bg-act3.jpg",
   end:"FireShield/bg-end.jpg"
 }};
-const UI = {{
-  cont:{t(UI['continue'], lang)!r},
-  nextAct:{t(UI['next_act'], lang)!r},
-  rewind:{t(UI['rewind'], lang)!r},
-  restart:{t(UI['restart'], lang)!r},
-  toActivation:{t(UI['to_activation'], lang)!r},
-  carry:{t(UI['carry'], lang)!r}
-}};
+const UI_I18N = {js_i18n()};
+
+/* §8: offer a language only if it defines every key English defines. A
+   half-done pass stays in the table and simply is not listed. */
+const LANG_NAMES = {{en:"English", de:"Deutsch", es:"Espa\u00f1ol"}};
+let LANG = "en";
+function T(k){{
+  const row = UI_I18N[LANG] || {{}};
+  return (row[k] !== undefined ? row[k] : UI_I18N.en[k]);
+}}
+function completeLangs(){{
+  const need = Object.keys(UI_I18N.en).length;
+  return Object.keys(UI_I18N).filter(l => Object.keys(UI_I18N[l]).length >= need);
+}}
+function applyI18n(){{
+  document.documentElement.lang = LANG;
+  document.querySelectorAll("[data-i18n]").forEach(el => {{
+    el.innerHTML = T(el.dataset.i18n);
+  }});
+  const c = document.getElementById("counter");
+  const n = ta.value.trim() ? ta.value.trim().split(/\s+/).length : 0;
+  c.textContent = n + " " + T("actWords");
+  if (SCENES[current] && document.getElementById("gameArea").children.length) render();
+}}
 
 let current = "a1_open", answered = false;
 
@@ -1095,7 +1349,7 @@ function render(){{
   const s = SCENES[current];
 
   if (s.type === "story") {{
-    area.innerHTML = `<div class="card"><div class="tag">${{s.tag}}</div>
+    area.innerHTML = `<div class="card"><div class="tag">${{T(s.tagKey)}}</div>
       <p class="narrative">${{s.narrative}}</p><div id="choiceBox"></div></div>`;
     const box = document.getElementById("choiceBox");
     s.choices.forEach(c => {{
@@ -1112,12 +1366,12 @@ function render(){{
 
   else if (s.type === "checkpoint") {{
     answered = false;
-    area.innerHTML = `<div class="card"><div class="tag">${{s.tag}}</div>
+    area.innerHTML = `<div class="card"><div class="tag">${{T(s.tagKey)}}</div>
       <p class="narrative">${{s.narrative}}</p>
       <p class="narrative"><b>${{s.question}}</b></p>
       <div id="optsBox"></div>
       <div class="feedback" id="feedbackBox"></div>
-      <button class="btn" id="nextBtn" disabled>${{UI.cont}}</button></div>`;
+      <button class="btn" id="nextBtn" disabled>${{T("btnContinue")}}</button></div>`;
     const box = document.getElementById("optsBox");
     s.options.forEach((opt, i) => {{
       const b = document.createElement("button");
@@ -1146,10 +1400,10 @@ function render(){{
   else if (s.type === "interlude") {{
     const r = s.final ? ratio(null) : ratio(s.act);
     const tier = s.tiers.find(t => r >= t.min) || s.tiers[s.tiers.length - 1];
-    area.innerHTML = `<div class="card interlude"><div class="tag">${{s.tag}}</div>
+    area.innerHTML = `<div class="card interlude"><div class="tag">${{T(s.tagKey)}}</div>
       <h2>${{tier.title}}</h2><p class="narrative">${{tier.body}}</p>
-      <div class="carry">${{UI.carry}}: <b>${{meter()}}</b></div>
-      <button class="btn" id="nextBtn">${{s.final ? UI.toActivation : UI.nextAct}}</button>
+      <div class="carry">${{T("carry")}}: <b>${{meter()}}</b></div>
+      <button class="btn" id="nextBtn">${{s.final ? T("btnActivate") : T("btnNextAct")}}</button>
       </div>`;
     document.getElementById("nextBtn").addEventListener("click", () => {{
       if (s.final) {{ showActivation(); return; }}
@@ -1158,10 +1412,10 @@ function render(){{
   }}
 
   else if (s.type === "ending") {{
-    area.innerHTML = `<div class="card ending-card"><div class="tag">${{s.tag}}</div>
+    area.innerHTML = `<div class="card ending-card"><div class="tag">${{T(s.tagKey)}}</div>
       <h2>${{s.title}}</h2><p class="narrative">${{s.body}}</p>
-      ${{s.rewind ? `<button class="btn" id="rewindBtn">${{UI.rewind}}</button> ` : ""}}
-      <button class="btn ghost" id="restartBtn">${{UI.restart}}</button></div>`;
+      ${{s.rewind ? `<button class="btn" id="rewindBtn">${{T("btnRewind")}}</button> ` : ""}}
+      <button class="btn ghost" id="restartBtn">${{T("btnRestart")}}</button></div>`;
     if (s.rewind) {{
       document.getElementById("rewindBtn").addEventListener("click", () => {{
         log.pop();               /* un-take it; the meter follows the log */
@@ -1187,7 +1441,7 @@ const counter = document.getElementById("counter");
 const mirror = document.getElementById("writingMirror");
 ta.addEventListener("input", () => {{
   const n = ta.value.trim() ? ta.value.trim().split(/\\s+/).length : 0;
-  counter.textContent = n + " {t(ACTIVATION['words'], lang)}";
+  counter.textContent = n + " " + T("actWords");
   counter.classList.toggle("ok", n >= 150 && n <= 250);
   mirror.textContent = ta.value;
 }});
@@ -1195,10 +1449,25 @@ document.getElementById("copyBtn").addEventListener("click", async () => {{
   try {{
     await navigator.clipboard.writeText(ta.value);
     const b = document.getElementById("copyBtn");
-    b.textContent = {t(ACTIVATION['copied'], lang)!r};
-    setTimeout(() => b.textContent = {t(ACTIVATION['copy'], lang)!r}, 1400);
+    b.textContent = T("btnCopied");
+    setTimeout(() => b.textContent = T("btnCopy"), 1400);
   }} catch (e) {{ ta.select(); }}
 }});
+
+/* Build the switcher from UI_I18N. A language short of English's key count
+   never appears, so a selected option can never fall back mid-screen. */
+(function initLang(){{
+  const sel = document.getElementById("langSel");
+  const langs = completeLangs();
+  if (langs.length < 2) {{ sel.closest(".langbar").hidden = true; return; }}
+  langs.forEach(l => {{
+    const o = document.createElement("option");
+    o.value = l; o.textContent = LANG_NAMES[l] || l;
+    sel.appendChild(o);
+  }});
+  sel.value = LANG;
+  sel.addEventListener("change", () => {{ LANG = sel.value; applyI18n(); }});
+}})();
 
 document.getElementById("startBtn").addEventListener("click", startGame);
 </script>
