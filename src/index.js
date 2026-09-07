@@ -42,6 +42,20 @@ export default {
       return handlePaywallStatus(request, url, env, ctx);
     }
 
+    // ── RETIRED URLS ─────────────────────────────────────────────────
+    // The three FireShield pages were merged into one lesson on 2026-09-07.
+    // Students have bookmarks and Google has the old URLs, so they redirect
+    // rather than 404. Permanent, so crawlers move their weight across.
+    {
+      const retired = {
+        "/fireshield-pitch-roleplay.html": "/fireshield-pitch.html",
+        "/fireshield-pitch-part2.html":    "/fireshield-pitch.html",
+        "/fireshield-pitch-part3.html":    "/fireshield-pitch.html",
+      };
+      const to = retired[url.pathname] || retired[url.pathname + ".html"];
+      if (to) return Response.redirect(url.origin + to, 301);
+    }
+
     // ── THE PAYWALL ──────────────────────────────────────────────────
     // This is the only place a paywall can actually work on this site.
     // Lessons are static .html files on the asset CDN; they never pass
