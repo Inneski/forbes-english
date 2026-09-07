@@ -31,20 +31,37 @@ found and what you changed. `lesson-template/HOUSE-STYLE.md` §14 lists the four
 situations that genuinely warrant a question. Everything else: apply the
 standard and say what you did.
 
-## Handing a file to a cloud session
+## Getting files from Innes's machine into the repo
 
-A cloud session cannot see Innes's Downloads folder, and the Google Drive
-connector cannot move a file of any real size (a 7.5 MB RPG export killed
-the connection three times on 2026-09-05; drive.google.com itself is blocked
-by the sandbox proxy). Two routes work, and nothing else does:
+**Tested 2026-09-07, and the previous version of this section was wrong.**
 
-- **Attach the file to the chat message** — drag it into the message box.
-  This is how the 4 MB Oz export arrived, and it is the fastest.
-- **Upload it to the repository** on GitHub ("Add files via upload", as with
-  `61a32b2`) and say which file. Anything in the repo a session can fetch.
+A cloud session — anything started from claude.ai/code — cannot see Innes's
+computer. There is no attachment, connector or link that changes that:
 
-A forbesenglish.com URL works because the site is public. A link to a file
-on Innes's machine never will.
+- **Chat attachments arrive as pictures in the model's context, not as files
+  on disk.** Fifteen images were attached; `/mnt/attach`, `/mnt/user-data`
+  and a filesystem-wide sweep found nothing. `extract-palette.py` had no
+  bytes to read. (The Oz export "worked" because an HTML file's text is
+  readable in context; an image is not.)
+- **Google Drive is not a transport.** `download_file_content` returns
+  base64 through the context window — ~30k tokens per 90 KB image — and
+  direct fetch is 403'd at the sandbox proxy.
+- **Uploading to GitHub works** but it is the manual step Innes is tired
+  of, and raw Midjourney PNGs uploaded that way went straight into history:
+  73 MB, permanently, in `a51ef9a`…`6d6cbe9`.
+
+**The answer is a local session.** Claude Code CLI or the Claude desktop
+app, opened on Innes's clone of this repo, reads his filesystem directly and
+pushes with his own credentials. The workflow is:
+
+1. Drop the files in `incoming/` (gitignored — nothing there ever reaches git).
+2. Type `/publish`.
+
+`.claude/skills/publish/SKILL.md` is the whole pipeline: `prep-artwork.py`,
+palette, build, checks, the catalogue row, `seo.py`, redirects, push. Read it
+before doing any of those steps by hand.
+
+Use cloud sessions for anything that starts from what is already in git.
 
 ## Read these two, in this order
 
