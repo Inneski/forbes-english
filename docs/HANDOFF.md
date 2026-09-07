@@ -64,6 +64,279 @@ the hub but has no catalogue row, so it is not on the shelf at all.
 
 ---
 
+
+## 2026-09-07 — Frankenstein: nine languages before the build, and a third kind of export
+
+Innes asked for "frankenstein house style language translations". The export
+is `incoming/Frankenstein_The_Green_Prometheus_Going_To_RPG_Standalone_V32_ACTUAL_FINAL_FIXED (1).html`
+(118 MB, 50 scenes, 44 questions, 6 route choices, 4 endings, `going to`).
+**The translations are done and checked. The page is not built.** What is in
+git is the raw material a builder needs; "What is left" below says what remains.
+
+### The export is a third kind, and regexing it gives you a superseded draft
+
+`lesson-template/build/rpg/README.md` §2 names the Oz kind
+(`window.*_GAME_DATA`) and the Wonderland kind (`EMBEDDED_SCENES` + `q(...)`
+tables), and says a third kind means read its script first. This is the third:
+a base `const DATA={...}` followed by **twenty-two more `<script>` blocks** —
+kids-patch, v4-refined, v5, v6, … v30, final-user-fixes, v32-definitive — each
+reassigning scenes, rewriting story text and swapping images.
+`03_arctic_rescue.story.en` is rewritten three times; the last version is 21
+words where the first was 52. Any regex over the file finds a draft, not the
+lesson.
+
+The only way to the final text is to run it the way a browser does.
+**`lesson-template/build/rpg/extract_patched.py`** does that: it splits the
+export into its script blocks, strips the inlined base64 out of the *code*,
+rewrites top-level `const`/`let` to `var` (`vm.runInContext` gives each call
+its own lexical scope, so a top-level `const DATA` is invisible to the next
+block — this is why a naive run reports "DATA is not defined" from block 6
+onward), runs every block in one shared context behind a DOM shim, catching
+per block exactly as a browser does, then fires DOMContentLoaded and load
+because late patches register there. Output goes where
+`extract_standalone.py` puts it, so nothing downstream changes.
+
+Two shim details are worth keeping:
+
+- **A block that throws loses every `DATA` change after the throw.** Run all
+  the blocks in one `vm` call and one bad block kills the rest of the file;
+  run them separately and you match the browser. The script prints which
+  blocks threw, and the run is not trustworthy until that list is empty.
+- **`el.value` must mirror `innerHTML`.** Every export from v15 on decodes
+  HTML entities through a detached `<textarea>` and reads `.value`. A shim
+  without it throws inside `cleanText` and silently drops eight blocks of
+  patches — which is most of the final text.
+
+### The export's own Spanish and German gloss a version nobody reads
+
+Measured before anything was written: of the 292 learner-facing strings, **71
+have an `es` or `de` gloss more than 1.7x off its English in length**, because
+the late "story clarity" patches shortened the English and left the glosses
+behind. `03_arctic_rescue` is the clearest — 21 English words sitting under a
+52-word German paragraph describing a scene that is no longer on the page.
+
+So the export's `de`/`es` were not salvaged. `extract_patched.py` writes
+`data.json` **English-only** on purpose, and all nine languages come from the
+translations directory, where they gloss the text actually on the slide.
+
+### What is in git
+
+    lesson-template/build/rpg/frankenstein-green-prometheus-rpg/
+      data.json                  50 scenes, 4 endings, English only
+      translations/{es,de,fr,it,pt,ru,ar,zh,ja}.json
+
+**301 English strings × 9 languages = 2709 glosses**, keyed by the English
+string the way `apply_translations()` reads them. That is every kicker (50),
+title, story, clue, prompt, explanation, route label and note, and ending
+eyebrow/title/story — plus nine more the builder will want and `data.json`
+does not hold: the cover title and hook, the `going to` cover note, the
+lantern hint, and the rules briefing already split into the five form cards
+and two use cards an rpg.py `rules` scene takes.
+
+Conventions, both taken from the Lost Yellow Road glosses:
+
+- **A prompt keeps its `___` in the same slot**, and the sentence around it is
+  translated. The blank is the question; a gloss that fills it in gives the
+  answer away. `check_translations.py` fails a gloss that loses or invents one.
+- **English grammar tokens stay English inside the gloss** — `is going to`,
+  `base verb`, `Is Victor going to...?`. They are the thing being taught.
+- **Options are not glossed.** They are the target language, and the engine's
+  `TEXT_KEYS` does not ask for them. The export had copied the English into
+  its `de`/`es` option slots, which is not a gloss.
+
+### check_translations.py
+
+`check-glosses.js` measures the right defect class but cannot help here: it
+needs a `const LANGS` and a `const scenes=` block, which only the
+Blocula-style page has, and it cannot run until a page exists — by which point
+a bad gloss is already built in.
+**`lesson-template/build/rpg/check_translations.py`** runs the same script
+rules over the `<lang>.json` files themselves, plus three that belong to this
+stage: every language file holds the same key set, a `___` survives into every
+gloss, and (given `data.json`) every learner-facing string in the lesson has
+an entry.
+
+```bash
+python3 lesson-template/build/rpg/check_translations.py \
+    lesson-template/build/rpg/frankenstein-green-prometheus-rpg/translations \
+    lesson-template/build/rpg/frankenstein-green-prometheus-rpg/data.json
+```
+
+Verified against a deliberately broken copy before being trusted: a Russian
+gloss planted in the Japanese, Italian planted in the Russian, a French prompt
+with the `___` filled in, a blank German gloss and a deleted Spanish key — six
+findings, exit 1. The shipped table exits 0 with seven advisories, all real
+coincidences ("William"; French `PROLOGUE · 1794`; `第一幕 · 十一月`, which
+Chinese and Japanese genuinely share).
+
+Three leaked fragments were caught **in my own drafting** by that checker
+before anything reached the repo: Cyrillic inside a Japanese gloss twice, kana
+inside a Chinese one once. This defect is not hypothetical and it is invisible
+in review — write the checker first.
+
+### Two content defects, found and not fixed
+
+- **Two scenes are unreachable.** `17b_search` and `36a_icebound_rescue` are
+  never pointed at by any `next` or route. Each is a near-twin of the scene
+  that superseded it (`18a_pursuit`, `35b_ship_rescue`) — `17b_search` even
+  shares its title, "Victor Hunts the Creature". The builder should drop both;
+  that takes the lesson from 44 questions to 42, and the max score with it.
+  Their glosses are in the table and harmless if they stay.
+- **`40_creature_lament` mixes curly and straight apostrophes** across its
+  three options. Normalise before building, or the three distractors differ
+  typographically as well as grammatically.
+
+### The build, same day
+
+`block-camp/frankenstein-green-prometheus-rpg.html`, from
+**`lesson-template/build/build_frankenstein_green_prometheus.py`**. 54 scenes,
+42 questions, 5 sparks, 3 chances, max 210. Accent `#70A43A` — Going To is
+**camp 5** on the route map, and it happens to be the exact green the artwork
+is built around. (An earlier note here guessed the hub gold; that was wrong.
+Check `CAMP` in `block-camp-hub/build.py` before assuming a lesson has no camp.)
+
+Pictures: 51 webp at 1536×1024, 8.4 MB. The export mixed three shapes — 34 at
+3:2, 15 at 1672×941 and one at 1462×1076 — and hotspots are percentages of one
+canvas, so the odd ones are centre-cropped to 3:2 before anything is measured
+off them. The cover is `01_cover`: block 22, the last block to redefine
+`renderCover`, points back at it, so `v19_cover_art` is another superseded
+draft. That is the patch-stack trap in miniature — the newest-looking asset in
+the file is not the one the page uses.
+
+### The answer was in slot 0 on all 44 questions
+
+Innes caught this by playing it. It is the export's, not ours, and the engine
+is what made it invisible: a deck shuffles its options in the browser and
+labels A/B/C after, so `check-lesson.js`'s KEYS gate reads the *source* order
+for exactly this reason — but `rpg.py` renders `opts` in spec order and had no
+gate at all. Slot 0 was the first button, forty-four times.
+
+`rpg.py`'s `validate()` now runs **`_check_answer_key()`**, and it uses
+`check-lesson.js`'s numbers verbatim rather than any of its own:
+
+* longest: `key > maxOther * 1.10 and key - maxOther >= 4`
+* shortest: `minOther > key * 1.50 and minOther - key >= 10`
+* position: one slot holding ≥80% of the keys, with ≥4 questions
+
+The first draft of this gate used "never the longest, full stop" and blocked
+**both shipped RPGs** on one- and two-character margins (`were running`, 12
+against 11). That is why the thresholds are copied and not invented: the ratio
+alone flags closed option sets where length carries nothing. With the house
+numbers, Lost Yellow Road and Wonderland rebuild byte-identically, and their
+keys turn out to be spread already (8/7/3 and 8/11/5) — this was a Frankenstein
+defect, not a systemic one.
+
+Measured against a deliberately broken copy before being trusted: put the key
+back in slot 0 on every question and the build stops with
+*"the key sits in slot 0 on 42 of 42 questions (100%)"*.
+
+The same gate found two more, both fixed in `OPTS`: `40_creature_lament` keyed
+the only option written out in full (56 characters against 38 and 47), and
+`35b_ship_rescue` keyed the longest by one. `KEY` deals the key 14/14/14 and is
+written out rather than hashed, so renaming a scene does not reshuffle the
+lesson.
+
+### A route can now name its ending
+
+`36_walton_choice`'s clue promises, in nine languages, that the choice decides
+the Arctic ending — and `resolve()` graded on score alone, so the promise was
+false. The export had already marked the branch (`final: 'south' / 'north'`);
+the engine just had nowhere to put it. Three additive lines: `endingPick` in
+`fresh()`, set in `chooseRoute()`, preferred in `resolve()` **after** the
+master check and only while chances remain. A flawless run still reaches the
+master ending; a failed run still fails. The two shipped RPGs take the change
+with a 3-line diff each and nothing else.
+
+### What the glosses cost the layout, and what actually fixes it
+
+English was clean early. With a gloss under every line the panel content
+roughly doubles, and **22 of 54 scenes failed in German**. Two findings:
+
+* **Widening is the wrong lever past ~56%.** Tuning widths up to a 64% cap
+  took 17 scrolling scenes down to 9 and *created* eight new failures, because
+  a 64% panel then covers the object it grew out of. Reverted to the 46%
+  default.
+* **The copy was the problem.** The export's median story is 21 words — the
+  Lost Yellow Road range — but the fifteen scenes its late patches rewrote run
+  38 to 68. Those are exactly the panels that scrolled.
+
+So they were cut, per README §1, to the length the rest of the lesson already
+uses (`STORY` in the builder). The nine glosses were cut to match **by sentence
+index, not by chopping the tail**: `16_william` keeps its first and last
+sentence, because the missing locket is what `17_justine` and
+`24_portrait_justine` both turn on. Where a gloss did not split into the same
+number of sentences — Japanese splits one English sentence in two, Arabic joins
+two — the script refused that language and named it, and those three were
+written by hand. One splitter bug worth keeping: the Arabic question mark is
+U+061F, not `?`, so an Arabic gloss ending in one was being dropped entirely.
+
+The rules briefing needed the same treatment: five glossed cards, a note and a
+paragraph would not fit at any width. It is four cards and a note now, the
+paragraph is gone (it only restated the cards), and each card body lost the
+prefix that repeated its own heading — `FORM: I am / he is…` under a card
+headed FORM.
+
+### The check that found all of it
+
+`rpg/README.md` §4's Playwright pass, extended to return numbers instead of
+only pictures: panel scroll, horizontal clipping, and **what percentage of a
+scene's hotspot its own panel covers** — the last one is the measurement the
+standard's "put the panel on the empty side" rule never had. Run it per
+language; `off` alone hides most of the defects.
+
+**It also fails on the shipped RPGs.** Lost Yellow Road in German: the rules
+panel scrolls 136px and `tracks` has a panel covering 100% of its own hotspot.
+Wonderland is untested past the first scene. Neither was touched here — but §4
+has evidently only ever been run in English, and that is worth an evening.
+
+### seo.py rewrites tools/lessons.json from Supabase
+
+CLAUDE.md documents the cloud-session trap: Supabase is unreachable, `seo.py`
+falls back to `tools/lessons.json`, and anything newer than that cache is
+silently deleted from the four indexes. **On Innes's machine it is the exact
+inverse.** Supabase answers, `seo.py` takes its 294 rows as authoritative and
+*overwrites the cache with them* (`seo.py` line 136) — so a catalogue row added
+to `tools/lessons.json` by hand is gone the moment `seo.py` runs, and the run
+reports success either way.
+
+That is why README §5 says the row goes into Supabase *after* the page is live,
+and it means the order on a local machine is:
+
+1. push the page, the pictures and the `library.html` thumbnail;
+2. run the SQL below against Supabase;
+3. re-run `python tools/seo.py`, which only then writes the page's SEO block
+   and puts it in the sitemap, `llms.txt` and `lesson-meta.json`.
+
+Until step 2 the page ships with the builder's `<title>` and no Open Graph,
+canonical or JSON-LD. That is expected, not a defect — but it is also why the
+lesson is not finished the moment it is pushed.
+
+### What is left, and it is one SQL statement
+
+Pushed: the page, its 51 pictures, the builder, `extract_patched.py`,
+`check_translations.py`, the ten-language table, the `rpg.py` gates and route
+hook, the hub card and the `library.html` thumbnail. `check-library.js
+--vs-origin` passes; the thumbnail was applied to a copy re-read from
+`origin/main`, not to one held in memory.
+
+Not pushed, because it cannot be: the catalogue row. Supabase is
+authoritative, `seo.py` overwrites the local cache from it, and README §5 says
+the row goes in only once the page is live — which it now is. So the last two
+steps are Innes's, in this order:
+
+```sql
+insert into lessons (file, title, level, access, deck, video, sort_order) values
+ ('block-camp/frankenstein-green-prometheus-rpg.html',
+  'Frankenstein: The Green Prometheus — Going To Voxel RPG (A2)', 'A2', 'pro', false, false, 0);
+```
+
+Then `python tools/seo.py`, which writes the page's SEO block and adds it to
+the sitemap, `llms.txt` and `lesson-meta.json`. `sort_order 0` matches the
+other RPGs, so the shelf pins it to the front; `access pro` is live from the
+moment the row exists, because the Worker now gates `block-camp/` paths.
+
+---
+
 ## 2026-09-07 — Blocula takes the V7 draft: five new scenes, glass panels, and a gloss checker
 
 Innes sent `Dracula_…_Standalone_Draft_V7.html` (122 MB, pictures inlined,

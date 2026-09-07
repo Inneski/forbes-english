@@ -98,8 +98,20 @@ its text in JavaScript; `build_wonderland_stolen_now.py`'s docstring says
 how it was pulled out (slice the script from `const q =` to
 `function resetState`, run it in node, print the tables as JSON) and the
 cover / prologue / fork / briefing prose, which lives in its render
-functions, was transcribed by hand. A third kind means: read its script
-first, then decide which of the two it is closer to.
+functions, was transcribed by hand.
+
+**A third kind arrived on 2026-09-07** (Frankenstein: The Green Prometheus,
+V32): a base `const DATA={...}` followed by twenty-two more `<script>`
+blocks, each patching the one before, so no regex over the file reaches the
+final text — it finds a superseded draft and reports success.
+`extract_patched.py` runs every block in order behind a DOM shim and reads
+`DATA` afterwards; its docstring says why, and `docs/HANDOFF.md` says what
+it cost. A fourth kind means: read its script first, then decide which of
+the three it is closest to.
+
+`check_translations.py` audits a `<slug>/translations` directory before a
+page exists — script leaks, coverage, a lost `___` — which is the one thing
+`check-glosses.js` cannot do, since it needs a built Blocula-style page.
 
 Every page is **generated**: edit the builder, re-run it. The builder keeps
 the fenced SEO block from the file on disk, so a re-run without `seo.py`

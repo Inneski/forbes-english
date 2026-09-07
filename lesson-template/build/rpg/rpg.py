@@ -259,7 +259,7 @@ let sound=false;try{sound=localStorage.getItem('rpg-sound')==='1'}catch(_){}
 /* two short tones, right and wrong — the Wonderland export's, kept */
 function beep(ok){if(!sound)return;try{const c=new (window.AudioContext||window.webkitAudioContext)();const o=c.createOscillator(),g=c.createGain();o.type=ok?'square':'sawtooth';o.frequency.value=ok?620:180;g.gain.value=.03;o.connect(g);g.connect(c.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.16);o.stop(c.currentTime+.18);o.onended=()=>c.close()}catch(_){}}
 function setSound(on){sound=!!on;try{localStorage.setItem('rpg-sound',sound?'1':'0')}catch(_){}const b=document.getElementById('sound');b.setAttribute('aria-pressed',String(sound));b.firstChild.textContent=(sound?'🔊':'🔈')+' ';document.getElementById('soundLabel').textContent=ui(sound?'soundOn':'soundOff')}
-function fresh(lang){return {scene:G.start,score:0,chances:G.chances,tiles:0,lang,open:false,route:[],results:{},attempts:{},mistakes:[],answered:0,finalCorrect:null}}
+function fresh(lang){return {scene:G.start,score:0,chances:G.chances,tiles:0,lang,open:false,route:[],results:{},attempts:{},mistakes:[],answered:0,finalCorrect:null,endingPick:null,endingMaster:false}}
 const frame=document.getElementById('frame'), content=document.getElementById('content'), sceneImage=document.getElementById('sceneImage');
 const hot=document.getElementById('hot'), hotLabel=document.getElementById('hotLabel'), zone=document.getElementById('zone');
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -311,9 +311,9 @@ function displayAnswer(i,apply){const s=G.scenes[state.scene];const buttons=[...
   const head=ok?(retried?ui('repaired'):ui(s.relic?'relic':'correct',{p})):ui('wrong');const was=ok?'':`<br>${ui('answerWas')} ${esc(optText(s.opts[s.answer]))}`;
   fb.innerHTML=`<strong>${head}</strong>${was}${expl}`;fb.className=`feedback show ${ok?'good':'bad'}`;document.getElementById('continue').hidden=false;updateHUD();if(apply)requestAnimationFrame(()=>content.scrollTo({top:content.scrollHeight,behavior:'smooth'}))}
 function answer(i){if(Object.prototype.hasOwnProperty.call(state.results,state.scene))return;const s=G.scenes[state.scene];if(G.repair&&i!==s.answer){if(!(state.attempts[state.scene]||0))state.mistakes.push(state.scene);state.attempts[state.scene]=(state.attempts[state.scene]||0)+1;displayAnswer(i,true);return}state.results[state.scene]=i;displayAnswer(i,true)}
-function resolve(){const full=state.tiles>=G.tiles&&state.chances>0;if(state.finalCorrect&&full&&state.score>=G.max)return G.endings.master;if(state.finalCorrect&&full&&state.score>=G.completeScore)return G.endings.complete;if(state.finalCorrect&&state.tiles<G.tiles)return G.endings.missing;return G.endings.failed}
+function resolve(){const full=state.tiles>=G.tiles&&state.chances>0;const flawless=state.finalCorrect&&full&&state.score>=G.max;if(flawless&&(!state.endingPick||state.endingMaster))return G.endings.master;if(state.endingPick&&state.chances>0&&G.endings[state.endingPick])return G.endings[state.endingPick];if(state.finalCorrect&&full&&state.score>=G.completeScore)return G.endings.complete;if(state.finalCorrect&&state.tiles<G.tiles)return G.endings.missing;return G.endings.failed}
 function advance(){const s=G.scenes[state.scene];if(state.chances<=0&&state.results[state.scene]!==s.answer){go(G.endings.failed);return}if(s.next==='resolve'){go(resolve());return}go(s.next)}
-function chooseRoute(i){const r=G.scenes[state.scene].routes[i];if(r.route)state.route.push(r.route);go(r.min!=null&&state.score<r.min?r.else:r.target)}
+function chooseRoute(i){const r=G.scenes[state.scene].routes[i];if(r.route)state.route.push(r.route);if(r.ending){state.endingPick=r.ending;state.endingMaster=!!r.master}go(r.min!=null&&state.score<r.min?r.else:r.target)}
 function restart(){state=fresh(state.lang);render()}
 (function(){['off',...LANGS].forEach(l=>{const b=document.createElement('button');b.className='lang-item';b.dataset.lang=l;b.innerHTML=l==='off'?`<b>OFF</b><span>${esc(G.labels.off.en)}</span>`:`<b>${l.toUpperCase()}</b><span>${esc(G.names[l])}</span>`;b.addEventListener('click',()=>{state.lang=l;closeMenu();setLang()});langMenu.appendChild(b)});langBtn.addEventListener('click',e=>{e.stopPropagation();toggleMenu()});document.addEventListener('click',e=>{if(!langMenu.hidden&&!langMenu.contains(e.target))closeMenu()})})();
 function setLang(){const wasOpen=state.open;render();if(wasOpen)setOpen(true)}
@@ -369,6 +369,108 @@ def _check_langs(obj, langs, path):
             _check_langs(v, langs, '%s[%d]' % (path, i))
 
 
+def _opt_text(o):
+    return o.get('en') or ' '.join(o.get('parts') or [])
+
+
+def _check_answer_key(scenes):
+    """The two answer-key gates, which an RPG had no enforcement for.
+
+    A deck shuffles its options in the browser and applies A/B/C after
+    (HOUSE-STYLE, "Multiple choice"), so neither gate can bite there. This
+    engine renders `opts` in spec order — the first option really is the first
+    button, every time — so the spec is the only place to get it right.
+
+    The Frankenstein V32 export arrived with the answer in slot 0 on all 44
+    questions. It is invisible in a diff of `'answer': 0` lines and obvious to
+    the third student who notices. Builders distribute the key themselves;
+    this refuses the build if one forgets.
+
+    The length gate is HOUSE-STYLE's, verbatim: "The correct option must never
+    be the longest one. This is a hard gate, not a preference." A correct
+    answer written fuller than its distractors is scoreable without knowing
+    any of the language being taught. Ties are fine — three options of equal
+    length give nothing away.
+    """
+    qs = [(sid, s) for sid, s in scenes.items() if s.get('kind') == 'question']
+    if not qs:
+        return
+    bad = []
+    for sid, s in qs:
+        opts = [_opt_text(o) for o in s['opts']]
+        if len(opts) < 2:
+            continue
+        kl = len(opts[s['answer']])
+        others = [len(o) for i, o in enumerate(opts) if i != s['answer']]
+        hi, lo = max(others), min(others)
+        if kl > hi * 1.10 and kl - hi >= 4:
+            bad.append('%s: the key is the longest option, %d chars against %d (%.2fx) — %r'
+                       % (sid, kl, hi, kl / hi, opts[s['answer']][:60]))
+        if lo > kl * 1.50 and lo - kl >= 10:
+            bad.append('%s: the key is the shortest option, %d chars against %d (%.2fx) — %r'
+                       % (sid, kl, lo, lo / kl, opts[s['answer']][:60]))
+    if len(qs) >= 4:
+        tally = {}
+        for _, s in qs:
+            tally[s['answer']] = tally.get(s['answer'], 0) + 1
+        top, n = max(tally.items(), key=lambda kv: kv[1])
+        if n / len(qs) >= 0.80:
+            bad.append('the key sits in slot %d on %d of %d questions (%d%%). Deal it across '
+                       'the slots in the builder — this engine renders opts in spec order.'
+                       % (top, n, len(qs), round(100 * n / len(qs))))
+    if bad:
+        raise SystemExit('answer key (HOUSE-STYLE):\n  ' + '\n  '.join(bad))
+
+
+EASY_MIN = ('es', 'de')   # HOUSE-STYLE: every deck ships Spanish and German
+
+
+def _check_easy(spec):
+    """The easy-English layer, if the deck ships one.
+
+    A scene's `easy` value is a partial scene: only the keys whose text
+    changes. Everything it leaves out — the picture, the hotspot, the options,
+    the answer index, `next` — comes from the base scene, which is what makes
+    the switch safe mid-game and keeps one answer key for both levels. So the
+    gate here is narrow: an overlay may not touch the logic, and every string
+    in it needs English plus the two glosses HOUSE-STYLE requires. The other
+    gloss languages fall through to the base scene on purpose (the meaning is
+    the same at both levels; only the English changes), so they are not
+    required a second time.
+    """
+    scenes = spec['scenes']
+    frozen = ('img', 'hot', 'pos', 'v', 'width', 'inset', 'kind', 'answer', 'next',
+              'opts', 'points', 'relic', 'final', 'success')
+    bad, checked = [], []
+    for sid, s in scenes.items():
+        e = s.get('easy')
+        if e is None:
+            continue
+        if not isinstance(e, dict):
+            bad.append('%s: easy must be a partial scene dict' % sid)
+            continue
+        for k in frozen:
+            if k in e:
+                bad.append('%s: easy may not override %r — the two levels share the '
+                           'pictures, the options and the answer key' % (sid, k))
+        for k in e:
+            if k not in s:
+                bad.append('%s: easy adds %r, which the base scene does not have' % (sid, k))
+        if 'routes' in e:
+            if len(e['routes']) != len(s['routes']):
+                bad.append('%s: easy routes must line up one-for-one with the base routes' % sid)
+            else:
+                for i, (a, b) in enumerate(zip(s['routes'], e['routes'])):
+                    if a.get('target') != b.get('target') or a.get('min') != b.get('min') or a.get('else') != b.get('else'):
+                        bad.append('%s: easy route %d changes where it goes' % (sid, i))
+        checked.append(('scenes.%s.easy' % sid, e))
+    if bad:
+        raise SystemExit('easy-English layer:\n  ' + '\n  '.join(bad))
+    for path, obj in checked + [('easy_labels', spec.get('easy_labels', {})),
+                                ('easy_tags', spec.get('easy_tags', {}))]:
+        _check_langs(obj, [l for l in EASY_MIN if l in spec['langs']], path)
+
+
 def validate(spec):
     langs = spec['langs']
     scenes = spec['scenes']
@@ -400,6 +502,7 @@ def validate(spec):
     for key, sid in spec['endings'].items():
         if scenes.get(sid, {}).get('kind') != 'ending':
             raise SystemExit('ending %s -> %s is not an ending scene' % (key, sid))
+    _check_answer_key(scenes)
     labels = dict(LABELS, **spec.get('labels', {}))
     _check_langs(labels, langs, 'labels')
     # `opts` are left out on purpose: they are the English being taught, and
