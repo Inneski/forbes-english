@@ -86,6 +86,20 @@ CAMPS = '''<div class="camp" id="rules">
     ('With a person, using <em>have</em>', 'subject + have + <strong>person</strong> + infinitive', '"He <em>had</em> the plumber <em>look</em> at it."'),
     ('With a person, using <em>get</em>', 'subject + get + <strong>person</strong> + <em>to</em> + infinitive', '"He <em>got</em> the plumber <em>to look</em> at it."'),
 ], 'form-grid') + chart(
+    'So is this the passive?',
+    'Half of it is, which is why the causative sits on the descent side of the mountain rather than up '
+    'with the tenses. The main clause is <strong>active</strong> &mdash; you are the subject and you did '
+    'the arranging. What follows <em>have</em> is a <strong>passive</strong> in miniature: <em>my hair '
+    'cut</em> is <em>my hair [was] cut</em> with the auxiliary squeezed out. Many coursebooks call it the '
+    '<em>causative passive</em> for exactly that reason.',
+    ['Part of the sentence', 'Voice', 'Why'],
+    [['I had &hellip;', 'Active', 'You are the subject and the arranger.'],
+     ['&hellip; my hair cut', 'Passive', 'The hair is having it done to it, by somebody unnamed.'],
+     ['My hair was cut.', 'Passive', 'The full passive &mdash; and it loses you entirely.'],
+     ['I cut my hair.', 'Active', 'The plain active &mdash; and now you held the scissors.']],
+    'The causative is the sentence English uses when neither plain voice will do: the passive loses you, '
+    'the active makes you the barber. This one keeps you responsible and still hands the work to somebody '
+    'else &mdash; which is exactly what happened.') + chart(
     'The word order is the whole trick',
     'The thing comes <em>before</em> the participle, never after it. Put the participle next to '
     '<em>have</em> and you have written the present perfect instead, which says something completely '

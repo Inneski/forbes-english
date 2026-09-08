@@ -205,7 +205,7 @@ BUT = '''<div class="camp" id="rules">
       <div class="camp-label">Building it</div>
       <h2>How it&#39;s built</h2>
       ''' + rule_grid([
-    ('Affirmative', 'subject + am / is / are + <strong>used to</strong> + noun or -ing', '"He<em>&#39;s used to</em> the早 shifts."'),
+    ('Affirmative', 'subject + am / is / are + <strong>used to</strong> + noun or -ing', '"He<em>&#39;s used to</em> the early shifts."'),
     ('Negative', 'subject + am / is / are + not + used to + &hellip;', '"They<em>&#39;re not used to</em> the heat."'),
     ('Questions', 'Am / Is / Are + subject + used to + &hellip;?', '"<em>Are</em> you <em>used to</em> it yet?"'),
     ('Becoming', 'get / am getting / got + <strong>used to</strong> + &hellip;', '"I <em>got used to</em> it quickly."'),
@@ -344,7 +344,6 @@ assemble(
       '"Solid progress. Worth a look at the other cloud before you go on."'),
      ('"Good first attempt. The will/going to fork is the part to read again."',
       '"Good first attempt. The three-forms chart is the part to read again."'),
-     ('Camp seven', 'This cloud'),
-     ('the早 shifts', 'the early shifts')],
+     ('Camp seven', 'This cloud')],
     'sherpa-tensing-cloud-be-used-to.html')
 print('cloud: be used to')

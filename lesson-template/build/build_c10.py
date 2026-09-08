@@ -1,11 +1,40 @@
 # -*- coding: utf-8 -*-
 """Camp ten · past perfect. Built from camp seven, like camps six and nine."""
-import re, sys
+import json, os, re, sys
 sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
 sys.path.insert(0, 'lesson-template')
 import camp_ten_diagram as D
 
 BASE = open('sherpa-tensing-camp-seven-future-simple.html', encoding='utf-8').read()
+
+# Camp seven's tail — its progression id and its example translations — is
+# not part of what the slices below replace. Without this, every page built
+# here would ship as camp seven to the route map and translate the wrong
+# sentences.
+TAIL = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                   'sherpa_tail.json'), encoding='utf-8'))
+
+
+def _own_tail(out_s, out):
+    if out not in TAIL:
+        raise SystemExit('%s has no entry in build/sherpa_tail.json' % out)
+    t = TAIL[out]
+    ids = iter(range(t['tr_first_id'], t['tr_first_id'] + len(t['ex_tr'])))
+    out_s, n = re.subn(r'<div class="ex">', lambda m: '<div class="ex" data-tr="%d">' % next(ids),
+                       out_s, count=len(t['ex_tr']))
+    if n != len(t['ex_tr']):
+        raise SystemExit('%s: %d examples, %d translations' % (out, n, len(t['ex_tr'])))
+    ex_tr = {str(t['tr_first_id'] + i): v for i, v in enumerate(t['ex_tr'])}
+    out_s = re.sub(r'var EX_TR = \{.*?\};',
+                   lambda m: 'var EX_TR = %s;' % json.dumps(ex_tr, ensure_ascii=False), out_s, count=1)
+    twin = 'null' if t['twin'] is None else json.dumps(t['twin'])
+    for a, b in [(r'var SHERPA_ID = "[^"]+";', 'var SHERPA_ID = "%s";' % t['sherpa_id']),
+                 (r'var SHERPA_FACE = "[^"]+";', 'var SHERPA_FACE = "%s";' % t['face']),
+                 (r'var SHERPA_TWIN = (null|"[^"]+");', 'var SHERPA_TWIN = %s;' % twin)]:
+        out_s, n = re.subn(a, lambda m, b=b: b, out_s, count=1)
+        if n != 1:
+            raise SystemExit('%s: %s not found in the base' % (out, a))
+    return out_s
 
 
 def assemble(hero_section, camps, diagram_js, questions, palette, title,
@@ -27,7 +56,8 @@ def assemble(hero_section, camps, diagram_js, questions, palette, title,
         title, 1)
     for a, b in extra_replacements:
         out_s = out_s.replace(a, b)
-    open(out, 'w', encoding='utf-8').write(out_s)
+    out_s = _own_tail(out_s, out)
+    open(out, 'w', encoding='utf-8', newline='\n').write(out_s)
     return out_s
 
 
@@ -386,6 +416,7 @@ TEN_PALETTE = '''  :root{
     --accent-dark:#4A0718;
     --accent-light:#E7BFC8;
     --accent-lighter:#F9EBEE;
+    --on-accent:#FFFFFF;
     --good:#1E7A4C;
     --good-bg:#E5F5EC;
     --bad:#B23A3A;

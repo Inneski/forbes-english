@@ -110,7 +110,7 @@ def signals(title_a, items_a, title_b, items_b, note):
            title_b, "\n".join('            <li>%s</li>' % i for i in items_b), note)
 
 
-def chart(h3, note, headers, rows):
+def chart(h3, note, headers, rows, example=None):
     return '''      <div class="chart-wrap">
         <h3>%s</h3>
         <p class="chart-note">%s</p>
@@ -119,11 +119,12 @@ def chart(h3, note, headers, rows):
           <tbody>
 %s
           </tbody>
-        </table>
+        </table>%s
       </div>
 ''' % (h3, note, "".join('<th>%s</th>' % h for h in headers),
        "\n".join('            <tr><td class="subj">%s</td>%s</tr>'
-                 % (r[0], "".join('<td>%s</td>' % c for c in r[1:])) for r in rows))
+                 % (r[0], "".join('<td>%s</td>' % c for c in r[1:])) for r in rows),
+       '\n        <p class="example" style="margin-top:14px">%s</p>' % example if example else '')
 
 
 def fork(title, note, headers, rows, example, links):
@@ -168,7 +169,7 @@ def questions(items):
     return "\n".join(out)
 
 
-def palette(ink, ink_soft, paper, accent, dark, light, lighter):
+def palette(ink, ink_soft, paper, accent, dark, light, lighter, on_accent='#FFFFFF'):
     return '''  :root{
     --ink:%s;
     --ink-soft:%s;
@@ -178,12 +179,13 @@ def palette(ink, ink_soft, paper, accent, dark, light, lighter):
     --accent-dark:%s;
     --accent-light:%s;
     --accent-lighter:%s;
+    --on-accent:%s;
     --good:#1E7A4C;
     --good-bg:#E5F5EC;
     --bad:#B23A3A;
     --bad-bg:#FBEAEA;
     --radius:14px;
-  }''' % (ink, ink_soft, paper, accent, dark, light, lighter)
+  }''' % (ink, ink_soft, paper, accent, dark, light, lighter, on_accent)
 
 
 RESULTS = lambda clean, solid, first: [

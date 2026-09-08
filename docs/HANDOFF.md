@@ -12,6 +12,91 @@ stale copy.
 
 ---
 
+## 2026-09-08 — The two clouds translated each other's sentences, and their builder could not be run
+
+Innes reported a glitch in the *used to* / *be used to* clouds. Two defects,
+one of them in the pipeline rather than the page.
+
+### The glitch: `EX_TR` swapped between the two pages
+
+Every rule-card example on a Sherpa page carries `data-tr="N"`, and `EX_TR`
+maps `N` to nine translations. On `sherpa-tensing-cloud-used-to.html` the ten
+entries (160–169) were the *be used to* sentences — click DE under *"I used
+to smoke"* and you got *"An den Lärm habe ich mich gewöhnt"*. The other cloud
+(150–159) had the *used to* set. Swapped whole, one-to-one, in all nine
+languages, since `529fe53`. Fixed by swapping the values back under each
+page's own ids; both blocks now pair with their own sentences (checked by
+reading `data-tr` against `EX_TR` for every card).
+
+### The route map's clouds quivered on hover
+
+`sherpa-tensing-route-map.html` (hand-maintained, no builder) gave the two
+cloud links both an SVG `transform="translate(33 88)"` attribute and a CSS
+`:hover{transform:translateY(-2px)}`. A CSS transform *replaces* the attribute
+transform, so on hover the cloud jumped to the SVG origin — measured 30px for
+*used to*, 191px for *to be used to doing* — left the pointer, snapped back,
+re-entered, and oscillated. The translate now sits on a wrapper `<g>` and
+`.cloud-link` is the inner group; forcing the hover rule moves each cloud
+0.7px. The causative moon never had the attribute, which is why it was fine.
+**Rule: never put `class="cloud-link"` (or any CSS-transformed class) on an
+SVG element that also carries a `transform` attribute.**
+
+### The pipeline defect: `assemble()` shipped every page as camp seven
+
+`build_c10.assemble()` — shared by camps ten to thirteen and all three clouds —
+builds a page by slicing the *live* `sherpa-tensing-camp-seven-future-simple.html`
+and swapping in the hero, camps, diagram JS and questions. Everything else
+comes through verbatim, including the tail: `SHERPA_ID`/`FACE`/`TWIN` and
+`EX_TR`. Those were added to the shipped HTML by hand (`59e8048`, `c4c68a8`,
+`c469be8`) and never to the builders, so **re-running any of these seven
+builders produced a page that reported itself to the route map as
+`camp-seven-future-simple` and translated camp seven's examples.** Nobody had
+re-run one since. The first attempt here did exactly that; the diff is how
+it was caught.
+
+What changed:
+
+- **`lesson-template/build/sherpa_tail.json`** holds, per output file, the
+  progression id, face, twin, the first `data-tr` id and the ten translation
+  rows — extracted from the shipped pages after the swap fix.
+- **`assemble()` ends with `_own_tail()`**, which numbers the first ten
+  `.ex` divs, rewrites `EX_TR` and the three `SHERPA_*` lines from that file,
+  and **exits non-zero** if the page has no entry or the counts disagree.
+  Camp seven can no longer leak through silently.
+- **`palette()` now emits `--on-accent`** (default `#FFFFFF`), and camp ten's
+  literal palette has it too. Camp seven gained `var(--on-accent)` in
+  `fe400e0` and these seven pages were still on `color:#fff` — the rebuild
+  brings them onto the token with no visible change. If a camp here is ever
+  softened the way camps 4/5/7/8 were, pass `on_accent=` to `palette()`
+  rather than hardcoding.
+- **`chart()` takes an optional `example` paragraph**, and the causative's
+  hand-added *"So is this the passive?"* chart (`c4c68a8`) is now in
+  `build_causative.py`. It was the one content block a rebuild would have
+  deleted.
+- **`assemble()` writes with `newline='\n'`.** On Windows the default turns a
+  one-word change into a 1,700-line diff across every page the builder
+  touches. `seo.py` already did this; the builders did not.
+- The `the早 shifts` typo in `build_clouds.py` (a stray CJK character that
+  had been masked by a find/replace at the foot of the file) is fixed at
+  source and the patch removed.
+
+**Measurement:** with the fixes in, rebuilding all seven pages and running
+`seo.py` leaves a diff of 9–11 lines per page against what shipped: the
+`--on-accent` token, the four CSS lines that use it, and (clouds only) the
+translation swap. Nothing else — the builders now reproduce the shipped pages.
+
+**Two things to know before touching these builders:**
+
+- `build_clouds.py` and `build_causative.py` import `build_c10` and
+  `build_c11_12_13`, and both of those *run* on import. Running either cloud
+  builder rewrites camps ten to thirteen as well. Harmless now that the
+  output is stable, but expect seven modified files, not one.
+- `check-lesson.js` fails four checks on every Sherpa page — page scrolls,
+  no activation slide, no `UI_I18N`, no `.fe-logo` — **on the committed
+  versions too.** They are 16:9-deck rules applied to the older scrolling
+  format. No JS errors, entities and markup clean, before and after. Not
+  fixed here; it is the format, not the pages.
+
 ## 2026-09-08 — The shelf runs newest first, and the RPGs are behind the paywall
 
 Innes asked for new lessons at the top of the library, the RPGs pushed up,
