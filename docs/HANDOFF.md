@@ -12,6 +12,44 @@ stale copy.
 
 ---
 
+## 2026-09-08 — Present Simple vs Continuous: the sorting is about the time expression, nothing else
+
+`present-simple-vs-continuous.html` is hand-written, not generated — there is
+no builder for it in `lesson-template/build/`. Edit the HTML directly. The
+answer key is the `b` field on each entry of the `DATA.words` array, inline in
+the one long `const DATA = …` line.
+
+**The principle Innes settled on, over four passes:** the game sorts *time
+expressions*. Anything that decides the tense by way of the verb or the
+meaning instead is an exception, stated once under the three boxes and marked
+"Not part of the sorting" — never a criterion inside a box. Two such
+exceptions exist:
+
+- **State verbs** (`know, want, believe, belong, own`) have no continuous
+  form, so no signal word decides anything for them.
+- **Timetables and fixed arrangements** take the simple whatever expression
+  they carry — *the shop closes at six today*.
+
+Getting this wrong twice is what cost the passes. The first attempt put the
+state-verb note *inside* the third box, which reads as a fourth sorting
+criterion; the second only deleted the word "state" from four explanations
+without asking what those sentences were doing there.
+
+**The exception has a consequence for the key.** The timetable reading was the
+only thing putting `today`, `this week`, `this month` and `this year` in the
+either box. Once it is a general exception they are ordinary continuous words,
+so the key is now **11 simple / 12 continuous / 3 either** (was 11 / 8 / 7).
+The either box keeps only the three that are ambiguous with ordinary dynamic
+verbs and no override in play: `always` (habit vs complaint), `these days` and
+`nowadays` (general truth vs change under way). If you ever restore a word to
+the either box, check it is ambiguous *without* leaning on a state verb or a
+timetable — that is the test the other four failed.
+
+Counts are quoted in three places that must move together: the third box's
+note (`r3n`), the full-marks message (`band4`), and both in `en` and `de`.
+
+---
+
 ## 2026-09-08 — Wonderland's other seven languages now describe the deck it is
 
 The gloss debt from the two changes above is paid. When the narrative was
