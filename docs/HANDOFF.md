@@ -337,6 +337,15 @@ through the Write tool arrived in the file as a literal backspace
 character (U+0008), so `/^#all/` silently never matched. If a hash route
 "does nothing", check `s.count('')` before anything else.
 
+### The plan for what to build next
+
+`docs/SYLLABUS-GAPS.md` measures the catalogue against a 90-point A1–C2
+syllabus (own lesson / touched / absent). `docs/PLAN-foundations-grammar-business.md`
+turns the three biggest holes into 22 lessons and a hub — A2 Foundations
+(7), B1–B2 Exam Grammar (8), the Business route (7 + `business.html`) —
+with per-lesson scope, the library changes they need, and the Midjourney
+shopping list Innes generates from. Start there, not from the gaps file.
+
 ---
 
 
