@@ -235,7 +235,7 @@ wraps to at most two lines; the German is not longer than the panel.
 | `img_w`, `img_h` | picture size when it is not 1536×1024 (Wonderland is 1536×864) |
 | `repair`, `total` | `repair: True` = a wrong answer explains and lets the learner try again, points on the first try only, no chances (set `chances: 0`); `total` = questions on any path, shown as a progress badge |
 | `tags` | the two half-labels for split options, `{'a': {en,…}, 'b': {en,…}}` (pink NOW / blue USUAL) |
-| `easy_labels`, `easy_tags` | optional — the chrome and half-labels the easy-English layer rewords (§7) |
+| `easy_labels`, `easy_tags` | optional — chrome and half-labels a simpler text layer rewords; folded in at build time (§7) |
 
 Translations: `rpg.apply_translations(spec, '<dir>')` reads every
 `<lang>.json` in the directory — a flat `{"English string": "translation"}`
@@ -260,50 +260,68 @@ being taught and the check skips them) or, for a two-blank item,
 `{parts: ['stays', 'is getting'], kinds: ['b', 'a']}`: two coloured halves
 labelled from `tags`, first half for the first blank.
 
-## 7. An easy-English layer (optional, one deck has one)
+## 7. Two texts, one deck: folding a simpler version in
 
-A deck can carry a second reading level. It is **not a second deck**: the
-same page, the same pictures, the same options and the same answer key,
-with a 📖 button in the HUD (and `E`) that swaps the prose. Wonderland is
-the one that has it, from an Easy English export Innes sent on 2026-09-07
-that turned out to be a structural twin of the original — same 24 question
-ids, same order, options byte-for-byte identical, same `correct` indices.
+Wonderland's questions came from one export and a plain-English rewrite of
+the same lesson came from another — a structural twin: same 24 question ids
+in the same order, options byte-for-byte identical, same `correct` indices,
+only the prose simpler. Measure that before trusting any such pair; it is
+what makes the rest safe.
 
-Wire it by giving a scene an `easy` key holding a **partial scene**: only
-the keys whose wording changes.
+It shipped first as a runtime switch, with a 📖 button offering two reading
+levels. That is gone. Innes, 2026-09-08: *"Just keep the easy English
+version. A complicated version is redundant - the description must match the
+questions."* Once the narrative had been re-levelled to match the questions
+the two levels sat a hair apart, and a switch between them was a control
+with nothing behind it.
 
-```python
-scenes['prologue']['easy'] = {'k': …, 'title': …, 'story': …}
-```
+What remains is a **build-time fold**. `rpg/<slug>/data-easy.json` holds the
+simpler text; the builder attaches it to each scene as an `easy` key holding
+a **partial scene** — only the words that change — and `collapse()` folds it
+in and drops the key before `assemble()` ever sees it. The engine knows
+nothing about reading levels.
 
-Spec keys `easy_labels` and `easy_tags` reword the chrome (RELICS →
-MAGIC OBJECTS) and the cake halves the same way. `assemble()` sets
-`G.easy` when any scene has an overlay, which is what shows the button.
+Two things make it work, and both live in `build_wonderland_stolen_now.py`:
 
-Three things make this safe, and all three are enforced in `_check_easy`:
+- **`fold()` merges one text object at a time, not one key at a time.** The
+  simpler text had English, Spanish and German only; every other gloss falls
+  through to the base string, which describes the same scene. Merging whole
+  keys instead left 19 of 35 screens English-only in fr/it/pt/ru/ar/zh/ja —
+  and it looks perfect in en/es/de, which are the three anybody checks. The
+  measurement is a sweep: for each language, for each scene, assert a
+  `.translation` node exists.
+- **The gate in `collapse()` refuses an overlay that reaches past wording.**
+  `img`, `hot`, `opts`, `answer`, `next` and a route's `target` are frozen, and
+  a key the base scene does not have is a typo, not an overlay. Verified
+  against deliberately broken copies: setting `img`, or adding `answer`,
+  each stops the build.
 
-- **An overlay may not touch the logic.** `img`, `hot`, `opts`, `answer`,
-  `next`, `kind` and friends are refused, and easy `routes` must go where
-  the base routes go. So one answer key serves both levels, and the reader
-  can switch mid-question and keep the score, the route and the tiles.
-- **It may not add a key the base scene lacks** — that would be a typo, not
-  an overlay.
-- **Every string needs `en` plus `es` and `de`** (HOUSE-STYLE's minimum),
-  and nothing more. The other gloss languages fall through to the base
-  string, because the overlay is merged **one text object at a time**, not
-  one key at a time. Getting that wrong is the trap: `Object.assign` at the
-  key level left 19 of Wonderland's 35 screens English-only in
-  fr/it/pt/ru/ar/zh/ja, and it looks fine in en, es and de, which are the
-  three anybody checks. The measurement is a sweep — for each language, for
-  each scene, assert a `.translation` node exists at both levels.
+The cost to know about: the seven fall-through glosses were written for the
+harder wording, so a French reader sees "Canyon des Roses" where the English
+now says "a deep valley". Spanish and German match exactly. If a language
+ever needs its own simpler wording, put it in `data-easy.json` and it wins.
 
-The seven fall-through glosses describe the same scene at the harder
-reading level: a French reader on the easy text sees "Canyon des Roses"
-where the English now says "a deep valley". That is deliberate — the
-meaning is the same and only the English changes — but if a language ever
-needs its own easy wording, add it to the overlay and it wins.
+## 8. Colouring the grammar the deck teaches
 
-## 8. What is deliberately not here
+A deck that contrasts two tenses can name them in colour. Wonderland's cake
+gate is pink for the present continuous and blue for the present simple, and
+Innes asked for the blue rule to be blue *every time it is mentioned*.
+
+Two mechanisms, both reading the same two custom properties (`--cake-a`,
+`--cake-b`) so the pair can never drift apart in one place only:
+
+- **`tone: 'a' | 'b'` on a rule card** tints the card and its heading. Use it
+  wherever a card names one of the two — the cake briefing and the grammar
+  briefing both do.
+- **`[[a]]…[[/a]]` and `[[b]]…[[/b]]` inside a learner string** colour words
+  in a sentence or a title. They are applied *after* escaping, so they are
+  the only markup a translator can introduce, and every plain-text use — the
+  picture's `alt`, the review list, the answer read-back — strips them with
+  `bare()`. Put the marks in every language's version of the string, or that
+  language silently loses the colour; the sweep to catch it is a search for
+  `[[` in rendered text across all languages, which must find nothing.
+
+## 9. What is deliberately not here
 
 - **Print.** The exports had a "print result" button; the three RPGs
   before this one did not, and a fullscreen game is not a worksheet.

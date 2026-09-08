@@ -12,6 +12,61 @@ stale copy.
 
 ---
 
+## 2026-09-08 — Wonderland drops to one reading level, and the two tenses get their colours
+
+Innes, after the re-levelling: *"Just keep the easy English version. A
+complicated version is redundant - the description must match the questions."*
+He is right, and it is the same judgement the re-levelling forced: once the
+narrative came down to A1–A2, the two levels were a hair apart and the 📖
+button was a control with nothing behind it.
+
+**The deck now ships one text.** `data-easy.json` is still the source of the
+wording, but it is folded in at build time by `collapse()` in the builder and
+the key is gone before `assemble()` sees it. `G.easy`, the button, `SC()`,
+`mrg()`, `setEasy()`, the `E` key, the level labels and `_check_easy` are all
+out of `rpg.py` — the engine knows nothing about reading levels again. The
+page dropped 266 KB → 217 KB.
+
+The structural gate moved with the feature: `collapse()` refuses an overlay
+that sets `img`, `hot`, `opts`, `answer`, `next` or a route's `target`, or
+that adds a key the base scene lacks. **Verified against deliberately broken
+copies** — and the first version of that test did not fire, because
+`question()` builds its overlay from a fixed key set, so injecting `opts` into
+a *question* entry never reaches the scene. Inject into `EASY['scenes'][…]`
+instead. A gate you have not seen refuse something is not a gate.
+
+### Colour, and the trap in it
+
+Innes also asked for the blue rule — `BLUE · PRESENT SIMPLE` / `every day ·
+usually · facts` — to be blue every time it is mentioned, and `BLUE CAKE`
+written in blue. Two mechanisms, both reading one pair of custom properties
+(`--cake-a`, `--cake-b`) so the two colours cannot drift apart in one place
+only (README §8):
+
+- `tone: 'a'|'b'` on a rule card tints the card and its heading. Used on the
+  cake briefing's two cards and on the grammar briefing's FORM and PRESENT
+  SIMPLE cards.
+- `[[a]]…[[/a]]` / `[[b]]…[[/b]]` inside a learner string colours words in a
+  sentence or title, applied *after* escaping so the marks are the only markup
+  a translator can introduce. `bare()` strips them everywhere text is used as
+  plain text — the picture's `alt`, the review list, the answer read-back.
+
+**The trap:** the marks live in the string, so a language whose string has no
+marks silently loses the colour. Pink and blue are on both the English and all
+nine glosses here because the seven fall-through values were marked in place
+in `translations/<lang>.json` — the key never changed, only the value. The
+sweep that proves it searches rendered text for `[[` in every language on
+every scene, and must find nothing.
+
+Both routes of both acts still play 160/160 with 3 objects to `end_restore`,
+every screen glosses in all nine languages, and there is no horizontal
+overflow at 375px.
+
+**Still open, and Innes's call:** the seven non-es/de glosses were written for
+the harder wording. A French reader now sees "Canyon des Roses" against an
+English "deep valley". Spanish and German match exactly. Fixing the seven
+properly is roughly 116 strings × 7 languages, so it was not done on spec.
+
 ## 2026-09-08 — Wonderland's story was B1–B2 over A1–A2 questions
 
 Innes: *"The level of text on the opening couple of scenes of the Alice in

@@ -288,10 +288,10 @@ SCENES = {
   },
   'cake_intro': {
     'k': T('PART 2 · THE MAGIC CAKE CHALLENGE', 'PARTE 2 · EL RETO DEL PASTEL MÁGICO', 'TEIL 2 · DIE ZAUBERKUCHEN-PRÜFUNG'),
-    'title': T('PINK CAKE OR BLUE CAKE?', '¿PASTEL ROSA O PASTEL AZUL?', 'ROSA ODER BLAUER KUCHEN?'),
-    'story': T('A magic gate blocks the path. Answer four questions to open it. Pink = happening now: “Alice is running.” Blue = usual actions or facts: “Alice runs every day.”',
-               'Una puerta mágica bloquea el camino. Responde cuatro preguntas para abrirla. Rosa = ocurre ahora: «Alice is running». Azul = acciones habituales o hechos: «Alice runs every day».',
-               'Ein Zaubertor versperrt den Weg. Beantworte vier Fragen, um es zu öffnen. Rosa = passiert gerade: „Alice is running.“ Blau = gewohnte Handlungen oder Fakten: „Alice runs every day.“'),
+    'title': T('[[a]]PINK CAKE[[/a]] OR [[b]]BLUE CAKE[[/b]]?', '¿[[a]]PASTEL ROSA[[/a]] O [[b]]PASTEL AZUL[[/b]]?', '[[a]]ROSA[[/a]] ODER [[b]]BLAUER KUCHEN[[/b]]?'),
+    'story': T('A magic gate blocks the path. Answer four questions to open it. [[a]]Pink = happening now[[/a]]: “Alice is running.” [[b]]Blue = usual actions or facts[[/b]]: “Alice runs every day.”',
+               'Una puerta mágica bloquea el camino. Responde cuatro preguntas para abrirla. [[a]]Rosa = ocurre ahora[[/a]]: «Alice is running». [[b]]Azul = acciones habituales o hechos[[/b]]: «Alice runs every day».',
+               'Ein Zaubertor versperrt den Weg. Beantworte vier Fragen, um es zu öffnen. [[a]]Rosa = passiert gerade[[/a]]: „Alice is running.“ [[b]]Blau = gewohnte Handlungen oder Fakten[[/b]]: „Alice runs every day.“'),
     'rules': [
       {'name': T('PINK · PRESENT CONTINUOUS', 'ROSA · PRESENTE CONTINUO', 'ROSA · PRESENT CONTINUOUS'),
        'form': T('am / is / are + verb-ing', 'am / is / are + verbo-ing', 'am / is / are + Verb-ing')},

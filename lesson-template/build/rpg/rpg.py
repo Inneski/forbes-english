@@ -54,10 +54,6 @@ LABELS = {
     'progress':   {'en': 'SPELLS', 'es': 'HECHIZOS', 'de': 'ZAUBER', 'fr': 'SORTS', 'it': 'INCANTESIMI', 'pt': 'FEITIÇOS', 'ru': 'ЗАКЛИНАНИЯ', 'ar': 'تعويذات', 'zh': '咒语', 'ja': '呪文'},
     'soundOn':    {'en': 'SOUND ON', 'es': 'SONIDO SÍ', 'de': 'TON AN', 'fr': 'SON ACTIVÉ', 'it': 'AUDIO ON', 'pt': 'SOM LIGADO', 'ru': 'ЗВУК ВКЛ', 'ar': 'الصوت مفعّل', 'zh': '声音开', 'ja': 'サウンドON'},
     'soundOff':   {'en': 'SOUND OFF', 'es': 'SONIDO NO', 'de': 'TON AUS', 'fr': 'SON COUPÉ', 'it': 'AUDIO OFF', 'pt': 'SOM DESLIGADO', 'ru': 'ЗВУК ВЫКЛ', 'ar': 'الصوت مغلق', 'zh': '声音关', 'ja': 'サウンドOFF'},
-    # the reading-level switch. Like the sound button, it names the level you
-    # are reading, not the one the click would take you to.
-    'levelNormal': {'en': 'NORMAL ENGLISH', 'es': 'INGLÉS NORMAL', 'de': 'NORMALES ENGLISCH', 'fr': 'ANGLAIS NORMAL', 'it': 'INGLESE NORMALE', 'pt': 'INGLÊS NORMAL', 'ru': 'ОБЫЧНЫЙ АНГЛИЙСКИЙ', 'ar': 'إنجليزية عادية', 'zh': '普通英语', 'ja': '通常の英語'},
-    'levelEasy':   {'en': 'EASY ENGLISH', 'es': 'INGLÉS FÁCIL', 'de': 'EINFACHES ENGLISCH', 'fr': 'ANGLAIS FACILE', 'it': 'INGLESE FACILE', 'pt': 'INGLÊS FÁCIL', 'ru': 'ПРОСТОЙ АНГЛИЙСКИЙ', 'ar': 'إنجليزية مبسّطة', 'zh': '简易英语', 'ja': 'やさしい英語'},
     'repaired':   {'en': 'SPELL REPAIRED', 'es': 'HECHIZO REPARADO', 'de': 'ZAUBER REPARIERT', 'fr': 'SORT RÉPARÉ', 'it': 'INCANTESIMO RIPARATO', 'pt': 'FEITIÇO REPARADO', 'ru': 'ЗАКЛИНАНИЕ ИСПРАВЛЕНО', 'ar': 'أُصلحت التعويذة', 'zh': '咒语已修复', 'ja': '呪文を修復した'},
     'tryAgain':   {'en': 'NOT YET · TRY ANOTHER', 'es': 'TODAVÍA NO · PRUEBA OTRA', 'de': 'NOCH NICHT · VERSUCH ES ANDERS', 'fr': 'PAS ENCORE · ESSAIE AUTRE CHOSE', 'it': 'NON ANCORA · PROVA UN\'ALTRA', 'pt': 'AINDA NÃO · TENTA OUTRA', 'ru': 'ПОКА НЕТ · ПОПРОБУЙ ДРУГОЙ', 'ar': 'ليس بعد · جرّب إجابة أخرى', 'zh': '还不对 · 再试一个', 'ja': 'まだ · 別の答えを試そう'},
     'firstTry':   {'en': 'first try', 'es': 'a la primera', 'de': 'beim ersten Versuch', 'fr': 'du premier coup', 'it': 'al primo tentativo', 'pt': 'à primeira', 'ru': 'с первой попытки', 'ar': 'من المحاولة الأولى', 'zh': '一次答对', 'ja': '一発正解'},
@@ -73,8 +69,6 @@ LABELS = {
                    'ar': 'انقر على الشيء المتوهج أو ENTER للقراءة · ESC إخفاء · 1–3 اختيار · L اللغة · S الصوت · F ملء الشاشة',
                    'zh': '点击发光物体或按 ENTER 阅读 · ESC 隐藏 · 1–3 选择 · L 语言 · S 声音 · F 全屏',
                    'ja': '光る物をクリックか ENTER で読む · ESC 隠す · 1–3 選ぶ · L 言語 · S サウンド · F 全画面'},
-    # appended to `help` only on a deck that ships an easy-English layer
-    'helpLevel':  {'en': 'E easy English', 'es': 'E inglés fácil', 'de': 'E einfaches Englisch', 'fr': 'E anglais facile', 'it': 'E inglese facile', 'pt': 'E inglês fácil', 'ru': 'E простой английский', 'ar': 'E إنجليزية مبسّطة', 'zh': 'E 简易英语', 'ja': 'E やさしい英語'},
 }
 
 TEXT_KEYS = ('k', 'title', 'story', 'clue', 'prompt', 'fb', 'note', 'small', 'start')
@@ -124,7 +118,11 @@ def font_css():
 
 
 CSS = r"""
-:root{--accent:{{ACCENT}};--accent-ink:{{ACCENT_INK}};--deep:{{DEEP}};--panel:{{PANEL}};--bone:#fff6d9;--muted:#d9ccb0;--soft:#efe2c0;--good:#77efb4;--bad:#ff6f82;--shadow:rgba(0,0,0,.55)}
+:root{--cake-a:rgba(207,52,125,.55);--cake-b:rgba(36,121,173,.55);
+--cake-a-ink:#fff0f7;--cake-b-ink:#eef7ff;
+--cake-a-edge:#ff8dc2;--cake-b-edge:#7cc4f2;
+--cake-a-wash:rgba(207,52,125,.22);--cake-b-wash:rgba(36,121,173,.22);
+--accent:{{ACCENT}};--accent-ink:{{ACCENT_INK}};--deep:{{DEEP}};--panel:{{PANEL}};--bone:#fff6d9;--muted:#d9ccb0;--soft:#efe2c0;--good:#77efb4;--bad:#ff6f82;--shadow:rgba(0,0,0,.55)}
 *{box-sizing:border-box}
 html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#0a0703;color:var(--bone);font-family:"Courier New",Courier,monospace}
 /* Monocraft is the display face — titles, kickers, HUD, buttons, labels. The
@@ -196,7 +194,18 @@ button{font:inherit}
 .option:disabled{cursor:default;transform:none}.option .translation{font-size:1.05cqw}
 .option.split{grid-template-columns:2.6cqw 1fr 1fr;gap:.5cqw}.option .half{display:flex;flex-direction:column;gap:.15cqw;padding:.45cqw .6cqw;border:1px solid rgba(255,246,217,.25)}
 .option .half small{font-size:.8cqw;letter-spacing:.08em;opacity:.85}.option .half b{font-size:1.35cqw}
-.option .half.a{background:rgba(207,52,125,.55)}.option .half.b{background:rgba(36,121,173,.55)}
+.option .half.a{background:var(--cake-a)}.option .half.b{background:var(--cake-b)}
+/* the two kinds of time this deck teaches. Everything that names them —
+   the cake halves, the rule cards, the words inside a sentence — reads
+   these two, so the pair can never drift apart in one place only. */
+.tone-a,.tone-b{padding:0 .15em;border-radius:2px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.tone-a{background:var(--cake-a);color:var(--cake-a-ink)}
+.tone-b{background:var(--cake-b);color:var(--cake-b-ink)}
+.rule-card.tone{background:rgba(20,14,4,.8)}
+.rule-card.tone-card-a{border-color:var(--cake-a-edge);background:var(--cake-a-wash)}
+.rule-card.tone-card-b{border-color:var(--cake-b-edge);background:var(--cake-b-wash)}
+.rule-card.tone-card-a>b{color:var(--cake-a-edge)}
+.rule-card.tone-card-b>b{color:var(--cake-b-edge)}
 .badge[hidden]{display:none}
 .review{display:grid;gap:.45cqw;text-align:left}.review div{border-left:.25cqw solid var(--accent);padding:.4cqw .7cqw;background:rgba(255,235,160,.1);font-size:1.15cqw;line-height:1.3}.review b{color:var(--accent)}
 .option.wrong:disabled{opacity:.7}
@@ -247,7 +256,6 @@ BODY = r"""
           <button id="langBtn" class="lang-btn" aria-haspopup="true" aria-expanded="false">🌐 <span id="langWord">TRANSLATE</span> · <b id="langCur">OFF</b> ▾</button>
           <div id="langMenu" class="lang-menu" hidden></div>
         </div>
-        <button id="level" class="utility" title="E" aria-pressed="false" hidden>📖 <span id="levelLabel">NORMAL ENGLISH</span></button>
         <button id="sound" class="utility" title="S" aria-pressed="false">🔈 <span id="soundLabel">SOUND OFF</span></button>
         <button id="fullscreen" class="utility fs" title="F">⛶ <span id="fsLabel">FULLSCREEN</span></button>
       </div>
@@ -263,22 +271,6 @@ const G = {{GAME}};
 const LANGS = G.langs, RTL = ['ar'];
 let state = fresh('off');
 let sound=false;try{sound=localStorage.getItem('rpg-sound')==='1'}catch(_){}
-/* Reading level. A deck may ship an easy-English layer: a per-scene overlay of
-   simpler text over the SAME pictures, options and answer keys, so the switch
-   is safe mid-game and keeps the score. Kept outside `state` so restart() and
-   a route replay do not throw the reader back to the harder text. */
-let easy=false;if(G.easy){try{easy=localStorage.getItem('rpg-easy')==='1'}catch(_){}}
-/* Merge the overlay a text object at a time, not a key at a time: the easy
-   layer carries en/es/de, and every other gloss language falls through to the
-   base string, which describes the same scene. Replacing whole keys instead
-   left 19 of 35 screens English-only in fr/it/pt/ru/ar/zh/ja. */
-const isTxt=o=>!!o&&typeof o==='object'&&!Array.isArray(o)&&typeof o.en==='string';
-function mrg(b,e){if(e===undefined)return b;if(isTxt(e))return isTxt(b)?Object.assign({},b,e):e;
-  if(Array.isArray(e))return e.map((v,i)=>mrg(Array.isArray(b)?b[i]:undefined,v));
-  if(e&&typeof e==='object'){const o=Object.assign({},b);for(const k in e)o[k]=mrg(b?b[k]:undefined,e[k]);return o}
-  return e}
-const SC=id=>{const x=G.scenes[id];return easy&&x.easy?mrg(x,x.easy):x};
-function setEasy(on){easy=!!on&&!!G.easy;try{localStorage.setItem('rpg-easy',easy?'1':'0')}catch(_){}const b=document.getElementById('level');b.hidden=!G.easy;b.setAttribute('aria-pressed',String(easy));document.getElementById('levelLabel').textContent=ui(easy?'levelEasy':'levelNormal')}
 /* two short tones, right and wrong — the Wonderland export's, kept */
 function beep(ok){if(!sound)return;try{const c=new (window.AudioContext||window.webkitAudioContext)();const o=c.createOscillator(),g=c.createGain();o.type=ok?'square':'sawtooth';o.frequency.value=ok?620:180;g.gain.value=.03;o.connect(g);g.connect(c.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.16);o.stop(c.currentTime+.18);o.onended=()=>c.close()}catch(_){}}
 function setSound(on){sound=!!on;try{localStorage.setItem('rpg-sound',sound?'1':'0')}catch(_){}const b=document.getElementById('sound');b.setAttribute('aria-pressed',String(sound));b.firstChild.textContent=(sound?'🔊':'🔈')+' ';document.getElementById('soundLabel').textContent=ui(sound?'soundOn':'soundOff')}
@@ -286,17 +278,19 @@ function fresh(lang){return {scene:G.start,score:0,chances:G.chances,tiles:0,lan
 const frame=document.getElementById('frame'), content=document.getElementById('content'), sceneImage=document.getElementById('sceneImage');
 const hot=document.getElementById('hot'), hotLabel=document.getElementById('hotLabel'), zone=document.getElementById('zone');
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const MARK=/\[\[(\/?)([ab])\]\]/g;
+const bare=s=>String(s??'').replace(MARK,'');          /* plain text: alt, review, answer read-back */
+const esct=s=>esc(s).replace(MARK,(_,c,k)=>c?'</span>':'<span class="tone-'+k+'">');
 const tx=(o,l)=>o?(l&&o[l]?o[l]:o.en):'';
-function ui(key,vars){const e=easy&&G.easyLabels&&G.easyLabels[key];let s=tx(e?mrg(G.labels[key],e):G.labels[key],state.lang==='off'?null:state.lang);if(vars)for(const k in vars)s=s.replace('{'+k+'}',vars[k]);return s}
-const tg=k=>{const e=easy&&G.easyTags&&G.easyTags[k];return e?mrg(G.tags[k],e):G.tags[k]};
+function ui(key,vars){let s=tx(G.labels[key],state.lang==='off'?null:state.lang);if(vars)for(const k in vars)s=s.replace('{'+k+'}',vars[k]);return s}
 /* a gloss identical to the English (a formula, a name) is not shown — it would only repeat the line */
 const gloss=obj=>state.lang!=='off'&&obj[state.lang]&&obj[state.lang]!==obj.en?obj[state.lang]:'';
-function line(obj,cls=''){if(!obj)return '';const en=esc(obj.en),g=gloss(obj);return g?`<span class="${cls}">${en}<span class="translation">${esc(g)}</span></span>`:`<span class="${cls}">${en}</span>`}
-function label(obj){if(!obj)return '';const g=gloss(obj);return g?`${esc(obj.en)}<span class="translation">${esc(g)}</span>`:esc(obj.en)}
+function line(obj,cls=''){if(!obj)return '';const en=esct(obj.en),g=gloss(obj);return g?`<span class="${cls}">${en}<span class="translation">${esct(g)}</span></span>`:`<span class="${cls}">${en}</span>`}
+function label(obj){if(!obj)return '';const g=gloss(obj);return g?`${esct(obj.en)}<span class="translation">${esct(g)}</span>`:esct(obj.en)}
 /* an option is {en,…} or, for a two-blank item, {parts:[a,b], kinds:['a'|'b',…], tags:[{en,…},{en,…}]} — two coloured halves */
-function optText(o){return o.parts?o.parts.join(' / '):o.en}
-function optMarkup(o){if(!o.parts)return `<span>${label(o)}</span>`;return o.parts.map((p,i)=>`<span class="half ${o.kinds[i]}"><small>${label(tg(o.kinds[i]))}</small><b>${esc(p)}</b></span>`).join('')}
-function updateHUD(){document.getElementById('score').textContent=state.score;document.getElementById('tiles').textContent='◆'.repeat(state.tiles)+'◇'.repeat(Math.max(0,G.tiles-state.tiles));document.getElementById('chances').textContent='♥'.repeat(state.chances)+'♡'.repeat(Math.max(0,G.chances-state.chances));document.getElementById('lblPoints').textContent=ui('points');document.getElementById('lblTiles').textContent=ui('tiles');document.getElementById('lblChances').textContent=ui('chances');document.getElementById('chancesBadge').hidden=!G.chances;document.getElementById('progressBadge').hidden=!G.total;if(G.total){document.getElementById('lblProgress').textContent=ui('progress');document.getElementById('progress').textContent=`${state.answered}/${G.total}`}document.getElementById('help').textContent=ui('help')+(G.easy?' · '+ui('helpLevel'):'')}
+function optText(o){return bare(o.parts?o.parts.join(' / '):o.en)}
+function optMarkup(o){if(!o.parts)return `<span>${label(o)}</span>`;return o.parts.map((p,i)=>`<span class="half ${o.kinds[i]}"><small>${label(G.tags[o.kinds[i]])}</small><b>${esc(p)}</b></span>`).join('')}
+function updateHUD(){document.getElementById('score').textContent=state.score;document.getElementById('tiles').textContent='◆'.repeat(state.tiles)+'◇'.repeat(Math.max(0,G.tiles-state.tiles));document.getElementById('chances').textContent='♥'.repeat(state.chances)+'♡'.repeat(Math.max(0,G.chances-state.chances));document.getElementById('lblPoints').textContent=ui('points');document.getElementById('lblTiles').textContent=ui('tiles');document.getElementById('lblChances').textContent=ui('chances');document.getElementById('chancesBadge').hidden=!G.chances;document.getElementById('progressBadge').hidden=!G.total;if(G.total){document.getElementById('lblProgress').textContent=ui('progress');document.getElementById('progress').textContent=`${state.answered}/${G.total}`}document.getElementById('help').textContent=ui('help')}
 function head(s){const t=s.kind==='intro'?`<span class="big">${label(s.title)}</span>`:label(s.title);return `${line(s.k,'kicker')}<h1 class="title ${s.kind==='intro'?'cover-title':''}">${t}</h1>${line(s.story,'story')}`}
 /* HOT = [cx, cy, w, h] as % of the PICTURE (3:2). The picture is object-fit:cover in the frame, so convert picture space to frame pixels; a phone shows a narrow central slice and the object stays on it. */
 function placeHot(h){const W=frame.clientWidth,H=frame.clientHeight,sc=Math.max(W/G.imgW,H/G.imgH),dw=G.imgW*sc,dh=G.imgH*sc;
@@ -304,29 +298,29 @@ function placeHot(h){const W=frame.clientWidth,H=frame.clientHeight,sc=Math.max(
   const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));const ox=dw>W?clamp(W/2-h[0]/100*dw,W-dw,0):(W-dw)/2,oy=dh>H?clamp(H/2-h[1]/100*dh,H-dh,0):(H-dh)/2;
   sceneImage.style.objectPosition=`${dw>W?ox/(W-dw)*100:50}% ${dh>H?oy/(H-dh)*100:50}%`;
   const cx=ox+h[0]/100*dw,cy=oy+h[1]/100*dh,w=h[2]/100*dw,hh=h[3]/100*dh;hot.style.left=cx+'px';hot.style.top=cy+'px';hot.style.width=w+'px';hot.style.height=hh+'px';hot.classList.toggle('above',cy+hh/2>H*.84);hotLabel.textContent=ui('read');
-  document.getElementById('fsLabel').textContent=ui('fullscreen');document.getElementById('soundLabel').textContent=ui(sound?'soundOn':'soundOff');document.getElementById('levelLabel').textContent=ui(easy?'levelEasy':'levelNormal');document.getElementById('langWord').textContent=ui('translate');document.getElementById('langCur').textContent=state.lang==='off'?'OFF':G.names[state.lang];
+  document.getElementById('fsLabel').textContent=ui('fullscreen');document.getElementById('soundLabel').textContent=ui(sound?'soundOn':'soundOff');document.getElementById('langWord').textContent=ui('translate');document.getElementById('langCur').textContent=state.lang==='off'?'OFF':G.names[state.lang];
   document.querySelectorAll('.lang-item').forEach(b=>b.classList.toggle('active',b.dataset.lang===state.lang))}
 function setOpen(on){state.open=!!on;if(on){const hr=hot.getBoundingClientRect(),zr=zone.getBoundingClientRect();const cl=zr.left+content.offsetLeft,ct=zr.top+content.offsetTop;content.style.transformOrigin=`${hr.left+hr.width/2-cl}px ${hr.top+hr.height/2-ct}px`}frame.classList.toggle('open',state.open)}
 function openPanel(){if(!state.open)setOpen(true)}
 function closePanel(){if(state.open)setOpen(false)}
-function render(){const s=SC(state.scene);frame.className=`frame ${s.pos||'left'} v-${s.v||'center'}${RTL.includes(state.lang)?' rtl':''}`;sceneImage.src=G.dir+s.img;sceneImage.alt=s.title.en;placeHot(s.hot);const tr=state.lang!=='off';frame.classList.toggle('tr-on',tr);content.style.width=((s.width||(s.pos==='center'?64:46))+(tr?8:0))+'%';content.style.marginLeft=s.pos==='left'&&s.inset?s.inset+'%':'';content.style.marginRight=s.pos==='right'&&s.inset?s.inset+'%':'';
+function render(){const s=G.scenes[state.scene];frame.className=`frame ${s.pos||'left'} v-${s.v||'center'}${RTL.includes(state.lang)?' rtl':''}`;sceneImage.src=G.dir+s.img;sceneImage.alt=bare(s.title.en);placeHot(s.hot);const tr=state.lang!=='off';frame.classList.toggle('tr-on',tr);content.style.width=((s.width||(s.pos==='center'?64:46))+(tr?8:0))+'%';content.style.marginLeft=s.pos==='left'&&s.inset?s.inset+'%':'';content.style.marginRight=s.pos==='right'&&s.inset?s.inset+'%':'';
   let html=`<button class="hide-btn" onclick="closePanel()" title="Esc">✕ ${ui('hide')}</button>`+head(s);
   if(s.kind==='intro'){html+=`${s.rules?`<div class="rules-chips">${s.rules.map(r=>`<span>${label(r)}</span>`).join('')}</div>`:''}<button class="start" onclick="go('${s.next}')">${label(s.start)}</button>${s.small?`<div class="small">${label(s.small)}</div>`:''}`}
-  else if(s.kind==='rules'){html+=`<div class="rules-intro">${s.rules.map(r=>`<div class="rule-card"><b>${label(r.name)}</b>${label(r.form)}</div>`).join('')}</div>${s.note?`<div class="rule-note">${label(s.note)}</div>`:''}<button class="continue" onclick="go('${s.next}')">${s.button?label(s.button):ui('begin')}</button>`}
-  else if(s.kind==='story'){html+=`${s.rules?`<div class="rules-intro">${s.rules.map(r=>`<div class="rule-card"><b>${label(r.name)}</b>${label(r.form)}</div>`).join('')}</div>`:''}${s.note?`<div class="rule-note">${label(s.note)}</div>`:''}<button class="continue" onclick="go('${s.next}')">${s.button?label(s.button):ui('continue')}</button>`}
+  else if(s.kind==='rules'){html+=`<div class="rules-intro">${s.rules.map(r=>`<div class="rule-card${r.tone?' tone-card-'+r.tone:''}"><b>${label(r.name)}</b>${label(r.form)}</div>`).join('')}</div>${s.note?`<div class="rule-note">${label(s.note)}</div>`:''}<button class="continue" onclick="go('${s.next}')">${s.button?label(s.button):ui('begin')}</button>`}
+  else if(s.kind==='story'){html+=`${s.rules?`<div class="rules-intro">${s.rules.map(r=>`<div class="rule-card${r.tone?' tone-card-'+r.tone:''}"><b>${label(r.name)}</b>${label(r.form)}</div>`).join('')}</div>`:''}${s.note?`<div class="rule-note">${label(s.note)}</div>`:''}<button class="continue" onclick="go('${s.next}')">${s.button?label(s.button):ui('continue')}</button>`}
   else if(s.kind==='question'){html+=`${s.clue?`<div class="clue"><b>${ui('visual')}</b><br>${label(s.clue)}</div>`:''}<div class="prompt">${label(s.prompt)}</div><div class="options">${s.opts.map((o,i)=>`<button class="option${o.parts?' split':''}" data-i="${i}" onclick="answer(${i})"><span class="key">${i+1}</span>${optMarkup(o)}</button>`).join('')}</div><div id="feedback" class="feedback"></div><button id="continue" class="continue" hidden onclick="advance()">${ui('continue')}</button>`}
   else if(s.kind==='choice'){html+=`<div class="route-options">${s.routes.map((r,i)=>`<button class="route" onclick="chooseRoute(${i})"><b>${i+1} · ${label(r.name)}</b>${label(r.desc)}</button>`).join('')}</div>`}
-  else if(s.kind==='ending'){const rev=G.repair?(state.mistakes.length?`<div class="review">${state.mistakes.map(id=>{const m=SC(id);return `<div>${esc(m.prompt.en)}<br><b>${esc(optText(m.opts[m.answer]))}</b> — ${label(m.fb)}</div>`}).join('')}</div>`:`<div class="small">${ui('perfect')}</div>`):'';const ft=G.repair?` · ${state.score/(G.points||1)}/${G.total} ${ui('firstTry')}`:'';html+=`<div class="final-score">${ui('finalScore')} ${state.score}/${G.max}${ft} · ${'◆'.repeat(state.tiles)}${'◇'.repeat(Math.max(0,G.tiles-state.tiles))}</div>${rev}${state.route.length?`<div class="small">${ui('route')}: ${esc(state.route.join(' · ').toUpperCase())}</div>`:''}<button class="restart" onclick="restart()">${ui('restart')}</button>`}
+  else if(s.kind==='ending'){const rev=G.repair?(state.mistakes.length?`<div class="review">${state.mistakes.map(id=>{const m=G.scenes[id];return `<div>${esct(m.prompt.en)}<br><b>${esc(optText(m.opts[m.answer]))}</b> — ${label(m.fb)}</div>`}).join('')}</div>`:`<div class="small">${ui('perfect')}</div>`):'';const ft=G.repair?` · ${state.score/(G.points||1)}/${G.total} ${ui('firstTry')}`:'';html+=`<div class="final-score">${ui('finalScore')} ${state.score}/${G.max}${ft} · ${'◆'.repeat(state.tiles)}${'◇'.repeat(Math.max(0,G.tiles-state.tiles))}</div>${rev}${state.route.length?`<div class="small">${ui('route')}: ${esc(state.route.join(' · ').toUpperCase())}</div>`:''}<button class="restart" onclick="restart()">${ui('restart')}</button>`}
   content.innerHTML=html;content.scrollTop=0;updateHUD();setOpen(s.kind==='intro'||s.kind==='ending');
   if(s.kind==='question'&&Object.prototype.hasOwnProperty.call(state.results,state.scene))setTimeout(()=>displayAnswer(state.results[state.scene],false),0)}
 hot.addEventListener('click',e=>{e.stopPropagation();openPanel()});
 sceneImage.addEventListener('click',()=>{closeMenu();closePanel()});
-window.addEventListener('resize',()=>placeHot(SC(state.scene).hot));
+window.addEventListener('resize',()=>placeHot(G.scenes[state.scene].hot));
 const langMenu=document.getElementById('langMenu'), langBtn=document.getElementById('langBtn');
 function closeMenu(){langMenu.hidden=true;langBtn.setAttribute('aria-expanded','false')}
 function toggleMenu(){langMenu.hidden=!langMenu.hidden;langBtn.setAttribute('aria-expanded',String(!langMenu.hidden))}
 function go(id){state.scene=id;render()}
-function displayAnswer(i,apply){const s=SC(state.scene);const buttons=[...document.querySelectorAll('.option')];const ok=i===s.answer;const p=s.points||G.points;const fb=document.getElementById('feedback');const expl=s.fb?`<br>${label(s.fb)}`:'';
+function displayAnswer(i,apply){const s=G.scenes[state.scene];const buttons=[...document.querySelectorAll('.option')];const ok=i===s.answer;const p=s.points||G.points;const fb=document.getElementById('feedback');const expl=s.fb?`<br>${label(s.fb)}`:'';
   if(apply)beep(ok);
   if(G.repair&&!ok){/* repair mode: mark it, explain, let them try again */buttons[i].classList.add('wrong');buttons[i].disabled=true;fb.innerHTML=`<strong>${ui('tryAgain')}</strong>${expl}`;fb.className='feedback show bad';if(apply)requestAnimationFrame(()=>content.scrollTo({top:content.scrollHeight,behavior:'smooth'}));return}
   buttons.forEach(b=>b.disabled=true);buttons[i]?.classList.add(ok?'correct':'wrong');buttons[s.answer]?.classList.add('correct');
@@ -334,18 +328,17 @@ function displayAnswer(i,apply){const s=SC(state.scene);const buttons=[...docume
   if(apply){if(ok&&!retried){state.score+=p}if(ok&&s.relic)state.tiles=Math.min(G.tiles,state.tiles+1);if(!ok)state.chances=Math.max(0,state.chances-1);if(s.final)state.finalCorrect=ok;if(G.repair)state.answered++}
   const head=ok?(retried?ui('repaired'):ui(s.relic?'relic':'correct',{p})):ui('wrong');const was=ok?'':`<br>${ui('answerWas')} ${esc(optText(s.opts[s.answer]))}`;
   fb.innerHTML=`<strong>${head}</strong>${was}${expl}`;fb.className=`feedback show ${ok?'good':'bad'}`;document.getElementById('continue').hidden=false;updateHUD();if(apply)requestAnimationFrame(()=>content.scrollTo({top:content.scrollHeight,behavior:'smooth'}))}
-function answer(i){if(Object.prototype.hasOwnProperty.call(state.results,state.scene))return;const s=SC(state.scene);if(G.repair&&i!==s.answer){if(!(state.attempts[state.scene]||0))state.mistakes.push(state.scene);state.attempts[state.scene]=(state.attempts[state.scene]||0)+1;displayAnswer(i,true);return}state.results[state.scene]=i;displayAnswer(i,true)}
+function answer(i){if(Object.prototype.hasOwnProperty.call(state.results,state.scene))return;const s=G.scenes[state.scene];if(G.repair&&i!==s.answer){if(!(state.attempts[state.scene]||0))state.mistakes.push(state.scene);state.attempts[state.scene]=(state.attempts[state.scene]||0)+1;displayAnswer(i,true);return}state.results[state.scene]=i;displayAnswer(i,true)}
 function resolve(){const full=state.tiles>=G.tiles&&state.chances>0;const flawless=state.finalCorrect&&full&&state.score>=G.max;if(flawless&&(!state.endingPick||state.endingMaster))return G.endings.master;if(state.endingPick&&state.chances>0&&G.endings[state.endingPick])return G.endings[state.endingPick];if(state.finalCorrect&&full&&state.score>=G.completeScore)return G.endings.complete;if(state.finalCorrect&&state.tiles<G.tiles)return G.endings.missing;return G.endings.failed}
-function advance(){const s=SC(state.scene);if(state.chances<=0&&state.results[state.scene]!==s.answer){go(G.endings.failed);return}if(s.next==='resolve'){go(resolve());return}go(s.next)}
-function chooseRoute(i){const r=SC(state.scene).routes[i];if(r.route)state.route.push(r.route);if(r.ending){state.endingPick=r.ending;state.endingMaster=!!r.master}go(r.min!=null&&state.score<r.min?r.else:r.target)}
+function advance(){const s=G.scenes[state.scene];if(state.chances<=0&&state.results[state.scene]!==s.answer){go(G.endings.failed);return}if(s.next==='resolve'){go(resolve());return}go(s.next)}
+function chooseRoute(i){const r=G.scenes[state.scene].routes[i];if(r.route)state.route.push(r.route);if(r.ending){state.endingPick=r.ending;state.endingMaster=!!r.master}go(r.min!=null&&state.score<r.min?r.else:r.target)}
 function restart(){state=fresh(state.lang);render()}
 (function(){['off',...LANGS].forEach(l=>{const b=document.createElement('button');b.className='lang-item';b.dataset.lang=l;b.innerHTML=l==='off'?`<b>OFF</b><span>${esc(G.labels.off.en)}</span>`:`<b>${l.toUpperCase()}</b><span>${esc(G.names[l])}</span>`;b.addEventListener('click',()=>{state.lang=l;closeMenu();setLang()});langMenu.appendChild(b)});langBtn.addEventListener('click',e=>{e.stopPropagation();toggleMenu()});document.addEventListener('click',e=>{if(!langMenu.hidden&&!langMenu.contains(e.target))closeMenu()})})();
 function setLang(){const wasOpen=state.open;render();if(wasOpen)setOpen(true)}
-document.getElementById('level').addEventListener('click',()=>{setEasy(!easy);setLang()});
 document.getElementById('sound').addEventListener('click',()=>{setSound(!sound);beep(true)});
 document.getElementById('fullscreen').addEventListener('click',()=>{if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();else document.exitFullscreen?.()});
-document.addEventListener('keydown',e=>{const k=e.key;if(k.toLowerCase()==='l'){const all=['off',...LANGS];state.lang=all[(all.indexOf(state.lang)+1)%all.length];setLang();return}if(k==='Escape'){if(!langMenu.hidden){closeMenu();return}closePanel();return}if(k.toLowerCase()==='f'){document.getElementById('fullscreen').click();return}if(k.toLowerCase()==='s'){document.getElementById('sound').click();return}if(k.toLowerCase()==='e'&&G.easy){document.getElementById('level').click();return}if(!state.open&&(k==='Enter'||['1','2','3'].includes(k))){openPanel();return}const s=SC(state.scene);if(['1','2','3'].includes(k)){const i=Number(k)-1;if(s.kind==='question')document.querySelector(`.option[data-i="${i}"]`)?.click();if(s.kind==='choice')document.querySelectorAll('.route')[i]?.click();return}if(k==='Enter')document.querySelector('.continue:not([hidden]),.start,.restart')?.click()});
-setSound(sound);setEasy(easy);render();
+document.addEventListener('keydown',e=>{const k=e.key;if(k.toLowerCase()==='l'){const all=['off',...LANGS];state.lang=all[(all.indexOf(state.lang)+1)%all.length];setLang();return}if(k==='Escape'){if(!langMenu.hidden){closeMenu();return}closePanel();return}if(k.toLowerCase()==='f'){document.getElementById('fullscreen').click();return}if(k.toLowerCase()==='s'){document.getElementById('sound').click();return}if(!state.open&&(k==='Enter'||['1','2','3'].includes(k))){openPanel();return}const s=G.scenes[state.scene];if(['1','2','3'].includes(k)){const i=Number(k)-1;if(s.kind==='question')document.querySelector(`.option[data-i="${i}"]`)?.click();if(s.kind==='choice')document.querySelectorAll('.route')[i]?.click();return}if(k==='Enter')document.querySelector('.continue:not([hidden]),.start,.restart')?.click()});
+setSound(sound);render();
 """
 
 PAGE = """<!doctype html>
@@ -447,55 +440,6 @@ def _check_answer_key(scenes):
         raise SystemExit('answer key (HOUSE-STYLE):\n  ' + '\n  '.join(bad))
 
 
-EASY_MIN = ('es', 'de')   # HOUSE-STYLE: every deck ships Spanish and German
-
-
-def _check_easy(spec):
-    """The easy-English layer, if the deck ships one.
-
-    A scene's `easy` value is a partial scene: only the keys whose text
-    changes. Everything it leaves out — the picture, the hotspot, the options,
-    the answer index, `next` — comes from the base scene, which is what makes
-    the switch safe mid-game and keeps one answer key for both levels. So the
-    gate here is narrow: an overlay may not touch the logic, and every string
-    in it needs English plus the two glosses HOUSE-STYLE requires. The other
-    gloss languages fall through to the base scene on purpose (the meaning is
-    the same at both levels; only the English changes), so they are not
-    required a second time.
-    """
-    scenes = spec['scenes']
-    frozen = ('img', 'hot', 'pos', 'v', 'width', 'inset', 'kind', 'answer', 'next',
-              'opts', 'points', 'relic', 'final', 'success')
-    bad, checked = [], []
-    for sid, s in scenes.items():
-        e = s.get('easy')
-        if e is None:
-            continue
-        if not isinstance(e, dict):
-            bad.append('%s: easy must be a partial scene dict' % sid)
-            continue
-        for k in frozen:
-            if k in e:
-                bad.append('%s: easy may not override %r — the two levels share the '
-                           'pictures, the options and the answer key' % (sid, k))
-        for k in e:
-            if k not in s:
-                bad.append('%s: easy adds %r, which the base scene does not have' % (sid, k))
-        if 'routes' in e:
-            if len(e['routes']) != len(s['routes']):
-                bad.append('%s: easy routes must line up one-for-one with the base routes' % sid)
-            else:
-                for i, (a, b) in enumerate(zip(s['routes'], e['routes'])):
-                    if a.get('target') != b.get('target') or a.get('min') != b.get('min') or a.get('else') != b.get('else'):
-                        bad.append('%s: easy route %d changes where it goes' % (sid, i))
-        checked.append(('scenes.%s.easy' % sid, e))
-    if bad:
-        raise SystemExit('easy-English layer:\n  ' + '\n  '.join(bad))
-    for path, obj in checked + [('easy_labels', spec.get('easy_labels', {})),
-                                ('easy_tags', spec.get('easy_tags', {}))]:
-        _check_langs(obj, [l for l in EASY_MIN if l in spec['langs']], path)
-
-
 def validate(spec):
     langs = spec['langs']
     scenes = spec['scenes']
@@ -536,7 +480,6 @@ def validate(spec):
     _check_langs({k: {kk: vv for kk, vv in s.items() if kk in TEXT_KEYS or kk in ('rules', 'routes', 'button')}
                   for k, s in scenes.items()}, langs, 'scenes')
     _check_langs(spec.get('tags', {}), langs, 'tags')
-    _check_easy(spec)
     if _MISSING:
         raise SystemExit('%d untranslated strings:\n  ' % len(_MISSING) + '\n  '.join(_MISSING))
     return labels
@@ -557,14 +500,6 @@ def assemble(spec, out=None):
         'repair': bool(spec.get('repair')), 'total': spec.get('total', 0),
         'tags': spec.get('tags', {'a': {'en': 'NOW'}, 'b': {'en': 'USUALLY'}}),
     }
-    # the easy-English layer rides in the same scene objects (scene.easy);
-    # these two are the chrome and the cake tags it rewords.
-    if any('easy' in s for s in spec['scenes'].values()):
-        game['easy'] = True
-        if spec.get('easy_labels'):
-            game['easyLabels'] = spec['easy_labels']
-        if spec.get('easy_tags'):
-            game['easyTags'] = spec['easy_tags']
     css = (CSS.replace('{{ACCENT}}', spec['accent']).replace('{{ACCENT_INK}}', spec.get('accent_ink', '#1a1200'))
               .replace('{{DEEP}}', spec.get('deep', '#1a1200')).replace('{{PANEL}}', spec.get('panel', 'rgba(20,14,4,.88)')))
     body = BODY.replace('{{MAX}}', str(spec['max']))

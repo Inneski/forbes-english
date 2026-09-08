@@ -213,6 +213,58 @@ SIMPLER_ENDING = {
                 'Die Krone läuft wieder, aber ihr neues Herz ist schwach. Rose ist frei und der Wächter ist weg. Der Hutmacher hält die Zahnräder in Bewegung, während Alice ein letztes fehlendes Teil sucht. Wunderland hat einen neuen Morgen — und eine neue Quest.'),
 }
 
+def fold(base, over):
+    """Merge one text object at a time, exactly as the runtime used to."""
+    if over is None:
+        return base
+    if isinstance(over, dict) and 'en' in over:
+        return dict(base, **over) if isinstance(base, dict) and 'en' in base else over
+    if isinstance(over, list):
+        return [fold(base[i] if isinstance(base, list) and i < len(base) else None, v)
+                for i, v in enumerate(over)]
+    if isinstance(over, dict):
+        out = dict(base or {})
+        for k, v in over.items():
+            out[k] = fold(out.get(k), v)
+        return out
+    return over
+
+
+def collapse(spec):
+    """One reading level: fold the easy layer in and drop the switch.
+
+    Innes, 2026-09-08: "Just keep the easy English version. A complicated
+    version is redundant - the description must match the questions." Once the
+    narrative was re-levelled the two levels sat a hair apart, so the deck
+    ships the simpler wording and no reading-level button.
+
+    Folding rather than replacing is what keeps nine languages on every
+    screen: the export gave the easy text English, Spanish and German only,
+    and the base text supplies the other seven, which describe the same scene.
+    """
+    frozen = ('img', 'hot', 'pos', 'v', 'width', 'inset', 'kind', 'answer',
+              'next', 'opts', 'points', 'relic', 'final', 'success')
+    for sid, sc in spec['scenes'].items():
+        e = sc.pop('easy', None)
+        if not e:
+            continue
+        # the overlay is wording only. It shares the pictures, the options and
+        # the answer key with the text it replaces, and this is the gate that
+        # keeps it that way now that nothing checks it at runtime.
+        bad = [k for k in e if k in frozen] + [k for k in e if k not in sc]
+        if bad:
+            raise SystemExit('%s: the easy layer may not set %s' % (sid, ', '.join(sorted(set(bad)))))
+        if 'routes' in e and [r.get('target') for r in e['routes']] != [r.get('target') for r in sc['routes']]:
+            raise SystemExit('%s: the easy layer changes where a route goes' % sid)
+        sc.update(fold(sc, e))
+    # fold over rpg.LABELS, not just this deck's overrides: three of the easy
+    # labels (progress, review, perfect) have no base override here, and
+    # replacing the default outright would drop the seven glosses it ships.
+    spec['labels'] = fold(dict(rpg.LABELS, **spec.get('labels', {})),
+                          spec.pop('easy_labels', {}))
+    spec['tags'] = fold(spec.get('tags', {}), spec.pop('easy_tags', {}))
+    return spec
+
 
 def place(sid, scene):
     hot, pos, v = HOT[sid][:3]
@@ -294,7 +346,8 @@ def build():
                    'Usa el presente continuo para una acción que ocurre ahora: Alice is running. Usa el presente simple para lo que hacemos una y otra vez y para los hechos: Alice runs every day.',
                    'Benutze das Present Continuous für eine Handlung, die gerade passiert: Alice is running. Benutze das Present Simple für Dinge, die wir immer wieder tun, und für Fakten: Alice runs every day.'),
         'rules': [
-            {'name': T('FORM · AM / IS / ARE + ING FORM', 'FORMA · AM / IS / ARE + FORMA -ING', 'FORM · AM / IS / ARE + ING-FORM'),
+            {'tone': 'a',
+             'name': T('FORM · AM / IS / ARE + ING FORM', 'FORMA · AM / IS / ARE + FORMA -ING', 'FORM · AM / IS / ARE + ING-FORM'),
              'form': T('I am running · he / she / it is running · you / we / they are running')},
             {'name': T('NEGATIVE AND QUESTION', 'NEGACIÓN Y PREGUNTA', 'VERNEINUNG UND FRAGE'),
              'form': T('Alice is not sleeping. · Is Alice sleeping? Yes, she is. / No, she isn\'t.',
@@ -304,7 +357,8 @@ def build():
              'form': T('look → looking · make → making · run → running · lie → lying')},
             {'name': T('NOW CLUES', 'PISTAS DE "AHORA"', 'JETZT-SIGNALE'),
              'form': T('now · right now · at the moment · Look! · Listen!')},
-            {'name': T('PRESENT SIMPLE · EVERY DAY AND FACTS', 'PRESENTE SIMPLE · CADA DÍA Y HECHOS', 'PRESENT SIMPLE · JEDEN TAG UND FAKTEN'),
+            {'tone': 'b',
+             'name': T('PRESENT SIMPLE · EVERY DAY AND FACTS', 'PRESENTE SIMPLE · CADA DÍA Y HECHOS', 'PRESENT SIMPLE · JEDEN TAG UND FAKTEN'),
              'form': T('The Rabbit checks his watch every day. · I know the answer.',
                        'El Conejo mira su reloj todos los días. · Sé la respuesta.',
                        'Das Kaninchen schaut jeden Tag auf seine Uhr. · Ich weiß die Antwort.')},
@@ -348,9 +402,9 @@ def build():
                    'La puerta del palacio está atascada entre dos clases de tiempo. Rosa es el presente continuo: algo que ocurre ahora. Azul es el presente simple: lo que hacemos cada día y los hechos.',
                    'Das Palasttor steckt zwischen zwei Arten von Zeit fest. Rosa ist das Present Continuous: etwas, das gerade passiert. Blau ist das Present Simple: Dinge, die wir jeden Tag tun, und Fakten.'),
         'rules': [
-            {'name': T('PINK · PRESENT CONTINUOUS', 'ROSA · PRESENTE CONTINUO', 'ROSA · PRESENT CONTINUOUS'),
+            {'tone': 'a', 'name': T('PINK · PRESENT CONTINUOUS', 'ROSA · PRESENTE CONTINUO', 'ROSA · PRESENT CONTINUOUS'),
              'form': T('am / is / are + ING FORM', 'am / is / are + forma -ING', 'am / is / are + ING-Form')},
-            {'name': T('BLUE · PRESENT SIMPLE', 'AZUL · PRESENTE SIMPLE', 'BLAU · PRESENT SIMPLE'),
+            {'tone': 'b', 'name': T('BLUE · PRESENT SIMPLE', 'AZUL · PRESENTE SIMPLE', 'BLAU · PRESENT SIMPLE'),
              'form': T('habits, routines and facts', 'hábitos, rutinas y hechos', 'Gewohnheiten, Routinen und Fakten')},
         ],
         'note': T('Every answer is a cake in two halves. The first half goes in the first gap, and the second half goes in the second gap.',
@@ -437,4 +491,5 @@ def build():
 
 
 if __name__ == '__main__':
-    rpg.assemble(rpg.apply_translations(build(), os.path.join(HERE, 'rpg', 'wonderland-stolen-now', 'translations')))
+    rpg.assemble(collapse(rpg.apply_translations(
+        build(), os.path.join(HERE, 'rpg', 'wonderland-stolen-now', 'translations'))))
