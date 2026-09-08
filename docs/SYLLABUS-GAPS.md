@@ -45,7 +45,7 @@ normally introduced.
 | Giving directions | 2 | |
 | Health / at the doctor | 3 | |
 | Small talk / socialising | 4 | |
-| Describing a picture | 5 | `english_class_picture_description.html` exists in the root but is not in the catalogue |
+| Describing a picture | 5 | `english_class_picture_description.html` is in the catalogue but its title does not say so, so nobody searching for it finds it |
 | Pronunciation and word stress | 8 | Nothing on the site is about sound |
 
 ### B1–B2 (the exam and the office)
