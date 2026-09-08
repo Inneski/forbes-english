@@ -62,6 +62,47 @@ raw covers, `check-glosses.js` has not run over four RPGs, and
 `block-camp/frankenstein-green-prometheus-rpg.html` exists on disk and on
 the hub but has no catalogue row, so it is not on the shelf at all.
 
+### Second pass, same day: the shelf opens on collections, not a list
+
+Innes: *"There should be categories with heroes … instead of a random
+list."* `library.html` now opens on a grid of **collection cards** — one
+hero picture each, in the order he set: Role-Playing Games (Sherlock),
+Block Camp RPGs (Blocula), Block Camp (Present Simple), Business English
+(the boardroom), IELTS (the typewriter), Football (the ball), then Tenses,
+Minecraft, Workplace, Negotiation, Film & TV, Sports and the rest, with an
+"All lessons" card last. A card opens its collection: the same hero as a
+header above the lessons, a blurb, the count, and "Open the hub" when a
+route page exists (IELTS, Block Camp, Sherpa Tensing). "All collections"
+in the header goes back.
+
+The table is `COLLECTIONS` in `library.html`. A `hero` is a **lesson
+file**, and the picture is that lesson's `LESSON_IMAGES` entry — so a hero
+is always real art from inside its own collection and can never point at a
+file that is not on the shelf. A collection with no hero takes its newest
+lesson with art. An empty collection is not rendered. Measured against the
+catalogue before the browser: every hero exists, has art, and is in the
+collection it fronts (two were not on the first pass, both fixed).
+
+Three categories were added for it, all derived like the others:
+**Block Camp RPGs** (file under `block-camp/`), **Block Camp**
+(`blockcamp-*`), **Football** (split out of Sports). **Business** now also
+takes everything under Workplace Communication and Negotiation — ten
+lessons was not a collection; twenty-one is. Speaking activities was
+dropped from the collections (one lesson with art) but stays as a filter.
+
+The flat shelf is one step away and unchanged: the "All materials" pill,
+the lesson-count button, the "All lessons" card, or `#all`. Any filter,
+level, search or the free toggle also leaves the collections. `#cat=…`
+links from the front page land on the collection with its header, as
+before. Not screenshot-verified — the Browser pane would not draw — but
+every flow was driven and read back, and there is no horizontal overflow
+at 375px.
+
+**A trap found while writing it:** a regex `` typed into a patch script
+through the Write tool arrived in the file as a literal backspace
+character (U+0008), so `/^#all/` silently never matched. If a hash route
+"does nothing", check `s.count('')` before anything else.
+
 ---
 
 

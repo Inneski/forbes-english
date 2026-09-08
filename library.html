@@ -414,6 +414,133 @@
   .sherpa-banner.blockcamp-banner .sherpa-sub { color: #DCE6F5; }
   /* Filtering to IELTS gives you fourteen lessons in no particular order. The
      hub is the order, so say so at the point the filter is used. */
+  /* Collections: what the shelf opens on. One hero card per collection,
+     in the order Innes set (RPGs, Block Camp, Business, IELTS, Football,
+     then the rest). A card opens its collection; the shelf then shows a
+     hero header above the lessons. "All lessons" is one card away. */
+  .collections {
+    display: none;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .collections.on { display: grid; }
+  .coll {
+    position: relative;
+    display: block;
+    border-radius: var(--radius);
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    background: var(--green-deep);
+    text-decoration: none;
+    color: #fff;
+    border: 1px solid var(--border);
+    transition: box-shadow .15s ease, transform .15s ease;
+  }
+  .coll:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(27,58,40,.28); }
+  .coll img {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; display: block;
+    transition: transform .3s ease;
+  }
+  .coll:hover img { transform: scale(1.04); }
+  .coll .coll-scrim {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(10,24,16,0) 35%, rgba(10,24,16,.88) 100%);
+  }
+  .coll .coll-text {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 14px 16px 12px;
+  }
+  .coll .coll-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 1.35rem;
+    line-height: 1.1;
+    text-shadow: 0 1px 6px rgba(0,0,0,.6);
+  }
+  .coll .coll-sub {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    font-size: .8rem;
+    color: var(--gold-bright);
+    margin-top: 4px;
+  }
+  .coll.coll-all { background: var(--green-pale); color: var(--green-deep); }
+  .coll.coll-all .coll-scrim { display: none; }
+  .coll.coll-all .coll-title { text-shadow: none; }
+  .coll.coll-all .coll-sub { color: var(--gold); }
+  .coll.coll-all .coll-big {
+    position: absolute; top: 50%; left: 0; right: 0;
+    transform: translateY(-70%);
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 3.2rem;
+    line-height: 1;
+    color: var(--green-deep);
+  }
+  /* The header above a collection's lessons. Same picture as its card. */
+  .coll-head {
+    display: none;
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    margin: 0 0 16px;
+    min-height: 150px;
+    color: #fff;
+    background: var(--green-deep);
+  }
+  .coll-head.on { display: block; }
+  .coll-head img {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; display: block;
+  }
+  .coll-head .coll-scrim {
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, rgba(10,24,16,.92) 0%, rgba(10,24,16,.72) 55%, rgba(10,24,16,.25) 100%);
+  }
+  .coll-head .coll-text { position: relative; padding: 22px 24px; max-width: 640px; }
+  .coll-head .coll-back {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    font-size: .8rem;
+    color: var(--gold-bright);
+    text-decoration: none;
+  }
+  .coll-head .coll-back:hover { text-decoration: underline; }
+  .coll-head .coll-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 1.9rem;
+    line-height: 1.1;
+    margin: 6px 0 6px;
+  }
+  .coll-head .coll-blurb { font-size: .95rem; line-height: 1.45; color: rgba(255,255,255,.92); }
+  .coll-head .coll-hub {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: var(--gold-bright);
+    color: var(--green-deep);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    font-size: .85rem;
+    text-decoration: none;
+  }
+  .coll-head .coll-hub:hover { background: #fff; }
+  @media (max-width: 560px) {
+    .coll-head .coll-scrim { background: rgba(10,24,16,.8); }
+    .coll-head .coll-title { font-size: 1.5rem; }
+  }
   .cat-hub {
     display: none;
     align-items: center;
@@ -588,6 +715,8 @@
     <button class="free-toggle" id="freeToggle" style="margin-left:10px;">Free only</button>
   </div>
   <div id="count"></div>
+  <div class="collections" id="collections"></div>
+  <div class="coll-head" id="collHead"></div>
   <a class="cat-hub" id="catHub" href="ielts.html">
     <div class="cat-hub-ico">🎓</div>
     <div>
@@ -948,6 +1077,12 @@ function detectCategories(item) {
   // lessons on the site, and 'Gaming' buries it among the RPG and Lego ones.
   if (/minecraft|dino-?craft/.test(t)) cats.push('Minecraft');
   if (/\brpg\b|role[\s_-]?playing|career quest|falcon racing|parisian conquest|wild frame|thornwick|sherlock|scarlet star/.test(t)) cats.push('Role Playing Games');
+  // The Block Camp line has two halves and Innes wants them shelved apart:
+  // the branching RPGs live in block-camp/, the grammar climb is the
+  // blockcamp-* pages. Both also keep their broader categories.
+  if (/^block-camp\//.test(item.file)) cats.push('Block Camp RPGs');
+  if (/^blockcamp-/.test(item.file) || /block camp/.test(t)) cats.push('Block Camp');
+  if (/football|soccer|champions league|eintracht|vfb[\s_-]?stuttgart/.test(t)) cats.push('Football');
   if (/football|soccer|champions league|eintracht|vfb[\s_-]?stuttgart|\bgolf\b|tennis|skiing|\bski\b|water polo|\bmtb\b|mountain[\s_-]?bik|ridgeline|dartboard|scooter tricks/.test(t)) cats.push('Sports');
   if (/architect|rem koolhaas|max lamb|interior design|restaurant interior|\binterior\b|cafe kowloon/.test(t)) cats.push('Architectural Design');
   if (/fashion|atelier|couture/.test(t)) cats.push('Fashion');
@@ -973,6 +1108,10 @@ function detectCategories(item) {
   if (/passive/.test(t)) cats.push('Passive Voice');
   if (/gerund|infinitive/.test(t)) cats.push('Gerunds & Infinitives');
   (GRAMMAR_TAGS[item.file] || []).forEach(c => cats.push(c));
+  // Business is a collection, and ten lessons is not a collection. The
+  // workplace and negotiation material is business English by any other
+  // name, so it shelves under Business as well as under its own heading.
+  if (cats.includes('Workplace Communication') || cats.includes('Negotiation')) cats.push('Business');
   if (item.video) cats.push('Video Lessons');
   if (NOT_ACTUALLY_SPEAKING.has(item.file)) {
     cats.push('Grammar activity');
@@ -1017,7 +1156,7 @@ levels.forEach(lvl => {
   levelFilters.appendChild(btn);
 });
 
-const categories = ['ALL', 'Film & TV', 'Geopolitics', 'Philosophy', 'Gaming', 'Minecraft', 'Role Playing Games', 'Sports', 'Architectural Design', 'Fashion', 'Music', 'Construction', 'Energy', 'Technology & AI', 'Negotiation', 'Business', 'Animal Welfare', 'Nature & Wildlife', 'Workplace Communication', 'Emergency Services', 'Martial Arts', 'IELTS', 'Video Lessons', 'Modal Verbs', 'Tenses', 'Prepositions', 'Phrasal Verbs', 'Passive Voice', 'Gerunds & Infinitives', 'Reported Speech', 'Grammar activity', 'Speaking activity', 'Lesson plan', 'Slide Decks'];
+const categories = ['ALL', 'Film & TV', 'Geopolitics', 'Philosophy', 'Gaming', 'Minecraft', 'Role Playing Games', 'Block Camp RPGs', 'Block Camp', 'Sports', 'Football', 'Architectural Design', 'Fashion', 'Music', 'Construction', 'Energy', 'Technology & AI', 'Negotiation', 'Business', 'Animal Welfare', 'Nature & Wildlife', 'Workplace Communication', 'Emergency Services', 'Martial Arts', 'IELTS', 'Video Lessons', 'Modal Verbs', 'Tenses', 'Prepositions', 'Phrasal Verbs', 'Passive Voice', 'Gerunds & Infinitives', 'Reported Speech', 'Grammar activity', 'Speaking activity', 'Lesson plan', 'Slide Decks'];
 const catLabels = {
   'ALL': 'All',
   'Film & TV': 'Film & TV',
@@ -1026,7 +1165,10 @@ const catLabels = {
   'Gaming': 'Gaming',
   'Minecraft': 'Minecraft',
   'Role Playing Games': 'Role Playing Games',
+  'Block Camp RPGs': 'Block Camp RPGs',
+  'Block Camp': 'Block Camp',
   'Sports': 'Sports',
+  'Football': 'Football',
   'Architectural Design': 'Architectural Design',
   'Fashion': 'Fashion',
   'Construction': 'Construction',
@@ -1056,6 +1198,10 @@ const catLabels = {
 };
 const catFilters = document.getElementById('catFilters');
 let activeCategory = 'ALL';
+// The shelf opens on the collections. showAll is the one way past them
+// without picking a filter: the "All materials" pill, the lesson-count
+// button, the "All lessons" card, or #all in the URL.
+let showAll = false;
 
 categories.forEach(cat => {
   const btn = document.createElement('button');
@@ -1064,6 +1210,7 @@ categories.forEach(cat => {
   btn.dataset.cat = cat;
   btn.addEventListener('click', () => {
     activeCategory = cat;
+    showAll = false;                 // ALL from the pill row means the collections again
     document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     render();
@@ -1092,6 +1239,8 @@ document.getElementById('navFree').addEventListener('click', (e) => {
 });
 document.getElementById('navAll').addEventListener('click', (e) => {
   e.preventDefault();
+  showAll = true;
+  render();
   window.scrollTo({top: document.querySelector('main').offsetTop - 20, behavior: 'smooth'});
 });
 
@@ -1118,6 +1267,8 @@ function renderStats() {
   `;
   document.getElementById('lessonPlansBtn').addEventListener('click', (e) => {
     e.preventDefault();
+    showAll = true;
+    render();
     window.scrollTo({top: document.querySelector('main').offsetTop - 20, behavior: 'smooth'});
   });
   document.getElementById('grammarBtn').addEventListener('click', (e) => {
@@ -1126,6 +1277,7 @@ function renderStats() {
   });
   function goToCategory(cat) {
     activeCategory = cat;
+    showAll = false;
     document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === cat));
     render();
     window.scrollTo({top: document.querySelector('main').offsetTop - 20, behavior: 'smooth'});
@@ -1143,6 +1295,15 @@ function renderStats() {
   });
   window.applyHashCategory = function() {
     const hash = window.location.hash;
+    if (/^#all\b/.test(hash)) {
+      // The whole shelf, whatever was open before: #all after #cat=IELTS
+      // otherwise kept the IELTS filter and showed fourteen lessons.
+      activeCategory = 'ALL';
+      showAll = true;
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === 'ALL'));
+      render();
+      return;
+    }
     const m = hash.match(/cat=([^&]+)/);
     if (m) {
       const cat = decodeURIComponent(m[1].replace(/\+/g, ' '));
@@ -1440,6 +1601,57 @@ const PLACEHOLDER_OVERRIDE = {};
 // catalogue has no column for it and does not need one.
 function comingSoon(l) { return !LESSON_IMAGES[l.file]; }
 
+// The collections, in shelf order. `cat` is the category the card opens;
+// `hero` is a lesson whose LESSON_IMAGES art fronts the collection, so a
+// hero is always a real picture from inside that collection and cannot
+// point at a file that is not on the shelf. A collection without a hero
+// takes the newest lesson in it that has art. `hub` is a route page that
+// puts the lessons in order, offered from the header when there is one.
+const COLLECTIONS = [
+  { cat: 'Role Playing Games', title: 'Role-Playing Games', hero: 'sherlock-scarlet-star.html',
+    blurb: 'Branching stories with several endings. Every choice is a grammar question, and the wrong answer takes the story somewhere else.' },
+  { cat: 'Block Camp RPGs', title: 'Block Camp RPGs', hero: 'block-camp/dracula-castle-of-if.html', hub: 'block-camp.html',
+    blurb: 'The Minecraft-world adventures: Blocula, the Lost Yellow Road, Wonderland and the rest. One grammar point each, nine languages, a glowing object on every picture.' },
+  { cat: 'Block Camp', title: 'Block Camp', hero: 'blockcamp-present-simple.html', hub: 'block-camp.html',
+    blurb: 'The grammar climb: one tense per camp, active on the way up and passive on the way down, in the same order as Sherpa Tensing.' },
+  { cat: 'Business', title: 'Business English', hero: 'Forbes English - Decision-Making Under Uncertainty.html',
+    blurb: 'Meetings, negotiation, emails, pitches and the language of decisions. B2 to C2, most of it built around a roleplay.' },
+  { cat: 'IELTS', title: 'IELTS Academic', hero: 'forbes-english-ielts-bar-charts-c1.html', hub: 'ielts.html',
+    blurb: 'Writing Task 1 and Task 2, Speaking and Listening, in the order they should be taken, with a free Task 2 question bank.' },
+  { cat: 'Football', title: 'Football', hero: 'football_c1_roleplay.html',
+    blurb: 'Match-day English from B1 to C1: vocabulary, the Champions League, Eintracht and VfB, and gerunds at the stadium.' },
+  { cat: 'Tenses', title: 'Tenses', hero: 'sherpa-tensing-camp-one-present-continuous.html', hub: 'sherpa-tensing-route-map.html',
+    blurb: 'Sherpa Tensing\'s thirteen camps, the time-signal drills, and every lesson that teaches one tense properly.' },
+  { cat: 'Minecraft', title: 'Minecraft', hero: 'forbes-english-minecraft-c1.html',
+    blurb: 'The biggest run of themed lessons on the site: grammar and vocabulary set in the game, B1 to C1.' },
+  { cat: 'Workplace Communication', title: 'Workplace Communication', hero: 'forbes-english-meetings.html',
+    blurb: 'Meetings, emails, feedback, escalation and briefings — the conversations a job is made of.' },
+  { cat: 'Negotiation', title: 'Negotiation', hero: 'forbes-c1-negotiation.html',
+    blurb: 'Offers, concessions, deadlock and the language that moves a deal. C1 and up.' },
+  { cat: 'Film & TV', title: 'Film & TV', hero: 'twin-peaks-b2-discussion.html',
+    blurb: 'Lessons built on a series or a film: discussion, vocabulary and grammar in the world of the show.' },
+  { cat: 'Sports', title: 'Sports', hero: 'forbes-english-golf-lesson.html',
+    blurb: 'Golf, tennis, skiing, water polo, mountain biking — the vocabulary and the grammar of the game.' },
+  { cat: 'Prepositions', title: 'Prepositions', hero: 'prepositions_crime_lesson (fixed).html',
+    blurb: 'In, on, at and the rest, drilled inside a story rather than a table.' },
+  { cat: 'Modal Verbs', title: 'Modal Verbs', hero: 'forbes-english-modal-verbs-B1.html',
+    blurb: 'Must, have to, should, might and the modals of deduction — obligation, advice and probability.' },
+  { cat: 'Architectural Design', title: 'Architecture & Design', hero: 'forbes_english_c2_architecture_brutalism.html',
+    blurb: 'Brutalism, interiors, Koolhaas and Lamb: the vocabulary of buildings and the people who make them.' },
+  { cat: 'Nature & Wildlife', title: 'Nature & Wildlife', hero: 'forbes-nature-agency-part1.html',
+    blurb: 'Conservation, dinosaurs, penguins and the Nature Agency — the natural world at B1 to C1.' },
+  { cat: 'Geopolitics', title: 'Geopolitics', hero: 'ukraine-reconstruction-lesson.html',
+    blurb: 'Ukraine, Davos, the Falklands and JFK: the language of power, argued at C1.' },
+  { cat: 'Philosophy', title: 'Philosophy', hero: 'forbes-nietzsche-c1.html',
+    blurb: 'Nietzsche and Tolle, read closely. Grammar tests and film vocabulary that happen to be about ideas.' },
+  { cat: 'Grammar activity', title: 'Grammar Activities', hero: 'full_grammar_test.html',
+    blurb: 'Tests, quizzes, courts and jails — the drills, with the answer key hidden until you have committed.' },
+  { cat: 'Slide Decks', title: 'Slide Decks',
+    blurb: 'The 16:9 decks you can teach from or work through alone.' },
+  { cat: 'Video Lessons', title: 'Video Lessons',
+    blurb: 'Lessons with a video at the centre.' },
+];
+
 function cardImageHTML(l) {
   const img = LESSON_IMAGES[l.file];
   if (img) {
@@ -1455,8 +1667,99 @@ function cardImageHTML(l) {
   return `<div class="card-img-wrap placeholder" style="background:linear-gradient(135deg, ${gradient});"><span class="ph-icon">${icon}</span></div>`;
 }
 
+const collectionsEl = document.getElementById('collections');
+const collHeadEl = document.getElementById('collHead');
+
+function collectionFor(cat) { return COLLECTIONS.find(c => c.cat === cat); }
+
+// The picture that fronts a collection: its named hero, else the newest
+// lesson in it with art. Null only for a collection with no art at all.
+function collectionImage(c) {
+  if (c.hero && LESSON_IMAGES[c.hero]) return LESSON_IMAGES[c.hero];
+  const inIt = LESSONS.filter(l => l.categories.includes(c.cat) && LESSON_IMAGES[l.file]);
+  inIt.sort((a, b) => (Date.parse(b.created_at || '') || 0) - (Date.parse(a.created_at || '') || 0));
+  return inIt.length ? LESSON_IMAGES[inIt[0].file] : null;
+}
+
+function openCollection(cat) {
+  activeCategory = cat;
+  showAll = false;
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === cat));
+  render();
+  window.scrollTo({top: document.querySelector('main').offsetTop - 20, behavior: 'smooth'});
+}
+
+function renderCollections() {
+  collectionsEl.innerHTML = '';
+  COLLECTIONS.forEach(c => {
+    const n = LESSONS.filter(l => l.categories.includes(c.cat) && !comingSoon(l)).length;
+    if (!n) return;                                  // an empty collection is not a collection
+    const img = collectionImage(c);
+    const a = document.createElement('a');
+    a.className = 'coll';
+    a.href = '#cat=' + encodeURIComponent(c.cat).replace(/%20/g, '+');
+    a.innerHTML = `
+      ${img ? `<img src="${encodeURI(img)}" alt="" loading="lazy">` : ''}
+      <div class="coll-scrim"></div>
+      <div class="coll-text">
+        <div class="coll-title">${c.title}</div>
+        <div class="coll-sub">${n} lesson${n !== 1 ? 's' : ''}</div>
+      </div>`;
+    a.addEventListener('click', (e) => { e.preventDefault(); openCollection(c.cat); });
+    collectionsEl.appendChild(a);
+  });
+  const ready = LESSONS.filter(l => !comingSoon(l)).length;
+  const all = document.createElement('a');
+  all.className = 'coll coll-all';
+  all.href = '#all';
+  all.innerHTML = `
+    <div class="coll-big">${ready}</div>
+    <div class="coll-text">
+      <div class="coll-title">All lessons</div>
+      <div class="coll-sub">Newest first</div>
+    </div>`;
+  all.addEventListener('click', (e) => { e.preventDefault(); showAll = true; render(); });
+  collectionsEl.appendChild(all);
+}
+
+function renderCollectionHead(c, n) {
+  const img = collectionImage(c);
+  collHeadEl.innerHTML = `
+    ${img ? `<img src="${encodeURI(img)}" alt="">` : ''}
+    <div class="coll-scrim"></div>
+    <div class="coll-text">
+      <a class="coll-back" href="#">&larr; All collections</a>
+      <div class="coll-title">${c.title}</div>
+      <div class="coll-blurb">${c.blurb} <strong>${n} lesson${n !== 1 ? 's' : ''}.</strong></div>
+      ${c.hub ? `<a class="coll-hub" href="${c.hub}">Open the hub &rarr;</a>` : ''}
+    </div>`;
+  collHeadEl.querySelector('.coll-back').addEventListener('click', (e) => {
+    e.preventDefault();
+    activeCategory = 'ALL';
+    showAll = false;
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === 'ALL'));
+    render();
+  });
+}
+
 function render() {
   const q = normalizeForSearch(searchEl.value.trim());
+  // Collections until something narrows the shelf: a category, a level, a
+  // search, the free toggle, or an explicit "all". Then the lessons.
+  const collectionsView = !showAll && activeCategory === 'ALL' && activeLevel === 'ALL' && !freeOnly && !q;
+  collectionsEl.classList.toggle('on', collectionsView);
+  if (collectionsView) {
+    renderCollections();
+    grid.innerHTML = '';
+    grid.style.display = 'none';
+    collHeadEl.classList.remove('on');
+    emptyEl.style.display = 'none';
+    const ready = LESSONS.filter(l => !comingSoon(l)).length;
+    countEl.textContent = `${ready} lessons in ${collectionsEl.children.length - 1} collections`;
+    if (hubEl) hubEl.classList.remove('on');
+    return;
+  }
+  grid.style.display = '';
   const filtered = LESSONS.filter(l => {
     const matchesLevel = activeLevel === 'ALL' || l.level === activeLevel;
     const matchesCategory = activeCategory === 'ALL' || l.categories.includes(activeCategory);
@@ -1527,9 +1830,12 @@ function render() {
   countEl.textContent = `${ready} lesson${ready !== 1 ? 's' : ''}`
     + (soonCount ? ` · ${soonCount} coming soon` : '');
   emptyEl.style.display = filtered.length === 0 ? 'block' : 'none';
-  // Only while the IELTS filter is on. Off ALL, it would be an advert; on
-  // IELTS, it is the answer to "which of these nine do I open first".
-  if (hubEl) hubEl.classList.toggle('on', activeCategory === 'IELTS');
+  // A collection's hero heads its lessons. The hub link lives in the header
+  // now, so the old IELTS-only strip stays off.
+  const coll = collectionFor(activeCategory);
+  collHeadEl.classList.toggle('on', !!coll);
+  if (coll) renderCollectionHead(coll, ready);
+  if (hubEl) hubEl.classList.remove('on');
 }
 
 searchEl.addEventListener('input', render);
