@@ -12,6 +12,55 @@ stale copy.
 
 ---
 
+## 2026-09-08 — Wonderland's story was B1–B2 over A1–A2 questions
+
+Innes: *"The level of text on the opening couple of scenes of the Alice in
+Wonderland is still too advanced for the rest of the grammar."* He was right,
+and it was not only the opening. The 24 questions are A1–A2 throughout, but
+every narrative screen the export supplied was written at B1–B2, from the
+cover to the last ending:
+
+> The Time Warden **tears** the glowing Heart… Dancers freeze **in mid-step**…
+> the Heart has split into two **relics**… cross the **Gate of Now and Always**
+
+and, twenty-five screens later, *"not to control time, but to protect
+everyone's right to move through it."* Nobody at A2 reads that. The questions
+were never the problem, so it had gone unnoticed.
+
+All eleven narrative screens are now rewritten at the level the deck teaches —
+cover, prologue, rules, both forks, the cake briefing, the boss reveal, the
+decision and the three endings — and the new prose models the target grammar
+instead of avoiding it (*"It **is taking** the glowing Heart out of the palace
+clock. The people in the street **are not moving**, and the rain **is not
+falling**."*). "Relic" became "magic object" in the prose, so the HUD badge and
+the pickup message moved with it.
+
+**Three things to know if you do this to another deck:**
+
+- **Changing English changes the keys.** `translations/<lang>.json` is keyed by
+  the English string, so re-levelling 32 strings orphaned 32 × 7 glosses and
+  `validate()` refused the build — which is the gate working. Let the build
+  name them; do not guess the list.
+- **Do not retype the English.** `missing.py`-style extraction (mirror
+  `validate()`'s own filter — skip `opts` and `easy`) gives the exact keys, and
+  the new glosses go in indexed by position. A key typed twice is a key that
+  drifts.
+- **Match the file's formatting.** These files are `indent=0`, sorted, and
+  writing them back with `indent=1` churned 380 lines per file to add 32. The
+  real change disappears in a diff like that. `check_translations.py` PASSes at
+  205 × 7; its five "identical to EN" advisories are the grammar formula lines
+  and are correct.
+
+`data.json` still holds the export's own wording — the replacements live in
+`SIMPLER_ROUTE` / `SIMPLER_ENDING` in the builder, beside `Q` and
+`ROUTE_NAMES`, where the deck's other editorial text already is.
+
+The easy layer is untouched and still reads a step below the new normal text,
+but the gap is narrower now: its real value is the 24 questions, not the
+narration. Verified as before — nine languages × every scene × both levels all
+carry a gloss, and a full 16-question run at each level still lands 160/160,
+3 objects, `end_restore`.
+
 ## 2026-09-08 — The two clouds translated each other's sentences, and their builder could not be run
 
 Innes reported a glitch in the *used to* / *be used to* clouds. Two defects,

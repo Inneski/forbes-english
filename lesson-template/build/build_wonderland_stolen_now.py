@@ -182,6 +182,37 @@ ROUTE_NAMES = {
     'Enter the Gear Prison': ('ENTRA EN LA PRISIÓN DE ENGRANAJES', 'BETRITT DAS ZAHNRADGEFÄNGNIS'),
 }
 
+# The export wrote its endings and route blurbs at B1-B2 while every question
+# is A1-A2 — Innes flagged the opening on 2026-09-08 and the same register ran
+# to the last screen. These replace that prose at the level the deck teaches.
+# data.json keeps the export's wording; nothing here changes an answer.
+SIMPLER_ROUTE = {
+    'Follow the Rabbit':     ('Cross the broken bridge and get the Silver Stopwatch.',
+                              'Cruza el puente roto y consigue el Cronómetro de Plata.',
+                              'Überquere die kaputte Brücke und hol die silberne Stoppuhr.'),
+    'Follow the Cat':        ('Climb high above the trees and take back the Moon-Mirror Key.',
+                              'Sube muy alto sobre los árboles y recupera la Llave del Espejo Lunar.',
+                              'Klettere hoch über die Bäume und hol den Mondspiegelschlüssel zurück.'),
+    'Take the Teacup Boat':  ('Travel on the backwards river with the Hatter and get the Teacup Compass.',
+                              'Viaja por el río que va al revés con el Sombrerero y consigue la Brújula-Taza.',
+                              'Fahre mit dem Hutmacher auf dem rückwärts fließenden Fluss und hol den Teetassenkompass.'),
+    'Enter the Gear Prison': ('Help the Clockmaker Mouse escape and get the Heart Gear.',
+                              'Ayuda a la Ratona Relojera a escapar y consigue el Engranaje del Corazón.',
+                              'Hilf der Uhrmachermaus zu entkommen und hol das Herzrad.'),
+}
+
+SIMPLER_ENDING = {
+    'restore': ('Alice puts her magic objects inside the Crown. The clocks start again, Rose comes back, and the Queen lets the day finish. The Queen gives Alice the Keeper\'s Crown — not to control time, but to keep it safe for everybody.',
+                'Alice pone sus objetos mágicos dentro de la Corona. Los relojes vuelven a funcionar, Rose regresa y la Reina deja que el día termine. La Reina le da a Alice la Corona de la Guardiana: no para controlar el tiempo, sino para cuidarlo para todos.',
+                'Alice legt ihre Zaubergegenstände in die Krone. Die Uhren laufen wieder, Rose kommt zurück, und die Königin lässt den Tag zu Ende gehen. Die Königin gibt Alice die Krone der Hüterin — nicht um die Zeit zu kontrollieren, sondern um sie für alle zu bewahren.'),
+    'escape':  ('Alice breaks the machine and opens the palace doors. Rose, the Queen and everybody else run out into a new forest, and the old kingdom falls into pink blocks. Now nobody controls the next second.',
+                'Alice rompe la máquina y abre las puertas del palacio. Rose, la Reina y todos los demás salen corriendo hacia un bosque nuevo, y el viejo reino se deshace en bloques rosas. Ahora nadie controla el siguiente segundo.',
+                'Alice zerbricht die Maschine und öffnet die Palasttüren. Rose, die Königin und alle anderen laufen hinaus in einen neuen Wald, und das alte Königreich zerfällt in rosa Blöcke. Jetzt kontrolliert niemand die nächste Sekunde.'),
+    'flicker': ('The Crown is working again, but its new heart is weak. Rose is free and the Warden is gone. The Hatter is keeping the gears turning while Alice looks for one last missing piece. Wonderland has a new morning — and a new quest.',
+                'La Corona funciona otra vez, pero su nuevo corazón está débil. Rose está libre y el Guardián ha desaparecido. El Sombrerero mantiene los engranajes girando mientras Alice busca una última pieza. El País de las Maravillas tiene una mañana nueva y una misión nueva.',
+                'Die Krone läuft wieder, aber ihr neues Herz ist schwach. Rose ist frei und der Wächter ist weg. Der Hutmacher hält die Zahnräder in Bewegung, während Alice ein letztes fehlendes Teil sucht. Wunderland hat einen neuen Morgen — und eine neue Quest.'),
+}
+
 
 def place(sid, scene):
     hot, pos, v = HOT[sid][:3]
@@ -238,30 +269,30 @@ def build():
         'kind': 'intro', 'img': IMG('00_cover'),
         'k': T('WONDERLAND · PRESENT CONTINUOUS RPG', 'WONDERLAND · RPG DEL PRESENTE CONTINUO', 'WONDERLAND · PRESENT-CONTINUOUS-RPG'),
         'title': T('THE STOLEN NOW', 'EL AHORA ROBADO', 'DAS GESTOHLENE JETZT'),
-        'story': T('The last afternoon is repeating. Each loop is shorter. When the palace clock reaches zero, everybody in Wonderland will become a frozen memory.',
-                   'La última tarde se repite. Cada bucle es más corto. Cuando el reloj llegue a cero, todos se convertirán en un recuerdo congelado.',
-                   'Der letzte Nachmittag wiederholt sich. Jede Schleife wird kürzer. Wenn die Palastuhr null erreicht, werden alle zu einer eingefrorenen Erinnerung.'),
-        'rules': [T('+10 FIRST TRY', '+10 A LA PRIMERA', '+10 BEIM ERSTEN VERSUCH'), T('3 RELICS', '3 RELIQUIAS', '3 RELIKTE'), T('16 SPELLS', '16 HECHIZOS', '16 ZAUBER')],
+        'story': T('Something is wrong with time in Wonderland. The same afternoon is starting again and again, and every time it is shorter. When the palace clock stops, everybody in Wonderland stops too.',
+                   'Algo va mal con el tiempo en el País de las Maravillas. La misma tarde empieza una y otra vez, y cada vez es más corta. Cuando el reloj del palacio se pare, todos se pararán también.',
+                   'Mit der Zeit in Wunderland stimmt etwas nicht. Derselbe Nachmittag beginnt immer wieder, und jedes Mal ist er kürzer. Wenn die Palastuhr stehen bleibt, bleiben alle mit ihr stehen.'),
+        'rules': [T('+10 FIRST TRY', '+10 A LA PRIMERA', '+10 BEIM ERSTEN VERSUCH'), T('3 MAGIC OBJECTS', '3 OBJETOS MÁGICOS', '3 ZAUBERGEGENSTÄNDE'), T('16 SPELLS', '16 HECHIZOS', '16 ZAUBER')],
         'start': T('BEGIN THE QUEST', 'EMPEZAR LA MISIÓN', 'DIE QUEST BEGINNEN'),
-        'small': T('Single player · A1–A2 · two branching acts · three endings', 'Un jugador · A1–A2 · dos actos con ramas · tres finales', 'Ein Spieler · A1–A2 · zwei verzweigte Akte · drei Enden'),
+        'small': T('One player · A1–A2 · two paths to choose · three endings', 'Un jugador · A1–A2 · dos caminos a elegir · tres finales', 'Ein Spieler · A1–A2 · zwei Wege zur Wahl · drei Enden'),
         'next': 'prologue'})
     easy('cover')
     scenes['prologue'] = place('prologue', {
         'kind': 'story', 'img': IMG('01_prologue'),
-        'k': T('PROLOGUE · SIXTEEN MOVING SECONDS REMAIN', 'PRÓLOGO · QUEDAN DIECISÉIS SEGUNDOS EN MOVIMIENTO', 'PROLOG · SECHZEHN BEWEGTE SEKUNDEN BLEIBEN'),
-        'title': T('THE HEART OF NOW HAS BEEN STOLEN', 'HAN ROBADO EL CORAZÓN DEL AHORA', 'DAS HERZ DES JETZT WURDE GESTOHLEN'),
-        'story': T('The Time Warden tears the glowing Heart from the palace clock. Dancers freeze in mid-step. Raindrops hang above the street. Only Alice, the Rabbit and the Cat can still move. The Rabbit says the Heart has split into two relics. Find both, cross the Gate of Now and Always, and reach the Queen before the final bell disappears.',
-                   'El Guardián del Tiempo arranca el Corazón del reloj. Los bailarines se congelan a mitad de paso. Solo Alice, el Conejo y el Gato pueden moverse. El Corazón se ha partido en dos reliquias: encuentra las dos, cruza la Puerta del Ahora y el Siempre y llega hasta la Reina antes de que desaparezca la última campanada.',
-                   'Der Zeitwächter reißt das Herz aus der Palastuhr. Tänzer erstarren mitten im Schritt. Nur Alice, das Kaninchen und die Katze können sich noch bewegen. Das Herz ist in zwei Relikte zersprungen: Finde beide, durchquere das Tor von Jetzt und Immer und erreiche die Königin, bevor der letzte Glockenschlag verschwindet.'),
+        'k': T('PROLOGUE · TIME IS STOPPING', 'PRÓLOGO · EL TIEMPO SE ESTÁ PARANDO', 'PROLOG · DIE ZEIT BLEIBT STEHEN'),
+        'title': T('THE HEART OF THE CLOCK IS GONE', 'EL CORAZÓN DEL RELOJ HA DESAPARECIDO', 'DAS HERZ DER UHR IST WEG'),
+        'story': T('The Time Warden is a dark shadow. It is taking the glowing Heart out of the palace clock. Look — the people in the street are not moving, and the rain is not falling. Only Alice, the Rabbit and the Cat can still move. The Rabbit says the Heart is now two magic objects. Find them both, open the great gate, and reach the Queen before the clock stops.',
+                   'El Guardián del Tiempo es una sombra oscura. Está sacando el Corazón brillante del reloj del palacio. Mira: la gente de la calle no se mueve y la lluvia no cae. Solo Alice, el Conejo y el Gato pueden moverse todavía. El Conejo dice que el Corazón ahora son dos objetos mágicos. Encuéntralos los dos, abre la gran puerta y llega hasta la Reina antes de que el reloj se pare.',
+                   'Der Zeitwächter ist ein dunkler Schatten. Er nimmt gerade das leuchtende Herz aus der Palastuhr. Schau: Die Leute auf der Straße bewegen sich nicht, und der Regen fällt nicht. Nur Alice, das Kaninchen und die Katze können sich noch bewegen. Das Kaninchen sagt, das Herz sind jetzt zwei Zaubergegenstände. Finde beide, öffne das große Tor und erreiche die Königin, bevor die Uhr stehen bleibt.'),
         'next': 'rules'})
     easy('prologue')
     scenes['rules'] = place('rules', {
         'kind': 'rules', 'img': IMG('01_prologue'),
         'k': T('BEFORE THE QUEST · YOUR GRAMMAR SPELLBOOK', 'ANTES DE LA MISIÓN · TU LIBRO DE HECHIZOS', 'VOR DER QUEST · DEIN GRAMMATIK-ZAUBERBUCH'),
         'title': T('NOW OR ALWAYS?', '¿AHORA O SIEMPRE?', 'JETZT ODER IMMER?'),
-        'story': T('Use the present continuous for actions happening now or around now. Use the present simple for habits, routines, facts and most state verbs.',
-                   'Usa el presente continuo para acciones que ocurren ahora o en este periodo. Usa el presente simple para hábitos, rutinas, hechos y la mayoría de los verbos de estado.',
-                   'Benutze das Present Continuous für Handlungen, die jetzt oder um jetzt herum passieren. Benutze das Present Simple für Gewohnheiten, Routinen, Fakten und die meisten Zustandsverben.'),
+        'story': T('Use the present continuous for an action happening now: Alice is running. Use the present simple for things we do again and again, and for facts: Alice runs every day.',
+                   'Usa el presente continuo para una acción que ocurre ahora: Alice is running. Usa el presente simple para lo que hacemos una y otra vez y para los hechos: Alice runs every day.',
+                   'Benutze das Present Continuous für eine Handlung, die gerade passiert: Alice is running. Benutze das Present Simple für Dinge, die wir immer wieder tun, und für Fakten: Alice runs every day.'),
         'rules': [
             {'name': T('FORM · AM / IS / ARE + ING FORM', 'FORMA · AM / IS / ARE + FORMA -ING', 'FORM · AM / IS / ARE + ING-FORM'),
              'form': T('I am running · he / she / it is running · you / we / they are running')},
@@ -273,14 +304,14 @@ def build():
              'form': T('look → looking · make → making · run → running · lie → lying')},
             {'name': T('NOW CLUES', 'PISTAS DE "AHORA"', 'JETZT-SIGNALE'),
              'form': T('now · right now · at the moment · Look! · Listen!')},
-            {'name': T('PRESENT SIMPLE · HABITS AND FACTS', 'PRESENTE SIMPLE · HÁBITOS Y HECHOS', 'PRESENT SIMPLE · GEWOHNHEITEN UND FAKTEN'),
+            {'name': T('PRESENT SIMPLE · EVERY DAY AND FACTS', 'PRESENTE SIMPLE · CADA DÍA Y HECHOS', 'PRESENT SIMPLE · JEDEN TAG UND FAKTEN'),
              'form': T('The Rabbit checks his watch every day. · I know the answer.',
                        'El Conejo mira su reloj todos los días. · Sé la respuesta.',
                        'Das Kaninchen schaut jeden Tag auf seine Uhr. · Ich weiß die Antwort.')},
         ],
-        'note': T('Each first correct answer earns 10 points. A mistake shows the rule; repair the spell to continue. Sixteen spells on every route, 160 points.',
-                  'Cada primera respuesta correcta vale 10 puntos. Un error muestra la regla; repara el hechizo para continuar. Dieciséis hechizos en cada ruta, 160 puntos.',
-                  'Jede beim ersten Versuch richtige Antwort bringt 10 Punkte. Ein Fehler zeigt die Regel; repariere den Zauber, um weiterzugehen. Sechzehn Zauber auf jeder Route, 160 Punkte.'),
+        'note': T('Your first correct answer gives you 10 points. If you make a mistake, read the rule and repair the spell. There are 16 spells on every path and 160 points.',
+                  'Tu primera respuesta correcta te da 10 puntos. Si te equivocas, lee la regla y repara el hechizo. Hay 16 hechizos en cada camino y 160 puntos.',
+                  'Deine erste richtige Antwort gibt dir 10 Punkte. Wenn du einen Fehler machst, lies die Regel und repariere den Zauber. Es gibt 16 Zauber auf jedem Weg und 160 Punkte.'),
         'button': T('CHOOSE THE FIRST TRAIL', 'ELIGE EL PRIMER CAMINO', 'WÄHLE DEN ERSTEN PFAD'),
         'next': 'choice1'})
     easy('rules')
@@ -289,41 +320,42 @@ def build():
         routes, easy_routes = [], []
         for p in paths:
             es_n, de_n = ROUTE_NAMES[p['name']]
-            routes.append({'name': T(p['name'].upper(), es_n, de_n), 'desc': T(p['detail'], p['es'], p['de']),
+            en_d, es_d, de_d = SIMPLER_ROUTE[p['name']]
+            routes.append({'name': T(p['name'].upper(), es_n, de_n), 'desc': T(en_d, es_d, de_d),
                            'route': p['reward'], 'target': p['questions'][0]['id']})
             er = EASY['routes'][p['name']]
             easy_routes.append(dict(routes[-1], name=er['name'], desc=er['desc']))
             scenes.update(chain(p['questions'], act, after))
         scenes[sid] = place(sid, {'kind': 'choice', 'img': IMG(img), 'k':
-                                  T('ACT %s · BRANCHING QUEST · YOUR CHOICE CHANGES THE STORY' % ('I' if act == 1 else 'III'),
-                                    'ACTO %s · MISIÓN CON RAMAS · TU ELECCIÓN CAMBIA LA HISTORIA' % ('I' if act == 1 else 'III'),
-                                    'AKT %s · VERZWEIGTE QUEST · DEINE WAHL ÄNDERT DIE GESCHICHTE' % ('I' if act == 1 else 'III')),
+                                  T('ACT %s · CHOOSE A PATH · YOUR CHOICE CHANGES THE STORY' % ('I' if act == 1 else 'III'),
+                                    'ACTO %s · ELIGE UN CAMINO · TU ELECCIÓN CAMBIA LA HISTORIA' % ('I' if act == 1 else 'III'),
+                                    'AKT %s · WÄHLE EINEN WEG · DEINE WAHL ÄNDERT DIE GESCHICHTE' % ('I' if act == 1 else 'III')),
                                   'title': title, 'story': story, 'routes': routes})
         easy(sid, routes=easy_routes)
 
     fork('choice1', '02_fork_one', 1,
-         T('WHERE IS THE FIRST RELIC?', '¿DÓNDE ESTÁ LA PRIMERA RELIQUIA?', 'WO IST DAS ERSTE RELIKT?'),
-         T('The Silver Stopwatch lies beyond the Rabbit\'s collapsing bridge. The Moon-Mirror Key is hidden above the Cat\'s forest. Either relic can hold one true second.',
-           'El Cronómetro de Plata está más allá del puente del Conejo, que se derrumba. La Llave del Espejo Lunar se esconde sobre el bosque del Gato. Cualquiera de las dos guarda un segundo verdadero.',
-           'Die silberne Stoppuhr liegt hinter der einstürzenden Brücke des Kaninchens. Der Mondspiegelschlüssel ist über dem Wald der Katze versteckt. Jedes Relikt kann eine wahre Sekunde halten.'),
+         T('WHERE IS THE FIRST MAGIC OBJECT?', '¿DÓNDE ESTÁ EL PRIMER OBJETO MÁGICO?', 'WO IST DER ERSTE ZAUBERGEGENSTAND?'),
+         T('The Silver Stopwatch is on the other side of the Rabbit\'s broken bridge. The Moon-Mirror Key is high above the Cat\'s forest. Both objects can hold one true second.',
+           'El Cronómetro de Plata está al otro lado del puente roto del Conejo. La Llave del Espejo Lunar está muy alto, sobre el bosque del Gato. Los dos objetos pueden guardar un segundo verdadero.',
+           'Die silberne Stoppuhr ist auf der anderen Seite der kaputten Brücke des Kaninchens. Der Mondspiegelschlüssel ist hoch über dem Wald der Katze. Beide Gegenstände können eine wahre Sekunde halten.'),
          DATA['ACT_ONE'], 'cake_intro')
 
     scenes['cake_intro'] = place('cake_intro', {
         'kind': 'story', 'img': IMG('11_cake_chamber'),
         'k': T('ACT II · THE CATERPILLAR BAKER\'S TRIAL', 'ACTO II · LA PRUEBA DE LA ORUGA PASTELERA', 'AKT II · DIE PRÜFUNG DER RAUPENBÄCKERIN'),
         'title': T('PINK CAKE OR BLUE CAKE?', '¿PASTEL ROSA O PASTEL AZUL?', 'ROSA ODER BLAUER KUCHEN?'),
-        'story': T('The palace gate is caught between two kinds of time. Pink means present continuous: actions happening now. Blue means present simple: routines, facts and repeated actions.',
-                   'La puerta del palacio está atrapada entre dos clases de tiempo. Rosa = presente continuo: acciones que ocurren ahora. Azul = presente simple: rutinas, hechos y acciones repetidas.',
-                   'Das Palasttor steckt zwischen zwei Arten von Zeit fest. Rosa = Present Continuous: Handlungen, die jetzt passieren. Blau = Present Simple: Routinen, Fakten und wiederholte Handlungen.'),
+        'story': T('The palace gate is stuck between two kinds of time. Pink is the present continuous: something happening now. Blue is the present simple: things we do every day, and facts.',
+                   'La puerta del palacio está atascada entre dos clases de tiempo. Rosa es el presente continuo: algo que ocurre ahora. Azul es el presente simple: lo que hacemos cada día y los hechos.',
+                   'Das Palasttor steckt zwischen zwei Arten von Zeit fest. Rosa ist das Present Continuous: etwas, das gerade passiert. Blau ist das Present Simple: Dinge, die wir jeden Tag tun, und Fakten.'),
         'rules': [
             {'name': T('PINK · PRESENT CONTINUOUS', 'ROSA · PRESENTE CONTINUO', 'ROSA · PRESENT CONTINUOUS'),
              'form': T('am / is / are + ING FORM', 'am / is / are + forma -ING', 'am / is / are + ING-Form')},
             {'name': T('BLUE · PRESENT SIMPLE', 'AZUL · PRESENTE SIMPLE', 'BLAU · PRESENT SIMPLE'),
              'form': T('habits, routines and facts', 'hábitos, rutinas y hechos', 'Gewohnheiten, Routinen und Fakten')},
         ],
-        'note': T('Every answer is one cake split down the middle. Match the first coloured half to the first blank and the second half to the second blank.',
-                  'Cada respuesta es un pastel partido por la mitad. La primera mitad de color va en el primer hueco y la segunda en el segundo.',
-                  'Jede Antwort ist ein in der Mitte geteilter Kuchen. Die erste farbige Hälfte gehört in die erste Lücke, die zweite in die zweite.'),
+        'note': T('Every answer is a cake in two halves. The first half goes in the first gap, and the second half goes in the second gap.',
+                  'Cada respuesta es un pastel en dos mitades. La primera mitad va en el primer hueco y la segunda mitad va en el segundo hueco.',
+                  'Jede Antwort ist ein Kuchen in zwei Hälften. Die erste Hälfte gehört in die erste Lücke und die zweite Hälfte in die zweite Lücke.'),
         'button': T('TAKE THE FIRST PIECE', 'TOMA EL PRIMER TROZO', 'NIMM DAS ERSTE STÜCK'),
         'next': DATA['CAKE_ROUND'][0]['id']})
     easy('cake_intro')
@@ -331,18 +363,18 @@ def build():
 
     fork('choice2', '16_fork_two', 3,
          T('HOW WILL YOU ENTER THE PALACE?', '¿CÓMO ENTRARÁS EN EL PALACIO?', 'WIE KOMMST DU IN DEN PALAST?'),
-         T('The Hatter knows a river route to the Teacup Compass. A rebel card guard can lead Alice to the imprisoned Clockmaker and her Heart Gear.',
-           'El Sombrerero conoce una ruta por el río hasta la Brújula-Taza. Un guardia de cartas rebelde puede llevar a Alice hasta la Relojera prisionera y su Engranaje del Corazón.',
-           'Der Hutmacher kennt einen Flussweg zum Teetassenkompass. Eine rebellische Kartenwache kann Alice zur gefangenen Uhrmacherin und ihrem Herzrad führen.'),
+         T('The Hatter knows a river that goes to the Teacup Compass. A friendly card guard can take Alice to the Clockmaker Mouse in prison, and to her Heart Gear.',
+           'El Sombrerero conoce un río que lleva a la Brújula-Taza. Un guardia de cartas amable puede llevar a Alice hasta la Ratona Relojera en la prisión y hasta su Engranaje del Corazón.',
+           'Der Hutmacher kennt einen Fluss, der zum Teetassenkompass führt. Eine freundliche Kartenwache kann Alice zur Uhrmachermaus im Gefängnis und zu ihrem Herzrad bringen.'),
          DATA['ACT_TWO'], 'boss_intro')
 
     scenes['boss_intro'] = place('boss_intro', {
         'kind': 'story', 'img': IMG('25_boss_reveal'),
-        'k': T('THE REVEAL · THE CLOCK REACHES ZERO', 'LA REVELACIÓN · EL RELOJ LLEGA A CERO', 'DIE ENTHÜLLUNG · DIE UHR ERREICHT NULL'),
+        'k': T('THE SECRET · THE CLOCK IS STOPPING', 'EL SECRETO · EL RELOJ SE ESTÁ PARANDO', 'DAS GEHEIMNIS · DIE UHR BLEIBT STEHEN'),
         'title': T('THE WARDEN IS THE QUEEN\'S FEAR', 'EL GUARDIÁN ES EL MIEDO DE LA REINA', 'DER WÄCHTER IST DIE ANGST DER KÖNIGIN'),
-        'story': T('A child named Rose is trapped one second beyond the clock. Terrified of losing her, the Queen ordered the Clockmaker to stop tomorrow. Her fear grew into the Warden, and the Warden stole the present from everyone. Alice raises her two relics. They hold the arena in motion, but only four final grammar spells can break the Warden\'s control.',
-                   'Una niña llamada Rose está atrapada un segundo más allá del reloj. Aterrada de perderla, la Reina ordenó a la Relojera detener el mañana. Su miedo se convirtió en el Guardián, y el Guardián robó el presente a todos. Alice levanta sus dos reliquias: mantienen la arena en movimiento, pero solo cuatro hechizos finales pueden romper el control del Guardián.',
-                   'Ein Kind namens Rose ist eine Sekunde hinter der Uhr gefangen. Aus Angst, sie zu verlieren, ließ die Königin die Uhrmacherin das Morgen anhalten. Ihre Angst wurde zum Wächter, und der Wächter stahl allen die Gegenwart. Alice hebt ihre zwei Relikte: Sie halten die Arena in Bewegung, aber nur vier letzte Grammatikzauber können den Wächter brechen.'),
+        'story': T('Rose is the Queen\'s daughter, and she is trapped one second behind the clock. The Queen was afraid, so she asked the Clockmaker Mouse to stop tomorrow. The Queen\'s fear became the Warden, and the Warden took "now" from everybody. Alice is holding her two magic objects. They are keeping her friends moving, but only four more spells can stop the Warden.',
+                   'Rose es la hija de la Reina y está atrapada un segundo detrás del reloj. La Reina tenía miedo, así que pidió a la Ratona Relojera que detuviera el mañana. El miedo de la Reina se convirtió en el Guardián, y el Guardián le quitó el «ahora» a todo el mundo. Alice está sujetando sus dos objetos mágicos: mantienen a sus amigos en movimiento, pero solo cuatro hechizos más pueden detener al Guardián.',
+                   'Rose ist die Tochter der Königin, und sie ist eine Sekunde hinter der Uhr gefangen. Die Königin hatte Angst, also bat sie die Uhrmachermaus, das Morgen anzuhalten. Die Angst der Königin wurde zum Wächter, und der Wächter nahm allen das „Jetzt“. Alice hält gerade ihre zwei Zaubergegenstände. Sie halten ihre Freunde in Bewegung, aber nur vier weitere Zauber können den Wächter stoppen.'),
         'button': T('FIGHT FOR THE NEXT SECOND', 'LUCHA POR EL SIGUIENTE SEGUNDO', 'KÄMPFE UM DIE NÄCHSTE SEKUNDE'),
         'next': DATA['BOSS_ROUND'][0]['id']})
     easy('boss_intro')
@@ -353,16 +385,16 @@ def build():
     scenes['decision'] = place('decision', {
         'kind': 'choice', 'img': IMG('30_final_choice'),
         'k': T('FINAL DECISION · THREE ENDINGS', 'DECISIÓN FINAL · TRES FINALES', 'LETZTE ENTSCHEIDUNG · DREI ENDEN'),
-        'title': T('WHO SHOULD OWN TOMORROW?', '¿QUIÉN DEBE SER DUEÑO DEL MAÑANA?', 'WEM SOLL DAS MORGEN GEHÖREN?'),
-        'story': T('The Warden is gone, but the Crown still controls every clock. Alice can restore it and trust the Queen to share time, or destroy it and lead Wonderland into an unknown dawn.',
-                   'El Guardián ya no está, pero la Corona sigue controlando todos los relojes. Alice puede restaurarla y confiar en que la Reina comparta el tiempo, o destruirla y guiar al País de las Maravillas hacia un amanecer desconocido.',
-                   'Der Wächter ist fort, aber die Krone steuert noch jede Uhr. Alice kann sie wiederherstellen und darauf vertrauen, dass die Königin die Zeit teilt – oder sie zerstören und Wunderland in eine unbekannte Morgendämmerung führen.'),
+        'title': T('REPAIR THE CROWN OR BREAK IT?', '¿REPARAR LA CORONA O ROMPERLA?', 'DIE KRONE REPARIEREN ODER ZERBRECHEN?'),
+        'story': T('The Warden is gone, but the Crown still controls every clock in Wonderland. Alice can repair the Crown and trust the Queen. Or she can break it, and then everybody must start again somewhere new.',
+                   'El Guardián ya no está, pero la Corona sigue controlando todos los relojes del País de las Maravillas. Alice puede reparar la Corona y confiar en la Reina. O puede romperla, y entonces todos tendrán que empezar de nuevo en otro lugar.',
+                   'Der Wächter ist fort, aber die Krone steuert noch jede Uhr in Wunderland. Alice kann die Krone reparieren und der Königin vertrauen. Oder sie kann sie zerbrechen, und dann müssen alle woanders neu anfangen.'),
         'routes': [
-            {'name': T('RESTORE THE CROWN', 'RESTAURAR LA CORONA', 'DIE KRONE WIEDERHERSTELLEN'),
-             'desc': T('Requires 120 points for the strongest ending.', 'Con 120 puntos consigues el final más fuerte.', 'Mit 120 Punkten bekommst du das stärkste Ende.'),
+            {'name': T('REPAIR THE CROWN', 'REPARAR LA CORONA', 'DIE KRONE REPARIEREN'),
+             'desc': T('With 120 points or more you get the best ending.', 'Con 120 puntos o más consigues el mejor final.', 'Mit 120 Punkten oder mehr bekommst du das beste Ende.'),
              'target': 'end_restore', 'min': 120, 'else': 'end_flicker'},
             {'name': T('BREAK THE TIME MACHINE', 'ROMPER LA MÁQUINA DEL TIEMPO', 'DIE ZEITMASCHINE ZERSTÖREN'),
-             'desc': T('Choose freedom, risk and a world without controlled clocks.', 'Elige la libertad, el riesgo y un mundo sin relojes controlados.', 'Wähle Freiheit, Risiko und eine Welt ohne kontrollierte Uhren.'),
+             'desc': T('Everybody is free, but nobody knows what happens next.', 'Todos son libres, pero nadie sabe qué pasa después.', 'Alle sind frei, aber niemand weiß, was dann passiert.'),
              'target': 'end_escape'},
         ]})
     easy('decision', routes=[dict(r, **EASY['scenes']['decision']['routes'][i])
@@ -372,17 +404,17 @@ def build():
     for key, k, title in (
         ('restore', T('TRUE ENDING · QUEST COMPLETE', 'FINAL VERDADERO · MISIÓN COMPLETA', 'WAHRES ENDE · QUEST ABGESCHLOSSEN'), T('KEEPER OF NOW', 'GUARDIANA DEL AHORA', 'HÜTERIN DES JETZT')),
         ('escape',  T('FREEDOM ENDING · QUEST COMPLETE', 'FINAL DE LIBERTAD · MISIÓN COMPLETA', 'FREIHEITS-ENDE · QUEST ABGESCHLOSSEN'), T('A WORLD WITHOUT THE CROWN', 'UN MUNDO SIN LA CORONA', 'EINE WELT OHNE DIE KRONE')),
-        ('flicker', T('HOPEFUL ENDING · QUEST COMPLETE', 'FINAL ESPERANZADOR · MISIÓN COMPLETA', 'HOFFNUNGSVOLLES ENDE · QUEST ABGESCHLOSSEN'), T('ONE MORE DAWN', 'UN AMANECER MÁS', 'NOCH EINE MORGENDÄMMERUNG')),
+        ('flicker', T('HOPEFUL ENDING · QUEST COMPLETE', 'FINAL ESPERANZADOR · MISIÓN COMPLETA', 'HOFFNUNGSVOLLES ENDE · QUEST ABGESCHLOSSEN'), T('ONE MORE MORNING', 'UNA MAÑANA MÁS', 'NOCH EIN MORGEN')),
     ):
         e = E[key]
         scenes['end_' + key] = place('end_' + key, {
             'kind': 'ending', 'img': IMG(e['image']), 'success': key != 'flicker',
-            'k': k, 'title': title, 'story': T(e['story'], e['es'], e['de'])})
+            'k': k, 'title': title, 'story': T(*SIMPLER_ENDING[key])})
         easy('end_' + key)
 
     labels = {
-        'tiles':    T('RELICS', 'RELIQUIAS', 'RELIKTE'),
-        'relic':    T('RELIC RECOVERED · +{p} POINTS', 'RELIQUIA RECUPERADA · +{p} PUNTOS', 'RELIKT GEBORGEN · +{p} PUNKTE'),
+        'tiles':    T('MAGIC OBJECTS', 'OBJETOS MÁGICOS', 'ZAUBERGEGENSTÄNDE'),
+        'relic':    T('MAGIC OBJECT FOUND · +{p} POINTS', 'OBJETO MÁGICO ENCONTRADO · +{p} PUNTOS', 'ZAUBERGEGENSTAND GEFUNDEN · +{p} PUNKTE'),
         'correct':  T('FIRST-TRY SPELL · +{p} POINTS', 'HECHIZO A LA PRIMERA · +{p} PUNTOS', 'ZAUBER BEIM ERSTEN VERSUCH · +{p} PUNKTE'),
         'restart':  T('PLAY A DIFFERENT ROUTE', 'JUEGA OTRA RUTA', 'EINE ANDERE ROUTE SPIELEN'),
     }
