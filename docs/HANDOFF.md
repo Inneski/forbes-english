@@ -65,6 +65,137 @@ the hub but has no catalogue row, so it is not on the shelf at all.
 ---
 
 
+---
+
+## 2026-09-07 — Wonderland ships two reading levels in one page
+
+Innes sent `Wonderland_Easy_English.html` and asked to transplant its easy
+text into the Alice RPG, "either as a selection option or as a different
+version". It is a selection option: `block-camp/wonderland-stolen-now-rpg.html`
+now has a 📖 button in the HUD (and the `E` key) that swaps NORMAL ENGLISH
+for EASY ENGLISH. One page, one URL, one library row — nothing outside
+`block-camp/` changed, so there is no new catalogue entry to make.
+
+**Why a toggle and not a second deck.** The export is a structural twin of
+the original: the same 24 question ids in the same order, the options
+byte-for-byte identical, the same `correct` indices, the same branch shape.
+Only the prose is simpler. Measured before anything was built — that
+measurement is what made the toggle safe, and it is the first thing to
+re-run if another easy export arrives.
+
+The mechanism is in `rpg/README.md` §7 and is now part of the engine, not a
+Wonderland special case: a scene carries an `easy` key holding a **partial
+scene**, and `_check_easy` in `rpg.py` refuses an overlay that touches
+`img`, `hot`, `opts`, `answer`, `next` or a route's target. So both levels
+share one answer key, and a reader can switch mid-question and keep the
+score, the route and the tiles.
+
+### The defect that only shows in the languages nobody checks
+
+The overlay was first merged **one key at a time** (`Object.assign(base,
+easy)`). That is wrong: it replaces `story` wholesale, so a language the
+easy string does not carry loses its gloss entirely instead of falling back
+to the base one. It looks perfect in English, Spanish and German — the three
+anyone spot-checks — and left **19 of 35 screens English-only** in
+fr/it/pt/ru/ar/zh/ja.
+
+The fix is a merge **one text object at a time** (`mrg()` in `rpg.py`). The
+measurement, which is the part worth keeping: for each of the nine
+languages, for each scene, at both levels, assert a `.translation` node
+exists. It reported 133 bad screens before and `none` after. A defect class
+needs a measurement — do not trust a spot-check in es/de here.
+
+Consequence to know about: the seven fall-through glosses describe the same
+scene at the *harder* reading level. A French reader on the easy text sees
+"Canyon des Roses" where the English now says "a deep valley". Deliberate —
+the meaning matches and only the English changes — but if Innes wants the
+seven matched to the easy wording, they go in `data-easy.json` and win.
+
+`data-easy.json` carries the export's own es/de for the story lines, the
+endings and the narrative screens. The question titles, prompts and
+explanations the export left English-only, so those Spanish and German were
+written for it (HOUSE-STYLE's es+de minimum, enforced by `_check_easy`).
+
+### Two sessions edited `rpg.py` at once — what that cost
+
+The Frankenstein session and this one both had `rpg.py` open. `7a30e05`
+committed a **mid-edit snapshot** of it: my `EASY_MIN` and `_check_easy`
+went in, but not the call site in `validate()` and none of the runtime, so
+that commit's `rpg.py` defines a gate it never calls. Committing my copy on
+top would have been worse — it predated their `endingPick`/`endingMaster`
+routing in `chooseRoute`, and would have deleted the feature the
+Frankenstein deck runs on.
+
+So this change re-applies the easy layer onto `7a30e05`'s engine rather than
+committing the stale copy. `chooseRoute` now carries both:
+
+```js
+function chooseRoute(i){const r=SC(state.scene).routes[i];…if(r.ending){state.endingPick=r.ending;…}…}
+```
+
+The lesson, if two sessions are ever live again: **rebase the edit onto
+HEAD, do not commit the copy you started from**, and check the diff for
+lines you would remove that you never wrote.
+
+`rpg.py` gained a hidden HUD button and an inert easy branch, which every
+deck's page embeds on its next rebuild. Only Wonderland was rebuilt here.
+Frankenstein was rebuilt to prove the change is neutral — `G.easy` is unset,
+the button stays hidden — and then reverted to its committed bytes rather
+than ship an untested rebuild of another session's deck. The other four RPGs
+lag the engine in the same harmless way until someone rebuilds them.
+
+### Found, not fixed: `render()`'s replay timeout outlives its scene
+
+`render()` ends with
+
+```js
+if(s.kind==='question'&&…hasOwnProperty…(state.results,state.scene))
+  setTimeout(()=>displayAnswer(state.results[state.scene],false),0)
+```
+
+The closure reads `state.scene` when it *fires*, not when it is scheduled.
+Render an answered question and navigate away in the same tick and it fires
+against the new scene: `state.results[newScene]` is `undefined`, and
+`displayAnswer(undefined)` reaches `buttons[undefined].classList` (or a null
+`#feedback` on a story scene) and throws.
+
+**Pre-existing, and confirmed so** — the same three lines against the build
+at `be5244c` throw the same way:
+
+```js
+state=fresh('off'); go('03_rabbit_run'); openPanel(); answer(1);
+render(); go('prologue');           // -> Uncaught TypeError ~120ms later
+```
+
+Not user-reachable: nobody clicks within a tick of a render. It is reachable
+by scripted driving, which is how it surfaced, so a §4 harness should await
+between steps or it will chase a ghost. The fix is to capture the id —
+`const sid=state.scene; setTimeout(()=>{if(state.scene===sid)…})` — and it
+was left alone deliberately: `rpg.py` is shared by five decks, and shipping
+a one-line engine fix means rebuilding and re-checking all of them, which
+does not belong in a change about reading levels.
+
+**Not verified:** `check-lesson.js` does not apply to an RPG (§2), and
+Playwright is not installed on Innes's Windows machine, so the §4 screenshot
+pass did not run. What was checked instead, in the browser: the toggle at
+both levels; score, tiles and answered-state preserved across a mid-question
+switch; the cake half-labels; the ending review; the nine-language sweep
+above; no horizontal overflow at 375px; and a full 16-question playthrough
+at each level, which lands identically — 160/160, 3 relics, `end_restore` —
+with only the words differing. The one console error seen is the
+pre-existing replay timeout above, provoked by scripted driving and present
+at `be5244c` too. The pictures and hotspots were not touched and are refused
+by the gate, so §3 is unaffected.
+
+A caveat on how it was checked: the Browser pane serves a local file as a
+`data:` URL, so the deck's relative picture paths do not resolve and every
+scene renders on black. Text, layout and logic are all testable that way;
+the glow on the object is not. Reopen the file directly, or use Playwright,
+if a picture ever needs looking at.
+
+---
+
+
 ## 2026-09-07 — Frankenstein: nine languages before the build, and a third kind of export
 
 Innes asked for "frankenstein house style language translations". The export

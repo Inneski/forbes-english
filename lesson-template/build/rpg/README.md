@@ -235,6 +235,7 @@ wraps to at most two lines; the German is not longer than the panel.
 | `img_w`, `img_h` | picture size when it is not 1536×1024 (Wonderland is 1536×864) |
 | `repair`, `total` | `repair: True` = a wrong answer explains and lets the learner try again, points on the first try only, no chances (set `chances: 0`); `total` = questions on any path, shown as a progress badge |
 | `tags` | the two half-labels for split options, `{'a': {en,…}, 'b': {en,…}}` (pink NOW / blue USUAL) |
+| `easy_labels`, `easy_tags` | optional — the chrome and half-labels the easy-English layer rewords (§7) |
 
 Translations: `rpg.apply_translations(spec, '<dir>')` reads every
 `<lang>.json` in the directory — a flat `{"English string": "translation"}`
@@ -259,7 +260,50 @@ being taught and the check skips them) or, for a two-blank item,
 `{parts: ['stays', 'is getting'], kinds: ['b', 'a']}`: two coloured halves
 labelled from `tags`, first half for the first blank.
 
-## 7. What is deliberately not here
+## 7. An easy-English layer (optional, one deck has one)
+
+A deck can carry a second reading level. It is **not a second deck**: the
+same page, the same pictures, the same options and the same answer key,
+with a 📖 button in the HUD (and `E`) that swaps the prose. Wonderland is
+the one that has it, from an Easy English export Innes sent on 2026-09-07
+that turned out to be a structural twin of the original — same 24 question
+ids, same order, options byte-for-byte identical, same `correct` indices.
+
+Wire it by giving a scene an `easy` key holding a **partial scene**: only
+the keys whose wording changes.
+
+```python
+scenes['prologue']['easy'] = {'k': …, 'title': …, 'story': …}
+```
+
+Spec keys `easy_labels` and `easy_tags` reword the chrome (RELICS →
+MAGIC OBJECTS) and the cake halves the same way. `assemble()` sets
+`G.easy` when any scene has an overlay, which is what shows the button.
+
+Three things make this safe, and all three are enforced in `_check_easy`:
+
+- **An overlay may not touch the logic.** `img`, `hot`, `opts`, `answer`,
+  `next`, `kind` and friends are refused, and easy `routes` must go where
+  the base routes go. So one answer key serves both levels, and the reader
+  can switch mid-question and keep the score, the route and the tiles.
+- **It may not add a key the base scene lacks** — that would be a typo, not
+  an overlay.
+- **Every string needs `en` plus `es` and `de`** (HOUSE-STYLE's minimum),
+  and nothing more. The other gloss languages fall through to the base
+  string, because the overlay is merged **one text object at a time**, not
+  one key at a time. Getting that wrong is the trap: `Object.assign` at the
+  key level left 19 of Wonderland's 35 screens English-only in
+  fr/it/pt/ru/ar/zh/ja, and it looks fine in en, es and de, which are the
+  three anybody checks. The measurement is a sweep — for each language, for
+  each scene, assert a `.translation` node exists at both levels.
+
+The seven fall-through glosses describe the same scene at the harder
+reading level: a French reader on the easy text sees "Canyon des Roses"
+where the English now says "a deep valley". That is deliberate — the
+meaning is the same and only the English changes — but if a language ever
+needs its own easy wording, add it to the overlay and it wins.
+
+## 8. What is deliberately not here
 
 - **Print.** The exports had a "print result" button; the three RPGs
   before this one did not, and a fullscreen game is not a worksheet.

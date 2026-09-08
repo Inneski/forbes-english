@@ -24,6 +24,18 @@ rpg/README.md §6). The final decision sends Restore to the true ending at
 
 Pictures: block-camp/wonderland-stolen-now-rpg/NN_name.webp, 1536×864, as
 exported. The rules briefing borrows the prologue plate.
+
+Two reading levels. rpg/wonderland-stolen-now/data-easy.json is the easy
+layer, from the Easy English export of 2026-09-07 — a structural twin of the
+original: same 24 question ids in the same order, options byte-for-byte
+identical, same `correct` indices, simpler prose. It rides as a partial
+`easy` scene (rpg/README.md §7), so both levels share one page, one set of
+pictures and one answer key, and the 📖 button swaps the words mid-game
+without touching the score. The export carried its own Spanish and German
+for the story lines, the endings and the narrative screens; the question
+titles, prompts and explanations it left English-only, so those es/de were
+written for data-easy.json. The other seven glosses fall through to the
+base text on purpose.
 """
 import json, os, sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'rpg'))
@@ -31,6 +43,7 @@ import rpg
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 DATA = json.load(open(os.path.join(HERE, 'rpg', 'wonderland-stolen-now', 'data.json'), encoding='utf-8'))
+EASY = json.load(open(os.path.join(HERE, 'rpg', 'wonderland-stolen-now', 'data-easy.json'), encoding='utf-8'))
 LANGS = rpg.NINE   # es, de inline; the other seven from rpg/wonderland-stolen-now/translations/
 IMG = lambda n: n + '.webp'
 
@@ -192,6 +205,9 @@ def question(qd, act, nxt, relic=False):
          'points': 10, 'next': nxt}
     if relic:
         s['relic'] = True
+    e = EASY['questions'][qd['id']]
+    s['easy'] = {'k': e['k'], 'title': e['title'], 'story': e['story'],
+                 'prompt': e['ask'], 'fb': e['why']}
     return place(qd['id'], s)
 
 
@@ -205,6 +221,19 @@ def chain(questions, act, after):
 
 def build():
     scenes = {}
+
+    def easy(sid, **extra):
+        """Attach the easy-English overlay for `sid` to the scene just built.
+
+        The overlay is a partial scene — only the keys whose wording changes.
+        The picture, the hotspot, the options, the answer key and every `next`
+        stay on the base scene, so the reader can switch level mid-game and
+        keep both the score and the route. rpg.py refuses an overlay that
+        reaches past that.
+        """
+        src = EASY['scenes'].get(sid) or EASY['endings'][sid]
+        scenes[sid]['easy'] = dict(src, **extra)
+
     scenes['cover'] = place('cover', {
         'kind': 'intro', 'img': IMG('00_cover'),
         'k': T('WONDERLAND · PRESENT CONTINUOUS RPG', 'WONDERLAND · RPG DEL PRESENTE CONTINUO', 'WONDERLAND · PRESENT-CONTINUOUS-RPG'),
@@ -216,6 +245,7 @@ def build():
         'start': T('BEGIN THE QUEST', 'EMPEZAR LA MISIÓN', 'DIE QUEST BEGINNEN'),
         'small': T('Single player · A1–A2 · two branching acts · three endings', 'Un jugador · A1–A2 · dos actos con ramas · tres finales', 'Ein Spieler · A1–A2 · zwei verzweigte Akte · drei Enden'),
         'next': 'prologue'})
+    easy('cover')
     scenes['prologue'] = place('prologue', {
         'kind': 'story', 'img': IMG('01_prologue'),
         'k': T('PROLOGUE · SIXTEEN MOVING SECONDS REMAIN', 'PRÓLOGO · QUEDAN DIECISÉIS SEGUNDOS EN MOVIMIENTO', 'PROLOG · SECHZEHN BEWEGTE SEKUNDEN BLEIBEN'),
@@ -224,6 +254,7 @@ def build():
                    'El Guardián del Tiempo arranca el Corazón del reloj. Los bailarines se congelan a mitad de paso. Solo Alice, el Conejo y el Gato pueden moverse. El Corazón se ha partido en dos reliquias: encuentra las dos, cruza la Puerta del Ahora y el Siempre y llega hasta la Reina antes de que desaparezca la última campanada.',
                    'Der Zeitwächter reißt das Herz aus der Palastuhr. Tänzer erstarren mitten im Schritt. Nur Alice, das Kaninchen und die Katze können sich noch bewegen. Das Herz ist in zwei Relikte zersprungen: Finde beide, durchquere das Tor von Jetzt und Immer und erreiche die Königin, bevor der letzte Glockenschlag verschwindet.'),
         'next': 'rules'})
+    easy('prologue')
     scenes['rules'] = place('rules', {
         'kind': 'rules', 'img': IMG('01_prologue'),
         'k': T('BEFORE THE QUEST · YOUR GRAMMAR SPELLBOOK', 'ANTES DE LA MISIÓN · TU LIBRO DE HECHIZOS', 'VOR DER QUEST · DEIN GRAMMATIK-ZAUBERBUCH'),
@@ -252,19 +283,23 @@ def build():
                   'Jede beim ersten Versuch richtige Antwort bringt 10 Punkte. Ein Fehler zeigt die Regel; repariere den Zauber, um weiterzugehen. Sechzehn Zauber auf jeder Route, 160 Punkte.'),
         'button': T('CHOOSE THE FIRST TRAIL', 'ELIGE EL PRIMER CAMINO', 'WÄHLE DEN ERSTEN PFAD'),
         'next': 'choice1'})
+    easy('rules')
 
     def fork(sid, img, act, title, story, paths, after):
-        routes = []
+        routes, easy_routes = [], []
         for p in paths:
             es_n, de_n = ROUTE_NAMES[p['name']]
             routes.append({'name': T(p['name'].upper(), es_n, de_n), 'desc': T(p['detail'], p['es'], p['de']),
                            'route': p['reward'], 'target': p['questions'][0]['id']})
+            er = EASY['routes'][p['name']]
+            easy_routes.append(dict(routes[-1], name=er['name'], desc=er['desc']))
             scenes.update(chain(p['questions'], act, after))
         scenes[sid] = place(sid, {'kind': 'choice', 'img': IMG(img), 'k':
                                   T('ACT %s · BRANCHING QUEST · YOUR CHOICE CHANGES THE STORY' % ('I' if act == 1 else 'III'),
                                     'ACTO %s · MISIÓN CON RAMAS · TU ELECCIÓN CAMBIA LA HISTORIA' % ('I' if act == 1 else 'III'),
                                     'AKT %s · VERZWEIGTE QUEST · DEINE WAHL ÄNDERT DIE GESCHICHTE' % ('I' if act == 1 else 'III')),
                                   'title': title, 'story': story, 'routes': routes})
+        easy(sid, routes=easy_routes)
 
     fork('choice1', '02_fork_one', 1,
          T('WHERE IS THE FIRST RELIC?', '¿DÓNDE ESTÁ LA PRIMERA RELIQUIA?', 'WO IST DAS ERSTE RELIKT?'),
@@ -291,6 +326,7 @@ def build():
                   'Jede Antwort ist ein in der Mitte geteilter Kuchen. Die erste farbige Hälfte gehört in die erste Lücke, die zweite in die zweite.'),
         'button': T('TAKE THE FIRST PIECE', 'TOMA EL PRIMER TROZO', 'NIMM DAS ERSTE STÜCK'),
         'next': DATA['CAKE_ROUND'][0]['id']})
+    easy('cake_intro')
     scenes.update(chain(DATA['CAKE_ROUND'], 2, 'choice2'))
 
     fork('choice2', '16_fork_two', 3,
@@ -309,6 +345,7 @@ def build():
                    'Ein Kind namens Rose ist eine Sekunde hinter der Uhr gefangen. Aus Angst, sie zu verlieren, ließ die Königin die Uhrmacherin das Morgen anhalten. Ihre Angst wurde zum Wächter, und der Wächter stahl allen die Gegenwart. Alice hebt ihre zwei Relikte: Sie halten die Arena in Bewegung, aber nur vier letzte Grammatikzauber können den Wächter brechen.'),
         'button': T('FIGHT FOR THE NEXT SECOND', 'LUCHA POR EL SIGUIENTE SEGUNDO', 'KÄMPFE UM DIE NÄCHSTE SEKUNDE'),
         'next': DATA['BOSS_ROUND'][0]['id']})
+    easy('boss_intro')
     boss = chain(DATA['BOSS_ROUND'], 4, 'decision')
     boss[DATA['BOSS_ROUND'][-1]['id']].pop('relic', None)   # the third relic came from the cake gate
     scenes.update(boss)
@@ -328,6 +365,8 @@ def build():
              'desc': T('Choose freedom, risk and a world without controlled clocks.', 'Elige la libertad, el riesgo y un mundo sin relojes controlados.', 'Wähle Freiheit, Risiko und eine Welt ohne kontrollierte Uhren.'),
              'target': 'end_escape'},
         ]})
+    easy('decision', routes=[dict(r, **EASY['scenes']['decision']['routes'][i])
+                             for i, r in enumerate(scenes['decision']['routes'])])
 
     E = DATA['ENDINGS']
     for key, k, title in (
@@ -339,6 +378,7 @@ def build():
         scenes['end_' + key] = place('end_' + key, {
             'kind': 'ending', 'img': IMG(e['image']), 'success': key != 'flicker',
             'k': k, 'title': title, 'story': T(e['story'], e['es'], e['de'])})
+        easy('end_' + key)
 
     labels = {
         'tiles':    T('RELICS', 'RELIQUIAS', 'RELIKTE'),
@@ -357,6 +397,7 @@ def build():
         'accent_ink': '#1f0716', 'deep': '#2d1024', 'panel': 'rgba(30,9,26,.9)',
         'labels': labels,
         'tags': {'a': T('PINK · NOW', 'ROSA · AHORA', 'ROSA · JETZT'), 'b': T('BLUE · USUAL', 'AZUL · HABITUAL', 'BLAU · GEWOHNT')},
+        'easy_labels': EASY['labels'], 'easy_tags': EASY['tags'],
         'start': 'cover', 'scenes': scenes,
         'endings': {'master': 'end_restore', 'complete': 'end_restore', 'missing': 'end_flicker', 'failed': 'end_escape'},
         'max': 160, 'points': 10, 'tiles': 3, 'chances': 0, 'total': 16, 'repair': True,
