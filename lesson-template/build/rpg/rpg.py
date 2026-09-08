@@ -103,6 +103,9 @@ def apply_translations(spec, path):
             for v in o:
                 walk(v)
     walk(spec['scenes']); walk(spec.get('labels', {})); walk(spec.get('tags', {}))
+    # a deck that folds a simpler text layer in keeps its chrome overrides
+    # here; they need filling too, or they ship with English and nothing else.
+    walk(spec.get('easy_labels', {})); walk(spec.get('easy_tags', {}))
     return spec
 
 

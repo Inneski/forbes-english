@@ -12,6 +12,51 @@ stale copy.
 
 ---
 
+## 2026-09-08 — Wonderland's other seven languages now describe the deck it is
+
+The gloss debt from the two changes above is paid. When the narrative was
+re-levelled and then the simpler text folded in, English, Spanish and German
+moved and the other seven did not: they were written for wording that no
+longer existed. A French reader saw *Canyon des Roses* under an English
+"a deep valley".
+
+**146 strings × 7 languages, all rewritten.** `stale.py`'s method is the part
+worth keeping: build the spec, run `apply_translations`, then walk each
+scene's `easy` overlay *beside the base text it replaces* and collect every
+text object still missing one of the seven. Those are exactly the
+fall-throughs — no guessing, no retyping an English key. It now reports **0**.
+
+Three things fell out of doing it:
+
+- **`apply_translations` never walked `easy_labels` / `easy_tags`.** Nine
+  chrome strings shipped English-only in seven languages because of it, and
+  nothing complained, because the fold happens after. Fixed in `rpg.py`;
+  three of the nine then resolved themselves from keys already in the files.
+- **A stray Spanish word and a truncated sentence got into the Japanese** —
+  `…みんなワンダーランドに residir…` — and were applied before I caught them,
+  because the fix script's first line was a `print` that died on the Windows
+  console codepage while the write never ran. `PYTHONIOENCODING=utf-8` for
+  anything that prints non-Latin text on this machine.
+- So the translations get their own gate: **`qa7.py`** checks all seven for a
+  lost `___` blank, a lost `{p}`, colour marks that differ from the English, a
+  trailing `…` the English lacks, a Latin word appearing in a Cyrillic/Arabic/
+  CJK string that is nowhere in the English, and an entry under a third of the
+  English's length. Verified by re-injecting the three defects: it catches all
+  of them. Two calibrations it needed — hyphenated `VERB-ING` licenses a bare
+  `ING`, and the length rule cannot apply to zh/ja, which are legitimately a
+  third the length.
+
+Also normalised: the English contractions those explanations quote were typed
+`aren't` / `isn't` in the translations against the lesson's curly `aren’t` /
+`isn’t`. 21 values across the seven.
+
+The diff is 1022 insertions and no deletions — 146 × 7 exactly, at the files'
+own `indent=0`, so nothing reordered. `check_translations.py` passes at
+351 × 7. Both routes still play 160/160 to their endings, every screen glosses
+in nine languages, the colour marks render in the glosses too (Japanese shows
+pink and blue on both the English and the Japanese), and no raw `[[` reaches
+the page in any language.
+
 ## 2026-09-08 — Wonderland drops to one reading level, and the two tenses get their colours
 
 Innes, after the re-levelling: *"Just keep the easy English version. A
