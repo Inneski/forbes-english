@@ -357,6 +357,44 @@ T['en'] = dict(
                   'one pair from the collocation slides.',
     actPlaceholder='In the absence of any real evidence, we…',
 
+    # ── feedback: why an answer was wrong ─────────────────────────────
+    binOk='Correct', binBad='Incorrect',
+    q1w='<em>Despite</em> takes a noun phrase. <em>Although</em> needs a clause, '
+        '<em>because of</em> reverses the logic, and <em>in spite</em> is '
+        'incomplete — it must be <em>in spite of</em>.',
+    q2w='<em>Depend on</em> is fixed. There is no rule behind it; the other three '
+        'are simply not English here.',
+    q3w='<em>Since</em> marks a starting point that reaches the present. '
+        '<em>After</em> would need a finished period, and <em>from</em> needs '
+        '<em>to</em> to close it.',
+    q4w='<em>Aware of</em>, always. <em>Aware about</em> is the commonest single '
+        'error on this adjective.',
+    q5w='<em>On the basis of</em> introduces reasoning from evidence. '
+        '<em>Despite of</em> is not English at all.',
+    q6w='Clothing worn takes <em>in</em>. <em>With</em> is for what someone '
+        'carries, and <em>wearing</em> is a participle, not a preposition.',
+    q7w='The trauma is the cause, so the memory results <em>from</em> it. '
+        '<em>Result in</em> would point the arrow the other way.',
+    q8w='<em>from which</em> and <em>come from</em> are both correct English; only '
+        'the pied-piped <em>from which</em> suits a formal register. Stranding is '
+        'never wrong, just less formal. <em>what</em> and <em>had came</em> are '
+        'simply errors.',
+    q9w='<em>Guilty of</em> the offence. <em>Guilty for</em> is a common transfer '
+        'error and is not English.',
+    q10w='<em>Apart from</em> = excluding. <em>Besides from</em> and <em>except '
+         'to</em> do not exist, and <em>outside of</em> is spatial.',
+    g1w1='The discovery is the cause, so it results <em>in</em> the investigation.',
+    g1w2='<em>In spite of</em>. Note there is no such form as <em>despite of</em>.',
+    g2w1='<em>Obsessed with</em> for a person; <em>since</em> + clause for the '
+         'starting point.',
+    g2w2='<em>Aware of</em> and <em>respond to</em> — both fixed, neither derivable.',
+    g3w1='<em>On behalf of</em> = in their place. <em>In behalf of</em> is a '
+         'different, rarer form meaning "for the benefit of".',
+    g3w2='<em>By means of</em> names the instrument — a formal <em>using</em>.',
+    g4w1='An effect is always <em>on</em> something, never <em>to</em>.',
+    g4w2='<em>Capable of</em>, and it takes an <em>-ing</em> form or a noun after '
+         'it — never an infinitive.',
+
     resPerfect='Full marks. Compound forms, collocations and the double agents — all held.',
     resStrong='Strong. Look again at the collocation slides; that is where the last point usually goes.',
     resMid='Solid on the theory. The fixed pairs are the part to drill — they have no rule behind them.',
@@ -665,6 +703,46 @@ T['de'] = dict(
                   'Präposition und ein Paar aus den Kollokationsfolien.',
     actPlaceholder='In the absence of any real evidence, we…',
 
+    # ── Feedback: warum eine Antwort falsch war ────────────────────────
+    binOk='Richtig', binBad='Falsch',
+    q1w='<em>Despite</em> steht vor einer Nominalphrase. <em>Although</em> braucht '
+        'einen Teilsatz, <em>because of</em> dreht die Logik um, und <em>in '
+        'spite</em> ist unvollständig — es muss <em>in spite of</em> heißen.',
+    q2w='<em>Depend on</em> ist fest. Dahinter steht keine Regel; die anderen drei '
+        'sind hier schlicht kein Englisch.',
+    q3w='<em>Since</em> markiert einen Startpunkt, der bis in die Gegenwart reicht. '
+        '<em>After</em> bräuchte einen abgeschlossenen Zeitraum, und <em>from</em> '
+        'braucht ein <em>to</em>, um ihn zu schließen.',
+    q4w='Immer <em>aware of</em>. <em>Aware about</em> ist der häufigste Einzelfehler '
+        'bei diesem Adjektiv.',
+    q5w='<em>On the basis of</em> leitet eine Begründung aus Beweisen ein. '
+        '<em>Despite of</em> gibt es im Englischen überhaupt nicht.',
+    q6w='Getragene Kleidung nimmt <em>in</em>. <em>With</em> steht für das, was '
+        'jemand bei sich trägt, und <em>wearing</em> ist ein Partizip, keine '
+        'Präposition.',
+    q7w='Das Trauma ist die Ursache, also folgt die Erinnerung <em>from</em> ihm. '
+        '<em>Result in</em> würde den Pfeil andersherum zeigen.',
+    q8w='<em>from which</em> und <em>come from</em> sind beide korrektes Englisch; '
+        'nur das vorangestellte <em>from which</em> passt in ein formelles '
+        'Register. Stranding ist nie falsch, nur weniger formell. <em>what</em> und '
+        '<em>had came</em> sind schlicht Fehler.',
+    q9w='<em>Guilty of</em> vor der Tat. <em>Guilty for</em> ist ein häufiger '
+        'Übertragungsfehler und kein Englisch.',
+    q10w='<em>Apart from</em> = ausgenommen. <em>Besides from</em> und <em>except '
+         'to</em> existieren nicht, und <em>outside of</em> ist räumlich.',
+    g1w1='Der Fund ist die Ursache, also führt er <em>in</em> die Ermittlung — '
+         '<em>result in</em>.',
+    g1w2='<em>In spite of</em>. Beachte: eine Form <em>despite of</em> gibt es nicht.',
+    g2w1='<em>Obsessed with</em> bei Personen; <em>since</em> + Teilsatz für den '
+         'Startpunkt.',
+    g2w2='<em>Aware of</em> und <em>respond to</em> — beide fest, keines herleitbar.',
+    g3w1='<em>On behalf of</em> = an ihrer Stelle. <em>In behalf of</em> ist eine '
+         'andere, seltenere Form und heißt „zum Nutzen von“.',
+    g3w2='<em>By means of</em> nennt das Mittel — ein formelles <em>using</em>.',
+    g4w1='Eine Wirkung ist immer <em>on</em> etwas, nie <em>to</em>.',
+    g4w2='<em>Capable of</em>, und danach steht eine <em>-ing</em>-Form oder ein '
+         'Nomen — nie ein Infinitiv.',
+
     resPerfect='Volle Punktzahl. Mehrwortformen, Kollokationen und die Doppelagenten — alles gehalten.',
     resStrong='Stark. Sieh dir die Kollokationsfolien noch einmal an; dort geht der letzte Punkt meist verloren.',
     resMid='Die Theorie sitzt. Üben musst du die festen Paare — hinter ihnen steht keine Regel.',
@@ -968,6 +1046,46 @@ T['es'] = dict(
                   'menos dos preposiciones de tres palabras, una preposición al final '
                   'de cláusula y un par de las diapositivas de colocaciones.',
     actPlaceholder='In the absence of any real evidence, we…',
+
+    # ── Feedback: por qué una respuesta era incorrecta ─────────────────
+    binOk='Correcta', binBad='Incorrecta',
+    q1w='<em>Despite</em> va con un sintagma nominal. <em>Although</em> necesita una '
+        'cláusula, <em>because of</em> invierte la lógica, y <em>in spite</em> está '
+        'incompleto — tiene que ser <em>in spite of</em>.',
+    q2w='<em>Depend on</em> es fijo. No hay ninguna regla detrás; las otras tres '
+        'sencillamente no son inglés aquí.',
+    q3w='<em>Since</em> marca un punto de partida que llega hasta el presente. '
+        '<em>After</em> exigiría un periodo terminado, y <em>from</em> necesita un '
+        '<em>to</em> que lo cierre.',
+    q4w='Siempre <em>aware of</em>. <em>Aware about</em> es el error más frecuente '
+        'con este adjetivo.',
+    q5w='<em>On the basis of</em> introduce un razonamiento a partir de pruebas. '
+        '<em>Despite of</em> no existe en inglés.',
+    q6w='La ropa que se lleva puesta va con <em>in</em>. <em>With</em> es para lo '
+        'que alguien lleva encima, y <em>wearing</em> es un participio, no una '
+        'preposición.',
+    q7w='El trauma es la causa, así que el recuerdo resulta <em>from</em> él. '
+        '<em>Result in</em> apuntaría la flecha al revés.',
+    q8w='<em>from which</em> y <em>come from</em> son ambos inglés correcto; solo el '
+        'antepuesto <em>from which</em> encaja en un registro formal. El stranding '
+        'nunca es incorrecto, solo menos formal. <em>what</em> y <em>had came</em> '
+        'son simplemente errores.',
+    q9w='<em>Guilty of</em> ante el delito. <em>Guilty for</em> es un calco '
+        'frecuente y no es inglés.',
+    q10w='<em>Apart from</em> = excluyendo. <em>Besides from</em> y <em>except to</em> '
+         'no existen, y <em>outside of</em> es espacial.',
+    g1w1='El hallazgo es la causa, así que desemboca <em>in</em> la investigación — '
+         '<em>result in</em>.',
+    g1w2='<em>In spite of</em>. Ojo: la forma <em>despite of</em> no existe.',
+    g2w1='<em>Obsessed with</em> para personas; <em>since</em> + cláusula para el '
+         'punto de partida.',
+    g2w2='<em>Aware of</em> y <em>respond to</em> — ambos fijos, ninguno deducible.',
+    g3w1='<em>On behalf of</em> = en su lugar. <em>In behalf of</em> es otra forma, '
+         'más rara, y significa «en beneficio de».',
+    g3w2='<em>By means of</em> nombra el instrumento — un <em>using</em> formal.',
+    g4w1='Un efecto siempre es <em>on</em> algo, nunca <em>to</em>.',
+    g4w2='<em>Capable of</em>, y detrás va una forma en <em>-ing</em> o un '
+         'sustantivo — nunca un infinitivo.',
 
     resPerfect='Puntuación perfecta. Formas compuestas, colocaciones y agentes dobles: todo controlado.',
     resStrong='Muy bien. Vuelve a las diapositivas de colocaciones; ahí suele irse el último punto.',

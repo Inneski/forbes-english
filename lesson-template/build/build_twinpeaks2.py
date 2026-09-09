@@ -88,41 +88,31 @@ MC = [
     dict(stem='The agent was determined to solve the case, ____ the risk to his own life.',
          options=['although', 'despite', 'because of', 'in spite'],
          correct=1,
-         why='<em>Despite</em> + noun phrase. <em>Although</em> needs a clause, '
-             '<em>because of</em> reverses the logic, and <em>in spite</em> is '
-             'incomplete — it must be <em>in spite of</em>.'),
+         why='q1w'),
     dict(stem='The outcome of the investigation depended entirely ____ one witness.',
          options=['from', 'of', 'on', 'at'],
          correct=2,
-         why='<em>Depend on</em> is fixed. There is no rule behind it — the other '
-             'three are simply not English here.'),
+         why='q2w'),
     dict(stem='She had not spoken a word ____ the night of the murder.',
          options=['since', 'after', 'from', 'during'],
          correct=0,
-         why='<em>Since</em> marks a starting point that reaches the present. '
-             '<em>After</em> would need a finished period, and <em>from</em> needs '
-             '<em>to</em> to close it.'),
+         why='q3w'),
     dict(stem='Cooper was well aware ____ the dangers that waited beyond the curtain.',
          options=['about', 'for', 'with', 'of'],
          correct=3,
-         why='<em>Aware of</em>, always. <em>Aware about</em> is the single '
-             'commonest error on this adjective.'),
+         why='q4w'),
     dict(stem='____ the evidence gathered, a pattern began to emerge.',
          options=['Despite of', 'On the basis of', 'In the event of', 'Due to'],
          correct=1,
-         why='<em>On the basis of</em> introduces reasoning from evidence. '
-             '<em>Despite of</em> is not English at all.'),
+         why='q5w'),
     dict(stem='The man ____ the black jacket had been standing there all night.',
          options=['on', 'in', 'with', 'wearing'],
          correct=1,
-         why='Clothing worn takes <em>in</em>. <em>With</em> is for what someone '
-             'carries; <em>wearing</em> is a participle, not a preposition.'),
+         why='q6w'),
     dict(stem='The trauma resulted ____ years of repressed memory.',
          options=['in', 'of', 'by', 'from'],
          correct=3,
-         why='The trauma is the <em>cause</em>, so the memory results '
-             '<em>from</em> it. <em>Result in</em> would point the arrow the '
-             'other way.'),
+         why='q7w'),
     dict(stem='Which is the better choice for formal academic writing?',
          # The key must not be the longest option — a learner can score on
          # length alone, and check-lesson.js measures it. The informal
@@ -136,20 +126,15 @@ MC = [
          # Options are shuffled at runtime, so an explanation may never say
          # "the first two" — by the time a learner reads it, the order has
          # changed. Name the forms instead.
-         why='<em>from which</em> and <em>come from</em> are both correct '
-             'English; only the pied-piped <em>from which</em> suits a formal '
-             'register. Stranding is never wrong — it is just less formal. '
-             '<em>what</em> and <em>had came</em> are simply errors.'),
+         why='q8w'),
     dict(stem='The sheriff was found guilty ____ withholding evidence.',
          options=['for', 'about', 'of', 'in'],
          correct=2,
-         why='<em>Guilty of</em> the offence. <em>Guilty for</em> is a common '
-             'transfer error and is not English.'),
+         why='q9w'),
     dict(stem='____ Cooper, every agent who entered the Lodge lost their mind.',
          options=['Besides from', 'Except to', 'Outside of', 'Apart from'],
          correct=3,
-         why='<em>Apart from</em> = excluding. <em>Besides from</em> and '
-             '<em>except to</em> do not exist; <em>outside of</em> is spatial.'),
+         why='q10w'),
 ]
 
 # ── the Black Lodge: 11 blanks over four slides ────────────────────────
@@ -159,29 +144,26 @@ MC = [
 GAP = [
     [('The discovery of the body resulted ______ a full federal investigation. '
       '(event &rarr; consequence)', ['in'],
-      'The discovery is the cause, so it results <em>in</em> the investigation.'),
+      'g1w1'),
      ('______ ______ ______ the fog, Cooper pressed on toward the cabin. '
       '(three words, = despite)', ['in', 'spite', 'of'],
-      '<em>In spite of</em>. Note there is no such form as <em>despite of</em>.')],
+      'g1w2')],
     [('She had been obsessed ______ the case ever ______ the first victim was found.',
       ['with', 'since'],
-      '<em>Obsessed with</em> for a person; <em>since</em> + clause for the '
-      'starting point.'),
+      'g2w1'),
      ('He was aware ______ being watched, and he responded ______ this by leaving '
       'a false trail.', ['of', 'to'],
-      '<em>Aware of</em> and <em>respond to</em> — both fixed, neither derivable.')],
+      'g2w2')],
     [('The log lady spoke ______ ______ ______ those who could not speak for '
       'themselves. (three words, = representing)', ['on', 'behalf', 'of'],
-      '<em>On behalf of</em> = in their place. <em>In behalf of</em> is a '
-      'different, rarer form meaning "for the benefit of".'),
+      'g3w1'),
      ('______ ______ ______ a series of coded messages, the killer revealed their '
       'location. (three words, = using)', ['by', 'means', 'of'],
-      '<em>By means of</em> names the instrument — a formal <em>using</em>.')],
+      'g3w2')],
     [('The effect ______ the town was devastating.', ['on'],
-      'An effect is always <em>on</em> something, never <em>to</em>.'),
+      'g4w1'),
      ('Nobody was capable ______ trust anymore.', ['of'],
-      '<em>Capable of</em>, and it takes an <em>-ing</em> form or a noun after '
-      'it — never an infinitive.')],
+      'g4w2')],
 ]
 
 # ── crime scene: four right, four wrong ────────────────────────────────
@@ -275,18 +257,19 @@ def build():
     ] + [
         # ── stage 7 · crime scene analysis ─────────────────────────────
         divider(7, 'hero.jpg'),
-        D.sort_slide(['Correct', 'Incorrect'], SORT_ITEMS,
+        D.sort_slide([E['binOk'], E['binBad']], SORT_ITEMS,
                      'e7', E['e7'], 'sortT', E['sortT'],
-                     'sortHint', E['sortHint'], E['sortWhy'],
+                     'sortHint', E['sortHint'], 'sortWhy',
+                     bin_keys=['binOk', 'binBad'],
                      folder=F, bg='hero.jpg'),
 
         # ── stage 8 · red room connections ─────────────────────────────
         divider(8, 'red-room.jpg'),
         D.match(MATCH_A, 'e8', E['e8'], 'matchT', E['matchT'],
-                'matchHint', E['matchHint'], E['matchWhy'],
+                'matchHint', E['matchHint'], 'matchWhy',
                 folder=F, bg='red-room.jpg'),
         D.match(MATCH_B, 'e8', E['e8'], 'matchT2', E['matchT2'],
-                'matchHint', E['matchHint'], E['matchWhy'],
+                'matchHint', E['matchHint'], 'matchWhy',
                 folder=F, bg='red-room.jpg'),
 
         # ── results, then activation ───────────────────────────────────
