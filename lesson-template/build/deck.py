@@ -207,7 +207,7 @@ def teach(eyebrow_key, eyebrow, title_key, title, cards, cols=None, folder='', b
 
 
 def mc(i, total, q, eyebrow_key, eyebrow, title_key, title, folder='', bg=None,
-       ctx=None, explains=None):
+       ctx=None, explains=None, ctx_key=None, stem_key=None):
     """explains: optional list, one per option, of why THAT option is wrong.
 
     Without it the slide carries a single explanation, so a learner who picks
@@ -220,6 +220,20 @@ def mc(i, total, q, eyebrow_key, eyebrow, title_key, title, folder='', bg=None,
     Added in d11d5e1, removed by 807e19c on a stale base, restored here.
     Purely additive: a caller that does not pass it gets byte-identical
     output, and that is checked by rebuilding every deck.
+
+    ctx_key / stem_key: UI_I18N keys for the context line and the stem, so
+    either can translate. Neither could before, which is fine on a grammar
+    deck — HOUSE-STYLE §8 keeps the sentence under test in English — but not
+    on a vocabulary deck at A2, where the *situation* is scaffolding the
+    learner has to read before the item is answerable at all. Innes,
+    2026-09-09, on The Square: "Nothing has been translated."
+
+    The split that resolves it, and the reason both keys exist separately:
+    put the situation in `ctx` WITH a key so it translates, and leave the one
+    sentence carrying the blank as the stem WITHOUT one, because the learner
+    is completing an English sentence out of English options. A stem with no
+    blank in it — "Which sentence is correct English?" — takes a stem_key and
+    translates whole.
     """
     if explains is not None and len(explains) != len(q['options']):
         raise AssertionError(
@@ -240,7 +254,7 @@ def mc(i, total, q, eyebrow_key, eyebrow, title_key, title, folder='', bg=None,
         <h2 class="slide-title" data-i18n="%s">%s</h2>
       </div></div>
       <div class="slide-body">
-%s        <p class="q-stem">%s</p>
+%s        <p class="q-stem"%s>%s</p>
         <div class="opts">
           %s
         </div>
@@ -248,7 +262,9 @@ def mc(i, total, q, eyebrow_key, eyebrow, title_key, title, folder='', bg=None,
       </div>
     </section>
 ''' % (_bg(folder, bg), eyebrow_key, eyebrow, i, total, title_key, title,
-       ('        <p class="q-ctx">%s</p>\n' % ctx) if ctx else '',
+       ('        <p class="q-ctx"%s>%s</p>\n'
+        % (' data-i18n="%s"' % ctx_key if ctx_key else '', ctx)) if ctx else '',
+       ' data-i18n="%s"' % stem_key if stem_key else '',
        q['stem'], opts, esc(q['why']))
 
 
@@ -314,8 +330,26 @@ def gap(i, total, rows, bank, eyebrow_key, eyebrow, title_key, title,
 
 
 def match(pairs, eyebrow_key, eyebrow, title_key, title, hint_key, hint,
-          why, folder='', bg=None):
-    rows = "\n".join('        <div class="match-pair" data-term="%s" data-def="%s"></div>' % p
+          why, folder='', bg=None, glosses=None):
+    """pairs: list of (term, definition).
+
+    glosses: optional {lang: {term: translated_definition}}. The engine hangs
+    each one in a `.sup` under the definition button and shows only the one
+    matching the current language, so a ten-language deck costs one extra
+    line, not nine. It reads `data-def-<lang>`, which is why the attribute is
+    built from the language code here.
+
+    Only the definition side is glossed, and deliberately: the term is the
+    English word the slide exists to teach, and printing its translation
+    directly beneath it turns a matching task into a reading-off task."""
+    def _attrs(term, definition):
+        out = ' data-term="%s" data-def="%s"' % (esc(term), esc(definition))
+        for lang, table in sorted((glosses or {}).items()):
+            if table.get(term):
+                out += ' data-def-%s="%s"' % (lang, esc(table[term]))
+        return out
+
+    rows = "\n".join('        <div class="match-pair"%s></div>' % _attrs(*p)
                      for p in pairs)
     return '''
     <section class="slide" data-type="match"%s>
@@ -359,7 +393,8 @@ def order(items, eyebrow_key, eyebrow, title_key, title, hint_key, hint, why,
 
 
 def search(i, total, stem, items, eyebrow_key, eyebrow, title_key, title,
-           why, limit=20, folder='', bg=None, stop=None, take=None):
+           why, limit=20, folder='', bg=None, stop=None, take=None,
+           stem_key=None):
     """Timed identify-the-object hunt. items: list of (name, svg, is_key).
 
     The names ride on the buttons but the engine keeps them hidden until
@@ -381,7 +416,7 @@ def search(i, total, stem, items, eyebrow_key, eyebrow, title_key, title,
         <h2 class="slide-title" data-i18n="%s">%s</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">%s</p>
+        <p class="q-stem"%s>%s</p>
         <div class="search" data-limit="%d">
           %s
         </div>
@@ -391,8 +426,9 @@ def search(i, total, stem, items, eyebrow_key, eyebrow, title_key, title,
 ''' % (_bg(folder, bg),
        ' data-stop="%d"' % stop if stop else '',
        ' data-take="%s"' % take if take else '',
-       eyebrow_key, eyebrow, i, total, title_key, title, stem, limit, cells,
-       esc(why))
+       eyebrow_key, eyebrow, i, total, title_key, title,
+       ' data-i18n="%s"' % stem_key if stem_key else '',
+       stem, limit, cells, esc(why))
 
 
 def lock(code, stem, eyebrow_key, eyebrow, title_key, title, why,
@@ -513,7 +549,14 @@ def assemble(tpl_path, out_path, slides, palette, title, i18n_module, langs=('en
         if 0.2126 * f(rgb[0]) + 0.7152 * f(rgb[1]) + 0.0722 * f(rgb[2]) > 0.2:
             s = s.replace('<html lang="en">', '<html lang="en" data-theme="light">', 1)
 
-    open(out_path, 'w', encoding='utf-8').write(s)
+    # newline='' — NOT the default. Python's text mode translates '\n' to the
+    # platform separator, so on Innes's Windows machine every build rewrote
+    # the whole page as CRLF against an LF repo: `git diff` came back as
+    # ~4000 changed lines with no changed content, which is the exact symptom
+    # CLAUDE.md's "Working from Windows" note tells you to distrust. It was
+    # invisible on Linux, and invisible here too whenever tools/seo.py
+    # happened to rewrite the file afterwards.
+    open(out_path, 'w', encoding='utf-8', newline='').write(s)
     return s
 
 
@@ -523,7 +566,7 @@ def logo_from(tpl_path):
 
 
 def sort_slide(bins, items, eyebrow_key, eyebrow, title_key, title, hint_key,
-               hint, why, folder='', bg=None):
+               hint, why, folder='', bg=None, bin_keys=None):
     """items: list of (text, bin_index). bins: list of labels.
 
     Guards the two ways a sorting task stops being a task: an item that
@@ -549,11 +592,17 @@ def sort_slide(bins, items, eyebrow_key, eyebrow, title_key, title, hint_key,
       </div></div>
       <div class="slide-body">
         <p class="order-hint" data-i18n="%s">%s</p>
-        <div class="sort" data-bins="%s">
+        <div class="sort" data-bins="%s"%s>
           %s
         </div>
         <p class="feedback" data-explain="%s"></p>
       </div>
     </section>
 ''' % (_bg(folder, bg), eyebrow_key, eyebrow, title_key, title, hint_key, hint,
-       " | ".join(bins), chips, esc(why))
+       " | ".join(bins),
+       # bin_keys: one UI_I18N key per bin, so the labels translate. Without
+       # it the bins stay in whatever language `bins` was written in, which on
+       # a ten-language deck is two English words in the middle of a
+       # translated slide.
+       ' data-bins-i18n="%s"' % " | ".join(bin_keys) if bin_keys else '',
+       chips, esc(why))

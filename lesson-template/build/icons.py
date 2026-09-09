@@ -156,7 +156,7 @@ def contact_sheet(path='icons-sheet.svg', cols=6):
                    'font-family="monospace" text-anchor="middle">%s</text>'
                    % (x + 50, y + 114, name))
     out.append('</svg>')
-    open(path, 'w', encoding='utf-8').write('\n'.join(out))
+    open(path, 'w', encoding='utf-8', newline='').write('\n'.join(out))
     return path
 
 

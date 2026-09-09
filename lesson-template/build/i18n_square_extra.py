@@ -136,7 +136,7 @@ EXTRA['fr'] = dict(
              'puis pourquoi, puis quand.',
 
     searchT='Trouve-le avant la fin du chrono',
-    searchStem='Find the magnifying glass.',
+    searchStem='Trouve la <em>magnifying glass</em>.',
     searchWhy='Une <em>magnifying glass</em> est une lentille ronde avec un '
               "manche. La pièce est ronde aussi, mais elle n'a pas de manche.",
 
@@ -279,7 +279,7 @@ EXTRA['it'] = dict(
              'perché, poi quando.',
 
     searchT='Trovalo prima che scada il tempo',
-    searchStem='Find the magnifying glass.',
+    searchStem='Trova la <em>magnifying glass</em>.',
     searchWhy='Una <em>magnifying glass</em> è una lente rotonda con un manico. '
               'Anche la moneta è rotonda, ma non ha il manico.',
 
@@ -423,7 +423,7 @@ EXTRA['pt'] = dict(
              'para quê, e por fim quando.',
 
     searchT='Encontra-o antes de o relógio parar',
-    searchStem='Find the magnifying glass.',
+    searchStem='Encontra a <em>magnifying glass</em>.',
     searchWhy='Uma <em>magnifying glass</em> é uma lente redonda com cabo. A '
               'moeda também é redonda, mas não tem cabo.',
 
@@ -566,7 +566,7 @@ EXTRA['ru'] = dict(
              'что ты делаешь, затем зачем, затем когда.',
 
     searchT='Найди это, пока идут часы',
-    searchStem='Find the magnifying glass.',
+    searchStem='Найди <em>magnifying glass</em>.',
     searchWhy='<em>Magnifying glass</em> — круглая линза с ручкой. Монета тоже '
               'круглая, но ручки у неё нет.',
 
@@ -705,7 +705,7 @@ EXTRA['ar'] = dict(
              'ثم متى.',
 
     searchT='جِدْه قبل أن تتوقف الساعة',
-    searchStem='Find the magnifying glass.',
+    searchStem='جِد الـ<em>magnifying glass</em>.',
     searchWhy='الـ<em>magnifying glass</em> عدسة مستديرة لها مقبض. والعملة '
               'مستديرة أيضاً لكن بلا مقبض.',
 
@@ -838,7 +838,7 @@ EXTRA['zh'] = dict(
              '最后是什么时候。',
 
     searchT='在计时结束前找到它',
-    searchStem='Find the magnifying glass.',
+    searchStem='找出 <em>magnifying glass</em>。',
     searchWhy='<em>magnifying glass</em> 是带柄的圆形镜片。硬币也是圆的，'
               '但没有柄。',
 
@@ -972,7 +972,7 @@ EXTRA['ja'] = dict(
              '最後にいつ、の順です。',
 
     searchT='時間切れになる前に見つけて',
-    searchStem='Find the magnifying glass.',
+    searchStem='<em>magnifying glass</em> を見つけてください。',
     searchWhy='<em>magnifying glass</em> は柄のついた丸いレンズです。'
               'コインも丸いですが、柄がありません。',
 

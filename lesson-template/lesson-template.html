@@ -688,6 +688,23 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
    gloss, and no change to a single-line item anywhere else on the site. */
 .match-item:has(> .sup) { padding: 7px 14px; }
 .match-item > .sup { margin-top: 2px; font-size: 12.5px; line-height: 1.35; }
+/* A gloss shows only in its own language. The JS that builds these has always
+   described them as "hidden unless the root lang matches" — but the rule that
+   would do the hiding was never in this stylesheet, so every gloss rendered
+   all the time. With the two languages the feature shipped with that read as
+   a deliberate bilingual label and nobody looked twice; at ten it put nine
+   translations under every button and pushed the slide 16px off the canvas.
+   documentElement.lang is kept current by the switcher, so this is CSS. */
+.match-item > .sup { display: none; }
+:root[lang="de"] .match-item > .sup[data-lang="de"],
+:root[lang="es"] .match-item > .sup[data-lang="es"],
+:root[lang="fr"] .match-item > .sup[data-lang="fr"],
+:root[lang="it"] .match-item > .sup[data-lang="it"],
+:root[lang="pt"] .match-item > .sup[data-lang="pt"],
+:root[lang="ru"] .match-item > .sup[data-lang="ru"],
+:root[lang="ar"] .match-item > .sup[data-lang="ar"],
+:root[lang="zh"] .match-item > .sup[data-lang="zh"],
+:root[lang="ja"] .match-item > .sup[data-lang="ja"] { display: block; }
 .match-col:has(.match-item > .sup) { gap: 5px; }
 .match-grid:has(.match-item > .sup) { gap: 10px; }
 @keyframes shake { 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
@@ -1664,7 +1681,16 @@ slides.filter(s => s.dataset.type === 'match').forEach(slide => {
      data-def-es/-de renders exactly the button it rendered before. The gloss
      goes in a .sup, which is the site's existing mechanism - hidden unless
      the root lang matches, and stripped by bwNorm() so the EN/DE panel still
-     lists the English, not the English plus its own translation. */
+     lists the English, not the English plus its own translation.
+
+     Generalised 2026-09-09 from a hardcoded ['es','de'] to every code in
+     LANGS. The two-language version was written when two languages was the
+     maximum; a ten-language deck (The Square) then had a match slide that
+     translated into Spanish and German and silently stayed English in the
+     other seven. Nothing about the old markup changes - data-def-es and
+     data-def-de are still exactly what this reads for those two - so every
+     deck already generated keeps rendering as it did, and picks the other
+     eight up whenever it is next rebuilt. */
   const mk = (txt, cls, key, glosses) => {
     const b = document.createElement('button');
     b.className = 'match-item ' + cls;
@@ -1684,8 +1710,10 @@ slides.filter(s => s.dataset.type === 'match').forEach(slide => {
     });
     return b;
   };
-  const gl = (p, side) => [['es', 'ES', p.dataset[side + 'Es']],
-                           ['de', 'DE', p.dataset[side + 'De']]];
+  const gl = (p, side) => LANGS
+    .filter(l => l.code !== 'en')
+    .map(l => [l.code, l.code.toUpperCase(),
+               p.dataset[side + l.code[0].toUpperCase() + l.code.slice(1)]]);
   pairs.forEach(p => terms.appendChild(
     mk(p.dataset.term, 'term', p.dataset.term, gl(p, 'term'))));
   shuffled(pairs)
@@ -1886,6 +1914,7 @@ slides.filter(s => s.dataset.type === 'sort').forEach(slide => {
   const box = slide.querySelector('.sort');
   if (!box) return;
   const labels = (box.dataset.bins || '').split('|').map(x => x.trim());
+  const binKeys = (box.dataset.binsI18n || '').split('|').map(x => x.trim());
   const items = [...box.querySelectorAll('.sort-item')];
   if (labels.length < 2 || !items.length) return;
 
@@ -1902,6 +1931,13 @@ slides.filter(s => s.dataset.type === 'sort').forEach(slide => {
     const h = document.createElement('div');
     h.className = 'sort-bin-label';
     h.textContent = label;
+    /* Bin labels are chrome ("A thing" / "An action"), not the language under
+       test, so they should translate — and could not, because data-bins is a
+       plain string baked into the markup. An optional data-bins-i18n carries
+       one UI_I18N key per bin; the label then joins the normal [data-i18n]
+       pass and follows the switcher like everything else. data-bins stays the
+       English, which is both the fallback and what the SORT gate reads. */
+    if (binKeys[i]) h.dataset.i18n = binKeys[i];
     const body = document.createElement('div');
     body.className = 'sort-bin-items';
     bin.append(h, body);

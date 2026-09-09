@@ -12,6 +12,69 @@ stale copy.
 
 ---
 
+## 2026-09-09 — The Square, second pass: what "translated" means on a vocabulary deck, and three template bugs it found
+
+Innes, on the first multiple choice: *"They are not translated e.g. She put her
+arm out to take the coin from the table. She ____ for it. Nothing has been
+translated."* He was right, and HOUSE-STYLE §8 was the reason — its list of
+what stays English (stems, options, gap sentences) was written for grammar
+decks, where the stem **is** the item under test. At A2 the stem is usually a
+*situation*, and a learner who cannot read it cannot reach the question.
+
+**Where the line now falls, and it is worth reusing.** The one sentence
+carrying the blank stays English. Everything wrapped around it translates:
+
+| translates | stays English |
+|---|---|
+| the context lead-in (`ctx`) | the sentence with the blank in it |
+| every explanation (`data-explain` as a key) | the options |
+| the gap lead-in, the instructions | the gap answers and their word bank |
+| the match definitions | the match terms |
+| the sort bin labels | the sort chips, the order chunks |
+| the search instruction | the search object names |
+| the teach-card definitions | the headwords and example sentences |
+
+Translating the stem too was the option not taken: it turns the gap-fills into
+translation drills and leaves English options answering a German sentence.
+
+**`data-explain` now carries UI_I18N keys, not sentences.** §8 already said a
+key is the better choice on a multi-language deck; at ten it is the only one.
+Nothing in the repo did this before — every deck in the library, this one's
+first pass included, has explanations that stay English in every language.
+Worth doing on the next deck that ships more than English.
+
+### Three bugs in shared code, all found by turning the language switcher
+
+1. **`deck.assemble()` wrote CRLF on Windows.** `open(out, 'w')` in text mode,
+   so every build on Innes's machine rewrote the whole page as CRLF against an
+   LF repo — `git diff` came back as ~4000 changed lines with no changed
+   content, which is exactly what CLAUDE.md's Windows note tells you to
+   distrust. Invisible on Linux, and invisible here whenever `seo.py`
+   happened to rewrite the file afterwards. Fixed with `newline=''`; the same
+   fix went into `icons.py`. `tools/seo.py` already had it, which is why the
+   first commit of this lesson looked clean.
+
+2. **The match slide's gloss mechanism never hid anything.** The JS has
+   described `.sup` as "hidden unless the root lang matches" since it was
+   written, but the CSS rule doing the hiding was not in the stylesheet. With
+   the two languages it shipped with, both glosses rendering read as a
+   deliberate bilingual label and nobody looked twice. At ten it put nine
+   translations under every button and pushed the slide 16px off the canvas.
+   Now nine `:root[lang=…]` rules in the template.
+
+3. **Match glosses were hardcoded to `['es','de']`**, so seven languages got
+   nothing. Now generated from `LANGS`. Old markup is unchanged —
+   `data-def-es` / `data-def-de` still read exactly as before — so every
+   already-generated deck renders as it did and picks the rest up when next
+   rebuilt.
+
+Also additive in `deck.py`: `mc(ctx_key=, stem_key=)`, `search(stem_key=)`,
+`sort_slide(bin_keys=)` and `match(glosses=)`. Verified additive by rebuilding
+`twin_peaks_prepositions_v5.html` and diffing — zero drift in the slide
+markup, and that rebuild was then discarded.
+
+---
+
 ## 2026-09-09 — The Square (A2): 44 words, ten languages, and where a chat attachment actually lives
 
 `forbes-english-the-square-a2.html`, 24 slides, light theme, all ten languages

@@ -18,6 +18,7 @@ import json, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from chrome_i18n import CHROME
 from i18n_square_extra import EXTRA, TAIL_EXTRA
+from i18n_square_q import Q, M_DEFS          # noqa: F401  (M_DEFS: builder)
 
 LIFT = ['btnStart', 'btnCheck', 'btnNext', 'btnRestart', 'scoreLabel', 'slideOf',
         'fbCorrect', 'fbWrong', 'fbAnswer', 'resNext', 'actEyebrow',
@@ -294,7 +295,7 @@ T['de'] = dict(
              'dann warum, dann wann.',
 
     searchT='Finde es, bevor die Uhr abläuft',
-    searchStem='Find the magnifying glass.',
+    searchStem='Finde die <em>magnifying glass</em>.',
     searchWhy='Eine <em>magnifying glass</em> ist eine runde Linse mit Griff. '
               'Die Münze ist auch rund, hat aber keinen Griff.',
 
@@ -439,7 +440,7 @@ T['es'] = dict(
              'luego para qué, y al final cuándo.',
 
     searchT='Encuéntralo antes de que pare el reloj',
-    searchStem='Find the magnifying glass.',
+    searchStem='Encuentra la <em>magnifying glass</em>.',
     searchWhy='Una <em>magnifying glass</em> es una lente redonda con mango. La '
               'moneda también es redonda, pero no tiene mango.',
 
@@ -471,6 +472,8 @@ T['es'] = dict(
 
 T.update(EXTRA)
 TAIL.update(TAIL_EXTRA)
+for _c, _q in Q.items():                    # the question side, all ten
+    T[_c].update(_q)
 
 
 def render(code):

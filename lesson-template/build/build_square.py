@@ -130,73 +130,60 @@ def cards(n, stage, entries):
 # ── four multiple-choice items ─────────────────────────────────────────
 # The key is at a different index each time and is never the only longest
 # option — deck.py asserts it and check-lesson.js measures it again.
+#
+# `ctx` is the situation and translates; `stem` is the sentence carrying the
+# blank and does not. Q3 has no blank in its stem, so the stem itself takes a
+# key and translates whole. `why` is a UI_I18N key rather than a sentence —
+# HOUSE-STYLE §8 says a key is the better choice on a deck that ships more
+# than one language, and at ten it is the only choice.
 MC = [
-    dict(stem='She put her arm out to take the coin from the table. She ____ for it.',
+    dict(ctx='q1c', stem='She ____ for it.',
          options=['reached', 'scratched', 'whistled', 'deserted'],
-         correct=0,
-         why='<em>Reach</em> is putting your arm out towards something. '
-             '<em>Scratch</em> marks a surface, <em>whistle</em> makes a sound, '
-             'and <em>desert</em> means to leave someone behind.'),
-    dict(stem='His friends still needed him, but he walked away and never came '
-              'back. He ____ them.',
+         correct=0, why='q1x'),
+    dict(ctx='q2c', stem='He ____ them.',
          options=['finished', 'started', 'deserted', 'reached'],
-         correct=2,
-         why='To <em>desert</em> people is to leave them when they still need '
-             'you. Watch the stress: de-<em>SERT</em> is this verb; '
-             '<em>DE</em>-sert is the dry, sandy place.'),
-    dict(stem='Which sentence is correct English?',
+         correct=2, why='q2x'),
+    dict(ctx=None, stem_key='q3s', stem=E['q3s'],
          options=['I have a lot of homework tonight.',
                   'I have a lot of homeworks tonight.',
                   'I have got many homework tonight.',
                   'I have got two homeworks tonight.'],
-         correct=0,
-         why='<em>Homework</em> has no plural, so <em>homeworks</em> does not '
-             'exist and <em>many</em> and <em>two</em> cannot go in front of it. '
-             'Use <em>a lot of</em> or <em>much</em>.'),
-    dict(stem='It comes out every day, on big sheets of paper, and it is full of '
-              "today's news. It is a ____.",
+         correct=0, why='q3x'),
+    dict(ctx='q4c', stem='It is a ____.',
          options=['newspaper', 'magazine', 'board game', 'homework'],
-         correct=0,
-         why='A <em>newspaper</em> is daily news on big sheets. A '
-             '<em>magazine</em> is thinner, has far more pictures, and comes '
-             'out every week or every month.'),
+         correct=0, why='q4x'),
 ]
 
 # ── two gap-fill slides ────────────────────────────────────────────────
-# Every row explains itself; the bank is sorted so that it is not an answer
-# key in gap order — deck.py asserts that too.
+# The sentences stay English: the learner is completing an English sentence
+# out of an English word bank, and a German frame around an English answer is
+# a translation drill, not this exercise. What translates is the lead-in
+# (g1h/g2h) and every row's explanation.
+#
+# The bank is sorted so that it is not an answer key in gap order — deck.py
+# asserts that too.
 GAP = [
     ([('The sign on the door says PUSH, so do not ______ it — move it away from you.',
-       ['pull'],
-       '<em>Push</em> is away from you; <em>pull</em> is towards you. The sign '
-       'tells you which one.'),
+       ['pull'], 'g1x1'),
       ('He keeps his money in his ______, not in his bag.',
-       ['pocket'],
-       'A <em>pocket</em> is sewn into your clothes. A <em>bag</em> is a '
-       'separate container you carry.'),
+       ['pocket'], 'g1x2'),
       ('The writing was tiny, so she looked at it through a ______ ______.',
-       ['magnifying', 'glass'],
-       'A <em>magnifying glass</em> is a lens with a handle that makes small '
-       'things look big.')],
-     ['glass', 'magnifying', 'pocket', 'pull']),
+       ['magnifying', 'glass'], 'g1x3')],
+     ['glass', 'magnifying', 'pocket', 'pull'], 'g1h'),
     ([('______ I walk to school, but not every day.',
-       ['sometimes'],
-       '<em>Sometimes</em> means occasionally — some days yes, some days no.'),
+       ['sometimes'], 'g2x1'),
       ('My friends arrived late. ______ had missed the bus.',
-       ['they'],
-       '<em>They</em> stands for two or more people you have already named.'),
+       ['they'], 'g2x2'),
       ('That is not ______ — it is false.',
-       ['true'],
-       '<em>True</em> agrees with the facts; <em>false</em> does not.')],
-     ['they', 'true', 'sometimes', 'false']),
+       ['true'], 'g2x3')],
+     ['they', 'true', 'sometimes', 'false'], 'g2h'),
 ]
 
-MATCH = [
-    ('whistle', 'make a high sound with your lips'),
-    ('scratch', 'mark a surface with something sharp'),
-    ('build', 'put parts together to make a house'),
-    ('rug', 'a small, thick cloth on the floor'),
-]
+# The English definition is the button text; I.M_DEFS carries the other nine
+# as data-def-<lang>. The term side is never glossed — see deck.match().
+MATCH = [(term, I.M_DEFS['en'][term])
+         for term in ('whistle', 'scratch', 'build', 'rug')]
+MATCH_GLOSS = {c: d for c, d in I.M_DEFS.items() if c != 'en'}
 
 # Nouns and verbs only, and only words that cannot be read as both — a
 # vocabulary sort whose items are ambiguous tests nerve, not knowledge.
@@ -231,28 +218,32 @@ def build():
         + [cards(n, stage, entries) for n, stage, entries in WORDS]
 
         + [D.mc(i + 1, n_mc, q, 'e4', E['e4'], 'q%dt' % (i + 1),
-                E['q%dt' % (i + 1)], folder=F)
+                E['q%dt' % (i + 1)], folder=F,
+                ctx=E[q['ctx']] if q['ctx'] else None, ctx_key=q['ctx'],
+                stem_key=q.get('stem_key'))
            for i, q in enumerate(MC)]
 
         + [D.gap(i + 1, n_gap, rows, bank, 'e4', E['e4'],
                  'g%dt' % (i + 1), E['g%dt' % (i + 1)], folder=F,
-                 hint=E['gapHint'], hint_key='gapHint', width=150)
-           for i, (rows, bank) in enumerate(GAP)]
+                 hint=E[hint], hint_key=hint, width=150)
+           for i, (rows, bank, hint) in enumerate(GAP)]
 
         + [D.match(MATCH, 'e4', E['e4'], 'matchT', E['matchT'],
-                   'matchHint', E['matchHint'], E['matchWhy'], folder=F),
+                   'matchHint', E['matchHint'], 'matchWhy', folder=F,
+                   glosses=MATCH_GLOSS),
 
-           D.sort_slide(['A thing', 'An action'], SORT_ITEMS,
+           D.sort_slide([E['sortBinA'], E['sortBinB']], SORT_ITEMS,
                         'e4', E['e4'], 'sortT', E['sortT'],
-                        'sortHint', E['sortHint'], E['sortWhy'], folder=F),
+                        'sortHint', E['sortHint'], 'sortWhy', folder=F,
+                        bin_keys=['sortBinA', 'sortBinB']),
 
            D.order(ORDER, 'e4', E['e4'], 'orderT', E['orderT'],
-                   'orderHint', E['orderHint'], E['orderWhy'], folder=F),
+                   'orderHint', E['orderHint'], 'orderWhy', folder=F),
 
            D.search(1, 1, E['searchStem'],
                     [(name, ICO.icon(key), is_key) for name, key, is_key in SEARCH],
-                    'e4', E['e4'], 'searchT', E['searchT'], E['searchWhy'],
-                    limit=25, folder=F),
+                    'e4', E['e4'], 'searchT', E['searchT'], 'searchWhy',
+                    limit=25, folder=F, stem_key='searchStem'),
 
            D.results(folder=F),
 

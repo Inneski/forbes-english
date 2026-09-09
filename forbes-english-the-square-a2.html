@@ -695,6 +695,23 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
    gloss, and no change to a single-line item anywhere else on the site. */
 .match-item:has(> .sup) { padding: 7px 14px; }
 .match-item > .sup { margin-top: 2px; font-size: 12.5px; line-height: 1.35; }
+/* A gloss shows only in its own language. The JS that builds these has always
+   described them as "hidden unless the root lang matches" — but the rule that
+   would do the hiding was never in this stylesheet, so every gloss rendered
+   all the time. With the two languages the feature shipped with that read as
+   a deliberate bilingual label and nobody looked twice; at ten it put nine
+   translations under every button and pushed the slide 16px off the canvas.
+   documentElement.lang is kept current by the switcher, so this is CSS. */
+.match-item > .sup { display: none; }
+:root[lang="de"] .match-item > .sup[data-lang="de"],
+:root[lang="es"] .match-item > .sup[data-lang="es"],
+:root[lang="fr"] .match-item > .sup[data-lang="fr"],
+:root[lang="it"] .match-item > .sup[data-lang="it"],
+:root[lang="pt"] .match-item > .sup[data-lang="pt"],
+:root[lang="ru"] .match-item > .sup[data-lang="ru"],
+:root[lang="ar"] .match-item > .sup[data-lang="ar"],
+:root[lang="zh"] .match-item > .sup[data-lang="zh"],
+:root[lang="ja"] .match-item > .sup[data-lang="ja"] { display: block; }
 .match-col:has(.match-item > .sup) { gap: 5px; }
 .match-grid:has(.match-item > .sup) { gap: 10px; }
 @keyframes shake { 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
@@ -1494,14 +1511,15 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
         <h2 class="slide-title" data-i18n="q1t">Her arm went out</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">She put her arm out to take the coin from the table. She ____ for it.</p>
+        <p class="q-ctx" data-i18n="q1c">She put her arm out to take the coin from the table.</p>
+        <p class="q-stem">She ____ for it.</p>
         <div class="opts">
           <button class="opt" data-correct>reached</button>
           <button class="opt">scratched</button>
           <button class="opt">whistled</button>
           <button class="opt">deserted</button>
         </div>
-        <p class="feedback" data-explain="<em>Reach</em> is putting your arm out towards something. <em>Scratch</em> marks a surface, <em>whistle</em> makes a sound, and <em>desert</em> means to leave someone behind."></p>
+        <p class="feedback" data-explain="q1x"></p>
       </div>
     </section>
 
@@ -1511,14 +1529,15 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
         <h2 class="slide-title" data-i18n="q2t">He walked away</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">His friends still needed him, but he walked away and never came back. He ____ them.</p>
+        <p class="q-ctx" data-i18n="q2c">His friends still needed him, but he walked away and never came back.</p>
+        <p class="q-stem">He ____ them.</p>
         <div class="opts">
           <button class="opt">finished</button>
           <button class="opt">started</button>
           <button class="opt" data-correct>deserted</button>
           <button class="opt">reached</button>
         </div>
-        <p class="feedback" data-explain="To <em>desert</em> people is to leave them when they still need you. Watch the stress: de-<em>SERT</em> is this verb; <em>DE</em>-sert is the dry, sandy place."></p>
+        <p class="feedback" data-explain="q2x"></p>
       </div>
     </section>
 
@@ -1528,14 +1547,14 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
         <h2 class="slide-title" data-i18n="q3t">One word, no plural</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">Which sentence is correct English?</p>
+        <p class="q-stem" data-i18n="q3s">Which sentence is correct English?</p>
         <div class="opts">
           <button class="opt" data-correct>I have a lot of homework tonight.</button>
           <button class="opt">I have a lot of homeworks tonight.</button>
           <button class="opt">I have got many homework tonight.</button>
           <button class="opt">I have got two homeworks tonight.</button>
         </div>
-        <p class="feedback" data-explain="<em>Homework</em> has no plural, so <em>homeworks</em> does not exist and <em>many</em> and <em>two</em> cannot go in front of it. Use <em>a lot of</em> or <em>much</em>."></p>
+        <p class="feedback" data-explain="q3x"></p>
       </div>
     </section>
 
@@ -1545,14 +1564,15 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
         <h2 class="slide-title" data-i18n="q4t">Every day, or every month?</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">It comes out every day, on big sheets of paper, and it is full of today's news. It is a ____.</p>
+        <p class="q-ctx" data-i18n="q4c">It comes out every day, on big sheets of paper, and it is full of today's news.</p>
+        <p class="q-stem">It is a ____.</p>
         <div class="opts">
           <button class="opt" data-correct>newspaper</button>
           <button class="opt">magazine</button>
           <button class="opt">board game</button>
           <button class="opt">homework</button>
         </div>
-        <p class="feedback" data-explain="A <em>newspaper</em> is daily news on big sheets. A <em>magazine</em> is thinner, has far more pictures, and comes out every week or every month."></p>
+        <p class="feedback" data-explain="q4x"></p>
       </div>
     </section>
 
@@ -1566,18 +1586,18 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
           <span class="act-target-label" data-i18n="bankLabel">Word bank:</span>
           <span class="bank-chip">glass</span> <span class="bank-chip">magnifying</span> <span class="bank-chip">pocket</span> <span class="bank-chip">pull</span>
         </div>
-        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="gapHint">Type one word in each space.</p>
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="g1h">One word in each space. The sentences stay in English — the words you need are in the bank above.</p>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">The sign on the door says PUSH, so do not <input class="gap" data-answer="pull" aria-label="gap" style="width:150px"> it — move it away from you.</p>
-          <p class="feedback" data-explain="<em>Push</em> is away from you; <em>pull</em> is towards you. The sign tells you which one."></p>
+          <p class="feedback" data-explain="g1x1"></p>
         </div>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">He keeps his money in his <input class="gap" data-answer="pocket" aria-label="gap" style="width:150px">, not in his bag.</p>
-          <p class="feedback" data-explain="A <em>pocket</em> is sewn into your clothes. A <em>bag</em> is a separate container you carry."></p>
+          <p class="feedback" data-explain="g1x2"></p>
         </div>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">The writing was tiny, so she looked at it through a <input class="gap" data-answer="magnifying" aria-label="gap" style="width:150px"> <input class="gap" data-answer="glass" aria-label="gap" style="width:150px">.</p>
-          <p class="feedback" data-explain="A <em>magnifying glass</em> is a lens with a handle that makes small things look big."></p>
+          <p class="feedback" data-explain="g1x3"></p>
         </div>
         <div style="margin-top:10px">
           <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
@@ -1595,18 +1615,18 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
           <span class="act-target-label" data-i18n="bankLabel">Word bank:</span>
           <span class="bank-chip">they</span> <span class="bank-chip">true</span> <span class="bank-chip">sometimes</span> <span class="bank-chip">false</span>
         </div>
-        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="gapHint">Type one word in each space.</p>
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="g2h">One word in each space. Two of these are among the smallest words in the lesson.</p>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px"><input class="gap" data-answer="sometimes" aria-label="gap" style="width:150px"> I walk to school, but not every day.</p>
-          <p class="feedback" data-explain="<em>Sometimes</em> means occasionally — some days yes, some days no."></p>
+          <p class="feedback" data-explain="g2x1"></p>
         </div>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">My friends arrived late. <input class="gap" data-answer="they" aria-label="gap" style="width:150px"> had missed the bus.</p>
-          <p class="feedback" data-explain="<em>They</em> stands for two or more people you have already named."></p>
+          <p class="feedback" data-explain="g2x2"></p>
         </div>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">That is not <input class="gap" data-answer="true" aria-label="gap" style="width:150px"> — it is false.</p>
-          <p class="feedback" data-explain="<em>True</em> agrees with the facts; <em>false</em> does not."></p>
+          <p class="feedback" data-explain="g2x3"></p>
         </div>
         <div style="margin-top:10px">
           <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
@@ -1623,12 +1643,12 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
         <p class="prose dim" style="margin-bottom:14px;font-size:17px" data-i18n="matchHint">
           Click a word, then click what it means.
         </p>
-        <div class="match-pair" data-term="whistle" data-def="make a high sound with your lips"></div>
-        <div class="match-pair" data-term="scratch" data-def="mark a surface with something sharp"></div>
-        <div class="match-pair" data-term="build" data-def="put parts together to make a house"></div>
-        <div class="match-pair" data-term="rug" data-def="a small, thick cloth on the floor"></div>
+        <div class="match-pair" data-term="whistle" data-def="make a high sound with your lips" data-def-ar="إصدار صوت حادّ بالشفتين" data-def-de="mit den Lippen einen hohen Ton machen" data-def-es="hacer un sonido agudo con los labios" data-def-fr="faire un son aigu avec les lèvres" data-def-it="fare un suono acuto con le labbra" data-def-ja="くちびるで高く澄んだ音を出す" data-def-pt="fazer um som agudo com os lábios" data-def-ru="издать губами высокий звук" data-def-zh="用嘴唇发出又高又清的声音"></div>
+        <div class="match-pair" data-term="scratch" data-def="mark a surface with something sharp" data-def-ar="ترك أثر على سطح بشيء حادّ" data-def-de="eine Oberfläche mit etwas Spitzem markieren" data-def-es="marcar una superficie con algo puntiagudo" data-def-fr="marquer une surface avec quelque chose de pointu" data-def-it="segnare una superficie con qualcosa di appuntito" data-def-ja="とがったもので表面に跡をつける" data-def-pt="marcar uma superfície com algo pontiagudo" data-def-ru="оставить след на поверхности чем-то острым" data-def-zh="用尖的东西在表面留下痕迹"></div>
+        <div class="match-pair" data-term="build" data-def="put parts together to make a house" data-def-ar="ضمّ الأجزاء لبناء بيت" data-def-de="Teile zusammensetzen und ein Haus bauen" data-def-es="unir piezas para hacer una casa" data-def-fr="assembler des pièces pour faire une maison" data-def-it="mettere insieme dei pezzi per fare una casa" data-def-ja="部品を組み合わせて家を建てる" data-def-pt="juntar peças para fazer uma casa" data-def-ru="соединить части и построить дом" data-def-zh="把零件组合起来盖成房子"></div>
+        <div class="match-pair" data-term="rug" data-def="a small, thick cloth on the floor" data-def-ar="قطعة قماش صغيرة سميكة على الأرض" data-def-de="ein kleines, dickes Tuch auf dem Boden" data-def-es="una tela pequeña y gruesa sobre el suelo" data-def-fr="un petit tissu épais posé au sol" data-def-it="un panno piccolo e spesso sul pavimento" data-def-ja="床に置く小さくて厚い布" data-def-pt="um pano pequeno e grosso no chão" data-def-ru="небольшой плотный кусок ткани на полу" data-def-zh="铺在地上的一小块厚布"></div>
         <div class="match-grid"></div>
-        <p class="feedback" data-explain="Four verbs and one noun, all of them things you can see happening in the square."></p>
+        <p class="feedback" data-explain="matchWhy"></p>
       </div>
     </section>
 
@@ -1639,7 +1659,7 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
       </div></div>
       <div class="slide-body">
         <p class="order-hint" data-i18n="sortHint">Drop each word into the right box.</p>
-        <div class="sort" data-bins="A thing | An action">
+        <div class="sort" data-bins="A thing | An action" data-bins-i18n="sortBinA | sortBinB">
           <span class="sort-item" data-bin="0">window</span>
           <span class="sort-item" data-bin="0">coin</span>
           <span class="sort-item" data-bin="0">rug</span>
@@ -1649,7 +1669,7 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
           <span class="sort-item" data-bin="1">reach</span>
           <span class="sort-item" data-bin="1">know</span>
         </div>
-        <p class="feedback" data-explain="A thing is a noun — you can put <em>a</em> or <em>the</em> in front of it. An action is a verb — you can put <em>I</em> in front of it."></p>
+        <p class="feedback" data-explain="sortWhy"></p>
       </div>
     </section>
 
@@ -1664,7 +1684,7 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
         <div style="margin-top:12px">
           <button class="btn" data-action="check-order" data-i18n="btnCheck">Check</button>
         </div>
-        <p class="feedback" data-explain="<em>Sometimes</em> can open a sentence. Then what you do, then why you do it, then when."></p>
+        <p class="feedback" data-explain="orderWhy"></p>
       </div>
     </section>
 
@@ -1674,7 +1694,7 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
         <h2 class="slide-title" data-i18n="searchT">Find it before the clock stops</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">Find the magnifying glass.</p>
+        <p class="q-stem" data-i18n="searchStem">Find the magnifying glass.</p>
         <div class="search" data-limit="25">
           <button class="find" data-name="a window"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="22" y="18" width="56" height="58" rx="3"/><path d="M50 18 L50 76"/><path d="M22 47 L78 47"/><path d="M14 82 L86 82"/></svg></button>
           <button class="find" data-name="a door"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M28 12 L72 12 L72 88 L28 88 Z"/><path d="M37 21 L63 21 L63 45 L37 45 Z"/><circle cx="62" cy="63" r="3.5"/><path d="M18 88 L82 88"/></svg></button>
@@ -1685,7 +1705,7 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
           <button class="find" data-name="a piece of toast"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M28 88 L28 46 Q14 46 14 35 Q14 21 30 21 Q35 11 50 11 Q65 11 70 21 Q86 21 86 35 Q86 46 72 46 L72 88 Z"/><path d="M41 60 L59 60 L59 76 L41 76 Z"/></svg></button>
           <button class="find" data-name="a magnifying glass" data-correct><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="42" cy="42" r="26"/><path d="M61 61 L85 85"/><path d="M33 31 Q28 36 28 43"/></svg></button>
         </div>
-        <p class="feedback" data-explain="A <em>magnifying glass</em> is a round lens with a handle. The coin is round too, but it has no handle."></p>
+        <p class="feedback" data-explain="searchWhy"></p>
       </div>
     </section>
 
@@ -1811,8 +1831,16 @@ const UI_I18N = {
     fbAnswer: 'Answer:',
     fbCorrect: 'Correct.',
     fbWrong: 'Not quite.',
+    g1h: "One word in each space. The sentences stay in English — the words you need are in the bank above.",
     g1t: "In the square",
+    g1x1: "<em>Push</em> is away from you; <em>pull</em> is towards you. The sign tells you which one.",
+    g1x2: "A <em>pocket</em> is sewn into your clothes. A <em>bag</em> is a separate container you carry.",
+    g1x3: "A <em>magnifying glass</em> is a lens with a handle that makes small things look big.",
+    g2h: "One word in each space. Two of these are among the smallest words in the lesson.",
     g2t: "Not every day",
+    g2x1: "<em>Sometimes</em> means occasionally — some days yes, some days no.",
+    g2x2: "<em>They</em> stands for two or more people you have already named.",
+    g2x3: "<em>True</em> agrees with the facts; <em>false</em> does not.",
     gapHint: "Type one word in each space.",
     matchHint: "Click a word, then click what it means.",
     matchT: "Word and meaning",
@@ -1820,10 +1848,18 @@ const UI_I18N = {
     orderHint: "Click the parts in the right order.",
     orderT: "Build the sentence",
     orderWhy: "<em>Sometimes</em> can open a sentence. Then what you do, then why you do it, then when.",
+    q1c: "She put her arm out to take the coin from the table.",
     q1t: "Her arm went out",
+    q1x: "<em>Reach</em> is putting your arm out towards something. <em>Scratch</em> marks a surface, <em>whistle</em> makes a sound, and <em>desert</em> means to leave someone behind.",
+    q2c: "His friends still needed him, but he walked away and never came back.",
     q2t: "He walked away",
+    q2x: "To <em>desert</em> people is to leave them when they still need you. Watch the stress: de-<em>SERT</em> is this verb; <em>DE</em>-sert is the dry, sandy place.",
+    q3s: "Which sentence is correct English?",
     q3t: "One word, no plural",
+    q3x: "<em>Homework</em> has no plural, so <em>homeworks</em> does not exist and <em>many</em> and <em>two</em> cannot go in front of it. Use <em>a lot of</em> or <em>much</em>.",
+    q4c: "It comes out every day, on big sheets of paper, and it is full of today's news.",
     q4t: "Every day, or every month?",
+    q4x: "A <em>newspaper</em> is daily news on big sheets. A <em>magazine</em> is thinner, has far more pictures, and comes out every week or every month.",
     resLow: "Start again from the beginning and read each card out loud before you answer. These are words you meet every day.",
     resMid: "A good half. Read the four noun slides again, then try once more.",
     resNext: 'Recognising the language is half of it. Now produce it →',
@@ -1889,6 +1925,8 @@ const UI_I18N = {
     searchT: "Find it before the clock stops",
     searchWhy: "A <em>magnifying glass</em> is a round lens with a handle. The coin is round too, but it has no handle.",
     slideOf: (a,b)=>`${a} / ${b}`,
+    sortBinA: "A thing",
+    sortBinB: "An action",
     sortHint: "Drop each word into the right box.",
     sortT: "A thing, or an action?",
     sortWhy: "A thing is a noun — you can put <em>a</em> or <em>the</em> in front of it. An action is a verb — you can put <em>I</em> in front of it.",
@@ -1928,8 +1966,16 @@ const UI_I18N = {
     fbAnswer: 'Antwort:',
     fbCorrect: 'Richtig.',
     fbWrong: 'Nicht ganz.',
+    g1h: "Ein Wort pro Lücke. Die Sätze bleiben auf Englisch — die passenden Wörter stehen oben im Wortspeicher.",
     g1t: "Auf dem Platz",
+    g1x1: "<em>Push</em> ist von dir weg, <em>pull</em> ist zu dir hin. Das Schild sagt dir, welches gilt.",
+    g1x2: "Ein <em>pocket</em> ist in die Kleidung eingenäht. Eine <em>bag</em> ist ein eigener Behälter, den du trägst.",
+    g1x3: "Eine <em>magnifying glass</em> ist eine Linse mit Griff, die kleine Dinge groß erscheinen lässt.",
+    g2h: "Ein Wort pro Lücke. Zwei davon gehören zu den kleinsten Wörtern der Lektion.",
     g2t: "Nicht jeden Tag",
+    g2x1: "<em>Sometimes</em> heißt gelegentlich — an manchen Tagen ja, an anderen nicht.",
+    g2x2: "<em>They</em> steht für zwei oder mehr Personen, die du schon genannt hast.",
+    g2x3: "<em>True</em> stimmt mit den Tatsachen überein, <em>false</em> nicht.",
     gapHint: "Schreibe ein Wort in jede Lücke.",
     matchHint: "Klicke ein Wort an, dann seine Bedeutung.",
     matchT: "Wort und Bedeutung",
@@ -1937,10 +1983,18 @@ const UI_I18N = {
     orderHint: "Klicke die Teile in der richtigen Reihenfolge an.",
     orderT: "Bau den Satz",
     orderWhy: "<em>Sometimes</em> darf am Satzanfang stehen. Dann was du tust, dann warum, dann wann.",
+    q1c: "Sie streckte den Arm aus, um die Münze vom Tisch zu nehmen.",
     q1t: "Ihr Arm ging vor",
+    q1x: "<em>Reach</em> heißt, den Arm nach etwas ausstrecken. <em>Scratch</em> hinterlässt eine Spur, <em>whistle</em> macht ein Geräusch, und <em>desert</em> heißt, jemanden im Stich zu lassen.",
+    q2c: "Seine Freunde brauchten ihn noch, aber er ging weg und kam nie zurück.",
     q2t: "Er ging einfach weg",
+    q2x: "<em>Desert</em> heißt, Menschen zu verlassen, die dich noch brauchen. Achte auf die Betonung: de-<em>SERT</em> ist dieses Verb, <em>DE</em>-sert ist die trockene Sandwüste.",
+    q3s: "Welcher Satz ist korrektes Englisch?",
     q3t: "Ein Wort, kein Plural",
+    q3x: "<em>Homework</em> hat keinen Plural: <em>homeworks</em> gibt es nicht, und <em>many</em> oder <em>two</em> können nicht davorstehen. Nimm <em>a lot of</em> oder <em>much</em>.",
+    q4c: "Es erscheint jeden Tag, auf großen Papierbögen, und ist voll mit den Nachrichten von heute.",
     q4t: "Jeden Tag oder jeden Monat?",
+    q4x: "Ein <em>newspaper</em> bringt täglich Nachrichten auf großen Bögen. Ein <em>magazine</em> ist dünner, hat viel mehr Bilder und erscheint wöchentlich oder monatlich.",
     resLow: "Fang von vorne an und lies jede Karte laut vor, bevor du antwortest. Das sind Wörter, die dir täglich begegnen.",
     resMid: "Gut die Hälfte. Lies die vier Nomen-Folien noch einmal und versuch es dann erneut.",
     resNext: 'Die Sprache zu erkennen ist die halbe Miete. Jetzt anwenden →',
@@ -2002,10 +2056,12 @@ const UI_I18N = {
     s9db: "Ein Mann, der sich nicht an die Regeln hält — oft mit einem Lächeln gesagt.",
     s9t: "Wahr, falsch, schlecht",
     scoreLabel: 'Punkte',
-    searchStem: "Find the magnifying glass.",
+    searchStem: "Finde die <em>magnifying glass</em>.",
     searchT: "Finde es, bevor die Uhr abläuft",
     searchWhy: "Eine <em>magnifying glass</em> ist eine runde Linse mit Griff. Die Münze ist auch rund, hat aber keinen Griff.",
     slideOf: (a,b)=>`${a} / ${b}`,
+    sortBinA: "Ein Ding",
+    sortBinB: "Eine Handlung",
     sortHint: "Ziehe jedes Wort in das richtige Feld.",
     sortT: "Ein Ding oder eine Handlung?",
     sortWhy: "Ein Ding ist ein Nomen — man kann <em>a</em> oder <em>the</em> davorsetzen. Eine Handlung ist ein Verb — man kann <em>I</em> davorsetzen.",
@@ -2045,8 +2101,16 @@ const UI_I18N = {
     fbAnswer: 'Respuesta:',
     fbCorrect: 'Correcto.',
     fbWrong: 'No exactamente.',
+    g1h: "Una palabra por hueco. Las frases siguen en inglés — las palabras que necesitas están arriba, en el banco.",
     g1t: "En la plaza",
+    g1x1: "<em>Push</em> es lejos de ti; <em>pull</em> es hacia ti. El cartel te dice cuál.",
+    g1x2: "Un <em>pocket</em> va cosido a la ropa. Una <em>bag</em> es un recipiente aparte que llevas contigo.",
+    g1x3: "Una <em>magnifying glass</em> es una lente con mango que hace que las cosas pequeñas se vean grandes.",
+    g2h: "Una palabra por hueco. Dos de ellas están entre las palabras más pequeñas de la lección.",
     g2t: "No todos los días",
+    g2x1: "<em>Sometimes</em> significa de vez en cuando — unos días sí y otros no.",
+    g2x2: "<em>They</em> sustituye a dos o más personas que ya has nombrado.",
+    g2x3: "<em>True</em> concuerda con los hechos; <em>false</em> no.",
     gapHint: "Escribe una palabra en cada hueco.",
     matchHint: "Haz clic en una palabra y luego en lo que significa.",
     matchT: "Palabra y significado",
@@ -2054,10 +2118,18 @@ const UI_I18N = {
     orderHint: "Haz clic en las partes en el orden correcto.",
     orderT: "Construye la frase",
     orderWhy: "<em>Sometimes</em> puede abrir la frase. Después lo que haces, luego para qué, y al final cuándo.",
+    q1c: "Estiró el brazo para coger la moneda de la mesa.",
     q1t: "Su brazo se estiró",
+    q1x: "<em>Reach</em> es estirar el brazo hacia algo. <em>Scratch</em> deja una marca, <em>whistle</em> hace un sonido, y <em>desert</em> significa abandonar a alguien.",
+    q2c: "Sus amigos todavía lo necesitaban, pero se marchó y no volvió nunca.",
     q2t: "Se marchó sin más",
+    q2x: "<em>Desert</em> es dejar a gente que todavía te necesita. Fíjate en el acento: de-<em>SERT</em> es este verbo; <em>DE</em>-sert es el lugar seco y arenoso.",
+    q3s: "¿Qué frase es inglés correcto?",
     q3t: "Una palabra, sin plural",
+    q3x: "<em>Homework</em> no tiene plural: <em>homeworks</em> no existe, y <em>many</em> o <em>two</em> no pueden ir delante. Usa <em>a lot of</em> o <em>much</em>.",
+    q4c: "Sale todos los días, en hojas grandes de papel, y está lleno de las noticias de hoy.",
     q4t: "¿Cada día o cada mes?",
+    q4x: "Un <em>newspaper</em> trae noticias diarias en hojas grandes. Una <em>magazine</em> es más fina, tiene muchas más fotos y sale cada semana o cada mes.",
     resLow: "Empieza de nuevo y lee cada tarjeta en voz alta antes de responder. Son palabras que aparecen todos los días.",
     resMid: "Media buena. Lee otra vez las cuatro diapositivas de sustantivos y vuelve a intentarlo.",
     resNext: 'Reconocer el lenguaje es solo la mitad. Ahora prodúcelo →',
@@ -2119,10 +2191,12 @@ const UI_I18N = {
     s9db: "Un hombre que no sigue las reglas — se dice a menudo con una sonrisa.",
     s9t: "Verdadero, falso, malo",
     scoreLabel: 'Puntuación',
-    searchStem: "Find the magnifying glass.",
+    searchStem: "Encuentra la <em>magnifying glass</em>.",
     searchT: "Encuéntralo antes de que pare el reloj",
     searchWhy: "Una <em>magnifying glass</em> es una lente redonda con mango. La moneda también es redonda, pero no tiene mango.",
     slideOf: (a,b)=>`${a} / ${b}`,
+    sortBinA: "Una cosa",
+    sortBinB: "Una acción",
     sortHint: "Coloca cada palabra en la casilla correcta.",
     sortT: "¿Una cosa o una acción?",
     sortWhy: "Una cosa es un sustantivo — puedes poner <em>a</em> o <em>the</em> delante. Una acción es un verbo — puedes poner <em>I</em> delante.",
@@ -2162,8 +2236,16 @@ const UI_I18N = {
     fbAnswer: 'Réponse :',
     fbCorrect: 'Correct.',
     fbWrong: 'Pas tout à fait.',
+    g1h: "Un mot par espace. Les phrases restent en anglais — les mots dont tu as besoin sont dans la banque ci-dessus.",
     g1t: "Sur la place",
+    g1x1: "<em>Push</em>, c’est loin de toi ; <em>pull</em>, c’est vers toi. Le panneau te dit lequel.",
+    g1x2: "Un <em>pocket</em> est cousu dans les vêtements. Un <em>bag</em> est un contenant séparé que tu portes.",
+    g1x3: "Une <em>magnifying glass</em> est une lentille avec un manche qui fait paraître grandes les petites choses.",
+    g2h: "Un mot par espace. Deux d’entre eux comptent parmi les plus petits mots de la leçon.",
     g2t: "Pas tous les jours",
+    g2x1: "<em>Sometimes</em> veut dire de temps en temps — certains jours oui, d’autres non.",
+    g2x2: "<em>They</em> remplace deux personnes ou plus que tu as déjà nommées.",
+    g2x3: "<em>True</em> est conforme aux faits ; <em>false</em> ne l’est pas.",
     gapHint: "Écris un mot dans chaque espace.",
     matchHint: "Clique sur un mot, puis sur ce qu'il signifie.",
     matchT: "Mot et sens",
@@ -2171,10 +2253,18 @@ const UI_I18N = {
     orderHint: "Clique sur les parties dans le bon ordre.",
     orderT: "Construis la phrase",
     orderWhy: "<em>Sometimes</em> peut ouvrir la phrase. Ensuite ce que tu fais, puis pourquoi, puis quand.",
+    q1c: "Elle a tendu le bras pour prendre la pièce sur la table.",
     q1t: "Son bras s'est tendu",
+    q1x: "<em>Reach</em>, c’est tendre le bras vers quelque chose. <em>Scratch</em> laisse une marque, <em>whistle</em> fait un son, et <em>desert</em> veut dire abandonner quelqu’un.",
+    q2c: "Ses amis avaient encore besoin de lui, mais il est parti et n’est jamais revenu.",
     q2t: "Il est parti sans revenir",
+    q2x: "<em>Desert</em>, c’est quitter des gens qui ont encore besoin de toi. Attention à l’accent : de-<em>SERT</em> est ce verbe ; <em>DE</em>-sert est le lieu sec et sablonneux.",
+    q3s: "Quelle phrase est de l’anglais correct ?",
     q3t: "Un mot, pas de pluriel",
+    q3x: "<em>Homework</em> n’a pas de pluriel : <em>homeworks</em> n’existe pas, et <em>many</em> ou <em>two</em> ne peuvent pas le précéder. Utilise <em>a lot of</em> ou <em>much</em>.",
+    q4c: "Il paraît chaque jour, sur de grandes feuilles de papier, et il est plein des nouvelles du jour.",
     q4t: "Chaque jour, ou chaque mois ?",
+    q4x: "Un <em>newspaper</em> donne les nouvelles du jour sur de grandes feuilles. Un <em>magazine</em> est plus fin, a beaucoup plus d’images, et paraît chaque semaine ou chaque mois.",
     resLow: "Recommence depuis le début et lis chaque carte à voix haute avant de répondre. Ce sont des mots que tu croises tous les jours.",
     resMid: "Une bonne moitié. Relis les quatre diapositives de noms, puis réessaie.",
     resNext: 'Reconnaître la langue n’est que la moitié du travail. À vous de la produire →',
@@ -2236,10 +2326,12 @@ const UI_I18N = {
     s9db: "Un homme qui ne suit pas les règles — souvent dit avec un sourire.",
     s9t: "Vrai, faux, mauvais",
     scoreLabel: 'Score',
-    searchStem: "Find the magnifying glass.",
+    searchStem: "Trouve la <em>magnifying glass</em>.",
     searchT: "Trouve-le avant la fin du chrono",
     searchWhy: "Une <em>magnifying glass</em> est une lentille ronde avec un manche. La pièce est ronde aussi, mais elle n'a pas de manche.",
     slideOf: (a,b)=>`${a} / ${b}`,
+    sortBinA: "Une chose",
+    sortBinB: "Une action",
     sortHint: "Place chaque mot dans la bonne case.",
     sortT: "Une chose, ou une action ?",
     sortWhy: "Une chose est un nom — on peut mettre <em>a</em> ou <em>the</em> devant. Une action est un verbe — on peut mettre <em>I</em> devant.",
@@ -2279,8 +2371,16 @@ const UI_I18N = {
     fbAnswer: 'Risposta:',
     fbCorrect: 'Corretto.',
     fbWrong: 'Non proprio.',
+    g1h: "Una parola per spazio. Le frasi restano in inglese — le parole che ti servono sono nella banca qui sopra.",
     g1t: "In piazza",
+    g1x1: "<em>Push</em> è lontano da te; <em>pull</em> è verso di te. Il cartello ti dice quale.",
+    g1x2: "Un <em>pocket</em> è cucito nei vestiti. Una <em>bag</em> è un contenitore a parte che porti con te.",
+    g1x3: "Una <em>magnifying glass</em> è una lente con un manico che fa sembrare grandi le cose piccole.",
+    g2h: "Una parola per spazio. Due di queste sono fra le parole più piccole della lezione.",
     g2t: "Non tutti i giorni",
+    g2x1: "<em>Sometimes</em> vuol dire ogni tanto — certi giorni sì, certi no.",
+    g2x2: "<em>They</em> sta per due o più persone che hai già nominato.",
+    g2x3: "<em>True</em> è in accordo con i fatti; <em>false</em> no.",
     gapHint: "Scrivi una parola in ogni spazio.",
     matchHint: "Clicca una parola, poi il suo significato.",
     matchT: "Parola e significato",
@@ -2288,10 +2388,18 @@ const UI_I18N = {
     orderHint: "Clicca le parti nell'ordine giusto.",
     orderT: "Costruisci la frase",
     orderWhy: "<em>Sometimes</em> può aprire la frase. Poi quello che fai, poi perché, poi quando.",
+    q1c: "Ha allungato il braccio per prendere la moneta dal tavolo.",
     q1t: "Il suo braccio si è allungato",
+    q1x: "<em>Reach</em> vuol dire allungare il braccio verso qualcosa. <em>Scratch</em> lascia un segno, <em>whistle</em> fa un suono, e <em>desert</em> vuol dire abbandonare qualcuno.",
+    q2c: "I suoi amici avevano ancora bisogno di lui, ma se n’è andato e non è più tornato.",
     q2t: "Se n'è andato e basta",
+    q2x: "<em>Desert</em> vuol dire lasciare persone che hanno ancora bisogno di te. Attenzione all’accento: de-<em>SERT</em> è questo verbo; <em>DE</em>-sert è il luogo secco e sabbioso.",
+    q3s: "Quale frase è inglese corretto?",
     q3t: "Una parola, senza plurale",
+    q3x: "<em>Homework</em> non ha plurale: <em>homeworks</em> non esiste, e <em>many</em> o <em>two</em> non possono precederlo. Usa <em>a lot of</em> o <em>much</em>.",
+    q4c: "Esce ogni giorno, su grandi fogli di carta, ed è pieno delle notizie di oggi.",
     q4t: "Ogni giorno, o ogni mese?",
+    q4x: "Un <em>newspaper</em> porta le notizie del giorno su grandi fogli. Una <em>magazine</em> è più sottile, ha molte più immagini ed esce ogni settimana o ogni mese.",
     resLow: "Ricomincia dall'inizio e leggi ogni scheda ad alta voce prima di rispondere. Sono parole che incontri ogni giorno.",
     resMid: "Una buona metà. Rileggi le quattro diapositive dei sostantivi e riprova.",
     resNext: 'Riconoscere la lingua è solo metà del lavoro. Ora producila →',
@@ -2353,10 +2461,12 @@ const UI_I18N = {
     s9db: "Un uomo che non segue le regole — spesso detto con un sorriso.",
     s9t: "Vero, falso, cattivo",
     scoreLabel: 'Punteggio',
-    searchStem: "Find the magnifying glass.",
+    searchStem: "Trova la <em>magnifying glass</em>.",
     searchT: "Trovalo prima che scada il tempo",
     searchWhy: "Una <em>magnifying glass</em> è una lente rotonda con un manico. Anche la moneta è rotonda, ma non ha il manico.",
     slideOf: (a,b)=>`${a} / ${b}`,
+    sortBinA: "Una cosa",
+    sortBinB: "Un'azione",
     sortHint: "Metti ogni parola nella casella giusta.",
     sortT: "Una cosa, o un'azione?",
     sortWhy: "Una cosa è un sostantivo — puoi metterci davanti <em>a</em> o <em>the</em>. Un'azione è un verbo — puoi metterci davanti <em>I</em>.",
@@ -2396,8 +2506,16 @@ const UI_I18N = {
     fbAnswer: 'Resposta:',
     fbCorrect: 'Correto.',
     fbWrong: 'Não exatamente.',
+    g1h: "Uma palavra por espaço. As frases ficam em inglês — as palavras de que precisas estão no banco acima.",
     g1t: "Na praça",
+    g1x1: "<em>Push</em> é para longe de ti; <em>pull</em> é na tua direção. A placa diz-te qual é.",
+    g1x2: "Um <em>pocket</em> é cosido na roupa. Uma <em>bag</em> é um recipiente à parte que levas contigo.",
+    g1x3: "Uma <em>magnifying glass</em> é uma lente com cabo que faz as coisas pequenas parecerem grandes.",
+    g2h: "Uma palavra por espaço. Duas delas estão entre as palavras mais pequenas da lição.",
     g2t: "Não todos os dias",
+    g2x1: "<em>Sometimes</em> quer dizer de vez em quando — uns dias sim, outros não.",
+    g2x2: "<em>They</em> substitui duas ou mais pessoas que já nomeaste.",
+    g2x3: "<em>True</em> está de acordo com os factos; <em>false</em> não está.",
     gapHint: "Escreve uma palavra em cada espaço.",
     matchHint: "Clica numa palavra e depois no que ela significa.",
     matchT: "Palavra e significado",
@@ -2405,10 +2523,18 @@ const UI_I18N = {
     orderHint: "Clica nas partes pela ordem certa.",
     orderT: "Constrói a frase",
     orderWhy: "<em>Sometimes</em> pode abrir a frase. Depois o que fazes, depois para quê, e por fim quando.",
+    q1c: "Ela esticou o braço para apanhar a moeda em cima da mesa.",
     q1t: "O braço dela esticou-se",
+    q1x: "<em>Reach</em> é esticar o braço na direção de algo. <em>Scratch</em> deixa uma marca, <em>whistle</em> faz um som, e <em>desert</em> quer dizer abandonar alguém.",
+    q2c: "Os amigos ainda precisavam dele, mas ele foi-se embora e nunca mais voltou.",
     q2t: "Foi-se embora sem mais",
+    q2x: "<em>Desert</em> é deixar pessoas que ainda precisam de ti. Repara na sílaba forte: de-<em>SERT</em> é este verbo; <em>DE</em>-sert é o lugar seco e arenoso.",
+    q3s: "Que frase está em inglês correto?",
     q3t: "Uma palavra, sem plural",
+    q3x: "<em>Homework</em> não tem plural: <em>homeworks</em> não existe, e <em>many</em> ou <em>two</em> não podem vir à frente. Usa <em>a lot of</em> ou <em>much</em>.",
+    q4c: "Sai todos os dias, em folhas grandes de papel, e está cheio das notícias de hoje.",
     q4t: "Todos os dias, ou todos os meses?",
+    q4x: "Um <em>newspaper</em> traz as notícias do dia em folhas grandes. Uma <em>magazine</em> é mais fina, tem muito mais imagens e sai todas as semanas ou todos os meses.",
     resLow: "Começa do início e lê cada cartão em voz alta antes de responderes. São palavras que encontras todos os dias.",
     resMid: "Boa metade. Lê outra vez os quatro diapositivos de substantivos e tenta de novo.",
     resNext: 'Reconhecer a linguagem é metade do trabalho. Agora produza-a →',
@@ -2470,10 +2596,12 @@ const UI_I18N = {
     s9db: "Um homem que não segue as regras — dito muitas vezes com um sorriso.",
     s9t: "Verdadeiro, falso, mau",
     scoreLabel: 'Pontuação',
-    searchStem: "Find the magnifying glass.",
+    searchStem: "Encontra a <em>magnifying glass</em>.",
     searchT: "Encontra-o antes de o relógio parar",
     searchWhy: "Uma <em>magnifying glass</em> é uma lente redonda com cabo. A moeda também é redonda, mas não tem cabo.",
     slideOf: (a,b)=>`${a} / ${b}`,
+    sortBinA: "Uma coisa",
+    sortBinB: "Uma ação",
     sortHint: "Coloca cada palavra na caixa certa.",
     sortT: "Uma coisa, ou uma ação?",
     sortWhy: "Uma coisa é um substantivo — podes pôr <em>a</em> ou <em>the</em> à frente. Uma ação é um verbo — podes pôr <em>I</em> à frente.",
@@ -2513,8 +2641,16 @@ const UI_I18N = {
     fbAnswer: 'Ответ:',
     fbCorrect: 'Верно.',
     fbWrong: 'Не совсем.',
+    g1h: "По одному слову в каждый пропуск. Предложения остаются на английском — нужные слова в банке выше.",
     g1t: "На площади",
+    g1x1: "<em>Push</em> — от себя, <em>pull</em> — к себе. Табличка говорит, какое из двух.",
+    g1x2: "<em>Pocket</em> вшит в одежду. <em>Bag</em> — отдельная ёмкость, которую носят с собой.",
+    g1x3: "<em>Magnifying glass</em> — линза с ручкой, которая делает мелкое крупным на вид.",
+    g2h: "По одному слову в каждый пропуск. Два из них — среди самых маленьких слов урока.",
     g2t: "Не каждый день",
+    g2x1: "<em>Sometimes</em> значит иногда — в какие-то дни да, в какие-то нет.",
+    g2x2: "<em>They</em> заменяет двух или более людей, которых ты уже назвал.",
+    g2x3: "<em>True</em> совпадает с фактами, <em>false</em> — нет.",
     gapHint: "Впиши по одному слову в каждый пропуск.",
     matchHint: "Нажми на слово, затем на его значение.",
     matchT: "Слово и значение",
@@ -2522,10 +2658,18 @@ const UI_I18N = {
     orderHint: "Нажимай на части в правильном порядке.",
     orderT: "Собери предложение",
     orderWhy: "<em>Sometimes</em> может стоять в начале предложения. Затем то, что ты делаешь, затем зачем, затем когда.",
+    q1c: "Она вытянула руку, чтобы взять монету со стола.",
     q1t: "Её рука вытянулась",
+    q1x: "<em>Reach</em> — это вытянуть руку к чему-то. <em>Scratch</em> оставляет след, <em>whistle</em> издаёт звук, а <em>desert</em> значит бросить кого-то.",
+    q2c: "Друзья всё ещё нуждались в нём, но он ушёл и больше не вернулся.",
     q2t: "Он просто ушёл",
+    q2x: "<em>Desert</em> — оставить людей, которым ты ещё нужен. Обрати внимание на ударение: de-<em>SERT</em> — это глагол, а <em>DE</em>-sert — сухая песчаная пустыня.",
+    q3s: "Какое предложение — правильный английский?",
     q3t: "Одно слово, без множественного числа",
+    q3x: "У <em>homework</em> нет множественного числа: <em>homeworks</em> не существует, и <em>many</em> или <em>two</em> перед ним не ставятся. Используй <em>a lot of</em> или <em>much</em>.",
+    q4c: "Выходит каждый день, на больших листах бумаги, и полон сегодняшних новостей.",
     q4t: "Каждый день или каждый месяц?",
+    q4x: "<em>Newspaper</em> — ежедневные новости на больших листах. <em>Magazine</em> тоньше, картинок в нём гораздо больше, и выходит он раз в неделю или раз в месяц.",
     resLow: "Начни сначала и читай каждую карточку вслух перед ответом. Это слова, которые встречаются каждый день.",
     resMid: "Хорошая половина. Перечитай четыре слайда с существительными и попробуй ещё раз.",
     resNext: 'Узнавать язык — половина дела. Теперь используйте его сами →',
@@ -2587,10 +2731,12 @@ const UI_I18N = {
     s9db: "Мужчина, который не соблюдает правила, — часто говорится с улыбкой.",
     s9t: "Правда, ложь, плохое",
     scoreLabel: 'Счёт',
-    searchStem: "Find the magnifying glass.",
+    searchStem: "Найди <em>magnifying glass</em>.",
     searchT: "Найди это, пока идут часы",
     searchWhy: "<em>Magnifying glass</em> — круглая линза с ручкой. Монета тоже круглая, но ручки у неё нет.",
     slideOf: (a,b)=>`${a} / ${b}`,
+    sortBinA: "Предмет",
+    sortBinB: "Действие",
     sortHint: "Помести каждое слово в нужное поле.",
     sortT: "Предмет или действие?",
     sortWhy: "Предмет — это существительное: перед ним можно поставить <em>a</em> или <em>the</em>. Действие — это глагол: перед ним можно поставить <em>I</em>.",
@@ -2630,8 +2776,16 @@ const UI_I18N = {
     fbAnswer: 'الإجابة:',
     fbCorrect: 'صحيح.',
     fbWrong: 'ليس تماماً.',
+    g1h: "كلمة واحدة في كل فراغ. الجمل تبقى بالإنجليزية — والكلمات التي تحتاجها في البنك أعلاه.",
     g1t: "في الساحة",
+    g1x1: "<em>Push</em> بعيداً عنك، و<em>pull</em> نحوك. واللافتة تقول لك أيّهما.",
+    g1x2: "الـ<em>pocket</em> مخيط في الملابس، أما الـ<em>bag</em> فوعاء منفصل تحمله معك.",
+    g1x3: "الـ<em>magnifying glass</em> عدسة لها مقبض تجعل الأشياء الصغيرة تبدو كبيرة.",
+    g2h: "كلمة واحدة في كل فراغ. اثنتان منها من أصغر كلمات الدرس.",
     g2t: "ليس كل يوم",
+    g2x1: "<em>Sometimes</em> تعني أحياناً — في بعض الأيام نعم وفي بعضها لا.",
+    g2x2: "<em>They</em> تحلّ محلّ شخصين أو أكثر سبق أن ذكرتهم.",
+    g2x3: "<em>True</em> يطابق الوقائع، و<em>false</em> لا يطابقها.",
     gapHint: "اكتب كلمة واحدة في كل فراغ.",
     matchHint: "انقر على كلمة ثم على معناها.",
     matchT: "الكلمة والمعنى",
@@ -2639,10 +2793,18 @@ const UI_I18N = {
     orderHint: "انقر على الأجزاء بالترتيب الصحيح.",
     orderT: "ابنِ الجملة",
     orderWhy: "يمكن أن تبدأ الجملة بـ<em>Sometimes</em>. ثم ما تفعله، ثم لماذا، ثم متى.",
+    q1c: "مدّت ذراعها لتأخذ العملة من على الطاولة.",
     q1t: "امتدّت ذراعها",
+    q1x: "<em>Reach</em> تعني مدّ الذراع نحو شيء. و<em>scratch</em> تترك أثراً، و<em>whistle</em> تُصدر صوتاً، و<em>desert</em> تعني التخلّي عن أحد.",
+    q2c: "كان أصدقاؤه ما زالوا بحاجة إليه، لكنه مضى ولم يعد أبداً.",
     q2t: "مضى ولم يعد",
+    q2x: "<em>Desert</em> هي ترك أناس ما زالوا بحاجة إليك. انتبه إلى النبر: de-<em>SERT</em> هو هذا الفعل، أما <em>DE</em>-sert فهي الصحراء الجافة الرملية.",
+    q3s: "أي جملة إنجليزية صحيحة؟",
     q3t: "كلمة واحدة، بلا جمع",
+    q3x: "<em>Homework</em> لا جمع لها: <em>homeworks</em> غير موجودة، ولا يصح وضع <em>many</em> أو <em>two</em> قبلها. استعمل <em>a lot of</em> أو <em>much</em>.",
+    q4c: "يصدر كل يوم على أوراق كبيرة، وهو مليء بأخبار اليوم.",
     q4t: "كل يوم أم كل شهر؟",
+    q4x: "الـ<em>newspaper</em> أخبار يومية على أوراق كبيرة. أما الـ<em>magazine</em> فأرقّ، وصورها أكثر بكثير، وتصدر كل أسبوع أو كل شهر.",
     resLow: "ابدأ من البداية واقرأ كل بطاقة بصوت عالٍ قبل أن تجيب. هذه كلمات تصادفها كل يوم.",
     resMid: "نصف جيّد. أعد قراءة شرائح الأسماء الأربع ثم حاول مرة أخرى.",
     resNext: 'التعرّف على اللغة نصف المهمة. والآن استخدمها →',
@@ -2704,10 +2866,12 @@ const UI_I18N = {
     s9db: "رجل لا يلتزم بالقواعد — وتُقال غالباً بابتسامة.",
     s9t: "صحيح وخاطئ وسيّئ",
     scoreLabel: 'النتيجة',
-    searchStem: "Find the magnifying glass.",
+    searchStem: "جِد الـ<em>magnifying glass</em>.",
     searchT: "جِدْه قبل أن تتوقف الساعة",
     searchWhy: "الـ<em>magnifying glass</em> عدسة مستديرة لها مقبض. والعملة مستديرة أيضاً لكن بلا مقبض.",
     slideOf: (a,b)=>`${a} / ${b}`,
+    sortBinA: "شيء",
+    sortBinB: "فعل",
     sortHint: "ضع كل كلمة في الصندوق الصحيح.",
     sortT: "شيء أم فعل؟",
     sortWhy: "الشيء اسم — يمكن وضع <em>a</em> أو <em>the</em> قبله. والفعل يمكن وضع <em>I</em> قبله.",
@@ -2747,8 +2911,16 @@ const UI_I18N = {
     fbAnswer: '答案：',
     fbCorrect: '正确。',
     fbWrong: '不太对。',
+    g1h: "每个空填一个词。句子仍然是英语——需要的词在上面的词库里。",
     g1t: "在广场上",
+    g1x1: "<em>Push</em> 是朝外推，<em>pull</em> 是朝自己拉。牌子告诉你是哪一个。",
+    g1x2: "<em>Pocket</em> 是缝在衣服上的，<em>bag</em> 是你另外拿着的容器。",
+    g1x3: "<em>Magnifying glass</em> 是带柄的镜片，让小东西看起来变大。",
+    g2h: "每个空填一个词。其中两个是本课最小的词。",
     g2t: "不是每天",
+    g2x1: "<em>Sometimes</em> 是“偶尔”——有些天会，有些天不会。",
+    g2x2: "<em>They</em> 指你已经提过的两个或更多的人。",
+    g2x3: "<em>True</em> 与事实相符，<em>false</em> 不相符。",
     gapHint: "在每个空格里填一个词。",
     matchHint: "先点一个词，再点它的意思。",
     matchT: "词与词义",
@@ -2756,10 +2928,18 @@ const UI_I18N = {
     orderHint: "按正确的顺序点击各部分。",
     orderT: "把句子拼起来",
     orderWhy: "<em>Sometimes</em> 可以放在句首。然后是你做什么，再是为什么，最后是什么时候。",
+    q1c: "她伸出手臂，要拿桌上的硬币。",
     q1t: "她伸出了手臂",
+    q1x: "<em>Reach</em> 是朝某物伸出手臂。<em>Scratch</em> 是留下划痕，<em>whistle</em> 是发出声音，<em>desert</em> 是抛下某人。",
+    q2c: "朋友们还需要他，他却走了，再也没有回来。",
     q2t: "他走了，再没回来",
+    q2x: "<em>Desert</em> 是在别人还需要你的时候离开他们。注意重音：de-<em>SERT</em> 是这个动词，<em>DE</em>-sert 是干燥多沙的沙漠。",
+    q3s: "哪一句是正确的英语？",
     q3t: "一个词，没有复数",
+    q3x: "<em>Homework</em> 没有复数，所以没有 <em>homeworks</em> 这个词，前面也不能加 <em>many</em> 或 <em>two</em>。要用 <em>a lot of</em> 或 <em>much</em>。",
+    q4c: "它每天出一份，印在大张纸上，满是当天的新闻。",
     q4t: "每天，还是每月？",
+    q4x: "<em>Newspaper</em> 是印在大张纸上的每日新闻。<em>Magazine</em> 更薄，图片多得多，每周或每月出一期。",
     resLow: "从头开始，回答之前把每张卡片大声读出来。这些都是每天都会遇到的词。",
     resMid: "对了一半。把四张名词幻灯片再读一遍，然后再试一次。",
     resNext: '认得出这些表达只是一半，接下来要能说出来 →',
@@ -2821,10 +3001,12 @@ const UI_I18N = {
     s9db: "不守规矩的男人——常常是带着笑意说的。",
     s9t: "真、假、坏",
     scoreLabel: '得分',
-    searchStem: "Find the magnifying glass.",
+    searchStem: "找出 <em>magnifying glass</em>。",
     searchT: "在计时结束前找到它",
     searchWhy: "<em>magnifying glass</em> 是带柄的圆形镜片。硬币也是圆的，但没有柄。",
     slideOf: (a,b)=>`${a} / ${b}`,
+    sortBinA: "东西",
+    sortBinB: "动作",
     sortHint: "把每个词放进正确的框里。",
     sortT: "是东西，还是动作？",
     sortWhy: "东西是名词——前面可以放 <em>a</em> 或 <em>the</em>。动作是动词——前面可以放 <em>I</em>。",
@@ -2864,8 +3046,16 @@ const UI_I18N = {
     fbAnswer: '解答：',
     fbCorrect: '正解です。',
     fbWrong: '惜しいです。',
+    g1h: "空欄ごとに語を一つ。文は英語のままです。必要な語は上の単語バンクにあります。",
     g1t: "広場で",
+    g1x1: "<em>Push</em> は自分から遠ざける方向、<em>pull</em> は自分のほうへ。掲示がどちらかを教えてくれます。",
+    g1x2: "<em>Pocket</em> は服に縫いつけられたもの、<em>bag</em> は別に持ち歩く入れ物です。",
+    g1x3: "<em>Magnifying glass</em> は柄のついたレンズで、小さいものを大きく見せます。",
+    g2h: "空欄ごとに語を一つ。うち二つはこの課でいちばん小さい語です。",
     g2t: "毎日ではない",
+    g2x1: "<em>Sometimes</em> は「ときどき」。ある日はそうで、ある日はそうではありません。",
+    g2x2: "<em>They</em> はすでに挙げた二人以上の人を指します。",
+    g2x3: "<em>True</em> は事実と合い、<em>false</em> は合いません。",
     gapHint: "それぞれの空欄に語を一つ書いてください。",
     matchHint: "語をクリックしてから、その意味をクリックします。",
     matchT: "語と意味",
@@ -2873,10 +3063,18 @@ const UI_I18N = {
     orderHint: "正しい順番で各部分をクリックしてください。",
     orderT: "文を組み立てる",
     orderWhy: "<em>Sometimes</em> は文頭に置けます。次に何をするか、次になぜ、最後にいつ、の順です。",
+    q1c: "彼女はテーブルの上のコインを取ろうと腕をのばした。",
     q1t: "彼女の腕がのびた",
+    q1x: "<em>Reach</em> は何かに向かって腕をのばすことです。<em>Scratch</em> は跡をつけること、<em>whistle</em> は音を出すこと、<em>desert</em> は人を見捨てることです。",
+    q2c: "友だちはまだ彼を必要としていたのに、彼は去って二度と戻らなかった。",
     q2t: "彼は去ったきりだった",
+    q2x: "<em>Desert</em> は、まだ自分を必要としている人を置き去りにすること。アクセントに注意：de-<em>SERT</em> がこの動詞で、<em>DE</em>-sert は乾いた砂の砂漠です。",
+    q3s: "正しい英語はどれですか。",
     q3t: "一つの語、複数形なし",
+    q3x: "<em>Homework</em> に複数形はありません。<em>homeworks</em> は存在せず、<em>many</em> や <em>two</em> を前に置くこともできません。<em>a lot of</em> か <em>much</em> を使います。",
+    q4c: "それは毎日、大きな紙に印刷されて出て、その日のニュースでいっぱいです。",
     q4t: "毎日か、毎月か",
+    q4x: "<em>Newspaper</em> は大きな紙に載る毎日のニュース。<em>Magazine</em> はもっと薄く、写真がずっと多く、毎週または毎月出ます。",
     resLow: "最初からやり直し、答える前に各カードを声に出して読んでください。毎日出会う語ばかりです。",
     resMid: "半分は取れています。名詞の四枚をもう一度読んで、再挑戦を。",
     resNext: '表現を見分けられるのは半分。ここからは自分で使います →',
@@ -2938,10 +3136,12 @@ const UI_I18N = {
     s9db: "ルールを守らない男性。多くは笑いを含んで言います。",
     s9t: "本当、うそ、悪い",
     scoreLabel: 'スコア',
-    searchStem: "Find the magnifying glass.",
+    searchStem: "<em>magnifying glass</em> を見つけてください。",
     searchT: "時間切れになる前に見つけて",
     searchWhy: "<em>magnifying glass</em> は柄のついた丸いレンズです。コインも丸いですが、柄がありません。",
     slideOf: (a,b)=>`${a} / ${b}`,
+    sortBinA: "もの",
+    sortBinB: "動作",
     sortHint: "それぞれの語を正しい箱に入れてください。",
     sortT: "もの、それとも動作？",
     sortWhy: "ものは名詞で、前に <em>a</em> や <em>the</em> を置けます。動作は動詞で、前に <em>I</em> を置けます。",
@@ -3221,7 +3421,16 @@ slides.filter(s => s.dataset.type === 'match').forEach(slide => {
      data-def-es/-de renders exactly the button it rendered before. The gloss
      goes in a .sup, which is the site's existing mechanism - hidden unless
      the root lang matches, and stripped by bwNorm() so the EN/DE panel still
-     lists the English, not the English plus its own translation. */
+     lists the English, not the English plus its own translation.
+
+     Generalised 2026-09-09 from a hardcoded ['es','de'] to every code in
+     LANGS. The two-language version was written when two languages was the
+     maximum; a ten-language deck (The Square) then had a match slide that
+     translated into Spanish and German and silently stayed English in the
+     other seven. Nothing about the old markup changes - data-def-es and
+     data-def-de are still exactly what this reads for those two - so every
+     deck already generated keeps rendering as it did, and picks the other
+     eight up whenever it is next rebuilt. */
   const mk = (txt, cls, key, glosses) => {
     const b = document.createElement('button');
     b.className = 'match-item ' + cls;
@@ -3241,8 +3450,10 @@ slides.filter(s => s.dataset.type === 'match').forEach(slide => {
     });
     return b;
   };
-  const gl = (p, side) => [['es', 'ES', p.dataset[side + 'Es']],
-                           ['de', 'DE', p.dataset[side + 'De']]];
+  const gl = (p, side) => LANGS
+    .filter(l => l.code !== 'en')
+    .map(l => [l.code, l.code.toUpperCase(),
+               p.dataset[side + l.code[0].toUpperCase() + l.code.slice(1)]]);
   pairs.forEach(p => terms.appendChild(
     mk(p.dataset.term, 'term', p.dataset.term, gl(p, 'term'))));
   shuffled(pairs)
@@ -3443,6 +3654,7 @@ slides.filter(s => s.dataset.type === 'sort').forEach(slide => {
   const box = slide.querySelector('.sort');
   if (!box) return;
   const labels = (box.dataset.bins || '').split('|').map(x => x.trim());
+  const binKeys = (box.dataset.binsI18n || '').split('|').map(x => x.trim());
   const items = [...box.querySelectorAll('.sort-item')];
   if (labels.length < 2 || !items.length) return;
 
@@ -3459,6 +3671,13 @@ slides.filter(s => s.dataset.type === 'sort').forEach(slide => {
     const h = document.createElement('div');
     h.className = 'sort-bin-label';
     h.textContent = label;
+    /* Bin labels are chrome ("A thing" / "An action"), not the language under
+       test, so they should translate — and could not, because data-bins is a
+       plain string baked into the markup. An optional data-bins-i18n carries
+       one UI_I18N key per bin; the label then joins the normal [data-i18n]
+       pass and follows the switcher like everything else. data-bins stays the
+       English, which is both the fallback and what the SORT gate reads. */
+    if (binKeys[i]) h.dataset.i18n = binKeys[i];
     const body = document.createElement('div');
     body.className = 'sort-bin-items';
     bin.append(h, body);
