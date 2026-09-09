@@ -43,6 +43,15 @@ computer. There is no attachment, connector or link that changes that:
   and a filesystem-wide sweep found nothing. `extract-palette.py` had no
   bytes to read. (The Oz export "worked" because an HTML file's text is
   readable in context; an image is not.)
+
+  **This holds for a cloud session only.** In the Claude desktop app the
+  transcript, base64 image parts and all, is written to
+  `~/.claude/projects/<project-slug>/<session-id>.jsonl` — so an attached
+  picture *is* on disk locally. Walk the JSON for
+  `{"type":"image","source":{"data": …}}`, `base64.b64decode` it, and hand
+  the file to `tools/prep-artwork.py`. The hero for `the-square/` was
+  recovered that way on 2026-09-09. Do that before asking Innes to re-drop
+  a file he has already sent.
 - **Google Drive is not a transport.** `download_file_content` returns
   base64 through the context window — ~30k tokens per 90 KB image — and
   direct fetch is 403'd at the sandbox proxy.

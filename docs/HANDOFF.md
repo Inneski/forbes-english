@@ -12,6 +12,50 @@ stale copy.
 
 ---
 
+## 2026-09-09 — The Square (A2): 44 words, ten languages, and where a chat attachment actually lives
+
+`forbes-english-the-square-a2.html`, 24 slides, light theme, all ten languages
+complete. Built from a bare word list of 44 items with a dictionary gloss under
+each — the kind that accumulates over a term — plus one isometric town-square
+picture. Builder `lesson-template/build/build_square.py`; strings in
+`i18n_square.py` (en/de/es) and `i18n_square_extra.py` (the other seven).
+
+**A chat attachment IS on disk in a desktop session. `CLAUDE.md` says it is
+not, and for a cloud session that is still true — but locally the Claude
+desktop app writes the whole conversation, base64 image parts included, to
+`~/.claude/projects/<project-slug>/<session-id>.jsonl`.** Walk the JSON for
+`{"type":"image","source":{"data":…}}` and `base64.b64decode` it. The picture
+for this lesson came out at 2000x1120 that way and went straight through
+`prep-artwork.py`. This is worth knowing before asking Innes to re-drop a file
+into `incoming/`: the bytes are already there. It does not change the rule for
+cloud sessions, which have no such file.
+
+**Three of the supplied glosses picked the sense a learner would not guess,
+and all three were kept rather than swapped for the easy one** — `desert` is
+the verb *abandon*, `turn` is *move on to a new point*, `bad boy` is the man.
+`desert` carries the stress pair (de-SERT / DE-sert) on its card, because the
+two are only learnable together.
+
+**Eight icons added to the shared `lesson-template/build/icons.py`** for the
+timed search: window, door, coin, bag, rug, newspaper, toast, magnifier. Three
+of them failed by eye at the 90px they actually render at and were redrawn
+before shipping — a trapezoid rug read as a shopping basket, a plain rectangle
+inside a rectangle read as a strip of film (the diamond motif is what fixes
+it), and an arched slab read as a headstone until the crust lobes were pushed
+out wider than the body. `icons.py`'s docstring says to judge a set by eye;
+the contact sheet is not enough, because the failure is a function of size.
+A whistle was drawn and then dropped: the lesson's sense of the word is the
+verb, and a picture of the object teaches the wrong noun.
+
+**Found, not fixed:** `lesson-template/build/build_twinpeaks2.py` emits
+`D.activate(...)` *before* `D.results(...)`. HOUSE-STYLE §10b puts the
+activation stage after the results and makes it the last thing the learner
+sees, which is what every shipped deck does. `check-lesson.js`'s ACTIVATION
+gate only asks that the slide exists, so nothing catches it. Left alone
+because that lesson is someone else's uncommitted working tree.
+
+---
+
 ## 2026-09-09 — Grammar Court I & II: eleven items had a second correct answer, and the deck now has a picture for winning
 
 Both parts are **hand-written HTML**. There is no builder for them in

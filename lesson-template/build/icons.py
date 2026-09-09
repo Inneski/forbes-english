@@ -87,6 +87,48 @@ _PATHS = {
               '<path d="M50 30 L50 40"/>'
               '<path d="M34 40 L66 40 L66 88 L34 88 Z"/>'
               '<path d="M34 54 L66 54"/>',
+    # ── the square (A2 vocabulary) ────────────────────────────────
+    'window': '<rect x="22" y="18" width="56" height="58" rx="3"/>'
+              '<path d="M50 18 L50 76"/><path d="M22 47 L78 47"/>'
+              '<path d="M14 82 L86 82"/>',
+    'door':  '<path d="M28 12 L72 12 L72 88 L28 88 Z"/>'
+             '<path d="M37 21 L63 21 L63 45 L37 45 Z"/>'
+             '<circle cx="62" cy="63" r="3.5"/><path d="M18 88 L82 88"/>',
+    # Two concentric circles alone read as a button or a target; the milled
+    # edge is the thing that says "coin", so the eight ticks are load-bearing.
+    'coin':  '<circle cx="50" cy="50" r="30"/><circle cx="50" cy="50" r="20"/>'
+             '<path d="M80 50 L86 50"/><path d="M50 80 L50 86"/>'
+             '<path d="M20 50 L14 50"/><path d="M50 20 L50 14"/>'
+             '<path d="M71 71 L75 75"/><path d="M29 71 L25 75"/>'
+             '<path d="M29 29 L25 25"/><path d="M71 29 L75 25"/>',
+    'bag':   '<path d="M24 38 L76 38 L82 86 L18 86 Z"/>'
+             '<path d="M36 38 Q36 16 50 16 Q64 16 64 38"/>',
+    # Flat, with tassels on both short edges and a woven diamond in the
+    # middle. Two earlier versions failed at 90px: a trapezoid in perspective
+    # read as a shopping basket, and a plain rectangle inside a rectangle read
+    # as a strip of film. The motif is what says "rug" rather than "frame".
+    'rug':   '<path d="M18 34 L82 34 L82 74 L18 74 Z"/>'
+             '<path d="M50 40 L65 54 L50 68 L35 54 Z"/>'
+             '<path d="M18 40 L7 38"/><path d="M18 50 L6 49"/>'
+             '<path d="M18 59 L6 60"/><path d="M18 69 L7 71"/>'
+             '<path d="M82 40 L93 38"/><path d="M82 50 L94 49"/>'
+             '<path d="M82 59 L94 60"/><path d="M82 69 L93 71"/>',
+    'newspaper': '<path d="M12 26 L68 26 L68 82 L12 82 Z"/>'
+                 '<path d="M68 38 L88 38 L88 76 Q88 82 82 82 L68 82"/>'
+                 '<path d="M20 36 L60 36"/>'
+                 '<path d="M20 48 L38 48"/><path d="M20 58 L38 58"/>'
+                 '<path d="M20 68 L38 68"/>'
+                 '<path d="M46 48 L60 48"/><path d="M46 58 L60 58"/>'
+                 '<path d="M46 68 L60 68"/>',
+    # A plain arched slab is a headstone; a narrow-waisted one is a handbag.
+    # What makes it bread is the pair of crust lobes sitting WIDER than the
+    # body, with the body dropping straight from them — plus the butter.
+    'toast': '<path d="M28 88 L28 46 Q14 46 14 35 Q14 21 30 21 '
+             'Q35 11 50 11 Q65 11 70 21 Q86 21 86 35 Q86 46 72 46 '
+             'L72 88 Z"/>'
+             '<path d="M41 60 L59 60 L59 76 L41 76 Z"/>',
+    'magnifier': '<circle cx="42" cy="42" r="26"/><path d="M61 61 L85 85"/>'
+                 '<path d="M33 31 Q28 36 28 43"/>',
 }
 
 
