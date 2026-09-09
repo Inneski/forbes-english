@@ -12,6 +12,78 @@ stale copy.
 
 ---
 
+## 2026-09-09 — Frankenstein "Polished Both Parts": do not publish it, and the fix list is written
+
+A second ChatGPT export of Frankenstein arrived as
+`Frankenstein_Polished_Both_Parts (2).zip` (two HTML files, 106 MB). **It is
+a downgrade on what is already shipped.** `block-camp/frankenstein-green-prometheus-rpg.html`
+is 274 KB plus 8.4 MB of WebP, 50 scenes, ten languages; the export is
+56 scenes in three languages at twelve times the weight. Its contribution is
+the revised artwork and some story corrections, and those merge into
+`lesson-template/build/build_frankenstein_green_prometheus.py`.
+
+**The revision request for ChatGPT is `docs/CHATGPT-FRANKENSTEIN-FIXES.md`**
+— paste it into the session that produced the export. It sits on top of
+`docs/CHATGPT-RPG-BRIEF.md` and names measured defects rather than restating
+the standard.
+
+**The base is the shipped Block Camp game, not the export.** Innes, on
+comparing them: *"The one on block camp has purer going to structure, it has
+a choice between talking to De Lacey and leaving firewood."* He is right —
+44 questions on one target, and `21_approach_choice` is the best route
+choice in the lesson. So the ask to ChatGPT is a **replacement picture batch
+plus a distractor rewrite**, not a new export, and the brief is written that
+way.
+
+**The giant Creature is in both builds, and the pictures are shared.**
+`03_arctic_rescue.webp` and the export's `walton_rescue_bridge` are the same
+image; so are `43_ending_ice` and `ending_north`. The export inherited the
+defect rather than introducing it. Five files carry it —
+`final_alps_standoff`, `38_pursue`, `43_ending_ice`, `03_arctic_rescue`,
+`35_arctic_chase` — and `final_alps_pursuit.webp` is the one that gets a
+distant Creature right, so it is the reference to point at.
+`final_alps_standoff` is worse than the others: he has long shoulder-length
+hair and a grey face there, a different character from the flat-topped green
+head in `22_knock` and `25_demand`.
+
+**The answer-slot problem is already solved and does not need re-raising** —
+`KEY` in `build_frankenstein_green_prometheus.py` deals the key across the
+three slots at build time. The distractor *quality* is not solved: 21 of the
+44 items offer a non-English third option, so no item ever asks the learner
+to choose a tense.
+
+Four things worth carrying forward regardless of this lesson:
+
+- **The Creature is drawn at wildly inconsistent scale**, and the story text
+  caused it. `p1_01` says *"The sailors see a huge figure far away"*; the
+  generator drew a literal colossus. In `p2_09_delacey_art` he is level with a
+  seated old man; in `walton_rescue_bridge` and `ending_north` he is as tall
+  as an ice cliff. **A `visualBeat` that places a character at distance must
+  give a size anchor** — an object of known height in the same frame — or the
+  generator invents one. Add this to the brief for any world with a
+  non-human character.
+- **An export can arrive truncated and still look fine in a listing.** The
+  zip's Part I is 8.2 MB, stops mid-base64, has no closing `</script>`, no
+  engine and 6 of 17 pictures. The complete 30 MB copy was in Downloads.
+  Check `endswith("</html>")` and that every `imageKey` resolves, before
+  anything else.
+- **Distractors that are not real English do not test anything.** 32 of the
+  36 *going to* items offered `['is going to', 'are going to', 'is going
+  studying']` — option 3 is not English, option 2 is an agreement slip, so
+  the learner only ever picks a form of `be` and never chooses a tense. The
+  brief already forbids nonsense options (§3); it does not yet say *the wrong
+  options must be other tenses*. It should.
+- **`pos` in this export is dead metadata** — the engine never reads it; the
+  lantern is a fixed CSS widget at `right:24px;bottom:25px`. Do not treat
+  export fields as live without grepping the engine for them.
+
+Innes has cut `p2_31_lament` (the Creature's remorse) — *"nobody cares"*. It
+is gone from the working copy of the export. **`40_creature_lament` is still
+in the shipped Block Camp page** and needs the same treatment, with the graph
+rewired around it. Not done.
+
+---
+
 ## 2026-09-09 — The Square, second pass: what "translated" means on a vocabulary deck, and three template bugs it found
 
 Innes, on the first multiple choice: *"They are not translated e.g. She put her
@@ -456,6 +528,24 @@ the deck is 50 and not 49.
 
 The activation stage did not exist on the old page. §0 rule 6 requires one,
 so it is written, not ported.
+
+### Fixed after review by the session building The Square
+
+**The activation stage was before the results slide**, so the deck ended on a
+score rather than on the learner producing something, and the results slide's
+`Now use it →` button pointed at nothing. §10b is explicit that activation
+comes *after* the results and is the last thing the learner sees, and every
+other converted deck does that. The ACTIVATION gate only asserts the slide
+exists, so nothing caught the order — the same shape of hole PAINT closed.
+
+### Verifying a slide by hand: use `show(n)`, not the class
+
+Forcing `is-active` from the console bypasses the engine's `show()`, which is
+what applies `data-bg` to the background layer. Do that and every slide looks
+like it is still painting the hero, and you will report a `data-bg` bug that
+does not exist. I did. `show(3)` and `show(49)` paint `among-trees.jpg` and
+`profile.jpg` correctly. Panels are unaffected either way — their picture is
+`--pic` on the element itself, not the shared layer.
 
 ### Two things a future session should know
 

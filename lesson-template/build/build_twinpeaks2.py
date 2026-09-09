@@ -289,7 +289,13 @@ def build():
                 'matchHint', E['matchHint'], E['matchWhy'],
                 folder=F, bg='red-room.jpg'),
 
-        # ── activation and results ─────────────────────────────────────
+        # ── results, then activation ───────────────────────────────────
+        # §10b: the activation stage comes AFTER the results and is the last
+        # thing the learner sees. This deck had them the other way round, so
+        # the lesson ended on a score instead of on the learner producing
+        # something. The ACTIVATION gate only asserts the slide exists, so
+        # nothing caught it — found by the session building The Square.
+        D.results(folder=F, bg='hero.jpg'),
         D.activate(E['actTitle'], E['actUse'],
                    ['in spite of', 'aware of', 'result in', 'on behalf of',
                     'capable of'],
@@ -297,7 +303,6 @@ def build():
                    [E['actSpeak1'], E['actSpeak2'], E['actSpeak3']],
                    E['actWriteKind'], E['actWriteBrief'], E['actPlaceholder'],
                    folder=F, bg='profile.jpg'),
-        D.results(folder=F, bg='hero.jpg'),
     ])
 
     D.assemble(TPL, OUT, slides, PALETTE,
