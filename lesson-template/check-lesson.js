@@ -49,12 +49,19 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
   await page.waitForTimeout(2000);
   // Measure in the real face. The template already knows fonts settle late —
   // it hides the wordmark until document.fonts.ready resolves — but this
-  // checker never waited for it. Measure while DM Sans is still loading and
+  // checker never waited for it. Measure while a webfont is still loading and
   // every line wraps in a fallback, which is wider, so a slide that fits can
-  // report roughly one extra line of overflow. That is the shape of the
-  // ~30px phantom on blockcamp-present-continuous-2 (de, slide 8) that the
-  // Grammar Court session wrote up in c543279 and could not reproduce by
-  // hand: by the time you measure it yourself, the font has arrived.
+  // report roughly one extra line of overflow. Most decks here load DM Sans
+  // from gstatic and are exposed to exactly that.
+  //
+  // It is NOT the explanation for the +29px on blockcamp-present-continuous-2
+  // (de, slide 8). I proposed that and was wrong. The Grammar Court session
+  // disproved it in ddb29b1: that deck embeds all nine faces as data URIs and
+  // fetches nothing, document.fonts.status is already "loaded" at t=0, a
+  // sweep at 0/100/300/800/1500/3000ms reads over=0 at every delay, and the
+  // +29 is deterministic across five runs — the opposite of a load race.
+  // That number is still unexplained. Do not trust it, and do not let this
+  // await imply it is solved.
   await page.evaluate(() => document.fonts.ready.then(() => true));
 
   const r = await page.evaluate(() => {

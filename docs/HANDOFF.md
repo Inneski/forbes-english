@@ -12,6 +12,66 @@ stale copy.
 
 ---
 
+## 2026-09-09 — Two rules about the checkers, paid for four times in one day
+
+Four bugs came out of one afternoon across three sessions. Three of them were
+the same shape, and the fourth was the wrong way to react to it.
+
+**1. When a gate is wrong, repair the measurement. Do not delete it.**
+
+`overflow-langs.js` reported +720px on twelve slides of
+`twin_peaks_prepositions_v5` and +29px on `blockcamp-present-continuous-2`,
+both fiction. I deleted the measurement that produced them. That silenced the
+false positives and threw away the true ones with them — the same measurement
+is what catches a slide that genuinely does not fit. The Between Two Worlds
+session found the actual bug in the same week: summing every child assumes a
+slide stacks them vertically, and two real layouts break that. A child out of
+flow contributes nothing to its parent's content height, and a **row** is as
+tall as its tallest child, not as tall as all of them added up. Nine lines,
+and the signal survives.
+
+A checker that cries wolf gets ignored — that part is already written down
+three times in this file. The corollary is not: **the fix for crying wolf is a
+better ear, not a quieter wolf.**
+
+**2. Every gate mutates the page to measure it, and that is where they go
+blind.**
+
+Each check in `check-lesson.js` and `overflow-langs.js` forces `.is-active`
+onto a slide before reading it, because a hidden slide has no layout. So until
+2026-09-09 not one of them had ever looked at the page the way a learner opens
+it. Three of the four bugs lived in exactly that gap:
+
+- **Dividers painted over the whole deck.** `display: block` on the base rule
+  instead of on `.is-active`, so all eight painted at once and the last one
+  covered the cover. Every gate passed it, because every gate had already
+  forced the slide visible.
+- **Two slides measured at once.** The loop added `.is-active` to slide N
+  without removing it from the slide that already had it, so every slide from
+  index 1 on was measured with the cover still in the same flex column.
+- **A stale layout across a language switch.** On
+  `blockcamp-present-continuous-2` slide 8, a German-only pass measures 0 and
+  an English pass followed by a German one measures 32 — identical DOM, six
+  identical `.sup` glosses, 1784 identical characters of markup, `.slide-body`
+  client height 416 against 427.
+
+The PAINT gate is the one narrow answer so far: it runs first, on the
+untouched DOM, and asserts that exactly one slide is displayed on load. It
+found a real bug on its first run. **Any new gate that has to mutate the DOM
+should say so and put it back — and it is worth asking what a gate would see
+if it were not allowed to touch anything.**
+
+**Still unexplained, and left that way on purpose.** That +29px still reports
+on a fresh page, deterministically, five runs out of five, after both the
+stack fix and a per-language reload. Ruled out by measurement: fonts
+(`document.fonts.status` is `loaded` at t=0 — it is a Block Camp deck and
+embeds its faces, and a fresh-page sweep at 0/100/300/800/1500/3000ms reads 0
+every time), gloss accumulation (identical `innerHTML`), and self-pollution
+from walking the slides. The comment in the file says not to trust that number
+until someone explains it. Do not "fix" it by raising a threshold.
+
+---
+
 ## 2026-09-09 — Why the LAYOUT gate never seeing data-bg is harmless, and what would end that
 
 Raised while the Square and Between Two Worlds sessions were comparing notes on
