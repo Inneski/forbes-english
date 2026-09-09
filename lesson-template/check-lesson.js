@@ -52,8 +52,9 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
   // checker never waited for it. Measure while DM Sans is still loading and
   // every line wraps in a fallback, which is wider, so a slide that fits can
   // report roughly one extra line of overflow. That is the shape of the
-  // ~30px phantom the Square session could not reproduce by hand: by the
-  // time you measure it yourself, the font has arrived.
+  // ~30px phantom on blockcamp-present-continuous-2 (de, slide 8) that the
+  // Grammar Court session wrote up in c543279 and could not reproduce by
+  // hand: by the time you measure it yourself, the font has arrived.
   await page.evaluate(() => document.fonts.ready.then(() => true));
 
   const r = await page.evaluate(() => {
@@ -83,8 +84,9 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
     // displayed through every later measurement, and slides 2..n were each
     // measured with two slides stacked in the same column. Probed on a real
     // deck before the fix: "max slides displayed at once during LAYOUT: 2".
-    // Found by the session working on The Square, in the copy of this
-    // measurement that lives in checker/overflow-langs.js.
+    // Found by the Grammar Court session, in the copy of this measurement
+    // that lives in checker/overflow-langs.js (c543279). Keep the two in
+    // step: a bug in one is a bug in both.
     const originallyActive = slides.filter(x => x.classList.contains('is-active'));
     slides.forEach(x => x.classList.remove('is-active'));
 
