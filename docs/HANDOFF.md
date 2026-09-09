@@ -241,6 +241,97 @@ the checker will tell you if they drift.
 
 ---
 
+## 2026-09-09 — Between Two Worlds is built, and the deck engine has two new slide types
+
+`twin_peaks_prepositions_v5.html` is no longer a Coming Soon card. It was a
+145 KB scrolling page, English only, with no hero — the hero was the whole
+blocker, because `coming_soon()` in `tools/seo.py` is literally
+`row['file'] not in images`. It is now a 50-slide deck in EN/DE/ES, and
+`check-lesson.js` exits clean.
+
+Builder: `lesson-template/build/build_twinpeaks2.py`, strings in
+`i18n_twinpeaks2.py` (250 keys × 3). Artwork is `TwinPeaks2/` — six of the
+Midjourney vector illustrations, 34.7 MB of PNG down to 2.0 MB.
+
+### The panel layout, and why it exists
+
+The artwork for this lesson is flat-vector illustration, not atmosphere.
+§5's washed hero at 0.72 under a plated card is the right treatment for a
+picture you are meant to feel and the wrong one for a picture you are meant
+to look at. So the template now has two more slide types, and they are in the
+template rather than forked into this builder, so any deck can use them:
+
+- **`data-layout="panel"`** — the picture owns `--panel-w` (548px default) of
+  the stage at full opacity, bleeding off three edges; the text owns the rest
+  on flat `--void`. The slide paints its own opaque background, which covers
+  `.bg-layer` without the engine needing to know the type exists. Nothing is
+  plated, because nothing overlaps. `data-side="right"` mirrors it.
+- **`data-type="divider"`** — picture only, full bleed, one line of chrome in
+  a band the picture fades into.
+
+`deck.panel()` and `deck.divider()` build them. `--pic` drives the CSS and
+`data-pic` carries the same path for the ART gate, which now reads `--pic`
+as well as `--hero` and `data-bg`.
+
+**A soft gradient seam was tried first and rejected.** Dissolving the
+picture's inner edge into the canvas over 120px reads well where that edge is
+dark and smears badly where it is a flat field of one colour (`coffee.jpg`'s
+salmon). A 3px rule works on every image, so it is the rule.
+
+**The divider caption does overlap its picture, and that is measured, not
+assumed.** The panels have zero overlap — checked geometrically across all
+16 picture slides. The divider caption sits over the picture's foot under a
+gradient band; sampling the real image pixels, compositing the band's alpha
+(0.81 at the title's mid-line) and computing contrast against `--text` gives
+**14.86:1 at worst**, against the 7:1 the house style asks for.
+
+### A LAYOUT-gate bug the new types exposed
+
+`check-lesson.js` summed every direct child's height to decide whether a
+slide overflowed. That assumes the slide stacks its children vertically. It
+reported **+720px on every panel** (a row is as tall as its tallest child,
+not as tall as all of them added) and **+132px on every divider** (children
+taken out of flow contribute nothing to the parent's content height). Both
+are general truths, so the fix is general: skip `position: absolute/fixed`
+children, and `Math.max` instead of `+=` when the slide is a flex row.
+
+Measured before it was trusted, in both directions:
+
+| | before | after |
+|---|---|---|
+| carrying-the-load-c1 | 1 fail | 1 fail, same one |
+| forbes-conservation-c1 | 3 fails | 3 fails, same three |
+| present-simple-vs-continuous | 2 fails | 2 fails, same two |
+| a panel/divider deck that fits | +720, +132 | PASS |
+| a panel stuffed with 14× the prose | — | FAIL, +324px |
+
+### What was cut from the old page, and what was added
+
+The old page listed 36 collocations across three tables. At ~55 words a slide
+that is nine slides of list — reference material, not teaching — so the deck
+carries the 24 the exercises actually test. **Nothing that is tested was
+cut**: all 10 MCQ, 11 gap blanks, 8 error items and 8 matching pairs survive.
+
+The 8 matching pairs measured 504px into a 500px body on one slide. §6 says
+more slides, never smaller type, so they are two slides of four. That is why
+the deck is 50 and not 49.
+
+The activation stage did not exist on the old page. §0 rule 6 requires one,
+so it is written, not ported.
+
+### Two things a future session should know
+
+- **The `slide_0*` demo crops in `incoming/Twin Peaks/` are unusable and it is
+  not a style call.** They are 455–836px against the 1400px house minimum;
+  `prep-artwork.py` skips all nine on its own. They are also A1-level
+  preposition demonstrations, which is not what this C1 lesson is.
+- **`bgmeasure.py` cannot run on Innes's Windows box** — no `playwright`
+  module installed. The contrast numbers above were taken by sampling the
+  image in the browser and compositing the gradient by hand. Worth installing
+  playwright, or the tool is Linux-only in practice.
+
+---
+
 ## 2026-09-08 — Present Simple vs Continuous: the sorting is about the time expression, nothing else
 
 `present-simple-vs-continuous.html` is hand-written, not generated — there is
