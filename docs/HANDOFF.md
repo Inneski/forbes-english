@@ -12,6 +12,56 @@ stale copy.
 
 ---
 
+## 2026-09-09 — Three sessions, one index: `git add -- <path>` does NOT protect you
+
+This cost two sessions an attribution in one afternoon, in both directions,
+and the mitigation we agreed after the first time did not prevent the second.
+
+**What happens.** Several Claude sessions run in this one clone. There is one
+`.git/index` between them. `git add -- <path>` scopes *what* you put in the
+index; it does nothing about *when* somebody else's `git commit` consumes it.
+Between your `add` and your `commit` there is a window, and a peer committing
+in that window takes your staged file into their commit, under their message.
+
+- `054f9fe` "The logo lockup…" carries the panel/divider slide types,
+  `deck.panel()`/`deck.divider()` and a LAYOUT-gate fix from the Between Two
+  Worlds session. Cause: `git add -u`.
+- `37de26c` "The font race is not what causes the +29px…" carries the entry
+  immediately below this one — *"Two rules about the checkers"* — which is the
+  Grammar Court session's work, not mine. Cause: `git add -- <explicit path>`
+  followed by a bare `git commit`, which commits the whole index. The explicit
+  path was not the problem. The bare commit was.
+
+**What actually closes it**, in rough order of preference:
+
+1. `git commit -o <path>...` — commits the named paths and disregards
+   anything else staged. This is the one to reach for.
+2. Print the **unfiltered** staged set immediately before committing —
+   `git diff --cached --name-only` — and compare it against your intended
+   list. If anything else is there, it is a peer's and you unstage it.
+3. A separate `git worktree`, which has its own index.
+
+**The specific way I broke rule 2 while believing I was following it:** I ran
+`git status --short | grep check-lesson`. Grepping the pre-commit check for
+your own filename cannot show you a peer's staged file — it is designed not
+to. Never filter that output.
+
+**Caveat on `-o` that bit this repo once already.** `git commit -o <path>`
+takes working-tree content. If you have deliberately staged something that
+differs from the working tree, `-o` throws your staged version away. That
+technique is real and was needed here: `89e2475` had to hold one line of
+`library.html` out of the commit — a peer's `LESSON_IMAGES` row pointing at
+art that was still untracked — while leaving that line in the working tree for
+them. For that case, stage the divergent version, verify with rule 2, and
+commit with a bare `git commit` accepting that you own whatever else is in the
+index.
+
+**None of this is a reason to rewrite history.** Both commits are on
+`origin/main` with work built on top. The repair is the pointer, which is what
+this entry is.
+
+---
+
 ## 2026-09-09 — Two rules about the checkers, paid for four times in one day
 
 Four bugs came out of one afternoon across three sessions. Three of them were
