@@ -12,6 +12,41 @@ stale copy.
 
 ---
 
+## 2026-09-09 — Why the LAYOUT gate never seeing data-bg is harmless, and what would end that
+
+Raised while the Square and Between Two Worlds sessions were comparing notes on
+the `is-active` / `show()` trap, and left unwritten by both. Recording it
+because the *reason* is the part that will not survive in anyone's head.
+
+Every gate in `check-lesson.js` except PAINT forces `.is-active` onto a slide
+before measuring it. `.is-active` controls display; **`show()` is what applies
+`data-bg`**. So no gate has ever measured a slide with its own background
+image in place — LAYOUT included.
+
+**Today that is harmless, and it is harmless because of a property of the CSS,
+not of the gate.** `data-bg` feeds only the background layer: it paints behind
+the content and contributes nothing to the flow, so a slide measures the same
+with it and without it. Nothing about the checker guarantees that.
+
+It stops being harmless the moment a slide type keys its *layout* off its
+picture. `data-layout="panel"` is already close — it reserves a 548px column —
+but it escapes because a panel's picture is `--pic` on the element itself,
+which is in the flow and does get measured. A future type that sized a column
+from `data-bg` would be measured wrong by every gate and caught by none.
+
+So: if you add a slide type, the question is not only "does the display flip
+sit on `.is-active`" (the PAINT rule of thumb) but also **"does anything the
+engine applies in `show()` affect this slide's layout"**. If the answer is yes,
+the gate that measures it has to drive `show()` rather than set a class.
+
+Two bugs in one week came from measuring next to the thing rather than the
+thing: dividers painting on load (the base rule, not `.is-active`), and sort
+bin labels read from `data-bins` — which is the static English default and
+never changes — instead of from the rendered `.sort-bin-label`, which is where
+the translation lands.
+
+---
+
 ## 2026-09-09 — Frankenstein "Polished Both Parts": do not publish it, and the fix list is written
 
 A second ChatGPT export of Frankenstein arrived as
