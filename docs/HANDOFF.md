@@ -119,6 +119,73 @@ before committing.
 
 ---
 
+## 2026-09-09 — The German activation slide, site-wide: seven decks were really broken and thirteen were noise
+
+Grammar Court's German activation slide overflowed, so the obvious question was
+how many others do. `lesson-template/checker/overflow-langs.js` across all 111
+decks with an activation stage: **22 files flagged.** Most of them were not
+worth fixing, and working out which was the whole job.
+
+**Two filters, in this order.**
+
+1. **Re-measure each hit on its own.** The sweep walks every slide in one pass,
+   adding `is-active` to each in turn while the real active slide keeps it, and
+   it takes the larger of a real `scrollHeight - clientHeight` and a
+   `stack - 720` heuristic that sums child margins as if they never collapse.
+   One of the 22 — `blockcamp-present-continuous-2.html` de slide 8, reported
+   at **+29px** — measures **0** in isolation. Always re-measure before editing
+   anything.
+
+2. **Ask whether the overflow is ink or padding.** After filter 1, thirteen
+   files sat at **+2 to +5px**, and `forbes-english-minecraft-b1.html` de was
+   screenshotted at +5px: cards intact, "Neu starten" clear, nothing clipped,
+   nothing touching. The activation slide runs about 5px over its box on
+   almost every deck on the site in almost every language — English included —
+   because `.cols` cannot shrink below its cards' own content. **That ~5px is
+   the site's baseline, not a defect.** Do not rewrite anybody's German to
+   reclaim it, and do not trim the shared `.act-target` / restart-button
+   margins to silence it either: no learner can see it, and it would be a
+   third site-wide layout change to make a number look nicer.
+
+**What was actually broken — seven, all German, all fixed:**
+
+| deck | slide | was | now |
+|---|---|---|---|
+| `carrying-the-load-c1` | 58 activate | +33px | fits |
+| `-dinosaurs C1` | 23 activate | +14 de / +5 es | fits |
+| `forbes-nature-agency-part2` | 59 activate | +19px | fits |
+| `forbes-geoscience-phrases` | 39 activate | +17px | +6 (baseline) |
+| `forbes-english-minecraft-c1` | 23 activate | +16px | +5 (baseline) |
+| `tense-review-minecraft` | 21 activate | +16px | +5 (baseline) |
+| `forbes-english-b2-lesson` | 3 teach | +12px | fits |
+
+`carrying-the-load-c1` is what the damage looks like when it is real: the chips
+row rode up over the title, and the "Neu starten" button sat on top of the
+discussion card. The English on the same slide was fine.
+
+**The rule that came out of it: German runs 20–40% longer than the English in
+these prompts, and the prompts are the production half of the lesson.** Every
+rewrite here keeps the structure the prompt exists to elicit — the third
+conditional in the dinosaur asteroid prompt, *used to* / *would* / *would have*
+in Grammar Court II, the Sie-register in `carrying-the-load` — and loses only
+words. Shorten the framing, never the instruction.
+
+**Practical notes for the next sweep:**
+
+- The i18n blocks store `&mdash;` and `&hellip;`, not the characters. A
+  replacement built from a rendered dump will not match the source. Read the
+  raw line first — three edits failed on exactly this.
+- `check-lesson.js` sees the **English** ones and nothing else — it measures
+  one language. `forbes-english-minecraft-c1` (+5px) and
+  `forbes-geoscience-phrases` (+2px) were already failing their own LAYOUT gate
+  at `HEAD`, which is how you learn that a green run is not the same as a run
+  nobody has done. For anything multilingual `overflow-langs.js` is the gate
+  that matters, and neither `/publish` nor `CLAUDE.md` mentions it.
+- Sub-6px is the baseline; treat anything **above 10px** as real and look at it
+  before editing.
+
+---
+
 ## 2026-09-09 — The logo lockup was out by 9.75% on every page, and the checker was measuring the wrong box
 
 `check-lesson.js` has reported `Forbes 188px vs ENGLISH 180px — 4.4% apart` on
