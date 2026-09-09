@@ -12,6 +12,91 @@ stale copy.
 
 ---
 
+## 2026-09-09 — Grammar Court I & II: six items had a second correct answer, and the deck now has a picture for winning
+
+Both parts are **hand-written HTML**. There is no builder for them in
+`lesson-template/build/` — `613604b` shipped the decks and no script. Edit the
+files directly; the "every deck is generated" rule in `CLAUDE.md` does not
+apply to these two.
+
+**The defect Innes reported: questions with more than one possible answer.**
+Six, all in the multiple choice, all the same shape — a distractor that is
+perfectly good English:
+
+| | item | the second answer | fix |
+|---|---|---|---|
+| I | Q4 *When I arrived, Tom ___ already ___* | *was already leaving* | distractor → `had ... leaving` |
+| I | Q7 *If I ___ more money, I ___ travel* | first conditional *have … will* | distractor → `had ... will` |
+| I | Q9 *What ___ you do if you ___ the lottery?* | first conditional *will … win* | distractor → `would ... would win` |
+| I | Q12 *___ you take the job if they ___ it?* | first conditional *Will … offer* | distractor → `Will ... offered` |
+| II | Q9 *If you ___ me, I ___ what to do* | mixed conditional *hadn't told … wouldn't know* | stem → *…what to do **that night*** |
+| II | Q10 *We ___ the match if our best player ___ injured* | second conditional *would win … wasn't* | stem → *…**last Saturday's** match…* |
+
+**The pattern to check for in every other conditional drill on the site:** a
+second-conditional item whose distractor set includes a well-formed first
+conditional, or a third-conditional item whose distractor set includes a
+well-formed mixed or second conditional. Both are the *same* four words in a
+different order, so they arrive by accident. Part I had three in one case.
+
+**Part II Q9 had already been noticed and papered over.** Its explanation read,
+verbatim: "«Wouldn't know» is not wrong English — it is a mixed conditional, a
+past cause with a present result — but this case is testing the pure third."
+A learner who picks a correct sentence, is marked wrong, and is then told the
+sentence was fine is exactly the complaint. **An explanation that has to
+apologise for a distractor is the report of a broken item, not its
+documentation** — fix the item.
+
+Two soft ones fixed in the same pass:
+
+- **Part I Q5** keyed *have drunk* for "I ___ three coffees **this morning**",
+  and its explanation asserted "we're still in the morning". If it is the
+  afternoon, *drank* is the correct BrE form. Stem now reads **today**.
+- Three items were left alone deliberately: Part I Q3 (*Did you ever try*, AmE)
+  and Part II Q26 (*I read this book twice already*, AmE) are the standard BrE
+  present-perfect contrast the case exists to teach; Part II Q24
+  (*little* vs *a little*) is a real semantic contrast with the discriminator
+  already in the stem.
+
+**Artwork.** Eight new pictures from `incoming/grammar court/`, prepped with
+`tools/prep-artwork.py` (one Midjourney frame was dropped as a near-duplicate
+of Part II's hero). Every *case* now carries its own background rather than
+falling back to the hero: I gets `dusk` (2nd conditional), `witness` (modals),
+`gallery` (relative clauses) and the passive teach slide joins its own
+`gavel` drill; II gets `window` (gerunds), `panel` (quantifiers), `lectern`
+(perfect simple vs continuous), and `arch` / `stand` now run across their whole
+case instead of the teach slide alone.
+
+**`verdict.jpg` — the picture for winning.** At **80%** the results slide swaps
+its background for an arms-raised shot (Part I a woman, Part II the same man
+who is Part II's hero). Below 80% it keeps the deck's own courtroom, which is
+the whole point: the picture has to be rare to mean anything. `setVerdict(pct)`
+in both files; it sets `--hero` on **both** the stage (what the screen paints)
+and the slide (what the PDF paints), and the image is decoded at boot because
+the `data-bg` preload sweep cannot see a background that no slide carries yet.
+
+If a future pass adds a second win state, the threshold lives in one place per
+file — `pct >= .8` in `setVerdict`. The *message* thresholds are separate and
+were left alone: `resStrong` still starts at 75%, so 75–79% gets the words
+without the picture.
+
+**Found, not fixed: `check-lesson.js`'s LOGO check fails on every deck.**
+"Forbes 188px vs ENGLISH 180px — 4.4% apart, should be under 4%". Verified on
+`forbes-english-the-docket-b2.html` and on Grammar Court I at `HEAD` before any
+edit, so it is neither new nor local. `501c51c` scaled the ENGLISH sub-wordmark
+by 1.6× across all lessons; either that factor is fractionally short or the
+checker's 4% tolerance is fractionally tight. It is a one-line fix in whichever
+of the two is wrong, but it belongs in a site-wide pass — changing it in two
+decks would leave them inconsistent with a hundred others.
+
+**Running the checker on Windows needs two setup steps** that are in no doc:
+`npm install`, then `npx playwright install chromium`. Without them
+`check-lesson.js` dies with `Cannot find module 'playwright'`. `npm install`
+also rewrites `package-lock.json`'s `"name"` to whatever the clone folder is
+called (`FORBES` here, `forbes-english` on origin) — `git checkout --` it
+before committing.
+
+---
+
 ## 2026-09-08 — Present Simple vs Continuous: the sorting is about the time expression, nothing else
 
 `present-simple-vs-continuous.html` is hand-written, not generated — there is
