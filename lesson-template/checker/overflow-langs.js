@@ -25,9 +25,15 @@ const path = require('path');
       sel.value = L; sel.dispatchEvent(new Event('change'));
       const slides = [...document.querySelectorAll('.stage section.slide')];
       const out = [];
+      // Measure one slide at a time and no more. Adding .is-active to slide N
+      // without taking it off the slide that already had it leaves TWO slides
+      // displayed, and in a flex column that changes the heights you are about
+      // to measure: blockcamp-present-continuous-2 de slide 8 reported +29px
+      // that way and fits when measured alone. Restore the real one at the end.
+      const wasActive = slides.filter(s => s.classList.contains('is-active'));
+      slides.forEach(s => s.classList.remove('is-active'));
       slides.forEach((s, i) => {
         const anim = s.style.animation; s.style.animation = 'none';
-        const was = s.classList.contains('is-active');
         s.classList.add('is-active');
         let worst = 0, culprit = '';
         [s, ...s.querySelectorAll('.slide-body, .cover-inner, .opts, .card')].forEach(b => {
@@ -35,26 +41,34 @@ const path = require('path');
           if (over > worst) { worst = over; culprit = (b.className || '').split(' ')[0]; }
         });
         const scale = s.getBoundingClientRect().width / 1280 || 1;
-        // This used to ALSO sum every child's height and margins and report
-        // `stack - 720` when that was larger. It assumed the children stack
-        // vertically and that no margin ever collapses, and both assumptions
-        // are wrong often enough to bury the real hits:
-        //
-        //   twin_peaks_prepositions_v5  panel/divider slides put two 788px
-        //                               children side by side -> "+720px" on
-        //                               12 slides in 3 languages, all fiction
-        //   blockcamp-present-continuous-2  de slide 8 -> "+29px", measures 0
-        //
-        // Measured on 2026-09-09 across all 111 decks with an activation
-        // stage: the heuristic found zero real overflows the scrollHeight
-        // measurement missed, and at least three that do not exist. A checker
-        // that cries wolf gets ignored — that is how the LOGO failure sat
-        // unfixed for months. So: report what actually clips, and nothing else.
-        const over = Math.round(worst / scale);
+        const cs = getComputedStyle(s);
+        // Same stack measurement as check-lesson.js's LAYOUT gate, and it has
+        // to stay the same: two checkers that disagree about whether a slide
+        // fits are worse than one. I had deleted this outright after it
+        // reported +720px on twin_peaks_prepositions_v5 and +29px on
+        // blockcamp-present-continuous-2, both fiction. Deleting it was the
+        // wrong repair — the Between Two Worlds session found the actual bug
+        // in the same week. Summing every child assumes the slide stacks them
+        // vertically, and two real layouts break that: a child out of flow
+        // contributes nothing to its parent's content height, and a ROW is as
+        // tall as its tallest child, not as tall as all of them added up.
+        const isRow = cs.display.includes('flex')
+                   && (cs.flexDirection || '').startsWith('row');
+        let stack = 0;
+        [...s.children].forEach(c => {
+          const m = getComputedStyle(c);
+          if (m.position === 'absolute' || m.position === 'fixed') return;
+          const h = c.getBoundingClientRect().height
+                  + parseFloat(m.marginTop) + parseFloat(m.marginBottom);
+          stack = isRow ? Math.max(stack, h) : stack + h;
+        });
+        const needed = Math.round(stack / scale + parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom));
+        const over = Math.max(needed - 720, Math.round(worst / scale));
         if (over > 1) out.push({ n: i + 1, over, culprit });
-        if (!was) s.classList.remove('is-active');
+        s.classList.remove('is-active');
         s.style.animation = anim;
       });
+      wasActive.forEach(s => s.classList.add('is-active'));
       return { slides: slides.length, over: out };
     }, L);
   }
