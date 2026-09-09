@@ -378,13 +378,32 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
    the column is already centred, so the body must not also stretch. */
 .panel-body .slide-body { flex: 0 0 auto; justify-content: flex-start; }
 .panel-body .slide-head { margin-bottom: 22px; }
+/* The on-canvas plate exists to give text a GROUND over a washed hero. In a
+   panel there is no hero behind the text — it is flat --void — so the plate
+   has nothing to rescue and shows as a slightly lighter box behind every
+   line. Off, here only. This is what "nothing is plated because nothing is
+   over anything" actually costs: one rule. */
+.slide[data-layout="panel"] .eyebrow,
+.slide[data-layout="panel"] .slide-title,
+.slide[data-layout="panel"] .slide-body > .prose,
+.slide[data-layout="panel"] .q-stem,
+.slide[data-layout="panel"] .q-ctx,
+.slide[data-layout="panel"] .feedback.show {
+  background: none;
+  box-shadow: none;
+}
 
 /* ── DIVIDER: picture only, one line of chrome ─────────────────
    Opens a stage. The caption sits in a band the picture has already faded
    to --void inside, so this is still not text over artwork. */
 .slide[data-type="divider"] {
-  padding: 0; display: block; background: var(--void);
+  padding: 0; background: var(--void);
 }
+/* The display flip belongs ONLY on .is-active. Setting `display: block` on
+   the base rule overrides the `display: none` every slide starts with, so
+   all eight dividers painted at once, stacked, and the last one covered the
+   deck. Every gate passed: the LAYOUT check forces .is-active on each slide
+   before it measures, so nothing ever saw the page as a learner would. */
 .slide[data-type="divider"].is-active { display: block; }
 .divider-pic {
   position: absolute; inset: 0;
