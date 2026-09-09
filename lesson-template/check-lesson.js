@@ -47,6 +47,14 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
   page.on('pageerror', e => jsErrors.push(e.message));
   await page.goto('file://' + path.resolve(file));
   await page.waitForTimeout(2000);
+  // Measure in the real face. The template already knows fonts settle late —
+  // it hides the wordmark until document.fonts.ready resolves — but this
+  // checker never waited for it. Measure while DM Sans is still loading and
+  // every line wraps in a fallback, which is wider, so a slide that fits can
+  // report roughly one extra line of overflow. That is the shape of the
+  // ~30px phantom the Square session could not reproduce by hand: by the
+  // time you measure it yourself, the font has arrived.
+  await page.evaluate(() => document.fonts.ready.then(() => true));
 
   const r = await page.evaluate(() => {
     const out = { layout: [], answers: [], short: [], explain: [], resolve: [], i18n: [], logo: null, scroll: null, bank: null, markup: null, sort: [] };
@@ -69,8 +77,18 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
     }
 
     // ── LAYOUT ──────────────────────────────────────────────────────
+    // Measure with exactly ONE slide in the flow. This loop used to note
+    // whether a slide was already active and only remove the class it had
+    // added — so the slide that is active on load (the cover) stayed
+    // displayed through every later measurement, and slides 2..n were each
+    // measured with two slides stacked in the same column. Probed on a real
+    // deck before the fix: "max slides displayed at once during LAYOUT: 2".
+    // Found by the session working on The Square, in the copy of this
+    // measurement that lives in checker/overflow-langs.js.
+    const originallyActive = slides.filter(x => x.classList.contains('is-active'));
+    slides.forEach(x => x.classList.remove('is-active'));
+
     slides.forEach((s, i) => {
-      const wasActive = s.classList.contains('is-active');
       const anim = s.style.animation;
       s.style.animation = 'none';
       s.classList.add('is-active');
@@ -156,9 +174,10 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
         if (missing) out.explain.push({ n: i + 1, type: s.dataset.type });
       }
 
-      if (!wasActive) s.classList.remove('is-active');
+      s.classList.remove('is-active');
       s.style.animation = anim;
     });
+    originallyActive.forEach(x => x.classList.add('is-active'));
 
     // ── MARKUP: does any explanation print its own tags? ────────────
     // Explanations mark the word being taught with <strong>/<em>. If the

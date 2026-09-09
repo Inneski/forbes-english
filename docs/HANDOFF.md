@@ -538,6 +538,33 @@ comes *after* the results and is the last thing the learner sees, and every
 other converted deck does that. The ACTIVATION gate only asserts the slide
 exists, so nothing caught the order — the same shape of hole PAINT closed.
 
+### Two more measurement bugs in `check-lesson.js`, both fixed
+
+Reported by the Grammar Court session, which hit the first one in
+`lesson-template/checker/overflow-langs.js` — that file carries a copy of the
+same stack measurement, so anything wrong in one is wrong in both. Keep them
+in step.
+
+- **Two slides were displayed during every measurement.** The LAYOUT loop
+  remembered whether a slide was already active and only removed the class it
+  had added, so the slide active on load — the cover — stayed in the flow for
+  every later slide. In a flex column that changes the heights being read.
+  Probed on a real deck before the fix: *max slides displayed at once during
+  LAYOUT: 2*. After: 1. The loop now deactivates everything once, activates
+  exactly one at a time, and restores the original at the end.
+- **Nothing waited for webfonts.** The checker slept 2000ms and measured.
+  The template itself knows fonts settle late — it hides the wordmark until
+  `document.fonts.ready` — but the checker did not, so on a slow load text
+  was measured wrapping in a *fallback* face, which is wider, and a slide
+  that fits could report about one extra line of overflow. It now awaits
+  `document.fonts.ready`. This is the shape of the ~30px phantom on
+  `blockcamp-present-continuous-2` (de, slide 8) that the Grammar Court
+  session could not reproduce by hand — by the time you measure it yourself,
+  the font has arrived. Unconfirmed, but it fits the evidence.
+
+Both re-verified against a deliberately broken copy: a stuffed panel still
+fails at +282px, and six shipped decks report exactly what they did before.
+
 ### Verifying a slide by hand: use `show(n)`, not the class
 
 Forcing `is-active` from the console bypasses the engine's `show()`, which is
