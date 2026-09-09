@@ -52,6 +52,22 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
     const out = { layout: [], answers: [], short: [], explain: [], resolve: [], i18n: [], logo: null, scroll: null, bank: null, markup: null, sort: [] };
     const slides = [...document.querySelectorAll('.slide')];
 
+    // ── PAINT: one slide on screen when the deck opens ──────────────
+    // A slide type that puts `display` on its BASE rule instead of on
+    // .is-active overrides the `display: none` every slide starts with,
+    // and then paints over the deck forever. Eight dividers did exactly
+    // that and shipped, because every other gate in this file forces
+    // .is-active on a slide before measuring it — so none of them ever
+    // saw the page the way a learner opens it. This runs first, on the
+    // untouched DOM, and it is the only check here that does.
+    {
+      const on = slides.filter(s => getComputedStyle(s).display !== 'none');
+      if (on.length !== 1 || !on[0].classList.contains('is-active')) {
+        out.paint = { n: on.length,
+                      types: [...new Set(on.map(s => s.dataset.type || '?'))] };
+      }
+    }
+
     // ── LAYOUT ──────────────────────────────────────────────────────
     slides.forEach((s, i) => {
       const wasActive = s.classList.contains('is-active');
@@ -351,6 +367,14 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
   head('LAYOUT');
   if (!r.layout.length) ok('every slide fits the 1280x720 canvas');
   else r.layout.forEach(l => bad(`slide ${l.n} overflows by ${l.over}px (${l.culprit})`));
+
+  head('PAINT');
+  if (!r.paint) ok('exactly one slide is on screen when the deck opens');
+  else {
+    bad(`${r.paint.n} slide(s) paint at once on load — a slide type sets display outside .is-active`);
+    console.log(DIM('          types on screen: ' + r.paint.types.join(', ')));
+    console.log(DIM('          Put the display flip on .slide[...].is-active, never on the base rule.'));
+  }
   if (!r.scroll.y && !r.scroll.x) ok('no scrolling');
   else bad(`page scrolls (y:${r.scroll.y} x:${r.scroll.x})`);
 
