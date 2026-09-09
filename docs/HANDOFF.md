@@ -291,6 +291,25 @@ in a couple of pages), plus `lesson-template/forbes-logo.svgfrag`,
 refuses to touch anything carrying `fe-logo-word` in a non-canonical form and
 prints it instead; nothing was printed, so there are no variants left behind.
 
+**Then I broke 26 decks with it, and this is the part worth remembering.**
+The sweep was uniform and the checker went green, so I published. Loading the
+live site afterwards — which is the step I had skipped — showed
+`blockcamp-past-simple` rendering ENGLISH **6.78% too wide**. The Block Camp
+decks embed Carlito, JetBrains Mono, Pixelify Sans and Silkscreen as data URIs
+and **never load DM Sans**, so their wordmark has always been a fallback face.
+A value solved against DM Sans is wrong there by construction, and no value is
+right: the fallback measures 89 units locally and 96 live. All 26 are back on
+`x="100"` / `letter-spacing="8"`, the value they shipped with.
+
+`check-lesson.js` now checks whether DM Sans actually loaded before it reports
+a width, and says *"the wordmark is not rendering in DM Sans"* instead of a
+number that means nothing. The real fix for that family is to embed DM Sans 600
+next to their other four faces — a change to the Block Camp builder, not a
+value to nudge.
+
+**A uniform substitution is not a uniform result.** 113 files carried the same
+markup; 26 of them resolved it differently, and only the live page showed it.
+
 **If you are about to "fix" the logo again, stop and read §2 first.** The
 numbers there are now solved against a measurement rather than asserted, and
 the checker will tell you if they drift.

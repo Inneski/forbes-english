@@ -262,7 +262,14 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
         const scale = ctm ? ctm.a : 1;
         const ls = parseFloat(word.getAttribute('letter-spacing')) || 0;
         const b = word.getBoundingClientRect().width - ls * scale;
-        out.logo = { mark: Math.round(a), word: Math.round(b), diff: +(Math.abs(a - b) / Math.max(a, b) * 100).toFixed(1) };
+        // Is it even DM Sans? The 26 Block Camp decks embed their four faces
+        // as data URIs and never load DM Sans, so ENGLISH renders in whatever
+        // the fallback chain resolves to — 89 units on one machine, 96 on
+        // another. No letter-spacing is correct in that state, and a width
+        // reading is meaningless, so say which problem you actually have.
+        const dm = [...document.fonts].some(f => /DM Sans/.test(f.family) && f.status === 'loaded');
+        out.logo = { mark: Math.round(a), word: Math.round(b), dmSans: dm,
+                     diff: +(Math.abs(a - b) / Math.max(a, b) * 100).toFixed(1) };
       }
     }
 
@@ -575,6 +582,10 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
 
   head('LOGO');
   if (!r.logo) bad('no .fe-logo found — the stacked lockup is required');
+  else if (!r.logo.dmSans) bad(
+    'the wordmark is not rendering in DM Sans — this page never loads it, so ENGLISH ' +
+    'is in a fallback face and the lockup cannot be balanced at any letter-spacing. ' +
+    'Load DM Sans 600 (or embed it, as this deck embeds its other faces).');
   else if (r.logo.diff <= 4) ok(`Forbes and ENGLISH match (${r.logo.mark}px / ${r.logo.word}px)`);
   else bad(`Forbes ${r.logo.mark}px vs ENGLISH ${r.logo.word}px — ${r.logo.diff}% apart, should be under 4%`);
 

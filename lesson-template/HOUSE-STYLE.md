@@ -117,6 +117,14 @@ fallback face the balance collapses. The template handles this — the wordmark
 is hidden until `document.fonts.ready` resolves (with a 1.5s failsafe). Keep
 that mechanism.
 
+**26 Block Camp decks do not load DM Sans at all.** They embed Carlito,
+JetBrains Mono, Pixelify Sans and Silkscreen as data URIs and never fetch the
+Google font, so the wordmark falls through to Arial and the lockup cannot be
+balanced at any letter-spacing — the fallback measures 89 units on one machine
+and 96 on another. Those files keep `x="100"` / `letter-spacing="8"`, which is
+what they shipped with, until DM Sans 600 is embedded alongside their other
+four faces. `check-lesson.js` now says so instead of reporting a width.
+
 Size: `232px` on the cover, `152px` anywhere else.
 
 ---
