@@ -155,6 +155,9 @@ ADVENTURES = [
  ('block-camp/wonderland-stolen-now-rpg.html','block-camp/wonderland-stolen-now-rpg/00_cover.webp','Wonderland: The Stolen Now',
   'The last afternoon is looping and the palace clock is counting down. Two branching acts, a pink-or-blue cake trial that splits what is happening now from what always happens, and three endings.',
   ('Present Continuous',),'A1&ndash;A2','pro','new'),
+ ('block-camp/the-last-bounty-rpg.html','block-camp/the-last-bounty-rpg/cover.webp','The Last Bounty',
+  'A voxel Western. You found your brother&rsquo;s killer, but the town he is hiding in has other plans for the afternoon &mdash; two story choices split the finale, and every answer you give is judged on what actually happened, not what is happening now.',
+  ('Past Simple',),'A2','pro','new'),
 ]
 
 def adventure_cards():
