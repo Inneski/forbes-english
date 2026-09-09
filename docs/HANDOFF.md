@@ -172,13 +172,25 @@ worth fixing, and working out which was the whole job.
 
 **Two filters, in this order.**
 
-1. **Re-measure each hit on its own.** The sweep walks every slide in one pass,
-   adding `is-active` to each in turn while the real active slide keeps it, and
-   it takes the larger of a real `scrollHeight - clientHeight` and a
-   `stack - 720` heuristic that sums child margins as if they never collapse.
-   One of the 22 — `blockcamp-present-continuous-2.html` de slide 8, reported
-   at **+29px** — measures **0** in isolation. Always re-measure before editing
-   anything.
+1. **The sweep was lying, and it has been fixed.** `overflow-langs.js` used to
+   take the larger of a real `scrollHeight - clientHeight` and a `stack - 720`
+   heuristic that summed every child's height and margins as though children
+   always stack vertically and margins never collapse. Both assumptions fail
+   often enough to bury the real hits:
+
+   - `blockcamp-present-continuous-2.html` de slide 8, reported **+29px**,
+     measures **0**.
+   - `twin_peaks_prepositions_v5.html`, whose new `panel` and `divider` slides
+     put two 788px children side by side, was reported at **+720px on twelve
+     slides in three languages**. Every one of them is fiction; the deck is
+     fine.
+
+   Across all 111 decks the heuristic found **zero** real overflows that the
+   scrollHeight measurement missed, and at least three that do not exist, so it
+   is gone. What remains is what actually clips — verified in both directions
+   against pre-fix `carrying-the-load-c1` (still +33px) and against
+   `twin_peaks_prepositions_v5` (now fits). **A checker that cries wolf gets
+   ignored: that is exactly how the LOGO failure sat unfixed for months.**
 
 2. **Ask whether the overflow is ink or padding.** After filter 1, thirteen
    files sat at **+2 to +5px**, and `forbes-english-minecraft-b1.html` de was

@@ -35,14 +35,22 @@ const path = require('path');
           if (over > worst) { worst = over; culprit = (b.className || '').split(' ')[0]; }
         });
         const scale = s.getBoundingClientRect().width / 1280 || 1;
-        const cs = getComputedStyle(s);
-        let stack = 0;
-        [...s.children].forEach(c => {
-          const m = getComputedStyle(c);
-          stack += c.getBoundingClientRect().height + parseFloat(m.marginTop) + parseFloat(m.marginBottom);
-        });
-        const needed = Math.round(stack / scale + parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom));
-        const over = Math.max(needed - 720, Math.round(worst / scale));
+        // This used to ALSO sum every child's height and margins and report
+        // `stack - 720` when that was larger. It assumed the children stack
+        // vertically and that no margin ever collapses, and both assumptions
+        // are wrong often enough to bury the real hits:
+        //
+        //   twin_peaks_prepositions_v5  panel/divider slides put two 788px
+        //                               children side by side -> "+720px" on
+        //                               12 slides in 3 languages, all fiction
+        //   blockcamp-present-continuous-2  de slide 8 -> "+29px", measures 0
+        //
+        // Measured on 2026-09-09 across all 111 decks with an activation
+        // stage: the heuristic found zero real overflows the scrollHeight
+        // measurement missed, and at least three that do not exist. A checker
+        // that cries wolf gets ignored — that is how the LOGO failure sat
+        // unfixed for months. So: report what actually clips, and nothing else.
+        const over = Math.round(worst / scale);
         if (over > 1) out.push({ n: i + 1, over, culprit });
         if (!was) s.classList.remove('is-active');
         s.style.animation = anim;
