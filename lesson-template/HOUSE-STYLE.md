@@ -70,11 +70,26 @@ embedded in the template. Copy it verbatim. Its geometry is:
 
 - `viewBox="0 0 200 78"`
 - Forbes glyph: `transform="translate(-42.74,-30.22) scale(0.099477)"`
-- ENGLISH: `x="100" y="72.6"`, `font-size="20.8"`, `letter-spacing="8"`,
-  `font-weight="600"`, DM Sans
+- ENGLISH: `x="105.205" y="72.6"`, `font-size="20.8"`,
+  `letter-spacing="10.41"`, `font-weight="600"`, DM Sans
 
 Both lines then render 148.4 units wide, left edge at x=25.8. Do not nudge
 these numbers. If the two lines are different widths, the lockup is wrong.
+
+**`x` is not 100, and that is deliberate.** Letter-spacing is added after the
+*last* glyph as well as between glyphs, so with `text-anchor="middle"` the
+browser centres a box that is one whole space wider than the ink — which
+leaves the visible word half a space left of centre. `x = 100 + letter-spacing
+/ 2` puts the ink back on the centre line. Change one of the two and you must
+change the other.
+
+**Corrected 2026-09-09.** This section previously specified `x="100"` and
+`letter-spacing="8"` and claimed they rendered at 148.4/25.8. They did not:
+measured in headless Chromium at 1400×820 with DM Sans 600 loaded, Forbes ran
+25.809 → 174.192 (148.383 wide, exactly as documented) and ENGLISH ran
+29.037 → 162.963 — 133.927 wide, 9.75% narrow and 3.2 units left of where the
+mark starts. The values above are solved against that same measurement and land
+ENGLISH on 25.805 → 174.195. Every page in the repo was updated in one pass.
 
 **Colour:** the Forbes mark takes `var(--accent)`; ENGLISH takes
 `var(--text)`. Both come from the palette, so the logo belongs to each
@@ -97,7 +112,7 @@ or so loud that the mark stops reading, `var(--text)` for both is the safe
 fallback.
 
 **The font must actually be loaded before the wordmark shows.** DM Sans at
-`letter-spacing: 8` is what makes ENGLISH exactly as wide as Forbes; in a
+`letter-spacing: 10.41` is what makes ENGLISH exactly as wide as Forbes; in a
 fallback face the balance collapses. The template handles this — the wordmark
 is hidden until `document.fonts.ready` resolves (with a 1.5s failsafe). Keep
 that mechanism.

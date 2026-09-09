@@ -79,6 +79,77 @@ def _bg(folder, bg):
     return ' data-bg="%s/%s"' % (folder, bg) if bg else ''
 
 
+def _pic(folder, pic, side=None, pos=None, width=None):
+    """Attributes for a panel/divider picture.
+
+    Emitted twice on purpose: --pic drives the CSS, data-pic is what
+    check-lesson.js's ART gate reads to prove the file is on disk. One being
+    a style and the other an attribute is the only reason both exist; keep
+    them in step."""
+    if not pic:
+        return ''
+    ref = '%s/%s' % (folder, pic)
+    style = "--pic:url('%s')" % ref
+    if pos:
+        style += ';--pic-pos:%s' % pos
+    if width:
+        style += ';--panel-w:%s' % width
+    out = ' data-pic="%s" style="%s"' % (ref, style)
+    if side == 'right':
+        out += ' data-side="right"'
+    return out
+
+
+def panel(eyebrow_key, eyebrow, title_key, title, paras, folder='', pic=None,
+          side='left', pos=None, width=None):
+    """A teaching slide whose picture sits BESIDE the text, not under it.
+
+    paras: list of (key, html), or (key, html, 'dim') for the quieter second
+    voice. No cards: on a panel the text column is already a clean field of
+    --void, and a card on top of nothing is just a box.
+
+    Use it when the artwork IS the lesson rather than the atmosphere. The
+    washed-hero teach() is still right for everything else."""
+    rows = []
+    for para in paras:
+        key, body = para[0], para[1]
+        dim = ' dim' if len(para) > 2 and para[2] == 'dim' else ''
+        rows.append('<p class="prose%s"%s>%s</p>'
+                    % (dim, ' data-i18n="%s"' % key if key else '', body))
+    return """
+    <section class="slide" data-type="teach" data-layout="panel"%s>
+      <div class="panel-pic"></div>
+      <div class="panel-body">
+        <div class="slide-head"><div>
+          <div class="eyebrow" data-i18n="%s">%s</div>
+          <h2 class="slide-title" data-i18n="%s">%s</h2>
+        </div></div>
+        <div class="slide-body">
+          %s
+        </div>
+      </div>
+    </section>
+""" % (_pic(folder, pic, side, pos, width), eyebrow_key, eyebrow,
+       title_key, title, ("\n          ").join(rows))
+
+
+def divider(title_key, title, note_key, note, folder='', pic=None, pos=None):
+    """A stage opener: the picture, full bleed, and one line of chrome.
+
+    Nothing to answer. It marks that the deck has moved to a new stage, and
+    lets one of the pictures be seen whole before it goes back to being a
+    column."""
+    return """
+    <section class="slide" data-type="divider"%s>
+      <div class="divider-pic"></div>
+      <div class="divider-cap">
+        <h2 data-i18n="%s">%s</h2>
+        <div class="divider-n" data-i18n="%s">%s</div>
+      </div>
+    </section>
+""" % (_pic(folder, pic, None, pos), title_key, title, note_key, note)
+
+
 # ── slides ─────────────────────────────────────────────────────────────
 def cover(logo, title, sub, chips):
     return '''

@@ -66,11 +66,22 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
       });
       const scale = s.getBoundingClientRect().width / 1280 || 1;
       const cs = getComputedStyle(s);
+      // Summing every child assumes the slide stacks them vertically. Two
+      // things break that, and both are real layouts rather than mistakes:
+      // a child taken out of flow contributes nothing to its parent's
+      // content height, and a ROW of children is as tall as its tallest,
+      // not as tall as all of them added together. Measured against the
+      // panel and divider layouts, which reported +720 and +132 on slides
+      // that fit the canvas exactly.
+      const isRow = cs.display.includes('flex')
+                 && (cs.flexDirection || '').startsWith('row');
       let stack = 0;
       [...s.children].forEach(c => {
         const m = getComputedStyle(c);
-        stack += c.getBoundingClientRect().height
-               + parseFloat(m.marginTop) + parseFloat(m.marginBottom);
+        if (m.position === 'absolute' || m.position === 'fixed') return;
+        const h = c.getBoundingClientRect().height
+                + parseFloat(m.marginTop) + parseFloat(m.marginBottom);
+        stack = isRow ? Math.max(stack, h) : stack + h;
       });
       const needed = Math.round(stack / scale + parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom));
       const over = Math.max(needed - 720, Math.round(worst / scale));
@@ -240,7 +251,17 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
       const word = svg.querySelector('text');
       if (mark && word) {
         const a = mark.getBoundingClientRect().width;
-        const b = word.getBoundingClientRect().width;
+        // The wordmark's client rect is an ADVANCE box: letter-spacing is added
+        // after the last glyph too, so the box ends one full space past the ink.
+        // The mark's box is ink. Comparing the two reported every deck on the
+        // site as 4.4% out for months, and a session went looking for a font
+        // bug that was not there. Drop the trailing space and both sides are
+        // measuring the same thing — which is what HOUSE-STYLE 2 asks for:
+        // "the same optical width".
+        const ctm = svg.getScreenCTM();
+        const scale = ctm ? ctm.a : 1;
+        const ls = parseFloat(word.getAttribute('letter-spacing')) || 0;
+        const b = word.getBoundingClientRect().width - ls * scale;
         out.logo = { mark: Math.round(a), word: Math.round(b), diff: +(Math.abs(a - b) / Math.max(a, b) * 100).toFixed(1) };
       }
     }
@@ -540,6 +561,7 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
     const refs = new Set();
     for (const m of src.matchAll(/--hero:\s*url\('([^']+)'\)/g)) refs.add(m[1]);
     for (const m of src.matchAll(/data-bg="([^"]+)"/g)) refs.add(m[1]);
+    for (const m of src.matchAll(/--pic:\s*url\('([^']+)'\)/g)) refs.add(m[1]);
     const gone = [...refs].filter(u => !/^(https?:|data:)/.test(u)
                                     && !fs.existsSync(path.join(dir, u)));
     if (gone.length) {

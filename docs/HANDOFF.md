@@ -12,7 +12,7 @@ stale copy.
 
 ---
 
-## 2026-09-09 — Grammar Court I & II: six items had a second correct answer, and the deck now has a picture for winning
+## 2026-09-09 — Grammar Court I & II: eleven items had a second correct answer, and the deck now has a picture for winning
 
 Both parts are **hand-written HTML**. There is no builder for them in
 `lesson-template/build/` — `613604b` shipped the decks and no script. Edit the
@@ -20,8 +20,11 @@ files directly; the "every deck is generated" rule in `CLAUDE.md` does not
 apply to these two.
 
 **The defect Innes reported: questions with more than one possible answer.**
-Six, all in the multiple choice, all the same shape — a distractor that is
-perfectly good English:
+Eleven of the sixty, all in the multiple choice, all the same shape — a
+distractor that is perfectly good English.
+
+Six were conditionals, where the wrong answer is the same four words in a
+different order and so arrives by accident:
 
 | | item | the second answer | fix |
 |---|---|---|---|
@@ -32,30 +35,51 @@ perfectly good English:
 | II | Q9 *If you ___ me, I ___ what to do* | mixed conditional *hadn't told … wouldn't know* | stem → *…what to do **that night*** |
 | II | Q10 *We ___ the match if our best player ___ injured* | second conditional *would win … wasn't* | stem → *…**last Saturday's** match…* |
 
-**The pattern to check for in every other conditional drill on the site:** a
-second-conditional item whose distractor set includes a well-formed first
-conditional, or a third-conditional item whose distractor set includes a
-well-formed mixed or second conditional. Both are the *same* four words in a
-different order, so they arrive by accident. Part I had three in one case.
+Five more were tense and quantifier items where the alternative is a different
+variety of English, or simply also true:
 
-**Part II Q9 had already been noticed and papered over.** Its explanation read,
-verbatim: "«Wouldn't know» is not wrong English — it is a mixed conditional, a
-past cause with a present result — but this case is testing the pure third."
-A learner who picks a correct sentence, is marked wrong, and is then told the
-sentence was fine is exactly the complaint. **An explanation that has to
-apologise for a distractor is the report of a broken item, not its
-documentation** — fix the item.
+| | item | the second answer | fix |
+|---|---|---|---|
+| I | Q3 *___ you ever ___ sushi before?* | AmE *Did … try* | distractor → `Have ... try` |
+| I | Q5 *I ___ three coffees **this morning*** | *drank*, once it is the afternoon | stem → **today** |
+| II | Q24 *I have ___ money left* | *a little* is not false either | stem → *…I can't even afford the bus home* |
+| II | Q25 *How long ___ you ___ in the garden?* | *have you worked* — that is employment | verb → **dig** in all four options |
+| II | Q26 *I ___ this book twice already* | AmE *read* | distractor → `am reading` |
+| II | Q27 *She ___ French for five years* | *has learned* | distractor → `learns` |
+| II | Q29 *Look at your hands! What ___ you ___?* | *have you done* | stem → *…**all afternoon*** |
 
-Two soft ones fixed in the same pass:
+**Four of the eleven had already been noticed and papered over in the
+explanation rather than fixed.** Part II Q9's read, verbatim: "«Wouldn't know»
+is not wrong English — it is a mixed conditional, a past cause with a present
+result — but this case is testing the pure third." Part I Q3 conceded *Did you
+ever try* to American English; Part II Q27 said "both «has learned» and «has
+been learning» could work"; Part II Q29 said "«What have you done?» is also
+possible". Every one of those named an option that was on the slide.
 
-- **Part I Q5** keyed *have drunk* for "I ___ three coffees **this morning**",
-  and its explanation asserted "we're still in the morning". If it is the
-  afternoon, *drank* is the correct BrE form. Stem now reads **today**.
-- Three items were left alone deliberately: Part I Q3 (*Did you ever try*, AmE)
-  and Part II Q26 (*I read this book twice already*, AmE) are the standard BrE
-  present-perfect contrast the case exists to teach; Part II Q24
-  (*little* vs *a little*) is a real semantic contrast with the discriminator
-  already in the stem.
+**An explanation that has to apologise for a distractor is the report of a
+broken item, not its documentation.** That is the cheapest way to find the rest
+of them, and it is a grep:
+
+```bash
+grep -rniE "(also (exists|possible|correct|works))|is not wrong|could work|would be fine|American English" ./*.html
+```
+
+Read each hit and check whether the alternative it names is **on the slide**.
+If it is, the item is broken. If it is not — Part I Q21 and Q23, Part II Q1 and
+Q4 — the note is fine and is teaching something. The rest of the site has
+around forty hits that nobody has walked through yet; Grammar Court is clean.
+
+Both decks now pass their own audit: no explanation in either file names an
+offered option as acceptable.
+
+**The German activation slide overflowed the canvas in both decks** — Part I
++9px, Part II +4px on `.slide-body`, English and Spanish fine. Pre-existing;
+`lesson-template/checker/overflow-langs.js` is the only thing that sees it, and
+`check-lesson.js` reports the page as fitting. German runs 20–40% longer than
+the English here and four prompts had to lose words. Each one keeps the
+structure it exists to elicit — Part I keeps its second conditional, Part II
+keeps *used to* / *would* / *would have* — because those prompts are the
+production half of the lesson, not decoration.
 
 **Artwork.** Eight new pictures from `incoming/grammar court/`, prepped with
 `tools/prep-artwork.py` (one Midjourney frame was dropped as a near-duplicate
@@ -79,14 +103,12 @@ file — `pct >= .8` in `setVerdict`. The *message* thresholds are separate and
 were left alone: `resStrong` still starts at 75%, so 75–79% gets the words
 without the picture.
 
-**Found, not fixed: `check-lesson.js`'s LOGO check fails on every deck.**
-"Forbes 188px vs ENGLISH 180px — 4.4% apart, should be under 4%". Verified on
-`forbes-english-the-docket-b2.html` and on Grammar Court I at `HEAD` before any
-edit, so it is neither new nor local. `501c51c` scaled the ENGLISH sub-wordmark
-by 1.6× across all lessons; either that factor is fractionally short or the
-checker's 4% tolerance is fractionally tight. It is a one-line fix in whichever
-of the two is wrong, but it belongs in a site-wide pass — changing it in two
-decks would leave them inconsistent with a hundred others.
+**The LOGO check was failing on every deck, and both halves of it were wrong.**
+See the separate entry below for the full measurement. Short version: the
+ENGLISH sub-wordmark really was 9.75% narrower than Forbes, and the checker was
+comparing an advance box against an ink box so it under-reported that as 4.4%.
+Fixed in one site-wide pass — 114 files, plus `forbes-logo.svgfrag`,
+`HOUSE-STYLE.md` §2 and `check-lesson.js`.
 
 **Running the checker on Windows needs two setup steps** that are in no doc:
 `npm install`, then `npx playwright install chromium`. Without them
@@ -94,6 +116,61 @@ decks would leave them inconsistent with a hundred others.
 also rewrites `package-lock.json`'s `"name"` to whatever the clone folder is
 called (`FORBES` here, `forbes-english` on origin) — `git checkout --` it
 before committing.
+
+---
+
+## 2026-09-09 — The logo lockup was out by 9.75% on every page, and the checker was measuring the wrong box
+
+`check-lesson.js` has reported `Forbes 188px vs ENGLISH 180px — 4.4% apart` on
+every deck for months. A previous session concluded it was "font metrics on
+this PC" and told everyone to ignore it. That was wrong on both counts, and the
+note has been corrected in place further down this file.
+
+**Measured, headless Chromium at 1400×820, DM Sans 600 confirmed loaded**
+(`document.fonts.check('600 20.8px "DM Sans"')` → true, and the gstatic woff2
+request succeeds — the font was never the problem):
+
+```
+Forbes    25.809 → 174.192    148.383 wide     exactly as HOUSE-STYLE §2 says
+ENGLISH   29.037 → 162.963    133.927 wide     9.75% narrow, 3.2 units left
+```
+
+So §2's stated inputs (`x="100"`, `letter-spacing="8"`) do not produce §2's
+stated result ("both lines render 148.4 units wide, left edge at x=25.8"). The
+result is the design; the inputs were wrong.
+
+**Two things had to change, and neither works without the other.**
+
+1. **The lockup.** `letter-spacing="8"` → `"10.41"`, `x="100"` → `"105.205"`.
+   ENGLISH now runs 25.805 → 174.195: 148.391 wide, within 0.004 units of the
+   mark, flush at both flanks. **`x` moves because letter-spacing is added
+   after the last glyph as well as between glyphs** — `text-anchor="middle"`
+   centres a box one whole space wider than the ink, which parks the visible
+   word half a space left. `x = 100 + letter-spacing / 2` corrects it. Change
+   one, change the other.
+
+2. **The check.** It compared `mark.getBoundingClientRect().width` (ink)
+   against `word.getBoundingClientRect().width` (advance, trailing space and
+   all). Two different measurements, so the number it printed was neither the
+   real error nor a tolerance question. It now subtracts
+   `letter-spacing × getScreenCTM().a` before comparing.
+
+**The measurement is the point, not the fix.** Run the corrected checker
+against a pre-fix file and it fails at **9.8%** — the true error, correctly
+named. Run it against a fixed file and it is 188px / 188px. Either half alone
+would have looked worse than doing nothing: the old check passes the old
+lockup's neighbours by luck, and the new lockup measured the old way reads
+7.0% out.
+
+Swept in one pass: **114 files, 116 occurrences** (the wordmark appears twice
+in a couple of pages), plus `lesson-template/forbes-logo.svgfrag`,
+`lesson-template/lesson-template.html` and `HOUSE-STYLE.md` §2. The sweep
+refuses to touch anything carrying `fe-logo-word` in a non-canonical form and
+prints it instead; nothing was printed, so there are no variants left behind.
+
+**If you are about to "fix" the logo again, stop and read §2 first.** The
+numbers there are now solved against a measurement rather than asserted, and
+the checker will tell you if they drift.
 
 ---
 
@@ -2133,6 +2210,11 @@ Rebuilt from the same builder, now 26 slides, EN + DE + ES:
   (188 vs 180px, 4.4%) — verified on `tense-review-minecraft.html`, which is
   clean. It is font metrics on this PC, not the deck. Ignore it here; it passes
   in the sandbox.
+  **Wrong, and corrected on 2026-09-09 — see the entry at the top of this
+  file.** DM Sans 600 loads fine on this machine (`document.fonts.check` is
+  true and the gstatic woff2 request succeeds); the deck was genuinely out of
+  balance and the checker was genuinely measuring the wrong thing. Both are
+  fixed. Do not re-adopt "it is font metrics on this PC" as the explanation.
 
 `lesson-template/checker/overflow-langs.js` was what caught the DE activation
 slide at +5px; the English checker cannot see that. Run it on anything
