@@ -17,9 +17,36 @@ const path = require('path');
   page.on('pageerror', e => errs.push(e.message));
   await page.goto('file://' + path.resolve(file));
   await page.waitForTimeout(1500);
+  // Wait for the faces, not just the clock. A slide measured while the text is
+  // still in a fallback wraps wider and reports about one extra line of
+  // overflow that is not there. The deck itself already knows this — it hides
+  // the wordmark until fonts.ready with a 1.5s failsafe — so the page was
+  // ahead of its checker. (This did NOT turn out to be the cause of the
+  // blockcamp-present-continuous-2 +29px phantom: fonts report "loaded" at
+  // t=0 there and a fresh-page sweep at 0/100/300/800/1500/3000ms measures 0
+  // every time. Correct anyway, and cheap.)
+  await page.evaluate(() => document.fonts.ready);
   const langs = await page.evaluate(() => [...document.getElementById('langSelect').options].map(o => o.value));
   const report = {};
   for (const L of langs) {
+    // A FRESH PAGE PER LANGUAGE. Switching language in one page and measuring
+    // again can read a stale layout. Reduced to a minimal case on
+    // blockcamp-present-continuous-2 slide 8: a pass in German alone measures
+    // 0, and an English pass followed by a German one measures 32 — same DOM,
+    // same six .sup glosses, same 1784 characters of markup, different heights
+    // (.slide-body client 416 against 427). A learner opens the page in one
+    // language, so that is what the checker should do.
+    //
+    // HONEST LIMIT: this did NOT silence that deck's +29px, which still
+    // reports on a fresh page and is deterministic across five runs. So the
+    // reload is correct on its own merits and the phantom has a different
+    // cause that I did not find. Ruled out: fonts (status is "loaded" at t=0,
+    // and a fresh-page sweep at 0/100/300/800/1500/3000ms measures 0), gloss
+    // duplication (identical innerHTML), and self-pollution from walking the
+    // slides. Do not trust that one number until someone explains it.
+    await page.goto('file://' + path.resolve(file));
+    await page.waitForTimeout(1500);
+    await page.evaluate(() => document.fonts.ready);
     report[L] = await page.evaluate((L) => {
       const sel = document.getElementById('langSelect');
       sel.value = L; sel.dispatchEvent(new Event('change'));
