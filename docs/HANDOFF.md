@@ -12,6 +12,113 @@ stale copy.
 
 ---
 
+## 2026-09-10 — The Last Bounty: a chances-less RPG, and the engine assumed every game has lives
+
+Rebuilt `incoming/The-Last-Bounty.html` (`window.BOUNTY_GAME_DATA`) as
+`block-camp/the-last-bounty-rpg.html` — Past Simple, A2, voxel Western,
+24 scenes / 17 questions / 3 endings. Branch `last-bounty-rpg`, pushed;
+PR not opened by this session (`gh` is not installed here and there is no
+`GITHUB_TOKEN`/`GH_TOKEN` in the environment) — open one from
+`https://github.com/Inneski/forbes-english/pull/new/last-bounty-rpg`, or
+push found the compare link itself when this session ran `git push`.
+
+**What kind of export it was.** The "ChatGPT kind" (HANDOFF-rpg.md §3),
+and the most complete one yet: `meta`, a `briefing` object (5 rule cards,
+note, button), a per-scene `hotspot` + `panelWidth`, a per-scene
+`explanation`, and all nine languages already in every `local` block — no
+`translations/` directory needed at all, unlike Lost Yellow Road (es/de
+only) or Wonderland (no gloss). `build_the_last_bounty.py`'s docstring has
+the detail. Hotspots were checked against every picture with the README
+§3 contact-sheet method; all 24 landed exactly where the export put them
+except `door` and `chase`, whose objects sit within a few percent of
+centre — the left/right-of-centre math put the panel over the busy half
+of the picture in both, and eyeballing flipped it to the empty half.
+
+**The real find: `chances: 0` is not "no lives", it is "zero lives", and
+the engine has never shipped a game with no chances mechanic that also
+skips repair mode.** Wonderland has `chances: 0` too, but its `repair:
+True` sidesteps the bug entirely — a wrong answer there retries the same
+scene rather than calling `advance()`, so `state.chances<=0` never gets
+evaluated against a real wrong answer. The Last Bounty is genuinely
+different: `correctNext === wrongNext` on every question (confirmed with
+an assert) and no repair, i.e. "you always finish the story, score 50/75
+for a reward ending" per its own briefing note. With the unpatched
+engine, `advance()`'s `if(state.chances<=0 && wrong){go(failed)}` fired
+on the very first wrong answer anywhere, ending the game immediately —
+directly contradicting the export's own design. This was caught by
+screenshotting the wrong-answer feedback (it read "NO POINTS · −1
+CHANCE" for a game with no chances badge at all) and confirmed by a
+scripted Playwright playthrough before the fix: any single wrong answer
+short-circuited straight to the fail ending regardless of position.
+
+The fix, in `rpg.py`, generic and backward-compatible (measured against
+Lost Yellow Road/Wonderland/Frankenstein — all three still build and
+their generated HTML is byte-for-byte inert except the new `tilesBadge`
+id, since none of them has `chances: 0` without `repair: True`):
+
+- `resolve()`/`advance()` now compute an `okState` that is `state.chances
+  > 0` when `G.chances` is truthy (unchanged for every existing game),
+  and `state.score >= G.completeScore` when it is not. That lets
+  `chooseRoute()`'s existing `ending`/`master` mechanism resolve properly
+  for a points-only game: the two story choices (RESCUE/PURSUE) set
+  `state.endingPick`, and `resolve()` honours it when the score clears
+  the pass threshold, falling through to the shared `failed` ending
+  (mapped to `end_lost`) otherwise.
+- The HUD's `TILES` badge now hides when `G.tiles` is 0, the way
+  `CHANCES` already did — first RPG shipped with no relic mechanic at
+  all (`tilesBadge` id added to the markup).
+- A new `wrongPoints` label ("NO POINTS", no "−1 CHANCE") is used for the
+  wrong-answer head when `G.chances` is falsy.
+
+Verified with a scripted playthrough at every combination: RESCUE + all
+correct → `end_rescue` (75/75); PURSUE + all correct → `end_pursuit`
+(75/75); either route + all wrong → `end_lost` (25–30/75); the exact
+pass-line boundary, 10/17 correct (score 50) → reward ending, 9/17
+(score 45) → `end_lost`. Also reran the three other shipped RPGs against
+the patched engine to confirm no regression, then reverted their
+regenerated HTML — rebuilding them wasn't part of this task and the diff
+was inert (HANDOFF-rpg.md §8: don't restyle other RPGs as a side effect).
+
+**Checks run:** `check-library.js --vs-origin` PASS before and after the
+`library.html` edit (re-read fresh from disk, which matched
+`origin/main` byte-for-byte before editing — no stale-copy risk this
+time). `tools/seo.py` reached Supabase directly in this session (no
+`! supabase unreachable` line), so the cloud-fallback trap didn't apply;
+`git diff` on `sitemap.xml` was `lastmod` bumps only, `llms.txt` and
+`lesson-meta.json` had no diff at all, and `library.html`'s diff was the
+one added `LESSON_IMAGES` line. `tools/lessons.json` itself got
+overwritten by `seo.py`'s live Supabase fetch (295 lessons), which wiped
+the row this session had added there by hand first — harmless here since
+Supabase was reachable, but worth knowing: adding to that cache before
+running `seo.py` only helps in the cloud-fallback case; when Supabase
+answers, the cache is replaced wholesale from the live catalogue instead.
+
+Playwright screenshots taken at 1536×864 and 390×844: cover, rules
+briefing (all 5 cards + note + button on the widened 56% panel), a
+question closed and open, wrong and right feedback, the route-choice
+scene, both reward endings and the consolation ending, the sound toggle
+on, all 24 scenes closed and tiled (glow confirmed on the named object in
+every one — the export's own hotspot numbers were essentially perfect),
+and Japanese + Arabic (RTL, HUD and panel fully mirrored and translated,
+no overflow).
+
+**Left for after the merge**, per HANDOFF-rpg.md §7 step 4 — do not run
+this before the page is live, or the library card 404s:
+
+```sql
+insert into lessons (file, title, level, access, deck, video, sort_order)
+select 'block-camp/the-last-bounty-rpg.html', 'The Last Bounty — Past Simple Voxel Western RPG (A2)', 'A2', 'pro', false, false, 0
+where not exists (select 1 from lessons where file = 'block-camp/the-last-bounty-rpg.html');
+```
+
+After that row exists, re-run `python3 tools/seo.py` (from a session that
+can reach Supabase, or after `tools/lessons.json` picks up the row) so
+the page gets its full SEO block, joins the sitemap, `llms.txt` and the
+library's noscript index — right now the page has only the `<title>` and
+canonical link the builder's own template writes; it has no `og:*`,
+`ld+json` or listing anywhere, because `seo.py` only writes those for a
+lesson it can find in the catalogue. Nothing else is left to run.
+
 ## 2026-09-09 — Three sessions, one index: `git add -- <path>` does NOT protect you
 
 This cost two sessions an attribution in one afternoon, in both directions,
