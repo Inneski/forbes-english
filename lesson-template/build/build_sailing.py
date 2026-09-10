@@ -174,7 +174,10 @@ DIAGRAM = '''<div class="camp" id="order">
           <button type="button" data-mode="verb">Just the verbs</button>
         </div>
         <div class="diagram-stage">
-          ''' + M.chart('sailb', clickable=True) + '''
+          <div class="chart-toggle-wrap" id="chart-toggle-wrap">
+            <img class="chart-photo" src="sailing-the-seas-of-grammar/hero.jpg" alt="''' + HERO_MAP_ALT + '''" loading="lazy">
+            ''' + M.chart('sailb', clickable=True) + '''
+          </div>
         </div>
         <p class="chart-scroll-hint">Drag the chart sideways to read the far shore.</p>
         <div class="diagram-panels three">
@@ -421,8 +424,10 @@ function pulseShape(el){
   );
 }
 
-// the chart reads two ways: as a coast you learn, or as the bare word list
-// underneath it. Both charts on the page switch together.
+// the chart reads two ways: the illustrated map (place names, baked into the
+// artwork) or the bare word-list schematic underneath it (just the verbs).
+// The coded chart's own text stays in sync either way, so keyboard/no-JS
+// users who never see the photo still get the right labels.
 function sailNames(mode){
   document.querySelectorAll(".sail-chart text.place-name").forEach(function(t){
     t.textContent = t.getAttribute(mode === "verb" ? "data-verb" : "data-place");
@@ -432,6 +437,8 @@ function sailNames(mode){
     b.classList.toggle("on", b.getAttribute("data-mode") === mode);
     b.setAttribute("aria-pressed", b.getAttribute("data-mode") === mode ? "true" : "false");
   });
+  var wrap = document.getElementById("chart-toggle-wrap");
+  if (wrap) wrap.classList.toggle("mode-verb", mode === "verb");
 }
 document.querySelectorAll("#name-bar button").forEach(function(b){
   b.addEventListener("click", function(){ sailNames(b.getAttribute("data-mode")); });
@@ -490,16 +497,34 @@ EXTRA_CSS = '''
                    background:var(--card);color:var(--ink-soft);padding:5px 12px;border-radius:999px;
                    cursor:pointer;transition:background .12s ease,color .12s ease;}
   .name-bar button:hover{color:var(--ink);}
-  .name-bar button.on{background:var(--accent);color:#FFFFFF;border-color:var(--accent);}
+  .name-bar button.on{background:var(--accent);color:var(--on-accent);border-color:var(--accent);}
   .sail-chart .place-name{transition:opacity .12s ease;}
+  /* place mode shows the illustrated map (its labels are baked into the
+     artwork); verb mode fades to the coded schematic underneath, whose own
+     text already reads as bare verbs. The click regions and keyboard focus
+     stay live on the coded chart the whole time, so which layer is visible
+     never changes what you can actually click. */
+  .chart-toggle-wrap{position:relative;}
+  .chart-toggle-wrap .chart-photo{display:block;width:100%;height:auto;border-radius:14px;}
+  .chart-toggle-wrap .sail-chart{position:absolute;top:0;left:0;width:100%;height:100%;
+                                  opacity:0;transition:opacity .3s ease;}
+  .chart-toggle-wrap.mode-verb .sail-chart{opacity:1;}
+  .chart-toggle-wrap.mode-verb .chart-photo{opacity:0;}
+  .hero-cta{display:inline-flex;align-items:center;gap:6px;margin-top:18px;background:var(--accent);
+            color:var(--on-accent);font-family:'Inter',sans-serif;font-weight:600;font-size:14px;
+            padding:11px 20px;border-radius:999px;text-decoration:none;transition:opacity .12s ease;}
+  .hero-cta:hover{opacity:.88;}
   @media (max-width:760px){
     .diagram-stage{overflow-x:auto;-webkit-overflow-scrolling:touch;}
-    .diagram-stage .sail-chart{width:720px;max-width:none;}
+    .diagram-stage .chart-toggle-wrap{width:720px;max-width:none;}
     .chart-scroll-hint{display:block;}
   }
 '''
 
 REPLACEMENTS = [
+    ('the island, and the cape flying a false flag.</p>\n    </div>',
+     'the island, and the cape flying a false flag.</p>\n      '
+     '<a class="hero-cta" href="#order">Read the chart <span aria-hidden="true">&rarr;</span></a>\n    </div>'),
     ('<div class="brand">Sherpa <span>Tensing</span></div>',
      '<div class="brand">Sailing the <span>Seas of Grammar</span></div>'),
     ('<div class="sub">Forbes English &middot; a route up the tenses</div>',
