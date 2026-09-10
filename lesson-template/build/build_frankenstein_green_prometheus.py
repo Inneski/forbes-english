@@ -165,13 +165,23 @@ RULES = {
     # No story line: the four cards and the note say all of it, and with a
     # gloss under every one of them the panel had nowhere to put a paragraph
     # that only repeated them.
+    # Five cards, not four. `.rules-intro` is a two-column grid whose LAST
+    # card spans both columns, so an even count leaves one card stranded
+    # half-width on its own row and pushes the note out on its own — which is
+    # how "USE 2 — STRONG EVIDENCE" ended up looking like an afterthought
+    # rather than the partner of USE 1. Odd counts lay out 2+2+1.
     'rules': [
         {'name': T('FORM'), 'form': T('I am / he is / they are + going to + base verb.')},
         {'name': T('NEGATIVE'), 'form': T("am not / isn't / aren't + going to + base verb.")},
         {'name': T('QUESTION'), 'form': T('Am / Is / Are + subject + going to + base verb?')},
-        {'name': T('INTENTIONS'), 'form': T('a plan already decided')},
+        {'name': T('USE 1 · A PLAN'), 'form': T('something you have already decided')},
+        {'name': T('USE 2 · EVIDENCE'), 'form': T('something you can see is about to happen')},
     ],
-    'note': T('USE 2 — STRONG EVIDENCE: a prediction based on what you can see now.'),
+    # will and the present continuous are no longer in the option sets, but
+    # they are the two forms a learner reaches for by mistake, so the contrast
+    # is named once here rather than left to be guessed.
+    'note': T('going to = decided, or you can see it coming. '
+              'will = a guess. present continuous = a fixed arrangement.'),
     'next': '03_arctic_rescue',
 }
 
