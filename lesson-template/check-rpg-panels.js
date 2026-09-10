@@ -22,19 +22,15 @@
  *
  * Exit 0 = clean, 1 = findings.
  *
- * COVERS AND ENDINGS ARE ADVISORY, automatically. `render()` ends with
- * `setOpen(s.kind==='intro'||s.kind==='ending')`, so those two kinds are the
- * only ones whose panel is up from the first frame: there is no object waiting
- * to be revealed, nothing grew out of anything, and narrowing an ending panel
- * far enough to clear its marker tends to make its text scroll instead. They
- * are reported so the number is visible and counted against nothing. That rule
- * was worked out per-scene, in ALLOW, on the Frankenstein split before being
- * generalised here — which is why ALLOW is now empty. Keep the mechanism: it
- * is still the way to waive a *question* or *choice* scene where the geometry
- * genuinely leaves no better option.
+ * EVERY KIND IS CHECKED THE SAME WAY. Covers and endings were briefly
+ * advisory, on the reasoning that `render()` opened them itself so there was
+ * no object left to reveal. That stopped being true the moment Innes asked for
+ * "click to read" to be the default: `render()` now ends on `setOpen(false)`
+ * and every scene, cover and ending included, is arrived at closed. You click
+ * the marker, the panel opens, and it can cover the marker — which is the
+ * ordinary defect. The exemption went with the behaviour it described.
  *
- * OVERFLOW is never advisory. An ending whose text scrolls is a real defect
- * whatever kind it is.
+ * ALLOW is the only waiver now, and it is per scene with a reason.
  */
 const fs = require('fs');
 const path = require('path');
@@ -49,12 +45,9 @@ const CAMP = path.join(REPO, 'block-camp');
 // choice scene whose geometry leaves no better option, and say why.
 const ALLOW = {};
 
-// the two kinds whose panel is open from the first frame (see the header).
-// Detection reads `kind` off G.scenes, never the scene id: the Frankenstein
-// split names its endings `p1_end_alive` and the like, and anything keyed on an
-// `end_` prefix would have missed them. Keep that property.
-const PANEL_OPEN_ON_ARRIVAL = new Set(['intro', 'ending']);
-const article = w => (/^[aeiou]/i.test(w) ? 'an' : 'a');
+// Anything added to ALLOW should be keyed on the scene's `kind` off G.scenes,
+// never on its id: the Frankenstein split names its endings `p1_end_alive` and
+// the like, and anything keyed on an `end_` prefix would miss all three.
 
 const COVER_LIMIT = 20;   // % of the object the panel may hide
 const SCROLL_LIMIT = 120; // px of overflow before the options risk the fold
@@ -86,9 +79,7 @@ async function check(page, slug) {
       if (m.cover > worst.cover || m.scroll > worst.scroll)
         worst = { cover: Math.max(worst.cover, m.cover), scroll: Math.max(worst.scroll, m.scroll), lang };
     }
-    rows.push({ id, ...worst, kind: kinds[id],
-                allowed: allow[id] || (PANEL_OPEN_ON_ARRIVAL.has(kinds[id])
-                  ? `${article(kinds[id])} ${kinds[id]} scene opens with the panel already up` : null) });
+    rows.push({ id, ...worst, kind: kinds[id], allowed: allow[id] });
   }
   return rows;
 }

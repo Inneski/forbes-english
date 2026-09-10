@@ -249,6 +249,12 @@ OPTS = {
     '24_creature_to_geneva': ['The creature is going to travel to Geneva.',
                               'The creature going to travel to Geneva.',
                               'The creature is going to travels to Geneva.'],
+    '24_william_frankenstein': ['The creature is going to seize William.',
+                                'The creature is going seize William.',
+                                'The creature is going to seizing William.'],
+    '24_portrait_justine': ['The creature is going to leave the locket here.',
+                            'The creature is going leave the locket here.',
+                            'The creature is going to leaves the locket here.'],
 }
 
 # ── the rules briefing (kind `rules`), which the export had as one HTML blob.
