@@ -47,7 +47,12 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = 'https://forbesenglish.com'
 BRAND = 'Forbes English'
 CACHE = os.path.join(ROOT, 'tools', 'lessons.json')
-DEFAULT_IMAGE = '/logo-forbes-english_1.png'
+DEFAULT_IMAGE = '/og-forbes-english.png'
+# The transparent-background wordmark. Fine for the schema.org Organization
+# logo (knowledge panels render it on white) but unusable as a social-share
+# og:image — link previews with a dark chat background (Instagram DMs, etc.)
+# composite transparency onto black, and the navy/grey text disappears.
+ORG_LOGO = '/logo-forbes-english_1.png'
 
 SUPABASE_URL = 'https://tusioporxpjtegjlqkkb.supabase.co'
 # The same anon key the site ships in sb-client.js. Public by design.
@@ -341,7 +346,7 @@ ORG_LD = {
     '@context': 'https://schema.org',
     '@graph': [
         {'@type': 'Organization', '@id': SITE + '/#org', 'name': BRAND,
-         'url': SITE + '/', 'logo': SITE + DEFAULT_IMAGE,
+         'url': SITE + '/', 'logo': SITE + ORG_LOGO,
          'description': 'Interactive English lessons from A1 to C2, built as '
                         '16:9 decks for teachers and independent learners.',
          'knowsLanguage': ['en', 'de', 'es', 'fr', 'it', 'pt', 'ru', 'ar',
