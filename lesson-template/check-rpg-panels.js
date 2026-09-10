@@ -31,6 +31,14 @@
  * ordinary defect. The exemption went with the behaviour it described.
  *
  * ALLOW is the only waiver now, and it is per scene with a reason.
+ *
+ * OVERFLOW above SCROLL_LIMIT is a finding; any overflow at all below it is
+ * printed as `tight`. That second line exists because of a real miss: two
+ * stories rewritten in English overflowed by 15-80px once a gloss was on,
+ * which is under the limit, so the run said PASS and the prose shipped
+ * overlong. The checker reads every gloss language; a human writing English
+ * only ever reads one. If you have just authored or trimmed a story, read the
+ * `tight` lines — they are the ones your own eye cannot catch.
  */
 const fs = require('fs');
 const path = require('path');
@@ -102,6 +110,7 @@ async function check(page, slug) {
     }
     const hidden = rows.filter(r => r.cover > COVER_LIMIT && !r.allowed);
     const scroll = rows.filter(r => r.scroll > SCROLL_LIMIT);
+    const tight = rows.filter(r => r.scroll > 0 && r.scroll <= SCROLL_LIMIT);
     const waived = rows.filter(r => r.cover > COVER_LIMIT && r.allowed);
     console.log(`\n${slug}  (${rows.length} scenes)`);
     if (!hidden.length && !scroll.length) console.log('  PASS  no panel hides its object; nothing overflows');
@@ -109,6 +118,8 @@ async function check(page, slug) {
       console.log(`  HIDDEN    ${r.id.padEnd(24)} panel covers ${r.cover}% of the object (${r.lang})`);
     for (const r of scroll)
       console.log(`  OVERFLOW  ${r.id.padEnd(24)} +${r.scroll}px past the panel (${r.lang})`);
+    for (const r of tight)
+      console.log(`  tight     ${r.id.padEnd(24)} +${r.scroll}px past the panel (${r.lang}) — under the limit, but the copy is at the ceiling`);
     for (const r of waived)
       console.log(`  allowed   ${r.id.padEnd(24)} ${r.cover}% — ${r.allowed}`);
     bad += hidden.length + scroll.length;

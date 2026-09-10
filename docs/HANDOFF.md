@@ -11,6 +11,63 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-10 — Two ways lesson prose goes wrong that reading the English will never show you
+
+Both found by the Frankenstein split session in stories and clues written from
+this side, and both generalise past that lesson.
+
+### English fits; the gloss does not
+
+Two stories rewritten to give the William scene a motive came to 34 words
+against that lesson's 22-word cap, and a glossed panel renders the English
+*and* the translation, so a third sentence costs two lines rather than one.
+Measured overflow: 15px (de) and 24px (ru) on one, 80px (de) and 62px (ja) on
+the other. `check-rpg-panels.js` passed it, correctly — its `SCROLL_LIMIT` is
+120px.
+
+The shape of the miss is the useful part: **the checker reads every gloss
+language, and a person writing English only ever reads one.** So the tool now
+prints any overflow at all below the limit as a `tight` line. After authoring
+or trimming a story, read those: they are the ones your own eye cannot catch.
+
+Widening is only ever half the answer, too — `24_portrait_justine`'s marker is
+a 7%-wide locket at cx 46, dead centre, so the panel caps at 43% before it
+lands on the object. The trim and the width together got it to zero.
+
+### A pronoun that is merely vague in English is wrong in nine languages
+
+`"He has decided to leave the locket here so Justine is blamed for William's
+murder."` The glosses inherited the pronoun and had to pick a gender for it:
+German *Sie hat beschlossen*, French *Elle a décidé*, Russian *Оно решило*,
+Spanish with no subject at all. A learner who has just read Justine's name
+reads that "she" as Justine — which inverts the scene, because she is the one
+being framed.
+
+**The trap is specific and worth stating exactly, because a blanket rule would
+be noise:** it bites when a pronoun stands for something *genderless in
+English* — the Creature, the stranger, the ghost — near a named person of
+another gender. A pronoun for a named human is safe; every language already
+agrees on Andreas and on Dorothy.
+
+Swept the other six lessons for a clue, story or prompt opening on a bare
+pronoun. Two hits, both checked against their glosses and both correct:
+A Fistful of Lies `contract` ("He pays first" — Andreas: *Er* / *Il* / *Он*)
+and Lost Yellow Road `tower` ("She was halfway up the stairs" — Dorothy:
+*Elle* / *Она*). Neither lesson has a genderless character, which is why the
+failure mode is confined to Frankenstein.
+
+**Name the character in any clue that carries the decision.**
+
+### And a process note, because it cost the other session twice
+
+`git add -A -- lesson-template block-camp` swept that session's in-flight
+builder, data and translation edits into two of my commits. No content was
+lost either time, but it is not mine to commit. **Before staging a path under
+another lesson's builder or `rpg/<slug>/`, `git diff` it first** — or stage the
+files by name, which is what this commit does.
+
+---
+
 ## 2026-09-10 — Covers and endings are advisory in check-rpg-panels.js, and ALLOW is empty again
 
 The Frankenstein split worked out, per scene, that an ending's panel covering
