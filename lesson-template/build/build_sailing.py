@@ -174,9 +174,9 @@ DIAGRAM = '''<div class="camp" id="order">
           <button type="button" data-mode="verb">Just the verbs</button>
         </div>
         <div class="diagram-stage">
-          <div class="chart-toggle-wrap" id="chart-toggle-wrap">
-            <img class="chart-photo" src="sailing-the-seas-of-grammar/hero.jpg" alt="''' + HERO_MAP_ALT + '''" loading="lazy">
-            ''' + M.chart('sailb', clickable=True) + '''
+          <div class="chart-toggle-wrap">
+            <img class="chart-photo" src="sailing-the-seas-of-grammar/chart-clean.jpg" alt="" loading="lazy">
+            ''' + M.chart_overlay('sailb') + '''
           </div>
         </div>
         <p class="chart-scroll-hint">Drag the chart sideways to read the far shore.</p>
@@ -424,10 +424,9 @@ function pulseShape(el){
   );
 }
 
-// the chart reads two ways: the illustrated map (place names, baked into the
-// artwork) or the bare word-list schematic underneath it (just the verbs).
-// The coded chart's own text stays in sync either way, so keyboard/no-JS
-// users who never see the photo still get the right labels.
+// the chart reads two ways: place names or the bare verb underneath each
+// one. Both live in the same text node and just swap content, sitting over
+// the illustrated map the whole time.
 function sailNames(mode){
   document.querySelectorAll(".sail-chart text.place-name").forEach(function(t){
     t.textContent = t.getAttribute(mode === "verb" ? "data-verb" : "data-place");
@@ -437,8 +436,6 @@ function sailNames(mode){
     b.classList.toggle("on", b.getAttribute("data-mode") === mode);
     b.setAttribute("aria-pressed", b.getAttribute("data-mode") === mode ? "true" : "false");
   });
-  var wrap = document.getElementById("chart-toggle-wrap");
-  if (wrap) wrap.classList.toggle("mode-verb", mode === "verb");
 }
 document.querySelectorAll("#name-bar button").forEach(function(b){
   b.addEventListener("click", function(){ sailNames(b.getAttribute("data-mode")); });
@@ -483,10 +480,14 @@ EXTRA_CSS = '''
   .diagram-panel.is-isle h4{color:#5C3470;}
   .diagram-panel.is-east{background:#EDF4E5;border-color:#C4D9AE;}
   .diagram-panel.is-east h4{color:#31552B;}
-  .sail-chart .land,.sail-chart .land-false{transition:filter .15s ease;}
-  .sail-chart .land[role="button"]:hover,.sail-chart .land-false[role="button"]:hover{filter:brightness(1.06);}
-  .sail-chart .land[role="button"]:focus-visible,
-  .sail-chart .land-false[role="button"]:focus-visible{outline:3px solid #12626F;outline-offset:2px;}
+  /* the hotspot layer sits over the illustrated map with no fill of its own
+     (the artwork supplies the paint), so hover/focus need their own visible
+     wash rather than the brightness trick a filled shape could use. One
+     local custom property in place of an inline rgba(), per house style. */
+  .sail-chart-overlay{--hotspot-wash:rgba(255,255,255,.22);}
+  .sail-chart-overlay .land{transition:fill .15s ease;}
+  .sail-chart-overlay .land:hover{fill:var(--hotspot-wash);}
+  .sail-chart-overlay .land:focus-visible{fill:var(--hotspot-wash);outline:3px solid #12626F;outline-offset:2px;}
   /* a map squeezed onto a phone is a map you cannot read: let it scroll at a
      legible width instead of shrinking the place names to nothing */
   .chart-scroll-hint{display:none;font-size:12.5px;color:var(--ink-soft);margin:9px 2px 0;font-style:italic;}
@@ -498,18 +499,14 @@ EXTRA_CSS = '''
                    cursor:pointer;transition:background .12s ease,color .12s ease;}
   .name-bar button:hover{color:var(--ink);}
   .name-bar button.on{background:var(--accent);color:var(--on-accent);border-color:var(--accent);}
-  .sail-chart .place-name{transition:opacity .12s ease;}
-  /* place mode shows the illustrated map (its labels are baked into the
-     artwork); verb mode fades to the coded schematic underneath, whose own
-     text already reads as bare verbs. The click regions and keyboard focus
-     stay live on the coded chart the whole time, so which layer is visible
-     never changes what you can actually click. */
+  /* labels sit directly on the artwork now instead of a flat colour card, so
+     they need their own contrast: a light halo behind the ink, in any light
+     part of the map or dark. */
+  .sail-chart .place-name{transition:opacity .12s ease;paint-order:stroke;
+                          stroke:#FFFCF4;stroke-width:3px;stroke-linejoin:round;}
   .chart-toggle-wrap{position:relative;}
   .chart-toggle-wrap .chart-photo{display:block;width:100%;height:auto;border-radius:14px;}
-  .chart-toggle-wrap .sail-chart{position:absolute;top:0;left:0;width:100%;height:100%;
-                                  opacity:0;transition:opacity .3s ease;}
-  .chart-toggle-wrap.mode-verb .sail-chart{opacity:1;}
-  .chart-toggle-wrap.mode-verb .chart-photo{opacity:0;}
+  .chart-toggle-wrap .sail-chart{position:absolute;top:0;left:0;width:100%;height:100%;}
   .hero-cta{display:inline-flex;align-items:center;gap:6px;margin-top:18px;background:var(--accent);
             color:var(--on-accent);font-family:'Inter',sans-serif;font-weight:600;font-size:14px;
             padding:11px 20px;border-radius:999px;text-decoration:none;transition:opacity .12s ease;}
