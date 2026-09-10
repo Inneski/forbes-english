@@ -12,6 +12,40 @@ stale copy.
 
 ---
 
+## 2026-09-10 — Overlaying real interactivity on illustrated artwork: blob-detect the dots, don't eyeball them
+
+`sailing-the-seas-of-grammar.html`'s "Read the chart" diagram now sits real
+click targets and toggleable text labels directly on top of an illustrated
+map (`sailing-the-seas-of-grammar/chart-clean.jpg`) instead of drawing its
+own coastlines. The artwork has small dot markers at every harbour, with no
+text baked in — that combination (unlabeled, but with position markers) is
+what makes an illustrated map usable as an interactive layer rather than
+just a nicer background.
+
+**If a future lesson wants the same trick:** the request to the artist/model
+must ask for the *position markers with no text* — see
+`docs/CHATGPT-RPG-BRIEF.md`-style prompting, or just ask for "the same
+markers, no labels." Then don't hand-guess where those dots land in pixel
+space. A short numpy script does it reliably: threshold the image for very
+dark near-circular blobs (flood-fill/BFS connected components, filter by
+size + aspect-ratio + fill-ratio to reject coastline ink and dashed lines),
+then nearest-neighbour-match each detected blob to the known semantic list
+(scaled from whatever coordinate space the existing procedural version
+used) to get both an accurate pixel position *and* the right label for it
+in one pass. Border-decoration and tree/rock clusters produce false-positive
+blobs — filter obvious ones out by margin from the image edge, and expect
+the true count to run a little high per region (e.g. 17 candidates for 15
+real dots); nearest-neighbour matching against the known list absorbs the
+noise on its own since only real dots land close to an expected position.
+
+This replaced an earlier same-day attempt that faded between the photo and
+a flat coded schematic depending on a toggle — a reasonable first pass when
+only the *labelled* artwork existed (baking labels into pixels means you
+can't overlay different ones without visible duplication), but once an
+unlabeled version exists, do the calibration instead.
+
+---
+
 ## 2026-09-10 — Sailing the Seas of Grammar gets its hero art, and `assemble()` has been broken for this page since 9f6e2e7
 
 Innes asked for a copy of `sailing-the-seas-of-grammar.html` to hand to
