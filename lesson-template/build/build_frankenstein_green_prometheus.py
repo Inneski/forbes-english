@@ -120,7 +120,13 @@ HOT = {
     'cover':                  ([69, 66, 10, 20], 'left',   'bottom', 46),  # the lit column of the apparatus, low enough to clear the lockup
     'rules':                  ([14, 64, 12, 14], 'right',  'center', 60),   # the skull on the study table
     '03_arctic_rescue':       ([22, 78, 16, 14], 'right', 'center'),       # the broken ice under the sled
-    '04_warning':             ([35, 19, 15, 16], 'right', 'center'),   # the cabin window, the Arctic he wants
+    # Innes, 2026-09-10: "these glowing things should be pin-pointed on to
+    # objects and be size specific to the object they encompass — e.g. the
+    # lantern in the middle". The old box was 15x16% of the plate, big enough
+    # to hold the window mullions AND Walton's head, so the marker read as a
+    # blob over the scene rather than a ring around a thing. The desk lantern
+    # is one object, and 6x10 is its actual size.
+    '04_warning':             ([48, 31,  6, 10], 'left',  'center', 34),   # the lantern on the desk
     '05_lightning_oak':       ([57, 33, 15, 26], 'left',   'center', 38),       # the oak, with the bolt above it
     '05b_oak_burning':       ([58, 50, 14, 20], 'left',   'center'),       # the burning split trunk
     '06_ingolstadt':          ([30, 52, 13, 22], 'right',  'center'),       # Victor and his books on the university steps
@@ -215,8 +221,35 @@ KEY = {
 # beat the new text — data.json is the one source now.
 STORY = {}
 
+# ── clue rewrites, keyed by scene. A clue's nine glosses are keyed by its
+# English in translations/, so changing one here means re-keying them there too.
+CLUE = {
+    # Innes, 2026-09-10: "the creature" rather than "He". Eight of the nine
+    # glosses already said "the Creature" — only the English and the Chinese
+    # still had a pronoun, so this aligns them rather than changing them.
+    '11_life': "Power surges through the apparatus. The creature's eyes are still closed.",
+    # A bare "He" with nothing on screen to attach it to — the scene before it
+    # is the cottage, not Victor. Named, and the nine glosses re-keyed to match;
+    # six of them already led with their own word for the Creature.
+    '24_creature_to_geneva': 'The creature has chosen Geneva as its destination '
+                             'and decided to continue along this road.',
+}
+
 # ── option rewrites. Only where the export's own set broke a house gate.
-OPTS = {}
+OPTS = {
+    # same change, carried into the options. All three shift by the same words,
+    # so the key stays neither the longest nor the shortest of the three.
+    '11_life': ['The creature is going to wake up.',
+                'The creature is going wake up.',
+                'The creature is going to wakes up.'],
+    # Innes, 2026-09-10: "Victor is going to leave for Geneva" instead of "He".
+    '16_william': ['Victor is going to leave for Geneva.',
+                   'Victor going to leave for Geneva.',
+                   'Victor is going to leaving for Geneva.'],
+    '24_creature_to_geneva': ['The creature is going to travel to Geneva.',
+                              'The creature going to travel to Geneva.',
+                              'The creature is going to travels to Geneva.'],
+}
 
 # ── the rules briefing (kind `rules`), which the export had as one HTML blob.
 # The five form cards and two use cards, glossed in the translations file.
@@ -237,7 +270,7 @@ RULES = {
     # how "USE 2 — STRONG EVIDENCE" ended up looking like an afterthought
     # rather than the partner of USE 1. Odd counts lay out 2+2+1.
     'rules': [
-        {'name': T('FORM · AM / IS / ARE + GOING TO'), 'form': T('I AM going to leave · she IS going to leave · they ARE going to leave')},
+        {'name': T('FORM · AM / IS / ARE + GOING TO + INFINITIVE'), 'form': T('I AM going to leave · she IS going to leave · they ARE going to leave')},
         {'name': T("NEGATIVE · AM NOT / ISN'T / AREN'T"), 'form': T("He ISN'T going to wait. · They AREN'T going to follow.")},
         {'name': T('QUESTION · AM / IS / ARE + SUBJECT'), 'form': T("IS he going to speak? · Yes, he IS. / No, he ISN'T.")},
         {'name': T('USE 1 · A PLAN'), 'form': T('He has decided. He IS GOING TO study science.')},
@@ -328,7 +361,7 @@ def build(part):
                 base['routes'].append(r)
         else:
             base['kind'] = 'question'
-            base['clue'] = T(s['mission']['en'])
+            base['clue'] = T(CLUE.get(sid) or s['mission']['en'])
             base['prompt'] = T(s['prompt']['en'])
             texts = OPTS.get(sid) or [a['en'] for a in s['answers']]
             correct = texts[s['correct']]
