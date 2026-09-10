@@ -200,10 +200,11 @@ def build():
     scenes = {
         'cover': place('cover', {
             'kind': 'intro', 'img': '01_cover',
-            # "Frankenstein:" alone is 86px wider than the 46% panel at cover
-            # size and does not break, so the name rides the kicker and the
-            # subtitle carries the title. The full name is still the <title>.
-            'k': T('FRANKENSTEIN · GOING TO'),
+            # The plate carries a painted FRANKENSTEIN wordmark again
+            # (rpg/<slug>/make_cover.py), so the kicker no longer repeats it —
+            # and the glossed title underneath is the subtitle, which is the
+            # half that actually translates.
+            'k': T('BLOCK CAMP · GOING TO'),
             'title': T('The Green Prometheus'),
             'story': T('Lightning. Secrets. A body built from many different parts. '
                        'Enter Frankenstein and guide the story with your choices.'),
