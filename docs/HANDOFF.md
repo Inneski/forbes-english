@@ -11,11 +11,80 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
-## 2026-09-10 — Sign-in was a dead page on phones, and the cause was a CDN
+## 2026-09-10 — "Sign in is a white page": it was a 404, from a relative link on the gate
 
-Innes could not sign in on his phone: white page. It reproduces, and the
-cause is not layout — it is that **`account.html` could not draw itself
-unless a third-party CDN answered.**
+**Read this before the entry below it, which chased the wrong cause.**
+
+Innes could not sign in from his phone. The page was white. The actual URL was
+`https://forbesenglish.com/block-camp/account.html` — **404**. No such file
+exists and none should.
+
+`locked.html` is the paywall gate, and it is the one page on this site that is
+served **at another page's URL**: `locked()` in `src/index.js` returns its HTML,
+as a 200 and not a redirect, at the gated lesson's own path. Every URL in it was
+relative. So when the gate was shown for a Pro Block Camp RPG at
+`/block-camp/<slug>.html`, the browser resolved all seven of them against
+`/block-camp/`:
+
+| in locked.html | became | |
+|---|---|---|
+| `href="account.html"` ×2 | `/block-camp/account.html` | 404 — **"sign in"** |
+| `href="index.html"` | `/block-camp/index.html` | 404 — the logo |
+| `href="pricing.html"` | `/block-camp/pricing.html` | 404 — "See plans" |
+| `href="library.html?free=1"` | `/block-camp/library.html` | 404 |
+| `src="sb-client.js"` | `/block-camp/sb-client.js` | 404 |
+| `src="vendor/supabase-js…"` | `/block-camp/vendor/…` | 404 |
+
+The last two are why the gate's "you may already be subscribed, let me re-check
+and retry" logic had quietly stopped running on every RPG: its scripts 404'd.
+
+**This was a latent bug that a fix made live.** Until 2026-09-08 `lessonFileFor()`
+returned null for any path with a slash, so `/block-camp/*` never reached the
+gate at all (it was served ungated — that was the bug being fixed). The moment
+the gate started covering one-directory-deep lessons, every relative link on the
+gate page began resolving into `/block-camp/`.
+
+### Why it looked white rather than like an error
+
+The site had **no `404.html`**, while `wrangler.toml` sets
+`not_found_handling = "404-page"`. So a missing page produced a bare browser
+error — and on iOS an offer to *download* the missing file, with the tab left
+blank. That is what "white page" was: a download prompt on an empty tab. There
+is a real `404.html` now, so a dead link lands on something with a way out.
+
+### The fix
+
+- **`locked.html`: all seven URLs are root-absolute**, with a comment saying why
+  so it is not undone. This is the rule for this file: *every URL on the gate
+  page must start with `/`.*
+- **`404.html`**: house chrome, links to the library, sign-in and the front page.
+- **`deploy/test-paywall.mjs` gained a test** that resolves every URL on the real
+  `locked.html` against `https://x.test/block-camp/last-train-home-rpg.html` and
+  fails if any lands in `/block-camp/`. Verified by reintroducing the exact bug:
+  it fails and names the offending URL (`leaks: account.html`). 21 tests pass.
+
+### The lesson worth keeping
+
+**A page served at a path it does not own cannot contain a relative URL.**
+`locked.html` is the only such page today. If another is ever added — anything
+the Worker returns as a 200 under someone else's path — it inherits this rule.
+
+### How this was found, and how it was nearly missed
+
+Three rounds were spent on a JavaScript theory — spinner never resolving, CDN
+blocked, no timeouts — reproduced convincingly in a headless phone viewport and
+shipped. It was all real fragility and none of it was the cause. What settled it
+in seconds was **a screenshot of the actual screen**: a download bar reading
+`account.html`, which is not something a stuck spinner can produce. Ask for the
+URL and a picture before modelling the failure. A reproduction of *a* bug is not
+evidence that it is *the* bug.
+
+## 2026-09-10 — Sign-in had no fallback if supabase-js failed to load (real, but NOT the white page)
+
+**This did not cause the white page** — see the entry above; that was a 404
+from a relative link on the gate page. What follows is a genuine
+robustness bug found while looking for it, and worth keeping fixed:
+**`account.html` could not draw itself unless a third-party CDN answered.**
 
 `supabase-js` was loaded from `cdn.jsdelivr.net`. If that request failed,
 `sb-client.js` threw `supabase is not defined` on its very first statement,

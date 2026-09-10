@@ -3,21 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- LESSON:head -->
-<title>This lesson is for subscribers</title>
+<title>Page not found | Forbes English</title>
+<meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Barlow+Condensed:wght@700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-<!-- Served from our own origin, not a CDN: a blocked cdn.jsdelivr.net
-     (content blockers, in-app browsers, filtered Wi-Fi) used to leave this
-     page as a spinner and nothing else. See vendor/README.md. -->
-<!-- EVERY url on this page must start with "/". The Worker serves this
-     page's HTML at the GATED LESSON'S OWN path (see locked() in
-     src/index.js) -- a 200, not a redirect -- so a relative link is
-     resolved against that lesson's directory, not the site root. When
-     the gate began covering block-camp/ RPGs on 2026-09-08, every
-     relative link here started resolving to /block-camp/<name>.html
-     and returning 404. "Sign in" was one of them. -->
-<script src="/vendor/supabase-js-2.116.0.min.js"></script>
+<!-- Cloudflare serves this file for any path that does not exist
+     (not_found_handling = "404-page" in wrangler.toml). Until 2026-09-10
+     the file did not exist, so a dead link produced a bare browser error --
+     on iOS, an offer to DOWNLOAD the missing page rather than any visible
+     message. That is what a broken "sign in" link looked like from a phone:
+     a white screen. Every URL here is root-absolute, for the same reason as
+     locked.html: this page is served at whatever path was missed. -->
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -83,6 +79,25 @@
   }
   .checking.show { display: block; }
 </style>
+<style>
+  main { max-width: 640px; margin: 0 auto; padding: 72px 24px 96px; text-align: center; }
+  .code {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 800; letter-spacing: 1px;
+    text-transform: uppercase; font-size: 0.8rem; color: var(--muted); margin-bottom: 10px;
+  }
+  h1 {
+    font-family: 'Playfair Display', serif; font-weight: 900; font-size: 2rem;
+    color: var(--green-deep); margin-bottom: 12px; line-height: 1.15;
+  }
+  .lede { color: var(--muted); font-size: 1rem; line-height: 1.6; margin-bottom: 30px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  .actions a {
+    display: block; padding: 12px 22px; border-radius: 999px; text-decoration: none;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 0.95rem;
+    letter-spacing: 0.4px; background: var(--green-deep); color: var(--cream);
+  }
+  .actions a.ghost { background: transparent; color: var(--green-deep); border: 1.5px solid var(--border); }
+</style>
 </head>
 <body>
 
@@ -98,69 +113,18 @@
 </header>
 
 <main>
-  <!-- LESSON:intro -->
-  <div class="eyebrow">Subscribers only</div>
-  <h1>This one's behind the subscription</h1>
+  <div class="code">Error 404</div>
+  <h1>That page isn't here</h1>
   <p class="lede">
-    You've reached a lesson that's part of Forbes English Pro. Plenty of the
-    library is free and always will be &mdash; this particular lesson isn't.
+    The link may be out of date, or the address may have a typo in it.
+    Everything below still works.
   </p>
-  <!-- /LESSON:intro -->
-
-  <p class="checking" id="checking">Checking your subscription&hellip;</p>
-
   <div class="actions">
-    <a class="btn" href="/pricing.html">See plans &amp; what's free</a>
-    <a class="btn ghost" href="/library.html?free=1">Browse free lessons</a>
-  </div>
-
-  <div class="free-note">
-    <h2>Already subscribed?</h2>
-    <p>
-      If you're signed in on another tab this page will let you straight
-      through in a moment. If not, <a href="/account.html">sign in</a> and open
-      the lesson again.
-    </p>
+    <a href="/library.html">Browse the lesson library</a>
+    <a href="/account.html" class="ghost">Sign in</a>
+    <a href="/index.html" class="ghost">Front page</a>
   </div>
 </main>
-
-<script src="/sb-client.js"></script>
-<script>
-// A subscriber can land here for a dull reason: the access token in the cookie
-// expired while they were reading. supabase-js still holds a refresh token in
-// this browser, so ask it for a fresh session, let sb-client.js re-write the
-// cookie, and retry the lesson once. Only retry once — if the second attempt
-// also comes back 402 the subscription really is inactive, and looping would
-// just flicker the page.
-(async () => {
-  if (sessionStorage.getItem('fe-retried') === location.pathname) {
-    sessionStorage.removeItem('fe-retried');
-    return;
-  }
-  // No client means the library did not load; the buttons on this page still
-  // work, so leave it exactly as it is rather than logging a confusing error.
-  if (!window.sb) return;
-
-  const checking = document.getElementById('checking');
-  try {
-    const { data } = await window.sb.auth.getSession();
-    if (!data.session) return;
-
-    checking.classList.add('show');
-    const { data: rows } = await window.sb
-      .from('profiles').select('subscription_status').limit(1);
-    const status = rows && rows[0] && rows[0].subscription_status;
-    if (status === 'active' || status === 'trialing') {
-      sessionStorage.setItem('fe-retried', location.pathname);
-      location.reload();
-    } else {
-      checking.classList.remove('show');
-    }
-  } catch (e) {
-    /* leave the page as it is — the buttons still work */
-  }
-})();
-</script>
 
 </body>
 </html>

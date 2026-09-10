@@ -121,5 +121,27 @@ open_ ? pass++ : fail++;
 console.log(`${open_ ? ' PASS' : ' FAIL'}  fails open when Supabase is unreachable (${down.status})`);
 globalThis.fetch = realFetch;
 
+// The gate page is the one page served at somebody else's URL: locked()
+// returns its HTML, as a 200, at the gated lesson's own path. So a relative
+// link in it resolves against that lesson's directory. When the gate began
+// covering block-camp/ RPGs on 2026-09-08, "sign in" on the gate started
+// pointing at /block-camp/account.html and returning 404 -- and the gate's
+// own scripts 404'd with it, so the "you may already be subscribed" retry
+// silently stopped running. Resolve every URL the way a browser would, from
+// the deepest path the gate can be served at.
+{
+  const realLocked = readFileSync('locked.html', 'utf8');
+  const base = 'https://x.test/block-camp/last-train-home-rpg.html';
+  const urls = [...realLocked.matchAll(/(?:href|src)="([^"#]+)"/g)].map((m) => m[1]);
+  const escapes = urls.filter((u) => {
+    if (/^(https?:|\/\/|#|mailto:|data:|tel:)/.test(u)) return false;
+    return new URL(u, base).pathname.startsWith('/block-camp/');
+  });
+  const ok = urls.length > 0 && escapes.length === 0;
+  ok ? pass++ : fail++;
+  console.log(`${ok ? ' PASS' : ' FAIL'}  every URL on the gate page resolves to the site root, not the lesson's folder` +
+    (escapes.length ? `\n        leaks: ${escapes.join(', ')}` : ''));
+}
+
 console.log(`\n  ${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
