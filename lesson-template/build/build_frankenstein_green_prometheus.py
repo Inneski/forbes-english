@@ -25,8 +25,8 @@ Three things this builder fixes that the export shipped wrong:
     each a near-twin of the scene that superseded it. Dropped, which is what
     takes the lesson to 42 questions.
   * **One item keyed the longest option by 9 characters** — the short-answer
-    item at `40_creature_lament`, where the correct option was the only one
-    written out in full. OPTS below levels the three.
+    item at `40_creature_lament`. That scene is now cut outright (CUT below),
+    so the levelled option set went with it.
 
 Pictures: block-camp/frankenstein-green-prometheus-rpg/*.webp, 1536x1024.
 The export mixed 3:2 and 16:9 plates; the 16:9 ones were centre-cropped to
@@ -45,12 +45,22 @@ LANGS = rpg.NINE
 # Nothing points at these: each is a superseded draft of the scene after it.
 DEAD = ('17b_search', '36a_icebound_rescue')
 
+# Cut on purpose, 2026-09-09. The lament put the Creature at Victor's bedside
+# at human scale one scene after the crew flee a figure the height of an ice
+# cliff, and the jump read as two different characters. Innes cut the scene
+# rather than the artwork: "the creature's remorse at this point nobody
+# cares". 39_victor_death becomes the last question and its `next` resolves
+# to the ending.
+CUT = ('40_creature_lament',)
+
+SKIP = DEAD + CUT
+
 # ── hotspots: [cx, cy, w, h] in % of the 1536x1024 picture, then panel side,
 # vertical anchor, optional panel width %. Read off gridded contact sheets
 # (rpg/README.md §3); the object is the one the clue talks about, and the
 # panel goes on the picture's empty side so it never covers that object.
 HOT = {
-    'cover':                  ([72, 30, 16, 24], 'left', 'center'),
+    'cover':                  ([7, 53, 10, 15], 'center', 'center'),   # the ship's lantern at Victor's rail
     'rules':                  ([14, 64, 12, 14], 'right',  'center', 60),   # the skull on the study table
     '03_arctic_rescue':       ([22, 78, 16, 14], 'right', 'center'),       # the broken ice under the sled
     '04_warning':             ([35, 19, 15, 16], 'right', 'center'),   # the cabin window, the Arctic he wants
@@ -60,48 +70,55 @@ HOT = {
     '08_cemetery':            ([57, 62,  8, 12], 'left', 'center'),       # the lantern at the grave
     '09_waldman':             ([72, 45, 12, 20], 'left', 'center'),   # the demonstration apparatus
     '10_build':               ([24, 30, 12, 20], 'right', 'center'),       # Victor, who will not stop
-    '11_life':                ([72, 32, 16, 26], 'left', 'center'),       # the body taking the spark
+    '11_life':                ([86, 60, 14, 20], 'left', 'center'),       # the body taking the spark
     '12_awakening_choice':    ([45, 86, 12, 12], 'center', 'top'),          # the hand between them
     '13_flee':                ([62, 48, 14, 26], 'left', 'center'),       # Victor running
     '14_speak':               ([38, 45, 16, 28], 'right', 'center'),       # the Creature he might address
     '15_henry':               ([60, 30, 14, 26], 'left', 'center'),       # Henry at the bedside
     '16_william':             ([30, 62, 10, 14], 'right', 'center'),   # the letter
     '17_justine':             ([78, 45, 16, 22], 'left',   'center', 56),   # the judges
-    '18_alps':                ([78, 26, 14, 28], 'left', 'center'),       # the Creature on the glacier
-    '19_cottage':             ([66, 60, 14, 14], 'left', 'center'),       # the lit cottage window
-    '20_language':            ([21, 56, 10, 12], 'right', 'center'),       # the book
+    '18_alps':                ([82, 49, 18, 38], 'left', 'center'),       # the Creature on the glacier
+    '19_cottage':             ([71, 65, 20, 18], 'left', 'center'),       # the lit cottage window
+    '20_language':            ([38, 49, 13, 11], 'right',  'center'),       # the open book he found
     '21_approach_choice':     ([52, 86, 14, 12], 'center', 'top'),          # the Creature deciding
     '22_knock':               ([60, 38, 14, 22], 'left', 'center'),       # blind De Lacey
-    '23_firewood':            ([80, 46, 12, 16], 'left',   'center'),       # the door he leaves the wood by
-    '24_rejection_fire':      ([78, 48, 14, 12], 'left', 'center'),       # the dark cottage
+    '23_firewood':            ([58, 69, 16, 22], 'left', 'center'),       # the door he leaves the wood by
+    '24_rejection_fire':      ([89, 47, 10, 13], 'left',   'center'),       # the dark, empty cottage
     '25_demand':              ([66, 28, 14, 18], 'left',   'center', 42),   # the vision of the companion
     '26_companion_choice':    ([60, 86, 12, 12], 'center', 'top'),          # Victor weighing it
-    '27_orkney':              ([35, 58, 16, 12], 'right', 'center'),       # the shrouded second creature
+    '27_orkney':              ([85, 61, 16, 26], 'left', 'center'),       # the shrouded second creature
     '28_refuse':              ([18, 30, 12, 24], 'right', 'center'),   # Victor refusing
     '29_destroy':             ([70, 60, 14, 16], 'left', 'center'),       # the torn shroud
-    '30_clerval_prison':      ([40, 42, 16, 18], 'right', 'center'),       # the officers on the shore
+    '30_clerval_prison':      ([71, 42, 24, 28], 'left', 'center'),       # the officers on the shore
     '31_wedding_choice':      ([55, 86, 10, 12], 'center', 'top'),          # the lantern
     '32_confess':             ([68, 80, 14, 14], 'left',   'center'),       # the open book between them
-    '33_guard':               ([57, 52,  8, 12], 'left', 'center'),       # the lantern on his lone watch
-    '34_elizabeth':           ([72, 58, 18, 16], 'left', 'center'),   # Elizabeth on the bed
-    '35_arctic_chase':        ([28, 62, 18, 14], 'right', 'center'),   # the dogs and the sled — the longest story in the lesson
+    '33_guard':               ([76, 61, 10, 16], 'left', 'center'),       # the lantern on his lone watch
+    '34_elizabeth':           ([63, 44, 18, 28], 'left', 'center'),   # Elizabeth on the bed
+    '35_arctic_chase':        ([27, 75, 22, 18], 'right', 'center'),   # the dogs and the sled — the longest story in the lesson
     '36_walton_choice':       ([28, 24, 18, 18], 'right', 'center'),       # the ice through the cabin window
     '37_turn_south':          ([33, 72, 14, 16], 'right',  'center'),       # the ship's wheel
-    '38_pursue':              ([72, 38, 12, 22], 'left', 'center'),       # the figure still ahead
-    '39_victor_death':        ([72, 45, 14, 20], 'left', 'center'),       # Victor
-    '40_creature_lament':     ([58, 36, 10, 14], 'left', 'center'),   # the lamp at the cabin window
-    '24_creature_to_geneva':  ([18, 38, 14, 30], 'right', 'center'),       # the Creature on the road
+    # Re-read 2026-09-09 against the replacement plate. The old box was the
+    # oversized Creature, who filled [72, 38, 12, 22]; at honest scale he is a
+    # small figure further down the channel, so the old box now lands on empty
+    # mist. Padded past his silhouette so the marker is a comfortable target.
+    '38_pursue':              ([75, 61,  6, 10], 'left', 'center'),       # the figure still ahead
+    '39_victor_death':        ([86, 54, 18, 24], 'left', 'center'),       # Victor
+    '24_creature_to_geneva':  ([31, 25, 14, 20], 'right', 'center'),       # the Creature on the road
     '24_rescue_child':        ([72, 28, 12, 16], 'left', 'center'),   # the man raising his gun
-    '24_william_frankenstein':([60, 60, 12, 18], 'left', 'center'),       # William
-    '24_portrait_justine':    ([78, 25, 14, 22], 'left',   'center', 52),   # the Creature at the window
-    '29_storm_at_sea':        ([23, 28, 12, 16], 'right', 'center'),       # the storm at the window
-    '30_return_home':         ([25, 45, 12, 24], 'right', 'center'),       # Elizabeth, told too little
+    '24_william_frankenstein':([83, 69, 20, 28], 'left', 'center'),       # William
+    # Was [78, 25] on the window: the marker landed on flat moonlight and
+    # rendered as a pale blank blob. The clue names the locket, so the
+    # locket is the object. Panel right and narrow — this plate is busy on
+    # both sides, and 40% clears the locket and Justine's face.
+    '24_portrait_justine':    ([46, 62,  7, 12], 'right',  'center', 40),   # the locket he is about to leave
+    '29_storm_at_sea':        ([39, 67, 32, 24], 'right', 'center'),       # the storm at the window
+    '30_return_home':         ([16, 46, 18, 36], 'right', 'center'),       # Elizabeth, told too little
     '09b_obsession':          ([32, 62, 12, 14], 'right', 'center'),   # the skull on the books
     '18a_pursuit':            ([17, 60,  8, 12], 'right',  'center', 54),   # his lantern in the pass
-    '22b_return':             ([85, 45, 12, 20], 'left', 'center'),   # the doorway Felix comes through
-    '35b_ship_rescue':        ([65, 28, 16, 14], 'left', 'center'),   # the trapped ship
+    '22b_return':             ([85, 43, 16, 40], 'left', 'center'),   # the doorway Felix comes through
+    '35b_ship_rescue':        ([63, 28, 16, 14], 'left',   'center'),       # the trapped ship
     'end_mercy':              ([18, 45, 14, 30], 'right', 'center'),
-    'end_warning':            ([25, 45, 20, 30], 'right', 'center'),
+    'end_warning':            ([42, 49, 20, 34], 'right', 'center'),
     'end_ice':                ([72, 45, 18, 26], 'left', 'center'),
     'end_fail':               ([30, 40, 16, 26], 'right', 'center'),
 }
@@ -118,107 +135,22 @@ KEY = {
     '24_rejection_fire': 1, '25_demand': 0, '27_orkney': 2, '28_refuse': 1,
     '29_destroy': 0, '30_clerval_prison': 2, '32_confess': 1, '33_guard': 0,
     '34_elizabeth': 2, '35_arctic_chase': 1, '37_turn_south': 0, '38_pursue': 2,
-    '39_victor_death': 1, '40_creature_lament': 0, '24_creature_to_geneva': 2,
+    '39_victor_death': 1, '24_creature_to_geneva': 2,
     '24_rescue_child': 1, '24_william_frankenstein': 0, '24_portrait_justine': 2,
     '29_storm_at_sea': 1, '30_return_home': 0, '09b_obsession': 2,
     '18a_pursuit': 1, '22b_return': 0, '35b_ship_rescue': 2,
 }
 
 # ── story rewrites. Only where the panel could not hold the copy.
-STORY = {
-    # The export's median story is 21 words, the Lost Yellow Road range. The
-    # scenes its late patches rewrote run 38-68 words, and those are exactly
-    # the panels that scroll once a gloss sits under every line. README §1
-    # offers two levers, and widening past ~56% only moves the problem (a
-    # 64% panel then covers the object it grew out of), so these are cut to
-    # the length the rest of the lesson already uses. The nine glosses were
-    # cut to match by sentence index, never by chopping the tail: 16_william
-    # keeps its first and last sentence because the missing locket is what
-    # 17_justine and 24_portrait_justine both turn on.
-    '04_warning': 'Walton speaks eagerly about the glory he hopes to win in the Arctic.',
-    '09_waldman': (
-        'At Ingolstadt, Victor attends Professor Waldman\'s anatomy lecture in a '
-        'grand theatre of science. He watches controlled experiments with '
-        'chemistry and electricity, and the display awakens his ambition.'
-    ),
-    '09b_obsession': (
-        'Waldman\'s lecture stays in Victor\'s mind. He begins spending long '
-        'nights alone with anatomy books, chemical notes and studies of decay.'
-    ),
-    '16_william': (
-        'Victor learns that his young brother William has been murdered outside '
-        'Geneva. Victor realizes the terrible truth — and the locket is missing.'
-    ),
-    '17_justine': (
-        'The missing locket is suddenly found in the pocket of Justine Moritz, a '
-        'kind young woman who lives with Victor\'s family. Justine says she never '
-        'took it.'
-    ),
-    '18_alps': (
-        'Victor finally tracks the Creature down on the glacier. He expects a '
-        'fight, but the Creature turns to face him and demands to be heard.'
-    ),
-    '22b_return': (
-        'For one brief moment, blind De Lacey listens without fear. Felix '
-        'returns, sees the Creature beside his father and attacks before hearing '
-        'an explanation.'
-    ),
-    '24_creature_to_geneva': (
-        'After losing the De Laceys, the Creature leaves the valley and travels '
-        'toward Geneva. He is wounded by rejection but still remembers every '
-        'small kindness he has witnessed.'
-    ),
-    '24_rejection_fire': (
-        'Felix attacks the Creature before listening, and the De Lacey family '
-        'abandons the cottage. The Creature returns and stares at the dark, empty '
-        'home.'
-    ),
-    '24_rescue_child': (
-        'Near a rushing river, a little girl falls into the water. The Creature '
-        'jumps in and saves her.'
-    ),
-    '24_william_frankenstein': (
-        'Near Geneva, the Creature meets a young boy named William. William '
-        'recoils in fear and reveals that he is a Frankenstein, turning the '
-        'Creature\'s anger back toward Victor\'s family.'
-    ),
-    '28_refuse': (
-        'The Creature wants Victor to make him a companion so he will not be '
-        'alone. Victor refuses at first.'
-    ),
-    '34_elizabeth': (
-        'On the wedding night, the Creature keeps his promise and kills '
-        'Elizabeth. With no one able to stop the Creature, Victor swears to hunt '
-        'him himself.'
-    ),
-    '35_arctic_chase': (
-        'The chase lasts for months. Farther north, he buys dogs and a sled and '
-        'follows the Creature onto the frozen sea.'
-    ),
-    '35b_ship_rescue': (
-        'His dogs are gone, his sled is breaking, and he collapses on the frozen '
-        'sea. Through the ice and green light, Walton\'s trapped ship appears.'
-    ),
-    '36_walton_choice': (
-        'Days later, the trapped crew begs Walton to turn south if the ice opens. '
-        'Walton must decide whether to protect the people around him or continue '
-        'chasing glory.'
-    ),
-}
+# Emptied 2026-09-10. The Round 2 batch rewrote the story on all 47
+# rendered scenes and capped every one at 22 English words, which is what
+# these trims existed to do; and it replaced every option set, which is
+# what the 35b entry existed to do. An override left here would silently
+# beat the new text — data.json is the one source now.
+STORY = {}
 
 # ── option rewrites. Only where the export's own set broke a house gate.
-OPTS = {
-    # The key was the only option written out in full — 56 characters against
-    # 38 and 47, which is scoreable without reading the grammar. All three now
-    # carry the same tail, and the apostrophes are straight (the export mixed
-    # curly and straight across the three).
-    '40_creature_lament': ["No, he isn't. He's going to disappear into the darkness.",
-                           "No, he doesn't. He going to disappear into the darkness.",
-                           "No, he isn't going disappear into the darkness."],
-    # "are going to" was the longest by a character. The third option now
-    # carries a real learner error — be + going to + be — and is the longest.
-    '35b_ship_rescue': ['are going to', 'is going to', 'are going to be'],
-}
+OPTS = {}
 
 # ── the rules briefing (kind `rules`), which the export had as one HTML blob.
 # The five form cards and two use cards, glossed in the translations file.
@@ -272,7 +204,7 @@ def build():
     }
 
     for sid, s in DATA['scenes'].items():
-        if sid in DEAD:
+        if sid in SKIP:
             continue
         base = {'img': s['image'], 'k': T(s['act']),
                 'title': T(s['title']['en']),
@@ -311,11 +243,11 @@ def build():
                 base['relic'] = True
             base['fb'] = T(s['explanation']['en'])
             nxt = s.get('next')
-            base['next'] = nxt if nxt and nxt not in DEAD else 'resolve'
+            base['next'] = nxt if nxt and nxt not in SKIP else 'resolve'
         scenes[sid] = place(sid, base)
 
     # the last question decides whether a flawless run reaches the master ending
-    scenes['40_creature_lament']['final'] = True
+    scenes['39_victor_death']['final'] = True
 
     for key, e in DATA['endings'].items():
         sid = 'end_' + key

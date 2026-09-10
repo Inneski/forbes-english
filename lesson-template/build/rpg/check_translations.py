@@ -16,8 +16,12 @@ belong to this stage:
   * every language file holds exactly the same set of English keys;
   * a prompt whose English has a ___ keeps the ___ in every gloss (that blank
     is the question — a gloss that silently fills it in gives the answer away);
-  * pass `data.json` and it also reports which learner-facing strings in the
-    lesson have no entry at all, which is what `validate()` would refuse on.
+  * pass the BUILT `<slug>.html` (or, less exactly, `data.json`) and it also
+    reports which learner-facing strings have no entry at all, which is what
+    `validate()` would refuse on. Prefer the page: `data.json` still holds the
+    scenes a builder drops via DEAD/CUT, so it reports strings no learner can
+    reach — "Pick the best answer." survived on two cut Frankenstein scenes
+    and failed a clean run on 2026-09-10.
 
 Exit 0 = clean, 1 = findings. Coincidences are real: a proper name, a French
 kicker that genuinely matches its English, Chinese and Japanese that share
@@ -52,11 +56,20 @@ def load(d):
 
 
 def lesson_strings(path):
-    """Every learner-facing English string in an extracted data.json."""
+    """Every learner-facing English string in an extracted data.json.
+
+    `local` subtrees are skipped. An Oz-kind export keeps its own glosses
+    nested beside the English they gloss, so walking into them collects every
+    Spanish, Russian and Japanese line as if it were a lesson string that
+    needed translating — 1016 phantom defects on A Fistful of Lies, which
+    ships all nine languages. Nothing learner-facing in English ever lives
+    under `local`."""
     found = []
     def walk(o):
         if isinstance(o, dict):
             for k, v in o.items():
+                if k in ('local', 'meta'):
+                    continue   # glosses, and the generator's own bookkeeping
                 if k in TEXT_KEYS and isinstance(v, str) and v.strip():
                     found.append(v.strip())
                 elif k in TEXT_KEYS and isinstance(v, dict) and isinstance(v.get('en'), str):
@@ -66,7 +79,21 @@ def lesson_strings(path):
         elif isinstance(o, list):
             for v in o:
                 walk(v)
-    walk(json.load(open(path, encoding='utf-8')))
+    if path.endswith('.html'):
+        # The built page carries `const G = {...}` on one line — exactly the
+        # scenes that render, so a scene the builder drops cannot leak in.
+        src = open(path, encoding='utf-8').read()
+        m = re.search(r'^const G = (\{.*\});?$', src, re.M)
+        if not m:
+            raise SystemExit('no `const G = {...}` in %s — is it a built RPG page?' % path)
+        g = json.loads(m.group(1))
+        # only the subtrees validate() checks. G's own `start` is the id of the
+        # opening scene, and `start` is also a text key — walking the whole
+        # object reports the scene id "cover" as an untranslated string.
+        for k in ('scenes', 'labels', 'tags'):
+            walk(g.get(k, {}))
+    else:
+        walk(json.load(open(path, encoding='utf-8')))
     return found
 
 

@@ -9,6 +9,118 @@ session can read it.
 **`lesson-template/HOUSE-STYLE.md` in this repo is out of date.** The
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
+---
+
+## 2026-09-10 — Frankenstein Round 2 merged: new artwork, and questions that finally test the *use* of going to
+
+ChatGPT's Round 2 packet (`Frankenstein_Round2_Replacement_Batch.zip`) is in:
+**31 plates, 172 text fields with all nine glosses, 41 answer sets.** It is a
+picture-and-text packet for the existing builder, not a rebuilt game, and it
+merged cleanly. `block-camp/frankenstein-green-prometheus-rpg.html` is now 53
+scenes, 41 questions, max 175.
+
+### Two checks worth doing on any packet before merging it
+
+Both were cheap and both mattered:
+
+- **Verify the base.** The packet names the SHA-256 of the source zip it was
+  built against. Ours matched, which is the difference between "these keys
+  line up" and a silent no-op merge.
+- **Verify every `old_en` against the shipped page**, not against `data.json`.
+  All 172 were present in the page. Sixteen of them were *not* in `data.json`,
+  because the builder's `STORY` dict was overriding those scenes — the packet's
+  own README warns about this and it is worth restating: **an override in the
+  builder beats `data.json` silently.** The merge script reported the sixteen
+  as skips rather than pretending they applied.
+
+My first pass of that check used `r.get('old_english')` where the field is
+`old_en`, so it reported 0 of 172 missing — a clean pass produced by a typo.
+A coverage check that can only ever pass is worse than no check.
+
+### STORY and OPTS are now empty, on purpose
+
+The packet rewrote the story on all 47 rendered scenes and caps every one at
+**22 English words**, which is exactly what the 16 `STORY` trims existed to
+achieve, and it replaced every option set, which is what the one `OPTS` entry
+existed to do. Both dicts are emptied with a note saying why. `data.json` is
+the single source of the text again.
+
+The layout result is the headline: **540 renders — 53 scenes across ten
+languages — 0 scroll and 0 clipped text.** Before this batch, German alone had
+22 failing scenes and the fix was a fortnight of panel-width tuning and
+sentence-index trimming. Shorter copy solved it outright.
+
+### The questions are a different lesson now
+
+The old items drilled subject-verb agreement: `is going to` / `are going to` /
+`is going travelling`. The new ones are three full sentences that contrast the
+*uses*:
+
+> Water rises around the damaged sled. It cannot stay afloat.
+> **Which prediction fits the evidence now?**
+> The sled will probably stay afloat. · **The sled is going to sink.** ·
+> The sled is leaving port tomorrow.
+
+`will` for an uncertain guess, `going to` for evidence, present continuous for
+an arrangement. All 41 sets pass `_check_answer_key` on
+`check-lesson.js`'s own thresholds, and `KEY` still deals the slots 13/14/14.
+
+### Hotspots: trust the clue, not the old box
+
+31 new plates move the objects. The packet supplied 20 measured suggestions and
+they were mostly right, but four needed eyes:
+
+- **`20_language`** — its box sat on the Creature's forearm. Re-read onto the
+  open book at `[38, 49, 13, 11]`.
+- **`24_rejection_fire`** — straddled the cottage and the forest either side;
+  tightened onto the dark cottage.
+- **`cover`** — the new plate is Victor at the rail with a ship's lantern, and
+  the suggested `cx 4` hugged the frame edge. Moved inboard to `[7, 53, 10, 15]`,
+  still clear of the centred cover panel, which was covering **80%** of the old
+  box.
+- **`35b_ship_rescue`** — reached back to x 43 and sat a quarter under the left
+  panel; the trapped ship itself spans 53-71.
+
+**Two I thought were wrong and were not.** `11_life`'s marker looked like it
+was on machinery rather than the body, and `27_orkney`'s on the window rather
+than the shrouded second creation — but the packet *rewrote the clues*, and
+they now read "Power surges through the apparatus" and "Storm waves surround
+the isolated workshop". The clue names the object; when the clue changes, the
+object changes. Read the new clue before moving a box.
+
+### check_translations.py can read the built page now
+
+Pointed at `data.json` it reported "Pick the best answer." as untranslated —
+a string that survives only on two scenes the builder drops via `DEAD`/`CUT`
+and appears **zero** times in the page. It now accepts the built `<slug>.html`
+and walks `const G = {...}`, which is exactly what renders. Pass the page, not
+`data.json`:
+
+```bash
+python lesson-template/build/rpg/check_translations.py \
+    lesson-template/build/rpg/<slug>/translations block-camp/<slug>.html
+```
+
+One trap in doing that: `G.start` is the id of the opening scene and `start` is
+also a text key, so walking the whole object reports the scene id `cover` as an
+untranslated string. It walks `scenes`, `labels` and `tags` only.
+
+### Still the same last step
+
+The catalogue row is **still not in Supabase** — `seo.py` reports 295 lessons
+and none of them is this one, the page carries no Open Graph or JSON-LD, and it
+is in neither the sitemap, `llms.txt` nor `lesson-meta.json`. The page has been
+live on `origin/main` since 2026-09-07, so the row can go in whenever:
+
+```sql
+insert into lessons (file, title, level, access, deck, video, sort_order) values
+ ('block-camp/frankenstein-green-prometheus-rpg.html',
+  'Frankenstein: The Green Prometheus — Going To Voxel RPG (A2)', 'A2', 'pro', false, false, 0);
+```
+
+Then `python tools/seo.py`. Nothing else is outstanding.
+
+
 
 ---
 
