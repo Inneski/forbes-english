@@ -80,7 +80,10 @@ HOT = {
     'rules':    ([92, 64,  7, 11], 'left',   'center', 64),   # the glass on the bar; wide, five cards
     'door':     ([50, 52,  6, 35], 'right',  'center', 40),   # the saloon door, dead centre
     'mirror':   ([92, 64,  7, 11], 'left',   'center', 50),   # the glass
-    'table':    ([67, 67, 14, 26], 'left',   'center'),       # the overturned table (trimmed from w31 h45)
+    # 50, not the default 46: French is the long one here and overflowed by
+    # 18px at 46. Found by the checker's `tight` line, not by the German-only
+    # width sweep that set the rest of this table.
+    'table':    ([67, 67, 14, 26], 'left',   'center', 50),   # the overturned table (trimmed from w31 h45)
     'stable':   ([85, 15, 10, 26], 'left',   'center', 50),   # the hanging rope
     'poster':   ([84, 55, 18, 52], 'left',   'center', 58),   # the wanted poster (trimmed from w34 h60)
     'approach': ([74, 20, 16, 36], 'center', 'bottom'),       # the ladder to the roof, high in the frame
