@@ -52,11 +52,12 @@ builder can supply what was never drawn. Two of the ten were also on the wrong
 scenes (`06_token` holds a gas lamp, `10_lamp` holds the cab token) — the
 builder swaps those — and three more name an object no plate contains.
 
-**What to ask ChatGPT for:** eight replacement plates, 1536x1024 WebP under
-200 KB, one bright nameable object each, for `telegram`, `libcard`, `cipher`,
-`key`, `timetable`, `rope`, `plate` and `choice2`. Everything else in that
-lesson is finished; it is one builder re-run plus a fresh hotspot pass away
-from shipping.
+**What to ask ChatGPT for:** `docs/CHATGPT-SHERLOCK-ARTWORK.md` is the request,
+written to paste — eight replacement plates, 1536x1024 WebP under 200 KB, one
+bright nameable object each, for `telegram`, `cipher`, `choice2`, `libcard`,
+`key`, `timetable`, `rope` and `plate`. Everything else in that lesson is
+finished; it is one builder re-run plus a fresh hotspot pass away from
+shipping, and that file ends with the five steps.
 
 Its export was also the weakest in three other ways, all fixed in the builder
 and all worth checking on the next one: the answer sat in slot 0 on all fifteen
@@ -106,6 +107,17 @@ shipped lessons have findings that are not fixed yet** — Lost Yellow Road
 Frankenstein (`14_speak` 33% and four more; its centred cover is deliberate and
 is waived in the tool). Each needs the same measure-and-tune loop; none is
 urgent, and none of them is worth doing by eye now that the number is printable.
+
+### Shipped — and what is left to run
+
+`5d44275` (the lesson, the engine fixes, the checker) and `09da23c` (catalogue
+row, SEO block, the four indexes). Supabase row **313**, `access: pro`,
+inserted after the page returned 200 on origin/main. Verified live: the page,
+the hub card and the library row all 200, and the Sherlock RPG appears in none
+of the four indexes, which is the intended state.
+
+**Left to run:** nothing for The Last Bounty. Sherlock needs its eight plates.
+The three older lessons' panel findings are listed above and are not urgent.
 
 ### What that loop looks like, because it is not obvious
 
