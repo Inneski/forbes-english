@@ -7,7 +7,10 @@
 <title>This lesson is for subscribers</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Barlow+Condensed:wght@700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- Served from our own origin, not a CDN: a blocked cdn.jsdelivr.net
+     (content blockers, in-app browsers, filtered Wi-Fi) used to leave this
+     page as a spinner and nothing else. See vendor/README.md. -->
+<script src="vendor/supabase-js-2.116.0.min.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -127,6 +130,10 @@
     sessionStorage.removeItem('fe-retried');
     return;
   }
+  // No client means the library did not load; the buttons on this page still
+  // work, so leave it exactly as it is rather than logging a confusing error.
+  if (!window.sb) return;
+
   const checking = document.getElementById('checking');
   try {
     const { data } = await window.sb.auth.getSession();

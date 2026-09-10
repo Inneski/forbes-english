@@ -11,6 +11,94 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-10 — Sign-in was a dead page on phones, and the cause was a CDN
+
+Innes could not sign in on his phone: white page. It reproduces, and the
+cause is not layout — it is that **`account.html` could not draw itself
+unless a third-party CDN answered.**
+
+`supabase-js` was loaded from `cdn.jsdelivr.net`. If that request failed,
+`sb-client.js` threw `supabase is not defined` on its very first statement,
+which aborted the rest of that file *and* the inline script on the page below
+it — including the call that decides what to show. The page kept its green
+header and a small grey "Loading…" on cream, and nothing else, for ever. No
+form, no error, nothing to tap. From a phone that reads as a white page.
+
+Blocked jsdelivr is ordinary on a phone: content blockers, in-app browsers
+(Instagram, WhatsApp, Gmail — where a lot of this site's traffic starts),
+filtered school and office Wi-Fi, some national networks.
+
+**A second, independent way in, and the more likely one for Innes:** on a
+phone that had signed in before, the first paint waited on `getUser()` — a
+network call with no timeout. Stored session + stalled auth host = the same
+endless spinner. Measured: stranded, both with a valid token and an expired
+one.
+
+### What was measured
+
+Chromium at 390×844, iPhone UA, real `supabase-js`, on the code as shipped
+and on the fix. Harness pattern is worth reusing: serve the repo over plain
+http, `page.route()` the library and `*.supabase.co` to fail or hang,
+`addInitScript` to seed a stored session or make `localStorage` throw.
+
+| condition (signed-out visitor) | before | after |
+|---|---|---|
+| everything reachable | form 142ms | form 105ms |
+| supabase-js blocked | **no form, spinner** | form 97ms + a message |
+| auth host never answers | form 78ms | form 107ms |
+| localStorage throws (iOS "Block All Cookies") | form 73ms | form 111ms |
+| library blocked *and* storage blocked | **no form, spinner** | form 73ms + a message |
+
+| condition (phone that has signed in before) | before | after |
+|---|---|---|
+| valid token, auth host never answers | **stranded** | account panel 104ms |
+| expired token, auth host never answers | **stranded** | form 2554ms |
+| valid token, auth host refuses | form 95ms | form 82ms |
+
+Note what the measurement corrected: with the *real* library, a signed-out
+visitor survived a dead auth host fine — `getUser()` short-circuits when
+there is no stored session. An earlier run using a hand-written stub said
+otherwise. **Do not measure this kind of thing against a stub of the
+dependency; the stub's behaviour was the finding.**
+
+### The fix
+
+- **`vendor/supabase-js-2.116.0.min.js` — the library is served from our own
+  origin now.** It cannot be blocked separately from the pages that need it,
+  it costs no extra DNS + TLS handshake on a cold mobile connection, and the
+  version is pinned instead of floating on `@2`. `vendor/README.md` has the
+  three commands to update it. All four pages that used the CDN now point
+  here: `account.html`, `library.html`, `pricing.html`, `locked.html`.
+- **`sb-client.js` cannot take a page down.** The client is built inside a
+  guard; if `localStorage` throws it retries with an in-memory store (you
+  sign in, you are just not remembered next visit); if there is no library at
+  all `window.sb` is `null`, `window.sbUnavailable` is `true`, and every
+  helper returns a Supabase-shaped `{ error }` that callers already handle.
+  Every network call has a deadline and resolves — never rejects — on
+  timeout.
+- **`account.html` always ends somewhere.** First paint is decided by
+  `sbGetSession()`, which reads this browser's stored session and does not
+  need the network. Every path finishes at `showAuth()` or `showAccount()`, a
+  4s backstop calls `showAuth()` if nothing else has, and `start()` has a
+  `.catch` that does the same. "No client" says so in words a student can act
+  on rather than showing a spinner.
+
+### The rule this leaves behind
+
+**A page whose only visible state is a spinner has a bug, not a loading
+state.** The question to ask of any such page is not "is this fast enough"
+but "what does someone see when this never returns" — and if the answer is
+the spinner, it needs a deadline and a fallback that goes somewhere.
+
+### Not run: `tools/seo.py`
+
+Deliberate. No lesson was built; the four pages touched are site chrome, and
+`account.html` and `locked.html` are in seo.py's own SKIP set. A cloud
+session's run of it silently deletes anything newer than `tools/lessons.json`
+from four indexes (see CLAUDE.md), so this would have been pure risk.
+`check-library.js --vs-origin` was run and passes — `library.html` changed by
+one script tag only, no `LESSON_IMAGES` entry touched.
+
 ## 2026-09-10 — Frankenstein Round 2 merged: new artwork, and questions that finally test the *use* of going to
 
 ChatGPT's Round 2 packet (`Frankenstein_Round2_Replacement_Batch.zip`) is in:

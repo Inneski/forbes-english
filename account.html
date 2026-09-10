@@ -6,7 +6,10 @@
 <title>My Account</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Barlow+Condensed:wght@700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- Served from our own origin, not a CDN: a blocked cdn.jsdelivr.net
+     (content blockers, in-app browsers, filtered Wi-Fi) used to leave this
+     page as a spinner and nothing else. See vendor/README.md. -->
+<script src="vendor/supabase-js-2.116.0.min.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -205,6 +208,18 @@
 
 <script src="sb-client.js"></script>
 <script>
+// Everything below is arranged around one rule: the visitor must always end
+// up looking at something they can act on. Every path finishes at showAuth()
+// or showAccount(), and a deadline calls showAuth() if nothing else has.
+//
+// The bug this replaces: the first paint waited on `getUser()`, a network
+// call with no timeout, and the whole script sat below an unguarded
+// `window.sb.auth.onAuthStateChange(...)`. If the Supabase library had not
+// loaded, that line threw and took renderAccount() with it. Either way the
+// page showed "Loading&hellip;" for ever — no form, no error, nothing to tap.
+// On a phone that is not exotic: a content blocker, an in-app browser, or one
+// bar of signal was enough.
+
 let mode = "login"; // or "signup"
 
 const loading = document.getElementById("loading");
@@ -225,6 +240,34 @@ function showError(msg) {
 function clearError() {
   authError.classList.remove("show");
 }
+
+function showAuth() {
+  loading.hidden = true;
+  accountSection.hidden = true;
+  document.getElementById("recover-section").hidden = true;
+  authSection.hidden = false;
+}
+function showAccount() {
+  loading.hidden = true;
+  authSection.hidden = true;
+  document.getElementById("recover-section").hidden = true;
+  accountSection.hidden = false;
+}
+
+// The backstop. If the checks below have not decided anything by now,
+// something is wrong that the visitor cannot see and cannot fix — so give
+// them the login form, which at least goes somewhere.
+let painted = false;
+function paint(show) {
+  painted = true;
+  show();
+}
+setTimeout(() => {
+  if (!painted) {
+    paint(showAuth);
+    showError("That took longer than it should have. Try logging in, or reload the page.");
+  }
+}, 4000);
 
 // Split out of the toggle handler so the submit path can send someone back to
 // the login form without also wiping the message explaining why.
@@ -264,15 +307,24 @@ document.getElementById("forgot-link").addEventListener("click", async () => {
 });
 
 // Supabase returns from the reset email with a recovery session in the URL
-// fragment; supabase-js picks it up and fires this event.
-window.sb.auth.onAuthStateChange((event) => {
-  if (event === "PASSWORD_RECOVERY") {
-    loading.hidden = true;
-    authSection.hidden = true;
-    accountSection.hidden = true;
-    document.getElementById("recover-section").hidden = false;
+// fragment; supabase-js picks it up and fires this event. Guarded, because
+// there may be no client at all — and an exception on this line used to stop
+// the rest of this script from ever running.
+if (window.sb) {
+  try {
+    window.sb.auth.onAuthStateChange((event) => {
+      if (event === "PASSWORD_RECOVERY") {
+        painted = true;
+        loading.hidden = true;
+        authSection.hidden = true;
+        accountSection.hidden = true;
+        document.getElementById("recover-section").hidden = false;
+      }
+    });
+  } catch (err) {
+    console.error("Could not listen for the password-recovery event:", err);
   }
-});
+}
 
 document.getElementById("recover-form").addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -289,12 +341,23 @@ authForm.addEventListener("submit", async (e) => {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value;
   authSubmit.disabled = true;
+  authSubmit.textContent = mode === "signup" ? "Signing up\u2026" : "Logging in\u2026";
 
-  const { data, error } = mode === "signup"
-    ? await sbSignUp(email, password)
-    : await sbSignIn(email, password);
+  let data = null;
+  let error = null;
+  try {
+    ({ data, error } = mode === "signup"
+      ? await sbSignUp(email, password)
+      : await sbSignIn(email, password));
+  } catch (err) {
+    // A rejected request must not leave the button spinning with no
+    // explanation; that is indistinguishable from the page being broken.
+    console.error("Sign-in request failed:", err);
+    error = { message: "Could not reach the server. Check your connection and try again." };
+  }
 
   authSubmit.disabled = false;
+  applyMode(mode);
   if (error) {
     showError(error.message);
     return;
@@ -323,6 +386,15 @@ authForm.addEventListener("submit", async (e) => {
     window.location.href = "pricing.html";
     return;
   }
+  // The sign-in reply already carries the user, so show the panel from that
+  // rather than asking the server again -- one fewer round trip on the exact
+  // connection that just proved itself slow.
+  const signedIn = data && data.user;
+  if (signedIn) {
+    paint(showAccount);
+    await fillSubscription(signedIn);
+    return;
+  }
   await renderAccount();
 });
 
@@ -334,29 +406,34 @@ document.getElementById("logout-btn").addEventListener("click", async () => {
 // Subscribe button now just links to pricing.html (see markup above),
 // where the visitor picks a plan before checkout begins.
 
-async function renderAccount() {
-  const user = await sbGetUser();
-  loading.hidden = true;
+// Fills in the subscription panel. Runs after the panel is already on screen,
+// so a slow or failed profile read leaves a usable page rather than a blank
+// one -- the two rows just keep their em-dashes.
+async function fillSubscription(user) {
+  document.getElementById("account-email").textContent = user.email || "";
 
-  if (!user) {
-    authSection.hidden = false;
-    accountSection.hidden = true;
+  let profile = null;
+  try {
+    profile = await sbGetProfile(user.id);
+  } catch (err) {
+    console.error("Could not read the profile:", err);
+  }
+
+  const badge = document.getElementById("sub-badge");
+  if (!profile) {
+    badge.textContent = "Could not check";
+    badge.className = "badge inactive";
+    document.getElementById("subscribe-btn").hidden = false;
     return;
   }
 
-  authSection.hidden = true;
-  accountSection.hidden = false;
-  document.getElementById("account-email").textContent = user.email;
-
-  const profile = await sbGetProfile(user.id);
-  const status = profile?.subscription_status || "inactive";
+  const status = profile.subscription_status || "inactive";
   const isActive = status === "active" || status === "trialing";
   // An owner has full access without paying. Reporting only the billing
   // status made a working account look like a broken one.
-  const isOwner = profile?.owner === true;
+  const isOwner = profile.owner === true;
   const hasAccess = isOwner || isActive;
 
-  const badge = document.getElementById("sub-badge");
   badge.textContent = isOwner
     ? "Owner \u2014 full access"
     : isActive ? status[0].toUpperCase() + status.slice(1)
@@ -365,14 +442,61 @@ async function renderAccount() {
 
   document.getElementById("sub-period").textContent = isOwner
     ? "Never expires"
-    : profile?.current_period_end
+    : profile.current_period_end
       ? new Date(profile.current_period_end).toLocaleDateString()
       : "\u2014";
 
   document.getElementById("subscribe-btn").hidden = hasAccess;
 }
 
-renderAccount();
+async function renderAccount() {
+  const user = await sbGetUser();
+  if (!user) { paint(showAuth); return; }
+  paint(showAccount);
+  await fillSubscription(user);
+}
+
+// --- first paint ---------------------------------------------------------
+//
+// Decided from the session already stored in this browser, not from a network
+// round trip, so an unreachable server can no longer hold the page hostage.
+// The slower checks run afterwards, against a page that is already usable.
+async function start() {
+  if (window.sbUnavailable) {
+    // No client at all. Say so in words the visitor can act on, rather than
+    // showing a spinner that will never stop.
+    paint(showAuth);
+    authSubmit.disabled = true;
+    showError(
+      "Sign-in could not load. Reload the page \u2014 and if it keeps happening, " +
+      "turn off any ad or content blocker for this site, or open it in Safari " +
+      "or Chrome rather than inside another app."
+    );
+    return;
+  }
+
+  let session = null;
+  try {
+    session = await sbGetSession();
+  } catch (err) {
+    console.error("Could not read the stored session:", err);
+  }
+
+  if (!session) { paint(showAuth); return; }
+
+  // Signed in as far as this browser knows. Show the panel straight away,
+  // then confirm with the server and fill in the details.
+  paint(showAccount);
+  const user = await sbGetUser();
+  if (!user) { showAuth(); return; }
+  await fillSubscription(user);
+}
+
+start().catch((err) => {
+  // The last line of defence. Whatever went wrong, the visitor gets a form.
+  console.error("Account page failed to start:", err);
+  paint(showAuth);
+});
 </script>
 
 </body>
