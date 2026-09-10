@@ -95,8 +95,13 @@ RELIC_ADD = ('05_lightning_oak',)
 P1_ENDINGS = {
     'p1_end_alive': ('12_awakening_choice', True,
                      'END OF PART I · THE SPARK TAKES', 'The Eyes Open',
-                     'The body breathes. Victor is going to spend the rest of his life '
-                     'answering for this. Part II begins here.'),
+                     # "Part II begins here" was a third sentence until the
+                     # PLAY PART II button existed to say it. Dropping it is
+                     # also what gets this panel off its own marker: with the
+                     # panel arriving closed, the marker has to be clickable,
+                     # and one fewer line in ten languages is what buys that.
+                     'The body breathes. Victor is going to spend the rest of '
+                     'his life answering for this.'),
     'p1_end_sparks': ('10_build', True,
                       'END OF PART I · A SPARK LEFT BEHIND', 'The Bench Is Not Clear',
                       'The Creature lives, but you walked past a spark on the way. '
@@ -169,7 +174,10 @@ HOT = {
     '39_victor_death':        ([86, 54, 18, 24], 'left', 'center'),       # Victor
     '24_creature_to_geneva':  ([31, 25, 14, 20], 'right', 'center'),       # the Creature on the road
     '24_rescue_child':        ([72, 28, 12, 16], 'left', 'center'),   # the man raising his gun
-    '24_william_frankenstein':([83, 69, 20, 28], 'left', 'center'),       # William
+    # 52, not the default 46: the new story is three sentences and the panel
+    # was overflowing by 15px in German. William is at cx 83, so a wider
+    # panel on the left still clears him.
+    '24_william_frankenstein':([83, 69, 20, 28], 'left',  'center', 52),  # William
     # Was [78, 25] on the window: the marker landed on flat moonlight and
     # rendered as a pale blank blob. The clue names the locket, so the
     # locket is the object. Panel right and narrow — this plate is busy on
@@ -182,7 +190,7 @@ HOT = {
     '22b_return':             ([85, 43, 16, 40], 'left', 'center'),   # the doorway Felix comes through
     '35b_ship_rescue':        ([63, 28, 16, 14], 'left',   'center'),       # the trapped ship
     'end_mercy':              ([18, 45, 14, 30], 'right', 'center'),
-    'end_warning':            ([42, 49, 20, 34], 'right', 'center'),
+    'end_warning':            ([42, 49, 20, 34], 'right',  'center', 42),
     'end_ice':                ([72, 45, 18, 26], 'left', 'center'),
     'end_fail':               ([30, 40, 16, 26], 'right', 'center'),
     # Part II's cover. The marker is Walton's bearded stranger, low enough on
@@ -190,7 +198,13 @@ HOT = {
     # aligned exactly as Part I's is — which is why one pair of make_cover.py
     # constants serves both plates. Panel right, because he is on the left.
     'cover2':                 ([15, 58, 10, 18], 'right',  'bottom', 54),
-    'p1_end_alive':           ([44, 33, 10, 14], 'center', 'bottom'),
+    # Not Victor. This entry started as a copy of 12_awakening_choice's own
+    # hotspot, which is right for that scene — "Victor, deciding whether to
+    # speak" — and wrong for an ending called The Eyes Open. The object is
+    # the Creature's lit eyes, which are also high enough on the plate that
+    # the foot panel clears them in all ten languages. The marker moved
+    # because it was on the wrong object, not to dodge the panel.
+    'p1_end_alive':           ([75, 22,  9, 12], 'center', 'bottom'),
     'p1_end_sparks':          ([24, 30, 12, 20], 'right',  'center'),
     'p1_end_fail':            ([30, 40, 16, 26], 'right',  'center'),
 }
@@ -227,11 +241,11 @@ CLUE = {
     # Innes, 2026-09-10: "the creature" rather than "He". Eight of the nine
     # glosses already said "the Creature" — only the English and the Chinese
     # still had a pronoun, so this aligns them rather than changing them.
-    '11_life': "Power surges through the apparatus. The creature's eyes are still closed.",
+    '11_life': "Power surges through the apparatus. The Creature's eyes are still closed.",
     # A bare "He" with nothing on screen to attach it to — the scene before it
     # is the cottage, not Victor. Named, and the nine glosses re-keyed to match;
     # six of them already led with their own word for the Creature.
-    '24_creature_to_geneva': 'The creature has chosen Geneva as its destination '
+    '24_creature_to_geneva': 'The Creature has chosen Geneva as its destination '
                              'and decided to continue along this road.',
 }
 
@@ -239,22 +253,22 @@ CLUE = {
 OPTS = {
     # same change, carried into the options. All three shift by the same words,
     # so the key stays neither the longest nor the shortest of the three.
-    '11_life': ['The creature is going to wake up.',
-                'The creature is going wake up.',
-                'The creature is going to wakes up.'],
+    '11_life': ['The Creature is going to wake up.',
+                'The Creature is going wake up.',
+                'The Creature is going to wakes up.'],
     # Innes, 2026-09-10: "Victor is going to leave for Geneva" instead of "He".
     '16_william': ['Victor is going to leave for Geneva.',
                    'Victor going to leave for Geneva.',
                    'Victor is going to leaving for Geneva.'],
-    '24_creature_to_geneva': ['The creature is going to travel to Geneva.',
-                              'The creature going to travel to Geneva.',
-                              'The creature is going to travels to Geneva.'],
-    '24_william_frankenstein': ['The creature is going to seize William.',
-                                'The creature is going seize William.',
-                                'The creature is going to seizing William.'],
-    '24_portrait_justine': ['The creature is going to leave the locket here.',
-                            'The creature is going leave the locket here.',
-                            'The creature is going to leaves the locket here.'],
+    '24_creature_to_geneva': ['The Creature is going to travel to Geneva.',
+                              'The Creature going to travel to Geneva.',
+                              'The Creature is going to travels to Geneva.'],
+    '24_william_frankenstein': ['The Creature is going to seize William.',
+                                'The Creature is going seize William.',
+                                'The Creature is going to seizing William.'],
+    '24_portrait_justine': ['The Creature is going to leave the locket here.',
+                            'The Creature is going leave the locket here.',
+                            'The Creature is going to leaves the locket here.'],
 }
 
 # ── the rules briefing (kind `rules`), which the export had as one HTML blob.

@@ -170,10 +170,16 @@ button{font:inherit}
    the middle. `pos` already carries each lesson's answer to that (Part I is
    `left`, Part II is `right`, both chosen against a measurement), so the
    strip honours it and centres only where the scene asks to be centred. */
-.is-cover .zone{align-items:flex-end!important}
+.is-cover .zone{align-items:flex-end!important;bottom:7%}
 .is-cover .content{width:auto!important;max-width:64%;margin:0!important;text-align:center;align-items:center;
-  background:linear-gradient(180deg,rgba(0,0,0,0),var(--panel) 42%);border:0;box-shadow:none;backdrop-filter:none;
-  padding:2.6cqw 2.4cqw 1.1cqw;gap:.5cqw}
+  /* The scrim reaches full strength well above the first line of text. It used
+     to start fading in at 42%, which put the kicker — accent colour, smallest
+     type — on bare artwork: unreadable over snow on Part I and ice on Part II.
+     The bottom padding clears the corner help bar, which the spec line used to
+     sit on top of by 5-14px depending on how long that line is. */
+  background:linear-gradient(180deg,rgba(0,0,0,0) 0%,var(--panel) 30%);border:0;box-shadow:none;backdrop-filter:none;
+  padding:3.4cqw 2.4cqw 1.2cqw;gap:.5cqw}
+.is-cover .kicker{text-shadow:0 .12em .5em rgba(0,0,0,.85),0 0 .3em rgba(0,0,0,.9)}
 .is-cover .rules-chips{justify-content:center}
 .is-cover .start{align-self:center;margin-top:.35cqw}
 .is-cover .hide-btn{display:none}
