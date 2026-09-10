@@ -66,12 +66,12 @@ HOT = {
     '04_warning':             ([35, 19, 15, 16], 'right', 'center'),   # the cabin window, the Arctic he wants
     '05_lightning_oak':       ([64, 25, 14, 26], 'left',   'center'),       # the struck tree
     '06_ingolstadt':          ([64, 24, 18, 24], 'left', 'center'),       # the university towers
-    '07_research_choice':     ([52, 86, 12, 12], 'center', 'top'),          # Victor where the road divides
+    '07_research_choice':     ([79, 33, 12, 18], 'center', 'bottom'),        # the lit laboratory door, one of the two roads
     '08_cemetery':            ([57, 62,  8, 12], 'left', 'center'),       # the lantern at the grave
     '09_waldman':             ([72, 45, 12, 20], 'left', 'center'),   # the demonstration apparatus
     '10_build':               ([24, 30, 12, 20], 'right', 'center'),       # Victor, who will not stop
     '11_life':                ([86, 60, 14, 20], 'left', 'center'),       # the body taking the spark
-    '12_awakening_choice':    ([45, 86, 12, 12], 'center', 'top'),          # the hand between them
+    '12_awakening_choice':    ([44, 33, 10, 14], 'center', 'bottom'),        # Victor, deciding whether to speak
     '13_flee':                ([62, 48, 14, 26], 'left', 'center'),       # Victor running
     '14_speak':               ([38, 45, 16, 28], 'right', 'center'),       # the Creature he might address
     '15_henry':               ([60, 30, 14, 26], 'left', 'center'),       # Henry at the bedside
@@ -80,17 +80,17 @@ HOT = {
     '18_alps':                ([82, 49, 18, 38], 'left', 'center'),       # the Creature on the glacier
     '19_cottage':             ([71, 65, 20, 18], 'left', 'center'),       # the lit cottage window
     '20_language':            ([38, 49, 13, 11], 'right',  'center'),       # the open book he found
-    '21_approach_choice':     ([52, 86, 14, 12], 'center', 'top'),          # the Creature deciding
+    '21_approach_choice':     ([50, 38, 12, 14], 'center', 'bottom'),        # the Creature deciding how to approach
     '22_knock':               ([60, 38, 14, 22], 'left', 'center'),       # blind De Lacey
     '23_firewood':            ([58, 69, 16, 22], 'left', 'center'),       # the door he leaves the wood by
     '24_rejection_fire':      ([89, 47, 10, 13], 'left',   'center'),       # the dark, empty cottage
     '25_demand':              ([66, 28, 14, 18], 'left',   'center', 42),   # the vision of the companion
-    '26_companion_choice':    ([60, 86, 12, 12], 'center', 'top'),          # Victor weighing it
+    '26_companion_choice':    ([21, 45, 10, 12], 'center', 'bottom', 44),   # the book Victor weighs it over
     '27_orkney':              ([85, 61, 16, 26], 'left', 'center'),       # the shrouded second creature
     '28_refuse':              ([18, 30, 12, 24], 'right', 'center'),   # Victor refusing
     '29_destroy':             ([70, 60, 14, 16], 'left', 'center'),       # the torn shroud
     '30_clerval_prison':      ([71, 42, 24, 28], 'left', 'center'),       # the officers on the shore
-    '31_wedding_choice':      ([55, 86, 10, 12], 'center', 'top'),          # the lantern
+    '31_wedding_choice':      ([39, 32, 10, 13], 'center', 'bottom'),        # Elizabeth, who may or may not be told
     '32_confess':             ([68, 80, 14, 14], 'left',   'center'),       # the open book between them
     '33_guard':               ([76, 61, 10, 16], 'left', 'center'),       # the lantern on his lone watch
     '34_elizabeth':           ([63, 44, 18, 28], 'left', 'center'),   # Elizabeth on the bed
