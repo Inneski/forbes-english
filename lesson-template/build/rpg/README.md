@@ -109,6 +109,17 @@ final text — it finds a superseded draft and reports success.
 it cost. A fourth kind means: read its script first, then decide which of
 the three it is closest to.
 
+**A Fistful of Lies, 2026-09-10, is the ChatGPT kind arriving complete** —
+`window.FISTFUL_GAME_DATA`, plus `meta`, `briefing`, per-scene `hotspot` and
+`explanation`, and all nine languages in `local`. `extract_standalone.py`
+reads it whole and passes the extra keys through. When an export is that
+complete the builder writes almost no lesson text: flatten `local` into
+`translations/<lang>.json` (that lesson's `make-translations.py` is the
+pattern — it also refuses to write if one English string is glossed two
+different ways), take `explanation` as `fb` and `briefing` as the rules
+scene, and spend the effort on what no export carries — the panel side on
+every scene, and a picture for each ending.
+
 `check_translations.py` audits a `<slug>/translations` directory before a
 page exists — script leaks, coverage, a lost `___` — which is the one thing
 `check-glosses.js` cannot do, since it needs a built Blocula-style page.
@@ -250,10 +261,13 @@ Scene kinds: `intro` (cover: `rules` chips, `start` button, `small` line),
 optional `rules` cards and `note`, optional `button`), `question` (`clue`,
 `prompt`, `opts`, `answer`, `fb`, `points`, `relic`, `final`, `next`),
 `choice` (`routes`: name, desc, route, target — a route may carry `min`
-and `else`: below `min` points it goes to `else` instead), `ending`. A
-question's `next` of `'resolve'` picks the ending from the score, the tiles
-and whether the final question was right. Chances run out → the failed
-ending on the next CONTINUE.
+and `else`: below `min` points it goes to `else` instead), `ending`
+(optionally `routeStory`: `{ROUTE: text}`, a closing paragraph chosen by the
+route the player actually took — the first key that appears in `state.route`
+wins, and it prints above the final score). A question's `next` of
+`'resolve'` picks the ending from the score, the tiles and whether the final
+question was right. Chances run out → the failed ending on the next
+CONTINUE.
 
 An option is `{en, es, de}` (glosses optional — options are the English
 being taught and the check skips them) or, for a two-blank item,

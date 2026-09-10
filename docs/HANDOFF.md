@@ -11,6 +11,96 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-10 — A Fistful of Lies ships, and the export finally arrived complete
+
+`block-camp/fistful-of-lies-rpg.html` — Past Simple, A1-A2, a voxel spaghetti
+western built on The Red-Headed League. 19 questions, two forks (question Tito
+or search the office; save Tito or stop Andreas), four clue tiles, 15 questions
+on any one run, 75 points, 65 to pass. Builder:
+`lesson-template/build/build_fistful_of_lies.py`.
+
+**This is the first export that matched `docs/CHATGPT-RPG-BRIEF.md` in full**,
+and it changes how much work a rebuild is. It arrived with `meta`, a
+`briefing`, a per-scene `hotspot` and `explanation`, and all nine languages on
+every learner-facing string — so no gloss was written by hand, no feedback line
+was authored, and the answer key came already dealt 7/6/6 across the slots with
+no key the longest option in its scene. `_check_answer_key` passed on the
+export's own indices, which has never happened before (Frankenstein's V32 put
+the key in slot 0 on all 44 questions).
+
+What the builder still had to do, and what a future one will too:
+
+- **The panel side on every scene.** No export carries it. This art puts its
+  lit object on the right in nineteen of twenty-one plates, so the panel goes
+  left almost everywhere.
+- **A picture for each ending.** The export shipped 22 plates — cover,
+  nineteen questions, two forks — and pointed all four endings *and* the
+  briefing at the cover. Four endings on one picture reads as one ending with
+  four captions. Each now takes the plate its own closing text describes
+  (dawn / showdown / ledger / chase), and the briefing takes the office.
+- **Checking every hotspot by eye anyway.** The export's boxes were good, but
+  two were unusable: `tunnel`'s lantern ran off the right edge of the plate and
+  took the marker with it, and `map`'s box spanned 40% of the frame and reached
+  under a translated panel. Both were invisible in the table and obvious in a
+  closed-scene screenshot.
+
+### Two engine changes, both generic, both in `rpg/rpg.py`
+
+- **`routeStory` on an ending scene** — `{ROUTE: text}`, a closing paragraph
+  picked by the route the player actually took. The export's two success
+  endings carry a `routeTexts` block ("You saved Tito…" / "You stopped the
+  wagon…") and the engine already tracked `state.route` for the line it prints
+  under the final score. Validated in nine languages like every other learner
+  string; documented in `rpg/README.md` §6.
+- **The gloss under a button was cream on cream — and the fix already
+  existed, in a generated page only.** `.translation` is `--muted`, which is
+  designed for the dark panel; the START / CONTINUE / PLAY AGAIN buttons are a
+  light accent gradient, so in every gloss language the second line on those
+  buttons rendered as a faint smudge. It now takes `--accent-ink`.
+
+  The instructive part: `a95dfd0` ("The route panels stop covering the
+  characters' faces") committed **exactly this CSS line into
+  `frankenstein-green-prometheus-rpg.html` and did not commit `rpg.py`**. So
+  the repo held a generated page that was ahead of its own generator. The
+  fix reached one of four RPGs, and the next re-run of that builder would
+  have silently deleted it from that one too. `git status` says nothing about
+  this: the page is committed and clean, and the builder is committed and
+  clean; they simply disagree.
+
+  **If you change `rpg/rpg.py`, commit `rpg/rpg.py`, and re-run every builder
+  that uses it** — `build_lost_yellow_road.py`,
+  `build_wonderland_stolen_now.py`, `build_frankenstein_green_prometheus.py`,
+  `build_fistful_of_lies.py`. All four are regenerated in this commit and now
+  agree with the engine.
+
+### `lost-yellow-road-rpg.html` was four engine versions stale
+
+Re-running its builder changed 45 lines, not the 3 the button fix accounts
+for: it had never been regenerated after the `[[a]]`/`[[b]]` tone markup, the
+`esct()` escaping, `--cake-a`/`--cake-b` or `state.endingPick` landed. All of
+those are opt-in — that lesson uses no tones, no `[[` marks and no route that
+carries an `ending` — so the catch-up is behaviour-neutral, and it was checked
+that way (cover, a question, a route choice and both endings, English and
+German). Same cause as the entry above: the engine moved and the generated
+page did not.
+
+### A route-choice panel anchored `top` can land on its own object
+
+`rpg/README.md` §3 says route choices are `center` + `top`, which is right for
+Oz, whose fork objects sit at the foot of the frame. This lesson's first
+signpost is at y=41, and a top-anchored panel covered it exactly. `center` +
+`bottom` clears it. The rule is really "centred, and anchored away from the
+object" — check the fork scene open, not just closed.
+
+### Also fixed: `check_translations.py` reported 1016 phantom defects
+
+`lesson_strings()` walked into `local` subtrees, so on an Oz-kind export it
+collected every Spanish, Russian and Japanese line as an English lesson string
+needing a translation. It now skips `local` and `meta`. Lost Yellow Road's
+audit goes from noise to PASS as a side effect.
+
+---
+
 ## 2026-09-10 — "Sign in is a white page": it was a 404, from a relative link on the gate
 
 **Read this before the entry below it, which chased the wrong cause.**
@@ -278,6 +368,8 @@ insert into lessons (file, title, level, access, deck, video, sort_order) values
 Then `python tools/seo.py`. Nothing else is outstanding.
 
 
+
+---
 
 ---
 
