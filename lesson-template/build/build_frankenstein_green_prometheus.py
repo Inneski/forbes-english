@@ -64,8 +64,8 @@ HOT = {
     'rules':                  ([14, 64, 12, 14], 'right',  'center', 60),   # the skull on the study table
     '03_arctic_rescue':       ([22, 78, 16, 14], 'right', 'center'),       # the broken ice under the sled
     '04_warning':             ([35, 19, 15, 16], 'right', 'center'),   # the cabin window, the Arctic he wants
-    '05_lightning_oak':       ([64, 25, 14, 26], 'left',   'center'),       # the struck tree
-    '06_ingolstadt':          ([64, 24, 18, 24], 'left', 'center'),       # the university towers
+    '05_lightning_oak':       ([58, 50, 14, 20], 'left',   'center'),       # the burning split trunk
+    '06_ingolstadt':          ([30, 52, 13, 22], 'right',  'center'),       # Victor and his books on the university steps
     '07_research_choice':     ([79, 33, 12, 18], 'center', 'bottom'),        # the lit laboratory door, one of the two roads
     '08_cemetery':            ([57, 62,  8, 12], 'left', 'center'),       # the lantern at the grave
     '09_waldman':             ([72, 45, 12, 20], 'left', 'center'),   # the demonstration apparatus
@@ -73,7 +73,7 @@ HOT = {
     '11_life':                ([86, 60, 14, 20], 'left', 'center'),       # the body taking the spark
     '12_awakening_choice':    ([44, 33, 10, 14], 'center', 'bottom'),        # Victor, deciding whether to speak
     '13_flee':                ([62, 48, 14, 26], 'left', 'center'),       # Victor running
-    '14_speak':               ([38, 45, 16, 28], 'right', 'center'),       # the Creature he might address
+    '14_speak':               ([48, 42, 12, 26], 'right',  'center', 42),   # the Creature he tries to address
     '15_henry':               ([60, 30, 14, 26], 'left', 'center'),       # Henry at the bedside
     '16_william':             ([30, 62, 10, 14], 'right', 'center'),   # the letter
     '17_justine':             ([78, 45, 16, 22], 'left',   'center', 56),   # the judges
@@ -114,7 +114,7 @@ HOT = {
     '29_storm_at_sea':        ([39, 67, 32, 24], 'right', 'center'),       # the storm at the window
     '30_return_home':         ([16, 46, 18, 36], 'right', 'center'),       # Elizabeth, told too little
     '09b_obsession':          ([32, 62, 12, 14], 'right', 'center'),   # the skull on the books
-    '18a_pursuit':            ([17, 60,  8, 12], 'right',  'center', 54),   # his lantern in the pass
+    '18a_pursuit':            ([88, 15,  9, 14], 'left',   'center'),       # the Creature on the ridge ahead
     '22b_return':             ([85, 43, 16, 40], 'left', 'center'),   # the doorway Felix comes through
     '35b_ship_rescue':        ([63, 28, 16, 14], 'left',   'center'),       # the trapped ship
     'end_mercy':              ([18, 45, 14, 30], 'right', 'center'),
@@ -177,11 +177,11 @@ RULES = {
         {'name': T('USE 1 · A PLAN'), 'form': T('something you have already decided')},
         {'name': T('USE 2 · EVIDENCE'), 'form': T('something you can see is about to happen')},
     ],
-    # will and the present continuous are no longer in the option sets, but
-    # they are the two forms a learner reaches for by mistake, so the contrast
-    # is named once here rather than left to be guessed.
-    'note': T('going to = decided, or you can see it coming. '
-              'will = a guess. present continuous = a fixed arrangement.'),
+    # Innes, 2026-09-10: "we dont need to talk about future simple or pres
+    # cont in this legend, just make it neater and focus on going to
+    # infinitive". The distractors are form errors, so the note names the one
+    # rule they all break instead of contrasting three tenses.
+    'note': T('The verb after to never changes: he is going to leave, not leaves and not leaving.'),
     'next': '03_arctic_rescue',
 }
 

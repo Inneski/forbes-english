@@ -56,8 +56,16 @@ def main():
     out = plate.copy()
     out.paste(lock, ((w - tw) // 2, int(h * TOP)), lock)
     # The delivered plate is already 190 KB, so the wordmark's icicle detail
-    # cannot be added at the plate's own quality and still clear 200 KB. 66 is
-    # the highest that fits, and on this dark, soft-focus sky it is invisible.
+    # cannot be added at the plate's own quality and still clear the 200 KB the
+    # batch spec sets. Search for the quality that fits rather than pinning a
+    # number, which goes stale the moment the plate or the lockup is redrawn.
+    for q in range(88, 40, -2):
+        out.save(OUT, 'WEBP', quality=q, method=6)
+        if os.path.getsize(OUT) < 199000:
+            break
+    print('%s — %d x %d, %d KB at quality %d'
+          % (os.path.relpath(OUT, REPO), *out.size, os.path.getsize(OUT) // 1024, q))
+    return
     out.save(OUT, 'WEBP', quality=66, method=6)
     print('%s — %d x %d, %d KB' % (os.path.relpath(OUT, REPO), *out.size,
                                    os.path.getsize(OUT) // 1024))
