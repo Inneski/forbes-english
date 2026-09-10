@@ -99,6 +99,15 @@ collected every Spanish, Russian and Japanese line as an English lesson string
 needing a translation. It now skips `local` and `meta`. Lost Yellow Road's
 audit goes from noise to PASS as a side effect.
 
+### Shipped — nothing left to run
+
+`0c1be85` (the lesson, the engine changes, all four builders re-run) and
+`66fb20f` (catalogue row, SEO block, the four indexes). Supabase row **312**,
+`access: pro`, inserted only after the page returned 200 on origin/main.
+`seo.py` ran last with Supabase reachable and the diff on `library.html`,
+`llms.txt`, `lesson-meta.json` and `sitemap.xml` was additions only.
+`check-library.js --vs-origin` PASSes.
+
 ---
 
 ## 2026-09-10 — "Sign in is a white page": it was a 404, from a relative link on the gate
