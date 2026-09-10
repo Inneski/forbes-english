@@ -276,7 +276,7 @@ RULES = {
     # how "USE 2 — STRONG EVIDENCE" ended up looking like an afterthought
     # rather than the partner of USE 1. Odd counts lay out 2+2+1.
     'rules': [
-        {'name': T('FORM · AM / IS / ARE + GOING TO + INFINITIVE'), 'form': T('I AM going to leave · she IS going to leave · they ARE going to leave')},
+        {'name': T('FORM · AM / ARE / IS + GOING TO + INFINITIVE'), 'form': T('I AM going to leave · she IS going to leave · they ARE going to leave')},
         {'name': T("NEGATIVE · AM NOT / ISN'T / AREN'T"), 'form': T("He ISN'T going to wait. · They AREN'T going to follow.")},
         {'name': T('QUESTION · AM / IS / ARE + SUBJECT'), 'form': T("IS he going to speak? · Yes, he IS. / No, he ISN'T.")},
         {'name': T('USE 1 · A PLAN'), 'form': T('He has decided. He IS GOING TO study science.')},

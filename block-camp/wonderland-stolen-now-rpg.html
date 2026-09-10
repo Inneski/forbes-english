@@ -59,10 +59,17 @@ button{font:inherit}
 .zone{position:absolute;z-index:4;top:8%;bottom:3.5%;left:2.2%;right:2.2%;display:flex;pointer-events:none}
 .content{pointer-events:auto;display:flex;flex-direction:column;gap:.8cqw;width:46%;max-height:100%;overflow:auto;scrollbar-width:thin;padding:1.2cqw 1.4cqw;background:var(--panel);border:1px solid rgba(255,246,217,.22);box-shadow:0 1.4cqw 4cqw var(--shadow);backdrop-filter:blur(6px);transition:transform .38s cubic-bezier(.2,.9,.3,1.15),opacity .22s ease;transform-origin:50% 50%}
 .frame:not(.open) .content{opacity:0;transform:scale(.12);pointer-events:none;transition:transform .26s ease-in,opacity .18s ease-in}
-/* A cover is a strip at the foot of the frame, centred, with the panel fading
-   up out of the picture instead of sitting on it as a box. The plate is the
-   title screen; this is the caption under it. */
-.is-cover .zone{align-items:flex-end!important;justify-content:center!important}
+/* A cover is a strip at the foot of the frame, with the panel fading up out of
+   the picture instead of sitting on it as a box. The plate is the title
+   screen; this is the caption under it.
+
+   The foot is forced; the SIDE is not. Forcing both buried the cover marker on
+   four of seven adventures — 43% on Frankenstein Part I, 37% on Sherlock —
+   because a centred strip is ~64% of the zone and most cover objects sit near
+   the middle. `pos` already carries each lesson's answer to that (Part I is
+   `left`, Part II is `right`, both chosen against a measurement), so the
+   strip honours it and centres only where the scene asks to be centred. */
+.is-cover .zone{align-items:flex-end!important}
 .is-cover .content{width:auto!important;max-width:64%;margin:0!important;text-align:center;align-items:center;
   background:linear-gradient(180deg,rgba(0,0,0,0),var(--panel) 42%);border:0;box-shadow:none;backdrop-filter:none;
   padding:2.6cqw 2.4cqw 1.1cqw;gap:.5cqw}
