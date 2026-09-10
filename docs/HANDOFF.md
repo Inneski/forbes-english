@@ -11,6 +11,39 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-10 — If you are splitting Frankenstein into two parts, read this first
+
+Four things landed in `rpg/rpg.py` today, from the session that shipped A
+Fistful of Lies, The Last Bounty and Sherlock: The Blue Hour. They change what
+a Frankenstein rebuild produces and what a split has to re-derive.
+
+**The scoring must be re-derived per half, not copied.** `build_frankenstein_
+green_prometheus.py` computes `max_score` and `max_relics` with `best()`, which
+walks the longest path through the graph, and sets `complete_score` to 80% of
+that. Cutting the graph in two changes both numbers. `resolve()` gates the
+master ending on `score >= max`, so a copied `max` makes the best ending
+unreachable — which is exactly the failure mode the `resolve()` fix below was
+written for.
+
+**`check-rpg-panels.js`'s waiver is keyed by slug.** `ALLOW` in that file
+waives Frankenstein's deliberately-centred cover
+(`ALLOW['frankenstein-green-prometheus-rpg']`). Two new slugs means two slugs
+with no waiver, and the cover reports as a 96% finding on both. Add them when
+you rename. Frankenstein's other findings today, worth clearing while the
+scenes are being re-cut anyway: `05_lightning_oak` 29%, `14_speak` 33%,
+`23_firewood` 24%, `29_storm_at_sea` 28%, `end_warning` 29%.
+
+**A repair-mode half would have hit the `resolve()` bug.** It tested
+`state.chances > 0` as "has not failed", which is always false when a lesson
+has no chance counter. Fixed, but if either half switches to
+repair-until-correct, that is the one to know about.
+
+**Expect the rebuilt page to differ by more than your own edits** — `routeStory`,
+`endingMin`, the TILES badge hiding when a lesson has none, and the button
+gloss taking `--accent-ink`.
+
+---
+
 ## 2026-09-10 — Sherlock: The Blue Hour replaces The Blue Manuscript, and passes every check first time
 
 Innes: *"this is the sherlock class, I wasn't happy with the blue manuscript."*
