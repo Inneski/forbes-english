@@ -11,6 +11,58 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-10 — Sherlock: The Blue Hour replaces The Blue Manuscript, and passes every check first time
+
+Innes: *"this is the sherlock class, I wasn't happy with the blue manuscript."*
+So **The Blue Manuscript is deleted** — builder, data, translations, artwork
+and the artwork-request document — and `block-camp/sherlock-blue-hour-rpg.html`
+takes its place as the Present Simple adventure. It was never published, so
+nothing had to be withdrawn from the site.
+
+`build_sherlock_blue_hour.py`. Present Simple, A2, 19 questions, 15 on any one
+run, two route choices, four evidence tiles, four endings, 75 points, 65 to
+pass. Painted Victorian London rather than the voxel look the other five
+share, so its catalogue title reads **London RPG**, not *Voxel RPG*.
+
+**This is the cleanest export yet, and the contrast with its predecessor is
+entirely in the pictures.** 22 filenames holding 22 distinct images, no scene
+sharing a plate, a specific nameable object on every one, all of them composed
+with the object right of x=60 so a left panel never has to be juggled. The
+answer key arrived dealt 7/6/6, every question had its explanation, and all
+nine languages were present. `check-rpg-panels.js` passed on the first run —
+no panel hides its object, nothing overflows — which no other lesson has done
+without a tuning pass.
+
+Four things the builder still supplied, and they are now the standing list for
+this generator:
+
+- a plate for each of the four endings and for the briefing (the export pointed
+  all five at the cover);
+- trims for two hotspots taller than `validate()`'s 60% cap;
+- the briefing kicker and the HUD words;
+- **dropping the `resolve` pseudo-scene** — this generator emits a scene-shaped
+  object with `type: "resolve"` listing the four endings, meaning "the last
+  question resolves from the score". This engine says that with
+  `next: 'resolve'` on the question, which the export also set, so the
+  pseudo-scene is skipped rather than translated. Anything walking
+  `data['scenes']` must skip it: it has no `answers`, no `choices` and no
+  `image`, and a naive loop raises `KeyError: 'answers'` on it.
+
+### What the two Sherlock exports say about asking for artwork
+
+Same generator, same brief, a day apart, and the difference decided whether the
+lesson could ship at all. The Blue Manuscript sent ten pictures under eighteen
+names; The Blue Hour sent twenty-two under twenty-two. Nothing else about the
+two exports differed enough to matter. **Check the picture count against the
+filename count before reading anything else:**
+
+    for f in block-camp/<slug>/*.webp; do git hash-object "$f"; done | sort | uniq -d
+
+Anything printed there is a lesson that cannot meet §1, and no builder work
+will change that.
+
+---
+
 ## 2026-09-10 — The Last Bounty ships; Sherlock is blocked on artwork; and a flawless Wonderland run was reaching the failure ending
 
 Two more ChatGPT-kind exports (`docs/CHATGPT-RPG-BRIEF.md`). They could not
@@ -34,6 +86,11 @@ briefing that reads "You always finish the story." Chances at zero *without*
 run — so read the briefing, not just the scoring block.
 
 ### NOT shipped: Sherlock: The Blue Manuscript — and why
+
+**Superseded on the same day — see the entry above. The Blue Manuscript is
+deleted and Sherlock: The Blue Hour is the Present Simple adventure. The rest
+of this section is why it could not ship, which is still the clearest example
+of the one export defect a builder cannot work around.**
 
 `build_sherlock_blue_manuscript.py` and its data and translations are
 committed and finished. **The page is not, and must not be published until the
