@@ -130,8 +130,19 @@ does not strip the metadata — but `seo.py` still runs last, every time.
 
 `check-lesson.js` does not apply — an RPG is not a deck. The checks that do:
 `assemble()`'s own validation (every hotspot on the picture, every `next`
-resolving, every string in every language), the Playwright screenshots in
-§4, and `check-library.js --vs-origin`.
+resolving, every string in every language), **`check-rpg-panels.js`**, the
+Playwright screenshots in §4, and `check-library.js --vs-origin`.
+
+```bash
+NODE_PATH=$(npm root -g) node lesson-template/check-rpg-panels.js <slug>
+```
+
+measures the two things §4 asks you to judge by eye and that the eye is bad
+at: how much of the object the open panel covers, and whether the copy
+overflows the panel. It walks every scene in every gloss language, because a
+translated panel is 8 percentage points wider and taller and English alone
+proves nothing. A Fistful of Lies's fork scene looked clear in a zoomed
+screenshot and measured 61% covered.
 
 ## 3. Hotspots — the part that needs eyes
 
@@ -147,6 +158,13 @@ resolving, every string in every language), the Playwright screenshots in
 - `width` overrides the panel width for one scene — the rules briefing
   wants 56%, a scene with long options 50%, a scene whose picture is busy
   on both sides 38%.
+
+**A centre panel does not rescue a central object.** With a gloss under every
+line the panel runs nearly the full height of the frame, so `top` and `bottom`
+anchoring change nothing — the same scene measured 61% covered anchored
+`bottom` and 100% anchored `top`. The only levers are the panel's side and its
+`width`, and width trades against overflow. Measure both with
+`check-rpg-panels.js` rather than choosing by eye.
 
 **The object is the one the clue talks about.** "His axe stayed on the
 ground" → the axe. "Aunt Em's lantern was lit" → the lantern. A route-choice

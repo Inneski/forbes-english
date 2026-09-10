@@ -11,6 +11,115 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-10 — The Last Bounty ships; Sherlock is blocked on artwork; and a flawless Wonderland run was reaching the failure ending
+
+Two more ChatGPT-kind exports (`docs/CHATGPT-RPG-BRIEF.md`). They could not
+have been more different in quality, and the difference is entirely in the
+pictures.
+
+### Shipped: The Last Bounty — Past Simple, A2
+
+`block-camp/last-bounty-rpg.html`, builder `build_last_bounty.py`. 17
+questions, 15 on any one run, two story choices, three endings, 75 points, 50
+to pass. **The best export received so far**: 23 filenames holding 23 distinct
+pictures, a different nameable object on every scene, and an answer key already
+dealt 6/6/5. Only two things needed correcting — the last question hard-coded
+an ending instead of resolving, and one hotspot was 62% of the plate tall,
+which `validate()` rejects.
+
+It is the first **repair-until-correct** lesson since Wonderland, and the
+export says so in prose rather than in a flag: `tiles: 0, chances: 0` plus a
+briefing that reads "You always finish the story." Chances at zero *without*
+`repair` means the opposite in this engine — the first wrong answer ends the
+run — so read the briefing, not just the scoring block.
+
+### NOT shipped: Sherlock: The Blue Manuscript — and why
+
+`build_sherlock_blue_manuscript.py` and its data and translations are
+committed and finished. **The page is not, and must not be published until the
+artwork is replaced.** The export shipped **eighteen picture filenames holding
+ten distinct images**:
+
+    05_ledger = 11_telegram = 14_libcard      08_dockpass = 15_key
+    01_cover  = 12_cipher                     06_token    = 16_timetable
+    03_watch  = 18_plate                      04_boot     = 17_rope
+    07_choice1 = 13_choice2
+
+Every pair is on the main spine, so one 13-question run shows the same picture
+two or three times and the cover returns as a mid-game question. "One
+full-bleed picture per scene" is the first line of `rpg/README.md` §1 and no
+builder can supply what was never drawn. Two of the ten were also on the wrong
+scenes (`06_token` holds a gas lamp, `10_lamp` holds the cab token) — the
+builder swaps those — and three more name an object no plate contains.
+
+**What to ask ChatGPT for:** eight replacement plates, 1536x1024 WebP under
+200 KB, one bright nameable object each, for `telegram`, `libcard`, `cipher`,
+`key`, `timetable`, `rope`, `plate` and `choice2`. Everything else in that
+lesson is finished; it is one builder re-run plus a fresh hotspot pass away
+from shipping.
+
+Its export was also the weakest in three other ways, all fixed in the builder
+and all worth checking on the next one: the answer sat in slot 0 on all fifteen
+questions, the last question hard-coded the master ending so the score chose
+nothing, and **every one of the seventeen hotspots was the same box**,
+`[78, 58, 20, 26]` — a placeholder the brief asks generators not to send.
+
+### The engine bug this batch found: a perfect run got the failure ending
+
+`resolve()` computed `full = state.tiles>=G.tiles && state.chances>0`. A
+repair-mode lesson has no chance counter at all — `G.chances` is 0 by design —
+so `full` was always false and every branch depending on it was dead. Measured
+on the live page before the fix: **a flawless Wonderland run — 16/16 spells
+first try, all 3 magic objects, 160/160 — returned `end_escape`, the failure
+ending, and `end_restore` was unreachable from any state.** The route-chosen
+ending branch was gated the same way, so it could never fire in repair mode
+either.
+
+The test is now `alive = !G.chances || state.chances>0`, which is identical
+wherever chances exist. Re-measured across all five lessons: every declared
+ending is reachable and a flawless run reaches `master` on each.
+
+Two smaller engine additions, both generic:
+
+- **`endingMin` on a route** — a score floor under a route's own ending. The
+  Bounty's two story-choice endings are rewards you have to earn (50 of 75);
+  without a floor a player scoring 20 collected one. Frankenstein sets none,
+  so its route endings are unchanged.
+- **The TILES badge hides when a lesson has no tiles**, the way CHANCES
+  already did. The Bounty has none and showed an empty badge.
+
+### New tool: `lesson-template/check-rpg-panels.js`
+
+The open panel sitting on top of the object it grew out of is invisible in the
+hotspot table and, it turns out, easy to miss on a screenshot too — A Fistful
+of Lies's fork scene looked fine in a zoomed crop and measured **61% covered**.
+The new checker walks every scene in every gloss language and reports two
+things: how much of the object the open panel hides, and whether the copy
+overflows the panel (which can push option 3 below the fold).
+
+    NODE_PATH=$(npm root -g) node lesson-template/check-rpg-panels.js --all
+
+A Fistful of Lies's fork is fixed here (a 34% panel on the plate's empty left
+third clears the signpost completely and still does not scroll). **Three
+shipped lessons have findings that are not fixed yet** — Lost Yellow Road
+(`tracks` 100%, `route_two` 70%), Wonderland (`choice2` 85% and six more) and
+Frankenstein (`14_speak` 33% and four more; its centred cover is deliberate and
+is waived in the tool). Each needs the same measure-and-tune loop; none is
+urgent, and none of them is worth doing by eye now that the number is printable.
+
+### What that loop looks like, because it is not obvious
+
+A centre panel is **no help** for a central object. With a gloss under every
+line the panel runs nearly the full height of the frame, so `top` and `bottom`
+anchoring change nothing — measured at 61% covered anchored bottom and 100%
+anchored top on the same scene. The only levers that move the number are the
+panel's side and its width, and width trades against overflow. Four Bounty
+scenes sit within a few percent of the centre line and take the measured middle
+setting: object 70-100% visible, panel over by 34-87px — about one line, and
+answering scrolls the panel to the feedback regardless.
+
+---
+
 ## 2026-09-10 — A Fistful of Lies ships, and the export finally arrived complete
 
 `block-camp/fistful-of-lies-rpg.html` — Past Simple, A1-A2, a voxel spaghetti

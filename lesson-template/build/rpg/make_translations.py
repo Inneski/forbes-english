@@ -1,14 +1,18 @@
 #!/usr/bin/env python3
-"""Turn the export's own `local` blocks into rpg/<slug>/translations/<lang>.json.
+"""Turn a ChatGPT-kind export's own `local` blocks into translations/<lang>.json.
 
-    python3 lesson-template/build/rpg/fistful-of-lies-rpg/make-translations.py
+    python3 lesson-template/build/rpg/make_translations.py <slug>
 
-The Fistful of Lies export is the ChatGPT kind (docs/CHATGPT-RPG-BRIEF.md): it
-already carries all nine of HOUSE-STYLE §8's languages on every learner-facing
-string, nested beside the English it glosses. `rpg.apply_translations()` wants
-the opposite shape — one flat `{English: translation}` map per language — so
-this flattens the nesting once, rather than the builder reading `local` inline
-the way build_lost_yellow_road.py does for its two languages.
+A ChatGPT-kind export (docs/CHATGPT-RPG-BRIEF.md) already carries all nine of
+HOUSE-STYLE §8's languages on every learner-facing string, nested beside the
+English it glosses. `rpg.apply_translations()` wants the opposite shape — one
+flat `{English: translation}` map per language — so this flattens the nesting
+once, rather than the builder reading `local` inline the way
+build_lost_yellow_road.py does for its two languages.
+
+Reads `rpg/<slug>/data.json`, writes `rpg/<slug>/translations/*.json`. Written
+for A Fistful of Lies and generalised the moment a second export (Sherlock:
+The Blue Manuscript) needed exactly the same pass.
 
 Rerunnable and lossless: it only ever reads data.json. Strings the builder
 invents (the HUD label overrides, the briefing kicker) are not in the export
@@ -21,7 +25,12 @@ string has to be disambiguated in the builder before this file can be trusted.
 """
 import json, os, sys
 
-HERE = os.path.dirname(os.path.abspath(__file__))
+if len(sys.argv) != 2:
+    raise SystemExit(__doc__.strip().splitlines()[2].strip())
+SLUG = os.path.basename(os.path.normpath(sys.argv[1]))
+HERE = os.path.join(os.path.dirname(os.path.abspath(__file__)), SLUG)
+if not os.path.isdir(HERE):
+    raise SystemExit('no such lesson directory: %s' % HERE)
 LANGS = ('es', 'de', 'fr', 'it', 'pt', 'ru', 'ar', 'zh', 'ja')
 DATA = json.load(open(os.path.join(HERE, 'data.json'), encoding='utf-8'))
 
@@ -104,4 +113,4 @@ for l in LANGS:
     with open(os.path.join(d, '%s.json' % l), 'w', encoding='utf-8', newline='\n') as f:
         json.dump(out[l], f, ensure_ascii=False, indent=1, sort_keys=True)
         f.write('\n')
-    print('%s.json  %d strings' % (l, len(out[l])))
+    print('%s/%s.json  %d strings' % (SLUG, l, len(out[l])))

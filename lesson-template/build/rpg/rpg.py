@@ -253,7 +253,7 @@ BODY = r"""
     <header class="hud">
       <div class="hud-group">
         <div class="badge"><span id="lblPoints">POINTS</span> <b id="score">0</b>/{{MAX}}</div>
-        <div class="badge"><span id="lblTiles">TILES</span> <b id="tiles"></b></div>
+        <div class="badge" id="tilesBadge"><span id="lblTiles">TILES</span> <b id="tiles"></b></div>
         <div class="badge" id="chancesBadge"><span id="lblChances">CHANCES</span> <b id="chances"></b></div>
         <div class="badge" id="progressBadge" hidden><span id="lblProgress">SPELLS</span> <b id="progress"></b></div>
       </div>
@@ -280,7 +280,7 @@ let sound=false;try{sound=localStorage.getItem('rpg-sound')==='1'}catch(_){}
 /* two short tones, right and wrong — the Wonderland export's, kept */
 function beep(ok){if(!sound)return;try{const c=new (window.AudioContext||window.webkitAudioContext)();const o=c.createOscillator(),g=c.createGain();o.type=ok?'square':'sawtooth';o.frequency.value=ok?620:180;g.gain.value=.03;o.connect(g);g.connect(c.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.16);o.stop(c.currentTime+.18);o.onended=()=>c.close()}catch(_){}}
 function setSound(on){sound=!!on;try{localStorage.setItem('rpg-sound',sound?'1':'0')}catch(_){}const b=document.getElementById('sound');b.setAttribute('aria-pressed',String(sound));b.firstChild.textContent=(sound?'🔊':'🔈')+' ';document.getElementById('soundLabel').textContent=ui(sound?'soundOn':'soundOff')}
-function fresh(lang){return {scene:G.start,score:0,chances:G.chances,tiles:0,lang,open:false,route:[],results:{},attempts:{},mistakes:[],answered:0,finalCorrect:null,endingPick:null,endingMaster:false}}
+function fresh(lang){return {scene:G.start,score:0,chances:G.chances,tiles:0,lang,open:false,route:[],results:{},attempts:{},mistakes:[],answered:0,finalCorrect:null,endingPick:null,endingMaster:false,endingMin:0}}
 const frame=document.getElementById('frame'), content=document.getElementById('content'), sceneImage=document.getElementById('sceneImage');
 const hot=document.getElementById('hot'), hotLabel=document.getElementById('hotLabel'), zone=document.getElementById('zone');
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -296,7 +296,7 @@ function label(obj){if(!obj)return '';const g=gloss(obj);return g?`${esct(obj.en
 /* an option is {en,…} or, for a two-blank item, {parts:[a,b], kinds:['a'|'b',…], tags:[{en,…},{en,…}]} — two coloured halves */
 function optText(o){return bare(o.parts?o.parts.join(' / '):o.en)}
 function optMarkup(o){if(!o.parts)return `<span>${label(o)}</span>`;return o.parts.map((p,i)=>`<span class="half ${o.kinds[i]}"><small>${label(G.tags[o.kinds[i]])}</small><b>${esc(p)}</b></span>`).join('')}
-function updateHUD(){document.getElementById('score').textContent=state.score;document.getElementById('tiles').textContent='◆'.repeat(state.tiles)+'◇'.repeat(Math.max(0,G.tiles-state.tiles));document.getElementById('chances').textContent='♥'.repeat(state.chances)+'♡'.repeat(Math.max(0,G.chances-state.chances));document.getElementById('lblPoints').textContent=ui('points');document.getElementById('lblTiles').textContent=ui('tiles');document.getElementById('lblChances').textContent=ui('chances');document.getElementById('chancesBadge').hidden=!G.chances;document.getElementById('progressBadge').hidden=!G.total;if(G.total){document.getElementById('lblProgress').textContent=ui('progress');document.getElementById('progress').textContent=`${state.answered}/${G.total}`}document.getElementById('help').textContent=ui('help')}
+function updateHUD(){document.getElementById('score').textContent=state.score;document.getElementById('tiles').textContent='◆'.repeat(state.tiles)+'◇'.repeat(Math.max(0,G.tiles-state.tiles));document.getElementById('chances').textContent='♥'.repeat(state.chances)+'♡'.repeat(Math.max(0,G.chances-state.chances));document.getElementById('lblPoints').textContent=ui('points');document.getElementById('lblTiles').textContent=ui('tiles');document.getElementById('lblChances').textContent=ui('chances');document.getElementById('tilesBadge').hidden=!G.tiles;document.getElementById('chancesBadge').hidden=!G.chances;document.getElementById('progressBadge').hidden=!G.total;if(G.total){document.getElementById('lblProgress').textContent=ui('progress');document.getElementById('progress').textContent=`${state.answered}/${G.total}`}document.getElementById('help').textContent=ui('help')}
 function head(s){const t=s.kind==='intro'?`<span class="big">${label(s.title)}</span>`:label(s.title);return `${line(s.k,'kicker')}<h1 class="title ${s.kind==='intro'?'cover-title':''}">${t}</h1>${line(s.story,'story')}`}
 /* HOT = [cx, cy, w, h] as % of the PICTURE (3:2). The picture is object-fit:cover in the frame, so convert picture space to frame pixels; a phone shows a narrow central slice and the object stays on it. */
 function placeHot(h){const W=frame.clientWidth,H=frame.clientHeight,sc=Math.max(W/G.imgW,H/G.imgH),dw=G.imgW*sc,dh=G.imgH*sc;
@@ -335,9 +335,18 @@ function displayAnswer(i,apply){const s=G.scenes[state.scene];const buttons=[...
   const head=ok?(retried?ui('repaired'):ui(s.relic?'relic':'correct',{p})):ui('wrong');const was=ok?'':`<br>${ui('answerWas')} ${esc(optText(s.opts[s.answer]))}`;
   fb.innerHTML=`<strong>${head}</strong>${was}${expl}`;fb.className=`feedback show ${ok?'good':'bad'}`;document.getElementById('continue').hidden=false;updateHUD();if(apply)requestAnimationFrame(()=>content.scrollTo({top:content.scrollHeight,behavior:'smooth'}))}
 function answer(i){if(Object.prototype.hasOwnProperty.call(state.results,state.scene))return;const s=G.scenes[state.scene];if(G.repair&&i!==s.answer){if(!(state.attempts[state.scene]||0))state.mistakes.push(state.scene);state.attempts[state.scene]=(state.attempts[state.scene]||0)+1;displayAnswer(i,true);return}state.results[state.scene]=i;displayAnswer(i,true)}
-function resolve(){const full=state.tiles>=G.tiles&&state.chances>0;const flawless=state.finalCorrect&&full&&state.score>=G.max;if(flawless&&(!state.endingPick||state.endingMaster))return G.endings.master;if(state.endingPick&&state.chances>0&&G.endings[state.endingPick])return G.endings[state.endingPick];if(state.finalCorrect&&full&&state.score>=G.completeScore)return G.endings.complete;if(state.finalCorrect&&state.tiles<G.tiles)return G.endings.missing;return G.endings.failed}
+/* `alive` is "the player has not run out of chances". A repair-mode lesson has
+   no chance counter at all (G.chances is 0 by design), so testing state.chances>0
+   there is always false and silently kills every ending but `missing`/`failed` —
+   a flawless Wonderland run scored 160/160 and was sent to the escape ending.
+   With chances in play this is exactly the old test. */
+function resolve(){const alive=!G.chances||state.chances>0;const full=state.tiles>=G.tiles&&alive;const flawless=state.finalCorrect&&full&&state.score>=G.max;if(flawless&&(!state.endingPick||state.endingMaster))return G.endings.master;if(state.endingPick&&alive&&G.endings[state.endingPick]&&!(state.endingMin&&state.score<state.endingMin))return G.endings[state.endingPick];if(state.finalCorrect&&full&&state.score>=G.completeScore)return G.endings.complete;if(state.finalCorrect&&state.tiles<G.tiles)return G.endings.missing;return G.endings.failed}
 function advance(){const s=G.scenes[state.scene];if(state.chances<=0&&state.results[state.scene]!==s.answer){go(G.endings.failed);return}if(s.next==='resolve'){go(resolve());return}go(s.next)}
-function chooseRoute(i){const r=G.scenes[state.scene].routes[i];if(r.route)state.route.push(r.route);if(r.ending){state.endingPick=r.ending;state.endingMaster=!!r.master}go(r.min!=null&&state.score<r.min?r.else:r.target)}
+/* `endingMin` is a score floor on a route's own ending: the route decides WHICH
+   reward ending you get, the floor decides whether you have earned one at all.
+   Without it a route ending applies at any score. Frankenstein sets none, so its
+   behaviour is unchanged. */
+function chooseRoute(i){const r=G.scenes[state.scene].routes[i];if(r.route)state.route.push(r.route);if(r.ending){state.endingPick=r.ending;state.endingMaster=!!r.master;state.endingMin=r.endingMin||0}go(r.min!=null&&state.score<r.min?r.else:r.target)}
 function restart(){state=fresh(state.lang);render()}
 (function(){['off',...LANGS].forEach(l=>{const b=document.createElement('button');b.className='lang-item';b.dataset.lang=l;b.innerHTML=l==='off'?`<b>OFF</b><span>${esc(G.labels.off.en)}</span>`:`<b>${l.toUpperCase()}</b><span>${esc(G.names[l])}</span>`;b.addEventListener('click',()=>{state.lang=l;closeMenu();setLang()});langMenu.appendChild(b)});langBtn.addEventListener('click',e=>{e.stopPropagation();toggleMenu()});document.addEventListener('click',e=>{if(!langMenu.hidden&&!langMenu.contains(e.target))closeMenu()})})();
 function setLang(){const wasOpen=state.open;render();if(wasOpen)setOpen(true)}

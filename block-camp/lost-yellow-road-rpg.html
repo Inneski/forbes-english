@@ -235,7 +235,12 @@ function displayAnswer(i,apply){const s=G.scenes[state.scene];const buttons=[...
   const head=ok?(retried?ui('repaired'):ui(s.relic?'relic':'correct',{p})):ui('wrong');const was=ok?'':`<br>${ui('answerWas')} ${esc(optText(s.opts[s.answer]))}`;
   fb.innerHTML=`<strong>${head}</strong>${was}${expl}`;fb.className=`feedback show ${ok?'good':'bad'}`;document.getElementById('continue').hidden=false;updateHUD();if(apply)requestAnimationFrame(()=>content.scrollTo({top:content.scrollHeight,behavior:'smooth'}))}
 function answer(i){if(Object.prototype.hasOwnProperty.call(state.results,state.scene))return;const s=G.scenes[state.scene];if(G.repair&&i!==s.answer){if(!(state.attempts[state.scene]||0))state.mistakes.push(state.scene);state.attempts[state.scene]=(state.attempts[state.scene]||0)+1;displayAnswer(i,true);return}state.results[state.scene]=i;displayAnswer(i,true)}
-function resolve(){const full=state.tiles>=G.tiles&&state.chances>0;const flawless=state.finalCorrect&&full&&state.score>=G.max;if(flawless&&(!state.endingPick||state.endingMaster))return G.endings.master;if(state.endingPick&&state.chances>0&&G.endings[state.endingPick])return G.endings[state.endingPick];if(state.finalCorrect&&full&&state.score>=G.completeScore)return G.endings.complete;if(state.finalCorrect&&state.tiles<G.tiles)return G.endings.missing;return G.endings.failed}
+/* `alive` is "the player has not run out of chances". A repair-mode lesson has
+   no chance counter at all (G.chances is 0 by design), so testing state.chances>0
+   there is always false and silently kills every ending but `missing`/`failed` —
+   a flawless Wonderland run scored 160/160 and was sent to the escape ending.
+   With chances in play this is exactly the old test. */
+function resolve(){const alive=!G.chances||state.chances>0;const full=state.tiles>=G.tiles&&alive;const flawless=state.finalCorrect&&full&&state.score>=G.max;if(flawless&&(!state.endingPick||state.endingMaster))return G.endings.master;if(state.endingPick&&alive&&G.endings[state.endingPick])return G.endings[state.endingPick];if(state.finalCorrect&&full&&state.score>=G.completeScore)return G.endings.complete;if(state.finalCorrect&&state.tiles<G.tiles)return G.endings.missing;return G.endings.failed}
 function advance(){const s=G.scenes[state.scene];if(state.chances<=0&&state.results[state.scene]!==s.answer){go(G.endings.failed);return}if(s.next==='resolve'){go(resolve());return}go(s.next)}
 function chooseRoute(i){const r=G.scenes[state.scene].routes[i];if(r.route)state.route.push(r.route);if(r.ending){state.endingPick=r.ending;state.endingMaster=!!r.master}go(r.min!=null&&state.score<r.min?r.else:r.target)}
 function restart(){state=fresh(state.lang);render()}

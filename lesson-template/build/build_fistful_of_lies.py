@@ -74,12 +74,14 @@ HOT = {
     'entry':    ([81, 51,  5, 15], 'left',   'center'),       # the door handle
     'piano':    ([87, 62, 15, 17], 'left',   'center'),       # the piano keys
     'contract': ([73, 47, 14, 18], 'left',   'center'),       # the contract in Andreas's hand
-    # The only scene whose object is dead centre, so the only one no side
-    # panel can clear. Route choices are centred (README §3) — but anchored
-    # `top`, as Oz's are, the panel landed squarely on this signpost, which
-    # sits at y=43 rather than down at the foot of the frame. Anchored to the
-    # bottom it opens over the empty floor and the signpost stays lit.
-    'fork':     ([50, 41, 12, 12], 'center', 'bottom'),       # the signpost
+    # The only scene whose object is dead centre. Route choices are centred
+    # (README §3), but a centre panel is 64% wide and covers x=16-84, so it
+    # sits on this signpost whichever end it is anchored to — measured at 61%
+    # of the object hidden anchored `bottom` and 100% anchored `top`. The
+    # choice scene's copy is short enough for a 34% panel on the picture's
+    # empty left third, which clears the signpost completely and still does
+    # not scroll in any of the nine languages.
+    'fork':     ([50, 41, 12, 12], 'left',   'center', 34),   # the signpost
     'tito':     ([73, 69,  7,  5], 'left',   'center'),       # the silver coin on the bar
     'boot':     ([80, 62, 19, 24], 'left',   'center'),       # the muddy boot
     'office':   ([82, 46, 20, 31], 'left',   'center'),       # the safe, open and empty
