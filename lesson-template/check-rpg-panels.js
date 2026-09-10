@@ -10,16 +10,31 @@
  *   2. OVERFLOW — a panel whose copy does not fit, so the third option can sit
  *      below the fold before the learner has answered.
  *
- * Both depend on the gloss language: a translated panel is 8 percentage points
- * wider and taller, so English alone proves nothing. This checks the worst of
- * whatever languages the page ships.
+ * Both depend on the gloss language: `content.style.width` adds 8 percentage
+ * points when a translation is on, so English alone proves nothing and most
+ * findings turn out to be es/ja only. They are gloss-width defects, not layout
+ * defects — the language named in each line is the widest one that triggered
+ * it, and the fix is almost always to narrow the panel on the side it is
+ * already on. This checks every language the page ships and reports the worst.
  *
  *   NODE_PATH=$(npm root -g) node lesson-template/check-rpg-panels.js <slug>...
  *   NODE_PATH=$(npm root -g) node lesson-template/check-rpg-panels.js --all
  *
- * Exit 0 = clean, 1 = findings. Some occlusion is deliberate and is listed in
- * ALLOW below with the reason — a cover panel is open from the first frame and
- * has no object to reveal, so a centred cover is a design choice, not a defect.
+ * Exit 0 = clean, 1 = findings.
+ *
+ * COVERS AND ENDINGS ARE ADVISORY, automatically. `render()` ends with
+ * `setOpen(s.kind==='intro'||s.kind==='ending')`, so those two kinds are the
+ * only ones whose panel is up from the first frame: there is no object waiting
+ * to be revealed, nothing grew out of anything, and narrowing an ending panel
+ * far enough to clear its marker tends to make its text scroll instead. They
+ * are reported so the number is visible and counted against nothing. That rule
+ * was worked out per-scene, in ALLOW, on the Frankenstein split before being
+ * generalised here — which is why ALLOW is now empty. Keep the mechanism: it
+ * is still the way to waive a *question* or *choice* scene where the geometry
+ * genuinely leaves no better option.
+ *
+ * OVERFLOW is never advisory. An ending whose text scrolls is a real defect
+ * whatever kind it is.
  */
 const fs = require('fs');
 const path = require('path');
@@ -28,17 +43,18 @@ const { chromium } = require('playwright');
 const REPO = path.resolve(__dirname, '..');
 const CAMP = path.join(REPO, 'block-camp');
 
-// scene -> why its panel is allowed to sit on its object
-const ALLOW = {
-  'frankenstein-green-prometheus-rpg': {
-    cover: 'Innes asked for centred cover copy, 2026-09-09; a cover opens with the panel up',
-    p1_end_alive: 'an ending opens with the panel up too — setOpen(kind==="intro"||kind==="ending"), '
-                + 'so like a cover it has no object left to reveal',
-  },
-  'frankenstein-consequences-rpg': {
-    end_warning: 'an ending opens with the panel up; nothing to reveal',
-  },
-};
+// slug -> { scene: why its panel is allowed to sit on its object }.
+// Empty on purpose: every entry it used to hold was a cover or an ending, and
+// those are advisory for every lesson now. Add one here only for a question or
+// choice scene whose geometry leaves no better option, and say why.
+const ALLOW = {};
+
+// the two kinds whose panel is open from the first frame (see the header).
+// Detection reads `kind` off G.scenes, never the scene id: the Frankenstein
+// split names its endings `p1_end_alive` and the like, and anything keyed on an
+// `end_` prefix would have missed them. Keep that property.
+const PANEL_OPEN_ON_ARRIVAL = new Set(['intro', 'ending']);
+const article = w => (/^[aeiou]/i.test(w) ? 'an' : 'a');
 
 const COVER_LIMIT = 20;   // % of the object the panel may hide
 const SCROLL_LIMIT = 120; // px of overflow before the options risk the fold
@@ -49,7 +65,8 @@ async function check(page, slug) {
   await page.goto('file:///' + file.replace(/\\/g, '/'));
   await page.waitForTimeout(400);
   const langs = await page.evaluate('G.langs');
-  const ids = Object.keys(await page.evaluate('G.scenes'));
+  const kinds = await page.evaluate('Object.fromEntries(Object.entries(G.scenes).map(([k, v]) => [k, v.kind]))');
+  const ids = Object.keys(kinds);
   const allow = ALLOW[slug] || {};
   const rows = [];
   for (const id of ids) {
@@ -69,7 +86,9 @@ async function check(page, slug) {
       if (m.cover > worst.cover || m.scroll > worst.scroll)
         worst = { cover: Math.max(worst.cover, m.cover), scroll: Math.max(worst.scroll, m.scroll), lang };
     }
-    rows.push({ id, ...worst, allowed: allow[id] });
+    rows.push({ id, ...worst, kind: kinds[id],
+                allowed: allow[id] || (PANEL_OPEN_ON_ARRIVAL.has(kinds[id])
+                  ? `${article(kinds[id])} ${kinds[id]} scene opens with the panel already up` : null) });
   }
   return rows;
 }

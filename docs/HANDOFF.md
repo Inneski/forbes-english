@@ -11,6 +11,37 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-10 — Covers and endings are advisory in check-rpg-panels.js, and ALLOW is empty again
+
+The Frankenstein split worked out, per scene, that an ending's panel covering
+its own marker is not the defect the checker was treating it as: `render()`
+ends with `setOpen(s.kind==='intro'||s.kind==='ending')`, so those two kinds are
+the only ones whose panel is up from the first frame. Nothing grew out of
+anything and there is no object waiting to be revealed — and narrowing an
+ending panel far enough to clear its marker tends to make its text scroll
+instead, trading a non-defect for a real one.
+
+That reasoning is right and it is not Frankenstein-specific, so it is the
+checker's rule now rather than four `ALLOW` entries. **Covers and endings are
+reported with their number and counted against nothing, on every lesson.**
+`ALLOW` is empty and stays in the file for the case it was never needed for: a
+*question* or *choice* scene whose geometry genuinely leaves no better option.
+
+This also retires the slug-keyed trap in the entry below: a renamed or split
+lesson no longer loses a cover waiver, because it never needed one.
+
+**Overflow stays a hard finding for every kind.** An ending whose text scrolls
+is a real defect however it opens.
+
+Also worth knowing when reading a finding, and now in the tool's header: these
+are almost always **gloss-width defects, not layout defects**. `content.style
+.width` adds 8 percentage points when a translation is on, so a panel that is
+clear in English can sit on its object in Spanish or Japanese. Every finding
+names the widest language that triggered it, and the fix is nearly always to
+narrow the panel on the side it is already on rather than to move it.
+
+---
+
 ## 2026-09-10 — If you are splitting Frankenstein into two parts, read this first
 
 Four things landed in `rpg/rpg.py` today, from the session that shipped A
@@ -25,13 +56,13 @@ master ending on `score >= max`, so a copied `max` makes the best ending
 unreachable — which is exactly the failure mode the `resolve()` fix below was
 written for.
 
-**`check-rpg-panels.js`'s waiver is keyed by slug.** `ALLOW` in that file
-waives Frankenstein's deliberately-centred cover
-(`ALLOW['frankenstein-green-prometheus-rpg']`). Two new slugs means two slugs
-with no waiver, and the cover reports as a 96% finding on both. Add them when
-you rename. Frankenstein's other findings today, worth clearing while the
-scenes are being re-cut anyway: `05_lightning_oak` 29%, `14_speak` 33%,
-`23_firewood` 24%, `29_storm_at_sea` 28%, `end_warning` 29%.
+**`check-rpg-panels.js`'s waiver is keyed by slug.** ~~`ALLOW` in that file
+waives Frankenstein's centred cover, so two new slugs means two slugs with no
+waiver.~~ **Superseded the same day — covers and endings are advisory for every
+lesson now and need no entry at all; see the entry below. `ALLOW` is empty and
+is for question and choice scenes only.** Frankenstein's other findings, worth
+clearing while the scenes are being re-cut anyway: `05_lightning_oak` 29%,
+`14_speak` 33%, `23_firewood` 24%, `29_storm_at_sea` 28%.
 
 **A repair-mode half would have hit the `resolve()` bug.** It tested
 `state.chances > 0` as "has not failed", which is always false when a lesson
