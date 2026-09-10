@@ -11,8 +11,8 @@ once, rather than the builder reading `local` inline the way
 build_lost_yellow_road.py does for its two languages.
 
 Reads `rpg/<slug>/data.json`, writes `rpg/<slug>/translations/*.json`. Written
-for A Fistful of Lies and generalised the moment a second export (Sherlock:
-The Blue Manuscript) needed exactly the same pass.
+for A Fistful of Lies and generalised the moment a second export needed exactly
+the same pass; four lessons use it now.
 
 Rerunnable and lossless: it only ever reads data.json. Strings the builder
 invents (the HUD label overrides, the briefing kicker) are not in the export

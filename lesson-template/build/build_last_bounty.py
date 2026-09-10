@@ -13,8 +13,9 @@ The best ChatGPT-kind export received so far (docs/CHATGPT-RPG-BRIEF.md), and
 the first that needed no correcting at all in three places the others all got
 wrong: twenty-three filenames holding twenty-three *distinct* pictures, a
 different nameable object on every scene, and an answer key already dealt
-6/6/5 across the slots. Compare `build_sherlock_blue_manuscript.py`, whose
-export shipped ten pictures under eighteen names.
+6/6/5 across the slots. Compare the Sherlock: The Blue Manuscript export of the
+same week, which shipped ten pictures under eighteen filenames and could not be
+published at all (docs/HANDOFF.md, 2026-09-10).
 
 **Its scoring is repair-until-correct, and the export says so in prose rather
 than in a flag.** `meta.scoring` is `tiles: 0, chances: 0, pass: 50` and the
