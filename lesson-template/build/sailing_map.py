@@ -22,6 +22,8 @@ W, H = 1000, 660
 G_LAND, G_INK = '#D89257', '#4A2409'      # Gerundia
 I_LAND, I_INK = '#7FA870', '#1C3A17'      # Infinitivia
 T_LAND, T_INK = '#AE87BE', '#341A40'      # Twofold Isle
+S_INK = '#6B5320'                         # The Shallows
+CURRENT_INK = '#1A5A66'                   # compass hint + the two currents
 
 # ─────────────────────────────────────────────────────────────────────
 # coastlines: a rough outline, then roughened
@@ -169,6 +171,44 @@ def _places(items, ink, size=11):
     return "\n        ".join(out)
 
 
+# The captions the artwork itself no longer carries (it was generated with
+# no text at all, so a label could be overlaid on it cleanly) — the compass
+# hint, the two current arrows, the false cape's flag and name, the shallows
+# box, and the two shore titles. Positions are the same viewBox coordinates
+# the old hand-drawn chart used for these same elements, since the artwork
+# was composed to match that layout.
+CAPTIONS = '''<g class="chart-captions">
+        <text x="500" y="48" text-anchor="middle" font-family="Inter,sans-serif"
+              font-size="10.5" font-weight="700" letter-spacing=".06em" fill="%(cur)s">&#9664; -ING &#183; TO &#9654;</text>
+        <text x="485" y="154" text-anchor="middle" font-family="Inter,sans-serif"
+              font-size="10.5" font-weight="700" letter-spacing=".1em" fill="%(cur)s">PREPOSITIONS RUN WEST</text>
+        <text x="529" y="442" text-anchor="middle" font-family="Inter,sans-serif"
+              font-size="10.5" font-weight="700" letter-spacing=".1em" fill="%(cur)s">EVEN THE ONES SPELLED &#8220;TO&#8221;</text>
+        <text x="408" y="430" text-anchor="middle" font-family="Inter,sans-serif"
+              font-size="11.5" font-weight="700" fill="#3A1D04">TO</text>
+        <text x="316" y="516" text-anchor="middle" font-family="Inter,sans-serif"
+              font-size="10.5" font-weight="700" letter-spacing=".06em" fill="%(g)s">THE FALSE CAPE</text>
+        <text x="512" y="540" text-anchor="middle" font-family="Fraunces,Georgia,serif"
+              font-size="13" font-weight="700" letter-spacing=".05em" fill="%(s)s">THE SHALLOWS</text>
+        <text x="512" y="555" text-anchor="middle" font-family="Inter,sans-serif"
+              font-size="9.5" font-weight="600" fill="%(s)s">either channel, same meaning</text>
+        <text x="512" y="569" text-anchor="middle" font-family="Inter,sans-serif"
+              font-size="9" fill="%(s)s">begin &#183; start &#183; continue &#183; like &#183; hate</text>
+        <text x="56" y="608" font-family="Fraunces,Georgia,serif" font-size="22"
+              font-weight="700" letter-spacing=".05em" fill="%(g)s">GERUNDIA</text>
+        <text x="58" y="627" font-family="Inter,sans-serif" font-size="11"
+              font-weight="600" fill="%(g)s">verb + <tspan font-style="italic">-ing</tspan></text>
+        <text x="946" y="608" text-anchor="end" font-family="Fraunces,Georgia,serif" font-size="22"
+              font-weight="700" letter-spacing=".05em" fill="%(i)s">INFINITIVIA</text>
+        <text x="944" y="627" text-anchor="end" font-family="Inter,sans-serif" font-size="11"
+              font-weight="600" fill="%(i)s">verb + <tspan font-style="italic">to</tspan> + infinitive</text>
+        <text x="500" y="204" text-anchor="middle" font-family="Fraunces,Georgia,serif"
+              font-size="15.5" font-weight="700" letter-spacing=".05em" fill="%(t)s">TWOFOLD ISLE</text>
+        <text x="500" y="219" text-anchor="middle" font-family="Inter,sans-serif"
+              font-size="9.5" font-weight="600" fill="%(t)s">both channels &#183; two meanings</text>
+      </g>''' % {'cur': CURRENT_INK, 'g': G_INK, 'i': I_INK, 't': T_INK, 's': S_INK}
+
+
 def _hotspot(uid, suffix, coast, aria):
     """An invisible click/focus target shaped like a landmass, with no fill
     of its own — the illustrated map underneath supplies all the paint now."""
@@ -190,6 +230,7 @@ def chart_overlay(uid):
         %s
         %s
         %s
+        %s
         <g class="place-layer">
         %s
         %s
@@ -205,6 +246,7 @@ def chart_overlay(uid):
                  'Twofold Isle, verbs that take both forms with a change of meaning'),
         _hotspot(uid, 'shape-false', FALSE_CAPE,
                  'The False Cape, where to is a preposition and takes the -ing form'),
+        CAPTIONS,
         _places(GERUND_PLACES, G_INK),
         _places(INFINITIVE_PLACES, I_INK),
         _places(ISLAND_PLACES, T_INK, 10.5))

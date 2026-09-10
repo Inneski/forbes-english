@@ -471,6 +471,10 @@ document.querySelectorAll("#name-bar button").forEach(function(b){
 
 # ═════════════════════════════════════════════════════════════════════
 EXTRA_CSS = '''
+  /* ── the header, in the sea-chart's own display face ── */
+  @font-face{font-family:'Faktum';src:url('sailing-the-seas-of-grammar/fonts/Faktum-Bold.woff2') format('woff2');
+             font-weight:700;font-style:normal;font-display:swap;}
+  .wordmark .brand,.hero h1{font-family:'Faktum','Fraunces',serif;font-weight:700;}
   /* ── the sea chart ── */
   .diagram-panels.three{grid-template-columns:repeat(3,1fr);}
   @media (max-width:820px){.diagram-panels.three{grid-template-columns:1fr;}}
@@ -499,11 +503,7 @@ EXTRA_CSS = '''
                    cursor:pointer;transition:background .12s ease,color .12s ease;}
   .name-bar button:hover{color:var(--ink);}
   .name-bar button.on{background:var(--accent);color:var(--on-accent);border-color:var(--accent);}
-  /* labels sit directly on the artwork now instead of a flat colour card, so
-     they need their own contrast: a light halo behind the ink, in any light
-     part of the map or dark. */
-  .sail-chart .place-name{transition:opacity .12s ease;paint-order:stroke;
-                          stroke:#FFFCF4;stroke-width:3px;stroke-linejoin:round;}
+  .sail-chart .place-name{transition:opacity .12s ease;}
   .chart-toggle-wrap{position:relative;}
   .chart-toggle-wrap .chart-photo{display:block;width:100%;height:auto;border-radius:14px;}
   .chart-toggle-wrap .sail-chart{position:absolute;top:0;left:0;width:100%;height:100%;}
