@@ -38,7 +38,12 @@ def _own_tail(out_s, out):
 
 
 def assemble(hero_section, camps, diagram_js, questions, palette, title,
-             extra_replacements, out):
+             extra_replacements, out, own_tail=True):
+    """own_tail=False is for pages built on this shell that are not part of
+    the Sherpa Tensing progression (sailing-the-seas-of-grammar.html) — they
+    strip the mountain's SHERPA_ID/EX_TR machinery themselves after assemble()
+    returns and supply their own translations, so patching a camp's tail into
+    them here would corrupt their own markers instead of leaving them alone."""
     s = BASE
     A = s.index('<section class="hero" id="hero">')
     B = s.index('</section>', A) + len('</section>')
@@ -56,7 +61,8 @@ def assemble(hero_section, camps, diagram_js, questions, palette, title,
         title, 1)
     for a, b in extra_replacements:
         out_s = out_s.replace(a, b)
-    out_s = _own_tail(out_s, out)
+    if own_tail:
+        out_s = _own_tail(out_s, out)
     open(out, 'w', encoding='utf-8', newline='\n').write(out_s)
     return out_s
 

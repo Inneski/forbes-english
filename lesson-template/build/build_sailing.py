@@ -52,6 +52,15 @@ def exi(html):
             % (len(EX) - 1, html))
 
 
+HERO_MAP_ALT = (
+    'An illustrated sea chart with two ragged coastlines. The western shore, Gerundia, has harbours named '
+    'after verbs that take the -ing form: Cape Avoid, Enjoy Bay, Finish Point and others. The eastern shore, '
+    'Infinitivia, has harbours named after verbs that take to plus infinitive: Want Harbour, Decide Head, '
+    'Hope Point and others. Between them lies Twofold Isle, whose harbours take either form with a change of '
+    'meaning. South of the island is a shoal marked The Shallows, where either channel is safe. Dashed '
+    'currents run west across the strait, labelled prepositions. A spur off the western shore flies a flag '
+    'reading TO and is marked the False Cape.')
+
 HERO = hero(
     'Gerunds &amp; infinitives',
     'Sailing the Seas of Grammar',
@@ -60,7 +69,8 @@ HERO = hero(
     'decides which verb belongs where &mdash; it is geography, and you learn it the way sailors learn a coast. '
     'What you <em>can</em> learn as rules are the three things in the water between them: the current, the '
     'island, and the cape flying a false flag.',
-    M.chart('sail'))
+    '<img class="hero-diagram" src="sailing-the-seas-of-grammar/hero.jpg" alt="%s" loading="eager">'
+    % HERO_MAP_ALT)
 
 # ═════════════════════════════════════════════════════════════════════
 WEST = '''<div class="camp" id="rules">
@@ -531,7 +541,8 @@ s = assemble(
     PALETTE,
     '<title>Sailing the Seas of Grammar &mdash; Gerunds and Infinitives</title>',
     REPLACEMENTS,
-    OUT)
+    OUT,
+    own_tail=False)
 
 # ── strip the mountain's machinery: there is no camp here to earn ──
 s = open(OUT, encoding='utf-8').read()
