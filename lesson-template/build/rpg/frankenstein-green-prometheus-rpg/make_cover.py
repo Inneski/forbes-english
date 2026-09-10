@@ -1,29 +1,42 @@
 #!/usr/bin/env python3
-"""Composite the FRANKENSTEIN wordmark back onto the cover plate.
+"""Composite Innes's title lockups onto the two cover plates.
 
-    python lesson-template/build/rpg/frankenstein-green-prometheus-rpg/make_cover.py
+    py lesson-template/build/rpg/frankenstein-green-prometheus-rpg/make_cover.py
 
-Round 2c told ChatGPT to deliver the cover with **no lettering**, because the
-engine draws the cover title itself and glosses it into nine languages, and
-lettering baked into a plate is English-only. That was right about the
-subtitle and wrong about the name: Innes asked where the logo had gone, and
-he was right to. *Frankenstein* is a proper noun — it does not translate, so
-painting it costs no language anything.
+Innes drew two lockups — *Part I: Ambitions* and *Part II: Consequences* — each
+a complete title treatment: iced FRANKENSTEIN wordmark, THE GREEN PROMETHEUS
+underneath, a compass-rose rule, the part line, and a closing flourish. Both
+arrive as WebP with a real alpha channel, so there is nothing to matte: the
+white behind them in a picture viewer is the viewer's own backdrop. Paste them
+as they are and the flourishes keep their glow.
 
-So the plate carries the name and the panel carries the rest:
+    part I   -> the original hero, Victor at the green apparatus   01_cover.webp
+    part II  -> the Arctic, Walton's ship and the bearded stranger 01_cover_part2.webp
 
-    plate   FRANKENSTEIN            painted, English-only, and that is fine
-    kicker  BLOCK CAMP · GOING TO   glossed
-    title   The Green Prometheus    glossed
+Round 2 had replaced the hero with the Arctic plate and the composite carried
+only the bare wordmark; "Put this layer over the original hero. And part two
+goes over the arctic beard boat one" puts each picture back where it belongs.
 
-The wordmark is lifted from the Part II export's cover, which is where Innes
-saw it. It is matted out of that plate by luminance — the ice glyphs sit well
-above the teal band behind them — rather than cut by hand, so this is
-repeatable. `lockup.png` beside this file is that matte, kept so the composite
-does not depend on the 64 MB export being present.
+WHERE THE LOCKUP GOES is not a matter of taste, and eyeballing it on the plate
+put the last one half behind the score badges. Three things decide the band,
+and none of them is visible in the plate itself:
 
-Re-run after any redraw of the plain plate; the result must stay under
-200 KB like every other picture in the lesson.
+  * the HUD is drawn over the picture and owns the top of the viewport;
+  * a 3:2 plate on a 16:9 viewport is cropped top and bottom, so plate y and
+    viewport y are not the same number;
+  * the glass panel rises to meet the lockup, and it rises furthest in the
+    language whose text is longest.
+
+So the numbers below are read off the rendered page in all ten languages, not
+guessed. Measured 2026-09-10 at 1536x864, cover panel anchored `v-bottom`:
+
+    HUD bottom          plate y 0.142
+    panel top, worst    plate y 0.404   (Arabic; English gets 0.474)
+
+The lockup is fitted to that band by HEIGHT and centred, which is why WIDTH is
+derived rather than set: the two lockups have different aspect ratios, and
+pinning a width would push the taller one under the HUD. Re-measure with
+scratchpad/band.js if the cover panel's text ever changes length.
 """
 import os
 from PIL import Image
@@ -31,44 +44,45 @@ from PIL import Image
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.normpath(os.path.join(HERE, '..', '..', '..', '..'))
 ART = os.path.join(REPO, 'block-camp', 'frankenstein-green-prometheus-rpg')
-PLAIN = os.path.join(ART, '01_cover_plain.webp')     # as delivered, no lettering
-OUT = os.path.join(ART, '01_cover.webp')
 
-# Two things squeeze the band the wordmark can live in, and both are only
-# visible in the browser, not in the plate:
-#   * the HUD (points / sparks / chances, and the utilities) owns the top ~7%
-#     of the VIEWPORT, and it is drawn over the picture;
-#   * a 3:2 plate on a 16:9 viewport is cropped top and bottom — roughly 8% off
-#     each — so plate y 0.06 lands under the HUD at viewport y 0.
-# Placing it by eye on the plate put it half behind the score badges. These
-# numbers are read off the rendered page instead: the wordmark clears the HUD
-# and stops above the cover panel, which begins at viewport y ~0.28.
-WIDTH = 0.44      # of the plate's width
-TOP = 0.155       # of the plate's height
+TOP = 0.150       # of the plate's height — clear of the HUD at 0.142
+BOTTOM = 0.392    # clear of the panel at its tallest, 0.404
+MAX_W = 0.62      # never wider than this share of the plate
+
+COVERS = [
+    ('01_cover_part1_plain.webp', 'lockup_part1.webp', '01_cover.webp'),
+    ('01_cover_plain.webp',       'lockup_part2.webp', '01_cover_part2.webp'),
+]
+
+
+def compose(plain, lockup, out):
+    plate = Image.open(os.path.join(ART, plain)).convert('RGB')
+    lock = Image.open(os.path.join(HERE, lockup)).convert('RGBA')
+    lock = lock.crop(lock.getbbox())          # trim the transparent margin
+    w, h = plate.size
+    th = int(h * (BOTTOM - TOP))
+    tw = round(lock.width * th / lock.height)
+    if tw > w * MAX_W:                        # width-bound instead
+        tw = int(w * MAX_W)
+        th = round(lock.height * tw / lock.width)
+    lock = lock.resize((tw, th), Image.LANCZOS)
+    img = plate.copy()
+    img.paste(lock, ((w - tw) // 2, int(h * TOP)), lock)
+    # The plates are already close to the 200 KB the batch spec sets, and the
+    # wordmark's icicle detail is expensive. Search for the quality that fits
+    # rather than pinning a number, which goes stale on the next redraw.
+    dst = os.path.join(ART, out)
+    for q in range(88, 40, -2):
+        img.save(dst, 'WEBP', quality=q, method=6)
+        if os.path.getsize(dst) < 199000:
+            break
+    print('%-22s %d x %d lockup, %d KB at quality %d'
+          % (out, tw, th, os.path.getsize(dst) // 1024, q))
 
 
 def main():
-    plate = Image.open(PLAIN).convert('RGB')
-    lock = Image.open(os.path.join(HERE, 'lockup.png')).convert('RGBA')
-    w, h = plate.size
-    tw = int(w * WIDTH)
-    lock = lock.resize((tw, round(lock.height * tw / lock.width)), Image.LANCZOS)
-    out = plate.copy()
-    out.paste(lock, ((w - tw) // 2, int(h * TOP)), lock)
-    # The delivered plate is already 190 KB, so the wordmark's icicle detail
-    # cannot be added at the plate's own quality and still clear the 200 KB the
-    # batch spec sets. Search for the quality that fits rather than pinning a
-    # number, which goes stale the moment the plate or the lockup is redrawn.
-    for q in range(88, 40, -2):
-        out.save(OUT, 'WEBP', quality=q, method=6)
-        if os.path.getsize(OUT) < 199000:
-            break
-    print('%s — %d x %d, %d KB at quality %d'
-          % (os.path.relpath(OUT, REPO), *out.size, os.path.getsize(OUT) // 1024, q))
-    return
-    out.save(OUT, 'WEBP', quality=66, method=6)
-    print('%s — %d x %d, %d KB' % (os.path.relpath(OUT, REPO), *out.size,
-                                   os.path.getsize(OUT) // 1024))
+    for plain, lockup, out in COVERS:
+        compose(plain, lockup, out)
 
 
 if __name__ == '__main__':

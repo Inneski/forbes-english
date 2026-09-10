@@ -132,6 +132,112 @@ answering scrolls the panel to the feedback regardless.
 
 ---
 
+## 2026-09-10 — Frankenstein: grammar tokens go back into CAPS, and both of Innes's title lockups land on their plates
+
+Two complaints, one of them a repeat offence.
+
+### The house convention for grammar tokens is CAPS, and it is not written down
+
+Innes quoted my own rules note back at me — "The verb after to never changes:
+he is going to leave, not leaves and not leaving." — with *"You have broken one
+of the hardwired rules."* He is right, and the rule was visible in both shipped
+RPGs the whole time. Nowhere in `HOUSE-STYLE.md` or `rpg/README.md`, though, so
+here it is:
+
+**A grammar token is never ordinary lowercase prose.** Put the target form in
+CAPS and cited words in double quotes, and give the answer as a
+`subject + AUX + verb` form rather than describing it in a sentence:
+
+```
+Oz       card FORM · WAS / WERE + VERB-ING
+              I / he / she / it WAS running · you / we / they WERE running
+         note WAS with I, he, she, it. WERE with you, we, they.
+              The verb always ends in -ING.
+         fb   Dorothy and Toto are "they", so the verb is WERE + running.
+Wonderland fb "Look!" shows that the action is happening now.
+              The Rabbit = he. Use he + is + running.
+```
+
+Without the marking the learner cannot tell the instruction from the thing
+being cited: "not leaves and not leaving" simply reads as broken English. Five
+rule cards, the note and all six feedback lines were rewritten, in English and
+in all nine glosses (`scratchpad/caps.py` in this session; the strings are in
+the builder and `translations/*.json`).
+
+Oz also decides **what to translate**, and that split is worth copying. A card
+carrying a *pattern* stays English in all ten languages — glossing
+`I AM going to leave` would delete the very thing being taught, and
+`check_translations.py` reports those as IDENTICAL TO EN advisories, which is
+correct and not a defect. A card carrying a *meaning* is glossed.
+
+### Two title lockups, two plates — and where a lockup can actually go
+
+Innes drew a complete title treatment for each half of the story and said
+"Put this layer over the original hero. And part two goes over the arctic beard
+boat one." Round 2 had replaced the hero with the Arctic plate, so:
+
+    01_cover.webp        the original hero, Victor at the green apparatus + Part I: Ambitions
+    01_cover_part2.webp  Walton's ship and the bearded stranger        + Part II: Consequences
+
+Both lockups arrive as WebP **with a real alpha channel** — 61% and 86% of
+their pixels are transparent. The white behind them in a picture viewer is the
+viewer's backdrop, not the image. Do not try to matte them.
+
+`01_cover_part2.webp` is a deliverable with nowhere to go yet: the lesson is
+one part, 42 questions and five acts. It is committed and unreferenced, ready
+for the day the lesson splits. That split is Innes's call, not a builder's.
+
+**Placing a lockup by eye on the plate is how the last one ended up half behind
+the score badges.** Three things decide the band and none is visible in the
+plate:
+
+* the HUD is drawn over the picture and owns the top of the viewport;
+* a 3:2 plate on a 16:9 viewport is cropped top and bottom, so plate y and
+  viewport y are different numbers;
+* the glass panel rises to meet the lockup, furthest in whichever language is
+  longest — Arabic here, 0.404 against English's 0.474.
+
+`scratchpad/band.js` reads all three off the rendered page and reports them in
+the plate's own coordinates. `make_cover.py` then fits the lockup to that band
+**by height**, deriving the width, because the two lockups have different
+aspect ratios and pinning a width pushes the taller one under the HUD.
+Re-measure whenever the cover panel's text changes length.
+
+### A lockup in the sky is a layout change, not just an image swap
+
+The full lockup is 2.5x the height of the bare wordmark it replaced, so the
+cover panel had to give the space back. Three changes, each measured:
+
+* the panel is anchored `v-bottom`, not `v-center`;
+* the cover story is one sentence instead of two;
+* `small` stopped repeating the corner help — and it named a lantern that only
+  existed on the Round 2 Arctic plate. It now carries the lesson spec, which is
+  Wonderland's use of that slot: `One player · A2 · six choices · four endings`.
+
+The hotspot moved with the plate: the Arctic lantern is gone, so the glow is
+the lit column of the apparatus.
+
+**A bottom-anchored `center` panel put its own marker 79–87% underneath itself**
+(worse in Arabic). The fix was `pos: 'left'`, which drops the panel onto the
+empty rock at bottom-left and leaves the Creature's face, Victor and the
+apparatus all clear — the panel moves, never the marker. Measured after:
+0 scroll, 0 clipped and cover marker 0% covered in all ten languages, with the
+remaining 11 partial overlaps identical to the pushed build's baseline.
+
+### Worth knowing
+
+* `metrics.js` run ten times in a tight `for` loop **races**: the last language
+  reported 45 marker overlaps where a single clean run reports 12. Re-measure a
+  surprising number on its own before believing it.
+* `node` resolves modules from the *script's* directory, so a harness kept in
+  the scratchpad needs `NODE_PATH=<repo>/node_modules`.
+* `check_translations.py` takes the translations **directory** plus the built
+  page: `check_translations.py <slug>/translations <page>.html`. Passing the
+  page alone prints "no <lang>.json files".
+* The three one-off feedback lines it reports as UNUSED belong to scenes the
+  builder drops via `DEAD`/`CUT`. They were unused before this pass too.
+
+
 ## 2026-09-10 — A Fistful of Lies ships, and the export finally arrived complete
 
 `block-camp/fistful-of-lies-rpg.html` — Past Simple, A1-A2, a voxel spaghetti

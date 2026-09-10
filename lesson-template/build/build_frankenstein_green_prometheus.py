@@ -60,7 +60,11 @@ SKIP = DEAD + CUT
 # (rpg/README.md §3); the object is the one the clue talks about, and the
 # panel goes on the picture's empty side so it never covers that object.
 HOT = {
-    'cover':                  ([7, 53, 10, 15], 'center', 'center'),   # the ship's lantern at Victor's rail
+    # The cover is the original hero again, so the lantern of the Round 2
+    # arctic plate is gone: the glow is the green column of the apparatus.
+    # The panel is anchored BOTTOM, not centre, because the painted lockup
+    # now occupies the sky — see make_cover.py for how the band is measured.
+    'cover':                  ([69, 52, 10, 26], 'left',   'bottom', 46),  # the lit column of the apparatus
     'rules':                  ([14, 64, 12, 14], 'right',  'center', 60),   # the skull on the study table
     '03_arctic_rescue':       ([22, 78, 16, 14], 'right', 'center'),       # the broken ice under the sled
     '04_warning':             ([35, 19, 15, 16], 'right', 'center'),   # the cabin window, the Arctic he wants
@@ -172,17 +176,17 @@ RULES = {
     # how "USE 2 — STRONG EVIDENCE" ended up looking like an afterthought
     # rather than the partner of USE 1. Odd counts lay out 2+2+1.
     'rules': [
-        {'name': T('FORM'), 'form': T('I am / he is / they are + going to + base verb.')},
-        {'name': T('NEGATIVE'), 'form': T("am not / isn't / aren't + going to + base verb.")},
-        {'name': T('QUESTION'), 'form': T('Am / Is / Are + subject + going to + base verb?')},
-        {'name': T('USE 1 · A PLAN'), 'form': T('something you have already decided')},
-        {'name': T('USE 2 · EVIDENCE'), 'form': T('something you can see is about to happen')},
+        {'name': T('FORM · AM / IS / ARE + GOING TO'), 'form': T('I AM going to leave · she IS going to leave · they ARE going to leave')},
+        {'name': T("NEGATIVE · AM NOT / ISN'T / AREN'T"), 'form': T("He ISN'T going to wait. · They AREN'T going to follow.")},
+        {'name': T('QUESTION · AM / IS / ARE + SUBJECT'), 'form': T("IS he going to speak? · Yes, he IS. / No, he ISN'T.")},
+        {'name': T('USE 1 · A PLAN'), 'form': T('He has decided. He IS GOING TO study science.')},
+        {'name': T('USE 2 · EVIDENCE'), 'form': T('Look at the sky. The storm IS GOING TO break.')},
     ],
     # Innes, 2026-09-10: "we dont need to talk about future simple or pres
     # cont in this legend, just make it neater and focus on going to
     # infinitive". The distractors are form errors, so the note names the one
     # rule they all break instead of contrasting three tenses.
-    'note': T('The verb after to never changes: he is going to leave, not leaves and not leaving.'),
+    'note': T('Never lose the BE and never lose the TO. The verb after TO never changes: he is going to LEAVE, never LEAVES and never LEAVING.'),
     'next': '03_arctic_rescue',
 }
 
@@ -207,10 +211,15 @@ def build():
             # half that actually translates.
             'k': T('BLOCK CAMP · GOING TO'),
             'title': T('The Green Prometheus'),
-            'story': T('Lightning. Secrets. A body built from many different parts. '
-                       'Enter Frankenstein and guide the story with your choices.'),
+            # One sentence, not two. The painted lockup owns the top of the
+            # plate now, so every line the panel does not need is height the
+            # title treatment gets back.
+            'story': T('Lightning, secrets, and a body built from many different parts.'),
             'start': T('BEGIN'),
-            'small': T('Tap the glowing lantern to open each scene.'),
+            # The lantern belonged to the Round 2 Arctic plate, and the
+            # line repeated the corner help besides. Wonderland's shape
+            # instead: what the player is about to get.
+            'small': T('One player · A2 · six choices · four endings'),
             'next': 'rules'}),
         'rules': place('rules', dict(RULES)),
     }
