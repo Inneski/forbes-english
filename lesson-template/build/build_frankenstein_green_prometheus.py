@@ -64,7 +64,8 @@ HOT = {
     'rules':                  ([14, 64, 12, 14], 'right',  'center', 60),   # the skull on the study table
     '03_arctic_rescue':       ([22, 78, 16, 14], 'right', 'center'),       # the broken ice under the sled
     '04_warning':             ([35, 19, 15, 16], 'right', 'center'),   # the cabin window, the Arctic he wants
-    '05_lightning_oak':       ([58, 50, 14, 20], 'left',   'center'),       # the burning split trunk
+    '05_lightning_oak':       ([57, 33, 15, 26], 'left',   'center'),       # the oak, with the bolt above it
+    '05b_oak_burning':       ([58, 50, 14, 20], 'left',   'center'),       # the burning split trunk
     '06_ingolstadt':          ([30, 52, 13, 22], 'right',  'center'),       # Victor and his books on the university steps
     '07_research_choice':     ([79, 33, 12, 18], 'center', 'bottom'),        # the lit laboratory door, one of the two roads
     '08_cemetery':            ([57, 62,  8, 12], 'left', 'center'),       # the lantern at the grave
@@ -128,7 +129,7 @@ HOT = {
 # rather than generated so it is reviewable and stable across runs — a hash
 # of the scene id would reshuffle the whole lesson on any rename.
 KEY = {
-    '03_arctic_rescue': 1, '04_warning': 0, '05_lightning_oak': 2, '06_ingolstadt': 1,
+    '03_arctic_rescue': 1, '04_warning': 0, '05_lightning_oak': 2, '05b_oak_burning': 0, '06_ingolstadt': 1,
     '08_cemetery': 0, '09_waldman': 2, '10_build': 1, '11_life': 0, '13_flee': 2,
     '14_speak': 1, '15_henry': 0, '16_william': 2, '17_justine': 1, '18_alps': 0,
     '19_cottage': 2, '20_language': 1, '22_knock': 0, '23_firewood': 2,
