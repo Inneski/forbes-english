@@ -12,6 +12,55 @@ stale copy.
 
 ---
 
+## 2026-09-10 — Sailing the Seas of Grammar gets its hero art, and `assemble()` has been broken for this page since 9f6e2e7
+
+Innes asked for a copy of `sailing-the-seas-of-grammar.html` to hand to
+ChatGPT for a visuals upgrade, then sent back an illustrated sea-chart map
+matching the same place names the page's own coded SVG chart already used
+in its `aria-label` (Cape Avoid, Want Harbour, Twofold Isle...). Swapped the
+non-interactive hero chart for the artwork; left the second, clickable chart
+(`M.chart('sailb', clickable=True)`, the one that drives an actual exercise)
+as coded SVG. Palette re-derived from the new hero and re-verified — every
+contrast row still PASSes, so `PALETTE` in `build_sailing.py` was left
+unchanged rather than force-mapped from `extract-palette.py`'s newer
+`--void/--surface` scheme, which does not share a shape with this file's own
+`palette(ink, ink_soft, paper, accent, dark, light, lighter)` helper.
+
+**The actual defect, found trying to rebuild at all:** `9f6e2e7` ("The two
+clouds translated each other...") made `build_c10.assemble()` call
+`_own_tail()` unconditionally, which `raise SystemExit`s if `out` has no
+entry in `sherpa_tail.json`. That fix was for camps ten-thirteen and the two
+"cloud" pages, which all slice camp seven's HTML and need their tail
+(`SHERPA_ID`/`SHERPA_FACE`/`SHERPA_TWIN`/`EX_TR`) patched in from that file.
+`build_sailing.py` also calls this same `assemble()` for its shared page
+shell, but it has never had a `sherpa_tail.json` entry — it isn't part of
+the mountain progression, strips `SHERPA_ID`/the progression bar itself
+right after `assemble()` returns, and patches its *own* `EX_TR` from
+`ex_tr_sail.py` using its own `\x01N\x01` marker convention. Forcing a fake
+`sherpa_tail.json` entry on it would not just be wrong metadata — `_own_tail`'s
+`<div class="ex">` regex would have consumed sailing's own unresolved
+`\x01N\x01` markers before sailing's own post-processing got to them,
+corrupting the translation wiring.
+
+Since `9f6e2e7`, every `build_sailing.py` run has failed outright with
+`sailing-the-seas-of-grammar.html has no entry in build/sherpa_tail.json`.
+Nobody had rebuilt this page in the two days between that commit and this
+one, so it shipped unnoticed. Fixed by giving `assemble()` an `own_tail=True`
+default (unchanged behaviour for camps ten-thirteen and the clouds) and
+calling it with `own_tail=False` from `build_sailing.py`. Verified the four
+camp pages rebuild byte-identical to `origin/main` after the change.
+
+**`check-lesson.js` does not apply to this page at all**, and this is not new:
+it fails identically — `0 slides`, no `.fe-logo`, no `UI_I18N`, no
+`data-type="activate"` — on `sailing-the-seas-of-grammar.html` and on all
+four Sherpa Tensing camp pages (ten through thirteen). The checker is built
+for the newer 16:9 `deck.py` slide-deck format; the whole camp family is an
+older scrolling-page architecture that predates it. Not something to "fix"
+by reshaping five live pages — flagging so the next session doesn't spend
+time on it as if it were a regression.
+
+---
+
 ## 2026-09-09 — Three sessions, one index: `git add -- <path>` does NOT protect you
 
 This cost two sessions an attribution in one afternoon, in both directions,
