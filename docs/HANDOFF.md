@@ -44,6 +44,103 @@ gloss taking `--accent-ink`.
 
 ---
 
+## 2026-09-10 — Frankenstein becomes two lessons, and an ending can now hand the player on
+
+Innes drew two title lockups, *Part I: Ambitions* and *Part II: Consequences*,
+and the lesson was one 42-question page. Offered the three ways of resolving
+that, he chose the split. So:
+
+    block-camp/frankenstein-green-prometheus-rpg.html   Part I  · keeps the published URL
+    block-camp/frankenstein-consequences-rpg.html       Part II · new
+
+### One builder, one data.json, one picture directory, two pages
+
+`build_frankenstein_green_prometheus.py` now takes a part number and is run
+once for each. Nothing is duplicated on disk, because **`img_dir` reaches the
+page as `G.dir`, which is only its last path segment** (`rpg.py:509`). Both
+pages sit in `block-camp/`, so both can name
+`block-camp/frankenstein-green-prometheus-rpg` and every plate resolves from
+either. That is the trick worth remembering for any future multi-part lesson:
+split the pages, keep the artwork in one folder.
+
+The split itself is one tuple, `PART1`, plus `FINAL` (each page needs its own
+last question, because `resolve()` gates the master ending on `finalCorrect`)
+and a `next` that falls back to `resolve` when it points outside the part.
+
+### The size is lopsided, and Innes should know before he teaches it
+
+    Part I    10 questions authored, 9 on a run, 45 points, 1 fork,  2 sparks
+    Part II   32 questions authored, 27 on a run, 135 points, 5 forks, 4 sparks
+
+The narrative cut is right — Ambitions ends when the eyes open — but the
+material does not divide evenly there, and Part I lands well under the 16
+questions Oz and Wonderland carry. Moving the line to Victor's fever
+(`15_henry`) buys two more; the Alps (`18_alps`) would make it roughly even
+but puts the flight and William's death inside "Ambitions", which is wrong.
+Flagged to Innes; the line is one entry in `PART1` if he wants it moved.
+
+### There was no spare artwork, and that shapes Part I's endings
+
+All 56 plates are referenced. So Part I's three endings borrow:
+
+    p1_end_alive   12_awakening_choice   master + complete, and Part II opens
+                                         on the same plate — reads as a recap
+    p1_end_sparks  10_build              the bench you left a spark on
+    p1_end_fail    44_ending_fail        Part II's fail plate; a Part I player
+                                         never sees Part II, and the strings are
+                                         word for word the same, so it costs no
+                                         new gloss
+
+`master` and `complete` share a scene, which is what Part II already does with
+`mercy`. If plates are ever commissioned, only the `img` values change.
+
+### `rpg.py`: an ending can carry a link
+
+`p1_end_alive` says "Part II begins here", and the engine had no way to keep
+that promise — an ending rendered PLAY AGAIN and nothing else. Two additive
+fields:
+
+    link       a URL. Deliberately NOT in TEXT_KEYS: it is not prose.
+    linkLabel  the words on it, and it IS in TEXT_KEYS, so it must be glossed.
+
+Rendered as `<a class="start">` before the restart button. No existing lesson
+sets either, so nothing else changes.
+
+`head()` also now skips the `<h1>` when a scene has no title, and
+`sceneImage.alt` falls back to a scene's `alt`. That is what lets a cover whose
+plate carries a painted title lockup stop saying the same thing twice — see the
+cover notes in the entry below this one.
+
+### Odds and ends
+
+* **ALL FIVE SPARKS was wrong** the moment the lesson split: Part II carries
+  four. Both the kicker and the fail ending's lowercase form (`am / is / are +
+  going to`) are fixed, the latter to the CAPS convention.
+* Part I had a single relic, which makes `state.tiles >= G.tiles` true for
+  anyone who finds it. `05_lightning_oak` — the strike — is now the second.
+* `check_translations.py` reports 216 and 112 UNUSED entries against the two
+  pages. That is expected now and not a defect: one translation table serves
+  both pages, so each sees only its own half. Judge coverage by the PASS line.
+* **The panel findings the note above listed are cleared.** `05_lightning_oak`,
+  `14_speak`, `23_firewood` and `29_storm_at_sea` all had the panel on the right
+  side already and only overlapped once a gloss widened it — `content.style.width`
+  adds 8% when translation is on, which is why every finding was in `es`/`ja` and
+  none in English. A narrower panel on the same side clears each one; the panel
+  moves, never the marker.
+* **`p1_end_alive` and `end_warning` are waived, not fixed.** An ending is the
+  cover case: `setOpen(s.kind==='intro'||s.kind==='ending')` means the panel is
+  up from the first frame, so there is no object left to reveal by clicking, and
+  narrowing an ending panel enough to clear its marker would put its text at risk
+  of scrolling. `ALLOW` in `check-rpg-panels.js` now carries both, with reasons.
+  Note this means a *third* slug there — the file is keyed by slug, so any future
+  rename needs its waivers moved with it.
+* The catalogue rows are `Frankenstein Part I: Ambitions` and `Part II:
+  Consequences`, both `pro`, both `sort_order` 0. Within the pinned band the
+  shelf sorts `sort_order` ascending **then newest first**, so Part I's
+  `created_at` was set two minutes after Part II's to make the series read left
+  to right. That is the only lever available without unpinning one of them.
+
+
 ## 2026-09-10 — Sherlock: The Blue Hour replaces The Blue Manuscript, and passes every check first time
 
 Innes: *"this is the sherlock class, I wasn't happy with the blue manuscript."*

@@ -71,7 +71,10 @@ LABELS = {
                    'ja': '光る物をクリックか ENTER で読む · ESC 隠す · 1–3 選ぶ · L 言語 · S サウンド · F 全画面'},
 }
 
-TEXT_KEYS = ('k', 'title', 'story', 'clue', 'prompt', 'fb', 'note', 'small', 'start')
+# `link` is a URL, not prose, so it is deliberately not in here; `linkLabel`
+# is the words on it and must be glossed like anything else a learner reads.
+TEXT_KEYS = ('k', 'title', 'story', 'clue', 'prompt', 'fb', 'note', 'small',
+             'start', 'linkLabel')
 
 
 NINE = ['es', 'de', 'fr', 'it', 'pt', 'ru', 'ar', 'zh', 'ja']   # HOUSE-STYLE §8's full set
@@ -216,7 +219,7 @@ button{font:inherit}
 .feedback{display:none;padding:.8cqw .9cqw;border:1px solid rgba(255,246,217,.3);background:rgba(20,14,4,.85);font-size:1.35cqw;line-height:1.32}
 .feedback.show{display:block}.feedback.good{border-color:var(--good)}.feedback.bad{border-color:var(--bad)}
 .feedback strong{color:var(--accent)}.feedback .translation{font-size:1.05cqw}
-.continue,.start,.restart{align-self:flex-start;border:1px solid #fff8dc;background:linear-gradient(180deg,#fff0b8,var(--accent));color:var(--accent-ink);font-weight:700;letter-spacing:.07em;padding:.8cqw 1.2cqw;cursor:pointer;font-size:1.2cqw;box-shadow:0 .5cqw 1.5cqw rgba(0,0,0,.48)}
+.continue,.start,.restart{text-decoration:none;align-self:flex-start;border:1px solid #fff8dc;background:linear-gradient(180deg,#fff0b8,var(--accent));color:var(--accent-ink);font-weight:700;letter-spacing:.07em;padding:.8cqw 1.2cqw;cursor:pointer;font-size:1.2cqw;box-shadow:0 .5cqw 1.5cqw rgba(0,0,0,.48)}
 /* the gloss under a button sits on the light accent gradient, not on the dark
    panel: --muted there is cream on cream and reads as an empty second line. */
 .continue .translation,.start .translation,.restart .translation{color:var(--accent-ink);opacity:.72}
@@ -317,7 +320,7 @@ function render(){const s=G.scenes[state.scene];frame.className=`frame ${s.pos||
   else if(s.kind==='story'){html+=`${s.rules?`<div class="rules-intro">${s.rules.map(r=>`<div class="rule-card${r.tone?' tone-card-'+r.tone:''}"><b>${label(r.name)}</b>${label(r.form)}</div>`).join('')}</div>`:''}${s.note?`<div class="rule-note">${label(s.note)}</div>`:''}<button class="continue" onclick="go('${s.next}')">${s.button?label(s.button):ui('continue')}</button>`}
   else if(s.kind==='question'){html+=`${s.clue?`<div class="clue"><b>${ui('visual')}</b><br>${label(s.clue)}</div>`:''}<div class="prompt">${label(s.prompt)}</div><div class="options">${s.opts.map((o,i)=>`<button class="option${o.parts?' split':''}" data-i="${i}" onclick="answer(${i})"><span class="key">${i+1}</span>${optMarkup(o)}</button>`).join('')}</div><div id="feedback" class="feedback"></div><button id="continue" class="continue" hidden onclick="advance()">${ui('continue')}</button>`}
   else if(s.kind==='choice'){html+=`<div class="route-options">${s.routes.map((r,i)=>`<button class="route" onclick="chooseRoute(${i})"><b>${i+1} · ${label(r.name)}</b>${label(r.desc)}</button>`).join('')}</div>`}
-  else if(s.kind==='ending'){/* an ending may close with a paragraph that depends on the route taken (routeStory) */const rt=s.routeStory?(Object.entries(s.routeStory).find(([k])=>state.route.includes(k))||[])[1]:null;const rev=G.repair?(state.mistakes.length?`<div class="review">${state.mistakes.map(id=>{const m=G.scenes[id];return `<div>${esct(m.prompt.en)}<br><b>${esc(optText(m.opts[m.answer]))}</b> — ${label(m.fb)}</div>`}).join('')}</div>`:`<div class="small">${ui('perfect')}</div>`):'';const ft=G.repair?` · ${state.score/(G.points||1)}/${G.total} ${ui('firstTry')}`:'';html+=`${rt?line(rt,'story'):''}<div class="final-score">${ui('finalScore')} ${state.score}/${G.max}${ft} · ${'◆'.repeat(state.tiles)}${'◇'.repeat(Math.max(0,G.tiles-state.tiles))}</div>${rev}${state.route.length?`<div class="small">${ui('route')}: ${esc(state.route.join(' · ').toUpperCase())}</div>`:''}<button class="restart" onclick="restart()">${ui('restart')}</button>`}
+  else if(s.kind==='ending'){/* an ending may close with a paragraph that depends on the route taken (routeStory) */const rt=s.routeStory?(Object.entries(s.routeStory).find(([k])=>state.route.includes(k))||[])[1]:null;const rev=G.repair?(state.mistakes.length?`<div class="review">${state.mistakes.map(id=>{const m=G.scenes[id];return `<div>${esct(m.prompt.en)}<br><b>${esc(optText(m.opts[m.answer]))}</b> — ${label(m.fb)}</div>`}).join('')}</div>`:`<div class="small">${ui('perfect')}</div>`):'';const ft=G.repair?` · ${state.score/(G.points||1)}/${G.total} ${ui('firstTry')}`:'';html+=`${rt?line(rt,'story'):''}<div class="final-score">${ui('finalScore')} ${state.score}/${G.max}${ft} · ${'◆'.repeat(state.tiles)}${'◇'.repeat(Math.max(0,G.tiles-state.tiles))}</div>${rev}${state.route.length?`<div class="small">${ui('route')}: ${esc(state.route.join(' · ').toUpperCase())}</div>`:''}${s.link?`<a class="start" href="${s.link}">${label(s.linkLabel)}</a>`:''}<button class="restart" onclick="restart()">${ui('restart')}</button>`}
   content.innerHTML=html;content.scrollTop=0;updateHUD();setOpen(s.kind==='intro'||s.kind==='ending');
   if(s.kind==='question'&&Object.prototype.hasOwnProperty.call(state.results,state.scene))setTimeout(()=>displayAnswer(state.results[state.scene],false),0)}
 hot.addEventListener('click',e=>{e.stopPropagation();openPanel()});

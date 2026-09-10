@@ -32,6 +32,11 @@ const CAMP = path.join(REPO, 'block-camp');
 const ALLOW = {
   'frankenstein-green-prometheus-rpg': {
     cover: 'Innes asked for centred cover copy, 2026-09-09; a cover opens with the panel up',
+    p1_end_alive: 'an ending opens with the panel up too — setOpen(kind==="intro"||kind==="ending"), '
+                + 'so like a cover it has no object left to reveal',
+  },
+  'frankenstein-consequences-rpg': {
+    end_warning: 'an ending opens with the panel up; nothing to reveal',
   },
 };
 

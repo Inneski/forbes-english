@@ -30,8 +30,30 @@ and none of them is visible in the plate itself:
 So the numbers below are read off the rendered page in all ten languages, not
 guessed. Measured 2026-09-10 at 1536x864, cover panel anchored `v-bottom`:
 
-    HUD bottom          plate y 0.142
-    panel top, worst    plate y 0.404   (Arabic; English gets 0.474)
+    HUD bottom          viewport y  57
+    marker top          viewport y 413
+    panel top, worst    viewport y 502  (Arabic; English gets 581)
+
+**Plate y and viewport y are not related by a constant.** `placeHot` slides the
+picture to keep the hotspot on screen — `oy = clamp(H/2 - cy/100*dh, H-dh, 0)`
+— so the crop offset is a function of the cover hotspot's cy. Moving the marker
+DOWN moves the picture UP. That is how a lockup that was measured to clear the
+HUD ended up with its top flourish cut off at y 0: the marker moved from cy 52
+to cy 66, which took oy from -100 to its -160 limit and dragged the whole plate
+up 60px with it. At 1536x864 with the cover hotspot at cy 66 the picture is
+bottom-aligned, oy = -160, so
+
+    viewport y = plate y * 1024 - 160
+
+and the top 16% of the plate is never on screen at all. Re-derive this if the
+cover hotspot moves.
+
+The panel sits that low because the cover has no `title` of its own any more:
+the lockup already reads FRANKENSTEIN: THE GREEN PROMETHEUS, so a typeset h1
+underneath said it twice and ate the height the lockup wanted. Dropping it
+moved the panel from 0.404 to 0.568 and bought the title half as much size
+again. MAX_W, not the band, is what bounds the width now — a lockup wide
+enough to fill 0.15-0.555 would put its left flourish on the Creature.
 
 The lockup is fitted to that band by HEIGHT and centred, which is why WIDTH is
 derived rather than set: the two lockups have different aspect ratios, and
@@ -45,9 +67,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.normpath(os.path.join(HERE, '..', '..', '..', '..'))
 ART = os.path.join(REPO, 'block-camp', 'frankenstein-green-prometheus-rpg')
 
-TOP = 0.150       # of the plate's height — clear of the HUD at 0.142
-BOTTOM = 0.392    # clear of the panel at its tallest, 0.404
-MAX_W = 0.62      # never wider than this share of the plate
+TOP = 0.225       # of the plate's height — viewport y 70, clear of the HUD at 57
+BOTTOM = 0.548    # viewport y 401, twelve pixels above the marker at 413
+MAX_W = 0.39      # a guard; the band binds first at this hotspot
 
 COVERS = [
     ('01_cover_part1_plain.webp', 'lockup_part1.webp', '01_cover.webp'),

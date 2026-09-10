@@ -1,9 +1,23 @@
 #!/usr/bin/env python3
-"""Frankenstein: The Green Prometheus — GOING TO voxel RPG (A2).
+"""Frankenstein: The Green Prometheus — GOING TO voxel RPG (A2), in two parts.
 
     python3 lesson-template/build/build_frankenstein_green_prometheus.py
 
-Rebuilds block-camp/frankenstein-green-prometheus-rpg.html from
+Writes TWO pages from one data.json, one translation set and one picture
+directory:
+
+    block-camp/frankenstein-green-prometheus-rpg.html   Part I: Ambitions
+    block-camp/frankenstein-consequences-rpg.html       Part II: Consequences
+
+The story breaks where Innes's two title lockups say it breaks — at the
+Creature's awakening. Part I is the rise: the Arctic frame, the oak,
+Ingolstadt, the workshop, the spark. Part II is everything that costs.
+
+`img_dir` becomes `G.dir` as its last path segment, so both pages point at
+block-camp/frankenstein-green-prometheus-rpg/ and every plate resolves from
+either. No artwork is moved or duplicated.
+
+Rebuilds those pages from
 lesson-template/build/rpg/frankenstein-green-prometheus-rpg/data.json — the
 text of the V32 standalone export, pulled out by rpg/extract_patched.py —
 plus everything below that the export did not have: the hotspot on each
@@ -32,12 +46,14 @@ Pictures: block-camp/frankenstein-green-prometheus-rpg/*.webp, 1536x1024.
 The export mixed 3:2 and 16:9 plates; the 16:9 ones were centre-cropped to
 3:2 before the hotspots were read off them.
 """
-import json, os, sys
+import copy, json, os, sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'rpg'))
 import rpg
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-SLUG = 'frankenstein-green-prometheus-rpg'
+SLUG = 'frankenstein-green-prometheus-rpg'          # the picture directory, shared
+PAGE = {1: 'frankenstein-green-prometheus-rpg',     # Part I keeps the published URL
+        2: 'frankenstein-consequences-rpg'}
 BASE = os.path.join(HERE, 'rpg', SLUG)
 DATA = json.load(open(os.path.join(BASE, 'data.json'), encoding='utf-8'))
 LANGS = rpg.NINE
@@ -55,6 +71,43 @@ CUT = ('40_creature_lament',)
 
 SKIP = DEAD + CUT
 
+# ── where the story breaks in two. Everything not listed here (minus SKIP)
+# is Part II, which opens on the choice Part I ends one beat before.
+PART1 = ('03_arctic_rescue', '04_warning', '05_lightning_oak', '05b_oak_burning',
+         '06_ingolstadt', '07_research_choice', '08_cemetery', '09_waldman',
+         '09b_obsession', '10_build', '11_life')
+
+# The last question of each part: resolve() gates the master ending on the
+# final answer being right, so each page needs its own.
+FINAL = {1: '11_life', 2: '39_victor_death'}
+
+# Part I carried one relic, and one spark makes `state.tiles >= G.tiles`
+# true for anyone who finds it — no tension at all. The strike itself is
+# the obvious second.
+RELIC_ADD = ('05_lightning_oak',)
+
+# Part I's endings. There is no spare artwork — all 56 plates are already
+# spoken for — so two of these borrow a plate from inside Part I's own run
+# and the third reuses Part II's purpose-built fail plate, which a Part I
+# player never sees. `master` and `complete` share a scene, which is what
+# Part II already does with `mercy`. If Innes commissions three more plates,
+# only the `img` values here change.
+P1_ENDINGS = {
+    'p1_end_alive': ('12_awakening_choice', True,
+                     'END OF PART I · THE SPARK TAKES', 'The Eyes Open',
+                     'The body breathes. Victor is going to spend the rest of his life '
+                     'answering for this. Part II begins here.'),
+    'p1_end_sparks': ('10_build', True,
+                      'END OF PART I · A SPARK LEFT BEHIND', 'The Bench Is Not Clear',
+                      'The Creature lives, but you walked past a spark on the way. '
+                      'Run Part I again and take them both.'),
+    # word for word Part II's fail screen, so it costs no new gloss
+    'p1_end_fail': ('44_ending_fail', False,
+                    'FAILED EXPERIMENT', 'TRY THE FORM AGAIN',
+                    'Too many answers went wrong. Build the pattern again: '
+                    'AM / IS / ARE + GOING TO + base verb.'),
+}
+
 # ── hotspots: [cx, cy, w, h] in % of the 1536x1024 picture, then panel side,
 # vertical anchor, optional panel width %. Read off gridded contact sheets
 # (rpg/README.md §3); the object is the one the clue talks about, and the
@@ -64,11 +117,11 @@ HOT = {
     # arctic plate is gone: the glow is the green column of the apparatus.
     # The panel is anchored BOTTOM, not centre, because the painted lockup
     # now occupies the sky — see make_cover.py for how the band is measured.
-    'cover':                  ([69, 52, 10, 26], 'left',   'bottom', 46),  # the lit column of the apparatus
+    'cover':                  ([69, 66, 10, 20], 'left',   'bottom', 46),  # the lit column of the apparatus, low enough to clear the lockup
     'rules':                  ([14, 64, 12, 14], 'right',  'center', 60),   # the skull on the study table
     '03_arctic_rescue':       ([22, 78, 16, 14], 'right', 'center'),       # the broken ice under the sled
     '04_warning':             ([35, 19, 15, 16], 'right', 'center'),   # the cabin window, the Arctic he wants
-    '05_lightning_oak':       ([57, 33, 15, 26], 'left',   'center'),       # the oak, with the bolt above it
+    '05_lightning_oak':       ([57, 33, 15, 26], 'left',   'center', 38),       # the oak, with the bolt above it
     '05b_oak_burning':       ([58, 50, 14, 20], 'left',   'center'),       # the burning split trunk
     '06_ingolstadt':          ([30, 52, 13, 22], 'right',  'center'),       # Victor and his books on the university steps
     '07_research_choice':     ([79, 33, 12, 18], 'center', 'bottom'),        # the lit laboratory door, one of the two roads
@@ -78,7 +131,7 @@ HOT = {
     '11_life':                ([86, 60, 14, 20], 'left', 'center'),       # the body taking the spark
     '12_awakening_choice':    ([44, 33, 10, 14], 'center', 'bottom'),        # Victor, deciding whether to speak
     '13_flee':                ([62, 48, 14, 26], 'left', 'center'),       # Victor running
-    '14_speak':               ([48, 42, 12, 26], 'right',  'center', 42),   # the Creature he tries to address
+    '14_speak':               ([48, 42, 12, 26], 'right',  'center', 34),   # the Creature he tries to address
     '15_henry':               ([60, 30, 14, 26], 'left', 'center'),       # Henry at the bedside
     '16_william':             ([30, 62, 10, 14], 'right', 'center'),   # the letter
     '17_justine':             ([78, 45, 16, 22], 'left',   'center', 56),   # the judges
@@ -87,7 +140,7 @@ HOT = {
     '20_language':            ([38, 49, 13, 11], 'right',  'center'),       # the open book he found
     '21_approach_choice':     ([50, 38, 12, 14], 'center', 'bottom'),        # the Creature deciding how to approach
     '22_knock':               ([60, 38, 14, 22], 'left', 'center'),       # blind De Lacey
-    '23_firewood':            ([58, 69, 16, 22], 'left', 'center'),       # the door he leaves the wood by
+    '23_firewood':            ([58, 69, 16, 22], 'left',   'center', 38),       # the door he leaves the wood by
     '24_rejection_fire':      ([89, 47, 10, 13], 'left',   'center'),       # the dark, empty cottage
     '25_demand':              ([66, 28, 14, 18], 'left',   'center', 42),   # the vision of the companion
     '26_companion_choice':    ([21, 45, 10, 12], 'center', 'bottom', 44),   # the book Victor weighs it over
@@ -116,7 +169,7 @@ HOT = {
     # locket is the object. Panel right and narrow — this plate is busy on
     # both sides, and 40% clears the locket and Justine's face.
     '24_portrait_justine':    ([46, 62,  7, 12], 'right',  'center', 40),   # the locket he is about to leave
-    '29_storm_at_sea':        ([39, 67, 32, 24], 'right', 'center'),       # the storm at the window
+    '29_storm_at_sea':        ([39, 67, 32, 24], 'right',  'center', 34),       # the storm at the window
     '30_return_home':         ([16, 46, 18, 36], 'right', 'center'),       # Elizabeth, told too little
     '09b_obsession':          ([32, 62, 12, 14], 'right', 'center'),   # the skull on the books
     '18a_pursuit':            ([88, 15,  9, 14], 'left',   'center'),       # the Creature on the ridge ahead
@@ -126,6 +179,14 @@ HOT = {
     'end_warning':            ([42, 49, 20, 34], 'right', 'center'),
     'end_ice':                ([72, 45, 18, 26], 'left', 'center'),
     'end_fail':               ([30, 40, 16, 26], 'right', 'center'),
+    # Part II's cover. The marker is Walton's bearded stranger, low enough on
+    # his coat to leave his face clear, and at cy 58 the picture is bottom-
+    # aligned exactly as Part I's is — which is why one pair of make_cover.py
+    # constants serves both plates. Panel right, because he is on the left.
+    'cover2':                 ([15, 58, 10, 18], 'right',  'bottom', 54),
+    'p1_end_alive':           ([44, 33, 10, 14], 'center', 'bottom'),
+    'p1_end_sparks':          ([24, 30, 12, 20], 'right',  'center'),
+    'p1_end_fail':            ([30, 40, 16, 26], 'right',  'center'),
 }
 
 # ── the answer key. The export put it in slot 0 on all 44 questions; this
@@ -201,31 +262,49 @@ def place(sid, scene):
     return scene
 
 
-def build():
+def build(part):
+    first = 'cover' if part == 1 else 'cover2'
+    # the scenes this part owns; a `next` that points outside it resolves
+    keep = {sid for sid in DATA['scenes']
+            if sid not in SKIP and (sid in PART1) == (part == 1)}
     scenes = {
-        'cover': place('cover', {
-            'kind': 'intro', 'img': '01_cover',
-            # The plate carries a painted FRANKENSTEIN wordmark again
-            # (rpg/<slug>/make_cover.py), so the kicker no longer repeats it —
-            # and the glossed title underneath is the subtitle, which is the
-            # half that actually translates.
+        first: place(first, {
+            'kind': 'intro', 'img': '01_cover' if part == 1 else '01_cover_part2',
+            # No `title`. The plate carries Innes's painted lockup, which
+            # already reads FRANKENSTEIN: THE GREEN PROMETHEUS — a typeset h1
+            # under it only says the same thing a second time, and it was
+            # eating the height the lockup needs. The engine now skips the h1
+            # when a scene has no title, and takes the image's alt text from
+            # `alt` instead. The kicker stays: it names the grammar, which the
+            # lockup does not, and it is the line that actually translates.
             'k': T('BLOCK CAMP · GOING TO'),
-            'title': T('The Green Prometheus'),
+            'alt': ('Frankenstein: The Green Prometheus — Victor at the lightning apparatus'
+                    if part == 1 else
+                    'Frankenstein: The Green Prometheus, Part II — Walton\'s ship in the Arctic ice'),
             # One sentence, not two. The painted lockup owns the top of the
             # plate now, so every line the panel does not need is height the
             # title treatment gets back.
-            'story': T('Lightning, secrets, and a body built from many different parts.'),
+            'story': T('Lightning, secrets, and a body built from many different parts.'
+                       if part == 1 else
+                       'The Creature is awake and Victor is running. '
+                       'Everything from here is what that night cost.'),
             'start': T('BEGIN'),
             # The lantern belonged to the Round 2 Arctic plate, and the
             # line repeated the corner help besides. Wonderland's shape
             # instead: what the player is about to get.
-            'small': T('One player · A2 · six choices · four endings'),
+            'small': T('One player · A2 · one choice · three endings' if part == 1 else
+                       'One player · A2 · five choices · four endings'),
             'next': 'rules'}),
-        'rules': place('rules', dict(RULES)),
+        # Both parts open on the same briefing. It is the same grammar and the
+        # same spellbook; a player who arrives at Part II without Part I still
+        # needs it, and one who played both is not told anything new.
+        'rules': place('rules', dict(copy.deepcopy(RULES),
+                                     next='03_arctic_rescue' if part == 1
+                                     else '12_awakening_choice')),
     }
 
     for sid, s in DATA['scenes'].items():
-        if sid in SKIP:
+        if sid in SKIP or ((sid in PART1) != (part == 1)):
             continue
         base = {'img': s['image'], 'k': T(s['act']),
                 'title': T(s['title']['en']),
@@ -260,22 +339,34 @@ def build():
             base['opts'] = [T(t) for t in order]
             base['answer'] = slot
             base['points'] = 5
-            if s.get('relic'):
+            if s.get('relic') or sid in RELIC_ADD:
                 base['relic'] = True
             base['fb'] = T(s['explanation']['en'])
             nxt = s.get('next')
-            base['next'] = nxt if nxt and nxt not in SKIP else 'resolve'
+            base['next'] = nxt if nxt and nxt not in SKIP and nxt in keep else 'resolve'
         scenes[sid] = place(sid, base)
 
     # the last question decides whether a flawless run reaches the master ending
-    scenes['39_victor_death']['final'] = True
+    scenes[FINAL[part]]['final'] = True
 
-    for key, e in DATA['endings'].items():
-        sid = 'end_' + key
-        scenes[sid] = place(sid, {
-            'kind': 'ending', 'img': e['image'], 'success': key in ('mercy', 'warning'),
-            'k': T(e['eyebrow']['en']), 'title': T(e['title']['en']),
-            'story': T(e['story']['en'])})
+    if part == 1:
+        for sid, (img, ok, k, title, story) in P1_ENDINGS.items():
+            e = {'kind': 'ending', 'img': img, 'success': ok,
+                 'k': T(k), 'title': T(title), 'story': T(story)}
+            # "Part II begins here" is a promise the page has to keep. Only the
+            # ending that actually reaches the awakening carries the link — the
+            # other two want the player to run Part I again, not skip it.
+            if sid == 'p1_end_alive':
+                e['link'] = '/block-camp/%s.html' % PAGE[2]
+                e['linkLabel'] = T('PLAY PART II')
+            scenes[sid] = place(sid, e)
+    else:
+        for key, e in DATA['endings'].items():
+            sid = 'end_' + key
+            scenes[sid] = place(sid, {
+                'kind': 'ending', 'img': e['image'], 'success': key in ('mercy', 'warning'),
+                'k': T(e['eyebrow']['en']), 'title': T(e['title']['en']),
+                'story': T(e['story']['en'])})
 
     # The most a player can actually score is not 5 x every question: the six
     # forks mean roughly a third of them are never seen on any one run. Taking
@@ -296,16 +387,19 @@ def build():
             return (p + s.get('points', 5), r + (1 if s.get('relic') else 0))
         return (p, r)
 
-    max_score, max_relics = best('cover')
+    max_score, max_relics = best(first)
     n_q = sum(1 for s in scenes.values() if s['kind'] == 'question')
-    print('  %d questions authored; the longest single run scores %d and collects %d spark(s)'
-          % (n_q, max_score, max_relics))
+    print('  part %d: %d questions authored; the longest single run scores %d '
+          'and collects %d spark(s)' % (part, n_q, max_score, max_relics))
+    title = ('Frankenstein Part I: Ambitions — Going To Voxel RPG (A2)' if part == 1 else
+             'Frankenstein Part II: Consequences — Going To Voxel RPG (A2)')
     spec = {
-        'file': 'block-camp/%s.html' % SLUG,
+        'file': 'block-camp/%s.html' % PAGE[part],
+        # Both pages read the same folder: G.dir is img_dir's last segment,
+        # and both pages sit in block-camp/, so the relative path resolves.
         'img_dir': 'block-camp/%s' % SLUG,
-        'title': 'Frankenstein: The Green Prometheus — Going To Voxel RPG (A2)',
-        'description': 'An interactive A2 English lesson from Forbes English: '
-                       'Frankenstein: The Green Prometheus — Going To Voxel RPG (A2).',
+        'title': title,
+        'description': 'An interactive A2 English lesson from Forbes English: %s.' % title,
         'langs': LANGS,
         'accent': '#70A43A',        # camp 5, Going To, on the Block Camp route map
         'accent_ink': '#0b1a12', 'deep': '#0d1a0c', 'panel': 'rgba(10,18,9,.88)',
@@ -314,10 +408,12 @@ def build():
             'relic':  T('SPARK RECOVERED · +{p} POINTS'),
             'begin':  T('BEGIN'),
         },
-        'start': 'cover', 'scenes': scenes,
-        'endings': {'master': 'end_warning', 'complete': 'end_mercy',
-                    'missing': 'end_ice', 'failed': 'end_fail',
-                    'mercy': 'end_mercy', 'ice': 'end_ice'},
+        'start': first, 'scenes': scenes,
+        'endings': ({'master': 'p1_end_alive', 'complete': 'p1_end_alive',
+                     'missing': 'p1_end_sparks', 'failed': 'p1_end_fail'} if part == 1 else
+                    {'master': 'end_warning', 'complete': 'end_mercy',
+                     'missing': 'end_ice', 'failed': 'end_fail',
+                     'mercy': 'end_mercy', 'ice': 'end_ice'}),
         'max': max_score, 'points': 5, 'tiles': max_relics, 'chances': 3,
         'complete_score': round(max_score * 0.8),
     }
@@ -325,4 +421,6 @@ def build():
 
 
 if __name__ == '__main__':
-    rpg.assemble(rpg.apply_translations(build(), os.path.join(BASE, 'translations')))
+    for part in (1, 2):
+        rpg.assemble(rpg.apply_translations(build(part),
+                                            os.path.join(BASE, 'translations')))
