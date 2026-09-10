@@ -42,6 +42,73 @@ narrow the panel on the side it is already on rather than to move it.
 
 ---
 
+## 2026-09-10 — Frankenstein after the click-to-read engine: the two rebuilds it forced
+
+Rebuilt both parts on 19580fa. Three things the engine change surfaced, all fixed.
+
+### A waiver that stopped describing the engine
+
+`render()` now ends on `setOpen(false)`, so `intro` and `ending` scenes no
+longer open themselves. My two ending waivers were argued entirely from the old
+behaviour, so they went. `ALLOW` in `check-rpg-panels.js` is empty and both
+Frankenstein pages PASS with no advisory lines at all.
+
+`end_warning` was only ever a width problem — 46% to 42% takes it from 29% to
+9%. `p1_end_alive` was not: Japanese held at 47% however wide the panel got,
+because the height there is stacked elements, not wrapping. **The real defect
+was the marker, and it was mine.** That entry began as a copy of
+`12_awakening_choice`'s hotspot — "Victor, deciding whether to speak" — which is
+right for that choice scene in Part II and wrong for an ending called *The Eyes
+Open*. The object is the Creature's lit eyes at 75/22, which are high enough on
+the plate that the foot panel clears them in all ten languages. 0% everywhere.
+
+Worth stating because it cuts against the rule this repo has been applying all
+day: **the panel moves, never the marker — unless the marker is on the wrong
+object.** Inheriting a hotspot along with a plate is how that happens.
+
+### A story that fit the panel until it was glossed
+
+`24_william_frankenstein` and `24_portrait_justine` got new stories today, for
+a good reason (Innes: William's death "comes out of nowhere"). At 34 words the
+William story was over this lesson's 22-word cap, which Round 2 applied to all
+47 scenes — and **a glossed panel renders the English and the translation, so a
+third sentence costs two lines, not one.** Both panels pinned at the 765px
+ceiling; `24_portrait_justine` overflowed 80px in German.
+
+That is under `check-rpg-panels.js`'s SCROLL_LIMIT of 120, so it passes there.
+It is over this lesson's own standard of zero scroll in ten languages. If a
+scene's copy is rewritten, re-measure with a gloss on, not in English.
+
+Widening is not always available: `24_portrait_justine`'s marker is a 7%-wide
+locket at cx 46, dead centre, so the panel is capped around 43% before it lands
+on the object. It took trimming both fields *and* the last 3% of width to reach
+zero.
+
+### A pronoun that only breaks in translation
+
+`"He has decided to leave the locket here so Justine is blamed."` reads as
+merely vague in English. The glosses inherited it and made it wrong — German
+"Sie hat beschlossen", French "Elle a décidé", Russian "Оно решило", Spanish
+with no subject at all. A learner who has just read a sentence about Justine
+reads that "she" as Justine, which inverts the scene: she is the one being
+framed. Named the Creature in English and in all nine.
+
+**The general rule:** an English pronoun whose referent is obvious from the
+picture is not obvious in a language that has to choose a gender for it. Name
+the character in any clue that carries the decision.
+
+### Still open, in engine chrome (not mine to fix)
+
+* `.small` overlaps `.corner-help` on every adventure measured — Frankenstein I
+  5px, Frankenstein II 8px, The Last Bounty 8px, Wonderland 14px. The help bar's
+  top is 819 and the spec line runs past it.
+* The cover strip's kicker sits at the top edge where the scrim is weakest, so
+  `BLOCK CAMP · GOING TO` in accent green lands on a snow-lit mountain on Part I
+  and on ice on Part II. The story line 40px below it is fine.
+
+Both reported to the session that owns `rpg.py`.
+
+
 ## 2026-09-10 — If you are splitting Frankenstein into two parts, read this first
 
 Four things landed in `rpg/rpg.py` today, from the session that shipped A

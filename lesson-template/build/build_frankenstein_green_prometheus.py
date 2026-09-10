@@ -182,7 +182,7 @@ HOT = {
     # rendered as a pale blank blob. The clue names the locket, so the
     # locket is the object. Panel right and narrow — this plate is busy on
     # both sides, and 40% clears the locket and Justine's face.
-    '24_portrait_justine':    ([46, 62,  7, 12], 'right',  'center', 40),   # the locket he is about to leave
+    '24_portrait_justine':    ([46, 62,  7, 12], 'right',  'center', 43),   # the locket he is about to leave
     '29_storm_at_sea':        ([39, 67, 32, 24], 'right',  'center', 34),       # the storm at the window
     '30_return_home':         ([16, 46, 18, 36], 'right', 'center'),       # Elizabeth, told too little
     '09b_obsession':          ([32, 62, 12, 14], 'right', 'center'),   # the skull on the books
