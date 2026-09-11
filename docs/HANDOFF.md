@@ -11,6 +11,49 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-11 — The teach slide was printing the answer, and nothing was looking
+
+An audit of the three preposition decks (six independent dimensions, every
+finding then put to three adversarial verifiers) found something worse than the
+item defects: **the teaching slides were printing the answers to the items that
+followed them.** "The keys are in the drawer" on a teach card, then "The keys
+are ______ the drawer" four slides later. "In 1998, on Saturday mornings, at
+9 a.m." answered three time items at once. Ten of B1's twenty-one place/time/
+movement items were answered in print immediately before they were asked.
+
+`check-lesson.js` passed all of it, correctly — it verifies that every question
+HAS an explanation, never that the question is still worth asking. A learner
+could have scored without reading a word of the target language.
+
+**`lesson-template/check-teach-leak.js` is the measurement.** Run it when you
+write or revise a deck. It is deliberately NOT in `check-lesson.js`: that gate
+runs on 114 shipped decks and this would fail an unknown number of them at
+once, which is its own kind of useless.
+
+**The rule is not "never illustrate".** It is that the RULE travels and the
+SENTENCE does not — change the nouns. And there is a real distinction the tool
+had to learn before it was usable: an idiom deck MUST print its idioms. You
+cannot teach `on behalf of` without writing `on behalf of`. What separates a
+citation from a leak is emphasis density: a phrase wholly or half inside
+`<em>` is the card *naming* vocabulary; `<em>in</em> the drawer` emphasises
+only the answer and narrates the rest.
+
+**It took four versions, and the failures are the useful part** — they are all
+written into the file's header:
+
+- a word-overlap score with a threshold did not fail the deck it was written
+  from (the leaking sentence shares only two content words with its item);
+- `<p class="prose">` silently misses `<p class="prose dim">`, which is where
+  the card's *note* lives, and the note is where most examples sit — 2 of 10;
+- it cried wolf on twelve legitimate phrase citations before the emphasis rule;
+- joined-token substring search matched across word boundaries: "in spite of
+  the" hit inside "in spite of these".
+
+**So: verify a new checker against a deliberately broken copy before trusting
+it**, exactly as the SORT gate and the I18N generalisation were. `git show
+9c741d4:b1_prepositions_double_lesson.html` is the broken copy for this one; it
+reports 8 leaks and exits 1.
+
 ## 2026-09-11 — A distractor that is also correct, and the one place it can hide
 
 Innes played the shipped B1 preposition deck and found three items where a
