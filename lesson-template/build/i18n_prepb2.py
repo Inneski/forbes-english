@@ -54,7 +54,7 @@ T['en'] = dict(
     t1an='What follows is a noun or an <em>-ing</em> form, never a bare infinitive.',
     t1bh='To + infinitive',
     t1bb='<strong>To</strong> gives the <em>reason</em> a person does something. '
-         'I go to the gym <em>to get fit</em>; she took the early train <em>to '
+         'He saved for a year <em>to buy a van</em>; she took the early train <em>to '
          'avoid the queues</em>.',
     t1bn='<em>In order to</em> is the same thing, one register up. There is no '
          '<em>in order for</em> to match it.',
@@ -243,7 +243,7 @@ T['de'] = dict(
          'blanker Infinitiv.',
     t1bh='To + Infinitiv',
     t1bb='<strong>To</strong> nennt den <em>Grund</em>, aus dem eine Person etwas '
-         'tut. I go to the gym <em>to get fit</em>; she took the early train <em>to '
+         'tut. He saved for a year <em>to buy a van</em>; she took the early train <em>to '
          'avoid the queues</em>.',
     t1bn='<em>In order to</em> ist dasselbe, eine Stufe formeller. Ein passendes '
          '<em>in order for</em> gibt es nicht.',
@@ -436,7 +436,7 @@ T['es'] = dict(
          'infinitivo sin <em>to</em>.',
     t1bh='To + infinitivo',
     t1bb='<strong>To</strong> da el <em>motivo</em> por el que una persona hace '
-         'algo. I go to the gym <em>to get fit</em>; she took the early train <em>to '
+         'algo. He saved for a year <em>to buy a van</em>; she took the early train <em>to '
          'avoid the queues</em>.',
     t1bn='<em>In order to</em> es lo mismo, un registro más formal. No existe un '
          '<em>in order for</em> equivalente.',

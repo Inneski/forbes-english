@@ -96,7 +96,8 @@ def build():
                     'a bare infinitive.'),
                    ('t1bh', 'To + infinitive', 't1bb',
                     '<strong>To</strong> gives the <em>reason</em> a person '
-                    'does something. I go to the gym <em>to get fit</em>; he '
+                    'does something. He saved for a year <em>to buy a '
+                    'van</em>; she '
                     'she took the early train <em>to avoid the queues</em>.',
                     't1bn',
                     '<em>In order to</em> is the same thing, one register '

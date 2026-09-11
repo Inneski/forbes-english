@@ -48,7 +48,7 @@ T['en'] = dict(
     t1Title='Talking about figures: three words, three jobs',
     t1ah='In, of, by',
     t1ab='A rise <em>in</em> demand names <em>what</em> is growing. An increase '
-         '<em>of</em> eight percent gives the <em>size</em>. Costs dropping '
+         '<em>of</em> twelve percent gives the <em>size</em>. Costs dropping '
          '<em>by</em> a fifth gives the size of the <em>change</em>.',
     t1an='All three can appear in one sentence, each doing a different job.',
     t1bh='From here to there',
@@ -244,7 +244,7 @@ T['de'] = dict(
     t1Title='Über Zahlen sprechen: drei Wörter, drei Aufgaben',
     t1ah='In, of, by',
     t1ab='A rise <em>in</em> demand benennt, <em>was</em> wächst. An increase '
-         '<em>of</em> eight percent nennt die <em>Größe</em>. Costs dropping '
+         '<em>of</em> twelve percent nennt die <em>Größe</em>. Costs dropping '
          '<em>by</em> a fifth nennt die Größe der <em>Veränderung</em>.',
     t1an='Alle drei können in einem Satz stehen und dort je eine andere Aufgabe '
          'haben.',
@@ -453,7 +453,7 @@ T['es'] = dict(
     t1Title='Hablar de cifras: tres palabras, tres funciones',
     t1ah='In, of, by',
     t1ab='A rise <em>in</em> demand nombra <em>qué</em> está creciendo. An '
-         'increase <em>of</em> eight percent da el <em>tamaño</em>. Costs '
+         'increase <em>of</em> twelve percent da el <em>tamaño</em>. Costs '
          'dropping <em>by</em> a fifth da el tamaño del <em>cambio</em>.',
     t1an='Las tres pueden aparecer en una misma frase, cada una con su función.',
     t1bh='De aquí a allí',

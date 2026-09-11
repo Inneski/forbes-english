@@ -92,7 +92,7 @@ def build():
                   't1Title', 'Talking about figures: three words, three jobs',
                   [('t1ah', 'In, of, by', 't1ab',
                     'A rise <em>in</em> demand names <em>what</em> is '
-                    'growing. An increase <em>of</em> eight percent gives '
+                    'growing. An increase <em>of</em> twelve percent gives '
                     'the <em>size</em>. Costs dropping <em>by</em> a fifth '
                     'gives the size of the <em>change</em>.', 't1an',
                     'All three can appear in one sentence, each doing a '
