@@ -53,8 +53,8 @@ T['en'] = dict(
     t1bb='<strong>On</strong> means touching a surface. The surface does not have '
          'to be flat or horizontal &mdash; a wall and a ceiling both take '
          '<em>on</em>.',
-    t1bn='A crack <em>on</em> the wall is on its face; a crack <em>in</em> the '
-         'wall goes into it.',
+    t1bn='A map goes <em>on</em> the wall; a crack goes <em>in</em> it. The '
+         'surface takes <em>on</em>, the material takes <em>in</em>.',
     t1ch='At a point',
     t1cb='<strong>At</strong> marks one specific point rather than an area '
          '&mdash; an entrance, a desk, a bus stop, the traffic lights.',
@@ -101,7 +101,7 @@ T['en'] = dict(
     t4ab='<strong>Into</strong> is movement from outside to inside. '
          '<strong>Onto</strong> is movement that ends on top of a surface. Both '
          'describe arriving, not sitting still.',
-    t4an='She walked <em>into</em> the office; he placed the tray <em>onto</em> '
+    t4an='She walked <em>into</em> the office; he lifted the tray <em>onto</em> '
          'the table.',
     t4bh='Enclosed, or open',
     t4bb='<strong>Through</strong> goes in one side of an enclosed space and out '
@@ -173,8 +173,8 @@ T['en'] = dict(
     q12why='<strong>Since.</strong> The promotion in March is the point the '
            'feeling started from. <em>Since</em> takes a starting point; '
            '<em>for</em> takes a duration.',
-    q13why='<strong>During.</strong> The presentation is an event you stay quiet '
-           'throughout. <em>During</em> takes an event; <em>for</em> takes a '
+    q13why='<strong>During.</strong> The presentation is the event the sleeping '
+           'happened inside. <em>During</em> takes an event; <em>for</em> takes a '
            'number of minutes.',
     q14why='<strong>By.</strong> Friday is a deadline: the report must arrive at '
            'that time or before it. <em>Until</em> Friday would mean a period '
@@ -262,8 +262,8 @@ T['de'] = dict(
     t1bb='<strong>On</strong> heißt, eine Fläche zu berühren. Die Fläche muss '
          'weder flach noch waagerecht sein &mdash; eine Wand und eine Decke '
          'nehmen beide <em>on</em>.',
-    t1bn='A crack <em>on</em> the wall liegt auf der Oberfläche; a crack '
-         '<em>in</em> the wall geht hinein.',
+    t1bn='A map hängt <em>on</em> the wall; a crack sitzt <em>in</em> it. Die '
+         'Oberfläche nimmt <em>on</em>, das Material nimmt <em>in</em>.',
     t1ch='An einem Punkt',
     t1cb='<strong>At</strong> markiert einen bestimmten Punkt statt einer Fläche '
          '&mdash; einen Eingang, einen Schreibtisch, eine Haltestelle, die Ampel.',
@@ -313,7 +313,7 @@ T['de'] = dict(
     t4ab='<strong>Into</strong> ist Bewegung von außen nach innen. '
          '<strong>Onto</strong> ist Bewegung, die auf einer Fläche endet. Beide '
          'beschreiben ein Ankommen, kein Stillstehen.',
-    t4an='She walked <em>into</em> the office; he placed the tray <em>onto</em> '
+    t4an='She walked <em>into</em> the office; he lifted the tray <em>onto</em> '
          'the table.',
     t4bh='Umschlossen oder offen',
     t4bb='<strong>Through</strong> geht an einer Seite eines umschlossenen Raums '
@@ -390,8 +390,8 @@ T['de'] = dict(
     q12why='<strong>Since.</strong> Die Beförderung im März ist der Punkt, an '
            'dem das Gefühl begann. <em>Since</em> nimmt einen Anfangspunkt; '
            '<em>for</em> nimmt eine Dauer.',
-    q13why='<strong>During.</strong> Die Präsentation ist ein Ereignis, während '
-           'dessen man leise bleibt. <em>During</em> nimmt ein Ereignis; '
+    q13why='<strong>During.</strong> Die Präsentation ist das Ereignis, in dessen '
+           'Verlauf sie einschliefen. <em>During</em> nimmt ein Ereignis; '
            '<em>for</em> nimmt eine Anzahl von Minuten.',
     q14why='<strong>By.</strong> Freitag ist eine Frist: der Bericht muss zu '
            'diesem Zeitpunkt oder davor da sein. <em>Until</em> Friday wäre ein '
@@ -485,8 +485,8 @@ T['es'] = dict(
     t1bb='<strong>On</strong> significa tocar una superficie. La superficie no '
          'tiene por qué ser plana ni horizontal &mdash; una pared y un techo '
          'llevan las dos <em>on</em>.',
-    t1bn='A crack <em>on</em> the wall está en su cara; a crack <em>in</em> the '
-         'wall entra en ella.',
+    t1bn='A map va <em>on</em> the wall; a crack va <em>in</em> it. La '
+         'superficie lleva <em>on</em>, el material lleva <em>in</em>.',
     t1ch='En un punto',
     t1cb='<strong>At</strong> marca un punto concreto en lugar de una zona '
          '&mdash; una entrada, un escritorio, una parada, el semáforo.',
@@ -535,7 +535,7 @@ T['es'] = dict(
     t4ab='<strong>Into</strong> es movimiento de fuera hacia dentro. '
          '<strong>Onto</strong> es movimiento que termina encima de una '
          'superficie. Las dos describen una llegada, no una posición quieta.',
-    t4an='She walked <em>into</em> the office; he placed the tray <em>onto</em> '
+    t4an='She walked <em>into</em> the office; he lifted the tray <em>onto</em> '
          'the table.',
     t4bh='Cerrado o abierto',
     t4bb='<strong>Through</strong> entra por un lado de un espacio cerrado y sale '
@@ -610,8 +610,8 @@ T['es'] = dict(
     q12why='<strong>Since.</strong> El ascenso de marzo es el punto en que empezó '
            'esa sensación. <em>Since</em> lleva un punto de partida; <em>for</em> '
            'lleva una duración.',
-    q13why='<strong>During.</strong> La presentación es un acontecimiento a lo '
-           'largo del cual hay que callar. <em>During</em> lleva un '
+    q13why='<strong>During.</strong> La presentación es el acontecimiento durante '
+           'el cual se quedaron dormidos. <em>During</em> lleva un '
            'acontecimiento; <em>for</em> lleva un número de minutos.',
     q14why='<strong>By.</strong> El viernes es un plazo: el informe debe llegar '
            'ese día o antes. <em>Until</em> Friday sería un periodo que termina '

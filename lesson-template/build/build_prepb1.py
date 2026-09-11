@@ -59,6 +59,13 @@ PALETTE = '''  --hero: url('%s/hero.jpg');
 CHIPS = ['between', 'among', 'opposite', 'behind', 'during', 'by',
          'along', 'look forward to', 'good at']
 
+# One backdrop per activity, from the same four-up Midjourney grid as the hero,
+# so every section is the same street at a different moment. The teach slide
+# that opens a section carries its background too, which is what makes the
+# change read as "new section" rather than "different picture". HOUSE-STYLE §5b:
+# swap the pattern, never paste a box.
+BG_TIME, BG_MOVE, BG_DEP = 'bg02.jpg', 'bg03.jpg', 'bg04.jpg'
+
 ACTIVITIES = [
     (PLACE, 'a', 'Activity 1 &middot; Place', 'Where is it?'),
     (TIME, 'b', 'Activity 2 &middot; Time', 'When does it happen?'),
@@ -91,8 +98,9 @@ def build():
                     '<strong>On</strong> means touching a surface. The '
                     'surface does not have to be flat or horizontal &mdash; '
                     'a wall and a ceiling both take <em>on</em>.', 't1bn',
-                    'A crack <em>on</em> the wall is on its face; a crack '
-                    '<em>in</em> the wall goes into it.'),
+                    'A map goes <em>on</em> the wall; a crack goes '
+                    '<em>in</em> it. The surface takes <em>on</em>, the '
+                    'material takes <em>in</em>.'),
                    ('t1ch', 'At a point', 't1cb',
                     '<strong>At</strong> marks one specific point rather '
                     'than an area &mdash; an entrance, a desk, a bus stop, '
@@ -150,11 +158,11 @@ def build():
                     'time or before it, never after.', 't3cn',
                     '<em>By</em> Friday is a deadline; <em>until</em> '
                     'Friday is a period that ends there.')],
-                  folder=F)
+                  folder=F, bg=BG_TIME)
 
         + "".join(D.mc(i + 1, len(TIME), q, 'mcbEyebrow',
                        'Activity 2 &middot; Time', 'mcbTitle',
-                       'When does it happen?', folder=F)
+                       'When does it happen?', folder=F, bg=BG_TIME)
                   for i, q in enumerate(TIME))
 
         + D.teach('t4Eyebrow', 'Part 2 &middot; Before you start',
@@ -164,7 +172,7 @@ def build():
                     'inside. <strong>Onto</strong> is movement that ends on '
                     'top of a surface. Both describe arriving, not sitting '
                     'still.', 't4an',
-                    'She walked <em>into</em> the office; he placed the '
+                    'She walked <em>into</em> the office; he lifted the '
                     'tray <em>onto</em> the table.'),
                    ('t4bh', 'Enclosed, or open', 't4bb',
                     '<strong>Through</strong> goes in one side of an '
@@ -180,11 +188,11 @@ def build():
                     'or a person.', 't4cn',
                     'They jogged <em>along</em> the river; he handed the '
                     'file <em>to</em> his manager.')],
-                  folder=F)
+                  folder=F, bg=BG_MOVE)
 
         + "".join(D.mc(i + 1, len(MOVEMENT), q, 'mccEyebrow',
                        'Activity 3 &middot; Movement', 'mccTitle',
-                       'Which way does it go?', folder=F)
+                       'Which way does it go?', folder=F, bg=BG_MOVE)
                   for i, q in enumerate(MOVEMENT))
 
         + D.teach('t5Eyebrow', 'Part 2 &middot; Before you start',
@@ -211,11 +219,11 @@ def build():
                     'whole.', 't5cn',
                     'If a fixed phrase feels swappable, that feeling is '
                     'wrong.')],
-                  folder=F)
+                  folder=F, bg=BG_DEP)
 
         + "".join(D.mc(i + 1, len(DEPENDENT), q, 'mcdEyebrow',
                        'Activity 4 &middot; Fixed pairs', 'mcdTitle',
-                       'Which preposition does the word demand?', folder=F)
+                       'Which preposition does the word demand?', folder=F, bg=BG_DEP)
                   for i, q in enumerate(DEPENDENT))
 
         + D.results('resNext', 'You can spot it. Now use it &rarr;', folder=F)

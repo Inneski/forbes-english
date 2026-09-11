@@ -15,6 +15,15 @@ was an answer key with the column already filled in. Each item is now
 left-rotated so the key lands at position `n % 4`, which preserves the option
 set exactly and only moves where it sits.
 
+**One stem was rewritten because none of the four options was natural.** The
+`dependent` section read "The hotel boasts ______ a rooftop pool", keyed to
+`about` — but a hotel *boasts a rooftop pool* with no preposition at all. That
+transitive `boast` (to have as a feature) is a different verb from `boast
+about` (to brag), and the sentence had picked the wrong one, so every option
+was wrong and the key was merely the least wrong. The subject is now a person
+bragging, which is what `boast about` is for. Same fault class as the seven
+rewritten in `prepb1_data.py`, arriving by a different route.
+
 Every `why` is a UI_I18N key rather than inline text — the deck ships English,
 German and Spanish, and a key travels with the rest of the chrome instead of
 leaving the explanation stuck in English. See HOUSE-STYLE.md §7 and §8.
@@ -65,7 +74,7 @@ DEPENDENT = [
          options=["for", "against", "of", "to"], correct=3, why="q16why"),
     dict(stem="Please excuse me ______ interrupting, but I have an urgent question.",
          options=["for", "of", "from", "about"], correct=0, why="q17why"),
-    dict(stem="The hotel boasts ______ a rooftop pool with stunning views over the old town.",
+    dict(stem="The owner never stops boasting ______ the rooftop pool and its views.",
          options=["with", "about", "on", "for"], correct=1, why="q18why"),
     dict(stem="He resigned ______ his position shortly after the scandal became public.",
          options=["at", "with", "from", "of"], correct=2, why="q19why"),
@@ -83,7 +92,7 @@ PHRASAL = [
          options=["on", "for", "with", "against"], correct=2, why="q23why"),
     dict(stem="It took him a long time to get ______ the loss of his job.",
          options=["off", "back", "down", "over"], correct=3, why="q24why"),
-    dict(stem="Stop putting ______ the decision - you need to choose today.",
+    dict(stem="Stop putting ______ the decision &mdash; you need to choose today.",
          options=["off", "up", "down", "out"], correct=0, why="q25why"),
     dict(stem="I came ______ an old photo of my grandparents while cleaning the attic.",
          options=["through", "across", "into", "over"], correct=1, why="q26why"),

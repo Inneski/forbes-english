@@ -55,6 +55,11 @@ CHIPS = ['in terms of', 'on behalf of', 'in spite of', 'on the verge of',
          'at the expense of', 'for the sake of', 'put up with',
          'come up with', 'stand up for']
 
+# One backdrop per activity — the same staircase at three other moments, from
+# the four-up the hero came out of. Part 2 runs the same three in reverse, so
+# the pair shares a world without the two decks looking identical.
+BG_IDIOM, BG_DEP, BG_PHRASAL = 'bg02.jpg', 'bg03.jpg', 'bg04.jpg'
+
 
 def build():
     D.assert_no_key_is_longest(ALL, 'PrepB2')
@@ -120,11 +125,11 @@ def build():
                     'sounding B2 rather than B1.', 't2cn',
                     '<em>In spite of</em> and <em>despite</em> mean the '
                     'same; <em>despite</em> takes no <em>of</em>.')],
-                  folder=F)
+                  folder=F, bg=BG_IDIOM)
 
         + "".join(D.mc(i + 1, len(IDIOM), q, 'mcbEyebrow',
                        'Activity 2 &middot; Fixed phrases', 'mcbTitle',
-                       'Complete the expression', folder=F)
+                       'Complete the expression', folder=F, bg=BG_IDIOM)
                   for i, q in enumerate(IDIOM))
 
         + D.teach('t3Eyebrow', 'Before you start',
@@ -149,11 +154,11 @@ def build():
                     'passive &mdash; nothing "is consisted of".', 't3cn',
                     '<em>Comprise</em> means the same as <em>consist of</em> '
                     'and takes no preposition at all.')],
-                  folder=F)
+                  folder=F, bg=BG_DEP)
 
         + "".join(D.mc(i + 1, len(DEPENDENT), q, 'mccEyebrow',
                        'Activity 3 &middot; Dependent pairs', 'mccTitle',
-                       'Which preposition does the word take?', folder=F)
+                       'Which preposition does the word take?', folder=F, bg=BG_DEP)
                   for i, q in enumerate(DEPENDENT))
 
         + D.teach('t4Eyebrow', 'Before you start',
@@ -179,11 +184,11 @@ def build():
                     'parts.', 't4cn',
                     'These are the ones that make speech sound natural, so '
                     'they are worth the memorising.')],
-                  folder=F)
+                  folder=F, bg=BG_PHRASAL)
 
         + "".join(D.mc(i + 1, len(PHRASAL), q, 'mcdEyebrow',
                        'Activity 4 &middot; Phrasal verbs', 'mcdTitle',
-                       'Finish the phrasal verb', folder=F)
+                       'Finish the phrasal verb', folder=F, bg=BG_PHRASAL)
                   for i, q in enumerate(PHRASAL))
 
         + D.results('resNext', 'You can spot it. Now use it &rarr;', folder=F)

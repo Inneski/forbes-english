@@ -52,6 +52,11 @@ CHIPS = ['a rise in', 'an increase of', 'fall by', 'compared to',
          'with regard to', 'in charge of', 'under control', 'deal with',
          'fall behind']
 
+# The same three backdrops Part 1 uses, in reverse order: the pair shares a
+# world on Innes's instruction, but a learner doing both back to back should
+# not feel they are repeating a deck. Part 4 falls back to the hero.
+BG_TRENDS, BG_IDIOM, BG_DEP = 'bg04.jpg', 'bg03.jpg', 'bg02.jpg'
+
 
 def build():
     D.assert_no_key_is_longest(ALL, 'PrepB2P2')
@@ -87,11 +92,11 @@ def build():
                     'regard to</em> narrows to one aspect.', 't1cn',
                     '<em>With regard to</em> is formal and singular &mdash; '
                     'never <em>with regards to</em>, which is a sign-off.')],
-                  folder=F)
+                  folder=F, bg=BG_TRENDS)
 
         + "".join(D.mc(i + 1, len(TRENDS), q, 'mcaEyebrow',
                        'Activity 1 &middot; Trends and quantity', 'mcaTitle',
-                       'Which preposition carries the figure?', folder=F)
+                       'Which preposition carries the figure?', folder=F, bg=BG_TRENDS)
                   for i, q in enumerate(TRENDS))
 
         + D.teach('t2Eyebrow', 'Before you start',
@@ -117,11 +122,11 @@ def build():
                     'phrase.', 't2cn',
                     'This is why they are memorised whole rather than by '
                     'rule.')],
-                  folder=F)
+                  folder=F, bg=BG_IDIOM)
 
         + "".join(D.mc(i + 1, len(IDIOM), q, 'mcbEyebrow',
                        'Activity 2 &middot; Fixed phrases', 'mcbTitle',
-                       'Complete the expression', folder=F)
+                       'Complete the expression', folder=F, bg=BG_IDIOM)
                   for i, q in enumerate(IDIOM))
 
         + D.teach('t3Eyebrow', 'Before you start',
@@ -147,11 +152,11 @@ def build():
                     'someone <em>for</em> it.', 't3cn',
                     'Two verbs sharing a preposition is the exception here, '
                     'not the rule.')],
-                  folder=F)
+                  folder=F, bg=BG_DEP)
 
         + "".join(D.mc(i + 1, len(DEPENDENT), q, 'mccEyebrow',
                        'Activity 3 &middot; Dependent pairs', 'mccTitle',
-                       'Which preposition does the word take?', folder=F)
+                       'Which preposition does the word take?', folder=F, bg=BG_DEP)
                   for i, q in enumerate(DEPENDENT))
 
         + D.teach('t4Eyebrow', 'Before you start',

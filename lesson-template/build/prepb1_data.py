@@ -26,6 +26,41 @@ English is "at the weekend" — and `at` was sitting right there in the option
 list, so a learner taught British English picked it, was marked wrong, and was
 then told the inverse of the rule. The sentence now tests a named day, which
 is the point the explanation was always claiming to make.
+
+**Seven stems were rewritten because a distractor was also correct.** Innes
+found three of them on the live deck; the other four came out of auditing the
+rest for the same fault. This is the defect class to check for in any lesson
+whose preposition is chosen by *meaning* rather than fixed by collocation —
+place, time and movement. It does not reach the `dependent` section here, or
+either B2 lesson, because a fixed pair admits no second answer by definition.
+
+  `crack ______ the wall` → **a large map on the wall.** The worst of them: the
+  key was `on`, but "a crack IN the wall" is the natural collocation, because a
+  crack goes into the material rather than sitting on its face. The lesson was
+  marking the right answer wrong. A map is unarguably on a surface.
+
+  `sitting ______ strangers` → **lost among a crowd of strangers.** On a
+  crowded train you can perfectly well sit *between* two strangers or
+  *opposite* them; nothing forced the "three or more, no clear edges" reading
+  the explanation depends on. "Lost among a crowd" forces it.
+
+  `jogged ______ the river` → **jogged along the riverbank for three miles.**
+  You can jog *across* a river — there are bridges. The riverbank plus a
+  distance forces the following-the-length reading.
+
+  `directly ______ the supermarket, so you cannot miss it` → **on the other
+  side of the road.** `under` was live: cinemas sit under supermarkets in malls.
+
+  `Please stay quiet ______ the presentation` → **Two people fell asleep.**
+  "Stay quiet FOR the presentation" is ordinary English, and `for` was on the
+  list. You cannot fall asleep "for" a presentation.
+
+  `swim ______ the lake` → **to the far shore.** You can swim *along* a lake.
+
+  `placed the tray ______ the table` → **lifted the tray.** Natural English is
+  "placed it ON the table", and `on` was not offered — so the key `onto` was
+  the least-bad answer to a question with no good one. "Lifted" needs the
+  motion that `onto` carries.
 """
 
 
@@ -33,15 +68,15 @@ is the point the explanation was always claiming to make.
 PLACE = [
     dict(stem="The keys are ______ the drawer, under the old letters.",
          options=["in", "on", "at", "among"], correct=0, why="q1why"),
-    dict(stem="There is a small crack ______ the wall, just above the light switch.",
+    dict(stem="There is a large map ______ the wall, just above the light switch.",
          options=["in", "on", "at", "between"], correct=1, why="q2why"),
     dict(stem="Meet me ______ the entrance to the stadium at six.",
          options=["in", "on", "at", "among"], correct=2, why="q3why"),
     dict(stem="The bank is ______ the bakery and the pharmacy.",
          options=["among", "opposite", "behind", "between"], correct=3, why="q4why"),
-    dict(stem="She felt nervous, sitting ______ strangers on the crowded train.",
+    dict(stem="She felt nervous, lost ______ a crowd of strangers at the station.",
          options=["among", "opposite", "behind", "between"], correct=0, why="q5why"),
-    dict(stem="The cinema is directly ______ the supermarket, so you cannot miss it.",
+    dict(stem="The cinema is directly ______ the supermarket, on the other side of the road.",
          options=["among", "opposite", "under", "between"], correct=1, why="q6why"),
     dict(stem="The cat is hiding ______ the sofa again.",
          options=["at", "onto", "behind", "between"], correct=2, why="q7why"),
@@ -59,7 +94,7 @@ TIME = [
          options=["during", "by", "for", "since"], correct=2, why="q11why"),
     dict(stem="He has felt much more confident ______ the promotion in March.",
          options=["during", "until", "for", "since"], correct=3, why="q12why"),
-    dict(stem="Please stay quiet ______ the presentation.",
+    dict(stem="Two people fell asleep ______ the presentation.",
          options=["during", "by", "for", "since"], correct=0, why="q13why"),
     dict(stem="You need to submit the report ______ Friday at the latest.",
          options=["until", "by", "during", "for"], correct=1, why="q14why"),
@@ -69,13 +104,13 @@ TIME = [
 MOVEMENT = [
     dict(stem="She walked straight ______ the office without knocking.",
          options=["across", "along", "into", "onto"], correct=2, why="q15why"),
-    dict(stem="The waiter placed the tray ______ the table carefully.",
+    dict(stem="The waiter lifted the tray ______ the table carefully.",
          options=["through", "along", "into", "onto"], correct=3, why="q16why"),
     dict(stem="We drove ______ the tunnel and came out near the coast.",
          options=["through", "across", "into", "onto"], correct=0, why="q17why"),
-    dict(stem="It took twenty minutes to swim ______ the lake.",
+    dict(stem="It took twenty minutes to swim ______ the lake to the far shore.",
          options=["along", "across", "onto", "through"], correct=1, why="q18why"),
-    dict(stem="They jogged ______ the river every morning before work.",
+    dict(stem="They jogged ______ the riverbank for three miles every morning.",
          options=["onto", "across", "along", "into"], correct=2, why="q19why"),
     dict(stem="He handed the documents ______ his manager before the deadline.",
          options=["into", "onto", "through", "to"], correct=3, why="q20why"),
