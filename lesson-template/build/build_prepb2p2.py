@@ -68,6 +68,11 @@ CHIPS = ['a rise in', 'an increase of', 'fall by', 'compared to',
 BG_TRENDS, BG_IDIOM, BG_DEP, BG_PHRASAL = ('bg02.jpg', 'bg03.jpg',
                                            'bg04.jpg', 'bg05.jpg')
 
+# Its own picture for the activation stage, and a staircase rather than another
+# business scene: the hero and the closing slide bookend this deck, and both
+# being staircases is what ties it back to Part 1.
+BG_ACT = 'bg06.jpg'
+
 
 def build():
     D.assert_no_key_is_longest(ALL, 'PrepB2P2')
@@ -219,7 +224,7 @@ def build():
                      'doing about the one figure that is behind. Use at '
                      'least three of the expressions above.',
                      'In the three months to September…',
-                     folder=F)
+                     folder=F, bg=BG_ACT)
     )
 
     import i18n_prepb2p2 as I

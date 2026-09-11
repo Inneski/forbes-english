@@ -61,6 +61,11 @@ CHIPS = ['in terms of', 'on behalf of', 'in spite of', 'on the verge of',
 BG_PURPOSE, BG_IDIOM, BG_DEP, BG_PHRASAL = ('bg05.jpg', 'bg02.jpg',
                                             'bg03.jpg', 'bg04.jpg')
 
+# Its own picture for the activation stage — see build_prepb1.py for why the
+# densest slide in the deck does not share the cover's. Calmest of the two
+# remaining staircases over that footprint: 9.16 edge energy against 10.86.
+BG_ACT = 'bg06.jpg'
+
 
 def build():
     D.assert_no_key_is_longest(ALL, 'PrepB2')
@@ -214,7 +219,7 @@ def build():
                      'nothing can be left implied. Use at least three of the '
                      'expressions above.',
                      'Following this morning’s meeting…',
-                     folder=F)
+                     folder=F, bg=BG_ACT)
     )
 
     import i18n_prepb2 as I

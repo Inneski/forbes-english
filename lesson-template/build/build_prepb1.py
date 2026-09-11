@@ -67,6 +67,13 @@ CHIPS = ['between', 'among', 'opposite', 'behind', 'during', 'by',
 BG_PLACE, BG_TIME, BG_MOVE, BG_DEP = ('bg05.jpg', 'bg02.jpg',
                                       'bg03.jpg', 'bg04.jpg')
 
+# The activation stage is the densest slide in the deck — two task cards, the
+# chip strip and a textarea — and the last thing the learner sees, so it gets a
+# picture of its own rather than falling back to the cover's. Chosen by measuring
+# edge energy over the slide's own footprint, not by eye: 9.57 against 11.61 and
+# 15.90 for the other two candidates.
+BG_ACT = 'bg06.jpg'
+
 ACTIVITIES = [
     (PLACE, 'a', 'Activity 1 &middot; Place', 'Where is it?'),
     (TIME, 'b', 'Activity 2 &middot; Time', 'When does it happen?'),
@@ -250,7 +257,7 @@ def build():
                      'get there, and what time to be there by. Use at least '
                      'three of the expressions above.',
                      'Meet me at…',
-                     folder=F)
+                     folder=F, bg=BG_ACT)
     )
 
     import i18n_prepb1 as I
