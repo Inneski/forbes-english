@@ -69,8 +69,14 @@ HERO = hero(
     'decides which verb belongs where &mdash; it is geography, and you learn it the way sailors learn a coast. '
     'What you <em>can</em> learn as rules are the three things in the water between them: the current, the '
     'island, and the cape flying a false flag.',
+    '<button type="button" class="hero-diagram-btn" id="hero-map-btn" aria-label="Expand the map">'
     '<img class="hero-diagram" src="sailing-the-seas-of-grammar/hero.jpg" alt="%s" loading="eager">'
-    % HERO_MAP_ALT)
+    '</button>'
+    '<div class="img-lightbox" id="hero-lightbox">'
+    '<button type="button" class="lightbox-close" aria-label="Close">&times;</button>'
+    '<img src="sailing-the-seas-of-grammar/hero.jpg" alt="%s">'
+    '</div>'
+    % (HERO_MAP_ALT, HERO_MAP_ALT))
 
 # ═════════════════════════════════════════════════════════════════════
 WEST = '''<div class="camp" id="rules">
@@ -469,8 +475,52 @@ document.querySelectorAll("#name-bar button").forEach(function(b){
        ",\n  ".join('"%s"' % e for e in PANEL_INFIN),
        M.G_LAND, M.T_LAND, M.I_LAND, M.G_LAND)
 
+# The hero map, expanded full-size in a lightbox on click.
+LIGHTBOX_JS = '''(function(){
+  var btn = document.getElementById("hero-map-btn");
+  var box = document.getElementById("hero-lightbox");
+  if (!btn || !box) return;
+  var closeBtn = box.querySelector(".lightbox-close");
+  function openBox(){
+    box.classList.add("is-open");
+    document.body.style.overflow = "hidden";
+    closeBtn.focus();
+  }
+  function closeBox(){
+    box.classList.remove("is-open");
+    document.body.style.overflow = "";
+    btn.focus();
+  }
+  btn.addEventListener("click", openBox);
+  closeBtn.addEventListener("click", closeBox);
+  box.addEventListener("click", function(e){ if (e.target === box) closeBox(); });
+  document.addEventListener("keydown", function(e){
+    if (e.key === "Escape" && box.classList.contains("is-open")) closeBox();
+  });
+})();
+'''
+
 # ═════════════════════════════════════════════════════════════════════
 EXTRA_CSS = '''
+  /* ── the hero map, click to expand ── */
+  .hero-diagram-btn{all:unset;display:block;width:100%;cursor:zoom-in;position:relative;
+                     border-radius:14px;overflow:hidden;}
+  .hero-diagram-btn:hover .hero-diagram{filter:brightness(1.03);}
+  .hero-diagram-btn:focus-visible{outline:3px solid var(--accent);outline-offset:3px;}
+  .hero-diagram-btn::after{content:"Click to expand";position:absolute;right:12px;bottom:12px;
+                            background:rgba(14,84,96,.82);color:#fff;font-family:'Inter',sans-serif;
+                            font-size:11.5px;font-weight:600;padding:5px 11px;border-radius:999px;
+                            opacity:0;transition:opacity .15s ease;pointer-events:none;}
+  .hero-diagram-btn:hover::after,.hero-diagram-btn:focus-visible::after{opacity:1;}
+  .img-lightbox{display:none;position:fixed;inset:0;background:rgba(10,20,24,.88);
+                align-items:center;justify-content:center;padding:28px;z-index:80;}
+  .img-lightbox.is-open{display:flex;}
+  .img-lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,.5);}
+  .lightbox-close{position:absolute;top:18px;right:22px;background:rgba(255,255,255,.14);
+                   color:#fff;border:1px solid rgba(255,255,255,.4);width:40px;height:40px;
+                   border-radius:50%;font-size:24px;line-height:1;cursor:pointer;
+                   display:flex;align-items:center;justify-content:center;}
+  .lightbox-close:hover{background:rgba(255,255,255,.26);}
   /* ── the header, in the sea-chart's own display face ── */
   @font-face{font-family:'Faktum';src:url('sailing-the-seas-of-grammar/fonts/Faktum-Bold.woff2') format('woff2');
              font-weight:700;font-style:normal;font-display:swap;}
@@ -558,7 +608,7 @@ PALETTE = palette('#12262E', '#4E6B77', '#F4F9FA', '#1B7A87', '#0E5460', '#B9DCE
 s = assemble(
     HERO,
     WEST + EAST + DIAGRAM + CAPE + ISLE + SHALLOWS + SIGNALS,
-    DIAGRAM_JS,
+    DIAGRAM_JS + LIGHTBOX_JS,
     questions(QUIZ),
     PALETTE,
     '<title>Sailing the Seas of Grammar &mdash; Gerunds and Infinitives</title>',
