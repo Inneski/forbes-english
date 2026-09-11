@@ -18,9 +18,12 @@ All 28 scored items survive unchanged in substance and in count.
   real word in Spanish with the accent on.
 - **German is new.**
 
-Part 1 and this share `PrepositionsB2/hero.jpg` and therefore share a derived
-palette: Innes asked for one world across the pair. They remain two lessons at
-two URLs, because that is what students have bookmarked.
+Artwork is `PrepositionsB2P2/` — its own five pictures, none of them shared
+with Part 1. The four section backdrops are the business-people set, which is
+the register this half of the lesson works in. The hero stays a staircase so
+the derived palette lands within a hair of Part 1's, which is how the pair goes
+on reading as one world while sharing no image. Two lessons at two URLs,
+because that is what students have bookmarked.
 """
 import os
 import sys
@@ -31,31 +34,39 @@ from prepb2p2_data import TRENDS, IDIOM, DEPENDENT, PHRASAL, ALL
 
 TPL = 'lesson-template/lesson-template.html'
 OUT = 'b2_prepositions_advanced_lesson_part2.html'
-F = 'PrepositionsB2'
+F = 'PrepositionsB2P2'
 
-# python3 lesson-template/extract-palette.py PrepositionsB2/hero.jpg --light
+# python3 lesson-template/extract-palette.py PrepositionsB2P2/hero.jpg --light
 PALETTE = '''  --hero: url('%s/hero.jpg');
 
-  --void          : #d8c3ac;
-  --surface       : #e1d3c4;
-  --surface2      : #dccbb8;
-  --border        : #966f4a;
-  --text          : #2a1d11;
-  --text-dim      : #5e452e;
-  --accent        : #8e4c0d;
-  --accent-bright : #653304;
-  --accent-dim    : #db883b;
-  --secondary     : #162630;
-  --contrast      : #165f60;''' % F
+  --void          : #d6c2af;
+  --surface       : #e0d3c6;
+  --surface2      : #dacaba;
+  --border        : #96664a;
+  --text          : #2a1a11;
+  --text-dim      : #5e402e;
+  --accent        : #943f0d;
+  --accent-bright : #6a2904;
+  --accent-dim    : #dc793f;
+  --secondary     : #324a58;
+  --contrast      : #0f4c45;''' % F
 
 CHIPS = ['a rise in', 'an increase of', 'fall by', 'compared to',
          'with regard to', 'in charge of', 'under control', 'deal with',
          'fall behind']
 
-# The same three backdrops Part 1 uses, in reverse order: the pair shares a
-# world on Innes's instruction, but a learner doing both back to back should
-# not feel they are repeating a deck. Part 4 falls back to the hero.
-BG_TRENDS, BG_IDIOM, BG_DEP = 'bg04.jpg', 'bg03.jpg', 'bg02.jpg'
+# Part 2 has its own folder, its own hero and its own five pictures: Innes
+# asked for at least one per section and no picture shared between documents.
+# The four section backdrops are the business-people set, which is the register
+# this half works in — reports, meetings, figures — and `bg02` in particular is
+# figures standing on ascending blocks, which is the trends section drawn.
+#
+# The hero is still a staircase, and that is deliberate rather than left over:
+# the palette derives from the hero, so keeping one here holds Part 2 within a
+# hair of Part 1's colours (--void #d6c2af against #d8c3ac) and the pair still
+# reads as one world, which is what "combine is fine" asked for.
+BG_TRENDS, BG_IDIOM, BG_DEP, BG_PHRASAL = ('bg02.jpg', 'bg03.jpg',
+                                           'bg04.jpg', 'bg05.jpg')
 
 
 def build():
@@ -180,11 +191,11 @@ def build():
                     'objects and one is for people. <em>Fall behind</em> is '
                     'to slip back against a plan.', 't4cn',
                     'You come across a photo; you run into an old teacher.')],
-                  folder=F)
+                  folder=F, bg=BG_PHRASAL)
 
         + "".join(D.mc(i + 1, len(PHRASAL), q, 'mcdEyebrow',
                        'Activity 4 &middot; Phrasal verbs', 'mcdTitle',
-                       'Finish the phrasal verb', folder=F)
+                       'Finish the phrasal verb', folder=F, bg=BG_PHRASAL)
                   for i, q in enumerate(PHRASAL))
 
         + D.results('resNext', 'You can spot it. Now use it &rarr;', folder=F)

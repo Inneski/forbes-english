@@ -64,7 +64,8 @@ CHIPS = ['between', 'among', 'opposite', 'behind', 'during', 'by',
 # that opens a section carries its background too, which is what makes the
 # change read as "new section" rather than "different picture". HOUSE-STYLE §5b:
 # swap the pattern, never paste a box.
-BG_TIME, BG_MOVE, BG_DEP = 'bg02.jpg', 'bg03.jpg', 'bg04.jpg'
+BG_PLACE, BG_TIME, BG_MOVE, BG_DEP = ('bg05.jpg', 'bg02.jpg',
+                                      'bg03.jpg', 'bg04.jpg')
 
 ACTIVITIES = [
     (PLACE, 'a', 'Activity 1 &middot; Place', 'Where is it?'),
@@ -107,7 +108,7 @@ def build():
                     'the traffic lights.', 't1cn',
                     '<em>At</em> fixes a spot on the map. <em>In</em> '
                     'fills it.')],
-                  folder=F)
+                  folder=F, bg=BG_PLACE)
 
         + D.teach('t2Eyebrow', 'Part 1 &middot; Before you start',
                   't2Title', 'Four more that describe a position',
@@ -129,11 +130,11 @@ def build():
                     'behind the sofa.', 't2cn',
                     'Its opposite is <em>in front of</em>, not '
                     '<em>before</em>, which is about time.')],
-                  folder=F)
+                  folder=F, bg=BG_PLACE)
 
         + "".join(D.mc(i + 1, len(PLACE), q, 'mcaEyebrow',
                        'Activity 1 &middot; Place', 'mcaTitle',
-                       'Where is it?', folder=F)
+                       'Where is it?', folder=F, bg=BG_PLACE)
                   for i, q in enumerate(PLACE))
 
         + D.teach('t3Eyebrow', 'Part 1 &middot; Before you start',

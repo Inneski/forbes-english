@@ -58,7 +58,8 @@ CHIPS = ['in terms of', 'on behalf of', 'in spite of', 'on the verge of',
 # One backdrop per activity — the same staircase at three other moments, from
 # the four-up the hero came out of. Part 2 runs the same three in reverse, so
 # the pair shares a world without the two decks looking identical.
-BG_IDIOM, BG_DEP, BG_PHRASAL = 'bg02.jpg', 'bg03.jpg', 'bg04.jpg'
+BG_PURPOSE, BG_IDIOM, BG_DEP, BG_PHRASAL = ('bg05.jpg', 'bg02.jpg',
+                                            'bg03.jpg', 'bg04.jpg')
 
 
 def build():
@@ -96,11 +97,11 @@ def build():
                     'which is why this splits.', 't1cn',
                     'Both answer "why?", so the meaning will not tell them '
                     'apart. The grammar after the gap will.')],
-                  folder=F)
+                  folder=F, bg=BG_PURPOSE)
 
         + "".join(D.mc(i + 1, len(PURPOSE), q, 'mcaEyebrow',
                        'Activity 1 &middot; Purpose', 'mcaTitle',
-                       'For, or to?', folder=F)
+                       'For, or to?', folder=F, bg=BG_PURPOSE)
                   for i, q in enumerate(PURPOSE))
 
         + D.teach('t2Eyebrow', 'Before you start',
