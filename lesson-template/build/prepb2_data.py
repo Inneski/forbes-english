@@ -68,7 +68,7 @@ DEPENDENT = [
     dict(stem="The heavy snowfall prevented the plane ______ taking off on time.",
          options=["with", "from", "of", "for"], correct=1, why="q18why"),
     dict(stem="Everyone congratulated her ______ her well-deserved promotion.",
-         options=["of", "about", "on", "for"], correct=2, why="q19why"),
+         options=["of", "about", "on", "with"], correct=2, why="q19why"),
     dict(stem="This particular law firm specialises ______ corporate mergers and acquisitions.",
          options=["on", "at", "with", "in"], correct=3, why="q20why"),
     dict(stem="The advisory committee consists ______ five independent experts.",

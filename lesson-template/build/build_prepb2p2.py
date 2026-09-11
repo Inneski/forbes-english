@@ -7,7 +7,9 @@ content, no hero, and the correct answer written first in **all 28 items**
 without a single exception. See `prepb2p2_data.py` for what was done about
 that and why it was not merely cosmetic.
 
-All 28 scored items survive unchanged in substance and in count.
+All 28 items survive in count, and 26 unchanged in substance. Two stems were
+rewritten because none of their options was defensible, or more than one was:
+the `boast` item and the `Membership rose` item. See `prepb2p2_data.py`.
 
 - **Four teaching slides now exist. None did.** One per section: the
   rise/increase/fall prepositions that carry statistics, the second set of
@@ -97,11 +99,13 @@ def build():
                     'different job.'),
                    ('t1bh', 'From here to there', 't1bb',
                     '<strong>From X to Y</strong> marks the two ends of a '
-                    'change &mdash; membership rose <em>from</em> 500 '
-                    '<em>to</em> over 800. The starting point comes first.',
-                    't1bn',
-                    'Use it when both numbers matter; use <em>by</em> when '
-                    'only the gap between them does.'),
+                    'change &mdash; the fleet grew <em>from</em> nine '
+                    'vans <em>to</em> forty. The starting point comes '
+                    'first.', 't1bn',
+                    'The size of a change takes <em>by</em> after a verb '
+                    '(rose <em>by</em> 500) and <em>of</em> after a noun '
+                    '(an increase <em>of</em> 500). <em>From&hellip;to</em> '
+                    'names the two ends instead.'),
                    ('t1ch', 'Comparing and qualifying', 't1cb',
                     '<em>Compared to</em> sets two things side by side. '
                     '<em>A shortage of</em> names what is missing. <em>With '
@@ -150,8 +154,9 @@ def build():
                   [('t3ah', 'When <em>to</em> is not an infinitive', 't3ab',
                     'You <em>object to</em> something, and that <em>to</em> '
                     'is a preposition &mdash; so a verb after it takes '
-                    '<em>-ing</em>. Residents objected <em>to</em> the road '
-                    '<em>being built</em>, never <em>to be built</em>.',
+                    '<em>-ing</em>. The neighbours objected <em>to</em> the '
+                    'trees <em>being cut down</em>, never <em>to be cut '
+                    'down</em>.',
                     't3an',
                     'The same trap sits inside <em>look forward to</em> and '
                     '<em>be used to</em>.'),

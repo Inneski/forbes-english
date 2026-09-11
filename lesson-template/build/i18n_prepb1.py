@@ -48,12 +48,12 @@ T['en'] = dict(
     t1ab='<strong>In</strong> means enclosed. A drawer, a box, a room, a pocket '
          '&mdash; if it has sides and something can sit inside them, it takes '
          '<em>in</em>.',
-    t1an='The keys are <em>in</em> the drawer.',
+    t1an='The spare batteries are <em>in</em> the box.',
     t1bh='On a surface',
     t1bb='<strong>On</strong> means touching a surface. The surface does not have '
          'to be flat or horizontal &mdash; a wall and a ceiling both take '
          '<em>on</em>.',
-    t1bn='A map goes <em>on</em> the wall; a crack goes <em>in</em> it. The '
+    t1bn='A notice goes <em>on</em> the door; a crack goes <em>in</em> it. The '
          'surface takes <em>on</em>, the material takes <em>in</em>.',
     t1ch='At a point',
     t1cb='<strong>At</strong> marks one specific point rather than an area '
@@ -64,16 +64,16 @@ T['en'] = dict(
     t2Title='Four more that describe a position',
     t2ah='Two, or more than two',
     t2ab='<strong>Between</strong> needs exactly two clear points &mdash; the '
-         'bank sits between the bakery and the pharmacy. <strong>Among</strong> '
+         'chemist sits between the two cafés. <strong>Among</strong> '
          'puts you inside a larger, vaguer group of three or more.',
-    t2an='Between two named things; among a crowd.',
+    t2an='Between two named places; among a forest of them.',
     t2bh='Facing it',
     t2bb='<strong>Opposite</strong> means facing something, usually across a '
          'street or a room. The two things look at each other.',
     t2bn='Not the same as <em>next to</em>, which is side by side.',
     t2ch='Out of sight',
     t2cb='<strong>Behind</strong> puts something at the back of something else, '
-         'often hidden by it &mdash; the cat behind the sofa.',
+         'often hidden by it &mdash; the ball behind the curtain.',
     t2cn='Its opposite is <em>in front of</em>, not <em>before</em>, which is '
          'about time.',
 
@@ -83,16 +83,16 @@ T['en'] = dict(
     t3ab='<strong>In</strong> takes the long periods &mdash; years, months, '
          'seasons. <strong>On</strong> takes days and dates. <strong>At</strong> '
          'takes clock times.',
-    t3an='<em>In</em> 1998, <em>on</em> Saturday mornings, <em>at</em> 9 a.m.',
+    t3an='<em>In</em> April, <em>on</em> 3 June, <em>at</em> midnight.',
     t3bh='How long, or since when',
     t3bb='<strong>For</strong> takes a length of time &mdash; seven years, two '
          'hours. <strong>Since</strong> takes the point it started from &mdash; '
          'a date, an event.',
-    t3bn='<em>For</em> seven years; <em>since</em> the promotion in March.',
+    t3bn='<em>For</em> ten minutes; <em>since</em> Tuesday.',
     t3ch='Throughout, or no later than',
     t3cb='<strong>During</strong> means throughout an event. <strong>By</strong> '
          'marks a deadline &mdash; at that time or before it, never after.',
-    t3cn='<em>By</em> Friday is a deadline; <em>until</em> Friday is a period '
+    t3cn='<em>By</em> noon is a deadline; <em>until</em> noon is a period '
          'that ends there.',
 
     t4Eyebrow='Part 2 · Before you start',
@@ -101,19 +101,19 @@ T['en'] = dict(
     t4ab='<strong>Into</strong> is movement from outside to inside. '
          '<strong>Onto</strong> is movement that ends on top of a surface. Both '
          'describe arriving, not sitting still.',
-    t4an='She walked <em>into</em> the office; he lifted the tray <em>onto</em> '
-         'the table.',
+    t4an='She stepped <em>into</em> the lift; he lifted the box <em>onto</em> '
+         'the shelf.',
     t4bh='Enclosed, or open',
     t4bb='<strong>Through</strong> goes in one side of an enclosed space and out '
          'the other &mdash; a tunnel, a forest. <strong>Across</strong> crosses '
          'an open area &mdash; a lake, a square.',
-    t4bn='<em>Through</em> the tunnel; <em>across</em> the lake.',
+    t4bn='<em>Through</em> the forest; <em>across</em> the square.',
     t4ch='Following a line',
     t4cb='<strong>Along</strong> follows the length of something &mdash; a '
          'river, a road. <strong>To</strong> is the plain one: movement or '
          'transfer towards a destination or a person.',
-    t4cn='They jogged <em>along</em> the river; he handed the file <em>to</em> '
-         'his manager.',
+    t4cn='They walked <em>along</em> the canal; she passed the keys <em>to</em> '
+         'her neighbour.',
 
     t5Eyebrow='Part 2 · Before you start',
     t5Title='Some prepositions are not a choice at all',
@@ -220,8 +220,8 @@ T['en'] = dict(
                'under control.',
     resStrong='Strong work. Look again at the fixed pairs — that is usually '
               'where the last point goes.',
-    resMid='A good base. Go back to the two teaching slides on time: '
-           'for/since and during/by are the usual culprits.',
+    resMid='A good base. Go back to the teaching slide on time: for/since and '
+           'during/by are the usual culprits.',
     resLow='Read the five teaching slides again and retry. These are learned '
            'as pairs, not worked out.',
 
@@ -257,12 +257,12 @@ T['de'] = dict(
     t1ab='<strong>In</strong> heißt umschlossen. Eine Schublade, eine Kiste, ein '
          'Zimmer, eine Tasche &mdash; wenn etwas Seiten hat und man etwas '
          'hineinlegen kann, steht <em>in</em>.',
-    t1an='The keys are <em>in</em> the drawer.',
+    t1an='The spare batteries are <em>in</em> the box.',
     t1bh='Auf einer Fläche',
     t1bb='<strong>On</strong> heißt, eine Fläche zu berühren. Die Fläche muss '
          'weder flach noch waagerecht sein &mdash; eine Wand und eine Decke '
          'nehmen beide <em>on</em>.',
-    t1bn='A map hängt <em>on</em> the wall; a crack sitzt <em>in</em> it. Die '
+    t1bn='A notice goes <em>on</em> the door; a crack goes <em>in</em> it. Die '
          'Oberfläche nimmt <em>on</em>, das Material nimmt <em>in</em>.',
     t1ch='An einem Punkt',
     t1cb='<strong>At</strong> markiert einen bestimmten Punkt statt einer Fläche '
@@ -273,7 +273,7 @@ T['de'] = dict(
     t2Title='Vier weitere, die eine Position beschreiben',
     t2ah='Zwei, oder mehr als zwei',
     t2ab='<strong>Between</strong> braucht genau zwei klare Bezugspunkte '
-         '&mdash; die Bank liegt zwischen der Bäckerei und der Apotheke. '
+         '&mdash; die Apotheke liegt zwischen den beiden Cafés. '
          '<strong>Among</strong> setzt dich in eine größere, unschärfere Gruppe '
          'von drei oder mehr.',
     t2an='Between bei zwei genannten Dingen; among in einer Menge.',
@@ -284,7 +284,7 @@ T['de'] = dict(
     t2bn='Nicht dasselbe wie <em>next to</em>, das nebeneinander bedeutet.',
     t2ch='Außer Sicht',
     t2cb='<strong>Behind</strong> setzt etwas an die Rückseite von etwas '
-         'anderem, oft dahinter verborgen &mdash; die Katze hinter dem Sofa.',
+         'anderem, oft dahinter verborgen &mdash; der Ball hinter dem Vorhang.',
     t2cn='Das Gegenteil ist <em>in front of</em>, nicht <em>before</em>, das '
          'sich auf Zeit bezieht.',
 
@@ -294,12 +294,12 @@ T['de'] = dict(
     t3ab='<strong>In</strong> nimmt die langen Zeiträume &mdash; Jahre, Monate, '
          'Jahreszeiten. <strong>On</strong> nimmt Tage und Daten. '
          '<strong>At</strong> nimmt Uhrzeiten.',
-    t3an='<em>In</em> 1998, <em>on</em> Saturday mornings, <em>at</em> 9 a.m.',
+    t3an='<em>In</em> April, <em>on</em> 3 June, <em>at</em> midnight.',
     t3bh='Wie lange, oder seit wann',
     t3bb='<strong>For</strong> nimmt eine Zeitspanne &mdash; sieben Jahre, zwei '
          'Stunden. <strong>Since</strong> nimmt den Punkt, an dem es begann '
          '&mdash; ein Datum, ein Ereignis.',
-    t3bn='<em>For</em> seven years; <em>since</em> the promotion in March.',
+    t3bn='<em>For</em> ten minutes; <em>since</em> Tuesday.',
     t3ch='Währenddessen, oder spätestens',
     t3cb='<strong>During</strong> heißt während eines Ereignisses. '
          '<strong>By</strong> markiert eine Frist &mdash; zu diesem Zeitpunkt '
@@ -308,25 +308,25 @@ T['de'] = dict(
          'Zeitraum, der dann endet.',
 
     t4Eyebrow='Teil 2 · Bevor du anfängst',
-    t4Title='Bewegung: der Weg zählt, nicht der Ort',
-    t4ah='Hinein und hinauf',
+    t4Title='Bewegung: Der Weg zählt, nicht der Ort',
+    t4ah='Hinein und darauf',
     t4ab='<strong>Into</strong> ist Bewegung von außen nach innen. '
          '<strong>Onto</strong> ist Bewegung, die auf einer Fläche endet. Beide '
          'beschreiben ein Ankommen, kein Stillstehen.',
-    t4an='She walked <em>into</em> the office; he lifted the tray <em>onto</em> '
-         'the table.',
+    t4an='She stepped <em>into</em> the lift; he lifted the box <em>onto</em> '
+         'the shelf.',
     t4bh='Umschlossen oder offen',
     t4bb='<strong>Through</strong> geht an einer Seite eines umschlossenen Raums '
          'hinein und an der anderen hinaus &mdash; ein Tunnel, ein Wald. '
          '<strong>Across</strong> überquert eine offene Fläche &mdash; einen '
          'See, einen Platz.',
-    t4bn='<em>Through</em> the tunnel; <em>across</em> the lake.',
+    t4bn='<em>Through</em> the forest; <em>across</em> the square.',
     t4ch='Einer Linie folgen',
     t4cb='<strong>Along</strong> folgt der Länge von etwas &mdash; einem Fluss, '
-         'einer Straße. <strong>To</strong> ist das schlichte: Bewegung oder '
+         'einer Straße. <strong>To</strong> ist die schlichte Variante: Bewegung oder '
          'Übergabe hin zu einem Ziel oder einer Person.',
-    t4cn='They jogged <em>along</em> the river; he handed the file <em>to</em> '
-         'his manager.',
+    t4cn='They walked <em>along</em> the canal; she passed the keys <em>to</em> '
+         'her neighbour.',
 
     t5Eyebrow='Teil 2 · Bevor du anfängst',
     t5Title='Manche Präpositionen sind gar keine Wahl',
@@ -440,7 +440,7 @@ T['de'] = dict(
                'alles im Griff.',
     resStrong='Starke Leistung. Sieh dir die festen Paare noch einmal an — dort '
               'geht meist der letzte Punkt verloren.',
-    resMid='Eine gute Grundlage. Geh zurück zu den beiden Lernfolien zur Zeit: '
+    resMid='Eine gute Grundlage. Geh zurück zur Lernfolie über die Zeit: '
            'for/since und during/by sind die üblichen Stolpersteine.',
     resLow='Lies die fünf Lernfolien noch einmal und versuch es erneut. Diese '
            'Paare werden gelernt, nicht hergeleitet.',
@@ -480,12 +480,12 @@ T['es'] = dict(
     t1ab='<strong>In</strong> significa cerrado. Un cajón, una caja, una '
          'habitación, un bolsillo &mdash; si tiene lados y algo puede quedarse '
          'dentro, lleva <em>in</em>.',
-    t1an='The keys are <em>in</em> the drawer.',
+    t1an='The spare batteries are <em>in</em> the box.',
     t1bh='Sobre una superficie',
     t1bb='<strong>On</strong> significa tocar una superficie. La superficie no '
          'tiene por qué ser plana ni horizontal &mdash; una pared y un techo '
-         'llevan las dos <em>on</em>.',
-    t1bn='A map va <em>on</em> the wall; a crack va <em>in</em> it. La '
+         'llevan los dos <em>on</em>.',
+    t1bn='A notice goes <em>on</em> the door; a crack goes <em>in</em> it. La '
          'superficie lleva <em>on</em>, el material lleva <em>in</em>.',
     t1ch='En un punto',
     t1cb='<strong>At</strong> marca un punto concreto en lugar de una zona '
@@ -496,7 +496,7 @@ T['es'] = dict(
     t2Title='Otras cuatro que describen una posición',
     t2ah='Dos, o más de dos',
     t2ab='<strong>Between</strong> necesita exactamente dos puntos de referencia '
-         '&mdash; el banco está entre la panadería y la farmacia. '
+         '&mdash; la farmacia está entre las dos cafeterías. '
          '<strong>Among</strong> te sitúa dentro de un grupo mayor y más difuso, '
          'de tres o más.',
     t2an='Between con dos cosas nombradas; among en una multitud.',
@@ -506,7 +506,7 @@ T['es'] = dict(
     t2bn='No es lo mismo que <em>next to</em>, que es al lado.',
     t2ch='Fuera de la vista',
     t2cb='<strong>Behind</strong> coloca algo en la parte de atrás de otra cosa, '
-         'a menudo oculto por ella &mdash; el gato detrás del sofá.',
+         'a menudo oculto por ella &mdash; la pelota detrás de la cortina.',
     t2cn='Su contrario es <em>in front of</em>, no <em>before</em>, que es de '
          'tiempo.',
 
@@ -516,12 +516,12 @@ T['es'] = dict(
     t3ab='<strong>In</strong> lleva los periodos largos &mdash; años, meses, '
          'estaciones. <strong>On</strong> lleva días y fechas. '
          '<strong>At</strong> lleva las horas del reloj.',
-    t3an='<em>In</em> 1998, <em>on</em> Saturday mornings, <em>at</em> 9 a.m.',
+    t3an='<em>In</em> April, <em>on</em> 3 June, <em>at</em> midnight.',
     t3bh='Cuánto tiempo, o desde cuándo',
     t3bb='<strong>For</strong> lleva una duración &mdash; siete años, dos horas. '
          '<strong>Since</strong> lleva el punto de partida &mdash; una fecha, un '
          'acontecimiento.',
-    t3bn='<em>For</em> seven years; <em>since</em> the promotion in March.',
+    t3bn='<em>For</em> ten minutes; <em>since</em> Tuesday.',
     t3ch='Durante, o como muy tarde',
     t3cb='<strong>During</strong> significa a lo largo de un acontecimiento. '
          '<strong>By</strong> marca un plazo &mdash; en ese momento o antes, '
@@ -531,23 +531,23 @@ T['es'] = dict(
 
     t4Eyebrow='Parte 2 · Antes de empezar',
     t4Title='Movimiento: importa el recorrido, no el lugar',
-    t4ah='Hacia dentro y hacia encima',
+    t4ah='Hacia dentro y sobre una superficie',
     t4ab='<strong>Into</strong> es movimiento de fuera hacia dentro. '
          '<strong>Onto</strong> es movimiento que termina encima de una '
          'superficie. Las dos describen una llegada, no una posición quieta.',
-    t4an='She walked <em>into</em> the office; he lifted the tray <em>onto</em> '
-         'the table.',
+    t4an='She stepped <em>into</em> the lift; he lifted the box <em>onto</em> '
+         'the shelf.',
     t4bh='Cerrado o abierto',
     t4bb='<strong>Through</strong> entra por un lado de un espacio cerrado y sale '
          'por el otro &mdash; un túnel, un bosque. <strong>Across</strong> '
          'cruza una zona abierta &mdash; un lago, una plaza.',
-    t4bn='<em>Through</em> the tunnel; <em>across</em> the lake.',
+    t4bn='<em>Through</em> the forest; <em>across</em> the square.',
     t4ch='Seguir una línea',
     t4cb='<strong>Along</strong> sigue el largo de algo &mdash; un río, una '
          'carretera. <strong>To</strong> es la sencilla: movimiento o entrega '
          'hacia un destino o una persona.',
-    t4cn='They jogged <em>along</em> the river; he handed the file <em>to</em> '
-         'his manager.',
+    t4cn='They walked <em>along</em> the canal; she passed the keys <em>to</em> '
+         'her neighbour.',
 
     t5Eyebrow='Parte 2 · Antes de empezar',
     t5Title='Algunas preposiciones no son una elección',
@@ -659,7 +659,7 @@ T['es'] = dict(
                'fijas — todo controlado.',
     resStrong='Muy bien. Vuelve a mirar las parejas fijas — ahí suele irse el '
               'último punto.',
-    resMid='Buena base. Vuelve a las dos diapositivas de tiempo: for/since y '
+    resMid='Buena base. Vuelve a la diapositiva de tiempo: for/since y '
            'during/by son los tropiezos habituales.',
     resLow='Lee otra vez las cinco diapositivas de enseñanza y prueba de nuevo. '
            'Estas parejas se aprenden, no se deducen.',

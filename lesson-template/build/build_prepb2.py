@@ -7,7 +7,10 @@ in the per-answer feedback, so the learner met the rule after getting the item
 wrong. It had no hero either, which is why `library.html` greyed it out:
 `comingSoon(l)` is `!LESSON_IMAGES[l.file]`.
 
-All 28 scored items survive unchanged in substance and in count.
+All 28 items survive in count, and all but one in substance: the
+`congratulate` item had `for` on its option list, and "congratulate someone
+for something" is attested English, so `for` was swapped for the inert
+`with`. See `prepb2_data.py`.
 
 - **Four teaching slides now exist. None did.** One per section: the for/to
   purpose split, the fixed idiomatic phrases, the advanced verb and adjective
@@ -20,10 +23,12 @@ All 28 scored items survive unchanged in substance and in count.
   onto the English one.
 - **German is new.** The page was English with a Spanish footnote.
 
-Artwork is `PrepositionsB2/hero.jpg` — a figure climbing a wide staircase
-through layered levels, which is the register this half of the lesson works
-in. Part 2 shares it. The palette is derived from that file with `--light`;
-every contrast row PASSes.
+Artwork is `PrepositionsB2/` — a figure climbing a wide staircase through
+layered levels, which is the register this half of the lesson works in. Six
+pictures: the hero on the cover and results, one backdrop per activity, and one
+for the activation stage. Part 2 has its own folder and shares none of them.
+The palette is derived from `PrepositionsB2/hero.jpg` with `--light`; every
+contrast row PASSes.
 """
 import os
 import sys
@@ -55,9 +60,10 @@ CHIPS = ['in terms of', 'on behalf of', 'in spite of', 'on the verge of',
          'at the expense of', 'for the sake of', 'put up with',
          'come up with', 'stand up for']
 
-# One backdrop per activity — the same staircase at three other moments, from
-# the four-up the hero came out of. Part 2 runs the same three in reverse, so
-# the pair shares a world without the two decks looking identical.
+# One backdrop per activity — the same staircase at four other moments. Part 2
+# runs the business-people set instead and shares no picture with this deck;
+# what holds the pair together is the palette, which both derive from a
+# staircase hero.
 BG_PURPOSE, BG_IDIOM, BG_DEP, BG_PHRASAL = ('bg05.jpg', 'bg02.jpg',
                                             'bg03.jpg', 'bg04.jpg')
 
@@ -91,17 +97,18 @@ def build():
                    ('t1bh', 'To + infinitive', 't1bb',
                     '<strong>To</strong> gives the <em>reason</em> a person '
                     'does something. I go to the gym <em>to get fit</em>; he '
-                    'works two jobs <em>to support his family</em>.',
+                    'she took the early train <em>to avoid the queues</em>.',
                     't1bn',
                     '<em>In order to</em> is the same thing, one register '
                     'up. There is no <em>in order for</em> to match it.'),
                    ('t1ch', 'The test that works', 't1cb',
-                    'Ask what the subject is. A <em>thing</em> with a job '
-                    'takes <em>for</em>; a <em>person</em> with a goal takes '
-                    '<em>to</em>. Spanish and German use one word for both, '
-                    'which is why this splits.', 't1cn',
-                    'Both answer "why?", so the meaning will not tell them '
-                    'apart. The grammar after the gap will.')],
+                    'Read what comes after the gap, not who the subject '
+                    'is. <em>For</em> takes a noun or an <em>-ing</em> '
+                    'form; <em>to</em> takes a bare infinitive. That test '
+                    'never fails.', 't1cn',
+                    'What the gap describes is the function of a thing, or '
+                    'the goal of an action &mdash; a person can be the '
+                    'subject of either.')],
                   folder=F, bg=BG_PURPOSE)
 
         + "".join(D.mc(i + 1, len(PURPOSE), q, 'mcaEyebrow',

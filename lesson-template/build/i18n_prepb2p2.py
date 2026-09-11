@@ -53,10 +53,11 @@ T['en'] = dict(
     t1an='All three can appear in one sentence, each doing a different job.',
     t1bh='From here to there',
     t1bb='<strong>From X to Y</strong> marks the two ends of a change &mdash; '
-         'membership rose <em>from</em> 500 <em>to</em> over 800. The starting '
-         'point comes first.',
-    t1bn='Use it when both numbers matter; use <em>by</em> when only the gap '
-         'between them does.',
+         'the fleet grew <em>from</em> nine vans <em>to</em> forty. The '
+         'starting point comes first.',
+    t1bn='The size of a change takes <em>by</em> after a verb (rose <em>by</em> '
+         '500) and <em>of</em> after a noun (an increase <em>of</em> 500). '
+         '<em>From&hellip;to</em> names the two ends instead.',
     t1ch='Comparing and qualifying',
     t1cb='<em>Compared to</em> sets two things side by side. <em>A shortage '
          'of</em> names what is missing. <em>With regard to</em> narrows to one '
@@ -88,8 +89,9 @@ T['en'] = dict(
     t3Title='More dependent pairs, including one real trap',
     t3ah='When <em>to</em> is not an infinitive',
     t3ab='You <em>object to</em> something, and that <em>to</em> is a preposition '
-         '&mdash; so a verb after it takes <em>-ing</em>. Residents objected '
-         '<em>to</em> the road <em>being built</em>, never <em>to be built</em>.',
+         '&mdash; so a verb after it takes <em>-ing</em>. The neighbours objected '
+         '<em>to</em> the trees <em>being cut down</em>, never <em>to be cut '
+         'down</em>.',
     t3an='The same trap sits inside <em>look forward to</em> and <em>be used '
          'to</em>.',
     t3bh='Trusting and mentioning',
@@ -117,9 +119,10 @@ T['en'] = dict(
     t4bn='<em>Put someone off</em> exists too, and means to discourage them. '
          'Different verb.',
     t4ch='By chance, or behind',
-    t4cb='<em>Come across</em> a thing and <em>run into</em> a person &mdash; '
-         'both mean by chance, but one is for objects and one is for people. '
-         '<em>Fall behind</em> is to slip back against a plan.',
+    t4cb='<em>Come across</em> and <em>run into</em> both mean by chance. '
+         '<em>Run into</em> is only used of people; <em>come across</em> is '
+         'the usual one for things. <em>Fall behind</em> is to slip back '
+         'against a plan.',
     t4cn='You come across a photo; you run into an old teacher.',
 
     mcaEyebrow='Activity 1 · Trends and quantity',
@@ -138,9 +141,9 @@ T['en'] = dict(
     q3why='<strong>By.</strong> <em>Fall by</em> or <em>drop by</em> plus an '
           'amount states the size of the decrease &mdash; how much was lost, not '
           'what it fell to.',
-    q4why='<strong>From.</strong> <em>Rise from X to Y</em> marks the starting '
-          'point before the end point. Both numbers matter, so <em>by</em> would '
-          'not do the job.',
+    q4why='<strong>From.</strong> <em>Rise from X to Y</em> names the two ends '
+          'of the change. A dated starting figure is an end point, not an '
+          'increment, so it takes <em>from</em> rather than <em>by</em>.',
     q5why='<strong>To.</strong> <em>Compared to</em> introduces a direct '
           'comparison between two things.',
     q6why='<strong>Of.</strong> <em>A shortage of something</em> states exactly '
@@ -247,10 +250,12 @@ T['de'] = dict(
          'haben.',
     t1bh='Von hier nach dort',
     t1bb='<strong>From X to Y</strong> markiert die beiden Enden einer '
-         'Veränderung &mdash; membership rose <em>from</em> 500 <em>to</em> over '
-         '800. Der Ausgangspunkt steht zuerst.',
-    t1bn='Nimm es, wenn beide Zahlen zählen; nimm <em>by</em>, wenn nur der '
-         'Abstand dazwischen zählt.',
+         'Veränderung &mdash; the fleet grew <em>from</em> nine vans <em>to</em> '
+         'forty. Der Ausgangspunkt steht zuerst.',
+    t1bn='Die Höhe einer Veränderung steht nach einem Verb mit <em>by</em> '
+         '(rose <em>by</em> 500) und nach einem Substantiv mit <em>of</em> (an '
+         'increase <em>of</em> 500). <em>From&hellip;to</em> nennt stattdessen '
+         'die beiden Enden.',
     t1ch='Vergleichen und einschränken',
     t1cb='<em>Compared to</em> stellt zwei Dinge nebeneinander. <em>A shortage '
          'of</em> benennt, was fehlt. <em>With regard to</em> grenzt auf einen '
@@ -281,14 +286,14 @@ T['de'] = dict(
     t3Eyebrow='Bevor du anfängst',
     t3Title='Weitere abhängige Paare, darunter eine echte Falle',
     t3ah='Wenn <em>to</em> kein Infinitiv ist',
-    t3ab='Man <em>objects to</em> etwas, und dieses <em>to</em> ist eine '
+    t3ab='Das Muster ist <em>object to</em> etwas, und dieses <em>to</em> ist eine '
          'Präposition &mdash; ein Verb danach steht also auf <em>-ing</em>. '
-         'Residents objected <em>to</em> the road <em>being built</em>, nie '
-         '<em>to be built</em>.',
+         'The neighbours objected <em>to</em> the trees <em>being cut '
+         'down</em>, nie <em>to be cut down</em>.',
     t3an='Dieselbe Falle steckt in <em>look forward to</em> und <em>be used '
          'to</em>.',
     t3bh='Vertrauen und erwähnen',
-    t3bb='<em>Rely on</em> jemanden, der etwas tut. <em>Refer to</em> etwas in '
+    t3bb='<em>Rely on</em> jemanden, damit er etwas tut. <em>Refer to</em> etwas in '
          'einer Rede oder einem Text. Beide fest, beide nicht verhandelbar.',
     t3bn='<em>Refer to</em> heißt auch „etwas nachschlagen“, mit derselben '
          'Präposition.',
@@ -313,9 +318,9 @@ T['de'] = dict(
     t4bn='<em>Put someone off</em> gibt es auch und heißt, jemanden abzuschrecken. '
          'Anderes Verb.',
     t4ch='Zufällig, oder hinterher',
-    t4cb='<em>Come across</em> eine Sache und <em>run into</em> eine Person '
-         '&mdash; beides heißt zufällig, aber das eine gilt für Dinge und das '
-         'andere für Menschen. <em>Fall behind</em> heißt, hinter einen Plan '
+    t4cb='<em>Come across</em> und <em>run into</em> heißen beide zufällig. '
+         '<em>Run into</em> gilt nur für Menschen; <em>come across</em> ist '
+         'das übliche für Dinge. <em>Fall behind</em> heißt, hinter einen Plan '
          'zurückzufallen.',
     t4cn='You come across a photo; you run into an old teacher.',
 
@@ -337,9 +342,10 @@ T['de'] = dict(
     q3why='<strong>By.</strong> <em>Fall by</em> oder <em>drop by</em> plus Betrag '
           'nennt die Höhe des Rückgangs &mdash; wie viel verloren ging, nicht '
           'worauf es fiel.',
-    q4why='<strong>From.</strong> <em>Rise from X to Y</em> markiert den '
-          'Ausgangspunkt vor dem Endpunkt. Beide Zahlen zählen, <em>by</em> '
-          'würde das nicht leisten.',
+    q4why='<strong>From.</strong> <em>Rise from X to Y</em> nennt die beiden '
+          'Enden der Veränderung. Eine datierte Ausgangszahl ist ein Endpunkt '
+          'und kein Zuwachs, steht also mit <em>from</em> und nicht mit '
+          '<em>by</em>.',
     q5why='<strong>To.</strong> <em>Compared to</em> leitet einen direkten '
           'Vergleich zwischen zwei Dingen ein.',
     q6why='<strong>Of.</strong> <em>A shortage of something</em> benennt genau, '
@@ -452,10 +458,12 @@ T['es'] = dict(
     t1an='Las tres pueden aparecer en una misma frase, cada una con su función.',
     t1bh='De aquí a allí',
     t1bb='<strong>From X to Y</strong> marca los dos extremos de un cambio '
-         '&mdash; membership rose <em>from</em> 500 <em>to</em> over 800. El '
+         '&mdash; the fleet grew <em>from</em> nine vans <em>to</em> forty. El '
          'punto de partida va primero.',
-    t1bn='Úsalo cuando importan las dos cifras; usa <em>by</em> cuando solo '
-         'importa la diferencia entre ellas.',
+    t1bn='El tamaño de un cambio lleva <em>by</em> tras un verbo (rose '
+         '<em>by</em> 500) y <em>of</em> tras un sustantivo (an increase '
+         '<em>of</em> 500). <em>From&hellip;to</em> nombra en cambio los dos '
+         'extremos.',
     t1ch='Comparar y acotar',
     t1cb='<em>Compared to</em> pone dos cosas una al lado de la otra. <em>A '
          'shortage of</em> nombra lo que falta. <em>With regard to</em> acota a '
@@ -486,10 +494,10 @@ T['es'] = dict(
     t3Eyebrow='Antes de empezar',
     t3Title='Más parejas dependientes, con una trampa de verdad',
     t3ah='Cuando <em>to</em> no es un infinitivo',
-    t3ab='Se <em>objects to</em> algo, y ese <em>to</em> es una preposición '
-         '&mdash; así que el verbo que sigue va en <em>-ing</em>. Residents '
-         'objected <em>to</em> the road <em>being built</em>, nunca <em>to be '
-         'built</em>.',
+    t3ab='El patrón es <em>object to</em> algo, y ese <em>to</em> es una preposición '
+         '&mdash; así que el verbo que sigue va en <em>-ing</em>. The neighbours '
+         'objected <em>to</em> the trees <em>being cut down</em>, nunca <em>to be '
+         'cut down</em>.',
     t3an='La misma trampa está dentro de <em>look forward to</em> y <em>be used '
          'to</em>.',
     t3bh='Confiar y mencionar',
@@ -498,15 +506,15 @@ T['es'] = dict(
     t3bn='<em>Refer to</em> también significa "consultar algo", con la misma '
          'preposición.',
     t3ch='Irse, ganar, presumir',
-    t3cb='Se <em>resigns from</em> un puesto y se <em>benefits from</em> un plan '
-         '&mdash; las dos con <em>from</em>. Se <em>boasts about</em> algo, y se '
-         '<em>excuses</em> a alguien <em>for</em> algo.',
+    t3cb='Se dice <em>resign from</em> un puesto y <em>benefit from</em> un plan '
+         '&mdash; los dos con <em>from</em>. Y <em>boast about</em> algo, y '
+         '<em>excuse someone for</em> algo.',
     t3cn='Que dos verbos compartan preposición es aquí la excepción, no la regla.',
 
     t4Eyebrow='Antes de empezar',
     t4Title='Resolver, superar, aplazar, encontrarse por casualidad',
     t4ah='Las dos llevan <em>with</em>',
-    t4ab='Se <em>deals with</em> un problema y se <em>copes with</em> la presión. '
+    t4ab='Se dice <em>deal with</em> un problema y <em>cope with</em> la presión. '
          '<em>Deal with</em> va de resolverlo; <em>cope with</em> va de '
          'sobrellevarlo.',
     t4an='A manager deals with a conflict. The team copes with the workload.',
@@ -517,10 +525,10 @@ T['es'] = dict(
     t4bn='<em>Put someone off</em> también existe y significa desanimar a '
          'alguien. Otro verbo.',
     t4ch='Por casualidad, o por detrás',
-    t4cb='<em>Come across</em> una cosa y <em>run into</em> una persona &mdash; '
-         'las dos significan por casualidad, pero una es para objetos y otra '
-         'para personas. <em>Fall behind</em> es quedarse atrás respecto a un '
-         'plan.',
+    t4cb='<em>Come across</em> y <em>run into</em> significan las dos por '
+         'casualidad. <em>Run into</em> solo se usa con personas; <em>come '
+         'across</em> es el habitual para cosas. <em>Fall behind</em> es '
+         'quedarse atrás respecto a un plan.',
     t4cn='You come across a photo; you run into an old teacher.',
 
     mcaEyebrow='Actividad 1 · Tendencias y cantidad',
@@ -540,9 +548,9 @@ T['es'] = dict(
     q3why='<strong>By.</strong> <em>Fall by</em> o <em>drop by</em> más una '
           'cantidad indica el tamaño de la bajada &mdash; cuánto se perdió, no '
           'hasta dónde cayó.',
-    q4why='<strong>From.</strong> <em>Rise from X to Y</em> marca el punto de '
-          'partida antes del de llegada. Importan las dos cifras, así que '
-          '<em>by</em> no serviría.',
+    q4why='<strong>From.</strong> <em>Rise from X to Y</em> nombra los dos '
+          'extremos del cambio. Una cifra de partida con fecha es un extremo, '
+          'no un incremento, así que lleva <em>from</em> y no <em>by</em>.',
     q5why='<strong>To.</strong> <em>Compared to</em> introduce una comparación '
           'directa entre dos cosas.',
     q6why='<strong>Of.</strong> <em>A shortage of something</em> indica '

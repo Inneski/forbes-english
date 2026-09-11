@@ -15,7 +15,16 @@ was an answer key with the column already filled in. Each item is now
 left-rotated so the key lands at position `n % 4`, which preserves the option
 set exactly and only moves where it sits.
 
-**One stem was rewritten because none of the four options was natural.** The
+**Two stems were rewritten.** The first because more than one option worked:
+`Membership rose ______ 500 to over 800 within two years` was keyed to `from`,
+but "rose BY 500 to over 800" is ordinary report English — an increment of 500
+ending above 800 — and `by` was on the list. It now reads "rose ______ 500
+members in 2019 to over 800 today": a dated starting figure is an end point,
+not an increment. Note where this was found: `prepb1_data.py` had asserted the
+fault could not reach a B2 lesson at all. `trends` chooses by meaning, so it
+can.
+
+**The second because none of the four options was natural.** The
 `dependent` section read "The hotel boasts ______ a rooftop pool", keyed to
 `about` — but a hotel *boasts a rooftop pool* with no preposition at all. That
 transitive `boast` (to have as a feature) is a different verb from `boast
@@ -38,7 +47,7 @@ TRENDS = [
          options=["from", "of", "in", "by"], correct=1, why="q2why"),
     dict(stem="Costs fell sharply, dropping ______ almost a fifth in just one year.",
          options=["in", "from", "by", "of"], correct=2, why="q3why"),
-    dict(stem="Membership rose ______ 500 to over 800 within two years.",
+    dict(stem="Membership rose ______ 500 members in 2019 to over 800 today.",
          options=["by", "of", "at", "from"], correct=3, why="q4why"),
     dict(stem="Compared ______ its main competitor, this airline offers far better value for money.",
          options=["to", "for", "of", "at"], correct=0, why="q5why"),

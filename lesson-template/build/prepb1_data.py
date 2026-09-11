@@ -4,8 +4,9 @@
 Lifted from the scrolling `b1_prepositions_double_lesson.html`, a four-section quiz
 page with no teaching content at all: every rule lived only in the per-answer
 feedback, which is the defect already recorded against the Lego and Twin Peaks
-preposition decks in `docs/HANDOFF.md`. All 27 items survive unchanged in
-substance and in count, so the deck scores exactly what the page scored.
+preposition decks in `docs/HANDOFF.md`. All 27 items survive in count, so the
+deck scores exactly what the page scored; nine stems were rewritten, listed at
+the bottom of this docstring.
 
 **The options are rotated, and that is not cosmetic.** On the source page the
 correct answer was written first in 15 of the 27 — and never written fourth at all. Engine shuffling
@@ -27,12 +28,18 @@ list, so a learner taught British English picked it, was marked wrong, and was
 then told the inverse of the rule. The sentence now tests a named day, which
 is the point the explanation was always claiming to make.
 
-**Seven stems were rewritten because a distractor was also correct.** Innes
-found three of them on the live deck; the other four came out of auditing the
-rest for the same fault. This is the defect class to check for in any lesson
-whose preposition is chosen by *meaning* rather than fixed by collocation —
-place, time and movement. It does not reach the `dependent` section here, or
-either B2 lesson, because a fixed pair admits no second answer by definition.
+**Nine stems were rewritten because a distractor was also correct.** Innes
+found three of them on the live deck; four more came out of auditing the rest,
+and a later multi-agent audit found two the first sweep had missed. This is the
+defect class to check for wherever the preposition is chosen by *meaning*
+rather than fixed by collocation — place, time and movement.
+
+**It does NOT stop at fixed-pair sections, and an earlier version of this
+docstring was wrong to say so.** It claimed the fault could not reach either B2
+lesson "because a fixed pair admits no second answer by definition". True of
+the `dependent` sections; false of B2 Part 2's `trends` section, which chooses
+by meaning like any place/time section — and which duly had one. Audit by what
+the section *does*, not by which level it is on.
 
   `crack ______ the wall` → **a large map on the wall.** The worst of them: the
   key was `on`, but "a crack IN the wall" is the natural collocation, because a
@@ -61,6 +68,16 @@ either B2 lesson, because a fixed pair admits no second answer by definition.
   "placed it ON the table", and `on` was not offered — so the key `onto` was
   the least-bad answer to a question with no good one. "Lifted" needs the
   motion that `onto` carries.
+
+  `The bank is ______ the bakery and the pharmacy` → **with one shop on each
+  side.** Both "opposite the bakery and the pharmacy" and "behind" them are
+  ordinary English; only a flanking clause forces exactly-two. The teach card
+  was doing the work the stem should have done.
+
+  `We drove ______ the tunnel and came out near the coast` → **It took four
+  minutes to drive ______ the tunnel and out the other side.** "Drove INTO the
+  tunnel and came out" is a perfectly natural narrative — enter, then exit. A
+  measured duration plus "out the other side" forces the whole-path reading.
 """
 
 
@@ -72,7 +89,7 @@ PLACE = [
          options=["in", "on", "at", "between"], correct=1, why="q2why"),
     dict(stem="Meet me ______ the entrance to the stadium at six.",
          options=["in", "on", "at", "among"], correct=2, why="q3why"),
-    dict(stem="The bank is ______ the bakery and the pharmacy.",
+    dict(stem="The bank is ______ the bakery and the pharmacy, with one shop on each side.",
          options=["among", "opposite", "behind", "between"], correct=3, why="q4why"),
     dict(stem="She felt nervous, lost ______ a crowd of strangers at the station.",
          options=["among", "opposite", "behind", "between"], correct=0, why="q5why"),
@@ -106,7 +123,7 @@ MOVEMENT = [
          options=["across", "along", "into", "onto"], correct=2, why="q15why"),
     dict(stem="The waiter lifted the tray ______ the table carefully.",
          options=["through", "along", "into", "onto"], correct=3, why="q16why"),
-    dict(stem="We drove ______ the tunnel and came out near the coast.",
+    dict(stem="It took four minutes to drive ______ the tunnel and out the other side.",
          options=["through", "across", "into", "onto"], correct=0, why="q17why"),
     dict(stem="It took twenty minutes to swim ______ the lake to the far shore.",
          options=["along", "across", "onto", "through"], correct=1, why="q18why"),

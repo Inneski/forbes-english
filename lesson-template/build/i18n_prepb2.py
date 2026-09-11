@@ -54,16 +54,16 @@ T['en'] = dict(
     t1an='What follows is a noun or an <em>-ing</em> form, never a bare infinitive.',
     t1bh='To + infinitive',
     t1bb='<strong>To</strong> gives the <em>reason</em> a person does something. '
-         'I go to the gym <em>to get fit</em>; he works two jobs <em>to support '
-         'his family</em>.',
+         'I go to the gym <em>to get fit</em>; she took the early train <em>to '
+         'avoid the queues</em>.',
     t1bn='<em>In order to</em> is the same thing, one register up. There is no '
          '<em>in order for</em> to match it.',
     t1ch='The test that works',
-    t1cb='Ask what the subject is. A <em>thing</em> with a job takes <em>for</em>; '
-         'a <em>person</em> with a goal takes <em>to</em>. Spanish and German use '
-         'one word for both, which is why this splits.',
-    t1cn='Both answer "why?", so the meaning will not tell them apart. The '
-         'grammar after the gap will.',
+    t1cb='Read what comes after the gap, not who the subject is. <em>For</em> '
+         'takes a noun or an <em>-ing</em> form; <em>to</em> takes a bare '
+         'infinitive. That test never fails.',
+    t1cn='What the gap describes is the function of a thing, or the goal of an '
+         'action &mdash; a person can be the subject of either.',
 
     t2Eyebrow='Before you start',
     t2Title='Fixed phrases: the preposition is not a slot',
@@ -243,17 +243,16 @@ T['de'] = dict(
          'blanker Infinitiv.',
     t1bh='To + Infinitiv',
     t1bb='<strong>To</strong> nennt den <em>Grund</em>, aus dem eine Person etwas '
-         'tut. I go to the gym <em>to get fit</em>; he works two jobs <em>to '
-         'support his family</em>.',
+         'tut. I go to the gym <em>to get fit</em>; she took the early train <em>to '
+         'avoid the queues</em>.',
     t1bn='<em>In order to</em> ist dasselbe, eine Stufe formeller. Ein passendes '
          '<em>in order for</em> gibt es nicht.',
     t1ch='Der Test, der funktioniert',
-    t1cb='Frag, was das Subjekt ist. Eine <em>Sache</em> mit einer Aufgabe nimmt '
-         '<em>for</em>; eine <em>Person</em> mit einem Ziel nimmt <em>to</em>. '
-         'Deutsch und Spanisch haben für beides ein Wort, deshalb trennt sich '
-         'das hier.',
-    t1cn='Beide beantworten „warum?“, die Bedeutung trennt sie also nicht. Die '
-         'Grammatik nach der Lücke schon.',
+    t1cb='Lies, was nach der Lücke steht, nicht wer das Subjekt ist. '
+         '<em>For</em> nimmt ein Substantiv oder eine <em>-ing</em>-Form; '
+         '<em>to</em> nimmt den reinen Infinitiv. Dieser Test versagt nie.',
+    t1cn='Die Lücke beschreibt den Zweck einer Sache oder das Ziel einer '
+         'Handlung &mdash; eine Person kann bei beidem das Subjekt sein.',
 
     t2Eyebrow='Bevor du anfängst',
     t2Title='Feste Wendungen: die Präposition ist keine Lücke',
@@ -279,8 +278,8 @@ T['de'] = dict(
     t3Eyebrow='Bevor du anfängst',
     t3Title='Verben und Adjektive, die ihre Präposition mitbringen',
     t3ah='Gleiche Idee, andere Präposition',
-    t3ab='Man <em>accuses</em> jemanden <em>of</em> etwas, aber man '
-         '<em>blames</em> jemanden <em>for</em> etwas. Die Bedeutungen liegen '
+    t3ab='Das Muster ist <em>accuse someone of</em> etwas, aber <em>blame '
+         'someone for</em> etwas. Die Bedeutungen liegen '
          'nah beieinander, die Präpositionen sind nicht austauschbar.',
     t3an='Das ist das Paar, das auf B2 am häufigsten danebengeht.',
     t3bh='Drei mit Person und Sache',
@@ -409,7 +408,7 @@ T['de'] = dict(
     actSpeak2='Räume einen Punkt ein — etwas, das du <em>put up with</em> '
               'musstest — und <em>come up with</em> dann eine Alternative.',
     actSpeak3='Argumentiere, dass die Einsparung <em>at the expense of</em> '
-              'etwas geht, das sich das Unternehmen nicht nehmen lassen kann.',
+              'etwas geht, auf das das Unternehmen nicht verzichten kann.',
     actWriteKind='Schreiben · 180–250 Wörter',
     actWriteBrief='Schreib die E-Mail, die deine Seite danach verschickt: was '
                   'vereinbart wurde, was offen bleibt und worum ihr als Nächstes '
@@ -437,16 +436,16 @@ T['es'] = dict(
          'infinitivo sin <em>to</em>.',
     t1bh='To + infinitivo',
     t1bb='<strong>To</strong> da el <em>motivo</em> por el que una persona hace '
-         'algo. I go to the gym <em>to get fit</em>; he works two jobs <em>to '
-         'support his family</em>.',
+         'algo. I go to the gym <em>to get fit</em>; she took the early train <em>to '
+         'avoid the queues</em>.',
     t1bn='<em>In order to</em> es lo mismo, un registro más formal. No existe un '
          '<em>in order for</em> equivalente.',
     t1ch='La prueba que funciona',
-    t1cb='Pregúntate cuál es el sujeto. Una <em>cosa</em> con una función lleva '
-         '<em>for</em>; una <em>persona</em> con un objetivo lleva <em>to</em>. '
-         'En español ambos son "para", y por eso aquí se separan.',
-    t1cn='Los dos responden a "¿por qué?", así que el significado no los '
-         'distingue. La gramática que sigue al hueco sí.',
+    t1cb='Lee lo que va después del hueco, no quién es el sujeto. <em>For</em> '
+         'lleva un sustantivo o una forma en <em>-ing</em>; <em>to</em> lleva '
+         'el infinitivo sin más. Esa prueba nunca falla.',
+    t1cn='El hueco describe la función de una cosa o el objetivo de una acción '
+         '&mdash; en los dos casos el sujeto puede ser una persona.',
 
     t2Eyebrow='Antes de empezar',
     t2Title='Expresiones fijas: la preposición no es un hueco',
@@ -471,8 +470,8 @@ T['es'] = dict(
     t3Eyebrow='Antes de empezar',
     t3Title='Verbos y adjetivos que traen su preposición',
     t3ah='Misma idea, distinta preposición',
-    t3ab='Se <em>accuses</em> a alguien <em>of</em> algo, pero se <em>blames</em> '
-         'a alguien <em>for</em> algo. Los significados están cerca; las '
+    t3ab='El patrón es <em>accuse someone of</em> algo, pero <em>blame someone '
+         'for</em> algo. Los significados están cerca; las '
          'preposiciones no son intercambiables.',
     t3an='Es la pareja que más se falla en B2.',
     t3bh='Tres que llevan persona y cosa',
