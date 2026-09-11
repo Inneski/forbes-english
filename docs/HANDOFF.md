@@ -11,6 +11,47 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-11 — A distractor that is also correct, and the one place it can hide
+
+Innes played the shipped B1 preposition deck and found three items where a
+distractor was as good as the key. He was right on all three, and auditing the
+other 80 found five more. Eight stems rewritten across two lessons.
+
+**The rule that makes this findable: it can only happen where the preposition
+is chosen by MEANING.** Place, time, movement. It is structurally impossible in
+a fixed collocation — "interested ___ politics" admits one answer because the
+pair *is* the vocabulary item. That is why B1's `dependent` section and 55 of
+the 56 B2 items needed no change, and it is the filter to apply before spending
+time auditing anything else: **go straight to the semantic sections.**
+
+The eight, because the shapes repeat:
+
+- **The key was simply wrong.** `a small crack ______ the wall` keyed to `on`.
+  A crack goes *in* a wall — it is a fissure in the material, not a thing on the
+  surface. Worse, the teach card written for the rebuild had invented a
+  distinction to justify the key ("a crack *on* the wall is on its face"). If a
+  rule has to be invented to defend an answer, the answer is the problem.
+- **Nothing in the stem forced the reading.** `sitting ______ strangers on the
+  crowded train` keyed to `among`, but you can sit *between* two strangers or
+  *opposite* them. `jogged ______ the river` keyed to `along` — there are
+  bridges. `swim ______ the lake` keyed to `across` — you can swim along one.
+  The fix is always to add the detail that rules the others out: *lost among a
+  crowd*, *along the riverbank for three miles*, *across to the far shore*.
+- **A distractor was live in a second sense.** `directly ______ the supermarket`
+  keyed to `opposite`, but `under` is where cinemas sit in malls. And `Please
+  stay quiet ______ the presentation` keyed to `during` — "stay quiet **for**
+  the presentation" is ordinary English and `for` was on the list.
+- **None of the four options was natural.** `placed the tray ______ the table`
+  keyed to `onto`, but the English is "placed it **on** the table" and `on` was
+  not offered. Same in B2: `The hotel boasts ______ a rooftop pool` — a hotel
+  *boasts a pool*, no preposition, because transitive `boast` is a different
+  verb from `boast about`. In both the key was only the least-bad answer.
+
+**How to check quickly:** read each stem and ask of every distractor "could I
+write a sentence where this is right?" — not "is the key right?". The second
+question passes items the first one fails, which is exactly how all eight
+shipped.
+
 ## 2026-09-11 — A skew nobody could see, because the engine shuffles it away
 
 The three preposition lessons (`b1_prepositions_double_lesson`,
