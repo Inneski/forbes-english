@@ -199,7 +199,8 @@ last night and now it has vanished").
 
    The Supabase MCP tools work from a cloud session even though `urllib`
    does not. Titles follow *The Lost Yellow Road — Past Continuous Voxel
-   Oz RPG (A1-A2)*.
+   Oz RPG (A1-A2)* — and the world word follows the **art**, so a painted
+   game reads *London RPG*, not *Voxel RPG* (Sherlock, 2026-09-10).
 5. Record it in `docs/HANDOFF.md`: what shipped, what the export lacked,
    what you added, the PR number, the row id, and "nothing left to run".
 

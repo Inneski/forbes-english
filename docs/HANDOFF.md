@@ -11,6 +11,72 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-11 — A skew nobody could see, because the engine shuffles it away
+
+The three preposition lessons (`b1_prepositions_double_lesson`,
+`b2_prepositions_advanced_lesson`, `…_part2`) are decks now. The useful part
+is not the rebuild, it is what the source turned out to be hiding.
+
+**The correct answer was written first in 15 of 27, 25 of 28, and 28 of 28.**
+Part 2 did not have a single exception. Nobody had seen it because
+`shuffleOptions()` deals the buttons at runtime, so on screen the key moves
+around exactly as it should. `check-lesson.js` gates on the **source** order
+anyway, and that gate is the only reason this surfaced.
+
+It is right to gate there, and the reason is worth keeping: **the PDF export
+prints source order.** A printed hand-out of Part 2 was an answer key with the
+column already filled in. So the rule generalises past these three — any deck
+whose items were lifted from a page written by hand is worth measuring, because
+whoever wrote the page had no reason to think about option position:
+
+```python
+import collections
+collections.Counter(q['correct'] for q in ALL)
+```
+
+The fix that preserves the exercise is a **left rotation**, not a reshuffle:
+`s = (key_index - n % 4) % 4`, then `opts[s:] + opts[:s]`. The option set is
+byte-identical, only its position changes, so no distractor is invented and
+`assert_no_key_is_longest` is unaffected.
+
+**Two more defects in the same three lessons, both invisible from the English.**
+The B1 time section taught that *"on the weekend"* is British English — it is
+the American form, and `at` was in the same option list, so a British-taught
+learner picked it, was marked wrong, and was then told the inverse rule. And
+the B2 Spanish was unaccented end to end: *proposito, espanol, razon, exito,
+solucion, disminucion*. Both are the kind of thing that reads fine if you are
+checking the format and never the content.
+
+**Still to do on this group:** nine other preposition lessons are already
+decks, so the category is now complete — but 44 lessons remain on the
+`coming soon (no hero)` list that `tools/seo.py` prints on every run. That
+number is the queue. It was 66 at `38d2ac5`.
+
+## 2026-09-11 — The ChatGPT brief makes the art style a parameter
+
+Innes asked for RPG instructions "without the Minecraft element", so
+`docs/CHATGPT-RPG-BRIEF.md` no longer hardcodes voxel. The style is a fifth
+line on his brief (grammar, level, world, **style**, questions); §4's picture
+bullet names the style instead of assuming it; **§4a is a new style contract**
+section; §9's checklist and `meta.style` in §7 carry it through to the builder.
+
+What is *not* a parameter, and the brief now says so in §5: the chrome.
+Monocraft, the dark glass panel, the pop-out and the camp accent from `CAMP`
+in `block-camp-hub/build.py` come from `rpg.py` and are identical on every
+adventure — Sherlock's painted London ships with all four. Monocraft is
+hardwired in `font_css()`, not a spec key, so "no pixel font at all" is an
+engine change (a spec key plus a second embedded face), not a brief change.
+Nobody has asked for that yet; if it is asked for, that is the work, and the
+24 camp decks' Pixelify/Silkscreen pairing is the precedent for keeping two
+faces around.
+
+§4a is written off two failures and one success already recorded in this file:
+the Creature's drifting design (the Frankenstein fixes doc had to carry a
+character sheet — flat-topped green head, amber eyes, cross stitches — to stop
+it), the Blue Manuscript's eighteen filenames holding ten pictures, and Blue
+Hour composing every object right of x=60 so the panel never needed juggling.
+Voxel hid all three; a painted world will not.
+
 ## 2026-09-10 — Two ways lesson prose goes wrong that reading the English will never show you
 
 Both found by the Frankenstein split session in stories and clues written from

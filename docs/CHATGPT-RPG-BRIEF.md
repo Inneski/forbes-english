@@ -1,10 +1,10 @@
 # Brief for ChatGPT — build an RPG export that lands house-style-perfect
 
 **How to use this file.** Copy everything between the two rules into
-ChatGPT, then add four lines of your own: the grammar point, the level, the
-story world, and how many questions. Ask for the one HTML file. Then hand
-that file to Claude — a local session with the file in `incoming/`, or a
-cloud task with `Inneski/forbes-english` added as a source — and say:
+ChatGPT, then add five lines of your own: the grammar point, the level, the
+story world, the art style, and how many questions. Ask for the one HTML
+file. Then hand that file to Claude — a local session with the file in
+`incoming/`, or a cloud task with `Inneski/forbes-english` added as a source — and say:
 *"Rebuild this RPG export as a Block Camp RPG, to the standard in
 lesson-template/build/rpg/README.md."*
 
@@ -16,6 +16,15 @@ from `rpg.py`. ChatGPT's job is the **content in the exact shape the engine
 reads**, written to fit that chrome. The prompt below describes the chrome
 anyway, because the chrome is what the word budgets and the picture rules
 are *for* — not so ChatGPT can imitate it.
+
+**The art style is a parameter, not a constant.** The first six adventures are
+blocky voxel Minecraft art because that is what Block Camp is. Sherlock: The
+Blue Hour, 2026-09-10, is painted Victorian London — and it is the cleanest
+export we have received, passing `check-rpg-panels.js` on the first run, which
+no voxel one has. So **name the style on your brief.** Nothing in the engine
+cares: it takes 3:2 WebP plates and puts a glow on one object in each. What
+does care is §4a — a style that is not voxel needs a written style contract,
+or the hero's face changes between plate 4 and plate 17.
 
 The version of this brief before 2026-09-07 got three things wrong, each of
 which cost a session. It did not forbid patch-script revisions — Frankenstein
@@ -121,11 +130,19 @@ or cut it.
   clue already uses the target form, the question is free.
 - No question depends on knowing the story world, only on the grammar.
 
-## 4. Pictures and the glowing object
+## 4. Pictures, the art style and the glowing object
 
 - One picture per scene, plus a cover. **WebP, 1536 × 1024 (3:2), each under
-  200 KB.** No PNG, no JPEG. Blocky voxel Minecraft-style art, one palette
-  across the whole game.
+  200 KB.** No PNG, no JPEG.
+- **The art style is the one named on the brief** — blocky voxel, painted
+  illustration, ink and wash, cel animation, gouache storybook, noir
+  photoreal. Whatever it is, it is the same style in every plate, on one
+  palette, and it is written down (§4a). If the brief names no style, use
+  painted illustration.
+- **No lettering anywhere in the art.** No words on signposts, shop fascias,
+  book pages, maps or labels. An image model's English comes out garbled at
+  1536 px, and a broken word on a language lesson reads as a mistake in the
+  lesson. A signpost is fine; a signpost with writing on it is not.
 - **Every picture has exactly one clear object that the clue is about** — the
   tornado, the lantern, the axe, the ship's wheel. That object is what the
   player clicks and where the panel grows from.
@@ -146,6 +163,45 @@ or cut it.
   in play order, and inline every one as a base64 data URI in `images`.
 - **Only ship the pictures the game uses.** No superseded art, no alternates.
 
+## 4a. The style contract — what replaces "voxel"
+
+Voxel art is forgiving: a character who is six cubes and a hat looks the same
+in every plate. Every other style drifts. Twenty-two plates from twenty-two
+prompts give you three different Holmeses unless you fix the description once
+and never vary it.
+
+- **Write the style sentence once and paste it verbatim into every image
+  prompt** — medium, light, palette, camera — and put that same sentence in
+  `meta.style` so we can read what you were aiming at: *"Painted digital
+  illustration, Victorian London at blue hour, cool slate and gaslight amber,
+  soft brush edges, no hard outlines, three-quarter view at eye level."*
+- **A character sheet, one line per recurring character**, pasted into every
+  prompt that character appears in: *"Holmes: tall and thin, dark grey ulster,
+  no hat, black hair swept back, clean-shaven."* This rule exists because the
+  Frankenstein game needed *"flat-topped green head, amber eyes, cropped dark
+  hair, cross stitches, ragged layered coat"* on every prompt to stop the
+  Creature growing long hair halfway through the story.
+- **One palette and one light key for the whole game**, named in that
+  sentence. A game that wanders from blue hour to noon to firelight looks
+  like three games.
+- **Every filename is a different picture.** An export with eighteen
+  filenames holding ten images was thrown away whole: a player met the same
+  street three times and read it as a bug. The four endings and the briefing
+  may reuse a question's plate; nothing else may.
+- **Dark, but never black.** The panel is dark glass and our marker takes its
+  colour from the object underneath, so a night scene needs a light source in
+  frame — a lamp, a lit window, moonlight on wet stone. No heavy grain, no
+  lens flare, no crushed blacks: they eat the glow (§4).
+- **Put the object on the same side in every scene.** Sherlock composed all
+  twenty-two plates with the object right of x=60, so the panel sat left all
+  game and not one scene needed adjusting — the only export that has ever
+  needed none. Pick a side at the start, keep it, and leave the other side
+  quiet.
+- **Styles that fight the chrome:** anything on a bright flat white ground
+  (the dark glass panel disappears), anything that has to be read as text
+  (newspapers, diagrams, labelled maps), and anything so densely detailed
+  that both halves of the frame are busy.
+
 ## 5. Language, level and typography
 
 - The level is on the brief (A1–A2, B1, …). Short sentences, one idea per
@@ -157,6 +213,12 @@ or cut it.
   grammatically, which is a free clue.
 - Never refer to a previous version of anything — not a draft, not "the old
   version", not this export.
+- **The display face is a pixel font (Monocraft) whatever the art style.**
+  That is our engine's chrome, identical on every adventure; it is not a
+  reference to the pictures, and you do not write for it beyond the word
+  budgets in §2. If the game is not voxel, say so in the words instead: no
+  VOXEL in the `eyebrow`, no BLOCK in a title, and `meta.world` names the
+  world as it looks — *"Victorian London"*, not *"Voxel London"*.
 
 ## 6. Translations — nine languages, glossing the final English
 
@@ -199,6 +261,7 @@ expressions.
     "title": "THE LOST YELLOW ROAD",
     "grammar": "Past Continuous",
     "world": "Voxel Oz",
+    "style": "Blocky voxel Minecraft art, Kansas dust and storm grey, flat daylight, eye-level camera",
     "level": "A1-A2",
     "accent": "#F1D779",
     "scoring": { "points": 5, "tiles": 4, "chances": 3, "max": 75, "pass": 65 }
@@ -314,12 +377,16 @@ Rules for the structure:
 4. Every explanation names the rule.
 5. Every field is inside its word budget in §2.
 6. Every picture is WebP, 1536×1024, under 200 KB, with one nameable object,
-   bright enough to glow, on one side and a quiet other side.
-7. Every scene is reachable; nothing is orphaned; every `next` resolves.
-8. Every `local` has all nine languages on every string, glossing the text you
+   bright enough to glow, on one side — the same side all game — and a quiet
+   other side.
+7. One style, one palette, one look per character, no lettering in the art,
+   and no two filenames holding the same picture. `meta.style` says what the
+   style was.
+8. Every scene is reachable; nothing is orphaned; every `next` resolves.
+9. Every `local` has all nine languages on every string, glossing the text you
    actually shipped, with `___` preserved and options untranslated.
-9. The JSON parses. Count and report: scenes, questions, relics, endings,
-   pictures, total file size.
+10. The JSON parses. Count and report: scenes, questions, relics, endings,
+    pictures, total file size.
 
 Deliver the HTML file, then one table — scene id · picture · object · key
 slot · correct answer · next — and nothing else.
@@ -343,6 +410,12 @@ unknown keys through to `data.json` untouched, so read them in the builder:
 - `meta.accent` → check it against `CAMP` in the hub builder and use the camp
   colour if they differ; `meta.scoring` → the spec's `max`, `points`,
   `tiles`, `chances`, `complete_score`;
+- `meta.style` → the builder docstring, and the world word in the catalogue
+  title follows the art: *Sherlock Holmes: The Blue Hour — Present Simple
+  London RPG (A2)*, not *Voxel RPG* (README §5; HANDOFF, 2026-09-10). The
+  chrome does not follow it — Monocraft, the dark glass, the pop-out and the
+  camp accent are the standard on every adventure whatever its pictures look
+  like;
 - `_check_answer_key` in `rpg.py` enforces §3 at build time. If it fires, the
   export ignored the brief: re-deal the key in the builder, never disable the
   gate.
