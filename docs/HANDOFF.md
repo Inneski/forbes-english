@@ -11,6 +11,56 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-12 — IELTS Reading opens with True/False/Not Given
+
+`ielts.html` had shown a disabled Reading card since the route was split, and
+its own copy chose the lesson: "True/False/Not Given first, because that is
+where the most marks are lost." So `ielts-reading.html` is live with one deck
+behind it, `forbes-english-ielts-reading-tfng.html` — 20 slides, EN/DE/ES,
+six pictures, both gates clean, catalogue row in Supabase and mirrored.
+
+The hub is **the Speaking hub with its copy replaced**, deliberately: same
+chrome, same CSS, same lockup, so the two route pages cannot drift. If you add
+a third route, copy it the same way rather than re-authoring the shell.
+
+**Two things this lesson forced that are worth knowing.**
+
+1. **A question type with fixed options has to be written around the length
+   gate.** Bare `True / False / Not Given` fails `check-lesson.js`'s ANSWERS
+   check whenever the key is True, because "Not Given" is inherently the
+   longest label — and it fails it in the same direction on a third of the
+   paper. The three verdicts are written as full clauses of near-equal length
+   (38/39/36 characters) for exactly that reason. The key spread is not
+   shuffled either: the twelve items cycle True, False, Not Given, so the key
+   lands at `i % 3` and the distribution is an even 4/4/4.
+
+2. **`check-teach-leak.js` caught a real one.** The teach card illustrating
+   paraphrase used *"Rainfall is lower inland" / "the coast is wetter"* — which
+   was item 11's sentence pair verbatim, four slides later. Changed the nouns;
+   the rule travels, the sentence does not. **Run that gate on every new deck**;
+   it is not wired into `check-lesson.js`.
+
+One item was rewritten before it shipped. `q10` gave a hedged passage ("may
+reduce recovery time... the trial was small") against "the drug has been proven
+to shorten recovery" and was keyed FALSE — but a passage that hedges does not
+*deny* that a thing is proven, it simply never claims it, and real papers key
+that shape as NOT GIVEN about as often. Two defensible answers. The statement
+now tests approval, which the passage is plainly silent about.
+
+### Still to come on this route
+
+Two cards are `step-soon` on `ielts-reading.html`: Matching Headings (the type
+that does NOT run in passage order) and Summary/sentence completion (where the
+word limit does the damage). Both need their own art.
+
+**Vocabulary is one image short.** `incoming/ielts-vocabulary/` has five of its
+six sections; the missing one is the hero — *an old wooden card-index cabinet
+standing alone against a huge plain wall, one drawer open*. The palette derives
+from the hero, so nothing can be built until it lands. Everything else for that
+route is sorted and waiting in `incoming/ielts-vocabulary/`.
+
+---
+
 ## 2026-09-12 — The plate sweep: 47 decks rebuilt, 13 held back, four builder bugs fixed
 
 Innes: *"yes apply to all"* — the lighter plates and shrink-wrapped answer
