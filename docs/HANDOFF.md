@@ -11,6 +11,54 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-12 — Lighter plates and shrink-wrapped answer boxes (template-wide)
+
+Innes, looking at the two new speaking decks: *"the answer boxes dont need to
+be so long, we could be able to see much more of the background images. Also
+lower opacity of the text boxes."* Both are now template changes, in
+`lesson-template/lesson-template.html`.
+
+**The boxes stopped spanning the column.** `.opt` was `width: 100%`, so four
+full-bleed bars of `--surface2` painted across the artwork on every question
+slide. It is now `width: fit-content; max-width: min(100%, 46em)` with
+`justify-items: start` on `.opts` — the same shape `.chunk` and `.sort-item`
+already had. `.q-stem` and `.q-ctx` went the same way in the same pass: with
+the options shrunk, an eight-word stem was the last thing painting a bar from
+edge to edge, and it looked worse than what had just been fixed.
+
+**One property for plate strength, and a script that says what it may be.**
+`--plate` (0.68), `--plate-bg`, `--plate-box` and `--plate-card` replace four
+hardcoded percentages — the plate background and the spread shadow that grows
+it have to move together or the plate gets a rim, which is the `--bins-h`
+lesson again.
+
+**0.68 was measured, not chosen.** `lesson-template/measure-plate.py` is new.
+The plates exist because of a measurement (52 of 60 on-canvas blocks below AA
+on the Ukraine deck), so lowering them had to be answered with the same
+instrument. It composites void + hero + wash + plate over the **brightest**
+64px tile of every background a deck ships and reports contrast against
+`--text`:
+
+```
+python3 lesson-template/measure-plate.py ielts-pronunciation --alpha 0.94,0.68,0.5,0.4
+```
+
+At 0.68 both speaking decks hold above 9:1 and a light deck (`PrepositionsB2P2`)
+above 11:1, against AA's 4.5. The floor where either deck actually fails is
+**0.40**. Verified a second time in the live page rather than in the model,
+sampling the real pixels behind each element on the lightest background in the
+set (`ielts-pronunciation/bg02.jpg`, the pendant lamps): `.slide-title` 9.23,
+`.q-stem` 9.08, `.opt` 8.58. Raise `--plate` per deck if a hero needs it, and
+run the script rather than guessing.
+
+**Only two decks have been rebuilt onto this.** A template change reaches a
+deck when its builder is re-run, so the other 114 still carry the old full-width
+options and 94% plates. Sweeping them is a re-run of every builder in
+`lesson-template/build/` plus a `seo.py` pass — worth doing deliberately, with
+`check-lesson.js` over the lot afterwards, rather than as a side effect of this.
+
+---
+
 ## 2026-09-12 — The IELTS Speaking route is finished: Part 3 and Pronunciation
 
 `ielts-speaking.html` had been shipping two disabled cards with nothing behind
@@ -164,6 +212,41 @@ separately. Any branching RPG has this bug available to it.
   barrels on it"), so it would have shipped a distractor a teacher must mark
   correct. Slot 18 tests the form of the present result instead. `BIBLE.md`
   records this where the slot table is.
+
+### Later the same day — it went back in for the second tense
+
+Innes read the script and said: *"has no present perfect continuous."* He is
+right, and the story had been asking for it all along — a three-week hunt, a
+scar a man has been carrying for twenty-eight years, an engine that has been
+cutting out all night. **Six of the eighteen slots converted** (10, 12, 14, 16,
+18 in `BIBLE.md`'s table); twelve stay Present Perfect.
+
+Three things worth carrying to the next two-tense lesson:
+
+- **The PPC teaching is `build_c8.py`'s, verbatim.** Camp 8 is the shipped
+  treatment and a second one invented in an RPG would contradict it. Its three
+  canonical errors are now three of the six converted slots, and the best of
+  them closes the game: *"a number is a result, and results belong to camp
+  four"* — four barrels is a number, so slot 18 is HAVE FIXED against HAVE
+  BEEN FIXING. Use KNOW and BELIEVE for the state-verb slot, never LIVE or
+  WORK, which take either.
+- **The accent had to move.** Present Perfect is camp 7 (`#2E7D65`), the
+  continuous is camp 8 (`#46B0AB`); a game spanning two camps takes neither,
+  and `rpg/README.md` §1 puts it on the hub gold `#e8c04a` — which is what
+  `long-way-home-rpg` does for narrative tenses. Here the gold is also the
+  colour of the four marker barrels, so it costs nothing.
+- **Nothing in `ART-BRIEF.md` changed.** Every converted scene kept its plate,
+  its glowing object and its beat, and only the prompt, options and
+  explanation moved. That is worth designing for: fix the pictures to the
+  *story* rather than to the grammar, and the grammar can be re-cut later
+  without re-shooting thirty-two plates.
+
+The round-3 audit (fourteen agents, ninety findings) reverted two vocabulary
+fixes round 2 had already won — `capstan` and `bar-tight`, both above B1 —
+which is the standing hazard of handing a repair agent a scene without the
+finding that shaped it. Re-run `check-items.py` after every repair pass, and
+re-read the scenes the earlier audit touched.
+
 
 ## 2026-09-12 — A site-wide house-style audit: what is actually out of standard
 
