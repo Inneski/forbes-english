@@ -78,7 +78,7 @@ PASS = DATA['meta']['scoring']['pass']
 HOT = {
     'cover':    ([86, 43, 17, 49], 'left',   'center'),       # the lantern over the doors
     'rules':    ([92, 64,  7, 11], 'left',   'center', 64),   # the glass on the bar; wide, five cards
-    'door':     ([50, 52,  6, 35], 'right',  'center', 40),   # the saloon door, dead centre
+    'door':     ([50, 52,  6, 35], 'left',   'center', 40),   # the saloon door, dead centre
     'mirror':   ([92, 64,  7, 11], 'left',   'center', 50),   # the glass
     # 50, not the default 46: French is the long one here and overflowed by
     # 18px at 46. Found by the checker's `tight` line, not by the German-only
