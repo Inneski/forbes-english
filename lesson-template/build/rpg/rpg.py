@@ -170,7 +170,7 @@ button{font:inherit}
    the middle. `pos` already carries each lesson's answer to that (Part I is
    `left`, Part II is `right`, both chosen against a measurement), so the
    strip honours it and centres only where the scene asks to be centred. */
-.is-cover .zone{align-items:flex-end!important;bottom:7%}
+.is-cover .zone{align-items:flex-end!important;bottom:16%}
 .is-cover .content{width:auto!important;max-width:64%;margin:0!important;text-align:center;align-items:center;
   /* The scrim reaches full strength well above the first line of text. It used
      to start fading in at 42%, which put the kicker — accent colour, smallest

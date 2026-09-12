@@ -11,6 +11,275 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-12 — The Last Bounty: cover position, panel opacity, the two choice screens moved off centre
+
+Innes looked at the live `last-bounty-rpg` deck and asked for three layout
+tweaks. All three landed in `lesson-template/build/build_last_bounty.py` and
+`lesson-template/build/rpg/rpg.py`, then `block-camp/last-bounty-rpg.html`
+was rebuilt and re-checked with `check-rpg-panels.js`.
+
+1. **Cover text sat too low.** `rpg.py`'s `.is-cover .zone{bottom:...}` went
+   from `7%` to `16%`, which pushes the title strip up off the foot of the
+   frame. This is a shared engine value — every RPG deck picks it up the next
+   time it is rebuilt, not before. No other deck was rebuilt as part of this.
+2. **Panel opacity.** `build_last_bounty.py`'s `--panel` went from
+   `rgba(18,12,6,.88)` to `.72`. This is per-lesson (each builder hardcodes
+   its own palette dict), so it only affects this deck.
+3. **The two story-choice screens (`approach`, `priority`) were dead centre,
+   64%-wide horizontal blocks** — the house style documented in
+   `rpg/README.md` for route-choice scenes, but not what Innes wanted here.
+   Both objects sit far right in their plates (cx 74 and 92), so there was
+   negative space to use: both moved to `pos: 'left'` at `width: 50`, matching
+   the vertical panel style every other scene already uses. Re-ran
+   `check-rpg-panels.js last-bounty-rpg` after: clean on both scenes, no new
+   occlusion or overflow.
+
+**Not touched, and pre-existing:** the checker still reports `brother` and
+`chase` as HIDDEN (panel covers 23-29% of the object) and four `tight`
+overflow lines in es/de. Neither scene's `pos` was touched by this change —
+worth a pass with the contact-sheet method in `rpg/README.md` §3-4 next time
+someone is in this file.
+
+## 2026-09-12 — Kraken: The Black Tide, and the three item defects no reader catches
+
+A new Block Camp RPG, **written here rather than rebuilt from an export** —
+the first of the six that had no `window.*_GAME_DATA` file behind it. Innes
+asked for "an RPG script based on Jaws by Spielberg, but about hunting the
+Kraken on west coast of Scotland". Everything else was chosen from the gaps:
+**Present Perfect** (the biggest hole in the RPG set, and camp 7's `#2E7D65`
+is sea-green), **B1**, eighteen questions a path, two forks, four marker
+barrels — Quint's yellow barrels — and three chances. Max 90, pass 75, which
+is the score you still reach after spending all three chances.
+
+Everything is in `lesson-template/build/rpg/kraken-black-tide-rpg/`:
+`BIBLE.md` (cast, graph, slot table, the binding conventions), `script.json`
+(the English, final), `data.json` (assembled, key dealt), `ART-BRIEF.md`
+(style contract, character sheet, thirty-two image prompts), plus
+`assemble-script.py`, `check-items.py`, `prep-plates.py` and
+`dump-strings.py`. The builder is `lesson-template/build/build_kraken_black_tide.py`.
+
+**Not shippable yet, and blocked on two things only:** the thirty-two plates
+do not exist, and the nine glosses cannot be written until they gloss final
+English, which they now can.
+
+### The three defects that needed a measurement, not an opinion
+
+A multi-agent audit filed 165 findings against the first draft. Three were
+systemic, invisible to a reader, and are now gates in `check-items.py` —
+each verified failing against a deliberately broken copy before it was
+trusted, the way the SORT gate and the I18N generalisation were.
+
+1. **The blend tell.** *"Pick the option every one of whose words appears in
+   one of the other two."* That rule alone scored **9 of 25 items** and an
+   expected 58.7% overall. It is not bad luck: in a three-option minimal pair
+   the key is normally the intersection of its distractors' good halves, so
+   this is the **default state of a carelessly written item**. An item is
+   clean when the key owns a token neither distractor has, or when all three
+   options share one multiset of words and only the order differs.
+2. **The one-sub-skill tell.** **19 of 25** distractors died to the single
+   rule *"the word after HAVE/HAS is a past participle"*. A learner who knows
+   only that scores most of the game. Every distractor now carries an error
+   family (PART, AUX, AGR, ADV, PREP, TENSE, CONT, NEG, ORDER, SEM, TIME) in
+   `families.json`; no family may carry over 55% of the items on either path,
+   and no two consecutive items may share a family pair. PART is now 9 of 18
+   on the longer path.
+3. **`rpg.py`'s length gate is dead and should be tightened.** It fires only
+   when the key is 10% **and** 4 characters longer than its longest
+   distractor, which no real three-option item reaches. It passed all
+   twenty-five of this lesson's first-draft items while seven had a strict
+   length ordering a learner could read, and while the key was shortest or
+   tied-shortest **15 of 25**. `check-items.py` uses a flat two-character
+   margin in both directions instead. **Not fixed in `rpg.py`** — doing that
+   would re-gate the five shipped RPGs, which wants its own pass.
+
+### And one that is not about items at all
+
+**Deal the answer key over the PLAY orders, not the file.** The obvious
+rotation over `ORDER` deals 8/8/9 overall and looks fine — but `ORDER`
+interleaves the two branches, so the cycle correlates the slot with the
+branch, and one of the two actual play orders came out **8/2/8**: the middle
+button was right twice in eighteen questions. `assemble-script.py` now uses an
+explicit per-scene map balanced 6/6/6 over each path, and gates on each path
+separately. Any branching RPG has this bug available to it.
+
+### Two things a future session should carry
+
+- **Grammar tokens in CAPS is a hardwired rule, and a brief that does not say
+  so will not get it.** The first draft came back with thirteen lowercase
+  explanations against twelve CAPS ones — a visible seam down the middle of
+  the lesson — because the spec said "write grammar forms plainly". The rule
+  is not in `HOUSE-STYLE.md` or `rpg/README.md`; it lives in the shipped
+  builders. Restate it verbatim, with a worked example, in any brief.
+- **Slot 18 could not be written as planned.** It was meant to mirror slot 13
+  — a present result forcing the Present Perfect where slot 13 has a finished
+  time forcing the Past Simple. Every Past Simple distractor that fits such a
+  sentence is defensible English ("The sea gave them back", "We put four
+  barrels on it"), so it would have shipped a distractor a teacher must mark
+  correct. Slot 18 tests the form of the present result instead. `BIBLE.md`
+  records this where the slot table is.
+
+## 2026-09-12 — A site-wide house-style audit: what is actually out of standard
+
+Measured across all 316 root HTML files (291 lessons, 25 site chrome), plus
+`check-lesson.js` run over all 114 decks. The numbers below are measurements,
+not estimates. **Three of the six audit dimensions did not finish** (question
+quality, slide budget, publishing integrity) — a session limit killed them.
+Treat this entry as four-sixths of an audit.
+
+### The one to do first: 37 decks never picked up the template's WCAG fix
+
+`lesson-template.html:1032-1048` replaced the on-canvas **halo** with an
+on-canvas **plate** (`background: color-mix(in srgb, var(--surface) 94%,
+transparent)` grown with a spread shadow, `text-shadow: none`). The comment
+there records why, and it is a real measurement: *"52 of 60 on-canvas text
+blocks on the Ukraine deck contained ground below WCAG AA 4.5:1, a third of
+the area on a typical question stem, the cover subtitle bottoming out at
+1.44:1."*
+
+**76 decks carry the plate. 37 carry only the old halo. 1 carries neither
+(`fireshield-pitch.html`). None carry both.** The 37 include
+`forbes-c1-negotiation.html` — the deck HOUSE-STYLE calls the worked
+reference — and `forbes-english-hiking-c1.html`, `stranger-things-b1-lesson`,
+`impostor_syndrome_advanced_JP`, `jfk_prepositions_b2`, `koolhas & Lamb`.
+
+**No code change is needed.** The treatment already lives in the template;
+those 37 decks simply have not been regenerated since it landed (`92287fe`).
+The fix is to re-run each builder and re-check. This is the highest learner
+impact per unit of work on the site right now: a legibility defect that was
+measured and fixed once, with 37 decks still shipping the version that failed.
+
+### --bg-opacity: two deliberate departures are dead CSS
+
+`check-lesson.js` never asks whether a palette value takes effect, so this was
+invisible. The pattern that **works** patches the template's own line
+(`build_conservation.py:450`, `build_nature1.py:617`):
+`s.replace('  --bg-opacity: 0.72;', '  --bg-opacity: 0.42;', 1)`. Those render
+at 0.42 and 0.40 as intended.
+
+The pattern that **silently does nothing** writes `--bg-opacity` into the
+palette `:root` string (`build_exam1.py:100`, `build_exam2.py:77`,
+`build_poss.py:51`). The template re-declares it twenty lines later at the same
+specificity, and `html[data-theme="light"]` re-declares it again at higher
+specificity. Measured by rendering and reading the computed value:
+
+| deck | builder intends | actually renders |
+|---|---|---|
+| `exam-prep-5hour-course-part2.html` | 0.15 | **0.74** |
+| `forbes-english-possessive-pronouns-a1.html` | 0.30 | **0.72** |
+
+Both builders state a real reason for the departure (`build_exam1.py:95-100`:
+the hero "is a colour chart, not a picture: sixty flat, fully saturated blocks
+with hard edges and no quiet area anywhere"). The reasoning is sound and the
+result never reached the page.
+
+**The class fix** is to move `--bg-opacity` out of the template's fixed-token
+`:root` so a palette value can never be silently overridden — otherwise the
+next builder to try the obvious thing loses the same way.
+
+### 14 decks offer a language that does not translate the slide
+
+Proven by rendering, not by grep: open the deck, drive `#langSelect` to `de`,
+diff the chrome against the English render.
+
+| deck | menu offers | slides whose chrome changed | strings still English |
+|---|---|---|---|
+| `blockcamp-past-simple` (control) | en,de,es,fr,it,pt,ru,ar,zh,ja | 20 / 22 | 0 |
+| `forbes-c1-negotiation` (control) | all ten | 21 / 23 | 0 |
+| `blockcamp-passive-past-simple` | en,**de**,**es** | **0 / 22** | **40** |
+| `sherlock-scarlet-star` | en,**de**,**es** | 3 / 51 | **85** |
+| `forbes-english-meetings` | en,**de** | 3 / 12 | 16 |
+
+14 decks, 506 strings. The nine `blockcamp-passive-*` decks are the worst:
+**100% of their chrome is unkeyed**, while their own non-passive siblings are
+100% clean — so this is a fork in the passive builders, not a Block Camp trait.
+
+This is worse than the partial-language state the checker *does* gate, because
+`UI_I18N.de` is complete, so the language reports finished and appears in the
+menu. §8's rule — *"Anything without a `data-i18n` attribute will never
+translate"* — has no gate: the I18N check only asks whether existing
+`data-i18n` keys **resolve**, never whether translatable text **has** one.
+
+### The rest, in one list
+
+- **177 of 291 lessons are still scrolling pages.** HOUSE-STYLE §10a says "245
+  lesson files; 36 are decks". It is 291 and 114 — wrong by a factor of three,
+  and it is the first thing a planning session reads.
+- **54 decks ship EN+DE with no Spanish**, against the standing 2026-09-04
+  minimum. The docs explain this as a forgotten `langs=('en','de','es')`
+  argument. That explanation is wrong: **no ES-less deck has a finished Spanish
+  dictionary sitting behind a missing argument.** ~1,957 English strings need
+  writing. 29 decks have a working `deck.py` builder and a paired `i18n_*.py`;
+  the rest have no regeneration path at all.
+- **`fireshield-pitch.html` is an undocumented 27th DM Sans failure.** §2 waives
+  exactly 26 Block Camp decks; this is not one. It has 4 slides, no `data-bg`
+  and no activation icons. Worth deciding whether it is a lesson at all.
+- **`forbes-english-dinosaur-minecraft-part2.html` puts five `<img>` in a card**
+  (`:1200-1206`) — the §5b prohibition verbatim — plus a hand-picked
+  `rgba(9,12,14,.78)` caption plate that is on no palette. No builder emits this
+  file, so it is a hand edit.
+- **20 decks skew the MC key to one source position** (≥50% of items). The PDF
+  export prints source order, so a printed handout is an answer key. Worst:
+  `forbes-english-lego-lesson-part2` 71%, `exam-prep-5hour-courseEXP` 68%.
+- **`check-lesson.js`: 79 clean, 35 fail** — 27 DM Sans, 8 key-is-shortest items
+  across 4 decks, 7 canvas overflows across 6 decks.
+
+### A retraction, because the number looked alarming and was not
+
+An early pass of this audit reported "66 decks hardcode `rgba(0,0,0,…)` /
+`rgba(255,255,255,…)`, against §4a". **That is not a finding.** Nearly every one
+of those literals is either inside the *definition* of a theme primitive
+(`--inset`, `--scrim`, `--hairline`), which is the prescribed place for it, or
+the `text-shadow` halo that §5 explicitly requires — correctly guarded by
+`html[data-theme="light"]`. Rendering the two light decks confirmed they compute
+`--inset: rgba(0,0,0,0.045)` and a `--scrim` mixed from `--void`, exactly
+matching the `forbes-construction-contracts.html` benchmark.
+
+The grep counted declarations and called them violations. The only real
+observation underneath it is narrow: **there is no `--halo` token**, so decks
+re-declare the literal inline — and that is moot for the 76 decks already on the
+plate treatment, which sets `text-shadow: none`.
+
+### Gates worth adding, since a rule nobody measures drifts back
+
+1. **Untranslated chrome.** On a deck with a complete non-English language, fail
+   any `.slide-title`, `.eyebrow`, `.card-title`, `.card-body`, `.act-brief` or
+   `.cover-sub` carrying no `data-i18n`. Verify it failing against
+   `blockcamp-passive-past-simple.html` (43/43) before trusting it.
+2. **Palette values that do not take effect.** Read the *computed*
+   `--bg-opacity` and compare it against what the palette block declares. Would
+   have caught both dead departures above.
+3. **The ES minimum.** `assemble()` defaults to `('en','de')` and nothing fails
+   if a builder forgets to widen it.
+4. **Teach-card six-item form.** §8 says "No gate catches it; the only way to
+   see it is to screenshot a non-English build." That is not true — the
+   five-item form leaves a static signature, because `deck.py:184-186` sets the
+   body key to `None` and the attribute is simply omitted.
+
+### Unverified, but well evidenced — from audit agents whose verifiers died
+
+Recorded so the next session does not re-derive them. **Each still needs
+checking against source before it is acted on.**
+
+- `deck.py:174-181`'s `teach()` docstring tells builders that "at B2 and above
+  the five-item form, with the body left in English, is usually the right call"
+  — the opposite of §8, and it is what an author reads at the call site. Likely
+  the root cause of the item below.
+- **433 five-item teach cards across 32 decks**, worst `forbes-geoscience-phrases`
+  42, `forbes-english-b2-lesson` 34, `exam-prep-5hour-courseEXP` 30.
+- **The 25 Sherpa Tensing pages are generated by 13 clone-and-patch builders**
+  that never touch `deck.py` — so converting that family is 13 rewrites, not one.
+- **The 9 `*-time-signals` pages are the artwork quarry for all 24 Block Camp
+  decks**; converting them may be self-defeating.
+- **Nietzsche — five pages, one artwork set, a finished sibling builder** — is
+  the cheapest family in the backlog to convert, and reportedly has a cheatable
+  answer key.
+- **Eleven pieces of committed lesson artwork appear on no slide**, in five decks
+  that use a single picture for every slide.
+- `docs/HANDOFF.md`'s top-of-file pointer sends a fresh session to "the bottom of
+  this file" for the deltas; they are ~2,643 lines from where it says.
+
+---
+
 ## 2026-09-11 — The teach slide was printing the answer, and nothing was looking
 
 An audit of the three preposition decks (six independent dimensions, every

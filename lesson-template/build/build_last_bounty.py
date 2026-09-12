@@ -86,7 +86,7 @@ HOT = {
     'table':    ([67, 67, 14, 26], 'left',   'center', 50),   # the overturned table (trimmed from w31 h45)
     'stable':   ([85, 15, 10, 26], 'left',   'center', 50),   # the hanging rope
     'poster':   ([84, 55, 18, 52], 'left',   'center', 58),   # the wanted poster (trimmed from w34 h60)
-    'approach': ([74, 20, 16, 36], 'center', 'bottom'),       # the ladder to the roof, high in the frame
+    'approach': ([74, 20, 16, 36], 'left',   'center', 50),   # the ladder to the roof, high in the frame
     'roof':     ([89, 48, 20, 40], 'left',   'center', 50),   # the oil can
     'letter':   ([77, 54, 16, 16], 'left',   'center', 54),   # Tito's note
     'confess':  ([77, 78, 30, 20], 'left',   'center', 50),   # Tito's letter
@@ -95,7 +95,7 @@ HOT = {
     # the export asked for h62, which validate() rejects — a hotspot may not be
     # more than 60% of the plate, and the bank window is not.
     'fire':     ([79, 36, 30, 52], 'left',   'center', 50),   # the bank window
-    'priority': ([92, 54, 10, 24], 'center', 'bottom'),       # the bank padlock, far right
+    'priority': ([92, 54, 10, 24], 'left',   'center', 50),   # the bank padlock, far right
     'rescue':   ([93, 46,  8, 40], 'left',   'center'),       # the broken chain (pulled off the edge)
     'chase':    ([58, 74, 20, 24], 'left',   'center', 46),   # the fallen timber
     'return':   ([89, 75, 11, 25], 'left',   'center', 50),   # the teddy bear
@@ -249,7 +249,7 @@ def build():
         # A Fistful of Lies, and the same colour. The export asked for the
         # hub's gold #e8c04a; README §2 says the camp colour wins.
         'accent': '#B08968',
-        'accent_ink': '#0b1a12', 'deep': '#1a1008', 'panel': 'rgba(18,12,6,.88)',
+        'accent_ink': '#0b1a12', 'deep': '#1a1008', 'panel': 'rgba(18,12,6,.72)',
         'labels': LABELS,
         'start': 'cover', 'scenes': scenes,
         # three endings, two of them rewards chosen by the second story choice.
