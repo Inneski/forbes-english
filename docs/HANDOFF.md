@@ -11,6 +11,53 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-12 — The IELTS Speaking route is finished: Part 3 and Pronunciation
+
+`ielts-speaking.html` had been shipping two disabled cards with nothing behind
+them since 2026-08-30, and its own hero copy promised Part 3 as "next in the
+route". Both are now built, and the route has no "Soon" left on it.
+
+| Page | Builder | Art |
+|---|---|---|
+| `forbes-english-ielts-speaking-part3.html` | `build_ieltsp3.py` + `ieltsp3_data.py` + `i18n_ieltsp3.py` | `ielts-speaking-part3/` |
+| `forbes-english-ielts-pronunciation.html` | `build_ieltspron.py` + `ieltspron_data.py` + `i18n_ieltspron.py` | `ielts-pronunciation/` |
+
+19 slides each, EN/DE/ES complete, six pictures apiece (one per section plus
+the activation stage). `check-lesson.js` and `check-teach-leak.js` both clean
+on both. Catalogue rows are in Supabase and mirrored into `tools/lessons.json`;
+`seo.py` ran last and its diff on the four generated files was purely additive.
+
+**Three things worth carrying forward.**
+
+1. **`D.mc()` takes `ctx` as a function parameter and never reads it from the
+   item dict.** Both data files were written with `ctx=` keys inside the item
+   dicts, the way `stem`, `options`, `correct` and `why` are read — and those
+   keys were silently dropped. Five items shipped their examiner line to
+   nowhere, and two of them were unanswerable without it ("Stressing *she*
+   rather than *stole* changes what?" with no sentence on the slide). Nothing
+   caught it: the checker verifies that a question HAS an explanation, not
+   that it still has a question. The fix is `ctx=q.get('ctx')` at the call
+   site. **If you write a builder that puts `ctx` in its data, check the built
+   page for `<p class="q-ctx"` before trusting it.**
+
+2. **The cover's count chip must match what the results slide prints.** The
+   engine scores a `sort` slide *per chip* (`countIn` in the deck runtime), so
+   the pronunciation deck is out of 18, not 13: twelve items plus the six
+   habits on the sorting slide. The chip said 13 until the results screen was
+   actually looked at. A deck whose only non-MC slide is an `order` is out of
+   MC + 1, which is what Part 3's chip says.
+
+3. **`forbes-english-ielts-speaking-part1-2.html` is still EN+DE.** Its
+   `UI_I18N` carries `es:{}` at line ~1504, against the standing minimum set
+   2026-09-04. It is **hand-written HTML with no builder anywhere in the
+   repo** — `git log` shows it arriving whole in `d984c88` — so it cannot be
+   regenerated, and adding Spanish means editing the generated page directly
+   or writing the builder it never had. Found, not fixed: it is a rebuild of a
+   shipped deck rather than part of this job, and it needs Innes's call on
+   which of the two routes to take.
+
+---
+
 ## 2026-09-12 — The Last Bounty: cover position, panel opacity, the two choice screens moved off centre
 
 Innes looked at the live `last-bounty-rpg` deck and asked for three layout
