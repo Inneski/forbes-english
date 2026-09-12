@@ -374,13 +374,13 @@ def build():
     import i18n_food as I
     langs = ['en', 'de']
     block = 'const UI_I18N = {\n' + ",\n".join(
-        ['  %s: %s' % (c, I.render(c)) for c in langs]
+        ['  %s: %s' % (c, deck.fill_ledger(c, I.render(c))) for c in langs]
         + ['  %s: {}' % c for c in ['es', 'fr', 'it', 'pt', 'ru', 'ar', 'zh', 'ja']]) + '\n};'
     s = re.sub(r'const UI_I18N = \{.*?\n\};', block, s, count=1, flags=re.S)
 
     s = s.replace('</style>\n</head>', HEAD_CSS + '</style>\n</head>', 1)
     assert '.gap-row { padding: 8px' in s, 'the head CSS did not attach'
-    open(OUT, 'w', encoding='utf-8').write(s)
+    open(OUT, 'w', encoding='utf-8', newline='').write(s)
     print('wrote %s — %d slides, %d MC, %d gaps, %d pairs, %d fixes, bank positions %s, %d bytes'
           % (OUT, s.count('<section class="slide'), len(MC),
              len(ANSWERS_A) + len(ANSWERS_B), len(MATCH), len(FIX), pos, len(s)))

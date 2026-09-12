@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 import re
 TPL = open('lesson-template/lesson-template.html', encoding='utf-8').read()
 s = TPL
@@ -143,5 +144,5 @@ s = s.replace('.q-stem {', '''.cue {
 .gap-row + .gap-row { margin-top: 22px; }
 .q-stem {''', 1)
 
-open('/tmp/ff_stage1.html', 'w', encoding='utf-8').write(s)
+open(os.path.join(os.path.dirname(os.path.abspath(__file__)), '.stage', 'ff_stage1.html'), 'w', encoding='utf-8', newline='').write(s)
 print('ok')

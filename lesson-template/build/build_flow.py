@@ -363,7 +363,7 @@ def build():
     # anyway — the crop can run at full strength and still clear 14:1. Anything
     # below 1.0 here just throws away texture for no legibility in return.
     s = s.replace('  --bg-opacity: 0.72;', '  --bg-opacity: 1.0;', 1)
-    open(OUT, 'w', encoding='utf-8').write(s)
+    open(OUT, 'w', encoding='utf-8', newline='').write(s)
 
     print('wrote %s — %d sections, %d MC (keys at %s), %d gaps, %d pairs, '
           'bank positions %s, %d bytes'

@@ -342,7 +342,7 @@ def build():
         ['en', 'de', 'es', 'fr', 'it', 'pt', 'ru', 'ar', 'zh', 'ja']) + '\n};'
     s = re.sub(r'const UI_I18N = \{.*?\n\};', block, s, count=1, flags=re.S)
 
-    open(OUT, 'w', encoding='utf-8').write(s)
+    open(OUT, 'w', encoding='utf-8', newline='').write(s)
     n = s.count('<section class="slide')
     print('wrote %s — %d slides, %d questions, %d words, %d bytes'
           % (OUT, n, len(QUESTIONS), len(VOCAB), len(s)))

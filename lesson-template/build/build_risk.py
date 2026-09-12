@@ -528,7 +528,7 @@ def build():
     # moment a learner touches the switcher.
     n = s.count('<section class="slide') - 1
     s = s.replace('NSLIDES', str(n))
-    open(OUT, 'w', encoding='utf-8').write(s)
+    open(OUT, 'w', encoding='utf-8', newline='').write(s)
 
     sort_pts = sum(len(x['items']) for x in SORTS)
     gap_pts = sum(len(g['rows']) for g in GAPS)

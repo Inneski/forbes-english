@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 import re
 
 TPL = open('lesson-template/lesson-template.html', encoding='utf-8').read()
@@ -191,5 +192,5 @@ s = s.replace('''          <span class="bank-chip">target phrase</span>
           <span class="bank-chip">tampered with</span>
           <span class="bank-chip">along Elm Street</span>''')
 
-open('/tmp/jfk_stage1.html', 'w', encoding='utf-8').write(s)
+open(os.path.join(os.path.dirname(os.path.abspath(__file__)), '.stage', 'jfk_stage1.html'), 'w', encoding='utf-8', newline='').write(s)
 print('slides built')

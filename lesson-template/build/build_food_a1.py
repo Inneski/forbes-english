@@ -347,7 +347,7 @@ def build():
     assert 'data-theme="light"' in s, 'the light theme flag did not attach'
     s = s.replace('</style>\n</head>', HEAD_CSS + '</style>\n</head>', 1)
     assert 'top-band wash' in s, 'the head CSS did not attach'
-    open(OUT, 'w', encoding='utf-8').write(s)
+    open(OUT, 'w', encoding='utf-8', newline='').write(s)
 
     print('wrote %s — %d sections, %d MC, %d gaps, %d sentences, bank positions %s, %d bytes'
           % (OUT, s.count('<section class="slide'), len(MC), len(ANSWERS),

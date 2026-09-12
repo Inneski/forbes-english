@@ -116,15 +116,16 @@ weakest being border-on-surface at 3.70:1 against a 1.25 floor. The hero
 are about, so the artwork does teaching work rather than decorating.
 """
 import re
+import os
 import sys
 
-sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import deck as D
 import i18n_stranger_test as I
 
-TPL = '/home/claude/forbes-english/lesson-template/lesson-template.html'
-OUT = '/home/claude/forbes-english/stranger-things-test.html'
-STUB = '/home/claude/forbes-english/stranger-things-test-german.html'
+TPL = 'lesson-template/lesson-template.html'
+OUT = 'stranger-things-test.html'
+STUB = 'stranger-things-test-german.html'
 F = 'StrangerThings'
 E = I.T['en']
 HERO = 'hero.jpg'
@@ -839,9 +840,9 @@ if __name__ == '__main__':
     points = assert_no_answer_is_shown(s)
     for gone in ('= Blätter', '= Schall', 'Schall', 'hiking and walking'):
         assert gone not in s, 'a hardcoded gloss survived: %r' % gone
-    open(OUT, 'w', encoding='utf-8').write(s)
+    open(OUT, 'w', encoding='utf-8', newline='').write(s)
 
-    open(STUB, 'w', encoding='utf-8').write(STUB_HTML)
+    open(STUB, 'w', encoding='utf-8', newline='').write(STUB_HTML)
 
     print('wrote %s — %d bytes, %d slides' % (OUT, len(s), n))
     print('wrote %s — redirect stub' % STUB)

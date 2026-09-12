@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-s = open('/tmp/jfk_stage1.html', encoding='utf-8').read()
+import os
+s = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), '.stage', 'jfk_stage1.html'), encoding='utf-8').read()
 
 EN = """const UI_I18N = {
   en: {
@@ -121,5 +122,5 @@ EN = """const UI_I18N = {
 start = s.index('const UI_I18N = {')
 end = s.index('};', s.index('es:{}, fr:{}')) + 2
 s = s[:start] + EN + s[end:]
-open('/home/claude/forbes-english/jfk_prepositions_b2.html', 'w', encoding='utf-8').write(s)
+open('jfk_prepositions_b2.html', 'w', encoding='utf-8', newline='').write(s)
 print('written')

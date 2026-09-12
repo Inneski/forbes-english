@@ -11,6 +11,98 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-12 — The plate sweep: 47 decks rebuilt, 13 held back, four builder bugs fixed
+
+Innes: *"yes apply to all"* — the lighter plates and shrink-wrapped answer
+boxes, across the shipped decks rather than just the two new ones. 67 builders
+use `lesson-template.html`; 61 of them run; **47 decks shipped, 13 were held
+back**, and the difference is the point of this entry.
+
+**Every deck was checked before and after.** `check-lesson.js` was run over the
+shipped version and the rebuilt version of every changed page, and only pages
+with no NEW failure were kept. That gate caught four separate things, two of
+them mine:
+
+1. **An em cap on a plate re-wraps the text under it.** `.q-stem` capped at
+   34em overflowed **17 decks** by up to 36px; `.opt` capped at 46em (874px
+   against ~1150px of usable width) overflowed **5 more**. Both are now
+   `width: fit-content; max-width: 100%`, which shrink-wraps short text and
+   leaves long text breaking exactly where it always did. **Do not reach for an
+   em cap here** — the template says so at both rules.
+2. **28 builders wrote CRLF.** `deck.py`'s `assemble()` has carried a
+   `newline=''` and a paragraph about why since the last time this bit; every
+   builder that writes its own file bypassed it and never learned. The first
+   sweep produced a 99,390-line diff that was almost entirely line endings.
+   All 28 patched.
+3. **Four builders still had `/home/claude/forbes-english/` hardcoded** —
+   `build_geo`, `build_nature2`, `build_stranger_test`, `build_topgear`. They
+   could not run on Innes's machine at all. Repathed.
+4. **`deck.fill_ledger()` is new.** The template emits
+   `data-i18n="ledDp|ledTime|ledClues"` unconditionally and `CHROME` has
+   defined all three in ten languages for ages, but 36 i18n modules predate
+   them and never lifted them, so a rebuilt deck failed the I18N gate. Filling
+   them in one place beat editing 36 modules — and **`build_elzar.py`,
+   `build_food.py` and `build_emails3.py` each inline their own copy of
+   `assemble()`'s i18n block**, so the first version of the fix silently missed
+   them. That is why it is a named function and not an inline loop.
+
+### The 13 decks held back, and why
+
+**Ten rebuild with the key at option A in every single question** — their
+committed builders carry `correct=0` throughout, so the live pages were fixed
+*after* they were built and the fix never went back into the builder. The
+shipped page is better than what its own builder now produces:
+
+`active_passive_refinery_lesson`, `alchemist_b2_lesson`,
+`english_class_picture_description`, `forbes-english-photography-b2`,
+`forbes-english-possessive-pronouns-a1`, `forbes-english-product-speaking`,
+`forbes-english-the-docket-b2`, `impostor_syndrome_advanced_JP`,
+`stranger-things-b1-lesson`, `forbes-english-lesson (2)`,
+`forbes-english-lesson-curious incident`,
+`forbes-english-lesson_self-improvement (self)`.
+
+Rotating the keys is the documented remedy (`prepb2p2_data.py` does it: left-
+rotate so the key lands at `n % 4`, preserving the option set). It was checked
+that no learner-facing `why` names an option by letter — the four "Option D was
+never the answer" hits are in docstrings — so **the rotation is mechanically
+safe**. It was still not done here: a builder that no longer reproduces its own
+page deserves a pass of its own with each item read, not a bulk edit riding on
+a styling change. **This is the next job on this file.**
+
+One more, `carrying-the-load-c1`, rebuilds with a shortest-correct-option on
+slide 28. Same class, same treatment.
+
+**And `forbes-english-ope- say in your words.html` is an unbuilt stub** — the
+shipped page has zero slides. Its builder produces a valid deck, but the page
+has no catalogue row, so it is not published and rebuilding it would have been
+a change nobody asked for. Reverted. Publishing it is a decision, not a sweep
+side effect.
+
+### Still unrunnable, unchanged by this
+
+`build_ai`, `build_hike`, `build_ua` want stage-1 item data from `/tmp/*.json`
+that is long gone. `build_ff` and `build_jfk` now find their files (paths
+fixed, handoff moved to a gitignored `build/.stage/`) but their stage 2 splices
+on `es:{}, fr:{}`, a literal from a template of months ago — converting them to
+the modern builder shape is a per-deck job. `build_gf` reads its own pre-deck
+source page, which no longer contains `const sentences = [`.
+
+### If you sweep again
+
+```
+python3 <the sweep>            # every builder whose source names lesson-template.html
+node lesson-template/check-lesson.js <page>   # before AND after, per deck
+python3 tools/seo.py                          # last, always
+node lesson-template/check-library.js --vs-origin
+```
+
+The before/after comparison is the whole safety net. A first pass that skipped
+filenames containing spaces hid four regressions until the list was rebuilt
+with `git diff --name-only -z`; nine of this repo's pages have spaces in their
+names.
+
+---
+
 ## 2026-09-12 — Lighter plates and shrink-wrapped answer boxes (template-wide)
 
 Innes, looking at the two new speaking decks: *"the answer boxes dont need to
@@ -9117,3 +9209,27 @@ still have no `teaches`; the home page got no text block because it is a
 fixed one-screen stage. A concurrent session was mid-way through the
 Kraken RPG when this landed; its HANDOFF section and build folder were
 deliberately left out of this commit.
+
+## 2026-09-12 — KRAKEN: THE BLACK TIDE, the three-part saga (story + art list only)
+
+Innes asked for a Jaws-shaped kraken RPG as a two-or-three-part saga with
+longer story panels, concept-checking questions on shipping forecasts and
+radio calls, and pithy Present Perfect / Continuous dialogue. He was not
+convinced by the shipped 25-scene `kraken-black-tide-rpg` and did not want a
+sibling of it, so the saga is its own world: Inverbrae, the Narrows, the
+Cauldron, the *Kittiwake*, the *Ossian*, Sergeant Isla Munro, Angus Tulloch,
+Dr Rhona Vass, Provost Menzies. No name shared with Jaws.
+
+- `lesson-template/build/rpg/kraken-saga/STORY.md` — three parts, 14
+  questions per path, 51 questions written, keys dealt 17/17/17, no key
+  longest. Half the questions are CCQs on quoted information (the forecast's
+  IMMINENT / SOON / LATER, a harbour log, VHF calls), half are grammar gaps.
+- `lesson-template/build/rpg/kraken-saga/IMAGES.md` — 59 Midjourney
+  prompts with their own style contract, character sheet and the
+  right-of-centre / no-lettering / amber-light rules.
+
+**Not built.** Nothing in `block-camp/`, no builder, no plates. Two things
+need deciding before it can be: the story panels run 60–150 words against
+the engine's 28-word wall, so `rpg.py` needs a paged story panel or the
+blocks need splitting; and the prologue is a story-only scene, which the
+engine has no slot for (fold it into the briefing screen if it stays).

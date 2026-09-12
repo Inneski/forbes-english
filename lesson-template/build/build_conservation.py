@@ -448,7 +448,7 @@ def build():
     # as nothing, and the tool then reports 17.5:1 -- a spectacular pass that
     # means the images never loaded. That happened on the first attempt here.
     s = s.replace('  --bg-opacity: 0.72;', '  --bg-opacity: 0.42;', 1)
-    open(OUT, 'w', encoding='utf-8').write(s)
+    open(OUT, 'w', encoding='utf-8', newline='').write(s)
     print('wrote %s — %d <section class="slide" (checker header is authoritative), '
           '%d MC, %d gap slides, 2 orders, 1 sort, %d bytes'
           % (OUT, s.count('<section class="slide'), len(MC), len(GAPS), len(s)))

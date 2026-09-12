@@ -906,5 +906,5 @@ if __name__ == '__main__':
                    'Out of This World — 5-Hour English Test Prep · Part I',
                    i18n_exam1)
     s = s.replace('</style>\n</head>', COVER_CSS + '</style>\n</head>', 1)
-    open(OUT, 'w', encoding='utf-8').write(s)
+    open(OUT, 'w', encoding='utf-8', newline='').write(s)
     print('wrote %s — %d bytes' % (OUT, len(s)))

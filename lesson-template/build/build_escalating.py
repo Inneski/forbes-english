@@ -449,7 +449,7 @@ def build():
     # the moment a learner touches the switcher. The German chipCount is a word
     # this cannot rewrite ("Folien"); edit i18n_escalating if the count moves.
     s = s.replace('chipCount: "21 slides"', 'chipCount: "%d slides"' % (n - 1))
-    open(OUT, 'w', encoding='utf-8').write(s)
+    open(OUT, 'w', encoding='utf-8', newline='').write(s)
     # The engine scores a sort per item and a gap per input, not per slide, so
     # two sorts and two gap screens are worth 24 of the 34 points between them.
     sort_pts = sum(len(x['items']) for x in SORTS)

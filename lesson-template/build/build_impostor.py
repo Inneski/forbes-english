@@ -808,5 +808,5 @@ if __name__ == '__main__':
                    'Impostor Syndrome — Advanced English · C1',
                    i18n_impostor, langs=('en', 'ja'))
     s = s.replace('</style>\n</head>', CSS + '</style>\n</head>', 1)
-    open(OUT, 'w', encoding='utf-8').write(s)
+    open(OUT, 'w', encoding='utf-8', newline='').write(s)
     print('wrote %s — %d bytes' % (OUT, len(s)))

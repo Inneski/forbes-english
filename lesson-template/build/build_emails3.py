@@ -58,6 +58,7 @@ PALETTE = '''  --hero: url('%s/hero.jpg');
   --secondary     : #050e10;
   --contrast      : #1deda4;''' % FOLDER
 
+import deck
 from emails_mc import MC
 
 GAPS = [
@@ -318,11 +319,11 @@ def build():
 
     import i18n_emails3 as I
     block = 'const UI_I18N = {\n' + ",\n".join(
-        '  %s: %s' % (c, I.render(c)) for c in
+        '  %s: %s' % (c, deck.fill_ledger(c, I.render(c))) for c in
         ['en', 'de', 'es', 'fr', 'it', 'pt', 'ru', 'ar', 'zh', 'ja']) + '\n};'
     s = re.sub(r'const UI_I18N = \{.*?\n\};', block, s, count=1, flags=re.S)
 
-    open(OUT, 'w', encoding='utf-8').write(s)
+    open(OUT, 'w', encoding='utf-8', newline='').write(s)
     print('wrote %s — %d slides, %d MC, %d gaps, %d pairs, %d bytes'
           % (OUT, s.count('<section class="slide'), len(MC), len(GAPS), len(MATCH), len(s)))
 

@@ -89,13 +89,14 @@ folder are of a different continent from every word in the lesson and are
 not used.
 """
 import random
+import os
 import sys
 
-sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import deck as D
 
-TPL = '/home/claude/forbes-english/lesson-template/lesson-template.html'
-OUT = '/home/claude/forbes-english/forbes-nature-agency-part2.html'
+TPL = 'lesson-template/lesson-template.html'
+OUT = 'forbes-nature-agency-part2.html'
 F = 'NatureAgency2'
 BG2 = 'reeds.jpg'
 # The loch: calm water, a clean band of sky, and the most empty space of the
@@ -1133,7 +1134,7 @@ if __name__ == '__main__':
                    i18n_nature2)
     s = s.replace('<html lang="en">', '<html lang="en" data-theme="light">', 1)
     s = s.replace('</style>\n</head>', CSS + '</style>\n</head>', 1)
-    open(OUT, 'w', encoding='utf-8').write(s)
+    open(OUT, 'w', encoding='utf-8', newline='').write(s)
     print('wrote %s — %d bytes, %d slides' % (OUT, len(s), n))
     print('Section 1 key positions A/B/C/D: %s' % key_spread)
     print('Section 1 sibling offset from key (+1/+2/+3): %s' % sib_spread)

@@ -505,7 +505,13 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
      canvas. Innes, 2026-09-12: "the answer boxes dont need to be so long".
      .chunk and .sort-item were already shrink-wrapped; this brings .opt into
      line with them. */
-  width: fit-content; max-width: min(100%, 46em); text-align: left;
+  /* max-width is 100%, NOT an em cap. A 46em cap (874px against ~1150px of
+     usable width) re-wrapped long options onto a second line and pushed five
+     decks past the canvas — the same mistake the stem cap made, caught the
+     same way, by running check-lesson.js over every deck before and after.
+     `width: fit-content` alone is the whole fix: short options shrink, long
+     ones break exactly where they always did. */
+  width: fit-content; max-width: 100%; text-align: left;
   font-family: var(--font-ui); font-size: 19px; color: var(--text);
   background: var(--plate-box);
   border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
@@ -1082,7 +1088,13 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
    capped rather than merely shrunk, so a long stem wraps into a block instead
    of running the width of the canvas. */
 .eyebrow, .slide-title, .order-hint { width: fit-content; }
-.q-stem, .q-ctx { width: fit-content; max-width: min(100%, 34em); }
+.q-stem, .q-ctx { width: fit-content; max-width: 100%; }
+/* max-width is 100%, NOT a shorter em cap. A 34em cap was tried first and it
+   re-wrapped long stems onto an extra line, which pushed the body past the
+   canvas on 17 decks — measured by running check-lesson.js over every deck
+   before and after the sweep. `width: fit-content` alone is what was wanted:
+   it shrinks the plate to a short stem and leaves a long one breaking exactly
+   where it always did. */
 .act-target-label { display: inline-block; }
 /* The cover is centred, so its plates are too. */
 .cover-title, .cover-sub { width: fit-content; margin-inline: auto; max-width: 100%; }

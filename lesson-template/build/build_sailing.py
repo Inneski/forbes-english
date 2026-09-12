@@ -637,5 +637,5 @@ for i in range(len(EX)):
     rows.append('"%d": %s' % (i, __import__('json').dumps(r, ensure_ascii=False)))
 s = re.sub(r'var EX_TR = \{.*?\};\n', 'var EX_TR = {%s};\n' % ", ".join(rows), s, count=1, flags=re.S)
 
-open(OUT, 'w', encoding='utf-8').write(s)
+open(OUT, 'w', encoding='utf-8', newline='').write(s)
 print('wrote %s — %d examples, %d questions, %d bytes' % (OUT, len(EX), len(QUIZ), len(s)))

@@ -34,7 +34,7 @@ def assemble(hero_section, camps, diagram_js, questions, palette, title,
         title, 1)
     for a, b in extra_replacements:
         out_s = out_s.replace(a, b)
-    open(out, 'w', encoding='utf-8').write(out_s)
+    open(out, 'w', encoding='utf-8', newline='').write(out_s)
     return out_s
 
 

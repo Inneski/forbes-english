@@ -53,6 +53,44 @@
   --contrast      : #1deda4;
 }
 
+/* ── audio (Listening) ───────────────────────────────────────────────
+   A player that behaves like the exam: one play, no scrubbing, and the
+   Continue button stays locked until the recording has finished. The
+   replay control appears only afterwards and says plainly that the real
+   test does not offer it. */
+.audio-player { display: flex; flex-direction: column; gap: 14px; }
+.audio-row { display: flex; align-items: center; gap: 16px; }
+.audio-play {
+  flex: 0 0 auto; width: 62px; height: 62px; border-radius: 50%;
+  border: 2px solid var(--accent); background: var(--surface2);
+  color: var(--accent); cursor: pointer; font-size: 22px; line-height: 1;
+  display: grid; place-items: center; transition: background .15s ease, opacity .15s ease;
+}
+.audio-play:hover:not(:disabled) { background: var(--accent); color: var(--void); }
+.audio-play:disabled { opacity: .45; cursor: default; border-color: var(--border); color: var(--text-dim); }
+.audio-meta { flex: 1 1 auto; min-width: 0; }
+.audio-label {
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--text-dim);
+}
+.audio-track {
+  margin-top: 8px; height: 8px; border-radius: 4px; background: var(--surface2);
+  border: 1px solid var(--border); overflow: hidden;
+}
+.audio-fill { height: 100%; width: 0; background: var(--accent); transition: width .2s linear; }
+.audio-time {
+  margin-top: 6px; font-family: var(--font-mono); font-size: 14px; color: var(--text-dim);
+  display: flex; justify-content: space-between;
+}
+.audio-state { font-family: var(--font-ui); font-size: 17px; color: var(--text-dim); }
+.audio-state.done { color: var(--accent-bright); }
+.audio-replay {
+  margin-top: 2px; background: none; border: 0; padding: 0; cursor: pointer;
+  font-family: var(--font-ui); font-size: 14px; color: var(--text-dim);
+  text-decoration: underline; text-underline-offset: 3px;
+}
+.audio-replay:hover { color: var(--text); }
+
 /* ── Fixed tokens: identical in every lesson. Do not edit. ── */
 :root {
   --slide-w: 1280px;
@@ -70,6 +108,26 @@
   --ok-text: var(--ok);
   --no-text: var(--no);
   --bg-opacity: 0.72;     /* background pattern strength — see doc §6 */
+
+  /* HOW SOLID THE BOXES OVER THE ARTWORK ARE. One property, because the
+     same value is needed by a plate's background AND by the spread shadow
+     that grows it — they have to move together or the plate gets a rim.
+     Innes, 2026-09-12: "lower opacity of the text boxes", so that more of
+     the picture survives behind them.
+
+     0.68 was not chosen by eye. The plates exist because of a measurement
+     (52 of 60 on-canvas blocks below AA on the Ukraine deck — see the note
+     further down), so lowering them is answered with the same instrument:
+     `measure-plate.py` composites void + hero + wash + plate over the
+     BRIGHTEST 64px tile of every background a deck ships and reports the
+     contrast against --text. At 0.68 the two IELTS speaking decks hold
+     above 9:1 and a light deck above 11:1, against AA's 4.5:1; the floor
+     where either deck actually fails is 0.40. Raise it per deck if a hero
+     is bright enough to need it — and run the script rather than guess. */
+  --plate:      0.68;
+  --plate-bg:   color-mix(in srgb, var(--surface) calc(var(--plate) * 100%), transparent);
+  --plate-box:  color-mix(in srgb, var(--surface2) 70%, transparent);
+  --plate-card: color-mix(in srgb, var(--surface) 70%, transparent);
 
   /* Card entrance. The delay is the whole point: for that beat the slide
      shows nothing but the artwork. Raise --card-in-delay to linger longer on
@@ -125,11 +183,14 @@ html[data-theme="light"] {
 
      Mixed toward the lesson's own ink rather than set to a hex, so it follows
      the palette instead of having to be re-derived when the palette changes.
-     45% is the ratio that clears WCAG AA 4.5:1 on every light palette
-     shipped here — worst case 4.51:1 green, 5.55:1 red — while keeping the
-     hue plainly green and plainly red. */
-  --ok-text: color-mix(in srgb, var(--ok) 45%, var(--text));
-  --no-text: color-mix(in srgb, var(--no) 45%, var(--text));
+     45% cleared AA against --surface at full strength, but the plate the
+     feedback sits on is --surface at 94%, and the artwork showing through the
+     other 6% cost about a quarter of a point: measured 4.25:1 to 4.39:1 on
+     the graded feedback across the nine light lessons. 38% carries the
+     margin — worst case 4.9:1 — and is still plainly green and plainly
+     red. */
+  --ok-text: color-mix(in srgb, var(--ok) 38%, var(--text));
+  --no-text: color-mix(in srgb, var(--no) 38%, var(--text));
 }
 
 /* On a mid canvas a translucent card has little to contrast against, so
@@ -227,7 +288,7 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
 /* ── LOGO ── */
 .fe-logo { width: 152px; height: auto; display: block; }
 .fe-logo-mark { color: var(--logo-mark, var(--accent)); }
-.fe-logo-word { fill: var(--text); opacity: 0; transition: opacity .25s ease; }
+.fe-logo-word { fill: var(--logo-word, var(--text)); opacity: 0; transition: opacity .25s ease; }
 .fonts-ready .fe-logo-word { opacity: 1; }   /* never flash a fallback face */
 .slide[data-type="cover"] .fe-logo { width: 232px; }
 
@@ -279,9 +340,119 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
 }
 .slide-body { flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; }
 
+/* ── PANEL: the picture gets a column, the text gets the rest ──
+   §5 washes the hero to 0.72 and plates the text on top of it, which is
+   right when the artwork is atmosphere. It is wrong when the artwork is
+   the point — a flat-vector illustration dimmed by a quarter and covered
+   by a card is neither legible nor worth looking at.
+
+   So: the picture owns --panel-w of the stage at FULL opacity, bleeding
+   off three edges, and the text owns what is left, on flat --void. The
+   slide paints its own opaque background, which covers .bg-layer without
+   the engine needing to know this slide type exists.
+
+   Nothing is plated here, because nothing is over anything. Do not add a
+   wash, a scrim or a card to the text column - the whole point of the
+   layout is that it needs none. */
+.slide[data-layout="panel"] {
+  padding: 0;
+  flex-direction: row;
+  background: var(--void);
+}
+.panel-pic {
+  position: relative;
+  flex: 0 0 var(--panel-w, 548px);
+  overflow: hidden;
+  background: var(--surface2);
+}
+.panel-pic::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--pic) var(--pic-pos, center) / cover no-repeat;
+}
+/* The seam. A soft gradient dissolving the picture into the canvas was the
+   first attempt; it reads well where the picture's inner edge is dark and
+   smears where it is a flat field of one colour. A 3px rule works on every
+   image, so it is the rule. */
+.panel-pic::after {
+  content: '';
+  position: absolute; top: 0; bottom: 0; right: 0; width: 3px;
+  background: linear-gradient(180deg, transparent,
+    color-mix(in srgb, var(--accent) 70%, transparent) 22%,
+    color-mix(in srgb, var(--accent) 70%, transparent) 78%, transparent);
+}
+.panel-body {
+  flex: 1; min-width: 0;
+  padding: var(--pad) var(--pad) var(--pad) 44px;
+  display: flex; flex-direction: column; justify-content: center;
+}
+/* Alternate the side down the deck: it stops a long deck reading as one
+   template, and lets each picture be cropped toward the side its subject
+   actually occupies. */
+.slide[data-layout="panel"][data-side="right"] { flex-direction: row-reverse; }
+.slide[data-layout="panel"][data-side="right"] .panel-pic::after { right: auto; left: 0; }
+.slide[data-layout="panel"][data-side="right"] .panel-body {
+  padding: var(--pad) 44px var(--pad) var(--pad);
+}
+/* Inside a panel the head and body stop fighting for vertical centring -
+   the column is already centred, so the body must not also stretch. */
+.panel-body .slide-body { flex: 0 0 auto; justify-content: flex-start; }
+.panel-body .slide-head { margin-bottom: 22px; }
+/* The on-canvas plate exists to give text a GROUND over a washed hero. In a
+   panel there is no hero behind the text — it is flat --void — so the plate
+   has nothing to rescue and shows as a slightly lighter box behind every
+   line. Off, here only. This is what "nothing is plated because nothing is
+   over anything" actually costs: one rule. */
+.slide[data-layout="panel"] .eyebrow,
+.slide[data-layout="panel"] .slide-title,
+.slide[data-layout="panel"] .slide-body > .prose,
+.slide[data-layout="panel"] .q-stem,
+.slide[data-layout="panel"] .q-ctx,
+.slide[data-layout="panel"] .feedback.show {
+  background: none;
+  box-shadow: none;
+}
+
+/* ── DIVIDER: picture only, one line of chrome ─────────────────
+   Opens a stage. The caption sits in a band the picture has already faded
+   to --void inside, so this is still not text over artwork. */
+.slide[data-type="divider"] {
+  padding: 0; background: var(--void);
+}
+/* The display flip belongs ONLY on .is-active. Setting `display: block` on
+   the base rule overrides the `display: none` every slide starts with, so
+   all eight dividers painted at once, stacked, and the last one covered the
+   deck. Every gate passed: the LAYOUT check forces .is-active on each slide
+   before it measures, so nothing ever saw the page as a learner would. */
+.slide[data-type="divider"].is-active { display: block; }
+.divider-pic {
+  position: absolute; inset: 0;
+  background: var(--pic) var(--pic-pos, center) / cover no-repeat;
+}
+.divider-cap {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  padding: 44px var(--pad) 40px;
+  background: linear-gradient(0deg, var(--void) 12%,
+    color-mix(in srgb, var(--void) 74%, transparent) 62%, transparent);
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 30px;
+}
+/* The deck rail sits on the bottom edge, and a divider has no padding for
+   it to be pushed out of — so the caption clears it here rather than in the
+   generic .has-rail rule, which only knows about padded slides. */
+.stage.has-rail .divider-cap { padding-bottom: calc(40px + 34px); }
+.divider-cap h2 {
+  font-family: var(--font-display);
+  font-size: 44px; font-weight: 700; line-height: 1.1; color: var(--text);
+}
+.divider-cap .divider-n {
+  font-family: var(--font-mono); font-size: 13px; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--accent-bright);
+  white-space: nowrap; padding-bottom: 10px;
+}
+
 /* Content sits in a translucent card so it stays legible over the pattern. */
 .card {
-  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  background: var(--plate-card);
   border: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
   border-radius: var(--r);
   padding: 30px 34px;
@@ -314,18 +485,42 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
 
 /* Two-column teaching layout */
 .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+/* Three across, for a lesson that genuinely has three parallel things to say
+   — the case ledger's DP / Time / Clues, or a three-ending fork. Cards get
+   narrow fast, so keep each body under about twenty-five words. */
+.cols-3 { grid-template-columns: repeat(3, 1fr); }
 
 /* ── QUESTIONS ── */
 .q-stem { font-size: 25px; line-height: 1.5; color: var(--text); margin-bottom: 22px; }
 .q-stem em { font-style: normal; color: var(--accent-bright); font-weight: 600; }
+/* deck.py's mc(ctx=…) has emitted .q-ctx since it was added, but nothing ever
+   styled it: with no size and no margin it inherited the body rule and the
+   stem's plate shadow painted straight over it. Situational questions were
+   unreadable on the first lesson that used the argument. Set one notch below
+   the stem, dimmed, so it reads as the scene and not as the question. */
+.q-ctx { font-size: 19px; line-height: 1.5; color: var(--text-dim);
+         margin-bottom: 26px; max-width: 62em; }
 
-.opts { display: grid; gap: 11px; }
+.opts { display: grid; gap: 11px; justify-items: start; }
 .opts.two-up { grid-template-columns: 1fr 1fr; }
 .opt {
   display: flex; align-items: center; gap: 14px;
-  width: 100%; text-align: left;
+  /* NOT width:100%. A full-bleed row paints a bar of --surface2 straight
+     across the artwork four times per question, and on a deck whose pictures
+     are the reason it exists that is most of the frame gone. Shrink-wrapped to
+     the option text instead, capped so a long option still wraps inside the
+     canvas. Innes, 2026-09-12: "the answer boxes dont need to be so long".
+     .chunk and .sort-item were already shrink-wrapped; this brings .opt into
+     line with them. */
+  /* max-width is 100%, NOT an em cap. A 46em cap (874px against ~1150px of
+     usable width) re-wrapped long options onto a second line and pushed five
+     decks past the canvas — the same mistake the stem cap made, caught the
+     same way, by running check-lesson.js over every deck before and after.
+     `width: fit-content` alone is the whole fix: short options shrink, long
+     ones break exactly where they always did. */
+  width: fit-content; max-width: 100%; text-align: left;
   font-family: var(--font-ui); font-size: 19px; color: var(--text);
-  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  background: var(--plate-box);
   border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
   border-radius: var(--r);
   padding: 15px 20px; cursor: pointer;
@@ -341,6 +536,50 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
 .opt.correct { border-color: var(--ok); background: color-mix(in srgb, var(--ok) 20%, var(--surface2)); }
 .opt.wrong   { border-color: var(--no); background: color-mix(in srgb, var(--no) 18%, var(--surface2)); }
 .opt:disabled { cursor: default; }
+
+/* ── Branch mode: the case ledger ──────────────────────────────────────
+   A branching lesson carries state across nodes. It rides in the nav bar
+   so it is visible on every screen without stealing canvas space. */
+.ledger { display: flex; gap: 18px; align-items: center; margin-inline-end: 14px; }
+/* An author display rule outranks the UA sheet's [hidden] { display: none },
+   so the branch-mode ledger rendered "DP 0 TIME ••• CLUES 0" in the deck bar of
+   every non-branching lesson built from this template. The attribute is the
+   switch ledgerInit() throws; this makes the CSS respect it. */
+.ledger[hidden] { display: none; }
+.led { font: 600 11.5px/1 'DM Mono', monospace; letter-spacing: .09em;
+       text-transform: uppercase; color: var(--text-dim); white-space: nowrap; }
+.led b { color: var(--text-dim); font-weight: 600; }
+.led i { font-style: normal; color: var(--accent-bright); margin-inline-start: 5px; }
+.led.spend i { color: var(--contrast); }
+.choice[disabled] { opacity: .38; cursor: not-allowed; }
+
+/* ── Click-to-reveal glosses ───────────────────────────────────────────
+   House style §8 says do not translate the English being taught, and that
+   holds for question stems, options and explanations. But a story-driven
+   lesson is mostly NARRATIVE, and narrative is not the target language: a
+   B1 learner who loses the plot cannot do the grammar either. So prose
+   marked .gloss can reveal a translation underneath, English stays primary,
+   and the control only appears once a language other than English is
+   chosen. Same bargain as the Sherpa pages. */
+.gloss { position: relative; }
+.gloss-btn {
+  display: none; margin-top: 8px; padding: 3px 9px;
+  font: 600 10.5px/1.5 'DM Mono', monospace; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--text-dim);
+  background: transparent; border: 1px solid var(--border);
+  border-radius: 999px; cursor: pointer;
+}
+.gloss-btn:hover { color: var(--accent-bright); border-color: var(--accent); }
+html[data-gloss="on"] .gloss-btn { display: inline-block; }
+.gloss-tr {
+  display: none; margin-top: 9px; padding-top: 9px;
+  border-top: 1px solid var(--border);
+  font: 400 16.5px/1.5 'DM Sans', sans-serif; color: var(--text-dim);
+}
+.gloss-tr.show { display: block; }
+.choice-why { display: block; font: 500 11.5px/1.4 'DM Mono', monospace;
+              letter-spacing: .06em; text-transform: uppercase;
+              color: var(--text-dim); margin-top: 6px; }
 
 /* Gap-fill */
 .gap {
@@ -366,7 +605,12 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
   font-family: var(--font-ui); font-size: 15px; font-weight: 600;
   letter-spacing: .03em;
   padding: 12px 26px; border-radius: var(--r);
-  border: 1px solid var(--accent); background: transparent; color: var(--accent-bright);
+  /* NOT transparent. A transparent button puts its own label on whatever
+     artwork happens to be behind it: measured at 1.55:1 on this lesson
+     before this line, against 7.8:1 for the same ink on the surface. The
+     variants below still override it — .btn:hover and .btn-solid come
+     later and carry their own fill. */
+  border: 1px solid var(--accent); background: var(--surface); color: var(--accent-bright);
   cursor: pointer; transition: background .15s, color .15s;
 }
 .btn:hover { background: var(--accent); color: var(--void); }
@@ -432,7 +676,10 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
 .bank-chip {
   font-family: var(--font-mono); font-size: 12px;
   padding: 5px 12px; border-radius: 999px;
-  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  /* NOT a tint into `transparent`. See the note beside the light-theme block
+     lower down: a see-through fill is a hole in the plate, and the ink then
+     sits on whatever artwork happens to be behind it. */
+  background: color-mix(in srgb, var(--accent) 16%, var(--surface));
   border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
   color: var(--accent-bright);
 }
@@ -480,7 +727,7 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
 .match-item {
   font-family: var(--font-ui); font-size: 15.5px; line-height: 1.4;
   text-align: left; color: var(--text);
-  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  background: var(--plate-box);
   border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
   border-radius: var(--r); padding: 11px 16px; cursor: pointer;
   transition: border-color .15s, background .15s, opacity .2s;
@@ -500,6 +747,23 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
    gloss, and no change to a single-line item anywhere else on the site. */
 .match-item:has(> .sup) { padding: 7px 14px; }
 .match-item > .sup { margin-top: 2px; font-size: 12.5px; line-height: 1.35; }
+/* A gloss shows only in its own language. The JS that builds these has always
+   described them as "hidden unless the root lang matches" — but the rule that
+   would do the hiding was never in this stylesheet, so every gloss rendered
+   all the time. With the two languages the feature shipped with that read as
+   a deliberate bilingual label and nobody looked twice; at ten it put nine
+   translations under every button and pushed the slide 16px off the canvas.
+   documentElement.lang is kept current by the switcher, so this is CSS. */
+.match-item > .sup { display: none; }
+:root[lang="de"] .match-item > .sup[data-lang="de"],
+:root[lang="es"] .match-item > .sup[data-lang="es"],
+:root[lang="fr"] .match-item > .sup[data-lang="fr"],
+:root[lang="it"] .match-item > .sup[data-lang="it"],
+:root[lang="pt"] .match-item > .sup[data-lang="pt"],
+:root[lang="ru"] .match-item > .sup[data-lang="ru"],
+:root[lang="ar"] .match-item > .sup[data-lang="ar"],
+:root[lang="zh"] .match-item > .sup[data-lang="zh"],
+:root[lang="ja"] .match-item > .sup[data-lang="ja"] { display: block; }
 .match-col:has(.match-item > .sup) { gap: 5px; }
 .match-grid:has(.match-item > .sup) { gap: 10px; }
 @keyframes shake { 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
@@ -525,7 +789,7 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
 .chunk {
   font-family: var(--font-ui); font-size: 15.5px; line-height: 1.35;
   color: var(--text);
-  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  background: var(--plate-box);
   border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
   border-radius: 999px; padding: 9px 16px; cursor: pointer;
   transition: border-color .15s, background .15s, opacity .2s;
@@ -553,9 +817,15 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
   min-height: 44px;
 }
 .sort-bins { display: grid; gap: 14px; }
+/* The bin gets the card's own backdrop, not a bare tint. `--inset` alone
+   is nearly transparent, and over a bright hero the bin outline and its
+   label both disappeared — the board read as loose chips floating on
+   artwork with no boxes to put them in. */
 .sort-bin {
   border: 1.5px dashed color-mix(in srgb, var(--border) 60%, transparent);
-  border-radius: var(--r); background: var(--inset);
+  border-radius: var(--r);
+  background: color-mix(in srgb, var(--surface) 78%, transparent);
+  backdrop-filter: blur(3px);
   padding: 10px 12px; min-height: 132px;
   display: flex; flex-direction: column; gap: 8px;
   transition: border-color .15s, background .15s;
@@ -571,7 +841,7 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
 .sort-item {
   font-family: var(--font-ui); font-size: 15.5px; line-height: 1.35;
   color: var(--text);
-  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  background: var(--plate-box);
   border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
   border-radius: 999px; padding: 9px 16px; cursor: grab;
   transition: border-color .15s, background .15s, opacity .2s;
@@ -581,6 +851,129 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
 .sort-item.dragging { opacity: .45; cursor: grabbing; }
 .sort-item.placed { cursor: default; border-color: var(--ok); opacity: .7; }
 .sort-item.miss { border-color: var(--no); animation: shake .3s; }
+
+/* ── ESCAPE-ROOM MECHANICS ───────────────────────────────────────
+   Three things a puzzle lesson needs that a quiz deck does not: a timed
+   visual hunt, a combination lock, and a rail that remembers what the
+   learner has picked up on the way. All three are click-only. A scaled
+   stage makes drag targets lie about where they are — the same reason
+   `order` is click-based — and a timer plus a moving target would put
+   that inaccuracy where it costs a point.
+
+   A deck that uses none of them pays nothing: the rail hides itself when
+   no stops are declared, and the two slide types simply never match. */
+
+/* Timed search: identify the object by its shape, against a clock. The
+   names are hidden until the item is answered — a labelled picture is a
+   reading task, not a vocabulary one. */
+.search { display: flex; flex-direction: column; gap: 16px; }
+/* Clock beside the bar, not floating above it: sitting it over the
+   question stem put a countdown on top of the thing being read. */
+.search-bar { display: flex; align-items: center; gap: 12px; }
+.search-track {
+  flex: 1; height: 6px; border-radius: 3px;
+  background: var(--inset2); overflow: hidden;
+}
+.search-fill {
+  height: 100%; width: 100%;
+  background: var(--accent); transition: width .9s linear;
+}
+.search-bar.urgent .search-fill { background: var(--no); }
+/* A chip, not bare text: the countdown sits on the artwork, and on a
+   bright hero a thin mono glyph on its own does not survive. */
+.search-clock {
+  font-family: var(--font-mono); font-size: 14px; color: var(--text);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+  border-radius: 999px; padding: 4px 12px;
+  backdrop-filter: blur(3px);
+  min-width: 56px; text-align: center;
+}
+.search-bar.urgent .search-clock {
+  color: var(--no); border-color: var(--no);
+}
+.find-grid { display: grid; gap: 12px; }
+.find {
+  background: color-mix(in srgb, var(--surface2) 84%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 55%, transparent);
+  border-radius: var(--r); padding: 12px 8px 8px;
+  backdrop-filter: blur(3px);
+  cursor: pointer; color: var(--text);
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  transition: border-color .15s, background .15s, transform .15s;
+}
+.find:hover:not(:disabled) { border-color: var(--accent); transform: translateY(-3px); }
+.find svg { width: 100%; height: 86px; display: block; }
+.find-name {
+  font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .06em;
+  color: var(--text-dim); opacity: 0; transition: opacity .25s ease;
+  min-height: 15px; text-align: center;
+}
+.find.revealed .find-name { opacity: 1; }
+.find.correct { border-color: var(--ok); background: color-mix(in srgb, var(--ok) 18%, var(--surface2)); }
+.find.correct .find-name { color: var(--ok); }
+.find.wrong   { border-color: var(--no); background: color-mix(in srgb, var(--no) 16%, var(--surface2)); }
+.find:disabled { cursor: default; }
+.find:disabled:hover { transform: none; }
+
+/* Combination lock: the digits were earned one per section, and this is
+   where they are spent. Unlimited attempts, but only the first one
+   scores — the lock has to open for the story to end, and a puzzle you
+   cannot fail is not worth a point. */
+.lock { display: flex; align-items: center; justify-content: center; gap: 34px; }
+.lock-display { display: flex; gap: 10px; }
+.lock-cell {
+  width: 54px; height: 68px; border-radius: 8px;
+  border: 1.5px solid color-mix(in srgb, var(--border) 70%, transparent);
+  background: var(--inset);
+  font-family: var(--font-mono); font-size: 30px; color: var(--text);
+  display: grid; place-items: center;
+  transition: border-color .15s, background .15s;
+}
+.lock-cell.filled { border-color: var(--accent); background: var(--inset2); }
+.lock-cell.ok { border-color: var(--ok); color: var(--ok); }
+.lock.bad .lock-display { animation: shake .3s; }
+.lock-keys { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.lock-pad { display: grid; grid-template-columns: repeat(5, 1fr); gap: 7px; }
+.lock-key {
+  width: 44px; height: 38px; border-radius: 7px;
+  border: 1.5px solid color-mix(in srgb, var(--border) 55%, transparent);
+  background: color-mix(in srgb, var(--surface2) 84%, transparent);
+  color: var(--text); font-family: var(--font-mono); font-size: 16px;
+  cursor: pointer; transition: border-color .15s, background .15s;
+}
+.lock-key:hover:not(:disabled) { border-color: var(--accent); }
+.lock-key:disabled { opacity: .4; cursor: default; }
+
+/* The rail: which room you are in, and what you picked up in each. It
+   doubles as the progress indicator, so a learner who forgets a digit
+   is not being tested on memory — they are being tested on English. */
+.deck-rail {
+  position: absolute; z-index: 3; left: 26px; right: 26px; bottom: 56px;
+  display: flex; gap: 8px; justify-content: center;
+}
+.deck-rail[hidden] { display: none; }
+.stage.on-cover .deck-rail { display: none; }
+.rail-stop {
+  display: flex; align-items: center; gap: 7px;
+  padding: 4px 12px 4px 5px; border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--border) 45%, transparent);
+  background: var(--scrim); opacity: .45; transition: opacity .2s, border-color .2s;
+}
+.rail-stop.reached { opacity: .9; }
+.rail-stop.current { opacity: 1; border-color: var(--accent); }
+.rail-digit {
+  width: 21px; height: 21px; border-radius: 50%;
+  background: var(--inset2); color: var(--text-dim);
+  font-family: var(--font-mono); font-size: 12px;
+  display: grid; place-items: center;
+}
+.rail-stop.has-digit .rail-digit { background: var(--accent); color: var(--void); }
+.rail-label {
+  font-family: var(--font-mono); font-size: 10.5px;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--text);
+}
+.stage.has-rail .slide { padding-bottom: calc(var(--pad) + 34px); }
 
 /* ── DISCUSSION (unscored speaking prompts) ──────────────────────── */
 .discuss-meta {
@@ -615,7 +1008,14 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
     width: 1280px; height: auto;      /* let the slides stack into pages */
     overflow: visible; box-shadow: none;
   }
-  .bg-layer, .deck-bar, .lang-select, .nav-btn { display: none !important; }
+  .bg-layer, .deck-bar, .lang-select, .nav-btn, .deck-rail { display: none !important; }
+  /* A delayed animation must never decide what lands on a printed page. */
+  .slide.is-active .card,
+  .slide.is-active .card + .card,
+  .slide.is-active .card + .card + .card {
+    animation: none !important; opacity: 1 !important; transform: none !important;
+  }
+  .stage.has-rail .slide { padding-bottom: var(--pad); }
 
   /* Each slide becomes its own page and carries its own background, so the
      export does not depend on the single on-screen background layer. */
@@ -639,6 +1039,15 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
                                         var(--wash-mid) 80%, var(--wash-edge) 100%);
   }
   .slide[data-type="cover"]::before { opacity: 1; }
+  /* A panel or divider slide carries its own picture, so the per-page hero
+     that every other slide gets would print straight through it. */
+  .slide[data-layout="panel"]::before, .slide[data-layout="panel"]::after,
+  .slide[data-type="divider"]::before, .slide[data-type="divider"]::after {
+    display: none !important;
+  }
+  .slide[data-layout="panel"] { background: var(--void) !important; flex-direction: row; }
+  .slide[data-layout="panel"][data-side="right"] { flex-direction: row-reverse; }
+  .slide[data-type="divider"] { display: block !important; background: var(--void) !important; }
   .slide[data-type="cover"]::after {
     background:
       radial-gradient(ellipse 58% 54% at 50% 46%,
@@ -651,21 +1060,106 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
   .act-print { display: block !important; }
 }
 
-/* Text that sits on the canvas rather than inside a card needs its own halo
-   now that the artwork behind it is bright. A shadow costs nothing and lets
-   the picture stay up, which darkening the wash back down would not. */
-.slide-title, .eyebrow, .q-stem, .q-ctx, .order-hint, .cover-title, .cover-sub,
-.score-big, .slide-body > .prose, .act-target-label {
-  text-shadow: 0 1px 2px rgba(0,0,0,0.55), 0 0 12px rgba(0,0,0,0.38);
+/* Text that sits on the canvas rather than inside a card needs a GROUND, not
+   a halo. A halo is one value; a hero is many. The same white glow that lifts
+   a title clear of a cream sky does nothing for the half of it crossing a
+   black silhouette.
+
+   Measured before this rule existed, sampling the real pixels behind each
+   block with the glyphs made transparent: 52 of 60 on-canvas text blocks on
+   the Ukraine deck contained ground below WCAG AA 4.5:1, a third of the area
+   on a typical question stem, the cover subtitle bottoming out at 1.44:1.
+
+   So on-canvas text gets a plate of --surface, exactly what .card and .opt
+   already sit on. Both themes come free: --surface flips with data-theme.
+
+   .feedback is plated on .show rather than always, because it holds a
+   min-height while empty and would otherwise paint a blank bar under every
+   unanswered question. */
+.eyebrow, .slide-title, .q-stem, .q-ctx, .order-hint,
+.slide-body > .prose, .cover-title, .cover-sub, .act-target-label,
+.feedback.show, .score-big {
+  background: var(--plate-bg);
+  border-radius: 8px;
+  /* The plate is grown with a spread shadow rather than padding: padding
+     changes the content box, and on the cover that was enough to tip the
+     subtitle onto a second line. A spread costs no layout at all. */
+  box-shadow: 0 0 0 0.34em var(--plate-bg);
+  text-shadow: none;
 }
-html[data-theme="light"] .slide-title, html[data-theme="light"] .eyebrow,
-html[data-theme="light"] .q-stem, html[data-theme="light"] .q-ctx,
-html[data-theme="light"] .order-hint, html[data-theme="light"] .cover-title,
-html[data-theme="light"] .cover-sub, html[data-theme="light"] .score-big,
-html[data-theme="light"] .slide-body > .prose,
-html[data-theme="light"] .act-target-label {
-  text-shadow: 0 1px 2px rgba(255,255,255,0.75), 0 0 12px rgba(255,255,255,0.55);
-}
+/* Short labels should not stretch a plate across the whole column. */
+/* .q-stem and .q-ctx joined this list on 2026-09-12. They were the last two
+   full-bleed plates on a question slide: with the answer boxes shrink-wrapped,
+   a stem of eight words was still painting a bar of --surface from edge to
+   edge above them, which is the same complaint the options had. Both are
+   capped rather than merely shrunk, so a long stem wraps into a block instead
+   of running the width of the canvas. */
+.eyebrow, .slide-title, .order-hint { width: fit-content; }
+.q-stem, .q-ctx { width: fit-content; max-width: 100%; }
+/* max-width is 100%, NOT a shorter em cap. A 34em cap was tried first and it
+   re-wrapped long stems onto an extra line, which pushed the body past the
+   canvas on 17 decks — measured by running check-lesson.js over every deck
+   before and after the sweep. `width: fit-content` alone is what was wanted:
+   it shrinks the plate to a short stem and leaves a long one breaking exactly
+   where it always did. */
+.act-target-label { display: inline-block; }
+/* The cover is centred, so its plates are too. */
+.cover-title, .cover-sub { width: fit-content; margin-inline: auto; max-width: 100%; }
+.cover-sub { padding-inline: 0.22em; }
+.score-big { width: fit-content; }
+/* ── THE RESULTS PANELS OVERLAPPED, AND THE SPREAD IS WHY ─────────────
+   Every plate on this page is grown with `box-shadow: 0 0 0 0.34em` rather
+   than padding (see the note above - padding tipped the cover subtitle onto
+   a second line). At the score's 84px that spread is 28.5px in each
+   direction, and the panel under it is 18px away: the score plate and the
+   message plate paint into each other, and "Now use it" 14px below sits
+   inside both. Innes, on Past Simple 21: "text box overlap".
+   The gaps now exceed the spread they have to clear. The same fix is in
+   lesson-template/descent/build_descent.py for the Part II decks; this is
+   Part I catching up with it.
+
+   The empty message plate goes too. Before anything is answered #scoreMsg
+   has no text, and an empty plate is not nothing - it is a 28px dark square
+   floating under the score with no explanation. */
+.slide[data-type="results"] .score-big { margin-bottom: 10px; }
+.slide[data-type="results"] #scoreMsg  { margin-top: 34px !important; max-width: 34ch; }
+.slide[data-type="results"] #scoreMsg:empty { display: none; }
+.slide[data-type="results"] .slide-body > .prose.dim { margin-top: 34px !important; }
+
+/* A transparent background is a hole in the plate. .btn was
+   `background: transparent` and .bank-chip a 16% tint of --accent into
+   nothing, so on a light lesson their rust text — #701c00, which reads at
+   7.8:1 on the surface — sat straight on the artwork and measured 1.53:1 to
+   1.94:1. The Check button was the worst of it. Give them a real ground and
+   the same ink reads.
+
+   "Light theme only" is what this note used to say, on the reasoning that a
+   dark deck's canvas is dark. It is not: rule 5 puts the hero behind every
+   slide at 0.72, so a chip's ground is the *artwork*, and a hero with a bright
+   region puts a bright ground under it. Measured on the escalation deck — dark
+   theme, a cream sun disc and a pale wall in the hero — every word-bank chip
+   on the two gap slides and the activation slide came in between 1.38:1 and
+   3.03:1, with 100% of the glyph pixels under AA. The fix belongs on the base
+   rule for both themes, which is where it now is (see .bank-chip above); the
+   light-theme override that used to sit here was the same declaration and has
+   gone.
+
+   That measurement was made in the sandbox that built the escalation deck and
+   was lost with it, along with the glyph-level audit script it was made by. It
+   survived only inside the shipped page's own copy of this stylesheet, and was
+   lifted back into the template here so that rebuilding that deck — or any
+   other — stops reverting it. */
+/* Do NOT reach for `html[data-theme="light"] .btn` here. It scores one
+   attribute plus one type and beats `.btn-solid`, which scores one class —
+   the cover's Begin button lost its red fill and its cream label went to
+   1.03:1. :where() does not rescue it either, because the attribute counts
+   in the same specificity column as the class. Fix the base rule instead. */
+/* The solid button's label is --void, which is right on a dark canvas where
+   --void is the darkest token and --accent the bright one. Inverted, cream on
+   the accent red measures 4.45:1 — a hair under AA at 17px, which is not
+   large text. --surface as the label takes the same pair to 5.00:1. */
+html[data-theme="light"] .btn-solid { color: var(--surface); }
+html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 92%, transparent); }
 
 /* ── FIRST-RUN HINT ON THE LANGUAGE SWITCH ────────────────────────────────
    Innes, about a control that has been shipping on every lesson for months:
@@ -688,13 +1182,13 @@ html[data-theme="light"] .act-target-label {
   animation: bw-notice 2.2s ease-out infinite;
 }
 @media (prefers-reduced-motion: reduce) {
+  .lang-select.bw-notice, .tr-btn.bw-notice { animation: none; }
   /* No spring, no delay — the card is simply there. */
   .slide.is-active .card,
   .slide.is-active .card + .card,
   .slide.is-active .card + .card + .card {
     animation: none;
   }
-  .lang-select.bw-notice, .tr-btn.bw-notice { animation: none; }
 }
 </style>
 </head>
@@ -709,7 +1203,7 @@ html[data-theme="light"] .act-target-label {
     <!-- ══════════════════════════════════════════════════════════
          REPLACE 2 of 2: SLIDES
          Author one <section class="slide"> per screen.
-         data-type: cover | teach | mc | gap | match | order | discuss | results | activate
+         data-type: cover | teach | audio | mc | gap | match | order | discuss | results | activate
          data-bg="folder/other.jpg" swaps the background pattern on that slide.
          Everything a learner reads must fit WITHOUT scrolling.
          If it does not fit, split it across two slides — never shrink type.
@@ -1011,8 +1505,16 @@ html[data-theme="light"] .act-target-label {
     </section>
 
     <!-- ── DECK CHROME ──────────────────────────────────────── -->
+    <!-- The rail only appears if a lesson declares stops on it (see
+         data-i18n-stops / data-stops). Every other deck ignores it. -->
+    <div class="deck-rail" id="deckRail" data-i18n-stops="railStops" hidden></div>
     <div class="deck-bar">
       <select class="lang-select" id="langSelect" aria-label="Language"></select>
+      <div class="ledger" id="ledger" hidden>
+        <span class="led"><b data-i18n="ledDp">DP</b> <i id="ledDp">0</i></span>
+        <span class="led"><b data-i18n="ledTime">TIME</b> <i id="ledTime">•••</i></span>
+        <span class="led"><b data-i18n="ledClues">CLUES</b> <i id="ledClues">0</i></span>
+      </div>
       <button class="nav-btn" data-action="prev" aria-label="Previous">‹</button>
       <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
       <span class="deck-count" id="deckCount">1 / 1</span>
@@ -1101,7 +1603,10 @@ const UI_I18N = {
     temp3h: "Too warm",
     tempEyebrow: "Register",
     tempTitle: "The same message at three temperatures",
-    wordCount: (n)=>`${n} ${n===1?'word':'words'}`
+    wordCount: (n)=>`${n} ${n===1?'word':'words'}`,
+    ledDp: 'DP',
+    ledTime: 'Time',
+    ledClues: 'Clues'
   },
   de: {
     actEyebrow: 'Anwendung',
@@ -1162,7 +1667,10 @@ const UI_I18N = {
     temp3h: "Zu warm",
     tempEyebrow: "Register",
     tempTitle: "Dieselbe Nachricht in drei Temperaturen",
-    wordCount: (n)=>`${n} ${n===1?'Wort':'Wörter'}`
+    wordCount: (n)=>`${n} ${n===1?'Wort':'Wörter'}`,
+    ledDp: 'DP',
+    ledTime: 'Zeit',
+    ledClues: 'Hinweise'
   },
   es: {
     actEyebrow: 'Activación',
@@ -1223,7 +1731,10 @@ const UI_I18N = {
     temp3h: "Demasiado cálido",
     tempEyebrow: "Registro",
     tempTitle: "El mismo mensaje a tres temperaturas",
-    wordCount: (n)=>`${n} ${n===1?'palabra':'palabras'}`
+    wordCount: (n)=>`${n} ${n===1?'palabra':'palabras'}`,
+    ledDp: 'DP',
+    ledTime: 'Tiempo',
+    ledClues: 'Pistas'
   },
   fr: {
     actEyebrow: 'Activation',
@@ -1284,7 +1795,10 @@ const UI_I18N = {
     temp3h: "Trop chaud",
     tempEyebrow: "Registre",
     tempTitle: "Le même message à trois températures",
-    wordCount: (n)=>`${n} ${n===1?'mot':'mots'}`
+    wordCount: (n)=>`${n} ${n===1?'mot':'mots'}`,
+    ledDp: 'DP',
+    ledTime: 'Temps',
+    ledClues: 'Indices'
   },
   it: {
     actEyebrow: 'Attivazione',
@@ -1345,7 +1859,10 @@ const UI_I18N = {
     temp3h: "Troppo caldo",
     tempEyebrow: "Registro",
     tempTitle: "Lo stesso messaggio a tre temperature",
-    wordCount: (n)=>`${n} ${n===1?'parola':'parole'}`
+    wordCount: (n)=>`${n} ${n===1?'parola':'parole'}`,
+    ledDp: 'DP',
+    ledTime: 'Tempo',
+    ledClues: 'Indizi'
   },
   pt: {
     actEyebrow: 'Ativação',
@@ -1406,7 +1923,10 @@ const UI_I18N = {
     temp3h: "Quente demais",
     tempEyebrow: "Registo",
     tempTitle: "A mesma mensagem a três temperaturas",
-    wordCount: (n)=>`${n} ${n===1?'palavra':'palavras'}`
+    wordCount: (n)=>`${n} ${n===1?'palavra':'palavras'}`,
+    ledDp: 'DP',
+    ledTime: 'Tempo',
+    ledClues: 'Pistas'
   },
   ru: {
     actEyebrow: 'Практика',
@@ -1467,7 +1987,10 @@ const UI_I18N = {
     temp3h: "Слишком тепло",
     tempEyebrow: "Регистр",
     tempTitle: "Одно и то же сообщение при трёх температурах",
-    wordCount: (n)=>{const a=n%10,b=n%100;return `${n} ${a===1&&b!==11?'слово':(a>=2&&a<=4&&(b<12||b>14))?'слова':'слов'}`}
+    wordCount: (n)=>{const a=n%10,b=n%100;return `${n} ${a===1&&b!==11?'слово':(a>=2&&a<=4&&(b<12||b>14))?'слова':'слов'}`},
+    ledDp: 'DP',
+    ledTime: 'Время',
+    ledClues: 'Улики'
   },
   ar: {
     actEyebrow: 'التطبيق',
@@ -1528,7 +2051,10 @@ const UI_I18N = {
     temp3h: "دافئة أكثر من اللازم",
     tempEyebrow: "مستوى اللغة",
     tempTitle: "الرسالة نفسها بثلاث درجات حرارة",
-    wordCount: (n)=>`${n} كلمة`
+    wordCount: (n)=>`${n} كلمة`,
+    ledDp: 'DP',
+    ledTime: 'الوقت',
+    ledClues: 'أدلة'
   },
   zh: {
     actEyebrow: '运用',
@@ -1589,7 +2115,10 @@ const UI_I18N = {
     temp3h: "太热",
     tempEyebrow: "语域",
     tempTitle: "同一条信息的三种温度",
-    wordCount: (n)=>`${n} 词`
+    wordCount: (n)=>`${n} 词`,
+    ledDp: 'DP',
+    ledTime: '时间',
+    ledClues: '线索'
   },
   ja: {
     actEyebrow: '実践',
@@ -1650,7 +2179,10 @@ const UI_I18N = {
     temp3h: "温かすぎる",
     tempEyebrow: "語調",
     tempTitle: "同じ用件を三つの温度で",
-    wordCount: (n)=>`${n} 語`
+    wordCount: (n)=>`${n} 語`,
+    ledDp: 'DP',
+    ledTime: '時間',
+    ledClues: '手がかり'
   }
 };
 
@@ -1658,10 +2190,20 @@ let currentLang = 'en';
 const t = k => (UI_I18N[currentLang] && UI_I18N[currentLang][k] != null)
   ? UI_I18N[currentLang][k] : UI_I18N.en[k];
 
+/* An explanation may be written straight into data-explain, which is what most
+   of the library does, or given as a UI_I18N key so that it translates with
+   the rest of the deck. Resolve a key; pass literal text through untouched.
+   Both Grammar Court decks shipped with keys here and printed "Correct.
+   c1i1exp" under all eighty of their questions, because nothing ever looked
+   the key up. A literal explanation is a sentence and can never collide with
+   a key name, so this is safe on every existing lesson. */
+const explainOf = v => (v && typeof v === 'string' && typeof UI_I18N.en[v] === 'string')
+  ? t(v) : v;
+
 /* ── Deck state ── */
 const stage   = document.getElementById('stage');
 const slides  = [...document.querySelectorAll('.slide')];
-const scored  = slides.filter(s => ['mc','gap','match','order','sort'].includes(s.dataset.type));
+const scored  = slides.filter(s => ['mc','gap','match','order','sort','search','lock'].includes(s.dataset.type));
 /* A slide may hold more than one gap; each gap is worth a point. */
 const countIn = s => s.dataset.type === 'gap'   ? s.querySelectorAll('.gap').length
                    : s.dataset.type === 'match' ? s.querySelectorAll('.match-pair').length
@@ -1671,7 +2213,78 @@ const maxScore = scored.reduce((n, s) => n + Math.max(1, countIn(s)), 0);
 let idx = 0, score = 0;
 const answered = new WeakSet();
 
+/* ── Branch mode ────────────────────────────────────────────────────────
+   Opt in with <body data-flow="branch">. A branching lesson is a graph, not
+   a line: slides carry data-node, and links carry data-goto. Everything below
+   is inert in an ordinary deck, so the 200-odd linear lessons are unaffected.
+
+   Three things have to change, and they are the three that go wrong when a
+   branching game is faked with hyperlinks:
+     - prev must retrace the route actually taken, not slides[idx-1];
+     - the score denominator must count only the questions this learner met,
+       or every player is marked out of a paper they never sat;
+     - the ending must be decided by the ledger rather than by whichever
+       button the learner feels like pressing. */
+const BRANCH = document.body.dataset.flow === 'branch';
+const nodeOf = {};
+if (BRANCH) slides.forEach(sl => { if (sl.dataset.node) nodeOf[sl.dataset.node] = sl; });
+const START = BRANCH ? (document.body.dataset.start || slides[0].dataset.node) : null;
+const trail = [];
+const ledger = { dp: 0, time: 0, clues: new Set() };
+const seenScored = new Set();
+
+function ledgerInit() {
+  ledger.dp = 0;
+  ledger.time = +(document.body.dataset.time || 3);
+  ledger.clues.clear();
+  drawLedger();
+}
+function drawLedger() {
+  const box = document.getElementById('ledger');
+  if (!box) return;
+  box.hidden = !BRANCH;
+  if (!BRANCH) return;
+  document.getElementById('ledDp').textContent = ledger.dp;
+  document.getElementById('ledTime').textContent =
+    ledger.time > 0 ? '\u25CF'.repeat(ledger.time) : '\u2014';
+  document.getElementById('ledClues').textContent = ledger.clues.size;
+}
+/* Apply the cost or reward an element declares. Idempotent per element, so
+   paging back over a node never pays twice. */
+const spent = new WeakSet();
+function applyLedger(el) {
+  if (!BRANCH || !el || spent.has(el)) return;
+  spent.add(el);
+  if (el.dataset.dp)   ledger.dp = Math.max(0, ledger.dp + (+el.dataset.dp));
+  if (el.dataset.time) ledger.time = Math.max(0, ledger.time + (+el.dataset.time));
+  if (el.dataset.clue) el.dataset.clue.split(/\s+/).filter(Boolean)
+                          .forEach(c => ledger.clues.add(c));
+  drawLedger();
+}
+/* A ledger gate: data-require="dp>=8 && time>=1 && clues>=4".
+   Only these three names are in scope, and nothing is eval'd. */
+function meets(expr) {
+  if (!expr) return true;
+  const val = { dp: ledger.dp, time: ledger.time, clues: ledger.clues.size };
+  return expr.split('&&').every(part => {
+    const m = part.trim().match(/^(dp|time|clues)\s*(>=|<=|>|<|==)\s*(\d+)$/);
+    if (!m) return true;
+    const a = val[m[1]], b = +m[3];
+    return m[2] === '>=' ? a >= b : m[2] === '<=' ? a <= b
+         : m[2] === '>'  ? a >  b : m[2] === '<'  ? a <  b : a === b;
+  });
+}
+function goNode(id, record) {
+  const target = nodeOf[id];
+  if (!target) return;
+  if (record !== false) trail.push(idx);
+  show(slides.indexOf(target));
+}
+
 /* ── Scale the 1280×720 stage to fit any viewport, never scroll ── */
+if (BRANCH) ledgerInit();
+setTimeout(wireGlosses, 0);
+
 function fitStage() {
   const s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
   // Centre explicitly. Relying on the wrapper to centre an oversized child is
@@ -1684,6 +2297,11 @@ addEventListener('resize', fitStage);
 
 /* ── Navigation ── */
 function show(n) {
+  // A slide may own a running clock. Leaving it pauses; coming back
+  // resumes with the time that was left, so paging back to re-read a
+  // rule never costs the learner the answer.
+  const leaving = slides[idx];
+  if (leaving && leaving._leave) leaving._leave();
   idx = Math.max(0, Math.min(slides.length - 1, n));
   slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
   stage.classList.toggle('on-cover', slides[idx].dataset.type === 'cover');
@@ -1692,18 +2310,44 @@ function show(n) {
   // under the wash — so extra artwork never becomes a pasted-in box.
   stage.style.setProperty('--hero', slides[idx].dataset.bg
     ? `url('${slides[idx].dataset.bg}')` : '');
-  document.getElementById('progressFill').style.width =
-    (slides.length > 1 ? (idx / (slides.length - 1)) * 100 : 0) + '%';
-  document.getElementById('deckCount').textContent = t('slideOf')(idx + 1, slides.length);
-  document.querySelector('[data-action="prev"]').disabled = idx === 0;
-  document.querySelector('[data-action="next"]').disabled = idx === slides.length - 1;
+  // In branch mode idx/length is meaningless — a learner sees roughly half the
+  // nodes — so progress and the counter come from the node itself.
+  const cur = slides[idx];
+  document.getElementById('progressFill').style.width = BRANCH
+    ? (cur.dataset.progress || 0) + '%'
+    : (slides.length > 1 ? (idx / (slides.length - 1)) * 100 : 0) + '%';
+  document.getElementById('deckCount').textContent = BRANCH
+    ? (cur.dataset.act || '')
+    : t('slideOf')(idx + 1, slides.length);
+  document.querySelector('[data-action="prev"]').disabled =
+    BRANCH ? !trail.length : idx === 0;
+  document.querySelector('[data-action="next"]').disabled =
+    BRANCH ? !cur.querySelector('[data-goto]') : idx === slides.length - 1;
+  if (BRANCH) {
+    applyLedger(cur);
+    if (['mc','gap','match','order','sort','lock'].includes(cur.dataset.type))
+      seenScored.add(cur);
+    // A ledger gate greys out the endings the run did not earn.
+    cur.querySelectorAll('[data-require]').forEach(b => {
+      const okay = meets(b.dataset.require);
+      b.disabled = !okay;
+      b.classList.toggle('locked', !okay);
+    });
+  }
   if (slides[idx].dataset.type === 'results') renderResults();
+  markRail(slides[idx]);
+  if (slides[idx]._enter) slides[idx]._enter();
   const gap = slides[idx].querySelector('.gap');
   if (gap && !answered.has(slides[idx])) setTimeout(() => gap.focus(), 60);
 }
 
 function renderResults() {
-  const max = maxScore;
+  // Branch mode scores out of what this learner actually met. Counting every
+  // question in the file would mark them against a paper half of which was
+  // on the road not taken.
+  const max = BRANCH
+    ? [...seenScored].reduce((n, s) => n + Math.max(1, countIn(s)), 0)
+    : maxScore;
   document.getElementById('scoreVal').textContent = score;
   document.getElementById('scoreMax').textContent = max;
   const pct = max ? score / max : 0;
@@ -1730,7 +2374,7 @@ function feedback(slide, ok, extra, ownExplain) {
   if (!el) return;
   // An option's own explanation wins: telling a learner why THEIR answer was
   // wrong beats restating why the key was right.
-  const reason = ownExplain || el.dataset.explain;
+  const reason = explainOf(ownExplain || el.dataset.explain);
   const why = reason ? ' ' + reason : '';
   // innerHTML, not textContent: explanations carry <strong> and <em>, and the
   // whole point of an explanation is that the word being taught is marked.
@@ -1740,11 +2384,30 @@ function feedback(slide, ok, extra, ownExplain) {
   el.className = 'feedback show ' + (ok ? 'ok' : 'no');
 }
 
+/* A real shuffle.
+   `arr.map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1])` is not one, and it was doing visible
+   damage here. Array.prototype.sort assumes a consistent comparator; given an
+   inconsistent one it does whatever its insertion sort happens to do, which
+   for short arrays is mostly nothing. Measured in this engine's own runtime
+   over 400,000 trials, n=4: an option authored first landed at A 35.9% of the
+   time and at D 31.2%, against 25% for a fair shuffle — B and C shared the
+   remaining third. Every one of this lesson's six keys was authored first, so
+   "always press A" scored well above chance and a student noticed.
+   Fisher-Yates is uniform, and the source order no longer leaks. */
+function shuffled(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 /* Multiple choice — shuffled on first view so option order is never a tell. */
 slides.filter(s => s.dataset.type === 'mc').forEach(slide => {
   const box = slide.querySelector('.opts');
   const opts = [...box.querySelectorAll('.opt')];
-  opts.map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]).forEach((o, i) => {
+  shuffled(opts).forEach((o, i) => {
     o.prepend(Object.assign(document.createElement('span'), {
       className: 'opt-key', textContent: 'ABCD'[i]
     }));
@@ -1760,6 +2423,16 @@ slides.filter(s => s.dataset.type === 'mc').forEach(slide => {
     if (!ok) o.classList.add('wrong');
     award(slide, ok);
     feedback(slide, ok, null, o.dataset.explain);
+    if (BRANCH) {
+      // The chosen option carries its own consequence and its own destination,
+      // so a wrong answer costs Time and routes to a setback node rather than
+      // simply refusing to move.
+      applyLedger(o);
+      const to = o.dataset.goto || slide.dataset.goto;
+      const cont = slide.querySelector('[data-action="branch-continue"]');
+      if (cont) { cont.hidden = false; cont.dataset.goto = to; }
+      else if (to) setTimeout(() => goNode(to), 1400);
+    }
   }));
 });
 
@@ -1772,16 +2445,54 @@ slides.filter(s => s.dataset.type === 'match').forEach(slide => {
   const terms = document.createElement('div');
   const defs = document.createElement('div');
   terms.className = defs.className = 'match-col';
-  const mk = (txt, cls, key) => {
+  /* A MATCH SLIDE WAS THE ONE EXERCISE WITH NOWHERE TO PUT A TRANSLATION.
+     Every other shape carries its ES/DE gloss in the markup; this one builds
+     its items from data-term/data-def in JS, so there was no element to hang
+     one on and the slide simply had none. Innes, on Present Continuous 2b
+     slide 16: "translate words underneath".
+
+     Optional and backward-compatible: a pair with no data-term-es/-de and no
+     data-def-es/-de renders exactly the button it rendered before. The gloss
+     goes in a .sup, which is the site's existing mechanism - hidden unless
+     the root lang matches, and stripped by bwNorm() so the EN/DE panel still
+     lists the English, not the English plus its own translation.
+
+     Generalised 2026-09-09 from a hardcoded ['es','de'] to every code in
+     LANGS. The two-language version was written when two languages was the
+     maximum; a ten-language deck (The Square) then had a match slide that
+     translated into Spanish and German and silently stayed English in the
+     other seven. Nothing about the old markup changes - data-def-es and
+     data-def-de are still exactly what this reads for those two - so every
+     deck already generated keeps rendering as it did, and picks the other
+     eight up whenever it is next rebuilt. */
+  const mk = (txt, cls, key, glosses) => {
     const b = document.createElement('button');
     b.className = 'match-item ' + cls;
-    b.textContent = txt;
+    b.appendChild(document.createTextNode(txt));
     b.dataset.key = key;
+    (glosses || []).forEach(([lang, label, text]) => {
+      if (!text) return;
+      const s = document.createElement('span');
+      s.className = 'sup';
+      s.dataset.lang = lang;
+      const tag = document.createElement('b');
+      tag.textContent = label;
+      const body = document.createElement('span');
+      body.innerHTML = text;
+      s.append(tag, body);
+      b.appendChild(s);
+    });
     return b;
   };
-  pairs.forEach(p => terms.appendChild(mk(p.dataset.term, 'term', p.dataset.term)));
-  [...pairs].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1])
-    .forEach(p => defs.appendChild(mk(p.dataset.def, 'def', p.dataset.term)));
+  const gl = (p, side) => LANGS
+    .filter(l => l.code !== 'en')
+    .map(l => [l.code, l.code.toUpperCase(),
+               p.dataset[side + l.code[0].toUpperCase() + l.code.slice(1)]]);
+  pairs.forEach(p => terms.appendChild(
+    mk(p.dataset.term, 'term', p.dataset.term, gl(p, 'term'))));
+  shuffled(pairs)
+    .forEach(p => defs.appendChild(
+      mk(p.dataset.def, 'def', p.dataset.term, gl(p, 'def'))));
   grid.replaceChildren(terms, defs);
 
   let picked = null, done = 0;
@@ -1811,6 +2522,94 @@ slides.filter(s => s.dataset.type === 'match').forEach(slide => {
   });
 });
 
+/* Listening audio. Author as
+     <div class="audio" data-src="folder/file.mp3" data-label="Section 1 · 3 min"></div>
+   inside a slide with data-type="audio". The engine builds the player.
+
+   It behaves like the test, deliberately:
+     · one play — the button locks once it has been pressed
+     · no scrubbing — the bar reports progress, it does not accept clicks
+     · the slide's [data-action="next"] Continue button stays disabled until
+       the recording ends, so nobody reaches the questions early
+   A replay control appears only after it has finished, and it says in words
+   that the real test does not offer one. A classroom needs to replay; a
+   learner practising alone should know that is not the exam. */
+slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
+  const box = slide.querySelector('.audio');
+  if (!box || !box.dataset.src) return;
+
+  const audio = new Audio(box.dataset.src);
+  audio.preload = 'auto';
+
+  const wrap  = document.createElement('div'); wrap.className = 'audio-player';
+  const row   = document.createElement('div'); row.className = 'audio-row';
+  const btn   = document.createElement('button');
+  btn.className = 'audio-play'; btn.type = 'button';
+  btn.setAttribute('aria-label', t('audioPlay')); btn.textContent = '▶';
+  const meta  = document.createElement('div'); meta.className = 'audio-meta';
+  const label = document.createElement('div'); label.className = 'audio-label';
+  label.textContent = box.dataset.label || '';
+  const track = document.createElement('div'); track.className = 'audio-track';
+  const fill  = document.createElement('div'); fill.className = 'audio-fill';
+  const time  = document.createElement('div'); time.className = 'audio-time';
+  const now   = document.createElement('span'); now.textContent = '0:00';
+  const left  = document.createElement('span'); left.textContent = '';
+  const state = document.createElement('div'); state.className = 'audio-state';
+  state.textContent = t('audioOnce');
+
+  track.append(fill); time.append(now, left); meta.append(label, track, time);
+  row.append(btn, meta); wrap.append(row, state);
+  box.replaceChildren(wrap);
+
+  const cont = slide.querySelector('[data-action="next"]');
+  if (cont) cont.disabled = true;
+
+  const mmss = n => Number.isFinite(n)
+    ? Math.floor(n / 60) + ':' + String(Math.floor(n % 60)).padStart(2, '0') : '';
+
+  audio.addEventListener('loadedmetadata', () => { left.textContent = mmss(audio.duration); });
+  audio.addEventListener('timeupdate', () => {
+    if (!audio.duration) return;
+    fill.style.width = (audio.currentTime / audio.duration * 100) + '%';
+    now.textContent = mmss(audio.currentTime);
+    left.textContent = mmss(audio.duration - audio.currentTime);
+  });
+  audio.addEventListener('error', () => {
+    state.textContent = t('audioMissing');
+    btn.disabled = true;
+    if (cont) cont.disabled = false;   // never trap a learner behind a broken file
+  });
+  audio.addEventListener('ended', () => {
+    slide.dataset.played = 'yes';
+    fill.style.width = '100%';
+    state.textContent = t('audioDone');
+    state.classList.add('done');
+    if (cont) cont.disabled = false;
+    const again = document.createElement('button');
+    again.className = 'audio-replay'; again.type = 'button';
+    again.textContent = t('audioReplay');
+    again.addEventListener('click', () => {
+      audio.currentTime = 0; audio.play();
+      state.textContent = t('audioPlaying'); state.classList.remove('done');
+      again.remove();
+    });
+    wrap.append(again);
+  });
+
+  btn.addEventListener('click', () => {
+    btn.disabled = true;
+    state.textContent = t('audioPlaying');
+    audio.play().catch(() => {
+      state.textContent = t('audioMissing');
+      if (cont) cont.disabled = false;
+    });
+  });
+
+  // Leaving the slide stops the recording rather than letting it run on
+  // behind the questions.
+  slide._leave = () => { if (!audio.paused) audio.pause(); };
+});
+
 /* Sentence building. Author as
      <div class="order" data-answer="chunk|chunk|chunk"></div>
    with a [data-action="check-order"] button and a .feedback alongside it.
@@ -1823,8 +2622,19 @@ slides.filter(s => s.dataset.type === 'order').forEach(slide => {
   const answer = box.dataset.answer.split('|').map(x => x.trim());
   const target = document.createElement('div'); target.className = 'order-target';
   const pool   = document.createElement('div'); pool.className   = 'order-pool';
-  answer.map((txt, i) => ({ txt, i }))
-        .map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1])
+  /* A FAIR SHUFFLE CAN DEAL THE ANSWER. With four chunks, Fisher-Yates lands
+     on the solved order 1 time in 24, and the learner is handed a finished
+     sentence to "build". Innes met exactly that on Present Simple 2 slide 18:
+     "first | you | mine | the ore ." in answer order. Measured over 12 loads
+     the shuffle is uniform and healthy - which is the problem, not the excuse.
+     Re-deal while the order is the answer. Bounded, and skipped for a
+     one-chunk sentence, which has no other order to offer. */
+  let deal = answer.map((txt, i) => ({ txt, i }));
+  for (let tries = 0; tries < 12; tries++) {
+    deal = shuffled(answer.map((txt, i) => ({ txt, i })));
+    if (answer.length < 2 || deal.some((c, i) => c.i !== i)) break;
+  }
+  deal
         .forEach(({ txt, i }) => {
           const b = document.createElement('button');
           b.className = 'chunk';
@@ -1878,6 +2688,7 @@ slides.filter(s => s.dataset.type === 'sort').forEach(slide => {
   const box = slide.querySelector('.sort');
   if (!box) return;
   const labels = (box.dataset.bins || '').split('|').map(x => x.trim());
+  const binKeys = (box.dataset.binsI18n || '').split('|').map(x => x.trim());
   const items = [...box.querySelectorAll('.sort-item')];
   if (labels.length < 2 || !items.length) return;
 
@@ -1894,6 +2705,13 @@ slides.filter(s => s.dataset.type === 'sort').forEach(slide => {
     const h = document.createElement('div');
     h.className = 'sort-bin-label';
     h.textContent = label;
+    /* Bin labels are chrome ("A thing" / "An action"), not the language under
+       test, so they should translate — and could not, because data-bins is a
+       plain string baked into the markup. An optional data-bins-i18n carries
+       one UI_I18N key per bin; the label then joins the normal [data-i18n]
+       pass and follows the switcher like everything else. data-bins stays the
+       English, which is both the fallback and what the SORT gate reads. */
+    if (binKeys[i]) h.dataset.i18n = binKeys[i];
     const body = document.createElement('div');
     body.className = 'sort-bin-items';
     bin.append(h, body);
@@ -1901,7 +2719,7 @@ slides.filter(s => s.dataset.type === 'sort').forEach(slide => {
     return bin;
   });
 
-  items.map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]).forEach(it => {
+  shuffled(items).forEach(it => {
     it.setAttribute('draggable', 'true');
     it.tabIndex = 0;
     pool.appendChild(it);
@@ -1970,38 +2788,292 @@ slides.filter(s => s.dataset.type === 'sort').forEach(slide => {
   });
 });
 
-/* Gap fill. Supports several gaps on one slide, each scored and explained
-   individually via its own .gap-row wrapper. */
-const gapOk = g => g.dataset.answer.split('|')
-  .map(a => a.trim().toLowerCase())
-  .includes(g.value.trim().toLowerCase().replace(/\s+/g, ' '));
+/* ══ ESCAPE-ROOM MECHANICS ═══════════════════════════════════════════
+   Added for the puzzle-lesson format. A deck that uses none of them is
+   unaffected: the selectors match nothing and the rail stays hidden. */
 
-function markGap(g, fb) {
+/* Timed search. Author as
+     <div class="search" data-limit="20">
+       <button class="find" data-name="a spoon" data-correct><svg…></button>
+       …
+     </div>
+   The engine adds the clock, hides the names until the item is answered,
+   and marks it wrong if the clock runs out. One point.
+
+   The names must stay hidden while the clock runs. A labelled picture
+   turns a vocabulary task into a reading task: the learner scans for the
+   word in the stem instead of recognising the object. They are revealed
+   on answering, which is when they teach. */
+slides.filter(s => s.dataset.type === 'search').forEach(slide => {
+  const box = slide.querySelector('.search');
+  if (!box) return;
+  const items = [...box.querySelectorAll('.find')];
+  if (!items.length) return;
+  const limit = +(box.dataset.limit || 20);
+  const key = items.find(i => i.hasAttribute('data-correct'));
+
+  const bar = document.createElement('div'); bar.className = 'search-bar';
+  const track = document.createElement('div'); track.className = 'search-track';
+  const fill = document.createElement('div'); fill.className = 'search-fill';
+  const clock = document.createElement('span'); clock.className = 'search-clock';
+  track.appendChild(fill);
+  bar.append(track, clock);
+  const grid = document.createElement('div');
+  grid.className = 'find-grid';
+  grid.style.gridTemplateColumns = `repeat(${items.length}, 1fr)`;
+  items.forEach(it => {
+    const n = document.createElement('span');
+    n.className = 'find-name';
+    n.textContent = it.dataset.name || '';
+    it.appendChild(n);
+    grid.appendChild(it);
+  });
+  box.replaceChildren(bar, grid);
+
+  let left = limit, tid = null;
+  clock.textContent = left + 's';
+
+  function finish(chosen) {
+    if (answered.has(slide)) return;
+    if (tid) { clearInterval(tid); tid = null; }
+    answered.add(slide);
+    const ok = !!chosen && chosen.hasAttribute('data-correct');
+    items.forEach(i => { i.disabled = true; i.classList.add('revealed'); });
+    if (key) key.classList.add('correct');
+    if (chosen && !ok) chosen.classList.add('wrong');
+    if (ok) score++;
+    updateScoreChip();
+    feedback(slide, ok, ok || !key ? null : key.dataset.name);
+    markRail(slide);          // the digit is picked up here, not on arrival
+  }
+
+  items.forEach(i => i.addEventListener('click', () => finish(i)));
+
+  slide._enter = () => {
+    if (answered.has(slide) || tid) return;
+    tid = setInterval(() => {
+      left--;
+      clock.textContent = Math.max(0, left) + 's';
+      fill.style.width = Math.max(0, left / limit * 100) + '%';
+      if (left <= 5) bar.classList.add('urgent');
+      if (left <= 0) finish(null);
+    }, 1000);
+  };
+  slide._leave = () => { if (tid) { clearInterval(tid); tid = null; } };
+});
+
+/* Combination lock. Author as
+     <div class="lock" data-code="63741"></div>
+   The engine builds the display and the keypad. The first attempt is the
+   one that scores; after that the learner keeps trying until it opens,
+   because the lock is the last door and the story has to get through it. */
+slides.filter(s => s.dataset.type === 'lock').forEach(slide => {
+  const box = slide.querySelector('.lock');
+  if (!box) return;
+  const code = (box.dataset.code || '').trim().split('');
+  if (!code.length) return;
+
+  const disp = document.createElement('div'); disp.className = 'lock-display';
+  const cells = code.map(() => {
+    const c = document.createElement('span'); c.className = 'lock-cell';
+    disp.appendChild(c); return c;
+  });
+  const keys = document.createElement('div'); keys.className = 'lock-keys';
+  const pad  = document.createElement('div'); pad.className  = 'lock-pad';
+
+  let entry = [], scoredOnce = false, opened = false;
+  const draw = () => cells.forEach((c, i) => {
+    c.textContent = entry[i] != null ? entry[i] : '';
+    c.classList.toggle('filled', entry[i] != null);
+  });
+
+  '1234567890'.split('').forEach(n => {
+    const b = document.createElement('button');
+    b.className = 'lock-key'; b.textContent = n;
+    b.addEventListener('click', () => {
+      if (opened || entry.length >= code.length) return;
+      entry.push(n); draw();
+    });
+    pad.appendChild(b);
+  });
+  const del = document.createElement('button');
+  del.className = 'lock-key'; del.textContent = '⌫';
+  del.setAttribute('aria-label', 'delete');
+  del.addEventListener('click', () => { if (!opened) { entry.pop(); draw(); } });
+  pad.appendChild(del);
+
+  const go = document.createElement('button');
+  go.className = 'btn'; go.dataset.i18n = 'btnOpen'; go.textContent = 'Open';
+  go.addEventListener('click', () => {
+    if (opened || entry.length < code.length) return;
+    const ok = entry.join('') === code.join('');
+    if (!scoredOnce) {
+      scoredOnce = true; answered.add(slide);
+      if (ok) score++;
+      updateScoreChip();
+    }
+    if (ok) {
+      opened = true;
+      cells.forEach(c => c.classList.add('ok'));
+      pad.querySelectorAll('.lock-key').forEach(k => k.disabled = true);
+      go.disabled = true;
+      feedback(slide, true);
+    } else {
+      box.classList.add('bad');
+      setTimeout(() => box.classList.remove('bad'), 400);
+      feedback(slide, false, code.join(''));
+      entry = []; draw();
+    }
+  });
+
+  keys.append(pad, go);
+  box.replaceChildren(disp, keys);
+  draw();
+});
+
+/* The rail. A lesson declares its stops as a pipe-separated string, in
+   UI_I18N under the key named by data-i18n-stops, and each slide says
+   which stop it belongs to (data-stop) and what was picked up there
+   (data-take). Reached stops stay reached when the learner pages back. */
+const deckRail = document.getElementById('deckRail');
+const railTakes = new Map();
+let railMax = 0, railCur = 0;
+
+function markRail(slide) {
+  const st = +(slide.dataset.stop || 0);
+  if (st) {
+    railCur = st;
+    railMax = Math.max(railMax, st);
+    // A digit carried by a scored slide is only picked up once that slide
+    // has been answered. Otherwise the rail prints the reward the moment
+    // the learner arrives, and the question is over before it is asked.
+    if (slide.dataset.take &&
+        (!scored.includes(slide) || answered.has(slide)))
+      railTakes.set(st, slide.dataset.take);
+  }
+  renderRail();
+}
+
+function renderRail() {
+  if (!deckRail) return;
+  const raw = (deckRail.dataset.i18nStops ? t(deckRail.dataset.i18nStops) : null)
+            || deckRail.dataset.stops || '';
+  const labels = raw.split('|').map(x => x.trim()).filter(Boolean);
+  if (!labels.length) { deckRail.hidden = true; stage.classList.remove('has-rail'); return; }
+  deckRail.replaceChildren(...labels.map((label, i) => {
+    const n = i + 1;
+    const el = document.createElement('div');
+    el.className = 'rail-stop'
+      + (n <= railMax ? ' reached' : '')
+      + (n === railCur ? ' current' : '')
+      + (railTakes.has(n) ? ' has-digit' : '');
+    const d = document.createElement('span');
+    d.className = 'rail-digit';
+    d.textContent = railTakes.has(n) ? railTakes.get(n) : '·';
+    const l = document.createElement('span');
+    l.className = 'rail-label'; l.textContent = label;
+    el.append(d, l);
+    return el;
+  }));
+  deckRail.hidden = false;
+  stage.classList.add('has-rail');
+}
+
+/* Gap fill. Several gaps per slide, grouped and explained by .gap-row —
+   and several gaps per row, which the engine scores individually. */
+/* Typography must never decide whether a learner is right. An author writing
+   can’t / couldn’t with a curly apostrophe — which is what good prose wants —
+   made the answer unreachable from a keyboard, which types a straight one.
+   Both sides are normalised: curly quotes flattened, and the various dashes
+   too, for the same reason. Found on the Scarlet Star final lock, where the
+   key AND every alternative were unmatchable. */
+const flatten = s => s.trim().toLowerCase()
+  .replace(/[\u2018\u2019\u201B\u02BC\u00B4\u0060]/g, "'")
+  .replace(/[\u201C\u201D]/g, '"')
+  .replace(/[\u2010-\u2015]/g, '-')
+  .replace(/\s+/g, ' ');
+const gapOk = g => g.dataset.answer.split('|')
+  .map(flatten)
+  .includes(flatten(g.value));
+
+function markGap(g) {
   const ok = gapOk(g);
   g.classList.add(ok ? 'correct' : 'wrong');
   g.disabled = true;
   if (ok) score++;
-  if (fb) {
-    const why = fb.dataset.explain ? ' ' + fb.dataset.explain : '';
-    fb.innerHTML = (ok ? t('fbCorrect')
-      : `${t('fbWrong')} ${t('fbAnswer')} ${g.dataset.answer.split('|')[0]}.`) + why;
-    fb.className = 'feedback show ' + (ok ? 'ok' : 'no');
-  }
   return ok;
+}
+
+/* Mark EVERY input in a group and write ONE piece of feedback for it.
+
+   This used to mark the first input and stop, while maxScore counted them
+   all — so a row like "___ she ___ an alien?" was worth two points and
+   could only ever earn one. The learner typed both words correctly and
+   watched the score go up by one, with no way to tell which half had
+   supposedly failed. Found on Food A1 Part 1; it was also costing
+   exam-prep five points and two other lessons one each.
+
+   A miss now names every answer it missed, not just the first. */
+function fillFeedback(fb, missed, gaps) {
+  /* The row explains the row. A single gap may also carry data-explain of its
+     own, because a row like "They said they ___ already ___" is teaching two
+     different things and the second half had no way to be explained at all:
+     one .gap-row holds one .feedback, so its second point was unreachable. */
+  const why = [fb.dataset.explain, ...(gaps || []).map(g => g.dataset.explain)]
+    .map(explainOf).filter(Boolean).map(p => ' ' + p).join('');
+  fb.innerHTML = (missed.length === 0 ? t('fbCorrect')
+    : `${t('fbWrong')} ${t('fbAnswer')} ` +
+      missed.map(g => g.dataset.answer.split('|')[0]).join(', ') + '.') + why;
+  fb.className = 'feedback show ' + (missed.length === 0 ? 'ok' : 'no');
+}
+
+function markGroup(gaps, fb) {
+  const missed = gaps.filter(g => !markGap(g));
+  if (fb) fillFeedback(fb, missed, gaps);
+  return missed;
 }
 
 function checkGaps(slide) {
   if (answered.has(slide)) return;
+  // A slide with no gap on it is not a gap-fill: sentence-building shipped
+  // for months with a plain [data-action="check"] button, which landed
+  // here, threw on a null input and left the Check button dead. Route it
+  // to the slide's own checker instead of guessing.
+  if (!slide.querySelector('.gap')) {
+    if (slide._check) slide._check();
+    return;
+  }
   answered.add(slide);
   const rows = [...slide.querySelectorAll('.gap-row')];
+  // A screen may carry ONE pooled explanation instead of one per row — the
+  // four traps are variations on a single point and read better together,
+  // and four per-row feedback blocks reserve 46px each whether or not
+  // anyone has pressed Check. It shipped that way on Food A1 and was never
+  // once displayed: this loop only ever touched feedback found *inside* a
+  // row, so the slide's own note sat in the DOM with no code path to reach
+  // it. The learner pressed Check, saw the gaps go green, and got no
+  // explanation at all.
+  const pooled = [...slide.querySelectorAll('.feedback')]
+    .find(f => !f.closest('.gap-row'));
   if (rows.length) {
-    rows.forEach(r => markGap(r.querySelector('.gap'), r.querySelector('.feedback')));
+    const missed = rows.flatMap(r => markGroup([...r.querySelectorAll('.gap')],
+                                               r.querySelector('.feedback')));
+    if (pooled) fillFeedback(pooled, missed);
   } else {
-    markGap(slide.querySelector('.gap'), slide.querySelector('.feedback'));
+    // No .gap-row wrappers: the whole slide is one group. Marking only the
+    // first input here is the same bug in its other form.
+    markGroup([...slide.querySelectorAll('.gap')], pooled);
   }
   const btn = slide.querySelector('[data-action="check"]');
   if (btn) btn.disabled = true;
   updateScoreChip();
+  // In branch mode a gap slide may pay into the ledger, but only when every
+  // gap on it is right. Without this a scored slide costs the learner effort
+  // and returns nothing to the state that picks their ending.
+  if (BRANCH && slide.dataset.dp) {
+    const clean = ![...slide.querySelectorAll('.gap')].some(g => g.classList.contains('wrong'));
+    if (clean) applyLedger(slide); else spent.add(slide);
+  }
 }
 
 /* ── Activation: word count, copy, and a print mirror (a textarea's
@@ -2020,16 +3092,58 @@ if (actInput) {
   sync();
 }
 
+/* ── Glosses. NARRATIVE_TR is per-lesson; absent, none of this runs. ── */
+function wireGlosses() {
+  if (typeof NARRATIVE_TR === 'undefined') return;
+  document.querySelectorAll('.gloss[data-tr]').forEach(el => {
+    if (el._glossed) return;
+    el._glossed = true;
+    const tr = document.createElement('p'); tr.className = 'gloss-tr';
+    const btn = document.createElement('button'); btn.className = 'gloss-btn'; btn.type = 'button';
+    el.after(tr); tr.before(btn);
+    btn.addEventListener('click', () => {
+      const on = tr.classList.toggle('show');
+      btn.textContent = t(on ? 'glossHide' : 'glossShow');
+    });
+    el._gloss = { tr, btn };
+  });
+  syncGlosses();
+}
+function syncGlosses() {
+  if (typeof NARRATIVE_TR === 'undefined') return;
+  const bank = NARRATIVE_TR[currentLang];
+  // No translation for this language means no control — an empty reveal is
+  // worse than none, which is the same reason a half-done language stays out
+  // of the switcher entirely.
+  document.documentElement.dataset.gloss = bank ? 'on' : 'off';
+  document.querySelectorAll('.gloss[data-tr]').forEach(el => {
+    const g = el._gloss; if (!g) return;
+    const txt = bank && bank[el.dataset.tr];
+    g.btn.hidden = !txt;
+    g.tr.innerHTML = txt || '';
+    g.tr.classList.remove('show');
+    g.btn.textContent = t('glossShow');
+  });
+}
+
 /* ── Events ── */
 document.addEventListener('click', e => {
   const a = e.target.closest('[data-action]');
   if (!a) return;
   const act = a.dataset.action;
-  if (act === 'next') show(idx + 1);
-  if (act === 'prev') show(idx - 1);
+  if (act === 'next') BRANCH ? followFirst() : show(idx + 1);
+  if (act === 'prev') BRANCH ? (trail.length && show(trail.pop())) : show(idx - 1);
   if (act === 'check') checkGaps(a.closest('.slide'));
   if (act === 'check-order') { const sl = a.closest('.slide'); if (sl._check) sl._check(); }
-  if (act === 'restart') location.reload();
+  if (act === 'restart') {
+    if (!BRANCH) return location.reload();
+    // Replay resets the ledger but keeps the learner in the page, so a class
+    // can run the other route immediately.
+    trail.length = 0; seenScored.clear(); score = 0;
+    slides.forEach(sl => { answered.delete(sl); });
+    ledgerInit(); updateScoreChip();
+    goNode(a.dataset.goto || START, false);
+  }
   if (act === 'copy-writing') {
     const ta = document.getElementById('actInput');
     if (ta && navigator.clipboard) navigator.clipboard.writeText(ta.value).then(() => {
@@ -2040,17 +3154,37 @@ document.addEventListener('click', e => {
   }
 });
 
+/* Branch links. A choice may also move the ledger; the cost is paid once,
+   on the click that commits to it. */
+document.addEventListener('click', e => {
+  if (!BRANCH) return;
+  const g = e.target.closest('[data-goto]');
+  if (!g || g.disabled || g.dataset.action === 'restart') return;
+  if (g.classList.contains('opt')) return;   // options route after feedback
+  applyLedger(g);
+  goNode(g.dataset.goto);
+});
+function followFirst() {
+  const g = slides[idx].querySelector('[data-goto]:not([disabled])');
+  if (g) { applyLedger(g); goNode(g.dataset.goto); }
+}
+
 document.addEventListener('keydown', e => {
   if (e.target.matches('input, select, textarea')) {
     if (e.key === 'Enter') checkGaps(e.target.closest('.slide'));
     return;
   }
-  if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); show(idx + 1); }
-  if (['ArrowLeft', 'PageUp'].includes(e.key))         { e.preventDefault(); show(idx - 1); }
+  if (['ArrowRight', 'PageDown', ' '].includes(e.key)) {
+    e.preventDefault(); BRANCH ? followFirst() : show(idx + 1);
+  }
+  if (['ArrowLeft', 'PageUp'].includes(e.key)) {
+    e.preventDefault(); BRANCH ? (trail.length && show(trail.pop())) : show(idx - 1);
+  }
 });
 
 /* ── Language ── */
 function applyLang() {
+  syncGlosses();
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const v = t(el.dataset.i18n);
     if (v != null) el.innerHTML = v;
@@ -2081,9 +3215,16 @@ function initLang() {
 }
 
 /* Per-slide background art: set the variable on the element as well, because
-   the print stylesheet paints each slide's own ::before from var(--hero). */
-slides.filter(s => s.dataset.bg).forEach(s =>
-  s.style.setProperty('--hero', `url('${s.dataset.bg}')`));
+   the print stylesheet paints each slide's own ::before from var(--hero).
+
+   Decode them all up front. A background-image on a display:none slide is
+   never fetched, so a deck printed without visiting every slide first
+   exported those pages with no artwork at all — black interiors in the
+   PDF while the screen looked right. */
+slides.filter(s => s.dataset.bg).forEach(s => {
+  s.style.setProperty('--hero', `url('${s.dataset.bg}')`);
+  new Image().src = s.dataset.bg;
+});
 
 /* ── Boot ── */
 initLang();

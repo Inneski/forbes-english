@@ -137,14 +137,15 @@ old file — including a hand-picked `--green` and `--red` — are gone.
 There is no second image for this lesson, so no slide takes a `data-bg`.
 """
 import re
+import os
 import sys
 
-sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import deck as D
 import i18n_topgear as I
 
-TPL = '/home/claude/forbes-english/lesson-template/lesson-template.html'
-OUT = '/home/claude/forbes-english/forbes-english-b2-lesson.html'
+TPL = 'lesson-template/lesson-template.html'
+OUT = 'forbes-english-b2-lesson.html'
 F = 'TopGearB2'
 E = I.T['en']
 
@@ -916,7 +917,7 @@ if __name__ == '__main__':
     s = s.replace('</style>\n</head>', TENSE_VARS + CSS + '</style>\n</head>', 1)
     assert 'data:image' not in s, 'a base64 blob survived into the build'
     assert_no_answer_is_shown(s)
-    open(OUT, 'w', encoding='utf-8').write(s)
+    open(OUT, 'w', encoding='utf-8', newline='').write(s)
     print('wrote %s — %d bytes, %d slides' % (OUT, len(s), n))
     print('MC key positions A/B/C/D: %s' % key_spread)
     print('scored points: %d mc + %d gaps + %d error gaps + %d identify = %d'

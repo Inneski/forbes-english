@@ -15,6 +15,8 @@ just fail earlier and say why.
 import html as _html
 import re
 
+from chrome_i18n import CHROME
+
 
 # UI_I18N keys that reach the page as plain text rather than as HTML —
 # textContent for the first four, a `placeholder` attribute set from JS for
@@ -509,6 +511,31 @@ def activate(title, use_label, chips, speak_kind, speak_brief, speak_items,
 
 
 # ── assembly ───────────────────────────────────────────────────────────
+def fill_ledger(code, rendered):
+    """Add the ledger keys to a rendered UI_I18N block that is missing them.
+
+    The template's branch bar carries data-i18n="ledDp|ledTime|ledClues"
+    unconditionally, and chrome_i18n.CHROME has defined all three in all ten
+    languages since they were added — but 36 i18n modules were written before
+    that and their LIFT lists do not mention them. On a deck built back then
+    this was invisible; rebuilding one onto the current template fails
+    check-lesson's I18N gate with "data-i18n with no English key", which is how
+    it surfaced during the 2026-09-12 sweep.
+
+    It lives here, as a function, because assemble() is not the only caller:
+    build_elzar.py and build_food.py each inline their own copy of assemble's
+    i18n block and would otherwise need their own copy of this too. A module
+    that already defines the keys is left alone.
+    """
+    for k in ('ledDp', 'ledTime', 'ledClues'):
+        if not re.search(r'(?m)^\s*%s\s*:' % k, rendered):
+            body = rendered.rstrip()
+            assert body.endswith('}'), 'render() did not return an object'
+            body = body[:-1].rstrip().rstrip(',')
+            rendered = '%s,\n    %s: %s\n  }' % (body, k, CHROME[code][k])
+    return rendered
+
+
 def assemble(tpl_path, out_path, slides, palette, title, i18n_module, langs=('en', 'de'),
              all_langs=('en', 'de', 'es', 'fr', 'it', 'pt', 'ru', 'ar', 'zh', 'ja')):
     s = open(tpl_path, encoding='utf-8').read()
@@ -520,7 +547,7 @@ def assemble(tpl_path, out_path, slides, palette, title, i18n_module, langs=('en
     s = s.replace('<title>' + re.search(r'<title>(.*?)</title>', s, re.S).group(1) + '</title>',
                   '<title>%s</title>' % title, 1)
     def _render(c):
-        r = i18n_module.render(c)
+        r = fill_ledger(c, i18n_module.render(c))
         # Same reason as TEXT_ONLY_KEYS above: these values are assigned to a
         # text node or a placeholder attribute, where "&hellip;" is six
         # characters rather than an ellipsis.

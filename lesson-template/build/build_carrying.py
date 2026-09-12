@@ -448,7 +448,7 @@ def build():
     # counts one fewer than the raw section count (the cover is not a stop).
     s = s.replace('COUNT slides', '%d slides' % (n - 1))
     s = s.replace("chipCount: \"58 slides\"", 'chipCount: "%d slides"' % (n - 1))
-    open(OUT, 'w', encoding='utf-8').write(s)
+    open(OUT, 'w', encoding='utf-8', newline='').write(s)
     print('wrote %s — %d sections, %d scored (%d check, %d anatomy, %d escalate, '
           '%d words, %d form), %d bytes'
           % (OUT, n, len(CHECK) + len(ANATOMY) + len(ESCALATE) + len(WORDS) + len(FORM),

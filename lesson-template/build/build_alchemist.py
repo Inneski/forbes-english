@@ -485,5 +485,5 @@ if __name__ == '__main__':
     s = D.assemble(TPL, OUT, "".join(build()), PALETTE,
                    'The Alchemist — B2 English', i18n_alchemist)
     s = s.replace('</style>\n</head>', CSS + '</style>\n</head>', 1)
-    open(OUT, 'w', encoding='utf-8').write(s)
+    open(OUT, 'w', encoding='utf-8', newline='').write(s)
     print('wrote %s — %d bytes' % (OUT, len(s)))

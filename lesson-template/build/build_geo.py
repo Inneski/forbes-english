@@ -130,14 +130,15 @@ and pale ground is the house definition of a hero that belongs in a
 light lesson.
 """
 import re
+import os
 import sys
 
-sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import deck as D
 import i18n_geo as I
 
-TPL = '/home/claude/forbes-english/lesson-template/lesson-template.html'
-OUT = '/home/claude/forbes-english/forbes-geoscience-phrases.html'
+TPL = 'lesson-template/lesson-template.html'
+OUT = 'forbes-geoscience-phrases.html'
 F = 'Geoscience'
 E = I.T['en']
 
@@ -967,7 +968,7 @@ if __name__ == '__main__':
     for bad in ('hero.jpg', 'volcano.jpg', 'stratovolcano.jpg', 'fissure.jpg'):
         assert '%s/%s' % (F, bad) not in s, \
             'the deck references %s — this lesson has no volcanic content' % bad
-    open(OUT, 'w', encoding='utf-8').write(s)
+    open(OUT, 'w', encoding='utf-8', newline='').write(s)
     print('wrote %s — %d bytes, %d slides' % (OUT, len(s), n))
     print('MC key positions A/B/C/D: %s' % key_spread)
     print('gap answer positions in the shared bank: %s' % bank_spread)

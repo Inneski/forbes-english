@@ -246,7 +246,7 @@ def build():
         'input.gap:focus { background: #ffffff; color: #14100c; }\n'
         'input.gap.correct, input.gap.wrong { background: rgba(245,242,242,0.92); }\n')
     s = s.replace('</style>\n</head>', css + '</style>\n</head>', 1)
-    open(OUT, 'w', encoding='utf-8').write(s)
+    open(OUT, 'w', encoding='utf-8', newline='').write(s)
     print('wrote %s — %d slides, %d MC, %d typed, %d banked, %d pairs, bank %s, %d bytes'
           % (OUT, s.count('<section class="slide'), len(MC), len(TYPED), len(BANKED),
              len(MATCH), pos, len(s)))

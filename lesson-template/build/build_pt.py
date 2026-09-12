@@ -583,5 +583,5 @@ paint();
 html = HTML.replace('LOGO_HERE', LOGO)
 html = html.replace('DATA_HERE', json.dumps(DATA, ensure_ascii=False))
 html = html.replace('<span> / TOTAL</span>', '<span> / %d</span>' % len(DATA['words']))
-open(OUT, 'w', encoding='utf-8').write(html)
+open(OUT, 'w', encoding='utf-8', newline='').write(html)
 print('wrote %s — %d bytes, %d words' % (OUT, len(html), len(DATA['words'])))

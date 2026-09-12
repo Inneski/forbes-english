@@ -620,5 +620,5 @@ if __name__ == '__main__':
     s = D.assemble(TPL, OUT, "".join(build()), PALETTE,
                    'Stranger Things — B1 English', i18n_stranger)
     s = s.replace('</style>\n</head>', CSS + '</style>\n</head>', 1)
-    open(OUT, 'w', encoding='utf-8').write(s)
+    open(OUT, 'w', encoding='utf-8', newline='').write(s)
     print('wrote %s — %d bytes' % (OUT, len(s)))

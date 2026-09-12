@@ -284,7 +284,7 @@ def build():
     # 0.72 the "MAKING." and "DOING." letterforms competed with the slide titles
     # and swallowed the eyebrow line on the teaching slides.
     s = s.replace('  --bg-opacity: 0.72;', '  --bg-opacity: 0.34;', 1)
-    open(OUT, 'w', encoding='utf-8').write(s)
+    open(OUT, 'w', encoding='utf-8', newline='').write(s)
     n = s.count('<section class="slide')
     print('wrote %s — %d <section class="slide" (checker header is authoritative), '
           '%d gap slides, %d collocations, 1 sort, %d phrasal verbs, %d bytes'

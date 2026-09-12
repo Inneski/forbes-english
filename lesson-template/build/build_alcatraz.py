@@ -534,7 +534,7 @@ if __name__ == '__main__':
                    langs=tuple(I.T))
     s = s.replace('</head>', CSS + '</head>', 1)
     assert 'data:image' not in s, 'a base64 blob survived into the build'
-    open(OUT, 'w', encoding='utf-8').write(s)
+    open(OUT, 'w', encoding='utf-8', newline='').write(s)
 
     pts = (len(MC1 + MC2 + MC3 + MC4 + MC5) + len(TEST_MC)
            + len(GAP1 + GAP2 + GAP3 + GAP5)

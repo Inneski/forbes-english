@@ -615,7 +615,7 @@ def build():
     # were not. Re-measured after the artwork swap, not carried over on trust:
     # `lesson-template/bgmeasure.py` reports the same verdict for the new set.
     s = s.replace('  --bg-opacity: 0.72;', '  --bg-opacity: 0.40;', 1)
-    open(OUT, 'w', encoding='utf-8').write(s)
+    open(OUT, 'w', encoding='utf-8', newline='').write(s)
     n = s.count('<section class="slide')
     print('wrote %s — %d <section class="slide" (checker header is authoritative), '
           '%d MC, %d gap slides, 2 sorts, %d bytes' % (OUT, n, len(MC), len(GAPS), len(s)))

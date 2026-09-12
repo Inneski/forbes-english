@@ -1306,8 +1306,8 @@ if __name__ == '__main__':
         assert gone not in body, \
             'a German gloss survived inside an English string: %r' % gone
 
-    open(OUT, 'w', encoding='utf-8').write(s)
-    open(STUB, 'w', encoding='utf-8').write(STUB_HTML)
+    open(OUT, 'w', encoding='utf-8', newline='').write(s)
+    open(STUB, 'w', encoding='utf-8', newline='').write(STUB_HTML)
 
     print('wrote %s — %d bytes, %d slides' % (os.path.basename(OUT), len(s), n))
     print('wrote %s — redirect to ?lang=it' % os.path.basename(STUB))

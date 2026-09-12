@@ -109,6 +109,26 @@
   --no-text: var(--no);
   --bg-opacity: 0.72;     /* background pattern strength — see doc §6 */
 
+  /* HOW SOLID THE BOXES OVER THE ARTWORK ARE. One property, because the
+     same value is needed by a plate's background AND by the spread shadow
+     that grows it — they have to move together or the plate gets a rim.
+     Innes, 2026-09-12: "lower opacity of the text boxes", so that more of
+     the picture survives behind them.
+
+     0.68 was not chosen by eye. The plates exist because of a measurement
+     (52 of 60 on-canvas blocks below AA on the Ukraine deck — see the note
+     further down), so lowering them is answered with the same instrument:
+     `measure-plate.py` composites void + hero + wash + plate over the
+     BRIGHTEST 64px tile of every background a deck ships and reports the
+     contrast against --text. At 0.68 the two IELTS speaking decks hold
+     above 9:1 and a light deck above 11:1, against AA's 4.5:1; the floor
+     where either deck actually fails is 0.40. Raise it per deck if a hero
+     is bright enough to need it — and run the script rather than guess. */
+  --plate:      0.68;
+  --plate-bg:   color-mix(in srgb, var(--surface) calc(var(--plate) * 100%), transparent);
+  --plate-box:  color-mix(in srgb, var(--surface2) 70%, transparent);
+  --plate-card: color-mix(in srgb, var(--surface) 70%, transparent);
+
   /* Card entrance. The delay is the whole point: for that beat the slide
      shows nothing but the artwork. Raise --card-in-delay to linger longer on
      the picture, drop it to nothing to go back to cards-with-the-slide. */
@@ -320,9 +340,119 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
 }
 .slide-body { flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; }
 
+/* ── PANEL: the picture gets a column, the text gets the rest ──
+   §5 washes the hero to 0.72 and plates the text on top of it, which is
+   right when the artwork is atmosphere. It is wrong when the artwork is
+   the point — a flat-vector illustration dimmed by a quarter and covered
+   by a card is neither legible nor worth looking at.
+
+   So: the picture owns --panel-w of the stage at FULL opacity, bleeding
+   off three edges, and the text owns what is left, on flat --void. The
+   slide paints its own opaque background, which covers .bg-layer without
+   the engine needing to know this slide type exists.
+
+   Nothing is plated here, because nothing is over anything. Do not add a
+   wash, a scrim or a card to the text column - the whole point of the
+   layout is that it needs none. */
+.slide[data-layout="panel"] {
+  padding: 0;
+  flex-direction: row;
+  background: var(--void);
+}
+.panel-pic {
+  position: relative;
+  flex: 0 0 var(--panel-w, 548px);
+  overflow: hidden;
+  background: var(--surface2);
+}
+.panel-pic::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--pic) var(--pic-pos, center) / cover no-repeat;
+}
+/* The seam. A soft gradient dissolving the picture into the canvas was the
+   first attempt; it reads well where the picture's inner edge is dark and
+   smears where it is a flat field of one colour. A 3px rule works on every
+   image, so it is the rule. */
+.panel-pic::after {
+  content: '';
+  position: absolute; top: 0; bottom: 0; right: 0; width: 3px;
+  background: linear-gradient(180deg, transparent,
+    color-mix(in srgb, var(--accent) 70%, transparent) 22%,
+    color-mix(in srgb, var(--accent) 70%, transparent) 78%, transparent);
+}
+.panel-body {
+  flex: 1; min-width: 0;
+  padding: var(--pad) var(--pad) var(--pad) 44px;
+  display: flex; flex-direction: column; justify-content: center;
+}
+/* Alternate the side down the deck: it stops a long deck reading as one
+   template, and lets each picture be cropped toward the side its subject
+   actually occupies. */
+.slide[data-layout="panel"][data-side="right"] { flex-direction: row-reverse; }
+.slide[data-layout="panel"][data-side="right"] .panel-pic::after { right: auto; left: 0; }
+.slide[data-layout="panel"][data-side="right"] .panel-body {
+  padding: var(--pad) 44px var(--pad) var(--pad);
+}
+/* Inside a panel the head and body stop fighting for vertical centring -
+   the column is already centred, so the body must not also stretch. */
+.panel-body .slide-body { flex: 0 0 auto; justify-content: flex-start; }
+.panel-body .slide-head { margin-bottom: 22px; }
+/* The on-canvas plate exists to give text a GROUND over a washed hero. In a
+   panel there is no hero behind the text — it is flat --void — so the plate
+   has nothing to rescue and shows as a slightly lighter box behind every
+   line. Off, here only. This is what "nothing is plated because nothing is
+   over anything" actually costs: one rule. */
+.slide[data-layout="panel"] .eyebrow,
+.slide[data-layout="panel"] .slide-title,
+.slide[data-layout="panel"] .slide-body > .prose,
+.slide[data-layout="panel"] .q-stem,
+.slide[data-layout="panel"] .q-ctx,
+.slide[data-layout="panel"] .feedback.show {
+  background: none;
+  box-shadow: none;
+}
+
+/* ── DIVIDER: picture only, one line of chrome ─────────────────
+   Opens a stage. The caption sits in a band the picture has already faded
+   to --void inside, so this is still not text over artwork. */
+.slide[data-type="divider"] {
+  padding: 0; background: var(--void);
+}
+/* The display flip belongs ONLY on .is-active. Setting `display: block` on
+   the base rule overrides the `display: none` every slide starts with, so
+   all eight dividers painted at once, stacked, and the last one covered the
+   deck. Every gate passed: the LAYOUT check forces .is-active on each slide
+   before it measures, so nothing ever saw the page as a learner would. */
+.slide[data-type="divider"].is-active { display: block; }
+.divider-pic {
+  position: absolute; inset: 0;
+  background: var(--pic) var(--pic-pos, center) / cover no-repeat;
+}
+.divider-cap {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  padding: 44px var(--pad) 40px;
+  background: linear-gradient(0deg, var(--void) 12%,
+    color-mix(in srgb, var(--void) 74%, transparent) 62%, transparent);
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 30px;
+}
+/* The deck rail sits on the bottom edge, and a divider has no padding for
+   it to be pushed out of — so the caption clears it here rather than in the
+   generic .has-rail rule, which only knows about padded slides. */
+.stage.has-rail .divider-cap { padding-bottom: calc(40px + 34px); }
+.divider-cap h2 {
+  font-family: var(--font-display);
+  font-size: 44px; font-weight: 700; line-height: 1.1; color: var(--text);
+}
+.divider-cap .divider-n {
+  font-family: var(--font-mono); font-size: 13px; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--accent-bright);
+  white-space: nowrap; padding-bottom: 10px;
+}
+
 /* Content sits in a translucent card so it stays legible over the pattern. */
 .card {
-  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  background: var(--plate-card);
   border: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
   border-radius: var(--r);
   padding: 30px 34px;
@@ -371,13 +501,26 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
 .q-ctx { font-size: 19px; line-height: 1.5; color: var(--text-dim);
          margin-bottom: 26px; max-width: 62em; }
 
-.opts { display: grid; gap: 11px; }
+.opts { display: grid; gap: 11px; justify-items: start; }
 .opts.two-up { grid-template-columns: 1fr 1fr; }
 .opt {
   display: flex; align-items: center; gap: 14px;
-  width: 100%; text-align: left;
+  /* NOT width:100%. A full-bleed row paints a bar of --surface2 straight
+     across the artwork four times per question, and on a deck whose pictures
+     are the reason it exists that is most of the frame gone. Shrink-wrapped to
+     the option text instead, capped so a long option still wraps inside the
+     canvas. Innes, 2026-09-12: "the answer boxes dont need to be so long".
+     .chunk and .sort-item were already shrink-wrapped; this brings .opt into
+     line with them. */
+  /* max-width is 100%, NOT an em cap. A 46em cap (874px against ~1150px of
+     usable width) re-wrapped long options onto a second line and pushed five
+     decks past the canvas — the same mistake the stem cap made, caught the
+     same way, by running check-lesson.js over every deck before and after.
+     `width: fit-content` alone is the whole fix: short options shrink, long
+     ones break exactly where they always did. */
+  width: fit-content; max-width: 100%; text-align: left;
   font-family: var(--font-ui); font-size: 19px; color: var(--text);
-  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  background: var(--plate-box);
   border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
   border-radius: var(--r);
   padding: 15px 20px; cursor: pointer;
@@ -584,7 +727,7 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
 .match-item {
   font-family: var(--font-ui); font-size: 15.5px; line-height: 1.4;
   text-align: left; color: var(--text);
-  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  background: var(--plate-box);
   border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
   border-radius: var(--r); padding: 11px 16px; cursor: pointer;
   transition: border-color .15s, background .15s, opacity .2s;
@@ -604,6 +747,23 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
    gloss, and no change to a single-line item anywhere else on the site. */
 .match-item:has(> .sup) { padding: 7px 14px; }
 .match-item > .sup { margin-top: 2px; font-size: 12.5px; line-height: 1.35; }
+/* A gloss shows only in its own language. The JS that builds these has always
+   described them as "hidden unless the root lang matches" — but the rule that
+   would do the hiding was never in this stylesheet, so every gloss rendered
+   all the time. With the two languages the feature shipped with that read as
+   a deliberate bilingual label and nobody looked twice; at ten it put nine
+   translations under every button and pushed the slide 16px off the canvas.
+   documentElement.lang is kept current by the switcher, so this is CSS. */
+.match-item > .sup { display: none; }
+:root[lang="de"] .match-item > .sup[data-lang="de"],
+:root[lang="es"] .match-item > .sup[data-lang="es"],
+:root[lang="fr"] .match-item > .sup[data-lang="fr"],
+:root[lang="it"] .match-item > .sup[data-lang="it"],
+:root[lang="pt"] .match-item > .sup[data-lang="pt"],
+:root[lang="ru"] .match-item > .sup[data-lang="ru"],
+:root[lang="ar"] .match-item > .sup[data-lang="ar"],
+:root[lang="zh"] .match-item > .sup[data-lang="zh"],
+:root[lang="ja"] .match-item > .sup[data-lang="ja"] { display: block; }
 .match-col:has(.match-item > .sup) { gap: 5px; }
 .match-grid:has(.match-item > .sup) { gap: 10px; }
 @keyframes shake { 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
@@ -629,7 +789,7 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
 .chunk {
   font-family: var(--font-ui); font-size: 15.5px; line-height: 1.35;
   color: var(--text);
-  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  background: var(--plate-box);
   border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
   border-radius: 999px; padding: 9px 16px; cursor: pointer;
   transition: border-color .15s, background .15s, opacity .2s;
@@ -681,7 +841,7 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
 .sort-item {
   font-family: var(--font-ui); font-size: 15.5px; line-height: 1.35;
   color: var(--text);
-  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  background: var(--plate-box);
   border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
   border-radius: 999px; padding: 9px 16px; cursor: grab;
   transition: border-color .15s, background .15s, opacity .2s;
@@ -879,6 +1039,15 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
                                         var(--wash-mid) 80%, var(--wash-edge) 100%);
   }
   .slide[data-type="cover"]::before { opacity: 1; }
+  /* A panel or divider slide carries its own picture, so the per-page hero
+     that every other slide gets would print straight through it. */
+  .slide[data-layout="panel"]::before, .slide[data-layout="panel"]::after,
+  .slide[data-type="divider"]::before, .slide[data-type="divider"]::after {
+    display: none !important;
+  }
+  .slide[data-layout="panel"] { background: var(--void) !important; flex-direction: row; }
+  .slide[data-layout="panel"][data-side="right"] { flex-direction: row-reverse; }
+  .slide[data-type="divider"] { display: block !important; background: var(--void) !important; }
   .slide[data-type="cover"]::after {
     background:
       radial-gradient(ellipse 58% 54% at 50% 46%,
@@ -910,16 +1079,29 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
 .eyebrow, .slide-title, .q-stem, .q-ctx, .order-hint,
 .slide-body > .prose, .cover-title, .cover-sub, .act-target-label,
 .feedback.show, .score-big {
-  background: color-mix(in srgb, var(--surface) 94%, transparent);
+  background: var(--plate-bg);
   border-radius: 8px;
   /* The plate is grown with a spread shadow rather than padding: padding
      changes the content box, and on the cover that was enough to tip the
      subtitle onto a second line. A spread costs no layout at all. */
-  box-shadow: 0 0 0 0.34em color-mix(in srgb, var(--surface) 94%, transparent);
+  box-shadow: 0 0 0 0.34em var(--plate-bg);
   text-shadow: none;
 }
 /* Short labels should not stretch a plate across the whole column. */
+/* .q-stem and .q-ctx joined this list on 2026-09-12. They were the last two
+   full-bleed plates on a question slide: with the answer boxes shrink-wrapped,
+   a stem of eight words was still painting a bar of --surface from edge to
+   edge above them, which is the same complaint the options had. Both are
+   capped rather than merely shrunk, so a long stem wraps into a block instead
+   of running the width of the canvas. */
 .eyebrow, .slide-title, .order-hint { width: fit-content; }
+.q-stem, .q-ctx { width: fit-content; max-width: 100%; }
+/* max-width is 100%, NOT a shorter em cap. A 34em cap was tried first and it
+   re-wrapped long stems onto an extra line, which pushed the body past the
+   canvas on 17 decks — measured by running check-lesson.js over every deck
+   before and after the sweep. `width: fit-content` alone is what was wanted:
+   it shrinks the plate to a short stem and leaves a long one breaking exactly
+   where it always did. */
 .act-target-label { display: inline-block; }
 /* The cover is centred, so its plates are too. */
 .cover-title, .cover-sub { width: fit-content; margin-inline: auto; max-width: 100%; }
@@ -2123,7 +2305,16 @@ slides.filter(s => s.dataset.type === 'match').forEach(slide => {
      data-def-es/-de renders exactly the button it rendered before. The gloss
      goes in a .sup, which is the site's existing mechanism - hidden unless
      the root lang matches, and stripped by bwNorm() so the EN/DE panel still
-     lists the English, not the English plus its own translation. */
+     lists the English, not the English plus its own translation.
+
+     Generalised 2026-09-09 from a hardcoded ['es','de'] to every code in
+     LANGS. The two-language version was written when two languages was the
+     maximum; a ten-language deck (The Square) then had a match slide that
+     translated into Spanish and German and silently stayed English in the
+     other seven. Nothing about the old markup changes - data-def-es and
+     data-def-de are still exactly what this reads for those two - so every
+     deck already generated keeps rendering as it did, and picks the other
+     eight up whenever it is next rebuilt. */
   const mk = (txt, cls, key, glosses) => {
     const b = document.createElement('button');
     b.className = 'match-item ' + cls;
@@ -2143,8 +2334,10 @@ slides.filter(s => s.dataset.type === 'match').forEach(slide => {
     });
     return b;
   };
-  const gl = (p, side) => [['es', 'ES', p.dataset[side + 'Es']],
-                           ['de', 'DE', p.dataset[side + 'De']]];
+  const gl = (p, side) => LANGS
+    .filter(l => l.code !== 'en')
+    .map(l => [l.code, l.code.toUpperCase(),
+               p.dataset[side + l.code[0].toUpperCase() + l.code.slice(1)]]);
   pairs.forEach(p => terms.appendChild(
     mk(p.dataset.term, 'term', p.dataset.term, gl(p, 'term'))));
   shuffled(pairs)
@@ -2345,6 +2538,7 @@ slides.filter(s => s.dataset.type === 'sort').forEach(slide => {
   const box = slide.querySelector('.sort');
   if (!box) return;
   const labels = (box.dataset.bins || '').split('|').map(x => x.trim());
+  const binKeys = (box.dataset.binsI18n || '').split('|').map(x => x.trim());
   const items = [...box.querySelectorAll('.sort-item')];
   if (labels.length < 2 || !items.length) return;
 
@@ -2361,6 +2555,13 @@ slides.filter(s => s.dataset.type === 'sort').forEach(slide => {
     const h = document.createElement('div');
     h.className = 'sort-bin-label';
     h.textContent = label;
+    /* Bin labels are chrome ("A thing" / "An action"), not the language under
+       test, so they should translate — and could not, because data-bins is a
+       plain string baked into the markup. An optional data-bins-i18n carries
+       one UI_I18N key per bin; the label then joins the normal [data-i18n]
+       pass and follows the switcher like everything else. data-bins stays the
+       English, which is both the fallback and what the SORT gate reads. */
+    if (binKeys[i]) h.dataset.i18n = binKeys[i];
     const body = document.createElement('div');
     body.className = 'sort-bin-items';
     bin.append(h, body);

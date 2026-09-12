@@ -328,7 +328,7 @@ def build():
     s = s.replace('COUNT slides', '%d slides' % (n - 1))
     s = s.replace('chipCount: "28 slides"', 'chipCount: "%d slides"' % (n - 1))
     s = s.replace('chipCount: "28 Folien"', 'chipCount: "%d Folien"' % (n - 1))
-    open(OUT, 'w', encoding='utf-8').write(s)
+    open(OUT, 'w', encoding='utf-8', newline='').write(s)
     # The engine scores a sort per ITEM and a match per PAIR, not one point per
     # slide, so the deck bar reads 40 rather than the 24 a per-slide count gives.
     scored = (len(place) + len(miss) + len(SORT_ITEMS)

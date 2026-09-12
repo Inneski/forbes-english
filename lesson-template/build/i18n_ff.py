@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-s = open('/tmp/ff_stage1.html', encoding='utf-8').read()
+import os
+s = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), '.stage', 'ff_stage1.html'), encoding='utf-8').read()
 BLOCK = """const UI_I18N = {
   en: {
     /* ── chrome ── */
@@ -135,5 +136,5 @@ BLOCK = """const UI_I18N = {
 start = s.index('const UI_I18N = {')
 end = s.index('};', s.index('es:{}, fr:{}')) + 2
 s = s[:start] + BLOCK + s[end:]
-open('/home/claude/forbes-english/english_firefighter_v3.html', 'w', encoding='utf-8').write(s)
+open('english_firefighter_v3.html', 'w', encoding='utf-8', newline='').write(s)
 print('written')

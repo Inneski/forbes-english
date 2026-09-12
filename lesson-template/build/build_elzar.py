@@ -12,7 +12,8 @@ are not synonyms with different registers, they are vectors. Each one carries a
 direction — down, up, clearer, murkier, propped up — and at C2 the exam is
 almost always testing the direction rather than the definition.
 """
-import re, sys, json
+import re
+import deck, sys, json
 
 TPL = 'lesson-template/lesson-template.html'
 OUT = 'forbes-el-zar-c2.html'
@@ -339,11 +340,11 @@ def build():
 
     import i18n_elzar as I
     block = 'const UI_I18N = {\n' + ",\n".join(
-        '  %s: %s' % (c, I.render(c)) for c in
+        '  %s: %s' % (c, deck.fill_ledger(c, I.render(c))) for c in
         ['en', 'de', 'es', 'fr', 'it', 'pt', 'ru', 'ar', 'zh', 'ja']) + '\n};'
     s = re.sub(r'const UI_I18N = \{.*?\n\};', block, s, count=1, flags=re.S)
 
-    open(OUT, 'w', encoding='utf-8').write(s)
+    open(OUT, 'w', encoding='utf-8', newline='').write(s)
     print('wrote %s — %d slides, %d MC, %d gaps, %d pairs, %d order, %d bytes'
           % (OUT, s.count('<section class="slide'), len(MC), len(GAPS), len(MATCH), len(ORDER), len(s)))
 
