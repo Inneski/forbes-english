@@ -8682,3 +8682,39 @@ Found by the same sixteen-deck run, untouched: **`blockcamp-present-continuous.h
 slide 17 overflows by 3px in English** on the committed version too (`git
 show HEAD:` copy fails the same way). Not caused by anything in this session;
 it is the only Block Camp I deck that does not pass `check-lesson.js` today.
+
+## 2026-09-12 — Getting found: topic hubs, searcher-facing titles, gate-page excerpts
+
+Innes asked how the site gets found. The technical SEO was already there;
+what was missing was anything for a search engine to *rank*: 266 of 300
+lessons are gated and their pages were a title and two sentences, the
+titles were written for students not searchers, and no page explained a
+grammar point in plain sentences. This session added:
+
+- **`tools/topics.py`** — the topic map (18 topics, regex + `OVERRIDES`,
+  and the explanatory copy per topic). **`tools/build_hubs.py`** writes
+  `grammar.html` and one hub page per topic. Run it before `seo.py`.
+- **`tools/seo.py`**: titles append the grammar point when the title lacks
+  it; `rules()` was matching only the teach-card *heading* and so found
+  nothing on 252 of 256 lessons — it now joins heading and rule and reads
+  Sherpa `rule-card`s too (**4 lessons with rules → 104**, measured);
+  `lesson-meta.json` carries `teaches` and `topics`; hubs are in the
+  sitemap, `llms.txt` and the library crawlable list.
+- **`src/index.js`** `personaliseGate()` prints "What this lesson teaches"
+  and the topic links on every Pro gate page, and puts `teaches` and
+  `isPartOf` in the LD. Smoke-tested with node against real rows; the
+  Worker was not run locally (no wrangler in the tree).
+- The "Grammar" top-band link on `index.html` and the five IELTS pages now
+  goes to `grammar.html`.
+
+**Everything that actually moves the needle is not code and is listed in
+`docs/SEO.md`**: Search Console (DNS-verify, submit the sitemap), Bing
+import, Cloudflare Web Analytics (edge-injected, no code), links from
+teacher communities, and at least one free lesson per hub — Past
+Continuous, Past Perfect, Future Tenses and Used To have none.
+
+Not done: the RPGs keep their rules in script data, so their gate pages
+still have no `teaches`; the home page got no text block because it is a
+fixed one-screen stage. A concurrent session was mid-way through the
+Kraken RPG when this landed; its HANDOFF section and build folder were
+deliberately left out of this commit.

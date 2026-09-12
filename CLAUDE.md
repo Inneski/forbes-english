@@ -94,8 +94,17 @@ URL should be resolved to in a cloud session: `<slug>.html` in the root.)
 python3 lesson-template/extract-palette.py <hero.jpg> [--light]   # every row must PASS
 python3 lesson-template/build/build_<name>.py                     # builders live here
 node   lesson-template/check-lesson.js <lesson>.html               # must exit clean
+python3 tools/build_hubs.py                                       # topic hub pages, from the catalogue
 python3 tools/seo.py                                              # ALWAYS last
 ```
+
+**`tools/build_hubs.py` regenerates `grammar.html` and the per-topic pages**
+(`present-perfect.html`, `passive-voice.html`, …) from `tools/topics.py` and
+the catalogue. Run it whenever a lesson is added or retitled, before
+`seo.py`. A lesson whose title does not name its grammar needs a line in
+`OVERRIDES` in `topics.py` or it lands on the vocabulary page. The whole
+discoverability picture — what is generated, what only Innes can do — is
+`docs/SEO.md`.
 
 **On Windows there is no `python3`.** Use `py` (the launcher) or `python`, or
 add an alias — every command in this file and in the docs is written `python3`

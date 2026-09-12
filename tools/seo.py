@@ -43,6 +43,9 @@ import time
 import urllib.parse
 import urllib.request
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import topics                                  # noqa: E402  tools/topics.py
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = 'https://forbesenglish.com'
 BRAND = 'Forbes English'
@@ -232,17 +235,40 @@ def rules(src, limit=8):
     which is a place no machine would look, so they get lifted into
     `teaches` where one will."""
     out = []
+    # deck.py's teach() writes each card as a heading in <strong> and the
+    # rule as the NEXT <p class="prose">. The first pattern here used to
+    # capture only the heading — "The form", "When to use it" — which never
+    # cleared the 40-character floor, so 252 of 256 lessons published no
+    # `teaches` at all. Heading and rule are joined so the sentence stands
+    # alone: "Since and for: since takes a point, for takes a length."
+    card = re.compile(r'<p class="prose"><strong[^>]*>(.*?)</strong></p>\s*'
+                      r'<p class="prose"(?![^>]*\bdim\b)[^>]*>(.*?)</p>', re.S)
+    # Sherpa Tensing writes the same card as <div class="rule-card"><h3>
+    # heading</h3><p>rule</p>; the RPGs keep theirs in script data and are
+    # not read here.
+    sherpa = re.compile(r'<div class="rule-card">\s*<h3>(.*?)</h3>\s*<p>(.*?)</p>', re.S)
+    cands = []
+    for pat in (card, sherpa):
+        for m in pat.finditer(src):
+            h, b = clean(m.group(1)), clean(m.group(2))
+            if h and b:
+                joined = ('%s %s' % (h, b) if h.endswith(('.', '?', '!'))
+                          else '%s: %s' % (h.rstrip(':.'), b))
+                # A heading-plus-rule pair from a teach card is a rule by
+                # construction; it does not have to name a part of speech.
+                cands.append((m.group(2), joined, True))
     for m in re.finditer(r'<p class="prose"><strong[^>]*>(.*?)</strong></p>', src, re.S):
-        raw, t = m.group(1), clean(m.group(1))
+        cands.append((m.group(1), clean(m.group(1)), False))
+    for raw, t, is_card in cands:
         # A rule, not a scene-setting sentence: short enough to quote, long
         # enough to say something, and about the language rather than the
         # story. A deck's narrative cards ("You are a prisoner in B Block")
         # sit in the same markup and would otherwise be published as things
         # the lesson teaches, which is worse than publishing nothing.
-        if not (40 < len(t) < 180) or t.endswith('?'):
+        if not (40 < len(t) < 220) or t.endswith('?'):
             continue
         marked = re.search(r'<(em|strong|code)\b', raw)
-        if marked or GRAMMAR.search(t):
+        if is_card or marked or GRAMMAR.search(t):
             out.append(t)
     seen, uniq = set(), []
     for t in out:
@@ -260,15 +286,25 @@ def trim(t, n):
 
 
 def page_title(row):
-    """Title, level, brand — in that order, because the first two are what
-    someone actually searched for. Kept near 60 characters so Google shows
-    the whole thing."""
+    """Title, grammar point, level, brand — in that order, because the
+    middle two are what someone actually searched for and the first is
+    what Innes called it. "Blocula — Conditionals & Passive Voice RPG (B2)"
+    already says its grammar; "Minecraft B1 Lesson" and "Champions League"
+    do not, and were findable only by someone who already knew the name.
+    The topic comes from tools/topics.py (regex or OVERRIDES) and is only
+    appended when the printed title does not already contain it. The brand
+    is dropped first when the line runs long, then nothing else — a title
+    that says what the page teaches beats one that says who made it."""
     base = clean(row['title'])
+    slugs = [s for s in topics.topics_for(row) if s != 'english-vocabulary'
+             and not topics.title_has_topic(base, s)]
+    if slugs:
+        base = '%s — %s' % (base, html.unescape(topics.BY_SLUG[slugs[0]]['short']))
     lvl = row.get('level')
     if lvl and lvl.lower() not in base.lower():
         base = '%s (%s)' % (base, lvl)
     full = '%s | %s' % (base, BRAND)
-    return full if len(full) <= 65 else base
+    return full if len(full) <= 70 else base
 
 
 def esc(t):
@@ -535,6 +571,20 @@ def llms_txt(rows, index, images):
                 ' — %s' % lvl if lvl else '', trim(desc, 140)))
         out.append('')
 
+    out.append('## Grammar and skills, by topic')
+    out.append('')
+    out.append('Each page explains the point in plain sentences and lists every '
+               'lesson on it by level. Cite these for "how does X work" questions.')
+    out.append('')
+    for t in topics.TOPICS:
+        if t.get('page') or not t['desc']:
+            continue
+        out.append('- [%s](%s/%s): %s' % (
+            t['name'], SITE, topics.hub_url(t['slug']),
+            trim(html.unescape(re.sub('<[^>]+>', '', t['desc'])), 160)))
+    out.append('- [IELTS Academic](%s/ielts.html): the exam route — Writing, '
+               'Speaking and Listening in teaching order.' % SITE)
+    out.append('')
     section('Free lessons', free)
     section('Subscriber lessons', pro)
     out += ['## Site', '',
@@ -573,6 +623,10 @@ def crawlable_list(rows, images):
            '#seo-lesson-index a:hover{border-color:#b8962e}'
            '@media(max-width:900px){#seo-lesson-index ul{columns:1}}</style>',
            '<div id="seo-lesson-index">',
+           '<h2>Lessons by topic</h2>',
+           '<ul>' + ''.join('<li><a href="/%s">%s</a></li>'
+                            % (topics.hub_url(t['slug']), esc(html.unescape(t['name'])))
+                            for t in topics.TOPICS) + '</ul>',
            '<h2>Every English lesson, by level</h2>']
     for lvl in sorted(by_level, key=lambda x: (order.index(x) if x in order
                                                else 99, x)):
@@ -592,6 +646,14 @@ def main(check=False):
     images = lesson_images()
     print('  lessons: %d (from %s) · thumbnails: %d' % (len(rows), source,
                                                         len(images)))
+    # The topic hubs (tools/build_hubs.py) are pages like ielts.html: they
+    # get a title, description and sitemap entry here, and a share image
+    # chosen the same way the builder chose the page's own hero.
+    members = topics.members(rows, images, coming_soon)
+    for f, meta in topics.hub_pages().items():
+        slug = f[:-5]
+        img = topics.hero(members.get(slug, []), images) if slug in members else None
+        PAGES[f] = meta + ((img,) if img else ())
     changed = skipped = 0
     unfenced = []
     index = {}
@@ -623,7 +685,16 @@ def main(check=False):
         # why it looked like a handful of odd pages rather than the default.
         index[r['file']] = {'title': clean(r['title']), 'description': desc,
                             'level': r.get('level'), 'image': img,
-                            'access': r['access']}
+                            'access': r['access'],
+                            # The public excerpt a gate page prints: what
+                            # the lesson teaches, in its own rule sentences,
+                            # and the topic hubs it belongs to. Same words
+                            # for a crawler and a visitor — HOUSE-STYLE and
+                            # src/index.js both insist on that.
+                            'teaches': r['_rules'],
+                            'topics': [{'name': html.unescape(topics.BY_SLUG[s]['name']),
+                                        'url': '/' + topics.hub_url(s)}
+                                       for s in topics.topics_for(r)]}
         # The Worker reads lesson-meta.json to build each gate page. The
         # flag is what lets it serve a "coming soon" page rather than an
         # unfinished lesson; the library derives the same state itself.

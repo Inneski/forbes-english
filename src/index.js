@@ -308,6 +308,13 @@ function personaliseGate(html, m, url) {
   };
   if (m.level) ld.educationalLevel = m.level;
   if (image) ld.image = image;
+  // What the lesson teaches, in its own rule sentences — lifted from the
+  // teach cards by tools/seo.py. It is printed on the page below as well,
+  // because a crawler and a visitor must see the same words.
+  const teaches = Array.isArray(m.teaches) ? m.teaches.filter((t) => typeof t === "string").slice(0, 8) : [];
+  const hubs = Array.isArray(m.topics) ? m.topics.filter((t) => t && t.url && t.name) : [];
+  if (teaches.length) ld.teaches = teaches;
+  if (hubs.length) ld.isPartOf = hubs.map((t) => ({ "@type": "Collection", name: `${t.name} lessons`, url: `${url.origin}${t.url}` }));
 
   const head = [
     `<meta name="description" content="${desc}">`,
@@ -328,6 +335,19 @@ function personaliseGate(html, m, url) {
     `<div class="eyebrow">Subscribers only${level ? ` &middot; ${level}` : ""}</div>`,
     `<h1>${title}</h1>`,
     `<p class="lede">${desc}</p>`,
+    // The public excerpt. This is the part of a gated page that has
+    // something to rank on: the rules the deck states, in the deck's own
+    // words, and the topic pages where the free lessons on the same point
+    // are. Without it a Pro lesson's page is a title and two sentences.
+    teaches.length
+      ? `<section class="teaches"><h2>What this lesson teaches</h2><ul>${teaches
+          .map((t) => `<li>${escapeHtml(t)}</li>`).join("")}</ul></section>`
+      : "",
+    hubs.length
+      ? `<p class="topics">More on this: ${hubs
+          .map((t) => `<a href="${escapeHtml(t.url)}">${escapeHtml(t.name)}</a>`)
+          .join(" &middot; ")}${level ? ` &middot; <a href="/level-checker.html">Check your level</a>` : ""}</p>`
+      : "",
     `<p class="lede paywalled">The lesson itself &mdash; every slide, every exercise and`,
     ` the answers &mdash; is part of Forbes English Pro. Plenty of the library is free`,
     ` and always will be.</p>`,
