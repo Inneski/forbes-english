@@ -75,7 +75,11 @@ Cloudflare added through Google's connect flow (do not delete the
 submitted. Bing Webmaster Tools was created by importing from Search
 Console under raarmusic@gmail.com, and the sitemap is submitted there too.
 Both were driven from a local session through Innes's own Chrome; the
-sign-ins and the OAuth consent were his clicks. Steps 3 to 5 remain.
+sign-ins and the OAuth consent were his clicks. Step 3 turned out to be
+done already: Cloudflare Web Analytics has been on for forbesenglish.com
+(automatic setup) since about August 2026. **Baseline on 2026-09-12: 1
+visit in the previous 24 hours.** That is the number everything below is
+measured against. Steps 4 and 5 remain.
 
 1. **Google Search Console.** search.google.com/search-console → add a
    *Domain* property for `forbesenglish.com` → verify with the DNS TXT
