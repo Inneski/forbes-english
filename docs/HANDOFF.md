@@ -11,6 +11,56 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-13 — IELTS Vocabulary ships, and `ielts.html` has no "Soon" left
+
+`ielts-vocabulary.html` is live with `forbes-english-ielts-lexical-resource.html`
+behind it: 20 slides, EN/DE/ES, six pictures, both gates clean, catalogue row in
+Supabase and mirrored. **Every card on the IELTS hub is now a link.**
+
+The deck is built against the belief that costs candidates most here — that
+Lexical Resource rewards rare words. It asks for less common lexis used with
+PRECISION and FLEXIBILITY and penalises inaccuracy by name, so a reach-and-miss
+scores below a plain word that lands. Three sections: precision, collocation,
+paraphrase.
+
+**Two items were rewritten before it shipped, and neither was caught by a gate.**
+
+- `v5` offered *conduct / make / **do** / build research* — and "do research" is
+  perfectly good English. Two defensible answers. The three wrong verbs are now
+  ones English never takes with `research`.
+- `v6` tested `heavy sunshine`, which the teach card immediately above it names
+  in its list of `heavy` collocations. `check-teach-leak.js` passes it — a
+  collocation deck must print its collocations, and the gate exempts a phrase
+  the card is NAMING — but a learner who read the card answers without
+  thinking. The item now tests `strong`, so the rule transfers instead of the
+  example being recognised. **The gate cannot see this class; look for it by
+  hand on any deck whose subject is fixed phrases.**
+
+### Two template bugs, both found by measuring a slide that merely looked wrong
+
+1. **`.sort-bin-label` had no plate at all.** It was the one piece of
+   on-canvas text missing from the plate selector list, measured at **1.72:1**
+   against a busy background where AA is 4.5. It never showed while plates were
+   at 94% and the artwork was quiet. Now in the list, and 10.8:1 on the same
+   slide. **97 shipped decks have a sorting slide and every one of them still
+   carries the unplated label** — a rebuild is what picks the fix up, so this
+   wants the next sweep.
+
+2. **A per-deck `--plate` override could never win.** The template's note says
+   to raise it per deck if a hero is bright — but the palette block is injected
+   ABOVE the template's own `--plate: 0.68` in the same `:root`, so cascade
+   order silently beat every override. The template no longer declares `--plate`
+   at all; the three derived properties read `var(--plate, 0.68)`, so a deck
+   that sets it wins wherever it sits. Verified in the page: the deck reports
+   0.82, not 0.68.
+
+This deck sets `--plate: 0.82` because its backgrounds are the brightest on the
+route. At the house 0.68 its order hint measured 4.33:1; at 0.82 the worst
+element on the slide is 5.7:1. Both figures came from sampling the real pixels
+behind each element in the rendered page, not from the model.
+
+---
+
 ## 2026-09-12 — IELTS Reading opens with True/False/Not Given
 
 `ielts.html` had shown a disabled Reading card since the route was split, and
