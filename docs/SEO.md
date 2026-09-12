@@ -68,6 +68,15 @@ weight comes from the nav link and from `library.html`.
 
 None of this is code. All of it is worth more than everything above.
 
+**Status, 2026-09-12:** steps 1 and 2 are DONE. Search Console has a
+Domain property for forbesenglish.com, verified by a TXT record that
+Cloudflare added through Google's connect flow (do not delete the
+`google-site-verification=` TXT record on the zone), and the sitemap is
+submitted. Bing Webmaster Tools was created by importing from Search
+Console under raarmusic@gmail.com, and the sitemap is submitted there too.
+Both were driven from a local session through Innes's own Chrome; the
+sign-ins and the OAuth consent were his clicks. Steps 3 to 5 remain.
+
 1. **Google Search Console.** search.google.com/search-console → add a
    *Domain* property for `forbesenglish.com` → verify with the DNS TXT
    record it gives you, added in the Cloudflare DNS panel (the domain's
