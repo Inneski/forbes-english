@@ -11,6 +11,20 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-13 — The Listening player sits on a plate now
+
+Innes, on the live Section 2, Section 3 and drills decks: the player's
+instruction lines ("You will hear this once…", "That is the end of the
+recording.", the section label and the times) were `--text-dim` straight
+onto the picture and unreadable on the light art. `lesson-template.html`:
+`.audio-player` now takes `--plate-box` with the box border and padding,
+like the prose above it, and its label, times, state and replay link are
+`--text`. Theme tokens only, so it follows each deck's palette. The five
+Listening decks were rebuilt and pass `check-lesson.js`; any other deck that
+ever authors an audio slide picks it up on its next build.
+
+---
+
 ## 2026-09-13 — Twenty Thousand Leagues: The Sealed Log. The painted Nautilus skin becomes its own lesson (Past Perfect, B1–B2)
 
 Innes, after the guard entry below: *"You change second Nautilus text then
