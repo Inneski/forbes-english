@@ -57,6 +57,13 @@ lands on the subject.
 `tools/lessons.json`; `build_hubs.py` and `seo.py` run last; the four
 indexes gained lines only. `check-library.js --vs-origin` passes.
 
+**A process slip, fixed in the next commit.** The commit's new-file list
+was built with `git ls-files --others lesson-template/build`, which
+swept in another session's untracked
+`rpg/nautilus-black-archive-deep-rpg/data.json`. Removed from git again
+(the file itself was never touched); CLAUDE.md now says to type the
+names. The guard cannot catch a generated list.
+
 **What is still open on IELTS** is the same two items as the finishing plan
 below: eleven hand-written decks without Spanish (a decision, not a build),
 and five recordings nobody has listened to. Everything a session could do
