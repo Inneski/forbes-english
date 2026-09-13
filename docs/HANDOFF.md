@@ -11,6 +11,99 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-13 — Three Nautilus editions, and the upgraded plates
+
+Innes sent `Nautilus_20000_Leagues_RPG_Revamped (3).html` — the painted
+export again, re-rendered — and overruled the duplicate-avoidance call made
+earlier the same day: *"I don't care that this already appears in a
+Minecraft style — so what? … I would like this version published the way it
+is but with the same font and text size revisions made in the 20000 leagues
+version. It should be of turquoise text instead of maroon."* Then: *"also
+sub the new images for the old ones in the past perfect edition."*
+
+So there are now **three editions of one dive**, and that is deliberate:
+
+| page | art | grammar | accent |
+|---|---|---|---|
+| `nautilus-black-archive-rpg.html` | voxel | Present Perfect (B1) | `#46B0AB` |
+| `nautilus-black-archive-deep-rpg.html` | painted | Present Perfect (B1) | `#46B0AB` |
+| `twenty-thousand-leagues-rpg.html` | painted | Past Perfect (B1-B2) | `#d66d77` |
+
+The two Present Perfect editions differ in **two strings** (a key-by-key
+diff of the two `data.json` files: the intro's "a city beneath the seabed"
+against "a city built from forgotten blocks", and one Aronnax line). All 27
+questions, every option and every `why` are byte-identical, and the option
+rotation is the same, so the voxel lesson's `translations/` served the new
+one after three strings were added. That is the intended relationship — do
+not "fix" it by rewording one of them.
+
+The painted pair take different **covers** so the library does not show the
+same thumbnail twice: the Sealed Log keeps `01_intro`, the painted Black
+Archive uses `39_archive`.
+
+### What the upgraded artwork actually changed
+
+Worth knowing before anyone re-reads a hotspot table. Of the 40 plates,
+**34 are the same picture at a higher bitrate** — mean absolute difference
+~0.3/255 on a 192×108 greyscale, i.e. encoder noise — and **six are
+redrawn**:
+
+| plate | mad | what moved |
+|---|---|---|
+| `02_brief` | 35.7 | recomposed: the chart table swings from Nemo's hand at the right edge to the centre of the frame, Nemo now points in from the right |
+| `20_log` | 14.0 | recomposed: Aronnax stops closing the journal amid flying pages under a red-lit hull and sits writing it by lamplight, window quiet |
+| `19_t4` | 6.4 | same composition, diver newly helmeted |
+| `18_tstatue` | 5.7 | same composition, diver swims across rather than clinging to the door |
+| `16_tdec` | 3.5 | same composition, divers newly suited |
+| `32_finaldec` | 2.8 | same composition, crisper |
+
+Three hotspots moved as a result (`brief`, `log`, `t4` — `t4` because the
+old entry sat on the lower corner of the etched plate and the new glove
+reaches it, not because the picture changed much). `check-rpg-panels.js`
+passes on all three pages in all nine glosses; `brief` is flagged *tight* in
+Spanish on the two Present Perfect pages, which is the ceiling, not a fail.
+
+**The Sealed Log's `log` line was rewritten** in English and all nine
+glosses: it said Aronnax *closed* the journal before the next alarm, which
+described the old plate. It now says he wrote the dive up by lamplight until
+the alarm interrupted him — same past-perfect anchor, same key, and it
+matches what the student is looking at.
+
+### Two defects fixed on the way past
+
+- **Both Present Perfect briefings promised a hull bar and an oxygen bar.**
+  The export tracked both; this engine counts points, shards and three
+  chances (rpg README §9), so the shipped voxel lesson had been describing a
+  penalty that appears nowhere on its page. `BRIEF_STORY` in both builders
+  replaces it. It is also a sentence shorter, which is what took the Spanish
+  briefing panel back inside its frame — it was overflowing by 129px.
+- **`WORDS` in `block-camp-hub/build.py` had no entry for 13.** Its own
+  comment predicted this ("the tenth adventure found the first gap"); the
+  thirteenth found the next, and the lede read "13 branching adventures"
+  beside "twenty-six units". 13, 14 and 15 are in now.
+
+### Not fixed
+
+`block-camp/nautilus-black-archive-rpg/41_map.webp` is 294 KB of the
+export's teacher navigation screen, committed but referenced by nothing —
+the builder's `SKIP` drops the scene. The Sealed Log and the painted Black
+Archive do not ship it. Deleting it from the voxel folder would not shrink
+the repo (history keeps it), so it was left alone.
+
+### On the shared tree
+
+The four IELTS lessons below were in Supabase but not on `origin/main` while
+this ran. They stayed out of `library.html`, `llms.txt`, `sitemap.xml` and
+`lesson-meta.json` anyway, because none has a `LESSON_IMAGES` thumbnail yet
+and `seo.py` holds a lesson with no hero in the coming-soon bucket. So the
+`seo.py` run here added exactly one lesson to the four indexes and removed
+nothing. Supabase was reachable (316 lessons, not the `tools/lessons.json`
+fallback), so the cloud stale-cache trap did not apply. The one thing the
+IELTS session must not skip: `library.html` now carries a `LESSON_IMAGES`
+line for the painted Black Archive, so re-read the file before adding theirs.
+
+---
+
 ## 2026-09-13 — IELTS is finished: the four "Soon" cards are lessons
 
 Innes dropped the 24 pictures from the shopping list (plus alternates: 78

@@ -193,7 +193,8 @@ def count_adv():
     return sum(present(h) for h,*_ in ADVENTURES)
 
 WORDS = {3:'three',4:'four',5:'five',6:'six',7:'seven',8:'eight',9:'nine',10:'ten',
-         11:'eleven',12:'twelve',16:'sixteen',17:'seventeen',18:'eighteen',
+         11:'eleven',12:'twelve',13:'thirteen',14:'fourteen',15:'fifteen',
+         16:'sixteen',17:'seventeen',18:'eighteen',
          24:'twenty-four',25:'twenty-five',26:'twenty-six',27:'twenty-seven',28:'twenty-eight'}
 # every count here is spelled out in the lede, so a gap in this table shows up
 # as "the 10 adventures" beside "twenty-six units". The tenth adventure found
