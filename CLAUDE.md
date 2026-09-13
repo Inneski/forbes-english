@@ -286,7 +286,7 @@ New files still need `git add <file>` before `-o` will take them.
   --others <dir>`, `find`, a glob — any of them returns a peer's untracked
   file alongside yours, and the guard cannot tell the two apart once they
   are names. It happened on 2026-09-13 (`08b565c` carried another
-  session's in-flight `data.json`; `09-13` removed it again). Type the
+  session's in-flight `data.json`; `629652e` removed it again). Type the
   names you created.
 - **Commit small and soon, push straight after.** Uncommitted work is exposed
   to every peer's mistakes for as long as it sits there.
