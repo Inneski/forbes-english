@@ -127,11 +127,17 @@
      contrast against --text. At 0.68 the two IELTS speaking decks hold
      above 9:1 and a light deck above 11:1, against AA's 4.5:1; the floor
      where either deck actually fails is 0.40. Raise it per deck if a hero
-     is bright enough to need it — and run the script rather than guess. */
-  --plate:      0.68;
-  --plate-bg:   color-mix(in srgb, var(--surface) calc(var(--plate) * 100%), transparent);
-  --plate-box:  color-mix(in srgb, var(--surface2) 70%, transparent);
-  --plate-card: color-mix(in srgb, var(--surface) 70%, transparent);
+     is bright enough to need it — and run the script rather than guess.
+
+     A DECK RAISES IT BY DECLARING --plate IN ITS OWN PALETTE BLOCK, and the
+     three derived properties below read it with a fallback rather than the
+     template declaring --plate itself. That is not a style preference: the
+     palette block is injected ABOVE this point in the same :root, so a
+     template-level `--plate: 0.68` would win on cascade order and silently
+     beat every per-deck override. It did, on the first deck that tried it. */
+  --plate-bg:   color-mix(in srgb, var(--surface)  calc(var(--plate, 0.68) * 100%), transparent);
+  --plate-box:  color-mix(in srgb, var(--surface2) calc(var(--plate, 0.68) * 100%), transparent);
+  --plate-card: color-mix(in srgb, var(--surface)  calc(var(--plate, 0.68) * 100%), transparent);
 
   /* Card entrance. The delay is the whole point: for that beat the slide
      shows nothing but the artwork. Raise --card-in-delay to linger longer on
@@ -1082,7 +1088,7 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
    unanswered question. */
 .eyebrow, .slide-title, .q-stem, .q-ctx, .order-hint,
 .slide-body > .prose, .cover-title, .cover-sub, .act-target-label,
-.feedback.show, .score-big {
+.feedback.show, .score-big, .sort-bin-label {
   background: var(--plate-bg);
   border-radius: 8px;
   /* The plate is grown with a spread shadow rather than padding: padding
@@ -1099,6 +1105,13 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
    capped rather than merely shrunk, so a long stem wraps into a block instead
    of running the width of the canvas. */
 .eyebrow, .slide-title, .order-hint { width: fit-content; }
+/* .sort-bin-label had NO plate at all until 2026-09-13 — it was the one piece
+   of on-canvas text missing from the rule above, and it was measured at 1.72:1
+   against a busy background, where AA is 4.5. It never showed while the plates
+   were at 94% and the artwork was quiet; a lighter plate and a high-contrast
+   picture made it obvious. Anything that paints text straight onto the stage
+   belongs in that selector list. */
+.sort-bin-label { width: fit-content; margin-inline: auto; }
 .q-stem, .q-ctx { width: fit-content; max-width: 100%; }
 /* max-width is 100%, NOT a shorter em cap. A 34em cap was tried first and it
    re-wrapped long stems onto an extra line, which pushed the body past the
