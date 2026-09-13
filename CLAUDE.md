@@ -280,6 +280,12 @@ in his own terminal, where the hook does not apply.
 `git commit -o` takes a directory too, so a new artwork folder is one path.
 New files still need `git add <file>` before `-o` will take them.
 
+**The guard reads the command text, not what the shell would expand it to.**
+So `git add <dir>/*.json` and `git add $(ls …)` are both refused as
+`git add <directory>` even though they would have expanded to file names.
+Type the names out — forty plates on one line is fine, and it is the only
+form that gets through.
+
 **Other rules the guard cannot enforce**
 
 - **Never build an `add` list from a directory listing.** `git ls-files
