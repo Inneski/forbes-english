@@ -967,6 +967,7 @@
 <li><a href="/forbes-english-ielts-academic-writing-part1.html">IELTS Academic Writing: The Report (Part 1)</a> — subscribers</li>
 <li><a href="/forbes-english-ielts-lexical-resource.html">IELTS Lexical Resource: Vocabulary That Scores</a> — subscribers</li>
 <li><a href="/forbes-english-ielts-listening-s1.html">IELTS Listening Section 1: The Everyday Conversation</a> — subscribers</li>
+<li><a href="/forbes-english-ielts-listening-s2.html">IELTS Listening Section 2: The Monologue and the Map</a> — subscribers</li>
 <li><a href="/forbes-english-ielts-listening-part9.html">IELTS Listening: How the Test Works (Part 9)</a> — subscribers</li>
 <li><a href="/forbes-english-ielts-pronunciation.html">IELTS Pronunciation &amp; Fluency</a> — subscribers</li>
 <li><a href="/forbes-english-ielts-reading-tfng.html">IELTS Reading: True, False, Not Given</a> — subscribers</li>
@@ -1514,6 +1515,7 @@ const LESSON_IMAGES = {
   "forbes-english-ielts-reading-tfng.html": "ielts-reading/hero.jpg",
   "forbes-english-ielts-lexical-resource.html": "ielts-vocabulary/hero.jpg",
   "forbes-english-ielts-listening-s1.html": "ielts-listen-s1/hero.jpg",
+  "forbes-english-ielts-listening-s2.html": "ielts-listen-s2/hero.jpg",
   "forbes-english-ielts-pronunciation.html": "ielts-pronunciation/hero.jpg",
   "forbes-english-ielts-line-graph-part8.html": "ielts-line-graph/hero.jpg",
   "forbes-english-ielts-listening-part9.html": "ielts-listening/hero.jpg",
@@ -1651,6 +1653,30 @@ const PLACEHOLDER_OVERRIDE = {};
 // The one rule: no hero means not finished. Derived, never stored — the
 // catalogue has no column for it and does not need one.
 function comingSoon(l) { return !LESSON_IMAGES[l.file]; }
+
+// The Block Camp climb, flattened to file order — CLIMB in
+// lesson-template/build/block-camp-hub/build.py, camp 1 (Present Simple) up
+// to camp 9 (Past Perfect), then the passive stations 9 down to 17 back to
+// Present Simple. Lets the library sort the collection by camp instead of by
+// upload date, where the newest-built camp (Past Perfect) would otherwise
+// lead the shelf. A Map, not an array index lookup, so a missing file is a
+// clean `undefined` rather than a silent 0.
+const BLOCK_CAMP_ORDER = new Map([
+  'blockcamp-present-simple.html', 'blockcamp-present-simple-2.html',
+  'blockcamp-present-continuous.html', 'blockcamp-present-continuous-2.html',
+  'blockcamp-past-simple.html', 'blockcamp-past-simple-2.html',
+  'blockcamp-past-continuous.html', 'blockcamp-past-continuous-2.html',
+  'blockcamp-going-to.html', 'blockcamp-going-to-2.html',
+  'blockcamp-future-simple.html', 'blockcamp-future-simple-2.html',
+  'blockcamp-present-perfect.html', 'blockcamp-present-perfect-2.html',
+  'blockcamp-present-perfect-continuous.html', 'blockcamp-present-perfect-continuous-2.html',
+  'blockcamp-past-perfect.html',
+  'blockcamp-passive-present-simple.html', 'blockcamp-passive-present-continuous.html',
+  'blockcamp-passive-past-simple.html', 'blockcamp-passive-past-continuous.html',
+  'blockcamp-passive-going-to.html', 'blockcamp-passive-future-simple.html',
+  'blockcamp-passive-present-perfect.html', 'blockcamp-passive-trial.html',
+  'blockcamp-passive-past-perfect.html',
+].map((file, i) => [file, i]));
 
 // The collections, in shelf order. `cat` is the category the card opens;
 // `hero` is a lesson whose LESSON_IMAGES art fronts the collection, so a
@@ -1839,10 +1865,20 @@ function render() {
   const pinned = l => l.sort_order !== null && l.sort_order !== undefined && l.sort_order <= 0;
   const band = l => comingSoon(l) ? 2 : (pinned(l) ? 0 : 1);
   const when = l => Date.parse(l.created_at || '') || 0;
+  // Inside the Block Camp collection, newest-first puts whatever tense was
+  // built last (Past Perfect, 2026-09-04) at the head of the shelf, ahead of
+  // Present Simple — the opposite of "one tense per camp ... in the same
+  // order as Sherpa Tensing" that the collection's own blurb promises. The
+  // climb position here is CLIMB from block-camp-hub/build.py, flattened to
+  // one file-order list; a lesson not on it (nothing outside Block Camp is)
+  // falls through to newest-first exactly as before.
   filtered.sort((a, b) => {
     const d = band(a) - band(b);
     if (d) return d;
     if (band(a) === 0 && a.sort_order !== b.sort_order) return a.sort_order - b.sort_order;
+    if (activeCategory === 'Block Camp' && BLOCK_CAMP_ORDER.has(a.file) && BLOCK_CAMP_ORDER.has(b.file)) {
+      return BLOCK_CAMP_ORDER.get(a.file) - BLOCK_CAMP_ORDER.get(b.file);
+    }
     return when(b) - when(a);
   });
   grid.innerHTML = '';
