@@ -66,7 +66,9 @@ LANGS = [] if os.environ.get('RPG_EN_ONLY') else rpg.NINE
 # reaches x=54. check-rpg-panels.js measures the result.
 HOT = {
     'intro':     ([63, 18, 36, 22], 'left',   'center'),       # the Nautilus, lamps on, above the drowned city
-    'brief':     ([88, 68, 14, 18], 'left',   'center', 70),   # the chart orb under Nemo's hand; four cards, and French needs the width
+    'brief':     ([80, 74, 16, 16], 'left',   'center', 66),   # the lit ruins on the chart table; the upgraded plate swings it in from
+                                                              # the right edge to the middle, so the glow takes the far corner of the
+                                                              # chart and the panel gives up four points of width to clear it
     'q0':        ([87, 24, 14, 14], 'left',   'center'),       # the headlamp on the bow
     'leak':      ([28, 55, 18, 22], 'right',  'center'),       # the valve wheel Lia is closing
     'route':     ([69, 47, 14, 18], 'left',   'center'),       # the crystal where the seabed splits
@@ -83,8 +85,9 @@ HOT = {
     'tdec':      ([80, 62, 18, 22], 'left',   'center'),       # the turquoise mark on the floor
     'tarchive':  ([54, 38, 18, 24], 'left',   'center', 38),   # the tablets in Aronnax's hands, mid-frame
     'tstatue':   ([90, 50, 18, 50], 'left',   'center'),       # the metal door
-    't4':        ([60, 64, 24, 34], 'left',   'center', 38),   # the black plate with the etched chart; a gloss panel reaches x=46
-    'log':       ([66, 76, 20, 16], 'left',   'center'),       # the journal under Aronnax's hand
+    't4':        ([78, 50, 28, 44], 'left',   'center', 38),   # the black plate with the etched chart, centred on the glow rather than
+                                                              # its lower corner, which the newly helmeted diver's glove now reaches
+    'log':       ([66, 79, 22, 16], 'left',   'center'),       # the open journal he is writing in
     'engine':    ([22, 35, 34, 34], 'right',  'center'),       # the pressure drive
     'ballast':   ([10, 63, 16, 20], 'right',  'center', 40),   # the ballast valve wheel, bottom left; the dark hull is the empty side
     'repairdec': ([57, 47, 30, 40], 'left',   'center', 38),   # the airlock wheel, mid-frame

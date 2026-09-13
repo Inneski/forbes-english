@@ -1,64 +1,59 @@
 #!/usr/bin/env python3
-"""Nautilus: The Black Archive — Present Perfect Simple + Continuous RPG (B1).
+"""Nautilus: The Black Archive — Present Perfect RPG on the painted plates (B1).
 
-    py lesson-template/build/build_nautilus_black_archive.py
+    py lesson-template/build/build_nautilus_black_archive_deep.py
 
-Rebuilds block-camp/nautilus-black-archive-rpg.html from
-lesson-template/build/rpg/nautilus-black-archive-rpg/data.json — the text of
-the "Minecraft Edition" export, pulled out by rpg/extract_static.py.
+Builds block-camp/nautilus-black-archive-deep-rpg.html from
+lesson-template/build/rpg/nautilus-black-archive-deep-rpg/data.json — the text
+of `Nautilus_20000_Leagues_RPG_Revamped.html`, pulled out by
+rpg/extract_static.py, which is the same static-markup export kind as the voxel
+edition (that builder's docstring has the detail).
 
-**The fourth kind of export, and the first to carry no game object at all.**
-README §2 named three kinds and said a fourth means "read its script first".
-This one's script holds nothing but the engine: scoring, hash routing and the
-feedback box. Every learner-facing string is already rendered markup, so
-extract_static.py parses rather than executes. Its docstring has the detail.
+**The painted skin, published as it stands.** The voxel edition
+(`build_nautilus_black_archive.py`) and this one are the same adventure in two
+art styles, and on 2026-09-13 the painted one was first rewritten into a
+different grammar point to avoid a duplicate — `build_twenty_thousand_leagues.py`,
+Past Perfect, B1-B2. Innes asked on 2026-09-13 for the painted skin to be
+published in its own right as well, with its own Present Perfect text: three
+editions of one dive, and a student picks the art and the tense. The two
+Present Perfect editions differ in exactly two strings, both of them scenery —
+the export's own "a city beneath the seabed" for "a city built from forgotten
+blocks", and an Aronnax line that matches the painted plate. Everything else,
+all 27 questions included, is byte-identical, which is deliberate: the lesson
+is the same lesson.
 
-**Two skins, one adventure — then two lessons.** Innes sent this alongside
-`Nautilus_20000_Leagues_RPG_Revamped.html`, a painted version of the same
-game: same 41 scene ids, all 27 questions with byte-identical prompts and
-byte-identical options, only the art and a few flavour words differ ("a city
-built from forgotten blocks" against "a city beneath the seabed"). Publishing
-both as they stood would have put two indistinguishable lessons in the
-catalogue, so this voxel one shipped first. On 2026-09-13 the painted skin
-became its own lesson with new text and the next grammar point —
-`build_twenty_thousand_leagues.py`, Past Perfect, B1-B2.
+So this builder is the voxel one with three things changed and nothing else:
 
-Six things this builder does that the export did not:
+  * **The hotspot table**, read off the painted plates. Those are the same
+    plates the Sealed Log uses, so its table is the base here — see below for
+    the three entries the upgraded artwork moved.
+  * **Turquoise, not rose.** Camp 8's `#46B0AB`, the voxel edition's accent
+    and the export's own — Innes asked for turquoise rather than the Sealed
+    Log's `#d66d77` when he asked for this edition.
+  * **A narrower briefing panel.** Two rule cards here against the Sealed
+    Log's four, so 60% rather than 70%.
 
-  * **Deals the answer key.** The export puts the key in slot 0 on fifteen
-    questions and slot 1 on the other twelve — never slot 2 or 3. A student
-    who has learned no grammar scores by guessing from the top two. This
-    engine renders `opts` in spec order, so the builder rotates each
-    question's options by a fixed offset from its index in the scene list.
-    `_check_answer_key`'s gate is 80% in one slot and would have passed this
-    at 56%, which is why the rotation is here and not left to the validator.
-  * **Writes four endings.** The export has one `#end` screen whose title and
-    paragraph were chosen in JavaScript from the score, so the text for
-    master / complete / missing / failed did not survive extraction and is
-    written here. Each gets its own plate.
-  * **An explanation under every answer.** The export carries `why` per
-    option, but the same sentence on all four — it explains the rule, not the
-    choice. Taken as `fb`.
-  * **Nine languages.** The export has no `local` block and no lang attribute
-    anywhere: English only. The glosses live in translations/.
-  * **Drops `map`.** Scene 41 is a teacher's expedition index — a nav screen
-    for the export's own hash routing. This engine has its own HUD and scene
-    graph, so it is skipped, the way Sherlock's builder skips `resolve`.
-  * **Drops hull and oxygen.** The export tracked two damage bars; this engine
-    scores on points, tiles and chances (README §9 keeps an export's rules,
-    but only where the engine has them). The five consequence scenes stay as
-    story beats and the chance counter carries the penalty.
+**The artwork is the upgraded set** (`Revamped (3)`, 2026-09-13). Measured
+against the plates the Sealed Log shipped with: 34 of the 40 are the same
+picture at a higher bitrate (mean abs. difference ~0.3/255 on a 192x108
+greyscale, i.e. encoder noise), and six are genuinely redrawn. Two of the six
+are recomposed and move their hotspot — `brief`, where the chart table swings
+from Nemo's hand at the right edge to the centre of the frame, and `log`, where
+Aronnax stops closing the journal amid flying pages and sits writing it by
+lamplight. Four are the same composition with the divers newly helmeted
+(`tdec`, `tstatue`, `t4`, `finaldec`); of those only `t4` needed its hotspot
+moved, and because it sat on the edge of the glowing plate rather than because
+the picture changed.
 
-Pictures: block-camp/nautilus-black-archive-rpg/NN_name.webp, **1536x864** —
-16:9, like Wonderland and unlike the 3:2 default, so the spec passes img_w
-and img_h.
+Pictures: block-camp/nautilus-black-archive-deep-rpg/NN_name.webp, **1536x864** —
+16:9, so the spec passes img_w and img_h.
 """
 import json, os, sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'rpg'))
 import rpg
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-SLUG = 'nautilus-black-archive-rpg'
+SLUG = 'nautilus-black-archive-deep-rpg'
 BASE = os.path.join(HERE, 'rpg', SLUG)
 DATA = json.load(open(os.path.join(BASE, 'data.json'), encoding='utf-8'))
 LANGS = rpg.NINE
@@ -67,61 +62,72 @@ BULLET, DASH = '·', '—'
 SKIP = ('map',)          # the teacher's expedition index, not a scene of the game
 
 # ── hotspots: [cx, cy, w, h] in % of the 1536x864 picture, then panel side,
-# vertical anchor, optional panel width %. Read off gridded contact sheets
-# (README §3) and named by the object the export's own alt text names — every
-# plate says "Minecraft-style <id> scene: the <object>", which is the thing
-# the clue talks about and so the thing that glows.
+# vertical anchor, optional panel width %. These are the painted plates, so the
+# table starts from the one build_twenty_thousand_leagues.py read off the same
+# pictures (README section 3) rather than from the voxel edition's, whose art is
+# composed differently on every frame. Three entries differ from it, all three
+# because the upgraded artwork moved the object:
 #
-# The art is composed with the subject off-centre on nearly every plate, so
-# most panels sit on the opposite side at the default 46%. Where the object
-# creeps toward the middle the panel is narrowed instead of moved — a gloss
-# language widens the panel by 8 points and a 46% left panel reaches x=58.
+#   brief  the chart table was under Nemo's hand at the right edge; it is now
+#          the centre of the frame with Nemo pointing in from the right, so the
+#          glow moves to the lit ruins on the chart and the panel takes the dark
+#          bulkhead on the left. 60% here against the Sealed Log's 70% — two
+#          rule cards, not four.
+#   log    Aronnax was closing the journal with pages in the water; he is now
+#          writing it by lamplight, and the open book sits three points lower.
+#   t4     unchanged in composition, but the old entry sat on the lower-left
+#          corner of the etched plate and caught the diver's glove. Centred on
+#          the glowing chart, which the new helmet does not reach.
+#
+# The painted plates put their subject mid-frame more often than the voxel ones,
+# so several panels are narrowed rather than moved: a gloss language widens the
+# panel by 8 points and a 46% left panel reaches x=54. check-rpg-panels.js
+# measures the result.
 HOT = {
-    'intro':     ([37, 18, 34, 20], 'right',  'center'),       # the Nautilus, running above the drowned city
-    'brief':     ([75, 72, 12, 18], 'left',   'center', 60),   # the chart orb in Nemo's hands; wide, two cards
-    'q0':        ([57, 45,  9, 13], 'left',   'center', 40),   # the headlamp
-    'leak':      ([13, 46, 12, 22], 'right',  'center'),       # the valve
-    'route':     ([80, 48, 13, 40], 'left',   'center'),       # the branching crystal
-    'c1':        ([22, 58, 16, 28], 'right',  'center'),       # the crystal shard
-    'cbad':      ([87, 62, 13, 20], 'left',   'center'),       # the oxygen gauge
-    'c2':        ([62, 72, 12, 16], 'left',   'center'),       # the pearl pouch
-    'cdec':      ([60, 83,  7, 10], 'left',   'center'),       # the flashing lamp
-    'crescue':   ([37, 60, 10, 15], 'right',  'center'),       # the trapped helmet
-    'csignal':   ([61, 40, 20, 34], 'left',   'center', 38),   # the aperture
-    'c4':        ([80, 45, 28, 42], 'left',   'center'),       # the dome
-    't1':        ([63, 22, 16, 26], 'left',   'center', 42),   # the threshold
-    'tbad':      ([27, 30, 14, 20], 'right',  'center'),       # the damaged plate
-    't2':        ([60, 38, 16, 22], 'left',   'center', 44),   # the carved eye
-    'tdec':      ([70, 40, 10, 16], 'left',   'center'),       # the spiral crest
-    'tarchive':  ([62, 45, 14, 26], 'left',   'center', 42),   # the tablet Aronnax holds, not the diver;
-                                                           # it starts at x=55, so 42% + gloss stops clear
-    'tstatue':   ([88, 45, 15, 34], 'left',   'center'),       # the bronze door
-    't4':        ([62, 55, 14, 28], 'left',   'center', 42),   # the obsidian map
-    'log':       ([70, 68, 14, 16], 'left',   'center'),       # the journal
-    'engine':    ([28, 55, 18, 28], 'right',  'center'),       # the pressure drive
-    'ballast':   ([24, 62, 16, 24], 'right',  'center'),       # the valve handle
-    'repairdec': ([62, 55, 18, 34], 'left',   'center', 42),   # the airlock wheel
-    'i1':        ([72, 45, 20, 28], 'left',   'center'),       # the regulator
-    'i2':        ([15, 46,  9, 15], 'right',  'center'),       # the coolant tap
-    'i3':        ([38, 62, 20, 18], 'right',  'center', 38),       # the power cells
-    'o1':        ([20, 35, 13, 18], 'right',  'center'),       # the helmet lamp
-    'o2':        ([72, 55, 10, 15], 'left',   'center'),       # the repair tool
-    'o3':        ([29, 14, 10, 13], 'right',  'center'),       # the approaching eye
-    'squidq':    ([88, 14, 11, 14], 'left',   'center'),       # the squid eye
-    'tentacle':  ([58, 55, 16, 24], 'left',   'center', 42),   # the torn rail
-    'finaldec':  ([85, 68, 15, 24], 'left',   'center'),       # the helm
-    'ft1':       ([22, 70, 24, 24], 'right',  'center'),       # the pearl trail
-    'ft2':       ([30, 72, 22, 20], 'right',  'center'),       # the crystal wall
-    'ft3':       ([57, 63, 18, 18], 'left',   'center', 34),   # the Nautilus bow
-    'fc1':       ([92, 42, 13, 38], 'left',   'center'),       # the next arch
-    'fc2':       ([72, 35, 20, 38], 'left',   'center'),       # the falling tower
-    'fc3':       ([90, 50, 13, 34], 'left',   'center'),       # the narrow arch
-    'archive':   ([62, 45, 24, 42], 'left',   'center', 40),   # the archive core
+    'intro':     ([63, 18, 36, 22], 'left',   'center'),       # the Nautilus, lamps on, above the drowned city
+    'brief':     ([74, 72, 18, 18], 'left',   'center', 60),   # the lit ruins on the chart table, under Nemo's finger
+    'q0':        ([87, 24, 14, 14], 'left',   'center'),       # the headlamp on the bow
+    'leak':      ([28, 55, 18, 22], 'right',  'center'),       # the valve wheel Lia is closing
+    'route':     ([69, 47, 14, 18], 'left',   'center'),       # the crystal where the seabed splits
+    'c1':        ([30, 52, 18, 40], 'right',  'center'),       # the diver on the line
+    'cbad':      ([90, 57, 14, 20], 'left',   'center'),       # the gauge in the diver's hand
+    'c2':        ([14, 70, 18, 20], 'right',  'center'),       # the net of black pearls
+    'cdec':      ([93, 81, 10, 14], 'left',   'center'),       # the broken lamp by the trapped diver's hand
+    'crescue':   ([16, 55, 20, 26], 'right',  'center'),       # the trapped diver's helmet
+    'csignal':   ([80, 36, 26, 40], 'left',   'center'),       # the turquoise aperture
+    'c4':        ([80, 42, 36, 55], 'left',   'center'),       # the dome under the reef
+    't1':        ([70, 22, 18, 28], 'left',   'center'),       # the warm lights inside the ruins
+    'tbad':      ([28, 42, 22, 24], 'right',  'center'),       # the starboard plates on the gate
+    't2':        ([77, 61, 12, 14], 'left',   'center'),       # Mara's lamp on the carved wall
+    'tdec':      ([80, 62, 18, 22], 'left',   'center'),       # the turquoise mark on the floor
+    'tarchive':  ([54, 38, 18, 24], 'left',   'center', 38),   # the tablets in Aronnax's hands, mid-frame
+    'tstatue':   ([90, 50, 18, 50], 'left',   'center'),       # the ringed door
+    't4':        ([78, 50, 28, 44], 'left',   'center', 38),   # the etched chart, glowing; a gloss panel reaches x=46
+    'log':       ([66, 79, 22, 16], 'left',   'center'),       # the open journal he is writing in
+    'engine':    ([22, 35, 34, 34], 'right',  'center'),       # the pressure drive
+    'ballast':   ([10, 63, 16, 20], 'right',  'center', 40),   # the ballast valve wheel, bottom left; the dark hull is the empty side
+    'repairdec': ([57, 47, 30, 40], 'left',   'center', 38),   # the airlock wheel, mid-frame
+    'i1':        ([33, 54, 26, 28], 'right',  'center'),       # the regulator in Lia's hands, sparking
+    'i2':        ([12, 28, 10, 14], 'right',  'center'),       # the coolant tap
+    'i3':        ([24, 26, 40, 44], 'right',  'center'),       # the power cells
+    'o1':        ([12, 33, 14, 16], 'right',  'center'),       # Nadia's helmet lamp
+    'o2':        ([38, 66, 12, 14], 'right',  'center'),       # the repair tool's light on the fracture
+    'o3':        ([75, 12, 16, 18], 'left',   'center'),       # the eye above Nadia
+    'squidq':    ([87, 20, 12, 16], 'left',   'center'),       # the squid's eye, clear of the HUD corner
+    'tentacle':  ([76, 68, 26, 30], 'left',   'center'),       # the torn rail
+    'finaldec':  ([88, 82, 22, 26], 'left',   'center'),       # the helm
+    'ft1':       ([20, 50, 38, 55], 'right',  'center'),       # the pearl trail
+    'ft2':       ([72, 55, 30, 45], 'left',   'center'),       # the squid in the crystals
+    'ft3':       ([75, 58, 30, 22], 'left',   'center'),       # the Nautilus slipping past
+    'fc1':       ([90, 25, 16, 30], 'left',   'center'),       # the arch Mara calls out
+    'fc2':       ([78, 18, 28, 32], 'left',   'center'),       # the falling tower
+    'fc3':       ([78, 45, 36, 40], 'left',   'center'),       # the Nautilus in the narrow arch
+    'archive':   ([70, 35, 40, 45], 'left',   'center', 40),   # the archive core
     # the four endings, on their own plates
-    'end_master':   ([80, 62, 10, 14], 'left', 'center'),      # the archive case, home
-    'end_complete': ([62, 45, 24, 42], 'left', 'center', 40),  # the archive core
-    'end_missing':  ([88, 45, 15, 34], 'left', 'center'),      # the bronze door, still shut
-    'end_failed':   ([58, 55, 16, 24], 'left', 'center', 42),  # the torn rail
+    'end_master':   ([81, 9, 12, 14], 'left', 'center'),       # the case held up in daylight
+    'end_complete': ([70, 35, 40, 45], 'left', 'center', 40),  # the archive core
+    'end_missing':  ([90, 50, 18, 50], 'left', 'center'),      # the ringed door, still shut
+    'end_failed':   ([76, 68, 26, 30], 'left', 'center'),      # the rail the squid tore away
 }
 
 # ── a plate for each ending. The export had one #end screen and chose its
@@ -326,13 +332,16 @@ def build():
     return {
         'file': 'block-camp/%s.html' % SLUG,
         'img_dir': 'block-camp/%s' % SLUG,
-        'title': 'Nautilus: The Black Archive — Present Perfect Voxel RPG (B1)',
+        'title': 'Nautilus: The Black Archive — Present Perfect Deep-Sea RPG (B1)',
         'description': 'An interactive B1 English lesson from Forbes English: '
-                       'Nautilus: The Black Archive — Present Perfect Voxel RPG (B1).',
+                       'Nautilus: The Black Archive — Present Perfect Deep-Sea RPG (B1).',
         'langs': LANGS,
         # camp 8 on the Block Camp route map, Present Perfect Continuous - the
-        # half of the contrast this lesson is pitched at, and a teal that sits
-        # in the plates rather than on top of them. One accent (README section 1).
+        # half of the contrast this lesson is pitched at. The export's own
+        # chrome is turquoise (--t: #48e4d4) and so is every glowing thing in
+        # the plates, so the camp colour and the art agree for once; Innes
+        # asked for turquoise here rather than the Sealed Log's rose. One
+        # accent (README section 1).
         'accent': '#46B0AB',
         'accent_ink': '#0b1a12', 'deep': '#06181f', 'panel': 'rgba(6,20,27,.88)',
         'labels': LABELS,

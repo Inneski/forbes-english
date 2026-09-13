@@ -173,6 +173,9 @@ ADVENTURES = [
  ('block-camp/twenty-thousand-leagues-rpg.html','block-camp/twenty-thousand-leagues-rpg/01_intro.webp','Twenty Thousand Leagues: The Sealed Log',
   'The same voyage, painted, and told from the ship&rsquo;s log after the Nautilus came home. Every entry looks back from a later moment &mdash; what had already happened, what had still been going on &mdash; through the crystal trench, the coral city and the squid that was waiting beyond both.',
   ('Past Perfect','Past Perfect Continuous'),'B1&ndash;B2','pro','new'),
+ ('block-camp/nautilus-black-archive-deep-rpg.html','block-camp/nautilus-black-archive-deep-rpg/39_archive.webp','Nautilus: The Black Archive (Deep-Sea)',
+  'The Black Archive again, painted: the same signal under the Atlantic and the same drowned city, lit by lamps rather than built from blocks. Two branching descents &mdash; the crystal trench or the ruined temple, the engine room or the open water &mdash; and every question asks the one thing: a finished result, or an activity still running.',
+  ('Present Perfect','Present Perfect Continuous'),'B1','pro','new'),
 ]
 
 def adventure_cards():
