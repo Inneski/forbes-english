@@ -3,24 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- SEO:start -->
-<meta name="description" content="Drones, thermal cameras and a rescue network that saves thousands of fawns every spring">
-<link rel="canonical" href="https://forbesenglish.com/saving-fawns-mower-b1.html">
-<meta property="og:type" content="article">
-<meta property="og:site_name" content="Forbes English">
-<meta property="og:title" content="Saving Fawns from the Mower (B1, German support) | Forbes English">
-<meta property="og:description" content="Drones, thermal cameras and a rescue network that saves thousands of fawns every spring">
-<meta property="og:url" content="https://forbesenglish.com/saving-fawns-mower-b1.html">
-<meta property="og:image" content="https://forbesenglish.com/Animal%20Welfare/deer-sunset-hero.png">
-<meta property="og:locale" content="en_GB">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Saving Fawns from the Mower (B1, German support) | Forbes English">
-<meta name="twitter:description" content="Drones, thermal cameras and a rescue network that saves thousands of fawns every spring">
-<meta name="twitter:image" content="https://forbesenglish.com/Animal%20Welfare/deer-sunset-hero.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Saving Fawns from the Mower (B1, German support)","description":"Drones, thermal cameras and a rescue network that saves thousands of fawns every spring","url":"https://forbesenglish.com/saving-fawns-mower-b1.html","inLanguage":"en","learningResourceType":"lesson","interactivityType":"active","isAccessibleForFree":false,"image":"https://forbesenglish.com/Animal%20Welfare/deer-sunset-hero.png","provider":{"@type":"Organization","name":"Forbes English","url":"https://forbesenglish.com/"},"isPartOf":{"@type":"Course","name":"Forbes English lesson library","url":"https://forbesenglish.com/library.html"},"educationalLevel":"B1","teaches":["drone: a small flying machine, no pilot inside","thermal imaging camera: a camera that sees heat","combine harvester: a big machine that cuts fields","to mow: to cut grass or crops with a machine","to relocate: to move something a short distance","Passive present simple: Use am/is/are + past participle when the action matters more than who does it: “Fawns are found early in the morning.”","First conditional: If + present simple, … will + infinitive, for a real, likely situation: “If a pilot spots a fawn early, the team will have time to help.”","Must, don’t have to, should: Must = a strong rule. Don’t have to = not necessary. Should = friendly advice, not a rule: “You must wear gloves, but you don’t have to carry the fawn far, and you should stay calm.”"],"datePublished":"2026-08-07","hasPart":{"@type":"WebPageElement","isAccessibleForFree":false,"cssSelector":".paywalled"}}</script>
-<!-- SEO:end -->
 <!-- ══ REPLACE: lesson title. No "Forbes English —" prefix. ══ -->
-<title>Saving Fawns from the Mower (B1, German support) | Forbes English</title>
+<title>Saving Fawns from the Mower (B1) | Forbes English</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -1203,6 +1187,19 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
     animation: none;
   }
 }
+</style>
+
+<style>
+.slide-body { align-items: center; text-align: center; }
+.slide-body > .prose, .q-stem, .q-ctx, .order-hint {
+  margin-left: auto; margin-right: auto;
+}
+.opts { justify-items: center; }
+.opt { text-align: center; }
+.cols { justify-items: center; }
+.card { text-align: center; }
+.act-list { list-style-position: inside; }
+.act-target { justify-content: center; }
 </style>
 </head>
 <body>
@@ -2779,6 +2776,7 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
   const row   = document.createElement('div'); row.className = 'audio-row';
   const btn   = document.createElement('button');
   btn.className = 'audio-play'; btn.type = 'button';
+  btn.dataset.i18nAria = 'audioPlay';
   btn.setAttribute('aria-label', t('audioPlay')); btn.textContent = '▶';
   const meta  = document.createElement('div'); meta.className = 'audio-meta';
   const label = document.createElement('div'); label.className = 'audio-label';
@@ -2789,6 +2787,13 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
   const now   = document.createElement('span'); now.textContent = '0:00';
   const left  = document.createElement('span'); left.textContent = '';
   const state = document.createElement('div'); state.className = 'audio-state';
+  /* The player is built ONCE, imperatively, so every string in it was frozen
+     in whatever language the page loaded in: the slide title translated and
+     the player underneath it stayed English. Tagging each element with the
+     key it is currently showing puts it back under applyLang()'s [data-i18n]
+     pass, and the tag is re-set every time the text changes so the CURRENT
+     state is what gets re-resolved. */
+  state.dataset.i18n = 'audioOnce';
   state.textContent = t('audioOnce');
 
   track.append(fill); time.append(now, left); meta.append(label, track, time);
@@ -2809,6 +2814,7 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
     left.textContent = mmss(audio.duration - audio.currentTime);
   });
   audio.addEventListener('error', () => {
+    state.dataset.i18n = 'audioMissing';
     state.textContent = t('audioMissing');
     btn.disabled = true;
     if (cont) cont.disabled = false;   // never trap a learner behind a broken file
@@ -2816,14 +2822,17 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
   audio.addEventListener('ended', () => {
     slide.dataset.played = 'yes';
     fill.style.width = '100%';
+    state.dataset.i18n = 'audioDone';
     state.textContent = t('audioDone');
     state.classList.add('done');
     if (cont) cont.disabled = false;
     const again = document.createElement('button');
     again.className = 'audio-replay'; again.type = 'button';
+    again.dataset.i18n = 'audioReplay';
     again.textContent = t('audioReplay');
     again.addEventListener('click', () => {
       audio.currentTime = 0; audio.play();
+      state.dataset.i18n = 'audioPlaying';
       state.textContent = t('audioPlaying'); state.classList.remove('done');
       again.remove();
     });
@@ -2832,9 +2841,12 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
 
   btn.addEventListener('click', () => {
     btn.disabled = true;
+    state.dataset.i18n = 'audioPlaying';
     state.textContent = t('audioPlaying');
     audio.play().catch(() => {
-      state.textContent = t('audioMissing');
+      state.dataset.i18n = 'audioMissing';
+      state.dataset.i18n = 'audioMissing';
+    state.textContent = t('audioMissing');
       if (cont) cont.disabled = false;
     });
   });
@@ -3426,6 +3438,12 @@ function applyLang() {
   document.querySelectorAll('[data-i18n-ph]').forEach(el => {
     const v = t(el.dataset.i18nPh);
     if (v != null) el.placeholder = v;
+  });
+  /* Accessible names need the same treatment as placeholders: a control
+     whose only label is an aria-label was left in the load language. */
+  document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+    const v = t(el.dataset.i18nAria);
+    if (v != null) el.setAttribute('aria-label', v);
   });
   if (window.syncActivation) window.syncActivation();
   document.documentElement.lang = currentLang;

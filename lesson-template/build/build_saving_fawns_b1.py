@@ -49,6 +49,26 @@ PALETTE = '''  --hero: url('%s/hero.jpg');
 CHIPS = ['fawn', 'doe', 'drone', 'thermal imaging camera', 'combine harvester',
          'drone pilot', 'volunteer', 'relocate', 'gloves']
 
+# Innes, 2026-09-13: centre this lesson's slide-body text — house style
+# left-aligns it by default (§7), but this deck's art is symmetric nature
+# scenes rather than side-lit portraits, and left-aligned text reads as an
+# afterthought bolted onto a centred picture. Scoped to this lesson only,
+# spliced in after assemble() rather than touching the shared template.
+CSS = """
+<style>
+.slide-body { align-items: center; text-align: center; }
+.slide-body > .prose, .q-stem, .q-ctx, .order-hint {
+  margin-left: auto; margin-right: auto;
+}
+.opts { justify-items: center; }
+.opt { text-align: center; }
+.cols { justify-items: center; }
+.card { text-align: center; }
+.act-list { list-style-position: inside; }
+.act-target { justify-content: center; }
+</style>
+"""
+
 CATS = ['people', 'equipment', 'animals', 'actions']
 CAT_KEYS = ['catPeople', 'catEquipment', 'catAnimals', 'catActions']
 BINS = [CATEGORY_LABEL[c] for c in CATS]
@@ -197,6 +217,8 @@ def build():
     s = D.assemble(TPL, OUT, slides, PALETTE,
                    'Saving Fawns from the Mower (B1) | Forbes English', I,
                    langs=('en', 'de', 'es'))
+    s = s.replace('</head>', CSS + '</head>', 1)
+    open(OUT, 'w', encoding='utf-8', newline='').write(s)
     total_mc = len(READING) + len(VOCAB) + len(GRAMMAR)
     print('wrote %s — %d slides, %d MC + %d sort items, %d bytes'
           % (OUT, s.count('<section class="slide'), total_mc, len(SORT_ITEMS), len(s)))
