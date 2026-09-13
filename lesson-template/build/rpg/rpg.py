@@ -257,7 +257,7 @@ button{font:inherit}
 .route:hover{border-color:var(--accent);background:rgba(70,48,8,.92)}
 .route b{display:block;color:var(--accent);font-size:1.3cqw;margin-bottom:.4cqw}.route .translation{font-size:1cqw}
 .rules-intro{display:grid;grid-template-columns:1fr 1fr;gap:.75cqw 1.4cqw}.rule-card:last-child{grid-column:1/-1}
-.rule-card{border:0;border-left:.22cqw solid rgba(255,246,217,.22);background:none;padding:.1cqw 0 .1cqw .7cqw;font-size:1.08cqw;line-height:1.3;text-align:left}
+.rule-card{white-space:pre-line;border:0;border-left:.22cqw solid rgba(255,246,217,.22);background:none;padding:.1cqw 0 .1cqw .7cqw;font-size:1.08cqw;line-height:1.3;text-align:left}
 .rule-card b{display:block;color:var(--accent);font-size:1.2cqw;margin-bottom:.15cqw}.rule-card .translation{font-size:.95cqw}
 .rule-note{color:#fff;font-size:1.2cqw;line-height:1.34;border:0;border-top:1px solid rgba(255,246,217,.18);padding:.7cqw 0 0;background:none;text-align:left}
 .cover-title{font-size:3.2cqw;line-height:1}

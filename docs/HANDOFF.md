@@ -11,6 +11,81 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-13 — Twenty Thousand Leagues: The Sealed Log. The painted Nautilus skin becomes its own lesson (Past Perfect, B1–B2)
+
+Innes, after the guard entry below: *"You change second Nautilus text then
+upload."* The painted export (`Nautilus_20000_Leagues_RPG_Revamped.html`, in
+his Downloads, never in the repo) had been set aside on 2026-09-13 morning
+because it was the same game as the voxel one — same 41 scene ids, same 27
+questions, only the art. Publishing it unchanged would have been a second
+cover on an identical lesson. So the pictures stayed and every word changed.
+
+**Shipped:** `block-camp/twenty-thousand-leagues-rpg.html` — 43 scenes, 27
+questions (15 on any run, two forks, four endings), nine languages. Builder
+`lesson-template/build/build_twenty_thousand_leagues.py`; text in
+`rpg/twenty-thousand-leagues-rpg/data.json`; glosses in `translations/`.
+Hub card on `block-camp.html`, thumbnail in `library.html`, catalogue row
+**id 326** in Supabase and mirrored to `tools/lessons.json`. The page's own
+docstring says how it differs; the short version:
+
+- **Past perfect simple against continuous, anchored on a later moment.**
+  The voyage is the ship's log, read after the Nautilus came home, so every
+  entry looks back from THEN: "By the time they turned back, the divers ___
+  six black pearls" (had collected — a number) against "When the crystals
+  flared, the divers ___ for six hours" (had been descending — a duration).
+  The voxel lesson asks the same question from NOW at B1; this is the next
+  camp on the route map (camp 9, `#d66d77`).
+- **Distractors by design.** The other past-perfect form, the past simple,
+  and the present perfect in the key's aspect — which is the voxel lesson's
+  own answer, wrong here, and the same length as the key, so a continuous
+  key (the longest form English has) never trips the length gate.
+- **All forty pictures are on the path.** The export routed a wrong answer
+  through five "consequence" plates and a right answer past them; the voxel
+  builder took the key's `next` and left those five unreachable. Here they
+  are log entries in their own right (a seam opened, the gate closed).
+- **Three rule cards, not four.** The briefing shipped with four and was the
+  one panel that overflowed once Spanish and French glosses were on
+  (`check-rpg-panels.js`: +329px, then +286, then a clipped button at +67).
+  Widened to 70% and cut twice; the fourth card's idea — the log looks back
+  from THEN, never from NOW — is the opening line now.
+
+**Nine languages, nine subagents.** The 191 learner strings were dumped from
+the spec, the 32 shared with the voxel lesson (route names, HUD words)
+seeded from its files, and one subagent per language wrote the rest from
+the same brief (keep `___`, keep the formula line English, keep the taught
+form after the colon verbatim). `check_translations.py` passes; pt and ru
+keep the two card headers in English, which the engine treats as no gloss.
+The first run hit Innes's usage limit and killed eight of nine mid-write;
+Russian and Chinese had already finished, the rest were relaunched. The
+Russian pass caught one real error on review: "into the current" glossed as
+the *time* preposition.
+
+**Hotspots: the grid sheets lied four times.** Every closed scene was
+screenshot and tiled (README §4), and four glows sat beside their object,
+not on it — the regulator, the repair tool, the trench lamp and the case on
+the surfacing plate — all in right-hand quadrants of the contact sheets,
+where I had read the local 10–90 labels against the sheet's global
+position. A crop check of the sixteen small targets found the fourth. The
+tiled closed-scene sheet is the check that works; the grid is only a start.
+
+**One engine change, shared.** `rpg.py`: `.rule-card{white-space:pre-line}`.
+A rule card's `form` has always been written "description\nformula" and the
+`\n` was rendering as a space — visible on this deck's briefing and, on
+inspection, on the voxel Nautilus's too. The voxel page shows the old
+rendering until its builder is re-run; nothing else changes until rebuilt.
+
+**Also fixed on the way: the voxel Nautilus had no catalogue row.** Live at
+its URL since `f7d2464`, thumbnail in `library.html`, but absent from
+Supabase — so out of the library, the sitemap, `llms.txt` and
+`lesson-meta.json`. Inserted as **id 325**, mirrored to `tools/lessons.json`,
+`build_hubs.py` and `seo.py` re-run. Its builder docstring said "only the
+voxel one ships"; updated.
+
+**Nothing left to run.** The three git commands in the entry below still
+wait on Innes.
+
+---
+
 ## 2026-09-13 — Several sessions, one tree: a guard, an orphan stash, a second Last Bounty, and an IELTS finishing plan
 
 Innes: "I have several chats working in the same tree — I am just starting

@@ -13,13 +13,15 @@ This one's script holds nothing but the engine: scoring, hash routing and the
 feedback box. Every learner-facing string is already rendered markup, so
 extract_static.py parses rather than executes. Its docstring has the detail.
 
-**Two skins, one adventure.** Innes sent this alongside
+**Two skins, one adventure — then two lessons.** Innes sent this alongside
 `Nautilus_20000_Leagues_RPG_Revamped.html`, a painted version of the same
 game: same 41 scene ids, all 27 questions with byte-identical prompts and
 byte-identical options, only the art and a few flavour words differ ("a city
 built from forgotten blocks" against "a city beneath the seabed"). Publishing
-both would put two indistinguishable lessons in the catalogue, so only the
-voxel one ships — it is the look the other Block Camp adventures share.
+both as they stood would have put two indistinguishable lessons in the
+catalogue, so this voxel one shipped first. On 2026-09-13 the painted skin
+became its own lesson with new text and the next grammar point —
+`build_twenty_thousand_leagues.py`, Past Perfect, B1-B2.
 
 Six things this builder does that the export did not:
 
