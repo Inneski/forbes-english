@@ -144,6 +144,84 @@ is stale. What is left, in the order worth doing it:
 of them is waiting on Innes, not on a session: 24 images, one decision, one
 listen. Everything a session could do alone is done.
 
+### The 24 images: a shopping list
+
+One folder per lesson, six slots per folder, the same slot names the two
+shipped builders already read (`hero`, `bg02`…`bg05` one per teaching
+section, `bg06` for the activation stage). Drop the Midjourney frames into
+`incoming/<folder>/<slot>/` as the Listening route did; several variants per
+slot are fine, the building session picks one and `prep-artwork.py` does the
+rest. The palette derives from `hero`, so that one matters most.
+
+The style stem is the one the IELTS Reading and Vocabulary art was made
+with (recovered from the 2026-09-12 chat; the filenames in
+`incoming/ielts-listen-s1/hero/` confirm it):
+
+```text
+flat editorial illustration, two-tone palette of slate blue and warm salmon, heavy grain and stipple texture, hard single light source, deep shadow, no people, no text, wide negative space, --ar 16:9 --style raw
+```
+
+Every prompt below is `<subject>, <stem>`. Heroes keep the subject to one
+side so the cover lockup has the middle. Each section's picture is the
+section's idea as one object, the way the shipped decks do it (three stacks
+of paper for three passages; a balance not quite level for the qualifier).
+
+**`ielts-reading-headings/` — Matching Headings** (sections: the shape of
+the task, function over topic, out of passage order, the two-way heading
+left till last, activation)
+
+```text
+hero  a row of luggage tags hanging on strings from a rail, one tag turned to face the wall, subject to the left
+bg02  a row of coat hooks on a bare wall, more coats than hooks, two coats on the floor
+bg03  an empty picture frame hanging on a wall, the picture it held leaning against the skirting below it
+bg04  a box of index cards knocked over, the cards fanned across a desk out of order
+bg05  a jigsaw with one gap left and two nearly identical pieces lying beside it
+bg06  a single coat on a long row of hooks, every other hook bare
+```
+
+**`ielts-reading-completion/` — Summary and sentence completion** (sections:
+the shape of a gap-fill, words taken straight from the passage, the word
+limit, spelling and grammar fit, activation)
+
+```text
+hero  a wooden ruler lying across a blank sheet of paper, a pair of scissors beside it, subject to the right
+bg02  a sheet of paper with three rectangular windows cut out of it, light coming through the holes
+bg03  a metal stencil lying on a table beside the shape it has just left on the wall
+bg04  a parcel too big for a letterbox slot, leaning against the door under the slot
+bg05  a brass key lying beside a padlock, the teeth plainly not matching the keyhole
+bg06  a pencil sharpened to a point on a bare desk, the shavings in a small pile beside it
+```
+
+**`ielts-vocabulary-environment/` — Topic bank: environment and energy**
+(sections: emissions, renewables, consumption and waste, filing by idea,
+activation)
+
+```text
+hero  a single wind turbine on a bare ridge under a huge flat sky, subject to the left
+bg02  a factory chimney with one plume of smoke against a flat sky
+bg03  a row of solar panels on a flat roof, hard shadow underneath them
+bg04  an overflowing street bin against a plain wall, one bottle on the pavement beside it
+bg05  a pegboard with tools hung in groups by kind, a few hooks empty
+bg06  a bare light bulb hanging from a cord, switched on, against a plain wall
+```
+
+**`ielts-vocabulary-work/` — Topic bank: work, automation and cities**
+(sections: work, automation, cities, the pairing that gets scored,
+activation)
+
+```text
+hero  a single tower crane against a flat sky above an unfinished concrete building, subject to the right
+bg02  an empty office chair under a strip light, the desk in front of it cleared
+bg03  a robotic arm holding one bolt above a conveyor belt on an empty factory floor
+bg04  a block of flats seen from the street, every window the same, one window lit
+bg05  two interlocking cogs on a plain wall, one large and one small
+bg06  an empty railway platform with one bench, hard morning light
+```
+
+Keep them bright: the IELTS decks are light-themed and a muddy frame forces
+the palette dark. 16:9 at 2000px or more, no text in the picture, nothing
+centred.
+
 ---
 
 ## 2026-09-13 — Animal Welfare converted; the §5c art gap is closed
