@@ -14,13 +14,14 @@ diff and obvious to the third student who notices.
 
 So this does three things the writing cannot do for itself:
 
-  1. **Deals the key** on a fixed 0,1,2,1,2,0,2,0,1 rotation over the scenes
-     in play order. Roughly a third in each slot, and the two parallel
-     branches never land on the same slot for the same grammar point, so a
-     player who replays and takes the other road gets no free answers.
-  2. **Enforces the length gate** — rpg.py refuses a build where the key is
-     the longest option by more than 10% and 4 characters, and it is much
-     cheaper to hear about that here than after thirty-two plates exist.
+  1. **Deals the key** from the explicit SLOT map below, balanced 6/6/6 over
+     each of the two PLAY orders rather than over this file. A rotation over
+     the file order looks right and is not: the file interleaves the branches,
+     so a cycle correlates the slot with the branch.
+  2. **Runs every item gate** — check-items.py, which measures the budgets, the
+     option lengths, the blend tell, the CAPS convention and the error-family
+     balance. Much cheaper to hear about here than after thirty-two plates
+     exist.
   3. **Wires the graph**: the fixed next/correctNext/wrongNext edges, the four
      marker barrels, the plate filenames, and the scoring block.
 
@@ -80,18 +81,39 @@ CHOICE_NEXT = {
 # the four marker barrels, spread one to a chapter
 RELICS = {'drift', 'shed', 'wreck1', 'last'}
 
-ROTATION = [0, 1, 2, 1, 2, 0, 2, 0, 1]
+# Which button the key sits on, per scene. A rotation over the file order was
+# the obvious thing and it was wrong: the file interleaves the two branches, so
+# a repeating cycle correlates the slot with the branch. It dealt 8/8/9 overall
+# and still gave one of the two PLAY orders a 8/2/8 split — on that path the
+# middle button was right twice in eighteen questions, which is a stronger tell
+# than the one the dealing exists to remove.
+#
+# So the map is explicit and balanced over both paths instead of over the file:
+# each path gets 6/6/6, no slot runs three deep, and no two parallel branch
+# scenes (reef1/cave1, corry2/night2, …) share a slot bar one, so replaying to
+# take the other road hands over nothing.
+SLOT = {
+    # shared trunk, 4/4/3
+    'drift': 0, 'bell': 1, 'provost': 2, 'hoy': 0, 'jar': 1, 'shed': 2,
+    'wreck1': 0, 'wreck2': 1, 'wreck3': 2, 'barrels': 0, 'last': 1,
+    # branch A, 2/2/3
+    'reef1': 2, 'reef2': 0, 'reef3': 1, 'reef4': 2,
+    'corry1': 0, 'corry2': 1, 'corry3': 2,
+    # branch B, 2/2/3
+    'cave1': 0, 'cave2': 2, 'cave3': 0, 'cave4': 1,
+    'night1': 2, 'night2': 1, 'night3': 2,
+}
 
 META = {
     'title': 'KRAKEN: THE BLACK TIDE',
-    'grammar': 'Present Perfect',
+    'grammar': 'Present Perfect / Present Perfect Continuous',
     'world': 'The west coast of Scotland',
     'style': ('Painted digital illustration, west coast of Scotland, late August, low grey '
               'Atlantic light with one warm amber lamp in frame, slate-blue sea, wet black '
               'granite, kelp green and rust red, soft brush edges, no hard outlines, '
               'eye-level three-quarter camera'),
     'level': 'B1',
-    'accent': '#2E7D65',
+    'accent': '#e8c04a',
     'protagonist': 'Isla Brodie',
     'cast': {'sergeant': 'Isla Brodie', 'scientist': 'Dr. Maren Hoy',
              'skipper': 'Angus Quinn', 'provost': 'Provost Baird'},
@@ -115,39 +137,21 @@ def deal(scene, slot):
     return opts
 
 
-def check_lengths(sid, opts):
-    """rpg.py's gate, run here so it fires before the plates exist."""
-    texts = [o['text'] for o in opts]
-    key = next(o['text'] for o in opts if o.get('correct'))
-    others = [len(t) for t in texts if t != key]
-    hi, lo = max(others), min(others)
-    out = []
-    if len(key) > hi * 1.10 and len(key) - hi >= 4:
-        out.append('%s: the key is the longest option, %d chars against %d — %r'
-                   % (sid, len(key), hi, key))
-    if lo > len(key) * 1.50 and lo - len(key) >= 10:
-        out.append('%s: the key is the shortest option, %d chars against %d — %r'
-                   % (sid, len(key), lo, key))
-    for t in texts:
-        if len(t) > 45:
-            out.append('%s: option is %d chars, the wall is 45 — %r' % (sid, len(t), t))
-    return out
+# The budget, length, blend, CAPS and family gates all live in check-items.py
+# and are run from here, so there is one implementation and one place to fix.
+#
+# rpg.py's own length gate stays where it is but cannot be relied on: it wants
+# the key 10% AND 4 characters longer than its longest distractor before it
+# fires, which no real three-option item reaches. Measured against this
+# lesson's first draft it passed all twenty-five while seven of them had a
+# strict length ordering a learner could read. check-items.py uses a flat
+# two-character margin in both directions instead.
+import importlib.util
 
-
-WORD_CAPS = {'title': 5, 'act': 6, 'story': 28, 'clue': 16, 'prompt': 13, 'explanation': 25}
-
-
-def check_words(sid, scene):
-    out = []
-    for field, cap in WORD_CAPS.items():
-        v = scene.get(field)
-        if v and len(v.split()) > cap:
-            out.append('%s: %s is %d words, the wall is %d — %r'
-                       % (sid, field, len(v.split()), cap, v))
-    for field, v in scene.items():
-        if isinstance(v, str) and ('’' in v or '“' in v or '”' in v):
-            out.append('%s: %s has a curly quote — %r' % (sid, field, v))
-    return out
+_spec = importlib.util.spec_from_file_location(
+    'check_items', os.path.join(HERE, 'check-items.py'))
+check_items = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(check_items)
 
 
 def main(argv):
@@ -164,14 +168,16 @@ def main(argv):
     if extra:
         sys.exit('script.json has scenes the graph does not: %s' % ', '.join(extra))
 
-    problems, scenes, tally = [], {}, {0: 0, 1: 0, 2: 0}
+    check_items.FAMILIES.update(
+        json.load(open(os.path.join(HERE, 'families.json'), encoding='utf-8')))
+    problems = check_items.check(src['scenes'])
+
+    scenes, tally = {}, {0: 0, 1: 0, 2: 0}
     for n, sid in enumerate(ORDER):
         s = by_id[sid]
-        slot = ROTATION[n % len(ROTATION)]
+        slot = SLOT[sid]
         opts = deal(s, slot)
         tally[slot] += 1
-        problems += check_lengths(sid, opts)
-        problems += check_words(sid, s)
         scene = {
             'image': IMG[sid],
             'hotspot': {'object': s['object']},
@@ -219,9 +225,15 @@ def main(argv):
     if n_rel != META['scoring']['tiles']:
         problems.append('%d marker barrels, scoring says %d' % (n_rel, META['scoring']['tiles']))
 
-    top = max(tally.values())
-    if top / len(ORDER) > 0.40:
-        problems.append('the key sits in one slot on %d of %d questions' % (top, len(ORDER)))
+    # measured over each PLAY order, not the file: the file interleaves the
+    # branches and a file-order tally hides a per-path skew completely.
+    for pname, order in check_items.PATHS.items():
+        t = {0: 0, 1: 0, 2: 0}
+        for sid in order:
+            t[SLOT[sid]] += 1
+        if max(t.values()) / len(order) > 0.40:
+            problems.append('%s: the key sits in one slot on %d of %d questions (%d/%d/%d)'
+                            % (pname, max(t.values()), len(order), t[0], t[1], t[2]))
 
     if problems:
         print('\n'.join(problems))

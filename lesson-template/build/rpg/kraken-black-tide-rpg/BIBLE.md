@@ -9,10 +9,10 @@ instead of a shark. Written to `docs/CHATGPT-RPG-BRIEF.md` and
 | | |
 |---|---|
 | Title | KRAKEN: THE BLACK TIDE |
-| Grammar | **Present Perfect** (have/has + past participle) — and nothing else |
+| Grammar | **Present Perfect and Present Perfect Continuous** — and nothing else |
 | Level | **B1** |
 | World | The west coast of Scotland — a sea loch, late August |
-| Accent | `#2E7D65` (Block Camp camp 7, Present Perfect) |
+| Accent | `#e8c04a` — the hub gold. Two camps (7 and 8) means neither, per rpg/README.md §1 |
 | Scoring | 5 points a question, 4 marker barrels, 3 chances, 18 questions per path, max 90, pass 75 |
 | Slug | `kraken-black-tide-rpg` |
 
@@ -50,10 +50,12 @@ on screen. A lost boat and a man pulled out of the water is as far as it goes.
    - `prompt` 7 words, **max 13**
    - each option 25 characters, **max 45**
    - `explanation` 12 words, **max 25**
-2. **Every question tests Present Perfect and nothing else.** The two wrong
-   options are real B1 learner errors: "have saw", "has went", "have been
-   here since three weeks", "I have seen him yesterday", "did you ever see",
-   "he have gone". Never nonsense, never a joke option.
+2. **Every question tests the Present Perfect or the Present Perfect
+   Continuous and nothing else** — the slot table below says which. The two
+   wrong options are real B1 learner errors: "have saw", "has went", "have
+   been here since three weeks", "he have gone", "I am living here since
+   2019", "I have been knowing her for years". Never nonsense, never a joke
+   option, and never an option a teacher would have to accept.
 3. **The clue carries the evidence, never the answer.** If the clue already
    uses the target form, the question is free — rewrite it.
 4. **Every scene stands alone.** The player reads one panel and the last one
@@ -66,9 +68,11 @@ on screen. A lost boat and a man pulled out of the water is as far as it goes.
    "Present Perfect for a past action with a result now: has + taken. Took
    needs a finished time."
 9. Answer options are English and are never translated or glossed.
-10. **Grammar tokens go in CAPS** — HAVE / HAS + PAST PARTICIPLE, SINCE, FOR,
-    YET, ALREADY, JUST, EVER, NEVER, BEEN, GONE. Addendum §A is binding and
-    has worked examples; read it before writing a single explanation.
+10. **Grammar tokens go in CAPS** — HAVE / HAS + PAST PARTICIPLE,
+    HAVE / HAS + BEEN + -ING, HOW LONG, SINCE, FOR, YET, ALREADY, JUST, EVER,
+    NEVER, BEEN, GONE, KNOWN. Tense names stay in title case: Present Perfect,
+    Present Perfect Continuous, Past Simple. Addendum §A is binding and has
+    worked examples; read it before writing a single explanation.
 
 ## The graph — fixed. Do not add, rename or drop a scene.
 
@@ -96,15 +100,53 @@ every player meets all eighteen points.
 | 7 | `reef1` / `cave1` | already |
 | 8 | `reef2` / `cave2` | yet |
 | 9 | `reef3` / `cave3` | since + a point in time |
-| 10 | `reef4` / `cave4` | for + a period of time |
+| 10 | `reef4` / `cave4` | **PPC form: HAVE / HAS + BEEN + -ING, FOR a period** |
 | 11 | `wreck1` | been vs gone |
-| 12 | `wreck2` | How long have you...? |
+| 12 | `wreck2` | **HOW LONG HAVE YOU BEEN + -ING?** |
 | 13 | `wreck3` | Present Perfect vs Past Simple — a finished time expression forces Past Simple |
-| 14 | `corry1` / `night1` | subject agreement: has vs have |
-| 15 | `corry2` / `night2` | superlative / the first time + Present Perfect ("the biggest thing I have ever seen") |
-| 16 | `corry3` / `night3` | How many...have you...? — a countable result now |
+| 14 | `corry1` / `night1` | **state verbs refuse the continuous: HAS KNOWN, not HAS BEEN KNOWING** |
+| 15 | `corry2` / `night2` | IT IS THE FIRST TIME + Present Perfect |
+| 16 | `corry3` / `night3` | **PPC for an activity that has run right up to now** |
 | 17 | `barrels` | an unfinished time period: this week, this summer, today |
-| 18 | `last` | Present Perfect vs Past Simple — a result now forces Present Perfect |
+| 18 | `last` | **the contrast: a countable RESULT takes the Present Perfect, not the Continuous** |
+
+## The second tense, added 2026-09-12
+
+The lesson shipped its first draft as Present Perfect alone and Innes sent it
+back: *"has no present perfect continuous"*. He is right, and the story was
+always asking for it — a three-week hunt, a scar somebody has been carrying for
+twenty-eight years, an engine that has been cutting out all night. Six slots
+converted (10, 12, 14, 16, 18 above); twelve stay Present Perfect. The plates
+did not change, so `ART-BRIEF.md` is untouched: every converted scene keeps its
+picture, its glowing object and its beat.
+
+The PPC teaching is **`lesson-template/build/build_c8.py`'s, verbatim** — camp
+8 is the shipped treatment and this lesson must not invent a second one:
+
+- form: subject + HAVE / HAS + BEEN + -ING;
+- *"I am living here since 2019"* is wrong — English measures duration up to
+  now with a perfect tense, never with the present continuous;
+- *"I have been knowing her for years"* is wrong — state verbs refuse the
+  continuous, so the Present Perfect takes it;
+- *"I have been reading three books"* is wrong — a number is a result, and a
+  result takes the Present Perfect. **That is slot 18, and it is the climax of
+  the lesson:** four barrels is a number.
+
+Do not use LIVE or WORK as if they refused the continuous. They take either,
+and they are the pair every learner has met; the stative verb at slot 14 is
+KNOW.
+
+**Slot 18 was written as the mirror of slot 13 and could not stay that way.**
+The plan was a second Present Perfect vs Past Simple item pointing the other
+way — a present result forcing the perfect. Every Past Simple option that fits
+such a sentence turns out to be defensible English: "The sea gave them back"
+and "We put four barrels on it" are both perfectly good Past Simple reports,
+so the distractor would have been markable as correct, which is the defect
+class this lesson has spent two audits removing. Slot 13 keeps that
+contrast, where a finished time makes it decidable. Slot 18 now carries the
+Present Perfect against the Present Perfect Continuous instead — a count of
+four barrels is a result, and a result refuses the continuous — which is a
+sharper close than the form test it briefly held.
 
 ## The four marker barrels (the tiles)
 

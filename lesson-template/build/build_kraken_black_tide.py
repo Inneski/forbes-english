@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Kraken: The Black Tide — Present Perfect West Highland RPG (B1).
+"""Kraken: The Black Tide — Present Perfect & Continuous West Highland RPG (B1).
 
     py lesson-template/build/build_kraken_black_tide.py
 
@@ -17,10 +17,19 @@ contract, the character sheet and the thirty-two image prompts, because the
 pictures were commissioned after the words for once, which is why every
 plate's object sits right of frame and every panel in this game sits left.
 
-Grammar: Present Perfect, so the accent is Block Camp camp 7's #2E7D65 — the
-only colour in the page (rpg/README.md §1). Eighteen questions on either path,
-two forks, four marker barrels, three chances: max 90, pass 75, which is the
-score you still reach after spending all three chances.
+Grammar: **Present Perfect and Present Perfect Continuous.** It began as a
+Present Perfect lesson and Innes sent it back for the second tense — a story
+about a three-week hunt is what the continuous exists for. Six of the eighteen
+slots converted; BIBLE.md's slot table says which and why.
+
+That spans two camps, 7 (#2E7D65) and 8 (#46B0AB), so it takes neither:
+rpg/README.md §1 puts a game with no single camp on the hub's gold #e8c04a,
+which is what long-way-home-rpg does for narrative tenses. The gold is also
+the colour of the four marker barrels the whole scoring system is about.
+
+Eighteen questions on either path, two forks, four marker barrels, three
+chances: max 90, pass 75, which is the score you still reach after spending
+all three chances.
 
 The answer key was dealt across the three slots by assemble-script.py in the
 data directory rather than left where the writing put it — the script was
@@ -204,13 +213,14 @@ def build():
     return {
         'file': 'block-camp/%s.html' % SLUG,
         'img_dir': 'block-camp/%s' % SLUG,
-        'title': 'Kraken: The Black Tide — Present Perfect West Highland RPG (B1)',
+        'title': 'Kraken: The Black Tide — Present Perfect & Continuous West Highland RPG (B1)',
         'description': 'An interactive B1 English lesson from Forbes English: '
-                       'Kraken: The Black Tide — Present Perfect West Highland RPG (B1).',
+                       'Kraken: The Black Tide — Present Perfect & Continuous '
+                       'West Highland RPG (B1).',
         'langs': LANGS,
-        # camp 7, Present Perfect, on the Block Camp route map
-        'accent': '#2E7D65',
-        'accent_ink': '#f2f7f3', 'deep': '#08161a', 'panel': 'rgba(6,18,22,.88)',
+        # two camps, so neither: the hub gold, per rpg/README.md §1
+        'accent': '#e8c04a',
+        'accent_ink': '#0b1a12', 'deep': '#0d1618', 'panel': 'rgba(10,20,22,.88)',
         'labels': LABELS,
         'start': 'cover', 'scenes': scenes,
         'endings': {'master': 'end_master', 'complete': 'end_complete',
