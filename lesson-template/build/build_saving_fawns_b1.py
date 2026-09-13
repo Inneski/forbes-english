@@ -166,7 +166,7 @@ def build():
           '= not necessary. <strong>Should</strong> = friendly advice, not a rule: '
           '&ldquo;You <em>must</em> wear gloves, but you <em>don&rsquo;t have to</em> '
           'carry the fawn far, and you <em>should</em> stay calm.&rdquo;', None, '')],
-        folder=F, bg='mountain-dusk.jpg')
+        folder=F, bg='drone-mist.jpg')
 
     slides = (
         D.cover(logo, 'Saving Fawns from the <em>Mower</em>',
@@ -199,7 +199,7 @@ def build():
         + grammar_intro
         + "".join(D.mc(i + 1, len(GRAMMAR), q, 'gEyebrow', 'Grammar focus',
                        'gTitle', 'Choose the correct form',
-                       folder=F, bg='mountain-dusk.jpg')
+                       folder=F, bg='drone-mist.jpg')
                   for i, q in enumerate(GRAMMAR))
 
         + D.results('resNext', 'You can read the article and use the grammar &rarr;',

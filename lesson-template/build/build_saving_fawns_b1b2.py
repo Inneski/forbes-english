@@ -158,7 +158,7 @@ def build():
           'advice, not a rule: &ldquo;You <em>must</em> wear gloves, farmers '
           '<em>don&rsquo;t have to</em> report mowing dates by law, and you '
           '<em>should</em> approach a fawn calmly.&rdquo;', None, '')],
-        folder=F, bg='hero.jpg')
+        folder=F, bg='harvester-signal.jpg')
 
     slides = (
         D.cover(logo, 'Saving Fawns from the <em>Mower</em>',
@@ -179,7 +179,7 @@ def build():
 
         + "".join(D.mc(i + 1, len(VOCAB), q, 'vEyebrow', 'Vocabulary in context',
                        'vTitle', 'Choose the word that fits',
-                       folder=F, bg='hero.jpg')
+                       folder=F, bg='drone-pastel-sky.jpg')
                   for i, q in enumerate(VOCAB))
 
         + D.sort_slide(BINS, SORT_ITEMS,
@@ -187,16 +187,16 @@ def build():
                        'sortTitle', 'Sort each word into its category',
                        'sortHint', 'Match each word to the category it belongs to.',
                        'sortWhy',
-                       folder=F, bg='harvester-flag.jpg', bin_keys=CAT_KEYS)
+                       folder=F, bg='harvester-daylight.jpg', bin_keys=CAT_KEYS)
 
         + grammar_intro
         + "".join(D.mc(i + 1, len(GRAMMAR), q, 'gEyebrow', 'Grammar focus',
                        'gTitle', 'Choose the correct form',
-                       folder=F, bg='drone-thermal.jpg')
+                       folder=F, bg='harvester-signal.jpg')
                   for i, q in enumerate(GRAMMAR))
 
         + D.results('resNext', 'You can read the article and use the grammar &rarr;',
-                    folder=F, bg='fawn-release.jpg')
+                    folder=F, bg='fawn-meadow.jpg')
 
         + D.activate('Talk and write about fawn rescue', 'Use at least four:', CHIPS,
                      'Discussion &middot; in pairs or small groups',
@@ -214,7 +214,7 @@ def build():
                      'fawn rescue network and exactly what you need from them before '
                      'they mow.',
                      'Every spring, our network asks farmers to&hellip;',
-                     folder=F, bg='fawn-release.jpg')
+                     folder=F, bg='fawn-meadow.jpg')
     )
 
     import i18n_saving_fawns_b1b2 as I
