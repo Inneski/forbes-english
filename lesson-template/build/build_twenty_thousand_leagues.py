@@ -86,7 +86,7 @@ HOT = {
     't4':        ([60, 64, 24, 34], 'left',   'center', 38),   # the black plate with the etched chart; a gloss panel reaches x=46
     'log':       ([66, 76, 20, 16], 'left',   'center'),       # the journal under Aronnax's hand
     'engine':    ([22, 35, 34, 34], 'right',  'center'),       # the pressure drive
-    'ballast':   ([57, 32, 12, 40], 'left',   'center'),       # the valve lever Lia is hauling on
+    'ballast':   ([10, 63, 16, 20], 'right',  'center', 40),   # the ballast valve wheel, bottom left; the dark hull is the empty side
     'repairdec': ([57, 47, 30, 40], 'left',   'center', 38),   # the airlock wheel, mid-frame
     'i1':        ([33, 54, 26, 28], 'right',  'center'),       # the regulator in Lia's hands, sparking
     'i2':        ([12, 28, 10, 14], 'right',  'center'),       # the coolant tap
@@ -94,7 +94,7 @@ HOT = {
     'o1':        ([12, 33, 14, 16], 'right',  'center'),       # Nadia's helmet lamp
     'o2':        ([38, 66, 12, 14], 'right',  'center'),       # the repair tool's light on the fracture
     'o3':        ([75, 12, 16, 18], 'left',   'center'),       # the eye above Nadia
-    'squidq':    ([92, 12, 14, 16], 'left',   'center'),       # the squid's eye
+    'squidq':    ([87, 20, 12, 16], 'left',   'center'),       # the squid's eye, clear of the HUD corner
     'tentacle':  ([76, 68, 26, 30], 'left',   'center'),       # the torn rail
     'finaldec':  ([88, 82, 22, 26], 'left',   'center'),       # the helm
     'ft1':       ([20, 50, 38, 55], 'right',  'center'),       # the pearl trail
