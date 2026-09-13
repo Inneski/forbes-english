@@ -164,6 +164,9 @@ ADVENTURES = [
  ('block-camp/wonderland-stolen-now-rpg.html','block-camp/wonderland-stolen-now-rpg/00_cover.webp','Wonderland: The Stolen Now',
   'The last afternoon is looping and the palace clock is counting down. Two branching acts, a pink-or-blue cake trial that splits what is happening now from what always happens, and three endings.',
   ('Present Continuous',),'A1&ndash;A2','pro','new'),
+ ('block-camp/nautilus-black-archive-rpg.html','block-camp/nautilus-black-archive-rpg/01_intro.webp','Nautilus: The Black Archive',
+  'A signal under the Atlantic, a city built from forgotten blocks, and something vast waking beneath it. Two branching descents &mdash; the crystal trench or the ruined temple, the engine room or the open water &mdash; and every question asks the same thing: a finished result, or an activity still running.',
+  ('Present Perfect','Present Perfect Continuous'),'B1','pro','new'),
 ]
 
 def adventure_cards():
@@ -180,7 +183,12 @@ def adventure_cards():
 def count_adv():
     return sum(present(h) for h,*_ in ADVENTURES)
 
-WORDS = {3:'three',4:'four',5:'five',8:'eight',9:'nine',16:'sixteen',17:'seventeen',18:'eighteen',24:'twenty-four',25:'twenty-five',26:'twenty-six',27:'twenty-seven'}
+WORDS = {3:'three',4:'four',5:'five',6:'six',7:'seven',8:'eight',9:'nine',10:'ten',
+         11:'eleven',12:'twelve',16:'sixteen',17:'seventeen',18:'eighteen',
+         24:'twenty-four',25:'twenty-five',26:'twenty-six',27:'twenty-seven',28:'twenty-eight'}
+# every count here is spelled out in the lede, so a gap in this table shows up
+# as "the 10 adventures" beside "twenty-six units". The tenth adventure found
+# the first gap; the neighbours are filled in so the next one does not.
 
 def more_cards():
     return '\n'.join(card(h,i,0,'',t,l,'pro') for t,h,i,l in MORE)

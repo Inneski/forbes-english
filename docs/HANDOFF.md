@@ -11,6 +11,77 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-13 — Nautilus: The Black Archive, and a fourth kind of export
+
+**Built and checked, not yet committed or live.** `block-camp/nautilus-black-archive-rpg.html`
+— Present Perfect Simple + Continuous, B1, 43 scenes, 27 questions, all nine
+glosses. Builder: `lesson-template/build/build_nautilus_black_archive.py`.
+
+**The export was a fourth kind and it now has an extractor.**
+`lesson-template/build/rpg/extract_static.py` (written before this session, and
+still untracked alongside the artwork it produced) handles an export that
+carries *no game object at all* — no `window.*_GAME_DATA`, no `EMBEDDED_SCENES`,
+no patch stack. Every learner-facing string is already rendered markup, so it
+parses rather than executes. README §2 lists three kinds; this is the fourth.
+Add it there when someone next edits that file.
+
+**Two skins of one adventure arrived together, and only one ships.** Innes sent
+`Nautilus_Minecraft_Edition*.html` and `Nautilus_20000_Leagues_RPG_Revamped.html`.
+They are the same game: same 41 scene ids, all 27 questions with byte-identical
+prompts *and* byte-identical options; only the art and a few flavour words
+differ. Publishing both would put two indistinguishable lessons in the
+catalogue. Innes chose the voxel one — it matches the rest of Block Camp.
+**If a Nautilus export arrives again, diff it against `data.json` before
+treating it as new.**
+
+**Two defects in the source data, fixed in the builder, worth checking for in
+the next export from this generator:**
+
+- **The answer key was in slot 1 or 2 on all 27 questions** — fifteen at index
+  0, twelve at index 1, never lower. `_check_answer_key`'s gate is 80% in one
+  slot, so this **passed the validator at 56%** and would have shipped. The
+  builder rotates each question's options by its ordinal. A percentage gate
+  does not catch a key that avoids only the *bottom* half of the list.
+- **The correct option was the longest one on four questions, and some
+  distractors were not English** (`is call`, `is translate`, `translated
+  since`). Both have one fix: replace the junk with a grammatical
+  past-perfect-continuous form, which is wrong for a present-anchored sentence,
+  plausible to anyone who has not learned the contrast, and the same length as
+  the key. On a present-perfect-continuous item the key is *always* longer —
+  `has been searching` against `has searched` — so expect this gate to bite on
+  any lesson teaching this pair.
+
+**Two things the engine has no home for, dropped deliberately:** the export's
+**hull and oxygen** bars (this engine scores on points, tiles and chances, so
+the five consequence scenes are story beats and the chance counter is the
+penalty), and its **`map` scene**, a teacher's expedition index built for its
+own hash routing.
+
+**Checks run:** `assemble()` validation, `check-rpg-panels.js` → *no panel hides
+its object; nothing overflows* (the briefing is flagged `tight`, +89px, under
+the limit), and Playwright screenshots of all 43 scenes closed plus open,
+answered, German and a 390px phone. Four hotspots were wrong in the first pass
+and invisible in the table: `ft2` sat on open water, `leak` and `i2` on a
+crewman rather than the valve and the tap, `tarchive` on the diver rather than
+the tablet. **Screenshot every scene closed — the table cannot show you this.**
+
+**Innes: the catalogue row still has to go into Supabase, after the page is
+live on `origin/main`.** `seo.py` reads Supabase and rewrites
+`tools/lessons.json` from it, so a row added to that file locally is wiped by
+the next run — which is what happened here. The page currently has **no SEO
+block, and is not in the sitemap, `llms.txt` or `lesson-meta.json`**; it will
+get them on the first `seo.py` run after this row exists:
+
+```sql
+insert into lessons (file, title, level, access, deck, video, sort_order) values
+ ('block-camp/nautilus-black-archive-rpg.html',
+  'Nautilus: The Black Archive — Present Perfect Voxel RPG (B1)',
+  'B1', 'pro', false, false, 0);
+```
+
+`library.html` already carried the thumbnail line (committed in `95ac017`), and
+the hub card is in `ADVENTURES` and built.
+
 ## 2026-09-13 — The Listening recordings are synthetic, and Section 1 is live
 
 Innes chose synthetic voices for the IELTS Listening audio. The recordings are
