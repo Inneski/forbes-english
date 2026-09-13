@@ -11,6 +11,59 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-13 — IELTS is finished: the four "Soon" cards are lessons
+
+Innes dropped the 24 pictures from the shopping list (plus alternates: 78
+Midjourney frames, four-ups of 24 prompts, some prompts re-rolled, two
+subjects swapped — mailboxes for coat hooks, a departure board for the
+railway platform) and said *"new images in incoming to finish IELTS — be
+content aware of text positioning."*
+
+**Shipped, all C1, all EN/DE/ES, all `check-lesson.js` clean:**
+
+| page | builder | folder | row |
+|---|---|---|---|
+| `forbes-english-ielts-reading-headings.html` — Matching Headings | `build_ieltshead.py` (+ `ieltshead_data.py`, `i18n_ieltshead.py`) | `ielts-reading-headings/` | 327 |
+| `forbes-english-ielts-reading-completion.html` — Summary and Sentence Completion | `build_ieltscomp.py` (+ data, i18n) | `ielts-reading-completion/` | 328 |
+| `forbes-english-ielts-vocabulary-environment.html` — Environment and Energy | `build_ieltsenv.py` (+ data, i18n) | `ielts-vocabulary-environment/` | 329 |
+| `forbes-english-ielts-vocabulary-work.html` — Work, Automation and Cities | `build_ieltswork.py` (+ data, i18n) | `ielts-vocabulary-work/` | 330 |
+
+Each is the shape of its shipped sibling (`build_ieltsread.py` for the two
+Reading decks, `build_ieltsvocab.py` for the two banks): cover, three teach
+slides in the six-item card form, twelve MC items with a `why` under each,
+a six-item sort, results, activation — 19 slides, 18 scored points. Keys
+cycle `i % 4`; `assert_no_key_is_longest` and `check-teach-leak.js` pass on
+all four. The passages, headings, gapped sentences and pairings under test
+stay English in the glosses, as the siblings' i18n docstrings say. Four
+builder subagents wrote them in parallel from one brief each; the decisions
+they flagged are in the builders' docstrings (the completion deck keeps the
+word limit in `ctx` because the teach card must print it; two of the banks
+translate the sort explanation through a `sortWhy` key rather than the
+sibling's bare English sentence).
+
+**Content-aware placement, what it meant in practice.** The frames were
+chosen so the subject sits low or to the right, where the plates are not
+(README-style contact sheets of all 78, then a seven-slide screenshot pass
+of each deck). Three heroes still put their subject under the cover lockup
+— tags, turbine and crane all sat left, and the lockup is left — so those
+three `hero.jpg` files are the frame mirrored. None carries text or a
+handed object, so nothing reads wrong; palettes are unchanged by a mirror.
+If a hero is ever re-cut from `incoming/`, mirror it again or the lockup
+lands on the subject.
+
+**Wired:** `ielts-reading.html` and `ielts-vocabulary.html` have no
+`step-soon` left; `ielts.html` says three lessons on each route; four
+`LESSON_IMAGES` lines; four Supabase rows (ids above) mirrored to
+`tools/lessons.json`; `build_hubs.py` and `seo.py` run last; the four
+indexes gained lines only. `check-library.js --vs-origin` passes.
+
+**What is still open on IELTS** is the same two items as the finishing plan
+below: eleven hand-written decks without Spanish (a decision, not a build),
+and five recordings nobody has listened to. Everything a session could do
+alone is done.
+
+---
+
 ## 2026-09-13 — The Listening player sits on a plate now
 
 Innes, on the live Section 2, Section 3 and drills decks: the player's
