@@ -56,11 +56,16 @@ CHIPS = ['fawn', 'doe', 'drone', 'thermal imaging camera', 'combine harvester',
 # spliced in after assemble() rather than touching the shared template.
 CSS = """
 <style>
-/* Innes, 2026-09-13: "make forbes green" — the Forbes glyph (.fe-logo-mark)
-   defaults to --accent, this lesson's coral. Recoloured to --contrast, the
-   palette's own counterpoint token (deck.py's palette table: "a highlight
-   that must not blend") rather than a new hardcoded hex. */
-:root { --logo-mark: var(--contrast); }
+/* Innes, 2026-09-13: "make forbes green" -> "a more natural green" ->
+   "Forbes ENGLISH ... in both". Flat --contrast read as neon; the
+   template's own recolour comment models a muted variant by mixing the
+   counterpoint token down with --text-dim, so that's the one used, not a
+   hand-picked hex. --logo-word set equal to --logo-mark so "ENGLISH"
+   takes the same green as the glyph, not just the mark. */
+:root {
+  --logo-mark: color-mix(in srgb, var(--contrast) 45%, var(--text-dim));
+  --logo-word: var(--logo-mark);
+}
 .slide-body { align-items: center; text-align: center; }
 .slide-body > .prose, .q-stem, .q-ctx, .order-hint {
   margin-left: auto; margin-right: auto;
