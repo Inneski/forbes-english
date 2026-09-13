@@ -11,6 +11,48 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-13 — Animal Welfare converted; the §5c art gap is closed
+
+Both `saving-fawns-mower-b1.html` and `-b1-b2.html` are now decks —
+EN/DE/ES, `check-lesson.js` and `check-library.js --vs-origin` clean on
+both. This closes the entry logged earlier the same day: the family was
+sitting on a two-image set (§5c needs one background per section plus
+activation), so three more were commissioned in the same flat-vector
+dusk/dawn style before either lesson was built — `drone-thermal.jpg`,
+`harvester-flag.jpg`, `fawn-release.jpg` in `Animal Welfare/`. **Skiing,
+Tennis and Water Polo are still open** — same two-image shortfall, not
+yet re-audited section-by-section or commissioned.
+
+**Two lesson-specific style choices, on Innes's request, not house style
+changes.** Both live as a scoped `<style>` block spliced into the builder's
+output after `assemble()` (see `build_alcatraz.py` for the precedent),
+not in the shared template:
+
+1. **Centred slide-body text** — house style §7 left-aligns by default;
+   this family's art is symmetric nature scenes rather than side-lit
+   portraits, and left-aligned text read like an afterthought.
+2. **The Forbes glyph and wordmark recoloured green** — first tried flat
+   `--logo-mark: var(--contrast)`, called "neon" and reduced to
+   `color-mix(in srgb, var(--contrast) 45%, var(--text-dim))`, with
+   `--logo-word` set equal so "ENGLISH" takes the same tone as the mark,
+   not just the glyph. Both values come from the palette's own tokens —
+   nothing hand-picked.
+
+`saving-fawns-mower-b1.html` also went `access: free` on request (was
+`pro`); `-b1-b2.html` stayed `pro` — the ask was for "this one," not the
+family.
+
+**A defect pattern worth checking before trusting any not-yet-rebuilt
+lesson's MC data wholesale:** both pages had all 28 keys authored at
+index 0, and on top of that several correct options on the B1 sibling
+were written visibly longer than their distractors — shuffling position
+alone does not fix the second one. `deck.assert_no_key_is_longest` and
+`check-lesson.js`'s ANSWERS gate both catch it now, but a source page
+being copied for content (not rebuilt through the pipeline) needs the
+same look by eye.
+
+---
+
 ## 2026-09-13 — The Listening route is finished. Every IELTS card is a link.
 
 All five Listening lessons are live, so `ielts-listening.html` has no "Soon"
