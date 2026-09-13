@@ -11,6 +11,84 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-13 — The Listening recordings are synthetic, and Section 1 is live
+
+Innes chose synthetic voices for the IELTS Listening audio. The recordings are
+now **generated like every other asset here**: the script lives in a Python
+module, `lesson-template/build/tts.py` turns it into an mp3, and re-running the
+builder reproduces it exactly. **Never hand-edit an mp3 in a lesson folder.**
+
+```
+py lesson-template/build/build_ieltslisten_s1.py --audio   # script -> mp3 -> deck
+py lesson-template/build/build_ieltslisten_s1.py           # deck only (mp3 must exist)
+```
+
+**Why edge-tts and not the voices on the machine.** Windows SAPI has three:
+Hazel (en-GB), Zira (en-US), Hedda (de-DE). Two usable English voices, both
+female, both old desktop quality — it cannot cast a two-speaker Section 1 at
+all, never mind Section 3's three. `pip install edge-tts` gives free neural
+voices in British, Australian, New Zealand, Irish, Canadian and American
+English, both genders, no API key. `tts.VOICES` is the cast list.
+
+**The joining is byte concatenation and it is checked.** edge-tts writes CBR
+MPEG-1 Layer III, so turns concatenate as raw bytes — verified, not assumed:
+217 frames + 244 frames came back as 461, 5.21s + 5.86s as 11.06s. `render()`
+asserts the joined file's length equals the sum of its parts, because a bad
+join produces a recording that stops early and a player that reports the wrong
+duration from the same broken stream. There is no ffmpeg here and none is
+needed.
+
+### Four things the first audio deck exposed
+
+Nothing had ever authored a `data-type="audio"` slide, so the whole path was
+untested. All four are fixed in the shared files, and every Listening deck
+after this one gets them free:
+
+1. **`deck.py` had no `audio()` builder.** Added. It emits the `.audio` box
+   and, critically, the Continue button the engine disables until the
+   recording ends — without that button there is nothing to lock and a
+   learner walks into the questions having heard none of it.
+2. **The five player strings were not in `chrome_i18n.py`**, only as English
+   defaults inside the template's own UI_I18N — which `assemble()` replaces
+   wholesale. Lifting them would have raised a KeyError. Added in all ten
+   languages.
+3. **`audioMissing` was defined nowhere at all** once a deck was built: two
+   call sites, no key, so a recording that fails to load prints `undefined`
+   to the learner. Added in ten languages.
+4. **The player did not follow the language switcher.** It is built once,
+   imperatively, so every string in it froze in the load language: the slide
+   title turned Spanish and the player under it stayed English. Each element
+   now carries the `data-i18n` key it is *currently* showing, re-set whenever
+   the text changes, and `applyLang()` gained a `[data-i18n-aria]` pass for
+   accessible names it never had. Verified in en/de/es, before and after the
+   recording finishes.
+
+The whole audio lifecycle was measured in the page rather than trusted:
+Continue disabled before, play button locks, state goes to "Playing", and on
+`ended` Continue enables, the bar reads 100% and the replay control appears
+with the right translated text. To test the end state without sitting through
+3:19, build a one-line probe mp3 and point a scratch copy of the page at it.
+
+### Where the rest of the route stands
+
+**Art for all five Listening lessons is prepped and committed** —
+`ielts-listen-s1` … `-s4`, `-drills`, six pictures each, palettes derived and
+every contrast row PASS. Variants were chosen by scoring the **upper band** of
+each frame for busyness (that is where slide text sits) and then vetoing by
+eye: the score cannot see content, and its top pick for two sections contained
+a pigeon and a human hand. One section was never generated — `drills/bg06` —
+and uses a spare desk-and-pen from the Section 1 set.
+
+**So Sections 2, 3, 4 and the drills need only their scripts and decks.** The
+pattern is set: write `ieltslisten_sN_data.py` with TURNS and the items, copy
+the S1 builder, run with `--audio`.
+
+Section 3 is the one to think about: three speakers, so cast three distinct
+voices from `tts.VOICES` and keep the accents apart, or the learner cannot
+tell who is talking — which is exactly what that section tests.
+
+---
+
 ## 2026-09-13 — New minimum: one background image per section, not two total
 
 Innes pushed back on a "the Animal Welfare pair only has 2 images, that's

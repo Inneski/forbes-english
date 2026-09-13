@@ -453,6 +453,38 @@ def lock(code, stem, eyebrow_key, eyebrow, title_key, title, why,
        eyebrow_key, eyebrow, title_key, title, stem, code, esc(why))
 
 
+def audio(eyebrow_key, eyebrow, title_key, title, note_key, note,
+          src, label, folder='', bg=None):
+    """The Listening play-once slide.
+
+    The engine (lesson-template.html, "Listening audio") builds the player
+    itself from `<div class="audio" data-src=… data-label=…>`; all this has to
+    emit is the box and a Continue button for the engine to disable until the
+    recording has finished. Without that button there is nothing to lock, and
+    a learner walks into the questions having heard none of it.
+
+    `label` is deliberately NOT a translated key. It carries the section name
+    and the running time — "Section 1 · 3:19" — and the running time is a fact
+    about the file rather than a piece of chrome.
+    """
+    return '''
+    <section class="slide" data-type="audio"%s>
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="%s">%s</div>
+        <h2 class="slide-title" data-i18n="%s">%s</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="prose" data-i18n="%s">%s</p>
+        <div class="audio" data-src="%s/%s" data-label="%s"></div>
+        <div style="margin-top:22px">
+          <button class="btn" data-action="next" data-i18n="btnNext">Next →</button>
+        </div>
+      </div>
+    </section>
+''' % (_bg(folder, bg), eyebrow_key, eyebrow, title_key, title,
+       note_key, note, folder, src, esc(label))
+
+
 def results(next_key='resNext', next_text='Now use it →', folder='', bg=None):
     return '''
     <section class="slide" data-type="results"%s>
