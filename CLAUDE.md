@@ -252,6 +252,64 @@ its page and its download are all fine. But `comingSoon()` is
 "Coming soon" div and sorts it behind every other lesson. It reports as
 "I can't see it", not as an error.
 
+## Several sessions share this tree
+
+Innes runs several Claude sessions at once, all in this one clone. There is
+**one working tree, one index and one `main`** between them. Whatever
+`git status` shows that you did not touch is another session's half-finished
+work. It is not clutter, not a bug, and not yours to tidy.
+
+**The harness enforces the rules below.** `.claude/settings.json` runs
+`.claude/hooks/git-guard.js` before every Bash and PowerShell call and refuses
+the commands that hurt a peer. There is no override; the refusal is telling
+you the command is wrong here, not that it needs a password. If Innes wants
+something the guard refuses (dropping a stash, resetting the tree), he runs it
+in his own terminal, where the hook does not apply.
+
+**What is blocked, and what to do instead**
+
+| Blocked | Because | Instead |
+|---|---|---|
+| `git stash` (except `list`, `show`) | takes every peer's edits with yours; a pop or drop by anyone loses them | commit your own files by name, or use a worktree |
+| `git reset --hard`, `git clean`, `git checkout .`, `git restore .` | discards everyone's edits | `git checkout -- <file>` on a file you changed, after `git diff <file>` |
+| `git add -A`, `-u`, `.`, `<directory>` | stages a peer's files | `git add <file> <file>…` by name |
+| bare `git commit`, `git commit -a`, `--amend` | commits the whole shared index, or rewrites a peer's commit | `git commit -o <file>… -m "…"` — `-o` commits exactly those paths |
+| `git switch`, `git checkout <branch>`, `-b` | moves everyone's tree off `main` | a worktree: `git worktree add ../FORBES-<task> -b <task>` |
+| `--autostash`, `worktree remove --force` | same hazards by another route | commit first; check the worktree is clean first |
+
+`git commit -o` takes a directory too, so a new artwork folder is one path.
+New files still need `git add <file>` before `-o` will take them.
+
+**Other rules the guard cannot enforce**
+
+- **Commit small and soon, push straight after.** Uncommitted work is exposed
+  to every peer's mistakes for as long as it sits there.
+- **One lesson, one session.** Two sessions on the same builder overwrite each
+  other's generated HTML and neither notices. If the builder you need is
+  already modified in `git status`, stop and say so.
+- **The regenerated indexes** — `library.html`, `sitemap.xml`,
+  `lesson-meta.json`, `llms.txt`, the hub pages — are rewritten whole by
+  `seo.py` and `build_hubs.py`. Commit them in the same `-o` list as the
+  lesson that changed them. A peer re-running the tools reproduces the same
+  result, so a ride-along is harmless; an uncommitted one is not.
+- **`docs/HANDOFF.md` is shared too.** Write your entry and commit it at
+  once. If `git diff docs/HANDOFF.md` shows an entry that is not yours, it
+  rides along with your commit; that is fine, the content survives.
+- **A worktree is the escape hatch, not the default.** Inside a linked
+  worktree the guard stands down and git is unrestricted, because that tree
+  is yours alone. Use one for a branch, a risky refactor, or anything that
+  needs a clean tree. Merge back to `main` and `git worktree remove` it in the
+  same session. A worktree left behind becomes a second copy of a lesson that
+  nobody remembers building: that is exactly how `last-bounty-rpg` came to
+  exist twice (archived as the tag `archive/last-bounty-rpg-branch`).
+- **Never stash a peer's work "to keep it safe".** The 2026-09-10 stash of
+  another session's Fistful of Lies and Frankenstein files sat unnoticed for
+  three days while both sessions committed their own copies; it is archived
+  as `archive/stash-2026-09-10-fistful-frankenstein`. Leave the files where
+  they are and work around them.
+
+Self-test the guard after editing it: `node .claude/hooks/git-guard.js --test`.
+
 ## Standing constraints
 
 - **Every deck ships Spanish and German as a minimum.** Innes said so on

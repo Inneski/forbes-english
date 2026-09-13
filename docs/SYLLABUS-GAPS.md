@@ -98,7 +98,7 @@ normally introduced.
 | Job interviews | Tech Interview Masterclass (C1) | Nothing at B1/B2, where most candidates are |
 | Travel / hotel / airport | Conservation Travel (C1) | Nothing at A2 |
 | Complaints | Escalating a Complaint (C1) | Nothing at B1 |
-| Listening | IELTS Listening Part 9 | The four audio lessons are still "in build" |
+| Listening | IELTS Listening Part 9 + Sections 1–4 + drills | Covered since 2026-09-13; the whole Listening route is live |
 | Past perfect continuous, future continuous, future perfect continuous | Sherpa Tensing only | No Block Camp and no time-signals drill for these three |
 
 ## What this means for the queue

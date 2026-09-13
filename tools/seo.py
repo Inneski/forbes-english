@@ -112,6 +112,17 @@ PAGES = {
                    'forty questions, and every recording played once. How the '
                    'test is built, and what to do in the seconds before each '
                    'section starts.', 0.9, '/ielts-listening/hero.jpg'),
+    'ielts-reading.html': ('IELTS Reading',
+                   'The IELTS Reading route — twelve-plus question types, '
+                   'the same on both modules. True/False/Not Given first, '
+                   'because that is where the most marks are lost, and it is '
+                   'technique, not vocabulary, that recovers them.', 0.9,
+                   '/ielts-reading/hero.jpg'),
+    'ielts-vocabulary.html': ('IELTS Vocabulary',
+                   'The IELTS vocabulary route — topic banks that feed '
+                   'Speaking and Task 2 at once, since Lexical Resource is a '
+                   'quarter of the marks in both. Words you have to use, not '
+                   'words you have to read.', 0.9, '/ielts-vocabulary/hero.jpg'),
     'level-checker.html': ('Level Checker',
                            'A free adaptive placement test for English '
                            'tenses. Six questions a level, A1 to C1, and it '

@@ -11,6 +11,141 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-13 — Several sessions, one tree: a guard, an orphan stash, a second Last Bounty, and an IELTS finishing plan
+
+Innes: "I have several chats working in the same tree — I am just starting
+to understand how that messes things up. Can you fix it?" This entry is the
+audit, the fix, and the three commands only he can run.
+
+### What the shared tree had done
+
+- **An orphan stash, three days old.** `stash@{0}` "On main: unrelated
+  in-progress work (fistful-of-lies-rpg, rpg.py) — not mine, preserving for
+  other session", taken 2026-09-10 14:38 by a session that wanted a clean
+  tree. It held another session's whole Fistful of Lies build (untracked)
+  plus mid-edit Frankenstein data, nine translation files and a four-line
+  `rpg.py` change. Both owning sessions carried on and committed their own
+  copies (`0c1be85` Fistful; `224de1b`…`7297b27` Frankenstein, twelve
+  commits), so every line in the stash is superseded: 32 of 35 untracked
+  files are byte-identical on `main`, the other three are earlier drafts of
+  files `main` has newer, and the `rpg.py` hunk (`routeStory`) is on `main`
+  in its later form. Nobody popped it because nobody knew whose it was.
+- **A second worktree with a second Last Bounty.** `../FORBES-last-bounty`
+  on branch `last-bounty-rpg`, two commits at 00:13 and 00:17 on 2026-09-10,
+  shipping `block-camp/the-last-bounty-rpg.html`. Sixteen hours later a
+  different session built the same export again as
+  `block-camp/last-bounty-rpg.html` (`5d44275`) and that is the one that
+  went live and was refined on 09-12. The 23 pictures are pixel-identical
+  between the two (mean difference 0.0 on a 256px downscale); only the
+  folder name and the webp quality differ. The branch's engine fix
+  (`wrongPoints`, a `G.chances` guard in `advance()`) took a different route
+  from `main`'s (`alive = !G.chances || state.chances > 0` in `resolve()`,
+  plus `repair: true` on the lesson), and `main`'s is the one every shipped
+  RPG now runs on. Nothing on the branch is needed.
+- **Nautilus is not a duplicate**, though it looks like one from the
+  outside. `block-camp/nautilus-black-archive-rpg.html` is live (`f7d2464`).
+  `incoming/Nautilus_Minecraft_Edition_Helmet_Fix.html` is its source export
+  — all 41 shipped pictures are in it, pixel for pixel — still sitting in
+  the drop folder after `/publish`. The other skin,
+  `Nautilus_20000_Leagues_RPG_Revamped.html`, was never in the repo; it is in
+  Innes's Downloads. The entry below this one records that Innes chose the
+  voxel skin, and that stands unless he says otherwise.
+- **While this session ran, another one committed `311d1d0`** (Animal
+  Welfare backgrounds) under it. That is the shared tree working as
+  designed; it only goes wrong when a session reaches for `stash`, `reset`,
+  `add -A` or a bare `commit`.
+- **Eleven `origin/claude/*` branches** from cloud sessions. Nine are merged
+  into `main`. Two are not: `forbes-c2-multilingual-support-povk8z` (2
+  ahead, last touched 09-01) and `pharma-sales-interview-english-v0x9bq` (1
+  ahead, 09-03). Not examined; not deleted.
+
+### What changed
+
+- **`.claude/hooks/git-guard.js` + `.claude/settings.json`** — a PreToolUse
+  hook on Bash and PowerShell that refuses the commands that hurt a peer in
+  a shared tree: `stash`, `reset --hard`, `clean`, whole-tree `checkout`/
+  `restore`, `add -A`/`-u`/`.`/`<dir>`, bare `commit`, `commit -a`,
+  `--amend`, `switch`/`checkout <branch>`, `--autostash`,
+  `worktree remove --force`. The refusal carries the reason and the
+  replacement. `node .claude/hooks/git-guard.js --test` runs 63 cases. It
+  stands down inside a linked worktree. **There is deliberately no override**
+  — an attempt to add one was refused mid-session, correctly.
+- **`CLAUDE.md` "Several sessions share this tree"** — the rules, the table
+  of what is blocked, and the ones the guard cannot see (one lesson per
+  session, commit small and soon, indexes ride in the same `-o` list).
+- **Archived, not deleted:** tag `archive/stash-2026-09-10-fistful-frankenstein`
+  points at the stash commit; tag `archive/last-bounty-rpg-branch` at the
+  branch tip. The `FORBES-last-bounty` worktree is removed (it was clean).
+- **`docs/SYLLABUS-GAPS.md`** — the Listening row said the four audio
+  lessons were "still in build"; they shipped 09-13.
+- **`ielts.html`** — the route cards said Speaking had 1 lesson (3),
+  Listening had 1 (6) "as the recordings are finished" (they are), and
+  Reading and Vocabulary had no count at all.
+- **`tools/seo.py` `PAGES`** now lists `ielts-reading.html` and
+  `ielts-vocabulary.html`. Until this commit those two hubs had no SEO block
+  and were absent from the sitemap, `llms.txt` and `lesson-meta.json`,
+  because `seo.py` only writes hub metadata for pages named in that dict and
+  `--check` reports a missing entry as nothing to do. When a new hub page is
+  added, add it there.
+
+### Three commands only Innes can run
+
+The guard refuses the first from any Claude tool, and the harness refused
+the other two this session. In a normal terminal in the clone:
+
+```bash
+git stash drop
+git branch -D last-bounty-rpg
+git push origin --delete last-bounty-rpg
+```
+
+Both tags keep everything reachable afterwards.
+
+### IELTS: what "finished" would take
+
+Audited 2026-09-13 across all seven hubs and 23 lessons. No broken link, no
+stub, no missing audio; the nine builder-backed decks are EN/DE/ES and none
+is stale. What is left, in the order worth doing it:
+
+1. ~~Two hubs invisible to search~~ — done above (`seo.py` `PAGES`).
+2. ~~Stale counts on `ielts.html`~~ — done above.
+3. **Four lessons still "Soon"** — `ielts-reading.html`: Matching Headings,
+   Summary/sentence completion; `ielts-vocabulary.html`: environment and
+   energy, work/automation/cities. No art exists for any of them, and each
+   needs six images (hero + five backgrounds) before a builder can start.
+   Pattern: `build_ieltsread.py` / `build_ieltsvocab.py`. **Blocked on
+   Innes commissioning 24 images.**
+4. **Eleven lessons below the EN/DE/ES minimum**, all hand-written pages
+   with no builder. No `es` key at all: `academic-writing-part1`, `-part1b`,
+   `writing-lab-part2`, `-part2b`, `model-answers-part4`, `outweigh-part5`,
+   `two-questions-part6`. Empty `es:{}`: `speaking-part1-2`,
+   `intro-overview-part7`, `line-graph-part8`, `listening-part9`. No lesson
+   i18n at all: `bar-charts-c1`, `writing-studio-part3`, `maps-and-data-c1`
+   (the three scrolling pages). **Blocked on the decision parked in the
+   2026-09-12 entry below:** translate the generated HTML in place (one
+   session, a day, but every later fix is by hand too), or write eleven
+   builders (the house answer, several sessions). The earlier entry names
+   only `speaking-part1-2`; the count is eleven.
+5. **Five recordings nobody has listened to** — Sections 1–4 and the
+   drills. Only a listener can judge the spelled surname and whether the
+   Section 3 voices are far enough apart. **Innes, with headphones.**
+6. **Tidy:** `incoming/ielts-listen-s1/`…`-drills/` still hold the candidate
+   variant folders after the chosen frames were promoted; `incoming/
+   ielts-vocabulary/` was cleared when its route shipped, so these are an
+   omission. Delete from the terminal, not from a session (the guard is not
+   involved, but `incoming/` is gitignored and a session cannot tell a
+   staged variant from a fresh drop).
+7. **One-offs to remember:** `listening-part9` is the only Listening lesson
+   with no `data-type="audio"` slide, by design (it is the how-the-test-works
+   page). The Section 2 map task matches places to positions instead of a
+   drawn map — revisit only if a diagram is ever drawn.
+
+"There is always something unfinished" is items 3, 4 and 5, and every one
+of them is waiting on Innes, not on a session: 24 images, one decision, one
+listen. Everything a session could do alone is done.
+
+---
+
 ## 2026-09-13 — Animal Welfare converted; the §5c art gap is closed
 
 Both `saving-fawns-mower-b1.html` and `-b1-b2.html` are now decks —
