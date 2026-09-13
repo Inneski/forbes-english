@@ -491,28 +491,40 @@
     line-height: 1;
     color: var(--green-deep);
   }
-  /* The header above a collection's lessons. Same picture as its card. */
+  /* The header above a collection's lessons. Same picture as its card.
+     Text and image are two panels side by side, not text laid over a
+     darkened photo — a hero that is itself a lesson's title slide (baked-in
+     heading, badges, a button, as Block Camp's is) ghosts under the
+     collection's own heading no matter how strong the scrim, and every
+     other hero loses most of its picture to the darkening a scrim-over-photo
+     needs. `--wash-a`/`--wash-b`, set inline per collection, tint the text
+     panel; unset, it falls back to the site green. */
   .coll-head {
     display: none;
-    position: relative;
-    overflow: hidden;
     border-radius: var(--radius);
     border: 1px solid var(--border);
     margin: 0 0 16px;
     min-height: 150px;
     color: #fff;
     background: var(--green-deep);
+    overflow: hidden;
   }
-  .coll-head.on { display: block; }
-  .coll-head img {
+  .coll-head.on { display: flex; align-items: stretch; }
+  .coll-head .coll-text {
+    position: relative;
+    flex: 0 0 42%;
+    padding: 22px 24px;
+    background: linear-gradient(155deg, var(--wash-a, var(--green-deep)), var(--wash-b, var(--green-deep)));
+  }
+  .coll-head .coll-media { position: relative; flex: 1 1 auto; min-width: 0; overflow: hidden; }
+  .coll-head .coll-media img {
     position: absolute; inset: 0; width: 100%; height: 100%;
     object-fit: cover; display: block;
   }
-  .coll-head .coll-scrim {
-    position: absolute; inset: 0;
-    background: linear-gradient(90deg, rgba(10,24,16,.92) 0%, rgba(10,24,16,.72) 55%, rgba(10,24,16,.25) 100%);
+  .coll-head .coll-media::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(90deg, var(--wash-b, var(--green-deep)) 0%, transparent 10%);
   }
-  .coll-head .coll-text { position: relative; padding: 22px 24px; max-width: 640px; }
   .coll-head .coll-back {
     font-family: 'Barlow Condensed', sans-serif;
     font-weight: 700;
@@ -547,7 +559,13 @@
   }
   .coll-head .coll-hub:hover { background: #fff; }
   @media (max-width: 560px) {
-    .coll-head .coll-scrim { background: rgba(10,24,16,.8); }
+    /* Side by side stops working long before the grid does: a 42%-wide text
+       panel wraps every heading. Stack instead and drop the media panel --
+       there is no width left to show it clean, and a sliver of photo reads
+       worse than none. */
+    .coll-head.on { flex-direction: column; }
+    .coll-head .coll-text { flex-basis: auto; }
+    .coll-head .coll-media { display: none; }
     .coll-head .coll-title { font-size: 1.5rem; }
   }
   .cat-hub {
@@ -1696,6 +1714,7 @@ const COLLECTIONS = [
   { cat: 'Block Camp RPGs', title: 'Block Camp RPGs', hero: 'block-camp/dracula-castle-of-if.html', hub: 'block-camp.html',
     blurb: 'The Minecraft-world adventures: Blocula, the Lost Yellow Road, Wonderland and the rest. One grammar point each, nine languages, a glowing object on every picture.' },
   { cat: 'Block Camp', title: 'Block Camp', hero: 'block-camp/long-way-home-rpg.html', hub: 'block-camp.html',
+    wash: ['#15294c', '#050a15'],
     blurb: 'The grammar climb: one tense per camp, active on the way up and passive on the way down, in the same order as Sherpa Tensing.' },
   { cat: 'Business', title: 'Business English', hero: 'Forbes English - Decision-Making Under Uncertainty.html',
     blurb: 'Meetings, negotiation, emails, pitches and the language of decisions. B2 to C2, most of it built around a roleplay.' },
@@ -1807,15 +1826,15 @@ function renderCollections() {
 
 function renderCollectionHead(c, n) {
   const img = collectionImage(c);
+  collHeadEl.style.cssText = c.wash ? `--wash-a:${c.wash[0]};--wash-b:${c.wash[1]}` : '';
   collHeadEl.innerHTML = `
-    ${img ? `<img src="${encodeURI(img)}" alt="">` : ''}
-    <div class="coll-scrim"></div>
     <div class="coll-text">
       <a class="coll-back" href="#">&larr; All collections</a>
       <div class="coll-title">${c.title}</div>
       <div class="coll-blurb">${c.blurb} <strong>${n} lesson${n !== 1 ? 's' : ''}.</strong></div>
       ${c.hub ? `<a class="coll-hub" href="${c.hub}">Open the hub &rarr;</a>` : ''}
-    </div>`;
+    </div>
+    ${img ? `<div class="coll-media"><img src="${encodeURI(img)}" alt=""></div>` : ''}`;
   collHeadEl.querySelector('.coll-back').addEventListener('click', (e) => {
     e.preventDefault();
     activeCategory = 'ALL';
