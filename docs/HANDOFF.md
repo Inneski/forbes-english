@@ -11,6 +11,68 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-13 — The Listening route is finished. Every IELTS card is a link.
+
+All five Listening lessons are live, so `ielts-listening.html` has no "Soon"
+left on it and neither does `ielts.html`. The whole IELTS section — Writing,
+Speaking, Listening, Reading, Vocabulary and the Question Bank — is open.
+
+| Deck | Audio | Points |
+|---|---|---|
+| Section 1 — the everyday conversation | 3:19 | 10 |
+| Section 2 — the monologue and the map | 3:02 | 12 |
+| Section 3 — the academic discussion | 3:08 | 12 |
+| Section 4 — the lecture | 3:01 | 10 |
+| Numbers, spelling and accents | 2 clips | 17 |
+
+All EN/DE/ES, six pictures each, both gates clean, catalogue rows in Supabase
+and mirrored, `seo.py` last every time.
+
+**The casting is deliberate and it is pedagogy, not decoration.** Six accents
+across the route and no two decks sharing a pairing: Section 1 a British
+manager and an Australian caller, Section 2 a New Zealand guide, Section 3 an
+Irish tutor with Canadian and British students, Section 4 a British lecturer,
+and the drills cutting between five accents inside one twenty-four-second clip.
+Section 3 is the one that had to be cast carefully — its whole task is
+attribution, and three voices of the same age, gender and accent would have
+made it an aural puzzle instead of a language test.
+
+**Two decks needed a decision recorded rather than a fix.**
+
+`Section 2` matches places to positions instead of labelling a drawn map. A
+real paper gives you a plan with letters on it and we have illustration, not
+diagrams. Faking a map would be worse than testing the same skill one step
+earlier — which is what a candidate does before they ever look at the letters —
+and the teach card says so in as many words. **If a diagram is ever drawn for
+this route, that slide is the one to revisit.**
+
+`the drills` ships two short clips rather than one section-length recording,
+and the engine's replay control — which on every other deck says plainly that
+the real test will not let you — is the point here rather than a concession. A
+drill is repetition; a section is one pass.
+
+### The audio pipeline, now proven across five decks
+
+```
+py lesson-template/build/build_ieltslisten_s1.py --audio   # script -> mp3 -> deck
+py lesson-template/build/build_ieltslisten_s1.py           # deck only
+```
+
+`tts.py` is the shared tool and `tts.VOICES` is the cast list. Turns join by
+byte concatenation (exact for the CBR mp3 edge-tts writes) and `render()`
+asserts the joined file equals the sum of its parts. Total audio across the
+route is about 5 MB.
+
+**What still wants a human ear.** Nothing in this session could listen to what
+it made. Scripts, timings and joins were all checked mechanically and each mp3
+was sent to Innes as it was built — but whether a spelled surname comes out
+clearly, or whether the Irish and British male voices in Section 3 are far
+enough apart, is a judgement only a listener can make. **If a voice is wrong,
+change `tts.VOICES` or the take and re-run the builder with `--audio`. Do not
+edit the mp3.**
+
+---
+
 ## 2026-09-13 — Nautilus: The Black Archive, and a fourth kind of export
 
 **Built and checked, not yet committed or live.** `block-camp/nautilus-black-archive-rpg.html`
