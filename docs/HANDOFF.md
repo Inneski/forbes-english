@@ -11,6 +11,40 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-13 — New minimum: one background image per section, not two total
+
+Innes pushed back on a "the Animal Welfare pair only has 2 images, that's
+fine" answer: he found it hard to believe two images was really enough for a
+full rebuild. He was right to push — 2 images covers a hero plus one `data-bg`
+swap (§5b), not a background per activity. Written up as **§5c** in
+`HOUSE-STYLE.md`: every lesson now needs a distinct background per
+activity/section plus one for activation, not just a hero and an occasional
+change of pace.
+
+**This reopens the "convertible today, nothing to commission" bucket from the
+2026-09-03 audit.** That count (77 lessons) was done against the old bar —
+any hero image existing at all. Re-checked against §5c, the families that
+were filed as ready on a **two-image set** now need more art commissioned
+before conversion:
+
+| Family | Images on disk | Sections it needs art for |
+|---|---|---|
+| Animal Welfare (`saving-fawns-mower-b1`, `-b1-b2`) | 2 | reading, vocab, word-sort, grammar, activation — needs 5 |
+| Skiing | 2 | not yet re-audited section-by-section |
+| Tennis | 2 | not yet re-audited section-by-section |
+| Water Polo | 2 | not yet re-audited section-by-section |
+
+The families with more images on disk (Ecuador 4, Football 7, Fire Brigade 4,
+fashion 3, Top Gear 10) may or may not clear the new bar depending on how many
+sections each lesson actually has — check count against structure, don't
+assume "more than 2" is automatically enough.
+
+**Next session converting any of these five families: check image count
+against activity count first (§5c), and flag a commission rather than
+building on a thin set.**
+
+---
+
 ## 2026-09-13 — IELTS Vocabulary ships, and `ielts.html` has no "Soon" left
 
 `ielts-vocabulary.html` is live with `forbes-english-ielts-lexical-resource.html`

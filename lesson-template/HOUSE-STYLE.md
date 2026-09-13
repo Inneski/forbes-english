@@ -341,6 +341,34 @@ whole background.
 
 ---
 
+## 5c. Minimum artwork — one background per section
+
+**Added 2026-09-13, Innes's standing instruction.** A hero plus a single
+`data-bg` swap is not enough art for a full lesson, even though the engine
+will happily run that way. Every lesson needs a **distinct background image
+for each activity/section it contains, plus one for the activation stage** —
+not just a picture change of pace on one or two slides.
+
+Practically: a standard four-activity lesson (reading, vocab, word-sort or
+match, grammar) plus activation needs **five images**, not two — cover/hero,
+then one `data-bg` per section. Fewer sections need fewer images; the count
+follows the deck's own structure, not a fixed number.
+
+**This changes the art requirement for a lesson, not the §3 hero minimum.**
+The hero is still the single landscape image that drives the cover and the
+CSS `--hero` fallback. The other images are per-section `data-bg` swaps as in
+§5b — same treatment, same rule against boxing them in a card.
+
+If a lesson has fewer images than sections, **that lesson needs art
+commissioned before it is converted** — say so and stop, per §14, rather than
+converting on a thin set and reusing the hero across sections that were
+supposed to look different. This reclassifies any family that was previously
+filed as "artwork on disk, convertible today" on a two-image set: two images
+covers a hero and one section swap, not a full multi-activity deck. Check the
+image count against the section count before starting a rebuild.
+
+---
+
 ## 6. Slide budget — the hard constraint
 
 The canvas is exactly **1280 × 720** with 64px padding. Roughly **1150 × 590**
