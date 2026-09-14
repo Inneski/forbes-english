@@ -82,8 +82,49 @@ answer first:
   The minus belongs inside: `calc(-.4 * var(--u))`. If you ever rewrite units in
   this sheet again, grep for `-calc(` afterwards.
 
-`check-rpg-panels.js` still only renders 16:9. **Adding a second aspect to it is
-the obvious next job** and is not done here.
+### check-rpg-panels.js now renders two shapes
+
+Done, in the same session — "fix it". `VIEWPORTS` is 16:9 (what the scale was
+authored for) plus **1920x940**, a maximised Chrome on a 1080p screen, which is
+the shape a lesson is usually actually read in. Findings name the shape when it
+is not 16:9, so a wide-only finding is legible as one. Three other changes went
+with it:
+
+- **English is in the sweep.** It never was — only the gloss languages — and
+  Frostbound's `voice` ran 94px past the panel at `off`.
+- **Animation is frozen before measuring** (`*{animation:none!important;
+  transition:none!important}`). The glow and the FULLSCREEN button never settle
+  and the panel has a .38s open transition, so every old reading was a frame
+  somewhere inside an easing curve. This is also what pays for the second
+  shape: the per-screen wait drops from 360ms to 80 and a two-shape run costs
+  about what the one-shape run did.
+- **The summary counts advisories.** "all pages clean" printed directly above
+  twenty `tight` lines is precisely how this defect stayed invisible, so the
+  last line now says `— N advisory 'tight' line(s), read them`. Thresholds are
+  untouched and the exit code still tracks findings only: this does not turn
+  other lessons' advisories into failures.
+
+**Verified against a deliberately broken copy**, which is what this repo asks
+for. The pre-fix page was dropped into `block-camp/` under a throwaway slug and
+checked: 19 advisory lines, every one labelled `on a wide window`. The fixed
+page is silent at both shapes.
+
+**Three findings the second shape immediately exposed, which 16:9 never
+showed** — all of them other lessons, none fixed here:
+
+| lesson | scene | panel covers |
+|---|---|---|
+| `frankenstein-consequences-rpg` | `21_approach_choice` | 47% (ja, wide) |
+| `frankenstein-consequences-rpg` | `31_wedding_choice` | 33% (ja, wide) |
+| `frankenstein-green-prometheus-rpg` | `07_research_choice` | 26% (ja, wide) |
+
+Wonderland's `choice2` also goes from 95% covered to 100% on the wide shape,
+and `last-bounty`'s `door` picks up a 56px advisory. The full run is 18
+findings across eleven RPGs; `last-train-home-rpg` and `long-way-home-rpg` SKIP
+because they predate this engine and have no `G`.
+
+**The queue item is now the hotspot tables, not the checker.** Wonderland is the
+worst by a distance — eight covered scenes and a briefing 230px past the panel.
 
 ---
 

@@ -15,7 +15,18 @@
  * findings turn out to be es/ja only. They are gloss-width defects, not layout
  * defects — the language named in each line is the widest one that triggered
  * it, and the fix is almost always to narrow the panel on the side it is
- * already on. This checks every language the page ships and reports the worst.
+ * already on. This checks every language the page ships, English included, and
+ * reports the worst.
+ *
+ * Both also depend on the WINDOW SHAPE, which this file ignored until
+ * 2026-09-14 and which cost a shipped defect. Every size in the engine is a
+ * fraction of the frame's width; the panel's height is not. So a window wider
+ * than 16:9 gets larger type in a box that did not grow. Rendering 16:9 only,
+ * this checker reported PASS on a Frostbound where 46 of 78 scene/language
+ * screens scrolled on an ordinary maximised Chrome — Innes found it by opening
+ * the page. It now renders VIEWPORTS: the 16:9 the scale was authored for, and
+ * 1920x940, which is what a lesson is usually actually read in. A finding names
+ * the shape that produced it when it is not 16:9.
  *
  *   NODE_PATH=$(npm root -g) node lesson-template/check-rpg-panels.js <slug>...
  *   NODE_PATH=$(npm root -g) node lesson-template/check-rpg-panels.js --all
@@ -60,37 +71,70 @@ const ALLOW = {};
 const COVER_LIMIT = 20;   // % of the object the panel may hide
 const SCROLL_LIMIT = 120; // px of overflow before the options risk the fold
 
+// Two window shapes, and the second one is why this file changed on 2026-09-14.
+// Every size in the engine is a fraction of the frame's WIDTH; the panel's
+// height is not. So a window wider than 16:9 gets bigger type in a box that did
+// not grow, and the options fall below the fold. This checker rendered 16:9
+// only and reported PASS on a Frostbound where 46 of 78 scene/language screens
+// scrolled on an ordinary maximised Chrome. Innes found it by opening the page.
+//
+// 16:9 is the shape the scale was authored for. `wide` is 1920x940 — a
+// maximised Chrome on a 1080p screen, tabs and omnibox taken off — which is
+// the shape a lesson is most often actually read in. Every finding names the
+// shape that produced it, so a `wide`-only finding is legible as one.
+const VIEWPORTS = [
+  { w: 1536, h: 864, tag: '16:9' },
+  { w: 1920, h: 940, tag: 'wide' },
+];
+
 async function check(page, slug) {
   const file = path.join(CAMP, slug + '.html');
   if (!fs.existsSync(file)) throw new Error('no such page: ' + file);
-  await page.goto('file:///' + file.replace(/\\/g, '/'));
-  await page.waitForTimeout(400);
-  const langs = await page.evaluate('G.langs');
-  const kinds = await page.evaluate('Object.fromEntries(Object.entries(G.scenes).map(([k, v]) => [k, v.kind]))');
-  const ids = Object.keys(kinds);
   const allow = ALLOW[slug] || {};
-  const rows = [];
-  for (const id of ids) {
-    let worst = { cover: 0, scroll: 0, lang: null };
-    for (const lang of langs) {
-      await page.evaluate(([i, l]) => { state.lang = l; go(i); openPanel(); }, [id, lang]);
-      await page.waitForTimeout(360);
-      const m = await page.evaluate(() => {
-        const c = document.querySelector('.content');
-        const cr = c.getBoundingClientRect();
-        const h = document.getElementById('hot').getBoundingClientRect();
-        const ix = Math.max(0, Math.min(cr.right, h.right) - Math.max(cr.left, h.left));
-        const iy = Math.max(0, Math.min(cr.bottom, h.bottom) - Math.max(cr.top, h.top));
-        return { cover: Math.round(100 * (ix * iy) / (h.width * h.height)),
-                 scroll: Math.max(0, c.scrollHeight - c.clientHeight) };
-      });
-      if (m.cover > worst.cover || m.scroll > worst.scroll)
-        worst = { cover: Math.max(worst.cover, m.cover), scroll: Math.max(worst.scroll, m.scroll), lang };
+  const worst = new Map();   // id -> the worst reading across every shape and language
+  let kinds = null;
+
+  for (const vp of VIEWPORTS) {
+    await page.setViewportSize({ width: vp.w, height: vp.h });
+    await page.goto('file:///' + file.replace(/\\/g, '/'));
+    await page.waitForTimeout(300);
+    // The hotspot glow and the FULLSCREEN button animate forever, and the panel
+    // has a .38s open transition. Freezing both means every measurement is the
+    // settled one rather than a frame somewhere inside an easing curve — which
+    // is also what lets the per-screen wait drop from 360ms to 80 and keeps a
+    // two-shape run no slower than the old one-shape run.
+    await page.addStyleTag({ content: '*,*::before,*::after{animation:none!important;transition:none!important}' });
+    // 'off' belongs in the sweep: English-only overflows too, and it was never
+    // measured. Frostbound's `voice` ran 94px past the panel with no gloss on.
+    const langs = ['off', ...await page.evaluate('G.langs')];
+    kinds = await page.evaluate('Object.fromEntries(Object.entries(G.scenes).map(([k, v]) => [k, v.kind]))');
+    for (const id of Object.keys(kinds)) {
+      for (const lang of langs) {
+        await page.evaluate(([i, l]) => { state.lang = l; go(i); openPanel(); }, [id, lang]);
+        await page.waitForTimeout(80);
+        const m = await page.evaluate(() => {
+          const c = document.querySelector('.content');
+          const cr = c.getBoundingClientRect();
+          const h = document.getElementById('hot').getBoundingClientRect();
+          const ix = Math.max(0, Math.min(cr.right, h.right) - Math.max(cr.left, h.left));
+          const iy = Math.max(0, Math.min(cr.bottom, h.bottom) - Math.max(cr.top, h.top));
+          return { cover: Math.round(100 * (ix * iy) / (h.width * h.height)),
+                   scroll: Math.max(0, c.scrollHeight - c.clientHeight) };
+        });
+        const cur = worst.get(id) ||
+          { cover: 0, scroll: 0, coverLang: null, coverAt: null, scrollLang: null, scrollAt: null };
+        if (m.cover > cur.cover) { cur.cover = m.cover; cur.coverLang = lang; cur.coverAt = vp.tag; }
+        if (m.scroll > cur.scroll) { cur.scroll = m.scroll; cur.scrollLang = lang; cur.scrollAt = vp.tag; }
+        worst.set(id, cur);
+      }
     }
-    rows.push({ id, ...worst, kind: kinds[id], allowed: allow[id] });
   }
-  return rows;
+  return Object.keys(kinds).map(id => ({ id, ...worst.get(id), kind: kinds[id], allowed: allow[id] }));
 }
+
+// "es" or "es on a wide window" — the shape is named only when it is not the
+// one the type scale was authored for, so an ordinary finding reads as before.
+const where = (lang, at) => at && at !== '16:9' ? `${lang} on a ${at} window` : String(lang);
 
 (async () => {
   let slugs = process.argv.slice(2);
@@ -98,8 +142,8 @@ async function check(page, slug) {
     slugs = fs.readdirSync(CAMP).filter(f => f.endsWith('.html')).map(f => f.replace(/\.html$/, ''));
 
   const browser = await chromium.launch();
-  const page = await browser.newPage({ viewport: { width: 1536, height: 864 } });
-  let bad = 0;
+  const page = await browser.newPage({ viewport: { width: VIEWPORTS[0].w, height: VIEWPORTS[0].h } });
+  let bad = 0, advisory = 0;
   for (const slug of slugs) {
     let rows;
     try {
@@ -113,18 +157,26 @@ async function check(page, slug) {
     const tight = rows.filter(r => r.scroll > 0 && r.scroll <= SCROLL_LIMIT);
     const waived = rows.filter(r => r.cover > COVER_LIMIT && r.allowed);
     console.log(`\n${slug}  (${rows.length} scenes)`);
-    if (!hidden.length && !scroll.length) console.log('  PASS  no panel hides its object; nothing overflows');
+    if (!hidden.length && !scroll.length)
+      console.log(`  PASS  no panel hides its object; nothing overflows (${VIEWPORTS.map(v => v.tag).join(' + ')})`);
     for (const r of hidden)
-      console.log(`  HIDDEN    ${r.id.padEnd(24)} panel covers ${r.cover}% of the object (${r.lang})`);
+      console.log(`  HIDDEN    ${r.id.padEnd(24)} panel covers ${r.cover}% of the object (${where(r.coverLang, r.coverAt)})`);
     for (const r of scroll)
-      console.log(`  OVERFLOW  ${r.id.padEnd(24)} +${r.scroll}px past the panel (${r.lang})`);
+      console.log(`  OVERFLOW  ${r.id.padEnd(24)} +${r.scroll}px past the panel (${where(r.scrollLang, r.scrollAt)})`);
     for (const r of tight)
-      console.log(`  tight     ${r.id.padEnd(24)} +${r.scroll}px past the panel (${r.lang}) — under the limit, but the copy is at the ceiling`);
+      console.log(`  tight     ${r.id.padEnd(24)} +${r.scroll}px past the panel (${where(r.scrollLang, r.scrollAt)}) — under the limit, but the copy is at the ceiling`);
     for (const r of waived)
       console.log(`  allowed   ${r.id.padEnd(24)} ${r.cover}% — ${r.allowed}`);
     bad += hidden.length + scroll.length;
+    advisory += tight.length;
   }
   await browser.close();
-  console.log(bad ? `\n${bad} finding(s)` : '\nall pages clean');
+  // "all pages clean" printed directly above twenty `tight` lines is how the
+  // wide-window defect stayed invisible for as long as it did. The thresholds
+  // are a judgement about each lesson's copy and are left alone, but the last
+  // line should never imply there was nothing to read. The exit code still
+  // tracks findings only, so this does not turn advisories into failures.
+  const tail = advisory ? ` — ${advisory} advisory 'tight' line(s), read them` : '';
+  console.log(bad ? `\n${bad} finding(s)${tail}` : `\nall pages clean${tail}`);
   process.exit(bad ? 1 : 0);
 })();

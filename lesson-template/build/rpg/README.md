@@ -167,10 +167,17 @@ NODE_PATH=$(npm root -g) node lesson-template/check-rpg-panels.js <slug>
 
 measures the two things §4 asks you to judge by eye and that the eye is bad
 at: how much of the object the open panel covers, and whether the copy
-overflows the panel. It walks every scene in every gloss language, because a
-translated panel is 8 percentage points wider and taller and English alone
-proves nothing. A Fistful of Lies's fork scene looked clear in a zoomed
-screenshot and measured 61% covered.
+overflows the panel. It walks every scene in every language the page ships,
+English included, because a translated panel is 8 percentage points wider and
+taller and English alone proves nothing. A Fistful of Lies's fork scene looked
+clear in a zoomed screenshot and measured 61% covered.
+
+**It renders two window shapes**, 16:9 and 1920x940, and names the shape on any
+finding that is not 16:9. Until 2026-09-14 it rendered 16:9 only and said PASS
+on a lesson where 46 of 78 scene/language screens scrolled on a maximised
+Chrome — the whole scale is a fraction of frame width and the panel's height is
+not, so a wider window means bigger type in a box that did not grow. A `tight`
+line labelled `on a wide window` is that class of defect; read them.
 
 ## 3. Hotspots — the part that needs eyes
 
