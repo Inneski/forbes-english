@@ -96,26 +96,42 @@ generated pages. Somebody edited the engine and did not re-run the builders.
 Both are improvements and both are now shipped. **If you change `rpg.py`,
 re-run all eleven RPG builders in the same commit.**
 
+**The 12 panel findings on `lost-yellow-road-rpg` and `wonderland-stolen-now-rpg`
+are pre-existing, and that was measured, not assumed.** The shipped copies were
+restored from HEAD and re-checked: byte-identical findings. So the rebuild
+caused none of them — but they are real and still open. Wonderland's `rules`
+overflows 230px in Spanish and eight of its scenes have the panel sitting on
+the object (one at 95%); Lost Yellow Road's `tracks` is 100% covered in
+Spanish. Neither was fixed here — they are other lessons, and eleven hotspot
+tables is its own job. It belongs in the queue.
+
 `build_kraken_black_tide.py` cannot be re-run at all:
 `rpg/kraken-black-tide-rpg/translations` does not exist, so
 `apply_translations()` raises. That page is not in `ADVENTURES`, not in
 `library.html` and not in the catalogue, so it is unpublished work in
 progress — left alone, not fixed. Whoever owns it needs to add that directory.
 
-### Left to run
+### Nothing left to run
 
-The catalogue row. `seo.py` read Supabase (not the cache), so the lesson is in
-`library.html` and the hub but **not** in `sitemap.xml`, `llms.txt` or
-`lesson-meta.json` until the row exists. Run this **after** the page is live on
-`origin/main`, then re-run `python tools/seo.py` and commit the four indexes:
+Shipped end to end. The page went to `origin/main` first, was confirmed live
+(`/block-camp/frostbound-river-rpg`, cover serving — note the `.html` URL
+redirects to the extensionless one, which is why a `curl` without `-L` reads
+404 and looks like a failed deploy), and only then did the catalogue row go in:
+**`lessons.id 332`**. `build_hubs.py` and `seo.py` ran after it, additions only
+in all four indexes, and the lesson is on `present-simple.html`.
 
-```sql
-insert into lessons (file, title, level, access, deck, video, sort_order)
-select 'block-camp/frostbound-river-rpg.html',
-       'Frostbound: The River Remembers — Present Simple Frozen North RPG (A1-A2)',
-       'A1-A2', 'pro', false, false, 0
-where not exists (select 1 from lessons where file = 'block-camp/frostbound-river-rpg.html');
-```
+A full playthrough was asserted in Playwright rather than eyeballed, because
+`bands` is new engine code: perfect run 76/76 goes to `guardian`, alternating
+6 of 12 scores 38 and goes to `rekindle`, all-wrong scores 8 and goes to
+`rekindle`, and each band edge (76/64/63/40/39/0) resolves to the right
+ending. Twelve questions and four routes on every path, as designed.
+
+**One judgement call left for Innes, not a defect.** The export's own bands are
+steep: 6 of 12 correct plus the cautious routes is 38, below the 40 floor, so a
+learner who gets half the grammar right still lands in the bottom ending. That
+is the export's scoring kept exactly (README 9). Lowering the `rebuild` floor to
+about 34 in `build_frostbound_river.py`'s `bands` is a one-line change if he
+wants half-right to feel like a partial win.
 
 ---
 
