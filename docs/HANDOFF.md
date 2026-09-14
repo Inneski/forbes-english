@@ -11,6 +11,82 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-14 (later) — The sixth stem, and the unit the type scale should always have had
+
+Innes opened the live page and sent back one screenshot. Two defects in it, and
+only one of them was the lesson.
+
+### "you missed this one"
+
+`camp` asked *"Eira and Lina ___ a memory of their mother."* The first pass
+classified SHARE as stative and moved on. It is not stative here: the picture
+shows the sisters doing it at that moment, so ARE SHARING is the natural
+answer — the sixth instance of exactly the defect the rebuild existed to
+remove. Innes supplied the fix himself: **"share the same mother."** A shared
+mother is permanent, so the continuous is not merely unlikely, it is
+ungrammatical. That is a better class of fix than a frequency adverb, and it is
+the one to reach for first.
+
+`wind` went the same way in the same pass — *"show THEM the way"* asked about
+the one moment in the plate, so it is now *"show TRAVELLERS the way"*, which
+asks what the spirit does for anyone. **Seven stems rewritten in total.**
+
+**The lesson for the next audit: "is it a stative verb?" is the wrong question.
+The question is "could a speaker say IS/ARE + -ING here?"** HAVE, SHARE, HOLD,
+KNOW and LOOK all pass the stative test in a dictionary and fail it in a
+sentence. Read the stem against its own picture, every time.
+
+### The type scale grew with width and nothing capped it
+
+The same screenshot had a scrollbar on the panel and the kicker cut off the
+top. Not a Frostbound bug — **an engine bug in every Block Camp RPG since the
+engine was written.**
+
+The whole scale is in `cqw`, a fraction of the frame's WIDTH, authored against
+a 16:9 frame. Innes's Chrome content box is 1920x940 — aspect 2.04. Wider means
+more width for the type and no more height for the panel, so the text outgrows
+the box. Measured on his geometry: **46 of 78 scene/language screens scrolled**;
+at 2.23 it was 57. `check-rpg-panels.js` never caught it because it only ever
+renders 16:9.
+
+The fix is one custom property in `rpg.py`:
+
+```css
+--u: min(1vw, 1.7778vh)
+```
+
+and every `Ncqw` in the sheet became `calc(N * var(--u))`, 164 of them. At 16:9
+`1vw` and `1.7778vh` are equal, so the unit only ever caps and never enlarges;
+the frame is the viewport (`.game` is `position:fixed;inset:0`), which is why
+`vw`/`vh` rather than a container query. Portrait and phone layouts pick the
+`vw` term and are untouched.
+
+**Measured, in both directions:**
+
+- 1536x864 — 72 of 78 screens are **pixel-identical** to the pre-change page
+  (sha1 of the rendered frame); the 6 that differ are `camp` and `wind` in three
+  languages, which changed on purpose.
+- 1920x940 and 1920x860 — **nothing scrolls**, against 46 and 57 before.
+
+Two traps in doing that measurement, both of which produced a confident wrong
+answer first:
+
+- **A screenshot diff of this engine can never match unless animation is
+  frozen.** The hotspot glow and the FULLSCREEN button animate forever; the
+  first run reported 0 of 78 identical and the cause was entirely the clock.
+  Inject `*{animation:none!important;transition:none!important}` before
+  shooting.
+- **`-.4cqw` becomes `-calc(...)`, which is invalid and silently drops the whole
+  declaration.** A regex over the sheet hit five negative margins and insets,
+  and the only symptom was a panel 11px taller than before — no error anywhere.
+  The minus belongs inside: `calc(-.4 * var(--u))`. If you ever rewrite units in
+  this sheet again, grep for `-calc(` afterwards.
+
+`check-rpg-panels.js` still only renders 16:9. **Adding a second aspect to it is
+the obvious next job** and is not done here.
+
+---
+
 ## 2026-09-14 — Frostbound: The River Remembers, and the fifth kind of export
 
 `block-camp/frostbound-river-rpg.html` — Present Simple, A1-A2, camp 1's

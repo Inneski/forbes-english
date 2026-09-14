@@ -127,7 +127,10 @@ Q = {
         opts=['whisper', 'whispers', 'whispering', 'does whisper'], answer=0,
         fb='"The trees" is "they", so the verb takes no -S: THE TREES + WHISPER. '
            'DOES belongs with "he", "she" or "it".'),
-    'wind': dict(
+    'wind': dict(  # REWRITTEN. "show THEM the way" asked about the one moment in the
+                   # plate; "show TRAVELLERS the way" asks what the spirit does for
+                   # anyone, which is the only reading the present simple wants.
+        stem='___ the wind spirit show travellers the way?',
         opts=['Is', 'Are', 'Do', 'Does'], answer=3,
         fb='A present simple question is DO / DOES + SUBJECT + BASE VERB. '
            '"The wind spirit" is "it": DOES + THE WIND SPIRIT + SHOW.'),
@@ -139,10 +142,16 @@ Q = {
         opts=["don't", "isn't", 'not', "doesn't"], answer=0,
         fb='"The giants" is "they", so DON\'T + BASE VERB: THE GIANTS + DON\'T + SLEEP. '
            'English needs DO or DOES in front of "not" here.'),
-    'camp': dict(
+    'camp': dict(  # REWRITTEN. Was "Eira and Lina ___ a memory of their mother" — the
+                   # sixth stem of the same defect, and the one the first pass missed:
+                   # SHARE was read as stative and it is not, so the picture's ARE
+                   # SHARING was the natural answer. Innes caught it on the live page
+                   # and supplied the fix. A shared mother is permanent, so the
+                   # continuous is not merely unlikely here, it is ungrammatical.
+        stem='Eira and Lina ___ the same mother.',
         opts=['sharing', 'does share', 'shares', 'share'], answer=3,
-        fb='Two people make "they": EIRA AND LINA + SHARE. '
-           'No -S and no DOES with a plural subject.'),
+        fb='Two people make "they": EIRA AND LINA + SHARE. A permanent fact takes the '
+           'present simple. No -S and no DOES with a plural subject.'),
     'sea': dict(
         opts=['Does', 'Do', 'Is', 'Are'], answer=0,
         fb='Eira is "she", so the question word is DOES: DOES + EIRA + NEED. '

@@ -23,8 +23,18 @@ Camp with Monocraft."*
   object. Clicking the object (or Enter) pops the panel out of that spot;
   ✕, Esc or a click on the picture folds it away. The cover and the endings
   open with the panel already up — everything else starts closed.
-- **Dark glass panel, Monocraft, big.** Story 1.65cqw, options 1.4cqw, title
-  3cqw, on a 46%-wide panel — a step up from Blocula (1.36 / 1.04 / 3.6 at
+- **Sizes go through `--u`, never raw viewport units.** `--u: min(1vw,
+  1.7778vh)` is one hundredth of a 16:9 frame's width, capped so it cannot
+  outgrow the frame's height. Every size in the sheet is `calc(N * var(--u))`.
+  Before this existed the scale was raw `cqw` and the type grew with window
+  width while the panel's height did not: on a 1920x940 window — an ordinary
+  maximised Chrome — 46 of Frostbound's 78 scene/language screens scrolled, on
+  every RPG in the camp. Write new sizes as `calc(N * var(--u))`, and if you
+  ever rewrite the units again, grep for `-calc(` afterwards: a negative length
+  written `-.4cqw` converts to `-calc(...)`, which is invalid CSS and drops the
+  declaration with no error.
+- **Dark glass panel, Monocraft, big.** Story 1.65 units, options 1.4, title
+  3, on a 46%-wide panel — a step up from Blocula (1.36 / 1.04 / 3.6 at
   42%), because Monocraft is wider than Pixelify and because the brief said
   bigger. Phones get a bottom sheet in fixed px. Do not shrink these to
   make a long scene fit; widen the panel for that scene (`width`) or cut the
