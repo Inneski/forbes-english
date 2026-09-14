@@ -43,18 +43,18 @@ HOT = {
     'munchkins':   ([46, 62, 20, 16], 'right',  'center', 38),  # the dancers
     'tin':         ([16, 70, 10, 18], 'right',  'center'),   # the axe on the ground
     'oil':         ([66, 52,  8, 12], 'left',   'center'),   # the oil can
-    'tracks':      ([60, 78, 18, 16], 'right',  'top'),      # the paw marks
-    'route_two':   ([64, 58, 10, 14], 'center', 'top'),      # where the road divides
+    'tracks':      ([60, 78, 18, 16], 'left',   'top',   45),  # the paw marks
+    'route_two':   ([64, 58, 10, 14], 'left',   'top',   52),  # where the road divides
     'lion':        ([68, 38, 10, 20], 'left',   'center'),   # the Lion behind the tree
     'poppies':     ([17, 55, 10, 14], 'right',  'center'),   # Dorothy asleep
     'mice':        ([70, 72, 12, 18], 'left',   'center'),   # the mouse queen's cart
     'witch':       ([31, 70, 22, 34], 'right',  'center'),   # the golden sphere
     'monkeys':     ([80, 22, 18, 26], 'left',   'top'),      # the winged monkey
     'bridge':      ([35, 72,  9, 14], 'right',  'center'),   # the glowing tile
-    'route_three': ([14, 40, 10, 18], 'center', 'top'),      # the tower door
+    'route_three': ([14, 40, 10, 18], 'right',  'top',   60),  # the tower door
     'tower':       ([66, 22, 22, 22], 'left',   'center'),   # the guarded room
     'courtyard':   ([30, 76, 14, 14], 'right',  'center'),   # the axe on the rope
-    'finale':      ([60, 52, 10, 14], 'left',   'center'),   # the bucket
+    'finale':      ([60, 52, 10, 14], 'left',   'center', 48),  # the bucket
     'end_master':  ([67, 20, 14, 22], 'left',   'center'),
     'end_complete':([67, 20, 14, 22], 'left',   'center'),
     'end_missing': ([50, 75, 24, 20], 'right',  'top'),      # the road breaking up

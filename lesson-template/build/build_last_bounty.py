@@ -90,14 +90,14 @@ HOT = {
     'roof':     ([89, 48, 20, 40], 'left',   'center', 50),   # the oil can
     'letter':   ([77, 54, 16, 16], 'left',   'center', 54),   # Tito's note
     'confess':  ([77, 78, 30, 20], 'left',   'center', 50),   # Tito's letter
-    'brother':  ([56, 83,  8, 13], 'left',   'center', 46),   # the sheriff's badge
+    'brother':  ([56, 83,  8, 13], 'left',   'center', 45),   # the sheriff's badge
     'ambush':   ([89, 24, 20, 46], 'left',   'center', 62),   # the broken window
     # the export asked for h62, which validate() rejects — a hotspot may not be
     # more than 60% of the plate, and the bank window is not.
     'fire':     ([79, 36, 30, 52], 'left',   'center', 50),   # the bank window
     'priority': ([92, 54, 10, 24], 'left',   'center', 50),   # the bank padlock, far right
     'rescue':   ([93, 46,  8, 40], 'left',   'center'),       # the broken chain (pulled off the edge)
-    'chase':    ([58, 74, 20, 24], 'left',   'center', 46),   # the fallen timber
+    'chase':    ([58, 74, 20, 24], 'left',   'center', 43),   # the fallen timber
     'return':   ([89, 75, 11, 25], 'left',   'center', 50),   # the teddy bear
     'duel':     ([92, 43, 10, 27], 'left',   'center', 62),   # the pocket watch
     'shot':     ([78, 86, 26, 16], 'left',   'center'),       # the dropped revolver (trimmed from w44)

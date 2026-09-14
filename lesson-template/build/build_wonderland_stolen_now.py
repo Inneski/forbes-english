@@ -58,31 +58,34 @@ HOT = {
     'cover':                 ([65, 22, 12, 22], 'left',   'center'),      # the palace clock in the rift
     'prologue':              ([82, 10, 12, 16], 'left',   'center'),      # the Warden with the stolen Heart
     'rules':                 ([66,  9,  8, 14], 'left',   'center', 56),  # the stopped clock tower
-    'choice1':               ([50, 72, 12, 28], 'center', 'top'),         # Alice at the fork
+    # A centre panel is 64% wide and cannot clear a central object at any
+    # vertical anchor (README §3). Alice stands at x=50 on both forks, so both
+    # move to a narrow left panel, measured against the 20% gate.
+    'choice1':               ([50, 72, 12, 28], 'left',   'top',    37),  # Alice at the fork
     '03_rabbit_run':         ([78, 50, 12, 20], 'left',   'center'),      # the Rabbit with his watch
     '04_bridge_build':       ([42, 47,  8, 12], 'right',  'center'),      # the rose block going in
-    '05_mouse_swim':         ([55, 62,  9, 12], 'left',   'center'),      # the Mouse in the rapids
+    '05_mouse_swim':         ([55, 62,  9, 12], 'left',   'center', 43),  # the Mouse in the rapids
     '06_guard_chase':        ([25, 42, 20, 30], 'right',  'center'),      # the card guards
     '07_cat_vanish':         ([69, 11, 10, 14], 'left',   'center'),      # the Cat's grin
     '08_tree_climb':         ([42, 50, 10, 18], 'right',  'center'),      # Alice on the stairs
     '09_mirror_guards':      ([72, 20, 14, 22], 'left',   'center'),      # the mirror portal
-    '10_mirror_key':         ([55, 33,  8, 12], 'left',   'center'),      # the key in Alice's hand
-    'cake_intro':            ([60, 32, 12, 18], 'left',   'center', 50),  # the Caterpillar Baker
+    '10_mirror_key':         ([55, 33,  8, 12], 'left',   'center', 44),  # the key in Alice's hand
+    'cake_intro':            ([60, 32, 12, 18], 'left',   'center', 48),  # the Caterpillar Baker
     '12_cake_growing':       ([40, 25, 16, 30], 'right',  'center'),      # Alice growing
     '13_cake_routine':       ([63, 45,  8, 16], 'left',   'center'),      # the Rabbit running
     '14_cake_contrast':      ([78, 20, 12, 20], 'left',   'center'),      # the Hatter pouring tea
-    '15_cake_gate':          ([50, 35, 10, 30], 'right',  'center', 40),  # where the two doors meet
-    'choice2':               ([50, 60, 10, 26], 'center', 'top'),         # Alice between the routes
+    '15_cake_gate':          ([50, 35, 10, 30], 'right',  'center', 38),  # where the two doors meet
+    'choice2':               ([50, 60, 10, 26], 'left',   'top',    38),  # Alice between the routes
     '17_boat_engine':        ([60, 35, 12, 18], 'left',   'center'),      # tea into the engine
     '18_reverse_river':      ([70, 32, 12, 30], 'left',   'center'),      # the backwards waterfall
     '19_stone_ear':          ([25, 68, 16, 22], 'right',  'center'),      # Alice and the Hatter hiding
     '20_compass_island':     ([42, 45,  8, 10], 'right',  'center'),      # the compass
     '21_prison_gears':       ([75, 40, 16, 26], 'left',   'center'),      # the great gear
-    '22_clockmaker_trapped': ([56, 32, 10, 14], 'left',   'center'),      # the trapped Mouse
+    '22_clockmaker_trapped': ([56, 32, 10, 14], 'left',   'center', 44),  # the trapped Mouse
     '23_broken_drill':       ([60, 35, 18, 20], 'left',   'center'),      # the drill
     '24_heart_gear':         ([42, 56,  8, 12], 'right',  'center'),      # the Heart Gear
     'boss_intro':            ([60, 30, 12, 24], 'left',   'center'),      # the Queen
-    '26_freeze_attack':      ([52, 22, 14, 26], 'right',  'center', 40),  # the Warden sending the wave
+    '26_freeze_attack':      ([52, 22, 14, 26], 'left',   'center', 38),  # the Warden sending the wave
     '27_shards_crown':       ([62, 38, 20, 22], 'left',   'center'),      # the Crown
     '28_queen_truth':        ([82, 30, 10, 22], 'left',   'center'),      # Rose beyond the wall
     '29_warden_break':       ([72, 25, 18, 26], 'left',   'center'),      # the Warden breaking up

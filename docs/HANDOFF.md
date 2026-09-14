@@ -11,6 +11,90 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-14 (later still) — The hotspot tables, cleared
+
+Eighteen findings across eleven RPGs down to **zero**. Every Block Camp
+adventure now passes at both window shapes, in every language it ships.
+
+### How, so the next person does not do it by eye
+
+Not by guessing widths and re-running the checker. The geometry is exact —
+`.zone` spans 2.2%..97.8% of the frame, `.content` is `(width + 8 with a gloss
+on)%` of the zone anchored to its side, and the panel runs nearly the full
+height so horizontal overlap is the whole story. So the widest panel that
+still passes is solvable:
+
+```
+left   width <= (hotLeft  + slack - zoneLeft ) / zoneWidth * 100 - 8
+right  width <= (zoneRight - hotRight + slack) / zoneWidth * 100 - 8
+centre width <= min(2*(hotLeft + slack - zoneLeft), 2*(zoneRight - hotRight + slack)) - zoneWidth
+```
+
+**`slack` is the point.** The gate is 20% of the object hidden, not 0. Solving
+for 0 threw away several points of width on every scene and cost lines of copy
+that then overflowed; solving for 15% — margin under the gate — gave a clean
+answer almost everywhere. Then set that width in the live page and measure the
+scroll it costs in every language at both shapes, because width trades against
+overflow and only measurement settles the trade.
+
+### What moved
+
+**Nine centre panels became side panels.** README §3 already said a centre
+panel cannot rescue a central object at any vertical anchor; nine scenes were
+still centred anyway, and the wide shape is where it showed — Wonderland's
+`choice2` covered its object 100%, Frankenstein's `21_approach_choice` 47%.
+Wonderland `choice1`/`choice2`, Lost Yellow Road `route_two`/`route_three`,
+Frankenstein `07_research_choice`/`12_awakening_choice`/`21_approach_choice`/
+`31_wedding_choice`. **A `center` pos in a builder should now be treated as a
+defect waiting to be measured.**
+
+**Ten panels narrowed or changed side** — Wonderland ×6, Lost Yellow Road
+`tracks` (100% covered, and it swapped side as well), Last Bounty
+`brother`/`chase`.
+
+**Wonderland's briefing lost two sentences** — the only OVERFLOW, at 230px in
+Spanish, now a 100px advisory.
+
+### The trap that cost the most time here
+
+**Wonderland's shipped text is the EASY overlay, not the builder's own copy.**
+Innes, 2026-09-08: *"Just keep the easy English version."* So the briefing text
+in `build_wonderland_stolen_now.py` never reaches the page — editing it, as I
+did first, changes nothing and the rebuild looks like it worked. The text lives
+in `rpg/wonderland-stolen-now/data-easy.json`, which carries en/es/de inline;
+the other seven glosses are in `translations/<lang>.json` **keyed by the
+overlay's English**, so changing that English means re-keying all seven or the
+build refuses. Check which layer renders before editing any Wonderland string:
+
+```js
+// in the built page
+G.scenes.rules.story.en
+```
+
+Also: do not reach for the `[[a]]`/`[[b]]` colour marks in a string whose
+glosses come from `translations/`. The marks must appear in every language's
+version or that language silently loses the colour (README §8), and a
+translations file keyed by a new English string will not have them.
+
+### What is left, and it is advisory only
+
+Ten `tight` lines, none over the 120px limit, and every one a briefing or a
+long story screen: Wonderland `rules` +100 / `cake_intro` +83 / `decision` +73,
+Lost Yellow Road `rules` +97 / `finale` +85, Last Bounty `chase` +104 /
+`brother` +70 / `door` +56 / `cuffs` +52, the Nautilus pair `brief` +79.
+
+`chase` and `brother` went slightly further past the panel as the price of
+uncovering their objects — that trade is deliberate and measured: a covered
+object is a finding, a 100px scroll on an answered screen is not. **Five of the
+eleven briefings scroll in Spanish.** That points at the briefing layout rather
+than at each lesson's copy — `.rules-intro` is a two-column grid and five cards
+make three rows. A third column, or a `rules`-only zone that starts higher,
+would fix all five at once. That is the next job here, and it is a change to
+`rpg.py` affecting every page, so it wants its own session and its own
+before/after pixel proof.
+
+---
+
 ## 2026-09-14 (later) — The sixth stem, and the unit the type scale should always have had
 
 Innes opened the live page and sent back one screenshot. Two defects in it, and
