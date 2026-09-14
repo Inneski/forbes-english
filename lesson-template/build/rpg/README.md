@@ -120,9 +120,27 @@ different ways), take `explanation` as `fb` and `briefing` as the rules
 scene, and spend the effort on what no export carries — the panel side on
 every scene, and a picture for each ending.
 
+**Frostbound: The River Remembers, 2026-09-14, is the fifth kind** — a flat
+`const SCENES=[...]` array with no `window.*` global and no `images` map,
+every scene carrying its own picture inline on an `image` key.
+`extract_standalone.py` finds nothing in it; `extract_scene_array.py` reads
+it. It is the first export to name its own hotspots: a per-scene `object`
+(the glowing thing the plate was drawn around) and a `target` centre in
+picture percent, both accurate on all 26 plates. Sizes and panel widths are
+still yours, and the closed-scene screenshot pass is still what catches a
+misread — two ending hotspots were wrong in the table and obvious in the
+thumbnail.
+
 `check_translations.py` audits a `<slug>/translations` directory before a
 page exists — script leaks, coverage, a lost `___` — which is the one thing
 `check-glosses.js` cannot do, since it needs a built Blocula-style page.
+
+**If you change `rpg.py`, re-run every RPG builder in the same commit.** On
+2026-09-14 a rebuild for one lesson pulled two CSS fixes that had sat in the
+engine unshipped — the cover strip's `bottom:7%` → `16%` and `white-space:
+pre-line` on rule cards — onto ten pages at once, because the person who
+edited the engine had re-run only their own builder. `build_kraken_black_tide.py`
+is the one that cannot be re-run: its `translations/` directory does not exist.
 
 Every page is **generated**: edit the builder, re-run it. The builder keeps
 the fenced SEO block from the file on disk, so a re-run without `seo.py`
@@ -262,6 +280,7 @@ wraps to at most two lines; the German is not longer than the panel.
 | `start`, `scenes`, `endings` | first scene id; the scenes; `{master, complete, missing, failed}` → ending scene ids |
 | `max`, `points`, `tiles`, `chances`, `complete_score` | the scoring — 75 / 5 / 4 / 3 / 65 for a 15-question path |
 | `img_w`, `img_h` | picture size when it is not 1536×1024 (Wonderland is 1536×864) |
+| `bands` | `[(min, ending_sid), …]` highest first, ending at 0 — an ending picked by score alone, for an export whose thresholds are pure numbers and which has no tiles or chances (Frostbound: 64+ / 40-63 / below 40). Consulted before the tile-and-chance ladder; omit it and `resolve()` is unchanged |
 | `repair`, `total` | `repair: True` = a wrong answer explains and lets the learner try again, points on the first try only, no chances (set `chances: 0`); `total` = questions on any path, shown as a progress badge |
 | `tags` | the two half-labels for split options, `{'a': {en,…}, 'b': {en,…}}` (pink NOW / blue USUAL) |
 | `easy_labels`, `easy_tags` | optional — chrome and half-labels a simpler text layer rewords; folded in at build time (§7) |
@@ -278,8 +297,9 @@ Scene kinds: `intro` (cover: `rules` chips, `start` button, `small` line),
 `rules` (form cards + `note`, optional `button` text), `story` (text,
 optional `rules` cards and `note`, optional `button`), `question` (`clue`,
 `prompt`, `opts`, `answer`, `fb`, `points`, `relic`, `final`, `next`),
-`choice` (`routes`: name, desc, route, target — a route may carry `min`
-and `else`: below `min` points it goes to `else` instead), `ending`
+`choice` (`routes`: name, desc, route, target — a route may carry `points`,
+which are added to the score when it is taken, and `min` with `else`: below
+`min` points it goes to `else` instead), `ending`
 (optionally `routeStory`: `{ROUTE: text}`, a closing paragraph chosen by the
 route the player actually took — the first key that appears in `state.route`
 wins, and it prints above the final score). A question's `next` of

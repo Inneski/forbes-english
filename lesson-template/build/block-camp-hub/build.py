@@ -176,6 +176,9 @@ ADVENTURES = [
  ('block-camp/nautilus-black-archive-deep-rpg.html','block-camp/nautilus-black-archive-deep-rpg/39_archive.webp','Nautilus: The Black Archive (Deep-Sea)',
   'The Black Archive again, painted: the same signal under the Atlantic and the same drowned city, lit by lamps rather than built from blocks. Two branching descents &mdash; the crystal trench or the ruined temple, the engine room or the open water &mdash; and every question asks the one thing: a finished result, or an activity still running.',
   ('Present Perfect','Present Perfect Continuous'),'B1','pro','new'),
+ ('block-camp/frostbound-river-rpg.html','block-camp/frostbound-river-rpg/01_intro.webp','Frostbound: The River Remembers',
+  'A voice under the ice, two sisters who follow it north, and a dam their kingdom is proud of for the wrong reasons. Four branching choices through a frozen forest &mdash; the ridge or the trail, the fire spirit or the stone giants &mdash; where every question asks what somebody does every time, and your score alone decides which of three endings the flood leaves behind.',
+  ('Present Simple',),'A1&ndash;A2','pro','new'),
 ]
 
 def adventure_cards():

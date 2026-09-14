@@ -11,6 +11,114 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-14 — Frostbound: The River Remembers, and the fifth kind of export
+
+`block-camp/frostbound-river-rpg.html` — Present Simple, A1-A2, camp 1's
+`#7A93B5`. Built from `Frostbound_The_River_Remembers.html`, which Innes did
+not send as "rebuild this": he asked a question first.
+
+> *"Does this work using only present simple? Some of the pictures would seem
+> to lend themselves better to present continuous … it might confuse students
+> when suddenly they are posed with a choice of the two tenses and, oh, why
+> does it work this time?"*
+
+**The answer, and why it changed the build.** The export is safe at the
+answer level by accident: not one of its 68 distractors is a well-formed
+present continuous — they are bare `-ING` with no auxiliary, or non-words
+like "is hear" and "do crack" — so a learner who knows the continuous could
+never pick it. The defect was in the **stems**. The briefing says the present
+simple is for habits, repeated actions and facts, and then five questions
+asked about a one-off action happening in front of the reader:
+
+| scene | export stem | what a speaker actually says |
+|---|---|---|
+| `ridge` | The ice ___ under our boots. | is cracking |
+| `records` | Lina ___ the carved pictures carefully. | is studying |
+| `rescue` | Bram ___ supplies to the safe path. | is carrying |
+| `wave` | The water ___ toward Northmere. | is rushing |
+| `bridge` | Eira and Lina ___ together to protect the town. | are working |
+
+The lesson taught a rule and then broke it with its own answer key. All five
+now carry a frequency or generalising context — ALWAYS, BEFORE EVERY
+CROSSING, IN AN EMERGENCY — so the present simple is the only natural
+reading, and each one's grammar target (third-person -S, consonant + Y to
+-IES, -SH to -ES, the plural base form) is untouched. Innes approved the
+five rewrites before the build started.
+
+**The invariant worth keeping across the site:** a stem only ever describes a
+situation where the target tense is the *only* natural choice. Get that right
+and a later present-simple-vs-continuous lesson is the payoff rather than a
+contradiction. The briefing's note names the other half of the seam out loud —
+the narration is in the present simple the way a film synopsis is.
+
+**Nine distractors were replaced** for the same reason a key must not be the
+longest option: "is hear" and "is reveal" are free eliminations that turn a
+four-option item into a two-option one. Each is now an error a real A1 learner
+makes — the base form on a singular subject, a doubled marker ("does hears"),
+a bare -ING, an over-applied -ES spelling, DO/DOES against a plural subject.
+
+### A fifth kind of export
+
+`const SCENES=[...]`, no `window.*_GAME_DATA` and no `images` map: every scene
+carries its own picture inline on an `image` key. `extract_standalone.py`
+finds nothing in it. `rpg/extract_scene_array.py` reads it, and the export
+gives two things no earlier one did — a per-scene `object` naming the glowing
+thing the plate was drawn around, and a `target` giving its centre in picture
+percent. Both were accurate on all 26 plates. Sizes and panel widths still
+needed eyes; two ending hotspots (`rekindle`, `guardian`) were misread off the
+contact sheet and only the closed-scene screenshots caught it, which is
+exactly what README §4 says that pass is for.
+
+### Three engine additions, all generic (README §9)
+
+- **`bands`** — `[[min, sceneId], …]`, highest first: an ending chosen by score
+  alone. This export's endings are pure thresholds (64+ / 40-63 / below 40) and
+  it has no tiles and no chances, so `resolve()`'s tile-and-chance ladder sent a
+  64-point run to `missing`. Validated: bands must descend and must end at 0.
+- **`points` on a route** — the story choices score 4 or 2, and the bands read
+  the total. A route without `points` scores nothing, as before.
+- **The fourth answer key.** The engine bound `['1','2','3']` only, so on a
+  four-option lesson the fourth button was mouse-only — and it is the key on
+  five of Frostbound's twelve. HOUSE-STYLE has said "A/B/C/D labels" all along.
+
+Plus one guard: `advance()` tested `state.chances<=0` unconditionally, which
+in a lesson with no chance counter (`G.chances` 0 by design) is true from the
+first frame and threw the learner to the failed ending on their first wrong
+answer. Now `G.chances && state.chances<=0` — the same guard `resolve()` has
+carried since the Wonderland bug. Lessons with chances behave identically.
+
+### The ten other RPGs were already stale
+
+Re-running every builder onto the patched engine changed ten pages by more
+than the new JS: `.is-cover .zone{bottom:7%}` → `16%` and
+`.rule-card{white-space:pre-line}` were in `rpg.py` and had never reached the
+generated pages. Somebody edited the engine and did not re-run the builders.
+Both are improvements and both are now shipped. **If you change `rpg.py`,
+re-run all eleven RPG builders in the same commit.**
+
+`build_kraken_black_tide.py` cannot be re-run at all:
+`rpg/kraken-black-tide-rpg/translations` does not exist, so
+`apply_translations()` raises. That page is not in `ADVENTURES`, not in
+`library.html` and not in the catalogue, so it is unpublished work in
+progress — left alone, not fixed. Whoever owns it needs to add that directory.
+
+### Left to run
+
+The catalogue row. `seo.py` read Supabase (not the cache), so the lesson is in
+`library.html` and the hub but **not** in `sitemap.xml`, `llms.txt` or
+`lesson-meta.json` until the row exists. Run this **after** the page is live on
+`origin/main`, then re-run `python tools/seo.py` and commit the four indexes:
+
+```sql
+insert into lessons (file, title, level, access, deck, video, sort_order)
+select 'block-camp/frostbound-river-rpg.html',
+       'Frostbound: The River Remembers — Present Simple Frozen North RPG (A1-A2)',
+       'A1-A2', 'pro', false, false, 0
+where not exists (select 1 from lessons where file = 'block-camp/frostbound-river-rpg.html');
+```
+
+---
+
 ## 2026-09-13 — Three Nautilus editions, and the upgraded plates
 
 Innes sent `Nautilus_20000_Leagues_RPG_Revamped (3).html` — the painted

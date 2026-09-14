@@ -303,6 +303,10 @@ BODY = r"""
 JS = r"""
 const G = {{GAME}};
 const LANGS = G.langs, RTL = ['ar'];
+/* answer keys. Four options are house style (HOUSE-STYLE: "A/B/C/D labels"),
+   and the engine used to bind only 1-3 — on a four-option lesson the fourth
+   button was mouse-only, and it is the key on five of Frostbound's twelve. */
+const NUM = ['1','2','3','4'];
 let state = fresh('off');
 let sound=false;try{sound=localStorage.getItem('rpg-sound')==='1'}catch(_){}
 /* two short tones, right and wrong — the Wonderland export's, kept */
@@ -360,7 +364,7 @@ function displayAnswer(i,apply){const s=G.scenes[state.scene];const buttons=[...
   if(G.repair&&!ok){/* repair mode: mark it, explain, let them try again */buttons[i].classList.add('wrong');buttons[i].disabled=true;fb.innerHTML=`<strong>${ui('tryAgain')}</strong>${expl}`;fb.className='feedback show bad';if(apply)requestAnimationFrame(()=>content.scrollTo({top:content.scrollHeight,behavior:'smooth'}));return}
   buttons.forEach(b=>b.disabled=true);buttons[i]?.classList.add(ok?'correct':'wrong');buttons[s.answer]?.classList.add('correct');
   const retried=G.repair&&(state.attempts[state.scene]||0)>0;
-  if(apply){if(ok&&!retried){state.score+=p}if(ok&&s.relic)state.tiles=Math.min(G.tiles,state.tiles+1);if(!ok)state.chances=Math.max(0,state.chances-1);if(s.final)state.finalCorrect=ok;if(G.repair)state.answered++}
+  if(apply){if(ok&&!retried){state.score+=p}if(ok&&s.relic)state.tiles=Math.min(G.tiles,state.tiles+1);if(!ok)state.chances=Math.max(0,state.chances-1);if(s.final)state.finalCorrect=ok;state.answered++}
   const head=ok?(retried?ui('repaired'):ui(s.relic?'relic':'correct',{p})):ui('wrong');const was=ok?'':`<br>${ui('answerWas')} ${esc(optText(s.opts[s.answer]))}`;
   fb.innerHTML=`<strong>${head}</strong>${was}${expl}`;fb.className=`feedback show ${ok?'good':'bad'}`;document.getElementById('continue').hidden=false;updateHUD();if(apply)requestAnimationFrame(()=>content.scrollTo({top:content.scrollHeight,behavior:'smooth'}))}
 function answer(i){if(Object.prototype.hasOwnProperty.call(state.results,state.scene))return;const s=G.scenes[state.scene];if(G.repair&&i!==s.answer){if(!(state.attempts[state.scene]||0))state.mistakes.push(state.scene);state.attempts[state.scene]=(state.attempts[state.scene]||0)+1;displayAnswer(i,true);return}state.results[state.scene]=i;displayAnswer(i,true)}
@@ -369,19 +373,33 @@ function answer(i){if(Object.prototype.hasOwnProperty.call(state.results,state.s
    there is always false and silently kills every ending but `missing`/`failed` —
    a flawless Wonderland run scored 160/160 and was sent to the escape ending.
    With chances in play this is exactly the old test. */
-function resolve(){const alive=!G.chances||state.chances>0;const full=state.tiles>=G.tiles&&alive;const flawless=state.finalCorrect&&full&&state.score>=G.max;if(flawless&&(!state.endingPick||state.endingMaster))return G.endings.master;if(state.endingPick&&alive&&G.endings[state.endingPick]&&!(state.endingMin&&state.score<state.endingMin))return G.endings[state.endingPick];if(state.finalCorrect&&full&&state.score>=G.completeScore)return G.endings.complete;if(state.finalCorrect&&state.tiles<G.tiles)return G.endings.missing;return G.endings.failed}
-function advance(){const s=G.scenes[state.scene];if(state.chances<=0&&state.results[state.scene]!==s.answer){go(G.endings.failed);return}if(s.next==='resolve'){go(resolve());return}go(s.next)}
+/* `bands` is an ending chosen by score alone: [[min, sceneId], …] highest
+   first, the first band the score reaches wins. An export whose endings are
+   pure score thresholds (Frostbound: 64+ / 40-63 / below 40) has no tiles and
+   no chances to reason about, and the tile/chance ladder below would send a
+   64-point run to `missing` because G.tiles is 0. Lessons without `bands` are
+   unchanged. */
+function resolve(){if(G.bands&&G.bands.length){const b=G.bands.find(b=>state.score>=b[0]);if(b)return b[1]}
+  const alive=!G.chances||state.chances>0;const full=state.tiles>=G.tiles&&alive;const flawless=state.finalCorrect&&full&&state.score>=G.max;if(flawless&&(!state.endingPick||state.endingMaster))return G.endings.master;if(state.endingPick&&alive&&G.endings[state.endingPick]&&!(state.endingMin&&state.score<state.endingMin))return G.endings[state.endingPick];if(state.finalCorrect&&full&&state.score>=G.completeScore)return G.endings.complete;if(state.finalCorrect&&state.tiles<G.tiles)return G.endings.missing;return G.endings.failed}
+/* `G.chances &&` is the same guard resolve() carries: a lesson with no chance
+   counter at all (G.chances is 0 by design) has state.chances<=0 from the
+   first frame, so the old test threw the learner to the failed ending on their
+   first wrong answer. With chances in play this is exactly the old test. */
+function advance(){const s=G.scenes[state.scene];if(G.chances&&state.chances<=0&&state.results[state.scene]!==s.answer){go(G.endings.failed);return}if(s.next==='resolve'){go(resolve());return}go(s.next)}
 /* `endingMin` is a score floor on a route's own ending: the route decides WHICH
    reward ending you get, the floor decides whether you have earned one at all.
    Without it a route ending applies at any score. Frankenstein sets none, so its
    behaviour is unchanged. */
-function chooseRoute(i){const r=G.scenes[state.scene].routes[i];if(r.route)state.route.push(r.route);if(r.ending){state.endingPick=r.ending;state.endingMaster=!!r.master;state.endingMin=r.endingMin||0}go(r.min!=null&&state.score<r.min?r.else:r.target)}
+/* `points` on a route is the export kind whose story choices score (Frostbound:
+   the careful road pays 4, the shortcut 2, and the ending bands read the
+   total). A route without `points` scores nothing, as every route did before. */
+function chooseRoute(i){const r=G.scenes[state.scene].routes[i];if(r.route)state.route.push(r.route);if(r.points)state.score+=r.points;if(r.ending){state.endingPick=r.ending;state.endingMaster=!!r.master;state.endingMin=r.endingMin||0}go(r.min!=null&&state.score<r.min?r.else:r.target)}
 function restart(){state=fresh(state.lang);render()}
 (function(){['off',...LANGS].forEach(l=>{const b=document.createElement('button');b.className='lang-item';b.dataset.lang=l;b.innerHTML=l==='off'?`<b>OFF</b><span>${esc(G.labels.off.en)}</span>`:`<b>${l.toUpperCase()}</b><span>${esc(G.names[l])}</span>`;b.addEventListener('click',()=>{state.lang=l;closeMenu();setLang()});langMenu.appendChild(b)});langBtn.addEventListener('click',e=>{e.stopPropagation();toggleMenu()});document.addEventListener('click',e=>{if(!langMenu.hidden&&!langMenu.contains(e.target))closeMenu()})})();
 function setLang(){const wasOpen=state.open;render();if(wasOpen)setOpen(true)}
 document.getElementById('sound').addEventListener('click',()=>{setSound(!sound);beep(true)});
 document.getElementById('fullscreen').addEventListener('click',()=>{if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();else document.exitFullscreen?.()});
-document.addEventListener('keydown',e=>{const k=e.key;if(k.toLowerCase()==='l'){const all=['off',...LANGS];state.lang=all[(all.indexOf(state.lang)+1)%all.length];setLang();return}if(k==='Escape'){if(!langMenu.hidden){closeMenu();return}closePanel();return}if(k.toLowerCase()==='f'){document.getElementById('fullscreen').click();return}if(k.toLowerCase()==='s'){document.getElementById('sound').click();return}if(!state.open&&(k==='Enter'||['1','2','3'].includes(k))){openPanel();return}const s=G.scenes[state.scene];if(['1','2','3'].includes(k)){const i=Number(k)-1;if(s.kind==='question')document.querySelector(`.option[data-i="${i}"]`)?.click();if(s.kind==='choice')document.querySelectorAll('.route')[i]?.click();return}if(k==='Enter')document.querySelector('.continue:not([hidden]),.start,.restart')?.click()});
+document.addEventListener('keydown',e=>{const k=e.key;if(k.toLowerCase()==='l'){const all=['off',...LANGS];state.lang=all[(all.indexOf(state.lang)+1)%all.length];setLang();return}if(k==='Escape'){if(!langMenu.hidden){closeMenu();return}closePanel();return}if(k.toLowerCase()==='f'){document.getElementById('fullscreen').click();return}if(k.toLowerCase()==='s'){document.getElementById('sound').click();return}if(!state.open&&(k==='Enter'||NUM.includes(k))){openPanel();return}const s=G.scenes[state.scene];if(NUM.includes(k)){const i=Number(k)-1;if(s.kind==='question')document.querySelector(`.option[data-i="${i}"]`)?.click();if(s.kind==='choice')document.querySelectorAll('.route')[i]?.click();return}if(k==='Enter')document.querySelector('.continue:not([hidden]),.start,.restart')?.click()});
 setSound(sound);render();
 """
 
@@ -515,6 +533,14 @@ def validate(spec):
     for key, sid in spec['endings'].items():
         if scenes.get(sid, {}).get('kind') != 'ending':
             raise SystemExit('ending %s -> %s is not an ending scene' % (key, sid))
+    bands = spec.get('bands') or []
+    for i, (lo, sid) in enumerate(bands):
+        if scenes.get(sid, {}).get('kind') != 'ending':
+            raise SystemExit('band %d (%s+) -> %s is not an ending scene' % (i, lo, sid))
+        if i and lo >= bands[i - 1][0]:
+            raise SystemExit('bands must run highest first: %s+ follows %s+' % (lo, bands[i - 1][0]))
+    if bands and bands[-1][0] > 0:
+        raise SystemExit('the last band must be 0 — a score below %s reaches no ending' % bands[-1][0])
     _check_answer_key(scenes)
     labels = dict(LABELS, **spec.get('labels', {}))
     _check_langs(labels, langs, 'labels')
@@ -542,6 +568,7 @@ def assemble(spec, out=None):
         'max': spec['max'], 'points': spec.get('points', 5), 'tiles': spec['tiles'],
         'chances': spec['chances'], 'completeScore': spec.get('complete_score', spec['max']),
         'repair': bool(spec.get('repair')), 'total': spec.get('total', 0),
+        'bands': spec.get('bands') or [],
         'tags': spec.get('tags', {'a': {'en': 'NOW'}, 'b': {'en': 'USUALLY'}}),
     }
     css = (CSS.replace('{{ACCENT}}', spec['accent']).replace('{{ACCENT_INK}}', spec.get('accent_ink', '#1a1200'))
