@@ -11,6 +11,38 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-15 — Six more lessons moved to free
+
+`access` in the Supabase `lessons` table is the only switch. The Worker reads
+`access=eq.pro` live (`getProFiles()` in `src/index.js`, edge-cached), so a
+flip takes effect without a deploy; `tools/seo.py` then has to re-run so
+`library.html`, `llms.txt`, `lesson-meta.json`, `sitemap.xml` and
+`tools/lessons.json` agree with it. Hub pages read the same rows through
+`seo.lessons()`, so `tools/build_hubs.py` runs too. Freed: one entry point per
+IELTS route (Academic Writing Part 1, Speaking Parts 1 & 2, Listening Part 9,
+Reading TFNG, Lexical Resource) plus `block-camp/last-bounty-rpg.html`.
+Site-wide free is now 41 of 317.
+
+### The free tier has a pattern, applied to about a third of the library
+
+The first lesson of a series is the free taster — Block Camp present simple,
+Sherpa Camp One and Two, Block Camp II Passive 9. It was never finished, and
+the gaps are visible as **five topic hubs with no free lesson at all**:
+`past-continuous` (6), `present-perfect-continuous` (4), `past-perfect` (6),
+`future-tenses` (14), `used-to` (3). Those hub pages are what Google lands
+people on, and every lesson on them is gated.
+
+The Block Camp "1a" of each tense is the obvious fix and matches what is
+already free elsewhere: `blockcamp-past-continuous.html`,
+`blockcamp-present-perfect-continuous.html`, `blockcamp-past-perfect.html`,
+`blockcamp-going-to.html`, `blockcamp-future-simple.html`, and
+`sherpa-tensing-cloud-used-to.html` for the hub with no Block Camp lesson.
+The eight Time Signals (Minecraft ed.) pages are the other candidate set —
+short, reference-shaped, high-intent search terms, and only the present
+perfect one is free. Not done: it is a pricing call, not a defect.
+
+---
+
 ## 2026-09-14 (later still) — The hotspot tables, cleared
 
 Eighteen findings across eleven RPGs down to **zero**. Every Block Camp
