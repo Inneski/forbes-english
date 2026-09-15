@@ -32,14 +32,22 @@ the gaps are visible as **five topic hubs with no free lesson at all**:
 `future-tenses` (14), `used-to` (3). Those hub pages are what Google lands
 people on, and every lesson on them is gated.
 
-The Block Camp "1a" of each tense is the obvious fix and matches what is
-already free elsewhere: `blockcamp-past-continuous.html`,
+**Closed the same day.** The Block Camp "1a" of each tense, which matches
+what was already free elsewhere: `blockcamp-past-continuous.html`,
 `blockcamp-present-perfect-continuous.html`, `blockcamp-past-perfect.html`,
 `blockcamp-going-to.html`, `blockcamp-future-simple.html`, and
 `sherpa-tensing-cloud-used-to.html` for the hub with no Block Camp lesson.
-The eight Time Signals (Minecraft ed.) pages are the other candidate set —
-short, reference-shaped, high-intent search terms, and only the present
-perfect one is free. Not done: it is a pricing call, not a defect.
+With them, the eight remaining Time Signals (Minecraft ed.) pages — short,
+reference-shaped, high-intent search terms, and companions to the Block Camp
+lessons rather than the teaching itself — and
+`sherpa-tensing-descent-one-present-continuous-passive.html`, so the Descent
+has an entry point the way Camp One does the ascent.
+
+**Every topic hub now has at least one free lesson.** Site-wide free is 56 of
+317. If that is too much to give away, the Time Signals set is the block to
+reverse first: eight rows back to `pro`, then `build_hubs.py` and `seo.py`.
+Reversing the six "1a" tasters would put the zero-free hubs back, so do not
+start there.
 
 ---
 
