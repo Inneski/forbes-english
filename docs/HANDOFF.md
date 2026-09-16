@@ -81,12 +81,20 @@ cogs (3.65 vs 2.28), jigsaw (6.26 vs 2.12), frame (4.82 vs 2.55), the
 stopwatch meant to replace the departure board (3.76 vs 2.00), the pencil
 (7.70 vs 7.52, noise), and the hero — see below.
 
-### The cover is measured separately, and the hero won a straight fight
+### The cover is measured separately, in the candidate's own palette
 
-Four purpose-shot "empty meeting room" variants were generated for the cover
-and **all four were rejected**. Every one puts a wall-mounted screen dead
-centre, which is exactly where the 232px stacked logo sits: the Forbes mark
-measured 1.53–3.68:1 against the incumbent office chair's 4.86:1.
+A hero changes `--accent`, so judging its Forbes mark against the *outgoing*
+accent measures the wrong colour. Derive the candidate's palette first, then
+measure the logo, title and subtitle bands under the light-theme cover scrim
+(radial white 0.48 at 50%/46%, ellipse 58%×54%, plus the linear stops) over the
+hero at full strength — no wash, no dim, per the `.stage.on-cover` rules.
+
+**Six "empty meeting room" variants were generated for this slot across two
+batches and all six were rejected.** Midjourney puts a screen on the back wall
+of a meeting room every time, and that is exactly where the 232px stacked logo
+sits: the Forbes mark measured 1.53–3.68:1. The notepad that ships measures
+5.81:1 on the mark and clears every band; the office-chair placeholder it
+replaced measured 4.86:1.
 
 **Why no palette switch rescues it, which is the transferable half.**
 HOUSE-STYLE §2 offers `--logo-mark: var(--contrast)` when the mark disappears
@@ -98,9 +106,35 @@ the cover with the scrim applied (radial white 0.48 at 50%/46%, ellipse
 58%×54%, plus the linear stops) over the hero at full strength — no wash, no
 dim, per the `.stage.on-cover` rules — at the logo, title and subtitle bands.
 
-The meeting-room palette was tested too and is not the reason: `--void`
-`#d8b9ac` vs `#d8beac` is invisible on screen, and every contrast row passed.
-The cover composition was the whole of it.
+A meeting-room palette was tested too and was never the reason: it passed every
+contrast row and the interiors were indistinguishable. Composition was the whole
+of it.
+
+### Three generations in one evening, and the third is the one that ships
+
+Placeholders from an unrelated batch → a purpose-shot set against the brief →
+a **warmer, more saturated re-shoot of the same fourteen subjects**. The third
+set ships. Twelve of its fourteen went in; `board.jpg` and `jigsaw.jpg` kept
+their cooler second-generation picture because the warm re-shoot of those two
+measured 2.32 and 2.03, and one slot moved from the stencil (whose dark table
+edge sat under the word-bank label at 2.90:1) to a second card-strip variant.
+
+**The deck is warm rust and teal rather than muted olive because the hero
+changed, not because anyone picked a colour.** `--accent` went `#953e12` →
+`#a42a00`, `--secondary` `#577170` → `#72aab3`. Every palette value is still
+the verbatim output of `extract-palette.py` on the hero.
+
+Two things that cost time and will again:
+
+- **Re-run the ink measurement after any hero change.** `--void` and `--text`
+  move with the palette, so all 68 numbers shift. The stencil failure only
+  appeared in the new palette.
+- **The browser caches background bitmaps across a rebuild**, because the
+  filenames do not change. A hard reload updates the HTML and the palette while
+  leaving the old artwork on screen, which looks exactly like a build that
+  silently did nothing. Force it:
+  `await Promise.all([...urls].map(u => fetch(u, {cache: 'reload'})))` over
+  `CampaignReview/hero.jpg` plus every `section.slide[data-bg]`, then reload.
 
 `lesson-template/bgmeasure.py` could not run here: it imports `playwright`,
 which is not installed on Innes's Windows box. The measurement above was done

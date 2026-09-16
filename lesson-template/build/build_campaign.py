@@ -71,40 +71,55 @@ Three notes before changing anything here.
 * The artwork is one coherent flat-vector family, one picture per section per
   HOUSE-STYLE §5c, and each was picked for what it depicts: a tape measure for
   measurement, interlocking cogs for cause, numbered mailboxes for reach, two
-  rubber stamps for an approval that is not yours to give, a departure board
-  mid-flip for the moment before you have the words. Swapping one is a one-line
-  change to the bg name plus a re-run; swapping the hero also means re-running
-  extract-palette.
+  rubber stamps for an approval that is not yours to give, a card strip with
+  three cut windows for the slots you fill. Swapping one is a one-line change to
+  the bg name plus a re-run; swapping the hero also means re-running
+  extract-palette, because the palette IS the hero.
 
-  **Every background here was chosen by measurement, not by eye, and the method
-  is the transferable part.** On a light deck the text is dark ink, so a
-  background failure is a dark MASS under a text run rather than a bright one —
-  the opposite of the dark-theme case §5 describes — and a blanket wash bump is
-  the wrong lever, because a void-based wash on a light deck lightens the whole
+  It went through three generations in one evening: placeholders pulled from an
+  unrelated batch, a purpose-shot set against a slot-by-slot brief, then a
+  warmer, more saturated re-shoot of the same fourteen subjects. The third set
+  is what ships, and it is also what sets the palette — this deck is warm rust
+  and teal rather than muted olive because the hero changed, not because a
+  colour was picked.
+
+  **Every background was chosen by measurement, not by eye, and the method is
+  the transferable part.** On a light deck the text is dark ink, so a background
+  failure is a dark MASS under a text run rather than a bright one — the
+  opposite of the dark-theme case §5 describes — and a blanket wash bump is the
+  wrong lever, because a void-based wash on a light deck lightens the whole
   picture toward the flat look §4a warns about (clearing the worst patch needed
   alpha 0.45, far past it). The fix is per-image.
 
   Measure against the real ink rectangles, not a band across the slide: activate
   each slide in turn and take Range.getBoundingClientRect() on every .eyebrow,
   .slide-title, .q-ctx, .q-stem, .order-hint and .prose NOT inside a .card, then
-  composite 0.74 × image + 0.26 × --void and apply the wash at that y. The first
-  cut ran 13 of 68 text runs under 3.5:1; a pass that moved four images to the
-  variant of the same picture whose subject sits LOW took it to 1 of 68; the
-  purpose-shot batch took it to **0 of 68**, weakest run 3.92:1 on the cogs
-  stem. If you replace a picture, re-run that measurement rather than assuming.
+  composite 0.74 × image + 0.26 × --void and apply the wash at that y. Run it
+  again after ANY hero change — --void and --text move with the palette, so
+  every one of the 68 numbers shifts. Generation one ran 13 of 68 under 3.5:1;
+  two ran 0 of 68; three ran 1 of 68 (a stencil whose dark table edge sat under
+  the word-bank label) and is back to **0 of 68** with that slot on the card
+  strip instead.
 
-* **The cover is measured separately and the hero lost a straight fight.** Four
-  purpose-shot "empty meeting room" variants were generated for this slot and
-  all four were rejected: every one puts a wall-mounted screen dead centre,
-  which is exactly where the 232px stacked logo sits, and the Forbes mark came
-  out at 1.53–3.68:1 against the office chair's 4.86:1.
+* **The cover is measured separately, in the candidate's OWN palette.** A hero
+  changes the accent, so judging its Forbes mark against the outgoing accent
+  measures the wrong colour: derive the candidate's palette first, then measure
+  the logo, title and subtitle bands under the light-theme cover scrim (radial
+  white 0.48 at 50%/46%, ellipse 58%×54%, plus the linear stops) over the hero
+  at full strength — no wash, no dim, per the .stage.on-cover rules.
 
-  The reason it cannot be rescued is worth keeping. HOUSE-STYLE §2 offers
-  `--logo-mark: var(--contrast)` when the mark disappears into the artwork, and
-  `var(--text)` as the safe fallback — but on a LIGHT deck every one of those is
-  dark ink by design (accent #953e12, contrast #0f4d44, text #2a1911), so a dark
-  panel behind the logo defeats all three. On a light lesson the hero has to
-  keep its centre pale; no palette switch will save it.
+  **Six "empty meeting room" variants were generated for this slot across two
+  batches and all six were rejected.** Midjourney puts a wall-mounted screen on
+  the back wall of a meeting room every time, which is exactly where the 232px
+  stacked logo sits; the Forbes mark came out at 1.53–3.68:1. The notepad that
+  ships measures 5.81:1 on the mark and clears every band.
+
+  The reason a dark centre cannot be rescued is worth keeping. HOUSE-STYLE §2
+  offers `--logo-mark: var(--contrast)` when the mark disappears into the
+  artwork, and `var(--text)` as the safe fallback — but on a LIGHT deck all
+  three are dark ink by design (here accent #a42a00, contrast #075544, text
+  #2a1711), so a dark panel behind the logo defeats every one of them. On a
+  light lesson the hero has to keep its centre pale.
 
 * Every MC stem here carries a stem_key and translates, which is the opposite
   of the grammar decks. The stems are all "which sentence …?" prompts with no
@@ -127,20 +142,20 @@ HERO = 'hero.jpg'
 # Mechanically derived — the verbatim output of
 #     python3 lesson-template/extract-palette.py CampaignReview/hero.jpg --light
 # Contrast report: PASS on all eight rows, the tightest being border on
-# surface at 3.33:1 against a 1.25 floor. Never hand-pick a value in here.
+# surface at 3.65:1 against a 1.25 floor. Never hand-pick a value in here.
 PALETTE = '''  --hero: url('%s/%s');
 
-  --void          : #d8beac;
-  --surface       : #e1d0c4;
-  --surface2      : #dcc6b8;
-  --border        : #96634a;
-  --text          : #2a1911;
-  --text-dim      : #5e3e2e;
-  --accent        : #953e12;
-  --accent-bright : #6e2907;
-  --accent-dim    : #d87a4b;
-  --secondary     : #577170;
-  --contrast      : #0f4d44;''' % (F, HERO)
+  --void          : #d8c6ac;
+  --surface       : #e1d6c4;
+  --surface2      : #dccdb8;
+  --border        : #965e4a;
+  --text          : #2a1711;
+  --text-dim      : #5e3b2e;
+  --accent        : #a42a00;
+  --accent-bright : #711d00;
+  --accent-dim    : #ef612f;
+  --secondary     : #72aab3;
+  --contrast      : #075544;''' % (F, HERO)
 
 
 # ── teaching slides ────────────────────────────────────────────────────
@@ -300,7 +315,7 @@ GAPS = [
     dict(bank=BANK_B, title_key='gapTitleB', title='Complete the proposal',
          hint_key='gapHintB',
          hint='One verb per gap. Three of the six are not needed &mdash; and all three are real phrases from this lesson.',
-         width=140, bg='stencil.jpg',
+         width=140, bg='slots.jpg',
          rows=[('I&rsquo;d suggest we ______ a fifth of the budget out of display and into search.',
                 ['shift'],
                 '<strong>Shift &hellip; out of &hellip; and into &hellip;</strong> is the fixed pattern for moving money between channels.'),
