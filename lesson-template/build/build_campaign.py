@@ -155,7 +155,17 @@ PALETTE = '''  --hero: url('%s/%s');
   --accent-bright : #711d00;
   --accent-dim    : #ef612f;
   --secondary     : #72aab3;
-  --contrast      : #075544;''' % (F, HERO)
+  --contrast      : #075544;
+
+  /* Raised from the 0.68 default on Innes's note of 2026-09-16, about the
+     sort slide: "increase opacity on text boxes". The chips on that board sit
+     over a tool roll with a lot of small dark incident, and at 0.68 the tools
+     read through them. This is a LOOK call, not a contrast fix — measure-plate
+     puts the whole deck at 7.1-9.0:1 at 0.68 and 10.9-11.3:1 at 0.94, both far
+     clear of AA — so it is set by eye and the measurement only says it is
+     safe. It lifts every plate on the deck, which also answers the cards
+     reading soft against the paler re-shot artwork. */
+  --plate         : 0.92;''' % (F, HERO)
 
 
 # ── teaching slides ────────────────────────────────────────────────────

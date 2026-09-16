@@ -181,6 +181,75 @@ ever left the 2–4 band. Noted in the i18n module too.
   with 53 lessons and 9 free; it now has 10, and this is the only free one
   that is about agency work specifically.
 
+### THE ACTIVATION STAGE CHANGED FOR EVERY DECK — two glowing words
+
+Innes, late on 2026-09-16: *"Make activation screen with pop up windows from
+one glowing word DISCUSSION and WRITING. Never show both open at same time."*
+It is the Block Camp RPG idiom (`rpg/README.md` §1 — the text waits behind a
+glowing object and pops out of it) brought into the deck engine.
+
+**Both tasks are still live and both still print.** House style §10b says the
+two tracks are not alternatives — a class runs one in the room and sets the
+other as homework — and that has not changed. Only one is on *screen* at a
+time. The print stylesheet opens both panels, drops the words and the ✕, and
+lifts the max-height, so the PDF export is unaffected.
+
+Four files move together and all of it is additive:
+
+1. `deck.activate()` — new markup. Same signature, so **no builder changes**.
+   `#actInput`, `#actCount` and `#actPrint` stay exactly where the engine's
+   activation block expects them.
+2. `lesson-template.html` — `.act-stage` / `.act-word` / `.act-panel` CSS, the
+   print block, and `actPanel(slide, which)`, which is the only thing that
+   decides what is visible. Opening is that call; closing is the same call
+   with `null`. An earlier version toggled each panel independently and could
+   show both, which is the one thing the brief ruled out.
+3. `chrome_i18n.CHROME` — `actSpeakWord` / `actWriteWord` in all eleven
+   languages.
+4. `deck.fill_ledger()` — backfills those two keys, same as it already does
+   for `ledDp`/`ledTime`/`ledClues`. Without it every deck written before
+   today would fail the I18N gate the next time it was rebuilt, because the
+   markup carries the keys unconditionally.
+
+**Existing shipped decks are untouched until they are rebuilt**, and a rebuild
+picks up markup and CSS together, so there is no half state.
+
+**The trap, which cost a LAYOUT failure:** `.act-panel { display: flex }`
+outranks the UA sheet's `[hidden] { display: none }` — a class beats an
+attribute selector — so both panels rendered and slide 23 overflowed by 114px.
+`.act-panel[hidden] { display: none !important }` is restated in the sheet.
+The `hidden` attribute is kept rather than swapped for a class because it is
+also what a screen reader reads.
+
+Verified in the page, not by eye: no overflow closed or with either panel
+open, exactly one panel open at a time, `aria-expanded` tracking, Esc and a
+click on the artwork both folding it away.
+
+### `measure-plate.py` was measuring the wrong end on a light deck
+
+It reports the **brightest** composited tile, which is right for a dark deck —
+light text is in trouble where the picture is bright. On a LIGHT deck the ink
+is dark and the risk inverts exactly: the worst tile is the **darkest**.
+
+It does not fail loudly, it passes everything. Run against `CampaignReview` the
+old version reported 11.6–12.6:1 on all fourteen images at every alpha from
+0.70 to 0.94 — which reads as "any plate you like" and is the opposite of a
+measurement. It now picks the end from the palette (`lum(text) < lum(void)`
+means a light deck) and prints which one it used.
+
+### `--plate-bin`: the sorting bin was outside the plate system
+
+`--plate` is the documented per-deck lever for plate opacity, and `.sort-bin`
+ignored it — hardcoded at 78%. A deck that raised `--plate` got solid chips
+sitting inside a see-through box, which is the opposite of what it asked for
+and invisible unless you happened to look at that one slide. The bin now
+derives from `--plate` and keeps its +10, so at the 0.68 default it still
+computes to the same 78% every shipped deck already has.
+
+This deck runs `--plate: 0.92`, on Innes's note about the sort slide. It is a
+**look** call, not a contrast fix: measured properly the deck sits at 7.1–9.0:1
+at 0.68 and 10.9–11.3:1 at 0.94, both far clear of AA.
+
 ---
 
 ## 2026-09-16 — Wonderland (The Stolen Now): the panel was burying the cast, and one plate was a train

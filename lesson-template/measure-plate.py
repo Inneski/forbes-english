@@ -87,8 +87,20 @@ def palette_of(folder):
     return None, None
 
 
-def worst_tile(path, void):
-    """The brightest TILE-sized patch of the composited backdrop."""
+def worst_tile(path, void, darkest=False):
+    """The TILE-sized patch of composited backdrop that hurts the text most.
+
+    On a DARK deck the text is light, so the plate is in trouble where the
+    picture is brightest. On a LIGHT deck the text is dark ink and the risk
+    inverts exactly: the plate is in trouble where the picture is DARKEST.
+
+    Measuring the wrong end does not fail loudly — it passes everything. Run
+    against CampaignReview (light) the brightest-tile version reported 11.6
+    to 12.6:1 on all fourteen images at every alpha from 0.70 to 0.94, which
+    reads as "any plate you like" and is the opposite of the truth: at the
+    dark end the same deck has images that need 0.80 to clear AA. Added
+    2026-09-16, when a light deck first asked the question.
+    """
     im = Image.open(path).convert('RGB')
     im.thumbnail((1280, 720))
     w, h = im.size
@@ -101,7 +113,8 @@ def worst_tile(path, void):
             mean = tuple(sum(p[i] for p in px) / n for i in range(3))
             back = over(mean, void, BG_OPACITY)
             back = over(void, back, WASH)
-            if worst is None or lum(back) > lum(worst):
+            if worst is None or ((lum(back) < lum(worst)) if darkest
+                                 else (lum(back) > lum(worst))):
                 worst = back
     return worst
 
@@ -121,14 +134,20 @@ def main():
             bad = 1
             continue
         void, surface, text = pal['--void'], pal['--surface'], pal['--text']
+        # Which end hurts is a fact about the palette, not a flag to remember:
+        # ink darker than its own canvas means a light deck.
+        dark_ink = lum(text) < lum(void)
         print('\n  %s  (%s)' % (folder, builder))
-        print('    void %s  surface %s  text %s'
+        print('    void %s  surface %s  text %s   %s theme, worst tile is the %s'
               % (tuple(map(int, void)), tuple(map(int, surface)),
-                 tuple(map(int, text))))
+                 tuple(map(int, text)),
+                 'light' if dark_ink else 'dark',
+                 'darkest' if dark_ink else 'brightest'))
 
         imgs = sorted(f for f in os.listdir(folder)
                       if f.lower().endswith(('.jpg', '.jpeg', '.png')))
-        backs = {f: worst_tile(os.path.join(folder, f), void) for f in imgs}
+        backs = {f: worst_tile(os.path.join(folder, f), void, darkest=dark_ink)
+                 for f in imgs}
 
         print('    %-10s %s' % ('alpha', '  '.join('%-6s' % f.split('.')[0]
                                                    for f in imgs)))

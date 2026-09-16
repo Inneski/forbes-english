@@ -134,6 +134,14 @@
   --plate-bg:   color-mix(in srgb, var(--surface)  calc(var(--plate, 0.68) * 100%), transparent);
   --plate-box:  color-mix(in srgb, var(--surface2) calc(var(--plate, 0.68) * 100%), transparent);
   --plate-card: color-mix(in srgb, var(--surface)  calc(var(--plate, 0.68) * 100%), transparent);
+  /* The sorting bin sat OUTSIDE this system on a hardcoded 78% until
+     2026-09-16, which meant a deck that raised --plate got solid chips inside
+     a see-through box — the opposite of what it asked for, and invisible
+     unless you looked at that one slide. It keeps its +10 over the plate, so
+     at the 0.68 default it still computes to the same 78% every shipped deck
+     already has, and it now moves when --plate moves. */
+  --plate-bin:  color-mix(in srgb, var(--surface)
+                  calc(min(calc(var(--plate, 0.68) + 0.10), 1) * 100%), transparent);
 
   /* Card entrance. The delay is the whole point: for that beat the slide
      shows nothing but the artwork. Raise --card-in-delay to linger longer on
@@ -691,6 +699,94 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
 }
 .act-cols { align-items: stretch; }
 .act-card { display: flex; flex-direction: column; padding: 20px 24px; }
+
+/* ── ACTIVATION: two glowing words, one panel at a time ──────────────
+   Innes, 2026-09-16: "pop up windows from one glowing word DISCUSSION and
+   WRITING. Never show both open at same time." The idiom is the Block Camp
+   RPG's — the text waits behind a glowing object and pops out of it — and
+   both tasks are still live and both still print. Only one is on screen.
+
+   The glow cannot be a white halo here. That is what an RPG uses, but those
+   are dark full-bleed scenes; on a LIGHT deck a white bloom over pale
+   artwork is invisible. It is built from --accent instead, which flips with
+   the theme and stays visible on paper and on ink alike. */
+.act-stage { position: relative; }
+.act-choose {
+  display: flex; justify-content: center; gap: 26px;
+  margin: 4px 0 14px;
+}
+.act-word {
+  position: relative; display: flex; align-items: center; gap: 12px;
+  font-family: var(--font-display); font-size: 30px; font-weight: 700;
+  letter-spacing: .01em; color: var(--accent-bright);
+  background: var(--plate-card);
+  border: 1.5px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  border-radius: 999px; padding: 12px 30px; cursor: pointer;
+  backdrop-filter: blur(3px);
+  transition: transform .18s ease, border-color .18s, box-shadow .18s;
+  animation: act-pulse 2.6s ease-in-out infinite;
+}
+.act-word-icon { font-size: 22px; line-height: 1; }
+.act-word:hover, .act-word:focus-visible {
+  outline: none; transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 26%, transparent),
+              0 6px 26px color-mix(in srgb, var(--accent) 34%, transparent);
+}
+/* The open word stops pulsing and reads as pressed: the glow is an
+   invitation, and an invitation you have already accepted is noise. */
+.act-word.is-open {
+  animation: none; transform: none;
+  color: var(--text); border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 18%, var(--surface2));
+  box-shadow: none;
+}
+@keyframes act-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 34%, transparent),
+                         0 0 14px color-mix(in srgb, var(--accent) 22%, transparent); }
+  50%      { box-shadow: 0 0 0 7px color-mix(in srgb, var(--accent) 0%, transparent),
+                         0 0 26px color-mix(in srgb, var(--accent) 40%, transparent); }
+}
+@media (prefers-reduced-motion: reduce) { .act-word { animation: none; } }
+
+.act-panel {
+  position: relative;
+  background: var(--plate-card);
+  border: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+  border-radius: var(--r);
+  backdrop-filter: blur(3px);
+  padding: 20px 26px;
+  display: flex; flex-direction: column;
+  /* The canvas is fixed at 720 and the head, chips, words and Start again
+     button are all above or below this: 300 is what is left. A panel that
+     outgrows it would scroll, which §6 forbids outright. */
+  max-height: 300px; overflow: hidden;
+  animation: act-pop .22s cubic-bezier(.2, .9, .3, 1.25) both;
+}
+/* `display: flex` on .act-panel outranks the UA sheet's `[hidden] {display:none}`
+   — a class beats an attribute selector — so both panels rendered and the
+   slide overflowed the canvas by 114px. The `hidden` attribute is doing real
+   work here (it is also what the screen reader reads), so it is restated
+   rather than swapped for a class. */
+.act-panel[hidden] { display: none !important; }
+.act-panel[data-panel="speak"] { transform-origin: 30% -20px; }
+.act-panel[data-panel="write"] { transform-origin: 70% -20px; }
+@keyframes act-pop {
+  from { opacity: 0; transform: scale(.94) translateY(-8px); }
+  to   { opacity: 1; transform: none; }
+}
+.act-close {
+  position: absolute; top: 10px; right: 12px;
+  width: 30px; height: 30px; border-radius: 999px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 19px; line-height: 1; color: var(--text-dim);
+  background: var(--inset); border: 1px solid color-mix(in srgb, var(--border) 40%, transparent);
+  cursor: pointer; transition: color .15s, border-color .15s;
+}
+.act-close:hover { color: var(--accent-bright); border-color: var(--accent); }
+.act-panel .act-list { overflow: auto; }
+.act-restart { margin-top: 14px; text-align: center; }
+
 .act-kind {
   display: flex; align-items: center; gap: 9px;
   font-family: var(--font-mono); font-size: 11.5px;
@@ -830,7 +926,7 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
 .sort-bin {
   border: 1.5px dashed color-mix(in srgb, var(--border) 60%, transparent);
   border-radius: var(--r);
-  background: color-mix(in srgb, var(--surface) 78%, transparent);
+  background: var(--plate-bin);
   backdrop-filter: blur(3px);
   padding: 10px 12px; min-height: 132px;
   display: flex; flex-direction: column; gap: 8px;
@@ -1064,6 +1160,18 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
   .feedback { opacity: 1 !important; }
   .act-input, .act-foot { display: none !important; }
   .act-print { display: block !important; }
+  /* On screen the activation shows one task at a time; on paper it shows
+     both. A printed handout has no clicks in it, and house style §10b is
+     explicit that the two tracks are not alternatives — a class runs one in
+     the room and sets the other as homework, so a PDF that carried only the
+     one that happened to be open would drop half the stage. The words and
+     the close buttons are chrome and go. */
+  .act-panel[hidden] { display: flex !important; }
+  .act-panel { max-height: none !important; overflow: visible !important;
+               animation: none !important; break-inside: avoid; }
+  .act-panel + .act-panel { margin-top: 12px; }
+  .act-choose, .act-close { display: none !important; }
+  .act-panel .act-list { overflow: visible !important; }
 }
 
 /* Text that sits on the canvas rather than inside a card needs a GROUND, not
@@ -1344,8 +1452,21 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
           <span class="bank-chip">target phrase</span>
           <span class="bank-chip">target phrase</span>
         </div>
-        <div class="cols act-cols">
-          <div class="card act-card">
+        <div class="act-stage">
+          <div class="act-choose">
+            <button class="act-word" type="button" data-action="act-open" data-act="speak"
+                    aria-expanded="false" aria-controls="actPanelSpeak">
+              <span class="act-word-icon" aria-hidden="true">🗣</span>
+              <span class="act-word-text" data-i18n="actSpeakWord">Discussion</span>
+            </button>
+            <button class="act-word" type="button" data-action="act-open" data-act="write"
+                    aria-expanded="false" aria-controls="actPanelWrite">
+              <span class="act-word-icon" aria-hidden="true">✍️</span>
+              <span class="act-word-text" data-i18n="actWriteWord">Writing</span>
+            </button>
+          </div>
+          <div class="act-panel" id="actPanelSpeak" data-panel="speak" hidden>
+            <button class="act-close" type="button" data-action="act-close" aria-label="Close">&times;</button>
             <div class="act-kind"><span class="act-icon">🗣</span><span data-i18n="actSpeakKind">Discussion · in pairs</span></div>
             <p class="act-brief" data-i18n="actSpeakBrief">Frame the speaking task in one line.</p>
             <ul class="act-list">
@@ -1354,7 +1475,8 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
               <li data-i18n="actSpeak3">Third prompt, arguing the opposite side.</li>
             </ul>
           </div>
-          <div class="card act-card">
+          <div class="act-panel" id="actPanelWrite" data-panel="write" hidden>
+            <button class="act-close" type="button" data-action="act-close" aria-label="Close">&times;</button>
             <div class="act-kind"><span class="act-icon">✍️</span><span data-i18n="actWriteKind">Writing · 180–220 words</span></div>
             <p class="act-brief" data-i18n="actWriteBrief">Frame the writing task in one or two lines.</p>
             <textarea class="act-input" id="actInput" data-i18n-ph="actPlaceholder" placeholder="Write your response here…" aria-label="Written response"></textarea>
@@ -1365,7 +1487,7 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
             <div class="act-print" id="actPrint" aria-hidden="true"></div>
           </div>
         </div>
-        <div style="margin-top:14px;text-align:center">
+        <div class="act-restart">
           <button class="btn" data-action="restart" data-i18n="btnRestart">Start again</button>
         </div>
       </div>
@@ -2479,6 +2601,56 @@ document.addEventListener('click', e => {
       setTimeout(() => { a.textContent = was; }, 1400);
     });
   }
+  if (act === 'act-open') actPanel(a.closest('.slide'), a.dataset.act);
+  if (act === 'act-close') actPanel(a.closest('.slide'), null);
+});
+
+/* ── Activation panels: one open at a time, and that is the whole rule ──
+   Passing the slide in rather than reaching for document.getElementById is
+   what makes it safe on a deck with more than one activation stage — the
+   IDs the engine needs (#actInput, #actCount, #actPrint) are unique per
+   page, but the words and panels are not.
+
+   Opening is idempotent and closing is the same call with null, so there is
+   exactly one place that decides what is visible; an earlier version toggled
+   each panel independently and could show both, which is the one thing the
+   brief ruled out. */
+function actPanel(slide, which) {
+  if (!slide) return;
+  slide.querySelectorAll('.act-panel').forEach(p => {
+    const on = p.dataset.panel === which;
+    p.hidden = !on;
+    if (on) p.classList.remove('is-closing');
+  });
+  slide.querySelectorAll('.act-word').forEach(w => {
+    const on = w.dataset.act === which;
+    w.classList.toggle('is-open', on);
+    w.setAttribute('aria-expanded', on ? 'true' : 'false');
+  });
+  const open = which && slide.querySelector('.act-panel[data-panel="' + which + '"]');
+  if (open) {
+    // Focus the textarea when the writing panel opens — it is the only thing
+    // in there to do — but never steal focus on the discussion panel, which
+    // is read aloud from the screen.
+    const ta = open.querySelector('.act-input');
+    if (ta) ta.focus({ preventScroll: true });
+  }
+}
+/* Esc closes whatever is open, on the active slide only. */
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  const sl = slides[idx];
+  if (sl && sl.dataset.type === 'activate' && sl.querySelector('.act-panel:not([hidden])')) {
+    e.stopPropagation();
+    actPanel(sl, null);
+  }
+}, true);
+/* A click on the slide itself — the artwork around the panel — folds it away,
+   the way the RPG's picture does. Anything inside the stage is left alone. */
+document.addEventListener('click', e => {
+  const sl = e.target.closest('.slide[data-type="activate"]');
+  if (!sl || e.target.closest('.act-stage') || e.target.closest('[data-action]')) return;
+  actPanel(sl, null);
 });
 
 /* Branch links. A choice may also move the ledger; the cost is paid once,

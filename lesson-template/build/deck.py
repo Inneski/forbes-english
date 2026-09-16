@@ -499,6 +499,27 @@ def results(next_key='resNext', next_text='Now use it →', folder='', bg=None):
 
 def activate(title, use_label, chips, speak_kind, speak_brief, speak_items,
              write_kind, write_brief, placeholder, folder='', bg=None):
+    """The activation stage: two glowing words, one panel open at a time.
+
+    Innes, 2026-09-16: *"Make activation screen with pop up windows from one
+    glowing word DISCUSSION and WRITING. Never show both open at same time."*
+    It is the Block Camp RPG idiom (rpg/README.md §1 — "the picture is the
+    lesson; the text waits behind the object") brought across to the deck
+    engine, and the reason it suits this slide is that the activation is the
+    one screen where the two tasks are genuinely alternatives in the room:
+    a class runs the discussion and sets the writing as homework, and showing
+    both at once said they were a menu to choose between.
+
+    Both tasks are still LIVE and both still print — house style §10b says the
+    slide shows both because a class often does one and sets the other, and
+    that has not changed. What changed is that only one is on screen at a time.
+    The print stylesheet opens both and drops the chrome, so the PDF export is
+    unaffected.
+
+    The markup keeps #actInput, #actCount and #actPrint exactly where the
+    engine's activation block expects them; that code does not know or care
+    that a panel is now around them.
+    """
     lis = "\n              ".join('<li data-i18n="actSpeak%d">%s</li>' % (n + 1, t)
                                  for n, t in enumerate(speak_items))
     return ('''
@@ -512,15 +533,29 @@ def activate(title, use_label, chips, speak_kind, speak_brief, speak_items,
           <span class="act-target-label" data-i18n="actUse">%s</span>
           %s
         </div>
-        <div class="cols act-cols">
-          <div class="card act-card">
+        <div class="act-stage">
+          <div class="act-choose">
+            <button class="act-word" type="button" data-action="act-open" data-act="speak"
+                    aria-expanded="false" aria-controls="actPanelSpeak">
+              <span class="act-word-icon" aria-hidden="true">🗣</span>
+              <span class="act-word-text" data-i18n="actSpeakWord">Discussion</span>
+            </button>
+            <button class="act-word" type="button" data-action="act-open" data-act="write"
+                    aria-expanded="false" aria-controls="actPanelWrite">
+              <span class="act-word-icon" aria-hidden="true">✍️</span>
+              <span class="act-word-text" data-i18n="actWriteWord">Writing</span>
+            </button>
+          </div>
+          <div class="act-panel" id="actPanelSpeak" data-panel="speak" hidden>
+            <button class="act-close" type="button" data-action="act-close" aria-label="Close">&times;</button>
             <div class="act-kind"><span class="act-icon">🗣</span><span data-i18n="actSpeakKind">%s</span></div>
             <p class="act-brief" data-i18n="actSpeakBrief">%s</p>
             <ul class="act-list">
               %s
             </ul>
           </div>
-          <div class="card act-card">
+          <div class="act-panel" id="actPanelWrite" data-panel="write" hidden>
+            <button class="act-close" type="button" data-action="act-close" aria-label="Close">&times;</button>
             <div class="act-kind"><span class="act-icon">✍️</span><span data-i18n="actWriteKind">%s</span></div>
             <p class="act-brief" data-i18n="actWriteBrief">%s</p>
             <textarea class="act-input" id="actInput" data-i18n-ph="actPlaceholder" placeholder="%s" aria-label="Written response"></textarea>
@@ -531,7 +566,7 @@ def activate(title, use_label, chips, speak_kind, speak_brief, speak_items,
             <div class="act-print" id="actPrint" aria-hidden="true"></div>
           </div>
         </div>
-        <div style="margin-top:14px;text-align:center">
+        <div class="act-restart">
           <button class="btn" data-action="restart" data-i18n="btnRestart">Start again</button>
         </div>
       </div>
@@ -558,8 +593,15 @@ def fill_ledger(code, rendered):
     build_elzar.py and build_food.py each inline their own copy of assemble's
     i18n block and would otherwise need their own copy of this too. A module
     that already defines the keys is left alone.
+
+    actSpeakWord/actWriteWord joined the list on 2026-09-16, when the
+    activation stage became two glowing words with a panel behind each. Same
+    reasoning exactly: the markup carries the keys unconditionally, no i18n
+    module written before that date declares them, and without the backfill
+    every one of those decks would fail check-lesson's I18N gate the next time
+    it was rebuilt.
     """
-    for k in ('ledDp', 'ledTime', 'ledClues'):
+    for k in ('ledDp', 'ledTime', 'ledClues', 'actSpeakWord', 'actWriteWord'):
         if not re.search(r'(?m)^\s*%s\s*:' % k, rendered):
             body = rendered.rstrip()
             assert body.endswith('}'), 'render() did not return an object'
