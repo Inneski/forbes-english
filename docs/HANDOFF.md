@@ -11,6 +11,91 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-16 — Construction Presentations (C1): five of seven MC items had a second right answer
+
+`forbes-english-construction-presentations.html` is **hand-written HTML with
+no builder**, like Grammar Court I & II (2026-09-09, below). Edit the file
+directly. Innes asked for the grammar logic to be checked. The checking code
+was sound; the items were not.
+
+**Five of the seven multiple-choice items keyed one answer while another
+option on the slide — in one case all four — was also correct English, and
+every one of those explanations defended the key with a claim that is
+false:**
+
+| item | keyed | also correct, on the slide | what the explanation claimed |
+|---|---|---|---|
+| Q1 *walk / take / guide you through* | walk | take, guide | "take requires a noun" |
+| Q2 *The holdup was largely ___ the late delivery* | owing to | attributed to | "attributed to needs a passive" — the stem already had *was* |
+| Q3 *We've revised our estimates ___* | upward | accordingly | nothing in the stem asked for a direction |
+| Q5 *let me now ___ to the schedule* | move | shift, transition | described "move **on** to", which the gap could not produce |
+| Q6 *The development is ___ to achieve BREEAM Excellent* | on track | projected, anticipated, targeted | "projected / targeted work as adjectives" — *is projected to* is the ordinary passive |
+| Q7 *The decision was made ___ the results* | in light of | following | "following is acceptable but informal" — an explanation apologising for a distractor, see 2026-09-11 |
+
+The 2026-09-11 test finds all of them: ask of each distractor "could I write
+a sentence where this is right?", not "is the key right?".
+
+**Fixed by rewriting the stem until only the key fits**, and by saying in the
+explanation which alternatives are real English rather than pretending they
+are not:
+
+- Q1 tests the particle (*walk you ___*: through / throughout / across /
+  along); the explanation names the verb family WALK / TALK / TAKE / RUN you
+  THROUGH.
+- Q2 fronts the phrase (*___ the late delivery…, the programme has slipped*).
+  OWING TO is the only preposition on the list; BECAUSE needs a clause and
+  *attributed to* / *resulting from* become dangling participles.
+- Q3 keys ACCORDINGLY in end position against *consequently / respectively /
+  henceforth*.
+- Q4 key changed from *vulnerabilities* to DEFICIENCIES — the word a
+  structural survey report actually uses, and the old key was the longest
+  option by two characters. Stem adds *in the existing frame* so
+  *contingencies* is dead.
+- Q5 tests the dependent preposition: *turn to* against *aim at / focus on /
+  address Ø*.
+- Q6 adds *with eight of the nine credit categories already secured*, so the
+  choice is meaning (*on track* vs *at risk / in doubt / off course*), and
+  the explanation now names PROJECTED / EXPECTED TO as equally professional.
+- Q7 replaces the object: *the poor bearing capacity of the underlying clay*
+  is a property, not an event, so FOLLOWING no longer fits.
+
+**Key position.** Six of the seven keys sat at option C in the source, and
+this page has no runtime shuffle — the buttons render in source order, so C
+scored 6/7 on the live page. Now A / D / B / B / B / C / D. Lengths were
+measured by hand against `check-lesson.js`'s two thresholds (the checker only
+reads `.opt[data-correct]` on decks); nothing fires.
+
+**Three more things fixed on the way past:**
+
+- Gap 1 contained its own answer: *operating ___ schedule, with the
+  groundworks three weeks **ahead of** the original programme*. Reworded.
+- Activity 2 taught PROGRAMME "not schedule" as the UK term while Activity 3
+  had the learner build *the approved schedule* and MC Q5 said *construction
+  schedule*. Both now say programme; the gap explanation says why *ahead of
+  schedule* is the exception.
+- Sort 3's *it is our recommendation that the client approves* now reads
+  *approve*, and the explanation teaches the base-verb form with BrE SHOULD
+  APPROVE as the alternative. All five sort items now start with a capital
+  and end with a full stop, because *prior to the commencement of steelwork
+  it is our recommendation that…* was a grammatical second order the checker
+  marked wrong.
+
+Explanations rewritten in the CAPS-token / "quoted word" convention of the
+shipped builders.
+
+**Code.** The gap check collapses internal whitespace (`ahead  of` was marked
+wrong); a checked sort question now locks its pool and slots (items left in
+the pool could be dropped into a marked slot). `check-lesson.js` reports the
+same five deck-only failures (no slides, no activation, no i18n, no
+`.fe-logo`) on the committed version and on this one; RUNTIME passes. Played
+through in the browser: 7/7, 6/6 with uppercase and double-spaced input, one
+deliberately wrong sort order marked wrong, final screen 17/18.
+
+**Not done.** Still a legacy single-page lesson: EN only, no activation stage,
+no deck. A rebuild is a separate job. Nothing else on the page was touched.
+
+---
+
 ## 2026-09-15 — Six more lessons moved to free
 
 `access` in the Supabase `lessons` table is the only switch. The Worker reads
