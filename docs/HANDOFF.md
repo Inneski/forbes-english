@@ -39,11 +39,23 @@ small talk, the stand, the dinner), presenting to a room rather than to a
 call, and internal team-lead language (briefing, delegating, chasing without
 nagging). None of them is started.
 
-### The artwork is placeholder, and the swap is measured, not eyeballed
+### The artwork is chosen by measurement, not by eye
 
-Innes said "choose any images from incoming for now, we can replace them
-later". Fourteen from the flat-vector negative-space family in `incoming/`,
-prepped into `CampaignReview/` — one per section per §5c.
+Built first on placeholders pulled from the existing `incoming/` family, then
+**re-shot to a brief the same evening**. Innes generated 51 images against a
+slot-by-slot shopping list; eight beat the placeholder and went in, six lost to
+what was already there and were left alone. That ratio is the point — a
+purpose-shot picture is not automatically the better one, and the only way to
+know is to measure it.
+
+The brief that produced them is two rules and a style suffix: **`--ar 16:9`,
+and the subject in the bottom third**, because the eyebrow, title, context line
+and stem occupy the top 40% of the slide (y 56–280 of 720) and a dark mass
+there is what kills a light deck. Then "flat vector editorial illustration,
+limited palette of dusty slate blue, pale salmon, cream and near-black,
+screen-print grain, hard flat shadows, wide negative space, no text, no
+lettering". Keep all four Midjourney variants of each: three of the first
+pass's four fixes were a *different variant of the same picture*.
 
 **The thing worth keeping: on a LIGHT deck a background failure is a dark mass
 under the text, which is the opposite of the case HOUSE-STYLE §5 describes,
@@ -59,11 +71,36 @@ them off the rendered page — activate each slide in turn and take
 then composite `0.74 × image + 0.26 × --void` and apply the wash at that y.
 The first cut had **13 of 68 text runs under 3.5:1**, eight of them on one
 cogs variant whose black gear sat under the eyebrow, title and stem. Swapping
-cogs, cards and stencil for the Midjourney variant of the *same picture* whose
-subject sits low, and the activation's departure-board platform for the
-sharpened pencil, took it to **1 of 68**. The survivor is `desk.jpg` at
-3.48:1 on a hint line — 0.02 under, inside the halo's margin, and no better
-variant exists in the batch. `bulb.jpg` clears at 3.52:1, equally tight.
+four images for the variant of the *same picture* whose subject sits low took
+it to **1 of 68**; the purpose-shot batch took it to **0 of 68**, weakest run
+3.92:1, median around 8–9:1. The two that had been sitting on the threshold —
+`desk.jpg` at 3.48 and `bulb.jpg` at 3.52 — are now 8.08 and 9.15.
+
+Six slots kept their original picture because the new shot measured *worse*:
+cogs (3.65 vs 2.28), jigsaw (6.26 vs 2.12), frame (4.82 vs 2.55), the
+stopwatch meant to replace the departure board (3.76 vs 2.00), the pencil
+(7.70 vs 7.52, noise), and the hero — see below.
+
+### The cover is measured separately, and the hero won a straight fight
+
+Four purpose-shot "empty meeting room" variants were generated for the cover
+and **all four were rejected**. Every one puts a wall-mounted screen dead
+centre, which is exactly where the 232px stacked logo sits: the Forbes mark
+measured 1.53–3.68:1 against the incumbent office chair's 4.86:1.
+
+**Why no palette switch rescues it, which is the transferable half.**
+HOUSE-STYLE §2 offers `--logo-mark: var(--contrast)` when the mark disappears
+into the artwork, and `var(--text)` as the safe fallback. On a light deck all
+three candidates are dark ink by design — accent `#953e12`, contrast
+`#0f4d44`, text `#2a1911` — so a dark panel behind the logo defeats every one
+of them. **On a light lesson the hero has to keep its centre pale.** Measure
+the cover with the scrim applied (radial white 0.48 at 50%/46%, ellipse
+58%×54%, plus the linear stops) over the hero at full strength — no wash, no
+dim, per the `.stage.on-cover` rules — at the logo, title and subtitle bands.
+
+The meeting-room palette was tested too and is not the reason: `--void`
+`#d8b9ac` vs `#d8beac` is invisible on screen, and every contrast row passed.
+The cover composition was the whole of it.
 
 `lesson-template/bgmeasure.py` could not run here: it imports `playwright`,
 which is not installed on Innes's Windows box. The measurement above was done

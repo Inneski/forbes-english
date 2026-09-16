@@ -68,35 +68,43 @@ Three notes before changing anything here.
   §4a: forcing bright artwork into the dark theme is what produces muddy
   interiors. Every row of the contrast report reads PASS.
 
-* The artwork is PLACEHOLDER, chosen from incoming/ on Innes's instruction
-  ("choose any images from incoming for now, we can replace them later").
-  It is one coherent flat-vector family in a single palette, one picture per
-  section per HOUSE-STYLE §5c, and each was picked for what it depicts: a
-  ruler for measurement, interlocking cogs for cause, numbered mailboxes for
-  reach, a departure board mid-flip for the moment before you have the words.
-  Swapping any of them is a one-line change to the bg name plus a re-run;
-  swapping the hero also means re-running extract-palette.
+* The artwork is one coherent flat-vector family, one picture per section per
+  HOUSE-STYLE §5c, and each was picked for what it depicts: a tape measure for
+  measurement, interlocking cogs for cause, numbered mailboxes for reach, two
+  rubber stamps for an approval that is not yours to give, a departure board
+  mid-flip for the moment before you have the words. Swapping one is a one-line
+  change to the bg name plus a re-run; swapping the hero also means re-running
+  extract-palette.
 
-  Four of them were swapped for a different Midjourney variant of the SAME
-  subject after measuring, not after looking. On a light deck the text is dark
-  ink, so a background failure is a dark MASS under a text run rather than a
-  bright one — the opposite of the dark-theme case HOUSE-STYLE §5 describes,
-  and a blanket wash bump is the wrong lever because a void-based wash on a
-  light deck lightens the whole picture toward the flat, washed-out look §4a
-  warns about (0.45 alpha was needed, which is far past that). The fix is
-  per-image. Measured against the real ink rectangles pulled off the rendered
-  page, the first cut had thirteen text runs under 3.5:1, eight of them on the
-  original cogs variant whose black gear sat directly under the eyebrow, title
-  and stem. cogs, cards and stencil moved to the variant of the same picture
-  whose subject sits LOW, and the activation's departure-board platform became
-  the sharpened pencil, which was the only good closer that keeps its top two
-  thirds open. Nothing is now under 3.5:1.
+  **Every background here was chosen by measurement, not by eye, and the method
+  is the transferable part.** On a light deck the text is dark ink, so a
+  background failure is a dark MASS under a text run rather than a bright one —
+  the opposite of the dark-theme case §5 describes — and a blanket wash bump is
+  the wrong lever, because a void-based wash on a light deck lightens the whole
+  picture toward the flat look §4a warns about (clearing the worst patch needed
+  alpha 0.45, far past it). The fix is per-image.
 
-  Two remain worth knowing about if the art is replaced. bulb.jpg clears at
-  3.52:1 on the context line and desk.jpg at 3.48:1 on the hint — the first is
-  a hair over the floor and the second a hair under it, both inside the margin
-  the text-shadow halo covers, and neither has a better variant in the batch.
-  Replace either one and re-measure rather than assuming.
+  Measure against the real ink rectangles, not a band across the slide: activate
+  each slide in turn and take Range.getBoundingClientRect() on every .eyebrow,
+  .slide-title, .q-ctx, .q-stem, .order-hint and .prose NOT inside a .card, then
+  composite 0.74 × image + 0.26 × --void and apply the wash at that y. The first
+  cut ran 13 of 68 text runs under 3.5:1; a pass that moved four images to the
+  variant of the same picture whose subject sits LOW took it to 1 of 68; the
+  purpose-shot batch took it to **0 of 68**, weakest run 3.92:1 on the cogs
+  stem. If you replace a picture, re-run that measurement rather than assuming.
+
+* **The cover is measured separately and the hero lost a straight fight.** Four
+  purpose-shot "empty meeting room" variants were generated for this slot and
+  all four were rejected: every one puts a wall-mounted screen dead centre,
+  which is exactly where the 232px stacked logo sits, and the Forbes mark came
+  out at 1.53–3.68:1 against the office chair's 4.86:1.
+
+  The reason it cannot be rescued is worth keeping. HOUSE-STYLE §2 offers
+  `--logo-mark: var(--contrast)` when the mark disappears into the artwork, and
+  `var(--text)` as the safe fallback — but on a LIGHT deck every one of those is
+  dark ink by design (accent #953e12, contrast #0f4d44, text #2a1911), so a dark
+  panel behind the logo defeats all three. On a light lesson the hero has to
+  keep its centre pale; no palette switch will save it.
 
 * Every MC stem here carries a stem_key and translates, which is the opposite
   of the grammar decks. The stems are all "which sentence …?" prompts with no
@@ -218,7 +226,7 @@ TEACH = [
       (None, 'ask for time',
        't5b4', '<em>I&rsquo;d give it another fortnight before we judge it.</em>',
        't5n4', 'A date turns &ldquo;wait&rdquo; into a plan.')],
-     'bulb.jpg'),
+     'stamps.jpg'),
 
     ('t6Eyebrow', 'The question you did not prepare for',
      't6Title', 'Two seconds, bought properly',
@@ -456,7 +464,7 @@ QUESTIONS = [
                    'Passive with no agent: nobody is asking, nobody is deciding, and nobody owns it.'],
          why='<strong>I&rsquo;d suggest we</strong> is the register for anything the other person signs off. '
              'Keep <em>we&rsquo;re going to</em> for your own team, where announcing the decision is your job.',
-         bg='bulb.jpg'),
+         bg='stamps.jpg'),
 
     dict(ctx_key='q8Ctx', ctx='Mid-call, the client asks for a figure you do not have in front of you.',
          stem_key='q8Stem', stem='Which reply keeps your credibility?',
@@ -512,7 +520,7 @@ def build():
                        'sortEyebrow', 'Before you say why',
                        SORT['title_key'], SORT['title'],
                        SORT['hint_key'], SORT['hint'], SORT['why'],
-                       folder=F, bg='pegboard.jpg', bin_keys=SORT['bin_keys'])
+                       folder=F, bg='toolroll.jpg', bin_keys=SORT['bin_keys'])
 
         + "".join(D.gap(i + 1, len(GAPS), g['rows'], g['bank'],
                         'gapEyebrow', 'The grammar of the report',
