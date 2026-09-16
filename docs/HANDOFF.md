@@ -11,6 +11,47 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-16 — B1 Mixed Grammar Test: audited, blocked on artwork
+
+`forbes-english-b1-mixed-grammar-test.html` is an old scrolling page and needs
+the full §10 rebuild. **It is blocked by §5c, not by effort**: five sections
+plus an activation stage want six backgrounds and `MixedGrammarPart1/` holds
+one landscape image and a square thumbnail. Nothing was built; the live page is
+untouched.
+
+The audit, the slide plan and the Midjourney shopping list are in
+**`docs/PLAN-mixed-grammar-b1.md`**. Headlines:
+
+- Ten house-style failures, the interesting ones being a hand-picked mint
+  palette over a coral desert hero, the hero boxed in a card (§5b), no language
+  switcher at all (the `EN ↔ ES` badge is a CSS tooltip on six vocabulary
+  words), no activation stage, and twelve invented `--tense-*` hexes that are
+  all near-misses of the published values in `tense-palette.css`.
+- The multiple-choice set **passes** ANSWERS — the distractors were written
+  properly. Port the 35 items as they are.
+- **Four content bugs found in the data**, live right now: `ec6` marks *"the
+  girl that is sitting there"* wrong while `tf6` in the same test teaches that
+  *that* is acceptable; `ec2` and `ec1` reject the contracted forms
+  (*"I'll call you"*, *"She's lived here"*); Section 4 shuffles single words
+  where §7 wants phrase chunks.
+- **Light theme**, decided on a measurement: hero mean luminance 138, and the
+  dark palette's `--void #0c0e0e` under `--bg-opacity: 0.72` kills the coral
+  sky that is the best thing in the picture. The new artwork therefore has to
+  land in the 120–160 band or the set breaks in half.
+- Plans out at **40 slides**, over §7's split-at-24 line on purpose — a 35-item
+  test does not split usefully and this is already Part 1 of two. Precedent is
+  the exam decks at 50 and 69.
+
+Part 2 is structurally identical (10/8/6/5/6, all new sentences) with the same
+one-image problem. Its six subjects are in the same document so both can come
+out of one Midjourney sitting; Part 1 does not wait on them.
+
+**Next session:** if the twelve pictures are in `incoming/`, the plan's §6 is
+the command sequence. If not, this stays blocked — do not convert on a thin
+set and reuse the hero across five sections.
+
+---
+
 ## 2026-09-15 — Six more lessons moved to free
 
 `access` in the Supabase `lessons` table is the only switch. The Worker reads
