@@ -569,7 +569,8 @@ def fill_ledger(code, rendered):
 
 
 def assemble(tpl_path, out_path, slides, palette, title, i18n_module, langs=('en', 'de'),
-             all_langs=('en', 'de', 'es', 'fr', 'it', 'pt', 'ru', 'ar', 'zh', 'ja')):
+             all_langs=('en', 'de', 'es', 'fr', 'it', 'pt', 'ru', 'ar', 'zh', 'ja',
+                        'hr')):
     s = open(tpl_path, encoding='utf-8').read()
     a = s.index('    <!-- ── COVER ')
     b = s.index('    <!-- ── DECK CHROME ')

@@ -312,6 +312,10 @@ OVERRIDES = {
     'forbes-escalating-a-complaint-c1.html': ['business-english'],
     'carrying-the-load-c1.html': ['business-english'],
     'forbes-risk-management-c1-c2.html': ['business-english'],
+    # "The Monthly Review" says nothing about its subject to a regex, and
+    # "review" alone would pull it onto the tense-review hub. It is agency
+    # reporting language: the business hub, and nothing else.
+    'forbes-campaign-review-b2.html': ['business-english'],
     'forbes-construction-contracts.html': ['business-english'],
     'vapour-barriers-lesson.html': ['business-english'],
     'forbes-english-the-ten-year-bet-C1.html': ['business-english'],

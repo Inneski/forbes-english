@@ -277,4 +277,43 @@ CHROME = {
         'ledTime': "'時間'",
         'ledClues': "'手がかり'"
     },
+    # Croatian, added 2026-09-16 for The Monthly Review (B2) — Innes's
+    # student is Croatian. The eleventh language; everything above it came
+    # over from forbes-c1-negotiation.html, so this is the first block
+    # written from scratch rather than lifted.
+    #
+    # wordCount carries the plural rule and it is not the Russian one, even
+    # though the two languages share the pattern. Croatian takes the
+    # singular after any number ending in 1 except 11 (*21 riječ*), and the
+    # paucal after 2-4 except 12-14. For *riječ* the paucal and the genitive
+    # plural are both *riječi*, so the three-way rule collapses to two — but
+    # the test still has to be on the last digit, not on n===1, or the box
+    # reads "21 riječi".
+    'hr': {
+        'btnStart': "'Počni →'",
+        'btnCheck': "'Provjeri'",
+        'btnNext': "'Dalje →'",
+        'btnRestart': "'Počni ispočetka'",
+        'scoreLabel': "'Rezultat'",
+        'slideOf': '(a,b)=>`${a} / ${b}`',
+        'fbCorrect': "'Točno.'",
+        'fbWrong': "'Nije baš.'",
+        'fbAnswer': "'Odgovor:'",
+        'resNext': "'Prepoznati jezik je lakši dio. Sada ga upotrijebi →'",
+        'actEyebrow': "'Primjena'",
+        'actSpeakKind': "'Rasprava · u paru'",
+        'btnCopy': "'Kopiraj'",
+        'btnCopied': "'Kopirano'",
+        'audioPlay': "'Pusti snimku'",
+        'audioOnce': "'Snimku ćeš čuti jednom. Pritisni kad budeš spreman.'",
+        'audioPlaying': "'Reproducira se — ne možeš pauzirati ni premotati.'",
+        'audioDone': "'To je kraj snimke.'",
+        'audioReplay': "'Pusti ponovno — na pravom ispitu to nećeš moći'",
+        'audioMissing': "'Snimku nije bilo moguće učitati.'",
+        'wordCount': "(n)=>{const a=n%10,b=n%100;return `${n} ${a===1&&b!==11?'riječ':'riječi'}`}",
+        'btnOpen': "'Otvori'",
+        'ledDp': "'DP'",
+        'ledTime': "'Vrijeme'",
+        'ledClues': "'Tragovi'"
+    },
 }

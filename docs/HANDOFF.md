@@ -11,6 +11,107 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-16 — The Monthly Review (B2): a lesson built for one named student
+
+`forbes-campaign-review-b2.html`, 23 slides, 31 points, **EN/DE/ES/HR**, light
+theme.
+Built from a student brief rather than from a URL: team lead and project
+manager at a digital marketing agency — Google and Meta ads, website projects,
+branding, analytics, client and partner communication — who asked for
+meetings, presentations, business trips, conferences, and above all the
+confidence to speak spontaneously.
+
+**That is four lessons, so this is the one he needs first.** The situation is
+the monthly client review call, because it carries all four of his stated
+needs at once: presenting numbers, explaining what happened and why, proposing
+next steps, and answering a question he did not prepare for. The six teaching
+points are the change prepositions (*by / to / from…to / up on*), cause versus
+coincidence (*driven by* vs *coincided with*), the four metric pairs people
+collapse in English, owning a miss, *I'd suggest we* versus *we're going to*,
+and the holding phrases that buy two seconds. Nothing overlaps the existing
+business decks — meetings, the design pitch, talking with clients, emails and
+follow-ups, escalating a complaint, C1 negotiation, managing risk — none of
+which touches campaign performance.
+
+**Three parts are still queued** and are the obvious follow-ups, in the order
+he will use them: the conference and business-trip register (arriving,
+small talk, the stand, the dinner), presenting to a room rather than to a
+call, and internal team-lead language (briefing, delegating, chasing without
+nagging). None of them is started.
+
+### The artwork is placeholder, and the swap is measured, not eyeballed
+
+Innes said "choose any images from incoming for now, we can replace them
+later". Fourteen from the flat-vector negative-space family in `incoming/`,
+prepped into `CampaignReview/` — one per section per §5c.
+
+**The thing worth keeping: on a LIGHT deck a background failure is a dark mass
+under the text, which is the opposite of the case HOUSE-STYLE §5 describes,
+and §5's remedy does not apply.** Raising `--wash-mid`/`--wash-edge` on a
+light deck mixes toward `--void`, so it *lightens* the whole picture; clearing
+3.5:1 in the worst patch needed alpha 0.45, which is the washed-out look §4a
+exists to prevent. The lever is per-image instead.
+
+Measure against the real ink rectangles, not a band across the slide. Pull
+them off the rendered page — activate each slide in turn and take
+`Range.getBoundingClientRect()` on every `.eyebrow`, `.slide-title`,
+`.q-ctx`, `.q-stem`, `.order-hint` and `.prose` **not** inside a `.card` —
+then composite `0.74 × image + 0.26 × --void` and apply the wash at that y.
+The first cut had **13 of 68 text runs under 3.5:1**, eight of them on one
+cogs variant whose black gear sat under the eyebrow, title and stem. Swapping
+cogs, cards and stencil for the Midjourney variant of the *same picture* whose
+subject sits low, and the activation's departure-board platform for the
+sharpened pencil, took it to **1 of 68**. The survivor is `desk.jpg` at
+3.48:1 on a hint line — 0.02 under, inside the halo's margin, and no better
+variant exists in the batch. `bulb.jpg` clears at 3.52:1, equally tight.
+
+`lesson-template/bgmeasure.py` could not run here: it imports `playwright`,
+which is not installed on Innes's Windows box. The measurement above was done
+with Pillow plus the browser for the rects, which is why it is written down.
+
+### Croatian is now a language this site knows about
+
+Asked for mid-build, and it is the language the student actually speaks. It is
+the **eleventh**, and the first added since the original ten came over from
+`forbes-c1-negotiation.html`. Adding one touches four files and all of it is
+additive — a deck with no `hr` block simply never offers it, so nothing that
+already shipped changes:
+
+1. `lesson-template/build/chrome_i18n.py` — `CHROME['hr']`, the 26 chrome
+   strings. Written from scratch rather than lifted, which no other language
+   block here was.
+2. `lesson-template/lesson-template.html` — `{ code:'hr', label:'Hrvatski' }`
+   in `LANGS`. The switcher is built by filtering `LANGS` against
+   `UI_I18N[code] || {}`, so an absent block is already handled.
+3. `lesson-template/build/deck.py` — `'hr'` on `assemble`'s `all_langs`, so
+   every deck emits the empty placeholder.
+4. The lesson's own `i18n_*.py` — `T['hr']` and `TAIL['hr']`.
+
+**The plural rule is the part worth copying, not the strings.** Croatian takes
+the singular after any number ending in 1 except 11 (*21 riječ*, *101 riječ*)
+and the plural otherwise (*11 riječi*, *22 riječi*), so `wordCount` tests the
+last digit, not `n === 1`. It is close enough to the Russian function to invite
+a copy-paste and different enough to be wrong if you do — Russian needs a third
+branch for 2–4 that Croatian does not, because *riječ* has the same form in the
+paucal and the genitive plural. Verified in the page:
+`[0,1,2,5,11,21,22,101] → riječi, riječ, riječi, riječi, riječi, riječ, riječi, riječ`.
+
+The one place a count is not a function is the cover chip, which is a static
+string with the slide count patched in. `chipCount` reads "NSLIDES slajda",
+correct for this deck's 23, and would need to become "slajdova" if the deck
+ever left the 2–4 band. Noted in the i18n module too.
+
+### Two repo-side things this needed
+
+- **`tools/topics.py` OVERRIDES.** "The Monthly Review" says nothing to a
+  regex, and `review` alone would have pulled it onto the tense-review hub.
+  It is pinned to `business-english`.
+- **The catalogue row is `free`,** on Innes's call. Business English was a hub
+  with 53 lessons and 9 free; it now has 10, and this is the only free one
+  that is about agency work specifically.
+
+---
+
 ## 2026-09-16 — Wonderland (The Stolen Now): the panel was burying the cast, and one plate was a train
 
 Innes sent four screenshots of `block-camp/wonderland-stolen-now-rpg.html`:
