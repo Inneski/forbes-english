@@ -1,5 +1,14 @@
 # Artwork still needed
 
+> **Superseded for the "what do I generate" question — see
+> `docs/ART-SHOPPING-LIST.md` (2026-09-16).** This file was generated against
+> `LESSON_IMAGES` presence alone, before HOUSE-STYLE §5c required one background
+> per section, and several lessons listed below have been given art since. It
+> also does not check whether a picture that exists is big enough to be a hero,
+> which is the thing that actually blocks a conversion. Kept for the
+> library-card view it gives — a lesson with no `LESSON_IMAGES` row renders as a
+> disabled "Coming soon" card — not as a commissioning list.
+
 Generated against `library.html`. A lesson with no `LESSON_IMAGES` entry
 renders as a disabled "Coming soon" card and sorts behind everything else,
 so this is what a visitor currently cannot click.

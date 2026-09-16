@@ -11,6 +11,94 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-16 — Quebert is not a special case: 52 lessons are blocked on artwork, and there is now a shopping list
+
+`docs/ART-SHOPPING-LIST.md` is new, and it is the answer to "what do I generate
+next" for every lesson that cannot be converted today. **255 frames across 47
+folders, covering 51 lessons**; a 52nd is a merge decision rather than a
+commission.
+
+The question that started it was `harry-quebert-b2.html` — a 23 KB scrolling
+page, sixteen questions in three parts, English only, no activation. Rules 1, 5
+and 6 are a rebuild a session could do from git. Rules 2, 3 and 4 are not: the
+only picture the lesson owns is `LibraryCards/harry-quebert.jpg` at **1200×512**,
+which is under the §3 minimum *and* cropped to 2.34:1 rather than 16:9. There is
+nothing to derive a palette from. That is §14's first case — "no hero image
+exists and none was supplied" — and it is true fifty-two times over.
+
+### The measurement, and why the existing counts disagreed
+
+Classified from each file rather than from the `deck` column in
+`tools/lessons.json`: a deck has `<section class="slide` **and** `fitStage`, an
+RPG has a `window.*_GAME_DATA`. Artwork resolved three ways — images the page
+references, the folder its `LESSON_IMAGES` card points at, and any root folder
+whose name matches the slug — with real pixel dimensions read from the JPEG/PNG
+headers.
+
+| | |
+|---|---|
+| Catalogued lessons | 317 |
+| House-style decks | 130 |
+| RPGs, deck-viewers, not-a-deck families | 55 |
+| Scrolling lessons | 132 |
+| — no usable image at all (≥1400px) | **52** |
+| — exactly one | 28 |
+| — two to four | 28 |
+| — five or more | 24 |
+
+**`FORBES ENGLISH/` and `HOUSE STYLE/` have to be excluded from name matching.**
+They are brand and reference dumps (Noma Bar scans, old promo art), and matching
+`forbes-english-*` against `FORBES ENGLISH` made eighteen lessons look supplied
+when they own nothing. That single error is the difference between "34 blocked"
+and the real 52, and it is the trap in any future regeneration of this list.
+
+The 52 split two ways, and it changes what you ask for:
+
+- **19 own a picture that is only too small** — 900×504 to 1200×671 web cards.
+  The subject is already right; the brief keeps it and asks for the same idea at
+  2000px. `FeedbackThatLands/group-feedback-hero.jpeg` at 900×504 is the worst.
+- **33 own nothing at all**, so the subject is a free choice.
+
+### Findings worth carrying even if nobody generates a frame
+
+- **`preview.html` is almost certainly the pre-rebuild original of
+  `forbes-english-possessive-pronouns-a1.html`** — same level, same grammar,
+  same German support, same worked examples (*my bag → it's mine*, the classroom
+  coats), and the deck already exists on `Possessives/hero.jpg`. Diff the
+  question data (the 2026-09-03 method) and redirect-stub the loser. One lesson
+  off the list for no artwork.
+- **`Impostor2/hero.jpg`** (3376×1440) is on disk and referenced by nothing.
+  Check it against `impostor_syndrome_lesson.html` before ordering art for that
+  lesson.
+- **`docs/artwork-needed.md` is stale** — generated against `LESSON_IMAGES`
+  presence alone, before §5c existed, and it lists lessons that have since been
+  given art. It now carries a banner pointing here.
+- **Only one of the 52 has an activation stage** (`feedback-that-lands.html`,
+  which also carries eight languages and is the outlier in every other respect).
+  The other 51 end on a score, so rule 6 is new work on each one — which is why
+  the last frame in nearly every brief is an activation background.
+- **Skiing, Tennis and Water Polo are still open** on the two-image shortfall the
+  2026-09-13 §5c entry logged. They are in the top-up list in §8 of the new file,
+  still not audited section-by-section.
+
+### A third stem, and why
+
+The list names stem A (flat vector, bright — the house stem) and stem B (the
+IELTS two-tone editorial stem) per lesson, and adds **stem C: stem B's texture
+and discipline on a deep navy and warm amber night palette.** Quebert, Champions
+League and the gaming lesson have no business being bright, and forcing a cream
+hero onto a thriller is how the muddy backgrounds in §5 happened. A stem C deck
+runs `extract-palette.py` **without** `--light`.
+
+### What is not in the file
+
+Briefs for the 56 lessons that have one to four images. They are not blocked the
+way the 52 are — a session can start one and stop at the shortfall — so §8 lists
+them without briefs, with the §5c instruction to count images against sections
+before commissioning the gap.
+
+---
+
 ## 2026-09-15 — Six more lessons moved to free
 
 `access` in the Supabase `lessons` table is the only switch. The Worker reads

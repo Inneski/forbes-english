@@ -367,6 +367,12 @@ filed as "artwork on disk, convertible today" on a two-image set: two images
 covers a hero and one section swap, not a full multi-activity deck. Check the
 image count against the section count before starting a rebuild.
 
+**The lessons already known to be in that position are listed, with per-frame
+Midjourney briefs, in `docs/ART-SHOPPING-LIST.md`** — 52 of them as of
+2026-09-16, none of which owns a picture of even the §3 minimum size. Look there
+before writing a new brief, and regenerate the measurement with
+`python3 tools/audit-artwork.py` rather than trusting the count.
+
 ---
 
 ## 6. Slide budget — the hard constraint
