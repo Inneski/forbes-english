@@ -94,6 +94,10 @@ deliberately wrong sort order marked wrong, final screen 17/18.
 **Not done.** Still a legacy single-page lesson: EN only, no activation stage,
 no deck. A rebuild is a separate job. Nothing else on the page was touched.
 
+**Moved to free the same day** (`access` row in Supabase, then `build_hubs.py`
+and `seo.py`). Ninth free lesson on the Business English hub; site-wide free
+is 57 of 317.
+
 ---
 
 ## 2026-09-15 — Six more lessons moved to free
