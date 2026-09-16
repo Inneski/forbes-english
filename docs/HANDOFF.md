@@ -11,6 +11,70 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-16 — Wonderland (The Stolen Now): the panel was burying the cast, and one plate was a train
+
+Innes sent four screenshots of `block-camp/wonderland-stolen-now-rpg.html`:
+"this a train not a boat", "some text on wrong side of screen covering
+characters", and, of the first fork, "can make text bottom central and more
+streamlined or in two parts and reduce opacity throughout".
+
+**The train.** `14_cake_contrast` is a pink/blue contrast plate where the
+Hatter pours tea into a **locomotive on rails**. Every line of the question
+called it a boat — title, story, all nine glosses. (`17_boat_engine`, two acts
+later, really is a teacup boat, so the word was right there and wrong here.)
+Fixed in `data.json`, `data-easy.json` and all seven `translations/*.json`;
+the title is now *TEA FOR A TRAIN?*. **Changing an English string re-keys its
+translations** — the files are `{English: gloss}` — so delete the old key and
+add the new one in the same pass, or seven languages silently fall back to
+English.
+
+**The panel.** Rendering all 35 scenes with the panel at 22% opacity showed
+what it was hiding, and it was not marginal: Alice was wholly behind it on
+`07_cat_vanish`, `09_mirror_guards`, `17_boat_engine`, `21_prison_gears`,
+`28_queen_truth`; the cover title sat on her; and on the contrast plates
+(`cake_intro`, `14_cake_contrast`) it covered the entire blue half — half of
+the comparison the question is built on. The cause is the artwork: these are
+crowd scenes with a character in the middle and the cast at both edges, so
+**there is no empty side to put a 46% panel on.**
+
+So `rpg.py` grew a fourth `pos`: **`band`** — a wide, shallow strip across the
+foot of the frame, prose in one column and the options in the other, 92% wide
+and about a third of the height a stacked panel needs. Twenty-four of the
+thirty-five scenes use it; the ones with real empty sky or an empty hall
+(`04`, `05`, `08`, `12`, `15`, `20`, `24`, both good endings) keep a side
+panel. It is opt-in, so no other RPG changes — verified by rebuilding
+`sherlock-blue-hour-rpg` and diffing: only the unused `.band` CSS, a badge
+blur and a `--scrim` set to its own `--panel`.
+
+Two things the band costs you, both in `rpg/README.md` §3 now:
+
+- **its hotspot has to sit above about 40% of the picture.** The band reaches
+  half the frame once a gloss is on. Ten hotspots moved; the three forks now
+  glow on the lantern over the junction, on Alice's shoulders and on the time
+  machine, not on the road at her feet. `check-rpg-panels.js` found every one
+  of them — ten findings on the first build, zero now.
+- **it is the wrong tool for a long story screen.** A paragraph that fills a
+  side panel fills a band too, only wider. `k-story` gets a button-sized
+  second column so the prose runs the full strip; a screen carrying a grammar
+  table (`rules`, `cake_intro`) gets the opposite split. Measured, not guessed:
+  the worst case per scene per language is what to tune against.
+
+**Opacity** went `.9` → `.74`, with the backdrop blur carrying the contrast.
+The cover caption is a gradient with no blur behind it, so it thinned out and
+left the kicker on bare sunset — hence the new optional `scrim` spec key,
+which this deck sets to `.93`. A deck that thins its panel below about .8
+needs one.
+
+**Found while auditing, also fixed:** the deck awards three relics (act I, the
+cake gate, act III) and the HUD shows ◆◆◆, but `boss_intro`,
+`26_freeze_attack` and `27_shards_crown` all said Alice was holding **two**
+magic objects — in all nine languages. Now three.
+
+**Found, not fixed:** `22_clockmaker_trapped` says "trapped **beside** a large
+metal wheel" and then asks "The Mouse is ___ **behind** the wheel." Both
+describe the plate and the blank tests the verb, not the preposition, so it
+did not seem worth re-keying nine translations for.
+
 ## 2026-09-16 — Construction Presentations (C1): five of seven MC items had a second right answer
 
 `forbes-english-construction-presentations.html` is **hand-written HTML with

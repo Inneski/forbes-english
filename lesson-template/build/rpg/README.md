@@ -186,13 +186,31 @@ line labelled `on a wide window` is that class of defect; read them.
 - `cx cy w h` are **percent of the picture** (1536×1024, 3:2), centre and
   size. Not of the browser frame — the engine converts, and on a portrait
   phone it slides the picture so the object is still on screen.
-- `side` is where the panel sits: `left`, `right` or `center`. Put it on
-  the empty side of the picture, and put the hotspot on the other side so
+- `side` is where the panel sits: `left`, `right`, `center` or `band`. Put it
+  on the empty side of the picture, and put the hotspot on the other side so
   the panel does not cover the object it grew out of. `center` is for the
   route-choice scenes (panel 64% wide, `valign` `top`).
 - `width` overrides the panel width for one scene — the rules briefing
   wants 56%, a scene with long options 50%, a scene whose picture is busy
   on both sides 38%.
+
+**`band` is for a picture with no empty side.** It is a wide, shallow strip
+across the foot of the frame: the prose in one column, the options or routes
+in the other, 92% wide by default and roughly a third of the height a stacked
+panel needs. Use it when the plate is a crowd scene — a character in the
+middle and the cast at both edges — or when the question compares two halves
+of the picture and a side panel would cover one of them. Wonderland runs on it
+(twenty-four of thirty-five scenes); the decks with an empty sky or an empty
+hall on one side do not need it. Two rules come with it:
+
+- **the hotspot has to sit above about 40% of the picture.** The band reaches
+  up to roughly half the frame once a gloss is on, so the object has to be in
+  the top half. On a fork that usually means the lantern over the junction or
+  the character's head and shoulders, not the road at their feet.
+- **it is the wrong tool for a long story screen.** The engine gives `story`
+  a narrow button column so the prose runs the full strip, and a screen that
+  carries a grammar table gets the opposite split — but a paragraph that fills
+  a side panel top to bottom will fill a band too, only wider. Measure it.
 
 **A centre panel does not rescue a central object.** With a gloss under every
 line the panel runs nearly the full height of the frame, so `top` and `bottom`
@@ -293,6 +311,7 @@ wraps to at most two lines; the German is not longer than the panel.
 | `title`, `description` | the `<title>` and meta description until `seo.py` replaces them |
 | `langs` | gloss languages, e.g. `['es', 'de']` — every string must carry each |
 | `accent`, `accent_ink`, `deep`, `panel` | the camp colour, the ink on it, the title outline, the panel glass |
+| `scrim` | the cover caption's gradient, if the panel is too thin to carry it. Defaults to `panel`. A panel below about .8 needs one: the caption is a gradient over bare artwork with no blur behind it |
 | `labels` | overrides for `rpg.LABELS` (HUD words, CONTINUE, PLAY AGAIN …) |
 | `start`, `scenes`, `endings` | first scene id; the scenes; `{master, complete, missing, failed}` → ending scene ids |
 | `max`, `points`, `tiles`, `chances`, `complete_score` | the scoring — 75 / 5 / 4 / 3 / 65 for a 15-question path |

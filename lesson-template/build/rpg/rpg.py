@@ -128,7 +128,7 @@ CSS = r"""
 --cake-a-ink:#fff0f7;--cake-b-ink:#eef7ff;
 --cake-a-edge:#ff8dc2;--cake-b-edge:#7cc4f2;
 --cake-a-wash:rgba(207,52,125,.22);--cake-b-wash:rgba(36,121,173,.22);
---accent:{{ACCENT}};--accent-ink:{{ACCENT_INK}};--deep:{{DEEP}};--panel:{{PANEL}};--bone:#fff6d9;--muted:#d9ccb0;--soft:#efe2c0;--good:#77efb4;--bad:#ff6f82;--shadow:rgba(0,0,0,.55);
+--accent:{{ACCENT}};--accent-ink:{{ACCENT_INK}};--deep:{{DEEP}};--panel:{{PANEL}};--scrim:{{SCRIM}};--bone:#fff6d9;--muted:#d9ccb0;--soft:#efe2c0;--good:#77efb4;--bad:#ff6f82;--shadow:rgba(0,0,0,.55);
 /* The scale unit. Every size below was authored as a fraction of a 16:9
    frame's width, so on a wider window the type outgrew the panel and the
    options fell below the fold. 1vw and 1.7778vh are equal at 16:9, so this
@@ -149,7 +149,7 @@ button{font:inherit}
 /* ── HUD ── */
 .hud{position:absolute;z-index:5;top:calc(1.3 * var(--u));left:calc(1.5 * var(--u));right:calc(1.5 * var(--u));display:flex;align-items:center;justify-content:space-between;gap:calc(1 * var(--u));pointer-events:none}
 .hud-group{display:flex;gap:calc(.55 * var(--u));align-items:center;flex-wrap:wrap}
-.badge{background:var(--panel);border:1px solid rgba(255,246,217,.34);box-shadow:0 0 calc(1.3 * var(--u)) var(--shadow);padding:calc(.5 * var(--u)) calc(.8 * var(--u));font-size:calc(1.15 * var(--u));letter-spacing:.04em;white-space:nowrap}
+.badge{background:var(--panel);backdrop-filter:blur(5px);border:1px solid rgba(255,246,217,.34);box-shadow:0 0 calc(1.3 * var(--u)) var(--shadow);padding:calc(.5 * var(--u)) calc(.8 * var(--u));font-size:calc(1.15 * var(--u));letter-spacing:.04em;white-space:nowrap}
 .badge b{color:var(--accent);font-weight:700}
 .langs{display:flex;gap:calc(.35 * var(--u));pointer-events:auto;position:relative}
 .lang-btn,.utility{border:1px solid rgba(255,246,217,.35);color:var(--bone);background:var(--panel);padding:calc(.5 * var(--u)) calc(.75 * var(--u));cursor:pointer;font-size:calc(1.1 * var(--u));pointer-events:auto}
@@ -183,7 +183,7 @@ button{font:inherit}
      type — on bare artwork: unreadable over snow on Part I and ice on Part II.
      The bottom padding clears the corner help bar, which the spec line used to
      sit on top of by 5-14px depending on how long that line is. */
-  background:linear-gradient(180deg,rgba(0,0,0,0) 0%,var(--panel) 30%);border:0;box-shadow:none;backdrop-filter:none;
+  background:linear-gradient(180deg,rgba(0,0,0,0) 0%,var(--scrim) 30%);border:0;box-shadow:none;backdrop-filter:none;
   padding:calc(3.4 * var(--u)) calc(2.4 * var(--u)) calc(1.2 * var(--u));gap:calc(.5 * var(--u))}
 .is-cover .kicker{text-shadow:0 .12em .5em rgba(0,0,0,.85),0 0 .3em rgba(0,0,0,.9)}
 .is-cover .rules-chips{justify-content:center}
@@ -195,6 +195,43 @@ button{font:inherit}
 .right .zone{justify-content:flex-end}.right .content{text-align:right}
 .center .zone{justify-content:center}.center .content{width:64%;text-align:center}
 .v-top .zone{align-items:flex-start}.v-center .zone{align-items:center}.v-bottom .zone{align-items:flex-end}
+/* ── `band`: a wide, shallow strip across the foot of the frame ──
+   A side panel assumes the picture has an empty side. Wonderland's plates are
+   crowd scenes — Alice stands in the middle and the supporting cast fills both
+   edges — so 46% of the width buried a named character on eighteen of thirty-
+   five screens, and on the pink/blue contrast plates it covered half of the
+   very thing the question compares. A band reads across instead of down: the
+   prose in one column, the options in the other, so it is roughly a third of
+   the height a stacked panel needs and the upper two thirds of the picture
+   stay visible. Innes asked for it on the first fork on 2026-09-16 ("bottom
+   central and more streamlined or in two parts") and it answers the occlusion
+   everywhere else too.
+
+   It comes after the .v-* rules on purpose: same specificity, so the foot wins
+   whatever `v` the scene carries. A band scene's hotspot must sit above ~60%
+   of the picture — check-rpg-panels.js measures that. */
+.band .zone{justify-content:center;align-items:flex-end}
+.band .content{text-align:left;display:grid;grid-template-columns:1.12fr 1fr;align-items:end;
+  column-gap:calc(2 * var(--u));row-gap:calc(.3 * var(--u));margin-bottom:calc(1.6 * var(--u));
+  padding:calc(1 * var(--u)) calc(1.3 * var(--u))}
+.band .hide-btn{grid-column:1/-1;justify-self:end;margin:calc(-.4 * var(--u)) calc(-.5 * var(--u)) 0 0}
+.band-text,.band-act{display:flex;flex-direction:column;gap:calc(.6 * var(--u));min-width:0}
+.band .continue,.band .start,.band .restart{align-self:flex-start}
+/* The even split above is for a question, where the prompt and three options
+   weigh about what the story does. The other kinds are lopsided.
+
+   A story screen is prose and one button, so the button column shrinks to the
+   button and the prose takes the whole strip: the same paragraph in a 64% column
+   runs seven lines and in an 88% one runs five, and a band is only worth having
+   while it stays shallow. The cap stops a long button label ("HELP ALICE STOP
+   THE WARDEN") from taking a third of the strip back. */
+.band.k-story:not(.has-rules) .content{grid-template-columns:1fr auto}.band.k-story:not(.has-rules) .band-act{max-width:calc(17 * var(--u))}
+/* has-rules comes last: a story screen that carries a grammar table (the cake
+   briefing) is a rules screen in everything but name, and the prose ratio
+   squeezed the table into a column too narrow to read. */
+.band.k-rules .content{grid-template-columns:1fr 2.4fr}
+.band.has-rules:not(.k-rules) .content{grid-template-columns:1fr 1.6fr}
+.band.k-choice .content{grid-template-columns:1.3fr 1fr}
 .hide-btn{align-self:flex-end;order:-1;margin:calc(-.4 * var(--u)) calc(-.5 * var(--u)) calc(-.3 * var(--u)) 0;border:0;background:none;color:var(--soft);font-size:calc(.95 * var(--u));letter-spacing:.08em;cursor:pointer;padding:calc(.25 * var(--u)) calc(.4 * var(--u))}
 .hide-btn:hover{color:#fff}.right .hide-btn{align-self:flex-start}
 /* ── the glowing object ── */
@@ -274,9 +311,9 @@ button{font:inherit}
 /* translation on: a little tighter, a little wider */
 .tr-on .content{gap:calc(.55 * var(--u));padding:calc(1 * var(--u)) calc(1.2 * var(--u))}.tr-on .option{padding:calc(.5 * var(--u)) calc(.7 * var(--u))}.tr-on .options{gap:calc(.4 * var(--u))}.tr-on .title{font-size:calc(2.6 * var(--u))}
 /* portrait / square-ish windows */
-@media(max-aspect-ratio:4/3){.content{width:60%}.center .content{width:84%}.hot-label{font-size:calc(1.8 * var(--u))}.lang-menu{min-width:calc(30 * var(--u))}.lang-item{font-size:calc(1.4 * var(--u))}.lang-item b{font-size:calc(1.3 * var(--u))}.title{font-size:calc(4.4 * var(--u))}.story,.prompt{font-size:calc(2.1 * var(--u))}.option,.feedback{font-size:calc(1.75 * var(--u))}.translation{font-size:calc(1.35 * var(--u))}.badge{font-size:calc(1.5 * var(--u))}.lang-btn,.utility{font-size:calc(1.4 * var(--u))}.clue{font-size:calc(1.7 * var(--u))}}
+@media(max-aspect-ratio:4/3){.content{width:60%}.center .content{width:84%}.band .content{display:flex;flex-direction:column;gap:calc(.8 * var(--u))}.band .hide-btn{align-self:flex-end;margin-bottom:calc(-.3 * var(--u))}.hot-label{font-size:calc(1.8 * var(--u))}.lang-menu{min-width:calc(30 * var(--u))}.lang-item{font-size:calc(1.4 * var(--u))}.lang-item b{font-size:calc(1.3 * var(--u))}.title{font-size:calc(4.4 * var(--u))}.story,.prompt{font-size:calc(2.1 * var(--u))}.option,.feedback{font-size:calc(1.75 * var(--u))}.translation{font-size:calc(1.35 * var(--u))}.badge{font-size:calc(1.5 * var(--u))}.lang-btn,.utility{font-size:calc(1.4 * var(--u))}.clue{font-size:calc(1.7 * var(--u))}}
 /* phones: the panel is a sheet across the bottom, sizes in px */
-@media(max-width:700px){.hud{top:8px;left:8px;right:8px}.badge{font-size:11px;padding:5px 6px}.lang-btn,.utility{font-size:11px;padding:5px 6px}.zone{top:58px;bottom:10px;left:3%;right:3%;align-items:flex-end!important;justify-content:center!important}.content,.center .content,.tr-on .content{width:100%!important;margin:0!important;max-height:100%;text-align:left;padding:14px;gap:9px}.right .content{text-align:left}.right .clue{border-right:0;border-left:4px solid var(--accent)}.right .option{text-align:left;grid-template-columns:24px 1fr}.right .option .key{order:0}.right .continue,.right .start,.right .restart,.center .continue,.center .start,.center .restart{align-self:flex-start}.right .hide-btn{align-self:flex-end}.hot{min-width:44px;min-height:44px}.hot i,.hot::before{inset:-4px}.hot i{box-shadow:0 0 0 2px #fff,0 0 0 4px rgba(70,45,0,.55),0 0 14px 3px rgba(255,240,170,.85)}.hot::before{border-width:2px}.hot-label{font-size:13px}.lang-menu{min-width:200px;padding:6px;gap:3px}.lang-item{font-size:13px;padding:6px 8px;grid-template-columns:32px 1fr}.lang-item b{font-size:12px}.hide-btn{font-size:12px}.title,.tr-on .title{font-size:26px}.cover-title{font-size:22px}.kicker{font-size:12px}.story,.prompt{font-size:17px}.clue{font-size:15px;padding:8px 10px;border-left-width:4px}.translation,.title .translation{font-size:13px}.option,.feedback{font-size:15px;padding:9px 10px}.option{grid-template-columns:24px 1fr;gap:8px}.option .key{width:22px;height:22px}.option .translation,.route .translation,.rule-card .translation,.feedback .translation{font-size:12px}.option.split{grid-template-columns:24px 1fr 1fr;gap:6px}.option .half{padding:6px 8px}.option .half small{font-size:10px}.option .half b{font-size:14px}.review div{font-size:13px;padding:6px 8px}.route-options,.rules-intro{grid-template-columns:1fr}.rule-card:last-child{grid-column:auto}.rule-card,.rule-note,.route{font-size:14px;padding:9px}.rule-card b,.route b{font-size:14px}.rules-chips span{font-size:11px;padding:4px 7px}.final-score{font-size:19px}.small{font-size:12px}.continue,.start,.restart{font-size:14px;padding:11px 16px}.corner-help{display:none}}
+@media(max-width:700px){.hud{top:8px;left:8px;right:8px}.badge{font-size:11px;padding:5px 6px}.lang-btn,.utility{font-size:11px;padding:5px 6px}.zone{top:58px;bottom:10px;left:3%;right:3%;align-items:flex-end!important;justify-content:center!important}.content,.center .content,.tr-on .content{width:100%!important;margin:0!important;max-height:100%;text-align:left;padding:14px;gap:9px}.band .content{display:flex;flex-direction:column;margin-bottom:0!important}.band-text,.band-act{gap:9px}.right .content{text-align:left}.right .clue{border-right:0;border-left:4px solid var(--accent)}.right .option{text-align:left;grid-template-columns:24px 1fr}.right .option .key{order:0}.right .continue,.right .start,.right .restart,.center .continue,.center .start,.center .restart{align-self:flex-start}.right .hide-btn{align-self:flex-end}.hot{min-width:44px;min-height:44px}.hot i,.hot::before{inset:-4px}.hot i{box-shadow:0 0 0 2px #fff,0 0 0 4px rgba(70,45,0,.55),0 0 14px 3px rgba(255,240,170,.85)}.hot::before{border-width:2px}.hot-label{font-size:13px}.lang-menu{min-width:200px;padding:6px;gap:3px}.lang-item{font-size:13px;padding:6px 8px;grid-template-columns:32px 1fr}.lang-item b{font-size:12px}.hide-btn{font-size:12px}.title,.tr-on .title{font-size:26px}.cover-title{font-size:22px}.kicker{font-size:12px}.story,.prompt{font-size:17px}.clue{font-size:15px;padding:8px 10px;border-left-width:4px}.translation,.title .translation{font-size:13px}.option,.feedback{font-size:15px;padding:9px 10px}.option{grid-template-columns:24px 1fr;gap:8px}.option .key{width:22px;height:22px}.option .translation,.route .translation,.rule-card .translation,.feedback .translation{font-size:12px}.option.split{grid-template-columns:24px 1fr 1fr;gap:6px}.option .half{padding:6px 8px}.option .half small{font-size:10px}.option .half b{font-size:14px}.review div{font-size:13px;padding:6px 8px}.route-options,.rules-intro{grid-template-columns:1fr}.rule-card:last-child{grid-column:auto}.rule-card,.rule-note,.route{font-size:14px;padding:9px}.rule-card b,.route b{font-size:14px}.rules-chips span{font-size:11px;padding:4px 7px}.final-score{font-size:19px}.small{font-size:12px}.continue,.start,.restart{font-size:14px;padding:11px 16px}.corner-help{display:none}}
 """
 
 BODY = r"""
@@ -348,15 +385,18 @@ function placeHot(h){const W=frame.clientWidth,H=frame.clientHeight,sc=Math.max(
 function setOpen(on){state.open=!!on;if(on){const hr=hot.getBoundingClientRect(),zr=zone.getBoundingClientRect();const cl=zr.left+content.offsetLeft,ct=zr.top+content.offsetTop;content.style.transformOrigin=`${hr.left+hr.width/2-cl}px ${hr.top+hr.height/2-ct}px`}frame.classList.toggle('open',state.open)}
 function openPanel(){if(!state.open)setOpen(true)}
 function closePanel(){if(state.open)setOpen(false)}
-function render(){const s=G.scenes[state.scene];frame.className=`frame ${s.pos||'left'} v-${s.v||'center'}${s.kind==='intro'?' is-cover':''}${RTL.includes(state.lang)?' rtl':''}`;sceneImage.src=G.dir+s.img;sceneImage.alt=bare((s.title&&s.title.en)||s.alt||'');placeHot(s.hot);const tr=state.lang!=='off';frame.classList.toggle('tr-on',tr);content.style.width=((s.width||(s.pos==='center'?64:46))+(tr?8:0))+'%';content.style.marginLeft=s.pos==='left'&&s.inset?s.inset+'%':'';content.style.marginRight=s.pos==='right'&&s.inset?s.inset+'%':'';
-  let html=`<button class="hide-btn" onclick="closePanel()" title="Esc">✕ ${ui('hide')}</button>`+head(s);
-  if(s.kind==='intro'){html+=`${s.rules?`<div class="rules-chips">${s.rules.map(r=>`<span>${label(r)}</span>`).join('')}</div>`:''}<button class="start" onclick="go('${s.next}')">${label(s.start)}</button>${s.small?`<div class="small">${label(s.small)}</div>`:''}`}
-  else if(s.kind==='rules'){html+=`<div class="rules-intro">${s.rules.map(r=>`<div class="rule-card${r.tone?' tone-card-'+r.tone:''}"><b>${label(r.name)}</b>${label(r.form)}</div>`).join('')}</div>${s.note?`<div class="rule-note">${label(s.note)}</div>`:''}<button class="continue" onclick="go('${s.next}')">${s.button?label(s.button):ui('begin')}</button>`}
-  else if(s.kind==='story'){html+=`${s.rules?`<div class="rules-intro">${s.rules.map(r=>`<div class="rule-card${r.tone?' tone-card-'+r.tone:''}"><b>${label(r.name)}</b>${label(r.form)}</div>`).join('')}</div>`:''}${s.note?`<div class="rule-note">${label(s.note)}</div>`:''}<button class="continue" onclick="go('${s.next}')">${s.button?label(s.button):ui('continue')}</button>`}
-  else if(s.kind==='question'){html+=`${s.clue?`<div class="clue"><b>${ui('visual')}</b><br>${label(s.clue)}</div>`:''}<div class="prompt">${label(s.prompt)}</div><div class="options">${s.opts.map((o,i)=>`<button class="option${o.parts?' split':''}" data-i="${i}" onclick="answer(${i})"><span class="key">${i+1}</span>${optMarkup(o)}</button>`).join('')}</div><div id="feedback" class="feedback"></div><button id="continue" class="continue" hidden onclick="advance()">${ui('continue')}</button>`}
-  else if(s.kind==='choice'){html+=`<div class="route-options">${s.routes.map((r,i)=>`<button class="route" onclick="chooseRoute(${i})"><b>${i+1} · ${label(r.name)}</b>${label(r.desc)}</button>`).join('')}</div>`}
-  else if(s.kind==='ending'){/* an ending may close with a paragraph that depends on the route taken (routeStory) */const rt=s.routeStory?(Object.entries(s.routeStory).find(([k])=>state.route.includes(k))||[])[1]:null;const rev=G.repair?(state.mistakes.length?`<div class="review">${state.mistakes.map(id=>{const m=G.scenes[id];return `<div>${esct(m.prompt.en)}<br><b>${esc(optText(m.opts[m.answer]))}</b> — ${label(m.fb)}</div>`}).join('')}</div>`:`<div class="small">${ui('perfect')}</div>`):'';const ft=G.repair?` · ${state.score/(G.points||1)}/${G.total} ${ui('firstTry')}`:'';html+=`${rt?line(rt,'story'):''}<div class="final-score">${ui('finalScore')} ${state.score}/${G.max}${ft} · ${'◆'.repeat(state.tiles)}${'◇'.repeat(Math.max(0,G.tiles-state.tiles))}</div>${rev}${state.route.length?`<div class="small">${ui('route')}: ${esc(state.route.join(' · ').toUpperCase())}</div>`:''}${s.link?`<a class="start" href="${s.link}">${label(s.linkLabel)}</a>`:''}<button class="restart" onclick="restart()">${ui('restart')}</button>`}
-  content.innerHTML=html;content.scrollTop=0;updateHUD();setOpen(false);
+function render(){const s=G.scenes[state.scene];frame.className=`frame ${s.pos||'left'} v-${s.v||'center'} k-${s.kind}${s.kind==='intro'?' is-cover':''}${RTL.includes(state.lang)?' rtl':''}`;sceneImage.src=G.dir+s.img;sceneImage.alt=bare((s.title&&s.title.en)||s.alt||'');placeHot(s.hot);const tr=state.lang!=='off';frame.classList.toggle('tr-on',tr);frame.classList.toggle('has-rules',!!s.rules&&s.kind!=='intro');content.style.width=((s.width||(s.pos==='center'?64:s.pos==='band'?92:46))+(tr?(s.pos==='band'?3:8):0))+'%';content.style.marginLeft=s.pos==='left'&&s.inset?s.inset+'%':'';content.style.marginRight=s.pos==='right'&&s.inset?s.inset+'%':'';
+  const hide=`<button class="hide-btn" onclick="closePanel()" title="Esc">✕ ${ui('hide')}</button>`;
+  let html=head(s),act='';
+  if(s.kind==='intro'){act+=`${s.rules?`<div class="rules-chips">${s.rules.map(r=>`<span>${label(r)}</span>`).join('')}</div>`:''}<button class="start" onclick="go('${s.next}')">${label(s.start)}</button>${s.small?`<div class="small">${label(s.small)}</div>`:''}`}
+  else if(s.kind==='rules'){act+=`<div class="rules-intro">${s.rules.map(r=>`<div class="rule-card${r.tone?' tone-card-'+r.tone:''}"><b>${label(r.name)}</b>${label(r.form)}</div>`).join('')}</div>${s.note?`<div class="rule-note">${label(s.note)}</div>`:''}<button class="continue" onclick="go('${s.next}')">${s.button?label(s.button):ui('begin')}</button>`}
+  else if(s.kind==='story'){act+=`${s.rules?`<div class="rules-intro">${s.rules.map(r=>`<div class="rule-card${r.tone?' tone-card-'+r.tone:''}"><b>${label(r.name)}</b>${label(r.form)}</div>`).join('')}</div>`:''}${s.note?`<div class="rule-note">${label(s.note)}</div>`:''}<button class="continue" onclick="go('${s.next}')">${s.button?label(s.button):ui('continue')}</button>`}
+  else if(s.kind==='question'){act+=`${s.clue?`<div class="clue"><b>${ui('visual')}</b><br>${label(s.clue)}</div>`:''}<div class="prompt">${label(s.prompt)}</div><div class="options">${s.opts.map((o,i)=>`<button class="option${o.parts?' split':''}" data-i="${i}" onclick="answer(${i})"><span class="key">${i+1}</span>${optMarkup(o)}</button>`).join('')}</div><div id="feedback" class="feedback"></div><button id="continue" class="continue" hidden onclick="advance()">${ui('continue')}</button>`}
+  else if(s.kind==='choice'){act+=`<div class="route-options">${s.routes.map((r,i)=>`<button class="route" onclick="chooseRoute(${i})"><b>${i+1} · ${label(r.name)}</b>${label(r.desc)}</button>`).join('')}</div>`}
+  else if(s.kind==='ending'){/* an ending may close with a paragraph that depends on the route taken (routeStory) */const rt=s.routeStory?(Object.entries(s.routeStory).find(([k])=>state.route.includes(k))||[])[1]:null;const rev=G.repair?(state.mistakes.length?`<div class="review">${state.mistakes.map(id=>{const m=G.scenes[id];return `<div>${esct(m.prompt.en)}<br><b>${esc(optText(m.opts[m.answer]))}</b> — ${label(m.fb)}</div>`}).join('')}</div>`:`<div class="small">${ui('perfect')}</div>`):'';const ft=G.repair?` · ${state.score/(G.points||1)}/${G.total} ${ui('firstTry')}`:'';act+=`${rt?line(rt,'story'):''}<div class="final-score">${ui('finalScore')} ${state.score}/${G.max}${ft} · ${'◆'.repeat(state.tiles)}${'◇'.repeat(Math.max(0,G.tiles-state.tiles))}</div>${rev}${state.route.length?`<div class="small">${ui('route')}: ${esc(state.route.join(' · ').toUpperCase())}</div>`:''}${s.link?`<a class="start" href="${s.link}">${label(s.linkLabel)}</a>`:''}<button class="restart" onclick="restart()">${ui('restart')}</button>`}
+  /* a band lays the two halves side by side; every other position stacks them */
+  content.innerHTML=s.pos==='band'?`${hide}<div class="band-text">${html}</div><div class="band-act">${act}</div>`:hide+html+act;
+  content.scrollTop=0;updateHUD();setOpen(false);
   if(s.kind==='question'&&Object.prototype.hasOwnProperty.call(state.results,state.scene))setTimeout(()=>displayAnswer(state.results[state.scene],false),0)}
 hot.addEventListener('click',e=>{e.stopPropagation();openPanel()});
 sceneImage.addEventListener('click',()=>{closeMenu();closePanel()});
@@ -578,7 +618,11 @@ def assemble(spec, out=None):
         'tags': spec.get('tags', {'a': {'en': 'NOW'}, 'b': {'en': 'USUALLY'}}),
     }
     css = (CSS.replace('{{ACCENT}}', spec['accent']).replace('{{ACCENT_INK}}', spec.get('accent_ink', '#1a1200'))
-              .replace('{{DEEP}}', spec.get('deep', '#1a1200')).replace('{{PANEL}}', spec.get('panel', 'rgba(20,14,4,.88)')))
+              .replace('{{DEEP}}', spec.get('deep', '#1a1200')).replace('{{PANEL}}', spec.get('panel', 'rgba(20,14,4,.88)'))
+              # the cover caption is a gradient, not a box, so it needs more
+              # alpha than the panel to hold a kicker over bright artwork.
+              # A deck that thins its panel sets this; the rest inherit it.
+              .replace('{{SCRIM}}', spec.get('scrim', spec.get('panel', 'rgba(20,14,4,.88)'))))
     body = BODY.replace('{{MAX}}', str(spec['max']))
     js = JS.replace('{{GAME}}', json.dumps(game, ensure_ascii=False, separators=(',', ':')))
     page = (PAGE.replace('{{FONTS}}', font_css()).replace('{{CSS}}', css.strip())

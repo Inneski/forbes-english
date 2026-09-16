@@ -54,42 +54,50 @@ def T(en, es=None, de=None):
 
 # ── hotspots: [cx, cy, w, h] in % of the 16:9 picture, panel side, vertical
 # anchor, optional panel width. Picked from gridded contact sheets.
+#
+# Most of this deck reads in a `band` — a wide, shallow strip across the foot of
+# the frame, prose on the left of it and the buttons on the right (rpg.py, the
+# .band block). These plates are crowd scenes: Alice stands in the middle and
+# the cast fills both edges, so a 46% side panel buried a named character on
+# most screens, and on the pink/blue contrast plates it covered half of the
+# comparison the question is built on. A band keeps the upper two thirds.
+# `left` and `right` survive only where the picture really does have an empty
+# side — water, sky, an empty hall — and the numbers below say which.
+# A band scene's hotspot has to sit above about 60% of the picture, which is
+# why the three forks glow on Alice's shoulders rather than at her feet.
 HOT = {
-    'cover':                 ([65, 22, 12, 22], 'left',   'center'),      # the palace clock in the rift
-    'prologue':              ([82, 10, 12, 16], 'left',   'center'),      # the Warden with the stolen Heart
-    'rules':                 ([66,  9,  8, 14], 'left',   'center', 56),  # the stopped clock tower
-    # A centre panel is 64% wide and cannot clear a central object at any
-    # vertical anchor (README §3). Alice stands at x=50 on both forks, so both
-    # move to a narrow left panel, measured against the 20% gate.
-    'choice1':               ([50, 72, 12, 28], 'left',   'top',    37),  # Alice at the fork
-    '03_rabbit_run':         ([78, 50, 12, 20], 'left',   'center'),      # the Rabbit with his watch
+    'cover':                 ([26, 50, 12, 26], 'right',  'center'),      # Alice, clear of the caption strip
+    'prologue':              ([82, 10, 12, 16], 'band',   'bottom'),      # the Warden with the stolen Heart
+    'rules':                 ([66,  9,  8, 14], 'band',   'bottom', 92),  # the stopped clock tower
+    'choice1':               ([55, 21,  6, 12], 'band',   'bottom'),      # the lantern over the fork
+    '03_rabbit_run':         ([67, 41, 11, 14], 'band',   'bottom'),      # the Rabbit with his watch
     '04_bridge_build':       ([42, 47,  8, 12], 'right',  'center'),      # the rose block going in
     '05_mouse_swim':         ([55, 62,  9, 12], 'left',   'center', 43),  # the Mouse in the rapids
-    '06_guard_chase':        ([25, 42, 20, 30], 'right',  'center'),      # the card guards
-    '07_cat_vanish':         ([69, 11, 10, 14], 'left',   'center'),      # the Cat's grin
+    '06_guard_chase':        ([18, 32, 18, 24], 'band',   'bottom'),      # the card guards
+    '07_cat_vanish':         ([69, 11, 10, 14], 'band',   'bottom'),      # the Cat's grin
     '08_tree_climb':         ([42, 50, 10, 18], 'right',  'center'),      # Alice on the stairs
-    '09_mirror_guards':      ([72, 20, 14, 22], 'left',   'center'),      # the mirror portal
-    '10_mirror_key':         ([55, 33,  8, 12], 'left',   'center', 44),  # the key in Alice's hand
-    'cake_intro':            ([60, 32, 12, 18], 'left',   'center', 48),  # the Caterpillar Baker
+    '09_mirror_guards':      ([72, 20, 14, 22], 'band',   'bottom'),      # the mirror portal
+    '10_mirror_key':         ([55, 33,  8, 12], 'band',   'bottom'),      # the key in Alice's hand
+    'cake_intro':            ([53, 25,  9, 12], 'band',   'bottom'),      # the Caterpillar Baker
     '12_cake_growing':       ([40, 25, 16, 30], 'right',  'center'),      # Alice growing
-    '13_cake_routine':       ([63, 45,  8, 16], 'left',   'center'),      # the Rabbit running
-    '14_cake_contrast':      ([78, 20, 12, 20], 'left',   'center'),      # the Hatter pouring tea
+    '13_cake_routine':       ([42, 29,  9, 12], 'band',   'bottom'),      # the clock over the Rabbit's route
+    '14_cake_contrast':      ([78, 20, 12, 20], 'band',   'bottom'),      # the Hatter pouring tea
     '15_cake_gate':          ([50, 35, 10, 30], 'right',  'center', 38),  # where the two doors meet
-    'choice2':               ([50, 60, 10, 26], 'left',   'top',    38),  # Alice between the routes
-    '17_boat_engine':        ([60, 35, 12, 18], 'left',   'center'),      # tea into the engine
-    '18_reverse_river':      ([70, 32, 12, 30], 'left',   'center'),      # the backwards waterfall
-    '19_stone_ear':          ([25, 68, 16, 22], 'right',  'center'),      # Alice and the Hatter hiding
+    'choice2':               ([50, 34,  9, 12], 'band',   'bottom'),      # Alice between the routes
+    '17_boat_engine':        ([60, 35, 12, 18], 'band',   'bottom'),      # tea into the engine
+    '18_reverse_river':      ([70, 32, 12, 30], 'band',   'bottom'),      # the backwards waterfall
+    '19_stone_ear':          ([78, 21, 11, 26], 'band',   'bottom'),      # the stone ear on the wall
     '20_compass_island':     ([42, 45,  8, 10], 'right',  'center'),      # the compass
-    '21_prison_gears':       ([75, 40, 16, 26], 'left',   'center'),      # the great gear
-    '22_clockmaker_trapped': ([56, 32, 10, 14], 'left',   'center', 44),  # the trapped Mouse
-    '23_broken_drill':       ([60, 35, 18, 20], 'left',   'center'),      # the drill
+    '21_prison_gears':       ([43, 15, 11, 17], 'band',   'bottom'),      # the great gear
+    '22_clockmaker_trapped': ([56, 32, 10, 14], 'band',   'bottom'),      # the trapped Mouse
+    '23_broken_drill':       ([60, 35, 18, 20], 'band',   'bottom'),      # the drill
     '24_heart_gear':         ([42, 56,  8, 12], 'right',  'center'),      # the Heart Gear
-    'boss_intro':            ([60, 30, 12, 24], 'left',   'center'),      # the Queen
-    '26_freeze_attack':      ([52, 22, 14, 26], 'left',   'center', 38),  # the Warden sending the wave
-    '27_shards_crown':       ([62, 38, 20, 22], 'left',   'center'),      # the Crown
-    '28_queen_truth':        ([82, 30, 10, 22], 'left',   'center'),      # Rose beyond the wall
-    '29_warden_break':       ([72, 25, 18, 26], 'left',   'center'),      # the Warden breaking up
-    'decision':              ([48, 60, 10, 24], 'right',  'center', 40),  # Alice at the controls
+    'boss_intro':            ([47, 12, 14, 18], 'band',   'bottom'),      # the Warden over the Queen
+    '26_freeze_attack':      ([52, 22, 14, 26], 'band',   'bottom'),      # the Warden sending the wave
+    '27_shards_crown':       ([62, 38, 20, 22], 'band',   'bottom'),      # the Crown
+    '28_queen_truth':        ([82, 30, 10, 22], 'band',   'bottom'),      # Rose beyond the wall
+    '29_warden_break':       ([72, 25, 18, 26], 'band',   'bottom'),      # the Warden breaking up
+    'decision':              ([22, 28, 10, 16], 'band',   'bottom'),      # the time machine
     'end_restore':           ([32, 30,  8, 12], 'right',  'center'),      # the Crown held high
     'end_escape':            ([20, 30, 16, 26], 'right',  'center'),      # the portal they came through
     'end_flicker':           ([58, 12, 12, 18], 'left',   'center'),      # the flickering heart
@@ -429,9 +437,9 @@ def build():
         'kind': 'story', 'img': IMG('25_boss_reveal'),
         'k': T('THE SECRET · THE CLOCK IS STOPPING', 'EL SECRETO · EL RELOJ SE ESTÁ PARANDO', 'DAS GEHEIMNIS · DIE UHR BLEIBT STEHEN'),
         'title': T('THE WARDEN IS THE QUEEN\'S FEAR', 'EL GUARDIÁN ES EL MIEDO DE LA REINA', 'DER WÄCHTER IST DIE ANGST DER KÖNIGIN'),
-        'story': T('Rose is the Queen\'s daughter, and she is trapped one second behind the clock. The Queen was afraid, so she asked the Clockmaker Mouse to stop tomorrow. The Queen\'s fear became the Warden, and the Warden took "now" from everybody. Alice is holding her two magic objects. They are keeping her friends moving, but only four more spells can stop the Warden.',
-                   'Rose es la hija de la Reina y está atrapada un segundo detrás del reloj. La Reina tenía miedo, así que pidió a la Ratona Relojera que detuviera el mañana. El miedo de la Reina se convirtió en el Guardián, y el Guardián le quitó el «ahora» a todo el mundo. Alice está sujetando sus dos objetos mágicos: mantienen a sus amigos en movimiento, pero solo cuatro hechizos más pueden detener al Guardián.',
-                   'Rose ist die Tochter der Königin, und sie ist eine Sekunde hinter der Uhr gefangen. Die Königin hatte Angst, also bat sie die Uhrmachermaus, das Morgen anzuhalten. Die Angst der Königin wurde zum Wächter, und der Wächter nahm allen das „Jetzt“. Alice hält gerade ihre zwei Zaubergegenstände. Sie halten ihre Freunde in Bewegung, aber nur vier weitere Zauber können den Wächter stoppen.'),
+        'story': T('Rose is the Queen\'s daughter, and she is trapped one second behind the clock. The Queen was afraid, so she asked the Clockmaker Mouse to stop tomorrow. The Queen\'s fear became the Warden, and the Warden took "now" from everybody. Alice is holding her three magic objects. They are keeping her friends moving, but only four more spells can stop the Warden.',
+                   'Rose es la hija de la Reina y está atrapada un segundo detrás del reloj. La Reina tenía miedo, así que pidió a la Ratona Relojera que detuviera el mañana. El miedo de la Reina se convirtió en el Guardián, y el Guardián le quitó el «ahora» a todo el mundo. Alice está sujetando sus tres objetos mágicos: mantienen a sus amigos en movimiento, pero solo cuatro hechizos más pueden detener al Guardián.',
+                   'Rose ist die Tochter der Königin, und sie ist eine Sekunde hinter der Uhr gefangen. Die Königin hatte Angst, also bat sie die Uhrmachermaus, das Morgen anzuhalten. Die Angst der Königin wurde zum Wächter, und der Wächter nahm allen das „Jetzt“. Alice hält gerade ihre drei Zaubergegenstände. Sie halten ihre Freunde in Bewegung, aber nur vier weitere Zauber können den Wächter stoppen.'),
         'button': T('FIGHT FOR THE NEXT SECOND', 'LUCHA POR EL SIGUIENTE SEGUNDO', 'KÄMPFE UM DIE NÄCHSTE SEKUNDE'),
         'next': DATA['BOSS_ROUND'][0]['id']})
     easy('boss_intro')
@@ -483,7 +491,11 @@ def build():
         'description': 'An interactive A1-A2 English lesson from Forbes English: Wonderland: The Stolen Now — Present Continuous Voxel RPG (A1-A2).',
         'langs': LANGS,
         'accent': '#E66085',        # camp 2, Present Continuous, on the Block Camp route map
-        'accent_ink': '#1f0716', 'deep': '#2d1024', 'panel': 'rgba(30,9,26,.9)',
+        'accent_ink': '#1f0716', 'deep': '#2d1024', 'panel': 'rgba(30,9,26,.74)', 'scrim': 'rgba(30,9,26,.93)',
+        # .9 read as a solid slab over the artwork. Innes asked for less on
+        # 2026-09-16; the panel's backdrop blur carries the contrast at .74.
+        # The cover caption has no blur behind it — it is a gradient over a
+        # sunset — so it keeps its own alpha.
         'labels': labels,
         'tags': {'a': T('PINK · NOW', 'ROSA · AHORA', 'ROSA · JETZT'), 'b': T('BLUE · USUAL', 'AZUL · HABITUAL', 'BLAU · GEWOHNT')},
         'easy_labels': EASY['labels'], 'easy_tags': EASY['tags'],
