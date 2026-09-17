@@ -11,6 +11,68 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-17 — BEYOND THE HANDLEBARS (B2/C1): a supplied ChatGPT deck, rebuilt to house style
+
+Innes dropped `forbes-english-beyond-the-handlebars_1.html` in Downloads with
+two pictures and asked for the house logo, a new cover and a new Commuter
+portrait; then "it is destined for forbesenglish.com, maybe some text could be
+bolder". So it went through the whole pipeline. Live as
+`beyond-the-handlebars.html`, catalogue row in Supabase, `B2-C1`, pro, deck.
+
+Builder `lesson-template/build/build_handlebars.py` + `i18n_handlebars.py`
+(EN/DE/ES). 32 slides, `check-lesson.js` clean. The source was a saved-DOM
+page: its questions live in a `const Q={...}` at the tail, not in the markup,
+and its 21 illustrations were base64 in a `<script type="application/json"
+id="embedded-art">`. They are now `BeyondTheHandlebars/` (9 landscapes at
+house spec, 12 rider portraits at 560px — `prep-artwork.py --min-width 500
+--width 560`, and it correctly flags all twelve as not-16:9; they are inline
+portraits, not backgrounds).
+
+**Four defects found in the source, all fixed in the builder — see its
+docstring for the full reasoning.** Shortest version:
+
+- Five MC items had the key as the conspicuously longest option. Reading Q1
+  ran a 66-character key against 45 and 47. Distractors lengthened.
+- The three idioms were a closed set asked three times as MCQ, so the item
+  keyed `an uphill struggle` could not be fixed by rewriting options — the
+  options *are* the answer set. It is a gap-fill with a shared alphabetised
+  bank now.
+- The bicycle schematic carried a third party's brand on the down tube and in
+  its aria-label. Removed. The drawing is otherwise untouched, in
+  `lesson-template/build/handlebars_bike.svgfrag` (`#roadBike`, `#bikeImage`).
+- The teacher notes credited a competitor's lesson pages by name and URL.
+  Gone.
+
+**Two things a later session should know.**
+
+1. **This deck declares `--plate: 0.86`.** Not taste — measured. The artwork
+   is flat vector with large near-white areas, and at the template's 0.68 the
+   dim note line on a teach card came out at **4.13:1**, under AA. Method is
+   in the builder's palette comment: photograph the card with its text
+   hidden, take the brightest 2%, compute against `--text-dim`. Worth running
+   on any deck whose hero is this bright.
+
+2. **`tools/topics.py` had no `B2-C1` in `_LEVEL_ORDER`.** A level that is
+   missing is not dropped, it is sorted to the bottom of its hub by
+   `level_key`'s 99, so nothing looks broken. Added. The list still carries
+   only the spans that have been used; the next odd one will do the same
+   thing silently.
+
+Also worth knowing for the ordering of a *new* lesson's publish: `build_hubs.py`
+skips anything `coming_soon`, which is `file not in LESSON_IMAGES`, and
+`LESSON_IMAGES` is hand-maintained in `library.html` — `seo.py` only reads it.
+So a brand-new lesson needs the `library.html` line added BEFORE `build_hubs.py`
+will place it on a hub. The order that worked: card → `library.html` line →
+`build_hubs.py` → `seo.py`.
+
+Unrelated to this lesson but noted while working: `?? .74.` has been sitting
+untracked in the root since before this session. Not mine; left alone.
+
+Themed neighbour: **The Loch Ness Loop** below is also bike-parts vocabulary,
+as an RPG. The two share no files and no builder, but they overlap heavily in
+lexis (cassette, derailleur, chainring, rim, hub, spokes), so they are worth
+cross-linking if a hub ever wants a pair.
+
 ## 2026-09-17 — THE LOCH NESS LOOP (B2): a bike-parts RPG script, glossed in nine languages, for ChatGPT to picture
 
 Innes asked for an RPG script "a bit like Kraken": hire a bike in Inverness,

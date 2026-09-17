@@ -340,7 +340,13 @@ OVERRIDES = {
 }
 
 BY_SLUG = {t['slug']: t for t in TOPICS}
-_LEVEL_ORDER = ['A1', 'A1-A2', 'A2', 'A2-C1', 'B1', 'B1-B2', 'B2', 'C1', 'C1-C2', 'C2']
+# A level missing from this list is not dropped, it is sorted to the bottom of
+# its hub by level_key's 99 — which looks like nothing is wrong. 'B2-C1' was
+# the gap: the list already carried 'A1-A2', 'B1-B2' and 'C1-C2', so a span at
+# that one boundary had nowhere to sit. Added 2026-09-17 with Beyond the
+# Handlebars, the first lesson to use it.
+_LEVEL_ORDER = ['A1', 'A1-A2', 'A2', 'A2-C1', 'B1', 'B1-B2', 'B2', 'B2-C1',
+                'C1', 'C1-C2', 'C2']
 
 
 def topics_for(row):
