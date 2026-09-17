@@ -59,6 +59,9 @@ LABELS = {
     'firstTry':   {'en': 'first try', 'es': 'a la primera', 'de': 'beim ersten Versuch', 'fr': 'du premier coup', 'it': 'al primo tentativo', 'pt': 'à primeira', 'ru': 'с первой попытки', 'ar': 'من المحاولة الأولى', 'zh': '一次答对', 'ja': '一発正解'},
     'review':     {'en': 'REVIEW THE REPAIRED SPELLS', 'es': 'REPASA LOS HECHIZOS REPARADOS', 'de': 'DIE REPARIERTEN ZAUBER ANSEHEN', 'fr': 'REVOIR LES SORTS RÉPARÉS', 'it': 'RIVEDI GLI INCANTESIMI RIPARATI', 'pt': 'REVER OS FEITIÇOS REPARADOS', 'ru': 'ПОВТОРИТЬ ИСПРАВЛЕННЫЕ ЗАКЛИНАНИЯ', 'ar': 'راجع التعويذات المُصلحة', 'zh': '复习已修复的咒语', 'ja': '修復した呪文を復習'},
     'perfect':    {'en': 'Perfect first-try grammar. Every spell held.', 'es': 'Gramática perfecta a la primera. Todos los hechizos aguantaron.', 'de': 'Perfekte Grammatik beim ersten Versuch. Jeder Zauber hat gehalten.', 'fr': 'Grammaire parfaite du premier coup. Tous les sorts ont tenu.', 'it': 'Grammatica perfetta al primo tentativo. Ogni incantesimo ha retto.', 'pt': 'Gramática perfeita à primeira. Todos os feitiços aguentaram.', 'ru': 'Идеальная грамматика с первой попытки. Все заклинания выдержали.', 'ar': 'قواعد مثالية من المحاولة الأولى. صمدت كل التعويذات.', 'zh': '一次全对，语法完美。每个咒语都成功了。', 'ja': '一発で完璧な文法。すべての呪文が成功した。'},
+    'readOn':     {'en': 'READ ON →', 'es': 'SIGUE LEYENDO →', 'de': 'WEITERLESEN →', 'fr': 'LIRE LA SUITE →', 'it': 'CONTINUA A LEGGERE →', 'pt': 'CONTINUAR A LER →', 'ru': 'ЧИТАТЬ ДАЛЬШЕ →', 'ar': '← تابع القراءة', 'zh': '继续阅读 →', 'ja': '読み進める →'},
+    'nextChapter':{'en': 'CHAPTER {n} →', 'es': 'CAPÍTULO {n} →', 'de': 'KAPITEL {n} →', 'fr': 'CHAPITRE {n} →', 'it': 'CAPITOLO {n} →', 'pt': 'CAPÍTULO {n} →', 'ru': 'ГЛАВА {n} →', 'ar': '← الفصل {n}', 'zh': '第 {n} 章 →', 'ja': '第{n}章 →'},
+    'chapters':   {'en': 'ALL CHAPTERS', 'es': 'TODOS LOS CAPÍTULOS', 'de': 'ALLE KAPITEL', 'fr': 'TOUS LES CHAPITRES', 'it': 'TUTTI I CAPITOLI', 'pt': 'TODOS OS CAPÍTULOS', 'ru': 'ВСЕ ГЛАВЫ', 'ar': 'كل الفصول', 'zh': '所有章节', 'ja': 'すべての章'},
     'help':       {'en': 'click the glowing object or ENTER to read · ESC hide · 1–3 choose · L language · S sound · F fullscreen',
                    'es': 'pulsa el objeto que brilla o ENTER para leer · ESC ocultar · 1–3 elegir · L idioma · S sonido · F pantalla completa',
                    'de': 'klicke das leuchtende Objekt oder ENTER zum Lesen · ESC ausblenden · 1–3 wählen · L Sprache · S Ton · F Vollbild',
@@ -299,6 +302,18 @@ button{font:inherit}
 .route{border:1px solid rgba(255,246,217,.43);background:rgba(20,14,4,.82);color:#fff;padding:calc(1 * var(--u));cursor:pointer;text-align:left;min-height:calc(7 * var(--u));font-size:calc(1.25 * var(--u));line-height:1.3}
 .route:hover{border-color:var(--accent);background:rgba(70,48,8,.92)}
 .route b{display:block;color:var(--accent);font-size:calc(1.3 * var(--u));margin-bottom:calc(.4 * var(--u))}.route .translation{font-size:calc(1 * var(--u))}
+/* the chapter picker on a page with `chapters`. One column, not the route
+   fork's two: these are read in order, and a chapter's lead is a sentence
+   rather than a label. Same sizes as .route so the two never disagree. */
+.chapter-list{display:grid;grid-template-columns:1fr;gap:calc(.7 * var(--u))}
+.chapter{border:1px solid rgba(255,246,217,.43);background:rgba(20,14,4,.82);color:#fff;padding:calc(1 * var(--u));cursor:pointer;text-align:left;font-size:calc(1.25 * var(--u));line-height:1.35}
+.chapter:hover{border-color:var(--accent);background:rgba(70,48,8,.92)}
+.chapter b{display:block;color:var(--accent);font-size:calc(1.3 * var(--u));margin-bottom:calc(.35 * var(--u))}.chapter .translation{font-size:calc(1 * var(--u))}
+/* the READ ON row under a paged story block. The count sits left of the
+   button so the eye finds "1 / 3" before it decides whether to tap. */
+.story-pager{display:flex;align-items:center;gap:calc(1 * var(--u))}
+.page-count{color:rgba(255,246,217,.62);font-size:calc(1 * var(--u));font-variant-numeric:tabular-nums;letter-spacing:.08em}
+.story-pager .continue{margin-left:auto}
 .rules-intro{display:grid;grid-template-columns:1fr 1fr;gap:calc(.75 * var(--u)) calc(1.4 * var(--u))}.rule-card:last-child{grid-column:1/-1}
 .rule-card{white-space:pre-line;border:0;border-left:calc(.22 * var(--u)) solid rgba(255,246,217,.22);background:none;padding:calc(.1 * var(--u)) 0 calc(.1 * var(--u)) calc(.7 * var(--u));font-size:calc(1.08 * var(--u));line-height:1.3;text-align:left}
 .rule-card b{display:block;color:var(--accent);font-size:calc(1.2 * var(--u));margin-bottom:calc(.15 * var(--u))}.rule-card .translation{font-size:calc(.95 * var(--u))}
@@ -313,7 +328,7 @@ button{font:inherit}
 /* portrait / square-ish windows */
 @media(max-aspect-ratio:4/3){.content{width:60%}.center .content{width:84%}.band .content{display:flex;flex-direction:column;gap:calc(.8 * var(--u))}.band .hide-btn{align-self:flex-end;margin-bottom:calc(-.3 * var(--u))}.hot-label{font-size:calc(1.8 * var(--u))}.lang-menu{min-width:calc(30 * var(--u))}.lang-item{font-size:calc(1.4 * var(--u))}.lang-item b{font-size:calc(1.3 * var(--u))}.title{font-size:calc(4.4 * var(--u))}.story,.prompt{font-size:calc(2.1 * var(--u))}.option,.feedback{font-size:calc(1.75 * var(--u))}.translation{font-size:calc(1.35 * var(--u))}.badge{font-size:calc(1.5 * var(--u))}.lang-btn,.utility{font-size:calc(1.4 * var(--u))}.clue{font-size:calc(1.7 * var(--u))}}
 /* phones: the panel is a sheet across the bottom, sizes in px */
-@media(max-width:700px){.hud{top:8px;left:8px;right:8px}.badge{font-size:11px;padding:5px 6px}.lang-btn,.utility{font-size:11px;padding:5px 6px}.zone{top:58px;bottom:10px;left:3%;right:3%;align-items:flex-end!important;justify-content:center!important}.content,.center .content,.tr-on .content{width:100%!important;margin:0!important;max-height:100%;text-align:left;padding:14px;gap:9px}.band .content{display:flex;flex-direction:column;margin-bottom:0!important}.band-text,.band-act{gap:9px}.right .content{text-align:left}.right .clue{border-right:0;border-left:4px solid var(--accent)}.right .option{text-align:left;grid-template-columns:24px 1fr}.right .option .key{order:0}.right .continue,.right .start,.right .restart,.center .continue,.center .start,.center .restart{align-self:flex-start}.right .hide-btn{align-self:flex-end}.hot{min-width:44px;min-height:44px}.hot i,.hot::before{inset:-4px}.hot i{box-shadow:0 0 0 2px #fff,0 0 0 4px rgba(70,45,0,.55),0 0 14px 3px rgba(255,240,170,.85)}.hot::before{border-width:2px}.hot-label{font-size:13px}.lang-menu{min-width:200px;padding:6px;gap:3px}.lang-item{font-size:13px;padding:6px 8px;grid-template-columns:32px 1fr}.lang-item b{font-size:12px}.hide-btn{font-size:12px}.title,.tr-on .title{font-size:26px}.cover-title{font-size:22px}.kicker{font-size:12px}.story,.prompt{font-size:17px}.clue{font-size:15px;padding:8px 10px;border-left-width:4px}.translation,.title .translation{font-size:13px}.option,.feedback{font-size:15px;padding:9px 10px}.option{grid-template-columns:24px 1fr;gap:8px}.option .key{width:22px;height:22px}.option .translation,.route .translation,.rule-card .translation,.feedback .translation{font-size:12px}.option.split{grid-template-columns:24px 1fr 1fr;gap:6px}.option .half{padding:6px 8px}.option .half small{font-size:10px}.option .half b{font-size:14px}.review div{font-size:13px;padding:6px 8px}.route-options,.rules-intro{grid-template-columns:1fr}.rule-card:last-child{grid-column:auto}.rule-card,.rule-note,.route{font-size:14px;padding:9px}.rule-card b,.route b{font-size:14px}.rules-chips span{font-size:11px;padding:4px 7px}.final-score{font-size:19px}.small{font-size:12px}.continue,.start,.restart{font-size:14px;padding:11px 16px}.corner-help{display:none}}
+@media(max-width:700px){.hud{top:8px;left:8px;right:8px}.badge{font-size:11px;padding:5px 6px}.lang-btn,.utility{font-size:11px;padding:5px 6px}.zone{top:58px;bottom:10px;left:3%;right:3%;align-items:flex-end!important;justify-content:center!important}.content,.center .content,.tr-on .content{width:100%!important;margin:0!important;max-height:100%;text-align:left;padding:14px;gap:9px}.band .content{display:flex;flex-direction:column;margin-bottom:0!important}.band-text,.band-act{gap:9px}.right .content{text-align:left}.right .clue{border-right:0;border-left:4px solid var(--accent)}.right .option{text-align:left;grid-template-columns:24px 1fr}.right .option .key{order:0}.right .continue,.right .start,.right .restart,.center .continue,.center .start,.center .restart{align-self:flex-start}.right .hide-btn{align-self:flex-end}.hot{min-width:44px;min-height:44px}.hot i,.hot::before{inset:-4px}.hot i{box-shadow:0 0 0 2px #fff,0 0 0 4px rgba(70,45,0,.55),0 0 14px 3px rgba(255,240,170,.85)}.hot::before{border-width:2px}.hot-label{font-size:13px}.lang-menu{min-width:200px;padding:6px;gap:3px}.lang-item{font-size:13px;padding:6px 8px;grid-template-columns:32px 1fr}.lang-item b{font-size:12px}.hide-btn{font-size:12px}.title,.tr-on .title{font-size:26px}.cover-title{font-size:22px}.kicker{font-size:12px}.story,.prompt{font-size:17px}.clue{font-size:15px;padding:8px 10px;border-left-width:4px}.translation,.title .translation{font-size:13px}.option,.feedback{font-size:15px;padding:9px 10px}.option{grid-template-columns:24px 1fr;gap:8px}.option .key{width:22px;height:22px}.option .translation,.route .translation,.rule-card .translation,.feedback .translation{font-size:12px}.option.split{grid-template-columns:24px 1fr 1fr;gap:6px}.option .half{padding:6px 8px}.option .half small{font-size:10px}.option .half b{font-size:14px}.review div{font-size:13px;padding:6px 8px}.route-options,.rules-intro{grid-template-columns:1fr}.rule-card:last-child{grid-column:auto}.rule-card,.rule-note,.route,.chapter{font-size:14px;padding:9px}.rule-card b,.route b,.chapter b{font-size:14px}.rules-chips span{font-size:11px;padding:4px 7px}.final-score{font-size:19px}.small{font-size:12px}.continue,.start,.restart{font-size:14px;padding:11px 16px}.corner-help{display:none}}
 """
 
 BODY = r"""
@@ -350,12 +365,29 @@ const LANGS = G.langs, RTL = ['ar'];
    and the engine used to bind only 1-3 — on a four-option lesson the fourth
    button was mouse-only, and it is the key on five of Frostbound's twelve. */
 const NUM = ['1','2','3','4'];
-let state = fresh('off');
+/* `chapters` is a page that holds more than one game. Each chapter keeps its
+   own start, score, endings, collectibles and chances, and the player picks
+   one from a hub scene; nothing is carried between them. A page without
+   `chapters` has state.chapter null and CH() is G, which is every lesson
+   built before 2026-09-18 and is unchanged.
+   The Kraken saga is the reason: three parts of fourteen questions each, one
+   library card. Merging them into one 42-question run would have rewritten
+   the game's own rules, which README.md section 1 forbids. */
+const CH = () => (state.chapter == null || !G.chapters) ? G : G.chapters[state.chapter];
+let state = fresh('off', null);
 let sound=false;try{sound=localStorage.getItem('rpg-sound')==='1'}catch(_){}
 /* two short tones, right and wrong — the Wonderland export's, kept */
 function beep(ok){if(!sound)return;try{const c=new (window.AudioContext||window.webkitAudioContext)();const o=c.createOscillator(),g=c.createGain();o.type=ok?'square':'sawtooth';o.frequency.value=ok?620:180;g.gain.value=.03;o.connect(g);g.connect(c.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.16);o.stop(c.currentTime+.18);o.onended=()=>c.close()}catch(_){}}
 function setSound(on){sound=!!on;try{localStorage.setItem('rpg-sound',sound?'1':'0')}catch(_){}const b=document.getElementById('sound');b.setAttribute('aria-pressed',String(sound));b.firstChild.textContent=(sound?'🔊':'🔈')+' ';document.getElementById('soundLabel').textContent=ui(sound?'soundOn':'soundOff')}
-function fresh(lang){return {scene:G.start,score:0,chances:G.chances,tiles:0,lang,open:false,route:[],results:{},attempts:{},mistakes:[],answered:0,finalCorrect:null,endingPick:null,endingMaster:false,endingMin:0}}
+function fresh(lang,ch){const c=(ch==null||!G.chapters)?G:G.chapters[ch];return {chapter:(ch==null||!G.chapters)?null:ch,scene:c.start,page:0,score:0,chances:c.chances,tiles:0,lang,open:false,route:[],results:{},attempts:{},mistakes:[],answered:0,finalCorrect:null,endingPick:null,endingMaster:false,endingMin:0}}
+/* A scene's `story` is one block, or a list of them to be read a page at a
+   time. The panel does not scroll by design (README section 1: never shrink
+   type to fit), which caps a block at about 28 words — fine for the camp
+   games, hopeless for a saga whose panels run 60 to 150. Paging is what the
+   Kraken export did and it is the right answer: the reader taps READ ON and
+   the question only appears under the last page. A scene with a single story
+   block has one page and behaves exactly as before. */
+const storyPages=s=>Array.isArray(s.story)?s.story:[s.story];
 const frame=document.getElementById('frame'), content=document.getElementById('content'), sceneImage=document.getElementById('sceneImage');
 const hot=document.getElementById('hot'), hotLabel=document.getElementById('hotLabel'), zone=document.getElementById('zone');
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -371,9 +403,15 @@ function label(obj){if(!obj)return '';const g=gloss(obj);return g?`${esct(obj.en
 /* an option is {en,…} or, for a two-blank item, {parts:[a,b], kinds:['a'|'b',…], tags:[{en,…},{en,…}]} — two coloured halves */
 function optText(o){return bare(o.parts?o.parts.join(' / '):o.en)}
 function optMarkup(o){if(!o.parts)return `<span>${label(o)}</span>`;return o.parts.map((p,i)=>`<span class="half ${o.kinds[i]}"><small>${label(G.tags[o.kinds[i]])}</small><b>${esc(p)}</b></span>`).join('')}
-function updateHUD(){document.getElementById('score').textContent=state.score;document.getElementById('tiles').textContent='◆'.repeat(state.tiles)+'◇'.repeat(Math.max(0,G.tiles-state.tiles));document.getElementById('chances').textContent='♥'.repeat(state.chances)+'♡'.repeat(Math.max(0,G.chances-state.chances));document.getElementById('lblPoints').textContent=ui('points');document.getElementById('lblTiles').textContent=ui('tiles');document.getElementById('lblChances').textContent=ui('chances');document.getElementById('tilesBadge').hidden=!G.tiles;document.getElementById('chancesBadge').hidden=!G.chances;document.getElementById('progressBadge').hidden=!G.total;if(G.total){document.getElementById('lblProgress').textContent=ui('progress');document.getElementById('progress').textContent=`${state.answered}/${G.total}`}document.getElementById('help').textContent=ui('help')}
+/* `tilesLabel` lets a chapter rename its own collectibles — the Kraken saga
+   counts EVIDENCE in part one, MARKER BARRELS in part two and THE LAST FOUR
+   in part three, on the same HUD badge. A lesson without one uses ui('tiles'). */
+function updateHUD(){const c=CH();const onHub=G.scenes[state.scene]?.kind==='hub';document.getElementById('score').textContent=state.score;document.getElementById('tiles').textContent='◆'.repeat(state.tiles)+'◇'.repeat(Math.max(0,c.tiles-state.tiles));document.getElementById('chances').textContent='♥'.repeat(state.chances)+'♡'.repeat(Math.max(0,c.chances-state.chances));document.getElementById('lblPoints').textContent=ui('points');document.getElementById('lblTiles').textContent=c.tilesLabel?label(c.tilesLabel):ui('tiles');document.getElementById('lblChances').textContent=ui('chances');document.getElementById('tilesBadge').hidden=!c.tiles||onHub;document.getElementById('chancesBadge').hidden=!c.chances||onHub;document.getElementById('progressBadge').hidden=!c.total||onHub;if(c.total){document.getElementById('lblProgress').textContent=ui('progress');document.getElementById('progress').textContent=`${state.answered}/${c.total}`}document.getElementById('help').textContent=ui('help')}
 /* A cover whose plate carries a painted title lockup has no title of its own: the h1 would only say the same thing again. */
-function head(s){const has=s.title&&bare(s.title.en||'').trim();const t=s.kind==='intro'?`<span class="big">${label(s.title)}</span>`:label(s.title);return `${line(s.k,'kicker')}${has?`<h1 class="title ${s.kind==='intro'?'cover-title':''}">${t}</h1>`:''}${line(s.story,'story')}`}
+/* the kicker and title belong to the scene, so they stay put while the story
+   pages under them — a title that reappeared on every tap would read as a new
+   scene each time. */
+function head(s,pi){const has=s.title&&bare(s.title.en||'').trim();const t=s.kind==='intro'?`<span class="big">${label(s.title)}</span>`:label(s.title);return `${line(s.k,'kicker')}${has?`<h1 class="title ${s.kind==='intro'?'cover-title':''}">${t}</h1>`:''}${line(storyPages(s)[pi||0],'story')}`}
 /* HOT = [cx, cy, w, h] as % of the PICTURE (3:2). The picture is object-fit:cover in the frame, so convert picture space to frame pixels; a phone shows a narrow central slice and the object stays on it. */
 function placeHot(h){const W=frame.clientWidth,H=frame.clientHeight,sc=Math.max(W/G.imgW,H/G.imgH),dw=G.imgW*sc,dh=G.imgH*sc;
   /* cover crops the picture; slide it so the object stays on screen (a portrait phone shows a third of the width) */
@@ -387,13 +425,24 @@ function openPanel(){if(!state.open)setOpen(true)}
 function closePanel(){if(state.open)setOpen(false)}
 function render(){const s=G.scenes[state.scene];frame.className=`frame ${s.pos||'left'} v-${s.v||'center'} k-${s.kind}${s.kind==='intro'?' is-cover':''}${RTL.includes(state.lang)?' rtl':''}`;sceneImage.src=G.dir+s.img;sceneImage.alt=bare((s.title&&s.title.en)||s.alt||'');placeHot(s.hot);const tr=state.lang!=='off';frame.classList.toggle('tr-on',tr);frame.classList.toggle('has-rules',!!s.rules&&s.kind!=='intro');content.style.width=((s.width||(s.pos==='center'?64:s.pos==='band'?92:46))+(tr?(s.pos==='band'?3:8):0))+'%';content.style.marginLeft=s.pos==='left'&&s.inset?s.inset+'%':'';content.style.marginRight=s.pos==='right'&&s.inset?s.inset+'%':'';
   const hide=`<button class="hide-btn" onclick="closePanel()" title="Esc">✕ ${ui('hide')}</button>`;
-  let html=head(s),act='';
+  const np=storyPages(s).length,pi=Math.min(state.page||0,np-1);
+  let html=head(s,pi),act='';
+  /* mid-story: the only thing on offer is the next page. The scene's own
+     action — question, routes, restart — waits for the last one. */
+  if(pi<np-1){content.innerHTML=hide+html+`<div class="story-pager"><span class="page-count">${pi+1} / ${np}</span><button class="continue" onclick="nextPage()">${ui('readOn')}</button></div>`;content.scrollTop=0;updateHUD();setOpen(false);return}
   if(s.kind==='intro'){act+=`${s.rules?`<div class="rules-chips">${s.rules.map(r=>`<span>${label(r)}</span>`).join('')}</div>`:''}<button class="start" onclick="go('${s.next}')">${label(s.start)}</button>${s.small?`<div class="small">${label(s.small)}</div>`:''}`}
   else if(s.kind==='rules'){act+=`<div class="rules-intro">${s.rules.map(r=>`<div class="rule-card${r.tone?' tone-card-'+r.tone:''}"><b>${label(r.name)}</b>${label(r.form)}</div>`).join('')}</div>${s.note?`<div class="rule-note">${label(s.note)}</div>`:''}<button class="continue" onclick="go('${s.next}')">${s.button?label(s.button):ui('begin')}</button>`}
   else if(s.kind==='story'){act+=`${s.rules?`<div class="rules-intro">${s.rules.map(r=>`<div class="rule-card${r.tone?' tone-card-'+r.tone:''}"><b>${label(r.name)}</b>${label(r.form)}</div>`).join('')}</div>`:''}${s.note?`<div class="rule-note">${label(s.note)}</div>`:''}<button class="continue" onclick="go('${s.next}')">${s.button?label(s.button):ui('continue')}</button>`}
   else if(s.kind==='question'){act+=`${s.clue?`<div class="clue"><b>${ui('visual')}</b><br>${label(s.clue)}</div>`:''}<div class="prompt">${label(s.prompt)}</div><div class="options">${s.opts.map((o,i)=>`<button class="option${o.parts?' split':''}" data-i="${i}" onclick="answer(${i})"><span class="key">${i+1}</span>${optMarkup(o)}</button>`).join('')}</div><div id="feedback" class="feedback"></div><button id="continue" class="continue" hidden onclick="advance()">${ui('continue')}</button>`}
   else if(s.kind==='choice'){act+=`<div class="route-options">${s.routes.map((r,i)=>`<button class="route" onclick="chooseRoute(${i})"><b>${i+1} · ${label(r.name)}</b>${label(r.desc)}</button>`).join('')}</div>`}
-  else if(s.kind==='ending'){/* an ending may close with a paragraph that depends on the route taken (routeStory) */const rt=s.routeStory?(Object.entries(s.routeStory).find(([k])=>state.route.includes(k))||[])[1]:null;const rev=G.repair?(state.mistakes.length?`<div class="review">${state.mistakes.map(id=>{const m=G.scenes[id];return `<div>${esct(m.prompt.en)}<br><b>${esc(optText(m.opts[m.answer]))}</b> — ${label(m.fb)}</div>`}).join('')}</div>`:`<div class="small">${ui('perfect')}</div>`):'';const ft=G.repair?` · ${state.score/(G.points||1)}/${G.total} ${ui('firstTry')}`:'';act+=`${rt?line(rt,'story'):''}<div class="final-score">${ui('finalScore')} ${state.score}/${G.max}${ft} · ${'◆'.repeat(state.tiles)}${'◇'.repeat(Math.max(0,G.tiles-state.tiles))}</div>${rev}${state.route.length?`<div class="small">${ui('route')}: ${esc(state.route.join(' · ').toUpperCase())}</div>`:''}${s.link?`<a class="start" href="${s.link}">${label(s.linkLabel)}</a>`:''}<button class="restart" onclick="restart()">${ui('restart')}</button>`}
+  else if(s.kind==='hub'){act+=`<div class="chapter-list">${G.chapters.map((c,i)=>`<button class="chapter" onclick="startChapter(${i})"><b>${i+1} · ${label(c.title)}</b>${c.lead?label(c.lead):''}</button>`).join('')}</div>${s.small?`<div class="small">${label(s.small)}</div>`:''}`}
+  else if(s.kind==='ending'){const c=CH();/* an ending may close with a paragraph that depends on the route taken (routeStory) */const rt=s.routeStory?(Object.entries(s.routeStory).find(([k])=>state.route.includes(k))||[])[1]:null;const rev=G.repair?(state.mistakes.length?`<div class="review">${state.mistakes.map(id=>{const m=G.scenes[id];return `<div>${esct(m.prompt.en)}<br><b>${esc(optText(m.opts[m.answer]))}</b> — ${label(m.fb)}</div>`}).join('')}</div>`:`<div class="small">${ui('perfect')}</div>`):'';const ft=G.repair?` · ${state.score/(G.points||1)}/${c.total} ${ui('firstTry')}`:'';
+    /* the next chapter is offered from every ending, won or lost — a part
+       three that can only be reached by mastering part two is a part three
+       most learners never see. */
+    const nx=(G.chapters&&state.chapter!=null&&state.chapter+1<G.chapters.length)?`<button class="start" onclick="startChapter(${state.chapter+1})">${ui('nextChapter',{n:state.chapter+2})}</button>`:'';
+    const hub=(G.chapters)?`<button class="restart" onclick="toHub()">${ui('chapters')}</button>`:'';
+    act+=`${rt?line(rt,'story'):''}<div class="final-score">${ui('finalScore')} ${state.score}/${c.max}${ft} · ${'◆'.repeat(state.tiles)}${'◇'.repeat(Math.max(0,c.tiles-state.tiles))}</div>${rev}${state.route.length?`<div class="small">${ui('route')}: ${esc(state.route.join(' · ').toUpperCase())}</div>`:''}${s.link?`<a class="start" href="${s.link}">${label(s.linkLabel)}</a>`:''}${nx}<button class="restart" onclick="restart()">${ui('restart')}</button>${hub}`}
   /* a band lays the two halves side by side; every other position stacks them */
   content.innerHTML=s.pos==='band'?`${hide}<div class="band-text">${html}</div><div class="band-act">${act}</div>`:hide+html+act;
   content.scrollTop=0;updateHUD();setOpen(false);
@@ -404,13 +453,16 @@ window.addEventListener('resize',()=>placeHot(G.scenes[state.scene].hot));
 const langMenu=document.getElementById('langMenu'), langBtn=document.getElementById('langBtn');
 function closeMenu(){langMenu.hidden=true;langBtn.setAttribute('aria-expanded','false')}
 function toggleMenu(){langMenu.hidden=!langMenu.hidden;langBtn.setAttribute('aria-expanded',String(!langMenu.hidden))}
-function go(id){state.scene=id;render()}
+function go(id){state.scene=id;state.page=0;render()}
+/* paging keeps the panel up — the reader is mid-sentence, and folding it away
+   on every tap would mean re-opening the object three times to read one scene */
+function nextPage(){state.page=(state.page||0)+1;render();setOpen(true)}
 function displayAnswer(i,apply){const s=G.scenes[state.scene];const buttons=[...document.querySelectorAll('.option')];const ok=i===s.answer;const p=s.points||G.points;const fb=document.getElementById('feedback');const expl=s.fb?`<br>${label(s.fb)}`:'';
   if(apply)beep(ok);
   if(G.repair&&!ok){/* repair mode: mark it, explain, let them try again */buttons[i].classList.add('wrong');buttons[i].disabled=true;fb.innerHTML=`<strong>${ui('tryAgain')}</strong>${expl}`;fb.className='feedback show bad';if(apply)requestAnimationFrame(()=>content.scrollTo({top:content.scrollHeight,behavior:'smooth'}));return}
   buttons.forEach(b=>b.disabled=true);buttons[i]?.classList.add(ok?'correct':'wrong');buttons[s.answer]?.classList.add('correct');
   const retried=G.repair&&(state.attempts[state.scene]||0)>0;
-  if(apply){if(ok&&!retried){state.score+=p}if(ok&&s.relic)state.tiles=Math.min(G.tiles,state.tiles+1);if(!ok)state.chances=Math.max(0,state.chances-1);if(s.final)state.finalCorrect=ok;state.answered++}
+  if(apply){if(ok&&!retried){state.score+=p}if(ok&&s.relic)state.tiles=Math.min(CH().tiles,state.tiles+1);if(!ok)state.chances=Math.max(0,state.chances-1);if(s.final)state.finalCorrect=ok;state.answered++}
   const head=ok?(retried?ui('repaired'):ui(s.relic?'relic':'correct',{p})):ui('wrong');const was=ok?'':`<br>${ui('answerWas')} ${esc(optText(s.opts[s.answer]))}`;
   fb.innerHTML=`<strong>${head}</strong>${was}${expl}`;fb.className=`feedback show ${ok?'good':'bad'}`;document.getElementById('continue').hidden=false;updateHUD();if(apply)requestAnimationFrame(()=>content.scrollTo({top:content.scrollHeight,behavior:'smooth'}))}
 function answer(i){if(Object.prototype.hasOwnProperty.call(state.results,state.scene))return;const s=G.scenes[state.scene];if(G.repair&&i!==s.answer){if(!(state.attempts[state.scene]||0))state.mistakes.push(state.scene);state.attempts[state.scene]=(state.attempts[state.scene]||0)+1;displayAnswer(i,true);return}state.results[state.scene]=i;displayAnswer(i,true)}
@@ -425,13 +477,13 @@ function answer(i){if(Object.prototype.hasOwnProperty.call(state.results,state.s
    no chances to reason about, and the tile/chance ladder below would send a
    64-point run to `missing` because G.tiles is 0. Lessons without `bands` are
    unchanged. */
-function resolve(){if(G.bands&&G.bands.length){const b=G.bands.find(b=>state.score>=b[0]);if(b)return b[1]}
-  const alive=!G.chances||state.chances>0;const full=state.tiles>=G.tiles&&alive;const flawless=state.finalCorrect&&full&&state.score>=G.max;if(flawless&&(!state.endingPick||state.endingMaster))return G.endings.master;if(state.endingPick&&alive&&G.endings[state.endingPick]&&!(state.endingMin&&state.score<state.endingMin))return G.endings[state.endingPick];if(state.finalCorrect&&full&&state.score>=G.completeScore)return G.endings.complete;if(state.finalCorrect&&state.tiles<G.tiles)return G.endings.missing;return G.endings.failed}
+function resolve(){const c=CH();if(c.bands&&c.bands.length){const b=c.bands.find(b=>state.score>=b[0]);if(b)return b[1]}
+  const alive=!c.chances||state.chances>0;const full=state.tiles>=c.tiles&&alive;const flawless=state.finalCorrect&&full&&state.score>=c.max;if(flawless&&(!state.endingPick||state.endingMaster))return c.endings.master;if(state.endingPick&&alive&&c.endings[state.endingPick]&&!(state.endingMin&&state.score<state.endingMin))return c.endings[state.endingPick];if(state.finalCorrect&&full&&state.score>=c.completeScore)return c.endings.complete;if(state.finalCorrect&&state.tiles<c.tiles)return c.endings.missing;return c.endings.failed}
 /* `G.chances &&` is the same guard resolve() carries: a lesson with no chance
    counter at all (G.chances is 0 by design) has state.chances<=0 from the
    first frame, so the old test threw the learner to the failed ending on their
    first wrong answer. With chances in play this is exactly the old test. */
-function advance(){const s=G.scenes[state.scene];if(G.chances&&state.chances<=0&&state.results[state.scene]!==s.answer){go(G.endings.failed);return}if(s.next==='resolve'){go(resolve());return}go(s.next)}
+function advance(){const s=G.scenes[state.scene];const c=CH();if(c.chances&&state.chances<=0&&state.results[state.scene]!==s.answer){go(c.endings.failed);return}if(s.next==='resolve'){go(resolve());return}go(s.next)}
 /* `endingMin` is a score floor on a route's own ending: the route decides WHICH
    reward ending you get, the floor decides whether you have earned one at all.
    Without it a route ending applies at any score. Frankenstein sets none, so its
@@ -440,7 +492,11 @@ function advance(){const s=G.scenes[state.scene];if(G.chances&&state.chances<=0&
    the careful road pays 4, the shortcut 2, and the ending bands read the
    total). A route without `points` scores nothing, as every route did before. */
 function chooseRoute(i){const r=G.scenes[state.scene].routes[i];if(r.route)state.route.push(r.route);if(r.points)state.score+=r.points;if(r.ending){state.endingPick=r.ending;state.endingMaster=!!r.master;state.endingMin=r.endingMin||0}go(r.min!=null&&state.score<r.min?r.else:r.target)}
-function restart(){state=fresh(state.lang);render()}
+function restart(){state=fresh(state.lang,state.chapter);render()}
+/* the hub and the chapters it starts. `toHub` resets to no chapter at all, so
+   the HUD badges go quiet until one is picked. */
+function startChapter(i){state=fresh(state.lang,i);render()}
+function toHub(){state=fresh(state.lang,null);render()}
 (function(){['off',...LANGS].forEach(l=>{const b=document.createElement('button');b.className='lang-item';b.dataset.lang=l;b.innerHTML=l==='off'?`<b>OFF</b><span>${esc(G.labels.off.en)}</span>`:`<b>${l.toUpperCase()}</b><span>${esc(G.names[l])}</span>`;b.addEventListener('click',()=>{state.lang=l;closeMenu();setLang()});langMenu.appendChild(b)});langBtn.addEventListener('click',e=>{e.stopPropagation();toggleMenu()});document.addEventListener('click',e=>{if(!langMenu.hidden&&!langMenu.contains(e.target))closeMenu()})})();
 function setLang(){const wasOpen=state.open;render();if(wasOpen)setOpen(true)}
 document.getElementById('sound').addEventListener('click',()=>{setSound(!sound);beep(true)});
@@ -579,6 +635,26 @@ def validate(spec):
     for key, sid in spec['endings'].items():
         if scenes.get(sid, {}).get('kind') != 'ending':
             raise SystemExit('ending %s -> %s is not an ending scene' % (key, sid))
+    # A chapter is a whole game's worth of spec on one page: its own start,
+    # score, collectibles, chances and endings. The page-level values stay as
+    # the defaults a lesson without chapters uses, so nothing built before
+    # 2026-09-18 changes.
+    for i, ch in enumerate(spec.get('chapters') or []):
+        where = 'chapter %d (%s)' % (i + 1, (ch.get('title') or {}).get('en', '?'))
+        if ch['start'] not in scenes:
+            raise SystemExit('%s: start %r does not exist' % (where, ch['start']))
+        for key, sid in ch['endings'].items():
+            if scenes.get(sid, {}).get('kind') != 'ending':
+                raise SystemExit('%s: ending %s -> %s is not an ending scene' % (where, key, sid))
+        for k in ('max', 'tiles', 'chances'):
+            if k not in ch:
+                raise SystemExit('%s: needs %s — CH() reads it with no page-level fallback' % (where, k))
+    if spec.get('chapters'):
+        hubs = [sid for sid, s in scenes.items() if s['kind'] == 'hub']
+        if len(hubs) != 1:
+            raise SystemExit('a page with chapters needs exactly one hub scene, found %d' % len(hubs))
+        if spec['start'] != hubs[0]:
+            raise SystemExit('start should be the hub scene %r, not %r' % (hubs[0], spec['start']))
     bands = spec.get('bands') or []
     for i, (lo, sid) in enumerate(bands):
         if scenes.get(sid, {}).get('kind') != 'ending':
@@ -596,6 +672,10 @@ def validate(spec):
     _check_langs({k: {kk: vv for kk, vv in s.items() if kk in TEXT_KEYS or kk in ('rules', 'routes', 'button', 'routeStory')}
                   for k, s in scenes.items()}, langs, 'scenes')
     _check_langs(spec.get('tags', {}), langs, 'tags')
+    # a chapter's name, its one-line lead and its collectible label are all
+    # learner-facing, so they are glossed like any other string on the page
+    _check_langs({'chapter %d' % (i + 1): {k: v for k, v in ch.items() if k in ('title', 'lead', 'tilesLabel')}
+                  for i, ch in enumerate(spec.get('chapters') or [])}, langs, 'chapters')
     if _MISSING:
         raise SystemExit('%d untranslated strings:\n  ' % len(_MISSING) + '\n  '.join(_MISSING))
     return labels
@@ -615,6 +695,7 @@ def assemble(spec, out=None):
         'chances': spec['chances'], 'completeScore': spec.get('complete_score', spec['max']),
         'repair': bool(spec.get('repair')), 'total': spec.get('total', 0),
         'bands': spec.get('bands') or [],
+        'chapters': spec.get('chapters') or None,
         'tags': spec.get('tags', {'a': {'en': 'NOW'}, 'b': {'en': 'USUALLY'}}),
     }
     css = (CSS.replace('{{ACCENT}}', spec['accent']).replace('{{ACCENT_INK}}', spec.get('accent_ink', '#1a1200'))
