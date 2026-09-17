@@ -947,9 +947,13 @@ from further up the file while the slide kept overflowing by the same 16px.
 
 ### The reference pair
 
-`beyond-the-handlebars.html` (default) and the same builder run with
-`--editorial` are the same 32 slides of identical content in both looks, which
-is the fastest way to see what the choice actually costs and buys. The
-editorial build is written to `_beyond-the-handlebars-editorial.html` — the
-leading underscore keeps it out of git and out of `check-library.js`, because a
-preview is not a lesson.
+`lesson-template/build/build_handlebars.py`, run plain and run with
+`--editorial`, writes the same 32 slides of identical content in both looks —
+`_beyond-the-handlebars-housestyle.html` and
+`_beyond-the-handlebars-editorial.html`. That is the fastest way to see what
+the choice costs and buys. Both are underscore-prefixed: gitignored, and
+skipped by `check-library.js`, because a preview is not a lesson.
+
+**Neither is the live page.** `beyond-the-handlebars.html` is the deck Innes
+supplied, published to his own design and hand-maintained — it is not built
+from a builder at all. Do not point that builder back at it.

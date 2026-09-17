@@ -42,6 +42,25 @@ Innes asked for bolder; this is the axis that was free.
 Hero is the supplied coastal rider; palette is derived from it, dark theme,
 every contrast row PASS.
 """
+# ══════════════════════════════════════════════════════════════════════
+# THIS BUILDER DOES NOT WRITE THE LIVE PAGE. Do not point it back at
+# beyond-the-handlebars.html.
+#
+# 2026-09-17: Innes asked for the deck he supplied to be published as he
+# designed it. The live beyond-the-handlebars.html is therefore HIS file —
+# ChatGPT-built, its own chrome, its own layout — with four changes made to
+# it and nothing else: artwork moved out of base64 onto disk, another
+# company's trademark removed from the bicycle schematic, three credits to a
+# competitor's lesson pages removed, and five multiple-choice items repaired
+# where the key was the conspicuously longest option. It is hand-maintained.
+# Edit the page, not this file.
+#
+# What is below is the house-style rebuild of the same lesson, which is NOT
+# what ships. It is kept because it is the reference build for the editorial
+# style (HOUSE-STYLE §15) and because its data tables are the cleanest record
+# of the lesson's content. Both outputs are underscore-prefixed, so neither
+# can reach git or be mistaken for the live page.
+# ══════════════════════════════════════════════════════════════════════
 import os
 import re
 import sys
@@ -50,7 +69,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import deck as D
 
 TPL = 'lesson-template/lesson-template.html'
-OUT = 'beyond-the-handlebars.html'
+OUT = '_beyond-the-handlebars-housestyle.html'   # NOT the live page — see above
 F = 'BeyondTheHandlebars'
 BIKE = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                     'handlebars_bike.svgfrag')

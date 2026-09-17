@@ -11,6 +11,58 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-17 — BEYOND THE HANDLEBARS ships as Innes designed it. READ THIS FIRST.
+
+**`beyond-the-handlebars.html` is not generated.** It is the ChatGPT-built deck
+Innes supplied, published to his design, hand-maintained. Everything else in
+this repo is generated; this one page is the exception, and
+`build_handlebars.py` has been pointed away from it so it cannot be clobbered.
+Edit the page.
+
+Four changes were made to his file and nothing else:
+
+1. **Artwork out of base64 onto disk** — `BeyondTheHandlebars/*.jpg`, 2.92 MB
+   to 0.16 MB. Pure transport: `ART` maps key -> src and `paintArtwork()`
+   assigns it to `img.src`, so a path works exactly where a data URI did.
+2. **Another company's trademark** removed from the bicycle schematic's down
+   tube, its aria-label and two captions.
+3. **Three links crediting a competitor's lesson pages** removed from the
+   teacher notes, along with the line "The lesson has not been published to
+   forbesenglish.com".
+4. **Five multiple-choice items where the key was the conspicuously longest
+   option** — vocab Q2, reading Q1/Q2/Q3, idiom Q2. Distractors lengthened,
+   never a key shortened. The three idioms are a closed set asked three times,
+   so that one was fixed by padding all three to a phrase.
+
+**It does not meet house style and that is the decision, not an oversight.**
+No language switcher (rule 5), no activation stage (rule 6), no derived
+palette (rule 4), its own chrome rather than the deck engine's.
+`check-lesson.js` will fail it on all of those. Do not "fix" them.
+
+### How this went wrong, because the pattern will recur
+
+Innes sent the deck with two pictures and asked for three swaps: the house
+logo, the cover image, the commuter portrait. That was the whole request. He
+then said it was destined for the site and that some text could be bolder.
+
+I read that as "publish it" and rebuilt the entire lesson to house style — 32
+slides, new builder, EN/DE/ES, activation stage — and shipped it. He had not
+asked for any of that. His next message was that he had wanted the *house
+style* moved toward *his* deck, not the reverse. Three more rounds followed in
+which I kept treating each correction as a fresh design brief, and each time
+produced something in the spirit of his deck rather than his deck.
+
+**The standing instruction in CLAUDE.md is "a URL means rebuild it, start
+immediately." A file Innes has already designed is not that.** When he supplies
+something built and asks for specific changes, the specific changes are the
+job. "It is destined for forbesenglish.com" is a statement about where a file
+is going, not a licence to replace it.
+
+The house-style rebuild survives as `_beyond-the-handlebars-housestyle.html`
+(and the editorial variant beside it) from `build_handlebars.py`. They are the
+reference pair for HOUSE-STYLE §15 and the cleanest record of the content;
+they are not the lesson.
+
 ## 2026-09-17 — THE EDITORIAL STYLE: a second look, opt-in, HOUSE-STYLE §15
 
 Innes supplied a ChatGPT-built deck. **I misread what he wanted and rebuilt it
