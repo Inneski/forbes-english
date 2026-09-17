@@ -874,7 +874,10 @@ EXTRA_JS = '''
 '''
 
 
-def build():
+# Set by build(style=...). The editorial style is opt-in per HOUSE-STYLE §15;
+# this lesson can be built either way, which is what makes it the reference
+# pair for comparing the two looks on identical content.
+def build(style=None, out=None):
     D.assert_no_key_is_longest(VOCAB, 'VOCAB')
     D.assert_no_key_is_longest(COLL, 'COLL')
     D.assert_no_key_is_longest(INFER, 'INFER')
@@ -999,8 +1002,12 @@ def build():
     )
 
     import i18n_handlebars as I
-    s = D.assemble(TPL, OUT, slides, PALETTE, 'Beyond the Handlebars — Forbes English',
-                   I, langs=('en', 'de', 'es'))
+    out_path = out or OUT
+    palette = (D.editorial_palette('%s/hero.jpg' % F) if style == 'editorial'
+               else PALETTE)
+    s = D.assemble(TPL, out_path, slides, palette,
+                   'Beyond the Handlebars — Forbes English',
+                   I, langs=('en', 'de', 'es'), style=style)
 
     # The bicycle's <defs> and the bespoke slides' machinery. Both go in after
     # assemble(), because assemble() owns the region between the cover marker
@@ -1018,9 +1025,16 @@ def build():
     s = s.replace('COUNT Folien', '%d Folien' % n)
     s = s.replace('COUNT diapositivas', '%d diapositivas' % n)
 
-    open(OUT, 'w', encoding='utf-8', newline='').write(s)
-    print('%s — %d slides' % (OUT, n))
+    open(out_path, 'w', encoding='utf-8', newline='').write(s)
+    print('%s — %d slides%s' % (out_path, n,
+                               ' (editorial)' if style else ''))
 
 
 if __name__ == '__main__':
-    build()
+    if '--editorial' in sys.argv:
+        # Leading underscore: gitignored, and check-library.js skips it, so a
+        # preview of the alternative style never looks like a deck that is
+        # missing its library card.
+        build(style='editorial', out='_beyond-the-handlebars-editorial.html')
+    else:
+        build()

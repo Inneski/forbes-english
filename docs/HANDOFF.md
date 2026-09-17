@@ -11,6 +11,63 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-17 — THE EDITORIAL STYLE: a second look, opt-in, HOUSE-STYLE §15
+
+Innes supplied a ChatGPT-built deck. **I misread what he wanted and rebuilt it
+to house style; he wanted the house style moved toward it.** The rebuild stands
+(it is live, and he asked to keep it as the alternative), and the actual
+request is now done as well: `data-style="editorial"`, a second look a builder
+opts into with `assemble(..., style='editorial')`.
+
+Nothing already shipped changes. The template gains ~200 lines of CSS that no
+deck matches unless it asks, and one `div.editorial-art` that is
+`display:none` in the base stylesheet. Rebuilding a shipped deck against the
+new template produces **insertions only** — verified on beyond-the-handlebars,
+203 added lines, nothing modified or removed.
+
+**What it is.** Flat cream field instead of the washed hero; no text plates;
+artwork in an arch frame on the right; one fixed brand palette instead of a
+derived one; 88px cover and 48px slide titles with the accent word in serif
+italic. §15 has the full table and the authoring rules.
+
+**Three things a later session should know.**
+
+1. **`data-bg` changes meaning under this style** — it becomes the framed
+   picture rather than the background wash, via `:has()` on the stage, so an
+   existing builder's `bg=` calls carry over untouched. A slide with **no**
+   `data-bg` shows no picture at all and takes the full width, which is
+   deliberate: an untethered photo behind text on a flat field is the thing
+   the style exists to remove.
+
+2. **The fixed palette is the only hand-picked one in the repo, and it is
+   guarded.** `tools/check-editorial-palette.py` reads the tokens from BOTH
+   `lesson-template.html` and `deck.py`, fails on drift between the two
+   copies, and runs extract-palette's contrast rows. All 8 pass. My first
+   pass wrote five ratios into the CSS comment from memory and four of them
+   were wrong — the checker caught it. Do not hand-write a contrast number.
+
+3. **Bigger type overflowed five of 32 slides** at 52px titles. Fixed by
+   taking the space back from the style's own chrome (48px title, 14px head
+   margin, 11px rule gap, tighter editorial card padding), not from content.
+   §6 binds editorial decks unchanged; if one still overflows, split it.
+
+**The reference pair** is the fastest way to judge it: `beyond-the-handlebars.html`
+and `python lesson-template/build/build_handlebars.py --editorial`, which writes
+`_beyond-the-handlebars-editorial.html` — same 32 slides, identical content,
+both looks. The leading underscore keeps a preview out of git and out of
+check-library.js, which otherwise counts it as a deck with no library card.
+
+Also here, uncommitted and undecided: **`docs/CHATGPT-DECK-BRIEF.md`**, the
+deck counterpart to CHATGPT-RPG-BRIEF.md, written while I was still on the
+wrong reading of the task. It is about making a ChatGPT-built lesson rebuild
+quickly, which is still a real need, but nothing points at it yet and it has
+not been reviewed. Either wire it into CLAUDE.md's default-action section or
+delete it; do not leave it dangling.
+
+Fixed in passing: the catalogue title for this lesson ended "(B2/C1)" and
+seo.py appends the level, so og:title read "... (B2/C1) (B2-C1)". Title is now
+plain.
+
 ## 2026-09-17 — BEYOND THE HANDLEBARS (B2/C1): a supplied ChatGPT deck, rebuilt to house style
 
 Innes dropped `forbes-english-beyond-the-handlebars_1.html` in Downloads with

@@ -610,9 +610,37 @@ def fill_ledger(code, rendered):
     return rendered
 
 
+# The fixed palette for style='editorial'. It is a constant rather than
+# something extract-palette.py produces, because the whole point of the style
+# is that every deck wearing it wears the same one — see the template's
+# EDITORIAL STYLE block for the contrast measurements and why this is the one
+# sanctioned exception to "never hand-pick a colour".
+#
+# A builder passes it through as its PALETTE so the --hero line still names
+# that lesson's own cover image, which the cover and the framed pictures use.
+EDITORIAL_PALETTE = '''  --hero: url('%s');
+
+  --void          : #fff9ed;
+  --surface       : #ffffff;
+  --surface2      : #f3ede0;
+  --border        : #d8dfd8;
+  --text          : #123a3e;
+  --text-dim      : #4a6265;
+  --accent        : #1c5789;
+  --accent-bright : #16456b;
+  --accent-dim    : #4a8cc4;
+  --secondary     : #f8dcd1;
+  --contrast      : #a33b12;'''
+
+
+def editorial_palette(hero):
+    """The editorial palette, pointed at this lesson's hero."""
+    return EDITORIAL_PALETTE % hero
+
+
 def assemble(tpl_path, out_path, slides, palette, title, i18n_module, langs=('en', 'de'),
              all_langs=('en', 'de', 'es', 'fr', 'it', 'pt', 'ru', 'ar', 'zh', 'ja',
-                        'hr')):
+                        'hr'), style=None):
     s = open(tpl_path, encoding='utf-8').read()
     a = s.index('    <!-- ── COVER ')
     b = s.index('    <!-- ── DECK CHROME ')
@@ -650,6 +678,16 @@ def assemble(tpl_path, out_path, slides, palette, title, i18n_module, langs=('en
         f = lambda c: c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4
         if 0.2126 * f(rgb[0]) + 0.7152 * f(rgb[1]) + 0.0722 * f(rgb[2]) > 0.2:
             s = s.replace('<html lang="en">', '<html lang="en" data-theme="light">', 1)
+
+    # style='editorial' is a SECOND, orthogonal axis: data-theme stays whatever
+    # the palette's luminance says (editorial's cream field makes it "light"),
+    # and data-style only changes how the artwork and the type are treated.
+    # Written with a regex on the opening tag rather than a fixed replace
+    # because data-theme may or may not already be on it by this point.
+    if style:
+        assert style == 'editorial', 'unknown style %r' % style
+        s = re.sub(r'<html lang="en"([^>]*)>',
+                   r'<html lang="en"\1 data-style="%s">' % style, s, count=1)
 
     # newline='' — NOT the default. Python's text mode translates '\n' to the
     # platform separator, so on Innes's Windows machine every build rewrote

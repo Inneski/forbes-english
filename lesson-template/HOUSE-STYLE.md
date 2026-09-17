@@ -37,6 +37,12 @@ Pre-ship checker: **`lesson-template/check-lesson.js`** — must exit clean.
 If you cannot satisfy all six, stop and say so. Do not ship a partial version
 and describe it as done.
 
+**Rules 3 and 4 have one sanctioned alternative.** A deck may opt into the
+*editorial* style, which replaces the washed-hero background with a flat field
+and framed artwork, and replaces the derived palette with one fixed brand set.
+It is opt-in per deck, it changes nothing already shipped, and it is §15. The
+other four rules bind it exactly as they bind everything else.
+
 ---
 
 ## 1. Start from the template. Do not build from scratch.
@@ -830,3 +836,92 @@ Ask before proceeding if:
 - The request conflicts with this document.
 
 Otherwise, apply the standard and report what you did.
+
+---
+
+## 15. The editorial style — the opt-in alternative
+
+Set by a builder passing `style='editorial'` to `assemble()`, which puts
+`data-style="editorial"` on `<html>`. **Nothing already shipped changes.** A
+deck wears this look only if it asks for it, and the default look remains the
+default.
+
+### Why there are two
+
+The default treats the artwork as **atmosphere**: the hero is washed across
+every slide at 0.72 and the text is plated on top of it. That is right when the
+picture is a mood, and it is what makes an arbitrary dropped-in hero safe.
+
+It is wrong when the picture is flat vector illustration with large near-white
+areas. There, the plate has to be pushed toward opaque before the text clears
+AA — and once it is opaque, the artwork it was supposed to be showing is gone.
+Beyond the Handlebars measured `--text-dim` at **4.13:1** on a teach card at
+the default plate, and needed `--plate: 0.86` to fix it, at which point the
+background was decorative only.
+
+The editorial style treats the artwork as an **object**: a clean field, and the
+picture in a frame with an edge, the way a magazine sets a photograph.
+
+### What it changes, and what it does not
+
+| | default | editorial |
+|---|---|---|
+| field | hero washed behind every slide | flat `--void`, no wash |
+| text | on translucent plates | straight on the canvas, no plates |
+| artwork | full-bleed background | arch-framed block, right 39% |
+| `data-bg` | swaps the background wash | **swaps the framed picture** — same markup |
+| no `data-bg` | shows the lesson hero | shows **no picture**, text takes full width |
+| palette | derived per lesson from the hero | one fixed brand set |
+| cover title | 62px | 88px, accent word in serif italic |
+| slide title | 38px | 48px, with a rule under it |
+
+Everything else is untouched: the slide budget, the activation stage, the
+language switcher, scoring, print, SEO, `check-lesson.js`.
+
+### The palette is the one hand-picked set in the repo
+
+Rule 4 exists to stop 216 lessons drifting into 216 colour schemes, and this
+does not reopen that. It is an exception in the safe direction: **one** set,
+authored once, measured once, shared by every deck that opts in. A derived
+palette varies per lesson and must be re-measured per lesson; this one cannot
+vary, so it cannot regress.
+
+`extract-palette.py` is **not** run for an editorial deck. The hero still sets
+the cover and the framed pictures; it no longer sets the colours. Instead:
+
+```bash
+python3 tools/check-editorial-palette.py     # every row must PASS
+```
+
+It reads the tokens out of `lesson-template.html` **and** out of `deck.py`,
+fails if the two copies have drifted, and runs the same contrast rows
+`extract-palette.py` would. Run it after touching any of those tokens.
+
+### Writing a deck for it
+
+```python
+s = D.assemble(TPL, OUT, slides, D.editorial_palette('%s/hero.jpg' % F),
+               title, I, langs=('en', 'de', 'es'), style='editorial')
+```
+
+Three things to hold in mind while authoring:
+
+- **`data-bg` now means "the picture for this slide", and no `data-bg` means
+  no picture.** On a flat field an untethered photograph behind the text is
+  precisely what this style removes, so a slide with nothing to show shows
+  nothing and takes the full width. Decide per slide.
+- **A slide with a picture has 56% of the width.** Keep it to two columns.
+  Three cards and a picture will not fit.
+- **Bigger type means less on a slide, not the same amount smaller.** §6 binds
+  here unchanged and `check-lesson.js` enforces it. On the reference deck the
+  larger scale overflowed five slides until the style bought the space back
+  from its own chrome; if one still overflows, **split it**.
+
+### The reference pair
+
+`beyond-the-handlebars.html` (default) and the same builder run with
+`--editorial` are the same 32 slides of identical content in both looks, which
+is the fastest way to see what the choice actually costs and buys. The
+editorial build is written to `_beyond-the-handlebars-editorial.html` — the
+leading underscore keeps it out of git and out of `check-library.js`, because a
+preview is not a lesson.
