@@ -876,6 +876,7 @@ picture in a frame with an edge, the way a magazine sets a photograph.
 | slide title | 38px Playfair | **54px DM Sans 700**, no rule |
 | eyebrow | 12px DM Mono | 16px DM Sans 700, accent |
 | reading prose | DM Sans | Playfair, 23px |
+| answer options | shrink-wrapped to the text | **full-width bars** |
 
 Everything else is untouched: the slide budget, the activation stage, the
 language switcher, scoring, print, SEO, `check-lesson.js`.
@@ -925,6 +926,9 @@ Three things to hold in mind while authoring:
   title grows.
 - **Give nearly every slide a picture.** The look depends on it; a flat field
   with no artwork is just an empty page.
+- **The heading spans the full width; the picture starts under it.** Only the
+  slide BODY yields a column. A picture level with the title is the default
+  style's habit, not this one's.
 
 Three attributes tune how a slide's picture sits, and all three are inert
 under the default style, so one slide list builds both looks:
