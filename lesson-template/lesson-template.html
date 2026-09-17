@@ -1410,8 +1410,24 @@ html[data-style="editorial"] .editorial-art {
   position: absolute; z-index: 0; pointer-events: none;
   right: 58px; top: 104px; width: 39%; height: 66%;
   background: var(--hero) center / cover no-repeat;
-  border-radius: 190px 190px 18px 18px;   /* the arch */
+  border-radius: 22px;                     /* the source deck's default */
   box-shadow: 0 10px 40px rgba(18, 58, 62, 0.14);
+}
+/* The arch is the exception, not the rule — the source deck used it on a
+   handful of slides for emphasis. data-art="arch" on the slide picks it. */
+html[data-style="editorial"] .stage:has(.slide.is-active[data-art="arch"]) .editorial-art {
+  border-radius: 190px 190px 18px 18px;
+}
+/* A slide carrying continuous prose gives the text more of the width and the
+   picture less, which is what the source did on its two reading pages. This
+   is a LAYOUT answer to running out of room, not a type answer: §6 says split
+   or re-plan, never shrink, and the passage is one the source fitted too. */
+html[data-style="editorial"] .stage:has(.slide.is-active[data-art-size="narrow"]) .editorial-art {
+  width: 30%;
+}
+/* ...and it can sit on the left instead, which the source alternated. */
+html[data-style="editorial"] .stage:has(.slide.is-active[data-art-side="left"]) .editorial-art {
+  right: auto; left: 58px;
 }
 html[data-style="editorial"] .stage:not(:has(.slide.is-active[data-bg])) .editorial-art,
 html[data-style="editorial"] .stage.on-cover .editorial-art { display: none; }
@@ -1421,6 +1437,16 @@ html[data-style="editorial"] .stage.on-cover .editorial-art { display: none; }
 html[data-style="editorial"] .stage:has(.slide.is-active[data-bg]) .slide.is-active .slide-head,
 html[data-style="editorial"] .stage:has(.slide.is-active[data-bg]) .slide.is-active .slide-body {
   max-width: 56%;
+}
+html[data-style="editorial"] .stage:has(.slide.is-active[data-art-side="left"]) .slide.is-active .slide-head,
+html[data-style="editorial"] .stage:has(.slide.is-active[data-art-side="left"]) .slide.is-active .slide-body {
+  margin-left: 44%; max-width: 56%;
+}
+/* After the two rules above, because it has to beat them and every one of
+   the three is the same specificity — source order is the only tiebreak. */
+html[data-style="editorial"] .stage:has(.slide.is-active[data-art-size="narrow"]) .slide.is-active .slide-head,
+html[data-style="editorial"] .stage:has(.slide.is-active[data-art-size="narrow"]) .slide.is-active .slide-body {
+  max-width: 65%;
 }
 
 /* ── 3. editorial type ──
@@ -1432,8 +1458,14 @@ html[data-style="editorial"] .stage:has(.slide.is-active[data-bg]) .slide.is-act
 html[data-style="editorial"] .cover-title {
   font-size: 88px; line-height: 0.94; letter-spacing: -0.045em; font-weight: 900;
 }
+/* The INTERIOR heading is a heavy sans, not the display serif. The cover is
+   the only slide that gets the serif, which is exactly how the source deck
+   this style is modelled on set it: one serif moment on the cover, and
+   everything after it in the same sans as the body, very large and very
+   tight. Sizes are the source's own, scaled 1600->1280 (68px * 0.8). */
 html[data-style="editorial"] .slide-title {
-  font-size: 48px; line-height: 1.02; letter-spacing: -0.03em;
+  font-family: var(--font-ui);
+  font-size: 54px; font-weight: 700; line-height: 1.02; letter-spacing: -0.044em;
 }
 /* Bigger type costs vertical space and the slide budget does not grow, so
    the style takes it back from its OWN chrome rather than from the content.
@@ -1451,8 +1483,19 @@ html[data-style="editorial"] .slide-title em {
   font-family: var(--font-display); font-style: italic; font-weight: 700;
   color: var(--accent); letter-spacing: -0.035em;
 }
+html[data-style="editorial"] .eyebrow {
+  font-family: var(--font-ui); font-size: 16px; font-weight: 700;
+  letter-spacing: 0.15em; color: var(--accent);
+}
 html[data-style="editorial"] .cover-sub { font-size: 24px; line-height: 1.35; }
 html[data-style="editorial"] .q-stem { font-size: 27px; }
+/* The source deck set its reading passages in Georgia at 31px and everything
+   else in the sans. That inversion — serif for continuous prose, sans for
+   interface — is the most editorial thing about it, so it is kept. */
+html[data-style="editorial"] .read-para {
+  font-family: var(--font-display); font-size: 23px; line-height: 1.46;
+  font-weight: 400; letter-spacing: 0;
+}
 /* The cover reads as a left column over the hero, so it is CAPPED rather than
    centred. Without the cap the subtitle ran the full 1280px and finished on
    top of the cover art — measured on Beyond the Handlebars, where the last
@@ -1496,12 +1539,14 @@ html[data-style="editorial"] .match-item,
 html[data-style="editorial"] .sort-item {
   background: var(--surface); border: 2px solid var(--border);
 }
-/* A rule under a heading, the way the source deck marked a section. */
-html[data-style="editorial"] .slide-title::after {
-  content: ''; display: block; width: 74px; height: 5px;
-  background: var(--accent); margin-top: 11px; border-radius: 2px;
+/* The rule is a thing a builder PLACES, not something every heading grows.
+   The source deck has it under the cover title and nowhere else; putting it
+   on all thirty-two slides was mine and it was wrong. Emit
+   <div class="rule"></div> where one is actually wanted. */
+html[data-style="editorial"] .rule {
+  width: 64px; height: 6px; background: var(--accent);
+  border-radius: 2px; margin: 18px 0;
 }
-html[data-style="editorial"] .cover-title::after { display: none; }
 /* The rotated badge. Opt-in per slide: a builder emits
    <span class="stamp">LOOK. THINK. SPEAK.</span> and this places it. */
 html[data-style="editorial"] .stamp {

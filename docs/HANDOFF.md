@@ -26,9 +26,24 @@ new template produces **insertions only** — verified on beyond-the-handlebars,
 203 added lines, nothing modified or removed.
 
 **What it is.** Flat cream field instead of the washed hero; no text plates;
-artwork in an arch frame on the right; one fixed brand palette instead of a
-derived one; 88px cover and 48px slide titles with the accent word in serif
-italic. §15 has the full table and the authoring rules.
+artwork framed beside the text; one fixed brand palette instead of a derived
+one. §15 has the full table and the authoring rules.
+
+**Corrected after a second look from Innes**, who liked the cover and said the
+interiors had moved much further from the source than they needed to. He was
+right, and the corrections are worth knowing because the same instinct will
+recur: the serif interior headings and the blue rule under every title were
+MINE, not the source's. The source sets one serif moment on the cover and
+every interior heading in the same heavy sans as the body (68px at 1600 wide,
+so 54px here), with the rule as an occasional explicit element. Reading prose
+goes the other way, into the serif, which is the most editorial thing the
+source does. Half the question slides also had no picture at all under my
+first version, where the source had art on nearly every slide and alternated
+the side — hence `data-art-side`, `data-art="arch"` and `data-art-size`.
+
+The lesson generalises: when the brief is "make our thing look more like
+theirs", read THEIR stylesheet and take its numbers, rather than designing
+something in the same spirit.
 
 **Three things a later session should know.**
 

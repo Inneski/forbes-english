@@ -873,7 +873,9 @@ picture in a frame with an edge, the way a magazine sets a photograph.
 | no `data-bg` | shows the lesson hero | shows **no picture**, text takes full width |
 | palette | derived per lesson from the hero | one fixed brand set |
 | cover title | 62px | 88px, accent word in serif italic |
-| slide title | 38px | 48px, with a rule under it |
+| slide title | 38px Playfair | **54px DM Sans 700**, no rule |
+| eyebrow | 12px DM Mono | 16px DM Sans 700, accent |
+| reading prose | DM Sans | Playfair, 23px |
 
 Everything else is untouched: the slide budget, the activation stage, the
 language switcher, scoring, print, SEO, `check-lesson.js`.
@@ -916,6 +918,28 @@ Three things to hold in mind while authoring:
   here unchanged and `check-lesson.js` enforces it. On the reference deck the
   larger scale overflowed five slides until the style bought the space back
   from its own chrome; if one still overflows, **split it**.
+- **The serif is a cover moment, not a house voice.** The cover title takes
+  Playfair with the accent word in italic; every interior heading is the same
+  heavy sans as the body, very large and very tight. A rule under a heading is
+  an element a builder places (`<div class="rule">`), never something every
+  title grows.
+- **Give nearly every slide a picture.** The look depends on it; a flat field
+  with no artwork is just an empty page.
+
+Three attributes tune how a slide's picture sits, and all three are inert
+under the default style, so one slide list builds both looks:
+
+| attribute | effect |
+|---|---|
+| `data-art-side="left"` | picture on the left, text on the right |
+| `data-art="arch"` | the 190px arch instead of the default 22px rounded corners |
+| `data-art-size="narrow"` | picture 30%, text 65% — for a slide carrying prose |
+
+They are plain string replacements on the section tag; `build_handlebars.py`'s
+`art()` helper is the pattern to copy. The three `max-width` rules they drive
+are the same specificity, so **source order is the only tiebreak** — the
+narrow rule sits last in the block for exactly that reason, and lost silently
+from further up the file while the slide kept overflowing by the same 16px.
 
 ### The reference pair
 

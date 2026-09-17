@@ -743,6 +743,12 @@ EXTRA_CSS = '''
               min-width: 3.3em; font-variant-numeric: tabular-nums; }
 .timer-note { font-size: 15px; }
 
+/* Under the editorial style the passage is set in the serif and runs a line
+   or two longer, which left the second reading slide 2px over. The prompt box
+   gives the 2px back; the type does not move. */
+html[data-style="editorial"] .read-col { background: none; padding: 0; }
+html[data-style="editorial"] .read-ask { margin-top: 15px; padding: 11px 15px; }
+
 @media print {
   .dlg-box[hidden] { display: block !important; }
   .dlg-toggle, .dil-next, .timer-row { display: none !important; }
@@ -877,6 +883,20 @@ EXTRA_JS = '''
 # Set by build(style=...). The editorial style is opt-in per HOUSE-STYLE §15;
 # this lesson can be built either way, which is what makes it the reference
 # pair for comparing the two looks on identical content.
+def art(slide, side=None, shape=None):
+    """Tag a slide with how the editorial style should place its picture.
+
+    Inert in the default style — nothing outside the editorial block reads
+    either attribute — so one slide list still builds both looks.
+    """
+    extra = ''
+    if side == 'left':
+        extra += ' data-art-side="left"'
+    if shape == 'arch':
+        extra += ' data-art="arch"'
+    return slide.replace('<section class="slide"', '<section class="slide"' + extra, 1)
+
+
 def build(style=None, out=None):
     D.assert_no_key_is_longest(VOCAB, 'VOCAB')
     D.assert_no_key_is_longest(COLL, 'COLL')
@@ -912,20 +932,26 @@ def build(style=None, out=None):
         + D.teach('preEyebrow', 'Make it precise', 'preTitle',
                   'Three that get confused', PRECISE, cols='1fr 1fr 1fr',
                   folder=F, bg='mountain-pedal.jpg')
-        + "".join(D.mc(i + 1, len(VOCAB), q, 'vocabEyebrow', 'Make it precise',
-                       'vocabTitle', 'Not just &ldquo;that bit&rdquo;', folder=F,
-                       explains=q['ex'],
-                       bg=[None, 'workshop-inspect.jpg', None,
-                           'mountain-pedal.jpg', None, 'workshop-red-bike.jpg'][i % 6])
+        + "".join(art(D.mc(i + 1, len(VOCAB), q, 'vocabEyebrow', 'Make it precise',
+                           'vocabTitle', 'Not just &ldquo;that bit&rdquo;', folder=F,
+                           explains=q['ex'],
+                           bg=['workshop-inspect.jpg', 'mountain-pedal.jpg',
+                               'workshop-red-bike.jpg', 'mountain-road.jpg',
+                               'cycle-lane.jpg', 'workshop-inspect.jpg'][i % 6]),
+                       side='left' if i % 2 else None,
+                       shape='arch' if i % 3 == 0 else None)
                   for i, q in enumerate(VOCAB))
 
         + D.teach('collTeachEyebrow', 'Sound like a rider', 'collTeachTitle',
                   'Words that ride together', COLL_TEACH, cols='1fr 1fr',
                   folder=F, bg='cycle-lane.jpg')
-        + "".join(D.mc(i + 1, len(COLL), q, 'collEyebrow', 'Natural combinations',
-                       'collTitle', 'Which word does English put here?', folder=F,
-                       explains=q['ex'],
-                       bg=[None, 'alpine-road.jpg', None, 'cycle-lane.jpg'][i % 4])
+        + "".join(art(D.mc(i + 1, len(COLL), q, 'collEyebrow', 'Natural combinations',
+                           'collTitle', 'Which word does English put here?', folder=F,
+                           explains=q['ex'],
+                           bg=['alpine-road.jpg', 'cycle-lane.jpg',
+                               'mountain-pedal.jpg', 'city-ride.jpg'][i % 4]),
+                       side='left' if i % 2 else None,
+                       shape='arch' if i % 2 else None)
                   for i, q in enumerate(COLL))
 
         + reading_slide(
@@ -941,7 +967,8 @@ def build(style=None, out=None):
              'never properly identified?'],
             'readAskOne',
             'Pause and predict: what might Maya change next? What does the highlighted '
-            'phrase suggest?', 'mountain-road.jpg')
+            'phrase suggest?', 'mountain-road.jpg').replace(
+                '<section class="slide"', '<section class="slide" data-art="arch" data-art-size="narrow"', 1)
 
         + reading_slide(
             2, 'readTwoEyebrow', 'Read between the lines', 'readTwoTitle',
@@ -958,12 +985,15 @@ def build(style=None, out=None):
              '<mark>worth it for whom, and for what?</mark>'],
             'readAskTwo',
             'Find the sentence that balances the writer&rsquo;s argument. Why is it '
-            'there?', 'cafe-conversation.jpg')
+            'there?', 'cafe-conversation.jpg').replace(
+                '<section class="slide"', '<section class="slide" data-art="arch" data-art-size="narrow"', 1)
 
-        + "".join(D.mc(i + 1, len(INFER), q, 'inferEyebrow', 'Meaning beneath the words',
-                       'inferTitle', 'What is the writer really saying?', folder=F,
-                       explains=q['ex'],
-                       bg=[None, 'cafe-conversation.jpg', None, 'mountain-road.jpg'][i % 4])
+        + "".join(art(D.mc(i + 1, len(INFER), q, 'inferEyebrow', 'Meaning beneath the words',
+                           'inferTitle', 'What is the writer really saying?', folder=F,
+                           explains=q['ex'],
+                           bg=['cafe-conversation.jpg', 'mountain-road.jpg',
+                               'city-ride.jpg', 'cafe-conversation.jpg'][i % 4]),
+                       side='left' if i % 2 else None)
                   for i, q in enumerate(INFER))
 
         + shop_slide()
