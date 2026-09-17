@@ -11,6 +11,97 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-17 — THE LOCH NESS LOOP (B2): a bike-parts RPG script, glossed in nine languages, for ChatGPT to picture
+
+Innes asked for an RPG script "a bit like Kraken": hire a bike in Inverness,
+ride the loop round Loch Ness, learn the words for the parts of a bike, talk
+to the bike-shop woman, two women in a pub and an old man with a boat, and
+see her. Level B2, branching, rewards for concept-checking what people say,
+flat vector art, 16:9, and ChatGPT makes the export. Mid-build he added:
+the protagonist is a Swiss film director (Alex Marin, from Zürich).
+
+Everything is in `lesson-template/build/rpg/loch-ness-loop-rpg/`:
+
+- `BIBLE.md` — binding: cast, places, timeline ledger, who-is-where, the
+  fixed graph (two forks, four paths), the eighteen slots, the objects, the
+  item rules for both kinds of question, the CAPS/citation convention.
+- `script.json` + `families.json` — the English, final; 25 question scenes
+  (9 VOCAB + 9 CCQ on every path), 2 route choices, cover, briefing, 4
+  endings. Written as `correct/wrong1/wrong2` so the key slot is dealt by
+  the tool, never by habit.
+- `data.json` — assembled by `assemble-script.py`: key dealt 6/6/6 over
+  each of the four play orders, photos 4 a path, plate names, `meta.chrome`
+  for the builder's strings. The shape `docs/CHATGPT-RPG-BRIEF.md` §7 asks
+  ChatGPT for, minus `images`, the hotspot boxes and `local`.
+- `STORY.md` + `strings.json` — GENERATED from data.json by
+  `render-story.py` (the Kraken saga kept script and data apart and its
+  glosses drifted; here the JSON is the truth and STORY.md is its view).
+- `translations/{es,de,fr,it,pt,ru,ar,zh,ja}.json` — 187 strings each,
+  flat maps `apply_translations()` reads; written one agent per language,
+  second-read three languages per agent, `check-coverage.py` and
+  `check_translations.py` both PASS. VOCAB explanations keep the English
+  CAPS target and add the native part name in brackets once — that bracket
+  is the bilingual glossary a vocabulary lesson needs and no grammar lesson
+  has.
+- `IMAGES.md` — the picture contract (style sentence, four rules, character
+  sheet, 16:9 crop-safe band) and 32 prompts with draft hot boxes, object
+  right of centre on every plate.
+- `check-items.py` — the Kraken gates (length tell, blend tell, families,
+  repeats, budgets) plus two of this lesson's own: a VOCAB key word may not
+  appear anywhere on its panel, and the convention is kind-specific (CAPS
+  target in a VOCAB explanation, a double-quoted citation in a CCQ). All
+  fourteen gates were verified firing against deliberately broken copies
+  before the writing started. `prep-plates.py` is the 16:9 plate tool.
+
+**What ChatGPT gets and what it must not do** is written at the top of
+`STORY.md` and in the new tail section of `docs/CHATGPT-RPG-BRIEF.md`:
+pictures and hotspot boxes only; `data.json` pasted in unchanged; no `local`
+blocks. `docs/HANDOFF-rpg.md` §3 now has the "script written here first"
+kind, with the diff-before-extract rule.
+
+**Not built.** No plates, no builder, nothing in `block-camp/`. The next
+session copies `build_kraken_black_tide.py`, passes `img_w: 1536, img_h:
+864`, takes `HOT` from IMAGES.md's draft boxes and verifies them on contact
+sheets, overrides `tiles`/`relic`/`restart` and the briefing kicker from
+`meta.chrome` (glosses are in the translations files), and sets `final` on
+`back2`. Catalogue title: *The Loch Ness Loop — Bike Parts Loch Ness RPG
+(B2)*; accent the hub gold (no camp for vocabulary).
+
+### Three things to carry
+
+- **A vocabulary item is harder to write honestly than a grammar item.**
+  Everyday bike words are full of synonyms a teacher must accept — seat,
+  flat, bars, shift down, cogs, dropped the chain, crossbar, gear lever —
+  so the bible bans them as distractors by name and the item reviewer
+  re-checked every distractor against "would a British mechanic accept
+  it". The three distractor families that survive are PART (another real
+  part, ruled out by the clue's description), TRANSFER (a word-for-word
+  translation: *the handles*, *the chain has fallen*) and COLLOC (*pump it
+  until sixty*).
+- **The key must be off the panel.** A CCQ whose key is a phrase on the
+  panel is a reading test; a VOCAB item whose part name is in the clue is
+  free. `check-items.py` refuses both. The first merge tripped it once
+  (shop6's title printed half the key).
+- **The bracketed native part name is the point of glossing a vocabulary
+  lesson.** `check-coverage.py` insists the English CAPS token survives and
+  the translators were told to add the native word in brackets once. Two
+  side effects to know: RIGHT and FRONT in the briefing note are treated as
+  target tokens by the checker, so every language carries them in English
+  with a bracket; and the checker's CHROME_CAPS list is where to add a
+  word if that is ever wrong.
+
+The image writer caught one contradiction of mine: the `missing` ending's
+plate had the bike back on Dores beach in the evening, while the story
+returns it at midday. It is now the phone in the open pannier on the
+counter, in the bible, the contract and data.json.
+
+Not done: the writing was meant to run as three drafts, a judge panel and
+five critic lenses; the session limit killed it after two drafts. The
+merge, the Swiss-director change and the judging were done by hand, then
+one adversarial item reviewer fixed sixteen items (mostly length tells the
+checker tolerates and the brief does not). A second full critic pass at
+build time would not be wasted.
+
 ## 2026-09-16 — The Monthly Review (B2): a lesson built for one named student
 
 `forbes-campaign-review-b2.html`, 23 slides, 31 points, **EN/DE/ES/HR**, light

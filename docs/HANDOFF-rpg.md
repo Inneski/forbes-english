@@ -118,6 +118,18 @@ The page and its picture folder share it.
   plus `meta`, `briefing`, per-scene `hotspot` and `explanation`, and nine
   languages in `local`. Extract as Oz; the tail of the brief says which
   field feeds which part of the spec.
+- **A script written here first** (Kraken: The Black Tide, 2026-09-12;
+  The Loch Ness Loop, 2026-09-17): no export at all yet. The text lives in
+  `rpg/<slug>/script.json`, is dealt and wired into `data.json` by that
+  folder's `assemble-script.py`, and its nine glosses are already in
+  `rpg/<slug>/translations/`. ChatGPT gets `STORY.md`, `IMAGES.md` and
+  `data.json` and is asked for the pictures and the hotspot boxes only — the
+  export it sends back must carry the repo's `data.json` unchanged, no
+  `local` blocks. When it arrives: **diff its JSON against `data.json`
+  before extracting** (a re-typed word is a lost gloss), take its `images`
+  and `hotspot` boxes, and build from the repo's text and translations, not
+  the export's. Builder to copy: `build_kraken_black_tide.py`; The Loch
+  Ness Loop is 16:9, so pass `img_w: 1536, img_h: 864` as Wonderland does.
 - **A third kind:** read its whole script before anything else. Find
   where the pictures are (base64 map), where the questions are (a table or
   an object), what the scoring rule is, and which of the two builders is

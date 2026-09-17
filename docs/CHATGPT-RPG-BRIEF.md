@@ -423,3 +423,26 @@ unknown keys through to `data.json` untouched, so read them in the builder:
 If the file arrives without these — or as a stack of patch scripts, which is
 the third kind — follow `docs/HANDOFF-rpg.md` and `README.md` §2 as written
 and write the missing parts yourself.
+
+## When Claude has written the script first
+
+Sometimes the words exist before ChatGPT is asked for anything — Kraken: The
+Black Tide (2026-09-12) and The Loch Ness Loop (2026-09-17) were written in
+this repo, to this brief, with the answer key already dealt and the nine
+glosses already in `lesson-template/build/rpg/<slug>/translations/`. Then
+ChatGPT's job shrinks to the pictures and the boxes, and the brief Innes
+pastes is this file plus three lines:
+
+> The script is written and attached (`STORY.md`, `IMAGES.md`, `data.json`).
+> Paste `data.json` in as `window.<NAME>_GAME_DATA` **unchanged** — every
+> word, every option order, every explanation — add the `images` map and a
+> `hotspot` box (`x`, `y`, `w`, `h` in percent) to every scene, and write
+> **no `local` blocks**: the translations exist already. Deliver the one
+> HTML file and the scene table.
+
+The session that receives that export diffs its JSON against the repo's
+`data.json` before extracting anything (a re-typed line is a lost gloss),
+keeps the export's `images` and `hotspot` boxes, and builds from the repo's
+text and translations. If the lesson's `IMAGES.md` says 16:9, the plates are
+1536 × 864 and the spec carries `img_w: 1536, img_h: 864`; §4's 3:2 is the
+default, not a law.
