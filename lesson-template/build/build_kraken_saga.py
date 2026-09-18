@@ -49,7 +49,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 DATA = json.load(open(os.path.join(HERE, 'rpg', 'kraken-saga', 'data.json'), encoding='utf-8'))
 SLUG = 'kraken-black-tide-rpg'
 NAME = 'The Kraken: A Tale of the Deep'
-LANGS = ['es', 'de', 'fr', 'it', 'pt']   # rpg.NINE is the target; one at a time
+LANGS = ['es', 'de', 'fr', 'it', 'pt', 'ru']   # rpg.NINE is the target
 
 # The export's own gold, which came off the artwork's one sodium-amber light —
 # the thing IMAGES.md required in every frame so the glow marker has a colour
