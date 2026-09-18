@@ -96,6 +96,23 @@ def plain(s):
     return s.strip()
 
 
+def repair_speaker(prompt, dialogue):
+    """Twenty-one of the fifty-one prompts come out of the export as `** "..."`
+    with the speaker's name gone — a defect in the export, not in the stripping
+    here, and it would have printed a bare `**` at learners. The name survives
+    in the scene's dialogue, where the same quoted line is attributed, so take
+    it from there rather than lose who is talking."""
+    if not prompt.startswith('** '):
+        return prompt
+    key = prompt[3:].strip()[:60]
+    for line in (dialogue or '').splitlines():
+        if key and key in line:
+            m = re.match(r'\s*\*\*(.+?):\*\*', line)
+            if m:
+                return '**%s:** %s' % (m.group(1), prompt[3:].strip())
+    raise SystemExit('prompt with no recoverable speaker: %r' % prompt[:70])
+
+
 def pages(text):
     """Split a story block into panel-sized pages, at paragraph breaks where
     they fall and at sentence ends where a single paragraph is too long."""
@@ -167,14 +184,15 @@ def build():
             if s.get('act'):
                 base['k'] = T(s['act'])
             if s['kind'] in ('CCQ', 'GRAMMAR'):
+                prompt = repair_speaker(s['prompt'], s.get('dialogue'))
                 base.update({
                     'kind': 'question', 'next': v,
-                    'prompt': T(oneline(s['prompt'])),
+                    'prompt': T(oneline(prompt)),
                     'opts': [{'en': o} for o in s['options']],
                     'answer': s['correct'], 'fb': T(plain(s['why']))})
                 # the dialogue ends with the prompt; printing both says it twice
                 clue = oneline(s['dialogue'])
-                tail = oneline(s['prompt'])
+                tail = oneline(prompt)
                 if clue.endswith(tail):
                     clue = clue[:-len(tail)].rstrip(' ·').strip()
                 if clue:
