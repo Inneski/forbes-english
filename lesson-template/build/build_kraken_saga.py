@@ -59,7 +59,10 @@ DEEP, PANEL = '#08131c', 'rgba(8,19,28,.88)'
 
 # a panel is 46% of the frame and the objects sit right of x=60 on every plate
 # (IMAGES.md's composition contract), so every scene takes a left panel.
-HOME_HOT = [84.0, 82.0, 9.0, 13.0]       # the compass rose, the one object clear of the panel
+# the compass rose, the one object on the cover clear of the panel. Measured
+# off 00_home.webp rather than guessed: the gold star's warm pixels centre on
+# 77.9%, 83.7%, and the disc around them is about 7% by 12% of a 16:9 frame.
+HOME_HOT = [77.9, 83.7, 7.0, 12.0]
 ENDING_HOT = [80.0, 55.0, 14.0, 18.0]
 
 WORDS_PER_PAGE = 42              # what a 46% panel holds at 1.65 units without scrolling

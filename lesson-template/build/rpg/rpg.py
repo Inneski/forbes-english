@@ -159,7 +159,17 @@ button{font:inherit}
 .badge b{color:var(--accent);font-weight:700}
 .langs{display:flex;gap:calc(.35 * var(--u));pointer-events:auto;position:relative}
 .lang-btn,.utility{border:1px solid rgba(255,246,217,.35);color:var(--bone);background:var(--panel);padding:calc(.5 * var(--u)) calc(.75 * var(--u));cursor:pointer;font-size:calc(1.1 * var(--u));pointer-events:auto}
-.lang-btn{display:flex;align-items:center;gap:calc(.3 * var(--u));white-space:nowrap}.lang-btn b{color:var(--accent)}
+.lang-btn{display:flex;align-items:center;gap:0;white-space:nowrap}
+/* The three utilities sit as bare icons and give their words back on hover or
+   keyboard focus. Three labelled buttons across the top of a painted frame is
+   a lot of furniture over somebody's artwork, and the keys (L, S, F) and the
+   corner help line already say what they do. The label is collapsed by width
+   rather than removed, so it stays in the accessibility tree and a screen
+   reader still reads "SOUND OFF". */
+.u-label{display:inline-block;max-width:0;opacity:0;overflow:hidden;white-space:nowrap;vertical-align:middle;transition:max-width .2s ease,opacity .18s ease}
+.utility:hover .u-label,.utility:focus-visible .u-label,.langs:focus-within .u-label{max-width:20em;opacity:1;margin-left:calc(.4 * var(--u))}
+/* a touch screen has no hover, so there the words are simply always on */
+@media(hover:none){.u-label{max-width:20em;opacity:1;margin-left:calc(.4 * var(--u))}}.lang-btn b{color:var(--accent)}
 .utility:hover,.lang-btn:hover{border-color:var(--bone)}
 .utility.fs{display:flex;align-items:center;gap:calc(.35 * var(--u));color:var(--accent-ink);background:linear-gradient(180deg,#fff0b8,var(--accent));border:1px solid #fff8dc;font-weight:700;letter-spacing:.06em;animation:fsglow 2.4s ease-in-out infinite}
 .utility.fs:hover{filter:brightness(1.08)}
@@ -348,11 +358,11 @@ BODY = r"""
       </div>
       <div class="hud-group">
         <div class="langs">
-          <button id="langBtn" class="lang-btn" aria-haspopup="true" aria-expanded="false">🌐 <span id="langWord">TRANSLATE</span> · <b id="langCur">OFF</b> ▾</button>
+          <button id="langBtn" class="lang-btn utility" aria-haspopup="true" aria-expanded="false">🌐<span class="u-label"><span id="langWord">TRANSLATE</span> · <b id="langCur">OFF</b> ▾</span></button>
           <div id="langMenu" class="lang-menu" hidden></div>
         </div>
-        <button id="sound" class="utility" title="S" aria-pressed="false">🔈 <span id="soundLabel">SOUND OFF</span></button>
-        <button id="fullscreen" class="utility fs" title="F">⛶ <span id="fsLabel">FULLSCREEN</span></button>
+        <button id="sound" class="utility" title="S" aria-pressed="false">🔈<span class="u-label" id="soundLabel">SOUND OFF</span></button>
+        <button id="fullscreen" class="utility fs" title="F">⛶<span class="u-label" id="fsLabel">FULLSCREEN</span></button>
       </div>
     </header>
     <div id="zone" class="zone"><article id="content" class="content"></article></div>
@@ -381,7 +391,7 @@ let state = fresh('off', null);
 let sound=false;try{sound=localStorage.getItem('rpg-sound')==='1'}catch(_){}
 /* two short tones, right and wrong — the Wonderland export's, kept */
 function beep(ok){if(!sound)return;try{const c=new (window.AudioContext||window.webkitAudioContext)();const o=c.createOscillator(),g=c.createGain();o.type=ok?'square':'sawtooth';o.frequency.value=ok?620:180;g.gain.value=.03;o.connect(g);g.connect(c.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.16);o.stop(c.currentTime+.18);o.onended=()=>c.close()}catch(_){}}
-function setSound(on){sound=!!on;try{localStorage.setItem('rpg-sound',sound?'1':'0')}catch(_){}const b=document.getElementById('sound');b.setAttribute('aria-pressed',String(sound));b.firstChild.textContent=(sound?'🔊':'🔈')+' ';document.getElementById('soundLabel').textContent=ui(sound?'soundOn':'soundOff')}
+function setSound(on){sound=!!on;try{localStorage.setItem('rpg-sound',sound?'1':'0')}catch(_){}const b=document.getElementById('sound');b.setAttribute('aria-pressed',String(sound));b.firstChild.textContent=(sound?'🔊':'🔈');document.getElementById('soundLabel').textContent=ui(sound?'soundOn':'soundOff')}
 function fresh(lang,ch){const c=(ch==null||!G.chapters)?G:G.chapters[ch];return {chapter:(ch==null||!G.chapters)?null:ch,scene:c.start,page:0,score:0,chances:c.chances,tiles:0,lang,open:false,route:[],results:{},attempts:{},mistakes:[],answered:0,finalCorrect:null,endingPick:null,endingMaster:false,endingMin:0}}
 /* A scene's `story` is one block, or a list of them to be read a page at a
    time. The panel does not scroll by design (README section 1: never shrink
