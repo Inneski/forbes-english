@@ -210,6 +210,13 @@ def build():
 
     scenes['hub'] = {
         'kind': 'hub', 'img': DATA['home'], 'hot': HOME_HOT,
+        # the cover was redrawn wider on 2026-09-18 and is 16:9, so it fills a
+        # widescreen edge to edge while the 58 story plates are still 3:2 and
+        # letterbox. ChatGPT is redrawing those wider too; when they land, this
+        # override goes and img_w/img_h below become 1536x864 for the whole
+        # game — and the spots.js hotspot percentages will need recomputing,
+        # because widening a picture moves every x% in it.
+        'imgW': 1536, 'imgH': 864,
         # the cover plate carries its own painted title lockup, so no title
         # here: head() would print the name a second time over the art. No
         # story line either — three chapter leads is already a panel's worth,

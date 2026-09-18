@@ -424,7 +424,11 @@ function head(s,pi){const has=s.title&&bare(s.title.en||'').trim();const t=s.kin
    the art is the lesson, cropping it is not a trade worth making.
    The maths below already handles a letterboxed image: every `dw>W` / `dh>H`
    branch falls to centring, which is exactly right once the picture fits. */
-function placeHot(h){const W=frame.clientWidth,H=frame.clientHeight,sc=(G.fit==='contain'?Math.min:Math.max)(W/G.imgW,H/G.imgH),dw=G.imgW*sc,dh=G.imgH*sc;
+/* a scene may carry its own imgW/imgH. Most games are one aspect throughout,
+   but a cover is often drawn to the screen while the story plates are drawn to
+   the art brief's ratio — Kraken's cover is 16:9 and its 58 plates are 3:2 —
+   and the glow has to be placed in the picture's own space or it drifts. */
+function placeHot(s){const h=s.hot,IW=s.imgW||G.imgW,IH=s.imgH||G.imgH;const W=frame.clientWidth,H=frame.clientHeight,sc=(G.fit==='contain'?Math.min:Math.max)(W/IW,H/IH),dw=IW*sc,dh=IH*sc;
   /* cover crops the picture; slide it so the object stays on screen (a portrait phone shows a third of the width) */
   const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));const ox=dw>W?clamp(W/2-h[0]/100*dw,W-dw,0):(W-dw)/2,oy=dh>H?clamp(H/2-h[1]/100*dh,H-dh,0):(H-dh)/2;
   sceneImage.style.objectPosition=`${dw>W?ox/(W-dw)*100:50}% ${dh>H?oy/(H-dh)*100:50}%`;
@@ -434,7 +438,7 @@ function placeHot(h){const W=frame.clientWidth,H=frame.clientHeight,sc=(G.fit===
 function setOpen(on){state.open=!!on;if(on){const hr=hot.getBoundingClientRect(),zr=zone.getBoundingClientRect();const cl=zr.left+content.offsetLeft,ct=zr.top+content.offsetTop;content.style.transformOrigin=`${hr.left+hr.width/2-cl}px ${hr.top+hr.height/2-ct}px`}frame.classList.toggle('open',state.open)}
 function openPanel(){if(!state.open)setOpen(true)}
 function closePanel(){if(state.open)setOpen(false)}
-function render(){const s=G.scenes[state.scene];frame.className=`frame ${s.pos||'left'} v-${s.v||'center'} k-${s.kind}${s.kind==='intro'?' is-cover':''}${RTL.includes(state.lang)?' rtl':''}${G.fit==='contain'?' fit-contain':''}`;sceneImage.src=G.dir+s.img;sceneImage.alt=bare((s.title&&s.title.en)||s.alt||'');placeHot(s.hot);const tr=state.lang!=='off';frame.classList.toggle('tr-on',tr);frame.classList.toggle('has-rules',!!s.rules&&s.kind!=='intro');content.style.width=((s.width||(s.pos==='center'?64:s.pos==='band'?92:46))+(tr?(s.pos==='band'?3:8):0))+'%';content.style.marginLeft=s.pos==='left'&&s.inset?s.inset+'%':'';content.style.marginRight=s.pos==='right'&&s.inset?s.inset+'%':'';
+function render(){const s=G.scenes[state.scene];frame.className=`frame ${s.pos||'left'} v-${s.v||'center'} k-${s.kind}${s.kind==='intro'?' is-cover':''}${RTL.includes(state.lang)?' rtl':''}${G.fit==='contain'?' fit-contain':''}`;sceneImage.src=G.dir+s.img;sceneImage.alt=bare((s.title&&s.title.en)||s.alt||'');placeHot(s);const tr=state.lang!=='off';frame.classList.toggle('tr-on',tr);frame.classList.toggle('has-rules',!!s.rules&&s.kind!=='intro');content.style.width=((s.width||(s.pos==='center'?64:s.pos==='band'?92:46))+(tr?(s.pos==='band'?3:8):0))+'%';content.style.marginLeft=s.pos==='left'&&s.inset?s.inset+'%':'';content.style.marginRight=s.pos==='right'&&s.inset?s.inset+'%':'';
   const hide=`<button class="hide-btn" onclick="closePanel()" title="Esc">✕ ${ui('hide')}</button>`;
   const np=storyPages(s).length,pi=Math.min(state.page||0,np-1);
   let html=head(s,pi),act='';
@@ -460,7 +464,7 @@ function render(){const s=G.scenes[state.scene];frame.className=`frame ${s.pos||
   if(s.kind==='question'&&Object.prototype.hasOwnProperty.call(state.results,state.scene))setTimeout(()=>displayAnswer(state.results[state.scene],false),0)}
 hot.addEventListener('click',e=>{e.stopPropagation();openPanel()});
 sceneImage.addEventListener('click',()=>{closeMenu();closePanel()});
-window.addEventListener('resize',()=>placeHot(G.scenes[state.scene].hot));
+window.addEventListener('resize',()=>placeHot(G.scenes[state.scene]));
 const langMenu=document.getElementById('langMenu'), langBtn=document.getElementById('langBtn');
 function closeMenu(){langMenu.hidden=true;langBtn.setAttribute('aria-expanded','false')}
 function toggleMenu(){langMenu.hidden=!langMenu.hidden;langBtn.setAttribute('aria-expanded',String(!langMenu.hidden))}
