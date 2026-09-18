@@ -371,7 +371,16 @@ function answer(i){if(Object.prototype.hasOwnProperty.call(state.results,state.s
    no chances to reason about, and the tile/chance ladder below would send a
    64-point run to `missing` because G.tiles is 0. Lessons without `bands` are
    unchanged. */
-function resolve(){const c=CH();if(c.bands&&c.bands.length){const b=c.bands.find(b=>state.score>=b[0]);if(b)return b[1]}
+/* `passScore` is the third way an export can decide an ending, after the
+   tile/chance ladder and score-only `bands`: a pass mark, then the collection,
+   then a perfect score. The Kraken export's own rule, verbatim —
+   `chances<=0 || n<60 ? failed : items<4 ? missing : n===70 ? master : complete`
+   — and it deliberately does not consult the final question, which the ladder
+   below does. A 60/70 run with one collectible missing is `missing`; the
+   ladder called it `failed` because the last answer was wrong, which is a
+   different game from the one the export shipped. */
+function resolve(){const c=CH();if(c.passScore!=null){const live=!c.chances||state.chances>0;if(!live||state.score<c.passScore)return c.endings.failed;if(state.tiles<c.tiles)return c.endings.missing;if(state.score>=c.max)return c.endings.master;return c.endings.complete}
+  if(c.bands&&c.bands.length){const b=c.bands.find(b=>state.score>=b[0]);if(b)return b[1]}
   const alive=!c.chances||state.chances>0;const full=state.tiles>=c.tiles&&alive;const flawless=state.finalCorrect&&full&&state.score>=c.max;if(flawless&&(!state.endingPick||state.endingMaster))return c.endings.master;if(state.endingPick&&alive&&c.endings[state.endingPick]&&!(state.endingMin&&state.score<state.endingMin))return c.endings[state.endingPick];if(state.finalCorrect&&full&&state.score>=c.completeScore)return c.endings.complete;if(state.finalCorrect&&state.tiles<c.tiles)return c.endings.missing;return c.endings.failed}
 /* `G.chances &&` is the same guard resolve() carries: a lesson with no chance
    counter at all (G.chances is 0 by design) has state.chances<=0 from the
