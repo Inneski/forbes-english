@@ -11,6 +11,85 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-18 — The Kraken: A Tale of the Deep, published (seven of nine languages)
+
+Live at `/kraken-black-tide-rpg`, catalogue row **335**, on the Present Perfect
+hub. Innes said "upload as is", so it shipped with seven languages rather than
+waiting for nine.
+
+**Not a Block Camp RPG, and that was a correction mid-build.** CLAUDE.md's
+standing instruction says an RPG export becomes a Block Camp RPG; Innes said
+three times that this one is not — "this isn't block camp", "it's just RPG".
+The page therefore sits at the repo ROOT beside `stranger-gears-rpg.html`, with
+its plates in a sibling folder, no hub card in `block-camp-hub/build.py`, no
+camp colour and no Monocraft override. The engine is still `rpg.py`. **Ask
+which world an RPG belongs to before copying plates anywhere.**
+
+**Source.** The saga written here on 2026-09-12 (`rpg/kraken-saga/STORY.md`)
+came back from ChatGPT as a saved web page, not a standalone file: clean JSON in
+`content.js`, hotspot centres in `spots.js`, and the 59 plates behind a ChatGPT
+login on a `chatgpt.site` host. `rpg/kraken-saga/extract-export.py` reads the
+first two. The plates were fetched through a browser signed in as Innes; the
+browser saved 57 of them as UUID `.tmp` files with the download name dropped, so
+they were hash-matched against the server rather than mapped by timestamp.
+
+**Four things went into `rpg.py`, so all eleven other RPGs were re-run each time:**
+
+- `chapters` + the `hub` scene kind — a page holding three games, each with its
+  own start, score, collectibles, chances and endings. `CH()` is the accessor;
+  without `chapters` it returns `G` and nothing else changes.
+- paged story, then `page_clues` — a scene reads as story pages, then clue
+  pages, then the question on a page of its own. **Opt-in**: six shipped lessons
+  put clues on 115 questions and read them beside the options.
+- `passScore` — score, then collection, then perfect. The engine's own ladder
+  gates every good ending on the FINAL question; this export does not.
+- `fit: 'contain'` and per-scene `imgW`/`imgH` — 3:2 plates in a 16:9 window
+  lose 15.6% of their height to `cover`, and `placeHot` piles the whole loss on
+  one edge.
+
+**Three defects found by measuring, not by looking.** Each was invisible in a
+screenshot and each would have shipped:
+
+1. **82 screens overflowed the panel, most of them in English.** Cause: the
+   story was paginated and the clue was not. Fixed by `page_clues`. Measure with
+   `content.scrollHeight - content.clientHeight` over every scene, every page,
+   every language — not by eye.
+2. **21 prompts read `** "..."` with the speaker's name gone.** A defect in the
+   export, not in the Markdown stripping. `repair_speaker()` recovers the name
+   from the same scene's `dialogue`, and the builder raises rather than guesses.
+3. **A three-string rotation in five language files.** A story panel was glossed
+   with the next string's translation. Cause: those batches reused the index
+   numbering from before clues gained their own pages, for one run of three.
+
+**Two checks now guard the translations and should be run on any new language.**
+A *shape* test — an English string with a `___` gap must be glossed by one with
+a gap, and a grammar note by a grammar note. And a *length-ratio* test — a
+translation wildly longer or shorter than its English is a label glossed as a
+paragraph. The rotation was caught by the first; the second is clean everywhere
+and only ever hits short titles.
+
+### Open
+
+- **Arabic, Chinese and Japanese.** `strings.json` (394 strings) is the input;
+  the six existing files in `rpg/kraken-saga/translations/` are the pattern.
+  Arabic is right-to-left and the engine's `RTL` path has not been exercised on
+  this page, so it needs a layout check as well as the string checks. Add the
+  code to `LANGS` in `build_kraken_saga.py` and rebuild.
+- **The 59 hotspot boxes have not been checked against their plates.** They are
+  the extractor's default 12x16 around each `spots.js` centre. The ones looked
+  at land dead on the object, which is not the same as all of them doing so;
+  HANDOFF-rpg.md section 4 wants every scene shot closed and tiled.
+- **The export's per-outcome consequence lines are dropped.** It prints a
+  different line for right and wrong ("The bell rings. Mrs Rennie sits down on
+  the step."); the engine's `fb` is one explanation shown either way. Giving it
+  `fbRight`/`fbWrong` is a small generic change.
+- **ChatGPT is redrawing the 58 story plates wider.** The cover is already 16:9
+  and fills the frame; the plates are 3:2 and letterbox. When they land, set
+  `img_w: 1536, img_h: 864` for the whole game and drop the hub's override. If
+  they were widened by extending the sides, every `spots.js` x% moves by
+  arithmetic; if they were re-rendered from the prompts, all 59 need measuring
+  again.
+
 ## 2026-09-17 — BEYOND THE HANDLEBARS ships as Innes designed it. READ THIS FIRST.
 
 **`beyond-the-handlebars.html` is not generated.** It is the ChatGPT-built deck
