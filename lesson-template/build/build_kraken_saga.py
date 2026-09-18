@@ -49,7 +49,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 DATA = json.load(open(os.path.join(HERE, 'rpg', 'kraken-saga', 'data.json'), encoding='utf-8'))
 SLUG = 'kraken-black-tide-rpg'
 NAME = 'The Kraken: A Tale of the Deep'
-LANGS = ['es']                   # rpg.NINE is the target; one language at a time
+LANGS = ['es', 'de']             # rpg.NINE is the target; one language at a time
 
 # The export's own gold, which came off the artwork's one sodium-amber light —
 # the thing IMAGES.md required in every frame so the glow marker has a colour
@@ -281,7 +281,7 @@ def build():
         # as '' for the validator to trip over.
         # 62, not the default 46: three chapter leads is a lot of panel, and
         # with a gloss under each one it overflowed by 78px in Spanish.
-        'width': 62,
+        'width': 70,
         'small': T('14 questions a chapter · 4 collectibles · 3 chances · your choices change the route')}
 
     return {
