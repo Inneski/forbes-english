@@ -108,7 +108,11 @@ def apply_translations(spec, path):
         elif isinstance(o, list):
             for v in o:
                 walk(v)
-    walk(spec['scenes']); walk(spec.get('labels', {})); walk(spec.get('tags', {}))
+    # `chapters` carries learner-facing strings of its own — each chapter's
+    # name, its one-line lead and its collectible label — and validate() checks
+    # them, so this has to fill them or a chaptered page can never build.
+    walk(spec['scenes']); walk(spec.get('chapters') or [])
+    walk(spec.get('labels', {})); walk(spec.get('tags', {}))
     # a deck that folds a simpler text layer in keeps its chrome overrides
     # here; they need filling too, or they ship with English and nothing else.
     walk(spec.get('easy_labels', {})); walk(spec.get('easy_tags', {}))
@@ -400,7 +404,24 @@ function fresh(lang,ch){const c=(ch==null||!G.chapters)?G:G.chapters[ch];return 
    Kraken export did and it is the right answer: the reader taps READ ON and
    the question only appears under the last page. A scene with a single story
    block has one page and behaves exactly as before. */
-const storyPages=s=>Array.isArray(s.story)?s.story:[s.story];
+const storyPages=s=>s.story?(Array.isArray(s.story)?s.story:[s.story]):[];
+/* A scene reads as a sequence of pages: its story blocks, then its clue blocks,
+   then — on a question — the prompt and the options on a page of their own.
+   Paging only the story was not enough: measured across all 68 scenes, 82
+   screens overflowed the panel, in English as well as in gloss, because the
+   last page carried story, clue, prompt and three options at once. The export
+   pages the clue too ("THE CLUE / 3 OF 3" then "YOUR ANSWER"), and STORY.md
+   says why it is the right reading: a CCQ gives you the information first and
+   asks about it afterwards, so leaving the clue behind is the exercise. */
+function scenePages(s){const out=storyPages(s).map(b=>({t:'story',b}));
+  /* opt-in per lesson. Six of the shipped eleven put a clue on 115 questions
+     and read it beside the options; moving those onto a page of their own
+     would be a change to those lessons that nobody asked for. */
+  if(G.pageClues){
+    if(s.clue)(Array.isArray(s.clue)?s.clue:[s.clue]).forEach(c=>out.push({t:'clue',b:c}));
+    if(s.kind==='question')out.push({t:'ask'});
+  }
+  return out.length?out:[{t:'story',b:null}]}
 const frame=document.getElementById('frame'), content=document.getElementById('content'), sceneImage=document.getElementById('sceneImage');
 const hot=document.getElementById('hot'), hotLabel=document.getElementById('hotLabel'), zone=document.getElementById('zone');
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -419,12 +440,16 @@ function optMarkup(o){if(!o.parts)return `<span>${label(o)}</span>`;return o.par
 /* `tilesLabel` lets a chapter rename its own collectibles — the Kraken saga
    counts EVIDENCE in part one, MARKER BARRELS in part two and THE LAST FOUR
    in part three, on the same HUD badge. A lesson without one uses ui('tiles'). */
-function updateHUD(){const c=CH();const onHub=G.scenes[state.scene]?.kind==='hub';document.getElementById('score').textContent=state.score;document.getElementById('tiles').textContent='◆'.repeat(state.tiles)+'◇'.repeat(Math.max(0,c.tiles-state.tiles));document.getElementById('chances').textContent='♥'.repeat(state.chances)+'♡'.repeat(Math.max(0,c.chances-state.chances));document.getElementById('lblPoints').textContent=ui('points');document.getElementById('lblTiles').textContent=c.tilesLabel?label(c.tilesLabel):ui('tiles');document.getElementById('lblChances').textContent=ui('chances');document.getElementById('tilesBadge').hidden=!c.tiles||onHub;document.getElementById('chancesBadge').hidden=!c.chances||onHub;document.getElementById('progressBadge').hidden=!c.total||onHub;if(c.total){document.getElementById('lblProgress').textContent=ui('progress');document.getElementById('progress').textContent=`${state.answered}/${c.total}`}document.getElementById('help').textContent=ui('help')}
+function updateHUD(){const c=CH();const onHub=G.scenes[state.scene]?.kind==='hub';document.getElementById('score').textContent=state.score;document.getElementById('tiles').textContent='◆'.repeat(state.tiles)+'◇'.repeat(Math.max(0,c.tiles-state.tiles));document.getElementById('chances').textContent='♥'.repeat(state.chances)+'♡'.repeat(Math.max(0,c.chances-state.chances));document.getElementById('lblPoints').textContent=ui('points');document.getElementById('lblTiles').textContent=c.tilesLabel?tx(c.tilesLabel,state.lang==='off'?null:state.lang):ui('tiles');document.getElementById('lblChances').textContent=ui('chances');document.getElementById('tilesBadge').hidden=!c.tiles||onHub;document.getElementById('chancesBadge').hidden=!c.chances||onHub;document.getElementById('progressBadge').hidden=!c.total||onHub;if(c.total){document.getElementById('lblProgress').textContent=ui('progress');document.getElementById('progress').textContent=`${state.answered}/${c.total}`}document.getElementById('help').textContent=ui('help')}
 /* A cover whose plate carries a painted title lockup has no title of its own: the h1 would only say the same thing again. */
 /* the kicker and title belong to the scene, so they stay put while the story
    pages under them — a title that reappeared on every tap would read as a new
    scene each time. */
-function head(s,pi){const has=s.title&&bare(s.title.en||'').trim();const t=s.kind==='intro'?`<span class="big">${label(s.title)}</span>`:label(s.title);return `${line(s.k,'kicker')}${has?`<h1 class="title ${s.kind==='intro'?'cover-title':''}">${t}</h1>`:''}${line(storyPages(s)[pi||0],'story')}`}
+function head(s,pg){const has=s.title&&bare(s.title.en||'').trim();const t=s.kind==='intro'?`<span class="big">${label(s.title)}</span>`:label(s.title);
+  /* the page's own body: a story block, a clue block in its labelled box, or
+     nothing at all on the page that asks the question. */
+  const body=!pg?'':pg.t==='story'?line(pg.b,'story'):pg.t==='clue'?`<div class="clue"><b>${ui('visual')}</b><br>${label(pg.b)}</div>`:'';
+  return `${line(s.k,'kicker')}${has?`<h1 class="title ${s.kind==='intro'?'cover-title':''}">${t}</h1>`:''}${body}`}
 /* HOT = [cx, cy, w, h] as % of the PICTURE (3:2). The picture is object-fit:cover in the frame, so convert picture space to frame pixels; a phone shows a narrow central slice and the object stays on it. */
 /* `fit:'contain'` shows the whole plate and letterboxes the remainder in the
    page's deep colour, instead of filling the frame and cropping. A 3:2 plate
@@ -450,15 +475,15 @@ function openPanel(){if(!state.open)setOpen(true)}
 function closePanel(){if(state.open)setOpen(false)}
 function render(){const s=G.scenes[state.scene];frame.className=`frame ${s.pos||'left'} v-${s.v||'center'} k-${s.kind}${s.kind==='intro'?' is-cover':''}${RTL.includes(state.lang)?' rtl':''}${G.fit==='contain'?' fit-contain':''}`;sceneImage.src=G.dir+s.img;sceneImage.alt=bare((s.title&&s.title.en)||s.alt||'');placeHot(s);const tr=state.lang!=='off';frame.classList.toggle('tr-on',tr);frame.classList.toggle('has-rules',!!s.rules&&s.kind!=='intro');content.style.width=((s.width||(s.pos==='center'?64:s.pos==='band'?92:46))+(tr?(s.pos==='band'?3:8):0))+'%';content.style.marginLeft=s.pos==='left'&&s.inset?s.inset+'%':'';content.style.marginRight=s.pos==='right'&&s.inset?s.inset+'%':'';
   const hide=`<button class="hide-btn" onclick="closePanel()" title="Esc">✕ ${ui('hide')}</button>`;
-  const np=storyPages(s).length,pi=Math.min(state.page||0,np-1);
-  let html=head(s,pi),act='';
+  const pgs=scenePages(s),np=pgs.length,pi=Math.min(state.page||0,np-1);
+  let html=head(s,pgs[pi]),act='';
   /* mid-story: the only thing on offer is the next page. The scene's own
      action — question, routes, restart — waits for the last one. */
   if(pi<np-1){content.innerHTML=hide+html+`<div class="story-pager"><span class="page-count">${pi+1} / ${np}</span><button class="continue" onclick="nextPage()">${ui('readOn')}</button></div>`;content.scrollTop=0;updateHUD();setOpen(false);return}
   if(s.kind==='intro'){act+=`${s.rules?`<div class="rules-chips">${s.rules.map(r=>`<span>${label(r)}</span>`).join('')}</div>`:''}<button class="start" onclick="go('${s.next}')">${label(s.start)}</button>${s.small?`<div class="small">${label(s.small)}</div>`:''}`}
   else if(s.kind==='rules'){act+=`<div class="rules-intro">${s.rules.map(r=>`<div class="rule-card${r.tone?' tone-card-'+r.tone:''}"><b>${label(r.name)}</b>${label(r.form)}</div>`).join('')}</div>${s.note?`<div class="rule-note">${label(s.note)}</div>`:''}<button class="continue" onclick="go('${s.next}')">${s.button?label(s.button):ui('begin')}</button>`}
   else if(s.kind==='story'){act+=`${s.rules?`<div class="rules-intro">${s.rules.map(r=>`<div class="rule-card${r.tone?' tone-card-'+r.tone:''}"><b>${label(r.name)}</b>${label(r.form)}</div>`).join('')}</div>`:''}${s.note?`<div class="rule-note">${label(s.note)}</div>`:''}<button class="continue" onclick="go('${s.next}')">${s.button?label(s.button):ui('continue')}</button>`}
-  else if(s.kind==='question'){act+=`${s.clue?`<div class="clue"><b>${ui('visual')}</b><br>${label(s.clue)}</div>`:''}<div class="prompt">${label(s.prompt)}</div><div class="options">${s.opts.map((o,i)=>`<button class="option${o.parts?' split':''}" data-i="${i}" onclick="answer(${i})"><span class="key">${i+1}</span>${optMarkup(o)}</button>`).join('')}</div><div id="feedback" class="feedback"></div><button id="continue" class="continue" hidden onclick="advance()">${ui('continue')}</button>`}
+  else if(s.kind==='question'){act+=`${(!G.pageClues&&s.clue)?`<div class="clue"><b>${ui('visual')}</b><br>${label(Array.isArray(s.clue)?s.clue[0]:s.clue)}</div>`:''}<div class="prompt">${label(s.prompt)}</div><div class="options">${s.opts.map((o,i)=>`<button class="option${o.parts?' split':''}" data-i="${i}" onclick="answer(${i})"><span class="key">${i+1}</span>${optMarkup(o)}</button>`).join('')}</div><div id="feedback" class="feedback"></div><button id="continue" class="continue" hidden onclick="advance()">${ui('continue')}</button>`}
   else if(s.kind==='choice'){act+=`<div class="route-options">${s.routes.map((r,i)=>`<button class="route" onclick="chooseRoute(${i})"><b>${i+1} · ${label(r.name)}</b>${label(r.desc)}</button>`).join('')}</div>`}
   else if(s.kind==='hub'){act+=`<div class="chapter-list">${G.chapters.map((c,i)=>`<button class="chapter" onclick="startChapter(${i})"><b>${i+1} · ${label(c.title)}</b>${c.lead?label(c.lead):''}</button>`).join('')}</div>${s.small?`<div class="small">${label(s.small)}</div>`:''}`}
   else if(s.kind==='ending'){const c=CH();/* an ending may close with a paragraph that depends on the route taken (routeStory) */const rt=s.routeStory?(Object.entries(s.routeStory).find(([k])=>state.route.includes(k))||[])[1]:null;const rev=G.repair?(state.mistakes.length?`<div class="review">${state.mistakes.map(id=>{const m=G.scenes[id];return `<div>${esct(m.prompt.en)}<br><b>${esc(optText(m.opts[m.answer]))}</b> — ${label(m.fb)}</div>`}).join('')}</div>`:`<div class="small">${ui('perfect')}</div>`):'';const ft=G.repair?` · ${state.score/(G.points||1)}/${c.total} ${ui('firstTry')}`:'';
@@ -731,6 +756,7 @@ def assemble(spec, out=None):
         'bands': spec.get('bands') or [],
         'chapters': spec.get('chapters') or None,
         'fit': spec.get('fit', 'cover'),
+        'pageClues': bool(spec.get('page_clues')),
         'tags': spec.get('tags', {'a': {'en': 'NOW'}, 'b': {'en': 'USUALLY'}}),
     }
     css = (CSS.replace('{{ACCENT}}', spec['accent']).replace('{{ACCENT_INK}}', spec.get('accent_ink', '#1a1200'))

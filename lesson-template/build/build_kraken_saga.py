@@ -49,7 +49,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 DATA = json.load(open(os.path.join(HERE, 'rpg', 'kraken-saga', 'data.json'), encoding='utf-8'))
 SLUG = 'kraken-black-tide-rpg'
 NAME = 'The Kraken: A Tale of the Deep'
-LANGS = []                       # English only for now; rpg.NINE is the target
+LANGS = ['es']                   # rpg.NINE is the target; one language at a time
 
 # The export's own gold, which came off the artwork's one sodium-amber light —
 # the thing IMAGES.md required in every frame so the glow marker has a colour
@@ -135,6 +135,41 @@ def pages(text):
     return [T(p) for p in out] or [T('')]
 
 
+def clue_pages(text, drop_tail=''):
+    """A clue is a log, a radio call or a run of dialogue, and two of them —
+    Tulloch's 1998 monologue worst of all — are far longer than a panel holds.
+    Pack its lines into panel-sized pages the way pages() does for the story,
+    keeping whole lines together so a forecast or a log entry is never split
+    down the middle. `drop_tail` is the prompt, which the question asks on its
+    own page and would otherwise be printed twice."""
+    lines = [l.strip() for l in plain(text).splitlines() if l.strip()]
+    if drop_tail:
+        tail = [l.strip() for l in plain(drop_tail).splitlines() if l.strip()]
+        if tail and lines[-len(tail):] == tail:
+            lines = lines[:-len(tail)]
+    out, cur = [], []
+    for l in lines:
+        if cur and len((' '.join(cur) + ' ' + l).split()) > WORDS_PER_PAGE:
+            out.append(cur); cur = [l]
+        else:
+            cur.append(l)
+    if cur:
+        out.append(cur)
+    return [T(join_lines(p)) for p in out]
+
+
+def join_lines(lines):
+    out = ''
+    for l in lines:
+        if not out:
+            out = l
+        elif out.endswith(':'):
+            out += ' ' + l
+        else:
+            out += ' · ' + l
+    return out
+
+
 def oneline(text):
     """A clue is a quoted log or radio call: its line breaks carry meaning, but
     .clue does not set white-space, so they become separators. A line that ends
@@ -190,13 +225,11 @@ def build():
                     'prompt': T(oneline(prompt)),
                     'opts': [{'en': o} for o in s['options']],
                     'answer': s['correct'], 'fb': T(plain(s['why']))})
-                # the dialogue ends with the prompt; printing both says it twice
-                clue = oneline(s['dialogue'])
-                tail = oneline(prompt)
-                if clue.endswith(tail):
-                    clue = clue[:-len(tail)].rstrip(' ·').strip()
+                # the dialogue ends with the prompt, which now has a page of
+                # its own, so drop it here rather than print it twice
+                clue = clue_pages(s['dialogue'], prompt)
                 if clue:
-                    base['clue'] = T(clue)
+                    base['clue'] = clue
                 if s.get('item'):
                     base['relic'] = True
                 if sid in finals:
@@ -243,8 +276,12 @@ def build():
         # story line either — three chapter leads is already a panel's worth,
         # and a fourth paragraph pushed the third chapter off the bottom.
         'k': T('B1 ENGLISH · PRESENT PERFECT · THREE CHAPTERS'),
-        'story': T(''),
-        'width': 52,
+        # no story line: three chapter leads is already a panel's worth, and an
+        # empty one cannot be glossed, so the key goes rather than sitting there
+        # as '' for the validator to trip over.
+        # 62, not the default 46: three chapter leads is a lot of panel, and
+        # with a gloss under each one it overflowed by 78px in Spanish.
+        'width': 62,
         'small': T('14 questions a chapter · 4 collectibles · 3 chances · your choices change the route')}
 
     return {
@@ -261,6 +298,12 @@ def build():
         # away a sixth of every picture's height — and the cover's title lockup
         # and the characters' heads live in exactly the strip it takes.
         'fit': 'contain',
+        # the clue gets its own page and the question follows it, the way the
+        # export reads ("THE CLUE / 3 OF 3" then "YOUR ANSWER") and the way
+        # STORY.md describes a CCQ: you are given the information, then asked
+        # about it. Without this, 82 of the 68 scenes' screens overflowed the
+        # panel - in English as well as in gloss.
+        'page_clues': True,
         'labels': LABELS,
         'start': 'hub', 'scenes': scenes, 'chapters': chapters,
         # page-level defaults, used by the HUD before a chapter is picked
@@ -269,5 +312,7 @@ def build():
     }
 
 
+TRANSLATIONS = os.path.join(HERE, 'rpg', 'kraken-saga', 'translations')
+
 if __name__ == '__main__':
-    rpg.assemble(build())
+    rpg.assemble(rpg.apply_translations(build(), TRANSLATIONS))
