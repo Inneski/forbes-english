@@ -229,6 +229,10 @@ def build():
                        'a three-chapter Present Perfect RPG on the west coast of Scotland.' % NAME,
         'langs': LANGS,
         'accent': ACCENT, 'accent_ink': ACCENT_INK, 'deep': DEEP, 'panel': PANEL,
+        # the plates are 3:2 and a browser window is 16:9, so `cover` throws
+        # away a sixth of every picture's height — and the cover's title lockup
+        # and the characters' heads live in exactly the strip it takes.
+        'fit': 'contain',
         'labels': LABELS,
         'start': 'hub', 'scenes': scenes, 'chapters': chapters,
         # page-level defaults, used by the HUD before a chapter is picked

@@ -149,6 +149,9 @@ button{font:inherit}
 .game{position:fixed;inset:0;background:#0a0703}
 .frame{position:absolute;inset:0;overflow:hidden;container-type:inline-size}
 .scene-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;filter:saturate(1.04) contrast(1.03)}
+/* opt-in, per lesson: show the whole plate, letterboxed in the deep colour */
+.fit-contain .scene-img{object-fit:contain}
+.fit-contain{background:{{DEEP}}}
 /* ── HUD ── */
 .hud{position:absolute;z-index:5;top:calc(1.3 * var(--u));left:calc(1.5 * var(--u));right:calc(1.5 * var(--u));display:flex;align-items:center;justify-content:space-between;gap:calc(1 * var(--u));pointer-events:none}
 .hud-group{display:flex;gap:calc(.55 * var(--u));align-items:center;flex-wrap:wrap}
@@ -413,7 +416,15 @@ function updateHUD(){const c=CH();const onHub=G.scenes[state.scene]?.kind==='hub
    scene each time. */
 function head(s,pi){const has=s.title&&bare(s.title.en||'').trim();const t=s.kind==='intro'?`<span class="big">${label(s.title)}</span>`:label(s.title);return `${line(s.k,'kicker')}${has?`<h1 class="title ${s.kind==='intro'?'cover-title':''}">${t}</h1>`:''}${line(storyPages(s)[pi||0],'story')}`}
 /* HOT = [cx, cy, w, h] as % of the PICTURE (3:2). The picture is object-fit:cover in the frame, so convert picture space to frame pixels; a phone shows a narrow central slice and the object stays on it. */
-function placeHot(h){const W=frame.clientWidth,H=frame.clientHeight,sc=Math.max(W/G.imgW,H/G.imgH),dw=G.imgW*sc,dh=G.imgH*sc;
+/* `fit:'contain'` shows the whole plate and letterboxes the remainder in the
+   page's deep colour, instead of filling the frame and cropping. A 3:2 plate
+   in a 16:9 window loses about 16% of its height to `cover`, and the slide
+   below then puts that entire loss on one edge — which on the Kraken cover ate
+   the word THE and on a quayside scene took both characters' heads off. When
+   the art is the lesson, cropping it is not a trade worth making.
+   The maths below already handles a letterboxed image: every `dw>W` / `dh>H`
+   branch falls to centring, which is exactly right once the picture fits. */
+function placeHot(h){const W=frame.clientWidth,H=frame.clientHeight,sc=(G.fit==='contain'?Math.min:Math.max)(W/G.imgW,H/G.imgH),dw=G.imgW*sc,dh=G.imgH*sc;
   /* cover crops the picture; slide it so the object stays on screen (a portrait phone shows a third of the width) */
   const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));const ox=dw>W?clamp(W/2-h[0]/100*dw,W-dw,0):(W-dw)/2,oy=dh>H?clamp(H/2-h[1]/100*dh,H-dh,0):(H-dh)/2;
   sceneImage.style.objectPosition=`${dw>W?ox/(W-dw)*100:50}% ${dh>H?oy/(H-dh)*100:50}%`;
@@ -423,7 +434,7 @@ function placeHot(h){const W=frame.clientWidth,H=frame.clientHeight,sc=Math.max(
 function setOpen(on){state.open=!!on;if(on){const hr=hot.getBoundingClientRect(),zr=zone.getBoundingClientRect();const cl=zr.left+content.offsetLeft,ct=zr.top+content.offsetTop;content.style.transformOrigin=`${hr.left+hr.width/2-cl}px ${hr.top+hr.height/2-ct}px`}frame.classList.toggle('open',state.open)}
 function openPanel(){if(!state.open)setOpen(true)}
 function closePanel(){if(state.open)setOpen(false)}
-function render(){const s=G.scenes[state.scene];frame.className=`frame ${s.pos||'left'} v-${s.v||'center'} k-${s.kind}${s.kind==='intro'?' is-cover':''}${RTL.includes(state.lang)?' rtl':''}`;sceneImage.src=G.dir+s.img;sceneImage.alt=bare((s.title&&s.title.en)||s.alt||'');placeHot(s.hot);const tr=state.lang!=='off';frame.classList.toggle('tr-on',tr);frame.classList.toggle('has-rules',!!s.rules&&s.kind!=='intro');content.style.width=((s.width||(s.pos==='center'?64:s.pos==='band'?92:46))+(tr?(s.pos==='band'?3:8):0))+'%';content.style.marginLeft=s.pos==='left'&&s.inset?s.inset+'%':'';content.style.marginRight=s.pos==='right'&&s.inset?s.inset+'%':'';
+function render(){const s=G.scenes[state.scene];frame.className=`frame ${s.pos||'left'} v-${s.v||'center'} k-${s.kind}${s.kind==='intro'?' is-cover':''}${RTL.includes(state.lang)?' rtl':''}${G.fit==='contain'?' fit-contain':''}`;sceneImage.src=G.dir+s.img;sceneImage.alt=bare((s.title&&s.title.en)||s.alt||'');placeHot(s.hot);const tr=state.lang!=='off';frame.classList.toggle('tr-on',tr);frame.classList.toggle('has-rules',!!s.rules&&s.kind!=='intro');content.style.width=((s.width||(s.pos==='center'?64:s.pos==='band'?92:46))+(tr?(s.pos==='band'?3:8):0))+'%';content.style.marginLeft=s.pos==='left'&&s.inset?s.inset+'%':'';content.style.marginRight=s.pos==='right'&&s.inset?s.inset+'%':'';
   const hide=`<button class="hide-btn" onclick="closePanel()" title="Esc">✕ ${ui('hide')}</button>`;
   const np=storyPages(s).length,pi=Math.min(state.page||0,np-1);
   let html=head(s,pi),act='';
@@ -705,6 +716,7 @@ def assemble(spec, out=None):
         'repair': bool(spec.get('repair')), 'total': spec.get('total', 0),
         'bands': spec.get('bands') or [],
         'chapters': spec.get('chapters') or None,
+        'fit': spec.get('fit', 'cover'),
         'tags': spec.get('tags', {'a': {'en': 'NOW'}, 'b': {'en': 'USUALLY'}}),
     }
     css = (CSS.replace('{{ACCENT}}', spec['accent']).replace('{{ACCENT_INK}}', spec.get('accent_ink', '#1a1200'))
