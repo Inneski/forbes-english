@@ -11,7 +11,7 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
-## 2026-09-19 — Holding the Line (C1): the first editorial deck. Art in, not pushed.
+## 2026-09-19 — Holding the Line (C1): the first editorial deck. PUBLISHED.
 
 Built from a live class Innes taught on answering an unreasonable manager —
 a junior who finished the junior tasks he was assigned inside the time
@@ -66,8 +66,33 @@ rather than the default 2000: a 7:6 plate at 2000 is 54% more pixels than a
 16:9 one and four of them came out over 400 KB, against a house target near
 300. At 1600 the whole set is 2.4 MB and still twice the rendered size.
 
-**Still not pushed, and still no catalogue row.** Nothing about the art
-changes that — it is a decision, not a build step.
+**Published.** Catalogue row **336**, C1, deck, **access `pro`** — the
+documented default; Innes did not say, and the recent decks are a mix (the
+Kraken and Beyond the Handlebars are both free). One UPDATE flips it. Topic
+override onto Passive Voice and Business English, because the title names no
+grammar. Library card cut from the hero at 1200x512. `check-lesson.js` passes
+every gate including HEAD; `check-library.js --vs-origin` reports nothing
+missing or silently changed. Its remaining FAIL is the two body-parts decks,
+which are another session's and still have no card.
+
+### tools/deck-to-pptx.py — new, and not specific to this lesson
+
+"Give me a PowerPoint to send to someone" has come up often enough to be a
+tool. One slide per slide, full-bleed picture on a 13.333 x 7.5in blank
+layout, ~3 MB for 23 slides.
+
+    py tools/deck-to-pptx.py <lesson.html> [--lang de] [-o out.pptx]
+
+It renders through **the deck's own Next button**, not by toggling
+`.is-active`. The match grid, the sort chips and the sentence-order strip are
+built by the engine the first time a slide is shown, so a slide reached by
+hand photographs empty — do not "simplify" that loop. It also hides the same
+chrome the print stylesheet hides, and exports the interactive rounds
+UNANSWERED. No answer key in the speaker notes, deliberately: who the file is
+going to is not knowable from the repo, and a key in a student's copy is
+worse than no file.
+
+HOUSE-STYLE §9's Ctrl-P route is still the right answer for a PDF.
 
 ### What the editorial style does to an artwork brief
 
