@@ -11,6 +11,89 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-19 — Body parts, rebuilt as two decks. ARTWORK PENDING, not pushed.
+
+Andreas's coursebook page (Body and mind, unit 10, p.89 — 36 body parts, 10
+idioms, 17 verbs of contact) arrived as a PDF with a German translation. The
+site already carried the same material as `forbes-english-body-parts-c1.html`,
+a five-tab scrolling page with 61 items, so this is a §10 revamp of that file
+plus a second deck for the half that would not fit.
+
+  * `forbes-english-body-parts-c1.html` — **Head to Toe** (C1), 23 slides, 61
+    scored. Same filename, so the URL survives. Builder `build_bodyparts.py`.
+  * `forbes-english-body-idioms-c1.html` — **Elbow Grease** (C1), 21 slides, 48
+    scored. New file. Builder `build_bodyidioms.py`.
+
+Both EN/DE/ES, light theme, `check-lesson.js` clean except the HEAD gate, which
+only closes once `seo.py` runs, which only runs once the catalogue rows exist.
+
+**Neither is pushed and neither has a catalogue row.** Innes, mid-build: *"we
+need proper artwork which I will provide."* The interim art is hand-built SVG
+(see below), so publishing now would put a look on the live site that he has
+already said is not the one he wants. A Supabase row is what makes a lesson
+appear in the library and `sb-client.js` reads the table live, so inserting one
+before the HTML is pushed would also show a card pointing at a 404.
+
+### The art slots, for when the pictures land
+
+Drop them in `incoming/` and run `/publish`. Seven slots, all **16:9, 1400px
+wide minimum, no text in the image**. Every slide names its background through
+a map at the top of its builder, so the swap is one line per slot — change the
+value, re-run the builder, and nothing else in the file moves:
+
+| builder constant | current file | where it is used | what it has to be |
+|---|---|---|---|
+| `HERO` (parts) | `BodyParts/hero.jpg` | Head to Toe cover + every unnamed slide | quiet centre: the 232px logo and the title sit there |
+| `BG_FACE` | `BodyParts/face-plain.jpg` | behind the face questions | |
+| `BG_TORSO` | `BodyParts/torso-plain.jpg` | behind the trunk questions | |
+| `BG_LIMBS` | `BodyParts/limbs-plain.jpg` | behind the limb questions, and the verb questions in part two | |
+| `HERO` (idioms) | `BodyParts/hero-idioms.jpg` | Elbow Grease cover + the verb divider | hands, and a quiet top third |
+| `BG_IDIOM` / `PIC_IDIOM` | `BodyParts/idioms-soft.jpg`, `idioms.jpg` | behind the idiom gap-fills, and the idiom divider | quiet behind the questions: chips and word banks sit on it |
+| `BG_TALK` | `BodyParts/speaking.jpg` | results + activation, both decks | two people talking |
+
+**The three labelled charts are not on that list and should not be generated.**
+`face-neck.svg`, `torso-organs.svg` and `limbs-extremities.svg` carry the
+thirty-six words as leader-line labels; an image generator writes gibberish
+where the words go. They are the old lesson's own artwork (§10), they are
+accurate, and they are what the three section dividers show. They were repaired
+in this pass rather than replaced:
+
+  * **cheek, earlobe and jaw were on the coursebook page and on no plate** —
+    added to `face-neck.svg`, with markers.
+  * **every leader line now has a cream halo.** A dark leader crossing the navy
+    head was invisible, so the eyebrow and eyelash labels appeared to point at
+    the hairline. `plates_bodyparts.py` adds the halos mechanically.
+  * **the limbs plate ran off the bottom edge** and six of its twelve labels
+    sat in the band a divider caption occupies. Drawing scaled to 0.8, labels
+    re-slotted between y=200 and y=546.
+
+`plates_bodyparts.py` also strips each chart to a wordless copy. That is not
+decoration: a labelled chart behind a matching round is an answer key, so the
+divider shows the chart and the questions behind it show the same picture with
+nothing written on it. **Whatever art arrives has to keep that split** — the
+`-bg` slots above are the wordless half.
+
+The hero drives the palette (`extract-palette.py <hero> --light`), so a new
+hero means a re-derived palette and a re-run of both builders. Nothing else in
+either builder changes when the art does.
+
+### Worth knowing
+
+  * **`--plate` does nothing to cards on a light deck.** Both builders raise it
+    to 0.94 and the comment in `build_bodyparts.py` says why: the light-theme
+    rules in the template fix `.card` at 92% of `--surface` and `.opt` at 95%,
+    so the variable only reaches the plates behind uncarded runs — titles,
+    eyebrows, hints, stems. Measured across all 70 uncarded runs in part one:
+    worst 6.55:1 at 0.68, 8.98:1 at 0.94.
+  * **The old lesson's German glosses are not lost.** `deck.match` refuses to
+    print a translation under the term, so they ride in the match feedback,
+    which appears after the round is answered. The idioms are deliberately not
+    glossed at all — *Kopf hoch* names a different body part and would hand
+    over the gap fill.
+  * `forbes-english-body-parts-c1-zh.html`, the Chinese-support twin of the old
+    page, is untouched and is still the old scrolling format. It needs the same
+    treatment or a redirect; nobody has decided which.
+
 ## 2026-09-18 — The Kraken: A Tale of the Deep, published (seven of nine languages)
 
 Live at `/kraken-black-tide-rpg`, catalogue row **335**, on the Present Perfect
