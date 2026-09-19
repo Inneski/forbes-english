@@ -11,6 +11,89 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-19 — Holding the Line (C1): the first editorial deck. ARTWORK PENDING, not pushed.
+
+Built from a live class Innes taught on answering an unreasonable manager —
+a junior who finished the junior tasks he was assigned inside the time
+allowance, who was never allocated the lead tasks, and who is now being told
+his time efficiency is concerning while a fourth task arrives in a corridor.
+His three stages are the deck's three stages.
+
+  * `forbes-english-holding-the-line-c1.html` — **Holding the Line** (C1),
+    23 slides, 40 scored, EN/DE/ES. Builder `build_holdingline.py`,
+    strings `i18n_holdingline.py`.
+  * `check-lesson.js` clean **except the HEAD gate**, which only closes once
+    `seo.py` runs, which only runs once there is a catalogue row.
+  * `tools/check-editorial-palette.py` — all 8 rows PASS.
+
+**This is the first deck other than the reference pair to use the editorial
+style** (HOUSE-STYLE §15), because that is what Innes asked for. It is worth
+reading `build_holdingline.py` before writing the second one: everything below
+was measured on this build rather than reasoned about.
+
+**Not pushed, no catalogue row, artwork commissioned.** The eight plates in
+`HoldingTheLine/` are interim flat SVG this session drew so the deck could be
+measured today; `lesson-template/build/plates_holdingline.py` regenerates
+them and both go in the bin when the real set lands. The brief is
+`docs/ARTWORK-holding-the-line.md`, and its top half is the spec for ANY
+editorial deck, not just this one.
+
+### What the editorial style does to an artwork brief
+
+Three of the standing artwork rules invert, and a session that carries the
+old ones across will commission the wrong pictures:
+
+  * **7:6, not 16:9.** `.editorial-art` is 37% × 57% of the stage — 473 × 410
+    css px — and centre-crops. Only the cover is full-bleed. `prep-artwork.py`
+    prints "not 16:9 — it will crop on the deck" for every correct plate,
+    which is exactly backwards under this style. Noted in the publish skill
+    so `/publish` does not act on it.
+  * **the art matches the palette**, because the palette is fixed and is not
+    derived from the hero. The publish skill now says to skip
+    `extract-palette.py` for an editorial deck; running it would overwrite
+    the one set the style is measured against.
+  * **large near-white areas are fine**, which is the whole point of the
+    style — but a plate whose ground is the page cream makes the frame
+    vanish. Give it a ground one step off `--void`.
+
+Also measured: the 190px arch (`data-art="arch"`) clips the top corners of a
+plate, so a subject that fills the frame loses its head on three slides here.
+
+### The five layout facts, so the next editorial deck does not rediscover them
+
+Everything is the §6 budget applied to a 58% column, and the fix was always
+"split", never "shrink":
+
+  * **a three-card teach slide cannot carry a picture.** Two fit. The three
+    wide slides in this deck (the case, the three moves, the fact/verdict
+    sort) omit `data-bg` for that reason and take the full 1280px.
+  * **eight match pairs overflow by 12px** with or without art, and trimming
+    the definitions does not help — the grid is row-quantised. Split 8 into
+    two rounds of 4; that also reads better.
+  * **five gap rows in the 58% column ran 129px over.** Three and two both
+    fit. The bank shows whole on both screens and every word is used once
+    across the pair, which is the escalating-a-complaint idiom.
+  * **a two-line hint costs a gap row.** The cross-screen note moved out of
+    the hint and the last 16px went with it.
+  * **`deal()` in the builder rotates each MC's options so the key lands on a
+    named slot.** Six of seven keys came out on B, because a sensible reply
+    is naturally the one you write second. Rotating moves `ex` with the
+    options; re-typing them by hand is how an explanation ends up hanging on
+    the wrong distractor.
+
+### Worth knowing
+
+  * The two FORM cards — the passive, and ONCE + PRESENT SIMPLE — carry **no
+    head key**, so the CAPS pattern stays English in German and Spanish. A
+    German heading over an English pattern is the half-finished screen §8
+    exists to prevent.
+  * `resNext` and `actSpeakKind` are declared in the i18n module rather than
+    lifted from CHROME, because the builder emits its own text in both slots.
+    Lifting one and emitting the other is what makes a slide change when a
+    learner switches language and back.
+  * Both match rounds carry DE/ES glosses on the definition side only. The
+    term is the English word the round exists to teach.
+
 ## 2026-09-19 — Body parts, rebuilt as two decks. ARTWORK PENDING, not pushed.
 
 Andreas's coursebook page (Body and mind, unit 10, p.89 — 36 body parts, 10

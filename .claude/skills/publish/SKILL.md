@@ -52,6 +52,21 @@ python3 lesson-template/extract-palette.py <Folder>/hero.jpg [--light]
 
 Every row must PASS. Paste the block into the builder.
 
+**Unless the deck wears the editorial style** (HOUSE-STYLE §15, a builder
+passing `style='editorial'`). That style has ONE fixed palette, shared by
+every deck that opts in, and deriving a new one from the hero overwrites the
+set the whole style is measured against. For those decks: skip
+`extract-palette.py` entirely and run
+
+```
+python3 tools/check-editorial-palette.py
+```
+
+Their artwork is also **7:6, not 16:9** — the picture is a framed block, not
+a background wash — so `prep-artwork.py`'s "not 16:9" note is expected on
+every plate but the hero and is not a reason to re-render. See
+`docs/ARTWORK-holding-the-line.md` for the full spec.
+
 ## 2. The lesson
 
 Builders live in `lesson-template/build/`. Read `lesson-template/HOUSE-STYLE.md`
