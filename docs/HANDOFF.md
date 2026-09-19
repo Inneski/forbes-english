@@ -11,7 +11,7 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
-## 2026-09-19 — Holding the Line (C1): the first editorial deck. ARTWORK PENDING, not pushed.
+## 2026-09-19 — Holding the Line (C1): the first editorial deck. Art in, not pushed.
 
 Built from a live class Innes taught on answering an unreasonable manager —
 a junior who finished the junior tasks he was assigned inside the time
@@ -20,23 +20,54 @@ his time efficiency is concerning while a fourth task arrives in a corridor.
 His three stages are the deck's three stages.
 
   * `forbes-english-holding-the-line-c1.html` — **Holding the Line** (C1),
-    23 slides, 40 scored, EN/DE/ES. Builder `build_holdingline.py`,
+    23 slides, 40 scored, **EN/DE/ES/RU**. Builder `build_holdingline.py`,
     strings `i18n_holdingline.py`.
   * `check-lesson.js` clean **except the HEAD gate**, which only closes once
     `seo.py` runs, which only runs once there is a catalogue row.
   * `tools/check-editorial-palette.py` — all 8 rows PASS.
+  * `checker/overflow-langs.js` — all four languages fit. Worth running on any
+    editorial deck: check-lesson.js measures English only, and at a 54px title
+    in a 58% column the margin is thin. Russian put slide 14 7px over on a
+    context line that wrapped to two; the LINE was shortened, not the type.
 
 **This is the first deck other than the reference pair to use the editorial
 style** (HOUSE-STYLE §15), because that is what Innes asked for. It is worth
 reading `build_holdingline.py` before writing the second one: everything below
 was measured on this build rather than reasoned about.
 
-**Not pushed, no catalogue row, artwork commissioned.** The eight plates in
-`HoldingTheLine/` are interim flat SVG this session drew so the deck could be
-measured today; `lesson-template/build/plates_holdingline.py` regenerates
-them and both go in the bin when the real set lands. The brief is
+**The art landed the same day** and is in. The brief is
 `docs/ARTWORK-holding-the-line.md`, and its top half is the spec for ANY
-editorial deck, not just this one.
+editorial deck, not just this one. The interim SVG plates this session drew to
+measure against, and their generator, were deleted in the commit that brought
+the real set in — two sets of plates in one folder is how a lesson ends up
+built twice.
+
+**Eleven candidates arrived, all of them 16:9.** The `--ar 7:6` in the brief
+did not take. The hero wanted 16:9 anyway, because the cover is the one
+full-bleed slide; the other seven were cut to the frame's 7:6 BEFORE
+`prep-artwork.py`, at a chosen centre rather than the blind middle — the
+middle bisects the door and puts half a clock at the edge. Centres, as a
+fraction of the source width:
+
+| slot | Midjourney stem | centre |
+|---|---|---|
+| `hero` | `a_tall_high-backed_executive_chair_and_a_small_pla …_3` | not cropped |
+| `remit` | `a_boundary_taped_out_on_an_office_floor_three_fold …_3` | 0.50 |
+| `ledger` | `a_clipboard_with_four_rows_three_ticked_and_the_fo …_1` | 0.50 |
+| `facts` | `a_large_plain_wall_clock_beside_a_stack_of_three_d …_0` | 0.38 |
+| `door` | `a_single_closed_office_door_with_a_small_blank_nam …_1` | 0.575 |
+| `handover` | `an_archive_box_with_its_lid_lifted_off_a_blank_lug …_3` | 0.50 |
+| `keys` | `an_access_card_lying_at_an_angle_in_front_of_a_wal …_1` | 0.55 |
+| `talk` | `two_identical_chairs_turned_to_face_each_other_acr …_3` | 0.50 |
+
+The sources are in `incoming/`, which is gitignored, so a re-cut means going
+back to Midjourney. The seven framed plates were written at `--width 1600`
+rather than the default 2000: a 7:6 plate at 2000 is 54% more pixels than a
+16:9 one and four of them came out over 400 KB, against a house target near
+300. At 1600 the whole set is 2.4 MB and still twice the rendered size.
+
+**Still not pushed, and still no catalogue row.** Nothing about the art
+changes that — it is a decision, not a build step.
 
 ### What the editorial style does to an artwork brief
 

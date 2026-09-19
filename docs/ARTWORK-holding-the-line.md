@@ -1,9 +1,15 @@
 # Artwork: Holding the Line (C1) — and the spec for any editorial deck
 
-Eight pictures. The deck is built, measured and clean; the only thing it is
-waiting for is these. Everything above the slot table applies to **every**
-deck built on the editorial style (HOUSE-STYLE §15), so commission the next
-one from the same spec.
+> **Delivered 2026-09-19.** All eight slots are in `HoldingTheLine/` and the
+> deck is built on them. One thing did not survive the brief: every candidate
+> came back **16:9**, so the seven framed plates were cut to 7:6 here before
+> prep, at the centres recorded in `docs/HANDOFF.md`. If you are re-rendering
+> any of them, `--ar 7:6` is still what you want — a native 7:6 keeps 35% more
+> of the picture than a crop does.
+
+Eight pictures. Everything above the slot table applies to **every** deck
+built on the editorial style (HOUSE-STYLE §15), so commission the next one
+from the same spec.
 
 ---
 
@@ -29,9 +35,10 @@ sentences is true, and the reasons are structural rather than taste.
    read across it. The old warning about bright flat vector art does not
    apply.
 5. **But the plate needs its own ground.** Cream-on-cream makes the frame
-   disappear — the interim plates do exactly this and you can see the effect.
-   Give each picture a ground one step off the page cream (`#f3ede0` or a
-   pale slate tint) so the framed block reads as an object with an edge.
+   disappear. Give each picture a ground one step off the page cream
+   (`#f3ede0`, a pale slate or a sage wall) so the framed block reads as an
+   object with an edge. The delivered set does this and it is the single
+   biggest reason it sits well.
 
 ---
 
@@ -126,15 +133,24 @@ which of a four-up are near-duplicates, and the building session picks one.
 
 ## When they land
 
+**Copy this batch out of `incoming/` first.** That folder is shared with
+every other session and holds hundreds of files from earlier drops; pointing
+`prep-artwork.py` at it processes all of them and `--names` then fails on a
+count mismatch, which is the friendly version of the mistake. Move the batch
+to a folder of its own, numbered so that sorted order matches `--names`:
+
 ```bash
-py tools\prep-artwork.py incoming/ --into HoldingTheLine --dry-run
+py tools\prep-artwork.py <batch-folder> --into HoldingTheLine --dry-run
 ```
 
 then, once the keepers are chosen:
 
 ```bash
-py tools\prep-artwork.py incoming/ --into HoldingTheLine --names hero,remit,ledger,facts,door,handover,keys,talk
+py tools\prep-artwork.py <batch-folder> --into HoldingTheLine --width 1600 --names remit,ledger,facts,door,handover,keys,talk
 ```
+
+The hero goes in its own run without `--width`, because 16:9 at 2000px is
+right for a full-bleed cover and lands near 220 KB anyway.
 
 Then, in order:
 
@@ -148,6 +164,6 @@ Then, in order:
    (1200 × 512, cut from the hero), `library.html` line,
    `py tools\build_hubs.py`, then `py tools\seo.py` last.
 
-The interim plates in `HoldingTheLine/*.svg` and their generator
-`lesson-template/build/plates_holdingline.py` can be deleted in the same
-commit. They exist only so the deck could be measured before the art arrived.
+The interim SVG plates and their generator were deleted in the commit that
+brought this set in. Two sets of plates in one folder is how a lesson ends up
+built twice.

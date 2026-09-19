@@ -32,10 +32,14 @@ for. Three consequences a later session should not undo:
   * the palette is NOT derived from the hero. `extract-palette.py` is not run
     for this deck; `tools/check-editorial-palette.py` is what guards it.
 
-ARTWORK IS INTERIM. `HoldingTheLine/*.svg` are flat plates this repo drew so
-the deck could be measured today; the real set is commissioned and specified
-in `docs/ARTWORK-holding-the-line.md`. ART below is the only place a filename
-appears, so the swap is one line per slot.
+ARTWORK. The eight plates arrived 2026-09-19, to the brief in
+`docs/ARTWORK-holding-the-line.md` - except for the aspect, which came back
+16:9 on all eleven candidates rather than 7:6. The hero wanted 16:9 anyway
+(the cover is the one full-bleed slide); the other seven were cut to the
+frame's 7:6 before prep, at a chosen centre rather than the blind middle,
+because the middle bisects the door and the clock. The crop centres are in
+docs/HANDOFF.md. Sources are in `incoming/` and are gitignored, so a re-cut
+means going back to Midjourney.
 """
 import os
 import re
@@ -49,17 +53,17 @@ OUT = 'forbes-english-holding-the-line-c1.html'
 F = 'HoldingTheLine'
 
 # ── the art slots ──────────────────────────────────────────────────────
-# One line per slot. When the commissioned set lands, change the values to
-# the .jpg names and re-run; nothing else in this file moves.
+# The commissioned set, dropped 2026-09-19. One line per slot; nothing else
+# in this file knows a filename.
 ART = {
-    'hero':     'hero.svg',      # cover, and the only 16:9 plate
-    'remit':    'remit.svg',     # scope, and what sits outside it
-    'ledger':   'ledger.svg',    # the dated record of what was done
-    'facts':    'facts.svg',     # time, measured rather than asserted
-    'door':     'door.svg',      # the room this conversation belongs in
-    'handover': 'handover.svg',  # ownership changing hands
-    'keys':     'keys.svg',      # access
-    'talk':     'talk.svg',      # two chairs, the same size
+    'hero':     'hero.jpg',      # cover, and the only 16:9 plate
+    'remit':    'remit.jpg',     # scope, and what sits outside it
+    'ledger':   'ledger.jpg',    # the dated record of what was done
+    'facts':    'facts.jpg',     # time, measured rather than asserted
+    'door':     'door.jpg',      # the room this conversation belongs in
+    'handover': 'handover.jpg',  # ownership changing hands
+    'keys':     'keys.jpg',      # access
+    'talk':     'talk.jpg',      # two chairs, the same size
 }
 
 
@@ -174,6 +178,16 @@ TERM_GLOSS = {
         'sign-off': 'Die formale Freigabe, die eine Arbeit abschlie&szlig;t',
         'allocate': 'Eine Aufgabe einer namentlich genannten Person zuweisen',
         'capacity': 'Die Arbeitsstunden, die Ihnen noch bleiben',
+    },
+    'ru': {
+        'remit': 'Область работы, за которую отвечает ваша должность',
+        'scope': 'Согласованные границы одной задачи или проекта',
+        'ownership': 'Быть тем, кому принадлежит работа',
+        'accountability': 'Отвечать за результат',
+        'authority': 'Право решать или утверждать',
+        'sign-off': 'Формальное утверждение, завершающее работу',
+        'allocate': 'Поручить задачу конкретному человеку',
+        'capacity': 'Часы, которые у вас ещё остались',
     },
     'es': {
         'remit': 'El &aacute;mbito de trabajo del que responde tu puesto',
@@ -412,6 +426,20 @@ FUNC_GLOSS = {
         'I would like to discuss this at a convenient time.':
             'Verlegt es in einen Raum mit einer Tür',
     },
+    'ru': {
+        'Could you give me a specific example?':
+            'Превращает оценку в то, на что можно ответить',
+        'Can we stick to the facts, please?':
+            'Не даёт разговору перейти на личности',
+        'That was never allocated to me.':
+            'Сообщает факт, не называя никого',
+        'I can take it on once ownership is reassigned.':
+            'Принимает работу и называет условие',
+        'Could you confirm that in writing?':
+            'Превращает указание в запись',
+        'I would like to discuss this at a convenient time.':
+            'Переносит разговор в комнату с дверью',
+    },
     'es': {
         'Could you give me a specific example?':
             'Convierte un juicio en algo que se puede responder',
@@ -603,7 +631,7 @@ def build(style='editorial', out=None):
     assert palette, 'this deck is written for the editorial style'
     s = D.assemble(TPL, out_path, slides, palette,
                    'Holding the Line — Forbes English',
-                   I, langs=('en', 'de', 'es'), style=style)
+                   I, langs=('en', 'de', 'es', 'ru'), style=style)
 
     # The count chip is written once the deck knows how long it is. Counting
     # `<section class="slide` returns N+1 - the template keeps one of its own
@@ -613,6 +641,14 @@ def build(style='editorial', out=None):
     s = s.replace('COUNT slides', '%d slides' % n)
     s = s.replace('COUNT Folien', '%d Folien' % n)
     s = s.replace('COUNT diapositivas', '%d diapositivas' % n)
+    # Russian counts the noun, not the digit: 21 слайд, 23 слайда, 25 слайдов.
+    # The chip is generated, so the form has to be as well - a hard-coded
+    # '%d слайдов' is wrong for two thirds of the numbers a deck can be.
+    ten, hun = n % 10, n % 100
+    ru = ('слайдов' if 11 <= hun <= 14 else
+          'слайд' if ten == 1 else
+          'слайда' if ten in (2, 3, 4) else 'слайдов')
+    s = s.replace('COUNT слайдов', '%d %s' % (n, ru))
     open(out_path, 'w', encoding='utf-8', newline='').write(s)
     print('%s - %d slides (editorial)' % (out_path, n))
 
