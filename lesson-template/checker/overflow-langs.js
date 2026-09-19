@@ -95,14 +95,50 @@ const path = require('path');
         s.classList.remove('is-active');
         s.style.animation = anim;
       });
+      // The activation stage has no resting state: both panels are shut on
+      // arrival and the slide is a third taller with one open, so the loop
+      // above measures a screen no learner ever stops on. check-lesson.js
+      // gained the same measurement, in English only; this is where the
+      // language matters, because a German brief that runs to three lines
+      // where the English ran to two is the way it actually fails.
+      const act = [];
+      slides.filter(s => s.dataset.type === 'activate').forEach(s => {
+        slides.forEach(x => x.classList.remove('is-active'));
+        s.classList.add('is-active');
+        const scale = s.getBoundingClientRect().width / 1280 || 1;
+        const px = v => Math.round(v / scale);
+        ['speak', 'write'].forEach(which => {
+          const w = s.querySelector(`[data-action="act-open"][data-act="${which}"]`);
+          if (!w) return;
+          w.click();
+          const body = s.querySelector('.slide-body');
+          const panel = s.querySelector('.act-panel:not([hidden])');
+          const list = s.querySelector('.act-list');
+          const head = s.querySelector('.slide-head');
+          const targ = s.querySelector('.act-target');
+          const over = Math.max(
+            px(body.scrollHeight - body.clientHeight),
+            head && targ ? px(head.getBoundingClientRect().bottom
+                            - targ.getBoundingClientRect().top) : 0,
+            panel ? px(panel.scrollHeight - panel.clientHeight) : 0,
+            list ? px(list.scrollHeight - list.clientHeight) : 0);
+          if (over > 1) act.push({ which, over });
+          w.click();
+        });
+        s.classList.remove('is-active');
+      });
       wasActive.forEach(s => s.classList.add('is-active'));
-      return { slides: slides.length, over: out };
+      return { slides: slides.length, over: out, act };
     }, L);
   }
   await browser.close();
   for (const L of Object.keys(report)) {
     const r = report[L];
-    console.log(L.padEnd(3), r.over.length ? r.over.map(o => `slide ${o.n} +${o.over}px (${o.culprit})`).join('; ') : 'fits');
+    const notes = [
+      ...r.over.map(o => `slide ${o.n} +${o.over}px (${o.culprit})`),
+      ...(r.act || []).map(a => `activation/${a.which} open +${a.over}px`),
+    ];
+    console.log(L.padEnd(3), notes.length ? notes.join('; ') : 'fits');
   }
   if (errs.length) console.log('JS errors:', errs);
 })();

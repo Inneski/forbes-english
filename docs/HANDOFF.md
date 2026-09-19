@@ -11,6 +11,90 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-19 — A full-screen button, and the overlap the LAYOUT gate could not see
+
+Innes, on the live activation stage: *"should have a full screen button
+hardwired and also no overlaps."* Both are template changes, so both land on
+every deck — **but only when that deck is rebuilt.** See the propagation note
+at the end.
+
+### The overlap, and why nothing caught it
+
+`.slide-body` was `justify-content: center`, which splits overflow EVENLY. A
+body 32px too tall therefore put 16px of itself ABOVE its own heading, and the
+activation chips printed straight through the title. Two consequences, and the
+second is the bad one:
+
+  * it looks like a z-index bug and is not one;
+  * **`scrollHeight - clientHeight` does not count the half that goes up**, so
+    the LAYOUT gate measured a slide that fitted. The deck passed every gate
+    and was wrong on screen.
+
+`justify-content: safe center` centres while the content fits and falls back
+to flex-start the moment it does not, so overflow lands at the bottom where a
+checker can see it. Declared twice so an engine without `safe` keeps the old
+behaviour. **This is the same bug class as the stage that aligned itself off
+the right edge below 1280px** — CLAUDE.md already had the lesson written down.
+
+Turning it on immediately surfaced 1px of real Russian overflow on three mc
+slides that centring had been hiding. Fixed in the style's own chrome (the
+editorial `.q-stem` margin, 22px → 18px), not in the content.
+
+### The activation stage has no resting state
+
+Both panels are shut on arrival and the slide is a third taller with one open,
+so every gate was measuring a screen no learner stops on. Underneath:
+
+  * `.act-panel .act-list` was `overflow: auto`, so an over-long brief SCROLLED
+    inside the panel and the last speaking task simply was not on the slide.
+    Now `hidden`, which makes it a visible clip that a checker can fail on.
+  * `.act-panel`'s `max-height` was a hardcoded 300px, sized against the
+    default type scale. Editorial's 54px title takes 32 of those pixels. It is
+    now `--act-panel-h`, with `268px` under editorial — one home for the
+    constant, which is the `--bins-h` lesson from CLAUDE.md.
+  * `.act-input`'s `min-height` was 118px, more than the panel has left once a
+    brief runs to three lines, and because the panel clips, what fell off was
+    the word count and the Copy button rather than the textarea. 96px now: it
+    is a floor, and `flex: 1` already gives the box every spare pixel.
+
+**Both checkers now open both panels and measure.** `check-lesson.js` gained an
+ACTIVATION row (English, where it loads); `checker/overflow-langs.js` does the
+same per language, which is where it matters — a German brief that runs to
+three lines where the English ran to two is how it actually fails. Verified
+against a deliberately broken copy: both report the same 43px.
+
+### The button
+
+`.deck-bar`, beside the language select, plus `f` as a shortcut (below the
+input guard, so it does not fire while somebody types in the activation
+textarea). `aria-label` comes through `data-i18n-aria="btnFull"`, which
+`applyLang()` only overwrites when the key resolves — so a deck built before
+`btnFull` existed keeps the English label instead of failing the I18N gate,
+which only scans `data-i18n`. `btnFull` is in `chrome_i18n.py` in all eleven
+languages; a builder gets it by adding it to its LIFT list.
+
+`fitStage()` already listens to `resize` and entering full screen fires one, so
+`fullscreenchange` only repaints the button.
+
+### PROPAGATION — read this before promising the button on other decks
+
+A template change reaches a deck only when its builder is re-run, and there are
+**119 builders**. Three were re-run as a measurement and then reverted:
+
+| deck | +/- |
+|---|---|
+| `forbes-escalating-a-complaint-c1.html` | +591 / -32 |
+| `forbes-campaign-review-b2.html` | +375 / -22 |
+| `forbes-english-the-docket-b2.html` | +1956 / -105 |
+
+It is **not** insertions-only. Most of the volume is the template catching up —
+those decks predate the editorial block — and most of the deletions are the SEO
+block and the `<title>`, which `seo.py` puts back. But it is not a change
+anybody can eyeball 119 times, so the honest plan is: rebuild, run
+`check-lesson.js` on each, and keep only what passes. That is a session of its
+own and it has not been done. **Until it is, the full-screen button is on
+Holding the Line and nowhere else.**
+
 ## 2026-09-19 — Holding the Line (C1): the first editorial deck. PUBLISHED.
 
 Built from a live class Innes taught on answering an unreasonable manager —

@@ -37,9 +37,10 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from chrome_i18n import CHROME
 
 # Emitted from CHROME verbatim, sorted in with the body.
-LIFT = ['btnStart', 'btnCheck', 'btnNext', 'btnRestart', 'scoreLabel',
-        'slideOf', 'fbCorrect', 'fbWrong', 'fbAnswer', 'btnCopy', 'btnCopied',
-        'wordCount', 'actEyebrow', 'actSpeakWord', 'actWriteWord']
+LIFT = ['btnStart', 'btnCheck', 'btnNext', 'btnRestart', 'btnFull',
+        'scoreLabel', 'slideOf', 'fbCorrect', 'fbWrong', 'fbAnswer',
+        'btnCopy', 'btnCopied', 'wordCount', 'actEyebrow', 'actSpeakWord',
+        'actWriteWord']
 
 # Template chrome that no lesson declares but check-lesson.js's I18N gate
 # still resolves. Raw JS literals, emitted after the body.
@@ -187,19 +188,17 @@ T['en'] = dict(
     actSpeakKind='Speaking',
     actSpeakBrief='In pairs. Three minutes each, then swap roles and run it '
                   'again.',
-    actSpeak1='You are the junior. Your manager opens with &ldquo;Your time '
-              'efficiency is concerning.&rdquo; Answer without accepting it and '
-              'without attacking him.',
-    actSpeak2='Swap. This time the manager hands over a fourth task in the '
-              'corridor. Get it allocated, or get it off your list.',
-    actSpeak3='Same meeting, with HR in the room. What changes in how you say it '
-              '&mdash; and what must not change?',
-    actSpeak4='Argue the other side: when is a manager right to hand somebody '
-              'work outside their remit?',
+    actSpeak1='You are the junior. He opens: &ldquo;Your time efficiency is '
+              'concerning.&rdquo;',
+    actSpeak2='Swap. A fourth task arrives in the corridor. Get it allocated or '
+              'dropped.',
+    actSpeak3='Same meeting, HR in the room. What changes, and what must not?',
+    actSpeak4='The other side: when is a manager right to go outside your '
+              'remit?',
     actWriteKind='Writing &middot; 180&ndash;220 words',
-    actWriteBrief='Write the email asking for your role to be clarified. Three '
-                  'dated facts, one concession, one specific ask, and nothing at '
-                  'all about anybody&rsquo;s character.',
+    actWriteBrief='The email that asks for your role to be clarified: three '
+                  'dated facts, one concession, one specific ask. Nothing about '
+                  'character.',
     actPlaceholder='Dear Ana, following this morning&rsquo;s conversation, I '
                    'would like to set out what was allocated to me and '
                    'when&hellip;',
@@ -328,25 +327,22 @@ T['de'] = dict(
            'ein Urteil anstelle einer Tatsache.',
 
     actTitle='Jetzt f&uuml;hren Sie das Gespr&auml;ch',
-    actUse='Mindestens vier verwenden:',
+    actUse='Mindestens vier:',
     actSpeakKind='Sprechen',
     actSpeakBrief='Zu zweit. Je drei Minuten, dann Rollen tauschen und noch '
                   'einmal durchspielen.',
-    actSpeak1='Sie sind die Junior-Kraft. Ihre F&uuml;hrungskraft beginnt mit '
-              '&bdquo;Your time efficiency is concerning.&ldquo; Antworten Sie, '
-              'ohne es zu akzeptieren und ohne anzugreifen.',
-    actSpeak2='Tauschen. Diesmal wird im Flur eine vierte Aufgabe &uuml;bergeben. '
-              'Lassen Sie sie zuweisen &mdash; oder von Ihrer Liste streichen.',
-    actSpeak3='Dasselbe Gespr&auml;ch, mit HR im Raum. Was &auml;ndert sich an '
-              'Ihrer Formulierung &mdash; und was darf sich keinesfalls '
-              '&auml;ndern?',
-    actSpeak4='Vertreten Sie die Gegenseite: Wann hat eine F&uuml;hrungskraft '
-              'recht, jemandem Arbeit au&szlig;erhalb seines Bereichs zu geben?',
+    actSpeak1='Sie sind die Junior-Kraft. Er beginnt: &bdquo;Your time '
+              'efficiency is concerning.&ldquo;',
+    actSpeak2='Tauschen. Im Flur kommt eine vierte Aufgabe. Zuweisen lassen '
+              'oder streichen.',
+    actSpeak3='Dasselbe Gespr&auml;ch, HR im Raum. Was &auml;ndert sich, was '
+              'nicht?',
+    actSpeak4='Die Gegenseite: Wann darf eine F&uuml;hrungskraft &uuml;ber Ihren '
+              'Bereich hinausgehen?',
     actWriteKind='Schreiben &middot; 180&ndash;220 W&ouml;rter',
-    actWriteBrief='Schreiben Sie die E-Mail, in der Sie um Kl&auml;rung Ihrer '
-                  'Rolle bitten. Drei datierte Tatsachen, ein Zugest&auml;ndnis, '
-                  'eine konkrete Bitte &mdash; und nichts &uuml;ber den Charakter '
-                  'anderer.',
+    actWriteBrief='Die E-Mail, die um Kl&auml;rung Ihrer Rolle bittet: drei '
+                  'datierte Tatsachen, ein Zugest&auml;ndnis, eine konkrete '
+                  'Bitte. Nichts &uuml;ber Charakter.',
     actPlaceholder='Dear Ana, following this morning&rsquo;s conversation, I '
                    'would like to set out what was allocated to me and '
                    'when&hellip;',
@@ -478,22 +474,18 @@ T['es'] = dict(
     actSpeakKind='Hablar',
     actSpeakBrief='En parejas. Tres minutos cada uno, luego cambiad de papel y '
                   'repetid.',
-    actSpeak1='Eres la persona junior. Tu responsable abre con &laquo;Your time '
-              'efficiency is concerning.&raquo; Responde sin aceptarlo y sin '
-              'atacarle.',
-    actSpeak2='Cambiad. Esta vez te pasa una cuarta tarea en el pasillo. '
-              'Consigue que te la asignen o que salga de tu lista.',
-    actSpeak3='La misma reuni&oacute;n, con RR. HH. en la sala. &iquest;Qu&eacute; '
-              'cambia en c&oacute;mo lo dices &mdash; y qu&eacute; no puede '
-              'cambiar?',
-    actSpeak4='Defiende la otra parte: &iquest;cu&aacute;ndo tiene raz&oacute;n '
-              'un responsable al dar trabajo fuera de las competencias de '
-              'alguien?',
+    actSpeak1='Eres la persona junior. Abre con &laquo;Your time efficiency is '
+              'concerning.&raquo;',
+    actSpeak2='Cambiad. Llega una cuarta tarea en el pasillo: que te la asignen '
+              'o fuera.',
+    actSpeak3='La misma reuni&oacute;n, con RR. HH. &iquest;Qu&eacute; cambia y '
+              'qu&eacute; no?',
+    actSpeak4='La otra parte: &iquest;cu&aacute;ndo puede salirse de tus '
+              'competencias?',
     actWriteKind='Escritura &middot; 180&ndash;220 palabras',
-    actWriteBrief='Escribe el correo en el que pides que se aclare tu puesto. '
-                  'Tres hechos con fecha, una concesi&oacute;n, una '
-                  'petici&oacute;n concreta y nada sobre el car&aacute;cter de '
-                  'nadie.',
+    actWriteBrief='El correo que pide aclarar tu puesto: tres hechos con fecha, '
+                  'una concesi&oacute;n, una petici&oacute;n concreta. Nada '
+                  'sobre el car&aacute;cter.',
     actPlaceholder='Dear Ana, following this morning&rsquo;s conversation, I '
                    'would like to set out what was allocated to me and '
                    'when&hellip;',
@@ -616,23 +608,18 @@ T['ru'] = dict(
            'факта.',
 
     actTitle='Теперь проведите разговор',
-    actUse='Используйте минимум четыре:',
+    actUse='Минимум четыре:',
     actSpeakKind='Говорение',
     actSpeakBrief='В парах. По три минуты каждому, затем поменяйтесь ролями и '
                   'повторите.',
-    actSpeak1='Вы — младший сотрудник. Руководитель начинает с &laquo;Your time '
-              'efficiency is concerning.&raquo; Ответьте, не соглашаясь и не '
-              'нападая.',
-    actSpeak2='Поменяйтесь. Теперь руководитель передаёт четвёртую задачу в '
-              'коридоре. Добейтесь, чтобы её оформили — или сняли с вас.',
-    actSpeak3='Тот же разговор, но в комнате HR. Что меняется в формулировках — '
-              'и что меняться не должно?',
-    actSpeak4='Выступите за другую сторону: когда руководитель прав, поручая '
-              'работу вне чьих-то полномочий?',
+    actSpeak1='Вы — младший. Он начинает: &laquo;Your time efficiency is '
+              'concerning.&raquo;',
+    actSpeak2='Поменяйтесь. В коридоре — четвёртая задача. Оформить или снять.',
+    actSpeak3='Тот же разговор, в комнате HR. Что меняется, а что нет?',
+    actSpeak4='Другая сторона: когда можно выйти за ваши полномочия?',
     actWriteKind='Письмо &middot; 180&ndash;220 слов',
-    actWriteBrief='Напишите письмо с просьбой уточнить вашу роль. Три факта с '
-                  'датами, одна уступка, одна конкретная просьба — и ничего о '
-                  'чьём-либо характере.',
+    actWriteBrief='Письмо с просьбой уточнить вашу роль: три факта с датами, '
+                  'одна уступка, одна конкретная просьба. Ничего о характере.',
     actPlaceholder='Dear Ana, following this morning&rsquo;s conversation, I '
                    'would like to set out what was allocated to me and '
                    'when&hellip;',

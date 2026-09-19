@@ -326,6 +326,53 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
     return out;
   });
 
+  // ── ACTIVATION, OPEN ──────────────────────────────────────────────
+  // The LAYOUT loop above measures every slide in its RESTING state, and the
+  // activation stage does not have one: its two panels are shut on arrival
+  // and the slide is a third taller with one open. So the deck passed LAYOUT
+  // while the live page printed the chip row straight through the title
+  // (Holding the Line, 2026-09-19) and clipped the last speaking task off
+  // the bottom of a panel that scrolled inside itself.
+  //
+  // Measured here rather than in the loop because it needs to click: opening
+  // a panel toggles `hidden`, which is a synchronous layout change, and the
+  // pop is transform and opacity only, so nothing has to be waited for.
+  const act = await page.evaluate(() => {
+    const out = [];
+    const slides = [...document.querySelectorAll('.slide[data-type="activate"]')];
+    const was = [...document.querySelectorAll('.slide.is-active')];
+    for (const s of slides) {
+      document.querySelectorAll('.slide').forEach(x => x.classList.remove('is-active'));
+      s.classList.add('is-active');
+      for (const which of ['speak', 'write']) {
+        const w = s.querySelector(`[data-action="act-open"][data-act="${which}"]`);
+        if (!w) continue;
+        w.click();
+        const body = s.querySelector('.slide-body');
+        const panel = s.querySelector('.act-panel:not([hidden])');
+        const list = s.querySelector('.act-list');
+        const head = s.querySelector('.slide-head');
+        const targ = s.querySelector('.act-target');
+        const scale = s.getBoundingClientRect().width / 1280 || 1;
+        const px = v => Math.round(v / scale);
+        out.push({
+          which,
+          body: px(body.scrollHeight - body.clientHeight),
+          // The heading is the thing an overflowing centred body lands on.
+          overlap: head && targ
+            ? px(head.getBoundingClientRect().bottom - targ.getBoundingClientRect().top)
+            : 0,
+          panel: panel ? px(panel.scrollHeight - panel.clientHeight) : 0,
+          list: list ? px(list.scrollHeight - list.clientHeight) : 0,
+        });
+        w.click();
+      }
+    }
+    document.querySelectorAll('.slide').forEach(x => x.classList.remove('is-active'));
+    was.forEach(x => x.classList.add('is-active'));
+    return out;
+  });
+
   // ── ACTIONS ───────────────────────────────────────────────────────
   // Every scored slide must actually be answerable. This exists because
   // `deck.order` emitted a plain [data-action="check"] button while the
@@ -578,6 +625,19 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
   head('ACTIVATION');
   if (r.hasActivation) ok('lesson ends with an activation stage');
   else bad('no data-type="activate" slide — every lesson must end with a speaking + writing task');
+  {
+    const faults = act.filter(a => a.body > 1 || a.overlap > 1 || a.panel > 1 || a.list > 1);
+    if (!act.length) { /* no activation slide: already reported above */ }
+    else if (!faults.length) ok(`both panels fit with ${act.length} opened`);
+    else faults.forEach(a => bad(
+      `the ${a.which} panel does not fit: ` +
+      [a.overlap > 1 && `${a.overlap}px over its own heading`,
+       a.body > 1 && `body ${a.body}px past the canvas`,
+       a.panel > 1 && `panel clips ${a.panel}px`,
+       a.list > 1 && `list scrolls ${a.list}px — a task nobody can read`,
+      ].filter(Boolean).join(', ') +
+      '. Shorten the brief or the tasks; §6 says never shrink the type.'));
+  }
 
   head('I18N');
   if (!r.i18n.length) ok(`${r.langs} complete language(s) offered; no partial ones; all data-i18n resolve`);

@@ -456,9 +456,13 @@ FUNC_GLOSS = {
     },
 }
 
-CHIPS = ['remit', 'scope', 'ownership', 'accountability', 'authority',
-         'sign-off', 'allocated', 'capacity', 'access', 'in writing',
-         'a specific example', 'once ownership is reassigned']
+# Ten, not the fourteen §? allows: at this type scale twelve wrapped to a
+# third row and the row came straight out of the panel's height. The three
+# phrases stay and three single words go, because a phrase is the harder
+# thing to produce and the one worth prompting.
+CHIPS = ['remit', 'scope', 'ownership', 'accountability', 'sign-off',
+         'allocated', 'access', 'in writing', 'a specific example',
+         'once ownership is reassigned']
 
 
 def build(style='editorial', out=None):
@@ -606,19 +610,18 @@ def build(style='editorial', out=None):
             'Now run the meeting', 'Use at least four:', CHIPS,
             'Speaking',
             'In pairs. Three minutes each, then swap roles and run it again.',
-            ['You are the junior. Your manager opens with &ldquo;Your time '
-             'efficiency is concerning.&rdquo; Answer without accepting it and '
-             'without attacking him.',
-             'Swap. This time the manager hands over a fourth task in the '
-             'corridor. Get it allocated, or get it off your list.',
-             'Same meeting, with HR in the room. What changes in how you say it '
-             '&mdash; and what must not change?',
-             'Argue the other side: when is a manager right to hand somebody work '
-             'outside their remit?'],
+            # One line each. The panel clips at --act-panel-h and the list no
+            # longer scrolls, so a task that runs to two lines is a task the
+            # class never sees. The tasks are unchanged; the wording is not.
+            ['You are the junior. He opens: &ldquo;Your time efficiency is '
+             'concerning.&rdquo;',
+             'Swap. A fourth task arrives in the corridor. Get it allocated or '
+             'dropped.',
+             'Same meeting, HR in the room. What changes, and what must not?',
+             'The other side: when is a manager right to go outside your remit?'],
             'Writing &middot; 180&ndash;220 words',
-            'Write the email asking for your role to be clarified. Three dated '
-            'facts, one concession, one specific ask, and nothing at all about '
-            'anybody&rsquo;s character.',
+            'The email that asks for your role to be clarified: three dated '
+            'facts, one concession, one specific ask. Nothing about character.',
             'Dear Ana, following this morning&rsquo;s conversation, I would like '
             'to set out what was allocated to me and when&hellip;',
             folder=F, bg=A('talk'))
