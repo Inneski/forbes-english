@@ -11,6 +11,55 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-20 — Credit Where It's Due (C1). ARTWORK PENDING, not pushed.
+
+The sibling of Holding the Line, built from two trade articles Innes supplied
+on bosses and colleagues taking credit. **Nothing in them is reproduced** —
+the situations, the wording, the items and the tasks are written here, and no
+publication, employer or product is named anywhere in the deck.
+
+  * `forbes-english-credit-where-its-due-c1.html` — **Credit Where It's Due**
+    (C1), 20 slides, 37 scored, EN/DE/ES/RU. Builder `build_creditdue.py`,
+    strings `i18n_creditdue.py`, editorial style.
+  * `check-lesson.js` clean but for HEAD; `overflow-langs.js` fits in all four
+    languages, activation panels included.
+  * **Not pushed, no catalogue row.** `CreditWhereDue/*.svg` are interim
+    plates; the brief is `docs/ARTWORK-credit-where-its-due.md`.
+
+**It is deliberately the mirror of its sibling, and that is the teaching
+point.** Holding the Line uses the agentless passive as a shield — "the lead
+tasks WERE NOT allocated to me" states a fact and accuses nobody. Here the
+same structure is the enemy: "the proposal WAS PUT TOGETHER over three weeks"
+erases the person who put it together. Same grammar, opposite job. The spine
+is the cleft (WHAT I proposed on Tuesday WAS…) against "that was my idea":
+one asks the room to remember a date, the other asks it to pick a winner.
+
+**Every distractor is wrong on a named principle** — TOO SHARP (it accuses),
+TOO SOFT (it signs the work away), TOO LOUD (it grandstands or stops the
+meeting to litigate). A pragmatics item has the defect class the synonym-ban
+note describes: without a named failure, a distractor is only wrong by taste.
+The taxonomy is in the builder docstring and in every `ex` line.
+
+### The new gates earned their keep on the first deck after them
+
+Both of yesterday's additions fired on this build before a human looked at it:
+
+  * **ACTIVATION** caught the write panel 27px past the canvas — ten chips
+    wrapped the row to a third line. Eight fit. This is the second deck in two
+    days where the chip count was the thing that broke the activation stage;
+    **treat 8 as the working maximum at this type scale**, not the 14 the
+    brief allows.
+  * **LAYOUT** caught a three-row gap screen 61px over in the 58% column the
+    framed picture leaves. The three sentences were shortened, not the type.
+
+Also worth knowing for the next editorial deck: `deck.assert_no_key_is_longest`
+is **stricter than check-lesson.js's ANSWERS gate**. The checker allows a key
+up to 10% longer than the next option; the builder assert fails any key that
+is the unique longest by 4 characters or more. Three items here had to have
+their distractors lengthened to clear the builder even though the checker
+would have passed them. That is the right way round, but it costs a round trip
+if you write the options by eye — measure them.
+
 ## 2026-09-19 — A full-screen button, and the overlap the LAYOUT gate could not see
 
 Innes, on the live activation stage: *"should have a full screen button
