@@ -257,6 +257,10 @@ OVERRIDES = {
     'forbes-english-lego-passive-active.html': ['passive-voice'],
     'active_passive_refinery_lesson.html': ['passive-voice', 'business-english'],
     'active_passive_refinery_quiz_part2.html': ['passive-voice', 'business-english'],
+    # "Holding the Line" names no grammar. It teaches the agentless passive
+    # as a de-escalator and ONCE + PRESENT SIMPLE as a boundary, in a
+    # workplace-conflict setting.
+    'forbes-english-holding-the-line-c1.html': ['passive-voice', 'business-english'],
     'vw_grammar_atelier_final.html': ['tense-review'],
     'full_grammar_test.html': ['tense-review'],
     'forbes-english-b1-mixed-grammar-test.html': ['tense-review'],
