@@ -1,7 +1,18 @@
 # Artwork: Credit Where It's Due (C1)
 
-Eight pictures. The deck is built, measured and clean in all four languages;
-this is the only thing it is waiting for.
+> **Delivered 2026-09-20, and the lesson is live.** Thirteen candidates across
+> all eight slots. Two notes for next time:
+>
+> * **16:9 again**, so the six framed plates were cropped here. That is now
+>   twice; the spec has been rewritten to ask for a subject inside the middle
+>   65% rather than for a ratio the pipeline does not honour.
+> * **`nameplate` came back unusable** — a hand holding nothing, no plate in
+>   the frame. The slot is now `paper`, filled by the second hero candidate:
+>   the sheet lying on the table, which is what the two screens using it are
+>   about anyway. Three `tally` candidates had a person in them and one had a
+>   face; the usable one was cropped left of the figure.
+
+Eight pictures.
 
 **The spec has not changed, so it is not repeated here.** Geometry, palette,
 safe areas, the upscale, and the `prep-artwork.py` warning to ignore are all
@@ -9,10 +20,9 @@ in [`ARTWORK-holding-the-line.md`](ARTWORK-holding-the-line.md), above its
 slot table. The three that matter most, because last time they were the ones
 that slipped:
 
-1. **`--ar 7:6` for the seven framed plates**, `--ar 16:9` for the hero alone.
-   Every candidate in the last batch came back 16:9 and had to be cropped
-   here, which threw away about a third of each picture. A native 7:6 keeps
-   it.
+1. **Compose the subject inside the middle 65%** of a 16:9 frame. Ask for
+   `--ar 7:6` by all means, but two batches running have ignored it, and a
+   centre crop to the frame keeps exactly that middle band.
 2. **Give each plate its own ground** — one step off the page cream
    (`#f3ede0`, a pale slate, a sage wall). Cream-on-cream makes the frame
    vanish; the interim plates in `CreditWhereDue/` do exactly that and you can
@@ -49,7 +59,7 @@ filename appears.
 | `room` | the cleft teaching card; the first question | `a single microphone on a tall stand, alone on a bare floor` |
 | `trail` | the active/passive teaching card | `four dated paper slips pinned in a row along a wire, one pin brick red` |
 | `tally` | both number screens | `a wall chart of tally marks counted in fives, some groups struck through` |
-| `nameplate` | the first reclaim screen; the sentence-order round | `a blank engraved desk nameplate, face up, nothing written on it` |
+| `paper` | the first reclaim screen; the sentence-order round | `a single sheet of paper lying on a dark table, nothing else on it` — *was `nameplate`; see the note at the top* |
 | `folder` | the second reclaim screen; the email question | `a crisp card folder with three identical sheets fanned out of it` |
 | `spotlight` | two questions | `an empty circle of light on a bare floor, the lamp just visible above` |
 | `cups` | the activation stage | `two cups on a small table, one pushed forward towards the other` |
@@ -66,7 +76,7 @@ is shared with every other session), numbered so sorted order matches
 `--names`:
 
 ```bash
-py tools\prep-artwork.py <batch-folder> --into CreditWhereDue --width 1600 --names room,trail,tally,nameplate,folder,spotlight,cups
+py tools\prep-artwork.py <batch-folder> --into CreditWhereDue --width 1600 --names room,trail,tally,paper,folder,spotlight,cups
 ```
 
 The hero goes in its own run without `--width`: 16:9 at 2000px is right for a

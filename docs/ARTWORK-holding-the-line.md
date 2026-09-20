@@ -44,14 +44,29 @@ sentences is true, and the reasons are structural rather than taste.
 
 ## The spec
 
-| | **hero** (1 file) | **the other seven** |
+> **Revised 2026-09-20, after two batches.** `--ar 7:6` did not take either
+> time: every candidate in both came back 16:9. Twice is a default, not a
+> slip, so this table now asks for what that pipeline actually produces and
+> puts the burden on COMPOSITION instead of on the flag. Ask for 7:6 by all
+> means — it keeps about a third more of the picture — but compose as if you
+> will not get it.
+
+| | **hero** (1 file) | **the framed plates** |
 |---|---|---|
-| ratio | 16:9 | **7:6** |
-| Midjourney | `--ar 16:9` | `--ar 7:6` |
-| deliver at | 2000 × 1125 | 2000 × 1714 |
-| where it shows | full bleed behind the cover | framed block, right or left, centre-cropped |
-| composition | **subject on the RIGHT** | **subject CENTRED** |
-| keep clear | the left 58%, top to bottom | the top corners |
+| ratio you will get | 16:9 | 16:9 |
+| ratio the frame wants | 16:9 | **7:6** (473 × 410 css px) |
+| Midjourney | `--ar 16:9` | `--ar 7:6`, and expect 16:9 |
+| deliver at | 2000 × 1125 | 2944 × 1648 is fine |
+| where it shows | full bleed behind the cover | framed block, right or left |
+| composition | **subject on the RIGHT** | **subject inside the middle 65%** |
+| keep clear | the left 58%, top to bottom | the outer sixth each side, and the top corners |
+
+**The middle 65% is the whole instruction.** A 16:9 plate centre-cropped to
+7:6 keeps the central 65% of its width and throws away a sixth off each side.
+A subject composed inside that band survives untouched; one that spans the
+full width comes back cut in half. Both batches lost pictures this way — a
+clock bisected, two chairs sliced at the arms — and both were salvaged only by
+choosing the crop centre by hand, plate by plate.
 
 **The cover's quiet half.** The lockup — logo, an 88px title, the subtitle,
 three chips and the Begin button — is left-aligned and capped at 58% of the

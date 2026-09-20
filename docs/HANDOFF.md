@@ -11,7 +11,7 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
-## 2026-09-20 — Credit Where It's Due (C1). ARTWORK PENDING, not pushed.
+## 2026-09-20 — Credit Where It's Due (C1). PUBLISHED, free, row 337.
 
 The sibling of Holding the Line, built from two trade articles Innes supplied
 on bosses and colleagues taking credit. **Nothing in them is reproduced** —
@@ -23,8 +23,30 @@ publication, employer or product is named anywhere in the deck.
     strings `i18n_creditdue.py`, editorial style.
   * `check-lesson.js` clean but for HEAD; `overflow-langs.js` fits in all four
     languages, activation panels included.
-  * **Not pushed, no catalogue row.** `CreditWhereDue/*.svg` are interim
-    plates; the brief is `docs/ARTWORK-credit-where-its-due.md`.
+  * **Live**, catalogue row **337**, `access: free`, on the Passive Voice
+    and Business English hubs. Art landed the same day; interim plates and
+    `plates_creditdue.py` deleted in the commit that brought the real set in.
+
+### The artwork brief has been rewritten, and this is why
+
+`--ar 7:6` has now failed on two consecutive batches — every candidate in both
+came back 16:9. That is a Midjourney default, not a slip, so
+`docs/ARTWORK-holding-the-line.md` (which carries the generic spec) no longer
+leans on the flag. It asks for **the subject inside the middle 65% of a 16:9
+frame**, because a centre crop to 7:6 keeps exactly that band and throws away
+a sixth off each side. Both batches lost pictures to this — a clock bisected,
+two chairs sliced at the arms — and both were saved only by picking the crop
+centre by hand, plate by plate. Crop centres for this deck: room 0.47, trail
+0.45, tally 0.295, paper 0.42, folder 0.42, spotlight 0.45, cups 0.46; the
+hero is uncropped.
+
+**Two slots needed judgement rather than a crop.** `nameplate` came back as a
+hand holding nothing, with no plate anywhere in the frame; the slot was
+renamed `paper` and filled with the second hero candidate, the sheet lying on
+the table, which suits the two screens that use it better than a nameplate
+did. Of three `tally` candidates, one had a person seen from behind and one a
+clear face — the brief says no people — so the usable one was cropped left of
+the figure, leaving the marks and the bars.
 
 **It is deliberately the mirror of its sibling, and that is the teaching
 point.** Holding the Line uses the agentless passive as a shield — "the lead

@@ -261,6 +261,9 @@ OVERRIDES = {
     # as a de-escalator and ONCE + PRESENT SIMPLE as a boundary, in a
     # workplace-conflict setting.
     'forbes-english-holding-the-line-c1.html': ['passive-voice', 'business-english'],
+    # "Credit Where It's Due" teaches the cleft and the active/passive
+    # choice for authorship - the mirror of its sibling above.
+    'forbes-english-credit-where-its-due-c1.html': ['passive-voice', 'business-english'],
     'vw_grammar_atelier_final.html': ['tense-review'],
     'full_grammar_test.html': ['tense-review'],
     'forbes-english-b1-mixed-grammar-test.html': ['tense-review'],

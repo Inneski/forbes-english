@@ -33,10 +33,17 @@ EDITORIAL STYLE (HOUSE-STYLE §15), like its sibling. `data-bg` is the framed
 picture, a slide without one takes the full width, a slide with one has two
 columns at most, and the palette is fixed rather than derived.
 
-ARTWORK IS INTERIM: `CreditWhereDue/*.svg` are flat plates drawn so the deck
-could be measured today. The brief for the real set is
-`docs/ARTWORK-credit-where-its-due.md`. ART below is the only place a
-filename appears.
+ARTWORK. The commissioned set landed 2026-09-20, to the brief in
+`docs/ARTWORK-credit-where-its-due.md`, and 16:9 again rather than the 7:6
+the frame wants - twice now, so it is the Midjourney default rather than a
+slip, and the brief has been rewritten to ask for what that pipeline actually
+produces. The hero needed no crop; the other six were cut to 7:6 here at a
+chosen centre, and the crop centres are in docs/HANDOFF.md.
+
+One slot changed name. `nameplate` came back as a hand holding nothing and
+was unusable; the second hero candidate - the sheet of paper lying on the
+table - took its place and the slot is `paper`, which is what the two screens
+using it are about anyway.
 """
 import os
 import re
@@ -50,14 +57,14 @@ OUT = 'forbes-english-credit-where-its-due-c1.html'
 F = 'CreditWhereDue'
 
 ART = {
-    'hero':      'hero.svg',       # cover, the only 16:9 plate
-    'room':      'room.svg',       # the meeting, and who holds the floor
-    'trail':     'trail.svg',      # the dated record
-    'tally':     'tally.svg',      # the number that ends the argument
-    'nameplate': 'nameplate.svg',  # attribution, and the blank plate
-    'folder':    'folder.svg',     # the timestamp you can hand round
-    'spotlight': 'spotlight.svg',  # the moment, and who is standing in it
-    'cups':      'cups.svg',       # the check-in
+    'hero':      'hero.jpg',       # cover, the only 16:9 plate
+    'room':      'room.jpg',       # the meeting, and who holds the floor
+    'trail':     'trail.jpg',      # the dated record
+    'tally':     'tally.jpg',      # the number that ends the argument
+    'paper':     'paper.jpg',      # the sheet on the table: the record
+    'folder':    'folder.jpg',     # the timestamp you can hand round
+    'spotlight': 'spotlight.jpg',  # the moment, and who is standing in it
+    'cups':      'cups.jpg',       # the check-in
 }
 
 
@@ -421,7 +428,7 @@ def build(style='editorial', out=None):
 
         + art(D.gap(1, 2, RECLAIM_A, RECLAIM_BANK, 'reclaimEyebrow',
                     'Say it in the room', 'reclaimTitle', 'Complete the line',
-                    folder=F, bg=A('nameplate'), hint_key='reclaimHint',
+                    folder=F, bg=A('paper'), hint_key='reclaimHint',
                     hint='One word per gap; each is used once across both '
                          'screens.'), side='left')
 
@@ -460,7 +467,7 @@ def build(style='editorial', out=None):
                       'Click the parts in order.',
                       'The cleft carries the author; the last clause carries '
                       'the proof. Nobody has to take your word for it.',
-                      folder=F, bg=A('nameplate')), shape='arch')
+                      folder=F, bg=A('paper')), shape='arch')
 
         + art(D.teach('voiceEyebrow', 'Active or passive', 'voiceTitle',
                       'Which voice puts you in it', VOICE,
