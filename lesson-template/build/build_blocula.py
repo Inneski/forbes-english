@@ -322,6 +322,21 @@ def build():
                       lambda m: tail, page, count=1, flags=re.S)
     assert n == 1, 'displayAnswer no longer ends the way the CONTINUE scroll patch expects'
 
+    # ---- 7. the camp save file (block-camp/camp-save.js). Every Block Camp
+    # page reports to it and block-camp/quest.html reads it back as the
+    # learner's progress. Guarded insertions, like fitPanel above.
+    if 'src="camp-save.js"' not in page:
+        page = page.replace('<script>', '<script src="camp-save.js"></script>\n<script>', 1)
+    if "CampSave.visit(" not in page:
+        page = page.replace("\nfunction render(){", "\nif(window.CampSave)try{CampSave.visit('rpg')}catch(_){}\nfunction render(){", 1)
+    if "CampSave.rpgEnd(" not in page:
+        page = page.replace("else if(s.kind==='ending'){html+=",
+                            "else if(s.kind==='ending'){if(window.CampSave)try{CampSave.rpgEnd({score:state.score,max:85,tiles:state.evidence,tilesMax:3,cleared:true,master:state.score>=85&&state.evidence>=3,ending:state.scene})}catch(_){}html+=", 1)
+        page = page.replace("else if(s.kind==='failure'){html+=",
+                            "else if(s.kind==='failure'){if(window.CampSave)try{CampSave.rpgEnd({score:state.score,max:85,tiles:state.evidence,tilesMax:3,cleared:false,ending:state.scene})}catch(_){}html+=", 1)
+    for hook in ('src="camp-save.js"', 'CampSave.visit(', "kind==='ending'){if(window.CampSave)", "kind==='failure'){if(window.CampSave)"):
+        assert hook in page, 'camp save was not wired in: ' + hook
+
     open(PAGE, 'w', encoding='utf-8', newline='\n').write(page)
     nq = sum(1 for s in scenes.values() if s.get('kind') == 'question')
     print(f'wrote {os.path.relpath(PAGE, ROOT)} — {len(scenes)} scenes, '

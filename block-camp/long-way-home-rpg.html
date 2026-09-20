@@ -250,6 +250,7 @@
   </main>
   <div id="app" hidden></div>
   <noscript><main class="fatal"><h1>JAVASCRIPT IS REQUIRED</h1><p>Enable JavaScript to play the interactive game.</p></main></noscript>
+<script src="camp-save.js"></script>
   <script>
 let odysseyLaunched = false;
 function launchOdyssey(){
@@ -272,6 +273,7 @@ function launchOdyssey(){
   }
   var q = (chapter, location, title, narrative, prompt, rule, options, art, kind = "test") => ({ chapter, location, title, narrative, prompt, focus: focusFromRule(rule), rule, options, art, kind });
   var c = (chapter, location, title, narrative, prompt, options, art) => ({ chapter, location, title, narrative, prompt, focus: "STORY CHOICE", options, art, kind: "choice" });
+  if (window.CampSave) try { CampSave.visit("rpg"); } catch (_) {}
   var scenes = [
     q("PROLOGUE \xB7 I", "THE BEACH BELOW TROY", "ASHES BEHIND YOU", "While the last towers were burning, Odysseus gathered twelve sailors beside a black-hulled ship. He ordered them aboard, and the ship left Troy. Ithaca waited beyond an angry sea.", "Which verbs carry the completed main events?", "Use PAST SIMPLE for the completed events that move the main story forward. The was/were + -ing clause supplies the scene around them.", [
       { text: "gathered, ordered, left", correct: true, note: "These completed past-simple events form the main sequence." },
@@ -660,6 +662,7 @@ function launchOdyssey(){
   }
   function renderEnding() {
     const e = ending();
+    if (window.CampSave) try { CampSave.rpgEnd({ score: Math.min(state.score, 2100), max: 2100, tiles: 0, tilesMax: 0, cleared: !!e.success, master: e.rank === "MASTER OF THREE TIMES", ending: e.rank }); } catch (_) {}
     const tone = e.success ? "success" : "failure";
     document.body.className = `ending-${tone}`;
     document.title = `${e.title} \u2014 The Long Way Home`;

@@ -422,3 +422,41 @@ Two mechanisms, both reading the same two custom properties (`--cake-a`,
   RPG in this engine that needs `ar`, `zh` or `ja` needs a fallback face
   declared for those glyphs first — say so in HANDOFF rather than shipping
   boxes.
+
+## 10. The save file and the overworld (2026-09-20)
+
+Every camp page reports to one localStorage record, `forbes-camp-save`,
+through `block-camp/camp-save.js`, and `block-camp/quest.html` reads it
+back as a game: the climb and the descent as trails that light up, the
+adventures as cards with best score, tiles and endings found, a passport
+of badges, XP and a rank. Built by `lesson-template/build/block-camp-quest/
+build.py`, which imports the hub builder's tables, so **an adventure added
+to `ADVENTURES` in `block-camp-hub/build.py` is on the map at the next
+quest build** — hang it off a camp by making its first grammar chip the
+camp's name (`'Past Simple'`, not `'Past Simple Passive'`).
+
+What the engine does for you, on every `assemble()`:
+
+- inlines `camp-save.js` into the page (it stays one file, opens from disk);
+- calls `CampSave.visit('rpg')` on load, so the map's "Back to" button
+  knows where the learner was;
+- calls `CampSave.rpgEnd({score, max, tiles, tilesMax, cleared, master,
+  ending, chapter})` from the ending scene — `cleared` is any ending but
+  `endings.failed`, `master` is `endings.master`; a chaptered page (Kraken)
+  keeps one record per chapter under `parts`;
+- adds a `CAMP MAP` button (label `camp`, ten languages) beside PLAY AGAIN,
+  pointing at `quest.html` relative to the page.
+
+A hand-built page (Blocula's builder, `last-train-home-rpg`,
+`long-way-home-rpg`) loads the module with `<script src="camp-save.js">`
+and makes the same two calls itself; the 26 tense decks at the root load
+`block-camp/camp-save.js` and call `CampSave.deck(idx, slides.length)`
+from `show()`. If you ever regenerate a deck from a template, put that
+line back.
+
+The save never leaves the browser. Moving it is a copy-and-paste of the
+save code on the quest page (`BLOCKCAMP1:` + base64 JSON); syncing it to
+Supabase for Pro learners is the obvious next step and needs a table, so
+it is Innes's call. `manifest.webmanifest` + `sw.js` (network-first,
+scoped to `block-camp/`) make the game installable; bump `VERSION` in
+`block-camp-quest/sw.js` if a cached page must be dropped.

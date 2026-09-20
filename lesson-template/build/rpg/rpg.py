@@ -37,6 +37,7 @@ LABELS = {
     'hide':       {'en': 'HIDE', 'es': 'OCULTAR', 'de': 'AUSBLENDEN', 'fr': 'MASQUER', 'it': 'NASCONDI', 'pt': 'OCULTAR', 'ru': 'СКРЫТЬ', 'ar': 'إخفاء', 'zh': '隐藏', 'ja': '隠す'},
     'continue':   {'en': 'CONTINUE', 'es': 'CONTINUAR', 'de': 'WEITER', 'fr': 'CONTINUER', 'it': 'CONTINUA', 'pt': 'CONTINUAR', 'ru': 'ДАЛЕЕ', 'ar': 'متابعة', 'zh': '继续', 'ja': '続ける'},
     'begin':      {'en': 'BEGIN', 'es': 'EMPEZAR', 'de': 'LOSLEGEN', 'fr': 'COMMENCER', 'it': 'INIZIA', 'pt': 'COMEÇAR', 'ru': 'НАЧАТЬ', 'ar': 'ابدأ', 'zh': '开始', 'ja': '始める'},
+    'camp':       {'en': 'CAMP MAP', 'es': 'MAPA DEL CAMPAMENTO', 'de': 'LAGERKARTE', 'fr': 'CARTE DU CAMP', 'it': 'MAPPA DEL CAMPO', 'pt': 'MAPA DO ACAMPAMENTO', 'ru': 'КАРТА ЛАГЕРЯ', 'ar': 'خريطة المخيم', 'zh': '营地地图', 'ja': 'キャンプの地図'},
     'restart':    {'en': 'PLAY AGAIN', 'es': 'JUGAR OTRA VEZ', 'de': 'NOCH EINMAL SPIELEN', 'fr': 'REJOUER', 'it': 'GIOCA ANCORA', 'pt': 'JOGAR DE NOVO', 'ru': 'ИГРАТЬ СНОВА', 'ar': 'العب مرة أخرى', 'zh': '再玩一次', 'ja': 'もう一度遊ぶ'},
     'fullscreen': {'en': 'FULLSCREEN', 'es': 'PANTALLA COMPLETA', 'de': 'VOLLBILD', 'fr': 'PLEIN ÉCRAN', 'it': 'SCHERMO INTERO', 'pt': 'ECRÃ INTEIRO', 'ru': 'ВО ВЕСЬ ЭКРАН', 'ar': 'ملء الشاشة', 'zh': '全屏', 'ja': '全画面'},
     'translate':  {'en': 'TRANSLATE', 'es': 'TRADUCIR', 'de': 'ÜBERSETZEN', 'fr': 'TRADUIRE', 'it': 'TRADUCI', 'pt': 'TRADUZIR', 'ru': 'ПЕРЕВОД', 'ar': 'ترجمة', 'zh': '翻译', 'ja': '翻訳'},
@@ -392,6 +393,7 @@ const NUM = ['1','2','3','4'];
    the game's own rules, which README.md section 1 forbids. */
 const CH = () => (state.chapter == null || !G.chapters) ? G : G.chapters[state.chapter];
 let state = fresh('off', null);
+if(window.CampSave)try{CampSave.visit('rpg')}catch(_){}
 let sound=false;try{sound=localStorage.getItem('rpg-sound')==='1'}catch(_){}
 /* two short tones, right and wrong — the Wonderland export's, kept */
 function beep(ok){if(!sound)return;try{const c=new (window.AudioContext||window.webkitAudioContext)();const o=c.createOscillator(),g=c.createGain();o.type=ok?'square':'sawtooth';o.frequency.value=ok?620:180;g.gain.value=.03;o.connect(g);g.connect(c.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.16);o.stop(c.currentTime+.18);o.onended=()=>c.close()}catch(_){}}
@@ -492,7 +494,13 @@ function render(){const s=G.scenes[state.scene];frame.className=`frame ${s.pos||
        most learners never see. */
     const nx=(G.chapters&&state.chapter!=null&&state.chapter+1<G.chapters.length)?`<button class="start" onclick="startChapter(${state.chapter+1})">${ui('nextChapter',{n:state.chapter+2})}</button>`:'';
     const hub=(G.chapters)?`<button class="restart" onclick="toHub()">${ui('chapters')}</button>`:'';
-    act+=`${rt?line(rt,'story'):''}<div class="final-score">${ui('finalScore')} ${state.score}/${c.max}${ft} · ${'◆'.repeat(state.tiles)}${'◇'.repeat(Math.max(0,c.tiles-state.tiles))}</div>${rev}${state.route.length?`<div class="small">${ui('route')}: ${esc(state.route.join(' · ').toUpperCase())}</div>`:''}${s.link?`<a class="start" href="${s.link}">${label(s.linkLabel)}</a>`:''}${nx}<button class="restart" onclick="restart()">${ui('restart')}</button>${hub}`}
+    /* the camp save file (block-camp/camp-save.js, inlined above): the
+       overworld reads this back as the learner's progress. Written once per
+       ending, whichever ending it is; a run is "cleared" when it reached any
+       ending but the failed one, "master" on the master ending. */
+    if(window.CampSave)try{CampSave.rpgEnd({score:state.score,max:c.max,tiles:state.tiles,tilesMax:c.tiles||0,cleared:state.scene!==c.endings.failed,master:state.scene===c.endings.master,ending:state.scene,chapter:state.chapter})}catch(_){}
+    const camp=`<a class="restart" href="{{CAMP}}">${ui('camp')}</a>`;
+    act+=`${rt?line(rt,'story'):''}<div class="final-score">${ui('finalScore')} ${state.score}/${c.max}${ft} · ${'◆'.repeat(state.tiles)}${'◇'.repeat(Math.max(0,c.tiles-state.tiles))}</div>${rev}${state.route.length?`<div class="small">${ui('route')}: ${esc(state.route.join(' · ').toUpperCase())}</div>`:''}${s.link?`<a class="start" href="${s.link}">${label(s.linkLabel)}</a>`:''}${nx}<button class="restart" onclick="restart()">${ui('restart')}</button>${hub}${camp}`}
   /* a band lays the two halves side by side; every other position stacks them */
   content.innerHTML=s.pos==='band'?`${hide}<div class="band-text">${html}</div><div class="band-act">${act}</div>`:hide+html+act;
   content.scrollTop=0;updateHUD();setOpen(false);
@@ -766,7 +774,12 @@ def assemble(spec, out=None):
               # A deck that thins its panel sets this; the rest inherit it.
               .replace('{{SCRIM}}', spec.get('scrim', spec.get('panel', 'rgba(20,14,4,.88)'))))
     body = BODY.replace('{{MAX}}', str(spec['max']))
-    js = JS.replace('{{GAME}}', json.dumps(game, ensure_ascii=False, separators=(',', ':')))
+    # block-camp/camp-save.js rides inside the page so the file stays
+    # self-contained (it opens from disk, like the fonts); the overworld it
+    # reports to is block-camp/quest.html, linked relative to this page.
+    save_js = open(os.path.join(REPO, 'block-camp', 'camp-save.js'), encoding='utf-8').read().strip()
+    camp = os.path.relpath(os.path.join(REPO, 'block-camp', 'quest.html'), os.path.dirname(os.path.join(REPO, spec['file']))).replace(os.sep, '/')
+    js = save_js + '\n' + JS.replace('{{GAME}}', json.dumps(game, ensure_ascii=False, separators=(',', ':'))).replace('{{CAMP}}', camp)
     page = (PAGE.replace('{{FONTS}}', font_css()).replace('{{CSS}}', css.strip())
                 .replace('{{BODY}}', body.strip()).replace('{{JS}}', js.strip())
                 .replace('{{TITLE}}', html.escape(spec['title'])).replace('{{DESC}}', html.escape(spec['description']))

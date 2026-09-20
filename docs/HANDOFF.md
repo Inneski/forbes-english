@@ -11,6 +11,42 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-20 — Block Camp is now one game: `block-camp/quest.html`
+
+Innes: "make the game". Built on branch `claude/block-camp-game-concept-48034h`.
+
+  * **`block-camp/camp-save.js`** — one localStorage save file every camp
+    page writes to. Inlined into every engine RPG by `rpg.py`; loaded by
+    `<script src>` in Blocula (its builder patches it in), Last Train Home,
+    Long Way Home and all 26 `blockcamp-*.html` decks. The decks call
+    `CampSave.deck(idx, slides.length)` from `show()` — a deck regenerated
+    from `lesson-template.html` loses that line, so put it back.
+  * **`block-camp/quest.html`** — the overworld: drifting trail scene with
+    fireflies and a lantern, XP bar and rank, the climb and descent as
+    zig-zag trails that light up, a pixel hiker at the current stop,
+    adventure cards with best score / tiles / endings, a badge passport,
+    save-code export/import, fireworks on a full clear. Builder:
+    `lesson-template/build/block-camp-quest/build.py` (imports the hub's
+    tables, so new adventures appear by themselves). Hub got a
+    "Play it as a game" button.
+  * **Installable**: `manifest.webmanifest`, `sw.js` (network-first, scoped
+    to `block-camp/` only), icons drawn in pure Python (no PIL here).
+  * **Every RPG ending** now writes the save and shows a CAMP MAP button
+    (`camp` label, ten languages). All 12 engine RPGs and the Kraken saga
+    were rebuilt; `build_kraken_black_tide.py` is broken on `main` already
+    (missing `translations/` dir) — the saga builder is the live one.
+  * Not on the map: `kraken-black-tide-rpg.html`, because it is not in the
+    hub's `ADVENTURES`. Add it there and rebuild both.
+  * Verified in headless Chromium: deck paging, an engine ending, Blocula
+    and Last Train Home all write the record; the map reads it back; no
+    horizontal overflow at 390px. `seo.py` here changed only `lastmod`
+    lines in the sitemap (checked, nothing dropped).
+  * **Open offers for Innes**: a Supabase table so Pro learners' progress
+    follows them across devices; proper artwork for the badge medals and
+    a drawn hiker sprite (the current one is 8x12 box-shadow pixels).
+
+---
+
 ## 2026-09-20 — The deck now shows a learner what they got wrong
 
 **Engine change in `lesson-template/lesson-template.html`, so it reaches every
