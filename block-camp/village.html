@@ -251,7 +251,9 @@ function applyMet() { rangers.forEach((r, i) => { if (save.met[r.camp.n]) { lamp
 applyMet();
 
 /* ---- player ------------------------------------------------------------- */
-const player = {x: 17.5 * T, y: 30.5 * T, vx: 0, vy: 0, face: 0, frame: 0, walk: 0, speed: 2.2};
+/* spawn on the bottom path, clear of the tent's footprint: the first build
+   started inside it and every step was blocked (Innes: 'neither moves') */
+const player = {x: 20.5 * T, y: 32.4 * T, vx: 0, vy: 0, face: 0, frame: 0, walk: 0, speed: 2.2};
 const keys = {}; let talking = false;
 const DIRS = {ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right', w: 'up', s: 'down', a: 'left', d: 'right', W: 'up', S: 'down', A: 'left', D: 'right'};
 addEventListener('keydown', e => { if (e.repeat) return; const d = DIRS[e.key]; if (d) { keys[d] = true; e.preventDefault(); }
@@ -277,8 +279,10 @@ function stepPlayer() {
   if (dx && dy) { dx *= .707; dy *= .707; }
   if (dx || dy) { player.face = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 1 : 3) : (dy > 0 ? 0 : 2); player.walk++; } else player.walk = 0;
   const nx = player.x + dx * player.speed, ny = player.y + dy * player.speed;
-  if (!solid(nx - 6, player.y) && !solid(nx + 6, player.y)) player.x = Math.max(T, Math.min(W - T, nx));
-  if (!solid(player.x, ny - 2) && !solid(player.x, ny + 4)) player.y = Math.max(T, Math.min(H - T, ny));
+  /* if the hiker is somehow standing in a solid, let them walk out of it */
+  const stuck = solid(player.x, player.y);
+  if (stuck || (!solid(nx - 6, player.y) && !solid(nx + 6, player.y))) player.x = Math.max(T, Math.min(W - T, nx));
+  if (stuck || (!solid(player.x, ny - 2) && !solid(player.x, ny + 4))) player.y = Math.max(T, Math.min(H - T, ny));
   trail.push({x: player.x, y: player.y}); if (trail.length > 40) trail.shift();
 }
 const trail = [];
