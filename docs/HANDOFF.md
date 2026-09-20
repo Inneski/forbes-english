@@ -18,10 +18,13 @@ to talk, MET 0/7) and said the reward for a right answer could be an
 animation, then: "the snow isn't important, maybe 'it is raining' and 'it
 is going to rain' can be written into the game and appear briefly."
 
-  * **`block-camp/village.html`** — a top-down camp drawn in code: nine
-    cabins in the camp colours, a ranger per tense, tower, cinema, post,
-    tent, notice board, lamps. Arrow keys / WASD, space to talk, touch
-    d-pad on phones. Each ranger: a greeting in their tense, three
+  * **`block-camp/village.html`** — the hiker walks the hub's own trail
+    painting (`BlockCamp/hub-hero.jpg`) from the tent, over the bridge and
+    up to the lookout tower, shrinking with depth while the camera zooms
+    in; nine rangers stand along the path at even spacings. Arrow keys or
+    A/D walk the trail, tap the trail to walk there, space to talk, two
+    buttons on phones. (The first cut was a tile map drawn in code; Innes:
+    "the graphics are pants". He was right; it lasted an hour.) Each ranger: a greeting in their tense, three
     questions, one-line explanations. All three right → the sky does the
     sentence: clouds + "It is going to rain.", rain + "It is raining.",
     clear + "It has stopped raining." Then that cabin's lamps and windows
@@ -29,18 +32,19 @@ is going to rain' can be written into the game and appear briefly."
     you. Doors open the deck / quest page / library / hub.
   * Builder: `lesson-template/build/block-camp-village/build.py` — the
     rangers, questions and weather sequences are its `RANGERS` table; the
-    map is a terrain string in `template.html`. Set `MAP_IMAGE` there once
-    a painted top-down map exists and the terrain string becomes just the
-    walkable mask. Sprites are 8x12 pixel strings; a real sprite sheet
-    replaces `drawSprite`.
+    path is `TRAIL` in `template.html`, in picture pixels, traced from the
+    painting's sandy pixels with a Playwright script (rows every 8px,
+    clustered) — do the same for any new scene. Sprites are 8x12 pixel
+    strings; a real sprite sheet replaces `drawSprite`.
   * Saves under `CampSave.get('village')` → `{met:{n:true}, best:{n:3}}`
     (`get`/`put` added to camp-save.js for this).
   * Verified in headless Chromium: walk up, talk, answer three, rain and
     caption play, MET 1/9 saved. Bug found and fixed on the way: one Space
     press was both opening the box and pressing its first button.
-  * Wanted from Innes: a top-down painted map (Midjourney: "top-down pixel
-    art voxel campsite, tent, cabins, lookout tower, lamps, night") and a
-    four-direction walk cycle for the hiker.
+  * Wanted from Innes: a four-direction walk cycle for the hiker and a
+    standing pose per ranger. The far side (`BlockCampDescent/
+    watchtower-far-side.jpg`, whose route the descent map already draws)
+    is the obvious second scene: stations as doors, no quiz yet.
 
 ## 2026-09-20 — Block Camp is now one game: `block-camp/quest.html`
 

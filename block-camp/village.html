@@ -34,7 +34,7 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--cream);font-fami
 @media(max-width:620px){.tb-links a:not(.tb-cta):not(.tb-cta-gold){display:none}}
 
 #stage{position:fixed;inset:0;top:var(--top,44px)}
-canvas#world{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated;image-rendering:crisp-edges;display:block}
+canvas#world{position:absolute;inset:0;width:100%;height:100%;display:block}
 .paper{background:var(--paper);color:var(--paper-ink);border:3px solid var(--paper-edge);box-shadow:inset 0 0 0 2px #d9c39a,0 6px 0 rgba(0,0,0,.35);border-radius:2px}
 #met{position:absolute;left:16px;top:16px;padding:10px 16px;font-size:clamp(16px,2.4vw,26px);letter-spacing:.04em;z-index:4;pointer-events:none}
 #hint{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);padding:10px 20px;font-size:clamp(15px,2.2vw,24px);z-index:4;opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap}
@@ -69,7 +69,7 @@ canvas#world{position:absolute;inset:0;width:100%;height:100%;image-rendering:pi
 #talk .btn.alt{background:transparent;color:#8a5a2b;border:2px solid #8a5a2b}
 
 /* touch controls */
-#pad{position:absolute;left:14px;bottom:14px;display:none;grid-template-columns:repeat(3,52px);grid-template-rows:repeat(3,52px);gap:4px;z-index:5;touch-action:none}
+#pad{position:absolute;left:14px;bottom:18px;display:none;grid-template-columns:repeat(2,64px);grid-template-rows:64px;gap:8px;z-index:5;touch-action:none}
 #pad button{font:inherit;font-size:20px;background:rgba(11,26,18,.6);color:var(--cream);border:1px solid rgba(232,192,74,.45);border-radius:8px;touch-action:none;user-select:none;-webkit-user-select:none}
 #pad button:active{background:var(--gold);color:var(--green-deep)}
 #act{position:absolute;right:16px;bottom:22px;display:none;width:74px;height:74px;border-radius:50%;font:inherit;font-size:14px;background:var(--gold);color:var(--green-deep);border:3px solid #8a5a2b;z-index:5;touch-action:none;user-select:none}
@@ -160,7 +160,7 @@ canvas#world{position:absolute;inset:0;width:100%;height:100%;image-rendering:pi
     <button id="helpBtn" type="button" aria-pressed="false">? help</button>
     <a href="quest.html" title="Your map, badges and save">⌂ map</a>
   </div>
-  <div id="help" class="paper">Arrow keys or WASD to walk. Walk up to a ranger and press <b>SPACE</b> to talk. Each ranger asks three questions in their tense. Get all three and watch the sky. Walk into a cabin door and press SPACE to open that camp's lesson. Progress is saved in this browser.</div>
+  <div id="help" class="paper">Arrow keys (or A/D) walk you along the trail; tap the trail to walk there. Stand by a ranger and press <b>SPACE</b> to talk. Each ranger asks three questions in their tense. Get all three and watch the sky. Walk into a cabin door and press SPACE to open that camp's lesson. Progress is saved in this browser.</div>
   <div id="caption" class="paper"></div>
   <div id="hint" class="paper">PRESS SPACE</div>
   <div id="talk" class="paper" role="dialog" aria-live="polite">
@@ -170,7 +170,7 @@ canvas#world{position:absolute;inset:0;width:100%;height:100%;image-rendering:pi
     <div class="fb" id="tFb"></div>
     <div class="row" id="tRow"></div>
   </div>
-  <div id="pad"><span></span><button data-k="up">▲</button><span></span><button data-k="left">◀</button><span></span><button data-k="right">▶</button><span></span><button data-k="down">▼</button><span></span></div>
+  <div id="pad"><button data-k="back">◀</button><button data-k="fwd">▶</button></div>
   <button id="act" type="button">SPACE</button>
 </div>
 
@@ -178,140 +178,75 @@ canvas#world{position:absolute;inset:0;width:100%;height:100%;image-rendering:pi
 <script>
 'use strict';
 const CAMPS = [{"n":1,"tense":"Present Simple","colour":"#7A93B5","ink":"#0b1a12","href":"../blockcamp-present-simple.html","ranger":"Ranger Sam","hi":"Morning! I light these lamps every evening. Same time, every day.","weather":[["sun","It rains here every afternoon. But not now: the sun shines."]],"q":[{"p":"The ranger ___ the lamps every evening.","o":["lights","is lighting","lit"],"a":0,"fb":"A habit, every evening: Present Simple, and he/she/it takes -s."},{"p":"Water ___ at 100 degrees.","o":["boils","is boiling","boiled"],"a":0,"fb":"A fact that is always true takes the Present Simple."},{"p":"She ___ coffee.","o":["doesn't drink","don't drink","not drinks"],"a":0,"fb":"Negative with he/she/it: doesn't + the bare verb."}]},{"n":2,"tense":"Present Continuous","colour":"#E66085","ink":"#0b1a12","href":"../blockcamp-present-continuous.html","ranger":"Ranger Mia","hi":"Look at the sky! Something is happening up there right now.","weather":[["rain","It is raining."]],"q":[{"p":"Look! It ___.","o":["is raining","rains","rained"],"a":0,"fb":"Happening right now, as we watch: Present Continuous."},{"p":"They ___ a tent at the moment.","o":["are putting up","put up","have put up"],"a":0,"fb":"An action in progress at this moment: are + -ing."},{"p":"Why ___ you laughing?","o":["are","do","did"],"a":0,"fb":"Questions in the Present Continuous start with am/is/are."}]},{"n":3,"tense":"Past Simple","colour":"#B08968","ink":"#0b1a12","href":"../blockcamp-past-simple.html","ranger":"Ranger Tom","hi":"It rained all night. I crossed the bridge at dawn and it was still wet.","weather":[["rain","It rained."],["clear","It rained, and then it stopped."]],"q":[{"p":"We ___ the bridge yesterday.","o":["crossed","cross","have crossed"],"a":0,"fb":"Finished, with a time in the past (yesterday): Past Simple."},{"p":"He ___ go to the cinema last night.","o":["didn't","doesn't","hasn't"],"a":0,"fb":"Past negative: didn't + the bare verb."},{"p":"___ you see the tiger?","o":["Did","Do","Have"],"a":0,"fb":"Past Simple questions start with Did."}]},{"n":4,"tense":"Past Continuous","colour":"#F1D779","ink":"#0b1a12","href":"../blockcamp-past-continuous.html","ranger":"Ranger Ana","hi":"When you arrived, I was watching the clouds. They were moving fast.","weather":[["rain","It was raining when you arrived."],["clear",""]],"q":[{"p":"It ___ when we arrived.","o":["was raining","rained","is raining"],"a":0,"fb":"In progress at a moment in the past: was/were + -ing."},{"p":"They ___ while the ranger talked.","o":["were listening","listened","are listening"],"a":0,"fb":"A longer action around a shorter one: Past Continuous."},{"p":"What ___ you doing at eight o'clock?","o":["were","did","are"],"a":0,"fb":"Questions: was/were + subject + -ing."}]},{"n":5,"tense":"Going To","colour":"#70A43A","ink":"#0b1a12","href":"../blockcamp-going-to.html","ranger":"Ranger Leo","hi":"See those clouds? I know what they mean. Something is going to happen.","weather":[["clouds","It is going to rain."],["rain","It is raining."]],"q":[{"p":"Look at those clouds. It ___ rain.","o":["is going to","will","is"],"a":0,"fb":"Evidence now (the clouds) about the future: going to."},{"p":"I ___ climb the tower tomorrow.","o":["am going to","will going to","going to"],"a":0,"fb":"A plan already made: am/is/are going to."},{"p":"___ they going to camp here?","o":["Are","Do","Will"],"a":0,"fb":"Questions: Are/Is + subject + going to."}]},{"n":6,"tense":"Future Simple","colour":"#F0723F","ink":"#0b1a12","href":"../blockcamp-future-simple.html","ranger":"Ranger Zoe","hi":"Don't worry about the weather. I'll tell you what it will do tonight.","weather":[["night","It will be cold tonight."],["clear",""]],"q":[{"p":"Don't worry, I ___ help you.","o":["will","am going to","would"],"a":0,"fb":"A decision made at the moment of speaking: will."},{"p":"It ___ be cold tonight.","o":["will","is","was"],"a":0,"fb":"A prediction with no evidence in front of us: will."},{"p":"I think she ___ come.","o":["won't","willn't","doesn't will"],"a":0,"fb":"The negative of will is won't."}]},{"n":7,"tense":"Present Perfect","colour":"#2E7D65","ink":"#f2f7f3","href":"../blockcamp-present-perfect.html","ranger":"Ranger Kai","hi":"I've climbed that tower three times. I've never seen a view like it.","weather":[["rain","It has been raining."],["clear","It has stopped raining."]],"q":[{"p":"I ___ the tower three times.","o":["have climbed","climbed","am climbing"],"a":0,"fb":"Experience up to now, no time given: Present Perfect."},{"p":"___ you ever seen snow?","o":["Have","Did","Do"],"a":0,"fb":"Ever + experience: Have/Has + subject + past participle."},{"p":"She ___ just left.","o":["has","have","had"],"a":0,"fb":"A recent action with 'just': has + past participle."}]},{"n":8,"tense":"Present Perfect Continuous","colour":"#46B0AB","ink":"#0b1a12","href":"../blockcamp-present-perfect-continuous.html","ranger":"Ranger Ivy","hi":"It's been raining for hours. I've been waiting here since dawn.","weather":[["rain","It has been raining all day."],["clear",""]],"q":[{"p":"It ___ for hours.","o":["has been raining","has rained","is raining"],"a":0,"fb":"Still going on, with 'for hours': Present Perfect Continuous."},{"p":"How long ___ you been waiting?","o":["have","did","are"],"a":0,"fb":"Questions: How long + have/has + subject + been + -ing."},{"p":"They ___ since dawn.","o":["have been walking","walk","are walking"],"a":0,"fb":"Since dawn until now, still happening: have been + -ing."}]},{"n":9,"tense":"Past Perfect","colour":"#d66d77","ink":"#0b1a12","href":"../blockcamp-past-perfect.html","ranger":"Ranger Rex","hi":"By the time you got here, the rain had stopped. Lucky you.","weather":[["rain",""],["clear","The rain had stopped when you arrived."]],"q":[{"p":"When we got there, the rain ___.","o":["had stopped","stopped","has stopped"],"a":0,"fb":"The earlier of two past events: had + past participle."},{"p":"She ___ never seen a tiger before that day.","o":["had","has","was"],"a":0,"fb":"Before a past moment: Past Perfect."},{"p":"___ they left before you arrived?","o":["Had","Did","Have"],"a":0,"fb":"Questions: Had + subject + past participle."}]}];
-/* Optional painted map: set to '../BlockCamp/village-map.jpg' once one exists.
-   It is drawn under the terrain at world scale; the terrain string below
-   then only needs to mark where the learner can walk. */
-const MAP_IMAGE = null;
 
-/* ---- the world -------------------------------------------------------------
-   T is the tile size in world pixels. Terrain legend: . grass  = path
-   ~ water  b bridge  t tree  , flowers. Buildings, lamps and rangers are
-   placed on top by pixel coordinates below. 44 x 34 tiles. */
-const T = 32;
-const MAP = `
-tttttttttttttttttttttttttttttttttttttttttttt
-tttt....................................tttt
-tt......,.......==========.......,........tt
-tt..............=........=................tt
-tt.....t........=........=......t.........tt
-tt..============================.....,....tt
-tt..=...........=........=......=.........tt
-tt..=...,.......=........=......=...t.....tt
-tt..=...........=........=......=.........tt
-tt..============================..........tt
-tt..=....t......=..,.....=......=,........tt
-tt..=...........=........=......=.........tt
-tt..=...........=........=......=......t..tt
-tt..============================..........tt
-tt......,.......=........=......=.........tt
-tt..............=........=......=.........tt
-tt....t.........=........=......=.....,...tt
-tt~~~~~~~~~~~~~~b~~~~~~~~b~~~~~~b~~~~~~~~~tt
-tt~~~~~~~~~~~~~~b~~~~~~~~b~~~~~~b~~~~~~~~~tt
-tt..............=........=......=.........tt
-tt....,.........=........=......=...t.....tt
-tt..============================..........tt
-tt..=...........=........=......=.........tt
-tt..=....t......=........=......=.....,...tt
-tt..=...........=........=......=.........tt
-tt..============================..........tt
-tt..=...........=........=......=.........tt
-tt..=...........=........=......=..t......tt
-tt..=...,.......=........=......=.........tt
-tt..============================..........tt
-tt..............=.....,..=................tt
-tt..............=........=................tt
-tt..............==========................tt
-tttttttttttttttttttttttttttttttttttttttttttt`.trim().split('\n');
-const ROWS = MAP.length, COLS = MAP[0].length, W = COLS * T, H = ROWS * T;
-const at = (c, r) => (MAP[r] || '')[c] || 't';
+/* ---- the scene: the hub's trail painting, walked along its own path ----------
+   Coordinates are pixels of the 1600x900 picture. TRAIL is the painted path
+   from the tent, over the bridge and up to the lookout tower; the hiker can
+   only be on it. Depth is read off the picture's y: a figure at the bottom
+   edge is drawn at full size, one at the tower a third of that, and the
+   camera zooms to keep the hiker readable on screen. */
+const SCENE = {src: '../BlockCamp/hub-hero.jpg', w: 1600, h: 900};
+const TRAIL = [[500,892],[560,868],[578,840],[602,810],[632,792],[668,776],[705,762],[750,752],[792,742],[832,752],[900,760],[1000,762],[1100,766],[1180,768],[1090,762],[1000,754],[960,742],[932,726],[938,712],[918,700],[898,688],[906,676],[935,665],[962,656],[992,648],[1016,640],[1030,628],[1024,614],[1005,602],[996,592],[1012,584],[1046,576],[1076,568],[1094,558],[1122,538],[1150,512]];
+const DEPTH = y => Math.max(.3, Math.min(1, .3 + .7 * (y - 500) / 380));   // 1 at the bottom, .3 at the tower
+const seg = []; let total = 0;
+for (let i = 1; i < TRAIL.length; i++) { const [ax, ay] = TRAIL[i - 1], [bx, by] = TRAIL[i]; const L = Math.hypot(bx - ax, by - ay); seg.push({ax, ay, bx, by, L, d0: total}); total += L; }
+function pos(d) { d = Math.max(0, Math.min(total, d)); const sg = seg.find(s => d <= s.d0 + s.L) || seg[seg.length - 1]; const k = (d - sg.d0) / sg.L; return {x: sg.ax + (sg.bx - sg.ax) * k, y: sg.ay + (sg.by - sg.ay) * k, dx: sg.bx - sg.ax, dy: sg.by - sg.ay}; }
+function nearestD(x, y) { let best = 0, bd = 1e9; for (const sg of seg) { const vx = sg.bx - sg.ax, vy = sg.by - sg.ay; const k = Math.max(0, Math.min(1, ((x - sg.ax) * vx + (y - sg.ay) * vy) / (sg.L * sg.L))); const px = sg.ax + vx * k, py = sg.ay + vy * k; const dd = Math.hypot(px - x, py - y); if (dd < bd) { bd = dd; best = sg.d0 + sg.L * k; } } return {d: best, dist: bd}; }
 
-/* buildings: x,y is the top-left in world px; door is the walk-in zone */
-const CABIN_SPOTS = [[5,3],[17,3],[29,3],[5,10],[17,10],[29,10],[5,22],[17,22],[29,22]];
-const buildings = CAMPS.map((c, i) => { const [cx, cy] = CABIN_SPOTS[i]; return {kind: 'cabin', camp: c, x: cx * T, y: cy * T, w: 5 * T, h: 3 * T,
-  door: {x: cx * T + 2 * T, y: cy * T + 3 * T, w: T, h: T}, href: c.href, label: c.tense}; });
-buildings.push({kind: 'tower', x: 19 * T, y: 0.5 * T, w: 3 * T, h: 4.2 * T, door: {x: 20 * T, y: 4.7 * T, w: T, h: T}, href: 'quest.html', label: 'THE LOOKOUT · your map & badges'});
-buildings.push({kind: 'cinema', x: 33 * T, y: 15 * T, w: 6 * T, h: 3 * T, door: {x: 35.5 * T, y: 18 * T, w: T, h: T}, href: 'quest.html#adventures', label: 'CINEMA · the adventures'});
-buildings.push({kind: 'post', x: 33 * T, y: 27 * T, w: 5 * T, h: 3 * T, door: {x: 35 * T, y: 30 * T, w: T, h: T}, href: '../library.html', label: 'POST · the lesson library'});
-buildings.push({kind: 'tent', x: 16 * T, y: 29.4 * T, w: 3 * T, h: 2.2 * T, door: {x: 17 * T, y: 31.6 * T, w: T, h: T}, href: 'quest.html#passport', label: 'YOUR TENT · save file'});
-buildings.push({kind: 'board', x: 24 * T, y: 30 * T, w: 2 * T, h: 1.5 * T, door: {x: 24.5 * T, y: 31.5 * T, w: T, h: T}, href: '../block-camp.html', label: 'NOTICE BOARD · the hub'});
-const lamps = []; for (const [cx, cy] of CABIN_SPOTS) { lamps.push({x: cx * T - 0.6 * T, y: cy * T + 3.3 * T, lit: false}); lamps.push({x: cx * T + 5.6 * T, y: cy * T + 3.3 * T, lit: false}); }
-[[15.5,16.5],[24.5,16.5],[31.5,16.5],[15.5,19.6],[24.5,19.6],[31.5,19.6],[20.4,5.6],[21.6,5.6]].forEach(([x, y]) => lamps.push({x: x * T, y: y * T, lit: true}));
-const rangers = CAMPS.map((c, i) => { const [cx, cy] = CABIN_SPOTS[i]; return {camp: c, x: cx * T + 3.6 * T, y: cy * T + 3.9 * T, face: 2, bob: Math.random() * 6}; });
-const trees = []; for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) if (at(c, r) === 't') trees.push({x: c * T + T / 2, y: r * T + T, seed: (r * 31 + c * 17) % 7});
-const flowers = []; for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) if (at(c, r) === ',') flowers.push({x: c * T, y: r * T});
+/* stops along the trail: the tent at the start, a ranger per camp, the tower at the end.
+   TRAIL was traced from the painting's sandy pixels (rows every 8px, clustered), not by eye. */
+const stops = [{kind: 'tent', d: 0, label: 'YOUR TENT · map, badges, save', href: 'quest.html#passport'}];
+CAMPS.forEach((c, i) => stops.push({kind: 'ranger', camp: c, d: total * (.09 + .80 * i / Math.max(1, CAMPS.length - 1)), bob: Math.random() * 6, face: 3}));
+stops.push({kind: 'tower', d: total, label: 'THE LOOKOUT · the far side', href: '../block-camp-descent-map.html'});
+stops.forEach(s => { const p = pos(s.d); s.x = p.x; s.y = p.y; });
+const lantern = {x: 455, y: 748};
 
-/* ---- save --------------------------------------------------------------- */
+/* ---- save ------------------------------------------------------------------- */
 const save = (window.CampSave && CampSave.get('village')) || {met: {}, best: {}};
 save.met = save.met || {}; save.best = save.best || {};
 function persist() { if (window.CampSave) try { CampSave.put('village', save); } catch (_) {} }
 if (window.CampSave) try { CampSave.visit('village'); } catch (_) {}
 function metCount() { return CAMPS.filter(c => save.met[c.n]).length; }
-function applyMet() { rangers.forEach((r, i) => { if (save.met[r.camp.n]) { lamps[i * 2].lit = lamps[i * 2 + 1].lit = true; } }); document.getElementById('met').textContent = `MET ${metCount()}/${CAMPS.length}`; }
+function applyMet() { document.getElementById('met').textContent = `MET ${metCount()}/${CAMPS.length}`; }
 applyMet();
 
-/* ---- player ------------------------------------------------------------- */
-/* spawn on the bottom path, clear of the tent's footprint: the first build
-   started inside it and every step was blocked (Innes: 'neither moves') */
-const player = {x: 20.5 * T, y: 32.4 * T, vx: 0, vy: 0, face: 0, frame: 0, walk: 0, speed: 2.2};
+/* ---- the hiker --------------------------------------------------------------- */
+const player = {d: 30, x: 0, y: 0, face: 1, walk: 0, target: null};
 const keys = {}; let talking = false;
-const DIRS = {ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right', w: 'up', s: 'down', a: 'left', d: 'right', W: 'up', S: 'down', A: 'left', D: 'right'};
-addEventListener('keydown', e => { if (e.repeat) return; const d = DIRS[e.key]; if (d) { keys[d] = true; e.preventDefault(); }
+const DIRS = {ArrowRight: 'fwd', ArrowUp: 'fwd', ArrowLeft: 'back', ArrowDown: 'back', d: 'fwd', w: 'fwd', a: 'back', s: 'back', D: 'fwd', W: 'fwd', A: 'back', S: 'back'};
+addEventListener('keydown', e => { if (e.repeat) return; const k = DIRS[e.key]; if (k) { keys[k] = true; player.target = null; e.preventDefault(); }
   if (e.key === ' ' || e.key === 'Enter' || e.key === 'e' || e.key === 'E') { e.preventDefault(); if (!talking) act(); else { const b = document.querySelector('#tRow .btn:last-child'); if (b) b.click(); } return; }
-  if (e.key === 'Escape') closeTalk(); if ((e.key === 'S' || e.key === 's') && !talking) setSound(!sound);
-  if (talking && /^[1-4]$/.test(e.key)) { const b = document.querySelectorAll('#talk .opt')[+e.key - 1]; if (b && !b.disabled) b.click(); }
-});
-addEventListener('keyup', e => { const d = DIRS[e.key]; if (d) keys[d] = false; });
-document.querySelectorAll('#pad button').forEach(b => { const k = b.dataset.k; const on = e => { e.preventDefault(); keys[k] = true; }, off = e => { e.preventDefault(); keys[k] = false; };
+  if (e.key === 'Escape') closeTalk(); if ((e.key === 'M' || e.key === 'm') && !talking) setSound(!sound);
+  if (talking && /^[1-4]$/.test(e.key)) { const b = document.querySelectorAll('#talk .opt')[+e.key - 1]; if (b && !b.disabled) b.click(); } });
+addEventListener('keyup', e => { const k = DIRS[e.key]; if (k) keys[k] = false; });
+document.querySelectorAll('#pad button').forEach(b => { const k = b.dataset.k; const on = e => { e.preventDefault(); keys[k] = true; player.target = null; }, off = e => { e.preventDefault(); keys[k] = false; };
   b.addEventListener('pointerdown', on); b.addEventListener('pointerup', off); b.addEventListener('pointercancel', off); b.addEventListener('pointerleave', off); });
 document.getElementById('act').addEventListener('click', () => { if (talking) { const b = document.querySelector('#tRow .btn:last-child'); if (b) b.click(); } else act(); });
 
-function solid(x, y) {
-  const c = Math.floor(x / T), r = Math.floor(y / T), t = at(c, r);
-  if (t === 't' || t === '~') return true;
-  for (const b of buildings) if (x > b.x && x < b.x + b.w && y > b.y + b.h * .35 && y < b.y + b.h) return true;
-  for (const rg of rangers) if (Math.abs(x - rg.x) < 10 && Math.abs(y - rg.y) < 8) return true;
-  return false;
-}
 function stepPlayer() {
   if (talking) { player.walk = 0; return; }
-  let dx = (keys.right ? 1 : 0) - (keys.left ? 1 : 0), dy = (keys.down ? 1 : 0) - (keys.up ? 1 : 0);
-  if (dx && dy) { dx *= .707; dy *= .707; }
-  if (dx || dy) { player.face = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 1 : 3) : (dy > 0 ? 0 : 2); player.walk++; } else player.walk = 0;
-  const nx = player.x + dx * player.speed, ny = player.y + dy * player.speed;
-  /* if the hiker is somehow standing in a solid, let them walk out of it */
-  const stuck = solid(player.x, player.y);
-  if (stuck || (!solid(nx - 6, player.y) && !solid(nx + 6, player.y))) player.x = Math.max(T, Math.min(W - T, nx));
-  if (stuck || (!solid(player.x, ny - 2) && !solid(player.x, ny + 4))) player.y = Math.max(T, Math.min(H - T, ny));
-  trail.push({x: player.x, y: player.y}); if (trail.length > 40) trail.shift();
+  let dir = (keys.fwd ? 1 : 0) - (keys.back ? 1 : 0);
+  if (player.target != null) { const gap = player.target - player.d; if (Math.abs(gap) < 2) { player.d = player.target; player.target = null; } else dir = Math.sign(gap); }
+  const p = pos(player.d), sc = DEPTH(p.y);
+  if (dir) { player.d = Math.max(0, Math.min(total, player.d + dir * 2.6 * sc)); player.walk++; const q = pos(player.d); const fx = dir * q.dx, fy = dir * q.dy; player.face = Math.abs(fx) > Math.abs(fy) * .8 ? (fx > 0 ? 1 : 3) : (fy > 0 ? 0 : 2); } else player.walk = 0;
+  const q = pos(player.d); player.x = q.x; player.y = q.y;
 }
-const trail = [];
+function near() { for (const s of stops) if (Math.abs(s.d - player.d) < 34) return s; return null; }
+function act() { const s = near(); if (!s) return; if (s.kind === 'ranger') talkTo(s); else enter(s); }
 
-/* what is in reach: a ranger, or a door */
-function near() {
-  for (const r of rangers) if (Math.hypot(r.x - player.x, r.y - player.y) < 44) return {kind: 'ranger', r};
-  for (const b of buildings) { const d = b.door; if (player.x > d.x - 8 && player.x < d.x + d.w + 8 && player.y > d.y - 6 && player.y < d.y + d.h + 10) return {kind: 'door', b}; }
-  return null;
-}
-function act() { const n = near(); if (!n) return; if (n.kind === 'ranger') talkTo(n.r); else enter(n.b); }
-
-/* ---- the talk box ------------------------------------------------------- */
+/* ---- the talk box ------------------------------------------------------------ */
 const $ = id => document.getElementById(id);
 function openTalk() { talking = true; $('talk').classList.add('on'); }
 function closeTalk() { talking = false; $('talk').classList.remove('on'); }
 function esc(s) { return String(s).replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c])); }
-function say(who, tense, html, opts, fb, row) { $('tWho').textContent = who; $('tTense').textContent = tense; $('tSay').innerHTML = html; $('tOpts').innerHTML = opts || ''; $('tFb').innerHTML = fb || ''; $('tRow').innerHTML = row || ''; openTalk(); }
+function say(who, tense, html, opts, fb) { $('tWho').textContent = who; $('tTense').textContent = tense; $('tSay').innerHTML = html; $('tOpts').innerHTML = opts || ''; $('tFb').innerHTML = fb || ''; $('tRow').innerHTML = ''; openTalk(); }
 function btn(label, fn, alt) { const b = document.createElement('button'); b.className = 'btn' + (alt ? ' alt' : ''); b.textContent = label; b.onclick = fn; $('tRow').append(b); }
-
-function enter(b) {
-  say(b.label, '', b.kind === 'cabin' ? `Go in and open <b>${esc(b.camp.tense)}</b>, part 1?` : `Go to <b>${esc(b.label.split(' · ')[1] || b.label)}</b>?`);
-  btn('Not now', closeTalk, true); btn('Go in', () => { location.href = b.href; });
-}
+function enter(s) { say(s.label, '', s.kind === 'tent' ? 'Your tent. The map of everything you have done, your badges and your save code are inside.' : 'The lookout tower. From the top you can see the far side of the hill — the same tenses, in the passive.'); btn('Not now', closeTalk, true); btn('Go', () => { location.href = s.href; }); }
 function talkTo(r) {
-  r.face = player.x < r.x ? 3 : player.x > r.x + 10 ? 1 : 0;
+  r.face = player.d < r.d ? 3 : 1;
   const c = r.camp, done = !!save.met[c.n];
   say(c.ranger, c.tense, `${esc(c.hi)}${done ? '<br><small>You have already met me. Want the questions again?</small>' : ''}`);
-  btn('Later', closeTalk, true); btn(done ? 'Ask me again' : 'Ask me', () => quiz(r, 0, 0));
+  btn('Later', closeTalk, true); btn('Open the lesson', () => { location.href = c.href; }, true); btn(done ? 'Ask me again' : 'Ask me', () => quiz(r, 0, 0));
 }
 function quiz(r, i, right) {
   const c = r.camp, q = c.q[i];
@@ -331,21 +266,19 @@ function quiz(r, i, right) {
 function finish(r, right) {
   const c = r.camp, all = right === c.q.length;
   save.best[c.n] = Math.max(save.best[c.n] || 0, right);
-  if (all && !save.met[c.n]) { save.met[c.n] = true; }
+  if (all && !save.met[c.n]) save.met[c.n] = true;
   persist(); applyMet();
   if (all) { say(c.ranger, c.tense, `${right}/${c.q.length}. Well done. Now look at the sky.`); btn('Look up', () => { closeTalk(); weatherShow(c.weather); }); }
   else { say(c.ranger, c.tense, `${right}/${c.q.length}. Not yet. Read the camp and come back, I'm not going anywhere.`); btn('Open the lesson', () => { location.href = c.href; }, true); btn('OK', closeTalk); }
 }
 
-/* ---- weather: the reward. A phase is a look for the sky; the caption is
-   the sentence. Phases fade over one another, so 'clouds' then 'rain' reads
-   as "it is going to rain" turning into "it is raining". ----------------- */
+/* ---- weather: the reward ----------------------------------------------------- */
 const weather = {phase: 'clear', from: 'clear', t: 1, queue: [], hold: 0};
 const drops = []; for (let i = 0; i < 260; i++) drops.push({x: Math.random(), y: Math.random(), s: .6 + Math.random() * .8});
-const clouds = []; for (let i = 0; i < 9; i++) clouds.push({x: Math.random(), y: Math.random() * .5, w: .18 + Math.random() * .22, v: .00012 + Math.random() * .0002});
+const clouds = []; for (let i = 0; i < 8; i++) clouds.push({x: Math.random(), y: .04 + Math.random() * .3, w: .2 + Math.random() * .25, v: .00012 + Math.random() * .0002});
 function weatherShow(seq) { weather.queue = seq.slice(); weather.hold = 0; }
 function setPhase(p) { if (p !== weather.phase) { weather.from = weather.phase; weather.phase = p; weather.t = 0; } }
-let capTimer;
+let capTimer, ambient = 0;
 function caption(text) { const el = $('caption'); clearTimeout(capTimer); if (!text) { el.classList.remove('on'); return; }
   el.innerHTML = esc(text).replace(/\b(is going to rain|is raining|rained|was raining|will be cold|has been raining|has stopped raining|had stopped|rains|shines)\b/g, '<b>$1</b>'); el.classList.add('on');
   capTimer = setTimeout(() => el.classList.remove('on'), 4200); }
@@ -353,38 +286,23 @@ function stepWeather(dt) {
   weather.t = Math.min(1, weather.t + dt / 1800);
   if (weather.hold > 0) weather.hold -= dt;
   else if (weather.queue.length) { const [p, text] = weather.queue.shift(); setPhase(p); caption(text); weather.hold = text ? 5200 : 3200; }
-  else if (weather.phase !== 'clear' && weather.t >= 1) { setPhase('clear'); }
+  else if (weather.phase !== 'clear' && weather.t >= 1) setPhase('clear');
   ambient += dt; if (ambient > 95000 && weather.phase === 'clear' && !talking) { ambient = -Math.random() * 40000; weatherShow([['clouds', 'It is going to rain.'], ['rain', 'It is raining.'], ['clear', 'It has stopped raining.']]); }
   clouds.forEach(c => { c.x += c.v * dt / 16; if (c.x > 1.3) c.x = -c.w; });
   const rainy = weather.phase === 'rain' ? weather.t : weather.from === 'rain' ? 1 - weather.t : 0;
   if (rainy > 0) drops.forEach(d => { d.y += .012 * d.s * dt / 16; d.x -= .002 * dt / 16; if (d.y > 1) { d.y = -.05; d.x = Math.random() * 1.1; } });
 }
-let ambient = 0;
 function mix(p) { return weather.phase === p ? weather.t : weather.from === p ? 1 - weather.t : 0; }
 
-/* ---- drawing ------------------------------------------------------------ */
+/* ---- drawing ------------------------------------------------------------------ */
 const cv = $('world'), ctx = cv.getContext('2d');
-let VW, VH, Z = 1;
+let VW = 1, VH = 1, DPR = 1;
 function size() { const st = $('stage'); const top = document.querySelector('.topband'); st.style.setProperty('--top', (top ? top.offsetHeight : 0) + 'px');
-  VW = st.clientWidth; VH = st.clientHeight; Z = VW < 700 ? 1.6 : 2; cv.width = Math.round(VW / Z); cv.height = Math.round(VH / Z); ctx.imageSmoothingEnabled = false; }
+  VW = st.clientWidth; VH = st.clientHeight; DPR = Math.min(2, devicePixelRatio || 1); cv.width = Math.round(VW * DPR); cv.height = Math.round(VH * DPR); }
 addEventListener('resize', size); size();
+const img = new Image(); img.src = SCENE.src;
 
-/* terrain is drawn once to an offscreen canvas at world scale */
-const ground = document.createElement('canvas'); ground.width = W; ground.height = H; const g = ground.getContext('2d');
-(function paintGround() {
-  const rnd = (n => () => (n = (n * 16807) % 2147483647) / 2147483647)(7);
-  for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) {
-    const t = at(c, r), x = c * T, y = r * T;
-    if (t === '~') { g.fillStyle = '#23486a'; g.fillRect(x, y, T, T); g.fillStyle = '#2d5a82'; for (let i = 0; i < 3; i++) g.fillRect(x + rnd() * T, y + rnd() * T, 8, 3); }
-    else if (t === 'b') { g.fillStyle = '#7a5230'; g.fillRect(x, y, T, T); g.fillStyle = '#5a3a1e'; for (let i = 0; i < T; i += 8) g.fillRect(x, y + i, T, 2); g.fillStyle = '#3b2612'; g.fillRect(x, y, 3, T); g.fillRect(x + T - 3, y, 3, T); }
-    else if (t === '=') { g.fillStyle = '#9a8a6a'; g.fillRect(x, y, T, T); g.fillStyle = '#8a7a5c'; for (let i = 0; i < 4; i++) g.fillRect(x + rnd() * T, y + rnd() * T, 6, 4); }
-    else { g.fillStyle = (r + c) % 2 ? '#3f7a3a' : '#3b7236'; g.fillRect(x, y, T, T); g.fillStyle = '#48884a'; for (let i = 0; i < 3; i++) g.fillRect(x + rnd() * T, y + rnd() * T, 4, 4); }
-  }
-  flowers.forEach(f => { for (let i = 0; i < 5; i++) { g.fillStyle = ['#e8c04a', '#f2dc9e', '#E66085', '#faf8f3'][i % 4]; g.fillRect(f.x + 4 + i * 5, f.y + 8 + (i % 2) * 10, 4, 4); } });
-})();
-
-/* pixel sprites: a string map, 4px a cell in the world */
-const PX = 2;
+const PX = 3;   /* a sprite cell, in picture pixels at full depth */
 function sprite(rows, ink) { return {rows: rows.split('\n'), ink}; }
 const HIKER = {
   0: sprite(`..HHHH..\n..HHHH..\n..FFFF..\n..FfFf..\n..FFFF..\n.OOOOOO.\nOOOOOOOO\nO.OOOO.O\n..PPPP..\n..PPPP..\n..P..P..\n..S..S..`, {H: '#3b2a1a', F: '#f1c9a5', f: '#1a1a1a', O: '#e07a2a', P: '#2b3a6b', S: '#1a1200'}),
@@ -392,70 +310,60 @@ const HIKER = {
   1: sprite(`..HHHH..\n..HHHH..\n..FFFF..\n..FFfF..\n..FFFF..\n..OOOO..\n..OOOOO.\n..OOOO..\n..PPPP..\n..PPPP..\n..P.P...\n..S.S...`, {H: '#3b2a1a', F: '#f1c9a5', f: '#1a1a1a', O: '#e07a2a', P: '#2b3a6b', S: '#1a1200'}),
 };
 HIKER[3] = {rows: HIKER[1].rows.map(r => [...r].reverse().join('')), ink: HIKER[1].ink};
-function rangerSprite(colour) { const s = sprite(`..HHHH..\n.HHHHHH.\n..FFFF..\n..FfFf..\n..FFFF..\n.CCCCCC.\nCCCCCCCC\nC.CCCC.C\n..PPPP..\n..PPPP..\n..P..P..\n..S..S..`, {H: '#6b4a2a', F: '#f1c9a5', f: '#1a1a1a', C: colour, P: '#3b2a1a', S: '#1a1200'}); return s; }
+function rangerSprite(colour) { return sprite(`..HHHH..\n.HHHHHH.\n..FFFF..\n..FfFf..\n..FFFF..\n.CCCCCC.\nCCCCCCCC\nC.CCCC.C\n..PPPP..\n..PPPP..\n..P..P..\n..S..S..`, {H: '#6b4a2a', F: '#f1c9a5', f: '#1a1a1a', C: colour, P: '#3b2a1a', S: '#1a1200'}); }
 const RANGER_SPR = {}; CAMPS.forEach(c => RANGER_SPR[c.n] = rangerSprite(c.colour));
 const DOG = sprite(`......BB\n.BBBBBBB\n.BBBBBB.\n.B..B...`, {B: '#8a5a2b'});
-function drawSprite(s, x, y, legs) { s.rows.forEach((row, r) => { if (legs && r >= 10) { const shift = legs % 2 ? 1 : -1; row = shift > 0 ? row.slice(1) + '.' : '.' + row.slice(0, -1); }
-  [...row].forEach((ch, c) => { const col = s.ink[ch]; if (col) { ctx.fillStyle = col; ctx.fillRect(x + c * PX, y + r * PX, PX, PX); } }); }); }
+/* draw a sprite standing on picture point (x,y) at depth scale s, mirrored for the left-facing frame */
+function drawSprite(s, x, y, sc, legs, flip) { const cell = PX * sc, w = 8 * cell, h = s.rows.length * cell; const ox = x - w / 2, oy = y - h;
+  ctx.fillStyle = 'rgba(0,0,0,.28)'; ctx.beginPath(); ctx.ellipse(x, y + cell * .4, w * .45, cell * .9, 0, 0, 7); ctx.fill();
+  s.rows.forEach((row, r) => { if (legs && r >= 10) { row = (legs % 2) ? row.slice(1) + '.' : '.' + row.slice(0, -1); }
+    [...row].forEach((ch, c) => { const col = s.ink[ch]; if (col) { ctx.fillStyle = col; ctx.fillRect(ox + (flip ? 7 - c : c) * cell, oy + r * cell, cell + .5, cell + .5); } }); }); }
 
-function drawBuilding(b, cx, cy) {
-  const x = b.x - cx, y = b.y - cy;
-  if (b.kind === 'cabin') { const col = b.camp.colour, met = !!save.met[b.camp.n];
-    ctx.fillStyle = '#5a3a1e'; ctx.fillRect(x, y + b.h * .35, b.w, b.h * .65);
-    ctx.fillStyle = col; ctx.beginPath(); ctx.moveTo(x - 6, y + b.h * .4); ctx.lineTo(x + b.w / 2, y); ctx.lineTo(x + b.w + 6, y + b.h * .4); ctx.closePath(); ctx.fill();
-    ctx.fillStyle = 'rgba(0,0,0,.25)'; ctx.fillRect(x, y + b.h * .35, b.w, 4);
-    ctx.fillStyle = met ? '#ffe9a6' : '#2a1a0c'; ctx.fillRect(x + 12, y + b.h * .5, 18, 16); ctx.fillRect(x + b.w - 30, y + b.h * .5, 18, 16);
-    if (met) { ctx.fillStyle = 'rgba(255,233,166,.18)'; ctx.fillRect(x + 6, y + b.h * .45, 30, 30); ctx.fillRect(x + b.w - 36, y + b.h * .45, 30, 30); }
-    ctx.fillStyle = '#b3452c'; ctx.fillRect(b.door.x - cx, y + b.h - 26, T, 26); ctx.fillStyle = '#e8c04a'; ctx.fillRect(b.door.x - cx + T - 8, y + b.h - 14, 3, 3);
-    ctx.font = '8px Monocraft, monospace'; ctx.textAlign = 'center'; const sign = String(b.camp.n) + ' · ' + b.camp.tense.toUpperCase(); const sw = ctx.measureText(sign).width + 12;
-    ctx.fillStyle = '#f3e6c8'; ctx.fillRect(x + b.w / 2 - sw / 2, y + b.h * .12, sw, 12); ctx.fillStyle = '#3b2a1a'; ctx.fillText(sign, x + b.w / 2, y + b.h * .12 + 9);
-  } else if (b.kind === 'tower') { ctx.fillStyle = '#5a3a1e'; ctx.fillRect(x + 20, y + 30, b.w - 40, b.h - 30); ctx.fillStyle = '#3b2612'; for (let i = 40; i < b.h; i += 14) ctx.fillRect(x + 20, y + i, b.w - 40, 3);
-    ctx.fillStyle = '#8a5a2b'; ctx.fillRect(x, y + 18, b.w, 22); ctx.fillStyle = '#e8c04a'; ctx.beginPath(); ctx.moveTo(x - 4, y + 18); ctx.lineTo(x + b.w / 2, y); ctx.lineTo(x + b.w + 4, y + 18); ctx.fill();
-    const lit = metCount(); for (let i = 0; i < CAMPS.length; i++) { ctx.fillStyle = i < lit ? '#ffe9a6' : '#2a1a0c'; ctx.fillRect(x + 26 + (i % 3) * 14, y + 44 + Math.floor(i / 3) * 18, 8, 10); }
-    ctx.fillStyle = '#b3452c'; ctx.fillRect(b.door.x - cx, b.door.y - cy - 20, T, 20);
-  } else if (b.kind === 'cinema' || b.kind === 'post') { const col = b.kind === 'cinema' ? '#7a1f2b' : '#c8842a';
-    ctx.fillStyle = col; ctx.fillRect(x, y + 14, b.w, b.h - 14); ctx.fillStyle = 'rgba(0,0,0,.25)'; ctx.fillRect(x, y + 14, b.w, 5); ctx.fillStyle = '#3b2612'; ctx.fillRect(x - 4, y + 4, b.w + 8, 12);
-    ctx.fillStyle = '#ffe9a6'; for (let i = 14; i < b.w - 20; i += 30) ctx.fillRect(x + i, y + 30, 16, 16); ctx.fillStyle = '#b3452c'; ctx.fillRect(b.door.x - cx, y + b.h - 26, T, 26);
-    ctx.fillStyle = '#f3e6c8'; ctx.fillRect(x + b.w / 2 - 34, y + 20, 68, 12); ctx.fillStyle = '#3b2a1a'; ctx.font = '9px Monocraft, monospace'; ctx.textAlign = 'center'; ctx.fillText(b.kind.toUpperCase(), x + b.w / 2, y + 29);
-  } else if (b.kind === 'tent') { ctx.fillStyle = '#e8c04a'; ctx.beginPath(); ctx.moveTo(x, y + b.h); ctx.lineTo(x + b.w / 2, y); ctx.lineTo(x + b.w, y + b.h); ctx.fill(); ctx.fillStyle = '#b8962e'; ctx.beginPath(); ctx.moveTo(x + b.w / 2 - 12, y + b.h); ctx.lineTo(x + b.w / 2, y + 22); ctx.lineTo(x + b.w / 2 + 12, y + b.h); ctx.fill();
-  } else if (b.kind === 'board') { ctx.fillStyle = '#5a3a1e'; ctx.fillRect(x + 6, y + 10, 6, b.h); ctx.fillRect(x + b.w - 12, y + 10, 6, b.h); ctx.fillStyle = '#8a5a2b'; ctx.fillRect(x, y, b.w, 34); ctx.fillStyle = '#f3e6c8'; for (let i = 0; i < 5; i++) ctx.fillRect(x + 6 + (i % 3) * 20, y + 6 + Math.floor(i / 3) * 14, 14, 10); }
-}
-function drawTree(t, cx, cy) { const x = t.x - cx, y = t.y - cy; ctx.fillStyle = '#5a3a1e'; ctx.fillRect(x - 3, y - 12, 6, 12); const k = ['#1f5a2a', '#246a32', '#1a4f25'][t.seed % 3]; ctx.fillStyle = k;
-  ctx.fillRect(x - 12, y - 24, 24, 12); ctx.fillRect(x - 9, y - 34, 18, 12); ctx.fillRect(x - 5, y - 42, 10, 10); if (weather.phase !== 'night') { ctx.fillStyle = 'rgba(255,255,255,.08)'; ctx.fillRect(x - 9, y - 34, 6, 4); } }
-function drawLamp(l, cx, cy) { const x = l.x - cx, y = l.y - cy; ctx.fillStyle = '#1a1200'; ctx.fillRect(x - 2, y - 26, 4, 26); ctx.fillRect(x - 6, y - 30, 12, 6); ctx.fillStyle = l.lit ? '#ffe9a6' : '#3b2a1a'; ctx.fillRect(x - 4, y - 28, 8, 5); }
-function drawGlow(l, cx, cy, a) { const x = l.x - cx, y = l.y - cy - 26; const gr = ctx.createRadialGradient(x, y, 2, x, y, 46); gr.addColorStop(0, `rgba(255,224,150,${.45 * a})`); gr.addColorStop(1, 'rgba(255,224,150,0)'); ctx.fillStyle = gr; ctx.fillRect(x - 46, y - 46, 92, 92); }
-
-let last = performance.now(), frame = 0;
+let last = performance.now(), frame = 0, camX = 0, camY = 0, camZ = 1;
 function loop(now) { const dt = Math.min(50, now - last); last = now; frame++;
   stepPlayer(); stepWeather(dt);
-  const cx = Math.round(Math.max(0, Math.min(W - cv.width, player.x - cv.width / 2))), cy = Math.round(Math.max(0, Math.min(H - cv.height, player.y - cv.height / 2)));
-  ctx.clearRect(0, 0, cv.width, cv.height);
-  if (mapImg && mapImg.complete) ctx.drawImage(mapImg, -cx, -cy, W, H); else ctx.drawImage(ground, -cx, -cy);
-  /* everything with a foot on the ground, sorted by y so the player walks behind cabins */
+  /* the camera: zoom so the hiker stays readable, follow them, never leave the picture */
+  const sc = DEPTH(player.y), vwP = VW * DPR, vhP = VH * DPR;
+  const wantZ = Math.max(vwP / SCENE.w, vhP / SCENE.h, Math.min(3.2, (VW < 700 ? 2.2 : 1.7) * DPR / sc));
+  camZ += (wantZ - camZ) * .08;
+  const tx = Math.max(0, Math.min(SCENE.w - vwP / camZ, player.x - vwP / camZ / 2)), ty = Math.max(0, Math.min(SCENE.h - vhP / camZ, player.y - vhP / camZ * .62));
+  camX += (tx - camX) * .1; camY += (ty - camY) * .1;
+  ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.fillStyle = '#0b1a12'; ctx.fillRect(0, 0, cv.width, cv.height);
+  ctx.setTransform(camZ, 0, 0, camZ, -camX * camZ, -camY * camZ); ctx.imageSmoothingEnabled = camZ < 1.5;
+  if (img.complete && img.naturalWidth) ctx.drawImage(img, 0, 0, SCENE.w, SCENE.h);
+  /* figures, far to near */
   const items = [];
-  buildings.forEach(b => items.push({y: b.y + b.h, f: () => drawBuilding(b, cx, cy)}));
-  trees.forEach(t => { if (t.x > cx - 40 && t.x < cx + cv.width + 40 && t.y > cy - 60 && t.y < cy + cv.height + 60) items.push({y: t.y, f: () => drawTree(t, cx, cy)}); });
-  lamps.forEach(l => items.push({y: l.y, f: () => drawLamp(l, cx, cy)}));
-  rangers.forEach(r => items.push({y: r.y + 24, f: () => { const bob = Math.sin((frame + r.bob * 10) / 30) > .9 ? 1 : 0; drawSprite(RANGER_SPR[r.camp.n], r.x - cx - 8, r.y - cy - 22 + bob); if (save.met[r.camp.n]) { ctx.fillStyle = '#e8c04a'; ctx.fillRect(r.x - cx - 2, r.y - cy - 30, 4, 4); } }}));
-  if (metCount() > 0 && trail.length > 24) { const p = trail[trail.length - 24]; items.push({y: p.y + 6, f: () => drawSprite(DOG, p.x - cx - 8 + (player.face === 1 ? -14 : 12), p.y - cy - 4, 0)}); }
-  items.push({y: player.y + 24, f: () => drawSprite(HIKER[player.face], player.x - cx - 8, player.y - cy - 22, player.walk ? Math.floor(player.walk / 8) : 0)});
+  stops.forEach(s => { if (s.kind !== 'ranger') return; items.push({y: s.y, f: () => { const d = DEPTH(s.y); const bob = Math.sin((frame + s.bob * 10) / 30) > .9 ? d : 0; drawSprite(RANGER_SPR[s.camp.n], s.x, s.y + bob, d, 0, s.face === 3);
+    if (save.met[s.camp.n]) { ctx.fillStyle = '#e8c04a'; ctx.fillRect(s.x - 2 * d, s.y - 14 * PX * d, 4 * d, 4 * d); }
+    /* the camp number floats over the ranger's head */
+    const fs = 11 * d; ctx.font = `${fs}px Monocraft, monospace`; ctx.textAlign = 'center'; const label = String(s.camp.n); const w = ctx.measureText(label).width + fs * .9;
+    ctx.fillStyle = s.camp.colour; ctx.beginPath(); ctx.arc(s.x, s.y - 14.5 * PX * d, w / 2, 0, 7); ctx.fill(); ctx.fillStyle = s.camp.ink; ctx.fillText(label, s.x, s.y - 14.5 * PX * d + fs * .36); } }); });
+  if (metCount() > 0) { const dd = Math.max(0, player.d - 26); const p = pos(dd); items.push({y: p.y - .1, f: () => drawSprite(DOG, p.x, p.y, DEPTH(p.y), 0, player.face === 3)}); }
+  items.push({y: player.y, f: () => drawSprite(HIKER[player.face === 3 ? 1 : player.face], player.x, player.y, sc, player.walk ? Math.floor(player.walk / 7) : 0, player.face === 3)});
   items.sort((a, b) => a.y - b.y).forEach(i => i.f());
-  /* sky */
+  /* the lantern by the tent, and the tower's windows */
   const night = mix('night'), cloud = Math.max(mix('clouds'), mix('rain') * .8), rain = mix('rain'), sun = mix('sun');
-  if (cloud > 0) { ctx.fillStyle = `rgba(30,40,60,${.35 * cloud})`; ctx.fillRect(0, 0, cv.width, cv.height); ctx.fillStyle = `rgba(90,100,125,${.28 * cloud})`; clouds.forEach(c => { const x = c.x * cv.width * 1.2 - cv.width * .1, y = c.y * cv.height, w = c.w * cv.width; ctx.beginPath(); ctx.ellipse(x, y, w / 2, w / 6, 0, 0, 7); ctx.ellipse(x - w / 4, y + 6, w / 4, w / 8, 0, 0, 7); ctx.ellipse(x + w / 4, y + 4, w / 3, w / 8, 0, 0, 7); ctx.fill(); }); }
-  if (rain > 0) { ctx.strokeStyle = `rgba(200,220,255,${.55 * rain})`; ctx.lineWidth = 1; ctx.beginPath(); drops.forEach(d => { const x = d.x * cv.width, y = d.y * cv.height; ctx.moveTo(x, y); ctx.lineTo(x - 2, y + 9 * d.s); }); ctx.stroke(); }
-  if (night > 0) { ctx.fillStyle = `rgba(8,14,40,${.55 * night})`; ctx.fillRect(0, 0, cv.width, cv.height); ctx.fillStyle = `rgba(255,255,255,${.8 * night})`; for (let i = 0; i < 40; i++) ctx.fillRect((i * 97) % cv.width, (i * 61) % (cv.height / 2), 2, 2); }
+  const glowA = .35 + night * .65 + cloud * .3; { const gr = ctx.createRadialGradient(lantern.x, lantern.y, 2, lantern.x, lantern.y, 70); gr.addColorStop(0, `rgba(255,224,150,${.5 * glowA})`); gr.addColorStop(1, 'rgba(255,224,150,0)'); ctx.fillStyle = gr; ctx.fillRect(lantern.x - 70, lantern.y - 70, 140, 140); }
+  { const lit = metCount(); ctx.fillStyle = `rgba(255,233,166,${.85 * Math.min(1, glowA + .3)})`; for (let i = 0; i < lit; i++) ctx.fillRect(1131 + (i % 3) * 14, 441 + Math.floor(i / 3) * 7, 8, 5); }
+  /* the sky, in screen space */
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  if (cloud > 0) { ctx.fillStyle = `rgba(30,40,60,${.35 * cloud})`; ctx.fillRect(0, 0, cv.width, cv.height); ctx.fillStyle = `rgba(90,100,125,${.32 * cloud})`; clouds.forEach(c => { const x = c.x * cv.width * 1.2 - cv.width * .1, y = c.y * cv.height, w = c.w * cv.width; ctx.beginPath(); ctx.ellipse(x, y, w / 2, w / 6, 0, 0, 7); ctx.ellipse(x - w / 4, y + 6, w / 4, w / 8, 0, 0, 7); ctx.ellipse(x + w / 4, y + 4, w / 3, w / 8, 0, 0, 7); ctx.fill(); }); }
+  if (rain > 0) { ctx.strokeStyle = `rgba(200,220,255,${.55 * rain})`; ctx.lineWidth = DPR; ctx.beginPath(); drops.forEach(d => { const x = d.x * cv.width, y = d.y * cv.height; ctx.moveTo(x, y); ctx.lineTo(x - 2 * DPR, y + 9 * d.s * DPR); }); ctx.stroke(); }
+  if (night > 0) { ctx.fillStyle = `rgba(8,14,40,${.55 * night})`; ctx.fillRect(0, 0, cv.width, cv.height); ctx.fillStyle = `rgba(255,255,255,${.8 * night})`; for (let i = 0; i < 40; i++) ctx.fillRect((i * 97) % cv.width, (i * 61) % (cv.height / 3), 2 * DPR, 2 * DPR); }
   if (sun > 0) { ctx.fillStyle = `rgba(255,220,120,${.18 * sun})`; ctx.fillRect(0, 0, cv.width, cv.height); const gr = ctx.createRadialGradient(cv.width * .85, 0, 10, cv.width * .85, 0, cv.width * .5); gr.addColorStop(0, `rgba(255,240,200,${.5 * sun})`); gr.addColorStop(1, 'rgba(255,240,200,0)'); ctx.fillStyle = gr; ctx.fillRect(0, 0, cv.width, cv.height); }
-  const glowA = .35 + night * .65 + cloud * .3; lamps.forEach(l => { if (l.lit) drawGlow(l, cx, cy, glowA); });
   /* the hint */
   const n = talking ? null : near(); const hint = $('hint');
-  if (n) { hint.textContent = n.kind === 'ranger' ? `PRESS SPACE · ${n.r.camp.ranger.toUpperCase()}` : `PRESS SPACE · ${n.b.label.toUpperCase().split(' · ')[0]}`; hint.classList.add('on'); } else hint.classList.remove('on');
+  if (n) { hint.textContent = n.kind === 'ranger' ? `PRESS SPACE · ${n.camp.ranger.toUpperCase()}` : `PRESS SPACE · ${n.label.toUpperCase().split(' · ')[0]}`; hint.classList.add('on'); } else hint.classList.remove('on');
   requestAnimationFrame(loop);
 }
-const mapImg = MAP_IMAGE ? Object.assign(new Image(), {src: MAP_IMAGE}) : null;
 requestAnimationFrame(loop);
 
-/* ---- small things: gold burst, sound, help ------------------------------- */
+/* tap or click the picture: walk to the nearest point of the trail, or talk to a ranger you are standing by */
+cv.addEventListener('click', e => { if (talking) return; const r = cv.getBoundingClientRect(); const wx = (e.clientX - r.left) * DPR / camZ + camX, wy = (e.clientY - r.top) * DPR / camZ + camY;
+  for (const s of stops) if (s.kind === 'ranger' && Math.hypot(s.x - wx, s.y - wy) < 40 * DEPTH(s.y) + 10 && Math.abs(s.d - player.d) < 34) return talkTo(s);
+  const n = nearestD(wx, wy); if (n.dist < 140) player.target = n.d; });
+
+/* ---- small things: gold burst, sound, help ------------------------------------ */
 function burstAt(el) { const r = el.getBoundingClientRect(); for (let i = 0; i < 14; i++) { const p = document.createElement('i'); p.className = 'burst'; p.style.cssText = `left:${r.left + r.width / 2}px;top:${r.top + r.height / 2}px;width:6px;height:6px;background:#e8c04a;position:fixed;transition:transform .7s ease-out,opacity .7s`; document.body.append(p);
   requestAnimationFrame(() => { const a = Math.random() * 6.28, d = 30 + Math.random() * 50; p.style.transform = `translate(${Math.cos(a) * d}px,${Math.sin(a) * d}px)`; p.style.opacity = '0'; }); setTimeout(() => p.remove(), 800); } }
 let sound = false, AC = null; try { sound = localStorage.getItem('rpg-sound') === '1'; } catch (_) {}
@@ -463,9 +371,6 @@ function setSound(on) { sound = !!on; try { localStorage.setItem('rpg-sound', so
 function beep(ok) { if (!sound) return; try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); const o = AC.createOscillator(), gn = AC.createGain(); o.type = 'square'; o.frequency.value = ok ? 660 : 180; gn.gain.value = .06; o.connect(gn).connect(AC.destination); o.start(); if (ok) o.frequency.setValueAtTime(880, AC.currentTime + .09); o.stop(AC.currentTime + (ok ? .18 : .25)); } catch (_) {} }
 setSound(sound); $('sound').onclick = () => setSound(!sound);
 $('helpBtn').onclick = () => { const on = !$('help').classList.contains('on'); $('help').classList.toggle('on', on); $('helpBtn').setAttribute('aria-pressed', String(on)); };
-/* a click on the world walks you there is a later feature; for now tapping a ranger or door talks */
-cv.addEventListener('click', e => { if (talking) return; const r = cv.getBoundingClientRect(); const wx = (e.clientX - r.left) / Z + Math.max(0, Math.min(W - cv.width, player.x - cv.width / 2)), wy = (e.clientY - r.top) / Z + Math.max(0, Math.min(H - cv.height, player.y - cv.height / 2));
-  for (const rg of rangers) if (Math.hypot(rg.x - wx, rg.y - wy) < 24 && Math.hypot(rg.x - player.x, rg.y - player.y) < 60) return talkTo(rg); });
 </script>
 </body>
 </html>

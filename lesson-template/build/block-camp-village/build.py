@@ -17,9 +17,12 @@ to rain' can be written into the game and appear briefly."
 Everything a learner reads is in this file (RANGERS), so a wording change
 is a rebuild, not a hunt through the page. The camps come from the hub
 builder's tables so the cabin links and colours cannot drift from the hub.
-The map itself (terrain, buildings, trees, lamps) is a string in
-template.html — the placeholder until a painted map arrives; the engine
-already draws a picture behind the terrain if `MAP_IMAGE` is set.
+The world is the hub's own trail painting (BlockCamp/hub-hero.jpg): the
+hiker walks the painted path from the tent, over the bridge and up to the
+lookout tower, shrinking with depth, and the camera zooms to follow. The
+path is `TRAIL` in template.html, in picture pixels; the rangers stand at
+even spacings along it. The first build drew a tile map in code and Innes
+called the graphics "pants" — rightly. Walking on the real art is the fix.
 
 Save state: CampSave.get('village') → {met:{camp:true}, best:{camp:n}}.
 """
