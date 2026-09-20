@@ -15,6 +15,7 @@
  *   RESOLVE  and that explanation is words, not an unresolved i18n key
  *   ACTIVATE every lesson ends with a speaking + writing production task
  *   SORT     every sorting slide has 2+ bins, no stray items, no empty bin
+ *   REVIEW   the results slide still fits when every question has been missed
  *   I18N     at least one language besides English is complete, and every data-i18n
  *            attribute resolves to a real key
  *   HEAD     the page carries a real <title> and a generated SEO block —
@@ -512,6 +513,57 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
     return [...new Set(misses)];
   });
 
+  // ── REVIEW, WITH EVERY QUESTION MISSED ────────────────────────────
+  // The results slide grows a list of the items the learner got wrong, and
+  // at rest that list is empty — so the LAYOUT loop above measures a slide
+  // that only the learner who did well ever sees. It is the ACTIVATION
+  // blind spot again: a runtime-grown slide passes a resting measurement.
+  //
+  // Answer the whole paper wrongly and measure what is then on screen. That
+  // is the worst case the deck can produce, and the box is capped so that a
+  // deck twice this length still fits. Reloaded first because every gate
+  // before this one has already answered the questions correctly, and a
+  // slide only ever scores once.
+  const errsBefore = jsErrors.slice();
+  await page.reload({ waitUntil: 'load' });
+  await page.waitForTimeout(600);
+  const review = await page.evaluate(async () => {
+    const wait = () => new Promise(r => setTimeout(r, 0));
+    const slides = [...document.querySelectorAll('.slide')];
+    const res = slides.findIndex(s => s.dataset.type === 'results');
+    if (res < 0 || !document.getElementById('reviewList')) return null;
+    for (let i = 0; i < slides.length; i++) {
+      const s = slides[i];
+      slides.forEach((x, n) => x.classList.toggle('is-active', n === i));
+      if (s.dataset.type === 'mc') {
+        const w = [...s.querySelectorAll('.opt')].find(o => !o.hasAttribute('data-correct'));
+        if (w) w.click();
+      } else if (s.dataset.type === 'gap') {
+        // A string no answer key can match, so every gap on the slide misses.
+        s.querySelectorAll('input.gap').forEach(g => { g.value = 'zzqx'; });
+        const b = s.querySelector('[data-action="check"]');
+        if (b) b.click();
+      }
+      await wait();
+    }
+    window.show(res);
+    const slide = slides[res];
+    const body = slide.querySelector('.slide-body');
+    const list = document.getElementById('reviewList');
+    const scale = slide.getBoundingClientRect().width / 1280 || 1;
+    const px = v => Math.round(v / scale);
+    return {
+      items: list.children.length,
+      empty: !!document.getElementById('reviewBox').hidden,
+      body: px(body.scrollHeight - body.clientHeight),
+      slide: px(slide.scrollHeight - slide.clientHeight),
+    };
+  });
+  // A reload re-reports the same load-time errors; keep only the new ones so
+  // RUNTIME does not print everything twice.
+  jsErrors.splice(0, jsErrors.length, ...errsBefore,
+                  ...jsErrors.slice(errsBefore.length).filter(e => !errsBefore.includes(e)));
+
   const src = require('fs').readFileSync(path.resolve(file), 'utf8');
   const optsBlocks = [...src.matchAll(/<div class="opts[^"]*">([\s\S]*?)<\/div>/g)];
   const keyAt = [];
@@ -621,6 +673,17 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
     console.log(DIM('          Either write the explanation into data-explain, or carry the'));
     console.log(DIM('          engine change that resolves a key through UI_I18N.'));
   }
+
+  head('REVIEW');
+  if (!review)
+    ok('deck predates the end-of-deck review list — rebuild it to add one');
+  else if (review.empty || !review.items)
+    bad('every question was answered wrongly and the results slide listed none of them');
+  else if (review.body > 1 || review.slide > 1)
+    bad(`the results slide overflows by ${Math.max(review.body, review.slide)}px `
+        + `with all ${review.items} item(s) missed — shorten the list box, do not shrink the type`);
+  else
+    ok(`the results slide fits with all ${review.items} item(s) missed`);
 
   head('ACTIVATION');
   if (r.hasActivation) ok('lesson ends with an activation stage');

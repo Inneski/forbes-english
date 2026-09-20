@@ -78,8 +78,9 @@ T['en'] = dict(
     t2bb='Most take one preposition at each end: <em>on</em> the verge '
          '<em>of</em>, <em>at</em> the expense <em>of</em>, <em>for</em> the sake '
          '<em>of</em>. Drop either and the phrase stops working.',
-    t2bn='The closing preposition is almost always <em>of</em>; it is the '
-         'opening one that changes from phrase to phrase.',
+    t2bn='The second preposition is almost always <em>of</em>. The first one '
+         'is the one that changes: <em>on</em> the verge, <em>at</em> the '
+         'expense, <em>for</em> the sake.',
     t2ch='They mark register',
     t2cb='This set belongs to formal and written English &mdash; reports, '
          'speeches, meetings. Using them is part of sounding B2 rather than B1.',
@@ -268,8 +269,9 @@ T['de'] = dict(
     t2bb='Die meisten haben an jedem Ende eine Präposition: <em>on</em> the verge '
          '<em>of</em>, <em>at</em> the expense <em>of</em>, <em>for</em> the sake '
          '<em>of</em>. Fehlt eine, funktioniert die Wendung nicht mehr.',
-    t2bn='Die zweite ist fast immer <em>of</em>; es ist die erste, die von '
-         'Wendung zu Wendung wechselt.',
+    t2bn='Die zweite Präposition ist fast immer <em>of</em>. Die erste ist '
+         'die, die wechselt: <em>on</em> the verge, <em>at</em> the expense, '
+         '<em>for</em> the sake.',
     t2ch='Sie markieren das Register',
     t2cb='Diese Gruppe gehört zum formellen und geschriebenen Englisch &mdash; '
          'Berichte, Reden, Besprechungen. Sie zu benutzen gehört dazu, wenn man '
@@ -462,8 +464,9 @@ T['es'] = dict(
     t2bb='La mayoría lleva una preposición en cada extremo: <em>on</em> the verge '
          '<em>of</em>, <em>at</em> the expense <em>of</em>, <em>for</em> the sake '
          '<em>of</em>. Si falta una, la expresión deja de funcionar.',
-    t2bn='La segunda es casi siempre <em>of</em>; la que cambia de una '
-         'expresión a otra es la primera.',
+    t2bn='La segunda preposición es casi siempre <em>of</em>. La que cambia '
+         'es la primera: <em>on</em> the verge, <em>at</em> the expense, '
+         '<em>for</em> the sake.',
     t2ch='Marcan el registro',
     t2cb='Este grupo pertenece al inglés formal y escrito &mdash; informes, '
          'discursos, reuniones. Usarlas forma parte de sonar a B2 y no a B1.',

@@ -132,9 +132,10 @@ def build():
                     'verge <em>of</em>, <em>at</em> the expense <em>of</em>, '
                     '<em>for</em> the sake <em>of</em>. Drop either and the '
                     'phrase stops working.', 't2bn',
-                    'The closing preposition is almost always <em>of</em>; '
-                    'it is the opening one that changes from phrase to '
-                    'phrase.'),
+                    'The second preposition is almost always <em>of</em>. '
+                    'The first one is the one that changes: <em>on</em> the '
+                    'verge, <em>at</em> the expense, <em>for</em> the '
+                    'sake.'),
                    ('t2ch', 'They mark register', 't2cb',
                     'This set belongs to formal and written English &mdash; '
                     'reports, speeches, meetings. Using them is part of '

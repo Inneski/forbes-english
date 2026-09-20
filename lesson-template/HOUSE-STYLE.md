@@ -757,7 +757,7 @@ Do not bulk-convert without being asked. Conversion is a rebuild per lesson
 node lesson-template/check-lesson.js <lesson>.html
 ```
 
-It mechanically verifies the ten things that have actually gone wrong here:
+It mechanically verifies the eleven things that have actually gone wrong here:
 
 - **LAYOUT** — every slide fits the canvas and nothing scrolls.
 - **ANSWERS** — no multiple-choice key is conspicuously the longest option.
@@ -771,6 +771,11 @@ It mechanically verifies the ten things that have actually gone wrong here:
   receives nothing. A bin nothing goes in is not a choice.
 - **EXPLAIN** — every scored question has an explanation.
 - **ACTIVATION** — the deck ends with an activation stage.
+- **REVIEW** — the results slide still fits when every question has been
+  missed. The end-of-deck list of missed items is empty at rest, so LAYOUT
+  measures a slide only a strong learner ever sees; this gate answers the
+  whole paper wrongly and measures what is then on screen. Uncapped, the
+  28-item list ran 825px off the canvas.
 - **I18N** — English plus **at least one** finished language, and every
   `data-i18n` resolves. This is no longer "German covers English": a complete
   Japanese alongside an empty German is a legitimate finished state. A language

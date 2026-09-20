@@ -11,6 +11,55 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-20 — The deck now shows a learner what they got wrong
+
+**Engine change in `lesson-template/lesson-template.html`, so it reaches every
+deck at its next rebuild.** Innes: "need to save the ones a student gets wrong
+and show them at the end." The results slide grew a list of every item missed,
+printed as the sentence it should have been with the missed word marked —
+"In terms **of** salary, this offer is far better" — not the bare answer.
+
+Three things a future session needs to know about it:
+
+  * **The recording hooks are `feedback()` and `fillFeedback()`, not
+    `award()`.** Multiple choice is the only type that calls `award()`; order,
+    lock and sort resolve through `feedback()` and gap rows through
+    `fillFeedback()`, so hooking the obvious one would have caught a quarter
+    of the library. Gap slides record per ROW, because a gap slide is four
+    questions wearing one heading and "Complete the sentence" is not
+    something anyone can revise from.
+  * **The heading is a hardcoded 11-language table in the engine
+    (`REVIEW_LABEL`), deliberately.** `check-lesson.js` fails any deck whose
+    `data-i18n` has no English key, and `assemble()` builds `UI_I18N` from
+    each deck's own i18n module — so a new key on the shared results slide
+    would have failed the checker on all 300-odd decks until every module
+    lifted it. A deck that defines `resReview` overrides the table.
+  * **`REVIEW` is a new gate in `check-lesson.js`**, and it exists because
+    this defect class is invisible to LAYOUT: the list is empty at rest, so
+    the resting measurement sees a slide only a strong learner ever reaches.
+    That is the ACTIVATION blind spot again. It reloads the page, answers the
+    whole paper wrongly and measures what is then on screen. Verified failing
+    against two deliberately broken copies before being trusted — uncapped,
+    the 28-item list ran **825px** off the canvas; with recording disabled it
+    reported an empty list. A deck built before the change passes with
+    "deck predates the end-of-deck review list", so nothing in the library
+    breaks and no mass rebuild is needed.
+
+**Only `b2_prepositions_advanced_lesson` has been rebuilt against it.** Every
+other deck picks the list up whenever it is next built; none needs a change of
+its own to do so.
+
+Same session, same deck: slide 10's teach card was rewritten twice. It told a
+B2 learner the preposition "is not a slot" and that "the gap is usually the
+first one" — both are teacher-side jargon the deck never introduces, and the
+German carried "die Präposition ist keine Lücke". The first replacement then
+had to be rewritten again, because "the opening one" named nothing a learner
+could point at. It now reads: the second preposition is almost always *of*;
+the first one is the one that changes — *on* the verge, *at* the expense,
+*for* the sake.
+
+---
+
 ## 2026-09-20 — Credit Where It's Due (C1). PUBLISHED, free, row 337.
 
 The sibling of Holding the Line, built from two trade articles Innes supplied

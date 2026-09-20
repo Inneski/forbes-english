@@ -491,6 +491,10 @@ def results(next_key='resNext', next_text='Now use it →', folder='', bg=None):
       <div class="slide-body" style="align-items:center;text-align:center">''' % _bg(folder, bg) + '''
         <div class="score-big"><span id="scoreVal">0</span><span class="dim" style="font-size:34px">/<span id="scoreMax">0</span></span></div>
         <p class="prose" style="margin-top:18px" id="scoreMsg"></p>
+        <div class="review" id="reviewBox" hidden>
+          <div class="eyebrow" id="reviewHead"></div>
+          <ul class="review-list" id="reviewList"></ul>
+        </div>
         <p class="prose dim" style="margin-top:14px" data-i18n="%s">%s</p>
       </div>
     </section>
