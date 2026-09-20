@@ -44,7 +44,7 @@ RANGERS = {
    q=[("The ranger ___ the lamps every evening.", ["lights", "is lighting", "lit"], 0, "A habit, every evening: Present Simple, and he/she/it takes -s."),
       ("Water ___ at 100 degrees.", ["boils", "is boiling", "boiled"], 0, "A fact that is always true takes the Present Simple."),
       ("She ___ coffee.", ["doesn't drink", "don't drink", "not drinks"], 0, "Negative with he/she/it: doesn't + the bare verb.")],
-   weather=[('sun', "It rains here every afternoon. But not now: the sun shines.")]),
+   weather=[('sun', "It rains here every afternoon. Every morning, the sun shines.")]),
  2: dict(name='Ranger Mia', hi="Look at the sky! Something is happening up there right now.",
    q=[("Look! It ___.", ["is raining", "rains", "rained"], 0, "Happening right now, as we watch: Present Continuous."),
       ("They ___ a tent at the moment.", ["are putting up", "put up", "have put up"], 0, "An action in progress at this moment: are + -ing."),
