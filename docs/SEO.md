@@ -49,6 +49,13 @@ there too.
    reads Sherpa Tensing's `rule-card` markup too. **Measured: 4 lessons
    with rules before, 104 after.** The RPGs keep their rules in script
    data and still report none.
+
+   **A card is only quoted if heading-plus-rule lands between 40 and 220
+   characters.** The ceiling bites when you edit a teach card: rewriting
+   one sentence of `build_prepb2.py` pushed its card to 229 and the rule
+   vanished from `teaches`, with the next card sliding up to fill the
+   list. `seo.py` reports success either way, so the only sign is
+   `git diff lesson-meta.json` — read it after any teach-card edit.
 3. **`lesson-meta.json` carries `teaches` and `topics` per lesson**, and
    the Worker (`personaliseGate()` in `src/index.js`) prints them on every
    Pro gate page as "What this lesson teaches" plus "More on this: →
