@@ -56,21 +56,36 @@ TPL = 'lesson-template/lesson-template.html'
 OUT = 'forbes-english-credit-where-its-due-c1.html'
 F = 'CreditWhereDue'
 
+# ONE PICTURE PER ART SLIDE, and that is the rule rather than an indulgence.
+# The first cut of this deck ran eight plates across twelve slides, so five
+# slides were a repeat at the same framing - the learner sees the same
+# photograph twice in four minutes and stops reading it. Innes caught it.
+# There were 21 candidates in the drop and only 8 had been looked at.
 ART = {
     'hero':      'hero.jpg',       # cover, the only 16:9 plate
-    'room':      'room.jpg',       # the meeting, and who holds the floor
-    'trail':     'trail.jpg',      # the dated record
-    'tally':     'tally.jpg',      # the number that ends the argument
-    'paper':     'paper.jpg',      # the sheet on the table: the record
-    'folder':    'folder.jpg',     # the timestamp you can hand round
-    'spotlight': 'spotlight.jpg',  # the moment, and who is standing in it
+    'room':      'room.jpg',       # a microphone alone: who holds the floor
+    'nameplate': 'nameplate.jpg',  # the blank plate: whose name is on it
+    'folder':    'folder.jpg',     # the filed copy
+    'desk':      'desk.jpg',       # the sheet and the microphone together
+    'lamp':      'lamp.jpg',       # a hanging lamp, light thrown down
+    'spotlight': 'spotlight.jpg',  # the lit circle, and nobody in it
+    'tags':      'tags.jpg',       # tags pegged up, dated
+    'trail':     'trail.jpg',      # the paper trail, pegged and legible
+    'tally':     'tally.jpg',      # counted marks against bars
+    'vials':     'vials.jpg',      # counted units, each one labelled
+    'stack':     'stack.jpg',      # the stack that nobody can attribute
     'cups':      'cups.jpg',       # the check-in
 }
 
 
-def art(slide, side=None, shape=None):
+def art(slide, side=None, shape=None, size=None):
+    """Side, shape and size are the three knobs §15 gives the framed picture,
+    and leaving two of them alone is how twelve different pictures still read
+    as one repeated picture. All three are inert under the default style, so
+    this slide list would build either way."""
     extra = (' data-art-side="left"' if side == 'left' else '') \
-          + (' data-art="arch"' if shape == 'arch' else '')
+          + (' data-art="arch"' if shape == 'arch' else '') \
+          + (' data-art-size="narrow"' if size == 'narrow' else '')
     return slide.replace('<section class="slide"',
                          '<section class="slide"' + extra, 1)
 
@@ -428,7 +443,7 @@ def build(style='editorial', out=None):
 
         + art(D.gap(1, 2, RECLAIM_A, RECLAIM_BANK, 'reclaimEyebrow',
                     'Say it in the room', 'reclaimTitle', 'Complete the line',
-                    folder=F, bg=A('paper'), hint_key='reclaimHint',
+                    folder=F, bg=A('nameplate'), hint_key='reclaimHint',
                     hint='One word per gap; each is used once across both '
                          'screens.'), side='left')
 
@@ -447,7 +462,7 @@ def build(style='editorial', out=None):
                                 'after you made it.',
                                 'The director thanks the team and names '
                                 'everyone but you.'][i],
-                           bg=A(['room', 'spotlight', 'spotlight'][i])),
+                           bg=A(['desk', 'lamp', 'spotlight'][i])),
                       side='left' if i % 2 else None,
                       shape='arch' if i == 2 else None)
                   for i, q in enumerate(ROOM))
@@ -467,7 +482,7 @@ def build(style='editorial', out=None):
                       'Click the parts in order.',
                       'The cleft carries the author; the last clause carries '
                       'the proof. Nobody has to take your word for it.',
-                      folder=F, bg=A('paper')), shape='arch')
+                      folder=F, bg=A('tags')), shape='arch', size='narrow')
 
         + art(D.teach('voiceEyebrow', 'Active or passive', 'voiceTitle',
                       'Which voice puts you in it', VOICE,
@@ -480,7 +495,7 @@ def build(style='editorial', out=None):
                          'screens.'), side='left')
 
         + art(D.gap(2, 2, NUM_B, NUM_BANK, 'numEyebrow', 'Put a number on it',
-                    'numTitle', 'Complete the line', folder=F, bg=A('tally'),
+                    'numTitle', 'Complete the line', folder=F, bg=A('vials'),
                     hint_key='numHint',
                     hint='One word per gap; each is used once across both '
                          'screens.'))
@@ -489,7 +504,7 @@ def build(style='editorial', out=None):
                    'mailTitle', 'Put it in writing first', folder=F,
                    explains=EMAIL[0]['ex'], ctx_key='mailCtx',
                    ctx='You want the idea on the record before Thursday.',
-                   bg=A('folder')), side='left')
+                   bg=A('stack')), side='left')
 
         + D.match(FUNCTIONS, 'funcEyebrow', 'The phrase bank', 'funcTitle',
                   'What each line actually does', 'funcHint',

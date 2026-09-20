@@ -40,13 +40,36 @@ centre by hand, plate by plate. Crop centres for this deck: room 0.47, trail
 0.45, tally 0.295, paper 0.42, folder 0.42, spotlight 0.45, cups 0.46; the
 hero is uncropped.
 
+**ONE PICTURE PER ART SLIDE.** The first cut shipped eight plates across
+twelve art slides, so five slides were a repeat at the same framing, and Innes
+caught it: *"you use the same pictures with the same framing when you could be
+using a different framing or other pictures I provided."* He was right, and
+the cause was mine — 21 candidates were in the drop and only 8 had been
+opened. The deck now runs **twelve distinct plates on twelve art slides**, and
+the framing varies too: four combinations of side, arch and narrow across the
+twelve, where the first cut used two.
+
+**Look at every candidate before picking, and count the art slides first.** A
+slot is not the unit; a SLIDE is. If there are more slides than slots, either
+find more pictures or vary the framing deliberately — do not let a repeat
+happen by default. `build_creditdue.py`'s ART map is one entry per slide for
+exactly this reason.
+
 **Two slots needed judgement rather than a crop.** `nameplate` came back as a
 hand holding nothing, with no plate anywhere in the frame; the slot was
 renamed `paper` and filled with the second hero candidate, the sheet lying on
 the table, which suits the two screens that use it better than a nameplate
-did. Of three `tally` candidates, one had a person seen from behind and one a
-clear face — the brief says no people — so the usable one was cropped left of
-the figure, leaving the marks and the bars.
+did. Of four `tally` candidates, two had people in them and one a clear face
+— the brief says no people — so the usable one was cropped left of the figure,
+leaving the marks and the bars, and the second number screen took the row of
+labelled vials instead.
+
+The second drop also carried the nameplate the first one had failed at:
+`plate _1` is the blank plate on a stand, so the slot went back to its
+intended picture rather than the borrowed hero candidate. Crop centres for the
+final set: room 0.47, nameplate 0.50, folder 0.50, desk 0.55, lamp 0.42,
+spotlight 0.45, tags 0.45, trail 0.45, tally 0.25, vials 0.50, stack 0.42,
+cups 0.45; hero uncropped.
 
 **It is deliberately the mirror of its sibling, and that is the teaching
 point.** Holding the Line uses the agentless passive as a shield — "the lead
