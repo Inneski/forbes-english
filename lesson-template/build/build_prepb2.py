@@ -97,17 +97,17 @@ def build():
                    ('t1bh', 'To + infinitive', 't1bb',
                     '<strong>To</strong> gives the <em>reason</em> a person '
                     'does something. He saved for a year <em>to buy a '
-                    'van</em>; she '
-                    'she took the early train <em>to avoid the queues</em>.',
+                    'van</em>; she took the early train <em>to avoid the '
+                    'queues</em>.',
                     't1bn',
                     '<em>In order to</em> is the same thing, one register '
                     'up. There is no <em>in order for</em> to match it.'),
                    ('t1ch', 'The test that works', 't1cb',
-                    'Read what comes after the gap, not who the subject '
+                    'Look at the words that follow, not at who the subject '
                     'is. <em>For</em> takes a noun or an <em>-ing</em> '
                     'form; <em>to</em> takes a bare infinitive. That test '
                     'never fails.', 't1cn',
-                    'What the gap describes is the function of a thing, or '
+                    'What is being described is the function of a thing, or '
                     'the goal of an action &mdash; a person can be the '
                     'subject of either.')],
                   folder=F, bg=BG_PURPOSE)
@@ -118,21 +118,23 @@ def build():
                   for i, q in enumerate(PURPOSE))
 
         + D.teach('t2Eyebrow', 'Before you start',
-                  't2Title', 'Fixed phrases: the preposition is not a slot',
+                  't2Title', 'Fixed phrases: you do not choose the preposition',
                   [('t2ah', 'The whole phrase is the word', 't2ab',
                     '<em>In terms of</em>, <em>on behalf of</em>, <em>in '
                     'spite of</em> &mdash; these are single items of '
-                    'vocabulary that happen to be three words long. Nothing '
-                    'inside them is chosen.', 't2an',
+                    'vocabulary that happen to be three words long. No word '
+                    'in them can be swapped: it is <em>in spite of</em>, '
+                    'never <em>on spite of</em>.', 't2an',
                     'Learn them whole, the way you learn <em>however</em> '
                     'or <em>nevertheless</em>.'),
-                   ('t2bh', 'Bookended by prepositions', 't2bb',
+                   ('t2bh', 'A preposition at each end', 't2bb',
                     'Most take one preposition at each end: <em>on</em> the '
                     'verge <em>of</em>, <em>at</em> the expense <em>of</em>, '
                     '<em>for</em> the sake <em>of</em>. Drop either and the '
                     'phrase stops working.', 't2bn',
-                    'The gap is usually the first one, because the second '
-                    'is almost always <em>of</em>.'),
+                    'The closing preposition is almost always <em>of</em>; '
+                    'it is the opening one that changes from phrase to '
+                    'phrase.'),
                    ('t2ch', 'They mark register', 't2cb',
                     'This set belongs to formal and written English &mdash; '
                     'reports, speeches, meetings. Using them is part of '

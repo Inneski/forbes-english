@@ -59,26 +59,27 @@ T['en'] = dict(
     t1bn='<em>In order to</em> is the same thing, one register up. There is no '
          '<em>in order for</em> to match it.',
     t1ch='The test that works',
-    t1cb='Read what comes after the gap, not who the subject is. <em>For</em> '
+    t1cb='Look at the words that follow, not at who the subject is. <em>For</em> '
          'takes a noun or an <em>-ing</em> form; <em>to</em> takes a bare '
          'infinitive. That test never fails.',
-    t1cn='What the gap describes is the function of a thing, or the goal of an '
+    t1cn='What is being described is the function of a thing, or the goal of an '
          'action &mdash; a person can be the subject of either.',
 
     t2Eyebrow='Before you start',
-    t2Title='Fixed phrases: the preposition is not a slot',
+    t2Title='Fixed phrases: you do not choose the preposition',
     t2ah='The whole phrase is the word',
     t2ab='<em>In terms of</em>, <em>on behalf of</em>, <em>in spite of</em> '
          '&mdash; these are single items of vocabulary that happen to be three '
-         'words long. Nothing inside them is chosen.',
+         'words long. No word in them can be swapped: it is <em>in spite '
+         'of</em>, never <em>on spite of</em>.',
     t2an='Learn them whole, the way you learn <em>however</em> or '
          '<em>nevertheless</em>.',
-    t2bh='Bookended by prepositions',
+    t2bh='A preposition at each end',
     t2bb='Most take one preposition at each end: <em>on</em> the verge '
          '<em>of</em>, <em>at</em> the expense <em>of</em>, <em>for</em> the sake '
          '<em>of</em>. Drop either and the phrase stops working.',
-    t2bn='The gap is usually the first one, because the second is almost always '
-         '<em>of</em>.',
+    t2bn='The closing preposition is almost always <em>of</em>; it is the '
+         'opening one that changes from phrase to phrase.',
     t2ch='They mark register',
     t2cb='This set belongs to formal and written English &mdash; reports, '
          'speeches, meetings. Using them is part of sounding B2 rather than B1.',
@@ -248,26 +249,27 @@ T['de'] = dict(
     t1bn='<em>In order to</em> ist dasselbe, eine Stufe formeller. Ein passendes '
          '<em>in order for</em> gibt es nicht.',
     t1ch='Der Test, der funktioniert',
-    t1cb='Lies, was nach der Lücke steht, nicht wer das Subjekt ist. '
+    t1cb='Sieh dir an, was danach folgt, nicht wer das Subjekt ist. '
          '<em>For</em> nimmt ein Substantiv oder eine <em>-ing</em>-Form; '
          '<em>to</em> nimmt den reinen Infinitiv. Dieser Test versagt nie.',
-    t1cn='Die Lücke beschreibt den Zweck einer Sache oder das Ziel einer '
+    t1cn='Beschrieben wird der Zweck einer Sache oder das Ziel einer '
          'Handlung &mdash; eine Person kann bei beidem das Subjekt sein.',
 
     t2Eyebrow='Bevor du anfängst',
-    t2Title='Feste Wendungen: die Präposition ist keine Lücke',
+    t2Title='Feste Wendungen: die Präposition wird nicht gewählt',
     t2ah='Die ganze Wendung ist das Wort',
     t2ab='<em>In terms of</em>, <em>on behalf of</em>, <em>in spite of</em> '
          '&mdash; das sind einzelne Vokabeln, die zufällig drei Wörter lang '
-         'sind. Nichts darin wird gewählt.',
+         'sind. Kein Wort darin lässt sich austauschen: es heißt '
+         '<em>in spite of</em>, nie <em>on spite of</em>.',
     t2an='Lerne sie als Ganzes, so wie du <em>however</em> oder '
          '<em>nevertheless</em> lernst.',
-    t2bh='Von Präpositionen eingerahmt',
+    t2bh='An jedem Ende eine Präposition',
     t2bb='Die meisten haben an jedem Ende eine Präposition: <em>on</em> the verge '
          '<em>of</em>, <em>at</em> the expense <em>of</em>, <em>for</em> the sake '
          '<em>of</em>. Fehlt eine, funktioniert die Wendung nicht mehr.',
-    t2bn='Gefragt ist meist die erste, denn die zweite ist fast immer '
-         '<em>of</em>.',
+    t2bn='Die zweite ist fast immer <em>of</em>; es ist die erste, die von '
+         'Wendung zu Wendung wechselt.',
     t2ch='Sie markieren das Register',
     t2cb='Diese Gruppe gehört zum formellen und geschriebenen Englisch &mdash; '
          'Berichte, Reden, Besprechungen. Sie zu benutzen gehört dazu, wenn man '
@@ -441,26 +443,27 @@ T['es'] = dict(
     t1bn='<em>In order to</em> es lo mismo, un registro más formal. No existe un '
          '<em>in order for</em> equivalente.',
     t1ch='La prueba que funciona',
-    t1cb='Lee lo que va después del hueco, no quién es el sujeto. <em>For</em> '
+    t1cb='Fíjate en lo que viene después, no en quién es el sujeto. <em>For</em> '
          'lleva un sustantivo o una forma en <em>-ing</em>; <em>to</em> lleva '
          'el infinitivo sin más. Esa prueba nunca falla.',
-    t1cn='El hueco describe la función de una cosa o el objetivo de una acción '
-         '&mdash; en los dos casos el sujeto puede ser una persona.',
+    t1cn='Lo que se describe es la función de una cosa o el objetivo de una '
+         'acción &mdash; en los dos casos el sujeto puede ser una persona.',
 
     t2Eyebrow='Antes de empezar',
-    t2Title='Expresiones fijas: la preposición no es un hueco',
+    t2Title='Expresiones fijas: la preposición no se elige',
     t2ah='La expresión entera es la palabra',
     t2ab='<em>In terms of</em>, <em>on behalf of</em>, <em>in spite of</em> '
          '&mdash; son piezas de vocabulario que casualmente tienen tres '
-         'palabras. Dentro no se elige nada.',
+         'palabras. No se puede cambiar ninguna de ellas: es '
+         '<em>in spite of</em>, nunca <em>on spite of</em>.',
     t2an='Apréndelas enteras, igual que aprendes <em>however</em> o '
          '<em>nevertheless</em>.',
-    t2bh='Con preposición a cada lado',
+    t2bh='Una preposición en cada extremo',
     t2bb='La mayoría lleva una preposición en cada extremo: <em>on</em> the verge '
          '<em>of</em>, <em>at</em> the expense <em>of</em>, <em>for</em> the sake '
          '<em>of</em>. Si falta una, la expresión deja de funcionar.',
-    t2bn='La que se pregunta suele ser la primera, porque la segunda es casi '
-         'siempre <em>of</em>.',
+    t2bn='La segunda es casi siempre <em>of</em>; la que cambia de una '
+         'expresión a otra es la primera.',
     t2ch='Marcan el registro',
     t2cb='Este grupo pertenece al inglés formal y escrito &mdash; informes, '
          'discursos, reuniones. Usarlas forma parte de sonar a B2 y no a B1.',
