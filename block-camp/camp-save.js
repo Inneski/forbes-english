@@ -73,6 +73,11 @@
       return store(s);
     },
 
+    /* a page with state of its own (the village's rangers met) keeps it
+       under its own key, so the record grows without a format bump */
+    get: function (key) { var s = load(); return s[key] == null ? null : s[key]; },
+    put: function (key, val) { var s = load(); s[key] = val; return store(s); },
+
     setName: function (name) { var s = load(); s.name = String(name || '').slice(0, 24); return store(s); },
     reset: function () { try { localStorage.removeItem(KEY); } catch (_) {} return store(blank()); },
 
