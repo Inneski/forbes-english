@@ -35,7 +35,7 @@ from pathlib import Path
 
 HERE = Path(__file__).parent
 BOOKS = {
-    1: ("level-1-day-one.md", "Day", "One", "A1/A2", "#e8735a", "coral"),
+    1: ("level-1-day-one.md", "Day", "One", "A1/A2", "#B8860B", "gold"),
     2: ("level-2-joining-in.md", "Joining", "In", "A2/B1", "#2f8f7a", "sea green"),
     3: ("level-3-taking-charge.md", "Taking", "Charge", "B1+/B2", "#e0a020", "amber"),
     4: ("level-4-setting-the-course.md", "Setting the", "Course", "B2/C1", "#2451b3", "cobalt"),
@@ -160,9 +160,10 @@ def numbered(items, cls="ex", answer_line=True):
     return f'<ol class="{cls}">{li}</ol>'
 
 
-def page(inner, head="", num=None, cls="", top=""):
+def page(inner, head="", num=None, cls="", top="", style=""):
     foot = f'<div class="foot"><span>{num if num else ""}</span></div>' if num else ""
-    return f'<section class="page {cls}">{top}{inner}{foot}</section>\n'
+    st = f' style="{style}"' if style else ""
+    return f'<section class="page {cls}"{st}>{top}{inner}{foot}</section>\n'
 
 
 def h(eyebrow, title, big=False):
@@ -260,7 +261,8 @@ def unit_pages(u, c, start):
         + f'<h3>1 · Practice</h3>{numbered([p for p, _ in c["practice"]], "ex two-col")}'
         + f'<h3>2 · Choose the right word</h3>{numbered([p for p, _ in c["controlled"]], "ex two-col", answer_line=False)}'
         + '<p class="ref">Grammar reference: at the back of the book.</p></div>',
-        head, start + 2, top=band(f"Unit {n} | {T}", "Grammar", tcol)))
+        head, start + 2, cls="tensepage" if tcol else "", top=band(f"Unit {n} | {T}", "Grammar", tcol),
+        style=f"--g:{tcol}" if tcol else ""))
 
     # 4 · listen and read: the dialogue beside the scene plate
     P.append(page(
@@ -407,7 +409,7 @@ CSS = """
 *{box-sizing:border-box}
 html,body{margin:0;background:#bbb;font-family:'DM Sans',Arial,sans-serif;color:var(--ink);font-size:10pt;line-height:1.36}
 @page{size:A4;margin:0}
-@media print{html,body{background:#fff}.page{margin:0;outline:0}}
+@media print{html,body{background:var(--paper)}.page{margin:0;outline:0}}
 .page{width:210mm;height:297mm;background:var(--paper);margin:8mm auto;position:relative;overflow:hidden;page-break-after:always;break-after:page;outline:1px solid #999}
 .body{padding:13mm 15mm 16mm}
 .body.tight-top{padding-top:7mm}
@@ -496,6 +498,10 @@ h2 .pipe + *, h2{font-size:21pt}
 .rule{font-size:9.6pt;margin:0 0 2mm}.runin{font-weight:700;text-transform:uppercase;font-size:8pt;letter-spacing:.06em;margin-right:1.5mm}
 .tense .gram strong{color:var(--g)}
 .tensetag{display:inline-block;color:#fff;font-size:8pt;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.8mm 2.4mm;border-radius:1mm;vertical-align:middle;margin-left:2mm}
+.tensepage{background:color-mix(in srgb, var(--g) 11%, white)}
+.tensepage h3,.tensepage .runin,.tensepage .pipe,.tensepage .slot-tag{color:var(--g)}
+.tensepage .panel.lp{background:color-mix(in srgb, var(--g) 22%, white)}
+.tensepage .plate{border-color:color-mix(in srgb, var(--g) 40%, white);background:color-mix(in srgb, var(--g) 16%, white)}
 .hwhead{border-top:.6pt solid var(--accent);padding-top:3mm;margin-top:4mm;font-size:10pt}
 .hw h4{color:var(--accent);font-size:8.5pt;text-transform:uppercase;letter-spacing:.08em;margin:2mm 0 1.5mm}
 """
