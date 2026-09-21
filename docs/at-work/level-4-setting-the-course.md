@@ -99,6 +99,16 @@ GRACE: Keep them. **I'm relying** on someone to tell me when I'm wrong. *It's po
 - *Speak:* You have just taken over a team of thirty in three cities. Set three expectations in two minutes, hedging each one exactly enough; your partner, a lead, pushes back on one and you hold it.
 - *Write:* Write the message to all two hundred after the meeting: what you're noticing, what you're asking, what you're not going to do — with five continuous forms, two of them dynamic uses of stative verbs.
 
+**Homework.**
+- *Do:* Write the message to all two hundred after your first leads meeting.
+- *Self-check:*
+  1. It seems to me we ___ (operate) as six teams.
+  2. I ___ (hear) that they talk to each other, not to us.
+  3. Some of the leads ___ (like) being told.
+  4. One lead ___ (be) very present in inboxes at the moment.
+  5. I ___ (rely) on someone to tell me when I'm wrong.
+- *Key:* 1 're operating · 2 'm hearing · 3 like · 4 is being · 5 'm relying
+
 **Artwork.**
 - `u01-opener` — a wall map of Europe with six clusters of small figures on it and only one thin line joining two clusters; Grace in her cobalt coat drawing a second line with a marker, Beatriz with her lanyard, Felix in his hoodie, Ravi with his folder; a pale-wood desk in the foreground
 - `u01-scene` — a laptop showing a stand-up in a foreign office with one extra silhouette in the corner window, listening, that window outlined cobalt
@@ -154,6 +164,16 @@ FELIX: Already in the plan.
 **The case.**
 - *Speak:* Pitch a tool that automates a task your colleagues do by hand. Open with the objection you know is coming, answer three more before they are asked, and report every claim with an advanced passive.
 - *Write:* Write the one-page proposal for the pilot: what is understood, what is expected, what has been shown, what is not shared, and what the sixty are offered — in the passive throughout, then one active sentence about who tells them.
+
+**Homework.**
+- *Do:* Write the one-page pilot proposal in the passive.
+- *Self-check:*
+  1. People think this tool replaces typing. → It ___ that this tool replaces typing.
+  2. Experts expect volume to double. → It ___ that volume will double.
+  3. Studies have shown reviewing is faster. → It ___ that reviewing is faster.
+  4. We estimate each note takes twenty minutes. → It ___ that each note takes twenty minutes.
+  5. Sixty people currently type notes. → Sixty people ___ to type notes.
+- *Key:* 1 is thought · 2 is expected · 3 has been shown · 4 is estimated · 5 are currently employed
 
 **Artwork.**
 - `u02-opener` — a long row of desks with typists in silhouette, the far end of the row dissolving into a single screen with a page of text on it and a pen poised above a signature line; Grace in her cobalt coat and Felix in his hoodie at the screen, Nadia standing, Ravi with his folder; the pen cobalt
@@ -213,6 +233,16 @@ GRACE: That's exactly it. Four numbers, none of them revenue.
 - *Speak:* Present three non-financial metrics for an organisation you know to a sceptical analyst. Each metric is one complex noun phrase; each time the analyst rephrases it, confirm or correct in one sentence.
 - *Write:* Write the ESG page of a report: four metrics, each as a noun phrase of at least twelve words, each followed by a plain-language sentence beginning *In other words*.
 
+**Homework.**
+- *Do:* Write the ESG page: four metrics as noun phrases, each followed by *In other words*.
+- *Self-check:*
+  1. Head noun of: *a reduction in patient travel emissions attributable to remote consultation*
+  2. Head noun of: *staff turnover among clinicians in their first two years*
+  3. Head noun of: *the temptation to monetise avoided emissions through carbon credits*
+  4. Head noun of: *the risk of losing the founder's clinical vision in a rush to governance*
+  5. Head noun of: *the proportion of board seats held by directors with no financial interest in the company*
+- *Key:* 1 reduction · 2 turnover · 3 temptation · 4 risk · 5 proportion
+
 **Artwork.**
 - `u03-opener` — a boardroom with a long table and seven chairs, three of them a different colour, a large window onto a map of scattered rural villages with thin lines running to one city; Grace in her cobalt coat and Ravi with his folder at one end, the analyst's silhouette with a tablet at the other; the three chairs cobalt
 - `u03-scene` — four vertical bars of different heights on a clean wall chart, no labels, the shortest one cobalt, a hand pointing at it
@@ -268,6 +298,16 @@ SUPPLIER: Understood. Friday.
 **The case.**
 - *Speak:* Your partner is a supplier cutting volume and raising prices. Hold them to the contract, argue the past with three third conditionals, refuse twice without closing the door, and end with an offer and a contingency.
 - *Write:* Write the letter confirming the position after the meeting: what the contract says, what would have happened had they given notice, what you can offer, and the contingency, stated once.
+
+**Homework.**
+- *Do:* Write the letter confirming your position after the supplier meeting.
+- *Self-check:*
+  1. If you ___ (sign) the two-year contract, your price ___ (be) fixed.
+  2. If we ___ (know) about the bottleneck, we ___ (choose) differently.
+  3. If the chips ___ (be) your only issue, you ___ (call) us in March.
+  4. If we ___ (have) more notice, we ___ (give) you more.
+  5. ___ respect, that's not our problem to fund. (With / By)
+- *Key:* 1 'd signed / would have been · 2 'd known / 'd have chosen · 3 had been / 'd have called · 4 'd had / 'd have given · 5 With
 
 **Artwork.**
 - `u04-opener` — a small white home-testing kit open on a table, its sensor slot empty, a printed contract beside it with one clause circled; Grace in her cobalt coat and Ravi with his folder on one side, the supplier's silhouette on a screen; through the window, a container ship far out; the circle cobalt
@@ -327,6 +367,16 @@ GRACE: **You must have been** dreading this meeting. I'm sorry it took me three 
 - *Speak:* Hold a one-to-one with a colleague whose work has slipped. Start with what you noticed, deduce with four modals, reflect back three times before you propose anything, and name the silence when it comes.
 - *Write:* Write the note to file after the meeting: what was observed, what may and must have contributed, what was agreed — no blame, one action with a date.
 
+**Homework.**
+- *Do:* Write the note to file after a difficult one-to-one.
+- *Self-check:*
+  1. Six people ___ left for six unrelated reasons. (impossible)
+  2. Two of them ___ gone for money. (possible)
+  3. That ___ been easy. (impossible)
+  4. You ___ been dreading this meeting. (certain)
+  5. It ___ be a structure problem. (possible, present)
+- *Key:* 1 can't have · 2 may / might have · 3 can't have · 4 must have · 5 could / may
+
 **Artwork.**
 - `u05-opener` — a quiet meeting room with two chairs turned slightly towards each other and no table between them, a window onto a courtyard, an empty desk visible through the glass with a nameplate removed; Grace's cobalt coat over the back of one chair, a box of tissues on the sill
 - `u05-scene` — an organisation chart drawn as boxes, one box with a line to fifteen small boxes and an empty dotted box beside it, the dotted box cobalt
@@ -383,6 +433,16 @@ GRACE: *Then you know the analogy:* the lock on the door is fine; it's the copy 
 - *Speak:* Explain three data rules of your organisation to a new colleague who has never read a policy: one analogy per rule, and say where each analogy stops. Use four defining and three non-defining relative clauses.
 - *Write:* Write the "Data in one page" briefing for new leads: what is anonymised, what is public, what opt-in means, and the one risk to remember — every rule with a relative clause, every concept with an analogy.
 
+**Homework.**
+- *Do:* Write the "Data in one page" briefing for new leads.
+- *Self-check:*
+  1. Every patient ___ data goes to research has ticked a box.
+  2. Anonymised data, ___ we share for research, still has a street in it.
+  3. Someone wrote a program ___ visited every page.
+  4. GDPR, ___ covers our doctors too, says we should have made it harder.
+  5. The risk ___ keeps me awake is a spreadsheet.
+- *Key:* 1 whose · 2 which · 3 that / which · 4 which · 5 that / which
+
 **Artwork.**
 - `u06-opener` — a street of terraced houses drawn twice, once with figures in the doorways and once with the same figures as blank ovals for faces, a magnifying glass over one doorway; Felix in his hoodie holding the glass, Grace in her cobalt coat, Beatriz's lanyard, a pale-wood desk with a laptop; one door cobalt
 - `u06-scene` — a kitchen table with a house key and a copied key side by side, a padlocked door in the background, the copied key cobalt
@@ -438,6 +498,16 @@ GRACE: You do. You interrupted well enough to earn it.
 **The case.**
 - *Speak:* Run a retro in threes on a project that scaled too fast. Each person interrupts once, diplomatically, and hands the floor back. Close with a three-date roadmap in the future perfect and continuous.
 - *Write:* Write the retro summary for the channel: what worked, what changes, the pivot in one sentence, and the roadmap as three dated lines.
+
+**Homework.**
+- *Do:* Write the retro summary with a three-date roadmap.
+- *Self-check:*
+  1. By the end of the pilot, they ___ (review) eight thousand notes.
+  2. We ___ (run) the pilot until next spring.
+  3. By March we ___ (finish) the migration.
+  4. From April we ___ (onboard) five clinics a month.
+  5. By year end we ___ (reach) forty.
+- *Key:* 1 'll have reviewed · 2 'll be running · 3 'll have finished · 4 'll be onboarding · 5 'll have reached
 
 **Artwork.**
 - `u07-opener` — a wall of forty small clinic icons in a grid, two of them lit, a tangle of old pipes drawn behind the grid with one clean new pipe running through; Grace in her cobalt coat at the wall, Felix in his hoodie, the product lead's silhouette with a marker; the new pipe cobalt
@@ -496,6 +566,16 @@ GRACE: *That's a question for our lawyers, and I won't pretend otherwise. What I
 - *Speak:* Your partner is a hostile journalist with seven questions about a failure at your organisation. Apologise first, report three claims at arm's length, own one thing outright, and decline two questions without saying "no comment".
 - *Write:* Write the public timeline of the outage: six timed entries, each reporting who said what and when, and a closing paragraph on the recovery plan that makes exactly two promises.
 
+**Homework.**
+- *Do:* Write the public timeline of the outage, six timed entries.
+- *Self-check:*
+  1. Vendor: "A change was applied to the wrong region." → The vendor said that a change ___ to the wrong region.
+  2. Vendor at midnight: "It will be fixed within the hour." → We were told it ___ fixed within the hour.
+  3. Vendor now: "The rollback failed." → The vendor now ___ the rollback failed. (claims / claimed)
+  4. Review: "The line needs doubling." → The review said the line ___ doubling.
+  5. "You knew the fallback was thin." → It ___ reported that we knew. (has been / is)
+- *Key:* 1 had been applied · 2 would be · 3 claims · 4 needed · 5 has been
+
 **Artwork.**
 - `u08-opener` — a press room with a bank of microphones on a table and a row of silhouettes with notebooks, Grace alone at the table in her cobalt coat with a single sheet in front of her; behind her a large screen showing a flat line with a six-hour gap in it, the gap cobalt
 - `u08-scene` — a call-centre floor at night with every desk lit and headsets on hooks, one phone off its hook, the phone cobalt
@@ -552,6 +632,16 @@ GRACE: *Then let's build one together, and not in this room today.* Thank you, b
 - *Speak:* Facilitate a discussion in fours on an unfair outcome — pay, promotion, who gets the interesting work. Set ground rules, slow it down once, reflect each side back, and get every speaker to use one mixed conditional.
 - *Write:* Write the note that goes to the engineering team after the session: what the number is, what was said in neutral words, and the three next steps — with two mixed conditionals that explain why.
 
+**Homework.**
+- *Do:* Write the note to the engineering team with two mixed conditionals.
+- *Self-check:*
+  1. If we ___ (measure) outcomes two years ago, we ___ (not have) this conversation now.
+  2. If the panel ___ (be) more diverse, last year's decisions ___ (look) different.
+  3. If I ___ (have) a rubric last year, I ___ (defend) decisions now instead of a feeling.
+  4. If people ___ (stop) applying, the process ___ (be) the problem.
+  5. Let's slow ___. (down / off)
+- *Key:* 1 'd measured / wouldn't be having · 2 were / would have looked · 3 'd had / 'd be defending · 4 had stopped / is · 5 down
+
 **Artwork.**
 - `u09-opener` — a round table with four chairs and a fifth chair pulled slightly back from it, a flip chart with a single blank rubric grid; Grace in her cobalt coat with both palms down on the table, Felix in his hoodie, Beatriz's lanyard, the engineer's silhouette with arms folded; one cell of the grid cobalt
 - `u09-scene` — a ladder against a wall with eleven rungs, nine of one colour and two of another, the two cobalt
@@ -607,6 +697,16 @@ GRACE: *They're the only part I rehearsed.*
 **The case.**
 - *Speak:* Pitch an unconventional strategy for an organisation you know in ninety seconds: five inversions, three pauses you mark in advance, one line you say twice. Your partner times the pauses and tells you which one landed.
 - *Write:* Write the pitch as a one-page memo, then mark it up as a script: where the pauses go, which sentence is repeated, which three words stand alone on a line.
+
+**Homework.**
+- *Do:* Write the pitch as a memo, then mark it up as a script with pauses.
+- *Self-check:*
+  1. Our cost doubled and our reach fell. (Not only …)
+  2. We have never built for virality. (Never …)
+  3. A health company rarely makes something people share. (Rarely …)
+  4. We can't keep buying a shrinking audience under any circumstances. (Under no circumstances …)
+  5. I had no sooner written the plan than I doubted it. (No sooner …)
+- *Key:* 1 Not only did our cost double, but our reach fell. · 2 Never have we built for virality. · 3 Rarely does a health company make something people share. · 4 Under no circumstances can we keep buying a shrinking audience. · 5 No sooner had I written the plan than I doubted it.
 
 **Artwork.**
 - `u10-opener` — a dark auditorium with one spotlit lectern and Grace in her cobalt coat beside it rather than behind it, one hand raised in a stop, a vast screen behind her showing two lines crossing — one rising, one falling — with no labels; the rising line cobalt
@@ -665,6 +765,16 @@ MORITZ: *And I'll stop treating quiet as yes.*
 - *Speak:* Mediate in threes between a direct colleague and a deferential one over a message that was read as an order. Name the two cultures without judging either, and get each side to agree to one change, using at least six of the unit's verb patterns.
 - *Write:* Write the two versions of Moritz's email — the one he sent, and the one that works in Lisbon — and a three-line note to him explaining the difference.
 
+**Homework.**
+- *Do:* Write the two versions of the email, and a three-line note explaining the difference.
+- *Self-check:*
+  1. It's no use ___ (pretend) it's a question.
+  2. I prefer ___ (get) feedback early.
+  3. You're used to people ___ (say) what they think.
+  4. Try ___ (end) the email with a question.
+  5. I can't help ___ (feel) that's slow.
+- *Key:* 1 pretending · 2 getting · 3 saying · 4 ending · 5 feeling
+
 **Artwork.**
 - `u11-opener` — two meeting tables seen from above in one room, one square with everyone leaning in and talking, one round with everyone sitting back and one figure speaking; Grace in her cobalt coat standing between them, Moritz's silhouette with a laptop, Inês's with a folded hand; a single cobalt chair at the round table turned slightly outward
 - `u11-scene` — a printed email on a desk with one word circled and a second draft beneath it with a name and a question mark written in, the circle cobalt
@@ -721,6 +831,16 @@ FOUNDER: *Thank you for not sending an email.*
 **The case.**
 - *Speak:* Deliver difficult news to a founder, a team lead or a long-serving colleague: what is happening, why, with four cause-and-effect linkers that explain rather than excuse, and what happens to the people. Your partner asks the question you were dreading.
 - *Write:* Write the message to all thirty for the day of the announcement: the decision, how it came about, the offer to the twelve, the list — and one sentence of acknowledgement that is not an apology.
+
+**Homework.**
+- *Do:* Write the message to all thirty for the day of the announcement.
+- *Self-check:*
+  1. The overlap ___ both companies running a data team. (stems from / results in)
+  2. ___, one of them is duplicated. (Consequently / Whereas)
+  3. The overlap came to light in diligence; ___ the delay. (hence / owing)
+  4. ___ the clinical expansion, we have nineteen open posts. (Owing to / Because)
+  5. What ___ the acquisition was how good the work is. (gave rise to / stemmed)
+- *Key:* 1 stems from · 2 Consequently · 3 hence · 4 Owing to · 5 gave rise to
 
 **Artwork.**
 - `u12-opener` — a small open-plan office with thirty chairs, twelve of them drawn in outline only, a founder's silhouette at the window with their back to the room; Grace in her cobalt coat and Beatriz with her lanyard at the door, a single sheet of paper in Grace's hand; the paper cobalt
@@ -785,6 +905,16 @@ INVESTOR: *I'll take that as a good sign. Next slide.*
 - *Speak:* Your partner fires ten one-word questions about an organisation you know — real or invented numbers. Answer each in under eight seconds, number first, with a participle clause in at least four answers.
 - *Write:* Write the one-page investor summary: eight lines, each opening with a participle clause and closing with a figure written in words.
 
+**Homework.**
+- *Do:* Write the one-page investor summary: eight lines, each opening with a participle clause.
+- *Self-check:*
+  1. Because we have doubled revenue, we're raising forty million. → ___, we're raising forty million.
+  2. If we assume no raise, twenty-two months. → ___ no raise, twenty-two months.
+  3. Because we haven't lost a clinic, clinic churn is zero. → ___ a clinic, clinic churn is zero.
+  4. The company was founded in 2019 with three doctors. → ___ in twenty nineteen with three doctors, …
+  5. Because we published the review, we lost fewer patients. → ___ the review, we lost fewer patients.
+- *Key:* 1 Having doubled revenue · 2 Assuming · 3 Not having lost · 4 Founded · 5 Having published
+
 **Artwork.**
 - `u13-opener` — a glass-walled room high above the city, an investor's silhouette leaning back with one finger raised, Ravi with his folder open and Grace in her cobalt coat standing; a screen showing a line that climbs steeply with a small dip near the end, the climb cobalt
 - `u13-scene` — a stopwatch and a single slide printed on the desk showing three large numbers as blank blocks, the stopwatch hand cobalt
@@ -844,6 +974,16 @@ GRACE: I'll let you.
 - *Speak:* Negotiate a senior offer in threes — candidate, hiring director, head of people. The candidate has a rival offer; the company has one thing it can't move on. Use eight probability expressions between you, and close with the four agreed terms said aloud.
 - *Write:* Write the offer letter's covering note: the package in four lines, the probability of the round closing stated honestly, and one sentence that closes.
 
+**Homework.**
+- *Do:* Write the covering note for the offer letter.
+- *Self-check:*
+  1. The round is ___ to close by March. (bound / doubt)
+  2. I'd ___ it at ninety per cent. (put / say)
+  3. It's ___ to slip past June. (unlikely / unlike)
+  4. The ___ are the other offer has less equity. (odds / chances)
+  5. I ___ you'd have taken it otherwise. (doubt / unlikely)
+- *Key:* 1 bound · 2 put · 3 unlikely · 4 odds · 5 doubt
+
 **Artwork.**
 - `u14-opener` — a hotel lobby at night with two armchairs and a low table, a single sheet on the table with four lines and a pen across it, the candidate's silhouette with a coat still on, Grace in her cobalt coat and Beatriz with her lanyard; a second sheet half-visible in the candidate's bag; the pen cobalt
 - `u14-scene` — a set of scales with a small stack of coins on one pan and a chair on the other, the chair cobalt, the pans level
@@ -894,6 +1034,16 @@ GRACE: **If I'd known** in January what I know now, I'd have hired the deputy in
 **The case.**
 - *Speak:* Give a four-minute closing keynote on what your team learned this year: four lessons, each carrying one of the four structures, and one ask that the audience can do before they leave the room. Take one question from the floor.
 - *Write:* Write the keynote as a script with the four structures marked in the margin, then cut it to three hundred words without losing any of them.
+
+**Homework.**
+- *Do:* Write the keynote as a script with the four structures marked, then cut it to three hundred words.
+- *Self-check:*
+  1. Name the structure: *Not once did we plan for an outage.*
+  2. Name the structure: *Having published the review, we lost fewer patients.*
+  3. Name the structure: *If we had tracked promotions, we wouldn't be rebuilding the process now.*
+  4. Name the structure: *It is often said that automation displaces people.*
+  5. Name the structure: *Nor does anyone in this room.*
+- *Key:* 1 inversion · 2 participle clause · 3 mixed conditional · 4 advanced passive · 5 inversion
 
 **Artwork.**
 - `u15-opener` — a conference hall from the back of the room, hundreds of silhouettes facing a small stage where Grace stands beside the lectern in her cobalt coat holding a single index card, the screen behind her blank; on every seat back a small folded card, one of them cobalt

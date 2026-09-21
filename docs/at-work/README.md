@@ -192,6 +192,7 @@ the artwork spec in §7 if the trim changes).
 | 5–6 | **Communication** | the model dialogue (recorded: see §6); a listening-for-gist task; the useful language box; a staged practice ending in a role-play with role cards |
 | 7 | **In the Room** | the phrase box; a short listening in which the phrases do their work; a one-minute mini role-play; a pronunciation note where intonation carries the meaning |
 | 8 | **The Case** | the activation: a *speaking* task and a *writing* task that use the unit's language on a situation from the unit's story. Never a quiz. This is the same rule as the deck activation stage in `lesson-template/HOUSE-STYLE.md` §10b, in print |
+| 8 | **Homework** | a boxed third of the page: one written task to do alone (*Do*), and a five-item *Self-check* on the unit's grammar whose *Key* sits at the back of the book. The self-check is the one quiz a unit has, and it is for the learner, not the teacher |
 
 **Word budgets.** A page is roughly 300 words of learner-facing text once
 the artwork, the rubrics and the white space have taken theirs. A dialogue
@@ -200,8 +201,8 @@ that runs long is split across two recordings, never set smaller.
 **The spec block in each level file** gives, per unit: title and strapline;
 the can-do line; the scenario; the four strands as a table; the lead-in; the
 grammar as it lands in the dialogue; the In the Room phrase box; the model
-dialogue in full; the case; and the two artwork subjects. That is enough to
-write the eight pages from.
+dialogue in full; the case; the homework with its self-check and key; and
+the two artwork subjects. That is enough to write the eight pages from.
 
 ---
 
@@ -348,7 +349,8 @@ leaves at bottom-left.
 - **In the Room phrase bank** — every phrase box in the book, on two pages.
 - **Audio scripts** — every model dialogue and every In the Room listening.
 - **Word list** — the vocabulary sets, with the unit number, alphabetised.
-- **Answer key** — for the self-study edition only.
+- **Answer key** — the key to every unit's five-item self-check, in every
+  edition; the self-study edition adds keys for the in-unit exercises too.
 
 ---
 

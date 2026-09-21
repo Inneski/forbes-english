@@ -31,7 +31,10 @@ with artwork requests and dialogue. It is now **`docs/at-work/`**:
     strands as a table, lead-in, the grammar as it lands in the dialogue,
     a phrase box, a full model dialogue (grammar target in bold, In the
     Room phrases in italics), a speak-and-write case, and two artwork
-    subjects. **Every book carries:** a fictional company, a five-person
+    subjects, and — added the same day when Innes asked "does it have
+    homework sections and answers?" — a **Homework** block: one written
+    task to do alone, a five-item self-check on the unit's grammar, and
+    its key. **Every book carries:** a fictional company, a five-person
     cast told apart by props rather than faces, and a year's arc. The five
     companies share one world (README §2): Larkline buys its desks from
     Greenline, Tidewater stocks Larkline's bikes, Beatriz moves from

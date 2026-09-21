@@ -102,6 +102,16 @@ KWAME: And now you sound like someone who knows. *Once more from the top, and th
 - *Speak:* Write the first ninety seconds of a keynote that changes the subject in your industry. Rehearse it with a partner who stops you after every sentence without a cleft, and who counts the pauses aloud.
 - *Write:* Write the keynote's opening page — three hundred words, eight cleft sentences — and mark the two pauses and the one line you will say to one person.
 
+**Homework.**
+- *Do:* Write the keynote's opening page with eight cleft sentences.
+- *Self-check:*
+  1. This industry needs wires, not generation. (What …)
+  2. The wires are the problem. (It's …)
+  3. I'm nervous because the zeitgeist says renewables. (The reason …)
+  4. Meridian built half of Europe's substations. (It was …)
+  5. They paid to be told where the industry is going. (What …)
+- *Key:* 1 What this industry needs is wires, not generation. · 2 It's the wires that are the problem. · 3 The reason I'm nervous is that the zeitgeist says renewables. · 4 It was Meridian that built half of Europe's substations. · 5 What they paid for was to be told where the industry is going.
+
 **Artwork.**
 - `u01-opener` — an empty auditorium at night, one lectern under a single light, Mei-Lin standing beside it with her plum umbrella furled on the floor, Kwame in the third row with a fountain pen raised like a conductor's baton; a giant blank screen behind
 - `u01-scene` — a pylon and a line of cable running towards a city at dusk, the cable drawn plum, no power station in sight
@@ -157,6 +167,16 @@ ILSE: *That's rather elegant.* The person the prediction is about is the only on
 **The case.**
 - *Speak:* Take a tool your organisation uses or could use that scores people — for hiring, credit, performance — and argue its dilemma with a partner: each position hedged to exactly the strength you can defend, and a policy line at the end.
 - *Write:* Write the two-paragraph policy clause: what a model may and may not do with a person, hedged where the law is unsettled and unhedged where the company has decided.
+
+**Homework.**
+- *Do:* Write the two-paragraph policy clause on models that score people.
+- *Self-check:*
+  1. ___ might argue that's a decision. (One / Some)
+  2. The model ___ said to be more accurate in London. (is / has)
+  3. I'm not sure I'd go so ___ as to call it bias. (far / much)
+  4. It could ___ be described as unfair. (reasonably / reasonable)
+  5. That ___ prove expensive. (may / must)
+- *Key:* 1 One · 2 is · 3 far · 4 reasonably · 5 may
 
 **Artwork.**
 - `u02-opener` — two office towers, London and Zürich, each drawn as a grid of lit windows, one grid clear and one slightly blurred, a single figure in one window holding a small flag; Mei-Lin with her plum umbrella and Ilse with her ring binder on a bridge between the towers; the flag plum
@@ -214,6 +234,16 @@ HELENA: *They arrived this morning, and you'll have them before lunch. I'm going
 **The case.**
 - *Speak:* In fours — chair, proposer, seconder, opponent — defend a decision that costs money now to save more later. The opponent interrupts three times; the chair manages each one differently; the proposer's answers are single sentences with at least three dependent clauses.
 - *Write:* Write the board paper's one-page summary of the exit: four sentences, each carrying a concession, a condition and a consequence, and a final line that states what the board is asked to resolve.
+
+**Homework.**
+- *Do:* Write the board paper's one-page summary: four complex sentences and the resolution.
+- *Self-check:*
+  1. ___ these contracts represent a fifth of revenue, every one expires within five years. (Although / Despite)
+  2. ___ the penalty is a one-off, the cost of staying is recurring. (Whereas / However)
+  3. ___ we hold those contracts, our cost of capital carries a premium. (As long as / Unless)
+  4. The board would be obliged to sell the grid division, ___ loses money today. (which / what)
+  5. ___ the penalty is capped, the holders support the exit. (Provided / Despite)
+- *Key:* 1 Although · 2 Whereas · 3 As long as · 4 which · 5 Provided
 
 **Artwork.**
 - `u03-opener` — a long boardroom table under a skylight, Helena in the tall chair at its head with silver hair, Kwame standing with his fountain pen, Mei-Lin seated with her plum umbrella hooked on the chair, Victor half-risen with a phone at his ear; a stack of three letters at Helena's elbow, the top one plum
@@ -273,6 +303,16 @@ KWAME: Then let's walk through the one with the shortest lead time. **Should the
 - *Speak:* Run three scenarios for an organisation you know — a tariff, a sanction, a dominant supplier — each opened with an inverted conditional. Your partner reads you a "diplomatic" message and you decode it line by line.
 - *Write:* Write the one-page scenario memo: three scenarios, each with a *were/should/had* sentence and a bridge, and a final paragraph that admits which decision the scenarios are really about.
 
+**Homework.**
+- *Do:* Write the one-page scenario memo with three inverted conditionals.
+- *Self-check:*
+  1. If that were to happen, Zürich becomes the only supplier. (no *if*)
+  2. If we had invested in 2023, we'd be the winner. (no *if*)
+  3. If the sanctions list were to expand, we'd have ninety days. (no *if*)
+  4. If the tariff should land early, what's the bridge? (no *if*)
+  5. If I had found another scenario, I'd have led with it. (no *if*)
+- *Key:* 1 Were that to happen, Zürich becomes the only supplier. · 2 Had we invested in twenty twenty-three, we'd be the winner. · 3 Were the sanctions list to expand, we'd have ninety days. · 4 Should the tariff land early, what's the bridge? · 5 Had I found another scenario, I'd have led with it.
+
 **Artwork.**
 - `u04-opener` — a map of Europe on a table with three doors drawn standing on it, one ajar, small model transformers scattered across it; Mei-Lin with her plum umbrella leaning on the table edge, Kwame with his pen, Ilse with her ring binder open at a single typed letter; the ajar door plum
 - `u04-scene` — a folded letter on official paper with three phrases underlined and a pencilled translation beside each, the pencil plum
@@ -329,6 +369,16 @@ KWAME: *And that, Gunnar, is what a Chief Strategy Officer is for.*
 **The case.**
 - *Speak:* Pitch a large, costly, correct change to the person who has to deliver it and doesn't want to. Use ten discourse markers to carry the argument; when they stop listening to logic, offer them a test they cannot lose.
 - *Write:* Write the two-page proposal as a single argument: concession, contrast, consequence, the divestment case, and the pilot clause — every paragraph opened by a discourse marker that tells the reader where the argument is going.
+
+**Homework.**
+- *Do:* Write the two-page proposal, a discourse marker opening every paragraph.
+- *Self-check:*
+  1. ___, recovery costs more than ore today. (Granted / Rather)
+  2. ___, the first decommissioning wave starts in 2028. (Nevertheless / Conversely)
+  3. Ore is priced without its carbon; ___, recovered steel is priced without a coming tax. (conversely / moreover)
+  4. ___ the numbers hold, ___ I withdraw the clause. (Either … or / Both … and)
+  5. Not "worse" — ___, we sell it to someone who'll run it to the end. (on the contrary / by the same token)
+- *Key:* 1 Granted · 2 Nevertheless · 3 conversely · 4 Either … or · 5 on the contrary
 
 **Artwork.**
 - `u05-opener` — a scrapyard of decommissioned transformers under a pale sky with one being lifted by a crane towards a furnace, a set of scales in the foreground with ore on one pan and a coil of recovered steel on the other; Mei-Lin with her plum umbrella and Kwame with his pen beside the scales, Gunnar's silhouette in a hard hat; the steel coil plum
@@ -393,6 +443,16 @@ MEI-LIN: We'll have the heads of terms by Thursday. And Anders — *that pause c
 - *Speak:* Negotiate the purchase of a company, a building or a contract in threes. Every number must come with a reason or be met with silence; use eight of the unit's phrasal verbs; one side must use a pause to win a concession.
 - *Write:* Write the heads of terms as eight lines, each built on one phrasal verb, and a covering note that says which pause in the room decided the price.
 
+**Homework.**
+- *Do:* Write the heads of terms as eight lines, each built on a phrasal verb.
+- *Self-check:*
+  1. We hold ___ for four hundred.
+  2. We've priced Poland ___.
+  3. The recall wrote ___ your brand.
+  4. A break fee if we back ___ on antitrust grounds.
+  5. We might spin the consumer division ___.
+- *Key:* 1 out · 2 in · 3 down · 4 out · 5 off
+
 **Artwork.**
 - `u06-opener` — a hotel meeting room with a long table and one e-bike propped against the far wall, Anders's silhouette leaning forward with both hands flat, Kwame sitting back with his fountain pen capped and unmoving, Mei-Lin with her plum umbrella across her lap; a large wall clock with no numbers; the bike's frame plum
 - `u06-scene` — a single sheet headed with a blank title and three short lines, a fountain pen lying uncapped beside it, the ink plum
@@ -452,6 +512,16 @@ MEI-LIN: *You were going to be listened to. There's a difference*, and this comp
 - *Speak:* Run a blameless post-mortem in fours on a failure you know — an outage, a missed deadline, a lost client. The chair holds the passive until the sequence is clear, then restores the names only for the fixes. One person confesses early; deal with it.
 - *Write:* Write the post-mortem report: the sequence in agentless passives, the containment in present perfect passives, and a final paragraph in the active voice that names who does what next.
 
+**Homework.**
+- *Do:* Write the post-mortem report: the sequence in agentless passives, the fixes in the active voice with names.
+- *Self-check:*
+  1. Tomasz suppressed the alarm. (blameless)
+  2. The customer requested the suppression. (blameless)
+  3. Nobody triggered a review. (blameless)
+  4. We have disabled suppression on all sites. (blameless)
+  5. Tomasz identified eleven sites last night. (blameless)
+- *Key:* 1 The alarm was suppressed. · 2 The suppression was requested. · 3 No review was triggered. · 4 Suppression has been disabled on all sites. · 5 Eleven sites were identified last night.
+
 **Artwork.**
 - `u07-opener` — a control room at night, a wall of dark screens with one showing a flat temperature line that steps up and stays there, five figures at a round table below it; Mei-Lin with her plum umbrella hooked on the chair, Ilse's ring binder open, Kwame's pen, a young engineer's silhouette with his head in his hands; the stepped line plum
 - `u07-scene` — a substation in a heat haze with one small alarm lamp on its wall unlit, a plum-coloured tag hanging from the panel door
@@ -508,6 +578,16 @@ ILSE: It's the most useful thing I've done all month. **It might even be** the m
 **The case.**
 - *Speak:* Appoint a devil's advocate for a decision your group has already made. They attack it with eight nuanced modals; the group must find one thing it stopped hearing, and one rule that would have caught it.
 - *Write:* Write the two committee rules as a half-page memo — with a summary at the top, because that is the point — and a paragraph on why the second rule exists, hedged exactly as far as you can prove.
+
+**Homework.**
+- *Do:* Write the two committee rules as a half-page memo with the summary at the top.
+- *Self-check:*
+  1. This room ___ well be an echo chamber. (might / ought)
+  2. It ___ not necessarily follow that Zürich is right. (may / can)
+  3. The plant ___ have been sited in Zürich at all. (needn't / mustn't)
+  4. We ___ to have read it. (ought / should)
+  5. We can ___ claim we considered it. (hardly / hard)
+- *Key:* 1 might · 2 may · 3 needn't · 4 ought · 5 hardly
 
 **Artwork.**
 - `u08-opener` — a round executive table with seven identical chairs and one figure standing at the window with their back to it holding a thick document, the table's occupants all turned the same way; Mei-Lin with her plum umbrella turning her chair towards the window, Ilse's ring binder open, Kwame's pen; the document's cover plum
@@ -567,6 +647,16 @@ KWAME: **I'll have been arguing** for this for a year by the time it launches. Y
 - *Speak:* Pitch the product that would hurt your organisation most, to your own board. Name the status quo first, let your partner object as it, reframe once, and describe the next decade in five future perfect continuous sentences.
 - *Write:* Write the incubator charter in one page: what it builds, what it may cannibalise, how it is kept at a distance, and what will have been happening for how long by three dates.
 
+**Homework.**
+- *Do:* Write the incubator charter in one page.
+- *Self-check:*
+  1. By twenty thirty-five, someone ___ (sell) those for a decade.
+  2. By the time the market turns, we ___ (build) the thing that turns it.
+  3. In twenty thirty, the substation division ___ (fund) its sequel for five years.
+  4. We ___ (spend) two per cent of R&D for three years.
+  5. I ___ (argue) for this for a year by the time it launches.
+- *Key:* 1 will have been selling · 2 'll have been building · 3 will have been funding · 4 'll have been spending · 5 'll have been arguing
+
 **Artwork.**
 - `u09-opener` — a great old substation hall with a small glass building growing out of its side like a shoot, a single cable running from the shoot to a row of houses; Helena with silver hair in a tall chair set outdoors on the forecourt, Kwame with his pen, Mei-Lin with her plum umbrella pointing at the shoot; the shoot's roof plum
 - `u09-scene` — a neighbourhood of small houses each with a tiny panel on its roof, joined by a single loop of cable, the loop plum
@@ -624,6 +714,16 @@ HELENA: *Try. And this time, remember to do it.*
 **The case.**
 - *Speak:* You are the chair; your partner is a chief executive who has not planned a succession. Give the feedback once, directly, with the reason; evaluate two candidates; use eight of the meaning-changing verb pairs correctly between you.
 - *Write:* Write the confidential succession note for the board: two candidates, one paragraph each, one recommendation, and a final paragraph on the retention risk — with the verb patterns doing the precision.
+
+**Homework.**
+- *Do:* Write the confidential succession note for the board.
+- *Self-check:*
+  1. I regret ___ (say) the board is concerned. (a formal announcement)
+  2. I don't regret ___ (tell) you this.
+  3. He tried ___ (convince) the board he's ready. (made an effort)
+  4. He tried ___ (convince) each director separately. (an experiment)
+  5. If I stopped ___ (think) about it, it's her.
+- *Key:* 1 to say · 2 telling · 3 to convince · 4 convincing · 5 to think
 
 **Artwork.**
 - `u10-opener` — a dining room after a board dinner, the long table cleared but for two glasses, Helena with silver hair at the head of it and Kwame with his fountain pen turning it over in his fingers, an empty chair between them pulled slightly out; through the door, Mei-Lin's plum umbrella in the hall stand
@@ -685,6 +785,16 @@ MEI-LIN: *Then you've just agreed on something, which is more than the division 
 - *Speak:* Realign two sides of a team that grew too fast, in threes. Each side says what the other gets right; find the real split; propose two speeds and one gate. Use twelve instances of ellipsis or substitution between you, and make them sound natural.
 - *Write:* Write the one-page alignment note: who does what, what the gate is, the turnaround in days, and a final line each side can sign — short, because everything understood is left out.
 
+**Homework.**
+- *Do:* Write the one-page alignment note, with everything understood left out.
+- *Self-check:*
+  1. "Tariq's people move fast. My people don't move fast." → Mine ___.
+  2. "I would say that, and my team would say that." → …, and ___ my team.
+  3. "Is it blitzscaling?" "I hope it is blitzscaling." → I hope ___.
+  4. "Revenue we can recover from; a grid we can't always recover from." → The former we can recover from. The ___, not always.
+  5. "I didn't expect that." "I didn't expect it either." → ___ did I.
+- *Key:* 1 don't · 2 so would · 3 so · 4 latter · 5 Nor / Neither
+
 **Artwork.**
 - `u11-opener` — a wind-farm construction site with a row of turbines finished on the left and a row of bare towers on the right, two site huts facing each other across the road, a single figure on the road between them; Mei-Lin with her plum umbrella up against the wind, Birgit's silhouette in a hard hat, Tariq's with a tablet; one turbine blade plum
 - `u11-scene` — a sign-off sheet on a clipboard with a stamp beside it and a small calendar showing ten days marked off, the stamp plum
@@ -743,6 +853,16 @@ MEI-LIN: *Noted — and I did hear the "for now".*
 **The case.**
 - *Speak:* Debate whether your organisation should sell, share or return the data it holds on customers. Each speaker uses six emphatic structures and grades every claim of certainty honestly; the group ends with what it is and isn't certain of.
 - *Write:* Write the data-ethics position in one page: what the data does reveal, what the company does and does not do with it, and three sentences of certainty at three different strengths.
+
+**Homework.**
+- *Do:* Write the data-ethics position in one page with three grades of certainty.
+- *Self-check:*
+  1. That data has value. (add emphasis) → That data ___ have value.
+  2. We realise it. → We ___ realise it.
+  3. I checked. → I ___ check.
+  4. It is anonymised. → It is ___ anonymised.
+  5. We offer each household its data back. → We ___ offer each household its data back.
+- *Key:* 1 does · 2 do · 3 did · 4 indeed · 5 do
 
 **Artwork.**
 - `u12-opener` — a night street of identical houses, each with a small meter glowing on its wall, one house with every window lit and one with a single lamp; Mei-Lin with her plum umbrella and Ilse with her ring binder on the pavement, Victor's silhouette with a phone at his ear under a streetlight; the lit house's meter plum
@@ -803,6 +923,16 @@ KWAME: *None asked.* Just tell them we listened, and *tell them what we said —
 - *Speak:* Meet the representative of staff who have walked out over something your organisation does. Validate the anger without adopting it, state the cost of "now" honestly, and make an offer built from six subjunctive clauses — with one date you will be held to.
 - *Write:* Write the letter to all staff after the meeting: what was demanded, what is recommended, what is essential — in the subjunctive where the register asks for it — and the date, in the last line, alone.
 
+**Homework.**
+- *Do:* Write the letter to all staff after the meeting with the convenor, the date alone on the last line.
+- *Self-check:*
+  1. Their demand is that the company ___ (divest) now.
+  2. It is essential that the board ___ (understand).
+  3. We recommend that the exit ___ (bring) forward.
+  4. I'd insist that it ___ (be) a vote.
+  5. ___ the board refuse, I'll be outside on Monday. (Should / If)
+- *Key:* 1 divest · 2 understand · 3 be brought · 4 be · 5 Should
+
 **Artwork.**
 - `u13-opener` — a corporate forecourt filled with silhouettes standing still, seen from a high window in which two figures stand looking down; at the front of the crowd a single figure with a plum umbrella raised like a marker; inside, Kwame's fountain pen on the sill
 - `u13-scene` — a typed letter on a desk with one date standing alone on the last line, a signature above it, the date plum
@@ -862,6 +992,16 @@ MEI-LIN: For the avoidance of doubt, I know.
 - *Speak:* Your partner reads you a regulator's letter about your organisation — real or invented — in full legalese, using ten of the unit's phrases. Translate each sentence for the public, then write the three-sentence statement aloud.
 - *Write:* Write the lobbying brief in two columns: the legal position on the left, in prepositional legal English; the plain-words version on the right, one sentence per row. Then the public statement, three sentences, no legalese at all.
 
+**Homework.**
+- *Do:* Write the two-column lobbying brief and the three-sentence public statement.
+- *Self-check:*
+  1. ___ to the competition rules (Pursuant / Subject)
+  2. in the ___ of a finding of dominance (event / case)
+  3. ___ the acquisition, the grid division alone is the concern. (Notwithstanding / Regardless)
+  4. forty-one per cent by ___ of two competitors exiting (virtue / reason)
+  5. ___ prejudice to the review (Without / With)
+- *Key:* 1 Pursuant · 2 event · 3 Notwithstanding · 4 virtue · 5 Without
+
 **Artwork.**
 - `u14-opener` — a ministry corridor with tall doors, a bench where Ilse sits with her ring binder open across her knees and Mei-Lin stands with her plum umbrella dripping, a single typed sheet in each of their hands — one dense, one with three lines; the three-line sheet plum
 - `u14-scene` — a page split down the middle, dense small blocks of text on the left and three short bars on the right, an arrow between them, the arrow plum
@@ -912,6 +1052,16 @@ KWAME: *That last one is the legacy.* Good afternoon — and go home at four.
 **The case.**
 - *Speak:* Give a three-minute farewell to an organisation you have left or will leave: one periodic sentence, one anaphora in three, one antithesis, three clefts naming your successor, and one line that breaks the pattern.
 - *Write:* Write the address in full, three hundred and fifty words, then annotate it: mark every rule of three, every device by name, and the single place where you chose not to use one.
+
+**Homework.**
+- *Do:* Write the address in full, then annotate every device by name.
+- *Self-check:*
+  1. Name the device: *We stopped making excuses. We stopped making decisions in rooms that all sounded the same. We stopped making the mistake …*
+  2. Name the device: *Nine years ago, when …, when …, and when …, I took this job.*
+  3. Name the device: *Not philanthropy. Long-termism with a name on it.*
+  4. Name the device: *It was Mei-Lin who … It was Mei-Lin who … It was Mei-Lin who …*
+  5. Name the device: *Thank you for the job, thank you for the pauses, and thank you for leaving before you had to.*
+- *Key:* 1 anaphora · 2 periodic sentence · 3 antithesis · 4 cleft in series · 5 tricolon — the rule of three
 
 **Artwork.**
 - `u15-opener` — a vast plant hall with a transformer the size of a house behind a small stage, thousands of silhouettes in high-visibility vests, Kwame at a lectern laying down his fountain pen, Mei-Lin at the foot of the stage steps with her plum umbrella furled, Helena's tall chair at the side with silver hair above it; one high-visibility vest in the crowd plum

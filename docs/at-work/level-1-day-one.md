@@ -95,6 +95,16 @@ PRIYA: *Two Ns. Got it. That's right now.* Welcome to Greenline!
 - *Speak:* You are new. Introduce yourself to the team on a video call: your name, your country, your job and where you are today. Then introduce the person next to you.
 - *Write:* Fill in Priya's new-starter form for yourself. Then write a two-line message to Ana: your name, your job, where you are, and your email address, written the way you would say it.
 
+**Homework.**
+- *Do:* Write five sentences about three people you work or study with: name, job, where they are from, where they are today.
+- *Self-check:*
+  1. I ___ from Germany.
+  2. Ana ___ at home today.
+  3. ___ you in the office?
+  4. Tom and Sam ___ in Bristol.
+  5. My email ___ lena dot hartmann at greenline dot co dot uk.
+- *Key:* 1 am · 2 is · 3 Are · 4 are · 5 is
+
 **Artwork.**
 - `u01-opener` — a video call as a wall of four big windows on a screen in a small bright office; Lena with her coral bag standing in front of it, Tom in his flat cap beside her, Ana in a headset on the screen, a pale-wood desk in the foreground
 - `u01-scene` — Priya with a laptop under one arm leaning over Lena's desk, Lena writing her name on a card in big letters
@@ -149,6 +159,16 @@ LENA: *Bye! See you on Monday.*
 **The case.**
 - *Speak:* You and a colleague in another country need a weekly call. Say your working times, find a time on Tuesday that works for both of you, and start and end the call properly.
 - *Write:* Write your working week for the team page: what time you start and finish, when you have lunch, which days you are in the office and which days you are at home.
+
+**Homework.**
+- *Do:* Write your Monday, from getting up to going home, in eight sentences with times.
+- *Self-check:*
+  1. What time ___ you start? (do / does)
+  2. We ___ (not have) meetings on Fridays.
+  3. I ___ (finish) at half past five.
+  4. ___ they work at home? (Do / Does)
+  5. Ana and I ___ (have) lunch at two.
+- *Key:* 1 do · 2 don't have · 3 finish · 4 Do · 5 have
 
 **Artwork.**
 - `u02-opener` — two rooms side by side: a Bristol office on the left with Lena at a desk and rain on the window, a bright Valencia flat on the right with Ana in a headset and a sea horizon through her window; one large clock face on each wall, hands only, one hour apart
@@ -205,6 +225,16 @@ PRIYA: **There are some** in the cupboard. Ask Tom.
 - *Speak:* You start a new job tomorrow. Tell Priya what there is on your desk and what there isn't. Ask for three things you need.
 - *Write:* Write a chat message to IT: one problem with your laptop, what you tried, and one thing you need.
 
+**Homework.**
+- *Do:* Write everything on your desk with *there is* and *there are*; then a message to IT asking for two things.
+- *Self-check:*
+  1. ___ a printer in the office? (Is there / Are there)
+  2. There ___ some cables in the drawer.
+  3. There isn't ___ paper.
+  4. Are there ___ headphones?
+  5. There ___ a green light on the laptop.
+- *Key:* 1 Is there · 2 are · 3 any · 4 any · 5 is
+
 **Artwork.**
 - `u03-opener` — an office desk seen straight on: a laptop with a blank screen, a second monitor still in its box, a coral cable in a tangle, a printer on a shelf; Priya's silhouette with a laptop under her arm arriving from the right
 - `u03-scene` — Lena holding her laptop up to a phone propped on the desk so Priya on the phone screen can see it; a small light glowing on the laptop's side
@@ -259,6 +289,16 @@ TOM: *No, ten minutes on foot. You can't miss it.* Sam **knows** the customer �
 - *Speak:* A colleague visits your town next week. Tell them how to get from the station to your office: the way, how long it takes, and one thing they can't miss.
 - *Write:* Write Mr Shaw a short message: which train you take, what time it arrives, and one question about the visit.
 
+**Homework.**
+- *Do:* Write directions from the nearest station to your home or office, six lines.
+- *Self-check:*
+  1. The train ___ (leave) at eight.
+  2. It ___ (not stop) in Bath.
+  3. ___ Sam visit the customer every month? (Do / Does)
+  4. A ticket ___ (cost) forty pounds.
+  5. The office is ___ the café. (opposite / at)
+- *Key:* 1 leaves · 2 doesn't stop · 3 Does · 4 costs · 5 opposite
+
 **Artwork.**
 - `u04-opener` — a railway station concourse with a blank departure board, Lena with her coral bag walking towards a platform, a long train beyond the barrier; on the far left, through the glass wall, Tom's van at the kerb
 - `u04-scene` — a simple street map drawn as a picture: a station, a café on a corner, a dotted line of footprints turning left and going straight, one coral office door on the right
@@ -310,6 +350,16 @@ ANA: Yes! Oh — *here's Sam. Let's start.*
 **The case.**
 - *Speak:* You are early for a call with a colleague you don't know well. Talk for one minute about your weekend, ask two questions, and show interest three times.
 - *Write:* Write six sentences about your week for the team's well-being board: how often you exercise, cook, relax and sleep well.
+
+**Homework.**
+- *Do:* Write eight sentences about your free time, using every adverb of frequency once.
+- *Self-check:*
+  1. I go running on Saturdays. (usually)
+  2. She is late. (never)
+  3. We eat late. (often)
+  4. I am at the gym on Sundays. (always)
+  5. They cook in the week. (hardly ever)
+- *Key:* 1 I usually go running on Saturdays. · 2 She is never late. · 3 We often eat late. · 4 I am always at the gym on Sundays. · 5 They hardly ever cook in the week.
 
 **Artwork.**
 - `u05-opener` — one picture, two weathers: a seafront promenade in Valencia at sunrise on the right with Ana's silhouette walking, a rainy Bristol park on the left with Lena running under trees, one coral sun over the middle
@@ -367,6 +417,16 @@ LENA: Yes! I **was** a student in Hamburg.
 - *Speak:* Tell a colleague about a company you know: when it started, who the founder was, where the first office was and what the first product was. Say every year and number in words.
 - *Write:* Write the "Our story" box for the Greenline website: five sentences, with at least four dates or numbers written as words.
 
+**Homework.**
+- *Do:* Write the history of your school, company or town in six sentences with *was* and *were*, every number in words.
+- *Self-check:*
+  1. The first office ___ a garage.
+  2. There ___ two people.
+  3. ___ you at home in twenty twenty?
+  4. The price ___ (not) high.
+  5. Tom and Sam ___ the first team.
+- *Key:* 1 was · 2 were · 3 Were · 4 wasn't · 5 were
+
 **Artwork.**
 - `u06-opener` — a garage with its door up, one wooden desk inside under a bare bulb, a younger Sam in round glasses in the doorway, a small van in the drive, a coral sunset behind the roofs
 - `u06-scene` — a timeline drawn as a road with three small buildings along it — a garage, a small unit, a warehouse — and one van driving from the first towards the last
@@ -419,6 +479,16 @@ SAM: Good. That's the next step.
 **The case.**
 - *Speak:* Tell the team about a trip or a visit you made. Use *first, then, after that* and *finally*, and at least six past-tense verbs.
 - *Write:* Write Sam a six-line report on the Birmingham visit: what you did, what Mr Shaw said, and the next step.
+
+**Homework.**
+- *Do:* Write about your last trip in eight sentences with *first*, *then*, *after that* and *finally*.
+- *Self-check:*
+  1. I ___ (take) the train.
+  2. She ___ (meet) the manager.
+  3. ___ you ___ (send) the email?
+  4. He ___ (not like) the chairs.
+  5. We ___ (have) lunch at one.
+- *Key:* 1 took · 2 met · 3 Did … send · 4 didn't like · 5 had
 
 **Artwork.**
 - `u07-opener` — four small scenes in a row like a film strip: a train, a street with a café, a meeting room with one chair, a station at dusk; Lena's coral bag in every one
@@ -476,6 +546,16 @@ LENA: *No rush. Thanks!*
 - *Speak:* Sam stops at your desk. Tell him what you are doing, what you are not doing yet, and ask for help with one thing.
 - *Write:* Write a three-line status update in the team chat: what you are working on, what is done, and what you are waiting for.
 
+**Homework.**
+- *Do:* Write a status update: three things you are doing this week and two things you aren't doing yet.
+- *Self-check:*
+  1. I ___ (write) the new page.
+  2. What ___ you ___ (work) on?
+  3. The van ___ (come) at two.
+  4. They ___ (not pack) the chairs yet.
+  5. ___ she ___ (call) the hotel now?
+- *Key:* 1 'm writing · 2 are … working · 3 is coming · 4 aren't packing · 5 Is … calling
+
 **Artwork.**
 - `u08-opener` — the warehouse floor from above: Tom in a flat cap loading flat boxes into an open van, Lena at a desk by the door with a laptop, Priya crossing the floor with hers, a coral forklift parked in the corner
 - `u08-scene` — Lena and Priya side by side at one screen, Priya pointing at a column of cells
@@ -529,6 +609,16 @@ LENA: OK. *I think* he likes recycled!
 **The case.**
 - *Speak:* Choose a chat app for the team. One is free and simple; the other costs money and does more. Compare the two and give your opinion. Your partner disagrees once.
 - *Write:* Write Sam four lines: which box supplier you prefer, two comparisons, and one reason.
+
+**Homework.**
+- *Do:* Compare two things you use every day in six sentences.
+- *Self-check:*
+  1. This box is ___ (cheap).
+  2. Recycled card is ___ (good) for us.
+  3. The other supplier is ___ (expensive).
+  4. Two days is ___ (fast) than a week.
+  5. A big van is ___ (bad) for the city.
+- *Key:* 1 cheaper · 2 better · 3 more expensive · 4 faster · 5 worse
 
 **Artwork.**
 - `u09-opener` — two cardboard boxes on a warehouse table, one plain and small, one large with a recycling mark; Tom and Lena on either side, each with a hand on one box; a coral price tag hanging from each
@@ -584,6 +674,16 @@ TOM: *I'm sorry, but no.* *Thank you for the offer.*
 - *Speak:* A new colleague asks about the green rules. Explain five things they can and can't do. Then a supplier offers you free plastic pens with your logo on. Say no, politely, twice.
 - *Write:* Write the "Green rules" poster for the kitchen: six lines, each with *can* or *can't*.
 
+**Homework.**
+- *Do:* Write six green rules for your home or office with *can* and *can't*; then a polite no to a free offer, three lines.
+- *Self-check:*
+  1. You ___ recycle paper in the blue bin. (yes)
+  2. You ___ put plastic there. (no)
+  3. ___ I bring my own cup?
+  4. We ___ use plastic bags. It's a rule. (no)
+  5. Yes, you ___.
+- *Key:* 1 can · 2 can't · 3 Can · 4 can't · 5 can
+
 **Artwork.**
 - `u10-opener` — a kitchen corner with three big bins in a row, blue, green and black; a shelf of ceramic mugs, a plant, a window with a bicycle outside; Lena pinning a blank poster to the wall, her coral bag on a chair
 - `u10-scene` — Tom on the phone with one hand raised in a polite stop, a heap of plastic bags on the desk in front of him, one of them coral
@@ -637,6 +737,16 @@ TOM: *Thank you. And sorry again.*
 **The case.**
 - *Speak:* You are Mr Shaw. Call Greenline, say what is wrong with your order and ask for two things. Then swap: you are Tom — apologise and offer a solution.
 - *Write:* Write a five-line email to a customer: apologise for a late delivery, say what happened, and say what you can do.
+
+**Homework.**
+- *Do:* Write a five-line email reporting a problem with an order: what is wrong, the order number, and two requests.
+- *Self-check:*
+  1. ___ you send me a photo? (Could / Are)
+  2. ___ I call you back? (Can / Do)
+  3. I'm really sorry ___ the desk. (about / for)
+  4. Don't ___ about it. (worry / sorry)
+  5. I apologise ___ the delay. (for / about)
+- *Key:* 1 Could · 2 Can · 3 about · 4 worry · 5 for
 
 **Artwork.**
 - `u11-opener` — a delivered desk in a customer's office with a crack across its top, one chair beside it and an empty outline where a second chair should be; Tom in his flat cap on the phone in the doorway
@@ -695,6 +805,16 @@ LENA: **I'm doing** it now. *Thanks for being flexible.*
 - *Speak:* Arrange a photo shoot with a photographer for next month: the date, the time, the place and what they are bringing. Then call back and change the time.
 - *Write:* Write the calendar invite: what, when, where, who, and one thing to bring.
 
+**Homework.**
+- *Do:* Write your calendar for next week: five arrangements with the present continuous.
+- *Self-check:*
+  1. We ___ (do) a photo shoot next month.
+  2. ___ you free on the fifth? (Are / Do)
+  3. I ___ (work) in London that day.
+  4. Sam ___ (visit) a customer on Monday.
+  5. Can we ___ it to two? (move / moving)
+- *Key:* 1 're doing · 2 Are · 3 'm working · 4 is visiting · 5 move
+
 **Artwork.**
 - `u12-opener` — a wall calendar of blank squares with one square filled coral, Lena on the phone in front of it, a camera on a tripod and two light stands leaning in the corner
 - `u12-scene` — a photographer's silhouette with a camera bag crossing the warehouse floor, Sam in his round glasses waving from a doorway
@@ -750,6 +870,16 @@ ANA: Yes — **some** details. *Can you confirm the address* for the invoice, an
 **The case.**
 - *Speak:* You are the hotel. Order chairs and desks for a meeting room, ask two prices, and confirm the total. Your partner checks every number.
 - *Write:* Write the order confirmation email: quantities, prices, the total and the delivery date, with the numbers written in words as well as figures.
+
+**Homework.**
+- *Do:* Write an order for your office: three items with quantities, prices and the total, numbers in words.
+- *Self-check:*
+  1. How ___ chairs do you need?
+  2. How ___ is delivery?
+  3. Do you need ___ information?
+  4. Yes, ___ details, please.
+  5. How ___ money is that?
+- *Key:* 1 many · 2 much · 3 any · 4 some · 5 much
 
 **Artwork.**
 - `u13-opener` — a hotel lobby with a long empty meeting room seen through open doors; the hotel manager holding a tablet that shows Ana in her headset; forty small chair silhouettes stacked in a corner
@@ -808,6 +938,16 @@ BEN: Yes — hi, everyone. **I'd like** to say thank you. I'm very happy to be h
 - *Speak:* A visitor arrives ten minutes early for a meeting with Sam. Welcome them, offer a drink, show them where to sit and talk to them until Sam is free.
 - *Write:* Write the welcome message for a new colleague's first video call: three lines, one offer, one question.
 
+**Homework.**
+- *Do:* Write the first six lines you say to a visitor at reception.
+- *Self-check:*
+  1. ___ you like a coffee?
+  2. I'___ like a tea, please.
+  3. Would you like ___ see the showroom? (to / –)
+  4. ___ I take your coat? (Can / Would)
+  5. Please, have a ___. (seat / sit)
+- *Key:* 1 Would · 2 d · 3 to · 4 Can · 5 seat
+
 **Artwork.**
 - `u14-opener` — the Greenline showroom, three pale-wood desks and chairs on display; Lena at the door with a tray of two cups, Mr Shaw's silhouette with a briefcase stepping in; a coral cushion on one chair
 - `u14-scene` — a laptop screen showing six small video windows, one of them outlined in coral with a hand raised, a plate of biscuits beside the keyboard
@@ -865,6 +1005,16 @@ LENA: *I will. See you soon!*
 **The case.**
 - *Speak:* It's your review with Sam. Say three things you are going to do next year and one thing you aren't going to do. Then a colleague's last day: say goodbye and arrange how to keep in touch.
 - *Write:* Write a goodbye message to a colleague who is leaving: one thing you liked working on together, one plan, and one way to stay in touch.
+
+**Homework.**
+- *Do:* Write your plans for next year, six sentences with *going to*; then a three-line goodbye message to a colleague.
+- *Self-check:*
+  1. I ___ (take) a course next year.
+  2. What ___ you ___ (do)?
+  3. Tom ___ (not like) that!
+  4. We ___ (open) a shop.
+  5. ___ she going to be famous?
+- *Key:* 1 'm going to take · 2 are … going to do · 3 isn't going to like · 4 're going to open · 5 Is
 
 **Artwork.**
 - `u15-opener` — a taxi at the kerb outside the Greenline office at golden hour; Ana with a suitcase turning to wave; Lena, Tom and Sam in the doorway; a coral sky over the roofs

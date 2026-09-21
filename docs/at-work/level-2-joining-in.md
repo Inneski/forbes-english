@@ -98,6 +98,16 @@ MARCO: *If you need anything, just ask here. That's what the channel is for.*
 - *Speak:* You are Katrin. Introduce the team to a new starter: who does what, who reports to whom, and what each person is working on this week. Then swap: you are the new starter, and ask three questions.
 - *Write:* Write the welcome message for a new colleague in the team channel, and the new colleague's reply: two lines each.
 
+**Homework.**
+- *Do:* Write six sentences about your team: what each person usually does and what they are doing this week.
+- *Self-check:*
+  1. Jonas usually ___ (sit) here.
+  2. He ___ (work) from home today.
+  3. What ___ you ___ (do), exactly?
+  4. Aisha ___ (design) the catalogue at the moment.
+  5. Marco ___ (run) support.
+- *Key:* 1 sits · 2 's working · 3 do … do · 4 's designing · 5 runs
+
 **Artwork.**
 - `u01-opener` — an open-plan office with a river view, three desks in a row of which two are empty; Katrin in her long scarf pointing at a wall of team photos, Noor beside her with her green rucksack still on her back
 - `u01-scene` — a phone screen showing a group chat as five coloured bubbles with no text, one hand holding the phone, a sea-green bubble at the bottom
@@ -152,6 +162,16 @@ NOOR: No problem. *Let me call you back on the phone* — this line is terrible.
 - *Speak:* Record a thirty-second voice note for a colleague in another city: what you did today, what you sent them, and one question. Then play it to your partner on a "bad line" — they ask you to repeat twice.
 - *Write:* Write the follow-up message that goes with the voice note: three things you sent, when, and what you need back.
 
+**Homework.**
+- *Do:* Write the message that follows a voice note: three things you sent, when, and what you need back.
+- *Self-check:*
+  1. I ___ (send) the files yesterday.
+  2. ___ you ___ (get) them?
+  3. I ___ (not see) the message.
+  4. Marco ___ (tag) you on Tuesday.
+  5. My notifications ___ (be) off.
+- *Key:* 1 sent · 2 Did … get · 3 didn't see · 4 tagged · 5 were
+
 **Artwork.**
 - `u02-opener` — two windows side by side: Noor at a desk in Rotterdam with her green rucksack on the chair, Aisha at a drawing desk in London with a tablet and stylus; between them a jagged sea-green line of a signal breaking into pieces
 - `u02-scene` — a laptop screen with a frozen, pixelated face in the video window and a chat panel beside it filling with short bubbles
@@ -204,6 +224,16 @@ NOOR: I know this one. The e-bike from Copenhagen. It's also **the most expensiv
 **The case.**
 - *Speak:* Choose two products you know — two phones, two jackets, two apps. Present one to a customer against the other: three comparisons, one superlative, one strong opinion and one careful one.
 - *Write:* Write the product page for the tent: a headline, three features with their benefits, one comparison with a competitor and the trial offer, in eighty words.
+
+**Homework.**
+- *Do:* Write a product page for something you own: three features, two comparisons and one superlative.
+- *Self-check:*
+  1. It's ___ (light) than the old one.
+  2. It's the ___ (durable) tent in the test.
+  3. Is it ___ (cheap) than the competitor's?
+  4. The ___ (high) rating on the site.
+  5. The e-bike is the ___ (expensive) thing we sell.
+- *Key:* 1 lighter · 2 most durable · 3 cheaper · 4 highest · 5 most expensive
 
 **Artwork.**
 - `u03-opener` — two tents pitched side by side on a grassy dune, one small and sleek and one bulky, a sea-green flag on the sleek one; Jonas's silhouette with a second monitor under his arm and Noor with her green rucksack comparing them from the path
@@ -260,6 +290,16 @@ AISHA: *My main clients are* you and one other. So, three days a week for you.
 - *Speak:* Interview your partner as a freelancer for a two-month project: background, three experience questions with *Have you ever…?*, day rate, deadlines, availability. Then swap.
 - *Write:* Write your own freelancer profile in sixty words: what you've done, who you've worked with, what you've never done but would like to, and your terms.
 
+**Homework.**
+- *Do:* Write your own freelancer profile in sixty words.
+- *Self-check:*
+  1. I ___ (work) with four brands.
+  2. ___ you ever ___ (do) packaging?
+  3. Before that, I ___ (work) in-house.
+  4. I ___ (never do) an app.
+  5. Marco ___ (fix) it the same day.
+- *Key:* 1 've worked · 2 Have … done · 3 worked · 4 've never done · 5 fixed
+
 **Artwork.**
 - `u04-opener` — a bright home studio in London: Aisha at a drawing desk with a tablet and stylus, a wall of pinned catalogue pages, a laptop showing Katrin's scarf and Noor's green rucksack in two small video windows, a sea-green invoice stamp on the desk
 - `u04-scene` — a calendar page with three days a week shaded sea green, a stylus resting across it
@@ -315,6 +355,16 @@ MARCO: The first sentence. **If you say** sorry first, **the rest is** easy.
 - *Speak:* You are the customer: a jacket arrived in the wrong size, and you need it for a trip on Friday. Your partner is the agent: apologise, check, and make two conditional offers. Swap roles.
 - *Write:* Write the follow-up email to the tent customer: what you have done, what will happen if the pole is late, and one line that keeps them calm.
 
+**Homework.**
+- *Do:* Write the follow-up email to an annoyed customer: an apology and two conditional promises.
+- *Self-check:*
+  1. If you ___ (send) a photo, I'll ship it today.
+  2. If it doesn't arrive, we ___ (refund) you.
+  3. If you ___ (prefer), I'll send a replacement.
+  4. If anything ___ (change), you'll get an email.
+  5. We'll call you if the courier ___ (be) late.
+- *Key:* 1 send · 2 'll refund · 3 prefer · 4 changes · 5 is
+
 **Artwork.**
 - `u05-opener` — a support desk with two headsets on a shared screen, Marco with his mug mid-call and Noor with her green rucksack under the desk listening in; on the screen, a tent drawn with one pole missing, the gap outlined in sea green
 - `u05-scene` — an open cardboard box on a doormat with tent fabric inside and one long empty slot in the foam
@@ -367,6 +417,16 @@ KATRIN: OK. **A few** changes, one at a time. Noor, get a quote from the local s
 **The case.**
 - *Speak:* Propose three green changes for your own office or school. Your partner agrees with one, agrees with one up to a point, and disagrees with one — politely. Then swap.
 - *Write:* Write the message to the local card supplier asking for a quote: how many boxes a month, what they must be made of, and when you need them.
+
+**Homework.**
+- *Do:* Write three green proposals for your office, each with a quantity in it.
+- *Self-check:*
+  1. We use too ___ plastic. (much / many)
+  2. Not ___ card. (enough / plenty)
+  3. There are a ___ local suppliers. (few / little)
+  4. We have ___ of stock. (plenty / much)
+  5. A shorter route means ___ emissions. (fewer / less)
+- *Key:* 1 much · 2 enough · 3 few · 4 plenty · 5 fewer
 
 **Artwork.**
 - `u06-opener` — a warehouse packing bench with two heaps, a tall heap of plastic air pillows and a small stack of brown card, a meeting table in front of it where Katrin's scarf, Jonas's second monitor and Noor's green rucksack sit round three coffee cups; a sea-green recycling mark on one box
@@ -427,6 +487,16 @@ NOOR: On my own? OK. **I'll manage.**
 - *Speak:* Plan a two-day trip to a trade fair with your partner: travel, hotel, the stand, expenses. Then your partner calls with a problem and you change two things.
 - *Write:* Write the itinerary message for the trip: travel, times, hotel, who is doing what on each day — then a three-line message changing it.
 
+**Homework.**
+- *Do:* Write the itinerary for a two-day trip, then a three-line message changing it.
+- *Self-check:*
+  1. We ___ on Tuesday; the tickets are booked. (are flying / will fly)
+  2. I ___ the weekend — I've decided. (am going to stay / stay)
+  3. OK, I ___ send you the itinerary. ('ll / 'm going to)
+  4. ___ Monday work instead? (Would / Will)
+  5. Sorry for the short ___. (notice / news)
+- *Key:* 1 are flying · 2 am going to stay · 3 'll · 4 Would · 5 notice
+
 **Artwork.**
 - `u07-opener` — an airport departures hall with a blank board, a long queue at a closed gate, Katrin in her long scarf on the phone and Noor with her green rucksack checking a train app; through the window, a sea-green train on a viaduct
 - `u07-scene` — a trade-fair stand with a tent pitched on carpet, boots on a plinth, and Noor alone behind the counter with her rucksack under it
@@ -481,6 +551,16 @@ JONAS: **I'll look** at it after this. OK, that's everyone.
 - *Speak:* Give your stand-up report for a real or imagined week: two things done, one in progress, one blocker. Your partner asks for a status update on one of them.
 - *Write:* Write the written stand-up for the team channel — done, doing, blocked — in five lines, using both tenses.
 
+**Homework.**
+- *Do:* Write a written stand-up in five lines: done, doing, blocked.
+- *Self-check:*
+  1. I ___ (finish) the copy — I ___ (write) it yesterday.
+  2. She ___ (not send) the icons yet.
+  3. We ___ (close) thirty tickets this week.
+  4. It ___ (break) on Tuesday.
+  5. Nobody ___ (fix) it since.
+- *Key:* 1 've finished / wrote · 2 hasn't sent · 3 've closed · 4 broke · 5 has fixed
+
 **Artwork.**
 - `u08-opener` — five figures standing in a loose circle by a window, no chairs, a wall of sticky notes in three columns behind them; Jonas's second monitor on the desk beside him, Noor's green rucksack at her feet, Marco's mug in hand; one sea-green note in the middle column
 - `u08-scene` — a board with three columns of cards and one card halfway between the second and third, a hand moving it
@@ -533,6 +613,16 @@ MARCO: You **mustn't** forget your holidays either. You **have to** book them a 
 **The case.**
 - *Speak:* Explain the rules of your workplace or school to a new person: three things they have to do, two they don't have to do, one they mustn't do — and two pieces of friendly advice.
 - *Write:* Write the "First week" page of a handbook: six rules in six lines, each with a modal, and a friendly last line.
+
+**Homework.**
+- *Do:* Write the "First week" page of a handbook: six rules, each with a modal.
+- *Self-check:*
+  1. You ___ wear a suit. (not necessary)
+  2. You ___ be online from ten to three. (rule)
+  3. You ___ forget your holidays. (prohibition)
+  4. You ___ use the wellness budget. (advice)
+  5. Do I ___ come in every day?
+- *Key:* 1 don't have to · 2 must / have to · 3 mustn't · 4 should · 5 have to
 
 **Artwork.**
 - `u09-opener` — a bright kitchen corner with a long table, a bike leaning on the wall, a shelf of mugs and a printed handbook propped open; Marco with his mug and Noor with her green rucksack on the bench; a sea-green bicycle bell on the bike
@@ -592,6 +682,16 @@ MARCO: You're right, it **wasn't sent**. That's our mistake, and I'm sorry.
 - *Speak:* Explain a process you know — how a return is handled, how a new starter is set up, how coffee is made in your office — in six passive sentences. Then your partner calls about a delayed order and you track it.
 - *Write:* Write the "Where is my order?" page for the website: the five steps in the passive, and what a customer should do if the parcel is late.
 
+**Homework.**
+- *Do:* Write the "Where is my order?" page for a website: five steps in the passive.
+- *Self-check:*
+  1. The order ___ (place) and the payment ___ (check).
+  2. The parcel ___ (pack) in the warehouse.
+  3. It ___ (ship) on the ninth.
+  4. It ___ (hold) at the border last week.
+  5. A discount code ___ (apply) at the checkout.
+- *Key:* 1 is placed / is checked · 2 is packed · 3 was shipped · 4 was held · 5 is applied
+
 **Artwork.**
 - `u10-opener` — a warehouse conveyor drawn as five stations in a row — a screen, a packing bench, a label printer, a stack of parcels, a courier van at an open door — with one sea-green parcel travelling along it; Jonas's second monitor at the first station, Noor with her rucksack following the parcel
 - `u10-scene` — a boxed e-bike on a customs bench under a lamp, a clipboard beside it, a sea-green tracking label on the box
@@ -647,6 +747,16 @@ KATRIN: On the board. OK — three ideas, everyone votes.
 - *Speak:* Brainstorm a campaign for a product you like, in threes: eight ideas in five minutes, each offered with a suggestion phrase and answered with a modal. Park two, vote on the rest.
 - *Write:* Write up the brainstorm for the people who missed it: the three ideas that won, in one line each with *might*, *could* or *may*, and the one that was parked and why.
 
+**Homework.**
+- *Do:* Write up a brainstorm: three ideas, one each with *might*, *could* and *may*.
+- *Self-check:*
+  1. We ___ send an email the day it snows. (could / must)
+  2. That ___ work. (might / mights)
+  3. It ___ be hard to time. (may / can't)
+  4. Why ___ we do a photo contest? (don't / doesn't)
+  5. How ___ a slogan? (about / if)
+- *Key:* 1 could · 2 might · 3 may · 4 don't · 5 about
+
 **Artwork.**
 - `u11-opener` — a whiteboard wall covered in blank sticky notes of three colours, Katrin in her long scarf with a marker, a laptop on a stool showing Aisha's tablet and stylus, Noor with her green rucksack on the floor holding one sea-green note up to the board
 - `u11-scene` — a mock-up on a tablet screen: a tent in a snowfield under a large blank headline bar, a stylus pointing at it
@@ -701,6 +811,16 @@ JONAS: Perfect. One more thing: **while you were reading** that back, twelve peo
 - *Speak:* Describe a chart your partner cannot see — a week of visits, sales, or steps on your phone — so they can draw it: what was happening, what changed, and the numbers, with decimals. They read each number back.
 - *Write:* Write the weekly numbers message for the team: three metrics, each with a direction, a figure and one sentence on what was happening at the time.
 
+**Homework.**
+- *Do:* Write the weekly numbers message: three metrics, decimals written in words.
+- *Self-check:*
+  1. Traffic ___ (rise) all week, then it ___ (drop) on Friday.
+  2. While we ___ (fix) the checkout, nobody could buy.
+  3. Conversion ___ (go) up slowly all month.
+  4. Two point four ___ cent. (per / of)
+  5. Nought ___ five. (point / comma)
+- *Key:* 1 was rising / dropped · 2 were fixing · 3 was going · 4 per · 5 point
+
 **Artwork.**
 - `u12-opener` — a large wall screen showing a single line chart that climbs and then dips, no numbers or labels, with Jonas's second monitor on the desk below repeating it small; Noor with her green rucksack tracing the dip with one finger; the line is sea green
 - `u12-scene` — a close-up of a decimal number on a screen drawn as shapes — a large dot between two blank blocks — with a hand pointing at the dot
@@ -753,6 +873,16 @@ NOOR: Thanks. I **want to get** this right.
 **The case.**
 - *Speak:* Your partner sent a customer the wrong price, and you took the call. Raise it with them gently, using three softeners; they own it and suggest a rule. Swap.
 - *Write:* Write the message to Marco's support team: an apology in three lines, what you promise to do, and what you suggest doing from now on.
+
+**Homework.**
+- *Do:* Write an apology to a team in three lines: what you promise to do, and what you suggest doing.
+- *Self-check:*
+  1. I forgot ___ (tell) you.
+  2. I didn't mean ___ (cause) a problem.
+  3. They kept ___ (get) angry calls.
+  4. I suggest ___ (send) dates in writing.
+  5. I'd like to avoid ___ (do) it again.
+- *Key:* 1 to tell · 2 to cause · 3 getting · 4 sending · 5 doing
 
 **Artwork.**
 - `u13-opener` — a small glass meeting room seen from outside, two chairs pulled close, Marco with his mug and Noor with her green rucksack on the floor, a jagged speech shape between them smoothing into a round one, the round one sea green
@@ -809,6 +939,16 @@ JONAS: Phone. Always.
 **The case.**
 - *Speak:* Give a colleague the five security rules of your office as zero conditionals. They check each one back with a phrase from the box, and get one wrong on purpose.
 - *Write:* Write the one-page security notice for new starters: six *if* sentences, and a last line that says what to do if you make a mistake.
+
+**Homework.**
+- *Do:* Write a security notice: six *if* sentences.
+- *Self-check:*
+  1. If you ___ (click) a bad link, the malware ___ (install).
+  2. If a message ___ (ask) for a password, it ___ (be) a scam.
+  3. When you ___ (log in) from a new device, the app ___ (send) a code.
+  4. If you report it in ten minutes, we ___ (lock) the account.
+  5. Your laptop ___ (back up) every night if it's on the network.
+- *Key:* 1 click / installs · 2 asks / is · 3 log in / sends · 4 lock · 5 backs up
 
 **Artwork.**
 - `u14-opener` — a laptop on a desk showing two envelope shapes, one plain and one with a fish-hook drawn through it in sea green; Jonas's second monitor beside it, Noor with her green rucksack leaning in with her hands behind her back, not touching anything
@@ -868,6 +1008,16 @@ NOOR: *When do you start? Let's celebrate* on Thursday.
 **The case.**
 - *Speak:* It's your review. Tell your manager three goals with *when*, *as soon as* and *if*. Then a colleague announces a promotion in the chat — congratulate them and arrange to celebrate.
 - *Write:* Write your goals for next year in six sentences, each with a future clause — then a two-line congratulations message to a colleague.
+
+**Homework.**
+- *Do:* Write six goals with *when*, *as soon as* and *if*; then a two-line congratulations message.
+- *Self-check:*
+  1. When I ___ (finish) the course, I ___ (ask) to run the dashboards.
+  2. As soon as you ___ (pass), we ___ (move) you.
+  3. If there ___ (be) budget, I ___ (learn) the AI tools.
+  4. Congratulations — well ___! (deserved / deserving)
+  5. You've ___ it. (earned / won)
+- *Key:* 1 finish / 'll ask · 2 pass / 'll move · 3 is / 'll learn · 4 deserved · 5 earned
 
 **Artwork.**
 - `u15-opener` — the river at dusk from the office terrace, the team at a rail with paper cups, Marco with his mug raised, Katrin's scarf lifting in the wind, Jonas's monitor glowing through the window behind, Noor with her green rucksack at the end of the row; a sea-green string of lights along the rail

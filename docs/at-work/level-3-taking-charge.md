@@ -102,6 +102,16 @@ YUSUF: *We can see it.* And I've lost the tunnel. *Go ahead.*
 - *Speak:* Introduce yourself to a new distributed team in ninety seconds: who you are, where you're from, how you work, one thing you're still getting used to. Your partner interrupts twice with a tech problem; deal with it and carry on.
 - *Write:* Write the "How we work" page for a new starter: office days, overlap hours, what is async, how to book a desk — eight sentences.
 
+**Homework.**
+- *Do:* Write the "How we work" page for a new starter, eight sentences.
+- *Self-check:*
+  1. Yusuf ___ (sit) on a train right now.
+  2. Everybody ___ (cycle) here.
+  3. I ___ still ___ (learn) the bike lanes.
+  4. The frame team ___ (work) on-site.
+  5. We ___ (overlap) from ten to three.
+- *Key:* 1 is sitting · 2 cycles · 3 'm … learning · 4 works · 5 overlap
+
 **Artwork.**
 - `u01-opener` — a wall screen of video windows above a hot-desk office: welders in masks in one window, a train carriage in another with Yusuf's phone on a tripod, and in the room Daniel with his amber helmet under his arm, Elin with her notebook, a pale-wood Greenline desk in front of them; rain on the big window
 - `u01-scene` — a bike lane in the rain seen from behind a rider in an amber helmet, a row of cargo bikes at a crossing, the office building ahead
@@ -155,6 +165,16 @@ ELIN: Exactly. And **we've only mapped** the online one. The shop journey is you
 **The case.**
 - *Speak:* Map the journey of a customer of your own company or school on a table with sticky notes, then talk your partner through it: what happened last year, what has changed since, and where the pain point is. They check understanding three times.
 - *Write:* Write the project brief for the shop journey: what has been mapped so far, what hasn't, what you did in March and why it worked, and the first three steps.
+
+**Homework.**
+- *Do:* Write the project brief for a customer journey nobody has mapped.
+- *Self-check:*
+  1. Last year we ___ (lose) a third of new riders.
+  2. We ___ (redesign) the onboarding twice since then.
+  3. In March we ___ (add) a setup call.
+  4. Drop-off ___ (fall) to twelve per cent so far this year.
+  5. We ___ (not solve) the retail side yet.
+- *Key:* 1 lost · 2 've redesigned · 3 added · 4 has fallen · 5 haven't solved
 
 **Artwork.**
 - `u02-opener` — a long wall of sticky notes in a winding line from an advert at one end to a bike at the other, a few notes amber among the pale ones; Elin with her notebook pointing at the amber cluster, Daniel with his helmet hooked on his arm, a pale-wood desk in the foreground
@@ -210,6 +230,16 @@ DANIEL: Ah. Laptop and phone. *Leaving one now.*
 **The case.**
 - *Speak:* Run a three-person stand-up for a project you invent: a goal, one bottleneck, one request that is scope creep. Use all three future forms. One person's connection fails halfway through.
 - *Write:* Write the stand-up notes for the channel: goal, status, blocker, the de-scoped request and where it went — six lines, three future forms.
+
+**Homework.**
+- *Do:* Write stand-up notes for the channel using all three future forms.
+- *Self-check:*
+  1. We ___ hit the goal, but only just — the numbers say so. (are going to / will)
+  2. The engineer ___ tomorrow morning; it's booked. (is coming / will come)
+  3. OK, I ___ de-scope it. ('ll / 'm going to)
+  4. Marketing ___ need twenty bikes. (will / is)
+  5. We ___ the video with those — it's decided. (are going to shoot / shoot)
+- *Key:* 1 are going to · 2 is coming · 3 'll · 4 will · 5 are going to shoot
 
 **Artwork.**
 - `u03-opener` — a paint line seen from the gallery: a row of bare frames on hooks moving towards two ovens, one dark and one glowing amber, a figure in a mask at the sprayer; Daniel in his amber helmet on the gallery with a tablet, Elin's notebook on the rail
@@ -269,6 +299,16 @@ DANIEL: A port strike **hit** us while the frames **were sitting** on the quay, 
 - *Speak:* Explain a delay you have lived through — a project, a delivery, a train — as a chain of cause and effect, with at least two past continuous sentences. Then call the person it affected and apologise in the right order.
 - *Write:* Write the email to all retailers about March: what was happening, what happened, what it led to, what changes, and one line of apology that does not make excuses.
 
+**Homework.**
+- *Do:* Write the email to all retailers about the March delay: cause and effect, two past continuous sentences.
+- *Self-check:*
+  1. The frames ___ (be loaded) when the strike ___ (start).
+  2. While we ___ (wait), the supplier ___ (have) a fire.
+  3. We ___ (run) with no buffer stock.
+  4. One ___ to a delay; the other to a shortage. (led / lead)
+  5. ___ a result, we built forty bikes with no batteries. (As / For)
+- *Key:* 1 were being loaded / started · 2 were waiting / had · 3 were running · 4 led · 5 As
+
 **Artwork.**
 - `u04-opener` — a container quay at dawn with three stacked containers and a closed crane, a picket of figures at the gate; in the foreground on a desk a phone, a map with two routes drawn on it, and Daniel's amber helmet; one container amber
 - `u04-scene` — forty bikes in a row under a tarpaulin in a warehouse corner, each with an empty slot where a battery should be, one slot marked amber
@@ -322,6 +362,16 @@ DANIEL: *That's it. Questions?*
 **The case.**
 - *Speak:* Give a three-point, three-minute presentation on one thing your company or school could do about its footprint, to people who don't read spreadsheets. Signpost every move; use four comparatives or superlatives; take one question.
 - *Write:* Write the one-page handout for the retailers: three headings, one comparison under each, one sentence on next year's target.
+
+**Homework.**
+- *Do:* Write the one-page handout: three headings, one comparison under each.
+- *Self-check:*
+  1. Shipping is the ___ (big) part.
+  2. The new frame is fifteen per cent ___ (light) than last year's.
+  3. That's the ___ (short) route we've ever had.
+  4. Repairable is ___ (good) than recyclable.
+  5. The ___ (easy) bike to repair in its class.
+- *Key:* 1 biggest · 2 lighter · 3 shortest · 4 better · 5 easiest
 
 **Artwork.**
 - `u05-opener` — a showroom turned into a briefing: a projected chart of three blocks of different heights with no labels, the tallest amber, a semicircle of retailers' silhouettes on stools; Daniel at the front with his helmet on the table beside a laptop, Elin at his side with her notebook
@@ -377,6 +427,16 @@ ELIN: Agreed, then. One pilot, one line, a human on the button. **If it works**,
 **The case.**
 - *Speak:* In fours, decide whether to adopt a tool that writes your customer emails. Each person takes a position; each uses two first conditionals; one concedes a point; the group writes down the stop condition.
 - *Write:* Write the one-paragraph pilot proposal: what the tool does, what will happen if it works, what will happen if it doesn't, and who signs off.
+
+**Homework.**
+- *Do:* Write the pilot proposal paragraph with three first conditionals.
+- *Self-check:*
+  1. If we ___ (train) it on three years of orders, it ___ (predict) better than we do.
+  2. If the data ___ (be) wrong, the prediction ___ (be) wrong.
+  3. If it ___ (fail), we ___ (stop) it.
+  4. If you keep a human in the loop, it ___ (work).
+  5. With ___, my emails don't need a robot. (respect / regard)
+- *Key:* 1 train / 'll predict · 2 is / will be · 3 fails / 'll stop · 4 'll work · 5 respect
 
 **Artwork.**
 - `u06-opener` — a meeting table with a screen at its end showing a rising forecast line, a small silhouette of a person standing between the screen and the table with one hand raised; Ken's calculator watch in the foreground, Elin's notebook, Yusuf's tripod folded, Daniel's amber helmet on the pale-wood desk behind
@@ -435,6 +495,16 @@ YUSUF: *Point taken.*
 - *Speak:* A colleague has been emailing customer lists to their personal address to work at home. Tell them, in under a minute: the rule, why, what to do instead, and one thing they did well. Your partner reacts defensively once.
 - *Write:* Write the plain-language data screen for the app: what is collected, why, who sees it, how to say no — six sentences a rider would actually read.
 
+**Homework.**
+- *Do:* Write the plain-language data screen for the app, six sentences.
+- *Self-check:*
+  1. We ___ tell riders what we collect. (must / should — it's the law)
+  2. It ___ be a screen, not a paragraph. (has to / doesn't have to)
+  3. That ___ happen at all. (shouldn't / has to)
+  4. Personal data ___ sit in an open folder. (mustn't / doesn't have to)
+  5. You ___ make a thing of it, but somebody ___ say it. (don't have to / has to)
+- *Key:* 1 must · 2 has to · 3 shouldn't · 4 mustn't · 5 don't have to / has to
+
 **Artwork.**
 - `u07-opener` — a laptop on a pale-wood desk showing a folder icon left open with a sheet spilling out of it, a small padlock beside it unlocked; Beatriz with her lanyard standing over it, Daniel with his helmet on the chair back, the padlock amber
 - `u07-scene` — a phone screen showing a simple consent screen as three lines and two buttons, a thumb hovering, one button amber
@@ -489,6 +559,16 @@ YUSUF: *Consider it done.* *And the best part:* **little** of this is new spend.
 **The case.**
 - *Speak:* Pitch a campaign for a product you like to a sceptical finance lead: benefit first, then mechanism, one piece of proof, and the ask. Use eight quantifiers correctly; your partner asks *how much* and *how many* at least twice.
 - *Write:* Write the one-page creator offer: what they get (countables and uncountables), what they do, how they're paid, and one line on why it's better than a sponsorship.
+
+**Homework.**
+- *Do:* Write the one-page creator offer.
+- *Self-check:*
+  1. We spend a lot of ___ on a ___ big influencers. (money / monies; few / little)
+  2. How ___ less?
+  3. How ___ sales?
+  4. The big names get hardly ___ comments.
+  5. ___ of this is new spend. (Little / Few)
+- *Key:* 1 money / few · 2 much · 3 many · 4 any · 5 Little
 
 **Artwork.**
 - `u08-opener` — a split picture: on the left one huge silhouette on a stage under lights, on the right a crowd of small silhouettes each with a phone raised, a single bike passed hand to hand among them; Yusuf's phone on its tripod filming the crowd, the bike amber
@@ -546,6 +626,16 @@ BEATRIZ: *Let's make that the action.* And Daniel — you **can** say "too much"
 - *Speak:* Hold a one-to-one in pairs: one of you has been working late for a month. The listener asks how you are, reflects back three times before suggesting anything, and ends with one action. Swap.
 - *Write:* Write the follow-up note after the one-to-one: what was said, in neutral words, what the person can and can't do next week, and the action with a name against it.
 
+**Homework.**
+- *Do:* Write the follow-up note after a one-to-one on workload.
+- *Self-check:*
+  1. I ___ switch off during the strike. (couldn't / mustn't)
+  2. ___ I allowed to take time back? (Am / Do)
+  3. ___ you take next Friday? (Could / Should)
+  4. Nobody else ___ call the Lisbon plant. (can / may)
+  5. You don't feel ___ to leave it with anyone. (able / allowed)
+- *Key:* 1 couldn't · 2 Am · 3 Could · 4 can · 5 able
+
 **Artwork.**
 - `u09-opener` — two armchairs by a tall window in a quiet corner of the office, rain outside, a pale-wood side table with two mugs; Beatriz with her lanyard leaning forward, Daniel with his amber helmet on the floor beside his chair, a plant between them
 - `u09-scene` — a desk calendar with a Friday and the following Monday shaded amber, a phone face down beside it
@@ -602,6 +692,16 @@ BUYER: *Deal — subject to the paperwork.*
 - *Speak:* Negotiate in threes: a supplier, a buyer, a finance lead. Each side has two things it wants and one it can give. Every offer is a second conditional; every rejection keeps the door open.
 - *Write:* Write the "agreed in principle" email after the meeting: the four terms, what each side would do if it went ahead, and what still needs the paperwork.
 
+**Homework.**
+- *Do:* Write the "agreed in principle" email after a negotiation.
+- *Self-check:*
+  1. If you ___ (give) us exclusivity, we ___ (put) them on the home page.
+  2. If the margin were higher, it ___ work. (might / will)
+  3. ___ you consider two, if we ___ (take) the returns risk?
+  4. If we ___ (have) the staff, we ___ (do) it tomorrow.
+  5. We can agree to that in ___. (principle / principal)
+- *Key:* 1 gave / 'd put · 2 might · 3 Would / took · 4 had / 'd do · 5 principle
+
 **Artwork.**
 - `u10-opener` — a glass meeting room with a long table and a bike on a stand at its end, the buyer's silhouette with a tablet on one side, Daniel with his amber helmet and Ken with his calculator watch on the other, a single amber highlight on the bike's colour swatch card
 - `u10-scene` — a laptop showing a retail home page with a large bike in the hero slot, the slot outlined amber
@@ -655,6 +755,16 @@ METTE: *I can work with that.*
 **The case.**
 - *Speak:* Mediate in threes: two colleagues disagree about how desks, holidays or shifts were allocated; the third runs the conversation. Each side interrupts once, politely, and is stopped once, politely. End with two passive sentences that say what will be done.
 - *Write:* Write the note to the assembly team after the meeting: what was decided, what wasn't explained, what will be written, redone and consulted on — all in the passive, no names.
+
+**Homework.**
+- *Do:* Write the note to the assembly team: what was decided and what will be done, passive, no names.
+- *Self-check:*
+  1. The rotas ___ (change) last month and nobody ___ (consult).
+  2. Shifts ___ (assign) on skills.
+  3. The decision ___ (make) but it ___ (not explain).
+  4. The criteria ___ (write) this week.
+  5. The part-time team ___ (consult) before it's published.
+- *Key:* 1 were changed / was consulted · 2 were assigned · 3 was made / wasn't explained · 4 will be written · 5 will be consulted
 
 **Artwork.**
 - `u11-opener` — a shift rota on a factory wall drawn as a grid of blank blocks, some shaded dark for nights, two figures facing it from either side with a third between them; Daniel's amber helmet on a stool, Beatriz's lanyard, a pale-wood desk behind the glass; one rota block amber
@@ -714,6 +824,16 @@ KEN: You'd make a finance lead yet.
 - *Speak:* Explain the last year of a business you know — or your own budget — to a colleague: three things that had already happened before a turning point, and three fractions they must check back as percentages.
 - *Write:* Write the forecast summary for the management meeting: what had happened by March, what changed, the revised margin and break-even, each fraction with its percentage in brackets.
 
+**Homework.**
+- *Do:* Write the forecast summary, every fraction with its percentage.
+- *Self-check:*
+  1. By the time the strike ___ (end), we ___ (already lose) a third.
+  2. Inflation ___ (push) overheads up before a bike ___ (be sold).
+  3. The forecast I ___ (make) in October was wrong.
+  4. By June we ___ (recover) to two thirds.
+  5. Two fifths is ___ per cent.
+- *Key:* 1 ended / had already lost · 2 had pushed / was sold · 3 'd made · 4 had recovered · 5 forty
+
 **Artwork.**
 - `u12-opener` — a wall chart of a year drawn as a line that falls in the first quarter and climbs from the second, with a dotted line above it for the old forecast; Ken with his calculator watch pointing at the gap, Daniel with his amber helmet on the pale-wood desk holding a mug; the climbing line amber
 - `u12-scene` — a pie drawn on a whiteboard divided into three unequal slices, one shaded amber, a marker resting on the ledge
@@ -768,6 +888,16 @@ DANIEL: *Good question — give me a second.* … If we hide it, it damages the 
 **The case.**
 - *Speak:* Your partner is a journalist with six questions about a problem at your company — a delay, a leak, a recall. Answer every one; report what three other people said; buy time at least twice without saying "no comment".
 - *Write:* Write the public statement on the recall: what happened, what the supplier said, what the riders told you, what has been done today — under a hundred and twenty words, nothing you don't know.
+
+**Homework.**
+- *Do:* Write the public statement on the recall in under a hundred and twenty words.
+- *Self-check:*
+  1. "My battery overheated." → A rider said his battery ___.
+  2. "We have received forty complaints." → The retailer told us they ___ forty complaints.
+  3. "A seal failed on one line." → The supplier said that a seal ___.
+  4. "The other lines are unaffected." → … that the other lines ___ unaffected.
+  5. "Nobody was hurt." → Support told us nobody ___ hurt.
+- *Key:* 1 had overheated · 2 had received · 3 had failed · 4 were · 5 had been
 
 **Artwork.**
 - `u13-opener` — Daniel alone in a stairwell on the phone, his amber helmet hanging from one hand, a window behind him onto the assembly floor where a row of bikes stands with their batteries removed and laid on a bench; one battery amber
@@ -825,6 +955,16 @@ CONTRACTOR: *Noted.* We start Thursday.
 - *Speak:* Delegate a task you would rather keep — a report, an event, a move — to a contractor: scope, milestones, terms, and two favours. Use five of the meaning-changing verb pairs correctly; your partner refuses one favour politely.
 - *Write:* Write the statement of work: deliverables, three milestones, sign-off, and a closing paragraph that asks for one favour without making it a condition.
 
+**Homework.**
+- *Do:* Write the statement of work with one favour in the closing paragraph.
+- *Self-check:*
+  1. I remember ___ (work) with you last year.
+  2. Remember ___ (send) the addresses today.
+  3. I tried ___ (call) the courier and got nowhere.
+  4. They stopped ___ (do) weekend collections.
+  5. Most clients go on ___ (book) a retainer.
+- *Key:* 1 working · 2 to send · 3 calling · 4 doing · 5 to book
+
 **Artwork.**
 - `u14-opener` — a bike shop after hours with the shutters half down, a long counter with a printed list and a set of keys on it, the contractor's silhouette with a clipboard and Daniel with his amber helmet on the counter, a van's headlights through the shutter gap; the keys amber
 - `u14-scene` — a whiteboard with three milestone boxes in a row joined by arrows, the first ticked, a marker in a hand, the tick amber
@@ -879,6 +1019,16 @@ DANIEL: *Consider it a promise.* Right — drinks are on the terrace.
 **The case.**
 - *Speak:* Close a project you have worked on in two minutes: one line that sums it up, three things you will have done by a date, two things you will be doing this time next year. Then a colleague is leaving: say goodbye in a way that fixes a next contact.
 - *Write:* Write the closing message for the project channel: the one-line summary, the three future-perfect milestones, and a goodbye paragraph to a departing colleague with a concrete plan to stay in touch.
+
+**Homework.**
+- *Do:* Write the closing message for a project: three future-perfect milestones and a goodbye.
+- *Self-check:*
+  1. By June, we ___ (ship) ten thousand bikes.
+  2. This time next year, we ___ (build) in Poland.
+  3. By the time I go, we ___ (hire) my replacement.
+  4. The programme ___ (run) on its own by then.
+  5. You ___ (send) me the photo, I hope.
+- *Key:* 1 'll have shipped · 2 'll be building · 3 'll have hired · 4 will be running · 5 'll be sending
 
 **Artwork.**
 - `u15-opener` — a roof terrace over Copenhagen at dusk with bike lanes glowing below, the team along a rail with glasses: Daniel with his amber helmet on the rail, Elin's notebook, Yusuf's tripod folded under his arm, Beatriz with her lanyard off and in her hand, Ken's watch catching the light; one amber lantern
