@@ -431,3 +431,10 @@ FORMULA = {
 }
 for _n, _f in FORMULA.items():
     C[_n]["formula"] = _f
+
+# Units whose grammar does not name a tense but belongs to one all the same:
+# they take that tense's Sherpa colour on the grammar page.
+TENSE = {1: "present simple", 3: "present simple", 5: "present simple", 9: "present simple",
+         13: "present simple", 14: "present simple", 10: "present simple", 11: "present simple"}
+for _n, _t in TENSE.items():
+    C[_n]["tense"] = _t

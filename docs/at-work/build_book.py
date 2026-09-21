@@ -126,8 +126,8 @@ TENSES = [
 ]
 
 
-def tense_of(grammar_row):
-    g = grammar_row.lower()
+def tense_of(grammar_row, override=None):
+    g = (override or grammar_row).lower()
     for name, hexc in TENSES:
         if name in g:
             return name, hexc
@@ -216,7 +216,7 @@ def unit_pages(u, c, start):
     A = "right" if n % 2 else "left"          # the unit's main side
     B = "left" if A == "right" else "right"
     so, ss = f"u{n:02d}-opener", f"u{n:02d}-scene"
-    tname, tcol = tense_of(u["rows"]["Grammar"])
+    tname, tcol = tense_of(u["rows"]["Grammar"], c.get("tense"))
     P = []
 
     # 1 · opener: the hero right across the top, the title in a dark band under it
