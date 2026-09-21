@@ -71,6 +71,21 @@ with artwork requests and dialogue. It is now **`docs/at-work/`**:
     pages; the PDF is rendered with the repo's Playwright Chromium and not
     committed. Books 2–5 need their own `content_book<n>.py` before they
     build.
+  * **Third proof, same day.** Innes, with a screenshot of the grammar
+    page: *"tenses will adhere to the Sherpa Tensing color code. Squeezing
+    key syntax formula into a box is clunky. Pages need more space at
+    top- use a colored band. See incoming business result pdf for ideas.
+    colored areas for key vocabulary etc."* All four done. A running band
+    (ink, white text) across the top of every inner page; the opener's
+    title in a dark strip under the hero with the unit number in the
+    accent; key words, phrase box, language point and tip on tinted
+    panels; section heads *Section | topic*. The grammar page of a tense
+    unit takes its Sherpa colour (§5a) — `tense_of()` matches the longest
+    tense name in the Grammar row — for the band, a tag by the heading,
+    the formula and the marked words. The rule is one open formula line
+    (`FORMULA` in `content_book1.py`) plus Form / Use / Watch out as
+    run-in text, no cards. Six pages a unit still, 112 pages, no
+    overflows.
   * **What is Innes's call** is README §9: the title, the trim size, who
     records the audio, and whether the word lists carry German and
     Spanish glossaries.

@@ -191,7 +191,18 @@ Every page is composed to the editorial style (HOUSE-STYLE §15): a flat cream
 field, the heading across the full width, and the picture in a framed column
 under it, on the right or the left, rounded or arched, wide or narrow. The
 sides alternate by unit. The one exception is the opener, whose hero runs
-right across the top of the page.
+right across the top of the page, with the unit number and title in a dark
+strip beneath it.
+
+Three things carried over from the coursebook convention Innes pointed at:
+a **running band** across the top of every inner page (unit and title on the
+left, section on the right), **tinted panels** for the key words, the phrase
+box, the language point and the tip, and section heads written *Section |
+topic*. And one thing that is ours: **a grammar page whose unit teaches a
+tense takes that tense's colour** from the Sherpa Tensing code (HOUSE-STYLE
+§5a) for its band, its formula and its marked words. The rule is never boxed:
+it is one open **formula line** set large in that colour, then Form, Use and
+Watch out as run-in paragraphs.
 
 | page | section | content |
 |---|---|---|

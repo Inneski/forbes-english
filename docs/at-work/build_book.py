@@ -111,6 +111,35 @@ def you_question(leadin):
 
 # ---------------------------------------------------------------- pieces
 
+# The Sherpa Tensing colour code, HOUSE-STYLE §5a. A unit whose grammar names a
+# tense takes that tense's colour on its grammar page: the band, the formula,
+# the marked words. Longest name first so "present perfect continuous" is
+# not caught by "present perfect".
+TENSES = [
+    ("present perfect continuous", "#2FA6A1"), ("past perfect continuous", "#4B1A7A"),
+    ("future perfect continuous", "#B0B0B0"), ("future continuous", "#F0A500"),
+    ("future perfect", "#454545"), ("present continuous", "#C2185B"),
+    ("past continuous", "#FFD400"), ("present perfect", "#0F6E56"),
+    ("past perfect", "#6E0B24"), ("present simple", "#16345C"),
+    ("past simple", "#B08968"), ("going to", "#639922"), ("future simple", "#E8632A"),
+    ("will", "#E8632A"),
+]
+
+
+def tense_of(grammar_row):
+    g = grammar_row.lower()
+    for name, hexc in TENSES:
+        if name in g:
+            return name, hexc
+    return None, None
+
+
+def band(head, section, color=None):
+    style = f' style="background:{color}"' if color else ""
+    return f'<div class="band"{style}><span class="band-unit">{html.escape(head)}</span><span class="band-sec">{html.escape(section)}</span></div>'
+
+
+
 def plate(name, subject, h, shape="round"):
     sub = f'<div class="slot-sub">{inline(subject)}</div>' if subject else ""
     return (f'<div class="plate {shape}" style="height:{h}">'
@@ -131,15 +160,15 @@ def numbered(items, cls="ex", answer_line=True):
     return f'<ol class="{cls}">{li}</ol>'
 
 
-def page(inner, head="", num=None, cls=""):
-    foot = (f'<div class="foot"><span>{html.escape(head)}</span><span>{num if num else ""}</span></div>'
-            if (head or num) else "")
-    return f'<section class="page {cls}">{inner}{foot}</section>\n'
+def page(inner, head="", num=None, cls="", top=""):
+    foot = f'<div class="foot"><span>{num if num else ""}</span></div>' if num else ""
+    return f'<section class="page {cls}">{top}{inner}{foot}</section>\n'
 
 
 def h(eyebrow, title, big=False):
     tag = "h1" if big else "h2"
-    return f'<div class="eyebrow">{eyebrow}</div><{tag}>{title}</{tag}>'
+    eb = f'<div class="eyebrow">{eyebrow}</div>' if eyebrow else ""
+    return f'{eb}<{tag}>{title}</{tag}>'
 
 
 def strand_menu(u):
@@ -182,84 +211,91 @@ def dialogue_html(u):
 def unit_pages(u, c, start):
     """Six pages: opener · vocabulary · grammar · listen and read · in the room · case and homework."""
     n, T = u["n"], u["title"]
-    head = f"Unit {n} · {T}"
+    head = f"Unit {n}"
     A = "right" if n % 2 else "left"          # the unit's main side
     B = "left" if A == "right" else "right"
     so, ss = f"u{n:02d}-opener", f"u{n:02d}-scene"
+    tname, tcol = tense_of(u["rows"]["Grammar"])
     P = []
 
-    # 1 · opener: the hero right across the top
+    # 1 · opener: the hero right across the top, the title in a dark band under it
     cando = [x.strip() for x in re.split(r";\s*", u["cando"]) if x.strip()]
     P.append(page(
-        plate(so, u["art"].get(so, ""), "126mm", "hero")
+        plate(so, u["art"].get(so, ""), "118mm", "hero")
+        + f'<div class="titleband"><span class="bignum">{n}</span><div><h1>{inline(T)}</h1><p class="strap">{inline(u["strap"])}</p></div></div>'
         + '<div class="body tight-top">'
-        + h(f"Unit {n}", inline(T), big=True)
-        + f'<p class="strap">{inline(u["strap"])}</p>'
         + split('<h3>In this unit you can</h3><ul class="cando">' + "".join(f"<li>{inline(x)}</li>" for x in cando) + "</ul>"
                 f'<h3>Lead-in</h3><p class="lead">{inline(u["leadin"])}</p>',
                 f'<h3>The unit</h3>{strand_menu(u)}', "right", "half")
         + f'<h3>The story</h3><p class="story">{inline(u["scenario"])}</p></div>',
         head, start, "opener"))
 
-    # 2 · vocabulary: arch plate, word bank + matching beside it, thread below
+    # 2 · vocabulary: tinted word bank, matching beside an arched plate, thread below
     chips = "".join(
         f'<div class="group">{("<span class=glabel>" + html.escape(g) + "</span>") if g else ""}'
         + "".join(f'<span class="chip">{inline(w)}</span>' for w in ws) + "</div>" for g, ws in vocab_groups(u["rows"]["Vocabulary"]))
     m_html, m_key = match_ex(c["match"], n)
     P.append(page(
-        '<div class="body">' + h("Vocabulary", inline(T))
-        + split(f'<div class="wordbank">{chips}</div><h3>1 · Match the word to its meaning</h3>{m_html}',
-                plate("picture to label", "the vocabulary set in one scene from the unit's story, numbered", "104mm", "arch"), A)
+        '<div class="body">' + h("", f'Vocabulary <span class="pipe">|</span> {inline(T)}')
+        + f'<div class="panel tint wordbank"><h3>Key words</h3>{chips}</div>'
+        + split(f'<h3>1 · Match the word to its meaning</h3>{m_html}',
+                plate("picture to label", "the vocabulary set in one scene from the unit's story, numbered", "70mm", "arch"), A)
         + f'<h3>2 · Complete the text with words from the box</h3>{thread_ex(c["thread"])}'
         + f'<h3>3 · You</h3><p class="q">{inline(you_question(u["leadin"]))}</p>{lines(2)}</div>',
-        head, start + 1))
+        head, start + 1, top=band(f"Unit {n} | {T}", "Vocabulary")))
 
-    # 3 · grammar: rule beside a narrow plate; practice and the word-choice items below
-    cards = "".join(f'<div class="card"><h4>{t}</h4><p>{inline(c[k])}</p></div>' for t, k in (("Form", "form"), ("Use", "use"), ("Watch out", "watch")))
+    # 3 · grammar: the tense colour, the formula as an open line, the rule as text, a language point panel
+    gcol = tcol or "var(--accent)"
+    gtitle = re.split(r":| — |;", u["rows"]["Grammar"])[0].strip()
+    lp = ('<div class="panel lp" style="border-top-color:%s"><h3 style="color:%s">Language point</h3><ol class="gram">' % (gcol, gcol)
+          + "".join(f"<li>{inline(g)}</li>" for g in u["gramlines"]) + "</ol></div>")
+    formula = f'<div class="formula" style="color:{gcol}">{inline(c["formula"])}</div>'
+    rule = (f'<p class="rule"><span class="runin" style="color:{gcol}">Form</span> {inline(c["form"])}</p>'
+            f'<p class="rule"><span class="runin" style="color:{gcol}">Use</span> {inline(c["use"])}</p>'
+            f'<p class="rule"><span class="runin" style="color:{gcol}">Watch out</span> {inline(c["watch"])}</p>')
+    tense_tag = f'<span class="tensetag" style="background:{tcol}">{html.escape(tname)}</span>' if tname else ""
     P.append(page(
-        '<div class="body">' + h("Grammar", inline(u["rows"]["Grammar"].split(":")[0].split(" — ")[0]))
-        + split('<h3>In the dialogue</h3><ol class="gram">' + "".join(f"<li>{inline(g)}</li>" for g in u["gramlines"]) + "</ol>"
-                f'<h3>The rule</h3><div class="cards">{cards}</div>',
-                plate("spot", f"the grammar in action: {u['gramlines'][0]}", "104mm", "round"), B, "narrow")
+        f'<div class="body tense" style="--g:{gcol}">' + h("", f'Grammar <span class="pipe">|</span> {inline(gtitle)} {tense_tag}')
+        + formula + split(rule + lp, plate("spot", f"the grammar in action: {u['gramlines'][0]}", "96mm", "round"), B, "narrow")
         + f'<h3>1 · Practice</h3>{numbered([p for p, _ in c["practice"]], "ex two-col")}'
         + f'<h3>2 · Choose the right word</h3>{numbered([p for p, _ in c["controlled"]], "ex two-col", answer_line=False)}'
         + '<p class="ref">Grammar reference: at the back of the book.</p></div>',
-        head, start + 2))
+        head, start + 2, top=band(f"Unit {n} | {T}", "Grammar", tcol)))
 
     # 4 · listen and read: the dialogue beside the scene plate
     P.append(page(
-        '<div class="body">' + h(f"Communication · {inline(u['rows']['Communication'])}", "Listen and read")
+        '<div class="body">' + h("", f'Listen and read <span class="pipe">|</span> {inline(u["rows"]["Communication"])}')
         + '<div class="draft">AI draft dialogue — to be replaced</div>'
         + split(f'<div class="dialogue">{dialogue_html(u)}</div>',
-                plate(ss, u["art"].get(ss, ""), "140mm", "arch"), A)
+                plate(ss, u["art"].get(ss, ""), "130mm", "arch"), A)
         + '<h3>1 · Listen and answer</h3>' + numbered([q for q, _ in c["gist"]], "ex two-col")
         + '<h3>2 · Now you</h3><p>Read the dialogue in pairs. Then read it again and change three things: a name, a place and one number or time. Your partner listens for the changes.</p>'
         + f'<h3>3 · Role-play</h3><p class="q"><strong>Task.</strong> {inline(u["speak"])}</p>'
         f'<div class="role"><span class="rolelabel">A</span><p>{inline(c["roleA"])}</p></div>'
         f'<div class="role"><span class="rolelabel">B</span><p>{inline(c["roleB"])}</p></div></div>',
-        head, start + 3))
+        head, start + 3, top=band(f"Unit {n} | {T}", "Communication")))
 
-    # 5 · in the room: phrase box beside an arch plate; listen; one-minute role-play; say it right
+    # 5 · in the room: tinted phrase box beside an arched plate; listen; role-play; say it right
     P.append(page(
-        '<div class="body">' + h("In the Room", inline(u["rows"]["In the Room"]))
-        + split('<div class="phrases"><h3>Phrase box</h3><ul>' + "".join(f"<li>{inline(p)}</li>" for p in u["phrases"]) + "</ul></div>",
-                plate("spot", "the phrase box in use: a small scene from the listening", "78mm", "arch"), B)
+        '<div class="body">' + h("", f'In the Room <span class="pipe">|</span> {inline(u["rows"]["In the Room"])}')
+        + split('<div class="panel tint phrases"><h3>Phrase box</h3><ul>' + "".join(f"<li>{inline(p)}</li>" for p in u["phrases"]) + "</ul></div>",
+                plate("spot", "the phrase box in use: a small scene from the listening", "80mm", "arch"), B)
         + '<h3>1 · Listen and answer</h3>' + numbered([q for q, _ in c["listen"]], "ex two-col")
         + f'<h3>2 · One-minute role-play</h3><p>{inline(c["mini"])}</p>'
-        + f'<div class="sayit"><h3>Say it right</h3><p>{inline(c["pron"])}</p></div>'
-        + f'<h3>3 · Write it down</h3><p>Write the four phrases from the box you will use most, and one situation at work where each one helps.</p>{lines(4)}</div>',
-        head, start + 4))
+        + f'<div class="panel tip"><h3>Tip <span class="pipe">|</span> Say it right</h3><p>{inline(c["pron"])}</p></div>'
+        + f'<h3>3 · Write it down</h3><p>Write the four phrases from the box you will use most, and one situation at work where each one helps.</p>{lines(5)}</div>',
+        head, start + 4, top=band(f"Unit {n} | {T}", "In the Room")))
 
     # 6 · the case and the homework
     P.append(page(
-        '<div class="body">' + h("The Case", inline(T))
-        + split(f'<h3>Speak</h3><p>{inline(u["speak"])}</p><h3>Write</h3><p>{inline(u["write"])}</p>{lines(5)}',
-                plate("spot", "the case's situation, from the unit's story", "92mm", "round"), A)
-        + '<div class="hw">' + h("Homework", "")
-        + split(f'<h3>Do</h3><p>{inline(u["do"])}</p>{lines(3)}',
-                '<h3>Self-check</h3>' + numbered(u["items"], "ex selfcheck compact"), "right", "half")
+        '<div class="body">' + h("", f'The Case <span class="pipe">|</span> {inline(T)}')
+        + split(f'<h3>Speak</h3><p>{inline(u["speak"])}</p><h3>Write</h3><p>{inline(u["write"])}</p>{lines(7)}',
+                plate("spot", "the case's situation, from the unit's story", "104mm", "round"), A)
+        + '<div class="hw"><h3 class="hwhead">Homework</h3>'
+        + split(f'<h4>Do</h4><p>{inline(u["do"])}</p>{lines(4)}',
+                '<h4>Self-check</h4>' + numbered(u["items"], "ex selfcheck compact"), "right", "half")
         + '<p class="ref">Answers: in the key at the back of the book.</p></div></div>',
-        head, start + 5))
+        head, start + 5, top=band(f"Unit {n} | {T}", "The Case · Homework")))
     return P, m_key
 
 
@@ -295,15 +331,15 @@ def build(book):
             + "".join(f"<td>{inline(u['rows'][k])}</td>" for k in ("Vocabulary", "Grammar", "Communication", "In the Room")) + "</tr>" for u in us)
     mhead = '<tr><th></th><th>Unit</th><th>Vocabulary</th><th>Grammar</th><th>Communication</th><th>In the Room</th></tr>'
     pages.append(page('<div class="body">' + h("Map of the book", html.escape(btitle), big=True)
-                      + f'<table class="map">{mhead}{maprows(units[:8])}</table></div>', "Map of the book", 2))
+                      + f'<table class="map">{mhead}{maprows(units[:8])}</table></div>', "Map of the book", 2, top=band("Map of the book", btitle)))
     pages.append(page('<div class="body">' + h("Map of the book", "Units 9 to 15")
-                      + f'<table class="map">{mhead}{maprows(units[8:])}</table></div>', "Map of the book", 3))
+                      + f'<table class="map">{mhead}{maprows(units[8:])}</table></div>', "Map of the book", 3, top=band("Map of the book", btitle)))
     people = "".join(f'<div class="person">{plate("silhouette", f"{name}: {known}", "44mm", "arch")}<h4>{html.escape(name)}</h4><p>{inline(role)}</p></div>'
                      for name, role, _p, known in cast)
     pages.append(page('<div class="body">' + h("Meet the team", html.escape(setting), big=True)
                       + split(f'<p class="story">{inline(company)}</p><p class="story">{inline(year)}</p>',
                               plate("the office", "the whole team in one wide scene of the workplace, the props visible", "80mm", "round"), "right")
-                      + f'<div class="people">{people}</div></div>', "Meet the team", 4))
+                      + f'<div class="people">{people}</div></div>', "Meet the team", 4, top=band("Meet the team", setting)))
 
     num = 5
     match_keys = {}
@@ -317,18 +353,18 @@ def build(book):
     for chunk in chunks(units, 4):
         pages.append(page('<div class="body">' + h("Grammar reference", "The rules in full") + "".join(
             f'<div class="refunit"><h4>Unit {u["n"]} · {inline(u["title"])}</h4><p>{inline(C[u["n"]]["ref"])}</p></div>' for u in chunk)
-            + "</div>", "Grammar reference", num)); num += 1
+            + "</div>", "Grammar reference", num, top=band("Grammar reference", btitle))); num += 1
     # audio scripts
     for chunk in chunks(units, 3):
         pages.append(page('<div class="body">' + h("Audio scripts", "In the Room listenings") + "".join(
             f'<div class="scriptunit"><h4>Unit {u["n"]} · {inline(u["rows"]["In the Room"])}</h4>'
             + "".join(f'<div class="turn"><span class="who">{html.escape(w)}</span><span class="say">{inline(l)}</span></div>' for w, l in C[u["n"]]["script"])
-            + "</div>" for u in chunk) + "</div>", "Audio scripts", num)); num += 1
+            + "</div>" for u in chunk) + "</div>", "Audio scripts", num, top=band("Audio scripts", btitle))); num += 1
     # phrase bank
     for chunk in chunks(units, 8):
         pages.append(page('<div class="body">' + h("In the Room", "Phrase bank") + '<div class="bankgrid">' + "".join(
             f'<div><h4>Unit {u["n"]} · {inline(u["rows"]["In the Room"])}</h4><ul class="tight">' + "".join(f"<li>{inline(p)}</li>" for p in u["phrases"]) + "</ul></div>"
-            for u in chunk) + "</div></div>", "Phrase bank", num)); num += 1
+            for u in chunk) + "</div></div>", "Phrase bank", num, top=band("Phrase bank", btitle))); num += 1
     # word list
     words = {}
     for u in units:
@@ -340,7 +376,7 @@ def build(book):
     half = (len(items) + 1) // 2
     for part, title in ((items[:half], "A to " + items[half - 1][1][0][0].upper()), (items[half:], items[half][1][0][0].upper() + " to Z")):
         wl = "".join(f'<li>{inline(w)} <span class="unit">{", ".join(str(x) for x in sorted(ns))}</span></li>' for _k, (w, ns) in part)
-        pages.append(page('<div class="body">' + h("Word list", title) + f'<ul class="wordlist">{wl}</ul></div>', "Word list", num)); num += 1
+        pages.append(page('<div class="body">' + h("Word list", title) + f'<ul class="wordlist">{wl}</ul></div>', "Word list", num, top=band("Word list", btitle))); num += 1
     # answer key
     def keyblock(u):
         c = C[u["n"]]
@@ -353,7 +389,7 @@ def build(book):
         return (f'<div class="keyunit"><h4>Unit {u["n"]} · {inline(u["title"])}</h4>'
                 + "".join(f'<div class="keyrow"><span class="klabel">{lab}</span><span>{inline(val)}</span></div>' for lab, val in rows) + "</div>")
     for chunk in chunks(units, 3):
-        pages.append(page('<div class="body">' + h("Answer key", "Every exercise") + "".join(keyblock(u) for u in chunk) + "</div>", "Answer key", num)); num += 1
+        pages.append(page('<div class="body">' + h("Answer key", "Every exercise") + "".join(keyblock(u) for u in chunk) + "</div>", "Answer key", num, top=band("Answer key", btitle))); num += 1
 
     css = CSS.replace("ACCENT", accent)
     doc = ("<!doctype html><html lang='en'><head><meta charset='utf-8'>"
@@ -375,7 +411,7 @@ html,body{margin:0;background:#bbb;font-family:'DM Sans',Arial,sans-serif;color:
 .page{width:210mm;height:297mm;background:var(--paper);margin:8mm auto;position:relative;overflow:hidden;page-break-after:always;break-after:page;outline:1px solid #999}
 .body{padding:13mm 15mm 16mm}
 .body.tight-top{padding-top:7mm}
-.foot{position:absolute;left:15mm;right:15mm;bottom:7mm;display:flex;justify-content:space-between;font-family:'DM Mono',monospace;font-size:7.5pt;color:var(--mute)}
+.foot{position:absolute;left:15mm;right:15mm;bottom:7mm;display:flex;justify-content:flex-end;font-family:'DM Mono',monospace;font-size:7.5pt;color:var(--mute)}
 .eyebrow{font-weight:700;font-size:9pt;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin:0 0 1.5mm}
 h1{font-weight:800;font-size:34pt;line-height:.98;letter-spacing:-.02em;margin:0 0 2mm}
 h2{font-weight:700;font-size:23pt;line-height:1.02;letter-spacing:-.015em;margin:0 0 4mm}
@@ -391,7 +427,7 @@ p{margin:0 0 2.2mm}
 .col-text > h3:first-child{margin-top:0}
 .plate{background:var(--ground);border:.5pt solid var(--line);border-radius:3mm;position:relative;display:flex;flex-direction:column;justify-content:flex-end;padding:3mm 4mm;margin:0}
 .plate.arch{border-radius:50% 50% 3mm 3mm / 34% 34% 3mm 3mm}
-.plate.hero,.plate.cover-art{border-radius:0;border:0;border-bottom:.6pt dashed var(--accent);width:100%}
+.plate.hero,.plate.cover-art{border-radius:0;border:0;width:100%}
 .plate.cover-art{position:absolute;inset:0;height:297mm!important}
 .slot-tag{font-family:'DM Mono',monospace;font-size:7pt;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
 .slot-sub{font-size:8pt;color:var(--mute);font-style:italic;line-height:1.3}
@@ -413,7 +449,7 @@ p{margin:0 0 2.2mm}
 .ans{border-bottom:.4pt solid var(--line);height:4.5mm}
 .selfcheck li{padding-bottom:4mm;border-bottom:.4pt solid var(--line);margin-bottom:2mm}
 .selfcheck.compact li{padding-bottom:2.6mm;margin-bottom:1.2mm;font-size:9.4pt}
-.hw{border-top:.6pt solid var(--accent);margin-top:4mm;padding-top:3mm}.hw h2{display:none}
+
 .rule-line{border-bottom:.4pt solid var(--line)}
 .ref{font-size:8.2pt;color:var(--mute);margin-top:2mm}
 .draft{display:inline-block;background:var(--accent);color:#fff;font-family:'DM Mono',monospace;font-size:7.2pt;letter-spacing:.1em;text-transform:uppercase;padding:.8mm 2.4mm;border-radius:1mm;margin:0 0 3mm}
@@ -442,6 +478,26 @@ p{margin:0 0 2.2mm}
 .wordlist{columns:4;column-gap:6mm;margin:0;padding:0;list-style:none;font-size:8pt}.wordlist li{break-inside:avoid;border-bottom:.3pt solid var(--line);padding:.5mm 0}.wordlist .unit{float:right;color:var(--accent);font-family:'DM Mono',monospace;font-size:7.5pt}
 .keyunit{margin-bottom:4mm;font-size:8.8pt}.keyunit h4{color:var(--accent)}.keyrow{display:grid;grid-template-columns:30mm 1fr;gap:3mm;padding:1mm 0;border-bottom:.3pt solid var(--line)}.klabel{font-family:'DM Mono',monospace;font-size:7.5pt;color:var(--mute);text-transform:uppercase;letter-spacing:.05em}
 code{font-family:'DM Mono',monospace;font-size:.9em}
+.band{height:13mm;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 15mm;font-weight:700;font-size:10.5pt}
+.band-sec{font-weight:400;opacity:.85;font-size:9.5pt}
+.band + .body{padding-top:9mm}
+.titleband{background:var(--ink);color:#fff;display:grid;grid-template-columns:32mm 1fr;align-items:center;gap:6mm;padding:6mm 15mm 6mm 0;min-height:30mm}
+.titleband .bignum{font-weight:800;font-size:54pt;line-height:1;color:var(--accent);text-align:center;border-right:1.2mm solid var(--accent)}
+.titleband h1{color:#fff;margin:0}.titleband .strap{color:var(--blush);margin:1.5mm 0 0;font-size:13pt}
+.opener .body.tight-top{padding-top:7mm}
+.pipe{color:var(--accent);font-weight:400;margin:0 1mm}
+h2 .pipe + *, h2{font-size:21pt}
+.panel{border-radius:2mm;padding:3.5mm 4.5mm;margin:0 0 3.5mm}
+.panel h3{margin-top:0}
+.panel.tint{background:color-mix(in srgb, var(--accent) 12%, white)}
+.panel.tip{background:color-mix(in srgb, var(--slate) 12%, white);border-left:1.2mm solid var(--slate);border-radius:0 2mm 2mm 0;margin-top:3mm}.panel.tip h3{color:var(--slate)}.panel.tip p{margin:0;font-size:9.6pt}
+.panel.lp{background:var(--ground);border-top:1.2mm solid var(--accent);border-radius:0 0 2mm 2mm;margin-top:3mm}
+.formula{font-weight:800;font-size:19pt;line-height:1.15;letter-spacing:-.01em;margin:-1mm 0 4mm;padding:2.5mm 0;border-top:.6pt solid var(--line);border-bottom:.6pt solid var(--line)}
+.rule{font-size:9.6pt;margin:0 0 2mm}.runin{font-weight:700;text-transform:uppercase;font-size:8pt;letter-spacing:.06em;margin-right:1.5mm}
+.tense .gram strong{color:var(--g)}
+.tensetag{display:inline-block;color:#fff;font-size:8pt;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.8mm 2.4mm;border-radius:1mm;vertical-align:middle;margin-left:2mm}
+.hwhead{border-top:.6pt solid var(--accent);padding-top:3mm;margin-top:4mm;font-size:10pt}
+.hw h4{color:var(--accent);font-size:8.5pt;text-transform:uppercase;letter-spacing:.08em;margin:2mm 0 1.5mm}
 """
 
 if __name__ == "__main__":

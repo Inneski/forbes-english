@@ -409,3 +409,25 @@ C[15] = dict(
     pron="*Going to* before a verb is quick and weak: *I'm gonna take a course* in speech. *Have a GOOD trip. Let's keep in TOUCH.* — warm, falling voice for a goodbye.",
     ref="**Going to.** *am / is / are* + *going to* + base verb. *I'm going to take a course. She's going to open a shop. They aren't going to come.* Question: *Are you going to …? What is he going to do?* Use it for plans and intentions you have already decided, and for predictions with evidence (*Look at the sky — it's going to rain*). For arrangements fixed in a diary, the present continuous (Unit 12) is also common: *We're meeting at nine.*",
 )
+
+# The formula line at the top of each grammar page: the rule in one open line,
+# set large in the tense colour, never in a box.
+FORMULA = {
+    1: "I am · you are · he / she / it is · we / they are",
+    2: "I / you / we / they + verb · don't + verb · Do you … ?",
+    3: "There is + one thing · There are + more than one",
+    4: "he / she / it + verb-s · doesn't + verb · Does she … ?",
+    5: "always · usually · often · sometimes · hardly ever · never",
+    6: "I / he / she / it was · you / we / they were",
+    7: "verb + -ed · took, met, gave, had, came · Did you … ?",
+    8: "am / is / are + verb-ing",
+    9: "cheap → cheaper · expensive → more expensive · good → better",
+    10: "can + verb · can't + verb · Can I … ?",
+    11: "Can you … ? · Could you … ? · Can I … ?",
+    12: "am / is / are + verb-ing + a future time",
+    13: "How many + chairs? · How much + money?",
+    14: "Would you like + a coffee / to see … ? · I'd like …",
+    15: "am / is / are + going to + verb",
+}
+for _n, _f in FORMULA.items():
+    C[_n]["formula"] = _f
