@@ -338,10 +338,10 @@ TOM: *No, ten minutes on foot. You can't miss it.* Sam **knows** the customer â€
 **Model dialogue.** *On the Monday call, waiting for Sam.*
 
 ANA: Morning, Lena! *How was your weekend?*
-LENA: Good, thanks. I **usually** go running on Saturdays. And you?
+LENA: Good, thanks. I **usually** go running on Saturdays, but I went mountain biking instead. And you?
 ANA: *Oh, really?* I **never** run! I **often** go to the beach. It's five minutes from my flat.
-LENA: *That sounds nice.* I'm **always** at the gym on Sundays. It's boring, butâ€¦
-ANA: *I know what you mean.* Do you cook?
+LENA: *That sounds nice.* I'm **always** at the gym on Sundays. It's boring, but a small price to pay for staying in shape!
+ANA: Well, you look good for it! Do you cook?
 LENA: **Sometimes**. I **hardly ever** cook in the week. Too tired!
 ANA: *Same here.* We **often** eat late in Spain. At nine or ten.
 LENA: *Really? Ten?*

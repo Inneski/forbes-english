@@ -267,7 +267,7 @@ def unit_pages(u, c, start):
     # 4 · listen and read: the dialogue beside the scene plate
     P.append(page(
         '<div class="body">' + h("", f'Listen and read <span class="pipe">|</span> {inline(u["rows"]["Communication"])}')
-        + '<div class="draft">AI draft dialogue — to be replaced</div>'
+        + '<!-- dialogue: AI draft until Innes replaces it in the level file -->'
         + split(f'<div class="dialogue">{dialogue_html(u)}</div>',
                 plate(ss, u["art"].get(ss, ""), "130mm", "arch"), A)
         + '<h3>1 · Listen and answer</h3>' + numbered([q for q, _ in c["gist"]], "ex two-col")
