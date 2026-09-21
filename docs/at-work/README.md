@@ -23,7 +23,7 @@ nothing else in these files depends on it.
 | `level-3-taking-charge.md` | 15 units, B1+/B2 |
 | `level-4-setting-the-course.md` | 15 units, B2/C1 |
 | `level-5-the-long-game.md` | 15 units, C1/C2 |
-| `build_book.py`, `print_book.js` | lay a book out as A4 pages: `py docs/at-work/build_book.py 1` writes `book-1.html`, `node docs/at-work/print_book.js 1` renders `book-1.pdf` (not committed). Eight pages a unit, a hero band across the top of each opener, dashed slots for every picture, the AI dialogue tagged as a draft, exercises not yet written shown as "to write" boxes |
+| `build_book.py`, `print_book.js`, `content_book1.py` | lay a book out as A4 pages: `py docs/at-work/build_book.py 1` writes `book-1.html`, `node docs/at-work/print_book.js 1` renders `book-1.pdf` (not committed) and reports any page whose content overflows. Six pages a unit in the editorial style (§4), a hero across the top of each opener, a dashed slot for every picture, the AI dialogue tagged as a draft. `content_book<n>.py` holds the exercises the spec does not: matching, gapped text, rule cards, practice, gist questions, role cards, the listening script and questions, the pronunciation note, the grammar reference |
 
 ---
 
@@ -181,19 +181,26 @@ The other three keep their plain names. "Vocabulary", "Grammar" and
 
 ## 4. Anatomy of a unit
 
-Eight pages, A4, so 15 units make a 120-page book before front and back
-matter (assumption: A4 portrait, 210 × 297 mm, spreads of 420 × 297; change
-the artwork spec in §7 if the trim changes).
+Six pages, A4, so 15 units make a 90-page book before front and back matter
+(assumption: A4 portrait, 210 × 297 mm; change the artwork spec in §7 if the
+trim changes). The first proof was planned at eight pages and the content of
+an A1 unit filled five of them halfway; six is what the content fills to the
+foot, measured on Book 1.
 
-| pages | section | content |
+Every page is composed to the editorial style (HOUSE-STYLE §15): a flat cream
+field, the heading across the full width, and the picture in a framed column
+under it, on the right or the left, rounded or arched, wide or narrow. The
+sides alternate by unit. The one exception is the opener, whose hero runs
+right across the top of the page.
+
+| page | section | content |
 |---|---|---|
-| 1–2 | **Opener** (spread) | the opener artwork, full bleed; the unit title and strapline; three *can-do* lines; the unit menu (four strands, one line each); two lead-in questions and a picture task |
-| 3 | **Vocabulary** | the word set in a context (a message thread, a web page, a form), a matching or sorting task, a personalisation question |
-| 4 | **Grammar** | four sentences from the dialogue with the structure marked; the rule in three short cards; controlled practice; the pointer to the reference |
-| 5–6 | **Communication** | the model dialogue (recorded: see §6); a listening-for-gist task; the useful language box; a staged practice ending in a role-play with role cards |
-| 7 | **In the Room** | the phrase box; a short listening in which the phrases do their work; a one-minute mini role-play; a pronunciation note where intonation carries the meaning |
-| 8 | **The Case** | the activation: a *speaking* task and a *writing* task that use the unit's language on a situation from the unit's story. Never a quiz. This is the same rule as the deck activation stage in `lesson-template/HOUSE-STYLE.md` §10b, in print |
-| 8 | **Homework** | a boxed third of the page: one written task to do alone (*Do*), and a five-item *Self-check* on the unit's grammar whose *Key* sits at the back of the book. The self-check is the one quiz a unit has, and it is for the learner, not the teacher |
+| 1 | **Opener** | the hero across the top; the unit title and strapline; three *can-do* lines beside the unit menu; the lead-in; the story in serif |
+| 2 | **Vocabulary** | the word set as chips, a match-the-meaning task beside an arched picture-to-label plate, a gapped text with a word box, a personalisation question |
+| 3 | **Grammar** | the four marked sentences and three rule cards beside a narrow plate; six practice items; six word-choice items |
+| 4 | **Listen and read** | the model dialogue (recorded: see §6) beside the scene plate, tagged as an AI draft until replaced; two gist questions; a change-three-things re-read; the role-play task and its two role cards |
+| 5 | **In the Room** | the phrase box beside an arched plate; a four-question listening; the one-minute role-play; the *Say it right* pronunciation note; a write-it-down task |
+| 6 | **The Case and Homework** | the *speaking* and *writing* activation beside a plate, never a quiz, the same rule as the deck activation stage in HOUSE-STYLE §10b; below a rule, the homework: one task to do alone and the five-item self-check whose key is at the back |
 
 **Word budgets.** A page is roughly 300 words of learner-facing text once
 the artwork, the rubrics and the white space have taken theirs. A dialogue

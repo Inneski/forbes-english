@@ -53,16 +53,24 @@ with artwork requests and dialogue. It is now **`docs/at-work/`**:
     first. Books 2–5 were then written sequentially in the main session
     and committed one per book. Fan out heavy prose writing and expect
     the limit; write it in sequence and commit as you go.
-  * **Book 1 is laid out.** `build_book.py 1` writes `book-1.html`, 129 A4
-    pages: cover, map, team, eight pages a unit, then grammar reference
-    stubs, phrase bank, word list and the self-check key. Every unit
-    opener has a hero band right across the top; every picture is a
-    dashed slot named after its artwork slot; the dialogue is the AI draft
-    with a tag saying so, until Innes replaces it; the exercises the spec
-    does not contain are "to write" boxes. `print_book.js 1` renders the
-    PDF with the repo's Playwright Chromium (a `box-shadow` on the pages
-    tripled the file size — it is an outline now). The PDF is not
-    committed. Books 2–5 build the same way.
+  * **Book 1 is laid out, twice.** The first proof was eight pages a unit
+    with the unwritten exercises as "to write" boxes; Innes: *"dont
+    understand what the blank pages are nor the white spaces, also there
+    should be more dynamic illustration to text compositions like my
+    second house style."* Both fixed. `content_book1.py` now holds every
+    exercise the spec lacks — matching, gapped text, rule cards, practice,
+    gist questions, role cards, the listening script and questions, the
+    pronunciation note, the grammar reference — all AI drafts like the
+    dialogues. The pages follow HOUSE-STYLE §15: heading full width, the
+    picture in a framed column under it, sides alternating by unit, arch
+    and narrow variants; only the opener keeps its hero across the top.
+    **Six pages a unit**, not eight: measured, six is what the content
+    fills to the foot at A1. `print_book.js` now reports any page whose
+    content overflows its 297mm (`overflow:hidden` would otherwise hide
+    it), and the build is clean. `build_book.py 1` → `book-1.html`, 112
+    pages; the PDF is rendered with the repo's Playwright Chromium and not
+    committed. Books 2–5 need their own `content_book<n>.py` before they
+    build.
   * **What is Innes's call** is README §9: the title, the trim size, who
     records the audio, and whether the word lists carry German and
     Spanish glossaries.

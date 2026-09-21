@@ -12,6 +12,13 @@ const fs = require('fs');
   const page = await browser.newPage();
   await page.goto('file:///' + src.replace(/\\/g, '/'), { waitUntil: 'networkidle' });
   await page.evaluate(() => document.fonts.ready);
+  // Overflow check: a page whose content runs past its 297mm is a broken page,
+  // and overflow:hidden would otherwise hide it silently.
+  const over = await page.evaluate(() => [...document.querySelectorAll('section.page')]
+    .map((p, i) => ({ i: i + 1, over: p.scrollHeight - p.clientHeight }))
+    .filter(x => x.over > 1));
+  if (over.length) console.log('OVERFLOW ' + over.map(x => `p${x.i}(+${x.over}px)`).join(' '));
+  else console.log('no page overflows');
   await page.emulateMedia({ media: 'print' });
   await page.pdf({ path: out, format: 'A4', printBackground: true, preferCSSPageSize: true, margin: { top: 0, right: 0, bottom: 0, left: 0 } });
   await browser.close();
