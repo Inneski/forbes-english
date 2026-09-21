@@ -31,6 +31,7 @@ silhouettes, subject off-centre, no text, no numbers, no logos --style raw
 | `roleplay` | beside the practice items, narrow, 55 × 100 mm | portrait | `--ar 2:3` | two figures facing, centred |
 | `phrase` | beside the phrase box, arched, 70 × 80 mm | near square | `--ar 1:1` | a small scene, centred |
 | `case` | beside the case, 70 × 104 mm | portrait | `--ar 2:3` | the situation, centred |
+| `portrait` | Meet the Team, five across, arched, 33 × 44 mm each | 3:4 portrait | `--ar 3:4`, expect 16:9 | head and shoulders in the middle third, head clear of the top so the arch does not clip it, same scale across all five |
 
 **Deliver as** PNG, un-split four-ups are fine; `tools/prep-artwork.py` picks
 and hashes. **Filenames** `art/book-1/u05-scene.png` etc. Print wants the
