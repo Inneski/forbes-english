@@ -23,6 +23,7 @@ nothing else in these files depends on it.
 | `level-3-taking-charge.md` | 15 units, B1+/B2 |
 | `level-4-setting-the-course.md` | 15 units, B2/C1 |
 | `level-5-the-long-game.md` | 15 units, C1/C2 |
+| `build_book.py`, `print_book.js` | lay a book out as A4 pages: `py docs/at-work/build_book.py 1` writes `book-1.html`, `node docs/at-work/print_book.js 1` renders `book-1.pdf` (not committed). Eight pages a unit, a hero band across the top of each opener, dashed slots for every picture, the AI dialogue tagged as a draft, exercises not yet written shown as "to write" boxes |
 
 ---
 
