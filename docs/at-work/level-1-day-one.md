@@ -106,7 +106,7 @@ PRIYA: *Two Ns. Got it. That's right now.* Welcome to Greenline!
 - *Key:* 1 am · 2 is · 3 Are · 4 are · 5 is
 
 **Artwork.**
-- `u01-opener` — a small bright office; on the wall, a large screen showing a video call with four people in a two-by-two grid, one of them Ana in a headset; Lena with her gold bag and Tom in his flat cap stand in the room looking at the screen; a pale-wood desk in the foreground
+- `u01-opener` — a small bright office; Lena, her gold bag on the chair, sits at a pale-wood desk on a video call; the big screen in front of her shows the call as four tiles in a two-by-two grid: Sam in round glasses at his desk, Ana in a headset with a sea window behind her, Priya with her laptop and warehouse shelves behind her, and Lena herself; nobody else in the room
 - `u01-scene` — Priya with a laptop under one arm leaning over Lena's desk, Lena writing her name on a card in big letters
 
 ---

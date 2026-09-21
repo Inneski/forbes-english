@@ -51,7 +51,7 @@ and hashes. **Filenames** `art/book-1/u05-scene.png` etc. Print wants the
 
 | slot | subject |
 |---|---|
-| opener | a small bright office; on the wall, a large screen showing a video call with four people in a two-by-two grid, one of them Ana in a headset; Lena with her gold bag and Tom in his flat cap stand in the room looking at the screen; a pale-wood desk in the foreground |
+| opener | a small bright office; Lena, her gold bag on the chair, sits at a pale-wood desk on a video call; the big screen in front of her shows the call as four tiles in a two-by-two grid: Sam in round glasses at his desk, Ana in a headset with a sea window behind her, Priya with her laptop and warehouse shelves behind her, and Lena herself; nobody else in the room |
 | scene | Priya with a laptop under one arm leaning over Lena's desk, Lena writing her name on a card in big letters |
 | label | a desk with a name card, a laptop showing a map with four countries marked, a lanyard, a mug, a headset and an office plant, each thing clear and separate |
 | grammar | Lena alone at a laptop, one hand raised in a wave at the screen |
