@@ -42,7 +42,7 @@ and hashes. **Filenames** `art/book-1/u05-scene.png` etc. Print wants the
 |---|---|
 | `cover` | the Unit 1 opener recomposed for a portrait board: the video-call wall on the right, Lena with her gold bag small at the bottom-left, wide quiet cream at the left and bottom for the lockup |
 | `team` | the whole Greenline team in one wide office scene: Sam in round glasses at a standing desk, Tom in a flat cap in the doorway with a box, Priya crossing with a laptop, Lena with her gold bag arriving, Ana in a headset on a big screen on the wall |
-| `silhouette-lena` … `silhouette-priya` | five head-and-shoulders silhouettes, one per character, each with its prop, on plain cream, matching scale |
+| `portrait-lena` … `portrait-priya` | five head-and-shoulders portraits for the Meet the Team page, one per character, each with its prop, on plain cream, matching scale |
 
 ## The units
 

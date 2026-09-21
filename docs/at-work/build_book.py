@@ -336,7 +336,7 @@ def build(book):
                       + f'<table class="map">{mhead}{maprows(units[:8])}</table></div>', "Map of the book", 2, top=band("Map of the book", btitle)))
     pages.append(page('<div class="body">' + h("Map of the book", "Units 9 to 15")
                       + f'<table class="map">{mhead}{maprows(units[8:])}</table></div>', "Map of the book", 3, top=band("Map of the book", btitle)))
-    people = "".join(f'<div class="person">{plate("silhouette", f"{name}: {known}", "44mm", "arch")}<h4>{html.escape(name)}</h4><p>{inline(role)}</p></div>'
+    people = "".join(f'<div class="person">{plate("portrait", f"{name}: {known}", "44mm", "arch")}<h4>{html.escape(name)}</h4><p>{inline(role)}</p></div>'
                      for name, role, _p, known in cast)
     pages.append(page('<div class="body">' + h("Meet the team", html.escape(setting), big=True)
                       + split(f'<p class="story">{inline(company)}</p><p class="story">{inline(year)}</p>',
