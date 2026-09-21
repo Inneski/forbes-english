@@ -218,7 +218,7 @@ syllabus.
 | 2 | 110–150 words | 10–12 | about fourteen words | + present perfect, *will*, first and zero conditional, modals of obligation and possibility, passives, past continuous, verb patterns | second conditional, past perfect, reported speech |
 | 3 | 160–220 words | 11–15 | about eighteen words, two clauses | + second conditional, past perfect, reported speech, future perfect and continuous | mixed conditionals, inversion, participle clauses |
 | 4 | 200–280 words | 12–16 | complex sentences, hedged | + third and mixed conditionals, inversion, advanced passives, participle clauses, relative clauses of every kind | nothing, but nothing is used for show |
-| 5 | 200–280 words | 12–16 | as long as the point needs | everything, including the subjunctive, cleft sentences, ellipsis and register shifts within a turn | — |
+| 5 | 250–340 words | 12–20 | as long as the point needs | everything, including the subjunctive, cleft sentences, ellipsis and register shifts within a turn | — |
 
 Vocabulary follows the same rule. Book 1 says *broken*; Book 3 says
 *damaged in transit*; Book 5 says *a latent defect*. The word set in each unit

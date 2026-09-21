@@ -11,6 +11,51 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-21 — Forbes English at Work: a five-book business coursebook series, specified
+
+Innes pasted a five-level business English syllabus — fifteen units a
+level, drafted as a "conceptual reimagining" of an OUP series — and asked
+for it embellished, "Practically Speaking" renamed, and every unit set up
+with artwork requests and dialogue. It is now **`docs/at-work/`**:
+`README.md` is the series bible and `level-1-day-one.md` to
+`level-5-the-long-game.md` are the seventy-five units.
+
+  * **Nothing here is a lesson or a deck.** No catalogue row, no
+    `library.html`, no hubs, no `seo.py`. It is the design for a set of
+    printed books, in the repo because the repo is the shared memory.
+  * **Two names were OUP's and are gone.** The section is now **In the
+    Room** (README §3 says why, and offers two alternates); the series is
+    *Forbes English at Work*, a working title until Innes picks one and
+    runs a trademark search.
+  * **Every unit carries:** strapline, can-do line, scenario, the four
+    strands as a table, lead-in, the grammar as it lands in the dialogue,
+    a phrase box, a full model dialogue (grammar target in bold, In the
+    Room phrases in italics), a speak-and-write case, and two artwork
+    subjects. **Every book carries:** a fictional company, a five-person
+    cast told apart by props rather than faces, and a year's arc. The five
+    companies share one world (README §2): Larkline buys its desks from
+    Greenline, Tidewater stocks Larkline's bikes, Beatriz moves from
+    Larkline to Arden, Meridian buys Larkline.
+  * **Artwork follows the house pattern:** one style stem (the flat-vector
+    stem from `PLAN-foundations-grammar-business.md`), one accent colour
+    per book, a subject line per slot, and a composition rule written for
+    the 16:9 that actually arrives, cropped to a 3:2 spread. 150 prompts.
+  * **The dialogue budgets in README §5 were widened three times after
+    measuring.** What B2–C2 dialogue actually needs is 160–340 words, not
+    the 150–240 first guessed. A scratch checker (not committed) parsed
+    every unit block and confirmed each dialogue uses its grammar target
+    at least three times and its phrase box at least three times.
+  * **Four parallel writer agents, one per book, all died on the session
+    usage limit before writing a line** — one spent 64k tokens thinking
+    first. Books 2–5 were then written sequentially in the main session
+    and committed one per book. Fan out heavy prose writing and expect
+    the limit; write it in sequence and commit as you go.
+  * **What is Innes's call** is README §9: the title, the trim size, who
+    records the audio, and whether the word lists carry German and
+    Spanish glossaries.
+
+---
+
 ## 2026-09-20 — Block Camp Village: the walkable prototype
 
 Innes sent undead-fish.com/en (a pixel town you walk round, "press space"
