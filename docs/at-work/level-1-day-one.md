@@ -20,7 +20,7 @@ ten words. Present simple and continuous, *can*, *would like*; past simple of
 *be* from Unit 6, full past simple from Unit 7, *going to* from Unit 15.
 No *will*, no perfect, no conditional, no passive. See README §5.
 
-**Artwork accent:** coral. Lena's coral shoulder bag is in every picture she
+**Artwork accent:** gold. Lena's gold shoulder bag is in every picture she
 is in. Stem and slots: README §7.
 
 ## The map
@@ -106,7 +106,7 @@ PRIYA: *Two Ns. Got it. That's right now.* Welcome to Greenline!
 - *Key:* 1 am · 2 is · 3 Are · 4 are · 5 is
 
 **Artwork.**
-- `u01-opener` — a video call as a wall of four big windows on a screen in a small bright office; Lena with her coral bag standing in front of it, Tom in his flat cap beside her, Ana in a headset on the screen, a pale-wood desk in the foreground
+- `u01-opener` — a video call as a wall of four big windows on a screen in a small bright office; Lena with her gold bag standing in front of it, Tom in his flat cap beside her, Ana in a headset on the screen, a pale-wood desk in the foreground
 - `u01-scene` — Priya with a laptop under one arm leaning over Lena's desk, Lena writing her name on a card in big letters
 
 ---
@@ -236,7 +236,7 @@ PRIYA: **There are some** in the cupboard. Ask Tom.
 - *Key:* 1 Is there · 2 are · 3 any · 4 any · 5 is
 
 **Artwork.**
-- `u03-opener` — an office desk seen straight on: a laptop with a blank screen, a second monitor still in its box, a coral cable in a tangle, a printer on a shelf; Priya's silhouette with a laptop under her arm arriving from the right
+- `u03-opener` — an office desk seen straight on: a laptop with a blank screen, a second monitor still in its box, a gold cable in a tangle, a printer on a shelf; Priya's silhouette with a laptop under her arm arriving from the right
 - `u03-scene` — Lena holding her laptop up to a phone propped on the desk so Priya on the phone screen can see it; a small light glowing on the laptop's side
 
 ---
@@ -300,8 +300,8 @@ TOM: *No, ten minutes on foot. You can't miss it.* Sam **knows** the customer �
 - *Key:* 1 leaves · 2 doesn't stop · 3 Does · 4 costs · 5 opposite
 
 **Artwork.**
-- `u04-opener` — a railway station concourse with a blank departure board, Lena with her coral bag walking towards a platform, a long train beyond the barrier; on the far left, through the glass wall, Tom's van at the kerb
-- `u04-scene` — a simple street map drawn as a picture: a station, a café on a corner, a dotted line of footprints turning left and going straight, one coral office door on the right
+- `u04-opener` — a railway station concourse with a blank departure board, Lena with her gold bag walking towards a platform, a long train beyond the barrier; on the far left, through the glass wall, Tom's van at the kerb
+- `u04-scene` — a simple street map drawn as a picture: a station, a café on a corner, a dotted line of footprints turning left and going straight, one gold office door on the right
 
 ---
 
@@ -362,7 +362,7 @@ ANA: Yes! Oh — *here's Sam. Let's start.*
 - *Key:* 1 I usually go running on Saturdays. · 2 She is never late. · 3 We often eat late. · 4 I am always at the gym on Sundays. · 5 They hardly ever cook in the week.
 
 **Artwork.**
-- `u05-opener` — one picture, two weathers: a seafront promenade in Valencia at sunrise on the right with Ana's silhouette walking, a rainy Bristol park on the left with Lena running under trees, one coral sun over the middle
+- `u05-opener` — one picture, two weathers: a seafront promenade in Valencia at sunrise on the right with Ana's silhouette walking, a rainy Bristol park on the left with Lena running under trees, one gold sun over the middle
 - `u05-scene` — two laptops facing each other across a table, each screen showing a silhouette in a headset, a mug beside each
 
 ---
@@ -428,7 +428,7 @@ LENA: Yes! I **was** a student in Hamburg.
 - *Key:* 1 was · 2 were · 3 Were · 4 wasn't · 5 were
 
 **Artwork.**
-- `u06-opener` — a garage with its door up, one wooden desk inside under a bare bulb, a younger Sam in round glasses in the doorway, a small van in the drive, a coral sunset behind the roofs
+- `u06-opener` — a garage with its door up, one wooden desk inside under a bare bulb, a younger Sam in round glasses in the doorway, a small van in the drive, a gold sunset behind the roofs
 - `u06-scene` — a timeline drawn as a road with three small buildings along it — a garage, a small unit, a warehouse — and one van driving from the first towards the last
 
 ---
@@ -491,7 +491,7 @@ SAM: Good. That's the next step.
 - *Key:* 1 took · 2 met · 3 Did … send · 4 didn't like · 5 had
 
 **Artwork.**
-- `u07-opener` — four small scenes in a row like a film strip: a train, a street with a café, a meeting room with one chair, a station at dusk; Lena's coral bag in every one
+- `u07-opener` — four small scenes in a row like a film strip: a train, a street with a café, a meeting room with one chair, a station at dusk; Lena's gold bag in every one
 - `u07-scene` — Lena at the Monday call pointing at a screen that shows a photo of a chair, Tom and Sam listening on the other windows
 
 ---
@@ -557,7 +557,7 @@ LENA: *No rush. Thanks!*
 - *Key:* 1 'm writing · 2 are … working · 3 is coming · 4 aren't packing · 5 Is … calling
 
 **Artwork.**
-- `u08-opener` — the warehouse floor from above: Tom in a flat cap loading flat boxes into an open van, Lena at a desk by the door with a laptop, Priya crossing the floor with hers, a coral forklift parked in the corner
+- `u08-opener` — the warehouse floor from above: Tom in a flat cap loading flat boxes into an open van, Lena at a desk by the door with a laptop, Priya crossing the floor with hers, a gold forklift parked in the corner
 - `u08-scene` — Lena and Priya side by side at one screen, Priya pointing at a column of cells
 
 ---
@@ -621,7 +621,7 @@ LENA: OK. *I think* he likes recycled!
 - *Key:* 1 cheaper · 2 better · 3 more expensive · 4 faster · 5 worse
 
 **Artwork.**
-- `u09-opener` — two cardboard boxes on a warehouse table, one plain and small, one large with a recycling mark; Tom and Lena on either side, each with a hand on one box; a coral price tag hanging from each
+- `u09-opener` — two cardboard boxes on a warehouse table, one plain and small, one large with a recycling mark; Tom and Lena on either side, each with a hand on one box; a gold price tag hanging from each
 - `u09-scene` — two vans side by side in a yard, one small and one big, Tom in his flat cap between them scratching his head
 
 ---
@@ -685,8 +685,8 @@ TOM: *I'm sorry, but no.* *Thank you for the offer.*
 - *Key:* 1 can · 2 can't · 3 Can · 4 can't · 5 can
 
 **Artwork.**
-- `u10-opener` — a kitchen corner with three big bins in a row, blue, green and black; a shelf of ceramic mugs, a plant, a window with a bicycle outside; Lena pinning a blank poster to the wall, her coral bag on a chair
-- `u10-scene` — Tom on the phone with one hand raised in a polite stop, a heap of plastic bags on the desk in front of him, one of them coral
+- `u10-opener` — a kitchen corner with three big bins in a row, blue, green and black; a shelf of ceramic mugs, a plant, a window with a bicycle outside; Lena pinning a blank poster to the wall, her gold bag on a chair
+- `u10-scene` — Tom on the phone with one hand raised in a polite stop, a heap of plastic bags on the desk in front of him, one of them gold
 
 ---
 
@@ -750,7 +750,7 @@ TOM: *Thank you. And sorry again.*
 
 **Artwork.**
 - `u11-opener` — a delivered desk in a customer's office with a crack across its top, one chair beside it and an empty outline where a second chair should be; Tom in his flat cap on the phone in the doorway
-- `u11-scene` — Lena photographing the cracked desktop with her phone, the crack picked out in coral
+- `u11-scene` — Lena photographing the cracked desktop with her phone, the crack picked out in gold
 
 ---
 
@@ -816,7 +816,7 @@ LENA: **I'm doing** it now. *Thanks for being flexible.*
 - *Key:* 1 're doing · 2 Are · 3 'm working · 4 is visiting · 5 move
 
 **Artwork.**
-- `u12-opener` — a wall calendar of blank squares with one square filled coral, Lena on the phone in front of it, a camera on a tripod and two light stands leaning in the corner
+- `u12-opener` — a wall calendar of blank squares with one square filled gold, Lena on the phone in front of it, a camera on a tripod and two light stands leaning in the corner
 - `u12-scene` — a photographer's silhouette with a camera bag crossing the warehouse floor, Sam in his round glasses waving from a doorway
 
 ---
@@ -883,7 +883,7 @@ ANA: Yes — **some** details. *Can you confirm the address* for the invoice, an
 
 **Artwork.**
 - `u13-opener` — a hotel lobby with a long empty meeting room seen through open doors; the hotel manager holding a tablet that shows Ana in her headset; forty small chair silhouettes stacked in a corner
-- `u13-scene` — an invoice as a picture: a sheet on a desk with rows of blank lines and one coral total box, a hand with a pen checking a row
+- `u13-scene` — an invoice as a picture: a sheet on a desk with rows of blank lines and one gold total box, a hand with a pen checking a row
 
 ---
 
@@ -949,8 +949,8 @@ BEN: Yes — hi, everyone. **I'd like** to say thank you. I'm very happy to be h
 - *Key:* 1 Would · 2 d · 3 to · 4 Can · 5 seat
 
 **Artwork.**
-- `u14-opener` — the Greenline showroom, three pale-wood desks and chairs on display; Lena at the door with a tray of two cups, Mr Shaw's silhouette with a briefcase stepping in; a coral cushion on one chair
-- `u14-scene` — a laptop screen showing six small video windows, one of them outlined in coral with a hand raised, a plate of biscuits beside the keyboard
+- `u14-opener` — the Greenline showroom, three pale-wood desks and chairs on display; Lena at the door with a tray of two cups, Mr Shaw's silhouette with a briefcase stepping in; a gold cushion on one chair
+- `u14-scene` — a laptop screen showing six small video windows, one of them outlined in gold with a hand raised, a plate of biscuits beside the keyboard
 
 ---
 
@@ -1017,5 +1017,5 @@ LENA: *I will. See you soon!*
 - *Key:* 1 'm going to take · 2 are … going to do · 3 isn't going to like · 4 're going to open · 5 Is
 
 **Artwork.**
-- `u15-opener` — a taxi at the kerb outside the Greenline office at golden hour; Ana with a suitcase turning to wave; Lena, Tom and Sam in the doorway; a coral sky over the roofs
-- `u15-scene` — a notebook open on a desk with three ticks drawn down a list, a coral pen, a train ticket tucked into the corner
+- `u15-opener` — a taxi at the kerb outside the Greenline office at golden hour; Ana with a suitcase turning to wave; Lena, Tom and Sam in the doorway; a gold sky over the roofs
+- `u15-scene` — a notebook open on a desk with three ticks drawn down a list, a gold pen, a train ticket tucked into the corner

@@ -103,7 +103,7 @@ with each other.
 
 | name | role | pronouns | how the silhouette is known |
 |---|---|---|---|
-| Lena Hartmann | new marketing assistant, from Hamburg | she | coral shoulder bag |
+| Lena Hartmann | new marketing assistant, from Hamburg | she | gold shoulder bag |
 | Tom Reilly | warehouse and deliveries | he | flat cap |
 | Ana Ruiz | sales, works remotely from Valencia | she | headset, usually on a screen |
 | Sam Okafor | founder and managing director | he | round glasses |
@@ -300,7 +300,7 @@ and a composition rule written for the crop that actually arrives.
 
 Figures are **silhouettes, faceless**, each character told apart by the prop
 listed in §2. This is not a stylistic whim: a generated face cannot be kept
-consistent across fifteen pictures, and a silhouette with a coral bag can.
+consistent across fifteen pictures, and a silhouette with a gold bag can.
 It is also the house stem already used for the site's business decks
 (`docs/PLAN-foundations-grammar-business.md`), so the books and the site
 look like one thing.
@@ -318,7 +318,7 @@ it in the prompt in words; the print palette is the designer's to fix.
 
 | book | accent | the proxy's prop is in it |
 |---|---|---|
-| 1 | coral | Lena's bag |
+| 1 | gold | Lena's bag |
 | 2 | sea green | Noor's rucksack |
 | 3 | amber | Daniel's helmet |
 | 4 | cobalt | Grace's coat |
