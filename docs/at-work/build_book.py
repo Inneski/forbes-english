@@ -339,8 +339,8 @@ def build(book):
     people = "".join(f'<div class="person">{plate("portrait", f"{name}: {known}", "44mm", "arch")}<h4>{html.escape(name)}</h4><p>{inline(role)}</p></div>'
                      for name, role, _p, known in cast)
     pages.append(page('<div class="body">' + h("Meet the team", html.escape(setting), big=True)
-                      + split(f'<p class="story">{inline(company)}</p><p class="story">{inline(year)}</p>',
-                              plate("the office", "the whole team in one wide scene of the workplace, the props visible", "80mm", "round"), "right")
+                      + plate("team", "the whole team in one wide office scene, the props visible", "72mm", "round")
+                      + f'<p class="story">{inline(company)}</p><p class="story">{inline(year)}</p>'
                       + f'<div class="people">{people}</div></div>', "Meet the team", 4, top=band("Meet the team", setting)))
 
     num = 5
