@@ -11,6 +11,58 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-22 — The Kraken: all six glosses restored after the re-import
+
+The re-import of 2026-09-22 (new 16:9 plates, 20 `insert_` plates, an authored
+`panels` structure) re-cut every story panel, so `strings.json` went from 394
+strings to **423** and the page shipped **English and Spanish only**. German,
+French, Italian, Portuguese and Russian are back, and Spanish — which had
+shipped 54 strings short without anything reporting it — is complete.
+
+`LANGS` in `build_kraken_saga.py` is `['es', 'de', 'fr', 'it', 'pt', 'ru']`
+again.
+
+**The 54 missing Spanish strings are the lesson here.** `apply_translations()`
+falls back to the English when a key is absent, so a language can lose a third
+of its gloss and the build still prints `langs en+es+…` and looks right on any
+screen you happen to open. Nothing in the pipeline counts coverage. Until
+something does, **after any re-import, diff each translation file against
+`strings.json` by key** — missing and extra both matter, because the extras are
+the old panel boundaries and they are where the prose to re-cut is kept:
+
+```python
+EN = json.load(open('lesson-template/build/rpg/kraken-saga/strings.json'))
+t  = json.load(open('.../translations/es.json'))
+missing = [s for s in EN if s not in t]          # untranslated, silently
+stale   = [k for k in t if k not in EN]          # the pre-merge prose
+```
+
+Re-cutting beats re-translating: every one of the 54 Spanish strings already
+existed inside a stale merged key, so the fix was to split the existing prose at
+the new panel boundaries, not to write new Spanish. Two typos went with it
+(`Dílo` → `Dilo`, `víamos` → `veíamos`). Italian also carries Innes's
+correction, `salpando le nasse` → `tirando su le nasse`, for "hauling creels".
+
+**Measured, not assumed.** The overflow sweep drives `startChapter`/`go`/
+`nextPage` over every scene and every page in every language — **1,848 screens,
+7 languages × 264** — and reads `.content`'s `scrollHeight - clientHeight`.
+Zero overflow anywhere.
+
+The sweep is worth keeping, and so is the trap in it. Measuring straight after
+`setOpen(true)` reads the panel mid-transition and reports **every** screen as
+overflowing; and `eval`-ing the `const G = {…}` literal out of the page source
+gives you a *copy*, so mutating it to build a positive control proves nothing.
+The control that works is at the DOM: append a long `<p>` to the live
+`.content` and confirm the number moves (0 → 3320 → 0).
+
+### Still open (unchanged)
+
+Arabic, Chinese and Japanese — now 423 strings, and Arabic still needs the
+engine's untested RTL path checked. The 59 hotspot boxes are still the
+extractor's default 12×16 and unverified against the plates. The export's
+per-outcome `right`/`wrong` consequence lines are still dropped for want of
+`fbRight`/`fbWrong` in the engine.
+
 ## 2026-09-21 — Forbes English at Work: a five-book business coursebook series, specified
 
 Innes pasted a five-level business English syllabus — fifteen units a
