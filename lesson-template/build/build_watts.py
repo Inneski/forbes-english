@@ -101,7 +101,18 @@ EXTRA_CSS = '''
 # ══════════════════════════════════════════════════════════════════════
 # READING — the passage, unchanged in substance, split at the §6 budget
 # ══════════════════════════════════════════════════════════════════════
-def reading(eyebrow_key, title_key, paras, bg, side=None, arch=True):
+def arched(bg):
+    """True if this picture can take the 190px arch.
+
+    The arch eats the top corners, so it needs a subject with air above it.
+    The nine still lifes have that; the nine Watts portraits are
+    head-and-shoulders that fill the frame and come back with the hair cut
+    off. So the arch follows the PICTURE, not the deck — which is why this is
+    a function and not one flag for the whole build."""
+    return bg.startswith('plate-')
+
+
+def reading(eyebrow_key, title_key, paras, bg, side=None, arch=None):
     """A passage slide: prose straight on the field, picture framed beside it.
 
     paras: list of (key, 'class') pairs — the text itself lives in i18n_watts,
@@ -112,6 +123,8 @@ def reading(eyebrow_key, title_key, paras, bg, side=None, arch=True):
     body = "\n          ".join(
         '<p class="prose %s" data-i18n="%s">%s</p>' % (cls, k, EN[k])
         for k, cls in paras)
+    if arch is None:
+        arch = arched(bg)
     extra = ''
     if side == 'left':
         extra += ' data-art-side="left"'
@@ -136,7 +149,7 @@ def reading(eyebrow_key, title_key, paras, bg, side=None, arch=True):
        EN[title_key], body)
 
 
-def art(slide, side=None, shape='arch', size=None):
+def art(slide, side=None, shape=None, size=None):
     """Tag a slide with how the editorial style places its picture."""
     extra = ''
     if side == 'left':
@@ -317,27 +330,46 @@ def build():
 
     logo = D.logo_from(TPL)
 
-    # Six reading slides, alternating the picture side so the passage does not
-    # read as one long column with a stripe down the same edge.
+    # Eighteen pictures now: nine Watts portraits (watts-*) and nine still
+    # lifes (plate-*). They are not interchangeable and the split is the
+    # lesson's own — **a portrait where the slide is about the man, an object
+    # where it is about the idea.** The separate self is a coat that shares an
+    # edge with its own shadow; wu wei is water parting round a stone. Putting
+    # his face on those would say "here is Watts again" where the slide is
+    # trying to say something specific.
+    #
+    # Innes, 2026-09-23: the portraits stay. An earlier pass read "no bearded
+    # man in the shopping list" as "replace the portraits" and cut all nine.
+    # They were restored from 614a7b0.
     READ = [
+        # the man
         ('eWho', 'tWho', [('pWho1', 'read-para'), ('pWho2', 'read-para')],
-         'plate-c.jpg', None),
+         'watts-c.jpg', None),
+        # him speaking — the line is his, so he is on the slide
         ('eQuote', 'tQuote', [('pQuote1', 'pull-quote'),
-                              ('pQuote2', 'read-para dim')], 'plate-e.jpg', 'left'),
+                              ('pQuote2', 'read-para dim')], 'watts-d.jpg', 'left'),
+        # the three ideas, as objects
         ('eSelf', 'tSelf', [('pSelf1', 'read-para'), ('pSelf2', 'read-para')],
          'plate-a.jpg', None),
         ('eWu', 'tWu', [('pWu1', 'read-para'), ('pWu2', 'read-para')],
          'plate-d.jpg', 'left'),
         ('eImp', 'tImp', [('pImp1', 'read-para'), ('pImp2', 'read-para')],
          'plate-b.jpg', None),
+        # why we still hear him: the recordings, so the microphone
         ('eLeg', 'tLeg', [('pLeg1', 'read-para'), ('pLeg2', 'read-para')],
-         'plate-g.jpg', 'left'),
+         'plate-e.jpg', 'left'),
     ]
 
-    MC_BG = ['plate-f.jpg', 'plate-h.jpg', 'plate-i.jpg', 'plate-a.jpg',
-             'plate-d.jpg']
-    ORDER_BG = ['plate-b.jpg', 'plate-e.jpg', 'plate-c.jpg', 'plate-g.jpg',
-                'plate-f.jpg']
+    # Comprehension is about what HE said, so it runs on his face — and it is
+    # the one run long enough to show five different portraits.
+    MC_BG = ['watts-a.jpg', 'watts-b.jpg', 'watts-f.jpg', 'watts-h.jpg',
+             'watts-i.jpg']
+    # Vocabulary is about the words, so it runs on the objects.
+    GAP_BG = ['plate-f.jpg', 'plate-h.jpg', 'plate-c.jpg', 'plate-i.jpg']
+    # Sentence building returns to him. Two unused portraits first, then the
+    # three earliest MC faces again — far enough back not to read as a repeat.
+    ORDER_BG = ['watts-e.jpg', 'watts-g.jpg', 'watts-a.jpg', 'watts-b.jpg',
+                'watts-f.jpg']
 
     slides = (
         D.cover(logo, EN['coverTitle'], EN['coverSub'],
@@ -350,17 +382,18 @@ def build():
         + "".join(art(D.mc(i + 1, len(COMP), q, 'eComp', EN['eComp'],
                            'tComp', EN['tComp'], folder=F, explains=q['ex'],
                            bg=MC_BG[i]),
-                      side='left' if i % 2 else None, size='narrow')
+                      side='left' if i % 2 else None, size='narrow',
+                      shape='arch' if arched(MC_BG[i]) else None)
                   for i, q in enumerate(COMP))
 
         + "".join(
             art(D.gap(i + 1, 4, rows, BANK, 'eVocab', EN['eVocab'], 'tVocab',
                       EN['tVocab'], folder=F, bg=bg, hint_key='hVocab',
                       hint=EN['hVocab'], width=200),
-                side='left' if i % 2 else None, size='narrow')
+                side='left' if i % 2 else None, size='narrow',
+                shape='arch' if arched(bg) else None)
             for i, (rows, bg) in enumerate(
-                [(ROWS_1, 'plate-h.jpg'), (ROWS_2, 'plate-i.jpg'),
-                 (ROWS_3, 'plate-c.jpg'), (ROWS_4, 'plate-f.jpg')]))
+                zip((ROWS_1, ROWS_2, ROWS_3, ROWS_4), GAP_BG)))
 
         # Three cards and a picture will not fit (§15), so this slide has none.
         + D.teach('ePat', EN['ePat'], 'tPat', EN['tPat'], TEACH_PATTERNS,
@@ -369,7 +402,8 @@ def build():
         + "".join(art(D.order(items, 'eOrder', EN['eOrder'], 'tOrder',
                               EN['tOrder'], 'hOrder', EN['hOrder'], why,
                               folder=F, bg=ORDER_BG[i]),
-                      side='left' if i % 2 else None, size='narrow')
+                      side='left' if i % 2 else None, size='narrow',
+                      shape='arch' if arched(ORDER_BG[i]) else None)
                   for i, (items, why) in enumerate(ORDERS))
 
         + D.results(folder=F, bg='plate-i.jpg')

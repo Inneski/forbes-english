@@ -5,54 +5,53 @@ editorial style (HOUSE-STYLE §15). Read that first: the frame geometry, the
 "middle 65%" rule and the `prep-artwork.py` warning to ignore are all there and
 are not repeated here.
 
-**Revised 2026-09-22, Innes's call: no Alan Watts, no bearded man.** The first
-version of this brief asked for nine posterised portraits, because the lesson is
-about a specific person and the supplied batch was already portraits. He asked
-for the list again without them, and he is right to. Three reasons it is the
-better set:
+**What this brief is for, corrected 2026-09-23.** Innes asked for a shopping
+list "with non Alan Watts bearded man requests" — meaning *stop putting more
+pictures of the man on the list*, not *get rid of the ones we have*. A previous
+pass read it the second way and cut all nine portraits. They are restored from
+`614a7b0` and the deck now carries **both** sets.
 
-1. **It puts this deck back on the house stem.** `ARTWORK-holding-the-line.md`
-   says *no people, no faces* and means it. A deck that opts out is a deck that
-   has to justify itself every time someone re-renders it.
-2. **Generated likenesses of a real named person get worse the more you make.**
-   Nine was already a lot of near-misses of a man who died in 1973. Twenty is a
-   set where some of them are visibly not him, on a page with his name at the
-   top.
-3. **Objects age better.** A chair or a stone does not go out of date, does not
-   drift off-model between batches, and can be re-rendered in two years to match
-   whatever the set already looks like.
+So this list exists to add subjects that are **not** another portrait. The nine
+portraits are finished work and are not to be replaced.
 
-The nine portraits currently shipped stay live until a replacement set exists.
-Nothing here is urgent — see the note at the end.
+**The deck uses the two sets for different jobs, and the split is the lesson's
+own: a portrait where the slide is about the man, an object where it is about
+the idea.** The illusion of the separate self is a coat sharing an edge with its
+own shadow; *wu wei* is water parting round a stone. Watts's face on those slides
+would say "here is Watts again" where the slide is trying to say something
+specific. His face belongs on who he was, on the line he is remembered for, and
+on the comprehension run, which is about what *he* said.
 
 ---
 
-## Status — the plates are delivered, the hero is not
+## Status — 18 pictures, one slot still open
 
-**Delivered 2026-09-22.** All nine object plates below were rendered and are
-live. The nine interim Watts portraits are gone.
+**Delivered 2026-09-22/23.** Nine object plates (`plate-a` … `plate-i`) were
+rendered to this brief and are live **alongside** the nine restored Watts
+portraits (`watts-a` … `watts-i`). Eighteen pictures across twenty-two
+art-bearing slides, so only three repeat — all three late in the sentence-building
+run, far enough from their first showing not to read as one.
 
-**Seven came back native 7:6** (2368 × 2032) — the first time `--ar 7:6` has
-actually taken in this repo, and it is worth knowing it *can*. The other two
-came back 16:9 and were cut here:
+**Seven objects came back native 7:6** (2368 × 2032) — the first time `--ar 7:6`
+has actually taken in this repo, and worth knowing it *can*. Two came back 16:9
+and needed different handling:
 
 | plate | what happened |
 |---|---|
-| `plate-e` microphone | 16:9. Right-aligned **by hand**. The subject-centroid routine put the crop at x=0, because the dark wall panel on the left outweighs the microphone — and that sliced the microphone off the right edge. A dark *background* beats a dark *subject* every time; do not trust the centroid on a plate with a large dark field in it. |
-| `plate-d` river stone | 16:9, and the stone fills the frame edge to edge. Cropping to 7:6 zoomed further in and the 190px arch then cut it into an abstract stripe that no longer read as a stone. **Padded instead of cropped** — the whole 16:9 sits inside a 7:6 canvas with its own top and bottom edge colours extended, so the stone keeps air above it. |
+| `plate-e` microphone | Right-aligned **by hand**. The subject-centroid routine put the crop at x=0, because the dark wall panel on the left outweighs the microphone, and that sliced the microphone off the right edge. A dark *background* beats a dark *subject*; do not trust a centroid on a plate with a large dark field in it. |
+| `plate-d` river stone | The stone fills its frame edge to edge, so cropping to 7:6 zoomed further in and the arch cut it into an abstract stripe. **Padded instead** — the whole 16:9 inside a 7:6 canvas with its own edge colours extended. When a subject fills its frame, add ground rather than taking picture away. |
 
-`plate-d` is the standing lesson: **when a subject fills its frame, add ground
-rather than taking picture away.** A crop makes a too-big subject bigger.
-
-**The arch is back on.** `build_watts.py` passes `data-art="arch"` again. The
-portraits could not take it — head-and-shoulders filled the frame and it clipped
-hair — but a still life with sky above it is exactly what the arch is for.
+**The arch follows the picture, not the deck.** `build_watts.py` has an
+`arched(bg)` helper that returns true only for `plate-*`. The still lifes have
+sky above them and take the 190px arch well; the portraits are
+head-and-shoulders that fill the frame and come back with the hair cut off. One
+flag for the whole deck cannot express that, which is why it is a function.
 
 ### Still outstanding: the hero
 
-The nine plates cover every framed slot. **The cover does not**, and it is the
-one thing a learner actually sees go wrong: the hero is still the centred
-ZEN/TAO/NOW/BEING diagram, so the 88px title lands on the word ZEN.
+Every framed slot is filled. **The cover is not**, and it is the one thing a
+learner sees go wrong: the hero is still the centred ZEN/TAO/NOW/BEING diagram,
+so the 88px title lands on the word ZEN.
 
 Two ways to close it, and the cheap one is probably right:
 
