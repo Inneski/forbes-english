@@ -11,6 +11,70 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-22 — Alan Watts, The Art of Being Present (B1), editorial style
+
+Shipped `forbes-alan-watts-b1.html` — 24 slides, EN/DE/ES, HOUSE-STYLE §15.
+Builder `build_watts.py`, strings `i18n_watts.py`, artwork `alan-watts/`.
+
+**A OneDrive placeholder folder reads as empty.** `incoming/Alan Watts/` had
+held the artwork since 2026-09-08, but `ls`, `find` and a repo-wide grep all
+returned nothing — the files were cloud placeholders that had not hydrated.
+The folder listed as size 0 with no children, which is indistinguishable from
+genuinely empty. It populated a minute after Innes opened it in Explorer, and
+a `desktop.ini` appearing is the tell that a folder has just been touched.
+**Before telling Innes a drop folder is empty, ask him to open it first.** A
+session that concludes "no artwork was supplied" on a placeholder folder will
+send him off to re-render pictures he already has.
+
+**The editorial style is the right default for flat vector artwork, and it is
+worth recognising the case on sight.** All nine Watts plates are posterised
+vector portraits on large near-white fields. §15 already documents why the
+washed-hero treatment fails there (the plate has to go opaque before
+`--text-dim` clears AA, at which point the picture is gone). The hero here is
+a different palette family from the plates — cream/terracotta/sage against
+pink/coral/slate — which under the derived-palette rule would have been a
+problem and under the fixed editorial set is simply not one.
+
+**Three §6 overflows that the checker caught and what actually fixed them:**
+
+  * **MC slides overflowed on HEIGHT, not width.** At the editorial scale an
+    option bar is 26px, so any option over about 65 characters wraps to two
+    lines and four of them clear the canvas. `data-art-size="narrow"` buys
+    width but does not fix a two-line stem. Shortening the **stem** is worth
+    more than shortening the options: Q1 went from 66 characters to 48 and
+    took 28px with it.
+  * **Three gap rows do not fit on one editorial slide** (measured 69px over).
+    Seven gaps go two to a slide, which is four slides, not three.
+  * **The activation panel overflow was the chip strip, not the brief.**
+    Shortening `actWriteBrief` moved the number not at all; the target-language
+    strip sits above both tracks, so every line it wraps to pushes the open
+    panel down by that much. Ten chips with two full phrases in them was two
+    lines too many. **Eight short chips is the budget.**
+
+**`assert_no_key_is_longest` fires in both directions.** Fixing Q5 (key was the
+longest at 80 vs 74/72/76) by tightening every bank at once then pushed Q3 the
+other way — key 61 against a longest distractor of 54, which the gate also
+refuses. Lengthen the distractors back; do not shorten the key to meet them.
+
+**Two library cards were missing and nothing had noticed.**
+`forbes-english-body-idioms-c1.html` and `forbes-english-body-parts-c1.html`
+are decks with heroes on disk but no `LESSON_IMAGES` row, so `comingSoon()`
+was rendering both as disabled "Coming soon" tiles. Pre-existing — absent from
+`origin/main`'s `library.html` too — and the only reason
+`check-library.js` was red. Cards cut from their own heroes; it passes now.
+
+**A 2.34:1 library card cannot crop a centred diagram.** The hero is the
+ZEN/TAO/NOW/BEING figure at 1.83:1; a centre crop to 1200×512 cuts "BEING"
+off the bottom. Fit by height and pad the sides from the hero's own field
+colour instead — it reads as a mount, not as a mistake.
+
+**Left undone:** the commit subject carries a stray leading `@` — a PowerShell
+here-string (`-m @'…'@`) typed into the Bash tool, where the delimiters are
+literal. The git guard refuses `--amend`, correctly, so it stands. On Windows
+in this repo, pass a commit message with a real Bash heredoc or repeated `-m`.
+
+---
+
 ## 2026-09-22 — The Kraken: all six glosses restored after the re-import
 
 The re-import of 2026-09-22 (new 16:9 plates, 20 `insert_` plates, an authored
