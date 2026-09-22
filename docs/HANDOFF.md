@@ -23,7 +23,7 @@ flythru video link the two occasionally on repeat."
     `BlockCampDescent/watchtower-far-side.jpg`, pixel-aligned at zero offset
     (mean difference 4–5 levels, video slightly darker). So the video is
     on screen only while it moves, and both holds show the sharp stills.
-  * Cycle: trail 12 s → flight 9 s → far side 12 s → 1.6 s dissolve back →
+  * Cycle: trail 3 s → flight 9 s → far side 3 s → 1.6 s dissolve back →
     round again. `HOLD` in the template's script. The dissolve is the way
     back rather than the clip reversed. Flying backwards down a tower reads
     as a rewind.
