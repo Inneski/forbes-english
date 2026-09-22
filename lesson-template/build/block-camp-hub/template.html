@@ -108,6 +108,7 @@ img { display: block; }
    between still and video jumps. The script at the bottom runs it. */
 .hero {
   --hero-y: 62%;
+  --hero-fade: 4s;       /* the far side dissolving back; the script reads it */
   position: relative; isolation: isolate; overflow: hidden;
   min-height: clamp(540px, 74vh, 720px);
   display: flex; align-items: center;
@@ -123,7 +124,7 @@ img { display: block; }
 }
 .hero-far {
   background-image: url(BlockCampDescent/watchtower-far-side.jpg);
-  opacity: 0; transition: opacity 1.6s ease;
+  opacity: 0; transition: opacity var(--hero-fade) ease-in-out;
 }
 .hero-fly.on, .hero-far.on { opacity: 1; }
 .hero-far.on { transition-duration: .45s; }
@@ -151,6 +152,16 @@ img { display: block; }
   text-shadow: 0 4px 0 rgba(0,0,0,.35), 0 10px 40px rgba(0,0,0,.5);
 }
 .hero h1 em { font-style: normal; color: var(--raspberry); }
+/* When the flight lands, the wordmark's letters hop: each one up and back
+   down on its own, a few tens of ms apart in a random order (the script
+   sets each delay). inline-block, or transform does nothing to a span. */
+.hero h1 .j { display: inline-block; }
+.hero h1.hop .j { animation: hop .5s cubic-bezier(.3,.6,.4,1) both; }
+@keyframes hop {
+  0%, 100% { transform: translateY(0); }
+  38% { transform: translateY(-.16em); }   /* higher and B, L clip the eyebrow line */
+  72% { transform: translateY(.04em); }
+}
 .hero .lede {
   font-size: clamp(1.02rem, 1.4vw, 1.18rem); line-height: 1.6; color: #d9e6dd;
   max-width: 46ch; margin: 0 0 26px;
@@ -321,7 +332,7 @@ img { display: block; }
   <div class="hero-art hero-far" aria-hidden="true"></div>
   <div class="hero-inner">
     <div class="eyebrow">Forbes English &middot; Grammar, block by block</div>
-    <h1 class="mono">BLOCK <em>CAMP</em></h1>
+    <h1 class="mono" aria-label="Block Camp"><span aria-hidden="true"><span class="j">B</span><span class="j">L</span><span class="j">O</span><span class="j">C</span><span class="j">K</span> <em><span class="j">C</span><span class="j">A</span><span class="j">M</span><span class="j">P</span></em></span></h1>
     <p class="lede"><strong>Every lesson here is set in a blocky, voxel-built world.</strong> One trail up through the {{W_TENSES}} tenses, a second trail down the far side through the same tenses in the passive, {{W_ADV}} branching adventures with a grammar point built into the plot &mdash; and every illustrated reference in one place.</p>
     <div class="cta-row">
       <a class="btn btn-gold" href="block-camp-map.html">Open the route map <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
@@ -422,7 +433,8 @@ img { display: block; }
 
 <script>
 /* The hero's flight (see the HERO comment in the CSS): trail, HOLD, fly up
-   the tower, far side, HOLD, dissolve back, round again. The clip is not
+   the tower, far side (the logo's letters hop), HOLD, dissolve back over
+   --hero-fade, HOLD, round again. The clip is not
    fetched until the page has finished loading, and nothing moves off screen
    or in a background tab. Reduced motion, Save-Data, a refused autoplay or
    a failed load all leave the trail still standing, which is the page as
@@ -436,16 +448,19 @@ img { display: block; }
   if (navigator.connection && navigator.connection.saveData) return;
 
   var HOLD = 3000;                            /* ms on each still */
+  var FADE = parseFloat(getComputedStyle(hero).getPropertyValue('--hero-fade')) * 1000 || 0;
+  var logo = hero.querySelector('h1');
   var phase = 'near', due = false, seen = false, dead = false;
   var live = function () { return seen && !document.hidden && !dead; };
-  var hold = function () { due = false; setTimeout(function () { due = true; go(); }, HOLD); };
+  var hold = function (ms) { due = false; setTimeout(function () { due = true; go(); }, ms || HOLD); };
   var quit = function () { dead = true; fly.classList.remove('on'); far.classList.remove('on'); };
   var play = function () { var p = fly.play(); if (p && p.catch) p.catch(quit); };
 
   function go() {
     if (!due || !live()) return;
     if (phase === 'far') {                    /* dissolve back to the trail */
-      due = false; phase = 'near'; far.classList.remove('on'); hold();
+      due = false; phase = 'near'; far.classList.remove('on');
+      hold(FADE + HOLD);                      /* the trail's hold starts once it is back */
     } else if (phase === 'near' && fly.readyState === 4) {   /* take off */
       due = false; phase = 'fly'; fly.classList.add('on'); play();
     }
@@ -455,9 +470,16 @@ img { display: block; }
     /* once the still covers it, rewind behind it: seeking at take-off
        would flash the last frame for a moment first */
     setTimeout(function () { fly.classList.remove('on'); fly.currentTime = 0; }, 600);
+    hop();
     hold();
   });
   fly.addEventListener('canplaythrough', go);
+
+  function hop() {                          /* the movement has stopped: the letters hop */
+    if (!logo) return;
+    logo.querySelectorAll('.j').forEach(function (el) { el.style.animationDelay = Math.round(Math.random() * 280) + 'ms'; });
+    logo.classList.remove('hop'); void logo.offsetWidth; logo.classList.add('hop');
+  }
   fly.addEventListener('error', quit);
 
   function wake() {
