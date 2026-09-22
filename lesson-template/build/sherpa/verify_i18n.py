@@ -60,7 +60,7 @@ def verify(slug):
     if '&' in over.get('actPlaceholder', '') and re.search(r'&[a-z#0-9]+;', over['actPlaceholder']):
         faults.append('actPlaceholder carries an HTML entity; it is set as plain text')
     keys = set(EN) - {'chipCount'}
-    for lang in LANGS:
+    for lang in [l for l in B.ALL_LANGS if l != 'en' and (l in LANGS or l in A)]:
         tr = A.get(lang)
         if not isinstance(tr, dict):
             faults.append('%s: block missing' % lang)
