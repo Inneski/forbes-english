@@ -90,7 +90,7 @@ EXTRA_CSS = '''
 # ══════════════════════════════════════════════════════════════════════
 # READING — the passage, unchanged in substance, split at the §6 budget
 # ══════════════════════════════════════════════════════════════════════
-def reading(eyebrow_key, title_key, paras, bg, side=None, arch=True):
+def reading(eyebrow_key, title_key, paras, bg, side=None, arch=False):
     """A passage slide: prose straight on the field, picture framed beside it.
 
     paras: list of (key, 'class') pairs — the text itself lives in i18n_watts,
@@ -125,7 +125,7 @@ def reading(eyebrow_key, title_key, paras, bg, side=None, arch=True):
        EN[title_key], body)
 
 
-def art(slide, side=None, shape='arch', size=None):
+def art(slide, side=None, shape=None, size=None):
     """Tag a slide with how the editorial style places its picture."""
     extra = ''
     if side == 'left':
