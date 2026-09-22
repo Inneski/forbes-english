@@ -65,6 +65,31 @@ DEEP, PANEL = '#08131c', 'rgba(8,19,28,.88)'
 HOME_HOT = [77.9, 83.7, 7.0, 12.0]
 ENDING_HOT = [80.0, 55.0, 14.0, 18.0]
 
+# The glow on each insert plate, [cx, cy, w, h] in picture percent. Nine of the
+# twenty inserts came from the export with a `spot` centre; eleven did not and
+# were measured by eye off the plate on 2026-09-22. An insert needs one because
+# the closed view of a scene is now the PAGE the reader is on, not the scene's
+# own plate — see authored_pages() for why. This table wins over the export's
+# `spot`: two of the nine spots were checked on a contact sheet and were off
+# the object (the barrel's sat in the water under the buoy, the collie's on
+# the pier edge below the dog), so they are corrected here.
+INSERT_HOT = {
+    'insert_barrel_insert.webp':  [72.0, 42.0, 14.0, 20.0],   # the buoy itself, not the water under it
+    'insert_collie.webp':         [63.0, 40.0, 12.0, 16.0],   # the dog's face, not the pier edge
+    'insert_regatta_before.webp': [65.0, 54.0, 12.0, 16.0],   # the girl in 723
+    'insert_regatta_prank.webp':  [80.0, 54.0, 12.0, 16.0],   # the boys' motorboat
+    'insert_brannan_bell.webp':   [88.0, 32.0, 12.0, 16.0],   # the bell
+    'insert_bell_strike.webp':    [70.0, 45.0, 12.0, 16.0],   # the clapper
+    'insert_kayak_before.webp':   [65.0, 38.0, 12.0, 16.0],   # the kayaker
+    'insert_kayak_shadow.webp':   [78.0, 32.0, 12.0, 16.0],   # the kayaker, from above
+    'insert_kayak_rescue.webp':   [47.0, 55.0, 12.0, 16.0],   # the boy at the rail
+    'insert_beak_detail.webp':    [72.0, 51.0, 14.0, 18.0],   # the beak in the jar
+    'insert_tulloch_close.webp':  [68.0, 44.0, 14.0, 20.0],   # Tulloch's face
+    'insert_tide_detail.webp':    [74.0, 21.0, 12.0, 16.0],   # the finger on the black band
+    'insert_cage_descent.webp':   [66.0, 35.0, 14.0, 20.0],   # the diver in the cage
+}
+DEFAULT_BOX = (12.0, 16.0)
+
 WORDS_PER_PAGE = 42              # what a 46% panel holds at 1.65 units without scrolling
 
 # Two engine defaults are wrong for this game and are overridden here rather
@@ -233,17 +258,29 @@ def authored_pages(s):
     They render as story text under their label, not in the clue box: the box
     was this builder's way of marking quoted information, and the export's own
     labels now do that job better.
+
+    Every page carries a `hot` as well as a picture. Until 2026-09-22 the engine
+    showed the scene's own plate whenever the panel was closed, because that
+    plate was the only picture with a glow position - and on these scenes that
+    plate is the last moment, not the first: a reader arrived at 1.6 to the
+    kayak in the tentacle and then read "BEYOND THE MOORINGS", at 1.13 to the
+    dinghies over and the children in the water and then read "REGATTA
+    SUNDAY". Innes's words for it: "pages jump in like spoilers". Now the
+    closed view is the page the reader is on, so each insert needs a glow of
+    its own: the export's `spot` where it gave one, INSERT_HOT where it did
+    not, and the scene's hotspot where the page is the scene plate itself.
     """
     panels = s.get('panels')
     if not panels:
         return None, None
     prompt = plain(repair_speaker(s['prompt'], s.get('dialogue'))) if s.get('prompt') else None
-    pages, ask_img = [], None
+    pages, ask_img, ask_hot = [], None, None
     for i, pan in enumerate(panels):
         txt = plain(pan['text'])
+        hot = panel_hot(s, pan)
         last = i == len(panels) - 1
         if last:
-            ask_img = pan['image']
+            ask_img, ask_hot = pan['image'], hot
             if prompt and txt == prompt:
                 continue
         # A panel the author wrote longer than the panel holds still has to be
@@ -251,9 +288,25 @@ def authored_pages(s):
         # and the label across the parts, so the grouping survives even though
         # the page does not.
         for j, blk in enumerate(pages_of(txt)):
-            pages.append({'t': 'story', 'b': blk, 'img': pan['image'],
+            pages.append({'t': 'story', 'b': blk, 'img': pan['image'], 'hot': hot,
                           'label': T(pan['label'])})
-    return pages, ask_img
+    return pages, (ask_img, ask_hot)
+
+
+def panel_hot(s, pan):
+    """Where the glow sits on a panel's picture: the scene's own hotspot when
+    the picture is the scene plate, the export's `spot` centre (picture
+    fractions) in the default box when it gave one, INSERT_HOT otherwise. An
+    insert with none of the three is refused rather than left with a glow
+    floating over nothing."""
+    img = pan['image']
+    if img == s['image']:
+        return list(s['hot'])
+    if img in INSERT_HOT:
+        return list(INSERT_HOT[img])
+    if pan.get('spot'):
+        return [round(pan['spot'][0] * 100, 1), round(pan['spot'][1] * 100, 1), *DEFAULT_BOX]
+    raise SystemExit('no hotspot for insert %s (scene %s): add it to INSERT_HOT' % (img, s['title']))
 
 
 def build():
@@ -313,13 +366,13 @@ def build():
                     for c in s['choices']]})
             # an authored run of panels replaces both the split story and the
             # split clue, and carries the pictures and labels with it
-            auth, ask_img = authored_pages(s)
+            auth, ask = authored_pages(s)
             if auth:
                 base['pages'] = auth
                 base.pop('story', None)
                 base.pop('clue', None)
-                if ask_img:
-                    base['askImg'] = ask_img
+                if ask and ask[0]:
+                    base['askImg'], base['askHot'] = ask
             scenes[sid] = base
 
         for key, text in ch['endings'].items():
@@ -351,9 +404,11 @@ def build():
         # no story line: three chapter leads is already a panel's worth, and an
         # empty one cannot be glossed, so the key goes rather than sitting there
         # as '' for the validator to trip over.
-        # 62, not the default 46: three chapter leads is a lot of panel, and
-        # with a gloss under each one it overflowed by 78px in Spanish.
-        'width': 70,
+        # 74, not the default 46: three chapter leads is a lot of panel, and
+        # with a gloss under each one it overflowed by 78px in Spanish at 62
+        # and by 14px in Russian at 70 (measured 2026-09-22 at 16:9; 72 was
+        # still 14 over, 74 is the first width that clears it).
+        'width': 74,
         'small': T('14 questions a chapter · 4 collectibles · 3 chances · your choices change the route')}
 
     return {

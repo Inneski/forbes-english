@@ -423,7 +423,7 @@ function scenePages(s){
      picture and its own label ("THE SCENE", "YOU HEAR", "THE BELL"), and the
      builder must not split the text itself. A question still gets its own page
      at the end. */
-  if(s.pages)return s.kind==='question'?s.pages.concat([{t:'ask',img:s.askImg}]):s.pages.slice();
+  if(s.pages)return s.kind==='question'?s.pages.concat([{t:'ask',img:s.askImg,hot:s.askHot}]):s.pages.slice();
   const out=storyPages(s).map(b=>({t:'story',b}));
   /* opt-in per lesson. Six of the shipped eleven put a clue on 115 questions
      and read it beside the options; moving those onto a page of their own
@@ -475,7 +475,7 @@ function head(s,pg){const has=s.title&&bare(s.title.en||'').trim();const t=s.kin
    but a cover is often drawn to the screen while the story plates are drawn to
    the art brief's ratio — Kraken's cover is 16:9 and its 58 plates are 3:2 —
    and the glow has to be placed in the picture's own space or it drifts. */
-function placeHot(s){const h=s.hot,IW=s.imgW||G.imgW,IH=s.imgH||G.imgH;const W=frame.clientWidth,H=frame.clientHeight,sc=(G.fit==='contain'?Math.min:Math.max)(W/IW,H/IH),dw=IW*sc,dh=IH*sc;
+function placeHot(s){const h=pageHot(s),IW=s.imgW||G.imgW,IH=s.imgH||G.imgH;const W=frame.clientWidth,H=frame.clientHeight,sc=(G.fit==='contain'?Math.min:Math.max)(W/IW,H/IH),dw=IW*sc,dh=IH*sc;
   /* cover crops the picture; slide it so the object stays on screen (a portrait phone shows a third of the width) */
   const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));const ox=dw>W?clamp(W/2-h[0]/100*dw,W-dw,0):(W-dw)/2,oy=dh>H?clamp(H/2-h[1]/100*dh,H-dh,0):(H-dh)/2;
   sceneImage.style.objectPosition=`${dw>W?ox/(W-dw)*100:50}% ${dh>H?oy/(H-dh)*100:50}%`;
@@ -485,12 +485,17 @@ function placeHot(s){const h=s.hot,IW=s.imgW||G.imgW,IH=s.imgH||G.imgH;const W=f
 function setOpen(on){state.open=!!on;{const want=G.dir+pageImg();if(sceneImage.getAttribute('src')!==want)sceneImage.src=want}if(on){const hr=hot.getBoundingClientRect(),zr=zone.getBoundingClientRect();const cl=zr.left+content.offsetLeft,ct=zr.top+content.offsetTop;content.style.transformOrigin=`${hr.left+hr.width/2-cl}px ${hr.top+hr.height/2-ct}px`}frame.classList.toggle('open',state.open)}
 function openPanel(){if(!state.open)setOpen(true)}
 function closePanel(){if(state.open)setOpen(false)}
-function pageImg(){const s=G.scenes[state.scene];if(!state.open)return s.img;
-  const pg=scenePages(s)[Math.min(state.page||0,scenePages(s).length-1)];return (pg&&pg.img)||s.img}
-/* An authored page carries its own picture, but the glow marker is placed from
-   the SCENE's hotspot and belongs to the scene's own plate. So a closed panel
-   always shows that plate: otherwise folding the text away mid-scene leaves an
-   insert on screen with a glow floating over nothing, and no way back in. */
+function curPage(){const s=G.scenes[state.scene],pgs=scenePages(s);return pgs[Math.min(state.page||0,pgs.length-1)]}
+/* The picture on screen is the CURRENT page's, open or closed. Until
+   2026-09-22 a closed panel always showed the scene's own plate, because the
+   glow marker had only the scene's hotspot to sit on; on a scene with authored
+   pages that plate is the climax (the kayak in the tentacle, the dinghies
+   over), so a reader arrived at the ending of the scene and then read its
+   beginning. Now every authored page carries its own `hot` (the builder
+   refuses one without), so the closed view is the page the reader is on, and
+   folding the panel away mid-scene leaves the glow on that page's object. */
+function pageImg(){const s=G.scenes[state.scene],pg=curPage();return (pg&&pg.img)||s.img}
+function pageHot(s){const pg=curPage();return (pg&&pg.hot)||s.hot}
 function render(){const s=G.scenes[state.scene];frame.className=`frame ${s.pos||'left'} v-${s.v||'center'} k-${s.kind}${s.kind==='intro'?' is-cover':''}${RTL.includes(state.lang)?' rtl':''}${G.fit==='contain'?' fit-contain':''}`;sceneImage.src=G.dir+pageImg();sceneImage.alt=bare((s.title&&s.title.en)||s.alt||'');placeHot(s);const tr=state.lang!=='off';frame.classList.toggle('tr-on',tr);frame.classList.toggle('has-rules',!!s.rules&&s.kind!=='intro');content.style.width=((s.width||(s.pos==='center'?64:s.pos==='band'?92:46))+(tr?(s.pos==='band'?3:8):0))+'%';content.style.marginLeft=s.pos==='left'&&s.inset?s.inset+'%':'';content.style.marginRight=s.pos==='right'&&s.inset?s.inset+'%':'';
   const hide=`<button class="hide-btn" onclick="closePanel()" title="Esc">✕ ${ui('hide')}</button>`;
   const pgs=scenePages(s),np=pgs.length,pi=Math.min(state.page||0,np-1);
@@ -699,6 +704,22 @@ def validate(spec):
         img = os.path.join(REPO, spec['img_dir'], s['img'])
         if not os.path.exists(img):
             raise SystemExit('scene %s: no picture at %s' % (sid, img))
+        # an authored page with a picture of its own is shown closed as well as
+        # open, so the glow needs somewhere on THAT picture to sit
+        pages = list(s.get('pages') or [])
+        if s.get('askImg'):
+            pages.append({'img': s['askImg'], 'hot': s.get('askHot'), 't': 'ask'})
+        for i, pg in enumerate(pages):
+            if not pg.get('img'):
+                continue
+            if not os.path.exists(os.path.join(REPO, spec['img_dir'], pg['img'])):
+                raise SystemExit('scene %s page %d: no picture at %s' % (sid, i, pg['img']))
+            h = pg.get('hot')
+            if not h or len(h) != 4:
+                raise SystemExit('scene %s page %d (%s): needs hot=[cx,cy,w,h] for %s'
+                                 % (sid, i, pg.get('t'), pg['img']))
+            if not (0 < h[0] < 100 and 0 < h[1] < 100 and 0 < h[2] <= 60 and 0 < h[3] <= 60):
+                raise SystemExit('scene %s page %d: hot %r is off the picture' % (sid, i, h))
         if s['kind'] == 'question':
             for o in s['opts']:
                 if not (('en' in o) or ('parts' in o and 'kinds' in o)):

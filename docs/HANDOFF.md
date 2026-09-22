@@ -75,6 +75,75 @@ in this repo, pass a commit message with a real Bash heredoc or repeated `-m`.
 
 ---
 
+## 2026-09-22 — The Kraken: the closed view no longer spoils the scene; six languages reviewed
+
+Innes: "Pages jump in like spoilers. Also some translations are not very good."
+
+**The spoiler was the engine, not the page order.** `rpg.py` showed the
+scene's own plate whenever the panel was closed, because that plate was the
+only picture with a hotspot to put the glow on. On the fourteen Kraken scenes
+with authored `panels`, that plate is the LAST moment: a reader arrived at 1.6
+to the kayak in the tentacle and then read "BEYOND THE MOORINGS" (calm water),
+at 1.13 to the dinghies over and the children in the water and then read
+"REGATTA SUNDAY". The fix is general and small: the picture on screen is the
+current page's whether the panel is open or closed (`curPage()`, `pageImg()`,
+`pageHot()`), and every authored page carries its own `hot`. `validate()`
+refuses a page picture without one. All twelve engine builders re-run (the
+thirteenth, `build_kraken_black_tide.py`, is still broken on `main` for want
+of its translations directory, as before).
+
+The twenty insert plates now each have a glow position: the export's `spot`
+for seven, `INSERT_HOT` in `build_kraken_saga.py` for thirteen — eleven that
+had none, measured by eye, and two whose export spot was wrong. **Check spots
+on a contact sheet, not one at a time**: PIL, every insert at 384x216 with the
+ring drawn at its percentages, one image to read. That is how the barrel's
+spot was found sitting in the water under the buoy and the collie's on the
+pier edge below the dog. (The script was a scratchpad one-off; twenty lines,
+easy to write again.)
+
+**Translations: 292 strings changed across six languages** — es 31, de 69,
+fr 44, it 59, pt 22, ru 67 — after a native-level review of every one of the
+423 strings per language. No misalignments, no leaked English, no lost `___`.
+The recurring defect classes, for the next review of any RPG:
+
+- **A gap sentence that loses its participle.** German "Sie ___ diese Pier
+  vier Tage offen" reads as present tense; the gap only teaches Present
+  Perfect if the gloss keeps "offen gehalten". Ten German strings.
+- **Calques a native would never write**: "être après" for "going after",
+  "a mano a mano" for "hand over hand" (= gradually), "como una sábana" for
+  "in a sheet", "Das Licht geht" for "The light is going".
+- **The wrong word from the right field**: "bidón de marca" (brand-name
+  barrel), "Finiscila" (cut it out, not kill it), "boccaporto" (the hatch,
+  not its cover), "Bootshaken" for gaff, "portátil/portatile" alone for a
+  handheld radio (= laptop), "ФАЛЬШФЕЙЕР" for a flare pistol, "pèlerins"
+  for basking sharks (= pilgrims).
+- **Register slips against the file's own convention**: the sergeant
+  tutoie-ing Brannan once, Tulloch slipping to du, Vass to Sie/usted.
+- **Sea-state terms in the shipping forecasts** were wind words in de, pt,
+  ru ("forte", «крупное»); each language has an official scale.
+- **A corrupt character** — `всṗ` for `всё`, four Russian strings.
+
+The hub is 74 wide, not 70: in Russian the three glossed chapter leads were
+14px over at 16:9 (72 was still 14 over). Overflow sweep after all of it:
+**1,855 screens, 7 languages x 265, zero overflow**, positive control 3031 -> 0.
+
+**Two traps in the measuring, both new.** (1) A probe `<p>` appended to
+`.content` to prove the sweep can see overflow comes back 195px tall, not
+3000: `.content` is a flex column and shrinks it. Give it `flex:0 0 3000px`.
+(2) **The browser pane's screenshots are stale while the pane is hidden** —
+they came back showing scenes from the sweep that had run minutes earlier,
+in order, one per screenshot, while `sceneImage.src` said something else.
+`requestAnimationFrame` does not fire in a hidden tab either, which is why the
+first sweep timed out. Measure with synchronous DOM reads and transitions
+disabled; verify pictures from a contact sheet on disk, not from the pane.
+
+### Still open (unchanged)
+
+Arabic, Chinese and Japanese. The 59 scene-plate hotspots are still the
+extractor's default box around the export's centre; the contact-sheet method
+above would check all 59 in one image. The export's per-outcome `right`/
+`wrong` lines are still dropped.
+
 ## 2026-09-22 — The Kraken: all six glosses restored after the re-import
 
 The re-import of 2026-09-22 (new 16:9 plates, 20 `insert_` plates, an authored
