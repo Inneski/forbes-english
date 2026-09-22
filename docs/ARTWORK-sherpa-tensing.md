@@ -1,7 +1,7 @@
-# Artwork brief — Sherpa Tensing, the 26-deck tense course
+# Artwork brief — Sherpa Tensing, the 25-deck tense course
 
 The shopping list Innes asked for on 2026-09-22: **heroes and background
-textures** for the whole family. Forty files. Slot names are the filenames,
+textures** for the whole family. Thirty-nine files, plus one optional banner. Slot names are the filenames,
 `build_sherpa.py` reads them by name, and the interim set that ships today
 already sits under those names in `SherpaTensing/` — so a delivered file
 overwrites its interim twin and the next build picks it up with no code
@@ -21,7 +21,7 @@ across every slide at 0.72 opacity and the text sits on plates on top of it
 
 | | shipped now (interim) | what the deck wants |
 |---|---|---|
-| hero, 26 of them | the camp's own timeline diagram over a procedural contour field, in the camp's colour | a mountain scene, one per page, in the camp's colour |
+| hero, 25 of them | the camp's own timeline diagram over a procedural contour field, in the camp's colour | a mountain scene, one per page, in the camp's colour |
 | textures, 14 of them | procedural: contours, brick, hatch, stipple, graph paper, scree, cloud | photographed or painted material: canvas, rope, rock, snow, cloud |
 | ratio | 16:9, 1600 × 900 | 16:9, **2000 × 1125** |
 | library cards | still the old diagram renders in `SherpaCamps/` | cut from the new heroes |
@@ -48,7 +48,7 @@ mountain currently shows no mountain.
    **centred**, under a radial scrim. Put the subject low, or to one side,
    and keep a quiet field through the middle. The hero also repeats behind
    every interior slide, under text plates, so a busy hero costs legibility
-   on twenty-six slides, not one.
+   on every slide, not one.
 
 3. **Camps and clouds are light decks; descents are dark decks.** The
    thirteen camps and three clouds are built with `--light`: they want a
@@ -119,7 +119,7 @@ Two things in that stem are load-bearing:
 
 ## The shopping list
 
-### The heroes — 26 files, `--ar 16:9`
+### The heroes — 25 files, `--ar 16:9`
 
 The subject of each is the camp's own metaphor: the page's title, which is
 now the cover title, is in the second column. Paint the title.
@@ -196,8 +196,8 @@ seamless flat texture of <material>, soft even light, no subject, no horizon, no
 Two notes:
 
 - **The climb texture is under fourteen slides in a row.** It is the one to
-  get quietest. The interim scree had to be turned down twice before the
-  question stems read cleanly.
+  get quietest. The interim scree had to be turned down before the question
+  stems read cleanly.
 - **Optional upgrade, +14 files:** a texture set per zone (foundation ·
   ridge · summit push) instead of one day set — meadow-and-gravel for camps
   one to five, rock-and-snowline for six to nine, ice for ten to thirteen —
@@ -214,11 +214,11 @@ Move the batch out of `incoming/` into a folder of its own, numbered so the
 sorted order matches `--names`, then:
 
 ```bash
-py tools\prep-artwork.py <batch-folder> --into SherpaTensing --dry-run
-py tools\prep-artwork.py <batch-folder> --into SherpaTensing --names hero-camp-01,hero-camp-02,…
-py lesson-template\build\build_sherpa.py            # derives every palette again from the new heroes
-for f in sherpa-tensing-*.html; node lesson-template\check-lesson.js $f   # every deck must exit clean
-py tools\seo.py
+py tools/prep-artwork.py <batch-folder> --into SherpaTensing --dry-run
+py tools/prep-artwork.py <batch-folder> --into SherpaTensing --names hero-camp-01,hero-camp-02,…
+py lesson-template/build/build_sherpa.py      # derives every palette again from the new heroes
+for f in sherpa-tensing-*.html; do node lesson-template/check-lesson.js "$f"; done
+py tools/seo.py
 ```
 
 Then the library cards: `LESSON_IMAGES` in `library.html` still points the
@@ -227,9 +227,10 @@ card from each new hero (fit by height, pad from the hero's own field
 colour if the subject sits low — see the Watts card note in `HANDOFF.md`)
 and repoint the rows.
 
-`build_sherpa.py` re-derives the palette from whatever `hero-<slug>.jpg`
-is on disk and stops the build if any contrast row fails, so a hero that
-does not carry its tense colour is caught at build time, not on the live
-site. Camps and clouds are derived `--light`; a dark delivery for a camp
-will fail the "text on void" row — that is the tool refusing a night
-picture for a day deck, not a bug.
+`build_sherpa.py` re-derives each palette from whatever `hero-<slug>.jpg`
+is on disk, and stops the build if a contrast row fails. **That check will
+not catch a wrong picture.** Tested on 2026-09-23: two night covers put
+through the day-deck palette passed every row. A cover without its tense
+colour also builds cleanly, just in the wrong colour. So look at each
+cover's derived accent once it is built: camps and clouds need a bright
+daytime picture, and every cover needs its colour from the table above.
