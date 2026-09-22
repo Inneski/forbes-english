@@ -42,8 +42,13 @@ RULES['ar'] = dict(bad=(CYR, HAN, KANA, HANGUL, GREEK, HEB), needs=ARAB)
 RULES['zh'] = dict(bad=(CYR, ARAB, HANGUL, HEB), needs=HAN)
 RULES['ja'] = dict(bad=(CYR, ARAB, HANGUL, HEB), needs=HAN + KANA)
 
+# `b` is an authored page's text (only inside a page: `tags.b` is a tag), `fbRight`/`fbWrong` the consequence lines,
+# `name`/`desc` a route and `lead`/`tilesLabel` a chapter: all learner-facing,
+# and until 2026-09-23 all missing here, so the Kraken's 101 consequence lines
+# and its chapter leads were reported UNUSED while the page showed them.
 TEXT_KEYS = ('k', 'act', 'title', 'story', 'clue', 'mission', 'prompt',
-             'fb', 'explanation', 'note', 'label', 'small', 'start', 'eyebrow')
+             'fb', 'fbRight', 'fbWrong', 'explanation', 'note', 'label', 'small',
+             'start', 'eyebrow', 'name', 'desc', 'lead', 'tilesLabel')
 
 
 def load(d):
@@ -64,16 +69,17 @@ def lesson_strings(path):
     needed translating — 1016 phantom defects on A Fistful of Lies, which
     ships all nine languages. Nothing learner-facing in English ever lives
     under `local`."""
-    found = []
+    found = []            # (English, languages the page already glosses it in)
     def walk(o):
         if isinstance(o, dict):
             for k, v in o.items():
                 if k in ('local', 'meta'):
                     continue   # glosses, and the generator's own bookkeeping
-                if k in TEXT_KEYS and isinstance(v, str) and v.strip():
-                    found.append(v.strip())
-                elif k in TEXT_KEYS and isinstance(v, dict) and isinstance(v.get('en'), str):
-                    found.append(v['en'].strip())
+                text = k in TEXT_KEYS or (k == 'b' and 't' in o)   # a page's body
+                if text and isinstance(v, str) and v.strip():
+                    found.append((v.strip(), frozenset()))
+                elif text and isinstance(v, dict) and isinstance(v.get('en'), str):
+                    found.append((v['en'].strip(), frozenset(x for x in v if x != 'en' and v[x])))
                 else:
                     walk(v)
         elif isinstance(o, list):
@@ -92,6 +98,9 @@ def lesson_strings(path):
         # object reports the scene id "cover" as an untranslated string.
         for k in ('scenes', 'labels', 'tags'):
             walk(g.get(k, {}))
+        # a chapter's `start` is a scene id, so only its three text keys
+        for ch in g.get('chapters') or []:
+            walk({k: v for k, v in ch.items() if k in ('title', 'lead', 'tilesLabel')})
     else:
         walk(json.load(open(path, encoding='utf-8')))
     return found
@@ -130,8 +139,12 @@ def main(d, data_json=None):
                 errs.append(('BLANK ADDED', l, en, s))
 
     if data_json:
-        want = set(lesson_strings(data_json))
-        for s in sorted(want - union):
+        found = lesson_strings(data_json)
+        want = {en for en, _ in found}
+        # a string the built page already glosses in every language the table
+        # carries (an engine tag, a builder's inline rule card) needs no entry
+        inline = {en for en, ls in found if set(tables) <= ls}
+        for s in sorted(want - union - inline):
             errs.append(('UNTRANSLATED STRING', '-', s, 'in the lesson, not in the table'))
         stale = sorted(union - want)
         if stale:

@@ -348,6 +348,14 @@ def build():
                     'prompt': T(oneline(prompt)),
                     'opts': [{'en': o} for o in s['options']],
                     'answer': s['correct'], 'fb': T(plain(s['why']))})
+                # the export's per-outcome consequence lines ("The bell rings.
+                # Mrs Rennie sits down on the step." / "Brannan rings it
+                # anyway.") — dropped until 2026-09-23 for want of an engine
+                # slot; rpg.py now shows them between the verdict and `fb`
+                if s.get('right'):
+                    base['fbRight'] = T(plain(s['right']))
+                if s.get('wrong'):
+                    base['fbWrong'] = T(plain(s['wrong']))
                 # the dialogue ends with the prompt, which now has a page of
                 # its own, so drop it here rather than print it twice
                 clue = clue_pages(s['dialogue'], prompt)
@@ -442,6 +450,44 @@ def build():
 
 
 TRANSLATIONS = os.path.join(HERE, 'rpg', 'kraken-saga', 'translations')
+STRINGS = os.path.join(HERE, 'rpg', 'kraken-saga', 'strings.json')
+NL = chr(10)
+
+
+def learner_strings(spec):
+    """Every English string a translation file has to cover, in page order:
+    exactly the set rpg.validate() checks, so a file that covers this list
+    builds. Options are left out because the engine does not gloss them."""
+    seen = []
+    def walk(o):
+        if isinstance(o, dict):
+            if isinstance(o.get('en'), str):
+                if o['en'] not in seen:
+                    seen.append(o['en'])
+                return
+            for v in o.values():
+                walk(v)
+        elif isinstance(o, list):
+            for v in o:
+                walk(v)
+    keys = set(rpg.TEXT_KEYS) | {'rules', 'routes', 'button', 'routeStory'}
+    for s in spec['scenes'].values():
+        walk({k: v for k, v in s.items() if k in keys})
+    for ch in spec['chapters']:
+        walk({k: v for k, v in ch.items() if k in ('title', 'lead', 'tilesLabel')})
+    walk(spec['labels'])
+    return seen
+
 
 if __name__ == '__main__':
-    rpg.assemble(rpg.apply_translations(build(), TRANSLATIONS))
+    # `--strings` rewrites strings.json from the spec, which is what it is: until
+    # 2026-09-23 it was hand-kept, and the 101 consequence lines were only found
+    # because validate() refused them
+    if '--strings' in sys.argv:
+        out = learner_strings(build())
+        with open(STRINGS, 'w', encoding='utf-8', newline=NL) as f:
+            json.dump(out, f, ensure_ascii=False, indent=1)
+            f.write(NL)
+        print('wrote %s: %d strings' % (os.path.relpath(STRINGS), len(out)))
+    else:
+        rpg.assemble(rpg.apply_translations(build(), TRANSLATIONS))

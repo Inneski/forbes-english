@@ -77,8 +77,12 @@ LABELS = {
 
 # `link` is a URL, not prose, so it is deliberately not in here; `linkLabel`
 # is the words on it and must be glossed like anything else a learner reads.
-TEXT_KEYS = ('k', 'title', 'story', 'clue', 'prompt', 'fb', 'note', 'small',
-             'start', 'linkLabel')
+# `pages` is here because until 2026-09-23 it was not: an authored page's text
+# and label were never checked, and the Kraken shipped 54 Spanish strings short
+# with the build reporting all seven languages. `fbRight`/`fbWrong` are the
+# story's consequence lines, shown above `fb` once a question is answered.
+TEXT_KEYS = ('k', 'title', 'story', 'clue', 'prompt', 'fb', 'fbRight', 'fbWrong',
+             'note', 'small', 'start', 'linkLabel', 'pages')
 
 
 NINE = ['es', 'de', 'fr', 'it', 'pt', 'ru', 'ar', 'zh', 'ja']   # HOUSE-STYLE §8's full set
@@ -308,6 +312,7 @@ button{font:inherit}
 .feedback{display:none;padding:calc(.8 * var(--u)) calc(.9 * var(--u));border:1px solid rgba(255,246,217,.3);background:rgba(20,14,4,.85);font-size:calc(1.35 * var(--u));line-height:1.32}
 .feedback.show{display:block}.feedback.good{border-color:var(--good)}.feedback.bad{border-color:var(--bad)}
 .feedback strong{color:var(--accent)}.feedback .translation{font-size:calc(1.05 * var(--u))}
+.feedback .consequence{display:block;margin:calc(.35 * var(--u)) 0;font-style:italic;color:inherit}
 .continue,.start,.restart{text-decoration:none;align-self:flex-start;border:1px solid #fff8dc;background:linear-gradient(180deg,#fff0b8,var(--accent));color:var(--accent-ink);font-weight:700;letter-spacing:.07em;padding:calc(.8 * var(--u)) calc(1.2 * var(--u));cursor:pointer;font-size:calc(1.2 * var(--u));box-shadow:0 calc(.5 * var(--u)) calc(1.5 * var(--u)) rgba(0,0,0,.48)}
 /* the gloss under a button sits on the light accent gradient, not on the dark
    panel: --muted there is cream on cream and reads as an empty second line. */
@@ -537,13 +542,17 @@ function go(id){state.scene=id;state.page=0;render()}
    on every tap would mean re-opening the object three times to read one scene */
 function nextPage(){state.page=(state.page||0)+1;render();setOpen(true)}
 function displayAnswer(i,apply){const s=G.scenes[state.scene];const buttons=[...document.querySelectorAll('.option')];const ok=i===s.answer;const p=s.points||G.points;const fb=document.getElementById('feedback');const expl=s.fb?`<br>${label(s.fb)}`:'';
+  /* the story's consequence of this answer — "The bell rings. Mrs Rennie sits
+     down on the step." or "Brannan rings it anyway." — shown under the verdict
+     and above the grammar, so the answer changes the story as well as the score */
+  const cons=o=>o?`<span class="consequence">${label(o)}</span>`:'';
   if(apply)beep(ok);
-  if(G.repair&&!ok){/* repair mode: mark it, explain, let them try again */buttons[i].classList.add('wrong');buttons[i].disabled=true;fb.innerHTML=`<strong>${ui('tryAgain')}</strong>${expl}`;fb.className='feedback show bad';if(apply)requestAnimationFrame(()=>content.scrollTo({top:content.scrollHeight,behavior:'smooth'}));return}
+  if(G.repair&&!ok){/* repair mode: mark it, explain, let them try again */buttons[i].classList.add('wrong');buttons[i].disabled=true;fb.innerHTML=`<strong>${ui('tryAgain')}</strong>${cons(s.fbWrong)}${expl}`;fb.className='feedback show bad';if(apply)requestAnimationFrame(()=>content.scrollTo({top:content.scrollHeight,behavior:'smooth'}));return}
   buttons.forEach(b=>b.disabled=true);buttons[i]?.classList.add(ok?'correct':'wrong');buttons[s.answer]?.classList.add('correct');
   const retried=G.repair&&(state.attempts[state.scene]||0)>0;
   if(apply){if(ok&&!retried){state.score+=p}if(ok&&s.relic)state.tiles=Math.min(CH().tiles,state.tiles+1);if(!ok)state.chances=Math.max(0,state.chances-1);if(s.final)state.finalCorrect=ok;state.answered++}
   const head=ok?(retried?ui('repaired'):ui(s.relic?'relic':'correct',{p})):ui('wrong');const was=ok?'':`<br>${ui('answerWas')} ${esc(optText(s.opts[s.answer]))}`;
-  fb.innerHTML=`<strong>${head}</strong>${was}${expl}`;fb.className=`feedback show ${ok?'good':'bad'}`;document.getElementById('continue').hidden=false;updateHUD();if(apply)requestAnimationFrame(()=>content.scrollTo({top:content.scrollHeight,behavior:'smooth'}))}
+  fb.innerHTML=`<strong>${head}</strong>${cons(ok?s.fbRight:s.fbWrong)}${was}${expl}`;fb.className=`feedback show ${ok?'good':'bad'}`;document.getElementById('continue').hidden=false;updateHUD();if(apply)requestAnimationFrame(()=>content.scrollTo({top:content.scrollHeight,behavior:'smooth'}))}
 function answer(i){if(Object.prototype.hasOwnProperty.call(state.results,state.scene))return;const s=G.scenes[state.scene];if(G.repair&&i!==s.answer){if(!(state.attempts[state.scene]||0))state.mistakes.push(state.scene);state.attempts[state.scene]=(state.attempts[state.scene]||0)+1;displayAnswer(i,true);return}state.results[state.scene]=i;displayAnswer(i,true)}
 /* `alive` is "the player has not run out of chances". A repair-mode lesson has
    no chance counter at all (G.chances is 0 by design), so testing state.chances>0
