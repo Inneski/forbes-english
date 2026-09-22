@@ -7,9 +7,15 @@ five smaller spots a unit, which the layout added and the level file did
 not name. Seven pictures a unit, 105 for the book, plus the cover and the
 team page.
 
-**Accent: gold.** Lena's gold shoulder bag is in every picture she is in.
-The other props: Tom's flat cap, Ana's headset (usually on a screen), Sam's
-round glasses, Priya's laptop under one arm. Figures are faceless silhouettes.
+**Accent: gold.** Figures are faceless silhouettes, so each character is
+carried by build, hair, clothes, posture and a prop. Use these words every
+time a character appears:
+
+- **Lena**: mid-twenties, slim, short bob, a blazer over a plain top, a gold shoulder bag, one hand on the strap
+- **Tom**: forties, stocky, beard, flat cap, hi-vis vest, work boots, always carrying something
+- **Ana**: thirties, curly hair tied up, bright shirt, headset, only ever on a screen, leaning into the camera
+- **Sam**: fifties, tall and broad, shaved head, round glasses, cardigan with the sleeves rolled, hands on hips
+- **Priya**: thirties, small and quick, long plait, hoodie and trainers, laptop under one arm, mid-stride
 
 ## The stem
 
@@ -42,7 +48,7 @@ and hashes. **Filenames** `art/book-1/u05-scene.png` etc. Print wants the
 | file | subject |
 |---|---|
 | `cover` | the Unit 1 opener recomposed for a portrait board: the video-call wall on the right, Lena with her gold bag small at the bottom-left, wide quiet cream at the left and bottom for the lockup |
-| `team` | the whole Greenline team in one wide office scene: Sam in round glasses at a standing desk, Tom in a flat cap in the doorway with a box, Priya crossing with a laptop, Lena with her gold bag arriving, Ana in a headset on a big screen on the wall |
+| `team` | the whole Greenline Office team in one wide bright office: on the left Sam at a standing desk, hands on hips; in the doorway Tom carrying a flat box; crossing the floor Priya with her laptop; arriving on the right Lena with her gold bag, one hand on the strap; at the back Ana on a big wall screen leaning into the camera; pale-wood desks and a plant — each character described in full from the list above; `--ar 5:2` |
 | `portrait-lena` … `portrait-priya` | five head-and-shoulders portraits for the Meet the Team page, one per character, each with its prop, on plain cream, matching scale |
 
 ## The units

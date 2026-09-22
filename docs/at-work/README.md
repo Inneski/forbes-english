@@ -101,13 +101,13 @@ with each other.
 
 **Book 1 — Greenline Office, Bristol**
 
-| name | role | pronouns | how the silhouette is known |
+| name | role | pronouns | the look: build, hair, clothes, posture, prop |
 |---|---|---|---|
-| Lena Hartmann | new marketing assistant, from Hamburg | she | gold shoulder bag |
-| Tom Reilly | warehouse and deliveries | he | flat cap |
-| Ana Ruiz | sales, works remotely from Valencia | she | headset, usually on a screen |
-| Sam Okafor | founder and managing director | he | round glasses |
-| Priya Nair | IT — everything with a plug | she | laptop under one arm |
+| Lena Hartmann | new marketing assistant, from Hamburg | she | mid-twenties, slim, short bob, a smart blazer over a plain top, the **gold shoulder bag**, slightly unsure stance with one hand on the strap |
+| Tom Reilly | warehouse and deliveries | he | forties, stocky, beard, **flat cap**, hi-vis vest over a T-shirt, work boots, always carrying something |
+| Ana Ruiz | sales, works remotely from Valencia | she | thirties, curly hair tied up, a bright shirt, **headset**, only ever on a screen, leaning into the camera |
+| Sam Okafor | founder and managing director | he | fifties, tall and broad, shaved head, **round glasses**, a cardigan over a shirt with the sleeves rolled, stands with hands on hips |
+| Priya Nair | IT — everything with a plug | she | thirties, small and quick, long plait, hoodie and trainers, **laptop under one arm**, mid-stride |
 
 **Book 2 — Tidewater, Rotterdam**
 
@@ -298,8 +298,9 @@ and a composition rule written for the crop that actually arrives.
 
 ### The style
 
-Figures are **silhouettes, faceless**, each character told apart by the prop
-listed in §2. This is not a stylistic whim: a generated face cannot be kept
+Figures are **silhouettes, faceless**, each character told apart by the look
+listed in §2: build, hair, clothes and posture as well as the prop, because a
+prop alone is not enough for a group shot. This is not a stylistic whim: a generated face cannot be kept
 consistent across fifteen pictures, and a silhouette with a gold bag can.
 It is also the house stem already used for the site's business decks
 (`docs/PLAN-foundations-grammar-business.md`), so the books and the site
