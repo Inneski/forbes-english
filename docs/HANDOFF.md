@@ -11,6 +11,40 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-22 — Block Camp hub: the hero flies up the tower
+
+Innes dropped a Midjourney clip (`incoming/blackisler_fly_up_to_the_top_floor
+_of_the_watchtower…mp4`, 8.9 s, 1280x720, 13 MB) to link the climb's view to
+the descent's on `block-camp.html`: "a static pic can sit for a period and the
+flythru video link the two occasionally on repeat."
+
+  * **The clip was made from the two plates.** Frame 0 is
+    `BlockCamp/hub-hero.jpg` and the last frame is
+    `BlockCampDescent/watchtower-far-side.jpg`, pixel-aligned at zero offset
+    (mean difference 4–5 levels, video slightly darker). So the video is
+    on screen only while it moves, and both holds show the sharp stills.
+  * Cycle: trail 12 s → flight 9 s → far side 12 s → 1.6 s dissolve back →
+    round again. `HOLD` in the template's script. The dissolve is the way
+    back rather than the clip reversed. Flying backwards down a tower reads
+    as a rewind.
+  * Encoded to `BlockCamp/hub-flythrough.mp4`: H.264 CRF 27, veryslow,
+    faststart, no audio. **1.9 MB**, visually the same as the source at hero
+    size. Fetched only after `load`. Never fetched under reduced motion or
+    Save-Data. Paused off screen and in a hidden tab. A refused autoplay
+    (iOS low-power) or a load error leaves the still, which is the page as
+    it was.
+  * All three layers take their crop from one `--hero-y` (62%, 35% on
+    phones). Measured in headless Edge: still ↔ video within 1 px at 1440
+    and 390 wide. **If the hero crop changes, change `--hero-y`**, not a
+    `background-position`, or the handover jumps.
+  * **Video tooling on this machine:** there is no system ffmpeg, and
+    Playwright's bundled one is a VP8-only stub that cannot open an MP4.
+    `py -m pip install imageio-ffmpeg` gives a full ffmpeg 7.1 at
+    `imageio_ffmpeg.get_ffmpeg_exe()`. **For testing video in Playwright,
+    launch `channel: 'msedge'`**: Playwright's own Chromium has no H.264.
+    The browser pane is no use for this while it is hidden: it reports
+    `document.hidden` and runs no IntersectionObserver.
+
 ## 2026-09-22 — Alan Watts, The Art of Being Present (B1), editorial style
 
 Shipped `forbes-alan-watts-b1.html` — 24 slides, EN/DE/ES, HOUSE-STYLE §15.

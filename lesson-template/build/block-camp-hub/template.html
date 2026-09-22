@@ -97,17 +97,36 @@ img { display: block; }
    tower stays on the right and the copy sits over the darkened left. The
    overlay is two gradients: one from the left so the words are on near-black,
    one from the bottom so the plate dissolves into the page rather than
-   ending at a line. */
+   ending at a line.
+
+   Then it flies: the trail holds, BlockCamp/hub-flythrough.mp4 flies up the
+   tower to the top floor, the far side (the descent's own plate) holds, and
+   the far side dissolves back to the trail. The clip's first frame IS
+   hub-hero.jpg and its last IS watchtower-far-side.jpg, pixel-aligned, so
+   the video is on screen only while it moves and both holds are the sharp
+   stills. All three layers are cropped by the one --hero-y, or the swap
+   between still and video jumps. The script at the bottom runs it. */
 .hero {
+  --hero-y: 62%;
   position: relative; isolation: isolate; overflow: hidden;
   min-height: clamp(540px, 74vh, 720px);
   display: flex; align-items: center;
   background: var(--bg-2);
 }
-.hero-art {
+.hero-art, .hero-fly {
   position: absolute; inset: 0; z-index: -2;
-  background: url(BlockCamp/hub-hero.jpg) center 62% / cover no-repeat;
+  background: url(BlockCamp/hub-hero.jpg) center var(--hero-y) / cover no-repeat;
 }
+.hero-fly {
+  width: 100%; height: 100%; object-fit: cover; object-position: center var(--hero-y);
+  background: none; opacity: 0; transition: opacity .35s ease;
+}
+.hero-far {
+  background-image: url(BlockCampDescent/watchtower-far-side.jpg);
+  opacity: 0; transition: opacity 1.6s ease;
+}
+.hero-fly.on, .hero-far.on { opacity: 1; }
+.hero-far.on { transition-duration: .45s; }
 .hero::before {
   content: ""; position: absolute; inset: 0; z-index: -1;
   background:
@@ -118,8 +137,7 @@ img { display: block; }
    is behind the words - so the overlay goes near-solid and the art lives
    in the bottom third, where the buttons end. */
 @media (max-width: 760px) {
-  .hero { min-height: 0; }
-  .hero-art { background-position: center 35%; }
+  .hero { min-height: 0; --hero-y: 35%; }
   .hero::before { background:
     linear-gradient(180deg, rgba(var(--bg-rgb),.80) 0%, rgba(var(--bg-rgb),.72) 55%, rgba(var(--bg-rgb),.40) 80%, var(--bg) 100%); }
 }
@@ -298,7 +316,9 @@ img { display: block; }
 {{NAV}}
 
 <header class="hero">
-  <div class="hero-art" role="img" aria-label="A voxel woodland trail from a tent, over a bridge, up to a lookout tower"></div>
+  <div class="hero-art" role="img" aria-label="A voxel woodland trail from a tent, over a bridge, up to a lookout tower, and the view from the tower's top floor over the far side"></div>
+  <video class="hero-fly" data-src="BlockCamp/hub-flythrough.mp4" muted playsinline preload="none" disablepictureinpicture disableremoteplayback aria-hidden="true"></video>
+  <div class="hero-art hero-far" aria-hidden="true"></div>
   <div class="hero-inner">
     <div class="eyebrow">Forbes English &middot; Grammar, block by block</div>
     <h1 class="mono">BLOCK <em>CAMP</em></h1>
@@ -399,5 +419,59 @@ img { display: block; }
   </div>
 
 </div>
+
+<script>
+/* The hero's flight (see the HERO comment in the CSS): trail, HOLD, fly up
+   the tower, far side, HOLD, dissolve back, round again. The clip is not
+   fetched until the page has finished loading, and nothing moves off screen
+   or in a background tab. Reduced motion, Save-Data, a refused autoplay or
+   a failed load all leave the trail still standing, which is the page as
+   it was before the clip. */
+(function () {
+  var hero = document.querySelector('.hero'),
+      fly = hero && hero.querySelector('.hero-fly'),
+      far = hero && hero.querySelector('.hero-far');
+  if (!fly || !far || !window.IntersectionObserver) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (navigator.connection && navigator.connection.saveData) return;
+
+  var HOLD = 12000;                           /* ms on each still */
+  var phase = 'near', due = false, seen = false, dead = false;
+  var live = function () { return seen && !document.hidden && !dead; };
+  var hold = function () { due = false; setTimeout(function () { due = true; go(); }, HOLD); };
+  var quit = function () { dead = true; fly.classList.remove('on'); far.classList.remove('on'); };
+  var play = function () { var p = fly.play(); if (p && p.catch) p.catch(quit); };
+
+  function go() {
+    if (!due || !live()) return;
+    if (phase === 'far') {                    /* dissolve back to the trail */
+      due = false; phase = 'near'; far.classList.remove('on'); hold();
+    } else if (phase === 'near' && fly.readyState === 4) {   /* take off */
+      due = false; phase = 'fly'; fly.classList.add('on'); play();
+    }
+  }
+  fly.addEventListener('ended', function () {
+    phase = 'far'; far.classList.add('on');
+    /* once the still covers it, rewind behind it: seeking at take-off
+       would flash the last frame for a moment first */
+    setTimeout(function () { fly.classList.remove('on'); fly.currentTime = 0; }, 600);
+    hold();
+  });
+  fly.addEventListener('canplaythrough', go);
+  fly.addEventListener('error', quit);
+
+  function wake() {
+    if (phase !== 'fly') go();
+    else if (live()) play();
+    else fly.pause();
+  }
+  document.addEventListener('visibilitychange', wake);
+  new IntersectionObserver(function (e) { seen = e[0].isIntersecting; wake(); }).observe(hero);
+
+  function load() { fly.preload = 'auto'; fly.src = fly.getAttribute('data-src'); }
+  if (document.readyState === 'complete') load(); else addEventListener('load', load);
+  hold();
+})();
+</script>
 </body>
 </html>
