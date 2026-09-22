@@ -220,6 +220,9 @@ button{font:inherit}
 .chapter b{display:block;color:var(--accent);font-size:calc(1.3 * var(--u));margin-bottom:calc(.35 * var(--u))}.chapter .translation{font-size:calc(1 * var(--u))}
 /* the READ ON row under a paged story block. The count sits left of the
    button so the eye finds "1 / 3" before it decides whether to tap. */
+/* an authored page's own heading, above its text */
+.page-label{color:var(--accent);font-size:calc(1 * var(--u));letter-spacing:.14em;margin-bottom:calc(.3 * var(--u))}
+.page-label .translation{font-size:calc(.85 * var(--u));letter-spacing:.06em}
 .story-pager{display:flex;align-items:center;gap:calc(1 * var(--u))}
 .page-count{color:rgba(255,246,217,.62);font-size:calc(1 * var(--u));font-variant-numeric:tabular-nums;letter-spacing:.08em}
 .story-pager .continue{margin-left:auto}
@@ -341,6 +344,11 @@ button{font:inherit}
       return store(s);
     },
 
+    /* a page with state of its own (the village's rangers met) keeps it
+       under its own key, so the record grows without a format bump */
+    get: function (key) { var s = load(); return s[key] == null ? null : s[key]; },
+    put: function (key, val) { var s = load(); s[key] = val; return store(s); },
+
     setName: function (name) { var s = load(); s.name = String(name || '').slice(0, 24); return store(s); },
     reset: function () { try { localStorage.removeItem(KEY); } catch (_) {} return store(blank()); },
 
@@ -410,7 +418,13 @@ const storyPages=s=>s.story?(Array.isArray(s.story)?s.story:[s.story]):[];
    pages the clue too ("THE CLUE / 3 OF 3" then "YOUR ANSWER"), and STORY.md
    says why it is the right reading: a CCQ gives you the information first and
    asks about it afterwards, so leaving the clue behind is the exercise. */
-function scenePages(s){const out=storyPages(s).map(b=>({t:'story',b}));
+function scenePages(s){
+  /* `pages` is an authored run: the export chose the pages, each with its own
+     picture and its own label ("THE SCENE", "YOU HEAR", "THE BELL"), and the
+     builder must not split the text itself. A question still gets its own page
+     at the end. */
+  if(s.pages)return s.kind==='question'?s.pages.concat([{t:'ask',img:s.askImg}]):s.pages.slice();
+  const out=storyPages(s).map(b=>({t:'story',b}));
   /* opt-in per lesson. Six of the shipped eleven put a clue on 115 questions
      and read it beside the options; moving those onto a page of their own
      would be a change to those lessons that nobody asked for. */
@@ -445,7 +459,8 @@ function updateHUD(){const c=CH();const onHub=G.scenes[state.scene]?.kind==='hub
 function head(s,pg){const has=s.title&&bare(s.title.en||'').trim();const t=s.kind==='intro'?`<span class="big">${label(s.title)}</span>`:label(s.title);
   /* the page's own body: a story block, a clue block in its labelled box, or
      nothing at all on the page that asks the question. */
-  const body=!pg?'':pg.t==='story'?line(pg.b,'story'):pg.t==='clue'?`<div class="clue"><b>${ui('visual')}</b><br>${label(pg.b)}</div>`:'';
+  const lab=pg&&pg.label?label(pg.label):ui('visual');
+  const body=!pg?'':pg.t==='story'?`${pg.label?`<div class="page-label">${label(pg.label)}</div>`:''}${line(pg.b,'story')}`:pg.t==='clue'?`<div class="clue"><b>${lab}</b><br>${label(pg.b)}</div>`:'';
   return `${line(s.k,'kicker')}${has?`<h1 class="title ${s.kind==='intro'?'cover-title':''}">${t}</h1>`:''}${body}`}
 /* HOT = [cx, cy, w, h] as % of the PICTURE (3:2). The picture is object-fit:cover in the frame, so convert picture space to frame pixels; a phone shows a narrow central slice and the object stays on it. */
 /* `fit:'contain'` shows the whole plate and letterboxes the remainder in the
@@ -467,10 +482,16 @@ function placeHot(s){const h=s.hot,IW=s.imgW||G.imgW,IH=s.imgH||G.imgH;const W=f
   const cx=ox+h[0]/100*dw,cy=oy+h[1]/100*dh,w=h[2]/100*dw,hh=h[3]/100*dh;hot.style.left=cx+'px';hot.style.top=cy+'px';hot.style.width=w+'px';hot.style.height=hh+'px';hot.classList.toggle('above',cy+hh/2>H*.84);hotLabel.textContent=ui('read');
   document.getElementById('fsLabel').textContent=ui('fullscreen');document.getElementById('soundLabel').textContent=ui(sound?'soundOn':'soundOff');document.getElementById('langWord').textContent=ui('translate');document.getElementById('langCur').textContent=state.lang==='off'?'OFF':G.names[state.lang];
   document.querySelectorAll('.lang-item').forEach(b=>b.classList.toggle('active',b.dataset.lang===state.lang))}
-function setOpen(on){state.open=!!on;if(on){const hr=hot.getBoundingClientRect(),zr=zone.getBoundingClientRect();const cl=zr.left+content.offsetLeft,ct=zr.top+content.offsetTop;content.style.transformOrigin=`${hr.left+hr.width/2-cl}px ${hr.top+hr.height/2-ct}px`}frame.classList.toggle('open',state.open)}
+function setOpen(on){state.open=!!on;{const want=G.dir+pageImg();if(sceneImage.getAttribute('src')!==want)sceneImage.src=want}if(on){const hr=hot.getBoundingClientRect(),zr=zone.getBoundingClientRect();const cl=zr.left+content.offsetLeft,ct=zr.top+content.offsetTop;content.style.transformOrigin=`${hr.left+hr.width/2-cl}px ${hr.top+hr.height/2-ct}px`}frame.classList.toggle('open',state.open)}
 function openPanel(){if(!state.open)setOpen(true)}
 function closePanel(){if(state.open)setOpen(false)}
-function render(){const s=G.scenes[state.scene];frame.className=`frame ${s.pos||'left'} v-${s.v||'center'} k-${s.kind}${s.kind==='intro'?' is-cover':''}${RTL.includes(state.lang)?' rtl':''}${G.fit==='contain'?' fit-contain':''}`;sceneImage.src=G.dir+s.img;sceneImage.alt=bare((s.title&&s.title.en)||s.alt||'');placeHot(s);const tr=state.lang!=='off';frame.classList.toggle('tr-on',tr);frame.classList.toggle('has-rules',!!s.rules&&s.kind!=='intro');content.style.width=((s.width||(s.pos==='center'?64:s.pos==='band'?92:46))+(tr?(s.pos==='band'?3:8):0))+'%';content.style.marginLeft=s.pos==='left'&&s.inset?s.inset+'%':'';content.style.marginRight=s.pos==='right'&&s.inset?s.inset+'%':'';
+function pageImg(){const s=G.scenes[state.scene];if(!state.open)return s.img;
+  const pg=scenePages(s)[Math.min(state.page||0,scenePages(s).length-1)];return (pg&&pg.img)||s.img}
+/* An authored page carries its own picture, but the glow marker is placed from
+   the SCENE's hotspot and belongs to the scene's own plate. So a closed panel
+   always shows that plate: otherwise folding the text away mid-scene leaves an
+   insert on screen with a glow floating over nothing, and no way back in. */
+function render(){const s=G.scenes[state.scene];frame.className=`frame ${s.pos||'left'} v-${s.v||'center'} k-${s.kind}${s.kind==='intro'?' is-cover':''}${RTL.includes(state.lang)?' rtl':''}${G.fit==='contain'?' fit-contain':''}`;sceneImage.src=G.dir+pageImg();sceneImage.alt=bare((s.title&&s.title.en)||s.alt||'');placeHot(s);const tr=state.lang!=='off';frame.classList.toggle('tr-on',tr);frame.classList.toggle('has-rules',!!s.rules&&s.kind!=='intro');content.style.width=((s.width||(s.pos==='center'?64:s.pos==='band'?92:46))+(tr?(s.pos==='band'?3:8):0))+'%';content.style.marginLeft=s.pos==='left'&&s.inset?s.inset+'%':'';content.style.marginRight=s.pos==='right'&&s.inset?s.inset+'%':'';
   const hide=`<button class="hide-btn" onclick="closePanel()" title="Esc">✕ ${ui('hide')}</button>`;
   const pgs=scenePages(s),np=pgs.length,pi=Math.min(state.page||0,np-1);
   let html=head(s,pgs[pi]),act='';

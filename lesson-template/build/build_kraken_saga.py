@@ -49,7 +49,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 DATA = json.load(open(os.path.join(HERE, 'rpg', 'kraken-saga', 'data.json'), encoding='utf-8'))
 SLUG = 'kraken-black-tide-rpg'
 NAME = 'The Kraken: A Tale of the Deep'
-LANGS = ['es', 'de', 'fr', 'it', 'pt', 'ru']   # rpg.NINE is the target
+LANGS = ['es']   # de/fr/it/pt/ru rejoin once the re-import's 62 strings are in
 
 # The export's own gold, which came off the artwork's one sodium-amber light —
 # the thing IMAGES.md required in every frame so the glow marker has a colour
@@ -111,6 +111,39 @@ def repair_speaker(prompt, dialogue):
             if m:
                 return '**%s:** %s' % (m.group(1), prompt[3:].strip())
     raise SystemExit('prompt with no recoverable speaker: %r' % prompt[:70])
+
+
+SENT = re.compile('[^.!?]+[.!?]+[\'\"\u00bb\u201d\u2019)]*\\s*')
+
+
+def pages_of(text):
+    """Split an over-long authored panel, at LINE boundaries first.
+
+    pages() splits on sentence ends, which is right for narration and wrong
+    here: these panels are runs of dialogue, one speaker to a line, and a
+    sentence split cuts a speaker in half and strips the closing quote onto
+    the next page (`Not once. "`). So whole lines are kept together, and only
+    a single line too long for the panel on its own is sentence-split - with a
+    pattern that takes the closing quote with the full stop.
+    """
+    lines = [l.strip() for l in text.split(chr(10))]
+    units = []
+    for l in lines:
+        if not l:
+            continue
+        if len(l.split()) > WORDS_PER_PAGE:
+            units.extend(x.strip() for x in SENT.findall(l) if x.strip())
+        else:
+            units.append(l)
+    out, cur = [], []
+    for u in units:
+        if cur and len((' '.join(cur) + ' ' + u).split()) > WORDS_PER_PAGE:
+            out.append(' '.join(cur)); cur = [u]
+        else:
+            cur.append(u)
+    if cur:
+        out.append(' '.join(cur))
+    return [T(x) for x in out] or [T(text)]
 
 
 def pages(text):
@@ -186,6 +219,43 @@ def oneline(text):
     return out
 
 
+def authored_pages(s):
+    """The 2026-09-22 export chose the reading pages itself: `panels`, each with
+    its own picture and its own label ("THE SCENE", "YOU HEAR", "THE BELL").
+    Where a scene has them, they are used as-is and pages()/clue_pages() do not
+    run - splitting an author's pages again would cut them in the wrong places.
+
+    A last panel that is only the prompt is dropped: the question has its own
+    page and would otherwise print the line twice. Its picture is kept, so the
+    question appears over the plate the reader was just looking at rather than
+    jumping back to the scene's establishing shot.
+
+    They render as story text under their label, not in the clue box: the box
+    was this builder's way of marking quoted information, and the export's own
+    labels now do that job better.
+    """
+    panels = s.get('panels')
+    if not panels:
+        return None, None
+    prompt = plain(repair_speaker(s['prompt'], s.get('dialogue'))) if s.get('prompt') else None
+    pages, ask_img = [], None
+    for i, pan in enumerate(panels):
+        txt = plain(pan['text'])
+        last = i == len(panels) - 1
+        if last:
+            ask_img = pan['image']
+            if prompt and txt == prompt:
+                continue
+        # A panel the author wrote longer than the panel holds still has to be
+        # read. Split it the way any story block is split and carry the picture
+        # and the label across the parts, so the grouping survives even though
+        # the page does not.
+        for j, blk in enumerate(pages_of(txt)):
+            pages.append({'t': 'story', 'b': blk, 'img': pan['image'],
+                          'label': T(pan['label'])})
+    return pages, ask_img
+
+
 def build():
     scenes = {}
     chapters = []
@@ -241,6 +311,15 @@ def build():
                     {'name': T(c['name']), 'desc': T(plain(c['text'])),
                      'target': c['path'][0], 'route': c['name']}
                     for c in s['choices']]})
+            # an authored run of panels replaces both the split story and the
+            # split clue, and carries the pictures and labels with it
+            auth, ask_img = authored_pages(s)
+            if auth:
+                base['pages'] = auth
+                base.pop('story', None)
+                base.pop('clue', None)
+                if ask_img:
+                    base['askImg'] = ask_img
             scenes[sid] = base
 
         for key, text in ch['endings'].items():
@@ -264,13 +343,6 @@ def build():
 
     scenes['hub'] = {
         'kind': 'hub', 'img': DATA['home'], 'hot': HOME_HOT,
-        # the cover was redrawn wider on 2026-09-18 and is 16:9, so it fills a
-        # widescreen edge to edge while the 58 story plates are still 3:2 and
-        # letterbox. ChatGPT is redrawing those wider too; when they land, this
-        # override goes and img_w/img_h below become 1536x864 for the whole
-        # game — and the spots.js hotspot percentages will need recomputing,
-        # because widening a picture moves every x% in it.
-        'imgW': 1536, 'imgH': 864,
         # the cover plate carries its own painted title lockup, so no title
         # here: head() would print the name a second time over the art. No
         # story line either — three chapter leads is already a panel's worth,
@@ -294,9 +366,11 @@ def build():
                        'a three-chapter Present Perfect RPG on the west coast of Scotland.' % NAME,
         'langs': LANGS,
         'accent': ACCENT, 'accent_ink': ACCENT_INK, 'deep': DEEP, 'panel': PANEL,
-        # the plates are 3:2 and a browser window is 16:9, so `cover` throws
-        # away a sixth of every picture's height — and the cover's title lockup
-        # and the characters' heads live in exactly the strip it takes.
+        # Every plate is 16:9 as of the 2026-09-22 re-import, so it fills an
+        # ordinary window exactly. `contain` stays: it costs nothing when the
+        # aspects match and it is what stops an unusual window shape cropping
+        # the art rather than letterboxing it.
+        'img_w': DATA['imgW'], 'img_h': DATA['imgH'],
         'fit': 'contain',
         # the clue gets its own page and the question follows it, the way the
         # export reads ("THE CLUE / 3 OF 3" then "YOUR ANSWER") and the way
