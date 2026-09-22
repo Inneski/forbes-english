@@ -1,0 +1,228 @@
+<!-- Camp two's frequency slider, lifted from the scrolling page it was built for
+     (git show 7e058fc:sherpa-tensing-camp-two-present-simple.html) and moved onto the
+     deck's palette tokens. build_sherpa.py drops it into one slide as it is. -->
+      <div id="frequency-timeline-deluxe">
+        <style>
+          #frequency-timeline-deluxe {
+            --ft-bg: var(--surface);
+            --ft-panel: var(--surface2);
+            --ft-text: var(--text);
+            --ft-muted: var(--text-dim);
+            --ft-border: var(--border);
+            --ft-blue: var(--accent);
+            --ft-blue-deep: var(--accent-bright);
+            --ft-blue-soft: color-mix(in srgb, var(--accent) 16%, transparent);
+            box-sizing: border-box;
+            width: 100%;
+            padding: 14px 20px;
+            overflow: hidden;
+            color: var(--ft-text);
+            font-family: var(--font-sans);
+            background:
+              radial-gradient(circle at 85% 0%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 32%),
+              linear-gradient(145deg, var(--ft-bg), var(--ft-panel));
+            border: 1px solid var(--ft-border);
+            border-radius: 24px;
+            box-shadow: 0 18px 60px color-mix(in srgb, var(--accent) 12%, transparent);
+          }
+          #frequency-timeline-deluxe, #frequency-timeline-deluxe * { box-sizing: border-box; }
+          #frequency-timeline-deluxe .ft-top { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 18px; margin-bottom: 18px; }
+          #frequency-timeline-deluxe .ft-kicker { margin-bottom: 5px; color: var(--ft-muted); font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+          #frequency-timeline-deluxe .ft-reading { display: flex; align-items: baseline; gap: 14px; min-width: 0; flex-wrap: wrap; }
+          #frequency-timeline-deluxe .ft-percentage { color: var(--ft-blue-deep); font-size: 46px; font-weight: 800; letter-spacing: -0.06em; line-height: 0.95; font-variant-numeric: tabular-nums; }
+          #frequency-timeline-deluxe .ft-adverb { display: inline-flex; align-items: center; min-height: 30px; padding: 4px 14px; color: var(--ft-blue-deep); font-size: 21px; font-weight: 750; background: var(--ft-blue-soft); border: 1px solid var(--ft-border); border-radius: 999px; }
+          #frequency-timeline-deluxe .ft-density { padding: 8px 12px; color: var(--ft-muted); font-size: 13px; font-weight: 650; white-space: nowrap; background: color-mix(in srgb, var(--surface) 70%, transparent); border: 1px solid var(--ft-border); border-radius: 12px; }
+          #frequency-timeline-deluxe .ft-control { margin-bottom: 10px; }
+          #frequency-timeline-deluxe .ft-control-row { display: flex; justify-content: space-between; gap: 16px; margin-bottom: 8px; color: var(--ft-muted); font-size: 13px; font-weight: 650; }
+          #frequency-timeline-deluxe .ft-slider { width: 100%; accent-color: var(--ft-blue); cursor: pointer; }
+          #frequency-timeline-deluxe .ft-slider:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 28%, transparent); outline-offset: 5px; }
+          #frequency-timeline-deluxe .ft-timeline-shell {
+            position: relative; padding: 10px 16px 8px; overflow: hidden;
+            background: linear-gradient(to right, color-mix(in srgb, var(--accent) 7%, transparent) 1px, transparent 1px) 0 0 / 10% 100%,
+                        var(--inset);
+            border: 1px solid var(--ft-border); border-radius: 14px;
+          }
+          #frequency-timeline-deluxe .ft-timeline { position: relative; height: 118px; }
+          #frequency-timeline-deluxe .ft-axis { position: absolute; right: 0; bottom: 30px; left: 0; height: 3px; background: var(--ft-muted); border-radius: 999px; }
+          #frequency-timeline-deluxe .ft-axis::after { position: absolute; top: -5px; right: -1px; width: 0; height: 0; content: ""; border-top: 6px solid transparent; border-bottom: 6px solid transparent; border-left: 10px solid var(--ft-muted); }
+          #frequency-timeline-deluxe .ft-lines { position: absolute; inset: 0 8px 33px; }
+          #frequency-timeline-deluxe .ft-line {
+            position: absolute; bottom: 0; width: 3px; min-height: 30px;
+            background: linear-gradient(180deg, var(--accent-dim) 0%, var(--ft-blue) 48%, var(--ft-blue-deep) 100%);
+            border-radius: 999px 999px 0 0; box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 22%, transparent);
+            transform: translateX(-50%); transition: left 160ms ease, height 160ms ease;
+          }
+          #frequency-timeline-deluxe .ft-line::before { position: absolute; top: -3px; left: -2px; width: 7px; height: 7px; content: ""; background: var(--accent-dim); border-radius: 50%; }
+          #frequency-timeline-deluxe .ft-empty { position: absolute; inset: 0; display: grid; place-items: center; color: var(--ft-muted); font-size: 14px; font-weight: 650; }
+          #frequency-timeline-deluxe .ft-axis-labels { display: flex; justify-content: space-between; margin-top: 4px; color: var(--ft-muted); font-size: 11px; font-weight: 650; letter-spacing: 0.04em; text-transform: uppercase; }
+          #frequency-timeline-deluxe .ft-word-scale { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 5px; margin: 10px 0 10px; }
+          #frequency-timeline-deluxe .ft-word { display: grid; align-content: center; min-height: 40px; padding: 4px 3px; color: var(--ft-muted); text-align: center; background: color-mix(in srgb, var(--surface) 58%, transparent); border: 1px solid var(--ft-border); border-radius: 10px; cursor: pointer; transition: background .15s ease, border-color .15s ease, transform .15s ease; }
+          #frequency-timeline-deluxe .ft-word:hover { border-color: var(--ft-blue); transform: translateY(-1px); }
+          #frequency-timeline-deluxe .ft-word strong { display: block; color: inherit; font-size: 11px; font-weight: 700; }
+          #frequency-timeline-deluxe .ft-word span { display: block; margin-top: 2px; font-size: 10px; }
+          #frequency-timeline-deluxe .ft-word.is-active { color: var(--ft-blue-deep); background: var(--ft-blue-soft); border-color: var(--ft-blue); box-shadow: 0 5px 18px color-mix(in srgb, var(--accent) 16%, transparent); transform: translateY(-2px); }
+          #frequency-timeline-deluxe .ft-examples { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+          #frequency-timeline-deluxe .ft-example { min-width: 0; padding: 9px 12px; color: var(--ft-text); font-size: 15.5px; background: color-mix(in srgb, var(--surface) 76%, transparent); border: 1px solid var(--ft-border); border-radius: 14px; }
+          #frequency-timeline-deluxe .ft-example b { color: var(--ft-blue-deep); }
+          #frequency-timeline-deluxe .ft-rule { margin-top: 12px; color: var(--ft-muted); font-size: 12px; text-align: center; }
+          @media (prefers-reduced-motion: reduce) { #frequency-timeline-deluxe .ft-line { transition: none; } }
+          @media (max-width: 700px) {
+            #frequency-timeline-deluxe { padding: 18px; border-radius: 18px; }
+            #frequency-timeline-deluxe .ft-word-scale { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            #frequency-timeline-deluxe .ft-examples { grid-template-columns: 1fr; }
+          }
+          @media (max-width: 460px) {
+            #frequency-timeline-deluxe .ft-top { grid-template-columns: 1fr; align-items: start; }
+            #frequency-timeline-deluxe .ft-density { justify-self: start; }
+            #frequency-timeline-deluxe .ft-timeline { height: 160px; }
+          }
+        </style>
+
+        <div class="ft-top">
+          <div>
+            <div class="ft-kicker" data-i18n="ftKicker">Adverb of frequency</div>
+            <div class="ft-reading" aria-live="polite">
+              <output class="ft-percentage" id="ft-percentage" for="ft-slider">50%</output>
+              <span class="ft-adverb" id="ft-adverb">sometimes</span>
+            </div>
+          </div>
+          <div class="ft-density" id="ft-density">30 occurrences in 60 opportunities</div>
+        </div>
+
+        <div class="ft-control">
+          <div class="ft-control-row"><label for="ft-slider" data-i18n="ftControl">Change the frequency</label><span>0%&ndash;100%</span></div>
+          <input class="ft-slider" id="ft-slider" type="range" min="0" max="100" value="50" step="1">
+        </div>
+
+        <div class="ft-timeline-shell">
+          <div class="ft-timeline" id="ft-timeline" role="img" aria-label="Sometimes: 30 vertical occurrence lines across a timeline">
+            <div class="ft-lines" id="ft-lines"></div>
+            <div class="ft-axis"></div>
+          </div>
+          <div class="ft-axis-labels" aria-hidden="true"><span data-i18n="ftStart">Beginning</span><span data-i18n="ftTime">Time</span><span data-i18n="ftEnd">End</span></div>
+        </div>
+
+        <div class="ft-word-scale" id="ft-word-scale" aria-label="Adverbs of frequency scale &mdash; click a word to jump the slider">
+          <div class="ft-word" data-label="never" data-value="0"><strong>never</strong><span>0%</span></div>
+          <div class="ft-word" data-label="hardly ever" data-value="5"><strong>hardly ever</strong><span>5%</span></div>
+          <div class="ft-word" data-label="rarely" data-value="15"><strong>rarely</strong><span>15%</span></div>
+          <div class="ft-word" data-label="occasionally" data-value="30"><strong>occasionally</strong><span>30%</span></div>
+          <div class="ft-word is-active" data-label="sometimes" data-value="50"><strong>sometimes</strong><span>50%</span></div>
+          <div class="ft-word" data-label="often" data-value="70"><strong>often</strong><span>70%</span></div>
+          <div class="ft-word" data-label="usually" data-value="85"><strong>usually</strong><span>85%</span></div>
+          <div class="ft-word" data-label="almost always" data-value="95"><strong>almost always</strong><span>95%</span></div>
+          <div class="ft-word" data-label="always" data-value="100"><strong>always</strong><span>100%</span></div>
+        </div>
+
+        <div class="ft-examples" id="ft-examples" aria-live="polite">
+          <div class="ft-example">I <b>sometimes</b> take the bus to work.</div>
+          <div class="ft-example">She is <b>sometimes</b> at home by six.</div>
+          <div class="ft-example">We <b>sometimes</b> cook together on Fridays.</div>
+        </div>
+
+        <script>
+          (function () {
+            "use strict";
+
+            var root = document.getElementById("frequency-timeline-deluxe");
+            var slider = root.querySelector("#ft-slider");
+            var percentage = root.querySelector("#ft-percentage");
+            var adverb = root.querySelector("#ft-adverb");
+            var density = root.querySelector("#ft-density");
+            var lines = root.querySelector("#ft-lines");
+            var timeline = root.querySelector("#ft-timeline");
+            var scaleItems = Array.from(root.querySelectorAll(".ft-word"));
+            var exampleBoxes = Array.from(root.querySelectorAll(".ft-example"));
+            var maximumLines = 60;
+
+            var bands = [
+              { min: 0, max: 0, label: "never" },
+              { min: 1, max: 9, label: "hardly ever" },
+              { min: 10, max: 22, label: "rarely" },
+              { min: 23, max: 39, label: "occasionally" },
+              { min: 40, max: 59, label: "sometimes" },
+              { min: 60, max: 77, label: "often" },
+              { min: 78, max: 89, label: "usually" },
+              { min: 90, max: 99, label: "almost always" },
+              { min: 100, max: 100, label: "always" }
+            ];
+
+            function getAdverb(value) {
+              return bands.find(function (band) {
+                return value >= band.min && value <= band.max;
+              }).label;
+            }
+
+            function drawLines(value) {
+              var count = Math.round(maximumLines * value / 100);
+              lines.replaceChildren();
+
+              if (count === 0) {
+                var empty = document.createElement("div");
+                empty.className = "ft-empty";
+                empty.textContent = t("ftNone");
+                lines.appendChild(empty);
+                return count;
+              }
+
+              for (var index = 0; index < count; index += 1) {
+                var line = document.createElement("span");
+                var left = ((index + 0.5) / count) * 100;
+                var height = 34 + ((index * 23) % 48);
+                line.className = "ft-line";
+                line.style.left = left + "%";
+                line.style.height = height + "px";
+                lines.appendChild(line);
+              }
+              return count;
+            }
+
+            function updateExamples(label) {
+              var sentences = [
+                ["I ", " take the bus to work."],
+                ["She is ", " at home by six."],
+                ["We ", " cook together on Fridays."]
+              ];
+              exampleBoxes.forEach(function (box, index) {
+                box.replaceChildren();
+                box.append(document.createTextNode(sentences[index][0]));
+                var strong = document.createElement("b");
+                strong.textContent = label;
+                box.append(strong);
+                box.append(document.createTextNode(sentences[index][1]));
+              });
+            }
+
+            function update() {
+              var value = Number(slider.value);
+              var label = getAdverb(value);
+              var count = drawLines(value);
+
+              percentage.value = value + "%";
+              percentage.textContent = value + "%";
+              adverb.textContent = label;
+              density.textContent = t("ftDensity").replace("{n}", count).replace("{m}", maximumLines);
+              timeline.setAttribute("aria-label", label + ": " + count + " vertical occurrence lines across a timeline");
+
+              scaleItems.forEach(function (item) {
+                item.classList.toggle("is-active", item.getAttribute("data-label") === label);
+              });
+              updateExamples(label);
+            }
+
+            slider.addEventListener("input", update);
+
+            scaleItems.forEach(function (item) {
+              item.addEventListener("click", function () {
+                slider.value = item.getAttribute("data-value");
+                slider.focus();
+                update();
+              });
+            });
+
+            // first draw waits for the deck engine, which defines t()
+            document.addEventListener("DOMContentLoaded", update);
+            var ls = document.getElementById("langSelect");
+            if (ls) ls.addEventListener("change", function () { setTimeout(update, 0); });
+          }());
+        </script>

@@ -79,7 +79,11 @@ def verify(slug):
             for q in quoted(EN[k]):
                 if q not in html.unescape(re.sub(r'<[^>]+>', '', v)):
                     faults.append('%s.%s changed the quoted English example: "%s"' % (lang, k, q[:50]))
-            if v.strip() == EN[k].strip() and words(EN[k]) >= 4 and not re.search(r' \+ ', EN[k]):
+            # a table cell may legitimately be an English form or sentence
+            # ("They was waiting." under "Not this"); only prose keys are
+            # held to the still-English test
+            is_cell = re.search(r'_ch\d+t\d+c\d+$', k)
+            if v.strip() == EN[k].strip() and words(EN[k]) >= 4 and not re.search(r' \+ ', EN[k]) and not is_cell and not EN[k].strip().startswith('"') and k != 'actPlaceholder':
                 faults.append('%s.%s is still English: %s' % (lang, k, EN[k][:50]))
     chips = A.get('chips')
     if not isinstance(chips, list) or not 4 <= len(chips) <= 8 or not all(isinstance(x, str) and x.strip() for x in chips):

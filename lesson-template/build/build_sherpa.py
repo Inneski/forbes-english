@@ -83,6 +83,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import deck as D                      # noqa: E402
 from chrome_i18n import CHROME       # noqa: E402
+sys.path.insert(0, os.path.join(HERE, 'sherpa'))
+from chrome import SH_CHROME, PL_CHROME, LANG_LABELS   # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(HERE))
 TPL = os.path.join(ROOT, 'lesson-template', 'lesson-template.html')
@@ -90,6 +92,13 @@ CONTENT = os.path.join(HERE, 'sherpa', 'content')
 I18N = os.path.join(HERE, 'sherpa', 'i18n')
 F = 'SherpaTensing'
 LANGS = ('en', 'de', 'es')
+# every language a Sherpa deck may carry, in switcher order; a page offers
+# the ones its i18n file has a block for
+ALL_LANGS = ('en', 'de', 'es', 'fr', 'it', 'pl', 'ru', 'zh')
+
+
+def chrome_for(code):
+    return PL_CHROME if code == 'pl' else CHROME[code]
 
 LIFT = ['btnStart', 'btnCheck', 'btnNext', 'btnRestart', 'scoreLabel', 'slideOf',
         'fbCorrect', 'fbWrong', 'fbAnswer', 'actEyebrow', 'actSpeakKind',
@@ -346,8 +355,7 @@ def gloss_p(ex, tr, cls='prose dim sh-ex'):
     if not ex:
         return ''
     attr = ' data-tr="%d"' % tr if tr else ''
-    g = ' gloss' if tr else ''
-    return '\n            <p class="%s%s"%s>%s</p>' % (cls, g, attr, ex)
+    return '\n            <p class="%s"%s>%s</p>' % (cls, attr, ex)
 
 
 def card_html(hk, h, bk, b, ex=None, tr=None, body_cls='prose sh-body'):
@@ -534,16 +542,17 @@ def stage_slides(s, T, bg):
 
 
 def freq_slide(s, T, bg):
-    """Camp two's slider, as a scale: the nine adverbs with their weight,
-    the three example sentences, and the position rule."""
+    """Camp two's frequency slider, the interactive widget the scrolling page
+    was built around, in one slide of its own. The widget is the old page's
+    markup and script moved onto the deck's palette tokens
+    (sherpa/fragments/freq-slider.html); its labels translate through
+    SH_CHROME, and the adverbs and example sentences stay English because
+    they are the language being taught."""
     k = kid(s['id'])
-    fq = s['freq']
     ek, tk = k + '_label', k + '_title'
-    chips = ' '.join('<span class="bank-chip">%s &middot; %d%%</span>' % (w, v) for w, v in fq['words'])
-    exs = ''.join('<li>%s</li>' % x for x in fq['examples'])
-    parts = [head_html(ek, T[ek], tk, T[tk]), '      <div class="slide-body">',
-             '        <div class="act-target" style="margin-bottom:16px">%s</div>' % chips,
-             '        <div class="card sh-card"><ul class="sh-list sh-panel">%s</ul></div>' % exs,
+    frag = open(os.path.join(HERE, 'sherpa', 'fragments', 'freq-slider.html'), encoding='utf-8').read()
+    frag = re.sub(r'^<!--.*?-->\n', '', frag, count=1, flags=re.S)
+    parts = [head_html(ek, T[ek], tk, T[tk]), '      <div class="slide-body sh-freq">', frag,
              '        <p class="prose dim sh-after" data-i18n="%s_rule">%s</p>' % (k, T[k + '_rule']),
              '      </div>']
     return [section('\n'.join(parts), bg)]
@@ -639,16 +648,73 @@ def tail_script(c):
 ''' % (json.dumps(c['sherpa_id']), json.dumps(c['face']), twin)
 
 
-def narrative_tr(c):
-    """EX_TR (nine languages, keyed by the old data-tr id) as the engine's
-    NARRATIVE_TR, so an example's Translate button works in any language the
-    deck is switched to."""
+EXAMPLE_TR_JS = '''
+<script>
+(function(){
+  var TR = __TR__;
+  var NAMES = {de:"Deutsch", es:"Español", fr:"Français", it:"Italiano", pt:"Português",
+               ru:"Русский", ar:"العربية", zh:"中文", ja:"日本語"};
+  var sel = document.getElementById("shExLang");
+  if (!sel) return;
+  var lang = "";
+  sel.add(new Option(t("navExOff"), ""));
+  Object.keys(TR).forEach(function(l){ sel.add(new Option(NAMES[l] || l, l)); });
+  function set(l){
+    lang = l; sel.value = l;
+    document.documentElement.dataset.shex = l ? "on" : "off";
+    document.querySelectorAll(".sh-tr").forEach(function(x){ x.remove(); });
+  }
+  function relabel(){ sel.options[0].text = t("navExOff"); sel.title = t("navExHint"); }
+  sel.addEventListener("change", function(){ set(sel.value); });
+  document.addEventListener("click", function(e){
+    var ex = e.target.closest(".sh-ex[data-tr]");
+    if (!ex || !lang) return;
+    var next = ex.nextElementSibling;
+    if (next && next.classList.contains("sh-tr")) { next.remove(); return; }
+    var txt = (TR[lang] || {})[ex.getAttribute("data-tr")];
+    if (!txt) return;
+    var p = document.createElement("p");
+    p.className = "sh-tr"; p.textContent = txt;
+    if (lang === "ar") p.dir = "rtl";
+    ex.after(p);
+  });
+  var ui = document.getElementById("langSelect");
+  if (ui) ui.addEventListener("change", function(){
+    relabel();
+    set(TR[ui.value] ? ui.value : "");
+  });
+  relabel(); set("");
+})();
+</script>
+'''
+
+
+def example_tr(c):
+    """The nine-language example translations the scrolling pages had
+    (EX_TR), with a picker of their own in the deck bar. They are not tied to
+    the interface language: a learner reading the deck in English can still
+    see every example in Russian or Japanese, as on the old pages. Picking a
+    language underlines the examples; tapping one shows its translation under
+    it. Switching the interface to German or Spanish picks that language."""
     if not c.get('ex_tr'):
         return ''
-    out = {}
+    tr = {}
     for i, lang in enumerate(c['tr_order']):
-        out[lang] = {tr: rows[i] for tr, rows in c['ex_tr'].items() if i < len(rows) and rows[i]}
-    return '<script>\nconst NARRATIVE_TR = %s;\n</script>\n' % json.dumps(out, ensure_ascii=False)
+        tr[lang] = {k: rows[i] for k, rows in c['ex_tr'].items() if i < len(rows) and rows[i]}
+    return EXAMPLE_TR_JS.replace('__TR__', json.dumps(tr, ensure_ascii=False))
+
+
+def deck_bar_links(c):
+    """What the old pages pinned to every screen: the way back to the route
+    map, and the switch to the same tense in the other voice. The results
+    slide still carries both; these are for everywhere else."""
+    out = '<a class="sh-nav" href="sherpa-tensing-route-map.html" data-i18n="navMap">%s</a>' % SH_CHROME['en']['navMap']
+    if c.get('twin'):
+        key = 'navToActive' if c['kind'] == 'descent' else 'navToPassive'
+        out += '\n      <a class="sh-nav" href="%s" data-i18n="%s">%s</a>' % (c['twin'], key, SH_CHROME['en'][key])
+    if c.get('ex_tr'):
+        out += '\n      <select class="lang-select sh-exsel" id="shExLang" aria-label="Examples"></select>'
+    return out + '\n      '
 
 
 EXTRA_CSS = '''
@@ -685,7 +751,16 @@ EXTRA_CSS = '''
 .sh-example { margin-top: 14px; font-size: 18px; line-height: 1.5; }
 .sh-pull { font-size: 21px; line-height: 1.6; }
 .sh-brief .sh-svgcard { align-self: center; }
-.sh-ex.gloss + .gloss-btn { margin-top: 6px; }
+html[data-shex="on"] .sh-ex[data-tr] { cursor: pointer; text-decoration: underline dotted;
+  text-decoration-color: var(--accent); text-underline-offset: 4px; }
+.sh-tr { margin-top: 5px; padding-left: 10px; border-left: 2px solid var(--accent);
+  font-size: 15px; line-height: 1.4; color: var(--text); }
+.sh-nav { font-family: var(--font-mono); font-size: 12px; color: var(--text-dim); white-space: nowrap;
+  text-decoration: none; padding: 6px 10px; border-radius: 6px; background: var(--scrim);
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent); }
+.sh-nav:hover { color: var(--accent-bright); border-color: var(--accent); }
+.stage.on-cover .sh-nav, .stage.on-cover .sh-exsel { visibility: hidden; }
+.sh-freq { justify-content: flex-start; }
 '''
 
 
@@ -696,8 +771,9 @@ class I18nModule:
 
     def render(self, code):
         d = dict(self.T[code])
+        d.update(SH_CHROME[code])
         for k in LIFT:
-            d[k] = CHROME[code][k]
+            d[k] = chrome_for(code)[k]
         return '{\n' + ',\n'.join(
             '    %s: %s' % (k, d[k] if k in LIFT else json.dumps(d[k], ensure_ascii=False))
             for k in sorted(d)) + '\n  }'
@@ -720,9 +796,11 @@ def load_i18n(slug, stub=False):
     return json.load(open(p, encoding='utf-8'))
 
 
-def build(slug, langs=LANGS):
+def build(slug, langs=None):
     c = json.load(open(os.path.join(CONTENT, slug + '.json'), encoding='utf-8'))
     A = load_i18n(slug, stub=(langs == ('en',)))
+    if langs is None:
+        langs = tuple(l for l in ALL_LANGS if l == 'en' or l in A)
     EN = en_strings(c)
     EN.update(A.get('en', {}))
     missing_en = [k for k, v in EN.items() if v == '']
@@ -731,7 +809,9 @@ def build(slug, langs=LANGS):
     T = {'en': EN}
     for code in langs[1:]:
         tr = dict(A.get(code, {}))
-        tr.setdefault('chipCount', {'de': 'COUNT Folien', 'es': 'COUNT diapositivas'}.get(code, 'COUNT slides'))
+        tr.setdefault('chipCount', {'de': 'COUNT Folien', 'es': 'COUNT diapositivas', 'fr': 'COUNT diapositives',
+                                    'it': 'COUNT diapositive', 'pl': 'COUNT slajdów', 'ru': 'COUNT слайдов',
+                                    'zh': 'COUNT 张幻灯片'}.get(code, 'COUNT slides'))
         gone = [k for k in EN if k not in tr]
         if gone:
             raise SystemExit('%s: %s is missing %d keys: %s' % (slug, code, len(gone), gone[:12]))
@@ -787,16 +867,22 @@ def build(slug, langs=LANGS):
     palette = derive_palette(hero, dark)
     title = '%s | Forbes English' % re.sub(r'\s*\|\s*Forbes English\s*$', '', c['title'])
     out = os.path.join(ROOT, c['file'])
-    s = D.assemble(TPL, out, slides, palette, _html.escape(title, quote=False), I18nModule(T), langs=langs)
+    base = ('en', 'de', 'es', 'fr', 'it', 'pt', 'ru', 'ar', 'zh', 'ja', 'hr')
+    s = D.assemble(TPL, out, slides, palette, _html.escape(title, quote=False), I18nModule(T), langs=langs,
+                   all_langs=tuple(dict.fromkeys(base + tuple(langs))))
     s = s.replace('\n</style>', EXTRA_CSS + '</style>', 1)
     n = len(re.findall(r'<section class="slide[^>]*\bdata-type=', s))
     s = s.replace('COUNT slides', '%d slides' % n)
     for code in langs[1:]:
         s = s.replace(T[code]['chipCount'], T[code]['chipCount'].replace('COUNT', str(n)))
-    i = s.index('   ENGINE ')
-    j = s.rfind('<script>', 0, i)
-    s = s[:j] + narrative_tr(c) + s[j:]
-    s = s.replace('\n</body>', '\n' + tail_script(c) + '</body>', 1)
+    bar = '<div class="ledger" id="ledger" hidden>'
+    assert bar in s, 'the template deck bar has changed'
+    s = s.replace(bar, deck_bar_links(c) + bar, 1)
+    for code, label in LANG_LABELS.items():
+        if code in langs and "code:'%s'" % code not in s:
+            s = s.replace("  { code:'hr', label:'Hrvatski'  }",
+                          "  { code:'hr', label:'Hrvatski'  },\n  { code:'%s', label:'%s' }" % (code, label), 1)
+    s = s.replace('\n</body>', '\n' + tail_script(c) + example_tr(c) + '</body>', 1)
     open(out, 'w', encoding='utf-8', newline='').write(s)
     print('%s -> %s: %d slides, langs %s' % (slug, c['file'], n, '+'.join(langs)))
     return out
@@ -811,7 +897,7 @@ if __name__ == '__main__':
     if '--list' in sys.argv:
         print('\n'.join(slugs()))
         sys.exit()
-    langs = LANGS
+    langs = None
     if '--en-only' in sys.argv:
         langs = ('en',)
         LENIENT = True

@@ -13,6 +13,7 @@ Spanish in a finished file is reused verbatim; only the rest is written.
 """
 import json
 import os
+import re
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -49,7 +50,8 @@ def strings(slug):
 def todo(slug):
     mem = memory()
     EN = strings(slug)
-    out = {k: v for k, v in EN.items() if v not in mem['de'] or v not in mem['es']}
+    out = {k: v for k, v in EN.items() if (v not in mem['de'] or v not in mem['es'])
+           and not (re.search(r'_ch\d+t\d+c\d+$', k) and (v.strip().startswith('"') or not re.search(r'[a-z]{3,} [a-z]{3,} [a-z]{3,}', re.sub(r'<[^>]+>', '', v))))}
     print('%s: %d of %d strings need writing' % (slug, len(out), len(EN)))
     for k, v in out.items():
         print('%s\t%s' % (k, v))
@@ -67,6 +69,8 @@ def fill(slug, draft_path):
                 blk[k] = D[lang][k]
             elif v in mem[lang]:
                 blk[k] = mem[lang][v]
+            elif re.search(r'_ch\d+t\d+c\d+$', k) or v.strip().startswith('"'):
+                blk[k] = v          # an English form or example cell stays English
             else:
                 raise SystemExit('%s.%s has no draft and no memory: %s' % (lang, k, v[:60]))
         for k in AUTHORED:
