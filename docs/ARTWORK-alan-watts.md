@@ -27,32 +27,40 @@ Nothing here is urgent — see the note at the end.
 
 ---
 
-## What is shipped now, and why it needs replacing
+## Status — the plates are delivered, the hero is not
 
-The deck is live on nine plates salvaged from a 2:1 batch. They work — every
-subject is in frame — but they are a rescue, not the intended set:
+**Delivered 2026-09-22.** All nine object plates below were rendered and are
+live. The nine interim Watts portraits are gone.
 
-| | shipped now | what the frame wants |
-|---|---|---|
-| plate ratio as rendered | **2:1** | **7:6** |
-| what survived | central 58% of the width | the whole picture |
-| `plate-a` … `plate-d` | 1166 × 1000 | ≥ 1400 wide |
-| `plate-e` … `plate-i` | **952 × 816** | ≥ 1400 wide |
-| hero | 2000 × 1091, subject **centred** | 16:9, subject on the **right** |
+**Seven came back native 7:6** (2368 × 2032) — the first time `--ar 7:6` has
+actually taken in this repo, and it is worth knowing it *can*. The other two
+came back 16:9 and were cut here:
 
-Two concrete costs:
+| plate | what happened |
+|---|---|
+| `plate-e` microphone | 16:9. Right-aligned **by hand**. The subject-centroid routine put the crop at x=0, because the dark wall panel on the left outweighs the microphone — and that sliced the microphone off the right edge. A dark *background* beats a dark *subject* every time; do not trust the centroid on a plate with a large dark field in it. |
+| `plate-d` river stone | 16:9, and the stone fills the frame edge to edge. Cropping to 7:6 zoomed further in and the 190px arch then cut it into an abstract stripe that no longer read as a stone. **Padded instead of cropped** — the whole 16:9 sits inside a 7:6 canvas with its own top and bottom edge colours extended, so the stone keeps air above it. |
 
-1. **Roughly 42% of every plate was thrown away**, and the crop centre had to
-   be chosen per plate by finding the darkest region — the commit that did it
-   is `614a7b0`. A native 7:6 render keeps all of it.
-2. **`plate-e` … `plate-i` are 952px wide.** The framed block is 473 × 410 css
-   px, so at 2× device pixel ratio it needs 946 × 820. They are one pixel
-   clear of soft. There is no retina headroom and no room to re-crop again.
+`plate-d` is the standing lesson: **when a subject fills its frame, add ground
+rather than taking picture away.** A crop makes a too-big subject bigger.
 
-Neither is visible at 1× on a laptop. Both are visible on a projector and on a
-phone, which is where these decks actually get used.
+**The arch is back on.** `build_watts.py` passes `data-art="arch"` again. The
+portraits could not take it — head-and-shoulders filled the frame and it clipped
+hair — but a still life with sky above it is exactly what the arch is for.
 
----
+### Still outstanding: the hero
+
+The nine plates cover every framed slot. **The cover does not**, and it is the
+one thing a learner actually sees go wrong: the hero is still the centred
+ZEN/TAO/NOW/BEING diagram, so the 88px title lands on the word ZEN.
+
+Two ways to close it, and the cheap one is probably right:
+
+1. **No new art.** Shift the existing diagram right so the left 58% is clear.
+   Crop-and-pad on a file already on disk.
+2. **Render the hero below**, and move the diagram onto the "Who was Alan
+   Watts?" slide as a `data-bg`, where nothing is set over it and it is allowed
+   to be centred.
 
 ## The style stem
 
@@ -92,11 +100,11 @@ Same tokens as the general spec, with the two this deck leans on:
 | secondary | `#f8dcd1` | pale blush |
 | the one accent | `#a33b12` | brick red — **one object per picture** |
 
-The nine shipped portraits run hotter than this — coral and salmon rather than
-blush. A replacement set does **not** need to match them, because it replaces
-them wholesale; match the table instead. The editorial palette is fixed at the
-CSS level either way, so the deck's type and cards stay on-key regardless. Keep
-the **object** dark and the **ground** warm and you are inside the set.
+The delivered set sits on these tokens closely — slate blue, blush, warm cream
+— which is why it reads as one thing with the deck's own type and cards. Any
+later addition should match this table rather than eyeballing the existing
+plates. Keep the **object** dark and the **ground** warm and you are inside the
+set.
 
 ---
 

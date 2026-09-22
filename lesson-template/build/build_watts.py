@@ -48,10 +48,21 @@ on a flat field instead, and `extract-palette.py` is not run at all — the fixe
 brand set is used, verified with `tools/check-editorial-palette.py` (all rows
 PASS).
 
-Artwork: `hero.jpg` is the ZEN/TAO/NOW/BEING diagram (cover only — it is the
-lesson's concept map, and the one landscape image in the set). `plate-a` … `plate-i`
-are nine Watts portraits, one per section and then some. Two exact duplicates in
-the supplied batch were rejected by `prep-artwork.py` on hash.
+Artwork, replaced 2026-09-22: `plate-a` … `plate-i` are nine still lifes —
+the coat on the hook, the chair facing the sun, two chairs nobody sits in —
+commissioned to `docs/ARTWORK-alan-watts.md`. They replace an interim set of
+nine generated Watts portraits, on Innes's call: the house editorial stem says
+*no people, no faces*, and repeated generated likenesses of a real named man
+get worse the more of them there are.
+
+Seven arrived native 7:6, which is the frame's own ratio and the first time
+`--ar 7:6` has taken in this repo. The microphone and the river stone came back
+16:9 and are cut to 7:6 here — the stone by its own subject centroid, the
+microphone right-aligned by hand, because the dark wall panel on its left
+captured the centroid and sliced the microphone off the right edge.
+
+`hero.jpg` is still the ZEN/TAO/NOW/BEING diagram. It is the one slot the new
+set does not cover, and it is centred, so the cover title sits on the word ZEN.
 """
 import os
 import re
@@ -90,7 +101,7 @@ EXTRA_CSS = '''
 # ══════════════════════════════════════════════════════════════════════
 # READING — the passage, unchanged in substance, split at the §6 budget
 # ══════════════════════════════════════════════════════════════════════
-def reading(eyebrow_key, title_key, paras, bg, side=None, arch=False):
+def reading(eyebrow_key, title_key, paras, bg, side=None, arch=True):
     """A passage slide: prose straight on the field, picture framed beside it.
 
     paras: list of (key, 'class') pairs — the text itself lives in i18n_watts,
@@ -125,7 +136,7 @@ def reading(eyebrow_key, title_key, paras, bg, side=None, arch=False):
        EN[title_key], body)
 
 
-def art(slide, side=None, shape=None, size=None):
+def art(slide, side=None, shape='arch', size=None):
     """Tag a slide with how the editorial style places its picture."""
     extra = ''
     if side == 'left':
