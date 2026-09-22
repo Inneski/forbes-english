@@ -37,6 +37,15 @@ flythru video link the two occasionally on repeat."
     phones). Measured in headless Edge: still ↔ video within 1 px at 1440
     and 390 wide. **If the hero crop changes, change `--hero-y`**, not a
     `background-position`, or the handover jumps.
+  * **The site could not serve video to Safari.** Every static request goes
+    through the Worker to `env.ASSETS.fetch()`, and the asset binding
+    answers `Range: bytes=0-1` with the whole file and a 200. Safari needs
+    a 206 or it won't play a `<video>`, so on iPhone and iPad the hero would
+    have stayed a still. `withRanges()` in `src/index.js` now cuts ranges
+    for `video/*` and `audio/*` only; pages and images pass through
+    untouched. Tests: `node deploy/test-ranges.mjs` (12 cases) beside
+    `deploy/test-paywall.mjs`. This is the first `<video>` on the site, so
+    nothing had hit it before.
   * **Video tooling on this machine:** there is no system ffmpeg, and
     Playwright's bundled one is a VP8-only stub that cannot open an MP4.
     `py -m pip install imageio-ffmpeg` gives a full ffmpeg 7.1 at

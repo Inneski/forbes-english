@@ -66,9 +66,41 @@ export default {
     if (gate) return gate;
 
     // Everything else (every page, image, etc.) is a static file.
-    return env.ASSETS.fetch(request);
+    return withRanges(request, await env.ASSETS.fetch(request));
   },
 };
+
+/**
+ * Byte ranges for audio and video. The asset binding answers a Range request
+ * with the whole file and a 200 (measured 2026-09-22 on
+ * BlockCamp/hub-flythrough.mp4), and Safari will not play a <video> it
+ * cannot fetch by range: it asks for bytes=0-1 first and gives up on a 200.
+ * So for media, and only media, the range is cut here. Anything the header
+ * does not describe as one plain range gets the whole file, which the spec
+ * allows; only a range past the end is a 416.
+ */
+async function withRanges(request, res) {
+  if (res.status !== 200 || !/^(video|audio)\//.test(res.headers.get("Content-Type") || "")) return res;
+  const m = /^bytes=(\d*)-(\d*)$/.exec((request.headers.get("Range") || "").trim());
+  if (request.method !== "GET" || !m || (m[1] === "" && m[2] === "")) {
+    const out = new Response(res.body, res);
+    out.headers.set("Accept-Ranges", "bytes");
+    return out;
+  }
+  const body = await res.arrayBuffer();
+  const size = body.byteLength;
+  const start = m[1] === "" ? Math.max(size - Number(m[2]), 0) : Number(m[1]);   // "-500" = the last 500
+  const end = m[1] === "" || m[2] === "" ? size - 1 : Math.min(Number(m[2]), size - 1);
+  if (start >= size || start > end) {
+    return new Response(null, { status: 416, headers: { "Content-Range": `bytes */${size}` } });
+  }
+  const headers = new Headers(res.headers);
+  headers.delete("Content-Encoding");
+  headers.set("Accept-Ranges", "bytes");
+  headers.set("Content-Range", `bytes ${start}-${end}/${size}`);
+  headers.set("Content-Length", String(end - start + 1));
+  return new Response(body.slice(start, end + 1), { status: 206, headers });
+}
 
 // ─────────────────────────────────────────────────────────────────────────
 // Paywall

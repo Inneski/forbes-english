@@ -2,7 +2,8 @@
 //
 //   node deploy/test-paywall.mjs        (run from the repo root)
 //
-// Run this after ANY change to src/index.js. The cases that matter are the
+// Run this after ANY change to src/index.js, and deploy/test-ranges.mjs
+// beside it (the media byte ranges). The cases that matter here are the
 // bypasses: Cloudflare serves /foo from foo.html, so a gate that only looks
 // for '.html' is not a gate. Percent-encoding is the same trap.
 //
