@@ -114,9 +114,11 @@ regenerate their deck from the template, and they fail if run. Left in place
 because they record how those two lessons were made; do not expect them to
 run.
 
-## Order matters for the sherpa decks
+## Sherpa Tensing
 
-`sherpa-tensing-camp-one` and `camp-two` are written by one builder and then
-post-processed by another that **appends** the shared route-timeline CSS
-without checking whether it is already there. Running the whole build set
-twice injects it twice. Regenerate those two singly, or check the output.
+The whole family is one builder, `build_sherpa.py`, reading
+`sherpa/content/` and `sherpa/i18n/`. The thirteen clone-and-patch builders
+that made the old scrolling pages live in `sherpa/legacy/`, frozen: their
+builds only run if you execute them directly, and nothing should.
+`build_sailing.py` still imports their helpers. See `docs/HANDOFF.md`
+(2026-09-23) for the state of the rebuild.

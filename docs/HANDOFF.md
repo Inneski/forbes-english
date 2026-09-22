@@ -11,6 +11,80 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-23 — Sherpa Tensing rebuilt as decks, NOT shipped: waiting for Innes's artwork
+
+**State.** All 25 camps, descents and clouds build as 16:9 decks from one
+builder, `lesson-template/build/build_sherpa.py`, and pass every
+`check-lesson.js` gate except HEAD (that needs `tools/seo.py`). Every page
+fits in every language it offers (`checker/overflow-langs.js`). **The live
+site still serves the old scrolling pages**, deliberately: the decks ship
+when Innes's real artwork lands (HOUSE-STYLE §5c and §10: no converting on
+art we invented). The generated HTML was put back to the committed scrolling
+pages in the working tree. Rebuilding takes a minute.
+
+**To ship once the art arrives:**
+
+1. Save the pictures under the names in `docs/ARTWORK-sherpa-tensing-prompts.md`
+   (one Midjourney prompt per file) and run them through `tools/prep-artwork.py
+   --into SherpaTensing`, as `docs/ARTWORK-sherpa-tensing.md` describes. They
+   overwrite the interim placeholders of the same name.
+2. `py lesson-template/build/build_sherpa.py` (all 25), then `check-lesson.js`
+   and `overflow-langs.js` on each.
+3. **Look at every cover.** The palette check cannot tell a night picture on a
+   day deck, or a cover in the wrong tense colour; both pass (tested).
+4. Set `deck = true` for the 25 rows in Supabase and `tools/lessons.json`
+   (route map stays false), cut new library cards from the heroes, run
+   `tools/build_hubs.py` then `tools/seo.py`, read the diff on the four index
+   files, commit by name and push.
+
+**How the builder is organised.** `sherpa/content/<slug>.json` is the page's
+English, lifted from the scrolling pages by `sherpa/extract.py` (never re-run
+it: the markup it reads is gone once the decks ship). `sherpa/i18n/<slug>.json`
+holds German and Spanish (plus French, Italian, Polish, Russian and Chinese
+on camps one and two), the cover line, the speaking and writing stage and the
+quiz option fixes. The rules for writing one are in `sherpa/AUTHORING.md`;
+`sherpa/verify_i18n.py` checks it and `sherpa/land.sh` fills, verifies,
+builds and commits one page. `sherpa/chrome.py` has the family's own
+interface strings. The thirteen old clone-and-patch builders are frozen in
+`sherpa/legacy/` because `build_sailing.py` still imports their helpers
+(checked: its output is unchanged apart from the SEO block).
+
+**What the first pass got wrong, and what was fixed (the session changed
+model halfway; the fixes are the second half):**
+
+- **Features the decks had dropped, restored.** Camp two's interactive
+  frequency slider is back on a slide of its own (`sherpa/fragments/
+  freq-slider.html`, the old widget on the deck's palette tokens). Example
+  translations reach all nine languages again through a picker in the deck
+  bar that is independent of the interface language. The route-map link and
+  the active/passive switch sit in the deck bar on every slide. Camps one
+  and two offer the eight interface languages their old pages had.
+- **Quiz giveaways.** The first fixes for the longest-option rule put the
+  same always-wrong option ("had been…", "will still be…") into most items
+  of camps eight and thirteen. Replaced with varied distractors. Checking
+  them turned up **nine items with two correct answers**, most inherited
+  from the old pages ("I'm reading that report, but I'm only halfway";
+  "I'll see her at the meeting anyway"). Those now have exactly one.
+  **The other ~300 items were not re-audited.** Given that rate, they
+  deserve a pass before or soon after shipping.
+- **The multi-agent translation run died on the session cap** and locked
+  the session for hours. The pages were then written one at a time. See the
+  memory note; do not fan out prose again.
+- **Explanations still use the old lowercase style** ("Hadn't + participle")
+  rather than the CAPS convention. The form cards were converted; a safe
+  mechanical pass over the explanations was not possible, and a hand pass
+  is about 1,000 strings across three languages.
+- **Interim art is in git history** (39 files, about 3.4 MB in
+  `SherpaTensing/`). It cannot be removed now; the real set replaces it
+  under the same names.
+
+**Found on the way, fixed:** the eight descent pages built by
+`passive_kit.py` have shipped with **empty example panels** since they were
+built (a string replace that never matched). The decks carry the sentences.
+The live scrolling pages still have the bug until the decks ship.
+
+---
+
 ## 2026-09-22 — Block Camp hub: the hero flies up the tower
 
 Innes dropped a Midjourney clip (`incoming/blackisler_fly_up_to_the_top_floor

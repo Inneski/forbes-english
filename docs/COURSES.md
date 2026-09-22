@@ -41,6 +41,9 @@ absent, and the map says so**: *"native speakers avoid every one of them,
 rewriting round them instead. There is nothing there to learn, so there is no
 camp."* That is a correct call, documented in the right place.
 
+> **2026-09-23:** all 25 pages are rebuilt as decks with a speaking and
+> writing stage, waiting on artwork before they ship. See `docs/HANDOFF.md`.
+
 **What's missing:**
 
 - **No activation stage anywhere.** Zero of the 26 are decks, so not one ends
