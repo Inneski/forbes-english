@@ -31,7 +31,10 @@ LANGS = ('de', 'es')
 
 
 def quoted(s):
-    return re.findall(r'"([^"]{6,})"', html.unescape(re.sub(r'<[^>]+>', '', s)))
+    # pair the quotes in sequence, THEN drop the short ones — filtering by
+    # length inside the regex let a short "It" go unmatched and paired every
+    # later closing quote with the next opening one
+    return [q for q in re.findall(r'"([^"]*)"', html.unescape(re.sub(r'<[^>]+>', '', s))) if len(q) >= 6]
 
 
 def words(s):

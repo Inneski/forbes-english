@@ -16,6 +16,7 @@ that flies a false flag (the *to* in *look forward to* is a preposition).
 import re, sys, glob
 sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
 sys.path.insert(0, 'lesson-template')
+sys.path.insert(0, 'lesson-template/build/sherpa/legacy')   # build_c10/c11 helpers live there since 2026-09-22
 import sailing_map as M
 
 # The camp harnesses rebuild camps ten to thirteen the moment they are

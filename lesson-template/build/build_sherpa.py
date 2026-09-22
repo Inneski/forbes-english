@@ -553,7 +553,12 @@ def brief_slide(c, T, bg):
     """After the cover: the page's opening paragraph beside its own diagram."""
     h = c['hero']
     if h['svg']:
-        pic = '<div class="card sh-svgcard">%s</div>' % tune_svg(h['svg'])
+        # camp one's hero is the 400 x 400 ripple, not the 640 x 344 timeline;
+        # at the column's full width it ran 70px past the canvas
+        vb = re.search(r'viewBox="0 0 (\d+) (\d+)"', h['svg'])
+        tall = vb and int(vb.group(2)) / int(vb.group(1)) > 0.7
+        pic = '<div class="card sh-svgcard"%s>%s</div>' % (
+            ' style="max-width:430px;justify-self:center"' if tall else '', tune_svg(h['svg']))
     else:
         pic = '<div class="card sh-svgcard"><img class="sh-img" src="%s" alt="%s"></div>' % (h['img']['src'], _html.escape(h['img']['alt']))
     body = head_html('briefEyebrow', T['briefEyebrow'], 'briefTitle', T['briefTitle']) + '''
@@ -726,6 +731,7 @@ def build(slug, langs=LANGS):
     T = {'en': EN}
     for code in langs[1:]:
         tr = dict(A.get(code, {}))
+        tr.setdefault('chipCount', {'de': 'COUNT Folien', 'es': 'COUNT diapositivas'}.get(code, 'COUNT slides'))
         gone = [k for k in EN if k not in tr]
         if gone:
             raise SystemExit('%s: %s is missing %d keys: %s' % (slug, code, len(gone), gone[:12]))
