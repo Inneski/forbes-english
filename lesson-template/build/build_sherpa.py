@@ -123,6 +123,15 @@ def derive_palette(hero_rel, dark):
     p = P.build_palette(os.path.join(ROOT, hero_rel), dark=dark)
     order = ['void', 'surface', 'surface2', 'border', 'text', 'text-dim',
              'accent', 'accent-bright', 'accent-dim', 'secondary', 'contrast']
+    # The one row the tool itself does not loop on is the hairline. On a
+    # dark deck derived from a hero whose accent sits close to its surface
+    # (descent eight's yellow on near-black), the border lands under 1.25:1.
+    # HOUSE-STYLE §4 says adjust until it passes, so: the same colour, walked
+    # away from the surface in lightness until the row clears. Not a pick.
+    for _ in range(40):
+        if P.contrast_ratio(p['border'], p['surface']) >= 1.25:
+            break
+        p['border'] = P.shift(p['border'], dl=0.02 if dark else -0.02)
     checks = [
         ('text on surface', p['text'], p['surface'], 4.5),
         ('text on void', p['text'], p['void'], 4.5),
@@ -133,15 +142,6 @@ def derive_palette(hero_rel, dark):
         ('border on surface', p['border'], p['surface'], 1.25),
         ('accent-bright vs text', p['accent-bright'], p['text'], 1.45),
     ]
-    # The one row the tool itself does not loop on is the hairline. On a
-    # dark deck derived from a hero whose accent sits close to its surface
-    # (descent eight's yellow on near-black), the border lands under 1.25:1.
-    # HOUSE-STYLE §4 says adjust until it passes, so: the same colour, walked
-    # away from the surface in lightness until the row clears. Not a pick.
-    for _ in range(40):
-        if P.contrast_ratio(p['border'], p['surface']) >= 1.25:
-            break
-        p['border'] = P.shift(p['border'], dl=0.02 if dark else -0.02)
     failed = [l for l, fg, bg, mn in checks if P.contrast_ratio(fg, bg) < mn]
     if failed:
         raise SystemExit('palette for %s fails: %s' % (hero_rel, ', '.join(failed)))
@@ -494,7 +494,11 @@ def stage_slides(s, T, bg):
     parts = [head_html(ek, T[ek], tk, T[tk], counter(1)), '      <div class="slide-body sh-stage">']
     if dg['intro']:
         parts.append('        <p class="prose dim sh-note" data-i18n="%s_dintro">%s</p>' % (k, T[k + '_dintro']))
-    parts.append('        <div class="card sh-svgcard">%s</div>' % tune_svg(dg['svg'], 'st'))
+    # a long introduction takes the room from the picture: 130 words ran the
+    # camp eight slide 41px past the canvas at the full 760px
+    nwords = len(re.sub(r'<[^>]+>', '', dg['intro'] or '').split())
+    maxw = 760 if nwords <= 50 else 700 if nwords <= 80 else 600
+    parts.append('        <div class="card sh-svgcard" style="max-width:%dpx">%s</div>' % (maxw, tune_svg(dg['svg'], 'st')))
     parts.append('      </div>')
     out.append(section('\n'.join(parts), bg))
     n = 2
