@@ -288,10 +288,16 @@ ORDERS = [
 ]
 
 
+# Six-item cards: (head_key, head, body_key, body, note_key, note). The VALUE
+# has to be the English string, not None. deck.py interpolates it straight into
+# the HTML, so a None prints the literal word "None" — invisible at runtime,
+# because data-i18n overwrites it, but it is what a crawler and `seo.py`'s
+# rules() read, and a None note renders no note element at all, which silently
+# dropped all three example sentences.
 TEACH_PATTERNS = [
-    ('patA', 'that + clause', 'patAb', None, 'patAn', None),
-    ('patB', 'the more&hellip; the more&hellip;', 'patBb', None, 'patBn', None),
-    ('patC', 'rather than', 'patCb', None, 'patCn', None),
+    ('patA', EN['patA'], 'patAb', EN['patAb'], 'patAn', EN['patAn']),
+    ('patB', EN['patB'], 'patBb', EN['patBb'], 'patBn', EN['patBn']),
+    ('patC', EN['patC'], 'patCb', EN['patCb'], 'patCn', EN['patCn']),
 ]
 
 
