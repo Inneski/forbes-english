@@ -55,6 +55,11 @@ CHIPS = ['fix the entrance first', 'on your left', 'behind = across',
 
 BG_BRIEF, BG_AUDIO, BG_MAP, BG_DETAIL = ('bg02.jpg', 'bg03.jpg',
                                          'bg04.jpg', 'bg05.jpg')
+def one(html):
+    """A lone slide in its group: drop the "1 / 1" counter from its eyebrow."""
+    return html.replace(' &middot; 1 / 1</div>', '</div>')
+
+
 BG_ACT = 'bg06.jpg'
 
 
@@ -128,7 +133,7 @@ def build(make_audio=False):
                   'relative to something else.',
                   PLACES_WHY, folder=F, bg=BG_MAP)
 
-        + D.gap(1, 1, NOTES, NOTES_BANK,
+        + one(D.gap(1, 1, NOTES, NOTES_BANK,
                 'notesEyebrow',
                 'Questions 6&ndash;8 &middot; Complete the notes',
                 'notesTitle', 'Write ONE WORD AND/OR A NUMBER in each gap',
@@ -136,7 +141,7 @@ def build(make_audio=False):
                 hint_key='notesHint',
                 hint='Two numbers arrive in the same sentence more than once. '
                      'Write the one the gap asks for.',
-                width=210, size=19)
+                width=210, size=19))
 
         + "".join(D.mc(i + 1, len(MC), q, 'mcEyebrow',
                        'Questions 9&ndash;12 &middot; Detail', 'mcTitle',

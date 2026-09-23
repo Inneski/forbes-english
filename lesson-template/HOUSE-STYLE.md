@@ -799,6 +799,11 @@ Then open the file in a browser and check the things a script cannot judge:
 - [ ] Palette contrast report: every body-text row PASS
 - [ ] Arrow keys, on-screen arrows, and the Begin button all navigate
 - [ ] Every question scores and gives feedback when answered
+- [ ] Every scored slide still fits once answered, in every language:
+      `node lesson-template/checker/answered-overflow.js <deck> en de es`.
+      check-lesson measures slides unanswered; on 2026-09-23 twenty-odd IELTS
+      slides fitted at rest and ran 3–159px off the canvas once the
+      explanation appeared.
 - [ ] Switch to German: nothing is still in English on screen
 - [ ] Switch to Arabic: layout mirrors
 - [ ] Print preview: one 16:9 page per slide, backgrounds present

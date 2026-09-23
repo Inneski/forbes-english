@@ -132,14 +132,14 @@ def build(make_audio=False):
                   'playing while you answer, and you hear it once.',
                   AUDIO, label, folder=F, bg=BG_AUDIO)
 
-        + D.gap(1, 1, TOPIC, TOPIC_BANK,
+        + one(D.gap(1, 1, TOPIC, TOPIC_BANK,
                 'topicEyebrow', 'Question 1 &middot; The project',
                 'notesTitle', 'Write ONE WORD AND/OR A NUMBER in each gap',
                 folder=F, bg=BG_WHO,
                 hint_key='topicHint',
                 hint='It is given in the first few seconds, before anyone '
                      'disagrees about anything.',
-                width=210, size=19)
+                width=210, size=19))
 
         + one(D.mc(1, 1, MC_A[0], 'mcaEyebrow',
                    'Question 2 &middot; The method', 'mcTitle',
@@ -160,7 +160,7 @@ def build(make_audio=False):
                    'What happened in the discussion?',
                    folder=F, bg=BG_DETAIL))
 
-        + D.gap(1, 1, DECISIONS, DECISIONS_BANK,
+        + one(D.gap(1, 1, DECISIONS, DECISIONS_BANK,
                 'notesEyebrow',
                 'Questions 8&ndash;10 &middot; The tutorial notes',
                 'notesTitle', 'Write ONE WORD AND/OR A NUMBER in each gap',
@@ -168,7 +168,7 @@ def build(make_audio=False):
                 hint_key='notesHint',
                 hint='All three numbers are agreed out loud. One of them is '
                      'argued about at length and then kept unchanged.',
-                width=210, size=19)
+                width=210, size=19))
 
         + "".join(D.mc(i + 1, len(MC_C), q, 'mcEyebrow',
                        'Questions 11&ndash;12 &middot; The reading', 'mcTitle',

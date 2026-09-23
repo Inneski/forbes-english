@@ -11,6 +11,144 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-23 — IELTS audit: every page read, ~90 errors and ~40 wording problems fixed, Listening plays while you answer
+
+Innes: *"check IELTS for mistakes, complicated language, where it could be
+improved and expanded"*. All 24 decks, the three scrolling pages, six hubs
+and the Question Bank were read in full: the learner-facing English was
+dumped from each rendered page with keys, accepted answers and explanations
+resolved, and the Listening scripts were read from their data modules.
+Commits `8fc9106`, `7ddba99`, `98b5fff`, `0d88e5a` and the one carrying this
+entry. Every deck passes `check-lesson.js`, and every deck fits the canvas
+*answered* in every language it offers (see the new checker below).
+
+### The worst of it
+
+- **Questions with nothing to answer from.** Academic Writing Part 1 (a free
+  entry lesson) asked five "Read the chart" questions with no chart on the
+  deck since `2486f0d`; the chart is redrawn from the data in `c4f3488`, on
+  each slide, on an opaque card (the tide gauge in the artwork read as a
+  second axis through the translucent one). Maps & Accurate Data asked about
+  a smoking chart that has never existed (checked back to `fbfaedf`); it is
+  drawn from the values the items assume and labelled as a practice chart,
+  not England, whose real 2010 figures run the other way. The Writing
+  Studio's pie charts printed no percentages.
+- **The Listening engine hid the questions.** The audio slide locked Continue
+  until the recording ended and stopped it on leaving the slide, so no
+  learner could do what every Listening deck teaches: read the questions
+  first and answer while listening. Fixed in the template — see below.
+- **Four "band 9" model essays were under 250 words** (Part 4: 243 and 228;
+  Part 5: 223 and 220, where Question 3 told the learner the essay was
+  "comfortably over the minimum"). Lengthened without new arguments to 278,
+  273, 268 and 262, counted by script, keeping what the slides point to
+  (Part 4's two views stay level; Part 5's conclusion stays two sentences).
+- **Two right answers:** Part 9 Q1 (option A's own explanation endorsed it),
+  Part 4 Q6 (option A was a fault the lesson itself names), Maps ("located"
+  and "situated"), Part 2b Q3 (no context, so four connectors fitted),
+  Part 7's bar-chart/table match, and Section 3's two identical "Ravi" chips
+  (the engine keys pairs, so the other Ravi shook as a miss).
+- **Recordings:** Section 1's members paid more than non-members, yet joining
+  "works out cheaper"; Section 2's script said `children&rsquo;s` and
+  edge-tts read the entity aloud (1.4 s of it, measured against an apostrophe).
+
+### Facts corrected
+
+Lexical Resource is 25% of *all* Writing, not Task 2 (deck, hubs); accent
+*is* in the Pronunciation descriptors, for its effect on intelligibility
+(b8/b9); Listening's ten-minute transfer is paper-only; General Training
+Reading is not three passages; Listening has a Matching type (Part 9 said
+ten types without it); Matching Information jumps too; English A and R are
+not "near-identical" (the real collisions are A/E and E/I); G and J differ
+in the vowel; nothing requires two body paragraphs; "examiners reward the
+balance, not the position" (they reward a clear position); a discussion
+essay's opinion belongs in the introduction, not "usually in the
+conclusion"; model paragraphs made false claims about Germany and
+Singapore; "I didn't say she stole the money" has seven words; accepted
+answers broke their own word limits (half past six/five, twelve hundred,
+eight hundred and eighty, 1350 for £13.50) or allowed "swimming" for
+"swimming pool" under ONE WORD ONLY.
+
+### Language
+
+Garbled or wrong explanations rewritten (TFNG r11, Part 7's counts, Part 8's
+"negligible" 11%, "Is remote study better than it costs?"); explanations that
+named options by position on decks whose options shuffle now name them by
+content; riddles made plain ("Simple sentences are not penalised; only
+simple sentences are"); jargon out ("recycled topics", "load-bearing");
+overclaims softened ("half the Task 2 questions", "the best return in the
+whole exam"); Title Case classroom timings ("Mins 0–10 · …") and "Class 1/2"
+labels removed from learner headings; learner-facing history removed (the
+Question Bank's "a topic the bank had nothing on"). Spoken models contract.
+
+### Listening, now
+
+- **`data-carry`** (template, "Listening audio"; `deck.audio(carry=True)` is
+  the default and only the five IELTS builders call it): Continue is open,
+  the recording keeps playing across the question slides after it (up to the
+  next audio, results or activation slide), a small player in the deck bar
+  on those slides shows the time and can start it, and leaving the range
+  pauses it. One play, no scrubbing, as before. A new `slideHooks` array in
+  `show()` drives it. Verified in Chromium on all five decks.
+- **`tts.py`**: a `('pause', seconds)` turn inserts real silence (Layer III
+  frames with zero side information, in the format of the first spoken part;
+  decoded in Chromium as silence, length-checked), and every line is
+  `html.unescape`d before synthesis.
+- **Questions follow the recording**, as the real paper's do: Section 1 is
+  seven form lines then three MC after a reading pause; Section 2 keeps
+  match/notes/MC with a pause before Q6 (the "what has changed" MC, answered
+  in the first ten seconds, became the tour's route); Section 3 is regrouped
+  (1 gap, 1 MC, 4-item match | pause | 1 MC, 3 gaps, 2 MC); Section 4 is ten
+  note gaps, like a real Section 4; the drills say "double F".
+- New durations, reading pauses included: S1 4:03, S2 3:44, S3 3:51, S4 3:14.
+  **Still nobody has listened to any of them.** Innes, with headphones:
+  the pauses, the contractions, and whether the Section 3 voices separate.
+
+### Tools
+
+- **`lesson-template/checker/answered-overflow.js`** answers every scored
+  slide wrongly (explanation plus "Answer:" on screen) and measures overflow
+  the way LAYOUT does. `check-lesson.js` only measures unanswered slides, and
+  this found 20-odd IELTS slides running 3–159px off the canvas once
+  answered. Worth making a gate; it will flag decks outside IELTS.
+- **`tools/build_ielts_bank.py`** still drew the old PNG logo and wrote CRLF
+  on Windows, so any rebuild reverted the live chrome. It now takes the top
+  band from `ielts.html` (as `build_hubs.py` does) and writes LF.
+
+### Found, not fixed
+
+1. **Eleven hand-written decks are still EN+DE** (the decision parked on
+   09-13: translate in place, or write builders). The three scrolling pages
+   have no lesson i18n at all.
+2. **The three scrolling pages** (Bar Chart, Maps & Data, Writing Studio)
+   break rule 1. Converting each needs a hero and one background per section
+   (§5c) — an art order first.
+3. **The Writing hub's "Part N" chips** (1, 7, –, 8, –, 1b, 2, 2b, 4, 5, 6, 3)
+   are file-order numbers the hub has to explain away; the same numbers are
+   in the Supabase titles. Renumbering is a catalogue and SEO call.
+4. Section 2 still matches places to positions; a drawn plan (Part 9 has an
+   SVG one) would make it real map labelling.
+5. Speaking Part 3's spoken options are still uncontracted.
+
+### Expansion, in the order it would pay
+
+1. **Reading** covers 3 of roughly 11 question types. Next: Yes / No / Not
+   Given (the writer's views, TFNG's sibling — `build_ieltsread.py`
+   pattern), Matching Information & Features, Multiple Choice & Sentence
+   Endings. Six images each.
+2. **Writing Task 1** has no process diagram, table, pie chart or two-chart
+   lesson — the commonest gaps a candidate meets. Charts are SVG, as in the
+   Line Graph deck; six images each for the backgrounds.
+3. **Vocabulary** has 2 of the Question Bank's 22 topics. Education, health,
+   technology & AI, crime, media — `build_ieltsenv.py` pattern.
+4. **Speaking** has no Part 2 cue-card bank; a free reference page like the
+   Question Bank needs one hero and no per-section art.
+5. **Listening**: a full 40-question mock (four new recordings), and the
+   Section 2 plan.
+6. **General Training Task 1** (the letter): the hubs say it is not covered,
+   and it is the one GT-only paper.
+
+---
+
 ## 2026-09-23 — Grammar Jail: shorter boxes, "Correct the mistake", and two plates the sweep missed
 
 Innes, on `full_grammar_test`: *"shorten the long black text boxes such as is
