@@ -332,7 +332,15 @@ plate at 14 or more.
     AAC 96k); the other eight were silent at source. My first encode used
     `-an` like the hub, and Innes asked where the audio was. The video is
     unmuted and `play()` runs inside the answer click, so sound is allowed; if
-    it is refused anyway, it retries muted. 13.8 MB in all (bg25 is the largest: 16.7 s,
+    it is refused anyway, it retries muted.
+  * **Later that evening Innes re-rendered slides 9, 14, 17 and 18 with sound**
+    (`incoming/block vids/<n> slide.mp4`) and swapped them in. His "audio has
+    stopped again" came from those four: they had been silent at source. The
+    live page, the Worker's 206 ranges and the live files were all correct
+    (`max-age=0, must-revalidate`, so no stale copies). Verified in headless
+    Edge: 9 of 13 clips decode audio, unmuted. **Still silent at source:
+    slides 10, 15, 19, 21** (bg25 bg19 bg11 bg41). If he asks again, check
+    `webkitAudioDecodedByteCount` per slide before touching the code. 13.8 MB in all (bg25 is the largest: 16.7 s,
     3.7 MB). Only the current slide's clip is fetched.
   * An earlier reading put the first batch of clips on the time-signals slides
     (`9178aef`). It was reverted in `5ad6a6a`, and that page is static.
