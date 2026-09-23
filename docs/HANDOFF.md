@@ -60,43 +60,47 @@ failed the build. It now strips styles and HTML comments too.
 
 ## 2026-09-23 — Block Camp Present Simple Part 1: a right answer brings the picture to life
 
-Innes dropped 16 Midjourney clips in `incoming/`. **Every clip's first frame
-is one of the `present-simple-time-signals/` plates**, so no names were needed
-to match them: a 32×18 greyscale mean difference against every 16:9 image in
-the repo put each clip on its plate at 0.5–3.5 levels, with the next-best plate
-at 14 or more. The same match also recognised the hub flythrough, which was
-already shipped.
+**Every question in `blockcamp-present-simple.html` now plays a clip when the
+learner gets it right, and the Results screen plays one on arrival.** 13 clips,
+all Innes's Midjourney renders, each starting on its slide's own plate. Final
+set: `incoming/block vids/`, named by the deck's slide counter (the cover is 1,
+so `slide 9` = Q1 = `bg16`, `slide 21` = Results = `bg41`). Every name was
+confirmed by matching first frames: a 32×18 greyscale mean difference against
+every plate put each clip on its slide at 1.1–6.4 levels, with the next-best
+plate at 14 or more.
 
-**Where they go: on a correct answer in `blockcamp-present-simple.html`**, not
-on the time-signals slides. (That was my first reading and it shipped as
-`9178aef`; it has been reverted. The time-signals page is static again.)
-
-  * Only two of Part 1's 12 question slides sit on a plate that has a clip:
-    Q1 (mc, `bg16`) and Q10 (gap, `bg31`). Those two are live. Innes asked
-    for the other ten plates in a folder to render:
-    `incoming/midjourney-present-simple-part1/` (numbered Q02…Q12 with a
-    README of each slide's sentence). **When those clips arrive, match them
-    by first frame, encode them the same way and add `data-clip` to the
-    slide.** The mechanism is done.
+  * **`slide 16.mp4` did not open on its plate.** It re-renders the bg12 cave
+    scene with a different framing. So the match slide's plate is now
+    `bg12-dig.jpg`, the clip's own first frame, which keeps the handover
+    invisible. `present-simple-time-signals.html` still uses `bg12.jpg`.
+  * `slide 20_files/` in that folder is a browser "save page" (app.html,
+    gtm.js). The MP4 inside it is an alternate take for slide 15 (bg19),
+    not used.
   * Mechanism: one `<video class="bg-clip">` inside `.bg-layer`, which paints
     between the picture (`::before`) and the wash (`::after`) at
-    `--bg-opacity`. So it sits exactly on the dimmed plate and the handover
-    cannot be seen. The slide's `data-clip` is fetched when the slide is shown.
-    `clipPlay()` runs from the mc handler on `ok` and from `checkGaps()`. The
-    clip plays once, holds on its last frame, and rewinds on leaving.
-    Nothing plays under reduced motion or Save-Data. Hidden from print.
-  * **Gap slides:** the clip illustrates one sentence, so the gap marked
-    `data-clip-key` decides (Q10: "I check my map *once a day*"). Without a
-    key, every gap on the slide must be right.
+    `--bg-opacity`, so it sits exactly on the dimmed plate. The slide's
+    `data-clip` is fetched when the slide is shown, and the clip plays once and
+    holds on its last frame. Leaving the slide rewinds it.
+    **The trigger is `feedback(slide, ok)`**, which covers mc, sort (only when
+    every item went in first time), match and order. `checkGaps()` covers gap
+    slides: the gap marked `data-clip-key` decides (Q9 *makes*, Q10 *once a
+    day*); with no key, every gap must be right. `data-clip-auto` plays 1.2 s
+    after the slide is shown (Results). Nothing plays under reduced motion or
+    Save-Data. Hidden from print.
+  * Tested in headless Edge: all 13 play on a right answer; a wrong mc, a wrong
+    order and a sort with one miss do not. End frames were checked with the
+    cards on: all readable, because the cards carry their own panels.
   * Encoding: the same recipe as the hub flythrough (H.264 CRF 27 veryslow,
-    faststart, no audio, max 1280 wide). `bg16.mp4` 0.7 MB, `bg31.mp4` 1.2 MB.
-    The other 13 clips were deleted from the repo; their sources are still in
-    `incoming/`. Their plates are on Part 2 (`bg32` `bg35` mc, `bg33` `bg29`
-    gap, `bg18` order) and Passive (`bg33` mc, `bg34` match), should Innes
-    want them there.
-  * `blockcamp-present-simple.html` is not generated (no builder), so the edit
-    is in the HTML. `check-lesson.js`: the same single DM Sans failure before
-    and after.
+    faststart, no audio, max 1280 wide), named `present-simple-time-signals/
+    bgNN.mp4` after the plate. 13.8 MB in all (bg25 is the largest: 16.7 s,
+    3.7 MB). Only the current slide's clip is fetched.
+  * An earlier reading put the first batch of clips on the time-signals slides
+    (`9178aef`). It was reverted in `5ad6a6a`, and that page is static.
+  * The page is not generated (no builder), so the edit is in the HTML.
+    `check-lesson.js`: the same single DM Sans failure before and after.
+  * **To extend to Part 2 / Passive:** the same `.bg-clip` block, CSS and
+    `feedback()` hook need copying into those pages first, since they have
+    none of it. Then add `data-clip` per slide.
 
 ## 2026-09-23 — The Kraken: nine languages, the right/wrong lines, every hotspot, and the phone
 
