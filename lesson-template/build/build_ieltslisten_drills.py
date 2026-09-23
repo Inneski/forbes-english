@@ -50,7 +50,7 @@ PALETTE = '''  --hero: url('%s/hero.jpg');
   --contrast      : #1dedce;''' % F
 
 CHIPS = ['double oh = 00', 'eight eighty', 'thirteen &ne; thirty',
-         'A and R collide', 'E and I are swapped', 'double F = FF']
+         'A and E collide', 'E and I are swapped', 'double F = FF']
 
 BG_BRIEF, BG_NUM, BG_SPELL, BG_PAIRS = ('bg02.jpg', 'bg03.jpg',
                                         'bg04.jpg', 'bg05.jpg')
@@ -96,7 +96,7 @@ def build(make_audio=False):
                     'Thirteen and thirty are the costliest pair in the '
                     'language. The stress moves; the vowel barely does.'),
                    ('t1bh', 'Letter names collide', 't1bb',
-                    '<strong>A</strong> and <strong>R</strong>, '
+                    '<strong>A</strong> and <strong>E</strong>, '
                     '<strong>E</strong> and <strong>I</strong>, '
                     '<strong>G</strong> and <strong>J</strong>, '
                     '<strong>M</strong> and <strong>N</strong>. Four pairs, '
@@ -119,9 +119,10 @@ def build(make_audio=False):
         + D.audio('numAudEyebrow', 'Drill 1 &middot; The recording',
                   'numAudTitle', 'Five speakers, five numbers',
                   'numAudNote',
-                  'Short takes in five accents. Play it, write the numbers, '
-                  'and play it again as many times as you need &mdash; this is '
-                  'a drill, not the test.',
+                  'Short takes in five accents. Look at the gaps on the next '
+                  'slides, then press play &mdash; here or in the bar at the '
+                  'foot of those slides. When it ends you can play it again '
+                  'from here: this is a drill, not the test.',
                   'numbers.mp3', labels['numbers.mp3'], folder=F, bg=BG_NUM)
 
         + "".join(D.gap(n + 1, 2, rows, NUMBERS_BANK,
@@ -138,8 +139,8 @@ def build(make_audio=False):
                   'spellAudTitle', 'Two names, spelled once each',
                   'spellAudNote',
                   'Two takes, two accents. Each name is given letter by letter '
-                  'exactly once, at speaking speed, which is what the real '
-                  'test does.',
+                  'exactly once, at speaking speed, as in the real test. Look '
+                  'at the gaps on the next slide, then press play.',
                   'spelling.mp3', labels['spelling.mp3'], folder=F,
                   bg=BG_SPELL)
 
@@ -183,7 +184,7 @@ def build(make_audio=False):
                       'Put one number in your set that contains a thirteen or '
                       'a thirty, and do not help.',
                       'Spell one name containing two of the colliding pairs '
-                      '&mdash; an A and an R, or an M and an N.'],
+                      '&mdash; an A and an E, or an M and an N.'],
                      'Writing &middot; 80&ndash;120 words',
                      'Write out the five items you dictated, in figures and '
                      'letters, then write beside each one the mistake you '

@@ -27,11 +27,14 @@ Usage from a builder:
     import tts
     tts.render(TURNS, 'ielts-listen-s1/section1.mp3')
 
-where TURNS is a list of (voice_key, text). Voice keys are the short names in
+where TURNS is a list of (voice_key, text), or ('pause', seconds) for a
+silence. Voice keys are the short names in
 VOICES below, so a script reads as a cast list rather than as a pile of
 Microsoft voice ids.
 """
 import asyncio
+import html
+import math
 import os
 import subprocess
 import sys
@@ -67,6 +70,11 @@ def _synth(voice, text, out, rate=RATE):
     from a plain synchronous builder without an event-loop dance."""
     # --rate=-8% and NOT --rate -8%: a value starting with a minus is read as
     # the next flag by argparse, and the CLI dies with "expected one argument".
+    # The scripts are written in the same modules as the slides, so an HTML
+    # entity slips in easily — and edge-tts XML-escapes its input, so
+    # "children&rsquo;s" was read aloud character by character in the
+    # Section 2 recording (found 2026-09-23). Speak the character instead.
+    text = html.unescape(text)
     cmd = [sys.executable, '-m', 'edge_tts', '--voice', voice,
            '--rate=' + rate, '--text', text, '--write-media', out]
     r = subprocess.run(cmd, capture_output=True, text=True)
@@ -105,23 +113,64 @@ def duration(path):
     return total
 
 
+def _silence(like, seconds, out):
+    """`seconds` of silence as MPEG frames in the same format as the file
+    `like`, so it joins byte-for-byte like any other part.
+
+    A Layer III frame whose side information is all zero has no main data and
+    a global gain of zero: every decoder renders it as silence, and it does
+    not borrow from the bit reservoir, so it cannot disturb the frames around
+    it. The real test pauses inside Sections 1-3 while candidates read the
+    next questions; this is what lets a script say so."""
+    d = open(like, 'rb').read()
+    i = 10 + (d[6] << 21 | d[7] << 14 | d[8] << 7 | d[9]) if d[:3] == b'ID3' else 0
+    while not (d[i] == 0xFF and (d[i + 1] & 0xE0) == 0xE0):
+        i += 1
+    h = bytearray(d[i:i + 4])
+    h[1] |= 0x01                     # no CRC
+    h[2] &= 0xFD                     # no padding
+    ver = 1 if (h[1] >> 3) & 3 == 3 else 2
+    mono = (h[3] >> 6) == 3
+    side = (17 if mono else 32) if ver == 1 else (9 if mono else 17)
+    BR = {1: [0, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320, 0],
+          2: [0, 8, 16, 24, 32, 40, 48, 56, 64, 80, 96, 112, 128, 144, 160, 0]}
+    SR = {1: [44100, 48000, 32000], 2: [22050, 24000, 16000]}
+    br, sr = BR[ver][h[2] >> 4] * 1000, SR[ver][(h[2] >> 2) & 3]
+    if (h[1] >> 3) & 3 == 0:         # MPEG 2.5
+        sr //= 2
+    spf = 1152 if ver == 1 else 576
+    flen = (spf // 8) * br // sr
+    frame = bytes(h) + bytes(side) + bytes(flen - 4 - side)
+    n = math.ceil(seconds * sr / spf)
+    with open(out, 'wb') as f:
+        f.write(frame * n)
+
+
 def render(turns, out_path, rate=RATE):
-    """turns: list of (voice_key, text). Writes one mp3 and returns its length.
+    """turns: list of (voice_key, text), or ('pause', seconds). Writes one mp3
+    and returns its length.
 
     The gap between turns is whatever leading and trailing silence the voice
     itself supplies — roughly a third of a second, which is about what two
-    people leave each other. No artificial pause is inserted, because there is
-    no encoder here to make one and the natural padding sounds better than a
-    splice would.
+    people leave each other. A ('pause', seconds) turn inserts real silence,
+    built frame by frame in the same format (see _silence), for the reading
+    time the test gives inside a section.
     """
     os.makedirs(os.path.dirname(out_path) or '.', exist_ok=True)
     parts = []
     with tempfile.TemporaryDirectory() as tmp:
+        pauses = []
         for n, (who, text) in enumerate(turns):
-            voice = VOICES.get(who, who)
             p = os.path.join(tmp, '%03d.mp3' % n)
-            _synth(voice, text, p, rate)
+            if who == 'pause':
+                pauses.append((n, p, text))
+            else:
+                _synth(VOICES.get(who, who), text, p, rate)
             parts.append(p)
+        # Silence needs a spoken part to copy its frame format from.
+        like = next(p for p in parts if p not in [q for _, q, _ in pauses])
+        for n, p, secs in pauses:
+            _silence(like, float(secs), p)
         with open(out_path, 'wb') as f:
             for p in parts:
                 f.write(open(p, 'rb').read())

@@ -33,6 +33,14 @@ use:
 One speaker, a New Zealand voice — a different accent from Section 1's pairing
 on purpose, because the route should expose a learner to the spread the real
 test uses rather than the same two voices five times.
+REVISED 2026-09-23 (IELTS audit): the script said "children&rsquo;s", and
+edge-tts escapes its input, so the recording read the entity out (tts.py now
+unescapes). The questions follow the recording in order, because the deck now
+plays it while the learner answers: the old first multiple-choice item ("what
+has changed?") repeated the café match and was answered in the first ten
+seconds, so it gives way to the tour's route, the guide's last line. The
+section pauses for reading time before Question 6, as the real Section 2
+does. The guide contracts; the narrator does not.
 """
 
 # ── the recording ──────────────────────────────────────────────────────
@@ -40,54 +48,61 @@ TURNS = [
     ('narrator',
      'Section two. You will hear a guide talking to a group of visitors at a '
      'public garden. First, you have some time to look at questions one to '
-     'twelve.'),
-    ('narrator', 'Now listen carefully and answer questions one to twelve.'),
+     'five.'),
+    ('pause', 15),
+    ('narrator', 'Now listen carefully and answer questions one to five.'),
 
     ('nz_f',
-     'Good morning everyone, and welcome to Ashgrove Gardens. My name is '
-     'Rowan and I will be showing you round this morning. Before we set off, '
-     'let me give you the layout, because the grounds are bigger than they '
-     'look from the entrance.'),
+     "Good morning everyone, and welcome to Ashgrove Gardens. My name is "
+     "Rowan and I'll be showing you round this morning. Before we set off, "
+     "let me give you the layout, because the grounds are bigger than they "
+     "look from the entrance."),
     ('nz_f',
-     'You have all come in through the main gate. On your left, as you come '
-     'through that gate, is the old glasshouse, and that is where the café is '
-     'now. It was the ticket office until last year, so if you have an older '
-     'leaflet it will tell you something different.'),
+     "You've all come in through the main gate. On your left, as you come "
+     "through that gate, is the old glasshouse, and that's where the café is "
+     "now. It was the ticket office until last year, so if you've got an "
+     "older leaflet it'll tell you something different."),
     ('nz_f',
-     'Directly ahead of you is the lake. You cannot miss it. Behind the lake, '
-     'on the far side from where we are standing, is the rose garden, and '
-     'that is really the reason most people come in June.'),
+     "Directly ahead of you is the lake. You can't miss it. Behind the lake, "
+     "on the far side from where we are standing, is the rose garden, and "
+     "that's really the reason most people come in June."),
     ('nz_f',
-     'Now, the car park. If you drove here you will have parked to the east '
-     'of the grounds, and right next to the car park is the children&rsquo;s '
-     'play area. Two things beside the car park, in fact — the play area, and '
-     'the bicycle racks.'),
+     "Now, the car park. If you drove here you'll have parked to the east of "
+     "the grounds, and right next to the car park is the children's play "
+     "area. Two things beside the car park, in fact — the play area, and the "
+     "bicycle racks."),
     ('nz_f',
-     'The clock tower is the tall building you can see over the hedge, and '
-     'the toilets are underneath it. It is the only building with a clock, so '
-     'it is the easiest landmark in the garden.'),
+     "The clock tower is the tall building you can see over the hedge, and "
+     "the toilets are underneath it. It's the only building with a clock, so "
+     "it's the easiest landmark in the garden."),
     ('nz_f',
-     'One change to mention. The plant stall used to stand by the lake. It '
-     'has moved — it is now right at the far end of the long path, beyond the '
-     'greenhouse. People still walk to the lake looking for it, so I am '
-     'saying it twice: the far end of the long path.'),
+     "One change to mention. The plant stall used to stand by the lake. It's "
+     "moved — it's now right at the far end of the long path, beyond the "
+     "greenhouse. People still walk to the lake looking for it, so I'm saying "
+     "it twice: the far end of the long path."),
+
+    ('narrator',
+     'Before you hear the rest of the talk, you have some time to look at '
+     'questions six to twelve.'),
+    ('pause', 20),
+    ('narrator', 'Now listen and answer questions six to twelve.'),
 
     ('nz_f',
-     'A few practical things. The gardens are open from ten until half past '
-     'five, every day except Monday. Entry is eight pounds, but there is no '
-     'charge at all for anyone under sixteen.'),
+     "A few practical things. The gardens are open from ten until half past "
+     "five, every day except Monday. Entry is eight pounds, but there's no "
+     "charge at all for anyone under sixteen."),
     ('nz_f',
-     'The tour takes about ninety minutes and we finish back at the café. If '
-     'you want to stay on afterwards you are very welcome; your ticket lasts '
-     'all day.'),
+     "The tour takes about ninety minutes and we finish back at the café. If "
+     "you want to stay on afterwards you're very welcome; your ticket lasts "
+     "all day."),
     ('nz_f',
-     'Two warnings. The lower path, the one that runs along the stream, is '
-     'closed at the moment — the bank is being repaired and it will be closed '
-     'until the spring. And please do not feed the birds at the lake. I know '
-     'it is tempting, but the bread is genuinely bad for them.'),
+     "Two warnings. The lower path, the one that runs along the stream, is "
+     "closed at the moment — the bank is being repaired and it'll be closed "
+     "until the spring. And please don't feed the birds at the lake. I know "
+     "it's tempting, but the bread is genuinely bad for them."),
     ('nz_f',
-     'Right. If you would like to follow me, we will start at the glasshouse '
-     'and work our way round anticlockwise.'),
+     "Right. If you'd like to follow me, we'll start at the glasshouse and "
+     "work our way round anticlockwise."),
 
     ('narrator',
      'That is the end of section two. You now have half a minute to check '
@@ -110,16 +125,16 @@ PLACES = [
 ]
 
 PLACES_WHY = ('Every one of these is given relative to something else, which '
-              'is what a map task is. Two of them share a landmark &mdash; the '
-              'play area and the bicycle racks are both beside the car park '
-              '&mdash; so "next to the car park" on its own does not identify '
-              'either, and the plant stall is described twice precisely '
-              'because it has moved.')
+              'is what a map task is. The play area shares its landmark with '
+              'the bicycle racks &mdash; both are beside the car park &mdash; '
+              'so "next to the car park" on its own does not identify it, and '
+              'the plant stall is described twice precisely because it has '
+              'moved.')
 
 # ── Questions 6-8 · complete the notes ─────────────────────────────────
 NOTES = [
     ('Open until ______ every day except Monday',
-     ['5.30|5:30|half past five|17.30|17:30'],
+     ['5.30|5:30|5.30pm|5.30 pm|5:30pm|5:30 pm|17.30|17:30'],
      'Ten until half past five. The closing time is the one asked for, and it '
      'arrives second in the same short sentence as the opening time.'),
     ('Entry: £______ (free under 16)',
@@ -137,12 +152,12 @@ NOTES_BANK = []
 
 # ── Questions 9-12 · multiple choice ───────────────────────────────────
 MC = [
-    dict(stem='What has changed at the gardens recently?',
-         options=['The glasshouse is a café rather than a ticket office.',
-                  'The glasshouse is a ticket office rather than a café.',
-                  'The main gate has been moved to the eastern side.',
-                  'The rose garden has been replanted beside the lake.'],
-         correct=0, why='m1why'),
+    dict(stem='What happens at the end of the tour?',
+         options=['Visitors may stay on, because the ticket lasts all day.',
+                  'Visitors are taken back to the main gate and let out.',
+                  'Visitors pay a second time if they stay in the gardens.',
+                  'Visitors must leave the gardens within the next hour.'],
+         correct=0, why='m4why'),
 
     dict(stem='Why is the lower path closed?',
          options=['Because the birds beside it are being protected.',
@@ -158,10 +173,10 @@ MC = [
                   'Leave the group before the tour reaches the café.'],
          correct=2, why='m3why'),
 
-    dict(stem='What happens at the end of the tour?',
-         options=['Visitors must leave the gardens within the next hour.',
-                  'Visitors are taken back to the main gate and let out.',
-                  'Visitors pay a second time if they stay in the gardens.',
-                  'Visitors may stay on, because the ticket lasts all day.'],
-         correct=3, why='m4why'),
+    dict(stem='How will the tour go round the gardens?',
+         options=['Anticlockwise, starting from the main gate.',
+                  'Clockwise, starting at the old glasshouse.',
+                  'Clockwise, starting from the rose garden.',
+                  'Anticlockwise, starting at the glasshouse.'],
+         correct=3, why='m5why'),
 ]

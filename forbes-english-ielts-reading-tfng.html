@@ -97,6 +97,25 @@
   text-decoration: underline; text-underline-offset: 3px;
 }
 .audio-replay:hover { color: var(--text); }
+/* The same recording, docked in the deck bar on the question slides that
+   follow a data-carry audio slide, so it can be started after reading and
+   keeps its place while the learner answers. */
+.audio-dock {
+  display: flex; align-items: center; gap: 10px; flex: 0 1 auto; min-width: 0;
+  font-family: var(--font-mono); font-size: 12px; color: var(--text);
+}
+.audio-dock[hidden] { display: none; }
+.dock-play {
+  flex: 0 0 auto; width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid var(--accent); background: var(--scrim); color: var(--accent-bright);
+  cursor: pointer; font-size: 13px; line-height: 1; display: grid; place-items: center;
+}
+.dock-play:disabled { cursor: default; border-color: var(--border); color: var(--text-dim); }
+.dock-track { width: 120px; height: 4px; border-radius: 2px; background: var(--inset2); overflow: hidden; }
+.dock-fill { height: 100%; width: 0; background: var(--accent); transition: width .2s linear; }
+.dock-time, .dock-state { white-space: nowrap; }
+.dock-state { color: var(--text-dim); }
+.dock-state.done { color: var(--accent-bright); }
 
 /* ── Fixed tokens: identical in every lesson. Do not edit. ── */
 :root {
@@ -2552,6 +2571,9 @@ const countIn = s => s.dataset.type === 'gap'   ? s.querySelectorAll('.gap').len
                    : 1;
 const maxScore = scored.reduce((n, s) => n + Math.max(1, countIn(s)), 0);
 let idx = 0, score = 0;
+// Called with the new index after every slide change, for behaviour that
+// belongs to a range of slides rather than to one (the docked recording).
+const slideHooks = [];
 const answered = new WeakSet();
 
 /* ── Branch mode ────────────────────────────────────────────────────────
@@ -2703,6 +2725,7 @@ function show(n) {
   if (slides[idx].dataset.type === 'results') renderResults();
   markRail(slides[idx]);
   if (slides[idx]._enter) slides[idx]._enter();
+  slideHooks.forEach(f => f(idx));
   const gap = slides[idx].querySelector('.gap');
   if (gap && !answered.has(slides[idx])) setTimeout(() => gap.focus(), 60);
 }
@@ -2999,11 +3022,19 @@ slides.filter(s => s.dataset.type === 'match').forEach(slide => {
    It behaves like the test, deliberately:
      · one play — the button locks once it has been pressed
      · no scrubbing — the bar reports progress, it does not accept clicks
-     · the slide's [data-action="next"] Continue button stays disabled until
-       the recording ends, so nobody reaches the questions early
    A replay control appears only after it has finished, and it says in words
    that the real test does not offer one. A classroom needs to replay; a
-   learner practising alone should know that is not the exam. */
+   learner practising alone should know that is not the exam.
+
+   With data-carry on the box (every deck.audio() slide since 2026-09-23) the
+   recording behaves like the real paper, where you read first and answer as
+   you listen: Continue is open, leaving the slide does not stop it, and the
+   question slides after it — up to the next audio, results or activation
+   slide — carry a small player in the deck bar that shows the time and can
+   start it. Leaving that range pauses it; coming back resumes it.
+
+   Without data-carry the old contract holds: Continue stays disabled until
+   the recording ends, and leaving the slide stops it. */
 slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
   const box = slide.querySelector('.audio');
   if (!box || !box.dataset.src) return;
@@ -3039,8 +3070,39 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
   row.append(btn, meta); wrap.append(row, state);
   box.replaceChildren(wrap);
 
+  const carry = 'carry' in box.dataset;
   const cont = slide.querySelector('[data-action="next"]');
-  if (cont) cont.disabled = true;
+  if (cont && !carry) cont.disabled = true;
+
+  /* The docked copy: built for carry slides only, and put in the deck bar
+     where the ledger sits, so it never takes room from a slide. */
+  let dock = null, dockBtn = null, dockFill = null, dockTime = null, dockState = null;
+  if (carry) {
+    const at = slides.indexOf(slide);
+    let end = at + 1;
+    while (end < slides.length
+           && !['audio', 'results', 'activate'].includes(slides[end].dataset.type)) end++;
+    dock = document.createElement('div'); dock.className = 'audio-dock'; dock.hidden = true;
+    dockBtn = document.createElement('button');
+    dockBtn.className = 'dock-play'; dockBtn.type = 'button'; dockBtn.textContent = '▶';
+    dockBtn.dataset.i18nAria = 'audioPlay'; dockBtn.setAttribute('aria-label', t('audioPlay'));
+    const dockTrack = document.createElement('div'); dockTrack.className = 'dock-track';
+    dockFill = document.createElement('div'); dockFill.className = 'dock-fill';
+    dockTrack.append(dockFill);
+    dockTime = document.createElement('span'); dockTime.className = 'dock-time'; dockTime.textContent = '0:00';
+    dockState = document.createElement('span'); dockState.className = 'dock-state';
+    dock.append(dockBtn, dockTrack, dockTime, dockState);
+    const bar = document.querySelector('.deck-bar');
+    bar.insertBefore(dock, bar.querySelector('[data-action="prev"]'));
+    let autoPaused = false;
+    slideHooks.push(i => {
+      const inRange = i > at && i < end;
+      dock.hidden = !inRange;
+      if (i === at || inRange) {
+        if (autoPaused) { autoPaused = false; audio.play().catch(() => {}); }
+      } else if (!audio.paused) { autoPaused = true; audio.pause(); }
+    });
+  }
 
   const mmss = n => Number.isFinite(n)
     ? Math.floor(n / 60) + ':' + String(Math.floor(n % 60)).padStart(2, '0') : '';
@@ -3051,11 +3113,16 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
     fill.style.width = (audio.currentTime / audio.duration * 100) + '%';
     now.textContent = mmss(audio.currentTime);
     left.textContent = mmss(audio.duration - audio.currentTime);
+    if (dock) {
+      dockFill.style.width = fill.style.width;
+      dockTime.textContent = mmss(audio.currentTime) + ' / ' + mmss(audio.duration);
+    }
   });
   audio.addEventListener('error', () => {
     state.dataset.i18n = 'audioMissing';
     state.textContent = t('audioMissing');
     btn.disabled = true;
+    if (dockBtn) dockBtn.disabled = true;
     if (cont) cont.disabled = false;   // never trap a learner behind a broken file
   });
   audio.addEventListener('ended', () => {
@@ -3065,6 +3132,11 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
     state.textContent = t('audioDone');
     state.classList.add('done');
     if (cont) cont.disabled = false;
+    if (dock) {
+      dockFill.style.width = '100%';
+      dockState.textContent = '✓';
+      dockState.classList.add('done');
+    }
     const again = document.createElement('button');
     again.className = 'audio-replay'; again.type = 'button';
     again.dataset.i18n = 'audioReplay';
@@ -3073,13 +3145,17 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
       audio.currentTime = 0; audio.play();
       state.dataset.i18n = 'audioPlaying';
       state.textContent = t('audioPlaying'); state.classList.remove('done');
+      if (dock) { dockState.textContent = ''; dockState.classList.remove('done'); }
       again.remove();
     });
     wrap.append(again);
   });
 
-  btn.addEventListener('click', () => {
+  const start = () => {
     btn.disabled = true;
+    // The running time says it is playing; the deck bar has no room for
+    // the sentence the main player shows.
+    if (dockBtn) dockBtn.disabled = true;
     state.dataset.i18n = 'audioPlaying';
     state.textContent = t('audioPlaying');
     audio.play().catch(() => {
@@ -3088,11 +3164,14 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
     state.textContent = t('audioMissing');
       if (cont) cont.disabled = false;
     });
-  });
+  };
+  btn.addEventListener('click', start);
+  if (dockBtn) dockBtn.addEventListener('click', start);
 
-  // Leaving the slide stops the recording rather than letting it run on
-  // behind the questions.
-  slide._leave = () => { if (!audio.paused) audio.pause(); };
+  // Without data-carry, leaving the slide stops the recording rather than
+  // letting it run on behind the questions. With it, the range hook above
+  // decides.
+  if (!carry) slide._leave = () => { if (!audio.paused) audio.pause(); };
 });
 
 /* Sentence building. Author as

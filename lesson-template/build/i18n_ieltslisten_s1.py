@@ -67,10 +67,12 @@ T['en'] = dict(
     audEyebrow='The recording',
     audTitle='You will hear it once',
     audNote='A telephone conversation between a woman and the manager of a '
-            'community sports centre. Press play when you are ready to write. '
-            'There is no pause and no rewind, exactly as in the test.',
+            'community sports centre. Read the questions on the next slides '
+            'first, then press play &mdash; here, or in the bar at the foot of '
+            'any question slide. The recording keeps playing while you answer, '
+            'and you hear it once.',
 
-    gapEyebrow='Questions 1&ndash;6 &middot; Complete the form',
+    gapEyebrow='Questions 1&ndash;7 &middot; Complete the form',
     gapTitle='Write ONE WORD AND/OR A NUMBER in each gap',
     gapHint='Spelling is marked. Write what you actually heard, not what you '
             'expected to hear.',
@@ -79,7 +81,7 @@ T['en'] = dict(
     t2Title='The four places this section takes its marks',
     t2ah='The correction',
     t2ab='A speaker says one thing and immediately changes it &mdash; '
-         '<em>Tuesday&hellip; sorry, that is the children, the adult class is '
+         '<em>Tuesday&hellip; sorry, that&rsquo;s the children, the adult class is '
          'Thursday</em>. The answer is always the second one. This is the '
          'commonest mistake on the whole section.',
     t2an='Listen for <em>sorry</em>, <em>actually</em>, <em>I mean</em>, <em>I '
@@ -87,18 +89,18 @@ T['en'] = dict(
          'is about to change.',
     t2bh='The spelled word',
     t2bb='When a speaker starts giving letters, an answer is being dictated. '
-         'It happens once per section and it is never repeated more than the '
-         'speakers would naturally repeat it.',
-    t2bn='Know the letters that sound alike in English: A and R, E and I, G '
-         'and J, M and N.',
+         'In Section 1 it usually happens once, and it is never repeated more '
+         'than the speakers would naturally repeat it.',
+    t2bn='Know the letters that sound alike in English: A, E and I; G and J; '
+         'M and N.',
     t2ch='The number and the distractor',
     t2cb='British speakers say <em>double oh</em> for two noughts and '
          '<em>oh</em> for one. And there are nearly always two prices or two '
          'times &mdash; one of them labelled as the wrong one, quickly.',
-    t2cn='Thirty-five was the non-member rate. She was joining, so the answer '
-         'was forty-two.',
+    t2cn='Thirty-five was the monthly rate for non-members. She was joining, '
+         'so the answer was forty-two.',
 
-    mcEyebrow='Questions 7&ndash;10 &middot; Detail',
+    mcEyebrow='Questions 8&ndash;10 &middot; Detail',
     mcTitle='What exactly did they say?',
 
     l1why='The small pool, side entrance. He gives both in one breath &mdash; '
@@ -108,8 +110,6 @@ T['en'] = dict(
     l2why='The street behind the library is free after five. The car park is '
           'real, but he says it fills up by six; "free after five" attaches to '
           'the street, not the car park.',
-    l3why='Ten weeks, paid as one term. Both numbers are in the same sentence '
-          'as the prices, which is where the section is at its busiest.',
     l4why='The building was refurbished. The friend and the local paper are '
           'both mentioned in her last question, one line earlier, which is '
           'exactly why they are there.',
@@ -168,11 +168,12 @@ T['de'] = dict(
     audEyebrow='Die Aufnahme',
     audTitle='Du hörst sie einmal',
     audNote='Ein Telefongespräch zwischen einer Frau und dem Leiter eines '
-            'Gemeindesportzentrums. Drücke Play, wenn du bereit bist zu '
-            'schreiben. Kein Pausieren, kein Zurückspulen &mdash; genau wie in '
-            'der Prüfung.',
+            'Gemeindesportzentrums. Lies zuerst die Fragen auf den nächsten '
+            'Folien, dann drücke Play &mdash; hier oder in der Leiste unten auf '
+            'jeder Fragenfolie. Die Aufnahme läuft weiter, während du '
+            'antwortest, und du hörst sie einmal.',
 
-    gapEyebrow='Fragen 1&ndash;6 &middot; Formular ausfüllen',
+    gapEyebrow='Fragen 1&ndash;7 &middot; Formular ausfüllen',
     gapTitle='Schreibe EIN WORT UND/ODER EINE ZAHL in jede Lücke',
     gapHint='Rechtschreibung wird bewertet. Schreib, was du gehört hast, nicht '
             'was du erwartet hast.',
@@ -181,25 +182,25 @@ T['de'] = dict(
     t2Title='Die vier Stellen, an denen dieser Teil die Punkte holt',
     t2ah='Die Korrektur',
     t2ab='Jemand sagt etwas und ändert es sofort &mdash; <em>Tuesday&hellip; '
-         'sorry, that is the children, the adult class is Thursday</em>. Die '
+         'sorry, that&rsquo;s the children, the adult class is Thursday</em>. Die '
          'Antwort ist immer die zweite. Der häufigste Fehler im ganzen Teil.',
     t2an='Achte auf <em>sorry</em>, <em>actually</em>, <em>I mean</em>, <em>I '
          'beg your pardon</em>. Jedes davon kündigt an, dass die Antwort sich '
          'gleich ändert.',
     t2bh='Das buchstabierte Wort',
-    t2bb='Sobald jemand Buchstaben nennt, wird eine Antwort diktiert. Das '
-         'passiert einmal pro Teil und wird nicht öfter wiederholt, als zwei '
-         'Menschen es natürlich täten.',
-    t2bn='Kenne die Buchstaben, die im Englischen ähnlich klingen: A und R, E '
-         'und I, G und J, M und N.',
+    t2bb='Sobald jemand Buchstaben nennt, wird eine Antwort diktiert. In '
+         'Section 1 passiert das meist einmal, und es wird nicht öfter '
+         'wiederholt, als zwei Menschen es natürlich täten.',
+    t2bn='Kenne die Buchstaben, die im Englischen ähnlich klingen: A, E und I; '
+         'G und J; M und N.',
     t2ch='Die Zahl und der Ablenker',
     t2cb='Briten sagen <em>double oh</em> für zwei Nullen und <em>oh</em> für '
          'eine. Und fast immer gibt es zwei Preise oder zwei Uhrzeiten &mdash; '
          'einer davon wird kurz als der falsche markiert.',
-    t2cn='Fünfunddreißig war der Preis für Nichtmitglieder. Sie tritt bei, '
-         'also lautet die Antwort zweiundvierzig.',
+    t2cn='Fünfunddreißig war der Monatspreis für Nichtmitglieder. Sie tritt '
+         'bei, also lautet die Antwort zweiundvierzig.',
 
-    mcEyebrow='Fragen 7&ndash;10 &middot; Detail',
+    mcEyebrow='Fragen 8&ndash;10 &middot; Detail',
     mcTitle='Was genau wurde gesagt?',
 
     l1why='Der kleine Pool, Seiteneingang. Er nennt beides in einem Atemzug '
@@ -209,10 +210,8 @@ T['de'] = dict(
     l2why='Die Straße hinter der Bibliothek ist ab fünf frei. Den Parkplatz '
           'gibt es, aber er ist ab sechs voll; „free after five“ gehört zur '
           'Straße, nicht zum Parkplatz.',
-    l3why='Zehn Wochen, bezahlt als ein Kursabschnitt. Beide Zahlen stehen im '
-          'selben Satz wie die Preise &mdash; die dichteste Stelle des Teils.',
-    l4why='Das Gebäude wurde saniert. Die Freundin und die Lokalzeitung kommen '
-          'beide in ihrer letzten Frage vor, eine Zeile davor, und genau '
+    l4why='Das Gebäude wurde saniert. Die Empfehlung und die Lokalzeitung '
+          'kommen beide in ihrer letzten Frage vor, eine Zeile davor, und genau '
           'deshalb stehen sie dort.',
 
     actTitle='Nimm den Anruf an',
@@ -269,11 +268,12 @@ T['es'] = dict(
     audEyebrow='La grabación',
     audTitle='La oirás una vez',
     audNote='Una conversación telefónica entre una mujer y el responsable de '
-            'un centro deportivo municipal. Dale a reproducir cuando estés '
-            'listo para escribir. Sin pausa y sin rebobinar, igual que en el '
-            'examen.',
+            'un centro deportivo municipal. Lee primero las preguntas de las '
+            'diapositivas siguientes y luego dale a reproducir, aquí o en la '
+            'barra de abajo de cualquier pregunta. La grabación sigue sonando '
+            'mientras respondes, y la oyes una sola vez.',
 
-    gapEyebrow='Preguntas 1&ndash;6 &middot; Completa el formulario',
+    gapEyebrow='Preguntas 1&ndash;7 &middot; Completa el formulario',
     gapTitle='Escribe UNA PALABRA Y/O UN NÚMERO en cada hueco',
     gapHint='Se corrige la ortografía. Escribe lo que has oído, no lo que '
             'esperabas oír.',
@@ -282,25 +282,25 @@ T['es'] = dict(
     t2Title='Los cuatro sitios donde esta parte se lleva los puntos',
     t2ah='La corrección',
     t2ab='Alguien dice una cosa y la cambia enseguida: <em>Tuesday&hellip; '
-         'sorry, that is the children, the adult class is Thursday</em>. La '
+         'sorry, that&rsquo;s the children, the adult class is Thursday</em>. La '
          'respuesta es siempre la segunda. Es el fallo más común de toda la '
          'sección.',
     t2an='Escucha <em>sorry</em>, <em>actually</em>, <em>I mean</em>, <em>I beg '
          'your pardon</em>. Cada uno avisa de que la respuesta va a cambiar.',
     t2bh='La palabra deletreada',
     t2bb='En cuanto alguien empieza a dar letras, se está dictando una '
-         'respuesta. Pasa una vez por sección y no se repite más de lo que dos '
-         'personas lo repetirían de forma natural.',
-    t2bn='Aprende las letras que suenan parecido en inglés: A y R, E e I, G y '
-         'J, M y N.',
+         'respuesta. En la Section 1 suele pasar una vez, y no se repite más de '
+         'lo que dos personas lo repetirían de forma natural.',
+    t2bn='Aprende las letras que suenan parecido en inglés: A, E e I; G y J; M '
+         'y N.',
     t2ch='El número y el distractor',
     t2cb='Los británicos dicen <em>double oh</em> para dos ceros y <em>oh</em> '
          'para uno. Y casi siempre hay dos precios o dos horas, con uno '
          'marcado de pasada como el que no vale.',
-    t2cn='Treinta y cinco era la tarifa de no socios. Ella se hace socia, así '
-         'que la respuesta es cuarenta y dos.',
+    t2cn='Treinta y cinco era la tarifa mensual de no socios. Ella se hace '
+         'socia, así que la respuesta es cuarenta y dos.',
 
-    mcEyebrow='Preguntas 7&ndash;10 &middot; Detalle',
+    mcEyebrow='Preguntas 8&ndash;10 &middot; Detalle',
     mcTitle='¿Qué dijeron exactamente?',
 
     l1why='La piscina pequeña, entrada lateral. Lo dice todo de una vez '
@@ -310,9 +310,6 @@ T['es'] = dict(
     l2why='La calle de detrás de la biblioteca es gratis a partir de las '
           'cinco. El aparcamiento existe, pero dice que se llena a las seis; '
           '«free after five» va con la calle, no con el aparcamiento.',
-    l3why='Diez semanas, pagadas como un trimestre entero. Las dos cifras van '
-          'en la misma frase que los precios, que es el punto más cargado de '
-          'la sección.',
     l4why='El edificio se reformó. La amiga y el periódico local aparecen los '
           'dos en su última pregunta, una línea antes, y por eso están ahí.',
 

@@ -22,6 +22,19 @@ every one of them is in the recording on purpose:
 The answers are all one or two words or a number, which is what the word limit
 allows on a real form-completion task.
 
+REVISED 2026-09-23 (IELTS audit):
+  - The prices did not add up. Non-members paid thirty-five pounds and members
+    forty-two, and joining "works out cheaper". Non-members now pay thirty-five
+    a MONTH; members pay forty-two for the whole ten-week term.
+  - The deck now plays the recording while the learner answers (see
+    deck.audio, data-carry), so the questions follow the recording in order,
+    as the real paper's do: the old "The course lasts" multiple-choice item,
+    whose answer came in the middle of the form, is a form line (Question 5),
+    and the three multiple-choice items are the three facts after the break.
+  - Like the real Section 1 it pauses for reading time at the start and
+    before Questions 8-10.
+  - Speakers contract, as people do. The narrator does not.
+
 THE RECORDING IS GENERATED, like everything else here: `tts.py` turns TURNS
 into `ielts-listen-s1/section1.mp3`. Change the script, re-run the builder,
 and the audio and the answer key stay in step. Never edit the mp3.
@@ -35,52 +48,59 @@ TURNS = [
     ('narrator',
      'Section one. You will hear a telephone conversation between a woman and '
      'the manager of a community sports centre. First, you have some time to '
-     'look at questions one to ten.'),
-    ('narrator',
-     'Now listen carefully and answer questions one to ten.'),
+     'look at questions one to seven.'),
+    ('pause', 15),
+    ('narrator', 'Now listen carefully and answer questions one to seven.'),
 
     ('gb_m', 'Good morning, Fairfield Community Centre, Douglas speaking.'),
-    ('au_f', 'Oh, good morning. I wanted to ask about the adult swimming '
-             'classes, if that is all right.'),
+    ('au_f', "Oh, good morning. I wanted to ask about the adult swimming "
+             "classes, if that's all right."),
     ('gb_m', 'Of course. Have you been to the centre before at all?'),
-    ('au_f', 'No, never. I have just moved into the area.'),
-    ('gb_m', 'Right, then I will take a few details and set you up. Can I '
-             'start with your name?'),
-    ('au_f', 'Yes, it is Petra. Petra Novakova.'),
+    ('au_f', "No, never. I've just moved into the area."),
+    ('gb_m', "Right, then I'll take a few details and set you up. Can I start "
+             "with your name?"),
+    ('au_f', "Yes, it's Petra. Petra Novakova."),
     ('gb_m', 'Petra. And how do you spell the surname?'),
-    ('au_f', 'It is N, O, V, A, K, O, V, A. Novakova.'),
+    ('au_f', "It's N, O, V, A, K, O, V, A. Novakova."),
     ('gb_m', 'N, O, V, A, K, O, V, A. Thank you. And a contact number?'),
-    ('au_f', 'It is oh seven seven double oh, nine double oh, six four two.'),
+    ('au_f', "It's oh seven seven double oh, nine double oh, six four two."),
     ('gb_m', 'Let me read that back. Oh seven seven double oh, nine double oh, '
              'six four two. Is that right?'),
-    ('au_f', 'That is it, yes.'),
+    ('au_f', "That's it, yes."),
 
-    ('gb_m', 'Lovely. Now, the adult beginners class runs on a Tuesday '
-             'evening — sorry, I beg your pardon, that is the children. The '
-             'adult class is Thursday.'),
+    ('gb_m', "Lovely. Now, the adult beginners class runs on a Tuesday evening "
+             "— sorry, I beg your pardon, that's the children. The adult class "
+             "is Thursday."),
     ('au_f', 'Thursday. Good, that suits me better anyway.'),
-    ('gb_m', 'And it starts at six thirty, so if you can be poolside by twenty '
-             'past, that is ideal.'),
+    ('gb_m', "And it starts at six thirty, so if you can be poolside by twenty "
+             "past, that's ideal."),
     ('au_f', 'Six thirty. Right.'),
-    ('gb_m', 'The course is ten weeks. For non-members it is thirty-five '
-             'pounds, but as you are joining the centre you would pay the '
-             'member rate, which is forty-two pounds for the term.'),
-    ('au_f', 'Sorry — forty-two for members, and that is for the whole term?'),
-    ('gb_m', 'For the whole term, yes. It works out cheaper.'),
+    ('gb_m', "The course runs for ten weeks. For non-members it's thirty-five "
+             "pounds a month, but as you're joining the centre you'd pay the "
+             "member rate, which is forty-two pounds for the whole term."),
+    ('au_f', "Sorry — forty-two for members, and that's for the whole term?"),
+    ('gb_m', 'For the whole term, yes. It works out a lot cheaper.'),
 
     ('au_f', 'And is there anything I need to bring?'),
-    ('gb_m', 'Just the usual — costume and a towel. The one thing people '
-             'forget is a cap. You cannot get in the water without a swimming '
-             'cap, and we do sell them at reception.'),
-    ('au_f', 'A cap. I will write that down.'),
-    ('gb_m', 'We have two pools, by the way. The classes are in the small '
-             'pool, not the main one, so come through the side entrance.'),
+    ('gb_m', "Just the usual — a costume and a towel. The one thing people "
+             "forget is a cap. You can't get in the water without a swimming "
+             "cap, and we do sell them at reception."),
+    ('au_f', "A cap. I'll write that down."),
+
+    ('narrator',
+     'Before you hear the rest of the conversation, you have some time to '
+     'look at questions eight to ten.'),
+    ('pause', 20),
+    ('narrator', 'Now listen and answer questions eight to ten.'),
+
+    ('gb_m', "We've got two pools, by the way. The classes are in the small "
+             "pool, not the main one, so come through the side entrance."),
     ('au_f', 'The small pool, side entrance. And parking?'),
-    ('gb_m', 'There is a car park, but it fills up by six. Most people use the '
-             'street behind the library — it is free after five.'),
-    ('au_f', 'That is useful, thank you. Actually, can I ask — a friend '
-             'mentioned the centre, but I also saw something in the local '
-             'paper about the new pool.'),
+    ('gb_m', "There's a car park, but it fills up by six. Most people use the "
+             "street behind the library — it's free after five."),
+    ('au_f', "That's useful, thank you. Actually, can I ask — a friend "
+             "mentioned the centre, but I also saw something in the local "
+             "paper about the new pool."),
     ('gb_m', 'That would have been the refurbishment. We reopened in March.'),
 
     ('narrator',
@@ -90,30 +110,31 @@ TURNS = [
 
 AUDIO = 'section1.mp3'
 
-# ── Questions 1-6 · form completion ────────────────────────────────────
+# ── Questions 1-7 · form completion ────────────────────────────────────
 # The word limit on a real form task is ONE WORD AND/OR A NUMBER, and the
-# answers here respect it. The pipe form is the engine's list of accepted
-# spellings: a candidate who writes the number with or without the pound sign
-# has heard it correctly either way.
+# answers here respect it — which is also why "half past six" is not in the
+# accepted list: it is three words. The pipe form is the engine's list of
+# accepted spellings.
 FORM = [
     ('Surname: ______', ['Novakova|NOVAKOVA'],
-     'Spelled out once, letter by letter. Nothing else in the recording '
-     'spells anything, so the moment a speaker starts giving letters, that is '
-     'an answer being dictated.'),
-    ('Telephone: ______', ['07700900642|07700 900 642'],
-     '"Double oh" is two noughts and "oh" is one. Written out, the number is '
-     '07700 900 642 — and a candidate waiting for eleven separate digits will '
-     'not have heard eleven.'),
+     'Spelled out once, letter by letter. The moment a speaker starts giving '
+     'letters, an answer is being dictated.'),
+    ('Telephone: ______', ['07700900642|07700 900 642|07700-900-642'],
+     '"Double oh" is two noughts and "oh" is one: 07700 900 642. A candidate '
+     'waiting for eleven separate digits never hears eleven.'),
     ('Class day: ______', ['Thursday'],
-     'He says Tuesday and corrects himself in the same breath: "sorry, I beg '
-     'your pardon, that is the children." The answer is always the correction, '
-     'never the first thing said.'),
-    ('Starts at: ______', ['6.30|6:30|half past six|6.30pm|18.30|18:30'],
+     "He says Tuesday and corrects himself at once: \"sorry, I beg your "
+     "pardon, that's the children.\" The answer is always the correction."),
+    ('Starts at: ______',
+     ['6.30|6:30|6.30pm|6.30 pm|6:30pm|6:30 pm|18.30|18:30'],
      'Six thirty. Twenty past is when to arrive poolside, which is the sort '
      'of nearby number that is put there to be written down by mistake.'),
+    ('Length of course: ______ weeks', ['10|ten'],
+     'Ten, said once, just before the prices. The member price that follows '
+     'covers the same ten weeks &mdash; "the whole term".'),
     ('Cost for members: £______', ['42|42.00|forty-two'],
-     'Thirty-five is said first and is labelled as the non-member rate. She '
-     'is joining, so she pays forty-two.'),
+     'Thirty-five is said first, and it is the monthly rate for non-members. '
+     'She is joining, so she pays forty-two for the whole term.'),
     ('Must bring a swimming ______', ['cap'],
      'Costume and towel are "the usual". The cap is the one he singles out as '
      'the thing people forget, and a Section 1 answer is nearly always the '
@@ -126,13 +147,13 @@ FORM = [
 # chip row, which is what we want.
 FORM_BANK = []
 
-# Three gaps a slide, not six. Six rows plus the heading runs past the canvas,
-# and HOUSE-STYLE §6 is explicit that the answer is more slides rather than
-# smaller type.
-FORM_SLIDES = [FORM[:3], FORM[3:]]
+# Three, two and two a slide. Four rows plus the heading run past the canvas
+# once the explanations show, and HOUSE-STYLE §6 is explicit that the answer
+# is more slides rather than smaller type.
+FORM_SLIDES = [FORM[:3], FORM[3:5], FORM[5:]]
 
-# ── Questions 7-10 · multiple choice ───────────────────────────────────
-# Keys rotated so they land at i % 4 rather than clustering.
+# ── Questions 8-10 · multiple choice ───────────────────────────────────
+# The three facts after the break, in the order they are heard.
 MC = [
     dict(stem='Where do the adult classes take place?',
          options=['In the small pool, through the side entrance.',
@@ -148,17 +169,10 @@ MC = [
                   'The car park is usually empty before six o&rsquo;clock.'],
          correct=1, why='l2why'),
 
-    dict(stem='The course lasts',
-         options=['six weeks, paid for by the single session.',
-                  'one term, paid for by the single session.',
-                  'ten weeks, paid for as one whole term.',
-                  'ten months, paid for as one whole term.'],
-         correct=2, why='l3why'),
-
     dict(stem='Why did the centre reopen in March?',
          options=['Because a friend of hers had recommended it.',
                   'Because the local paper had run a campaign.',
-                  'Because the classes had grown too popular.',
-                  'Because the building had been refurbished.'],
-         correct=3, why='l4why'),
+                  'Because the building had been refurbished.',
+                  'Because the classes had grown too popular.'],
+         correct=2, why='l4why'),
 ]

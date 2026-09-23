@@ -9,8 +9,9 @@ see `tts.py` and `ieltslisten_s1_data.py`. Change the script, re-run this, and
 the recording and the answer key move together.
 
 **This is the first deck in the repo to use the audio slide.** The engine has
-supported `data-type="audio"` for a while — play once, no scrubbing, Continue
-locked until the recording ends — but nothing had ever authored one, so
+supported `data-type="audio"` for a while — play once, no scrubbing, and (until
+2026-09-23) Continue locked until the recording ended; it now keeps playing
+while the learner answers, see `deck.audio` — but nothing had ever authored one, so
 `deck.py` had no builder for it and `chrome_i18n.py` had none of the five
 player strings. Both were added for this deck, which means every Listening
 deck after it gets a translated player for free.
@@ -121,13 +122,14 @@ def build(make_audio=False):
                   'audTitle', 'You will hear it once',
                   'audNote',
                   'A telephone conversation between a woman and the manager of '
-                  'a community sports centre. Press play when you are ready to '
-                  'write. There is no pause and no rewind, exactly as in the '
-                  'test.',
+                  'a community sports centre. Read the questions on the next '
+                  'slides first, then press play &mdash; here, or in the bar '
+                  'at the foot of any question slide. The recording keeps '
+                  'playing while you answer, and you hear it once.',
                   AUDIO, label, folder=F, bg=BG_AUDIO)
 
         + "".join(D.gap(n + 1, len(FORM_SLIDES), rows, FORM_BANK,
-                        'gapEyebrow', 'Questions 1&ndash;6 &middot; Complete the form',
+                        'gapEyebrow', 'Questions 1&ndash;7 &middot; Complete the form',
                         'gapTitle',
                         'Write ONE WORD AND/OR A NUMBER in each gap',
                         folder=F, bg=BG_AUDIO,
@@ -137,11 +139,17 @@ def build(make_audio=False):
                         width=210, size=19)
                   for n, rows in enumerate(FORM_SLIDES))
 
+        + "".join(D.mc(i + 1, len(MC), q, 'mcEyebrow',
+                       'Questions 8&ndash;10 &middot; Detail', 'mcTitle',
+                       'What exactly did they say?',
+                       folder=F, bg=BG_DETAIL, ctx=q.get('ctx'))
+                  for i, q in enumerate(MC))
+
         + D.teach('t2Eyebrow', 'After the recording',
                   't2Title', 'The four places this section takes its marks',
                   [('t2ah', 'The correction', 't2ab',
                     'A speaker says one thing and immediately changes it '
-                    '&mdash; <em>Tuesday&hellip; sorry, that is the children, '
+                    '&mdash; <em>Tuesday&hellip; sorry, that&rsquo;s the children, '
                     'the adult class is Thursday</em>. The answer is always '
                     'the second one. This is the commonest mistake on the '
                     'whole section.', 't2an',
@@ -150,25 +158,19 @@ def build(make_audio=False):
                     'is a warning that the answer is about to change.'),
                    ('t2bh', 'The spelled word', 't2bb',
                     'When a speaker starts giving letters, an answer is being '
-                    'dictated. It happens once per section and it is never '
-                    'repeated more than the speakers would naturally repeat '
-                    'it.', 't2bn',
-                    'Know the letters that sound alike in English: A and R, E '
-                    'and I, G and J, M and N.'),
+                    'dictated. In Section 1 it usually happens once, and it '
+                    'is never repeated more than the speakers would naturally '
+                    'repeat it.', 't2bn',
+                    'Know the letters that sound alike in English: A, E and I; '
+                    'G and J; M and N.'),
                    ('t2ch', 'The number and the distractor', 't2cb',
                     'British speakers say <em>double oh</em> for two noughts '
                     'and <em>oh</em> for one. And there are nearly always two '
                     'prices or two times &mdash; one of them labelled as the '
                     'wrong one, quickly.', 't2cn',
-                    'Thirty-five was the non-member rate. She was joining, so '
-                    'the answer was forty-two.')],
+                    'Thirty-five was the monthly rate for non-members. She was '
+                    'joining, so the answer was forty-two.')],
                   folder=F, bg=BG_TRAPS)
-
-        + "".join(D.mc(i + 1, len(MC), q, 'mcEyebrow',
-                       'Questions 7&ndash;10 &middot; Detail', 'mcTitle',
-                       'What exactly did they say?',
-                       folder=F, bg=BG_DETAIL, ctx=q.get('ctx'))
-                  for i, q in enumerate(MC))
 
         + D.results('resNext', 'You heard it. Now run one &rarr;', folder=F)
 

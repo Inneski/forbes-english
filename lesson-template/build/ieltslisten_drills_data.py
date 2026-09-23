@@ -36,7 +36,7 @@ meets six accents while doing nothing but writing down numbers and letters.
 NUMBER_TAKES = [
     ('gb_f', 'The reference is double oh four, seven one three.'),
     ('us_m', 'It costs thirteen fifty. Not thirty, thirteen.'),
-    ('au_f', 'We are open from the fourteenth of March until the thirtieth '
+    ('au_f', "We're open from the fourteenth of March until the thirtieth "
              'of April.'),
     ('ca_f', 'The class is on the eighth floor, room eight eighty.'),
     ('gb_m2', 'Twenty pounds a head, or eighteen if you book by Friday.'),
@@ -44,7 +44,7 @@ NUMBER_TAKES = [
 
 SPELLING_TAKES = [
     ('ie_m', 'The surname is Hargreaves. H, A, R, G, R, E, A, V, E, S.'),
-    ('nz_f', 'That is Ffion with a double F. F, F, I, O, N.'),
+    ('nz_f', "That's Ffion. Double F, I, O, N."),
 ]
 
 CLIPS = [
@@ -55,27 +55,25 @@ CLIPS = [
 # ── Drill 1 · the numbers ──────────────────────────────────────────────
 NUMBERS_A = [
     ('Reference: ______', ['004713|00 47 13|0047 13'],
-     '"Double oh" is two noughts, so the reference begins 0 0. Said as '
-     '"double oh four, seven one three", it is 004713 &mdash; and a candidate '
-     'counting six separate digits never hears six.'),
-    ('Price: £______', ['13.50|13,50|1350'],
-     'Thirteen fifty. He says it and then separates it from thirty, which is '
-     'the pair that costs more marks than any other number in English.'),
+     '"Double oh" is two noughts: 004713. A candidate counting six separate '
+     'digits never hears six.'),
+    ('Price: £______', ['13.50|13,50'],
+     'Thirteen fifty, then "not thirty, thirteen": the pair that costs more '
+     'marks than any other number in English.'),
     ('Open from ______ March', ['14th|14|fourteenth'],
      'The fourteenth. Ordinals run together at speed &mdash; fourteenth and '
-     'fortieth differ by one unstressed syllable, and only one of them is a '
-     'real date.'),
+     'fortieth come out close, and only one of them is a real date.'),
 ]
 
 NUMBERS_B = [
-    ('Room ______', ['880|eight eighty|eight hundred and eighty'],
+    ('Room ______', ['880'],
      'Eight eighty. English says a room number in pairs rather than as a whole '
      'number, which is why "eight hundred and eighty" is what a learner '
      'expects and never what they hear.'),
     ('Price if you book early: £______', ['18|eighteen'],
-     'Eighteen. Twenty is the full price and it is said first &mdash; the '
-     'cheaper figure attached to a condition is almost always the answer, '
-     'because the condition is what the question is about.'),
+     'Eighteen. Twenty is the full price and it is said first; the gap asks '
+     'for the early-booking price, so the figure tied to that condition is the '
+     'one to write.'),
 ]
 
 NUMBERS_BANK = []
@@ -83,9 +81,9 @@ NUMBERS_BANK = []
 # ── Drill 2 · the spelling ─────────────────────────────────────────────
 SPELLING = [
     ('Surname: ______', ['Hargreaves|HARGREAVES'],
-     'Hargreaves. The trap is the A and the R at the start, which are the '
-     'commonest confusion in English letter names, and the EA in the middle, '
-     'which has to be heard as two letters rather than one sound.'),
+     'Hargreaves. The traps are the vowels &mdash; an A, then E and A '
+     'together &mdash; which learners swap because their own alphabets name '
+     'them differently, and the G, which is easily written as J.'),
     ('First name: ______', ['Ffion|FFION'],
      'Ffion, with a double F. When a speaker says "double" before a letter it '
      'is two of them &mdash; the same convention as "double oh" in a number, '
@@ -99,7 +97,7 @@ SPELLING_BANK = []
 # because grouping the pairs is what makes them memorable.
 PAIRS_BINS = ['Sound alike', 'Rarely confused']
 PAIRS_ITEMS = [
-    ('A and R', 0),
+    ('A and E', 0),
     ('E and I', 0),
     ('G and J', 0),
     ('M and N', 0),
@@ -109,13 +107,14 @@ PAIRS_ITEMS = [
 
 PAIRS_WHY = ('The four on the left are the ones that actually collide in '
              'English letter names, and between them they account for most '
-             'misspelled Section 1 answers. <strong>A</strong> and '
-             '<strong>R</strong> are near-identical in a non-rhotic British '
-             'accent; <strong>E</strong> and <strong>I</strong> swap between '
-             'English and most European languages; <strong>G</strong> and '
-             '<strong>J</strong> differ only in the opening consonant; '
-             '<strong>M</strong> and <strong>N</strong> differ only in the '
-             'nasal. W and Y and K and Q share nothing at all &mdash; which is '
+             'misspelled Section 1 answers. English <strong>A</strong> sounds '
+             'like the E of most European alphabets, and English '
+             '<strong>E</strong> like their I, so A and E, and E and I, are '
+             'swapped by anyone hearing with their own alphabet; '
+             '<strong>G</strong> and <strong>J</strong> share their opening '
+             'sound and differ only in the vowel; <strong>M</strong> and '
+             '<strong>N</strong> differ only in the final nasal. W and Y, and '
+             'K and Q, sound nothing alike once said in full &mdash; which is '
              'why nobody mishears them.')
 
 # ── Drill 4 · multiple choice ──────────────────────────────────────────

@@ -97,6 +97,25 @@
   text-decoration: underline; text-underline-offset: 3px;
 }
 .audio-replay:hover { color: var(--text); }
+/* The same recording, docked in the deck bar on the question slides that
+   follow a data-carry audio slide, so it can be started after reading and
+   keeps its place while the learner answers. */
+.audio-dock {
+  display: flex; align-items: center; gap: 10px; flex: 0 1 auto; min-width: 0;
+  font-family: var(--font-mono); font-size: 12px; color: var(--text);
+}
+.audio-dock[hidden] { display: none; }
+.dock-play {
+  flex: 0 0 auto; width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid var(--accent); background: var(--scrim); color: var(--accent-bright);
+  cursor: pointer; font-size: 13px; line-height: 1; display: grid; place-items: center;
+}
+.dock-play:disabled { cursor: default; border-color: var(--border); color: var(--text-dim); }
+.dock-track { width: 120px; height: 4px; border-radius: 2px; background: var(--inset2); overflow: hidden; }
+.dock-fill { height: 100%; width: 0; background: var(--accent); transition: width .2s linear; }
+.dock-time, .dock-state { white-space: nowrap; }
+.dock-state { color: var(--text-dim); }
+.dock-state.done { color: var(--accent-bright); }
 
 /* ── Fixed tokens: identical in every lesson. Do not edit. ── */
 :root {
@@ -1263,7 +1282,15 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
    picture made it obvious. Anything that paints text straight onto the stage
    belongs in that selector list. */
 .sort-bin-label { width: fit-content; margin-inline: auto; }
-.q-stem, .q-ctx { width: fit-content; max-width: 100%; }
+.q-stem, .q-ctx, .feedback, .gap-row { width: fit-content; max-width: 100%; }
+/* .feedback and .gap-row joined on 2026-09-23. The feedback plate was the one
+   on a question slide the 09-12 sweep never saw, because it is invisible until
+   a learner answers: a one-line "Correct." then painted a bar edge to edge
+   under shrink-wrapped options. .gap-row is the card deck.gap() puts
+   round each gap sentence, and a nine-word sentence was sitting in a card the
+   full width of the canvas. Innes, on Grammar Jail: "shorten the long black
+   text boxes". A row whose explanation is longer than its sentence widens
+   when answered; that is the card making room, not a layout fault. */
 /* max-width is 100%, NOT a shorter em cap. A 34em cap was tried first and it
    re-wrapped long stems onto an extra line, which pushed the body past the
    canvas on 17 decks — measured by running check-lesson.js over every deck
@@ -1766,8 +1793,8 @@ html[data-style="editorial"] .stamp {
         <h2 class="slide-title" data-i18n="audTitle">You will hear it once</h2>
       </div></div>
       <div class="slide-body">
-        <p class="prose" data-i18n="audNote">A guide talking to a group of visitors at a public garden. Press play when you are ready. There is no pause and no rewind, exactly as in the test.</p>
-        <div class="audio" data-src="ielts-listen-s2/section2.mp3" data-label="Section 2 &middot; 3:02"></div>
+        <p class="prose" data-i18n="audNote">A guide talking to a group of visitors at a public garden. Read the questions on the next slides first, then press play &mdash; here, or in the bar at the foot of any question slide. The recording keeps playing while you answer, and you hear it once.</p>
+        <div class="audio" data-src="ielts-listen-s2/section2.mp3" data-label="Section 2 &middot; 3:44" data-carry></div>
         <div style="margin-top:22px">
           <button class="btn" data-action="next" data-i18n="btnNext">Next →</button>
         </div>
@@ -1789,7 +1816,7 @@ html[data-style="editorial"] .stamp {
         <div class="match-pair" data-term="The toilets" data-def="Underneath the clock tower"></div>
         <div class="match-pair" data-term="The plant stall" data-def="At the far end of the long path"></div>
         <div class="match-grid"></div>
-        <p class="feedback" data-explain="Every one of these is given relative to something else, which is what a map task is. Two of them share a landmark &mdash; the play area and the bicycle racks are both beside the car park &mdash; so &quot;next to the car park&quot; on its own does not identify either, and the plant stall is described twice precisely because it has moved."></p>
+        <p class="feedback" data-explain="Every one of these is given relative to something else, which is what a map task is. The play area shares its landmark with the bicycle racks &mdash; both are beside the car park &mdash; so &quot;next to the car park&quot; on its own does not identify it, and the plant stall is described twice precisely because it has moved."></p>
       </div>
     </section>
 
@@ -1801,7 +1828,7 @@ html[data-style="editorial"] .stamp {
       <div class="slide-body">
         <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="notesHint">Two numbers arrive in the same sentence more than once. Write the one the gap asks for.</p>
         <div class="card gap-row" style="padding:12px 16px">
-          <p class="q-stem" style="margin-bottom:0;font-size:19px">Open until <input class="gap" data-answer="5.30|5:30|half past five|17.30|17:30" aria-label="gap" style="width:210px"> every day except Monday</p>
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">Open until <input class="gap" data-answer="5.30|5:30|5.30pm|5.30 pm|5:30pm|5:30 pm|17.30|17:30" aria-label="gap" style="width:210px"> every day except Monday</p>
           <p class="feedback" data-explain="Ten until half past five. The closing time is the one asked for, and it arrives second in the same short sentence as the opening time."></p>
         </div>
         <div class="card gap-row" style="padding:12px 16px">
@@ -1818,46 +1845,20 @@ html[data-style="editorial"] .stamp {
       </div>
     </section>
 
-    <section class="slide" data-type="teach" data-bg="ielts-listen-s2/bg05.jpg">
-      <div class="slide-head"><div>
-        <div class="eyebrow" data-i18n="t2Eyebrow">After the recording</div>
-        <h2 class="slide-title" data-i18n="t2Title">How a map task hides its answers</h2>
-      </div></div>
-      <div class="slide-body">
-        <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
-          <div class="card">
-            <p class="prose"><strong data-i18n="t2ah">The shared landmark</strong></p>
-            <p class="prose" data-i18n="t2ab" style="margin-top:8px;font-size:18px">Two things are put beside the same feature &mdash; the play area <em>and</em> the bicycle racks are both next to the car park. Naming the landmark does not identify either of them, so the sentence has to be held whole.</p>
-            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t2an">Whenever a speaker says <em>two things</em> or <em>in fact</em>, a second item is about to share a position.</p>
-          </div>
-          <div class="card">
-            <p class="prose"><strong data-i18n="t2bh">The thing that moved</strong></p>
-            <p class="prose" data-i18n="t2bb" style="margin-top:8px;font-size:18px">Something is described in its old place and then corrected to its new one. The plant stall "used to stand by the lake". Anyone answering from the first mention puts it in the wrong place.</p>
-            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t2bn">He repeats the new position deliberately. A repeat in a monologue is never decoration.</p>
-          </div>
-          <div class="card">
-            <p class="prose"><strong data-i18n="t2ch">The direction that depends on you</strong></p>
-            <p class="prose" data-i18n="t2cb" style="margin-top:8px;font-size:18px"><em>On your left</em>, <em>directly ahead</em>, <em>behind the lake</em>, <em>on the far side from where we are standing</em>. Every one of these is relative to the speaker&rsquo;s position, not to the page.</p>
-            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t2cn"><em>Behind</em> and <em>beyond</em> are the two that catch people: behind the lake is across it, beyond the greenhouse is past it.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <section class="slide" data-type="mc" data-bg="ielts-listen-s2/bg05.jpg">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="mcEyebrow">Questions 9&ndash;12 &middot; Detail</span> &middot; 1 / 4</div>
         <h2 class="slide-title" data-i18n="mcTitle">What exactly did the guide say?</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">What has changed at the gardens recently?</p>
+        <p class="q-stem">What happens at the end of the tour?</p>
         <div class="opts">
-          <button class="opt" data-correct>The glasshouse is a café rather than a ticket office.</button>
-          <button class="opt">The glasshouse is a ticket office rather than a café.</button>
-          <button class="opt">The main gate has been moved to the eastern side.</button>
-          <button class="opt">The rose garden has been replanted beside the lake.</button>
+          <button class="opt" data-correct>Visitors may stay on, because the ticket lasts all day.</button>
+          <button class="opt">Visitors are taken back to the main gate and let out.</button>
+          <button class="opt">Visitors pay a second time if they stay in the gardens.</button>
+          <button class="opt">Visitors must leave the gardens within the next hour.</button>
         </div>
-        <p class="feedback" data-explain="m1why"></p>
+        <p class="feedback" data-explain="m4why"></p>
       </div>
     </section>
 
@@ -1901,14 +1902,40 @@ html[data-style="editorial"] .stamp {
         <h2 class="slide-title" data-i18n="mcTitle">What exactly did the guide say?</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">What happens at the end of the tour?</p>
+        <p class="q-stem">How will the tour go round the gardens?</p>
         <div class="opts">
-          <button class="opt">Visitors must leave the gardens within the next hour.</button>
-          <button class="opt">Visitors are taken back to the main gate and let out.</button>
-          <button class="opt">Visitors pay a second time if they stay in the gardens.</button>
-          <button class="opt" data-correct>Visitors may stay on, because the ticket lasts all day.</button>
+          <button class="opt">Anticlockwise, starting from the main gate.</button>
+          <button class="opt">Clockwise, starting at the old glasshouse.</button>
+          <button class="opt">Clockwise, starting from the rose garden.</button>
+          <button class="opt" data-correct>Anticlockwise, starting at the glasshouse.</button>
         </div>
-        <p class="feedback" data-explain="m4why"></p>
+        <p class="feedback" data-explain="m5why"></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach" data-bg="ielts-listen-s2/bg05.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="t2Eyebrow">After the recording</div>
+        <h2 class="slide-title" data-i18n="t2Title">How a map task hides its answers</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="t2ah">The shared landmark</strong></p>
+            <p class="prose" data-i18n="t2ab" style="margin-top:8px;font-size:18px">Two things are put beside the same feature &mdash; the play area <em>and</em> the bicycle racks are both next to the car park. Naming the landmark does not identify either of them, so the sentence has to be held whole.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t2an">Whenever a speaker says <em>two things</em> or <em>in fact</em>, a second item is about to share a position.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t2bh">The thing that moved</strong></p>
+            <p class="prose" data-i18n="t2bb" style="margin-top:8px;font-size:18px">Something is described in its old place and then corrected to its new one. The plant stall "used to stand by the lake". Anyone answering from the first mention puts it in the wrong place.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t2bn">The guide repeats the new position deliberately. A repeat in a monologue is never decoration.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t2ch">The direction that depends on you</strong></p>
+            <p class="prose" data-i18n="t2cb" style="margin-top:8px;font-size:18px"><em>On your left</em>, <em>directly ahead</em>, <em>behind the lake</em>, <em>on the far side from where we are standing</em>. Every one of these is relative to the speaker&rsquo;s position, not to the page.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t2cn"><em>Behind</em> and <em>beyond</em> are the two that catch people: behind the lake is across it, beyond the greenhouse is past it.</p>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -2043,7 +2070,7 @@ const UI_I18N = {
     actWriteBrief: "Write the opening ninety seconds of a tour of somewhere you know well, describing where five things are. Use no compass directions at all &mdash; only positions relative to the entrance and to each other &mdash; and put two of them beside the same landmark.",
     actWriteKind: "Writing · 100–150 words",
     audEyebrow: "The recording",
-    audNote: "A guide talking to a group of visitors at a public garden. Press play when you are ready. There is no pause and no rewind, exactly as in the test.",
+    audNote: "A guide talking to a group of visitors at a public garden. Read the questions on the next slides first, then press play &mdash; here, or in the bar at the foot of any question slide. The recording keeps playing while you answer, and you hear it once.",
     audTitle: "You will hear it once",
     audioDone: 'That is the end of the recording.',
     audioMissing: 'The recording could not be loaded.',
@@ -2065,10 +2092,10 @@ const UI_I18N = {
     fbAnswer: 'Answer:',
     fbCorrect: 'Correct.',
     fbWrong: 'Not quite.',
-    m1why: "The glasshouse was the ticket office and is now the café. Both facts are in one sentence and the order is what decides the answer &mdash; which is the sentence the distractor simply reverses.",
     m2why: "The bank of the stream is being repaired. The birds are mentioned, and so is the spring, but neither is the reason: the spring is when it reopens.",
-    m3why: "Do not feed the birds. He gives a reason &mdash; bread is bad for them &mdash; and a reason attached to an instruction is how a monologue marks the thing it wants you to remember.",
+    m3why: "Do not feed the birds. The guide gives a reason &mdash; bread is bad for them &mdash; and a reason attached to an instruction is how a monologue marks the thing it wants you to remember.",
     m4why: "The ticket lasts all day, so visitors may stay. \"We finish back at the café\" is the line before, and it is about where the tour ends, not when you have to leave.",
+    m5why: "Anticlockwise, from the glasshouse &mdash; the last thing the guide says. Both halves come in one sentence, which is exactly where a distractor swaps one of them.",
     matchEyebrow: "Questions 1&ndash;5 &middot; The layout",
     matchHint: "Click a place, then its position. Everything is given relative to something else.",
     matchTitle: "Put each place where the guide put it",
@@ -2098,7 +2125,7 @@ const UI_I18N = {
     t2an: "Whenever a speaker says <em>two things</em> or <em>in fact</em>, a second item is about to share a position.",
     t2bb: "Something is described in its old place and then corrected to its new one. The plant stall \"used to stand by the lake\". Anyone answering from the first mention puts it in the wrong place.",
     t2bh: "The thing that moved",
-    t2bn: "He repeats the new position deliberately. A repeat in a monologue is never decoration.",
+    t2bn: "The guide repeats the new position deliberately. A repeat in a monologue is never decoration.",
     t2cb: "<em>On your left</em>, <em>directly ahead</em>, <em>behind the lake</em>, <em>on the far side from where we are standing</em>. Every one of these is relative to the speaker&rsquo;s position, not to the page.",
     t2ch: "The direction that depends on you",
     t2cn: "<em>Behind</em> and <em>beyond</em> are the two that catch people: behind the lake is across it, beyond the greenhouse is past it.",
@@ -2129,7 +2156,7 @@ const UI_I18N = {
     actWriteBrief: "Schreib die ersten neunzig Sekunden einer Führung durch einen Ort, den du gut kennst, und beschreibe, wo fünf Dinge sind. Ohne jede Himmelsrichtung &mdash; nur relativ zum Eingang und zueinander &mdash; und setz zwei davon neben denselben Orientierungspunkt.",
     actWriteKind: "Schreiben · 100–150 Wörter",
     audEyebrow: "Die Aufnahme",
-    audNote: "Eine Führerin spricht zu einer Besuchergruppe in einem öffentlichen Garten. Drücke Play, wenn du bereit bist. Kein Pausieren, kein Zurückspulen &mdash; genau wie in der Prüfung.",
+    audNote: "Eine Führerin spricht zu einer Besuchergruppe in einem öffentlichen Garten. Lies zuerst die Fragen auf den nächsten Folien, dann drücke Play &mdash; hier oder in der Leiste unten auf jeder Fragenfolie. Die Aufnahme läuft weiter, während du antwortest, und du hörst sie einmal.",
     audTitle: "Du hörst sie einmal",
     audioDone: 'Das ist das Ende der Aufnahme.',
     audioMissing: 'Die Aufnahme konnte nicht geladen werden.',
@@ -2151,10 +2178,10 @@ const UI_I18N = {
     fbAnswer: 'Antwort:',
     fbCorrect: 'Richtig.',
     fbWrong: 'Nicht ganz.',
-    m1why: "Das Glashaus war das Kartenhäuschen und ist jetzt das Café. Beides steht in einem Satz, und die Reihenfolge entscheidet &mdash; genau den Satz dreht der Ablenker um.",
     m2why: "Das Ufer des Bachs wird repariert. Die Vögel kommen vor und der Frühling auch, aber keins ist der Grund: im Frühling wird wieder geöffnet.",
     m3why: "Die Vögel nicht füttern. Sie nennt einen Grund &mdash; Brot ist schlecht für sie &mdash; und ein Grund an einer Anweisung ist im Monolog die Markierung für das, was man behalten soll.",
     m4why: "Das Ticket gilt den ganzen Tag, also darf man bleiben. „We finish back at the café“ steht davor und sagt, wo die Führung endet, nicht wann man gehen muss.",
+    m5why: "Gegen den Uhrzeigersinn, ab dem Glashaus &mdash; das Letzte, was die Führerin sagt. Beide Hälften stehen in einem Satz, und genau dort tauscht ein Ablenker eine davon aus.",
     matchEyebrow: "Fragen 1&ndash;5 &middot; Die Anlage",
     matchHint: "Klicke einen Ort an, dann seine Position. Alles ist relativ zu etwas anderem angegeben.",
     matchTitle: "Ordne jeden Ort dorthin, wo die Führerin ihn hingesetzt hat",
@@ -2215,7 +2242,7 @@ const UI_I18N = {
     actWriteBrief: "Escribe los primeros noventa segundos de una visita guiada a un sitio que conozcas bien, diciendo dónde están cinco cosas. Sin ningún punto cardinal &mdash; solo posiciones relativas a la entrada y entre sí &mdash; y pon dos de ellas junto a la misma referencia.",
     actWriteKind: "Escritura · 100–150 palabras",
     audEyebrow: "La grabación",
-    audNote: "Una guía hablando a un grupo de visitantes en un jardín público. Dale a reproducir cuando estés listo. Sin pausa y sin rebobinar, igual que en el examen.",
+    audNote: "Una guía hablando a un grupo de visitantes en un jardín público. Lee primero las preguntas de las diapositivas siguientes y luego dale a reproducir, aquí o en la barra de abajo de cualquier pregunta. La grabación sigue sonando mientras respondes, y la oyes una sola vez.",
     audTitle: "La oirás una vez",
     audioDone: 'Aquí acaba la grabación.',
     audioMissing: 'No se ha podido cargar la grabación.',
@@ -2237,10 +2264,10 @@ const UI_I18N = {
     fbAnswer: 'Respuesta:',
     fbCorrect: 'Correcto.',
     fbWrong: 'No exactamente.',
-    m1why: "El invernadero era la taquilla y ahora es la cafetería. Los dos datos van en una frase y el orden es lo que decide: justo la frase que el distractor da la vuelta.",
     m2why: "Están reparando la orilla del arroyo. Los pájaros salen, y la primavera también, pero ninguno es el motivo: en primavera se vuelve a abrir.",
     m3why: "No dar de comer a los pájaros. Da un motivo &mdash; el pan les sienta mal &mdash; y un motivo pegado a una instrucción es como un monólogo marca lo que quiere que recuerdes.",
     m4why: "La entrada vale todo el día, así que pueden quedarse. «We finish back at the café» es la línea anterior y dice dónde acaba la visita, no cuándo hay que irse.",
+    m5why: "En sentido contrario a las agujas del reloj, desde el invernadero: es lo último que dice la guía. Las dos mitades van en una frase, y ahí es justo donde un distractor cambia una.",
     matchEyebrow: "Preguntas 1&ndash;5 &middot; La distribución",
     matchHint: "Haz clic en un sitio y luego en su posición. Todo se da en relación con otra cosa.",
     matchTitle: "Coloca cada sitio donde lo colocó la guía",
@@ -2323,6 +2350,9 @@ const countIn = s => s.dataset.type === 'gap'   ? s.querySelectorAll('.gap').len
                    : 1;
 const maxScore = scored.reduce((n, s) => n + Math.max(1, countIn(s)), 0);
 let idx = 0, score = 0;
+// Called with the new index after every slide change, for behaviour that
+// belongs to a range of slides rather than to one (the docked recording).
+const slideHooks = [];
 const answered = new WeakSet();
 
 /* ── Branch mode ────────────────────────────────────────────────────────
@@ -2474,6 +2504,7 @@ function show(n) {
   if (slides[idx].dataset.type === 'results') renderResults();
   markRail(slides[idx]);
   if (slides[idx]._enter) slides[idx]._enter();
+  slideHooks.forEach(f => f(idx));
   const gap = slides[idx].querySelector('.gap');
   if (gap && !answered.has(slides[idx])) setTimeout(() => gap.focus(), 60);
 }
@@ -2770,11 +2801,19 @@ slides.filter(s => s.dataset.type === 'match').forEach(slide => {
    It behaves like the test, deliberately:
      · one play — the button locks once it has been pressed
      · no scrubbing — the bar reports progress, it does not accept clicks
-     · the slide's [data-action="next"] Continue button stays disabled until
-       the recording ends, so nobody reaches the questions early
    A replay control appears only after it has finished, and it says in words
    that the real test does not offer one. A classroom needs to replay; a
-   learner practising alone should know that is not the exam. */
+   learner practising alone should know that is not the exam.
+
+   With data-carry on the box (every deck.audio() slide since 2026-09-23) the
+   recording behaves like the real paper, where you read first and answer as
+   you listen: Continue is open, leaving the slide does not stop it, and the
+   question slides after it — up to the next audio, results or activation
+   slide — carry a small player in the deck bar that shows the time and can
+   start it. Leaving that range pauses it; coming back resumes it.
+
+   Without data-carry the old contract holds: Continue stays disabled until
+   the recording ends, and leaving the slide stops it. */
 slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
   const box = slide.querySelector('.audio');
   if (!box || !box.dataset.src) return;
@@ -2810,8 +2849,39 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
   row.append(btn, meta); wrap.append(row, state);
   box.replaceChildren(wrap);
 
+  const carry = 'carry' in box.dataset;
   const cont = slide.querySelector('[data-action="next"]');
-  if (cont) cont.disabled = true;
+  if (cont && !carry) cont.disabled = true;
+
+  /* The docked copy: built for carry slides only, and put in the deck bar
+     where the ledger sits, so it never takes room from a slide. */
+  let dock = null, dockBtn = null, dockFill = null, dockTime = null, dockState = null;
+  if (carry) {
+    const at = slides.indexOf(slide);
+    let end = at + 1;
+    while (end < slides.length
+           && !['audio', 'results', 'activate'].includes(slides[end].dataset.type)) end++;
+    dock = document.createElement('div'); dock.className = 'audio-dock'; dock.hidden = true;
+    dockBtn = document.createElement('button');
+    dockBtn.className = 'dock-play'; dockBtn.type = 'button'; dockBtn.textContent = '▶';
+    dockBtn.dataset.i18nAria = 'audioPlay'; dockBtn.setAttribute('aria-label', t('audioPlay'));
+    const dockTrack = document.createElement('div'); dockTrack.className = 'dock-track';
+    dockFill = document.createElement('div'); dockFill.className = 'dock-fill';
+    dockTrack.append(dockFill);
+    dockTime = document.createElement('span'); dockTime.className = 'dock-time'; dockTime.textContent = '0:00';
+    dockState = document.createElement('span'); dockState.className = 'dock-state';
+    dock.append(dockBtn, dockTrack, dockTime, dockState);
+    const bar = document.querySelector('.deck-bar');
+    bar.insertBefore(dock, bar.querySelector('[data-action="prev"]'));
+    let autoPaused = false;
+    slideHooks.push(i => {
+      const inRange = i > at && i < end;
+      dock.hidden = !inRange;
+      if (i === at || inRange) {
+        if (autoPaused) { autoPaused = false; audio.play().catch(() => {}); }
+      } else if (!audio.paused) { autoPaused = true; audio.pause(); }
+    });
+  }
 
   const mmss = n => Number.isFinite(n)
     ? Math.floor(n / 60) + ':' + String(Math.floor(n % 60)).padStart(2, '0') : '';
@@ -2822,11 +2892,16 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
     fill.style.width = (audio.currentTime / audio.duration * 100) + '%';
     now.textContent = mmss(audio.currentTime);
     left.textContent = mmss(audio.duration - audio.currentTime);
+    if (dock) {
+      dockFill.style.width = fill.style.width;
+      dockTime.textContent = mmss(audio.currentTime) + ' / ' + mmss(audio.duration);
+    }
   });
   audio.addEventListener('error', () => {
     state.dataset.i18n = 'audioMissing';
     state.textContent = t('audioMissing');
     btn.disabled = true;
+    if (dockBtn) dockBtn.disabled = true;
     if (cont) cont.disabled = false;   // never trap a learner behind a broken file
   });
   audio.addEventListener('ended', () => {
@@ -2836,6 +2911,11 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
     state.textContent = t('audioDone');
     state.classList.add('done');
     if (cont) cont.disabled = false;
+    if (dock) {
+      dockFill.style.width = '100%';
+      dockState.textContent = '✓';
+      dockState.classList.add('done');
+    }
     const again = document.createElement('button');
     again.className = 'audio-replay'; again.type = 'button';
     again.dataset.i18n = 'audioReplay';
@@ -2844,13 +2924,17 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
       audio.currentTime = 0; audio.play();
       state.dataset.i18n = 'audioPlaying';
       state.textContent = t('audioPlaying'); state.classList.remove('done');
+      if (dock) { dockState.textContent = ''; dockState.classList.remove('done'); }
       again.remove();
     });
     wrap.append(again);
   });
 
-  btn.addEventListener('click', () => {
+  const start = () => {
     btn.disabled = true;
+    // The running time says it is playing; the deck bar has no room for
+    // the sentence the main player shows.
+    if (dockBtn) dockBtn.disabled = true;
     state.dataset.i18n = 'audioPlaying';
     state.textContent = t('audioPlaying');
     audio.play().catch(() => {
@@ -2859,11 +2943,14 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
     state.textContent = t('audioMissing');
       if (cont) cont.disabled = false;
     });
-  });
+  };
+  btn.addEventListener('click', start);
+  if (dockBtn) dockBtn.addEventListener('click', start);
 
-  // Leaving the slide stops the recording rather than letting it run on
-  // behind the questions.
-  slide._leave = () => { if (!audio.paused) audio.pause(); };
+  // Without data-carry, leaving the slide stops the recording rather than
+  // letting it run on behind the questions. With it, the range hook above
+  // decides.
+  if (!carry) slide._leave = () => { if (!audio.paused) audio.pause(); };
 });
 
 /* Sentence building. Author as

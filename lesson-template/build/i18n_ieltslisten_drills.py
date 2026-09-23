@@ -20,7 +20,7 @@ from chrome_i18n import CHROME
 LIFT = ['btnStart', 'btnCheck', 'btnNext', 'btnRestart', 'scoreLabel', 'slideOf',
         'fbCorrect', 'fbWrong', 'fbAnswer', 'resNext', 'actEyebrow',
         'actSpeakKind', 'btnCopy', 'btnCopied', 'wordCount',
-        'audioPlay', 'audioOnce', 'audioPlaying', 'audioDone', 'audioReplay',
+        'audioPlay', 'audioPlaying', 'audioDone', 'audioReplay',
         'audioMissing']
 
 TAIL = {
@@ -54,7 +54,8 @@ T['en'] = dict(
     t1an='Thirteen and thirty are the costliest pair in the language. The '
          'stress moves; the vowel barely does.',
     t1bh='Letter names collide',
-    t1bb='<strong>A</strong> and <strong>R</strong>, <strong>E</strong> and '
+    audioOnce='Press play when you are ready. When it ends, you can replay it.',
+    t1bb='<strong>A</strong> and <strong>E</strong>, <strong>E</strong> and '
          '<strong>I</strong>, <strong>G</strong> and <strong>J</strong>, '
          '<strong>M</strong> and <strong>N</strong>. Four pairs, and between '
          'them they account for most of the misspelled answers on the paper.',
@@ -71,9 +72,10 @@ T['en'] = dict(
 
     numAudEyebrow='Drill 1 &middot; The recording',
     numAudTitle='Five speakers, five numbers',
-    numAudNote='Short takes in five accents. Play it, write the numbers, and '
-               'play it again as many times as you need &mdash; this is a '
-               'drill, not the test.',
+    numAudNote='Short takes in five accents. Look at the gaps on the next '
+               'slides, then press play &mdash; here or in the bar at the foot '
+               'of those slides. When it ends you can play it again from here: '
+               'this is a drill, not the test.',
 
     numEyebrow='Drill 1 &middot; Numbers',
     numTitle='Write ONE NUMBER in each gap',
@@ -83,8 +85,8 @@ T['en'] = dict(
     spellAudEyebrow='Drill 2 &middot; The recording',
     spellAudTitle='Two names, spelled once each',
     spellAudNote='Two takes, two accents. Each name is given letter by letter '
-                 'exactly once, at speaking speed, which is what the real test '
-                 'does.',
+                 'exactly once, at speaking speed, as in the real test. Look at '
+                 'the gaps on the next slide, then press play.',
 
     spellEyebrow='Drill 2 &middot; Spelling',
     spellTitle='Write the name exactly as it was spelled',
@@ -125,7 +127,7 @@ T['en'] = dict(
     actSpeak2='Put one number in your set that contains a thirteen or a '
               'thirty, and do not help.',
     actSpeak3='Spell one name containing two of the colliding pairs &mdash; '
-              'an A and an R, or an M and an N.',
+              'an A and an E, or an M and an N.',
     actWriteKind='Writing · 80–120 words',
     actWriteBrief='Write out the five items you dictated, in figures and '
                   'letters, then write beside each one the mistake you '
@@ -152,7 +154,8 @@ T['de'] = dict(
     t1an='Thirteen und thirty sind das teuerste Paar der Sprache. Die Betonung '
          'wandert, der Vokal kaum.',
     t1bh='Buchstabennamen kollidieren',
-    t1bb='<strong>A</strong> und <strong>R</strong>, <strong>E</strong> und '
+    audioOnce='Drücke Play, wenn du bereit bist. Danach kannst du es noch einmal hören.',
+    t1bb='<strong>A</strong> und <strong>E</strong>, <strong>E</strong> und '
          '<strong>I</strong>, <strong>G</strong> und <strong>J</strong>, '
          '<strong>M</strong> und <strong>N</strong>. Vier Paare, und zusammen '
          'verursachen sie die meisten falsch geschriebenen Antworten.',
@@ -170,9 +173,10 @@ T['de'] = dict(
 
     numAudEyebrow='Übung 1 &middot; Die Aufnahme',
     numAudTitle='Fünf Sprecher, fünf Zahlen',
-    numAudNote='Kurze Takes in fünf Akzenten. Abspielen, Zahlen mitschreiben '
-               'und so oft wiederholen, wie du willst &mdash; das ist eine '
-               'Übung, nicht die Prüfung.',
+    numAudNote='Kurze Takes in fünf Akzenten. Sieh dir die Lücken auf den '
+               'nächsten Folien an, dann drücke Play &mdash; hier oder in der '
+               'Leiste unten auf diesen Folien. Danach kannst du es von hier '
+               'noch einmal abspielen: das ist eine Übung, nicht die Prüfung.',
 
     numEyebrow='Übung 1 &middot; Zahlen',
     numTitle='Schreibe EINE ZAHL in jede Lücke',
@@ -183,7 +187,8 @@ T['de'] = dict(
     spellAudTitle='Zwei Namen, je einmal buchstabiert',
     spellAudNote='Zwei Takes, zwei Akzente. Jeder Name wird genau einmal '
                  'buchstabiert, in normalem Sprechtempo &mdash; so wie in der '
-                 'echten Prüfung.',
+                 'echten Prüfung. Sieh dir zuerst die Lücken auf der nächsten '
+                 'Folie an, dann drücke Play.',
 
     spellEyebrow='Übung 2 &middot; Buchstabieren',
     spellTitle='Schreib den Namen genau so, wie er buchstabiert wurde',
@@ -225,7 +230,7 @@ T['de'] = dict(
     actSpeak2='Bau eine Zahl mit einer Dreizehn oder einer Dreißig ein &mdash; '
               'und hilf nicht.',
     actSpeak3='Buchstabiere einen Namen mit zwei der kollidierenden Paare '
-              '&mdash; ein A und ein R, oder ein M und ein N.',
+              '&mdash; ein A und ein E, oder ein M und ein N.',
     actWriteKind='Schreiben · 80–120 Wörter',
     actWriteBrief='Schreib die fünf diktierten Dinge in Ziffern und Buchstaben '
                   'auf und daneben jeweils den Fehler, den du bei deinem '
@@ -251,7 +256,8 @@ T['es'] = dict(
     t1an='Thirteen y thirty son el par más caro del idioma. Lo que se mueve es '
          'el acento; la vocal casi no.',
     t1bh='Los nombres de las letras chocan',
-    t1bb='<strong>A</strong> y <strong>R</strong>, <strong>E</strong> e '
+    audioOnce='Dale a reproducir cuando estés listo. Al terminar puedes volver a oírlo.',
+    t1bb='<strong>A</strong> y <strong>E</strong>, <strong>E</strong> e '
          '<strong>I</strong>, <strong>G</strong> y <strong>J</strong>, '
          '<strong>M</strong> y <strong>N</strong>. Cuatro pares que, entre '
          'todos, causan la mayoría de las respuestas mal escritas del examen.',
@@ -268,9 +274,10 @@ T['es'] = dict(
 
     numAudEyebrow='Ejercicio 1 &middot; La grabación',
     numAudTitle='Cinco hablantes, cinco números',
-    numAudNote='Tomas cortas en cinco acentos. Reprodúcela, anota los números '
-               'y vuelve a ponerla las veces que necesites: esto es un '
-               'ejercicio, no el examen.',
+    numAudNote='Tomas cortas en cinco acentos. Mira los huecos de las '
+               'diapositivas siguientes y luego dale a reproducir, aquí o en la '
+               'barra de abajo de esas diapositivas. Al terminar puedes volver a '
+               'ponerla desde aquí: esto es un ejercicio, no el examen.',
 
     numEyebrow='Ejercicio 1 &middot; Números',
     numTitle='Escribe UN NÚMERO en cada hueco',
@@ -280,8 +287,9 @@ T['es'] = dict(
     spellAudEyebrow='Ejercicio 2 &middot; La grabación',
     spellAudTitle='Dos nombres, deletreados una vez cada uno',
     spellAudNote='Dos tomas, dos acentos. Cada nombre se deletrea exactamente '
-                 'una vez, a velocidad normal, que es lo que hace el examen '
-                 'real.',
+                 'una vez, a velocidad normal, como en el examen real. Mira '
+                 'primero los huecos de la diapositiva siguiente y luego dale a '
+                 'reproducir.',
 
     spellEyebrow='Ejercicio 2 &middot; Deletreo',
     spellTitle='Escribe el nombre tal y como se deletreó',
@@ -323,7 +331,7 @@ T['es'] = dict(
     actSpeak2='Mete en tu lista un número con un thirteen o un thirty, y no '
               'ayudes.',
     actSpeak3='Deletrea un nombre que lleve dos de los pares que chocan: una A '
-              'y una R, o una M y una N.',
+              'y una E, o una M y una N.',
     actWriteKind='Escritura · 80–120 palabras',
     actWriteBrief='Escribe las cinco cosas que dictaste, en cifras y letras, y '
                   'al lado de cada una el error que esperabas que cometiera tu '

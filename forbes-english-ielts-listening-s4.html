@@ -4,20 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- SEO:start -->
-<meta name="description" content="One speaker, four minutes, and the only section with no break in the middle">
+<meta name="description" content="One speaker, one long run, and the only section with no break in the middle">
 <link rel="canonical" href="https://forbesenglish.com/forbes-english-ielts-listening-s4.html">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Forbes English">
 <meta property="og:title" content="IELTS Listening Section 4: The Lecture (C1) | Forbes English">
-<meta property="og:description" content="One speaker, four minutes, and the only section with no break in the middle">
+<meta property="og:description" content="One speaker, one long run, and the only section with no break in the middle">
 <meta property="og:url" content="https://forbesenglish.com/forbes-english-ielts-listening-s4.html">
 <meta property="og:image" content="https://forbesenglish.com/ielts-listen-s4/hero.jpg">
 <meta property="og:locale" content="en_GB">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="IELTS Listening Section 4: The Lecture (C1) | Forbes English">
-<meta name="twitter:description" content="One speaker, four minutes, and the only section with no break in the middle">
+<meta name="twitter:description" content="One speaker, one long run, and the only section with no break in the middle">
 <meta name="twitter:image" content="https://forbesenglish.com/ielts-listen-s4/hero.jpg">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"IELTS Listening Section 4: The Lecture","description":"One speaker, four minutes, and the only section with no break in the middle","url":"https://forbesenglish.com/forbes-english-ielts-listening-s4.html","inLanguage":"en","learningResourceType":"lesson","interactivityType":"active","isAccessibleForFree":false,"image":"https://forbesenglish.com/ielts-listen-s4/hero.jpg","provider":{"@type":"Organization","name":"Forbes English","url":"https://forbesenglish.com/"},"isPartOf":{"@type":"Course","name":"Forbes English lesson library","url":"https://forbesenglish.com/library.html"},"educationalLevel":"C1","teaches":["The term defined in passing: The technical term is interception loss — and then an explanation. When a lecturer says the technical term is or that is, a markable word has just gone past.","The number that is corrected: Eight hundred pounds, then no, I should be accurate, then twelve hundred. The Section 1 correction trap, arriving at Section 4 speed where there is no second speaker to confirm it.","The aside with nothing in it: Twenty seconds about roots and pavements, containing no answers at all, placed exactly where a tiring candidate starts writing down whatever they hear."],"datePublished":"2026-09-13","hasPart":{"@type":"WebPageElement","isAccessibleForFree":false,"cssSelector":".paywalled"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"IELTS Listening Section 4: The Lecture","description":"One speaker, one long run, and the only section with no break in the middle","url":"https://forbesenglish.com/forbes-english-ielts-listening-s4.html","inLanguage":"en","learningResourceType":"lesson","interactivityType":"active","isAccessibleForFree":false,"image":"https://forbesenglish.com/ielts-listen-s4/hero.jpg","provider":{"@type":"Organization","name":"Forbes English","url":"https://forbesenglish.com/"},"isPartOf":{"@type":"Course","name":"Forbes English lesson library","url":"https://forbesenglish.com/library.html"},"educationalLevel":"C1","teaches":["The term defined in passing: The technical term is interception loss — and then an explanation. When a lecturer says the technical term is or that is, a markable word has just gone past.","The number that is corrected: Eight hundred pounds, then no, I should be accurate, then twelve hundred. The Section 1 correction trap, arriving at Section 4 speed where there is no second speaker to confirm it.","The aside that still counts: Twenty seconds about roots and pavements, which the lecturer flags as a digression. It is off the main argument — and it still holds an answer, Question 6."],"datePublished":"2026-09-13","hasPart":{"@type":"WebPageElement","isAccessibleForFree":false,"cssSelector":".paywalled"}}</script>
 <!-- SEO:end -->
 <!-- ══ REPLACE: lesson title. No "Forbes English —" prefix. ══ -->
 <title>IELTS Listening Section 4: The Lecture (C1) | Forbes English</title>
@@ -97,6 +97,25 @@
   text-decoration: underline; text-underline-offset: 3px;
 }
 .audio-replay:hover { color: var(--text); }
+/* The same recording, docked in the deck bar on the question slides that
+   follow a data-carry audio slide, so it can be started after reading and
+   keeps its place while the learner answers. */
+.audio-dock {
+  display: flex; align-items: center; gap: 10px; flex: 0 1 auto; min-width: 0;
+  font-family: var(--font-mono); font-size: 12px; color: var(--text);
+}
+.audio-dock[hidden] { display: none; }
+.dock-play {
+  flex: 0 0 auto; width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid var(--accent); background: var(--scrim); color: var(--accent-bright);
+  cursor: pointer; font-size: 13px; line-height: 1; display: grid; place-items: center;
+}
+.dock-play:disabled { cursor: default; border-color: var(--border); color: var(--text-dim); }
+.dock-track { width: 120px; height: 4px; border-radius: 2px; background: var(--inset2); overflow: hidden; }
+.dock-fill { height: 100%; width: 0; background: var(--accent); transition: width .2s linear; }
+.dock-time, .dock-state { white-space: nowrap; }
+.dock-state { color: var(--text-dim); }
+.dock-state.done { color: var(--accent-bright); }
 
 /* ── Fixed tokens: identical in every lesson. Do not edit. ── */
 :root {
@@ -1263,7 +1282,15 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
    picture made it obvious. Anything that paints text straight onto the stage
    belongs in that selector list. */
 .sort-bin-label { width: fit-content; margin-inline: auto; }
-.q-stem, .q-ctx { width: fit-content; max-width: 100%; }
+.q-stem, .q-ctx, .feedback, .gap-row { width: fit-content; max-width: 100%; }
+/* .feedback and .gap-row joined on 2026-09-23. The feedback plate was the one
+   on a question slide the 09-12 sweep never saw, because it is invisible until
+   a learner answers: a one-line "Correct." then painted a bar edge to edge
+   under shrink-wrapped options. .gap-row is the card deck.gap() puts
+   round each gap sentence, and a nine-word sentence was sitting in a card the
+   full width of the canvas. Innes, on Grammar Jail: "shorten the long black
+   text boxes". A row whose explanation is longer than its sentence widens
+   when answered; that is the card making room, not a layout fault. */
 /* max-width is 100%, NOT a shorter em cap. A 34em cap was tried first and it
    re-wrapped long stems onto an extra line, which pushed the body past the
    canvas on 17 decks — measured by running check-lesson.js over every deck
@@ -1722,7 +1749,7 @@ html[data-style="editorial"] .stamp {
           <text class="fe-logo-word" x="105.205" y="72.6" text-anchor="middle" font-family="'DM Sans', Arial, sans-serif" font-size="20.8" font-weight="600" letter-spacing="10.41">ENGLISH</text>
         </svg>
         <h1 class="cover-title" data-i18n="coverTitle">Section 4 &mdash; <em>the lecture</em></h1>
-        <p class="cover-sub" data-i18n="coverSub">One speaker, four minutes, and the only section with no break in the middle</p>
+        <p class="cover-sub" data-i18n="coverSub">One speaker, one long run, and the only section with no break in the middle</p>
         <div class="cover-meta">
           <span class="chip" data-i18n="chipLevel">C1</span>
           <span class="chip" data-i18n="chipFocus">Listening &middot; Section 4</span>
@@ -1748,7 +1775,7 @@ html[data-style="editorial"] .stamp {
           </div>
           <div class="card">
             <p class="prose"><strong data-i18n="t1bh">Follow the signposts, not the sentences</strong></p>
-            <p class="prose" data-i18n="t1bb" style="margin-top:8px;font-size:18px"><em>First</em> &middot; <em>the second factor</em> &middot; <em>the third function</em> &middot; <em>finally</em>. A lecturer tells you where you are roughly once a minute, and those words are the only handholds in four minutes of continuous speech.</p>
+            <p class="prose" data-i18n="t1bb" style="margin-top:8px;font-size:18px"><em>First</em> &middot; <em>the second factor</em> &middot; <em>the third function</em> &middot; <em>finally</em>. A lecturer tells you where you are roughly once a minute, and those words are the only handholds in a long run of continuous speech.</p>
             <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t1bn">If you have drifted, stop trying to catch up on meaning and wait for the next signpost. It is coming.</p>
           </div>
           <div class="card">
@@ -1766,8 +1793,8 @@ html[data-style="editorial"] .stamp {
         <h2 class="slide-title" data-i18n="audTitle">You will hear it once, straight through</h2>
       </div></div>
       <div class="slide-body">
-        <p class="prose" data-i18n="audNote">Part of a lecture on the role of trees in cities. Four minutes with no break. Press play when you have read every question.</p>
-        <div class="audio" data-src="ielts-listen-s4/section4.mp3" data-label="Section 4 &middot; 3:01"></div>
+        <p class="prose" data-i18n="audNote">Part of a lecture on the role of trees in cities, with no break in the middle. Read all ten questions on the next slides first, then press play &mdash; here, or in the bar at the foot of any question slide. It keeps playing while you answer.</p>
+        <div class="audio" data-src="ielts-listen-s4/section4.mp3" data-label="Section 4 &middot; 3:14" data-carry></div>
         <div style="margin-top:22px">
           <button class="btn" data-action="next" data-i18n="btnNext">Next →</button>
         </div>
@@ -1776,22 +1803,22 @@ html[data-style="editorial"] .stamp {
 
     <section class="slide" data-type="gap" data-bg="ielts-listen-s4/bg04.jpg">
       <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="notesEyebrow">Questions 1&ndash;6 &middot; Complete the notes</span> &middot; 1 / 2</div>
+        <div class="eyebrow"><span data-i18n="notesEyebrow">Questions 1&ndash;10 &middot; Complete the notes</span> &middot; 1 / 4</div>
         <h2 class="slide-title" data-i18n="notesTitle">Write ONE WORD AND/OR A NUMBER in each gap</h2>
       </div></div>
       <div class="slide-body">
-        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="notesHint">Every answer is said aloud. Two of them are said twice, with the second version being the one that counts.</p>
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="notesHint">Every answer is said aloud, in order. Two come with a second number beside them, and only one of each pair counts.</p>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">Urban trees should be treated as <input class="gap" data-answer="infrastructure" aria-label="gap" style="width:210px">, not decoration</p>
+          <p class="feedback" data-explain="Infrastructure, in the first sentence: the thesis the whole lecture is built to support."></p>
+        </div>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">Trees cool the air by shading and by <input class="gap" data-answer="transpiration" aria-label="gap" style="width:210px"></p>
-          <p class="feedback" data-explain="Transpiration &mdash; and the lecturer defines it in the same breath, &quot;releasing water vapour through the leaves&quot;. The definition is there to help; the answer is still the term."></p>
+          <p class="feedback" data-explain="Transpiration, defined in the same breath as &quot;releasing water vapour through the leaves&quot;. The answer is the term, not the definition."></p>
         </div>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">A planted street runs about <input class="gap" data-answer="2|two" aria-label="gap" style="width:210px"> degrees cooler</p>
-          <p class="feedback" data-explain="Two in Europe. Four is quoted for Australia and immediately labelled an &quot;upper bound rather than a typical figure&quot; &mdash; a number said and then qualified is almost never the answer."></p>
-        </div>
-        <div class="card gap-row" style="padding:12px 16px">
-          <p class="q-stem" style="margin-bottom:0;font-size:19px">Rain that never reaches the drain: <input class="gap" data-answer="interception" aria-label="gap" style="width:210px"> loss</p>
-          <p class="feedback" data-explain="&quot;The technical term is interception loss.&quot; He says <em>the technical term is</em>, which is the clearest possible flag that a word is about to be worth a mark."></p>
+          <p class="feedback" data-explain="Two, for Europe. Four is quoted for Australia and called an &quot;upper bound&quot; at once &mdash; a figure that gets qualified is not the answer."></p>
         </div>
         <div style="margin-top:10px">
           <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
@@ -1801,22 +1828,64 @@ html[data-style="editorial"] .stamp {
 
     <section class="slide" data-type="gap" data-bg="ielts-listen-s4/bg04.jpg">
       <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="notesEyebrow">Questions 1&ndash;6 &middot; Complete the notes</span> &middot; 2 / 2</div>
+        <div class="eyebrow"><span data-i18n="notesEyebrow">Questions 1&ndash;10 &middot; Complete the notes</span> &middot; 2 / 4</div>
         <h2 class="slide-title" data-i18n="notesTitle">Write ONE WORD AND/OR A NUMBER in each gap</h2>
       </div></div>
       <div class="slide-body">
-        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="notesHint">Every answer is said aloud. Two of them are said twice, with the second version being the one that counts.</p>
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="notesHint">Every answer is said aloud, in order. Two come with a second number beside them, and only one of each pair counts.</p>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">Rain that never reaches the drain: <input class="gap" data-answer="interception" aria-label="gap" style="width:210px"> loss</p>
+          <p class="feedback" data-explain="&quot;The technical term is interception loss&quot; &mdash; the clearest flag there is that a word is worth a mark."></p>
+        </div>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">Interception is <input class="gap" data-answer="20|twenty" aria-label="gap" style="width:210px"> to thirty per cent of a rainfall event</p>
-          <p class="feedback" data-explain="Twenty to thirty. Both halves of a range get said; the gap tells you which one it wants by what is already printed beside it."></p>
+          <p class="feedback" data-explain="Twenty to thirty. What is printed beside the gap shows which half of the range it wants."></p>
         </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">Root damage is largely avoidable with the right planting <input class="gap" data-answer="pit" aria-label="gap" style="width:210px"></p>
+          <p class="feedback" data-explain="Pit, inside the aside the lecturer flags as a digression. An aside is off the main argument, not empty."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap" data-bg="ielts-listen-s4/bg04.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="notesEyebrow">Questions 1&ndash;10 &middot; Complete the notes</span> &middot; 3 / 4</div>
+        <h2 class="slide-title" data-i18n="notesTitle">Write ONE WORD AND/OR A NUMBER in each gap</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="notesHint">Every answer is said aloud, in order. Two come with a second number beside them, and only one of each pair counts.</p>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">Weakest evidence of the three: <input class="gap" data-answer="air" aria-label="gap" style="width:210px"> quality</p>
-          <p class="feedback" data-explain="Air quality, and he grades it himself &mdash; &quot;the weakest evidence of the three&quot;. A lecturer ranking his own points is handing you the structure."></p>
+          <p class="feedback" data-explain="Air quality, and the lecturer grades it himself &mdash; &quot;the weakest evidence of the three&quot;. A lecturer ranking his own points is handing you the structure."></p>
         </div>
         <div class="card gap-row" style="padding:12px 16px">
-          <p class="q-stem" style="margin-bottom:0;font-size:19px">Cost per tree, including watering: £<input class="gap" data-answer="1200|1,200|twelve hundred" aria-label="gap" style="width:210px"></p>
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">A dense avenue over a narrow street can <input class="gap" data-answer="trap" aria-label="gap" style="width:210px"> polluted air</p>
+          <p class="feedback" data-explain="Trap. The complication comes straight after the claim it limits &mdash; trees trap particulates, and they can trap the polluted air too. Same verb, opposite effect."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap" data-bg="ielts-listen-s4/bg04.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="notesEyebrow">Questions 1&ndash;10 &middot; Complete the notes</span> &middot; 4 / 4</div>
+        <h2 class="slide-title" data-i18n="notesTitle">Write ONE WORD AND/OR A NUMBER in each gap</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="notesHint">Every answer is said aloud, in order. Two come with a second number beside them, and only one of each pair counts.</p>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">Cost per tree, including watering: £<input class="gap" data-answer="1200|1,200" aria-label="gap" style="width:210px"></p>
           <p class="feedback" data-explain="Twelve hundred. Eight hundred is said first and corrected inside the same sentence &mdash; &quot;no, I should be accurate&quot; &mdash; which is the Section 1 correction trap at Section 4 speed."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">Most schemes fail to budget for the <input class="gap" data-answer="watering" aria-label="gap" style="width:210px"></p>
+          <p class="feedback" data-explain="Watering &mdash; &quot;the watering, not the planting&quot;. The last line of a lecture is where it lands its point, and the contrast is said in the same breath."></p>
         </div>
         <div style="margin-top:10px">
           <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
@@ -1842,79 +1911,11 @@ html[data-style="editorial"] .stamp {
             <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t2bn">And two degrees is the answer while four is quoted and then called "an upper bound" &mdash; a figure that gets qualified is not the figure they want.</p>
           </div>
           <div class="card">
-            <p class="prose"><strong data-i18n="t2ch">The aside with nothing in it</strong></p>
-            <p class="prose" data-i18n="t2cb" style="margin-top:8px;font-size:18px">Twenty seconds about roots and pavements, containing no answers at all, placed exactly where a tiring candidate starts writing down whatever they hear.</p>
-            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t2cn"><em>An aside</em> &middot; <em>somebody always asks</em> &middot; <em>that is a different lecture</em>. He tells you it is a digression. Believe him and rest.</p>
+            <p class="prose"><strong data-i18n="t2ch">The aside that still counts</strong></p>
+            <p class="prose" data-i18n="t2cb" style="margin-top:8px;font-size:18px">Twenty seconds about roots and pavements, which the lecturer flags as a digression. It is off the main argument &mdash; and it still holds an answer, Question 6.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t2cn"><em>An aside</em> &middot; <em>somebody always asks</em> &middot; <em>that&rsquo;s a different lecture</em>. A digression is a change of subject, not a rest.</p>
           </div>
         </div>
-      </div>
-    </section>
-
-    <section class="slide" data-type="mc" data-bg="ielts-listen-s4/bg05.jpg">
-      <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="mcEyebrow">Questions 7&ndash;10 &middot; The argument</span> &middot; 1 / 4</div>
-        <h2 class="slide-title" data-i18n="mcTitle">What was the lecturer actually saying?</h2>
-      </div></div>
-      <div class="slide-body">
-        <p class="q-stem">How does the lecturer want trees to be thought of?</p>
-        <div class="opts">
-          <button class="opt" data-correct>As infrastructure rather than as decoration.</button>
-          <button class="opt">As decoration rather than as infrastructure.</button>
-          <button class="opt">As a cost that cities should try to reduce.</button>
-          <button class="opt">As a replacement for drainage in a city.</button>
-        </div>
-        <p class="feedback" data-explain="p1why"></p>
-      </div>
-    </section>
-
-    <section class="slide" data-type="mc" data-bg="ielts-listen-s4/bg05.jpg">
-      <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="mcEyebrow">Questions 7&ndash;10 &middot; The argument</span> &middot; 2 / 4</div>
-        <h2 class="slide-title" data-i18n="mcTitle">What was the lecturer actually saying?</h2>
-      </div></div>
-      <div class="slide-body">
-        <p class="q-stem">What complication does he raise about air quality?</p>
-        <div class="opts">
-          <button class="opt">Particulates are washed off the leaves by rain.</button>
-          <button class="opt" data-correct>Dense trees can trap polluted air in a street.</button>
-          <button class="opt">The leaves absorb less pollution than expected.</button>
-          <button class="opt">Measuring the effect needs specialist equipment.</button>
-        </div>
-        <p class="feedback" data-explain="p2why"></p>
-      </div>
-    </section>
-
-    <section class="slide" data-type="mc" data-bg="ielts-listen-s4/bg05.jpg">
-      <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="mcEyebrow">Questions 7&ndash;10 &middot; The argument</span> &middot; 3 / 4</div>
-        <h2 class="slide-title" data-i18n="mcTitle">What was the lecturer actually saying?</h2>
-      </div></div>
-      <div class="slide-body">
-        <p class="q-stem">What does he say about roots damaging pavements?</p>
-        <div class="opts">
-          <button class="opt">It is a myth that councils repeat to save money.</button>
-          <button class="opt">It is the strongest argument against street trees.</button>
-          <button class="opt" data-correct>It is real, but avoidable with the right planting.</button>
-          <button class="opt">It is a problem only in older European cities.</button>
-        </div>
-        <p class="feedback" data-explain="p3why"></p>
-      </div>
-    </section>
-
-    <section class="slide" data-type="mc" data-bg="ielts-listen-s4/bg05.jpg">
-      <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="mcEyebrow">Questions 7&ndash;10 &middot; The argument</span> &middot; 4 / 4</div>
-        <h2 class="slide-title" data-i18n="mcTitle">What was the lecturer actually saying?</h2>
-      </div></div>
-      <div class="slide-body">
-        <p class="q-stem">Which cost do schemes most often fail to budget for?</p>
-        <div class="opts">
-          <button class="opt">The price of buying the young tree originally.</button>
-          <button class="opt">The repair of pavements damaged by the roots.</button>
-          <button class="opt">The cost of designing where the trees will go.</button>
-          <button class="opt" data-correct>The watering of the tree in its first few years.</button>
-        </div>
-        <p class="feedback" data-explain="p4why"></p>
       </div>
     </section>
 
@@ -1933,7 +1934,7 @@ html[data-style="editorial"] .stamp {
     <section class="slide" data-type="activate" data-bg="ielts-listen-s4/bg06.jpg">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="actEyebrow">Activation</div>
-        <h2 class="slide-title" data-i18n="actTitle">Give the four-minute lecture</h2>
+        <h2 class="slide-title" data-i18n="actTitle">Give the three-minute lecture</h2>
       </div></div>
       <div class="slide-body">
         <div class="act-target">
@@ -1943,7 +1944,7 @@ html[data-style="editorial"] .stamp {
           <span class="bank-chip">the technical term is</span>
           <span class="bank-chip">a corrected number wins</span>
           <span class="bank-chip">a qualified figure loses</span>
-          <span class="bank-chip">an aside is a rest</span>
+          <span class="bank-chip">an aside still counts</span>
         </div>
         <div class="act-stage">
           <div class="act-choose">
@@ -1965,13 +1966,13 @@ html[data-style="editorial"] .stamp {
             <ul class="act-list">
               <li data-i18n="actSpeak1">Speaker: signpost every point out loud &mdash; <em>first</em>, <em>the second reason</em>, <em>finally</em>. Count them as you go.</li>
               <li data-i18n="actSpeak2">Correct one number halfway through, the way a real lecturer does, and see whether it reaches the notes.</li>
-              <li data-i18n="actSpeak3">Take one twenty-second digression and announce it as one. Your partner should write nothing during it.</li>
+              <li data-i18n="actSpeak3">Take one twenty-second digression and announce it as one. Your partner notes its one point, in three words or fewer.</li>
             </ul>
           </div>
           <div class="act-panel" id="actPanelWrite" data-panel="write" hidden>
             <button class="act-close" type="button" data-action="act-close" aria-label="Close">&times;</button>
             <div class="act-kind"><span class="act-icon">✍️</span><span data-i18n="actWriteKind">Writing &middot; 120&ndash;180 words</span></div>
-            <p class="act-brief" data-i18n="actWriteBrief">Write the notes a listener should have ended up with: your three points, the numbers, and the one term you defined. Keep every line to two words or fewer after the heading, which is the real limit a note task sets.</p>
+            <p class="act-brief" data-i18n="actWriteBrief">Write the notes a listener should have ended up with: your three points, the numbers, and the one term you defined. Set a word limit at the top &mdash; ONE WORD AND/OR A NUMBER is the strictest the test uses &mdash; and keep every line inside it.</p>
             <textarea class="act-input" id="actInput" data-i18n-ph="actPlaceholder" placeholder="Point 1: … / cooled by: …" aria-label="Written response"></textarea>
             <div class="act-foot">
               <span class="act-count" id="actCount">0 words</span>
@@ -2041,15 +2042,15 @@ const UI_I18N = {
     actPlaceholder: "Point 1: … / cooled by: …",
     actSpeak1: "Speaker: signpost every point out loud &mdash; <em>first</em>, <em>the second reason</em>, <em>finally</em>. Count them as you go.",
     actSpeak2: "Correct one number halfway through, the way a real lecturer does, and see whether it reaches the notes.",
-    actSpeak3: "Take one twenty-second digression and announce it as one. Your partner should write nothing during it.",
+    actSpeak3: "Take one twenty-second digression and announce it as one. Your partner notes its one point, in three words or fewer.",
     actSpeakBrief: "In pairs. Take something you know well and talk for three minutes without stopping, with three numbered points. Your partner takes notes and is not allowed to ask anything. Then compare their notes with what you meant to say.",
     actSpeakKind: 'Discussion · in pairs',
-    actTitle: "Give the four-minute lecture",
+    actTitle: "Give the three-minute lecture",
     actUse: "Use at least three:",
-    actWriteBrief: "Write the notes a listener should have ended up with: your three points, the numbers, and the one term you defined. Keep every line to two words or fewer after the heading, which is the real limit a note task sets.",
+    actWriteBrief: "Write the notes a listener should have ended up with: your three points, the numbers, and the one term you defined. Set a word limit at the top &mdash; ONE WORD AND/OR A NUMBER is the strictest the test uses &mdash; and keep every line inside it.",
     actWriteKind: "Writing · 120–180 words",
     audEyebrow: "The recording",
-    audNote: "Part of a lecture on the role of trees in cities. Four minutes with no break. Press play when you have read every question.",
+    audNote: "Part of a lecture on the role of trees in cities, with no break in the middle. Read all ten questions on the next slides first, then press play &mdash; here, or in the bar at the foot of any question slide. It keeps playing while you answer.",
     audTitle: "You will hear it once, straight through",
     audioDone: 'That is the end of the recording.',
     audioMissing: 'The recording could not be loaded.',
@@ -2066,20 +2067,14 @@ const UI_I18N = {
     chipCount: "10 questions",
     chipFocus: "Listening &middot; Section 4",
     chipLevel: "C1",
-    coverSub: "One speaker, four minutes, and the only section with no break in the middle",
+    coverSub: "One speaker, one long run, and the only section with no break in the middle",
     coverTitle: "Section 4 &mdash; <em>the lecture</em>",
     fbAnswer: 'Answer:',
     fbCorrect: 'Correct.',
     fbWrong: 'Not quite.',
-    mcEyebrow: "Questions 7&ndash;10 &middot; The argument",
-    mcTitle: "What was the lecturer actually saying?",
-    notesEyebrow: "Questions 1&ndash;6 &middot; Complete the notes",
-    notesHint: "Every answer is said aloud. Two of them are said twice, with the second version being the one that counts.",
+    notesEyebrow: "Questions 1&ndash;10 &middot; Complete the notes",
+    notesHint: "Every answer is said aloud, in order. Two come with a second number beside them, and only one of each pair counts.",
     notesTitle: "Write ONE WORD AND/OR A NUMBER in each gap",
-    p1why: "As infrastructure rather than decoration &mdash; he says it in his first twenty seconds, and the whole lecture is organised to support it. Openings carry the thesis; that is what they are for.",
-    p2why: "Dense trees over a narrow street can trap polluted air instead of letting it disperse. He raises it as a complication to his own point, which is where an honest lecturer puts the hardest question.",
-    p3why: "Real, but largely avoidable with the right planting pit. He grants the damage and the repair bill before he limits them &mdash; a concession is not a retraction.",
-    p4why: "The watering, not the planting. He says so explicitly in the last line, and it is the point the whole cost paragraph exists to make.",
     resNext: 'Recognising the language is half of it. Now produce it →',
     scoreLabel: 'Score',
     slideOf: (a,b)=>`${a} / ${b}`,
@@ -2088,7 +2083,7 @@ const UI_I18N = {
     t1ab: "Sections 1 to 3 stop halfway so you can read the next questions. Section 4 runs straight through. One speaker, no second voice to interrupt and repeat &mdash; so if you lose your place there is nothing to grab hold of.",
     t1ah: "There is no pause",
     t1an: "Read all the questions before you press play. There will be no moment later in which to do it.",
-    t1bb: "<em>First</em> &middot; <em>the second factor</em> &middot; <em>the third function</em> &middot; <em>finally</em>. A lecturer tells you where you are roughly once a minute, and those words are the only handholds in four minutes of continuous speech.",
+    t1bb: "<em>First</em> &middot; <em>the second factor</em> &middot; <em>the third function</em> &middot; <em>finally</em>. A lecturer tells you where you are roughly once a minute, and those words are the only handholds in a long run of continuous speech.",
     t1bh: "Follow the signposts, not the sentences",
     t1bn: "If you have drifted, stop trying to catch up on meaning and wait for the next signpost. It is coming.",
     t1cb: "Note completion takes the words from the recording, so the answer is rarely hard to hear. What loses the mark is writing three words where two were allowed, or adding a word the gap already has beside it.",
@@ -2102,9 +2097,9 @@ const UI_I18N = {
     t2bb: "Eight hundred pounds, then <em>no, I should be accurate</em>, then twelve hundred. The Section 1 correction trap, arriving at Section 4 speed where there is no second speaker to confirm it.",
     t2bh: "The number that is corrected",
     t2bn: "And two degrees is the answer while four is quoted and then called \"an upper bound\" &mdash; a figure that gets qualified is not the figure they want.",
-    t2cb: "Twenty seconds about roots and pavements, containing no answers at all, placed exactly where a tiring candidate starts writing down whatever they hear.",
-    t2ch: "The aside with nothing in it",
-    t2cn: "<em>An aside</em> &middot; <em>somebody always asks</em> &middot; <em>that is a different lecture</em>. He tells you it is a digression. Believe him and rest.",
+    t2cb: "Twenty seconds about roots and pavements, which the lecturer flags as a digression. It is off the main argument &mdash; and it still holds an answer, Question 6.",
+    t2ch: "The aside that still counts",
+    t2cn: "<em>An aside</em> &middot; <em>somebody always asks</em> &middot; <em>that&rsquo;s a different lecture</em>. A digression is a change of subject, not a rest.",
     wordCount: (n)=>`${n} ${n===1?'word':'words'}`,
     branchLocked: 'Your ledger does not support this ending',
     glossHide: 'Hide',
@@ -2124,15 +2119,15 @@ const UI_I18N = {
     actPlaceholder: "Point 1: … / cooled by: …",
     actSpeak1: "Sprecher: kündige jeden Punkt laut an &mdash; <em>first</em>, <em>the second reason</em>, <em>finally</em>. Zähl sie mit.",
     actSpeak2: "Korrigiere auf halber Strecke eine Zahl, wie es echte Vortragende tun, und schau, ob es in den Notizen ankommt.",
-    actSpeak3: "Mach eine Abschweifung von zwanzig Sekunden und kündige sie als solche an. Dein Partner soll dabei nichts schreiben.",
+    actSpeak3: "Mach eine Abschweifung von zwanzig Sekunden und kündige sie als solche an. Dein Partner notiert ihren einen Punkt, in höchstens drei Wörtern.",
     actSpeakBrief: "Zu zweit. Nimm etwas, das du gut kennst, und rede drei Minuten ohne Pause, mit drei nummerierten Punkten. Dein Partner macht Notizen und darf nichts fragen. Danach vergleicht ihr die Notizen mit dem, was du sagen wolltest.",
     actSpeakKind: 'Diskussion · zu zweit',
-    actTitle: "Halte die Vier-Minuten-Vorlesung",
+    actTitle: "Halte die Drei-Minuten-Vorlesung",
     actUse: "Verwende mindestens drei:",
-    actWriteBrief: "Schreib die Notizen auf, mit denen ein Zuhörer hätte enden sollen: deine drei Punkte, die Zahlen und der eine Begriff, den du definiert hast. Jede Zeile nach der Überschrift höchstens zwei Wörter &mdash; das ist das echte Limit einer Notizenaufgabe.",
+    actWriteBrief: "Schreib die Notizen auf, mit denen ein Zuhörer hätte enden sollen: deine drei Punkte, die Zahlen und der eine Begriff, den du definiert hast. Setz oben ein Wortlimit &mdash; ONE WORD AND/OR A NUMBER ist das strengste der Prüfung &mdash; und halte jede Zeile darin.",
     actWriteKind: "Schreiben · 120–180 Wörter",
     audEyebrow: "Die Aufnahme",
-    audNote: "Ein Ausschnitt aus einer Vorlesung über die Rolle von Bäumen in Städten. Vier Minuten ohne Pause. Drücke Play, wenn du jede Frage gelesen hast.",
+    audNote: "Ein Ausschnitt aus einer Vorlesung über die Rolle von Bäumen in Städten, ohne Pause in der Mitte. Lies zuerst alle zehn Fragen auf den nächsten Folien, dann drücke Play &mdash; hier oder in der Leiste unten auf jeder Fragenfolie. Die Aufnahme läuft weiter, während du antwortest.",
     audTitle: "Du hörst sie einmal, ohne Unterbrechung",
     audioDone: 'Das ist das Ende der Aufnahme.',
     audioMissing: 'Die Aufnahme konnte nicht geladen werden.',
@@ -2149,20 +2144,14 @@ const UI_I18N = {
     chipCount: "10 Fragen",
     chipFocus: "Listening &middot; Section 4",
     chipLevel: "C1",
-    coverSub: "Ein Sprecher, vier Minuten, und der einzige Teil ohne Pause in der Mitte",
+    coverSub: "Ein Sprecher, ein langer Block, und der einzige Teil ohne Pause in der Mitte",
     coverTitle: "Section 4 &mdash; <em>die Vorlesung</em>",
     fbAnswer: 'Antwort:',
     fbCorrect: 'Richtig.',
     fbWrong: 'Nicht ganz.',
-    mcEyebrow: "Fragen 7&ndash;10 &middot; Die Argumentation",
-    mcTitle: "Was hat der Vortragende eigentlich gesagt?",
-    notesEyebrow: "Fragen 1&ndash;6 &middot; Notizen vervollständigen",
-    notesHint: "Jede Antwort wird laut gesagt. Zwei davon zweimal &mdash; die zweite Fassung zählt.",
+    notesEyebrow: "Fragen 1&ndash;10 &middot; Notizen vervollständigen",
+    notesHint: "Jede Antwort wird laut gesagt, der Reihe nach. Zwei kommen mit einer zweiten Zahl daneben, und nur eine von beiden zählt.",
     notesTitle: "Schreibe EIN WORT UND/ODER EINE ZAHL in jede Lücke",
-    p1why: "Als Infrastruktur statt als Dekoration &mdash; er sagt es in den ersten zwanzig Sekunden, und die ganze Vorlesung ist darauf gebaut. Anfänge tragen die These; dafür sind sie da.",
-    p2why: "Dichte Bäume über einer engen Straße können verschmutzte Luft festhalten, statt sie entweichen zu lassen. Er bringt es als Einwand gegen den eigenen Punkt &mdash; dort steht bei einem ehrlichen Vortrag die schwerste Frage.",
-    p3why: "Real, aber mit der richtigen Pflanzgrube weitgehend vermeidbar. Er räumt Schaden und Reparaturkosten ein, bevor er sie einschränkt &mdash; ein Zugeständnis ist kein Rückzug.",
-    p4why: "Das Gießen, nicht das Pflanzen. Er sagt es ausdrücklich im letzten Satz, und der ganze Kostenabschnitt existiert für diesen Punkt.",
     resNext: 'Die Sprache zu erkennen ist die halbe Miete. Jetzt anwenden →',
     scoreLabel: 'Punkte',
     slideOf: (a,b)=>`${a} / ${b}`,
@@ -2171,7 +2160,7 @@ const UI_I18N = {
     t1ab: "Teil 1 bis 3 halten in der Mitte an, damit du die nächsten Fragen lesen kannst. Teil 4 läuft durch. Ein Sprecher, keine zweite Stimme, die unterbricht und wiederholt &mdash; wer den Faden verliert, hat nichts zum Festhalten.",
     t1ah: "Es gibt keine Pause",
     t1an: "Lies alle Fragen, bevor du Play drückst. Später gibt es dafür keinen Moment mehr.",
-    t1bb: "<em>First</em> &middot; <em>the second factor</em> &middot; <em>the third function</em> &middot; <em>finally</em>. Etwa einmal pro Minute sagt dir ein Vortragender, wo du bist, und das sind die einzigen Haltegriffe in vier Minuten Dauerrede.",
+    t1bb: "<em>First</em> &middot; <em>the second factor</em> &middot; <em>the third function</em> &middot; <em>finally</em>. Etwa einmal pro Minute sagt dir ein Vortragender, wo du bist, und das sind die einzigen Haltegriffe in einem langen Stück Dauerrede.",
     t1bh: "Folge den Wegweisern, nicht den Sätzen",
     t1bn: "Wenn du abgedriftet bist, hör auf, inhaltlich aufzuholen, und warte auf den nächsten Wegweiser. Er kommt.",
     t1cb: "Notizen-Ergänzen nimmt die Wörter aus der Aufnahme, die Antwort ist also selten schwer zu hören. Den Punkt kostet, wer drei Wörter schreibt, wo zwei erlaubt waren, oder ein Wort ergänzt, das neben der Lücke schon steht.",
@@ -2185,9 +2174,9 @@ const UI_I18N = {
     t2bb: "Achthundert Pfund, dann <em>no, I should be accurate</em>, dann zwölfhundert. Die Korrekturfalle aus Teil 1, jetzt im Tempo von Teil 4 und ohne zweiten Sprecher, der sie bestätigt.",
     t2bh: "Die korrigierte Zahl",
     t2bn: "Und zwei Grad ist die Antwort, während vier genannt und dann „an upper bound“ genannt wird &mdash; eine Zahl, die eingeschränkt wird, ist nicht die gesuchte.",
-    t2cb: "Zwanzig Sekunden über Wurzeln und Gehwege, ganz ohne Antworten, genau dort platziert, wo ein ermüdender Kandidat anfängt, alles mitzuschreiben, was er hört.",
-    t2ch: "Der Einschub ohne Inhalt",
-    t2cn: "<em>An aside</em> &middot; <em>somebody always asks</em> &middot; <em>that is a different lecture</em>. Er sagt dir, dass es eine Abschweifung ist. Glaub ihm und ruh dich aus.",
+    t2cb: "Zwanzig Sekunden über Wurzeln und Gehwege, die der Vortragende als Abschweifung ankündigt. Sie liegen neben dem Hauptargument &mdash; und enthalten trotzdem eine Antwort, Frage 6.",
+    t2ch: "Der Einschub, der trotzdem zählt",
+    t2cn: "<em>An aside</em> &middot; <em>somebody always asks</em> &middot; <em>that&rsquo;s a different lecture</em>. Eine Abschweifung ist ein Themenwechsel, keine Pause.",
     wordCount: (n)=>`${n} ${n===1?'Wort':'Wörter'}`,
     branchLocked: 'Dein Protokoll trägt dieses Ende nicht',
     glossHide: 'Ausblenden',
@@ -2207,15 +2196,15 @@ const UI_I18N = {
     actPlaceholder: "Point 1: … / cooled by: …",
     actSpeak1: "Quien habla: señaliza cada punto en voz alta &mdash; <em>first</em>, <em>the second reason</em>, <em>finally</em>. Ve contándolos.",
     actSpeak2: "Corrige un número a mitad de camino, como hace un conferenciante de verdad, y mira si llega a las notas.",
-    actSpeak3: "Haz una digresión de veinte segundos y anúnciala como tal. Tu compañero no debería escribir nada mientras dura.",
+    actSpeak3: "Haz una digresión de veinte segundos y anúnciala como tal. Tu compañero apunta su única idea, en tres palabras como mucho.",
     actSpeakBrief: "En parejas. Coge algo que conozcas bien y habla tres minutos sin parar, con tres puntos numerados. Tu compañero toma notas y no puede preguntar nada. Luego comparad sus notas con lo que querías decir.",
     actSpeakKind: 'Debate · en parejas',
-    actTitle: "Da la conferencia de cuatro minutos",
+    actTitle: "Da la conferencia de tres minutos",
     actUse: "Usa al menos tres:",
-    actWriteBrief: "Escribe las notas con las que debería haber acabado quien te escuchaba: tus tres puntos, las cifras y el término que definiste. Cada línea, después del encabezado, de dos palabras como mucho: ese es el límite real de una tarea de notas.",
+    actWriteBrief: "Escribe las notas con las que debería haber acabado quien te escuchaba: tus tres puntos, las cifras y el término que definiste. Pon arriba un límite de palabras &mdash; ONE WORD AND/OR A NUMBER es el más estricto del examen &mdash; y que cada línea lo respete.",
     actWriteKind: "Escritura · 120–180 palabras",
     audEyebrow: "La grabación",
-    audNote: "Parte de una conferencia sobre el papel de los árboles en las ciudades. Cuatro minutos sin pausa. Dale a reproducir cuando hayas leído todas las preguntas.",
+    audNote: "Parte de una conferencia sobre el papel de los árboles en las ciudades, sin pausa a mitad. Lee primero las diez preguntas de las diapositivas siguientes y luego dale a reproducir, aquí o en la barra de abajo de cualquier pregunta. Sigue sonando mientras respondes.",
     audTitle: "La oirás una vez, de seguido",
     audioDone: 'Aquí acaba la grabación.',
     audioMissing: 'No se ha podido cargar la grabación.',
@@ -2232,20 +2221,14 @@ const UI_I18N = {
     chipCount: "10 preguntas",
     chipFocus: "Listening &middot; Section 4",
     chipLevel: "C1",
-    coverSub: "Una sola voz, cuatro minutos, y la única parte sin pausa en mitad",
+    coverSub: "Una sola voz, un tramo largo, y la única parte sin pausa a mitad",
     coverTitle: "Section 4 &mdash; <em>la conferencia</em>",
     fbAnswer: 'Respuesta:',
     fbCorrect: 'Correcto.',
     fbWrong: 'No exactamente.',
-    mcEyebrow: "Preguntas 7&ndash;10 &middot; El argumento",
-    mcTitle: "¿Qué estaba diciendo en realidad?",
-    notesEyebrow: "Preguntas 1&ndash;6 &middot; Completa las notas",
-    notesHint: "Todas las respuestas se dicen en voz alta. Dos se dicen dos veces, y vale la segunda versión.",
+    notesEyebrow: "Preguntas 1&ndash;10 &middot; Completa las notas",
+    notesHint: "Todas las respuestas se dicen en voz alta, en orden. Dos llegan con un segundo número al lado, y solo uno de los dos vale.",
     notesTitle: "Escribe UNA PALABRA Y/O UN NÚMERO en cada hueco",
-    p1why: "Como infraestructura y no como decoración: lo dice en los primeros veinte segundos, y toda la conferencia está montada para sostenerlo. Las aperturas llevan la tesis; para eso están.",
-    p2why: "Los árboles densos sobre una calle estrecha pueden atrapar el aire contaminado en vez de dejarlo dispersarse. Lo plantea como complicación de su propio punto, que es donde un buen conferenciante pone la pregunta más difícil.",
-    p3why: "Real, pero evitable en gran medida con el hoyo de plantación adecuado. Admite el daño y la factura antes de limitarlos: una concesión no es una retirada.",
-    p4why: "El riego, no la plantación. Lo dice explícitamente en la última línea, y todo el párrafo de costes existe para eso.",
     resNext: 'Reconocer el lenguaje es solo la mitad. Ahora prodúcelo →',
     scoreLabel: 'Puntuación',
     slideOf: (a,b)=>`${a} / ${b}`,
@@ -2254,7 +2237,7 @@ const UI_I18N = {
     t1ab: "Las secciones 1 a 3 paran a mitad para que leas las preguntas siguientes. La 4 va de seguido. Una sola voz, sin nadie que interrumpa y repita: si pierdes el hilo, no hay de dónde agarrarse.",
     t1ah: "No hay pausa",
     t1an: "Lee todas las preguntas antes de darle a reproducir. Luego no habrá ningún momento para hacerlo.",
-    t1bb: "<em>First</em> &middot; <em>the second factor</em> &middot; <em>the third function</em> &middot; <em>finally</em>. Más o menos una vez por minuto te dicen dónde estás, y esas palabras son los únicos asideros en cuatro minutos seguidos.",
+    t1bb: "<em>First</em> &middot; <em>the second factor</em> &middot; <em>the third function</em> &middot; <em>finally</em>. Más o menos una vez por minuto te dicen dónde estás, y esas palabras son los únicos asideros en un tramo largo de habla seguida.",
     t1bh: "Sigue las señales, no las frases",
     t1bn: "Si te has despistado, deja de intentar recuperar el sentido y espera a la siguiente señal. Va a llegar.",
     t1cb: "Completar notas toma las palabras de la grabación, así que la respuesta rara vez cuesta oírla. El punto se pierde al escribir tres palabras donde cabían dos, o al añadir una palabra que ya está junto al hueco.",
@@ -2268,9 +2251,9 @@ const UI_I18N = {
     t2bb: "Ochocientas libras, luego <em>no, I should be accurate</em>, luego mil doscientas. La trampa de corrección de la Section 1, a la velocidad de la 4 y sin un segundo hablante que lo confirme.",
     t2bh: "El número que se corrige",
     t2bn: "Y dos grados es la respuesta, mientras que cuatro se cita y se llama «an upper bound»: una cifra que se matiza no es la que piden.",
-    t2cb: "Veinte segundos sobre raíces y aceras, sin una sola respuesta, puestos justo donde un candidato cansado empieza a apuntar todo lo que oye.",
-    t2ch: "El inciso sin nada dentro",
-    t2cn: "<em>An aside</em> &middot; <em>somebody always asks</em> &middot; <em>that is a different lecture</em>. Te dice que es una digresión. Créele y descansa.",
+    t2cb: "Veinte segundos sobre raíces y aceras, que el conferenciante anuncia como digresión. Se sale del argumento principal, y aun así contiene una respuesta, la pregunta 6.",
+    t2ch: "El inciso que también cuenta",
+    t2cn: "<em>An aside</em> &middot; <em>somebody always asks</em> &middot; <em>that&rsquo;s a different lecture</em>. Una digresión es un cambio de tema, no un descanso.",
     wordCount: (n)=>`${n} ${n===1?'palabra':'palabras'}`,
     branchLocked: 'Tu registro no admite este final',
     glossHide: 'Ocultar',
@@ -2320,6 +2303,9 @@ const countIn = s => s.dataset.type === 'gap'   ? s.querySelectorAll('.gap').len
                    : 1;
 const maxScore = scored.reduce((n, s) => n + Math.max(1, countIn(s)), 0);
 let idx = 0, score = 0;
+// Called with the new index after every slide change, for behaviour that
+// belongs to a range of slides rather than to one (the docked recording).
+const slideHooks = [];
 const answered = new WeakSet();
 
 /* ── Branch mode ────────────────────────────────────────────────────────
@@ -2471,6 +2457,7 @@ function show(n) {
   if (slides[idx].dataset.type === 'results') renderResults();
   markRail(slides[idx]);
   if (slides[idx]._enter) slides[idx]._enter();
+  slideHooks.forEach(f => f(idx));
   const gap = slides[idx].querySelector('.gap');
   if (gap && !answered.has(slides[idx])) setTimeout(() => gap.focus(), 60);
 }
@@ -2767,11 +2754,19 @@ slides.filter(s => s.dataset.type === 'match').forEach(slide => {
    It behaves like the test, deliberately:
      · one play — the button locks once it has been pressed
      · no scrubbing — the bar reports progress, it does not accept clicks
-     · the slide's [data-action="next"] Continue button stays disabled until
-       the recording ends, so nobody reaches the questions early
    A replay control appears only after it has finished, and it says in words
    that the real test does not offer one. A classroom needs to replay; a
-   learner practising alone should know that is not the exam. */
+   learner practising alone should know that is not the exam.
+
+   With data-carry on the box (every deck.audio() slide since 2026-09-23) the
+   recording behaves like the real paper, where you read first and answer as
+   you listen: Continue is open, leaving the slide does not stop it, and the
+   question slides after it — up to the next audio, results or activation
+   slide — carry a small player in the deck bar that shows the time and can
+   start it. Leaving that range pauses it; coming back resumes it.
+
+   Without data-carry the old contract holds: Continue stays disabled until
+   the recording ends, and leaving the slide stops it. */
 slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
   const box = slide.querySelector('.audio');
   if (!box || !box.dataset.src) return;
@@ -2807,8 +2802,39 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
   row.append(btn, meta); wrap.append(row, state);
   box.replaceChildren(wrap);
 
+  const carry = 'carry' in box.dataset;
   const cont = slide.querySelector('[data-action="next"]');
-  if (cont) cont.disabled = true;
+  if (cont && !carry) cont.disabled = true;
+
+  /* The docked copy: built for carry slides only, and put in the deck bar
+     where the ledger sits, so it never takes room from a slide. */
+  let dock = null, dockBtn = null, dockFill = null, dockTime = null, dockState = null;
+  if (carry) {
+    const at = slides.indexOf(slide);
+    let end = at + 1;
+    while (end < slides.length
+           && !['audio', 'results', 'activate'].includes(slides[end].dataset.type)) end++;
+    dock = document.createElement('div'); dock.className = 'audio-dock'; dock.hidden = true;
+    dockBtn = document.createElement('button');
+    dockBtn.className = 'dock-play'; dockBtn.type = 'button'; dockBtn.textContent = '▶';
+    dockBtn.dataset.i18nAria = 'audioPlay'; dockBtn.setAttribute('aria-label', t('audioPlay'));
+    const dockTrack = document.createElement('div'); dockTrack.className = 'dock-track';
+    dockFill = document.createElement('div'); dockFill.className = 'dock-fill';
+    dockTrack.append(dockFill);
+    dockTime = document.createElement('span'); dockTime.className = 'dock-time'; dockTime.textContent = '0:00';
+    dockState = document.createElement('span'); dockState.className = 'dock-state';
+    dock.append(dockBtn, dockTrack, dockTime, dockState);
+    const bar = document.querySelector('.deck-bar');
+    bar.insertBefore(dock, bar.querySelector('[data-action="prev"]'));
+    let autoPaused = false;
+    slideHooks.push(i => {
+      const inRange = i > at && i < end;
+      dock.hidden = !inRange;
+      if (i === at || inRange) {
+        if (autoPaused) { autoPaused = false; audio.play().catch(() => {}); }
+      } else if (!audio.paused) { autoPaused = true; audio.pause(); }
+    });
+  }
 
   const mmss = n => Number.isFinite(n)
     ? Math.floor(n / 60) + ':' + String(Math.floor(n % 60)).padStart(2, '0') : '';
@@ -2819,11 +2845,16 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
     fill.style.width = (audio.currentTime / audio.duration * 100) + '%';
     now.textContent = mmss(audio.currentTime);
     left.textContent = mmss(audio.duration - audio.currentTime);
+    if (dock) {
+      dockFill.style.width = fill.style.width;
+      dockTime.textContent = mmss(audio.currentTime) + ' / ' + mmss(audio.duration);
+    }
   });
   audio.addEventListener('error', () => {
     state.dataset.i18n = 'audioMissing';
     state.textContent = t('audioMissing');
     btn.disabled = true;
+    if (dockBtn) dockBtn.disabled = true;
     if (cont) cont.disabled = false;   // never trap a learner behind a broken file
   });
   audio.addEventListener('ended', () => {
@@ -2833,6 +2864,11 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
     state.textContent = t('audioDone');
     state.classList.add('done');
     if (cont) cont.disabled = false;
+    if (dock) {
+      dockFill.style.width = '100%';
+      dockState.textContent = '✓';
+      dockState.classList.add('done');
+    }
     const again = document.createElement('button');
     again.className = 'audio-replay'; again.type = 'button';
     again.dataset.i18n = 'audioReplay';
@@ -2841,13 +2877,17 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
       audio.currentTime = 0; audio.play();
       state.dataset.i18n = 'audioPlaying';
       state.textContent = t('audioPlaying'); state.classList.remove('done');
+      if (dock) { dockState.textContent = ''; dockState.classList.remove('done'); }
       again.remove();
     });
     wrap.append(again);
   });
 
-  btn.addEventListener('click', () => {
+  const start = () => {
     btn.disabled = true;
+    // The running time says it is playing; the deck bar has no room for
+    // the sentence the main player shows.
+    if (dockBtn) dockBtn.disabled = true;
     state.dataset.i18n = 'audioPlaying';
     state.textContent = t('audioPlaying');
     audio.play().catch(() => {
@@ -2856,11 +2896,14 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
     state.textContent = t('audioMissing');
       if (cont) cont.disabled = false;
     });
-  });
+  };
+  btn.addEventListener('click', start);
+  if (dockBtn) dockBtn.addEventListener('click', start);
 
-  // Leaving the slide stops the recording rather than letting it run on
-  // behind the questions.
-  slide._leave = () => { if (!audio.paused) audio.pause(); };
+  // Without data-carry, leaving the slide stops the recording rather than
+  // letting it run on behind the questions. With it, the range hook above
+  // decides.
+  if (!carry) slide._leave = () => { if (!audio.paused) audio.pause(); };
 });
 
 /* Sentence building. Author as

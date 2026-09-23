@@ -454,14 +454,21 @@ def lock(code, stem, eyebrow_key, eyebrow, title_key, title, why,
 
 
 def audio(eyebrow_key, eyebrow, title_key, title, note_key, note,
-          src, label, folder='', bg=None):
+          src, label, folder='', bg=None, carry=True):
     """The Listening play-once slide.
 
     The engine (lesson-template.html, "Listening audio") builds the player
     itself from `<div class="audio" data-src=… data-label=…>`; all this has to
-    emit is the box and a Continue button for the engine to disable until the
-    recording has finished. Without that button there is nothing to lock, and
-    a learner walks into the questions having heard none of it.
+    emit is the box and a Continue button.
+
+    carry (default, since 2026-09-23) sets data-carry: the recording keeps
+    playing while the learner moves on to the questions, and a small player
+    in the deck bar on those slides shows the time and can start it — so the
+    learner reads the questions first and answers while listening, as the
+    real test works. Before this the engine locked Continue until the
+    recording ended and stopped it on leaving the slide, which made every
+    Listening deck's own advice ("read the form first") impossible to follow.
+    carry=False restores the old lock.
 
     `label` is deliberately NOT a translated key. It carries the section name
     and the running time — "Section 1 · 3:19" — and the running time is a fact
@@ -475,14 +482,14 @@ def audio(eyebrow_key, eyebrow, title_key, title, note_key, note,
       </div></div>
       <div class="slide-body">
         <p class="prose" data-i18n="%s">%s</p>
-        <div class="audio" data-src="%s/%s" data-label="%s"></div>
+        <div class="audio" data-src="%s/%s" data-label="%s"%s></div>
         <div style="margin-top:22px">
           <button class="btn" data-action="next" data-i18n="btnNext">Next →</button>
         </div>
       </div>
     </section>
 ''' % (_bg(folder, bg), eyebrow_key, eyebrow, title_key, title,
-       note_key, note, folder, src, esc(label))
+       note_key, note, folder, src, esc(label), ' data-carry' if carry else '')
 
 
 def results(next_key='resNext', next_text='Now use it →', folder='', bg=None):

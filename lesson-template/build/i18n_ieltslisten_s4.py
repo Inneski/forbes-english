@@ -38,8 +38,8 @@ T = {}
 # ── English ────────────────────────────────────────────────────────────
 T['en'] = dict(
     coverTitle='Section 4 &mdash; <em>the lecture</em>',
-    coverSub='One speaker, four minutes, and the only section with no break in '
-             'the middle',
+    coverSub='One speaker, one long run, and the only section with no break '
+             'in the middle',
     chipLevel='C1', chipFocus='Listening &middot; Section 4',
     chipCount='10 questions',
 
@@ -56,7 +56,7 @@ T['en'] = dict(
     t1bb='<em>First</em> &middot; <em>the second factor</em> &middot; <em>the '
          'third function</em> &middot; <em>finally</em>. A lecturer tells you '
          'where you are roughly once a minute, and those words are the only '
-         'handholds in four minutes of continuous speech.',
+         'handholds in a long run of continuous speech.',
     t1bn='If you have drifted, stop trying to catch up on meaning and wait for '
          'the next signpost. It is coming.',
     t1ch='The word limit is the marker',
@@ -69,13 +69,15 @@ T['en'] = dict(
 
     audEyebrow='The recording',
     audTitle='You will hear it once, straight through',
-    audNote='Part of a lecture on the role of trees in cities. Four minutes '
-            'with no break. Press play when you have read every question.',
+    audNote='Part of a lecture on the role of trees in cities, with no break '
+            'in the middle. Read all ten questions on the next slides first, '
+            'then press play &mdash; here, or in the bar at the foot of any '
+            'question slide. It keeps playing while you answer.',
 
-    notesEyebrow='Questions 1&ndash;6 &middot; Complete the notes',
+    notesEyebrow='Questions 1&ndash;10 &middot; Complete the notes',
     notesTitle='Write ONE WORD AND/OR A NUMBER in each gap',
-    notesHint='Every answer is said aloud. Two of them are said twice, with '
-              'the second version being the one that counts.',
+    notesHint='Every answer is said aloud, in order. Two come with a second '
+              'number beside them, and only one of each pair counts.',
 
     t2Eyebrow='After the recording',
     t2Title='The four places a lecture takes its marks',
@@ -92,30 +94,15 @@ T['en'] = dict(
     t2bn='And two degrees is the answer while four is quoted and then called '
          '"an upper bound" &mdash; a figure that gets qualified is not the '
          'figure they want.',
-    t2ch='The aside with nothing in it',
-    t2cb='Twenty seconds about roots and pavements, containing no answers at '
-         'all, placed exactly where a tiring candidate starts writing down '
-         'whatever they hear.',
+    t2ch='The aside that still counts',
+    t2cb='Twenty seconds about roots and pavements, which the lecturer flags as '
+         'a digression. It is off the main argument &mdash; and it still holds '
+         'an answer, Question 6.',
     t2cn='<em>An aside</em> &middot; <em>somebody always asks</em> &middot; '
-         '<em>that is a different lecture</em>. He tells you it is a '
-         'digression. Believe him and rest.',
+         '<em>that&rsquo;s a different lecture</em>. A digression is a change '
+         'of subject, not a rest.',
 
-    mcEyebrow='Questions 7&ndash;10 &middot; The argument',
-    mcTitle='What was the lecturer actually saying?',
-
-    p1why='As infrastructure rather than decoration &mdash; he says it in his '
-          'first twenty seconds, and the whole lecture is organised to support '
-          'it. Openings carry the thesis; that is what they are for.',
-    p2why='Dense trees over a narrow street can trap polluted air instead of '
-          'letting it disperse. He raises it as a complication to his own '
-          'point, which is where an honest lecturer puts the hardest question.',
-    p3why='Real, but largely avoidable with the right planting pit. He grants '
-          'the damage and the repair bill before he limits them &mdash; a '
-          'concession is not a retraction.',
-    p4why='The watering, not the planting. He says so explicitly in the last '
-          'line, and it is the point the whole cost paragraph exists to make.',
-
-    actTitle='Give the four-minute lecture',
+    actTitle='Give the three-minute lecture',
     actUse='Use at least three:',
     actSpeakBrief='In pairs. Take something you know well and talk for three '
                   'minutes without stopping, with three numbered points. Your '
@@ -127,20 +114,21 @@ T['en'] = dict(
     actSpeak2='Correct one number halfway through, the way a real lecturer '
               'does, and see whether it reaches the notes.',
     actSpeak3='Take one twenty-second digression and announce it as one. Your '
-              'partner should write nothing during it.',
+              'partner notes its one point, in three words or fewer.',
     actWriteKind='Writing · 120–180 words',
     actWriteBrief='Write the notes a listener should have ended up with: your '
                   'three points, the numbers, and the one term you defined. '
-                  'Keep every line to two words or fewer after the heading, '
-                  'which is the real limit a note task sets.',
+                  'Set a word limit at the top &mdash; ONE WORD AND/OR A '
+                  'NUMBER is the strictest the test uses &mdash; and keep every '
+                  'line inside it.',
     actPlaceholder='Point 1: … / cooled by: …',
 )
 
 # ── German ─────────────────────────────────────────────────────────────
 T['de'] = dict(
     coverTitle='Section 4 &mdash; <em>die Vorlesung</em>',
-    coverSub='Ein Sprecher, vier Minuten, und der einzige Teil ohne Pause in '
-             'der Mitte',
+    coverSub='Ein Sprecher, ein langer Block, und der einzige Teil ohne Pause '
+             'in der Mitte',
     chipLevel='C1', chipFocus='Listening &middot; Section 4',
     chipCount='10 Fragen',
 
@@ -157,7 +145,7 @@ T['de'] = dict(
     t1bb='<em>First</em> &middot; <em>the second factor</em> &middot; <em>the '
          'third function</em> &middot; <em>finally</em>. Etwa einmal pro '
          'Minute sagt dir ein Vortragender, wo du bist, und das sind die '
-         'einzigen Haltegriffe in vier Minuten Dauerrede.',
+         'einzigen Haltegriffe in einem langen Stück Dauerrede.',
     t1bn='Wenn du abgedriftet bist, hör auf, inhaltlich aufzuholen, und warte '
          'auf den nächsten Wegweiser. Er kommt.',
     t1ch='Das Wortlimit ist der Prüfstein',
@@ -171,13 +159,15 @@ T['de'] = dict(
     audEyebrow='Die Aufnahme',
     audTitle='Du hörst sie einmal, ohne Unterbrechung',
     audNote='Ein Ausschnitt aus einer Vorlesung über die Rolle von Bäumen in '
-            'Städten. Vier Minuten ohne Pause. Drücke Play, wenn du jede Frage '
-            'gelesen hast.',
+            'Städten, ohne Pause in der Mitte. Lies zuerst alle zehn Fragen auf '
+            'den nächsten Folien, dann drücke Play &mdash; hier oder in der '
+            'Leiste unten auf jeder Fragenfolie. Die Aufnahme läuft weiter, '
+            'während du antwortest.',
 
-    notesEyebrow='Fragen 1&ndash;6 &middot; Notizen vervollständigen',
+    notesEyebrow='Fragen 1&ndash;10 &middot; Notizen vervollständigen',
     notesTitle='Schreibe EIN WORT UND/ODER EINE ZAHL in jede Lücke',
-    notesHint='Jede Antwort wird laut gesagt. Zwei davon zweimal &mdash; die '
-              'zweite Fassung zählt.',
+    notesHint='Jede Antwort wird laut gesagt, der Reihe nach. Zwei kommen mit '
+              'einer zweiten Zahl daneben, und nur eine von beiden zählt.',
 
     t2Eyebrow='Nach der Aufnahme',
     t2Title='Die vier Stellen, an denen eine Vorlesung Punkte holt',
@@ -194,31 +184,15 @@ T['de'] = dict(
     t2bn='Und zwei Grad ist die Antwort, während vier genannt und dann „an '
          'upper bound“ genannt wird &mdash; eine Zahl, die eingeschränkt wird, '
          'ist nicht die gesuchte.',
-    t2ch='Der Einschub ohne Inhalt',
-    t2cb='Zwanzig Sekunden über Wurzeln und Gehwege, ganz ohne Antworten, '
-         'genau dort platziert, wo ein ermüdender Kandidat anfängt, alles '
-         'mitzuschreiben, was er hört.',
+    t2ch='Der Einschub, der trotzdem zählt',
+    t2cb='Zwanzig Sekunden über Wurzeln und Gehwege, die der Vortragende als '
+         'Abschweifung ankündigt. Sie liegen neben dem Hauptargument &mdash; '
+         'und enthalten trotzdem eine Antwort, Frage 6.',
     t2cn='<em>An aside</em> &middot; <em>somebody always asks</em> &middot; '
-         '<em>that is a different lecture</em>. Er sagt dir, dass es eine '
-         'Abschweifung ist. Glaub ihm und ruh dich aus.',
+         '<em>that&rsquo;s a different lecture</em>. Eine Abschweifung ist ein '
+         'Themenwechsel, keine Pause.',
 
-    mcEyebrow='Fragen 7&ndash;10 &middot; Die Argumentation',
-    mcTitle='Was hat der Vortragende eigentlich gesagt?',
-
-    p1why='Als Infrastruktur statt als Dekoration &mdash; er sagt es in den '
-          'ersten zwanzig Sekunden, und die ganze Vorlesung ist darauf '
-          'gebaut. Anfänge tragen die These; dafür sind sie da.',
-    p2why='Dichte Bäume über einer engen Straße können verschmutzte Luft '
-          'festhalten, statt sie entweichen zu lassen. Er bringt es als '
-          'Einwand gegen den eigenen Punkt &mdash; dort steht bei einem '
-          'ehrlichen Vortrag die schwerste Frage.',
-    p3why='Real, aber mit der richtigen Pflanzgrube weitgehend vermeidbar. Er '
-          'räumt Schaden und Reparaturkosten ein, bevor er sie einschränkt '
-          '&mdash; ein Zugeständnis ist kein Rückzug.',
-    p4why='Das Gießen, nicht das Pflanzen. Er sagt es ausdrücklich im letzten '
-          'Satz, und der ganze Kostenabschnitt existiert für diesen Punkt.',
-
-    actTitle='Halte die Vier-Minuten-Vorlesung',
+    actTitle='Halte die Drei-Minuten-Vorlesung',
     actUse='Verwende mindestens drei:',
     actSpeakBrief='Zu zweit. Nimm etwas, das du gut kennst, und rede drei '
                   'Minuten ohne Pause, mit drei nummerierten Punkten. Dein '
@@ -229,20 +203,21 @@ T['de'] = dict(
     actSpeak2='Korrigiere auf halber Strecke eine Zahl, wie es echte '
               'Vortragende tun, und schau, ob es in den Notizen ankommt.',
     actSpeak3='Mach eine Abschweifung von zwanzig Sekunden und kündige sie als '
-              'solche an. Dein Partner soll dabei nichts schreiben.',
+              'solche an. Dein Partner notiert ihren einen Punkt, in höchstens '
+              'drei Wörtern.',
     actWriteKind='Schreiben · 120–180 Wörter',
     actWriteBrief='Schreib die Notizen auf, mit denen ein Zuhörer hätte '
                   'enden sollen: deine drei Punkte, die Zahlen und der eine '
-                  'Begriff, den du definiert hast. Jede Zeile nach der '
-                  'Überschrift höchstens zwei Wörter &mdash; das ist das echte '
-                  'Limit einer Notizenaufgabe.',
+                  'Begriff, den du definiert hast. Setz oben ein Wortlimit '
+                  '&mdash; ONE WORD AND/OR A NUMBER ist das strengste der '
+                  'Prüfung &mdash; und halte jede Zeile darin.',
     actPlaceholder='Point 1: … / cooled by: …',
 )
 
 # ── Spanish ────────────────────────────────────────────────────────────
 T['es'] = dict(
     coverTitle='Section 4 &mdash; <em>la conferencia</em>',
-    coverSub='Una sola voz, cuatro minutos, y la única parte sin pausa en '
+    coverSub='Una sola voz, un tramo largo, y la única parte sin pausa a '
              'mitad',
     chipLevel='C1', chipFocus='Listening &middot; Section 4',
     chipCount='10 preguntas',
@@ -259,7 +234,7 @@ T['es'] = dict(
     t1bb='<em>First</em> &middot; <em>the second factor</em> &middot; <em>the '
          'third function</em> &middot; <em>finally</em>. Más o menos una vez '
          'por minuto te dicen dónde estás, y esas palabras son los únicos '
-         'asideros en cuatro minutos seguidos.',
+         'asideros en un tramo largo de habla seguida.',
     t1bn='Si te has despistado, deja de intentar recuperar el sentido y espera '
          'a la siguiente señal. Va a llegar.',
     t1ch='El límite de palabras es lo que marca',
@@ -273,13 +248,15 @@ T['es'] = dict(
     audEyebrow='La grabación',
     audTitle='La oirás una vez, de seguido',
     audNote='Parte de una conferencia sobre el papel de los árboles en las '
-            'ciudades. Cuatro minutos sin pausa. Dale a reproducir cuando '
-            'hayas leído todas las preguntas.',
+            'ciudades, sin pausa a mitad. Lee primero las diez preguntas de las '
+            'diapositivas siguientes y luego dale a reproducir, aquí o en la '
+            'barra de abajo de cualquier pregunta. Sigue sonando mientras '
+            'respondes.',
 
-    notesEyebrow='Preguntas 1&ndash;6 &middot; Completa las notas',
+    notesEyebrow='Preguntas 1&ndash;10 &middot; Completa las notas',
     notesTitle='Escribe UNA PALABRA Y/O UN NÚMERO en cada hueco',
-    notesHint='Todas las respuestas se dicen en voz alta. Dos se dicen dos '
-              'veces, y vale la segunda versión.',
+    notesHint='Todas las respuestas se dicen en voz alta, en orden. Dos llegan '
+              'con un segundo número al lado, y solo uno de los dos vale.',
 
     t2Eyebrow='Después de la grabación',
     t2Title='Los cuatro sitios donde una conferencia se lleva los puntos',
@@ -295,31 +272,15 @@ T['es'] = dict(
          'velocidad de la 4 y sin un segundo hablante que lo confirme.',
     t2bn='Y dos grados es la respuesta, mientras que cuatro se cita y se llama '
          '«an upper bound»: una cifra que se matiza no es la que piden.',
-    t2ch='El inciso sin nada dentro',
-    t2cb='Veinte segundos sobre raíces y aceras, sin una sola respuesta, '
-         'puestos justo donde un candidato cansado empieza a apuntar todo lo '
-         'que oye.',
+    t2ch='El inciso que también cuenta',
+    t2cb='Veinte segundos sobre raíces y aceras, que el conferenciante anuncia '
+         'como digresión. Se sale del argumento principal, y aun así contiene '
+         'una respuesta, la pregunta 6.',
     t2cn='<em>An aside</em> &middot; <em>somebody always asks</em> &middot; '
-         '<em>that is a different lecture</em>. Te dice que es una digresión. '
-         'Créele y descansa.',
+         '<em>that&rsquo;s a different lecture</em>. Una digresión es un '
+         'cambio de tema, no un descanso.',
 
-    mcEyebrow='Preguntas 7&ndash;10 &middot; El argumento',
-    mcTitle='¿Qué estaba diciendo en realidad?',
-
-    p1why='Como infraestructura y no como decoración: lo dice en los primeros '
-          'veinte segundos, y toda la conferencia está montada para '
-          'sostenerlo. Las aperturas llevan la tesis; para eso están.',
-    p2why='Los árboles densos sobre una calle estrecha pueden atrapar el aire '
-          'contaminado en vez de dejarlo dispersarse. Lo plantea como '
-          'complicación de su propio punto, que es donde un buen conferenciante '
-          'pone la pregunta más difícil.',
-    p3why='Real, pero evitable en gran medida con el hoyo de plantación '
-          'adecuado. Admite el daño y la factura antes de limitarlos: una '
-          'concesión no es una retirada.',
-    p4why='El riego, no la plantación. Lo dice explícitamente en la última '
-          'línea, y todo el párrafo de costes existe para eso.',
-
-    actTitle='Da la conferencia de cuatro minutos',
+    actTitle='Da la conferencia de tres minutos',
     actUse='Usa al menos tres:',
     actSpeakBrief='En parejas. Coge algo que conozcas bien y habla tres '
                   'minutos sin parar, con tres puntos numerados. Tu compañero '
@@ -331,13 +292,13 @@ T['es'] = dict(
     actSpeak2='Corrige un número a mitad de camino, como hace un '
               'conferenciante de verdad, y mira si llega a las notas.',
     actSpeak3='Haz una digresión de veinte segundos y anúnciala como tal. Tu '
-              'compañero no debería escribir nada mientras dura.',
+              'compañero apunta su única idea, en tres palabras como mucho.',
     actWriteKind='Escritura · 120–180 palabras',
     actWriteBrief='Escribe las notas con las que debería haber acabado quien '
                   'te escuchaba: tus tres puntos, las cifras y el término que '
-                  'definiste. Cada línea, después del encabezado, de dos '
-                  'palabras como mucho: ese es el límite real de una tarea de '
-                  'notas.',
+                  'definiste. Pon arriba un límite de palabras &mdash; ONE '
+                  'WORD AND/OR A NUMBER es el más estricto del examen &mdash; y '
+                  'que cada línea lo respete.',
     actPlaceholder='Point 1: … / cooled by: …',
 )
 

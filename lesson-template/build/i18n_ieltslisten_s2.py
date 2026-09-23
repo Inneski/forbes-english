@@ -69,9 +69,10 @@ T['en'] = dict(
 
     audEyebrow='The recording',
     audTitle='You will hear it once',
-    audNote='A guide talking to a group of visitors at a public garden. Press '
-            'play when you are ready. There is no pause and no rewind, exactly '
-            'as in the test.',
+    audNote='A guide talking to a group of visitors at a public garden. Read '
+            'the questions on the next slides first, then press play &mdash; '
+            'here, or in the bar at the foot of any question slide. The '
+            'recording keeps playing while you answer, and you hear it once.',
 
     matchEyebrow='Questions 1&ndash;5 &middot; The layout',
     matchTitle='Put each place where the guide put it',
@@ -96,7 +97,7 @@ T['en'] = dict(
     t2bb='Something is described in its old place and then corrected to its '
          'new one. The plant stall "used to stand by the lake". Anyone '
          'answering from the first mention puts it in the wrong place.',
-    t2bn='He repeats the new position deliberately. A repeat in a monologue is '
+    t2bn='The guide repeats the new position deliberately. A repeat in a monologue is '
          'never decoration.',
     t2ch='The direction that depends on you',
     t2cb='<em>On your left</em>, <em>directly ahead</em>, <em>behind the '
@@ -109,19 +110,18 @@ T['en'] = dict(
     mcEyebrow='Questions 9&ndash;12 &middot; Detail',
     mcTitle='What exactly did the guide say?',
 
-    m1why='The glasshouse was the ticket office and is now the café. Both '
-          'facts are in one sentence and the order is what decides the '
-          'answer &mdash; which is the sentence the distractor simply '
-          'reverses.',
     m2why='The bank of the stream is being repaired. The birds are mentioned, '
           'and so is the spring, but neither is the reason: the spring is when '
           'it reopens.',
-    m3why='Do not feed the birds. He gives a reason &mdash; bread is bad for '
+    m3why='Do not feed the birds. The guide gives a reason &mdash; bread is bad for '
           'them &mdash; and a reason attached to an instruction is how a '
           'monologue marks the thing it wants you to remember.',
     m4why='The ticket lasts all day, so visitors may stay. "We finish back at '
           'the café" is the line before, and it is about where the tour ends, '
           'not when you have to leave.',
+    m5why='Anticlockwise, from the glasshouse &mdash; the last thing the guide '
+          'says. Both halves come in one sentence, which is exactly where a '
+          'distractor swaps one of them.',
 
     actTitle='Give the tour',
     actUse='Use at least three:',
@@ -182,8 +182,10 @@ T['de'] = dict(
     audEyebrow='Die Aufnahme',
     audTitle='Du hörst sie einmal',
     audNote='Eine Führerin spricht zu einer Besuchergruppe in einem '
-            'öffentlichen Garten. Drücke Play, wenn du bereit bist. Kein '
-            'Pausieren, kein Zurückspulen &mdash; genau wie in der Prüfung.',
+            'öffentlichen Garten. Lies zuerst die Fragen auf den nächsten '
+            'Folien, dann drücke Play &mdash; hier oder in der Leiste unten auf '
+            'jeder Fragenfolie. Die Aufnahme läuft weiter, während du '
+            'antwortest, und du hörst sie einmal.',
 
     matchEyebrow='Fragen 1&ndash;5 &middot; Die Anlage',
     matchTitle='Ordne jeden Ort dorthin, wo die Führerin ihn hingesetzt hat',
@@ -222,9 +224,6 @@ T['de'] = dict(
     mcEyebrow='Fragen 9&ndash;12 &middot; Detail',
     mcTitle='Was genau hat die Führerin gesagt?',
 
-    m1why='Das Glashaus war das Kartenhäuschen und ist jetzt das Café. Beides '
-          'steht in einem Satz, und die Reihenfolge entscheidet &mdash; genau '
-          'den Satz dreht der Ablenker um.',
     m2why='Das Ufer des Bachs wird repariert. Die Vögel kommen vor und der '
           'Frühling auch, aber keins ist der Grund: im Frühling wird wieder '
           'geöffnet.',
@@ -234,6 +233,9 @@ T['de'] = dict(
     m4why='Das Ticket gilt den ganzen Tag, also darf man bleiben. „We finish '
           'back at the café“ steht davor und sagt, wo die Führung endet, nicht '
           'wann man gehen muss.',
+    m5why='Gegen den Uhrzeigersinn, ab dem Glashaus &mdash; das Letzte, was die '
+          'Führerin sagt. Beide Hälften stehen in einem Satz, und genau dort '
+          'tauscht ein Ablenker eine davon aus.',
 
     actTitle='Führt eine Gruppe',
     actUse='Verwende mindestens drei:',
@@ -293,8 +295,10 @@ T['es'] = dict(
     audEyebrow='La grabación',
     audTitle='La oirás una vez',
     audNote='Una guía hablando a un grupo de visitantes en un jardín público. '
-            'Dale a reproducir cuando estés listo. Sin pausa y sin rebobinar, '
-            'igual que en el examen.',
+            'Lee primero las preguntas de las diapositivas siguientes y luego '
+            'dale a reproducir, aquí o en la barra de abajo de cualquier '
+            'pregunta. La grabación sigue sonando mientras respondes, y la oyes '
+            'una sola vez.',
 
     matchEyebrow='Preguntas 1&ndash;5 &middot; La distribución',
     matchTitle='Coloca cada sitio donde lo colocó la guía',
@@ -332,9 +336,6 @@ T['es'] = dict(
     mcEyebrow='Preguntas 9&ndash;12 &middot; Detalle',
     mcTitle='¿Qué dijo exactamente la guía?',
 
-    m1why='El invernadero era la taquilla y ahora es la cafetería. Los dos '
-          'datos van en una frase y el orden es lo que decide: justo la frase '
-          'que el distractor da la vuelta.',
     m2why='Están reparando la orilla del arroyo. Los pájaros salen, y la '
           'primavera también, pero ninguno es el motivo: en primavera se '
           'vuelve a abrir.',
@@ -344,6 +345,9 @@ T['es'] = dict(
     m4why='La entrada vale todo el día, así que pueden quedarse. «We finish '
           'back at the café» es la línea anterior y dice dónde acaba la '
           'visita, no cuándo hay que irse.',
+    m5why='En sentido contrario a las agujas del reloj, desde el invernadero: '
+          'es lo último que dice la guía. Las dos mitades van en una frase, y '
+          'ahí es justo donde un distractor cambia una.',
 
     actTitle='Haz de guía',
     actUse='Usa al menos tres:',

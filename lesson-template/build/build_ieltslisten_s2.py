@@ -114,8 +114,10 @@ def build(make_audio=False):
                   'audTitle', 'You will hear it once',
                   'audNote',
                   'A guide talking to a group of visitors at a public garden. '
-                  'Press play when you are ready. There is no pause and no '
-                  'rewind, exactly as in the test.',
+                  'Read the questions on the next slides first, then press '
+                  'play &mdash; here, or in the bar at the foot of any question '
+                  'slide. The recording keeps playing while you answer, and you '
+                  'hear it once.',
                   AUDIO, label, folder=F, bg=BG_AUDIO)
 
         + D.match(PLACES, 'matchEyebrow',
@@ -136,6 +138,12 @@ def build(make_audio=False):
                      'Write the one the gap asks for.',
                 width=210, size=19)
 
+        + "".join(D.mc(i + 1, len(MC), q, 'mcEyebrow',
+                       'Questions 9&ndash;12 &middot; Detail', 'mcTitle',
+                       'What exactly did the guide say?',
+                       folder=F, bg=BG_DETAIL, ctx=q.get('ctx'))
+                  for i, q in enumerate(MC))
+
         + D.teach('t2Eyebrow', 'After the recording',
                   't2Title', 'How a map task hides its answers',
                   [('t2ah', 'The shared landmark', 't2ab',
@@ -151,7 +159,7 @@ def build(make_audio=False):
                     'corrected to its new one. The plant stall "used to stand '
                     'by the lake". Anyone answering from the first mention '
                     'puts it in the wrong place.', 't2bn',
-                    'He repeats the new position deliberately. A repeat in a '
+                    'The guide repeats the new position deliberately. A repeat in a '
                     'monologue is never decoration.'),
                    ('t2ch', 'The direction that depends on you', 't2cb',
                     '<em>On your left</em>, <em>directly ahead</em>, '
@@ -162,12 +170,6 @@ def build(make_audio=False):
                     'catch people: behind the lake is across it, beyond the '
                     'greenhouse is past it.')],
                   folder=F, bg=BG_DETAIL)
-
-        + "".join(D.mc(i + 1, len(MC), q, 'mcEyebrow',
-                       'Questions 9&ndash;12 &middot; Detail', 'mcTitle',
-                       'What exactly did the guide say?',
-                       folder=F, bg=BG_DETAIL, ctx=q.get('ctx'))
-                  for i, q in enumerate(MC))
 
         + D.results('resNext', 'You held the plan. Now draw one &rarr;',
                     folder=F)

@@ -17,7 +17,7 @@
 <meta name="twitter:title" content="IELTS Listening Section 3: The Academic Discussion (C1)">
 <meta name="twitter:description" content="Three speakers, two of whom change their minds, and every question keyed to a person">
 <meta name="twitter:image" content="https://forbesenglish.com/ielts-listen-s3/hero.jpg">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"IELTS Listening Section 3: The Academic Discussion","description":"Three speakers, two of whom change their minds, and every question keyed to a person","url":"https://forbesenglish.com/forbes-english-ielts-listening-s3.html","inLanguage":"en","learningResourceType":"lesson","interactivityType":"active","isAccessibleForFree":false,"image":"https://forbesenglish.com/ielts-listen-s3/hero.jpg","provider":{"@type":"Organization","name":"Forbes English","url":"https://forbesenglish.com/"},"isPartOf":{"@type":"Course","name":"Forbes English lesson library","url":"https://forbesenglish.com/library.html"},"educationalLevel":"C1","teaches":["Positions move: This is a discussion, so somebody will argue themselves out of the view they opened with. What is marked is where they end up, not the first thing they said.","The agreement that is not one: Ravi says exactly — and then states something Maya did not say. She corrects him: that is not quite what I meant. Agreement words are not evidence that two people agree.","The shared term: Both students say response rate. Ravi means how many people reply; Maya means how quickly. One phrase, two meanings, two different answers keyed to two different people."],"datePublished":"2026-09-13","hasPart":{"@type":"WebPageElement","isAccessibleForFree":false,"cssSelector":".paywalled"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"IELTS Listening Section 3: The Academic Discussion","description":"Three speakers, two of whom change their minds, and every question keyed to a person","url":"https://forbesenglish.com/forbes-english-ielts-listening-s3.html","inLanguage":"en","learningResourceType":"lesson","interactivityType":"active","isAccessibleForFree":false,"image":"https://forbesenglish.com/ielts-listen-s3/hero.jpg","provider":{"@type":"Organization","name":"Forbes English","url":"https://forbesenglish.com/"},"isPartOf":{"@type":"Course","name":"Forbes English lesson library","url":"https://forbesenglish.com/library.html"},"educationalLevel":"C1","teaches":["Positions move: This is a discussion, so somebody will argue themselves out of the view they opened with. What is marked is where they end up, not the first thing they said.","The agreement that is not one: Ravi says exactly — and then states something Maya did not say. She corrects him: that’s not quite what I meant. Agreement words are not evidence that two people agree.","The shared term: Both students say response rate. Ravi means how many people reply; Maya means how quickly. One phrase, two meanings, two different answers keyed to two different people."],"datePublished":"2026-09-13","hasPart":{"@type":"WebPageElement","isAccessibleForFree":false,"cssSelector":".paywalled"}}</script>
 <!-- SEO:end -->
 <!-- ══ REPLACE: lesson title. No "Forbes English —" prefix. ══ -->
 <title>IELTS Listening Section 3: The Academic Discussion (C1)</title>
@@ -97,6 +97,25 @@
   text-decoration: underline; text-underline-offset: 3px;
 }
 .audio-replay:hover { color: var(--text); }
+/* The same recording, docked in the deck bar on the question slides that
+   follow a data-carry audio slide, so it can be started after reading and
+   keeps its place while the learner answers. */
+.audio-dock {
+  display: flex; align-items: center; gap: 10px; flex: 0 1 auto; min-width: 0;
+  font-family: var(--font-mono); font-size: 12px; color: var(--text);
+}
+.audio-dock[hidden] { display: none; }
+.dock-play {
+  flex: 0 0 auto; width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid var(--accent); background: var(--scrim); color: var(--accent-bright);
+  cursor: pointer; font-size: 13px; line-height: 1; display: grid; place-items: center;
+}
+.dock-play:disabled { cursor: default; border-color: var(--border); color: var(--text-dim); }
+.dock-track { width: 120px; height: 4px; border-radius: 2px; background: var(--inset2); overflow: hidden; }
+.dock-fill { height: 100%; width: 0; background: var(--accent); transition: width .2s linear; }
+.dock-time, .dock-state { white-space: nowrap; }
+.dock-state { color: var(--text-dim); }
+.dock-state.done { color: var(--accent-bright); }
 
 /* ── Fixed tokens: identical in every lesson. Do not edit. ── */
 :root {
@@ -1263,7 +1282,15 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
    picture made it obvious. Anything that paints text straight onto the stage
    belongs in that selector list. */
 .sort-bin-label { width: fit-content; margin-inline: auto; }
-.q-stem, .q-ctx { width: fit-content; max-width: 100%; }
+.q-stem, .q-ctx, .feedback, .gap-row { width: fit-content; max-width: 100%; }
+/* .feedback and .gap-row joined on 2026-09-23. The feedback plate was the one
+   on a question slide the 09-12 sweep never saw, because it is invisible until
+   a learner answers: a one-line "Correct." then painted a bar edge to edge
+   under shrink-wrapped options. .gap-row is the card deck.gap() puts
+   round each gap sentence, and a nine-word sentence was sitting in a card the
+   full width of the canvas. Innes, on Grammar Jail: "shorten the long black
+   text boxes". A row whose explanation is longer than its sentence widens
+   when answered; that is the card making room, not a layout fault. */
 /* max-width is 100%, NOT a shorter em cap. A 34em cap was tried first and it
    re-wrapped long stems onto an extra line, which pushed the body past the
    canvas on 17 decks — measured by running check-lesson.js over every deck
@@ -1749,12 +1776,12 @@ html[data-style="editorial"] .stamp {
           <div class="card">
             <p class="prose"><strong data-i18n="t1bh">Positions move</strong></p>
             <p class="prose" data-i18n="t1bb" style="margin-top:8px;font-size:18px">This is a discussion, so somebody will argue themselves out of the view they opened with. What is marked is where they <strong>end up</strong>, not the first thing they said.</p>
-            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t1bn"><em>Actually, no</em> &middot; <em>I was against that at first</em> &middot; <em>but you are right</em>. Every one of them says a position just changed.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t1bn"><em>Actually, no</em> &middot; <em>I was against that at first</em> &middot; <em>but you&rsquo;re right</em>. Every one of them says a position just changed.</p>
           </div>
           <div class="card">
             <p class="prose"><strong data-i18n="t1ch">Suggested is not decided</strong></p>
             <p class="prose" data-i18n="t1cb" style="margin-top:8px;font-size:18px">A tutor proposes things the students do not do. Both go in the recording and only one is the answer, so a question about the <em>plan</em> is answered by the students and a question about the <em>advice</em> by the tutor.</p>
-            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t1cn"><em>I would still push you towards&hellip; Fair enough, your decision.</em> That is a suggestion being declined, in two lines.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t1cn"><em>I&rsquo;d still push you towards&hellip; Fair enough, your decision.</em> That is a suggestion being declined, in two lines.</p>
           </div>
         </div>
       </div>
@@ -1766,51 +1793,24 @@ html[data-style="editorial"] .stamp {
         <h2 class="slide-title" data-i18n="audTitle">You will hear it once</h2>
       </div></div>
       <div class="slide-body">
-        <p class="prose" data-i18n="audNote">Two students, Maya and Ravi, discussing a research project with their tutor. Three voices. Press play when you are ready. No pause and no rewind, exactly as in the test.</p>
-        <div class="audio" data-src="ielts-listen-s3/section3.mp3" data-label="Section 3 &middot; 3:08"></div>
+        <p class="prose" data-i18n="audNote">Two students, Maya and Ravi, discussing a research project with their tutor. Three voices. Read the questions on the next slides first, then press play &mdash; here, or in the bar at the foot of any question slide. The recording keeps playing while you answer, and you hear it once.</p>
+        <div class="audio" data-src="ielts-listen-s3/section3.mp3" data-label="Section 3 &middot; 3:51" data-carry></div>
         <div style="margin-top:22px">
           <button class="btn" data-action="next" data-i18n="btnNext">Next →</button>
         </div>
       </div>
     </section>
 
-    <section class="slide" data-type="match" data-bg="ielts-listen-s3/bg04.jpg">
-      <div class="slide-head"><div>
-        <div class="eyebrow" data-i18n="whoEyebrow">Questions 1&ndash;5 &middot; Who holds this view?</div>
-        <h2 class="slide-title" data-i18n="whoTitle">Match each position to the person who ends up holding it</h2>
-      </div></div>
-      <div class="slide-body">
-        <p class="prose dim" style="margin-bottom:14px;font-size:17px" data-i18n="whoHint">
-          Click a position, then a person. What counts is where each speaker finishes, not where they started.
-        </p>
-        <div class="match-pair" data-term="Sixty is too small a sample" data-def="Maya, after changing her mind"></div>
-        <div class="match-pair" data-term="The worry is how MANY reply" data-def="Ravi"></div>
-        <div class="match-pair" data-term="The worry is how FAST they reply" data-def="Maya"></div>
-        <div class="match-pair" data-term="Interviews would be better than a questionnaire" data-def="The tutor"></div>
-        <div class="match-pair" data-term="Harrison&rsquo;s chapter is worth using" data-def="Ravi"></div>
-        <div class="match-grid"></div>
-        <p class="feedback" data-explain="Four of these five are stated by someone who is disagreeing with someone else in the same breath, which is what makes attribution the skill. Maya says sixty is fine <em>in principle</em> and then takes it straight back &mdash; her final position is the opposite of her first. And &quot;response rate&quot; is said by both students about two different things, which the tutor then separates for you: &quot;Ravi is talking about how many; Maya is talking about how quickly.&quot;"></p>
-      </div>
-    </section>
-
     <section class="slide" data-type="gap" data-bg="ielts-listen-s3/bg04.jpg">
       <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="notesEyebrow">Questions 6&ndash;8 &middot; The tutorial notes</span> &middot; 1 / 1</div>
+        <div class="eyebrow"><span data-i18n="topicEyebrow">Question 1 &middot; The project</span> &middot; 1 / 1</div>
         <h2 class="slide-title" data-i18n="notesTitle">Write ONE WORD AND/OR A NUMBER in each gap</h2>
       </div></div>
       <div class="slide-body">
-        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="notesHint">All three numbers are agreed out loud. One of them is argued about at length and then kept unchanged.</p>
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="topicHint">It is given in the first few seconds, before anyone disagrees about anything.</p>
         <div class="card gap-row" style="padding:12px 16px">
-          <p class="q-stem" style="margin-bottom:0;font-size:19px">Pilot the questionnaire with <input class="gap" data-answer="10|ten" aria-label="gap" style="width:210px"> people first</p>
-          <p class="feedback" data-explain="Ten. Ravi proposes it and Maya, who was against it, agrees &mdash; so the decision stands even though the first thing she said about it was no."></p>
-        </div>
-        <div class="card gap-row" style="padding:12px 16px">
-          <p class="q-stem" style="margin-bottom:0;font-size:19px">Send one reminder <input class="gap" data-answer="3|three" aria-label="gap" style="width:210px"> days before the close</p>
-          <p class="feedback" data-explain="Three days. The tutor gives the number; the students accept it without restating it, which is why it has to be caught the first time."></p>
-        </div>
-        <div class="card gap-row" style="padding:12px 16px">
-          <p class="q-stem" style="margin-bottom:0;font-size:19px">Final sample size: <input class="gap" data-answer="60|sixty" aria-label="gap" style="width:210px"> respondents</p>
-          <p class="feedback" data-explain="Sixty, unchanged. It is questioned at length and then kept &mdash; a discussion that argues about a number and does not change it is a standard Section 3 move."></p>
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">How first-year students use the library after <input class="gap" data-answer="10|ten|10pm|10 pm" aria-label="gap" style="width:210px"> at night</p>
+          <p class="feedback" data-explain="Ten, in Maya&rsquo;s first sentence. A Section 3 recording names its topic in the opening seconds, before anyone disagrees about anything."></p>
         </div>
         <div style="margin-top:10px">
           <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
@@ -1818,35 +1818,9 @@ html[data-style="editorial"] .stamp {
       </div>
     </section>
 
-    <section class="slide" data-type="teach" data-bg="ielts-listen-s3/bg05.jpg">
+    <section class="slide" data-type="mc" data-bg="ielts-listen-s3/bg04.jpg">
       <div class="slide-head"><div>
-        <div class="eyebrow" data-i18n="t2Eyebrow">After the recording</div>
-        <h2 class="slide-title" data-i18n="t2Title">Three ways a discussion hides the answer</h2>
-      </div></div>
-      <div class="slide-body">
-        <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
-          <div class="card">
-            <p class="prose"><strong data-i18n="t2ah">The agreement that is not one</strong></p>
-            <p class="prose" data-i18n="t2ab" style="margin-top:8px;font-size:18px">Ravi says <em>exactly</em> &mdash; and then states something Maya did not say. She corrects him: <em>that is not quite what I meant</em>. Agreement words are not evidence that two people agree.</p>
-            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t2an">The tutor then separates them explicitly, which is the recording handing you the answer if you are still listening.</p>
-          </div>
-          <div class="card">
-            <p class="prose"><strong data-i18n="t2bh">The shared term</strong></p>
-            <p class="prose" data-i18n="t2bb" style="margin-top:8px;font-size:18px">Both students say <em>response rate</em>. Ravi means how many people reply; Maya means how quickly. One phrase, two meanings, two different answers keyed to two different people.</p>
-            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t2bn">When a phrase is repeated by a second speaker, check they are using it for the same thing.</p>
-          </div>
-          <div class="card">
-            <p class="prose"><strong data-i18n="t2ch">The number that survives the argument</strong></p>
-            <p class="prose" data-i18n="t2cb" style="margin-top:8px;font-size:18px">Sixty is questioned, defended, doubted and kept. A discussion that argues about a figure and then leaves it alone is standard, and the length of the argument is not a signal that the figure changed.</p>
-            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t2cn">What changed was the plan around it: a pilot, and a reminder.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="slide" data-type="mc" data-bg="ielts-listen-s3/bg05.jpg">
-      <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="mcEyebrow">Questions 9&ndash;12 &middot; Following the thread</span> &middot; 1 / 4</div>
+        <div class="eyebrow"><span data-i18n="mcaEyebrow">Question 2 &middot; The method</span></div>
         <h2 class="slide-title" data-i18n="mcTitle">What happened in the discussion?</h2>
       </div></div>
       <div class="slide-body">
@@ -1861,9 +1835,27 @@ html[data-style="editorial"] .stamp {
       </div>
     </section>
 
+    <section class="slide" data-type="match" data-bg="ielts-listen-s3/bg04.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="whoEyebrow">Questions 3&ndash;6 &middot; Who holds this view?</div>
+        <h2 class="slide-title" data-i18n="whoTitle">Match each position to the person who ends up holding it</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="prose dim" style="margin-bottom:14px;font-size:17px" data-i18n="whoHint">
+          Click a position, then a person. What counts is where each speaker finishes, not where they started.
+        </p>
+        <div class="match-pair" data-term="Interviews would be better than a questionnaire" data-def="The tutor, whose advice is declined"></div>
+        <div class="match-pair" data-term="Sixty is too small a sample" data-def="Maya, after changing her mind"></div>
+        <div class="match-pair" data-term="The worry is how MANY reply" data-def="Ravi, who thinks he is agreeing"></div>
+        <div class="match-pair" data-term="The worry is how FAST they reply" data-def="Maya, correcting Ravi"></div>
+        <div class="match-grid"></div>
+        <p class="feedback" data-explain="Each person is named with the move they make, because the move is how you catch the view. The tutor&rsquo;s advice is heard and declined; Maya calls sixty fine <em>in principle</em> and takes it straight back; and &quot;response rate&quot; is said by both students about two different things, which the tutor then separates for you: &quot;Ravi&rsquo;s talking about how many; Maya&rsquo;s talking about how quickly.&quot;"></p>
+      </div>
+    </section>
+
     <section class="slide" data-type="mc" data-bg="ielts-listen-s3/bg05.jpg">
       <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="mcEyebrow">Questions 9&ndash;12 &middot; Following the thread</span> &middot; 2 / 4</div>
+        <div class="eyebrow"><span data-i18n="mcbEyebrow">Question 7 &middot; The deadline</span></div>
         <h2 class="slide-title" data-i18n="mcTitle">What happened in the discussion?</h2>
       </div></div>
       <div class="slide-body">
@@ -1872,15 +1864,40 @@ html[data-style="editorial"] .stamp {
           <button class="opt">It is the simplest way to raise the response rate.</button>
           <button class="opt" data-correct>It would cost them the time they need to analyse.</button>
           <button class="opt">It would be unfair on the students who replied.</button>
-          <button class="opt">It is not permitted this late in the whole term.</button>
+          <button class="opt">It is not permitted this late in the term.</button>
         </div>
         <p class="feedback" data-explain="n2why"></p>
       </div>
     </section>
 
+    <section class="slide" data-type="gap" data-bg="ielts-listen-s3/bg05.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="notesEyebrow">Questions 8&ndash;10 &middot; The tutorial notes</span> &middot; 1 / 1</div>
+        <h2 class="slide-title" data-i18n="notesTitle">Write ONE WORD AND/OR A NUMBER in each gap</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="notesHint">All three numbers are agreed out loud. One of them is argued about at length and then kept unchanged.</p>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">Send one reminder <input class="gap" data-answer="3|three" aria-label="gap" style="width:210px"> days before the close</p>
+          <p class="feedback" data-explain="Three days. The tutor gives the number and the students never repeat it &mdash; though the tutor does, once, in the summary at the end."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">Pilot the questionnaire with <input class="gap" data-answer="10|ten" aria-label="gap" style="width:210px"> people first</p>
+          <p class="feedback" data-explain="Ten. Ravi proposes it and Maya agrees. She says she was against it at first, but the answer is where she ends up."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">Final sample size: <input class="gap" data-answer="60|sixty" aria-label="gap" style="width:210px"> respondents</p>
+          <p class="feedback" data-explain="Sixty, unchanged. It is questioned at length and then kept &mdash; a discussion that argues about a number and does not change it is a standard Section 3 move."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
     <section class="slide" data-type="mc" data-bg="ielts-listen-s3/bg05.jpg">
       <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="mcEyebrow">Questions 9&ndash;12 &middot; Following the thread</span> &middot; 3 / 4</div>
+        <div class="eyebrow"><span data-i18n="mcEyebrow">Questions 11&ndash;12 &middot; The reading</span> &middot; 1 / 2</div>
         <h2 class="slide-title" data-i18n="mcTitle">What happened in the discussion?</h2>
       </div></div>
       <div class="slide-body">
@@ -1897,7 +1914,7 @@ html[data-style="editorial"] .stamp {
 
     <section class="slide" data-type="mc" data-bg="ielts-listen-s3/bg05.jpg">
       <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="mcEyebrow">Questions 9&ndash;12 &middot; Following the thread</span> &middot; 4 / 4</div>
+        <div class="eyebrow"><span data-i18n="mcEyebrow">Questions 11&ndash;12 &middot; The reading</span> &middot; 2 / 2</div>
         <h2 class="slide-title" data-i18n="mcTitle">What happened in the discussion?</h2>
       </div></div>
       <div class="slide-body">
@@ -1909,6 +1926,32 @@ html[data-style="editorial"] .stamp {
           <button class="opt" data-correct>Use the framework and say the context is different.</button>
         </div>
         <p class="feedback" data-explain="n4why"></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach" data-bg="ielts-listen-s3/bg05.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="t2Eyebrow">After the recording</div>
+        <h2 class="slide-title" data-i18n="t2Title">Three ways a discussion hides the answer</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="t2ah">The agreement that is not one</strong></p>
+            <p class="prose" data-i18n="t2ab" style="margin-top:8px;font-size:18px">Ravi says <em>exactly</em> &mdash; and then states something Maya did not say. She corrects him: <em>that&rsquo;s not quite what I meant</em>. Agreement words are not evidence that two people agree.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t2an">The tutor then separates them explicitly, which is the recording handing you the answer if you are still listening.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t2bh">The shared term</strong></p>
+            <p class="prose" data-i18n="t2bb" style="margin-top:8px;font-size:18px">Both students say <em>response rate</em>. Ravi means how many people reply; Maya means how quickly. One phrase, two meanings, two different answers keyed to two different people.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t2bn">When a phrase is repeated by a second speaker, check they are using it for the same thing.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t2ch">The number that survives the argument</strong></p>
+            <p class="prose" data-i18n="t2cb" style="margin-top:8px;font-size:18px">Sixty is questioned, defended, doubted and kept. A discussion that argues about a figure and then leaves it alone is standard, and the length of the argument is not a signal that the figure changed.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t2cn">What changed was the plan around it: a pilot, and a reminder.</p>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -2043,7 +2086,7 @@ const UI_I18N = {
     actWriteBrief: "Write the minutes of a three-person meeting: what was suggested, what was decided, and who ended up holding which view. One person must be recorded as having changed position, and one suggestion as declined.",
     actWriteKind: "Writing · 120–180 words",
     audEyebrow: "The recording",
-    audNote: "Two students, Maya and Ravi, discussing a research project with their tutor. Three voices. Press play when you are ready. No pause and no rewind, exactly as in the test.",
+    audNote: "Two students, Maya and Ravi, discussing a research project with their tutor. Three voices. Read the questions on the next slides first, then press play &mdash; here, or in the bar at the foot of any question slide. The recording keeps playing while you answer, and you hear it once.",
     audTitle: "You will hear it once",
     audioDone: 'That is the end of the recording.',
     audioMissing: 'The recording could not be loaded.',
@@ -2065,13 +2108,15 @@ const UI_I18N = {
     fbAnswer: 'Answer:',
     fbCorrect: 'Correct.',
     fbWrong: 'Not quite.',
-    mcEyebrow: "Questions 9&ndash;12 &middot; Following the thread",
+    mcEyebrow: "Questions 11&ndash;12 &middot; The reading",
     mcTitle: "What happened in the discussion?",
+    mcaEyebrow: "Question 2 &middot; The method",
+    mcbEyebrow: "Question 7 &middot; The deadline",
     n1why: "Because there are only two of them. Ravi gives the reason in the same breath as the decision. The tutor&rsquo;s preference for interviews is real but it is not why they chose otherwise.",
     n2why: "They would lose the analysis time. The tutor concedes it is possible &mdash; <em>you could</em> &mdash; before giving the objection, and a concession before an objection is not agreement.",
     n3why: "The Harrison chapter. Maya finds it thin and all American; Ravi likes the framework. The sample size and the reminder are both settled by agreement, not disagreement.",
     n4why: "Use the framework and say the context differs. The tutor turns the weakness into a strength &mdash; which is not the same as either dropping Harrison or treating the difference as a problem.",
-    notesEyebrow: "Questions 6&ndash;8 &middot; The tutorial notes",
+    notesEyebrow: "Questions 8&ndash;10 &middot; The tutorial notes",
     notesHint: "All three numbers are agreed out loud. One of them is argued about at length and then kept unchanged.",
     notesTitle: "Write ONE WORD AND/OR A NUMBER in each gap",
     resNext: 'Recognising the language is half of it. Now produce it →',
@@ -2084,13 +2129,13 @@ const UI_I18N = {
     t1an: "Write the names down in the preparation time. Then you are tracking people, not sentences.",
     t1bb: "This is a discussion, so somebody will argue themselves out of the view they opened with. What is marked is where they <strong>end up</strong>, not the first thing they said.",
     t1bh: "Positions move",
-    t1bn: "<em>Actually, no</em> &middot; <em>I was against that at first</em> &middot; <em>but you are right</em>. Every one of them says a position just changed.",
+    t1bn: "<em>Actually, no</em> &middot; <em>I was against that at first</em> &middot; <em>but you&rsquo;re right</em>. Every one of them says a position just changed.",
     t1cb: "A tutor proposes things the students do not do. Both go in the recording and only one is the answer, so a question about the <em>plan</em> is answered by the students and a question about the <em>advice</em> by the tutor.",
     t1ch: "Suggested is not decided",
-    t1cn: "<em>I would still push you towards&hellip; Fair enough, your decision.</em> That is a suggestion being declined, in two lines.",
+    t1cn: "<em>I&rsquo;d still push you towards&hellip; Fair enough, your decision.</em> That is a suggestion being declined, in two lines.",
     t2Eyebrow: "After the recording",
     t2Title: "Three ways a discussion hides the answer",
-    t2ab: "Ravi says <em>exactly</em> &mdash; and then states something Maya did not say. She corrects him: <em>that is not quite what I meant</em>. Agreement words are not evidence that two people agree.",
+    t2ab: "Ravi says <em>exactly</em> &mdash; and then states something Maya did not say. She corrects him: <em>that&rsquo;s not quite what I meant</em>. Agreement words are not evidence that two people agree.",
     t2ah: "The agreement that is not one",
     t2an: "The tutor then separates them explicitly, which is the recording handing you the answer if you are still listening.",
     t2bb: "Both students say <em>response rate</em>. Ravi means how many people reply; Maya means how quickly. One phrase, two meanings, two different answers keyed to two different people.",
@@ -2099,7 +2144,9 @@ const UI_I18N = {
     t2cb: "Sixty is questioned, defended, doubted and kept. A discussion that argues about a figure and then leaves it alone is standard, and the length of the argument is not a signal that the figure changed.",
     t2ch: "The number that survives the argument",
     t2cn: "What changed was the plan around it: a pilot, and a reminder.",
-    whoEyebrow: "Questions 1&ndash;5 &middot; Who holds this view?",
+    topicEyebrow: "Question 1 &middot; The project",
+    topicHint: "It is given in the first few seconds, before anyone disagrees about anything.",
+    whoEyebrow: "Questions 3&ndash;6 &middot; Who holds this view?",
     whoHint: "Click a position, then a person. What counts is where each speaker finishes, not where they started.",
     whoTitle: "Match each position to the person who ends up holding it",
     wordCount: (n)=>`${n} ${n===1?'word':'words'}`,
@@ -2129,7 +2176,7 @@ const UI_I18N = {
     actWriteBrief: "Schreib das Protokoll einer Besprechung zu dritt: was vorgeschlagen, was beschlossen wurde und wer am Ende welche Meinung vertritt. Eine Person muss die Meinung gewechselt haben, ein Vorschlag abgelehnt sein.",
     actWriteKind: "Schreiben · 120–180 Wörter",
     audEyebrow: "Die Aufnahme",
-    audNote: "Zwei Studierende, Maya und Ravi, besprechen ein Forschungsprojekt mit ihrem Tutor. Drei Stimmen. Drücke Play, wenn du bereit bist. Kein Pausieren, kein Zurückspulen &mdash; wie in der Prüfung.",
+    audNote: "Zwei Studierende, Maya und Ravi, besprechen ein Forschungsprojekt mit ihrem Tutor. Drei Stimmen. Lies zuerst die Fragen auf den nächsten Folien, dann drücke Play &mdash; hier oder in der Leiste unten auf jeder Fragenfolie. Die Aufnahme läuft weiter, während du antwortest, und du hörst sie einmal.",
     audTitle: "Du hörst sie einmal",
     audioDone: 'Das ist das Ende der Aufnahme.',
     audioMissing: 'Die Aufnahme konnte nicht geladen werden.',
@@ -2151,13 +2198,15 @@ const UI_I18N = {
     fbAnswer: 'Antwort:',
     fbCorrect: 'Richtig.',
     fbWrong: 'Nicht ganz.',
-    mcEyebrow: "Fragen 9&ndash;12 &middot; Dem Faden folgen",
+    mcEyebrow: "Fragen 11&ndash;12 &middot; Die Lektüre",
     mcTitle: "Was ist in der Diskussion passiert?",
+    mcaEyebrow: "Frage 2 &middot; Die Methode",
+    mcbEyebrow: "Frage 7 &middot; Die Frist",
     n1why: "Weil sie nur zu zweit sind. Ravi nennt den Grund im selben Atemzug wie die Entscheidung. Die Vorliebe des Tutors für Interviews ist echt, aber nicht der Grund für ihre Wahl.",
     n2why: "Sie verlören die Auswertungszeit. Der Tutor räumt ein, dass es ginge &mdash; <em>you could</em> &mdash; bevor der Einwand kommt, und ein Zugeständnis vor einem Einwand ist keine Zustimmung.",
     n3why: "Das Harrison-Kapitel. Maya findet es dünn und rein amerikanisch, Ravi mag den Rahmen. Stichprobengröße und Erinnerung werden per Zustimmung geklärt, nicht im Streit.",
     n4why: "Den Rahmen nutzen und sagen, dass der Kontext abweicht. Der Tutor macht aus der Schwäche eine Stärke &mdash; nicht dasselbe wie Harrison wegzulassen oder den Unterschied als Problem zu behandeln.",
-    notesEyebrow: "Fragen 6&ndash;8 &middot; Die Besprechungsnotizen",
+    notesEyebrow: "Fragen 8&ndash;10 &middot; Die Besprechungsnotizen",
     notesHint: "Alle drei Zahlen werden laut vereinbart. Über eine wird lange gestritten &mdash; und sie bleibt unverändert.",
     notesTitle: "Schreibe EIN WORT UND/ODER EINE ZAHL in jede Lücke",
     resNext: 'Die Sprache zu erkennen ist die halbe Miete. Jetzt anwenden →',
@@ -2170,13 +2219,13 @@ const UI_I18N = {
     t1an: "Schreib die Namen in der Vorbereitungszeit auf. Dann verfolgst du Personen und nicht Sätze.",
     t1bb: "Es ist eine Diskussion, also wird sich jemand aus der Meinung herausargumentieren, mit der er angefangen hat. Bewertet wird, wo jemand <strong>landet</strong>, nicht sein erster Satz.",
     t1bh: "Positionen bewegen sich",
-    t1bn: "<em>Actually, no</em> &middot; <em>I was against that at first</em> &middot; <em>but you are right</em>. Jedes davon meldet einen Positionswechsel.",
+    t1bn: "<em>Actually, no</em> &middot; <em>I was against that at first</em> &middot; <em>but you&rsquo;re right</em>. Jedes davon meldet einen Positionswechsel.",
     t1cb: "Ein Tutor schlägt Dinge vor, die die Studierenden nicht tun. Beides steht in der Aufnahme und nur eines ist die Antwort: eine Frage nach dem <em>Plan</em> beantworten die Studierenden, eine nach dem <em>Rat</em> der Tutor.",
     t1ch: "Vorgeschlagen ist nicht beschlossen",
-    t1cn: "<em>I would still push you towards&hellip; Fair enough, your decision.</em> Ein abgelehnter Vorschlag, in zwei Zeilen.",
+    t1cn: "<em>I&rsquo;d still push you towards&hellip; Fair enough, your decision.</em> Ein abgelehnter Vorschlag, in zwei Zeilen.",
     t2Eyebrow: "Nach der Aufnahme",
     t2Title: "Drei Arten, wie eine Diskussion die Antwort versteckt",
-    t2ab: "Ravi sagt <em>exactly</em> &mdash; und sagt dann etwas, das Maya gar nicht gesagt hat. Sie korrigiert ihn: <em>that is not quite what I meant</em>. Zustimmungswörter sind kein Beleg für Übereinstimmung.",
+    t2ab: "Ravi sagt <em>exactly</em> &mdash; und sagt dann etwas, das Maya gar nicht gesagt hat. Sie korrigiert ihn: <em>that&rsquo;s not quite what I meant</em>. Zustimmungswörter sind kein Beleg für Übereinstimmung.",
     t2ah: "Die Zustimmung, die keine ist",
     t2an: "Der Tutor trennt die beiden dann ausdrücklich &mdash; die Aufnahme reicht dir die Antwort, wenn du noch zuhörst.",
     t2bb: "Beide Studierenden sagen <em>response rate</em>. Ravi meint, wie viele antworten; Maya, wie schnell. Ein Ausdruck, zwei Bedeutungen, zwei Antworten bei zwei verschiedenen Personen.",
@@ -2185,7 +2234,9 @@ const UI_I18N = {
     t2cb: "Sechzig wird infrage gestellt, verteidigt, bezweifelt &mdash; und behalten. Dass lange über eine Zahl gestritten wird, heißt nicht, dass sie sich ändert.",
     t2ch: "Die Zahl, die den Streit überlebt",
     t2cn: "Geändert hat sich der Plan drumherum: ein Pilot und eine Erinnerung.",
-    whoEyebrow: "Fragen 1&ndash;5 &middot; Wer vertritt das?",
+    topicEyebrow: "Frage 1 &middot; Das Projekt",
+    topicHint: "Es fällt in den ersten Sekunden, bevor irgendjemand widerspricht.",
+    whoEyebrow: "Fragen 3&ndash;6 &middot; Wer vertritt das?",
     whoHint: "Klicke eine Position an, dann eine Person. Es zählt, wo jemand endet, nicht wo er angefangen hat.",
     whoTitle: "Ordne jede Position der Person zu, die sie am Ende vertritt",
     wordCount: (n)=>`${n} ${n===1?'Wort':'Wörter'}`,
@@ -2215,7 +2266,7 @@ const UI_I18N = {
     actWriteBrief: "Escribe el acta de una reunión de tres personas: qué se sugirió, qué se decidió y quién acabó sosteniendo qué. Una persona debe figurar como que cambió de postura, y una sugerencia como rechazada.",
     actWriteKind: "Escritura · 120–180 palabras",
     audEyebrow: "La grabación",
-    audNote: "Dos estudiantes, Maya y Ravi, hablan de un proyecto de investigación con su tutor. Tres voces. Dale a reproducir cuando estés listo. Sin pausa y sin rebobinar, igual que en el examen.",
+    audNote: "Dos estudiantes, Maya y Ravi, hablan de un proyecto de investigación con su tutor. Tres voces. Lee primero las preguntas de las diapositivas siguientes y luego dale a reproducir, aquí o en la barra de abajo de cualquier pregunta. La grabación sigue sonando mientras respondes, y la oyes una sola vez.",
     audTitle: "La oirás una vez",
     audioDone: 'Aquí acaba la grabación.',
     audioMissing: 'No se ha podido cargar la grabación.',
@@ -2237,13 +2288,15 @@ const UI_I18N = {
     fbAnswer: 'Respuesta:',
     fbCorrect: 'Correcto.',
     fbWrong: 'No exactamente.',
-    mcEyebrow: "Preguntas 9&ndash;12 &middot; Seguir el hilo",
+    mcEyebrow: "Preguntas 11&ndash;12 &middot; La lectura",
     mcTitle: "¿Qué pasó en el debate?",
+    mcaEyebrow: "Pregunta 2 &middot; El método",
+    mcbEyebrow: "Pregunta 7 &middot; El plazo",
     n1why: "Porque solo son dos. Ravi da el motivo en la misma frase que la decisión. La preferencia del tutor por las entrevistas es real, pero no es el motivo de su elección.",
     n2why: "Perderían el tiempo de análisis. El tutor admite que se podría &mdash; <em>you could</em> &mdash; antes de poner la objeción, y una concesión antes de una objeción no es un acuerdo.",
     n3why: "El capítulo de Harrison. Maya lo ve flojo y todo estadounidense; a Ravi le sirve el marco. El tamaño de la muestra y el recordatorio se resuelven de acuerdo, no discutiendo.",
     n4why: "Usar el marco y decir que el contexto es distinto. El tutor convierte la debilidad en fortaleza, que no es lo mismo que dejar fuera a Harrison ni tratar la diferencia como un problema.",
-    notesEyebrow: "Preguntas 6&ndash;8 &middot; Las notas de la tutoría",
+    notesEyebrow: "Preguntas 8&ndash;10 &middot; Las notas de la tutoría",
     notesHint: "Los tres números se acuerdan en voz alta. Sobre uno se discute largo y tendido y se queda igual.",
     notesTitle: "Escribe UNA PALABRA Y/O UN NÚMERO en cada hueco",
     resNext: 'Reconocer el lenguaje es solo la mitad. Ahora prodúcelo →',
@@ -2256,13 +2309,13 @@ const UI_I18N = {
     t1an: "Apunta los nombres en el tiempo de preparación. Así sigues a personas, no a frases.",
     t1bb: "Es un debate, así que alguien se va a sacar a sí mismo de la opinión con la que empezó. Lo que se califica es dónde <strong>acaba</strong>, no lo primero que dijo.",
     t1bh: "Las posturas se mueven",
-    t1bn: "<em>Actually, no</em> &middot; <em>I was against that at first</em> &middot; <em>but you are right</em>. Cada uno avisa de un cambio de postura.",
+    t1bn: "<em>Actually, no</em> &middot; <em>I was against that at first</em> &middot; <em>but you&rsquo;re right</em>. Cada uno avisa de un cambio de postura.",
     t1cb: "Un tutor propone cosas que los estudiantes no hacen. Las dos están en la grabación y solo una es la respuesta: una pregunta sobre el <em>plan</em> la contestan los estudiantes y una sobre el <em>consejo</em>, el tutor.",
     t1ch: "Sugerido no es decidido",
-    t1cn: "<em>I would still push you towards&hellip; Fair enough, your decision.</em> Una sugerencia rechazada, en dos líneas.",
+    t1cn: "<em>I&rsquo;d still push you towards&hellip; Fair enough, your decision.</em> Una sugerencia rechazada, en dos líneas.",
     t2Eyebrow: "Después de la grabación",
     t2Title: "Tres maneras en que un debate esconde la respuesta",
-    t2ab: "Ravi dice <em>exactly</em> y acto seguido dice algo que Maya no ha dicho. Ella le corrige: <em>that is not quite what I meant</em>. Las palabras de acuerdo no prueban que dos personas estén de acuerdo.",
+    t2ab: "Ravi dice <em>exactly</em> y acto seguido dice algo que Maya no ha dicho. Ella le corrige: <em>that&rsquo;s not quite what I meant</em>. Las palabras de acuerdo no prueban que dos personas estén de acuerdo.",
     t2ah: "El acuerdo que no lo es",
     t2an: "El tutor los separa después de forma explícita: la grabación te da la respuesta si sigues escuchando.",
     t2bb: "Los dos estudiantes dicen <em>response rate</em>. Ravi se refiere a cuántos contestan; Maya, a con qué rapidez. Una expresión, dos sentidos, dos respuestas atadas a dos personas distintas.",
@@ -2271,7 +2324,9 @@ const UI_I18N = {
     t2cb: "Sesenta se cuestiona, se defiende, se pone en duda y se mantiene. Que se discuta mucho sobre una cifra no significa que cambie.",
     t2ch: "El número que sobrevive a la discusión",
     t2cn: "Lo que cambió fue el plan alrededor: un piloto y un recordatorio.",
-    whoEyebrow: "Preguntas 1&ndash;5 &middot; ¿De quién es esta postura?",
+    topicEyebrow: "Pregunta 1 &middot; El proyecto",
+    topicHint: "Se dice en los primeros segundos, antes de que nadie discrepe de nada.",
+    whoEyebrow: "Preguntas 3&ndash;6 &middot; ¿De quién es esta postura?",
     whoHint: "Haz clic en una postura y luego en una persona. Cuenta dónde acaba cada uno, no dónde empezó.",
     whoTitle: "Empareja cada postura con quien acaba sosteniéndola",
     wordCount: (n)=>`${n} ${n===1?'palabra':'palabras'}`,
@@ -2323,6 +2378,9 @@ const countIn = s => s.dataset.type === 'gap'   ? s.querySelectorAll('.gap').len
                    : 1;
 const maxScore = scored.reduce((n, s) => n + Math.max(1, countIn(s)), 0);
 let idx = 0, score = 0;
+// Called with the new index after every slide change, for behaviour that
+// belongs to a range of slides rather than to one (the docked recording).
+const slideHooks = [];
 const answered = new WeakSet();
 
 /* ── Branch mode ────────────────────────────────────────────────────────
@@ -2474,6 +2532,7 @@ function show(n) {
   if (slides[idx].dataset.type === 'results') renderResults();
   markRail(slides[idx]);
   if (slides[idx]._enter) slides[idx]._enter();
+  slideHooks.forEach(f => f(idx));
   const gap = slides[idx].querySelector('.gap');
   if (gap && !answered.has(slides[idx])) setTimeout(() => gap.focus(), 60);
 }
@@ -2770,11 +2829,19 @@ slides.filter(s => s.dataset.type === 'match').forEach(slide => {
    It behaves like the test, deliberately:
      · one play — the button locks once it has been pressed
      · no scrubbing — the bar reports progress, it does not accept clicks
-     · the slide's [data-action="next"] Continue button stays disabled until
-       the recording ends, so nobody reaches the questions early
    A replay control appears only after it has finished, and it says in words
    that the real test does not offer one. A classroom needs to replay; a
-   learner practising alone should know that is not the exam. */
+   learner practising alone should know that is not the exam.
+
+   With data-carry on the box (every deck.audio() slide since 2026-09-23) the
+   recording behaves like the real paper, where you read first and answer as
+   you listen: Continue is open, leaving the slide does not stop it, and the
+   question slides after it — up to the next audio, results or activation
+   slide — carry a small player in the deck bar that shows the time and can
+   start it. Leaving that range pauses it; coming back resumes it.
+
+   Without data-carry the old contract holds: Continue stays disabled until
+   the recording ends, and leaving the slide stops it. */
 slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
   const box = slide.querySelector('.audio');
   if (!box || !box.dataset.src) return;
@@ -2810,8 +2877,39 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
   row.append(btn, meta); wrap.append(row, state);
   box.replaceChildren(wrap);
 
+  const carry = 'carry' in box.dataset;
   const cont = slide.querySelector('[data-action="next"]');
-  if (cont) cont.disabled = true;
+  if (cont && !carry) cont.disabled = true;
+
+  /* The docked copy: built for carry slides only, and put in the deck bar
+     where the ledger sits, so it never takes room from a slide. */
+  let dock = null, dockBtn = null, dockFill = null, dockTime = null, dockState = null;
+  if (carry) {
+    const at = slides.indexOf(slide);
+    let end = at + 1;
+    while (end < slides.length
+           && !['audio', 'results', 'activate'].includes(slides[end].dataset.type)) end++;
+    dock = document.createElement('div'); dock.className = 'audio-dock'; dock.hidden = true;
+    dockBtn = document.createElement('button');
+    dockBtn.className = 'dock-play'; dockBtn.type = 'button'; dockBtn.textContent = '▶';
+    dockBtn.dataset.i18nAria = 'audioPlay'; dockBtn.setAttribute('aria-label', t('audioPlay'));
+    const dockTrack = document.createElement('div'); dockTrack.className = 'dock-track';
+    dockFill = document.createElement('div'); dockFill.className = 'dock-fill';
+    dockTrack.append(dockFill);
+    dockTime = document.createElement('span'); dockTime.className = 'dock-time'; dockTime.textContent = '0:00';
+    dockState = document.createElement('span'); dockState.className = 'dock-state';
+    dock.append(dockBtn, dockTrack, dockTime, dockState);
+    const bar = document.querySelector('.deck-bar');
+    bar.insertBefore(dock, bar.querySelector('[data-action="prev"]'));
+    let autoPaused = false;
+    slideHooks.push(i => {
+      const inRange = i > at && i < end;
+      dock.hidden = !inRange;
+      if (i === at || inRange) {
+        if (autoPaused) { autoPaused = false; audio.play().catch(() => {}); }
+      } else if (!audio.paused) { autoPaused = true; audio.pause(); }
+    });
+  }
 
   const mmss = n => Number.isFinite(n)
     ? Math.floor(n / 60) + ':' + String(Math.floor(n % 60)).padStart(2, '0') : '';
@@ -2822,11 +2920,16 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
     fill.style.width = (audio.currentTime / audio.duration * 100) + '%';
     now.textContent = mmss(audio.currentTime);
     left.textContent = mmss(audio.duration - audio.currentTime);
+    if (dock) {
+      dockFill.style.width = fill.style.width;
+      dockTime.textContent = mmss(audio.currentTime) + ' / ' + mmss(audio.duration);
+    }
   });
   audio.addEventListener('error', () => {
     state.dataset.i18n = 'audioMissing';
     state.textContent = t('audioMissing');
     btn.disabled = true;
+    if (dockBtn) dockBtn.disabled = true;
     if (cont) cont.disabled = false;   // never trap a learner behind a broken file
   });
   audio.addEventListener('ended', () => {
@@ -2836,6 +2939,11 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
     state.textContent = t('audioDone');
     state.classList.add('done');
     if (cont) cont.disabled = false;
+    if (dock) {
+      dockFill.style.width = '100%';
+      dockState.textContent = '✓';
+      dockState.classList.add('done');
+    }
     const again = document.createElement('button');
     again.className = 'audio-replay'; again.type = 'button';
     again.dataset.i18n = 'audioReplay';
@@ -2844,13 +2952,17 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
       audio.currentTime = 0; audio.play();
       state.dataset.i18n = 'audioPlaying';
       state.textContent = t('audioPlaying'); state.classList.remove('done');
+      if (dock) { dockState.textContent = ''; dockState.classList.remove('done'); }
       again.remove();
     });
     wrap.append(again);
   });
 
-  btn.addEventListener('click', () => {
+  const start = () => {
     btn.disabled = true;
+    // The running time says it is playing; the deck bar has no room for
+    // the sentence the main player shows.
+    if (dockBtn) dockBtn.disabled = true;
     state.dataset.i18n = 'audioPlaying';
     state.textContent = t('audioPlaying');
     audio.play().catch(() => {
@@ -2859,11 +2971,14 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
     state.textContent = t('audioMissing');
       if (cont) cont.disabled = false;
     });
-  });
+  };
+  btn.addEventListener('click', start);
+  if (dockBtn) dockBtn.addEventListener('click', start);
 
-  // Leaving the slide stops the recording rather than letting it run on
-  // behind the questions.
-  slide._leave = () => { if (!audio.paused) audio.pause(); };
+  // Without data-carry, leaving the slide stops the recording rather than
+  // letting it run on behind the questions. With it, the range hook above
+  // decides.
+  if (!carry) slide._leave = () => { if (!audio.paused) audio.pause(); };
 });
 
 /* Sentence building. Author as

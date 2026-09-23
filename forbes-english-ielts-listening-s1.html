@@ -17,7 +17,7 @@
 <meta name="twitter:title" content="IELTS Listening Section 1: The Everyday Conversation (C1)">
 <meta name="twitter:description" content="Two speakers, one form to fill in, and a recording that plays exactly once">
 <meta name="twitter:image" content="https://forbesenglish.com/ielts-listen-s1/hero.jpg">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"IELTS Listening Section 1: The Everyday Conversation","description":"Two speakers, one form to fill in, and a recording that plays exactly once","url":"https://forbesenglish.com/forbes-english-ielts-listening-s1.html","inLanguage":"en","learningResourceType":"lesson","interactivityType":"active","isAccessibleForFree":false,"image":"https://forbesenglish.com/ielts-listen-s1/hero.jpg","provider":{"@type":"Organization","name":"Forbes English","url":"https://forbesenglish.com/"},"isPartOf":{"@type":"Course","name":"Forbes English lesson library","url":"https://forbesenglish.com/library.html"},"educationalLevel":"C1","teaches":["What Section 1 always is: Two speakers, an everyday situation, and a form or a set of notes to complete. Enrolling, booking, reporting something lost. It is the gentlest English on the paper.","It tests writing, not understanding: You will understand nearly every word. The marks go on whether you can write a spelled surname, a phone number and a price down accurately while someone keeps talking.","Read the form first: You get time before the recording starts. Use it to see what KIND of answer each gap wants — a day, a number, a name — so you are waiting for the right thing instead of listening to everything.","The spelled word: When a speaker starts giving letters, an answer is being dictated. It happens once per section and it is never repeated more than the speakers would naturally repeat it.","The number and the distractor: British speakers say double oh for two noughts and oh for one. And there are nearly always two prices or two times — one of them labelled as the wrong one, quickly."],"datePublished":"2026-09-13","hasPart":{"@type":"WebPageElement","isAccessibleForFree":false,"cssSelector":".paywalled"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"IELTS Listening Section 1: The Everyday Conversation","description":"Two speakers, one form to fill in, and a recording that plays exactly once","url":"https://forbesenglish.com/forbes-english-ielts-listening-s1.html","inLanguage":"en","learningResourceType":"lesson","interactivityType":"active","isAccessibleForFree":false,"image":"https://forbesenglish.com/ielts-listen-s1/hero.jpg","provider":{"@type":"Organization","name":"Forbes English","url":"https://forbesenglish.com/"},"isPartOf":{"@type":"Course","name":"Forbes English lesson library","url":"https://forbesenglish.com/library.html"},"educationalLevel":"C1","teaches":["What Section 1 always is: Two speakers, an everyday situation, and a form or a set of notes to complete. Enrolling, booking, reporting something lost. It is the gentlest English on the paper.","It tests writing, not understanding: You will understand nearly every word. The marks go on whether you can write a spelled surname, a phone number and a price down accurately while someone keeps talking.","Read the form first: You get time before the recording starts. Use it to see what KIND of answer each gap wants — a day, a number, a name — so you are waiting for the right thing instead of listening to everything.","The spelled word: When a speaker starts giving letters, an answer is being dictated. In Section 1 it usually happens once, and it is never repeated more than the speakers would naturally repeat it.","The number and the distractor: British speakers say double oh for two noughts and oh for one. And there are nearly always two prices or two times — one of them labelled as the wrong one, quickly."],"datePublished":"2026-09-13","hasPart":{"@type":"WebPageElement","isAccessibleForFree":false,"cssSelector":".paywalled"}}</script>
 <!-- SEO:end -->
 <!-- ══ REPLACE: lesson title. No "Forbes English —" prefix. ══ -->
 <title>IELTS Listening Section 1: The Everyday Conversation (C1)</title>
@@ -97,6 +97,25 @@
   text-decoration: underline; text-underline-offset: 3px;
 }
 .audio-replay:hover { color: var(--text); }
+/* The same recording, docked in the deck bar on the question slides that
+   follow a data-carry audio slide, so it can be started after reading and
+   keeps its place while the learner answers. */
+.audio-dock {
+  display: flex; align-items: center; gap: 10px; flex: 0 1 auto; min-width: 0;
+  font-family: var(--font-mono); font-size: 12px; color: var(--text);
+}
+.audio-dock[hidden] { display: none; }
+.dock-play {
+  flex: 0 0 auto; width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid var(--accent); background: var(--scrim); color: var(--accent-bright);
+  cursor: pointer; font-size: 13px; line-height: 1; display: grid; place-items: center;
+}
+.dock-play:disabled { cursor: default; border-color: var(--border); color: var(--text-dim); }
+.dock-track { width: 120px; height: 4px; border-radius: 2px; background: var(--inset2); overflow: hidden; }
+.dock-fill { height: 100%; width: 0; background: var(--accent); transition: width .2s linear; }
+.dock-time, .dock-state { white-space: nowrap; }
+.dock-state { color: var(--text-dim); }
+.dock-state.done { color: var(--accent-bright); }
 
 /* ── Fixed tokens: identical in every lesson. Do not edit. ── */
 :root {
@@ -1263,7 +1282,15 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
    picture made it obvious. Anything that paints text straight onto the stage
    belongs in that selector list. */
 .sort-bin-label { width: fit-content; margin-inline: auto; }
-.q-stem, .q-ctx { width: fit-content; max-width: 100%; }
+.q-stem, .q-ctx, .feedback, .gap-row { width: fit-content; max-width: 100%; }
+/* .feedback and .gap-row joined on 2026-09-23. The feedback plate was the one
+   on a question slide the 09-12 sweep never saw, because it is invisible until
+   a learner answers: a one-line "Correct." then painted a bar edge to edge
+   under shrink-wrapped options. .gap-row is the card deck.gap() puts
+   round each gap sentence, and a nine-word sentence was sitting in a card the
+   full width of the canvas. Innes, on Grammar Jail: "shorten the long black
+   text boxes". A row whose explanation is longer than its sentence widens
+   when answered; that is the card making room, not a layout fault. */
 /* max-width is 100%, NOT a shorter em cap. A 34em cap was tried first and it
    re-wrapped long stems onto an extra line, which pushed the body past the
    canvas on 17 decks — measured by running check-lesson.js over every deck
@@ -1766,8 +1793,8 @@ html[data-style="editorial"] .stamp {
         <h2 class="slide-title" data-i18n="audTitle">You will hear it once</h2>
       </div></div>
       <div class="slide-body">
-        <p class="prose" data-i18n="audNote">A telephone conversation between a woman and the manager of a community sports centre. Press play when you are ready to write. There is no pause and no rewind, exactly as in the test.</p>
-        <div class="audio" data-src="ielts-listen-s1/section1.mp3" data-label="Section 1 &middot; 3:19"></div>
+        <p class="prose" data-i18n="audNote">A telephone conversation between a woman and the manager of a community sports centre. Read the questions on the next slides first, then press play &mdash; here, or in the bar at the foot of any question slide. The recording keeps playing while you answer, and you hear it once.</p>
+        <div class="audio" data-src="ielts-listen-s1/section1.mp3" data-label="Section 1 &middot; 4:03" data-carry></div>
         <div style="margin-top:22px">
           <button class="btn" data-action="next" data-i18n="btnNext">Next →</button>
         </div>
@@ -1776,22 +1803,22 @@ html[data-style="editorial"] .stamp {
 
     <section class="slide" data-type="gap" data-bg="ielts-listen-s1/bg03.jpg">
       <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="gapEyebrow">Questions 1&ndash;6 &middot; Complete the form</span> &middot; 1 / 2</div>
+        <div class="eyebrow"><span data-i18n="gapEyebrow">Questions 1&ndash;7 &middot; Complete the form</span> &middot; 1 / 3</div>
         <h2 class="slide-title" data-i18n="gapTitle">Write ONE WORD AND/OR A NUMBER in each gap</h2>
       </div></div>
       <div class="slide-body">
         <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="gapHint">Spelling is marked. Write what you actually heard, not what you expected to hear.</p>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">Surname: <input class="gap" data-answer="Novakova|NOVAKOVA" aria-label="gap" style="width:210px"></p>
-          <p class="feedback" data-explain="Spelled out once, letter by letter. Nothing else in the recording spells anything, so the moment a speaker starts giving letters, that is an answer being dictated."></p>
+          <p class="feedback" data-explain="Spelled out once, letter by letter. The moment a speaker starts giving letters, an answer is being dictated."></p>
         </div>
         <div class="card gap-row" style="padding:12px 16px">
-          <p class="q-stem" style="margin-bottom:0;font-size:19px">Telephone: <input class="gap" data-answer="07700900642|07700 900 642" aria-label="gap" style="width:210px"></p>
-          <p class="feedback" data-explain="&quot;Double oh&quot; is two noughts and &quot;oh&quot; is one. Written out, the number is 07700 900 642 — and a candidate waiting for eleven separate digits will not have heard eleven."></p>
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">Telephone: <input class="gap" data-answer="07700900642|07700 900 642|07700-900-642" aria-label="gap" style="width:210px"></p>
+          <p class="feedback" data-explain="&quot;Double oh&quot; is two noughts and &quot;oh&quot; is one: 07700 900 642. A candidate waiting for eleven separate digits never hears eleven."></p>
         </div>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">Class day: <input class="gap" data-answer="Thursday" aria-label="gap" style="width:210px"></p>
-          <p class="feedback" data-explain="He says Tuesday and corrects himself in the same breath: &quot;sorry, I beg your pardon, that is the children.&quot; The answer is always the correction, never the first thing said."></p>
+          <p class="feedback" data-explain="He says Tuesday and corrects himself at once: &quot;sorry, I beg your pardon, that's the children.&quot; The answer is always the correction."></p>
         </div>
         <div style="margin-top:10px">
           <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
@@ -1801,18 +1828,35 @@ html[data-style="editorial"] .stamp {
 
     <section class="slide" data-type="gap" data-bg="ielts-listen-s1/bg03.jpg">
       <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="gapEyebrow">Questions 1&ndash;6 &middot; Complete the form</span> &middot; 2 / 2</div>
+        <div class="eyebrow"><span data-i18n="gapEyebrow">Questions 1&ndash;7 &middot; Complete the form</span> &middot; 2 / 3</div>
         <h2 class="slide-title" data-i18n="gapTitle">Write ONE WORD AND/OR A NUMBER in each gap</h2>
       </div></div>
       <div class="slide-body">
         <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="gapHint">Spelling is marked. Write what you actually heard, not what you expected to hear.</p>
         <div class="card gap-row" style="padding:12px 16px">
-          <p class="q-stem" style="margin-bottom:0;font-size:19px">Starts at: <input class="gap" data-answer="6.30|6:30|half past six|6.30pm|18.30|18:30" aria-label="gap" style="width:210px"></p>
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">Starts at: <input class="gap" data-answer="6.30|6:30|6.30pm|6.30 pm|6:30pm|6:30 pm|18.30|18:30" aria-label="gap" style="width:210px"></p>
           <p class="feedback" data-explain="Six thirty. Twenty past is when to arrive poolside, which is the sort of nearby number that is put there to be written down by mistake."></p>
         </div>
         <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">Length of course: <input class="gap" data-answer="10|ten" aria-label="gap" style="width:210px"> weeks</p>
+          <p class="feedback" data-explain="Ten, said once, just before the prices. The member price that follows covers the same ten weeks &mdash; &quot;the whole term&quot;."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap" data-bg="ielts-listen-s1/bg03.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="gapEyebrow">Questions 1&ndash;7 &middot; Complete the form</span> &middot; 3 / 3</div>
+        <h2 class="slide-title" data-i18n="gapTitle">Write ONE WORD AND/OR A NUMBER in each gap</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="gapHint">Spelling is marked. Write what you actually heard, not what you expected to hear.</p>
+        <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">Cost for members: £<input class="gap" data-answer="42|42.00|forty-two" aria-label="gap" style="width:210px"></p>
-          <p class="feedback" data-explain="Thirty-five is said first and is labelled as the non-member rate. She is joining, so she pays forty-two."></p>
+          <p class="feedback" data-explain="Thirty-five is said first, and it is the monthly rate for non-members. She is joining, so she pays forty-two for the whole term."></p>
         </div>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">Must bring a swimming <input class="gap" data-answer="cap" aria-label="gap" style="width:210px"></p>
@@ -1824,35 +1868,9 @@ html[data-style="editorial"] .stamp {
       </div>
     </section>
 
-    <section class="slide" data-type="teach" data-bg="ielts-listen-s1/bg04.jpg">
-      <div class="slide-head"><div>
-        <div class="eyebrow" data-i18n="t2Eyebrow">After the recording</div>
-        <h2 class="slide-title" data-i18n="t2Title">The four places this section takes its marks</h2>
-      </div></div>
-      <div class="slide-body">
-        <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
-          <div class="card">
-            <p class="prose"><strong data-i18n="t2ah">The correction</strong></p>
-            <p class="prose" data-i18n="t2ab" style="margin-top:8px;font-size:18px">A speaker says one thing and immediately changes it &mdash; <em>Tuesday&hellip; sorry, that is the children, the adult class is Thursday</em>. The answer is always the second one. This is the commonest mistake on the whole section.</p>
-            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t2an">Listen for <em>sorry</em>, <em>actually</em>, <em>I mean</em>, <em>I beg your pardon</em>. Every one of them is a warning that the answer is about to change.</p>
-          </div>
-          <div class="card">
-            <p class="prose"><strong data-i18n="t2bh">The spelled word</strong></p>
-            <p class="prose" data-i18n="t2bb" style="margin-top:8px;font-size:18px">When a speaker starts giving letters, an answer is being dictated. It happens once per section and it is never repeated more than the speakers would naturally repeat it.</p>
-            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t2bn">Know the letters that sound alike in English: A and R, E and I, G and J, M and N.</p>
-          </div>
-          <div class="card">
-            <p class="prose"><strong data-i18n="t2ch">The number and the distractor</strong></p>
-            <p class="prose" data-i18n="t2cb" style="margin-top:8px;font-size:18px">British speakers say <em>double oh</em> for two noughts and <em>oh</em> for one. And there are nearly always two prices or two times &mdash; one of them labelled as the wrong one, quickly.</p>
-            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t2cn">Thirty-five was the non-member rate. She was joining, so the answer was forty-two.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <section class="slide" data-type="mc" data-bg="ielts-listen-s1/bg05.jpg">
       <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="mcEyebrow">Questions 7&ndash;10 &middot; Detail</span> &middot; 1 / 4</div>
+        <div class="eyebrow"><span data-i18n="mcEyebrow">Questions 8&ndash;10 &middot; Detail</span> &middot; 1 / 3</div>
         <h2 class="slide-title" data-i18n="mcTitle">What exactly did they say?</h2>
       </div></div>
       <div class="slide-body">
@@ -1869,7 +1887,7 @@ html[data-style="editorial"] .stamp {
 
     <section class="slide" data-type="mc" data-bg="ielts-listen-s1/bg05.jpg">
       <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="mcEyebrow">Questions 7&ndash;10 &middot; Detail</span> &middot; 2 / 4</div>
+        <div class="eyebrow"><span data-i18n="mcEyebrow">Questions 8&ndash;10 &middot; Detail</span> &middot; 2 / 3</div>
         <h2 class="slide-title" data-i18n="mcTitle">What exactly did they say?</h2>
       </div></div>
       <div class="slide-body">
@@ -1886,24 +1904,7 @@ html[data-style="editorial"] .stamp {
 
     <section class="slide" data-type="mc" data-bg="ielts-listen-s1/bg05.jpg">
       <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="mcEyebrow">Questions 7&ndash;10 &middot; Detail</span> &middot; 3 / 4</div>
-        <h2 class="slide-title" data-i18n="mcTitle">What exactly did they say?</h2>
-      </div></div>
-      <div class="slide-body">
-        <p class="q-stem">The course lasts</p>
-        <div class="opts">
-          <button class="opt">six weeks, paid for by the single session.</button>
-          <button class="opt">one term, paid for by the single session.</button>
-          <button class="opt" data-correct>ten weeks, paid for as one whole term.</button>
-          <button class="opt">ten months, paid for as one whole term.</button>
-        </div>
-        <p class="feedback" data-explain="l3why"></p>
-      </div>
-    </section>
-
-    <section class="slide" data-type="mc" data-bg="ielts-listen-s1/bg05.jpg">
-      <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="mcEyebrow">Questions 7&ndash;10 &middot; Detail</span> &middot; 4 / 4</div>
+        <div class="eyebrow"><span data-i18n="mcEyebrow">Questions 8&ndash;10 &middot; Detail</span> &middot; 3 / 3</div>
         <h2 class="slide-title" data-i18n="mcTitle">What exactly did they say?</h2>
       </div></div>
       <div class="slide-body">
@@ -1911,10 +1912,36 @@ html[data-style="editorial"] .stamp {
         <div class="opts">
           <button class="opt">Because a friend of hers had recommended it.</button>
           <button class="opt">Because the local paper had run a campaign.</button>
-          <button class="opt">Because the classes had grown too popular.</button>
           <button class="opt" data-correct>Because the building had been refurbished.</button>
+          <button class="opt">Because the classes had grown too popular.</button>
         </div>
         <p class="feedback" data-explain="l4why"></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach" data-bg="ielts-listen-s1/bg04.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="t2Eyebrow">After the recording</div>
+        <h2 class="slide-title" data-i18n="t2Title">The four places this section takes its marks</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="t2ah">The correction</strong></p>
+            <p class="prose" data-i18n="t2ab" style="margin-top:8px;font-size:18px">A speaker says one thing and immediately changes it &mdash; <em>Tuesday&hellip; sorry, that&rsquo;s the children, the adult class is Thursday</em>. The answer is always the second one. This is the commonest mistake on the whole section.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t2an">Listen for <em>sorry</em>, <em>actually</em>, <em>I mean</em>, <em>I beg your pardon</em>. Every one of them is a warning that the answer is about to change.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t2bh">The spelled word</strong></p>
+            <p class="prose" data-i18n="t2bb" style="margin-top:8px;font-size:18px">When a speaker starts giving letters, an answer is being dictated. In Section 1 it usually happens once, and it is never repeated more than the speakers would naturally repeat it.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t2bn">Know the letters that sound alike in English: A, E and I; G and J; M and N.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t2ch">The number and the distractor</strong></p>
+            <p class="prose" data-i18n="t2cb" style="margin-top:8px;font-size:18px">British speakers say <em>double oh</em> for two noughts and <em>oh</em> for one. And there are nearly always two prices or two times &mdash; one of them labelled as the wrong one, quickly.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t2cn">Thirty-five was the monthly rate for non-members. She was joining, so the answer was forty-two.</p>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -2049,7 +2076,7 @@ const UI_I18N = {
     actWriteBrief: "Write the six lines of a form for a booking of your own choosing &mdash; a course, a delivery, a repair &mdash; and beside each one write what KIND of answer it needs: a name, a day, a number, a price. That is the thirty seconds of preparation the test gives you, done in advance.",
     actWriteKind: "Writing · 100–150 words",
     audEyebrow: "The recording",
-    audNote: "A telephone conversation between a woman and the manager of a community sports centre. Press play when you are ready to write. There is no pause and no rewind, exactly as in the test.",
+    audNote: "A telephone conversation between a woman and the manager of a community sports centre. Read the questions on the next slides first, then press play &mdash; here, or in the bar at the foot of any question slide. The recording keeps playing while you answer, and you hear it once.",
     audTitle: "You will hear it once",
     audioDone: 'That is the end of the recording.',
     audioMissing: 'The recording could not be loaded.',
@@ -2071,14 +2098,13 @@ const UI_I18N = {
     fbAnswer: 'Answer:',
     fbCorrect: 'Correct.',
     fbWrong: 'Not quite.',
-    gapEyebrow: "Questions 1&ndash;6 &middot; Complete the form",
+    gapEyebrow: "Questions 1&ndash;7 &middot; Complete the form",
     gapHint: "Spelling is marked. Write what you actually heard, not what you expected to hear.",
     gapTitle: "Write ONE WORD AND/OR A NUMBER in each gap",
     l1why: "The small pool, side entrance. He gives both in one breath &mdash; \"the classes are in the small pool, not the main one, so come through the side entrance\" &mdash; and the two halves get swapped by anyone answering from memory rather than from the line.",
     l2why: "The street behind the library is free after five. The car park is real, but he says it fills up by six; \"free after five\" attaches to the street, not the car park.",
-    l3why: "Ten weeks, paid as one term. Both numbers are in the same sentence as the prices, which is where the section is at its busiest.",
     l4why: "The building was refurbished. The friend and the local paper are both mentioned in her last question, one line earlier, which is exactly why they are there.",
-    mcEyebrow: "Questions 7&ndash;10 &middot; Detail",
+    mcEyebrow: "Questions 8&ndash;10 &middot; Detail",
     mcTitle: "What exactly did they say?",
     resNext: 'Recognising the language is half of it. Now produce it →',
     scoreLabel: 'Score',
@@ -2096,15 +2122,15 @@ const UI_I18N = {
     t1cn: "A gap after \"£\" wants a number. You can know that before you hear a word.",
     t2Eyebrow: "After the recording",
     t2Title: "The four places this section takes its marks",
-    t2ab: "A speaker says one thing and immediately changes it &mdash; <em>Tuesday&hellip; sorry, that is the children, the adult class is Thursday</em>. The answer is always the second one. This is the commonest mistake on the whole section.",
+    t2ab: "A speaker says one thing and immediately changes it &mdash; <em>Tuesday&hellip; sorry, that&rsquo;s the children, the adult class is Thursday</em>. The answer is always the second one. This is the commonest mistake on the whole section.",
     t2ah: "The correction",
     t2an: "Listen for <em>sorry</em>, <em>actually</em>, <em>I mean</em>, <em>I beg your pardon</em>. Every one of them is a warning that the answer is about to change.",
-    t2bb: "When a speaker starts giving letters, an answer is being dictated. It happens once per section and it is never repeated more than the speakers would naturally repeat it.",
+    t2bb: "When a speaker starts giving letters, an answer is being dictated. In Section 1 it usually happens once, and it is never repeated more than the speakers would naturally repeat it.",
     t2bh: "The spelled word",
-    t2bn: "Know the letters that sound alike in English: A and R, E and I, G and J, M and N.",
+    t2bn: "Know the letters that sound alike in English: A, E and I; G and J; M and N.",
     t2cb: "British speakers say <em>double oh</em> for two noughts and <em>oh</em> for one. And there are nearly always two prices or two times &mdash; one of them labelled as the wrong one, quickly.",
     t2ch: "The number and the distractor",
-    t2cn: "Thirty-five was the non-member rate. She was joining, so the answer was forty-two.",
+    t2cn: "Thirty-five was the monthly rate for non-members. She was joining, so the answer was forty-two.",
     wordCount: (n)=>`${n} ${n===1?'word':'words'}`,
     branchLocked: 'Your ledger does not support this ending',
     glossHide: 'Hide',
@@ -2132,7 +2158,7 @@ const UI_I18N = {
     actWriteBrief: "Schreib die sechs Zeilen eines Formulars für eine Buchung deiner Wahl &mdash; Kurs, Lieferung, Reparatur &mdash; und daneben, welche ART von Antwort jede Zeile braucht: Name, Tag, Zahl, Preis. Das sind die dreißig Sekunden Vorbereitung der Prüfung, vorab erledigt.",
     actWriteKind: "Schreiben · 100–150 Wörter",
     audEyebrow: "Die Aufnahme",
-    audNote: "Ein Telefongespräch zwischen einer Frau und dem Leiter eines Gemeindesportzentrums. Drücke Play, wenn du bereit bist zu schreiben. Kein Pausieren, kein Zurückspulen &mdash; genau wie in der Prüfung.",
+    audNote: "Ein Telefongespräch zwischen einer Frau und dem Leiter eines Gemeindesportzentrums. Lies zuerst die Fragen auf den nächsten Folien, dann drücke Play &mdash; hier oder in der Leiste unten auf jeder Fragenfolie. Die Aufnahme läuft weiter, während du antwortest, und du hörst sie einmal.",
     audTitle: "Du hörst sie einmal",
     audioDone: 'Das ist das Ende der Aufnahme.',
     audioMissing: 'Die Aufnahme konnte nicht geladen werden.',
@@ -2154,14 +2180,13 @@ const UI_I18N = {
     fbAnswer: 'Antwort:',
     fbCorrect: 'Richtig.',
     fbWrong: 'Nicht ganz.',
-    gapEyebrow: "Fragen 1&ndash;6 &middot; Formular ausfüllen",
+    gapEyebrow: "Fragen 1&ndash;7 &middot; Formular ausfüllen",
     gapHint: "Rechtschreibung wird bewertet. Schreib, was du gehört hast, nicht was du erwartet hast.",
     gapTitle: "Schreibe EIN WORT UND/ODER EINE ZAHL in jede Lücke",
     l1why: "Der kleine Pool, Seiteneingang. Er nennt beides in einem Atemzug &mdash; „the classes are in the small pool, not the main one, so come through the side entrance“ &mdash; und wer aus dem Gedächtnis antwortet, vertauscht die beiden Hälften.",
     l2why: "Die Straße hinter der Bibliothek ist ab fünf frei. Den Parkplatz gibt es, aber er ist ab sechs voll; „free after five“ gehört zur Straße, nicht zum Parkplatz.",
-    l3why: "Zehn Wochen, bezahlt als ein Kursabschnitt. Beide Zahlen stehen im selben Satz wie die Preise &mdash; die dichteste Stelle des Teils.",
-    l4why: "Das Gebäude wurde saniert. Die Freundin und die Lokalzeitung kommen beide in ihrer letzten Frage vor, eine Zeile davor, und genau deshalb stehen sie dort.",
-    mcEyebrow: "Fragen 7&ndash;10 &middot; Detail",
+    l4why: "Das Gebäude wurde saniert. Die Empfehlung und die Lokalzeitung kommen beide in ihrer letzten Frage vor, eine Zeile davor, und genau deshalb stehen sie dort.",
+    mcEyebrow: "Fragen 8&ndash;10 &middot; Detail",
     mcTitle: "Was genau wurde gesagt?",
     resNext: 'Die Sprache zu erkennen ist die halbe Miete. Jetzt anwenden →',
     scoreLabel: 'Punkte',
@@ -2179,15 +2204,15 @@ const UI_I18N = {
     t1cn: "Eine Lücke nach „£“ will eine Zahl. Das weißt du, bevor ein Wort gefallen ist.",
     t2Eyebrow: "Nach der Aufnahme",
     t2Title: "Die vier Stellen, an denen dieser Teil die Punkte holt",
-    t2ab: "Jemand sagt etwas und ändert es sofort &mdash; <em>Tuesday&hellip; sorry, that is the children, the adult class is Thursday</em>. Die Antwort ist immer die zweite. Der häufigste Fehler im ganzen Teil.",
+    t2ab: "Jemand sagt etwas und ändert es sofort &mdash; <em>Tuesday&hellip; sorry, that&rsquo;s the children, the adult class is Thursday</em>. Die Antwort ist immer die zweite. Der häufigste Fehler im ganzen Teil.",
     t2ah: "Die Korrektur",
     t2an: "Achte auf <em>sorry</em>, <em>actually</em>, <em>I mean</em>, <em>I beg your pardon</em>. Jedes davon kündigt an, dass die Antwort sich gleich ändert.",
-    t2bb: "Sobald jemand Buchstaben nennt, wird eine Antwort diktiert. Das passiert einmal pro Teil und wird nicht öfter wiederholt, als zwei Menschen es natürlich täten.",
+    t2bb: "Sobald jemand Buchstaben nennt, wird eine Antwort diktiert. In Section 1 passiert das meist einmal, und es wird nicht öfter wiederholt, als zwei Menschen es natürlich täten.",
     t2bh: "Das buchstabierte Wort",
-    t2bn: "Kenne die Buchstaben, die im Englischen ähnlich klingen: A und R, E und I, G und J, M und N.",
+    t2bn: "Kenne die Buchstaben, die im Englischen ähnlich klingen: A, E und I; G und J; M und N.",
     t2cb: "Briten sagen <em>double oh</em> für zwei Nullen und <em>oh</em> für eine. Und fast immer gibt es zwei Preise oder zwei Uhrzeiten &mdash; einer davon wird kurz als der falsche markiert.",
     t2ch: "Die Zahl und der Ablenker",
-    t2cn: "Fünfunddreißig war der Preis für Nichtmitglieder. Sie tritt bei, also lautet die Antwort zweiundvierzig.",
+    t2cn: "Fünfunddreißig war der Monatspreis für Nichtmitglieder. Sie tritt bei, also lautet die Antwort zweiundvierzig.",
     wordCount: (n)=>`${n} ${n===1?'Wort':'Wörter'}`,
     branchLocked: 'Dein Protokoll trägt dieses Ende nicht',
     glossHide: 'Ausblenden',
@@ -2215,7 +2240,7 @@ const UI_I18N = {
     actWriteBrief: "Escribe las seis líneas de un formulario para una reserva que elijas &mdash; un curso, un envío, una reparación &mdash; y al lado de cada una, qué TIPO de respuesta pide: un nombre, un día, un número, un precio. Son los treinta segundos de preparación del examen, hechos por adelantado.",
     actWriteKind: "Escritura · 100–150 palabras",
     audEyebrow: "La grabación",
-    audNote: "Una conversación telefónica entre una mujer y el responsable de un centro deportivo municipal. Dale a reproducir cuando estés listo para escribir. Sin pausa y sin rebobinar, igual que en el examen.",
+    audNote: "Una conversación telefónica entre una mujer y el responsable de un centro deportivo municipal. Lee primero las preguntas de las diapositivas siguientes y luego dale a reproducir, aquí o en la barra de abajo de cualquier pregunta. La grabación sigue sonando mientras respondes, y la oyes una sola vez.",
     audTitle: "La oirás una vez",
     audioDone: 'Aquí acaba la grabación.',
     audioMissing: 'No se ha podido cargar la grabación.',
@@ -2237,14 +2262,13 @@ const UI_I18N = {
     fbAnswer: 'Respuesta:',
     fbCorrect: 'Correcto.',
     fbWrong: 'No exactamente.',
-    gapEyebrow: "Preguntas 1&ndash;6 &middot; Completa el formulario",
+    gapEyebrow: "Preguntas 1&ndash;7 &middot; Completa el formulario",
     gapHint: "Se corrige la ortografía. Escribe lo que has oído, no lo que esperabas oír.",
     gapTitle: "Escribe UNA PALABRA Y/O UN NÚMERO en cada hueco",
     l1why: "La piscina pequeña, entrada lateral. Lo dice todo de una vez &mdash; «the classes are in the small pool, not the main one, so come through the side entrance» &mdash; y quien responde de memoria intercambia las dos mitades.",
     l2why: "La calle de detrás de la biblioteca es gratis a partir de las cinco. El aparcamiento existe, pero dice que se llena a las seis; «free after five» va con la calle, no con el aparcamiento.",
-    l3why: "Diez semanas, pagadas como un trimestre entero. Las dos cifras van en la misma frase que los precios, que es el punto más cargado de la sección.",
     l4why: "El edificio se reformó. La amiga y el periódico local aparecen los dos en su última pregunta, una línea antes, y por eso están ahí.",
-    mcEyebrow: "Preguntas 7&ndash;10 &middot; Detalle",
+    mcEyebrow: "Preguntas 8&ndash;10 &middot; Detalle",
     mcTitle: "¿Qué dijeron exactamente?",
     resNext: 'Reconocer el lenguaje es solo la mitad. Ahora prodúcelo →',
     scoreLabel: 'Puntuación',
@@ -2262,15 +2286,15 @@ const UI_I18N = {
     t1cn: "Un hueco detrás de «£» pide un número. Eso lo sabes antes de oír una sola palabra.",
     t2Eyebrow: "Después de la grabación",
     t2Title: "Los cuatro sitios donde esta parte se lleva los puntos",
-    t2ab: "Alguien dice una cosa y la cambia enseguida: <em>Tuesday&hellip; sorry, that is the children, the adult class is Thursday</em>. La respuesta es siempre la segunda. Es el fallo más común de toda la sección.",
+    t2ab: "Alguien dice una cosa y la cambia enseguida: <em>Tuesday&hellip; sorry, that&rsquo;s the children, the adult class is Thursday</em>. La respuesta es siempre la segunda. Es el fallo más común de toda la sección.",
     t2ah: "La corrección",
     t2an: "Escucha <em>sorry</em>, <em>actually</em>, <em>I mean</em>, <em>I beg your pardon</em>. Cada uno avisa de que la respuesta va a cambiar.",
-    t2bb: "En cuanto alguien empieza a dar letras, se está dictando una respuesta. Pasa una vez por sección y no se repite más de lo que dos personas lo repetirían de forma natural.",
+    t2bb: "En cuanto alguien empieza a dar letras, se está dictando una respuesta. En la Section 1 suele pasar una vez, y no se repite más de lo que dos personas lo repetirían de forma natural.",
     t2bh: "La palabra deletreada",
-    t2bn: "Aprende las letras que suenan parecido en inglés: A y R, E e I, G y J, M y N.",
+    t2bn: "Aprende las letras que suenan parecido en inglés: A, E e I; G y J; M y N.",
     t2cb: "Los británicos dicen <em>double oh</em> para dos ceros y <em>oh</em> para uno. Y casi siempre hay dos precios o dos horas, con uno marcado de pasada como el que no vale.",
     t2ch: "El número y el distractor",
-    t2cn: "Treinta y cinco era la tarifa de no socios. Ella se hace socia, así que la respuesta es cuarenta y dos.",
+    t2cn: "Treinta y cinco era la tarifa mensual de no socios. Ella se hace socia, así que la respuesta es cuarenta y dos.",
     wordCount: (n)=>`${n} ${n===1?'palabra':'palabras'}`,
     branchLocked: 'Tu registro no admite este final',
     glossHide: 'Ocultar',
@@ -2320,6 +2344,9 @@ const countIn = s => s.dataset.type === 'gap'   ? s.querySelectorAll('.gap').len
                    : 1;
 const maxScore = scored.reduce((n, s) => n + Math.max(1, countIn(s)), 0);
 let idx = 0, score = 0;
+// Called with the new index after every slide change, for behaviour that
+// belongs to a range of slides rather than to one (the docked recording).
+const slideHooks = [];
 const answered = new WeakSet();
 
 /* ── Branch mode ────────────────────────────────────────────────────────
@@ -2471,6 +2498,7 @@ function show(n) {
   if (slides[idx].dataset.type === 'results') renderResults();
   markRail(slides[idx]);
   if (slides[idx]._enter) slides[idx]._enter();
+  slideHooks.forEach(f => f(idx));
   const gap = slides[idx].querySelector('.gap');
   if (gap && !answered.has(slides[idx])) setTimeout(() => gap.focus(), 60);
 }
@@ -2767,11 +2795,19 @@ slides.filter(s => s.dataset.type === 'match').forEach(slide => {
    It behaves like the test, deliberately:
      · one play — the button locks once it has been pressed
      · no scrubbing — the bar reports progress, it does not accept clicks
-     · the slide's [data-action="next"] Continue button stays disabled until
-       the recording ends, so nobody reaches the questions early
    A replay control appears only after it has finished, and it says in words
    that the real test does not offer one. A classroom needs to replay; a
-   learner practising alone should know that is not the exam. */
+   learner practising alone should know that is not the exam.
+
+   With data-carry on the box (every deck.audio() slide since 2026-09-23) the
+   recording behaves like the real paper, where you read first and answer as
+   you listen: Continue is open, leaving the slide does not stop it, and the
+   question slides after it — up to the next audio, results or activation
+   slide — carry a small player in the deck bar that shows the time and can
+   start it. Leaving that range pauses it; coming back resumes it.
+
+   Without data-carry the old contract holds: Continue stays disabled until
+   the recording ends, and leaving the slide stops it. */
 slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
   const box = slide.querySelector('.audio');
   if (!box || !box.dataset.src) return;
@@ -2807,8 +2843,39 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
   row.append(btn, meta); wrap.append(row, state);
   box.replaceChildren(wrap);
 
+  const carry = 'carry' in box.dataset;
   const cont = slide.querySelector('[data-action="next"]');
-  if (cont) cont.disabled = true;
+  if (cont && !carry) cont.disabled = true;
+
+  /* The docked copy: built for carry slides only, and put in the deck bar
+     where the ledger sits, so it never takes room from a slide. */
+  let dock = null, dockBtn = null, dockFill = null, dockTime = null, dockState = null;
+  if (carry) {
+    const at = slides.indexOf(slide);
+    let end = at + 1;
+    while (end < slides.length
+           && !['audio', 'results', 'activate'].includes(slides[end].dataset.type)) end++;
+    dock = document.createElement('div'); dock.className = 'audio-dock'; dock.hidden = true;
+    dockBtn = document.createElement('button');
+    dockBtn.className = 'dock-play'; dockBtn.type = 'button'; dockBtn.textContent = '▶';
+    dockBtn.dataset.i18nAria = 'audioPlay'; dockBtn.setAttribute('aria-label', t('audioPlay'));
+    const dockTrack = document.createElement('div'); dockTrack.className = 'dock-track';
+    dockFill = document.createElement('div'); dockFill.className = 'dock-fill';
+    dockTrack.append(dockFill);
+    dockTime = document.createElement('span'); dockTime.className = 'dock-time'; dockTime.textContent = '0:00';
+    dockState = document.createElement('span'); dockState.className = 'dock-state';
+    dock.append(dockBtn, dockTrack, dockTime, dockState);
+    const bar = document.querySelector('.deck-bar');
+    bar.insertBefore(dock, bar.querySelector('[data-action="prev"]'));
+    let autoPaused = false;
+    slideHooks.push(i => {
+      const inRange = i > at && i < end;
+      dock.hidden = !inRange;
+      if (i === at || inRange) {
+        if (autoPaused) { autoPaused = false; audio.play().catch(() => {}); }
+      } else if (!audio.paused) { autoPaused = true; audio.pause(); }
+    });
+  }
 
   const mmss = n => Number.isFinite(n)
     ? Math.floor(n / 60) + ':' + String(Math.floor(n % 60)).padStart(2, '0') : '';
@@ -2819,11 +2886,16 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
     fill.style.width = (audio.currentTime / audio.duration * 100) + '%';
     now.textContent = mmss(audio.currentTime);
     left.textContent = mmss(audio.duration - audio.currentTime);
+    if (dock) {
+      dockFill.style.width = fill.style.width;
+      dockTime.textContent = mmss(audio.currentTime) + ' / ' + mmss(audio.duration);
+    }
   });
   audio.addEventListener('error', () => {
     state.dataset.i18n = 'audioMissing';
     state.textContent = t('audioMissing');
     btn.disabled = true;
+    if (dockBtn) dockBtn.disabled = true;
     if (cont) cont.disabled = false;   // never trap a learner behind a broken file
   });
   audio.addEventListener('ended', () => {
@@ -2833,6 +2905,11 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
     state.textContent = t('audioDone');
     state.classList.add('done');
     if (cont) cont.disabled = false;
+    if (dock) {
+      dockFill.style.width = '100%';
+      dockState.textContent = '✓';
+      dockState.classList.add('done');
+    }
     const again = document.createElement('button');
     again.className = 'audio-replay'; again.type = 'button';
     again.dataset.i18n = 'audioReplay';
@@ -2841,13 +2918,17 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
       audio.currentTime = 0; audio.play();
       state.dataset.i18n = 'audioPlaying';
       state.textContent = t('audioPlaying'); state.classList.remove('done');
+      if (dock) { dockState.textContent = ''; dockState.classList.remove('done'); }
       again.remove();
     });
     wrap.append(again);
   });
 
-  btn.addEventListener('click', () => {
+  const start = () => {
     btn.disabled = true;
+    // The running time says it is playing; the deck bar has no room for
+    // the sentence the main player shows.
+    if (dockBtn) dockBtn.disabled = true;
     state.dataset.i18n = 'audioPlaying';
     state.textContent = t('audioPlaying');
     audio.play().catch(() => {
@@ -2856,11 +2937,14 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
     state.textContent = t('audioMissing');
       if (cont) cont.disabled = false;
     });
-  });
+  };
+  btn.addEventListener('click', start);
+  if (dockBtn) dockBtn.addEventListener('click', start);
 
-  // Leaving the slide stops the recording rather than letting it run on
-  // behind the questions.
-  slide._leave = () => { if (!audio.paused) audio.pause(); };
+  // Without data-carry, leaving the slide stops the recording rather than
+  // letting it run on behind the questions. With it, the range hook above
+  // decides.
+  if (!carry) slide._leave = () => { if (!audio.paused) audio.pause(); };
 });
 
 /* Sentence building. Author as

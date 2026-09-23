@@ -58,28 +58,35 @@ T['en'] = dict(
          'view they opened with. What is marked is where they <strong>end '
          'up</strong>, not the first thing they said.',
     t1bn='<em>Actually, no</em> &middot; <em>I was against that at first</em> '
-         '&middot; <em>but you are right</em>. Every one of them says a '
+         '&middot; <em>but you&rsquo;re right</em>. Every one of them says a '
          'position just changed.',
     t1ch='Suggested is not decided',
     t1cb='A tutor proposes things the students do not do. Both go in the '
          'recording and only one is the answer, so a question about the '
          '<em>plan</em> is answered by the students and a question about the '
          '<em>advice</em> by the tutor.',
-    t1cn='<em>I would still push you towards&hellip; Fair enough, your '
+    t1cn='<em>I&rsquo;d still push you towards&hellip; Fair enough, your '
          'decision.</em> That is a suggestion being declined, in two lines.',
 
     audEyebrow='The recording',
     audTitle='You will hear it once',
     audNote='Two students, Maya and Ravi, discussing a research project with '
-            'their tutor. Three voices. Press play when you are ready. No '
-            'pause and no rewind, exactly as in the test.',
+            'their tutor. Three voices. Read the questions on the next slides '
+            'first, then press play &mdash; here, or in the bar at the foot of '
+            'any question slide. The recording keeps playing while you answer, '
+            'and you hear it once.',
 
-    whoEyebrow='Questions 1&ndash;5 &middot; Who holds this view?',
+    topicEyebrow='Question 1 &middot; The project',
+    topicHint='It is given in the first few seconds, before anyone disagrees '
+              'about anything.',
+    mcaEyebrow='Question 2 &middot; The method',
+    mcbEyebrow='Question 7 &middot; The deadline',
+    whoEyebrow='Questions 3&ndash;6 &middot; Who holds this view?',
     whoTitle='Match each position to the person who ends up holding it',
     whoHint='Click a position, then a person. What counts is where each '
             'speaker finishes, not where they started.',
 
-    notesEyebrow='Questions 6&ndash;8 &middot; The tutorial notes',
+    notesEyebrow='Questions 8&ndash;10 &middot; The tutorial notes',
     notesTitle='Write ONE WORD AND/OR A NUMBER in each gap',
     notesHint='All three numbers are agreed out loud. One of them is argued '
               'about at length and then kept unchanged.',
@@ -88,7 +95,7 @@ T['en'] = dict(
     t2Title='Three ways a discussion hides the answer',
     t2ah='The agreement that is not one',
     t2ab='Ravi says <em>exactly</em> &mdash; and then states something Maya '
-         'did not say. She corrects him: <em>that is not quite what I '
+         'did not say. She corrects him: <em>that&rsquo;s not quite what I '
          'meant</em>. Agreement words are not evidence that two people agree.',
     t2an='The tutor then separates them explicitly, which is the recording '
          'handing you the answer if you are still listening.',
@@ -104,7 +111,7 @@ T['en'] = dict(
          'length of the argument is not a signal that the figure changed.',
     t2cn='What changed was the plan around it: a pilot, and a reminder.',
 
-    mcEyebrow='Questions 9&ndash;12 &middot; Following the thread',
+    mcEyebrow='Questions 11&ndash;12 &middot; The reading',
     mcTitle='What happened in the discussion?',
 
     n1why='Because there are only two of them. Ravi gives the reason in the '
@@ -163,28 +170,35 @@ T['de'] = dict(
          'herausargumentieren, mit der er angefangen hat. Bewertet wird, wo '
          'jemand <strong>landet</strong>, nicht sein erster Satz.',
     t1bn='<em>Actually, no</em> &middot; <em>I was against that at first</em> '
-         '&middot; <em>but you are right</em>. Jedes davon meldet einen '
+         '&middot; <em>but you&rsquo;re right</em>. Jedes davon meldet einen '
          'Positionswechsel.',
     t1ch='Vorgeschlagen ist nicht beschlossen',
     t1cb='Ein Tutor schlägt Dinge vor, die die Studierenden nicht tun. Beides '
          'steht in der Aufnahme und nur eines ist die Antwort: eine Frage nach '
          'dem <em>Plan</em> beantworten die Studierenden, eine nach dem '
          '<em>Rat</em> der Tutor.',
-    t1cn='<em>I would still push you towards&hellip; Fair enough, your '
+    t1cn='<em>I&rsquo;d still push you towards&hellip; Fair enough, your '
          'decision.</em> Ein abgelehnter Vorschlag, in zwei Zeilen.',
 
     audEyebrow='Die Aufnahme',
     audTitle='Du hörst sie einmal',
     audNote='Zwei Studierende, Maya und Ravi, besprechen ein Forschungsprojekt '
-            'mit ihrem Tutor. Drei Stimmen. Drücke Play, wenn du bereit bist. '
-            'Kein Pausieren, kein Zurückspulen &mdash; wie in der Prüfung.',
+            'mit ihrem Tutor. Drei Stimmen. Lies zuerst die Fragen auf den '
+            'nächsten Folien, dann drücke Play &mdash; hier oder in der Leiste '
+            'unten auf jeder Fragenfolie. Die Aufnahme läuft weiter, während '
+            'du antwortest, und du hörst sie einmal.',
 
-    whoEyebrow='Fragen 1&ndash;5 &middot; Wer vertritt das?',
+    topicEyebrow='Frage 1 &middot; Das Projekt',
+    topicHint='Es fällt in den ersten Sekunden, bevor irgendjemand '
+              'widerspricht.',
+    mcaEyebrow='Frage 2 &middot; Die Methode',
+    mcbEyebrow='Frage 7 &middot; Die Frist',
+    whoEyebrow='Fragen 3&ndash;6 &middot; Wer vertritt das?',
     whoTitle='Ordne jede Position der Person zu, die sie am Ende vertritt',
     whoHint='Klicke eine Position an, dann eine Person. Es zählt, wo jemand '
             'endet, nicht wo er angefangen hat.',
 
-    notesEyebrow='Fragen 6&ndash;8 &middot; Die Besprechungsnotizen',
+    notesEyebrow='Fragen 8&ndash;10 &middot; Die Besprechungsnotizen',
     notesTitle='Schreibe EIN WORT UND/ODER EINE ZAHL in jede Lücke',
     notesHint='Alle drei Zahlen werden laut vereinbart. Über eine wird lange '
               'gestritten &mdash; und sie bleibt unverändert.',
@@ -193,7 +207,7 @@ T['de'] = dict(
     t2Title='Drei Arten, wie eine Diskussion die Antwort versteckt',
     t2ah='Die Zustimmung, die keine ist',
     t2ab='Ravi sagt <em>exactly</em> &mdash; und sagt dann etwas, das Maya gar '
-         'nicht gesagt hat. Sie korrigiert ihn: <em>that is not quite what I '
+         'nicht gesagt hat. Sie korrigiert ihn: <em>that&rsquo;s not quite what I '
          'meant</em>. Zustimmungswörter sind kein Beleg für Übereinstimmung.',
     t2an='Der Tutor trennt die beiden dann ausdrücklich &mdash; die Aufnahme '
          'reicht dir die Antwort, wenn du noch zuhörst.',
@@ -210,7 +224,7 @@ T['de'] = dict(
     t2cn='Geändert hat sich der Plan drumherum: ein Pilot und eine '
          'Erinnerung.',
 
-    mcEyebrow='Fragen 9&ndash;12 &middot; Dem Faden folgen',
+    mcEyebrow='Fragen 11&ndash;12 &middot; Die Lektüre',
     mcTitle='Was ist in der Diskussion passiert?',
 
     n1why='Weil sie nur zu zweit sind. Ravi nennt den Grund im selben Atemzug '
@@ -269,28 +283,35 @@ T['es'] = dict(
          'con la que empezó. Lo que se califica es dónde <strong>acaba</strong>, '
          'no lo primero que dijo.',
     t1bn='<em>Actually, no</em> &middot; <em>I was against that at first</em> '
-         '&middot; <em>but you are right</em>. Cada uno avisa de un cambio de '
+         '&middot; <em>but you&rsquo;re right</em>. Cada uno avisa de un cambio de '
          'postura.',
     t1ch='Sugerido no es decidido',
     t1cb='Un tutor propone cosas que los estudiantes no hacen. Las dos están '
          'en la grabación y solo una es la respuesta: una pregunta sobre el '
          '<em>plan</em> la contestan los estudiantes y una sobre el '
          '<em>consejo</em>, el tutor.',
-    t1cn='<em>I would still push you towards&hellip; Fair enough, your '
+    t1cn='<em>I&rsquo;d still push you towards&hellip; Fair enough, your '
          'decision.</em> Una sugerencia rechazada, en dos líneas.',
 
     audEyebrow='La grabación',
     audTitle='La oirás una vez',
     audNote='Dos estudiantes, Maya y Ravi, hablan de un proyecto de '
-            'investigación con su tutor. Tres voces. Dale a reproducir cuando '
-            'estés listo. Sin pausa y sin rebobinar, igual que en el examen.',
+            'investigación con su tutor. Tres voces. Lee primero las preguntas '
+            'de las diapositivas siguientes y luego dale a reproducir, aquí o '
+            'en la barra de abajo de cualquier pregunta. La grabación sigue '
+            'sonando mientras respondes, y la oyes una sola vez.',
 
-    whoEyebrow='Preguntas 1&ndash;5 &middot; ¿De quién es esta postura?',
+    topicEyebrow='Pregunta 1 &middot; El proyecto',
+    topicHint='Se dice en los primeros segundos, antes de que nadie discrepe '
+              'de nada.',
+    mcaEyebrow='Pregunta 2 &middot; El método',
+    mcbEyebrow='Pregunta 7 &middot; El plazo',
+    whoEyebrow='Preguntas 3&ndash;6 &middot; ¿De quién es esta postura?',
     whoTitle='Empareja cada postura con quien acaba sosteniéndola',
     whoHint='Haz clic en una postura y luego en una persona. Cuenta dónde '
             'acaba cada uno, no dónde empezó.',
 
-    notesEyebrow='Preguntas 6&ndash;8 &middot; Las notas de la tutoría',
+    notesEyebrow='Preguntas 8&ndash;10 &middot; Las notas de la tutoría',
     notesTitle='Escribe UNA PALABRA Y/O UN NÚMERO en cada hueco',
     notesHint='Los tres números se acuerdan en voz alta. Sobre uno se discute '
               'largo y tendido y se queda igual.',
@@ -299,7 +320,7 @@ T['es'] = dict(
     t2Title='Tres maneras en que un debate esconde la respuesta',
     t2ah='El acuerdo que no lo es',
     t2ab='Ravi dice <em>exactly</em> y acto seguido dice algo que Maya no ha '
-         'dicho. Ella le corrige: <em>that is not quite what I meant</em>. Las '
+         'dicho. Ella le corrige: <em>that&rsquo;s not quite what I meant</em>. Las '
          'palabras de acuerdo no prueban que dos personas estén de acuerdo.',
     t2an='El tutor los separa después de forma explícita: la grabación te da '
          'la respuesta si sigues escuchando.',
@@ -314,7 +335,7 @@ T['es'] = dict(
          'Que se discuta mucho sobre una cifra no significa que cambie.',
     t2cn='Lo que cambió fue el plan alrededor: un piloto y un recordatorio.',
 
-    mcEyebrow='Preguntas 9&ndash;12 &middot; Seguir el hilo',
+    mcEyebrow='Preguntas 11&ndash;12 &middot; La lectura',
     mcTitle='¿Qué pasó en el debate?',
 
     n1why='Porque solo son dos. Ravi da el motivo en la misma frase que la '

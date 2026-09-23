@@ -31,8 +31,9 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import deck as D
-from ieltslisten_s3_data import (TURNS, AUDIO, WHO, WHO_WHY,
-                                 DECISIONS, DECISIONS_BANK, MC)
+from ieltslisten_s3_data import (TURNS, AUDIO, TOPIC, TOPIC_BANK, MC_A, WHO,
+                                 WHO_WHY, MC_B, DECISIONS, DECISIONS_BANK,
+                                 MC_C, MC)
 
 TPL = 'lesson-template/lesson-template.html'
 OUT = 'forbes-english-ielts-listening-s3.html'
@@ -58,6 +59,11 @@ CHIPS = ['write the names down', 'where they end up', 'suggested &ne; decided',
 
 BG_BRIEF, BG_AUDIO, BG_WHO, BG_DETAIL = ('bg02.jpg', 'bg03.jpg',
                                          'bg04.jpg', 'bg05.jpg')
+def one(html):
+    """A lone multiple-choice slide: drop the "1 / 1" counter from its eyebrow."""
+    return html.replace(' &middot; 1 / 1</div>', '</div>')
+
+
 BG_ACT = 'bg06.jpg'
 
 
@@ -103,7 +109,7 @@ def build(make_audio=False):
                     'they <strong>end up</strong>, not the first thing they '
                     'said.', 't1bn',
                     '<em>Actually, no</em> &middot; <em>I was against that at '
-                    'first</em> &middot; <em>but you are right</em>. Every one '
+                    'first</em> &middot; <em>but you&rsquo;re right</em>. Every one '
                     'of them says a position just changed.'),
                    ('t1ch', 'Suggested is not decided', 't1cb',
                     'A tutor proposes things the students do not do. Both go '
@@ -111,7 +117,7 @@ def build(make_audio=False):
                     'question about the <em>plan</em> is answered by the '
                     'students and a question about the <em>advice</em> by the '
                     'tutor.', 't1cn',
-                    '<em>I would still push you towards&hellip; Fair enough, '
+                    '<em>I&rsquo;d still push you towards&hellip; Fair enough, '
                     'your decision.</em> That is a suggestion being declined, '
                     'in two lines.')],
                   folder=F, bg=BG_BRIEF)
@@ -120,12 +126,28 @@ def build(make_audio=False):
                   'audTitle', 'You will hear it once',
                   'audNote',
                   'Two students, Maya and Ravi, discussing a research project '
-                  'with their tutor. Three voices. Press play when you are '
-                  'ready. No pause and no rewind, exactly as in the test.',
+                  'with their tutor. Three voices. Read the questions on the '
+                  'next slides first, then press play &mdash; here, or in the '
+                  'bar at the foot of any question slide. The recording keeps '
+                  'playing while you answer, and you hear it once.',
                   AUDIO, label, folder=F, bg=BG_AUDIO)
 
+        + D.gap(1, 1, TOPIC, TOPIC_BANK,
+                'topicEyebrow', 'Question 1 &middot; The project',
+                'notesTitle', 'Write ONE WORD AND/OR A NUMBER in each gap',
+                folder=F, bg=BG_WHO,
+                hint_key='topicHint',
+                hint='It is given in the first few seconds, before anyone '
+                     'disagrees about anything.',
+                width=210, size=19)
+
+        + one(D.mc(1, 1, MC_A[0], 'mcaEyebrow',
+                   'Question 2 &middot; The method', 'mcTitle',
+                   'What happened in the discussion?',
+                   folder=F, bg=BG_WHO))
+
         + D.match(WHO, 'whoEyebrow',
-                  'Questions 1&ndash;5 &middot; Who holds this view?',
+                  'Questions 3&ndash;6 &middot; Who holds this view?',
                   'whoTitle',
                   'Match each position to the person who ends up holding it',
                   'whoHint',
@@ -133,21 +155,32 @@ def build(make_audio=False):
                   'speaker finishes, not where they started.',
                   WHO_WHY, folder=F, bg=BG_WHO)
 
+        + one(D.mc(1, 1, MC_B[0], 'mcbEyebrow',
+                   'Question 7 &middot; The deadline', 'mcTitle',
+                   'What happened in the discussion?',
+                   folder=F, bg=BG_DETAIL))
+
         + D.gap(1, 1, DECISIONS, DECISIONS_BANK,
                 'notesEyebrow',
-                'Questions 6&ndash;8 &middot; The tutorial notes',
+                'Questions 8&ndash;10 &middot; The tutorial notes',
                 'notesTitle', 'Write ONE WORD AND/OR A NUMBER in each gap',
-                folder=F, bg=BG_WHO,
+                folder=F, bg=BG_DETAIL,
                 hint_key='notesHint',
                 hint='All three numbers are agreed out loud. One of them is '
                      'argued about at length and then kept unchanged.',
                 width=210, size=19)
 
+        + "".join(D.mc(i + 1, len(MC_C), q, 'mcEyebrow',
+                       'Questions 11&ndash;12 &middot; The reading', 'mcTitle',
+                       'What happened in the discussion?',
+                       folder=F, bg=BG_DETAIL, ctx=q.get('ctx'))
+                  for i, q in enumerate(MC_C))
+
         + D.teach('t2Eyebrow', 'After the recording',
                   't2Title', 'Three ways a discussion hides the answer',
                   [('t2ah', 'The agreement that is not one', 't2ab',
                     'Ravi says <em>exactly</em> &mdash; and then states '
-                    'something Maya did not say. She corrects him: <em>that is '
+                    'something Maya did not say. She corrects him: <em>that&rsquo;s '
                     'not quite what I meant</em>. Agreement words are not '
                     'evidence that two people agree.', 't2an',
                     'The tutor then separates them explicitly, which is the '
@@ -168,12 +201,6 @@ def build(make_audio=False):
                     'What changed was the plan around it: a pilot, and a '
                     'reminder.')],
                   folder=F, bg=BG_DETAIL)
-
-        + "".join(D.mc(i + 1, len(MC), q, 'mcEyebrow',
-                       'Questions 9&ndash;12 &middot; Following the thread',
-                       'mcTitle', 'What happened in the discussion?',
-                       folder=F, bg=BG_DETAIL, ctx=q.get('ctx'))
-                  for i, q in enumerate(MC))
 
         + D.results('resNext', 'You followed it. Now run one &rarr;', folder=F)
 
@@ -206,7 +233,7 @@ def build(make_audio=False):
                    I, langs=('en', 'de', 'es'))
     print('wrote %s — %d slides, %d scored points, %d:%02d of audio, %d bytes'
           % (OUT, s.count('<section class="slide'),
-             len(WHO) + sum(r[0].count('______') for r in DECISIONS) + len(MC),
+             len(TOPIC) + len(WHO) + len(DECISIONS) + len(MC),
              secs // 60, secs % 60, len(s)))
 
 

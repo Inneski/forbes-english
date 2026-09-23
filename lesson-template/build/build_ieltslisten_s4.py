@@ -25,8 +25,8 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import deck as D
-from ieltslisten_s4_data import (TURNS, AUDIO, NOTES_A, NOTES_B,
-                                 NOTES_BANK, MC)
+from ieltslisten_s4_data import (TURNS, AUDIO, NOTES, NOTES_BANK,
+                                 NOTES_SLIDES)
 
 TPL = 'lesson-template/lesson-template.html'
 OUT = 'forbes-english-ielts-listening-s4.html'
@@ -49,7 +49,7 @@ PALETTE = '''  --hero: url('%s/hero.jpg');
 
 CHIPS = ['read every question first', 'first &middot; second &middot; finally',
          'the technical term is', 'a corrected number wins',
-         'a qualified figure loses', 'an aside is a rest']
+         'a qualified figure loses', 'an aside still counts']
 
 BG_BRIEF, BG_AUDIO, BG_NOTES, BG_DETAIL = ('bg02.jpg', 'bg03.jpg',
                                            'bg04.jpg', 'bg05.jpg')
@@ -57,7 +57,6 @@ BG_ACT = 'bg06.jpg'
 
 
 def build(make_audio=False):
-    D.assert_no_key_is_longest(MC, 'IELTSLISTEN4')
     logo = D.logo_from(TPL)
 
     if make_audio:
@@ -75,8 +74,8 @@ def build(make_audio=False):
 
     slides = (
         D.cover(logo, 'Section 4 &mdash; <em>the lecture</em>',
-                'One speaker, four minutes, and the only section with no break '
-                'in the middle',
+                'One speaker, one long run, and the only section with no '
+                'break in the middle',
                 [('Level', 'C1'),
                  ('Focus', 'Listening &middot; Section 4'),
                  ('Count', '10 questions')])
@@ -97,7 +96,7 @@ def build(make_audio=False):
                     '&middot; <em>the third function</em> &middot; '
                     '<em>finally</em>. A lecturer tells you where you are '
                     'roughly once a minute, and those words are the only '
-                    'handholds in four minutes of continuous speech.', 't1bn',
+                    'handholds in a long run of continuous speech.', 't1bn',
                     'If you have drifted, stop trying to catch up on meaning '
                     'and wait for the next signpost. It is coming.'),
                    ('t1ch', 'The word limit is the marker', 't1cb',
@@ -112,23 +111,25 @@ def build(make_audio=False):
         + D.audio('audEyebrow', 'The recording',
                   'audTitle', 'You will hear it once, straight through',
                   'audNote',
-                  'Part of a lecture on the role of trees in cities. Four '
-                  'minutes with no break. Press play when you have read every '
-                  'question.',
+                  'Part of a lecture on the role of trees in cities, with no '
+                  'break in the middle. Read all ten questions on the next '
+                  'slides first, then press play &mdash; here, or in the bar at '
+                  'the foot of any question slide. It keeps playing while you '
+                  'answer.',
                   AUDIO, label, folder=F, bg=BG_AUDIO)
 
-        + "".join(D.gap(n + 1, 2, rows, NOTES_BANK,
+        + "".join(D.gap(n + 1, len(NOTES_SLIDES), rows, NOTES_BANK,
                         'notesEyebrow',
-                        'Questions 1&ndash;6 &middot; Complete the notes',
+                        'Questions 1&ndash;10 &middot; Complete the notes',
                         'notesTitle',
                         'Write ONE WORD AND/OR A NUMBER in each gap',
                         folder=F, bg=BG_NOTES,
                         hint_key='notesHint',
-                        hint='Every answer is said aloud. Two of them are said '
-                             'twice, with the second version being the one '
-                             'that counts.',
+                        hint='Every answer is said aloud, in order. Two come '
+                             'with a second number beside them, and only one '
+                             'of each pair counts.',
                         width=210, size=19)
-                  for n, rows in enumerate([NOTES_A, NOTES_B]))
+                  for n, rows in enumerate(NOTES_SLIDES))
 
         + D.teach('t2Eyebrow', 'After the recording',
                   't2Title', 'The four places a lecture takes its marks',
@@ -147,25 +148,20 @@ def build(make_audio=False):
                     'And two degrees is the answer while four is quoted and '
                     'then called "an upper bound" &mdash; a figure that gets '
                     'qualified is not the figure they want.'),
-                   ('t2ch', 'The aside with nothing in it', 't2cb',
-                    'Twenty seconds about roots and pavements, containing no '
-                    'answers at all, placed exactly where a tiring candidate '
-                    'starts writing down whatever they hear.', 't2cn',
+                   ('t2ch', 'The aside that still counts', 't2cb',
+                    'Twenty seconds about roots and pavements, which the '
+                    'lecturer flags as a digression. It is off the main '
+                    'argument &mdash; and it still holds an answer, Question '
+                    '6.', 't2cn',
                     '<em>An aside</em> &middot; <em>somebody always asks</em> '
-                    '&middot; <em>that is a different lecture</em>. He tells '
-                    'you it is a digression. Believe him and rest.')],
+                    '&middot; <em>that&rsquo;s a different lecture</em>. A '
+                    'digression is a change of subject, not a rest.')],
                   folder=F, bg=BG_DETAIL)
-
-        + "".join(D.mc(i + 1, len(MC), q, 'mcEyebrow',
-                       'Questions 7&ndash;10 &middot; The argument', 'mcTitle',
-                       'What was the lecturer actually saying?',
-                       folder=F, bg=BG_DETAIL, ctx=q.get('ctx'))
-                  for i, q in enumerate(MC))
 
         + D.results('resNext', 'You stayed with it. Now give one &rarr;',
                     folder=F)
 
-        + D.activate('Give the four-minute lecture', 'Use at least three:',
+        + D.activate('Give the three-minute lecture', 'Use at least three:',
                      CHIPS, 'Discussion &middot; in pairs',
                      'In pairs. Take something you know well and talk for '
                      'three minutes without stopping, with three numbered '
@@ -178,12 +174,14 @@ def build(make_audio=False):
                       'Correct one number halfway through, the way a real '
                       'lecturer does, and see whether it reaches the notes.',
                       'Take one twenty-second digression and announce it as '
-                      'one. Your partner should write nothing during it.'],
+                      'one. Your partner notes its one point, in three words '
+                      'or fewer.'],
                      'Writing &middot; 120&ndash;180 words',
                      'Write the notes a listener should have ended up with: '
                      'your three points, the numbers, and the one term you '
-                     'defined. Keep every line to two words or fewer after the '
-                     'heading, which is the real limit a note task sets.',
+                     'defined. Set a word limit at the top &mdash; ONE WORD '
+                     'AND/OR A NUMBER is the strictest the test uses &mdash; and '
+                     'keep every line inside it.',
                      'Point 1: … / cooled by: …',
                      folder=F, bg=BG_ACT)
     )
@@ -194,7 +192,7 @@ def build(make_audio=False):
                    I, langs=('en', 'de', 'es'))
     print('wrote %s — %d slides, %d scored points, %d:%02d of audio, %d bytes'
           % (OUT, s.count('<section class="slide'),
-             sum(r[0].count('______') for r in NOTES_A + NOTES_B) + len(MC),
+             sum(r[0].count('______') for r in NOTES),
              secs // 60, secs % 60, len(s)))
 
 

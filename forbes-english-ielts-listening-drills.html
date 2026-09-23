@@ -17,7 +17,7 @@
 <meta name="twitter:title" content="IELTS Listening: Numbers, Spelling and Accents (B2) | Forbes English">
 <meta name="twitter:description" content="The three things that lose marks in every section, drilled on their own">
 <meta name="twitter:image" content="https://forbesenglish.com/ielts-listen-drills/hero.jpg">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"IELTS Listening: Numbers, Spelling and Accents","description":"The three things that lose marks in every section, drilled on their own","url":"https://forbesenglish.com/forbes-english-ielts-listening-drills.html","inLanguage":"en","learningResourceType":"lesson","interactivityType":"active","isAccessibleForFree":false,"image":"https://forbesenglish.com/ielts-listen-drills/hero.jpg","provider":{"@type":"Organization","name":"Forbes English","url":"https://forbesenglish.com/"},"isPartOf":{"@type":"Course","name":"Forbes English lesson library","url":"https://forbesenglish.com/library.html"},"educationalLevel":"B2","teaches":["English says numbers its own way: Double oh is two noughts. Oh is one. A room is eight eighty, not eight hundred and eighty. None of this is hard to hear — it is hard to expect.","Letter names collide: A and R, E and I, G and J, M and N. Four pairs, and between them they account for most of the misspelled answers on the paper."],"datePublished":"2026-09-13","hasPart":{"@type":"WebPageElement","isAccessibleForFree":false,"cssSelector":".paywalled"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"IELTS Listening: Numbers, Spelling and Accents","description":"The three things that lose marks in every section, drilled on their own","url":"https://forbesenglish.com/forbes-english-ielts-listening-drills.html","inLanguage":"en","learningResourceType":"lesson","interactivityType":"active","isAccessibleForFree":false,"image":"https://forbesenglish.com/ielts-listen-drills/hero.jpg","provider":{"@type":"Organization","name":"Forbes English","url":"https://forbesenglish.com/"},"isPartOf":{"@type":"Course","name":"Forbes English lesson library","url":"https://forbesenglish.com/library.html"},"educationalLevel":"B2","teaches":["English says numbers its own way: Double oh is two noughts. Oh is one. A room is eight eighty, not eight hundred and eighty. None of this is hard to hear — it is hard to expect.","Letter names collide: A and E, E and I, G and J, M and N. Four pairs, and between them they account for most of the misspelled answers on the paper."],"datePublished":"2026-09-13","hasPart":{"@type":"WebPageElement","isAccessibleForFree":false,"cssSelector":".paywalled"}}</script>
 <!-- SEO:end -->
 <!-- ══ REPLACE: lesson title. No "Forbes English —" prefix. ══ -->
 <title>IELTS Listening: Numbers, Spelling and Accents (B2) | Forbes English</title>
@@ -97,6 +97,25 @@
   text-decoration: underline; text-underline-offset: 3px;
 }
 .audio-replay:hover { color: var(--text); }
+/* The same recording, docked in the deck bar on the question slides that
+   follow a data-carry audio slide, so it can be started after reading and
+   keeps its place while the learner answers. */
+.audio-dock {
+  display: flex; align-items: center; gap: 10px; flex: 0 1 auto; min-width: 0;
+  font-family: var(--font-mono); font-size: 12px; color: var(--text);
+}
+.audio-dock[hidden] { display: none; }
+.dock-play {
+  flex: 0 0 auto; width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid var(--accent); background: var(--scrim); color: var(--accent-bright);
+  cursor: pointer; font-size: 13px; line-height: 1; display: grid; place-items: center;
+}
+.dock-play:disabled { cursor: default; border-color: var(--border); color: var(--text-dim); }
+.dock-track { width: 120px; height: 4px; border-radius: 2px; background: var(--inset2); overflow: hidden; }
+.dock-fill { height: 100%; width: 0; background: var(--accent); transition: width .2s linear; }
+.dock-time, .dock-state { white-space: nowrap; }
+.dock-state { color: var(--text-dim); }
+.dock-state.done { color: var(--accent-bright); }
 
 /* ── Fixed tokens: identical in every lesson. Do not edit. ── */
 :root {
@@ -1263,7 +1282,15 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
    picture made it obvious. Anything that paints text straight onto the stage
    belongs in that selector list. */
 .sort-bin-label { width: fit-content; margin-inline: auto; }
-.q-stem, .q-ctx { width: fit-content; max-width: 100%; }
+.q-stem, .q-ctx, .feedback, .gap-row { width: fit-content; max-width: 100%; }
+/* .feedback and .gap-row joined on 2026-09-23. The feedback plate was the one
+   on a question slide the 09-12 sweep never saw, because it is invisible until
+   a learner answers: a one-line "Correct." then painted a bar edge to edge
+   under shrink-wrapped options. .gap-row is the card deck.gap() puts
+   round each gap sentence, and a nine-word sentence was sitting in a card the
+   full width of the canvas. Innes, on Grammar Jail: "shorten the long black
+   text boxes". A row whose explanation is longer than its sentence widens
+   when answered; that is the card making room, not a layout fault. */
 /* max-width is 100%, NOT a shorter em cap. A 34em cap was tried first and it
    re-wrapped long stems onto an extra line, which pushed the body past the
    canvas on 17 decks — measured by running check-lesson.js over every deck
@@ -1748,7 +1775,7 @@ html[data-style="editorial"] .stamp {
           </div>
           <div class="card">
             <p class="prose"><strong data-i18n="t1bh">Letter names collide</strong></p>
-            <p class="prose" data-i18n="t1bb" style="margin-top:8px;font-size:18px"><strong>A</strong> and <strong>R</strong>, <strong>E</strong> and <strong>I</strong>, <strong>G</strong> and <strong>J</strong>, <strong>M</strong> and <strong>N</strong>. Four pairs, and between them they account for most of the misspelled answers on the paper.</p>
+            <p class="prose" data-i18n="t1bb" style="margin-top:8px;font-size:18px"><strong>A</strong> and <strong>E</strong>, <strong>E</strong> and <strong>I</strong>, <strong>G</strong> and <strong>J</strong>, <strong>M</strong> and <strong>N</strong>. Four pairs, and between them they account for most of the misspelled answers on the paper.</p>
             <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t1bn">E and I are the worst, because they are swapped between English and most European languages. What you were taught at school is actively against you here.</p>
           </div>
           <div class="card">
@@ -1766,8 +1793,8 @@ html[data-style="editorial"] .stamp {
         <h2 class="slide-title" data-i18n="numAudTitle">Five speakers, five numbers</h2>
       </div></div>
       <div class="slide-body">
-        <p class="prose" data-i18n="numAudNote">Short takes in five accents. Play it, write the numbers, and play it again as many times as you need &mdash; this is a drill, not the test.</p>
-        <div class="audio" data-src="ielts-listen-drills/numbers.mp3" data-label="Numbers &middot; five accents &middot; 0:24"></div>
+        <p class="prose" data-i18n="numAudNote">Short takes in five accents. Look at the gaps on the next slides, then press play &mdash; here or in the bar at the foot of those slides. When it ends you can play it again from here: this is a drill, not the test.</p>
+        <div class="audio" data-src="ielts-listen-drills/numbers.mp3" data-label="Numbers &middot; five accents &middot; 0:24" data-carry></div>
         <div style="margin-top:22px">
           <button class="btn" data-action="next" data-i18n="btnNext">Next →</button>
         </div>
@@ -1783,15 +1810,15 @@ html[data-style="editorial"] .stamp {
         <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="numHint">Write figures, not words. Two of these are said in a way English learners are rarely taught.</p>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">Reference: <input class="gap" data-answer="004713|00 47 13|0047 13" aria-label="gap" style="width:210px"></p>
-          <p class="feedback" data-explain="&quot;Double oh&quot; is two noughts, so the reference begins 0 0. Said as &quot;double oh four, seven one three&quot;, it is 004713 &mdash; and a candidate counting six separate digits never hears six."></p>
+          <p class="feedback" data-explain="&quot;Double oh&quot; is two noughts: 004713. A candidate counting six separate digits never hears six."></p>
         </div>
         <div class="card gap-row" style="padding:12px 16px">
-          <p class="q-stem" style="margin-bottom:0;font-size:19px">Price: £<input class="gap" data-answer="13.50|13,50|1350" aria-label="gap" style="width:210px"></p>
-          <p class="feedback" data-explain="Thirteen fifty. He says it and then separates it from thirty, which is the pair that costs more marks than any other number in English."></p>
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">Price: £<input class="gap" data-answer="13.50|13,50" aria-label="gap" style="width:210px"></p>
+          <p class="feedback" data-explain="Thirteen fifty, then &quot;not thirty, thirteen&quot;: the pair that costs more marks than any other number in English."></p>
         </div>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">Open from <input class="gap" data-answer="14th|14|fourteenth" aria-label="gap" style="width:210px"> March</p>
-          <p class="feedback" data-explain="The fourteenth. Ordinals run together at speed &mdash; fourteenth and fortieth differ by one unstressed syllable, and only one of them is a real date."></p>
+          <p class="feedback" data-explain="The fourteenth. Ordinals run together at speed &mdash; fourteenth and fortieth come out close, and only one of them is a real date."></p>
         </div>
         <div style="margin-top:10px">
           <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
@@ -1807,12 +1834,12 @@ html[data-style="editorial"] .stamp {
       <div class="slide-body">
         <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="numHint">Write figures, not words. Two of these are said in a way English learners are rarely taught.</p>
         <div class="card gap-row" style="padding:12px 16px">
-          <p class="q-stem" style="margin-bottom:0;font-size:19px">Room <input class="gap" data-answer="880|eight eighty|eight hundred and eighty" aria-label="gap" style="width:210px"></p>
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">Room <input class="gap" data-answer="880" aria-label="gap" style="width:210px"></p>
           <p class="feedback" data-explain="Eight eighty. English says a room number in pairs rather than as a whole number, which is why &quot;eight hundred and eighty&quot; is what a learner expects and never what they hear."></p>
         </div>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">Price if you book early: £<input class="gap" data-answer="18|eighteen" aria-label="gap" style="width:210px"></p>
-          <p class="feedback" data-explain="Eighteen. Twenty is the full price and it is said first &mdash; the cheaper figure attached to a condition is almost always the answer, because the condition is what the question is about."></p>
+          <p class="feedback" data-explain="Eighteen. Twenty is the full price and it is said first; the gap asks for the early-booking price, so the figure tied to that condition is the one to write."></p>
         </div>
         <div style="margin-top:10px">
           <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
@@ -1826,8 +1853,8 @@ html[data-style="editorial"] .stamp {
         <h2 class="slide-title" data-i18n="spellAudTitle">Two names, spelled once each</h2>
       </div></div>
       <div class="slide-body">
-        <p class="prose" data-i18n="spellAudNote">Two takes, two accents. Each name is given letter by letter exactly once, at speaking speed, which is what the real test does.</p>
-        <div class="audio" data-src="ielts-listen-drills/spelling.mp3" data-label="Spelling &middot; two accents &middot; 0:14"></div>
+        <p class="prose" data-i18n="spellAudNote">Two takes, two accents. Each name is given letter by letter exactly once, at speaking speed, as in the real test. Look at the gaps on the next slide, then press play.</p>
+        <div class="audio" data-src="ielts-listen-drills/spelling.mp3" data-label="Spelling &middot; two accents &middot; 0:14" data-carry></div>
         <div style="margin-top:22px">
           <button class="btn" data-action="next" data-i18n="btnNext">Next →</button>
         </div>
@@ -1843,7 +1870,7 @@ html[data-style="editorial"] .stamp {
         <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="spellHint">Spelling is marked. One of these uses the same "double" convention as the numbers drill.</p>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">Surname: <input class="gap" data-answer="Hargreaves|HARGREAVES" aria-label="gap" style="width:240px"></p>
-          <p class="feedback" data-explain="Hargreaves. The trap is the A and the R at the start, which are the commonest confusion in English letter names, and the EA in the middle, which has to be heard as two letters rather than one sound."></p>
+          <p class="feedback" data-explain="Hargreaves. The traps are the vowels &mdash; an A, then E and A together &mdash; which learners swap because their own alphabets name them differently, and the G, which is easily written as J."></p>
         </div>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">First name: <input class="gap" data-answer="Ffion|FFION" aria-label="gap" style="width:240px"></p>
@@ -1863,14 +1890,14 @@ html[data-style="editorial"] .stamp {
       <div class="slide-body">
         <p class="order-hint" data-i18n="sortHint">Drag each pair into a column &mdash; or click one, then the column you want it in.</p>
         <div class="sort" data-bins="Sound alike | Rarely confused" data-bins-i18n="sortBin1 | sortBin2">
-          <span class="sort-item" data-bin="0">A and R</span>
+          <span class="sort-item" data-bin="0">A and E</span>
           <span class="sort-item" data-bin="0">E and I</span>
           <span class="sort-item" data-bin="0">G and J</span>
           <span class="sort-item" data-bin="0">M and N</span>
           <span class="sort-item" data-bin="1">W and Y</span>
           <span class="sort-item" data-bin="1">K and Q</span>
         </div>
-        <p class="feedback" data-explain="The four on the left are the ones that actually collide in English letter names, and between them they account for most misspelled Section 1 answers. <strong>A</strong> and <strong>R</strong> are near-identical in a non-rhotic British accent; <strong>E</strong> and <strong>I</strong> swap between English and most European languages; <strong>G</strong> and <strong>J</strong> differ only in the opening consonant; <strong>M</strong> and <strong>N</strong> differ only in the nasal. W and Y and K and Q share nothing at all &mdash; which is why nobody mishears them."></p>
+        <p class="feedback" data-explain="The four on the left are the ones that actually collide in English letter names, and between them they account for most misspelled Section 1 answers. English <strong>A</strong> sounds like the E of most European alphabets, and English <strong>E</strong> like their I, so A and E, and E and I, are swapped by anyone hearing with their own alphabet; <strong>G</strong> and <strong>J</strong> share their opening sound and differ only in the vowel; <strong>M</strong> and <strong>N</strong> differ only in the final nasal. W and Y, and K and Q, sound nothing alike once said in full &mdash; which is why nobody mishears them."></p>
       </div>
     </section>
 
@@ -1965,7 +1992,7 @@ html[data-style="editorial"] .stamp {
           <span class="bank-chip">double oh = 00</span>
           <span class="bank-chip">eight eighty</span>
           <span class="bank-chip">thirteen &ne; thirty</span>
-          <span class="bank-chip">A and R collide</span>
+          <span class="bank-chip">A and E collide</span>
           <span class="bank-chip">E and I are swapped</span>
           <span class="bank-chip">double F = FF</span>
         </div>
@@ -1989,7 +2016,7 @@ html[data-style="editorial"] .stamp {
             <ul class="act-list">
               <li data-i18n="actSpeak1">Use <em>double</em> at least once, in a number and in a name.</li>
               <li data-i18n="actSpeak2">Put one number in your set that contains a thirteen or a thirty, and do not help.</li>
-              <li data-i18n="actSpeak3">Spell one name containing two of the colliding pairs &mdash; an A and an R, or an M and an N.</li>
+              <li data-i18n="actSpeak3">Spell one name containing two of the colliding pairs &mdash; an A and an E, or an M and an N.</li>
             </ul>
           </div>
           <div class="act-panel" id="actPanelWrite" data-panel="write" hidden>
@@ -2065,7 +2092,7 @@ const UI_I18N = {
     actPlaceholder: "Surname: … (expected mistake: A heard as R)",
     actSpeak1: "Use <em>double</em> at least once, in a number and in a name.",
     actSpeak2: "Put one number in your set that contains a thirteen or a thirty, and do not help.",
-    actSpeak3: "Spell one name containing two of the colliding pairs &mdash; an A and an R, or an M and an N.",
+    actSpeak3: "Spell one name containing two of the colliding pairs &mdash; an A and an E, or an M and an N.",
     actSpeakBrief: "In pairs, taking turns. Dictate five things to your partner: a surname, a phone number, a price, a date and a room number. Say each one once, at normal speed. Then swap papers and mark them &mdash; every wrong character is a lost mark, exactly as in the test.",
     actSpeakKind: 'Discussion · in pairs',
     actTitle: "Dictate and check",
@@ -2074,7 +2101,7 @@ const UI_I18N = {
     actWriteKind: "Writing · 80–120 words",
     audioDone: 'That is the end of the recording.',
     audioMissing: 'The recording could not be loaded.',
-    audioOnce: 'You will hear this once. Press play when you are ready.',
+    audioOnce: "Press play when you are ready. When it ends, you can replay it.",
     audioPlay: 'Play the recording',
     audioPlaying: 'Playing — you cannot pause or rewind.',
     audioReplay: 'Play it again — the real test will not let you',
@@ -2099,7 +2126,7 @@ const UI_I18N = {
     mcEyebrow: "Drill 4 &middot; The conventions",
     mcTitle: "What does English actually do here?",
     numAudEyebrow: "Drill 1 &middot; The recording",
-    numAudNote: "Short takes in five accents. Play it, write the numbers, and play it again as many times as you need &mdash; this is a drill, not the test.",
+    numAudNote: "Short takes in five accents. Look at the gaps on the next slides, then press play &mdash; here or in the bar at the foot of those slides. When it ends you can play it again from here: this is a drill, not the test.",
     numAudTitle: "Five speakers, five numbers",
     numEyebrow: "Drill 1 &middot; Numbers",
     numHint: "Write figures, not words. Two of these are said in a way English learners are rarely taught.",
@@ -2113,7 +2140,7 @@ const UI_I18N = {
     sortHint: "Drag each pair into a column &mdash; or click one, then the column you want it in.",
     sortTitle: "Which letter names actually get confused?",
     spellAudEyebrow: "Drill 2 &middot; The recording",
-    spellAudNote: "Two takes, two accents. Each name is given letter by letter exactly once, at speaking speed, which is what the real test does.",
+    spellAudNote: "Two takes, two accents. Each name is given letter by letter exactly once, at speaking speed, as in the real test. Look at the gaps on the next slide, then press play.",
     spellAudTitle: "Two names, spelled once each",
     spellEyebrow: "Drill 2 &middot; Spelling",
     spellHint: "Spelling is marked. One of these uses the same \"double\" convention as the numbers drill.",
@@ -2123,7 +2150,7 @@ const UI_I18N = {
     t1ab: "<em>Double oh</em> is two noughts. <em>Oh</em> is one. A room is <em>eight eighty</em>, not eight hundred and eighty. None of this is hard to hear &mdash; it is hard to <strong>expect</strong>.",
     t1ah: "English says numbers its own way",
     t1an: "Thirteen and thirty are the costliest pair in the language. The stress moves; the vowel barely does.",
-    t1bb: "<strong>A</strong> and <strong>R</strong>, <strong>E</strong> and <strong>I</strong>, <strong>G</strong> and <strong>J</strong>, <strong>M</strong> and <strong>N</strong>. Four pairs, and between them they account for most of the misspelled answers on the paper.",
+    t1bb: "<strong>A</strong> and <strong>E</strong>, <strong>E</strong> and <strong>I</strong>, <strong>G</strong> and <strong>J</strong>, <strong>M</strong> and <strong>N</strong>. Four pairs, and between them they account for most of the misspelled answers on the paper.",
     t1bh: "Letter names collide",
     t1bn: "E and I are the worst, because they are swapped between English and most European languages. What you were taught at school is actively against you here.",
     t1cb: "British, American, Australian, Canadian, Irish and New Zealand English all appear in real papers. The two recordings here are built from takes in different accents, so you are drilling all three things at once.",
@@ -2148,7 +2175,7 @@ const UI_I18N = {
     actPlaceholder: "Surname: … (expected mistake: A heard as R)",
     actSpeak1: "Benutze <em>double</em> mindestens einmal, in einer Zahl und in einem Namen.",
     actSpeak2: "Bau eine Zahl mit einer Dreizehn oder einer Dreißig ein &mdash; und hilf nicht.",
-    actSpeak3: "Buchstabiere einen Namen mit zwei der kollidierenden Paare &mdash; ein A und ein R, oder ein M und ein N.",
+    actSpeak3: "Buchstabiere einen Namen mit zwei der kollidierenden Paare &mdash; ein A und ein E, oder ein M und ein N.",
     actSpeakBrief: "Zu zweit, abwechselnd. Diktiere deinem Partner fünf Dinge: einen Nachnamen, eine Telefonnummer, einen Preis, ein Datum und eine Zimmernummer. Jedes einmal, in normalem Tempo. Dann Blätter tauschen und korrigieren &mdash; jedes falsche Zeichen ist ein Punkt, wie in der Prüfung.",
     actSpeakKind: 'Diskussion · zu zweit',
     actTitle: "Diktieren und prüfen",
@@ -2157,7 +2184,7 @@ const UI_I18N = {
     actWriteKind: "Schreiben · 80–120 Wörter",
     audioDone: 'Das ist das Ende der Aufnahme.',
     audioMissing: 'Die Aufnahme konnte nicht geladen werden.',
-    audioOnce: 'Du hörst das einmal. Drücke Play, wenn du bereit bist.',
+    audioOnce: "Drücke Play, wenn du bereit bist. Danach kannst du es noch einmal hören.",
     audioPlay: 'Aufnahme abspielen',
     audioPlaying: 'Läuft — kein Pausieren, kein Zurückspulen.',
     audioReplay: 'Noch einmal abspielen — die echte Prüfung lässt das nicht zu',
@@ -2182,7 +2209,7 @@ const UI_I18N = {
     mcEyebrow: "Übung 4 &middot; Die Konventionen",
     mcTitle: "Was macht das Englische hier eigentlich?",
     numAudEyebrow: "Übung 1 &middot; Die Aufnahme",
-    numAudNote: "Kurze Takes in fünf Akzenten. Abspielen, Zahlen mitschreiben und so oft wiederholen, wie du willst &mdash; das ist eine Übung, nicht die Prüfung.",
+    numAudNote: "Kurze Takes in fünf Akzenten. Sieh dir die Lücken auf den nächsten Folien an, dann drücke Play &mdash; hier oder in der Leiste unten auf diesen Folien. Danach kannst du es von hier noch einmal abspielen: das ist eine Übung, nicht die Prüfung.",
     numAudTitle: "Fünf Sprecher, fünf Zahlen",
     numEyebrow: "Übung 1 &middot; Zahlen",
     numHint: "Schreib Ziffern, keine Wörter. Zwei davon werden so gesagt, wie es Englischlernenden selten beigebracht wird.",
@@ -2196,7 +2223,7 @@ const UI_I18N = {
     sortHint: "Zieh jedes Paar in eine Spalte &mdash; oder klick eins an und dann die Spalte.",
     sortTitle: "Welche Buchstabennamen werden wirklich verwechselt?",
     spellAudEyebrow: "Übung 2 &middot; Die Aufnahme",
-    spellAudNote: "Zwei Takes, zwei Akzente. Jeder Name wird genau einmal buchstabiert, in normalem Sprechtempo &mdash; so wie in der echten Prüfung.",
+    spellAudNote: "Zwei Takes, zwei Akzente. Jeder Name wird genau einmal buchstabiert, in normalem Sprechtempo &mdash; so wie in der echten Prüfung. Sieh dir zuerst die Lücken auf der nächsten Folie an, dann drücke Play.",
     spellAudTitle: "Zwei Namen, je einmal buchstabiert",
     spellEyebrow: "Übung 2 &middot; Buchstabieren",
     spellHint: "Rechtschreibung wird bewertet. Einer davon nutzt dieselbe „double“-Konvention wie die Zahlenübung.",
@@ -2206,7 +2233,7 @@ const UI_I18N = {
     t1ab: "<em>Double oh</em> sind zwei Nullen. <em>Oh</em> ist eine. Ein Zimmer ist <em>eight eighty</em>, nicht eight hundred and eighty. Nichts davon ist schwer zu hören &mdash; es ist schwer zu <strong>erwarten</strong>.",
     t1ah: "Englisch sagt Zahlen auf seine eigene Art",
     t1an: "Thirteen und thirty sind das teuerste Paar der Sprache. Die Betonung wandert, der Vokal kaum.",
-    t1bb: "<strong>A</strong> und <strong>R</strong>, <strong>E</strong> und <strong>I</strong>, <strong>G</strong> und <strong>J</strong>, <strong>M</strong> und <strong>N</strong>. Vier Paare, und zusammen verursachen sie die meisten falsch geschriebenen Antworten.",
+    t1bb: "<strong>A</strong> und <strong>E</strong>, <strong>E</strong> und <strong>I</strong>, <strong>G</strong> und <strong>J</strong>, <strong>M</strong> und <strong>N</strong>. Vier Paare, und zusammen verursachen sie die meisten falsch geschriebenen Antworten.",
     t1bh: "Buchstabennamen kollidieren",
     t1bn: "E und I sind die schlimmsten, weil sie zwischen Englisch und fast allen europäischen Sprachen vertauscht sind. Was du in der Schule gelernt hast, arbeitet hier gegen dich.",
     t1cb: "Britisches, amerikanisches, australisches, kanadisches, irisches und neuseeländisches Englisch kommen in echten Prüfungen vor. Die beiden Aufnahmen hier bestehen aus Takes in verschiedenen Akzenten &mdash; du übst also alle drei Dinge gleichzeitig.",
@@ -2231,7 +2258,7 @@ const UI_I18N = {
     actPlaceholder: "Surname: … (expected mistake: A heard as R)",
     actSpeak1: "Usa <em>double</em> al menos una vez, en un número y en un nombre.",
     actSpeak2: "Mete en tu lista un número con un thirteen o un thirty, y no ayudes.",
-    actSpeak3: "Deletrea un nombre que lleve dos de los pares que chocan: una A y una R, o una M y una N.",
+    actSpeak3: "Deletrea un nombre que lleve dos de los pares que chocan: una A y una E, o una M y una N.",
     actSpeakBrief: "En parejas, por turnos. Dicta a tu compañero cinco cosas: un apellido, un número de teléfono, un precio, una fecha y un número de habitación. Cada una una sola vez, a velocidad normal. Luego intercambiad papeles y corregid: cada carácter mal es un punto, igual que en el examen.",
     actSpeakKind: 'Debate · en parejas',
     actTitle: "Dicta y corrige",
@@ -2240,7 +2267,7 @@ const UI_I18N = {
     actWriteKind: "Escritura · 80–120 palabras",
     audioDone: 'Aquí acaba la grabación.',
     audioMissing: 'No se ha podido cargar la grabación.',
-    audioOnce: 'La oirás una vez. Dale a reproducir cuando estés listo.',
+    audioOnce: "Dale a reproducir cuando estés listo. Al terminar puedes volver a oírlo.",
     audioPlay: 'Reproducir la grabación',
     audioPlaying: 'Sonando — no puedes pausar ni rebobinar.',
     audioReplay: 'Reproducir otra vez — el examen real no te deja',
@@ -2265,7 +2292,7 @@ const UI_I18N = {
     mcEyebrow: "Ejercicio 4 &middot; Las convenciones",
     mcTitle: "¿Qué hace el inglés aquí en realidad?",
     numAudEyebrow: "Ejercicio 1 &middot; La grabación",
-    numAudNote: "Tomas cortas en cinco acentos. Reprodúcela, anota los números y vuelve a ponerla las veces que necesites: esto es un ejercicio, no el examen.",
+    numAudNote: "Tomas cortas en cinco acentos. Mira los huecos de las diapositivas siguientes y luego dale a reproducir, aquí o en la barra de abajo de esas diapositivas. Al terminar puedes volver a ponerla desde aquí: esto es un ejercicio, no el examen.",
     numAudTitle: "Cinco hablantes, cinco números",
     numEyebrow: "Ejercicio 1 &middot; Números",
     numHint: "Escribe cifras, no palabras. Dos de estos se dicen de una forma que rara vez se enseña.",
@@ -2279,7 +2306,7 @@ const UI_I18N = {
     sortHint: "Arrastra cada par a una columna &mdash; o haz clic en uno y luego en la columna.",
     sortTitle: "¿Qué nombres de letras se confunden de verdad?",
     spellAudEyebrow: "Ejercicio 2 &middot; La grabación",
-    spellAudNote: "Dos tomas, dos acentos. Cada nombre se deletrea exactamente una vez, a velocidad normal, que es lo que hace el examen real.",
+    spellAudNote: "Dos tomas, dos acentos. Cada nombre se deletrea exactamente una vez, a velocidad normal, como en el examen real. Mira primero los huecos de la diapositiva siguiente y luego dale a reproducir.",
     spellAudTitle: "Dos nombres, deletreados una vez cada uno",
     spellEyebrow: "Ejercicio 2 &middot; Deletreo",
     spellHint: "Se corrige la ortografía. Uno de ellos usa la misma convención «double» que el ejercicio de números.",
@@ -2289,7 +2316,7 @@ const UI_I18N = {
     t1ab: "<em>Double oh</em> son dos ceros. <em>Oh</em> es uno. Una habitación es <em>eight eighty</em>, no eight hundred and eighty. Nada de esto cuesta oírlo: cuesta <strong>esperarlo</strong>.",
     t1ah: "El inglés dice los números a su manera",
     t1an: "Thirteen y thirty son el par más caro del idioma. Lo que se mueve es el acento; la vocal casi no.",
-    t1bb: "<strong>A</strong> y <strong>R</strong>, <strong>E</strong> e <strong>I</strong>, <strong>G</strong> y <strong>J</strong>, <strong>M</strong> y <strong>N</strong>. Cuatro pares que, entre todos, causan la mayoría de las respuestas mal escritas del examen.",
+    t1bb: "<strong>A</strong> y <strong>E</strong>, <strong>E</strong> e <strong>I</strong>, <strong>G</strong> y <strong>J</strong>, <strong>M</strong> y <strong>N</strong>. Cuatro pares que, entre todos, causan la mayoría de las respuestas mal escritas del examen.",
     t1bh: "Los nombres de las letras chocan",
     t1bn: "E e I son los peores, porque están intercambiados entre el inglés y casi todas las lenguas europeas. Lo que aprendiste en el colegio juega en tu contra aquí.",
     t1cb: "En los exámenes reales aparecen el inglés británico, americano, australiano, canadiense, irlandés y neozelandés. Las dos grabaciones de aquí están hechas con tomas en acentos distintos, así que practicas las tres cosas a la vez.",
@@ -2344,6 +2371,9 @@ const countIn = s => s.dataset.type === 'gap'   ? s.querySelectorAll('.gap').len
                    : 1;
 const maxScore = scored.reduce((n, s) => n + Math.max(1, countIn(s)), 0);
 let idx = 0, score = 0;
+// Called with the new index after every slide change, for behaviour that
+// belongs to a range of slides rather than to one (the docked recording).
+const slideHooks = [];
 const answered = new WeakSet();
 
 /* ── Branch mode ────────────────────────────────────────────────────────
@@ -2495,6 +2525,7 @@ function show(n) {
   if (slides[idx].dataset.type === 'results') renderResults();
   markRail(slides[idx]);
   if (slides[idx]._enter) slides[idx]._enter();
+  slideHooks.forEach(f => f(idx));
   const gap = slides[idx].querySelector('.gap');
   if (gap && !answered.has(slides[idx])) setTimeout(() => gap.focus(), 60);
 }
@@ -2791,11 +2822,19 @@ slides.filter(s => s.dataset.type === 'match').forEach(slide => {
    It behaves like the test, deliberately:
      · one play — the button locks once it has been pressed
      · no scrubbing — the bar reports progress, it does not accept clicks
-     · the slide's [data-action="next"] Continue button stays disabled until
-       the recording ends, so nobody reaches the questions early
    A replay control appears only after it has finished, and it says in words
    that the real test does not offer one. A classroom needs to replay; a
-   learner practising alone should know that is not the exam. */
+   learner practising alone should know that is not the exam.
+
+   With data-carry on the box (every deck.audio() slide since 2026-09-23) the
+   recording behaves like the real paper, where you read first and answer as
+   you listen: Continue is open, leaving the slide does not stop it, and the
+   question slides after it — up to the next audio, results or activation
+   slide — carry a small player in the deck bar that shows the time and can
+   start it. Leaving that range pauses it; coming back resumes it.
+
+   Without data-carry the old contract holds: Continue stays disabled until
+   the recording ends, and leaving the slide stops it. */
 slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
   const box = slide.querySelector('.audio');
   if (!box || !box.dataset.src) return;
@@ -2831,8 +2870,39 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
   row.append(btn, meta); wrap.append(row, state);
   box.replaceChildren(wrap);
 
+  const carry = 'carry' in box.dataset;
   const cont = slide.querySelector('[data-action="next"]');
-  if (cont) cont.disabled = true;
+  if (cont && !carry) cont.disabled = true;
+
+  /* The docked copy: built for carry slides only, and put in the deck bar
+     where the ledger sits, so it never takes room from a slide. */
+  let dock = null, dockBtn = null, dockFill = null, dockTime = null, dockState = null;
+  if (carry) {
+    const at = slides.indexOf(slide);
+    let end = at + 1;
+    while (end < slides.length
+           && !['audio', 'results', 'activate'].includes(slides[end].dataset.type)) end++;
+    dock = document.createElement('div'); dock.className = 'audio-dock'; dock.hidden = true;
+    dockBtn = document.createElement('button');
+    dockBtn.className = 'dock-play'; dockBtn.type = 'button'; dockBtn.textContent = '▶';
+    dockBtn.dataset.i18nAria = 'audioPlay'; dockBtn.setAttribute('aria-label', t('audioPlay'));
+    const dockTrack = document.createElement('div'); dockTrack.className = 'dock-track';
+    dockFill = document.createElement('div'); dockFill.className = 'dock-fill';
+    dockTrack.append(dockFill);
+    dockTime = document.createElement('span'); dockTime.className = 'dock-time'; dockTime.textContent = '0:00';
+    dockState = document.createElement('span'); dockState.className = 'dock-state';
+    dock.append(dockBtn, dockTrack, dockTime, dockState);
+    const bar = document.querySelector('.deck-bar');
+    bar.insertBefore(dock, bar.querySelector('[data-action="prev"]'));
+    let autoPaused = false;
+    slideHooks.push(i => {
+      const inRange = i > at && i < end;
+      dock.hidden = !inRange;
+      if (i === at || inRange) {
+        if (autoPaused) { autoPaused = false; audio.play().catch(() => {}); }
+      } else if (!audio.paused) { autoPaused = true; audio.pause(); }
+    });
+  }
 
   const mmss = n => Number.isFinite(n)
     ? Math.floor(n / 60) + ':' + String(Math.floor(n % 60)).padStart(2, '0') : '';
@@ -2843,11 +2913,16 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
     fill.style.width = (audio.currentTime / audio.duration * 100) + '%';
     now.textContent = mmss(audio.currentTime);
     left.textContent = mmss(audio.duration - audio.currentTime);
+    if (dock) {
+      dockFill.style.width = fill.style.width;
+      dockTime.textContent = mmss(audio.currentTime) + ' / ' + mmss(audio.duration);
+    }
   });
   audio.addEventListener('error', () => {
     state.dataset.i18n = 'audioMissing';
     state.textContent = t('audioMissing');
     btn.disabled = true;
+    if (dockBtn) dockBtn.disabled = true;
     if (cont) cont.disabled = false;   // never trap a learner behind a broken file
   });
   audio.addEventListener('ended', () => {
@@ -2857,6 +2932,11 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
     state.textContent = t('audioDone');
     state.classList.add('done');
     if (cont) cont.disabled = false;
+    if (dock) {
+      dockFill.style.width = '100%';
+      dockState.textContent = '✓';
+      dockState.classList.add('done');
+    }
     const again = document.createElement('button');
     again.className = 'audio-replay'; again.type = 'button';
     again.dataset.i18n = 'audioReplay';
@@ -2865,13 +2945,17 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
       audio.currentTime = 0; audio.play();
       state.dataset.i18n = 'audioPlaying';
       state.textContent = t('audioPlaying'); state.classList.remove('done');
+      if (dock) { dockState.textContent = ''; dockState.classList.remove('done'); }
       again.remove();
     });
     wrap.append(again);
   });
 
-  btn.addEventListener('click', () => {
+  const start = () => {
     btn.disabled = true;
+    // The running time says it is playing; the deck bar has no room for
+    // the sentence the main player shows.
+    if (dockBtn) dockBtn.disabled = true;
     state.dataset.i18n = 'audioPlaying';
     state.textContent = t('audioPlaying');
     audio.play().catch(() => {
@@ -2880,11 +2964,14 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
     state.textContent = t('audioMissing');
       if (cont) cont.disabled = false;
     });
-  });
+  };
+  btn.addEventListener('click', start);
+  if (dockBtn) dockBtn.addEventListener('click', start);
 
-  // Leaving the slide stops the recording rather than letting it run on
-  // behind the questions.
-  slide._leave = () => { if (!audio.paused) audio.pause(); };
+  // Without data-carry, leaving the slide stops the recording rather than
+  // letting it run on behind the questions. With it, the range hook above
+  // decides.
+  if (!carry) slide._leave = () => { if (!audio.paused) audio.pause(); };
 });
 
 /* Sentence building. Author as
