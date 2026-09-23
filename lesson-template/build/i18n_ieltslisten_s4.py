@@ -124,6 +124,12 @@ T['en'] = dict(
     actPlaceholder='Point 1: … / cooled by: …',
 )
 
+# The note explanations sit beside their answers in the data module, which
+# keeps the only copy of the English; they were plain strings there until
+# 2026-09-23, so German and Spanish learners read them in English.
+from ieltslisten_s4_data import NOTES
+T['en'].update(('n%dwhy' % (i + 1), r[2]) for i, r in enumerate(NOTES))
+
 # ── German ─────────────────────────────────────────────────────────────
 T['de'] = dict(
     coverTitle='Section 4 &mdash; <em>die Vorlesung</em>',
@@ -212,6 +218,36 @@ T['de'] = dict(
                   '&mdash; ONE WORD AND/OR A NUMBER ist das strengste der '
                   'Prüfung &mdash; und halte jede Zeile darin.',
     actPlaceholder='Point 1: … / cooled by: …',
+
+    # Questions 1-10: the English is registered from the data module, below.
+    n1why='Infrastructure, im ersten Satz: die These, die der ganze Vortrag '
+          'stützen soll.',
+    n2why='Transpiration, im selben Atemzug erklärt als „releasing water '
+          'vapour through the leaves“. Die Antwort ist der Fachbegriff, nicht '
+          'die Erklärung.',
+    n3why='Zwei, für Europa. Vier wird für Australien genannt und sofort ein '
+          '„upper bound“ genannt &mdash; eine Zahl, die gleich eingeschränkt '
+          'wird, ist nicht die Antwort.',
+    n4why='„The technical term is interception loss“ &mdash; deutlicher kann '
+          'nichts anzeigen, dass ein Wort einen Punkt wert ist.',
+    n5why='Zwanzig bis dreißig. Was neben der Lücke gedruckt steht, zeigt, '
+          'welche Hälfte der Spanne gefragt ist.',
+    n6why='Pit, mitten in dem Einschub, den der Vortragende als Abschweifung '
+          'ankündigt. Ein Einschub liegt neben dem Hauptargument, leer ist er '
+          'nicht.',
+    n7why='Air quality, und der Vortragende bewertet es selbst &mdash; „the '
+          'weakest evidence of the three“. Wer seine eigenen Punkte ordnet, '
+          'liefert dir die Struktur gleich mit.',
+    n8why='Trap. Die Einschränkung folgt direkt auf die Behauptung, die sie '
+          'begrenzt &mdash; Bäume fangen Feinstaub ein, und sie können auch die '
+          'verschmutzte Luft einschließen. Dasselbe Verb, die umgekehrte '
+          'Wirkung.',
+    n9why='Zwölfhundert. Achthundert kommt zuerst und wird im selben Satz '
+          'korrigiert &mdash; „no, I should be accurate“ &mdash; die '
+          'Korrekturfalle aus Section 1 im Tempo von Section 4.',
+    n10why='Watering &mdash; „the watering, not the planting“. In der letzten '
+           'Zeile eines Vortrags sitzt seine Pointe, und der Gegensatz kommt im '
+           'selben Atemzug.',
 )
 
 # ── Spanish ────────────────────────────────────────────────────────────
@@ -300,6 +336,34 @@ T['es'] = dict(
                   'WORD AND/OR A NUMBER es el más estricto del examen &mdash; y '
                   'que cada línea lo respete.',
     actPlaceholder='Point 1: … / cooled by: …',
+
+    # Questions 1-10: the English is registered from the data module, below.
+    n1why='Infrastructure, en la primera frase: la tesis que toda la '
+          'conferencia está construida para defender.',
+    n2why='Transpiration, definida en la misma frase como «releasing water '
+          'vapour through the leaves». La respuesta es el término, no la '
+          'definición.',
+    n3why='Dos, para Europa. Cuatro se cita para Australia y enseguida se '
+          'llama «upper bound»: una cifra que se matiza al momento no es la '
+          'respuesta.',
+    n4why='«The technical term is interception loss»: no hay señal más clara '
+          'de que una palabra vale un punto.',
+    n5why='De veinte a treinta. Lo que está impreso junto al hueco muestra qué '
+          'mitad del intervalo se pide.',
+    n6why='Pit, dentro del inciso que el profesor anuncia como digresión. Un '
+          'inciso se sale del argumento principal, pero no está vacío.',
+    n7why='Air quality, y el propio profesor lo califica: «the weakest '
+          'evidence of the three». Un profesor que ordena sus propios '
+          'argumentos te está dando la estructura.',
+    n8why='Trap. La complicación llega justo después de la afirmación que '
+          'limita: los árboles atrapan partículas, y también pueden atrapar el '
+          'aire contaminado. El mismo verbo, el efecto contrario.',
+    n9why='Mil doscientas. Ochocientas se dice primero y se corrige en la '
+          'misma frase («no, I should be accurate»): la trampa de la '
+          'corrección de la Section 1, a la velocidad de la Section 4.',
+    n10why='Watering: «the watering, not the planting». La última línea de una '
+           'conferencia es donde remata su idea, y el contraste va en la misma '
+           'frase.',
 )
 
 

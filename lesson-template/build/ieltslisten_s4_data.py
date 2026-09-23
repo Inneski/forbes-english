@@ -163,6 +163,7 @@ NOTES = [
 
 NOTES_BANK = []
 
-# Three, three, two and two a slide: four rows run past the canvas once the
-# explanations show (measured on Section 1, 2026-09-23).
-NOTES_SLIDES = [NOTES[:3], NOTES[3:6], NOTES[6:8], NOTES[8:]]
+# Two a slide. Four rows run past the canvas once the explanations show, and
+# three ran 12px past in Spanish once the explanations translated (measured
+# 2026-09-23). HOUSE-STYLE §6: more slides, not smaller type.
+NOTES_SLIDES = [NOTES[i:i + 2] for i in range(0, len(NOTES), 2)]

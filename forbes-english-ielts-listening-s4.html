@@ -1696,6 +1696,39 @@ html[data-style="editorial"] .match-item,
 html[data-style="editorial"] .sort-item {
   background: var(--surface); border: 2px solid var(--border);
 }
+
+/* ── answered states, restated at the editorial specificity ──────────
+   The base rules above are `html[data-style="editorial"] .opt`, which is
+   (0,2,1). The default answered states are `.opt.wrong` / `.opt.correct`,
+   which are (0,2,0). So the base rule WON, and its `background: var(--surface)`
+   plus `border: 2px solid …` repainted every answered option back to neutral.
+
+   The engine was never broken: measured on the Watts deck, a clicked wrong
+   option carried `class="opt wrong"` and the feedback read "Not quite …",
+   while the computed colours of the wrong, the correct and an untouched
+   option were all identical — rgb(255,255,255) on rgb(190,208,203). A
+   learner got no red, no green, and no sight of the right answer.
+
+   Same trap for .match-item and .sort-item, whose base rule uses the `border`
+   shorthand and so also outranks their own .picked/.done/.miss border-colors.
+   Restating the states here is the whole fix; nothing in the engine changes. */
+html[data-style="editorial"] .opt.correct {
+  border-color: var(--ok);
+  background: color-mix(in srgb, var(--ok) 20%, var(--surface));
+}
+html[data-style="editorial"] .opt.wrong {
+  border-color: var(--no);
+  background: color-mix(in srgb, var(--no) 18%, var(--surface));
+}
+html[data-style="editorial"] .match-item.picked,
+html[data-style="editorial"] .sort-item.picked {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 22%, var(--surface));
+}
+html[data-style="editorial"] .match-item.done,
+html[data-style="editorial"] .sort-item.placed { border-color: var(--ok); }
+html[data-style="editorial"] .match-item.miss,
+html[data-style="editorial"] .sort-item.miss { border-color: var(--no); }
 /* The rule is a thing a builder PLACES, not something every heading grows.
    The source deck has it under the cover title and nowhere else; putting it
    on all thirty-two slides was mine and it was wrong. Emit
@@ -1803,22 +1836,18 @@ html[data-style="editorial"] .stamp {
 
     <section class="slide" data-type="gap" data-bg="ielts-listen-s4/bg04.jpg">
       <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="notesEyebrow">Questions 1&ndash;10 &middot; Complete the notes</span> &middot; 1 / 4</div>
+        <div class="eyebrow"><span data-i18n="notesEyebrow">Questions 1&ndash;10 &middot; Complete the notes</span> &middot; 1 / 5</div>
         <h2 class="slide-title" data-i18n="notesTitle">Write ONE WORD AND/OR A NUMBER in each gap</h2>
       </div></div>
       <div class="slide-body">
         <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="notesHint">Every answer is said aloud, in order. Two come with a second number beside them, and only one of each pair counts.</p>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">Urban trees should be treated as <input class="gap" data-answer="infrastructure" aria-label="gap" style="width:210px">, not decoration</p>
-          <p class="feedback" data-explain="Infrastructure, in the first sentence: the thesis the whole lecture is built to support."></p>
+          <p class="feedback" data-explain="n1why"></p>
         </div>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">Trees cool the air by shading and by <input class="gap" data-answer="transpiration" aria-label="gap" style="width:210px"></p>
-          <p class="feedback" data-explain="Transpiration, defined in the same breath as &quot;releasing water vapour through the leaves&quot;. The answer is the term, not the definition."></p>
-        </div>
-        <div class="card gap-row" style="padding:12px 16px">
-          <p class="q-stem" style="margin-bottom:0;font-size:19px">A planted street runs about <input class="gap" data-answer="2|two" aria-label="gap" style="width:210px"> degrees cooler</p>
-          <p class="feedback" data-explain="Two, for Europe. Four is quoted for Australia and called an &quot;upper bound&quot; at once &mdash; a figure that gets qualified is not the answer."></p>
+          <p class="feedback" data-explain="n2why"></p>
         </div>
         <div style="margin-top:10px">
           <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
@@ -1828,22 +1857,18 @@ html[data-style="editorial"] .stamp {
 
     <section class="slide" data-type="gap" data-bg="ielts-listen-s4/bg04.jpg">
       <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="notesEyebrow">Questions 1&ndash;10 &middot; Complete the notes</span> &middot; 2 / 4</div>
+        <div class="eyebrow"><span data-i18n="notesEyebrow">Questions 1&ndash;10 &middot; Complete the notes</span> &middot; 2 / 5</div>
         <h2 class="slide-title" data-i18n="notesTitle">Write ONE WORD AND/OR A NUMBER in each gap</h2>
       </div></div>
       <div class="slide-body">
         <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="notesHint">Every answer is said aloud, in order. Two come with a second number beside them, and only one of each pair counts.</p>
         <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">A planted street runs about <input class="gap" data-answer="2|two" aria-label="gap" style="width:210px"> degrees cooler</p>
+          <p class="feedback" data-explain="n3why"></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">Rain that never reaches the drain: <input class="gap" data-answer="interception" aria-label="gap" style="width:210px"> loss</p>
-          <p class="feedback" data-explain="&quot;The technical term is interception loss&quot; &mdash; the clearest flag there is that a word is worth a mark."></p>
-        </div>
-        <div class="card gap-row" style="padding:12px 16px">
-          <p class="q-stem" style="margin-bottom:0;font-size:19px">Interception is <input class="gap" data-answer="20|twenty" aria-label="gap" style="width:210px"> to thirty per cent of a rainfall event</p>
-          <p class="feedback" data-explain="Twenty to thirty. What is printed beside the gap shows which half of the range it wants."></p>
-        </div>
-        <div class="card gap-row" style="padding:12px 16px">
-          <p class="q-stem" style="margin-bottom:0;font-size:19px">Root damage is largely avoidable with the right planting <input class="gap" data-answer="pit" aria-label="gap" style="width:210px"></p>
-          <p class="feedback" data-explain="Pit, inside the aside the lecturer flags as a digression. An aside is off the main argument, not empty."></p>
+          <p class="feedback" data-explain="n4why"></p>
         </div>
         <div style="margin-top:10px">
           <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
@@ -1853,18 +1878,39 @@ html[data-style="editorial"] .stamp {
 
     <section class="slide" data-type="gap" data-bg="ielts-listen-s4/bg04.jpg">
       <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="notesEyebrow">Questions 1&ndash;10 &middot; Complete the notes</span> &middot; 3 / 4</div>
+        <div class="eyebrow"><span data-i18n="notesEyebrow">Questions 1&ndash;10 &middot; Complete the notes</span> &middot; 3 / 5</div>
+        <h2 class="slide-title" data-i18n="notesTitle">Write ONE WORD AND/OR A NUMBER in each gap</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="notesHint">Every answer is said aloud, in order. Two come with a second number beside them, and only one of each pair counts.</p>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">Interception is <input class="gap" data-answer="20|twenty" aria-label="gap" style="width:210px"> to thirty per cent of a rainfall event</p>
+          <p class="feedback" data-explain="n5why"></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">Root damage is largely avoidable with the right planting <input class="gap" data-answer="pit" aria-label="gap" style="width:210px"></p>
+          <p class="feedback" data-explain="n6why"></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap" data-bg="ielts-listen-s4/bg04.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="notesEyebrow">Questions 1&ndash;10 &middot; Complete the notes</span> &middot; 4 / 5</div>
         <h2 class="slide-title" data-i18n="notesTitle">Write ONE WORD AND/OR A NUMBER in each gap</h2>
       </div></div>
       <div class="slide-body">
         <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="notesHint">Every answer is said aloud, in order. Two come with a second number beside them, and only one of each pair counts.</p>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">Weakest evidence of the three: <input class="gap" data-answer="air" aria-label="gap" style="width:210px"> quality</p>
-          <p class="feedback" data-explain="Air quality, and the lecturer grades it himself &mdash; &quot;the weakest evidence of the three&quot;. A lecturer ranking his own points is handing you the structure."></p>
+          <p class="feedback" data-explain="n7why"></p>
         </div>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">A dense avenue over a narrow street can <input class="gap" data-answer="trap" aria-label="gap" style="width:210px"> polluted air</p>
-          <p class="feedback" data-explain="Trap. The complication comes straight after the claim it limits &mdash; trees trap particulates, and they can trap the polluted air too. Same verb, opposite effect."></p>
+          <p class="feedback" data-explain="n8why"></p>
         </div>
         <div style="margin-top:10px">
           <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
@@ -1874,18 +1920,18 @@ html[data-style="editorial"] .stamp {
 
     <section class="slide" data-type="gap" data-bg="ielts-listen-s4/bg04.jpg">
       <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="notesEyebrow">Questions 1&ndash;10 &middot; Complete the notes</span> &middot; 4 / 4</div>
+        <div class="eyebrow"><span data-i18n="notesEyebrow">Questions 1&ndash;10 &middot; Complete the notes</span> &middot; 5 / 5</div>
         <h2 class="slide-title" data-i18n="notesTitle">Write ONE WORD AND/OR A NUMBER in each gap</h2>
       </div></div>
       <div class="slide-body">
         <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="notesHint">Every answer is said aloud, in order. Two come with a second number beside them, and only one of each pair counts.</p>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">Cost per tree, including watering: £<input class="gap" data-answer="1200|1,200" aria-label="gap" style="width:210px"></p>
-          <p class="feedback" data-explain="Twelve hundred. Eight hundred is said first and corrected inside the same sentence &mdash; &quot;no, I should be accurate&quot; &mdash; which is the Section 1 correction trap at Section 4 speed."></p>
+          <p class="feedback" data-explain="n9why"></p>
         </div>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">Most schemes fail to budget for the <input class="gap" data-answer="watering" aria-label="gap" style="width:210px"></p>
-          <p class="feedback" data-explain="Watering &mdash; &quot;the watering, not the planting&quot;. The last line of a lecture is where it lands its point, and the contrast is said in the same breath."></p>
+          <p class="feedback" data-explain="n10why"></p>
         </div>
         <div style="margin-top:10px">
           <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
@@ -2072,6 +2118,16 @@ const UI_I18N = {
     fbAnswer: 'Answer:',
     fbCorrect: 'Correct.',
     fbWrong: 'Not quite.',
+    n10why: "Watering &mdash; \"the watering, not the planting\". The last line of a lecture is where it lands its point, and the contrast is said in the same breath.",
+    n1why: "Infrastructure, in the first sentence: the thesis the whole lecture is built to support.",
+    n2why: "Transpiration, defined in the same breath as \"releasing water vapour through the leaves\". The answer is the term, not the definition.",
+    n3why: "Two, for Europe. Four is quoted for Australia and called an \"upper bound\" at once &mdash; a figure that gets qualified is not the answer.",
+    n4why: "\"The technical term is interception loss\" &mdash; the clearest flag there is that a word is worth a mark.",
+    n5why: "Twenty to thirty. What is printed beside the gap shows which half of the range it wants.",
+    n6why: "Pit, inside the aside the lecturer flags as a digression. An aside is off the main argument, not empty.",
+    n7why: "Air quality, and the lecturer grades it himself &mdash; \"the weakest evidence of the three\". A lecturer ranking his own points is handing you the structure.",
+    n8why: "Trap. The complication comes straight after the claim it limits &mdash; trees trap particulates, and they can trap the polluted air too. Same verb, opposite effect.",
+    n9why: "Twelve hundred. Eight hundred is said first and corrected inside the same sentence &mdash; \"no, I should be accurate\" &mdash; which is the Section 1 correction trap at Section 4 speed.",
     notesEyebrow: "Questions 1&ndash;10 &middot; Complete the notes",
     notesHint: "Every answer is said aloud, in order. Two come with a second number beside them, and only one of each pair counts.",
     notesTitle: "Write ONE WORD AND/OR A NUMBER in each gap",
@@ -2149,6 +2205,16 @@ const UI_I18N = {
     fbAnswer: 'Antwort:',
     fbCorrect: 'Richtig.',
     fbWrong: 'Nicht ganz.',
+    n10why: "Watering &mdash; „the watering, not the planting“. In der letzten Zeile eines Vortrags sitzt seine Pointe, und der Gegensatz kommt im selben Atemzug.",
+    n1why: "Infrastructure, im ersten Satz: die These, die der ganze Vortrag stützen soll.",
+    n2why: "Transpiration, im selben Atemzug erklärt als „releasing water vapour through the leaves“. Die Antwort ist der Fachbegriff, nicht die Erklärung.",
+    n3why: "Zwei, für Europa. Vier wird für Australien genannt und sofort ein „upper bound“ genannt &mdash; eine Zahl, die gleich eingeschränkt wird, ist nicht die Antwort.",
+    n4why: "„The technical term is interception loss“ &mdash; deutlicher kann nichts anzeigen, dass ein Wort einen Punkt wert ist.",
+    n5why: "Zwanzig bis dreißig. Was neben der Lücke gedruckt steht, zeigt, welche Hälfte der Spanne gefragt ist.",
+    n6why: "Pit, mitten in dem Einschub, den der Vortragende als Abschweifung ankündigt. Ein Einschub liegt neben dem Hauptargument, leer ist er nicht.",
+    n7why: "Air quality, und der Vortragende bewertet es selbst &mdash; „the weakest evidence of the three“. Wer seine eigenen Punkte ordnet, liefert dir die Struktur gleich mit.",
+    n8why: "Trap. Die Einschränkung folgt direkt auf die Behauptung, die sie begrenzt &mdash; Bäume fangen Feinstaub ein, und sie können auch die verschmutzte Luft einschließen. Dasselbe Verb, die umgekehrte Wirkung.",
+    n9why: "Zwölfhundert. Achthundert kommt zuerst und wird im selben Satz korrigiert &mdash; „no, I should be accurate“ &mdash; die Korrekturfalle aus Section 1 im Tempo von Section 4.",
     notesEyebrow: "Fragen 1&ndash;10 &middot; Notizen vervollständigen",
     notesHint: "Jede Antwort wird laut gesagt, der Reihe nach. Zwei kommen mit einer zweiten Zahl daneben, und nur eine von beiden zählt.",
     notesTitle: "Schreibe EIN WORT UND/ODER EINE ZAHL in jede Lücke",
@@ -2226,6 +2292,16 @@ const UI_I18N = {
     fbAnswer: 'Respuesta:',
     fbCorrect: 'Correcto.',
     fbWrong: 'No exactamente.',
+    n10why: "Watering: «the watering, not the planting». La última línea de una conferencia es donde remata su idea, y el contraste va en la misma frase.",
+    n1why: "Infrastructure, en la primera frase: la tesis que toda la conferencia está construida para defender.",
+    n2why: "Transpiration, definida en la misma frase como «releasing water vapour through the leaves». La respuesta es el término, no la definición.",
+    n3why: "Dos, para Europa. Cuatro se cita para Australia y enseguida se llama «upper bound»: una cifra que se matiza al momento no es la respuesta.",
+    n4why: "«The technical term is interception loss»: no hay señal más clara de que una palabra vale un punto.",
+    n5why: "De veinte a treinta. Lo que está impreso junto al hueco muestra qué mitad del intervalo se pide.",
+    n6why: "Pit, dentro del inciso que el profesor anuncia como digresión. Un inciso se sale del argumento principal, pero no está vacío.",
+    n7why: "Air quality, y el propio profesor lo califica: «the weakest evidence of the three». Un profesor que ordena sus propios argumentos te está dando la estructura.",
+    n8why: "Trap. La complicación llega justo después de la afirmación que limita: los árboles atrapan partículas, y también pueden atrapar el aire contaminado. El mismo verbo, el efecto contrario.",
+    n9why: "Mil doscientas. Ochocientas se dice primero y se corrige en la misma frase («no, I should be accurate»): la trampa de la corrección de la Section 1, a la velocidad de la Section 4.",
     notesEyebrow: "Preguntas 1&ndash;10 &middot; Completa las notas",
     notesHint: "Todas las respuestas se dicen en voz alta, en orden. Dos llegan con un segundo número al lado, y solo uno de los dos vale.",
     notesTitle: "Escribe UNA PALABRA Y/O UN NÚMERO en cada hueco",

@@ -56,6 +56,15 @@ BG_BRIEF, BG_AUDIO, BG_NOTES, BG_DETAIL = ('bg02.jpg', 'bg03.jpg',
 BG_ACT = 'bg06.jpg'
 
 
+# Each note's explanation goes out as an i18n key, n1why..n10why, so it
+# translates; the English is registered from NOTES by i18n_ieltslisten_s4.
+WHY_KEY = {r[0]: 'n%dwhy' % (i + 1) for i, r in enumerate(NOTES)}
+
+
+def keyed(rows):
+    return [(s, a, WHY_KEY[s]) for s, a, _ in rows]
+
+
 def build(make_audio=False):
     logo = D.logo_from(TPL)
 
@@ -118,7 +127,7 @@ def build(make_audio=False):
                   'answer.',
                   AUDIO, label, folder=F, bg=BG_AUDIO)
 
-        + "".join(D.gap(n + 1, len(NOTES_SLIDES), rows, NOTES_BANK,
+        + "".join(D.gap(n + 1, len(NOTES_SLIDES), keyed(rows), NOTES_BANK,
                         'notesEyebrow',
                         'Questions 1&ndash;10 &middot; Complete the notes',
                         'notesTitle',
