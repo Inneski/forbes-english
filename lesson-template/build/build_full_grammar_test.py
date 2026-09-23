@@ -73,7 +73,7 @@ The audit — what the forty-five questions were doing wrong
 Every one of the six recurring defects was present.
 
 1. **Key position: 30 of 30.** The page shuffled options at render time,
-   but every multiple-choice and every find-the-mistake item had its key
+   but every multiple-choice and every correct-the-mistake item had its key
    at index 0 in the source, so the data itself was unusable anywhere the
    shuffle was not running — a printout, a review screen, a future reuse.
    Keys here are spread across all four positions and the distribution is
@@ -177,8 +177,8 @@ QUESTION_L1 = json.load(
 # audit above), so the committed L1 note for them no longer describes what
 # is on the slide. These two — and only these two — are replaced. The
 # other 43 x 9 notes and all 45 x 9 prompts are used exactly as committed;
-# every rewritten item is a "Find the mistake" whose prompt column already
-# reads "Find the mistake." in every language.
+# every rewritten item is a "Correct the mistake" whose prompt column already
+# reads "Correct the mistake." in every language.
 L1_NOTE_OVERRIDES = {
     38: {
         'de': "Mehrere Besitzer: erst der Plural (<b>parents</b>), dann der "
@@ -479,7 +479,7 @@ MC = [
              'an English word.']),
 
     dict(qi=2, sec=0, correct=1,
-         stem='Find the mistake: <i>&ldquo;It mights rain &mdash; take an '
+         stem='Correct the mistake: <i>&ldquo;It mights rain &mdash; take an '
               'umbrella.&rdquo;</i>',
          options=['It mights rain — take an umbrella.',
                   'It might rain — take an umbrella.',
@@ -512,7 +512,7 @@ MC = [
              None]),
 
     dict(qi=5, sec=1, correct=2,
-         stem='Find the mistake: <i>&ldquo;She musts finish her homework '
+         stem='Correct the mistake: <i>&ldquo;She musts finish her homework '
               'before dinner.&rdquo;</i>',
          options=['She musts finish her homework before dinner.',
                   'She must to finish her homework before dinner.',
@@ -545,7 +545,7 @@ MC = [
              '<em>do</em>.']),
 
     dict(qi=8, sec=2, correct=0,
-         stem='Find the mistake: <i>&ldquo;I have to wore a uniform at my old '
+         stem='Correct the mistake: <i>&ldquo;I have to wore a uniform at my old '
               'school.&rdquo;</i>',
          options=['I had to wear a uniform at my old school.',
                   'I have to wore a uniform at my old school.',
@@ -577,7 +577,7 @@ MC = [
              None]),
 
     dict(qi=11, sec=3, correct=2,
-         stem='Find the mistake: <i>&ldquo;James likes run in the park every '
+         stem='Correct the mistake: <i>&ldquo;James likes run in the park every '
               'morning.&rdquo;</i>',
          options=['James likes run in the park every morning.',
                   'James likes to running in the park every morning.',
@@ -609,7 +609,7 @@ MC = [
              '<strong>to</strong></em> + base form.']),
 
     dict(qi=14, sec=4, correct=3,
-         stem='Find the mistake: <i>&ldquo;She&rsquo;s going to studies all '
+         stem='Correct the mistake: <i>&ldquo;She&rsquo;s going to studies all '
               'weekend.&rdquo;</i>',
          options=['She&rsquo;s going to studies all weekend.',
                   'She going to study all weekend.',
@@ -642,7 +642,7 @@ MC = [
              'the sentence says.']),
 
     dict(qi=17, sec=5, correct=2,
-         stem='Find the mistake: <i>&ldquo;He wills become a famous footballer '
+         stem='Correct the mistake: <i>&ldquo;He wills become a famous footballer '
               'one day.&rdquo;</i>',
          options=['He wills become a famous footballer one day.',
                   'He will becomes a famous footballer one day.',
@@ -672,7 +672,7 @@ MC = [
              'evening.']),
 
     dict(qi=20, sec=6, correct=3,
-         stem='Find the mistake: <i>&ldquo;Did she went to the party?&rdquo;'
+         stem='Correct the mistake: <i>&ldquo;Did she went to the party?&rdquo;'
               '</i>',
          options=['Did she went to the party?', 'Did she goes to the party?',
                   'Did she going to the party?', 'Did she go to the party?'],
@@ -700,7 +700,7 @@ MC = [
              'it is still running.']),
 
     dict(qi=23, sec=7, correct=1,
-         stem='Find the mistake: <i>&ldquo;He has saw this film three '
+         stem='Correct the mistake: <i>&ldquo;He has saw this film three '
               'times.&rdquo;</i>',
          options=['He has saw this film three times.',
                   'He has seen this film three times.',
@@ -732,7 +732,7 @@ MC = [
              'to skip dinner.']),
 
     dict(qi=26, sec=8, correct=2,
-         stem='Find the mistake: <i>&ldquo;She has yet finished her '
+         stem='Correct the mistake: <i>&ldquo;She has yet finished her '
               'lunch.&rdquo;</i>',
          options=['She has yet finished her lunch.',
                   'She yet has finished her lunch.',
@@ -766,7 +766,7 @@ MC = [
              'front of the participle.']),
 
     dict(qi=29, sec=9, correct=0,
-         stem='Find the mistake: <i>&ldquo;She hasn&rsquo;t never won a '
+         stem='Correct the mistake: <i>&ldquo;She hasn&rsquo;t never won a '
               'competition.&rdquo;</i>',
          options=['She has never won a competition.',
                   'She hasn&rsquo;t never won a competition.',
@@ -797,7 +797,7 @@ MC = [
              'on its own would work.']),
 
     dict(qi=32, sec=10, correct=3,
-         stem='Find the mistake: <i>&ldquo;I&rsquo;d like some informations, '
+         stem='Correct the mistake: <i>&ldquo;I&rsquo;d like some informations, '
               'please.&rdquo;</i>',
          options=['I&rsquo;d like some informations, please.',
                   'I&rsquo;d like any information, please.',
@@ -827,7 +827,7 @@ MC = [
              '<em>the</em> is already in the sentence, so this repeats it.']),
 
     dict(qi=35, sec=11, correct=0,
-         stem='Find the mistake: <i>&ldquo;I don&rsquo;t like these glasses. I '
+         stem='Correct the mistake: <i>&ldquo;I don&rsquo;t like these glasses. I '
               'prefer those one.&rdquo;</i>',
          options=['I don&rsquo;t like these glasses. I prefer those ones.',
                   'I don&rsquo;t like these glasses. I prefer those one.',
@@ -858,7 +858,7 @@ MC = [
              None]),
 
     dict(qi=38, sec=12, correct=2,
-         stem='Find the mistake: <i>&ldquo;These are my parent&rsquo;s cars '
+         stem='Correct the mistake: <i>&ldquo;These are my parent&rsquo;s cars '
               '&mdash; they both drive to work.&rdquo;</i>',
          options=['These are my parent&rsquo;s cars — they both drive to work.',
                   'These are my parents cars — they both drive to work.',
@@ -889,7 +889,7 @@ MC = [
              'The right kind of word, but 98% is not a bad result.']),
 
     dict(qi=41, sec=13, correct=1,
-         stem='Find the mistake: <i>&ldquo;He drives fastly and '
+         stem='Correct the mistake: <i>&ldquo;He drives fastly and '
               'dangerously.&rdquo;</i>',
          options=['He drives fastly and dangerous.',
                   'He drives fast and dangerously.',
@@ -920,7 +920,7 @@ MC = [
              'is positive.']),
 
     dict(qi=44, sec=14, correct=3,
-         stem='Find the mistake: <i>&ldquo;A: I have never been to Spain. '
+         stem='Correct the mistake: <i>&ldquo;A: I have never been to Spain. '
               '&nbsp;B: So have I.&rdquo;</i>',
          options=['A: I have never been to Spain. B: So did I.',
                   'A: I have never been to Spain. B: Neither did I.',
@@ -1189,8 +1189,13 @@ def assert_bank_is_not_a_key(html):
 
 
 def assert_no_backward_reference(html):
-    """Learner-facing text never mentions a previous version of a lesson."""
-    body = re.sub(r'<script.*?</script>', '', html, flags=re.S)
+    """Learner-facing text never mentions a previous version of a lesson.
+
+    Scripts, stylesheets and comments are not learner-facing, so they are
+    stripped first: the template's own CSS commentary says "what this note
+    used to say", and that is a note to the next author, not to a learner."""
+    body = re.sub(r'<(script|style)\b.*?</\1>|<!--.*?-->', '', html,
+                  flags=re.S)
     for phrase in ('old version', 'previous version', 'the old test',
                    'used to say', 'this lesson used to', 'earlier version'):
         assert phrase not in body.lower(), \

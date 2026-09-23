@@ -11,6 +11,53 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-23 — Grammar Jail: shorter boxes, "Correct the mistake", and two plates the sweep missed
+
+Innes, on `full_grammar_test`: *"shorten the long black text boxes such as is
+the house style"* and *"change 'find the mistake' to 'correct the mistake'"*.
+
+**The deck had never been rebuilt since the 09-12 plate sweep.** `18cddca`
+patched this builder's line endings but did not commit a rebuilt page, so the
+live deck still had full-width answer bars. A rebuild on the current template
+shrink-wraps them (1152px → ~380px each).
+
+**Two more full-width plates, now in the template** (`.q-stem, .q-ctx`
+rule, `lesson-template.html`):
+
+- **`.feedback`**: the sweep never saw it because it is hidden until a
+  learner answers. A one-line "Correct." was painting a bar across the
+  whole canvas. Now 535px on the first mistake item.
+- **`.gap-row`**: the card `deck.gap()` wraps round each gap sentence. It
+  had no width rule, so a nine-word sentence sat in a 1152px card. Now 646px,
+  and it widens when the explanation needs more room.
+
+Both use `width: fit-content; max-width: 100%`, the same as the options.
+Text wraps at the same points and heights do not change. **Other decks pick
+this up only when their builder re-runs**, so it has not been swept.
+
+**"Find the mistake" → "Correct the mistake"** in all four places it appears:
+the 15 English stems, the ERR tag on the orientation slide (`ui_i18n.json`,
+10 languages), the translated prompt on each of those 15 slides
+(`all_questions_i18n.json`, 9 × 15), and so the public excerpt in
+`lesson-meta.json`.
+
+**Two defects found by running the checker with each language forced on,
+both fixed:**
+
+- German already overflowed the activation slide by 5px on the shipped page.
+  The current template's panel check put it at 20px. The German writing brief
+  was ~290 characters where French and Italian are ~200; it is now the same
+  length as theirs and still asks for all four things.
+- Japanese went 13px over on the rebuild: the Japanese fallback font draws
+  ディスカッション / ライティング 8px taller than Latin script. The brief is
+  now one line (60 characters; 62 fit).
+
+**Builder bug:** `assert_no_backward_reference()` stripped `<script>` but not
+`<style>`, so the template's own CSS comment ("what this note used to say")
+failed the build. It now strips styles and HTML comments too.
+
+---
+
 ## 2026-09-23 — Block Camp Present Simple Part 1: a right answer brings the picture to life
 
 Innes dropped 16 Midjourney clips in `incoming/`. **Every clip's first frame

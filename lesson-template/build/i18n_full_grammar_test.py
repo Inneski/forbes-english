@@ -137,11 +137,10 @@ ACT = {
                   'habt, drei, die ihr nie gemacht habt &mdash; und stimmt '
                   'jedes Mal mit <em>So have I</em> oder <em>Neither have '
                   'I</em> zu.',
-        actWriteBrief='Schreibe einer Freundin oder einem Freund, die oder der '
-                      'eine Woche bei dir wohnen wird. Sag, was sie oder er '
-                      'mitbringen muss, was auf keinen Fall vergessen werden '
-                      'darf, was ihr zusammen vorhabt und eine Sache, die ihr '
-                      'beide noch nie gemacht habt und ausprobieren möchtet.',
+        actWriteBrief='Schreib einem Freund, der eine Woche bei dir wohnt: '
+                      'was er mitbringen muss, was er nicht vergessen darf, '
+                      'was ihr zusammen vorhabt und eine Sache, die ihr beide '
+                      'noch nie gemacht habt und gern ausprobieren würdet.',
         actPlaceholder='Hi Sam, I can’t wait for next week —'),
     'es': dict(
         actSpeakBrief='Tomad una consigna cada uno y seguid hasta que la otra '
@@ -271,10 +270,12 @@ ACT = {
         actSpeak3='お互いの人生を比べます。もうやったこと3つ、一度もやったことが'
                   'ないこと3つ &mdash; そのたびに <em>So have I</em> か '
                   '<em>Neither have I</em> で応じてください。',
-        actWriteBrief='一週間泊まりに来る友人に手紙を書いてください。何を持って'
-                      'こなければならないか、何を絶対に忘れてはいけないか、一緒に'
-                      '何をするつもりか、そして二人ともまだやったことがなく試して'
-                      'みたいことを一つ書きます。',
+        # One line on purpose: the Japanese fallback font sets the two
+        # activation words 8px taller than Latin script does, and a second
+        # line of brief put the write panel 13px past the canvas.
+        actWriteBrief='一週間泊まりに来る友人に、持ち物、忘れてはいけない物、'
+                      '一緒にする予定、二人ともまだ試したことのないことを書いて'
+                      'ください。',
         actPlaceholder='Hi Sam, I can’t wait for next week —'),
 }
 
