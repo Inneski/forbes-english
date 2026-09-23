@@ -11,6 +11,56 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-23 — B1 Mixed Grammar Test 1 + 2: editorial decks, six languages, NOT shipped: waiting for 14 plates
+
+Innes: *"make these house style and add languages"*, then *"house style 2
+and ask for shopping list images"*. "House style 2" is the editorial style
+(HOUSE-STYLE §15), as it was for Watts.
+
+**State.** `lesson-template/build/build_mixed_b1.py` builds both parts as
+31-slide editorial decks, EN DE ES FR IT PT, 35 points each as before. Content
+is in `mixed_b1_data.py`, one text file per language (`mixed_b1_<lang>.py`),
+loader and key-parity check in `i18n_mixed_b1.py`. **The live pages are
+untouched.** Until all seven plates for a part are on disk the builder writes
+`_forbes-english-b1-mixed-grammar-test*.html` (gitignored) instead. The live
+page is only written once all seven exist, so it cannot ship on thin art by
+accident (§5c).
+
+**The shopping list is `docs/ARTWORK-b1-mixed-grammar.md`**: 14 plates at
+7:6, one desert-roadside object per section, named by slot. The two heroes
+are already flat editorial vector art and stay. To ship: prep the plates into
+`MixedGrammarPart1/` and `MixedGrammarPart2/`, run the builder, check, look at
+every slide, set `deck = true` on both rows, `build_hubs.py`, `seo.py`,
+commit, push. The brief has the commands.
+
+**Measured, not assumed:** `--stand-in` puts the hero in every plate slot
+and writes the preview, so the layout is checked against the real narrow
+column before any art exists. `check-lesson.js`: clean except HEAD (seo.py
+has not run on a preview). `overflow-langs.js`: all six fit. **Answered
+state:** check-lesson measures slides before they are answered. A scratch
+script that answers every item wrongly in every language (so the explanation
+and the "Answer: …" line are on screen) found MC slides 2–16px over, one
+French story slide 16px over and a correction slide 3px over in ES and PT.
+Fixed with the option-bar padding and gap, one gap under each struck-through
+sentence, and two shorter French strings. Everything fits now. Any editorial
+deck with long explanations is probably in the same state. That measurement
+would be worth a gate in `check-lesson.js`.
+
+**Defects in the source, fixed** (full list in the builder docstring): Part 1
+accepted "serves much fresh seafood". Part 1's correction taught "I have much
+money", which is itself unnatural (it is a negative now). Accepted answers were
+too narrow: "has been living", "is going to meet", "that", "I'd". Part 2 had
+"forgotten his passport at his parents' house" and a flight "checked in" a week
+early. Part 2's correction 6 was an error nobody makes. The story gaps had no
+explanations. The typed corrections failed on a missing full stop.
+
+**Found, not fixed here, and filed as its own task:** 14 live decks (Watts
+and 13 IELTS) show a results slide with no score message. Their i18n never
+defines resPerfect/resStrong/resMid/resLow, and `assemble()` replaces the
+template's whole UI_I18N block. These decks define the four keys themselves.
+
+---
+
 ## 2026-09-23 — Sherpa Tensing rebuilt as decks, NOT shipped: waiting for Innes's artwork
 
 **State.** All 25 camps, descents and clouds build as 16:9 decks from one
