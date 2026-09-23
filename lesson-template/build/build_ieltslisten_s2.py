@@ -55,12 +55,13 @@ CHIPS = ['fix the entrance first', 'on your left', 'behind = across',
 
 BG_BRIEF, BG_AUDIO, BG_MAP, BG_DETAIL = ('bg02.jpg', 'bg03.jpg',
                                          'bg04.jpg', 'bg05.jpg')
-def one(html):
-    """A lone slide in its group: drop the "1 / 1" counter from its eyebrow."""
-    return html.replace(' &middot; 1 / 1</div>', '</div>')
-
-
 BG_ACT = 'bg06.jpg'
+
+
+# Each note's explanation goes out as an i18n key, n1why..n3why, so it
+# translates; the English is registered from NOTES by i18n_ieltslisten_s2.
+KEYED = [(s, a, 'n%dwhy' % (i + 1)) for i, (s, a, _) in enumerate(NOTES)]
+NOTE_SLIDES = [KEYED[:2], KEYED[2:]]
 
 
 def build(make_audio=False):
@@ -131,17 +132,23 @@ def build(make_audio=False):
                   'matchHint',
                   'Click a place, then its position. Everything is given '
                   'relative to something else.',
-                  PLACES_WHY, folder=F, bg=BG_MAP)
+                  'placesWhy', folder=F, bg=BG_MAP)
 
-        + one(D.gap(1, 1, NOTES, NOTES_BANK,
-                'notesEyebrow',
-                'Questions 6&ndash;8 &middot; Complete the notes',
-                'notesTitle', 'Write ONE WORD AND/OR A NUMBER in each gap',
-                folder=F, bg=BG_MAP,
-                hint_key='notesHint',
-                hint='Two numbers arrive in the same sentence more than once. '
-                     'Write the one the gap asks for.',
-                width=210, size=19))
+        # Two slides, two notes and one. All three on one slide fit in
+        # English and ran 12px off the canvas in Spanish once the
+        # explanations translated: three two-line explanations and the hint
+        # leave no room for the Check button. HOUSE-STYLE §6.
+        + "".join(D.gap(n + 1, len(NOTE_SLIDES), rows, NOTES_BANK,
+                        'notesEyebrow',
+                        'Questions 6&ndash;8 &middot; Complete the notes',
+                        'notesTitle',
+                        'Write ONE WORD AND/OR A NUMBER in each gap',
+                        folder=F, bg=BG_MAP,
+                        hint_key='notesHint',
+                        hint='Two numbers arrive in the same sentence more '
+                             'than once. Write the one the gap asks for.',
+                        width=210, size=19)
+                  for n, rows in enumerate(NOTE_SLIDES))
 
         + "".join(D.mc(i + 1, len(MC), q, 'mcEyebrow',
                        'Questions 9&ndash;12 &middot; Detail', 'mcTitle',

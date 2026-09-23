@@ -147,6 +147,13 @@ T['en'] = dict(
     actPlaceholder='As you come through the main door, on your left…',
 )
 
+# The explanations for Questions 1-8 sit beside their answers in the data
+# module, which keeps the only copy of the English; they were plain strings
+# there until 2026-09-23, so German and Spanish learners read them in English.
+from ieltslisten_s2_data import PLACES_WHY, NOTES
+T['en']['placesWhy'] = PLACES_WHY
+T['en'].update(('n%dwhy' % (i + 1), r[2]) for i, r in enumerate(NOTES))
+
 # ── German ─────────────────────────────────────────────────────────────
 T['de'] = dict(
     coverTitle='Section 2 &mdash; <em>der Monolog und der Plan</em>',
@@ -259,6 +266,21 @@ T['de'] = dict(
                   'Eingang und zueinander &mdash; und setz zwei davon neben '
                   'denselben Orientierungspunkt.',
     actPlaceholder='As you come through the main door, on your left…',
+
+    # Questions 1-8: the English is registered from the data module, below.
+    placesWhy='Jeder dieser Orte wird relativ zu etwas anderem angegeben '
+              '&mdash; genau das ist eine Kartenaufgabe. Der Spielplatz teilt '
+              'sich seinen Orientierungspunkt mit den Fahrradständern &mdash; '
+              'beide liegen am Parkplatz &mdash;, also bestimmt „next to the '
+              'car park“ allein ihn nicht; und der Pflanzenstand wird zweimal '
+              'beschrieben, eben weil er umgezogen ist.',
+    n1why='Zehn bis halb sechs. Gefragt ist die Schließzeit, und sie kommt '
+          'als zweite im selben kurzen Satz wie die Öffnungszeit.',
+    n2why='Acht Pfund. „No charge at all for anyone under sixteen“ steht im '
+          'selben Satz, und zwar damit jemand, der nur halb zuhört, „free“ '
+          'schreibt.',
+    n3why='Neunzig Minuten. Nicht die Öffnungszeiten und nicht „all day“ '
+          '&mdash; so lange gilt das Ticket, eine Zeile später gesagt.',
 )
 
 # ── Spanish ────────────────────────────────────────────────────────────
@@ -371,6 +393,22 @@ T['es'] = dict(
                   'relativas a la entrada y entre sí &mdash; y pon dos de '
                   'ellas junto a la misma referencia.',
     actPlaceholder='As you come through the main door, on your left…',
+
+    # Questions 1-8: the English is registered from the data module, below.
+    placesWhy='Cada uno de estos sitios se da en relación con otra cosa, que '
+              'es justo en lo que consiste una tarea de mapa. La zona de juegos '
+              'comparte punto de referencia con los aparcabicicletas &mdash; '
+              'los dos están junto al aparcamiento &mdash;, así que «next to '
+              'the car park» por sí solo no la identifica; y el puesto de '
+              'plantas se describe dos veces precisamente porque ha cambiado '
+              'de sitio.',
+    n1why='De diez a cinco y media. Lo que se pide es la hora de cierre, y '
+          'llega en segundo lugar, en la misma frase corta que la de apertura.',
+    n2why='Ocho libras. «No charge at all for anyone under sixteen» va en la '
+          'misma frase, y está ahí para que quien escucha a medias escriba '
+          '«free».',
+    n3why='Noventa minutos. Ni el horario de apertura ni «all day», que es lo '
+          'que dura la entrada y se dice una línea después.',
 )
 
 

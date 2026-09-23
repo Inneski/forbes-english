@@ -1696,6 +1696,39 @@ html[data-style="editorial"] .match-item,
 html[data-style="editorial"] .sort-item {
   background: var(--surface); border: 2px solid var(--border);
 }
+
+/* ── answered states, restated at the editorial specificity ──────────
+   The base rules above are `html[data-style="editorial"] .opt`, which is
+   (0,2,1). The default answered states are `.opt.wrong` / `.opt.correct`,
+   which are (0,2,0). So the base rule WON, and its `background: var(--surface)`
+   plus `border: 2px solid …` repainted every answered option back to neutral.
+
+   The engine was never broken: measured on the Watts deck, a clicked wrong
+   option carried `class="opt wrong"` and the feedback read "Not quite …",
+   while the computed colours of the wrong, the correct and an untouched
+   option were all identical — rgb(255,255,255) on rgb(190,208,203). A
+   learner got no red, no green, and no sight of the right answer.
+
+   Same trap for .match-item and .sort-item, whose base rule uses the `border`
+   shorthand and so also outranks their own .picked/.done/.miss border-colors.
+   Restating the states here is the whole fix; nothing in the engine changes. */
+html[data-style="editorial"] .opt.correct {
+  border-color: var(--ok);
+  background: color-mix(in srgb, var(--ok) 20%, var(--surface));
+}
+html[data-style="editorial"] .opt.wrong {
+  border-color: var(--no);
+  background: color-mix(in srgb, var(--no) 18%, var(--surface));
+}
+html[data-style="editorial"] .match-item.picked,
+html[data-style="editorial"] .sort-item.picked {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 22%, var(--surface));
+}
+html[data-style="editorial"] .match-item.done,
+html[data-style="editorial"] .sort-item.placed { border-color: var(--ok); }
+html[data-style="editorial"] .match-item.miss,
+html[data-style="editorial"] .sort-item.miss { border-color: var(--no); }
 /* The rule is a thing a builder PLACES, not something every heading grows.
    The source deck has it under the cover title and nowhere else; putting it
    on all thirty-two slides was mine and it was wrong. Emit
@@ -1816,28 +1849,41 @@ html[data-style="editorial"] .stamp {
         <div class="match-pair" data-term="The toilets" data-def="Underneath the clock tower"></div>
         <div class="match-pair" data-term="The plant stall" data-def="At the far end of the long path"></div>
         <div class="match-grid"></div>
-        <p class="feedback" data-explain="Every one of these is given relative to something else, which is what a map task is. The play area shares its landmark with the bicycle racks &mdash; both are beside the car park &mdash; so &quot;next to the car park&quot; on its own does not identify it, and the plant stall is described twice precisely because it has moved."></p>
+        <p class="feedback" data-explain="placesWhy"></p>
       </div>
     </section>
 
     <section class="slide" data-type="gap" data-bg="ielts-listen-s2/bg04.jpg">
       <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="notesEyebrow">Questions 6&ndash;8 &middot; Complete the notes</span></div>
+        <div class="eyebrow"><span data-i18n="notesEyebrow">Questions 6&ndash;8 &middot; Complete the notes</span> &middot; 1 / 2</div>
         <h2 class="slide-title" data-i18n="notesTitle">Write ONE WORD AND/OR A NUMBER in each gap</h2>
       </div></div>
       <div class="slide-body">
         <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="notesHint">Two numbers arrive in the same sentence more than once. Write the one the gap asks for.</p>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">Open until <input class="gap" data-answer="5.30|5:30|5.30pm|5.30 pm|5:30pm|5:30 pm|17.30|17:30" aria-label="gap" style="width:210px"> every day except Monday</p>
-          <p class="feedback" data-explain="Ten until half past five. The closing time is the one asked for, and it arrives second in the same short sentence as the opening time."></p>
+          <p class="feedback" data-explain="n1why"></p>
         </div>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">Entry: £<input class="gap" data-answer="8|8.00|eight" aria-label="gap" style="width:210px"> (free under 16)</p>
-          <p class="feedback" data-explain="Eight pounds. &quot;No charge at all for anyone under sixteen&quot; is the same sentence, and it is there so that a candidate half-listening writes &quot;free&quot;."></p>
+          <p class="feedback" data-explain="n2why"></p>
         </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap" data-bg="ielts-listen-s2/bg04.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="notesEyebrow">Questions 6&ndash;8 &middot; Complete the notes</span> &middot; 2 / 2</div>
+        <h2 class="slide-title" data-i18n="notesTitle">Write ONE WORD AND/OR A NUMBER in each gap</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="notesHint">Two numbers arrive in the same sentence more than once. Write the one the gap asks for.</p>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">The tour lasts about <input class="gap" data-answer="90|ninety" aria-label="gap" style="width:210px"> minutes</p>
-          <p class="feedback" data-explain="Ninety minutes. Not the opening hours, and not &quot;all day&quot; &mdash; which is how long the ticket lasts, said one line later."></p>
+          <p class="feedback" data-explain="n3why"></p>
         </div>
         <div style="margin-top:10px">
           <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
@@ -2101,9 +2147,13 @@ const UI_I18N = {
     matchTitle: "Put each place where the guide put it",
     mcEyebrow: "Questions 9&ndash;12 &middot; Detail",
     mcTitle: "What exactly did the guide say?",
+    n1why: "Ten until half past five. The closing time is the one asked for, and it arrives second in the same short sentence as the opening time.",
+    n2why: "Eight pounds. \"No charge at all for anyone under sixteen\" is the same sentence, and it is there so that a candidate half-listening writes \"free\".",
+    n3why: "Ninety minutes. Not the opening hours, and not \"all day\" &mdash; which is how long the ticket lasts, said one line later.",
     notesEyebrow: "Questions 6&ndash;8 &middot; Complete the notes",
     notesHint: "Two numbers arrive in the same sentence more than once. Write the one the gap asks for.",
     notesTitle: "Write ONE WORD AND/OR A NUMBER in each gap",
+    placesWhy: "Every one of these is given relative to something else, which is what a map task is. The play area shares its landmark with the bicycle racks &mdash; both are beside the car park &mdash; so \"next to the car park\" on its own does not identify it, and the plant stall is described twice precisely because it has moved.",
     resNext: 'Recognising the language is half of it. Now produce it →',
     scoreLabel: 'Score',
     slideOf: (a,b)=>`${a} / ${b}`,
@@ -2187,9 +2237,13 @@ const UI_I18N = {
     matchTitle: "Ordne jeden Ort dorthin, wo die Führerin ihn hingesetzt hat",
     mcEyebrow: "Fragen 9&ndash;12 &middot; Detail",
     mcTitle: "Was genau hat die Führerin gesagt?",
+    n1why: "Zehn bis halb sechs. Gefragt ist die Schließzeit, und sie kommt als zweite im selben kurzen Satz wie die Öffnungszeit.",
+    n2why: "Acht Pfund. „No charge at all for anyone under sixteen“ steht im selben Satz, und zwar damit jemand, der nur halb zuhört, „free“ schreibt.",
+    n3why: "Neunzig Minuten. Nicht die Öffnungszeiten und nicht „all day“ &mdash; so lange gilt das Ticket, eine Zeile später gesagt.",
     notesEyebrow: "Fragen 6&ndash;8 &middot; Notizen vervollständigen",
     notesHint: "Mehrfach stehen zwei Zahlen im selben Satz. Schreib die, nach der die Lücke fragt.",
     notesTitle: "Schreibe EIN WORT UND/ODER EINE ZAHL in jede Lücke",
+    placesWhy: "Jeder dieser Orte wird relativ zu etwas anderem angegeben &mdash; genau das ist eine Kartenaufgabe. Der Spielplatz teilt sich seinen Orientierungspunkt mit den Fahrradständern &mdash; beide liegen am Parkplatz &mdash;, also bestimmt „next to the car park“ allein ihn nicht; und der Pflanzenstand wird zweimal beschrieben, eben weil er umgezogen ist.",
     resNext: 'Die Sprache zu erkennen ist die halbe Miete. Jetzt anwenden →',
     scoreLabel: 'Punkte',
     slideOf: (a,b)=>`${a} / ${b}`,
@@ -2273,9 +2327,13 @@ const UI_I18N = {
     matchTitle: "Coloca cada sitio donde lo colocó la guía",
     mcEyebrow: "Preguntas 9&ndash;12 &middot; Detalle",
     mcTitle: "¿Qué dijo exactamente la guía?",
+    n1why: "De diez a cinco y media. Lo que se pide es la hora de cierre, y llega en segundo lugar, en la misma frase corta que la de apertura.",
+    n2why: "Ocho libras. «No charge at all for anyone under sixteen» va en la misma frase, y está ahí para que quien escucha a medias escriba «free».",
+    n3why: "Noventa minutos. Ni el horario de apertura ni «all day», que es lo que dura la entrada y se dice una línea después.",
     notesEyebrow: "Preguntas 6&ndash;8 &middot; Completa las notas",
     notesHint: "Más de una vez hay dos números en la misma frase. Escribe el que pide el hueco.",
     notesTitle: "Escribe UNA PALABRA Y/O UN NÚMERO en cada hueco",
+    placesWhy: "Cada uno de estos sitios se da en relación con otra cosa, que es justo en lo que consiste una tarea de mapa. La zona de juegos comparte punto de referencia con los aparcabicicletas &mdash; los dos están junto al aparcamiento &mdash;, así que «next to the car park» por sí solo no la identifica; y el puesto de plantas se describe dos veces precisamente porque ha cambiado de sitio.",
     resNext: 'Reconocer el lenguaje es solo la mitad. Ahora prodúcelo →',
     scoreLabel: 'Puntuación',
     slideOf: (a,b)=>`${a} / ${b}`,
