@@ -11,6 +11,83 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-23 — The Kraken: nine languages, the right/wrong lines, every hotspot, and the phone
+
+Innes, after yesterday's fix: "Is there more work to do in this?" then "do all
+of it". Everything on the open list is done and live.
+
+**Translations.**
+- **A second read of the 292 glosses the reviewer agents changed on 09-22 found
+  14 wrong**, the worst being German making the player male ("der neue
+  Sergeant") when she is Sergeant Isla Munro in every other language, and
+  Russian moving the bell to the landward end of the pier. **One reviewer per
+  language is not enough; read what a reviewer changed before shipping it.**
+- **Arabic, Chinese and Japanese, 524 strings each**, written in the main
+  session one language at a time and committed per file, as the parallel-
+  writers memory says. Arabic uses feminine second person. Names are
+  transliterated as the camp's other files do; 瓦丝, not 瓦斯 ("gas").
+- A merge check refused a gloss that lost a quote, a paragraph break or a
+  grammar token. **Which capitals are tokens was decided by German, Spanish
+  and French all keeping them**, so FORTY-FIVE MINUTES (emphasis, translated)
+  is not required and HAVEN'T is; the cast's names are excluded. Positive
+  control: dropping HAVEN'T from one Arabic gloss was refused.
+
+**Engine (`rpg.py`), all eleven other engine RPGs re-run:**
+- `fbRight` / `fbWrong`: the export's per-outcome consequence line, shown
+  between the verdict and the explanation. 101 of them in all nine languages.
+- `pages`, `fbRight`, `fbWrong` are in `TEXT_KEYS`, so `validate()` now refuses
+  a page or consequence line missing a language. **Page text was never
+  checked**, which is how Spanish shipped 54 short on 09-22.
+- Phone: `.page-label` and `.page-count` had no px size and rendered ~4px;
+  the panel's fixed 58px top let it slide under a HUD that wraps to four or
+  more rows (Arabic, Spanish). `fitZone()` now puts it below the HUD.
+- `.rtl .corner-help` runs right to left, so the Arabic help line reads in
+  order.
+- `camp: False` in a spec drops the CAMP MAP button and the camp save. The
+  Kraken had both, linking a non-camp game to `block-camp/quest.html`.
+
+**Builder (`build_kraken_saga.py`):** `--strings` regenerates `strings.json`
+(524, LF; it was CRLF and hand-kept). `SCENE_HOT` corrects three scene plates
+(2.2 half off the frame, 2.4 on the console not the sonar, 2.6b on the water
+not the dinghy); `INSERT_HOT` moves two insert glows off dead centre, where an
+open panel hid them from either side. The cover glow moved from the compass
+rose to the far-right ship: the 74-wide hub panel covered the rose 88–100%
+with any gloss on. `relic` says SECURED, not the camp's TILE RECOVERED.
+
+**Checkers.**
+- `check_translations.py` now reads page bodies, consequence lines, chapter
+  text and paged story/clue lists, and accepts a string the page already
+  glosses inline. The Kraken's "137 unused" was never stale keys: every table
+  holds exactly the page's 524 strings. **Do not prune by the UNUSED count
+  without checking what the checker can see.**
+- `check-rpg-panels.js` walks **every page** of a scene (it opened page 0
+  only) and takes a root-level page: `node lesson-template/check-rpg-panels.js
+  kraken-black-tide-rpg.html`.
+
+**Measured.** Playwright, every page of every scene, ten screen languages
+(English only plus nine), at 1536×864, 1920×940 and 390×844: zero overflow
+at all three, and at the two desktop shapes no open panel covers more than
+20% of the glow that page drew. Answered
+screens: the whole feedback block is in view once scrolled, at 1280×720, all
+ten. Hotspots: sixty scene plates and twenty inserts checked on PIL contact
+sheets. **Use Playwright (in `node_modules`) for screenshots, not the browser
+pane**: the pane's screenshots are stale while it is hidden.
+
+**Retired:** `build_kraken_black_tide.py` exits on purpose. It built the
+09-12 single-part Kraken into `block-camp/`, whose page and plates are gone;
+run, it would have recreated a second Kraken in the camp. It stays as the
+pattern its folder is copied from, and the tree is tagged
+`archive/kraken-black-tide-v1`.
+
+### Still open
+
+- On a phone the panel is a bottom sheet over the lower half of the plate, so
+  most glows sit under it once open. That is every engine RPG's phone design,
+  not a Kraken defect, and nothing measures it as one.
+- On a portrait phone the Kraken's `fit: contain` shows the 16:9 plate as a
+  band across the middle of the screen. That was chosen on 09-18 over
+  cropping the art; it is small on a phone.
+
 ## 2026-09-23 — B1 Mixed Grammar Test 1 + 2: editorial decks, six languages, NOT shipped: waiting for 14 plates
 
 Innes: *"make these house style and add languages"*, then *"house style 2
@@ -147,7 +224,7 @@ flythru video link the two occasionally on repeat."
     `BlockCampDescent/watchtower-far-side.jpg`, pixel-aligned at zero offset
     (mean difference 4–5 levels, video slightly darker). So the video is
     on screen only while it moves, and both holds show the sharp stills.
-  * Cycle: trail 3 s → flight 9 s → lands, and the BLOCK CAMP letters hop
+  * Cycle: trail 3 s → flight 9 s → lands; 1.2 s later (`HOP_AFTER`) the BLOCK CAMP letters hop
     (random stagger, 0–280 ms, 0.16em: any higher and B and L hit the
     eyebrow line) → far side 3 s → 4 s dissolve back (`--hero-fade`, which
     the script also reads, so the next hold starts after it) → trail 3 s →

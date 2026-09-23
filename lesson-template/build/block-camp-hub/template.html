@@ -450,6 +450,7 @@ img { display: block; }
   var HOLD = 3000;                            /* ms on each still */
   var FADE = parseFloat(getComputedStyle(hero).getPropertyValue('--hero-fade')) * 1000 || 0;
   var logo = hero.querySelector('h1');
+  var HOP_AFTER = 1200;                       /* ms after landing before the letters hop */
   var phase = 'near', due = false, seen = false, dead = false;
   var live = function () { return seen && !document.hidden && !dead; };
   var hold = function (ms) { due = false; setTimeout(function () { due = true; go(); }, ms || HOLD); };
@@ -470,7 +471,7 @@ img { display: block; }
     /* once the still covers it, rewind behind it: seeking at take-off
        would flash the last frame for a moment first */
     setTimeout(function () { fly.classList.remove('on'); fly.currentTime = 0; }, 600);
-    hop();
+    setTimeout(hop, HOP_AFTER);
     hold();
   });
   fly.addEventListener('canplaythrough', go);
