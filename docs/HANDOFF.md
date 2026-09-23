@@ -548,6 +548,23 @@ pages in the working tree. Rebuilding takes a minute.
    `tools/build_hubs.py` then `tools/seo.py`, read the diff on the four index
    files, commit by name and push.
 
+**Colour: the flagship palettes, not the hero (Innes, 2026-09-23).** The
+palettes derived from the covers were "atrocious" (beige fields, rust accents
+on rose, maroon, violet and charcoal camps). This family now takes its tokens
+from each page's own palette (`content/<slug>.json` 'palette', the colours
+the route map teaches as the tense colours): `flagship_palette()` in the
+builder. Active pages are the flagship colour as ink on white; passive pages
+are white ink on the flagship colour (Innes: "active = green ink on white,
+passive = white ink on green"), so the descents are no longer near-black.
+Tokens are walked in lightness until contrast passes, never picked. This is a
+deliberate exception to HOUSE-STYLE's derive-from-the-hero rule, for the one
+family with a colour key. The cover now leads with the tense name in the
+flagship colour; the evocative title is the line under it. Consequences for
+the art: a hero only has to sit under the colour, not produce it, and the
+descent heroes no longer need to be night scenes: their prompts still say
+"at night" and should move to the flagship colour. Cloud used-to and cloud
+causative share one flagship palette (#3F6577) on the old pages too.
+
 **How the builder is organised.** `sherpa/content/<slug>.json` is the page's
 English, lifted from the scrolling pages by `sherpa/extract.py` (never re-run
 it: the markup it reads is gone once the decks ship). `sherpa/i18n/<slug>.json`

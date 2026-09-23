@@ -116,7 +116,7 @@ def role_of(sid):
     return ROLE.get(sid, 'stage')
 
 
-# ── the palette, derived from the hero exactly as the tool would ──────
+# ── the palette: each page's flagship colour ──────────────────────────
 def _palette_tool():
     spec = importlib.util.spec_from_file_location(
         'extract_palette', os.path.join(ROOT, 'lesson-template', 'extract-palette.py'))
@@ -125,22 +125,101 @@ def _palette_tool():
     return m
 
 
-def derive_palette(hero_rel, dark):
-    """The same block `extract-palette.py` prints, plus its contrast report,
-    which must be all-PASS or the build stops."""
+def flagship_palette(c, hero_rel, dark):
+    """The deck tokens, from the colour the page already had.
+
+    NOT derived from the hero, which is the house rule everywhere else. The
+    first build did derive them, and on placeholder covers the result was a
+    muddy beige field with rust accents on four camps meant to be rose,
+    maroon, violet and charcoal. Innes, 2026-09-23: "atrocious" - use the
+    flagship colours. Every Sherpa page had its own palette (`content/<slug>
+    .json` 'palette', lifted from the scrolling page) and the route map has
+    been teaching those colours AS the tenses' colours, so this family is the
+    exception because it is the one with a colour key. The covers follow the
+    colour; they do not set it.
+
+    The two faces are inversions of each other, in Innes's words "active =
+    green ink on white, passive = white ink on green":
+
+      * camp / cloud (light): the flagship's paper and white cards, and the
+        flagship hue as the ink, darkened until body text reaches 8:1.
+      * descent (dark): the flagship hue IS the field, darkened only as far as
+        its white ink needs for 4.5:1; the plates are a deeper shade (7:1),
+        and the accents are the flagship's light variant.
+
+    Nothing is picked. Every token starts as a flagship colour; one short of
+    its contrast row is walked in lightness (the same hue, darker or lighter)
+    until it passes, and the build stops if any row still fails. Descent
+    two's 'accent' is its own near-black field (#182030), so a dark page
+    whose accent is that far from its ink starts from the light variant.
+    """
     P = _palette_tool()
-    p = P.build_palette(os.path.join(ROOT, hero_rel), dark=dark)
-    order = ['void', 'surface', 'surface2', 'border', 'text', 'text-dim',
-             'accent', 'accent-bright', 'accent-dim', 'secondary', 'contrast']
-    # The one row the tool itself does not loop on is the hairline. On a
-    # dark deck derived from a hero whose accent sits close to its surface
-    # (descent eight's yellow on near-black), the border lands under 1.25:1.
-    # HOUSE-STYLE §4 says adjust until it passes, so: the same colour, walked
-    # away from the surface in lightness until the row clears. Not a pick.
-    for _ in range(40):
-        if P.contrast_ratio(p['border'], p['surface']) >= 1.25:
-            break
-        p['border'] = P.shift(p['border'], dl=0.02 if dark else -0.02)
+    f = c['palette']
+    h = lambda k: tuple(int(f[k][i:i + 2], 16) for i in (1, 3, 5))
+    mix = lambda a, b, t: tuple(a[i] * t + b[i] * (1 - t) for i in range(3))
+    cr = P.contrast_ratio
+
+    def walk(col, bg, target, dl):
+        for _ in range(80):
+            if cr(col, bg) >= target:
+                break
+            col = P.shift(col, dl=dl)
+        return col
+
+    p = {}
+    if not dark:
+        flag0 = h('accent')
+        p['void'], p['surface'], p['surface2'] = h('paper'), h('card'), h('accent-lighter')
+        p['text'] = walk(flag0, p['surface'], 8.0, -0.02)
+        p['text-dim'] = walk(h('ink-soft'), p['surface'], 4.5, -0.02)
+        p['accent'] = walk(flag0, p['surface'], 4.5, -0.02)
+        ab = walk(h('accent-dark'), p['surface'], 4.5, -0.02)
+        # an accent, not a second ink. A deep flagship (camp ten's maroon,
+        # eleven's violet) is already darker than 8:1, so the accent sits ON
+        # the ink: lift the accent first while it still reads, then deepen
+        # the ink if that was not enough.
+        for _ in range(40):
+            if cr(ab, p['text']) >= 1.45:
+                break
+            nxt = P.shift(ab, dl=0.02)
+            if cr(nxt, p['surface']) < 4.5:
+                break
+            ab = nxt
+        for _ in range(40):
+            if cr(ab, p['text']) >= 1.45:
+                break
+            p['text'] = P.shift(p['text'], dl=-0.02)
+        p['accent-bright'] = ab
+        p['contrast'] = walk(h('bad'), p['surface'], 4.5, -0.02)
+        p['border'] = walk(mix(flag0, p['surface'], 0.45), p['surface'], 1.25, -0.02)
+        p['flag'] = walk(flag0, p['surface'], 3.0, -0.02)   # display type: 3:1
+    else:
+        ink = h('ink')
+        flag0 = h('accent')
+        if cr(flag0, ink) > 10:
+            flag0 = h('accent-dark')
+        p['text'] = ink
+        p['void'] = walk(flag0, ink, 4.5, -0.02)
+        p['surface'] = walk(p['void'], ink, 7.0, -0.02)
+        p['surface2'] = mix(p['void'], p['surface'], 0.5)
+        p['text-dim'] = walk(h('ink-soft'), p['surface'], 4.5, 0.02)
+        acc = walk(h('accent-dark'), p['surface'], 4.5, 0.02)
+        acc = walk(acc, p['void'], 4.5, 0.02)     # the solid button's label is --void
+        p['accent'] = acc
+        ab = acc
+        for _ in range(40):
+            if cr(ab, ink) >= 1.45:
+                break
+            nxt = P.shift(ab, dl=-0.02)
+            if cr(nxt, p['surface']) < 4.5:
+                break
+            ab = nxt
+        p['accent-bright'] = ab
+        p['contrast'] = walk(h('bad'), p['surface'], 4.5, 0.02)
+        p['border'] = walk(mix(acc, p['surface'], 0.45), p['surface'], 1.25, 0.02)
+        p['flag'] = ink                        # white ink on the colour
+    p['accent-dim'] = h('accent')
+    p['secondary'] = h('accent-light')
     checks = [
         ('text on surface', p['text'], p['surface'], 4.5),
         ('text on void', p['text'], p['void'], 4.5),
@@ -150,14 +229,48 @@ def derive_palette(hero_rel, dark):
         ('contrast on surface', p['contrast'], p['surface'], 4.5),
         ('border on surface', p['border'], p['surface'], 1.25),
         ('accent-bright vs text', p['accent-bright'], p['text'], 1.45),
+        ('flag on surface', p['flag'], p['surface'], 3.0),
     ]
-    failed = [l for l, fg, bg, mn in checks if P.contrast_ratio(fg, bg) < mn]
+    if dark:
+        checks.append(('button label (void) on accent', p['void'], p['accent'], 4.5))
+    failed = ['%s %.2f' % (l, cr(fg, bg)) for l, fg, bg, mn in checks if cr(fg, bg) < mn]
     if failed:
-        raise SystemExit('palette for %s fails: %s' % (hero_rel, ', '.join(failed)))
+        raise SystemExit('flagship palette for %s fails: %s' % (c['slug'], ', '.join(failed)))
+    order = ['void', 'surface', 'surface2', 'border', 'text', 'text-dim',
+             'accent', 'accent-bright', 'accent-dim', 'secondary', 'contrast', 'flag']
     lines = ["  --hero: url('%s');" % hero_rel, '']
     for k in order:
         lines.append('  --%s : %s;' % (k.ljust(14), P.hex_of(p[k])))
+    lines.append('  --logo-mark     : var(--flag);')
     return '\n'.join(lines)
+
+
+def cover_slide(logo, EN):
+    """The tense leads; the camp's own line comes second.
+
+    The first cover set the evocative title ("The ripple") at 62px and the
+    tense in an 11px chip. Innes, 2026-09-23, asked whether the titles should
+    be so prominent next to the names of the tenses. They should not: the
+    tense is what a learner picks a lesson by and what the route map is
+    colour-coded by. So the tense is the headline, in the flagship colour,
+    and the title is the line under it."""
+    return """
+    <section class="slide is-active" data-type="cover">
+      <div class="cover-inner">
+        %s
+        <p class="cover-sub sh-kicker" data-i18n="chipLevel">%s</p>
+        <h1 class="cover-title sh-tense" data-i18n="briefTitle">%s</h1>
+        <p class="cover-sub sh-line" data-i18n="coverTitle">%s</p>
+        <p class="cover-sub" data-i18n="coverSub">%s</p>
+        <div class="cover-meta">
+          <span class="chip" data-i18n="chipCount">COUNT slides</span>
+        </div>
+        <div style="margin-top:30px">
+          <button class="btn btn-solid btn-lg" data-action="next" data-i18n="btnStart">Begin →</button>
+        </div>
+      </div>
+    </section>
+""" % (logo, EN['chipLevel'], EN['briefTitle'], EN['coverTitle'], EN['coverSub'])
 
 
 # ── grammar tokens in CAPS ────────────────────────────────────────────
@@ -761,6 +874,27 @@ html[data-shex="on"] .sh-ex[data-tr] { cursor: pointer; text-decoration: underli
 .sh-nav:hover { color: var(--accent-bright); border-color: var(--accent); }
 .stage.on-cover .sh-nav, .stage.on-cover .sh-exsel { visibility: hidden; }
 .sh-freq { justify-content: flex-start; }
+
+/* ── the cover: the tense leads, in the flagship colour ── */
+.slide[data-type="cover"] .sh-kicker {
+  font-family: var(--font-mono); font-size: 14px; letter-spacing: .2em;
+  text-transform: uppercase; margin-top: 22px;
+}
+.slide[data-type="cover"] .cover-title.sh-tense { color: var(--flag); font-size: 68px; margin-top: 18px; }
+.slide[data-type="cover"] .sh-line {
+  font-family: var(--font-display); font-style: italic; font-weight: 600;
+  font-size: 30px; letter-spacing: 0; margin-top: 16px;
+}
+/* The inside field. Active pages are white with the tense colour as ink, so
+   the texture is pulled back and only faintly tinted. Passive pages ARE the
+   tense colour (--void), so the texture is a light pattern over it rather
+   than a dark picture that turns the field black. Declared on html:root so
+   they outrank both the template's :root and its html[data-theme="light"]. */
+html:root { --bg-opacity: 0.28; --wash-mid: transparent;
+            --wash-edge: color-mix(in srgb, var(--surface) 30%, transparent); }
+html:root[data-theme="light"] { --bg-opacity: 0.5;
+            --wash-mid: color-mix(in srgb, var(--flag) 6%, transparent);
+            --wash-edge: color-mix(in srgb, var(--flag) 14%, transparent); }
 '''
 
 
@@ -827,8 +961,7 @@ def build(slug, langs=None):
     assert 4 <= len(chips) <= 8, '%s: %d activation chips (want 4-8)' % (slug, len(chips))
 
     logo = D.logo_from(TPL)
-    slides = D.cover(logo, EN['coverTitle'], EN['coverSub'],
-                     [('Level', EN['chipLevel']), ('Focus', EN['chipFocus']), ('Count', 'COUNT slides')])
+    slides = cover_slide(logo, EN)
     slides += brief_slide(c, EN, bg('briefing'))
 
     for s in c['sections']:
@@ -864,7 +997,7 @@ def build(slug, langs=None):
                          EN['actWriteKind'], EN['actWriteBrief'], EN['actPlaceholder'],
                          folder=F, bg=bg('view'))
 
-    palette = derive_palette(hero, dark)
+    palette = flagship_palette(c, hero, dark)
     title = '%s | Forbes English' % re.sub(r'\s*\|\s*Forbes English\s*$', '', c['title'])
     out = os.path.join(ROOT, c['file'])
     base = ('en', 'de', 'es', 'fr', 'it', 'pt', 'ru', 'ar', 'zh', 'ja', 'hr')
