@@ -30,6 +30,14 @@
  *
  *   NODE_PATH=$(npm root -g) node lesson-template/check-rpg-panels.js <slug>...
  *   NODE_PATH=$(npm root -g) node lesson-template/check-rpg-panels.js --all
+ *   node lesson-template/check-rpg-panels.js kraken-black-tide-rpg.html   # a page outside block-camp/
+ *
+ * EVERY PAGE, since 2026-09-23. It used to open each scene at page 0 only, so a
+ * paged story or clue was measured on its first page and nowhere else; the
+ * Kraken's authored pages each carry their own picture and glow, and two of
+ * them hid their object under the panel on page 4 and page 0 of other scenes'
+ * runs. A scene is now walked page by page, and the glow measured is the one
+ * that page shows.
  *
  * Exit 0 = clean, 1 = findings.
  *
@@ -88,7 +96,9 @@ const VIEWPORTS = [
 ];
 
 async function check(page, slug) {
-  const file = path.join(CAMP, slug + '.html');
+  // a slug names a Block Camp page; anything ending .html is a path from the
+  // repo root, for an engine RPG that lives outside the camp (the Kraken)
+  const file = slug.endsWith('.html') ? path.join(REPO, slug) : path.join(CAMP, slug + '.html');
   if (!fs.existsSync(file)) throw new Error('no such page: ' + file);
   const allow = ALLOW[slug] || {};
   const worst = new Map();   // id -> the worst reading across every shape and language
@@ -108,28 +118,35 @@ async function check(page, slug) {
     // measured. Frostbound's `voice` ran 94px past the panel with no gloss on.
     const langs = ['off', ...await page.evaluate('G.langs')];
     kinds = await page.evaluate('Object.fromEntries(Object.entries(G.scenes).map(([k, v]) => [k, v.kind]))');
+    const pageCount = await page.evaluate('Object.fromEntries(Object.keys(G.scenes).map(k => [k, scenePages(G.scenes[k]).length]))');
     for (const id of Object.keys(kinds)) {
-      for (const lang of langs) {
-        await page.evaluate(([i, l]) => { state.lang = l; go(i); openPanel(); }, [id, lang]);
+      for (const lang of langs) for (let pi = 0; pi < pageCount[id]; pi++) {
+        // the glow is read closed, where it is drawn, then the panel opens over it
+        const h = await page.evaluate(([i, l, p]) => {
+          state.lang = l; go(i); state.page = p; render();
+          const r = document.getElementById('hot').getBoundingClientRect();
+          openPanel();
+          return { left: r.left, right: r.right, top: r.top, bottom: r.bottom, width: r.width, height: r.height };
+        }, [id, lang, pi]);
         await page.waitForTimeout(80);
-        const m = await page.evaluate(() => {
+        const m = await page.evaluate((h) => {
           const c = document.querySelector('.content');
           const cr = c.getBoundingClientRect();
-          const h = document.getElementById('hot').getBoundingClientRect();
           const ix = Math.max(0, Math.min(cr.right, h.right) - Math.max(cr.left, h.left));
           const iy = Math.max(0, Math.min(cr.bottom, h.bottom) - Math.max(cr.top, h.top));
           return { cover: Math.round(100 * (ix * iy) / (h.width * h.height)),
                    scroll: Math.max(0, c.scrollHeight - c.clientHeight) };
-        });
-        const cur = worst.get(id) ||
+        }, h);
+        const key = pageCount[id] > 1 ? id + ' p' + (pi + 1) : id;
+        const cur = worst.get(key) ||
           { cover: 0, scroll: 0, coverLang: null, coverAt: null, scrollLang: null, scrollAt: null };
         if (m.cover > cur.cover) { cur.cover = m.cover; cur.coverLang = lang; cur.coverAt = vp.tag; }
         if (m.scroll > cur.scroll) { cur.scroll = m.scroll; cur.scrollLang = lang; cur.scrollAt = vp.tag; }
-        worst.set(id, cur);
+        worst.set(key, cur);
       }
     }
   }
-  return Object.keys(kinds).map(id => ({ id, ...worst.get(id), kind: kinds[id], allowed: allow[id] }));
+  return [...worst.keys()].map(key => { const id = key.split(' ')[0]; return { id: key, ...worst.get(key), kind: kinds[id], allowed: allow[id] }; });
 }
 
 // "es" or "es on a wide window" — the shape is named only when it is not the

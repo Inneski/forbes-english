@@ -204,7 +204,10 @@ HOT = {
     # the Creature's lit eyes, which are also high enough on the plate that
     # the foot panel clears them in all ten languages. The marker moved
     # because it was on the wrong object, not to dodge the panel.
-    'p1_end_alive':           ([75, 22,  9, 12], 'center', 'bottom'),
+    # Width 84 since 2026-09-23: every ending gained a CAMP MAP button in
+    # 9d1b7d2, the foot panel grew a row, and in Japanese on a 1920x940 window
+    # it covered the eyes 37%. Wider is shorter: 0% at 16:9, 12% wide.
+    'p1_end_alive':           ([75, 22,  9, 12], 'center', 'bottom', 84),
     'p1_end_sparks':          ([24, 30, 12, 20], 'right',  'center'),
     'p1_end_fail':            ([30, 40, 16, 26], 'right',  'center'),
 }

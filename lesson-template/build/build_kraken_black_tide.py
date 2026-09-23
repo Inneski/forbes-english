@@ -1,7 +1,17 @@
 #!/usr/bin/env python3
 """Kraken: The Black Tide — Present Perfect & Continuous West Highland RPG (B1).
 
-    py lesson-template/build/build_kraken_black_tide.py
+**RETIRED 2026-09-23. Reference only; it refuses to run.** This built the
+single-part Kraken of 2026-09-12 into block-camp/. That game was replaced by
+the three-chapter saga at the root, kraken-black-tide-rpg.html, built by
+build_kraken_saga.py, and its Block Camp page and plates are gone. Run, this
+would recreate a second, older Kraken in Block Camp under the same slug, the
+way last-bounty-rpg once came to exist twice. It stays because its folder,
+rpg/kraken-black-tide-rpg/, is the pattern later RPGs copy (script.json ->
+assemble-script.py -> data.json, check-items.py, prep-plates.py). The last
+tree it belongs to is tagged archive/kraken-black-tide-v1.
+
+    py lesson-template/build/build_kraken_black_tide.py   # exits, see above
 
 Builds block-camp/kraken-black-tide-rpg.html from
 lesson-template/build/rpg/kraken-black-tide-rpg/data.json.
@@ -231,4 +241,6 @@ def build():
 
 
 if __name__ == '__main__':
-    rpg.assemble(rpg.apply_translations(build(), os.path.join(BASE, 'translations')))
+    raise SystemExit('build_kraken_black_tide.py is retired (2026-09-23): the live Kraken is '
+                     'kraken-black-tide-rpg.html, built by build_kraken_saga.py. Read this '
+                     "file's docstring before reviving it.")

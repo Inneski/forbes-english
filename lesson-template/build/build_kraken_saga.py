@@ -31,14 +31,13 @@ already clean JSON in `content.js` and the hotspot centres are in `spots.js`.
 rpg/kraken-saga/extract-export.py is the one that reads them; its docstring
 calls this a fifth kind of export and says why.
 
-**Known gaps in this pass, deliberately.** English only — the nine languages
-are the next and largest job. Hotspot boxes are the extractor's default 12x16
-around each centre from spots.js, not yet looked at against their plates, and
-docs/HANDOFF-rpg.md section 4 is right that this needs eyes. The export's
-per-outcome consequence lines (`right`/`wrong`) are dropped, because the
-engine's `fb` is one explanation shown either way; giving it `fbRight`/
-`fbWrong` is a small generic change, batched with whatever else comes out of
-review rather than spending a second eleven-builder re-run on its own.
+**State as of 2026-09-23.** All nine gloss languages ship, 524 strings each
+(`--strings` regenerates strings.json from this spec). The export's
+per-outcome consequence lines ship as `fbRight`/`fbWrong`. Every hotspot was
+checked: the sixty scene plates and twenty inserts on contact sheets, and
+every page of every scene in every language under Playwright at 16:9,
+1920x940 and phone width for overflow and for a panel hiding its own glow.
+Corrections live in SCENE_HOT and INSERT_HOT below, with the reason for each.
 """
 import json, os, re, sys
 
@@ -49,7 +48,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 DATA = json.load(open(os.path.join(HERE, 'rpg', 'kraken-saga', 'data.json'), encoding='utf-8'))
 SLUG = 'kraken-black-tide-rpg'
 NAME = 'The Kraken: A Tale of the Deep'
-LANGS = ['es', 'de', 'fr', 'it', 'pt', 'ru']
+LANGS = ['es', 'de', 'fr', 'it', 'pt', 'ru', 'ar', 'zh', 'ja']
 
 # The export's own gold, which came off the artwork's one sodium-amber light —
 # the thing IMAGES.md required in every frame so the glow marker has a colour
@@ -59,10 +58,11 @@ DEEP, PANEL = '#08131c', 'rgba(8,19,28,.88)'
 
 # a panel is 46% of the frame and the objects sit right of x=60 on every plate
 # (IMAGES.md's composition contract), so every scene takes a left panel.
-# the compass rose, the one object on the cover clear of the panel. Measured
-# off 00_home.webp rather than guessed: the gold star's warm pixels centre on
-# 77.9%, 83.7%, and the disc around them is about 7% by 12% of a 16:9 frame.
-HOME_HOT = [77.9, 83.7, 7.0, 12.0]
+# The compass rose (77.9, 83.7) was the glow until 2026-09-23, when the hub
+# panel had grown to 74 wide for Russian: with any gloss on, the open chapter
+# list covered it 88-100%. The far-right sailing ship, x 84-92% on the plate,
+# is the one object on the cover the wide panel leaves clear.
+HOME_HOT = [88.0, 67.0, 8.0, 14.0]
 ENDING_HOT = [80.0, 55.0, 14.0, 18.0]
 
 # The glow on each insert plate, [cx, cy, w, h] in picture percent. Nine of the
@@ -76,19 +76,38 @@ ENDING_HOT = [80.0, 55.0, 14.0, 18.0]
 INSERT_HOT = {
     'insert_barrel_insert.webp':  [72.0, 42.0, 14.0, 20.0],   # the buoy itself, not the water under it
     'insert_collie.webp':         [63.0, 40.0, 12.0, 16.0],   # the dog's face, not the pier edge
+    # These two had their object dead centre, where an open panel covers it
+    # from either side (the kayak rescue 100% under a glossed left panel, the
+    # gaff 68%): Playwright, every page, 2026-09-23. The glow moves to the man
+    # doing the thing, who stands in the half the panel leaves clear.
+    'insert_gaff.webp':           [69.0, 53.0, 12.0, 16.0],   # Tulloch's hand on the gaff
     'insert_regatta_before.webp': [65.0, 54.0, 12.0, 16.0],   # the girl in 723
     'insert_regatta_prank.webp':  [80.0, 54.0, 12.0, 16.0],   # the boys' motorboat
     'insert_brannan_bell.webp':   [88.0, 32.0, 12.0, 16.0],   # the bell
     'insert_bell_strike.webp':    [70.0, 45.0, 12.0, 16.0],   # the clapper
     'insert_kayak_before.webp':   [65.0, 38.0, 12.0, 16.0],   # the kayaker
     'insert_kayak_shadow.webp':   [78.0, 32.0, 12.0, 16.0],   # the kayaker, from above
-    'insert_kayak_rescue.webp':   [47.0, 55.0, 12.0, 16.0],   # the boy at the rail
+    'insert_kayak_rescue.webp':   [70.0, 22.0, 12.0, 16.0],   # Tulloch hauling him in
     'insert_beak_detail.webp':    [72.0, 51.0, 14.0, 18.0],   # the beak in the jar
     'insert_tulloch_close.webp':  [68.0, 44.0, 14.0, 20.0],   # Tulloch's face
     'insert_tide_detail.webp':    [74.0, 21.0, 12.0, 16.0],   # the finger on the black band
     'insert_cage_descent.webp':   [66.0, 35.0, 14.0, 20.0],   # the diver in the cage
 }
 DEFAULT_BOX = (12.0, 16.0)
+
+# Scene plates whose export hotspot misses the object, found on a contact sheet
+# of all sixty plates on 2026-09-23. The other fifty-seven land on their object.
+SCENE_HOT = {
+    '2.2':  [72.0, 10.0, 10.0, 12.0],   # the wheelhouse radio; the export put the
+                                        # box half off the top of the frame
+    '2.4':  [81.0, 33.0, 12.0, 18.0],   # the sonar screen, not the console under it
+    '2.6b': [82.0, 48.0, 14.0, 18.0],   # the dinghy, not the water beneath it
+}
+
+
+def scene_hot(s):
+    return list(SCENE_HOT.get(s['id'], s['hot']))
+
 
 WORDS_PER_PAGE = 42              # what a 46% panel holds at 1.65 units without scrolling
 
@@ -105,6 +124,13 @@ LABELS = {
     'visual':   {'en': 'THE SCENE', 'es': 'LA ESCENA', 'de': 'DIE SZENE', 'fr': 'LA SCÈNE',
                  'it': 'LA SCENA', 'pt': 'A CENA', 'ru': 'СЦЕНА', 'ar': 'المشهد',
                  'zh': '场景', 'ja': 'シーン'},
+    # the engine says TILE RECOVERED, which is Block Camp's word; this game's
+    # collectibles are evidence, marker barrels and the last four
+    'relic':    {'en': 'SECURED · +{p} POINTS', 'es': 'CONSEGUIDO · +{p} PUNTOS',
+                 'de': 'GESICHERT · +{p} PUNKTE', 'fr': 'OBTENU · +{p} POINTS',
+                 'it': 'OTTENUTO · +{p} PUNTI', 'pt': 'CONSEGUIDO · +{p} PONTOS',
+                 'ru': 'ПОЛУЧЕНО · +{p} ОЧКОВ', 'ar': 'حصلتِ عليه · +{p} نقاط',
+                 'zh': '已到手 · +{p} 分', 'ja': '確保 · +{p} ポイント'},
 }
 
 
@@ -301,7 +327,7 @@ def panel_hot(s, pan):
     floating over nothing."""
     img = pan['image']
     if img == s['image']:
-        return list(s['hot'])
+        return scene_hot(s)
     if img in INSERT_HOT:
         return list(INSERT_HOT[img])
     if pan.get('spot'):
@@ -337,7 +363,7 @@ def build():
 
         for sid, v in nxt.items():
             s = DATA['scenes'][sid]
-            base = {'img': s['image'], 'hot': s['hot'], 'title': T(s['title']),
+            base = {'img': s['image'], 'hot': scene_hot(s), 'title': T(s['title']),
                     'story': pages(s['narration'])}
             if s.get('act'):
                 base['k'] = T(s['act'])
@@ -442,6 +468,9 @@ def build():
         # panel - in English as well as in gloss.
         'page_clues': True,
         'labels': LABELS,
+        # not a Block Camp game: no CAMP MAP button on the endings and no camp
+        # save written, both of which it had until 2026-09-23
+        'camp': False,
         'start': 'hub', 'scenes': scenes, 'chapters': chapters,
         # page-level defaults, used by the HUD before a chapter is picked
         'endings': chapters[0]['endings'], 'max': 70, 'tiles': 4, 'chances': 3,

@@ -128,7 +128,8 @@ The page and its picture folder share it.
   `local` blocks. When it arrives: **diff its JSON against `data.json`
   before extracting** (a re-typed word is a lost gloss), take its `images`
   and `hotspot` boxes, and build from the repo's text and translations, not
-  the export's. Builder to copy: `build_kraken_black_tide.py`; The Loch
+  the export's. Builder to copy: `build_kraken_black_tide.py` (retired, so
+  read it as a pattern; it exits if run); The Loch
   Ness Loop is 16:9, so pass `img_w: 1536, img_h: 864` as Wonderland does.
 - **A third kind:** read its whole script before anything else. Find
   where the pictures are (base64 map), where the questions are (a table or

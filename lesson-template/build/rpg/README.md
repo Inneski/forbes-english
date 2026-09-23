@@ -150,7 +150,8 @@ page exists — script leaks, coverage, a lost `___` — which is the one thing
 engine unshipped — the cover strip's `bottom:7%` → `16%` and `white-space:
 pre-line` on rule cards — onto ten pages at once, because the person who
 edited the engine had re-run only their own builder. `build_kraken_black_tide.py`
-is the one that cannot be re-run: its `translations/` directory does not exist.
+is not one of them: it is retired (2026-09-23) and exits on purpose, because the
+live Kraken is the root-level saga built by `build_kraken_saga.py`, which is.
 
 Every page is **generated**: edit the builder, re-run it. The builder keeps
 the fenced SEO block from the file on disk, so a re-run without `seo.py`

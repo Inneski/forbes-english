@@ -57,8 +57,12 @@ HOT = {
     'finale':      ([60, 52, 10, 14], 'left',   'center', 48),  # the bucket
     'end_master':  ([67, 20, 14, 22], 'left',   'center'),
     'end_complete':([67, 20, 14, 22], 'left',   'center'),
-    'end_missing': ([50, 75, 24, 20], 'right',  'top'),      # the road breaking up
-    'end_failed':  ([50, 75, 24, 20], 'right',  'top'),
+    # width 40 since 2026-09-23: every ending gained a CAMP MAP button in
+    # 9d1b7d2, the right panel grew down over the road, and in Japanese on a
+    # 1920x940 window it covered it 26%. Narrower keeps it off the road's
+    # middle: 17% wide, 8-13% at 16:9, nothing overflows.
+    'end_missing': ([50, 75, 24, 20], 'right',  'top', 40),  # the road breaking up
+    'end_failed':  ([50, 75, 24, 20], 'right',  'top', 40),
 }
 
 # The export left the chapter kickers untranslated.
