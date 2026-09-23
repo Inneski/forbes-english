@@ -203,13 +203,17 @@ html, body {
 }
 /* A correct answer can bring the slide's picture to life (data-clip). The clip
    opens on the plate's exact frame, so it sits between the picture and the
-   wash at the picture's own strength and the handover cannot be seen. */
+   wash at the picture's own strength and the handover cannot be seen.
+   THE STILL MUST GO WHILE THE CLIP SHOWS. Both are translucent, so with the
+   still left in place it showed through the moving clip as a ghost frame.
+   The swap is instant on purpose: a fade would dip the picture, and the
+   first frame is the still, so a cut is invisible. */
 .bg-clip {
   position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
-  opacity: 0; filter: saturate(0.92); transition: opacity .25s linear;
-  pointer-events: none;
+  opacity: 0; filter: saturate(0.92); pointer-events: none;
 }
 .bg-clip.run { opacity: var(--bg-opacity); }
+.bg-layer.clip-on::before { opacity: 0; }
 /* The cover slide shows the hero at FULL strength — no wash, no dimming. */
 .stage.on-cover .bg-layer::before { opacity: 1; filter: none; }
 /* Centre scrim: guarantees cover-text contrast over ANY hero — light, dark,
@@ -4048,7 +4052,10 @@ function updateScoreChip() {
 var bgClip = document.querySelector('.bg-clip');
 var clipCalm = (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) ||
                !!(navigator.connection && navigator.connection.saveData);
-if (bgClip) bgClip.addEventListener('playing', () => bgClip.classList.add('run'));
+if (bgClip) bgClip.addEventListener('playing', () => {
+  bgClip.classList.add('run');
+  bgClip.parentNode.classList.add('clip-on');
+});
 function clipArm(slide) {
   if (clipCalm || !bgClip || !slide || !slide.dataset.clip) return;
   if (bgClip.getAttribute('src') !== slide.dataset.clip) {
@@ -4060,6 +4067,7 @@ function clipPark() {
   if (!bgClip) return;
   bgClip.pause();
   bgClip.classList.remove('run');
+  bgClip.parentNode.classList.remove('clip-on');
   if (bgClip.readyState) bgClip.currentTime = 0;
 }
 function clipPlay(slide) {

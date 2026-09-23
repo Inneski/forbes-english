@@ -81,6 +81,10 @@ plate at 14 or more.
     `--bg-opacity`, so it sits exactly on the dimmed plate. The slide's
     `data-clip` is fetched when the slide is shown, and the clip plays once and
     holds on its last frame. Leaving the slide rewinds it.
+    **The still is hidden (`.bg-layer.clip-on::before`) while the clip
+    shows.** Both layers are translucent, so on the first push the still
+    showed through the moving clip as a ghost frame (Innes caught it live).
+    The swap is instant on purpose: a fade would dip the picture.
     **The trigger is `feedback(slide, ok)`**, which covers mc, sort (only when
     every item went in first time), match and order. `checkGaps()` covers gap
     slides: the gap marked `data-clip-key` decides (Q9 *makes*, Q10 *once a
