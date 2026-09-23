@@ -11,6 +11,35 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-23 — Block Camp Present Simple: fourteen plates come alive
+
+Innes dropped 16 Midjourney clips in `incoming/` for
+`present-simple-time-signals.html` (Block Camp level 1). **Every clip's first
+frame is one of the lesson's own plates**, so matching them needed no names:
+a 32×18 greyscale mean difference against every 16:9 image in the repo put
+each clip on its plate at 0.5–3.5 levels, with the next-best plate at 14 or
+more. The same match also recognised the hub flythrough, which was already
+shipped.
+
+  * Encoded as `present-simple-time-signals/bgNN.mp4`, the same recipe as the hub
+    flythrough (H.264 CRF 27 veryslow, faststart, no audio, capped at 1280
+    wide). 15 files, 10.9 MB total. Slides 16 18 21 22 23 29–36 and 41.
+  * The still shows first, then after 1.2 s (`HOLD`) the clip plays once
+    and **holds on its last frame**. Leaving the slide rewinds it. Only the
+    current and next slide's clips are fetched; nothing is fetched under reduced
+    motion or Save-Data; a refused autoplay leaves the still. Hidden from print.
+  * **Two plates each had two clips.** bg36 (before bed): used `walk_out_door
+    …_2` (the door shuts and the room settles); `…_0` is unused and still in
+    `incoming/`. bg41 (Recap): both are shipped as `bg41a`/`bg41b`, one picked
+    at random per visit.
+  * **`bg41a` dissolves back to the still (`data-settle`)**, because its push-in
+    ends with the Recap's text over the characters' faces. Every other end frame
+    was checked on a contact sheet with the slide's text on it. 23, 31 and 34
+    move bright light under the text but stay readable (the text is outlined).
+  * The page is hand-made (no builder), so the change is in the HTML itself.
+    `check-lesson.js` reports the same 4 failures before and after: they are
+    the old page's house-template gaps (logo lockup etc.), not this change.
+
 ## 2026-09-23 — The Kraken: nine languages, the right/wrong lines, every hotspot, and the phone
 
 Innes, after yesterday's fix: "Is there more work to do in this?" then "do all
