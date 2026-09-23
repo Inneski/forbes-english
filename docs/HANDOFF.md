@@ -95,8 +95,13 @@ plate at 14 or more.
     order and a sort with one miss do not. End frames were checked with the
     cards on: all readable, because the cards carry their own panels.
   * Encoding: the same recipe as the hub flythrough (H.264 CRF 27 veryslow,
-    faststart, no audio, max 1280 wide), named `present-simple-time-signals/
-    bgNN.mp4` after the plate. 13.8 MB in all (bg25 is the largest: 16.7 s,
+    faststart, max 1280 wide), named `present-simple-time-signals/
+    bgNN.mp4` after the plate. **Sound is kept.** Five sources carry
+    Midjourney audio (slides 11, 12, 13, 16, 20 → bg24 bg14 bg13 bg12 bg10:
+    AAC 96k); the other eight were silent at source. My first encode used
+    `-an` like the hub, and Innes asked where the audio was. The video is
+    unmuted and `play()` runs inside the answer click, so sound is allowed; if
+    it is refused anyway, it retries muted. 13.8 MB in all (bg25 is the largest: 16.7 s,
     3.7 MB). Only the current slide's clip is fetched.
   * An earlier reading put the first batch of clips on the time-signals slides
     (`9178aef`). It was reverted in `5ad6a6a`, and that page is static.

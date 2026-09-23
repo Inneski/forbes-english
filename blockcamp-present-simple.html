@@ -2188,7 +2188,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
   <div class="stage" id="stage">
 
     <!-- Background pattern: driven entirely by --hero in the CSS above. -->
-    <div class="bg-layer" role="presentation"><video class="bg-clip" muted playsinline preload="none" aria-hidden="true"></video></div>
+    <div class="bg-layer" role="presentation"><video class="bg-clip" playsinline preload="none" aria-hidden="true"></video></div>
 
     <!-- ══════════════════════════════════════════════════════════
          REPLACE 2 of 2: SLIDES
@@ -4070,11 +4070,21 @@ function clipPark() {
   bgClip.parentNode.classList.remove('clip-on');
   if (bgClip.readyState) bgClip.currentTime = 0;
 }
+/* Five of the clips carry Midjourney's own sound; the rest are silent files.
+   The answer click is the user gesture that lets a browser play sound, so
+   play() runs inside it. If sound is still refused (iOS on the timed results
+   clip, say), play muted rather than not at all. */
 function clipPlay(slide) {
   if (clipCalm || !bgClip || !slide.dataset.clip || slides[idx] !== slide) return;
   clipArm(slide);
+  bgClip.muted = false;
   const p = bgClip.play();
-  if (p && p.catch) p.catch(() => {});
+  if (p && p.catch) p.catch(() => {
+    if (slides[idx] !== slide) return;
+    bgClip.muted = true;
+    const q = bgClip.play();
+    if (q && q.catch) q.catch(() => {});
+  });
 }
 
 function award(slide, ok) {
