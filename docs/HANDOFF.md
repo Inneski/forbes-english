@@ -11,6 +11,97 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-23 — IELTS Reading: Yes, No, Not Given built, NOT shipped (six pictures needed); the layout checker never switched language
+
+Innes: *"build yes/no/not given reading lesson next and explain if you need
+artwork or something"*.
+
+### The deck (`e75b0bc`)
+
+`build_ieltsynng.py`, `ieltsynng_data.py`, `i18n_ieltsynng.py`: the sibling
+of True, False, Not Given, with the same three answers, asked about what the
+writer thinks. Four teaching sections (what changes from TFNG, plus the
+answer-sheet trap; whose voice a sentence is in; *Admittedly … but*; how
+strongly the writer means it), twelve items cycling YES / NO / NOT GIVEN, a
+sort of six sentence openings (the writer's own view against a reported one),
+and the activation. EN, DE, ES; 20 slides, 18 points. Passes `check-lesson.js`
+(bar HEAD: a preview gets no SEO block) and fits answered in all three
+languages.
+
+- **Not shipped.** It needs six pictures. `docs/ARTWORK-ielts-reading-ynng.md`
+  is the brief *and* the shipping checklist (catalogue row, `LESSON_IMAGES`,
+  the Reading hub card, `build_hubs.py`, `seo.py`). Until the art is in
+  `ielts-reading-ynng/` and `PALETTE` is pasted from `extract-palette.py`,
+  the builder writes only the gitignored `_forbes-english-ielts-reading-ynng.html`,
+  on the TFNG pictures.
+- **Access is Innes's call.** The brief suggests `pro`, like Matching
+  Headings and Summary Completion. TFNG is the free one.
+- **The answer glosses translate** through an inner `<span data-i18n>`. On the
+  button itself, the language pass's `innerHTML` would wipe the engine's
+  A/B/C letter. The checker reads English only, so the builder checks the
+  ANSWERS length rule in every language itself. TFNG now does both (`c5215c2`).
+  Its i18n module had always claimed its verdicts translated; they never had.
+- Three drafted items failed the second-reading check and were dropped. The
+  shapes to avoid (implicature from "not yet", scope items, a hedge against
+  "proved") are in the data docstring, for whoever writes the next Reading
+  deck.
+
+### The checker's German and Spanish runs were measuring English (`d631b2e`)
+
+`answered-overflow.js` switched language with `applyLang(lang)`. But
+`applyLang()` takes no argument; it re-applies `currentLang`, so every de/es
+run measured the English deck again. **The audit entry below said every IELTS
+deck fits answered in every language. That was true in English only.** The
+checker now switches through the menu and reports a switch that does not
+take. The corrected run, plus the translations below, turned up overflows of
+3–23px on six decks, all fixed: Listening Sections 1–4 (forms and notes now
+two to a slide), Reading Completion Activity 2 (options two to a row), and
+Academic Writing Part 1 Q9 (shorter German). Every IELTS deck now fits answered in every language it offers.
+
+**To screenshot a non-English build, switch through `#langSelect`**
+(`value` + a `change` event). `applyLang('de')` looks as if it works and does
+nothing.
+
+### Explanations that could not translate
+
+Nine builder decks had explanations written as plain strings in their data
+modules: form and note gaps, map and view matches, sort and order slides. That
+was 38 in all. German and Spanish learners read them in English, while the
+multiple-choice explanations beside them translated. All 38 are i18n keys now.
+The English is registered from the data module, so it stays next to its
+answer (`892039e`, `5d6fbdc`, `df56f84`, `80554a9`, `953af79`, `c5215c2`,
+`755d7f5`). Sort chips stay English, as those decks' own notes intend.
+
+**Found, not fixed. Both need a decision from Innes:**
+
+1. **The seven hand-written EN+DE IELTS decks** (Writing Parts 4–8,
+   Listening Part 9, Speaking Parts 1–2) show every explanation in English
+   when German is selected, about 200 of them. This belongs to the decision parked on 09-13: translate in place,
+   or write builders.
+2. **Site-wide, 95 of the 147 multi-language decks** have explanations that
+   cannot translate: all of Block Camp in ten languages, Holding the Line,
+   Credit Where It's Due, the dinosaur decks and more. Measure it by counting,
+   on a deck whose `UI_I18N` has more than one complete language, the
+   `data-explain` values that are not keys of `UI_I18N.en`. HOUSE-STYLE §8
+   says rules translate (six-item teach cards) and the English under test must
+   not, but says nothing about explanations. If an explanation counts as the
+   rule, that is a large job and wants a gate; if not, §8 should say so. No
+   gate was added: it would turn 95 decks red for every session at once.
+
+### Hubs (`d631b2e`)
+
+All five skill hubs tagged their free "Start here" lesson **Pro**: Listening
+Part 9, TFNG, Speaking 1–2, Lexical Resource and Academic Writing Part 1. The
+catalogue and the Worker have all five as free. They now say **Free**.
+
+### Expansion
+
+Reading's next two remain as listed below: Matching Information & Features,
+then Multiple Choice & Sentence Endings. The YNNG brief's shipping checklist
+works for both.
+
+---
+
 ## 2026-09-23 — IELTS audit: every page read, ~90 errors and ~40 wording problems fixed, Listening plays while you answer
 
 Innes: *"check IELTS for mistakes, complicated language, where it could be
@@ -21,6 +112,8 @@ resolved, and the Listening scripts were read from their data modules.
 Commits `8fc9106`, `7ddba99`, `98b5fff`, `0d88e5a` and the one carrying this
 entry. Every deck passes `check-lesson.js`, and every deck fits the canvas
 *answered* in every language it offers (see the new checker below).
+**Correction, same day:** that was measured in English only, because the
+checker's language switch did nothing. See the entry above. It is true now.
 
 ### The worst of it
 
