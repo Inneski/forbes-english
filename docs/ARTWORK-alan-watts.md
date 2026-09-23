@@ -24,13 +24,14 @@ on the comprehension run, which is about what *he* said.
 
 ---
 
-## Status — 18 pictures, one slot still open
+## Status — 19 pictures, all slots filled
 
 **Delivered 2026-09-22/23.** Nine object plates (`plate-a` … `plate-i`) were
 rendered to this brief and are live **alongside** the nine restored Watts
-portraits (`watts-a` … `watts-i`). Eighteen pictures across twenty-two
-art-bearing slides, so only three repeat — all three late in the sentence-building
-run, far enough from their first showing not to read as one.
+portraits (`watts-a` … `watts-i`), plus the recoloured hero. Eighteen framed
+pictures across twenty-two art-bearing slides, so only three repeat — all three
+late in the sentence-building run, far enough from their first showing not to
+read as one.
 
 **Seven objects came back native 7:6** (2368 × 2032) — the first time `--ar 7:6`
 has actually taken in this repo, and worth knowing it *can*. Two came back 16:9
@@ -47,19 +48,43 @@ sky above them and take the 190px arch well; the portraits are
 head-and-shoulders that fill the frame and come back with the hair cut off. One
 flag for the whole deck cannot express that, which is why it is a function.
 
-### Still outstanding: the hero
+### The hero — closed 2026-09-23, no new art
 
-Every framed slot is filled. **The cover is not**, and it is the one thing a
-learner sees go wrong: the hero is still the centred ZEN/TAO/NOW/BEING diagram,
-so the 88px title lands on the word ZEN.
+The cover was the one thing a learner saw go wrong: the diagram was centred, so
+the 88px title landed on the word ZEN. Fixed without commissioning anything.
 
-Two ways to close it, and the cheap one is probably right:
+**Shifted.** The diagram now sits in the right 42% at 780 × 632, its left edge
+at x=1160 of 2000 — **exactly the 58% the lockup is capped at**, so the title,
+subtitle, chips and Begin button have a clear cream field and nothing overlaps.
 
-1. **No new art.** Shift the existing diagram right so the left 58% is clear.
-   Crop-and-pad on a file already on disk.
-2. **Render the hero below**, and move the diagram onto the "Who was Alan
-   Watts?" slide as a `data-bg`, where nothing is set over it and it is allowed
-   to be centred.
+**Recoloured onto the deck's own tokens.** The supplied diagram was
+cream/terracotta/olive/gold with a navy top circle — a different colour family
+from everything else on the page. Each region was remapped:
+
+| in the diagram | was | is now |
+|---|---|---|
+| NOW circle, and every overlap | `#38373d` near-black | ink teal `#123a3e` |
+| ZEN circle | `#b25930` terracotta | brick red `#a33b12` |
+| TAO circle | `#838153` olive | slate blue `#1c5789` |
+| BEING circle | `#b99247` gold | mid blush `#d9a895` |
+| printed border | `#ded7c6` | plate ground `#f3ede0` |
+| field | `#faf8f3` | warm cream `#fff9ed` |
+
+Method, because it is reusable on any flat illustration that arrives off-brand:
+k-means the non-field pixels to find the real anchors (point-sampling misses
+regions and the cream swamps a plain quantise), map each pixel to its nearest
+anchor, then write the target colour **plus the pixel's luminance difference
+from its anchor**. The addition is what keeps the halftone and grain — a
+straight substitution flattens the picture into vector shapes and it stops
+matching the plates.
+
+`BEING` is the one invented value: the palette's blush `#f8dcd1` is far too
+light to carry a circle, so it is darkened to `#d9a895`, holding the hue. Four
+circles need four codes, which is also why the diagram carries more than the
+"one brick-red accent per picture" rule allows. A diagram is not a plate.
+
+The library card is cut from the same recoloured diagram, centred — nothing is
+set over a card, so it is allowed to be.
 
 ## The style stem
 
