@@ -57,18 +57,26 @@ the 88px title landed on the word ZEN. Fixed without commissioning anything.
 at x=1160 of 2000 — **exactly the 58% the lockup is capped at**, so the title,
 subtitle, chips and Begin button have a clear cream field and nothing overlaps.
 
-**Recoloured onto the deck's own tokens.** The supplied diagram was
+**Recoloured onto the plates' own three colours.** The supplied diagram was
 cream/terracotta/olive/gold with a navy top circle — a different colour family
-from everything else on the page. Each region was remapped:
+from everything else on the page. Innes picked the target off the coat slide:
+*use these 3 colours*. Clustered across all nine plates they are dusty teal
+`#8fa19e`, pale blush `#eecdb9` and terracotta `#e3a993`, and those three now
+carry the three chromatic circles.
 
 | in the diagram | was | is now |
 |---|---|---|
-| NOW circle, and every overlap | `#38373d` near-black | ink teal `#123a3e` |
-| ZEN circle | `#b25930` terracotta | brick red `#a33b12` |
-| TAO circle | `#838153` olive | slate blue `#1c5789` |
-| BEING circle | `#b99247` gold | mid blush `#d9a895` |
+| ZEN circle | `#b25930` terracotta | terracotta `#e3a993` |
+| TAO circle | `#838153` olive | dusty teal `#8fa19e` |
+| BEING circle | `#b99247` gold | pale blush `#eecdb9` |
+| NOW circle, and every overlap | `#38373d` near-black | deep teal `#2f4a48` |
 | printed border | `#ded7c6` | plate ground `#f3ede0` |
 | field | `#faf8f3` | warm cream `#fff9ed` |
+
+**NOW is the fourth value and it has to be.** The eye, the star, the yin-yang
+and the mountain are knocked *out* of that circle — they are holes, not ink —
+so if NOW takes one of the three pale colours they disappear. It is the same
+teal darkened, so it stays inside the family rather than introducing a hue.
 
 Method, because it is reusable on any flat illustration that arrives off-brand:
 k-means the non-field pixels to find the real anchors (point-sampling misses
@@ -78,10 +86,8 @@ from its anchor**. The addition is what keeps the halftone and grain — a
 straight substitution flattens the picture into vector shapes and it stops
 matching the plates.
 
-`BEING` is the one invented value: the palette's blush `#f8dcd1` is far too
-light to carry a circle, so it is darkened to `#d9a895`, holding the hue. Four
-circles need four codes, which is also why the diagram carries more than the
-"one brick-red accent per picture" rule allows. A diagram is not a plate.
+Four circles need four codes, which is why the diagram carries more than the
+"one accent per picture" rule allows. A diagram is not a plate.
 
 The library card is cut from the same recoloured diagram, centred — nothing is
 set over a card, so it is allowed to be.
