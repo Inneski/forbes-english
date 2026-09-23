@@ -380,15 +380,17 @@ def build():
         + "".join(reading(ek, tk, paras, bg, side) for ek, tk, paras, bg, side in READ)
 
         + "".join(art(D.mc(i + 1, len(COMP), q, 'eComp', EN['eComp'],
-                           'tComp', EN['tComp'], folder=F, explains=q['ex'],
+                           'tComp%d' % (i + 1), EN['tComp%d' % (i + 1)],
+                           folder=F, explains=q['ex'],
                            bg=MC_BG[i]),
                       side='left' if i % 2 else None, size='narrow',
                       shape='arch' if arched(MC_BG[i]) else None)
                   for i, q in enumerate(COMP))
 
         + "".join(
-            art(D.gap(i + 1, 4, rows, BANK, 'eVocab', EN['eVocab'], 'tVocab',
-                      EN['tVocab'], folder=F, bg=bg, hint_key='hVocab',
+            art(D.gap(i + 1, 4, rows, BANK, 'eVocab', EN['eVocab'],
+                      'tVocab%d' % (i + 1), EN['tVocab%d' % (i + 1)],
+                      folder=F, bg=bg, hint_key='hVocab',
                       hint=EN['hVocab'], width=200),
                 side='left' if i % 2 else None, size='narrow',
                 shape='arch' if arched(bg) else None)
@@ -399,8 +401,9 @@ def build():
         + D.teach('ePat', EN['ePat'], 'tPat', EN['tPat'], TEACH_PATTERNS,
                   cols='1fr 1fr 1fr', folder=F)
 
-        + "".join(art(D.order(items, 'eOrder', EN['eOrder'], 'tOrder',
-                              EN['tOrder'], 'hOrder', EN['hOrder'], why,
+        + "".join(art(D.order(items, 'eOrder', EN['eOrder'],
+                              'tOrder%d' % (i + 1), EN['tOrder%d' % (i + 1)],
+                              'hOrder', EN['hOrder'], why,
                               folder=F, bg=ORDER_BG[i]),
                       side='left' if i % 2 else None, size='narrow',
                       shape='arch' if arched(ORDER_BG[i]) else None)

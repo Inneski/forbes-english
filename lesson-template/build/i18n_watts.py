@@ -142,6 +142,29 @@ T['en'] = dict(
                   'were wasted. Use four target expressions and one concession.',
     actPlaceholder='You say those years were wasted, and I see why it feels '
                    'that way&hellip;',
+    # ── per-item titles ───────────────────────────────────────────────
+    # One shared heading per activity run put the same 54px line on five
+    # screens running. The counter in the eyebrow does not rescue that: at
+    # the editorial scale the title is the loudest thing on the slide.
+    # MC titles name the THEME, never the key — the options are shuffled at
+    # runtime, so a theme cannot leak an answer. Gap titles number the spaces
+    # rather than describe them, because naming a part of speech there would
+    # narrow a seven-word bank. Order titles name the pattern the item
+    # practises, which points back at the teach slide before it.
+    tComp1='What he set out to do',
+    tComp2='The stranger in the body',
+    tComp3='The example he used',
+    tComp4='Why the flower matters',
+    tComp5='The message, in one line',
+    tVocab1='Spaces one and two',
+    tVocab2='Spaces three and four',
+    tVocab3='Spaces five and six',
+    tVocab4='The last space',
+    tOrder1='Build a that-clause',
+    tOrder2='Build a double comparative',
+    tOrder3='Build a contrast with rather than',
+    tOrder4='Build a noun clause',
+    tOrder5='Balance two clauses',
 )
 
 # ══════════════════════════════════════════════════════════════════════
@@ -250,6 +273,20 @@ T['de'] = dict(
                   'Zugeständnis.',
     actPlaceholder='Du sagst, diese Jahre seien vergeudet, und ich verstehe, '
                    'warum&hellip;',
+    tComp1='Was er erreichen wollte',
+    tComp2='Der Fremde im Körper',
+    tComp3='Das Beispiel, das er nahm',
+    tComp4='Warum die Blume zählt',
+    tComp5='Die Botschaft in einem Satz',
+    tVocab1='Lücke eins und zwei',
+    tVocab2='Lücke drei und vier',
+    tVocab3='Lücke fünf und sechs',
+    tVocab4='Die letzte Lücke',
+    tOrder1='Bau einen that-Satz',
+    tOrder2='Bau einen doppelten Komparativ',
+    tOrder3='Bau einen Gegensatz mit rather than',
+    tOrder4='Bau einen Nominalsatz',
+    tOrder5='Bring zwei Sätze ins Gleichgewicht',
 )
 
 # ══════════════════════════════════════════════════════════════════════
@@ -359,6 +396,20 @@ T['es'] = dict(
                   'concesión.',
     actPlaceholder='Dices que esos años se desperdiciaron, y entiendo por qué lo '
                    'sientes así&hellip;',
+    tComp1='Lo que se propuso hacer',
+    tComp2='El extraño dentro del cuerpo',
+    tComp3='El ejemplo que usó',
+    tComp4='Por qué importa la flor',
+    tComp5='El mensaje, en una frase',
+    tVocab1='Huecos uno y dos',
+    tVocab2='Huecos tres y cuatro',
+    tVocab3='Huecos cinco y seis',
+    tVocab4='El último hueco',
+    tOrder1='Construye una oración con that',
+    tOrder2='Construye un comparativo doble',
+    tOrder3='Construye un contraste con rather than',
+    tOrder4='Construye una oración sustantiva',
+    tOrder5='Equilibra dos oraciones',
 )
 
 
