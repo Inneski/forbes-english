@@ -80,6 +80,10 @@ def lesson_strings(path):
                     found.append((v.strip(), frozenset()))
                 elif text and isinstance(v, dict) and isinstance(v.get('en'), str):
                     found.append((v['en'].strip(), frozenset(x for x in v if x != 'en' and v[x])))
+                elif text and isinstance(v, list) and all(isinstance(x, dict) and isinstance(x.get('en'), str) for x in v):
+                    # a paged `story` or `clue`: one {en, …} per page
+                    for x in v:
+                        found.append((x['en'].strip(), frozenset(y for y in x if y != 'en' and x[y])))
                 else:
                     walk(v)
         elif isinstance(o, list):
