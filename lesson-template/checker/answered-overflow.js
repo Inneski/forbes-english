@@ -10,6 +10,13 @@
 // fullest state), activates it alone as LAYOUT does, and reports overflow.
 // Run it with each language the deck offers, e.g.  ... deck.html en de es
 // Exit code is 0 either way; read the output. Candidate for a gate.
+//
+// The language switch goes through the menu, as a learner's does. It first
+// called applyLang(lang), but applyLang() takes no argument — it re-applies
+// whatever currentLang already is — so every "de" and "es" run in the
+// 2026-09-23 audit measured the English deck again and reported it as fitting.
+// A language the menu does not offer, or a switch that does not take, is now
+// reported as an error instead of being measured in English.
 const { chromium } = require('playwright');
 const path = require('path');
 
@@ -27,8 +34,12 @@ const langs = process.argv.slice(3).length ? process.argv.slice(3) : ['en'];
     const res = await page.evaluate(async (lang) => {
       const sel = document.getElementById('langSelect');
       if (lang !== 'en') {
-        if (typeof applyLang === 'function') applyLang(lang);
-        else if (sel) { sel.value = lang; sel.dispatchEvent(new Event('change')); }
+        if (!sel || ![...sel.options].some(o => o.value === lang))
+          return [{ n: 0, type: '-', err: `language "${lang}" is not in the menu` }];
+        sel.value = lang;
+        sel.dispatchEvent(new Event('change'));
+        if (typeof currentLang !== 'undefined' && currentLang !== lang)
+          return [{ n: 0, type: '-', err: `the switch to "${lang}" did not take` }];
       }
       const wait = () => new Promise(r => setTimeout(r, 60));
       const style = document.createElement('style');
