@@ -201,6 +201,15 @@ html, body {
     linear-gradient(180deg, var(--wash-edge) 0%, var(--wash-mid) 20%,
                             var(--wash-mid) 80%, var(--wash-edge) 100%);
 }
+/* A correct answer can bring the slide's picture to life (data-clip). The clip
+   opens on the plate's exact frame, so it sits between the picture and the
+   wash at the picture's own strength and the handover cannot be seen. */
+.bg-clip {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  opacity: 0; filter: saturate(0.92); transition: opacity .25s linear;
+  pointer-events: none;
+}
+.bg-clip.run { opacity: var(--bg-opacity); }
 /* The cover slide shows the hero at FULL strength — no wash, no dimming. */
 .stage.on-cover .bg-layer::before { opacity: 1; filter: none; }
 /* Centre scrim: guarantees cover-text contrast over ANY hero — light, dark,
@@ -883,7 +892,7 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
     width: 1280px; height: auto;      /* let the slides stack into pages */
     overflow: visible; box-shadow: none;
   }
-  .bg-layer, .deck-bar, .lang-select, .nav-btn, .deck-rail { display: none !important; }
+  .bg-layer, .bg-clip, .deck-bar, .lang-select, .nav-btn, .deck-rail { display: none !important; }
   /* A delayed animation must never decide what lands on a printed page. */
   .slide.is-active .card,
   .slide.is-active .card + .card,
@@ -2175,7 +2184,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
   <div class="stage" id="stage">
 
     <!-- Background pattern: driven entirely by --hero in the CSS above. -->
-    <div class="bg-layer" role="presentation"></div>
+    <div class="bg-layer" role="presentation"><video class="bg-clip" muted playsinline preload="none" aria-hidden="true"></video></div>
 
     <!-- ══════════════════════════════════════════════════════════
          REPLACE 2 of 2: SLIDES
@@ -2379,7 +2388,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="mc" data-bg="present-simple-time-signals/bg16.jpg" data-side="right" data-vpos="top">
+    <section class="slide" data-type="mc" data-bg="present-simple-time-signals/bg16.jpg" data-clip="present-simple-time-signals/bg16.mp4" data-side="right" data-vpos="top">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="qEyebrow">Practice</span> &middot; 1 / 6</div>
         <h2 class="slide-title" data-i18n="qTitleForm">Choose the right form</h2>
@@ -2563,7 +2572,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="gap" data-bg="present-simple-time-signals/bg31.jpg" data-side="left" data-vpos="top">
+    <section class="slide" data-type="gap" data-bg="present-simple-time-signals/bg31.jpg" data-clip="present-simple-time-signals/bg31.mp4" data-side="left" data-vpos="top">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="gap2Eyebrow">Practice</span> &middot; 2 / 2</div>
         <h2 class="slide-title" data-i18n="gap2Title">Which words make it a habit?</h2>
@@ -2575,7 +2584,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
         </div>
         <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="gap2Hint">Three make it a habit. One is happening now &mdash; leave it out.</p>
         <div class="card gap-row" style="padding:12px 16px">
-          <p class="q-stem" style="margin-bottom:0;font-size:19px">I check my map <input class="gap" data-answer="once a day" aria-label="gap" style="width:210px"> &mdash; one time, every day.</p>
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">I check my map <input class="gap" data-answer="once a day" data-clip-key aria-label="gap" style="width:210px"> &mdash; one time, every day.</p>
           <p class="feedback" data-explain="<strong>once a day</strong> counts times inside a day.<span class=&quot;sup&quot; data-lang=&quot;es&quot;><b>ES</b><span>cu&aacute;ntas veces</span></span><span class=&quot;sup&quot; data-lang=&quot;de&quot;><b>DE</b><span>wie viele Male</span></span>"></p>
         </div>
         <div class="card gap-row" style="padding:12px 16px">
@@ -3967,6 +3976,7 @@ function show(n) {
   // under the wash — so extra artwork never becomes a pasted-in box.
   stage.style.setProperty('--hero', slides[idx].dataset.bg
     ? `url('${slides[idx].dataset.bg}')` : '');
+  clipPark(); clipArm(slides[idx]);
   // In branch mode idx/length is meaningless — a learner sees roughly half the
   // nodes — so progress and the counter come from the node itself.
   const cur = slides[idx];
@@ -4023,6 +4033,36 @@ function updateScoreChip() {
 }
 
 /* ── Answer handling ── */
+/* Correct-answer clips. A slide with data-clip fetches its clip when it is
+   shown and plays it once when the learner gets it right; the clip then holds
+   on its last frame. On a gap slide the clip illustrates one sentence, so the
+   gap marked data-clip-key decides; without one, every gap must be right.
+   Leaving the slide rewinds. Never under reduced motion or Save-Data, and a
+   refused autoplay or a load error leaves the still picture. */
+var bgClip = document.querySelector('.bg-clip');
+var clipCalm = (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) ||
+               !!(navigator.connection && navigator.connection.saveData);
+if (bgClip) bgClip.addEventListener('playing', () => bgClip.classList.add('run'));
+function clipArm(slide) {
+  if (clipCalm || !bgClip || !slide || !slide.dataset.clip) return;
+  if (bgClip.getAttribute('src') !== slide.dataset.clip) {
+    bgClip.src = slide.dataset.clip;
+    bgClip.preload = 'auto';
+  }
+}
+function clipPark() {
+  if (!bgClip) return;
+  bgClip.pause();
+  bgClip.classList.remove('run');
+  if (bgClip.readyState) bgClip.currentTime = 0;
+}
+function clipPlay(slide) {
+  if (clipCalm || !bgClip || !slide.dataset.clip || slides[idx] !== slide) return;
+  clipArm(slide);
+  const p = bgClip.play();
+  if (p && p.catch) p.catch(() => {});
+}
+
 function award(slide, ok) {
   if (answered.has(slide)) return;
   answered.add(slide);
@@ -4084,6 +4124,7 @@ slides.filter(s => s.dataset.type === 'mc').forEach(slide => {
     if (!ok) o.classList.add('wrong');
     award(slide, ok);
     feedback(slide, ok, null, o.dataset.explain);
+    if (ok) clipPlay(slide);
     if (BRANCH) {
       // The chosen option carries its own consequence and its own destination,
       // so a wrong answer costs Time and routes to a setback node rather than
@@ -4616,6 +4657,9 @@ function checkGaps(slide) {
   const btn = slide.querySelector('[data-action="check"]');
   if (btn) btn.disabled = true;
   updateScoreChip();
+  const clipKey = slide.querySelector('.gap[data-clip-key]');
+  if (clipKey ? clipKey.classList.contains('correct') : !slide.querySelector('.gap.wrong'))
+    clipPlay(slide);
   // In branch mode a gap slide may pay into the ledger, but only when every
   // gap on it is right. Without this a scored slide costs the learner effort
   // and returns nothing to the state that picks their ending.

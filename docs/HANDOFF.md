@@ -11,34 +11,45 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
-## 2026-09-23 — Block Camp Present Simple: fourteen plates come alive
+## 2026-09-23 — Block Camp Present Simple Part 1: a right answer brings the picture to life
 
-Innes dropped 16 Midjourney clips in `incoming/` for
-`present-simple-time-signals.html` (Block Camp level 1). **Every clip's first
-frame is one of the lesson's own plates**, so matching them needed no names:
-a 32×18 greyscale mean difference against every 16:9 image in the repo put
-each clip on its plate at 0.5–3.5 levels, with the next-best plate at 14 or
-more. The same match also recognised the hub flythrough, which was already
-shipped.
+Innes dropped 16 Midjourney clips in `incoming/`. **Every clip's first frame
+is one of the `present-simple-time-signals/` plates**, so no names were needed
+to match them: a 32×18 greyscale mean difference against every 16:9 image in
+the repo put each clip on its plate at 0.5–3.5 levels, with the next-best plate
+at 14 or more. The same match also recognised the hub flythrough, which was
+already shipped.
 
-  * Encoded as `present-simple-time-signals/bgNN.mp4`, the same recipe as the hub
-    flythrough (H.264 CRF 27 veryslow, faststart, no audio, capped at 1280
-    wide). 15 files, 10.9 MB total. Slides 16 18 21 22 23 29–36 and 41.
-  * The still shows first, then after 1.2 s (`HOLD`) the clip plays once
-    and **holds on its last frame**. Leaving the slide rewinds it. Only the
-    current and next slide's clips are fetched; nothing is fetched under reduced
-    motion or Save-Data; a refused autoplay leaves the still. Hidden from print.
-  * **Two plates each had two clips.** bg36 (before bed): used `walk_out_door
-    …_2` (the door shuts and the room settles); `…_0` is unused and still in
-    `incoming/`. bg41 (Recap): both are shipped as `bg41a`/`bg41b`, one picked
-    at random per visit.
-  * **`bg41a` dissolves back to the still (`data-settle`)**, because its push-in
-    ends with the Recap's text over the characters' faces. Every other end frame
-    was checked on a contact sheet with the slide's text on it. 23, 31 and 34
-    move bright light under the text but stay readable (the text is outlined).
-  * The page is hand-made (no builder), so the change is in the HTML itself.
-    `check-lesson.js` reports the same 4 failures before and after: they are
-    the old page's house-template gaps (logo lockup etc.), not this change.
+**Where they go: on a correct answer in `blockcamp-present-simple.html`**, not
+on the time-signals slides. (That was my first reading and it shipped as
+`9178aef`; it has been reverted. The time-signals page is static again.)
+
+  * Only two of Part 1's 12 question slides sit on a plate that has a clip:
+    Q1 (mc, `bg16`) and Q10 (gap, `bg31`). Those two are live. Innes asked
+    for the other ten plates in a folder to render:
+    `incoming/midjourney-present-simple-part1/` (numbered Q02…Q12 with a
+    README of each slide's sentence). **When those clips arrive, match them
+    by first frame, encode them the same way and add `data-clip` to the
+    slide.** The mechanism is done.
+  * Mechanism: one `<video class="bg-clip">` inside `.bg-layer`, which paints
+    between the picture (`::before`) and the wash (`::after`) at
+    `--bg-opacity`. So it sits exactly on the dimmed plate and the handover
+    cannot be seen. The slide's `data-clip` is fetched when the slide is shown.
+    `clipPlay()` runs from the mc handler on `ok` and from `checkGaps()`. The
+    clip plays once, holds on its last frame, and rewinds on leaving.
+    Nothing plays under reduced motion or Save-Data. Hidden from print.
+  * **Gap slides:** the clip illustrates one sentence, so the gap marked
+    `data-clip-key` decides (Q10: "I check my map *once a day*"). Without a
+    key, every gap on the slide must be right.
+  * Encoding: the same recipe as the hub flythrough (H.264 CRF 27 veryslow,
+    faststart, no audio, max 1280 wide). `bg16.mp4` 0.7 MB, `bg31.mp4` 1.2 MB.
+    The other 13 clips were deleted from the repo; their sources are still in
+    `incoming/`. Their plates are on Part 2 (`bg32` `bg35` mc, `bg33` `bg29`
+    gap, `bg18` order) and Passive (`bg33` mc, `bg34` match), should Innes
+    want them there.
+  * `blockcamp-present-simple.html` is not generated (no builder), so the edit
+    is in the HTML. `check-lesson.js`: the same single DM Sans failure before
+    and after.
 
 ## 2026-09-23 — The Kraken: nine languages, the right/wrong lines, every hotspot, and the phone
 
