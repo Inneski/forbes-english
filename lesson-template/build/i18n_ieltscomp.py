@@ -73,7 +73,7 @@ T['en'] = dict(
     t1ch='Sometimes there is a box',
     t1cb='When the task gives you a list of words, A&ndash;H, you choose from '
          'the list, not from the passage, and you write the letter. The words '
-         'may not be in the text at all, and the list has more options than '
+         'might not be in the text at all, and the list has more options than '
          'gaps.',
     t1cn='Same skill underneath: find the place in the passage, then check '
          'the grammar of the gap.',
@@ -119,7 +119,7 @@ T['en'] = dict(
          'place.',
     t3ch='Spelling counts',
     t3cb='Even in a copied word. Transfer it letter by letter and check it '
-         'against the passage, capitals included. A word you knew, copied '
+         'against the passage. A word you knew, copied '
          'wrongly, scores exactly what a word you did not know would have.',
     t3cn='Reading has no transfer time. Write on the answer sheet as you go.',
 
@@ -133,12 +133,13 @@ T['en'] = dict(
     r1why='Two words and a number. <em>The</em> is a word, so <em>the 1997 '
           'survey results</em> is three; <em>results of the survey</em> is '
           'four; <em>survey results from 1997</em> is three and a number. '
-          'Only the first fits.',
+          'Only <em>1997 survey results</em> fits.',
     r2why='A hyphen joins: <em>well-known</em> is one word. The other three '
           'are two words each, and under ONE WORD ONLY they score nothing.',
     r3why='<em>A fall of 200 tonnes</em> is four words and a number, one over '
-          'the limit. <em>In 1846</em> is one word and a number, and the '
-          'other two are three words and a number: all allowed.',
+          'the limit. <em>In 1846</em> is one word and a number, <em>nearly '
+          '200 tonnes</em> two words and a number, and <em>some 200 tonnes '
+          'each</em> three words and a number: all allowed.',
     r4why='With a list you write a letter, and the words in the list need '
           'not be in the passage at all. The list has more options than '
           'gaps, the summary still covers only a section, and words are '
@@ -298,7 +299,7 @@ T['de'] = dict(
          'falsche Stelle.',
     t3ch='Rechtschreibung zählt',
     t3cb='Auch bei einem kopierten Wort. Übertrag es Buchstabe für Buchstabe '
-         'und prüf es gegen den Text, Großbuchstaben eingeschlossen. Ein '
+         'und prüf es gegen den Text. Ein '
          'Wort, das du kanntest und falsch abgeschrieben hast, bringt genau '
          'so viel wie eines, das du nicht kanntest.',
     t3cn='Reading hat keine Übertragungszeit. Schreib direkt auf den '
@@ -314,14 +315,14 @@ T['de'] = dict(
     r1why='Zwei Wörter und eine Zahl. <em>The</em> ist ein Wort, also hat '
           '<em>the 1997 survey results</em> drei; <em>results of the '
           'survey</em> hat vier; <em>survey results from 1997</em> hat drei '
-          'und eine Zahl. Nur das erste passt.',
+          'und eine Zahl. Nur <em>1997 survey results</em> passt.',
     r2why='Ein Bindestrich verbindet: <em>well-known</em> ist ein Wort. Die '
           'anderen drei sind je zwei Wörter, und unter ONE WORD ONLY bringen '
           'sie nichts.',
     r3why='<em>A fall of 200 tonnes</em> sind vier Wörter und eine Zahl, '
           'eines über dem Limit. <em>In 1846</em> ist ein Wort und eine '
-          'Zahl, die anderen beiden sind drei Wörter und eine Zahl: alle '
-          'erlaubt.',
+          'Zahl, <em>nearly 200 tonnes</em> zwei Wörter und eine Zahl, <em>some '
+          '200 tonnes each</em> drei Wörter und eine Zahl: alle erlaubt.',
     r4why='Bei einer Liste schreibst du einen Buchstaben, und die Wörter der '
           'Liste müssen gar nicht im Text stehen. Die Liste hat mehr '
           'Optionen als Lücken, die Zusammenfassung deckt weiter nur einen '
@@ -484,7 +485,7 @@ T['es'] = dict(
          'equivocado.',
     t3ch='La ortografía cuenta',
     t3cb='Incluso en una palabra copiada. Pásala letra a letra y compruébala '
-         'contra el texto, mayúsculas incluidas. Una palabra que conocías, '
+         'contra el texto. Una palabra que conocías, '
          'copiada mal, puntúa exactamente lo mismo que una que no conocías.',
     t3cn='El Reading no tiene tiempo de transcripción. Escribe en la hoja de '
          'respuestas sobre la marcha.',
@@ -499,12 +500,13 @@ T['es'] = dict(
     r1why='Dos palabras y un número. <em>The</em> es una palabra, así que '
           '<em>the 1997 survey results</em> son tres; <em>results of the '
           'survey</em> son cuatro; <em>survey results from 1997</em> son '
-          'tres y un número. Solo la primera cabe.',
+          'tres y un número. Solo cabe <em>1997 survey results</em>.',
     r2why='El guion une: <em>well-known</em> es una palabra. Las otras tres '
           'son dos palabras cada una, y con ONE WORD ONLY no puntúan nada.',
     r3why='<em>A fall of 200 tonnes</em> son cuatro palabras y un número, '
           'una por encima del límite. <em>In 1846</em> es una palabra y un '
-          'número, y las otras dos son tres palabras y un número: todas '
+          'número, <em>nearly 200 tonnes</em> dos palabras y un número, y '
+          '<em>some 200 tonnes each</em> tres palabras y un número: todas '
           'permitidas.',
     r4why='Con una lista escribes una letra, y las palabras de la lista no '
           'tienen por qué estar en el texto. La lista tiene más opciones '

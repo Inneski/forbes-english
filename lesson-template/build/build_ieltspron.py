@@ -92,7 +92,7 @@ def build():
                     'out the point unaided.', 't1bn',
                     'Two syllables, two words: <em>RECord</em> is the noun, '
                     '<em>reCORD</em> is the verb.'),
-                   ('t1ch', 'Six sentences, six words', 't1cb',
+                   ('t1ch', 'One sentence, six meanings', 't1cb',
                     '&ldquo;I didn&rsquo;t say she stole the money&rdquo; '
                     'means six different things depending on which word takes '
                     'the beat. The words never change; only the stress does.',
@@ -194,7 +194,7 @@ def build():
                       'Have your partner interrupt with a word you do not '
                       'know. Talk around it and keep the turn &mdash; no '
                       'stopping, no asking.'],
-                     'Writing &middot; 150&ndash;200 words',
+                     'Writing &middot; 200&ndash;250 words',
                      'Write out a two-minute answer, then mark it up: a slash '
                      'at every group boundary and capitals on the word that '
                      'takes the beat in each group. Read it back and check the '

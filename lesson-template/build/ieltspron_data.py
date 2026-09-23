@@ -115,7 +115,7 @@ PAUSE = [
     dict(stem='Does a strong first-language accent lower the Pronunciation band?',
          options=['Yes &mdash; the band is built around a native speaker model.',
                   'Yes &mdash; but only above band seven does the accent count.',
-                  'No &mdash; what is scored is how easily you are followed.',
+                  'Not in itself &mdash; only in how easily you are followed.',
                   'No &mdash; pronunciation is only ever scored in Part 2.'],
          correct=2, why='p11why'),
 
@@ -139,7 +139,7 @@ SORT_ITEMS = [
     ('Mispronouncing the key word of your answer', 0),
     ('An accent the examiner can place at once', 1),
     ('A short silence between two thought groups', 1),
-    ('Speaking more slowly than a native speaker', 1),
+    ('A calm pace, slower than a native speaker&rsquo;s', 1),
 ]
 
 SORT_WHY = ('The left column is about whether the listener can follow you; the '

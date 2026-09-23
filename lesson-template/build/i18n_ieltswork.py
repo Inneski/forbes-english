@@ -42,9 +42,9 @@ T = {}
 # ── English ────────────────────────────────────────────────────────────
 T['en'] = dict(
     coverTitle='Work, Automation <em>and Cities</em>',
-    coverSub='The three topics that carry the most Part 3 questions and Task '
-             '2 prompts between them, and the pairings that make an answer on '
-             'any of them sound thought through',
+    coverSub='Three topics that come up again and again in Part 3 and Task 2, '
+             'and the pairings that make an answer on any of them sound '
+             'thought through',
     chipLevel='C1 · Advanced', chipFocus='Speaking &amp; Writing Task 2',
     chipCount='18 points',
 
@@ -64,8 +64,8 @@ T['en'] = dict(
          'side, the colleagues you no longer see on the other.',
     t1bn='One idea, two phrases, and <em>but</em> between them.',
     t1ch='Security against opportunity',
-    t1cb='<em>The gig economy</em> is the prompt behind half the Task 2 '
-         'questions on work. Argue it as a trade: it offers <em>a flexible '
+    t1cb='<em>The gig economy</em> is behind many of the Task 2 questions '
+         'on work. Argue it as a trade: it offers <em>a flexible '
          'schedule</em> and takes away <em>job security</em>; it widens '
          '<em>career prospects</em> for some and narrows them for others.',
     t1cn='Say what it gives and what it takes. That is the paragraph.',
@@ -78,7 +78,7 @@ T['en'] = dict(
          '<em>low-skilled jobs</em>, <em>artificial intelligence</em>. The '
          'noun brings its verb: tasks are <em>automated</em>, workers are '
          '<em>displaced</em>, a workforce is <em>retrained</em>.',
-    t2an='<em>Automatise</em> is not the verb. Neither is <em>robotise</em>.',
+    t2an='The verb is <em>automate</em>, not <em>automatise</em>.',
     t2bh='Lost against created',
     t2bb='Every automation prompt is the same trade: machines <em>displace</em> '
          'workers in <em>low-skilled jobs</em>, and the <em>productivity '
@@ -181,9 +181,9 @@ T['en'] = dict(
     sortBin2='English does not',
     sortWhy='The noun chooses the verb and the adjective. Congestion is '
             '<em>eased</em>, staff are <em>taken on</em>, and <em>the gig '
-            'economy</em> is a fixed name. A commute is something you '
-            '<em>have</em>, traffic is <em>heavy</em>, and tasks are '
-            '<em>automated</em> &mdash; the three on the right are what a '
+            'economy</em> is a fixed name. Congestion is <em>heavy</em> or '
+            '<em>severe</em>, traffic is <em>heavy</em>, and housing is '
+            '<em>affordable</em> &mdash; the three on the right are what a '
             'learner builds from a dictionary, one word at a time. Learn the '
             'phrase whole and the choice is never yours to get wrong.',
 
@@ -208,17 +208,17 @@ T['en'] = dict(
                   'paragraph on it: the claim, the argument, an example, the '
                   'concession. Use at least five pairings from the bank and '
                   'underline each one. Then read it back and count: a '
-                  'sentence with no pairing in it is a sentence the examiner '
-                  'will not score.',
+                  'sentence with no pairing in it is doing nothing for '
+                  'your Lexical Resource.',
     actPlaceholder='Automation displaces workers in low-skilled jobs, but…',
 )
 
 # ── German ─────────────────────────────────────────────────────────────
 T['de'] = dict(
     coverTitle='Arbeit, Automatisierung <em>und Städte</em>',
-    coverSub='Die drei Themen, die zusammen die meisten Fragen in Teil 3 und '
-             'die meisten Task-2-Aufgaben tragen &mdash; und die Paarungen, '
-             'mit denen eine Antwort zu jedem davon durchdacht klingt',
+    coverSub='Drei Themen, die in Teil 3 und in Task 2 immer wieder kommen '
+             '&mdash; und die Paarungen, mit denen eine Antwort zu jedem '
+             'davon durchdacht klingt',
     chipLevel='C1 · Fortgeschritten', chipFocus='Speaking &amp; Writing Task 2',
     chipCount='18 Punkte',
 
@@ -240,8 +240,8 @@ T['de'] = dict(
          'anderen.',
     t1bn='Eine Idee, zwei Phrasen, und <em>but</em> dazwischen.',
     t1ch='Sicherheit gegen Chance',
-    t1cb='<em>The gig economy</em> steckt hinter der Hälfte der Task-2-Fragen '
-         'zur Arbeit. Argumentiere sie als Tausch: Sie bietet <em>a flexible '
+    t1cb='<em>The gig economy</em> steckt hinter vielen Task-2-Fragen zur '
+         'Arbeit. Argumentiere sie als Tausch: Sie bietet <em>a flexible '
          'schedule</em> und nimmt <em>job security</em>; sie erweitert '
          '<em>career prospects</em> für die einen und verengt sie für die '
          'anderen.',
@@ -256,7 +256,7 @@ T['de'] = dict(
          'Substantiv bringt sein Verb mit: Aufgaben werden <em>automated</em>, '
          'Arbeiter werden <em>displaced</em>, eine Belegschaft wird '
          '<em>retrained</em>.',
-    t2an='<em>Automatise</em> ist nicht das Verb. <em>Robotise</em> auch nicht.',
+    t2an='Das Verb heißt <em>automate</em>, nicht <em>automatise</em>.',
     t2bh='Verloren gegen geschaffen',
     t2bb='Jede Aufgabe zur Automatisierung ist derselbe Tausch: Maschinen '
          '<em>displace</em> Arbeiter in <em>low-skilled jobs</em>, und die '
@@ -359,9 +359,9 @@ T['de'] = dict(
     sortBin2='Das sagt es nicht',
     sortWhy='Das Substantiv wählt Verb und Adjektiv. Congestion wird '
             '<em>eased</em>, staff werden <em>taken on</em>, und <em>the gig '
-            'economy</em> ist ein fester Name. Einen commute <em>hat</em> '
-            'man, traffic ist <em>heavy</em>, und tasks werden '
-            '<em>automated</em> &mdash; die drei rechts sind das, was man '
+            'economy</em> ist ein fester Name. Congestion ist <em>heavy</em> '
+            'oder <em>severe</em>, traffic ist <em>heavy</em>, und housing '
+            'ist <em>affordable</em> &mdash; die drei rechts sind das, was man '
             'sich aus dem Wörterbuch baut, Wort für Wort. Lern die Phrase als '
             'Ganzes, dann gibt es keine Wahl, die du falsch treffen kannst.',
 
@@ -386,17 +386,17 @@ T['de'] = dict(
                   'Hauptteil-Absatz für Task 2: Behauptung, Argument, '
                   'Beispiel, Einschränkung. Verwende mindestens fünf '
                   'Paarungen aus der Sammlung und unterstreich jede. Dann lies '
-                  'es noch einmal und zähl: Ein Satz ohne Paarung ist ein '
-                  'Satz, den der Prüfer nicht bewertet.',
+                  'es noch einmal und zähl: Ein Satz ohne Paarung tut nichts '
+                  'für deine Lexical Resource.',
     actPlaceholder='Automation displaces workers in low-skilled jobs, but…',
 )
 
 # ── Spanish ────────────────────────────────────────────────────────────
 T['es'] = dict(
     coverTitle='Trabajo, automatización <em>y ciudades</em>',
-    coverSub='Los tres temas que entre ellos cargan con más preguntas de la '
-             'Parte 3 y más enunciados de Task 2, y las parejas que hacen que '
-             'una respuesta sobre cualquiera de ellos suene pensada',
+    coverSub='Tres temas que salen una y otra vez en la Parte 3 y en Task 2, '
+             'y las parejas que hacen que una respuesta sobre cualquiera de '
+             'ellos suene pensada',
     chipLevel='C1 · Avanzado', chipFocus='Speaking y Writing Task 2',
     chipCount='18 puntos',
 
@@ -417,7 +417,7 @@ T['es'] = dict(
          'compañeros a los que ya no ves al otro.',
     t1bn='Una idea, dos frases, y <em>but</em> en medio.',
     t1ch='Seguridad contra oportunidad',
-    t1cb='<em>The gig economy</em> está detrás de la mitad de las preguntas '
+    t1cb='<em>The gig economy</em> está detrás de muchas de las preguntas '
          'de Task 2 sobre el trabajo. Defiéndela como un intercambio: ofrece '
          '<em>a flexible schedule</em> y quita <em>job security</em>; amplía '
          '<em>career prospects</em> para unos y los estrecha para otros.',
@@ -432,7 +432,7 @@ T['es'] = dict(
          'sustantivo trae su verbo: las tareas se <em>automated</em>, los '
          'trabajadores son <em>displaced</em>, una plantilla es '
          '<em>retrained</em>.',
-    t2an='<em>Automatise</em> no es el verbo. <em>Robotise</em> tampoco.',
+    t2an='El verbo es <em>automate</em>, no <em>automatise</em>.',
     t2bh='Perdidos contra creados',
     t2bb='Todo enunciado sobre automatización es el mismo intercambio: las '
          'máquinas <em>displace</em> a los trabajadores de <em>low-skilled '
@@ -533,8 +533,9 @@ T['es'] = dict(
     sortBin2='Esto no lo dice',
     sortWhy='El sustantivo elige el verbo y el adjetivo. Congestion se '
             '<em>eased</em>, staff se <em>taken on</em>, y <em>the gig '
-            'economy</em> es un nombre fijo. Un commute se <em>tiene</em>, '
-            'traffic es <em>heavy</em>, y las tasks se <em>automated</em>: '
+            'economy</em> es un nombre fijo. Congestion es <em>heavy</em> o '
+            '<em>severe</em>, traffic es <em>heavy</em>, y housing es '
+            '<em>affordable</em>: '
             'las tres de la derecha son lo que uno se monta con el '
             'diccionario, palabra a palabra. Aprende la frase entera y la '
             'elección nunca será tuya para fallarla.',
@@ -559,7 +560,7 @@ T['es'] = dict(
                   'de desarrollo de Task 2: la afirmación, el argumento, un '
                   'ejemplo, la concesión. Usa al menos cinco parejas del banco '
                   'y subraya cada una. Luego reléelo y cuenta: una frase sin '
-                  'pareja es una frase que el examinador no va a puntuar.',
+                  'pareja no hace nada por tu Lexical Resource.',
     actPlaceholder='Automation displaces workers in low-skilled jobs, but…',
 )
 

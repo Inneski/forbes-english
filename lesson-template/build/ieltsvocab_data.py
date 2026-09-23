@@ -88,7 +88,7 @@ COLLOCATION = [
     dict(stem='English says <em>strong coffee</em> and <em>strong accent</em>. What does it not say?',
          options=['Strong evidence emerged during the second inquiry.',
                   'Strong rain fell across the county for three days.',
-                  'Strong opinions were expressed on both of the sides.',
+                  'Strong opinions were expressed on either side.',
                   'Strong smells were coming from the kitchen window.'],
          correct=1, why='v6why'),
 
@@ -120,7 +120,7 @@ PARAPHRASE = [
 
     dict(stem='Why does paraphrase pay twice in this exam?',
          options=['It is faster to write than an original sentence.',
-                  'Speaking Part 3 and Task 2 both score the same skill.',
+                  'Speaking and Writing mark it under one criterion.',
                   'It lets you reuse the question wording in full.',
                   'Examiners are told to reward any repeated phrasing.'],
          correct=1, why='v10why'),

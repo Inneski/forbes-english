@@ -81,7 +81,7 @@ INSTRUCT = [
          options=['Each word in the list is used exactly once',
                   'The summary covers the whole passage, start to end',
                   'The limit now counts letters instead of words',
-                  'The answers may not appear in the passage at all'],
+                  'The answers might not appear in the passage at all'],
          correct=3, why='r4why'),
 ]
 

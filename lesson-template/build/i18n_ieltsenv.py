@@ -47,7 +47,7 @@ T['en'] = dict(
     chipCount='18 points',
 
     t1Eyebrow='Idea 1 of 3',
-    t1Title='Emissions: three pairings and two arguments',
+    t1Title='Emissions: four pairings and two arguments',
     t1ah='Cut them &mdash; the verb is fixed',
     t1ab='Emissions are <em>cut</em> or <em>reduced</em>; a country '
          '<em>burns fossil fuels</em> and releases <em>greenhouse gases</em>; '
@@ -57,9 +57,9 @@ T['en'] = dict(
          'notebook is worth none of them.',
     t1bh='The footprint and the tax',
     t1bb='A person or a firm has a <em>carbon footprint</em>, and shrinking '
-         'it is what a <em>carbon tax</em> is for. Neither noun can be '
-         'derived: nobody guesses <em>footprint</em>, and nobody guesses that '
-         'the charge is called a <em>tax</em>.',
+         'it is what a <em>carbon tax</em> is for. Both are fixed: the mark '
+         'you leave is a <em>footprint</em>, not a trace, and the charge is a '
+         '<em>tax</em>, not a fine.',
     t1bn='File them together. The tax exists because of the footprint.',
     t1ch='The argument it arrives with',
     t1cb='Two shapes carry most Part 3 answers here. <strong>Who '
@@ -174,7 +174,8 @@ T['en'] = dict(
     sortBin2='Consumption and waste',
     sortWhy='Filed by idea, each pairing sits next to the argument it '
             'serves. <em>Burn fossil fuels</em> and <em>phase out coal</em> '
-            'are already half a paragraph on who pays; <em>a throwaway '
+            'are already half a paragraph on emissions and the move away '
+            'from coal; <em>a throwaway '
             'culture</em> and <em>excess packaging</em> are half a paragraph '
             'on producer responsibility. Filed alphabetically they are six '
             'words, and under time you would have nothing to say with them.',
@@ -213,7 +214,7 @@ T['de'] = dict(
     chipCount='18 Punkte',
 
     t1Eyebrow='Idee 1 von 3',
-    t1Title='Emissionen: drei Paarungen und zwei Argumente',
+    t1Title='Emissionen: vier Paarungen und zwei Argumente',
     t1ah='Cut them &mdash; das Verb steht fest',
     t1ab='Emissions werden <em>cut</em> oder <em>reduced</em>; ein Land '
          '<em>burns fossil fuels</em> und setzt <em>greenhouse gases</em> '
@@ -224,9 +225,9 @@ T['de'] = dict(
     t1bh='Der Fußabdruck und die Steuer',
     t1bb='Eine Person oder eine Firma hat einen <em>carbon footprint</em>, '
          'und ihn zu verkleinern ist der Zweck einer <em>carbon tax</em>. '
-         'Keines der beiden Substantive lässt sich herleiten: niemand rät '
-         '<em>footprint</em>, und niemand rät, dass die Abgabe <em>tax</em> '
-         'heißt.',
+         'Beide sind feste Wörter: die Spur, die du hinterlässt, ist ein '
+         '<em>footprint</em>, kein trace, und die Abgabe ist eine '
+         '<em>tax</em>, keine fine.',
     t1bn='Zusammen ablegen. Die Steuer gibt es wegen des Fußabdrucks.',
     t1ch='Das Argument, das mitkommt',
     t1cb='Zwei Formen tragen die meisten Antworten in Teil 3. <strong>Wer '
@@ -345,7 +346,8 @@ T['de'] = dict(
     sortBin2='Konsum und Abfall',
     sortWhy='Nach Ideen abgelegt, liegt jede Paarung neben dem Argument, dem '
             'sie dient. <em>Burn fossil fuels</em> und <em>phase out '
-            'coal</em> sind schon ein halber Absatz darüber, wer zahlt; '
+            'coal</em> sind schon ein halber Absatz über Emissionen und den '
+            'Ausstieg aus der Kohle; '
             '<em>a throwaway culture</em> und <em>excess packaging</em> ein '
             'halber Absatz über die Verantwortung der Hersteller. '
             'Alphabetisch abgelegt sind es sechs Wörter, und unter Zeitdruck '
@@ -387,7 +389,7 @@ T['es'] = dict(
     chipCount='18 puntos',
 
     t1Eyebrow='Idea 1 de 3',
-    t1Title='Emisiones: tres parejas y dos argumentos',
+    t1Title='Emisiones: cuatro parejas y dos argumentos',
     t1ah='Cut them: el verbo es fijo',
     t1ab='Las emissions se <em>cut</em> o se <em>reduce</em>; un país '
          '<em>burns fossil fuels</em> y libera <em>greenhouse gases</em>; '
@@ -397,9 +399,9 @@ T['es'] = dict(
          'en el cuaderno no vale ninguna de ellas.',
     t1bh='La huella y el impuesto',
     t1bb='Una persona o una empresa tiene un <em>carbon footprint</em>, y '
-         'reducirlo es para lo que sirve una <em>carbon tax</em>. Ninguno de '
-         'los dos sustantivos se deduce: nadie adivina <em>footprint</em>, y '
-         'nadie adivina que el cobro se llama <em>tax</em>.',
+         'reducirlo es para lo que sirve una <em>carbon tax</em>. Las dos '
+         'son fijas: la marca que dejas es una <em>footprint</em>, no una '
+         'trace, y el cobro es una <em>tax</em>, no una fine.',
     t1bn='Archívalos juntos. El impuesto existe por la huella.',
     t1ch='El argumento con el que llega',
     t1cb='Dos formas sostienen la mayoría de las respuestas de la Parte 3. '
@@ -513,7 +515,8 @@ T['es'] = dict(
     sortBin2='Consumo y residuos',
     sortWhy='Archivada por ideas, cada pareja queda junto al argumento al que '
             'sirve. <em>Burn fossil fuels</em> y <em>phase out coal</em> ya '
-            'son medio párrafo sobre quién paga; <em>a throwaway culture</em> '
+            'son medio párrafo sobre las emisiones y el abandono del carbón; '
+            '<em>a throwaway culture</em> '
             'y <em>excess packaging</em>, medio párrafo sobre la '
             'responsabilidad del productor. Archivadas por orden alfabético '
             'son seis palabras, y con el reloj en marcha no tendrías nada '

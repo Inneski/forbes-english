@@ -85,21 +85,20 @@ def build():
 
     slides = (
         D.cover(logo, 'Lexical <em>Resource</em>',
-                'A quarter of the marks in Speaking and in Task 2, and it is '
-                'not the quarter that rewards rare words',
+                'A quarter of the marks in Speaking and in Writing, and it '
+                'is not the quarter that rewards rare words',
                 [('Level', 'C1 &middot; Advanced'),
-                 ('Focus', 'Speaking &amp; Writing Task 2'),
+                 ('Focus', 'Speaking &amp; Writing'),
                  ('Count', '18 points')])
 
         + D.teach('t1Eyebrow', 'Before you start',
                   't1Title', 'It does not reward rare words. It never has.',
                   [('t1ah', 'What the descriptors ask for', 't1ab',
-                    '<em>Less common</em> vocabulary, used with '
-                    '<strong>precision</strong> and <strong>flexibility</strong>. '
-                    'Two of those three words are about accuracy, and '
-                    'inaccuracy is penalised by name.', 't1an',
-                    'Rarity with a miss scores below plainness with a hit. '
-                    'Every time.'),
+                    'A range of vocabulary used with <strong>precision</strong> '
+                    'and <strong>flexibility</strong>, and <em>less common</em> '
+                    'words where they fit. Errors in word choice and '
+                    'collocation are named at every band.', 't1an',
+                    'Rarity with a miss scores below plainness with a hit.'),
                    ('t1bh', 'The near-miss costs more than the plain word',
                     't1bb',
                     'A candidate who writes <em>ameliorate the traffic</em> '
@@ -111,9 +110,9 @@ def build():
                     'are certain of the fit.'),
                    ('t1ch', 'Memorised phrases are audible', 't1cb',
                     'Band 9 phrase lists sit apart from the answer around '
-                    'them, and examiners are trained to hear exactly that. A '
-                    'learnt phrase in a plain answer marks the plain answer as '
-                    'the real one.', 't1cn',
+                    'them, and examiners are trained to hear exactly that. Drop '
+                    'one into a plain answer and the examiner can tell which '
+                    'language is really yours.', 't1cn',
                     'It is the mismatch that gives it away, not the phrase '
                     'itself.')],
                   folder=F, bg=BG_PRECISION)
@@ -157,10 +156,10 @@ def build():
         + D.teach('t3Eyebrow', 'Before you start',
                   't3Title', 'Paraphrase is the skill that pays twice',
                   [('t3ah', 'Both papers score it', 't3ab',
-                    'Speaking Part 3 and Writing Task 2 carry the same '
-                    'criterion. The work you do on saying one idea three ways '
-                    'is marked in both rooms, which is the best return on '
-                    'revision time in the whole exam.', 't3an',
+                    'Speaking and Writing are both marked on Lexical Resource. '
+                    'The work you do on saying one idea three ways is marked in '
+                    'both rooms &mdash; above all in Part 3 and in Task 2, where '
+                    'the ideas are abstract.', 't3an',
                     'It is also what Reading tests, from the other side.'),
                    ('t3bh', 'Reword the question, do not copy it', 't3bb',
                     'Words lifted straight from the prompt are not counted as '

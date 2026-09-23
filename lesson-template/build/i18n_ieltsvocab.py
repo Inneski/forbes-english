@@ -38,18 +38,19 @@ T = {}
 # ── English ────────────────────────────────────────────────────────────
 T['en'] = dict(
     coverTitle='Lexical <em>Resource</em>',
-    coverSub='A quarter of the marks in Speaking and in Task 2, and it is not '
+    coverSub='A quarter of the marks in Speaking and in Writing, and it is not '
              'the quarter that rewards rare words',
-    chipLevel='C1 · Advanced', chipFocus='Speaking &amp; Writing Task 2',
+    chipLevel='C1 · Advanced', chipFocus='Speaking &amp; Writing',
     chipCount='18 points',
 
     t1Eyebrow='Before you start',
     t1Title='It does not reward rare words. It never has.',
     t1ah='What the descriptors ask for',
-    t1ab='<em>Less common</em> vocabulary, used with <strong>precision</strong> '
-         'and <strong>flexibility</strong>. Two of those three words are about '
-         'accuracy, and inaccuracy is penalised by name.',
-    t1an='Rarity with a miss scores below plainness with a hit. Every time.',
+    t1ab='A range of vocabulary used with <strong>precision</strong> and '
+         '<strong>flexibility</strong>, and <em>less common</em> words where '
+         'they fit. Errors in word choice and collocation are named at every '
+         'band.',
+    t1an='Rarity with a miss scores below plainness with a hit.',
     t1bh='The near-miss costs more than the plain word',
     t1bb='A candidate who writes <em>ameliorate the traffic</em> has reached '
          'for a rare verb and attached it to the wrong object. The examiner '
@@ -59,8 +60,8 @@ T['en'] = dict(
          'certain of the fit.',
     t1ch='Memorised phrases are audible',
     t1cb='Band 9 phrase lists sit apart from the answer around them, and '
-         'examiners are trained to hear exactly that. A learnt phrase in a '
-         'plain answer marks the plain answer as the real one.',
+         'examiners are trained to hear exactly that. Drop one into a plain '
+         'answer and the examiner can tell which language is really yours.',
     t1cn='It is the mismatch that gives it away, not the phrase itself.',
 
     t2Eyebrow='Before you start',
@@ -88,9 +89,10 @@ T['en'] = dict(
     t3Eyebrow='Before you start',
     t3Title='Paraphrase is the skill that pays twice',
     t3ah='Both papers score it',
-    t3ab='Speaking Part 3 and Writing Task 2 carry the same criterion. The '
-         'work you do on saying one idea three ways is marked in both rooms, '
-         'which is the best return on revision time in the whole exam.',
+    t3ab='Speaking and Writing are both marked on Lexical Resource. The work '
+         'you do on saying one idea three ways is marked in both rooms '
+         '&mdash; above all in Part 3 and in Task 2, where the ideas are '
+         'abstract.',
     t3an='It is also what Reading tests, from the other side.',
     t3bh='Reword the question, do not copy it',
     t3bb='Words lifted straight from the prompt are not counted as your '
@@ -139,9 +141,9 @@ T['en'] = dict(
     v9why='It changes the grammar as well as the words: a question about what '
           'people think becomes a statement about what is disputed. The other '
           'three shuffle the prompt and hand it back.',
-    v10why='Speaking Part 3 and Task 2 are marked on the same criterion, so '
-           'the same practice raises two bands. Nothing else in the exam pays '
-           'twice like that.',
+    v10why='Speaking and Writing are both marked on Lexical Resource, so the '
+           'same practice counts in two papers &mdash; and Part 3 and Task 2 '
+           'are where a paraphrase does the most work.',
     v11why='By idea. A word filed under <em>congestion</em> arrives with an '
            'argument attached; a word filed under C arrives on its own, and '
            'under time an argument is what you are short of.',
@@ -182,19 +184,19 @@ T['en'] = dict(
 # ── German ─────────────────────────────────────────────────────────────
 T['de'] = dict(
     coverTitle='Lexical <em>Resource</em>',
-    coverSub='Ein Viertel der Note im Speaking und in Task 2 &mdash; und nicht '
+    coverSub='Ein Viertel der Note im Speaking und im Writing &mdash; und nicht '
              'das Viertel, das seltene Wörter belohnt',
-    chipLevel='C1 · Fortgeschritten', chipFocus='Speaking &amp; Writing Task 2',
+    chipLevel='C1 · Fortgeschritten', chipFocus='Speaking &amp; Writing',
     chipCount='18 Punkte',
 
     t1Eyebrow='Bevor du beginnst',
     t1Title='Seltene Wörter werden nicht belohnt. Nie gewesen.',
     t1ah='Was die Deskriptoren verlangen',
-    t1ab='<em>Weniger gebräuchlicher</em> Wortschatz, verwendet mit '
-         '<strong>Präzision</strong> und <strong>Flexibilität</strong>. Zwei '
-         'dieser drei Begriffe betreffen Genauigkeit, und Ungenauigkeit wird '
-         'ausdrücklich abgezogen.',
-    t1an='Selten und daneben liegt unter schlicht und richtig. Jedes Mal.',
+    t1ab='Ein breiter Wortschatz, verwendet mit <strong>Präzision</strong> '
+         'und <strong>Flexibilität</strong>, und <em>weniger gebräuchliche</em> '
+         'Wörter dort, wo sie passen. Fehler in Wortwahl und Kollokation '
+         'werden in jedem Band ausdrücklich genannt.',
+    t1an='Selten und daneben liegt unter schlicht und richtig.',
     t1bh='Der Fastreffer kostet mehr als das schlichte Wort',
     t1bb='Wer <em>ameliorate the traffic</em> schreibt, hat nach einem seltenen '
          'Verb gegriffen und es an das falsche Objekt gehängt. Der Prüfer '
@@ -204,9 +206,9 @@ T['de'] = dict(
          'du die Passung kennst.',
     t1ch='Auswendiges hört man',
     t1cb='Listen mit „Band-9-Phrasen“ stehen neben der Antwort, die sie '
-         'umgibt, und Prüfer sind darauf geschult, genau das zu hören. Eine '
-         'gelernte Phrase in einer schlichten Antwort markiert die schlichte '
-         'als die echte.',
+         'umgibt, und Prüfer sind darauf geschult, genau das zu hören. Steht '
+         'eine davon in einer schlichten Antwort, hört der Prüfer, welche '
+         'Sprache wirklich deine ist.',
     t1cn='Verräterisch ist der Bruch, nicht die Phrase selbst.',
 
     t2Eyebrow='Bevor du beginnst',
@@ -234,10 +236,10 @@ T['de'] = dict(
     t3Eyebrow='Bevor du beginnst',
     t3Title='Umschreiben ist die Fertigkeit, die doppelt zahlt',
     t3ah='Beide Prüfungsteile bewerten es',
-    t3ab='Speaking Teil 3 und Writing Task 2 tragen dasselbe Kriterium. Die '
-         'Arbeit daran, eine Idee auf drei Arten zu sagen, wird in beiden '
-         'Räumen bewertet &mdash; die beste Rendite auf Lernzeit in der ganzen '
-         'Prüfung.',
+    t3ab='Speaking und Writing werden beide nach Lexical Resource bewertet. '
+         'Die Arbeit daran, eine Idee auf drei Arten zu sagen, zählt in '
+         'beiden Räumen &mdash; vor allem in Teil 3 und in Task 2, wo die '
+         'Ideen abstrakt sind.',
     t3an='Und das Reading prüft genau dasselbe, nur von der anderen Seite.',
     t3bh='Formuliere die Frage um, kopier sie nicht',
     t3bb='Wörter, die direkt aus der Aufgabenstellung stammen, zählen nicht '
@@ -286,9 +288,9 @@ T['de'] = dict(
     v9why='Es ändert die Grammatik und nicht nur die Wörter: aus einer Frage, '
           'was Leute denken, wird eine Aussage darüber, was strittig ist. Die '
           'anderen drei schieben die Aufgabe um und geben sie zurück.',
-    v10why='Speaking Teil 3 und Task 2 werden nach demselben Kriterium '
-           'bewertet, dieselbe Übung hebt also zwei Noten. Nichts sonst in '
-           'der Prüfung zahlt so doppelt.',
+    v10why='Speaking und Writing werden beide nach Lexical Resource bewertet, '
+           'dieselbe Übung zählt also in zwei Prüfungsteilen &mdash; und in '
+           'Teil 3 und Task 2 leistet eine Umformulierung am meisten.',
     v11why='Nach Ideen. Ein Wort unter <em>congestion</em> kommt mit einem '
            'Argument; ein Wort unter C kommt allein, und unter Zeitdruck fehlt '
            'dir das Argument.',
@@ -331,19 +333,19 @@ T['de'] = dict(
 # ── Spanish ────────────────────────────────────────────────────────────
 T['es'] = dict(
     coverTitle='Lexical <em>Resource</em>',
-    coverSub='Una cuarta parte de la nota en Speaking y en Task 2, y no es la '
+    coverSub='Una cuarta parte de la nota en Speaking y en Writing, y no es la '
              'cuarta parte que premia las palabras raras',
-    chipLevel='C1 · Avanzado', chipFocus='Speaking y Writing Task 2',
+    chipLevel='C1 · Avanzado', chipFocus='Speaking y Writing',
     chipCount='18 puntos',
 
     t1Eyebrow='Antes de empezar',
     t1Title='No premia las palabras raras. Nunca lo ha hecho.',
     t1ah='Qué piden los descriptores',
-    t1ab='Vocabulario <em>menos frecuente</em>, usado con '
-         '<strong>precisión</strong> y <strong>flexibilidad</strong>. Dos de '
-         'esas tres palabras van de exactitud, y la inexactitud se penaliza '
-         'por su nombre.',
-    t1an='Raro y fallado puntúa menos que llano y acertado. Siempre.',
+    t1ab='Un vocabulario amplio, usado con <strong>precisión</strong> y '
+         '<strong>flexibilidad</strong>, y palabras <em>menos frecuentes</em> '
+         'donde encajan. Los errores de elección de palabra y de colocación '
+         'aparecen con nombre en todas las bandas.',
+    t1an='Raro y fallado puntúa menos que llano y acertado.',
     t1bh='El casi-acierto cuesta más que la palabra llana',
     t1bb='Quien escribe <em>ameliorate the traffic</em> ha ido a por un verbo '
          'raro y lo ha pegado al objeto equivocado. El examinador ve el '
@@ -353,9 +355,9 @@ T['es'] = dict(
          'sepas que encaja.',
     t1ch='Las frases memorizadas se oyen',
     t1cb='Las listas de «frases de band 9» quedan aparte del inglés que las '
-         'rodea, y a los examinadores se les entrena para oír justo eso. Una '
-         'frase aprendida dentro de una respuesta llana señala a la llana como '
-         'la de verdad.',
+         'rodea, y a los examinadores se les entrena para oír justo eso. Mete '
+         'una en una respuesta llana y el examinador sabe qué lengua es de '
+         'verdad la tuya.',
     t1cn='Lo que te delata es el desajuste, no la frase.',
 
     t2Eyebrow='Antes de empezar',
@@ -383,9 +385,10 @@ T['es'] = dict(
     t3Eyebrow='Antes de empezar',
     t3Title='Parafrasear es la destreza que paga dos veces',
     t3ah='Las dos pruebas la puntúan',
-    t3ab='Speaking Parte 3 y Writing Task 2 llevan el mismo criterio. El '
-         'trabajo de decir una idea de tres maneras se califica en las dos '
-         'salas: el mejor rendimiento por hora de estudio de todo el examen.',
+    t3ab='Speaking y Writing se califican los dos con Lexical Resource. El '
+         'trabajo de decir una idea de tres maneras cuenta en las dos salas, '
+         'sobre todo en la Parte 3 y en Task 2, donde las ideas son '
+         'abstractas.',
     t3an='Y el Reading examina lo mismo, solo que desde el otro lado.',
     t3bh='Reformula la pregunta, no la copies',
     t3bb='Las palabras sacadas tal cual del enunciado no cuentan como tu '
@@ -436,9 +439,9 @@ T['es'] = dict(
     v9why='Cambia la gramática además de las palabras: una pregunta sobre lo '
           'que piensa la gente pasa a ser una afirmación sobre lo que se '
           'discute. Las otras tres barajan el enunciado y lo devuelven.',
-    v10why='Speaking Parte 3 y Task 2 se califican con el mismo criterio, así '
-           'que la misma práctica sube dos notas. Nada más en el examen paga '
-           'así de doble.',
+    v10why='Speaking y Writing se califican los dos con Lexical Resource, así '
+           'que la misma práctica cuenta en dos pruebas, y en la Parte 3 y en '
+           'Task 2 es donde una paráfrasis rinde más.',
     v11why='Por ideas. Una palabra archivada en <em>congestion</em> llega con '
            'un argumento; una archivada en la C llega sola, y con el reloj en '
            'marcha lo que falta es el argumento.',

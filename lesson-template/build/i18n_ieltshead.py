@@ -47,7 +47,7 @@ T = {}
 # ── English ────────────────────────────────────────────────────────────
 T['en'] = dict(
     coverTitle='Matching <em>Headings</em>',
-    coverSub='The one Reading task that does not run in passage order '
+    coverSub='A Reading task that does not run in passage order '
              '&mdash; so the technique is different',
     chipLevel='C1 · Advanced', chipFocus='Reading · both modules',
     chipCount='18 points',
@@ -61,11 +61,11 @@ T['en'] = dict(
          'are never used &mdash; and they are written to be tempting.',
     t1an='Seven paragraphs, ten headings, three decoys. That is the usual '
          'arithmetic.',
-    t1bh='The one type that jumps',
-    t1bb='Every other question type follows the passage. This one does not: '
-         'heading i can belong to paragraph F, and nothing about the order '
-         'of the list tells you where to look. Answering four tells you '
-         'nothing about where the fifth is.',
+    t1bh='A type that jumps',
+    t1bb='Most question types follow the passage. This one, like Matching '
+         'Information, does not: heading i can belong to paragraph F, and '
+         'the order of the list tells you nothing about where to look. '
+         'Answering four tells you nothing about the fifth.',
     t1bn='It usually comes first on its passage, before the questions that '
          'do run in order.',
     t1ch='Read the paragraph before the list',
@@ -208,7 +208,7 @@ T['en'] = dict(
 # ── German ─────────────────────────────────────────────────────────────
 T['de'] = dict(
     coverTitle='Matching <em>Headings</em>',
-    coverSub='Die eine Reading-Aufgabe, die nicht in Textreihenfolge läuft '
+    coverSub='Eine Reading-Aufgabe, die nicht in Textreihenfolge läuft '
              '&mdash; und deshalb eine andere Technik braucht',
     chipLevel='C1 · Fortgeschritten', chipFocus='Reading · beide Module',
     chipCount='18 Punkte',
@@ -222,8 +222,9 @@ T['de'] = dict(
          'also übrig &mdash; und die sind so geschrieben, dass sie locken.',
     t1an='Sieben Absätze, zehn Überschriften, drei Köder. Das ist die übliche '
          'Rechnung.',
-    t1bh='Der eine Typ, der springt',
-    t1bb='Jeder andere Fragetyp folgt dem Text. Dieser nicht: Überschrift i '
+    t1bh='Ein Typ, der springt',
+    t1bb='Die meisten Fragetypen folgen dem Text. Dieser nicht, genauso wenig '
+         'wie Matching Information: Überschrift i '
          'kann zu Absatz F gehören, und die Reihenfolge der Liste verrät '
          'nichts darüber, wo du suchen musst. Vier gelöst heißt nicht, dass '
          'du weißt, wo die fünfte steht.',
@@ -379,7 +380,7 @@ T['de'] = dict(
 # ── Spanish ────────────────────────────────────────────────────────────
 T['es'] = dict(
     coverTitle='Matching <em>Headings</em>',
-    coverSub='La única tarea del Reading que no sigue el orden del texto, y '
+    coverSub='Una tarea del Reading que no sigue el orden del texto, y '
              'por eso la técnica es otra',
     chipLevel='C1 · Avanzado', chipFocus='Reading · los dos módulos',
     chipCount='18 puntos',
@@ -393,8 +394,9 @@ T['es'] = dict(
          'para tentar.',
     t1an='Siete párrafos, diez títulos, tres señuelos. Esa es la cuenta '
          'habitual.',
-    t1bh='El único tipo que salta',
-    t1bb='Todos los demás tipos de pregunta siguen el texto. Este no: el '
+    t1bh='Un tipo que salta',
+    t1bb='Casi todos los tipos de pregunta siguen el texto. Este no, igual '
+         'que Matching Information: el '
          'título i puede ser del párrafo F, y el orden de la lista no te '
          'dice nada sobre dónde mirar. Resolver cuatro no te dice dónde está '
          'el quinto.',

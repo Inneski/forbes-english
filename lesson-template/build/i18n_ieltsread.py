@@ -49,19 +49,19 @@ T['en'] = dict(
     chipCount='18 points',
 
     t1Eyebrow='Before you start',
-    t1Title='Sixty minutes, three passages, no time at the end',
+    t1Title='Sixty minutes, three sections, no time at the end',
     t1ah='The shape of the paper',
-    t1ab='Three passages, forty questions, sixty minutes. Roughly twenty '
-         'minutes each, and the third is usually the hardest &mdash; so a '
-         'passage that runs long is borrowing from the one that needs it '
-         'most.',
-    t1an='Academic and General Training differ in the texts, not in the '
-         'technique. Everything here applies to both.',
+    t1ab='Forty questions in sixty minutes, in three sections of about twenty '
+         'minutes each. The third is usually the hardest &mdash; so a section '
+         'that runs long is borrowing from the one that needs it most.',
+    t1an='Academic sets one long passage per section; General Training starts '
+         'with shorter texts. The technique is the same, so everything here '
+         'applies to both.',
     t1bh='No transfer time. None.',
-    t1bb='Listening gives you ten minutes at the end to copy your answers '
-         'across. <strong>Reading does not.</strong> Write on the answer '
-         'sheet as you go, because the invigilator stops you on the hour with '
-         'whatever is on it.',
+    t1bb='On paper, Listening gives you ten minutes at the end to copy your '
+         'answers across. <strong>Reading does not.</strong> Write on the '
+         'answer sheet as you go, because the invigilator stops you on the '
+         'hour with whatever is on it.',
     t1bn='Answers left on the question paper score nothing. It is the single '
          'cheapest way to lose marks on this paper.',
     t1ch='The questions follow the text',
@@ -165,9 +165,10 @@ T['en'] = dict(
           'FALSE rather than a Not Given.',
     r10why='The passage hedges about recovery time and says nothing whatever '
            'about approval. Silence, not denial. NOT GIVEN.',
-    r11why='Lower inland is wetter on the coast &mdash; the same claim turned '
-           'round, with no word in common. TRUE, and a good example of why '
-           'word-matching misses.',
+    r11why='Less rain in the valley means a wetter coast &mdash; the same '
+           'claim turned round. The words that carry it, <em>lower</em> and '
+           '<em>wetter</em>, have nothing in common, which is why '
+           'word-matching misses it. TRUE.',
     r12why='<em>Apart from two years in the 1980s</em> is the line you point '
            'at. <em>Never once</em> cannot survive it. FALSE.',
 
@@ -208,16 +209,17 @@ T['de'] = dict(
     chipCount='18 Punkte',
 
     t1Eyebrow='Bevor du beginnst',
-    t1Title='Sechzig Minuten, drei Texte, keine Zeit am Ende',
+    t1Title='Sechzig Minuten, drei Teile, keine Zeit am Ende',
     t1ah='Der Aufbau der Prüfung',
-    t1ab='Drei Texte, vierzig Fragen, sechzig Minuten. Etwa zwanzig Minuten '
-         'pro Text, und der dritte ist meist der schwerste &mdash; wer bei '
-         'einem Text überzieht, nimmt sie genau dem weg, der sie braucht.',
-    t1an='Academic und General Training unterscheiden sich in den Texten, '
-         'nicht in der Technik. Alles hier gilt für beide.',
+    t1ab='Vierzig Fragen in sechzig Minuten, in drei Teilen zu je etwa '
+         'zwanzig Minuten. Der dritte ist meist der schwerste &mdash; wer bei '
+         'einem Teil überzieht, nimmt die Zeit genau dem weg, der sie braucht.',
+    t1an='Academic gibt pro Teil einen langen Text; General Training beginnt '
+         'mit kürzeren Texten. Die Technik ist dieselbe, also gilt alles hier '
+         'für beide.',
     t1bh='Keine Übertragungszeit. Keine.',
-    t1bb='Beim Listening bekommst du am Ende zehn Minuten, um die Antworten '
-         'zu übertragen. <strong>Beim Reading nicht.</strong> Schreib direkt '
+    t1bb='Beim Listening auf Papier bekommst du am Ende zehn Minuten, um die '
+         'Antworten zu übertragen. <strong>Beim Reading nicht.</strong> Schreib direkt '
          'auf den Antwortbogen &mdash; nach sechzig Minuten wird '
          'eingesammelt, mit dem, was daraufsteht.',
     t1bn='Antworten, die auf dem Fragebogen bleiben, zählen nicht. Der '
@@ -330,9 +332,10 @@ T['de'] = dict(
           'Not Given.',
     r10why='Der Text schwächt bei der Genesungszeit ab und sagt zur Zulassung '
            'überhaupt nichts. Schweigen, nicht Widerspruch. NOT GIVEN.',
-    r11why='Weniger Regen im Landesinneren heißt mehr an der Küste &mdash; '
-           'dieselbe Aussage umgedreht, ohne ein gemeinsames Wort. TRUE, und '
-           'ein gutes Beispiel dafür, warum Wortabgleich versagt.',
+    r11why='Weniger Regen im Tal heißt eine nassere Küste &mdash; dieselbe '
+           'Aussage, umgedreht. Die tragenden Wörter, <em>lower</em> und '
+           '<em>wetter</em>, haben nichts gemeinsam; deshalb versagt '
+           'Wortabgleich hier. TRUE.',
     r12why='<em>Apart from two years in the 1980s</em> ist die Zeile, auf die '
            'du zeigst. <em>Never once</em> überlebt sie nicht. FALSE.',
 
@@ -375,15 +378,16 @@ T['es'] = dict(
     chipCount='18 puntos',
 
     t1Eyebrow='Antes de empezar',
-    t1Title='Sesenta minutos, tres textos, nada de tiempo al final',
+    t1Title='Sesenta minutos, tres partes, nada de tiempo al final',
     t1ah='La forma del examen',
-    t1ab='Tres textos, cuarenta preguntas, sesenta minutos. Unos veinte '
-         'minutos por texto, y el tercero suele ser el más difícil: si te '
-         'alargas en uno, se los quitas justo al que más los necesita.',
-    t1an='Academic y General Training se diferencian en los textos, no en la '
-         'técnica. Todo esto vale para los dos.',
+    t1ab='Cuarenta preguntas en sesenta minutos, en tres partes de unos '
+         'veinte minutos. La tercera suele ser la más difícil: si te alargas '
+         'en una, le quitas el tiempo justo a la que más lo necesita.',
+    t1an='Academic pone un texto largo por parte; General Training empieza '
+         'con textos más cortos. La técnica es la misma, así que todo esto '
+         'vale para los dos.',
     t1bh='No hay tiempo de transcripción. Ninguno.',
-    t1bb='En el Listening te dan diez minutos al final para pasar las '
+    t1bb='En el Listening en papel te dan diez minutos al final para pasar las '
          'respuestas. <strong>En el Reading no.</strong> Escribe en la hoja '
          'de respuestas sobre la marcha: a los sesenta minutos la recogen con '
          'lo que tenga.',
@@ -495,9 +499,10 @@ T['es'] = dict(
     r10why='El texto matiza sobre el tiempo de recuperación y de la '
            'autorización no dice absolutamente nada. Silencio, no negación. '
            'NOT GIVEN.',
-    r11why='Que llueva menos tierra adentro es que la costa sea más húmeda: la '
-           'misma afirmación del revés, sin una palabra en común. TRUE, y un '
-           'buen ejemplo de por qué cotejar palabras falla.',
+    r11why='Que llueva menos en el valle es que la costa sea más húmeda: la '
+           'misma afirmación del revés. Las palabras que la sostienen, '
+           '<em>lower</em> y <em>wetter</em>, no tienen nada en común, y por '
+           'eso cotejar palabras falla. TRUE.',
     r12why='<em>Apart from two years in the 1980s</em> es la línea que '
            'señalas. <em>Never once</em> no sobrevive a eso. FALSE.',
 

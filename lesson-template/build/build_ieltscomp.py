@@ -126,7 +126,7 @@ def build():
                    ('t1ch', 'Sometimes there is a box', 't1cb',
                     'When the task gives you a list of words, A&ndash;H, you '
                     'choose from the list, not from the passage, and you '
-                    'write the letter. The words may not be in the text at '
+                    'write the letter. The words might not be in the text at '
                     'all, and the list has more options than gaps.', 't1cn',
                     'Same skill underneath: find the place in the passage, '
                     'then check the grammar of the gap.')],
@@ -192,7 +192,7 @@ def build():
                     'or the wrong place.'),
                    ('t3ch', 'Spelling counts', 't3cb',
                     'Even in a copied word. Transfer it letter by letter and '
-                    'check it against the passage, capitals included. A word '
+                    'check it against the passage. A word '
                     'you knew, copied wrongly, scores exactly what a word you '
                     'did not know would have.', 't3cn',
                     'Reading has no transfer time. Write on the answer sheet '

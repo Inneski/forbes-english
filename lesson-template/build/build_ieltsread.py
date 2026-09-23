@@ -84,19 +84,21 @@ def build():
                  ('Count', '18 points')])
 
         + D.teach('t1Eyebrow', 'Before you start',
-                  't1Title', 'Sixty minutes, three passages, no time at the end',
+                  't1Title', 'Sixty minutes, three sections, no time at the end',
                   [('t1ah', 'The shape of the paper', 't1ab',
-                    'Three passages, forty questions, sixty minutes. Roughly '
-                    'twenty minutes each, and the third is usually the hardest '
-                    '&mdash; so a passage that runs long is borrowing from the '
-                    'one that needs it most.', 't1an',
-                    'Academic and General Training differ in the texts, not in '
-                    'the technique. Everything here applies to both.'),
+                    'Forty questions in sixty minutes, in three sections of '
+                    'about twenty minutes each. The third is usually the '
+                    'hardest &mdash; so a section that runs long is borrowing '
+                    'from the one that needs it most.', 't1an',
+                    'Academic sets one long passage per section; General '
+                    'Training starts with shorter texts. The technique is the '
+                    'same, so everything here applies to both.'),
                    ('t1bh', 'No transfer time. None.', 't1bb',
-                    'Listening gives you ten minutes at the end to copy your '
-                    'answers across. <strong>Reading does not.</strong> Write '
-                    'on the answer sheet as you go, because the invigilator '
-                    'stops you on the hour with whatever is on it.', 't1bn',
+                    'On paper, Listening gives you ten minutes at the end to '
+                    'copy your answers across. <strong>Reading does '
+                    'not.</strong> Write on the answer sheet as you go, '
+                    'because the invigilator stops you on the hour with '
+                    'whatever is on it.', 't1bn',
                     'Answers left on the question paper score nothing. It is '
                     'the single cheapest way to lose marks on this paper.'),
                    ('t1ch', 'The questions follow the text', 't1cb',

@@ -67,7 +67,7 @@ T['en'] = dict(
 
     t2Eyebrow='Before you start',
     t2Title='The examiner disagrees. That is the task, not a verdict.',
-    t2ah='Pushback is scripted',
+    t2ah='Pushback is part of the test',
     t2ab='Examiners are trained to challenge in Part 3, whatever you say. It '
          'is not a signal that the answer was weak &mdash; it is the part of '
          'the test that finds out what you can do under pressure.',
@@ -84,7 +84,7 @@ T['en'] = dict(
          'it&hellip;</em> or <em>On reflection, I would put that '
          'differently.</em>',
     t2cn='A silent reversal confuses the listener. A signalled one is '
-         'coherence, and coherence is a quarter of the mark.',
+         'coherence, and Fluency and Coherence is a quarter of the mark.',
 
     t3Eyebrow='Before you start',
     t3Title='How sure are you? Say so once, and mean it.',
@@ -138,9 +138,10 @@ T['en'] = dict(
     q8why='Whether you can hold a line, or revise one, in English. The '
           'examiner has no stake in the topic and marks no opinions &mdash; '
           'all four criteria are language.',
-    q9why='One hedge, then one limit. The second is hedged into saying '
-          'nothing, the third refuses to grade at all, and the fourth stacks '
-          'four hedges onto a single verb.',
+    q9why='One hedge, then one limit. <em>Arguably possible&hellip; '
+          'conceivably</em> is hedged into saying nothing, <em>It always '
+          'works</em> refuses to grade at all, and <em>might possibly '
+          'perhaps&hellip; maybe</em> stacks four hedges onto one verb.',
     q10why='The position disappears. Fluency and Coherence rewards a line of '
            'argument, and an answer that asserts nothing leaves no line to '
            'follow.',
@@ -224,7 +225,7 @@ T['de'] = dict(
          'that I say it&hellip;</em> oder <em>On reflection, I would put that '
          'differently.</em>',
     t2cn='Eine stille Kehrtwende verwirrt. Eine angekündigte ist Kohärenz &mdash; '
-         'und Kohärenz ist ein Viertel der Note.',
+         'und Fluency and Coherence ist ein Viertel der Note.',
 
     t3Eyebrow='Bevor du beginnst',
     t3Title='Wie sicher bist du? Sag es einmal, und meine es.',
@@ -279,9 +280,10 @@ T['de'] = dict(
     q8why='Ob du eine Linie halten oder überarbeiten kannst &mdash; auf '
           'Englisch. Der Prüfer hat kein Interesse am Thema und bewertet keine '
           'Meinungen; alle vier Kriterien sind Sprache.',
-    q9why='Eine Abschwächung, dann eine Einschränkung. Die zweite schwächt sich '
-          'ins Nichts, die dritte stuft gar nicht ein, und die vierte stapelt '
-          'vier Abschwächungen auf ein Verb.',
+    q9why='Eine Abschwächung, dann eine Einschränkung. <em>Arguably '
+          'possible&hellip; conceivably</em> schwächt sich ins Nichts, <em>It '
+          'always works</em> stuft gar nicht ein, und <em>might possibly '
+          'perhaps&hellip; maybe</em> stapelt vier Abschwächungen auf ein Verb.',
     q10why='Die Position verschwindet. Fluency and Coherence belohnt eine '
            'Argumentationslinie, und eine Antwort, die nichts behauptet, '
            'lässt keine Linie übrig.',
@@ -364,8 +366,8 @@ T['es'] = dict(
     t2cb='Dilo en voz alta y suena a estar pensando: <em>Actually, now that I '
          'say it&hellip;</em> o <em>On reflection, I would put that '
          'differently.</em>',
-    t2cn='Un giro silencioso confunde. Uno anunciado es coherencia, y la '
-         'coherencia es la cuarta parte de la nota.',
+    t2cn='Un giro silencioso confunde. Uno anunciado es coherencia, y '
+         'Fluency and Coherence es la cuarta parte de la nota.',
 
     t3Eyebrow='Antes de empezar',
     t3Title='¿Cuánto de seguro estás? Dilo una vez, y en serio.',
@@ -420,9 +422,11 @@ T['es'] = dict(
     q8why='Si sabes sostener una postura, o revisarla, en inglés. Al '
           'examinador el tema le da igual y no califica opiniones: los cuatro '
           'criterios son lengua.',
-    q9why='Un matizador y luego un límite. La segunda se matiza hasta no decir '
-          'nada, la tercera no gradúa en absoluto y la cuarta amontona cuatro '
-          'matizadores sobre un solo verbo.',
+    q9why='Un matizador y luego un límite. <em>Arguably possible&hellip; '
+          'conceivably</em> se matiza hasta no decir nada, <em>It always '
+          'works</em> no gradúa en absoluto y <em>might possibly '
+          'perhaps&hellip; maybe</em> amontona cuatro matizadores sobre un '
+          'solo verbo.',
     q10why='La postura desaparece. Fluency and Coherence premia una línea '
            'argumental, y una respuesta que no afirma nada no deja ninguna '
            'línea que seguir.',

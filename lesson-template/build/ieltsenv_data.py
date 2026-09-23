@@ -103,7 +103,7 @@ RENEWABLES = [
 
 # ── Activity 3 · consumption and waste ─────────────────────────────────
 WASTE = [
-    dict(stem='Where does rubbish go once nobody recycles it, in the phrase '
+    dict(stem='Where does rubbish that is not recycled go, in the phrase '
               'English uses?',
          options=['It is sent to landfill.',
                   'It is sent to the dumping.',

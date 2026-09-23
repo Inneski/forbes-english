@@ -85,7 +85,7 @@ def build():
                  ('Count', '18 points')])
 
         + D.teach('t1Eyebrow', 'Idea 1 of 3',
-                  't1Title', 'Emissions: three pairings and two arguments',
+                  't1Title', 'Emissions: four pairings and two arguments',
                   [('t1ah', 'Cut them &mdash; the verb is fixed', 't1ab',
                     'Emissions are <em>cut</em> or <em>reduced</em>; a '
                     'country <em>burns fossil fuels</em> and releases '
@@ -97,9 +97,9 @@ def build():
                    ('t1bh', 'The footprint and the tax', 't1bb',
                     'A person or a firm has a <em>carbon footprint</em>, and '
                     'shrinking it is what a <em>carbon tax</em> is for. '
-                    'Neither noun can be derived: nobody guesses '
-                    '<em>footprint</em>, and nobody guesses that the charge '
-                    'is called a <em>tax</em>.', 't1bn',
+                    'Both are fixed: the mark you leave is a '
+                    '<em>footprint</em>, not a trace, and the charge is a '
+                    '<em>tax</em>, not a fine.', 't1bn',
                     'File them together. The tax exists because of the '
                     'footprint.'),
                    ('t1ch', 'The argument it arrives with', 't1cb',

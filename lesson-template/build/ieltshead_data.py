@@ -190,7 +190,7 @@ SORT_BINS = ['Points to the right heading', 'A trap']
 SORT_ITEMS = [
     ('Is true of every sentence in the paragraph', 0),
     ('Says what the paragraph does, not what it names', 0),
-    ('Would survive the loss of any one sentence', 0),
+    ('Still fits with any one sentence taken out', 0),
     ('Shares its key word with the paragraph', 1),
     ('Fits the opening sentence and no other', 1),
     ('Would sit just as well on the next paragraph', 1),

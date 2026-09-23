@@ -118,7 +118,7 @@ def build():
         + D.teach('t2Eyebrow', 'Before you start',
                   't2Title',
                   'The examiner disagrees. That is the task, not a verdict.',
-                  [('t2ah', 'Pushback is scripted', 't2ab',
+                  [('t2ah', 'Pushback is part of the test', 't2ab',
                     'Examiners are trained to challenge in Part 3, whatever '
                     'you say. It is not a signal that the answer was weak '
                     '&mdash; it is the part of the test that finds out what '
@@ -137,7 +137,8 @@ def build():
                     'that I say it&hellip;</em> or <em>On reflection, I would '
                     'put that differently.</em>', 't2cn',
                     'A silent reversal confuses the listener. A signalled one '
-                    'is coherence, and coherence is a quarter of the mark.')],
+                    'is coherence, and Fluency and Coherence is a quarter of '
+                    'the mark.')],
                   folder=F, bg=BG_PUSH)
 
         + "".join(D.mc(i + 1, len(PUSHBACK), q, 'mcbEyebrow',

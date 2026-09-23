@@ -74,7 +74,7 @@ def build():
 
     slides = (
         D.cover(logo, 'Matching <em>Headings</em>',
-                'The one Reading task that does not run in passage order '
+                'A Reading task that does not run in passage order '
                 '&mdash; so the technique is different',
                 [('Level', 'C1 &middot; Advanced'),
                  ('Focus', 'Reading &middot; both modules'),
@@ -91,12 +91,12 @@ def build():
                     'they are written to be tempting.', 't1an',
                     'Seven paragraphs, ten headings, three decoys. That is '
                     'the usual arithmetic.'),
-                   ('t1bh', 'The one type that jumps', 't1bb',
-                    'Every other question type follows the passage. This one '
-                    'does not: heading i can belong to paragraph F, and '
-                    'nothing about the order of the list tells you where to '
-                    'look. Answering four tells you nothing about where the '
-                    'fifth is.', 't1bn',
+                   ('t1bh', 'A type that jumps', 't1bb',
+                    'Most question types follow the passage. This one, like '
+                    'Matching Information, does not: heading i can belong to '
+                    'paragraph F, and the order of the list tells you nothing '
+                    'about where to look. Answering four tells you nothing '
+                    'about the fifth.', 't1bn',
                     'It usually comes first on its passage, before the '
                     'questions that do run in order.'),
                    ('t1ch', 'Read the paragraph before the list', 't1cb',

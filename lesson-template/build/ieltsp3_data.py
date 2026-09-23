@@ -40,7 +40,7 @@ GENERAL = [
          correct=0, why='q1why'),
 
     dict(stem='Which phrase turns a personal habit into a general claim?',
-         options=['In my own case,', 'By and large,', 'As far as I go,',
+         options=['In my own case,', 'By and large,', 'For my part,',
                   'Speaking personally,'],
          correct=1, why='q2why'),
 
@@ -130,11 +130,11 @@ ALL = GENERAL + PUSHBACK + HEDGE
 ORDER = ['State your position in one sentence',
          'Give the reason behind it',
          'Add one case that illustrates it',
-         'Name what the other side gets right']
+         'Grant the other side its point, then hold yours']
 
 ORDER_WHY = ('Position, reason, example, concession. The example comes third '
              'because it illustrates a claim that has already been made &mdash; '
              'lead with it and the examiner hears an anecdote rather than an '
-             'argument. The concession comes last because it is the move that '
-             'survives pushback: you have already named the limit yourself, so '
-             'there is nothing left to catch you with.')
+             'argument. The concession comes last, and it ends back on your '
+             'position: you have already named the limit yourself, so pushback '
+             'has nothing left to catch you with.')

@@ -56,7 +56,7 @@ T['en'] = dict(
          'weight, so the listener has to work out the point unaided.',
     t1bn='Two syllables, two words: <em>RECord</em> is the noun, '
          '<em>reCORD</em> is the verb.',
-    t1ch='Six sentences, six words',
+    t1ch='One sentence, six meanings',
     t1cb='&ldquo;I didn&rsquo;t say she stole the money&rdquo; means six '
          'different things depending on which word takes the beat. The words '
          'never change; only the stress does.',
@@ -140,9 +140,10 @@ T['en'] = dict(
     p10why='Describe it and keep going. Paraphrase is rewarded under Lexical '
            'Resource, a first-language word is not English, asking is not '
            'answered, and restarting spends the time you have.',
-    p11why='No. What is scored is intelligibility and the effort the listener '
-           'has to make. Accent is explicitly not a band descriptor &mdash; '
-           'and there is no native model for it to be measured against.',
+    p11why='Not in itself. The descriptors mention accent only for its '
+           'effect: at band 8 an L1 accent has minimal effect on '
+           'intelligibility, at band 9 none. What is scored is how easily you '
+           'are followed, and there is no native model to be measured against.',
     p12why='Mispronouncing the words the answer is built on, because those are '
            'the words the listener needs. Accent, a thinking pause and a '
            'measured pace cost nothing at all.',
@@ -166,7 +167,7 @@ T['en'] = dict(
               'seven words, pausing only at the joins.',
     actSpeak3='Have your partner interrupt with a word you do not know. Talk '
               'around it and keep the turn &mdash; no stopping, no asking.',
-    actWriteKind='Writing · 150–200 words',
+    actWriteKind='Writing · 200–250 words',
     actWriteBrief='Write out a two-minute answer, then mark it up: a slash at '
                   'every group boundary and capitals on the word that takes '
                   'the beat in each group. Read it back and check the beats '
@@ -196,7 +197,7 @@ T['de'] = dict(
          'mit gleichem Gewicht &mdash; und der Zuhörer sucht den Punkt allein.',
     t1bn='Zwei Silben, zwei Wörter: <em>RECord</em> ist das Substantiv, '
          '<em>reCORD</em> das Verb.',
-    t1ch='Sechs Sätze, sechs Wörter',
+    t1ch='Ein Satz, sechs Bedeutungen',
     t1cb='&bdquo;I didn&rsquo;t say she stole the money&ldquo; bedeutet sechs '
          'verschiedene Dinge, je nachdem, welches Wort den Schlag bekommt. Die '
          'Wörter ändern sich nie, nur die Betonung.',
@@ -279,9 +280,11 @@ T['de'] = dict(
     p10why='Beschreib es und mach weiter. Umschreibung wird unter Lexical '
            'Resource belohnt, ein Wort aus der Muttersprache ist kein '
            'Englisch, Fragen ist keine Antwort, und Neuanfangen kostet Zeit.',
-    p11why='Nein. Bewertet werden Verständlichkeit und der Aufwand des '
-           'Zuhörers. Akzent ist ausdrücklich kein Deskriptor &mdash; und es '
-           'gibt kein Muttersprachler-Modell, an dem er gemessen würde.',
+    p11why='Nicht an sich. Die Deskriptoren nennen den Akzent nur wegen '
+           'seiner Wirkung: in Band 8 beeinträchtigt ein L1-Akzent die '
+           'Verständlichkeit kaum, in Band 9 gar nicht. Bewertet wird, wie '
+           'leicht man dir folgt &mdash; ein Muttersprachler-Modell, an dem '
+           'gemessen würde, gibt es nicht.',
     p12why='Die Wörter falsch auszusprechen, auf denen die Antwort steht, denn '
            'genau die braucht der Zuhörer. Akzent, eine Denkpause und ein '
            'ruhiges Tempo kosten gar nichts.',
@@ -306,7 +309,7 @@ T['de'] = dict(
     actSpeak3='Lass deinen Partner mit einem Wort dazwischengehen, das du '
               'nicht kennst. Rede darum herum und behalte das Wort &mdash; '
               'kein Anhalten, kein Fragen.',
-    actWriteKind='Schreiben · 150–200 Wörter',
+    actWriteKind='Schreiben · 200–250 Wörter',
     actWriteBrief='Schreib eine Zwei-Minuten-Antwort auf und markiere sie: ein '
                   'Schrägstrich an jeder Gruppengrenze und Großbuchstaben auf '
                   'dem Wort, das in jeder Gruppe den Schlag trägt. Lies laut '
@@ -336,7 +339,7 @@ T['es'] = dict(
          'peso y quien escucha tiene que deducir la idea solo.',
     t1bn='Dos sílabas, dos palabras: <em>RECord</em> es el sustantivo, '
          '<em>reCORD</em> el verbo.',
-    t1ch='Seis frases, seis palabras',
+    t1ch='Una frase, seis significados',
     t1cb='&laquo;I didn&rsquo;t say she stole the money&raquo; significa seis '
          'cosas distintas según qué palabra reciba el golpe. Las palabras no '
          'cambian nunca; solo cambia la acentuación.',
@@ -419,9 +422,10 @@ T['es'] = dict(
     p10why='Descríbelo y sigue. La paráfrasis se premia en Lexical Resource, '
            'una palabra de tu idioma no es inglés, preguntar no es responder, '
            'y volver a empezar gasta el tiempo que tienes.',
-    p11why='No. Se califican la inteligibilidad y el esfuerzo de quien '
-           'escucha. El acento no es un descriptor, y no hay un modelo nativo '
-           'contra el que medirlo.',
+    p11why='No por sí mismo. Los descriptores mencionan el acento solo por su '
+           'efecto: en la banda 8 un acento L1 apenas afecta a la '
+           'inteligibilidad, y en la 9 no la afecta. Se califica lo fácil que '
+           'es seguirte, y no hay un modelo nativo contra el que medirlo.',
     p12why='Pronunciar mal las palabras sobre las que se sostiene la '
            'respuesta, porque son las que quien escucha necesita. El acento, '
            'una pausa para pensar y un ritmo tranquilo no cuestan nada.',
@@ -445,7 +449,7 @@ T['es'] = dict(
               'a siete palabras, pausando solo en las juntas.',
     actSpeak3='Que tu compañero te interrumpa con una palabra que no conozcas. '
               'Rodéala y conserva el turno: sin parar y sin preguntar.',
-    actWriteKind='Escritura · 150–200 palabras',
+    actWriteKind='Escritura · 200–250 palabras',
     actWriteBrief='Escribe una respuesta de dos minutos y márcala: una barra '
                   'en cada límite de grupo y mayúsculas en la palabra que '
                   'lleva el golpe en cada grupo. Léela en voz alta y comprueba '

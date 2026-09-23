@@ -54,8 +54,8 @@ WORK = [
                   'Many of them make a burnout by the second winter.'],
          correct=2, why='v3why'),
 
-    dict(ctx='Part 3: <em>Will people change jobs more often in the '
-             'future?</em>',
+    dict(ctx='Part 3: <em>Will the gig economy help people&rsquo;s '
+             'careers?</em>',
          stem='Which answer uses the bank precisely?',
          options=["Yes &mdash; the gig economy will augment people's career trajectories.",
                   "Yes &mdash; the gig economy will enlarge people's career futures.",
@@ -148,9 +148,9 @@ SORT_ITEMS = [
     ('ease congestion', 0),
     ('take on staff', 0),
     ('the gig economy', 0),
-    ('make a commute', 1),
+    ('big congestion', 1),
     ('strong traffic', 1),
-    ('automatise tasks', 1),
+    ('cheap-priced housing', 1),
 ]
 
 # A UI_I18N key, not a sentence, so the explanation translates with the deck.
