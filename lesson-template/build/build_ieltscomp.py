@@ -74,9 +74,11 @@ BG_SHAPE, BG_COPY, BG_LIMIT, BG_FIT = ('bg02.jpg', 'bg03.jpg',
 
 # A passage excerpt, a limit, a summary line and four answers fit the canvas at rest, but
 # once a learner answers, the explanation and the "Answer:" line push the
-# slide 23-24px past the bottom edge (measured 2026-09-23, every language).
-# check-lesson only measures slides unanswered, so it never saw it. Two
-# options a row buys back two rows.
+# slide 23-24px past the bottom edge. check-lesson only measures slides
+# unanswered, so it never saw it. Two options a row buys back two rows.
+# Activity 3 was measured first; Activity 2 overflowed by the same 23px in
+# German and Spanish only, which the first measurement missed because the
+# checker's language switch did nothing (fixed in answered-overflow.js).
 def two_up(html):
     return html.replace('<div class="opts">', '<div class="opts two-up">')
 
@@ -176,10 +178,10 @@ def build():
                     'line again.')],
                   folder=F, bg=BG_COPY)
 
-        + "".join(D.mc(i + 1, len(COPY), q, 'mcbEyebrow',
+        + "".join(two_up(D.mc(i + 1, len(COPY), q, 'mcbEyebrow',
                        'Activity 2 &middot; Copy, do not paraphrase',
                        'mcbTitle', 'Which answer scores?',
-                       folder=F, bg=BG_LIMIT, ctx=q.get('ctx'))
+                       folder=F, bg=BG_LIMIT, ctx=q.get('ctx')))
                   for i, q in enumerate(COPY))
 
         + D.teach('t3Eyebrow', 'Before you start',
