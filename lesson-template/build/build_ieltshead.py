@@ -65,6 +65,16 @@ CHIPS = ['function, not topic', 'a detail is not a heading', 'sure ones first',
 
 BG_SHAPE, BG_FUNCTION, BG_ORDER, BG_TWOFIT = ('bg02.jpg', 'bg03.jpg',
                                               'bg04.jpg', 'bg05.jpg')
+
+# A passage paragraph, a stem and four headings fit the canvas at rest, but
+# once a learner answers, the explanation and the "Answer:" line push the
+# slide 23-24px past the bottom edge (measured 2026-09-23, every language).
+# check-lesson only measures slides unanswered, so it never saw it. Two
+# options a row buys back two rows.
+def two_up(html):
+    return html.replace('<div class="opts">', '<div class="opts two-up">')
+
+
 BG_ACT = 'bg06.jpg'
 
 
@@ -108,10 +118,10 @@ def build():
                     'Your own summary first, the list second. Every time.')],
                   folder=F, bg=BG_SHAPE)
 
-        + "".join(D.mc(i + 1, len(MAIN), q, 'mcaEyebrow',
+        + "".join(two_up(D.mc(i + 1, len(MAIN), q, 'mcaEyebrow',
                        'Activity 1 &middot; The main idea', 'mcaTitle',
                        'Read the paragraph. Which heading covers all of it?',
-                       folder=F, bg=BG_SHAPE, ctx=q.get('ctx'))
+                       folder=F, bg=BG_SHAPE, ctx=q.get('ctx')))
                   for i, q in enumerate(MAIN))
 
         + D.teach('t2Eyebrow', 'Before you start',
@@ -144,10 +154,10 @@ def build():
                     'a sentence. Spend the sentence.')],
                   folder=F, bg=BG_FUNCTION)
 
-        + "".join(D.mc(i + 1, len(FUNCTION), q, 'mcbEyebrow',
+        + "".join(two_up(D.mc(i + 1, len(FUNCTION), q, 'mcbEyebrow',
                        'Activity 2 &middot; What is it doing?', 'mcbTitle',
                        'Name the job, not the subject',
-                       folder=F, bg=BG_FUNCTION, ctx=q.get('ctx'))
+                       folder=F, bg=BG_FUNCTION, ctx=q.get('ctx')))
                   for i, q in enumerate(FUNCTION))
 
         + D.teach('t3Eyebrow', 'Before you start',
