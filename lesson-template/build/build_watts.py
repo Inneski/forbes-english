@@ -366,10 +366,14 @@ def build():
              'watts-i.jpg']
     # Vocabulary is about the words, so it runs on the objects.
     GAP_BG = ['plate-f.jpg', 'plate-h.jpg', 'plate-c.jpg', 'plate-i.jpg']
-    # Sentence building returns to him. Two unused portraits first, then the
-    # three earliest MC faces again — far enough back not to read as a repeat.
-    ORDER_BG = ['watts-e.jpg', 'watts-g.jpg', 'watts-a.jpg', 'watts-b.jpg',
-                'watts-f.jpg']
+    # Sentence building opens on the last two unused portraits and then goes
+    # out onto the road. plate-j/k/l are three more variants of the same open
+    # road as plate-i, dropped 2026-09-23 specifically to kill the repeats:
+    # the run used to reprise the first three MC faces, which is what Innes
+    # saw. The road also earns its place here — the last thing before the
+    # results is a road running on.
+    ORDER_BG = ['watts-e.jpg', 'watts-g.jpg', 'plate-j.jpg', 'plate-k.jpg',
+                'plate-l.jpg']
 
     slides = (
         D.cover(logo, EN['coverTitle'], EN['coverSub'],
@@ -409,7 +413,11 @@ def build():
                       shape='arch' if arched(ORDER_BG[i]) else None)
                   for i, (items, why) in enumerate(ORDERS))
 
-        + D.results(folder=F, bg='plate-i.jpg')
+        # The one deliberate reprise: the profile that opened the deck comes
+        # back on the results slide as a bookend. Twenty-one pictures cannot
+        # cover twenty-two slides, so one has to repeat; this is the place
+        # where a repeat reads as intent rather than as running out.
+        + D.results(folder=F, bg='watts-c.jpg')
 
         + D.activate(
             EN['actTitle'], EN['actUse'], CHIPS,
