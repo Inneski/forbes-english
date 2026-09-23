@@ -252,12 +252,21 @@ def rules(src, limit=8):
     # cleared the 40-character floor, so 252 of 256 lessons published no
     # `teaches` at all. Heading and rule are joined so the sentence stands
     # alone: "Since and for: since takes a point, for takes a length."
-    card = re.compile(r'<p class="prose"><strong[^>]*>(.*?)</strong></p>\s*'
-                      r'<p class="prose"(?![^>]*\bdim\b)[^>]*>(.*?)</p>', re.S)
+    # `class="prose[^"]*"`, not `class="prose"`. A builder that adds a second
+    # class to the body paragraph - `class="prose sh-body"` - drops out of this
+    # pattern entirely and publishes no `teaches` at all, silently. The Sherpa
+    # rebuild of 2026-09-22 did that to 23 pages and nothing reported it.
+    card = re.compile(r'<p class="prose[^"]*"><strong[^>]*>(.*?)</strong></p>\s*'
+                      r'<p class="prose[^"]*"(?![^>]*\bdim\b)[^>]*>(.*?)</p>', re.S)
     # Sherpa Tensing writes the same card as <div class="rule-card"><h3>
     # heading</h3><p>rule</p>; the RPGs keep theirs in script data and are
     # not read here.
-    sherpa = re.compile(r'<div class="rule-card">\s*<h3>(.*?)</h3>\s*<p>(.*?)</p>', re.S)
+    # Same lesson one layer down: <h3> and <p> must tolerate attributes.
+    # Camps one and two carry data-i18n on their rule cards because they are
+    # translated, and against the bare-tag pattern they matched nothing while
+    # holding 16 and 13 rule cards between them.
+    sherpa = re.compile(r'<div class="rule-card">\s*<h3[^>]*>(.*?)</h3>\s*'
+                        r'<p[^>]*>(.*?)</p>', re.S)
     cands = []
     for pat in (card, sherpa):
         for m in pat.finditer(src):
