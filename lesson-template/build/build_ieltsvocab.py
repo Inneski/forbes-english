@@ -192,7 +192,7 @@ def build():
                        'sortHint', 'Drag each one into a column &mdash; or '
                                    'click an item, then the column you want '
                                    'it in.',
-                       SORT_WHY, folder=F, bg=BG_BANK,
+                       'sortWhy', folder=F, bg=BG_BANK,
                        bin_keys=['sortBin1', 'sortBin2'])
 
         + D.results('resNext', 'You can spot it. Now build it &rarr;', folder=F)

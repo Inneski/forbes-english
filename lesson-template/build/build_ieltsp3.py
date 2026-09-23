@@ -180,7 +180,7 @@ def build():
                   'ordTitle', 'Put the four moves in order',
                   'ordHint', 'Drag them into order &mdash; or click one, then '
                              'the position you want it in.',
-                  ORDER_WHY, folder=F, bg=BG_ORDER)
+                  'orderWhy', folder=F, bg=BG_ORDER)
 
         + D.results('resNext', 'You can spot it. Now use it &rarr;', folder=F)
 

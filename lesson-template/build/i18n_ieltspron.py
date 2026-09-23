@@ -175,6 +175,12 @@ T['en'] = dict(
     actPlaceholder='The place I would recommend / is a small town…',
 )
 
+# The sort explanation sits in the data module, which keeps the only copy
+# of the English. It was a plain string there until 2026-09-23, so German and
+# Spanish learners read it in English.
+from ieltspron_data import SORT_WHY
+T['en']['sortWhy'] = SORT_WHY
+
 # ── German ─────────────────────────────────────────────────────────────
 T['de'] = dict(
     coverTitle='Aussprache <em>&amp; Sprachfluss</em>',
@@ -315,6 +321,13 @@ T['de'] = dict(
                   'dem Wort, das in jeder Gruppe den Schlag trägt. Lies laut '
                   'und prüfe, ob die Schläge dort landen, wo die Bedeutung ist.',
     actPlaceholder='The place I would recommend / is a small town…',
+
+    # The sort explanation; English from the data module.
+    sortWhy='In der linken Spalte geht es darum, ob man dir folgen kann; in '
+            'der rechten darum, ob du wie jemand anderes klingst. Bewertet wird '
+            'nur das Erste. Wer am Akzent arbeitet und die Betonung flach '
+            'lässt, hat die Übungszeit in die Spalte gesteckt, die keine Punkte '
+            'bringt.',
 )
 
 # ── Spanish ────────────────────────────────────────────────────────────
@@ -455,6 +468,12 @@ T['es'] = dict(
                   'lleva el golpe en cada grupo. Léela en voz alta y comprueba '
                   'que los golpes caen donde está el significado.',
     actPlaceholder='The place I would recommend / is a small town…',
+
+    # The sort explanation; English from the data module.
+    sortWhy='La columna izquierda trata de si quien escucha puede seguirte; la '
+            'derecha, de si suenas como otra persona. Solo lo primero puntúa. '
+            'Quien trabaja su acento y deja plana la acentuación ha gastado la '
+            'práctica en la columna que no da puntos.',
 )
 
 

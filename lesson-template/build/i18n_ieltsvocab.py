@@ -181,6 +181,12 @@ T['en'] = dict(
     actPlaceholder='Whether entry to museums should cost anything…',
 )
 
+# The sort explanation sits in the data module, which keeps the only copy
+# of the English. It was a plain string there until 2026-09-23, so German and
+# Spanish learners read it in English.
+from ieltsvocab_data import SORT_WHY
+T['en']['sortWhy'] = SORT_WHY
+
 # ── German ─────────────────────────────────────────────────────────────
 T['de'] = dict(
     coverTitle='Lexical <em>Resource</em>',
@@ -328,6 +334,15 @@ T['de'] = dict(
                   'du als eigenen Wortschatz zählen würdest, und sag, wie '
                   'viele es sind.',
     actPlaceholder='Whether entry to museums should cost anything…',
+
+    # The sort explanation; English from the data module.
+    sortWhy='Alles links dreht sich darum, Sprache zu <strong>benutzen</strong>; '
+            'alles rechts darum, sie <strong>vorzuführen</strong>. Die '
+            'Bewertungskriterien fragen, ob du sagen kannst, was du meinst, '
+            'präzise und flexibel &mdash; ein schlichtes Wort, das trifft, '
+            'schlägt also ein seltenes, das danebengeht, und eine ganz '
+            'gelernte Wendung schlägt ein einzeln gelerntes Wort. In die '
+            'rechte Spalte fließt die meiste Lernzeit.',
 )
 
 # ── Spanish ────────────────────────────────────────────────────────────
@@ -477,6 +492,15 @@ T['es'] = dict(
                   'la segunda cada frase que contarías como vocabulario tuyo y '
                   'di cuántas hay.',
     actPlaceholder='Whether entry to museums should cost anything…',
+
+    # The sort explanation; English from the data module.
+    sortWhy='Todo lo de la izquierda trata de <strong>usar</strong> la lengua; '
+            'todo lo de la derecha, de <strong>exhibirla</strong>. Los '
+            'descriptores preguntan si sabes decir lo que quieres decir, con '
+            'precisión y flexibilidad: así que una palabra sencilla que acierta '
+            'gana a una rara que falla, y una expresión aprendida entera gana a '
+            'una palabra aprendida suelta. La columna de la derecha es donde se '
+            'va la mayor parte del tiempo de repaso.',
 )
 
 

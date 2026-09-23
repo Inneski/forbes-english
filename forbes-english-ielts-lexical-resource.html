@@ -104,6 +104,25 @@
   text-decoration: underline; text-underline-offset: 3px;
 }
 .audio-replay:hover { color: var(--text); }
+/* The same recording, docked in the deck bar on the question slides that
+   follow a data-carry audio slide, so it can be started after reading and
+   keeps its place while the learner answers. */
+.audio-dock {
+  display: flex; align-items: center; gap: 10px; flex: 0 1 auto; min-width: 0;
+  font-family: var(--font-mono); font-size: 12px; color: var(--text);
+}
+.audio-dock[hidden] { display: none; }
+.dock-play {
+  flex: 0 0 auto; width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid var(--accent); background: var(--scrim); color: var(--accent-bright);
+  cursor: pointer; font-size: 13px; line-height: 1; display: grid; place-items: center;
+}
+.dock-play:disabled { cursor: default; border-color: var(--border); color: var(--text-dim); }
+.dock-track { width: 120px; height: 4px; border-radius: 2px; background: var(--inset2); overflow: hidden; }
+.dock-fill { height: 100%; width: 0; background: var(--accent); transition: width .2s linear; }
+.dock-time, .dock-state { white-space: nowrap; }
+.dock-state { color: var(--text-dim); }
+.dock-state.done { color: var(--accent-bright); }
 
 /* ── Fixed tokens: identical in every lesson. Do not edit. ── */
 :root {
@@ -1684,6 +1703,39 @@ html[data-style="editorial"] .match-item,
 html[data-style="editorial"] .sort-item {
   background: var(--surface); border: 2px solid var(--border);
 }
+
+/* ── answered states, restated at the editorial specificity ──────────
+   The base rules above are `html[data-style="editorial"] .opt`, which is
+   (0,2,1). The default answered states are `.opt.wrong` / `.opt.correct`,
+   which are (0,2,0). So the base rule WON, and its `background: var(--surface)`
+   plus `border: 2px solid …` repainted every answered option back to neutral.
+
+   The engine was never broken: measured on the Watts deck, a clicked wrong
+   option carried `class="opt wrong"` and the feedback read "Not quite …",
+   while the computed colours of the wrong, the correct and an untouched
+   option were all identical — rgb(255,255,255) on rgb(190,208,203). A
+   learner got no red, no green, and no sight of the right answer.
+
+   Same trap for .match-item and .sort-item, whose base rule uses the `border`
+   shorthand and so also outranks their own .picked/.done/.miss border-colors.
+   Restating the states here is the whole fix; nothing in the engine changes. */
+html[data-style="editorial"] .opt.correct {
+  border-color: var(--ok);
+  background: color-mix(in srgb, var(--ok) 20%, var(--surface));
+}
+html[data-style="editorial"] .opt.wrong {
+  border-color: var(--no);
+  background: color-mix(in srgb, var(--no) 18%, var(--surface));
+}
+html[data-style="editorial"] .match-item.picked,
+html[data-style="editorial"] .sort-item.picked {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 22%, var(--surface));
+}
+html[data-style="editorial"] .match-item.done,
+html[data-style="editorial"] .sort-item.placed { border-color: var(--ok); }
+html[data-style="editorial"] .match-item.miss,
+html[data-style="editorial"] .sort-item.miss { border-color: var(--no); }
 /* The rule is a thing a builder PLACES, not something every heading grows.
    The source deck has it under the cover title and nowhere else; putting it
    on all thirty-two slides was mine and it was wrong. Emit
@@ -2048,7 +2100,7 @@ html[data-style="editorial"] .stamp {
           <span class="sort-item" data-bin="1">Swapping in a thesaurus word you have not used</span>
           <span class="sort-item" data-bin="1">Repeating the question wording word for word</span>
         </div>
-        <p class="feedback" data-explain="Everything on the left is about <strong>using</strong> language; everything on the right is about <strong>displaying</strong> it. The descriptors ask whether you can say what you mean, precisely and flexibly &mdash; so a plain word that lands beats a rare one that misses, and a phrase learnt whole beats a word learnt alone. The right-hand column is where most of the revision time goes."></p>
+        <p class="feedback" data-explain="sortWhy"></p>
       </div>
     </section>
 
@@ -2210,6 +2262,7 @@ const UI_I18N = {
     sortEyebrow: "Activity 4 · Where the revision time should go",
     sortHint: "Drag each one into a column &mdash; or click an item, then the column you want it in.",
     sortTitle: "Sort the six habits",
+    sortWhy: "Everything on the left is about <strong>using</strong> language; everything on the right is about <strong>displaying</strong> it. The descriptors ask whether you can say what you mean, precisely and flexibly &mdash; so a plain word that lands beats a rare one that misses, and a phrase learnt whole beats a word learnt alone. The right-hand column is where most of the revision time goes.",
     t1Eyebrow: "Before you start",
     t1Title: "It does not reward rare words. It never has.",
     t1ab: "A range of vocabulary used with <strong>precision</strong> and <strong>flexibility</strong>, and <em>less common</em> words where they fit. Errors in word choice and collocation are named at every band.",
@@ -2309,6 +2362,7 @@ const UI_I18N = {
     sortEyebrow: "Aktivität 4 · Wohin die Lernzeit gehört",
     sortHint: "Zieh jede in eine Spalte &mdash; oder klicke ein Element an und dann die Spalte, in die es soll.",
     sortTitle: "Sortiere die sechs Gewohnheiten",
+    sortWhy: "Alles links dreht sich darum, Sprache zu <strong>benutzen</strong>; alles rechts darum, sie <strong>vorzuführen</strong>. Die Bewertungskriterien fragen, ob du sagen kannst, was du meinst, präzise und flexibel &mdash; ein schlichtes Wort, das trifft, schlägt also ein seltenes, das danebengeht, und eine ganz gelernte Wendung schlägt ein einzeln gelerntes Wort. In die rechte Spalte fließt die meiste Lernzeit.",
     t1Eyebrow: "Bevor du beginnst",
     t1Title: "Seltene Wörter werden nicht belohnt. Nie gewesen.",
     t1ab: "Ein breiter Wortschatz, verwendet mit <strong>Präzision</strong> und <strong>Flexibilität</strong>, und <em>weniger gebräuchliche</em> Wörter dort, wo sie passen. Fehler in Wortwahl und Kollokation werden in jedem Band ausdrücklich genannt.",
@@ -2408,6 +2462,7 @@ const UI_I18N = {
     sortEyebrow: "Actividad 4 · Dónde debe ir el tiempo de estudio",
     sortHint: "Arrastra cada una a una columna &mdash; o haz clic en un elemento y luego en la columna que quieras.",
     sortTitle: "Clasifica las seis costumbres",
+    sortWhy: "Todo lo de la izquierda trata de <strong>usar</strong> la lengua; todo lo de la derecha, de <strong>exhibirla</strong>. Los descriptores preguntan si sabes decir lo que quieres decir, con precisión y flexibilidad: así que una palabra sencilla que acierta gana a una rara que falla, y una expresión aprendida entera gana a una palabra aprendida suelta. La columna de la derecha es donde se va la mayor parte del tiempo de repaso.",
     t1Eyebrow: "Antes de empezar",
     t1Title: "No premia las palabras raras. Nunca lo ha hecho.",
     t1ab: "Un vocabulario amplio, usado con <strong>precisión</strong> y <strong>flexibilidad</strong>, y palabras <em>menos frecuentes</em> donde encajan. Los errores de elección de palabra y de colocación aparecen con nombre en todas las bandas.",
@@ -2502,6 +2557,9 @@ const countIn = s => s.dataset.type === 'gap'   ? s.querySelectorAll('.gap').len
                    : 1;
 const maxScore = scored.reduce((n, s) => n + Math.max(1, countIn(s)), 0);
 let idx = 0, score = 0;
+// Called with the new index after every slide change, for behaviour that
+// belongs to a range of slides rather than to one (the docked recording).
+const slideHooks = [];
 const answered = new WeakSet();
 
 /* ── Branch mode ────────────────────────────────────────────────────────
@@ -2653,6 +2711,7 @@ function show(n) {
   if (slides[idx].dataset.type === 'results') renderResults();
   markRail(slides[idx]);
   if (slides[idx]._enter) slides[idx]._enter();
+  slideHooks.forEach(f => f(idx));
   const gap = slides[idx].querySelector('.gap');
   if (gap && !answered.has(slides[idx])) setTimeout(() => gap.focus(), 60);
 }
@@ -2949,11 +3008,19 @@ slides.filter(s => s.dataset.type === 'match').forEach(slide => {
    It behaves like the test, deliberately:
      · one play — the button locks once it has been pressed
      · no scrubbing — the bar reports progress, it does not accept clicks
-     · the slide's [data-action="next"] Continue button stays disabled until
-       the recording ends, so nobody reaches the questions early
    A replay control appears only after it has finished, and it says in words
    that the real test does not offer one. A classroom needs to replay; a
-   learner practising alone should know that is not the exam. */
+   learner practising alone should know that is not the exam.
+
+   With data-carry on the box (every deck.audio() slide since 2026-09-23) the
+   recording behaves like the real paper, where you read first and answer as
+   you listen: Continue is open, leaving the slide does not stop it, and the
+   question slides after it — up to the next audio, results or activation
+   slide — carry a small player in the deck bar that shows the time and can
+   start it. Leaving that range pauses it; coming back resumes it.
+
+   Without data-carry the old contract holds: Continue stays disabled until
+   the recording ends, and leaving the slide stops it. */
 slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
   const box = slide.querySelector('.audio');
   if (!box || !box.dataset.src) return;
@@ -2989,8 +3056,39 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
   row.append(btn, meta); wrap.append(row, state);
   box.replaceChildren(wrap);
 
+  const carry = 'carry' in box.dataset;
   const cont = slide.querySelector('[data-action="next"]');
-  if (cont) cont.disabled = true;
+  if (cont && !carry) cont.disabled = true;
+
+  /* The docked copy: built for carry slides only, and put in the deck bar
+     where the ledger sits, so it never takes room from a slide. */
+  let dock = null, dockBtn = null, dockFill = null, dockTime = null, dockState = null;
+  if (carry) {
+    const at = slides.indexOf(slide);
+    let end = at + 1;
+    while (end < slides.length
+           && !['audio', 'results', 'activate'].includes(slides[end].dataset.type)) end++;
+    dock = document.createElement('div'); dock.className = 'audio-dock'; dock.hidden = true;
+    dockBtn = document.createElement('button');
+    dockBtn.className = 'dock-play'; dockBtn.type = 'button'; dockBtn.textContent = '▶';
+    dockBtn.dataset.i18nAria = 'audioPlay'; dockBtn.setAttribute('aria-label', t('audioPlay'));
+    const dockTrack = document.createElement('div'); dockTrack.className = 'dock-track';
+    dockFill = document.createElement('div'); dockFill.className = 'dock-fill';
+    dockTrack.append(dockFill);
+    dockTime = document.createElement('span'); dockTime.className = 'dock-time'; dockTime.textContent = '0:00';
+    dockState = document.createElement('span'); dockState.className = 'dock-state';
+    dock.append(dockBtn, dockTrack, dockTime, dockState);
+    const bar = document.querySelector('.deck-bar');
+    bar.insertBefore(dock, bar.querySelector('[data-action="prev"]'));
+    let autoPaused = false;
+    slideHooks.push(i => {
+      const inRange = i > at && i < end;
+      dock.hidden = !inRange;
+      if (i === at || inRange) {
+        if (autoPaused) { autoPaused = false; audio.play().catch(() => {}); }
+      } else if (!audio.paused) { autoPaused = true; audio.pause(); }
+    });
+  }
 
   const mmss = n => Number.isFinite(n)
     ? Math.floor(n / 60) + ':' + String(Math.floor(n % 60)).padStart(2, '0') : '';
@@ -3001,11 +3099,16 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
     fill.style.width = (audio.currentTime / audio.duration * 100) + '%';
     now.textContent = mmss(audio.currentTime);
     left.textContent = mmss(audio.duration - audio.currentTime);
+    if (dock) {
+      dockFill.style.width = fill.style.width;
+      dockTime.textContent = mmss(audio.currentTime) + ' / ' + mmss(audio.duration);
+    }
   });
   audio.addEventListener('error', () => {
     state.dataset.i18n = 'audioMissing';
     state.textContent = t('audioMissing');
     btn.disabled = true;
+    if (dockBtn) dockBtn.disabled = true;
     if (cont) cont.disabled = false;   // never trap a learner behind a broken file
   });
   audio.addEventListener('ended', () => {
@@ -3015,6 +3118,11 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
     state.textContent = t('audioDone');
     state.classList.add('done');
     if (cont) cont.disabled = false;
+    if (dock) {
+      dockFill.style.width = '100%';
+      dockState.textContent = '✓';
+      dockState.classList.add('done');
+    }
     const again = document.createElement('button');
     again.className = 'audio-replay'; again.type = 'button';
     again.dataset.i18n = 'audioReplay';
@@ -3023,13 +3131,17 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
       audio.currentTime = 0; audio.play();
       state.dataset.i18n = 'audioPlaying';
       state.textContent = t('audioPlaying'); state.classList.remove('done');
+      if (dock) { dockState.textContent = ''; dockState.classList.remove('done'); }
       again.remove();
     });
     wrap.append(again);
   });
 
-  btn.addEventListener('click', () => {
+  const start = () => {
     btn.disabled = true;
+    // The running time says it is playing; the deck bar has no room for
+    // the sentence the main player shows.
+    if (dockBtn) dockBtn.disabled = true;
     state.dataset.i18n = 'audioPlaying';
     state.textContent = t('audioPlaying');
     audio.play().catch(() => {
@@ -3038,11 +3150,14 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
     state.textContent = t('audioMissing');
       if (cont) cont.disabled = false;
     });
-  });
+  };
+  btn.addEventListener('click', start);
+  if (dockBtn) dockBtn.addEventListener('click', start);
 
-  // Leaving the slide stops the recording rather than letting it run on
-  // behind the questions.
-  slide._leave = () => { if (!audio.paused) audio.pause(); };
+  // Without data-carry, leaving the slide stops the recording rather than
+  // letting it run on behind the questions. With it, the range hook above
+  // decides.
+  if (!carry) slide._leave = () => { if (!audio.paused) audio.pause(); };
 });
 
 /* Sentence building. Author as

@@ -177,6 +177,12 @@ T['en'] = dict(
     actPlaceholder='On the whole, people…',
 )
 
+# The ordering explanation sits in the data module, which keeps the only copy
+# of the English. It was a plain string there until 2026-09-23, so German and
+# Spanish learners read it in English.
+from ieltsp3_data import ORDER_WHY
+T['en']['orderWhy'] = ORDER_WHY
+
 # ── German ─────────────────────────────────────────────────────────────
 T['de'] = dict(
     coverTitle='IELTS Speaking <em>Teil 3</em>',
@@ -317,6 +323,15 @@ T['de'] = dict(
                   'Beispiel und das Zugeständnis, das den Widerspruch '
                   'beantwortet, bevor er kommt.',
     actPlaceholder='On the whole, people…',
+
+    # The ordering explanation; English from the data module.
+    orderWhy='Position, Begründung, Beispiel, Zugeständnis. Das Beispiel kommt '
+             'an dritter Stelle, weil es eine Behauptung veranschaulicht, die '
+             'schon aufgestellt ist &mdash; beginnst du damit, hört der Prüfer '
+             'eine Anekdote statt eines Arguments. Das Zugeständnis kommt '
+             'zuletzt und endet wieder bei deiner Position: Du hast die Grenze '
+             'schon selbst benannt, also kann dich ein Einwand nicht mehr '
+             'erwischen.',
 )
 
 # ── Spanish ────────────────────────────────────────────────────────────
@@ -460,6 +475,13 @@ T['es'] = dict(
                   'postura, razón, un ejemplo y la concesión que responde a la '
                   'objeción antes de que llegue.',
     actPlaceholder='On the whole, people…',
+
+    # The ordering explanation; English from the data module.
+    orderWhy='Postura, razón, ejemplo, concesión. El ejemplo va tercero porque '
+             'ilustra una afirmación que ya se ha hecho: si empiezas por él, el '
+             'examinador oye una anécdota en lugar de un argumento. La '
+             'concesión va al final y vuelve a tu postura: el límite ya lo has '
+             'nombrado tú, así que una objeción ya no tiene por dónde pillarte.',
 )
 
 
