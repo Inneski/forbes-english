@@ -1689,6 +1689,39 @@ html[data-style="editorial"] .match-item,
 html[data-style="editorial"] .sort-item {
   background: var(--surface); border: 2px solid var(--border);
 }
+
+/* ── answered states, restated at the editorial specificity ──────────
+   The base rules above are `html[data-style="editorial"] .opt`, which is
+   (0,2,1). The default answered states are `.opt.wrong` / `.opt.correct`,
+   which are (0,2,0). So the base rule WON, and its `background: var(--surface)`
+   plus `border: 2px solid …` repainted every answered option back to neutral.
+
+   The engine was never broken: measured on the Watts deck, a clicked wrong
+   option carried `class="opt wrong"` and the feedback read "Not quite …",
+   while the computed colours of the wrong, the correct and an untouched
+   option were all identical — rgb(255,255,255) on rgb(190,208,203). A
+   learner got no red, no green, and no sight of the right answer.
+
+   Same trap for .match-item and .sort-item, whose base rule uses the `border`
+   shorthand and so also outranks their own .picked/.done/.miss border-colors.
+   Restating the states here is the whole fix; nothing in the engine changes. */
+html[data-style="editorial"] .opt.correct {
+  border-color: var(--ok);
+  background: color-mix(in srgb, var(--ok) 20%, var(--surface));
+}
+html[data-style="editorial"] .opt.wrong {
+  border-color: var(--no);
+  background: color-mix(in srgb, var(--no) 18%, var(--surface));
+}
+html[data-style="editorial"] .match-item.picked,
+html[data-style="editorial"] .sort-item.picked {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 22%, var(--surface));
+}
+html[data-style="editorial"] .match-item.done,
+html[data-style="editorial"] .sort-item.placed { border-color: var(--ok); }
+html[data-style="editorial"] .match-item.miss,
+html[data-style="editorial"] .sort-item.miss { border-color: var(--no); }
 /* The rule is a thing a builder PLACES, not something every heading grows.
    The source deck has it under the cover title and nowhere else; putting it
    on all thirty-two slides was mine and it was wrong. Emit

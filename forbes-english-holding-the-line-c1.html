@@ -97,6 +97,25 @@
   text-decoration: underline; text-underline-offset: 3px;
 }
 .audio-replay:hover { color: var(--text); }
+/* The same recording, docked in the deck bar on the question slides that
+   follow a data-carry audio slide, so it can be started after reading and
+   keeps its place while the learner answers. */
+.audio-dock {
+  display: flex; align-items: center; gap: 10px; flex: 0 1 auto; min-width: 0;
+  font-family: var(--font-mono); font-size: 12px; color: var(--text);
+}
+.audio-dock[hidden] { display: none; }
+.dock-play {
+  flex: 0 0 auto; width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid var(--accent); background: var(--scrim); color: var(--accent-bright);
+  cursor: pointer; font-size: 13px; line-height: 1; display: grid; place-items: center;
+}
+.dock-play:disabled { cursor: default; border-color: var(--border); color: var(--text-dim); }
+.dock-track { width: 120px; height: 4px; border-radius: 2px; background: var(--inset2); overflow: hidden; }
+.dock-fill { height: 100%; width: 0; background: var(--accent); transition: width .2s linear; }
+.dock-time, .dock-state { white-space: nowrap; }
+.dock-state { color: var(--text-dim); }
+.dock-state.done { color: var(--accent-bright); }
 
 /* ── Fixed tokens: identical in every lesson. Do not edit. ── */
 :root {
@@ -1263,7 +1282,15 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
    picture made it obvious. Anything that paints text straight onto the stage
    belongs in that selector list. */
 .sort-bin-label { width: fit-content; margin-inline: auto; }
-.q-stem, .q-ctx { width: fit-content; max-width: 100%; }
+.q-stem, .q-ctx, .feedback, .gap-row { width: fit-content; max-width: 100%; }
+/* .feedback and .gap-row joined on 2026-09-23. The feedback plate was the one
+   on a question slide the 09-12 sweep never saw, because it is invisible until
+   a learner answers: a one-line "Correct." then painted a bar edge to edge
+   under shrink-wrapped options. .gap-row is the card deck.gap() puts
+   round each gap sentence, and a nine-word sentence was sitting in a card the
+   full width of the canvas. Innes, on Grammar Jail: "shorten the long black
+   text boxes". A row whose explanation is longer than its sentence widens
+   when answered; that is the card making room, not a layout fault. */
 /* max-width is 100%, NOT a shorter em cap. A 34em cap was tried first and it
    re-wrapped long stems onto an extra line, which pushed the body past the
    canvas on 17 decks — measured by running check-lesson.js over every deck
@@ -1293,6 +1320,52 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
 .slide[data-type="results"] #scoreMsg  { margin-top: 34px !important; max-width: 34ch; }
 .slide[data-type="results"] #scoreMsg:empty { display: none; }
 .slide[data-type="results"] .slide-body > .prose.dim { margin-top: 34px !important; }
+
+/* ── THE MISSES, KEPT AND SHOWN AT THE END ────────────────────────────
+   A score out of 28 says how the learner did and nothing about what to do
+   next, and the feedback that would have said it scrolled past twenty
+   slides ago. The results slide now prints every item answered wrongly,
+   as the sentence it should have been.
+
+   The list scrolls inside a fixed height instead of growing the slide.
+   check-lesson.js measures every slide in its RESTING state, and at rest
+   this list is empty — so a slide that grew with each wrong answer would
+   pass LAYOUT and still run off the canvas for the learner who needed it
+   most. That is the ACTIVATION blind spot exactly; capping the box is what
+   makes the measurement honest, and REVIEW in check-lesson.js answers the
+   whole paper wrongly to prove it. */
+.slide[data-type="results"] .review {
+  width: min(880px, 100%); margin-top: 30px; text-align: left;
+}
+.slide[data-type="results"] .review[hidden] { display: none; }
+#reviewHead { margin-bottom: 10px; }
+/* Same plate recipe as .card, blur included: without the backdrop-filter the
+   box washes out over a busy hero and the artwork is read through the text.
+   Not .card itself, because check-lesson.js measures every .card for overflow
+   and this one is meant to scroll. */
+.review-list {
+  list-style: none; margin: 0; padding: 12px 18px;
+  max-height: 268px; overflow-y: auto;
+  /* Denser than .card on purpose. A teach card is three lines at 20px and
+     can afford to let the hero through; this is up to 28 lines at 17px, and
+     at --plate 0.68 the figure in the artwork was legible THROUGH the
+     sentences. Mixed from --surface rather than written as an rgba, per the
+     standing rule against hardcoded black and white. */
+  background: color-mix(in srgb, var(--surface) 93%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+  border-radius: var(--r);
+  backdrop-filter: blur(3px);
+}
+.review-list li { font-size: 17px; line-height: 1.45; color: var(--text); }
+.review-list li + li {
+  margin-top: 9px; padding-top: 9px; border-top: 1px solid var(--inset);
+}
+.review-list b { color: var(--accent-bright); font-weight: 700; }
+/* With a list under it the number is no longer the point of the slide. */
+.slide[data-type="results"].has-review .score-big { font-size: 54px; }
+.slide[data-type="results"].has-review #scoreMsg {
+  margin-top: 20px !important; font-size: 18px;
+}
 
 /* A transparent background is a hole in the plate. .btn was
    `background: transparent` and .bank-chip a 16% tint of --accent into
@@ -1623,6 +1696,39 @@ html[data-style="editorial"] .match-item,
 html[data-style="editorial"] .sort-item {
   background: var(--surface); border: 2px solid var(--border);
 }
+
+/* ── answered states, restated at the editorial specificity ──────────
+   The base rules above are `html[data-style="editorial"] .opt`, which is
+   (0,2,1). The default answered states are `.opt.wrong` / `.opt.correct`,
+   which are (0,2,0). So the base rule WON, and its `background: var(--surface)`
+   plus `border: 2px solid …` repainted every answered option back to neutral.
+
+   The engine was never broken: measured on the Watts deck, a clicked wrong
+   option carried `class="opt wrong"` and the feedback read "Not quite …",
+   while the computed colours of the wrong, the correct and an untouched
+   option were all identical — rgb(255,255,255) on rgb(190,208,203). A
+   learner got no red, no green, and no sight of the right answer.
+
+   Same trap for .match-item and .sort-item, whose base rule uses the `border`
+   shorthand and so also outranks their own .picked/.done/.miss border-colors.
+   Restating the states here is the whole fix; nothing in the engine changes. */
+html[data-style="editorial"] .opt.correct {
+  border-color: var(--ok);
+  background: color-mix(in srgb, var(--ok) 20%, var(--surface));
+}
+html[data-style="editorial"] .opt.wrong {
+  border-color: var(--no);
+  background: color-mix(in srgb, var(--no) 18%, var(--surface));
+}
+html[data-style="editorial"] .match-item.picked,
+html[data-style="editorial"] .sort-item.picked {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 22%, var(--surface));
+}
+html[data-style="editorial"] .match-item.done,
+html[data-style="editorial"] .sort-item.placed { border-color: var(--ok); }
+html[data-style="editorial"] .match-item.miss,
+html[data-style="editorial"] .sort-item.miss { border-color: var(--no); }
 /* The rule is a thing a builder PLACES, not something every heading grows.
    The source deck has it under the cover title and nowhere else; putting it
    on all thirty-two slides was mine and it was wrong. Emit
@@ -2101,6 +2207,10 @@ html[data-style="editorial"] .stamp {
       <div class="slide-body" style="align-items:center;text-align:center">
         <div class="score-big"><span id="scoreVal">0</span><span class="dim" style="font-size:34px">/<span id="scoreMax">0</span></span></div>
         <p class="prose" style="margin-top:18px" id="scoreMsg"></p>
+        <div class="review" id="reviewBox" hidden>
+          <div class="eyebrow" id="reviewHead"></div>
+          <ul class="review-list" id="reviewList"></ul>
+        </div>
         <p class="prose dim" style="margin-top:14px" data-i18n="resNext">Now run the meeting &rarr;</p>
       </div>
     </section>
@@ -2710,6 +2820,9 @@ const countIn = s => s.dataset.type === 'gap'   ? s.querySelectorAll('.gap').len
                    : 1;
 const maxScore = scored.reduce((n, s) => n + Math.max(1, countIn(s)), 0);
 let idx = 0, score = 0;
+// Called with the new index after every slide change, for behaviour that
+// belongs to a range of slides rather than to one (the docked recording).
+const slideHooks = [];
 const answered = new WeakSet();
 
 /* ── Branch mode ────────────────────────────────────────────────────────
@@ -2861,9 +2974,88 @@ function show(n) {
   if (slides[idx].dataset.type === 'results') renderResults();
   markRail(slides[idx]);
   if (slides[idx]._enter) slides[idx]._enter();
+  slideHooks.forEach(f => f(idx));
   const gap = slides[idx].querySelector('.gap');
   if (gap && !answered.has(slides[idx])) setTimeout(() => gap.focus(), 60);
 }
+
+/* ── WHAT WENT WRONG, KEPT FOR THE END ────────────────────────────────
+   Innes, 2026-09-20: "need to save the ones a student gets wrong and show
+   them at the end." A learner who missed eight items had eight explanations
+   and has now paged past all of them; the score tells them nothing they can
+   act on.
+
+   Recorded in feedback() and fillFeedback() because those two are the only
+   places every scored shape agrees on: mc, order, lock and sort all resolve
+   through the first, gap rows through the second. award() would have caught
+   multiple choice and nothing else — it is the only type that calls it. */
+const misses = [];
+const missSeen = new Set();
+const escHtml = s => s.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+
+/* The line as it should have been, not the bare word. "of" teaches nothing;
+   "In terms of salary, this offer is far better" with the word marked puts
+   it back in the sentence it belongs to, which is where it has to be
+   recognised next time. */
+function correctedLine(stemEl, answer) {
+  if (!stemEl) return answer ? '<b>' + escHtml(answer) + '</b>' : '';
+  const c = stemEl.cloneNode(true);
+  c.querySelectorAll('.sup, .feedback').forEach(x => x.remove());
+  // A gap row carries its answers on the inputs; swap each one in place so a
+  // row with two blanks comes back with both filled.
+  c.querySelectorAll('input.gap').forEach(g => {
+    const b = document.createElement('b');
+    b.textContent = (g.dataset.answer || '').split('|')[0];
+    g.replaceWith(b);
+  });
+  let html = c.innerHTML.trim();
+  if (answer) {
+    const mark = '<b>' + escHtml(answer) + '</b>';
+    // A multiple-choice stem writes its blank as ______ in the text. A stem
+    // with no blank in it ("Which sentence is correct?") gets the answer
+    // appended instead of silently dropping it.
+    html = /_{3,}/.test(html) ? html.replace(/_{3,}/, mark)
+                              : html + ' &mdash; ' + mark;
+  }
+  return html;
+}
+
+/* The answer a multiple-choice slide wanted, without the A/B/C/D disc the
+   engine prepends to the option or the translation gloss under it. */
+function keyText(slide) {
+  const o = slide.querySelector('.opt[data-correct]');
+  if (!o) return '';
+  const c = o.cloneNode(true);
+  c.querySelectorAll('.opt-key, .sup').forEach(x => x.remove());
+  return c.textContent.trim();
+}
+
+function noteMiss(slide, html) {
+  if (!slide || !html) return;
+  // A lock is retried until it opens, so feedback(false) fires once per
+  // wrong code; the learner missed the item once.
+  const key = slides.indexOf(slide) + '|' + html;
+  if (missSeen.has(key)) return;
+  missSeen.add(key);
+  misses.push({ n: slides.indexOf(slide), html });
+}
+
+/* Deliberately NOT a data-i18n node and not a UI_I18N key. check-lesson.js
+   fails any deck whose data-i18n has no English entry, and assemble() builds
+   UI_I18N from the deck's own i18n module — so a new key on the shared
+   results slide would fail the checker on all 300-odd decks until every
+   module lifted it. The engine carries the label; a deck that defines
+   resReview overrides it. */
+const REVIEW_LABEL = {
+  en: 'Worth another look', de: 'Noch einmal ansehen', es: 'Para repasar',
+  fr: 'À revoir', it: 'Da rivedere', pt: 'Para rever',
+  ru: 'Стоит повторить',
+  ar: 'يستحق مراجعة',
+  zh: '值得再看一遍', ja: 'もう一度確認',
+  hr: 'Vrijedi ponoviti'
+};
+const reviewLabel = () =>
+  t('resReview') || REVIEW_LABEL[currentLang] || REVIEW_LABEL.en;
 
 function renderResults() {
   // Branch mode scores out of what this learner actually met. Counting every
@@ -2878,6 +3070,26 @@ function renderResults() {
   document.getElementById('scoreMsg').textContent =
     pct === 1 ? t('resPerfect') : pct >= .75 ? t('resStrong')
     : pct >= .5 ? t('resMid') : t('resLow');
+
+  // A deck generated before this engine change has no review box; it keeps
+  // the results slide it always had.
+  const box = document.getElementById('reviewBox');
+  const list = document.getElementById('reviewList');
+  if (!box || !list) return;
+  box.hidden = !misses.length;
+  slides[idx].classList.toggle('has-review', misses.length > 0);
+  if (!misses.length) { list.replaceChildren(); return; }
+  // The count, because the box scrolls and six of twenty-eight on screen
+  // with no number looks like all of them.
+  document.getElementById('reviewHead').textContent =
+    reviewLabel() + ' · ' + misses.length;
+  // Deck order, not the order they were answered in: a learner paging back
+  // and forth should still read them in the order the lesson taught them.
+  list.replaceChildren(...[...misses].sort((a, b) => a.n - b.n).map(m => {
+    const li = document.createElement('li');
+    li.innerHTML = m.html;
+    return li;
+  }));
 }
 
 function updateScoreChip() {
@@ -2906,6 +3118,12 @@ function feedback(slide, ok, extra, ownExplain) {
   // every deck built from this template.
   el.innerHTML = (ok ? t('fbCorrect') : t('fbWrong') + (extra ? ` ${t('fbAnswer')} ${extra}` : '')) + why;
   el.className = 'feedback show ' + (ok ? 'ok' : 'no');
+  // `extra` is already the right answer wherever a caller has one (order
+  // passes the sentence, lock the code); multiple choice does not, and its
+  // key is on the option marked data-correct.
+  if (!ok) noteMiss(slide, correctedLine(
+    slide.querySelector('.q-stem') || slide.querySelector('.slide-title'),
+    extra || keyText(slide)));
 }
 
 /* A real shuffle.
@@ -3053,11 +3271,19 @@ slides.filter(s => s.dataset.type === 'match').forEach(slide => {
    It behaves like the test, deliberately:
      · one play — the button locks once it has been pressed
      · no scrubbing — the bar reports progress, it does not accept clicks
-     · the slide's [data-action="next"] Continue button stays disabled until
-       the recording ends, so nobody reaches the questions early
    A replay control appears only after it has finished, and it says in words
    that the real test does not offer one. A classroom needs to replay; a
-   learner practising alone should know that is not the exam. */
+   learner practising alone should know that is not the exam.
+
+   With data-carry on the box (every deck.audio() slide since 2026-09-23) the
+   recording behaves like the real paper, where you read first and answer as
+   you listen: Continue is open, leaving the slide does not stop it, and the
+   question slides after it — up to the next audio, results or activation
+   slide — carry a small player in the deck bar that shows the time and can
+   start it. Leaving that range pauses it; coming back resumes it.
+
+   Without data-carry the old contract holds: Continue stays disabled until
+   the recording ends, and leaving the slide stops it. */
 slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
   const box = slide.querySelector('.audio');
   if (!box || !box.dataset.src) return;
@@ -3093,8 +3319,39 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
   row.append(btn, meta); wrap.append(row, state);
   box.replaceChildren(wrap);
 
+  const carry = 'carry' in box.dataset;
   const cont = slide.querySelector('[data-action="next"]');
-  if (cont) cont.disabled = true;
+  if (cont && !carry) cont.disabled = true;
+
+  /* The docked copy: built for carry slides only, and put in the deck bar
+     where the ledger sits, so it never takes room from a slide. */
+  let dock = null, dockBtn = null, dockFill = null, dockTime = null, dockState = null;
+  if (carry) {
+    const at = slides.indexOf(slide);
+    let end = at + 1;
+    while (end < slides.length
+           && !['audio', 'results', 'activate'].includes(slides[end].dataset.type)) end++;
+    dock = document.createElement('div'); dock.className = 'audio-dock'; dock.hidden = true;
+    dockBtn = document.createElement('button');
+    dockBtn.className = 'dock-play'; dockBtn.type = 'button'; dockBtn.textContent = '▶';
+    dockBtn.dataset.i18nAria = 'audioPlay'; dockBtn.setAttribute('aria-label', t('audioPlay'));
+    const dockTrack = document.createElement('div'); dockTrack.className = 'dock-track';
+    dockFill = document.createElement('div'); dockFill.className = 'dock-fill';
+    dockTrack.append(dockFill);
+    dockTime = document.createElement('span'); dockTime.className = 'dock-time'; dockTime.textContent = '0:00';
+    dockState = document.createElement('span'); dockState.className = 'dock-state';
+    dock.append(dockBtn, dockTrack, dockTime, dockState);
+    const bar = document.querySelector('.deck-bar');
+    bar.insertBefore(dock, bar.querySelector('[data-action="prev"]'));
+    let autoPaused = false;
+    slideHooks.push(i => {
+      const inRange = i > at && i < end;
+      dock.hidden = !inRange;
+      if (i === at || inRange) {
+        if (autoPaused) { autoPaused = false; audio.play().catch(() => {}); }
+      } else if (!audio.paused) { autoPaused = true; audio.pause(); }
+    });
+  }
 
   const mmss = n => Number.isFinite(n)
     ? Math.floor(n / 60) + ':' + String(Math.floor(n % 60)).padStart(2, '0') : '';
@@ -3105,11 +3362,16 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
     fill.style.width = (audio.currentTime / audio.duration * 100) + '%';
     now.textContent = mmss(audio.currentTime);
     left.textContent = mmss(audio.duration - audio.currentTime);
+    if (dock) {
+      dockFill.style.width = fill.style.width;
+      dockTime.textContent = mmss(audio.currentTime) + ' / ' + mmss(audio.duration);
+    }
   });
   audio.addEventListener('error', () => {
     state.dataset.i18n = 'audioMissing';
     state.textContent = t('audioMissing');
     btn.disabled = true;
+    if (dockBtn) dockBtn.disabled = true;
     if (cont) cont.disabled = false;   // never trap a learner behind a broken file
   });
   audio.addEventListener('ended', () => {
@@ -3119,6 +3381,11 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
     state.textContent = t('audioDone');
     state.classList.add('done');
     if (cont) cont.disabled = false;
+    if (dock) {
+      dockFill.style.width = '100%';
+      dockState.textContent = '✓';
+      dockState.classList.add('done');
+    }
     const again = document.createElement('button');
     again.className = 'audio-replay'; again.type = 'button';
     again.dataset.i18n = 'audioReplay';
@@ -3127,13 +3394,17 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
       audio.currentTime = 0; audio.play();
       state.dataset.i18n = 'audioPlaying';
       state.textContent = t('audioPlaying'); state.classList.remove('done');
+      if (dock) { dockState.textContent = ''; dockState.classList.remove('done'); }
       again.remove();
     });
     wrap.append(again);
   });
 
-  btn.addEventListener('click', () => {
+  const start = () => {
     btn.disabled = true;
+    // The running time says it is playing; the deck bar has no room for
+    // the sentence the main player shows.
+    if (dockBtn) dockBtn.disabled = true;
     state.dataset.i18n = 'audioPlaying';
     state.textContent = t('audioPlaying');
     audio.play().catch(() => {
@@ -3142,11 +3413,14 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
     state.textContent = t('audioMissing');
       if (cont) cont.disabled = false;
     });
-  });
+  };
+  btn.addEventListener('click', start);
+  if (dockBtn) dockBtn.addEventListener('click', start);
 
-  // Leaving the slide stops the recording rather than letting it run on
-  // behind the questions.
-  slide._leave = () => { if (!audio.paused) audio.pause(); };
+  // Without data-carry, leaving the slide stops the recording rather than
+  // letting it run on behind the questions. With it, the range hook above
+  // decides.
+  if (!carry) slide._leave = () => { if (!audio.paused) audio.pause(); };
 });
 
 /* Sentence building. Author as
@@ -3569,6 +3843,16 @@ function fillFeedback(fb, missed, gaps) {
 function markGroup(gaps, fb) {
   const missed = gaps.filter(g => !markGap(g));
   if (fb) fillFeedback(fb, missed, gaps);
+  // Recorded per ROW rather than per slide: a gap slide is four questions
+  // wearing one heading, and "Complete the sentence" is not a thing anyone
+  // can revise from. A slide whose feedback is pooled has no rows to name,
+  // so it falls back to its own stem.
+  if (missed.length) {
+    const slide = gaps[0] && gaps[0].closest('.slide');
+    const rows = [...new Set(missed.map(g => g.closest('.gap-row')).filter(Boolean))];
+    if (rows.length) rows.forEach(r => noteMiss(slide, correctedLine(r.querySelector('.q-stem'), '')));
+    else if (slide) noteMiss(slide, correctedLine(slide.querySelector('.q-stem'), ''));
+  }
   return missed;
 }
 
@@ -3680,6 +3964,7 @@ document.addEventListener('click', e => {
     // Replay resets the ledger but keeps the learner in the page, so a class
     // can run the other route immediately.
     trail.length = 0; seenScored.clear(); score = 0;
+    misses.length = 0; missSeen.clear();
     slides.forEach(sl => { answered.delete(sl); });
     ledgerInit(); updateScoreChip();
     goNode(a.dataset.goto || START, false);
