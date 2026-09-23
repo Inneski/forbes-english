@@ -18,6 +18,7 @@
  *   REVIEW   the results slide still fits when every question has been missed
  *   I18N     at least one language besides English is complete, and every data-i18n
  *            attribute resolves to a real key
+ *   RESMSG   the results slide's message under the score resolves in every language
  *   HEAD     the page carries a real <title> and a generated SEO block —
  *            not the template's "Lesson Title" placeholder
  *   ART      every background and hero the page names exists on disk
@@ -66,7 +67,7 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
   await page.evaluate(() => document.fonts.ready.then(() => true));
 
   const r = await page.evaluate(() => {
-    const out = { layout: [], answers: [], short: [], explain: [], resolve: [], i18n: [], logo: null, scroll: null, bank: null, markup: null, sort: [] };
+    const out = { layout: [], answers: [], short: [], explain: [], resolve: [], i18n: [], resmsg: null, logo: null, scroll: null, bank: null, markup: null, sort: [] };
     const slides = [...document.querySelectorAll('.slide')];
 
     // ── PAINT: one slide on screen when the deck opens ──────────────
@@ -287,6 +288,33 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
       if (unresolved.length) out.i18n.push({ kind: 'data-i18n with no English key', list: [...new Set(unresolved)] });
     } else {
       out.i18n.push({ kind: 'no UI_I18N found', list: [] });
+    }
+
+    // ── RESMSG: the results slide says something under the score ────
+    // renderResults() writes #scoreMsg from t('resPerfect'|'resStrong'|
+    // 'resMid'|'resLow'). Those are read in script, not through data-i18n
+    // markup, so the I18N gate above never saw them — and deck.assemble()
+    // replaces the template's whole UI_I18N with the builder's own, so a
+    // module that never defined them shipped a results slide with the score
+    // and nothing under it. Sixteen files, found 2026-09-23. t() falls back
+    // to English, so a key is only missing if English lacks it too; that
+    // fallback is reproduced here rather than assumed.
+    // Only decks whose engine actually reads the keys are judged.
+    {
+      const code = [...document.scripts].map(x => x.textContent).join('\n');
+      if (document.getElementById('scoreMsg') && /t\(\s*'resPerfect'\s*\)/.test(code)
+          && typeof UI_I18N !== 'undefined') {
+        const keys = ['resPerfect', 'resStrong', 'resMid', 'resLow'];
+        const codes = (typeof LANGS !== 'undefined' ? LANGS.map(l => l.code) : Object.keys(UI_I18N))
+          .filter(c => c === 'en' || Object.keys(UI_I18N[c] || {}).length > 0);
+        const say = (c, k) => {
+          const v = (UI_I18N[c] && UI_I18N[c][k] != null) ? UI_I18N[c][k] : (UI_I18N.en || {})[k];
+          return typeof v === 'string' ? v.trim() : '';
+        };
+        const empty = [];
+        codes.forEach(c => keys.forEach(k => { if (!say(c, k)) empty.push(`${c}.${k}`); }));
+        if (empty.length) out.resmsg = empty;
+      }
     }
 
     // ── LOGO balance ────────────────────────────────────────────────
@@ -705,6 +733,14 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
   head('I18N');
   if (!r.i18n.length) ok(`${r.langs} complete language(s) offered; no partial ones; all data-i18n resolve`);
   else r.i18n.forEach(i => bad(`${i.kind}: ${i.list.slice(0, 8).join(', ')}${i.list.length > 8 ? ` +${i.list.length - 8} more` : ''}`));
+
+  head('RESMSG');
+  if (!r.resmsg) ok('the results slide has a message under the score in every language');
+  else {
+    bad(`${r.resmsg.length} results message(s) resolve to nothing — the score prints with no message under it`);
+    console.log(DIM('          ' + r.resmsg.slice(0, 12).join(', ') + (r.resmsg.length > 12 ? ` +${r.resmsg.length - 12} more` : '')));
+    console.log(DIM('          Rebuild: deck.fill_ledger() backfills them from chrome_i18n.CHROME.'));
+  }
 
   head('HEAD');
   {

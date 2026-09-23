@@ -58,7 +58,14 @@
    Continue button stays locked until the recording has finished. The
    replay control appears only afterwards and says plainly that the real
    test does not offer it. */
-.audio-player { display: flex; flex-direction: column; gap: 14px; }
+.audio-player {
+  display: flex; flex-direction: column; gap: 14px;
+  /* The player sits over the picture like the prose above it, so it takes the
+     same plate; the status lines were text-dim straight onto the art and
+     unreadable on a light plate (Innes, 2026-09-13, on all five Listening decks). */
+  background: var(--plate-box); border: 1px solid var(--border);
+  border-radius: 14px; padding: 18px 22px;
+}
 .audio-row { display: flex; align-items: center; gap: 16px; }
 .audio-play {
   flex: 0 0 auto; width: 62px; height: 62px; border-radius: 50%;
@@ -71,7 +78,7 @@
 .audio-meta { flex: 1 1 auto; min-width: 0; }
 .audio-label {
   font-family: var(--font-mono); font-size: 12px; letter-spacing: .12em;
-  text-transform: uppercase; color: var(--text-dim);
+  text-transform: uppercase; color: var(--text);
 }
 .audio-track {
   margin-top: 8px; height: 8px; border-radius: 4px; background: var(--surface2);
@@ -79,14 +86,14 @@
 }
 .audio-fill { height: 100%; width: 0; background: var(--accent); transition: width .2s linear; }
 .audio-time {
-  margin-top: 6px; font-family: var(--font-mono); font-size: 14px; color: var(--text-dim);
+  margin-top: 6px; font-family: var(--font-mono); font-size: 14px; color: var(--text);
   display: flex; justify-content: space-between;
 }
-.audio-state { font-family: var(--font-ui); font-size: 17px; color: var(--text-dim); }
+.audio-state { font-family: var(--font-ui); font-size: 17px; color: var(--text); }
 .audio-state.done { color: var(--accent-bright); }
 .audio-replay {
   margin-top: 2px; background: none; border: 0; padding: 0; cursor: pointer;
-  font-family: var(--font-ui); font-size: 14px; color: var(--text-dim);
+  font-family: var(--font-ui); font-size: 14px; color: var(--text);
   text-decoration: underline; text-underline-offset: 3px;
 }
 .audio-replay:hover { color: var(--text); }
@@ -134,6 +141,14 @@
   --plate-bg:   color-mix(in srgb, var(--surface)  calc(var(--plate, 0.68) * 100%), transparent);
   --plate-box:  color-mix(in srgb, var(--surface2) calc(var(--plate, 0.68) * 100%), transparent);
   --plate-card: color-mix(in srgb, var(--surface)  calc(var(--plate, 0.68) * 100%), transparent);
+  /* The sorting bin sat OUTSIDE this system on a hardcoded 78% until
+     2026-09-16, which meant a deck that raised --plate got solid chips inside
+     a see-through box — the opposite of what it asked for, and invisible
+     unless you looked at that one slide. It keeps its +10 over the plate, so
+     at the 0.68 default it still computes to the same 78% every shipped deck
+     already has, and it now moves when --plate moves. */
+  --plate-bin:  color-mix(in srgb, var(--surface)
+                  calc(min(calc(var(--plate, 0.68) + 0.10), 1) * 100%), transparent);
 
   /* Card entrance. The delay is the whole point: for that beat the slide
      shows nothing but the artwork. Raise --card-in-delay to linger longer on
@@ -243,6 +258,11 @@ html, body {
    ONE definition. Two pseudo-layers because opacity on a parent would
    also fade the wash sitting on top of it. */
 .bg-layer { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+/* Off unless data-style="editorial" turns it on. Declared here, in the base
+   stylesheet, rather than left to have no background in a default deck: an
+   element with no background still sits in the stage's flow, and "it happens
+   to be invisible" is not the same as "it is not there". */
+.editorial-art { display: none; }
 .bg-layer::before {
   content: '';
   position: absolute; inset: 0;
@@ -344,7 +364,17 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
   font-size: 38px; font-weight: 700; line-height: 1.15; color: var(--text);
   margin-top: 6px;
 }
+/* `safe center` is load-bearing, not a nicety. Plain `center` splits any
+   overflow EVENLY, so a body 32px too tall puts 16px of itself above its own
+   heading — the chips of an open activation panel printed straight through
+   the title on the live page, 2026-09-19. `safe` centres while it fits and
+   falls back to flex-start the moment it does not, so an overflow shows up
+   at the bottom where LAYOUT can see it instead of on top of the type.
+   Declared twice: an engine without `safe` keeps the old behaviour rather
+   than dropping the rule. Same bug class as the stage that aligned itself
+   off the right edge below 1280px — see CLAUDE.md. */
 .slide-body { flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; }
+.slide-body { justify-content: safe center; }
 
 /* ── PANEL: the picture gets a column, the text gets the rest ──
    §5 washes the hero to 0.72 and plates the text on top of it, which is
@@ -691,6 +721,113 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
 }
 .act-cols { align-items: stretch; }
 .act-card { display: flex; flex-direction: column; padding: 20px 24px; }
+
+/* ── ACTIVATION: two glowing words, one panel at a time ──────────────
+   Innes, 2026-09-16: "pop up windows from one glowing word DISCUSSION and
+   WRITING. Never show both open at same time." The idiom is the Block Camp
+   RPG's — the text waits behind a glowing object and pops out of it — and
+   both tasks are still live and both still print. Only one is on screen.
+
+   The glow cannot be a white halo here. That is what an RPG uses, but those
+   are dark full-bleed scenes; on a LIGHT deck a white bloom over pale
+   artwork is invisible. It is built from --accent instead, which flips with
+   the theme and stays visible on paper and on ink alike. */
+.act-stage { position: relative; }
+.act-choose {
+  display: flex; justify-content: center; gap: 26px;
+  margin: 4px 0 14px;
+}
+.act-word {
+  position: relative; display: flex; align-items: center; gap: 12px;
+  font-family: var(--font-display); font-size: 30px; font-weight: 700;
+  letter-spacing: .01em; color: var(--accent-bright);
+  background: var(--plate-card);
+  border: 1.5px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  border-radius: 999px; padding: 12px 30px; cursor: pointer;
+  backdrop-filter: blur(3px);
+  transition: transform .18s ease, border-color .18s, box-shadow .18s;
+  animation: act-pulse 2.6s ease-in-out infinite;
+}
+.act-word-icon { font-size: 22px; line-height: 1; }
+.act-word:hover, .act-word:focus-visible {
+  outline: none; transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 26%, transparent),
+              0 6px 26px color-mix(in srgb, var(--accent) 34%, transparent);
+}
+/* The open word stops pulsing and reads as pressed: the glow is an
+   invitation, and an invitation you have already accepted is noise. */
+.act-word.is-open {
+  animation: none; transform: none;
+  color: var(--text); border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 18%, var(--surface2));
+  box-shadow: none;
+}
+@keyframes act-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 34%, transparent),
+                         0 0 14px color-mix(in srgb, var(--accent) 22%, transparent); }
+  50%      { box-shadow: 0 0 0 7px color-mix(in srgb, var(--accent) 0%, transparent),
+                         0 0 26px color-mix(in srgb, var(--accent) 40%, transparent); }
+}
+@media (prefers-reduced-motion: reduce) { .act-word { animation: none; } }
+
+.act-panel {
+  position: relative;
+  background: var(--plate-card);
+  border: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+  border-radius: var(--r);
+  backdrop-filter: blur(3px);
+  padding: 20px 26px;
+  display: flex; flex-direction: column;
+  /* The canvas is fixed at 720 and the head, chips, words and Start again
+     button are all above or below this: what is left is --act-panel-h. A
+     panel that outgrows it would scroll, which §6 forbids outright.
+     It is a custom property rather than a number in this rule because the
+     space left over is a property of the TYPE SCALE, and the editorial style
+     has a different one — a 54px title takes 32px that the default's 38px
+     did not. A second hardcoded constant is how the --bins-h bug happened
+     twice (CLAUDE.md); there is one home for this one. */
+  max-height: var(--act-panel-h, 300px); overflow: hidden;
+  animation: act-pop .22s cubic-bezier(.2, .9, .3, 1.25) both;
+}
+/* `display: flex` on .act-panel outranks the UA sheet's `[hidden] {display:none}`
+   — a class beats an attribute selector — so both panels rendered and the
+   slide overflowed the canvas by 114px. The `hidden` attribute is doing real
+   work here (it is also what the screen reader reads), so it is restated
+   rather than swapped for a class. */
+.act-panel[hidden] { display: none !important; }
+.act-panel[data-panel="speak"] { transform-origin: 30% -20px; }
+.act-panel[data-panel="write"] { transform-origin: 70% -20px; }
+@keyframes act-pop {
+  from { opacity: 0; transform: scale(.94) translateY(-8px); }
+  to   { opacity: 1; transform: none; }
+}
+.act-close {
+  position: absolute; top: 10px; right: 12px;
+  width: 30px; height: 30px; border-radius: 999px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 19px; line-height: 1; color: var(--text-dim);
+  background: var(--inset); border: 1px solid color-mix(in srgb, var(--border) 40%, transparent);
+  cursor: pointer; transition: color .15s, border-color .15s;
+}
+.act-close:hover { color: var(--accent-bright); border-color: var(--accent); }
+/* `auto` here was the quiet half of the same defect: the panel clipped at
+   --act-panel-h and the list scrolled INSIDE it, so the last speaking task
+   was simply not on the slide and nothing reported it. §6 says nothing
+   scrolls; `hidden` makes an over-long brief a visible clip that
+   check-lesson.js's ACTIVATION gate now measures and fails. */
+.act-panel .act-list { overflow: hidden; }
+
+/* The full-screen toggle. Square rather than the nav arrows' glyph, and the
+   icon inherits currentColor so it follows every palette. */
+.fs-btn svg {
+  width: 15px; height: 15px; display: block;
+  fill: none; stroke: currentColor; stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.fs-btn[aria-pressed="true"] { color: var(--accent-bright); border-color: var(--accent); }
+.act-restart { margin-top: 14px; text-align: center; }
+
 .act-kind {
   display: flex; align-items: center; gap: 9px;
   font-family: var(--font-mono); font-size: 11.5px;
@@ -707,8 +844,14 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
 .act-list li::before {
   content: '—'; position: absolute; left: 0; color: var(--accent);
 }
+/* min-height is a FLOOR, not a size: `flex: 1` already hands the textarea
+   every pixel the panel has spare. The floor was 118px, which is more than
+   the panel has left once the brief runs to three lines — and because the
+   panel clips, what fell off the bottom was the word count and the Copy
+   button rather than the box itself. 96px is four lines at this scale, and
+   it lets the textarea take the squeeze, which is the right thing to squeeze. */
 .act-input {
-  flex: 1; min-height: 118px; resize: none;
+  flex: 1; min-height: 96px; resize: none;
   font-family: var(--font-ui); font-size: 15px; line-height: 1.55;
   color: var(--text);
   background: var(--inset);
@@ -830,7 +973,7 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
 .sort-bin {
   border: 1.5px dashed color-mix(in srgb, var(--border) 60%, transparent);
   border-radius: var(--r);
-  background: color-mix(in srgb, var(--surface) 78%, transparent);
+  background: var(--plate-bin);
   backdrop-filter: blur(3px);
   padding: 10px 12px; min-height: 132px;
   display: flex; flex-direction: column; gap: 8px;
@@ -1064,6 +1207,18 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
   .feedback { opacity: 1 !important; }
   .act-input, .act-foot { display: none !important; }
   .act-print { display: block !important; }
+  /* On screen the activation shows one task at a time; on paper it shows
+     both. A printed handout has no clicks in it, and house style §10b is
+     explicit that the two tracks are not alternatives — a class runs one in
+     the room and sets the other as homework, so a PDF that carried only the
+     one that happened to be open would drop half the stage. The words and
+     the close buttons are chrome and go. */
+  .act-panel[hidden] { display: flex !important; }
+  .act-panel { max-height: none !important; overflow: visible !important;
+               animation: none !important; break-inside: avoid; }
+  .act-panel + .act-panel { margin-top: 12px; }
+  .act-choose, .act-close { display: none !important; }
+  .act-panel .act-list { overflow: visible !important; }
 }
 
 /* Text that sits on the canvas rather than inside a card needs a GROUND, not
@@ -1139,6 +1294,52 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
 .slide[data-type="results"] #scoreMsg:empty { display: none; }
 .slide[data-type="results"] .slide-body > .prose.dim { margin-top: 34px !important; }
 
+/* ── THE MISSES, KEPT AND SHOWN AT THE END ────────────────────────────
+   A score out of 28 says how the learner did and nothing about what to do
+   next, and the feedback that would have said it scrolled past twenty
+   slides ago. The results slide now prints every item answered wrongly,
+   as the sentence it should have been.
+
+   The list scrolls inside a fixed height instead of growing the slide.
+   check-lesson.js measures every slide in its RESTING state, and at rest
+   this list is empty — so a slide that grew with each wrong answer would
+   pass LAYOUT and still run off the canvas for the learner who needed it
+   most. That is the ACTIVATION blind spot exactly; capping the box is what
+   makes the measurement honest, and REVIEW in check-lesson.js answers the
+   whole paper wrongly to prove it. */
+.slide[data-type="results"] .review {
+  width: min(880px, 100%); margin-top: 30px; text-align: left;
+}
+.slide[data-type="results"] .review[hidden] { display: none; }
+#reviewHead { margin-bottom: 10px; }
+/* Same plate recipe as .card, blur included: without the backdrop-filter the
+   box washes out over a busy hero and the artwork is read through the text.
+   Not .card itself, because check-lesson.js measures every .card for overflow
+   and this one is meant to scroll. */
+.review-list {
+  list-style: none; margin: 0; padding: 12px 18px;
+  max-height: 268px; overflow-y: auto;
+  /* Denser than .card on purpose. A teach card is three lines at 20px and
+     can afford to let the hero through; this is up to 28 lines at 17px, and
+     at --plate 0.68 the figure in the artwork was legible THROUGH the
+     sentences. Mixed from --surface rather than written as an rgba, per the
+     standing rule against hardcoded black and white. */
+  background: color-mix(in srgb, var(--surface) 93%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+  border-radius: var(--r);
+  backdrop-filter: blur(3px);
+}
+.review-list li { font-size: 17px; line-height: 1.45; color: var(--text); }
+.review-list li + li {
+  margin-top: 9px; padding-top: 9px; border-top: 1px solid var(--inset);
+}
+.review-list b { color: var(--accent-bright); font-weight: 700; }
+/* With a list under it the number is no longer the point of the slide. */
+.slide[data-type="results"].has-review .score-big { font-size: 54px; }
+.slide[data-type="results"].has-review #scoreMsg {
+  margin-top: 20px !important; font-size: 18px;
+}
+
 /* A transparent background is a hole in the plate. .btn was
    `background: transparent` and .bank-chip a 16% tint of --accent into
    nothing, so on a light lesson their rust text — #701c00, which reads at
@@ -1203,6 +1404,289 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
     animation: none;
   }
 }
+
+/* ══ EDITORIAL STYLE ══════════════════════════════════════════════════
+   An OPT-IN second look, set with data-style="editorial" on <html> (a
+   builder passes style='editorial' to assemble()). Nothing already shipped
+   changes; a deck has this look only if it asks for it.
+
+   It exists because the default look and this one solve the same problem
+   from opposite ends. The default treats the artwork as ATMOSPHERE: the hero
+   is washed across every slide and the text is plated on top of it, which is
+   right when the picture is a mood and wrong when the picture is flat vector
+   art with large near-white areas — there, the plate has to be pushed toward
+   opaque until the artwork it was showing is gone anyway. This treats the
+   artwork as an OBJECT: a clean field, and the picture in a frame with an
+   edge, the way a magazine sets a photograph.
+
+   Three consequences, and they are the whole stylesheet below:
+     1. no wash, so no plates — text sits straight on the canvas and the
+        contrast is a property of two flat colours, not of a photograph;
+     2. the picture needs a shape of its own, because nothing else bounds it;
+     3. the type can be much bigger, because it no longer has to survive
+        being read over a picture.
+
+   This style is deliberately NOT theme-derived. See --editorial-* below. */
+html[data-style="editorial"] {
+  /* ── the fixed brand palette ──
+     House rule 4 says a palette is derived from the hero and never
+     hand-picked, and that rule is what keeps 216 lessons from drifting into
+     216 colour schemes. This style is the one exception, and it is an
+     exception in the safe direction: ONE set, authored once, measured once,
+     used by every deck that opts in. A derived palette varies per lesson and
+     so has to be re-measured per lesson; this one cannot vary, so it cannot
+     regress. extract-palette.py is not run for an editorial deck — the hero
+     still sets the cover and the framed pictures, it just no longer sets the
+     colours.
+
+     Measured against --surface (#ffffff), AA body text needs 4.5:1:
+       text        #123a3e   12.35:1
+       text-dim    #4a6265    6.51:1
+       accent      #1c5789    7.57:1
+       accent-brt  #16456b   10.01:1
+       contrast    #a33b12    6.58:1
+     Numbers are whatever tools/check-editorial-palette.py last printed — it
+     reads these very tokens, and also checks that deck.py's copy of them has
+     not drifted. Re-run it after touching any of these. */
+  --void          : #fff9ed;   /* the cream field, and it IS the page */
+  --surface       : #ffffff;   /* cards, and the reference for contrast */
+  --surface2      : #f3ede0;   /* recessed blocks, one step off the field */
+  --border        : #d8dfd8;
+  --text          : #123a3e;
+  --text-dim      : #4a6265;
+  --accent        : #1c5789;
+  --accent-bright : #16456b;
+  --accent-dim    : #4a8cc4;
+  --secondary     : #f8dcd1;
+  --contrast      : #a33b12;
+  --stamp         : #f9d46b;   /* editorial-only: the rotated badge */
+
+  /* A flat light field, not a washed photograph. The light theme's structural
+     flips still apply — assemble() sets data-theme="light" from --void's
+     luminance, and #fff9ed is far above the 0.2 threshold. */
+  --plate         : 0;         /* there is nothing to plate against */
+  --bg-opacity    : 1;
+  --wash-mid      : transparent;
+  --wash-edge     : transparent;
+}
+
+/* ── 1. the field is flat ── */
+html[data-style="editorial"] .stage { background: var(--void); }
+html[data-style="editorial"] .bg-layer::before,
+html[data-style="editorial"] .bg-layer::after { content: none; }
+
+/* No wash means no plate. Every selector in the plate rule is unset here
+   rather than the rule being made conditional, because the plate rule is
+   load-bearing for every other deck and must not grow a second mode. */
+html[data-style="editorial"] :where(.eyebrow, .slide-title, .q-stem, .q-ctx,
+  .order-hint, .slide-body > .prose, .cover-title, .cover-sub,
+  .act-target-label, .feedback.show, .score-big, .sort-bin-label) {
+  background: none;
+  box-shadow: none;
+}
+
+/* ── 2. the picture gets a frame ──
+   data-bg keeps its meaning — "the picture for this slide" — but renders as
+   a framed block at the right instead of a full-bleed wash. Same markup, so
+   an existing builder's bg= calls carry over unchanged.
+
+   :has() is what makes it conditional: a slide with no data-bg shows NO
+   picture and takes the full width, because on a flat field an untethered
+   photograph behind the text is exactly the thing this style removes. */
+html[data-style="editorial"] .editorial-art {
+  display: block;
+  position: absolute; z-index: 0; pointer-events: none;
+  right: 58px; top: 172px; width: 37%; height: 57%;
+  background: var(--hero) center / cover no-repeat;
+  border-radius: 22px;                     /* the source deck's default */
+  box-shadow: 0 10px 40px rgba(18, 58, 62, 0.14);
+}
+/* The arch is the exception, not the rule — the source deck used it on a
+   handful of slides for emphasis. data-art="arch" on the slide picks it. */
+html[data-style="editorial"] .stage:has(.slide.is-active[data-art="arch"]) .editorial-art {
+  border-radius: 190px 190px 18px 18px;
+}
+/* A slide carrying continuous prose gives the text more of the width and the
+   picture less, which is what the source did on its two reading pages. This
+   is a LAYOUT answer to running out of room, not a type answer: §6 says split
+   or re-plan, never shrink, and the passage is one the source fitted too. */
+html[data-style="editorial"] .stage:has(.slide.is-active[data-art-size="narrow"]) .editorial-art {
+  width: 30%;
+}
+/* ...and it can sit on the left instead, which the source alternated. */
+html[data-style="editorial"] .stage:has(.slide.is-active[data-art-side="left"]) .editorial-art {
+  right: auto; left: 58px;
+}
+html[data-style="editorial"] .stage:not(:has(.slide.is-active[data-bg])) .editorial-art,
+html[data-style="editorial"] .stage.on-cover .editorial-art { display: none; }
+
+/* The text yields the right-hand column to the picture, and only then. A
+   slide that wants all 1280px simply omits data-bg. */
+/* Only the BODY yields the column. The heading runs the full width above both,
+   which is how the source sets it — the picture begins under the title, not
+   beside it. */
+html[data-style="editorial"] .stage:has(.slide.is-active[data-bg]) .slide.is-active .slide-body {
+  max-width: 58%;
+}
+html[data-style="editorial"] .stage:has(.slide.is-active[data-art-side="left"]) .slide.is-active .slide-body {
+  margin-left: 42%; max-width: 58%;
+}
+/* After the two rules above, because it has to beat them and every one of
+   the three is the same specificity — source order is the only tiebreak. */
+html[data-style="editorial"] .stage:has(.slide.is-active[data-art-size="narrow"]) .slide.is-active .slide-body {
+  max-width: 65%;
+}
+
+/* ── 3. editorial type ──
+   Bigger and tighter than HOUSE-STYLE §6, which is the point of the style
+   and is why it is opt-in: §6's scale is what keeps text legible OVER a
+   picture, and here there is no picture under the text. The slide budget in
+   §6 still applies and is still enforced by check-lesson.js — bigger type
+   means LESS on a slide, not the same amount smaller. */
+html[data-style="editorial"] .cover-title {
+  font-size: 88px; line-height: 0.94; letter-spacing: -0.045em; font-weight: 900;
+}
+/* The INTERIOR heading is a heavy sans, not the display serif. The cover is
+   the only slide that gets the serif, which is exactly how the source deck
+   this style is modelled on set it: one serif moment on the cover, and
+   everything after it in the same sans as the body, very large and very
+   tight. Sizes are the source's own, scaled 1600->1280 (68px * 0.8). */
+html[data-style="editorial"] .slide-title {
+  font-family: var(--font-ui);
+  font-size: 54px; font-weight: 700; line-height: 1.02; letter-spacing: -0.044em;
+}
+/* Bigger type costs vertical space and the slide budget does not grow, so
+   the style takes it back from its OWN chrome rather than from the content.
+   Measured: at 52px with a 24px rule and the stock 26px head margin, five of
+   this deck's 32 slides overflowed — the two diagram slides by 7px, a teach
+   slide by 24px, the dilemmas by 4px and the results by 9px. These three
+   numbers are what clear all five. If a future editorial deck overflows
+   anyway, split the slide; do not shrink the type, which is the whole §6
+   rule and applies here exactly as it does everywhere else. */
+html[data-style="editorial"] .slide-head { margin-bottom: 14px; }
+/* ...and the activation panel pays for the taller heading. Measured on
+   Holding the Line: with the default 300px the activation body ran 32px past
+   the canvas, which `safe center` now sends to the bottom instead of over
+   the title, but sending it somewhere is not fixing it. 268 is 300 less the
+   32 the bigger head takes. A panel whose CONTENT does not fit 268 is a
+   content problem — shorten the briefs, do not raise this. */
+html[data-style="editorial"] { --act-panel-h: 268px; }
+/* ...and the panel's own padding gives back the last 8px, which is the
+   style's rule for itself: take the space from the chrome, never from the
+   content. Measured: the writing panel ran 6-8px past 268 in all four
+   languages with the textarea already on its floor. */
+html[data-style="editorial"] .act-panel { padding: 16px 24px; }
+/* The accent word goes to serif italic rather than a colour swap alone —
+   this is the one piece of the look that is pure voice. */
+html[data-style="editorial"] .cover-title em,
+html[data-style="editorial"] .slide-title em {
+  font-family: var(--font-display); font-style: italic; font-weight: 700;
+  color: var(--accent); letter-spacing: -0.035em;
+}
+html[data-style="editorial"] .eyebrow {
+  font-family: var(--font-ui); font-size: 16px; font-weight: 700;
+  letter-spacing: 0.15em; color: var(--accent);
+}
+html[data-style="editorial"] .cover-sub { font-size: 24px; line-height: 1.35; }
+/* 18px, not the base 22px. The stem is two points larger here and a
+   question slide is the tightest thing this style has to fit: a two-line
+   stem, three full-width bars and the feedback line that has to reserve its
+   height before anybody answers. Cyrillic sits a pixel taller per line than
+   Latin at the same size, which was enough to put three Russian slides 1px
+   past the canvas — hidden until `safe center` stopped splitting the
+   overflow and half of it went behind the heading. Chrome, not content. */
+html[data-style="editorial"] .q-stem { font-size: 27px; margin-bottom: 18px; }
+/* The source deck set its reading passages in Georgia at 31px and everything
+   else in the sans. That inversion — serif for continuous prose, sans for
+   interface — is the most editorial thing about it, so it is kept. */
+html[data-style="editorial"] .read-para {
+  font-family: var(--font-display); font-size: 23px; line-height: 1.46;
+  font-weight: 400; letter-spacing: 0;
+}
+/* The cover reads as a left column over the hero, so it is CAPPED rather than
+   centred. Without the cap the subtitle ran the full 1280px and finished on
+   top of the cover art — measured on Beyond the Handlebars, where the last
+   three words landed on the rider. 58% is the width the scrim is opaque to. */
+html[data-style="editorial"] .cover-inner {
+  text-align: left; align-items: flex-start;
+  max-width: 58%; margin-inline: 0;
+}
+html[data-style="editorial"] .cover-title,
+html[data-style="editorial"] .cover-sub { margin-inline: 0; max-width: 100%; }
+html[data-style="editorial"] .cover-meta { justify-content: flex-start; }
+
+/* The cover keeps its full-bleed hero, and gets a scrim only where the type
+   sits, so a bright hero cannot take the title with it. */
+html[data-style="editorial"] .stage.on-cover { background: var(--void); }
+html[data-style="editorial"] .stage.on-cover .bg-layer::before {
+  content: ''; position: absolute; inset: 0; opacity: 1;
+  background: var(--hero) center / cover no-repeat;
+}
+html[data-style="editorial"] .stage.on-cover .bg-layer::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(100deg,
+    color-mix(in srgb, var(--void) 94%, transparent) 0%,
+    color-mix(in srgb, var(--void) 88%, transparent) 38%,
+    transparent 68%);
+}
+
+/* ── 4. the primitives the look is made of ── */
+/* Tighter than the house card, and for a reason rather than to fit: the house
+   card's generous padding is what separates it from the photograph behind it,
+   and on a flat field with a 2px border there is nothing to separate it from. */
+html[data-style="editorial"] .card {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  backdrop-filter: none;
+  box-shadow: 0 2px 10px rgba(18, 58, 62, 0.05);
+  padding: 22px 26px;
+}
+/* Answer buttons are FULL-WIDTH BARS, not shrink-wrapped pills. This is the
+   single biggest thing that makes a question slide look like the source and
+   not like the default deck, and it is the house .opts rule it overrides:
+   `justify-items: start` shrink-wraps each option to its text, which is right
+   when an option sits on a photograph and wrong on a flat field, where a
+   column of ragged pills just looks unfinished.
+
+   Numbers are the source's own, scaled 1600->1280 (x0.8):
+     .answer{width:100%;padding:20px 24px;border:2px;border-radius:14px;
+             font-size:26px;font-weight:500;gap:22px}
+     .letter{font-size:24px;padding:10px 15px;border-radius:9px;
+             background:cream;font-weight:800}  */
+html[data-style="editorial"] .opts { justify-items: stretch; gap: 12px; }
+html[data-style="editorial"] .opt {
+  width: 100%; text-align: left; gap: 18px;
+  background: var(--surface); border: 2px solid #bed0cb;
+  border-radius: 11px; padding: 16px 19px;
+  font-size: 21px; font-weight: 500; line-height: 1.3;
+}
+html[data-style="editorial"] .opt-key {
+  background: var(--void); border: 0; border-radius: 7px;
+  padding: 8px 12px; width: auto; height: auto;
+  font-family: var(--font-ui); font-size: 19px; font-weight: 800;
+}
+html[data-style="editorial"] .match-item,
+html[data-style="editorial"] .sort-item {
+  background: var(--surface); border: 2px solid var(--border);
+}
+/* The rule is a thing a builder PLACES, not something every heading grows.
+   The source deck has it under the cover title and nowhere else; putting it
+   on all thirty-two slides was mine and it was wrong. Emit
+   <div class="rule"></div> where one is actually wanted. */
+html[data-style="editorial"] .rule {
+  width: 64px; height: 6px; background: var(--accent);
+  border-radius: 2px; margin: 18px 0;
+}
+/* The rotated badge. Opt-in per slide: a builder emits
+   <span class="stamp">LOOK. THINK. SPEAK.</span> and this places it. */
+html[data-style="editorial"] .stamp {
+  position: absolute; z-index: 2; right: 72px; top: 64px;
+  width: 116px; height: 116px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; text-align: center;
+  background: var(--stamp); color: var(--text);
+  font-family: var(--font-ui); font-size: 15px; font-weight: 800; line-height: 1.2;
+  padding: 10px; transform: rotate(10deg);
+}
 </style>
 </head>
 <body>
@@ -1212,6 +1696,14 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
 
     <!-- Background pattern: driven entirely by --hero in the CSS above. -->
     <div class="bg-layer" role="presentation"></div>
+
+    <!-- The framed picture, for data-style="editorial" only. It is inert and
+         invisible in every other deck (no rule outside the editorial block
+         gives it a size or a background), so it costs a shipped lesson one
+         empty div. It is a sibling of .bg-layer rather than a pseudo-element
+         ON it because the cover still wants .bg-layer's ::before and ::after
+         for the full-bleed hero and its scrim. -->
+    <div class="editorial-art" role="presentation"></div>
 
     <!-- ══════════════════════════════════════════════════════════
          REPLACE 2 of 2: SLIDES
@@ -1549,6 +2041,10 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
       <div class="slide-body" style="align-items:center;text-align:center">
         <div class="score-big"><span id="scoreVal">0</span><span class="dim" style="font-size:34px">/<span id="scoreMax">0</span></span></div>
         <p class="prose" style="margin-top:18px" id="scoreMsg"></p>
+        <div class="review" id="reviewBox" hidden>
+          <div class="eyebrow" id="reviewHead"></div>
+          <ul class="review-list" id="reviewList"></ul>
+        </div>
         <p class="prose dim" style="margin-top:14px" data-i18n="resNext">You can hear it. Now say it &rarr;</p>
       </div>
     </section>
@@ -1568,8 +2064,21 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
           <span class="bank-chip">paraphrase, do not stop</span>
           <span class="bank-chip">RECord / reCORD</span>
         </div>
-        <div class="cols act-cols">
-          <div class="card act-card">
+        <div class="act-stage">
+          <div class="act-choose">
+            <button class="act-word" type="button" data-action="act-open" data-act="speak"
+                    aria-expanded="false" aria-controls="actPanelSpeak">
+              <span class="act-word-icon" aria-hidden="true">🗣</span>
+              <span class="act-word-text" data-i18n="actSpeakWord">Discussion</span>
+            </button>
+            <button class="act-word" type="button" data-action="act-open" data-act="write"
+                    aria-expanded="false" aria-controls="actPanelWrite">
+              <span class="act-word-icon" aria-hidden="true">✍️</span>
+              <span class="act-word-text" data-i18n="actWriteWord">Writing</span>
+            </button>
+          </div>
+          <div class="act-panel" id="actPanelSpeak" data-panel="speak" hidden>
+            <button class="act-close" type="button" data-action="act-close" aria-label="Close">&times;</button>
             <div class="act-kind"><span class="act-icon">🗣</span><span data-i18n="actSpeakKind">Discussion &middot; in pairs</span></div>
             <p class="act-brief" data-i18n="actSpeakBrief">In pairs, with the long-turn card from Part 2. Read your partner a four-line answer, deliberately flat, then read it again in thought groups with the beat on the content words. Your partner says what changed.</p>
             <ul class="act-list">
@@ -1578,7 +2087,8 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
               <li data-i18n="actSpeak3">Have your partner interrupt with a word you do not know. Talk around it and keep the turn &mdash; no stopping, no asking.</li>
             </ul>
           </div>
-          <div class="card act-card">
+          <div class="act-panel" id="actPanelWrite" data-panel="write" hidden>
+            <button class="act-close" type="button" data-action="act-close" aria-label="Close">&times;</button>
             <div class="act-kind"><span class="act-icon">✍️</span><span data-i18n="actWriteKind">Writing &middot; 150&ndash;200 words</span></div>
             <p class="act-brief" data-i18n="actWriteBrief">Write out a two-minute answer, then mark it up: a slash at every group boundary and capitals on the word that takes the beat in each group. Read it back and check the beats land where the meaning is.</p>
             <textarea class="act-input" id="actInput" data-i18n-ph="actPlaceholder" placeholder="The place I would recommend / is a small town…" aria-label="Written response"></textarea>
@@ -1589,7 +2099,7 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
             <div class="act-print" id="actPrint" aria-hidden="true"></div>
           </div>
         </div>
-        <div style="margin-top:14px;text-align:center">
+        <div class="act-restart">
           <button class="btn" data-action="restart" data-i18n="btnRestart">Start again</button>
         </div>
       </div>
@@ -1601,6 +2111,15 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
     <div class="deck-rail" id="deckRail" data-i18n-stops="railStops" hidden></div>
     <div class="deck-bar">
       <select class="lang-select" id="langSelect" aria-label="Language"></select>
+      <!-- Hardwired, not left to F11: a learner on a shared machine does not
+           know F11 and a teacher projecting should not have to. aria-label is
+           set through data-i18n-aria, which applyLang() only overwrites when
+           the key resolves — so a deck built before btnFull existed keeps the
+           English label rather than failing the I18N gate. -->
+      <button class="nav-btn fs-btn" data-action="fullscreen" aria-pressed="false"
+              data-i18n-aria="btnFull" aria-label="Full screen">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+      </button>
       <div class="ledger" id="ledger" hidden>
         <span class="led"><b data-i18n="ledDp">DP</b> <i id="ledDp">0</i></span>
         <span class="led"><b data-i18n="ledTime">TIME</b> <i id="ledTime">•••</i></span>
@@ -1630,7 +2149,8 @@ const LANGS = [
   { code:'es', label:'Español'   }, { code:'fr', label:'Français' },
   { code:'it', label:'Italiano'  }, { code:'pt', label:'Português'},
   { code:'ru', label:'Русский'   }, { code:'ar', label:'العربية'  },
-  { code:'zh', label:'中文'       }, { code:'ja', label:'日本語'    }
+  { code:'zh', label:'中文'       }, { code:'ja', label:'日本語'    },
+  { code:'hr', label:'Hrvatski'  }
 ];
 const RTL_LANGS = ['ar'];
 
@@ -1726,7 +2246,13 @@ const UI_I18N = {
     glossShow: 'Translate',
     ledClues: 'Clues',
     ledDp: 'DP',
-    ledTime: 'Time'
+    ledTime: 'Time',
+    actSpeakWord: 'Discussion',
+    actWriteWord: 'Writing',
+    resPerfect: 'Flawless. Every single one.',
+    resStrong: 'Strong work — the rule has landed.',
+    resMid: 'Solid start. Worth one more pass.',
+    resLow: 'Review the language focus slides, then try again.'
   },
   de: {
     actEyebrow: 'Anwendung',
@@ -1819,7 +2345,13 @@ const UI_I18N = {
     glossShow: 'Übersetzen',
     ledClues: 'Hinweise',
     ledDp: 'DP',
-    ledTime: 'Zeit'
+    ledTime: 'Zeit',
+    actSpeakWord: 'Diskussion',
+    actWriteWord: 'Schreiben',
+    resPerfect: 'Makellos. Alles richtig.',
+    resStrong: 'Starke Leistung — die Regel sitzt.',
+    resMid: 'Guter Anfang. Ein weiterer Durchgang lohnt sich.',
+    resLow: 'Sieh dir die Erklärungsfolien noch einmal an und versuche es erneut.'
   },
   es: {
     actEyebrow: 'Activación',
@@ -1912,7 +2444,13 @@ const UI_I18N = {
     glossShow: 'Traducir',
     ledClues: 'Pistas',
     ledDp: 'DP',
-    ledTime: 'Tiempo'
+    ledTime: 'Tiempo',
+    actSpeakWord: 'Debate',
+    actWriteWord: 'Escritura',
+    resPerfect: 'Impecable. Todas correctas.',
+    resStrong: 'Muy buen trabajo — la regla ya está asentada.',
+    resMid: 'Buen comienzo. Merece la pena otra vuelta.',
+    resLow: 'Repasa las diapositivas de explicación y vuelve a intentarlo.'
   },
   fr: {},
   it: {},
@@ -1920,7 +2458,8 @@ const UI_I18N = {
   ru: {},
   ar: {},
   zh: {},
-  ja: {}
+  ja: {},
+  hr: {}
 };
 
 let currentLang = 'en';
@@ -2032,6 +2571,31 @@ function fitStage() {
 }
 addEventListener('resize', fitStage);
 
+/* ── Full screen ──
+   The deck is a fixed 1280x720 stage that fitStage() scales to the viewport,
+   so the browser's own chrome is the only thing standing between a class and
+   a full screen. Vendor-prefixed calls are kept for older Safari, which is a
+   real share of the iPads these are taught on.
+
+   fitStage already listens to resize and entering full screen fires one, so
+   the rescale is not wired twice — fullscreenchange only repaints the button. */
+function toggleFullscreen() {
+  const d = document, e = d.documentElement;
+  const on = d.fullscreenElement || d.webkitFullscreenElement;
+  const fn = on ? (d.exitFullscreen || d.webkitExitFullscreen).bind(d)
+                : (e.requestFullscreen || e.webkitRequestFullscreen).bind(e);
+  // Refused when the page is not in a user gesture, or blocked by policy in
+  // an iframe. Nothing to recover: the deck is usable either way.
+  try { const r = fn(); if (r && r.catch) r.catch(() => {}); } catch (_) {}
+}
+['fullscreenchange', 'webkitfullscreenchange'].forEach(ev =>
+  document.addEventListener(ev, () => {
+    const b = document.querySelector('[data-action="fullscreen"]');
+    if (b) b.setAttribute('aria-pressed',
+      String(!!(document.fullscreenElement || document.webkitFullscreenElement)));
+    fitStage();
+  }));
+
 /* ── Navigation ── */
 function show(n) {
   // A slide may own a running clock. Leaving it pauses; coming back
@@ -2078,6 +2642,84 @@ function show(n) {
   if (gap && !answered.has(slides[idx])) setTimeout(() => gap.focus(), 60);
 }
 
+/* ── WHAT WENT WRONG, KEPT FOR THE END ────────────────────────────────
+   Innes, 2026-09-20: "need to save the ones a student gets wrong and show
+   them at the end." A learner who missed eight items had eight explanations
+   and has now paged past all of them; the score tells them nothing they can
+   act on.
+
+   Recorded in feedback() and fillFeedback() because those two are the only
+   places every scored shape agrees on: mc, order, lock and sort all resolve
+   through the first, gap rows through the second. award() would have caught
+   multiple choice and nothing else — it is the only type that calls it. */
+const misses = [];
+const missSeen = new Set();
+const escHtml = s => s.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+
+/* The line as it should have been, not the bare word. "of" teaches nothing;
+   "In terms of salary, this offer is far better" with the word marked puts
+   it back in the sentence it belongs to, which is where it has to be
+   recognised next time. */
+function correctedLine(stemEl, answer) {
+  if (!stemEl) return answer ? '<b>' + escHtml(answer) + '</b>' : '';
+  const c = stemEl.cloneNode(true);
+  c.querySelectorAll('.sup, .feedback').forEach(x => x.remove());
+  // A gap row carries its answers on the inputs; swap each one in place so a
+  // row with two blanks comes back with both filled.
+  c.querySelectorAll('input.gap').forEach(g => {
+    const b = document.createElement('b');
+    b.textContent = (g.dataset.answer || '').split('|')[0];
+    g.replaceWith(b);
+  });
+  let html = c.innerHTML.trim();
+  if (answer) {
+    const mark = '<b>' + escHtml(answer) + '</b>';
+    // A multiple-choice stem writes its blank as ______ in the text. A stem
+    // with no blank in it ("Which sentence is correct?") gets the answer
+    // appended instead of silently dropping it.
+    html = /_{3,}/.test(html) ? html.replace(/_{3,}/, mark)
+                              : html + ' &mdash; ' + mark;
+  }
+  return html;
+}
+
+/* The answer a multiple-choice slide wanted, without the A/B/C/D disc the
+   engine prepends to the option or the translation gloss under it. */
+function keyText(slide) {
+  const o = slide.querySelector('.opt[data-correct]');
+  if (!o) return '';
+  const c = o.cloneNode(true);
+  c.querySelectorAll('.opt-key, .sup').forEach(x => x.remove());
+  return c.textContent.trim();
+}
+
+function noteMiss(slide, html) {
+  if (!slide || !html) return;
+  // A lock is retried until it opens, so feedback(false) fires once per
+  // wrong code; the learner missed the item once.
+  const key = slides.indexOf(slide) + '|' + html;
+  if (missSeen.has(key)) return;
+  missSeen.add(key);
+  misses.push({ n: slides.indexOf(slide), html });
+}
+
+/* Deliberately NOT a data-i18n node and not a UI_I18N key. check-lesson.js
+   fails any deck whose data-i18n has no English entry, and assemble() builds
+   UI_I18N from the deck's own i18n module — so a new key on the shared
+   results slide would fail the checker on all 300-odd decks until every
+   module lifted it. The engine carries the label; a deck that defines
+   resReview overrides it. */
+const REVIEW_LABEL = {
+  en: 'Worth another look', de: 'Noch einmal ansehen', es: 'Para repasar',
+  fr: 'À revoir', it: 'Da rivedere', pt: 'Para rever',
+  ru: 'Стоит повторить',
+  ar: 'يستحق مراجعة',
+  zh: '值得再看一遍', ja: 'もう一度確認',
+  hr: 'Vrijedi ponoviti'
+};
+const reviewLabel = () =>
+  t('resReview') || REVIEW_LABEL[currentLang] || REVIEW_LABEL.en;
+
 function renderResults() {
   // Branch mode scores out of what this learner actually met. Counting every
   // question in the file would mark them against a paper half of which was
@@ -2091,6 +2733,26 @@ function renderResults() {
   document.getElementById('scoreMsg').textContent =
     pct === 1 ? t('resPerfect') : pct >= .75 ? t('resStrong')
     : pct >= .5 ? t('resMid') : t('resLow');
+
+  // A deck generated before this engine change has no review box; it keeps
+  // the results slide it always had.
+  const box = document.getElementById('reviewBox');
+  const list = document.getElementById('reviewList');
+  if (!box || !list) return;
+  box.hidden = !misses.length;
+  slides[idx].classList.toggle('has-review', misses.length > 0);
+  if (!misses.length) { list.replaceChildren(); return; }
+  // The count, because the box scrolls and six of twenty-eight on screen
+  // with no number looks like all of them.
+  document.getElementById('reviewHead').textContent =
+    reviewLabel() + ' · ' + misses.length;
+  // Deck order, not the order they were answered in: a learner paging back
+  // and forth should still read them in the order the lesson taught them.
+  list.replaceChildren(...[...misses].sort((a, b) => a.n - b.n).map(m => {
+    const li = document.createElement('li');
+    li.innerHTML = m.html;
+    return li;
+  }));
 }
 
 function updateScoreChip() {
@@ -2119,6 +2781,12 @@ function feedback(slide, ok, extra, ownExplain) {
   // every deck built from this template.
   el.innerHTML = (ok ? t('fbCorrect') : t('fbWrong') + (extra ? ` ${t('fbAnswer')} ${extra}` : '')) + why;
   el.className = 'feedback show ' + (ok ? 'ok' : 'no');
+  // `extra` is already the right answer wherever a caller has one (order
+  // passes the sentence, lock the code); multiple choice does not, and its
+  // key is on the option marked data-correct.
+  if (!ok) noteMiss(slide, correctedLine(
+    slide.querySelector('.q-stem') || slide.querySelector('.slide-title'),
+    extra || keyText(slide)));
 }
 
 /* A real shuffle.
@@ -2282,6 +2950,7 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
   const row   = document.createElement('div'); row.className = 'audio-row';
   const btn   = document.createElement('button');
   btn.className = 'audio-play'; btn.type = 'button';
+  btn.dataset.i18nAria = 'audioPlay';
   btn.setAttribute('aria-label', t('audioPlay')); btn.textContent = '▶';
   const meta  = document.createElement('div'); meta.className = 'audio-meta';
   const label = document.createElement('div'); label.className = 'audio-label';
@@ -2292,6 +2961,13 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
   const now   = document.createElement('span'); now.textContent = '0:00';
   const left  = document.createElement('span'); left.textContent = '';
   const state = document.createElement('div'); state.className = 'audio-state';
+  /* The player is built ONCE, imperatively, so every string in it was frozen
+     in whatever language the page loaded in: the slide title translated and
+     the player underneath it stayed English. Tagging each element with the
+     key it is currently showing puts it back under applyLang()'s [data-i18n]
+     pass, and the tag is re-set every time the text changes so the CURRENT
+     state is what gets re-resolved. */
+  state.dataset.i18n = 'audioOnce';
   state.textContent = t('audioOnce');
 
   track.append(fill); time.append(now, left); meta.append(label, track, time);
@@ -2312,6 +2988,7 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
     left.textContent = mmss(audio.duration - audio.currentTime);
   });
   audio.addEventListener('error', () => {
+    state.dataset.i18n = 'audioMissing';
     state.textContent = t('audioMissing');
     btn.disabled = true;
     if (cont) cont.disabled = false;   // never trap a learner behind a broken file
@@ -2319,14 +2996,17 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
   audio.addEventListener('ended', () => {
     slide.dataset.played = 'yes';
     fill.style.width = '100%';
+    state.dataset.i18n = 'audioDone';
     state.textContent = t('audioDone');
     state.classList.add('done');
     if (cont) cont.disabled = false;
     const again = document.createElement('button');
     again.className = 'audio-replay'; again.type = 'button';
+    again.dataset.i18n = 'audioReplay';
     again.textContent = t('audioReplay');
     again.addEventListener('click', () => {
       audio.currentTime = 0; audio.play();
+      state.dataset.i18n = 'audioPlaying';
       state.textContent = t('audioPlaying'); state.classList.remove('done');
       again.remove();
     });
@@ -2335,9 +3015,12 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
 
   btn.addEventListener('click', () => {
     btn.disabled = true;
+    state.dataset.i18n = 'audioPlaying';
     state.textContent = t('audioPlaying');
     audio.play().catch(() => {
-      state.textContent = t('audioMissing');
+      state.dataset.i18n = 'audioMissing';
+      state.dataset.i18n = 'audioMissing';
+    state.textContent = t('audioMissing');
       if (cont) cont.disabled = false;
     });
   });
@@ -2767,6 +3450,16 @@ function fillFeedback(fb, missed, gaps) {
 function markGroup(gaps, fb) {
   const missed = gaps.filter(g => !markGap(g));
   if (fb) fillFeedback(fb, missed, gaps);
+  // Recorded per ROW rather than per slide: a gap slide is four questions
+  // wearing one heading, and "Complete the sentence" is not a thing anyone
+  // can revise from. A slide whose feedback is pooled has no rows to name,
+  // so it falls back to its own stem.
+  if (missed.length) {
+    const slide = gaps[0] && gaps[0].closest('.slide');
+    const rows = [...new Set(missed.map(g => g.closest('.gap-row')).filter(Boolean))];
+    if (rows.length) rows.forEach(r => noteMiss(slide, correctedLine(r.querySelector('.q-stem'), '')));
+    else if (slide) noteMiss(slide, correctedLine(slide.querySelector('.q-stem'), ''));
+  }
   return missed;
 }
 
@@ -2870,6 +3563,7 @@ document.addEventListener('click', e => {
   const act = a.dataset.action;
   if (act === 'next') BRANCH ? followFirst() : show(idx + 1);
   if (act === 'prev') BRANCH ? (trail.length && show(trail.pop())) : show(idx - 1);
+  if (act === 'fullscreen') toggleFullscreen();
   if (act === 'check') checkGaps(a.closest('.slide'));
   if (act === 'check-order') { const sl = a.closest('.slide'); if (sl._check) sl._check(); }
   if (act === 'restart') {
@@ -2877,6 +3571,7 @@ document.addEventListener('click', e => {
     // Replay resets the ledger but keeps the learner in the page, so a class
     // can run the other route immediately.
     trail.length = 0; seenScored.clear(); score = 0;
+    misses.length = 0; missSeen.clear();
     slides.forEach(sl => { answered.delete(sl); });
     ledgerInit(); updateScoreChip();
     goNode(a.dataset.goto || START, false);
@@ -2889,6 +3584,56 @@ document.addEventListener('click', e => {
       setTimeout(() => { a.textContent = was; }, 1400);
     });
   }
+  if (act === 'act-open') actPanel(a.closest('.slide'), a.dataset.act);
+  if (act === 'act-close') actPanel(a.closest('.slide'), null);
+});
+
+/* ── Activation panels: one open at a time, and that is the whole rule ──
+   Passing the slide in rather than reaching for document.getElementById is
+   what makes it safe on a deck with more than one activation stage — the
+   IDs the engine needs (#actInput, #actCount, #actPrint) are unique per
+   page, but the words and panels are not.
+
+   Opening is idempotent and closing is the same call with null, so there is
+   exactly one place that decides what is visible; an earlier version toggled
+   each panel independently and could show both, which is the one thing the
+   brief ruled out. */
+function actPanel(slide, which) {
+  if (!slide) return;
+  slide.querySelectorAll('.act-panel').forEach(p => {
+    const on = p.dataset.panel === which;
+    p.hidden = !on;
+    if (on) p.classList.remove('is-closing');
+  });
+  slide.querySelectorAll('.act-word').forEach(w => {
+    const on = w.dataset.act === which;
+    w.classList.toggle('is-open', on);
+    w.setAttribute('aria-expanded', on ? 'true' : 'false');
+  });
+  const open = which && slide.querySelector('.act-panel[data-panel="' + which + '"]');
+  if (open) {
+    // Focus the textarea when the writing panel opens — it is the only thing
+    // in there to do — but never steal focus on the discussion panel, which
+    // is read aloud from the screen.
+    const ta = open.querySelector('.act-input');
+    if (ta) ta.focus({ preventScroll: true });
+  }
+}
+/* Esc closes whatever is open, on the active slide only. */
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  const sl = slides[idx];
+  if (sl && sl.dataset.type === 'activate' && sl.querySelector('.act-panel:not([hidden])')) {
+    e.stopPropagation();
+    actPanel(sl, null);
+  }
+}, true);
+/* A click on the slide itself — the artwork around the panel — folds it away,
+   the way the RPG's picture does. Anything inside the stage is left alone. */
+document.addEventListener('click', e => {
+  const sl = e.target.closest('.slide[data-type="activate"]');
+  if (!sl || e.target.closest('.act-stage') || e.target.closest('[data-action]')) return;
+  actPanel(sl, null);
 });
 
 /* Branch links. A choice may also move the ledger; the cost is paid once,
@@ -2917,6 +3662,9 @@ document.addEventListener('keydown', e => {
   if (['ArrowLeft', 'PageUp'].includes(e.key)) {
     e.preventDefault(); BRANCH ? (trail.length && show(trail.pop())) : show(idx - 1);
   }
+  // Below the input guard above, so it cannot fire while the activation
+  // textarea has focus and someone is typing the word "four".
+  if (e.key === 'f' || e.key === 'F') { e.preventDefault(); toggleFullscreen(); }
 });
 
 /* ── Language ── */
@@ -2929,6 +3677,12 @@ function applyLang() {
   document.querySelectorAll('[data-i18n-ph]').forEach(el => {
     const v = t(el.dataset.i18nPh);
     if (v != null) el.placeholder = v;
+  });
+  /* Accessible names need the same treatment as placeholders: a control
+     whose only label is an aria-label was left in the load language. */
+  document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+    const v = t(el.dataset.i18nAria);
+    if (v != null) el.setAttribute('aria-label', v);
   });
   if (window.syncActivation) window.syncActivation();
   document.documentElement.lang = currentLang;
