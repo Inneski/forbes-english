@@ -33,17 +33,16 @@ failing on the unrebuilt `forbes-alan-watts-b1.html` (12 empty: en/de/es × 4)
 before trusting it; the 13 rebuilt decks pass, and a live `renderResults()`
 on listening-s1 prints the message in en/de/es.
 
-**Rebuilt and shipped (13):** every `forbes-english-ielts-*` deck in the scan:
+**Rebuilt and shipped:** every `forbes-english-ielts-*` deck in the scan:
 lexical-resource, listening-drills, listening-s1..s4, pronunciation,
 reading-completion, reading-headings, reading-tfng, speaking-part3,
 vocabulary-environment, vocabulary-work. Rebuilding onto the current template
 also brought in the template changes made since they were last built (editorial-style CSS,
 `--plate-bin`, `safe center`, …). All pass check-lesson clean.
 
-**NOT rebuilt: `forbes-alan-watts-b1.html`.** Another session had
-`alan-watts/hero.jpg` modified in the main tree when this ran, so the lesson
-is in flight elsewhere. It still fails RESMSG. Whoever next runs
-`build_watts.py` fixes it for free via the backfill; nothing else is needed.
+**Alan Watts rebuilt too (14 in all)**, once the session that had
+`alan-watts/hero.jpg` open had pushed `1f75be8`; its diff is the twelve lines
+of the fix and nothing else.
 The two gitignored `_forbes-english-b1-mixed-grammar-test*` previews go through
 `assemble()` too and are fixed on their next build.
 
