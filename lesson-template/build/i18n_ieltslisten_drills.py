@@ -136,6 +136,15 @@ T['en'] = dict(
     actPlaceholder='Surname: … (expected mistake: A heard as R)',
 )
 
+# The drill explanations sit beside their answers in the data module, which
+# keeps the only copy of the English; they were plain strings there until
+# 2026-09-23, so German and Spanish learners read them in English.
+from ieltslisten_drills_data import NUMBERS_A, NUMBERS_B, SPELLING, PAIRS_WHY
+T['en'].update(('g%dwhy' % (i + 1), r[2])
+               for i, r in enumerate(NUMBERS_A + NUMBERS_B))
+T['en'].update(('s%dwhy' % (i + 1), r[2]) for i, r in enumerate(SPELLING))
+T['en']['pairsWhy'] = PAIRS_WHY
+
 # ── German ─────────────────────────────────────────────────────────────
 T['de'] = dict(
     coverTitle='Zahlen, Buchstabieren <em>und Akzente</em>',
@@ -237,6 +246,39 @@ T['de'] = dict(
                   'Partner erwartet hast. Die Falle vorher zu benennen ist, '
                   'was einen selbst davor bewahrt.',
     actPlaceholder='Surname: … (expected mistake: A heard as R)',
+
+    # Drills 1-3: the English is registered from the data module, below.
+    g1why='„Double oh“ sind zwei Nullen: 004713. Wer sechs einzelne Ziffern '
+          'zählt, hört nie sechs.',
+    g2why='Dreizehn fünfzig, dann „not thirty, thirteen“: das Paar, das mehr '
+          'Punkte kostet als jede andere Zahl im Englischen.',
+    g3why='Der Vierzehnte. Ordnungszahlen verschwimmen im Tempo &mdash; '
+          'fourteenth und fortieth klingen ähnlich, und nur eines davon ist ein '
+          'echtes Datum.',
+    g4why='Eight eighty. Im Englischen sagt man Zimmernummern paarweise statt '
+          'als ganze Zahl &mdash; deshalb erwarten Lernende „eight hundred and '
+          'eighty“ und hören es nie.',
+    g5why='Achtzehn. Zwanzig ist der volle Preis und kommt zuerst; die Lücke '
+          'fragt nach dem Frühbucherpreis, also schreibst du die Zahl, die an '
+          'diese Bedingung geknüpft ist.',
+    s1why='Hargreaves. Die Fallen sind die Vokale &mdash; ein A, dann E und A '
+          'zusammen &mdash;, die Lernende vertauschen, weil ihr eigenes '
+          'Alphabet sie anders benennt, und das G, das man leicht als J '
+          'schreibt.',
+    s2why='Ffion, mit doppeltem F. Sagt jemand „double“ vor einem Buchstaben, '
+          'sind es zwei davon &mdash; dieselbe Konvention wie „double oh“ bei '
+          'einer Zahl, und deshalb gehören die beiden Übungen in eine Lektion.',
+    pairsWhy='Die vier links sind die, die bei englischen Buchstabennamen '
+             'wirklich kollidieren, und auf sie gehen die meisten falsch '
+             'geschriebenen Antworten in Section 1 zurück. Das englische '
+             '<strong>A</strong> klingt wie das deutsche E und das englische '
+             '<strong>E</strong> wie das deutsche I, also werden A und E sowie '
+             'E und I von allen vertauscht, die mit ihrem eigenen Alphabet '
+             'hören; <strong>G</strong> und <strong>J</strong> beginnen gleich '
+             'und unterscheiden sich nur im Vokal; <strong>M</strong> und '
+             '<strong>N</strong> nur im Nasal am Ende. W und Y sowie K und Q '
+             'klingen, voll ausgesprochen, völlig verschieden &mdash; deshalb '
+             'verhört sich dabei niemand.',
 )
 
 # ── Spanish ────────────────────────────────────────────────────────────
@@ -338,6 +380,36 @@ T['es'] = dict(
                   'compañero. Nombrar la trampa por adelantado es lo que evita '
                   'que caigas tú en ella.',
     actPlaceholder='Surname: … (expected mistake: A heard as R)',
+
+    # Drills 1-3: the English is registered from the data module, below.
+    g1why='«Double oh» son dos ceros: 004713. Quien cuenta seis cifras sueltas '
+          'nunca oye seis.',
+    g2why='Trece cincuenta, y luego «not thirty, thirteen»: la pareja que más '
+          'puntos cuesta de todos los números en inglés.',
+    g3why='El catorce. Los ordinales se funden al hablar rápido: fourteenth y '
+          'fortieth suenan parecidos, y solo uno de ellos es una fecha real.',
+    g4why='Eight eighty. En inglés un número de habitación se dice por '
+          'parejas, no como número entero; por eso quien aprende espera «eight '
+          'hundred and eighty» y nunca lo oye.',
+    g5why='Dieciocho. Veinte es el precio completo y se dice primero; el hueco '
+          'pide el precio con reserva anticipada, así que hay que escribir la '
+          'cifra ligada a esa condición.',
+    s1why='Hargreaves. Las trampas son las vocales (una A, y luego E y A '
+          'juntas), que se intercambian porque el alfabeto propio las nombra '
+          'de otra manera, y la G, que es fácil escribir como J.',
+    s2why='Ffion, con doble F. Cuando alguien dice «double» delante de una '
+          'letra, son dos: la misma convención que «double oh» en un número, y '
+          'por eso los dos ejercicios van en la misma lección.',
+    pairsWhy='Las cuatro de la izquierda son las que de verdad chocan en los '
+             'nombres de las letras en inglés, y entre ellas explican la mayoría '
+             'de las respuestas mal escritas de la Section 1. La '
+             '<strong>A</strong> inglesa suena como la E española, y la '
+             '<strong>E</strong> inglesa como la I española, así que A y E, y E '
+             'e I, las intercambia cualquiera que oiga con su propio alfabeto; '
+             '<strong>G</strong> y <strong>J</strong> empiezan igual y solo se '
+             'diferencian en la vocal; <strong>M</strong> y <strong>N</strong>, '
+             'solo en la nasal final. W e Y, y K y Q, no se parecen en nada '
+             'dichas enteras, y por eso nadie las confunde.',
 )
 
 

@@ -57,6 +57,13 @@ BG_BRIEF, BG_NUM, BG_SPELL, BG_PAIRS = ('bg02.jpg', 'bg03.jpg',
 BG_ACT = 'bg06.jpg'
 
 
+def keyed(rows, prefix, start):
+    """Each gap's explanation goes out as an i18n key (g1why.., s1why..) so it
+    translates; i18n_ieltslisten_drills registers the English from the data."""
+    return [(s, a, '%s%dwhy' % (prefix, start + i + 1))
+            for i, (s, a, _) in enumerate(rows)]
+
+
 def build(make_audio=False):
     D.assert_no_key_is_longest(MC, 'IELTSDRILLS')
     logo = D.logo_from(TPL)
@@ -133,7 +140,8 @@ def build(make_audio=False):
                         hint='Write figures, not words. Two of these are said '
                              'in a way English learners are rarely taught.',
                         width=210, size=19)
-                  for n, rows in enumerate([NUMBERS_A, NUMBERS_B]))
+                  for n, rows in enumerate([keyed(NUMBERS_A, 'g', 0),
+                                            keyed(NUMBERS_B, 'g', 3)]))
 
         + D.audio('spellAudEyebrow', 'Drill 2 &middot; The recording',
                   'spellAudTitle', 'Two names, spelled once each',
@@ -144,7 +152,7 @@ def build(make_audio=False):
                   'spelling.mp3', labels['spelling.mp3'], folder=F,
                   bg=BG_SPELL)
 
-        + D.gap(1, 1, SPELLING, SPELLING_BANK,
+        + D.gap(1, 1, keyed(SPELLING, 's', 0), SPELLING_BANK,
                 'spellEyebrow', 'Drill 2 &middot; Spelling',
                 'spellTitle', 'Write the name exactly as it was spelled',
                 folder=F, bg=BG_SPELL,
@@ -160,7 +168,7 @@ def build(make_audio=False):
                        'sortHint',
                        'Drag each pair into a column &mdash; or click one, '
                        'then the column you want it in.',
-                       PAIRS_WHY, folder=F, bg=BG_PAIRS,
+                       'pairsWhy', folder=F, bg=BG_PAIRS,
                        bin_keys=['sortBin1', 'sortBin2'])
 
         + "".join(D.mc(i + 1, len(MC), q, 'mcEyebrow',

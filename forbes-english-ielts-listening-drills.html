@@ -1696,6 +1696,39 @@ html[data-style="editorial"] .match-item,
 html[data-style="editorial"] .sort-item {
   background: var(--surface); border: 2px solid var(--border);
 }
+
+/* ── answered states, restated at the editorial specificity ──────────
+   The base rules above are `html[data-style="editorial"] .opt`, which is
+   (0,2,1). The default answered states are `.opt.wrong` / `.opt.correct`,
+   which are (0,2,0). So the base rule WON, and its `background: var(--surface)`
+   plus `border: 2px solid …` repainted every answered option back to neutral.
+
+   The engine was never broken: measured on the Watts deck, a clicked wrong
+   option carried `class="opt wrong"` and the feedback read "Not quite …",
+   while the computed colours of the wrong, the correct and an untouched
+   option were all identical — rgb(255,255,255) on rgb(190,208,203). A
+   learner got no red, no green, and no sight of the right answer.
+
+   Same trap for .match-item and .sort-item, whose base rule uses the `border`
+   shorthand and so also outranks their own .picked/.done/.miss border-colors.
+   Restating the states here is the whole fix; nothing in the engine changes. */
+html[data-style="editorial"] .opt.correct {
+  border-color: var(--ok);
+  background: color-mix(in srgb, var(--ok) 20%, var(--surface));
+}
+html[data-style="editorial"] .opt.wrong {
+  border-color: var(--no);
+  background: color-mix(in srgb, var(--no) 18%, var(--surface));
+}
+html[data-style="editorial"] .match-item.picked,
+html[data-style="editorial"] .sort-item.picked {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 22%, var(--surface));
+}
+html[data-style="editorial"] .match-item.done,
+html[data-style="editorial"] .sort-item.placed { border-color: var(--ok); }
+html[data-style="editorial"] .match-item.miss,
+html[data-style="editorial"] .sort-item.miss { border-color: var(--no); }
 /* The rule is a thing a builder PLACES, not something every heading grows.
    The source deck has it under the cover title and nowhere else; putting it
    on all thirty-two slides was mine and it was wrong. Emit
@@ -1810,15 +1843,15 @@ html[data-style="editorial"] .stamp {
         <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="numHint">Write figures, not words. Two of these are said in a way English learners are rarely taught.</p>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">Reference: <input class="gap" data-answer="004713|00 47 13|0047 13" aria-label="gap" style="width:210px"></p>
-          <p class="feedback" data-explain="&quot;Double oh&quot; is two noughts: 004713. A candidate counting six separate digits never hears six."></p>
+          <p class="feedback" data-explain="g1why"></p>
         </div>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">Price: £<input class="gap" data-answer="13.50|13,50" aria-label="gap" style="width:210px"></p>
-          <p class="feedback" data-explain="Thirteen fifty, then &quot;not thirty, thirteen&quot;: the pair that costs more marks than any other number in English."></p>
+          <p class="feedback" data-explain="g2why"></p>
         </div>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">Open from <input class="gap" data-answer="14th|14|fourteenth" aria-label="gap" style="width:210px"> March</p>
-          <p class="feedback" data-explain="The fourteenth. Ordinals run together at speed &mdash; fourteenth and fortieth come out close, and only one of them is a real date."></p>
+          <p class="feedback" data-explain="g3why"></p>
         </div>
         <div style="margin-top:10px">
           <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
@@ -1835,11 +1868,11 @@ html[data-style="editorial"] .stamp {
         <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="numHint">Write figures, not words. Two of these are said in a way English learners are rarely taught.</p>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">Room <input class="gap" data-answer="880" aria-label="gap" style="width:210px"></p>
-          <p class="feedback" data-explain="Eight eighty. English says a room number in pairs rather than as a whole number, which is why &quot;eight hundred and eighty&quot; is what a learner expects and never what they hear."></p>
+          <p class="feedback" data-explain="g4why"></p>
         </div>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">Price if you book early: £<input class="gap" data-answer="18|eighteen" aria-label="gap" style="width:210px"></p>
-          <p class="feedback" data-explain="Eighteen. Twenty is the full price and it is said first; the gap asks for the early-booking price, so the figure tied to that condition is the one to write."></p>
+          <p class="feedback" data-explain="g5why"></p>
         </div>
         <div style="margin-top:10px">
           <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
@@ -1870,11 +1903,11 @@ html[data-style="editorial"] .stamp {
         <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="spellHint">Spelling is marked. One of these uses the same "double" convention as the numbers drill.</p>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">Surname: <input class="gap" data-answer="Hargreaves|HARGREAVES" aria-label="gap" style="width:240px"></p>
-          <p class="feedback" data-explain="Hargreaves. The traps are the vowels &mdash; an A, then E and A together &mdash; which learners swap because their own alphabets name them differently, and the G, which is easily written as J."></p>
+          <p class="feedback" data-explain="s1why"></p>
         </div>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">First name: <input class="gap" data-answer="Ffion|FFION" aria-label="gap" style="width:240px"></p>
-          <p class="feedback" data-explain="Ffion, with a double F. When a speaker says &quot;double&quot; before a letter it is two of them &mdash; the same convention as &quot;double oh&quot; in a number, which is why the two drills belong in one lesson."></p>
+          <p class="feedback" data-explain="s2why"></p>
         </div>
         <div style="margin-top:10px">
           <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
@@ -1897,7 +1930,7 @@ html[data-style="editorial"] .stamp {
           <span class="sort-item" data-bin="1">W and Y</span>
           <span class="sort-item" data-bin="1">K and Q</span>
         </div>
-        <p class="feedback" data-explain="The four on the left are the ones that actually collide in English letter names, and between them they account for most misspelled Section 1 answers. English <strong>A</strong> sounds like the E of most European alphabets, and English <strong>E</strong> like their I, so A and E, and E and I, are swapped by anyone hearing with their own alphabet; <strong>G</strong> and <strong>J</strong> share their opening sound and differ only in the vowel; <strong>M</strong> and <strong>N</strong> differ only in the final nasal. W and Y, and K and Q, sound nothing alike once said in full &mdash; which is why nobody mishears them."></p>
+        <p class="feedback" data-explain="pairsWhy"></p>
       </div>
     </section>
 
@@ -2123,6 +2156,11 @@ const UI_I18N = {
     fbAnswer: 'Answer:',
     fbCorrect: 'Correct.',
     fbWrong: 'Not quite.',
+    g1why: "\"Double oh\" is two noughts: 004713. A candidate counting six separate digits never hears six.",
+    g2why: "Thirteen fifty, then \"not thirty, thirteen\": the pair that costs more marks than any other number in English.",
+    g3why: "The fourteenth. Ordinals run together at speed &mdash; fourteenth and fortieth come out close, and only one of them is a real date.",
+    g4why: "Eight eighty. English says a room number in pairs rather than as a whole number, which is why \"eight hundred and eighty\" is what a learner expects and never what they hear.",
+    g5why: "Eighteen. Twenty is the full price and it is said first; the gap asks for the early-booking price, so the figure tied to that condition is the one to write.",
     mcEyebrow: "Drill 4 &middot; The conventions",
     mcTitle: "What does English actually do here?",
     numAudEyebrow: "Drill 1 &middot; The recording",
@@ -2131,7 +2169,10 @@ const UI_I18N = {
     numEyebrow: "Drill 1 &middot; Numbers",
     numHint: "Write figures, not words. Two of these are said in a way English learners are rarely taught.",
     numTitle: "Write ONE NUMBER in each gap",
+    pairsWhy: "The four on the left are the ones that actually collide in English letter names, and between them they account for most misspelled Section 1 answers. English <strong>A</strong> sounds like the E of most European alphabets, and English <strong>E</strong> like their I, so A and E, and E and I, are swapped by anyone hearing with their own alphabet; <strong>G</strong> and <strong>J</strong> share their opening sound and differ only in the vowel; <strong>M</strong> and <strong>N</strong> differ only in the final nasal. W and Y, and K and Q, sound nothing alike once said in full &mdash; which is why nobody mishears them.",
     resNext: 'Recognising the language is half of it. Now produce it →',
+    s1why: "Hargreaves. The traps are the vowels &mdash; an A, then E and A together &mdash; which learners swap because their own alphabets name them differently, and the G, which is easily written as J.",
+    s2why: "Ffion, with a double F. When a speaker says \"double\" before a letter it is two of them &mdash; the same convention as \"double oh\" in a number, which is why the two drills belong in one lesson.",
     scoreLabel: 'Score',
     slideOf: (a,b)=>`${a} / ${b}`,
     sortBin1: "Sound alike",
@@ -2206,6 +2247,11 @@ const UI_I18N = {
     fbAnswer: 'Antwort:',
     fbCorrect: 'Richtig.',
     fbWrong: 'Nicht ganz.',
+    g1why: "„Double oh“ sind zwei Nullen: 004713. Wer sechs einzelne Ziffern zählt, hört nie sechs.",
+    g2why: "Dreizehn fünfzig, dann „not thirty, thirteen“: das Paar, das mehr Punkte kostet als jede andere Zahl im Englischen.",
+    g3why: "Der Vierzehnte. Ordnungszahlen verschwimmen im Tempo &mdash; fourteenth und fortieth klingen ähnlich, und nur eines davon ist ein echtes Datum.",
+    g4why: "Eight eighty. Im Englischen sagt man Zimmernummern paarweise statt als ganze Zahl &mdash; deshalb erwarten Lernende „eight hundred and eighty“ und hören es nie.",
+    g5why: "Achtzehn. Zwanzig ist der volle Preis und kommt zuerst; die Lücke fragt nach dem Frühbucherpreis, also schreibst du die Zahl, die an diese Bedingung geknüpft ist.",
     mcEyebrow: "Übung 4 &middot; Die Konventionen",
     mcTitle: "Was macht das Englische hier eigentlich?",
     numAudEyebrow: "Übung 1 &middot; Die Aufnahme",
@@ -2214,7 +2260,10 @@ const UI_I18N = {
     numEyebrow: "Übung 1 &middot; Zahlen",
     numHint: "Schreib Ziffern, keine Wörter. Zwei davon werden so gesagt, wie es Englischlernenden selten beigebracht wird.",
     numTitle: "Schreibe EINE ZAHL in jede Lücke",
+    pairsWhy: "Die vier links sind die, die bei englischen Buchstabennamen wirklich kollidieren, und auf sie gehen die meisten falsch geschriebenen Antworten in Section 1 zurück. Das englische <strong>A</strong> klingt wie das deutsche E und das englische <strong>E</strong> wie das deutsche I, also werden A und E sowie E und I von allen vertauscht, die mit ihrem eigenen Alphabet hören; <strong>G</strong> und <strong>J</strong> beginnen gleich und unterscheiden sich nur im Vokal; <strong>M</strong> und <strong>N</strong> nur im Nasal am Ende. W und Y sowie K und Q klingen, voll ausgesprochen, völlig verschieden &mdash; deshalb verhört sich dabei niemand.",
     resNext: 'Die Sprache zu erkennen ist die halbe Miete. Jetzt anwenden →',
+    s1why: "Hargreaves. Die Fallen sind die Vokale &mdash; ein A, dann E und A zusammen &mdash;, die Lernende vertauschen, weil ihr eigenes Alphabet sie anders benennt, und das G, das man leicht als J schreibt.",
+    s2why: "Ffion, mit doppeltem F. Sagt jemand „double“ vor einem Buchstaben, sind es zwei davon &mdash; dieselbe Konvention wie „double oh“ bei einer Zahl, und deshalb gehören die beiden Übungen in eine Lektion.",
     scoreLabel: 'Punkte',
     slideOf: (a,b)=>`${a} / ${b}`,
     sortBin1: "Klingen gleich",
@@ -2289,6 +2338,11 @@ const UI_I18N = {
     fbAnswer: 'Respuesta:',
     fbCorrect: 'Correcto.',
     fbWrong: 'No exactamente.',
+    g1why: "«Double oh» son dos ceros: 004713. Quien cuenta seis cifras sueltas nunca oye seis.",
+    g2why: "Trece cincuenta, y luego «not thirty, thirteen»: la pareja que más puntos cuesta de todos los números en inglés.",
+    g3why: "El catorce. Los ordinales se funden al hablar rápido: fourteenth y fortieth suenan parecidos, y solo uno de ellos es una fecha real.",
+    g4why: "Eight eighty. En inglés un número de habitación se dice por parejas, no como número entero; por eso quien aprende espera «eight hundred and eighty» y nunca lo oye.",
+    g5why: "Dieciocho. Veinte es el precio completo y se dice primero; el hueco pide el precio con reserva anticipada, así que hay que escribir la cifra ligada a esa condición.",
     mcEyebrow: "Ejercicio 4 &middot; Las convenciones",
     mcTitle: "¿Qué hace el inglés aquí en realidad?",
     numAudEyebrow: "Ejercicio 1 &middot; La grabación",
@@ -2297,7 +2351,10 @@ const UI_I18N = {
     numEyebrow: "Ejercicio 1 &middot; Números",
     numHint: "Escribe cifras, no palabras. Dos de estos se dicen de una forma que rara vez se enseña.",
     numTitle: "Escribe UN NÚMERO en cada hueco",
+    pairsWhy: "Las cuatro de la izquierda son las que de verdad chocan en los nombres de las letras en inglés, y entre ellas explican la mayoría de las respuestas mal escritas de la Section 1. La <strong>A</strong> inglesa suena como la E española, y la <strong>E</strong> inglesa como la I española, así que A y E, y E e I, las intercambia cualquiera que oiga con su propio alfabeto; <strong>G</strong> y <strong>J</strong> empiezan igual y solo se diferencian en la vocal; <strong>M</strong> y <strong>N</strong>, solo en la nasal final. W e Y, y K y Q, no se parecen en nada dichas enteras, y por eso nadie las confunde.",
     resNext: 'Reconocer el lenguaje es solo la mitad. Ahora prodúcelo →',
+    s1why: "Hargreaves. Las trampas son las vocales (una A, y luego E y A juntas), que se intercambian porque el alfabeto propio las nombra de otra manera, y la G, que es fácil escribir como J.",
+    s2why: "Ffion, con doble F. Cuando alguien dice «double» delante de una letra, son dos: la misma convención que «double oh» en un número, y por eso los dos ejercicios van en la misma lección.",
     scoreLabel: 'Puntuación',
     slideOf: (a,b)=>`${a} / ${b}`,
     sortBin1: "Suenan igual",
