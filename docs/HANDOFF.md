@@ -79,6 +79,17 @@ run, it would have recreated a second Kraken in the camp. It stays as the
 pattern its folder is copied from, and the tree is tagged
 `archive/kraken-black-tide-v1`.
 
+**Two camp endings fixed on the way.** Running the camp checker to prove the
+engine change broke nothing found Frankenstein's `p1_end_alive` covering the
+Creature's eyes 37%, and Lost Yellow Road's `end_missing` / `end_failed`
+covering the road 26%, both in Japanese on a 1920×940 window. Neither was
+today's change: the same page from before 09-22 measures the same 37%. The
+cause is `9d1b7d2`, which gave every ending a CAMP MAP button and so a taller
+panel. Frankenstein's goes to width 84 (shorter: 0% at 16:9, 12% wide);
+Lost Yellow Road's to width 40 (off the road's middle: 17% wide). **Any
+change that adds a row to every ending needs the panel checker run on every
+camp page**, because an ending's glow is tuned to the panel's old height.
+
 ### Still open
 
 - On a phone the panel is a bottom sheet over the lower half of the plate, so
