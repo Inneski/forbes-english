@@ -59,6 +59,12 @@ CHIPS = ['write the names down', 'where they end up', 'suggested &ne; decided',
 
 BG_BRIEF, BG_AUDIO, BG_WHO, BG_DETAIL = ('bg02.jpg', 'bg03.jpg',
                                          'bg04.jpg', 'bg05.jpg')
+# Each explanation goes out as an i18n key so it translates; the English is
+# registered from the data module by i18n_ieltslisten_s3.
+DEC_KEYED = [(s, a, 'd%dwhy' % (i + 1)) for i, (s, a, _) in enumerate(DECISIONS)]
+DEC_SLIDES = [DEC_KEYED[:2], DEC_KEYED[2:]]
+
+
 def one(html):
     """A lone multiple-choice slide: drop the "1 / 1" counter from its eyebrow."""
     return html.replace(' &middot; 1 / 1</div>', '</div>')
@@ -132,7 +138,8 @@ def build(make_audio=False):
                   'playing while you answer, and you hear it once.',
                   AUDIO, label, folder=F, bg=BG_AUDIO)
 
-        + one(D.gap(1, 1, TOPIC, TOPIC_BANK,
+        + one(D.gap(1, 1, [(s, a, 'g1why') for s, a, _ in TOPIC],
+                    TOPIC_BANK,
                 'topicEyebrow', 'Question 1 &middot; The project',
                 'notesTitle', 'Write ONE WORD AND/OR A NUMBER in each gap',
                 folder=F, bg=BG_WHO,
@@ -153,22 +160,27 @@ def build(make_audio=False):
                   'whoHint',
                   'Click a position, then a person. What counts is where each '
                   'speaker finishes, not where they started.',
-                  WHO_WHY, folder=F, bg=BG_WHO)
+                  'whoWhy', folder=F, bg=BG_WHO)
 
         + one(D.mc(1, 1, MC_B[0], 'mcbEyebrow',
                    'Question 7 &middot; The deadline', 'mcTitle',
                    'What happened in the discussion?',
                    folder=F, bg=BG_DETAIL))
 
-        + one(D.gap(1, 1, DECISIONS, DECISIONS_BANK,
-                'notesEyebrow',
-                'Questions 8&ndash;10 &middot; The tutorial notes',
-                'notesTitle', 'Write ONE WORD AND/OR A NUMBER in each gap',
-                folder=F, bg=BG_DETAIL,
-                hint_key='notesHint',
-                hint='All three numbers are agreed out loud. One of them is '
-                     'argued about at length and then kept unchanged.',
-                width=210, size=19))
+        # Two and one. All three on one slide ran 12px off the canvas in
+        # Spanish once the explanations translated. HOUSE-STYLE §6.
+        + "".join(D.gap(n + 1, len(DEC_SLIDES), rows, DECISIONS_BANK,
+                        'notesEyebrow',
+                        'Questions 8&ndash;10 &middot; The tutorial notes',
+                        'notesTitle',
+                        'Write ONE WORD AND/OR A NUMBER in each gap',
+                        folder=F, bg=BG_DETAIL,
+                        hint_key='notesHint',
+                        hint='All three numbers are agreed out loud. One of '
+                             'them is argued about at length and then kept '
+                             'unchanged.',
+                        width=210, size=19)
+                  for n, rows in enumerate(DEC_SLIDES))
 
         + "".join(D.mc(i + 1, len(MC_C), q, 'mcEyebrow',
                        'Questions 11&ndash;12 &middot; The reading', 'mcTitle',

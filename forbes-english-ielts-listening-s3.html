@@ -1696,6 +1696,39 @@ html[data-style="editorial"] .match-item,
 html[data-style="editorial"] .sort-item {
   background: var(--surface); border: 2px solid var(--border);
 }
+
+/* ── answered states, restated at the editorial specificity ──────────
+   The base rules above are `html[data-style="editorial"] .opt`, which is
+   (0,2,1). The default answered states are `.opt.wrong` / `.opt.correct`,
+   which are (0,2,0). So the base rule WON, and its `background: var(--surface)`
+   plus `border: 2px solid …` repainted every answered option back to neutral.
+
+   The engine was never broken: measured on the Watts deck, a clicked wrong
+   option carried `class="opt wrong"` and the feedback read "Not quite …",
+   while the computed colours of the wrong, the correct and an untouched
+   option were all identical — rgb(255,255,255) on rgb(190,208,203). A
+   learner got no red, no green, and no sight of the right answer.
+
+   Same trap for .match-item and .sort-item, whose base rule uses the `border`
+   shorthand and so also outranks their own .picked/.done/.miss border-colors.
+   Restating the states here is the whole fix; nothing in the engine changes. */
+html[data-style="editorial"] .opt.correct {
+  border-color: var(--ok);
+  background: color-mix(in srgb, var(--ok) 20%, var(--surface));
+}
+html[data-style="editorial"] .opt.wrong {
+  border-color: var(--no);
+  background: color-mix(in srgb, var(--no) 18%, var(--surface));
+}
+html[data-style="editorial"] .match-item.picked,
+html[data-style="editorial"] .sort-item.picked {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 22%, var(--surface));
+}
+html[data-style="editorial"] .match-item.done,
+html[data-style="editorial"] .sort-item.placed { border-color: var(--ok); }
+html[data-style="editorial"] .match-item.miss,
+html[data-style="editorial"] .sort-item.miss { border-color: var(--no); }
 /* The rule is a thing a builder PLACES, not something every heading grows.
    The source deck has it under the cover title and nowhere else; putting it
    on all thirty-two slides was mine and it was wrong. Emit
@@ -1810,7 +1843,7 @@ html[data-style="editorial"] .stamp {
         <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="topicHint">It is given in the first few seconds, before anyone disagrees about anything.</p>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">How first-year students use the library after <input class="gap" data-answer="10|ten|10pm|10 pm" aria-label="gap" style="width:210px"> at night</p>
-          <p class="feedback" data-explain="Ten, in Maya&rsquo;s first sentence. A Section 3 recording names its topic in the opening seconds, before anyone disagrees about anything."></p>
+          <p class="feedback" data-explain="g1why"></p>
         </div>
         <div style="margin-top:10px">
           <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
@@ -1849,7 +1882,7 @@ html[data-style="editorial"] .stamp {
         <div class="match-pair" data-term="The worry is how MANY reply" data-def="Ravi, who thinks he is agreeing"></div>
         <div class="match-pair" data-term="The worry is how FAST they reply" data-def="Maya, correcting Ravi"></div>
         <div class="match-grid"></div>
-        <p class="feedback" data-explain="Each person is named with the move they make, because the move is how you catch the view. The tutor&rsquo;s advice is heard and declined; Maya calls sixty fine <em>in principle</em> and takes it straight back; and &quot;response rate&quot; is said by both students about two different things, which the tutor then separates for you: &quot;Ravi&rsquo;s talking about how many; Maya&rsquo;s talking about how quickly.&quot;"></p>
+        <p class="feedback" data-explain="whoWhy"></p>
       </div>
     </section>
 
@@ -1872,22 +1905,35 @@ html[data-style="editorial"] .stamp {
 
     <section class="slide" data-type="gap" data-bg="ielts-listen-s3/bg05.jpg">
       <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="notesEyebrow">Questions 8&ndash;10 &middot; The tutorial notes</span></div>
+        <div class="eyebrow"><span data-i18n="notesEyebrow">Questions 8&ndash;10 &middot; The tutorial notes</span> &middot; 1 / 2</div>
         <h2 class="slide-title" data-i18n="notesTitle">Write ONE WORD AND/OR A NUMBER in each gap</h2>
       </div></div>
       <div class="slide-body">
         <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="notesHint">All three numbers are agreed out loud. One of them is argued about at length and then kept unchanged.</p>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">Send one reminder <input class="gap" data-answer="3|three" aria-label="gap" style="width:210px"> days before the close</p>
-          <p class="feedback" data-explain="Three days. The tutor gives the number and the students never repeat it &mdash; though the tutor does, once, in the summary at the end."></p>
+          <p class="feedback" data-explain="d1why"></p>
         </div>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">Pilot the questionnaire with <input class="gap" data-answer="10|ten" aria-label="gap" style="width:210px"> people first</p>
-          <p class="feedback" data-explain="Ten. Ravi proposes it and Maya agrees. She says she was against it at first, but the answer is where she ends up."></p>
+          <p class="feedback" data-explain="d2why"></p>
         </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap" data-bg="ielts-listen-s3/bg05.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="notesEyebrow">Questions 8&ndash;10 &middot; The tutorial notes</span> &middot; 2 / 2</div>
+        <h2 class="slide-title" data-i18n="notesTitle">Write ONE WORD AND/OR A NUMBER in each gap</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="notesHint">All three numbers are agreed out loud. One of them is argued about at length and then kept unchanged.</p>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">Final sample size: <input class="gap" data-answer="60|sixty" aria-label="gap" style="width:210px"> respondents</p>
-          <p class="feedback" data-explain="Sixty, unchanged. It is questioned at length and then kept &mdash; a discussion that argues about a number and does not change it is a standard Section 3 move."></p>
+          <p class="feedback" data-explain="d3why"></p>
         </div>
         <div style="margin-top:10px">
           <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
@@ -2105,9 +2151,13 @@ const UI_I18N = {
     chipLevel: "C1",
     coverSub: "Three speakers, two of whom change their minds, and every question keyed to a person",
     coverTitle: "Section 3 &mdash; <em>the academic discussion</em>",
+    d1why: "Three days. The tutor gives the number and the students never repeat it &mdash; though the tutor does, once, in the summary at the end.",
+    d2why: "Ten. Ravi proposes it and Maya agrees. She says she was against it at first, but the answer is where she ends up.",
+    d3why: "Sixty, unchanged. It is questioned at length and then kept &mdash; a discussion that argues about a number and does not change it is a standard Section 3 move.",
     fbAnswer: 'Answer:',
     fbCorrect: 'Correct.',
     fbWrong: 'Not quite.',
+    g1why: "Ten, in Maya&rsquo;s first sentence. A Section 3 recording names its topic in the opening seconds, before anyone disagrees about anything.",
     mcEyebrow: "Questions 11&ndash;12 &middot; The reading",
     mcTitle: "What happened in the discussion?",
     mcaEyebrow: "Question 2 &middot; The method",
@@ -2149,6 +2199,7 @@ const UI_I18N = {
     whoEyebrow: "Questions 3&ndash;6 &middot; Who holds this view?",
     whoHint: "Click a position, then a person. What counts is where each speaker finishes, not where they started.",
     whoTitle: "Match each position to the person who ends up holding it",
+    whoWhy: "Each person is named with the move they make, because the move is how you catch the view. The tutor&rsquo;s advice is heard and declined; Maya calls sixty fine <em>in principle</em> and takes it straight back; and \"response rate\" is said by both students about two different things, which the tutor then separates for you: \"Ravi&rsquo;s talking about how many; Maya&rsquo;s talking about how quickly.\"",
     wordCount: (n)=>`${n} ${n===1?'word':'words'}`,
     branchLocked: 'Your ledger does not support this ending',
     glossHide: 'Hide',
@@ -2195,9 +2246,13 @@ const UI_I18N = {
     chipLevel: "C1",
     coverSub: "Drei Sprecher, zwei davon ändern ihre Meinung, und jede Frage ist an eine Person gebunden",
     coverTitle: "Section 3 &mdash; <em>die akademische Diskussion</em>",
+    d1why: "Drei Tage. Der Tutor nennt die Zahl, und die Studierenden wiederholen sie nie &mdash; der Tutor aber schon, einmal, in der Zusammenfassung am Ende.",
+    d2why: "Zehn. Ravi schlägt es vor, und Maya stimmt zu. Sie sagt, sie sei zuerst dagegen gewesen, aber die Antwort ist, wo sie am Ende steht.",
+    d3why: "Sechzig, unverändert. Die Zahl wird lange infrage gestellt und dann beibehalten &mdash; eine Diskussion, die über eine Zahl streitet und sie nicht ändert, ist ein typischer Zug in Section 3.",
     fbAnswer: 'Antwort:',
     fbCorrect: 'Richtig.',
     fbWrong: 'Nicht ganz.',
+    g1why: "Zehn, in Mayas erstem Satz. Eine Section-3-Aufnahme nennt ihr Thema in den ersten Sekunden, bevor irgendjemand irgendetwas bestreitet.",
     mcEyebrow: "Fragen 11&ndash;12 &middot; Die Lektüre",
     mcTitle: "Was ist in der Diskussion passiert?",
     mcaEyebrow: "Frage 2 &middot; Die Methode",
@@ -2239,6 +2294,7 @@ const UI_I18N = {
     whoEyebrow: "Fragen 3&ndash;6 &middot; Wer vertritt das?",
     whoHint: "Klicke eine Position an, dann eine Person. Es zählt, wo jemand endet, nicht wo er angefangen hat.",
     whoTitle: "Ordne jede Position der Person zu, die sie am Ende vertritt",
+    whoWhy: "Bei jeder Person steht der Zug, den sie macht, denn am Zug erkennst du die Meinung. Der Rat des Tutors wird gehört und abgelehnt; Maya nennt sechzig <em>in principle</em> in Ordnung und nimmt es sofort zurück; und „response rate“ sagen beide Studierenden über zwei verschiedene Dinge, die der Tutor dann für dich auseinanderhält: „Ravi’s talking about how many; Maya’s talking about how quickly.“",
     wordCount: (n)=>`${n} ${n===1?'Wort':'Wörter'}`,
     branchLocked: 'Dein Protokoll trägt dieses Ende nicht',
     glossHide: 'Ausblenden',
@@ -2285,9 +2341,13 @@ const UI_I18N = {
     chipLevel: "C1",
     coverSub: "Tres hablantes, dos de los cuales cambian de opinión, y cada pregunta atada a una persona",
     coverTitle: "Section 3 &mdash; <em>el debate académico</em>",
+    d1why: "Tres días. El tutor da el número y los estudiantes no lo repiten nunca, aunque el tutor sí lo hace, una vez, en el resumen del final.",
+    d2why: "Diez. Ravi lo propone y Maya está de acuerdo. Dice que al principio estaba en contra, pero la respuesta es donde acaba.",
+    d3why: "Sesenta, sin cambios. Se discute largo y tendido y luego se mantiene: una conversación que discute un número y no lo cambia es un recurso típico de la Section 3.",
     fbAnswer: 'Respuesta:',
     fbCorrect: 'Correcto.',
     fbWrong: 'No exactamente.',
+    g1why: "Diez, en la primera frase de Maya. Una grabación de la Section 3 dice su tema en los primeros segundos, antes de que nadie discrepe de nada.",
     mcEyebrow: "Preguntas 11&ndash;12 &middot; La lectura",
     mcTitle: "¿Qué pasó en el debate?",
     mcaEyebrow: "Pregunta 2 &middot; El método",
@@ -2329,6 +2389,7 @@ const UI_I18N = {
     whoEyebrow: "Preguntas 3&ndash;6 &middot; ¿De quién es esta postura?",
     whoHint: "Haz clic en una postura y luego en una persona. Cuenta dónde acaba cada uno, no dónde empezó.",
     whoTitle: "Empareja cada postura con quien acaba sosteniéndola",
+    whoWhy: "Cada persona aparece con el movimiento que hace, porque el movimiento es lo que te deja captar su postura. El consejo del tutor se escucha y se rechaza; Maya dice que sesenta está bien <em>in principle</em> y lo retira enseguida; y «response rate» lo dicen los dos estudiantes sobre dos cosas distintas, que el tutor luego te separa: «Ravi’s talking about how many; Maya’s talking about how quickly».",
     wordCount: (n)=>`${n} ${n===1?'palabra':'palabras'}`,
     branchLocked: 'Tu registro no admite este final',
     glossHide: 'Ocultar',

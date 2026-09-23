@@ -148,6 +148,15 @@ T['en'] = dict(
     actPlaceholder='Suggested: … Decided: … Maya now holds that …',
 )
 
+# The explanations for Questions 1, 3-6 and 8-10 sit beside their answers in
+# the data module, which keeps the only copy of the English; they were plain
+# strings there until 2026-09-23, so German and Spanish learners read them in
+# English.
+from ieltslisten_s3_data import TOPIC, WHO_WHY, DECISIONS
+T['en']['g1why'] = TOPIC[0][2]
+T['en']['whoWhy'] = WHO_WHY
+T['en'].update(('d%dwhy' % (i + 1), r[2]) for i, r in enumerate(DECISIONS))
+
 # ── German ─────────────────────────────────────────────────────────────
 T['de'] = dict(
     coverTitle='Section 3 &mdash; <em>die akademische Diskussion</em>',
@@ -259,6 +268,25 @@ T['de'] = dict(
                   'welche Meinung vertritt. Eine Person muss die Meinung '
                   'gewechselt haben, ein Vorschlag abgelehnt sein.',
     actPlaceholder='Suggested: … Decided: … Maya now holds that …',
+
+    # Questions 1, 3-6, 8-10: the English is registered from the data module.
+    g1why='Zehn, in Mayas erstem Satz. Eine Section-3-Aufnahme nennt ihr Thema '
+          'in den ersten Sekunden, bevor irgendjemand irgendetwas bestreitet.',
+    whoWhy='Bei jeder Person steht der Zug, den sie macht, denn am Zug '
+           'erkennst du die Meinung. Der Rat des Tutors wird gehört und '
+           'abgelehnt; Maya nennt sechzig <em>in principle</em> in Ordnung und '
+           'nimmt es sofort zurück; und „response rate“ sagen beide '
+           'Studierenden über zwei verschiedene Dinge, die der Tutor dann für '
+           'dich auseinanderhält: „Ravi’s talking about how many; Maya’s '
+           'talking about how quickly.“',
+    d1why='Drei Tage. Der Tutor nennt die Zahl, und die Studierenden '
+          'wiederholen sie nie &mdash; der Tutor aber schon, einmal, in der '
+          'Zusammenfassung am Ende.',
+    d2why='Zehn. Ravi schlägt es vor, und Maya stimmt zu. Sie sagt, sie sei '
+          'zuerst dagegen gewesen, aber die Antwort ist, wo sie am Ende steht.',
+    d3why='Sechzig, unverändert. Die Zahl wird lange infrage gestellt und '
+          'dann beibehalten &mdash; eine Diskussion, die über eine Zahl '
+          'streitet und sie nicht ändert, ist ein typischer Zug in Section 3.',
 )
 
 # ── Spanish ────────────────────────────────────────────────────────────
@@ -369,6 +397,25 @@ T['es'] = dict(
                   'persona debe figurar como que cambió de postura, y una '
                   'sugerencia como rechazada.',
     actPlaceholder='Suggested: … Decided: … Maya now holds that …',
+
+    # Questions 1, 3-6, 8-10: the English is registered from the data module.
+    g1why='Diez, en la primera frase de Maya. Una grabación de la Section 3 '
+          'dice su tema en los primeros segundos, antes de que nadie discrepe '
+          'de nada.',
+    whoWhy='Cada persona aparece con el movimiento que hace, porque el '
+           'movimiento es lo que te deja captar su postura. El consejo del '
+           'tutor se escucha y se rechaza; Maya dice que sesenta está bien '
+           '<em>in principle</em> y lo retira enseguida; y «response rate» lo '
+           'dicen los dos estudiantes sobre dos cosas distintas, que el tutor '
+           'luego te separa: «Ravi’s talking about how many; Maya’s talking '
+           'about how quickly».',
+    d1why='Tres días. El tutor da el número y los estudiantes no lo repiten '
+          'nunca, aunque el tutor sí lo hace, una vez, en el resumen del final.',
+    d2why='Diez. Ravi lo propone y Maya está de acuerdo. Dice que al principio '
+          'estaba en contra, pero la respuesta es donde acaba.',
+    d3why='Sesenta, sin cambios. Se discute largo y tendido y luego se '
+          'mantiene: una conversación que discute un número y no lo cambia es '
+          'un recurso típico de la Section 3.',
 )
 
 
