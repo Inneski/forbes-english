@@ -1696,6 +1696,39 @@ html[data-style="editorial"] .match-item,
 html[data-style="editorial"] .sort-item {
   background: var(--surface); border: 2px solid var(--border);
 }
+
+/* ── answered states, restated at the editorial specificity ──────────
+   The base rules above are `html[data-style="editorial"] .opt`, which is
+   (0,2,1). The default answered states are `.opt.wrong` / `.opt.correct`,
+   which are (0,2,0). So the base rule WON, and its `background: var(--surface)`
+   plus `border: 2px solid …` repainted every answered option back to neutral.
+
+   The engine was never broken: measured on the Watts deck, a clicked wrong
+   option carried `class="opt wrong"` and the feedback read "Not quite …",
+   while the computed colours of the wrong, the correct and an untouched
+   option were all identical — rgb(255,255,255) on rgb(190,208,203). A
+   learner got no red, no green, and no sight of the right answer.
+
+   Same trap for .match-item and .sort-item, whose base rule uses the `border`
+   shorthand and so also outranks their own .picked/.done/.miss border-colors.
+   Restating the states here is the whole fix; nothing in the engine changes. */
+html[data-style="editorial"] .opt.correct {
+  border-color: var(--ok);
+  background: color-mix(in srgb, var(--ok) 20%, var(--surface));
+}
+html[data-style="editorial"] .opt.wrong {
+  border-color: var(--no);
+  background: color-mix(in srgb, var(--no) 18%, var(--surface));
+}
+html[data-style="editorial"] .match-item.picked,
+html[data-style="editorial"] .sort-item.picked {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 22%, var(--surface));
+}
+html[data-style="editorial"] .match-item.done,
+html[data-style="editorial"] .sort-item.placed { border-color: var(--ok); }
+html[data-style="editorial"] .match-item.miss,
+html[data-style="editorial"] .sort-item.miss { border-color: var(--no); }
 /* The rule is a thing a builder PLACES, not something every heading grows.
    The source deck has it under the cover title and nowhere else; putting it
    on all thirty-two slides was mine and it was wrong. Emit
@@ -1822,9 +1855,9 @@ html[data-style="editorial"] .stamp {
         <p class="q-ctx"><em>The museum opened in 1897 and has never closed to the public, not even during the two wars.</em></p>
         <p class="q-stem">Statement: the museum remained open throughout both wars.</p>
         <div class="opts">
-          <button class="opt" data-correct>True &mdash; the passage clearly states this</button>
-          <button class="opt">False &mdash; the passage clearly denies this</button>
-          <button class="opt">Not Given &mdash; the passage does not say</button>
+          <button class="opt" data-correct><span data-i18n="optT">True &mdash; the passage clearly states this</span></button>
+          <button class="opt"><span data-i18n="optF">False &mdash; the passage clearly denies this</span></button>
+          <button class="opt"><span data-i18n="optN">Not Given &mdash; the passage does not say</span></button>
         </div>
         <p class="feedback" data-explain="r1why"></p>
       </div>
@@ -1839,9 +1872,9 @@ html[data-style="editorial"] .stamp {
         <p class="q-ctx"><em>Ferries leave the harbour twice a day in summer and once a day for the rest of the year.</em></p>
         <p class="q-stem">Statement: there are three summer sailings a day.</p>
         <div class="opts">
-          <button class="opt">True &mdash; the passage clearly states this</button>
-          <button class="opt" data-correct>False &mdash; the passage clearly denies this</button>
-          <button class="opt">Not Given &mdash; the passage does not say</button>
+          <button class="opt"><span data-i18n="optT">True &mdash; the passage clearly states this</span></button>
+          <button class="opt" data-correct><span data-i18n="optF">False &mdash; the passage clearly denies this</span></button>
+          <button class="opt"><span data-i18n="optN">Not Given &mdash; the passage does not say</span></button>
         </div>
         <p class="feedback" data-explain="r2why"></p>
       </div>
@@ -1856,9 +1889,9 @@ html[data-style="editorial"] .stamp {
         <p class="q-ctx"><em>The library holds forty thousand volumes, a quarter of them in Welsh.</em></p>
         <p class="q-stem">Statement: the library intends to enlarge its Welsh holdings.</p>
         <div class="opts">
-          <button class="opt">True &mdash; the passage clearly states this</button>
-          <button class="opt">False &mdash; the passage clearly denies this</button>
-          <button class="opt" data-correct>Not Given &mdash; the passage does not say</button>
+          <button class="opt"><span data-i18n="optT">True &mdash; the passage clearly states this</span></button>
+          <button class="opt"><span data-i18n="optF">False &mdash; the passage clearly denies this</span></button>
+          <button class="opt" data-correct><span data-i18n="optN">Not Given &mdash; the passage does not say</span></button>
         </div>
         <p class="feedback" data-explain="r3why"></p>
       </div>
@@ -1873,9 +1906,9 @@ html[data-style="editorial"] .stamp {
         <p class="q-ctx"><em>Rebuilding began in 1954 and the tower was finished two years later, ahead of schedule.</em></p>
         <p class="q-stem">Statement: the tower was completed in 1956.</p>
         <div class="opts">
-          <button class="opt" data-correct>True &mdash; the passage clearly states this</button>
-          <button class="opt">False &mdash; the passage clearly denies this</button>
-          <button class="opt">Not Given &mdash; the passage does not say</button>
+          <button class="opt" data-correct><span data-i18n="optT">True &mdash; the passage clearly states this</span></button>
+          <button class="opt"><span data-i18n="optF">False &mdash; the passage clearly denies this</span></button>
+          <button class="opt"><span data-i18n="optN">Not Given &mdash; the passage does not say</span></button>
         </div>
         <p class="feedback" data-explain="r4why"></p>
       </div>
@@ -1916,9 +1949,9 @@ html[data-style="editorial"] .stamp {
         <p class="q-ctx"><em>Bees navigate largely by polarised light, which remains usable when the sun is behind cloud.</em></p>
         <p class="q-stem">Statement: bees cannot navigate on an overcast day.</p>
         <div class="opts">
-          <button class="opt">True &mdash; the passage clearly states this</button>
-          <button class="opt" data-correct>False &mdash; the passage clearly denies this</button>
-          <button class="opt">Not Given &mdash; the passage does not say</button>
+          <button class="opt"><span data-i18n="optT">True &mdash; the passage clearly states this</span></button>
+          <button class="opt" data-correct><span data-i18n="optF">False &mdash; the passage clearly denies this</span></button>
+          <button class="opt"><span data-i18n="optN">Not Given &mdash; the passage does not say</span></button>
         </div>
         <p class="feedback" data-explain="r5why"></p>
       </div>
@@ -1933,9 +1966,9 @@ html[data-style="editorial"] .stamp {
         <p class="q-ctx"><em>The mill was the only employer for miles, and the village depended on it entirely.</em></p>
         <p class="q-stem">Statement: the mill was sold to a competitor in 1902.</p>
         <div class="opts">
-          <button class="opt">True &mdash; the passage clearly states this</button>
-          <button class="opt">False &mdash; the passage clearly denies this</button>
-          <button class="opt" data-correct>Not Given &mdash; the passage does not say</button>
+          <button class="opt"><span data-i18n="optT">True &mdash; the passage clearly states this</span></button>
+          <button class="opt"><span data-i18n="optF">False &mdash; the passage clearly denies this</span></button>
+          <button class="opt" data-correct><span data-i18n="optN">Not Given &mdash; the passage does not say</span></button>
         </div>
         <p class="feedback" data-explain="r6why"></p>
       </div>
@@ -1950,9 +1983,9 @@ html[data-style="editorial"] .stamp {
         <p class="q-ctx"><em>Antarctica holds roughly seventy per cent of the world&rsquo;s fresh water, locked up as ice.</em></p>
         <p class="q-stem">Statement: most of the planet&rsquo;s fresh water is in Antarctica.</p>
         <div class="opts">
-          <button class="opt" data-correct>True &mdash; the passage clearly states this</button>
-          <button class="opt">False &mdash; the passage clearly denies this</button>
-          <button class="opt">Not Given &mdash; the passage does not say</button>
+          <button class="opt" data-correct><span data-i18n="optT">True &mdash; the passage clearly states this</span></button>
+          <button class="opt"><span data-i18n="optF">False &mdash; the passage clearly denies this</span></button>
+          <button class="opt"><span data-i18n="optN">Not Given &mdash; the passage does not say</span></button>
         </div>
         <p class="feedback" data-explain="r7why"></p>
       </div>
@@ -1967,9 +2000,9 @@ html[data-style="editorial"] .stamp {
         <p class="q-ctx"><em>The survey covered eight hundred households across four coastal districts.</em></p>
         <p class="q-stem">Statement: the survey was funded by the national government.</p>
         <div class="opts">
-          <button class="opt">True &mdash; the passage clearly states this</button>
-          <button class="opt">False &mdash; the passage clearly denies this</button>
-          <button class="opt" data-correct>Not Given &mdash; the passage does not say</button>
+          <button class="opt"><span data-i18n="optT">True &mdash; the passage clearly states this</span></button>
+          <button class="opt"><span data-i18n="optF">False &mdash; the passage clearly denies this</span></button>
+          <button class="opt" data-correct><span data-i18n="optN">Not Given &mdash; the passage does not say</span></button>
         </div>
         <p class="feedback" data-explain="r8why"></p>
       </div>
@@ -2010,9 +2043,9 @@ html[data-style="editorial"] .stamp {
         <p class="q-ctx"><em>Most of the islanders speak both languages at home.</em></p>
         <p class="q-stem">Statement: every islander speaks both languages at home.</p>
         <div class="opts">
-          <button class="opt">True &mdash; the passage clearly states this</button>
-          <button class="opt" data-correct>False &mdash; the passage clearly denies this</button>
-          <button class="opt">Not Given &mdash; the passage does not say</button>
+          <button class="opt"><span data-i18n="optT">True &mdash; the passage clearly states this</span></button>
+          <button class="opt" data-correct><span data-i18n="optF">False &mdash; the passage clearly denies this</span></button>
+          <button class="opt"><span data-i18n="optN">Not Given &mdash; the passage does not say</span></button>
         </div>
         <p class="feedback" data-explain="r9why"></p>
       </div>
@@ -2027,9 +2060,9 @@ html[data-style="editorial"] .stamp {
         <p class="q-ctx"><em>The drug may reduce recovery time in some patients, though the trial was small.</em></p>
         <p class="q-stem">Statement: the drug has been approved for general use.</p>
         <div class="opts">
-          <button class="opt">True &mdash; the passage clearly states this</button>
-          <button class="opt">False &mdash; the passage clearly denies this</button>
-          <button class="opt" data-correct>Not Given &mdash; the passage does not say</button>
+          <button class="opt"><span data-i18n="optT">True &mdash; the passage clearly states this</span></button>
+          <button class="opt"><span data-i18n="optF">False &mdash; the passage clearly denies this</span></button>
+          <button class="opt" data-correct><span data-i18n="optN">Not Given &mdash; the passage does not say</span></button>
         </div>
         <p class="feedback" data-explain="r10why"></p>
       </div>
@@ -2044,9 +2077,9 @@ html[data-style="editorial"] .stamp {
         <p class="q-ctx"><em>Rainfall in the valley is lower than on the coast, and has been for a century.</em></p>
         <p class="q-stem">Statement: the coast is wetter than the valley.</p>
         <div class="opts">
-          <button class="opt" data-correct>True &mdash; the passage clearly states this</button>
-          <button class="opt">False &mdash; the passage clearly denies this</button>
-          <button class="opt">Not Given &mdash; the passage does not say</button>
+          <button class="opt" data-correct><span data-i18n="optT">True &mdash; the passage clearly states this</span></button>
+          <button class="opt"><span data-i18n="optF">False &mdash; the passage clearly denies this</span></button>
+          <button class="opt"><span data-i18n="optN">Not Given &mdash; the passage does not say</span></button>
         </div>
         <p class="feedback" data-explain="r11why"></p>
       </div>
@@ -2061,9 +2094,9 @@ html[data-style="editorial"] .stamp {
         <p class="q-ctx"><em>The festival has run every summer since 1970, apart from two years in the 1980s.</em></p>
         <p class="q-stem">Statement: the festival has never once been cancelled.</p>
         <div class="opts">
-          <button class="opt">True &mdash; the passage clearly states this</button>
-          <button class="opt" data-correct>False &mdash; the passage clearly denies this</button>
-          <button class="opt">Not Given &mdash; the passage does not say</button>
+          <button class="opt"><span data-i18n="optT">True &mdash; the passage clearly states this</span></button>
+          <button class="opt" data-correct><span data-i18n="optF">False &mdash; the passage clearly denies this</span></button>
+          <button class="opt"><span data-i18n="optN">Not Given &mdash; the passage does not say</span></button>
         </div>
         <p class="feedback" data-explain="r12why"></p>
       </div>
@@ -2084,7 +2117,7 @@ html[data-style="editorial"] .stamp {
           <span class="sort-item" data-bin="1">The topic appears, but not this detail</span>
           <span class="sort-item" data-bin="1">You know it is true from outside the text</span>
         </div>
-        <p class="feedback" data-explain="The left column all name a <strong>sentence you could point at</strong>. The right column are all the ways a candidate reaches a verdict without one &mdash; inference, association, or general knowledge. That is the whole distinction: FALSE needs a line in the passage that says otherwise, and if you cannot put your finger on it, the answer is NOT GIVEN."></p>
+        <p class="feedback" data-explain="sortWhy"></p>
       </div>
     </section>
 
@@ -2238,6 +2271,9 @@ const UI_I18N = {
     mcbTitle: "What does this text actually say?",
     mccEyebrow: "Activity 3 · The word that decides it",
     mccTitle: "Most, all, may, never",
+    optF: "False &mdash; the passage clearly denies this",
+    optN: "Not Given &mdash; the passage does not say",
+    optT: "True &mdash; the passage clearly states this",
     r10why: "The passage hedges about recovery time and says nothing whatever about approval. Silence, not denial. NOT GIVEN.",
     r11why: "Less rain in the valley means a wetter coast &mdash; the same claim turned round. The words that carry it, <em>lower</em> and <em>wetter</em>, have nothing in common, which is why word-matching misses it. TRUE.",
     r12why: "<em>Apart from two years in the 1980s</em> is the line you point at. <em>Never once</em> cannot survive it. FALSE.",
@@ -2258,6 +2294,7 @@ const UI_I18N = {
     sortEyebrow: "Activity 4 · What tips you which way",
     sortHint: "Drag each one into a column &mdash; or click an item, then the column you want it in.",
     sortTitle: "Sort the six signals",
+    sortWhy: "Everything in the left column names a <strong>sentence you could point at</strong>. Everything in the right column is a way of reaching a verdict without one &mdash; inference, association, or general knowledge. That is the whole distinction: FALSE needs a line in the passage that says otherwise, and if you cannot put your finger on it, the answer is NOT GIVEN.",
     t1Eyebrow: "Before you start",
     t1Title: "Sixty minutes, three sections, no time at the end",
     t1ab: "Forty questions in sixty minutes, in three sections of about twenty minutes each. The third is usually the hardest &mdash; so a section that runs long is borrowing from the one that needs it most.",
@@ -2348,6 +2385,9 @@ const UI_I18N = {
     mcbTitle: "Was sagt dieser Text tatsächlich?",
     mccEyebrow: "Aktivität 3 · Das Wort, das entscheidet",
     mccTitle: "Most, all, may, never",
+    optF: "False &mdash; der Text bestreitet das klar",
+    optN: "Not Given &mdash; der Text sagt dazu nichts",
+    optT: "True &mdash; der Text sagt das klar",
     r10why: "Der Text schwächt bei der Genesungszeit ab und sagt zur Zulassung überhaupt nichts. Schweigen, nicht Widerspruch. NOT GIVEN.",
     r11why: "Weniger Regen im Tal heißt eine nassere Küste &mdash; dieselbe Aussage, umgedreht. Die tragenden Wörter, <em>lower</em> und <em>wetter</em>, haben nichts gemeinsam; deshalb versagt Wortabgleich hier. TRUE.",
     r12why: "<em>Apart from two years in the 1980s</em> ist die Zeile, auf die du zeigst. <em>Never once</em> überlebt sie nicht. FALSE.",
@@ -2368,6 +2408,7 @@ const UI_I18N = {
     sortEyebrow: "Aktivität 4 · Was wohin zeigt",
     sortHint: "Zieh jedes in eine Spalte &mdash; oder klicke ein Element an und dann die Spalte, in die es soll.",
     sortTitle: "Sortiere die sechs Signale",
+    sortWhy: "Alles in der linken Spalte nennt einen <strong>Satz, auf den du zeigen könntest</strong>. Alles in der rechten ist ein Weg, ohne einen solchen Satz zu einem Urteil zu kommen &mdash; Schlussfolgerung, Assoziation oder Allgemeinwissen. Das ist der ganze Unterschied: FALSE braucht eine Zeile im Text, die etwas anderes sagt, und wenn du nicht mit dem Finger darauf zeigen kannst, heißt die Antwort NOT GIVEN.",
     t1Eyebrow: "Bevor du beginnst",
     t1Title: "Sechzig Minuten, drei Teile, keine Zeit am Ende",
     t1ab: "Vierzig Fragen in sechzig Minuten, in drei Teilen zu je etwa zwanzig Minuten. Der dritte ist meist der schwerste &mdash; wer bei einem Teil überzieht, nimmt die Zeit genau dem weg, der sie braucht.",
@@ -2458,6 +2499,9 @@ const UI_I18N = {
     mcbTitle: "¿Qué dice realmente este texto?",
     mccEyebrow: "Actividad 3 · La palabra que decide",
     mccTitle: "Most, all, may, never",
+    optF: "False &mdash; el texto lo niega claramente",
+    optN: "Not Given &mdash; el texto no lo dice",
+    optT: "True &mdash; el texto lo dice claramente",
     r10why: "El texto matiza sobre el tiempo de recuperación y de la autorización no dice absolutamente nada. Silencio, no negación. NOT GIVEN.",
     r11why: "Que llueva menos en el valle es que la costa sea más húmeda: la misma afirmación del revés. Las palabras que la sostienen, <em>lower</em> y <em>wetter</em>, no tienen nada en común, y por eso cotejar palabras falla. TRUE.",
     r12why: "<em>Apart from two years in the 1980s</em> es la línea que señalas. <em>Never once</em> no sobrevive a eso. FALSE.",
@@ -2478,6 +2522,7 @@ const UI_I18N = {
     sortEyebrow: "Actividad 4 · Qué te inclina hacia dónde",
     sortHint: "Arrastra cada una a una columna &mdash; o haz clic en un elemento y luego en la columna que quieras.",
     sortTitle: "Clasifica las seis señales",
+    sortWhy: "Todo lo de la columna izquierda nombra una <strong>frase que podrías señalar</strong>. Todo lo de la derecha es una forma de llegar a un veredicto sin ella: deducción, asociación o cultura general. Esa es toda la diferencia: FALSE necesita una línea del texto que diga otra cosa, y si no puedes señalarla con el dedo, la respuesta es NOT GIVEN.",
     t1Eyebrow: "Antes de empezar",
     t1Title: "Sesenta minutos, tres partes, nada de tiempo al final",
     t1ab: "Cuarenta preguntas en sesenta minutos, en tres partes de unos veinte minutos. La tercera suele ser la más difícil: si te alargas en una, le quitas el tiempo justo a la que más lo necesita.",

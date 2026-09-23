@@ -200,6 +200,13 @@ T['en'] = dict(
     actPlaceholder='Statement 1 (TRUE): … The line that decides it: …',
 )
 
+# The verdicts and the sort explanation sit in the data module, which keeps
+# the only copy of the English. Until 2026-09-23 neither translated: the
+# options were bare English in the markup and SORT_WHY a plain string.
+from ieltsread_data import VERDICTS, SORT_WHY
+T['en'].update(VERDICTS)
+T['en']['sortWhy'] = SORT_WHY
+
 # ── German ─────────────────────────────────────────────────────────────
 T['de'] = dict(
     coverTitle='True, False, <em>Not Given</em>',
@@ -367,6 +374,18 @@ T['de'] = dict(
                   'Lösungsschlüssel: zu jeder den genauen Satz, der '
                   'entscheidet, oder klar gesagt, dass es keinen gibt.',
     actPlaceholder='Statement 1 (TRUE): … The line that decides it: …',
+
+    # The verdict glosses and the sort explanation; English from the data.
+    optT='True &mdash; der Text sagt das klar',
+    optF='False &mdash; der Text bestreitet das klar',
+    optN='Not Given &mdash; der Text sagt dazu nichts',
+    sortWhy='Alles in der linken Spalte nennt einen <strong>Satz, auf den du '
+            'zeigen könntest</strong>. Alles in der rechten ist ein Weg, ohne '
+            'einen solchen Satz zu einem Urteil zu kommen &mdash; '
+            'Schlussfolgerung, Assoziation oder Allgemeinwissen. Das ist der '
+            'ganze Unterschied: FALSE braucht eine Zeile im Text, die etwas '
+            'anderes sagt, und wenn du nicht mit dem Finger darauf zeigen '
+            'kannst, heißt die Antwort NOT GIVEN.',
 )
 
 # ── Spanish ────────────────────────────────────────────────────────────
@@ -533,6 +552,17 @@ T['es'] = dict(
                   'clave: para cada una, la frase exacta que la decide, o '
                   'decir claramente que no hay ninguna.',
     actPlaceholder='Statement 1 (TRUE): … The line that decides it: …',
+
+    # The verdict glosses and the sort explanation; English from the data.
+    optT='True &mdash; el texto lo dice claramente',
+    optF='False &mdash; el texto lo niega claramente',
+    optN='Not Given &mdash; el texto no lo dice',
+    sortWhy='Todo lo de la columna izquierda nombra una <strong>frase que '
+            'podrías señalar</strong>. Todo lo de la derecha es una forma de '
+            'llegar a un veredicto sin ella: deducción, asociación o cultura '
+            'general. Esa es toda la diferencia: FALSE necesita una línea del '
+            'texto que diga otra cosa, y si no puedes señalarla con el dedo, la '
+            'respuesta es NOT GIVEN.',
 )
 
 

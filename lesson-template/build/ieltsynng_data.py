@@ -19,10 +19,10 @@ decide a writer's view:
 **The verdicts are one fixed set, written as clauses of near-equal
 length**, for the reason `ieltsread_data.py` gives: a bare `Yes / No / Not
 Given` makes Not Given the conspicuously long option on every item where it
-is the key. Unlike that deck, the gloss after the dash translates — the
-verdict word stays English, because it is what goes on the answer sheet.
-`build_ieltsynng.py` checks the lengths in every language, not only in
-English.
+is the key. The gloss after the dash translates, as it now does in that
+deck too; the verdict word stays English, because it is what goes on the
+answer sheet. `build_ieltsynng.py` checks the lengths in every language, not
+only in English.
 
 **The keys cycle YES, NO, NOT GIVEN**, so the key sits at `i % 3` and the
 spread is exactly four of each.

@@ -32,13 +32,15 @@ qualifier; and the clock over a bare desk closes it.
 
 English, German and Spanish all complete.
 """
+import html
 import os
+import re
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import deck as D
-from ieltsread_data import (VERDICT, WORLD, QUALIFY, ALL,
-                            SORT_BINS, SORT_ITEMS, SORT_WHY)
+from ieltsread_data import (VERDICT, WORLD, QUALIFY, ALL, VERDICTS,
+                            SORT_BINS, SORT_ITEMS)
 
 TPL = 'lesson-template/lesson-template.html'
 OUT = 'forbes-english-ielts-reading-tfng.html'
@@ -70,8 +72,25 @@ BG_SHAPE, BG_VERDICT, BG_WORLD, BG_QUALIFY = ('bg02.jpg', 'bg03.jpg',
 BG_ACT = 'bg06.jpg'
 
 
+def check_verdicts(I):
+    """The ANSWERS rule in every language the deck offers. The checker reads
+    the English markup; the glosses translate, and each verdict is the key on
+    four items, so one that is the only longest by four characters in German
+    would hand German learners a third of the answers."""
+    for code in I.T:
+        L = [len(html.unescape(re.sub(r'<[^>]+>', '', I.T[code][k])))
+             for k, _ in VERDICTS]
+        top = sorted(L)
+        assert not (L.count(top[-1]) == 1 and top[-1] - top[-2] >= 4), (
+            '%s: the verdict glosses run %s characters. One is the only '
+            'longest by 4+, which gives away every item it is the key for.'
+            % (code, L))
+
+
 def build():
+    import i18n_ieltsread as I
     D.assert_no_key_is_longest(ALL, 'IELTSREAD')
+    check_verdicts(I)
     logo = D.logo_from(TPL)
 
     slides = (
@@ -210,7 +229,7 @@ def build():
                        'sortHint', 'Drag each one into a column &mdash; or '
                                    'click an item, then the column you want '
                                    'it in.',
-                       SORT_WHY, folder=F, bg=BG_QUALIFY,
+                       'sortWhy', folder=F, bg=BG_QUALIFY,
                        bin_keys=['sortBin1', 'sortBin2'])
 
         + D.results('resNext', 'You can call it. Now prove it &rarr;', folder=F)
@@ -239,7 +258,6 @@ def build():
                      folder=F, bg=BG_ACT)
     )
 
-    import i18n_ieltsread as I
     s = D.assemble(TPL, OUT, slides, PALETTE,
                    'IELTS Reading: True, False, Not Given (C1) | Forbes English',
                    I, langs=('en', 'de', 'es'))

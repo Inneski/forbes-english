@@ -34,10 +34,17 @@ the dependence outright and the statement tests a different fact.
 # The three verdicts, in one place. Written as clauses rather than as bare
 # labels so that no verdict is the conspicuously short or long option: the
 # type would otherwise leak the answer on every item where the key is True.
-T = 'True &mdash; the passage clearly states this'
-F = 'False &mdash; the passage clearly denies this'
-N = 'Not Given &mdash; the passage does not say'
-OPTS = [T, F, N]
+#
+# (UI_I18N key, English). The gloss after the dash translates, as
+# i18n_ieltsread.py had always said it did; until 2026-09-23 the options were
+# bare English in the markup and never did. The key sits on an inner span,
+# not on the button, because the engine prepends the A/B/C letter into the
+# button and the language pass sets innerHTML: on the button it would wipe
+# the letter. build_ieltsread.py checks the lengths in every language.
+VERDICTS = [('optT', 'True &mdash; the passage clearly states this'),
+            ('optF', 'False &mdash; the passage clearly denies this'),
+            ('optN', 'Not Given &mdash; the passage does not say')]
+OPTS = ['<span data-i18n="%s">%s</span>' % kv for kv in VERDICTS]
 
 # ── Activity 1 · False is not Not Given ────────────────────────────────
 VERDICT = [
@@ -130,9 +137,9 @@ SORT_ITEMS = [
     ('You know it is true from outside the text', 1),
 ]
 
-SORT_WHY = ('The left column all name a <strong>sentence you could point '
-            'at</strong>. The right column are all the ways a candidate '
-            'reaches a verdict without one &mdash; inference, association, or '
-            'general knowledge. That is the whole distinction: FALSE needs a '
+SORT_WHY = ('Everything in the left column names a <strong>sentence you '
+            'could point at</strong>. Everything in the right column is a way '
+            'of reaching a verdict without one &mdash; inference, association, '
+            'or general knowledge. That is the whole distinction: FALSE needs a '
             'line in the passage that says otherwise, and if you cannot put '
             'your finger on it, the answer is NOT GIVEN.')
