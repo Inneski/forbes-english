@@ -604,8 +604,16 @@ def fill_ledger(code, rendered):
     module written before that date declares them, and without the backfill
     every one of those decks would fail check-lesson's I18N gate the next time
     it was rebuilt.
+
+    resPerfect/resStrong/resMid/resLow joined on 2026-09-23. renderResults()
+    sets #scoreMsg from them, but they are read by t() in script rather than
+    through data-i18n markup, so a module that omitted them failed no gate:
+    t() returned undefined and the results slide showed the score with no
+    message under it. Sixteen files shipped that way. check-lesson's RESMSG
+    gate now fails such a deck; this backfill is what keeps it passing.
     """
-    for k in ('ledDp', 'ledTime', 'ledClues', 'actSpeakWord', 'actWriteWord'):
+    for k in ('ledDp', 'ledTime', 'ledClues', 'actSpeakWord', 'actWriteWord',
+              'resPerfect', 'resStrong', 'resMid', 'resLow'):
         if not re.search(r'(?m)^\s*%s\s*:' % k, rendered):
             body = rendered.rstrip()
             assert body.endswith('}'), 'render() did not return an object'

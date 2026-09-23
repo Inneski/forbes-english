@@ -11,6 +11,42 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-23 — Results slides were printing the score with no message: fixed at the root, new RESMSG gate
+
+`renderResults()` sets `#scoreMsg` from `t('resPerfect'|'resStrong'|'resMid'|'resLow')`.
+`deck.assemble()` swaps the template's whole `UI_I18N` for the builder's, and
+many i18n modules never defined those four keys, so `t()` returned undefined
+and the results slide showed a bare score. No gate saw it: the keys are read in
+script, not through `data-i18n` markup, so the I18N gate never looked.
+
+**Root fix.** `chrome_i18n.CHROME` now carries the four keys in all 11
+languages (en/de are the template's own wording; the other nine were written
+for it). `deck.fill_ledger()` backfills them into any module that lacks them,
+so every builder going through `assemble()` (or calling `fill_ledger` directly:
+elzar, emails3, food) is covered from now on. A module that defines its own
+lesson-specific wording keeps it.
+
+**Gate.** `check-lesson.js` RESMSG: for every offered language, resolves the
+four keys exactly as `t()` does (own language, then English) and fails if any
+is empty. Judged only on decks whose engine calls `t('resPerfect')`. Verified
+failing on the unrebuilt `forbes-alan-watts-b1.html` (12 empty: en/de/es × 4)
+before trusting it; the 13 rebuilt decks pass, and a live `renderResults()`
+on listening-s1 prints the message in en/de/es.
+
+**Rebuilt and shipped (13):** every `forbes-english-ielts-*` deck in the scan:
+lexical-resource, listening-drills, listening-s1..s4, pronunciation,
+reading-completion, reading-headings, reading-tfng, speaking-part3,
+vocabulary-environment, vocabulary-work. Rebuilding onto the current template
+also brought in the template changes made since they were last built (editorial-style CSS,
+`--plate-bin`, `safe center`, …). All pass check-lesson clean.
+
+**NOT rebuilt: `forbes-alan-watts-b1.html`.** Another session had
+`alan-watts/hero.jpg` modified in the main tree when this ran, so the lesson
+is in flight elsewhere. It still fails RESMSG. Whoever next runs
+`build_watts.py` fixes it for free via the backfill; nothing else is needed.
+The two gitignored `_forbes-english-b1-mixed-grammar-test*` previews go through
+`assemble()` too and are fixed on their next build.
+
 ## 2026-09-23 — B1 Mixed Grammar Test 1 + 2: editorial decks, six languages, NOT shipped: waiting for 14 plates
 
 Innes: *"make these house style and add languages"*, then *"house style 2
