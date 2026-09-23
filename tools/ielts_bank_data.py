@@ -39,7 +39,7 @@ TOPICS = [
   ('Some schools are replacing printed textbooks with tablets and laptops. Do the advantages of this change outweigh the disadvantages?','outweigh'),
   ('In some countries, teachers are paid less than other professionals with similar qualifications. What problems does this cause, and what could be done about it?','measure'),
  ],
- 'for_h':'Arguments for narrowing education toward useful skills',
+ 'for_h':'Arguments for narrowing education towards useful skills',
  'for':[
   'Graduates in shortage fields earn a measurable wage premium, and the state recovers part of it through tax — so the training pays for itself in a way a general degree may not.',
   'Employers in engineering, nursing and the trades report vacancies left open for months for want of specific technical training, while unrelated graduates are unemployed. That is a matching failure, not a shortage of education.',
@@ -184,7 +184,7 @@ TOPICS = [
 },
 {
  'id':'gender', 'name':'Gender & equality',
- 'blurb':'A long-standing exam topic the bank had nothing on.',
+ 'blurb':'Work, pay and who does what at home: a long-standing exam topic.',
  'prompts':[
   ('In many countries women are still under-represented in senior positions. What are the causes, and what measures could change it?','measure'),
   ('Some believe companies should be required to employ equal numbers of men and women; others argue jobs should go to the best candidate regardless. Discuss both views and give your own opinion.','discussion'),
@@ -236,7 +236,7 @@ TOPICS = [
 },
 {
  'id':'ageing', 'name':'Population & ageing',
- 'blurb':'A demographic question dressed as an opinion one.',
+ 'blurb':'Numbers first, then a judgement about them.',
  'prompts':[
   ('In many countries the proportion of older people is rising quickly. What problems does this cause, and what measures could governments take?','measure'),
   ('Some believe the retirement age should rise as life expectancy rises; others say people should be free to stop working at sixty. Discuss both views and give your own opinion.','discussion'),
@@ -257,12 +257,12 @@ TOPICS = [
  'against':[
   'Pension and health systems were funded on the assumption that each generation would be larger than the last. When it is not, the shortfall does not appear gradually; it appears as a specific bill in a specific decade.',
   'Care work cannot be automated at the rate the shortfall requires, and it is precisely the sector already unable to recruit. The gap is in hands, not in money.',
-  'Political weight follows numbers. As the electorate ages, spending shifts toward the old and away from schools and housing — which suppresses the birth rate further and deepens the original problem.',
+  'Political weight follows numbers. As the electorate ages, spending shifts towards the old and away from schools and housing — which suppresses the birth rate further and deepens the original problem.',
  ],
 },
 {
  'id':'immigration', 'name':'Immigration & integration',
- 'blurb':'Handle carefully and argue both sides — examiners reward the balance, not the position.',
+ 'blurb':'Handle it carefully: examiners mark how well you argue, not which side you take.',
  'prompts':[
   ('Some argue that immigration solves labour shortages; others believe it lowers wages for existing workers. Discuss both views and give your own opinion.','discussion'),
   ('People who move to a new country should adopt its customs and way of life. To what extent do you agree?','opinion'),
@@ -398,7 +398,7 @@ TOPICS = [
   ('Rates of some crimes have fallen in many countries while fear of crime has risen. Why is this happening, and is it a problem?','direct'),
   ('The main purpose of prison should be rehabilitation rather than punishment. To what extent do you agree?','opinion'),
   ('Reoffending rates remain high in many countries. What problems does this cause, and what measures could reduce it?','measure'),
-  ('Some argue that widespread surveillance cameras in public places make cities safer. Do the advantages outweigh the disadvantages?','outweigh'),
+  ('Many cities now have surveillance cameras in most public places. Do the advantages of this outweigh the disadvantages?','outweigh'),
   ('Young offenders should be treated differently from adults who commit the same crime. To what extent do you agree?','opinion'),
   ('Some believe that the causes of crime are mainly economic; others argue they are mainly cultural. Discuss both views and give your own opinion.','discussion'),
   ('Some countries publish the names and photographs of convicted criminals. Do the advantages of this practice outweigh the disadvantages?','outweigh'),
@@ -422,7 +422,7 @@ TOPICS = [
  'prompts':[
   ('Some people believe university education should be funded entirely by the state. Others argue that students should pay the full cost of their own degrees. Discuss both views and give your own opinion.','discussion'),
   ('Governments should spend money on public services rather than on the arts. To what extent do you agree?','opinion'),
-  ('Some countries are considering a shorter working week with no reduction in pay. Do the advantages outweigh the disadvantages?','outweigh'),
+  ('Some countries are considering a shorter working week with no reduction in pay. Do the advantages of this outweigh the disadvantages?','outweigh'),
   ('The gap between the highest and lowest earners has widened in many countries. What problems does this cause, and what measures could narrow it?','measure'),
   ('Fewer people carry cash than a decade ago. Why is this happening, and is it a positive development?','direct'),
   ('Wealthy countries should give a fixed share of their income as aid to poorer ones. To what extent do you agree?','opinion'),
@@ -473,8 +473,8 @@ TOPICS = [
  'blurb':'Attention, tradition and who decides what is worth keeping.',
  'prompts':[
   ('Some believe that social media has done more harm than good to public debate. To what extent do you agree?','opinion'),
-  ('Governments should fund the preservation of traditional culture even when few people take part in it. Discuss both views and give your own opinion.','discussion'),
-  ('Some argue that global entertainment is eroding local culture. Do the disadvantages outweigh the advantages?','outweigh'),
+  ('Some believe governments should fund traditional culture even when few people take part in it; others say the money should follow what people actually use. Discuss both views and give your own opinion.','discussion'),
+  ('Films, music and television from a few countries are now watched all over the world. Do the disadvantages of this outweigh the advantages?','outweigh'),
   ('People in many countries report reading fewer books than they did a decade ago. Why is this happening, and what measures could change it?','measure'),
   ('Museums and galleries in many cities now charge no entrance fee. Why has this become common, and is it a positive development?','direct'),
   ('Advertising aimed at children should be banned. To what extent do you agree?','opinion'),
@@ -496,7 +496,7 @@ TOPICS = [
 },
 {
  'id':'language', 'name':'Language & globalisation',
- 'blurb':'A favourite of examiners, and one candidates often answer with slogans.',
+ 'blurb':'A favourite of the question writers, and one candidates often answer with slogans.',
  'prompts':[
   ('The spread of English as a global language is putting smaller languages at risk. Do the disadvantages of this outweigh the advantages?','outweigh'),
   ('Some believe children should learn a foreign language from the age of five; others think it should wait until secondary school. Discuss both views and give your own opinion.','discussion'),
@@ -528,7 +528,7 @@ TOPICS = [
   ('Some believe supermarkets should be banned from selling food that has travelled long distances; others say the choice should be left to shoppers. Discuss both views and give your own opinion.','discussion'),
   ('Governments should require restaurants to display the calorie content of every dish. To what extent do you agree?','opinion'),
   ('More people are buying ready-made meals instead of cooking from raw ingredients. Why is this happening, and is it a positive or a negative development?','direct'),
-  ('Growing food locally rather than importing it is better for a country. Do the advantages outweigh the disadvantages?','outweigh'),
+  ('Some countries are trying to grow more of their own food rather than import it. Do the advantages of this outweigh the disadvantages?','outweigh'),
   ('Advertising for food high in sugar and fat should be banned completely. To what extent do you agree?','opinion'),
   ('Some argue that eating together as a family is important; others say it matters less than it used to. Discuss both views and give your own opinion.','discussion'),
   ('In many countries, healthy food costs more than unhealthy food. What problems does this cause, and what could be done about it?','measure'),
@@ -578,7 +578,7 @@ TOPICS = [
  'prompts':[
   ('Some argue that money spent exploring space would be better spent solving problems on Earth. To what extent do you agree?','opinion'),
   ('Some believe scientific research should be funded by governments; others say private companies should pay for it. Discuss both views and give your own opinion.','discussion'),
-  ('Using animals in medical research is sometimes necessary. Do the advantages of this outweigh the disadvantages?','outweigh'),
+  ('Animals are still used in medical research. Do the advantages of this outweigh the disadvantages?','outweigh'),
   ('Fewer young people are choosing to study science at university in some countries. What are the causes, and what measures could change it?','measure'),
   ('Scientists are increasingly expected to explain their work to the public. Why is this happening, and is it a positive or a negative development?','direct'),
   ('The results of publicly funded research should be free for anyone to read. To what extent do you agree?','opinion'),

@@ -14,6 +14,19 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, 'tools'))
 from ielts_bank_data import TOPICS, TYPES
 
+
+# The top band — logo lockup, links and their CSS — is taken from ielts.html
+# at build time, as tools/build_hubs.py does for the grammar hubs. This file
+# used to carry its own copy, which still drew the old PNG logo after every
+# other page moved to the SVG lockup, so a rebuild quietly put it back
+# (found 2026-09-23, when a text fix to the bank was regenerated).
+import re as _re
+_src = open(os.path.join(ROOT, 'ielts.html'), encoding='utf-8').read()
+_css = _re.search(r'\n(\.topband \{.*?\.tb-links a:not\(\.tb-cta\):not\(\.tb-cta-gold\) \{ display: none; \} \})',
+                  _src, _re.S).group(1)
+TB_CSS = _css      # inserted by the f-string below, so braces stay single
+TB_NAV = _re.search(r'<nav class="topband">.*?</nav>', _src, _re.S).group(0)
+
 def esc(s): return html.escape(s, quote=True)
 
 chips_topic = '\n'.join(
@@ -102,23 +115,7 @@ body {{
     linear-gradient(165deg,#ffffff 0%,#f6f8f5 55%,#eef3ef 100%);
   -webkit-font-smoothing:antialiased;
 }}
-.topband {{ background:var(--green-deep); border-bottom:1px solid rgba(232,192,74,0.25); }}
-.tb-inner {{ max-width:1180px; margin:0 auto; padding:10px clamp(20px,4vw,40px);
-  display:flex; align-items:center; justify-content:space-between; gap:20px; }}
-.tb-logo {{ display:block; width:160px; height:32px; background-image:url('logo-forbes-english_1.png');
-  background-size:contain; background-repeat:no-repeat; background-position:left center;
-  text-indent:-9999px; overflow:hidden; text-decoration:none; }}
-.tb-links {{ display:flex; align-items:center; gap:clamp(12px,2vw,26px); flex-wrap:wrap; }}
-.tb-links a {{ font-family:'Barlow Condensed',sans-serif; font-weight:600; letter-spacing:.06em;
-  font-size:.78rem; text-transform:uppercase; color:var(--cream); text-decoration:none;
-  opacity:.85; transition:opacity .15s ease; }}
-.tb-links a:hover, .tb-links a[aria-current] {{ opacity:1; }}
-.tb-links a[aria-current] {{ color:var(--gold-bright); }}
-.tb-cta {{ background:var(--green-lift); color:var(--cream)!important; padding:6px 14px; border-radius:20px;
-  opacity:1!important; border:1px solid rgba(232,192,74,.4); }}
-.tb-cta-gold {{ background:var(--gold-bright); color:var(--green-deep)!important; padding:6px 14px;
-  border-radius:20px; opacity:1!important; font-weight:700; }}
-@media (max-width:620px) {{ .tb-links a:not(.tb-cta):not(.tb-cta-gold) {{ display:none; }} }}
+{TB_CSS}
 
 .wrap {{ max-width:1180px; margin:0 auto; padding:clamp(26px,5vw,54px) clamp(20px,4vw,40px) clamp(50px,8vw,90px); }}
 .hero {{ display:grid; grid-template-columns:1.15fr 1fr; gap:clamp(24px,4vw,48px); align-items:center;
@@ -206,25 +203,13 @@ h1 em {{ font-style:normal; color:var(--pink-mid); }}
 </head>
 <body>
 
-<nav class="topband">
-  <div class="tb-inner">
-    <a class="tb-logo" href="index.html">Forbes English</a>
-    <div class="tb-links">
-      <a href="library.html">Lessons</a>
-      <a href="ielts.html" aria-current="page">IELTS</a>
-      <a href="library.html#cat=Grammar+activity">Grammar</a>
-      <a href="library.html#cat=Speaking+activity">Speaking</a>
-      <a href="pricing.html" class="tb-cta-gold">Go Pro</a>
-      <a href="mailto:forbes@goodtimebook.com" class="tb-cta">Work With Me</a>
-    </div>
-  </div>
-</nav>
+{TB_NAV}
 
 <div class="wrap">
 
   <div class="hero">
     <div>
-      <div class="eyebrow">IELTS Writing Task 2 · Free</div>
+      <div class="eyebrow">IELTS Academic Writing · Task 2 · Free</div>
       <h1>Question Bank <em>&amp; Ideas</em></h1>
       <p class="lede"><strong>{TOTAL} questions, sorted by topic and by essay type.</strong> Filter to the type you are practising, or search for a word.</p>
       <p class="lede">Under each topic sit arguments for <em>both</em> sides — written as reasons rather than slogans, because the thing that stops most candidates is not the shape of the essay. It is having nothing to say.</p>
@@ -264,7 +249,7 @@ h1 em {{ font-style:normal; color:var(--pink-mid); }}
       <h3>Have the ideas, not sure of the shape?</h3>
       <p>Each essay type on this page is taught in the course — what the instruction obliges you to produce, a band 9 model, and the band 6 answer that got the shape right and the question wrong.</p>
     </div>
-    <a href="ielts.html">The IELTS route &rarr;</a>
+    <a href="ielts.html">The IELTS Academic route &rarr;</a>
   </div>
 
 </div>
@@ -333,5 +318,7 @@ h1 em {{ font-style:normal; color:var(--pink-mid); }}
 </body>
 </html>
 '''
-open(os.path.join(ROOT, 'ielts-question-bank.html'), 'w', encoding='utf-8').write(page)
+# newline='\n': the repo is LF, and text mode on Windows writes CRLF.
+open(os.path.join(ROOT, 'ielts-question-bank.html'), 'w', encoding='utf-8',
+     newline='\n').write(page)
 print('written', round(len(page)/1024), 'KB ·', TOTAL, 'prompts')

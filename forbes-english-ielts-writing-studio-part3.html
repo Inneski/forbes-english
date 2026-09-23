@@ -704,14 +704,18 @@ function pieSlice(cx,cy,r,startAngle,endAngle,color){
 
 function renderPie(values, cx, cy, r){
   let a = -Math.PI/2;
-  let s = '';
+  let s = '', labels = '';
   values.forEach((v,i)=>{
     const frac = v/100;
     const a2 = a + frac*2*Math.PI;
     s += pieSlice(cx,cy,r,a,a2,PIE_DATA.categories[i].color);
+    // The prompt asks for figures, so the slices carry them, as a real
+    // Task 1 pie chart does. Cream on a dark outline reads on every slice.
+    const mid = (a + a2) / 2, lr = r * 0.66;
+    labels += `<text x="${(cx + lr*Math.cos(mid)).toFixed(1)}" y="${(cy + lr*Math.sin(mid) + 4).toFixed(1)}" text-anchor="middle" font-size="12" font-weight="700" font-family="IBM Plex Mono, monospace" fill="#FBF7EE" stroke="#22344A" stroke-width="2.5" paint-order="stroke">${v}%</text>`;
     a = a2;
   });
-  return s;
+  return s + labels;
 }
 
 function renderPieCharts(){
@@ -747,8 +751,8 @@ const ESSAY_TYPES = [
 ];
 const ESSAY_CORRECT = 1; // Discussion
 const ESSAY_EXPL = {
-  en:"\"Discuss both views and give your own opinion\" is the signal phrase for a Discussion essay — present both sides fairly before giving your position.",
-  de:"„Discuss both views and give your own opinion\" ist die Signalphrase für einen Diskussions-Essay — stelle beide Seiten fair dar, bevor du deine Position gibst.",
+  en:"\"Discuss both views and give your own opinion\" is the signal phrase for a Discussion essay — present both sides fairly, and make your own position clear in the introduction and again in the conclusion.",
+  de:"„Discuss both views and give your own opinion\" ist die Signalphrase für einen Diskussions-Essay — stelle beide Seiten fair dar und mach deine eigene Position in der Einleitung und noch einmal im Schluss deutlich.",
 };
 let typeState = {selected:null, checked:false};
 
@@ -801,7 +805,7 @@ const T2_CHECKLIST = [
 ];
 const TK_CHECKLIST = [
   {en:"Word count met?", de:"Wortzahl erreicht?"},
-  {en:"Structure matches the task (four paragraphs)?", de:"Struktur passt zur Aufgabe (vier Absätze)?"},
+  {en:"Clear paragraphs, each doing one job (usually four)?", de:"Klare Absätze mit je einer Aufgabe (meist vier)?"},
   {en:"Task 1: overview present with no data. Task 2: position clear from the introduction?", de:"Task 1: Übersicht ohne Daten vorhanden. Task 2: Position aus der Einleitung klar?"},
   {en:"Task 1: at least one comparison. Task 2: one example per idea?", de:"Task 1: mindestens ein Vergleich. Task 2: ein Beispiel pro Idee?"},
   {en:"Topic sentences open each body paragraph?", de:"Kernsätze eröffnen jeden Hauptteil?"},

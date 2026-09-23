@@ -235,7 +235,7 @@ def index_page(allm, images, style, fonts, nav):
       <ul class="facts">
         <li><b>Where to start</b><a href="level-checker.html">The free Level Checker</a> tests the tenses adaptively, six questions a level, and names the lesson to open first.</li>
         <li><b>Two routes through the tenses</b><a href="sherpa-tensing-route-map.html">Sherpa Tensing</a> climbs them in order, active then passive; <a href="block-camp.html">Block Camp</a> does the same in Minecraft.</li>
-        <li><b>Exam English</b><a href="ielts.html">IELTS Academic</a> has its own route: Writing, Speaking and Listening in teaching order.</li>
+        <li><b>Exam English</b><a href="ielts.html">IELTS Academic</a> has its own route: Writing, Speaking, Listening, Reading and Vocabulary, in teaching order.</li>
       </ul>
     </div>
   </div>''')
