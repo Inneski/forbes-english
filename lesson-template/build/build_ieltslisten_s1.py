@@ -67,6 +67,15 @@ BG_BRIEF, BG_AUDIO, BG_TRAPS, BG_DETAIL = ('bg02.jpg', 'bg03.jpg',
 BG_ACT = 'bg06.jpg'
 
 
+# Each form row's explanation goes out as an i18n key, f1why..f7why, so it
+# translates; the English is registered from FORM by i18n_ieltslisten_s1.
+WHY_KEY = {r[0]: 'f%dwhy' % (i + 1) for i, r in enumerate(FORM)}
+
+
+def keyed(rows):
+    return [(s, a, WHY_KEY[s]) for s, a, _ in rows]
+
+
 def build(make_audio=False):
     D.assert_no_key_is_longest(MC, 'IELTSLISTEN1')
     logo = D.logo_from(TPL)
@@ -128,7 +137,7 @@ def build(make_audio=False):
                   'playing while you answer, and you hear it once.',
                   AUDIO, label, folder=F, bg=BG_AUDIO)
 
-        + "".join(D.gap(n + 1, len(FORM_SLIDES), rows, FORM_BANK,
+        + "".join(D.gap(n + 1, len(FORM_SLIDES), keyed(rows), FORM_BANK,
                         'gapEyebrow', 'Questions 1&ndash;7 &middot; Complete the form',
                         'gapTitle',
                         'Write ONE WORD AND/OR A NUMBER in each gap',

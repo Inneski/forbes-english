@@ -1696,6 +1696,39 @@ html[data-style="editorial"] .match-item,
 html[data-style="editorial"] .sort-item {
   background: var(--surface); border: 2px solid var(--border);
 }
+
+/* ── answered states, restated at the editorial specificity ──────────
+   The base rules above are `html[data-style="editorial"] .opt`, which is
+   (0,2,1). The default answered states are `.opt.wrong` / `.opt.correct`,
+   which are (0,2,0). So the base rule WON, and its `background: var(--surface)`
+   plus `border: 2px solid …` repainted every answered option back to neutral.
+
+   The engine was never broken: measured on the Watts deck, a clicked wrong
+   option carried `class="opt wrong"` and the feedback read "Not quite …",
+   while the computed colours of the wrong, the correct and an untouched
+   option were all identical — rgb(255,255,255) on rgb(190,208,203). A
+   learner got no red, no green, and no sight of the right answer.
+
+   Same trap for .match-item and .sort-item, whose base rule uses the `border`
+   shorthand and so also outranks their own .picked/.done/.miss border-colors.
+   Restating the states here is the whole fix; nothing in the engine changes. */
+html[data-style="editorial"] .opt.correct {
+  border-color: var(--ok);
+  background: color-mix(in srgb, var(--ok) 20%, var(--surface));
+}
+html[data-style="editorial"] .opt.wrong {
+  border-color: var(--no);
+  background: color-mix(in srgb, var(--no) 18%, var(--surface));
+}
+html[data-style="editorial"] .match-item.picked,
+html[data-style="editorial"] .sort-item.picked {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 22%, var(--surface));
+}
+html[data-style="editorial"] .match-item.done,
+html[data-style="editorial"] .sort-item.placed { border-color: var(--ok); }
+html[data-style="editorial"] .match-item.miss,
+html[data-style="editorial"] .sort-item.miss { border-color: var(--no); }
 /* The rule is a thing a builder PLACES, not something every heading grows.
    The source deck has it under the cover title and nowhere else; putting it
    on all thirty-two slides was mine and it was wrong. Emit
@@ -1803,43 +1836,39 @@ html[data-style="editorial"] .stamp {
 
     <section class="slide" data-type="gap" data-bg="ielts-listen-s1/bg03.jpg">
       <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="gapEyebrow">Questions 1&ndash;7 &middot; Complete the form</span> &middot; 1 / 3</div>
+        <div class="eyebrow"><span data-i18n="gapEyebrow">Questions 1&ndash;7 &middot; Complete the form</span> &middot; 1 / 4</div>
         <h2 class="slide-title" data-i18n="gapTitle">Write ONE WORD AND/OR A NUMBER in each gap</h2>
       </div></div>
       <div class="slide-body">
         <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="gapHint">Spelling is marked. Write what you actually heard, not what you expected to hear.</p>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">Surname: <input class="gap" data-answer="Novakova|NOVAKOVA" aria-label="gap" style="width:210px"></p>
-          <p class="feedback" data-explain="Spelled out once, letter by letter. The moment a speaker starts giving letters, an answer is being dictated."></p>
+          <p class="feedback" data-explain="f1why"></p>
         </div>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">Telephone: <input class="gap" data-answer="07700900642|07700 900 642|07700-900-642" aria-label="gap" style="width:210px"></p>
-          <p class="feedback" data-explain="&quot;Double oh&quot; is two noughts and &quot;oh&quot; is one: 07700 900 642. A candidate waiting for eleven separate digits never hears eleven."></p>
+          <p class="feedback" data-explain="f2why"></p>
         </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap" data-bg="ielts-listen-s1/bg03.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="gapEyebrow">Questions 1&ndash;7 &middot; Complete the form</span> &middot; 2 / 4</div>
+        <h2 class="slide-title" data-i18n="gapTitle">Write ONE WORD AND/OR A NUMBER in each gap</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="gapHint">Spelling is marked. Write what you actually heard, not what you expected to hear.</p>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">Class day: <input class="gap" data-answer="Thursday" aria-label="gap" style="width:210px"></p>
-          <p class="feedback" data-explain="He says Tuesday and corrects himself at once: &quot;sorry, I beg your pardon, that's the children.&quot; The answer is always the correction."></p>
+          <p class="feedback" data-explain="f3why"></p>
         </div>
-        <div style="margin-top:10px">
-          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
-        </div>
-      </div>
-    </section>
-
-    <section class="slide" data-type="gap" data-bg="ielts-listen-s1/bg03.jpg">
-      <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="gapEyebrow">Questions 1&ndash;7 &middot; Complete the form</span> &middot; 2 / 3</div>
-        <h2 class="slide-title" data-i18n="gapTitle">Write ONE WORD AND/OR A NUMBER in each gap</h2>
-      </div></div>
-      <div class="slide-body">
-        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="gapHint">Spelling is marked. Write what you actually heard, not what you expected to hear.</p>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">Starts at: <input class="gap" data-answer="6.30|6:30|6.30pm|6.30 pm|6:30pm|6:30 pm|18.30|18:30" aria-label="gap" style="width:210px"></p>
-          <p class="feedback" data-explain="Six thirty. Twenty past is when to arrive poolside, which is the sort of nearby number that is put there to be written down by mistake."></p>
-        </div>
-        <div class="card gap-row" style="padding:12px 16px">
-          <p class="q-stem" style="margin-bottom:0;font-size:19px">Length of course: <input class="gap" data-answer="10|ten" aria-label="gap" style="width:210px"> weeks</p>
-          <p class="feedback" data-explain="Ten, said once, just before the prices. The member price that follows covers the same ten weeks &mdash; &quot;the whole term&quot;."></p>
+          <p class="feedback" data-explain="f4why"></p>
         </div>
         <div style="margin-top:10px">
           <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
@@ -1849,18 +1878,35 @@ html[data-style="editorial"] .stamp {
 
     <section class="slide" data-type="gap" data-bg="ielts-listen-s1/bg03.jpg">
       <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="gapEyebrow">Questions 1&ndash;7 &middot; Complete the form</span> &middot; 3 / 3</div>
+        <div class="eyebrow"><span data-i18n="gapEyebrow">Questions 1&ndash;7 &middot; Complete the form</span> &middot; 3 / 4</div>
         <h2 class="slide-title" data-i18n="gapTitle">Write ONE WORD AND/OR A NUMBER in each gap</h2>
       </div></div>
       <div class="slide-body">
         <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="gapHint">Spelling is marked. Write what you actually heard, not what you expected to hear.</p>
         <div class="card gap-row" style="padding:12px 16px">
-          <p class="q-stem" style="margin-bottom:0;font-size:19px">Cost for members: £<input class="gap" data-answer="42|42.00|forty-two" aria-label="gap" style="width:210px"></p>
-          <p class="feedback" data-explain="Thirty-five is said first, and it is the monthly rate for non-members. She is joining, so she pays forty-two for the whole term."></p>
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">Length of course: <input class="gap" data-answer="10|ten" aria-label="gap" style="width:210px"> weeks</p>
+          <p class="feedback" data-explain="f5why"></p>
         </div>
         <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">Cost for members: £<input class="gap" data-answer="42|42.00|forty-two" aria-label="gap" style="width:210px"></p>
+          <p class="feedback" data-explain="f6why"></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap" data-bg="ielts-listen-s1/bg03.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="gapEyebrow">Questions 1&ndash;7 &middot; Complete the form</span> &middot; 4 / 4</div>
+        <h2 class="slide-title" data-i18n="gapTitle">Write ONE WORD AND/OR A NUMBER in each gap</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="gapHint">Spelling is marked. Write what you actually heard, not what you expected to hear.</p>
+        <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">Must bring a swimming <input class="gap" data-answer="cap" aria-label="gap" style="width:210px"></p>
-          <p class="feedback" data-explain="Costume and towel are &quot;the usual&quot;. The cap is the one he singles out as the thing people forget, and a Section 1 answer is nearly always the item that gets emphasised."></p>
+          <p class="feedback" data-explain="f7why"></p>
         </div>
         <div style="margin-top:10px">
           <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
@@ -2095,6 +2141,13 @@ const UI_I18N = {
     chipLevel: "B2&ndash;C1",
     coverSub: "Two speakers, one form to fill in, and a recording that plays exactly once",
     coverTitle: "Section 1 &mdash; <em>the everyday conversation</em>",
+    f1why: "Spelled out once, letter by letter. The moment a speaker starts giving letters, an answer is being dictated.",
+    f2why: "\"Double oh\" is two noughts and \"oh\" is one: 07700 900 642. A candidate waiting for eleven separate digits never hears eleven.",
+    f3why: "He says Tuesday and corrects himself at once: \"sorry, I beg your pardon, that's the children.\" The answer is always the correction.",
+    f4why: "Six thirty. Twenty past is when to arrive poolside, which is the sort of nearby number that is put there to be written down by mistake.",
+    f5why: "Ten, said once, just before the prices. The member price that follows covers the same ten weeks &mdash; \"the whole term\".",
+    f6why: "Thirty-five is said first, and it is the monthly rate for non-members. She is joining, so she pays forty-two for the whole term.",
+    f7why: "Costume and towel are \"the usual\". The cap is the one he singles out as the thing people forget, and a Section 1 answer is nearly always the item that gets emphasised.",
     fbAnswer: 'Answer:',
     fbCorrect: 'Correct.',
     fbWrong: 'Not quite.',
@@ -2177,6 +2230,13 @@ const UI_I18N = {
     chipLevel: "B2&ndash;C1",
     coverSub: "Zwei Sprecher, ein Formular und eine Aufnahme, die genau einmal läuft",
     coverTitle: "Section 1 &mdash; <em>das Alltagsgespräch</em>",
+    f1why: "Einmal buchstabiert, Buchstabe für Buchstabe. Sobald jemand anfängt, Buchstaben zu nennen, wird dir eine Antwort diktiert.",
+    f2why: "„Double oh“ sind zwei Nullen, „oh“ ist eine: 07700 900 642. Wer auf elf einzelne Ziffern wartet, hört nie elf.",
+    f3why: "Er sagt Tuesday und korrigiert sich sofort: „sorry, I beg your pardon, that’s the children.“ Die Antwort ist immer die Korrektur.",
+    f4why: "Halb sieben. Zwanzig nach ist die Zeit, zu der man am Becken sein soll &mdash; genau so eine Zahl in der Nähe, die dasteht, damit man sie aus Versehen aufschreibt.",
+    f5why: "Zehn, einmal gesagt, direkt vor den Preisen. Der Mitgliederpreis danach gilt für dieselben zehn Wochen &mdash; „the whole term“.",
+    f6why: "Fünfunddreißig kommt zuerst, und das ist der Monatspreis für Nichtmitglieder. Sie wird Mitglied, also zahlt sie zweiundvierzig für den ganzen Kurs.",
+    f7why: "Badesachen und Handtuch sind „the usual“. Die Badekappe hebt er als das hervor, was die Leute vergessen, und eine Antwort in Section 1 ist fast immer das, was betont wird.",
     fbAnswer: 'Antwort:',
     fbCorrect: 'Richtig.',
     fbWrong: 'Nicht ganz.',
@@ -2259,6 +2319,13 @@ const UI_I18N = {
     chipLevel: "B2&ndash;C1",
     coverSub: "Dos hablantes, un formulario que rellenar y una grabación que suena exactamente una vez",
     coverTitle: "Section 1 &mdash; <em>la conversación cotidiana</em>",
+    f1why: "Se deletrea una sola vez, letra a letra. En cuanto alguien empieza a dar letras, te están dictando una respuesta.",
+    f2why: "«Double oh» son dos ceros y «oh» es uno: 07700 900 642. Quien espera once cifras sueltas no las oye nunca.",
+    f3why: "Dice Tuesday y se corrige enseguida: «sorry, I beg your pardon, that’s the children». La respuesta es siempre la corrección.",
+    f4why: "Las seis y media. Y veinte es la hora de estar ya junto a la piscina: justo el tipo de número cercano que se pone ahí para que lo apuntes por error.",
+    f5why: "Diez, dicho una vez, justo antes de los precios. El precio para socios que viene después cubre las mismas diez semanas: «the whole term».",
+    f6why: "Treinta y cinco se dice primero, y es la tarifa mensual para quien no es socio. Ella se hace socia, así que paga cuarenta y dos por el curso entero.",
+    f7why: "El bañador y la toalla son «the usual». El gorro es lo que él destaca como lo que la gente olvida, y una respuesta de la Section 1 casi siempre es lo que se subraya.",
     fbAnswer: 'Respuesta:',
     fbCorrect: 'Correcto.',
     fbWrong: 'No exactamente.',

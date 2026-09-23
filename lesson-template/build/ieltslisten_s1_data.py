@@ -147,10 +147,11 @@ FORM = [
 # chip row, which is what we want.
 FORM_BANK = []
 
-# Three, two and two a slide. Four rows plus the heading run past the canvas
-# once the explanations show, and HOUSE-STYLE §6 is explicit that the answer
-# is more slides rather than smaller type.
-FORM_SLIDES = [FORM[:3], FORM[3:5], FORM[5:]]
+# Two a slide. Three rows fit in English, just, and ran 12px past the canvas
+# in German and Spanish once the explanations translated (a longer "Answer:"
+# pushes the first one onto a second line). HOUSE-STYLE §6 is explicit that
+# the answer is more slides rather than smaller type.
+FORM_SLIDES = [FORM[:2], FORM[2:4], FORM[4:6], FORM[6:]]
 
 # ── Questions 8-10 · multiple choice ───────────────────────────────────
 # The three facts after the break, in the order they are heard.

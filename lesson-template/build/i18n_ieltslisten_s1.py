@@ -136,6 +136,12 @@ T['en'] = dict(
     actPlaceholder='Surname: … (a name, spelled)',
 )
 
+# The form explanations sit beside their answers in the data module, which
+# keeps the only copy of the English; they were plain strings there until
+# 2026-09-23, so German and Spanish learners read them in English.
+from ieltslisten_s1_data import FORM
+T['en'].update(('f%dwhy' % (i + 1), r[2]) for i, r in enumerate(FORM))
+
 # ── German ─────────────────────────────────────────────────────────────
 T['de'] = dict(
     coverTitle='Section 1 &mdash; <em>das Alltagsgespräch</em>',
@@ -235,6 +241,25 @@ T['de'] = dict(
                   'Tag, Zahl, Preis. Das sind die dreißig Sekunden Vorbereitung '
                   'der Prüfung, vorab erledigt.',
     actPlaceholder='Surname: … (a name, spelled)',
+
+    # Questions 1-7: the English is registered from the data module, below.
+    f1why='Einmal buchstabiert, Buchstabe für Buchstabe. Sobald jemand '
+          'anfängt, Buchstaben zu nennen, wird dir eine Antwort diktiert.',
+    f2why='„Double oh“ sind zwei Nullen, „oh“ ist eine: 07700 900 642. Wer '
+          'auf elf einzelne Ziffern wartet, hört nie elf.',
+    f3why='Er sagt Tuesday und korrigiert sich sofort: „sorry, I beg your '
+          'pardon, that’s the children.“ Die Antwort ist immer die Korrektur.',
+    f4why='Halb sieben. Zwanzig nach ist die Zeit, zu der man am Becken sein '
+          'soll &mdash; genau so eine Zahl in der Nähe, die dasteht, damit man '
+          'sie aus Versehen aufschreibt.',
+    f5why='Zehn, einmal gesagt, direkt vor den Preisen. Der Mitgliederpreis '
+          'danach gilt für dieselben zehn Wochen &mdash; „the whole term“.',
+    f6why='Fünfunddreißig kommt zuerst, und das ist der Monatspreis für '
+          'Nichtmitglieder. Sie wird Mitglied, also zahlt sie zweiundvierzig '
+          'für den ganzen Kurs.',
+    f7why='Badesachen und Handtuch sind „the usual“. Die Badekappe hebt er '
+          'als das hervor, was die Leute vergessen, und eine Antwort in '
+          'Section 1 ist fast immer das, was betont wird.',
 )
 
 # ── Spanish ────────────────────────────────────────────────────────────
@@ -333,6 +358,26 @@ T['es'] = dict(
                   'un nombre, un día, un número, un precio. Son los treinta '
                   'segundos de preparación del examen, hechos por adelantado.',
     actPlaceholder='Surname: … (a name, spelled)',
+
+    # Questions 1-7: the English is registered from the data module, below.
+    f1why='Se deletrea una sola vez, letra a letra. En cuanto alguien empieza '
+          'a dar letras, te están dictando una respuesta.',
+    f2why='«Double oh» son dos ceros y «oh» es uno: 07700 900 642. Quien espera '
+          'once cifras sueltas no las oye nunca.',
+    f3why='Dice Tuesday y se corrige enseguida: «sorry, I beg your pardon, '
+          'that’s the children». La respuesta es siempre la corrección.',
+    f4why='Las seis y media. Y veinte es la hora de estar ya junto a la '
+          'piscina: justo el tipo de número cercano que se pone ahí para que '
+          'lo apuntes por error.',
+    f5why='Diez, dicho una vez, justo antes de los precios. El precio para '
+          'socios que viene después cubre las mismas diez semanas: «the whole '
+          'term».',
+    f6why='Treinta y cinco se dice primero, y es la tarifa mensual para quien '
+          'no es socio. Ella se hace socia, así que paga cuarenta y dos por el '
+          'curso entero.',
+    f7why='El bañador y la toalla son «the usual». El gorro es lo que él '
+          'destaca como lo que la gente olvida, y una respuesta de la Section 1 '
+          'casi siempre es lo que se subraya.',
 )
 
 
