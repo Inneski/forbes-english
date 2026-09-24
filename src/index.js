@@ -524,12 +524,20 @@ async function handleStripeWebhook(request, env) {
       }
       break;
     }
-    case "customer.subscription.updated": {
+        case "customer.subscription.updated": {
       const sub = event.data.object;
       const plan = sub.metadata?.plan;
+      // Since Stripe API 2025-03-31 the period end lives on the subscription
+      // item, not the subscription. Reading sub.current_period_end gave
+      // undefined -> Invalid Date -> toISOString() threw, so every
+      // subscription.updated event would have 500'd. Fall back to the old
+      // field for older payloads, and skip the date rather than crash.
+      const periodEnd = sub.items?.data?.[0]?.current_period_end ?? sub.current_period_end;
       await updateProfileByCustomer(env, sub.customer, {
         subscription_status: sub.status,
-        current_period_end: new Date(sub.current_period_end * 1000).toISOString(),
+        ...(typeof periodEnd === "number"
+          ? { current_period_end: new Date(periodEnd * 1000).toISOString() }
+          : {}),
         ...(plan ? { plan } : {}),
       });
       break;
