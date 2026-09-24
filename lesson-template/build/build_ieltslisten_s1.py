@@ -36,6 +36,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import deck as D
+from ielts_langs import LANGS
 from ieltslisten_s1_data import (TURNS, AUDIO, FORM, FORM_SLIDES, FORM_BANK, MC)
 
 TPL = 'lesson-template/lesson-template.html'
@@ -212,7 +213,7 @@ def build(make_audio=False):
     import i18n_ieltslisten_s1 as I
     s = D.assemble(TPL, OUT, slides, PALETTE,
                    'IELTS Listening Section 1: The Everyday Conversation | Forbes English',
-                   I, langs=('en', 'de', 'es'))
+                   I, langs=LANGS)
     print('wrote %s — %d slides, %d scored points, %d:%02d of audio, %d bytes'
           % (OUT, s.count('<section class="slide'),
              sum(r[0].count('______') for r in FORM) + len(MC),
