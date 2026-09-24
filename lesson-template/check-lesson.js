@@ -7,6 +7,7 @@
  * so they cannot be missed by eye:
  *
  *   LAYOUT   every slide fits the 1280x720 canvas, and nothing scrolls
+ *   OPTS     no answer box is far longer than the longest answer in its group
  *   ANSWERS  the correct MC option is neither the longest nor the shortest
  *   KEYS     the key is not parked at the same option letter every time, and
  *            the runtime shuffle that hides its position is a real shuffle
@@ -133,6 +134,51 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
       const needed = Math.round(stack / scale + parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom));
       const over = Math.max(needed - 720, Math.round(worst / scale));
       if (over > 1) out.layout.push({ n: i + 1, over, culprit });
+
+      // ── OPTS: an answer box as long as the slide ──────────────────
+      // Innes, 2026-09-12: "the answer boxes dont need to be so long". The
+      // template got width: fit-content that day, but a template fix only
+      // reaches a page that is rebuilt, and on 2026-09-24 he sent a live
+      // deck with "Overview", "Introduction" and "Body Paragraph" in bars
+      // 1260px wide: 79 pages still carried width: 100%. Measured on the
+      // rendered slide, so it holds whatever CSS a page happens to have.
+      // A box is stretched when it is 400px+ of canvas and even the longest
+      // answer in its group needs less than 60% of it. Measured against the
+      // group, not the row: a .two-up cell is half the row and still far too
+      // long for "has lived", while the editorial bars — one width, set by
+      // the longest answer — are meant to be wider than the short ones.
+      const needOf = o => {
+        // Width of the widest LINE of text: every text run on one line counts,
+        // so "Record and <em>record</em>" is measured whole, not as its longest
+        // piece. The key letter is text too; an empty badge adds its width.
+        const lines = [];
+        const walk = document.createTreeWalker(o, NodeFilter.SHOW_TEXT);
+        for (let t; (t = walk.nextNode());) {
+          if (!t.textContent.trim()) continue;
+          const range = document.createRange(); range.selectNodeContents(t);
+          for (const q of range.getClientRects()) {
+            if (q.width < 1) continue;
+            const mid = (q.top + q.bottom) / 2;
+            const l = lines.find(l => Math.abs(l.mid - mid) < 8);
+            if (l) { l.a = Math.min(l.a, q.left); l.b = Math.max(l.b, q.right); }
+            else lines.push({ mid, a: q.left, b: q.right });
+          }
+        }
+        let extra = 0;
+        for (const c of o.children) if (!(c.innerText || '').trim()) extra += c.getBoundingClientRect().width;
+        return Math.max(0, ...lines.map(l => l.b - l.a)) + extra;
+      };
+      new Set([...s.querySelectorAll('.opt')].map(o => o.parentElement)).forEach(par => {
+        const group = [...par.children].filter(o => o.classList.contains('opt'));
+        const most = Math.max(...group.map(needOf));
+        group.forEach(o => {
+          const rr = o.getBoundingClientRect();
+          if (rr.width / scale >= 400 && most < rr.width * 0.6) {
+            (out.opts = out.opts || []).push({ n: i + 1, w: Math.round(rr.width / scale),
+              text: o.innerText.replace(/\s+/g, ' ').trim().slice(0, 40) });
+          }
+        });
+      });
 
       // ── ANSWERS: is the key simply the longest option? ────────────
       if (s.dataset.type === 'mc') {
@@ -530,6 +576,14 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
   head('LAYOUT');
   if (!r.layout.length) ok('every slide fits the 1280x720 canvas');
   else r.layout.forEach(l => bad(`slide ${l.n} overflows by ${l.over}px (${l.culprit})`));
+
+  head('OPTS');
+  if (!r.opts) ok('every answer box is sized to its answers');
+  else {
+    const slidesHit = [...new Set(r.opts.map(o => o.n))];
+    bad(`${r.opts.length} answer box(es) on ${slidesHit.length} slide(s) are far longer than their answers — e.g. slide ${r.opts[0].n}, "${r.opts[0].text}" at ${r.opts[0].w}px`);
+    console.log(DIM('          .opt wants width: fit-content; max-width: 100% (and .opts justify-items: start), as in lesson-template.html.'));
+  }
 
   head('PAINT');
   if (!r.paint) ok('exactly one slide is on screen when the deck opens');
