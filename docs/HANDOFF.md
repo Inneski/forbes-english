@@ -34,21 +34,52 @@ The audit, the slide plan and the Midjourney shopping list are in
   *that* is acceptable; `ec2` and `ec1` reject the contracted forms
   (*"I'll call you"*, *"She's lived here"*); Section 4 shuffles single words
   where §7 wants phrase chunks.
-- **Light theme**, decided on a measurement: hero mean luminance 138, and the
-  dark palette's `--void #0c0e0e` under `--bg-opacity: 0.72` kills the coral
-  sky that is the best thing in the picture. The new artwork therefore has to
-  land in the 120–160 band or the set breaks in half.
 - Plans out at **40 slides**, over §7's split-at-24 line on purpose — a 35-item
   test does not split usefully and this is already Part 1 of two. Precedent is
   the exam decks at 50 and 69.
 
 Part 2 is structurally identical (10/8/6/5/6, all new sentences) with the same
-one-image problem. Its six subjects are in the same document so both can come
-out of one Midjourney sitting; Part 1 does not wait on them.
+one-image problem, and is briefed in the same document so both can come out of
+one Midjourney sitting; Part 1 does not wait on them.
 
-**Next session:** if the twelve pictures are in `incoming/`, the plan's §6 is
-the command sequence. If not, this stays blocked — do not convert on a thin
-set and reuse the hero across five sections.
+### 2026-09-24 — the style is Noma Bar, and that moved the count to 14
+
+Innes's call. The stem is the one already documented in
+`PLAN-foundations-grammar-business.md`, and the reference set is the
+`HOUSE STYLE/` folder at the repo root — flat shapes, solid colour, one idea in
+negative space. The briefs were rewritten as *ideas* rather than scenes,
+because a Noma Bar brief that names a place gets you a place.
+
+Two consequences worth carrying forward:
+
+- **The heroes are now on the shopping list too**, 7 per lesson rather than 6.
+  The two desert pictures are the other style, and §0.3 makes the hero the
+  background of every slide, so a cinematic cover over six flat interiors is
+  worse than either. They stay on disk unreferenced — good enough for a lesson
+  of their own later. The library thumbnails are the same problem and want
+  recutting from the new heroes.
+- **The theme measurement in the plan's §3 is superseded.** It analysed a hero
+  the deck will no longer use, so the palette has to be re-derived from the new
+  one. Light is still the likely answer — Noma Bar is bright flat colour on a
+  pale ground — but run the extractor both ways and read the report.
+
+**`--no photorealistic, gradient, texture, grain, depth of field, perspective`
+belongs on every prompt.** Nine PNGs at the repo root are named
+`blackisler_flat_vector_illustration_cel-shaded_solid_flat_col_*` and not one
+of them is flat vector — the one opened to check is a painterly Minecraft
+sunset with gradients and depth of field. The words in the stem did not survive
+the generation, and **a filename is not evidence of style**. Check output
+against `HOUSE STYLE/`, not against a filename.
+
+**Next session:** if the fourteen pictures are in `incoming/`, the plan's §6 is
+the command sequence. If not, this stays blocked — do not convert on a thin set
+and reuse the hero across five sections.
+
+**A cloud session cannot reach `incoming/`.** Confirmed again on 2026-09-24,
+with the path Innes gave: `C:\Users\black\Documents\FORBES\incoming\B1 test`.
+There is no `/mnt/c`, no drive mount of any kind, and a filesystem sweep for
+images newer than the clone returns nothing. The route is a local `/publish`,
+or `prep-artwork.py` locally and push the folder.
 
 ---
 

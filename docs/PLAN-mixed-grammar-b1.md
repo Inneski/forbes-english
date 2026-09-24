@@ -94,12 +94,25 @@ extract-palette.py … --light   →  --void #d8cbac  --surface #e1d9c4
 
 `--void` lands at HSL lightness 0.761, exactly the ~0.76 §4a asks for. The dark
 palette resolves to `--void #0c0e0e`, and at `--bg-opacity: 0.72` over near-black
-the coral sky — the best thing in the picture — goes to mud. Take the light
-theme, with `data-theme="light"` on `<html>` as §4a requires.
+the coral sky — the best thing in the picture — goes to mud.
 
-**This decides the shopping list.** Every new image has to sit in the same
-brightness band or the set breaks in half. Target mean luminance **120–160**;
-under 90 is an automatic refusal.
+> **Superseded 2026-09-24, and left here for the reasoning.** Innes chose the
+> Noma Bar flat-vector house style over the desert look (§5), which retires
+> `desert-building-sunset-clouds.jpg` as the hero. The numbers above describe a
+> picture the deck will no longer use, so **the palette has to be re-derived
+> from the new hero** when it lands — do not paste the block above into the
+> builder.
+>
+> The *conclusion* almost certainly survives: Noma Bar is flat, bright, solid
+> colour on a cream or pink ground, which is squarely §4a's "bright and airy",
+> so expect `--light` and `data-theme="light"`. Confirm it rather than assume
+> it — run the extractor both ways on the real hero and read the contrast
+> report, as §4 requires.
+
+**Whatever the hero turns out to be, the set has to hold together.** Run
+`prep-artwork.py` over all seven at once so it reports the luminance of each,
+and keep them inside a band of roughly ±20 of the hero's. Anything under 90 is
+an automatic refusal for a light deck.
 
 ## 4. The slide plan, and where each picture goes
 
@@ -109,13 +122,13 @@ not only its divider, so each section reads as one place.
 | Slides | Content | Background |
 |---|---|---|
 | 1 | Cover | `hero.jpg` |
-| 2–12 | Divider + 10 multiple-choice, one per slide | `s1-crossroads.jpg` |
-| 13–18 | Divider, Elena's story as a `teach` slide, then 4 gap slides of 2 | `s2-window.jpg` |
-| 19–25 | Divider + 6 true/false | `s3-fork.jpg` |
-| 26–31 | Divider + 5 `order` slides | `s4-siding.jpg` |
-| 32–38 | Divider + 6 error-correction gaps | `s5-shutter.jpg` |
+| 2–12 | Divider + 10 multiple-choice, one per slide | `s1-doors.jpg` |
+| 13–18 | Divider, Elena's story as a `teach` slide, then 4 gap slides of 2 | `s2-cup-clock.jpg` |
+| 19–25 | Divider + 6 true/false | `s3-thumb-shadow.jpg` |
+| 26–31 | Divider + 5 `order` slides | `s4-bars-arrow.jpg` |
+| 32–38 | Divider + 6 error-correction gaps | `s5-eraser-bulb.jpg` |
 | 39 | Results | `hero.jpg` |
-| 40 | Activation — speaking + writing | `activate-tailgate.jpg` |
+| 40 | Activation — speaking + writing | `activate-two-bubbles.jpg` |
 
 **Forty slides, and that is deliberate.** §7's "split beyond twenty-four" is
 written for a teaching lesson; a 35-item test does not split usefully, and this
@@ -126,59 +139,83 @@ one lever that does not cost content is folding Section 3 into two `sort`
 slides of three statements into TRUE / FALSE bins — 40 slides becomes 36. Both
 bins receive items (4 true, 2 false), so the SORT gate is satisfied.
 
-## 5. Shopping list — six images for Part 1
+## 5. Shopping list — seven images for Part 1
 
-Same style as the two already on disk: flat vector, mid-century American
-Southwest roadside at dusk, coral sky, slate-blue and pale concrete solids,
-black silhouettes. Append the stem to every subject line.
+**Style: Noma Bar flat vector.** Innes's call, 2026-09-24. That is the stem
+already documented in `docs/PLAN-foundations-grammar-business.md` and
+`docs/minecraft-artwork-plan.md`, and the style filling the `HOUSE STYLE/`
+reference folder at the repo root — flat shapes, two to four solid colours, one
+idea carried by negative space, no texture and no depth.
 
 ```
 flat vector illustration, cel-shaded, solid flat colour, minimalist,
-mid-century American Southwest roadside at dusk, coral and salmon sky with
-slate-blue and pale concrete solids, black silhouettes, ochre sand, subtle
-halftone grain, wide landscape, subject off-centre with the middle of the
-frame readable, no text, no lettering, no numbers --ar 16:9
+Noma Bar style, negative space, wide landscape, cream and dusty pink and
+coral with slate-blue and black silhouettes, subject off-centre with the
+middle of the frame empty, no text, no lettering, no numbers --ar 16:9
+--no photorealistic, gradient, texture, grain, depth of field, perspective
 ```
 
-**Spec.** 16:9, 2000px or wider on the long edge (2200 matches what is already
-in the folder). Mean luminance 120–160 — this is a light deck and a muddy
-scene breaks the set. Nothing centred: the cover lockup sits in the middle of
-the frame. No lettering anywhere in the picture — Midjourney cannot spell, and
-§13 has us chasing `%20` and stray glyphs often enough already.
+**The `--no` clause is not optional, and here is the evidence.** Nine PNGs at
+the repo root are named
+`blackisler_flat_vector_illustration_cel-shaded_solid_flat_col_*` and **none of
+them is flat vector** — the one opened to check is a painterly Minecraft sunset
+with gradients, atmospheric haze and depth of field. The words in the stem did
+not survive the generation. Check the four-up against `HOUSE STYLE/` before
+keeping anything, and do not trust a filename as evidence of style.
 
-Each subject carries the metaphor of its own section, so the background says
-what the activity is before the learner reads the heading.
+### Writing a Noma Bar brief
 
-| File | Subject |
+This is a different brief from a scene, and the earlier desert list will not
+translate line for line. Noma Bar is **one substitution, read at a glance**: a
+brain that is also a barbell, a face whose negative space is a second face. So
+each subject below names an *idea*, not a place, and the test is whether it
+still reads at thumbnail size.
+
+Two constraints the editorial originals do not have, both from the deck:
+
+- **16:9 with an empty middle.** Noma Bar's own work is mostly square or
+  portrait with the pun dead centre. Ours cannot be — the cover lockup sits in
+  the middle of the frame (§2) and the interior slides put a `.card` there.
+  Push the idea to one third and let flat colour carry the rest.
+- **Bright.** Light deck, so a light ground. See §3.
+
+**Spec.** 16:9, 2000px or wider on the long edge. No lettering anywhere in the
+picture. Run everything through `prep-artwork.py` rather than saving by hand.
+
+| File | The idea |
 |---|---|
-| `MixedGrammarPart1/s1-crossroads.jpg` | a desert crossroads at dusk, four blank signposts pointing four different ways, one pickup stopped at the line, long shadows |
-| `MixedGrammarPart1/s2-window.jpg` | a first-floor apartment window early in the morning, curtains half drawn, a coffee pot and a small alarm clock in silhouette on the sill, the street below still in shadow |
-| `MixedGrammarPart1/s3-fork.jpg` | a two-lane road forking around a rock outcrop, one lane in low sun and the other in shadow, a single figure standing where they split |
-| `MixedGrammarPart1/s4-siding.jpg` | a desert rail siding at dusk, five freight cars being shunted into line, a switchman in silhouette at the points lever |
-| `MixedGrammarPart1/s5-shutter.jpg` | a roadside diner at dusk with one shutter hanging crooked, a ladder against the wall and a figure halfway up straightening it, tools on the ground |
-| `MixedGrammarPart1/activate-tailgate.jpg` | two figures sitting on the tailgate of a pickup at dusk, turned to face each other mid-conversation, an open notebook on the tailgate between them, sun on the horizon |
+| `MixedGrammarPart1/hero.jpg` | a pen nib, and the split down its centre is also a fork in a road running to the horizon — one object, two readings |
+| `MixedGrammarPart1/s1-doors.jpg` | four identical flat doors in a row, three shut and one ajar, the wedge of space behind the open one forming a tick |
+| `MixedGrammarPart1/s2-cup-clock.jpg` | a coffee cup seen from directly above, the dark circle of coffee also a clock face with no numerals, one hand near seven |
+| `MixedGrammarPart1/s3-thumb-shadow.jpg` | a thumbs-up in flat colour whose cast shadow is unmistakably a thumbs-down |
+| `MixedGrammarPart1/s4-bars-arrow.jpg` | five flat bars of different lengths in a jumbled stack, the gaps between them resolving into a single arrow pointing right |
+| `MixedGrammarPart1/s5-eraser-bulb.jpg` | an eraser part-way along a line, and the cleared space behind it is the shape of a lightbulb |
+| `MixedGrammarPart1/activate-two-bubbles.jpg` | two speech bubbles overlapping, and the lens of overlap between them is a pen nib |
 
-**Already on disk, nothing to generate:**
-`MixedGrammarPart1/desert-building-sunset-clouds.jpg` is a good hero and stays.
-It gets `git mv`-ed to `MixedGrammarPart1/hero.jpg` at build time per §3 — it
-is referenced only by the page being replaced, so the rename costs nothing and
-adds no blob.
+**The hero is now on the list, and that is the cost of the style change.**
+`desert-building-sunset-clouds.jpg` is a good picture but it is the *other*
+style, and §0.3 makes the hero the background of every slide — a cinematic
+cover over six flat-vector interiors is worse than either style alone. So the
+count goes from six to seven. The two desert pictures stay on disk unreferenced
+rather than being deleted; they are good enough to carry a lesson of their own
+later, and git keeps the blobs regardless. **If you would rather keep the
+desert covers and save two generations, say so** — it is a defensible call and
+it is yours, not mine.
 
-### And six more if Part 2 is going through the same Midjourney sitting
+### And seven more for Part 2, for the same sitting
 
-Part 2 has the identical five sections and the identical problem — one image,
-`desert-gas-station-sunset.jpg` (2200×1232, mean luminance 148, also a good
-hero). Listed here only so both can be generated in one pass; Part 1 does not
-wait on them.
+Identical five sections, identical problem. Different ideas rather than
+recoloured twins, so the two decks do not read as one.
 
-| File | Subject |
+| File | The idea |
 |---|---|
-| `MixedGrammarPart2/s1-motel.jpg` | a motel courtyard at dusk seen along the row, four identical doors in shadow, one car parked, a pool fence and a blank sign frame |
-| `MixedGrammarPart2/s2-diner.jpg` | a diner booth by a window at dusk, two coffee cups and a folded map on the table, nobody in the seats, desert outside |
-| `MixedGrammarPart2/s3-billboard.jpg` | a blank two-sided billboard alone in scrubland, lit on one face by the low sun and dark on the other, a maintenance ladder up the leg |
-| `MixedGrammarPart2/s4-freight.jpg` | a long freight train crossing the frame on a level crossing at dusk, a lone pickup waiting at the barrier, Joshua trees behind |
-| `MixedGrammarPart2/s5-repair.jpg` | a pickup pulled onto the shoulder with its hood up at dusk, one figure leaning in over the engine, a toolbox open on the ground |
-| `MixedGrammarPart2/activate-porch.jpg` | two figures on a porch at dusk, one in a chair and one on the step, talking, a radio and a notebook on the boards between them |
+| `MixedGrammarPart2/hero.jpg` | a question mark whose curve straightens into a road running to a low horizon |
+| `MixedGrammarPart2/s1-keys.jpg` | four flat keys hanging in a row, one casting a shadow shaped like a keyhole |
+| `MixedGrammarPart2/s2-book-bird.jpg` | an open book seen edge-on, its two pages becoming the wings of a bird lifting off |
+| `MixedGrammarPart2/s3-coin.jpg` | a coin caught mid-spin, one visible face a tick and the blurred other face a cross |
+| `MixedGrammarPart2/s4-zip.jpg` | a zip half done up, the two ragged sides interlocking into one clean line |
+| `MixedGrammarPart2/s5-inverted.jpg` | a row of identical flat shapes with exactly one upside down, the gap it leaves forming an exclamation mark |
+| `MixedGrammarPart2/activate-mic-pencil.jpg` | a microphone whose stand tapers into a sharpened pencil |
 
 ## 6. What happens when the pictures land
 
@@ -187,9 +224,12 @@ and the duplicate check — **do not commit raw Midjourney PNGs**, `.git` is
 already ~700 MB with no LFS.
 
 ```bash
-python3 tools/prep-artwork.py incoming/MixedGrammarPart1 --into MixedGrammarPart1 \
-  --names s1-crossroads,s2-window,s3-fork,s4-siding,s5-shutter,activate-tailgate
-git mv MixedGrammarPart1/desert-building-sunset-clouds.jpg MixedGrammarPart1/hero.jpg
+# --dry-run first: it prints each file's luminance and aspect, and picks
+# between Midjourney's near-identical four-up variants.
+python3 tools/prep-artwork.py "incoming/B1 test" --into MixedGrammarPart1 --dry-run
+
+python3 tools/prep-artwork.py "incoming/B1 test" --into MixedGrammarPart1 \
+  --names hero,s1-doors,s2-cup-clock,s3-thumb-shadow,s4-bars-arrow,s5-eraser-bulb,activate-two-bubbles
 
 python3 lesson-template/extract-palette.py MixedGrammarPart1/hero.jpg --light   # every row PASS
 python3 lesson-template/build/build_mixedgrammar1.py                            # to be written
@@ -198,10 +238,19 @@ python3 tools/build_hubs.py
 python3 tools/seo.py
 ```
 
+`--names` is positional — `names[i]` goes to the *i*th source in the order
+`prep-artwork.py` lists them — and it **exits if the count does not match the
+number of source files**, which a folder of Midjourney four-ups will trip
+immediately. Read the `--dry-run` output, confirm the pairing, and split the
+four-ups down to seven files first. On Windows it is `py`, not `python3`.
+
 Keep the filename — `forbes-english-b1-mixed-grammar-test.html` — so the live
 URL does not move (§10.8). `library.html` already has a `LESSON_IMAGES` row for
-it; point it at `MixedGrammarPart1/hero.jpg` once the rename is done, and run
+it; repoint it at `MixedGrammarPart1/hero.jpg`, and run
 `node lesson-template/check-library.js --vs-origin` before committing that file.
+`MixedGrammarPart1/mixed-grammar-part1-thumb.jpg` is the old desert square and
+becomes the odd one out on the library page too — recut the card from the new
+hero (`LibraryCards/` at 1200×512, per the publish skill).
 `tools/topics.py` already maps both parts to `tense-review`, so the hub picks
 them up with no override needed.
 
