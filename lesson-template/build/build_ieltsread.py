@@ -30,7 +30,7 @@ and Not Given; a book in a pool of light with everything beyond it unlit is
 the passage against the world; a balance almost but not quite level is the
 qualifier; and the clock over a bare desk closes it.
 
-English, German and Spanish all complete.
+Ten languages, all complete (`ielts_langs.LANGS`).
 """
 import html
 import os
@@ -39,6 +39,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import deck as D
+from ielts_langs import LANGS
 from ieltsread_data import (VERDICT, WORLD, QUALIFY, ALL, VERDICTS,
                             SORT_BINS, SORT_ITEMS)
 
@@ -260,7 +261,7 @@ def build():
 
     s = D.assemble(TPL, OUT, slides, PALETTE,
                    'IELTS Reading: True, False, Not Given (C1) | Forbes English',
-                   I, langs=('en', 'de', 'es'))
+                   I, langs=LANGS)
     # Twelve items plus the six signals on the sorting slide: the engine scores
     # a sort per chip, so the cover chip has to say 18, not 13.
     print('wrote %s — %d slides, %d scored points, %d bytes'
