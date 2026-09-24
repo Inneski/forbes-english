@@ -32,8 +32,8 @@ will not go through the letterbox is the word limit; a brass key against a
 padlock whose teeth do not match is the grammar fit; and a pencil sharpened
 to a point, shavings beside it, closes it.
 
-Ten languages, all complete (`ielts_langs.LANGS`).
-answers a candidate might write, described, not the English under test, so
+Ten languages, all complete (`ielts_langs.LANGS`), the sort items included:
+they are answers a candidate might write, described, not the English under test, so
 they carry `data-i18n` keys that this builder adds after `sort_slide()`.
 """
 import os

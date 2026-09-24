@@ -28,9 +28,15 @@ office chair for work, a robotic arm holding one bolt for automation, a block
 of flats with one window lit for cities, two interlocking cogs for the sort,
 and a board mid-flip in an empty station to close.
 
-Ten languages, all complete (`ielts_langs.LANGS`).
-is read from `i18n_ieltswork.T['en']`, so the HTML and `UI_I18N.en` cannot
-drift apart.
+Ten languages, all complete (`ielts_langs.LANGS`). Every English string in
+the slides is read from `i18n_ieltswork.T['en']`, so the HTML and
+`UI_I18N.en` cannot drift apart.
+
+Corrected 2026-09-24 after Innes flagged it: the deck taught `suffer
+burnout` (English says `suffer from burnout`), invented a band score for a
+one-sided answer, called `automatise` and `productivity growth` wrong, and
+stated "nearly always" and "usually" about Part 3 and Task 2 prompts. The
+item fixes are listed in `ieltswork_data`.
 """
 import os
 import sys

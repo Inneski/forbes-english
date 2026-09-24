@@ -23,15 +23,24 @@ Three sections, four items each, one idea per picture. Keys sit at `i % 4`
 across all twelve. **Every distractor was checked for the reading that makes
 it right**: `low-cost housing`, `urban expansion`, `mechanise a process` and
 `bring on staff` were all first drafts and all defensible English, so none of
-them is here. Nothing reuses a sentence from a teach card — see
+them is here.
+
+That check missed five, found by Innes on 2026-09-24 and fixed then: the
+key taught `suffer burnout` where English says `suffer from burnout`; the
+explanation called `productivity growth` wrong (only the plural was);
+`dislocated` workers is an official US term, so it cannot be a wrong
+answer; `urban spread` is attested; and `invest into` / `invest for` are
+both defensible. Each is replaced by a distractor with no correct
+reading: `deported`, `earnings`, `spreading`, `invest to` / `invest at`.
+Nothing reuses a sentence from a teach card — see
 `check-teach-leak.js`; the cards NAME the pairings, emphasised, which that
 gate exempts, and the item sentences are different sentences.
 """
 
 # ── Activity 1 · work ──────────────────────────────────────────────────
 WORK = [
-    dict(stem='Which sentence uses the pairing English has for working away '
-              'from the office?',
+    dict(stem='Which sentence uses the natural phrase for working away from '
+              'the office?',
          options=['Half the team now works remotely three days a week.',
                   'Half the team now works distantly three days a week.',
                   'Half the team now works at distance three days a week.',
@@ -46,12 +55,12 @@ WORK = [
                   'The post gives its holder career insurance for years to come.'],
          correct=1, why='v2why'),
 
-    dict(stem='Nurses on double shifts are exhausted. Which sentence uses '
-              'the pairing for it?',
-         options=['Many of them get into burnout by the second winter.',
-                  'Many of them fall in burnout by the second winter.',
-                  'Many of them suffer burnout by the second winter.',
-                  'Many of them make a burnout by the second winter.'],
+    dict(stem='The nurses worked double shifts for two years. Which sentence '
+              'describes the result naturally?',
+         options=['Many of them got into a burnout in the second winter.',
+                  'Many of them fell in burnout in the second winter.',
+                  'Many of them suffered from burnout in the second winter.',
+                  'Many of them made a burnout in the second winter.'],
          correct=2, why='v3why'),
 
     dict(ctx='Part 3: <em>Will the gig economy help people&rsquo;s '
@@ -70,21 +79,21 @@ AUTOMATION = [
              'of their jobs.',
          stem='Which verb is the precise one?',
          options=['Automation has displaced thousands of factory workers.',
-                  'Automation has dislocated thousands of factory workers.',
+                  'Automation has deported thousands of factory workers.',
                   'Automation has misplaced thousands of factory workers.',
                   'Automation has evicted thousands of factory workers.'],
          correct=0, why='v5why'),
 
-    dict(stem='Which pairing does English use for the benefit a new machine '
-              'brings?',
+    dict(stem='The factory has installed a new production line. Which '
+              'sentence describes the benefit naturally?',
          options=['The report predicts large productivity profits from the new line.',
                   'The report predicts large productivity gains from the new line.',
-                  'The report predicts large productivity growths from the new line.',
+                  'The report predicts large productivity earnings from the new line.',
                   'The report predicts large productivity winnings from the new line.'],
          correct=1, why='v6why'),
 
-    dict(stem='The plant is closing. Which sentence uses the pairing for what '
-              'should happen to its workers?',
+    dict(stem='The plant is closing. Which sentence says naturally what should '
+              'happen to its workers?',
          options=['The council should re-form the workforce for the new trades.',
                   'The council should re-teach the workforce for the new trades.',
                   'The council should retrain the workforce for the new trades.',
@@ -103,10 +112,10 @@ AUTOMATION = [
 
 # ── Activity 3 · cities ────────────────────────────────────────────────
 CITIES = [
-    dict(stem='Which is the English pairing for a city spreading outwards '
-              'into the countryside?',
+    dict(stem='Which is the usual term for a city spreading outwards into '
+              'the countryside?',
          options=['Urban sprawl has swallowed three villages since 1990.',
-                  'Urban spread has swallowed three villages since 1990.',
+                  'Urban spreading has swallowed three villages since 1990.',
                   'Urban stretch has swallowed three villages since 1990.',
                   'Urban widening has swallowed three villages since 1990.'],
          correct=0, why='v9why'),
@@ -120,15 +129,15 @@ CITIES = [
                   'Cities need more reasonable housing near the centre.'],
          correct=1, why='v10why'),
 
-    dict(stem='Which sentence has the pairing right?',
+    dict(stem='Which sentence uses the right preposition?',
          options=['The mayor promised to invest on infrastructure before the vote.',
-                  'The mayor promised to invest for infrastructure before the vote.',
+                  'The mayor promised to invest to infrastructure before the vote.',
                   'The mayor promised to invest in infrastructure before the vote.',
-                  'The mayor promised to invest into infrastructure before the vote.'],
+                  'The mayor promised to invest at infrastructure before the vote.'],
          correct=2, why='v11why'),
 
-    dict(stem='Which sentence says how far the journey to work is, the way '
-              'English says it?',
+    dict(stem='The trains are slow and the drive takes an hour. Which '
+              'sentence describes the trip to work naturally?',
          options=['Most residents face a protracted transit every morning.',
                   'Most residents face a prolonged journeying every morning.',
                   'Most residents face an extended travelling every morning.',
@@ -143,7 +152,7 @@ ALL = WORK + AUTOMATION + CITIES
 # they are what a learner produces when the phrase was learnt as a word plus
 # a translation — a verb from the dictionary, an adjective from their own
 # language, a suffix that looks like it should work.
-SORT_BINS = ['English says this', 'English does not']
+SORT_BINS = ['Natural English', 'Not natural']
 SORT_ITEMS = [
     ('ease congestion', 0),
     ('take on staff', 0),
