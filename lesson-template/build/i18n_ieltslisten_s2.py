@@ -44,14 +44,13 @@ T['en'] = dict(
     chipCount='12 questions',
 
     t1Eyebrow='Before you listen',
-    t1Title='One voice, and no second chance at anything',
+    t1Title='One voice, and almost nothing said twice',
     t1ah='Nobody asks a question',
     t1ab='In Section 1 the other speaker keeps checking &mdash; <em>sorry, '
-         'forty-two?</em> &mdash; and every check is a free repeat. A '
-         'monologue never does that. A detail you miss is simply gone.',
-    t1an='Which is why the preparation time matters more here than anywhere '
-         'else on the paper.',
-    t1bh='The map task is not about English',
+         'forty-two?</em> &mdash; and every check is a free repeat. In a '
+         'monologue nobody does that, so a detail you miss is usually gone.',
+    t1an='That is why the preparation time matters so much here.',
+    t1bh='The map task is about orientation as much as English',
     t1bb='Labelling a plan tests whether you can hold an orientation while '
          'somebody walks you through a space in words. The vocabulary is '
          'small; the difficulty is that everything is relative to something '
@@ -64,8 +63,8 @@ T['en'] = dict(
          'until you know where the gate is and which way you are facing. Find '
          'the entrance on the plan before the recording starts, and mark which '
          'way is "ahead".',
-    t1cn='Half the marks on a map task are lost by candidates who never '
-         'established where they were standing.',
+    t1cn='Many map-task marks are lost by candidates who never worked out '
+         'where they were standing.',
 
     audEyebrow='The recording',
     audTitle='You will hear it once',
@@ -81,8 +80,8 @@ T['en'] = dict(
 
     notesEyebrow='Questions 6&ndash;8 &middot; Complete the notes',
     notesTitle='Write ONE WORD AND/OR A NUMBER in each gap',
-    notesHint='Two numbers arrive in the same sentence more than once. Write '
-              'the one the gap asks for.',
+    notesHint='Twice, a sentence contains two numbers. Write the one the gap '
+              'asks for.',
 
     t2Eyebrow='After the recording',
     t2Title='How a map task hides its answers',
@@ -91,21 +90,22 @@ T['en'] = dict(
          '<em>and</em> the bicycle racks are both next to the car park. '
          'Naming the landmark does not identify either of them, so the '
          'sentence has to be held whole.',
-    t2an='Whenever a speaker says <em>two things</em> or <em>in fact</em>, a '
-         'second item is about to share a position.',
+    t2an='<em>Two things</em> or <em>in fact</em> can signal that a second '
+         'item is about to share a position.',
     t2bh='The thing that moved',
     t2bb='Something is described in its old place and then corrected to its '
          'new one. The plant stall "used to stand by the lake". Anyone '
          'answering from the first mention puts it in the wrong place.',
-    t2bn='The guide repeats the new position deliberately. A repeat in a monologue is '
-         'never decoration.',
+    t2bn='The guide repeats the new position deliberately. In a monologue, a '
+         'repeat is usually a signal.',
     t2ch='The direction that depends on you',
     t2cb='<em>On your left</em>, <em>directly ahead</em>, <em>behind the '
          'lake</em>, <em>on the far side from where we are standing</em>. '
          'Every one of these is relative to the speaker&rsquo;s position, not '
          'to the page.',
     t2cn='<em>Behind</em> and <em>beyond</em> are the two that catch people: '
-         'behind the lake is across it, beyond the greenhouse is past it.',
+         'behind the lake is on its far side, beyond the greenhouse is past '
+         'it.',
 
     mcEyebrow='Questions 9&ndash;12 &middot; Detail',
     mcTitle='What exactly did the guide say?',
@@ -113,9 +113,9 @@ T['en'] = dict(
     m2why='The bank of the stream is being repaired. The birds are mentioned, '
           'and so is the spring, but neither is the reason: the spring is when '
           'it reopens.',
-    m3why='Do not feed the birds. The guide gives a reason &mdash; bread is bad for '
-          'them &mdash; and a reason attached to an instruction is how a '
-          'monologue marks the thing it wants you to remember.',
+    m3why='Do not feed the birds. The guide gives a reason &mdash; bread is '
+          'bad for them &mdash; and a reason attached to an instruction often '
+          'marks what a speaker wants you to remember.',
     m4why='The ticket lasts all day, so visitors may stay. "We finish back at '
           'the café" is the line before, and it is about where the tour ends, '
           'not when you have to leave.',
@@ -131,13 +131,13 @@ T['en'] = dict(
                   'a compass direction. The other marks them on their own copy '
                   'and then compares.',
     actSpeak1='Describer: fix the starting point out loud first. "You come in '
-              'through the door on the north side." Then everything is '
-              'relative to that.',
+              'through the door by the lifts." Then everything is relative to '
+              'that.',
     actSpeak2='Put two of your five things beside the same landmark, and see '
               'whether your partner separates them.',
     actSpeak3='Move one thing halfway through: "the printer used to be by the '
-              'window &mdash; it is now&hellip;" Say the new place twice, as a '
-              'real guide does.',
+              'window &mdash; it is now&hellip;" Say the new place twice, as '
+              'the guide in the recording does.',
     actWriteKind='Writing · 100–150 words',
     actWriteBrief='Write the opening ninety seconds of a tour of somewhere you '
                   'know well, describing where five things are. Use no '
@@ -163,14 +163,14 @@ T['de'] = dict(
     chipCount='12 Fragen',
 
     t1Eyebrow='Bevor du hörst',
-    t1Title='Eine Stimme &mdash; und nirgends eine zweite Chance',
+    t1Title='Eine Stimme, und fast nichts wird zweimal gesagt',
     t1ah='Niemand stellt eine Rückfrage',
     t1ab='In Section 1 hakt die zweite Person ständig nach &mdash; <em>sorry, '
          'forty-two?</em> &mdash; und jede Rückfrage ist eine geschenkte '
-         'Wiederholung. Ein Monolog tut das nie. Was du verpasst, ist weg.',
-    t1an='Genau deshalb zählt die Vorbereitungszeit hier mehr als sonst wo in '
-         'der Prüfung.',
-    t1bh='Die Kartenaufgabe prüft kein Englisch',
+         'Wiederholung. Im Monolog fragt niemand nach, also ist ein verpasstes '
+         'Detail meist weg.',
+    t1an='Deshalb zählt die Vorbereitungszeit hier so viel.',
+    t1bh='Die Kartenaufgabe prüft Orientierung ebenso wie Englisch',
     t1bb='Einen Plan zu beschriften prüft, ob du eine Orientierung behältst, '
          'während dich jemand mit Worten durch einen Raum führt. Der '
          'Wortschatz ist klein; schwierig ist, dass alles relativ zu etwas '
@@ -183,8 +183,8 @@ T['de'] = dict(
          'solange du nicht weißt, wo das Tor ist und wohin du schaust. Finde '
          'den Eingang auf dem Plan, bevor die Aufnahme startet, und markiere, '
          'wo „geradeaus“ ist.',
-    t1cn='Die Hälfte der Punkte einer Kartenaufgabe verlieren Kandidaten, die '
-         'nie festgelegt haben, wo sie stehen.',
+    t1cn='Viele Punkte einer Kartenaufgabe verlieren Kandidaten, die nie '
+         'geklärt haben, wo sie stehen.',
 
     audEyebrow='Die Aufnahme',
     audTitle='Du hörst sie einmal',
@@ -201,7 +201,7 @@ T['de'] = dict(
 
     notesEyebrow='Fragen 6&ndash;8 &middot; Notizen vervollständigen',
     notesTitle='Schreibe EIN WORT UND/ODER EINE ZAHL in jede Lücke',
-    notesHint='Mehrfach stehen zwei Zahlen im selben Satz. Schreib die, nach '
+    notesHint='Zweimal stehen zwei Zahlen im selben Satz. Schreib die, nach '
               'der die Lücke fragt.',
 
     t2Eyebrow='Nach der Aufnahme',
@@ -211,14 +211,14 @@ T['de'] = dict(
          'Spielplatz <em>und</em> die Fahrradständer stehen beide neben dem '
          'Parkplatz. Den Orientierungspunkt zu nennen identifiziert keines '
          'von beiden; der Satz muss ganz behalten werden.',
-    t2an='Wenn jemand <em>two things</em> oder <em>in fact</em> sagt, teilt '
-         'gleich ein zweites Ding dieselbe Position.',
+    t2an='<em>Two things</em> oder <em>in fact</em> kann ankündigen, dass '
+         'gleich ein zweites Ding dieselbe Position teilt.',
     t2bh='Das, was umgezogen ist',
     t2bb='Etwas wird an seinem alten Ort beschrieben und dann an den neuen '
          'korrigiert. Der Pflanzenstand „used to stand by the lake“. Wer nach '
          'der ersten Nennung antwortet, setzt ihn falsch.',
-    t2bn='Sie wiederholt die neue Position absichtlich. Eine Wiederholung im '
-         'Monolog ist nie Dekoration.',
+    t2bn='Sie wiederholt die neue Position absichtlich. Im Monolog ist eine '
+         'Wiederholung meist ein Signal.',
     t2ch='Die Richtung, die von dir abhängt',
     t2cb='<em>On your left</em>, <em>directly ahead</em>, <em>behind the '
          'lake</em>, <em>on the far side from where we are standing</em>. '
@@ -235,8 +235,8 @@ T['de'] = dict(
           'Frühling auch, aber keins ist der Grund: im Frühling wird wieder '
           'geöffnet.',
     m3why='Die Vögel nicht füttern. Sie nennt einen Grund &mdash; Brot ist '
-          'schlecht für sie &mdash; und ein Grund an einer Anweisung ist im '
-          'Monolog die Markierung für das, was man behalten soll.',
+          'schlecht für sie &mdash; und ein Grund an einer Anweisung markiert '
+          'oft, was man sich merken soll.',
     m4why='Das Ticket gilt den ganzen Tag, also darf man bleiben. „We finish '
           'back at the café“ steht davor und sagt, wo die Führung endet, nicht '
           'wann man gehen muss.',
@@ -252,13 +252,13 @@ T['de'] = dict(
                   'und ohne Himmelsrichtungen. Der andere trägt sie ein und '
                   'vergleicht.',
     actSpeak1='Beschreiber: leg zuerst laut den Ausgangspunkt fest. „Du kommst '
-              'durch die Tür an der Nordseite herein.“ Danach ist alles '
+              'durch die Tür bei den Aufzügen herein.“ Danach ist alles '
               'relativ dazu.',
     actSpeak2='Setz zwei deiner fünf Dinge neben denselben Orientierungspunkt '
               'und schau, ob dein Partner sie auseinanderhält.',
     actSpeak3='Verschieb auf halber Strecke ein Ding: „der Drucker stand '
               'früher am Fenster &mdash; jetzt ist er&hellip;“ Sag den neuen '
-              'Ort zweimal, wie eine echte Führung es tut.',
+              'Ort zweimal, wie die Führerin in der Aufnahme.',
     actWriteKind='Schreiben · 100–150 Wörter',
     actWriteBrief='Schreib die ersten neunzig Sekunden einer Führung durch '
                   'einen Ort, den du gut kennst, und beschreibe, wo fünf Dinge '
@@ -271,14 +271,16 @@ T['de'] = dict(
     placesWhy='Jeder dieser Orte wird relativ zu etwas anderem angegeben '
               '&mdash; genau das ist eine Kartenaufgabe. Der Spielplatz teilt '
               'sich seinen Orientierungspunkt mit den Fahrradständern &mdash; '
-              'beide liegen am Parkplatz &mdash;, also bestimmt „next to the '
-              'car park“ allein ihn nicht; und der Pflanzenstand wird zweimal '
-              'beschrieben, eben weil er umgezogen ist.',
+              'beide liegen am Parkplatz &mdash;, also würde auf einem echten '
+              'Plan, auf dem auch die Fahrradständer einen Buchstaben hätten, '
+              '„next to the car park“ allein ihn nicht bestimmen. Der '
+              'Pflanzenstand wird zweimal beschrieben, eben weil er umgezogen '
+              'ist.',
     n1why='Zehn bis halb sechs. Gefragt ist die Schließzeit, und sie kommt '
           'als zweite im selben kurzen Satz wie die Öffnungszeit.',
-    n2why='Acht Pfund. „No charge at all for anyone under sixteen“ steht im '
-          'selben Satz, und zwar damit jemand, der nur halb zuhört, „free“ '
-          'schreibt.',
+    n2why='Acht Pfund. Derselbe Satz geht weiter mit „no charge at all for '
+          'anyone under sixteen“, und das steht da, um jeden zu erwischen, '
+          'der 0 schreibt.',
     n3why='Neunzig Minuten. Nicht die Öffnungszeiten und nicht „all day“ '
           '&mdash; so lange gilt das Ticket, eine Zeile später gesagt.',
 )
@@ -292,14 +294,14 @@ T['es'] = dict(
     chipCount='12 preguntas',
 
     t1Eyebrow='Antes de escuchar',
-    t1Title='Una voz, y ninguna segunda oportunidad',
+    t1Title='Una voz, y casi nada se dice dos veces',
     t1ah='Nadie pregunta nada',
     t1ab='En la Section 1 la otra persona va comprobando &mdash; <em>sorry, '
          'forty-two?</em> &mdash; y cada comprobación es una repetición '
-         'gratis. Un monólogo no hace eso. Lo que se te escapa, se fue.',
-    t1an='Por eso el tiempo de preparación cuenta aquí más que en ninguna otra '
-         'parte del examen.',
-    t1bh='La tarea del plano no va de inglés',
+         'gratis. En un monólogo nadie lo hace, así que lo que se te escapa '
+         'suele perderse.',
+    t1an='Por eso el tiempo de preparación cuenta tanto aquí.',
+    t1bh='La tarea del plano mide la orientación tanto como el inglés',
     t1bb='Etiquetar un plano mide si puedes mantener una orientación mientras '
          'alguien te lleva por un espacio con palabras. El vocabulario es '
          'poco; lo difícil es que todo se da en relación con otra cosa.',
@@ -311,8 +313,8 @@ T['es'] = dict(
          'hasta que sabes dónde está la puerta y hacia dónde miras. Localiza '
          'la entrada en el plano antes de que empiece la grabación y marca '
          'qué dirección es «de frente».',
-    t1cn='La mitad de los puntos de un plano los pierde quien nunca fijó dónde '
-         'estaba de pie.',
+    t1cn='Muchos puntos de un plano los pierde quien nunca averiguó dónde '
+         'estaba.',
 
     audEyebrow='La grabación',
     audTitle='La oirás una vez',
@@ -329,8 +331,8 @@ T['es'] = dict(
 
     notesEyebrow='Preguntas 6&ndash;8 &middot; Completa las notas',
     notesTitle='Escribe UNA PALABRA Y/O UN NÚMERO en cada hueco',
-    notesHint='Más de una vez hay dos números en la misma frase. Escribe el '
-              'que pide el hueco.',
+    notesHint='Dos veces hay dos números en la misma frase. Escribe el que '
+              'pide el hueco.',
 
     t2Eyebrow='Después de la grabación',
     t2Title='Cómo esconde sus respuestas una tarea de plano',
@@ -339,14 +341,14 @@ T['es'] = dict(
          '<em>y</em> el aparcabicis están las dos al lado del aparcamiento. '
          'Nombrar la referencia no identifica ninguna, así que hay que '
          'quedarse con la frase entera.',
-    t2an='Cuando alguien dice <em>two things</em> o <em>in fact</em>, un '
+    t2an='<em>Two things</em> o <em>in fact</em> pueden anunciar que un '
          'segundo elemento va a compartir posición.',
     t2bh='Lo que se ha movido',
     t2bb='Algo se describe en su sitio antiguo y luego se corrige al nuevo. El '
          'puesto de plantas «used to stand by the lake». Quien responde por la '
          'primera mención lo coloca mal.',
-    t2bn='Repite la posición nueva a propósito. Una repetición en un monólogo '
-         'nunca es decoración.',
+    t2bn='Repite la posición nueva a propósito. En un monólogo, una repetición '
+         'suele ser una señal.',
     t2ch='La dirección que depende de ti',
     t2cb='<em>On your left</em>, <em>directly ahead</em>, <em>behind the '
          'lake</em>, <em>on the far side from where we are standing</em>. Todo '
@@ -362,8 +364,8 @@ T['es'] = dict(
           'primavera también, pero ninguno es el motivo: en primavera se '
           'vuelve a abrir.',
     m3why='No dar de comer a los pájaros. Da un motivo &mdash; el pan les '
-          'sienta mal &mdash; y un motivo pegado a una instrucción es como un '
-          'monólogo marca lo que quiere que recuerdes.',
+          'sienta mal &mdash; y un motivo pegado a una instrucción suele '
+          'marcar lo que quien habla quiere que recuerdes.',
     m4why='La entrada vale todo el día, así que pueden quedarse. «We finish '
           'back at the café» es la línea anterior y dice dónde acaba la '
           'visita, no cuándo hay que irse.',
@@ -379,13 +381,13 @@ T['es'] = dict(
                   'puntos cardinales. El otro las marca en su copia y luego '
                   'comparáis.',
     actSpeak1='Quien describe: fija en voz alta el punto de partida. «Entras '
-              'por la puerta del lado norte.» A partir de ahí todo es relativo '
-              'a eso.',
+              'por la puerta que está junto a los ascensores.» A partir de ahí '
+              'todo es relativo a eso.',
     actSpeak2='Pon dos de tus cinco cosas junto a la misma referencia y mira '
               'si tu compañero las separa.',
     actSpeak3='A mitad de camino, mueve una cosa: «la impresora estaba junto a '
               'la ventana… ahora está…». Di el sitio nuevo dos veces, como '
-              'hace una guía de verdad.',
+              'hace la guía de la grabación.',
     actWriteKind='Escritura · 100–150 palabras',
     actWriteBrief='Escribe los primeros noventa segundos de una visita guiada '
                   'a un sitio que conozcas bien, diciendo dónde están cinco '
@@ -396,17 +398,17 @@ T['es'] = dict(
 
     # Questions 1-8: the English is registered from the data module, below.
     placesWhy='Cada uno de estos sitios se da en relación con otra cosa, que '
-              'es justo en lo que consiste una tarea de mapa. La zona de juegos '
-              'comparte punto de referencia con los aparcabicicletas &mdash; '
-              'los dos están junto al aparcamiento &mdash;, así que «next to '
-              'the car park» por sí solo no la identifica; y el puesto de '
+              'es justo en lo que consiste una tarea de plano. La zona de '
+              'juegos comparte referencia con el aparcabicis &mdash; los dos '
+              'están junto al aparcamiento &mdash;, así que en un plano de '
+              'verdad, donde el aparcabicis también tendría letra, «next to '
+              'the car park» por sí solo no la identificaría. Y el puesto de '
               'plantas se describe dos veces precisamente porque ha cambiado '
               'de sitio.',
     n1why='De diez a cinco y media. Lo que se pide es la hora de cierre, y '
           'llega en segundo lugar, en la misma frase corta que la de apertura.',
-    n2why='Ocho libras. «No charge at all for anyone under sixteen» va en la '
-          'misma frase, y está ahí para que quien escucha a medias escriba '
-          '«free».',
+    n2why='Ocho libras. La misma frase sigue con «no charge at all for anyone '
+          'under sixteen», que está ahí para pillar a quien escriba 0.',
     n3why='Noventa minutos. Ni el horario de apertura ni «all day», que es lo '
           'que dura la entrada y se dice una línea después.',
 )

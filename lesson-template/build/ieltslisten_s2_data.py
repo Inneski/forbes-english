@@ -127,21 +127,23 @@ PLACES = [
 PLACES_WHY = ('Every one of these is given relative to something else, which '
               'is what a map task is. The play area shares its landmark with '
               'the bicycle racks &mdash; both are beside the car park &mdash; '
-              'so "next to the car park" on its own does not identify it, and '
-              'the plant stall is described twice precisely because it has '
+              'so on a real plan, where the racks would have a letter too, '
+              '"next to the car park" on its own would not identify it. The '
+              'plant stall is described twice precisely because it has '
               'moved.')
 
 # ── Questions 6-8 · complete the notes ─────────────────────────────────
+# The entry line said "(free under 16)" until 2026-09-25, which printed the
+# very trap its explanation described; it now asks for the adult price.
 NOTES = [
     ('Open until ______ every day except Monday',
-     ['5.30|5:30|5.30pm|5.30 pm|5:30pm|5:30 pm|17.30|17:30'],
+     ['5.30|5:30|5.30pm|5.30 pm|5:30pm|5:30 pm|5.30 p.m.|5:30 p.m.|17.30|17:30'],
      'Ten until half past five. The closing time is the one asked for, and it '
      'arrives second in the same short sentence as the opening time.'),
-    ('Entry: £______ (free under 16)',
-     ['8|8.00|eight'],
-     'Eight pounds. "No charge at all for anyone under sixteen" is the same '
-     'sentence, and it is there so that a candidate half-listening writes '
-     '"free".'),
+    ('Adult entry: £______',
+     ['8|8.00|eight|£8|£8.00'],
+     'Eight pounds. The same sentence goes on to "no charge at all for anyone '
+     'under sixteen", which is there to catch anyone who writes 0.'),
     ('The tour lasts about ______ minutes',
      ['90|ninety'],
      'Ninety minutes. Not the opening hours, and not "all day" &mdash; which '
@@ -167,14 +169,14 @@ MC = [
          correct=1, why='m2why'),
 
     dict(stem='What does the guide ask visitors not to do?',
-         options=['Walk along the stream path beyond the greenhouse.',
+         options=['Walk on the grass around the edge of the rose garden.',
                   'Take photographs inside the old glasshouse café.',
                   'Give any bread to the birds that live on the lake.',
                   'Leave the group before the tour reaches the café.'],
          correct=2, why='m3why'),
 
     dict(stem='How will the tour go round the gardens?',
-         options=['Anticlockwise, starting from the main gate.',
+         options=['Anticlockwise, starting at the rose garden.',
                   'Clockwise, starting at the old glasshouse.',
                   'Clockwise, starting from the rose garden.',
                   'Anticlockwise, starting at the glasshouse.'],
