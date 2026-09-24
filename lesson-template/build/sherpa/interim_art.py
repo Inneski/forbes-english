@@ -14,7 +14,7 @@ Two kinds of file, both into SherpaTensing/:
     honestly: the accent it derives is the tense colour, which is what the
     route map has been teaching learners to associate with that tense.
   * **bg-<face>-<role>.jpg** (1600 x 900) — one texture per section role,
-    in a day set for the camps and clouds and a night set for the descents.
+    one light set for both faces (each deck multiplies it onto its colour).
     Procedural, low-contrast, no subject: a texture under a text plate needs
     nothing in it that competes with the words (HOUSE-STYLE §5).
 
@@ -158,9 +158,10 @@ GEN = dict(briefing=briefing, building=building, fork=fork, markers=markers,
            stage=stage, climb=climb, view=view)
 
 FACES = {
-    # face: (base, ink, how much of the ink alpha to keep)
+    # face: (base, ink, how much of the ink alpha to keep). One set since
+    # 2026-09-24: the decks dye it in their own colour, so a night set that
+    # was dark to begin with would only have turned the descents muddy.
     'day': ((243, 237, 227), (72, 69, 64), 1.0),
-    'night': ((27, 26, 31), (150, 156, 172), 0.85),
 }
 
 
