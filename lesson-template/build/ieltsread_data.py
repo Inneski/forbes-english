@@ -41,8 +41,13 @@ the dependence outright and the statement tests a different fact.
 # not on the button, because the engine prepends the A/B/C letter into the
 # button and the language pass sets innerHTML: on the button it would wipe
 # the letter. build_ieltsread.py checks the lengths in every language.
-VERDICTS = [('optT', 'True &mdash; the passage clearly states this'),
-            ('optF', 'False &mdash; the passage clearly denies this'),
+#
+# Corrected 2026-09-24: these said "clearly states" and "clearly denies".
+# The official wording is that the statement AGREES WITH or CONTRADICTS the
+# information, and two of this deck's own TRUE items (a sum, a comparison
+# turned round) are not stated clearly at all.
+VERDICTS = [('optT', 'True &mdash; the passage agrees with this'),
+            ('optF', 'False &mdash; the passage contradicts this'),
             ('optN', 'Not Given &mdash; the passage does not say')]
 OPTS = ['<span data-i18n="%s">%s</span>' % kv for kv in VERDICTS]
 
@@ -117,7 +122,10 @@ QUALIFY = [
 
     dict(ctx='<em>The festival has run every summer since 1970, apart from '
              'two years in the 1980s.</em>',
-         stem='Statement: the festival has never once been cancelled.',
+         # Was "has never once been cancelled": the passage says only that it
+         # did not run in two summers, and not running is not necessarily
+         # being cancelled, so NOT GIVEN was arguable. Fixed 2026-09-24.
+         stem='Statement: the festival has been held every summer since 1970.',
          options=OPTS, correct=1, why='r12why'),
 ]
 
@@ -137,9 +145,4 @@ SORT_ITEMS = [
     ('You know it is true from outside the text', 1),
 ]
 
-SORT_WHY = ('Everything in the left column names a <strong>sentence you '
-            'could point at</strong>. Everything in the right column is a way '
-            'of reaching a verdict without one &mdash; inference, association, '
-            'or general knowledge. That is the whole distinction: FALSE needs a '
-            'line in the passage that says otherwise, and if you cannot put '
-            'your finger on it, the answer is NOT GIVEN.')
+SORT_WHY = 'The FALSE signals each name a <strong>sentence you could point at</strong>. The NOT GIVEN signals are ways of reaching a verdict without one &mdash; guesswork, association, or general knowledge. That is the whole distinction: FALSE needs a line in the passage that says otherwise, and if you cannot put your finger on it, the answer is NOT GIVEN.'

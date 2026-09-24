@@ -94,168 +94,67 @@ def build():
     check_verdicts(I)
     logo = D.logo_from(TPL)
 
-    slides = (
-        D.cover(logo, 'True, False, <em>Not Given</em>',
-                'The question type that loses the most marks on the Reading '
-                'paper &mdash; and the one that technique, not vocabulary, '
-                'gets back',
-                [('Level', 'C1 &middot; Advanced'),
-                 ('Focus', 'Reading &middot; both modules'),
-                 ('Count', '18 points')])
+    # Every English string on the slides is read from the i18n module, so the
+    # HTML and UI_I18N.en cannot drift apart. Until 2026-09-24 they were
+    # written out twice, and a correction to one copy would have missed the
+    # other.
+    E = I.T['en']
 
-        + D.teach('t1Eyebrow', 'Before you start',
-                  't1Title', 'Sixty minutes, three sections, no time at the end',
-                  [('t1ah', 'The shape of the paper', 't1ab',
-                    'Forty questions in sixty minutes, in three sections of '
-                    'about twenty minutes each. The third is usually the '
-                    'hardest &mdash; so a section that runs long is borrowing '
-                    'from the one that needs it most.', 't1an',
-                    'Academic sets one long passage per section; General '
-                    'Training starts with shorter texts. The technique is the '
-                    'same, so everything here applies to both.'),
-                   ('t1bh', 'No transfer time. None.', 't1bb',
-                    'On paper, Listening gives you ten minutes at the end to '
-                    'copy your answers across. <strong>Reading does '
-                    'not.</strong> Write on the answer sheet as you go, '
-                    'because the invigilator stops you on the hour with '
-                    'whatever is on it.', 't1bn',
-                    'Answers left on the question paper score nothing. It is '
-                    'the single cheapest way to lose marks on this paper.'),
-                   ('t1ch', 'The questions follow the text', 't1cb',
-                    'Most question types run in passage order, this one '
-                    'included. Answer four and you know roughly where the '
-                    'fifth is &mdash; you never have to search the whole '
-                    'passage twice.', 't1cn',
-                    'Matching Headings and Matching Information are the '
-                    'exceptions. They jump around.')],
+    def card(p):
+        return (p + 'h', E[p + 'h'], p + 'b', E[p + 'b'], p + 'n', E[p + 'n'])
+
+    slides = (
+        D.cover(logo, E['coverTitle'], E['coverSub'],
+                [('Level', E['chipLevel']),
+                 ('Focus', E['chipFocus']),
+                 ('Count', E['chipCount'])])
+
+        + D.teach('t1Eyebrow', E['t1Eyebrow'], 't1Title', E['t1Title'],
+                  [card('t1a'), card('t1b'), card('t1c')],
                   folder=F, bg=BG_SHAPE)
 
-        + D.teach('t2Eyebrow', 'Before you start',
-                  't2Title', 'False and Not Given are not the same answer',
-                  [('t2ah', 'FALSE: the passage says otherwise', 't2ab',
-                    'There is a sentence in the text that '
-                    '<strong>contradicts</strong> the statement. You can put '
-                    'your finger on it. If someone asked you to prove the '
-                    'statement wrong, you would point at that line.', 't2an',
-                    'A number that disagrees, a date that does not match, an '
-                    '"only" against a "several" &mdash; all contradictions.'),
-                   ('t2bh', 'NOT GIVEN: the passage is silent', 't2bb',
-                    'The text neither says it nor denies it. The statement may '
-                    'well be true out in the world; the passage simply does '
-                    'not go there.', 't2bn',
-                    'Not Given is not a punishment for missing something. It '
-                    'is a real answer, and roughly a third of them are.'),
-                   ('t2ch', 'The test is one question', 't2cb',
-                    '<strong>Can I point at the sentence?</strong> If yes, the '
-                    'answer is True or False depending on what it says. If you '
-                    'are reasoning &mdash; &ldquo;well, it must be&rdquo; '
-                    '&mdash; the answer is Not Given.', 't2cn',
-                    'Reasoning feels like understanding, which is exactly why '
-                    'it costs so many marks here.')],
+        + D.teach('t2Eyebrow', E['t2Eyebrow'], 't2Title', E['t2Title'],
+                  [card('t2a'), card('t2b'), card('t2c')],
                   folder=F, bg=BG_VERDICT)
 
-        + "".join(D.mc(i + 1, len(VERDICT), q, 'mcaEyebrow',
-                       'Activity 1 &middot; False, or Not Given?', 'mcaTitle',
-                       'Read the passage. Then read the statement.',
+        + "".join(D.mc(i + 1, len(VERDICT), q, 'mcaEyebrow', E['mcaEyebrow'],
+                       'mcaTitle', E['mcaTitle'],
                        folder=F, bg=BG_VERDICT, ctx=q.get('ctx'))
                   for i, q in enumerate(VERDICT))
 
-        + D.teach('t3Eyebrow', 'Before you start',
-                  't3Title', 'Answer from the passage, never from what you know',
-                  [('t3ah', 'Your knowledge is the trap', 't3ab',
-                    'A statement can be perfectly true in the world and still '
-                    'Not Given in the text. The examiner is not asking whether '
-                    'it is true. They are asking what this passage says.',
-                    't3an',
-                    'This is why candidates score worse on topics they know '
-                    'well.'),
-                   ('t3bh', 'TRUE means the text says it', 't3bb',
-                    'Said in different words, almost always. The passage will '
-                    'not repeat the statement; it will paraphrase it. Matching '
-                    'meaning is the skill &mdash; matching words is a habit to '
-                    'break.', 't3bn',
-                    '<em>Attendance fell sharply after 1990</em> and <em>far '
-                    'fewer people came in the years that followed</em> are '
-                    'the same claim with no word in common.'),
-                   ('t3ch', 'Word-matching fails both ways', 't3cb',
-                    'The same words can sit in a sentence that says the '
-                    'opposite, and a sentence with no shared words at all can '
-                    'state the claim exactly. Shared vocabulary tells you '
-                    'where to look, never what to answer.', 't3cn',
-                    'Use the repeated word to find the line. Then read the '
-                    'line.')],
+        + D.teach('t3Eyebrow', E['t3Eyebrow'], 't3Title', E['t3Title'],
+                  [card('t3a'), card('t3b'), card('t3c')],
                   folder=F, bg=BG_WORLD)
 
-        + "".join(D.mc(i + 1, len(WORLD), q, 'mcbEyebrow',
-                       'Activity 2 &middot; The passage, not the world',
-                       'mcbTitle', 'What does this text actually say?',
+        + "".join(D.mc(i + 1, len(WORLD), q, 'mcbEyebrow', E['mcbEyebrow'],
+                       'mcbTitle', E['mcbTitle'],
                        folder=F, bg=BG_WORLD, ctx=q.get('ctx'))
                   for i, q in enumerate(WORLD))
 
-        + D.teach('t4Eyebrow', 'Before you start',
-                  't4Title', 'One word decides a third of these',
-                  [('t4ah', 'Absolutes', 't4ab',
-                    '<em>All</em>, <em>every</em>, <em>never</em>, '
-                    '<em>only</em>. A passage that says <em>most</em> makes a '
-                    'statement saying <em>all</em> FALSE &mdash; the two '
-                    'cannot both hold, and that is a contradiction you can '
-                    'point at.', 't4an',
-                    '<em>Most islanders</em> against <em>every islander</em> '
-                    'is a False, not a Not Given.'),
-                   ('t4bh', 'Hedges', 't4bb',
-                    '<em>May</em>, <em>might</em>, <em>is thought to</em>, '
-                    '<em>suggests</em>. A hedged passage does not deny a '
-                    'confident statement &mdash; it just never makes it. That '
-                    'shape is usually Not Given.', 't4bn',
-                    'The difference from an absolute: <em>most</em> excludes '
-                    '<em>all</em>, but <em>may</em> excludes nothing.'),
-                   ('t4ch', 'Comparatives need both sides', 't4cb',
-                    '<em>Wetter than</em>, <em>the largest</em>, <em>more '
-                    'common than</em>. Check that the passage actually '
-                    'compares the same two things &mdash; a text about one of '
-                    'them cannot support a claim about the pair.', 't4cn',
-                    'A passage naming one figure and a statement ranking two '
-                    'is a Not Given every time.')],
+        + D.teach('t4Eyebrow', E['t4Eyebrow'], 't4Title', E['t4Title'],
+                  [card('t4a'), card('t4b'), card('t4c')],
                   folder=F, bg=BG_QUALIFY)
 
-        + "".join(D.mc(i + 1, len(QUALIFY), q, 'mccEyebrow',
-                       'Activity 3 &middot; The word that decides it',
-                       'mccTitle', 'Most, all, may, never',
+        + "".join(D.mc(i + 1, len(QUALIFY), q, 'mccEyebrow', E['mccEyebrow'],
+                       'mccTitle', E['mccTitle'],
                        folder=F, bg=BG_QUALIFY, ctx=q.get('ctx'))
                   for i, q in enumerate(QUALIFY))
 
         + D.sort_slide(SORT_BINS, SORT_ITEMS,
-                       'sortEyebrow', 'Activity 4 &middot; What tips you which way',
-                       'sortTitle', 'Sort the six signals',
-                       'sortHint', 'Drag each one into a column &mdash; or '
-                                   'click an item, then the column you want '
-                                   'it in.',
+                       'sortEyebrow', E['sortEyebrow'],
+                       'sortTitle', E['sortTitle'],
+                       'sortHint', E['sortHint'],
                        'sortWhy', folder=F, bg=BG_QUALIFY,
                        bin_keys=['sortBin1', 'sortBin2'])
 
         + D.results('resNext', 'You can call it. Now prove it &rarr;', folder=F)
 
-        + D.activate('Prove it from the text', 'Use at least three:', CHIPS,
+        + D.activate(E['actTitle'], E['actUse'], CHIPS,
                      'Discussion &middot; in pairs',
-                     'In pairs, with any passage you have to hand &mdash; a '
-                     'news article will do. One of you writes four statements '
-                     'about it: one true, one false, two not given. Swap, '
-                     'answer, and then defend each verdict by reading out the '
-                     'line you based it on. No line, no FALSE.',
-                     ['Whoever answers must say which sentence decided it, out '
-                      'loud, before the verdict is accepted.',
-                      'For every NOT GIVEN, say what the passage would have '
-                      'had to contain for the answer to be FALSE instead.',
-                      'Find one statement in your partner&rsquo;s set that you '
-                      'could argue either way, and rewrite it so that it '
-                      'cannot be.'],
-                     'Writing &middot; 150&ndash;200 words',
-                     'Take one passage and write three statements about it '
-                     '&mdash; one TRUE, one FALSE, one NOT GIVEN &mdash; then '
-                     'write the answer key, naming for each one the exact '
-                     'sentence that decides it, or saying plainly that no '
-                     'sentence does.',
-                     'Statement 1 (TRUE): … The line that decides it: …',
+                     E['actSpeakBrief'],
+                     [E['actSpeak1'], E['actSpeak2'], E['actSpeak3']],
+                     E['actWriteKind'], E['actWriteBrief'],
+                     E['actPlaceholder'],
                      folder=F, bg=BG_ACT)
     )
 

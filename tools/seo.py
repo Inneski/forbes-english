@@ -115,8 +115,8 @@ PAGES = {
     'ielts-reading.html': ('IELTS Reading',
                    'The IELTS Reading route — twelve-plus question types, '
                    'the same on both modules. True/False/Not Given first, '
-                   'because that is where the most marks are lost, and it is '
-                   'technique, not vocabulary, that recovers them.', 0.9,
+                   'because it is the type candidates find hardest to call, '
+                   'and technique wins those marks back.', 0.9,
                    '/ielts-reading/hero.jpg'),
     'ielts-vocabulary.html': ('IELTS Vocabulary',
                    'The IELTS vocabulary route — topic banks that feed '

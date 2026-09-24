@@ -47,9 +47,8 @@ T = {}
 # ── English ────────────────────────────────────────────────────────────
 T['en'] = dict(
     coverTitle='True, False, <em>Not Given</em>',
-    coverSub='The question type that loses the most marks on the Reading '
-             'paper &mdash; and the one that technique, not vocabulary, gets '
-             'back',
+    coverSub='The question type candidates find hardest to call &mdash; and '
+             'one where technique wins marks back',
     chipLevel='C1 · Advanced', chipFocus='Reading · both modules',
     chipCount='18 points',
 
@@ -73,8 +72,8 @@ T['en'] = dict(
     t1cb='Most question types run in passage order, this one included. Answer '
          'four and you know roughly where the fifth is &mdash; you never have '
          'to search the whole passage twice.',
-    t1cn='Matching Headings and Matching Information are the exceptions. They '
-         'jump around.',
+    t1cn='Matching Information and Matching Features jump around, and in '
+         'Matching Headings the list of headings has no order.',
 
     t2Eyebrow='Before you start',
     t2Title='False and Not Given are not the same answer',
@@ -88,13 +87,14 @@ T['en'] = dict(
     t2bb='The text neither says it nor denies it. The statement may well be '
          'true out in the world; the passage simply does not go there.',
     t2bn='Not Given is not a punishment for missing something. It is a real '
-         'answer, and roughly a third of them are.',
-    t2ch='The test is one question',
-    t2cb='<strong>Can I point at the sentence?</strong> If yes, the answer is '
-         'True or False depending on what it says. If you are reasoning &mdash; '
-         '&ldquo;well, it must be&rdquo; &mdash; the answer is Not Given.',
-    t2cn='Reasoning feels like understanding, which is exactly why it costs so '
-         'many marks here.',
+         'answer, and you should expect several on a paper.',
+    t2ch='One question decides it',
+    t2cb='<strong>Can I point at the sentence?</strong> If yes, the answer '
+         'is True or False depending on what it says. If you are filling a '
+         'gap the passage leaves &mdash; &ldquo;well, it must be&rdquo; '
+         '&mdash; the answer is Not Given.',
+    t2cn='Filling the gap feels like understanding, which is exactly why it '
+         'costs so many marks here.',
 
     t3Eyebrow='Before you start',
     t3Title='Answer from the passage, never from what you know',
@@ -102,7 +102,7 @@ T['en'] = dict(
     t3ab='A statement can be perfectly true in the world and still Not Given '
          'in the text. The examiner is not asking whether it is true. They '
          'are asking what this passage says.',
-    t3an='This is why candidates score worse on topics they know well.',
+    t3an='This is why a familiar topic can cost you marks here.',
     t3bh='TRUE means the text says it',
     t3bb='Said in different words, almost always. The passage will not repeat '
          'the statement; it will paraphrase it. Matching meaning is the '
@@ -117,26 +117,28 @@ T['en'] = dict(
     t3cn='Use the repeated word to find the line. Then read the line.',
 
     t4Eyebrow='Before you start',
-    t4Title='One word decides a third of these',
+    t4Title='One word can decide it',
     t4ah='Absolutes',
     t4ab='<em>All</em>, <em>every</em>, <em>never</em>, <em>only</em>. A '
-         'passage that says <em>most</em> makes a statement saying <em>all</em> '
-         'FALSE &mdash; the two cannot both hold, and that is a contradiction '
-         'you can point at.',
-    t4an='<em>Most islanders</em> against <em>every islander</em> is a False, '
-         'not a Not Given.',
+         'passage that says <em>most</em> makes a statement saying '
+         '<em>all</em> FALSE: <em>most</em> tells you <em>not all</em>, '
+         'because a writer who meant <em>all</em> would say so.',
+    t4an='<em>Most islanders</em> against <em>every islander</em> is a '
+         'False, not a Not Given &mdash; unless the passage says <em>most, '
+         'if not all</em>.',
     t4bh='Hedges',
     t4bb='<em>May</em>, <em>might</em>, <em>is thought to</em>, <em>suggests</em>. '
          'A hedged passage does not deny a confident statement &mdash; it just '
          'never makes it. That shape is usually Not Given.',
-    t4bn='The difference from an absolute: <em>most</em> excludes <em>all</em>, '
-         'but <em>may</em> excludes nothing.',
-    t4ch='Comparatives need both sides',
-    t4cb='<em>Wetter than</em>, <em>the largest</em>, <em>more common than</em>. '
-         'Check that the passage actually compares the same two things &mdash; '
-         'a text about one of them cannot support a claim about the pair.',
-    t4cn='A passage naming one figure and a statement ranking two is a Not '
-         'Given every time.',
+    t4bn='The difference from an absolute: <em>most</em> tells you <em>not '
+         'all</em>, but <em>may</em> tells you nothing either way.',
+    t4ch='Comparisons need both sides',
+    t4cb='<em>Wetter than</em>, <em>the largest</em>, <em>more common '
+         'than</em>. Check that the passage actually compares the things the '
+         'statement compares &mdash; a text about one of them cannot support '
+         'a claim about how they rank.',
+    t4cn='A figure for only one of the two, with nothing to compare it with, '
+         'cannot support a ranking.',
 
     mcaEyebrow='Activity 1 · False, or Not Given?',
     mcaTitle='Read the passage. Then read the statement.',
@@ -166,8 +168,8 @@ T['en'] = dict(
           'Funding is a reasonable thing to wonder about and the text does not '
           'go there. NOT GIVEN.',
     r9why='<em>Most</em> in the passage against <em>every</em> in the '
-          'statement. An absolute is contradicted by a majority, so this is a '
-          'FALSE rather than a Not Given.',
+          'statement. <em>Most</em> tells you <em>not all</em>, so the '
+          'passage contradicts the statement: FALSE, not Not Given.',
     r10why='The passage hedges about recovery time and says nothing whatever '
            'about approval. Silence, not denial. NOT GIVEN.',
     r11why='Less rain in the valley means a wetter coast &mdash; the same '
@@ -175,7 +177,7 @@ T['en'] = dict(
            '<em>wetter</em>, have nothing in common, which is why '
            'word-matching misses it. TRUE.',
     r12why='<em>Apart from two years in the 1980s</em> is the line you point '
-           'at. <em>Never once</em> cannot survive it. FALSE.',
+           'at. <em>Every summer</em> cannot survive it. FALSE.',
 
     sortEyebrow='Activity 4 · What tips you which way',
     sortTitle='Sort the six signals',
@@ -186,11 +188,11 @@ T['en'] = dict(
 
     actTitle='Prove it from the text',
     actUse='Use at least three:',
-    actSpeakBrief='In pairs, with any passage you have to hand &mdash; a news '
-                  'article will do. One of you writes four statements about '
-                  'it: one true, one false, two not given. Swap, answer, and '
-                  'then defend each verdict by reading out the line you based '
-                  'it on. No line, no FALSE.',
+    actSpeakBrief='In pairs, with any passage you have to hand &mdash; a '
+                  'news article will do. One of you writes four statements '
+                  'about it: one true, one false, two not given. Swap and '
+                  'answer. Defend each TRUE or FALSE by reading out the line '
+                  'it rests on; for a NOT GIVEN, show that there is none.',
     actSpeak1='Whoever answers must say which sentence decided it, out loud, '
               'before the verdict is accepted.',
     actSpeak2='For every NOT GIVEN, say what the passage would have had to '
@@ -215,8 +217,8 @@ T['en']['sortWhy'] = SORT_WHY
 # ── German ─────────────────────────────────────────────────────────────
 T['de'] = dict(
     coverTitle='True, False, <em>Not Given</em>',
-    coverSub='Der Fragetyp, der im Reading die meisten Punkte kostet &mdash; '
-             'und den Technik zurückholt, nicht Wortschatz',
+    coverSub='Der Aufgabentyp, bei dem die Entscheidung am schwersten fällt '
+             '&mdash; und einer, bei dem Technik Punkte zurückholt',
     chipLevel='C1 · Fortgeschritten', chipFocus='Reading · beide Module',
     chipCount='18 Punkte',
 
@@ -240,8 +242,9 @@ T['de'] = dict(
     t1cb='Die meisten Fragetypen laufen in Textreihenfolge, dieser auch. Nach '
          'vier Antworten weißt du ungefähr, wo die fünfte steht &mdash; du '
          'musst nie zweimal den ganzen Text absuchen.',
-    t1cn='Matching Headings und Matching Information sind die Ausnahmen. Die '
-         'springen.',
+    t1cn='Matching Information und Matching Features springen hin und her, '
+         'und bei Matching Headings hat die Liste der Überschriften keine '
+         'Reihenfolge.',
 
     t2Eyebrow='Bevor du beginnst',
     t2Title='False und Not Given sind nicht dieselbe Antwort',
@@ -256,14 +259,16 @@ T['de'] = dict(
     t2bb='Der Text sagt es weder, noch bestreitet er es. Die Aussage mag in '
          'der Welt völlig zutreffen &mdash; dieser Text geht schlicht nicht '
          'darauf ein.',
-    t2bn='Not Given ist keine Strafe dafür, etwas übersehen zu haben. Es ist '
-         'eine echte Antwort, und etwa ein Drittel sind es.',
-    t2ch='Die Prüfung ist eine einzige Frage',
-    t2cb='<strong>Kann ich auf den Satz zeigen?</strong> Wenn ja, heißt die '
-         'Antwort True oder False, je nachdem, was dort steht. Wenn du '
-         'schließt &mdash; „das muss doch“ &mdash; heißt sie Not Given.',
-    t2cn='Schließen fühlt sich nach Verstehen an. Genau deshalb kostet es hier '
-         'so viele Punkte.',
+    t2bn='Not Given ist keine Strafe dafür, dass du etwas übersehen hast. Es '
+         'ist eine echte Antwort, und du solltest mit mehreren pro Prüfung '
+         'rechnen.',
+    t2ch='Eine Frage entscheidet',
+    t2cb='<strong>Kann ich auf den Satz zeigen?</strong> Wenn ja, ist die '
+         'Antwort True oder False, je nachdem, was er sagt. Wenn du eine '
+         'Lücke füllst, die der Text lässt &mdash; „na ja, das muss so sein“ '
+         '&mdash;, ist die Antwort Not Given.',
+    t2cn='Die Lücke zu füllen fühlt sich wie Verstehen an, und genau deshalb '
+         'kostet es hier so viele Punkte.',
 
     t3Eyebrow='Bevor du beginnst',
     t3Title='Antworte aus dem Text, nie aus deinem Wissen',
@@ -271,8 +276,7 @@ T['de'] = dict(
     t3ab='Eine Aussage kann in der Welt völlig richtig und im Text trotzdem '
          'Not Given sein. Gefragt ist nicht, ob sie stimmt, sondern was '
          'dieser Text sagt.',
-    t3an='Deshalb schneiden Kandidaten bei Themen, die sie gut kennen, oft '
-         'schlechter ab.',
+    t3an='Deshalb kann dich ein vertrautes Thema hier Punkte kosten.',
     t3bh='TRUE heißt: der Text sagt es',
     t3bb='Fast immer mit anderen Worten. Der Text wiederholt die Aussage '
          'nicht, er paraphrasiert sie. Bedeutung abgleichen ist die '
@@ -290,27 +294,30 @@ T['de'] = dict(
          'Zeile.',
 
     t4Eyebrow='Bevor du beginnst',
-    t4Title='Ein Wort entscheidet ein Drittel davon',
+    t4Title='Ein Wort kann entscheiden',
     t4ah='Absolute',
     t4ab='<em>All</em>, <em>every</em>, <em>never</em>, <em>only</em>. Sagt '
-         'der Text <em>most</em>, ist eine Aussage mit <em>all</em> FALSE '
-         '&mdash; beides kann nicht gelten, und das ist ein Widerspruch, auf '
-         'den du zeigen kannst.',
-    t4an='<em>Most islanders</em> gegen <em>every islander</em> ist ein False, '
-         'kein Not Given.',
+         'der Text <em>most</em>, macht er eine Aussage mit <em>all</em> '
+         'FALSE: <em>most</em> heißt <em>nicht alle</em>, denn wer '
+         '<em>alle</em> meint, sagt es auch.',
+    t4an='<em>Most islanders</em> gegen <em>every islander</em> ist ein '
+         'False, kein Not Given &mdash; es sei denn, der Text sagt <em>most, '
+         'if not all</em>.',
     t4bh='Abschwächungen',
     t4bb='<em>May</em>, <em>might</em>, <em>is thought to</em>, '
          '<em>suggests</em>. Ein abschwächender Text bestreitet eine '
          'sichere Aussage nicht &mdash; er trifft sie nur nie. Diese Form ist '
          'meist Not Given.',
-    t4bn='Der Unterschied zum Absoluten: <em>most</em> schließt <em>all</em> '
-         'aus, <em>may</em> schließt gar nichts aus.',
+    t4bn='Der Unterschied zum Absoluten: <em>most</em> heißt <em>nicht '
+         'alle</em>, aber <em>may</em> sagt dir weder das eine noch das '
+         'andere.',
     t4ch='Vergleiche brauchen beide Seiten',
-    t4cb='<em>Wetter than</em>, <em>the largest</em>, <em>more common than</em>. '
-         'Prüfe, ob der Text wirklich dieselben zwei Dinge vergleicht &mdash; '
-         'ein Text über eines davon trägt keine Aussage über das Paar.',
-    t4cn='Ein Text mit einer Zahl und eine Aussage, die zwei Dinge ordnet, ist '
-         'jedes Mal ein Not Given.',
+    t4cb='<em>Wetter than</em>, <em>the largest</em>, <em>more common '
+         'than</em>. Prüf, ob der Text wirklich vergleicht, was die Aussage '
+         'vergleicht &mdash; ein Text über nur eines davon kann keine '
+         'Behauptung über die Rangfolge stützen.',
+    t4cn='Eine Zahl für nur eines von beiden, ohne Vergleichswert, kann '
+         'keine Rangfolge stützen.',
 
     mcaEyebrow='Aktivität 1 · False oder Not Given?',
     mcaTitle='Lies den Text. Dann lies die Aussage.',
@@ -339,17 +346,17 @@ T['de'] = dict(
     r8why='Der Text sagt, was die Studie erfasst hat, nicht wer sie bezahlt '
           'hat. Nach der Finanzierung zu fragen ist naheliegend; der Text geht '
           'nicht darauf ein. NOT GIVEN.',
-    r9why='<em>Most</em> im Text gegen <em>every</em> in der Aussage. Ein '
-          'Absolutes wird von einer Mehrheit widerlegt, also FALSE und nicht '
-          'Not Given.',
+    r9why='<em>Most</em> im Text gegen <em>every</em> in der Aussage. '
+          '<em>Most</em> heißt <em>nicht alle</em>, also widerspricht der '
+          'Text der Aussage: FALSE, nicht Not Given.',
     r10why='Der Text schwächt bei der Genesungszeit ab und sagt zur Zulassung '
            'überhaupt nichts. Schweigen, nicht Widerspruch. NOT GIVEN.',
     r11why='Weniger Regen im Tal heißt eine nassere Küste &mdash; dieselbe '
            'Aussage, umgedreht. Die tragenden Wörter, <em>lower</em> und '
            '<em>wetter</em>, haben nichts gemeinsam; deshalb versagt '
            'Wortabgleich hier. TRUE.',
-    r12why='<em>Apart from two years in the 1980s</em> ist die Zeile, auf die '
-           'du zeigst. <em>Never once</em> überlebt sie nicht. FALSE.',
+    r12why='<em>Apart from two years in the 1980s</em> ist die Stelle, auf '
+           'die du zeigst. <em>Every summer</em> übersteht sie nicht. FALSE.',
 
     sortEyebrow='Aktivität 4 · Was wohin zeigt',
     sortTitle='Sortiere die sechs Signale',
@@ -361,11 +368,11 @@ T['de'] = dict(
     actTitle='Beweise es aus dem Text',
     actUse='Verwende mindestens drei:',
     actSpeakBrief='Zu zweit, mit irgendeinem Text zur Hand &mdash; ein '
-                  'Zeitungsartikel genügt. Einer schreibt vier Aussagen dazu: '
-                  'eine wahr, eine falsch, zwei nicht genannt. Tauschen, '
-                  'beantworten, und jedes Urteil verteidigen, indem die Zeile '
-                  'vorgelesen wird, auf der es beruht. Keine Zeile, kein '
-                  'FALSE.',
+                  'Zeitungsartikel reicht. Einer schreibt vier Aussagen '
+                  'dazu: eine wahre, eine falsche, zwei nicht gegebene. '
+                  'Tauscht und beantwortet sie. Verteidigt jedes TRUE oder '
+                  'FALSE, indem ihr die Zeile vorlest, auf der es beruht; '
+                  'bei einem NOT GIVEN zeigt ihr, dass es keine gibt.',
     actSpeak1='Wer antwortet, muss laut sagen, welcher Satz entschieden hat, '
               'bevor das Urteil gilt.',
     actSpeak2='Sag bei jedem NOT GIVEN, was im Text hätte stehen müssen, damit '
@@ -381,23 +388,22 @@ T['de'] = dict(
     actPlaceholder='Statement 1 (TRUE): … The line that decides it: …',
 
     # The verdict glosses and the sort explanation; English from the data.
-    optT='True &mdash; der Text sagt das klar',
-    optF='False &mdash; der Text bestreitet das klar',
+    optT='True &mdash; der Text stimmt damit überein',
+    optF='False &mdash; der Text widerspricht dem',
     optN='Not Given &mdash; der Text sagt dazu nichts',
-    sortWhy='Alles in der linken Spalte nennt einen <strong>Satz, auf den du '
-            'zeigen könntest</strong>. Alles in der rechten ist ein Weg, ohne '
-            'einen solchen Satz zu einem Urteil zu kommen &mdash; '
-            'Schlussfolgerung, Assoziation oder Allgemeinwissen. Das ist der '
-            'ganze Unterschied: FALSE braucht eine Zeile im Text, die etwas '
-            'anderes sagt, und wenn du nicht mit dem Finger darauf zeigen '
-            'kannst, heißt die Antwort NOT GIVEN.',
+    sortWhy='Die FALSE-Signale nennen jeweils einen <strong>Satz, auf den du '
+            'zeigen könntest</strong>. Die NOT-GIVEN-Signale sind Wege zu '
+            'einem Urteil ohne einen solchen Satz &mdash; Raten, Assoziation '
+            'oder Allgemeinwissen. Darin liegt der ganze Unterschied: FALSE '
+            'braucht eine Zeile im Text, die etwas anderes sagt, und wenn du '
+            'nicht darauf zeigen kannst, ist die Antwort NOT GIVEN.',
 )
 
 # ── Spanish ────────────────────────────────────────────────────────────
 T['es'] = dict(
     coverTitle='True, False, <em>Not Given</em>',
-    coverSub='El tipo de pregunta que más puntos cuesta en el Reading, y el '
-             'que se recupera con técnica, no con vocabulario',
+    coverSub='El tipo de pregunta en el que más cuesta decidir &mdash; y uno '
+             'en el que la técnica recupera puntos',
     chipLevel='C1 · Avanzado', chipFocus='Reading · los dos módulos',
     chipCount='18 puntos',
 
@@ -421,8 +427,8 @@ T['es'] = dict(
     t1cb='La mayoría de los tipos van en el orden del texto, este incluido. '
          'Con cuatro respondidas ya sabes más o menos dónde está la quinta: '
          'nunca hace falta recorrer el texto entero dos veces.',
-    t1cn='Matching Headings y Matching Information son las excepciones. Esas '
-         'saltan.',
+    t1cn='Matching Information y Matching Features van saltando, y en '
+         'Matching Headings la lista de títulos no tiene orden.',
 
     t2Eyebrow='Antes de empezar',
     t2Title='False y Not Given no son la misma respuesta',
@@ -436,14 +442,15 @@ T['es'] = dict(
     t2bb='El texto ni lo dice ni lo niega. La afirmación puede ser '
          'perfectamente cierta en el mundo real; este texto sencillamente no '
          'entra ahí.',
-    t2bn='Not Given no es un castigo por habérsete escapado algo. Es una '
-         'respuesta de verdad, y lo es en torno a un tercio de las veces.',
-    t2ch='La prueba es una sola pregunta',
+    t2bn='Not Given no es un castigo por pasar algo por alto. Es una '
+         'respuesta real, y conviene esperar varias en un examen.',
+    t2ch='Una pregunta lo decide',
     t2cb='<strong>¿Puedo señalar la frase?</strong> Si sí, la respuesta es '
-         'True o False según lo que diga. Si estás deduciendo &mdash; «hombre, '
-         'tiene que ser» &mdash; la respuesta es Not Given.',
-    t2cn='Deducir se parece mucho a entender, y justo por eso cuesta tantos '
-         'puntos aquí.',
+         'True o False según lo que diga. Si estás rellenando un hueco que '
+         'el texto deja &mdash; «bueno, tiene que ser así» &mdash;, la '
+         'respuesta es Not Given.',
+    t2cn='Rellenar el hueco parece comprender, y precisamente por eso cuesta '
+         'tantos puntos aquí.',
 
     t3Eyebrow='Antes de empezar',
     t3Title='Responde desde el texto, nunca desde lo que sabes',
@@ -451,7 +458,7 @@ T['es'] = dict(
     t3ab='Una afirmación puede ser del todo cierta en el mundo y aun así ser '
          'Not Given en el texto. No te preguntan si es verdad: te preguntan '
          'qué dice este texto.',
-    t3an='Por eso se puntúa peor en los temas que uno domina.',
+    t3an='Por eso un tema conocido puede costarte puntos aquí.',
     t3bh='TRUE significa que el texto lo dice',
     t3bb='Casi siempre con otras palabras. El texto no repite la afirmación: '
          'la parafrasea. Cotejar significado es la destreza; cotejar palabras '
@@ -468,27 +475,29 @@ T['es'] = dict(
          'línea.',
 
     t4Eyebrow='Antes de empezar',
-    t4Title='Una palabra decide un tercio de estas',
+    t4Title='Una palabra puede decidirlo',
     t4ah='Absolutos',
-    t4ab='<em>All</em>, <em>every</em>, <em>never</em>, <em>only</em>. Si el '
-         'texto dice <em>most</em>, una afirmación con <em>all</em> es FALSE: '
-         'no pueden cumplirse las dos, y esa contradicción se puede señalar.',
+    t4ab='<em>All</em>, <em>every</em>, <em>never</em>, <em>only</em>. Un '
+         'texto que dice <em>most</em> hace FALSE una afirmación que dice '
+         '<em>all</em>: <em>most</em> te dice <em>no todos</em>, porque '
+         'quien quisiera decir <em>todos</em> lo diría.',
     t4an='<em>Most islanders</em> frente a <em>every islander</em> es un '
-         'False, no un Not Given.',
+         'False, no un Not Given &mdash; salvo que el texto diga <em>most, '
+         'if not all</em>.',
     t4bh='Matizadores',
     t4bb='<em>May</em>, <em>might</em>, <em>is thought to</em>, '
          '<em>suggests</em>. Un texto que matiza no niega una afirmación '
          'rotunda: simplemente no llega a hacerla. Esa forma suele ser Not '
          'Given.',
-    t4bn='La diferencia con un absoluto: <em>most</em> excluye <em>all</em>, '
-         'pero <em>may</em> no excluye nada.',
-    t4ch='Los comparativos necesitan los dos lados',
+    t4bn='La diferencia con un absoluto: <em>most</em> te dice <em>no '
+         'todos</em>, pero <em>may</em> no te dice nada en ningún sentido.',
+    t4ch='Las comparaciones necesitan los dos lados',
     t4cb='<em>Wetter than</em>, <em>the largest</em>, <em>more common '
-         'than</em>. Comprueba que el texto compare de verdad las mismas dos '
-         'cosas: un texto sobre una de ellas no sostiene una afirmación sobre '
-         'el par.',
-    t4cn='Un texto que da una cifra y una afirmación que ordena dos cosas es '
-         'Not Given siempre.',
+         'than</em>. Comprueba que el texto compara de verdad lo que compara '
+         'la afirmación &mdash; un texto sobre uno solo de ellos no puede '
+         'sostener una afirmación sobre cómo se clasifican.',
+    t4cn='Una cifra de solo uno de los dos, sin nada con qué compararla, no '
+         'puede sostener una clasificación.',
 
     mcaEyebrow='Actividad 1 · ¿False o Not Given?',
     mcaTitle='Lee el texto. Y luego lee la afirmación.',
@@ -517,9 +526,9 @@ T['es'] = dict(
     r8why='El texto dice qué abarcó la encuesta, no quién la pagó. Preguntarse '
           'por la financiación es razonable, y el texto no entra ahí. NOT '
           'GIVEN.',
-    r9why='<em>Most</em> en el texto frente a <em>every</em> en la afirmación. '
-          'Una mayoría contradice un absoluto, así que es FALSE y no Not '
-          'Given.',
+    r9why='<em>Most</em> en el texto frente a <em>every</em> en la '
+          'afirmación. <em>Most</em> te dice <em>no todos</em>, así que el '
+          'texto contradice la afirmación: FALSE, no Not Given.',
     r10why='El texto matiza sobre el tiempo de recuperación y de la '
            'autorización no dice absolutamente nada. Silencio, no negación. '
            'NOT GIVEN.',
@@ -528,7 +537,7 @@ T['es'] = dict(
            '<em>lower</em> y <em>wetter</em>, no tienen nada en común, y por '
            'eso cotejar palabras falla. TRUE.',
     r12why='<em>Apart from two years in the 1980s</em> es la línea que '
-           'señalas. <em>Never once</em> no sobrevive a eso. FALSE.',
+           'señalas. <em>Every summer</em> no la resiste. FALSE.',
 
     sortEyebrow='Actividad 4 · Qué te inclina hacia dónde',
     sortTitle='Clasifica las seis señales',
@@ -539,11 +548,12 @@ T['es'] = dict(
 
     actTitle='Demuéstralo con el texto',
     actUse='Usa al menos tres:',
-    actSpeakBrief='En parejas, con cualquier texto que tengáis a mano: vale '
-                  'una noticia. Uno escribe cuatro afirmaciones sobre él: una '
-                  'verdadera, una falsa y dos no dichas. Intercambiad, '
-                  'responded y defended cada veredicto leyendo en voz alta la '
-                  'línea en la que os basáis. Sin línea, no hay FALSE.',
+    actSpeakBrief='En parejas, con cualquier texto a mano; una noticia '
+                  'sirve. Uno escribe cuatro afirmaciones sobre él: una '
+                  'verdadera, una falsa y dos no dadas. Intercambiad y '
+                  'responded. Defended cada TRUE o FALSE leyendo en voz alta '
+                  'la línea en que se apoya; para un NOT GIVEN, mostrad que '
+                  'no la hay.',
     actSpeak1='Quien responde tiene que decir en voz alta qué frase lo ha '
               'decidido antes de que se acepte el veredicto.',
     actSpeak2='En cada NOT GIVEN, di qué habría tenido que poner el texto para '
@@ -559,29 +569,28 @@ T['es'] = dict(
     actPlaceholder='Statement 1 (TRUE): … The line that decides it: …',
 
     # The verdict glosses and the sort explanation; English from the data.
-    optT='True &mdash; el texto lo dice claramente',
-    optF='False &mdash; el texto lo niega claramente',
+    optT='True &mdash; el texto coincide con esto',
+    optF='False &mdash; el texto lo contradice',
     optN='Not Given &mdash; el texto no lo dice',
-    sortWhy='Todo lo de la columna izquierda nombra una <strong>frase que '
-            'podrías señalar</strong>. Todo lo de la derecha es una forma de '
-            'llegar a un veredicto sin ella: deducción, asociación o cultura '
-            'general. Esa es toda la diferencia: FALSE necesita una línea del '
-            'texto que diga otra cosa, y si no puedes señalarla con el dedo, la '
-            'respuesta es NOT GIVEN.',
+    sortWhy='Las señales de FALSE nombran cada una una <strong>frase que '
+            'podrías señalar</strong>. Las señales de NOT GIVEN son formas '
+            'de llegar a un veredicto sin ella &mdash; conjeturas, '
+            'asociaciones o cultura general. Esa es toda la diferencia: '
+            'FALSE necesita una línea del texto que diga lo contrario, y si '
+            'no puedes señalarla, la respuesta es NOT GIVEN.',
 )
 
 
 # ── French ─────────────────────────────────────────────────────────────
 T['fr'] = dict(
     coverTitle='True, False, <em>Not Given</em>',
-    coverSub='Le type de question qui coûte le plus de points à l’épreuve de '
-             'Reading &mdash; et celui que la technique, pas le vocabulaire, '
-             'permet de récupérer',
+    coverSub='Le type de question le plus difficile à trancher &mdash; et '
+             'l’un de ceux où la technique fait regagner des points',
     chipLevel='C1 · Avancé', chipFocus='Reading · les deux modules',
     chipCount='18 points',
 
-    optT='True &mdash; le texte le dit clairement',
-    optF='False &mdash; le texte le nie clairement',
+    optT='True &mdash; le texte concorde avec cela',
+    optF='False &mdash; le texte le contredit',
     optN='Not Given &mdash; le texte ne le dit pas',
 
     t1Eyebrow='Avant de commencer',
@@ -606,8 +615,9 @@ T['fr'] = dict(
          'compris. Après quatre réponses, vous savez à peu près où se trouve la '
          'cinquième &mdash; vous n’avez jamais à parcourir tout le texte deux '
          'fois.',
-    t1cn='Matching Headings et Matching Information sont les exceptions. Ils '
-         'sautent d’un endroit à l’autre.',
+    t1cn='Matching Information et Matching Features sautent d’un endroit à '
+         'l’autre, et dans Matching Headings la liste des titres n’a pas '
+         'd’ordre.',
 
     t2Eyebrow='Avant de commencer',
     t2Title='False et Not Given ne sont pas la même réponse',
@@ -621,15 +631,16 @@ T['fr'] = dict(
     t2bh='NOT GIVEN : le texte se tait',
     t2bb='Le texte ne le dit pas et ne le nie pas. L’affirmation est peut-être '
          'vraie dans le monde réel ; le texte, simplement, n’en parle pas.',
-    t2bn='Not Given n’est pas une punition pour avoir raté quelque chose. C’est '
-         'une vraie réponse, et environ un tiers des réponses le sont.',
-    t2ch='Le test tient en une question',
+    t2bn='Not Given n’est pas une punition pour avoir manqué quelque chose. '
+         'C’est une vraie réponse, et il faut s’attendre à en trouver '
+         'plusieurs dans une épreuve.',
+    t2ch='Une question tranche',
     t2cb='<strong>Puis-je montrer la phrase du doigt ?</strong> Si oui, la '
-         'réponse est True ou False selon ce qu’elle dit. Si vous raisonnez '
-         '&mdash; « bon, ce doit être le cas » &mdash; la réponse est Not '
-         'Given.',
-    t2cn='Raisonner donne l’impression de comprendre, et c’est exactement pour '
-         'cela que cela coûte autant de points ici.',
+         'réponse est True ou False selon ce qu’elle dit. Si vous comblez un '
+         'vide que le texte laisse &mdash; « bon, ça doit être ça » &mdash;, '
+         'la réponse est Not Given.',
+    t2cn='Combler le vide donne l’impression de comprendre, et c’est '
+         'exactement pour cela que cela coûte tant de points ici.',
 
     t3Eyebrow='Avant de commencer',
     t3Title='Répondez d’après le texte, jamais d’après ce que vous savez',
@@ -637,8 +648,7 @@ T['fr'] = dict(
     t3ab='Une affirmation peut être tout à fait vraie dans le monde et pourtant '
          'Not Given dans le texte. L’examinateur ne vous demande pas si elle '
          'est vraie. Il vous demande ce que dit ce texte.',
-    t3an='C’est pourquoi les candidats réussissent moins bien sur les sujets '
-         'qu’ils connaissent bien.',
+    t3an='C’est pourquoi un sujet familier peut vous coûter des points ici.',
     t3bh='TRUE veut dire que le texte le dit',
     t3bb='Presque toujours avec d’autres mots. Le texte ne répète pas '
          'l’affirmation, il la reformule. Faire correspondre le sens, c’est la '
@@ -655,28 +665,30 @@ T['fr'] = dict(
          'ligne.',
 
     t4Eyebrow='Avant de commencer',
-    t4Title='Un seul mot en décide un tiers',
+    t4Title='Un mot peut tout décider',
     t4ah='Les absolus',
-    t4ab='<em>All</em>, <em>every</em>, <em>never</em>, <em>only</em>. Un texte '
-         'qui dit <em>most</em> rend FALSE une affirmation qui dit <em>all</em> '
-         '&mdash; les deux ne peuvent pas être vrais à la fois, et c’est une '
-         'contradiction que l’on peut montrer du doigt.',
-    t4an='<em>Most islanders</em> face à <em>every islander</em>, c’est un '
-         'False, pas un Not Given.',
+    t4ab='<em>All</em>, <em>every</em>, <em>never</em>, <em>only</em>. Un '
+         'texte qui dit <em>most</em> rend FALSE une affirmation qui dit '
+         '<em>all</em> : <em>most</em> signifie <em>pas tous</em>, car un '
+         'auteur qui voulait dire <em>tous</em> l’aurait dit.',
+    t4an='<em>Most islanders</em> contre <em>every islander</em>, c’est un '
+         'False, pas un Not Given &mdash; sauf si le texte dit <em>most, if '
+         'not all</em>.',
     t4bh='Les atténuations',
     t4bb='<em>May</em>, <em>might</em>, <em>is thought to</em>, '
          '<em>suggests</em>. Un texte qui atténue ne nie pas une affirmation '
          'catégorique &mdash; il ne la fait simplement jamais. Cette forme '
          'donne en général Not Given.',
-    t4bn='La différence avec un absolu : <em>most</em> exclut <em>all</em>, '
-         'mais <em>may</em> n’exclut rien.',
-    t4ch='Un comparatif a besoin des deux côtés',
+    t4bn='La différence avec un absolu : <em>most</em> signifie <em>pas '
+         'tous</em>, mais <em>may</em> ne vous dit rien dans un sens ni dans '
+         'l’autre.',
+    t4ch='Les comparaisons exigent les deux côtés',
     t4cb='<em>Wetter than</em>, <em>the largest</em>, <em>more common '
-         'than</em>. Vérifiez que le texte compare vraiment les deux mêmes '
-         'choses &mdash; un texte sur l’une d’elles ne peut pas justifier une '
-         'affirmation sur la paire.',
-    t4cn='Un texte qui donne un seul chiffre et une affirmation qui en classe '
-         'deux, c’est Not Given à chaque fois.',
+         'than</em>. Vérifiez que le texte compare vraiment ce que compare '
+         'l’affirmation &mdash; un texte qui ne parle que de l’un ne peut '
+         'pas étayer un classement.',
+    t4cn='Un chiffre pour un seul des deux, sans rien à quoi le comparer, ne '
+         'peut pas étayer un classement.',
 
     mcaEyebrow='Activité 1 · False, ou Not Given ?',
     mcaTitle='Lisez le texte. Puis lisez l’affirmation.',
@@ -706,9 +718,9 @@ T['fr'] = dict(
     r8why='Le texte dit sur quoi a porté l’enquête, pas qui l’a financée. On '
           'peut raisonnablement se poser la question du financement, mais le '
           'texte n’en parle pas. NOT GIVEN.',
-    r9why='<em>Most</em> dans le texte face à <em>every</em> dans '
-          'l’affirmation. Une majorité contredit un absolu : c’est donc un '
-          'FALSE et non un Not Given.',
+    r9why='<em>Most</em> dans le texte contre <em>every</em> dans '
+          'l’affirmation. <em>Most</em> signifie <em>pas tous</em>, donc le '
+          'texte contredit l’affirmation : FALSE, pas Not Given.',
     r10why='Le texte atténue au sujet du temps de rétablissement et ne dit '
            'strictement rien de l’autorisation. Un silence, pas un démenti. '
            'NOT GIVEN.',
@@ -716,8 +728,8 @@ T['fr'] = dict(
            'même affirmation retournée. Les mots qui la portent, '
            '<em>lower</em> et <em>wetter</em>, n’ont rien en commun, et c’est '
            'pour cela que la recherche de mots passe à côté. TRUE.',
-    r12why='<em>Apart from two years in the 1980s</em> est la ligne que l’on '
-           'montre du doigt. <em>Never once</em> n’y survit pas. FALSE.',
+    r12why='<em>Apart from two years in the 1980s</em> est la ligne à '
+           'montrer. <em>Every summer</em> n’y résiste pas. FALSE.',
 
     sortEyebrow='Activité 4 · Ce qui fait pencher d’un côté',
     sortTitle='Classez les six signaux',
@@ -725,22 +737,22 @@ T['fr'] = dict(
              'un élément, puis sur la colonne voulue.',
     sortBin1='Oriente vers FALSE',
     sortBin2='Oriente vers NOT GIVEN',
-    sortWhy='Tout ce qui est dans la colonne de gauche désigne une '
-            '<strong>phrase que l’on pourrait montrer du doigt</strong>. Tout '
-            'ce qui est dans la colonne de droite est une façon d’arriver à un '
-            'verdict sans elle : déduction, association ou culture générale. '
-            'Toute la différence est là : FALSE exige une ligne du texte qui '
-            'dit le contraire, et si vous ne pouvez pas mettre le doigt '
-            'dessus, la réponse est NOT GIVEN.',
+    sortWhy='Les signaux de FALSE désignent chacun une <strong>phrase que '
+            'vous pourriez montrer du doigt</strong>. Les signaux de NOT '
+            'GIVEN sont des façons d’arriver à un verdict sans elle &mdash; '
+            'conjecture, association ou culture générale. Toute la '
+            'différence est là : FALSE exige une ligne du texte qui dit le '
+            'contraire, et si vous ne pouvez pas la montrer, la réponse est '
+            'NOT GIVEN.',
 
     actTitle='Prouvez-le par le texte',
     actUse='Utilisez-en au moins trois :',
     actSpeakBrief='À deux, avec n’importe quel texte sous la main &mdash; un '
-                  'article de presse fera l’affaire. L’un de vous écrit quatre '
-                  'affirmations à son sujet : une vraie, une fausse, deux non '
-                  'mentionnées. Échangez, répondez, puis défendez chaque '
-                  'verdict en lisant la ligne sur laquelle il repose. Pas de '
-                  'ligne, pas de FALSE.',
+                  'article de presse suffit. L’un écrit quatre affirmations '
+                  'à son sujet : une vraie, une fausse, deux non données. '
+                  'Échangez et répondez. Défendez chaque TRUE ou FALSE en '
+                  'lisant la ligne sur laquelle il repose ; pour un NOT '
+                  'GIVEN, montrez qu’il n’y en a pas.',
     actSpeak1='Celui qui répond doit dire à voix haute quelle phrase a décidé, '
               'avant que le verdict soit accepté.',
     actSpeak2='Pour chaque NOT GIVEN, dites ce que le texte aurait dû contenir '
@@ -761,14 +773,13 @@ T['fr'] = dict(
 # ── Italian ────────────────────────────────────────────────────────────
 T['it'] = dict(
     coverTitle='True, False, <em>Not Given</em>',
-    coverSub='Il tipo di domanda che fa perdere più punti nella prova di Reading '
-             '&mdash; e quello che si recupera con la tecnica, non con il '
-             'vocabolario',
+    coverSub='Il tipo di domanda su cui è più difficile decidere &mdash; e '
+             'uno di quelli in cui la tecnica recupera punti',
     chipLevel='C1 · Avanzato', chipFocus='Reading · entrambi i moduli',
     chipCount='18 punti',
 
-    optT='True &mdash; il testo lo dice chiaramente',
-    optF='False &mdash; il testo lo nega chiaramente',
+    optT='True &mdash; il testo concorda con questo',
+    optF='False &mdash; il testo lo contraddice',
     optN='Not Given &mdash; il testo non lo dice',
 
     t1Eyebrow='Prima di cominciare',
@@ -792,8 +803,8 @@ T['it'] = dict(
     t1cb='La maggior parte dei tipi di domanda segue l’ordine del testo, '
          'compreso questo. Dopo quattro risposte sai più o meno dove si trova la '
          'quinta &mdash; non devi mai scorrere tutto il testo due volte.',
-    t1cn='Matching Headings e Matching Information sono le eccezioni. Saltano '
-         'da una parte all’altra.',
+    t1cn='Matching Information e Matching Features saltano qua e là, e in '
+         'Matching Headings la lista dei titoli non ha ordine.',
 
     t2Eyebrow='Prima di cominciare',
     t2Title='False e Not Given non sono la stessa risposta',
@@ -807,13 +818,14 @@ T['it'] = dict(
     t2bb='Il testo non lo dice e non lo nega. L’affermazione può essere '
          'verissima nel mondo reale; il testo semplicemente non ne parla.',
     t2bn='Not Given non è una punizione perché ti è sfuggito qualcosa. È una '
-         'risposta vera, e lo è circa un terzo delle volte.',
-    t2ch='La prova è una sola domanda',
-    t2cb='<strong>Posso indicare la frase?</strong> Se sì, la risposta è True '
-         'o False a seconda di ciò che dice. Se stai ragionando &mdash; «be’, '
-         'deve essere così» &mdash; la risposta è Not Given.',
-    t2cn='Ragionare sembra capire, ed è proprio per questo che qui costa tanti '
-         'punti.',
+         'risposta vera, e in una prova devi aspettartene diverse.',
+    t2ch='Una domanda decide',
+    t2cb='<strong>Posso indicare la frase?</strong> Se sì, la risposta è '
+         'True o False a seconda di ciò che dice. Se stai riempiendo un '
+         'vuoto che il testo lascia &mdash; «beh, dev’essere così» &mdash;, '
+         'la risposta è Not Given.',
+    t2cn='Riempire il vuoto sembra capire, ed è proprio per questo che qui '
+         'costa tanti punti.',
 
     t3Eyebrow='Prima di cominciare',
     t3Title='Rispondi in base al testo, mai in base a ciò che sai',
@@ -821,8 +833,7 @@ T['it'] = dict(
     t3ab='Un’affermazione può essere verissima nel mondo e comunque Not Given '
          'nel testo. L’esaminatore non ti chiede se è vera. Ti chiede che cosa '
          'dice questo testo.',
-    t3an='Ecco perché i candidati vanno peggio sugli argomenti che conoscono '
-         'bene.',
+    t3an='Ecco perché un argomento che conosci può costarti punti qui.',
     t3bh='TRUE significa che il testo lo dice',
     t3bb='Quasi sempre con altre parole. Il testo non ripete l’affermazione, la '
          'riformula. Far corrispondere il significato è l’abilità; far '
@@ -838,28 +849,30 @@ T['it'] = dict(
     t3cn='Usa la parola ripetuta per trovare la riga. Poi leggi la riga.',
 
     t4Eyebrow='Prima di cominciare',
-    t4Title='Una sola parola ne decide un terzo',
+    t4Title='Una parola può decidere',
     t4ah='Gli assoluti',
-    t4ab='<em>All</em>, <em>every</em>, <em>never</em>, <em>only</em>. Un testo '
-         'che dice <em>most</em> rende FALSE un’affermazione che dice '
-         '<em>all</em> &mdash; le due cose non possono valere insieme, ed è una '
-         'contraddizione che puoi indicare.',
+    t4ab='<em>All</em>, <em>every</em>, <em>never</em>, <em>only</em>. Un '
+         'testo che dice <em>most</em> rende FALSE un’affermazione che dice '
+         '<em>all</em>: <em>most</em> significa <em>non tutti</em>, perché '
+         'chi intendesse <em>tutti</em> lo direbbe.',
     t4an='<em>Most islanders</em> contro <em>every islander</em> è un False, '
-         'non un Not Given.',
+         'non un Not Given &mdash; a meno che il testo non dica <em>most, if '
+         'not all</em>.',
     t4bh='Le attenuazioni',
     t4bb='<em>May</em>, <em>might</em>, <em>is thought to</em>, '
          '<em>suggests</em>. Un testo che attenua non nega un’affermazione '
          'sicura &mdash; semplicemente non la fa mai. Questa forma di solito è '
          'Not Given.',
-    t4bn='La differenza con un assoluto: <em>most</em> esclude <em>all</em>, '
-         'ma <em>may</em> non esclude niente.',
-    t4ch='Un comparativo ha bisogno di entrambi i lati',
+    t4bn='La differenza rispetto a un assoluto: <em>most</em> significa '
+         '<em>non tutti</em>, ma <em>may</em> non ti dice niente né in un '
+         'senso né nell’altro.',
+    t4ch='I confronti richiedono entrambi i lati',
     t4cb='<em>Wetter than</em>, <em>the largest</em>, <em>more common '
-         'than</em>. Controlla che il testo confronti davvero le stesse due '
-         'cose &mdash; un testo su una sola di esse non può sostenere '
-         'un’affermazione sulla coppia.',
-    t4cn='Un testo che dà un solo dato e un’affermazione che ne mette in '
-         'ordine due: è Not Given ogni volta.',
+         'than</em>. Controlla che il testo confronti davvero ciò che '
+         'confronta l’affermazione &mdash; un testo su uno solo dei due non '
+         'può sostenere una graduatoria.',
+    t4cn='Un dato su uno solo dei due, senza niente con cui confrontarlo, '
+         'non può sostenere una graduatoria.',
 
     mcaEyebrow='Attività 1 · False o Not Given?',
     mcaTitle='Leggi il testo. Poi leggi l’affermazione.',
@@ -888,16 +901,17 @@ T['it'] = dict(
     r8why='Il testo dice che cosa ha riguardato l’indagine, non chi l’ha '
           'pagata. Chiedersi chi l’abbia finanziata è ragionevole, ma il testo '
           'non ne parla. NOT GIVEN.',
-    r9why='<em>Most</em> nel testo contro <em>every</em> nell’affermazione. Una '
-          'maggioranza contraddice un assoluto, quindi è FALSE e non Not Given.',
+    r9why='<em>Most</em> nel testo contro <em>every</em> nell’affermazione. '
+          '<em>Most</em> significa <em>non tutti</em>, quindi il testo '
+          'contraddice l’affermazione: FALSE, non Not Given.',
     r10why='Il testo attenua sul tempo di recupero e non dice proprio nulla '
            'sull’approvazione. Silenzio, non smentita. NOT GIVEN.',
     r11why='Meno pioggia nella valle vuol dire una costa più piovosa: la stessa '
            'affermazione rovesciata. Le parole che la reggono, <em>lower</em> e '
            '<em>wetter</em>, non hanno niente in comune, ed è per questo che '
            'cercare le parole non la trova. TRUE.',
-    r12why='<em>Apart from two years in the 1980s</em> è la riga da indicare. '
-           '<em>Never once</em> non ci sopravvive. FALSE.',
+    r12why='<em>Apart from two years in the 1980s</em> è la riga da '
+           'indicare. <em>Every summer</em> non regge. FALSE.',
 
     sortEyebrow='Attività 4 · Che cosa ti fa pendere da una parte',
     sortTitle='Classifica i sei segnali',
@@ -905,21 +919,21 @@ T['it'] = dict(
              'elemento e poi sulla colonna che vuoi.',
     sortBin1='Porta a FALSE',
     sortBin2='Porta a NOT GIVEN',
-    sortWhy='Tutto ciò che sta nella colonna di sinistra indica una '
-            '<strong>frase che potresti indicare col dito</strong>. Tutto ciò '
-            'che sta nella colonna di destra è un modo di arrivare a un '
-            'verdetto senza di essa: deduzione, associazione o cultura '
-            'generale. Tutta la differenza è qui: FALSE richiede una riga del '
-            'testo che dica il contrario, e se non riesci a indicarla, la '
-            'risposta è NOT GIVEN.',
+    sortWhy='I segnali di FALSE indicano ciascuno una <strong>frase che '
+            'potresti indicare</strong>. I segnali di NOT GIVEN sono modi di '
+            'arrivare a un verdetto senza di essa &mdash; congetture, '
+            'associazioni o cultura generale. Tutta la differenza è qui: '
+            'FALSE richiede una riga del testo che dica il contrario, e se '
+            'non riesci a indicarla, la risposta è NOT GIVEN.',
 
     actTitle='Dimostralo con il testo',
     actUse='Usane almeno tre:',
-    actSpeakBrief='In coppia, con un testo qualsiasi a portata di mano &mdash; '
-                  'va bene un articolo di giornale. Uno di voi scrive quattro '
-                  'affermazioni sul testo: una vera, una falsa, due non dette. '
-                  'Scambiatevele, rispondete e poi difendete ogni verdetto '
-                  'leggendo la riga su cui si basa. Niente riga, niente FALSE.',
+    actSpeakBrief='In coppia, con un testo qualsiasi a portata di mano '
+                  '&mdash; basta un articolo di giornale. Uno scrive quattro '
+                  'affermazioni: una vera, una falsa, due non date. '
+                  'Scambiatevele e rispondete. Difendete ogni TRUE o FALSE '
+                  'leggendo la riga su cui si basa; per un NOT GIVEN, '
+                  'mostrate che non c’è.',
     actSpeak1='Chi risponde deve dire ad alta voce quale frase ha deciso, prima '
               'che il verdetto venga accettato.',
     actSpeak2='Per ogni NOT GIVEN, di’ che cosa avrebbe dovuto contenere il '
@@ -939,13 +953,13 @@ T['it'] = dict(
 # ── Portuguese ─────────────────────────────────────────────────────────
 T['pt'] = dict(
     coverTitle='True, False, <em>Not Given</em>',
-    coverSub='O tipo de pergunta que mais pontos faz perder na prova de Reading '
-             '&mdash; e o que se recupera com técnica, não com vocabulário',
+    coverSub='O tipo de pergunta em que é mais difícil decidir &mdash; e um '
+             'daqueles em que a técnica recupera pontos',
     chipLevel='C1 · Avançado', chipFocus='Reading · os dois módulos',
     chipCount='18 pontos',
 
-    optT='True &mdash; o texto afirma-o claramente',
-    optF='False &mdash; o texto nega-o claramente',
+    optT='True &mdash; o texto concorda com isto',
+    optF='False &mdash; o texto contradiz isto',
     optN='Not Given &mdash; o texto não o diz',
 
     t1Eyebrow='Antes de começar',
@@ -969,8 +983,8 @@ T['pt'] = dict(
     t1cb='A maioria dos tipos de pergunta segue a ordem do texto, este '
          'incluído. Depois de quatro respostas, sabes mais ou menos onde está a '
          'quinta &mdash; nunca precisas de percorrer o texto todo duas vezes.',
-    t1cn='Matching Headings e Matching Information são as exceções. Saltam de '
-         'um lado para o outro.',
+    t1cn='Matching Information e Matching Features saltam de um lado para o '
+         'outro, e em Matching Headings a lista de títulos não tem ordem.',
 
     t2Eyebrow='Antes de começar',
     t2Title='False e Not Given não são a mesma resposta',
@@ -983,14 +997,15 @@ T['pt'] = dict(
     t2bh='NOT GIVEN: o texto cala-se',
     t2bb='O texto nem o diz nem o nega. A afirmação pode muito bem ser '
          'verdadeira no mundo real; o texto simplesmente não fala disso.',
-    t2bn='Not Given não é um castigo por te ter escapado alguma coisa. É uma '
-         'resposta a sério, e é-o em cerca de um terço dos casos.',
-    t2ch='O teste é uma única pergunta',
-    t2cb='<strong>Consigo apontar para a frase?</strong> Se sim, a resposta é '
-         'True ou False, conforme o que ela diz. Se estás a deduzir &mdash; '
-         '«bem, tem de ser» &mdash; a resposta é Not Given.',
-    t2cn='Deduzir parece compreender, e é exatamente por isso que custa tantos '
-         'pontos aqui.',
+    t2bn='Not Given não é um castigo por teres deixado escapar alguma coisa. '
+         'É uma resposta verdadeira, e deves contar com várias numa prova.',
+    t2ch='Uma pergunta decide',
+    t2cb='<strong>Consigo apontar para a frase?</strong> Se sim, a resposta '
+         'é True ou False, conforme o que ela diz. Se estás a preencher uma '
+         'lacuna que o texto deixa &mdash; «bem, tem de ser assim» &mdash;, '
+         'a resposta é Not Given.',
+    t2cn='Preencher a lacuna parece compreender, e é exatamente por isso que '
+         'custa tantos pontos aqui.',
 
     t3Eyebrow='Antes de começar',
     t3Title='Responde com base no texto, nunca no que sabes',
@@ -998,8 +1013,7 @@ T['pt'] = dict(
     t3ab='Uma afirmação pode ser perfeitamente verdadeira no mundo e mesmo '
          'assim ser Not Given no texto. O examinador não te pergunta se é '
          'verdade. Pergunta-te o que diz este texto.',
-    t3an='É por isso que os candidatos têm piores resultados nos temas que '
-         'conhecem bem.',
+    t3an='É por isso que um tema conhecido te pode custar pontos aqui.',
     t3bh='TRUE quer dizer que o texto o diz',
     t3bb='Quase sempre por outras palavras. O texto não repete a afirmação: '
          'parafraseia-a. Fazer corresponder o sentido é a competência; fazer '
@@ -1015,28 +1029,30 @@ T['pt'] = dict(
     t3cn='Usa a palavra repetida para encontrar a linha. Depois lê a linha.',
 
     t4Eyebrow='Antes de começar',
-    t4Title='Uma palavra decide um terço destas',
+    t4Title='Uma palavra pode decidir',
     t4ah='Os absolutos',
-    t4ab='<em>All</em>, <em>every</em>, <em>never</em>, <em>only</em>. Um texto '
-         'que diz <em>most</em> torna FALSE uma afirmação que diz <em>all</em> '
-         '&mdash; as duas não podem ser verdade ao mesmo tempo, e isso é uma '
-         'contradição para a qual podes apontar.',
+    t4ab='<em>All</em>, <em>every</em>, <em>never</em>, <em>only</em>. Um '
+         'texto que diz <em>most</em> torna FALSE uma afirmação que diz '
+         '<em>all</em>: <em>most</em> quer dizer <em>nem todos</em>, porque '
+         'quem quisesse dizer <em>todos</em> di-lo-ia.',
     t4an='<em>Most islanders</em> contra <em>every islander</em> é um False, '
-         'não um Not Given.',
+         'não um Not Given &mdash; a não ser que o texto diga <em>most, if '
+         'not all</em>.',
     t4bh='As atenuações',
     t4bb='<em>May</em>, <em>might</em>, <em>is thought to</em>, '
          '<em>suggests</em>. Um texto que atenua não nega uma afirmação '
          'categórica &mdash; simplesmente nunca a faz. Essa forma costuma ser '
          'Not Given.',
-    t4bn='A diferença em relação a um absoluto: <em>most</em> exclui '
-         '<em>all</em>, mas <em>may</em> não exclui nada.',
-    t4ch='Um comparativo precisa dos dois lados',
+    t4bn='A diferença para um absoluto: <em>most</em> quer dizer <em>nem '
+         'todos</em>, mas <em>may</em> não te diz nada num sentido nem '
+         'noutro.',
+    t4ch='As comparações precisam dos dois lados',
     t4cb='<em>Wetter than</em>, <em>the largest</em>, <em>more common '
-         'than</em>. Confirma que o texto compara mesmo as duas coisas '
-         '&mdash; um texto sobre uma delas não sustenta uma afirmação sobre o '
-         'par.',
-    t4cn='Um texto que dá um só número e uma afirmação que ordena dois é Not '
-         'Given sempre.',
+         'than</em>. Verifica se o texto compara de facto o que a afirmação '
+         'compara &mdash; um texto sobre apenas um deles não sustenta uma '
+         'afirmação sobre a sua posição relativa.',
+    t4cn='Um número de apenas um dos dois, sem nada com que o comparar, não '
+         'sustenta uma classificação.',
 
     mcaEyebrow='Atividade 1 · False ou Not Given?',
     mcaTitle='Lê o texto. Depois lê a afirmação.',
@@ -1063,16 +1079,17 @@ T['pt'] = dict(
           'em vez de o repetir, que é o aspeto que um TRUE costuma ter.',
     r8why='O texto diz o que o inquérito abrangeu, não quem o pagou. É razoável '
           'perguntar pelo financiamento, e o texto não fala disso. NOT GIVEN.',
-    r9why='<em>Most</em> no texto contra <em>every</em> na afirmação. Uma '
-          'maioria contradiz um absoluto, por isso é FALSE e não Not Given.',
+    r9why='<em>Most</em> no texto contra <em>every</em> na afirmação. '
+          '<em>Most</em> quer dizer <em>nem todos</em>, por isso o texto '
+          'contradiz a afirmação: FALSE, não Not Given.',
     r10why='O texto atenua quanto ao tempo de recuperação e não diz absolutamente '
            'nada sobre a aprovação. Silêncio, não negação. NOT GIVEN.',
     r11why='Menos chuva no vale quer dizer uma costa mais chuvosa: a mesma '
            'afirmação do avesso. As palavras que a sustentam, <em>lower</em> e '
            '<em>wetter</em>, não têm nada em comum, e é por isso que procurar '
            'palavras não a apanha. TRUE.',
-    r12why='<em>Apart from two years in the 1980s</em> é a linha para a qual '
-           'apontas. <em>Never once</em> não lhe sobrevive. FALSE.',
+    r12why='<em>Apart from two years in the 1980s</em> é a linha para onde '
+           'apontas. <em>Every summer</em> não lhe resiste. FALSE.',
 
     sortEyebrow='Atividade 4 · O que te faz pender para cada lado',
     sortTitle='Classifica os seis sinais',
@@ -1080,20 +1097,20 @@ T['pt'] = dict(
              'depois na coluna que quiseres.',
     sortBin1='Aponta para FALSE',
     sortBin2='Aponta para NOT GIVEN',
-    sortWhy='Tudo o que está na coluna da esquerda nomeia uma <strong>frase '
-            'para a qual poderias apontar</strong>. Tudo o que está na coluna '
-            'da direita é uma forma de chegar a um veredicto sem ela: dedução, '
-            'associação ou cultura geral. Toda a diferença está aqui: FALSE '
-            'precisa de uma linha do texto que diga o contrário, e se não '
-            'consegues pôr o dedo nela, a resposta é NOT GIVEN.',
+    sortWhy='Os sinais de FALSE indicam cada um uma <strong>frase para onde '
+            'podias apontar</strong>. Os sinais de NOT GIVEN são maneiras de '
+            'chegar a um veredicto sem ela &mdash; palpites, associações ou '
+            'cultura geral. Toda a diferença está aqui: FALSE precisa de uma '
+            'linha do texto que diga o contrário, e se não a consegues '
+            'apontar, a resposta é NOT GIVEN.',
 
     actTitle='Prova-o com o texto',
     actUse='Usa pelo menos três:',
-    actSpeakBrief='Em pares, com um texto qualquer à mão &mdash; serve uma '
-                  'notícia. Um de vocês escreve quatro afirmações sobre ele: '
-                  'uma verdadeira, uma falsa, duas não mencionadas. Troquem, '
-                  'respondam e depois defendam cada veredicto lendo a linha em '
-                  'que se basearam. Sem linha, não há FALSE.',
+    actSpeakBrief='Em pares, com qualquer texto à mão &mdash; uma notícia '
+                  'serve. Um escreve quatro afirmações sobre ele: uma '
+                  'verdadeira, uma falsa e duas não dadas. Troquem e '
+                  'respondam. Defendam cada TRUE ou FALSE lendo a linha em '
+                  'que assenta; para um NOT GIVEN, mostrem que não existe.',
     actSpeak1='Quem responde tem de dizer em voz alta que frase decidiu, antes '
               'de o veredicto ser aceite.',
     actSpeak2='Para cada NOT GIVEN, diz o que o texto teria de conter para a '
@@ -1112,13 +1129,13 @@ T['pt'] = dict(
 # ── Russian ────────────────────────────────────────────────────────────
 T['ru'] = dict(
     coverTitle='True, False, <em>Not Given</em>',
-    coverSub='Тип вопросов, на котором в Reading теряют больше всего баллов, '
-             '&mdash; и который возвращает техника, а не словарный запас',
+    coverSub='Тип вопросов, где решить труднее всего, &mdash; и один из тех, '
+             'где техника возвращает баллы',
     chipLevel='C1 · Продвинутый', chipFocus='Reading · оба модуля',
     chipCount='18 баллов',
 
-    optT='True &mdash; в тексте это сказано прямо',
-    optF='False &mdash; текст прямо это отрицает',
+    optT='True &mdash; текст с этим согласуется',
+    optF='False &mdash; текст этому противоречит',
     optN='Not Given &mdash; в тексте об этом нет',
 
     t1Eyebrow='Прежде чем начать',
@@ -1141,8 +1158,8 @@ T['ru'] = dict(
     t1cb='Большинство типов вопросов идут в порядке текста, этот тоже. '
          'Ответив на четыре, вы примерно знаете, где пятый, &mdash; искать по '
          'всему тексту дважды не придётся.',
-    t1cn='Исключения &mdash; Matching Headings и Matching Information. Они '
-         'прыгают по тексту.',
+    t1cn='Matching Information и Matching Features прыгают по тексту, а в '
+         'Matching Headings у списка заголовков нет порядка.',
 
     t2Eyebrow='Прежде чем начать',
     t2Title='False и Not Given &mdash; разные ответы',
@@ -1155,15 +1172,15 @@ T['ru'] = dict(
     t2bh='NOT GIVEN: текст молчит',
     t2bb='Текст этого не говорит и не отрицает. Утверждение вполне может быть '
          'верным в реальном мире; просто текст об этом не говорит.',
-    t2bn='Not Given &mdash; не наказание за то, что вы что-то пропустили. Это '
-         'настоящий ответ, и таких примерно треть.',
-    t2ch='Проверка &mdash; один вопрос',
-    t2cb='<strong>Могу ли я указать на предложение?</strong> Если да, ответ '
-         'True или False в зависимости от того, что в нём сказано. Если вы '
-         'рассуждаете &mdash; «ну, должно же быть так» &mdash;, ответ Not '
-         'Given.',
-    t2cn='Рассуждение похоже на понимание, и именно поэтому здесь оно стоит '
-         'так много баллов.',
+    t2bn='Not Given &mdash; не наказание за то, что вы что-то пропустили. '
+         'Это настоящий ответ, и на экзамене таких может быть несколько.',
+    t2ch='Решает один вопрос',
+    t2cb='<strong>Могу ли я показать на предложение?</strong> Если да, ответ '
+         '&mdash; True или False, в зависимости от того, что в нём сказано. '
+         'Если вы заполняете пробел, который оставляет текст, &mdash; «ну, '
+         'так должно быть», &mdash; ответ Not Given.',
+    t2cn='Заполнять пробел кажется пониманием, и именно поэтому здесь это '
+         'стоит стольких баллов.',
 
     t3Eyebrow='Прежде чем начать',
     t3Title='Отвечайте по тексту, а не по тому, что знаете',
@@ -1171,7 +1188,7 @@ T['ru'] = dict(
     t3ab='Утверждение может быть совершенно верным в мире и всё равно быть Not '
          'Given в тексте. Экзаменатор не спрашивает, правда ли это. Он '
          'спрашивает, что сказано в этом тексте.',
-    t3an='Поэтому на хорошо знакомых темах кандидаты набирают меньше.',
+    t3an='Вот почему знакомая тема может стоить вам здесь баллов.',
     t3bh='TRUE значит: в тексте это сказано',
     t3bb='Почти всегда другими словами. Текст не повторяет утверждение, а '
          'перефразирует его. Сопоставлять смысл &mdash; это навык; '
@@ -1187,27 +1204,29 @@ T['ru'] = dict(
     t3cn='Найдите строку по повторяющемуся слову. Потом прочитайте строку.',
 
     t4Eyebrow='Прежде чем начать',
-    t4Title='Треть таких вопросов решает одно слово',
+    t4Title='Одно слово может всё решить',
     t4ah='Абсолюты',
-    t4ab='<em>All</em>, <em>every</em>, <em>never</em>, <em>only</em>. Если в '
-         'тексте <em>most</em>, то утверждение с <em>all</em> &mdash; FALSE: '
-         'оба не могут быть верны одновременно, и на это противоречие можно '
-         'указать.',
+    t4ab='<em>All</em>, <em>every</em>, <em>never</em>, <em>only</em>. Если '
+         'в тексте сказано <em>most</em>, утверждение с <em>all</em> '
+         'получает FALSE: <em>most</em> значит <em>не все</em>, ведь автор, '
+         'имевший в виду <em>всех</em>, так бы и сказал.',
     t4an='<em>Most islanders</em> против <em>every islander</em> &mdash; это '
-         'False, а не Not Given.',
+         'False, а не Not Given, если только в тексте не сказано <em>most, '
+         'if not all</em>.',
     t4bh='Смягчения',
     t4bb='<em>May</em>, <em>might</em>, <em>is thought to</em>, '
          '<em>suggests</em>. Смягчённый текст не отрицает уверенное '
          'утверждение &mdash; он просто никогда его не делает. Обычно это Not '
          'Given.',
-    t4bn='Отличие от абсолюта: <em>most</em> исключает <em>all</em>, а '
-         '<em>may</em> не исключает ничего.',
+    t4bn='Отличие от абсолюта: <em>most</em> значит <em>не все</em>, а '
+         '<em>may</em> не говорит ничего ни в ту, ни в другую сторону.',
     t4ch='Сравнению нужны обе стороны',
     t4cb='<em>Wetter than</em>, <em>the largest</em>, <em>more common '
-         'than</em>. Проверьте, что текст действительно сравнивает те же два '
-         'предмета: текст об одном из них не подтверждает утверждение о паре.',
-    t4cn='Текст с одной цифрой и утверждение, которое сравнивает две, &mdash; '
-         'это всегда Not Given.',
+         'than</em>. Проверьте, действительно ли текст сравнивает то же, что '
+         'и утверждение, &mdash; текст только об одном из них не может '
+         'подтвердить утверждение о том, как они соотносятся.',
+    t4cn='Цифра только для одного из двух, без того, с чем её сравнить, не '
+         'может подтвердить ранжирование.',
 
     mcaEyebrow='Задание 1 · False или Not Given?',
     mcaTitle='Прочитайте текст. Потом прочитайте утверждение.',
@@ -1238,8 +1257,8 @@ T['ru'] = dict(
           'Задаться вопросом о финансировании естественно, но текст об этом '
           'молчит. NOT GIVEN.',
     r9why='<em>Most</em> в тексте против <em>every</em> в утверждении. '
-          'Большинство противоречит абсолюту, поэтому это FALSE, а не Not '
-          'Given.',
+          '<em>Most</em> значит <em>не все</em>, поэтому текст противоречит '
+          'утверждению: FALSE, а не Not Given.',
     r10why='Текст смягчает высказывание о сроке восстановления и ничего не '
            'говорит об одобрении. Молчание, а не отрицание. NOT GIVEN.',
     r11why='Меньше дождей в долине &mdash; значит, на побережье влажнее: то же '
@@ -1247,7 +1266,8 @@ T['ru'] = dict(
            '<em>lower</em> и <em>wetter</em>, не имеют ничего общего, поэтому '
            'поиск по словам его пропускает. TRUE.',
     r12why='<em>Apart from two years in the 1980s</em> &mdash; строка, на '
-           'которую вы указываете. <em>Never once</em> её не переживёт. FALSE.',
+           'которую вы показываете. <em>Every summer</em> её не выдерживает. '
+           'FALSE.',
 
     sortEyebrow='Задание 4 · Что склоняет в какую сторону',
     sortTitle='Распределите шесть сигналов',
@@ -1255,20 +1275,21 @@ T['ru'] = dict(
              'на нужный столбец.',
     sortBin1='Указывает на FALSE',
     sortBin2='Указывает на NOT GIVEN',
-    sortWhy='Всё в левом столбце называет <strong>предложение, на которое можно '
-            'указать</strong>. Всё в правом &mdash; способы прийти к вердикту '
-            'без него: вывод, ассоциация или общие знания. В этом вся '
-            'разница: для FALSE нужна строка текста, которая говорит обратное, '
-            'а если указать на неё нельзя, ответ NOT GIVEN.',
+    sortWhy='Признаки FALSE называют каждый <strong>предложение, на которое '
+            'можно показать</strong>. Признаки NOT GIVEN &mdash; способы '
+            'вынести вердикт без него: догадка, ассоциация или общие знания. '
+            'В этом вся разница: для FALSE нужна строка в тексте, которая '
+            'говорит обратное, и если вы не можете на неё показать, ответ '
+            '&mdash; NOT GIVEN.',
 
     actTitle='Докажите по тексту',
     actUse='Используйте хотя бы три:',
-    actSpeakBrief='В парах, с любым текстом под рукой &mdash; подойдёт новостная '
-                  'статья. Один из вас пишет по нему четыре утверждения: одно '
-                  'верное, одно неверное, два, о которых в тексте ничего нет. '
-                  'Обменяйтесь, ответьте и защитите каждый вердикт, прочитав '
-                  'строку, на которую вы опирались. Нет строки &mdash; нет '
-                  'FALSE.',
+    actSpeakBrief='В парах, с любым текстом под рукой &mdash; подойдёт '
+                  'газетная статья. Один пишет по нему четыре утверждения: '
+                  'одно верное, одно неверное, два не указанных в тексте. '
+                  'Обменяйтесь и ответьте. Каждое TRUE или FALSE защищайте, '
+                  'зачитывая строку, на которой оно основано; для NOT GIVEN '
+                  'покажите, что такой строки нет.',
     actSpeak1='Тот, кто отвечает, должен вслух назвать решающее предложение, '
               'прежде чем вердикт будет принят.',
     actSpeak2='Для каждого NOT GIVEN скажите, что должно было бы быть в тексте, '
@@ -1287,14 +1308,14 @@ T['ru'] = dict(
 # ── Arabic ─────────────────────────────────────────────────────────────
 T['ar'] = dict(
     coverTitle='True, False, <em>Not Given</em>',
-    coverSub='نوع الأسئلة الذي يُفقد أكبر عدد من الدرجات في اختبار Reading، '
-             'والذي تستعيدها فيه التقنية لا المفردات',
+    coverSub='نوع الأسئلة الذي يصعب فيه الحسم أكثر من غيره &mdash; وأحد '
+             'الأنواع التي تستعيد فيها التقنيةُ الدرجات',
     chipLevel='C1 · متقدّم', chipFocus='Reading · الوحدتان كلتاهما',
     chipCount='18 نقطة',
 
-    optT='True &mdash; النص يذكر هذا صراحةً',
-    optF='False &mdash; النص ينفي هذا صراحةً',
-    optN='Not Given &mdash; النص لا يذكر ذلك',
+    optT='True &mdash; النص يتفق مع هذا',
+    optF='False &mdash; النص يناقض هذا',
+    optN='Not Given &mdash; لا يذكره النص',
 
     t1Eyebrow='قبل أن تبدأ',
     t1Title='ستون دقيقة، ثلاثة أقسام، ولا وقت في النهاية',
@@ -1314,8 +1335,8 @@ T['ar'] = dict(
     t1cb='معظم أنواع الأسئلة تسير بترتيب النص، ومنها هذا النوع. بعد أربع '
          'إجابات تعرف تقريبًا أين الخامسة، فلا تحتاج أبدًا إلى البحث في النص '
          'كله مرتين.',
-    t1cn='الاستثناءان هما Matching Headings وMatching Information، فهما '
-         'يتنقّلان في النص.',
+    t1cn='أما Matching Information وMatching Features فتتنقلان في النص، وفي '
+         'Matching Headings لا ترتيب لقائمة العناوين.',
 
     t2Eyebrow='قبل أن تبدأ',
     t2Title='False وNot Given ليسا الإجابة نفسها',
@@ -1327,20 +1348,20 @@ T['ar'] = dict(
     t2bh='NOT GIVEN: النص صامت',
     t2bb='النص لا يقول ذلك ولا ينفيه. قد تكون العبارة صحيحة تمامًا في الواقع، '
          'لكن النص ببساطة لا يتطرّق إليها.',
-    t2bn='ليست Not Given عقوبةً لأن شيئًا فاتك. إنها إجابة حقيقية، ونحو ثلث '
-         'الإجابات كذلك.',
-    t2ch='الاختبار سؤال واحد',
+    t2bn='ليست Not Given عقابًا لأنك فوّتّ شيئًا. إنها إجابة حقيقية، فتوقّع '
+         'أن تجد منها عدة إجابات في الاختبار.',
+    t2ch='سؤال واحد يحسم الأمر',
     t2cb='<strong>هل أستطيع أن أشير إلى الجملة؟</strong> إن كان الجواب نعم، '
-         'فالإجابة True أو False بحسب ما تقوله. وإن كنت تستنتج، «لا بدّ أن '
-         'يكون كذلك»، فالإجابة Not Given.',
-    t2cn='الاستنتاج يشبه الفهم، ولهذا بالذات يكلّف هنا درجات كثيرة.',
+         'فالإجابة True أو False بحسب ما تقوله. وإن كنت تملأ فجوة يتركها '
+         'النص &mdash; «لا بد أنه كذلك» &mdash; فالإجابة Not Given.',
+    t2cn='ملء الفجوة يشبه الفهم، ولهذا بالضبط يكلّف كثيرًا من الدرجات هنا.',
 
     t3Eyebrow='قبل أن تبدأ',
     t3Title='أجب من النص، لا مما تعرفه أبدًا',
     t3ah='معرفتك هي الفخّ',
     t3ab='قد تكون العبارة صحيحة تمامًا في الواقع ومع ذلك Not Given في النص. '
          'الممتحن لا يسألك هل هي صحيحة، بل يسألك ماذا يقول هذا النص.',
-    t3an='ولهذا تكون نتائج المتقدّمين أسوأ في الموضوعات التي يعرفونها جيدًا.',
+    t3an='ولهذا قد يكلّفك موضوع مألوف درجات هنا.',
     t3bh='TRUE تعني أن النص يقول ذلك',
     t3bb='بكلمات أخرى في الأغلب. فالنص لا يكرّر العبارة بل يعيد صياغتها. '
          'مطابقة المعنى هي المهارة، ومطابقة الكلمات عادة يجب التخلّص منها.',
@@ -1354,25 +1375,26 @@ T['ar'] = dict(
     t3cn='استخدم الكلمة المكرّرة لتجد السطر، ثم اقرأ السطر.',
 
     t4Eyebrow='قبل أن تبدأ',
-    t4Title='كلمة واحدة تحسم ثلث هذه الأسئلة',
+    t4Title='كلمة واحدة قد تحسم الأمر',
     t4ah='المطلقات',
-    t4ab='كلمات مثل <em>All</em> و<em>every</em> و<em>never</em> '
-         'و<em>only</em>: النص الذي يقول <em>most</em> يجعل العبارة التي تقول '
-         '<em>all</em> خاطئة FALSE، فلا يمكن أن يصحّ الاثنان معًا، وهذا تناقض '
-         'يمكنك الإشارة إليه.',
-    t4an='عبارة <em>Most islanders</em> مقابل <em>every islander</em> هي False '
-         'لا Not Given.',
+    t4ab='الكلمات <em>all</em> و<em>every</em> و<em>never</em> '
+         'و<em>only</em>. النص الذي يقول <em>most</em> يجعل العبارة التي '
+         'تقول <em>all</em> خاطئة (FALSE): فـ<em>most</em> تعني «ليس '
+         'الجميع»، لأن الكاتب الذي يقصد «الجميع» كان سيقول ذلك.',
+    t4an='عبارة <em>most islanders</em> مقابل <em>every islander</em> تعني '
+         'False لا Not Given &mdash; إلا إذا قال النص <em>most, if not '
+         'all</em>.',
     t4bh='التلطيف',
     t4bb='كلمات مثل <em>May</em> و<em>might</em> و<em>is thought to</em> '
          'و<em>suggests</em>: النص الملطَّف لا ينفي العبارة الجازمة، بل لا '
          'يقولها أصلًا. وهذا الشكل يكون عادةً Not Given.',
-    t4bn='الفرق عن المطلق: <em>most</em> تستبعد <em>all</em>، أما <em>may</em> '
-         'فلا تستبعد شيئًا.',
-    t4ch='المقارنة تحتاج إلى الطرفين',
-    t4cb='عبارات مثل <em>Wetter than</em> و<em>the largest</em> و<em>more '
-         'common than</em>: تأكّد أن النص يقارن فعلًا بين الشيئين نفسيهما، '
-         'فالنص الذي يتحدث عن أحدهما لا يدعم عبارة عن الاثنين.',
-    t4cn='نص يذكر رقمًا واحدًا وعبارة ترتّب شيئين: هذا Not Given في كل مرة.',
+    t4bn='الفرق عن الألفاظ المطلقة: <em>most</em> تعني «ليس الجميع»، أما '
+         '<em>may</em> فلا تخبرك بشيء في أي اتجاه.',
+    t4ch='المقارنات تحتاج إلى الطرفين',
+    t4cb='عبارات <em>wetter than</em> و<em>the largest</em> و<em>more common '
+         'than</em>. تحقّق أن النص يقارن فعلًا بين ما تقارن بينه العبارة '
+         '&mdash; فالنص الذي يتحدث عن أحدهما وحده لا يدعم ادعاءً عن ترتيبهما.',
+    t4cn='رقم لأحد الاثنين فقط، من دون ما يُقارن به، لا يدعم ترتيبًا.',
 
     mcaEyebrow='النشاط 1 · False أم Not Given؟',
     mcaTitle='اقرأ النص، ثم اقرأ العبارة.',
@@ -1398,33 +1420,35 @@ T['ar'] = dict(
           'وهذا هو الشكل المعتاد لـ TRUE.',
     r8why='يقول النص ما شمله المسح، لا من موّله. والتساؤل عن التمويل أمر '
           'معقول، لكن النص لا يتطرّق إليه. NOT GIVEN.',
-    r9why='كلمة <em>Most</em> في النص مقابل <em>every</em> في العبارة. '
-          'الأغلبية تناقض المطلق، لذا فهي FALSE لا Not Given.',
+    r9why='كلمة <em>most</em> في النص مقابل <em>every</em> في العبارة. وكلمة '
+          '<em>most</em> تعني «ليس الجميع»، فالنص يناقض العبارة: FALSE لا '
+          'Not Given.',
     r10why='النص يلطّف الكلام عن مدة التعافي ولا يقول شيئًا على الإطلاق عن '
            'الموافقة. صمت لا نفي. NOT GIVEN.',
     r11why='قلة المطر في الوادي تعني ساحلًا أكثر مطرًا: العبارة نفسها مقلوبة. '
            'والكلمتان اللتان تحملانها، <em>lower</em> و<em>wetter</em>، لا '
            'يجمعهما شيء، ولهذا تفوتها مطابقة الكلمات. TRUE.',
-    r12why='عبارة <em>Apart from two years in the 1980s</em> هي السطر الذي '
-           'تشير إليه، و<em>never once</em> لا تصمد أمامه. FALSE.',
+    r12why='عبارة <em>apart from two years in the 1980s</em> هي السطر الذي '
+           'تشير إليه، وعبارة <em>every summer</em> لا تصمد أمامه. FALSE.',
 
     sortEyebrow='النشاط 4 · ما الذي يرجّح كل جهة',
     sortTitle='صنِّف الإشارات الست',
     sortHint='اسحب كل إشارة إلى عمود، أو انقر عليها ثم على العمود الذي تريده.',
     sortBin1='يشير إلى FALSE',
     sortBin2='يشير إلى NOT GIVEN',
-    sortWhy='كل ما في عمود «يشير إلى FALSE» يسمّي <strong>جملة يمكنك أن تشير '
-            'إليها</strong>. وكل ما في العمود الآخر طريقة للوصول إلى حكم من '
-            'دونها: الاستنتاج أو الربط أو المعلومات العامة. هذا هو الفرق كله: '
-            'FALSE تحتاج إلى سطر في النص يقول العكس، فإن لم تستطع أن تضع إصبعك '
-            'عليه فالإجابة NOT GIVEN.',
+    sortWhy='علامات FALSE تسمّي كلٌّ منها <strong>جملة يمكنك أن تشير '
+            'إليها</strong>. أما علامات NOT GIVEN فهي طرق للوصول إلى حكم من '
+            'دونها &mdash; التخمين، أو الربط، أو المعرفة العامة. وهذا هو '
+            'الفرق كله: تحتاج FALSE إلى سطر في النص يقول عكس ذلك، وإن لم '
+            'تستطع أن تشير إليه فالإجابة NOT GIVEN.',
 
     actTitle='أثبِتها من النص',
     actUse='استخدم ثلاثة منها على الأقل:',
-    actSpeakBrief='اعملا في ثنائي، ومعكما أي نص، ويكفي خبر صحفي. يكتب أحدكما '
-                  'أربع عبارات عنه: واحدة صحيحة، وواحدة خاطئة، واثنتين غير '
-                  'مذكورتين. تبادلا وأجيبا، ثم دافعا عن كل حكم بقراءة السطر '
-                  'الذي بنيتماه عليه. لا سطر، لا FALSE.',
+    actSpeakBrief='اعملا في ثنائي، ومعكما أي نص &mdash; يكفي مقال إخباري. '
+                  'يكتب أحدكما أربع عبارات عنه: واحدة صحيحة، وواحدة خاطئة، '
+                  'واثنتين غير مذكورتين. تبادلاها وأجيبا. دافعا عن كل TRUE '
+                  'أو FALSE بقراءة السطر الذي تستند إليه، وفي حالة NOT GIVEN '
+                  'بيّنا أنه لا يوجد سطر كهذا.',
     actSpeak1='على من يجيب أن يقول بصوت عالٍ أي جملة حسمت الأمر قبل أن يُقبل '
               'الحكم.',
     actSpeak2='في كل NOT GIVEN، قل ما كان ينبغي أن يتضمّنه النص لتكون الإجابة '
@@ -1443,12 +1467,12 @@ T['ar'] = dict(
 # ── Chinese ────────────────────────────────────────────────────────────
 T['zh'] = dict(
     coverTitle='True, False, <em>Not Given</em>',
-    coverSub='阅读考试里最丢分的题型——而把分拿回来靠的是技巧，不是词汇',
+    coverSub='最难下判断的题型——也是技巧能把分数挣回来的题型之一',
     chipLevel='C1 · 高级', chipFocus='Reading · 两个模块通用',
     chipCount='18 分',
 
-    optT='True &mdash; 文中明确这样说',
-    optF='False &mdash; 文中明确否定这一点',
+    optT='True &mdash; 与文中信息一致',
+    optF='False &mdash; 与文中信息矛盾',
     optN='Not Given &mdash; 文中没有提到',
 
     t1Eyebrow='开始之前',
@@ -1466,7 +1490,8 @@ T['zh'] = dict(
     t1ch='题目顺序跟着文章走',
     t1cb='大多数题型按文章顺序出题，这一种也是。答完四道，你大致就知道第五道在'
          '哪里——永远不必把整篇文章找两遍。',
-    t1cn='Matching Headings 和 Matching Information 是例外，它们会跳来跳去。',
+    t1cn='Matching Information 和 Matching Features 会在文中跳来跳去，而 Matching '
+         'Headings 的标题列表没有顺序。',
 
     t2Eyebrow='开始之前',
     t2Title='False 和 Not Given 不是同一个答案',
@@ -1477,19 +1502,18 @@ T['zh'] = dict(
     t2bh='NOT GIVEN：文中没有说',
     t2bb='文中既没有这么说，也没有否认。题干在现实中可能完全正确，只是文章根本'
          '没有涉及。',
-    t2bn='Not Given 不是因为你漏看了什么而受的惩罚。它是真正的答案，大约三分之一'
-         '的题都是它。',
-    t2ch='检验只有一个问题',
-    t2cb='<strong>我能指出是哪一句吗？</strong>能，答案就是 True 或 False，看那'
-         '句话怎么说。如果你是在推理——“嗯，应该是这样吧”——答案就是 Not Given。',
-    t2cn='推理感觉像是理解了，正因如此，它在这里才让人丢那么多分。',
+    t2bn='Not Given 不是对你漏看了什么的惩罚。它是一个真正的答案，一套题里通常会有好几个。',
+    t2ch='一个问题就能决定',
+    t2cb='<strong>我能指出那句话吗？</strong>能的话，答案就是 True 或 '
+         'False，看那句话怎么说。如果你是在填补文章留下的空白——“嗯，肯定是这样”——答案就是 Not Given。',
+    t2cn='填补空白感觉像是理解，这正是它在这里丢掉那么多分的原因。',
 
     t3Eyebrow='开始之前',
     t3Title='根据文章作答，绝不根据你知道的',
     t3ah='你的知识就是陷阱',
     t3ab='一个说法可能在现实中完全正确，在文中却仍然是 Not Given。考官问的不是'
          '它对不对，而是这篇文章说了什么。',
-    t3an='这就是为什么考生在自己熟悉的话题上反而得分更低。',
+    t3an='这就是为什么熟悉的话题反而可能让你在这里丢分。',
     t3bh='TRUE 表示文中说了',
     t3bb='几乎总是换了说法。文章不会重复题干，而是改写它。匹配意思才是技能——'
          '匹配字词是要改掉的习惯。',
@@ -1502,24 +1526,22 @@ T['zh'] = dict(
     t3cn='用重复出现的词找到那一行，然后读那一行。',
 
     t4Eyebrow='开始之前',
-    t4Title='一个词决定了三分之一的题',
+    t4Title='一个词就可能决定答案',
     t4ah='绝对词',
-    t4ab='<em>All</em>、<em>every</em>、<em>never</em>、<em>only</em>。文中说 '
-         '<em>most</em>，题干说 <em>all</em>，题干就是 FALSE——两者不能同时'
-         '成立，而这是可以指出来的矛盾。',
-    t4an='<em>Most islanders</em> 对 <em>every islander</em>，是 False，不是 '
-         'Not Given。',
+    t4ab='<em>All</em>、<em>every</em>、<em>never</em>、<em>only</em>。文章说 '
+         '<em>most</em>，就会让说 <em>all</em> 的陈述成为 FALSE：<em>most</em> '
+         '告诉你“不是全部”，因为作者如果想说“全部”，就会直接说。',
+    t4an='<em>Most islanders</em> 对 <em>every islander</em> 是 False，不是 Not '
+         'Given——除非文章说的是 <em>most, if not all</em>。',
     t4bh='模糊限制语',
     t4bb='<em>May</em>、<em>might</em>、<em>is thought to</em>、'
          '<em>suggests</em>。用了模糊限制语的文章并不否认一个肯定的说法——它只是'
          '从来没这么说。这种情况通常是 Not Given。',
-    t4bn='与绝对词的区别：<em>most</em> 排除了 <em>all</em>，而 <em>may</em> '
-         '什么也不排除。',
-    t4ch='比较要两边都有',
+    t4bn='和绝对词的区别：<em>most</em> 告诉你“不是全部”，而 <em>may</em> 在哪个方向上都没告诉你什么。',
+    t4ch='比较需要两边都有',
     t4cb='<em>Wetter than</em>、<em>the largest</em>、<em>more common '
-         'than</em>。确认文章真的在比较同样的两样东西——只讲其中一样的文章，'
-         '支撑不了关于两者的说法。',
-    t4cn='文中只给一个数字，题干却对两样东西排序：每次都是 Not Given。',
+         'than</em>。确认文章确实在比较陈述所比较的东西——只讲其中一个的文章，无法支持关于它们排名的说法。',
+    t4cn='只给出其中一方的数字、没有可比较的对象，就无法支持排名。',
 
     mcaEyebrow='练习 1 · False 还是 Not Given？',
     mcaTitle='先读文章，再读题干。',
@@ -1543,32 +1565,29 @@ T['zh'] = dict(
           '个样子。',
     r8why='文中说的是调查覆盖了哪些人，而不是谁出的钱。想知道经费来源很合理，但'
           '文章没有涉及。NOT GIVEN。',
-    r9why='文中的 <em>Most</em> 对题干的 <em>every</em>。多数与绝对说法相矛'
-          '盾，所以是 FALSE，而不是 Not Given。',
+    r9why='文中是 <em>most</em>，陈述里是 <em>every</em>。<em>Most</em> '
+          '告诉你“不是全部”，所以文章与陈述矛盾：是 FALSE，不是 Not Given。',
     r10why='文中对康复时间用了模糊限制语，对审批则只字未提。是沉默，不是否认。'
            'NOT GIVEN。',
     r11why='山谷雨少，就是海岸更湿——同一个说法反过来讲。承载它的两个词 '
            '<em>lower</em> 和 <em>wetter</em> 毫无共同之处，所以对字词会漏掉'
            '它。TRUE。',
-    r12why='<em>Apart from two years in the 1980s</em> 就是你要指出的那一行。'
-           '<em>Never once</em> 经不起它。FALSE。',
+    r12why='<em>Apart from two years in the 1980s</em> 就是你要指出的那一行。<em>Every '
+           'summer</em> 经不起这一行。FALSE。',
 
     sortEyebrow='练习 4 · 什么让你倒向哪一边',
     sortTitle='给这六个信号分类',
     sortHint='把每一项拖到一栏里——或者先点一项，再点你想放进的那一栏。',
     sortBin1='指向 FALSE',
     sortBin2='指向 NOT GIVEN',
-    sortWhy='左栏的每一项都指向一句<strong>你能指出来的话</strong>。右栏的每一项'
-            '都是在没有这样一句话的情况下得出结论的方式：推理、联想或常识。区别'
-            '就在这里：FALSE 需要文中有一行说法相反的话，如果你指不出来，答案就'
-            '是 NOT GIVEN。',
+    sortWhy='每个 FALSE 信号指向的都是一句<strong>你能指出来的话</strong>。NOT GIVEN '
+            '信号则是不靠这样一句话就下结论的方式——猜测、联想或常识。区别全在这里：FALSE '
+            '需要文中有一行说的是相反的意思；如果你指不出来，答案就是 NOT GIVEN。',
 
     actTitle='用文章来证明',
     actUse='至少用上三个：',
-    actSpeakBrief='两人一组，手边随便找一篇文章——新闻报道就行。一人就这篇文章写'
-                  '四个说法：一个对的、一个错的、两个文中没提到的。交换、作答，'
-                  '然后读出你判断所依据的那一行，为每个判断辩护。指不出那一行，'
-                  '就不能判 FALSE。',
+    actSpeakBrief='两人一组，手边随便找一篇文章——新闻报道就行。一人针对它写四个陈述：一个正确，一个错误，两个文中未提及。交换并作答。'
+                  '每个 TRUE 或 FALSE，都要读出它所依据的那一行来辩护；对 NOT GIVEN，要说明没有这样的一行。',
     actSpeak1='答题的人必须在判断被接受之前，大声说出是哪一句决定了答案。',
     actSpeak2='每个 NOT GIVEN，说说文章里要有什么内容，答案才会变成 FALSE。',
     actSpeak3='在同伴写的说法里找一个两种判断都说得通的，把它改写到只有一种判断'
@@ -1584,14 +1603,13 @@ T['zh'] = dict(
 # ── Japanese ───────────────────────────────────────────────────────────
 T['ja'] = dict(
     coverTitle='True, False, <em>Not Given</em>',
-    coverSub='Reading で最も点を落とす問題形式。そして、語彙ではなくテクニックで'
-             '取り戻せる形式です',
+    coverSub='いちばん判断に迷う問題形式――そしてテクニックで点を取り戻せる形式の一つ',
     chipLevel='C1 · 上級', chipFocus='Reading · 両モジュール共通',
     chipCount='18 点',
 
-    optT='True &mdash; 本文にはっきり書かれています',
-    optF='False &mdash; 本文がはっきり否定しています',
-    optN='Not Given &mdash; 本文には書かれていません',
+    optT='True &mdash; 本文の内容と一致しています',
+    optF='False &mdash; 本文の内容と矛盾しています',
+    optN='Not Given &mdash; 本文に記述がありません',
 
     t1Eyebrow='始める前に',
     t1Title='60分、3セクション、最後に時間はなし',
@@ -1611,8 +1629,8 @@ T['ja'] = dict(
     t1ch='設問は本文の順番どおり',
     t1cb='ほとんどの形式は本文の順に出題され、この形式もそうです。4問答えれば5'
          '問目のだいたいの位置がわかり、本文全体を二度探す必要はありません。',
-    t1cn='例外は Matching Headings と Matching Information です。この二つは'
-         'あちこちに飛びます。',
+    t1cn='Matching Information と Matching Features は本文のあちこちに飛び、Matching '
+         'Headings では見出しの一覧に順番がありません。',
 
     t2Eyebrow='始める前に',
     t2Title='False と Not Given は同じ答えではない',
@@ -1625,14 +1643,11 @@ T['ja'] = dict(
     t2bh='NOT GIVEN：本文は何も言っていない',
     t2bb='本文はそうだとも、そうでないとも言っていません。設問の内容は現実には'
          '正しいかもしれませんが、本文はそこに触れていないだけです。',
-    t2bn='Not Given は何かを見落とした罰ではありません。れっきとした答えで、全体'
-         'のおよそ3分の1がそうです。',
-    t2ch='確かめる問いは一つ',
-    t2cb='<strong>その文を指させるか？</strong>指させるなら、答えはその文の内容'
-         'に応じて True か False です。推論している――「まあ、そうに違いない」――'
-         'なら、答えは Not Given です。',
-    t2cn='推論は理解したような気にさせます。だからこそ、ここで多くの点を失うの'
-         'です。',
+    t2bn='Not Given は何かを見落とした罰ではありません。本物の答えで、一回の試験でいくつも出てくると思っておきましょう。',
+    t2ch='一つの問いで決まる',
+    t2cb='<strong>その文を指させるか？</strong> 指させるなら、答えはその文の内容に応じて True か False '
+         'です。本文が残した空白を自分で埋めているなら――「まあ、そうに違いない」――答えは Not Given です。',
+    t2cn='空白を埋めることは理解しているように感じられ、だからこそここで多くの点を失うのです。',
 
     t3Eyebrow='始める前に',
     t3Title='知識ではなく、本文から答える',
@@ -1640,7 +1655,7 @@ T['ja'] = dict(
     t3ab='現実にはまったく正しい内容でも、本文では Not Given ということがあり'
          'ます。試験官が問うているのは、それが正しいかどうかではありません。'
          'この本文が何を言っているかです。',
-    t3an='だから受験者は、よく知っている話題ほど点が取れないのです。',
+    t3an='だから、よく知っている話題でこそ点を落とすことがあるのです。',
     t3bh='TRUE は本文がそう言っているということ',
     t3bb='ほぼ必ず別の言葉で言っています。本文は設問をそのまま繰り返さず、言い'
          '換えます。意味を照合するのが技能であり、語句を照合するのはやめるべき'
@@ -1655,26 +1670,25 @@ T['ja'] = dict(
     t3cn='繰り返されている語で該当行を見つけ、それからその行を読みましょう。',
 
     t4Eyebrow='始める前に',
-    t4Title='3分の1は一語で決まる',
+    t4Title='一語で決まることがある',
     t4ah='絶対表現',
     t4ab='<em>All</em>、<em>every</em>、<em>never</em>、<em>only</em>。本文が '
-         '<em>most</em> なら、<em>all</em> と言う設問は FALSE です――両方が同時に'
-         '成り立つことはなく、それは指で示せる矛盾です。',
-    t4an='<em>Most islanders</em> 対 <em>every islander</em> は False で、Not '
-         'Given ではありません。',
+         '<em>most</em> と言っていれば、<em>all</em> と言う文は FALSE になります：<em>most</em> '
+         'は「全部ではない」ことを伝えます。<em>all</em> のつもりなら、書き手はそう書くはずだからです。',
+    t4an='<em>Most islanders</em> と <em>every islander</em> なら False で、Not '
+         'Given ではありません――本文が <em>most, if not all</em> と言っていない限り。',
     t4bh='ぼかし表現',
     t4bb='<em>May</em>、<em>might</em>、<em>is thought to</em>、'
          '<em>suggests</em>。ぼかした本文は、言い切った設問を否定しているわけで'
          'はなく、そもそもそうは言っていないのです。この形はたいてい Not Given '
          'です。',
-    t4bn='絶対表現との違い：<em>most</em> は <em>all</em> を排除しますが、'
-         '<em>may</em> は何も排除しません。',
-    t4ch='比較には両側が必要',
+    t4bn='絶対語との違い：<em>most</em> は「全部ではない」ことを伝えますが、<em>may</em> '
+         'はどちらの方向にも何も伝えません。',
+    t4ch='比較には両方が必要',
     t4cb='<em>Wetter than</em>、<em>the largest</em>、<em>more common '
-         'than</em>。本文が本当に同じ二つのものを比べているか確かめましょう。'
-         '片方だけについての本文では、二つについての主張は裏づけられません。',
-    t4cn='数字を一つだけ挙げる本文と、二つを順位づける設問――これは毎回 Not '
-         'Given です。',
+         'than</em>。本文が、文の比べているものを本当に比べているか確かめましょう――一方についてしか書いていない本文では、順位について'
+         'の主張は支えられません。',
+    t4cn='二つのうち一方だけの数字では、比べる相手がないので、順位を支えることはできません。',
 
     mcaEyebrow='演習 1 · False か Not Given か？',
     mcaTitle='本文を読み、それから設問の文を読みましょう。',
@@ -1702,16 +1716,16 @@ T['ja'] = dict(
     r8why='本文が述べているのは調査の対象で、誰が費用を出したかではありません。'
           '資金について知りたくなるのは自然ですが、本文はそこに触れていません。'
           'NOT GIVEN。',
-    r9why='本文の <em>Most</em> 対 設問の <em>every</em>。多数派は絶対表現と矛'
-          '盾するので、Not Given ではなく FALSE です。',
+    r9why='本文の <em>most</em> と、文の <em>every</em>。<em>most</em> '
+          'は「全部ではない」ことを伝えるので、本文は文と矛盾します：FALSE で、Not Given ではありません。',
     r10why='本文は回復期間についてぼかしていて、承認については何ひとつ述べていま'
            'せん。否定ではなく沈黙です。NOT GIVEN。',
     r11why='谷のほうが雨が少ないということは、海岸のほうが雨が多いということ――同'
            'じ内容を裏返したものです。それを担う <em>lower</em> と '
            '<em>wetter</em> には共通点がないので、語句の照合では見逃します。'
            'TRUE。',
-    r12why='<em>Apart from two years in the 1980s</em> が指し示す行です。'
-           '<em>Never once</em> はこれに耐えられません。FALSE。',
+    r12why='<em>Apart from two years in the 1980s</em> が指さす行です。<em>Every '
+           'summer</em> はこれに耐えられません。FALSE。',
 
     sortEyebrow='演習 4 · どちらに傾かせるか',
     sortTitle='六つのシグナルを分類しましょう',
@@ -1719,18 +1733,15 @@ T['ja'] = dict(
              '入れたい列をクリックします。',
     sortBin1='FALSE を示す',
     sortBin2='NOT GIVEN を示す',
-    sortWhy='左の列はすべて<strong>指し示せる文</strong>を挙げています。右の列は'
-            'すべて、そうした文なしに判定に至るやり方です――推論、連想、一般常識。'
-            '違いはこれに尽きます。FALSE には本文に逆のことを言う行が必要で、それ'
-            'を指し示せないなら答えは NOT GIVEN です。',
+    sortWhy='FALSE のサインは、どれも<strong>指させる文</strong>を名指しています。NOT GIVEN '
+            'のサインは、そういう文なしで判断にたどり着く道です――推測、連想、一般常識。違いはこれに尽きます：FALSE '
+            'には反対のことを言う本文の行が必要で、それを指させなければ、答えは NOT GIVEN です。',
 
     actTitle='本文で証明する',
     actUse='少なくとも三つ使いましょう：',
-    actSpeakBrief='ペアで、手近な文章を一つ用意します。ニュース記事で十分です。'
-                  '一人がその文章について四つの文を書きます：正しいもの一つ、誤り'
-                  '一つ、書かれていないもの二つ。交換して答え、根拠にした行を読み'
-                  '上げてそれぞれの判定を説明します。行がなければ FALSE はなし'
-                  'です。',
+    actSpeakBrief='ペアで、手元にある文章を何でも使います――新聞記事で十分です。一人がそれについて四つの文を書きます：正しいもの一つ、'
+                  '誤りのもの一つ、本文にないもの二つ。交換して答えましょう。TRUE や FALSE '
+                  'は、その根拠となる行を読み上げて守り、NOT GIVEN については、そういう行がないことを示します。',
     actSpeak1='答える人は、判定が認められる前に、どの文が決め手になったかを声に'
               '出して言いましょう。',
     actSpeak2='NOT GIVEN のたびに、答えが FALSE になるには本文に何が書かれている'
