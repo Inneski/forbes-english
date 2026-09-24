@@ -42,8 +42,9 @@ T = {}
 # ── English ────────────────────────────────────────────────────────────
 T['en'] = dict(
     coverTitle='Pronunciation <em>&amp; Fluency</em>',
-    coverSub='A quarter of the marks, and the quarter nobody practises: '
-             'stress, chunking, and the pause that reads as thinking',
+    coverSub='A quarter of the marks, and the quarter most candidates never '
+             'practise: stress, chunking, and the pause that reads as '
+             'thinking',
     chipLevel='C1 · Advanced', chipFocus='Speaking · all three parts',
     chipCount='18 points',
 
@@ -53,13 +54,13 @@ T['en'] = dict(
     t1ab='The descriptors ask how easily you can be understood, whether you '
          'control the features that carry meaning, and how much effort the '
          'listener has to make. Sounding British is on none of those lists.',
-    t1an='Candidates lose marks here for flat stress far more often than for '
-         'an accent.',
+    t1an='Flat stress costs marks. An accent costs nothing unless it gets in '
+         'the way of being understood.',
     t1bh='Stress marks the meaning',
     t1bb='English puts the beat on the words that carry the point and lets the '
          'rest run light. Flatten that and every word arrives with equal '
          'weight, so the listener has to work out the point unaided.',
-    t1bn='Two syllables, two words: <em>RECord</em> is the noun, '
+    t1bn='Same spelling, two words: <em>RECord</em> is the noun, '
          '<em>reCORD</em> is the verb.',
     t1ch='One sentence, six meanings',
     t1cb='&ldquo;I didn&rsquo;t say she stole the money&rdquo; means six '
@@ -95,12 +96,12 @@ T['en'] = dict(
          'word. The pause is not the problem &mdash; its position is.',
     t3an='Two seconds at a join is unremarkable. Two seconds inside a phrase '
          'is audible.',
-    t3bh='Fillers are worse than silence',
+    t3bh='A filler does not hide the pause',
     t3bb='<em>Errrm</em> and a repeated first word draw attention to the '
          'trouble. A clean break does not. If you need a moment, take it '
          'quietly &mdash; or say that you are taking it.',
-    t3bn='<em>That is a good question, actually</em> buys the same time and '
-         'costs nothing.',
+    t3bn='<em>Let me think about that for a moment</em> buys the same time. '
+         'Once sounds natural; on every question it becomes a formula.',
     t3ch='Talk around the word you lost',
     t3cb='If the word will not come, describe what the thing does and keep the '
          'turn. Paraphrase is scored under Lexical Resource; stopping dead is '
@@ -115,9 +116,9 @@ T['en'] = dict(
     mccEyebrow='Activity 3 · Pausing and repair',
     mccTitle='Thinking, or stalling?',
 
-    p1why='The content words &mdash; the ones the sentence is actually about. '
-          'Length, breath and difficulty have nothing to do with it; a '
-          'one-syllable word takes the beat whenever it carries the point.',
+    p1why='The words that carry the point &mdash; usually the content words, '
+          'but any word, even a pronoun, takes the beat when it is the '
+          'point. Length, breath and difficulty have nothing to do with it.',
     p2why='Each version denies a different part: stressing the pronoun denies '
           'that it was her, stressing the verb denies the theft itself. Same '
           'words, six meanings, carried entirely by the beat.',
@@ -149,9 +150,11 @@ T['en'] = dict(
            'effect: at band 8 an L1 accent has minimal effect on '
            'intelligibility, at band 9 none. What is scored is how easily you '
            'are followed, and there is no native model to be measured against.',
-    p12why='Mispronouncing the words the answer is built on, because those are '
-           'the words the listener needs. Accent, a thinking pause and a '
-           'measured pace cost nothing at all.',
+    p12why='Mispronouncing the words the answer is built on, because those '
+           'are the words the listener needs. An accent, a pause and a '
+           'measured pace are not what Pronunciation scores &mdash; though '
+           'long searches for words and very slow speech do count under '
+           'Fluency.',
 
     sortEyebrow='Activity 4 · What the criterion actually scores',
     sortTitle='Sort the six habits',
@@ -189,8 +192,9 @@ T['en']['sortWhy'] = SORT_WHY
 # ── German ─────────────────────────────────────────────────────────────
 T['de'] = dict(
     coverTitle='Aussprache <em>&amp; Sprachfluss</em>',
-    coverSub='Ein Viertel der Note &mdash; und das Viertel, das niemand übt: '
-             'Betonung, Sinngruppen und die Pause, die nach Denken klingt',
+    coverSub='Ein Viertel der Note &mdash; und das Viertel, das die meisten '
+             'nie üben: Betonung, Sinngruppen und die Pause, die nach '
+             'Nachdenken klingt',
     chipLevel='C1 · Fortgeschritten', chipFocus='Speaking · alle drei Teile',
     chipCount='18 Punkte',
 
@@ -200,14 +204,14 @@ T['de'] = dict(
     t1ab='Die Deskriptoren fragen, wie leicht man dich versteht, ob du die '
          'bedeutungstragenden Merkmale beherrschst und wie viel Mühe das '
          'Zuhören kostet. Britisch zu klingen steht auf keiner dieser Listen.',
-    t1an='Für flache Betonung verlieren Kandidaten hier weit häufiger Punkte '
-         'als für einen Akzent.',
+    t1an='Flache Betonung kostet Punkte. Ein Akzent kostet nichts, solange '
+         'er das Verstehen nicht erschwert.',
     t1bh='Betonung markiert die Bedeutung',
     t1bb='Englisch legt den Schlag auf die Wörter, die den Punkt tragen, und '
          'lässt den Rest leicht laufen. Wer das einebnet, liefert jedes Wort '
          'mit gleichem Gewicht &mdash; und der Zuhörer sucht den Punkt allein.',
-    t1bn='Zwei Silben, zwei Wörter: <em>RECord</em> ist das Substantiv, '
-         '<em>reCORD</em> das Verb.',
+    t1bn='Gleiche Schreibung, zwei Wörter: <em>RECord</em> ist das '
+         'Substantiv, <em>reCORD</em> das Verb.',
     t1ch='Ein Satz, sechs Bedeutungen',
     t1cb='&bdquo;I didn&rsquo;t say she stole the money&ldquo; bedeutet sechs '
          'verschiedene Dinge, je nachdem, welches Wort den Schlag bekommt. Die '
@@ -241,12 +245,13 @@ T['de'] = dict(
          'ist das Problem, sondern ihre Position.',
     t3an='Zwei Sekunden an einer Fuge fallen nicht auf. Zwei Sekunden in einer '
          'Phrase schon.',
-    t3bh='Füllwörter sind schlimmer als Stille',
+    t3bh='Ein Füllwort versteckt die Pause nicht',
     t3bb='<em>Errrm</em> und ein wiederholtes erstes Wort lenken die '
          'Aufmerksamkeit auf das Problem. Eine saubere Pause nicht. Brauchst '
          'du einen Moment, nimm ihn leise &mdash; oder sag, dass du ihn nimmst.',
-    t3bn='<em>That is a good question, actually</em> kauft dieselbe Zeit und '
-         'kostet nichts.',
+    t3bn='<em>Let me think about that for a moment</em> verschafft dieselbe '
+         'Zeit. Einmal klingt das natürlich; bei jeder Frage wird es zur '
+         'Formel.',
     t3ch='Rede um das fehlende Wort herum',
     t3cb='Kommt das Wort nicht, beschreibe, was die Sache tut, und behalte das '
          'Rederecht. Umschreibung zählt unter Lexical Resource; stehen zu '
@@ -261,9 +266,10 @@ T['de'] = dict(
     mccEyebrow='Aktivität 3 · Pausen und Reparatur',
     mccTitle='Denken oder Stocken?',
 
-    p1why='Die Inhaltswörter &mdash; die, um die es im Satz geht. Länge, Atem '
-          'und Schwierigkeit spielen keine Rolle; ein einsilbiges Wort bekommt '
-          'den Schlag, sobald es den Punkt trägt.',
+    p1why='Die Wörter, die den Punkt tragen &mdash; meist die Inhaltswörter, '
+          'aber jedes Wort, sogar ein Pronomen, bekommt die Betonung, wenn '
+          'es der Punkt ist. Länge, Atem und Schwierigkeit spielen keine '
+          'Rolle.',
     p2why='Jede Fassung bestreitet etwas anderes: betontes Pronomen bestreitet, '
           'dass sie es war; betontes Verb bestreitet den Diebstahl selbst. '
           'Gleiche Wörter, sechs Bedeutungen, allein durch den Schlag.',
@@ -296,9 +302,11 @@ T['de'] = dict(
            'Verständlichkeit kaum, in Band 9 gar nicht. Bewertet wird, wie '
            'leicht man dir folgt &mdash; ein Muttersprachler-Modell, an dem '
            'gemessen würde, gibt es nicht.',
-    p12why='Die Wörter falsch auszusprechen, auf denen die Antwort steht, denn '
-           'genau die braucht der Zuhörer. Akzent, eine Denkpause und ein '
-           'ruhiges Tempo kosten gar nichts.',
+    p12why='Die Wörter falsch auszusprechen, auf denen die Antwort beruht, '
+           'denn genau die braucht der Zuhörer. Akzent, eine Pause und ein '
+           'ruhiges Tempo bewertet Pronunciation nicht &mdash; lange '
+           'Wortsuche und sehr langsames Sprechen zählen allerdings unter '
+           'Fluency.',
 
     sortEyebrow='Aktivität 4 · Was das Kriterium wirklich bewertet',
     sortTitle='Sortiere die sechs Gewohnheiten',
@@ -328,18 +336,21 @@ T['de'] = dict(
     actPlaceholder='The place I would recommend / is a small town…',
 
     # The sort explanation; English from the data module.
-    sortWhy='In der linken Spalte geht es darum, ob man dir folgen kann; in '
-            'der rechten darum, ob du wie jemand anderes klingst. Bewertet wird '
-            'nur das Erste. Wer am Akzent arbeitet und die Betonung flach '
-            'lässt, hat die Übungszeit in die Spalte gesteckt, die keine Punkte '
+    sortWhy='Die Gewohnheiten, die Punkte kosten, machen es alle schwerer, '
+            'dir zu folgen: flache Betonung, eine Pause mitten in einer '
+            'Wendung, ein Schlüsselwort, das der Zuhörer nicht versteht. Die '
+            'kostenlosen lassen dich nur weniger wie ein Muttersprachler '
+            'klingen, und das wird nicht bewertet. Wer am Akzent arbeitet '
+            'und die Betonung flach lässt, hat dort geübt, wo es nichts '
             'bringt.',
 )
 
 # ── Spanish ────────────────────────────────────────────────────────────
 T['es'] = dict(
     coverTitle='Pronunciación <em>y fluidez</em>',
-    coverSub='Una cuarta parte de la nota, y la que nadie practica: acento '
-             'tónico, grupos de sentido y la pausa que suena a pensar',
+    coverSub='Una cuarta parte de la nota, y la que casi nadie practica: '
+             'acento tónico, grupos de sentido y la pausa que suena a '
+             'reflexión',
     chipLevel='C1 · Avanzado', chipFocus='Speaking · las tres partes',
     chipCount='18 puntos',
 
@@ -349,13 +360,13 @@ T['es'] = dict(
     t1ab='Los descriptores preguntan con qué facilidad se te entiende, si '
          'controlas los rasgos que llevan el significado y cuánto esfuerzo le '
          'cuesta a quien escucha. Sonar británico no está en ninguna lista.',
-    t1an='Aquí se pierden más puntos por una entonación plana que por el '
-         'acento.',
+    t1an='Un acento tónico plano cuesta puntos. El acento de origen no '
+         'cuesta nada, salvo que dificulte entenderte.',
     t1bh='El acento tónico marca el sentido',
     t1bb='El inglés pone el golpe en las palabras que llevan la idea y deja '
          'correr el resto. Si lo aplanas, cada palabra llega con el mismo '
          'peso y quien escucha tiene que deducir la idea solo.',
-    t1bn='Dos sílabas, dos palabras: <em>RECord</em> es el sustantivo, '
+    t1bn='Misma grafía, dos palabras: <em>RECord</em> es el sustantivo, '
          '<em>reCORD</em> el verbo.',
     t1ch='Una frase, seis significados',
     t1cb='&laquo;I didn&rsquo;t say she stole the money&raquo; significa seis '
@@ -390,12 +401,13 @@ T['es'] = dict(
          'problema no es la pausa: es dónde cae.',
     t3an='Dos segundos en una junta no llaman la atención. Dos segundos dentro '
          'de una frase, sí.',
-    t3bh='Las muletillas son peores que el silencio',
+    t3bh='Una muletilla no esconde la pausa',
     t3bb='<em>Errrm</em> y repetir la primera palabra señalan el problema. Una '
          'pausa limpia, no. Si necesitas un momento, tómalo en silencio o di '
          'que te lo estás tomando.',
-    t3bn='<em>That is a good question, actually</em> compra el mismo tiempo y '
-         'no cuesta nada.',
+    t3bn='<em>Let me think about that for a moment</em> te da el mismo '
+         'tiempo. Una vez suena natural; en cada pregunta se vuelve una '
+         'fórmula.',
     t3ch='Rodea la palabra que has perdido',
     t3cb='Si la palabra no llega, describe qué hace esa cosa y conserva el '
          'turno. La paráfrasis puntúa en Lexical Resource; quedarse parado '
@@ -410,9 +422,10 @@ T['es'] = dict(
     mccEyebrow='Actividad 3 · Pausas y reparación',
     mccTitle='¿Pensando o atascado?',
 
-    p1why='Las palabras con contenido, las que dicen de qué va la frase. La '
-          'longitud, la respiración y la dificultad no cuentan: una palabra de '
-          'una sílaba se lleva el golpe si carga con la idea.',
+    p1why='Las palabras que llevan la idea &mdash; normalmente las de '
+          'contenido, pero cualquier palabra, incluso un pronombre, se lleva '
+          'el acento cuando es la idea. La longitud, la respiración y la '
+          'dificultad no tienen nada que ver.',
     p2why='Cada versión niega una parte distinta: acentuar el pronombre niega '
           'que fuera ella; acentuar el verbo niega el robo. Las mismas '
           'palabras, seis sentidos, todo a cargo del golpe.',
@@ -444,9 +457,11 @@ T['es'] = dict(
            'efecto: en la banda 8 un acento L1 apenas afecta a la '
            'inteligibilidad, y en la 9 no la afecta. Se califica lo fácil que '
            'es seguirte, y no hay un modelo nativo contra el que medirlo.',
-    p12why='Pronunciar mal las palabras sobre las que se sostiene la '
-           'respuesta, porque son las que quien escucha necesita. El acento, '
-           'una pausa para pensar y un ritmo tranquilo no cuestan nada.',
+    p12why='Pronunciar mal las palabras sobre las que se construye la '
+           'respuesta, porque son las que necesita quien escucha. El acento '
+           'de origen, una pausa y un ritmo pausado no son lo que puntúa '
+           'Pronunciation &mdash; aunque buscar palabras mucho rato y hablar '
+           'muy despacio sí cuentan en Fluency.',
 
     sortEyebrow='Actividad 4 · Qué califica de verdad el criterio',
     sortTitle='Clasifica las seis costumbres',
@@ -475,19 +490,21 @@ T['es'] = dict(
     actPlaceholder='The place I would recommend / is a small town…',
 
     # The sort explanation; English from the data module.
-    sortWhy='La columna izquierda trata de si quien escucha puede seguirte; la '
-            'derecha, de si suenas como otra persona. Solo lo primero puntúa. '
-            'Quien trabaja su acento y deja plana la acentuación ha gastado la '
-            'práctica en la columna que no da puntos.',
+    sortWhy='Los hábitos que cuestan puntos te hacen más difícil de seguir: '
+            'acento tónico plano, una pausa en mitad de una expresión, una '
+            'palabra clave que no se entiende. Los que no cuestan nada solo '
+            'hacen que suenes menos a nativo, y eso no se puntúa. Quien '
+            'trabaja el acento de origen y deja plano el tónico ha '
+            'practicado donde no se gana nada.',
 )
 
 
 # ── French ─────────────────────────────────────────────────────────────
 T['fr'] = dict(
     coverTitle='Pronunciation <em>&amp; Fluency</em>',
-    coverSub='Un quart des points, et le quart que personne ne travaille : '
-             'l’accent de mot, le découpage, et la pause qui passe pour de la '
-             'réflexion',
+    coverSub='Un quart des points, et le quart que la plupart des candidats '
+             'ne travaillent jamais : l’accent de mot, le découpage, et la '
+             'pause qui passe pour de la réflexion',
     chipLevel='C1 · Avancé', chipFocus='Speaking · les trois parties',
     chipCount='18 points',
 
@@ -498,14 +515,14 @@ T['fr'] = dict(
          'vous maîtrisez les traits qui portent le sens, et combien d’effort '
          'l’auditeur doit fournir. Avoir l’air britannique ne figure sur aucune '
          'de ces listes.',
-    t1an='Ici, les candidats perdent des points bien plus souvent pour une '
-         'accentuation plate que pour un accent.',
+    t1an='Une accentuation plate coûte des points. Un accent ne coûte rien, '
+         'sauf s’il empêche de vous comprendre.',
     t1bh='L’accentuation marque le sens',
     t1bb='L’anglais met le temps fort sur les mots qui portent l’idée et laisse '
          'filer le reste. Aplatissez cela et chaque mot arrive avec le même '
          'poids : l’auditeur doit trouver l’idée tout seul.',
-    t1bn='Deux syllabes, deux mots : <em>RECord</em> est le nom, <em>reCORD</em> '
-         'le verbe.',
+    t1bn='Même orthographe, deux mots : <em>RECord</em> est le nom, '
+         '<em>reCORD</em> le verbe.',
     t1ch='Une phrase, six sens',
     t1cb='&ldquo;I didn&rsquo;t say she stole the money&rdquo; veut dire six '
          'choses différentes selon le mot qui porte le temps fort. Les mots ne '
@@ -540,12 +557,13 @@ T['fr'] = dict(
          'mot. Le problème n’est pas la pause &mdash; c’est sa place.',
     t3an='Deux secondes à une jointure passent inaperçues. Deux secondes au '
          'milieu d’une expression s’entendent.',
-    t3bh='Les tics sont pires que le silence',
+    t3bh='Un tic ne cache pas la pause',
     t3bb='<em>Errrm</em> et un premier mot répété attirent l’attention sur la '
          'difficulté. Une coupure nette, non. Si vous avez besoin d’un instant, '
          'prenez-le en silence &mdash; ou dites que vous le prenez.',
-    t3bn='<em>That is a good question, actually</em> fait gagner le même temps '
-         'et ne coûte rien.',
+    t3bn='<em>Let me think about that for a moment</em> fait gagner le même '
+         'temps. Une fois, c’est naturel ; à chaque question, cela devient '
+         'une formule.',
     t3ch='Contournez le mot perdu',
     t3cb='Si le mot ne vient pas, décrivez ce que fait la chose et gardez la '
          'parole. La reformulation est notée en Lexical Resource ; s’arrêter net '
@@ -560,9 +578,10 @@ T['fr'] = dict(
     mccEyebrow='Activité 3 · Pauses et réparations',
     mccTitle='Réflexion, ou blocage ?',
 
-    p1why='Les mots de contenu &mdash; ceux dont parle vraiment la phrase. La '
-          'longueur, le souffle et la difficulté n’y sont pour rien ; un mot '
-          'd’une syllabe prend le temps fort dès qu’il porte l’idée.',
+    p1why='Les mots qui portent l’idée &mdash; en général les mots de '
+          'contenu, mais n’importe quel mot, même un pronom, prend le temps '
+          'fort quand c’est lui l’idée. La longueur, le souffle et la '
+          'difficulté n’y sont pour rien.',
     p2why='Chaque version nie une partie différente : accentuer le pronom nie que '
           'ce soit elle, accentuer le verbe nie le vol lui-même. Mêmes mots, six '
           'sens, portés entièrement par le temps fort.',
@@ -600,9 +619,11 @@ T['fr'] = dict(
            'l’intelligibilité, au band 9 aucun. Ce qui est noté, c’est la '
            'facilité avec laquelle on vous suit, et il n’y a aucun modèle natif '
            'auquel être comparé.',
-    p12why='Mal prononcer les mots sur lesquels repose la réponse, parce que ce '
-           'sont ceux dont l’auditeur a besoin. L’accent, une pause de réflexion '
-           'et un débit posé ne coûtent rien du tout.',
+    p12why='Mal prononcer les mots sur lesquels repose la réponse, parce que '
+           'ce sont ceux dont l’auditeur a besoin. L’accent, une pause et un '
+           'débit posé ne sont pas ce que note Pronunciation &mdash; même si '
+           'les longues recherches de mots et un débit très lent comptent en '
+           'Fluency.',
 
     sortEyebrow='Activité 4 · Ce que le critère note vraiment',
     sortTitle='Classez les six habitudes',
@@ -610,11 +631,13 @@ T['fr'] = dict(
              'un élément, puis sur la colonne voulue.',
     sortBin1='Vous coûte des points',
     sortBin2='Ne vous coûte rien',
-    sortWhy='La colonne de gauche concerne la question de savoir si l’auditeur '
-            'peut vous suivre ; celle de droite, si vous ressemblez à quelqu’un '
-            'd’autre. Seule la première est notée. Un candidat qui travaille son '
-            'accent et laisse son accentuation plate a consacré son entraînement '
-            'à la colonne qui ne rapporte aucun point.',
+    sortWhy='Les habitudes qui coûtent des points vous rendent toutes plus '
+            'difficile à suivre : une accentuation plate, une coupure au '
+            'milieu d’une expression, un mot clé que l’auditeur ne saisit '
+            'pas. Les habitudes gratuites vous font seulement sonner moins '
+            'comme un natif, et cela n’est pas noté. Un candidat qui '
+            'travaille son accent et laisse son accentuation plate s’est '
+            'entraîné là où cela ne rapporte rien.',
 
     actTitle='Dites-le, et soyez suivi',
     actUse='Utilisez-en au moins trois :',
@@ -643,8 +666,9 @@ T['fr'] = dict(
 # ── Italian ────────────────────────────────────────────────────────────
 T['it'] = dict(
     coverTitle='Pronunciation <em>&amp; Fluency</em>',
-    coverSub='Un quarto dei punti, e il quarto che nessuno allena: l’accento di '
-             'parola, i gruppi di senso, e la pausa che sembra riflessione',
+    coverSub='Un quarto dei punti, e il quarto che quasi nessuno allena: '
+             'l’accento di parola, i gruppi di senso, e la pausa che sembra '
+             'riflessione',
     chipLevel='C1 · Avanzato', chipFocus='Speaking · tutte e tre le parti',
     chipCount='18 punti',
 
@@ -654,14 +678,14 @@ T['it'] = dict(
     t1ab='I descrittori chiedono quanto facilmente ti si capisce, se controlli '
          'i tratti che portano il significato, e quanto sforzo deve fare chi '
          'ascolta. Sembrare britannico non compare in nessuno di questi elenchi.',
-    t1an='Qui i candidati perdono punti molto più spesso per un accento di '
-         'parola piatto che per l’accento regionale.',
+    t1an='Un accento di parola piatto costa punti. L’accento regionale non '
+         'costa niente, a meno che non renda difficile capirti.',
     t1bh='L’accento di parola segna il significato',
     t1bb='L’inglese mette il battito sulle parole che portano il punto e lascia '
          'scorrere leggero il resto. Appiattisci tutto e ogni parola arriva con '
          'lo stesso peso, così chi ascolta deve trovare il punto da solo.',
-    t1bn='Due sillabe, due parole: <em>RECord</em> è il nome, <em>reCORD</em> il '
-         'verbo.',
+    t1bn='Stessa grafia, due parole: <em>RECord</em> è il nome, '
+         '<em>reCORD</em> il verbo.',
     t1ch='Una frase, sei significati',
     t1cb='&ldquo;I didn&rsquo;t say she stole the money&rdquo; vuol dire sei cose '
          'diverse a seconda della parola che prende il battito. Le parole non '
@@ -696,12 +720,13 @@ T['it'] = dict(
          'problema non è la pausa &mdash; è dove la metti.',
     t3an='Due secondi in una giuntura passano inosservati. Due secondi dentro '
          'un’espressione si sentono.',
-    t3bh='I riempitivi sono peggio del silenzio',
+    t3bh='Un riempitivo non nasconde la pausa',
     t3bb='<em>Errrm</em> e una prima parola ripetuta attirano l’attenzione sulla '
          'difficoltà. Una pausa pulita no. Se ti serve un momento, prendilo in '
          'silenzio &mdash; oppure di’ che lo stai prendendo.',
-    t3bn='<em>That is a good question, actually</em> fa guadagnare lo stesso '
-         'tempo e non costa niente.',
+    t3bn='<em>Let me think about that for a moment</em> fa guadagnare lo '
+         'stesso tempo. Una volta suona naturale; a ogni domanda diventa una '
+         'formula.',
     t3ch='Gira intorno alla parola persa',
     t3cb='Se la parola non viene, descrivi che cosa fa la cosa e tieni il turno. '
          'La riformulazione è valutata in Lexical Resource; fermarsi di colpo è '
@@ -716,9 +741,9 @@ T['it'] = dict(
     mccEyebrow='Attività 3 · Pause e recupero',
     mccTitle='Riflessione o blocco?',
 
-    p1why='Le parole piene &mdash; quelle di cui la frase parla davvero. '
-          'Lunghezza, respiro e difficoltà non c’entrano; una parola di una '
-          'sillaba prende il battito ogni volta che porta il punto.',
+    p1why='Le parole che portano il punto &mdash; di solito le parole piene, '
+          'ma qualsiasi parola, persino un pronome, prende il battito quando '
+          'è lei il punto. Lunghezza, respiro e difficoltà non c’entrano.',
     p2why='Ogni versione nega una parte diversa: accentare il pronome nega che '
           'sia stata lei, accentare il verbo nega il furto stesso. Stesse parole, '
           'sei significati, portati interamente dal battito.',
@@ -753,9 +778,11 @@ T['it'] = dict(
            'sulla comprensibilità, al band 9 nessuno. Viene valutato quanto '
            'facilmente ti si segue, e non esiste un modello nativo con cui '
            'confrontarti.',
-    p12why='Pronunciare male le parole su cui si regge la risposta, perché sono '
-           'quelle di cui chi ascolta ha bisogno. L’accento, una pausa per '
-           'pensare e un ritmo misurato non costano niente.',
+    p12why='Pronunciare male le parole su cui si regge la risposta, perché '
+           'sono quelle di cui chi ascolta ha bisogno. L’accento, una pausa '
+           'e un ritmo misurato non sono ciò che valuta Pronunciation '
+           '&mdash; anche se le lunghe ricerche di parole e un parlato molto '
+           'lento contano in Fluency.',
 
     sortEyebrow='Attività 4 · Che cosa valuta davvero il criterio',
     sortTitle='Classifica le sei abitudini',
@@ -763,11 +790,13 @@ T['it'] = dict(
              'elemento e poi sulla colonna che vuoi.',
     sortBin1='Ti costa punti',
     sortBin2='Non ti costa niente',
-    sortWhy='La colonna di sinistra riguarda la possibilità di chi ascolta di '
-            'seguirti; quella di destra, se sembri qualcun altro. Solo la prima '
-            'viene valutata. Un candidato che lavora sull’accento e lascia piatto '
-            'l’accento di parola ha speso l’allenamento sulla colonna che non '
-            'porta punti.',
+    sortWhy='Le abitudini che costano punti ti rendono tutte più difficile '
+            'da seguire: un accento di parola piatto, una pausa a metà di '
+            'un’espressione, una parola chiave che chi ascolta non coglie. '
+            'Quelle gratuite ti fanno solo sembrare meno madrelingua, e '
+            'questo non viene valutato. Un candidato che lavora sull’accento '
+            'e lascia piatto l’accento di parola si è allenato dove non si '
+            'guadagna nulla.',
 
     actTitle='Dillo, e fatti seguire',
     actUse='Usane almeno tre:',
@@ -795,8 +824,8 @@ T['it'] = dict(
 # ── Portuguese ─────────────────────────────────────────────────────────
 T['pt'] = dict(
     coverTitle='Pronunciation <em>&amp; Fluency</em>',
-    coverSub='Um quarto da nota, e o quarto que ninguém treina: a acentuação, '
-             'os grupos de sentido e a pausa que soa a reflexão',
+    coverSub='Um quarto da nota, e o quarto que a maioria nunca treina: a '
+             'acentuação, os grupos de sentido e a pausa que soa a reflexão',
     chipLevel='C1 · Avançado', chipFocus='Speaking · as três partes',
     chipCount='18 pontos',
 
@@ -807,13 +836,13 @@ T['pt'] = dict(
          'controlas os traços que transportam o significado e quanto esforço '
          'tem de fazer quem ouve. Soar britânico não consta de nenhuma dessas '
          'listas.',
-    t1an='Aqui, os candidatos perdem pontos muito mais vezes por uma '
-         'acentuação plana do que pelo sotaque.',
+    t1an='Uma acentuação plana custa pontos. O sotaque não custa nada, a não '
+         'ser que dificulte perceberem-te.',
     t1bh='A acentuação marca o significado',
     t1bb='O inglês põe a batida nas palavras que transportam a ideia e deixa o '
          'resto correr leve. Se achatares isso, cada palavra chega com o mesmo '
          'peso, e quem ouve tem de descobrir a ideia sozinho.',
-    t1bn='Duas sílabas, duas palavras: <em>RECord</em> é o nome, '
+    t1bn='A mesma grafia, duas palavras: <em>RECord</em> é o nome, '
          '<em>reCORD</em> é o verbo.',
     t1ch='Uma frase, seis significados',
     t1cb='&ldquo;I didn&rsquo;t say she stole the money&rdquo; quer dizer seis '
@@ -849,12 +878,12 @@ T['pt'] = dict(
          'a pausa &mdash; é o sítio onde está.',
     t3an='Dois segundos numa junção passam despercebidos. Dois segundos dentro '
          'de uma expressão ouvem-se.',
-    t3bh='As muletas são piores do que o silêncio',
+    t3bh='Uma muleta não esconde a pausa',
     t3bb='<em>Errrm</em> e uma primeira palavra repetida chamam a atenção para '
          'a dificuldade. Uma pausa limpa, não. Se precisares de um momento, '
          'toma-o em silêncio &mdash; ou diz que o estás a tomar.',
-    t3bn='<em>That is a good question, actually</em> ganha o mesmo tempo e não '
-         'custa nada.',
+    t3bn='<em>Let me think about that for a moment</em> ganha o mesmo tempo. '
+         'Uma vez soa natural; em todas as perguntas torna-se uma fórmula.',
     t3ch='Contorna a palavra que perdeste',
     t3cb='Se a palavra não vier, descreve o que a coisa faz e não percas a vez. '
          'A paráfrase é avaliada em Lexical Resource; parar de repente é '
@@ -868,10 +897,10 @@ T['pt'] = dict(
     mccEyebrow='Atividade 3 · Pausas e reparação',
     mccTitle='A pensar, ou encravado?',
 
-    p1why='As palavras de conteúdo &mdash; aquelas de que a frase realmente '
-          'trata. O comprimento, a respiração e a dificuldade nada têm a ver com '
-          'isso; uma palavra de uma sílaba leva a batida sempre que transporta a '
-          'ideia.',
+    p1why='As palavras que transportam a ideia &mdash; normalmente as '
+          'palavras de conteúdo, mas qualquer palavra, até um pronome, leva '
+          'a batida quando é ela a ideia. O comprimento, a respiração e a '
+          'dificuldade nada têm a ver com isso.',
     p2why='Cada versão nega uma parte diferente: acentuar o pronome nega que '
           'tenha sido ela, acentuar o verbo nega o próprio roubo. As mesmas '
           'palavras, seis significados, transportados inteiramente pela batida.',
@@ -906,8 +935,10 @@ T['pt'] = dict(
            'facilidade com que te seguem, e não há nenhum modelo nativo com que '
            'sejas comparado.',
     p12why='Pronunciar mal as palavras em que assenta a resposta, porque são '
-           'essas de que quem ouve precisa. O sotaque, uma pausa para pensar e um '
-           'ritmo calmo não custam nada.',
+           'essas de que quem ouve precisa. O sotaque, uma pausa e um ritmo '
+           'calmo não são o que a Pronunciation avalia &mdash; embora as '
+           'longas procuras de palavras e uma fala muito lenta contem em '
+           'Fluency.',
 
     sortEyebrow='Atividade 4 · O que o critério avalia realmente',
     sortTitle='Classifica os seis hábitos',
@@ -915,10 +946,12 @@ T['pt'] = dict(
              'depois na coluna que quiseres.',
     sortBin1='Custa-te pontos',
     sortBin2='Não te custa nada',
-    sortWhy='A coluna da esquerda trata de saber se quem ouve te consegue '
-            'seguir; a da direita, de saber se soas como outra pessoa. Só a '
-            'primeira é avaliada. Um candidato que trabalha o sotaque e deixa a '
-            'acentuação plana gastou o treino na coluna que não dá pontos.',
+    sortWhy='Os hábitos que custam pontos tornam-te todos mais difícil de '
+            'seguir: acentuação plana, uma pausa a meio de uma expressão, '
+            'uma palavra-chave que quem ouve não apanha. Os que não custam '
+            'nada só te fazem soar menos a nativo, e isso não é avaliado. Um '
+            'candidato que trabalha o sotaque e deixa a acentuação plana '
+            'treinou onde não se ganha nada.',
 
     actTitle='Di-lo, e faz-te entender',
     actUse='Usa pelo menos três:',
@@ -946,8 +979,9 @@ T['pt'] = dict(
 # ── Russian ────────────────────────────────────────────────────────────
 T['ru'] = dict(
     coverTitle='Pronunciation <em>&amp; Fluency</em>',
-    coverSub='Четверть баллов, и та четверть, которую никто не тренирует: '
-             'ударение, смысловые группы и пауза, которая звучит как размышление',
+    coverSub='Четверть баллов, и та четверть, которую большинство никогда не '
+             'тренирует: ударение, смысловые группы и пауза, которая звучит '
+             'как размышление',
     chipLevel='C1 · Продвинутый', chipFocus='Speaking · все три части',
     chipCount='18 баллов',
 
@@ -958,15 +992,15 @@ T['ru'] = dict(
          'средствами, которые несут смысл, и сколько усилий приходится '
          'прилагать слушателю. Британского звучания нет ни в одном из этих '
          'списков.',
-    t1an='Здесь кандидаты теряют баллы из-за речи без фразового ударения '
-         'гораздо чаще, чем из-за акцента.',
+    t1an='Речь без фразового ударения стоит баллов. Акцент ничего не стоит, '
+         'если он не мешает вас понимать.',
     t1bh='Ударение отмечает смысл',
     t1bb='Английский ставит сильную долю на слова, которые несут главное, а '
          'остальное произносит легко. Выровняйте всё &mdash; и каждое слово '
          'придёт с одинаковым весом, так что слушателю придётся самому искать '
          'главное.',
-    t1bn='Два слога, два слова: <em>RECord</em> &mdash; существительное, '
-         '<em>reCORD</em> &mdash; глагол.',
+    t1bn='Одно написание, два слова: <em>RECord</em> &mdash; '
+         'существительное, <em>reCORD</em> &mdash; глагол.',
     t1ch='Одно предложение, шесть смыслов',
     t1cb='&ldquo;I didn&rsquo;t say she stole the money&rdquo; означает шесть '
          'разных вещей в зависимости от того, какое слово получает ударение. '
@@ -1000,12 +1034,13 @@ T['ru'] = dict(
          '&mdash; а в её месте.',
     t3an='Две секунды на стыке никто не замечает. Две секунды внутри фразы '
          'слышны.',
-    t3bh='Заполнители пауз хуже тишины',
+    t3bh='Заполнитель не прячет паузу',
     t3bb='<em>Errrm</em> и повторённое первое слово привлекают внимание к '
          'затруднению. Чистый разрыв &mdash; нет. Если нужна секунда, возьмите '
          'её молча &mdash; или скажите, что берёте её.',
-    t3bn='<em>That is a good question, actually</em> даёт столько же времени и '
-         'ничего не стоит.',
+    t3bn='<em>Let me think about that for a moment</em> даёт столько же '
+         'времени. Один раз это звучит естественно; на каждый вопрос &mdash; '
+         'становится формулой.',
     t3ch='Обойдите потерянное слово',
     t3cb='Если слово не приходит, опишите, что эта вещь делает, и продолжайте '
          'говорить. Перефразирование оценивается в Lexical Resource; внезапная '
@@ -1020,9 +1055,9 @@ T['ru'] = dict(
     mccEyebrow='Задание 3 · Паузы и исправления',
     mccTitle='Размышление или заминка?',
 
-    p1why='Знаменательные слова &mdash; те, о которых на самом деле '
-          'предложение. Длина, дыхание и сложность тут ни при чём; односложное '
-          'слово получает ударение всякий раз, когда несёт главное.',
+    p1why='Слова, которые несут главное, &mdash; обычно знаменательные, но '
+          'любое слово, даже местоимение, получает ударение, когда главное в '
+          'нём. Длина, дыхание и сложность тут ни при чём.',
     p2why='Каждый вариант отрицает свою часть: ударение на местоимении '
           'отрицает, что это была она, ударение на глаголе отрицает саму кражу. '
           'Те же слова, шесть смыслов, и всё держится на ударении.',
@@ -1059,8 +1094,9 @@ T['ru'] = dict(
            'легко за вами следить, и нет никакого эталона носителя, с которым '
            'вас сравнивают.',
     p12why='Неправильно произносить слова, на которых держится ответ, потому '
-           'что именно они нужны слушателю. Акцент, пауза на размышление и '
-           'размеренный темп не стоят ничего.',
+           'что именно они нужны слушателю. Акцент, пауза и размеренный темп '
+           '&mdash; не то, что оценивает Pronunciation, хотя долгие поиски '
+           'слов и очень медленная речь учитываются в Fluency.',
 
     sortEyebrow='Задание 4 · Что критерий оценивает на самом деле',
     sortTitle='Распределите шесть привычек',
@@ -1068,11 +1104,12 @@ T['ru'] = dict(
              'на нужный столбец.',
     sortBin1='Стоит вам баллов',
     sortBin2='Ничего вам не стоит',
-    sortWhy='Левый столбец &mdash; о том, может ли слушатель следить за вами; '
-            'правый &mdash; о том, звучите ли вы как кто-то другой. Оценивается '
-            'только первое. Кандидат, который работает над акцентом и оставляет '
-            'речь без ударений, потратил тренировку на столбец, который не '
-            'приносит баллов.',
+    sortWhy='Привычки, которые стоят баллов, все делают вас труднее для '
+            'понимания: речь без ударений, пауза посреди выражения, ключевое '
+            'слово, которое слушатель не разобрал. Бесплатные лишь делают '
+            'вас менее похожим на носителя языка, а это не оценивается. '
+            'Кандидат, который работает над акцентом и оставляет речь без '
+            'ударений, тренировался там, где ничего не заработаешь.',
 
     actTitle='Скажите так, чтобы вас поняли',
     actUse='Используйте хотя бы три:',
@@ -1100,8 +1137,8 @@ T['ru'] = dict(
 # ── Arabic ─────────────────────────────────────────────────────────────
 T['ar'] = dict(
     coverTitle='Pronunciation <em>&amp; Fluency</em>',
-    coverSub='ربع الدرجات، والربع الذي لا يتدرّب عليه أحد: النبر، والتقسيم إلى '
-             'مجموعات معنى، والوقفة التي تبدو تفكيرًا',
+    coverSub='ربع الدرجات، والربع الذي لا يتدرّب عليه معظم المرشحين: النبر، '
+             'والتقسيم إلى مجموعات معنى، والوقفة التي تبدو تفكيرًا',
     chipLevel='C1 · متقدّم', chipFocus='Speaking · الأجزاء الثلاثة',
     chipCount='18 نقطة',
 
@@ -1111,13 +1148,13 @@ T['ar'] = dict(
     t1ab='تسأل معايير التقييم عن مدى سهولة فهمك، وهل تتحكّم في السمات التي '
          'تحمل المعنى، وكم من الجهد يبذله المستمع. أما أن تبدو بريطانيًا فليس '
          'في أيٍّ من هذه القوائم.',
-    t1an='يخسر المرشّحون هنا درجات بسبب الكلام الرتيب بلا نبر أكثر بكثير مما '
-         'يخسرونها بسبب اللكنة.',
+    t1an='النبر الرتيب يكلّف درجات. أما اللكنة فلا تكلّف شيئًا ما لم تُصعّب '
+         'فهمك.',
     t1bh='النبر يحدّد المعنى',
     t1bb='تضع الإنجليزية الضربة القوية على الكلمات التي تحمل الفكرة، وتمرّ على '
          'الباقي خفيفًا. وإن سوّيتَ بينها وصلت كل كلمة بالوزن نفسه، فيضطر '
          'المستمع إلى استخلاص الفكرة وحده.',
-    t1bn='مقطعان، وكلمتان: <em>RECord</em> اسم، و<em>reCORD</em> فعل.',
+    t1bn='التهجئة نفسها، وكلمتان: <em>RECord</em> اسم، و<em>reCORD</em> فعل.',
     t1ch='جملة واحدة، وستة معانٍ',
     t1cb='الجملة <bdi>&ldquo;I didn&rsquo;t say she stole the money&rdquo;</bdi> '
          'تعني ستة '
@@ -1150,12 +1187,12 @@ T['ar'] = dict(
          'عبارة يبدو بحثًا عن كلمة. المشكلة ليست في الوقفة &mdash; بل في '
          'موضعها.',
     t3an='ثانيتان عند مفصل لا يلاحظهما أحد. ثانيتان داخل عبارة تُسمعان.',
-    t3bh='أصوات الحشو أسوأ من الصمت',
+    t3bh='صوت الحشو لا يخفي الوقفة',
     t3bb='صوت <em>Errrm</em> وتكرار الكلمة الأولى يلفتان الانتباه إلى التعثّر. '
          'أما الفاصل النظيف فلا. إن احتجت لحظة فخذها بهدوء &mdash; أو قل إنك '
          'تأخذها.',
-    t3bn='عبارة <em>That is a good question, actually</em> تكسب الوقت نفسه ولا '
-         'تكلّف شيئًا.',
+    t3bn='عبارة <em>Let me think about that for a moment</em> تكسب الوقت '
+         'نفسه. مرة واحدة تبدو طبيعية، وفي كل سؤال تصبح قالبًا جاهزًا.',
     t3ch='التفّ حول الكلمة التي فقدتها',
     t3cb='إن لم تأتِ الكلمة، فصِف ما يفعله الشيء واحتفظ بدورك في الكلام. إعادة '
          'الصياغة تُقيَّم في Lexical Resource، والتوقف التام يُقيَّم في '
@@ -1169,9 +1206,9 @@ T['ar'] = dict(
     mccEyebrow='النشاط 3 · الوقفات والإصلاح',
     mccTitle='تفكير، أم تعثّر؟',
 
-    p1why='كلمات المحتوى &mdash; الكلمات التي تدور حولها الجملة فعلًا. لا علاقة '
-          'للطول ولا للنَّفَس ولا للصعوبة بذلك؛ فالكلمة ذات المقطع الواحد تأخذ '
-          'الضربة كلما حملت الفكرة.',
+    p1why='الكلمات التي تحمل الفكرة &mdash; وهي عادةً كلمات المحتوى، لكن أي '
+          'كلمة، حتى الضمير، تأخذ الضربة حين تكون هي الفكرة. لا علاقة للطول '
+          'ولا للنَّفَس ولا للصعوبة بذلك.',
     p2why='كل صيغة تنفي جزءًا مختلفًا: نبر الضمير ينفي أنها هي، ونبر الفعل ينفي '
           'السرقة نفسها. الكلمات نفسها، وستة معانٍ، تحملها الضربة وحدها.',
     p3why='النبر الرتيب يترك المستمع يستخلص الفكرة وحده، وعبء المستمع مكتوب في '
@@ -1201,19 +1238,21 @@ T['ar'] = dict(
            'في band 8 يكون للكنة اللغة الأم أثر ضئيل في وضوح الكلام، وفي band 9 '
            'لا أثر لها. ما يُقيَّم هو سهولة متابعتك، ولا يوجد نموذج لمتحدث أصلي '
            'تُقاس عليه.',
-    p12why='نطق الكلمات التي تقوم عليها الإجابة نطقًا خاطئًا، لأنها الكلمات التي '
-           'يحتاجها المستمع. أما اللكنة، ووقفة التفكير، والإيقاع المتّزن، فلا '
-           'تكلّف شيئًا على الإطلاق.',
+    p12why='نطق الكلمات التي تقوم عليها الإجابة نطقًا خاطئًا، لأنها الكلمات '
+           'التي يحتاجها المستمع. أما اللكنة والوقفة والإيقاع المتّزن فليست '
+           'ما يقيّمه معيار Pronunciation &mdash; وإن كان البحث الطويل عن '
+           'الكلمات والكلام البطيء جدًا يُحتسبان في Fluency.',
 
     sortEyebrow='النشاط 4 · ما الذي يقيّمه المعيار فعلًا',
     sortTitle='صنّف العادات الست',
     sortHint='اسحب كل عادة إلى عمود، أو انقر عليها ثم على العمود الذي تريده.',
     sortBin1='يكلّفك درجات',
     sortBin2='لا يكلّفك شيئًا',
-    sortWhy='عمود «يكلّفك درجات» يتعلّق بقدرة المستمع على متابعتك، وعمود «لا '
-            'يكلّفك شيئًا» يتعلّق بما إذا كنت تبدو كشخص آخر. الأول وحده '
-            'يُقيَّم. والمرشّح الذي يعمل على لكنته ويترك نبره رتيبًا قد أنفق '
-            'تدريبه على العمود الذي لا درجات فيه.',
+    sortWhy='العادات التي تكلّف درجات كلها تجعل متابعتك أصعب: النبر الرتيب، '
+            'والتوقف في منتصف عبارة، وكلمة مفتاحية لا يلتقطها المستمع. أما '
+            'العادات المجانية فلا تفعل إلا أن تجعلك أقل شبهًا بالمتحدث '
+            'الأصلي، وهذا لا يُقيَّم. والمرشح الذي يعمل على لكنته ويترك نبره '
+            'رتيبًا قد تدرّب حيث لا يكسب شيئًا.',
 
     actTitle='قلها بحيث يتابعك السامع',
     actUse='استخدم ثلاثة منها على الأقل:',
@@ -1240,8 +1279,7 @@ T['ar'] = dict(
 # ── Chinese ────────────────────────────────────────────────────────────
 T['zh'] = dict(
     coverTitle='Pronunciation <em>&amp; Fluency</em>',
-    coverSub='四分之一的分数，也是没人练的那四分之一：重音、意群，以及听起来像在'
-             '思考的停顿',
+    coverSub='四分之一的分数，也是大多数考生从不练习的那四分之一：重音、意群，以及听起来像在思考的停顿',
     chipLevel='C1 · 高级', chipFocus='Speaking · 全部三个部分',
     chipCount='18 分',
 
@@ -1250,11 +1288,11 @@ T['zh'] = dict(
     t1ah='真正评分的是什么',
     t1ab='评分标准问的是：别人理解你有多容易，你能否掌控承载意义的那些语音特征，'
          '以及听者需要付出多少努力。听起来像英国人，不在其中任何一条里。',
-    t1an='在这一项上，考生因为重音平淡而丢分，远比因为口音丢分常见。',
+    t1an='平淡的重音会丢分。口音不会，除非它妨碍别人听懂你。',
     t1bh='重音标出意思',
     t1bb='英语把节拍放在承载要点的词上，其余的轻轻带过。把它说平了，每个词都以'
          '同样的分量到达，听者只能自己去找要点。',
-    t1bn='两个音节，两个词：<em>RECord</em> 是名词，<em>reCORD</em> 是动词。',
+    t1bn='拼写相同，两个词：<em>RECord</em> 是名词，<em>reCORD</em> 是动词。',
     t1ch='一句话，六种意思',
     t1cb='&ldquo;I didn&rsquo;t say she stole the money&rdquo; 这句话，节拍落在'
          '哪个词上，意思就不同，一共六种。词从来不变，变的只是重音。',
@@ -1281,11 +1319,11 @@ T['zh'] = dict(
     t3ab='在意群末尾短暂的沉默，听起来像在思考。同样长的沉默出现在短语中间，听'
          '起来像在找词。问题不在停顿——而在停顿的位置。',
     t3an='在接缝处停两秒，没人注意。在短语里面停两秒，谁都听得见。',
-    t3bh='填充音比沉默更糟',
+    t3bh='填充音掩盖不了停顿',
     t3bb='<em>Errrm</em> 和重复的第一个词，会把注意力引向你的困难。干净的停顿'
          '不会。如果需要一点时间，就安静地停一下——或者直接说你需要想一想。',
-    t3bn='<em>That is a good question, actually</em> 能争取到同样的时间，却没有'
-         '任何代价。',
+    t3bn='<em>Let me think about that for a moment</em> '
+         '能争取到同样的时间。说一次很自然；每个问题都说，就成了套话。',
     t3ch='绕过你忘掉的词',
     t3cb='如果那个词想不起来，就描述这个东西是做什么的，并且继续说下去。改述在 '
          'Lexical Resource 中评分；突然卡住在 Fluency 中评分，而且不会手下'
@@ -1299,8 +1337,7 @@ T['zh'] = dict(
     mccEyebrow='练习 3 · 停顿与补救',
     mccTitle='在思考，还是卡住了？',
 
-    p1why='实词——句子真正在讲的那些词。长度、气息和难度都与此无关；单音节词只'
-          '要承载要点，就会得到节拍。',
+    p1why='承载要点的词——通常是实词，但任何词，哪怕是代词，只要它就是要点，都会得到节拍。长度、气息和难度都与此无关。',
     p2why='每个版本否认的部分不同：重读代词，否认的是“是她”；重读动词，否认的是'
           '偷窃本身。同样的词，六种意思，完全由节拍承载。',
     p3why='平淡的重音让听者只能自己找要点，而听者的吃力程度就写在评分标准里。每'
@@ -1323,17 +1360,16 @@ T['zh'] = dict(
     p11why='口音本身不会。评分标准提到口音，只是因为它的影响：8 分的描述是母语'
            '口音对可理解度影响极小，9 分则是没有影响。评的是别人跟上你有多容易，'
            '并没有一个母语者的模板来衡量你。',
-    p12why='把答案所依靠的词读错，因为那正是听者需要的词。口音、思考时的停顿和从'
-           '容的语速，都不会让你丢任何分。',
+    p12why='把答案所依靠的词读错，因为那正是听者需要的词。口音、停顿和从容的语速都不是 Pronunciation '
+           '要评的——不过长时间找词和语速过慢会计入 Fluency。',
 
     sortEyebrow='练习 4 · 这项标准真正评的是什么',
     sortTitle='把六个习惯分类',
     sortHint='把每一项拖到一栏里——或者先点一项，再点你想放进的那一栏。',
     sortBin1='会让你丢分',
     sortBin2='不会让你丢分',
-    sortWhy='左边一栏关乎听者能不能跟上你；右边一栏关乎你听起来像不像别人。只有'
-            '前者计分。一个考生若苦练口音，却让重音一直平淡，就把练习花在了不计'
-            '分的那一栏上。',
+    sortWhy='会丢分的习惯，都让别人更难跟上你：平淡的重音、短语中间的停顿、听者听不清的关键词。不丢分的习惯，只是让你听起来不那么像母语者，而'
+            '这一点不计分。一个考生若苦练口音，却让重音一直平淡，就把练习花在了拿不到分的地方。',
 
     actTitle='说出来，让人跟得上',
     actUse='至少用上三个：',
@@ -1356,8 +1392,7 @@ T['zh'] = dict(
 # ── Japanese ───────────────────────────────────────────────────────────
 T['ja'] = dict(
     coverTitle='Pronunciation <em>&amp; Fluency</em>',
-    coverSub='点数の4分の1、そして誰も練習しない4分の1：強勢、意味のまとまり、'
-             'そして考えているように聞こえるポーズ',
+    coverSub='点数の4分の1、そしてほとんどの受験者が練習しない4分の1：強勢、意味のまとまり、そして考えているように聞こえるポーズ',
     chipLevel='C1 · 上級', chipFocus='Speaking · 全3パート',
     chipCount='18 点',
 
@@ -1367,13 +1402,12 @@ T['ja'] = dict(
     t1ab='評価基準が問うのは、あなたの話がどれだけ楽に理解できるか、意味を運ぶ'
          '特徴をコントロールできているか、そして聞き手がどれだけ努力しなければな'
          'らないかです。イギリス人らしく聞こえることは、どのリストにもありません。',
-    t1an='このパートで受験者が点を落とすのは、なまりよりも、平板な強勢のほうが'
-         'ずっと多いのです。',
+    t1an='平板な強勢は減点されます。なまりは、理解の妨げにならない限り、何の減点にもなりません。',
     t1bh='強勢が意味を示す',
     t1bb='英語は、要点を運ぶ語に拍を置き、残りは軽く流します。それを平らにする'
          'と、どの語も同じ重さで届き、聞き手は自力で要点を探さなければなりませ'
          'ん。',
-    t1bn='2音節で、2つの語：<em>RECord</em> は名詞、<em>reCORD</em> は動詞です。',
+    t1bn='同じつづりで、2つの語：<em>RECord</em> は名詞、<em>reCORD</em> は動詞です。',
     t1ch='一つの文、六つの意味',
     t1cb='&ldquo;I didn&rsquo;t say she stole the money&rdquo; は、どの語が拍を'
          '取るかによって六つの違う意味になります。語は決して変わらず、変わるのは'
@@ -1407,12 +1441,12 @@ T['ja'] = dict(
          'ではなく――その位置です。',
     t3an='つなぎ目での2秒は誰も気にしません。句の中での2秒は聞こえてしまい'
          'ます。',
-    t3bh='つなぎ言葉は沈黙より悪い',
+    t3bh='つなぎ言葉ではポーズは隠せない',
     t3bb='<em>Errrm</em> や最初の語の繰り返しは、困っていることに注意を向けさせ'
          'ます。きれいな区切りはそうなりません。少し時間が必要なら、静かに取るか'
          '――取っていると口に出しましょう。',
-    t3bn='<em>That is a good question, actually</em> なら同じだけ時間を稼げて、'
-         '何も失いません。',
+    t3bn='<em>Let me think about that for a moment</em> '
+         'なら同じだけ時間を稼げます。一度なら自然ですが、毎回使えば決まり文句になります。',
     t3ch='見失った語の周りを回って話す',
     t3cb='語が出てこなければ、そのものが何をするかを説明して、話し続けましょう。'
          '言い換えは Lexical Resource で評価され、ぴたりと止まることは Fluency '
@@ -1426,8 +1460,7 @@ T['ja'] = dict(
     mccEyebrow='演習 3 · ポーズと立て直し',
     mccTitle='考えている？ それとも詰まっている？',
 
-    p1why='内容語――その文が実際に語っている語です。長さや息や難しさは関係あり'
-          'ません。1音節の語でも、要点を運ぶときは拍を取ります。',
+    p1why='要点を運ぶ語――ふつうは内容語ですが、どんな語でも、代名詞でさえ、それが要点なら拍を取ります。長さや息や難しさは関係ありません。',
     p2why='それぞれの版が違う部分を否定します。代名詞に強勢を置けば彼女だったこ'
           'とを否定し、動詞に置けば盗み自体を否定します。同じ語で六つの意味、そ'
           'れを運ぶのは拍だけです。',
@@ -1459,9 +1492,8 @@ T['ja'] = dict(
            '響についてだけです：バンド8では母語のなまりが理解しやすさに与える影'
            '響はごくわずか、バンド9ではまったくありません。採点されるのは話のつ'
            'いていきやすさで、比べられるネイティブの手本はありません。',
-    p12why='答えの土台になる語を誤って発音することです。聞き手が必要とするのはそ'
-           'の語だからです。なまり、考えるためのポーズ、落ち着いた話す速さでは、'
-           'まったく点を失いません。',
+    p12why='答えの土台になる語を誤って発音することです。聞き手が必要とするのはその語だからです。なまり、ポーズ、落ち着いた速さは '
+           'Pronunciation の採点対象ではありません――ただし、長い語探しや非常に遅い話し方は Fluency で数えられます。',
 
     sortEyebrow='演習 4 · この基準が実際に採点するもの',
     sortTitle='六つの習慣を分類しましょう',
@@ -1469,10 +1501,9 @@ T['ja'] = dict(
              '入れたい列をクリックします。',
     sortBin1='点を失う',
     sortBin2='何も失わない',
-    sortWhy='左の列は聞き手があなたの話についていけるかどうか、右の列はあなたが'
-            '誰か別の人のように聞こえるかどうかの問題です。採点されるのは前者だ'
-            'け。なまりを直す練習をして強勢を平板なままにする受験者は、点になら'
-            'ない列に練習を費やしたことになります。',
+    sortWhy='減点される習慣は、どれもあなたの話を追いにくくします：平板な強勢、句の途中の区切り、聞き手が聞き取れないキーワード。減点されない'
+            '習慣は、ネイティブらしく聞こえにくくするだけで、それは採点されません。なまりを直す練習をして強勢を平板なままにする受験者は、点に'
+            'ならないところで練習したことになります。',
 
     actTitle='話して、ついてきてもらう',
     actUse='少なくとも三つ使いましょう：',

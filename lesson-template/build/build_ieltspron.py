@@ -34,6 +34,7 @@ import deck as D
 from ielts_langs import LANGS
 from ieltspron_data import (STRESS, CHUNK, PAUSE, ALL,
                             SORT_BINS, SORT_ITEMS, SORT_WHY)
+import i18n_ieltspron as I
 
 TPL = 'lesson-template/lesson-template.html'
 OUT = 'forbes-english-ielts-pronunciation.html'
@@ -64,147 +65,71 @@ BG_STRESS, BG_CHUNK, BG_PAUSE, BG_SORT = ('bg02.jpg', 'bg03.jpg',
                                           'bg04.jpg', 'bg05.jpg')
 BG_ACT = 'bg06.jpg'
 
+# Every English string on the slides is read from the i18n module, so the
+# HTML and UI_I18N.en cannot drift apart. Until 2026-09-24 they were written
+# out twice, and a correction to one copy would have missed the other.
+E = I.T['en']
+
+
+def card(p):
+    """The six-item teach card for prefix p ('t1a', 't1b', …), from E."""
+    return (p + 'h', E[p + 'h'], p + 'b', E[p + 'b'], p + 'n', E[p + 'n'])
+
 
 def build():
     D.assert_no_key_is_longest(ALL, 'IELTSPRON')
     logo = D.logo_from(TPL)
 
     slides = (
-        D.cover(logo, 'Pronunciation <em>&amp; Fluency</em>',
-                'A quarter of the marks, and the quarter nobody practises: '
-                'stress, chunking, and the pause that reads as thinking',
-                [('Level', 'C1 &middot; Advanced'),
-                 ('Focus', 'Speaking &middot; all three parts'),
-                 ('Count', '18 points')])
+        D.cover(logo, E['coverTitle'], E['coverSub'],
+                [('Level', E['chipLevel']),
+                 ('Focus', E['chipFocus']),
+                 ('Count', E['chipCount'])])
 
-        + D.teach('t1Eyebrow', 'Before you start',
-                  't1Title', 'It is not an accent test. It never was.',
-                  [('t1ah', 'What is actually scored', 't1ab',
-                    'The descriptors ask how easily you can be understood, '
-                    'whether you control the features that carry meaning, and '
-                    'how much effort the listener has to make. Sounding '
-                    'British is on none of those lists.', 't1an',
-                    'Candidates lose marks here for flat stress far more often '
-                    'than for an accent.'),
-                   ('t1bh', 'Stress marks the meaning', 't1bb',
-                    'English puts the beat on the words that carry the point '
-                    'and lets the rest run light. Flatten that and every word '
-                    'arrives with equal weight, so the listener has to work '
-                    'out the point unaided.', 't1bn',
-                    'Two syllables, two words: <em>RECord</em> is the noun, '
-                    '<em>reCORD</em> is the verb.'),
-                   ('t1ch', 'One sentence, six meanings', 't1cb',
-                    '&ldquo;I didn&rsquo;t say she stole the money&rdquo; '
-                    'means six different things depending on which word takes '
-                    'the beat. The words never change; only the stress does.',
-                    't1cn',
-                    'Try it aloud on each of the six. Every version denies '
-                    'something different.')],
+        + D.teach('t1Eyebrow', E['t1Eyebrow'], 't1Title', E['t1Title'],
+                  [card('t1a'), card('t1b'), card('t1c')],
                   folder=F, bg=BG_STRESS)
 
-        + "".join(D.mc(i + 1, len(STRESS), q, 'mcaEyebrow',
-                       'Activity 1 &middot; Where the beat falls', 'mcaTitle',
-                       'Stress, and what moves when it moves',
-                       folder=F, bg=BG_STRESS, ctx=q.get('ctx'))
+        + "".join(D.mc(i + 1, len(STRESS), q, 'mcaEyebrow', E['mcaEyebrow'],
+                       'mcaTitle', E['mcaTitle'], folder=F, bg=BG_STRESS,
+                       ctx=q.get('ctx'))
                   for i, q in enumerate(STRESS))
 
-        + D.teach('t2Eyebrow', 'Before you start',
-                  't2Title', 'Speech arrives in groups, not in words',
-                  [('t2ah', 'The thought group', 't2ab',
-                    'Fluent English comes in short runs of words said as one '
-                    'unit, with a small break between them. The break is not a '
-                    'hesitation &mdash; it is the punctuation of spoken '
-                    'language.', 't2an',
-                    'Roughly three to seven words is the natural size of a '
-                    'group.'),
-                   ('t2bh', 'The boundary carries meaning', 't2bb',
-                    'Move the break and you move the sense. The group boundary '
-                    'is doing the same job a comma does on the page, and '
-                    'putting it in the wrong place misleads the listener in '
-                    'the same way.', 't2bn',
-                    'Read a written sentence aloud and the commas usually show '
-                    'you where the groups end.'),
-                   ('t2ch', 'Inside a group, keep going', 't2cb',
-                    'A break inside a group is the one that reads as trouble: '
-                    'pausing in the middle of a noun phrase tells the examiner '
-                    'you have lost the word, not that you are weighing an '
-                    'idea.', 't2cn',
-                    'Pause at the joins, not inside the pieces.')],
+        + D.teach('t2Eyebrow', E['t2Eyebrow'], 't2Title', E['t2Title'],
+                  [card('t2a'), card('t2b'), card('t2c')],
                   folder=F, bg=BG_CHUNK)
 
-        + "".join(D.mc(i + 1, len(CHUNK), q, 'mcbEyebrow',
-                       'Activity 2 &middot; Thought groups', 'mcbTitle',
-                       'Where speech breaks, and why it matters',
-                       folder=F, bg=BG_CHUNK, ctx=q.get('ctx'))
+        + "".join(D.mc(i + 1, len(CHUNK), q, 'mcbEyebrow', E['mcbEyebrow'],
+                       'mcbTitle', E['mcbTitle'], folder=F, bg=BG_CHUNK,
+                       ctx=q.get('ctx'))
                   for i, q in enumerate(CHUNK))
 
-        + D.teach('t3Eyebrow', 'Before you start',
-                  't3Title', 'The pause, and what you put in it',
-                  [('t3ah', 'Silence is allowed', 't3ab',
-                    'A short silence at the end of a group reads as thinking. '
-                    'The same length of silence in the middle of a phrase '
-                    'reads as a search for a word. The pause is not the '
-                    'problem &mdash; its position is.', 't3an',
-                    'Two seconds at a join is unremarkable. Two seconds inside '
-                    'a phrase is audible.'),
-                   ('t3bh', 'Fillers are worse than silence', 't3bb',
-                    '<em>Errrm</em> and a repeated first word draw attention '
-                    'to the trouble. A clean break does not. If you need a '
-                    'moment, take it quietly &mdash; or say that you are '
-                    'taking it.', 't3bn',
-                    '<em>That is a good question, actually</em> buys the same '
-                    'time and costs nothing.'),
-                   ('t3ch', 'Talk around the word you lost', 't3cb',
-                    'If the word will not come, describe what the thing does '
-                    'and keep the turn. Paraphrase is scored under Lexical '
-                    'Resource; stopping dead is scored under Fluency, and not '
-                    'kindly.', 't3cn',
-                    'Never stop to ask the examiner for a word. They will not '
-                    'give you one.')],
+        + D.teach('t3Eyebrow', E['t3Eyebrow'], 't3Title', E['t3Title'],
+                  [card('t3a'), card('t3b'), card('t3c')],
                   folder=F, bg=BG_PAUSE)
 
-        + "".join(D.mc(i + 1, len(PAUSE), q, 'mccEyebrow',
-                       'Activity 3 &middot; Pausing and repair', 'mccTitle',
-                       'Thinking, or stalling?', folder=F, bg=BG_PAUSE,
+        + "".join(D.mc(i + 1, len(PAUSE), q, 'mccEyebrow', E['mccEyebrow'],
+                       'mccTitle', E['mccTitle'], folder=F, bg=BG_PAUSE,
                        ctx=q.get('ctx'))
                   for i, q in enumerate(PAUSE))
 
         + D.sort_slide(SORT_BINS, SORT_ITEMS,
-                       'sortEyebrow',
-                       'Activity 4 &middot; What the criterion actually scores',
-                       'sortTitle', 'Sort the six habits',
-                       'sortHint', 'Drag each one into a column &mdash; or '
-                                   'click an item, then the column you want '
-                                   'it in.',
+                       'sortEyebrow', E['sortEyebrow'],
+                       'sortTitle', E['sortTitle'],
+                       'sortHint', E['sortHint'],
                        'sortWhy', folder=F, bg=BG_SORT,
                        bin_keys=['sortBin1', 'sortBin2'])
 
         + D.results('resNext', 'You can hear it. Now say it &rarr;', folder=F)
 
-        + D.activate('Say it, and be followed', 'Use at least three:', CHIPS,
+        + D.activate(E['actTitle'], E['actUse'], CHIPS,
                      'Discussion &middot; in pairs',
-                     'In pairs, with the long-turn card from Part 2. Read your '
-                     'partner a four-line answer, deliberately flat, then read '
-                     'it again in thought groups with the beat on the content '
-                     'words. Your partner says what changed.',
-                     ['Say &ldquo;I didn&rsquo;t say she stole the '
-                      'money&rdquo; six times, one beat each. Your partner '
-                      'names what you denied.',
-                      'Take a Part 3 question and answer it in groups of three '
-                      'to seven words, pausing only at the joins.',
-                      'Have your partner interrupt with a word you do not '
-                      'know. Talk around it and keep the turn &mdash; no '
-                      'stopping, no asking.'],
-                     'Writing &middot; 200&ndash;250 words',
-                     'Write out a two-minute answer, then mark it up: a slash '
-                     'at every group boundary and capitals on the word that '
-                     'takes the beat in each group. Read it back and check the '
-                     'beats land where the meaning is.',
-                     'The place I would recommend / is a small town…',
+                     E['actSpeakBrief'],
+                     [E['actSpeak1'], E['actSpeak2'], E['actSpeak3']],
+                     E['actWriteKind'], E['actWriteBrief'],
+                     E['actPlaceholder'],
                      folder=F, bg=BG_ACT)
     )
-
-    import i18n_ieltspron as I
     s = D.assemble(TPL, OUT, slides, PALETTE,
                    'IELTS Pronunciation & Fluency (C1) | Forbes English',
                    I, langs=LANGS)

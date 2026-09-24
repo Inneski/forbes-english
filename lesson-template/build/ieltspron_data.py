@@ -88,7 +88,8 @@ CHUNK = [
                   'Only where the written sentence has a comma.'],
          correct=2, why='p7why'),
 
-    dict(stem='Long turn, no pauses at all, all two minutes. How does that read?',
+    dict(stem='A two-minute long turn with no pauses at all. How does it come '
+              'across?',
          options=['As fluency, and it is the strongest possible answer.',
                   'As accuracy, since no pause means no hesitation.',
                   'As confidence, which the examiner rewards directly.',
@@ -114,12 +115,17 @@ PAUSE = [
 
     dict(stem='Does a strong first-language accent lower the Pronunciation band?',
          options=['Yes &mdash; the band is built around a native speaker model.',
-                  'Yes &mdash; but only above band seven does the accent count.',
+                  # Was "only above band seven does the accent count": bands 8
+                  # and 9 do mention accent's effect on intelligibility, so it
+                  # was partly true. Fixed 2026-09-24.
+                  'Yes &mdash; any accent the examiner notices costs a band.',
                   'Not in itself &mdash; only in how easily you are followed.',
                   'No &mdash; pronunciation is only ever scored in Part 2.'],
          correct=2, why='p11why'),
 
-    dict(stem='Which habit costs the most marks under this criterion?',
+    # "Under this criterion", on the pausing slide, let a silence to find a
+    # word and very slow speech - both Fluency faults - read as right.
+    dict(stem='Which habit costs the most marks under Pronunciation?',
          options=['An accent the examiner can place immediately.',
                   'Occasional silence while you choose the next word.',
                   'Slower speech than a first-language speaker uses.',
@@ -139,11 +145,7 @@ SORT_ITEMS = [
     ('Mispronouncing the key word of your answer', 0),
     ('An accent the examiner can place at once', 1),
     ('A short silence between two thought groups', 1),
-    ('A calm pace, slower than a native speaker&rsquo;s', 1),
+    ('A steady pace, a little slower than a native speaker&rsquo;s', 1),
 ]
 
-SORT_WHY = ('The left column is about whether the listener can follow you; the '
-            'right column is about whether you sound like someone else. Only '
-            'the first is scored. A candidate who works on the accent and '
-            'leaves the stress flat has spent the practice on the column that '
-            'carries no marks.')
+SORT_WHY = 'The habits that cost marks all make you harder to follow: flat stress, a break inside a phrase, a key word the listener cannot catch. The free ones only make you sound less like a native speaker, and that is not scored. A candidate who works on the accent and leaves the stress flat has spent the practice where it earns nothing.'
