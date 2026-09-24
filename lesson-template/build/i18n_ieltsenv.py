@@ -1322,7 +1322,8 @@ T['ar'] = dict(
     mccEyebrow='النشاط 3 · الاستهلاك والنفايات',
     mccTitle='أيّ تلازم، وأيّ كلمة؟',
 
-    v1why='الصحيح <em>cut emissions</em> أو <em>reduce</em> them. الفعل يفرضه '
+    v1why='الصحيح <em>cut emissions</em> أو <bdi><em>reduce</em> them</bdi>. '
+          'الفعل يفرضه '
           'الاسم، والثلاثة الأخرى أفعال من لغة أخرى في ثوب إنجليزي، والممتحن '
           'يسمع كلًّا منها خطأً.',
     v2why='الصحيح <em>carbon footprint</em>. لا أحد يستنتجها، بل تُتعلَّم كاملة، '

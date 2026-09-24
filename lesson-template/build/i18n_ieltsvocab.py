@@ -1172,8 +1172,9 @@ T['ar'] = dict(
     t2Eyebrow='قبل أن تبدأ',
     t2Title='الوحدة هي التلازم، لا الكلمة',
     t2ah='الاسم يختار الفعل',
-    t2ab='في الإنجليزية تقول <em>conduct</em> research و<em>reach</em> a '
-         'decision و<em>draw</em> a conclusion. لا فعل منها نادر؛ الثلاثة ثابتة، '
+    t2ab='في الإنجليزية تقول <bdi><em>conduct</em> research</bdi> '
+         'و<bdi><em>reach</em> a decision</bdi> و<bdi><em>draw</em> a '
+         'conclusion</bdi>. لا فعل منها نادر؛ الثلاثة ثابتة، '
          'ولا واحد منها هو ما يعطيك إياه القاموس للاسم.',
     t2an='أكثر ما يكلّف الدرجات هو <em>make research</em> و<em>do a '
          'decision</em>.',

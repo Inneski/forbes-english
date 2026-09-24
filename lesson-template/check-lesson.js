@@ -18,6 +18,8 @@
  *   REVIEW   the results slide still fits when every question has been missed
  *   I18N     at least one language besides English is complete, and every data-i18n
  *            attribute resolves to a real key
+ *   BIDI     an English phrase inside Arabic text is not split round an <em>
+ *            or left in bare curly quotes, where it renders in the wrong order
  *   RESMSG   the results slide's message under the score resolves in every language
  *   HEAD     the page carries a real <title> and a generated SEO block —
  *            not the template's "Lesson Title" placeholder
@@ -288,6 +290,63 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
       if (unresolved.length) out.i18n.push({ kind: 'data-i18n with no English key', list: [...new Set(unresolved)] });
     } else {
       out.i18n.push({ kind: 'no UI_I18N found', list: [] });
+    }
+
+    // ── BIDI: English inside Arabic that the renderer will reorder ──────
+    // An Arabic page is dir="rtl", so every English phrase in it sits in a
+    // right-to-left paragraph. Inside a card or an explanation an <em> is its
+    // own unit (the template makes it an inline-block), and a unit between an
+    // Arabic word and an English one is laid out right to left: "لا <em>tend
+    // to arriving</em> late" drew as "late tend to arriving", "<em>conduct</em>
+    // research" as "research conduct". A curly-quoted English sentence goes
+    // the same way, its opening mark drawn at the far end. All measured on
+    // the IELTS decks, 2026-09-24; nothing else in this checker could see it,
+    // because every word is present and every key resolves. The fix is one
+    // <bdi> round the whole English run.
+    out.bidi = [];
+    if (typeof UI_I18N !== 'undefined' && typeof RTL_LANGS !== 'undefined') {
+      const RTL = /[֐-ࣿיִ-﷿ﹰ-﻿]/;
+      const LAT = /[A-Za-z]/;
+      const ENT = { ldquo: '“', rdquo: '”', lsquo: '‘', rsquo: '’',
+                    quot: '"', amp: '&', mdash: '—', ndash: '–', hellip: '…' };
+      const strongBefore = t => {
+        for (let i = t.length - 1; i >= 0; i--) {
+          if (RTL.test(t[i])) return 'R';
+          if (LAT.test(t[i])) return 'L';
+        }
+        return 'R';   // start of an RTL paragraph
+      };
+      const strongAfter = t => {
+        for (const ch of t) {
+          if (RTL.test(ch)) return 'R';
+          if (LAT.test(ch)) return 'L';
+        }
+        return 'R';
+      };
+      RTL_LANGS.forEach(code => Object.entries(UI_I18N[code] || {}).forEach(([key, v]) => {
+        if (typeof v !== 'string' || !RTL.test(v)) return;
+        // A <bdi> is already isolated: to its neighbours it is one neutral.
+        const s = v.replace(/<bdi\b[^>]*>[\s\S]*?<\/bdi>/g, '￼')
+                   .replace(/&([a-z]+);/g, (m, n) => ENT[n] || ' ');
+        const parts = s.split(/(<em>[\s\S]*?<\/em>)/);
+        const isEm = p => p.startsWith('<em>');
+        const text = p => isEm(p) ? '￼' : p.replace(/<[^>]+>/g, '');
+        parts.forEach((p, i) => {
+          const inner = isEm(p) ? p.slice(4, -5).replace(/<[^>]+>/g, '') : '';
+          if (!LAT.test(inner)) return;
+          const before = parts.slice(0, i).map(text).join('');
+          const after = parts.slice(i + 1).map(text).join('');
+          const tail = after.match(/^\s+[A-Za-z][\w'’-]*/);
+          const head = before.match(/[A-Za-z][\w'’-]*\s+$/);
+          if (tail && strongBefore(before) === 'R')
+            out.bidi.push(`${code}.${key}: "${inner}${tail[0]}" splits round an Arabic word`);
+          else if (head && strongAfter(after) === 'R')
+            out.bidi.push(`${code}.${key}: "${head[0]}${inner}" splits round an Arabic word`);
+        });
+        const plain = parts.map(p => isEm(p) ? p.slice(4, -5) : text(p)).join('');
+        const q = plain.match(/“[^”]*[A-Za-z][^”]*”/);
+        if (q) out.bidi.push(`${code}.${key}: ${q[0].slice(0, 48)} is quoted English outside a <bdi>`);
+      }));
     }
 
     // ── RESMSG: the results slide says something under the score ────
@@ -733,6 +792,14 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
   head('I18N');
   if (!r.i18n.length) ok(`${r.langs} complete language(s) offered; no partial ones; all data-i18n resolve`);
   else r.i18n.forEach(i => bad(`${i.kind}: ${i.list.slice(0, 8).join(', ')}${i.list.length > 8 ? ` +${i.list.length - 8} more` : ''}`));
+
+  head('BIDI');
+  if (!r.bidi.length) ok('English inside right-to-left text keeps its word order');
+  else {
+    r.bidi.slice(0, 12).forEach(b => bad(b));
+    if (r.bidi.length > 12) bad(`+${r.bidi.length - 12} more`);
+    console.log(DIM('          Wrap the whole English run, em and all, in <bdi>…</bdi>.'));
+  }
 
   head('RESMSG');
   if (!r.resmsg) ok('the results slide has a message under the score in every language');

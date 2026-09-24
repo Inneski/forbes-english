@@ -1095,16 +1095,18 @@ T['ar'] = dict(
     t1Eyebrow='قبل أن تبدأ',
     t1Title='الجزء 1 سأل عنك. الجزء 3 يسأل عن الناس.',
     t1ah='الشخص يتغيّر',
-    t1ab='في الجزء 1: &ldquo;Do you enjoy cooking?&rdquo; وفي الجزء 3: &ldquo;Why '
-         'do fewer people cook at home now?&rdquo; السؤال الثاني ليس عن مطبخك. '
+    t1ab='في الجزء 1: <bdi>&ldquo;Do you enjoy cooking?&rdquo;</bdi> وفي الجزء 3: '
+         '<bdi>&ldquo;Why do fewer people cook at home now?&rdquo;</bdi> السؤال '
+         'الثاني ليس عن مطبخك. '
          'أجب عن المجموعة.',
     t1an='إذا بقيت الإجابة قائمة بعد أن تُخرج نفسك منها، فهي إجابة للجزء 3.',
     t1bh='ثلاث عبارات للتعميم',
     t1bb='عبارات <em>tend to</em> و<em>on the whole</em> و<em>by and large</em> '
          'تقول كلٌّ منها «هذا ما يصحّ عادةً»، وتترك كلٌّ منها مجالًا للاستثناءات '
          'التي يوشك الممتحن أن يطرحها.',
-    t1bn='بعد <em>tend to</em> يأتي فعل مجرّد: people <em>tend to arrive</em> '
-         'late، لا <em>tend to arriving</em> late أبدًا.',
+    t1bn='بعد <em>tend to</em> يأتي فعل مجرّد: <bdi>people <em>tend to '
+         'arrive</em> late</bdi>، لا <bdi><em>tend to arriving</em> late</bdi> '
+         'أبدًا.',
     t1ch='حياتك تبقى مهمة',
     t1cb='مثال واحد، يأتي بعد الادّعاء العام، يُظهر أنك تعني ما تقول. وعبارة '
          '<em>A case in point is&hellip;</em> تُعلّمه على أنه توضيح لا الإجابة '
