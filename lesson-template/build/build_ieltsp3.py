@@ -38,6 +38,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import deck as D
+from ielts_langs import LANGS
 from ieltsp3_data import GENERAL, PUSHBACK, HEDGE, ALL, ORDER, ORDER_WHY
 
 TPL = 'lesson-template/lesson-template.html'
@@ -208,7 +209,7 @@ def build():
     import i18n_ieltsp3 as I
     s = D.assemble(TPL, OUT, slides, PALETTE,
                    'IELTS Speaking Part 3: The Discussion (C1) | Forbes English',
-                   I, langs=('en', 'de', 'es'))
+                   I, langs=LANGS)
     print('wrote %s — %d slides, %d questions, %d bytes'
           % (OUT, s.count('<section class="slide'), len(ALL) + 1, len(s)))
 
