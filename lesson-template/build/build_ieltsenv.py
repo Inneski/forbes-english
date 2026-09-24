@@ -33,13 +33,14 @@ roof of solar panels for renewables, an overflowing street bin for waste, a
 pegboard with tools hung by kind for the filing, and a bare bulb switched on
 to close.
 
-English, German and Spanish all complete.
+Ten languages, all complete (`ielts_langs.LANGS`).
 """
 import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import deck as D
+from ielts_langs import LANGS
 from ieltsenv_data import (EMISSIONS, RENEWABLES, WASTE, ALL,
                            SORT_BINS, SORT_ITEMS, SORT_WHY)
 
@@ -233,7 +234,7 @@ def build():
     import i18n_ieltsenv as I
     s = D.assemble(TPL, OUT, slides, PALETTE,
                    'IELTS Vocabulary: Environment and Energy (C1) | Forbes English',
-                   I, langs=('en', 'de', 'es'))
+                   I, langs=LANGS)
     print('wrote %s — %d slides, %d scored points, %d bytes'
           % (OUT, s.count('<section class="slide'),
              len(ALL) + len(SORT_ITEMS), len(s)))

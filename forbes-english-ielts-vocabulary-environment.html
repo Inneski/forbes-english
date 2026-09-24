@@ -97,6 +97,25 @@
   text-decoration: underline; text-underline-offset: 3px;
 }
 .audio-replay:hover { color: var(--text); }
+/* The same recording, docked in the deck bar on the question slides that
+   follow a data-carry audio slide, so it can be started after reading and
+   keeps its place while the learner answers. */
+.audio-dock {
+  display: flex; align-items: center; gap: 10px; flex: 0 1 auto; min-width: 0;
+  font-family: var(--font-mono); font-size: 12px; color: var(--text);
+}
+.audio-dock[hidden] { display: none; }
+.dock-play {
+  flex: 0 0 auto; width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid var(--accent); background: var(--scrim); color: var(--accent-bright);
+  cursor: pointer; font-size: 13px; line-height: 1; display: grid; place-items: center;
+}
+.dock-play:disabled { cursor: default; border-color: var(--border); color: var(--text-dim); }
+.dock-track { width: 120px; height: 4px; border-radius: 2px; background: var(--inset2); overflow: hidden; }
+.dock-fill { height: 100%; width: 0; background: var(--accent); transition: width .2s linear; }
+.dock-time, .dock-state { white-space: nowrap; }
+.dock-state { color: var(--text-dim); }
+.dock-state.done { color: var(--accent-bright); }
 
 /* ── Fixed tokens: identical in every lesson. Do not edit. ── */
 :root {
@@ -697,6 +716,21 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
 /* ── RTL ── */
 [dir="rtl"] .opt { text-align: right; }
 [dir="rtl"] .opt:hover:not(:disabled) { transform: translateX(-3px); }
+/* English on an Arabic page. The page is dir="rtl", so an English sentence
+   inherited a right-to-left base direction and drew its full stop and
+   question mark at the wrong end: ".We are not in a position…", "?Which
+   phrasing…" (measured on the negotiation deck, 2026-09-24). Everything that
+   holds the English being taught now takes its direction from its own first
+   letter. A context line or stem that a builder translates starts with
+   Arabic, so it stays right-to-left; explanations are untouched. */
+[dir="rtl"] :is(.q-ctx, .q-stem, .opt, .sort-item, .match-item, .chunk,
+                .bank-chip, .review-list li) { unicode-bidi: plaintext; }
+/* An English phrase quoted inside Arabic running text (a teach card, an
+   explanation) was cut by the line break and its halves reordered: "it is
+   often" closed one line and "claimed" opened the next. Each quoted phrase is
+   now one unit, set in its own direction; a long one wraps inside itself. */
+[dir="rtl"] :is(.card, .feedback, .prose) em { display: inline-block;
+                                             unicode-bidi: plaintext; }
 
 
 /* ── ACTIVATION ──────────────────────────────────────────────────── */
@@ -1677,6 +1711,39 @@ html[data-style="editorial"] .match-item,
 html[data-style="editorial"] .sort-item {
   background: var(--surface); border: 2px solid var(--border);
 }
+
+/* ── answered states, restated at the editorial specificity ──────────
+   The base rules above are `html[data-style="editorial"] .opt`, which is
+   (0,2,1). The default answered states are `.opt.wrong` / `.opt.correct`,
+   which are (0,2,0). So the base rule WON, and its `background: var(--surface)`
+   plus `border: 2px solid …` repainted every answered option back to neutral.
+
+   The engine was never broken: measured on the Watts deck, a clicked wrong
+   option carried `class="opt wrong"` and the feedback read "Not quite …",
+   while the computed colours of the wrong, the correct and an untouched
+   option were all identical — rgb(255,255,255) on rgb(190,208,203). A
+   learner got no red, no green, and no sight of the right answer.
+
+   Same trap for .match-item and .sort-item, whose base rule uses the `border`
+   shorthand and so also outranks their own .picked/.done/.miss border-colors.
+   Restating the states here is the whole fix; nothing in the engine changes. */
+html[data-style="editorial"] .opt.correct {
+  border-color: var(--ok);
+  background: color-mix(in srgb, var(--ok) 20%, var(--surface));
+}
+html[data-style="editorial"] .opt.wrong {
+  border-color: var(--no);
+  background: color-mix(in srgb, var(--no) 18%, var(--surface));
+}
+html[data-style="editorial"] .match-item.picked,
+html[data-style="editorial"] .sort-item.picked {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 22%, var(--surface));
+}
+html[data-style="editorial"] .match-item.done,
+html[data-style="editorial"] .sort-item.placed { border-color: var(--ok); }
+html[data-style="editorial"] .match-item.miss,
+html[data-style="editorial"] .sort-item.miss { border-color: var(--no); }
 /* The rule is a thing a builder PLACES, not something every heading grows.
    The source deck has it under the cover title and nowhere else; putting it
    on all thirty-two slides was mine and it was wrong. Emit
@@ -2464,13 +2531,706 @@ const UI_I18N = {
     resMid: 'Buen comienzo. Merece la pena otra vuelta.',
     resLow: 'Repasa las diapositivas de explicación y vuelve a intentarlo.'
   },
-  fr: {},
-  it: {},
-  pt: {},
-  ru: {},
-  ar: {},
-  zh: {},
-  ja: {},
+  fr: {
+    actEyebrow: 'Activation',
+    actPlaceholder: "The most effective way to cut emissions is…",
+    actSpeak1: "Chaque réponse contient au moins une association de la réserve, dite en entier &mdash; le verbe avec son nom, ou l’adjectif avec son nom.",
+    actSpeak2: "L’examinateur demande <em>why</em> après chaque réponse. La relance doit utiliser l’un des arguments qui venaient avec l’idée : qui paie, la fiabilité contre le coût, l’individu contre le producteur.",
+    actSpeak3: "Si le mot n’est pas dans la réserve, décrivez la chose en anglais simple plutôt que d’aller chercher un mot rare.",
+    actSpeakBrief: "À deux. L’un de vous est l’examinateur et pose trois questions de Part 3 sur l’environnement &mdash; si ce sont les gouvernements ou les individus qui doivent agir sur les émissions, si les renouvelables peuvent remplacer le charbon, si le recyclage en vaut la peine. L’autre répond en n’utilisant que des associations de la réserve. Inversez les rôles après trois questions.",
+    actSpeakKind: 'Discussion · en binôme',
+    actTitle: "Répondez avec la réserve",
+    actUse: "Utilisez-en au moins trois :",
+    actWriteBrief: "Écrivez un paragraphe de développement de Task 2 sur l’une des trois idées &mdash; émissions, renouvelables, ou consommation et déchets. Utilisez au moins cinq associations de la réserve et soulignez chacune. Puis dites quel argument le paragraphe défend.",
+    actWriteKind: "Écriture · 150–200 mots",
+    btnCheck: 'Vérifier',
+    btnCopied: 'Copié',
+    btnCopy: 'Copier',
+    btnNext: 'Suivant →',
+    btnRestart: 'Recommencer',
+    btnStart: 'Commencer →',
+    chipCount: "18 points",
+    chipFocus: "Speaking &amp; Writing Task 2",
+    chipLevel: "C1 · Avancé",
+    coverSub: "La première réserve thématique : trois idées, chacune avec ses associations et son argument déjà attaché",
+    coverTitle: "Environment <em>and Energy</em>",
+    fbAnswer: 'Réponse :',
+    fbCorrect: 'Correct.',
+    fbWrong: 'Pas tout à fait.',
+    mcaEyebrow: "Activité 1 · Les émissions",
+    mcaTitle: "Quelle association, et quel mot ?",
+    mcbEyebrow: "Activité 2 · Les renouvelables",
+    mcbTitle: "Quelle association, et quel mot ?",
+    mccEyebrow: "Activité 3 · Consommation et déchets",
+    mccTitle: "Quelle association, et quel mot ?",
+    resNext: 'Reconnaître la langue n’est que la moitié du travail. À vous de la produire →',
+    scoreLabel: 'Score',
+    slideOf: (a,b)=>`${a} / ${b}`,
+    sortBin1: "Émissions et énergie",
+    sortBin2: "Consommation et déchets",
+    sortEyebrow: "Activité 4 · Ranger par idée",
+    sortHint: "Faites glisser chacune dans une colonne &mdash; ou cliquez sur un élément, puis sur la colonne voulue.",
+    sortTitle: "Rangez les six associations",
+    sortWhy: "Rangée par idée, chaque association se trouve à côté de l’argument qu’elle sert. <em>Burn fossil fuels</em> et <em>phase out coal</em> sont déjà la moitié d’un paragraphe sur les émissions et l’abandon du charbon ; <em>a throwaway culture</em> et <em>excess packaging</em> sont la moitié d’un paragraphe sur la responsabilité du producteur. Rangées par ordre alphabétique, ce sont six mots, et sous la pression du temps vous n’auriez rien à dire avec eux.",
+    t1Eyebrow: "Idée 1 sur 3",
+    t1Title: "Les émissions : quatre associations et deux arguments",
+    t1ab: "Les émissions sont <em>cut</em> ou <em>reduced</em> ; un pays <em>burns fossil fuels</em> et rejette des <em>greenhouse gases</em> ; une ville mesure son <em>air quality</em>. C’est le nom qui choisit le verbe, et aucune des quatre associations n’est rare.",
+    t1ah: "On les <em>cut</em> &mdash; le verbe est figé",
+    t1an: "Quatre associations, apprises en bloc. Un <em>emissions</em> tout seul dans le carnet ne vaut aucune d’elles.",
+    t1bb: "Une personne ou une entreprise a une <em>carbon footprint</em>, et la réduire, c’est le rôle d’une <em>carbon tax</em>. Les deux sont figées : la marque qu’on laisse est une <em>footprint</em>, pas une trace, et le prélèvement est une <em>tax</em>, pas une amende.",
+    t1bh: "L’empreinte et la taxe",
+    t1bn: "Rangez-les ensemble. La taxe existe à cause de l’empreinte.",
+    t1cb: "Deux schémas portent la plupart des réponses de Part 3 sur ce thème. <strong>Qui paie</strong> : l’air pollué retombe sur des gens qui ne l’ont pas produit. <strong>Les objectifs contre l’application</strong> : un pays peut promettre de diviser ses émissions par deux sans jamais mettre une amende à une seule usine.",
+    t1ch: "L’argument qui vient avec",
+    t1cn: "Rangez l’idée, et le paragraphe est à moitié écrit avant même de lire la question.",
+    t2Eyebrow: "Idée 2 sur 3",
+    t2Title: "Les renouvelables : <em>generate</em>, <em>subsidise</em>, <em>phase out</em>",
+    t2ab: "Un <em>wind farm</em> ou un toit de <em>solar panels</em> <em>generates electricity</em>, et ce qu’il produit alimente le <em>national grid</em>. <em>Renewable energy</em> est le terme générique ; <em>renewables</em> tout seul est le nom qu’emploie une réponse de Part 3.",
+    t2ah: "<em>Generate</em>, pas <em>make</em>",
+    t2an: "Quatre associations et un nom générique. Tout est simple, tout est figé.",
+    t2bb: "Le soleil se couche et le vent tombe : l’approvisionnement est donc <em>intermittent</em>, il va et vient à son propre rythme. Plusieurs mots se ressemblent et veulent dire autre chose, et l’examinateur compte celui qui dit ce que vous vouliez dire.",
+    t2bh: "Le mot précis pour la faiblesse",
+    t2bn: "Un presque-juste qui sonne savant rapporte moins que le mot simple qui porte.",
+    t2cb: "Les gouvernements <em>subsidise</em> les renouvelables et <em>phase out coal</em>, et tout essai sur le sujet met en balance les deux mêmes paires. <strong>La fiabilité contre le coût</strong> : bon marché à produire, cher à stocker. <strong>La subvention contre le marché</strong> : les panneaux existent parce que quelqu’un a payé, et il faudra peut-être que quelqu’un continue de payer.",
+    t2ch: "L’argument qui vient avec",
+    t2cn: "<em>Energy security</em> est le troisième terme : un pays qui produit sa propre énergie ne peut pas être coupé.",
+    t3Eyebrow: "Idée 3 sur 3",
+    t3Title: "Consommation et déchets : l’association inclut la préposition",
+    t3ab: "Les ordures sont <em>sent to landfill</em> ; une commune publie ses <em>recycling rates</em> ; un client <em>cuts down on</em> <em>excess packaging</em>. La préposition fait partie de l’association : <em>landfill</em> ne prend pas d’article, et le verbe à particules en a deux, pas une.",
+    t3ah: "<em>Sent to landfill</em>, <em>cut down on</em>",
+    t3an: "Écrivez le tout. La moitié d’un verbe à particules, c’est raté.",
+    t3bb: "Une bouteille utilisée une fois, c’est du <em>single-use plastic</em> ; une société qui s’attend à tout jeter a une <em>throwaway culture</em> ; un dispositif qui vous paie pour rapporter la bouteille est un <em>deposit scheme</em>. Trois associations adjectif-nom, toutes de niveau C1, aucune rare.",
+    t3bh: "<em>Single-use</em>, <em>throwaway</em>, <em>deposit</em>",
+    t3bn: "<em>A throwaway culture</em> vaut plus que <em>consumerism</em> parce que c’est précis.",
+    t3cb: "Demandez qui doit changer, et la réponse est écrite. <strong>La responsabilité individuelle contre celle du producteur</strong> : un client peut changer ses <em>consumer habits</em>, mais l’emballage a été décidé avant son arrivée. <strong>La commodité contre le coût</strong> : le jetable est bon marché aujourd’hui et se paie plus tard.",
+    t3ch: "L’argument qui vient avec",
+    t3cn: "Les deux arguments fonctionnent dans les deux sens, et c’est ce qui les rend dignes d’être rangés.",
+    v10why: "<em>Single-use plastic</em>. L’adjectif prend un trait d’union et il est figé ; les autres veulent dire la même chose, et chacune trahit un rédacteur qui devine.",
+    v11why: "<em>Cut down on</em>. Un verbe à particules forme un bloc avec ses deux particules, et en changer une donne une expression qui n’existe pas.",
+    v12why: "La responsabilité du producteur avant celle de l’individu. On dit au client de changer alors que la décision qui compte a été prise au service emballage. L’argument et l’association <em>excess packaging</em> arrivent ensemble.",
+    v1why: "<em>Cut emissions</em>, ou <em>reduce</em> them. Le verbe est imposé par le nom ; les trois autres sont des verbes d’une autre langue déguisés en anglais, et l’examinateur entend chacun comme un raté.",
+    v2why: "Une <em>carbon footprint</em>. Personne ne la déduit &mdash; on l’apprend en bloc, et <em>step</em>, <em>trace</em> ou <em>fingerprint</em> annoncent chacun qu’on ne l’a pas apprise.",
+    v3why: "Qui paie. Le coût de l’air pollué retombe sur des gens qui ne l’ont pas produit &mdash; l’argument qui accompagne le plus souvent cette idée, et un schéma qu’une réponse de Part 3 peut reprendre tel quel.",
+    v4why: "Une <em>carbon tax</em>. Le prélèvement sur une tonne de CO&#8322; s’appelle une taxe dans tous les débats en anglais ; <em>fine</em>, <em>tariff</em> et <em>toll</em> désignent chacun autre chose.",
+    v5why: "<em>Generate electricity</em>. <em>Fabricate</em> et <em>manufacture</em> s’emploient pour des objets, et <em>originate</em> n’est un verbe que personne n’utilise pour l’énergie. Le verbe simple est celui que prend le nom.",
+    v6why: "<em>Intermittent</em> : il va et vient de lui-même. <em>Interrupted</em> veut dire que quelqu’un l’a arrêté, <em>infrequent</em> veut dire rarement, et <em>intermediate</em> est un autre mot qui se contente de sonner pareil.",
+    v7why: "<em>Phase out coal</em>. La particule fait partie du verbe, et seul <em>out</em> porte l’idée de mettre fin à quelque chose par étapes.",
+    v8why: "La subvention contre le marché. Le candidat concède que l’argent public a construit les éoliennes, puis se demande si le secteur pourra jamais s’en passer &mdash; une idée, les deux côtés, et c’est ce que récompense la Part 3.",
+    v9why: "<em>Sent to landfill</em>, sans article. Le verbe est <em>send</em> et le nom <em>landfill</em> ; les trois autres décrivent le même trou dans le sol avec des mots que l’anglais n’emploie jamais pour lui.",
+    wordCount: (n)=>`${n} ${n===1?'mot':'mots'}`,
+    branchLocked: 'Votre registre ne permet pas cette fin',
+    glossHide: 'Masquer',
+    glossShow: 'Traduire',
+    ledClues: 'Indices',
+    ledDp: 'DP',
+    ledTime: 'Temps',
+    actSpeakWord: 'Discussion',
+    actWriteWord: 'Écriture',
+    resPerfect: 'Impeccable. Tout est juste.',
+    resStrong: 'Beau travail — la règle est acquise.',
+    resMid: 'Bon début. Un autre passage en vaut la peine.',
+    resLow: 'Relisez les diapositives d’explication, puis réessayez.'
+  },
+  it: {
+    actEyebrow: 'Attivazione',
+    actPlaceholder: "The most effective way to cut emissions is…",
+    actSpeak1: "Ogni risposta contiene almeno una combinazione della banca, detta per intero &mdash; il verbo con il suo nome, o l’aggettivo con il suo nome.",
+    actSpeak2: "L’esaminatore chiede <em>why</em> dopo ogni risposta. Il seguito deve usare uno degli argomenti che arrivavano con l’idea: chi paga, affidabilità contro costo, individuo contro produttore.",
+    actSpeak3: "Se la parola non è nella banca, descrivi la cosa in inglese semplice invece di cercare una parola rara.",
+    actSpeakBrief: "In coppia. Uno di voi fa l’esaminatore e pone tre domande di Part 3 sull’ambiente &mdash; se sulle emissioni debbano agire i governi o gli individui, se le rinnovabili possano sostituire il carbone, se il riciclo valga la fatica. L’altro risponde usando solo combinazioni della banca. Dopo tre domande vi scambiate i ruoli.",
+    actSpeakKind: 'Discussione · in coppia',
+    actTitle: "Rispondi con la banca",
+    actUse: "Usane almeno tre:",
+    actWriteBrief: "Scrivi un paragrafo centrale di Task 2 su una delle tre idee &mdash; emissioni, rinnovabili, o consumi e rifiuti. Usa almeno cinque combinazioni della banca e sottolineale tutte. Poi di’ quale argomento sostiene il paragrafo.",
+    actWriteKind: "Scrittura · 150–200 parole",
+    btnCheck: 'Verifica',
+    btnCopied: 'Copiato',
+    btnCopy: 'Copia',
+    btnNext: 'Avanti →',
+    btnRestart: 'Ricomincia',
+    btnStart: 'Inizia →',
+    chipCount: "18 punti",
+    chipFocus: "Speaking e Writing Task 2",
+    chipLevel: "C1 · Avanzato",
+    coverSub: "La prima banca tematica: tre idee, ognuna con le sue combinazioni e il suo argomento già attaccato",
+    coverTitle: "Environment <em>and Energy</em>",
+    fbAnswer: 'Risposta:',
+    fbCorrect: 'Corretto.',
+    fbWrong: 'Non proprio.',
+    mcaEyebrow: "Attività 1 · Le emissioni",
+    mcaTitle: "Quale combinazione, e quale parola?",
+    mcbEyebrow: "Attività 2 · Le rinnovabili",
+    mcbTitle: "Quale combinazione, e quale parola?",
+    mccEyebrow: "Attività 3 · Consumi e rifiuti",
+    mccTitle: "Quale combinazione, e quale parola?",
+    resNext: 'Riconoscere la lingua è solo metà del lavoro. Ora producila →',
+    scoreLabel: 'Punteggio',
+    slideOf: (a,b)=>`${a} / ${b}`,
+    sortBin1: "Emissioni ed energia",
+    sortBin2: "Consumi e rifiuti",
+    sortEyebrow: "Attività 4 · Archiviare per idee",
+    sortHint: "Trascina ciascuna in una colonna &mdash; oppure clicca su un elemento e poi sulla colonna che vuoi.",
+    sortTitle: "Archivia le sei combinazioni",
+    sortWhy: "Archiviata per idea, ogni combinazione sta accanto all’argomento che serve. <em>Burn fossil fuels</em> e <em>phase out coal</em> sono già mezzo paragrafo sulle emissioni e sull’abbandono del carbone; <em>a throwaway culture</em> ed <em>excess packaging</em> sono mezzo paragrafo sulla responsabilità del produttore. In ordine alfabetico sono sei parole, e sotto pressione non avresti niente da dire con esse.",
+    t1Eyebrow: "Idea 1 di 3",
+    t1Title: "Le emissioni: quattro combinazioni e due argomenti",
+    t1ab: "Le emissioni si <em>cut</em> o si <em>reduce</em>; un paese <em>burns fossil fuels</em> e rilascia <em>greenhouse gases</em>; una città misura la sua <em>air quality</em>. Il verbo lo sceglie il nome, e nessuna delle quattro è rara.",
+    t1ah: "Si <em>cut</em> &mdash; il verbo è fisso",
+    t1an: "Quattro combinazioni, imparate intere. Un <em>emissions</em> da solo sul quaderno non ne vale nessuna.",
+    t1bb: "Una persona o un’azienda ha una <em>carbon footprint</em>, e ridurla è lo scopo di una <em>carbon tax</em>. Entrambe sono fisse: il segno che lasci è una <em>footprint</em>, non una traccia, e il prelievo è una <em>tax</em>, non una multa.",
+    t1bh: "L’impronta e la tassa",
+    t1bn: "Archiviale insieme. La tassa esiste a causa dell’impronta.",
+    t1cb: "Due schemi reggono la maggior parte delle risposte di Part 3 su questo tema. <strong>Chi paga</strong>: l’aria sporca ricade su persone che non l’hanno prodotta. <strong>Obiettivi contro controlli</strong>: un paese può promettere di dimezzare le emissioni e non multare mai una sola fabbrica.",
+    t1ch: "L’argomento che arriva con lei",
+    t1cn: "Archivia l’idea, e il paragrafo è scritto a metà prima ancora di leggere la domanda.",
+    t2Eyebrow: "Idea 2 di 3",
+    t2Title: "Le rinnovabili: <em>generate</em>, <em>subsidise</em>, <em>phase out</em>",
+    t2ab: "Un <em>wind farm</em> o un tetto di <em>solar panels</em> <em>generates electricity</em>, e ciò che produce alimenta il <em>national grid</em>. <em>Renewable energy</em> è il termine ombrello; <em>renewables</em> da solo è il nome che usa una risposta di Part 3.",
+    t2ah: "<em>Generate</em>, non <em>make</em>",
+    t2an: "Quattro combinazioni e un nome ombrello. Tutto semplice, tutto fisso.",
+    t2bb: "Il sole tramonta e il vento cala, quindi la fornitura è <em>intermittent</em>: va e viene con i suoi tempi. Diverse parole suonano simili e vogliono dire altro, e l’esaminatore conta quella che dice ciò che intendevi.",
+    t2bh: "La parola precisa per il punto debole",
+    t2bn: "Un quasi giusto che suona avanzato vale meno della parola semplice che arriva a segno.",
+    t2cb: "I governi <em>subsidise</em> le rinnovabili e <em>phase out coal</em>, e ogni saggio sul tema mette sulla bilancia le stesse due coppie. <strong>Affidabilità contro costo</strong>: economiche da produrre, care da immagazzinare. <strong>Sussidio contro mercato</strong>: i pannelli esistono perché qualcuno ha pagato, e forse serve che qualcuno continui a pagare.",
+    t2ch: "L’argomento che arriva con lei",
+    t2cn: "<em>Energy security</em> è il terzo termine: un paese che produce la propria energia non può essere tagliato fuori.",
+    t3Eyebrow: "Idea 3 di 3",
+    t3Title: "Consumi e rifiuti: la combinazione comprende la preposizione",
+    t3ab: "I rifiuti sono <em>sent to landfill</em>; un comune pubblica i suoi <em>recycling rates</em>; un cliente <em>cuts down on</em> <em>excess packaging</em>. La preposizione fa parte della combinazione: <em>landfill</em> non vuole l’articolo, e il phrasal verb ha due particelle, non una.",
+    t3ah: "<em>Sent to landfill</em>, <em>cut down on</em>",
+    t3an: "Scrivi tutto. Mezzo phrasal verb è un errore.",
+    t3bb: "Una bottiglia usata una volta è <em>single-use plastic</em>; una società che si aspetta di buttare tutto ha una <em>throwaway culture</em>; un sistema che ti paga per riportare la bottiglia è un <em>deposit scheme</em>. Tre combinazioni aggettivo-nome, tutte di livello C1, nessuna rara.",
+    t3bh: "<em>Single-use</em>, <em>throwaway</em>, <em>deposit</em>",
+    t3bn: "<em>A throwaway culture</em> vale più di <em>consumerism</em> perché è precisa.",
+    t3cb: "Chiediti chi deve cambiare e la risposta è scritta. <strong>Responsabilità individuale contro responsabilità del produttore</strong>: un cliente può cambiare le sue <em>consumer habits</em>, ma l’imballaggio è stato deciso prima che arrivasse. <strong>Comodità contro costo</strong>: l’usa e getta costa poco oggi e si paga dopo.",
+    t3ch: "L’argomento che arriva con lei",
+    t3cn: "Entrambi gli argomenti funzionano nei due sensi, ed è questo che li rende degni di essere archiviati.",
+    v10why: "<em>Single-use plastic</em>. L’aggettivo ha il trattino ed è fisso; le alternative vogliono dire la stessa cosa, e ognuna segnala chi scrive tirando a indovinare.",
+    v11why: "<em>Cut down on</em>. Un phrasal verb è un’unità con entrambe le particelle, e cambiarne una dà un’espressione che non esiste.",
+    v12why: "La responsabilità del produttore prima di quella dell’individuo. Al cliente si dice di cambiare mentre la decisione che conta è stata presa nel reparto imballaggi. L’argomento e la combinazione <em>excess packaging</em> arrivano insieme.",
+    v1why: "<em>Cut emissions</em>, o <em>reduce</em> them. Il verbo lo impone il nome; gli altri tre sono verbi di un’altra lingua travestiti da inglese, e l’esaminatore li sente tutti come errori.",
+    v2why: "Una <em>carbon footprint</em>. Nessuno la ricava &mdash; si impara intera, e <em>step</em>, <em>trace</em> o <em>fingerprint</em> dichiarano ciascuno che non la si è imparata.",
+    v3why: "Chi paga. Il costo dell’aria inquinata ricade su persone che non l’hanno prodotta &mdash; l’argomento che accompagna più spesso questa idea, e uno schema che una risposta di Part 3 può prendere in blocco.",
+    v4why: "Una <em>carbon tax</em>. Il prelievo su una tonnellata di CO&#8322; si chiama tassa in ogni dibattito in inglese; <em>fine</em>, <em>tariff</em> e <em>toll</em> indicano ciascuno un’altra cosa.",
+    v5why: "<em>Generate electricity</em>. <em>Fabricate</em> e <em>manufacture</em> valgono per gli oggetti, e <em>originate</em> non è un verbo che nessuno usa per l’energia. Il verbo semplice è quello che il nome vuole.",
+    v6why: "<em>Intermittent</em>: va e viene da sé. <em>Interrupted</em> vuol dire che qualcuno l’ha fermato, <em>infrequent</em> vuol dire raramente, e <em>intermediate</em> è un’altra parola che si limita a suonare simile.",
+    v7why: "<em>Phase out coal</em>. La particella fa parte del verbo, e solo <em>out</em> porta il senso di porre fine a qualcosa per gradi.",
+    v8why: "Sussidio contro mercato. Il candidato concede che il denaro pubblico ha costruito le turbine, poi si chiede se il settore potrà mai farne a meno &mdash; un’idea, entrambi i lati, ed è ciò che la Part 3 premia.",
+    v9why: "<em>Sent to landfill</em>, senza articolo. Il verbo è <em>send</em> e il nome <em>landfill</em>; le altre tre descrivono la stessa buca nel terreno con parole che l’inglese non usa mai per indicarla.",
+    wordCount: (n)=>`${n} ${n===1?'parola':'parole'}`,
+    branchLocked: 'Il tuo registro non consente questo finale',
+    glossHide: 'Nascondi',
+    glossShow: 'Traduci',
+    ledClues: 'Indizi',
+    ledDp: 'DP',
+    ledTime: 'Tempo',
+    actSpeakWord: 'Discussione',
+    actWriteWord: 'Scrittura',
+    resPerfect: 'Impeccabile. Tutte giuste.',
+    resStrong: 'Ottimo lavoro — la regola è entrata.',
+    resMid: 'Buon inizio. Vale la pena fare un altro giro.',
+    resLow: 'Rivedi le diapositive di spiegazione, poi riprova.'
+  },
+  pt: {
+    actEyebrow: 'Ativação',
+    actPlaceholder: "The most effective way to cut emissions is…",
+    actSpeak1: "Cada resposta tem pelo menos uma combinação do banco, dita inteira &mdash; o verbo com o seu nome, ou o adjetivo com o seu nome.",
+    actSpeak2: "O examinador pergunta <em>why</em> depois de cada resposta. A continuação tem de usar um dos argumentos que vinham com a ideia: quem paga, fiabilidade contra custo, indivíduo contra produtor.",
+    actSpeak3: "Se a palavra não está no banco, descreve a coisa em inglês simples em vez de ires buscar uma palavra rara.",
+    actSpeakBrief: "Em pares. Um de vocês é o examinador e faz três perguntas de Part 3 sobre o ambiente &mdash; se devem ser os governos ou as pessoas a agir sobre as emissões, se as renováveis podem substituir o carvão, se a reciclagem vale o esforço. O outro responde usando só combinações do banco. Troquem ao fim de três.",
+    actSpeakKind: 'Discussão · a pares',
+    actTitle: "Responde com o banco",
+    actUse: "Usa pelo menos três:",
+    actWriteBrief: "Escreve um parágrafo de desenvolvimento de Task 2 sobre uma das três ideias &mdash; emissões, renováveis, ou consumo e resíduos. Usa pelo menos cinco combinações do banco e sublinha cada uma. Depois diz que argumento o parágrafo defende.",
+    actWriteKind: "Escrita · 150–200 palavras",
+    btnCheck: 'Verificar',
+    btnCopied: 'Copiado',
+    btnCopy: 'Copiar',
+    btnNext: 'Seguinte →',
+    btnRestart: 'Recomeçar',
+    btnStart: 'Começar →',
+    chipCount: "18 pontos",
+    chipFocus: "Speaking e Writing Task 2",
+    chipLevel: "C1 · Avançado",
+    coverSub: "O primeiro banco temático: três ideias, cada uma com as suas combinações e o seu argumento já agarrado",
+    coverTitle: "Environment <em>and Energy</em>",
+    fbAnswer: 'Resposta:',
+    fbCorrect: 'Correto.',
+    fbWrong: 'Não exatamente.',
+    mcaEyebrow: "Atividade 1 · As emissões",
+    mcaTitle: "Que combinação, e que palavra?",
+    mcbEyebrow: "Atividade 2 · As renováveis",
+    mcbTitle: "Que combinação, e que palavra?",
+    mccEyebrow: "Atividade 3 · Consumo e resíduos",
+    mccTitle: "Que combinação, e que palavra?",
+    resNext: 'Reconhecer a linguagem é metade do trabalho. Agora produza-a →',
+    scoreLabel: 'Pontuação',
+    slideOf: (a,b)=>`${a} / ${b}`,
+    sortBin1: "Emissões e energia",
+    sortBin2: "Consumo e resíduos",
+    sortEyebrow: "Atividade 4 · Arquivar por ideias",
+    sortHint: "Arrasta cada uma para uma coluna &mdash; ou clica num elemento e depois na coluna que quiseres.",
+    sortTitle: "Arquiva as seis combinações",
+    sortWhy: "Arquivada por ideia, cada combinação fica ao lado do argumento que serve. <em>Burn fossil fuels</em> e <em>phase out coal</em> já são meio parágrafo sobre as emissões e o abandono do carvão; <em>a throwaway culture</em> e <em>excess packaging</em> são meio parágrafo sobre a responsabilidade do produtor. Por ordem alfabética são seis palavras, e com o tempo a apertar não terias nada a dizer com elas.",
+    t1Eyebrow: "Ideia 1 de 3",
+    t1Title: "As emissões: quatro combinações e dois argumentos",
+    t1ab: "As emissões são <em>cut</em> ou <em>reduced</em>; um país <em>burns fossil fuels</em> e liberta <em>greenhouse gases</em>; uma cidade mede a sua <em>air quality</em>. É o nome que escolhe o verbo, e nenhuma das quatro combinações é rara.",
+    t1ah: "Fazem-se <em>cut</em> &mdash; o verbo é fixo",
+    t1an: "Quatro combinações, aprendidas inteiras. Um <em>emissions</em> sozinho no caderno não vale nenhuma delas.",
+    t1bb: "Uma pessoa ou uma empresa tem uma <em>carbon footprint</em>, e reduzi-la é para isso que serve uma <em>carbon tax</em>. As duas são fixas: a marca que deixas é uma <em>footprint</em>, não um rasto, e a cobrança é uma <em>tax</em>, não uma multa.",
+    t1bh: "A pegada e o imposto",
+    t1bn: "Arquiva-as juntas. O imposto existe por causa da pegada.",
+    t1cb: "Dois esquemas sustentam a maioria das respostas de Part 3 neste tema. <strong>Quem paga</strong>: o ar poluído cai sobre pessoas que não o produziram. <strong>Metas contra fiscalização</strong>: um país pode prometer reduzir as emissões para metade e nunca multar uma única fábrica.",
+    t1ch: "O argumento que vem com ela",
+    t1cn: "Arquiva a ideia, e o parágrafo fica meio escrito antes de leres a pergunta.",
+    t2Eyebrow: "Ideia 2 de 3",
+    t2Title: "As renováveis: <em>generate</em>, <em>subsidise</em>, <em>phase out</em>",
+    t2ab: "Um <em>wind farm</em> ou um telhado de <em>solar panels</em> <em>generates electricity</em>, e o que produz alimenta o <em>national grid</em>. <em>Renewable energy</em> é o termo geral; <em>renewables</em> sozinho é o nome que uma resposta de Part 3 usa.",
+    t2ah: "<em>Generate</em>, não <em>make</em>",
+    t2an: "Quatro combinações e um nome geral. Tudo simples, tudo fixo.",
+    t2bb: "O sol põe-se e o vento abranda, por isso o abastecimento é <em>intermittent</em>: vai e vem ao seu próprio ritmo. Várias palavras soam parecidas e querem dizer outra coisa, e o examinador conta a que diz o que tu querias dizer.",
+    t2bh: "A palavra exata para o ponto fraco",
+    t2bn: "Um quase certo que soa avançado vale menos do que a palavra simples que acerta.",
+    t2cb: "Os governos <em>subsidise</em> as renováveis e <em>phase out coal</em>, e todos os ensaios sobre o tema pesam os mesmos dois pares. <strong>Fiabilidade contra custo</strong>: baratas de produzir, caras de armazenar. <strong>Subsídio contra mercado</strong>: os painéis existem porque alguém pagou, e talvez precisem que alguém continue a pagar.",
+    t2ch: "O argumento que vem com ela",
+    t2cn: "<em>Energy security</em> é o terceiro termo: um país que produz a sua própria energia não pode ficar sem ela por decisão de outro.",
+    t3Eyebrow: "Ideia 3 de 3",
+    t3Title: "Consumo e resíduos: a combinação inclui a preposição",
+    t3ab: "O lixo é <em>sent to landfill</em>; uma câmara municipal divulga as suas <em>recycling rates</em>; um consumidor <em>cuts down on</em> <em>excess packaging</em>. A preposição faz parte da combinação: <em>landfill</em> não leva artigo, e o phrasal verb tem duas partículas, não uma.",
+    t3ah: "<em>Sent to landfill</em>, <em>cut down on</em>",
+    t3an: "Escreve tudo. Meio phrasal verb é um erro.",
+    t3bb: "Uma garrafa usada uma vez é <em>single-use plastic</em>; uma sociedade que espera deitar tudo fora tem uma <em>throwaway culture</em>; um sistema que te paga para devolveres a garrafa é um <em>deposit scheme</em>. Três combinações adjetivo-nome, todas de nível C1, nenhuma rara.",
+    t3bh: "<em>Single-use</em>, <em>throwaway</em>, <em>deposit</em>",
+    t3bn: "<em>A throwaway culture</em> vale mais do que <em>consumerism</em> porque é precisa.",
+    t3cb: "Pergunta quem deve mudar e a resposta está escrita. <strong>Responsabilidade individual contra a do produtor</strong>: um consumidor pode mudar os seus <em>consumer habits</em>, mas a embalagem foi decidida antes de ele chegar. <strong>Conveniência contra custo</strong>: o descartável é barato agora e paga-se depois.",
+    t3ch: "O argumento que vem com ela",
+    t3cn: "Os dois argumentos funcionam nos dois sentidos, e é isso que os torna dignos de ser arquivados.",
+    v10why: "<em>Single-use plastic</em>. O adjetivo leva hífen e é fixo; as alternativas querem dizer o mesmo, e cada uma denuncia quem está a adivinhar.",
+    v11why: "<em>Cut down on</em>. Um phrasal verb é uma unidade com as duas partículas, e trocar qualquer uma dá uma expressão que não existe.",
+    v12why: "A responsabilidade do produtor antes da individual. Diz-se ao consumidor que mude, quando a decisão que conta foi tomada no departamento de embalagens. O argumento e a combinação <em>excess packaging</em> chegam juntos.",
+    v1why: "<em>Cut emissions</em>, ou <em>reduce</em> them. O verbo é imposto pelo nome; os outros três são verbos de outra língua vestidos de inglês, e o examinador ouve cada um deles como um erro.",
+    v2why: "Uma <em>carbon footprint</em>. Ninguém a deduz &mdash; aprende-se inteira, e <em>step</em>, <em>trace</em> ou <em>fingerprint</em> anunciam, cada um, que não foi aprendida.",
+    v3why: "Quem paga. O custo do ar poluído cai sobre pessoas que não o produziram &mdash; o argumento que mais vezes acompanha esta ideia, e um esquema que uma resposta de Part 3 pode usar inteiro.",
+    v4why: "Uma <em>carbon tax</em>. A cobrança por tonelada de CO&#8322; chama-se imposto em todos os debates em inglês; <em>fine</em>, <em>tariff</em> e <em>toll</em> designam, cada um, outra coisa.",
+    v5why: "<em>Generate electricity</em>. <em>Fabricate</em> e <em>manufacture</em> usam-se para objetos, e <em>originate</em> não é um verbo que alguém use para energia. O verbo simples é o que o nome leva.",
+    v6why: "<em>Intermittent</em>: vai e vem por si. <em>Interrupted</em> quer dizer que alguém o parou, <em>infrequent</em> quer dizer raramente, e <em>intermediate</em> é outra palavra que só soa parecida.",
+    v7why: "<em>Phase out coal</em>. A partícula faz parte do verbo, e só <em>out</em> traz o sentido de acabar com algo por etapas.",
+    v8why: "Subsídio contra mercado. O candidato admite que o dinheiro público construiu as turbinas e depois pergunta se o setor alguma vez passará sem ele &mdash; uma ideia, os dois lados, que é o que a Part 3 premeia.",
+    v9why: "<em>Sent to landfill</em>, sem artigo. O verbo é <em>send</em> e o nome é <em>landfill</em>; as outras três descrevem o mesmo buraco no chão com palavras que o inglês nunca usa para ele.",
+    wordCount: (n)=>`${n} ${n===1?'palavra':'palavras'}`,
+    branchLocked: 'O teu registo não permite este final',
+    glossHide: 'Ocultar',
+    glossShow: 'Traduzir',
+    ledClues: 'Pistas',
+    ledDp: 'DP',
+    ledTime: 'Tempo',
+    actSpeakWord: 'Discussão',
+    actWriteWord: 'Escrita',
+    resPerfect: 'Impecável. Todas certas.',
+    resStrong: 'Excelente trabalho — a regra ficou.',
+    resMid: 'Bom começo. Vale a pena mais uma volta.',
+    resLow: 'Revê os diapositivos de explicação e tenta outra vez.'
+  },
+  ru: {
+    actEyebrow: 'Практика',
+    actPlaceholder: "The most effective way to cut emissions is…",
+    actSpeak1: "Каждый ответ содержит хотя бы одно сочетание из запаса, сказанное целиком, &mdash; глагол со своим существительным или прилагательное со своим существительным.",
+    actSpeak2: "После каждого ответа экзаменатор спрашивает <em>why</em>. В продолжении нужно использовать один из аргументов, пришедших с идеей: кто платит, надёжность против стоимости, личность против производителя.",
+    actSpeak3: "Если слова нет в запасе, опишите предмет простым английским, а не тянитесь за редким словом.",
+    actSpeakBrief: "В парах. Один из вас &mdash; экзаменатор, он задаёт три вопроса Part 3 об окружающей среде: кто должен бороться с выбросами, правительства или люди; могут ли возобновляемые источники заменить уголь; стоит ли переработка усилий. Другой отвечает, используя только сочетания из запаса. После трёх вопросов поменяйтесь.",
+    actSpeakKind: 'Обсуждение · в парах',
+    actTitle: "Отвечайте из запаса",
+    actUse: "Используйте хотя бы три:",
+    actWriteBrief: "Напишите один абзац основной части Task 2 по одной из трёх идей &mdash; выбросы, возобновляемая энергия или потребление и отходы. Используйте не меньше пяти сочетаний из запаса и подчеркните каждое. Затем скажите, какой аргумент отстаивает абзац.",
+    actWriteKind: "Письмо · 150–200 слов",
+    btnCheck: 'Проверить',
+    btnCopied: 'Скопировано',
+    btnCopy: 'Копировать',
+    btnNext: 'Далее →',
+    btnRestart: 'Начать заново',
+    btnStart: 'Начать →',
+    chipCount: "18 баллов",
+    chipFocus: "Speaking и Writing Task 2",
+    chipLevel: "C1 · Продвинутый",
+    coverSub: "Первый тематический запас: три идеи, у каждой свои сочетания и готовый аргумент",
+    coverTitle: "Environment <em>and Energy</em>",
+    fbAnswer: 'Ответ:',
+    fbCorrect: 'Верно.',
+    fbWrong: 'Не совсем.',
+    mcaEyebrow: "Задание 1 · Выбросы",
+    mcaTitle: "Какое сочетание и какое слово?",
+    mcbEyebrow: "Задание 2 · Возобновляемая энергия",
+    mcbTitle: "Какое сочетание и какое слово?",
+    mccEyebrow: "Задание 3 · Потребление и отходы",
+    mccTitle: "Какое сочетание и какое слово?",
+    resNext: 'Узнавать язык — половина дела. Теперь используйте его сами →',
+    scoreLabel: 'Счёт',
+    slideOf: (a,b)=>`${a} / ${b}`,
+    sortBin1: "Выбросы и энергия",
+    sortBin2: "Потребление и отходы",
+    sortEyebrow: "Задание 4 · Храним по идеям",
+    sortHint: "Перетащите каждое в столбец &mdash; или нажмите на него, а затем на нужный столбец.",
+    sortTitle: "Разложите шесть сочетаний",
+    sortWhy: "Если хранить по идеям, каждое сочетание лежит рядом с аргументом, которому служит. <em>Burn fossil fuels</em> и <em>phase out coal</em> &mdash; это уже пол-абзаца о выбросах и отказе от угля; <em>a throwaway culture</em> и <em>excess packaging</em> &mdash; пол-абзаца об ответственности производителя. По алфавиту это шесть слов, и под давлением времени вам нечего было бы с ними сказать.",
+    t1Eyebrow: "Идея 1 из 3",
+    t1Title: "Выбросы: четыре сочетания и два аргумента",
+    t1ab: "Выбросы <em>cut</em> или <em>reduce</em>; страна <em>burns fossil fuels</em> и выделяет <em>greenhouse gases</em>; город измеряет свою <em>air quality</em>. Глагол выбирает существительное, и ни одно из четырёх сочетаний не редкое.",
+    t1ah: "Их <em>cut</em> &mdash; глагол закреплён",
+    t1an: "Четыре сочетания, выученные целиком. Голое <em>emissions</em> в тетради не стоит ни одного из них.",
+    t1bb: "У человека или компании есть <em>carbon footprint</em>, и уменьшать его &mdash; задача <em>carbon tax</em>. Оба сочетания устойчивы: оставленная отметка &mdash; это <em>footprint</em>, а не trace, а сбор &mdash; это <em>tax</em>, а не штраф.",
+    t1bh: "След и налог",
+    t1bn: "Храните их вместе. Налог существует из-за следа.",
+    t1cb: "На этой теме большинство ответов Part 3 держатся на двух схемах. <strong>Кто платит</strong>: грязный воздух достаётся тем, кто его не загрязнял. <strong>Цели против контроля</strong>: страна может пообещать вдвое сократить выбросы и так и не оштрафовать ни одного завода.",
+    t1ch: "Аргумент, который идёт в комплекте",
+    t1cn: "Сохраните идею &mdash; и абзац наполовину написан ещё до того, как вы прочитали вопрос.",
+    t2Eyebrow: "Идея 2 из 3",
+    t2Title: "Возобновляемая энергия: <em>generate</em>, <em>subsidise</em>, <em>phase out</em>",
+    t2ab: "<em>Wind farm</em> или крыша с <em>solar panels</em> <em>generates electricity</em>, и то, что вырабатывается, поступает в <em>national grid</em>. <em>Renewable energy</em> &mdash; общий термин; <em>renewables</em> отдельно &mdash; существительное, которое использует ответ Part 3.",
+    t2ah: "<em>Generate</em>, а не <em>make</em>",
+    t2an: "Четыре сочетания и одно общее существительное. Всё просто, всё устойчиво.",
+    t2bb: "Солнце садится, ветер стихает, поэтому снабжение <em>intermittent</em>: оно то есть, то нет, по собственному графику. Несколько слов звучат похоже и значат другое, а экзаменатор засчитывает то, которое значит именно то, что вы хотели сказать.",
+    t2bh: "Точное слово для слабого места",
+    t2bn: "Почти-попадание, звучащее умно, стоит меньше простого слова в цель.",
+    t2cb: "Правительства <em>subsidise</em> возобновляемую энергию и <em>phase out coal</em>, и каждое эссе на эту тему взвешивает одни и те же две пары. <strong>Надёжность против стоимости</strong>: вырабатывать дёшево, хранить дорого. <strong>Субсидии против рынка</strong>: панели существуют, потому что кто-то заплатил, и, возможно, кому-то придётся платить и дальше.",
+    t2ch: "Аргумент, который идёт в комплекте",
+    t2cn: "<em>Energy security</em> &mdash; третий термин: страну, которая сама вырабатывает энергию, нельзя от неё отрезать.",
+    t3Eyebrow: "Идея 3 из 3",
+    t3Title: "Потребление и отходы: предлог входит в сочетание",
+    t3ab: "Мусор <em>sent to landfill</em>; муниципалитет сообщает свои <em>recycling rates</em>; покупатель <em>cuts down on</em> <em>excess packaging</em>. Предлог &mdash; часть сочетания: <em>landfill</em> идёт без артикля, а у фразового глагола две частицы, а не одна.",
+    t3ah: "<em>Sent to landfill</em>, <em>cut down on</em>",
+    t3an: "Пишите целиком. Половина фразового глагола &mdash; это ошибка.",
+    t3bb: "Бутылка на один раз &mdash; это <em>single-use plastic</em>; общество, которое привыкло всё выбрасывать, имеет <em>throwaway culture</em>; схема, которая платит вам за возврат бутылки, &mdash; это <em>deposit scheme</em>. Три сочетания «прилагательное + существительное», все уровня C1, ни одного редкого.",
+    t3bh: "<em>Single-use</em>, <em>throwaway</em>, <em>deposit</em>",
+    t3bn: "<em>A throwaway culture</em> ценнее, чем <em>consumerism</em>, потому что точнее.",
+    t3cb: "Спросите, кто должен меняться, &mdash; и ответ готов. <strong>Личная ответственность против ответственности производителя</strong>: покупатель может изменить свои <em>consumer habits</em>, но упаковку выбрали до того, как он пришёл. <strong>Удобство против стоимости</strong>: одноразовое дёшево сейчас, а платить придётся потом.",
+    t3ch: "Аргумент, который идёт в комплекте",
+    t3cn: "Оба аргумента работают в обе стороны &mdash; поэтому их и стоит хранить.",
+    v10why: "<em>Single-use plastic</em>. Прилагательное пишется через дефис и закреплено; варианты значат то же самое, и каждый выдаёт автора, который угадывает.",
+    v11why: "<em>Cut down on</em>. Фразовый глагол &mdash; единое целое с обеими частицами, и замена любой из них даёт выражение, которого не существует.",
+    v12why: "Ответственность производителя важнее личной. Покупателю говорят измениться, а решение, которое имеет значение, приняли в отделе упаковки. Аргумент и сочетание <em>excess packaging</em> приходят вместе.",
+    v1why: "<em>Cut emissions</em> или <em>reduce</em> them. Глагол задан существительным; остальные три &mdash; глаголы другого языка в английской одежде, и экзаменатор слышит каждый как промах.",
+    v2why: "<em>Carbon footprint</em>. Его никто не выводит &mdash; его учат целиком, и <em>step</em>, <em>trace</em> или <em>fingerprint</em> сразу показывают, что не выучили.",
+    v3why: "Кто платит. Цена грязного воздуха ложится на тех, кто его не загрязнял, &mdash; это аргумент, с которым эта идея приходит чаще всего, и схема, которую ответ Part 3 может взять целиком.",
+    v4why: "<em>Carbon tax</em>. Сбор за тонну CO&#8322; в любой английской дискуссии называется налогом; <em>fine</em>, <em>tariff</em> и <em>toll</em> обозначают другое.",
+    v5why: "<em>Generate electricity</em>. <em>Fabricate</em> и <em>manufacture</em> &mdash; для предметов, а <em>originate</em> для энергии никто не использует. Простой глагол &mdash; тот, что требует существительное.",
+    v6why: "<em>Intermittent</em>: то появляется, то пропадает само по себе. <em>Interrupted</em> значит, что его кто-то остановил, <em>infrequent</em> &mdash; редко, а <em>intermediate</em> &mdash; другое слово, которое лишь похоже по звучанию.",
+    v7why: "<em>Phase out coal</em>. Частица &mdash; часть глагола, и только <em>out</em> несёт смысл поэтапного прекращения.",
+    v8why: "Субсидии против рынка. Кандидат признаёт, что турбины построены на государственные деньги, а потом спрашивает, сможет ли отрасль когда-нибудь без них обойтись, &mdash; одна идея, обе стороны, и именно это вознаграждает Part 3.",
+    v9why: "<em>Sent to landfill</em>, без артикля. Глагол &mdash; <em>send</em>, существительное &mdash; <em>landfill</em>; остальные три описывают ту же яму в земле словами, которыми английский её никогда не называет.",
+    wordCount: (n)=>{const a=n%10,b=n%100;return `${n} ${a===1&&b!==11?'слово':(a>=2&&a<=4&&(b<12||b>14))?'слова':'слов'}`},
+    branchLocked: 'Ваш журнал не допускает этот финал',
+    glossHide: 'Скрыть',
+    glossShow: 'Перевести',
+    ledClues: 'Улики',
+    ledDp: 'DP',
+    ledTime: 'Время',
+    actSpeakWord: 'Обсуждение',
+    actWriteWord: 'Письмо',
+    resPerfect: 'Безупречно. Всё верно.',
+    resStrong: 'Отличная работа — правило усвоено.',
+    resMid: 'Хорошее начало. Стоит пройти ещё раз.',
+    resLow: 'Вернитесь к слайдам с объяснением и попробуйте снова.'
+  },
+  ar: {
+    actEyebrow: 'التطبيق',
+    actPlaceholder: "The most effective way to cut emissions is…",
+    actSpeak1: "كل إجابة تحمل تلازمًا واحدًا على الأقل من الرصيد، يُقال كاملًا: الفعل مع اسمه، أو الصفة مع اسمها.",
+    actSpeak2: "يسأل الممتحن <em>why</em> بعد كل إجابة. ويجب أن تستخدم المتابعة إحدى الحجج التي جاءت مع الفكرة: من يدفع، أو الموثوقية مقابل التكلفة، أو الفرد مقابل المنتِج.",
+    actSpeak3: "إذا لم تكن الكلمة في الرصيد، فصِف الشيء بإنجليزية بسيطة بدل أن تمدّ يدك إلى كلمة نادرة.",
+    actSpeakBrief: "اعملا في ثنائي. أحدكما الممتحن ويطرح ثلاثة أسئلة من Part 3 عن البيئة: هل على الحكومات أم على الأفراد أن يتصرّفوا بشأن الانبعاثات، وهل تستطيع الطاقة المتجدّدة أن تحلّ محلّ الفحم، وهل تستحق إعادة التدوير الجهد. والآخر يجيب مستخدمًا تلازمات الرصيد وحدها. تبادلا الأدوار بعد ثلاثة أسئلة.",
+    actSpeakKind: 'نقاش · ثنائي',
+    actTitle: "أجب من الرصيد",
+    actUse: "استخدم ثلاثة منها على الأقل:",
+    actWriteBrief: "اكتب فقرة من صلب مقال Task 2 عن إحدى الأفكار الثلاث: الانبعاثات، أو الطاقة المتجدّدة، أو الاستهلاك والنفايات. استخدم خمسة تلازمات على الأقل من الرصيد وضع خطًّا تحت كل منها. ثم قل أيّ حجّة تقدّمها الفقرة.",
+    actWriteKind: "الكتابة · 150–200 كلمة",
+    btnCheck: 'تحقّق',
+    btnCopied: 'تم النسخ',
+    btnCopy: 'نسخ',
+    btnNext: 'التالي →',
+    btnRestart: 'ابدأ من جديد',
+    btnStart: 'ابدأ →',
+    chipCount: "18 نقطة",
+    chipFocus: "Speaking وWriting Task 2",
+    chipLevel: "C1 · متقدّم",
+    coverSub: "الرصيد الموضوعي الأول: ثلاث أفكار، لكل منها تلازماتها وحجّتها الجاهزة",
+    coverTitle: "Environment <em>and Energy</em>",
+    fbAnswer: 'الإجابة:',
+    fbCorrect: 'صحيح.',
+    fbWrong: 'ليس تماماً.',
+    mcaEyebrow: "النشاط 1 · الانبعاثات",
+    mcaTitle: "أيّ تلازم، وأيّ كلمة؟",
+    mcbEyebrow: "النشاط 2 · الطاقة المتجدّدة",
+    mcbTitle: "أيّ تلازم، وأيّ كلمة؟",
+    mccEyebrow: "النشاط 3 · الاستهلاك والنفايات",
+    mccTitle: "أيّ تلازم، وأيّ كلمة؟",
+    resNext: 'التعرّف على اللغة نصف المهمة. والآن استخدمها →',
+    scoreLabel: 'النتيجة',
+    slideOf: (a,b)=>`${a} / ${b}`,
+    sortBin1: "الانبعاثات والطاقة",
+    sortBin2: "الاستهلاك والنفايات",
+    sortEyebrow: "النشاط 4 · الحفظ بحسب الفكرة",
+    sortHint: "اسحب كل تلازم إلى عمود، أو انقر عليه ثم على العمود الذي تريده.",
+    sortTitle: "احفظ التلازمات الستة في مكانها",
+    sortWhy: "حين تحفظ بحسب الفكرة، يقع كل تلازم بجانب الحجّة التي يخدمها. فعبارتا <em>burn fossil fuels</em> و<em>phase out coal</em> نصف فقرة جاهزة عن الانبعاثات والتخلّي عن الفحم، و<em>a throwaway culture</em> و<em>excess packaging</em> نصف فقرة عن مسؤولية المنتِج. أما بالترتيب الأبجدي فهي ست كلمات، ولن يكون لديك تحت ضغط الوقت ما تقوله بها.",
+    t1Eyebrow: "الفكرة 1 من 3",
+    t1Title: "الانبعاثات: أربعة تلازمات وحجّتان",
+    t1ab: "الانبعاثات تُقال معها <em>cut</em> أو <em>reduced</em>؛ والدولة <em>burns fossil fuels</em> وتطلق <em>greenhouse gases</em>؛ والمدينة تقيس <em>air quality</em>. الاسم هو الذي يختار الفعل، ولا تلازم من الأربعة نادر.",
+    t1ah: "نقول <em>cut</em>، فالفعل ثابت",
+    t1an: "أربعة تلازمات تُتعلَّم كاملة. أما كلمة <em>emissions</em> وحدها في الدفتر فلا تساوي أيًّا منها.",
+    t1bb: "للشخص أو الشركة <em>carbon footprint</em>، وتقليصها هو غرض <em>carbon tax</em>. كلاهما ثابت: الأثر الذي تتركه <em>footprint</em> لا trace، والرسم المفروض <em>tax</em> لا غرامة.",
+    t1bh: "البصمة والضريبة",
+    t1bn: "احفظهما معًا. فالضريبة موجودة بسبب البصمة.",
+    t1cb: "معظم إجابات Part 3 في هذا الموضوع تقوم على نمطين. <strong>من يدفع</strong>: الهواء الملوّث يقع على أناس لم يلوّثوه. <strong>الأهداف مقابل التطبيق</strong>: قد تعد دولة بخفض انبعاثاتها إلى النصف ولا تغرّم مصنعًا واحدًا.",
+    t1ch: "الحجّة التي تأتي معها",
+    t1cn: "احفظ الفكرة، فتكون الفقرة نصف مكتوبة قبل أن تقرأ السؤال.",
+    t2Eyebrow: "الفكرة 2 من 3",
+    t2Title: "الطاقة المتجدّدة: <em>generate</em> و<em>subsidise</em> و<em>phase out</em>",
+    t2ab: "الـ<em>wind farm</em> أو سطح عليه <em>solar panels</em> <em>generates electricity</em>، وما يولّده يغذّي <em>national grid</em>. وعبارة <em>renewable energy</em> هي المصطلح الجامع، أما <em>renewables</em> وحدها فهي الاسم الذي تستخدمه إجابة Part 3.",
+    t2ah: "نقول <em>generate</em> لا <em>make</em>",
+    t2an: "أربعة تلازمات واسم جامع واحد. كلها بسيطة وكلها ثابتة.",
+    t2bb: "تغرب الشمس وتسكن الريح، فيكون الإمداد <em>intermittent</em>: يأتي ويذهب وفق جدوله الخاص. كلمات عدة تبدو قريبة وتعني شيئًا آخر، والممتحن يحتسب الكلمة التي تعني ما قصدته.",
+    t2bh: "الكلمة الدقيقة لنقطة الضعف",
+    t2bn: "شبه الإصابة التي تبدو متقدّمة تنال أقل من الكلمة البسيطة التي تصيب.",
+    t2cb: "الحكومات <em>subsidise</em> الطاقة المتجدّدة و<em>phase out coal</em>، وكل مقال في الموضوع يوازن بين الزوجين نفسيهما. <strong>الموثوقية مقابل التكلفة</strong>: رخيصة التوليد، غالية التخزين. <strong>الدعم مقابل السوق</strong>: الألواح موجودة لأن أحدًا دفع ثمنها، وقد تحتاج إلى من يواصل الدفع.",
+    t2ch: "الحجّة التي تأتي معها",
+    t2cn: "المصطلح الثالث <em>energy security</em>: الدولة التي تولّد طاقتها بنفسها لا يمكن قطعها عنها.",
+    t3Eyebrow: "الفكرة 3 من 3",
+    t3Title: "الاستهلاك والنفايات: حرف الجر جزء من التلازم",
+    t3ab: "القمامة <em>sent to landfill</em>؛ والبلدية تعلن <em>recycling rates</em>؛ والمتسوّق <em>cuts down on</em> <em>excess packaging</em>. حرف الجر جزء من التلازم: <em>landfill</em> بلا أداة تعريف، والفعل المركّب له أداتان لا واحدة.",
+    t3ah: "<em>Sent to landfill</em> و<em>cut down on</em>",
+    t3an: "اكتب التعبير كله. فنصف الفعل المركّب خطأ.",
+    t3bb: "الزجاجة المستعملة مرة واحدة <em>single-use plastic</em>؛ والمجتمع الذي يتوقّع رمي الأشياء له <em>throwaway culture</em>؛ والنظام الذي يدفع لك لتعيد الزجاجة <em>deposit scheme</em>. ثلاثة تلازمات من صفة واسم، كلها بمستوى C1 ولا شيء منها نادر.",
+    t3bh: "<em>Single-use</em> و<em>throwaway</em> و<em>deposit</em>",
+    t3bn: "عبارة <em>a throwaway culture</em> أثمن من <em>consumerism</em> لأنها دقيقة.",
+    t3cb: "اسأل من يجب أن يتغيّر فتكون الإجابة مكتوبة. <strong>مسؤولية الفرد مقابل مسؤولية المنتِج</strong>: يستطيع المتسوّق أن يغيّر <em>consumer habits</em>، لكن التغليف تقرّر قبل وصوله. <strong>الراحة مقابل التكلفة</strong>: ما يُستعمل مرة واحدة رخيص الآن ويُدفع ثمنه لاحقًا.",
+    t3ch: "الحجّة التي تأتي معها",
+    t3cn: "كلتا الحجّتين تصلح في الاتجاهين، وهذا ما يجعلهما جديرتين بالحفظ.",
+    v10why: "الصحيح <em>single-use plastic</em>. الصفة موصولة بشرطة وثابتة، والبدائل تعني الشيء نفسه، وكلٌّ منها يفضح كاتبًا يخمّن.",
+    v11why: "الصحيح <em>cut down on</em>. الفعل المركّب وحدة واحدة بأداتيه، وتبديل أيٍّ منهما يعطي عبارة غير موجودة.",
+    v12why: "مسؤولية المنتِج قبل مسؤولية الفرد. يُطلب من المتسوّق أن يتغيّر بينما اتُّخذ القرار المهم في قسم التغليف. والحجّة والتلازم <em>excess packaging</em> يأتيان معًا.",
+    v1why: "الصحيح <em>cut emissions</em> أو <em>reduce</em> them. الفعل يفرضه الاسم، والثلاثة الأخرى أفعال من لغة أخرى في ثوب إنجليزي، والممتحن يسمع كلًّا منها خطأً.",
+    v2why: "الصحيح <em>carbon footprint</em>. لا أحد يستنتجها، بل تُتعلَّم كاملة، و<em>step</em> و<em>trace</em> و<em>fingerprint</em> تعلن كلٌّ منها أنها لم تُتعلَّم.",
+    v3why: "من يدفع. تكلفة الهواء الملوّث تقع على أناس لم يلوّثوه، وهذه أكثر حجّة تأتي مع هذه الفكرة، ونمط تستطيع إجابة Part 3 أن تأخذه كاملًا.",
+    v4why: "الصحيح <em>carbon tax</em>. الرسم على طن CO&#8322; يُسمّى ضريبة في كل نقاش بالإنجليزية، أما <em>fine</em> و<em>tariff</em> و<em>toll</em> فتسمّي كلٌّ منها شيئًا آخر.",
+    v5why: "الصحيح <em>generate electricity</em>. <em>Fabricate</em> و<em>manufacture</em> للأشياء، و<em>originate</em> لا يستخدمها أحد للطاقة. الفعل البسيط هو الذي يأخذه الاسم.",
+    v6why: "الصحيح <em>intermittent</em>: يأتي ويذهب من تلقاء نفسه. <em>Interrupted</em> تعني أن أحدًا أوقفه، و<em>infrequent</em> تعني نادرًا، و<em>intermediate</em> كلمة أخرى تشبهها في النطق فقط.",
+    v7why: "الصحيح <em>phase out coal</em>. الأداة جزء من الفعل، ووحدها <em>out</em> تحمل معنى إنهاء الشيء على مراحل.",
+    v8why: "الدعم مقابل السوق. يقرّ المتقدّم بأن المال العام بنى التوربينات، ثم يسأل هل يستطيع القطاع يومًا أن يستغني عنه: فكرة واحدة بوجهيها، وهذا ما يكافئه Part 3.",
+    v9why: "الصحيح <em>sent to landfill</em> بلا أداة تعريف. الفعل <em>send</em> والاسم <em>landfill</em>، والثلاثة الأخرى تصف الحفرة نفسها في الأرض بكلمات لا تستخدمها الإنجليزية لها أبدًا.",
+    wordCount: (n)=>`${n} كلمة`,
+    branchLocked: 'سجلّك لا يسمح بهذه النهاية',
+    glossHide: 'إخفاء',
+    glossShow: 'ترجمة',
+    ledClues: 'أدلة',
+    ledDp: 'DP',
+    ledTime: 'الوقت',
+    actSpeakWord: 'نقاش',
+    actWriteWord: 'كتابة',
+    resPerfect: 'بلا أخطاء. كل الإجابات صحيحة.',
+    resStrong: 'عمل قوي — القاعدة رسخت.',
+    resMid: 'بداية جيدة. تستحق جولة أخرى.',
+    resLow: 'راجع شرائح الشرح ثم حاول مرة أخرى.'
+  },
+  zh: {
+    actEyebrow: '运用',
+    actPlaceholder: "The most effective way to cut emissions is…",
+    actSpeak1: "每个回答至少带一个词库里的搭配，而且要完整说出——动词加它的名词，或形容词加它的名词。",
+    actSpeak2: "每个回答之后，考官都问一句 <em>why</em>。接下来的回答必须用上这个观点自带的某个论点：谁来买单、可靠性与成本、个人与生产者。",
+    actSpeak3: "如果词库里没有那个词，就用简单的英语把东西描述出来，而不是去够一个生僻词。",
+    actSpeakBrief: "两人一组。一人当考官，就环境问题问三个 Part 3 问题——减排该靠政府还是个人，可再生能源能否取代煤炭，回收是否值得费力。另一人只能用词库里的搭配回答。三题后交换角色。",
+    actSpeakKind: '讨论 · 两人一组',
+    actTitle: "从词库里作答",
+    actUse: "至少用上三个：",
+    actWriteBrief: "就三个观点之一——排放、可再生能源，或消费与垃圾——写一段 Task 2 的主体段。至少用上词库里的五个搭配，并给每一个画线。然后说明这一段在论证哪个论点。",
+    actWriteKind: "写作 · 150–200 词",
+    btnCheck: '检查',
+    btnCopied: '已复制',
+    btnCopy: '复制',
+    btnNext: '下一步 →',
+    btnRestart: '重新开始',
+    btnStart: '开始 →',
+    chipCount: "18 分",
+    chipFocus: "Speaking 与 Writing Task 2",
+    chipLevel: "C1 · 高级",
+    coverSub: "第一个话题词库：三个观点，每个都配好了搭配，也带好了论点",
+    coverTitle: "Environment <em>and Energy</em>",
+    fbAnswer: '答案：',
+    fbCorrect: '正确。',
+    fbWrong: '不太对。',
+    mcaEyebrow: "练习 1 · 排放",
+    mcaTitle: "哪个搭配，哪个词？",
+    mcbEyebrow: "练习 2 · 可再生能源",
+    mcbTitle: "哪个搭配，哪个词？",
+    mccEyebrow: "练习 3 · 消费与垃圾",
+    mccTitle: "哪个搭配，哪个词？",
+    resNext: '认得出这些表达只是一半，接下来要能说出来 →',
+    scoreLabel: '得分',
+    slideOf: (a,b)=>`${a} / ${b}`,
+    sortBin1: "排放与能源",
+    sortBin2: "消费与垃圾",
+    sortEyebrow: "练习 4 · 按观点归档",
+    sortHint: "把每一项拖到一栏里——或者先点一项，再点你想放进的那一栏。",
+    sortTitle: "把六个搭配归档",
+    sortWhy: "按观点归档，每个搭配就挨着它所服务的论点。<em>Burn fossil fuels</em> 和 <em>phase out coal</em> 已经是关于排放和弃用煤炭的半段话；<em>a throwaway culture</em> 和 <em>excess packaging</em> 是关于生产者责任的半段话。按字母排，它们只是六个词，时间紧迫时你拿它们什么也说不出来。",
+    t1Eyebrow: "观点 1 / 3",
+    t1Title: "排放：四个搭配，两个论点",
+    t1ab: "排放用 <em>cut</em> 或 <em>reduced</em>；一个国家 <em>burns fossil fuels</em>，释放 <em>greenhouse gases</em>；一座城市测量它的 <em>air quality</em>。动词由名词决定，而这四个搭配没有一个是生僻的。",
+    t1ah: "用 <em>cut</em>——动词是固定的",
+    t1an: "四个搭配，整体记住。笔记本上光秃秃的一个 <em>emissions</em>，一个搭配都抵不上。",
+    t1bb: "一个人或一家公司有 <em>carbon footprint</em>，而缩小它正是 <em>carbon tax</em> 的用途。两者都是固定说法：留下的痕迹是 <em>footprint</em>，不是 trace；收的钱是 <em>tax</em>，不是罚款。",
+    t1bh: "足迹与税",
+    t1bn: "把它们放在一起记。有了足迹，才有这笔税。",
+    t1cb: "这个话题的 Part 3 回答，大多靠两种思路撑起来。<strong>谁来买单</strong>：脏空气落在了没有制造它的人身上。<strong>目标与执行</strong>：一个国家可以承诺把排放减半，却从不罚任何一家工厂。",
+    t1ch: "它自带的论点",
+    t1cn: "把观点存好，还没读题，段落就已经写了一半。",
+    t2Eyebrow: "观点 2 / 3",
+    t2Title: "可再生能源：<em>generate</em>、<em>subsidise</em>、<em>phase out</em>",
+    t2ab: "<em>Wind farm</em> 或铺满 <em>solar panels</em> 的屋顶 <em>generates electricity</em>，发出的电并入 <em>national grid</em>。<em>Renewable energy</em> 是总称；单独的 <em>renewables</em> 则是 Part 3 回答里用的名词。",
+    t2ah: "用 <em>generate</em>，不用 <em>make</em>",
+    t2an: "四个搭配加一个总称名词。都很朴素，都很固定。",
+    t2bb: "太阳下山、风停下来，所以供应是 <em>intermittent</em> 的：按自己的节奏时有时无。有几个词听起来很像，意思却不同，而考官只认那个准确表达你意思的词。",
+    t2bh: "说弱点的那个准确的词",
+    t2bn: "听起来高级却差一点的词，得分低于用对了的普通词。",
+    t2cb: "政府 <em>subsidise</em> 可再生能源并 <em>phase out coal</em>，这个话题的每篇文章都在权衡同样的两组对立。<strong>可靠性与成本</strong>：发电便宜，储存却贵。<strong>补贴与市场</strong>：面板之所以存在，是因为有人出了钱，而且可能需要有人一直出下去。",
+    t2ch: "它自带的论点",
+    t2cn: "第三个词是 <em>energy security</em>：自己发电的国家，别人断不了它的电。",
+    t3Eyebrow: "观点 3 / 3",
+    t3Title: "消费与垃圾：搭配里包括介词",
+    t3ab: "垃圾是 <em>sent to landfill</em>；市政府公布它的 <em>recycling rates</em>；顾客 <em>cuts down on</em> <em>excess packaging</em>。介词是搭配的一部分：<em>landfill</em> 前面不加冠词，而这个短语动词有两个小品词，不是一个。",
+    t3ah: "<em>Sent to landfill</em>、<em>cut down on</em>",
+    t3an: "整个写下来。短语动词只写一半就是错。",
+    t3bb: "用一次就扔的瓶子是 <em>single-use plastic</em>；习惯把东西扔掉的社会有一种 <em>throwaway culture</em>；付钱让你把瓶子送回来的办法叫 <em>deposit scheme</em>。三个形容词加名词的搭配，都是 C1 水平，没有一个生僻。",
+    t3bh: "<em>Single-use</em>、<em>throwaway</em>、<em>deposit</em>",
+    t3bn: "<em>A throwaway culture</em> 比 <em>consumerism</em> 更有价值，因为它更准确。",
+    t3cb: "问一句“谁该改变”，答案就写好了。<strong>个人责任与生产者责任</strong>：顾客可以改变自己的 <em>consumer habits</em>，但包装在顾客到来之前就定下了。<strong>方便与成本</strong>：一次性的东西现在便宜，代价以后再付。",
+    t3ch: "它自带的论点",
+    t3cn: "两个论点正反都说得通，所以才值得存起来。",
+    v10why: "<em>Single-use plastic</em>。这个形容词带连字符，是固定的；其他选项意思相同，但每一个都暴露出写的人在猜。",
+    v11why: "<em>Cut down on</em>。短语动词连同两个小品词是一个整体，换掉任何一个，得到的都是不存在的说法。",
+    v12why: "生产者责任先于个人责任。人们让顾客去改变，可真正要紧的决定是在包装部门做的。这个论点和 <em>excess packaging</em> 这个搭配是一起来的。",
+    v1why: "<em>Cut emissions</em>，或者 <em>reduce</em> them。动词由名词决定；另外三个是穿着英语外衣的别的语言的动词，考官听到的每一个都是失误。",
+    v2why: "<em>Carbon footprint</em>。没人能推导出来——只能整体记住，而 <em>step</em>、<em>trace</em> 或 <em>fingerprint</em> 每一个都暴露出没记住。",
+    v3why: "谁来买单。空气污染的代价落在了没有制造污染的人身上——这是这个观点最常带出的论点，也是 Part 3 回答可以整个借用的思路。",
+    v4why: "<em>Carbon tax</em>。对每吨 CO&#8322; 收的钱，在所有英语讨论里都叫税；<em>fine</em>、<em>tariff</em> 和 <em>toll</em> 各指别的东西。",
+    v5why: "<em>Generate electricity</em>。<em>Fabricate</em> 和 <em>manufacture</em> 用于物品，<em>originate</em> 则没人用来说电。名词要的就是那个朴素的动词。",
+    v6why: "<em>Intermittent</em>：它自己时有时无。<em>Interrupted</em> 指有人把它停了，<em>infrequent</em> 指很少发生，<em>intermediate</em> 则是另一个只是发音相近的词。",
+    v7why: "<em>Phase out coal</em>。小品词是动词的一部分，只有 <em>out</em> 带有“分阶段终止”的意思。",
+    v8why: "补贴与市场。考生先承认涡轮机是公共资金建起来的，再追问这个行业能否有一天离开这笔钱——一个观点，两面都讲到，这正是 Part 3 奖励的。",
+    v9why: "<em>Sent to landfill</em>，不加冠词。动词是 <em>send</em>，名词是 <em>landfill</em>；另外三个描述的是地上同一个坑，用的却是英语从来不用的词。",
+    wordCount: (n)=>`${n} 词`,
+    branchLocked: '你的记录不支持这个结局',
+    glossHide: '隐藏',
+    glossShow: '翻译',
+    ledClues: '线索',
+    ledDp: 'DP',
+    ledTime: '时间',
+    actSpeakWord: '讨论',
+    actWriteWord: '写作',
+    resPerfect: '完美，全部答对。',
+    resStrong: '做得很好——规则已经掌握了。',
+    resMid: '开头不错，值得再做一遍。',
+    resLow: '回到讲解页复习一下，然后再试一次。'
+  },
+  ja: {
+    actEyebrow: '実践',
+    actPlaceholder: "The most effective way to cut emissions is…",
+    actSpeak1: "どの答えにも、語彙集の組み合わせを少なくとも一つ、丸ごと入れること――動詞とその名詞、または形容詞とその名詞。",
+    actSpeak2: "試験官は答えのたびに <em>why</em> と尋ねます。続きの答えでは、そのアイデアについてきた議論を一つ使うこと：誰が払うか、信頼性対コスト、個人対生産者。",
+    actSpeak3: "語彙集にない語なら、難しい語に手を伸ばさず、平易な英語でそのものを説明しましょう。",
+    actSpeakBrief: "ペアで。一人が試験官になり、環境について Part 3 の質問を三つします――排出に取り組むべきは政府か個人か、再生可能エネルギーは石炭に取って代われるか、リサイクルは手間に見合うか。もう一人は、語彙集の組み合わせだけを使って答えます。三問で交代しましょう。",
+    actSpeakKind: 'ディスカッション · ペア',
+    actTitle: "語彙集から答える",
+    actUse: "少なくとも三つ使いましょう：",
+    actWriteBrief: "三つのアイデア――排出、再生可能エネルギー、消費と廃棄物――のどれかについて、Task 2 の本論の段落を一つ書きましょう。語彙集の組み合わせを少なくとも五つ使い、それぞれに下線を引きます。そのあと、その段落がどの議論を展開しているかを書きます。",
+    actWriteKind: "ライティング · 150–200 語",
+    btnCheck: '確認',
+    btnCopied: 'コピーしました',
+    btnCopy: 'コピー',
+    btnNext: '次へ →',
+    btnRestart: '最初から',
+    btnStart: '開始 →',
+    chipCount: "18 点",
+    chipFocus: "Speaking・Writing Task 2",
+    chipLevel: "C1 · 上級",
+    coverSub: "最初のトピック語彙集：三つのアイデアに、それぞれの組み合わせと議論がはじめからついています",
+    coverTitle: "Environment <em>and Energy</em>",
+    fbAnswer: '解答：',
+    fbCorrect: '正解です。',
+    fbWrong: '惜しいです。',
+    mcaEyebrow: "演習 1 · 排出",
+    mcaTitle: "どの組み合わせで、どの語か？",
+    mcbEyebrow: "演習 2 · 再生可能エネルギー",
+    mcbTitle: "どの組み合わせで、どの語か？",
+    mccEyebrow: "演習 3 · 消費と廃棄物",
+    mccTitle: "どの組み合わせで、どの語か？",
+    resNext: '表現を見分けられるのは半分。ここからは自分で使います →',
+    scoreLabel: 'スコア',
+    slideOf: (a,b)=>`${a} / ${b}`,
+    sortBin1: "排出とエネルギー",
+    sortBin2: "消費と廃棄物",
+    sortEyebrow: "演習 4 · アイデアごとにしまう",
+    sortHint: "それぞれを列にドラッグしてください。または項目をクリックしてから、入れたい列をクリックします。",
+    sortTitle: "六つの組み合わせをしまいましょう",
+    sortWhy: "アイデアごとにしまうと、どの組み合わせも、それが支える議論の隣に置かれます。<em>Burn fossil fuels</em> と <em>phase out coal</em> は、排出と石炭からの転換についての段落の半分です。<em>a throwaway culture</em> と <em>excess packaging</em> は、生産者の責任についての段落の半分です。アルファベット順にしまえばただの六語で、時間に追われているときには、それで言えることが何もありません。",
+    t1Eyebrow: "アイデア 1 / 3",
+    t1Title: "排出：四つの組み合わせと二つの議論",
+    t1ab: "排出は <em>cut</em> または <em>reduced</em>。国は <em>burns fossil fuels</em> して <em>greenhouse gases</em> を出し、都市は自分の <em>air quality</em> を測ります。動詞は名詞が選び、四つのどれも難しい語ではありません。",
+    t1ah: "<em>cut</em> する――動詞は決まっている",
+    t1an: "四つの組み合わせを丸ごと覚えましょう。ノートにただ <em>emissions</em> とだけ書いても、そのどれにも及びません。",
+    t1bb: "個人や企業には <em>carbon footprint</em> があり、それを小さくするのが <em>carbon tax</em> の役目です。どちらも決まった言い方で、残る跡は trace ではなく <em>footprint</em>、課されるお金は罰金ではなく <em>tax</em> です。",
+    t1bh: "フットプリントと税",
+    t1bn: "一緒にしまっておきましょう。税があるのは、フットプリントがあるからです。",
+    t1cb: "このテーマの Part 3 の答えは、ほとんど二つの型で支えられます。<strong>誰が払うか</strong>：汚れた空気は、それを生み出していない人々の上に降ってきます。<strong>目標対実施</strong>：国は排出を半分にすると約束しながら、一つの工場にも罰金を科さないことがあります。",
+    t1ch: "ついてくる議論",
+    t1cn: "アイデアをしまっておけば、問いを読む前に段落は半分書けています。",
+    t2Eyebrow: "アイデア 2 / 3",
+    t2Title: "再生可能エネルギー：<em>generate</em>、<em>subsidise</em>、<em>phase out</em>",
+    t2ab: "<em>Wind farm</em> や <em>solar panels</em> を載せた屋根は <em>generates electricity</em> し、生まれた電気は <em>national grid</em> に送られます。<em>Renewable energy</em> は総称で、単独の <em>renewables</em> が Part 3 の答えで使う名詞です。",
+    t2ah: "<em>make</em> ではなく <em>generate</em>",
+    t2an: "四つの組み合わせと、総称の名詞が一つ。どれも平易で、どれも決まった形です。",
+    t2bb: "日は沈み、風はやむので、供給は <em>intermittent</em> です。自分の都合で来たり来なかったりします。似た響きで意味の違う語がいくつもあり、試験官が数えるのは、あなたの言いたいことを正しく表した語です。",
+    t2bh: "弱点を表す正確な語",
+    t2bn: "高度に聞こえる惜しい語は、当たった平易な語より点が低くなります。",
+    t2cb: "政府は再生可能エネルギーに <em>subsidise</em> し、<em>phase out coal</em> します。このテーマのどのエッセイも、同じ二組を天秤にかけます。<strong>信頼性対コスト</strong>：発電は安く、蓄電は高い。<strong>補助金対市場</strong>：パネルがあるのは誰かが払ったからで、誰かが払い続ける必要があるかもしれません。",
+    t2ch: "ついてくる議論",
+    t2cn: "三つ目の語は <em>energy security</em>：自国で電気をつくる国は、外から止められません。",
+    t3Eyebrow: "アイデア 3 / 3",
+    t3Title: "消費と廃棄物：組み合わせには前置詞も含まれる",
+    t3ab: "ごみは <em>sent to landfill</em>。自治体は <em>recycling rates</em> を発表し、買い物客は <em>excess packaging</em> を <em>cuts down on</em> します。前置詞も組み合わせの一部です。<em>landfill</em> には冠詞がつかず、この句動詞の小辞は一つではなく二つです。",
+    t3ah: "<em>Sent to landfill</em>、<em>cut down on</em>",
+    t3an: "全体を書きましょう。句動詞の半分だけでは誤りです。",
+    t3bb: "一度使って捨てるボトルは <em>single-use plastic</em>、物を捨てるのが当たり前の社会には <em>throwaway culture</em> があり、ボトルを返すとお金が戻る仕組みは <em>deposit scheme</em> です。形容詞と名詞の組み合わせが三つ。どれも C1 レベルで、難しい語はありません。",
+    t3bh: "<em>Single-use</em>、<em>throwaway</em>、<em>deposit</em>",
+    t3bn: "<em>A throwaway culture</em> は正確なので、<em>consumerism</em> より価値があります。",
+    t3cb: "誰が変わるべきかと問えば、答えはもう書けています。<strong>個人の責任対生産者の責任</strong>：買い物客は自分の <em>consumer habits</em> を変えられますが、包装は客が来る前に決まっていました。<strong>便利さ対コスト</strong>：使い捨ては今は安く、代償はあとで払います。",
+    t3ch: "ついてくる議論",
+    t3cn: "どちらの議論も逆向きにも使えます。だからこそ、しまっておく価値があります。",
+    v10why: "<em>Single-use plastic</em>。形容詞はハイフンつきで、決まった形です。ほかの選択肢は同じ意味でも、どれも書き手が当てずっぽうだとわかってしまいます。",
+    v11why: "<em>Cut down on</em>。句動詞は二つの小辞を含めて一つの単位で、どちらかを入れ替えると存在しない表現になります。",
+    v12why: "個人の責任より生産者の責任。買い物客には変われと言われますが、大事な決定は包装部門で下されていました。この議論と <em>excess packaging</em> という組み合わせは一緒にやって来ます。",
+    v1why: "<em>Cut emissions</em>、または <em>reduce</em> them。動詞は名詞で決まります。ほかの三つは英語の服を着たほかの言語の動詞で、試験官にはどれも外れに聞こえます。",
+    v2why: "<em>Carbon footprint</em>。理屈で導く人はいません――丸ごと覚えるもので、<em>step</em>、<em>trace</em>、<em>fingerprint</em> はどれも、覚えていないことを告げてしまいます。",
+    v3why: "誰が払うか。汚れた空気の代償は、それを生み出していない人々にかかります――このアイデアに最もよくついてくる議論で、Part 3 の答えがそのまま借りられる型です。",
+    v4why: "<em>Carbon tax</em>。CO&#8322; 1トンあたりの課金は、英語の議論ではどこでも税と呼ばれます。<em>fine</em>、<em>tariff</em>、<em>toll</em> はそれぞれ別のものを指します。",
+    v5why: "<em>Generate electricity</em>。<em>Fabricate</em> と <em>manufacture</em> は物に使い、<em>originate</em> を電力に使う人はいません。名詞がとるのは平易な動詞です。",
+    v6why: "<em>Intermittent</em>：ひとりでに来たり来なかったりします。<em>Interrupted</em> は誰かが止めたこと、<em>infrequent</em> はめったにないこと、<em>intermediate</em> は響きが似ているだけの別の語です。",
+    v7why: "<em>Phase out coal</em>。小辞は動詞の一部で、段階的に終わらせるという意味を担えるのは <em>out</em> だけです。",
+    v8why: "補助金対市場。受験者は、タービンを建てたのが公的資金だと認めたうえで、この産業がいつかそれなしでやっていけるのかを問います――一つのアイデアの両面で、Part 3 が評価するのはまさにそれです。",
+    v9why: "<em>Sent to landfill</em>、冠詞なし。動詞は <em>send</em>、名詞は <em>landfill</em> です。ほかの三つは、地面の同じ穴を、英語が決して使わない言葉で言っています。",
+    wordCount: (n)=>`${n} 語`,
+    branchLocked: 'この記録ではこの結末に進めません',
+    glossHide: '隠す',
+    glossShow: '翻訳',
+    ledClues: '手がかり',
+    ledDp: 'DP',
+    ledTime: '時間',
+    actSpeakWord: 'ディスカッション',
+    actWriteWord: 'ライティング',
+    resPerfect: '完璧です。全問正解です。',
+    resStrong: 'よくできました。ルールが身についています。',
+    resMid: 'よい出だしです。もう一度やる価値があります。',
+    resLow: '解説のスライドを見直してから、もう一度挑戦しましょう。'
+  },
   hr: {}
 };
 
@@ -2499,6 +3259,9 @@ const countIn = s => s.dataset.type === 'gap'   ? s.querySelectorAll('.gap').len
                    : 1;
 const maxScore = scored.reduce((n, s) => n + Math.max(1, countIn(s)), 0);
 let idx = 0, score = 0;
+// Called with the new index after every slide change, for behaviour that
+// belongs to a range of slides rather than to one (the docked recording).
+const slideHooks = [];
 const answered = new WeakSet();
 
 /* ── Branch mode ────────────────────────────────────────────────────────
@@ -2650,6 +3413,7 @@ function show(n) {
   if (slides[idx].dataset.type === 'results') renderResults();
   markRail(slides[idx]);
   if (slides[idx]._enter) slides[idx]._enter();
+  slideHooks.forEach(f => f(idx));
   const gap = slides[idx].querySelector('.gap');
   if (gap && !answered.has(slides[idx])) setTimeout(() => gap.focus(), 60);
 }
@@ -2946,11 +3710,19 @@ slides.filter(s => s.dataset.type === 'match').forEach(slide => {
    It behaves like the test, deliberately:
      · one play — the button locks once it has been pressed
      · no scrubbing — the bar reports progress, it does not accept clicks
-     · the slide's [data-action="next"] Continue button stays disabled until
-       the recording ends, so nobody reaches the questions early
    A replay control appears only after it has finished, and it says in words
    that the real test does not offer one. A classroom needs to replay; a
-   learner practising alone should know that is not the exam. */
+   learner practising alone should know that is not the exam.
+
+   With data-carry on the box (every deck.audio() slide since 2026-09-23) the
+   recording behaves like the real paper, where you read first and answer as
+   you listen: Continue is open, leaving the slide does not stop it, and the
+   question slides after it — up to the next audio, results or activation
+   slide — carry a small player in the deck bar that shows the time and can
+   start it. Leaving that range pauses it; coming back resumes it.
+
+   Without data-carry the old contract holds: Continue stays disabled until
+   the recording ends, and leaving the slide stops it. */
 slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
   const box = slide.querySelector('.audio');
   if (!box || !box.dataset.src) return;
@@ -2986,8 +3758,39 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
   row.append(btn, meta); wrap.append(row, state);
   box.replaceChildren(wrap);
 
+  const carry = 'carry' in box.dataset;
   const cont = slide.querySelector('[data-action="next"]');
-  if (cont) cont.disabled = true;
+  if (cont && !carry) cont.disabled = true;
+
+  /* The docked copy: built for carry slides only, and put in the deck bar
+     where the ledger sits, so it never takes room from a slide. */
+  let dock = null, dockBtn = null, dockFill = null, dockTime = null, dockState = null;
+  if (carry) {
+    const at = slides.indexOf(slide);
+    let end = at + 1;
+    while (end < slides.length
+           && !['audio', 'results', 'activate'].includes(slides[end].dataset.type)) end++;
+    dock = document.createElement('div'); dock.className = 'audio-dock'; dock.hidden = true;
+    dockBtn = document.createElement('button');
+    dockBtn.className = 'dock-play'; dockBtn.type = 'button'; dockBtn.textContent = '▶';
+    dockBtn.dataset.i18nAria = 'audioPlay'; dockBtn.setAttribute('aria-label', t('audioPlay'));
+    const dockTrack = document.createElement('div'); dockTrack.className = 'dock-track';
+    dockFill = document.createElement('div'); dockFill.className = 'dock-fill';
+    dockTrack.append(dockFill);
+    dockTime = document.createElement('span'); dockTime.className = 'dock-time'; dockTime.textContent = '0:00';
+    dockState = document.createElement('span'); dockState.className = 'dock-state';
+    dock.append(dockBtn, dockTrack, dockTime, dockState);
+    const bar = document.querySelector('.deck-bar');
+    bar.insertBefore(dock, bar.querySelector('[data-action="prev"]'));
+    let autoPaused = false;
+    slideHooks.push(i => {
+      const inRange = i > at && i < end;
+      dock.hidden = !inRange;
+      if (i === at || inRange) {
+        if (autoPaused) { autoPaused = false; audio.play().catch(() => {}); }
+      } else if (!audio.paused) { autoPaused = true; audio.pause(); }
+    });
+  }
 
   const mmss = n => Number.isFinite(n)
     ? Math.floor(n / 60) + ':' + String(Math.floor(n % 60)).padStart(2, '0') : '';
@@ -2998,11 +3801,16 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
     fill.style.width = (audio.currentTime / audio.duration * 100) + '%';
     now.textContent = mmss(audio.currentTime);
     left.textContent = mmss(audio.duration - audio.currentTime);
+    if (dock) {
+      dockFill.style.width = fill.style.width;
+      dockTime.textContent = mmss(audio.currentTime) + ' / ' + mmss(audio.duration);
+    }
   });
   audio.addEventListener('error', () => {
     state.dataset.i18n = 'audioMissing';
     state.textContent = t('audioMissing');
     btn.disabled = true;
+    if (dockBtn) dockBtn.disabled = true;
     if (cont) cont.disabled = false;   // never trap a learner behind a broken file
   });
   audio.addEventListener('ended', () => {
@@ -3012,6 +3820,11 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
     state.textContent = t('audioDone');
     state.classList.add('done');
     if (cont) cont.disabled = false;
+    if (dock) {
+      dockFill.style.width = '100%';
+      dockState.textContent = '✓';
+      dockState.classList.add('done');
+    }
     const again = document.createElement('button');
     again.className = 'audio-replay'; again.type = 'button';
     again.dataset.i18n = 'audioReplay';
@@ -3020,13 +3833,17 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
       audio.currentTime = 0; audio.play();
       state.dataset.i18n = 'audioPlaying';
       state.textContent = t('audioPlaying'); state.classList.remove('done');
+      if (dock) { dockState.textContent = ''; dockState.classList.remove('done'); }
       again.remove();
     });
     wrap.append(again);
   });
 
-  btn.addEventListener('click', () => {
+  const start = () => {
     btn.disabled = true;
+    // The running time says it is playing; the deck bar has no room for
+    // the sentence the main player shows.
+    if (dockBtn) dockBtn.disabled = true;
     state.dataset.i18n = 'audioPlaying';
     state.textContent = t('audioPlaying');
     audio.play().catch(() => {
@@ -3035,11 +3852,14 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
     state.textContent = t('audioMissing');
       if (cont) cont.disabled = false;
     });
-  });
+  };
+  btn.addEventListener('click', start);
+  if (dockBtn) dockBtn.addEventListener('click', start);
 
-  // Leaving the slide stops the recording rather than letting it run on
-  // behind the questions.
-  slide._leave = () => { if (!audio.paused) audio.pause(); };
+  // Without data-carry, leaving the slide stops the recording rather than
+  // letting it run on behind the questions. With it, the range hook above
+  // decides.
+  if (!carry) slide._leave = () => { if (!audio.paused) audio.pause(); };
 });
 
 /* Sentence building. Author as
