@@ -32,7 +32,7 @@ will not go through the letterbox is the word limit; a brass key against a
 padlock whose teeth do not match is the grammar fit; and a pencil sharpened
 to a point, shavings beside it, closes it.
 
-English, German and Spanish all complete, the sort items included: they are
+Ten languages, all complete (`ielts_langs.LANGS`).
 answers a candidate might write, described, not the English under test, so
 they carry `data-i18n` keys that this builder adds after `sort_slide()`.
 """
@@ -41,6 +41,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import deck as D
+from ielts_langs import LANGS
 from ieltscomp_data import (INSTRUCT, COPY, SHAPE, ALL,
                             SORT_BINS, SORT_ITEMS, SORT_WHY)
 
@@ -259,7 +260,7 @@ def build():
     s = D.assemble(TPL, OUT, slides, PALETTE,
                    'IELTS Reading: Summary and Sentence Completion (C1) | '
                    'Forbes English',
-                   I, langs=('en', 'de', 'es'))
+                   I, langs=LANGS)
     # Twelve items plus the six answers on the sorting slide: the engine scores
     # a sort per chip, so the cover chip has to say 18, not 13.
     print('wrote %s — %d slides, %d scored points, %d bytes'

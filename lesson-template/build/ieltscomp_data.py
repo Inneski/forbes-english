@@ -197,9 +197,9 @@ SORT_ITEMS = [
     ('The passage word with a spelling mistake', 1),
 ]
 
-SORT_WHY = ('The left column are all <strong>the passage, within the '
-            'limit, spelt as printed</strong> &mdash; a number is one item, a '
-            'hyphenated word is one word. The right column are three ways of '
+SORT_WHY = ('Everything in the left column is <strong>the passage, within '
+            'the limit, spelt as printed</strong> &mdash; a number is one item, '
+            'a hyphenated word is one word. The right column holds three ways of '
             'understanding the text and scoring nothing for it: one word over '
             'the limit, a correct idea in different words, a copied word with '
             'a letter wrong. The marker does not read for meaning. The marker '
