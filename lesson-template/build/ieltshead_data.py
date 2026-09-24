@@ -187,19 +187,19 @@ ALL = MAIN + FUNCTION + ATTACK
 # a shared word, a match with the opening line only, a fit that the next
 # paragraph could claim just as well.
 SORT_BINS = ['Points to the right heading', 'A trap']
+# Corrected 2026-09-24. "Shares its key word with the paragraph" was sorted
+# as a trap while five of this deck's own twelve keys share one (reefs,
+# station, ban, scheme, tried): a decoy is built from a DETAIL, not from a
+# shared word. "Says what the paragraph does" overstated the task, which
+# asks for the main idea; "true of every sentence" failed on a paragraph
+# that opens with a concession.
 SORT_ITEMS = [
-    ('Is true of every sentence in the paragraph', 0),
-    ('Says what the paragraph does, not what it names', 0),
+    ('Covers the paragraph as a whole', 0),
+    ('Sums up the main idea, not just the topic', 0),
     ('Still fits with any one sentence taken out', 0),
-    ('Shares its key word with the paragraph', 1),
+    ('Is built from a detail in one sentence', 1),
     ('Fits the opening sentence and no other', 1),
     ('Would sit just as well on the next paragraph', 1),
 ]
 
-SORT_WHY = ('Everything in the left column describes a heading that <strong>fits '
-            'the paragraph as a whole</strong>: it names the job, it holds for '
-            'every sentence, and it does not depend on any one of them. The '
-            'right column holds the three ways a heading looks right without '
-            'being right &mdash; a shared word, a match with the opening '
-            'line only, a fit that another paragraph could claim just as '
-            'well. Each is a decoy doing exactly what it was written to do.')
+SORT_WHY = 'The signals of the right heading all describe one that <strong>covers the paragraph as a whole</strong>: it sums up the main idea, and it still fits with any one sentence taken out. The traps are the three ways a heading looks right without being right &mdash; a detail from one sentence, a match with the opening line only, a fit that another paragraph could claim just as well. Each is a decoy doing exactly what it was written to do.'

@@ -38,6 +38,7 @@ import deck as D
 from ielts_langs import LANGS
 from ieltshead_data import (MAIN, FUNCTION, ATTACK, ALL,
                             SORT_BINS, SORT_ITEMS, SORT_WHY)
+import i18n_ieltshead as I
 
 TPL = 'lesson-template/lesson-template.html'
 OUT = 'forbes-english-ielts-reading-headings.html'
@@ -78,120 +79,51 @@ def two_up(html):
 
 BG_ACT = 'bg06.jpg'
 
+# Every English string on the slides is read from the i18n module, so the
+# HTML and UI_I18N.en cannot drift apart. Until 2026-09-24 they were written
+# out twice, and a correction to one copy would have missed the other.
+E = I.T['en']
+
+
+def card(p):
+    """The six-item teach card for prefix p ('t1a', 't1b', …), from E."""
+    return (p + 'h', E[p + 'h'], p + 'b', E[p + 'b'], p + 'n', E[p + 'n'])
+
 
 def build():
     D.assert_no_key_is_longest(ALL, 'IELTSHEAD')
     logo = D.logo_from(TPL)
 
     slides = (
-        D.cover(logo, 'Matching <em>Headings</em>',
-                'A Reading task that does not run in passage order '
-                '&mdash; so the technique is different',
-                [('Level', 'C1 &middot; Advanced'),
-                 ('Focus', 'Reading &middot; both modules'),
-                 ('Count', '18 points')])
+        D.cover(logo, E['coverTitle'], E['coverSub'],
+                [('Level', E['chipLevel']),
+                 ('Focus', E['chipFocus']),
+                 ('Count', E['chipCount'])])
 
-        + D.teach('t1Eyebrow', 'Before you start',
-                  't1Title', 'More headings than paragraphs, and no order to '
-                             'lean on',
-                  [('t1ah', 'The shape of the task', 't1ab',
-                    'A list of headings numbered i, ii, iii, and a passage '
-                    'with paragraphs lettered A to G. Each paragraph takes '
-                    'one heading. There are always more headings than '
-                    'paragraphs, so two or three are never used &mdash; and '
-                    'they are written to be tempting.', 't1an',
-                    'Seven paragraphs, ten headings, three decoys. That is '
-                    'the usual arithmetic.'),
-                   ('t1bh', 'A type that jumps', 't1bb',
-                    'Most question types follow the passage. This one, like '
-                    'Matching Information, does not: heading i can belong to '
-                    'paragraph F, and the order of the list tells you nothing '
-                    'about where to look. Answering four tells you nothing '
-                    'about the fifth.', 't1bn',
-                    'It usually comes first on its passage, before the '
-                    'questions that do run in order.'),
-                   ('t1ch', 'Read the paragraph before the list', 't1cb',
-                    'The trap is to read ten headings first and then hunt '
-                    'for them in the text &mdash; ten ideas in your head, all '
-                    'looking for a home. Read paragraph A, say in your own '
-                    'words what it is about, and only then look at the list '
-                    'for the heading that says the same.', 't1cn',
-                    'Your own summary first, the list second. Every time.')],
+        + D.teach('t1Eyebrow', E['t1Eyebrow'], 't1Title', E['t1Title'],
+                  [card('t1a'), card('t1b'), card('t1c')],
                   folder=F, bg=BG_SHAPE)
 
-        + "".join(two_up(D.mc(i + 1, len(MAIN), q, 'mcaEyebrow',
-                       'Activity 1 &middot; The main idea', 'mcaTitle',
-                       'Read the paragraph. Which heading covers all of it?',
-                       folder=F, bg=BG_SHAPE, ctx=q.get('ctx')))
+        + "".join(two_up(D.mc(i + 1, len(MAIN), q, 'mcaEyebrow', E['mcaEyebrow'],
+                              'mcaTitle', E['mcaTitle'],
+                              folder=F, bg=BG_SHAPE, ctx=q.get('ctx')))
                   for i, q in enumerate(MAIN))
 
-        + D.teach('t2Eyebrow', 'Before you start',
-                  't2Title', 'Ask what the paragraph is doing, not what it '
-                             'is about',
-                  [('t2ah', 'Function over topic', 't2ab',
-                    'Two paragraphs can share a topic and do different jobs '
-                    'with it: one introduces a problem, the next gives an '
-                    'example, a third weighs two views, a fourth proposes a '
-                    'fix. The heading names the job. A heading that only '
-                    'names the topic fits half the passage.', 't2an',
-                    'Introducing, illustrating, comparing, warning, '
-                    'proposing. Five verbs cover most of what a paragraph '
-                    'does.'),
-                   ('t2bh', 'The topic sentence moves around', 't2bb',
-                    'It is usually first, and the people who write these '
-                    'tests know you know that. A paragraph can open with an '
-                    'example and state its point at the end, or bury it in '
-                    'the middle after a concession. Read to the last '
-                    'sentence before you decide.', 't2bn',
-                    'A heading that matches only the first sentence is the '
-                    'commonest wrong answer on the paper.'),
-                   ('t2ch', 'A repeated word is bait', 't2cb',
-                    'If a heading uses a word that sits in the paragraph, be '
-                    'suspicious. The right heading paraphrases: it says what '
-                    'the paragraph means in words the paragraph did not '
-                    'use. The wrong ones are built from its vocabulary, so '
-                    'that a candidate scanning for words finds them.', 't2cn',
-                    'Matching a word takes a second. Matching an idea takes '
-                    'a sentence. Spend the sentence.')],
+        + D.teach('t2Eyebrow', E['t2Eyebrow'], 't2Title', E['t2Title'],
+                  [card('t2a'), card('t2b'), card('t2c')],
                   folder=F, bg=BG_FUNCTION)
 
         + "".join(two_up(D.mc(i + 1, len(FUNCTION), q, 'mcbEyebrow',
-                       'Activity 2 &middot; What is it doing?', 'mcbTitle',
-                       'Name the job, not the subject',
-                       folder=F, bg=BG_FUNCTION, ctx=q.get('ctx')))
+                              E['mcbEyebrow'], 'mcbTitle', E['mcbTitle'],
+                              folder=F, bg=BG_FUNCTION, ctx=q.get('ctx')))
                   for i, q in enumerate(FUNCTION))
 
-        + D.teach('t3Eyebrow', 'Before you start',
-                  't3Title', 'Sure ones first, cross it out, two-fit goes '
-                             'last',
-                  [('t3ah', 'Do the certain ones first', 't3ab',
-                    'Some paragraphs have one obvious heading. Take them, '
-                    'whatever letter they carry. Every certain match '
-                    'shortens the list for the ones you are not sure of, and '
-                    'the hardest paragraph is often decided by what is left '
-                    'rather than by what it says.', 't3an',
-                    'Do not work A to G. Work easy to hard.'),
-                   ('t3bh', 'Cross it out once used', 't3bb',
-                    'Each heading is used once. Strike it off the list the '
-                    'moment you commit to it, and strike off the paragraph '
-                    'too. A list that still shows ten headings with two '
-                    'paragraphs to go is asking you to reconsider every '
-                    'decision you have already made.', 't3bn',
-                    'Pencil, not memory. Under time you will forget which '
-                    'you have used.'),
-                   ('t3ch', 'When a heading fits two paragraphs', 't3cb',
-                    'Leave it. Do the rest, and come back with the list '
-                    'shorter. Then ask of each paragraph: does this heading '
-                    'cover the whole of it, or just one sentence? One of the '
-                    'two has a better heading elsewhere, and elimination '
-                    'decides what reading could not.', 't3cn',
-                    'Too general and too specific both fail. The right '
-                    'heading fits the paragraph and fits nothing else.')],
+        + D.teach('t3Eyebrow', E['t3Eyebrow'], 't3Title', E['t3Title'],
+                  [card('t3a'), card('t3b'), card('t3c')],
                   folder=F, bg=BG_ORDER)
 
-        + "".join(D.mc(i + 1, len(ATTACK), q, 'mccEyebrow',
-                       'Activity 3 &middot; Order of attack', 'mccTitle',
-                       'Which move, and which heading?',
+        + "".join(D.mc(i + 1, len(ATTACK), q, 'mccEyebrow', E['mccEyebrow'],
+                       'mccTitle', E['mccTitle'],
                        folder=F, bg=BG_TWOFIT, ctx=q.get('ctx'))
                   for i, q in enumerate(ATTACK))
 
@@ -199,44 +131,23 @@ def build():
         # the rest of the slide; SORT_WHY in the data module is the English
         # of that key, kept there so the data file reads whole.
         + D.sort_slide(SORT_BINS, SORT_ITEMS,
-                       'sortEyebrow', 'Activity 4 &middot; Right heading, or '
-                                      'trap?',
-                       'sortTitle', 'Sort the six signals',
-                       'sortHint', 'Drag each one into a column &mdash; or '
-                                   'click an item, then the column you want '
-                                   'it in.',
+                       'sortEyebrow', E['sortEyebrow'],
+                       'sortTitle', E['sortTitle'],
+                       'sortHint', E['sortHint'],
                        'sortWhy', folder=F, bg=BG_TWOFIT,
                        bin_keys=['sortBin1', 'sortBin2'])
 
         + D.results('resNext', 'You can match them. Now write them &rarr;',
                     folder=F)
 
-        + D.activate('Write the headings yourself', 'Use at least three:',
-                     CHIPS, 'Discussion &middot; in pairs',
-                     'In pairs, with any article to hand. One of you writes '
-                     'a heading for each paragraph, then adds two extra '
-                     'headings that fit nothing &mdash; one that repeats a '
-                     'word from the text, one that is too general. Shuffle '
-                     'the list, swap, and match. Then argue every match.',
-                     ['Whoever matches must say what each paragraph is doing '
-                      '&mdash; introducing, comparing, warning &mdash; before '
-                      'naming its heading.',
-                      'For each decoy, say which paragraph it was written to '
-                      'tempt you towards, and what gives it away.',
-                      'Find one heading in your partner&rsquo;s set that fits '
-                      'two paragraphs, and rewrite it so that it fits only '
-                      'one.'],
-                     'Writing &middot; 150&ndash;200 words',
-                     'Take a passage of three paragraphs and write a heading '
-                     'for each. Under every heading, quote the one sentence '
-                     'that proves it is the main idea, and say in a line why '
-                     'the heading covers the whole paragraph rather than '
-                     'that sentence alone.',
-                     'Paragraph A — heading: … The sentence that proves it: …',
+        + D.activate(E['actTitle'], E['actUse'], CHIPS,
+                     'Discussion &middot; in pairs',
+                     E['actSpeakBrief'],
+                     [E['actSpeak1'], E['actSpeak2'], E['actSpeak3']],
+                     E['actWriteKind'], E['actWriteBrief'],
+                     E['actPlaceholder'],
                      folder=F, bg=BG_ACT)
     )
-
-    import i18n_ieltshead as I
     assert I.T['en']['sortWhy'] == SORT_WHY, 'sortWhy drifted from SORT_WHY'
     s = D.assemble(TPL, OUT, slides, PALETTE,
                    'IELTS Reading: Matching Headings (C1) | Forbes English',

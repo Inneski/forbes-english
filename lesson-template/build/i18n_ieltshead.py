@@ -52,8 +52,8 @@ T = {}
 # ── English ────────────────────────────────────────────────────────────
 T['en'] = dict(
     coverTitle='Matching <em>Headings</em>',
-    coverSub='A Reading task that does not run in passage order '
-             '&mdash; so the technique is different',
+    coverSub='A Reading task whose list of answers follows no order &mdash; '
+             'so the technique is different',
     chipLevel='C1 · Advanced', chipFocus='Reading · both modules',
     chipCount='18 points',
 
@@ -62,31 +62,32 @@ T['en'] = dict(
     t1ah='The shape of the task',
     t1ab='A list of headings numbered i, ii, iii, and a passage with '
          'paragraphs lettered A to G. Each paragraph takes one heading. '
-         'There are always more headings than paragraphs, so two or three '
-         'are never used &mdash; and they are written to be tempting.',
+         'There are more headings than paragraphs, so some are never used '
+         '&mdash; and they are written to be tempting.',
     t1an='Seven paragraphs, ten headings, three decoys. That is the usual '
          'arithmetic.',
     t1bh='A type that jumps',
-    t1bb='Most question types follow the passage. This one, like Matching '
-         'Information, does not: heading i can belong to paragraph F, and '
-         'the order of the list tells you nothing about where to look. '
-         'Answering four tells you nothing about the fifth.',
+    t1bb='Most question types follow the passage. Here the paragraphs run A, '
+         'B, C, but the list of headings has no order: heading i can belong '
+         'to paragraph F, and where a heading sits on the list tells you '
+         'nothing about where to look.',
     t1bn='It usually comes first on its passage, before the questions that '
          'do run in order.',
     t1ch='Read the paragraph before the list',
     t1cb='The trap is to read ten headings first and then hunt for them in '
          'the text &mdash; ten ideas in your head, all looking for a home. '
-         'Read paragraph A, say in your own words what it is about, and only '
-         'then look at the list for the heading that says the same.',
+         'Read a paragraph, say in your own words what its main point is, '
+         'and only then look at the list for the heading that says the same.',
     t1cn='Your own summary first, the list second. Every time.',
 
     t2Eyebrow='Before you start',
-    t2Title='Ask what the paragraph is doing, not what it is about',
+    t2Title='Ask what the paragraph is doing, not just what it is about',
     t2ah='Function over topic',
     t2ab='Two paragraphs can share a topic and do different jobs with it: '
          'one introduces a problem, the next gives an example, a third '
-         'weighs two views, a fourth proposes a fix. The heading names the '
-         'job. A heading that only names the topic fits half the passage.',
+         'weighs two views, a fourth proposes a fix. The heading states the '
+         'main idea &mdash; often by naming the job. A heading that only '
+         'names the topic fits half the passage.',
     t2an='Introducing, illustrating, comparing, warning, proposing. Five '
          'verbs cover most of what a paragraph does.',
     t2bh='The topic sentence moves around',
@@ -94,16 +95,15 @@ T['en'] = dict(
          'you know that. A paragraph can open with an example and state its '
          'point at the end, or bury it in the middle after a concession. '
          'Read to the last sentence before you decide.',
-    t2bn='A heading that matches only the first sentence is the commonest '
-         'wrong answer on the paper.',
-    t2ch='A repeated word is bait',
-    t2cb='If a heading uses a word that sits in the paragraph, be '
-         'suspicious. The right heading paraphrases: it says what the '
-         'paragraph means in words the paragraph did not use. The wrong '
-         'ones are built from its vocabulary, so that a candidate scanning '
-         'for words finds them.',
-    t2cn='Matching a word takes a second. Matching an idea takes a '
-         'sentence. Spend the sentence.',
+    t2bn='A heading that matches only the first sentence is one of the '
+         'commonest traps.',
+    t2ch='A shared word proves nothing',
+    t2cb='The right heading may share the paragraph&rsquo;s topic word, but '
+         'it states the main idea. The decoys are built from details &mdash; '
+         'a word or a fact from one sentence &mdash; so that a candidate '
+         'scanning for words finds them.',
+    t2cn='Matching a word takes a second. Matching an idea takes longer. '
+         'Take the time.',
 
     t3Eyebrow='Before you start',
     t3Title='Sure ones first, cross it out, two-fit goes last',
@@ -112,12 +112,12 @@ T['en'] = dict(
          'letter they carry. Every certain match shortens the list for the '
          'ones you are not sure of, and the hardest paragraph is often '
          'decided by what is left rather than by what it says.',
-    t3an='Do not work A to G. Work easy to hard.',
+    t3an='Read in order if you like, but commit easy to hard.',
     t3bh='Cross it out once used',
-    t3bb='Each heading is used once. Strike it off the list the moment you '
+    t3bb='No heading is used twice. Strike it off the list the moment you '
          'commit to it, and strike off the paragraph too. A list that still '
-         'shows ten headings with two paragraphs to go is asking '
-         'you to reconsider every decision you have already made.',
+         'shows ten headings with two paragraphs to go is asking you to '
+         'reconsider every decision you have already made.',
     t3bn='Pencil, not memory. Under time you will forget which you have '
          'used.',
     t3ch='When a heading fits two paragraphs',
@@ -135,9 +135,9 @@ T['en'] = dict(
     mccEyebrow='Activity 3 · Order of attack',
     mccTitle='Which move, and which heading?',
 
-    r1why='The crabs and the one per cent are details; the oceans as a '
-          'whole are more than the paragraph covers. The one heading that '
-          'holds for every sentence is the size set against the life.',
+    r1why='The crabs and the one per cent are details; the oceans as a whole '
+          'are more than the paragraph covers. The one heading that covers '
+          'the whole paragraph is the size set against the life.',
     r2why='The first station, the second, the foundations underfoot: every '
           'sentence is about one site carrying two stations. The passengers '
           'are a detail, and the demolition is never explained.',
@@ -179,21 +179,22 @@ T['en'] = dict(
              'column you want it in.',
     sortBin1='Points to the right heading',
     sortBin2='A trap',
-    sortWhy='Everything in the left column describes a heading that <strong>fits '
-            'the paragraph as a whole</strong>: it names the job, it holds for '
-            'every sentence, and it does not depend on any one of them. The '
-            'right column holds the three ways a heading looks right without '
-            'being right &mdash; a shared word, a match with the opening '
-            'line only, a fit that another paragraph could claim just as '
-            'well. Each is a decoy doing exactly what it was written to do.',
+    sortWhy='The signals of the right heading all describe one that '
+            '<strong>covers the paragraph as a whole</strong>: it sums up '
+            'the main idea, and it still fits with any one sentence taken '
+            'out. The traps are the three ways a heading looks right without '
+            'being right &mdash; a detail from one sentence, a match with '
+            'the opening line only, a fit that another paragraph could claim '
+            'just as well. Each is a decoy doing exactly what it was written '
+            'to do.',
 
     actTitle='Write the headings yourself',
     actUse='Use at least three:',
     actSpeakBrief='In pairs, with any article to hand. One of you writes a '
-                  'heading for each paragraph, then adds two extra headings '
-                  'that fit nothing &mdash; one that repeats a word from the '
-                  'text, one that is too general. Shuffle the list, swap, '
-                  'and match. Then argue every match.',
+                  'heading for each paragraph, then adds two decoys that '
+                  'belong to no paragraph &mdash; one built from a detail, '
+                  'one too general. Shuffle the list, swap, and match. Then '
+                  'argue every match.',
     actSpeak1='Whoever matches must say what each paragraph is doing &mdash; '
               'introducing, comparing, warning &mdash; before naming its '
               'heading.',
@@ -213,8 +214,8 @@ T['en'] = dict(
 # ── German ─────────────────────────────────────────────────────────────
 T['de'] = dict(
     coverTitle='Matching <em>Headings</em>',
-    coverSub='Eine Reading-Aufgabe, die nicht in Textreihenfolge läuft '
-             '&mdash; und deshalb eine andere Technik braucht',
+    coverSub='Eine Reading-Aufgabe, deren Antwortliste keiner Reihenfolge '
+             'folgt &mdash; also ist die Technik eine andere',
     chipLevel='C1 · Fortgeschritten', chipFocus='Reading · beide Module',
     chipCount='18 Punkte',
 
@@ -222,34 +223,35 @@ T['de'] = dict(
     t1Title='Mehr Überschriften als Absätze, und keine Reihenfolge als Halt',
     t1ah='Der Aufbau der Aufgabe',
     t1ab='Eine Liste von Überschriften, nummeriert i, ii, iii, und ein Text '
-         'mit Absätzen A bis G. Jeder Absatz bekommt eine Überschrift. Es '
-         'gibt immer mehr Überschriften als Absätze, zwei oder drei bleiben '
-         'also übrig &mdash; und die sind so geschrieben, dass sie locken.',
+         'mit Absätzen von A bis G. Jeder Absatz bekommt eine Überschrift. '
+         'Es gibt mehr Überschriften als Absätze, also bleiben einige '
+         'unbenutzt &mdash; und die sind so geschrieben, dass sie verlocken.',
     t1an='Sieben Absätze, zehn Überschriften, drei Köder. Das ist die übliche '
          'Rechnung.',
     t1bh='Ein Typ, der springt',
-    t1bb='Die meisten Fragetypen folgen dem Text. Dieser nicht, genauso wenig '
-         'wie Matching Information: Überschrift i '
-         'kann zu Absatz F gehören, und die Reihenfolge der Liste verrät '
-         'nichts darüber, wo du suchen musst. Vier gelöst heißt nicht, dass '
-         'du weißt, wo die fünfte steht.',
+    t1bb='Die meisten Aufgabentypen folgen dem Text. Hier laufen die Absätze '
+         'A, B, C, aber die Liste der Überschriften hat keine Reihenfolge: '
+         'Überschrift i kann zu Absatz F gehören, und wo eine Überschrift '
+         'auf der Liste steht, sagt dir nichts darüber, wo du suchen musst.',
     t1bn='Er kommt meist als Erstes zu seinem Text, vor den Fragen, die der '
          'Reihe nach laufen.',
     t1ch='Erst der Absatz, dann die Liste',
     t1cb='Die Falle: erst zehn Überschriften lesen und sie dann im Text '
-         'suchen &mdash; zehn Ideen im Kopf, die alle ein Zuhause wollen. '
-         'Lies Absatz A, sag mit eigenen Worten, worum es geht, und such '
-         'erst dann in der Liste die Überschrift, die dasselbe sagt.',
+         'suchen &mdash; zehn Ideen im Kopf, die alle ein Zuhause suchen. '
+         'Lies einen Absatz, sag in eigenen Worten, was sein Hauptpunkt ist, '
+         'und schau erst dann in die Liste nach der Überschrift, die '
+         'dasselbe sagt.',
     t1cn='Erst deine Zusammenfassung, dann die Liste. Jedes Mal.',
 
     t2Eyebrow='Bevor du beginnst',
-    t2Title='Frag, was der Absatz tut, nicht wovon er handelt',
+    t2Title='Frag, was der Absatz tut, nicht nur, worum es geht',
     t2ah='Funktion vor Thema',
-    t2ab='Zwei Absätze können dasselbe Thema haben und Verschiedenes damit '
-         'tun: einer führt ein Problem ein, der nächste bringt ein Beispiel, '
-         'ein dritter wägt zwei Sichten ab, ein vierter schlägt eine Lösung '
-         'vor. Die Überschrift nennt die Aufgabe. Eine, die nur das Thema '
-         'nennt, passt auf den halben Text.',
+    t2ab='Zwei Absätze können dasselbe Thema haben und damit Verschiedenes '
+         'tun: einer stellt ein Problem vor, der nächste bringt ein '
+         'Beispiel, ein dritter wägt zwei Sichtweisen ab, ein vierter '
+         'schlägt eine Lösung vor. Die Überschrift nennt den Hauptgedanken '
+         '&mdash; oft, indem sie die Aufgabe des Absatzes nennt. Eine '
+         'Überschrift, die nur das Thema nennt, passt auf den halben Text.',
     t2an='Einführen, veranschaulichen, vergleichen, warnen, vorschlagen. '
          'Fünf Verben decken das meiste ab, was ein Absatz tut.',
     t2bh='Der Kernsatz wandert',
@@ -258,16 +260,15 @@ T['de'] = dict(
          'Punkt am Ende machen, oder ihn nach einem Zugeständnis in der '
          'Mitte verstecken. Lies bis zum letzten Satz, bevor du '
          'entscheidest.',
-    t2bn='Eine Überschrift, die nur zum ersten Satz passt, ist die häufigste '
-         'falsche Antwort der ganzen Prüfung.',
-    t2ch='Ein wiederholtes Wort ist ein Köder',
-    t2cb='Steht in einer Überschrift ein Wort aus dem Absatz, sei '
-         'misstrauisch. Die richtige Überschrift paraphrasiert: Sie sagt, '
-         'was der Absatz meint, mit Wörtern, die der Absatz nicht benutzt. '
-         'Die falschen sind aus seinem Wortschatz gebaut, damit sie findet, '
-         'wer nach Wörtern sucht.',
-    t2cn='Ein Wort abgleichen dauert eine Sekunde. Eine Idee abgleichen '
-         'dauert einen Satz. Gib den Satz aus.',
+    t2bn='Eine Überschrift, die nur zum ersten Satz passt, ist eine der '
+         'häufigsten Fallen.',
+    t2ch='Ein gemeinsames Wort beweist nichts',
+    t2cb='Die richtige Überschrift kann das Themenwort des Absatzes '
+         'enthalten, aber sie nennt den Hauptgedanken. Die Köder sind aus '
+         'Details gebaut &mdash; einem Wort oder einer Tatsache aus einem '
+         'Satz &mdash;, damit jemand, der nur nach Wörtern sucht, sie findet.',
+    t2cn='Ein Wort zuzuordnen dauert eine Sekunde. Eine Idee zuzuordnen '
+         'dauert länger. Nimm dir die Zeit.',
 
     t3Eyebrow='Bevor du beginnst',
     t3Title='Die sicheren zuerst, streichen, Doppeltreffer zuletzt',
@@ -277,12 +278,13 @@ T['de'] = dict(
          'die Liste für die unsicheren, und der schwerste Absatz wird oft '
          'durch das entschieden, was übrig bleibt, nicht durch das, was er '
          'sagt.',
-    t3an='Nicht A bis G. Leicht bis schwer.',
+    t3an='Lies ruhig der Reihe nach, aber leg dich vom Leichten zum Schweren '
+         'fest.',
     t3bh='Streichen, sobald vergeben',
-    t3bb='Jede Überschrift wird einmal benutzt. Streich sie von der Liste, '
-         'sobald du dich festlegst, und streich den Absatz gleich mit. Eine '
-         'Liste, die für die letzten zwei Absätze noch zehn Überschriften '
-         'zeigt, verlangt, dass du jede Entscheidung noch einmal '
+    t3bb='Keine Überschrift wird zweimal verwendet. Streich sie von der '
+         'Liste, sobald du dich festlegst, und streich auch den Absatz. Eine '
+         'Liste, die bei zwei offenen Absätzen noch zehn Überschriften '
+         'zeigt, verlangt, dass du jede bereits getroffene Entscheidung neu '
          'überdenkst.',
     t3bn='Bleistift, nicht Gedächtnis. Unter Zeitdruck vergisst du, welche '
          'schon weg sind.',
@@ -302,9 +304,10 @@ T['de'] = dict(
     mccEyebrow='Aktivität 3 · Reihenfolge des Angriffs',
     mccTitle='Welcher Zug, und welche Überschrift?',
 
-    r1why='Die Krabben und das eine Prozent sind Details; die Ozeane als '
-          'Ganzes sind mehr, als der Absatz abdeckt. Die eine Überschrift, '
-          'die für jeden Satz gilt, setzt die Größe gegen das Leben.',
+    r1why='Die Krabben und das eine Prozent sind Details; die Ozeane '
+          'insgesamt sind mehr, als der Absatz behandelt. Die einzige '
+          'Überschrift, die den ganzen Absatz abdeckt, stellt die Größe dem '
+          'Leben gegenüber.',
     r2why='Der erste Bahnhof, der zweite, die Fundamente unter den Füßen: '
           'Jeder Satz handelt von einem Ort mit zwei Bahnhöfen. Die '
           'Fahrgäste sind ein Detail, und der Abriss wird nie erklärt.',
@@ -347,24 +350,24 @@ T['de'] = dict(
              'dann die Spalte, in die es soll.',
     sortBin1='Deutet auf die richtige Überschrift',
     sortBin2='Eine Falle',
-    sortWhy='Die linke Spalte beschreibt durchweg eine Überschrift, die '
-            '<strong>auf den ganzen Absatz passt</strong>: Sie nennt die '
-            'Aufgabe, sie gilt für jeden Satz, und sie hängt an keinem '
-            'einzelnen davon. Die rechte Spalte sind die drei Arten, wie '
-            'eine Überschrift richtig aussieht, ohne richtig zu sein '
-            '&mdash; ein gemeinsames Wort, ein Treffer nur mit dem ersten '
-            'Satz, eine Passung, die ein anderer Absatz genauso '
-            'beanspruchen könnte. Jede ist ein Köder, der genau das tut, '
-            'wofür er geschrieben wurde.',
+    sortWhy='Die Signale für die richtige Überschrift beschreiben alle eine, '
+            'die <strong>den Absatz als Ganzes abdeckt</strong>: Sie fasst '
+            'den Hauptgedanken zusammen und passt auch dann noch, wenn man '
+            'einen beliebigen Satz herausnimmt. Die Fallen sind die drei '
+            'Arten, wie eine Überschrift richtig aussieht, ohne es zu sein '
+            '&mdash; ein Detail aus einem Satz, ein Treffer nur beim ersten '
+            'Satz, eine Passung, die ein anderer Absatz genauso beanspruchen '
+            'könnte. Jede ist ein Köder, der genau das tut, wofür er '
+            'geschrieben wurde.',
 
     actTitle='Schreib die Überschriften selbst',
     actUse='Verwende mindestens drei:',
-    actSpeakBrief='Zu zweit, mit irgendeinem Artikel zur Hand. Einer '
-                  'schreibt zu jedem Absatz eine Überschrift und fügt zwei '
-                  'dazu, die auf nichts passen &mdash; eine, die ein Wort '
-                  'aus dem Text wiederholt, eine, die zu allgemein ist. '
-                  'Liste mischen, tauschen, zuordnen. Dann jede Zuordnung '
-                  'verteidigen.',
+    actSpeakBrief='Zu zweit, mit irgendeinem Artikel. Einer schreibt zu '
+                  'jedem Absatz eine Überschrift und fügt dann zwei Köder '
+                  'hinzu, die zu keinem Absatz gehören &mdash; einen aus '
+                  'einem Detail gebaut, einen zu allgemeinen. Mischt die '
+                  'Liste, tauscht und ordnet zu. Dann begründet jede '
+                  'Zuordnung.',
     actSpeak1='Wer zuordnet, muss sagen, was jeder Absatz tut &mdash; '
               'einführen, vergleichen, warnen &mdash;, bevor er die '
               'Überschrift nennt.',
@@ -385,8 +388,8 @@ T['de'] = dict(
 # ── Spanish ────────────────────────────────────────────────────────────
 T['es'] = dict(
     coverTitle='Matching <em>Headings</em>',
-    coverSub='Una tarea del Reading que no sigue el orden del texto, y '
-             'por eso la técnica es otra',
+    coverSub='Una tarea de Reading cuya lista de respuestas no sigue ningún '
+             'orden &mdash; así que la técnica es otra',
     chipLevel='C1 · Avanzado', chipFocus='Reading · los dos módulos',
     chipCount='18 puntos',
 
@@ -394,34 +397,33 @@ T['es'] = dict(
     t1Title='Más títulos que párrafos, y ningún orden al que agarrarse',
     t1ah='La forma de la tarea',
     t1ab='Una lista de títulos numerados i, ii, iii, y un texto con párrafos '
-         'de la A a la G. Cada párrafo recibe un título. Siempre hay más '
-         'títulos que párrafos, así que dos o tres sobran, y están escritos '
-         'para tentar.',
+         'de la A a la G. Cada párrafo lleva un título. Hay más títulos que '
+         'párrafos, así que algunos no se usan nunca &mdash; y están '
+         'escritos para tentar.',
     t1an='Siete párrafos, diez títulos, tres señuelos. Esa es la cuenta '
          'habitual.',
     t1bh='Un tipo que salta',
-    t1bb='Casi todos los tipos de pregunta siguen el texto. Este no, igual '
-         'que Matching Information: el '
-         'título i puede ser del párrafo F, y el orden de la lista no te '
-         'dice nada sobre dónde mirar. Resolver cuatro no te dice dónde está '
-         'el quinto.',
+    t1bb='La mayoría de los tipos de pregunta siguen el texto. Aquí los '
+         'párrafos van A, B, C, pero la lista de títulos no tiene orden: el '
+         'título i puede ser del párrafo F, y el lugar que ocupa un título '
+         'en la lista no te dice nada sobre dónde buscar.',
     t1bn='Suele ser lo primero de su texto, antes de las preguntas que sí '
          'van en orden.',
     t1ch='Primero el párrafo, luego la lista',
     t1cb='La trampa es leer primero diez títulos y luego buscarlos en el '
-         'texto: diez ideas en la cabeza, todas buscando sitio. Lee el '
-         'párrafo A, di con tus palabras de qué va, y solo entonces busca '
-         'en la lista el título que dice lo mismo.',
+         'texto: diez ideas en la cabeza, todas buscando casa. Lee un '
+         'párrafo, di con tus palabras cuál es su idea principal y solo '
+         'entonces mira la lista para encontrar el título que dice lo mismo.',
     t1cn='Primero tu resumen, después la lista. Siempre.',
 
     t2Eyebrow='Antes de empezar',
-    t2Title='Pregunta qué hace el párrafo, no de qué trata',
+    t2Title='Pregúntate qué hace el párrafo, no solo de qué trata',
     t2ah='Función antes que tema',
     t2ab='Dos párrafos pueden compartir tema y hacer cosas distintas con él: '
-         'uno plantea un problema, el siguiente da un ejemplo, un tercero '
-         'sopesa dos posturas, un cuarto propone una solución. El título '
-         'nombra la tarea. Un título que solo nombra el tema encaja con '
-         'medio texto.',
+         'uno presenta un problema, el siguiente da un ejemplo, un tercero '
+         'sopesa dos puntos de vista, un cuarto propone una solución. El '
+         'título expresa la idea principal, a menudo nombrando la función. '
+         'Un título que solo nombra el tema vale para medio texto.',
     t2an='Plantear, ilustrar, comparar, advertir, proponer. Cinco verbos '
          'cubren casi todo lo que hace un párrafo.',
     t2bh='La frase clave se mueve',
@@ -429,15 +431,15 @@ T['es'] = dict(
          'sabes. Un párrafo puede abrir con un ejemplo y dar su idea al '
          'final, o esconderla en medio tras una concesión. Lee hasta la '
          'última frase antes de decidir.',
-    t2bn='Un título que solo encaja con la primera frase es la respuesta '
-         'equivocada más frecuente de todo el examen.',
-    t2ch='Una palabra repetida es un cebo',
-    t2cb='Si un título usa una palabra que está en el párrafo, desconfía. El '
-         'título correcto parafrasea: dice lo que el párrafo quiere decir '
-         'con palabras que el párrafo no usa. Los incorrectos están hechos '
-         'con su vocabulario, para que los encuentre quien busca palabras.',
-    t2cn='Cotejar una palabra lleva un segundo. Cotejar una idea lleva una '
-         'frase. Gasta la frase.',
+    t2bn='Un título que solo encaja con la primera frase es una de las '
+         'trampas más comunes.',
+    t2ch='Una palabra compartida no prueba nada',
+    t2cb='El título correcto puede compartir la palabra del tema del '
+         'párrafo, pero expresa la idea principal. Los cebos se construyen '
+         'con detalles &mdash; una palabra o un dato de una sola frase '
+         '&mdash; para que quien busca palabras los encuentre.',
+    t2cn='Emparejar una palabra lleva un segundo. Emparejar una idea lleva '
+         'más. Tómate ese tiempo.',
 
     t3Eyebrow='Antes de empezar',
     t3Title='Los seguros primero, tachar, el doble encaje al final',
@@ -446,12 +448,12 @@ T['es'] = dict(
          'letra que lleven. Cada acierto seguro acorta la lista para los '
          'dudosos, y el párrafo más difícil se decide muchas veces por lo '
          'que queda, no por lo que dice.',
-    t3an='No vayas de la A a la G. Ve de fácil a difícil.',
+    t3an='Lee en orden si quieres, pero decide de lo fácil a lo difícil.',
     t3bh='Táchalo en cuanto lo uses',
-    t3bb='Cada título se usa una vez. Táchalo de la lista en cuanto te '
-         'decidas, y tacha también el párrafo. Una lista que todavía enseña '
-         'diez títulos para los dos últimos párrafos te está pidiendo que '
-         'reconsideres cada decisión que ya has tomado.',
+    t3bb='Ningún título se usa dos veces. Táchalo de la lista en cuanto te '
+         'decidas, y tacha también el párrafo. Una lista que aún muestra '
+         'diez títulos cuando quedan dos párrafos te está pidiendo que '
+         'repienses cada decisión que ya has tomado.',
     t3bn='Lápiz, no memoria. Con el reloj encima olvidarás cuáles has '
          'usado.',
     t3ch='Cuando un título encaja en dos párrafos',
@@ -470,8 +472,8 @@ T['es'] = dict(
     mccTitle='¿Qué movimiento, y qué título?',
 
     r1why='Los cangrejos y el uno por ciento son detalles; los océanos en su '
-          'conjunto son más de lo que el párrafo abarca. El único título '
-          'que vale para cada frase es el tamaño frente a la vida.',
+          'conjunto son más de lo que cubre el párrafo. El único título que '
+          'abarca todo el párrafo es el que enfrenta el tamaño a la vida.',
     r2why='La primera estación, la segunda, los cimientos bajo los pies: '
           'cada frase habla de un sitio con dos estaciones. Los pasajeros '
           'son un detalle, y la demolición nunca se explica.',
@@ -515,22 +517,23 @@ T['es'] = dict(
              'elemento y luego en la columna que quieras.',
     sortBin1='Apunta al título correcto',
     sortBin2='Una trampa',
-    sortWhy='La columna izquierda describe siempre un título que '
-            '<strong>encaja con el párrafo entero</strong>: nombra la '
-            'tarea, vale para cada frase y no depende de ninguna en '
-            'concreto. La derecha son las tres maneras en que un título '
-            'parece correcto sin serlo: una palabra compartida, un encaje '
-            'solo con la primera línea, un ajuste que otro párrafo podría '
-            'reclamar igual. Cada una es un señuelo haciendo justo lo que '
-            'se escribió para hacer.',
+    sortWhy='Las señales del título correcto describen todas uno que '
+            '<strong>abarca el párrafo entero</strong>: resume la idea '
+            'principal y sigue encajando aunque quites cualquier frase. Las '
+            'trampas son las tres formas en que un título parece correcto '
+            'sin serlo &mdash; un detalle de una sola frase, un encaje solo '
+            'con la primera línea, un encaje que otro párrafo podría '
+            'reclamar igual. Cada una es un cebo que hace exactamente '
+            'aquello para lo que se escribió.',
 
     actTitle='Escribe tú los títulos',
     actUse='Usa al menos tres:',
     actSpeakBrief='En parejas, con cualquier artículo a mano. Uno escribe un '
-                  'título para cada párrafo y añade dos que no encajen con '
-                  'nada: uno que repita una palabra del texto y otro '
-                  'demasiado general. Barajad la lista, intercambiad y '
-                  'emparejad. Luego defended cada emparejamiento.',
+                  'título para cada párrafo y añade dos cebos que no '
+                  'corresponden a ningún párrafo: uno construido con un '
+                  'detalle y otro demasiado general. Barajad la lista, '
+                  'intercambiadla y emparejad. Luego defended cada '
+                  'emparejamiento.',
     actSpeak1='Quien empareja tiene que decir qué hace cada párrafo '
               '&mdash; plantear, comparar, advertir &mdash; antes de nombrar '
               'su título.',
@@ -551,8 +554,8 @@ T['es'] = dict(
 # ── French ─────────────────────────────────────────────────────────────
 T['fr'] = dict(
     coverTitle='Matching <em>Headings</em>',
-    coverSub='Une tâche de Reading qui ne suit pas l’ordre du texte &mdash; la '
-             'technique est donc différente',
+    coverSub='Une tâche de Reading dont la liste de réponses ne suit aucun '
+             'ordre &mdash; donc la technique est différente',
     chipLevel='C1 · Avancé', chipFocus='Reading · les deux modules',
     chipCount='18 points',
 
@@ -561,34 +564,36 @@ T['fr'] = dict(
             's’appuyer',
     t1ah='La forme de la tâche',
     t1ab='Une liste de titres numérotés i, ii, iii, et un texte dont les '
-         'paragraphes vont de A à G. Chaque paragraphe reçoit un titre. Il y a '
-         'toujours plus de titres que de paragraphes, donc deux ou trois ne '
-         'servent jamais &mdash; et ils sont écrits pour être tentants.',
+         'paragraphes vont de A à G. Chaque paragraphe reçoit un titre. Il y '
+         'a plus de titres que de paragraphes, donc certains ne servent '
+         'jamais &mdash; et ils sont écrits pour tenter.',
     t1an='Sept paragraphes, dix titres, trois leurres. C’est le calcul '
          'habituel.',
     t1bh='Un type qui saute',
-    t1bb='La plupart des types de questions suivent le texte. Celui-ci, comme '
-         'Matching Information, ne le fait pas : le titre i peut appartenir au '
-         'paragraphe F, et l’ordre de la liste ne dit rien de l’endroit où '
-         'chercher. En trouver quatre ne dit rien du cinquième.',
+    t1bb='La plupart des types de questions suivent le texte. Ici, les '
+         'paragraphes vont A, B, C, mais la liste des titres n’a pas d’ordre '
+         ': le titre i peut appartenir au paragraphe F, et la place d’un '
+         'titre dans la liste ne vous dit rien sur l’endroit où chercher.',
     t1bn='Il vient en général en premier sur son texte, avant les questions '
          'qui, elles, suivent l’ordre.',
     t1ch='Lisez le paragraphe avant la liste',
-    t1cb='Le piège consiste à lire d’abord les dix titres puis à les chercher '
-         'dans le texte &mdash; dix idées en tête, toutes en quête d’un point '
-         'de chute. Lisez le paragraphe A, dites avec vos mots de quoi il '
-         'parle, et seulement ensuite cherchez dans la liste le titre qui dit '
-         'la même chose.',
+    t1cb='Le piège est de lire d’abord dix titres puis de les chercher dans '
+         'le texte &mdash; dix idées en tête, toutes en quête d’un foyer. '
+         'Lisez un paragraphe, dites avec vos mots quelle est son idée '
+         'principale, et seulement ensuite cherchez dans la liste le titre '
+         'qui dit la même chose.',
     t1cn='Votre résumé d’abord, la liste ensuite. À chaque fois.',
 
     t2Eyebrow='Avant de commencer',
-    t2Title='Demandez-vous ce que fait le paragraphe, pas de quoi il parle',
+    t2Title='Demandez ce que fait le paragraphe, pas seulement de quoi il '
+            'parle',
     t2ah='La fonction avant le sujet',
-    t2ab='Deux paragraphes peuvent partager un sujet et en faire des choses '
-         'différentes : l’un présente un problème, le suivant donne un exemple, '
-         'un troisième pèse deux points de vue, un quatrième propose une '
-         'solution. Le titre nomme la fonction. Un titre qui ne nomme que le '
-         'sujet convient à la moitié du texte.',
+    t2ab='Deux paragraphes peuvent partager un thème et en faire des choses '
+         'différentes : l’un présente un problème, le suivant donne un '
+         'exemple, un troisième pèse deux points de vue, un quatrième '
+         'propose une solution. Le titre énonce l’idée principale &mdash; '
+         'souvent en nommant la fonction. Un titre qui ne nomme que le thème '
+         'convient à la moitié du texte.',
     t2an='Présenter, illustrer, comparer, mettre en garde, proposer. Cinq '
          'verbes couvrent l’essentiel de ce que fait un paragraphe.',
     t2bh='La phrase principale se déplace',
@@ -596,16 +601,15 @@ T['fr'] = dict(
          'savent que vous le savez. Un paragraphe peut s’ouvrir sur un exemple '
          'et énoncer son idée à la fin, ou l’enfouir au milieu après une '
          'concession. Lisez jusqu’à la dernière phrase avant de décider.',
-    t2bn='Un titre qui ne correspond qu’à la première phrase est la mauvaise '
-         'réponse la plus courante de l’épreuve.',
-    t2ch='Un mot répété est un appât',
-    t2cb='Si un titre utilise un mot qui figure dans le paragraphe, méfiez-vous. '
-         'Le bon titre reformule : il dit ce que signifie le paragraphe avec '
-         'des mots que le paragraphe n’a pas employés. Les mauvais sont '
-         'construits avec son vocabulaire, pour qu’un candidat qui cherche des '
-         'mots les trouve.',
-    t2cn='Faire correspondre un mot prend une seconde. Faire correspondre une '
-         'idée prend une phrase. Prenez le temps de la phrase.',
+    t2bn='Un titre qui ne correspond qu’à la première phrase est l’un des '
+         'pièges les plus courants.',
+    t2ch='Un mot commun ne prouve rien',
+    t2cb='Le bon titre peut reprendre le mot du thème du paragraphe, mais il '
+         'énonce l’idée principale. Les appâts sont construits à partir de '
+         'détails &mdash; un mot ou un fait tiré d’une seule phrase &mdash; '
+         'pour que le candidat qui cherche des mots les trouve.',
+    t2cn='Associer un mot prend une seconde. Associer une idée prend plus de '
+         'temps. Prenez-le.',
 
     t3Eyebrow='Avant de commencer',
     t3Title='Les sûrs d’abord, rayez, les doubles à la fin',
@@ -614,13 +618,13 @@ T['fr'] = dict(
          'soit leur lettre. Chaque correspondance sûre raccourcit la liste pour '
          'ceux dont vous doutez, et le paragraphe le plus difficile est souvent '
          'tranché par ce qui reste plutôt que par ce qu’il dit.',
-    t3an='Ne travaillez pas de A à G. Travaillez du plus facile au plus '
-         'difficile.',
+    t3an='Lisez dans l’ordre si vous voulez, mais tranchez du plus facile au '
+         'plus difficile.',
     t3bh='Rayez-le une fois utilisé',
-    t3bb='Chaque titre ne sert qu’une fois. Rayez-le de la liste dès que vous '
+    t3bb='Aucun titre ne sert deux fois. Rayez-le de la liste dès que vous '
          'vous engagez, et rayez aussi le paragraphe. Une liste qui affiche '
-         'encore dix titres alors qu’il reste deux paragraphes vous invite à '
-         'remettre en cause toutes les décisions déjà prises.',
+         'encore dix titres alors qu’il reste deux paragraphes vous demande '
+         'de reconsidérer chaque décision déjà prise.',
     t3bn='Le crayon, pas la mémoire. Sous la pression du temps, vous oublierez '
          'lesquels vous avez utilisés.',
     t3ch='Quand un titre convient à deux paragraphes',
@@ -640,9 +644,8 @@ T['fr'] = dict(
     mccTitle='Quelle démarche, et quel titre ?',
 
     r1why='Les crabes et le un pour cent sont des détails ; les océans dans '
-          'leur ensemble dépassent ce que couvre le paragraphe. Le seul titre '
-          'valable pour chaque phrase est celui qui met la taille en regard de '
-          'la vie.',
+          'leur ensemble dépassent ce que couvre le paragraphe. Le seul '
+          'titre qui couvre tout le paragraphe oppose la taille à la vie.',
     r2why='La première gare, la deuxième, les fondations sous les pieds : '
           'chaque phrase parle d’un même site portant deux gares. Les voyageurs '
           'sont un détail, et la démolition n’est jamais expliquée.',
@@ -686,24 +689,24 @@ T['fr'] = dict(
              'un élément, puis sur la colonne voulue.',
     sortBin1='Oriente vers le bon titre',
     sortBin2='Un piège',
-    sortWhy='Tout ce qui est dans la colonne de gauche décrit un titre qui '
-            '<strong>convient au paragraphe dans son ensemble</strong> : il '
-            'nomme la fonction, il vaut pour chaque phrase, et il ne dépend '
-            'd’aucune en particulier. La colonne de droite réunit les trois '
-            'façons dont un titre semble juste sans l’être &mdash; un mot '
-            'partagé, une correspondance avec la seule première ligne, une '
-            'adéquation qu’un autre paragraphe pourrait revendiquer tout '
-            'autant. Chacun est un leurre qui fait exactement ce pour quoi il a '
-            'été écrit.',
+    sortWhy='Les signaux du bon titre décrivent tous un titre qui '
+            '<strong>couvre le paragraphe dans son ensemble</strong> : il '
+            'résume l’idée principale et convient encore si l’on retire '
+            'n’importe quelle phrase. Les pièges sont les trois façons dont '
+            'un titre semble juste sans l’être &mdash; un détail tiré d’une '
+            'seule phrase, une correspondance avec la seule première ligne, '
+            'une adéquation qu’un autre paragraphe pourrait revendiquer tout '
+            'autant. Chacun est un appât qui fait exactement ce pour quoi il '
+            'a été écrit.',
 
     actTitle='Écrivez vous-même les titres',
     actUse='Utilisez-en au moins trois :',
-    actSpeakBrief='À deux, avec n’importe quel article sous la main. L’un de '
-                  'vous écrit un titre pour chaque paragraphe, puis ajoute deux '
-                  'titres en trop qui ne conviennent à rien &mdash; l’un qui '
-                  'reprend un mot du texte, l’autre trop général. Mélangez la '
-                  'liste, échangez et associez. Puis défendez chaque '
-                  'association.',
+    actSpeakBrief='À deux, avec n’importe quel article sous la main. L’un '
+                  'écrit un titre pour chaque paragraphe, puis ajoute deux '
+                  'appâts qui n’appartiennent à aucun paragraphe &mdash; '
+                  'l’un construit à partir d’un détail, l’autre trop '
+                  'général. Mélangez la liste, échangez, associez. Puis '
+                  'justifiez chaque association.',
     actSpeak1='Celui qui associe doit dire ce que fait chaque paragraphe '
               '&mdash; présenter, comparer, mettre en garde &mdash; avant de '
               'nommer son titre.',
@@ -725,41 +728,42 @@ T['fr'] = dict(
 # ── Italian ────────────────────────────────────────────────────────────
 T['it'] = dict(
     coverTitle='Matching <em>Headings</em>',
-    coverSub='Un compito di Reading che non segue l’ordine del testo &mdash; '
-             'quindi la tecnica è diversa',
+    coverSub='Un compito di Reading in cui la lista delle risposte non segue '
+             'alcun ordine &mdash; per questo la tecnica è diversa',
     chipLevel='C1 · Avanzato', chipFocus='Reading · entrambi i moduli',
     chipCount='18 punti',
 
     t1Eyebrow='Prima di cominciare',
     t1Title='Più titoli che paragrafi, e nessun ordine a cui appoggiarsi',
     t1ah='Com’è fatto il compito',
-    t1ab='Un elenco di titoli numerati i, ii, iii, e un testo con i paragrafi '
-         'dalla A alla G. A ogni paragrafo va un titolo. I titoli sono sempre '
-         'più dei paragrafi, quindi due o tre non si usano mai &mdash; e sono '
-         'scritti apposta per tentarti.',
+    t1ab='Una lista di titoli numerati i, ii, iii, e un testo con paragrafi '
+         'dalla A alla G. Ogni paragrafo prende un titolo. I titoli sono più '
+         'dei paragrafi, quindi alcuni non vengono mai usati &mdash; e sono '
+         'scritti per tentarti.',
     t1an='Sette paragrafi, dieci titoli, tre esche. È il conto abituale.',
     t1bh='Un tipo che salta',
-    t1bb='La maggior parte dei tipi di domanda segue il testo. Questo, come '
-         'Matching Information, no: il titolo i può appartenere al paragrafo F, '
-         'e l’ordine dell’elenco non ti dice nulla su dove guardare. '
-         'Risolverne quattro non ti dice nulla del quinto.',
+    t1bb='La maggior parte dei tipi di domanda segue il testo. Qui i '
+         'paragrafi vanno A, B, C, ma la lista dei titoli non ha ordine: il '
+         'titolo i può appartenere al paragrafo F, e la posizione di un '
+         'titolo nella lista non ti dice nulla su dove cercare.',
     t1bn='Di solito è il primo compito sul suo testo, prima delle domande che '
          'seguono l’ordine.',
     t1ch='Leggi il paragrafo prima dell’elenco',
-    t1cb='La trappola è leggere prima i dieci titoli e poi cercarli nel testo '
-         '&mdash; dieci idee in testa, tutte in cerca di casa. Leggi il '
-         'paragrafo A, di’ con parole tue di che cosa parla, e solo allora '
-         'cerca nell’elenco il titolo che dice la stessa cosa.',
+    t1cb='La trappola è leggere prima dieci titoli e poi cercarli nel testo '
+         '&mdash; dieci idee in testa, tutte in cerca di casa. Leggi un '
+         'paragrafo, di’ con parole tue qual è la sua idea principale, e '
+         'solo allora cerca nella lista il titolo che dice la stessa cosa.',
     t1cn='Prima il tuo riassunto, poi l’elenco. Ogni volta.',
 
     t2Eyebrow='Prima di cominciare',
-    t2Title='Chiediti che cosa fa il paragrafo, non di che cosa parla',
+    t2Title='Chiediti che cosa fa il paragrafo, non solo di che cosa parla',
     t2ah='La funzione prima dell’argomento',
-    t2ab='Due paragrafi possono avere lo stesso argomento e farci cose diverse: '
-         'uno introduce un problema, il successivo porta un esempio, un terzo '
-         'mette a confronto due punti di vista, un quarto propone una '
-         'soluzione. Il titolo dà il nome alla funzione. Un titolo che nomina '
-         'solo l’argomento va bene per metà del testo.',
+    t2ab='Due paragrafi possono condividere un argomento e farci cose '
+         'diverse: uno presenta un problema, il successivo dà un esempio, un '
+         'terzo mette a confronto due punti di vista, un quarto propone una '
+         'soluzione. Il titolo esprime l’idea principale &mdash; spesso '
+         'nominando la funzione. Un titolo che nomina solo l’argomento va '
+         'bene per mezzo testo.',
     t2an='Introdurre, illustrare, confrontare, avvertire, proporre. Cinque '
          'verbi coprono quasi tutto ciò che fa un paragrafo.',
     t2bh='La frase chiave si sposta',
@@ -767,15 +771,15 @@ T['it'] = dict(
          'paragrafo può aprirsi con un esempio ed enunciare l’idea alla fine, '
          'o nasconderla a metà dopo una concessione. Leggi fino all’ultima '
          'frase prima di decidere.',
-    t2bn='Un titolo che corrisponde solo alla prima frase è la risposta '
-         'sbagliata più comune della prova.',
-    t2ch='Una parola ripetuta è un’esca',
-    t2cb='Se un titolo usa una parola che sta nel paragrafo, diffida. Il titolo '
-         'giusto riformula: dice che cosa significa il paragrafo con parole che '
-         'il paragrafo non ha usato. Quelli sbagliati sono costruiti con il suo '
-         'vocabolario, perché un candidato che cerca parole li trovi.',
-    t2cn='Far corrispondere una parola richiede un secondo. Far corrispondere '
-         'un’idea richiede una frase. Spendi la frase.',
+    t2bn='Un titolo che corrisponde solo alla prima frase è una delle '
+         'trappole più comuni.',
+    t2ch='Una parola in comune non prova niente',
+    t2cb='Il titolo giusto può contenere la parola del tema del paragrafo, '
+         'ma ne esprime l’idea principale. Le esche sono costruite con i '
+         'dettagli &mdash; una parola o un fatto preso da una sola frase '
+         '&mdash; perché chi cerca parole le trovi.',
+    t2cn='Abbinare una parola richiede un secondo. Abbinare un’idea richiede '
+         'di più. Prenditi il tempo.',
 
     t3Eyebrow='Prima di cominciare',
     t3Title='Prima i sicuri, cancella, i doppi alla fine',
@@ -784,12 +788,12 @@ T['it'] = dict(
          'abbiano. Ogni abbinamento sicuro accorcia l’elenco per quelli su cui '
          'hai dubbi, e il paragrafo più difficile spesso si decide per ciò che '
          'resta più che per ciò che dice.',
-    t3an='Non lavorare dalla A alla G. Lavora dal facile al difficile.',
+    t3an='Leggi in ordine se vuoi, ma decidi dal facile al difficile.',
     t3bh='Cancellalo una volta usato',
-    t3bb='Ogni titolo si usa una volta sola. Cancellalo dall’elenco appena ti '
-         'decidi, e cancella anche il paragrafo. Un elenco che mostra ancora '
-         'dieci titoli quando mancano due paragrafi ti invita a rimettere in '
-         'discussione ogni decisione già presa.',
+    t3bb='Nessun titolo si usa due volte. Cancellalo dalla lista appena '
+         'decidi, e cancella anche il paragrafo. Una lista che mostra ancora '
+         'dieci titoli quando mancano due paragrafi ti sta chiedendo di '
+         'riconsiderare ogni decisione già presa.',
     t3bn='Matita, non memoria. Sotto pressione dimenticherai quali hai già '
          'usato.',
     t3ch='Quando un titolo va bene per due paragrafi',
@@ -808,9 +812,9 @@ T['it'] = dict(
     mccTitle='Quale mossa, e quale titolo?',
 
     r1why='I granchi e l’uno per cento sono dettagli; gli oceani nel loro '
-          'insieme vanno oltre ciò che copre il paragrafo. L’unico titolo che '
-          'vale per ogni frase è quello che mette a confronto le dimensioni con '
-          'la vita.',
+          'insieme sono più di quanto copra il paragrafo. L’unico titolo che '
+          'copre tutto il paragrafo è quello che mette la dimensione a '
+          'confronto con la vita.',
     r2why='La prima stazione, la seconda, le fondamenta sotto i piedi: ogni '
           'frase parla di un unico luogo che ospita due stazioni. I passeggeri '
           'sono un dettaglio, e la demolizione non viene mai spiegata.',
@@ -853,22 +857,23 @@ T['it'] = dict(
              'elemento e poi sulla colonna che vuoi.',
     sortBin1='Porta al titolo giusto',
     sortBin2='Una trappola',
-    sortWhy='Tutto ciò che sta nella colonna di sinistra descrive un titolo che '
-            '<strong>va bene per il paragrafo nel suo insieme</strong>: nomina '
-            'la funzione, vale per ogni frase e non dipende da nessuna in '
-            'particolare. La colonna di destra raccoglie i tre modi in cui un '
-            'titolo sembra giusto senza esserlo &mdash; una parola in comune, '
-            'una corrispondenza con la sola prima riga, un’adeguatezza che un '
-            'altro paragrafo potrebbe rivendicare altrettanto. Ognuno è '
-            'un’esca che fa esattamente ciò per cui è stata scritta.',
+    sortWhy='I segnali del titolo giusto descrivono tutti un titolo che '
+            '<strong>copre il paragrafo nel suo insieme</strong>: ne '
+            'riassume l’idea principale e va ancora bene anche togliendo una '
+            'frase qualsiasi. Le trappole sono i tre modi in cui un titolo '
+            'sembra giusto senza esserlo &mdash; un dettaglio preso da una '
+            'frase, una corrispondenza solo con la prima riga, un '
+            'adattamento che un altro paragrafo potrebbe rivendicare '
+            'altrettanto bene. Ognuna è un’esca che fa esattamente ciò per '
+            'cui è stata scritta.',
 
     actTitle='Scrivi tu i titoli',
     actUse='Usane almeno tre:',
-    actSpeakBrief='In coppia, con un articolo qualsiasi a portata di mano. Uno di '
-                  'voi scrive un titolo per ogni paragrafo, poi aggiunge due '
-                  'titoli in più che non vanno bene per nessuno &mdash; uno che '
-                  'ripete una parola del testo, uno troppo generale. Mescolate '
-                  'l’elenco, scambiatevelo e abbinate. Poi discutete ogni '
+    actSpeakBrief='In coppia, con un articolo qualsiasi a portata di mano. '
+                  'Uno scrive un titolo per ogni paragrafo, poi aggiunge due '
+                  'esche che non appartengono a nessun paragrafo &mdash; una '
+                  'costruita su un dettaglio, una troppo generica. Mescolate '
+                  'la lista, scambiatevela e abbinate. Poi motivate ogni '
                   'abbinamento.',
     actSpeak1='Chi abbina deve dire che cosa fa ogni paragrafo &mdash; '
               'introdurre, confrontare, avvertire &mdash; prima di nominarne il '
@@ -889,40 +894,41 @@ T['it'] = dict(
 # ── Portuguese ─────────────────────────────────────────────────────────
 T['pt'] = dict(
     coverTitle='Matching <em>Headings</em>',
-    coverSub='Uma tarefa de Reading que não segue a ordem do texto &mdash; por '
-             'isso a técnica é diferente',
+    coverSub='Uma tarefa de Reading cuja lista de respostas não segue '
+             'nenhuma ordem &mdash; por isso, a técnica é outra',
     chipLevel='C1 · Avançado', chipFocus='Reading · os dois módulos',
     chipCount='18 pontos',
 
     t1Eyebrow='Antes de começar',
     t1Title='Mais títulos do que parágrafos, e nenhuma ordem em que te apoiar',
     t1ah='O formato da tarefa',
-    t1ab='Uma lista de títulos numerados i, ii, iii, e um texto com parágrafos '
-         'de A a G. Cada parágrafo leva um título. Há sempre mais títulos do '
-         'que parágrafos, por isso dois ou três nunca são usados &mdash; e são '
-         'escritos para tentar.',
+    t1ab='Uma lista de títulos numerados i, ii, iii, e um texto com '
+         'parágrafos de A a G. Cada parágrafo recebe um título. Há mais '
+         'títulos do que parágrafos, por isso alguns nunca são usados '
+         '&mdash; e são escritos para tentar.',
     t1an='Sete parágrafos, dez títulos, três iscos. É a conta habitual.',
     t1bh='Um tipo que salta',
-    t1bb='A maioria dos tipos de pergunta segue o texto. Este, tal como '
-         'Matching Information, não: o título i pode pertencer ao parágrafo F, '
-         'e a ordem da lista não te diz nada sobre onde procurar. Acertar em '
-         'quatro não te diz nada sobre o quinto.',
+    t1bb='A maioria dos tipos de pergunta segue o texto. Aqui, os parágrafos '
+         'vão A, B, C, mas a lista de títulos não tem ordem: o título i pode '
+         'pertencer ao parágrafo F, e o lugar de um título na lista não te '
+         'diz nada sobre onde procurar.',
     t1bn='Costuma ser a primeira tarefa sobre o seu texto, antes das perguntas '
          'que seguem a ordem.',
     t1ch='Lê o parágrafo antes da lista',
-    t1cb='A armadilha é ler primeiro os dez títulos e depois procurá-los no '
-         'texto &mdash; dez ideias na cabeça, todas à procura de casa. Lê o '
-         'parágrafo A, diz por palavras tuas de que trata, e só depois procura '
-         'na lista o título que diz o mesmo.',
+    t1cb='A armadilha é ler primeiro dez títulos e depois procurá-los no '
+         'texto &mdash; dez ideias na cabeça, todas à procura de casa. Lê um '
+         'parágrafo, diz por palavras tuas qual é a ideia principal e só '
+         'então procura na lista o título que diz o mesmo.',
     t1cn='Primeiro o teu resumo, depois a lista. Sempre.',
 
     t2Eyebrow='Antes de começar',
-    t2Title='Pergunta o que o parágrafo está a fazer, não de que trata',
+    t2Title='Pergunta o que o parágrafo está a fazer, não só de que trata',
     t2ah='A função antes do tema',
-    t2ab='Dois parágrafos podem partilhar um tema e fazer coisas diferentes com '
-         'ele: um apresenta um problema, o seguinte dá um exemplo, um terceiro '
-         'pesa duas opiniões, um quarto propõe uma solução. O título nomeia a '
-         'função. Um título que só nomeia o tema serve para metade do texto.',
+    t2ab='Dois parágrafos podem partilhar um tema e fazer coisas diferentes '
+         'com ele: um apresenta um problema, o seguinte dá um exemplo, um '
+         'terceiro pesa dois pontos de vista, um quarto propõe uma solução. '
+         'O título exprime a ideia principal &mdash; muitas vezes nomeando a '
+         'função. Um título que só nomeia o tema serve para meio texto.',
     t2an='Apresentar, ilustrar, comparar, alertar, propor. Cinco verbos cobrem '
          'quase tudo o que um parágrafo faz.',
     t2bh='A frase principal muda de lugar',
@@ -930,16 +936,15 @@ T['pt'] = dict(
          'isso. Um parágrafo pode abrir com um exemplo e dizer a ideia no fim, '
          'ou escondê-la a meio, depois de uma concessão. Lê até à última frase '
          'antes de decidir.',
-    t2bn='Um título que só corresponde à primeira frase é a resposta errada '
-         'mais comum da prova.',
-    t2ch='Uma palavra repetida é um isco',
-    t2cb='Se um título usa uma palavra que está no parágrafo, desconfia. O '
-         'título certo parafraseia: diz o que o parágrafo quer dizer com '
-         'palavras que o parágrafo não usou. Os errados são construídos com o '
-         'seu vocabulário, para que um candidato à procura de palavras os '
-         'encontre.',
-    t2cn='Fazer corresponder uma palavra leva um segundo. Fazer corresponder '
-         'uma ideia leva uma frase. Gasta a frase.',
+    t2bn='Um título que só corresponde à primeira frase é uma das armadilhas '
+         'mais comuns.',
+    t2ch='Uma palavra em comum não prova nada',
+    t2cb='O título certo pode partilhar a palavra do tema do parágrafo, mas '
+         'exprime a ideia principal. Os iscos são construídos com pormenores '
+         '&mdash; uma palavra ou um facto de uma só frase &mdash; para que '
+         'quem procura palavras os encontre.',
+    t2cn='Emparelhar uma palavra leva um segundo. Emparelhar uma ideia leva '
+         'mais tempo. Dá-lhe esse tempo.',
 
     t3Eyebrow='Antes de começar',
     t3Title='Primeiro os certos, risca, os duplos no fim',
@@ -948,12 +953,13 @@ T['pt'] = dict(
          'letra. Cada correspondência certa encurta a lista para os que te '
          'deixam dúvidas, e o parágrafo mais difícil decide-se muitas vezes '
          'pelo que sobra, e não pelo que diz.',
-    t3an='Não trabalhes de A a G. Trabalha do fácil para o difícil.',
+    t3an='Lê pela ordem, se quiseres, mas decide do mais fácil para o mais '
+         'difícil.',
     t3bh='Risca-o depois de usado',
-    t3bb='Cada título usa-se uma só vez. Risca-o da lista assim que te decides, '
-         'e risca também o parágrafo. Uma lista que ainda mostra dez títulos '
-         'quando faltam dois parágrafos está a convidar-te a rever todas as '
-         'decisões que já tomaste.',
+    t3bb='Nenhum título é usado duas vezes. Risca-o da lista assim que te '
+         'decidires, e risca também o parágrafo. Uma lista que ainda mostra '
+         'dez títulos quando faltam dois parágrafos está a pedir-te que '
+         'reconsideres todas as decisões que já tomaste.',
     t3bn='Lápis, não memória. Com o tempo a apertar, vais esquecer-te de quais '
          'já usaste.',
     t3ch='Quando um título serve para dois parágrafos',
@@ -972,8 +978,8 @@ T['pt'] = dict(
     mccTitle='Que jogada, e que título?',
 
     r1why='Os caranguejos e o um por cento são pormenores; os oceanos no seu '
-          'conjunto vão além do que o parágrafo cobre. O único título que vale '
-          'para todas as frases é o que põe o tamanho frente à vida.',
+          'conjunto são mais do que o parágrafo abrange. O único título que '
+          'abrange o parágrafo inteiro é o que opõe o tamanho à vida.',
     r2why='A primeira estação, a segunda, as fundações debaixo dos pés: todas '
           'as frases falam de um só local com duas estações. Os passageiros '
           'são um pormenor, e a demolição nunca é explicada.',
@@ -1015,22 +1021,23 @@ T['pt'] = dict(
              'depois na coluna que quiseres.',
     sortBin1='Aponta para o título certo',
     sortBin2='Uma armadilha',
-    sortWhy='Tudo o que está na coluna da esquerda descreve um título que '
-            '<strong>serve para o parágrafo no seu todo</strong>: nomeia a '
-            'função, vale para todas as frases e não depende de nenhuma em '
-            'particular. A coluna da direita reúne as três maneiras de um título '
-            'parecer certo sem o ser &mdash; uma palavra partilhada, uma '
+    sortWhy='Os sinais do título certo descrevem todos um que '
+            '<strong>abrange o parágrafo como um todo</strong>: resume a '
+            'ideia principal e continua a servir mesmo que se tire qualquer '
+            'frase. As armadilhas são as três maneiras de um título parecer '
+            'certo sem o ser &mdash; um pormenor de uma só frase, uma '
             'correspondência só com a primeira linha, um encaixe que outro '
-            'parágrafo podia reclamar da mesma forma. Cada um é um isco a fazer '
-            'exatamente aquilo para que foi escrito.',
+            'parágrafo poderia reclamar da mesma forma. Cada uma é um isco '
+            'que faz exatamente aquilo para que foi escrito.',
 
     actTitle='Escreve tu os títulos',
     actUse='Usa pelo menos três:',
-    actSpeakBrief='Em pares, com um artigo qualquer à mão. Um de vocês escreve um '
-                  'título para cada parágrafo e depois junta dois títulos a mais '
-                  'que não servem para nenhum &mdash; um que repete uma palavra '
-                  'do texto, outro demasiado geral. Baralhem a lista, troquem e '
-                  'façam as correspondências. Depois discutam cada uma.',
+    actSpeakBrief='Em pares, com um artigo qualquer à mão. Um escreve um '
+                  'título para cada parágrafo e depois acrescenta dois iscos '
+                  'que não pertencem a nenhum parágrafo &mdash; um '
+                  'construído a partir de um pormenor, outro demasiado '
+                  'geral. Baralhem a lista, troquem-na e emparelhem. Depois '
+                  'justifiquem cada escolha.',
     actSpeak1='Quem faz as correspondências tem de dizer o que cada parágrafo '
               'está a fazer &mdash; apresentar, comparar, alertar &mdash; antes '
               'de dizer o título.',
@@ -1050,41 +1057,42 @@ T['pt'] = dict(
 # ── Russian ────────────────────────────────────────────────────────────
 T['ru'] = dict(
     coverTitle='Matching <em>Headings</em>',
-    coverSub='Задание Reading, которое не идёт по порядку текста, &mdash; '
-             'поэтому и техника другая',
+    coverSub='Задание Reading, в котором список ответов не следует никакому '
+             'порядку, &mdash; поэтому и техника другая',
     chipLevel='C1 · Продвинутый', chipFocus='Reading · оба модуля',
     chipCount='18 баллов',
 
     t1Eyebrow='Прежде чем начать',
     t1Title='Заголовков больше, чем абзацев, и опереться на порядок нельзя',
     t1ah='Как устроено задание',
-    t1ab='Список заголовков с номерами i, ii, iii и текст с абзацами от A до G. '
-         'Каждому абзацу нужен один заголовок. Заголовков всегда больше, чем '
-         'абзацев, поэтому два-три так и не пригодятся &mdash; и написаны они '
-         'так, чтобы соблазнять.',
+    t1ab='Список заголовков с номерами i, ii, iii и текст с абзацами от A до '
+         'G. Каждому абзацу &mdash; один заголовок. Заголовков больше, чем '
+         'абзацев, так что некоторые остаются неиспользованными &mdash; и '
+         'написаны они так, чтобы соблазнять.',
     t1an='Семь абзацев, десять заголовков, три приманки. Обычная арифметика.',
     t1bh='Тип, который прыгает',
-    t1bb='Большинство типов вопросов идут по тексту. Этот, как и Matching '
-         'Information, &mdash; нет: заголовок i может относиться к абзацу F, а '
-         'порядок списка ничего не говорит о том, где искать. Четыре ответа '
-         'ничего не подскажут о пятом.',
+    t1bb='Большинство типов вопросов идёт по тексту. Здесь абзацы идут A, B, '
+         'C, но у списка заголовков порядка нет: заголовок i может '
+         'относиться к абзацу F, а место заголовка в списке ничего не '
+         'говорит о том, где искать.',
     t1bn='Обычно это задание идёт первым по своему тексту, перед вопросами, '
          'которые идут по порядку.',
     t1ch='Читайте абзац раньше списка',
-    t1cb='Ловушка в том, чтобы сначала прочитать десять заголовков, а потом '
-         'искать их в тексте, &mdash; в голове десять идей, и каждая ищет, куда '
-         'пристроиться. Прочитайте абзац A, скажите своими словами, о чём он, и '
-         'только потом ищите в списке заголовок, который говорит то же самое.',
+    t1cb='Ловушка &mdash; сначала прочитать десять заголовков, а потом '
+         'искать их в тексте: десять идей в голове, и все ищут себе место. '
+         'Прочитайте абзац, скажите своими словами, в чём его главная мысль, '
+         'и только потом ищите в списке заголовок, который говорит то же '
+         'самое.',
     t1cn='Сначала ваше резюме, потом список. Всегда.',
 
     t2Eyebrow='Прежде чем начать',
-    t2Title='Спрашивайте, что абзац делает, а не о чём он',
+    t2Title='Спрашивайте, что делает абзац, а не только о чём он',
     t2ah='Функция важнее темы',
-    t2ab='Два абзаца могут иметь одну тему и делать с ней разное: один '
-         'представляет проблему, следующий приводит пример, третий взвешивает '
-         'две точки зрения, четвёртый предлагает решение. Заголовок называет '
-         'функцию. Заголовок, который называет только тему, подходит к '
-         'половине текста.',
+    t2ab='Два абзаца могут быть на одну тему и делать с ней разное: один '
+         'ставит проблему, следующий приводит пример, третий взвешивает две '
+         'точки зрения, четвёртый предлагает решение. Заголовок передаёт '
+         'главную мысль &mdash; часто называя функцию абзаца. Заголовок, '
+         'который называет только тему, подходит к половине текста.',
     t2an='Вводить, иллюстрировать, сравнивать, предостерегать, предлагать. '
          'Пять глаголов покрывают почти всё, что делает абзац.',
     t2bh='Главное предложение перемещается',
@@ -1092,15 +1100,15 @@ T['ru'] = dict(
          'Абзац может начаться с примера и высказать мысль в конце или спрятать '
          'её в середине после уступки. Дочитайте до последнего предложения, '
          'прежде чем решать.',
-    t2bn='Заголовок, совпадающий только с первым предложением, &mdash; самая '
-         'частая ошибка на экзамене.',
-    t2ch='Повторённое слово &mdash; наживка',
-    t2cb='Если в заголовке есть слово из абзаца, будьте начеку. Верный '
-         'заголовок перефразирует: он передаёт смысл абзаца словами, которых в '
-         'абзаце нет. Неверные собраны из его лексики, чтобы их нашёл тот, кто '
-         'ищет слова.',
-    t2cn='Сопоставить слово &mdash; секунда. Сопоставить мысль &mdash; целое '
-         'предложение. Потратьте это предложение.',
+    t2bn='Заголовок, совпадающий только с первым предложением, &mdash; одна '
+         'из самых частых ловушек.',
+    t2ch='Общее слово ничего не доказывает',
+    t2cb='Верный заголовок может содержать слово, обозначающее тему абзаца, '
+         'но он передаёт главную мысль. Наживки строятся из деталей &mdash; '
+         'слова или факта из одного предложения, &mdash; чтобы тот, кто ищет '
+         'слова, их нашёл.',
+    t2cn='Сопоставить слово &mdash; секунда. Сопоставить мысль &mdash; '
+         'дольше. Потратьте это время.',
 
     t3Eyebrow='Прежде чем начать',
     t3Title='Сначала верные, вычёркивайте, двойные &mdash; в конце',
@@ -1109,12 +1117,12 @@ T['ru'] = dict(
          'буква у них ни была. Каждое верное совпадение сокращает список для '
          'тех, в которых вы не уверены, а самый трудный абзац часто решает то, '
          'что осталось, а не то, что в нём сказано.',
-    t3an='Не идите от A к G. Идите от лёгкого к трудному.',
+    t3an='Читайте по порядку, если хотите, но решайте от лёгкого к трудному.',
     t3bh='Использовали &mdash; вычеркните',
-    t3bb='Каждый заголовок используется один раз. Вычеркните его из списка, как '
-         'только решили, и вычеркните абзац тоже. Список, где всё ещё десять '
-         'заголовков, когда осталось два абзаца, предлагает вам пересмотреть '
-         'все уже принятые решения.',
+    t3bb='Ни один заголовок не используется дважды. Вычёркивайте его из '
+         'списка, как только решили, и вычёркивайте абзац тоже. Список, в '
+         'котором при двух оставшихся абзацах всё ещё десять заголовков, '
+         'требует пересмотреть каждое уже принятое решение.',
     t3bn='Карандаш, а не память. Под давлением времени вы забудете, какие уже '
          'использовали.',
     t3ch='Когда заголовок подходит к двум абзацам',
@@ -1132,9 +1140,9 @@ T['ru'] = dict(
     mccEyebrow='Задание 3 · Порядок действий',
     mccTitle='Какой ход и какой заголовок?',
 
-    r1why='Крабы и один процент &mdash; детали; океаны в целом шире того, что '
-          'охватывает абзац. Единственный заголовок, верный для каждого '
-          'предложения, &mdash; тот, что сопоставляет размер с жизнью.',
+    r1why='Крабы и один процент &mdash; детали; океаны в целом &mdash; '
+          'больше, чем охватывает абзац. Единственный заголовок, '
+          'охватывающий весь абзац, противопоставляет размер жизни.',
     r2why='Первая станция, вторая, фундаменты под ногами: каждое предложение '
           '&mdash; об одном месте, где две станции. Пассажиры &mdash; деталь, а '
           'снос нигде не объясняется.',
@@ -1176,22 +1184,22 @@ T['ru'] = dict(
              'на нужный столбец.',
     sortBin1='Указывает на верный заголовок',
     sortBin2='Ловушка',
-    sortWhy='Всё в левом столбце описывает заголовок, который <strong>подходит '
-            'к абзацу целиком</strong>: он называет функцию, верен для каждого '
-            'предложения и не зависит ни от одного из них. В правом столбце '
-            '&mdash; три способа, которыми заголовок кажется верным, не будучи '
-            'им: общее слово, совпадение только с первой строкой, соответствие, '
-            'на которое с тем же успехом может претендовать другой абзац. Каждый '
-            'из них &mdash; приманка, которая делает ровно то, ради чего '
-            'написана.',
+    sortWhy='Признаки верного заголовка описывают заголовок, который '
+            '<strong>охватывает абзац целиком</strong>: он передаёт главную '
+            'мысль и подходит, даже если убрать любое предложение. Ловушки '
+            '&mdash; три способа выглядеть верным, не будучи им: деталь из '
+            'одного предложения, совпадение только с первой строкой, '
+            'соответствие, на которое мог бы так же претендовать другой '
+            'абзац. Каждая &mdash; наживка, которая делает ровно то, для '
+            'чего её написали.',
 
     actTitle='Напишите заголовки сами',
     actUse='Используйте хотя бы три:',
-    actSpeakBrief='В парах, с любой статьёй под рукой. Один из вас пишет '
-                  'заголовок к каждому абзацу, а потом добавляет два лишних, '
-                  'которые ни к чему не подходят: один повторяет слово из '
-                  'текста, другой слишком общий. Перемешайте список, '
-                  'обменяйтесь и сопоставьте. Потом обсудите каждое '
+    actSpeakBrief='В парах, с любой статьёй под рукой. Один пишет заголовок '
+                  'к каждому абзацу, а затем добавляет две наживки, которые '
+                  'не относятся ни к одному абзацу, &mdash; одну, '
+                  'построенную на детали, и одну слишком общую. Перемешайте '
+                  'список, обменяйтесь и сопоставьте. Потом обоснуйте каждое '
                   'сопоставление.',
     actSpeak1='Тот, кто сопоставляет, должен сказать, что делает каждый абзац '
               '&mdash; вводит, сравнивает, предостерегает, &mdash; прежде чем '
@@ -1213,35 +1221,36 @@ T['ru'] = dict(
 # ── Arabic ─────────────────────────────────────────────────────────────
 T['ar'] = dict(
     coverTitle='Matching <em>Headings</em>',
-    coverSub='مهمة في Reading لا تسير بترتيب النص، ولذلك تختلف التقنية',
+    coverSub='مهمة Reading لا تتبع قائمةُ إجاباتها أي ترتيب &mdash; ولذلك '
+             'تختلف التقنية',
     chipLevel='C1 · متقدّم', chipFocus='Reading · الوحدتان كلتاهما',
     chipCount='18 نقطة',
 
     t1Eyebrow='قبل أن تبدأ',
     t1Title='عناوين أكثر من الفقرات، ولا ترتيب تستند إليه',
     t1ah='شكل المهمة',
-    t1ab='قائمة عناوين مرقّمة i وii وiii، ونص فقراته مرقّمة بالأحرف من A إلى '
-         'G. لكل فقرة عنوان واحد. والعناوين دائمًا أكثر من الفقرات، فيبقى اثنان '
-         'أو ثلاثة بلا استخدام، وهي مكتوبة لتُغريك.',
+    t1ab='قائمة عناوين مرقّمة i وii وiii، ونص فقراته من A إلى G. تأخذ كل '
+         'فقرة عنوانًا واحدًا. والعناوين أكثر من الفقرات، فيبقى بعضها دون '
+         'استخدام &mdash; وهي مكتوبة لتغريك.',
     t1an='سبع فقرات، وعشرة عناوين، وثلاثة طُعوم. هذا هو الحساب المعتاد.',
     t1bh='نوع يقفز',
-    t1bb='معظم أنواع الأسئلة تتبع ترتيب النص. أما هذا النوع، مثل Matching '
-         'Information، فلا يتبعه: قد يكون العنوان i للفقرة F، وترتيب القائمة '
-         'لا يدلّك على مكان البحث. وحلّ أربعة لا يخبرك شيئًا عن الخامس.',
+    t1bb='معظم أنواع الأسئلة تتبع النص. هنا تسير الفقرات A ثم B ثم C، لكن '
+         'قائمة العناوين بلا ترتيب: قد ينتمي العنوان i إلى الفقرة F، وموضع '
+         'العنوان في القائمة لا يخبرك بشيء عن مكان البحث.',
     t1bn='يأتي عادةً أولًا على نصّه، قبل الأسئلة التي تتبع الترتيب.',
     t1ch='اقرأ الفقرة قبل القائمة',
-    t1cb='الفخّ أن تقرأ العناوين العشرة أولًا ثم تبحث عنها في النص، فتدور في '
-         'رأسك عشر أفكار كلها تبحث عن مكان. اقرأ الفقرة A، وقل بكلماتك عمّا '
-         'تتحدث، وبعد ذلك فقط ابحث في القائمة عن العنوان الذي يقول الشيء '
-         'نفسه.',
+    t1cb='الفخ أن تقرأ عشرة عناوين أولًا ثم تبحث عنها في النص &mdash; عشر '
+         'أفكار في رأسك، كلها تبحث عن مكان. اقرأ فقرة، وقل بكلماتك ما فكرتها '
+         'الرئيسية، ثم انظر في القائمة عن العنوان الذي يقول الشيء نفسه.',
     t1cn='ملخّصك أولًا، ثم القائمة. في كل مرة.',
 
     t2Eyebrow='قبل أن تبدأ',
-    t2Title='اسأل ماذا تفعل الفقرة، لا عمّا تتحدث',
+    t2Title='اسأل ماذا تفعل الفقرة، لا عمّ تتحدث فقط',
     t2ah='الوظيفة قبل الموضوع',
-    t2ab='قد تشترك فقرتان في موضوع واحد وتقوم كل منهما بعمل مختلف: واحدة تعرض '
+    t2ab='قد تشترك فقرتان في موضوع واحد وتفعلان به أشياء مختلفة: واحدة تطرح '
          'مشكلة، والتالية تضرب مثالًا، وثالثة توازن بين رأيين، ورابعة تقترح '
-         'حلًّا. العنوان يسمّي الوظيفة. والعنوان الذي يسمّي الموضوع فقط يناسب '
+         'حلًا. والعنوان يعبّر عن الفكرة الرئيسية &mdash; وكثيرًا ما يفعل '
+         'ذلك بتسمية وظيفة الفقرة. أما العنوان الذي يذكر الموضوع فقط فيناسب '
          'نصف النص.',
     t2an='العرض والتمثيل والمقارنة والتحذير والاقتراح: خمسة أفعال تغطي معظم ما '
          'تفعله الفقرة.',
@@ -1249,13 +1258,12 @@ T['ar'] = dict(
     t2bb='تأتي عادةً أولًا، وواضعو هذه الاختبارات يعرفون أنك تعرف ذلك. قد تبدأ '
          'الفقرة بمثال وتذكر فكرتها في النهاية، أو تدفنها في الوسط بعد تسليم. '
          'اقرأ حتى الجملة الأخيرة قبل أن تقرّر.',
-    t2bn='العنوان الذي لا يطابق إلا الجملة الأولى هو أكثر الإجابات الخاطئة '
-         'شيوعًا في الاختبار.',
-    t2ch='الكلمة المكرّرة طُعم',
-    t2cb='إذا استخدم عنوانٌ كلمةً موجودة في الفقرة، فكن حذرًا. العنوان الصحيح '
-         'يعيد الصياغة: يقول ما تعنيه الفقرة بكلمات لم تستخدمها. أما العناوين '
-         'الخاطئة فمبنية من مفرداتها، ليجدها المتقدّم الذي يبحث عن الكلمات.',
-    t2cn='مطابقة كلمة تستغرق ثانية، ومطابقة فكرة تستغرق جملة. أنفِق الجملة.',
+    t2bn='العنوان الذي لا يطابق إلا الجملة الأولى من أشيع الفخاخ.',
+    t2ch='الكلمة المشتركة لا تثبت شيئًا',
+    t2cb='قد يحمل العنوان الصحيح الكلمة التي تسمّي موضوع الفقرة، لكنه يعبّر '
+         'عن فكرتها الرئيسية. أما الطُّعوم فمبنية من التفاصيل &mdash; كلمة '
+         'أو معلومة من جملة واحدة &mdash; لكي يجدها من يبحث عن الكلمات.',
+    t2cn='مطابقة كلمة تستغرق ثانية. مطابقة فكرة تستغرق أكثر. خذ وقتك.',
 
     t3Eyebrow='قبل أن تبدأ',
     t3Title='المؤكَّد أولًا، اشطب، والمزدوج في الآخر',
@@ -1263,11 +1271,11 @@ T['ar'] = dict(
     t3ab='لبعض الفقرات عنوان واضح. خذه أيًّا كان حرفها. كل مطابقة مؤكّدة تقصّر '
          'القائمة لما لست متأكدًا منه، وكثيرًا ما يحسم الفقرةَ الأصعب ما تبقّى '
          'لا ما تقوله.',
-    t3an='لا تعمل من A إلى G، بل من السهل إلى الصعب.',
+    t3an='اقرأ بالترتيب إن شئت، لكن احسم من الأسهل إلى الأصعب.',
     t3bh='اشطبه بعد استخدامه',
-    t3bb='يُستخدم كل عنوان مرة واحدة. اشطبه من القائمة لحظة تقرّر، واشطب الفقرة '
-         'أيضًا. القائمة التي ما زالت تعرض عشرة عناوين وقد بقيت فقرتان تدعوك إلى '
-         'مراجعة كل قرار اتخذته.',
+    t3bb='لا يُستخدم أي عنوان مرتين. اشطبه من القائمة لحظة تقرّر، واشطب '
+         'الفقرة أيضًا. القائمة التي ما زالت تعرض عشرة عناوين وقد بقيت '
+         'فقرتان تطلب منك أن تعيد النظر في كل قرار اتخذته.',
     t3bn='القلم لا الذاكرة. تحت ضغط الوقت ستنسى أيّها استخدمت.',
     t3ch='عندما يناسب عنوانٌ فقرتين',
     t3cb='اتركه. أنجز الباقي وعُد إليه والقائمة أقصر. ثم اسأل عن كل فقرة: هل '
@@ -1283,9 +1291,9 @@ T['ar'] = dict(
     mccEyebrow='النشاط 3 · ترتيب الهجوم',
     mccTitle='أيّ خطوة، وأيّ عنوان؟',
 
-    r1why='السرطانات والواحد في المئة تفاصيل، والمحيطات كلها أوسع مما تغطيه '
-          'الفقرة. العنوان الوحيد الذي يصحّ على كل جملة هو الذي يضع الحجم في '
-          'مقابل الحياة.',
+    r1why='السرطانات والواحد في المئة تفاصيل، والمحيطات بأكملها أوسع مما '
+          'تتناوله الفقرة. العنوان الوحيد الذي يغطي الفقرة كلها هو الذي يضع '
+          'الحجم في مقابل الحياة.',
     r2why='المحطة الأولى، والثانية، والأساسات تحت الأقدام: كل جملة تتحدث عن موقع '
           'واحد يحمل محطتين. الركاب تفصيل، والهدم لا يُشرح أبدًا.',
     r3why='خطّ اليد المنسوخ، والفراغ المتروك للحروف الكبيرة، والنسخ المبيعة على '
@@ -1319,19 +1327,19 @@ T['ar'] = dict(
     sortHint='اسحب كل إشارة إلى عمود، أو انقر عليها ثم على العمود الذي تريده.',
     sortBin1='يشير إلى العنوان الصحيح',
     sortBin2='فخّ',
-    sortWhy='كل ما في عمود «يشير إلى العنوان الصحيح» يصف عنوانًا <strong>يناسب '
-            'الفقرة كلها</strong>: يسمّي الوظيفة، ويصحّ على كل جملة، ولا يعتمد '
-            'على جملة بعينها. أما عمود «فخّ» فيضمّ الطرق الثلاث التي يبدو بها '
-            'العنوان صحيحًا وهو ليس كذلك: كلمة مشتركة، أو تطابق مع السطر الأول '
-            'وحده، أو ملاءمة يمكن أن تدّعيها فقرة أخرى بالقدر نفسه. كل منها طُعم '
-            'يفعل تمامًا ما كُتب ليفعله.',
+    sortWhy='علامات العنوان الصحيح كلها تصف عنوانًا <strong>يغطي الفقرة '
+            'بأكملها</strong>: يلخّص فكرتها الرئيسية، ويظل مناسبًا حتى لو '
+            'حُذفت أي جملة منها. أما الفخاخ فهي الطرق الثلاث التي يبدو بها '
+            'العنوان صحيحًا دون أن يكون كذلك &mdash; تفصيل من جملة واحدة، أو '
+            'تطابق مع السطر الأول وحده، أو ملاءمة يمكن أن تدّعيها فقرة أخرى '
+            'بالقدر نفسه. كل منها طُعم يفعل بالضبط ما كُتب من أجله.',
 
     actTitle='اكتب العناوين بنفسك',
     actUse='استخدم ثلاثة منها على الأقل:',
-    actSpeakBrief='اعملا في ثنائي، ومعكما أي مقال. يكتب أحدكما عنوانًا لكل فقرة، '
-                  'ثم يضيف عنوانين زائدين لا يناسبان شيئًا: واحد يكرّر كلمة من '
-                  'النص، وآخر عام جدًّا. اخلطا القائمة وتبادلاها وطابقا. ثم '
-                  'ناقشا كل مطابقة.',
+    actSpeakBrief='اعملا في ثنائي، ومعكما أي مقال. يكتب أحدكما عنوانًا لكل '
+                  'فقرة، ثم يضيف طُعمين لا ينتميان إلى أي فقرة &mdash; '
+                  'واحدًا مبنيًا على تفصيل، وآخر عامًا أكثر من اللازم. اخلطا '
+                  'القائمة، وتبادلاها، وطابقا. ثم دافعا عن كل مطابقة.',
     actSpeak1='على من يطابق أن يقول ماذا تفعل كل فقرة، عرضًا أو مقارنةً أو '
               'تحذيرًا، قبل أن يذكر عنوانها.',
     actSpeak2='عن كل طُعم، قل إلى أيّ فقرة كُتب ليجذبك، وما الذي يكشفه.',
@@ -1348,44 +1356,38 @@ T['ar'] = dict(
 # ── Chinese ────────────────────────────────────────────────────────────
 T['zh'] = dict(
     coverTitle='Matching <em>Headings</em>',
-    coverSub='一个不按文章顺序出题的阅读任务——所以技巧也不一样',
+    coverSub='一种答案列表不按任何顺序排列的阅读题——所以方法也不一样',
     chipLevel='C1 · 高级', chipFocus='Reading · 两个模块通用',
     chipCount='18 分',
 
     t1Eyebrow='开始之前',
     t1Title='标题比段落多，而且没有顺序可依',
     t1ah='题目的形式',
-    t1ab='一列用 i、ii、iii 编号的标题，加上一篇段落编为 A 到 G 的文章。每段配一'
-         '个标题。标题总是比段落多，所以总有两三个用不上——而它们正是写来诱惑你'
-         '的。',
+    t1ab='一份编号为 i、ii、iii 的标题列表，和一篇段落从 A 到 G 的文章。每个段落对应一个标题。标题比段落多，所以有些永远用不上——'
+         '而且它们写得很有诱惑力。',
     t1an='七个段落，十个标题，三个干扰项。这是常见的配比。',
     t1bh='一种会跳的题型',
-    t1bb='大多数题型按文章顺序出题。这一种和 Matching Information 一样不按顺序：'
-         '标题 i 可能属于段落 F，列表的顺序也不会告诉你去哪里找。答对四个，对第五'
-         '个毫无帮助。',
+    t1bb='大多数题型按文章顺序出题。这里段落按 A、B、C 排列，但标题列表没有顺序：标题 i 可能属于段落 '
+         'F，一个标题在列表里的位置，完全不能告诉你该去哪里找。',
     t1bn='它通常是这篇文章的第一组题，排在按顺序出题的题目前面。',
     t1ch='先读段落，再看列表',
-    t1cb='陷阱在于先读十个标题，再去文中找——脑子里装着十个念头，个个都在找落脚'
-         '处。先读段落 A，用自己的话说出它讲什么，然后才去列表里找说的是同一件事'
-         '的标题。',
+    t1cb='陷阱是先读十个标题，再去文中找它们——脑子里装着十个想法，全都在找归宿。先读一个段落，用自己的话说出它的主旨，然后才去列表里找说同样意'
+         '思的标题。',
     t1cn='先写自己的概括，再看列表。每次都如此。',
 
     t2Eyebrow='开始之前',
-    t2Title='问段落在做什么，而不是它讲什么',
+    t2Title='问段落在做什么，而不只是它讲什么',
     t2ah='功能重于话题',
-    t2ab='两个段落可以话题相同，做的事却不同：一段提出问题，下一段举例，第三段权'
-         '衡两种观点，第四段提出解决办法。标题点出的是功能。只点出话题的标题，'
-         '文中一半的段落都能套上。',
+    t2ab='两个段落可以讲同一个话题，却用它做不同的事：一个提出问题，下一个举例，第三个权衡两种观点，第四个提出解决办法。标题表达的是主旨——常常'
+         '是通过点明段落的作用。只点出话题的标题，半篇文章都适用。',
     t2an='引出、举例、比较、警示、建议。五个动词就涵盖了段落的大部分功能。',
     t2bh='主题句会挪位置',
     t2bb='它通常在开头，而出题人知道你知道这一点。一个段落可能以例子开头、在结尾'
          '才点明观点，也可能在让步之后把观点藏在中间。读到最后一句再做决定。',
-    t2bn='只和第一句对得上的标题，是整份试卷上最常见的错误答案。',
-    t2ch='重复的词是诱饵',
-    t2cb='如果标题用了段落里出现的词，就要警惕。正确的标题是改写过的：它用段落'
-         '没用过的词说出段落的意思。错误的标题恰恰用段落里的词拼成，好让只会找'
-         '词的考生找到它们。',
-    t2cn='对一个词只要一秒，对一个意思要一句话。把这句话的时间花掉。',
+    t2bn='只和第一句对得上的标题，是最常见的陷阱之一。',
+    t2ch='共同的词证明不了什么',
+    t2cb='正确的标题可能也用了段落的话题词，但它表达的是主旨。诱饵则是用细节拼成的——某一句里的一个词或一个事实——好让只会找词的考生找到它们。',
+    t2cn='匹配一个词只要一秒。匹配一个意思要花更久。把这点时间花上。',
 
     t3Eyebrow='开始之前',
     t3Title='先做有把握的，划掉，两可的放最后',
@@ -1393,10 +1395,10 @@ T['zh'] = dict(
     t3ab='有些段落的标题一眼就能看出。不管它是哪个字母，先拿下。每确定一个，'
          '没把握的那几个可选范围就小一些，而最难的那一段，往往是靠剩下的标题'
          '而不是靠它的内容来决定的。',
-    t3an='不要按 A 到 G 的顺序做，要从易到难。',
+    t3an='想按顺序读也可以，但要从易到难地作出决定。',
     t3bh='用过就划掉',
-    t3bb='每个标题只用一次。一旦确定就从列表中划掉，同时划掉那个段落。只剩两段'
-         '了，列表上却还是十个标题，这等于让你把已经做过的每个决定重新考虑一遍。',
+    t3bb='每个标题最多用一次。一旦决定，就把它从列表里划掉，也把段落划掉。还剩两个段落时列表上仍显示十个标题，等于在让你重新考虑已经做出的每一个'
+         '决定。',
     t3bn='靠铅笔，别靠记忆。时间一紧，你会忘了哪些已经用过。',
     t3ch='一个标题同时适合两段时',
     t3cb='先放着。做完其余的，等列表变短再回来。然后逐段问：这个标题覆盖的是整'
@@ -1411,8 +1413,7 @@ T['zh'] = dict(
     mccEyebrow='练习 3 · 攻题顺序',
     mccTitle='用哪一步，选哪个标题？',
 
-    r1why='螃蟹和百分之一是细节；整个海洋则超出了这一段的范围。唯一对每一句都成'
-          '立的标题，是把体量和生命放在一起对照的那个。',
+    r1why='螃蟹和百分之一都是细节；整个海洋又超出了这一段的范围。唯一能涵盖整段的标题，是把面积和生命放在一起对比的那个。',
     r2why='第一个车站、第二个车站、脚下的地基：每一句都在讲同一个地点先后有两座'
           '车站。乘客是细节，拆除则从未解释。',
     r3why='照抄的手写字体、为大写首字母留的空、当作手抄本出售的印本——三个细节，'
@@ -1441,16 +1442,14 @@ T['zh'] = dict(
     sortHint='把每一项拖到一栏里——或者先点一项，再点你想放进的那一栏。',
     sortBin1='指向正确标题',
     sortBin2='陷阱',
-    sortWhy='左栏的每一项描述的都是<strong>适合整段</strong>的标题：它点出功能，'
-            '对每一句都成立，而且不依赖其中任何一句。右栏是标题看似正确、实则'
-            '不对的三种情况——共用一个词、只和第一行对得上、另一段也同样适合。'
-            '每一个都是干扰项，做的正是它被写出来要做的事。',
+    sortWhy='正确标题的信号描述的都是一个<strong>涵盖整个段落</strong>的标题：它概括了主旨，即使拿掉任何一句也仍然适用。陷阱'
+            '则是标题看似正确却并不正确的三种方式——出自某一句的细节、只和开头那句对得上、另一个段落也同样可以认领。每一个都是诱饵，做的正是'
+            '它被写出来要做的事。',
 
     actTitle='自己来写标题',
     actUse='至少用上三个：',
-    actSpeakBrief='两人一组，手边随便准备一篇文章。一人为每一段写一个标题，再加'
-                  '两个哪一段都不适合的多余标题——一个重复文中的某个词，一个太'
-                  '笼统。打乱列表、交换、配对。然后为每一个配对说理。',
+    actSpeakBrief='两人一组，手边随便找一篇文章。一人给每个段落写一个标题，再加两个不属于任何段落的诱饵——一个用细节拼成，一个过于笼统'
+                  '。把列表打乱，交换，然后匹配。最后为每一次匹配说出理由。',
     actSpeak1='配对的人必须先说出每一段在做什么——引出、比较、警示——再说出它的'
               '标题。',
     actSpeak2='每个干扰项，说说它是写来引你配给哪一段的，以及是什么露出了破绽。',
@@ -1467,52 +1466,42 @@ T['zh'] = dict(
 # ── Japanese ───────────────────────────────────────────────────────────
 T['ja'] = dict(
     coverTitle='Matching <em>Headings</em>',
-    coverSub='本文の順番どおりに進まない Reading の課題。だからテクニックも違い'
-             'ます',
+    coverSub='答えの一覧に順番がない Reading の課題――だからテクニックも違う',
     chipLevel='C1 · 上級', chipFocus='Reading · 両モジュール共通',
     chipCount='18 点',
 
     t1Eyebrow='始める前に',
     t1Title='段落より見出しが多く、頼れる順番もない',
     t1ah='課題の形',
-    t1ab='i、ii、iii と番号のついた見出しのリストと、A から G の段落がある本文。各'
-         '段落に見出しを一つ選びます。見出しは必ず段落より多いので、二つか三つは'
-         '使われません――そしてそれらは、つい選びたくなるように書かれています。',
+    t1ab='i、ii、iii と番号の付いた見出しの一覧と、A から G までの段落がある文章。各段落に見出しが一つずつ付きます。見出しは段落より'
+         '多いので、使われないものもあり――それらは惑わすように書かれています。',
     t1an='段落が七つ、見出しが十、おとりが三つ。これがよくある構成です。',
     t1bh='あちこちに飛ぶ形式',
-    t1bb='ほとんどの形式は本文の順に進みます。この形式は Matching Information と'
-         '同じく、そうなりません。見出し i が段落 F のものかもしれず、リストの順番'
-         'はどこを探すべきかを何も教えてくれません。四つ答えても五つ目の手がかりに'
-         'はなりません。',
+    t1bb='ほとんどの問題形式は本文の順に進みます。ここでは段落は A、B、C と進みますが、見出しの一覧には順番がありません：見出し i '
+         'が段落 F のものかもしれず、一覧のどこにある見出しかは、どこを探せばいいかについて何も教えてくれません。',
     t1bn='ふつうはその本文の最初の設問で、順番どおりに進む設問より前に来ます。',
     t1ch='リストより先に段落を読む',
-    t1cb='罠は、先に十の見出しを読んでから本文で探すことです――頭の中に十のアイデア'
-         'があって、どれも置き場所を探している状態になります。段落 A を読み、何に'
-         'ついての段落かを自分の言葉で言い、それからはじめて、同じことを言っている'
-         '見出しをリストから探しましょう。',
+    t1cb='罠は、先に見出しを十個読んでから本文で探すことです――頭の中に十の考えがあって、どれも居場所を探しています。段落を一つ読み、その要点を'
+         '自分の言葉で言ってから、はじめて一覧で同じことを言っている見出しを探しましょう。',
     t1cn='まず自分の要約、次にリスト。毎回そうします。',
 
     t2Eyebrow='始める前に',
-    t2Title='何についての段落かではなく、何をしている段落かを問う',
+    t2Title='段落が何について書いているかだけでなく、何をしているかを問う',
     t2ah='話題より機能',
-    t2ab='二つの段落が同じ話題で、違う役割を果たすことがあります。一つは問題を提'
-         '示し、次は例を挙げ、三つ目は二つの見方を比べ、四つ目は解決策を提案する。'
-         '見出しが名づけるのは役割です。話題だけを名づけた見出しは、本文の半分に'
-         '当てはまってしまいます。',
+    t2ab='二つの段落が同じ話題を扱い、それで違うことをすることがあります：一つは問題を提示し、次は例を挙げ、三つ目は二つの見方を比べ、四つ目は解'
+         '決策を提案する。見出しは要点を述べます――多くの場合、段落の役割を名指しすることで。話題を名指すだけの見出しは、文章の半分に当てはまっ'
+         'てしまいます。',
     t2an='導入する、例を示す、比べる、警告する、提案する。この五つの動詞で、段落'
          'の役割のほとんどをカバーできます。',
     t2bh='主題文は動き回る',
     t2bb='ふつうは最初にありますが、出題者はあなたがそれを知っていることを知って'
          'います。段落は例から始めて最後に要点を述べることも、譲歩のあとで真ん中'
          'に要点を埋めることもあります。最後の文まで読んでから決めましょう。',
-    t2bn='最初の文とだけ合う見出しは、この試験で最もよくある誤答です。',
-    t2ch='繰り返された語はエサ',
-    t2cb='段落にある語が見出しに使われていたら、疑ってください。正しい見出しは言'
-         'い換えています。段落が使っていない言葉で、段落の意味を言っているのです。'
-         '誤りの見出しは段落の語彙で組み立てられていて、語を探す受験者に見つかるよ'
-         'うにできています。',
-    t2cn='語を照合するのは一秒、考えを照合するには一文かかります。その一文をかけ'
-         'ましょう。',
+    t2bn='最初の文にしか合わない見出しは、いちばんよくある罠の一つです。',
+    t2ch='共通の語は何の証明にもならない',
+    t2cb='正しい見出しにも段落の話題を表す語が入っていることはありますが、正しい見出しは要点を述べています。エサは細部から作られています――一つ'
+         'の文から取った語や事実で――語を探す受験者に見つかるように。',
+    t2cn='語を合わせるのは一秒。考えを合わせるにはもっとかかります。その時間を使いましょう。',
 
     t3Eyebrow='始める前に',
     t3Title='確実なものから、消していき、二つに合うものは最後',
@@ -1520,11 +1509,10 @@ T['ja'] = dict(
     t3ab='見出しが明らかな段落があります。記号が何であれ、それを先に取りましょう。'
          '確実な組み合わせが一つ決まるたびに、迷っている段落の選択肢が減ります。い'
          'ちばん難しい段落は、その内容よりも残った見出しで決まることがよくあります。',
-    t3an='A から G の順に解かないこと。易しいものから難しいものへ。',
+    t3an='順番に読んでもかまいませんが、決めるのは易しいものから難しいものへ。',
     t3bh='使ったら消す',
-    t3bb='見出しはそれぞれ一度しか使いません。決めたらすぐリストから消し、段落も'
-         '消しましょう。残り二段落なのにリストに十の見出しが残っていたら、それまで'
-         'の判断を全部見直せと言われているようなものです。',
+    t3bb='同じ見出しが二度使われることはありません。決めたらすぐ一覧から消し、段落も消しましょう。段落が二つ残っているのに一覧にまだ十の見出しが'
+         'あるのは、すでにした決定をすべて考え直せと言っているようなものです。',
     t3bn='記憶ではなく鉛筆で。時間に追われると、どれを使ったか忘れます。',
     t3ch='見出しが二つの段落に合うとき',
     t3cb='いったん置いておきます。残りを解き、リストが短くなってから戻りましょう。'
@@ -1541,8 +1529,7 @@ T['ja'] = dict(
     mccEyebrow='演習 3 · 攻める順番',
     mccTitle='どの手順で、どの見出しか？',
 
-    r1why='カニと1パーセントは細部です。海全体は段落が扱う範囲を超えています。す'
-          'べての文に当てはまる見出しは、大きさを命と対比させたものだけです。',
+    r1why='カニと1パーセントは細部で、海全体は段落が扱う範囲を超えています。段落全体を覆う唯一の見出しは、大きさと生命を対比させたものです。',
     r2why='一つ目の駅、二つ目の駅、足元の基礎：どの文も、二つの駅を抱えた一つの場'
           '所の話です。乗客は細部で、取り壊しの理由は一度も説明されません。',
     r3why='写された手書きの書体、大文字のために空けた場所、写本として売られた本――'
@@ -1578,18 +1565,15 @@ T['ja'] = dict(
              '入れたい列をクリックします。',
     sortBin1='正しい見出しを示す',
     sortBin2='罠',
-    sortWhy='左の列はすべて、<strong>段落全体に合う</strong>見出しを表しています。'
-            '役割を名づけ、どの文にも当てはまり、特定の一文に頼っていません。右の'
-            '列は、正しく見えて実は正しくない三つのパターンです――共通の語、最初の'
-            '行とだけの一致、別の段落にも同じように当てはまること。どれも、書かれ'
-            'た目的どおりに働くおとりです。',
+    sortWhy='正しい見出しのサインは、どれも<strong>段落全体を覆う</strong>見出しを表しています：要点をまとめていて、どの文を'
+            '一つ取り除いても当てはまる。罠は、正しくないのに正しく見える三つの形です――一つの文から取った細部、最初の一行だけとの一致、別の'
+            '段落も同じように名乗れる当てはまり。どれも、書かれたとおりの役目を果たすエサです。',
 
     actTitle='見出しを自分で書く',
     actUse='少なくとも三つ使いましょう：',
-    actSpeakBrief='ペアで、手近な記事を一つ用意します。一人が各段落に見出しを書き、'
-                  'さらにどれにも合わない見出しを二つ加えます――本文の語を繰り返す'
-                  'ものと、一般的すぎるもの。リストを混ぜて交換し、組み合わせま'
-                  'す。そのあと、一つひとつの組み合わせについて議論しましょう。',
+    actSpeakBrief='ペアで、手元の記事を何でも使います。一人が各段落に見出しを書き、どの段落にも属さないエサを二つ加えます――一つは細部'
+                  'から作ったもの、もう一つは一般的すぎるもの。一覧を混ぜて交換し、組み合わせましょう。そして、すべての組み合わせの理由'
+                  'を述べます。',
     actSpeak1='組み合わせる人は、見出しを言う前に、各段落が何をしているか――導入、'
               '比較、警告――を言いましょう。',
     actSpeak2='おとりごとに、どの段落へ誘うために書かれたのか、何でそれが見破れるの'
