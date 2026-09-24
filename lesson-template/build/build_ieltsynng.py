@@ -93,7 +93,7 @@ BG_ACT = 'bg06.jpg'
 # read as what the learner says to themselves in the exam room.
 CHIPS = ['whose voice is it?', 'reported &ne; held', 'admittedly &hellip; but',
          'the turn outweighs', 'largely &ne; completely',
-         'a hedge commits to nothing']
+         'may &ne; did']
 
 E = I.T['en']
 

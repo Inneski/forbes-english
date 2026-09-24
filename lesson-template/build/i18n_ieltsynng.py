@@ -54,13 +54,13 @@ T = {}
 # ── English ────────────────────────────────────────────────────────────
 T['en'] = dict(
     coverTitle='Yes, No, <em>Not Given</em>',
-    coverSub='The same three answers as True, False, Not Given &mdash; asked '
-             'about what the writer thinks, not what the passage says',
+    coverSub='The same three-way choice as True, False, Not Given &mdash; '
+             'asked about what the writer thinks, not what the passage says',
     chipLevel='C1 · Advanced', chipFocus='Reading · both modules',
     chipCount='18 points',
 
     t1Eyebrow='Before you start',
-    t1Title='Same three answers, a different question',
+    t1Title='Same three-way choice, a different question',
     t1ah='Views, not facts',
     t1ab='True / False / Not Given asks what the passage <em>says</em>. '
          'Yes / No / Not Given asks what the writer <em>thinks</em>. The '
@@ -74,7 +74,7 @@ T['en'] = dict(
          'most likely to argue.',
     t1bn='Write the word the instructions ask for. YES on a True / False / '
          'Not Given question is marked wrong, even when you meant TRUE.',
-    t1ch='The test has not changed',
+    t1ch='Same check as True / False / Not Given',
     t1cb='<strong>Can I point at the sentence?</strong> Only now it has to be '
          'a sentence in which the writer speaks. If the only line you can '
          'find is someone else&rsquo;s opinion, you have not found the answer '
@@ -90,14 +90,14 @@ T['en'] = dict(
          'but the writer has not signed it. On its own, it can only give you '
          'NOT GIVEN.',
     t2an='These sentences state the claim in full, so word-matching finds '
-         'them first. That is exactly why they trap.',
+         'them first. That is exactly what makes them traps.',
     t2bh='The writer&rsquo;s own voice',
     t2bb='<em>I think</em>, <em>in my view</em>, <em>the truth is</em> &mdash; '
          'and far more often, no marker at all. In a passage that argues, a '
          'plain statement with nobody else&rsquo;s name on it is the '
          'writer&rsquo;s.',
-    t2bn='Markers point at the other voices. Most of the writer&rsquo;s own '
-         'views are unmarked.',
+    t2bn='Most markers point at other people&rsquo;s views; most of the '
+         'writer&rsquo;s own views carry none.',
     t2ch='Reported, then judged',
     t2cb='<em>Supporters say it works. They are right.</em> The second '
          'sentence makes the view the writer&rsquo;s own. <em>They are '
@@ -109,9 +109,10 @@ T['en'] = dict(
     t3Title='Admittedly &hellip; but',
     t3ah='The concession',
     t3ab='<em>Admittedly</em>, <em>of course</em>, <em>it is true that</em>, '
-         '<em>this is not to say</em>. The writer grants the other side a '
-         'point &mdash; and it is still the writer speaking. A point conceded '
-         'is a point the writer accepts.',
+         '<em>this is not to say</em> (which concedes the opposite of what '
+         'follows it). The writer grants the other side a point &mdash; and '
+         'it is still the writer speaking. A point conceded is a point the '
+         'writer accepts.',
     t3an='Contradict a concession and the answer is NO, even when the '
          'statement sounds like the writer&rsquo;s side.',
     t3bh='The turn',
@@ -138,9 +139,11 @@ T['en'] = dict(
          'False / Not Given paper.',
     t4bh='Hedges',
     t4bb='<em>May</em>, <em>might</em>, <em>perhaps</em>, <em>it seems</em>. '
-         'A hedge commits the writer to nothing. A statement making the claim '
-         'outright is NOT GIVEN: the writer has neither agreed nor disagreed.',
-    t4bn='Not NO. The writer has not denied it, only refused to promise it.',
+         'A hedge says the writer thinks something possible, not that it is '
+         'true. A statement making the claim outright is usually NOT GIVEN: '
+         'the writer has neither agreed nor disagreed.',
+    t4bn='Not NO. The writer has not denied it, only stopped short of '
+         'promising it.',
     t4ch='Evaluation words',
     t4cb='<em>Surprisingly</em>, <em>sadly</em>, <em>rightly</em>, <em>was '
          'right to</em>. One word gives you the writer&rsquo;s attitude, and '
@@ -181,9 +184,10 @@ T['en'] = dict(
     r8why='The writer is against it for beginners, but concedes the benefits '
           'outright: <em>obvious benefits, and I do not dispute them</em>. A '
           'concession is on the record too, so contradicting it is NO.',
-    r9why='<em>May have</em> commits the writer to nothing, and <em>other '
-          'changes</em> says why. The writer has not agreed and has not '
-          'disagreed. NOT GIVEN &mdash; not NO.',
+    r9why='The writer hedges about the ban (<em>may have</em>) and mentions '
+          '<em>other changes</em>, but never says which did more. Comparing '
+          'them is your step, not the writer&rsquo;s. NOT GIVEN &mdash; not '
+          'NO.',
     r10why='<em>Surprisingly</em> is the writer&rsquo;s reaction to the '
            'result, and <em>unexpectedly</em> is the same reaction in another '
            'word. YES.',
@@ -200,21 +204,22 @@ T['en'] = dict(
              'column you want it in.',
     sortBin1='The writer’s own view',
     sortBin2='A view the writer only reports',
-    sortWhy='Only the left column is the writer&rsquo;s own view. <em>I '
-            'think</em> says so outright; <em>rightly</em> takes over a view '
-            'the writer is reporting; <em>admittedly</em> grants a point the '
-            'writer accepts. The right column names someone else&rsquo;s view '
-            'and leaves it there &mdash; until the writer judges it, a '
-            'statement built on it is NOT GIVEN.',
+    sortWhy='Three of these put the writer on record. <em>I think</em> says '
+            'so outright; <em>rightly</em> takes over a view the writer is '
+            'reporting; <em>admittedly</em> grants a point the writer '
+            'accepts. The other three name someone else&rsquo;s view and '
+            'leave it there &mdash; until the writer judges it, a statement '
+            'built on it is NOT GIVEN.',
 
     actTitle='Put the writer on record',
     actUse='Use at least three:',
-    actSpeakBrief='In pairs, with an opinion piece to hand &mdash; a newspaper '
-                  'column or a review will do. One of you writes four '
-                  'statements about it: one YES, one NO, two NOT GIVEN, and at '
-                  'least one that repeats a view the writer only reports. '
-                  'Swap, answer, and defend each verdict by reading out the '
-                  'sentence in which the writer speaks.',
+    actSpeakBrief='In pairs, with an opinion piece to hand &mdash; a '
+                  'newspaper column or a review will do. Each of you writes '
+                  'four statements about it: one YES, one NO and two NOT '
+                  'GIVEN, one of them built on a view the writer only '
+                  'reports. Swap and answer. Defend each YES or NO with the '
+                  'sentence in which the writer speaks; for a NOT GIVEN, '
+                  'show that there is none.',
     actSpeak1='Before a YES or a NO counts, say whose voice the deciding '
               'sentence is in.',
     actSpeak2='Find the writer&rsquo;s concession, if there is one, and write '
@@ -234,8 +239,9 @@ T['en'] = dict(
 # ── German ─────────────────────────────────────────────────────────────
 T['de'] = dict(
     coverTitle='Yes, No, <em>Not Given</em>',
-    coverSub='Dieselben drei Antworten wie bei True, False, Not Given &mdash; '
-             'nur geht es darum, was der Autor denkt, nicht was der Text sagt',
+    coverSub='Dieselbe Dreifachauswahl wie bei True, False, Not Given '
+             '&mdash; gefragt wird, was der Autor denkt, nicht was der Text '
+             'sagt',
     chipLevel='C1 · Fortgeschritten', chipFocus='Reading · beide Module',
     chipCount='18 Punkte',
 
@@ -244,7 +250,7 @@ T['de'] = dict(
     optNG='Not Given &mdash; der Autor sagt dazu nichts',
 
     t1Eyebrow='Bevor du beginnst',
-    t1Title='Dieselben drei Antworten, eine andere Frage',
+    t1Title='Dieselbe Dreifachauswahl, eine andere Frage',
     t1ah='Meinungen, nicht Fakten',
     t1ab='True / False / Not Given fragt, was der Text <em>sagt</em>. Yes / '
          'No / Not Given fragt, was der Autor <em>denkt</em>. Die '
@@ -259,7 +265,7 @@ T['de'] = dict(
     t1bn='Schreib das Wort, das die Aufgabe verlangt. YES bei einer True / '
          'False / Not Given-Frage wird als falsch gewertet, auch wenn du TRUE '
          'gemeint hast.',
-    t1ch='Die Prüfung bleibt dieselbe',
+    t1ch='Dieselbe Prüfung wie bei True / False / Not Given',
     t1cb='<strong>Kann ich auf den Satz zeigen?</strong> Nur muss es jetzt '
          'ein Satz sein, in dem der Autor selbst spricht. Findest du nur die '
          'Meinung eines anderen, hast du die Antwort noch nicht gefunden.',
@@ -273,14 +279,14 @@ T['de'] = dict(
          'to</em>, <em>many people believe</em>. Die Meinung steht im Text, '
          'aber der Autor hat sie nicht unterschrieben. Für sich allein ergibt '
          'sie nur NOT GIVEN.',
-    t2an='Solche Sätze nennen die Behauptung vollständig, deshalb findet '
-         'Wortabgleich sie zuerst. Genau darum sind sie eine Falle.',
+    t2an='Diese Sätze nennen die Behauptung vollständig, also findet man sie '
+         'beim Wortabgleich zuerst. Genau das macht sie zu Fallen.',
     t2bh='Die eigene Stimme des Autors',
     t2bb='<em>I think</em>, <em>in my view</em>, <em>the truth is</em> &mdash; '
          'und viel öfter gar kein Signal. In einem argumentierenden Text '
          'gehört ein schlichter Satz ohne fremden Namen dem Autor.',
-    t2bn='Signale zeigen auf die anderen Stimmen. Die meisten Ansichten des '
-         'Autors stehen ohne Signal da.',
+    t2bn='Die meisten Signalwörter zeigen auf die Ansichten anderer; die '
+         'meisten eigenen Ansichten des Autors tragen keines.',
     t2ch='Wiedergegeben, dann bewertet',
     t2cb='<em>Supporters say it works. They are right.</em> Mit dem zweiten '
          'Satz macht der Autor sich die Meinung zu eigen. <em>They are '
@@ -292,9 +298,10 @@ T['de'] = dict(
     t3Title='Admittedly &hellip; but',
     t3ah='Das Zugeständnis',
     t3ab='<em>Admittedly</em>, <em>of course</em>, <em>it is true that</em>, '
-         '<em>this is not to say</em>. Der Autor räumt der Gegenseite einen '
-         'Punkt ein &mdash; und spricht dabei immer noch selbst. Was er '
-         'zugesteht, hält er für richtig.',
+         '<em>this is not to say</em> (das räumt das Gegenteil dessen ein, '
+         'was folgt). Der Autor gesteht der Gegenseite einen Punkt zu '
+         '&mdash; und es spricht immer noch der Autor. Ein zugestandener '
+         'Punkt ist ein Punkt, den der Autor akzeptiert.',
     t3an='Widerspricht eine Aussage dem Zugeständnis, heißt die Antwort NO '
          '&mdash; auch wenn sie nach der Seite des Autors klingt.',
     t3bh='Die Wende',
@@ -322,9 +329,10 @@ T['de'] = dict(
          'False / Not Given.',
     t4bh='Abschwächungen',
     t4bb='<em>May</em>, <em>might</em>, <em>perhaps</em>, <em>it seems</em>. '
-         'Eine Abschwächung legt den Autor auf nichts fest. Eine Aussage, die '
-         'dasselbe ohne Einschränkung behauptet, ist NOT GIVEN: Der Autor hat '
-         'weder zugestimmt noch widersprochen.',
+         'Eine Abschwächung sagt, dass der Autor etwas für möglich hält, '
+         'nicht, dass es stimmt. Eine Aussage, die die Behauptung ohne '
+         'Einschränkung macht, ist meist NOT GIVEN: Der Autor hat weder '
+         'zugestimmt noch widersprochen.',
     t4bn='Nicht NO. Der Autor hat es nicht bestritten, nur nicht versprochen.',
     t4ch='Wertende Wörter',
     t4cb='<em>Surprisingly</em>, <em>sadly</em>, <em>rightly</em>, <em>was '
@@ -369,9 +377,10 @@ T['de'] = dict(
           'er ausdrücklich ein: <em>obvious benefits, and I do not dispute '
           'them</em>. Auch ein Zugeständnis ist seine Meinung, also heißt ein '
           'Widerspruch dazu NO.',
-    r9why='<em>May have</em> legt den Autor auf nichts fest, und <em>other '
-          'changes</em> sagt, warum. Er hat weder zugestimmt noch '
-          'widersprochen. NOT GIVEN &mdash; nicht NO.',
+    r9why='Der Autor schwächt die Aussage über das Verbot ab (<em>may '
+          'have</em>) und erwähnt <em>other changes</em>, sagt aber nie, was '
+          'mehr bewirkt hat. Der Vergleich ist dein Schritt, nicht der des '
+          'Autors. NOT GIVEN &mdash; nicht NO.',
     r10why='<em>Surprisingly</em> ist die Reaktion des Autors auf das '
            'Ergebnis, und <em>unexpectedly</em> ist dieselbe Reaktion in einem '
            'anderen Wort. YES.',
@@ -389,22 +398,23 @@ T['de'] = dict(
              'die Spalte, in die er soll.',
     sortBin1='Die eigene Meinung des Autors',
     sortBin2='Eine Meinung, die er nur wiedergibt',
-    sortWhy='Nur die linke Spalte ist die eigene Meinung des Autors. <em>I '
-            'think</em> sagt es direkt; mit <em>rightly</em> macht er sich '
-            'eine wiedergegebene Meinung zu eigen; mit <em>admittedly</em> '
-            'räumt er einen Punkt ein, den er akzeptiert. Die rechte Spalte '
-            'nennt die Meinung anderer und lässt sie stehen &mdash; solange '
-            'der Autor sie nicht bewertet, ist eine Aussage darüber NOT GIVEN.',
+    sortWhy='Drei davon legen den Autor fest. <em>I think</em> sagt es '
+            'direkt; <em>rightly</em> übernimmt eine Ansicht, über die der '
+            'Autor berichtet; <em>admittedly</em> räumt einen Punkt ein, den '
+            'der Autor akzeptiert. Die anderen drei nennen die Ansicht eines '
+            'anderen und lassen sie stehen &mdash; bis der Autor sie '
+            'bewertet, ist eine darauf gebaute Aussage NOT GIVEN.',
 
     actTitle='Den Autor beim Wort nehmen',
     actUse='Verwende mindestens drei:',
     actSpeakBrief='Zu zweit, mit einem Meinungstext zur Hand &mdash; eine '
-                  'Zeitungskolumne oder eine Rezension genügt. Einer schreibt '
-                  'vier Aussagen dazu: eine YES, eine NO, zwei NOT GIVEN, und '
-                  'mindestens eine, die eine nur wiedergegebene Meinung '
-                  'aufgreift. Tauschen, beantworten, und jedes Urteil '
-                  'verteidigen, indem ihr den Satz vorlest, in dem der Autor '
-                  'selbst spricht.',
+                  'Zeitungskolumne oder eine Rezension reicht. Jeder '
+                  'schreibt vier Aussagen dazu: eine YES, eine NO und zwei '
+                  'NOT GIVEN, eine davon aufgebaut auf einer Ansicht, über '
+                  'die der Autor nur berichtet. Tauscht und beantwortet sie. '
+                  'Verteidigt jedes YES oder NO mit dem Satz, in dem der '
+                  'Autor spricht; bei einem NOT GIVEN zeigt ihr, dass es '
+                  'keinen gibt.',
     actSpeak1='Bevor ein YES oder ein NO zählt, sag, wessen Stimme im '
               'entscheidenden Satz spricht.',
     actSpeak2='Finde das Zugeständnis des Autors, falls es eins gibt, und '
@@ -425,8 +435,9 @@ T['de'] = dict(
 # ── Spanish ────────────────────────────────────────────────────────────
 T['es'] = dict(
     coverTitle='Yes, No, <em>Not Given</em>',
-    coverSub='Las mismas tres respuestas que en True, False, Not Given, pero '
-             'sobre lo que piensa el autor, no sobre lo que dice el texto',
+    coverSub='La misma elección entre tres que en True, False, Not Given '
+             '&mdash; pero sobre lo que piensa el autor, no sobre lo que '
+             'dice el texto',
     chipLevel='C1 · Avanzado', chipFocus='Reading · los dos módulos',
     chipCount='18 puntos',
 
@@ -435,7 +446,7 @@ T['es'] = dict(
     optNG='Not Given &mdash; el autor no lo dice',
 
     t1Eyebrow='Antes de empezar',
-    t1Title='Las mismas tres respuestas, otra pregunta',
+    t1Title='La misma elección entre tres, otra pregunta',
     t1ah='Opiniones, no hechos',
     t1ab='True / False / Not Given pregunta qué <em>dice</em> el texto. Yes / '
          'No / Not Given pregunta qué <em>piensa</em> el autor. El enunciado '
@@ -449,7 +460,7 @@ T['es'] = dict(
          'suele argumentar.',
     t1bn='Escribe la palabra que pide el enunciado. Un YES en una pregunta de '
          'True / False / Not Given se da por mal, aunque quisieras decir TRUE.',
-    t1ch='La prueba no ha cambiado',
+    t1ch='La misma comprobación que en True / False / Not Given',
     t1cb='<strong>¿Puedo señalar la frase?</strong> Solo que ahora tiene que '
          'ser una frase en la que hable el autor. Si la única línea que '
          'encuentras es la opinión de otro, todavía no has encontrado la '
@@ -463,14 +474,15 @@ T['es'] = dict(
          'to</em>, <em>many people believe</em>. La opinión está en el texto, '
          'pero el autor no la ha firmado. Por sí sola, solo puede darte NOT '
          'GIVEN.',
-    t2an='Estas frases enuncian la afirmación entera, así que cotejar '
-         'palabras las encuentra primero. Justo por eso son una trampa.',
+    t2an='Estas frases enuncian la afirmación completa, así que el '
+         'emparejamiento de palabras las encuentra primero. Precisamente eso '
+         'las convierte en trampas.',
     t2bh='La voz del propio autor',
     t2bb='<em>I think</em>, <em>in my view</em>, <em>the truth is</em> &mdash; '
          'y, mucho más a menudo, ninguna marca. En un texto que argumenta, una '
          'afirmación sin el nombre de nadie más es del autor.',
-    t2bn='Las marcas señalan las otras voces. La mayoría de las opiniones del '
-         'autor van sin marca.',
+    t2bn='La mayoría de las marcas señalan opiniones ajenas; la mayoría de '
+         'las opiniones propias del autor no llevan ninguna.',
     t2ch='Recogida, y luego juzgada',
     t2cb='<em>Supporters say it works. They are right.</em> Con la segunda '
          'frase el autor hace suya la opinión. <em>They are wrong</em> diría '
@@ -482,8 +494,10 @@ T['es'] = dict(
     t3Title='Admittedly &hellip; but',
     t3ah='La concesión',
     t3ab='<em>Admittedly</em>, <em>of course</em>, <em>it is true that</em>, '
-         '<em>this is not to say</em>. El autor le concede un punto a la otra '
-         'parte, y sigue hablando él. Lo que concede, lo acepta.',
+         '<em>this is not to say</em> (que concede lo contrario de lo que '
+         'sigue). El autor concede un punto al otro lado &mdash; y sigue '
+         'hablando el autor. Un punto concedido es un punto que el autor '
+         'acepta.',
     t3an='Si una afirmación contradice la concesión, la respuesta es NO, '
          'aunque suene a la postura del autor.',
     t3bh='El giro',
@@ -511,9 +525,11 @@ T['es'] = dict(
          'False / Not Given.',
     t4bh='Matizadores',
     t4bb='<em>May</em>, <em>might</em>, <em>perhaps</em>, <em>it seems</em>. '
-         'Un matiz no compromete al autor a nada. Una afirmación rotunda de lo '
-         'mismo es NOT GIVEN: el autor ni ha dicho que sí ni ha dicho que no.',
-    t4bn='No es NO. El autor no lo ha negado; solo no se ha comprometido.',
+         'Un matiz dice que el autor cree algo posible, no que sea cierto. '
+         'Una afirmación que lo dice sin reservas suele ser NOT GIVEN: el '
+         'autor ni está de acuerdo ni en desacuerdo.',
+    t4bn='No es NO. El autor no lo ha negado; solo se ha quedado sin '
+         'prometerlo.',
     t4ch='Palabras que valoran',
     t4cb='<em>Surprisingly</em>, <em>sadly</em>, <em>rightly</em>, <em>was '
          'right to</em>. Una palabra te da la actitud del autor, y las '
@@ -554,9 +570,10 @@ T['es'] = dict(
           'ventajas sin rodeos: <em>obvious benefits, and I do not dispute '
           'them</em>. La concesión también es suya, así que contradecirla es '
           'NO.',
-    r9why='<em>May have</em> no compromete al autor a nada, y <em>other '
-          'changes</em> dice por qué. Ni ha dicho que sí ni ha dicho que no. '
-          'NOT GIVEN, no NO.',
+    r9why='El autor matiza lo de la prohibición (<em>may have</em>) y '
+          'menciona <em>other changes</em>, pero nunca dice qué influyó más. '
+          'Compararlos es un paso tuyo, no del autor. NOT GIVEN &mdash; no '
+          'NO.',
     r10why='<em>Surprisingly</em> es la reacción del autor al resultado, y '
            '<em>unexpectedly</em> es la misma reacción con otra palabra. YES.',
     r11why='<em>Largely</em>, <em>most of the promised homes</em>, <em>a year '
@@ -572,21 +589,22 @@ T['es'] = dict(
              'luego en la columna que quieras.',
     sortBin1='La opinión del propio autor',
     sortBin2='Una opinión que solo recoge',
-    sortWhy='Solo la columna de la izquierda es opinión del autor. <em>I '
-            'think</em> lo dice abiertamente; <em>rightly</em> hace suya una '
-            'opinión que recoge; <em>admittedly</em> concede un punto que el '
-            'autor acepta. La columna de la derecha nombra la opinión de otros '
-            'y la deja ahí: mientras el autor no la juzgue, una afirmación '
+    sortWhy='Tres de ellas comprometen al autor. <em>I think</em> lo dice '
+            'abiertamente; <em>rightly</em> hace suya una opinión que el '
+            'autor está contando; <em>admittedly</em> concede un punto que '
+            'el autor acepta. Las otras tres nombran la opinión de otro y la '
+            'dejan ahí &mdash; hasta que el autor la juzga, una afirmación '
             'basada en ella es NOT GIVEN.',
 
     actTitle='Que el autor se moje',
     actUse='Usa al menos tres:',
-    actSpeakBrief='En parejas, con un texto de opinión a mano: vale una '
-                  'columna de periódico o una reseña. Uno escribe cuatro '
-                  'afirmaciones sobre él: una YES, una NO, dos NOT GIVEN, y al '
-                  'menos una que repita una opinión que el autor solo recoge. '
-                  'Intercambiad, responded y defended cada veredicto leyendo '
-                  'en voz alta la frase en la que habla el autor.',
+    actSpeakBrief='En parejas, con un artículo de opinión a mano; una '
+                  'columna o una reseña sirven. Cada uno escribe cuatro '
+                  'afirmaciones sobre él: una YES, una NO y dos NOT GIVEN, '
+                  'una de ellas basada en una opinión que el autor solo '
+                  'cuenta. Intercambiad y responded. Defended cada YES o NO '
+                  'con la frase en la que habla el autor; para un NOT GIVEN, '
+                  'mostrad que no la hay.',
     actSpeak1='Antes de que cuente un YES o un NO, di de quién es la voz de la '
               'frase que lo decide.',
     actSpeak2='Busca la concesión del autor, si la hay, y escribe una '
@@ -607,8 +625,9 @@ T['es'] = dict(
 # ── French ─────────────────────────────────────────────────────────────
 T['fr'] = dict(
     coverTitle='Yes, No, <em>Not Given</em>',
-    coverSub='Les trois mêmes réponses que True, False, Not Given &mdash; mais '
-             'on demande ce que pense l’auteur, pas ce que dit le texte',
+    coverSub='Le même choix entre trois réponses que True, False, Not Given '
+             '&mdash; mais sur ce que pense l’auteur, pas sur ce que dit le '
+             'texte',
     chipLevel='C1 · Avancé', chipFocus='Reading · les deux modules',
     chipCount='18 points',
 
@@ -617,7 +636,7 @@ T['fr'] = dict(
     optNG='Not Given &mdash; l’auteur ne le dit pas',
 
     t1Eyebrow='Avant de commencer',
-    t1Title='Les trois mêmes réponses, une autre question',
+    t1Title='Le même choix entre trois, une autre question',
     t1ah='Des opinions, pas des faits',
     t1ab='True / False / Not Given demande ce que le texte <em>dit</em>. '
          'Yes / No / Not Given demande ce que l’auteur <em>pense</em>. La '
@@ -631,7 +650,7 @@ T['fr'] = dict(
          'celle qui argumente le plus volontiers.',
     t1bn='Écrivez le mot que demande la consigne. Un YES à une question True / '
          'False / Not Given est compté faux, même si vous vouliez dire TRUE.',
-    t1ch='Le test n’a pas changé',
+    t1ch='La même vérification que pour True / False / Not Given',
     t1cb='<strong>Puis-je montrer la phrase du doigt ?</strong> Seulement, il '
          'faut désormais que ce soit une phrase où l’auteur parle lui-même. Si '
          'la seule ligne que vous trouvez est l’opinion de quelqu’un d’autre, '
@@ -646,16 +665,16 @@ T['fr'] = dict(
          'to</em>, <em>many people believe</em>. L’opinion est dans le texte, '
          'mais l’auteur ne l’a pas signée. À elle seule, elle ne peut donner '
          'que NOT GIVEN.',
-    t2an='Ces phrases énoncent l’affirmation en entier, si bien que la '
-         'recherche de mots les trouve en premier. C’est exactement pour cela '
-         'qu’elles sont un piège.',
+    t2an='Ces phrases énoncent l’affirmation en entier, donc le repérage de '
+         'mots les trouve en premier. C’est exactement ce qui en fait des '
+         'pièges.',
     t2bh='La voix de l’auteur',
     t2bb='<em>I think</em>, <em>in my view</em>, <em>the truth is</em> &mdash; '
          'et, bien plus souvent, aucune marque. Dans un texte qui argumente, '
          'une affirmation simple, sans le nom de personne d’autre, appartient à '
          'l’auteur.',
-    t2bn='Les marques désignent les autres voix. La plupart des opinions de '
-         'l’auteur n’en portent aucune.',
+    t2bn='La plupart des marqueurs signalent l’avis des autres ; la plupart '
+         'des avis de l’auteur n’en portent aucun.',
     t2ch='Rapportée, puis jugée',
     t2cb='<em>Supporters say it works. They are right.</em> Avec la deuxième '
          'phrase, l’auteur fait sienne l’opinion. <em>They are wrong</em> '
@@ -667,9 +686,10 @@ T['fr'] = dict(
     t3Title='Admittedly &hellip; but',
     t3ah='La concession',
     t3ab='<em>Admittedly</em>, <em>of course</em>, <em>it is true that</em>, '
-         '<em>this is not to say</em>. L’auteur accorde un point au camp d’en '
-         'face &mdash; et c’est toujours lui qui parle. Ce qu’il concède, il '
-         'l’accepte.',
+         '<em>this is not to say</em> (qui concède le contraire de ce qui '
+         'suit). L’auteur accorde un point à l’autre camp &mdash; et c’est '
+         'toujours l’auteur qui parle. Un point concédé est un point que '
+         'l’auteur accepte.',
     t3an='Si une affirmation contredit la concession, la réponse est NO, même '
          'quand elle semble aller dans le sens de l’auteur.',
     t3bh='Le tournant',
@@ -697,10 +717,10 @@ T['fr'] = dict(
          'False / Not Given.',
     t4bh='Les atténuations',
     t4bb='<em>May</em>, <em>might</em>, <em>perhaps</em>, <em>it seems</em>. '
-         'Une atténuation n’engage l’auteur à rien. Une affirmation qui dit la '
-         'même chose sans réserve est NOT GIVEN : l’auteur n’a ni approuvé ni '
-         'contredit.',
-    t4bn='Pas NO. L’auteur ne l’a pas nié ; il a seulement refusé de le '
+         'Une atténuation dit que l’auteur juge une chose possible, pas '
+         'qu’elle est vraie. Une affirmation qui la pose sans réserve est en '
+         'général NOT GIVEN : l’auteur n’a ni approuvé ni contredit.',
+    t4bn='Pas NO. L’auteur ne l’a pas nié ; il s’est seulement abstenu de le '
          'promettre.',
     t4ch='Les mots qui jugent',
     t4cb='<em>Surprisingly</em>, <em>sadly</em>, <em>rightly</em>, <em>was '
@@ -745,9 +765,10 @@ T['fr'] = dict(
           'les avantages : <em>obvious benefits, and I do not dispute '
           'them</em>. La concession fait aussi partie de ses opinions ; la '
           'contredire, c’est NO.',
-    r9why='<em>May have</em> n’engage l’auteur à rien, et <em>other '
-          'changes</em> dit pourquoi. Il n’a ni approuvé ni contredit. NOT '
-          'GIVEN &mdash; pas NO.',
+    r9why='L’auteur atténue à propos de l’interdiction (<em>may have</em>) '
+          'et mentionne <em>other changes</em>, mais ne dit jamais ce qui a '
+          'le plus compté. La comparaison est votre étape, pas celle de '
+          'l’auteur. NOT GIVEN &mdash; pas NO.',
     r10why='<em>Surprisingly</em> est la réaction de l’auteur au résultat, et '
            '<em>unexpectedly</em> est la même réaction en un autre mot. YES.',
     r11why='<em>Largely</em>, <em>most of the promised homes</em>, <em>a year '
@@ -763,22 +784,22 @@ T['fr'] = dict(
              'l’un d’eux, puis sur la colonne voulue.',
     sortBin1='L’opinion de l’auteur',
     sortBin2='Une opinion qu’il ne fait que rapporter',
-    sortWhy='Seule la colonne de gauche est l’opinion de l’auteur. <em>I '
-            'think</em> le dit ouvertement ; avec <em>rightly</em>, il fait '
-            'sienne une opinion qu’il rapporte ; avec <em>admittedly</em>, il '
-            'concède un point qu’il accepte. La colonne de droite nomme '
-            'l’opinion d’autres personnes et s’arrête là : tant que l’auteur '
-            'ne la juge pas, une affirmation qui s’y appuie est NOT GIVEN.',
+    sortWhy='Trois de ces phrases engagent l’auteur. <em>I think</em> le dit '
+            'ouvertement ; <em>rightly</em> reprend à son compte un avis que '
+            'l’auteur rapporte ; <em>admittedly</em> concède un point que '
+            'l’auteur accepte. Les trois autres nomment l’avis de quelqu’un '
+            'd’autre et en restent là &mdash; tant que l’auteur ne le juge '
+            'pas, une affirmation fondée dessus est NOT GIVEN.',
 
     actTitle='Prendre l’auteur au mot',
     actUse='Utilisez-en au moins trois :',
     actSpeakBrief='À deux, avec un texte d’opinion sous la main &mdash; une '
-                  'chronique ou une critique fera l’affaire. L’un de vous écrit '
-                  'quatre affirmations sur ce texte : une YES, une NO, deux NOT '
-                  'GIVEN, et au moins une qui reprend une opinion que l’auteur '
-                  'ne fait que rapporter. Échangez, répondez, et défendez '
-                  'chaque verdict en lisant à voix haute la phrase où l’auteur '
-                  'parle lui-même.',
+                  'chronique ou une critique suffit. Chacun écrit quatre '
+                  'affirmations à son sujet : une YES, une NO et deux NOT '
+                  'GIVEN, dont une fondée sur un avis que l’auteur ne fait '
+                  'que rapporter. Échangez et répondez. Défendez chaque YES '
+                  'ou NO avec la phrase où l’auteur parle ; pour un NOT '
+                  'GIVEN, montrez qu’il n’y en a pas.',
     actSpeak1='Avant qu’un YES ou un NO compte, dites à qui appartient la voix '
               'de la phrase décisive.',
     actSpeak2='Trouvez la concession de l’auteur, s’il y en a une, et écrivez '
@@ -799,8 +820,9 @@ T['fr'] = dict(
 # ── Italian ────────────────────────────────────────────────────────────
 T['it'] = dict(
     coverTitle='Yes, No, <em>Not Given</em>',
-    coverSub='Le stesse tre risposte di True, False, Not Given &mdash; ma la '
-             'domanda è che cosa pensa l’autore, non che cosa dice il testo',
+    coverSub='La stessa scelta fra tre risposte di True, False, Not Given '
+             '&mdash; ma su ciò che pensa l’autore, non su ciò che dice il '
+             'testo',
     chipLevel='C1 · Avanzato', chipFocus='Reading · entrambi i moduli',
     chipCount='18 punti',
 
@@ -809,7 +831,7 @@ T['it'] = dict(
     optNG='Not Given &mdash; l’autore non lo dice',
 
     t1Eyebrow='Prima di cominciare',
-    t1Title='Le stesse tre risposte, un’altra domanda',
+    t1Title='La stessa scelta fra tre, un’altra domanda',
     t1ah='Opinioni, non fatti',
     t1ab='True / False / Not Given chiede che cosa <em>dice</em> il testo. '
          'Yes / No / Not Given chiede che cosa <em>pensa</em> l’autore. La '
@@ -823,7 +845,7 @@ T['it'] = dict(
          'argomenta più volentieri.',
     t1bn='Scrivi la parola che chiede la consegna. Un YES a una domanda True / '
          'False / Not Given è considerato sbagliato, anche se intendevi TRUE.',
-    t1ch='Il test non è cambiato',
+    t1ch='La stessa verifica di True / False / Not Given',
     t1cb='<strong>Posso indicare la frase?</strong> Solo che ora deve essere '
          'una frase in cui parla l’autore. Se l’unica riga che trovi è '
          'l’opinione di qualcun altro, non hai ancora trovato la risposta.',
@@ -836,15 +858,16 @@ T['it'] = dict(
     t2ab='<em>Critics argue</em>, <em>it is often claimed</em>, <em>according '
          'to</em>, <em>many people believe</em>. L’opinione è nel testo, ma '
          'l’autore non l’ha firmata. Da sola può dare soltanto NOT GIVEN.',
-    t2an='Queste frasi enunciano l’affermazione per intero, quindi chi cerca le '
-         'parole le trova per prime. Proprio per questo sono una trappola.',
+    t2an='Queste frasi enunciano l’affermazione per intero, quindi chi cerca '
+         'le parole le trova per prime. È proprio questo a farne delle '
+         'trappole.',
     t2bh='La voce dell’autore',
     t2bb='<em>I think</em>, <em>in my view</em>, <em>the truth is</em> &mdash; '
          'e, molto più spesso, nessun segnale. In un testo che argomenta, '
          'un’affermazione semplice senza il nome di nessun altro è '
          'dell’autore.',
-    t2bn='I segnali indicano le altre voci. La maggior parte delle opinioni '
-         'dell’autore non ne ha.',
+    t2bn='La maggior parte dei segnali indica le opinioni altrui; la maggior '
+         'parte delle opinioni dell’autore non ne ha nessuno.',
     t2ch='Riportata, poi giudicata',
     t2cb='<em>Supporters say it works. They are right.</em> Con la seconda '
          'frase l’autore fa propria l’opinione. <em>They are wrong</em> '
@@ -856,9 +879,10 @@ T['it'] = dict(
     t3Title='Admittedly &hellip; but',
     t3ah='La concessione',
     t3ab='<em>Admittedly</em>, <em>of course</em>, <em>it is true that</em>, '
-         '<em>this is not to say</em>. L’autore concede un punto alla parte '
-         'avversa &mdash; ed è sempre lui a parlare. Ciò che concede, lo '
-         'accetta.',
+         '<em>this is not to say</em> (che concede il contrario di ciò che '
+         'segue). L’autore concede un punto all’altra parte &mdash; ed è '
+         'sempre l’autore a parlare. Un punto concesso è un punto che '
+         'l’autore accetta.',
     t3an='Se un’affermazione contraddice la concessione, la risposta è NO, '
          'anche quando sembra stare dalla parte dell’autore.',
     t3bh='La svolta',
@@ -886,10 +910,10 @@ T['it'] = dict(
          'False / Not Given.',
     t4bh='Le attenuazioni',
     t4bb='<em>May</em>, <em>might</em>, <em>perhaps</em>, <em>it seems</em>. '
-         'Un’attenuazione non impegna l’autore a nulla. Un’affermazione che '
-         'dice la stessa cosa senza riserve è NOT GIVEN: l’autore non ha né '
-         'approvato né contraddetto.',
-    t4bn='Non NO. L’autore non l’ha negato; si è solo rifiutato di '
+         'Un’attenuazione dice che l’autore ritiene una cosa possibile, non '
+         'che sia vera. Un’affermazione che la sostiene senza riserve è di '
+         'solito NOT GIVEN: l’autore non ha né concordato né dissentito.',
+    t4bn='Non NO. L’autore non l’ha negato; si è solo fermato prima di '
          'prometterlo.',
     t4ch='Le parole che giudicano',
     t4cb='<em>Surprisingly</em>, <em>sadly</em>, <em>rightly</em>, <em>was '
@@ -932,9 +956,10 @@ T['it'] = dict(
     r8why='L’autore è contrario per chi comincia, ma concede apertamente i '
           'vantaggi: <em>obvious benefits, and I do not dispute them</em>. '
           'Anche la concessione è una sua opinione, quindi contraddirla è NO.',
-    r9why='<em>May have</em> non impegna l’autore a nulla, e <em>other '
-          'changes</em> dice perché. Non ha né approvato né contraddetto. NOT '
-          'GIVEN &mdash; non NO.',
+    r9why='L’autore attenua quanto al divieto (<em>may have</em>) e cita '
+          '<em>other changes</em>, ma non dice mai che cosa abbia inciso di '
+          'più. Il confronto è un passo tuo, non dell’autore. NOT GIVEN '
+          '&mdash; non NO.',
     r10why='<em>Surprisingly</em> è la reazione dell’autore al risultato, e '
            '<em>unexpectedly</em> è la stessa reazione con un’altra parola. '
            'YES.',
@@ -951,22 +976,22 @@ T['it'] = dict(
              'poi sulla colonna che vuoi.',
     sortBin1='L’opinione dell’autore',
     sortBin2='Un’opinione che si limita a riportare',
-    sortWhy='Solo la colonna di sinistra è l’opinione dell’autore. <em>I '
-            'think</em> lo dice apertamente; con <em>rightly</em> fa propria '
-            'un’opinione che riporta; con <em>admittedly</em> concede un punto '
-            'che accetta. La colonna di destra nomina l’opinione di altri e si '
-            'ferma lì: finché l’autore non la giudica, un’affermazione basata '
-            'su di essa è NOT GIVEN.',
+    sortWhy='Tre di queste impegnano l’autore. <em>I think</em> lo dice '
+            'apertamente; <em>rightly</em> fa propria un’opinione che '
+            'l’autore riporta; <em>admittedly</em> concede un punto che '
+            'l’autore accetta. Le altre tre nominano l’opinione di qualcun '
+            'altro e la lasciano lì &mdash; finché l’autore non la giudica, '
+            'un’affermazione costruita su di essa è NOT GIVEN.',
 
     actTitle='Prendere l’autore in parola',
     actUse='Usane almeno tre:',
-    actSpeakBrief='In coppia, con un testo d’opinione a portata di mano '
-                  '&mdash; va bene un editoriale o una recensione. Uno di voi '
-                  'scrive quattro affermazioni sul testo: una YES, una NO, due '
-                  'NOT GIVEN, e almeno una che riprende un’opinione che '
-                  'l’autore si limita a riportare. Scambiatevele, rispondete e '
-                  'difendete ogni verdetto leggendo ad alta voce la frase in '
-                  'cui parla l’autore.',
+    actSpeakBrief='In coppia, con un articolo d’opinione a portata di mano '
+                  '&mdash; basta una rubrica o una recensione. Ognuno scrive '
+                  'quattro affermazioni: una YES, una NO e due NOT GIVEN, '
+                  'una delle quali basata su un’opinione che l’autore si '
+                  'limita a riportare. Scambiatevele e rispondete. Difendete '
+                  'ogni YES o NO con la frase in cui parla l’autore; per un '
+                  'NOT GIVEN, mostrate che non c’è.',
     actSpeak1='Prima che un YES o un NO conti, di’ di chi è la voce nella frase '
               'decisiva.',
     actSpeak2='Trova la concessione dell’autore, se c’è, e scrivi '
@@ -987,8 +1012,9 @@ T['it'] = dict(
 # ── Portuguese ─────────────────────────────────────────────────────────
 T['pt'] = dict(
     coverTitle='Yes, No, <em>Not Given</em>',
-    coverSub='As mesmas três respostas de True, False, Not Given &mdash; mas a '
-             'pergunta é o que pensa o autor, não o que diz o texto',
+    coverSub='A mesma escolha entre três respostas de True, False, Not Given '
+             '&mdash; mas sobre o que o autor pensa, não sobre o que o texto '
+             'diz',
     chipLevel='C1 · Avançado', chipFocus='Reading · os dois módulos',
     chipCount='18 pontos',
 
@@ -997,7 +1023,7 @@ T['pt'] = dict(
     optNG='Not Given &mdash; o autor não diz nada',
 
     t1Eyebrow='Antes de começar',
-    t1Title='As mesmas três respostas, outra pergunta',
+    t1Title='A mesma escolha entre três, outra pergunta',
     t1ah='Opiniões, não factos',
     t1ab='True / False / Not Given pergunta o que o texto <em>diz</em>. Yes / '
          'No / Not Given pergunta o que o autor <em>pensa</em>. O enunciado '
@@ -1011,7 +1037,7 @@ T['pt'] = dict(
          'tende a argumentar.',
     t1bn='Escreve a palavra que o enunciado pede. Um YES numa pergunta True / '
          'False / Not Given conta como errado, mesmo que quisesses dizer TRUE.',
-    t1ch='O teste não mudou',
+    t1ch='A mesma verificação de True / False / Not Given',
     t1cb='<strong>Consigo apontar para a frase?</strong> Só que agora tem de '
          'ser uma frase em que fala o próprio autor. Se a única linha que '
          'encontras é a opinião de outra pessoa, ainda não encontraste a '
@@ -1024,15 +1050,15 @@ T['pt'] = dict(
     t2ab='<em>Critics argue</em>, <em>it is often claimed</em>, <em>according '
          'to</em>, <em>many people believe</em>. A opinião está no texto, mas o '
          'autor não a assinou. Sozinha, só pode dar NOT GIVEN.',
-    t2an='Estas frases enunciam a afirmação por inteiro, por isso quem procura '
-         'palavras encontra-as primeiro. É exatamente por isso que são uma '
-         'armadilha.',
+    t2an='Estas frases enunciam a afirmação por inteiro, por isso quem '
+         'procura palavras encontra-as primeiro. É exatamente isso que as '
+         'torna armadilhas.',
     t2bh='A voz do próprio autor',
     t2bb='<em>I think</em>, <em>in my view</em>, <em>the truth is</em> &mdash; '
          'e, muito mais vezes, marca nenhuma. Num texto que argumenta, uma '
          'afirmação simples, sem o nome de mais ninguém, é do autor.',
-    t2bn='As marcas apontam para as outras vozes. A maior parte das opiniões '
-         'do autor não tem marca.',
+    t2bn='A maioria dos marcadores aponta para as opiniões dos outros; a '
+         'maioria das opiniões do próprio autor não traz nenhum.',
     t2ch='Relatada, e depois julgada',
     t2cb='<em>Supporters say it works. They are right.</em> Com a segunda '
          'frase, o autor torna sua a opinião. <em>They are wrong</em> quereria '
@@ -1044,8 +1070,10 @@ T['pt'] = dict(
     t3Title='Admittedly &hellip; but',
     t3ah='A concessão',
     t3ab='<em>Admittedly</em>, <em>of course</em>, <em>it is true that</em>, '
-         '<em>this is not to say</em>. O autor concede um ponto ao outro lado '
-         '&mdash; e continua a ser ele a falar. O que concede, aceita.',
+         '<em>this is not to say</em> (que concede o contrário do que vem a '
+         'seguir). O autor dá razão ao outro lado num ponto &mdash; e '
+         'continua a ser o autor a falar. Um ponto concedido é um ponto que '
+         'o autor aceita.',
     t3an='Se uma afirmação contradiz a concessão, a resposta é NO, mesmo quando '
          'parece estar do lado do autor.',
     t3bh='A viragem',
@@ -1072,10 +1100,10 @@ T['pt'] = dict(
          'Not Given.',
     t4bh='As atenuações',
     t4bb='<em>May</em>, <em>might</em>, <em>perhaps</em>, <em>it seems</em>. '
-         'Uma atenuação não compromete o autor com nada. Uma afirmação que diz '
-         'o mesmo sem reservas é NOT GIVEN: o autor não concordou nem '
-         'discordou.',
-    t4bn='Não é NO. O autor não o negou; apenas se recusou a prometê-lo.',
+         'Uma atenuação diz que o autor acha uma coisa possível, não que '
+         'seja verdade. Uma afirmação que a faz sem reservas é normalmente '
+         'NOT GIVEN: o autor não concordou nem discordou.',
+    t4bn='Não é NO. O autor não o negou; apenas não chegou a prometê-lo.',
     t4ch='As palavras que avaliam',
     t4cb='<em>Surprisingly</em>, <em>sadly</em>, <em>rightly</em>, <em>was '
          'right to</em>. Uma só palavra dá-te a atitude do autor, e as '
@@ -1116,9 +1144,10 @@ T['pt'] = dict(
     r8why='O autor é contra para quem está a começar, mas concede as vantagens '
           'sem rodeios: <em>obvious benefits, and I do not dispute them</em>. A '
           'concessão também é opinião dele; contradizê-la é NO.',
-    r9why='<em>May have</em> não compromete o autor com nada, e <em>other '
-          'changes</em> diz porquê. Ele não concordou nem discordou. NOT GIVEN '
-          '&mdash; não NO.',
+    r9why='O autor atenua quanto à proibição (<em>may have</em>) e menciona '
+          '<em>other changes</em>, mas nunca diz o que contou mais. '
+          'Compará-los é um passo teu, não do autor. NOT GIVEN &mdash; não '
+          'NO.',
     r10why='<em>Surprisingly</em> é a reação do autor ao resultado, e '
            '<em>unexpectedly</em> é a mesma reação noutra palavra. YES.',
     r11why='<em>Largely</em>, <em>most of the promised homes</em>, <em>a year '
@@ -1134,21 +1163,22 @@ T['pt'] = dict(
              'depois na coluna que quiseres.',
     sortBin1='A opinião do próprio autor',
     sortBin2='Uma opinião que ele só relata',
-    sortWhy='Só a coluna da esquerda é opinião do autor. <em>I think</em> di-lo '
-            'abertamente; com <em>rightly</em>, torna sua uma opinião que '
-            'relata; com <em>admittedly</em>, concede um ponto que aceita. A '
-            'coluna da direita nomeia a opinião de outros e fica por aí: '
-            'enquanto o autor não a julgar, uma afirmação baseada nela é NOT '
-            'GIVEN.',
+    sortWhy='Três destas comprometem o autor. <em>I think</em> di-lo '
+            'abertamente; <em>rightly</em> assume uma opinião que o autor '
+            'está a relatar; <em>admittedly</em> concede um ponto que o '
+            'autor aceita. As outras três nomeiam a opinião de outra pessoa '
+            'e deixam-na ficar &mdash; até o autor a julgar, uma afirmação '
+            'construída sobre ela é NOT GIVEN.',
 
     actTitle='O autor, preto no branco',
     actUse='Usa pelo menos três:',
-    actSpeakBrief='Em pares, com um texto de opinião à mão &mdash; serve uma '
-                  'crónica de jornal ou uma crítica. Um de vocês escreve quatro '
-                  'afirmações sobre ele: uma YES, uma NO, duas NOT GIVEN, e '
-                  'pelo menos uma que repita uma opinião que o autor só '
-                  'relata. Troquem, respondam e defendam cada veredicto lendo '
-                  'em voz alta a frase em que fala o próprio autor.',
+    actSpeakBrief='Em pares, com um artigo de opinião à mão &mdash; uma '
+                  'crónica ou uma crítica servem. Cada um escreve quatro '
+                  'afirmações sobre ele: uma YES, uma NO e duas NOT GIVEN, '
+                  'uma delas construída sobre uma opinião que o autor só '
+                  'relata. Troquem e respondam. Defendam cada YES ou NO com '
+                  'a frase em que o autor fala; para um NOT GIVEN, mostrem '
+                  'que não existe.',
     actSpeak1='Antes de um YES ou um NO contar, diz de quem é a voz na frase '
               'decisiva.',
     actSpeak2='Encontra a concessão do autor, se houver, e escreve uma '
@@ -1168,8 +1198,8 @@ T['pt'] = dict(
 # ── Russian ────────────────────────────────────────────────────────────
 T['ru'] = dict(
     coverTitle='Yes, No, <em>Not Given</em>',
-    coverSub='Те же три ответа, что в True, False, Not Given, &mdash; но вопрос '
-             'о том, что думает автор, а не о том, что сказано в тексте',
+    coverSub='Тот же выбор из трёх, что и в True, False, Not Given, &mdash; '
+             'но о том, что думает автор, а не о том, что сказано в тексте',
     chipLevel='C1 · Продвинутый', chipFocus='Reading · оба модуля',
     chipCount='18 баллов',
 
@@ -1178,7 +1208,7 @@ T['ru'] = dict(
     optNG='Not Given &mdash; автор об этом молчит',
 
     t1Eyebrow='Прежде чем начать',
-    t1Title='Те же три ответа, другой вопрос',
+    t1Title='Тот же выбор из трёх, другой вопрос',
     t1ah='Мнения, а не факты',
     t1ab='True / False / Not Given спрашивает, что <em>сказано</em> в тексте. '
          'Yes / No / Not Given спрашивает, что <em>думает</em> автор. Задание '
@@ -1193,7 +1223,7 @@ T['ru'] = dict(
     t1bn='Пишите то слово, которого требует задание. YES в вопросе True / '
          'False / Not Given засчитывается как ошибка, даже если вы имели в виду '
          'TRUE.',
-    t1ch='Проверка не изменилась',
+    t1ch='Та же проверка, что и в True / False / Not Given',
     t1cb='<strong>Могу ли я указать на предложение?</strong> Только теперь это '
          'должно быть предложение, в котором говорит сам автор. Если '
          'единственная строка, которую вы нашли, &mdash; чужое мнение, ответ '
@@ -1207,14 +1237,15 @@ T['ru'] = dict(
          'to</em>, <em>many people believe</em>. Мнение есть в тексте, но '
          'автор под ним не подписывался. Само по себе оно может дать только '
          'NOT GIVEN.',
-    t2an='Такие предложения излагают утверждение целиком, поэтому поиск по '
-         'словам находит их первыми. Именно поэтому они и ловушка.',
+    t2an='Эти предложения формулируют утверждение полностью, поэтому поиск '
+         'совпадающих слов находит их первыми. Именно это и делает их '
+         'ловушками.',
     t2bh='Собственный голос автора',
     t2bb='<em>I think</em>, <em>in my view</em>, <em>the truth is</em> &mdash; '
          'а гораздо чаще никаких сигналов. В тексте, где автор спорит, простое '
          'утверждение без чужого имени принадлежит автору.',
-    t2bn='Сигналы указывают на чужие голоса. Большинство мнений самого автора '
-         'никак не помечено.',
+    t2bn='Большинство маркеров указывают на чужие мнения; у большинства '
+         'собственных мнений автора маркеров нет.',
     t2ch='Пересказано, затем оценено',
     t2cb='<em>Supporters say it works. They are right.</em> Вторым '
          'предложением автор делает это мнение своим. <em>They are wrong</em> '
@@ -1226,9 +1257,10 @@ T['ru'] = dict(
     t3Title='Admittedly &hellip; but',
     t3ah='Уступка',
     t3ab='<em>Admittedly</em>, <em>of course</em>, <em>it is true that</em>, '
-         '<em>this is not to say</em>. Автор уступает другой стороне в одном '
-         'пункте &mdash; и говорит при этом по-прежнему сам. То, что он '
-         'уступает, он принимает.',
+         '<em>this is not to say</em> (здесь уступается противоположное '
+         'тому, что следует дальше). Автор уступает другой стороне в '
+         'каком-то пункте &mdash; и это по-прежнему говорит автор. '
+         'Уступленный пункт &mdash; это пункт, с которым автор согласен.',
     t3an='Если утверждение противоречит уступке, ответ NO, даже когда оно '
          'звучит как позиция автора.',
     t3bh='Поворот',
@@ -1256,11 +1288,10 @@ T['ru'] = dict(
          'Not Given.',
     t4bh='Смягчения',
     t4bb='<em>May</em>, <em>might</em>, <em>perhaps</em>, <em>it seems</em>. '
-         'Смягчение ни к чему автора не обязывает. Утверждение, которое '
-         'говорит то же самое без оговорок, &mdash; NOT GIVEN: автор не '
-         'согласился и не возразил.',
-    t4bn='Не NO. Автор этого не отрицал &mdash; он лишь отказался это '
-         'обещать.',
+         'Смягчение говорит, что автор считает что-то возможным, а не '
+         'истинным. Утверждение, которое говорит это без оговорок, обычно '
+         'NOT GIVEN: автор ни согласился, ни возразил.',
+    t4bn='Не NO. Автор этого не отрицал, он лишь не стал этого обещать.',
     t4ch='Оценочные слова',
     t4cb='<em>Surprisingly</em>, <em>sadly</em>, <em>rightly</em>, <em>was '
          'right to</em>. Одно слово передаёт отношение автора, и утверждения '
@@ -1300,8 +1331,9 @@ T['ru'] = dict(
     r8why='Для начинающих автор против, но преимущества признаёт прямо: '
           '<em>obvious benefits, and I do not dispute them</em>. Уступка '
           '&mdash; тоже его мнение, поэтому противоречить ей &mdash; это NO.',
-    r9why='<em>May have</em> ни к чему автора не обязывает, а <em>other '
-          'changes</em> объясняет почему. Он не согласился и не возразил. NOT '
+    r9why='Автор смягчает сказанное о запрете (<em>may have</em>) и '
+          'упоминает <em>other changes</em>, но нигде не говорит, что '
+          'повлияло сильнее. Сравнение &mdash; ваш шаг, а не автора. NOT '
           'GIVEN, а не NO.',
     r10why='<em>Surprisingly</em> &mdash; реакция автора на результат, а '
            '<em>unexpectedly</em> &mdash; та же реакция другим словом. YES.',
@@ -1318,22 +1350,22 @@ T['ru'] = dict(
              'на нужный столбец.',
     sortBin1='Собственное мнение автора',
     sortBin2='Мнение, которое он лишь пересказывает',
-    sortWhy='Мнение автора &mdash; только в левом столбце. <em>I think</em> '
-            'говорит об этом прямо; через <em>rightly</em> автор делает своим '
-            'пересказанное мнение; через <em>admittedly</em> уступает в '
-            'пункте, который принимает. Правый столбец называет чужое мнение и '
-            'на этом останавливается: пока автор его не оценил, утверждение, '
-            'основанное на нём, &mdash; NOT GIVEN.',
+    sortWhy='Три из них связывают автора. <em>I think</em> говорит это '
+            'прямо; <em>rightly</em> делает своим мнение, которое автор '
+            'пересказывает; <em>admittedly</em> уступает пункт, с которым '
+            'автор согласен. Остальные три называют чужое мнение и на этом '
+            'останавливаются &mdash; пока автор его не оценил, утверждение, '
+            'построенное на нём, &mdash; NOT GIVEN.',
 
     actTitle='Поймать автора на слове',
     actUse='Используйте хотя бы три:',
-    actSpeakBrief='В парах, с любым текстом-мнением под рукой &mdash; подойдёт '
-                  'газетная колонка или рецензия. Один из вас пишет по нему '
-                  'четыре утверждения: одно YES, одно NO, два NOT GIVEN, '
-                  'причём хотя бы одно повторяет мнение, которое автор лишь '
-                  'пересказывает. Обменяйтесь, ответьте и защитите каждый '
-                  'вердикт, прочитав вслух предложение, в котором говорит сам '
-                  'автор.',
+    actSpeakBrief='В парах, с авторской колонкой под рукой &mdash; подойдёт '
+                  'газетная колонка или рецензия. Каждый пишет по ней четыре '
+                  'утверждения: одно YES, одно NO и два NOT GIVEN, одно из '
+                  'них &mdash; на основе мнения, которое автор лишь '
+                  'пересказывает. Обменяйтесь и ответьте. Каждое YES или NO '
+                  'защищайте предложением, в котором говорит автор; для NOT '
+                  'GIVEN покажите, что такого предложения нет.',
     actSpeak1='Прежде чем YES или NO будет засчитан, скажите, чей голос звучит '
               'в решающем предложении.',
     actSpeak2='Найдите уступку автора, если она есть, и напишите одно '
@@ -1354,8 +1386,8 @@ T['ru'] = dict(
 # ── Arabic ─────────────────────────────────────────────────────────────
 T['ar'] = dict(
     coverTitle='Yes, No, <em>Not Given</em>',
-    coverSub='الإجابات الثلاث نفسها كما في True / False / Not Given، لكن '
-             'السؤال هنا عمّا يراه الكاتب، لا عمّا يقوله النص',
+    coverSub='الاختيار الثلاثي نفسه الذي في True, False, Not Given &mdash; '
+             'لكن السؤال عمّا يراه الكاتب، لا عمّا يقوله النص',
     chipLevel='C1 · متقدّم', chipFocus='Reading · الوحدتان كلتاهما',
     chipCount='18 نقطة',
 
@@ -1364,7 +1396,7 @@ T['ar'] = dict(
     optNG='Not Given &mdash; الكاتب لا يذكر ذلك',
 
     t1Eyebrow='قبل أن تبدأ',
-    t1Title='الإجابات الثلاث نفسها، وسؤال مختلف',
+    t1Title='الاختيار الثلاثي نفسه، وسؤال مختلف',
     t1ah='آراء لا حقائق',
     t1ab='يسأل True / False / Not Given عمّا <em>يقوله</em> النص، ويسأل Yes / '
          'No / Not Given عمّا <em>يراه</em> الكاتب. والتعليمات تكشف ذلك: '
@@ -1378,7 +1410,7 @@ T['ar'] = dict(
          'إلى المحاججة.',
     t1bn='اكتب الكلمة التي تطلبها التعليمات. كلمة YES في سؤال True / False / '
          'Not Given تُحسب خطأً، حتى لو كنت تقصد TRUE.',
-    t1ch='الاختبار لم يتغيّر',
+    t1ch='الفحص نفسه كما في True / False / Not Given',
     t1cb='<strong>هل أستطيع أن أشير إلى الجملة؟</strong> غير أنها يجب الآن أن '
          'تكون جملة يتكلّم فيها الكاتب نفسه. فإن كان السطر الوحيد الذي وجدته '
          'رأيَ شخص آخر، فأنت لم تجد الإجابة بعد.',
@@ -1390,13 +1422,14 @@ T['ar'] = dict(
     t2ab='عبارات مثل <em>Critics argue</em> و<em>it is often claimed</em> '
          'و<em>according to</em> و<em>many people believe</em>: الرأي موجود في '
          'النص، لكن الكاتب لم يوقّع عليه. وهو وحده لا يعطيك إلا NOT GIVEN.',
-    t2an='هذه الجمل تذكر الادّعاء كاملًا، لذلك يعثر عليها البحث عن الكلمات '
-         'أولًا. ولهذا بالضبط هي فخّ.',
+    t2an='هذه الجمل تذكر الادعاء كاملًا، فيعثر عليها أولًا من يطابق الكلمات. '
+         'وهذا بالضبط ما يجعلها فخاخًا.',
     t2bh='صوت الكاتب نفسه',
     t2bb='عبارات مثل <em>I think</em> و<em>in my view</em> و<em>the truth '
          'is</em>، وفي أغلب الأحيان لا علامة على الإطلاق. في نص يحاجج، الجملة '
          'البسيطة التي لا تحمل اسم أحد آخر هي جملة الكاتب.',
-    t2bn='العلامات تشير إلى الأصوات الأخرى. ومعظم آراء الكاتب نفسه بلا علامة.',
+    t2bn='معظم العلامات تشير إلى آراء الآخرين، ومعظم آراء الكاتب نفسه لا '
+         'تحمل أي علامة.',
     t2ch='يُنقل ثم يُحكم عليه',
     t2cb='في المثال <em>Supporters say it works. They are right.</em> تجعل '
          'الجملة الثانية الرأيَ رأيَ الكاتب. ولو قال <em>They are wrong</em> '
@@ -1407,9 +1440,10 @@ T['ar'] = dict(
     t3Eyebrow='قبل أن تبدأ',
     t3Title='Admittedly &hellip; but',
     t3ah='التسليم',
-    t3ab='عبارات مثل <em>Admittedly</em> و<em>of course</em> و<em>it is true '
-         'that</em> و<em>this is not to say</em>: يسلّم الكاتب للطرف الآخر '
-         'بنقطة، ويبقى هو المتكلّم. فما يسلّم به يقبله.',
+    t3ab='عبارات <em>admittedly</em> و<em>of course</em> و<em>it is true '
+         'that</em> و<em>this is not to say</em> (والأخيرة تسلّم بعكس ما '
+         'يليها). يسلّم الكاتب للطرف الآخر بنقطة &mdash; ويظل الكاتب هو '
+         'المتكلم. والنقطة المسلَّم بها نقطة يقبلها الكاتب.',
     t3an='إذا ناقضت العبارةُ التسليمَ فالإجابة NO، حتى لو بدت منسجمة مع موقف '
          'الكاتب.',
     t3bh='الانعطاف',
@@ -1435,10 +1469,11 @@ T['ar'] = dict(
     t4an='القاعدة نفسها في <em>most</em> مقابل <em>all</em> في أسئلة True / '
          'False / Not Given.',
     t4bh='التلطيف',
-    t4bb='كلمات مثل <em>May</em> و<em>might</em> و<em>perhaps</em> و<em>it '
-         'seems</em>: التلطيف لا يُلزم الكاتب بشيء. والعبارة التي تقول الشيء '
-         'نفسه دون تحفّظ هي NOT GIVEN: فالكاتب لم يوافق ولم يعترض.',
-    t4bn='ليست NO. الكاتب لم ينفِ الأمر، بل امتنع عن الجزم به فقط.',
+    t4bb='كلمات مثل <em>may</em> و<em>might</em> و<em>perhaps</em> و<em>it '
+         'seems</em>: التلطيف يعني أن الكاتب يرى الأمر ممكنًا، لا أنه صحيح. '
+         'والعبارة التي تقرّر الادعاء دون تحفّظ تكون في الغالب NOT GIVEN: '
+         'فالكاتب لم يوافق ولم يعارض.',
+    t4bn='ليست NO. الكاتب لم ينكر ذلك، بل امتنع عن الوعد به فقط.',
     t4ch='كلمات التقييم',
     t4cb='كلمات مثل <em>Surprisingly</em> و<em>sadly</em> و<em>rightly</em> '
          'و<em>was right to</em>: كلمة واحدة تعطيك موقف الكاتب، والعبارات '
@@ -1474,8 +1509,9 @@ T['ar'] = dict(
     r8why='الكاتب يعارض العمل من المنزل للمبتدئين، لكنه يسلّم بالمزايا صراحةً: '
           '<em>obvious benefits, and I do not dispute them</em>. والتسليم رأيه '
           'أيضًا، فمناقضته NO.',
-    r9why='عبارة <em>May have</em> لا تُلزم الكاتب بشيء، و<em>other '
-          'changes</em> تبيّن السبب. فهو لم يوافق ولم يعترض. NOT GIVEN، لا NO.',
+    r9why='يلطّف الكاتب كلامه عن الحظر (<em>may have</em>) ويذكر <em>other '
+          'changes</em>، لكنه لا يقول أبدًا أيّهما كان أثره أكبر. المقارنة '
+          'خطوتك أنت لا خطوة الكاتب. NOT GIVEN &mdash; لا NO.',
     r10why='كلمة <em>Surprisingly</em> هي ردّ فعل الكاتب على النتيجة، '
            'و<em>unexpectedly</em> هي ردّ الفعل نفسه بكلمة أخرى. YES.',
     r11why='الكلمات <em>Largely</em> و<em>most of the promised homes</em> '
@@ -1491,19 +1527,20 @@ T['ar'] = dict(
              'تريده.',
     sortBin1='رأي الكاتب نفسه',
     sortBin2='رأي ينقله الكاتب فقط',
-    sortWhy='عمود «رأي الكاتب نفسه» وحده هو رأي الكاتب. <em>I think</em> تقول '
-            'ذلك صراحةً؛ وبكلمة <em>rightly</em> يتبنّى الكاتب رأيًا ينقله؛ '
-            'وبكلمة <em>admittedly</em> يسلّم بنقطة يقبلها. أما العمود الآخر '
-            'فيذكر رأي الآخرين ويتوقّف عند ذلك: ما دام الكاتب لم يحكم عليه، '
-            'فالعبارة المبنية عليه NOT GIVEN.',
+    sortWhy='ثلاث من هذه العبارات تُلزم الكاتب. <em>I think</em> تقول ذلك '
+            'صراحةً، و<em>rightly</em> تتبنّى رأيًا ينقله الكاتب، '
+            'و<em>admittedly</em> تسلّم بنقطة يقبلها الكاتب. أما الثلاث '
+            'الأخرى فتذكر رأي غيره وتتركه عند ذلك &mdash; وحتى يحكم الكاتب '
+            'عليه، تكون العبارة المبنية عليه NOT GIVEN.',
 
     actTitle='خُذِ الكاتب بكلامه',
     actUse='استخدم ثلاثة منها على الأقل:',
-    actSpeakBrief='اعملا في ثنائي، ومعكما نصّ رأي، ويكفي عمود صحفي أو مراجعة. '
-                  'يكتب أحدكما أربع عبارات عنه: واحدة YES، وواحدة NO، واثنتين '
-                  'NOT GIVEN، على أن تكرّر واحدة منها على الأقل رأيًا ينقله '
-                  'الكاتب فقط. تبادلا وأجيبا، ثم دافعا عن كل حكم بقراءة '
-                  'الجملة التي يتكلّم فيها الكاتب نفسه بصوت عالٍ.',
+    actSpeakBrief='اعملا في ثنائي، ومعكما مقال رأي &mdash; يكفي عمود صحفي أو '
+                  'مراجعة. يكتب كل منكما أربع عبارات عنه: واحدة YES، وواحدة '
+                  'NO، واثنتين NOT GIVEN، إحداهما مبنية على رأي ينقله الكاتب '
+                  'فقط. تبادلاها وأجيبا. دافعا عن كل YES أو NO بالجملة التي '
+                  'يتكلم فيها الكاتب، وفي حالة NOT GIVEN بيّنا أنه لا توجد '
+                  'جملة كهذه.',
     actSpeak1='قبل أن تُحتسب YES أو NO، قل صوتُ مَن هو في الجملة الحاسمة.',
     actSpeak2='جِد تسليم الكاتب إن وُجد، واكتب عبارة يجعلها YES وأخرى يجعلها '
               'NO.',
@@ -1521,8 +1558,7 @@ T['ar'] = dict(
 # ── Chinese ────────────────────────────────────────────────────────────
 T['zh'] = dict(
     coverTitle='Yes, No, <em>Not Given</em>',
-    coverSub='和 True / False / Not Given 同样的三个答案——但问的是作者怎么想，'
-             '而不是文章怎么说',
+    coverSub='和 True, False, Not Given 一样的三选一——但问的是作者怎么想，而不是文章说了什么',
     chipLevel='C1 · 高级', chipFocus='Reading · 两个模块通用',
     chipCount='18 分',
 
@@ -1531,7 +1567,7 @@ T['zh'] = dict(
     optNG='Not Given &mdash; 作者未表态',
 
     t1Eyebrow='开始之前',
-    t1Title='同样的三个答案，不同的问题',
+    t1Title='同样的三选一，不同的问题',
     t1ah='观点，而不是事实',
     t1ab='True / False / Not Given 问的是文章<em>说了</em>什么；Yes / No / Not '
          'Given 问的是作者<em>认为</em>什么。题目要求本身就透露了这一点：'
@@ -1543,7 +1579,7 @@ T['zh'] = dict(
          '最后一部分，也就是最爱论证的那一篇。',
     t1bn='写题目要求的那个词。在 True / False / Not Given 题里写 YES 会被判错，'
          '哪怕你想表达的是 TRUE。',
-    t1ch='检验方法没变',
+    t1ch='和 True / False / Not Given 一样的检验',
     t1cb='<strong>我能指出是哪一句吗？</strong>只是现在，这一句必须是作者本人在'
          '说话。如果你找到的唯一一句是别人的观点，那你还没找到答案。',
     t1cn='YES 和 NO 需要作者本人的声音；NOT GIVEN 是作者的沉默。',
@@ -1554,13 +1590,12 @@ T['zh'] = dict(
     t2ab='<em>Critics argue</em>、<em>it is often claimed</em>、<em>according '
          'to</em>、<em>many people believe</em>。观点在文中，但作者并没有为它'
          '署名。单凭它，只能得出 NOT GIVEN。',
-    t2an='这类句子把说法完整地摆出来，所以靠找词最先找到的就是它们。正因如此，'
-         '它们才是陷阱。',
+    t2an='这些句子把观点说得很完整，所以找词的人最先找到它们。这正是它们成为陷阱的原因。',
     t2bh='作者自己的声音',
     t2bb='<em>I think</em>、<em>in my view</em>、<em>the truth is</em>——而更多'
          '时候，根本没有任何标记。在一篇论证性文章里，没有挂上别人名字的普通'
          '陈述句，就是作者的话。',
-    t2bn='标记指向的是其他声音。作者自己的观点大多不带标记。',
+    t2bn='大多数标记词指向的是别人的观点；作者自己的观点，大多不带任何标记。',
     t2ch='先转述，再评判',
     t2cb='<em>Supporters say it works. They are right.</em> 第二句让这个观点成'
          '了作者自己的观点。如果是 <em>They are wrong</em>，就说明作者持相反'
@@ -1571,9 +1606,9 @@ T['zh'] = dict(
     t3Eyebrow='开始之前',
     t3Title='Admittedly &hellip; but',
     t3ah='让步',
-    t3ab='<em>Admittedly</em>、<em>of course</em>、<em>it is true that</em>、'
-         '<em>this is not to say</em>。作者向对方让出一点——而说话的仍然是作者'
-         '本人。他让步承认的，就是他接受的。',
+    t3ab='<em>Admittedly</em>、<em>of course</em>、<em>it is true '
+         'that</em>、<em>this is not to say</em>（最后这个让步的是后文的反面）。作者承认对方的某一点——说话'
+         '的仍然是作者。被让步的一点，就是作者接受的一点。',
     t3an='如果某个说法与让步的内容相矛盾，答案就是 NO，哪怕它听起来像是站在作者'
          '那一边。',
     t3bh='转折',
@@ -1596,10 +1631,10 @@ T['zh'] = dict(
     t4an='和 True / False / Not Given 里 <em>most</em> 对 <em>all</em> 是同一条'
          '规则。',
     t4bh='模糊限制语',
-    t4bb='<em>May</em>、<em>might</em>、<em>perhaps</em>、<em>it seems</em>。'
-         '模糊限制语不让作者对任何事表态。把同一件事说得毫无保留的说法是 NOT '
-         'GIVEN：作者既没有同意，也没有反对。',
-    t4bn='不是 NO。作者没有否认，只是不肯打包票。',
+    t4bb='<em>May</em>、<em>might</em>、<em>perhaps</em>、<em>it '
+         'seems</em>。模糊限制语表示作者认为某事有可能，而不是说它是真的。把同一件事说得毫无保留的陈述，通常是 NOT '
+         'GIVEN：作者既没同意，也没反对。',
+    t4bn='不是 NO。作者没有否认，只是没有打包票。',
     t4ch='评价词',
     t4cb='<em>Surprisingly</em>、<em>sadly</em>、<em>rightly</em>、<em>was '
          'right to</em>。一个词就能体现作者的态度，而题目考的正是这种态度：'
@@ -1632,8 +1667,8 @@ T['zh'] = dict(
     r8why='作者反对刚入行的人在家办公，但坦然承认它的好处：<em>obvious '
           'benefits, and I do not dispute them</em>。让步同样是作者的观点，与之'
           '矛盾就是 NO。',
-    r9why='<em>May have</em> 没有让作者对任何事表态，<em>other changes</em> 说明'
-          '了原因。作者既没同意，也没反对。NOT GIVEN，不是 NO。',
+    r9why='作者对禁令的说法有所保留（<em>may have</em>），也提到了 <em>other '
+          'changes</em>，但从没说哪个作用更大。比较它们是你的推断，不是作者的说法。NOT GIVEN——不是 NO。',
     r10why='<em>Surprisingly</em> 是作者对结果的反应，<em>unexpectedly</em> 是换'
            '一个词表达同样的反应。YES。',
     r11why='<em>Largely</em>、<em>most of the promised homes</em>、<em>a year '
@@ -1647,18 +1682,15 @@ T['zh'] = dict(
     sortHint='把每一项拖到一栏里——或者先点一项，再点你想放进的那一栏。',
     sortBin1='作者自己的观点',
     sortBin2='作者只是转述的观点',
-    sortWhy='只有左栏是作者自己的观点。<em>I think</em> 直接说明了这一点；用 '
-            '<em>rightly</em>，作者把转述的观点变成了自己的；用 '
-            '<em>admittedly</em>，作者让步承认了自己接受的一点。右栏提到的是别人'
-            '的观点，并止步于此：只要作者没有对它作出评判，基于它的说法就是 NOT '
-            'GIVEN。',
+    sortWhy='其中三句让作者表了态。<em>I think</em> 直接说出来；<em>rightly</em> '
+            '把作者转述的观点变成自己的；<em>admittedly</em> '
+            '让步于作者接受的一点。另外三句只点出别人的观点，就此打住——在作者作出评判之前，基于它们的陈述都是 NOT GIVEN。',
 
     actTitle='让作者表明立场',
     actUse='至少用上三个：',
-    actSpeakBrief='两人一组，手边准备一篇观点文章——报纸专栏或评论都行。一人就'
-                  '这篇文章写四个说法：一个 YES、一个 NO、两个 NOT GIVEN，其中'
-                  '至少一个要重复作者只是转述的观点。交换、作答，然后大声读出'
-                  '作者本人说话的那一句，为每个判断辩护。',
+    actSpeakBrief='两人一组，手边准备一篇评论文章——报纸专栏或书评都行。每人针对它写四个陈述：一个 YES，一个 NO，两个 NOT '
+                  'GIVEN，其中一个建立在作者只是转述的观点上。交换并作答。每个 YES 或 NO，都用作者表态的那句话来辩护；对 '
+                  'NOT GIVEN，要说明没有这样的句子。',
     actSpeak1='在 YES 或 NO 算数之前，先说出决定答案的那一句是谁的声音。',
     actSpeak2='找出作者的让步（如果有的话），写一个据此为 YES 的说法和一个据此为 '
               'NO 的说法。',
@@ -1676,8 +1708,7 @@ T['zh'] = dict(
 # ── Japanese ───────────────────────────────────────────────────────────
 T['ja'] = dict(
     coverTitle='Yes, No, <em>Not Given</em>',
-    coverSub='True / False / Not Given と同じ三つの答え。ただし問われるのは、本文'
-             'が何を言っているかではなく、筆者がどう考えているかです',
+    coverSub='True, False, Not Given と同じ三択――ただし問われるのは本文の内容ではなく、筆者の考え',
     chipLevel='C1 · 上級', chipFocus='Reading · 両モジュール共通',
     chipCount='18 点',
 
@@ -1686,7 +1717,7 @@ T['ja'] = dict(
     optNG='Not Given &mdash; 筆者は述べていません',
 
     t1Eyebrow='始める前に',
-    t1Title='同じ三つの答え、違う問い',
+    t1Title='同じ三択、違う問い',
     t1ah='事実ではなく意見',
     t1ab='True / False / Not Given は本文が何を<em>言っているか</em>を問います。'
          'Yes / No / Not Given は筆者が何を<em>考えているか</em>を問います。指示'
@@ -1699,7 +1730,7 @@ T['ja'] = dict(
          '特に多いのは最後のセクションで、最も論じる傾向が強いパートです。',
     t1bn='指示文が求める語を書いてください。True / False / Not Given の問題に '
          'YES と書くと、TRUE のつもりでも不正解になります。',
-    t1ch='確かめ方は変わりません',
+    t1ch='True / False / Not Given と同じ確かめ方',
     t1cb='<strong>その文を指させるか？</strong>ただし今度は、筆者自身が語っている'
          '文でなければなりません。見つかったのが他人の意見の一文だけなら、まだ答え'
          'は見つかっていません。',
@@ -1711,14 +1742,12 @@ T['ja'] = dict(
     t2ab='<em>Critics argue</em>、<em>it is often claimed</em>、<em>according '
          'to</em>、<em>many people believe</em>。意見は本文にありますが、筆者は'
          'それに署名していません。それだけでは NOT GIVEN にしかなりません。',
-    t2an='こうした文は主張をそのまま全部述べているので、語句を照合するとまっ先に'
-         '見つかります。だからこそ罠なのです。',
+    t2an='こうした文は主張を丸ごと述べているので、語の照合で真っ先に見つかります。まさにそれが罠になる理由です。',
     t2bh='筆者自身の声',
     t2bb='<em>I think</em>、<em>in my view</em>、<em>the truth is</em>――そして、'
          'はるかに多いのは何の目印もない場合です。論じる文章では、他の誰の名前も'
          '付いていない普通の文は筆者のものです。',
-    t2bn='目印が指しているのは他の声です。筆者自身の意見の大半には目印がありま'
-         'せん。',
+    t2bn='ほとんどの目印は他人の見解を指しています。筆者自身の見解の多くには、目印がありません。',
     t2ch='紹介してから評価する',
     t2cb='<em>Supporters say it works. They are right.</em> 二文目で、筆者はそ'
          'の意見を自分のものにしています。<em>They are wrong</em> なら、筆者は'
@@ -1729,10 +1758,9 @@ T['ja'] = dict(
     t3Eyebrow='始める前に',
     t3Title='Admittedly &hellip; but',
     t3ah='譲歩',
-    t3ab='<em>Admittedly</em>、<em>of course</em>、<em>it is true that</em>、'
-         '<em>this is not to say</em>。筆者は相手側に一点を認めます――そして語っ'
-         'ているのは依然として筆者本人です。認めた点は、筆者が受け入れている点'
-         'です。',
+    t3ab='<em>Admittedly</em>、<em>of course</em>、<em>it is true '
+         'that</em>、<em>this is not to say</em>（最後のものは、続く内容の反対を認めます）。筆者は相手側の一'
+         '点を認めます――それでも話しているのは筆者です。認めた点は、筆者が受け入れている点です。',
     t3an='譲歩の内容に矛盾する文は、筆者の側の主張に聞こえても NO です。',
     t3bh='転換',
     t3bb='<em>But</em>、<em>yet</em>、<em>even so</em>、<em>still</em>。その後に'
@@ -1757,10 +1785,10 @@ T['ja'] = dict(
     t4an='True / False / Not Given の <em>most</em> 対 <em>all</em> と同じ規則'
          'です。',
     t4bh='ぼかし表現',
-    t4bb='<em>May</em>、<em>might</em>、<em>perhaps</em>、<em>it seems</em>。'
-         'ぼかし表現は筆者を何にも縛りません。同じことを留保なしで言う文は NOT '
-         'GIVEN です。筆者は同意も反対もしていません。',
-    t4bn='NO ではありません。筆者は否定したのではなく、断言を避けただけです。',
+    t4bb='<em>May</em>、<em>might</em>、<em>perhaps</em>、<em>it '
+         'seems</em>。ぼかし表現は、筆者がそれを可能だと考えていることを示すだけで、真実だとは言っていません。同じことを留保なしに述べ'
+         'る文は、ふつう NOT GIVEN です：筆者は賛成も反対もしていません。',
+    t4bn='NO ではありません。筆者は否定しておらず、保証するのを控えただけです。',
     t4ch='評価の言葉',
     t4cb='<em>Surprisingly</em>、<em>sadly</em>、<em>rightly</em>、<em>was '
          'right to</em>。一語で筆者の態度がわかり、設問はそこを試します：'
@@ -1798,9 +1826,9 @@ T['ja'] = dict(
     r8why='筆者は新人の在宅勤務には反対ですが、利点ははっきり認めています：'
           '<em>obvious benefits, and I do not dispute them</em>。譲歩も筆者の意見'
           'なので、それに矛盾すれば NO です。',
-    r9why='<em>May have</em> は筆者を何にも縛らず、<em>other changes</em> がその'
-          '理由を示しています。筆者は同意も反対もしていません。NOT GIVEN であっ'
-          'て、NO ではありません。',
+    r9why='筆者は禁止について <em>may have</em> とぼかし、<em>other changes</em> '
+          'にも触れていますが、どちらがより効いたかは言っていません。比べるのはあなたの推論で、筆者の主張ではありません。NOT '
+          'GIVEN――NO ではありません。',
     r10why='<em>Surprisingly</em> は結果に対する筆者の反応で、'
            '<em>unexpectedly</em> は同じ反応を別の語で言ったものです。YES。',
     r11why='<em>Largely</em>、<em>most of the promised homes</em>、<em>a year '
@@ -1816,20 +1844,17 @@ T['ja'] = dict(
              '入れたい列をクリックします。',
     sortBin1='筆者自身の意見',
     sortBin2='筆者が紹介しているだけの意見',
-    sortWhy='筆者自身の意見は左の列だけです。<em>I think</em> はそれをはっきり示'
-            'し、<em>rightly</em> では紹介した意見を筆者が自分のものにし、'
-            '<em>admittedly</em> では筆者が受け入れる点を認めています。右の列は他'
-            '人の意見を挙げるだけで、そこで止まります。筆者が評価しない限り、それ'
-            'に基づく文は NOT GIVEN です。',
+    sortWhy='このうち三つは筆者の立場を示しています。<em>I think</em> ははっきり言い、<em>rightly</em> '
+            'は筆者が伝えている見解を自分のものにし、<em>admittedly</em> '
+            'は筆者が受け入れる一点を認めます。残りの三つは他人の見解を挙げてそのままにしています――筆者が判断するまで、それに基づく文は '
+            'NOT GIVEN です。',
 
     actTitle='筆者の言葉をつかまえる',
     actUse='少なくとも三つ使いましょう：',
-    actSpeakBrief='ペアで、意見を述べた文章を一つ用意します。新聞のコラムやレビュ'
-                  'ーで十分です。一人がその文章について四つの文を書きます：YES を'
-                  '一つ、NO を一つ、NOT GIVEN を二つ。そのうち少なくとも一つは、'
-                  '筆者が紹介しているだけの意見を繰り返すものにします。交換して答'
-                  'え、筆者自身が語っている文を声に出して読んで、それぞれの判定を'
-                  '説明します。',
+    actSpeakBrief='ペアで、意見記事を手元に用意します――新聞のコラムや書評で十分です。それぞれがその記事について四つの文を書きます：Y'
+                  'ES を一つ、NO を一つ、NOT GIVEN を二つで、そのうち一つは筆者が伝えているだけの見解をもとにします。交'
+                  '換して答えましょう。YES と NO は筆者が語っている文で守り、NOT GIVEN '
+                  'については、そういう文がないことを示します。',
     actSpeak1='YES や NO を認める前に、決め手となる文が誰の声かを言いましょう。',
     actSpeak2='筆者の譲歩があれば見つけ、それによって YES になる文と NO になる文を'
               '一つずつ書きましょう。',

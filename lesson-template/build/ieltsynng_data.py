@@ -116,8 +116,12 @@ TURN = [
 DEGREE = [
     dict(ctx='<em>The ban on plastic bags may have reduced litter on the '
              'beaches, though other changes came in that same year.</em>',
-         stem='Statement: the ban on plastic bags reduced litter on the '
-              'beaches.',
+         # Was "the ban on plastic bags reduced litter on the beaches": with
+         # "though other changes came in that same year" after the hedge,
+         # NO was arguable. The writer never compares the ban with the other
+         # changes, so this is NOT GIVEN on any reading. Fixed 2026-09-24.
+         stem='Statement: other changes that year did more than the ban to '
+              'cut litter.',
          options=OPTS, correct=2, why='r9why'),
 
     dict(ctx='<em>Surprisingly, the smallest schools in the study produced '
