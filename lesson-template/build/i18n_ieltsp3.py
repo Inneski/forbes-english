@@ -44,8 +44,8 @@ T = {}
 # ── English ────────────────────────────────────────────────────────────
 T['en'] = dict(
     coverTitle='IELTS Speaking <em>Part 3</em>',
-    coverSub='The discussion: answering for people in general, and holding the '
-             'line when the examiner disagrees',
+    coverSub='The discussion: answering for people in general, and holding '
+             'the line when the examiner pushes back',
     chipLevel='C1 · Advanced', chipFocus='Speaking Part 3',
     chipCount='13 questions',
 
@@ -71,13 +71,14 @@ T['en'] = dict(
          'run long.',
 
     t2Eyebrow='Before you start',
-    t2Title='The examiner disagrees. That is the task, not a verdict.',
+    t2Title='If the examiner pushes back, that is the task, not a verdict',
     t2ah='Pushback is part of the test',
-    t2ab='Examiners are trained to challenge in Part 3, whatever you say. It '
-         'is not a signal that the answer was weak &mdash; it is the part of '
-         'the test that finds out what you can do under pressure.',
-    t2an='A well-made point often attracts more pushback, not less, precisely '
-         'because it is worth pushing.',
+    t2ab='Part 3 examiners often push back &mdash; asking whether a view '
+         'holds everywhere, or putting the other side &mdash; however good '
+         'the answer. It is not a signal that the answer was weak: it is how '
+         'Part 3 finds out what you can do under pressure.',
+    t2an='A well-made point can attract more pushback, not less, because it '
+         'is worth pushing.',
     t2bh='Concede, then qualify',
     t2bb='Give the other side something true, then keep your ground: <em>That '
          'is true up to a point, though&hellip;</em> or <em>I would accept '
@@ -93,10 +94,11 @@ T['en'] = dict(
 
     t3Eyebrow='Before you start',
     t3Title='How sure are you? Say so once, and mean it.',
-    t3ah='Hedging is vocabulary',
+    t3ah='Hedging is precise language',
     t3ab='<em>Broadly speaking</em>, <em>arguably</em>, <em>in most '
-         'cases</em>. These are precise words doing a precise job, and '
-         'precision is what Lexical Resource measures.',
+         'cases</em>. These are precise words doing a precise job, which '
+         'Lexical Resource rewards &mdash; and modal verbs and frames like '
+         '<em>it is argued that</em> show grammatical range as well.',
     t3an='A hedge is not a filler. <em>Sort of</em> and <em>kind of</em> are '
          'fillers &mdash; they grade nothing.',
     t3bh='Move the claim off yourself',
@@ -122,12 +124,13 @@ T['en'] = dict(
     q1why='<em>On the whole</em> makes it a claim about readers in general, and '
           'the clause after <em>though</em> keeps it honest. The thriller '
           'answer belongs in Part 1; the other two close the topic down.',
-    q2why='<em>By and large</em> states what is usually true of the group. The '
-          'other three announce that only you are being described, which is '
-          'the habit Part 3 is asking you to drop.',
-    q3why='A reason that applies to everyone who moves, given in one line. The '
-          'cousin is an example with no claim in front of it, and the other '
-          'two either overstate or refuse the question.',
+    q2why='<em>By and large</em> states what is usually true of the group. '
+          'The other three mark your own case or your own view &mdash; fine '
+          'for giving an opinion, but none of them turns a habit into a '
+          'general claim.',
+    q3why='A reason that applies to most people who move, given in one line. '
+          'The cousin is an example with no claim in front of it, and the '
+          'other two either overstate or refuse the question.',
     q4why='After. The claim is the answer and the example is evidence for it. '
           'Put the example first and the examiner has to wait to find out what '
           'it is evidence of.',
@@ -153,9 +156,10 @@ T['en'] = dict(
     q11why='<em>It is often argued that</em> reports the view without adopting '
            'it. The other three put your own name to the claim before you have '
            'decided whether you want it.',
-    q12why='Lexical Resource. A hedge is a precise word choice, and picking '
-           'the right degree of certainty is exactly what that criterion '
-           'measures. No descriptor counts how many you use.',
+    q12why='Lexical Resource. A hedge is a precise word choice, and choosing '
+           'the right degree of certainty is part of what that criterion '
+           'rewards &mdash; though a modal hedge shows grammar too. No '
+           'descriptor counts how many you use.',
 
     ordEyebrow='Activity 4 · The shape of an answer',
     ordTitle='Put the four moves in order',
@@ -172,8 +176,8 @@ T['en'] = dict(
               'give one example of your own.',
     actSpeak2='Examiner: push back on the strongest thing you hear, not the '
               'weakest. Ask whether it holds everywhere.',
-    actSpeak3='Candidate: concede what is fair, keep the rest, and grade how '
-              'sure you are exactly once.',
+    actSpeak3='Candidate: concede what is fair, keep the rest, and say how '
+              'sure you are without hedging every clause.',
     actWriteKind='Writing · 180–250 words',
     actWriteBrief='Write out your best answer to one of the four questions you '
                   'were asked, as you would want to have said it: position, '
@@ -191,8 +195,8 @@ T['en']['orderWhy'] = ORDER_WHY
 # ── German ─────────────────────────────────────────────────────────────
 T['de'] = dict(
     coverTitle='IELTS Speaking <em>Teil 3</em>',
-    coverSub='Die Diskussion: für die Allgemeinheit antworten und die Position '
-             'halten, wenn der Prüfer widerspricht',
+    coverSub='Die Diskussion: für Menschen im Allgemeinen antworten und die '
+             'Position halten, wenn der Prüfer dagegenhält',
     chipLevel='C1 · Fortgeschritten', chipFocus='Speaking Teil 3',
     chipCount='13 Fragen',
 
@@ -218,13 +222,15 @@ T['de'] = dict(
          'lang geraten ist.',
 
     t2Eyebrow='Bevor du beginnst',
-    t2Title='Der Prüfer widerspricht. Das ist die Aufgabe, kein Urteil.',
+    t2Title='Wenn der Prüfer dagegenhält, ist das die Aufgabe, kein Urteil',
     t2ah='Der Widerspruch ist vorgesehen',
-    t2ab='Prüfer sind darauf geschult, in Teil 3 zu widersprechen &mdash; egal '
-         'was du sagst. Es ist kein Zeichen für eine schwache Antwort, sondern '
-         'der Teil der Prüfung, der zeigt, was du unter Druck kannst.',
-    t2an='Ein gut gebauter Punkt zieht oft mehr Widerspruch an, gerade weil er '
-         'es wert ist.',
+    t2ab='Prüfer in Teil 3 halten oft dagegen &mdash; sie fragen, ob eine '
+         'Sicht überall gilt, oder bringen die Gegenseite ins Spiel &mdash;, '
+         'egal wie gut die Antwort war. Das ist kein Zeichen, dass die '
+         'Antwort schwach war: So findet Teil 3 heraus, was du unter Druck '
+         'kannst.',
+    t2an='Ein gut gemachter Punkt kann mehr Gegenwind bekommen, nicht '
+         'weniger, weil es sich lohnt, dagegenzuhalten.',
     t2bh='Zugestehen, dann einschränken',
     t2bb='Gib der Gegenseite etwas Wahres, dann halte deine Position: <em>That '
          'is true up to a point, though&hellip;</em> oder <em>I would accept '
@@ -240,10 +246,11 @@ T['de'] = dict(
 
     t3Eyebrow='Bevor du beginnst',
     t3Title='Wie sicher bist du? Sag es einmal, und meine es.',
-    t3ah='Abschwächen ist Wortschatz',
-    t3ab='<em>Broadly speaking</em>, <em>arguably</em>, <em>in most cases</em>. '
-         'Das sind präzise Wörter mit einer präzisen Aufgabe, und Präzision ist '
-         'genau das, was Lexical Resource misst.',
+    t3ah='Abschwächen ist präzise Sprache',
+    t3ab='<em>Broadly speaking</em>, <em>arguably</em>, <em>in most '
+         'cases</em>. Das sind präzise Wörter für eine präzise Aufgabe, und '
+         'Lexical Resource belohnt sie &mdash; Modalverben und Rahmen wie '
+         '<em>it is argued that</em> zeigen außerdem grammatische Bandbreite.',
     t3an='Eine Abschwächung ist kein Füllwort. <em>Sort of</em> und <em>kind '
          'of</em> sind Füllwörter &mdash; sie stufen nichts ein.',
     t3bh='Die Aussage von dir wegrücken',
@@ -270,12 +277,13 @@ T['de'] = dict(
           'Allgemeinen, und der Teil nach <em>though</em> hält sie ehrlich. '
           'Die Thriller-Antwort gehört in Teil 1; die anderen beiden beenden '
           'das Thema.',
-    q2why='<em>By and large</em> sagt, was für die Gruppe üblicherweise gilt. '
-          'Die anderen drei kündigen an, dass nur von dir die Rede ist &mdash; '
-          'genau die Gewohnheit, die Teil 3 ablegen lässt.',
-    q3why='Ein Grund, der für alle gilt, die umziehen, in einer Zeile. Der '
-          'Cousin ist ein Beispiel ohne Aussage davor, und die anderen beiden '
-          'übertreiben oder verweigern die Frage.',
+    q2why='<em>By and large</em> sagt, was für die Gruppe meistens gilt. Die '
+          'anderen drei kennzeichnen deinen eigenen Fall oder deine eigene '
+          'Sicht &mdash; gut, um eine Meinung zu äußern, aber keines macht '
+          'aus einer Gewohnheit eine allgemeine Aussage.',
+    q3why='Ein Grund, der für die meisten gilt, die umziehen, in einer '
+          'Zeile. Der Cousin ist ein Beispiel ohne Aussage davor, und die '
+          'anderen beiden übertreiben oder verweigern die Frage.',
     q4why='Danach. Die Aussage ist die Antwort, das Beispiel ist der Beleg '
           'dafür. Steht das Beispiel vorn, muss der Prüfer warten, um zu '
           'erfahren, wofür es ein Beleg ist.',
@@ -301,9 +309,11 @@ T['de'] = dict(
     q11why='<em>It is often argued that</em> gibt die Ansicht wieder, ohne sie '
            'zu übernehmen. Die anderen drei setzen deinen Namen unter die '
            'Aussage, bevor du sie überhaupt willst.',
-    q12why='Lexical Resource. Eine Abschwächung ist eine präzise Wortwahl, und '
-           'den richtigen Grad zu treffen, ist genau das, was dieses Kriterium '
-           'misst. Kein Deskriptor zählt, wie viele du benutzt.',
+    q12why='Lexical Resource. Eine Abschwächung ist eine präzise Wortwahl, '
+           'und den richtigen Grad an Sicherheit zu wählen gehört zu dem, '
+           'was dieses Kriterium belohnt &mdash; wobei eine Abschwächung mit '
+           'Modalverb auch Grammatik zeigt. Kein Deskriptor zählt, wie viele '
+           'du benutzt.',
 
     ordEyebrow='Aktivität 4 · Die Form einer Antwort',
     ordTitle='Bring die vier Schritte in die richtige Reihenfolge',
@@ -320,8 +330,8 @@ T['de'] = dict(
               'mit einem eigenen Beispiel.',
     actSpeak2='Prüfer: widersprich dem stärksten Punkt, den du hörst, nicht '
               'dem schwächsten. Frage, ob er überall gilt.',
-    actSpeak3='Kandidat: gestehe zu, was fair ist, halte den Rest, und stufe '
-              'genau einmal ein, wie sicher du bist.',
+    actSpeak3='Kandidat: Gib zu, was stimmt, behalte den Rest und sag, wie '
+              'sicher du bist, ohne jeden Satzteil abzuschwächen.',
     actWriteKind='Schreiben · 180–250 Wörter',
     actWriteBrief='Schreibe deine beste Antwort auf eine der vier Fragen so '
                   'auf, wie du sie gern gesagt hättest: Position, Grund, ein '
@@ -330,20 +340,20 @@ T['de'] = dict(
     actPlaceholder='On the whole, people…',
 
     # The ordering explanation; English from the data module.
-    orderWhy='Position, Begründung, Beispiel, Zugeständnis. Das Beispiel kommt '
-             'an dritter Stelle, weil es eine Behauptung veranschaulicht, die '
-             'schon aufgestellt ist &mdash; beginnst du damit, hört der Prüfer '
-             'eine Anekdote statt eines Arguments. Das Zugeständnis kommt '
-             'zuletzt und endet wieder bei deiner Position: Du hast die Grenze '
-             'schon selbst benannt, also kann dich ein Einwand nicht mehr '
-             'erwischen.',
+    orderWhy='Position, Begründung, Beispiel, Einschränkung. Das Beispiel '
+             'kommt an dritter Stelle, weil es eine Aussage veranschaulicht, '
+             'die schon gemacht ist &mdash; fängst du damit an, hört der '
+             'Prüfer eine Anekdote statt eines Arguments. Die Einschränkung '
+             'kommt zuletzt, und die Antwort endet wieder bei deiner '
+             'Position: Du hast die Ausnahme selbst benannt, also hat '
+             'Widerspruch weniger, woran er dich packen kann.',
 )
 
 # ── Spanish ────────────────────────────────────────────────────────────
 T['es'] = dict(
     coverTitle='IELTS Speaking <em>Parte 3</em>',
-    coverSub='El debate: responder sobre la gente en general y mantener tu '
-             'postura cuando el examinador te lleva la contraria',
+    coverSub='La discusión: responder por la gente en general y mantener la '
+             'postura cuando el examinador lleva la contraria',
     chipLevel='C1 · Avanzado', chipFocus='Speaking Parte 3',
     chipCount='13 preguntas',
 
@@ -369,13 +379,16 @@ T['es'] = dict(
          'ha alargado.',
 
     t2Eyebrow='Antes de empezar',
-    t2Title='El examinador discrepa. Esa es la tarea, no un veredicto.',
+    t2Title='Si el examinador te lleva la contraria, es la tarea, no un '
+            'veredicto',
     t2ah='La objeción está prevista',
-    t2ab='Los examinadores están formados para rebatir en la Parte 3, digas lo '
-         'que digas. No indica que tu respuesta fuera floja: es la parte de la '
-         'prueba que averigua qué sabes hacer bajo presión.',
-    t2an='Un argumento bien construido suele atraer más objeciones, no menos, '
-         'precisamente porque merece la pena rebatirlo.',
+    t2ab='En la Parte 3 los examinadores a menudo te llevan la contraria '
+         '&mdash; preguntan si una idea vale en todas partes o plantean el '
+         'otro lado &mdash;, por buena que sea la respuesta. No es señal de '
+         'que la respuesta fuera floja: es como la Parte 3 averigua lo que '
+         'sabes hacer bajo presión.',
+    t2an='Un argumento bien hecho puede recibir más réplica, no menos, '
+         'porque merece la pena replicarlo.',
     t2bh='Concede y luego matiza',
     t2bb='Dale a la otra parte algo cierto y luego mantén tu terreno: <em>That '
          'is true up to a point, though&hellip;</em> o <em>I would accept that '
@@ -391,10 +404,12 @@ T['es'] = dict(
 
     t3Eyebrow='Antes de empezar',
     t3Title='¿Cuánto de seguro estás? Dilo una vez, y en serio.',
-    t3ah='Matizar es vocabulario',
-    t3ab='<em>Broadly speaking</em>, <em>arguably</em>, <em>in most cases</em>. '
-         'Son palabras precisas con una función precisa, y la precisión es '
-         'justo lo que mide Lexical Resource.',
+    t3ah='Matizar es lenguaje preciso',
+    t3ab='<em>Broadly speaking</em>, <em>arguably</em>, <em>in most '
+         'cases</em>. Son palabras precisas haciendo un trabajo preciso, y '
+         'Lexical Resource las premia &mdash; y los verbos modales y '
+         'fórmulas como <em>it is argued that</em> muestran además variedad '
+         'gramatical.',
     t3an='Un matizador no es una muletilla. <em>Sort of</em> y <em>kind of</em> '
          'son muletillas: no gradúan nada.',
     t3bh='Aleja la afirmación de ti',
@@ -421,12 +436,13 @@ T['es'] = dict(
           'lectores en general, y la parte tras <em>though</em> la mantiene '
           'honesta. La respuesta del thriller es de Parte 1; las otras dos '
           'cierran el tema.',
-    q2why='<em>By and large</em> dice lo que suele ser cierto del grupo. Las '
-          'otras tres anuncian que solo se habla de ti, que es justo la '
-          'costumbre que la Parte 3 te pide dejar.',
-    q3why='Una razón que vale para todo el que se muda, en una línea. El primo '
-          'es un ejemplo sin afirmación delante, y las otras dos exageran o '
-          'esquivan la pregunta.',
+    q2why='<em>By and large</em> expresa lo que suele ser verdad del grupo. '
+          'Las otras tres marcan tu propio caso o tu propia opinión &mdash; '
+          'válidas para opinar, pero ninguna convierte una costumbre en una '
+          'afirmación general.',
+    q3why='Una razón que vale para la mayoría de quienes se mudan, dicha en '
+          'una línea. El primo es un ejemplo sin ninguna afirmación delante, '
+          'y las otras dos exageran o se niegan a responder.',
     q4why='Después. La afirmación es la respuesta y el ejemplo es la prueba. '
           'Si el ejemplo va primero, el examinador tiene que esperar para '
           'saber de qué es prueba.',
@@ -453,9 +469,10 @@ T['es'] = dict(
     q11why='<em>It is often argued that</em> recoge la idea sin asumirla. Las '
            'otras tres ponen tu nombre bajo la afirmación antes de que hayas '
            'decidido si la quieres.',
-    q12why='Lexical Resource. Un matizador es una elección léxica precisa, y '
-           'acertar con el grado de certeza es exactamente lo que mide ese '
-           'criterio. Ningún descriptor cuenta cuántos usas.',
+    q12why='Lexical Resource. Un matiz es una elección de palabra precisa, y '
+           'elegir el grado justo de certeza forma parte de lo que premia '
+           'ese criterio &mdash; aunque un matiz con un modal muestra '
+           'también gramática. Ningún descriptor cuenta cuántos usas.',
 
     ordEyebrow='Actividad 4 · La forma de una respuesta',
     ordTitle='Ordena los cuatro pasos',
@@ -472,8 +489,8 @@ T['es'] = dict(
               'después da un ejemplo propio.',
     actSpeak2='Examinador: rebate lo más fuerte que oigas, no lo más flojo. '
               'Pregunta si eso vale en todas partes.',
-    actSpeak3='Candidato: concede lo que sea justo, conserva el resto y gradúa '
-              'tu certeza exactamente una vez.',
+    actSpeak3='Candidato: concede lo que sea justo, mantén el resto y di lo '
+              'seguro que estás sin matizar cada frase.',
     actWriteKind='Escritura · 180–250 palabras',
     actWriteBrief='Escribe tu mejor respuesta a una de las cuatro preguntas '
                   'que te hicieron, tal como te habría gustado decirla: '
@@ -482,11 +499,12 @@ T['es'] = dict(
     actPlaceholder='On the whole, people…',
 
     # The ordering explanation; English from the data module.
-    orderWhy='Postura, razón, ejemplo, concesión. El ejemplo va tercero porque '
-             'ilustra una afirmación que ya se ha hecho: si empiezas por él, el '
-             'examinador oye una anécdota en lugar de un argumento. La '
-             'concesión va al final y vuelve a tu postura: el límite ya lo has '
-             'nombrado tú, así que una objeción ya no tiene por dónde pillarte.',
+    orderWhy='Postura, razón, ejemplo, límite. El ejemplo va tercero porque '
+             'ilustra una afirmación ya hecha &mdash; si empiezas por él, el '
+             'examinador oye una anécdota, no un argumento. El límite va al '
+             'final, y la respuesta termina de nuevo en tu postura: ya has '
+             'nombrado tú mismo la excepción, así que la réplica tiene menos '
+             'donde agarrarte.',
 )
 
 
@@ -494,7 +512,7 @@ T['es'] = dict(
 T['fr'] = dict(
     coverTitle='IELTS Speaking <em>Partie 3</em>',
     coverSub='La discussion : répondre pour les gens en général, et tenir sa '
-             'position quand l’examinateur n’est pas d’accord',
+             'position quand l’examinateur vous contredit',
     chipLevel='C1 · Avancé', chipFocus='Speaking Partie 3',
     chipCount='13 questions',
 
@@ -520,14 +538,16 @@ T['fr'] = dict(
          'Partie 1 qui s’est allongée.',
 
     t2Eyebrow='Avant de commencer',
-    t2Title='L’examinateur n’est pas d’accord. C’est la tâche, pas un verdict.',
+    t2Title='Si l’examinateur vous contredit, c’est l’exercice, pas un '
+            'verdict',
     t2ah='La contradiction fait partie du test',
-    t2ab='Les examinateurs sont formés pour vous contredire en Partie 3, quoi '
-         'que vous disiez. Ce n’est pas le signe que la réponse était faible '
-         '&mdash; c’est la partie du test qui mesure ce que vous savez faire sous '
-         'pression.',
-    t2an='Un argument bien construit attire souvent plus de contradiction, pas '
-         'moins, justement parce qu’il vaut la peine d’être poussé.',
+    t2ab='En Partie 3, les examinateurs contredisent souvent &mdash; ils '
+         'demandent si un point de vue vaut partout, ou présentent l’autre '
+         'camp &mdash;, quelle que soit la qualité de la réponse. Ce n’est '
+         'pas le signe d’une réponse faible : c’est ainsi que la Partie 3 '
+         'découvre ce que vous savez faire sous pression.',
+    t2an='Un argument bien construit peut s’attirer plus d’objections, pas '
+         'moins, parce qu’il vaut la peine d’être poussé.',
     t2bh='Concéder, puis nuancer',
     t2bb='Accordez à l’autre camp quelque chose de vrai, puis tenez bon : '
          '<em>That is true up to a point, though&hellip;</em> ou <em>I would '
@@ -544,10 +564,12 @@ T['fr'] = dict(
 
     t3Eyebrow='Avant de commencer',
     t3Title='À quel point êtes-vous sûr ? Dites-le une fois, et pour de bon.',
-    t3ah='Nuancer, c’est du vocabulaire',
-    t3ab='<em>Broadly speaking</em>, <em>arguably</em>, <em>in most cases</em>. '
-         'Ce sont des mots précis qui font un travail précis, et la précision est '
-         'ce que mesure Lexical Resource.',
+    t3ah='Nuancer, c’est parler avec précision',
+    t3ab='<em>Broadly speaking</em>, <em>arguably</em>, <em>in most '
+         'cases</em>. Ce sont des mots précis qui font un travail précis, et '
+         'Lexical Resource les récompense &mdash; les verbes modaux et des '
+         'tournures comme <em>it is argued that</em> montrent en outre '
+         'l’étendue de votre grammaire.',
     t3an='Une nuance n’est pas un tic. <em>Sort of</em> et <em>kind of</em> sont '
          'des tics &mdash; ils ne graduent rien.',
     t3bh='Détachez l’affirmation de vous',
@@ -575,12 +597,13 @@ T['fr'] = dict(
           'général, et la proposition après <em>though</em> la garde honnête. La '
           'réponse sur le polar relève de la Partie 1 ; les deux autres ferment le '
           'sujet.',
-    q2why='<em>By and large</em> énonce ce qui est vrai en général pour le groupe. '
-          'Les trois autres annoncent que seul vous êtes décrit, et c’est '
-          'justement l’habitude que la Partie 3 vous demande d’abandonner.',
-    q3why='Une raison qui vaut pour tous ceux qui déménagent, en une ligne. Le '
-          'cousin est un exemple sans affirmation devant lui, et les deux autres '
-          'exagèrent ou refusent la question.',
+    q2why='<em>By and large</em> énonce ce qui est généralement vrai du '
+          'groupe. Les trois autres signalent votre propre cas ou votre '
+          'propre avis &mdash; très bien pour donner une opinion, mais '
+          'aucune ne fait d’une habitude une affirmation générale.',
+    q3why='Une raison qui vaut pour la plupart des gens qui déménagent, en '
+          'une ligne. Le cousin est un exemple sans affirmation devant lui, '
+          'et les deux autres exagèrent ou refusent la question.',
     q4why='Après. L’affirmation est la réponse et l’exemple en est la preuve. '
           'Mettez l’exemple d’abord, et l’examinateur doit attendre pour savoir de '
           'quoi il est la preuve.',
@@ -606,20 +629,23 @@ T['fr'] = dict(
     q11why='<em>It is often argued that</em> rapporte le point de vue sans '
            'l’adopter. Les trois autres mettent votre nom sur l’affirmation avant '
            'que vous ayez décidé si vous la voulez.',
-    q12why='Lexical Resource. Une nuance est un choix de mot précis, et choisir '
-           'le bon degré de certitude est exactement ce que mesure ce critère. '
-           'Aucun descripteur ne compte combien vous en utilisez.',
+    q12why='Lexical Resource. Une nuance est un choix de mot précis, et '
+           'choisir le bon degré de certitude fait partie de ce que ce '
+           'critère récompense &mdash; même si une nuance exprimée par un '
+           'modal montre aussi de la grammaire. Aucun descripteur ne compte '
+           'combien vous en utilisez.',
 
     ordEyebrow='Activité 4 · La forme d’une réponse',
     ordTitle='Mettez les quatre étapes dans l’ordre',
     ordHint='Faites-les glisser dans l’ordre &mdash; ou cliquez sur l’une, puis '
             'sur la position voulue.',
-    orderWhy='Position, raison, exemple, concession. L’exemple vient en troisième '
-             'parce qu’il illustre une affirmation déjà faite &mdash; commencez par '
-             'lui, et l’examinateur entend une anecdote plutôt qu’un argument. La '
-             'concession vient en dernier, et elle retombe sur votre position : '
-             'vous avez déjà nommé la limite vous-même, donc la contradiction n’a '
-             'plus rien pour vous prendre en défaut.',
+    orderWhy='Position, raison, exemple, limite. L’exemple vient en '
+             'troisième parce qu’il illustre une affirmation déjà faite '
+             '&mdash; commencez par lui et l’examinateur entend une anecdote '
+             'plutôt qu’un argument. La limite vient en dernier, et la '
+             'réponse se termine sur votre position : vous avez nommé '
+             'l’exception vous-même, donc une objection a moins de prise sur '
+             'vous.',
 
     actTitle='Jouez une Partie 3',
     actUse='Utilisez-en au moins trois :',
@@ -631,8 +657,9 @@ T['fr'] = dict(
               'ensuite donnez un exemple personnel.',
     actSpeak2='Examinateur : contredisez le point le plus fort que vous entendez, '
               'pas le plus faible. Demandez s’il vaut partout.',
-    actSpeak3='Candidat : concédez ce qui est juste, gardez le reste, et graduez '
-              'votre certitude une seule fois exactement.',
+    actSpeak3='Candidat : concédez ce qui est juste, gardez le reste, et '
+              'dites à quel point vous êtes sûr sans nuancer chaque '
+              'proposition.',
     actWriteKind='Écriture · 180–250 mots',
     actWriteBrief='Rédigez votre meilleure réponse à l’une des quatre questions '
                   'qu’on vous a posées, telle que vous auriez voulu la dire : '
@@ -645,8 +672,8 @@ T['fr'] = dict(
 # ── Italian ────────────────────────────────────────────────────────────
 T['it'] = dict(
     coverTitle='IELTS Speaking <em>Parte 3</em>',
-    coverSub='La discussione: rispondere per le persone in generale, e tenere la '
-             'posizione quando l’esaminatore non è d’accordo',
+    coverSub='La discussione: rispondere per le persone in generale e tenere '
+             'la posizione quando l’esaminatore ti contraddice',
     chipLevel='C1 · Avanzato', chipFocus='Speaking Parte 3',
     chipCount='13 domande',
 
@@ -672,13 +699,15 @@ T['it'] = dict(
          'si è allungata.',
 
     t2Eyebrow='Prima di cominciare',
-    t2Title='L’esaminatore non è d’accordo. È il compito, non un verdetto.',
+    t2Title='Se l’esaminatore ti contraddice, è il compito, non un verdetto',
     t2ah='L’obiezione fa parte del test',
-    t2ab='Gli esaminatori sono addestrati a contraddirti nella Parte 3, qualunque '
-         'cosa tu dica. Non è il segno che la risposta era debole &mdash; è la '
-         'parte del test che scopre che cosa sai fare sotto pressione.',
-    t2an='Un punto ben costruito attira spesso più obiezioni, non meno, proprio '
-         'perché vale la pena spingerlo.',
+    t2ab='Nella Parte 3 gli esaminatori spesso ti contraddicono &mdash; '
+         'chiedono se un’opinione vale ovunque, o presentano l’altra parte '
+         '&mdash;, per quanto buona sia la risposta. Non è un segnale che la '
+         'risposta fosse debole: è così che la Parte 3 scopre che cosa sai '
+         'fare sotto pressione.',
+    t2an='Un punto ben costruito può attirare più obiezioni, non meno, '
+         'perché vale la pena metterlo alla prova.',
     t2bh='Concedi, poi precisa',
     t2bb='Dai all’altra parte qualcosa di vero, poi tieni la posizione: '
          '<em>That is true up to a point, though&hellip;</em> oppure <em>I would '
@@ -694,10 +723,11 @@ T['it'] = dict(
 
     t3Eyebrow='Prima di cominciare',
     t3Title='Quanto ne sei sicuro? Dillo una volta, e sul serio.',
-    t3ah='Attenuare è lessico',
-    t3ab='<em>Broadly speaking</em>, <em>arguably</em>, <em>in most cases</em>. '
-         'Sono parole precise che fanno un lavoro preciso, e la precisione è ciò '
-         'che misura Lexical Resource.',
+    t3ah='Sfumare è linguaggio preciso',
+    t3ab='<em>Broadly speaking</em>, <em>arguably</em>, <em>in most '
+         'cases</em>. Sono parole precise che fanno un lavoro preciso, e '
+         'Lexical Resource le premia &mdash; e i verbi modali e formule come '
+         '<em>it is argued that</em> mostrano anche varietà grammaticale.',
     t3an='Un’attenuazione non è un riempitivo. <em>Sort of</em> e <em>kind '
          'of</em> sono riempitivi &mdash; non graduano niente.',
     t3bh='Stacca l’affermazione da te',
@@ -722,12 +752,13 @@ T['it'] = dict(
     q1why='<em>On the whole</em> ne fa un’affermazione sui lettori in generale, e '
           'la frase dopo <em>though</em> la mantiene onesta. La risposta sul '
           'giallo va bene per la Parte 1; le altre due chiudono l’argomento.',
-    q2why='<em>By and large</em> dice ciò che di solito è vero per il gruppo. Le '
-          'altre tre annunciano che si sta descrivendo solo te, ed è proprio '
-          'l’abitudine che la Parte 3 ti chiede di lasciare.',
-    q3why='Un motivo che vale per chiunque si trasferisca, detto in una riga. Il '
-          'cugino è un esempio senza un’affermazione davanti, e le altre due o '
-          'esagerano o rifiutano la domanda.',
+    q2why='<em>By and large</em> dice ciò che di solito è vero per il '
+          'gruppo. Le altre tre segnalano il tuo caso o la tua opinione '
+          '&mdash; vanno bene per esprimere un parere, ma nessuna trasforma '
+          'un’abitudine in un’affermazione generale.',
+    q3why='Un motivo che vale per la maggior parte di chi si trasferisce, '
+          'detto in una riga. Il cugino è un esempio senza un’affermazione '
+          'davanti, e le altre due esagerano o rifiutano la domanda.',
     q4why='Dopo. L’affermazione è la risposta e l’esempio ne è la prova. Metti '
           'prima l’esempio e l’esaminatore deve aspettare per capire di che cosa '
           'è la prova.',
@@ -754,20 +785,22 @@ T['it'] = dict(
     q11why='<em>It is often argued that</em> riporta il punto di vista senza '
            'farlo proprio. Le altre tre mettono il tuo nome sull’affermazione '
            'prima che tu abbia deciso se la vuoi.',
-    q12why='Lexical Resource. Un’attenuazione è una scelta di parole precisa, e '
-           'scegliere il grado giusto di certezza è esattamente ciò che misura '
-           'questo criterio. Nessun descrittore conta quante ne usi.',
+    q12why='Lexical Resource. Una sfumatura è una scelta lessicale precisa, '
+           'e scegliere il giusto grado di certezza fa parte di ciò che quel '
+           'criterio premia &mdash; anche se una sfumatura con un modale '
+           'mostra pure la grammatica. Nessun descrittore conta quante ne '
+           'usi.',
 
     ordEyebrow='Attività 4 · La forma di una risposta',
     ordTitle='Metti in ordine le quattro mosse',
     ordHint='Trascinale nell’ordine giusto &mdash; oppure clicca su una e poi '
             'sulla posizione che vuoi.',
-    orderWhy='Posizione, motivo, esempio, concessione. L’esempio viene terzo '
-             'perché illustra un’affermazione già fatta &mdash; comincia con '
-             'quello e l’esaminatore sente un aneddoto invece di un argomento. La '
-             'concessione viene per ultima, e riporta alla tua posizione: il limite '
-             'l’hai già nominato tu, quindi l’obiezione non ha più niente con cui '
-             'coglierti in fallo.',
+    orderWhy='Posizione, motivo, esempio, limite. L’esempio viene terzo '
+             'perché illustra un’affermazione già fatta &mdash; se inizi da '
+             'lì, l’esaminatore sente un aneddoto invece di un argomento. Il '
+             'limite viene per ultimo, e la risposta si chiude tornando alla '
+             'tua posizione: l’eccezione l’hai già nominata tu, quindi '
+             'un’obiezione ha meno appigli.',
 
     actTitle='Fai una Parte 3',
     actUse='Usane almeno tre:',
@@ -779,8 +812,8 @@ T['it'] = dict(
               'dai un esempio tuo.',
     actSpeak2='Esaminatore: contesta la cosa più forte che senti, non la più '
               'debole. Chiedi se vale ovunque.',
-    actSpeak3='Candidato: concedi ciò che è giusto, tieni il resto, e gradua la tua '
-              'certezza esattamente una volta.',
+    actSpeak3='Candidato: concedi ciò che è giusto, tieni il resto e di’ '
+              'quanto sei sicuro senza sfumare ogni frase.',
     actWriteKind='Scrittura · 180–250 parole',
     actWriteBrief='Scrivi la tua risposta migliore a una delle quattro domande che '
                   'ti sono state fatte, come avresti voluto dirla: posizione, '
@@ -793,8 +826,8 @@ T['it'] = dict(
 # ── Portuguese ─────────────────────────────────────────────────────────
 T['pt'] = dict(
     coverTitle='IELTS Speaking <em>Parte 3</em>',
-    coverSub='A discussão: responder pelas pessoas em geral, e manter a posição '
-             'quando o examinador discorda',
+    coverSub='A discussão: responder pelas pessoas em geral e manter a '
+             'posição quando o examinador contraria',
     chipLevel='C1 · Avançado', chipFocus='Speaking Parte 3',
     chipCount='13 perguntas',
 
@@ -820,13 +853,15 @@ T['pt'] = dict(
          'alongou.',
 
     t2Eyebrow='Antes de começar',
-    t2Title='O examinador discorda. É a tarefa, não um veredicto.',
+    t2Title='Se o examinador te contrariar, é a tarefa, não um veredicto',
     t2ah='A contestação faz parte do teste',
-    t2ab='Os examinadores são treinados para contestar na Parte 3, digas o que '
-         'disseres. Não é sinal de que a resposta foi fraca &mdash; é a parte do '
-         'teste que descobre o que consegues fazer sob pressão.',
-    t2an='Um argumento bem construído atrai muitas vezes mais contestação, não '
-         'menos, precisamente porque vale a pena pressioná-lo.',
+    t2ab='Na Parte 3, os examinadores contrariam muitas vezes &mdash; '
+         'perguntam se uma opinião vale em todo o lado ou apresentam o outro '
+         'lado &mdash;, por muito boa que seja a resposta. Não é sinal de '
+         'que a resposta foi fraca: é assim que a Parte 3 descobre o que '
+         'consegues fazer sob pressão.',
+    t2an='Um argumento bem feito pode atrair mais objeções, e não menos, '
+         'porque vale a pena pô-lo à prova.',
     t2bh='Concede e depois matiza',
     t2bb='Dá ao outro lado algo verdadeiro e depois mantém a tua posição: '
          '<em>That is true up to a point, though&hellip;</em> ou <em>I would '
@@ -842,10 +877,12 @@ T['pt'] = dict(
 
     t3Eyebrow='Antes de começar',
     t3Title='Até que ponto tens a certeza? Di-lo uma vez, e a sério.',
-    t3ah='Matizar é vocabulário',
-    t3ab='<em>Broadly speaking</em>, <em>arguably</em>, <em>in most cases</em>. '
-         'São palavras precisas a fazer um trabalho preciso, e a precisão é o que '
-         'o Lexical Resource mede.',
+    t3ah='Atenuar é linguagem precisa',
+    t3ab='<em>Broadly speaking</em>, <em>arguably</em>, <em>in most '
+         'cases</em>. São palavras precisas a fazer um trabalho preciso, e o '
+         'Lexical Resource premeia-as &mdash; e os verbos modais e fórmulas '
+         'como <em>it is argued that</em> mostram também variedade '
+         'gramatical.',
     t3an='Um matiz não é um bordão. <em>Sort of</em> e <em>kind of</em> são '
          'bordões &mdash; não graduam nada.',
     t3bh='Afasta a afirmação de ti',
@@ -871,12 +908,13 @@ T['pt'] = dict(
     q1why='<em>On the whole</em> faz disto uma afirmação sobre os leitores em '
           'geral, e a oração depois de <em>though</em> mantém-na honesta. A '
           'resposta do policial é de Parte 1; as outras duas encerram o tema.',
-    q2why='<em>By and large</em> diz o que costuma ser verdade para o grupo. As '
-          'outras três anunciam que só tu estás a ser descrito, e é precisamente '
-          'esse hábito que a Parte 3 te pede para largares.',
-    q3why='Uma razão que vale para toda a gente que muda de casa, dita numa '
-          'linha. O primo é um exemplo sem uma afirmação à frente, e as outras '
-          'duas exageram ou recusam a pergunta.',
+    q2why='<em>By and large</em> diz o que costuma ser verdade para o grupo. '
+          'As outras três assinalam o teu caso ou a tua opinião &mdash; '
+          'servem para dar uma opinião, mas nenhuma transforma um hábito '
+          'numa afirmação geral.',
+    q3why='Uma razão que vale para a maioria das pessoas que se mudam, dita '
+          'numa linha. O primo é um exemplo sem nenhuma afirmação à frente, '
+          'e as outras duas exageram ou recusam a pergunta.',
     q4why='Depois. A afirmação é a resposta e o exemplo é a prova. Põe o exemplo '
           'primeiro e o examinador tem de esperar para saber de que é que ele é '
           'prova.',
@@ -902,20 +940,21 @@ T['pt'] = dict(
     q11why='<em>It is often argued that</em> relata a opinião sem a adotar. As '
            'outras três põem o teu nome na afirmação antes de decidires se a '
            'queres.',
-    q12why='Lexical Resource. Um matiz é uma escolha de palavras precisa, e '
-           'escolher o grau certo de certeza é exatamente o que esse critério '
-           'mede. Nenhum descritor conta quantos usas.',
+    q12why='Lexical Resource. Uma atenuação é uma escolha de palavra '
+           'precisa, e escolher o grau certo de certeza faz parte do que '
+           'esse critério premeia &mdash; embora uma atenuação com um modal '
+           'mostre também gramática. Nenhum descritor conta quantas usas.',
 
     ordEyebrow='Atividade 4 · A forma de uma resposta',
     ordTitle='Põe os quatro passos por ordem',
     ordHint='Arrasta-os para a ordem certa &mdash; ou clica num deles e depois na '
             'posição que quiseres.',
-    orderWhy='Posição, razão, exemplo, concessão. O exemplo vem em terceiro '
-             'porque ilustra uma afirmação que já foi feita &mdash; começa por ele '
-             'e o examinador ouve uma história em vez de um argumento. A '
-             'concessão vem no fim, e acaba de volta na tua posição: já nomeaste '
-             'o limite tu mesmo, por isso a contestação já não tem por onde te '
-             'apanhar.',
+    orderWhy='Posição, razão, exemplo, limite. O exemplo vem em terceiro '
+             'porque ilustra uma afirmação já feita &mdash; se começares por '
+             'ele, o examinador ouve uma história e não um argumento. O '
+             'limite vem no fim, e a resposta termina de novo na tua '
+             'posição: já nomeaste tu a exceção, por isso uma objeção tem '
+             'menos por onde te apanhar.',
 
     actTitle='Faz uma Parte 3',
     actUse='Usa pelo menos três:',
@@ -927,8 +966,8 @@ T['pt'] = dict(
               'um exemplo teu.',
     actSpeak2='Examinador: contesta a coisa mais forte que ouvires, não a mais '
               'fraca. Pergunta se vale em todo o lado.',
-    actSpeak3='Candidato: concede o que é justo, mantém o resto e gradua a tua '
-              'certeza exatamente uma vez.',
+    actSpeak3='Candidato: concede o que for justo, mantém o resto e diz quão '
+              'seguro estás sem atenuar cada frase.',
     actWriteKind='Escrita · 180–250 palavras',
     actWriteBrief='Escreve a tua melhor resposta a uma das quatro perguntas que te '
                   'fizeram, como gostarias de a ter dito: posição, razão, um '
@@ -941,8 +980,8 @@ T['pt'] = dict(
 # ── Russian ────────────────────────────────────────────────────────────
 T['ru'] = dict(
     coverTitle='IELTS Speaking <em>Часть 3</em>',
-    coverSub='Дискуссия: отвечать за людей в целом и держать позицию, когда '
-             'экзаменатор не согласен',
+    coverSub='Обсуждение: отвечать за людей в целом и держать позицию, когда '
+             'экзаменатор возражает',
     chipLevel='C1 · Продвинутый', chipFocus='Speaking, часть 3',
     chipCount='13 вопросов',
 
@@ -967,13 +1006,14 @@ T['ru'] = dict(
          'ответ для части 1.',
 
     t2Eyebrow='Прежде чем начать',
-    t2Title='Экзаменатор не согласен. Это задание, а не приговор.',
+    t2Title='Если экзаменатор возражает, это задание, а не приговор',
     t2ah='Возражение &mdash; часть экзамена',
-    t2ab='Экзаменаторов учат возражать в части 3, что бы вы ни сказали. Это не '
-         'знак, что ответ был слабым, &mdash; это та часть экзамена, которая '
-         'выясняет, что вы умеете под давлением.',
-    t2an='Хорошо построенный довод часто вызывает больше возражений, а не '
-         'меньше, &mdash; именно потому, что на него стоит надавить.',
+    t2ab='В части 3 экзаменаторы часто возражают &mdash; спрашивают, везде '
+         'ли верна ваша точка зрения, или приводят другую сторону, &mdash; '
+         'как бы хорош ни был ответ. Это не знак, что ответ слабый: так '
+         'часть 3 выясняет, на что вы способны под давлением.',
+    t2an='Хорошо построенный довод может вызвать больше возражений, а не '
+         'меньше, потому что его стоит проверить на прочность.',
     t2bh='Уступите, затем уточните',
     t2bb='Признайте за другой стороной что-то верное, а потом стойте на своём: '
          '<em>That is true up to a point, though&hellip;</em> или <em>I would '
@@ -989,10 +1029,12 @@ T['ru'] = dict(
 
     t3Eyebrow='Прежде чем начать',
     t3Title='Насколько вы уверены? Скажите это один раз &mdash; и всерьёз.',
-    t3ah='Смягчение &mdash; это лексика',
-    t3ab='<em>Broadly speaking</em>, <em>arguably</em>, <em>in most cases</em>. '
-         'Это точные слова, выполняющие точную работу, а точность &mdash; то, '
-         'что измеряет Lexical Resource.',
+    t3ah='Смягчение &mdash; это точный язык',
+    t3ab='<em>Broadly speaking</em>, <em>arguably</em>, <em>in most '
+         'cases</em>. Это точные слова, выполняющие точную работу, и Lexical '
+         'Resource их вознаграждает, &mdash; а модальные глаголы и '
+         'конструкции вроде <em>it is argued that</em> к тому же показывают '
+         'грамматический диапазон.',
     t3an='Смягчение &mdash; не слово-паразит. <em>Sort of</em> и <em>kind '
          'of</em> &mdash; паразиты: они ничего не градуируют.',
     t3bh='Снимите утверждение с себя',
@@ -1018,12 +1060,13 @@ T['ru'] = dict(
     q1why='<em>On the whole</em> делает это утверждением о читателях в целом, а '
           'часть после <em>though</em> сохраняет честность. Ответ про детектив '
           'годится для части 1; два других закрывают тему.',
-    q2why='<em>By and large</em> говорит о том, что обычно верно для группы. Три '
-          'других сообщают, что описываетесь только вы, &mdash; именно от этой '
-          'привычки часть 3 просит отказаться.',
-    q3why='Причина, верная для всех, кто переезжает, в одну строку. Кузен '
-          '&mdash; пример без утверждения перед ним, а два других либо '
-          'преувеличивают, либо отказываются от вопроса.',
+    q2why='<em>By and large</em> говорит о том, что обычно верно для группы. '
+          'Остальные три обозначают ваш собственный случай или ваше мнение '
+          '&mdash; это годится, чтобы высказать мнение, но ни одно не '
+          'превращает привычку в общее утверждение.',
+    q3why='Причина, верная для большинства переезжающих, сказанная в одну '
+          'строку. Кузен &mdash; пример без утверждения перед ним, а два '
+          'других варианта либо преувеличивают, либо уходят от вопроса.',
     q4why='После. Утверждение &mdash; это ответ, а пример &mdash; его '
           'доказательство. Поставьте пример первым, и экзаменатору придётся '
           'ждать, чтобы понять, что он доказывает.',
@@ -1050,18 +1093,20 @@ T['ru'] = dict(
            'Три других ставят ваше имя под утверждением раньше, чем вы решили, '
            'нужно ли оно вам.',
     q12why='Lexical Resource. Смягчение &mdash; точный выбор слова, а выбор '
-           'нужной степени уверенности &mdash; ровно то, что измеряет этот '
-           'критерий. Ни один дескриптор не считает, сколько их у вас.',
+           'нужной степени уверенности входит в то, что вознаграждает этот '
+           'критерий, &mdash; хотя смягчение модальным глаголом показывает и '
+           'грамматику. Ни один дескриптор не считает, сколько их у вас.',
 
     ordEyebrow='Задание 4 · Форма ответа',
     ordTitle='Расставьте четыре шага по порядку',
     ordHint='Перетащите их по порядку &mdash; или нажмите на один, а затем на '
             'нужное место.',
-    orderWhy='Позиция, причина, пример, уступка. Пример идёт третьим, потому что '
-             'иллюстрирует уже сделанное утверждение, &mdash; начните с него, и '
-             'экзаменатор услышит историю, а не аргумент. Уступка идёт '
-             'последней и возвращает к вашей позиции: вы уже сами назвали '
-             'ограничение, так что возражению больше не за что вас поймать.',
+    orderWhy='Позиция, причина, пример, ограничение. Пример идёт третьим, '
+             'потому что иллюстрирует уже высказанное утверждение, &mdash; '
+             'начнёте с него, и экзаменатор услышит историю, а не аргумент. '
+             'Ограничение идёт последним, и ответ возвращается к вашей '
+             'позиции: исключение вы назвали сами, так что возражению меньше '
+             'за что зацепиться.',
 
     actTitle='Проведите часть 3',
     actUse='Используйте хотя бы три:',
@@ -1073,8 +1118,9 @@ T['ru'] = dict(
               'приведите один свой пример.',
     actSpeak2='Экзаменатор: возражайте против самого сильного, что слышите, а не '
               'самого слабого. Спросите, везде ли это верно.',
-    actSpeak3='Кандидат: уступите в том, что справедливо, сохраните остальное и '
-              'обозначьте степень уверенности ровно один раз.',
+    actSpeak3='Кандидат: уступите в том, что справедливо, сохраните '
+              'остальное и скажите, насколько вы уверены, не смягчая каждую '
+              'фразу.',
     actWriteKind='Письмо · 180–250 слов',
     actWriteBrief='Запишите свой лучший ответ на один из четырёх вопросов, которые '
                   'вам задали, так, как вы хотели бы его сказать: позиция, '
@@ -1087,7 +1133,7 @@ T['ru'] = dict(
 # ── Arabic ─────────────────────────────────────────────────────────────
 T['ar'] = dict(
     coverTitle='IELTS Speaking <em>الجزء 3</em>',
-    coverSub='النقاش: أن تجيب عن الناس عمومًا، وأن تتمسّك بموقفك حين يخالفك '
+    coverSub='النقاش: أن تجيب عن الناس عمومًا، وأن تثبت على موقفك حين يعترض '
              'الممتحن',
     chipLevel='C1 · متقدّم', chipFocus='Speaking · الجزء 3',
     chipCount='13 سؤالًا',
@@ -1114,12 +1160,13 @@ T['ar'] = dict(
     t1cn='مثال واحد دعم. وثلاثة أمثلة إجابةٌ للجزء 1 طالت أكثر من اللازم.',
 
     t2Eyebrow='قبل أن تبدأ',
-    t2Title='الممتحن يخالفك. هذه هي المهمة، لا حكم عليك.',
+    t2Title='إن اعترض الممتحن، فتلك هي المهمة، لا حكم عليك',
     t2ah='الاعتراض جزء من الاختبار',
-    t2ab='الممتحنون مدرَّبون على الاعتراض في الجزء 3 مهما قلت. ليس ذلك علامة على '
-         'أن الإجابة ضعيفة، بل هو الجزء من الاختبار الذي يكشف ما تستطيع فعله تحت '
-         'الضغط.',
-    t2an='الحجّة المحكمة تجلب اعتراضًا أكثر لا أقل، لأنها بالذات تستحق الضغط.',
+    t2ab='كثيرًا ما يعترض الممتحنون في الجزء 3 &mdash; فيسألون هل يصح رأي ما '
+         'في كل مكان، أو يطرحون الجانب الآخر &mdash; مهما كانت الإجابة جيدة. '
+         'ليس هذا علامة على ضعف الإجابة، بل هو الطريقة التي يكتشف بها الجزء '
+         '3 ما تستطيع فعله تحت الضغط.',
+    t2an='النقطة المحكمة قد تجلب اعتراضًا أكثر لا أقل، لأنها تستحق أن تُختبر.',
     t2bh='سلِّم ثم قيِّد',
     t2bb='أعطِ الطرف الآخر شيئًا صحيحًا ثم اثبت على موقفك: <em>That is true up '
          'to a point, though&hellip;</em> أو <em>I would accept that for smaller '
@@ -1135,10 +1182,11 @@ T['ar'] = dict(
 
     t3Eyebrow='قبل أن تبدأ',
     t3Title='ما مدى يقينك؟ قُلها مرة واحدة، واعنِها.',
-    t3ah='التلطيف مفردات',
-    t3ab='عبارات مثل <em>Broadly speaking</em> و<em>arguably</em> و<em>in most '
-         'cases</em> كلمات دقيقة تؤدّي عملًا دقيقًا، والدقة هي ما يقيسه Lexical '
-         'Resource.',
+    t3ah='التحوّط لغة دقيقة',
+    t3ab='عبارات <em>broadly speaking</em> و<em>arguably</em> و<em>in most '
+         'cases</em> كلمات دقيقة تؤدي عملًا دقيقًا، ويكافئها Lexical '
+         'Resource &mdash; كما أن أفعالًا مثل <em>may</em> و<em>might</em> '
+         'وصيغًا مثل <em>it is argued that</em> تُظهر تنوعًا نحويًا أيضًا.',
     t3an='التلطيف ليس حشوًا. أما <em>sort of</em> و<em>kind of</em> فحشو، لا '
          'تدرّج شيئًا.',
     t3bh='أبعِد الادّعاء عن نفسك',
@@ -1162,11 +1210,11 @@ T['ar'] = dict(
     q1why='عبارة <em>On the whole</em> تجعله ادّعاءً عن القرّاء عمومًا، والجملة '
           'بعد <em>though</em> تبقيه صادقًا. إجابة الرواية البوليسية مكانها '
           'الجزء 1، والأخريان تغلقان الموضوع.',
-    q2why='عبارة <em>By and large</em> تقول ما يصحّ عادةً على المجموعة. والثلاث '
-          'الأخرى تعلن أنك وحدك الموصوف، وهذه بالذات العادة التي يطلب منك الجزء '
-          '3 أن تتركها.',
-    q3why='سبب يصحّ على كل من ينتقل، في سطر واحد. ابن العم مثال بلا ادّعاء '
-          'يسبقه، والأخريان إما تبالغان وإما ترفضان السؤال.',
+    q2why='عبارة <em>by and large</em> تقول ما يصدق عادةً على المجموعة. أما '
+          'الثلاث الأخرى فتشير إلى حالتك أو رأيك أنت &mdash; وهي مناسبة '
+          'لإبداء الرأي، لكن أيًّا منها لا يحوّل عادة إلى حكم عام.',
+    q3why='سبب يصدق على معظم من ينتقلون، في سطر واحد. أما ابن العم فمثال لا '
+          'يسبقه ادعاء، والخياران الآخران إما يبالغان وإما يرفضان السؤال.',
     q4why='بعده. الادّعاء هو الإجابة والمثال دليل عليه. ضع المثال أولًا فيضطر '
           'الممتحن إلى الانتظار ليعرف على أيّ شيء هو دليل.',
     q5why='تسلّم بالاعتراض حيث يصحّ، ثم تُبقي الادّعاء حيًّا. الرفض القاطع لا '
@@ -1185,18 +1233,19 @@ T['ar'] = dict(
            'التي لا تؤكّد شيئًا لا تترك خطًّا يُتتبَّع.',
     q11why='عبارة <em>It is often argued that</em> تنقل الرأي دون تبنّيه. أما '
            'الثلاث الأخرى فتضع اسمك على الادّعاء قبل أن تقرّر هل تريده.',
-    q12why='الإجابة Lexical Resource. التلطيف اختيار دقيق للكلمة، واختيار درجة '
-           'اليقين المناسبة هو بالضبط ما يقيسه هذا المعيار. ولا يعدّ أيّ وصف كم '
+    q12why='المعيار Lexical Resource. التحوّط اختيار دقيق للكلمة، واختيار '
+           'الدرجة الصحيحة من اليقين جزء مما يكافئه هذا المعيار &mdash; وإن '
+           'كان التحوّط بفعل مساعد يُظهر النحو أيضًا. ولا يوجد معيار يعدّ كم '
            'مرة تستخدمه.',
 
     ordEyebrow='النشاط 4 · شكل الإجابة',
     ordTitle='رتّب الخطوات الأربع',
     ordHint='اسحبها إلى الترتيب الصحيح، أو انقر على واحدة ثم على الموضع الذي '
             'تريده.',
-    orderWhy='الموقف، ثم السبب، ثم المثال، ثم التسليم. يأتي المثال ثالثًا لأنه '
-             'يوضّح ادّعاءً قيل من قبل، فإن بدأت به سمع الممتحن حكاية لا حجّة. '
-             'ويأتي التسليم أخيرًا وينتهي عائدًا إلى موقفك: لقد سمّيت الحدّ '
-             'بنفسك، فلم يبقَ للاعتراض ما يمسكك به.',
+    orderWhy='الموقف، ثم السبب، ثم المثال، ثم الحدّ. يأتي المثال ثالثًا لأنه '
+             'يوضّح ادعاءً سبق طرحه &mdash; ابدأ به فيسمع الممتحن حكاية لا '
+             'حجة. ويأتي الحدّ أخيرًا، فتنتهي الإجابة عائدة إلى موقفك: لقد '
+             'سمّيت الاستثناء بنفسك، فيقلّ ما يمسكك به الاعتراض.',
 
     actTitle='أدِر الجزء 3',
     actUse='استخدم ثلاثة منها على الأقل:',
@@ -1207,8 +1256,8 @@ T['ar'] = dict(
               'حياتك.',
     actSpeak2='الممتحن: اعترض على أقوى ما تسمعه لا على أضعفه. واسأل هل يصحّ في كل '
               'مكان.',
-    actSpeak3='المتقدّم: سلِّم بما هو عادل، واحتفظ بالباقي، وحدّد درجة يقينك مرة '
-              'واحدة بالضبط.',
+    actSpeak3='المرشح: سلّم بما هو منصف، واحتفظ بالباقي، وقل مدى يقينك من '
+              'دون أن تتحوّط في كل جملة.',
     actWriteKind='الكتابة · 180–250 كلمة',
     actWriteBrief='اكتب أفضل إجابة لديك عن أحد الأسئلة الأربعة التي طُرحت عليك، '
                   'كما كنت تتمنّى أن تقولها: الموقف، والسبب، ومثال واحد، والتسليم '
@@ -1220,7 +1269,7 @@ T['ar'] = dict(
 # ── Chinese ────────────────────────────────────────────────────────────
 T['zh'] = dict(
     coverTitle='IELTS Speaking <em>第三部分</em>',
-    coverSub='讨论环节：替普遍的人群作答，在考官反驳时守住立场',
+    coverSub='讨论：代表一般人来回答，并在考官反驳时守住立场',
     chipLevel='C1 · 高级', chipFocus='Speaking 第三部分',
     chipCount='13 道题',
 
@@ -1242,11 +1291,11 @@ T['zh'] = dict(
     t1cn='一个例子是支撑；三个例子，就是一个拖长了的第一部分回答。',
 
     t2Eyebrow='开始之前',
-    t2Title='考官反驳你，这是题目本身，不是判决。',
+    t2Title='考官反驳，是任务的一部分，不是判决',
     t2ah='反驳是考试的一部分',
-    t2ab='无论你说什么，考官在第三部分都受过训练要反驳。这并不说明你的回答不好'
-         '——这是考试中检验你在压力下能做什么的那一部分。',
-    t2an='论点越扎实，招来的反驳往往越多而不是越少，正因为它值得一推。',
+    t2ab='第三部分的考官经常会反驳——问你的观点是否处处成立，或提出另一方的看法——不管回答有多好。这并不说明回答差：第三部分正是通过这种方式看'
+         '你在压力下能做什么。',
+    t2an='论证得好的观点，可能会招来更多而不是更少的反驳，因为它值得推敲。',
     t2bh='先让步，再限定',
     t2bb='先承认对方说得对的部分，然后守住阵地：<em>That is true up to a point, '
          'though&hellip;</em> 或 <em>I would accept that for smaller towns, '
@@ -1261,9 +1310,10 @@ T['zh'] = dict(
 
     t3Eyebrow='开始之前',
     t3Title='你有多确定？说一次，而且要当真。',
-    t3ah='模糊限制语是词汇',
-    t3ab='<em>Broadly speaking</em>、<em>arguably</em>、<em>in most cases</em>。'
-         '这些是精确的词，做精确的事，而精确正是 Lexical Resource 所衡量的。',
+    t3ah='委婉限定是精确的语言',
+    t3ab='<em>Broadly speaking</em>、<em>arguably</em>、<em>in most '
+         'cases</em>。这些是做精确工作的精确词语，Lexical Resource 会奖励它们——而情态动词和 <em>it is '
+         'argued that</em> 这样的句式，也能展示语法的广度。',
     t3an='模糊限制语不是口头禅。<em>Sort of</em> 和 <em>kind of</em> 才是口头禅'
          '——它们什么程度都没表达。',
     t3bh='把观点从自己身上移开',
@@ -1286,10 +1336,9 @@ T['zh'] = dict(
     q1why='<em>On the whole</em> 把它变成关于读者整体的观点，<em>though</em> 后面'
           '的分句让它保持实事求是。讲惊悚小说的那个回答属于第一部分；另外两个把'
           '话题聊死了。',
-    q2why='<em>By and large</em> 说的是这个群体通常的情况。另外三个都在宣告只是在'
-          '描述你自己，而这正是第三部分要你改掉的习惯。',
-    q3why='一个适用于所有搬家者的理由，一句话说清。表哥是一个前面没有观点的例子，'
-          '另外两个不是夸大其词就是回避问题。',
+    q2why='<em>By and large</em> 说的是这个群体通常的情况。另外三个标记的是你自己的情况或看法——用来表达观点没问题，但没'
+          '有一个能把个人习惯变成一般性的判断。',
+    q3why='一个适用于大多数搬家者的理由，一句话说完。表哥是一个前面没有观点的例子，另外两个要么夸大，要么拒绝回答。',
     q4why='在后面。观点是答案，例子是它的证据。把例子放在前面，考官就得等着才知道'
           '它是在证明什么。',
     q5why='它在反驳成立的地方让步，同时让观点继续成立。一口回绝不给考官任何可接的'
@@ -1307,15 +1356,14 @@ T['zh'] = dict(
            '的回答，没有任何线可以跟。',
     q11why='<em>It is often argued that</em> 转述观点而不采纳它。另外三个在你还没'
            '决定要不要这个观点之前，就把你的名字签了上去。',
-    q12why='Lexical Resource。模糊限制语是精确的用词选择，而选对确定的程度正是这'
-           '项标准衡量的东西。没有任何一条描述会数你用了几个。',
+    q12why='Lexical Resource。委婉限定是一种精确的用词，而选对确定的程度，正是这项标准奖励的内容之一——不过用情态动词来限定也'
+           '能展示语法。没有任何一条描述会数你用了几个。',
 
     ordEyebrow='练习 4 · 回答的结构',
     ordTitle='把四个步骤排好顺序',
     ordHint='把它们拖到正确顺序——或者先点一个，再点你想放的位置。',
-    orderWhy='立场、理由、例子、让步。例子排第三，因为它是为已经提出的观点作例证'
-             '——用它开头，考官听到的是轶事而不是论点。让步放在最后，并落回到你的'
-             '立场上：限制条件你已经自己点明了，反驳就再也抓不住你什么。',
+    orderWhy='立场、理由、例子、限定。例子排第三，因为它是为已经提出的观点作例证——先说例子，考官听到的就是一段故事，而不是论证。限定放在最'
+             '后，回答再回到你的立场上：例外已经由你自己点明，反驳能抓住的地方就少了。',
 
     actTitle='来一轮第三部分',
     actUse='至少用上三个：',
@@ -1323,8 +1371,7 @@ T['zh'] = dict(
                   '而且至少要反驳两次。五分钟后交换。',
     actSpeak1='考生：先替普遍的人群作答，然后才举一个自己的例子。',
     actSpeak2='考官：反驳你听到的最有力的观点，而不是最弱的。问它是否处处成立。',
-    actSpeak3='考生：公道的地方就让步，其余的守住，并且只表达一次、恰好一次你的'
-              '确定程度。',
+    actSpeak3='考生：承认合理的部分，守住其余的，说出你有多确定，但不要每个分句都加限定。',
     actWriteKind='写作 · 180–250 词',
     actWriteBrief='从你被问到的四个问题里选一个，把你最好的回答写出来，写成你希望'
                   '自己当时说出的样子：立场、理由、一个例子，以及在反驳到来之前就'
@@ -1336,8 +1383,7 @@ T['zh'] = dict(
 # ── Japanese ───────────────────────────────────────────────────────────
 T['ja'] = dict(
     coverTitle='IELTS Speaking <em>パート3</em>',
-    coverSub='ディスカッション：人々一般について答え、試験官が反論しても立場を'
-             '保つ',
+    coverSub='ディスカッション：人々一般について答え、試験官が反論しても立場を保つ',
     chipLevel='C1 · 上級', chipFocus='Speaking パート3',
     chipCount='13 問',
 
@@ -1361,13 +1407,11 @@ T['ja'] = dict(
     t1cn='例が一つなら裏づけ。三つなら、長くなったパート1の答えです。',
 
     t2Eyebrow='始める前に',
-    t2Title='試験官が反論する。それは課題であって、判定ではない。',
+    t2Title='試験官が反論しても、それは課題であって判定ではない',
     t2ah='反論は試験の一部',
-    t2ab='試験官は、あなたが何を言ってもパート3で反論するよう訓練されています。'
-         '答えが弱かったという合図ではありません――プレッシャーの中で何ができるか'
-         'を見るための部分なのです。',
-    t2an='よくできた主張ほど、反論は減るどころか増えます。押す価値があるから'
-         'です。',
+    t2ab='パート3の試験官は、答えがどれほどよくても、よく反論します――その考えがどこでも成り立つのかを尋ねたり、反対の立場を持ち出したり。答え'
+         'が弱かったという合図ではありません。プレッシャーの中で何ができるかを、パート3はこうして確かめるのです。',
+    t2an='よくできた主張ほど、反論が減るどころか増えることがあります。押す価値があるからです。',
     t2bh='譲歩してから限定する',
     t2bb='相手側に正しい点を一つ認め、それから踏みとどまります：<em>That is true '
          'up to a point, though&hellip;</em> または <em>I would accept that for '
@@ -1383,10 +1427,10 @@ T['ja'] = dict(
 
     t3Eyebrow='始める前に',
     t3Title='どれくらい確信がある？ 一度だけ、本気で言う。',
-    t3ah='ぼかしも語彙のうち',
-    t3ab='<em>Broadly speaking</em>、<em>arguably</em>、<em>in most cases</em>。'
-         'これらは正確な仕事をする正確な言葉で、正確さこそ Lexical Resource が測る'
-         'ものです。',
+    t3ah='ぼかしは正確な言葉',
+    t3ab='<em>Broadly speaking</em>、<em>arguably</em>、<em>in most '
+         'cases</em>。これらは正確な仕事をする正確な言葉で、Lexical Resource が評価します――さらに助動詞や '
+         '<em>it is argued that</em> のような型は、文法の幅も示します。',
     t3an='ぼかしはつなぎ言葉ではありません。<em>Sort of</em> や <em>kind of</em> '
          'はつなぎ言葉で、何の度合いも示しません。',
     t3bh='主張を自分から切り離す',
@@ -1410,11 +1454,9 @@ T['ja'] = dict(
     q1why='<em>On the whole</em> で読者一般についての主張になり、<em>though</em> '
           'の後の節が正直さを保っています。スリラーの答えはパート1向きで、ほかの'
           '二つは話題を閉じてしまいます。',
-    q2why='<em>By and large</em> は集団について通常成り立つことを述べています。ほ'
-          'かの三つはあなた一人のことだと宣言していて、それこそパート3がやめるよ'
-          'う求めている癖です。',
-    q3why='引っ越すすべての人に当てはまる理由を一行で。いとこの話は前に主張のない'
-          '例で、ほかの二つは誇張するか質問を拒んでいます。',
+    q2why='<em>By and large</em> は集団について通常成り立つことを述べています。ほかの三つは自分自身の場合や意見を示すもの'
+          'で――意見を言うには問題ありませんが、どれも習慣を一般的な主張に変えてはくれません。',
+    q3why='引っ越す人の多くに当てはまる理由を一行で。いとこの話は前に主張のない例で、ほかの二つは誇張するか質問を拒んでいます。',
     q4why='後です。主張が答えで、例はその根拠です。例を先に置くと、試験官は何の根'
           '拠なのかがわかるまで待たされます。',
     q5why='反論が当たるところは認め、それでも主張を生かしています。きっぱり拒めば'
@@ -1434,18 +1476,16 @@ T['ja'] = dict(
     q11why='<em>It is often argued that</em> は、見解を採らずに紹介します。ほかの'
            '三つは、あなたがそれを望むかどうか決める前に、主張にあなたの名前を付け'
            'てしまいます。',
-    q12why='Lexical Resource。ぼかしは正確な語の選択で、確信の度合いを正しく選ぶ'
-           'ことこそ、この基準が測るものです。使った数を数える記述はありません。',
+    q12why='Lexical Resource。ぼかしは正確な語の選択で、確信の度合いを正しく選ぶことは、この基準が評価するものの一部です――助'
+           '動詞によるぼかしは文法も示しますが。使った数を数える記述はありません。',
 
     ordEyebrow='演習 4 · 答えの形',
     ordTitle='四つの手順を並べましょう',
     ordHint='ドラッグして並べてください。または一つをクリックしてから、置きたい'
             '位置をクリックします。',
-    orderWhy='立場、理由、例、譲歩。例が三番目なのは、すでに述べた主張を例示する'
-             'ものだからです――例から始めると、試験官には議論ではなく思い出話に聞こ'
-             'えます。譲歩は最後に来て、あなたの立場に戻って終わります。限界はすで'
-             'に自分で言ってあるので、反論にはもうあなたを捕まえるところが残ってい'
-             'ません。',
+    orderWhy='立場、理由、例、限定。例が三番目なのは、すでに述べた主張を例示するものだからです――例から始めると、試験官には議論ではなく思い'
+             '出話に聞こえます。限定は最後に来て、答えはあなたの立場に戻って終わります。例外を自分で挙げてあるので、反論にはつけ入るすきが少'
+             'なくなります。',
 
     actTitle='パート3をやってみる',
     actUse='少なくとも三つ使いましょう：',
@@ -1456,8 +1496,7 @@ T['ja'] = dict(
               '挙げましょう。',
     actSpeak2='試験官：聞こえた中でいちばん弱い点ではなく、いちばん強い点に反論し'
               'ましょう。それがどこでも成り立つのかを尋ねます。',
-    actSpeak3='受験者：もっともな点は認め、残りは守り、確信の度合いはちょうど一度'
-              'だけ示しましょう。',
+    actSpeak3='受験者：もっともな点は認め、残りは守り、すべての節をぼかさずに、どれくらい確かかを示しましょう。',
     actWriteKind='ライティング · 180–250 語',
     actWriteBrief='聞かれた四つの質問から一つ選び、自分が言いたかった形で最高の答'
                   'えを書きましょう：立場、理由、例を一つ、そして反論が来る前にそ'

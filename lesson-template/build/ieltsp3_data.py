@@ -81,7 +81,7 @@ PUSHBACK = [
     dict(stem='You change your mind halfway through an answer. Is that a problem?',
          options=['Yes &mdash; it costs marks under Fluency and Coherence.',
                   'Yes &mdash; the examiner writes it down as an error.',
-                  'No &mdash; said aloud, it reads as thinking, not as weakness.',
+                  'No &mdash; signalled, it reads as thinking, not as weakness.',
                   'No &mdash; provided you never signal that you have done it.'],
          correct=2, why='q7why'),
 
@@ -95,7 +95,8 @@ PUSHBACK = [
 
 # ── Activity 3 · saying how sure you are ───────────────────────────────
 HEDGE = [
-    dict(stem='Which answer commits to a view and then limits it once?',
+    # The stem said "limits it once" while the key hedges AND limits.
+    dict(stem='Which answer takes a clear view and qualifies it just enough?',
          options=['Broadly speaking it works, though not for every subject.',
                   'It might possibly perhaps work in some cases, maybe.',
                   'It works. It always works. There is no doubt at all.',
@@ -130,11 +131,9 @@ ALL = GENERAL + PUSHBACK + HEDGE
 ORDER = ['State your position in one sentence',
          'Give the reason behind it',
          'Add one case that illustrates it',
-         'Grant the other side its point, then hold yours']
+         # Was "Grant the other side its point, then hold yours", keyed last
+         # although the deck teaches conceding at any point; a closing limit
+         # is last by definition. Fixed 2026-09-24.
+         'Name one limit, then close on your position']
 
-ORDER_WHY = ('Position, reason, example, concession. The example comes third '
-             'because it illustrates a claim that has already been made &mdash; '
-             'lead with it and the examiner hears an anecdote rather than an '
-             'argument. The concession comes last, and it ends back on your '
-             'position: you have already named the limit yourself, so pushback '
-             'has nothing left to catch you with.')
+ORDER_WHY = 'Position, reason, example, limit. The example comes third because it illustrates a claim that has already been made &mdash; lead with it and the examiner hears an anecdote rather than an argument. The limit comes last, and the answer ends back on your position: you have named the exception yourself, so pushback has less to catch you with.'
