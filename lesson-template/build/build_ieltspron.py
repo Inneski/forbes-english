@@ -24,13 +24,14 @@ pendant lamps at unequal heights for stress, a shelf of clustered objects for
 thought groups, an empty chair and a glass set down for the pause, a tiled wall
 for the drills, and two chairs with a stopwatch for the activation stage.
 
-English, German and Spanish all complete.
+Ten languages, all complete (`ielts_langs.LANGS`).
 """
 import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import deck as D
+from ielts_langs import LANGS
 from ieltspron_data import (STRESS, CHUNK, PAUSE, ALL,
                             SORT_BINS, SORT_ITEMS, SORT_WHY)
 
@@ -206,7 +207,7 @@ def build():
     import i18n_ieltspron as I
     s = D.assemble(TPL, OUT, slides, PALETTE,
                    'IELTS Pronunciation & Fluency (C1) | Forbes English',
-                   I, langs=('en', 'de', 'es'))
+                   I, langs=LANGS)
     # The engine scores each sort chip separately, so the deck is out of
     # 18: twelve items plus the six habits on the sorting slide. The cover
     # chip has to match what the results slide prints, or the learner
