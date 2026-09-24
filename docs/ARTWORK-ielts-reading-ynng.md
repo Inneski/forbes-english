@@ -2,10 +2,23 @@
 
 Six pictures for `forbes-english-ielts-reading-ynng.html`, asked for on
 2026-09-23 ("build yes/no/not given reading lesson next and explain if you
-need artwork"). **The deck is built and passes every check on stand-in art.**
-It goes live when these six land. Until then `build_ieltsynng.py` writes only
-the gitignored preview `_forbes-english-ielts-reading-ynng.html`, on the
-True/False/Not Given pictures, and never the live page.
+need artwork").
+
+**Delivered 2026-09-24 and shipped.** Twelve renders came in; the six used,
+by Midjourney variant: hero the pen (`_1`), bg02 the glasses (`_2`), bg03
+the microphones `_2` (five stands and a spotlight on one; the four-stand
+`_0` had no single lit microphone), bg04 the weathervane (`_3`), bg05 the
+lamp `_2` (its shade half lit, right of centre; `_0` sat centre and `_3`
+glowed fully), bg06 the seal `_0`. The unused variants are in
+`incoming/_previous/ielts-reading-ynng/`.
+
+**One known flaw:** all three seal renders put the seal dead centre, so on
+the activation slide it sits behind the two glowing words. The words stay
+legible and the template has no per-slide background position. A re-render
+with `the seal in the lower right corner` would clear it; drop it in as
+`bg06` and rebuild.
+
+The rest of this brief stands as the pattern for the next Reading deck.
 
 ## What the set has to match
 

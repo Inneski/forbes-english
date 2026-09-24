@@ -30,16 +30,17 @@ writer's own view and a view the writer only reports. The two that catch
 people are both on the writer's side: "Supporters rightly point out" and
 "Admittedly".
 
-**The art is not in yet.** `docs/ARTWORK-ielts-reading-ynng.md` is the
-brief: six pictures in the style of the TFNG set, so the two decks read as a
-pair — a pen on a blank notebook (the writer), folded reading glasses (the
-same answers read another way), microphones with one lit (whose voice), a
-weathervane mid-turn (the turn), a dimmer half up (how strongly), a wax seal
-on a letter (on the record). Until all six are in `ielts-reading-ynng/` and
-PALETTE below has been derived from the hero, this builder writes the
-gitignored preview `_forbes-english-ielts-reading-ynng.html` on the TFNG
-pictures and palette, and never the live page — HOUSE-STYLE §5c and §14.
-`--stand-in` forces the preview even when the art is there.
+**Six pictures, one per section**, commissioned from
+`docs/ARTWORK-ielts-reading-ynng.md` in the style of the TFNG set so the two
+decks read as a pair, and delivered 2026-09-24: a pen on a blank notebook
+(the writer), reading glasses on a closed book (the same answers, read
+another way), five microphones with a spotlight on one (whose voice), a
+weathervane mid-turn (the turn), a lamp whose shade is half lit (how
+strongly), a wax seal on a letter (on the record). If any of them goes
+missing, or PALETTE is unset, this builder writes the gitignored preview
+`_forbes-english-ielts-reading-ynng.html` on the TFNG pictures and palette
+instead of the live page — HOUSE-STYLE §5c and §14. `--stand-in` forces the
+preview even when the art is there.
 
 English, German and Spanish, all complete. The verdict glosses translate;
 the checker only reads the English, so `check_verdicts()` applies the ANSWERS
@@ -63,8 +64,21 @@ F = 'ielts-reading-ynng'
 ART = ('hero.jpg', 'bg02.jpg', 'bg03.jpg', 'bg04.jpg', 'bg05.jpg', 'bg06.jpg')
 
 # python3 lesson-template/extract-palette.py ielts-reading-ynng/hero.jpg
-# Paste its block here when the hero lands. Derived, never picked.
-PALETTE = None
+# Every row PASSes. The accent is the cream of the notebook's pages, not the
+# TFNG salmon: derived, never picked.
+PALETTE = '''  --hero: url('%s/hero.jpg');
+
+  --void          : #0b0d0a;
+  --surface       : #161a14;
+  --surface2      : #20261d;
+  --border        : #d5bb98;
+  --text          : #f5f4f2;
+  --text-dim      : #bfb3a3;
+  --accent        : #f9ecda;
+  --accent-bright : #d2c6c6;
+  --accent-dim    : #e9c38e;
+  --secondary     : #98acaa;
+  --contrast      : #1dd8ed;''' % F
 
 # The preview borrows the TFNG set: same file names, same kind of picture, so
 # the layout it measures is the layout the real art will get.

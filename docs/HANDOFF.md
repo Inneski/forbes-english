@@ -11,7 +11,36 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
-## 2026-09-23 — IELTS Reading: Yes, No, Not Given built, NOT shipped (six pictures needed); the layout checker never switched language
+## 2026-09-24 — IELTS Reading: Yes, No, Not Given shipped
+
+Innes dropped twelve renders in `incoming/` and said *"check incoming"*. The
+deck from the entry below is live at `forbes-english-ielts-reading-ynng.html`.
+
+- **Art**: six of the twelve, through `prep-artwork.py` (no duplicates, no
+  warnings), into `ielts-reading-ynng/`. Which variant and why is in
+  `docs/ARTWORK-ielts-reading-ynng.md`; the rest are in
+  `incoming/_previous/ielts-reading-ynng/`.
+- **Palette** from the hero; every row PASSes. The accent is the cream of the
+  notebook's pages, not TFNG's salmon, so the pair match in the pictures
+  rather than in the buttons.
+- **Catalogue**: Supabase row and `tools/lessons.json`, access **pro** like
+  Matching Headings and Summary Completion. Innes was asked free-or-pro and
+  had not answered; the pipeline default stood. One field to change if not.
+- **Pages**: `LESSON_IMAGES` entry (`check-library.js --vs-origin` PASS
+  before and after); a card on `ielts-reading.html` as step 2, straight
+  after TFNG, with Headings and Completion renumbered 3 and 4; `ielts.html`
+  says 4 Reading lessons. `build_hubs.py` puts it on the vocabulary page,
+  like its three siblings, which moved every hub's vocabulary count from 97
+  to 98. `seo.py` last; the four indexes only gained lines.
+- **Checked**: `check-lesson.js` exits clean; answered-state fits in EN, DE
+  and ES; every slide looked at with the real art.
+- **Known flaw**: the wax seal sits dead centre behind the activation slide's
+  two glowing words, in all three renders. Legible, not pretty. A re-render
+  with the seal in a corner, dropped in as `bg06`, fixes it.
+
+---
+
+## 2026-09-23 — IELTS Reading: Yes, No, Not Given built (shipped 09-24, see above); the layout checker never switched language
 
 Innes: *"build yes/no/not given reading lesson next and explain if you need
 artwork or something"*.
