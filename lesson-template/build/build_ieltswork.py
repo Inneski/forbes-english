@@ -28,7 +28,7 @@ office chair for work, a robotic arm holding one bolt for automation, a block
 of flats with one window lit for cities, two interlocking cogs for the sort,
 and a board mid-flip in an empty station to close.
 
-English, German and Spanish all complete. Every English string in the slides
+Ten languages, all complete (`ielts_langs.LANGS`).
 is read from `i18n_ieltswork.T['en']`, so the HTML and `UI_I18N.en` cannot
 drift apart.
 """
@@ -37,6 +37,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import deck as D
+from ielts_langs import LANGS
 from ieltswork_data import (WORK, AUTOMATION, CITIES, ALL,
                             SORT_BINS, SORT_ITEMS, SORT_WHY)
 import i18n_ieltswork as I
@@ -134,7 +135,7 @@ def build():
 
     s = D.assemble(TPL, OUT, slides, PALETTE,
                    'IELTS Vocabulary: Work, Automation and Cities (C1) | Forbes English',
-                   I, langs=('en', 'de', 'es'))
+                   I, langs=LANGS)
     print('wrote %s — %d slides, %d scored points, %d bytes'
           % (OUT, s.count('<section class="slide'),
              len(ALL) + len(SORT_ITEMS), len(s)))
