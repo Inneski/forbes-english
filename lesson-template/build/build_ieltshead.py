@@ -28,13 +28,14 @@ cards knocked over is the passage with no order to lean on; a jigsaw with
 one gap and two nearly identical pieces is the heading that fits twice; and
 a single coat on a long row of hooks closes it on the activation stage.
 
-English, German and Spanish all complete.
+Ten languages, all complete (`ielts_langs.LANGS`).
 """
 import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import deck as D
+from ielts_langs import LANGS
 from ieltshead_data import (MAIN, FUNCTION, ATTACK, ALL,
                             SORT_BINS, SORT_ITEMS, SORT_WHY)
 
@@ -239,7 +240,7 @@ def build():
     assert I.T['en']['sortWhy'] == SORT_WHY, 'sortWhy drifted from SORT_WHY'
     s = D.assemble(TPL, OUT, slides, PALETTE,
                    'IELTS Reading: Matching Headings (C1) | Forbes English',
-                   I, langs=('en', 'de', 'es'))
+                   I, langs=LANGS)
     # Twelve items plus the six signals on the sorting slide: the engine scores
     # a sort per chip, so the cover chip has to say 18, not 13.
     print('wrote %s — %d slides, %d scored points, %d bytes'

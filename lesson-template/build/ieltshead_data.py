@@ -196,10 +196,10 @@ SORT_ITEMS = [
     ('Would sit just as well on the next paragraph', 1),
 ]
 
-SORT_WHY = ('The left column all describe a heading that <strong>fits the '
-            'paragraph as a whole</strong>: it names the job, it holds for '
+SORT_WHY = ('Everything in the left column describes a heading that <strong>fits '
+            'the paragraph as a whole</strong>: it names the job, it holds for '
             'every sentence, and it does not depend on any one of them. The '
-            'right column are the three ways a heading looks right without '
-            'being right &mdash; a shared word, a match with the opening line '
-            'only, a fit that another paragraph could claim just as well. '
-            'Each is a decoy doing exactly what it was written to do.')
+            'right column holds the three ways a heading looks right without '
+            'being right &mdash; a shared word, a match with the opening '
+            'line only, a fit that another paragraph could claim just as '
+            'well. Each is a decoy doing exactly what it was written to do.')
