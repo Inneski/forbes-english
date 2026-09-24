@@ -709,6 +709,21 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
 /* ── RTL ── */
 [dir="rtl"] .opt { text-align: right; }
 [dir="rtl"] .opt:hover:not(:disabled) { transform: translateX(-3px); }
+/* English on an Arabic page. The page is dir="rtl", so an English sentence
+   inherited a right-to-left base direction and drew its full stop and
+   question mark at the wrong end: ".We are not in a position…", "?Which
+   phrasing…" (measured on the negotiation deck, 2026-09-24). Everything that
+   holds the English being taught now takes its direction from its own first
+   letter. A context line or stem that a builder translates starts with
+   Arabic, so it stays right-to-left; explanations are untouched. */
+[dir="rtl"] :is(.q-ctx, .q-stem, .opt, .sort-item, .match-item, .chunk,
+                .bank-chip, .review-list li) { unicode-bidi: plaintext; }
+/* An English phrase quoted inside Arabic running text (a teach card, an
+   explanation) was cut by the line break and its halves reordered: "it is
+   often" closed one line and "claimed" opened the next. Each quoted phrase is
+   now one unit, set in its own direction; a long one wraps inside itself. */
+[dir="rtl"] :is(.card, .feedback, .prose) em { display: inline-block;
+                                             unicode-bidi: plaintext; }
 
 
 /* ── ACTIVATION ──────────────────────────────────────────────────── */

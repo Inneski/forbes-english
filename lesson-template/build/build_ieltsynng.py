@@ -42,7 +42,7 @@ missing, or PALETTE is unset, this builder writes the gitignored preview
 instead of the live page — HOUSE-STYLE §5c and §14. `--stand-in` forces the
 preview even when the art is there.
 
-English, German and Spanish, all complete. The verdict glosses translate;
+Ten languages, all complete (`ielts_langs.LANGS`). The verdict glosses translate;
 the checker only reads the English, so `check_verdicts()` applies the ANSWERS
 rule to every language here.
 """
@@ -55,6 +55,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import deck as D
 import i18n_ieltsynng as I
 from chrome_i18n import CHROME
+from ielts_langs import LANGS
 from ieltsynng_data import (VOICE, TURN, DEGREE, ALL, VERDICTS,
                             SORT_BINS, SORT_ITEMS)
 
@@ -176,7 +177,7 @@ def build(stand_in=False):
     out = OUT if live else '_' + OUT
     s = D.assemble(TPL, out, slides, palette,
                    'IELTS Reading: Yes, No, Not Given (C1) | Forbes English',
-                   I, langs=('en', 'de', 'es'))
+                   I, langs=LANGS)
     # Twelve items plus six openings on the sorting slide, which the engine
     # scores one point each: the cover chip says 18, not 13.
     print('wrote %s — %d slides, %d scored points, %d bytes'
