@@ -43,6 +43,7 @@ import deck as D
 from ielts_langs import LANGS
 from ieltsvocab_data import (PRECISION, COLLOCATION, PARAPHRASE, ALL,
                              SORT_BINS, SORT_ITEMS, SORT_WHY)
+import i18n_ieltsvocab as I
 
 TPL = 'lesson-template/lesson-template.html'
 OUT = 'forbes-english-ielts-lexical-resource.html'
@@ -79,151 +80,71 @@ BG_PRECISION, BG_COLLOC, BG_PARA, BG_BANK = ('bg02.jpg', 'bg03.jpg',
                                              'bg04.jpg', 'bg05.jpg')
 BG_ACT = 'bg06.jpg'
 
+# Every English string on the slides is read from the i18n module, so the
+# HTML and UI_I18N.en cannot drift apart. Until 2026-09-24 they were written
+# out twice, and a correction to one copy would have missed the other.
+E = I.T['en']
+
+
+def card(p):
+    """The six-item teach card for prefix p ('t1a', 't1b', …), from E."""
+    return (p + 'h', E[p + 'h'], p + 'b', E[p + 'b'], p + 'n', E[p + 'n'])
+
 
 def build():
     D.assert_no_key_is_longest(ALL, 'IELTSVOCAB')
     logo = D.logo_from(TPL)
 
     slides = (
-        D.cover(logo, 'Lexical <em>Resource</em>',
-                'A quarter of the marks in Speaking and in Writing, and it '
-                'is not the quarter that rewards rare words',
-                [('Level', 'C1 &middot; Advanced'),
-                 ('Focus', 'Speaking &amp; Writing'),
-                 ('Count', '18 points')])
+        D.cover(logo, E['coverTitle'], E['coverSub'],
+                [('Level', E['chipLevel']),
+                 ('Focus', E['chipFocus']),
+                 ('Count', E['chipCount'])])
 
-        + D.teach('t1Eyebrow', 'Before you start',
-                  't1Title', 'It does not reward rare words. It never has.',
-                  [('t1ah', 'What the descriptors ask for', 't1ab',
-                    'A range of vocabulary used with <strong>precision</strong> '
-                    'and <strong>flexibility</strong>, and <em>less common</em> '
-                    'words where they fit. Errors in word choice and '
-                    'collocation are named at every band.', 't1an',
-                    'Rarity with a miss scores below plainness with a hit.'),
-                   ('t1bh', 'The near-miss costs more than the plain word',
-                    't1bb',
-                    'A candidate who writes <em>ameliorate the traffic</em> '
-                    'has reached for a rare verb and attached it to the wrong '
-                    'object. The examiner sees the reach and the miss. '
-                    '<em>Ease the traffic</em> is plain, right, and scores '
-                    'higher.', 't1bn',
-                    'Reach for the word you are sure of, then stretch once you '
-                    'are certain of the fit.'),
-                   ('t1ch', 'Memorised phrases are audible', 't1cb',
-                    'Band 9 phrase lists sit apart from the answer around '
-                    'them, and examiners are trained to hear exactly that. Drop '
-                    'one into a plain answer and the examiner can tell which '
-                    'language is really yours.', 't1cn',
-                    'It is the mismatch that gives it away, not the phrase '
-                    'itself.')],
+        + D.teach('t1Eyebrow', E['t1Eyebrow'], 't1Title', E['t1Title'],
+                  [card('t1a'), card('t1b'), card('t1c')],
                   folder=F, bg=BG_PRECISION)
 
-        + "".join(D.mc(i + 1, len(PRECISION), q, 'mcaEyebrow',
-                       'Activity 1 &middot; Precision, not rarity', 'mcaTitle',
-                       'What is actually being marked?',
+        + "".join(D.mc(i + 1, len(PRECISION), q, 'mcaEyebrow', E['mcaEyebrow'],
+                       'mcaTitle', E['mcaTitle'],
                        folder=F, bg=BG_PRECISION, ctx=q.get('ctx'))
                   for i, q in enumerate(PRECISION))
 
-        + D.teach('t2Eyebrow', 'Before you start',
-                  't2Title', 'The unit is the pairing, not the word',
-                  [('t2ah', 'The noun chooses the verb', 't2ab',
-                    'You <em>conduct</em> research, <em>reach</em> a decision '
-                    'and <em>draw</em> a conclusion. None of those verbs is '
-                    'rare; all three are fixed, and none of them is the one a '
-                    'dictionary gives you for the noun.', 't2an',
-                    '<em>Make research</em> and <em>do a decision</em> are the '
-                    'two this costs most often.'),
-                   ('t2bh', 'And the adjective', 't2bb',
-                    '<em>Heavy traffic</em>, <em>heavy rain</em>, <em>heavy '
-                    'losses</em>, <em>heavy fighting</em> &mdash; but never '
-                    '<em>heavy sunshine</em>. The adjective is chosen by the '
-                    'noun, and no rule predicts which.', 't2bn',
-                    'Which is why they are learnt whole, in the phrase, rather '
-                    'than derived.'),
-                   ('t2ch', 'So write the phrase, not the word', 't2cb',
-                    'A notebook entry of one word plus a translation gives you '
-                    'a word you cannot use. An entry of the phrase it lives in '
-                    'gives you something you can say tomorrow.', 't2cn',
-                    '<em>Tackle congestion</em> is worth ten times '
-                    '<em>congestion = [your language]</em>.')],
+        + D.teach('t2Eyebrow', E['t2Eyebrow'], 't2Title', E['t2Title'],
+                  [card('t2a'), card('t2b'), card('t2c')],
                   folder=F, bg=BG_COLLOC)
 
-        + "".join(D.mc(i + 1, len(COLLOCATION), q, 'mcbEyebrow',
-                       'Activity 2 &middot; Words that travel together',
-                       'mcbTitle', 'Which pairing does English use?',
+        + "".join(D.mc(i + 1, len(COLLOCATION), q, 'mcbEyebrow', E['mcbEyebrow'],
+                       'mcbTitle', E['mcbTitle'],
                        folder=F, bg=BG_COLLOC, ctx=q.get('ctx'))
                   for i, q in enumerate(COLLOCATION))
 
-        + D.teach('t3Eyebrow', 'Before you start',
-                  't3Title', 'Paraphrase is the skill that pays twice',
-                  [('t3ah', 'Both papers score it', 't3ab',
-                    'Speaking and Writing are both marked on Lexical Resource. '
-                    'The work you do on saying one idea three ways is marked in '
-                    'both rooms &mdash; above all in Part 3 and in Task 2, where '
-                    'the ideas are abstract.', 't3an',
-                    'It is also what Reading tests, from the other side.'),
-                   ('t3bh', 'Reword the question, do not copy it', 't3bb',
-                    'Words lifted straight from the prompt are not counted as '
-                    'your vocabulary. An opening that restates the question in '
-                    'your own terms is scored; one that repeats it is not.',
-                    't3bn',
-                    'Change the grammar, not just the nouns: <em>should '
-                    'museums be free</em> becomes <em>whether entry should '
-                    'cost anything</em>.'),
-                   ('t3ch', 'Build the bank by idea', 't3cb',
-                    'A topic bank sorted alphabetically gives you words. '
-                    'Sorted by idea &mdash; congestion, ageing, automation '
-                    '&mdash; each word arrives with an argument already '
-                    'attached, which is what you are short of under time.',
-                    't3cn',
-                    'Ten ideas with three phrases each beats a hundred words '
-                    'with none.')],
+        + D.teach('t3Eyebrow', E['t3Eyebrow'], 't3Title', E['t3Title'],
+                  [card('t3a'), card('t3b'), card('t3c')],
                   folder=F, bg=BG_PARA)
 
-        + "".join(D.mc(i + 1, len(PARAPHRASE), q, 'mccEyebrow',
-                       'Activity 3 &middot; Saying it another way', 'mccTitle',
-                       'Paraphrase, and the bank behind it',
+        + "".join(D.mc(i + 1, len(PARAPHRASE), q, 'mccEyebrow', E['mccEyebrow'],
+                       'mccTitle', E['mccTitle'],
                        folder=F, bg=BG_PARA, ctx=q.get('ctx'))
                   for i, q in enumerate(PARAPHRASE))
 
         + D.sort_slide(SORT_BINS, SORT_ITEMS,
-                       'sortEyebrow',
-                       'Activity 4 &middot; Where the revision time should go',
-                       'sortTitle', 'Sort the six habits',
-                       'sortHint', 'Drag each one into a column &mdash; or '
-                                   'click an item, then the column you want '
-                                   'it in.',
+                       'sortEyebrow', E['sortEyebrow'],
+                       'sortTitle', E['sortTitle'],
+                       'sortHint', E['sortHint'],
                        'sortWhy', folder=F, bg=BG_BANK,
                        bin_keys=['sortBin1', 'sortBin2'])
 
         + D.results('resNext', 'You can spot it. Now build it &rarr;', folder=F)
 
-        + D.activate('Build one page of the bank', 'Use at least three:', CHIPS,
+        + D.activate(E['actTitle'], E['actUse'], CHIPS,
                      'Discussion &middot; in pairs',
-                     'In pairs. Take one topic &mdash; congestion, ageing, '
-                     'automation, tourism. Five minutes to build a page '
-                     'together: three ideas, and for each idea two phrases '
-                     'rather than two words. Then argue the topic for two '
-                     'minutes using only what is on your page.',
-                     ['Every phrase on the page must be a pairing &mdash; a '
-                      'verb with its noun, or an adjective with its noun. No '
-                      'bare words.',
-                      'Your partner stops you whenever you use a word that is '
-                      'not on the page, and you have to say it again using one '
-                      'that is.',
-                      'Take one idea and say it three ways: plainly, formally, '
-                      'and as you would say it to a friend.'],
-                     'Writing &middot; 150&ndash;200 words',
-                     'Take a Task 2 question and write the opening paragraph '
-                     'twice: once repeating the question wording, once '
-                     'rewording it properly. Then underline in the second one '
-                     'every phrase you would count as your own vocabulary, and '
-                     'say how many there are.',
-                     'Whether entry to museums should cost anything…',
+                     E['actSpeakBrief'],
+                     [E['actSpeak1'], E['actSpeak2'], E['actSpeak3']],
+                     E['actWriteKind'], E['actWriteBrief'],
+                     E['actPlaceholder'],
                      folder=F, bg=BG_ACT)
     )
-
-    import i18n_ieltsvocab as I
     s = D.assemble(TPL, OUT, slides, PALETTE,
                    'IELTS Lexical Resource: Vocabulary That Scores (C1) | Forbes English',
                    I, langs=LANGS)

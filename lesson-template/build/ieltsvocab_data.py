@@ -60,9 +60,9 @@ PRECISION = [
          correct=2, why='v3why'),
 
     dict(stem='Why do memorised "band 9 phrases" often lower the score?',
-         options=['They are too formal for the Speaking test alone.',
+         options=['They count against you only in the Speaking test.',
                   'They are banned outright by the marking scheme.',
-                  'They take up words the examiner wanted spent.',
+                  'They make the essay run over the word limit.',
                   'They sit apart from the answer and sound learnt.'],
          correct=3, why='v4why'),
 ]
@@ -120,7 +120,7 @@ PARAPHRASE = [
 
     dict(stem='Why does paraphrase pay twice in this exam?',
          options=['It is faster to write than an original sentence.',
-                  'Speaking and Writing mark it under one criterion.',
+                  'Lexical Resource rewards it in Speaking and Writing.',
                   'It lets you reuse the question wording in full.',
                   'Examiners are told to reward any repeated phrasing.'],
          correct=1, why='v10why'),
@@ -148,16 +148,20 @@ ALL = PRECISION + COLLOCATION + PARAPHRASE
 SORT_BINS = ['Raises the band', 'Does nothing, or costs you']
 SORT_ITEMS = [
     ('Learning words in the phrases they live in', 0),
-    ('Saying exactly what you mean in plain words', 0),
+    ('Saying exactly what you mean in words you control', 0),
     ('Rewording the question in your own terms', 0),
     ('Memorising a list of impressive phrases', 1),
     ('Swapping in a thesaurus word you have not used', 1),
     ('Repeating the question wording word for word', 1),
 ]
 
-SORT_WHY = ('Everything on the left is about <strong>using</strong> language; '
-            'everything on the right is about <strong>displaying</strong> it. '
-            'The descriptors ask whether you can say what you mean, precisely '
-            'and flexibly &mdash; so a plain word that lands beats a rare one '
-            'that misses, and a phrase learnt whole beats a word learnt alone. '
-            'The right-hand column is where most of the revision time goes.')
+# Corrected 2026-09-24: this said "a plain word that lands beats a rare one",
+# but the band 5 descriptor caps accurate-but-plain vocabulary for range, and
+# bands 7-8 reward less common items. The deck's headline ("It does not reward
+# rare words. It never has.") contradicted the descriptors outright.
+SORT_WHY = ('The habits that raise the band are about <strong>using</strong> '
+            'language; the others are about <strong>displaying</strong> it. The '
+            'descriptors ask whether you can say what you mean, precisely and '
+            'flexibly &mdash; so a word you control beats a rare one that '
+            'misses, and a phrase learnt whole beats a word learnt alone. The '
+            'displaying habits feel like progress, and that is the trap.')
