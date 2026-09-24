@@ -33,13 +33,14 @@ for precision, interlocking blocks for collocation, two differently shaped
 vessels holding the same volume for paraphrase, a wall of labelled drawers for
 the bank, and a desk with an open notebook to close.
 
-English, German and Spanish all complete.
+Ten languages, all complete (`ielts_langs.LANGS`).
 """
 import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import deck as D
+from ielts_langs import LANGS
 from ieltsvocab_data import (PRECISION, COLLOCATION, PARAPHRASE, ALL,
                              SORT_BINS, SORT_ITEMS, SORT_WHY)
 
@@ -225,7 +226,7 @@ def build():
     import i18n_ieltsvocab as I
     s = D.assemble(TPL, OUT, slides, PALETTE,
                    'IELTS Lexical Resource: Vocabulary That Scores (C1) | Forbes English',
-                   I, langs=('en', 'de', 'es'))
+                   I, langs=LANGS)
     print('wrote %s — %d slides, %d scored points, %d bytes'
           % (OUT, s.count('<section class="slide'),
              len(ALL) + len(SORT_ITEMS), len(s)))
