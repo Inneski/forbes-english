@@ -44,6 +44,7 @@ import deck as D
 from ielts_langs import LANGS
 from ieltscomp_data import (INSTRUCT, COPY, SHAPE, ALL,
                             SORT_BINS, SORT_ITEMS, SORT_WHY)
+import i18n_ieltscomp as I
 
 TPL = 'lesson-template/lesson-template.html'
 OUT = 'forbes-english-ielts-reading-completion.html'
@@ -103,160 +104,72 @@ def _keyed_sort(html):
         html = html.replace(bare, keyed, 1)
     return html
 
+# Every English string on the slides is read from the i18n module, so the
+# HTML and UI_I18N.en cannot drift apart. Until 2026-09-24 they were written
+# out twice, and a correction to one copy would have missed the other.
+E = I.T['en']
+
+
+def card(p):
+    """The six-item teach card for prefix p ('t1a', 't1b', …), from E."""
+    return (p + 'h', E[p + 'h'], p + 'b', E[p + 'b'], p + 'n', E[p + 'n'])
+
 
 def build():
     D.assert_no_key_is_longest(ALL, 'IELTSCOMP')
     logo = D.logo_from(TPL)
 
     slides = (
-        D.cover(logo, 'Summary and <em>Sentence Completion</em>',
-                'Where the word limit does the damage &mdash; answers come '
-                'straight from the passage, spelling counts, and one word '
-                'too many scores nothing',
-                [('Level', 'C1 &middot; Advanced'),
-                 ('Focus', 'Reading &middot; both modules'),
-                 ('Count', '18 points')])
+        D.cover(logo, E['coverTitle'], E['coverSub'],
+                [('Level', E['chipLevel']),
+                 ('Focus', E['chipFocus']),
+                 ('Count', E['chipCount'])])
 
-        + D.teach('t1Eyebrow', 'Before you start',
-                  't1Title', 'Three gaps, one instruction line, and the line '
-                             'comes first',
-                  [('t1ah', 'What you are given', 't1ab',
-                    'A summary of part of the passage, or a set of separate '
-                    'sentences, with gaps in them. The words that fill the '
-                    'gaps are in the passage. The summary usually runs in '
-                    'passage order, but it covers only a section &mdash; find '
-                    'where that section starts and stay in it.', 't1an',
-                    'Academic and General Training set it the same way. '
-                    'Everything here applies to both.'),
-                   ('t1bh', 'Read the instruction first', 't1bb',
-                    '<strong>NO MORE THAN TWO WORDS AND/OR A NUMBER. ONE WORD '
-                    'ONLY.</strong> The limit is printed above the gaps and '
-                    'it is the first thing to read &mdash; before the summary, '
-                    'before the passage. It decides what a correct answer '
-                    'looks like before you have found one.', 't1bn',
-                    'A hyphenated word is one word. A number is a number, not '
-                    'a word. <em>The</em> is a word, and it counts.'),
-                   ('t1ch', 'Sometimes there is a box', 't1cb',
-                    'When the task gives you a list of words, A&ndash;H, you '
-                    'choose from the list, not from the passage, and you '
-                    'write the letter. The words might not be in the text at '
-                    'all, and the list has more options than gaps.', 't1cn',
-                    'Same skill underneath: find the place in the passage, '
-                    'then check the grammar of the gap.')],
+        + D.teach('t1Eyebrow', E['t1Eyebrow'], 't1Title', E['t1Title'],
+                  [card('t1a'), card('t1b'), card('t1c')],
                   folder=F, bg=BG_SHAPE)
 
-        + "".join(D.mc(i + 1, len(INSTRUCT), q, 'mcaEyebrow',
-                       'Activity 1 &middot; Read the instruction', 'mcaTitle',
-                       'What does the limit allow?',
+        + "".join(D.mc(i + 1, len(INSTRUCT), q, 'mcaEyebrow', E['mcaEyebrow'],
+                       'mcaTitle', E['mcaTitle'],
                        folder=F, bg=BG_SHAPE, ctx=q.get('ctx'))
                   for i, q in enumerate(INSTRUCT))
 
-        + D.teach('t2Eyebrow', 'Before you start',
-                  't2Title', 'The word is in the passage. Lift it.',
-                  [('t2ah', 'Find the place by meaning', 't2ab',
-                    'The summary does not repeat the passage; it paraphrases '
-                    'everything <strong>around</strong> the gap. Match the '
-                    'meaning of the sentence to find the right lines, then '
-                    'read those lines for the one word the summary did not '
-                    'change.', 't2an',
-                    'A shared word tells you where to look. The gap word is '
-                    'usually the one word that was not paraphrased.'),
-                   ('t2bh', 'Then copy it, exactly', 't2bb',
-                    'Same spelling, same form as printed. Do not make it '
-                    'plural, do not change the tense, do not add an article '
-                    'the summary already has. A correct idea in your own '
-                    'words scores nothing, because the marker compares your '
-                    'answer with the key, not with the passage.', 't2bn',
-                    'If your word is not in the passage, it is not the '
-                    'answer.'),
-                   ('t2ch', 'The limit is a wall', 't2cb',
-                    'Under NO MORE THAN TWO WORDS, a three-word answer scores '
-                    'nothing however right it is. Not half a mark: nothing. '
-                    'When an answer runs over, the extra word is almost '
-                    'always an article or an adjective you did not need.',
-                    't2cn',
-                    'Write the answer, count it, then read the instruction '
-                    'line again.')],
+        + D.teach('t2Eyebrow', E['t2Eyebrow'], 't2Title', E['t2Title'],
+                  [card('t2a'), card('t2b'), card('t2c')],
                   folder=F, bg=BG_COPY)
 
         + "".join(two_up(D.mc(i + 1, len(COPY), q, 'mcbEyebrow',
-                       'Activity 2 &middot; Copy, do not paraphrase',
-                       'mcbTitle', 'Which answer scores?',
-                       folder=F, bg=BG_LIMIT, ctx=q.get('ctx')))
+                              E['mcbEyebrow'], 'mcbTitle', E['mcbTitle'],
+                              folder=F, bg=BG_LIMIT, ctx=q.get('ctx')))
                   for i, q in enumerate(COPY))
 
-        + D.teach('t3Eyebrow', 'Before you start',
-                  't3Title', 'Predict the word before you look for it',
-                  [('t3ah', 'Name the word class first', 't3ab',
-                    'Read the summary sentence with the gap in it and decide '
-                    'what it needs: a noun, a verb, an adjective, a number. A '
-                    'gap after <em>the</em> or <em>a</em> wants a noun; a gap '
-                    'after the subject wants a verb; a gap after '
-                    '<em>lasted</em> or <em>cost</em> wants an amount.',
-                    't3an',
-                    'Decide this before you open the passage. Then you are '
-                    'looking for one kind of word, not any word.'),
-                   ('t3bh', 'The answer must read as English', 't3bb',
-                    'Put your word in the gap and read the whole sentence. '
-                    'Singular or plural, past or present: the summary '
-                    'sentence decides, and the passage word usually already '
-                    'fits, because the summary was written from it.', 't3bn',
-                    'If the sentence does not read, you have the wrong form '
-                    'or the wrong place.'),
-                   ('t3ch', 'Spelling counts', 't3cb',
-                    'Even in a copied word. Transfer it letter by letter and '
-                    'check it against the passage. A word '
-                    'you knew, copied wrongly, scores exactly what a word you '
-                    'did not know would have.', 't3cn',
-                    'Reading has no transfer time. Write on the answer sheet '
-                    'as you go.')],
+        + D.teach('t3Eyebrow', E['t3Eyebrow'], 't3Title', E['t3Title'],
+                  [card('t3a'), card('t3b'), card('t3c')],
                   folder=F, bg=BG_FIT)
 
         + "".join(two_up(D.mc(i + 1, len(SHAPE), q, 'mccEyebrow',
-                       'Activity 3 &middot; The gap has a shape',
-                       'mccTitle', 'Which form fits the sentence?',
-                       folder=F, bg=BG_FIT, ctx=q.get('ctx')))
+                              E['mccEyebrow'], 'mccTitle', E['mccTitle'],
+                              folder=F, bg=BG_FIT, ctx=q.get('ctx')))
                   for i, q in enumerate(SHAPE))
 
         + _keyed_sort(
             D.sort_slide(SORT_BINS, SORT_ITEMS,
-                         'sortEyebrow', 'Activity 4 &middot; What the marker does',
-                         'sortTitle', 'Sort the six answers',
-                         'sortHint', 'Drag each one into a column &mdash; or '
-                                     'click an item, then the column you want '
-                                     'it in.',
+                         'sortEyebrow', E['sortEyebrow'],
+                         'sortTitle', E['sortTitle'],
+                         'sortHint', E['sortHint'],
                          'sortWhy', folder=F, bg=BG_FIT,
                          bin_keys=['sortBin1', 'sortBin2']))
 
         + D.results('resNext', 'You can fill them. Now set them &rarr;', folder=F)
 
-        + D.activate('Set the gaps yourself', 'Use at least three:', CHIPS,
+        + D.activate(E['actTitle'], E['actUse'], CHIPS,
                      'Discussion &middot; in pairs',
-                     'In pairs, with a short article each. Write a three-gap '
-                     'summary of yours &mdash; four sentences, a word limit '
-                     'above them &mdash; and swap. Your partner fills the gaps '
-                     'from the article only; you mark as the examiner would: '
-                     'passage word, within the limit, spelt as printed, or '
-                     'nothing.',
-                     ['Before filling any gap, say out loud what word class it '
-                      'needs and which words in the sentence tell you so.',
-                      'For every answer, point at the words in the article. An '
-                      'answer you cannot point at is not accepted.',
-                      'Find one gap in your partner&rsquo;s summary that two '
-                      'passage words could fill, and rewrite the sentence so '
-                      'only one can.'],
-                     'Writing &middot; 150&ndash;200 words',
-                     'Take a passage you read this week and write a '
-                     'four-sentence summary of it with three gaps, the word '
-                     'limit stated above it. Then write the key: the exact '
-                     'passage words for each gap, and one tempting wrong '
-                     'answer with why it scores nothing.',
-                     'NO MORE THAN TWO WORDS. Summary: … Gap 1: … Tempting '
-                     'wrong answer: …',
+                     E['actSpeakBrief'],
+                     [E['actSpeak1'], E['actSpeak2'], E['actSpeak3']],
+                     E['actWriteKind'], E['actWriteBrief'],
+                     E['actPlaceholder'],
                      folder=F, bg=BG_ACT)
     )
-
-    import i18n_ieltscomp as I
     s = D.assemble(TPL, OUT, slides, PALETTE,
                    'IELTS Reading: Summary and Sentence Completion (C1) | '
                    'Forbes English',

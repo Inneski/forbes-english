@@ -62,9 +62,10 @@ T['en'] = dict(
     t1Title='Three gaps, one instruction line, and the line comes first',
     t1ah='What you are given',
     t1ab='A summary of part of the passage, or a set of separate sentences, '
-         'with gaps in them. The words that fill the gaps are in the passage. '
-         'The summary usually runs in passage order, but it covers only a '
-         'section &mdash; find where that section starts and stay in it.',
+         'with gaps in them. The words that fill the gaps are in the '
+         'passage. The summary usually runs in passage order and usually '
+         'covers one section of it &mdash; find where that section starts '
+         'and stay in it.',
     t1an='Academic and General Training set it the same way. Everything here '
          'applies to both.',
     t1bh='Read the instruction first',
@@ -73,8 +74,9 @@ T['en'] = dict(
          'first thing to read &mdash; before the summary, before the passage. '
          'It decides what a correct answer looks like before you have found '
          'one.',
-    t1bn='A hyphenated word is one word. A number is a number, not a word. '
-         '<em>The</em> is a word, and it counts.',
+    t1bn='A hyphenated word is one word, and <em>the</em> is a word that '
+         'counts. Under AND/OR A NUMBER, a number is allowed on top of the '
+         'words; under a plain word limit, count it as a word.',
     t1ch='Sometimes there is a box',
     t1cb='When the task gives you a list of words, A&ndash;H, you choose from '
          'the list, not from the passage, and you write the letter. The words '
@@ -86,10 +88,10 @@ T['en'] = dict(
     t2Eyebrow='Before you start',
     t2Title='The word is in the passage. Lift it.',
     t2ah='Find the place by meaning',
-    t2ab='The summary does not repeat the passage; it paraphrases everything '
-         '<strong>around</strong> the gap. Match the meaning of the sentence '
-         'to find the right lines, then read those lines for the one word '
-         'the summary did not change.',
+    t2ab='The summary rarely repeats the passage word for word; it '
+         'paraphrases most of what is <strong>around</strong> the gap. Match '
+         'the meaning of the sentence to find the right lines, then read '
+         'those lines for the word the summary has left out.',
     t2an='A shared word tells you where to look. The gap word is usually the '
          'one word that was not paraphrased.',
     t2bh='Then copy it, exactly',
@@ -101,8 +103,8 @@ T['en'] = dict(
     t2ch='The limit is a wall',
     t2cb='Under NO MORE THAN TWO WORDS, a three-word answer scores nothing '
          'however right it is. Not half a mark: nothing. When an answer runs '
-         'over, the extra word is almost always an article or an adjective '
-         'you did not need.',
+         'over, the extra word is often an article, an adjective or a '
+         'preposition you did not need.',
     t2cn='Write the answer, count it, then read the instruction line again.',
 
     t3Eyebrow='Before you start',
@@ -110,9 +112,9 @@ T['en'] = dict(
     t3ah='Name the word class first',
     t3ab='Read the summary sentence with the gap in it and decide what it '
          'needs: a noun, a verb, an adjective, a number. A gap after '
-         '<em>the</em> or <em>a</em> wants a noun; a gap after the subject '
-         'wants a verb; a gap after <em>lasted</em> or <em>cost</em> wants an '
-         'amount.',
+         '<em>the</em> or <em>a</em> wants a noun, or an adjective if a noun '
+         'follows the gap; a gap after the subject wants a verb; a gap after '
+         '<em>lasted</em> or <em>cost</em> wants an amount.',
     t3an='Decide this before you open the passage. Then you are looking for '
          'one kind of word, not any word.',
     t3bh='The answer must read as English',
@@ -147,8 +149,8 @@ T['en'] = dict(
           'each</em> three words and a number: all allowed.',
     r4why='With a list you write a letter, and the words in the list need '
           'not be in the passage at all. The list has more options than '
-          'gaps, the summary still covers only a section, and words are '
-          'still counted as words.',
+          'gaps, the summary usually still covers one section, and there is '
+          'no word limit: the answer is a letter.',
     r5why='The passage says <em>a process known as bleaching</em>; the '
           'summary paraphrases <em>warmer water</em> as <em>rising sea '
           'temperatures</em> and leaves the gap word alone. <em>Coral '
@@ -177,9 +179,10 @@ T['en'] = dict(
            'passive. <em>Correctly identified</em> is what the passage '
            'prints, and it reads. Predict that shape and three options fall '
            'away before you look.',
-    r12why='<em>Took</em> wants a length of time: a number and a plural noun. '
-           '<em>Eleven years</em>, as printed. The singular does not agree, '
-           'the ordinal is a different word, and the article makes three.',
+    r12why='<em>Took</em> wants a length of time: a number and a plural '
+           'noun. <em>Eleven years</em>, as printed. The singular does not '
+           'agree, the ordinal is a different word, and <em>an</em> cannot '
+           'go before a plural.',
 
     sortEyebrow='Activity 4 · What the marker does',
     sortTitle='Sort the six answers',
@@ -193,10 +196,10 @@ T['en'] = dict(
     sort4='Three words when the limit is two',
     sort5='The right idea in your own words',
     sort6='The passage word with a spelling mistake',
-    sortWhy='Everything in the left column is <strong>the passage, within the '
-            'limit, spelt as printed</strong> &mdash; a number is one item, a '
-            'hyphenated word is one word. The right column holds three ways of '
-            'understanding the text and scoring nothing for it: one word '
+    sortWhy='Everything that <strong>scores</strong> is the passage, within '
+            'the limit, spelt as printed &mdash; a number is one item, a '
+            'hyphenated word is one word. The other column holds three ways '
+            'of understanding the text and scoring nothing for it: one word '
             'over the limit, a correct idea in different words, a copied '
             'word with a letter wrong. The marker does not read for meaning. '
             'The marker compares your answer with the key.',
@@ -238,10 +241,11 @@ T['de'] = dict(
     t1Eyebrow='Bevor du beginnst',
     t1Title='Drei Lücken, eine Anweisungszeile, und die Zeile kommt zuerst',
     t1ah='Was du bekommst',
-    t1ab='Eine Zusammenfassung eines Textabschnitts oder einzelne Sätze, '
-         'jeweils mit Lücken. Die Wörter für die Lücken stehen im Text. Die '
-         'Zusammenfassung folgt meist der Textreihenfolge, deckt aber nur '
-         'einen Abschnitt ab &mdash; finde, wo der beginnt, und bleib darin.',
+    t1ab='Eine Zusammenfassung eines Teils des Textes oder eine Reihe '
+         'einzelner Sätze, jeweils mit Lücken. Die Wörter für die Lücken '
+         'stehen im Text. Die Zusammenfassung folgt meist der Reihenfolge '
+         'des Textes und deckt meist einen Abschnitt ab &mdash; finde, wo '
+         'dieser Abschnitt beginnt, und bleib darin.',
     t1an='Academic und General Training stellen die Aufgabe gleich. Alles '
          'hier gilt für beide.',
     t1bh='Lies zuerst die Anweisung',
@@ -250,8 +254,9 @@ T['de'] = dict(
          'was du liest &mdash; vor der Zusammenfassung, vor dem Text. Es legt '
          'fest, wie eine richtige Antwort aussieht, bevor du eine gefunden '
          'hast.',
-    t1bn='Ein Wort mit Bindestrich ist ein Wort. Eine Zahl ist eine Zahl, '
-         'kein Wort. <em>The</em> ist ein Wort, und es zählt.',
+    t1bn='Ein Wort mit Bindestrich ist ein Wort, und <em>the</em> ist ein '
+         'Wort, das zählt. Bei AND/OR A NUMBER ist eine Zahl zusätzlich zu '
+         'den Wörtern erlaubt; bei einem reinen Wortlimit zählt sie als Wort.',
     t1ch='Manchmal gibt es einen Kasten',
     t1cb='Gibt die Aufgabe eine Wortliste A&ndash;H vor, wählst du aus der '
          'Liste, nicht aus dem Text, und schreibst den Buchstaben. Die Wörter '
@@ -263,11 +268,11 @@ T['de'] = dict(
     t2Eyebrow='Bevor du beginnst',
     t2Title='Das Wort steht im Text. Hol es heraus.',
     t2ah='Finde die Stelle über die Bedeutung',
-    t2ab='Die Zusammenfassung wiederholt den Text nicht; sie paraphrasiert '
-         'alles <strong>um</strong> die Lücke herum. Gleiche die Bedeutung '
-         'des Satzes ab, um die richtigen Zeilen zu finden, und lies dann '
-         'diese Zeilen nach dem einen Wort, das die Zusammenfassung nicht '
-         'verändert hat.',
+    t2ab='Die Zusammenfassung wiederholt den Text selten Wort für Wort; sie '
+         'paraphrasiert das meiste <strong>rund um</strong> die Lücke. '
+         'Gleich die Bedeutung des Satzes ab, um die richtigen Zeilen zu '
+         'finden, und such dann in diesen Zeilen das Wort, das die '
+         'Zusammenfassung weggelassen hat.',
     t2an='Ein gemeinsames Wort sagt dir, wo du suchst. Das Lückenwort ist '
          'meist das eine Wort, das nicht paraphrasiert wurde.',
     t2bh='Dann kopiere es, genau',
@@ -278,10 +283,11 @@ T['de'] = dict(
          'nicht mit dem Text.',
     t2bn='Steht dein Wort nicht im Text, ist es nicht die Antwort.',
     t2ch='Das Limit ist eine Mauer',
-    t2cb='Unter NO MORE THAN TWO WORDS bringt eine Antwort aus drei Wörtern '
-         'nichts, so richtig sie auch ist. Nicht einen halben Punkt: nichts. '
-         'Läuft eine Antwort über, ist das überzählige Wort fast immer ein '
-         'Artikel oder ein Adjektiv, das du nicht gebraucht hättest.',
+    t2cb='Bei NO MORE THAN TWO WORDS bringt eine Antwort aus drei Wörtern '
+         'nichts, egal wie richtig sie ist. Kein halber Punkt: nichts. Wenn '
+         'eine Antwort zu lang wird, ist das überzählige Wort oft ein '
+         'Artikel, ein Adjektiv oder eine Präposition, die du nicht '
+         'gebraucht hast.',
     t2cn='Antwort schreiben, Wörter zählen, dann die Anweisungszeile noch '
          'einmal lesen.',
 
@@ -290,7 +296,8 @@ T['de'] = dict(
     t3ah='Erst die Wortart benennen',
     t3ab='Lies den Satz mit der Lücke und entscheide, was sie braucht: ein '
          'Nomen, ein Verb, ein Adjektiv, eine Zahl. Eine Lücke nach '
-         '<em>the</em> oder <em>a</em> will ein Nomen; eine Lücke nach dem '
+         '<em>the</em> oder <em>a</em> will ein Nomen &mdash; oder ein '
+         'Adjektiv, wenn nach der Lücke ein Nomen folgt; eine Lücke nach dem '
          'Subjekt will ein Verb; eine Lücke nach <em>lasted</em> oder '
          '<em>cost</em> will eine Menge.',
     t3an='Entscheide das, bevor du den Text aufschlägst. Dann suchst du eine '
@@ -328,10 +335,11 @@ T['de'] = dict(
           'eines über dem Limit. <em>In 1846</em> ist ein Wort und eine '
           'Zahl, <em>nearly 200 tonnes</em> zwei Wörter und eine Zahl, <em>some '
           '200 tonnes each</em> drei Wörter und eine Zahl: alle erlaubt.',
-    r4why='Bei einer Liste schreibst du einen Buchstaben, und die Wörter der '
+    r4why='Mit einer Liste schreibst du einen Buchstaben, und die Wörter der '
           'Liste müssen gar nicht im Text stehen. Die Liste hat mehr '
-          'Optionen als Lücken, die Zusammenfassung deckt weiter nur einen '
-          'Abschnitt ab, und Wörter werden weiter als Wörter gezählt.',
+          'Optionen als Lücken, die Zusammenfassung deckt meist trotzdem '
+          'einen Abschnitt ab, und es gibt kein Wortlimit: Die Antwort ist '
+          'ein Buchstabe.',
     r5why='Der Text sagt <em>a process known as bleaching</em>; die '
           'Zusammenfassung paraphrasiert <em>warmer water</em> als '
           '<em>rising sea temperatures</em> und lässt das Lückenwort in '
@@ -362,10 +370,10 @@ T['de'] = dict(
            'Passiv. <em>Correctly identified</em> steht so im Text, und es '
            'liest sich. Sag diese Form voraus, und drei Optionen fallen weg, '
            'bevor du hinschaust.',
-    r12why='<em>Took</em> will eine Zeitspanne: eine Zahl und ein Nomen im '
-           'Plural. <em>Eleven years</em>, wie gedruckt. Der Singular passt '
-           'nicht, die Ordnungszahl ist ein anderes Wort, und der Artikel '
-           'macht drei daraus.',
+    r12why='<em>Took</em> verlangt eine Zeitdauer: eine Zahl und ein Nomen '
+           'im Plural. <em>Eleven years</em>, wie gedruckt. Der Singular '
+           'passt nicht, die Ordnungszahl ist ein anderes Wort, und '
+           '<em>an</em> kann nicht vor einem Plural stehen.',
 
     sortEyebrow='Aktivität 4 · Was der Prüfer tut',
     sortTitle='Sortiere die sechs Antworten',
@@ -379,14 +387,14 @@ T['de'] = dict(
     sort4='Drei Wörter, wenn das Limit zwei ist',
     sort5='Die richtige Idee in eigenen Worten',
     sort6='Das Textwort mit einem Rechtschreibfehler',
-    sortWhy='Die linke Spalte ist durchweg <strong>der Text, innerhalb des '
-            'Limits, geschrieben wie gedruckt</strong> &mdash; eine Zahl ist '
-            'ein Element, ein Wort mit Bindestrich ein Wort. Die rechte '
-            'Spalte sind drei Wege, den Text zu verstehen und nichts dafür '
-            'zu bekommen: ein Wort über dem Limit, eine richtige Idee in '
-            'anderen Worten, ein kopiertes Wort mit einem falschen '
-            'Buchstaben. Der Prüfer liest nicht auf Bedeutung. Der Prüfer '
-            'vergleicht deine Antwort mit dem Lösungsschlüssel.',
+    sortWhy='Alles, was <strong>zählt</strong>, ist der Text, innerhalb des '
+            'Limits, geschrieben wie gedruckt &mdash; eine Zahl ist ein '
+            'Element, ein Wort mit Bindestrich ist ein Wort. Die andere '
+            'Spalte enthält drei Arten, den Text verstanden zu haben und '
+            'trotzdem nichts dafür zu bekommen: ein Wort über dem Limit, '
+            'eine richtige Idee in anderen Worten, ein abgeschriebenes Wort '
+            'mit einem falschen Buchstaben. Der Korrektor liest nicht auf '
+            'Bedeutung. Er vergleicht deine Antwort mit dem Schlüssel.',
 
     actTitle='Setz die Lücken selbst',
     actUse='Verwende mindestens drei:',
@@ -425,10 +433,11 @@ T['es'] = dict(
     t1Eyebrow='Antes de empezar',
     t1Title='Tres huecos, una línea de instrucciones, y la línea va primero',
     t1ah='Lo que te dan',
-    t1ab='Un resumen de parte del texto, o varias frases sueltas, con '
-         'huecos. Las palabras que los rellenan están en el texto. El '
-         'resumen suele seguir el orden del texto, pero cubre solo una '
-         'sección: localiza dónde empieza esa sección y quédate en ella.',
+    t1ab='Un resumen de una parte del texto, o una serie de frases sueltas, '
+         'con huecos. Las palabras que llenan los huecos están en el texto. '
+         'El resumen suele seguir el orden del texto y suele cubrir una '
+         'sección &mdash; encuentra dónde empieza esa sección y no salgas de '
+         'ella.',
     t1an='Academic y General Training la plantean igual. Todo esto vale para '
          'los dos.',
     t1bh='Lee primero la instrucción',
@@ -437,8 +446,10 @@ T['es'] = dict(
          'primero que se lee: antes del resumen, antes del texto. Decide qué '
          'aspecto tiene una respuesta correcta antes de que hayas encontrado '
          'una.',
-    t1bn='Una palabra con guion es una palabra. Un número es un número, no '
-         'una palabra. <em>The</em> es una palabra, y cuenta.',
+    t1bn='Una palabra con guion es una palabra, y <em>the</em> es una '
+         'palabra que cuenta. Con AND/OR A NUMBER, se permite un número '
+         'además de las palabras; con un límite solo de palabras, cuéntalo '
+         'como una palabra.',
     t1ch='A veces hay un recuadro',
     t1cb='Cuando la tarea te da una lista de palabras, A&ndash;H, eliges de '
          'la lista, no del texto, y escribes la letra. Las palabras pueden '
@@ -450,10 +461,11 @@ T['es'] = dict(
     t2Eyebrow='Antes de empezar',
     t2Title='La palabra está en el texto. Sácala.',
     t2ah='Encuentra el sitio por el significado',
-    t2ab='El resumen no repite el texto: parafrasea todo lo que hay '
-         '<strong>alrededor</strong> del hueco. Coteja el significado de la '
-         'frase para dar con las líneas correctas, y luego busca en esas '
-         'líneas la única palabra que el resumen no ha cambiado.',
+    t2ab='El resumen rara vez repite el texto palabra por palabra; '
+         'parafrasea casi todo lo que hay <strong>alrededor</strong> del '
+         'hueco. Busca el sentido de la frase para encontrar las líneas '
+         'correctas y luego lee esas líneas buscando la palabra que el '
+         'resumen ha dejado fuera.',
     t2an='Una palabra compartida te dice dónde mirar. La palabra del hueco '
          'suele ser la única que no se parafraseó.',
     t2bh='Y luego cópiala, exactamente',
@@ -465,9 +477,9 @@ T['es'] = dict(
     t2bn='Si tu palabra no está en el texto, no es la respuesta.',
     t2ch='El límite es un muro',
     t2cb='Con NO MORE THAN TWO WORDS, una respuesta de tres palabras no '
-         'puntúa nada por muy correcta que sea. Ni medio punto: nada. Cuando '
-         'una respuesta se pasa, la palabra sobrante es casi siempre un '
-         'artículo o un adjetivo que no hacía falta.',
+         'puntúa, por correcta que sea. Ni medio punto: nada. Cuando una '
+         'respuesta se pasa, la palabra de más suele ser un artículo, un '
+         'adjetivo o una preposición que no necesitabas.',
     t2cn='Escribe la respuesta, cuéntala y vuelve a leer la línea de '
          'instrucciones.',
 
@@ -476,9 +488,10 @@ T['es'] = dict(
     t3ah='Primero, nombra la clase de palabra',
     t3ab='Lee la frase del resumen con el hueco y decide qué necesita: un '
          'sustantivo, un verbo, un adjetivo, un número. Un hueco tras '
-         '<em>the</em> o <em>a</em> pide un sustantivo; un hueco tras el '
-         'sujeto pide un verbo; un hueco tras <em>lasted</em> o '
-         '<em>cost</em> pide una cantidad.',
+         '<em>the</em> o <em>a</em> pide un sustantivo, o un adjetivo si '
+         'detrás del hueco viene un sustantivo; un hueco tras el sujeto pide '
+         'un verbo; un hueco tras <em>lasted</em> o <em>cost</em> pide una '
+         'cantidad.',
     t3an='Decídelo antes de abrir el texto. Así buscas un tipo de palabra, no '
          'cualquier palabra.',
     t3bh='La respuesta tiene que leerse como inglés',
@@ -513,10 +526,10 @@ T['es'] = dict(
           'número, <em>nearly 200 tonnes</em> dos palabras y un número, y '
           '<em>some 200 tonnes each</em> tres palabras y un número: todas '
           'permitidas.',
-    r4why='Con una lista escribes una letra, y las palabras de la lista no '
-          'tienen por qué estar en el texto. La lista tiene más opciones '
-          'que huecos, el resumen sigue cubriendo solo una sección, y las '
-          'palabras se siguen contando como palabras.',
+    r4why='Con una lista escribes una letra, y las palabras de la lista ni '
+          'siquiera tienen que estar en el texto. La lista tiene más '
+          'opciones que huecos, el resumen suele cubrir igualmente una '
+          'sección, y no hay límite de palabras: la respuesta es una letra.',
     r5why='El texto dice <em>a process known as bleaching</em>; el resumen '
           'parafrasea <em>warmer water</em> como <em>rising sea '
           'temperatures</em> y deja en paz la palabra del hueco. <em>Coral '
@@ -547,9 +560,9 @@ T['es'] = dict(
            '<em>Correctly identified</em> es lo que imprime el texto, y se '
            'lee bien. Predice esa forma y tres opciones caen antes de mirar.',
     r12why='<em>Took</em> pide una duración: un número y un sustantivo en '
-           'plural. <em>Eleven years</em>, tal como está impreso. El singular '
-           'no concuerda, el ordinal es otra palabra, y el artículo hace '
-           'tres.',
+           'plural. <em>Eleven years</em>, tal como está impreso. El '
+           'singular no concuerda, el ordinal es otra palabra, y <em>an</em> '
+           'no puede ir delante de un plural.',
 
     sortEyebrow='Actividad 4 · Lo que hace el corrector',
     sortTitle='Clasifica las seis respuestas',
@@ -563,14 +576,13 @@ T['es'] = dict(
     sort4='Tres palabras cuando el límite es dos',
     sort5='La idea correcta con tus propias palabras',
     sort6='La palabra del texto con una falta de ortografía',
-    sortWhy='La columna izquierda es toda <strong>el texto, dentro del '
-            'límite, escrito como está impreso</strong>: un número es un '
-            'elemento, una palabra con guion es una palabra. La derecha son '
-            'tres maneras de entender el texto y no puntuar nada: una '
-            'palabra por encima del límite, una idea correcta con otras '
-            'palabras, una palabra copiada con una letra mal. El corrector '
-            'no lee buscando significado. El corrector compara tu respuesta '
-            'con la clave.',
+    sortWhy='Todo lo que <strong>puntúa</strong> es el texto, dentro del '
+            'límite, escrito como está impreso: un número es un elemento y '
+            'una palabra con guion es una palabra. La otra columna recoge '
+            'tres formas de entender el texto y no puntuar por ello: una '
+            'palabra de más, una idea correcta con otras palabras, una '
+            'palabra copiada con una letra mal. El corrector no lee buscando '
+            'el sentido: compara tu respuesta con la clave.',
 
     actTitle='Pon tú los huecos',
     actUse='Usa al menos tres:',
@@ -611,9 +623,10 @@ T['fr'] = dict(
     t1Title='Trois trous, une ligne de consigne, et la ligne d’abord',
     t1ah='Ce qu’on vous donne',
     t1ab='Un résumé d’une partie du texte, ou une série de phrases séparées, '
-         'avec des trous. Les mots qui les remplissent sont dans le texte. Le '
-         'résumé suit en général l’ordre du texte, mais il n’en couvre qu’une '
-         'section &mdash; trouvez où elle commence et restez-y.',
+         'avec des trous. Les mots qui remplissent les trous sont dans le '
+         'texte. Le résumé suit en général l’ordre du texte et couvre en '
+         'général une section &mdash; trouvez où commence cette section et '
+         'restez-y.',
     t1an='Academic et General Training la présentent de la même façon. Tout ce '
          'qui suit vaut pour les deux.',
     t1bh='Lisez d’abord la consigne',
@@ -622,8 +635,9 @@ T['fr'] = dict(
          'la première chose à lire &mdash; avant le résumé, avant le texte. '
          'Elle décide à quoi ressemble une bonne réponse avant même que vous en '
          'ayez trouvé une.',
-    t1bn='Un mot avec trait d’union compte pour un mot. Un nombre est un '
-         'nombre, pas un mot. <em>The</em> est un mot, et il compte.',
+    t1bn='Un mot à trait d’union compte pour un mot, et <em>the</em> est un '
+         'mot qui compte. Avec AND/OR A NUMBER, un nombre est permis en plus '
+         'des mots ; avec une simple limite de mots, comptez-le comme un mot.',
     t1ch='Parfois il y a un encadré',
     t1cb='Quand la tâche vous donne une liste de mots, A&ndash;H, vous '
          'choisissez dans la liste, pas dans le texte, et vous écrivez la '
@@ -635,10 +649,10 @@ T['fr'] = dict(
     t2Eyebrow='Avant de commencer',
     t2Title='Le mot est dans le texte. Prenez-le.',
     t2ah='Trouvez l’endroit par le sens',
-    t2ab='Le résumé ne répète pas le texte ; il reformule tout ce qui est '
-         '<strong>autour</strong> du trou. Faites correspondre le sens de la '
-         'phrase pour trouver les bonnes lignes, puis cherchez dans ces lignes '
-         'le seul mot que le résumé n’a pas changé.',
+    t2ab='Le résumé reprend rarement le texte mot pour mot ; il reformule '
+         'l’essentiel de ce qui entoure le trou. Appuyez-vous sur le sens de '
+         'la phrase pour trouver les bonnes lignes, puis cherchez dans ces '
+         'lignes le mot que le résumé a laissé de côté.',
     t2an='Un mot commun vous dit où chercher. Le mot du trou est en général le '
          'seul qui n’a pas été reformulé.',
     t2bh='Puis recopiez-le, exactement',
@@ -650,8 +664,8 @@ T['fr'] = dict(
     t2ch='La limite est un mur',
     t2cb='Avec NO MORE THAN TWO WORDS, une réponse de trois mots ne rapporte '
          'rien, aussi juste soit-elle. Pas un demi-point : rien. Quand une '
-         'réponse déborde, le mot en trop est presque toujours un article ou '
-         'un adjectif inutile.',
+         'réponse déborde, le mot en trop est souvent un article, un '
+         'adjectif ou une préposition dont vous n’aviez pas besoin.',
     t2cn='Écrivez la réponse, comptez les mots, puis relisez la consigne.',
 
     t3Eyebrow='Avant de commencer',
@@ -659,9 +673,9 @@ T['fr'] = dict(
     t3ah='Nommez d’abord la nature du mot',
     t3ab='Lisez la phrase du résumé qui contient le trou et décidez ce qu’il '
          'lui faut : un nom, un verbe, un adjectif, un nombre. Un trou après '
-         '<em>the</em> ou <em>a</em> demande un nom ; un trou après le sujet '
-         'demande un verbe ; un trou après <em>lasted</em> ou <em>cost</em> '
-         'demande une quantité.',
+         '<em>the</em> ou <em>a</em> appelle un nom, ou un adjectif si un '
+         'nom suit le trou ; un trou après le sujet appelle un verbe ; un '
+         'trou après <em>lasted</em> ou <em>cost</em> appelle une quantité.',
     t3an='Décidez-le avant d’ouvrir le texte. Vous cherchez alors une seule '
          'sorte de mot, pas n’importe lequel.',
     t3bh='La réponse doit être de l’anglais correct',
@@ -698,9 +712,10 @@ T['fr'] = dict(
           'tonnes</em> deux mots et un nombre, et <em>some 200 tonnes each</em> '
           'trois mots et un nombre : tous autorisés.',
     r4why='Avec une liste, vous écrivez une lettre, et les mots de la liste '
-          'n’ont pas besoin de figurer dans le texte. La liste a plus d’options '
-          'que de trous, le résumé ne couvre toujours qu’une section, et les '
-          'mots se comptent toujours comme des mots.',
+          'ne figurent pas forcément dans le texte. La liste a plus '
+          'd’options que de trous, le résumé couvre en général toujours une '
+          'section, et il n’y a pas de limite de mots : la réponse est une '
+          'lettre.',
     r5why='Le texte dit <em>a process known as bleaching</em> ; le résumé '
           'reformule <em>warmer water</em> en <em>rising sea temperatures</em> '
           'et laisse le mot du trou tel quel. <em>Coral whitening</em> est la '
@@ -729,9 +744,10 @@ T['fr'] = dict(
            'passif. <em>Correctly identified</em> est ce que le texte imprime, '
            'et la phrase tient. Prédisez cette forme et trois options tombent '
            'avant même de regarder.',
-    r12why='<em>Took</em> demande une durée : un nombre et un nom au pluriel. '
-           '<em>Eleven years</em>, tel qu’imprimé. Le singulier ne s’accorde '
-           'pas, l’ordinal est un autre mot, et l’article en fait trois.',
+    r12why='<em>Took</em> appelle une durée : un nombre et un nom au '
+           'pluriel. <em>Eleven years</em>, tel qu’imprimé. Le singulier ne '
+           's’accorde pas, l’ordinal est un autre mot, et <em>an</em> ne '
+           'peut pas précéder un pluriel.',
 
     sortEyebrow='Activité 4 · Ce que fait le correcteur',
     sortTitle='Classez les six réponses',
@@ -745,14 +761,13 @@ T['fr'] = dict(
     sort4='Trois mots quand la limite est de deux',
     sort5='La bonne idée avec vos propres mots',
     sort6='Le mot du texte avec une faute d’orthographe',
-    sortWhy='Tout ce qui est dans la colonne de gauche, c’est <strong>le texte, '
-            'dans la limite, orthographié comme imprimé</strong> &mdash; un '
-            'nombre compte pour un élément, un mot avec trait d’union pour un '
-            'mot. La colonne de droite réunit trois façons de comprendre le '
-            'texte sans en tirer aucun point : un mot de trop, une idée juste '
-            'avec d’autres mots, un mot recopié avec une lettre fausse. Le '
-            'correcteur ne lit pas pour le sens. Il compare votre réponse au '
-            'corrigé.',
+    sortWhy='Tout ce qui <strong>rapporte</strong>, c’est le texte, dans la '
+            'limite, orthographié comme imprimé &mdash; un nombre compte '
+            'pour un élément, un mot à trait d’union pour un mot. L’autre '
+            'colonne réunit trois façons d’avoir compris le texte sans rien '
+            'marquer : un mot de trop, une idée juste formulée autrement, un '
+            'mot recopié avec une lettre fausse. Le correcteur ne lit pas le '
+            'sens. Il compare votre réponse au corrigé.',
 
     actTitle='Créez vous-même les trous',
     actUse='Utilisez-en au moins trois :',
@@ -792,10 +807,11 @@ T['it'] = dict(
     t1Eyebrow='Prima di cominciare',
     t1Title='Tre spazi, una riga di istruzioni, e la riga viene prima',
     t1ah='Che cosa ti danno',
-    t1ab='Un riassunto di una parte del testo, o una serie di frasi separate, '
-         'con degli spazi vuoti. Le parole che li riempiono sono nel testo. Il '
-         'riassunto di solito segue l’ordine del testo, ma ne copre solo una '
-         'sezione &mdash; trova dove comincia quella sezione e restaci.',
+    t1ab='Un riassunto di una parte del testo, o una serie di frasi '
+         'separate, con degli spazi vuoti. Le parole che li riempiono sono '
+         'nel testo. Il riassunto di solito segue l’ordine del testo e di '
+         'solito copre una sezione &mdash; trova dove comincia quella '
+         'sezione e restaci dentro.',
     t1an='Academic e General Training lo propongono allo stesso modo. Tutto '
          'quello che trovi qui vale per entrambi.',
     t1bh='Leggi prima l’istruzione',
@@ -804,8 +820,10 @@ T['it'] = dict(
          'cosa da leggere &mdash; prima del riassunto, prima del testo. Decide '
          'com’è fatta una risposta giusta prima ancora che tu ne abbia trovata '
          'una.',
-    t1bn='Una parola con il trattino conta come una. Un numero è un numero, non '
-         'una parola. <em>The</em> è una parola, e conta.',
+    t1bn='Una parola con il trattino conta come una parola, e <em>the</em> è '
+         'una parola che conta. Con AND/OR A NUMBER, un numero è ammesso in '
+         'più rispetto alle parole; con un semplice limite di parole, '
+         'contalo come una parola.',
     t1ch='A volte c’è un riquadro',
     t1cb='Quando il compito ti dà un elenco di parole, A&ndash;H, scegli '
          'dall’elenco, non dal testo, e scrivi la lettera. Le parole possono '
@@ -816,10 +834,11 @@ T['it'] = dict(
     t2Eyebrow='Prima di cominciare',
     t2Title='La parola è nel testo. Prendila.',
     t2ah='Trova il punto dal significato',
-    t2ab='Il riassunto non ripete il testo; riformula tutto ciò che sta '
-         '<strong>intorno</strong> allo spazio. Fai corrispondere il '
-         'significato della frase per trovare le righe giuste, poi cerca in '
-         'quelle righe l’unica parola che il riassunto non ha cambiato.',
+    t2ab='Il riassunto raramente ripete il testo parola per parola; '
+         'parafrasa quasi tutto ciò che sta <strong>intorno</strong> allo '
+         'spazio. Segui il senso della frase per trovare le righe giuste, '
+         'poi cerca in quelle righe la parola che il riassunto ha lasciato '
+         'fuori.',
     t2an='Una parola in comune ti dice dove guardare. La parola dello spazio di '
          'solito è l’unica che non è stata riformulata.',
     t2bh='Poi copiala, esattamente',
@@ -829,10 +848,10 @@ T['it'] = dict(
          'confronta la tua risposta con la chiave, non con il testo.',
     t2bn='Se la tua parola non è nel testo, non è la risposta.',
     t2ch='Il limite è un muro',
-    t2cb='Con NO MORE THAN TWO WORDS, una risposta di tre parole vale zero, per '
-         'quanto giusta. Non mezzo punto: zero. Quando una risposta sfora, la '
-         'parola in più è quasi sempre un articolo o un aggettivo che non '
-         'serviva.',
+    t2cb='Con NO MORE THAN TWO WORDS, una risposta di tre parole non vale '
+         'nulla, per quanto giusta. Nemmeno mezzo punto: niente. Quando una '
+         'risposta sfora, la parola in più è spesso un articolo, un '
+         'aggettivo o una preposizione che non ti serviva.',
     t2cn='Scrivi la risposta, conta le parole, poi rileggi la riga '
          'dell’istruzione.',
 
@@ -841,9 +860,9 @@ T['it'] = dict(
     t3ah='Prima stabilisci la categoria',
     t3ab='Leggi la frase del riassunto con lo spazio e decidi che cosa le '
          'serve: un nome, un verbo, un aggettivo, un numero. Uno spazio dopo '
-         '<em>the</em> o <em>a</em> vuole un nome; uno spazio dopo il soggetto '
-         'vuole un verbo; uno spazio dopo <em>lasted</em> o <em>cost</em> vuole '
-         'una quantità.',
+         '<em>the</em> o <em>a</em> vuole un nome, o un aggettivo se dopo lo '
+         'spazio viene un nome; uno spazio dopo il soggetto vuole un verbo; '
+         'uno spazio dopo <em>lasted</em> o <em>cost</em> vuole una quantità.',
     t3an='Decidilo prima di aprire il testo. Così cerchi un solo tipo di '
          'parola, non una parola qualsiasi.',
     t3bh='La risposta deve essere inglese corretto',
@@ -876,10 +895,10 @@ T['it'] = dict(
           'di troppo. <em>In 1846</em> è una parola e un numero, <em>nearly 200 '
           'tonnes</em> due parole e un numero, e <em>some 200 tonnes each</em> '
           'tre parole e un numero: tutte ammesse.',
-    r4why='Con un elenco scrivi una lettera, e le parole dell’elenco non devono '
-          'per forza comparire nel testo. L’elenco ha più opzioni che spazi, il '
-          'riassunto copre sempre solo una sezione, e le parole si contano '
-          'sempre come parole.',
+    r4why='Con una lista scrivi una lettera, e le parole della lista possono '
+          'non essere affatto nel testo. La lista ha più opzioni che spazi, '
+          'il riassunto di solito copre comunque una sezione, e non c’è '
+          'limite di parole: la risposta è una lettera.',
     r5why='Il testo dice <em>a process known as bleaching</em>; il riassunto '
           'riformula <em>warmer water</em> come <em>rising sea '
           'temperatures</em> e lascia com’è la parola dello spazio. <em>Coral '
@@ -907,9 +926,10 @@ T['it'] = dict(
            'passivo. <em>Correctly identified</em> è ciò che il testo stampa, e '
            'la frase regge. Prevedi questa forma e tre opzioni cadono prima '
            'ancora di guardare.',
-    r12why='<em>Took</em> vuole una durata: un numero e un nome plurale. '
-           '<em>Eleven years</em>, così come è stampato. Il singolare non '
-           'concorda, l’ordinale è un’altra parola, e l’articolo fa tre parole.',
+    r12why='<em>Took</em> vuole una durata: un numero e un nome al plurale. '
+           '<em>Eleven years</em>, come è stampato. Il singolare non '
+           'concorda, l’ordinale è un’altra parola, e <em>an</em> non può '
+           'stare davanti a un plurale.',
 
     sortEyebrow='Attività 4 · Che cosa fa il correttore',
     sortTitle='Classifica le sei risposte',
@@ -923,14 +943,14 @@ T['it'] = dict(
     sort4='Tre parole quando il limite è due',
     sort5='L’idea giusta con parole tue',
     sort6='La parola del testo con un errore di ortografia',
-    sortWhy='Tutto ciò che sta nella colonna di sinistra è <strong>il testo, '
-            'entro il limite, scritto come è stampato</strong> &mdash; un numero '
-            'conta come un elemento, una parola con il trattino come una '
-            'parola. La colonna di destra raccoglie tre modi di capire il testo '
-            'senza prendere punti: una parola oltre il limite, un’idea giusta '
-            'con altre parole, una parola copiata con una lettera sbagliata. Il '
-            'correttore non legge per il significato. Il correttore confronta la '
-            'tua risposta con la chiave.',
+    sortWhy='Tutto ciò che <strong>vale</strong> è il testo, entro il '
+            'limite, scritto come è stampato &mdash; un numero è un '
+            'elemento, una parola con il trattino è una parola. L’altra '
+            'colonna raccoglie tre modi di aver capito il testo senza '
+            'prendere nulla: una parola oltre il limite, un’idea giusta con '
+            'altre parole, una parola copiata con una lettera sbagliata. Il '
+            'correttore non legge il senso: confronta la tua risposta con la '
+            'chiave.',
 
     actTitle='Prepara tu gli spazi',
     actUse='Usane almeno tre:',
@@ -970,10 +990,10 @@ T['pt'] = dict(
     t1Eyebrow='Antes de começar',
     t1Title='Três espaços, uma linha de instruções, e a linha vem primeiro',
     t1ah='O que te dão',
-    t1ab='Um resumo de parte do texto, ou um conjunto de frases soltas, com '
-         'espaços em branco. As palavras que os preenchem estão no texto. O '
-         'resumo costuma seguir a ordem do texto, mas só cobre uma secção '
-         '&mdash; encontra onde essa secção começa e fica nela.',
+    t1ab='Um resumo de uma parte do texto, ou uma série de frases soltas, '
+         'com espaços. As palavras que preenchem os espaços estão no texto. '
+         'O resumo costuma seguir a ordem do texto e costuma cobrir uma '
+         'secção &mdash; encontra onde começa essa secção e não saias dela.',
     t1an='O Academic e o General Training apresentam-no da mesma forma. Tudo o '
          'que está aqui vale para os dois.',
     t1bh='Lê primeiro a instrução',
@@ -981,8 +1001,10 @@ T['pt'] = dict(
          'ONLY.</strong> O limite está impresso por cima dos espaços e é a '
          'primeira coisa a ler &mdash; antes do resumo, antes do texto. Decide '
          'como é uma resposta certa antes mesmo de encontrares uma.',
-    t1bn='Uma palavra com hífen conta como uma. Um número é um número, não uma '
-         'palavra. <em>The</em> é uma palavra, e conta.',
+    t1bn='Uma palavra com hífen conta como uma palavra, e <em>the</em> é uma '
+         'palavra que conta. Com AND/OR A NUMBER, um número é permitido além '
+         'das palavras; com um limite só de palavras, conta-o como uma '
+         'palavra.',
     t1ch='Às vezes há uma caixa',
     t1cb='Quando a tarefa te dá uma lista de palavras, A&ndash;H, escolhes da '
          'lista, não do texto, e escreves a letra. As palavras podem nem estar '
@@ -993,10 +1015,10 @@ T['pt'] = dict(
     t2Eyebrow='Antes de começar',
     t2Title='A palavra está no texto. Tira-a de lá.',
     t2ah='Encontra o sítio pelo sentido',
-    t2ab='O resumo não repete o texto; parafraseia tudo o que está '
-         '<strong>à volta</strong> do espaço. Faz corresponder o sentido da '
-         'frase para encontrar as linhas certas e depois procura nessas linhas '
-         'a única palavra que o resumo não mudou.',
+    t2ab='O resumo raramente repete o texto palavra por palavra; parafraseia '
+         'quase tudo o que está <strong>à volta</strong> do espaço. Segue o '
+         'sentido da frase para encontrar as linhas certas e depois procura '
+         'nessas linhas a palavra que o resumo deixou de fora.',
     t2an='Uma palavra em comum diz-te onde procurar. A palavra do espaço é '
          'normalmente a única que não foi parafraseada.',
     t2bh='Depois copia-a, tal e qual',
@@ -1006,10 +1028,10 @@ T['pt'] = dict(
          'compara a tua resposta com a chave, não com o texto.',
     t2bn='Se a tua palavra não está no texto, não é a resposta.',
     t2ch='O limite é uma parede',
-    t2cb='Com NO MORE THAN TWO WORDS, uma resposta de três palavras vale zero, '
-         'por mais certa que seja. Não é meio ponto: é zero. Quando uma resposta '
-         'passa do limite, a palavra a mais é quase sempre um artigo ou um '
-         'adjetivo de que não precisavas.',
+    t2cb='Com NO MORE THAN TWO WORDS, uma resposta de três palavras não vale '
+         'nada, por muito certa que seja. Nem meio ponto: nada. Quando uma '
+         'resposta passa do limite, a palavra a mais é muitas vezes um '
+         'artigo, um adjetivo ou uma preposição de que não precisavas.',
     t2cn='Escreve a resposta, conta as palavras e volta a ler a instrução.',
 
     t3Eyebrow='Antes de começar',
@@ -1017,9 +1039,10 @@ T['pt'] = dict(
     t3ah='Primeiro, a classe da palavra',
     t3ab='Lê a frase do resumo que tem o espaço e decide do que precisa: um '
          'nome, um verbo, um adjetivo, um número. Um espaço depois de '
-         '<em>the</em> ou <em>a</em> pede um nome; um espaço depois do sujeito '
-         'pede um verbo; um espaço depois de <em>lasted</em> ou <em>cost</em> '
-         'pede uma quantidade.',
+         '<em>the</em> ou <em>a</em> pede um nome, ou um adjetivo se a '
+         'seguir ao espaço vier um nome; um espaço depois do sujeito pede um '
+         'verbo; um espaço depois de <em>lasted</em> ou <em>cost</em> pede '
+         'uma quantidade.',
     t3an='Decide isto antes de abrires o texto. Assim procuras um só tipo de '
          'palavra, e não uma palavra qualquer.',
     t3bh='A resposta tem de ser inglês correto',
@@ -1053,10 +1076,10 @@ T['pt'] = dict(
           'mais. <em>In 1846</em> é uma palavra e um número, <em>nearly 200 '
           'tonnes</em> duas palavras e um número, e <em>some 200 tonnes '
           'each</em> três palavras e um número: todas permitidas.',
-    r4why='Com uma lista, escreves uma letra, e as palavras da lista não têm de '
-          'estar no texto. A lista tem mais opções do que espaços, o resumo '
-          'continua a cobrir só uma secção, e as palavras continuam a contar '
-          'como palavras.',
+    r4why='Com uma lista escreves uma letra, e as palavras da lista nem '
+          'precisam de estar no texto. A lista tem mais opções do que '
+          'espaços, o resumo costuma cobrir na mesma uma secção, e não há '
+          'limite de palavras: a resposta é uma letra.',
     r5why='O texto diz <em>a process known as bleaching</em>; o resumo '
           'parafraseia <em>warmer water</em> como <em>rising sea '
           'temperatures</em> e deixa a palavra do espaço intacta. <em>Coral '
@@ -1085,7 +1108,8 @@ T['pt'] = dict(
            'funciona. Prevê esta forma e três opções caem antes de olhares.',
     r12why='<em>Took</em> pede uma duração: um número e um nome no plural. '
            '<em>Eleven years</em>, tal como está impresso. O singular não '
-           'concorda, o ordinal é outra palavra, e o artigo faz três palavras.',
+           'concorda, o ordinal é outra palavra, e <em>an</em> não pode vir '
+           'antes de um plural.',
 
     sortEyebrow='Atividade 4 · O que faz o corretor',
     sortTitle='Classifica as seis respostas',
@@ -1099,14 +1123,13 @@ T['pt'] = dict(
     sort4='Três palavras quando o limite é duas',
     sort5='A ideia certa por palavras tuas',
     sort6='A palavra do texto com um erro ortográfico',
-    sortWhy='Tudo o que está na coluna da esquerda é <strong>o texto, dentro do '
-            'limite, escrito como está impresso</strong> &mdash; um número '
-            'conta como um elemento, uma palavra com hífen como uma palavra. A '
-            'coluna da direita reúne três maneiras de perceber o texto e não '
-            'ganhar nada com isso: uma palavra acima do limite, uma ideia certa '
-            'por outras palavras, uma palavra copiada com uma letra errada. O '
-            'corretor não lê pelo sentido. O corretor compara a tua resposta com '
-            'a chave.',
+    sortWhy='Tudo o que <strong>vale</strong> é o texto, dentro do limite, '
+            'escrito como está impresso &mdash; um número é um elemento, uma '
+            'palavra com hífen é uma palavra. A outra coluna reúne três '
+            'maneiras de perceber o texto e não ganhar nada com isso: uma '
+            'palavra a mais, uma ideia certa por outras palavras, uma '
+            'palavra copiada com uma letra errada. O corretor não lê o '
+            'sentido: compara a tua resposta com a chave.',
 
     actTitle='Cria tu os espaços',
     actUse='Usa pelo menos três:',
@@ -1146,10 +1169,10 @@ T['ru'] = dict(
     t1Eyebrow='Прежде чем начать',
     t1Title='Три пропуска, одна строка с инструкцией, и строка &mdash; первой',
     t1ah='Что вам дают',
-    t1ab='Краткое изложение части текста или набор отдельных предложений с '
-         'пропусками. Слова для пропусков есть в тексте. Изложение обычно идёт '
-         'по порядку текста, но охватывает только один фрагмент &mdash; найдите, '
-         'где он начинается, и оставайтесь в нём.',
+    t1ab='Изложение части текста или ряд отдельных предложений с пропусками. '
+         'Слова для пропусков есть в тексте. Изложение обычно идёт по '
+         'порядку текста и обычно охватывает один его раздел &mdash; '
+         'найдите, где этот раздел начинается, и не выходите за его пределы.',
     t1an='В Academic и General Training это задание устроено одинаково. Всё '
          'здесь подходит для обоих модулей.',
     t1bh='Сначала прочитайте инструкцию',
@@ -1157,8 +1180,9 @@ T['ru'] = dict(
          'ONLY.</strong> Лимит напечатан над пропусками, и читать его нужно '
          'первым &mdash; раньше изложения, раньше текста. Он определяет, как '
          'выглядит правильный ответ, ещё до того, как вы его нашли.',
-    t1bn='Слово через дефис &mdash; одно слово. Число &mdash; это число, а не '
-         'слово. <em>The</em> &mdash; слово, и оно считается.',
+    t1bn='Слово через дефис &mdash; одно слово, а <em>the</em> &mdash; '
+         'слово, которое считается. При AND/OR A NUMBER число допускается '
+         'сверх слов; при простом лимите слов считайте его словом.',
     t1ch='Иногда есть рамка со словами',
     t1cb='Когда задание даёт список слов A&ndash;H, вы выбираете из списка, а '
          'не из текста, и пишете букву. Этих слов может вообще не быть в '
@@ -1169,10 +1193,10 @@ T['ru'] = dict(
     t2Eyebrow='Прежде чем начать',
     t2Title='Слово есть в тексте. Возьмите его.',
     t2ah='Находите место по смыслу',
-    t2ab='Изложение не повторяет текст: оно перефразирует всё '
-         '<strong>вокруг</strong> пропуска. Сопоставьте смысл предложения, '
-         'чтобы найти нужные строки, а потом ищите в них то единственное '
-         'слово, которое изложение не изменило.',
+    t2ab='Изложение редко повторяет текст слово в слово; оно перефразирует '
+         'почти всё <strong>вокруг</strong> пропуска. Ищите по смыслу '
+         'предложения нужные строки, а потом ищите в них слово, которое '
+         'изложение пропустило.',
     t2an='Общее слово подсказывает, где искать. Слово для пропуска &mdash; '
          'обычно единственное, которое не перефразировали.',
     t2bh='Потом перепишите его точно',
@@ -1182,19 +1206,21 @@ T['ru'] = dict(
          'проверяющий сравнивает ваш ответ с ключом, а не с текстом.',
     t2bn='Если вашего слова нет в тексте, это не ответ.',
     t2ch='Лимит &mdash; это стена',
-    t2cb='При NO MORE THAN TWO WORDS ответ из трёх слов &mdash; ноль, как бы '
-         'верен он ни был. Не полбалла, а ноль. Когда ответ выходит за лимит, '
-         'лишнее слово почти всегда &mdash; ненужный артикль или '
-         'прилагательное.',
+    t2cb='При NO MORE THAN TWO WORDS ответ из трёх слов не приносит ничего, '
+         'каким бы верным он ни был. Не половина балла: ноль. Когда ответ '
+         'выходит за лимит, лишнее слово часто оказывается артиклем, '
+         'прилагательным или предлогом, который был не нужен.',
     t2cn='Напишите ответ, посчитайте слова и снова прочитайте инструкцию.',
 
     t3Eyebrow='Прежде чем начать',
     t3Title='Предскажите слово, прежде чем искать его',
     t3ah='Сначала часть речи',
-    t3ab='Прочитайте предложение изложения с пропуском и решите, что ему нужно: '
-         'существительное, глагол, прилагательное, число. После <em>the</em> '
-         'или <em>a</em> нужно существительное; после подлежащего &mdash; '
-         'глагол; после <em>lasted</em> или <em>cost</em> &mdash; количество.',
+    t3ab='Прочитайте предложение изложения с пропуском и решите, что ему '
+         'нужно: существительное, глагол, прилагательное, число. После '
+         '<em>the</em> или <em>a</em> пропуск требует существительного, а '
+         'если после пропуска идёт существительное &mdash; прилагательного; '
+         'после подлежащего &mdash; глагола; после <em>lasted</em> или '
+         '<em>cost</em> &mdash; количества.',
     t3an='Решите это до того, как откроете текст. Тогда вы ищете слово одного '
          'вида, а не любое слово.',
     t3bh='Ответ должен звучать по-английски',
@@ -1227,9 +1253,10 @@ T['ru'] = dict(
           'больше лимита. <em>In 1846</em> &mdash; одно слово и число, '
           '<em>nearly 200 tonnes</em> &mdash; два слова и число, а <em>some 200 '
           'tonnes each</em> &mdash; три слова и число: всё допустимо.',
-    r4why='Со списком вы пишете букву, а слов из списка может вообще не быть в '
-          'тексте. Вариантов больше, чем пропусков, изложение по-прежнему '
-          'охватывает только фрагмент, а слова по-прежнему считаются словами.',
+    r4why='Со списком вы пишете букву, и слов из списка может вообще не быть '
+          'в тексте. В списке больше вариантов, чем пропусков, изложение '
+          'обычно всё равно охватывает один раздел, а лимита слов нет: ответ '
+          '&mdash; буква.',
     r5why='В тексте &mdash; <em>a process known as bleaching</em>; изложение '
           'перефразирует <em>warmer water</em> как <em>rising sea '
           'temperatures</em>, а слово для пропуска не трогает. <em>Coral '
@@ -1260,10 +1287,11 @@ T['ru'] = dict(
            'это пассив. <em>Correctly identified</em> &mdash; то, что напечатано '
            'в тексте, и предложение складывается. Предскажите эту форму, и три '
            'варианта отпадут ещё до того, как вы посмотрите.',
-    r12why='<em>Took</em> требует длительности: числа и существительного во '
-           'множественном числе. <em>Eleven years</em>, как напечатано. '
-           'Единственное число не согласуется, порядковое числительное &mdash; '
-           'другое слово, а с артиклем получается три.',
+    r12why='<em>Took</em> требует продолжительности: числа и '
+           'существительного во множественном числе. <em>Eleven years</em>, '
+           'как напечатано. Единственное число не согласуется, порядковое '
+           'числительное &mdash; другое слово, а <em>an</em> не ставится '
+           'перед множественным числом.',
 
     sortEyebrow='Задание 4 · Что делает проверяющий',
     sortTitle='Распределите шесть ответов',
@@ -1277,13 +1305,13 @@ T['ru'] = dict(
     sort4='Три слова при лимите в два',
     sort5='Верная мысль своими словами',
     sort6='Слово из текста с орфографической ошибкой',
-    sortWhy='Всё в левом столбце &mdash; это <strong>текст, в пределах лимита, '
-            'написанный как напечатано</strong>: число считается одним '
-            'элементом, слово через дефис &mdash; одним словом. В правом столбце '
-            '&mdash; три способа понять текст и ничего за это не получить: '
-            'слово сверх лимита, верная мысль другими словами, переписанное '
-            'слово с ошибкой в букве. Проверяющий не читает по смыслу. Он '
-            'сравнивает ваш ответ с ключом.',
+    sortWhy='Всё, что <strong>засчитывается</strong>, &mdash; это текст, в '
+            'пределах лимита, написанный как напечатано: число считается '
+            'одним элементом, слово через дефис &mdash; одним словом. В '
+            'другом столбце &mdash; три способа понять текст и ничего за это '
+            'не получить: слово сверх лимита, верная мысль другими словами, '
+            'переписанное слово с ошибкой в одной букве. Проверяющий не '
+            'читает смысл: он сравнивает ваш ответ с ключом.',
 
     actTitle='Сделайте пропуски сами',
     actUse='Используйте хотя бы три:',
@@ -1323,17 +1351,19 @@ T['ar'] = dict(
     t1Eyebrow='قبل أن تبدأ',
     t1Title='ثلاث فجوات وسطر تعليمات، والسطر أولًا',
     t1ah='ما الذي يُعطى لك',
-    t1ab='ملخّص لجزء من النص، أو مجموعة جمل منفصلة، فيها فجوات. والكلمات التي '
-         'تملؤها موجودة في النص. يسير الملخّص عادةً بترتيب النص، لكنه يغطي قسمًا '
-         'واحدًا فقط، فابحث عن بداية ذلك القسم وابقَ فيه.',
+    t1ab='ملخّص لجزء من النص، أو مجموعة من الجمل المنفصلة، فيها فجوات. '
+         'والكلمات التي تملأ الفجوات موجودة في النص. ويسير الملخّص عادةً '
+         'بترتيب النص ويغطي عادةً قسمًا واحدًا منه &mdash; فجد أين يبدأ ذلك '
+         'القسم وابقَ فيه.',
     t1an='يطرحه Academic وGeneral Training بالطريقة نفسها، فكل ما هنا يصلح '
          'للاثنين.',
     t1bh='اقرأ التعليمات أولًا',
     t1bb='<strong>NO MORE THAN TWO WORDS AND/OR A NUMBER. ONE WORD '
          'ONLY.</strong> الحدّ مطبوع فوق الفجوات، وهو أول ما يُقرأ، قبل الملخّص '
          'وقبل النص. فهو يحدّد شكل الإجابة الصحيحة قبل أن تجدها.',
-    t1bn='الكلمة الموصولة بشرطة تُعدّ كلمة واحدة. والرقم رقم لا كلمة. أما '
-         '<em>The</em> فكلمة، وتُحتسب.',
+    t1bn='الكلمة الموصولة بشرطة كلمة واحدة، و<em>the</em> كلمة تُحتسب. مع '
+         'AND/OR A NUMBER يُسمح برقم فوق عدد الكلمات، ومع حدّ للكلمات وحدها '
+         'احسبه كلمة.',
     t1ch='أحيانًا يكون هناك مربّع',
     t1cb='عندما تعطيك المهمة قائمة كلمات A&ndash;H، فأنت تختار من القائمة لا '
          'من النص، وتكتب الحرف. وقد لا تكون الكلمات في النص أصلًا، وفي القائمة '
@@ -1343,9 +1373,9 @@ T['ar'] = dict(
     t2Eyebrow='قبل أن تبدأ',
     t2Title='الكلمة في النص. انقلها.',
     t2ah='جِد الموضع بالمعنى',
-    t2ab='الملخّص لا يكرّر النص، بل يعيد صياغة كل ما <strong>حول</strong> '
-         'الفجوة. طابِق معنى الجملة لتجد الأسطر الصحيحة، ثم ابحث فيها عن الكلمة '
-         'الوحيدة التي لم يغيّرها الملخّص.',
+    t2ab='نادرًا ما يكرر الملخّص النص كلمةً كلمة، بل يعيد صياغة معظم ما '
+         '<strong>حول</strong> الفجوة. طابق معنى الجملة لتجد السطور الصحيحة، '
+         'ثم اقرأ تلك السطور بحثًا عن الكلمة التي أسقطها الملخّص.',
     t2an='الكلمة المشتركة تدلّك أين تبحث. وكلمة الفجوة هي عادةً الكلمة الوحيدة '
          'التي لم تُعَد صياغتها.',
     t2bh='ثم انسخها كما هي تمامًا',
@@ -1354,18 +1384,19 @@ T['ar'] = dict(
          'تنال شيئًا، لأن المصحّح يقارن إجابتك بمفتاح الإجابة لا بالنص.',
     t2bn='إذا لم تكن كلمتك في النص، فليست هي الإجابة.',
     t2ch='الحدّ جدار',
-    t2cb='مع NO MORE THAN TWO WORDS، الإجابة المكوّنة من ثلاث كلمات تنال صفرًا '
-         'مهما كانت صحيحة. لا نصف درجة: صفر. وحين تتجاوز الإجابة الحدّ، تكون '
-         'الكلمة الزائدة غالبًا أداة تعريف أو صفة لم تكن بحاجة إليها.',
+    t2cb='مع NO MORE THAN TWO WORDS لا تنال الإجابة المؤلفة من ثلاث كلمات '
+         'شيئًا، مهما كانت صحيحة. لا نصف درجة: لا شيء. وحين تتجاوز الإجابة '
+         'الحدّ، تكون الكلمة الزائدة غالبًا أداة تعريف أو صفة أو حرف جر لم '
+         'تكن تحتاجه.',
     t2cn='اكتب الإجابة، وعُدّ كلماتها، ثم اقرأ سطر التعليمات من جديد.',
 
     t3Eyebrow='قبل أن تبدأ',
     t3Title='توقّع الكلمة قبل أن تبحث عنها',
     t3ah='حدّد نوع الكلمة أولًا',
-    t3ab='اقرأ جملة الملخّص التي فيها الفجوة وقرّر ما تحتاجه: اسم، أو فعل، أو '
-         'صفة، أو رقم. الفجوة بعد <em>the</em> أو <em>a</em> تريد اسمًا، '
-         'والفجوة بعد الفاعل تريد فعلًا، والفجوة بعد <em>lasted</em> أو '
-         '<em>cost</em> تريد مقدارًا.',
+    t3ab='اقرأ جملة الملخّص التي فيها الفجوة وقرّر ما تحتاجه: اسم، أو فعل، '
+         'أو صفة، أو رقم. الفجوة بعد <em>the</em> أو <em>a</em> تريد اسمًا، '
+         'أو صفة إذا جاء بعد الفجوة اسم؛ والفجوة بعد الفاعل تريد فعلًا؛ '
+         'والفجوة بعد <em>lasted</em> أو <em>cost</em> تريد كمية.',
     t3an='قرّر ذلك قبل أن تفتح النص، فتبحث عن نوع واحد من الكلمات لا عن أيّ '
          'كلمة.',
     t3bh='يجب أن تكون الإجابة إنجليزية سليمة',
@@ -1394,9 +1425,9 @@ T['ar'] = dict(
     r3why='عبارة <em>A fall of 200 tonnes</em> أربع كلمات ورقم، أي كلمة زائدة. '
           'و<em>In 1846</em> كلمة ورقم، و<em>nearly 200 tonnes</em> كلمتان ورقم، '
           'و<em>some 200 tonnes each</em> ثلاث كلمات ورقم: كلها مسموحة.',
-    r4why='مع القائمة تكتب حرفًا، وكلمات القائمة لا يلزم أن تكون في النص. '
-          'والقائمة فيها خيارات أكثر من الفجوات، والملخّص ما زال يغطي قسمًا واحدًا '
-          'فقط، والكلمات ما زالت تُعدّ كلمات.',
+    r4why='مع القائمة تكتب حرفًا، وقد لا تكون كلمات القائمة في النص أصلًا. '
+          'في القائمة خيارات أكثر من الفجوات، ويغطي الملخّص عادةً قسمًا '
+          'واحدًا مع ذلك، ولا يوجد حدّ للكلمات: الإجابة حرف.',
     r5why='يقول النص <em>a process known as bleaching</em>، والملخّص يعيد صياغة '
           '<em>warmer water</em> إلى <em>rising sea temperatures</em> ويترك '
           'كلمة الفجوة كما هي. فـ<em>coral whitening</em> هي الفكرة الصحيحة '
@@ -1421,9 +1452,9 @@ T['ar'] = dict(
     r11why='التركيب <em>was not ______ until</em> يريد اسم مفعول، أي المبني '
            'للمجهول. و<em>correctly identified</em> هو ما يطبعه النص، والجملة '
            'تستقيم. توقّع هذا الشكل تسقط ثلاثة خيارات قبل أن تنظر.',
-    r12why='الفعل <em>took</em> يريد مدة: رقمًا واسمًا بالجمع. <em>Eleven '
-           'years</em> كما هي مطبوعة. المفرد لا يتّفق، والعدد الترتيبي كلمة '
-           'أخرى، والأداة تجعلها ثلاث كلمات.',
+    r12why='الفعل <em>took</em> يريد مدة زمنية: رقمًا واسمًا جمعًا. '
+           '<em>Eleven years</em> كما طُبعت. المفرد لا يتطابق، والعدد '
+           'الترتيبي كلمة أخرى، و<em>an</em> لا تأتي قبل الجمع.',
 
     sortEyebrow='النشاط 4 · ماذا يفعل المصحّح',
     sortTitle='صنِّف الإجابات الست',
@@ -1436,12 +1467,11 @@ T['ar'] = dict(
     sort4='ثلاث كلمات والحدّ كلمتان',
     sort5='الفكرة الصحيحة بكلماتك',
     sort6='كلمة النص بخطأ إملائي',
-    sortWhy='كل ما في عمود «تُحتسب» هو <strong>النص، ضمن الحدّ، ومكتوب كما '
-            'طُبع</strong>: الرقم يُعدّ عنصرًا واحدًا، والكلمة الموصولة بشرطة كلمة '
-            'واحدة. أما عمود «لا تنال شيئًا» فيضمّ ثلاث طرق لفهم النص دون أن تكسب '
-            'شيئًا: كلمة فوق الحدّ، وفكرة صحيحة بكلمات أخرى، وكلمة منسوخة بحرف '
-            'خاطئ. المصحّح لا يقرأ من أجل المعنى، بل يقارن إجابتك بمفتاح '
-            'الإجابة.',
+    sortWhy='كل ما <strong>يُحتسب</strong> هو النص، ضمن الحدّ، ومكتوب كما '
+            'طُبع: الرقم يُعدّ عنصرًا واحدًا، والكلمة الموصولة بشرطة كلمة '
+            'واحدة. أما العمود الآخر ففيه ثلاث طرق لفهم النص دون نيل شيء: '
+            'كلمة فوق الحدّ، وفكرة صحيحة بكلمات أخرى، وكلمة منقولة بحرف '
+            'خاطئ. المصحّح لا يقرأ المعنى، بل يقارن إجابتك بمفتاح الإجابة.',
 
     actTitle='اصنع الفجوات بنفسك',
     actUse='استخدم ثلاثة منها على الأقل:',
@@ -1476,16 +1506,15 @@ T['zh'] = dict(
     t1Eyebrow='开始之前',
     t1Title='三个空、一行说明，先读那一行',
     t1ah='题目给你什么',
-    t1ab='一段文章部分内容的摘要，或者几个独立的句子，中间留有空格。填空的词都在'
-         '原文里。摘要通常按原文顺序展开，但只覆盖其中一部分——找到这一部分从哪里'
-         '开始，然后就待在里面。',
+    t1ab='一段对文章某部分的摘要，或几句独立的句子，里面有空格。填空的词都在原文里。摘要通常按原文顺序，而且通常只涵盖其中一部分——找到那一部分'
+         '从哪里开始，就待在那里。',
     t1an='Academic 和 General Training 的出法一样。这里讲的都适用于两者。',
     t1bh='先读说明',
     t1bb='<strong>NO MORE THAN TWO WORDS AND/OR A NUMBER. ONE WORD '
          'ONLY.</strong> 字数限制印在空格上方，是第一个要读的东西——在摘要之前，'
          '在原文之前。你还没找到答案，它就已经决定了正确答案长什么样。',
-    t1bn='带连字符的词算一个词。数字是数字，不算词。<em>The</em> 是一个词，要'
-         '算进去。',
+    t1bn='带连字符的词算一个词，<em>the</em> 也是算数的一个词。在 AND/OR A NUMBER '
+         '的要求下，数字可以另外加上；如果只有字数限制，数字要算作一个词。',
     t1ch='有时会有一个选项框',
     t1cb='如果题目给你一列词，A&ndash;H，你要从列表里选，而不是从原文里找，写'
          '的是字母。这些词可能根本不在原文里，而且选项比空格多。',
@@ -1494,8 +1523,8 @@ T['zh'] = dict(
     t2Eyebrow='开始之前',
     t2Title='词就在原文里，把它拿过来。',
     t2ah='按意思找位置',
-    t2ab='摘要不会重复原文；它改写的是空格<strong>周围</strong>的一切。用句子的'
-         '意思去对应，找到正确的那几行，再在这几行里找那个摘要没有改动的词。',
+    t2ab='摘要很少逐字重复原文；空格<strong>周围</strong>的大部分内容都经过改写。按句子的意思找到对应的几行，再在这几行里找摘要'
+         '漏掉的那个词。',
     t2an='共同的词告诉你去哪里找。要填的词通常就是唯一没被改写的那个。',
     t2bh='然后原样照抄',
     t2bb='拼写一样，形式也和原文一样。不要改成复数，不要改时态，不要加摘要里已'
@@ -1503,17 +1532,16 @@ T['zh'] = dict(
          '准答案比，而不是和原文比。',
     t2bn='你的词如果不在原文里，就不是答案。',
     t2ch='字数限制是一堵墙',
-    t2cb='在 NO MORE THAN TWO WORDS 下，三个词的答案无论多对都是零分。不是半分，'
-         '是零分。答案超字数时，多出来的那个词几乎总是一个不需要的冠词或形'
-         '容词。',
+    t2cb='在 NO MORE THAN TWO WORDS 的要求下，三个词的答案再对也不得分。不是半分，是零分。答案超了字数时，多出来的往往是'
+         '你并不需要的冠词、形容词或介词。',
     t2cn='写下答案，数一数字数，再读一遍说明。',
 
     t3Eyebrow='开始之前',
     t3Title='找之前先预测是什么词',
     t3ah='先确定词性',
-    t3ab='读有空格的那句摘要，判断它需要什么：名词、动词、形容词还是数字。'
-         '<em>the</em> 或 <em>a</em> 后面的空要名词；主语后面的空要动词；'
-         '<em>lasted</em> 或 <em>cost</em> 后面的空要数量。',
+    t3ab='读有空格的那句摘要，判断它需要什么：名词、动词、形容词还是数字。<em>the</em> 或 <em>a</em> '
+         '后面的空要名词，如果空后面跟着名词，就要形容词；主语后面的空要动词；<em>lasted</em> 或 <em>cost</em> '
+         '后面的空要数量。',
     t3an='在打开原文之前就判断好。这样你找的是一类词，而不是随便哪个词。',
     t3bh='答案必须是通顺的英语',
     t3bb='把你的词放进空里，把整句读一遍。单数还是复数，过去还是现在：由摘要这'
@@ -1540,8 +1568,7 @@ T['zh'] = dict(
     r3why='<em>A fall of 200 tonnes</em> 是四个词加一个数字，超了一个。<em>In '
           '1846</em> 是一个词加一个数字，<em>nearly 200 tonnes</em> 是两个词加'
           '一个数字，<em>some 200 tonnes each</em> 是三个词加一个数字：都可以。',
-    r4why='有列表时你写的是字母，列表里的词不一定在原文中。选项比空格多，摘要仍'
-          '然只覆盖一部分，词也照样按词计数。',
+    r4why='有词表时你写字母，词表里的词甚至可能根本不在原文里。选项比空格多，摘要通常仍只涵盖一部分，而且没有字数限制：答案是一个字母。',
     r5why='原文说的是 <em>a process known as bleaching</em>；摘要把 <em>warmer '
           'water</em> 改写成 <em>rising sea temperatures</em>，而要填的词没有'
           '动。<em>Coral whitening</em> 意思对但换了说法，<em>bleached</em> 形式'
@@ -1564,9 +1591,8 @@ T['zh'] = dict(
     r11why='<em>Was not ______ until</em> 要的是过去分词：被动语态。<em>Correctly '
            'identified</em> 是原文印的，句子也通。预测到这个形式，还没看选项就'
            '能排除三个。',
-    r12why='<em>Took</em> 后面要一段时间：一个数字加一个复数名词。<em>Eleven '
-           'years</em>，照印刷原样。单数不一致，序数词是另一个词，加冠词就成了'
-           '三个词。',
+    r12why='<em>Took</em> 需要一段时长：一个数字加一个复数名词。<em>Eleven '
+           'years</em>，按印刷原样。单数不一致，序数词是另一个词，而 <em>an</em> 不能放在复数前。',
 
     sortEyebrow='练习 4 · 阅卷人怎么做',
     sortTitle='给这六个答案分类',
@@ -1579,10 +1605,9 @@ T['zh'] = dict(
     sort4='限制两个词却写了三个词',
     sort5='用自己的话写出的正确意思',
     sort6='拼错了的原文单词',
-    sortWhy='左栏的每一项都是<strong>原文的词、在字数限制之内、按印刷原样拼写'
-            '</strong>——数字算一项，带连字符的词算一个词。右栏是看懂了原文却一分'
-            '不得的三种情况：超出限制一个词、换了说法的正确意思、抄错一个字母的原'
-            '词。阅卷人不看意思，只拿你的答案和标准答案比。',
+    sortWhy='所有<strong>得分</strong>的答案，都是原文的词、在字数限制之内、按印刷原样拼写——数字算一项，带连字符的词算一个'
+            '词。另一栏是看懂了原文却一分不得的三种情况：超出限制一个词、换了说法的正确意思、抄错一个字母的原词。阅卷人不看意思，只拿你的答案'
+            '和答案对照。',
 
     actTitle='自己来出填空题',
     actUse='至少用上三个：',
@@ -1615,9 +1640,8 @@ T['ja'] = dict(
     t1Eyebrow='始める前に',
     t1Title='空所が三つ、指示が一行。まず読むのはその一行',
     t1ah='与えられるもの',
-    t1ab='本文の一部の要約、または別々の文の集まりに空所があります。空所に入る語'
-         'は本文にあります。要約はふつう本文の順に進みますが、扱うのは一部分だけ'
-         'です――その部分がどこから始まるかを見つけ、その中で探しましょう。',
+    t1ab='本文の一部の要約、または独立した文のまとまりで、空所があります。空所を埋める語は本文にあります。要約はふつう本文の順に進み、ふつうはそ'
+         'の一部の範囲だけを扱います――その範囲がどこから始まるかを見つけ、その中にとどまりましょう。',
     t1an='Academic も General Training も出題のしかたは同じです。ここで学ぶこと'
          'はどちらにも使えます。',
     t1bh='まず指示文を読む',
@@ -1625,8 +1649,8 @@ T['ja'] = dict(
          'ONLY.</strong> 制限は空所の上に印刷されていて、最初に読むべきものです'
          '――要約より先、本文より先に。答えを見つける前から、正しい答えの形を決め'
          'てしまうからです。',
-    t1bn='ハイフンでつながった語は一語です。数字は数字で、語には数えません。'
-         '<em>The</em> は一語で、数に入ります。',
+    t1bn='ハイフンでつながった語は一語で、<em>the</em> も数に入る一語です。AND/OR A NUMBER '
+         'なら語に加えて数字を一つ書けますが、語数だけの制限なら数字も一語と数えます。',
     t1ch='語群の枠があることも',
     t1cb='A&ndash;H の語のリストが与えられたら、本文ではなくリストから選び、記号'
          'を書きます。リストの語は本文にまったく出てこないこともあり、選択肢は空'
@@ -1637,9 +1661,8 @@ T['ja'] = dict(
     t2Eyebrow='始める前に',
     t2Title='語は本文にある。そのまま取る。',
     t2ah='意味で場所を見つける',
-    t2ab='要約は本文を繰り返しません。空所の<strong>周り</strong>をすべて言い換え'
-         'ています。文の意味を照らし合わせて該当する行を見つけ、その行の中で要約'
-         'が変えなかった一語を探しましょう。',
+    t2ab='要約が本文を一語一語くり返すことはまれで、空所の<strong>まわり</strong>の大部分を言い換えています。文の意味を手がかり'
+         'に該当する行を見つけ、その行の中で要約が抜いた語を探しましょう。',
     t2an='共通の語は探す場所を教えてくれます。空所の語は、たいてい言い換えられな'
          'かった唯一の語です。',
     t2bh='そして、そのまま写す',
@@ -1648,17 +1671,16 @@ T['ja'] = dict(
          'たの答えを本文ではなく解答と照らし合わせるからです。',
     t2bn='その語が本文になければ、答えではありません。',
     t2ch='制限は壁',
-    t2cb='NO MORE THAN TWO WORDS のもとでは、三語の答えはどれほど正しくても0点で'
-         'す。半分の点ではなく、0点です。字数を超えたとき、余分な一語はほとんどの'
-         '場合、要らない冠詞か形容詞です。',
+    t2cb='NO MORE THAN TWO WORDS なら、三語の答えはどれほど正しくても0点です。半分の点もなく、0点。答えが制限を超えると'
+         'き、余分な語はたいてい、要らなかった冠詞、形容詞、前置詞です。',
     t2cn='答えを書き、語数を数え、もう一度指示文を読みましょう。',
 
     t3Eyebrow='始める前に',
     t3Title='探す前に語を予測する',
     t3ah='まず品詞を決める',
-    t3ab='空所のある要約の文を読み、何が必要かを決めます：名詞、動詞、形容詞、数'
-         '字。<em>the</em> や <em>a</em> の後の空所は名詞、主語の後の空所は動詞、'
-         '<em>lasted</em> や <em>cost</em> の後の空所は量を求めています。',
+    t3ab='空所のある要約の文を読み、何が必要かを決めます：名詞、動詞、形容詞、数字。<em>the</em> や <em>a</em> '
+         'の後の空所は名詞、空所の後に名詞が続くなら形容詞、主語の後の空所は動詞、<em>lasted</em> や '
+         '<em>cost</em> の後の空所は量です。',
     t3an='本文を開く前に決めましょう。そうすれば、どんな語でもなく、一種類の語を'
          '探すことになります。',
     t3bh='答えは英語として通じること',
@@ -1687,9 +1709,8 @@ T['ja'] = dict(
     r3why='<em>A fall of 200 tonnes</em> は四語と数字で、一語多すぎます。<em>In '
           '1846</em> は一語と数字、<em>nearly 200 tonnes</em> は二語と数字、'
           '<em>some 200 tonnes each</em> は三語と数字：どれも認められます。',
-    r4why='リストがあれば記号を書き、リストの語が本文にある必要はありません。選択'
-          '肢は空所より多く、要約が扱うのはやはり一部分だけで、語はやはり語として'
-          '数えます。',
+    r4why='リストがあるときは記号を書き、リストの語が本文にまったくないこともあります。選択肢は空所より多く、要約はそれでもふつう一部の範囲だけ'
+          'を扱い、語数制限はありません：答えは記号です。',
     r5why='本文は <em>a process known as bleaching</em> と言っています。要約は '
           '<em>warmer water</em> を <em>rising sea temperatures</em> と言い換え、'
           '空所の語はそのままです。<em>Coral whitening</em> は内容は正しいが別の'
@@ -1714,9 +1735,8 @@ T['ja'] = dict(
     r11why='<em>Was not ______ until</em> には過去分詞、つまり受け身が必要です。'
            '<em>Correctly identified</em> は本文に印刷されている語で、文も通じま'
            'す。この形を予測すれば、見る前に三つの選択肢が消えます。',
-    r12why='<em>Took</em> の後には期間、つまり数字と複数名詞が必要です。'
-           '<em>Eleven years</em>、印刷どおり。単数形は一致せず、序数は別の語で、'
-           '冠詞をつけると三語になります。',
+    r12why='<em>Took</em> には期間が必要です：数字と複数形の名詞。<em>Eleven '
+           'years</em>、印刷どおり。単数形は一致せず、序数は別の語で、<em>an</em> は複数形の前には置けません。',
 
     sortEyebrow='演習 4 · 採点者がすること',
     sortTitle='六つの答えを分類しましょう',
@@ -1730,12 +1750,9 @@ T['ja'] = dict(
     sort4='制限が二語なのに三語',
     sort5='自分の言葉で書いた正しい内容',
     sort6='つづりを間違えた本文の語',
-    sortWhy='左の列はすべて、<strong>本文の語を、制限内で、印刷どおりのつづりで'
-            '</strong>書いたものです――数字は一項目、ハイフンつきの語は一語と数えま'
-            'す。右の列は、本文を理解していながら点にならない三つのパターンです：'
-            '制限を一語超えたもの、別の言葉で書いた正しい内容、一文字間違えて写し'
-            'た語。採点者は意味で読みません。あなたの答えを解答と照らし合わせるだ'
-            'けです。',
+    sortWhy='<strong>点になる</strong>ものはすべて、本文の語を、制限内で、印刷どおりのつづりで書いたものです――数字は一項目'
+            '、ハイフンつきの語は一語と数えます。もう一方の列は、本文を理解していながら点にならない三つのパターンです：制限を一語超えたもの、'
+            '正しい内容を別の言葉で書いたもの、一文字写し間違えた語。採点者は意味を読みません。答えを解答と照らし合わせるだけです。',
 
     actTitle='空所を自分で作る',
     actUse='少なくとも三つ使いましょう：',
