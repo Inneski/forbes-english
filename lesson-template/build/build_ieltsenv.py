@@ -43,6 +43,7 @@ import deck as D
 from ielts_langs import LANGS
 from ieltsenv_data import (EMISSIONS, RENEWABLES, WASTE, ALL,
                            SORT_BINS, SORT_ITEMS, SORT_WHY)
+import i18n_ieltsenv as I
 
 TPL = 'lesson-template/lesson-template.html'
 OUT = 'forbes-english-ielts-vocabulary-environment.html'
@@ -72,166 +73,72 @@ BG_EMISSIONS, BG_RENEW, BG_WASTE, BG_FILE = ('bg02.jpg', 'bg03.jpg',
                                              'bg04.jpg', 'bg05.jpg')
 BG_ACT = 'bg06.jpg'
 
+# Every English string on the slides is read from the i18n module, so the
+# HTML and UI_I18N.en cannot drift apart. Until 2026-09-24 they were written
+# out twice, and a correction to one copy would have missed the other.
+E = I.T['en']
+
+
+def card(p):
+    """The six-item teach card for prefix p ('t1a', 't1b', …), from E."""
+    return (p + 'h', E[p + 'h'], p + 'b', E[p + 'b'], p + 'n', E[p + 'n'])
+
 
 def build():
     D.assert_no_key_is_longest(ALL, 'IELTSENV')
     logo = D.logo_from(TPL)
 
     slides = (
-        D.cover(logo, 'Environment <em>and Energy</em>',
-                'The first topic bank: three ideas, each with its pairings '
-                'and its argument already attached',
-                [('Level', 'C1 &middot; Advanced'),
-                 ('Focus', 'Speaking &amp; Writing Task 2'),
-                 ('Count', '18 points')])
+        D.cover(logo, E['coverTitle'], E['coverSub'],
+                [('Level', E['chipLevel']),
+                 ('Focus', E['chipFocus']),
+                 ('Count', E['chipCount'])])
 
-        + D.teach('t1Eyebrow', 'Idea 1 of 3',
-                  't1Title', 'Emissions: four pairings and two arguments',
-                  [('t1ah', 'Cut them &mdash; the verb is fixed', 't1ab',
-                    'Emissions are <em>cut</em> or <em>reduced</em>; a '
-                    'country <em>burns fossil fuels</em> and releases '
-                    '<em>greenhouse gases</em>; a city measures its <em>air '
-                    'quality</em>. The verb is chosen by the noun, and none '
-                    'of the four is rare.', 't1an',
-                    'Four pairings, learnt whole. A bare <em>emissions</em> '
-                    'in the notebook is worth none of them.'),
-                   ('t1bh', 'The footprint and the tax', 't1bb',
-                    'A person or a firm has a <em>carbon footprint</em>, and '
-                    'shrinking it is what a <em>carbon tax</em> is for. '
-                    'Both are fixed: the mark you leave is a '
-                    '<em>footprint</em>, not a trace, and the charge is a '
-                    '<em>tax</em>, not a fine.', 't1bn',
-                    'File them together. The tax exists because of the '
-                    'footprint.'),
-                   ('t1ch', 'The argument it arrives with', 't1cb',
-                    'Two shapes carry most Part 3 answers here. <strong>Who '
-                    'pays</strong>: dirty air lands on people who did not '
-                    'produce it. <strong>Targets against '
-                    'enforcement</strong>: a country can promise to halve '
-                    'its emissions and never fine a single factory.', 't1cn',
-                    'File the idea, and the paragraph is half-written before '
-                    'the question is read.')],
+        + D.teach('t1Eyebrow', E['t1Eyebrow'], 't1Title', E['t1Title'],
+                  [card('t1a'), card('t1b'), card('t1c')],
                   folder=F, bg=BG_EMISSIONS)
 
-        + "".join(D.mc(i + 1, len(EMISSIONS), q, 'mcaEyebrow',
-                       'Activity 1 &middot; Emissions', 'mcaTitle',
-                       'Which pairing, and which word?',
+        + "".join(D.mc(i + 1, len(EMISSIONS), q, 'mcaEyebrow', E['mcaEyebrow'],
+                       'mcaTitle', E['mcaTitle'],
                        folder=F, bg=BG_EMISSIONS, ctx=q.get('ctx'))
                   for i, q in enumerate(EMISSIONS))
 
-        + D.teach('t2Eyebrow', 'Idea 2 of 3',
-                  't2Title', 'Renewables: generate, subsidise, phase out',
-                  [('t2ah', 'Generate, not make', 't2ab',
-                    'A <em>wind farm</em> or a roof of <em>solar panels</em> '
-                    '<em>generates electricity</em>, and what it generates '
-                    'feeds the <em>national grid</em>. <em>Renewable '
-                    'energy</em> is the umbrella term; <em>renewables</em> on '
-                    'its own is the noun a Part 3 answer uses.', 't2an',
-                    'Four pairings and one umbrella noun. All plain, all '
-                    'fixed.'),
-                   ('t2bh', 'The precise word for the weakness', 't2bb',
-                    'The sun sets and the wind drops, so the supply is '
-                    '<em>intermittent</em>: it comes and goes on its own '
-                    'schedule. Several words sound close and mean something '
-                    'else, and the examiner counts the one that means what '
-                    'you meant.', 't2bn',
-                    'A near-miss that sounds advanced scores below the plain '
-                    'word that lands.'),
-                   ('t2ch', 'The argument it arrives with', 't2cb',
-                    'Governments <em>subsidise</em> renewables and <em>phase '
-                    'out coal</em>, and every essay on the topic weighs the '
-                    'same two pairs. <strong>Reliability against '
-                    'cost</strong>: cheap to generate, dear to store. '
-                    '<strong>Subsidy against the market</strong>: the panels '
-                    'exist because someone paid, and may need someone to '
-                    'keep paying.', 't2cn',
-                    '<em>Energy security</em> is the third term: a country '
-                    'that generates its own power cannot be cut off.')],
+        + D.teach('t2Eyebrow', E['t2Eyebrow'], 't2Title', E['t2Title'],
+                  [card('t2a'), card('t2b'), card('t2c')],
                   folder=F, bg=BG_RENEW)
 
-        + "".join(D.mc(i + 1, len(RENEWABLES), q, 'mcbEyebrow',
-                       'Activity 2 &middot; Renewables', 'mcbTitle',
-                       'Which pairing, and which word?',
+        + "".join(D.mc(i + 1, len(RENEWABLES), q, 'mcbEyebrow', E['mcbEyebrow'],
+                       'mcbTitle', E['mcbTitle'],
                        folder=F, bg=BG_RENEW, ctx=q.get('ctx'))
                   for i, q in enumerate(RENEWABLES))
 
-        + D.teach('t3Eyebrow', 'Idea 3 of 3',
-                  't3Title', 'Consumption and waste: the pairing includes the '
-                             'preposition',
-                  [('t3ah', 'Sent to landfill, cut down on', 't3ab',
-                    'Rubbish is <em>sent to landfill</em>; a council reports '
-                    'its <em>recycling rates</em>; a shopper <em>cuts down '
-                    'on</em> <em>excess packaging</em>. The preposition '
-                    'belongs to the pairing: <em>landfill</em> takes no '
-                    'article, and the phrasal verb is two particles, not '
-                    'one.', 't3an',
-                    'Write the whole thing. Half a phrasal verb is a miss.'),
-                   ('t3bh', 'Single-use, throwaway, deposit', 't3bb',
-                    'A bottle used once is <em>single-use plastic</em>; a '
-                    'society that expects to bin things has a <em>throwaway '
-                    'culture</em>; a scheme that pays you to bring the '
-                    'bottle back is a <em>deposit scheme</em>. Three '
-                    'adjective-noun pairings, all C1, none rare.', 't3bn',
-                    '<em>A throwaway culture</em> is worth more than '
-                    '<em>consumerism</em> because it is precise.'),
-                   ('t3ch', 'The argument it arrives with', 't3cb',
-                    'Ask who should change and the answer is written. '
-                    '<strong>Individual against producer '
-                    'responsibility</strong>: a shopper can change '
-                    '<em>consumer habits</em>, but the packaging was decided '
-                    'before the shopper arrived. <strong>Convenience against '
-                    'cost</strong>: single-use is cheap now and paid for '
-                    'later.', 't3cn',
-                    'Both arguments run either way round, which is what '
-                    'makes them worth filing.')],
+        + D.teach('t3Eyebrow', E['t3Eyebrow'], 't3Title', E['t3Title'],
+                  [card('t3a'), card('t3b'), card('t3c')],
                   folder=F, bg=BG_WASTE)
 
-        + "".join(D.mc(i + 1, len(WASTE), q, 'mccEyebrow',
-                       'Activity 3 &middot; Consumption and waste', 'mccTitle',
-                       'Which pairing, and which word?',
+        + "".join(D.mc(i + 1, len(WASTE), q, 'mccEyebrow', E['mccEyebrow'],
+                       'mccTitle', E['mccTitle'],
                        folder=F, bg=BG_WASTE, ctx=q.get('ctx'))
                   for i, q in enumerate(WASTE))
 
         + D.sort_slide(SORT_BINS, SORT_ITEMS,
-                       'sortEyebrow', 'Activity 4 &middot; Filing by idea',
-                       'sortTitle', 'File the six pairings',
-                       'sortHint', 'Drag each one into a column &mdash; or '
-                                   'click an item, then the column you want '
-                                   'it in.',
+                       'sortEyebrow', E['sortEyebrow'],
+                       'sortTitle', E['sortTitle'],
+                       'sortHint', E['sortHint'],
                        SORT_WHY, folder=F, bg=BG_FILE,
                        bin_keys=['sortBin1', 'sortBin2'])
 
         + D.results('resNext', 'You can file it. Now argue with it &rarr;',
                     folder=F)
 
-        + D.activate('Answer from the bank', 'Use at least three:', CHIPS,
+        + D.activate(E['actTitle'], E['actUse'], CHIPS,
                      'Discussion &middot; in pairs',
-                     'In pairs. One of you is the examiner and asks three '
-                     'Part 3 questions on the environment &mdash; whether '
-                     'governments or individuals should act on emissions, '
-                     'whether renewables can replace coal, whether recycling '
-                     'is worth the effort. The other answers using only '
-                     'pairings from the bank. Swap after three.',
-                     ['Every answer carries at least one pairing from the '
-                      'bank, said whole &mdash; the verb with its noun, or '
-                      'the adjective with its noun.',
-                      'The examiner asks <em>why</em> after every answer. The '
-                      'follow-up has to use one of the arguments the idea '
-                      'arrived with: who pays, reliability against cost, '
-                      'individual against producer.',
-                      'If the word is not in the bank, describe the thing in '
-                      'plain English rather than reaching for a rare word.'],
-                     'Writing &middot; 150&ndash;200 words',
-                     'Write one Task 2 body paragraph on one of the three '
-                     'ideas &mdash; emissions, renewables, or consumption and '
-                     'waste. Use at least five pairings from the bank and '
-                     'underline each one. Then say which argument the '
-                     'paragraph is making.',
-                     'The most effective way to cut emissions is…',
+                     E['actSpeakBrief'],
+                     [E['actSpeak1'], E['actSpeak2'], E['actSpeak3']],
+                     E['actWriteKind'], E['actWriteBrief'],
+                     E['actPlaceholder'],
                      folder=F, bg=BG_ACT)
     )
-
-    import i18n_ieltsenv as I
     s = D.assemble(TPL, OUT, slides, PALETTE,
                    'IELTS Vocabulary: Environment and Energy (C1) | Forbes English',
                    I, langs=LANGS)

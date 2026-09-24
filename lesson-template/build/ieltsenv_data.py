@@ -119,7 +119,9 @@ WASTE = [
                   'Once-only plastic.'],
          correct=1, why='v10why'),
 
-    dict(stem='Which sentence uses a phrasal verb English actually has?',
+    # The stem asked for "a phrasal verb English actually has", which cut
+    # off and cut away are; the wrong answers satisfied it. Fixed 2026-09-24.
+    dict(stem='Which sentence is natural English?',
          options=['Shoppers could cut off on packaging.',
                   'Shoppers could cut away on packaging.',
                   'Shoppers could cut down on packaging.',
@@ -145,7 +147,9 @@ SORT_BINS = ['Emissions and energy', 'Consumption and waste']
 SORT_ITEMS = [
     ('burn fossil fuels', 0),
     ('phase out coal', 0),
-    ('a carbon footprint', 0),
+    # Was 'a carbon footprint', which the deck's own item builds from flights
+    # and steak - consumption - so either column was defensible.
+    ('generate electricity', 0),
     ('send to landfill', 1),
     ('a throwaway culture', 1),
     ('excess packaging', 1),
