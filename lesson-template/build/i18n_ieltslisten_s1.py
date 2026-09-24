@@ -51,15 +51,16 @@ T['en'] = dict(
 
     t1Eyebrow='Before you listen',
     t1Title='The easiest section, and the one people throw marks away on',
-    t1ah='What Section 1 always is',
-    t1ab='Two speakers, an everyday situation, and a form or a set of notes to '
-         'complete. Enrolling, booking, reporting something lost. It is the '
-         'gentlest English on the paper.',
-    t1an='Which is why a lost mark here costs the same as a lost mark in the '
-         'lecture, and hurts more.',
-    t1bh='It tests writing, not understanding',
-    t1bb='You will understand nearly every word. The marks go on whether you '
-         'can write a spelled surname, a phone number and a price down '
+    t1ah='What Section 1 is',
+    t1ab='Two speakers in an everyday situation, and usually a form, notes '
+         'or a table to complete &mdash; sometimes a few multiple-choice '
+         'questions as well. Enrolling, booking, reporting something lost. '
+         'It is the gentlest English on the paper.',
+    t1an='A mark lost here costs as much as one lost in the lecture, and it '
+         'is easier to keep.',
+    t1bh='It tests accurate writing as much as understanding',
+    t1bb='You will understand nearly every word. The marks depend on whether '
+         'you can write down a spelled surname, a phone number and a price '
          'accurately while someone keeps talking.',
     t1bn='Spelling counts. A correctly heard word spelt wrong scores nothing.',
     t1ch='Read the form first',
@@ -83,25 +84,25 @@ T['en'] = dict(
             'expected to hear.',
 
     t2Eyebrow='After the recording',
-    t2Title='The four places this section takes its marks',
+    t2Title='Where this section takes its marks',
     t2ah='The correction',
     t2ab='A speaker says one thing and immediately changes it &mdash; '
-         '<em>Tuesday&hellip; sorry, that&rsquo;s the children, the adult class is '
-         'Thursday</em>. The answer is always the second one. This is the '
-         'commonest mistake on the whole section.',
-    t2an='Listen for <em>sorry</em>, <em>actually</em>, <em>I mean</em>, <em>I '
-         'beg your pardon</em>. Every one of them is a warning that the answer '
-         'is about to change.',
+         '<em>Tuesday&hellip; sorry, that&rsquo;s the children, the adult '
+         'class is Thursday</em>. The answer is the second one. It is one of '
+         'the commonest ways to lose a mark here.',
+    t2an='Listen for <em>sorry</em>, <em>actually</em>, <em>I mean</em>, '
+         '<em>I beg your pardon</em>. Each of them can signal a change, so '
+         'check the next few words before you write.',
     t2bh='The spelled word',
     t2bb='When a speaker starts giving letters, an answer is being dictated. '
-         'In Section 1 it usually happens once, and it is never repeated more '
-         'than the speakers would naturally repeat it.',
-    t2bn='Know the letters that sound alike in English: A, E and I; G and J; '
-         'M and N.',
+         'Expect at least one spelled word in Section 1. It may be read '
+         'back, as it is here, but do not count on hearing it twice.',
+    t2bn='Know the letters learners most often confuse: A, E and I, whose '
+         'English names differ from most alphabets; G and J; M and N.',
     t2ch='The number and the distractor',
     t2cb='British speakers say <em>double oh</em> for two noughts and '
-         '<em>oh</em> for one. And there are nearly always two prices or two '
-         'times &mdash; one of them labelled as the wrong one, quickly.',
+         '<em>oh</em> for one. And there are often two prices or two times, '
+         'with one of them quickly ruled out.',
     t2cn='Thirty-five was the monthly rate for non-members. She was joining, '
          'so the answer was forty-two.',
 
@@ -128,8 +129,8 @@ T['en'] = dict(
                   'the form and then reads it back.',
     actSpeak1='Speller: give the surname once, at speaking speed. Do not slow '
               'down and do not repeat it unless you are asked.',
-    actSpeak2='Caller: read the whole form back at the end. Every wrong letter '
-              'is a mark, so say the letters, not the word.',
+    actSpeak2='Caller: read the whole form back at the end. One wrong letter '
+              'loses the whole answer, so say the letters, not the word.',
     actSpeak3='Somewhere in the call, change one detail after you have already '
               'given it. See whether your partner catches it.',
     actWriteKind='Writing · 100–150 words',
@@ -157,13 +158,14 @@ T['de'] = dict(
 
     t1Eyebrow='Bevor du hörst',
     t1Title='Der leichteste Teil &mdash; und der, in dem Punkte verschenkt werden',
-    t1ah='Was Section 1 immer ist',
-    t1ab='Zwei Sprecher, eine Alltagssituation und ein Formular oder Notizen '
-         'zum Ausfüllen. Anmelden, buchen, etwas als verloren melden. Das '
-         'einfachste Englisch der ganzen Prüfung.',
-    t1an='Genau deshalb kostet ein Fehler hier so viel wie einer in der '
-         'Vorlesung &mdash; und ärgert mehr.',
-    t1bh='Geprüft wird Schreiben, nicht Verstehen',
+    t1ah='Was Section 1 ist',
+    t1ab='Zwei Sprecher in einer Alltagssituation und meist ein Formular, '
+         'Notizen oder eine Tabelle zum Ausfüllen &mdash; manchmal auch ein '
+         'paar Multiple-Choice-Fragen. Anmelden, buchen, etwas als verloren '
+         'melden. Das einfachste Englisch der ganzen Prüfung.',
+    t1an='Ein Punkt, der hier verloren geht, zählt so viel wie einer in der '
+         'Vorlesung &mdash; und ist leichter zu halten.',
+    t1bh='Geprüft wird genaues Schreiben, nicht nur Verstehen',
     t1bb='Du wirst fast jedes Wort verstehen. Die Punkte hängen daran, ob du '
          'einen buchstabierten Nachnamen, eine Telefonnummer und einen Preis '
          'korrekt mitschreibst, während weitergesprochen wird.',
@@ -190,24 +192,28 @@ T['de'] = dict(
             'was du erwartet hast.',
 
     t2Eyebrow='Nach der Aufnahme',
-    t2Title='Die vier Stellen, an denen dieser Teil die Punkte holt',
+    t2Title='Wo dieser Teil die Punkte holt',
     t2ah='Die Korrektur',
     t2ab='Jemand sagt etwas und ändert es sofort &mdash; <em>Tuesday&hellip; '
-         'sorry, that&rsquo;s the children, the adult class is Thursday</em>. Die '
-         'Antwort ist immer die zweite. Der häufigste Fehler im ganzen Teil.',
-    t2an='Achte auf <em>sorry</em>, <em>actually</em>, <em>I mean</em>, <em>I '
-         'beg your pardon</em>. Jedes davon kündigt an, dass die Antwort sich '
-         'gleich ändert.',
+         'sorry, that&rsquo;s the children, the adult class is '
+         'Thursday</em>. Die Antwort ist die zweite. Das ist einer der '
+         'häufigsten Gründe, hier einen Punkt zu verlieren.',
+    t2an='Achte auf <em>sorry</em>, <em>actually</em>, <em>I mean</em>, '
+         '<em>I beg your pardon</em>. Jedes davon kann eine Änderung '
+         'ankündigen &mdash; prüf also die nächsten Wörter, bevor du '
+         'schreibst.',
     t2bh='Das buchstabierte Wort',
-    t2bb='Sobald jemand Buchstaben nennt, wird eine Antwort diktiert. In '
-         'Section 1 passiert das meist einmal, und es wird nicht öfter '
-         'wiederholt, als zwei Menschen es natürlich täten.',
-    t2bn='Kenne die Buchstaben, die im Englischen ähnlich klingen: A, E und I; '
-         'G und J; M und N.',
+    t2bb='Sobald jemand Buchstaben nennt, wird eine Antwort diktiert. Rechne '
+         'in Section 1 mit mindestens einem buchstabierten Wort. Vielleicht '
+         'wird es zurückgelesen, wie hier, aber verlass dich nicht darauf, '
+         'es zweimal zu hören.',
+    t2bn='Kenne die Buchstaben, die Lernende am häufigsten verwechseln: A, E '
+         'und I, deren englische Namen anders klingen als in den meisten '
+         'Alphabeten; G und J; M und N.',
     t2ch='Die Zahl und der Ablenker',
-    t2cb='Briten sagen <em>double oh</em> für zwei Nullen und <em>oh</em> für '
-         'eine. Und fast immer gibt es zwei Preise oder zwei Uhrzeiten &mdash; '
-         'einer davon wird kurz als der falsche markiert.',
+    t2cb='Briten sagen <em>double oh</em> für zwei Nullen und <em>oh</em> '
+         'für eine. Und oft gibt es zwei Preise oder zwei Uhrzeiten, von '
+         'denen einer schnell ausgeschlossen wird.',
     t2cn='Fünfunddreißig war der Monatspreis für Nichtmitglieder. Sie tritt '
          'bei, also lautet die Antwort zweiundvierzig.',
 
@@ -234,9 +240,9 @@ T['de'] = dict(
                   'korrigieren. Der Anrufer füllt aus und liest zurück.',
     actSpeak1='Buchstabierer: nenne den Nachnamen einmal, in normalem Tempo. '
               'Nicht langsamer werden und nicht wiederholen, außer man fragt.',
-    actSpeak2='Anrufer: lies am Ende das ganze Formular zurück. Jeder falsche '
-              'Buchstabe ist ein Punkt &mdash; also nenne die Buchstaben, '
-              'nicht das Wort.',
+    actSpeak2='Anrufer: lies am Ende das ganze Formular zurück. Ein falscher '
+              'Buchstabe kostet die ganze Antwort &mdash; also nenne die '
+              'Buchstaben, nicht das Wort.',
     actSpeak3='Ändere irgendwo im Gespräch ein Detail, das du schon genannt '
               'hast. Schau, ob dein Partner es mitbekommt.',
     actWriteKind='Schreiben · 100–150 Wörter',
@@ -248,12 +254,13 @@ T['de'] = dict(
     actPlaceholder='Surname: … (a name, spelled)',
 
     # Questions 1-7: the English is registered from the data module, below.
-    f1why='Einmal buchstabiert, Buchstabe für Buchstabe. Sobald jemand '
-          'anfängt, Buchstaben zu nennen, wird dir eine Antwort diktiert.',
+    f1why='Buchstabe für Buchstabe buchstabiert und dann einmal '
+          'zurückgelesen. Sobald jemand anfängt, Buchstaben zu nennen, wird '
+          'dir eine Antwort diktiert.',
     f2why='„Double oh“ sind zwei Nullen, „oh“ ist eine: 07700 900 642. Wer '
           'auf elf einzelne Ziffern wartet, hört nie elf.',
     f3why='Er sagt Tuesday und korrigiert sich sofort: „sorry, I beg your '
-          'pardon, that’s the children.“ Die Antwort ist immer die Korrektur.',
+          'pardon, that’s the children.“ Die Antwort ist die Korrektur.',
     f4why='Halb sieben. Zwanzig nach ist die Zeit, zu der man am Becken sein '
           'soll &mdash; genau so eine Zahl in der Nähe, die dasteht, damit man '
           'sie aus Versehen aufschreibt.',
@@ -262,9 +269,9 @@ T['de'] = dict(
     f6why='Fünfunddreißig kommt zuerst, und das ist der Monatspreis für '
           'Nichtmitglieder. Sie wird Mitglied, also zahlt sie zweiundvierzig '
           'für den ganzen Kurs.',
-    f7why='Badesachen und Handtuch sind „the usual“. Die Badekappe hebt er '
-          'als das hervor, was die Leute vergessen, und eine Antwort in '
-          'Section 1 ist fast immer das, was betont wird.',
+    f7why='Die Badekappe ist das Eine, das die Leute laut ihm vergessen, und '
+          'er nennt sie zweimal: „a cap … a swimming cap“. Badeanzug und '
+          'Handtuch sind „the usual“ &mdash; danach fragt die Zeile nicht.',
 )
 
 # ── Spanish ────────────────────────────────────────────────────────────
@@ -277,13 +284,15 @@ T['es'] = dict(
 
     t1Eyebrow='Antes de escuchar',
     t1Title='La parte más fácil, y en la que se regalan puntos',
-    t1ah='Qué es siempre la Section 1',
-    t1ab='Dos hablantes, una situación cotidiana y un formulario o unas notas '
-         'que completar. Matricularse, reservar, denunciar una pérdida. El '
-         'inglés más sencillo de todo el examen.',
-    t1an='Justo por eso un punto perdido aquí cuesta lo mismo que uno perdido '
-         'en la conferencia, y duele más.',
-    t1bh='Examina escribir, no entender',
+    t1ah='Qué es la Section 1',
+    t1ab='Dos hablantes en una situación cotidiana y, por lo general, un '
+         'formulario, unas notas o una tabla que completar &mdash; a veces '
+         'también algunas preguntas de opción múltiple. Matricularse, '
+         'reservar, denunciar una pérdida. El inglés más sencillo de todo el '
+         'examen.',
+    t1an='Un punto perdido aquí vale lo mismo que uno perdido en la '
+         'conferencia, y es más fácil de conservar.',
+    t1bh='Examina escribir con exactitud, tanto como entender',
     t1bb='Vas a entender casi todas las palabras. Los puntos dependen de si '
          'sabes anotar con exactitud un apellido deletreado, un número de '
          'teléfono y un precio mientras el otro sigue hablando.',
@@ -309,24 +318,28 @@ T['es'] = dict(
             'esperabas oír.',
 
     t2Eyebrow='Después de la grabación',
-    t2Title='Los cuatro sitios donde esta parte se lleva los puntos',
+    t2Title='Dónde se lleva los puntos esta parte',
     t2ah='La corrección',
     t2ab='Alguien dice una cosa y la cambia enseguida: <em>Tuesday&hellip; '
-         'sorry, that&rsquo;s the children, the adult class is Thursday</em>. La '
-         'respuesta es siempre la segunda. Es el fallo más común de toda la '
-         'sección.',
-    t2an='Escucha <em>sorry</em>, <em>actually</em>, <em>I mean</em>, <em>I beg '
-         'your pardon</em>. Cada uno avisa de que la respuesta va a cambiar.',
+         'sorry, that&rsquo;s the children, the adult class is '
+         'Thursday</em>. La respuesta es la segunda. Es una de las formas '
+         'más comunes de perder un punto aquí.',
+    t2an='Escucha <em>sorry</em>, <em>actually</em>, <em>I mean</em>, <em>I '
+         'beg your pardon</em>. Cualquiera de ellos puede anunciar un '
+         'cambio, así que comprueba las palabras siguientes antes de '
+         'escribir.',
     t2bh='La palabra deletreada',
     t2bb='En cuanto alguien empieza a dar letras, se está dictando una '
-         'respuesta. En la Section 1 suele pasar una vez, y no se repite más de '
-         'lo que dos personas lo repetirían de forma natural.',
-    t2bn='Aprende las letras que suenan parecido en inglés: A, E e I; G y J; M '
-         'y N.',
+         'respuesta. Cuenta con al menos una palabra deletreada en la '
+         'Section 1. Puede que se relea, como aquí, pero no cuentes con '
+         'oírla dos veces.',
+    t2bn='Aprende las letras que más se confunden: A, E e I, cuyos nombres '
+         'en inglés no coinciden con los de la mayoría de los alfabetos; G y '
+         'J; M y N.',
     t2ch='El número y el distractor',
-    t2cb='Los británicos dicen <em>double oh</em> para dos ceros y <em>oh</em> '
-         'para uno. Y casi siempre hay dos precios o dos horas, con uno '
-         'marcado de pasada como el que no vale.',
+    t2cb='Los británicos dicen <em>double oh</em> para dos ceros y '
+         '<em>oh</em> para uno. Y a menudo hay dos precios o dos horas, y '
+         'uno se descarta enseguida.',
     t2cn='Treinta y cinco era la tarifa mensual de no socios. Ella se hace '
          'socia, así que la respuesta es cuarenta y dos.',
 
@@ -352,8 +365,9 @@ T['es'] = dict(
                   'rellena el formulario y luego lo lee en voz alta.',
     actSpeak1='Quien deletrea: da el apellido una sola vez, a velocidad '
               'normal. Sin frenar y sin repetirlo salvo que te lo pidan.',
-    actSpeak2='Quien llama: lee al final el formulario entero. Cada letra mal '
-              'es un punto, así que di las letras, no la palabra.',
+    actSpeak2='Quien llama: lee al final el formulario entero. Una sola '
+              'letra mal hace perder la respuesta entera, así que di las '
+              'letras, no la palabra.',
     actSpeak3='En algún momento de la llamada, cambia un dato que ya habías '
               'dado. A ver si tu compañero lo pilla.',
     actWriteKind='Escritura · 100–150 palabras',
@@ -365,12 +379,12 @@ T['es'] = dict(
     actPlaceholder='Surname: … (a name, spelled)',
 
     # Questions 1-7: the English is registered from the data module, below.
-    f1why='Se deletrea una sola vez, letra a letra. En cuanto alguien empieza '
-          'a dar letras, te están dictando una respuesta.',
+    f1why='Se deletrea letra a letra y luego se relee una vez. En cuanto '
+          'alguien empieza a dar letras, te están dictando una respuesta.',
     f2why='«Double oh» son dos ceros y «oh» es uno: 07700 900 642. Quien espera '
           'once cifras sueltas no las oye nunca.',
     f3why='Dice Tuesday y se corrige enseguida: «sorry, I beg your pardon, '
-          'that’s the children». La respuesta es siempre la corrección.',
+          'that’s the children». La respuesta es la corrección.',
     f4why='Las seis y media. Y veinte es la hora de estar ya junto a la '
           'piscina: justo el tipo de número cercano que se pone ahí para que '
           'lo apuntes por error.',
@@ -380,9 +394,9 @@ T['es'] = dict(
     f6why='Treinta y cinco se dice primero, y es la tarifa mensual para quien '
           'no es socio. Ella se hace socia, así que paga cuarenta y dos por el '
           'curso entero.',
-    f7why='El bañador y la toalla son «the usual». El gorro es lo que él '
-          'destaca como lo que la gente olvida, y una respuesta de la Section 1 '
-          'casi siempre es lo que se subraya.',
+    f7why='El gorro es lo único que, según él, la gente olvida, y lo '
+          'menciona dos veces: «a cap… a swimming cap». El bañador y la '
+          'toalla son «the usual»: no es lo que pide la línea.',
 )
 
 
@@ -396,16 +410,18 @@ T['fr'] = dict(
 
     t1Eyebrow='Avant l’écoute',
     t1Title='La partie la plus facile, et celle où l’on jette des points',
-    t1ah='Ce qu’est toujours la Section 1',
-    t1ab='Deux interlocuteurs, une situation du quotidien, et un formulaire ou '
-         'des notes à compléter. S’inscrire, réserver, signaler un objet perdu. '
-         'C’est l’anglais le plus simple de toute l’épreuve.',
-    t1an='C’est pourquoi un point perdu ici coûte autant qu’un point perdu dans '
-         'la conférence, et fait plus mal.',
-    t1bh='On teste l’écrit, pas la compréhension',
+    t1ah='Ce qu’est la Section 1',
+    t1ab='Deux interlocuteurs dans une situation du quotidien, et le plus '
+         'souvent un formulaire, des notes ou un tableau à compléter &mdash; '
+         'parfois aussi quelques questions à choix multiple. S’inscrire, '
+         'réserver, signaler un objet perdu. C’est l’anglais le plus simple '
+         'de toute l’épreuve.',
+    t1an='Un point perdu ici coûte autant qu’un point perdu dans la '
+         'conférence, et il est plus facile à garder.',
+    t1bh='On teste l’écrit exact autant que la compréhension',
     t1bb='Vous comprendrez presque chaque mot. Les points dépendent de votre '
-         'capacité à noter exactement un nom épelé, un numéro de téléphone et un '
-         'prix pendant que l’on continue de parler.',
+         'capacité à noter exactement un nom épelé, un numéro de téléphone '
+         'et un prix pendant que l’on continue de parler.',
     t1bn='L’orthographe compte. Un mot bien entendu mais mal écrit ne rapporte '
          'rien.',
     t1ch='Lisez d’abord le formulaire',
@@ -431,24 +447,27 @@ T['fr'] = dict(
             'entendu, pas ce que vous vous attendiez à entendre.',
 
     t2Eyebrow='Après l’enregistrement',
-    t2Title='Les quatre endroits où cette partie vous prend des points',
+    t2Title='Où cette partie prend ses points',
     t2ah='La correction',
     t2ab='Quelqu’un dit une chose et la change aussitôt &mdash; '
-         '<em>Tuesday&hellip; sorry, that&rsquo;s the children, the adult class '
-         'is Thursday</em>. La réponse est toujours la seconde. C’est l’erreur la '
-         'plus fréquente de toute la partie.',
-    t2an='Guettez <em>sorry</em>, <em>actually</em>, <em>I mean</em>, <em>I beg '
-         'your pardon</em>. Chacun annonce que la réponse va changer.',
+         '<em>Tuesday&hellip; sorry, that&rsquo;s the children, the adult '
+         'class is Thursday</em>. La réponse est la seconde. C’est l’une des '
+         'façons les plus courantes de perdre un point ici.',
+    t2an='Guettez <em>sorry</em>, <em>actually</em>, <em>I mean</em>, <em>I '
+         'beg your pardon</em>. Chacun peut annoncer un changement : '
+         'vérifiez les mots qui suivent avant d’écrire.',
     t2bh='Le mot épelé',
     t2bb='Dès que quelqu’un commence à donner des lettres, on vous dicte une '
-         'réponse. En Section 1, cela arrive en général une fois, et ce n’est '
-         'jamais répété plus que deux personnes ne le feraient naturellement.',
-    t2bn='Connaissez les lettres qui se ressemblent en anglais : A, E et I ; G '
-         'et J ; M et N.',
+         'réponse. Attendez-vous à au moins un mot épelé en Section 1. Il '
+         'sera peut-être relu, comme ici, mais ne comptez pas l’entendre '
+         'deux fois.',
+    t2bn='Connaissez les lettres que l’on confond le plus souvent : A, E et '
+         'I, dont les noms anglais diffèrent de ceux de la plupart des '
+         'alphabets ; G et J ; M et N.',
     t2ch='Le nombre et le distracteur',
     t2cb='Les Britanniques disent <em>double oh</em> pour deux zéros et '
-         '<em>oh</em> pour un seul. Et il y a presque toujours deux prix ou deux '
-         'heures &mdash; l’un des deux présenté, très vite, comme le mauvais.',
+         '<em>oh</em> pour un seul. Et il y a souvent deux prix ou deux '
+         'heures, dont l’un est vite écarté.',
     t2cn='Trente-cinq était le tarif mensuel des non-membres. Elle '
          's’inscrivait, donc la réponse était quarante-deux.',
 
@@ -476,8 +495,9 @@ T['fr'] = dict(
     actSpeak1='Qui épelle : donnez le nom de famille une seule fois, au débit '
               'normal. Ne ralentissez pas et ne le répétez pas, sauf si on vous '
               'le demande.',
-    actSpeak2='Qui appelle : relisez tout le formulaire à la fin. Chaque lettre '
-              'fausse est un point perdu, alors dites les lettres, pas le mot.',
+    actSpeak2='Qui appelle : relisez tout le formulaire à la fin. Une seule '
+              'lettre fausse fait perdre toute la réponse, alors dites les '
+              'lettres, pas le mot.',
     actSpeak3='À un moment de l’appel, changez un détail que vous avez déjà '
               'donné. Voyez si votre partenaire le remarque.',
     actWriteKind='Écriture · 100–150 mots',
@@ -489,12 +509,12 @@ T['fr'] = dict(
                   'd’avance.',
     actPlaceholder='Surname: … (a name, spelled)',
 
-    f1why='Épelé une seule fois, lettre par lettre. Dès que quelqu’un commence à '
-          'donner des lettres, on vous dicte une réponse.',
+    f1why='Épelé lettre par lettre, puis relu une fois. Dès que quelqu’un '
+          'commence à donner des lettres, on vous dicte une réponse.',
     f2why='« Double oh » veut dire deux zéros, et « oh » un seul : 07700 900 '
           '642. Qui attend onze chiffres séparés n’en entend jamais onze.',
-    f3why='Il dit Tuesday et se corrige aussitôt : « sorry, I beg your pardon, '
-          'that’s the children. » La réponse est toujours la correction.',
+    f3why='Il dit Tuesday et se corrige aussitôt : « sorry, I beg your '
+          'pardon, that’s the children. » La réponse est la correction.',
     f4why='Six heures et demie. Six heures vingt, c’est l’heure d’arriver au '
           'bord du bassin : exactement le genre de nombre voisin placé là pour '
           'être noté par erreur.',
@@ -503,9 +523,10 @@ T['fr'] = dict(
     f6why='Trente-cinq est dit en premier, et c’est le tarif mensuel des '
           'non-membres. Elle devient membre, donc elle paie quarante-deux pour '
           'tout le trimestre.',
-    f7why='Le maillot et la serviette, c’est « the usual ». Le bonnet est ce '
-          'qu’il signale comme la chose que les gens oublient, et une réponse de '
-          'Section 1 est presque toujours l’élément sur lequel on insiste.',
+    f7why='Le bonnet est la seule chose que, selon lui, les gens oublient, '
+          'et il le dit deux fois : « a cap… a swimming cap ». Le maillot et '
+          'la serviette, c’est « the usual » : ce n’est pas ce que demande '
+          'la ligne.',
 )
 
 
@@ -519,16 +540,18 @@ T['it'] = dict(
 
     t1Eyebrow='Prima dell’ascolto',
     t1Title='La parte più facile, e quella in cui si buttano via punti',
-    t1ah='Che cos’è sempre la Section 1',
-    t1ab='Due persone, una situazione quotidiana e un modulo o degli appunti da '
-         'completare. Iscriversi, prenotare, denunciare uno smarrimento. È '
-         'l’inglese più semplice di tutta la prova.',
-    t1an='Proprio per questo un punto perso qui costa quanto uno perso nella '
-         'lezione, e brucia di più.',
-    t1bh='Si valuta la scrittura, non la comprensione',
-    t1bb='Capirai quasi ogni parola. I punti dipendono dal saper annotare con '
-         'precisione un cognome compitato, un numero di telefono e un prezzo '
-         'mentre l’altro continua a parlare.',
+    t1ah='Che cos’è la Section 1',
+    t1ab='Due persone in una situazione quotidiana e, di solito, un modulo, '
+         'degli appunti o una tabella da completare &mdash; a volte anche '
+         'qualche domanda a scelta multipla. Iscriversi, prenotare, '
+         'denunciare uno smarrimento. È l’inglese più semplice di tutta la '
+         'prova.',
+    t1an='Un punto perso qui vale quanto uno perso nella lezione, ed è più '
+         'facile da tenere.',
+    t1bh='Si valuta la scrittura esatta, non solo la comprensione',
+    t1bb='Capirai quasi ogni parola. I punti dipendono dal saper annotare '
+         'con precisione un cognome compitato, un numero di telefono e un '
+         'prezzo mentre l’altro continua a parlare.',
     t1bn='L’ortografia conta. Una parola sentita bene ma scritta male non vale '
          'niente.',
     t1ch='Leggi prima il modulo',
@@ -552,25 +575,27 @@ T['it'] = dict(
             'non quello che ti aspettavi di sentire.',
 
     t2Eyebrow='Dopo la registrazione',
-    t2Title='I quattro momenti in cui questa parte ti toglie punti',
+    t2Title='Dove questa parte ti toglie punti',
     t2ah='La correzione',
-    t2ab='Qualcuno dice una cosa e la cambia subito &mdash; <em>Tuesday&hellip; '
-         'sorry, that&rsquo;s the children, the adult class is Thursday</em>. La '
-         'risposta è sempre la seconda. È l’errore più comune di tutta la '
-         'sezione.',
-    t2an='Fai attenzione a <em>sorry</em>, <em>actually</em>, <em>I mean</em>, '
-         '<em>I beg your pardon</em>. Ognuno avverte che la risposta sta per '
-         'cambiare.',
+    t2ab='Qualcuno dice una cosa e la cambia subito &mdash; '
+         '<em>Tuesday&hellip; sorry, that&rsquo;s the children, the adult '
+         'class is Thursday</em>. La risposta è la seconda. È uno dei modi '
+         'più comuni di perdere un punto qui.',
+    t2an='Fai attenzione a <em>sorry</em>, <em>actually</em>, <em>I '
+         'mean</em>, <em>I beg your pardon</em>. Ognuno può annunciare un '
+         'cambiamento: controlla le parole successive prima di scrivere.',
     t2bh='La parola compitata',
-    t2bb='Appena qualcuno comincia a dire delle lettere, ti stanno dettando una '
-         'risposta. Nella Section 1 di solito succede una volta, e non viene mai '
-         'ripetuta più di quanto due persone farebbero naturalmente.',
-    t2bn='Impara le lettere che in inglese si somigliano: A, E e I; G e J; M e '
-         'N.',
+    t2bb='Appena qualcuno comincia a dire delle lettere, ti stanno dettando '
+         'una risposta. Aspettati almeno una parola compitata nella Section '
+         '1. Forse verrà riletta, come qui, ma non contare di sentirla due '
+         'volte.',
+    t2bn='Impara le lettere che si confondono più spesso: A, E e I, i cui '
+         'nomi inglesi non coincidono con quelli della maggior parte degli '
+         'alfabeti; G e J; M e N.',
     t2ch='Il numero e il distrattore',
-    t2cb='I britannici dicono <em>double oh</em> per due zeri e <em>oh</em> per '
-         'uno. E quasi sempre ci sono due prezzi o due orari &mdash; uno dei due '
-         'indicato, in fretta, come quello sbagliato.',
+    t2cb='I britannici dicono <em>double oh</em> per due zeri e <em>oh</em> '
+         'per uno. E spesso ci sono due prezzi o due orari, e uno dei due '
+         'viene scartato in fretta.',
     t2cn='Trentacinque era la tariffa mensile per i non soci. Lei si stava '
          'iscrivendo, quindi la risposta era quarantadue.',
 
@@ -597,8 +622,9 @@ T['it'] = dict(
                   'compila il modulo e poi lo rilegge ad alta voce.',
     actSpeak1='Chi compita: di’ il cognome una volta sola, a velocità normale. '
               'Non rallentare e non ripeterlo, a meno che non te lo chiedano.',
-    actSpeak2='Chi chiama: alla fine rileggi tutto il modulo. Ogni lettera '
-              'sbagliata è un punto, quindi di’ le lettere, non la parola.',
+    actSpeak2='Chi chiama: alla fine rileggi tutto il modulo. Una sola '
+              'lettera sbagliata fa perdere l’intera risposta, quindi di’ le '
+              'lettere, non la parola.',
     actSpeak3='A un certo punto della chiamata, cambia un dettaglio che hai già '
               'dato. Vedi se il tuo compagno se ne accorge.',
     actWriteKind='Scrittura · 100–150 parole',
@@ -610,13 +636,13 @@ T['it'] = dict(
                   'anticipo.',
     actPlaceholder='Surname: … (a name, spelled)',
 
-    f1why='Compitato una volta sola, lettera per lettera. Nel momento in cui '
-          'qualcuno comincia a dire delle lettere, ti stanno dettando una '
-          'risposta.',
+    f1why='Compitato lettera per lettera e poi riletto una volta. Nel '
+          'momento in cui qualcuno comincia a dire delle lettere, ti stanno '
+          'dettando una risposta.',
     f2why='«Double oh» sono due zeri e «oh» è uno: 07700 900 642. Chi aspetta '
           'undici cifre separate non ne sente mai undici.',
     f3why='Dice Tuesday e si corregge subito: «sorry, I beg your pardon, '
-          'that’s the children.» La risposta è sempre la correzione.',
+          'that’s the children.» La risposta è la correzione.',
     f4why='Le sei e mezza. Le sei e venti sono l’ora in cui presentarsi a bordo '
           'vasca: proprio il tipo di numero vicino messo lì per essere scritto '
           'per sbaglio.',
@@ -625,9 +651,9 @@ T['it'] = dict(
     f6why='Trentacinque viene detto per primo, ed è la tariffa mensile per i non '
           'soci. Lei si iscrive, quindi paga quarantadue per tutto il '
           'trimestre.',
-    f7why='Costume e asciugamano sono «the usual». La cuffia è quella che lui '
-          'indica come la cosa che la gente dimentica, e una risposta della '
-          'Section 1 è quasi sempre l’elemento su cui si insiste.',
+    f7why='La cuffia è l’unica cosa che, secondo lui, la gente dimentica, e '
+          'la nomina due volte: «a cap… a swimming cap». Costume e '
+          'asciugamano sono «the usual»: non è quello che chiede la riga.',
 )
 
 
@@ -641,13 +667,15 @@ T['pt'] = dict(
 
     t1Eyebrow='Antes de ouvir',
     t1Title='A parte mais fácil, e aquela onde se deitam pontos fora',
-    t1ah='O que a Section 1 é sempre',
-    t1ab='Duas pessoas, uma situação do dia a dia e um formulário ou umas notas '
-         'para completar. Inscrever-se, reservar, participar a perda de alguma '
-         'coisa. É o inglês mais simples de toda a prova.',
-    t1an='É precisamente por isso que um ponto perdido aqui custa o mesmo que um '
-         'ponto perdido na palestra, e dói mais.',
-    t1bh='Avalia a escrita, não a compreensão',
+    t1ah='O que é a Section 1',
+    t1ab='Duas pessoas numa situação do dia a dia e, em geral, um '
+         'formulário, umas notas ou uma tabela para completar &mdash; às '
+         'vezes também algumas perguntas de escolha múltipla. Inscrever-se, '
+         'reservar, participar a perda de alguma coisa. É o inglês mais '
+         'simples de toda a prova.',
+    t1an='Um ponto perdido aqui vale tanto como um perdido na palestra, e é '
+         'mais fácil de guardar.',
+    t1bh='Avalia a escrita exata tanto como a compreensão',
     t1bb='Vais perceber quase todas as palavras. Os pontos dependem de '
          'conseguires anotar com exatidão um apelido soletrado, um número de '
          'telefone e um preço enquanto a outra pessoa continua a falar.',
@@ -674,25 +702,25 @@ T['pt'] = dict(
             'esperavas ouvir.',
 
     t2Eyebrow='Depois da gravação',
-    t2Title='Os quatro sítios onde esta parte te tira pontos',
+    t2Title='Onde esta parte te tira pontos',
     t2ah='A correção',
     t2ab='Alguém diz uma coisa e muda-a logo a seguir &mdash; '
-         '<em>Tuesday&hellip; sorry, that&rsquo;s the children, the adult class '
-         'is Thursday</em>. A resposta é sempre a segunda. É o erro mais comum '
-         'de toda a secção.',
+         '<em>Tuesday&hellip; sorry, that&rsquo;s the children, the adult '
+         'class is Thursday</em>. A resposta é a segunda. É uma das formas '
+         'mais comuns de perder um ponto aqui.',
     t2an='Está atento a <em>sorry</em>, <em>actually</em>, <em>I mean</em>, '
-         '<em>I beg your pardon</em>. Cada uma avisa que a resposta está '
-         'prestes a mudar.',
+         '<em>I beg your pardon</em>. Qualquer um pode anunciar uma mudança, '
+         'por isso confirma as palavras seguintes antes de escrever.',
     t2bh='A palavra soletrada',
-    t2bb='Quando alguém começa a dizer letras, está a ser ditada uma resposta. '
-         'Na Section 1 isto costuma acontecer uma vez, e nunca é repetido mais '
-         'do que duas pessoas o repetiriam naturalmente.',
-    t2bn='Conhece as letras que soam parecidas em inglês: A, E e I; G e J; M e '
-         'N.',
+    t2bb='Quando alguém começa a dizer letras, está a ser ditada uma '
+         'resposta. Conta com pelo menos uma palavra soletrada na Section 1. '
+         'Pode ser relida, como aqui, mas não contes ouvi-la duas vezes.',
+    t2bn='Conhece as letras que mais se confundem: A, E e I, cujos nomes em '
+         'inglês não coincidem com os da maioria dos alfabetos; G e J; M e N.',
     t2ch='O número e o distrator',
-    t2cb='Os britânicos dizem <em>double oh</em> para dois zeros e <em>oh</em> '
-         'para um. E há quase sempre dois preços ou duas horas &mdash; um deles '
-         'apontado, de passagem, como o errado.',
+    t2cb='Os britânicos dizem <em>double oh</em> para dois zeros e '
+         '<em>oh</em> para um. E há muitas vezes dois preços ou duas horas, '
+         'e um deles é logo posto de parte.',
     t2cn='Trinta e cinco era a mensalidade para não sócios. Ela ia '
          'inscrever-se, por isso a resposta era quarenta e dois.',
 
@@ -719,8 +747,9 @@ T['pt'] = dict(
                   'formulário e depois lê-o em voz alta.',
     actSpeak1='Quem soletra: diz o apelido uma só vez, à velocidade normal. Não '
               'abrandes e não repitas, a não ser que te peçam.',
-    actSpeak2='Quem liga: no fim, lê o formulário todo em voz alta. Cada letra '
-              'errada é um ponto, por isso diz as letras, não a palavra.',
+    actSpeak2='Quem liga: no fim, lê o formulário todo em voz alta. Uma só '
+              'letra errada faz perder a resposta inteira, por isso diz as '
+              'letras, não a palavra.',
     actSpeak3='A certa altura da chamada, muda um pormenor que já tinhas dado. '
               'Vê se o teu colega dá por isso.',
     actWriteKind='Escrita · 100–150 palavras',
@@ -732,12 +761,12 @@ T['pt'] = dict(
                   'antecedência.',
     actPlaceholder='Surname: … (a name, spelled)',
 
-    f1why='Soletrado uma só vez, letra a letra. Assim que alguém começa a dizer '
-          'letras, estão a ditar-te uma resposta.',
+    f1why='Soletrado letra a letra e depois relido uma vez. Assim que alguém '
+          'começa a dizer letras, estão a ditar-te uma resposta.',
     f2why='«Double oh» são dois zeros e «oh» é um: 07700 900 642. Quem espera '
           'onze algarismos soltos nunca ouve onze.',
     f3why='Ele diz Tuesday e corrige-se logo: «sorry, I beg your pardon, '
-          'that’s the children.» A resposta é sempre a correção.',
+          'that’s the children.» A resposta é a correção.',
     f4why='Seis e meia. Seis e vinte é a hora de estar à beira da piscina: '
           'exatamente o tipo de número próximo que está ali para ser escrito por '
           'engano.',
@@ -746,9 +775,9 @@ T['pt'] = dict(
     f6why='Trinta e cinco é dito primeiro, e é a mensalidade para não sócios. '
           'Ela vai inscrever-se, por isso paga quarenta e dois pelo período '
           'inteiro.',
-    f7why='O fato de banho e a toalha são «the usual». A touca é o que ele '
-          'destaca como aquilo de que as pessoas se esquecem, e uma resposta da '
-          'Section 1 é quase sempre o elemento que é sublinhado.',
+    f7why='A touca é a única coisa de que, segundo ele, as pessoas se '
+          'esquecem, e ele di-lo duas vezes: «a cap… a swimming cap». O fato '
+          'de banho e a toalha são «the usual»: não é isso que a linha pede.',
 )
 
 
@@ -762,16 +791,17 @@ T['ru'] = dict(
 
     t1Eyebrow='Перед прослушиванием',
     t1Title='Самая лёгкая часть &mdash; и та, где баллы теряют зря',
-    t1ah='Чем всегда бывает Section 1',
-    t1ab='Два собеседника, бытовая ситуация и анкета или заметки, которые нужно '
-         'заполнить. Записаться, забронировать, сообщить о потере. Это самый '
-         'простой английский во всём экзамене.',
-    t1an='Именно поэтому балл, потерянный здесь, стоит столько же, сколько '
-         'балл, потерянный в лекции, и обиднее.',
-    t1bh='Проверяется письмо, а не понимание',
-    t1bb='Вы поймёте почти каждое слово. Баллы зависят от того, сможете ли вы '
-         'точно записать продиктованную по буквам фамилию, номер телефона и '
-         'цену, пока собеседник продолжает говорить.',
+    t1ah='Что такое Section 1',
+    t1ab='Два собеседника в бытовой ситуации и обычно анкета, заметки или '
+         'таблица, которые нужно заполнить, &mdash; иногда ещё несколько '
+         'вопросов с выбором ответа. Записаться, забронировать, сообщить о '
+         'потере. Это самый простой английский во всём экзамене.',
+    t1an='Балл, потерянный здесь, стоит столько же, сколько балл, потерянный '
+         'в лекции, а сохранить его легче.',
+    t1bh='Проверяется точная запись не меньше, чем понимание',
+    t1bb='Вы поймёте почти каждое слово. Баллы зависят от того, сможете ли '
+         'вы точно записать продиктованную по буквам фамилию, номер телефона '
+         'и цену, пока собеседник продолжает говорить.',
     t1bn='Орфография учитывается. Слово, услышанное верно, но записанное с '
          'ошибкой, не приносит ничего.',
     t1ch='Сначала прочитайте анкету',
@@ -795,24 +825,26 @@ T['ru'] = dict(
             'не то, что ожидали услышать.',
 
     t2Eyebrow='После записи',
-    t2Title='Четыре места, где эта часть отнимает баллы',
+    t2Title='Где эта часть отнимает баллы',
     t2ah='Поправка',
-    t2ab='Говорящий называет одно и тут же меняет &mdash; <em>Tuesday&hellip; '
-         'sorry, that&rsquo;s the children, the adult class is Thursday</em>. '
-         'Ответ всегда второй. Это самая частая ошибка во всей части.',
-    t2an='Ловите <em>sorry</em>, <em>actually</em>, <em>I mean</em>, <em>I beg '
-         'your pardon</em>. Каждое из них предупреждает, что ответ сейчас '
-         'изменится.',
+    t2ab='Говорящий называет одно и тут же меняет &mdash; '
+         '<em>Tuesday&hellip; sorry, that&rsquo;s the children, the adult '
+         'class is Thursday</em>. Ответ &mdash; второй. Это один из самых '
+         'частых способов потерять здесь балл.',
+    t2an='Ловите <em>sorry</em>, <em>actually</em>, <em>I mean</em>, <em>I '
+         'beg your pardon</em>. Каждое из них может предвещать изменение, '
+         'поэтому проверьте следующие слова, прежде чем писать.',
     t2bh='Слово по буквам',
-    t2bb='Как только говорящий начинает называть буквы, вам диктуют ответ. В '
-         'Section 1 это обычно бывает один раз и повторяется не больше, чем '
-         'повторили бы два человека в обычном разговоре.',
-    t2bn='Знайте буквы, которые в английском звучат похоже: A, E и I; G и J; M '
-         'и N.',
+    t2bb='Как только говорящий начинает называть буквы, вам диктуют ответ. '
+         'Ждите в Section 1 хотя бы одно слово по буквам. Его могут '
+         'повторить, как здесь, но не рассчитывайте услышать его дважды.',
+    t2bn='Знайте буквы, которые учащиеся путают чаще всего: A, E и I, чьи '
+         'английские названия не совпадают с названиями в большинстве '
+         'алфавитов; G и J; M и N.',
     t2ch='Число и отвлекающий вариант',
     t2cb='Британцы говорят <em>double oh</em> о двух нулях и <em>oh</em> об '
-         'одном. И почти всегда звучат две цены или два времени &mdash; одно из '
-         'них мимоходом обозначено как неверное.',
+         'одном. И часто звучат две цены или два времени, и одно из них '
+         'быстро отбрасывается.',
     t2cn='Тридцать пять &mdash; месячный тариф для тех, кто не состоит в клубе. '
          'Она вступала, поэтому ответ &mdash; сорок два.',
 
@@ -838,8 +870,8 @@ T['ru'] = dict(
                   'в конце зачитывает её.',
     actSpeak1='Тот, кто диктует: назовите фамилию один раз, в обычном темпе. Не '
               'замедляйтесь и не повторяйте, если не просят.',
-    actSpeak2='Звонящий: в конце зачитайте всю анкету. Каждая неверная буква '
-              '&mdash; потерянный балл, поэтому называйте буквы, а не слово.',
+    actSpeak2='Звонящий: в конце зачитайте всю анкету. Одна неверная буква '
+              'стоит всего ответа, поэтому называйте буквы, а не слово.',
     actSpeak3='Где-нибудь в разговоре измените деталь, которую уже назвали. '
               'Посмотрите, заметит ли партнёр.',
     actWriteKind='Письмо · 100–150 слов',
@@ -850,13 +882,13 @@ T['ru'] = dict(
                   'экзамен, сделанные заранее.',
     actPlaceholder='Surname: … (a name, spelled)',
 
-    f1why='Продиктовано по буквам один раз. Как только говорящий начинает '
-          'называть буквы, вам диктуют ответ.',
+    f1why='Продиктовано по буквам, а затем один раз повторено. Как только '
+          'говорящий начинает называть буквы, вам диктуют ответ.',
     f2why='«Double oh» &mdash; это два нуля, а «oh» &mdash; один: 07700 900 642. '
           'Кто ждёт одиннадцать отдельных цифр, никогда не услышит '
           'одиннадцать.',
-    f3why='Он говорит Tuesday и сразу поправляется: «sorry, I beg your pardon, '
-          'that’s the children». Ответ &mdash; всегда поправка.',
+    f3why='Он говорит Tuesday и сразу поправляется: «sorry, I beg your '
+          'pardon, that’s the children». Ответ &mdash; поправка.',
     f4why='Половина седьмого. Двадцать минут седьмого &mdash; это когда нужно '
           'быть у бассейна: как раз такое соседнее число, которое стоит там, '
           'чтобы его записали по ошибке.',
@@ -866,9 +898,9 @@ T['ru'] = dict(
     f6why='Тридцать пять звучит первым, и это месячный тариф для тех, кто не '
           'состоит в клубе. Она вступает, поэтому платит сорок два за весь '
           'курс.',
-    f7why='Купальник и полотенце &mdash; это «the usual». Шапочку он выделяет '
-          'как то, что люди забывают, а ответ в Section 1 почти всегда &mdash; '
-          'то, на чём делают упор.',
+    f7why='Шапочка &mdash; единственное, что, по его словам, люди забывают, '
+          'и он называет её дважды: «a cap… a swimming cap». Купальник и '
+          'полотенце &mdash; это «the usual», и строка спрашивает не о них.',
 )
 
 
@@ -881,15 +913,17 @@ T['ar'] = dict(
 
     t1Eyebrow='قبل أن تستمع',
     t1Title='أسهل الأقسام، والقسم الذي تُهدر فيه الدرجات',
-    t1ah='ما الذي يأتي في Section 1 دائمًا',
-    t1ab='متحدثان، وموقف من الحياة اليومية، واستمارة أو ملاحظات عليك إكمالها: '
-         'التسجيل في دورة، أو الحجز، أو الإبلاغ عن شيء مفقود. إنها أسهل '
-         'إنجليزية في الاختبار كله.',
-    t1an='ولهذا بالذات تكلّفك الدرجة الضائعة هنا ما تكلّفه الدرجة الضائعة في '
-         'المحاضرة، وتؤلم أكثر.',
-    t1bh='يختبر الكتابة، لا الفهم',
-    t1bb='ستفهم كل كلمة تقريبًا. أما الدرجات فتتوقف على قدرتك على أن تكتب بدقة '
-         'اسم عائلة مُتهجّى، ورقم هاتف، وسعرًا، بينما يواصل المتحدث كلامه.',
+    t1ah='ما هو Section 1',
+    t1ab='متحدثان في موقف من الحياة اليومية، وفي العادة استمارة أو ملاحظات '
+         'أو جدول عليك إكماله &mdash; وأحيانًا بضعة أسئلة اختيار من متعدد '
+         'أيضًا: التسجيل في دورة، أو الحجز، أو الإبلاغ عن شيء مفقود. إنها '
+         'أسهل إنجليزية في الاختبار كله.',
+    t1an='الدرجة الضائعة هنا تساوي الدرجة الضائعة في المحاضرة، والحفاظ عليها '
+         'أسهل.',
+    t1bh='يختبر الكتابة الدقيقة بقدر ما يختبر الفهم',
+    t1bb='ستفهم كل كلمة تقريبًا. أما الدرجات فتتوقف على قدرتك على أن تكتب '
+         'بدقة اسم عائلة مُتهجّى، ورقم هاتف، وسعرًا، بينما يواصل المتحدث '
+         'كلامه.',
     t1bn='الإملاء يُحتسب. الكلمة التي تسمعها صحيحة وتكتبها خطأً لا تنال شيئًا.',
     t1ch='اقرأ الاستمارة أولًا',
     t1cb='يُعطى لك وقت قبل أن يبدأ التسجيل. استخدمه لترى نوع الإجابة التي '
@@ -910,23 +944,24 @@ T['ar'] = dict(
     gapHint='الإملاء يُقيَّم. اكتب ما سمعته فعلًا، لا ما توقعت أن تسمعه.',
 
     t2Eyebrow='بعد التسجيل',
-    t2Title='المواضع الأربعة التي يأخذ منها هذا القسم درجاتك',
+    t2Title='حيث يأخذ هذا القسم درجاتك',
     t2ah='التصحيح',
-    t2ab='يقول المتحدث شيئًا ثم يغيّره فورًا &mdash; <em>Tuesday&hellip; sorry, '
-         'that&rsquo;s the children, the adult class is Thursday</em>. والإجابة '
-         'هي الثانية دائمًا. هذا أشيع خطأ في القسم كله.',
-    t2an='انتبه إلى <em>sorry</em> و<em>actually</em> و<em>I mean</em> و<em>I '
-         'beg your pardon</em>. كل واحدة منها إنذار بأن الإجابة على وشك أن '
-         'تتغيّر.',
+    t2ab='يقول المتحدث شيئًا ثم يغيّره فورًا &mdash; <em>Tuesday&hellip; '
+         'sorry, that&rsquo;s the children, the adult class is '
+         'Thursday</em>. والإجابة هي الثانية. هذه من أشيع الطرق لخسارة درجة '
+         'هنا.',
+    t2an='انتبه إلى <em>sorry</em> و<em>actually</em> و<em>I mean</em> '
+         'و<em>I beg your pardon</em>. كل واحدة منها قد تنبئ بتغيير، فتحقّق '
+         'من الكلمات التالية قبل أن تكتب.',
     t2bh='الكلمة المتهجّاة',
-    t2bb='حين يبدأ المتحدث بذكر الحروف، فهناك إجابة تُملى عليك. في Section 1 '
-         'يحدث ذلك عادةً مرة واحدة، ولا يتكرر أكثر مما يكرره متحدثان بشكل '
-         'طبيعي.',
-    t2bn='اعرف الحروف المتشابهة في النطق بالإنجليزية: A وE وI؛ وG وJ؛ وM وN.',
+    t2bb='حين يبدأ المتحدث بذكر الحروف، فهناك إجابة تُملى عليك. توقّع في '
+         'Section 1 كلمة متهجّاة واحدة على الأقل. قد تُعاد قراءتها كما هنا، '
+         'لكن لا تعتمد على سماعها مرتين.',
+    t2bn='اعرف الحروف التي يخلط بينها المتعلمون أكثر من غيرها: A وE وI، '
+         'وأسماؤها بالإنجليزية تختلف عنها في معظم الأبجديات؛ وG وJ؛ وM وN.',
     t2ch='الرقم والمشتِّت',
     t2cb='يقول البريطانيون <em>double oh</em> لصفرين و<em>oh</em> لصفر واحد. '
-         'وهناك دائمًا تقريبًا سعران أو وقتان &mdash; يُشار إلى أحدهما بسرعة '
-         'على أنه الخطأ.',
+         'وكثيرًا ما يُذكر سعران أو وقتان، ويُستبعد أحدهما بسرعة.',
     t2cn='خمسة وثلاثون كان الاشتراك الشهري لغير الأعضاء. وهي كانت تنضم إلى '
          'المركز، فكانت الإجابة اثنين وأربعين.',
 
@@ -951,8 +986,8 @@ T['ar'] = dict(
                   'واحدة. ويملأ المتصل الاستمارة ثم يقرؤها بصوت عالٍ.',
     actSpeak1='من يتهجّى: اذكر اسم العائلة مرة واحدة، بسرعة الكلام العادية. لا '
               'تبطئ ولا تكرّره إلا إذا طُلب منك.',
-    actSpeak2='المتصل: اقرأ الاستمارة كلها في النهاية. كل حرف خطأ درجة ضائعة، '
-              'فاذكر الحروف لا الكلمة.',
+    actSpeak2='المتصل: اقرأ الاستمارة كلها في النهاية. حرف واحد خطأ يُضيع '
+              'الإجابة كلها، فاذكر الحروف لا الكلمة.',
     actSpeak3='في مكان ما من المكالمة، غيّر تفصيلًا سبق أن ذكرته، وانظر هل ينتبه '
               'زميلك.',
     actWriteKind='الكتابة · 100–150 كلمة',
@@ -962,14 +997,14 @@ T['ar'] = dict(
                   'التحضير التي يمنحك إياها الاختبار، منجزة مسبقًا.',
     actPlaceholder='Surname: … (a name, spelled)',
 
-    f1why='يُتهجّى مرة واحدة، حرفًا حرفًا. في اللحظة التي يبدأ فيها المتحدث '
-          'بذكر الحروف، تكون هناك إجابة تُملى عليك.',
+    f1why='يُتهجّى حرفًا حرفًا ثم تُعاد قراءته مرة واحدة. في اللحظة التي '
+          'يبدأ فيها المتحدث بذكر الحروف، تكون هناك إجابة تُملى عليك.',
     f2why='عبارة <bdi>&ldquo;double oh&rdquo;</bdi> تعني صفرين، '
           'و<bdi>&ldquo;oh&rdquo;</bdi> تعني صفرًا واحدًا: <bdi>07700 900 '
           '642</bdi>. ومن ينتظر أحد عشر رقمًا منفصلًا لا يسمع أحد عشر أبدًا.',
     f3why='يقول Tuesday ثم يصحّح نفسه فورًا: <bdi>&ldquo;sorry, I beg your '
-          'pardon, that&rsquo;s the children.&rdquo;</bdi> والإجابة هي التصحيح '
-          'دائمًا.',
+          'pardon, that&rsquo;s the children.&rdquo;</bdi> والإجابة هي '
+          'التصحيح.',
     f4why='السادسة والنصف. أما السادسة وعشرون دقيقة فهي موعد الوصول إلى حافة '
           'المسبح، وهذا بالضبط نوع الرقم القريب الذي يوضع هناك لكي يُكتب '
           'خطأً.',
@@ -978,9 +1013,10 @@ T['ar'] = dict(
           'term&rdquo;</bdi>.',
     f6why='خمسة وثلاثون تُقال أولًا، وهي الاشتراك الشهري لغير الأعضاء. وهي '
           'تنضم إلى المركز، فتدفع اثنين وأربعين عن الفصل كله.',
-    f7why='ملابس السباحة والمنشفة هي <bdi>&ldquo;the usual&rdquo;</bdi>. أما '
-          'قبعة السباحة فهي ما يخصّه بالذكر على أنه الشيء الذي ينساه الناس، '
-          'وإجابة Section 1 تكون في الغالب العنصر الذي يُشدَّد عليه.',
+    f7why='قبعة السباحة هي الشيء الوحيد الذي يقول إن الناس ينسونه، ويذكرها '
+          'مرتين: <bdi>&ldquo;a cap&hellip; a swimming cap&rdquo;</bdi>. أما '
+          'ملابس السباحة والمنشفة فهي <bdi>&ldquo;the usual&rdquo;</bdi>، '
+          'وليست ما يسأل عنه السطر.',
 )
 
 
@@ -993,13 +1029,12 @@ T['zh'] = dict(
 
     t1Eyebrow='听之前',
     t1Title='最简单的部分，也是最容易白白丢分的部分',
-    t1ah='Section 1 总是什么样',
-    t1ab='两位说话人，一个日常场景，一张要填的表格或一份笔记。报名、预订、报失物'
-         '品。这是整张试卷里最简单的英语。',
-    t1an='正因为如此，在这里丢的一分和在讲座部分丢的一分一样多，却更让人心疼。',
-    t1bh='考的是书写，不是理解',
-    t1bb='你几乎每个词都能听懂。分数取决于你能否在对方不停说话的同时，准确写下一'
-         '个拼读出来的姓、一个电话号码和一个价格。',
+    t1ah='Section 1 是什么样',
+    t1ab='两位说话人，一个日常场景，通常是一张要填的表格、一份笔记或一张表——有时也会有几道选择题。报名、预订、报失物品。这是整张试卷里最简单的'
+         '英语。',
+    t1an='在这里丢的一分和在讲座部分丢的一分一样多，而这一分更容易保住。',
+    t1bh='考的是准确书写，也考理解',
+    t1bb='你几乎每个词都能听懂。分数取决于你能否在对方不停说话的同时，准确写下一个拼读出来的姓、一个电话号码和一个价格。',
     t1bn='拼写要计分。听对了却拼错的词，一分不得。',
     t1ch='先读表格',
     t1cb='录音开始前有一段时间。用它看清每个空要的是什么类型的答案——日期、数字'
@@ -1017,20 +1052,19 @@ T['zh'] = dict(
     gapHint='拼写要计分。写你真正听到的，而不是你以为会听到的。',
 
     t2Eyebrow='录音之后',
-    t2Title='这一部分扣分的四个地方',
+    t2Title='这一部分在哪里扣分',
     t2ah='更正',
-    t2ab='说话人说了一样东西，马上又改口——<em>Tuesday&hellip; sorry, '
-         'that&rsquo;s the children, the adult class is Thursday</em>。答案永远'
-         '是第二个。这是整个部分最常见的错误。',
+    t2ab='说话人说了一样东西，马上又改口——<em>Tuesday&hellip; sorry, that&rsquo;s the '
+         'children, the adult class is Thursday</em>。答案是第二个。这是在这里丢分最常见的原因之一。',
     t2an='注意听 <em>sorry</em>、<em>actually</em>、<em>I mean</em>、<em>I beg '
-         'your pardon</em>。每一个都在提醒你：答案马上要变了。',
+         'your pardon</em>。它们都可能预示着改动，所以下笔之前先听清后面几个词。',
     t2bh='拼读的单词',
-    t2bb='说话人一开始报字母，就是在给你口述答案。Section 1 里这种情况通常只出现'
-         '一次，而且重复的次数不会超过两个人自然对话时的重复。',
-    t2bn='记住英语里发音相近的字母：A、E 和 I；G 和 J；M 和 N。',
+    t2bb='说话人一开始报字母，就是在给你口述答案。Section 1 里至少会有一个要拼读的词。它可能会被复述一遍，就像这里一样，但别指望能听到'
+         '两次。',
+    t2bn='记住学习者最常混淆的字母：A、E 和 I——它们的英语读法和大多数字母表不同；G 和 J；M 和 N。',
     t2ch='数字和干扰项',
-    t2cb='英国人把两个零说成 <em>double oh</em>，一个零说成 <em>oh</em>。而且几'
-         '乎总会出现两个价格或两个时间——其中一个会被很快地点明是错的。',
+    t2cb='英国人把两个零说成 <em>double oh</em>，一个零说成 '
+         '<em>oh</em>。而且常常会出现两个价格或两个时间，其中一个很快就被排除。',
     t2cn='三十五是非会员的月费。她是要入会的，所以答案是四十二。',
 
     mcEyebrow='问题 8&ndash;10 &middot; 细节',
@@ -1051,8 +1085,7 @@ T['zh'] = dict(
                   '更正一次。来电者填好表格，最后把它读一遍。',
     actSpeak1='拼读的人：用正常语速把姓说一遍。不要放慢；除非对方要求，否则不要'
               '重复。',
-    actSpeak2='来电者：最后把整张表格读回去。每错一个字母就丢一分，所以要报字母，'
-              '而不是读单词。',
+    actSpeak2='来电者：最后把整张表格读回去。错一个字母，整个答案就不得分，所以要报字母，而不是读单词。',
     actSpeak3='在通话中的某个地方，改掉一个你已经说过的细节。看看同伴能不能发现。',
     actWriteKind='写作 · 100–150 词',
     actWriteBrief='为你自选的一项预订写出一张表格的六行——一门课程、一次送货、一'
@@ -1060,19 +1093,18 @@ T['zh'] = dict(
                   '价格。这就是考试给你的那三十秒准备时间，提前完成。',
     actPlaceholder='Surname: … (a name, spelled)',
 
-    f1why='只拼读一次，一个字母一个字母地说。说话人一开始报字母，就是在给你口述'
-          '答案。',
+    f1why='一个字母一个字母地拼读，然后被复述一遍。说话人一开始报字母，就是在给你口述答案。',
     f2why='&ldquo;Double oh&rdquo; 是两个零，&ldquo;oh&rdquo; 是一个零：07700 '
           '900 642。等着听十一个单独数字的考生，永远听不到十一个。',
-    f3why='他说了 Tuesday，马上改口：&ldquo;sorry, I beg your pardon, '
-          'that&rsquo;s the children.&rdquo; 答案永远是更正后的那个。',
+    f3why='他说了 Tuesday，马上改口：&ldquo;sorry, I beg your pardon, that&rsquo;s '
+          'the children.&rdquo; 答案是更正后的那个。',
     f4why='六点半。六点二十是到泳池边的时间，正是那种放在旁边、让人一不小心就写'
           '下来的相近数字。',
     f5why='十，只说了一次，就在报价之前。后面的会员价涵盖的是同样的十周——'
           '&ldquo;the whole term&rdquo;。',
     f6why='三十五先说出来，那是非会员的月费。她要入会，所以整个学期付四十二。',
-    f7why='泳衣和毛巾是 &ldquo;the usual&rdquo;。泳帽是他特别点出来、说大家常忘'
-          '带的东西，而 Section 1 的答案几乎总是被强调的那一项。',
+    f7why='泳帽是他说大家唯一会忘带的东西，而且他说了两次：&ldquo;a cap&hellip; a swimming '
+          'cap&rdquo;。泳衣和毛巾是 &ldquo;the usual&rdquo;，不是这一行要问的。',
 )
 
 
@@ -1085,15 +1117,13 @@ T['ja'] = dict(
 
     t1Eyebrow='聞く前に',
     t1Title='いちばん易しいセクション、そして点を捨ててしまうセクション',
-    t1ah='Section 1 はいつもこういうもの',
-    t1ab='話し手は二人、日常の場面、そして埋める用紙かメモ。入会の手続き、予約、'
-         '落とし物の届け出。試験全体でいちばん易しい英語です。',
-    t1an='だからこそ、ここで失う1点は講義で失う1点と同じ重さで、しかもより悔しい'
-         'のです。',
-    t1bh='試されるのは理解ではなく、書くこと',
-    t1bb='ほぼすべての語が聞き取れるはずです。点数を分けるのは、相手が話し続けて'
-         'いる間に、つづりを言われた名字、電話番号、値段を正確に書き取れるかどう'
-         'かです。',
+    t1ah='Section 1 とはどんなものか',
+    t1ab='日常の場面での二人の話し手、そしてたいていは埋める用紙、メモ、表――ときには選択問題もいくつか。入会の手続き、予約、落とし物の届け出。'
+         '試験全体でいちばん易しい英語です。',
+    t1an='ここで失う1点は講義で失う1点と同じ重さで、しかも守りやすい1点です。',
+    t1bh='試されるのは理解と同じくらい、正確に書くこと',
+    t1bb='ほぼすべての語が聞き取れるはずです。点数を分けるのは、相手が話し続けている間に、つづりを言われた名字、電話番号、値段を正確に書き取れる'
+         'かどうかです。',
     t1bn='つづりも採点されます。正しく聞き取れても、つづりを間違えれば0点です。',
     t1ch='まず用紙を読む',
     t1cb='録音が始まる前に時間があります。それを使って、各空欄がどんな種類の答え'
@@ -1114,24 +1144,22 @@ T['ja'] = dict(
             'たものを書きましょう。',
 
     t2Eyebrow='録音の後で',
-    t2Title='このセクションが点を奪う四つの場所',
+    t2Title='このセクションが点を奪うところ',
     t2ah='言い直し',
-    t2ab='話し手が何かを言って、すぐに変えます――<em>Tuesday&hellip; sorry, '
-         'that&rsquo;s the children, the adult class is Thursday</em>。答えは必'
-         'ず二つ目です。このセクション全体でいちばん多い間違いです。',
+    t2ab='話し手が何かを言って、すぐに変えます――<em>Tuesday&hellip; sorry, that&rsquo;s the '
+         'children, the adult class is Thursday</em>。答えは二つ目です。ここで点を落とすいちばんよくあ'
+         'る原因の一つです。',
     t2an='<em>sorry</em>、<em>actually</em>、<em>I mean</em>、<em>I beg your '
-         'pardon</em> に耳を澄ましましょう。どれも、答えがこれから変わるという'
-         '合図です。',
+         'pardon</em> に耳を澄ましましょう。どれも変更の合図になりうるので、書く前に続く数語を確かめましょう。',
     t2bh='つづりを言われる語',
-    t2bb='話し手がアルファベットを言い始めたら、答えを書き取らされているのです。'
-         'Section 1 ではたいてい一度だけで、二人の人が自然に繰り返す以上に繰り返'
-         'されることはありません。',
-    t2bn='英語で似て聞こえる文字を覚えておきましょう：A、E と I、G と J、M と '
-         'N。',
+    t2bb='話し手がアルファベットを言い始めたら、答えを書き取らされているのです。Section 1 '
+         'では少なくとも一つはつづりを言われる語があると思っておきましょう。ここのように読み返されることもありますが、二度聞けると当てにしてはい'
+         'けません。',
+    t2bn='学習者がいちばん混同しやすい文字を覚えておきましょう：A、E と I（英語での読み方が多くのアルファベットと違う）、G と J、M '
+         'と N。',
     t2ch='数字と引っかけ',
-    t2cb='イギリス人はゼロ二つを <em>double oh</em>、ゼロ一つを <em>oh</em> と'
-         '言います。そして値段や時刻はほぼ必ず二つ出てきて――そのうち一つは、さっ'
-         'と違うものだと示されます。',
+    t2cb='イギリス人はゼロ二つを <em>double oh</em>、ゼロ一つを <em>oh</em> '
+         'と言います。そして値段や時刻が二つ出てきて、一つがすぐに外されることがよくあります。',
     t2cn='35は非会員の月額料金でした。彼女は入会するところだったので、答えは42で'
          'した。',
 
@@ -1156,8 +1184,7 @@ T['ja'] = dict(
                   '電話をかけた人は用紙を埋め、最後に読み上げます。',
     actSpeak1='つづりを言う人：名字は普通の速さで一度だけ言いましょう。ゆっくりに'
               'せず、頼まれない限り繰り返さないこと。',
-    actSpeak2='電話をかけた人：最後に用紙全体を読み上げましょう。間違った文字一つ'
-              'が1点なので、単語ではなく文字を言うこと。',
+    actSpeak2='電話をかけた人：最後に用紙全体を読み上げましょう。文字を一つ間違えると答え全体が0点になるので、単語ではなく文字を言うこと。',
     actSpeak3='通話のどこかで、すでに伝えた情報を一つ変えましょう。パートナーが気'
               'づくかどうか見てみます。',
     actWriteKind='ライティング · 100–150 語',
@@ -1167,22 +1194,21 @@ T['ja'] = dict(
                   'おくのです。',
     actPlaceholder='Surname: … (a name, spelled)',
 
-    f1why='一文字ずつ、一度だけつづりが言われます。話し手が文字を言い始めた瞬間、'
-          '答えを書き取らされているのです。',
+    f1why='一文字ずつつづりが言われ、一度読み返されます。話し手が文字を言い始めた瞬間、答えを書き取らされているのです。',
     f2why='&ldquo;Double oh&rdquo; はゼロ二つ、&ldquo;oh&rdquo; はゼロ一つで'
           'す：07700 900 642。11個のばらばらの数字を待っている受験者には、11個は'
           '決して聞こえません。',
-    f3why='彼は Tuesday と言って、すぐに言い直します：&ldquo;sorry, I beg your '
-          'pardon, that&rsquo;s the children.&rdquo; 答えは必ず言い直した方です。',
+    f3why='彼は Tuesday と言って、すぐに言い直します：&ldquo;sorry, I beg your pardon, '
+          'that&rsquo;s the children.&rdquo; 答えは言い直した方です。',
     f4why='6時半。6時20分はプールサイドに着いているべき時刻で、まさに間違えて書か'
           'せるために置かれた、近くの数字です。',
     f5why='10。値段の直前に一度だけ言われます。その後の会員料金は同じ10週間分で'
           'す――&ldquo;the whole term&rdquo;。',
     f6why='35が先に言われますが、それは非会員の月額料金です。彼女は入会するので、'
           '学期全体で42を払います。',
-    f7why='水着とタオルは &ldquo;the usual&rdquo; です。キャップは人が忘れるもの'
-          'として彼がわざわざ取り上げていて、Section 1 の答えはほとんどいつも、強'
-          '調される品物です。',
+    f7why='キャップは、人が忘れるものとして彼が挙げる唯一の品で、二度言っています：&ldquo;a cap&hellip; a '
+          'swimming cap&rdquo;。水着とタオルは &ldquo;the usual&rdquo; '
+          'で、この行が聞いているものではありません。',
 )
 
 

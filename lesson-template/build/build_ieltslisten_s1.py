@@ -29,7 +29,7 @@ every one of them is deliberately in the recording:
 Form completion first, with **no word bank** — a real form task gives you
 nothing to choose from — then four detail questions.
 
-Six pictures, one per section. English, German and Spanish all complete.
+Six pictures, one per section. Ten languages, all complete.
 """
 import os
 import sys
@@ -38,6 +38,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import deck as D
 from ielts_langs import LANGS
 from ieltslisten_s1_data import (TURNS, AUDIO, FORM, FORM_SLIDES, FORM_BANK, MC)
+import i18n_ieltslisten_s1 as I
 
 TPL = 'lesson-template/lesson-template.html'
 OUT = 'forbes-english-ielts-listening-s1.html'
@@ -61,7 +62,8 @@ PALETTE = '''  --hero: url('%s/hero.jpg');
 # The moves, not phrases. This deck's target language is what a candidate says
 # to themselves while writing.
 CHIPS = ['read the form first', 'wait for the letters', 'double oh = 00',
-         'take the correction', 'two prices, one label', 'spelling is marked']
+         'take the correction', 'two prices, one ruled out',
+         'spelling is marked']
 
 BG_BRIEF, BG_AUDIO, BG_TRAPS, BG_DETAIL = ('bg02.jpg', 'bg03.jpg',
                                            'bg04.jpg', 'bg05.jpg')
@@ -71,6 +73,17 @@ BG_ACT = 'bg06.jpg'
 # Each form row's explanation goes out as an i18n key, f1why..f7why, so it
 # translates; the English is registered from FORM by i18n_ieltslisten_s1.
 WHY_KEY = {r[0]: 'f%dwhy' % (i + 1) for i, r in enumerate(FORM)}
+
+
+# Every English string on the slides is read from the i18n module, so the
+# HTML and UI_I18N.en cannot drift apart. They were written out twice until
+# 2026-09-24, and a fix made in one copy would have missed the other.
+E = I.T['en']
+
+
+def card(p):
+    """The six-item teach card for prefix p ('t1a', 't1b', …), from E."""
+    return (p + 'h', E[p + 'h'], p + 'b', E[p + 'b'], p + 'n', E[p + 'n'])
 
 
 def keyed(rows):
@@ -95,122 +108,47 @@ def build(make_audio=False):
     label = 'Section 1 &middot; %d:%02d' % (secs // 60, secs % 60)
 
     slides = (
-        D.cover(logo, 'Section 1 &mdash; <em>the everyday conversation</em>',
-                'Two speakers, one form to fill in, and a recording that plays '
-                'exactly once',
-                [('Level', 'B2&ndash;C1'),
-                 ('Focus', 'Listening &middot; Section 1'),
-                 ('Count', '10 questions')])
+        D.cover(logo, E['coverTitle'], E['coverSub'],
+                [('Level', E['chipLevel']),
+                 ('Focus', E['chipFocus']),
+                 ('Count', E['chipCount'])])
 
-        + D.teach('t1Eyebrow', 'Before you listen',
-                  't1Title',
-                  'The easiest section, and the one people throw marks away on',
-                  [('t1ah', 'What Section 1 always is', 't1ab',
-                    'Two speakers, an everyday situation, and a form or a set '
-                    'of notes to complete. Enrolling, booking, reporting '
-                    'something lost. It is the gentlest English on the paper.',
-                    't1an',
-                    'Which is why a lost mark here costs the same as a lost '
-                    'mark in the lecture, and hurts more.'),
-                   ('t1bh', 'It tests writing, not understanding', 't1bb',
-                    'You will understand nearly every word. The marks go on '
-                    'whether you can write a spelled surname, a phone number '
-                    'and a price down accurately while someone keeps talking.',
-                    't1bn',
-                    'Spelling counts. A correctly heard word spelt wrong '
-                    'scores nothing.'),
-                   ('t1ch', 'Read the form first', 't1cb',
-                    'You get time before the recording starts. Use it to see '
-                    'what KIND of answer each gap wants &mdash; a day, a '
-                    'number, a name &mdash; so you are waiting for the right '
-                    'thing instead of listening to everything.', 't1cn',
-                    'A gap after "£" wants a number. You can know that before '
-                    'you hear a word.')],
+        + D.teach('t1Eyebrow', E['t1Eyebrow'], 't1Title', E['t1Title'],
+                  [card('t1a'), card('t1b'), card('t1c')],
                   folder=F, bg=BG_BRIEF)
 
-        + D.audio('audEyebrow', 'The recording',
-                  'audTitle', 'You will hear it once',
-                  'audNote',
-                  'A telephone conversation between a woman and the manager of '
-                  'a community sports centre. Read the questions on the next '
-                  'slides first, then press play &mdash; here, or in the bar '
-                  'at the foot of any question slide. The recording keeps '
-                  'playing while you answer, and you hear it once.',
+        + D.audio('audEyebrow', E['audEyebrow'],
+                  'audTitle', E['audTitle'],
+                  'audNote', E['audNote'],
                   AUDIO, label, folder=F, bg=BG_AUDIO)
 
         + "".join(D.gap(n + 1, len(FORM_SLIDES), keyed(rows), FORM_BANK,
-                        'gapEyebrow', 'Questions 1&ndash;7 &middot; Complete the form',
-                        'gapTitle',
-                        'Write ONE WORD AND/OR A NUMBER in each gap',
+                        'gapEyebrow', E['gapEyebrow'],
+                        'gapTitle', E['gapTitle'],
                         folder=F, bg=BG_AUDIO,
-                        hint_key='gapHint',
-                        hint='Spelling is marked. Write what you actually '
-                             'heard, not what you expected to hear.',
+                        hint_key='gapHint', hint=E['gapHint'],
                         width=210, size=19)
                   for n, rows in enumerate(FORM_SLIDES))
 
-        + "".join(D.mc(i + 1, len(MC), q, 'mcEyebrow',
-                       'Questions 8&ndash;10 &middot; Detail', 'mcTitle',
-                       'What exactly did they say?',
+        + "".join(D.mc(i + 1, len(MC), q, 'mcEyebrow', E['mcEyebrow'],
+                       'mcTitle', E['mcTitle'],
                        folder=F, bg=BG_DETAIL, ctx=q.get('ctx'))
                   for i, q in enumerate(MC))
 
-        + D.teach('t2Eyebrow', 'After the recording',
-                  't2Title', 'The four places this section takes its marks',
-                  [('t2ah', 'The correction', 't2ab',
-                    'A speaker says one thing and immediately changes it '
-                    '&mdash; <em>Tuesday&hellip; sorry, that&rsquo;s the children, '
-                    'the adult class is Thursday</em>. The answer is always '
-                    'the second one. This is the commonest mistake on the '
-                    'whole section.', 't2an',
-                    'Listen for <em>sorry</em>, <em>actually</em>, <em>I '
-                    'mean</em>, <em>I beg your pardon</em>. Every one of them '
-                    'is a warning that the answer is about to change.'),
-                   ('t2bh', 'The spelled word', 't2bb',
-                    'When a speaker starts giving letters, an answer is being '
-                    'dictated. In Section 1 it usually happens once, and it '
-                    'is never repeated more than the speakers would naturally '
-                    'repeat it.', 't2bn',
-                    'Know the letters that sound alike in English: A, E and I; '
-                    'G and J; M and N.'),
-                   ('t2ch', 'The number and the distractor', 't2cb',
-                    'British speakers say <em>double oh</em> for two noughts '
-                    'and <em>oh</em> for one. And there are nearly always two '
-                    'prices or two times &mdash; one of them labelled as the '
-                    'wrong one, quickly.', 't2cn',
-                    'Thirty-five was the monthly rate for non-members. She was '
-                    'joining, so the answer was forty-two.')],
+        + D.teach('t2Eyebrow', E['t2Eyebrow'], 't2Title', E['t2Title'],
+                  [card('t2a'), card('t2b'), card('t2c')],
                   folder=F, bg=BG_TRAPS)
 
         + D.results('resNext', 'You heard it. Now run one &rarr;', folder=F)
 
-        + D.activate('Take the call', 'Use at least three:', CHIPS,
+        + D.activate(E['actTitle'], E['actUse'], CHIPS,
                      'Discussion &middot; in pairs',
-                     'In pairs, with a form each. One of you is the '
-                     'receptionist at a centre, a hotel or a garage; the other '
-                     'is enquiring. The receptionist must spell one name, give '
-                     'one phone number, and correct themselves once. The '
-                     'caller fills in the form and then reads it back.',
-                     ['Speller: give the surname once, at speaking speed. Do '
-                      'not slow down and do not repeat it unless you are '
-                      'asked.',
-                      'Caller: read the whole form back at the end. Every '
-                      'wrong letter is a mark, so say the letters, not the '
-                      'word.',
-                      'Somewhere in the call, change one detail after you have '
-                      'already given it. See whether your partner catches it.'],
-                     'Writing &middot; 100&ndash;150 words',
-                     'Write the six lines of a form for a booking of your own '
-                     'choosing &mdash; a course, a delivery, a repair &mdash; '
-                     'and beside each one write what KIND of answer it needs: '
-                     'a name, a day, a number, a price. That is the thirty '
-                     'seconds of preparation the test gives you, done in '
-                     'advance.',
-                     'Surname: … (a name, spelled)',
+                     E['actSpeakBrief'],
+                     [E['actSpeak1'], E['actSpeak2'], E['actSpeak3']],
+                     E['actWriteKind'], E['actWriteBrief'],
+                     E['actPlaceholder'],
                      folder=F, bg=BG_ACT)
     )
-
-    import i18n_ieltslisten_s1 as I
     s = D.assemble(TPL, OUT, slides, PALETTE,
                    'IELTS Listening Section 1: The Everyday Conversation | Forbes English',
                    I, langs=LANGS)

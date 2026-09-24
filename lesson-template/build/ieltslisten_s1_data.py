@@ -10,10 +10,10 @@ speaker corrects themselves.
 So the script is built around the four traps that actually lose marks, and
 every one of them is in the recording on purpose:
 
-  1. **A spelled surname.** NOVAKOVA is given letter by letter, once.
+  1. **A spelled surname.** NOVAKOVA is given letter by letter and read
+     back once.
   2. **A self-correction.** The manager says Tuesday and then corrects to
-     Thursday. Candidates who write the first thing they hear lose the mark,
-     and this is the single commonest Section 1 error.
+     Thursday. Candidates who write the first thing they hear lose the mark.
   3. **A distractor price.** Forty-two pounds is the answer; thirty-five is
      said first and is explicitly the non-member rate.
   4. **A number said in the British way.** The phone number uses "double" and
@@ -34,6 +34,17 @@ REVISED 2026-09-23 (IELTS audit):
   - Like the real Section 1 it pauses for reading time at the start and
     before Questions 8-10.
   - Speakers contract, as people do. The narrator does not.
+
+REVISED 2026-09-24 (Innes: "some statements are questionable"):
+  - Question 7 read "Must bring a swimming ______", and she must bring a
+    costume as well as a cap, so COSTUME was a correct answer marked
+    wrong. The line is now "Often forgotten: swimming ______".
+  - Accepted answers widened to what a candidate may correctly write:
+    07700 900642 (the usual UK grouping), 6.30 p.m., GBP42 with the sign,
+    forty two unhyphenated.
+  - The explanations no longer say the surname is spelled once (it is
+    read back), that the answer is "always" the correction, or that a
+    Section 1 answer is "nearly always" the emphasised item.
 
 THE RECORDING IS GENERATED, like everything else here: `tts.py` turns TURNS
 into `ielts-listen-s1/section1.mp3`. Change the script, re-run the builder,
@@ -117,28 +128,29 @@ AUDIO = 'section1.mp3'
 # accepted spellings.
 FORM = [
     ('Surname: ______', ['Novakova|NOVAKOVA'],
-     'Spelled out once, letter by letter. The moment a speaker starts giving '
-     'letters, an answer is being dictated.'),
-    ('Telephone: ______', ['07700900642|07700 900 642|07700-900-642'],
+     'Spelled letter by letter, then read back once. The moment a speaker '
+     'starts giving letters, an answer is being dictated.'),
+    ('Telephone: ______', ['07700900642|07700 900 642|07700 900642|07700-900-642|07700-900642'],
      '"Double oh" is two noughts and "oh" is one: 07700 900 642. A candidate '
      'waiting for eleven separate digits never hears eleven.'),
     ('Class day: ______', ['Thursday'],
      "He says Tuesday and corrects himself at once: \"sorry, I beg your "
-     "pardon, that's the children.\" The answer is always the correction."),
+     "pardon, that's the children.\" The answer is the correction."),
     ('Starts at: ______',
-     ['6.30|6:30|6.30pm|6.30 pm|6:30pm|6:30 pm|18.30|18:30'],
+     ['6.30|6:30|6.30pm|6.30 pm|6:30pm|6:30 pm|6.30p.m.|6.30 p.m.|6:30p.m.|'
+      '6:30 p.m.|18.30|18:30'],
      'Six thirty. Twenty past is when to arrive poolside, which is the sort '
      'of nearby number that is put there to be written down by mistake.'),
     ('Length of course: ______ weeks', ['10|ten'],
      'Ten, said once, just before the prices. The member price that follows '
      'covers the same ten weeks &mdash; "the whole term".'),
-    ('Cost for members: £______', ['42|42.00|forty-two'],
+    ('Cost for members: £______', ['42|42.00|£42|£42.00|forty-two|forty two'],
      'Thirty-five is said first, and it is the monthly rate for non-members. '
      'She is joining, so she pays forty-two for the whole term.'),
-    ('Must bring a swimming ______', ['cap'],
-     'Costume and towel are "the usual". The cap is the one he singles out as '
-     'the thing people forget, and a Section 1 answer is nearly always the '
-     'item that gets emphasised.'),
+    ('Often forgotten: swimming ______', ['cap'],
+     'The cap is the one thing he says people forget, and he names it '
+     'twice: "a cap&hellip; a swimming cap". Costume and towel are "the '
+     'usual", which is not what the line asks for.'),
 ]
 
 # NO WORD BANK, deliberately. A real form-completion task gives you nothing to
