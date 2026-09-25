@@ -90,10 +90,18 @@ PALETTE = """  --hero: url('%s/hero.jpg');
 
 # ── the seven pictures ─────────────────────────────────────────────────
 # One per section plus the cover. Each appears twice: whole on its divider,
-# cropped to a column on its panel. POS tunes which vertical slice the panel
-# takes — a panel is 548x720 out of a 16:9 source, so most of the width is
-# discarded. Set these by eye once the real artwork lands; centre is the
-# honest default until then.
+# cropped to a column on its panel. POS picks which vertical slice the panel
+# takes: a panel is 548x720 out of a 16:9 source painted `cover`, so it sees
+# 42.6% of the width, and 'P% 50%' puts the window's left edge at P x 0.574
+# of it. (The divider gets the same value but has ~6px of slack, so there it
+# is a no-op.) Set by eye from renders of each crop, 2026-09-25:
+#
+#   1  the clip, all three ticks, and the pencil on the unticked fourth row
+#   2  the alarm clock whole, both bells — Elena's alarm, at about eight
+#   3  the padlock, with the key's teeth coming in at the edge
+#   4  the tipped-over box and the cards it spilled
+#   5  the hammer and the screwdrivers; the tools sit low, so the right-hand
+#      end is the only slice with any height in it
 PIC = {
     1: 's1-clipboard.jpg',
     2: 's2-clock.jpg',
@@ -102,7 +110,13 @@ PIC = {
     5: 's5-tool-roll.jpg',
 }
 ACT_PIC = 'activate-notepad.jpg'
-POS = {}               # e.g. POS[3] = '38% 50%'
+POS = {
+    1: '52% 50%',
+    2: '85% 50%',
+    3: '78% 50%',
+    4: '62% 50%',
+    5: '85% 50%',
+}
 
 
 def panel(n, stage, side='left'):
