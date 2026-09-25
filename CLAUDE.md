@@ -35,8 +35,9 @@ standard and say what you did.
 
 **Tested 2026-09-07, and the previous version of this section was wrong.**
 
-A cloud session — anything started from claude.ai/code — cannot see Innes's
-computer. There is no attachment, connector or link that changes that:
+A cloud session — one running in Anthropic's sandbox, not on Innes's
+machine — cannot see Innes's computer. There is no attachment, connector or
+link that changes that:
 
 - **Chat attachments arrive as pictures in the model's context, not as files
   on disk.** Fifteen images were attached; `/mnt/attach`, `/mnt/user-data`
@@ -69,6 +70,18 @@ pushes with his own credentials. The workflow is:
 `.claude/skills/publish/SKILL.md` is the whole pipeline: `prep-artwork.py`,
 palette, build, checks, the catalogue row, `seo.py`, redirects, push. Read it
 before doing any of those steps by hand.
+
+**Being driven from the phone does not make a session a cloud session.**
+Since 2026-09-25 new sessions on this machine are set to start with Remote
+Control on (`remoteControlAtStartup` in `~/.claude/settings.json`; the
+desktop app's own "Connect new sessions to Remote Control" preference
+overrides it if it is ever set), so Innes can follow and steer them from
+claude.ai/code or the Claude app. Such a session is still local: it reads
+`incoming/`, pushes, and reaches the live site. Where the session runs
+decides it, not where Innes types — a `win32` platform and
+`C:\Users\black\Documents\FORBES` mean local. The machine has to be on with
+the app open. Not yet tested: whether a picture attached from the phone
+reaches the local `.jsonl` the way a desktop attachment does.
 
 Use cloud sessions for anything that starts from what is already in git.
 
