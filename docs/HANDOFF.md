@@ -11,7 +11,65 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
-## 2026-09-16 — B1 Mixed Grammar Test: audited, blocked on artwork
+## 2026-09-25 — B1 Mixed Grammar Test Part 1: SHIPPED as a 45-slide deck (audited 2026-09-16)
+
+### 2026-09-25 — shipped, from a local session
+
+Live at the same URL and byte-for-byte what `4e8fc67` committed (curl'd, and
+the library row, card image and tense-review hub are live too). 45 slides,
+EN/DE/ES, house style 2. `check-lesson.js`: all checks passed, **LOGO
+188px/188px locally**, so the cloud failure below was the sandbox, as it
+predicted. `answered-overflow.js` fits in en/de/es; a print export gives 45
+pages at 16:9 with backgrounds.
+
+- **Art.** Six plates from `incoming/`; the mapping is in `90e78aa`'s
+  message. The plan's "`a_large_clock…`" is really
+  `a_large_plain_wall_clock_beside_a_stack…`, and its apartment-window
+  alternative is from the 09-24 desert batch the plan gives Part 2, so it
+  stayed out. `POS` was set by eye from renders of each 548×720 crop. The
+  seven sources are now in `incoming/_previous/forbes-english-b1-mixed-grammar-test/`.
+- **The cover is a stand-in, and Innes chose it.** The briefed cover (a
+  pencil whose shadow curves into a question mark, plan §5) had not been
+  generated: nothing in `incoming/` or Downloads. §14 says ask, so two
+  stand-ins were built for real and he picked
+  `a_notepad_and_a_sharp_pencil_on_a_bare_desk…` 9ca3d7 #1. **When the
+  question-mark render exists:** `prep-artwork.py <it> --into
+  MixedGrammarPart1 --names hero`, `extract-palette.py … --light`, paste over
+  `PALETTE`, rebuild, check, `build_hubs.py`, `seo.py`. Nothing else moves;
+  the library row already points at `hero.jpg`.
+- **The question slides are not flat `--void`**, whatever the builder and
+  the plan said. With no `data-bg`, `.bg-layer` paints `--hero` at 0.72
+  behind every slide that doesn't paint its own background, and only panel
+  and divider slides do. So **the cover is the backdrop of 33 of the 45
+  slides.** That's why a stand-in needed an empty middle, and why the desk
+  render (the activation plate) was the wrong one: it would have put one
+  picture behind 34 slides. Corrected in the builder, the plan and the
+  style-2 note below.
+- **Needs Innes: the catalogue row still says `deck = false`.** Session writes
+  to `public.lessons` are refused here, so:
+  ```sql
+  update public.lessons set deck = true
+  where file in ('forbes-english-b1-mixed-grammar-test.html',
+                 'must-have-to-vfb-stuttgart.html');
+  ```
+  VfB's flag has been pending since this morning's rebuild.
+- **`check-library.js --vs-origin` failed every deliberate repoint**, since
+  any value that differed from origin was a FAIL. It now takes `--expect
+  <lesson.html>`, which passes only if origin still holds the base's value
+  for that row. Undeclared differences fail as before. `--self-test` runs ten
+  cases, including 2026-08-25 and `f6be885`. CLAUDE.md and the publish skill
+  say so.
+- **The publish skill's ship and clear steps were stale.** Step 6 used
+  `add -A` and a bare commit, both refused by the guard; step 7 emptied
+  `incoming/`, which is shared (297 files today). Both now name files.
+- **git-guard reads commit-message text as commands.** A `-m` whose own line
+  says "git add -A" is refused as if you ran it. Put such a message in a
+  file and `git commit -o … -F <file>`.
+- `MixedGrammarPart1/mixed-grammar-part1-thumb.jpg` (the old desert square)
+  and `desert-building-sunset-clouds.jpg` are now unreferenced and left on
+  disk. The plan keeps the latter as Part 2's fallback.
+
+### 2026-09-16 — the audit, when it was blocked on artwork
 
 `forbes-english-b1-mixed-grammar-test.html` is an old scrolling page and needs
 the full §10 rebuild. **It is blocked by §5c, not by effort**: five sections
@@ -112,9 +170,9 @@ each picture by eye.
 **HOUSE-STYLE.md documents style 1 only.** §5, §5b and §5c are all written as
 though the washed hero is the only treatment, and §5c's "one background per
 section" reads as a `data-bg` count. Under style 2 the requirement is met by
-the section's divider and panel showing the picture at full opacity, and
-question slides carry no artwork at all. Worth a §5d when someone next edits
-that file.
+the section's divider and panel showing the picture at full opacity. Question
+slides without a `bg=` still carry artwork: the cover's wash (corrected
+2026-09-25, see above). Worth a §5d when someone next edits that file.
 
 ### 2026-09-24 — the style is Noma Bar, and that moved the count to 14
 
