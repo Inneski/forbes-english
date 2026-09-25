@@ -70,44 +70,63 @@ HERO_ALT = ('Illustration of a flag on a hilltop under a tall pink-edged cloud, 
 BANK_SRC = 'ielts-question-bank/hero.jpg'
 
 # Route copy. Everything countable is filled in from the route pages.
+# Every learner-facing line on this page follows the writing standard,
+# lesson-template/HOUSE-STYLE.md §7a: full sentences a B2 reader gets the
+# first time, and what actually happens on screen, checked against the deck.
+# The page calls a route a "course"; the route pages still say "route".
 ROUTES = [
     dict(key='writing', hub='ielts-writing.html', name='Writing', family='prod',
          meta='Task 1 &amp; Task 2',
-         pitch='Task 1 comes first on the paper, so it comes first here &mdash; '
-               'but Task 2 carries twice the marks, and that is where the hours '
-               'should go. All five essay types, the two paragraphs that decide '
-               'Task Achievement, band 9 models taken apart, and a timed studio '
-               'that exports for marking.',
+         pitch='Task 1 comes first in the test, so it comes first in this course. '
+               'But Task 2 is worth twice as many marks, so spend more of your '
+               'practice time on Task 2. You learn to write the introduction and '
+               'the overview of a Task 1 report. Without a clear overview, your mark '
+               'for answering the task cannot go above band 5. You learn the five '
+               'types of Task 2 essay, '
+               'and you compare two band 9 essays with band 6 answers to the same '
+               'questions. In the last lesson, the Writing Studio, you write a '
+               'report in 20 minutes and an essay in 40 minutes, with a timer and '
+               'a word counter on the screen. Then a button downloads your plan '
+               'and your writing as a text file for your teacher.',
          pos='18% 50%'),
     dict(key='speaking', hub='ielts-speaking.html', name='Speaking', family='prod',
-         meta='Parts 1, 2 &amp; 3 &middot; both modules',
-         pitch='Eleven to fourteen minutes, three parts, one examiner, and the '
-               'same test on both modules. Parts 1 and 2 first: answering at '
-               'length without waffling, and filling the two minutes of the '
-               'long turn, which is where most candidates come unstuck.',
+         meta='Parts 1, 2 &amp; 3 &middot; Academic and General Training',
+         pitch='The Speaking test takes 11 to 14 minutes. It has three parts, and '
+               'you talk to one examiner. The test is the same in Academic and '
+               'General Training. The first lesson covers Parts 1 and 2. You learn '
+               'to make your answers longer without filling them with empty words. '
+               'You also learn to keep talking for the full two minutes in Part 2, '
+               'when you speak alone about one topic. This is where most candidates '
+               'have problems.',
          pos='40% 50%'),
     dict(key='listening', hub='ielts-listening.html', name='Listening', family='recv',
-         meta='With recordings &middot; both modules',
-         pitch='Every recording is played once, so reading the questions before '
-               'the audio starts matters more than anything you do while it '
-               'runs. The mechanics first, then the four sections, one lesson '
-               'each, each playing its recording once as the test does &mdash; '
-               'and a drills deck for numbers and spelling.',
+         meta='With recordings &middot; Academic and General Training',
+         pitch='In the test, you hear each recording only once. So the most '
+               'important thing is to read the questions before the recording '
+               'starts. The first lesson explains how the Listening test works. '
+               'Then there is one lesson for each of the four sections. In these '
+               'lessons, the recording plays once without stopping, like in the '
+               'real test, and you answer while it plays. After it ends, you can '
+               'play it again. The last lesson practises numbers, spelling and '
+               'different accents.',
          pos='40% 50%'),
     dict(key='reading', hub='ielts-reading.html', name='Reading', family='recv',
-         meta='40 questions &middot; both modules',
-         pitch='The question types are the same on both modules, and the '
-               'difficulty is technique rather than vocabulary. True, False, '
-               'Not Given first, because it is the type candidates find hardest '
-               'to call: they answer from what they know instead of from what '
-               'the passage says.',
+         meta='40 questions in the test &middot; Academic and General Training',
+         pitch='Academic and General Training use the same types of question, '
+               'but with different texts. Reading is hard because each type of '
+               'question needs its own technique. Difficult words are a smaller '
+               'problem. The course starts with True, False, Not Given, because '
+               'candidates find it the hardest type. Many of them answer from '
+               'what they already know about the topic. The answer must come '
+               'from what the text says.',
          pos='60% 50%'),
     dict(key='vocabulary', hub='ielts-vocabulary.html', name='Vocabulary', family='lex',
-         meta='Feeds Speaking &amp; Writing',
-         pitch='Lexical Resource is a quarter of the Speaking mark and a quarter '
-               'of the Writing mark. The descriptors ask for less common words '
-               'used accurately, not rare ones: words you have to use, not '
-               'words you have to read.',
+         meta='For Speaking and Writing',
+         pitch='Your vocabulary is a quarter of your mark in Speaking and a '
+               'quarter in Writing. To get a high mark, you do not need rare '
+               'words. You need less common words, and you need to use them '
+               'correctly. So these lessons teach words and word combinations '
+               'that you can use when you speak and write.',
          pos='55% 50%'),
 ]
 
@@ -115,25 +134,25 @@ ROUTES = [
 # it. Each line is paraphrased from that lesson's own description on its
 # route page; keep it that way, so the promise is one the lesson keeps.
 SYMPTOMS = [
-    ('My Task 1 report keeps turning into an opinion.',
+    ('I keep giving my opinion in my Task 1 report.',
      'forbes-english-ielts-academic-writing-part1.html'),
-    ('I never know what belongs in the overview.',
+    ('I never know what to put in the overview.',
      'forbes-english-ielts-intro-overview-part7.html'),
-    ('I can&rsquo;t tell which kind of essay the question wants.',
+    ('I don&rsquo;t know which type of essay the question is asking for.',
      'forbes-english-ielts-writing-lab-part2.html'),
-    ('I know the shape of the essay and have nothing to say.',
+    ('I know how to organise my essay, but I have no ideas to write about.',
      'ielts-question-bank.html'),
-    ('I run dry forty seconds into the two-minute long turn.',
+    ('In Part 2, I stop talking after about 40 seconds, but I need to speak for two minutes.',
      'forbes-english-ielts-speaking-part1-2.html'),
-    ('In Part 3 I answer about my own life, not the general case.',
+    ('In Part 3, I talk about my own life, but the question is about people in general.',
      'forbes-english-ielts-speaking-part3.html'),
     ('I can&rsquo;t decide between False and Not Given.',
      'forbes-english-ielts-reading-tfng.html'),
-    ('In Section 3 I lose track of who said what.',
+    ('In Section 3, I forget which speaker said what.',
      'forbes-english-ielts-listening-s3.html'),
-    ('I hear the answer, then write it down wrong.',
+    ('I hear the answer, but then I write it down wrong.',
      'forbes-english-ielts-listening-drills.html'),
-    ('I know plenty of words, but my vocabulary band doesn&rsquo;t move.',
+    ('I know a lot of words, but my vocabulary score does not go up.',
      'forbes-english-ielts-lexical-resource.html'),
 ]
 
@@ -205,6 +224,11 @@ def words(n):
 
 def plural(n, one, many=None):
     return one if n == 1 else (many or one + 's')
+
+
+def and_list(xs):
+    """['A', 'B', 'C'] -> 'A, B and C'."""
+    return xs[0] if len(xs) == 1 else '%s and %s' % (', '.join(xs[:-1]), xs[-1])
 
 
 # ── reading the route pages ───────────────────────────────────────────
@@ -760,32 +784,32 @@ a.ih-seg:hover { transform: translateY(-4px); box-shadow: 0 16px 30px var(--ih-s
 
 
 def hero(routes, f):
-    free_line = ('free &mdash; the first lesson on every route' if f['firsts'] and f['free'] == len(routes)
-                 else 'free, including the first lesson on every route' if f['firsts']
-                 else 'free, no sign-in')
+    free_line = ('free: the first lesson of every course' if f['firsts'] and f['free'] == len(routes)
+                 else 'free, including the first lesson of every course' if f['firsts']
+                 else 'free lessons, no account needed')
     return """<header class="ih-hero" aria-labelledby="ih-h1">
   <img class="ih-hero-img" src="%(hero)s" srcset="%(hero_sm)s 1000w, %(hero)s 2000w" sizes="100vw"
        width="2000" height="1120" alt="%(alt)s" fetchpriority="high">
   <div class="ih-hero-in">
     <div class="ih-hero-copy">
-      <p class="ih-kicker">Exam route &middot; C1 &middot; the Academic module</p>
+      <p class="ih-kicker">Exam preparation &middot; Level C1</p>
       <h1 class="ih-h1" id="ih-h1">IELTS <em>Academic</em></h1>
-      <p class="ih-lede">Writing, Speaking, Listening, Reading, and the vocabulary that feeds two of them &mdash; %(nroutes_w)s routes, each in the order it should be taught.</p>
+      <p class="ih-lede">There is one course for each part of the test: Writing, Speaking, Listening and Reading. A fifth course teaches the vocabulary you need for Writing and Speaking. You do the lessons in each course in order.</p>
       <ul class="ih-stats">
         <li><b>%(total)d</b><span>%(lessons)s</span></li>
-        <li><b>%(nroutes)d</b><span>routes</span></li>
+        <li><b>%(nroutes)d</b><span>%(courses)s</span></li>
         <li class="ih-stat-free"><b>%(free)d</b><span>%(free_line)s</span></li>
       </ul>
       <div class="ih-ctas">
-        <a class="ih-btn" href="#routes">Choose a route <span aria-hidden="true">&darr;</span></a>
-        <a class="ih-btn ih-btn-quiet" href="#test">The test, to scale</a>
+        <a class="ih-btn" href="#routes">Choose a course <span aria-hidden="true">&darr;</span></a>
+        <a class="ih-btn ih-btn-quiet" href="#test">How long each part takes</a>
       </div>
     </div>
   </div>
 </header>""" % dict(hero=HERO_SRC, hero_sm=derive(HERO_SRC, 'hero-1000', 1000, 82),
                    alt=esc(HERO_ALT), total=f['total'], lessons=plural(f['total'], 'lesson'),
                    free=f['free'], free_line=free_line,
-                   nroutes=len(routes), nroutes_w=words(len(routes)))
+                   nroutes=len(routes), courses=plural(len(routes), 'course'))
 
 
 def test_to_scale(routes):
@@ -797,40 +821,40 @@ def test_to_scale(routes):
     return """<section class="ih-test" id="test" aria-labelledby="ih-test-h">
   <div class="ih-wrap">
     <div class="ih-sechead">
-      <p class="ih-kicker">The exam</p>
-      <h2 class="ih-h2" id="ih-test-h">The test, to scale</h2>
-      <p>Four papers, about two hours and forty-five minutes. Listening, Reading and Writing are sat back to back with no break between them; Speaking is face to face with an examiner, and may fall on a different day.</p>
+      <p class="ih-kicker">The test</p>
+      <h2 class="ih-h2" id="ih-test-h">How long is each part of the test?</h2>
+      <p>The test has four parts and takes about two hours and forty-five minutes. You take Listening, Reading and Writing one after the other, with no break between them. Speaking is a conversation with an examiner, and it may be on a different day.</p>
     </div>
     <div class="ih-scale">
-      <a class="ih-seg ih-seg-l" href="#listening" style="--m:30" aria-label="Listening: 30 minutes, 4 sections, 40 questions, each recording heard once. %(l)s on the Listening route.">
-        <div><span class="ih-seg-name">Listening</span><p class="ih-seg-fact">4 sections &middot; 40 questions &middot; each recording heard once</p></div>
+      <a class="ih-seg ih-seg-l" href="#listening" style="--m:30" aria-label="Listening: 30 minutes. 4 sections, 40 questions. You hear each recording once. %(l)s in the Listening course.">
+        <div><span class="ih-seg-name">Listening</span><p class="ih-seg-fact">4 sections, 40 questions. You hear each recording once.</p></div>
         <span class="ih-seg-min">30<small>min</small></span>
       </a>
-      <div class="ih-seg ih-seg-x" style="--m:10" role="note" aria-label="Plus 10 minutes to transfer Listening answers, on the paper test only.">
-        <p class="ih-seg-fact">on paper</p>
+      <div class="ih-seg ih-seg-x" style="--m:10" role="note" aria-label="Paper test only: 10 more minutes to copy your Listening answers onto the answer sheet.">
+        <p class="ih-seg-fact">paper test only</p>
         <span class="ih-seg-min">+10</span>
       </div>
-      <a class="ih-seg ih-seg-r" href="#reading" style="--m:60" aria-label="Reading: 60 minutes, 3 sections, 40 questions, no transfer time. %(r)s on the Reading route.">
-        <div><span class="ih-seg-name">Reading</span><p class="ih-seg-fact">3 sections &middot; 40 questions &middot; no time at the end to transfer anything</p></div>
+      <a class="ih-seg ih-seg-r" href="#reading" style="--m:60" aria-label="Reading: 60 minutes. 3 sections, 40 questions. You get no extra time to copy your answers. %(r)s in the Reading course.">
+        <div><span class="ih-seg-name">Reading</span><p class="ih-seg-fact">3 sections, 40 questions. You get no extra time to copy your answers.</p></div>
         <span class="ih-seg-min">60<small>min</small></span>
       </a>
-      <a class="ih-seg ih-seg-w" href="#writing" style="--m:60" aria-label="Writing: 60 minutes. Task 1, about 20 minutes, at least 150 words. Task 2, about 40 minutes, at least 250 words, twice the marks of Task 1. %(w)s on the Writing route.">
+      <a class="ih-seg ih-seg-w" href="#writing" style="--m:60" aria-label="Writing: 60 minutes. Task 1: spend about 20 minutes and write at least 150 words. Task 2: spend about 40 minutes and write at least 250 words. Task 2 is worth twice as many marks as Task 1. %(w)s in the Writing course.">
         <div class="ih-task" style="--m:20">
-          <div><span class="ih-seg-name">Writing: Task&nbsp;1</span><p class="ih-seg-fact">at least 150 words</p></div>
-          <span class="ih-seg-min">~20<small>min</small></span>
+          <div><span class="ih-seg-name">Writing: Task&nbsp;1</span><p class="ih-seg-fact">Spend about 20 minutes. Write at least 150 words.</p></div>
+          <span class="ih-seg-min">20<small>min</small></span>
         </div>
         <div class="ih-task" style="--m:40">
-          <div><span class="ih-seg-name">Task&nbsp;2</span><p class="ih-seg-fact">at least 250 words &middot; twice the marks of Task&nbsp;1</p></div>
-          <span class="ih-seg-min">~40<small>min</small></span>
+          <div><span class="ih-seg-name">Task&nbsp;2</span><p class="ih-seg-fact">Spend about 40 minutes. Write at least 250 words. Task&nbsp;2 is worth twice as many marks as Task&nbsp;1.</p></div>
+          <span class="ih-seg-min">40<small>min</small></span>
         </div>
       </a>
       <div class="ih-gap" style="--m:7" aria-hidden="true"></div>
-      <a class="ih-seg ih-seg-s" href="#speaking" style="--m:14" aria-label="Speaking: 11 to 14 minutes, 3 parts, face to face. %(s)s on the Speaking route.">
+      <a class="ih-seg ih-seg-s" href="#speaking" style="--m:14" aria-label="Speaking: 11 to 14 minutes. 3 parts, face to face with an examiner. %(s)s in the Speaking course.">
         <div><span class="ih-seg-name">Speaking</span><p class="ih-seg-fact">3 parts</p></div>
-        <span class="ih-seg-min">11&ndash;14</span>
+        <span class="ih-seg-min">11&ndash;14<small>min</small></span>
       </a>
-      <p class="ih-scale-note">Drawn to scale: every block is as long as the paper is. <span class="ih-keyed"><span class="ih-key ih-key-recv"></span>Blues</span> for the two papers you take in, <span class="ih-keyed"><span class="ih-key ih-key-prod"></span>reds</span> for the two you produce. The hatched ten minutes are for copying Listening answers onto the answer sheet, and only the paper test has them.</p>
-      <a class="ih-brace" href="#vocabulary"><b>Vocabulary</b> <span>Lexical Resource is a quarter of the Writing mark and a quarter of the Speaking mark &mdash; %(v)s &rarr;</span></a>
+      <p class="ih-scale-note">The size of each block shows how long that part of the test takes. <span class="ih-keyed"><span class="ih-key ih-key-recv"></span>Blue blocks</span> are the parts where you listen and read. <span class="ih-keyed"><span class="ih-key ih-key-prod"></span>Red blocks</span> are the parts where you write and speak. The striped block is 10 extra minutes to copy your Listening answers onto the answer sheet. Only the paper test has this extra time.</p>
+      <a class="ih-brace" href="#vocabulary"><b>Vocabulary</b> <span>Your vocabulary is a quarter of your mark in Writing and a quarter in Speaking. Examiners call this Lexical Resource. The Vocabulary course has %(v)s. &rarr;</span></a>
     </div>
   </div>
 </section>""" % dict(l=n('listening'), r=n('reading'), w=n('writing'), s=n('speaking'),
@@ -858,7 +882,7 @@ def route_html(i, r):
     if first_free:
         go.append('<a class="ih-btn ih-btn-sm" href="%s">Start free: %s <span aria-hidden="true">&rarr;</span></a>'
                   % (seo.quote(first_free['file']), first_free['title']))
-    go.append('<a class="ih-textlink" href="%s">The %s route, lesson by lesson</a>'
+    go.append('<a class="ih-textlink" href="%s">Read about each %s lesson</a>'
               % (r['hub'], r['name']))
     return """  <article class="ih-route" id="%(key)s" data-family="%(family)s" aria-labelledby="ih-r-%(key)s">
     <a class="ih-route-art" href="%(hub)s" tabindex="-1" aria-hidden="true">
@@ -889,25 +913,31 @@ def routes_html(routes, f):
         '<span class="ih-jump-name">%s</span><span class="ih-jump-c">%d %s</span></a></li>'
         % (r['family'], r['key'], i + 1, r['name'], len(r['stops']),
            plural(len(r['stops']), 'lesson')) for i, r in enumerate(routes))
-    free = (' The first lesson on every route is free, with no sign-in.' if f['firsts']
-            else ' Lessons marked Free need no sign-in.')
+    free = (' The first lesson of every course is free, and you do not need an account for it.'
+            if f['firsts'] else ' You do not need an account for the lessons marked Free.')
+    decks = ('Most lessons are slides that you click through. When a question has one '
+             'right answer, the lesson checks your answer and keeps your score. The '
+             'lesson does not score your own speaking and writing.')
     if not f['silent']:
-        decks = ('Every lesson is a click-through deck, scored where scoring teaches '
-                 'something, and ends with language you produce rather than recognise.')
+        decks += (' Every lesson has a speaking or writing task, where you use phrases '
+                  'from the lesson.')
     else:
-        decks = ('Every lesson is a click-through deck, scored where scoring teaches '
-                 'something. All but %s end with language you produce rather than '
-                 'recognise.' % words(len(f['silent'])))
+        n = len(f['silent'])
+        decks += (' Most lessons end with a speaking task for two people and a writing '
+                  'task, where you use phrases from the lesson. %s %s the only %s with no '
+                  'speaking or writing task.'
+                  % (and_list([s['title'] for s in f['silent']]), 'is' if n == 1 else 'are',
+                     plural(n, 'lesson')))
     return """<section class="ih-routes" id="routes" aria-labelledby="ih-routes-h">
   <div class="ih-wrap">
     <div class="ih-routes-head">
       <div class="ih-sechead">
-        <p class="ih-kicker">%(n_w)s routes</p>
-        <h2 class="ih-h2" id="ih-routes-h">Pick a route. Walk it in order.</h2>
-        <p>Each route is ordered: the later lessons assume the earlier ones, so start at the top of one and work down rather than picking lessons at random.%(free)s</p>
+        <p class="ih-kicker">%(n_w)s courses</p>
+        <h2 class="ih-h2" id="ih-routes-h">Choose a course and do its lessons in order.</h2>
+        <p>In each course, the later lessons use what you learned in the earlier ones. So start with lesson 1 and do the lessons in order.%(free)s</p>
         <p>%(decks)s</p>
       </div>
-      <ol class="ih-jump" aria-label="Jump to a route">
+      <ol class="ih-jump" aria-label="Go to a course">
 %(jump)s
       </ol>
     </div>
@@ -922,10 +952,10 @@ def symptoms_html(routes):
     items = []
     for said, f in SYMPTOMS:
         if f == 'ielts-question-bank.html':
-            where, title, free = 'Reference', 'Question Bank &amp; Ideas', True
+            where, title, free = 'Reference page', 'Question Bank &amp; Ideas', True
         elif f in stops:
             s = stops[f]
-            where, title, free = '%s %d' % (s['route']['name'], s['n']), s['title'], s['free']
+            where, title, free = '%s lesson %d' % (s['route']['name'], s['n']), s['title'], s['free']
         else:
             print('  ! symptom list names %s, which is on no route page; dropped' % f)
             continue
@@ -937,15 +967,15 @@ def symptoms_html(routes):
     return """<section class="ih-diag" id="start" aria-labelledby="ih-diag-h">
   <div class="ih-wrap">
     <div class="ih-sechead">
-      <p class="ih-kicker">Where the marks go</p>
-      <h2 class="ih-h2" id="ih-diag-h">Already know what is costing you?</h2>
-      <p>Every route runs in order, but you do not have to start at the top of all %s. If you can name the problem, one of these answers it.</p>
+      <p class="ih-kicker">Common problems</p>
+      <h2 class="ih-h2" id="ih-diag-h">Do you already know where you lose marks?</h2>
+      <p>The courses are in order, but you do not have to start every course at lesson 1. If you know what your problem is, find it below. Each problem links to the lesson that helps with it.</p>
     </div>
     <ul class="ih-qs">
 %s
     </ul>
   </div>
-</section>""" % (words(len(routes)), '\n'.join(items))
+</section>""" % '\n'.join(items)
 
 
 def bank_html():
@@ -955,9 +985,9 @@ def bank_html():
     <a class="ih-bank-card" href="ielts-question-bank.html">
       <div class="ih-bank-art"><img src="%(art)s" alt="" loading="lazy" decoding="async"></div>
       <div class="ih-bank-copy">
-        <p class="ih-kicker">Free &middot; no sign-in</p>
+        <p class="ih-kicker">Free &middot; No account needed</p>
         <h2 id="ih-bank-h">Question Bank &amp; Ideas</h2>
-        <p><b>%(n)d Task&nbsp;2 questions across %(t)d topics</b> &mdash; artificial intelligence, gentrification, energy and immigration included &mdash; filterable by topic and by essay type, and under each topic, arguments for both sides. For when you know the shape and have nothing to say &mdash; keep it open while you write.</p>
+        <p>The Question Bank has <b>%(n)d Task&nbsp;2 questions on %(t)d topics</b>, including artificial intelligence, energy and immigration. You can choose a topic or a type of essay to see only those questions, or search for a word. Each topic also gives you ideas: three arguments for and three against one debate in that topic. Use it when you know how to organise an essay but have no ideas. Keep it open while you write.</p>
         <ul class="ih-types" aria-label="Essay types">%(types)s</ul>
         <span class="ih-btn">Open the question bank <span aria-hidden="true">&rarr;</span></span>
       </div>
@@ -971,22 +1001,28 @@ def notes_html(routes):
     # Plain string order puts every level below C1 ('A1'..'B2', 'A2-C1',
     # 'B2-C1') before 'C1', and C1-and-up after it: the split wanted here.
     below = [s for r in routes for s in r['stops'] if s['level'] and s['level'] < 'C1']
-    pitch = 'The whole set is C1'
-    if below:
-        pitch = 'Everything is C1 except %s' % ', '.join(
-            '<em>%s</em> on the %s route, which starts at %s'
-            % (s['title'], s['route']['name'], s['level'][:2]) for s in below)
+    # "starts at": the drills deck is B2 in the catalogue and B2-C1 on its
+    # cover, and this is true of both.
+    def where(s):
+        return ('<em>%s</em> in the %s course' % (s['title'], s['route']['name']),
+                'starts at level %s' % s['level'][:2])
+    pitch = 'All the lessons are at level C1.'
+    if len(below) == 1:
+        pitch = 'All the lessons are at level C1, except %s, which %s.' % where(below[0])
+    elif below:
+        pitch = 'Most lessons are at level C1. %s' % ' '.join(
+            '%s %s.' % where(s) for s in below)
     return """<section class="ih-notes" aria-labelledby="ih-notes-h">
   <h2 class="ih-vh" id="ih-notes-h">Before you start</h2>
   <div class="ih-wrap ih-notes-grid">
     <div class="ih-note">
-      <h3>Sitting General Training?</h3>
-      <p><strong>This is the Academic module.</strong> Speaking and Listening are identical on General Training, and Reading uses the same question types &mdash; but GT Task 1 is a letter, not a report, so the Task 1 lessons will not match a GT paper. Task 2 is the same on both.</p>
+      <h3>Are you taking IELTS General Training?</h3>
+      <p><strong>These lessons are for IELTS Academic.</strong> General Training has the same Speaking and Listening tests. Its Reading test uses the same types of question, but with different texts. Writing Task 2 is the same in both. But in General Training, Task 1 is a letter. Our Task 1 lessons teach the Academic report, so they will not prepare you for the letter.</p>
     </div>
     <div class="ih-note">
-      <h3>Teaching this rather than sitting it?</h3>
-      <p>The Writing route runs as a course; the Model Answer Vault works on its own as a marking clinic, and the Writing Studio exports a learner&rsquo;s planning notes and final essay as a plain text file for correction. Speaking is built for pairs.</p>
-      <p>%s &mdash; bring a strong B2 class and expect to slow down.</p>
+      <h3>Are you a teacher?</h3>
+      <p>You can teach the Writing lessons in order, as a full course. The Model Answer Vault also works as a single lesson: your students compare band 9 essays with band 6 answers to the same questions, and find what makes the band 6 answers weaker. In the Writing Studio, a button downloads each student&rsquo;s plan and final essay as a text file, and you mark it. The Studio also has a Marking Toolkit tab with a checklist for you. Each Speaking lesson ends with a task for pairs, where one student plays the examiner.</p>
+      <p>%s You can use the C1 lessons with a strong B2 class, but plan to go more slowly.</p>
     </div>
   </div>
 </section>""" % pitch
@@ -997,22 +1033,23 @@ def close_html(routes, f, series):
            if series else '')
     pro = f['total'] - f['free']
     if f['free']:
-        head = '%s %s free. Pro opens the other %s.' % (
+        head = '%s %s free. With Pro, you get the other %s.' % (
             words(f['free']).capitalize() if f['free'] < 100 else f['free'],
             'lesson is' if f['free'] == 1 else 'lessons are',
             words(pro) if pro < 100 else pro)
     else:
-        head = 'Every lesson here comes with Pro.'
-    lead = ('The first lesson on every route costs nothing and needs no account. '
-            if f['firsts'] else 'Lessons marked Free cost nothing and need no account. ')
+        head = 'All of these lessons are part of Pro.'
+    lead = ('The first lesson of every course is free, and you do not need an account for it. '
+            if f['firsts'] else
+            'The lessons marked Free cost nothing, and you do not need an account for them. ')
     return """<section class="ih-close" aria-labelledby="ih-close-h">
   %s<div class="ih-close-in">
     <p class="ih-kicker">Forbes English Pro</p>
     <h2 class="ih-h2" id="ih-close-h">%s</h2>
-    <p>%sPro is every lesson on the site &mdash; IELTS and everything else &mdash; with new ones as they are published.</p>
+    <p>%sA Pro subscription gives you every lesson on the site, not only the IELTS lessons. It also gives you every new lesson as soon as it appears.</p>
     <div class="ih-ctas">
       <a class="ih-btn" href="pricing.html">Plans and prices <span aria-hidden="true">&rarr;</span></a>
-      <a class="ih-btn ih-btn-quiet" href="library.html#cat=IELTS">Every IELTS lesson in the library</a>
+      <a class="ih-btn ih-btn-quiet" href="library.html#cat=IELTS">See every IELTS lesson in the library</a>
     </div>
   </div>
 </section>""" % (art, head, lead)

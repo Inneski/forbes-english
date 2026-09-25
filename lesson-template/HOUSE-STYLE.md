@@ -531,6 +531,48 @@ class; beyond about twenty-four, split into Part I and Part II.
 
 ---
 
+## 7a. The writing standard — every line a learner reads
+
+Innes, 2026-09-25, after the IELTS landing page came out reading like
+shorthand (*"a timed studio that exports for marking"*, *"scored where
+scoring teaches something"*, *"All but two end with language you produce
+rather than recognise"*). It applies to every lesson and every hub page from
+now on, and it replaces two lines from his earlier instructions: *"Short
+sentences, one idea each"* and *"No filler, no padding"*. In his words:
+
+- Write for a B2 learner reading in their second language. They should
+  understand every sentence the first time, without rereading it.
+- Use full sentences with a subject and a verb. No fragments, slogans or
+  taglines.
+- Say who does what: "You write an essay." "Your teacher marks it." Avoid
+  sentences built around abstract nouns like "marking", "scoring" or
+  "production" instead of people doing things.
+- Describe what actually happens on screen: a 20-minute timer, a word
+  counter, a button that downloads your essay for your teacher. A lesson
+  title like "The Writing Studio" is fine, but the description under it must
+  say what the learner actually does.
+- No teaching jargon: produce/recognise, receptive/productive, scaffolding,
+  activation stage, CCQ, input/output.
+- No clever contrasts or wordplay ("X rather than Y", "where X does Y"). If a
+  line sounds clever, say the same thing plainly.
+- Be specific. Instead of "all but two", name the two lessons.
+- Clear beats short. Two plain sentences are better than one compressed one.
+  Only cut words when the meaning stays just as clear.
+- Test every line: could a learner explain it to a friend in their own words?
+
+**Labels** — buttons, kickers, pills, chips, a slide number — stay short,
+but in plain words ("Choose a course", not "Pick a route").
+
+**"Describe what actually happens" means checking the lesson.** Read the deck
+before you describe it: the landing page said the Speaking decks were "built
+for pairs" (only the last slide is), and that each Listening lesson played its
+recording once "as the test does" (it does, then offers a replay).
+
+The first page written to this standard is `ielts.html`
+(`tools/build_ielts_hub.py`).
+
+---
+
 ## 8. Translation
 
 Structure is `LANGS` / `RTL_LANGS` / `UI_I18N` / `t()`, already wired.

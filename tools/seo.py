@@ -96,10 +96,10 @@ PAGES = {
                      'What a Forbes English subscription costs, and which '
                      'lessons are free forever.', 0.7),
     'ielts.html': ('IELTS Academic',
-                   'IELTS Academic in five routes — Writing, Speaking, '
-                   'Listening, Reading, and the vocabulary that feeds Speaking '
-                   'and Writing — each in teaching order. The first lesson on '
-                   'every route is free.', 0.9, '/ielts-essay/hero.jpg'),
+                   'IELTS Academic lessons in five courses: Writing, Speaking, '
+                   'Listening, Reading and vocabulary. You do the lessons in '
+                   'each course in order. The first lesson of every course is '
+                   'free.', 0.9, '/ielts-essay/hero.jpg'),
     'ielts-writing.html': ('IELTS Academic Writing',
                    'A twelve-lesson route through IELTS Academic Writing — '
                    'Task 1 reports and Task 2 essays, in the order they '

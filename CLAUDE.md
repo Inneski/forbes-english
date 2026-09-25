@@ -336,6 +336,11 @@ Self-test the guard after editing it: `node .claude/hooks/git-guard.js --test`.
   2026-09-04, after three decks went out EN+DE. `assemble()` still defaults to
   `('en', 'de')`, so pass `langs=('en', 'de', 'es')` explicitly — and write the
   teach cards in the six-item form so the rule text travels with its heading.
+- **Every line a learner reads follows the writing standard in
+  `lesson-template/HOUSE-STYLE.md` §7a** — lessons and hub pages alike.
+  Innes set it on 2026-09-25: full sentences a B2 reader understands the
+  first time, who does what, what actually happens on screen, no jargon, no
+  clever contrasts.
 - **Learner-facing text must never mention a previous version of the lesson.**
   No "the old version marked this wrong" on a slide. That belongs in the
   builder docstring and the commit message.

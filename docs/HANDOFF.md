@@ -11,6 +11,69 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-25 — IELTS landing page rewritten to the new writing standard (HOUSE-STYLE §7a)
+
+Innes: the new `ielts.html` "reads like clever shorthand, so learners have to
+stop and decode it" (*"a timed studio that exports for marking"*, *"scored
+where scoring teaches something"*, *"All but two end with language you
+produce rather than recognise"*). He set a writing standard for the hub and
+for all lesson text from now on. It is **HOUSE-STYLE §7a**, with a pointer in
+CLAUDE.md's standing constraints. It replaces two lines in his own
+instructions, *"Short sentences, one idea each"* and *"No filler, no
+padding"*. Those lines are not in the repo, so he changes them where he keeps
+them.
+
+- **Every learner-facing line in `tools/build_ielts_hub.py` is rewritten**,
+  and so is the page's meta description (`seo.py`). Before/after for every
+  line was shown to Innes and approved before commit. "Route" is "course" on
+  this page. The five route pages, `index.html`'s IELTS card and `seo.py`'s
+  route-page descriptions still say "route".
+- **Each description was checked against the deck first.** Three claims on
+  the page were wrong:
+  - Speaking was "built for pairs". Only the last slide is pair work; the
+    quizzes are solo.
+  - Each Listening lesson played "its recording once as the test does". It
+    does, then shows "Play it again — the real test will not let you".
+  - The Model Answer Vault "works on its own as a marking clinic". Learners
+    never award a band: every sample is labelled.
+
+  Also, "every lesson is a click-through deck" was not true: The Bar Chart,
+  Maps & Accurate Data and the Writing Studio are single pages.
+- **Fit was measured, not eyeballed.** Playwright ran at ten widths (1440 to
+  360) with the real fonts: the woff2 files were fetched with curl, because
+  Chromium does not trust the sandbox proxy's CA.
+  - No text is clipped at any width.
+  - The test-to-scale row grows 9px at about 1041px.
+  - The page is 800–1600px longer.
+  - The two notes cards stretch to the same height, so the General Training
+    card now has empty space at the bottom.
+- **Left as they were; each needs a decision.**
+  - The essay-type chips ("Outweigh", "Problem & measure") come from
+    `ielts_bank_data.py` and are the Question Bank's filter buttons. The
+    Writing Lab calls the same types "Advantage / Disadvantage" and
+    "Cause / Problem / Solution".
+  - Listening's group headings ("The mechanics — before you listen to
+    anything" …) come from `ielts-listening.html`.
+  - Lesson titles are allowed by §7a.
+
+**Found in the decks, not fixed:**
+- `listening-drills`: the numbers clip is labelled "five accents", but the
+  builder gives it four (two British voices, American, Australian, Canadian).
+- Listening matching items always finish at full marks. A wrong click
+  bounces back, and the item still scores.
+- The Listening voices are synthetic (`tts.py`), so no page may call them
+  human recordings.
+- The Writing Studio saves nothing: reloading loses the essay. It is EN/DE
+  only, below the ES minimum. The Bar Chart and Maps pages have no language
+  switch at all.
+- Reading format gaps:
+  - Matching Headings asks for the best of four headings for one paragraph.
+    There is no list of headings for several paragraphs, as in the test.
+  - Summary and sentence completion is all multiple choice. Nothing is
+    typed.
+
+---
+
 ## 2026-09-25 — Must & Have To: VfB Stuttgart rebuilt as a deck; order decoys; results messages printed their markup on 23 decks
 
 Innes: *"https://forbesenglish.com/must-have-to-vfb-stuttgart make this house
