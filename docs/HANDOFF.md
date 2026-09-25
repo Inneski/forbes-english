@@ -377,7 +377,25 @@ plate at 14 or more.
     watermark on either Gemini clip (corners checked at full size). **12 of 13
     now have sound; only slide 15 (sort, bg19) is silent at source.** To tell
     new files from moved ones, compare checksums, not names: `19 slide.mp4`
-    and `slide 19.mp4` are one file, and `20 slide.mp4` is the shipped one. 13.8 MB in all (bg25 is the largest: 16.7 s,
+    and `slide 19.mp4` are one file, and `20 slide.mp4` is the shipped one.
+  * **Slide 15 (sort, bg19) re-rendered with sound** (`gemini_generated_video_
+    0fbc00c2.mp4`, no watermark): **all 13 clips now have sound.**
+  * **Two sentences rewritten to match their clips, at Innes's request.**
+    Slide 10: "They don't go to school ~~on weekdays~~ **at weekends**" (the old
+    line was false; "at weekends" because the deck teaches BrE *at* for the
+    weekend). Slide 19: ~~Steve often mines~~ **Alex often walks** (the clip is
+    Alex walking with a map). Each change touches the stem or `data-answer`, the
+    inline `.sup` glosses, the `data-explain`, every language's `ord1Why` (dead
+    text: nothing reads it) and **`window.BW_TR`, the EN/xx panel's glossary.
+    It is keyed by the exact normalised English text** (`.sup` stripped,
+    whitespace collapsed, no lowercasing or punctuation stripping). So a changed
+    stem or chip needs its key renamed in all nine languages, or the panel
+    silently drops the row. The Passive page carries a copied `BW_TR` and
+    `ord1Why`, both synced.
+  * The 18 new translations were checked by three adversarial reviewers.
+    Changes taken: IT *il fine settimana* (all three said *nel* reads as one
+    weekend), and the "walks ." chip as plain walking rather than strolling:
+    DE *geht zu Fuß*, RU *ходит пешком*, ZH *走路*. 13.8 MB in all (bg25 is the largest: 16.7 s,
     3.7 MB). Only the current slide's clip is fetched.
   * An earlier reading put the first batch of clips on the time-signals slides
     (`9178aef`). It was reverted in `5ad6a6a`, and that page is static.
