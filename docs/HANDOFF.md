@@ -11,6 +11,60 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-25 — The five IELTS route pages: generated, in the landing page's family
+
+Innes: *"do you think the other IELTS should be more like the landing
+page?"* Yes, in look, not in structure: `ielts-writing.html` … were the
+older hand-written text-card design, so the redesigned `ielts.html` led into
+pages that looked like another site (and whose nav had lost Level Check).
+This supersedes "Next, if wanted" in the landing-page entry below.
+
+- **`tools/ielts_routes.py` is now the source of truth** for every IELTS
+  lesson, its order, track, description and tags, and each route page's
+  copy (lifted verbatim from the old pages). **`tools/build_ielts_routes.py`**
+  writes the five route pages; `build_ielts_hub.py` reads the same file for
+  the landing page (it used to parse the route pages; verified it rebuilt
+  `ielts.html` byte-identical before any design change). Route order,
+  number, name and colour stay in `build_ielts_hub.ROUTES`.
+- **All six pages build together** (`build_all`), from `build_hubs.py` or
+  either script, because they share the web-sized pictures in `ielts-hub/`
+  and a rebuild prunes superseded copies.
+- **Hand edits are refused.** Each route page carries
+  `<!-- IELTS-ROUTE: … sha=… -->`. A page changed since generation (outside
+  the SEO fence and `<title>`), or one without the marker, stops the run:
+  nothing is written and `build_hubs.py` exits 2. Tested by hand-editing
+  `ielts-reading.html`: refused, then `--force` restored it byte-identical.
+- **Design**: the landing page's `ih-` block carried whole, plus an `ir-`
+  block. Route number and H1, ledes, counts, "Start free", the route picture
+  in a 4:3 frame (`hero_pos` per route keeps the subject in view); the
+  callout; tracks with a sticky heading and a numbered stop list, each
+  lesson an h3 with its description and tags; Writing's Question Bank card;
+  the teaching note beside all five routes; a Pro band.
+- **Computed, not typed**: Free and level (catalogue), counts, the level
+  span (Listening is B2–C1: the drills deck is B2), "Start here" on the
+  lesson the start button opens, Writing's "all but two end with writing
+  you produce" (`produces()`), `{levels}` in Writing's teaching note. The
+  landing page's kicker now says B2–C1 for the same reason.
+- **Copy changed**: three teaching notes said "The lesson …" from when their
+  route had one lesson; they say "The first lesson …" (checked against the
+  decks' last slides). "New" and hand-typed Pro/level tags are gone.
+- **Also fixed on the way**: `tools/topics.py` had literal backspace bytes
+  where `\b` was meant in the IELTS pattern, so all 28 IELTS decks were filed
+  under Vocabulary, and every IELTS gate page's "More on this" pointed at the
+  vocabulary hub (now IELTS Academic; the vocabulary hub drops from 98 to 71
+  lessons). The landing page's focus ring on dark bands lost to a more
+  specific rule (2.6–2.9:1; now 9.6:1). Grammar hubs never marked Grammar as
+  current (the nav link they looked for had changed). `seo.py --check`
+  rewrote `tools/lessons.json`. The Writing meta description typed "twelve".
+  `/publish` now puts a new IELTS lesson in `tools/ielts_routes.py` and runs
+  `build_hubs.py`.
+- **Reviewed**: five lenses plus a skeptic each; 45 of 46 findings
+  confirmed, all fixed. Measured after: no overflow on any route page at ten
+  widths from 320 to 1440; one `aria-current="page"` per page.
+- **Not committed by this session**: `llms.txt` and the
+  `forbes-english-writers-nightmare.html` entry in `lesson-meta.json` carry
+  another session's uncommitted Writer's Nightmare work; they were left out.
+
 ## 2026-09-25 — Sherpa route map: refined, not redesigned
 
 Innes: *"improve my sherpa tensing hub subtly like the way you did my

@@ -119,13 +119,17 @@ the catalogue. Run it whenever a lesson is added or retitled, before
 discoverability picture — what is generated, what only Innes can do — is
 `docs/SEO.md`.
 
-**It also regenerates the IELTS landing page, `ielts.html`**, through
-`tools/build_ielts_hub.py`: the routes, lesson counts and Free labels are
-read from the five route pages (`ielts-writing.html` …) and the catalogue.
-So a new IELTS lesson goes on its route page, and the landing page follows
-on the next run. Everything below the nav, and the `ih-` style block, is
-generated; the first `<style>` block and the nav are hand-kept, because
-`build_hubs.py` and `build_ielts_bank.py` copy them into other pages.
+**It also regenerates all six IELTS pages** — the five route pages
+(`ielts-writing.html` …, through `tools/build_ielts_routes.py`) and the
+landing page `ielts.html` (`tools/build_ielts_hub.py`) — from
+**`tools/ielts_routes.py`** and the catalogue. So a new IELTS lesson goes in
+`tools/ielts_routes.py`, in its track, in teaching order; both pages follow
+on the next run. **Never edit a route page by hand**: the builder refuses to
+overwrite a page changed since it last wrote it (it names the page), so a
+hand edit blocks the build rather than vanishing. On `ielts.html` everything
+below the nav, and the `ih-` style block, is generated; its first `<style>`
+block and the nav are hand-kept, because `build_hubs.py`,
+`build_ielts_bank.py` and `build_ielts_routes.py` copy them into other pages.
 
 **On Windows there is no `python3`.** Use `py` (the launcher) or `python`, or
 add an alias — every command in this file and in the docs is written `python3`

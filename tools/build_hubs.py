@@ -69,9 +69,20 @@ def chrome():
     fonts = '\n'.join(re.findall(r'<link[^>]+(?:preconnect|fonts\.googleapis)[^>]*>', src))
     nav = re.search(r'<nav class="topband">.*?</nav>', src, re.S).group(0)
     nav = nav.replace(' aria-current="page"', '')
-    nav = nav.replace('<a href="library.html#cat=Grammar+activity">Grammar</a>',
-                      '<a href="grammar.html" aria-current="page">Grammar</a>')
+    if GRAMMAR_LINK not in nav:
+        print('  ! the top band has no %s; no hub will mark Grammar as current' % GRAMMAR_LINK)
     return style, fonts, nav
+
+
+GRAMMAR_LINK = '<a href="grammar.html">Grammar</a>'
+
+
+def nav_for(nav, current):
+    """The top band with Grammar marked: 'page' on grammar.html itself,
+    'true' (the current section) on a grammar topic, nothing elsewhere."""
+    if not current:
+        return nav
+    return nav.replace(GRAMMAR_LINK, '<a href="grammar.html" aria-current="%s">Grammar</a>' % current)
 
 
 def esc(t):
@@ -297,19 +308,30 @@ def main():
             continue
         out = os.path.join(ROOT, topics.hub_url(t['slug']))
         open(out, 'w', encoding='utf-8', newline='\n').write(
-            topic_page(t, trows, images, allm, style, fonts, nav))
+            topic_page(t, trows, images, allm, style, fonts,
+                       nav_for(nav, 'true' if t.get('group') in ('Tenses', 'Grammar') else None)))
         written.append((topics.hub_url(t['slug']), len(trows),
                         sum(1 for r in trows if r.get('access') != 'pro')))
     open(os.path.join(ROOT, 'grammar.html'), 'w', encoding='utf-8', newline='\n').write(
-        index_page(allm, images, style, fonts, nav))
+        index_page(allm, images, style, fonts, nav_for(nav, 'page')))
     print('  lessons: %d (from %s)' % (len(rows), source))
     for f, n, free in written:
         print('  %-32s %3d lessons, %2d free' % (f, n, free))
     print('  grammar.html: %d topics' % len(written))
-    # The IELTS landing page is generated from the five IELTS route pages
-    # and the catalogue, so it goes stale the same way these do.
-    import build_ielts_hub
-    build_ielts_hub.build(rows, images)
+    # The five IELTS route pages and the landing page are generated from
+    # tools/ielts_routes.py and the catalogue, so they go stale the same way
+    # these do. All six at once: they share their pictures.
+    import build_ielts_routes
+    _, refused = build_ielts_routes.build_all(rows, images)
+    # The Sherpa route map is hand-kept but states Free, levels and counts
+    # that come from the catalogue; say so if they have drifted apart.
+    import check_route_map
+    check_route_map.report(rows, source)
+    if refused:
+        sys.exit('! IELTS: %s edited by hand (or unmarked), so none of the six IELTS pages '
+                 'was rebuilt. Move the edit into tools/ielts_routes.py, or run '
+                 'tools/build_ielts_routes.py --force. Do not run seo.py until then.'
+                 % ', '.join(refused))
     print('  now run: python tools/seo.py')
 
 

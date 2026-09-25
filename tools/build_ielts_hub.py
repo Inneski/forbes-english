@@ -1,35 +1,38 @@
 # -*- coding: utf-8 -*-
 """Build the IELTS landing page, `ielts.html`.
 
-    python3 tools/build_ielts_hub.py            # then python3 tools/seo.py
-    python3 tools/build_ielts_hub.py --check    # exit 1 if the page is stale
+    python3 tools/build_ielts_hub.py            # all six IELTS pages; then tools/seo.py
+    python3 tools/build_ielts_hub.py --check    # exit 1 if any of them is stale
     python3 tools/build_ielts_hub.py --palette  # re-derive the colours below
 
 `tools/build_hubs.py` calls this too, so the normal pipeline keeps the page
-current: add a lesson to a route page, run build_hubs, and the landing page
-picks it up with no hand edit.
+current: add a lesson to `tools/ielts_routes.py`, run build_hubs, and the
+landing page and its route page both pick it up with no hand edit.
 
 WHY IT IS GENERATED. The page was hand-written, and every count on it went
 stale in turn: Speaking said 1 lesson when there were 3 (fixed 2026-09-13),
 then Reading said 3 on the card and 4 in the tag beside it. Nothing here is
 typed twice any more:
 
-- the routes, their lessons, their order and their groups are read from the
-  five route pages (`ielts-writing.html` …), which are the source of truth
-  for teaching order;
+- the routes' lessons, their order and their groups come from
+  `tools/ielts_routes.py`, the source of truth for teaching order, which
+  also builds the five route pages (`tools/build_ielts_routes.py`; until
+  2026-09-25 this file parsed those pages, which were hand-written);
 - Free or not comes from the catalogue (`seo.lessons()` — Supabase, or the
   cached `tools/lessons.json` when that is unreachable);
-- each route's picture is the one its own route page uses;
+- each route's picture is the one its route page uses (same data);
 - the Question Bank figures come from `tools/ielts_bank_data.py`.
 
 WHAT IS NOT GENERATED. Everything in `ielts.html` outside the two fences is
 hand-maintained, and two other builders depend on it: `tools/build_hubs.py`
 and `tools/build_ielts_bank.py` lift the FIRST `<style>` block, the font
 links and `<nav class="topband">` from this page to dress every grammar hub
-and the Question Bank. So the old IELTS classes (.hero, .step, .track …)
-stay in that first block even though this page no longer uses them, and
+and the Question Bank, and `tools/build_ielts_routes.py` lifts them for the
+five route pages. So the old IELTS classes (.hero, .step, .track …) stay in
+that first block even though no IELTS page uses them any more, and
 everything this page needs lives in its own `ih-`-prefixed block, which the
-two lifters cannot see. Do not merge the two blocks.
+lifters cannot see. Do not merge the two blocks. The route pages carry this
+page's `ih-` block whole, so a change to it restyles them too.
 
 THE PALETTE is derived from the pictures, not picked. `--palette` rebuilds
 the recipe: every IELTS hero (`ielts-*/hero.jpg`, sorted) at 500x280 in a
@@ -69,7 +72,9 @@ HERO_ALT = ('Illustration of a flag on a hilltop under a tall pink-edged cloud, 
             'and far below it a lone figure walking up the slope towards it')
 BANK_SRC = 'ielts-question-bank/hero.jpg'
 
-# Route copy. Everything countable is filled in from the route pages.
+# The routes, in order: number, name, colour family and the landing page's
+# own copy. The lessons and each route page's copy are in
+# tools/ielts_routes.py. Everything countable is counted from there.
 ROUTES = [
     dict(key='writing', hub='ielts-writing.html', name='Writing', family='prod',
          meta='Task 1 &amp; Task 2',
@@ -112,8 +117,8 @@ ROUTES = [
 ]
 
 # "Already know where the marks go?" — a symptom, and the lesson that answers
-# it. Each line is paraphrased from that lesson's own description on its
-# route page; keep it that way, so the promise is one the lesson keeps.
+# it. Each line is paraphrased from that lesson's own description in
+# tools/ielts_routes.py; keep it that way, so the promise is one the lesson keeps.
 SYMPTOMS = [
     ('My Task 1 report keeps turning into an opinion.',
      'forbes-english-ielts-academic-writing-part1.html'),
@@ -207,33 +212,43 @@ def plural(n, one, many=None):
     return one if n == 1 else (many or one + 's')
 
 
-# ── reading the route pages ───────────────────────────────────────────
+LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
+
+
+def level_span(levels):
+    """'C1', or 'B2&ndash;C1': from the lowest level any lesson starts at to
+    the highest any reaches. A level may itself be a span ('B2-C1')."""
+    lo = hi = None
+    for l in levels:
+        ix = [LEVELS.index(x) for x in re.findall(r'[ABC][12]', l or '')]
+        if ix:
+            lo = min(ix) if lo is None else min(lo, min(ix))
+            hi = max(ix) if hi is None else max(hi, max(ix))
+    if lo is None:
+        return ''
+    return LEVELS[lo] if lo == hi else '%s&ndash;%s' % (LEVELS[lo], LEVELS[hi])
+
+
+# ── the routes' lessons ───────────────────────────────────────────────
 def short_title(t):
-    """'IELTS Academic Writing: The Report' -> 'The Report'. The route pages
-    already use short names for everything else."""
+    """'IELTS Academic Writing: The Report' -> 'The Report', here and on
+    the route pages."""
     return re.sub(r'^IELTS [^:]+:\s*', '', t.strip())
 
 
 def read_route(r):
-    src = open(os.path.join(ROOT, r['hub']), encoding='utf-8').read()
-    fig = re.search(r'<figure class="hero-art"[^>]*>\s*<img src="([^"]+)" alt="([^"]*)"', src)
-    if not fig:
-        sys.exit('! %s: no hero-art figure to take the route picture from' % r['hub'])
-    groups = []
-    for sec in re.finditer(r'<section class="track">(.*?)</section>', src, re.S):
-        h2 = re.search(r'<h2>(.*?)</h2>', sec.group(1), re.S)
-        stops = []
-        for a in re.finditer(r'<a class="step[^"]*" href="([^"]+)">(.*?)</a>', sec.group(1), re.S):
-            href = a.group(1)
-            if not href.startswith('forbes-english-'):
-                continue                     # the Question Bank card
-            t = re.search(r'class="step-title">(.*?)</h3>', a.group(2), re.S)
-            stops.append(dict(file=href, title=short_title(t.group(1))))
-        if stops:
-            groups.append(dict(h=h2.group(1).strip() if h2 else '', stops=stops))
+    """The route's lessons and picture, from tools/ielts_routes.py — the
+    same data the route pages are built from."""
+    from ielts_routes import ROUTES as DATA
+    d = next((x for x in DATA if x['hub'] == r['hub']), None)
+    if d is None:
+        sys.exit('! %s is not in tools/ielts_routes.py' % r['hub'])
+    groups = [dict(h=t['h'], stops=[dict(file=l['file'], title=short_title(l['title']))
+                                    for l in t['lessons']])
+              for t in d['tracks'] if t['lessons']]
     if not groups:
-        sys.exit('! %s: no lessons found — has its markup changed?' % r['hub'])
-    return dict(r, art=fig.group(1), art_alt=fig.group(2), groups=groups,
+        sys.exit('! %s: no lessons in tools/ielts_routes.py' % r['hub'])
+    return dict(r, art=d['art'], art_alt=d['art_alt'], groups=groups,
                 stops=[s for g in groups for s in g['stops']])
 
 
@@ -291,9 +306,11 @@ def bank_numbers():
 
 # ── pictures ──────────────────────────────────────────────────────────
 # Every derived picture is named <stem>-<hash>.jpg, the hash taken over its
-# inputs (source bytes and settings). Change a route page's picture, or
+# inputs (source bytes and settings). Change a route's picture, or
 # re-render a hero, and the name changes, so the HTML changes, --check says
 # STALE, and a rebuild writes the new file and deletes the superseded one.
+# The route pages use the same files, which is why the six IELTS pages are
+# always built together (build_ielts_routes.build_all).
 # (Fixed names would keep serving the old picture with nothing to notice.)
 # PIL's JPEG encoder is deterministic, so the same inputs give the same
 # bytes on any machine and a rebuild makes no diff.
@@ -394,7 +411,7 @@ body.ih {
   font-variant-numeric: lining-nums;
 }
 :where(.ih) a { color: inherit; }
-.ih main a:focus-visible { outline: 3px solid var(--ih-accent); outline-offset: 3px; }
+.ih :where(main) a:focus-visible { outline: 3px solid var(--ih-accent); outline-offset: 3px; }
 .ih-hero a:focus-visible, .ih-diag a:focus-visible { outline-color: var(--ih-night); }
 .ih-close a:focus-visible { outline-color: var(--ih-ink-accent); }
 .ih-vh { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
@@ -768,7 +785,7 @@ def hero(routes, f):
        width="2000" height="1120" alt="%(alt)s" fetchpriority="high">
   <div class="ih-hero-in">
     <div class="ih-hero-copy">
-      <p class="ih-kicker">Exam route &middot; C1 &middot; the Academic module</p>
+      <p class="ih-kicker">Exam route &middot; %(span)s &middot; the Academic module</p>
       <h1 class="ih-h1" id="ih-h1">IELTS <em>Academic</em></h1>
       <p class="ih-lede">Writing, Speaking, Listening, Reading, and the vocabulary that feeds two of them &mdash; %(nroutes_w)s routes, each in the order it should be taught.</p>
       <ul class="ih-stats">
@@ -785,7 +802,8 @@ def hero(routes, f):
 </header>""" % dict(hero=HERO_SRC, hero_sm=derive(HERO_SRC, 'hero-1000', 1000, 82),
                    alt=esc(HERO_ALT), total=f['total'], lessons=plural(f['total'], 'lesson'),
                    free=f['free'], free_line=free_line,
-                   nroutes=len(routes), nroutes_w=words(len(routes)))
+                   nroutes=len(routes), nroutes_w=words(len(routes)),
+                   span=level_span([s['level'] for r in routes for s in r['stops']]))
 
 
 def test_to_scale(routes):
@@ -958,7 +976,7 @@ def bank_html():
         <p class="ih-kicker">Free &middot; no sign-in</p>
         <h2 id="ih-bank-h">Question Bank &amp; Ideas</h2>
         <p><b>%(n)d Task&nbsp;2 questions across %(t)d topics</b> &mdash; artificial intelligence, gentrification, energy and immigration included &mdash; filterable by topic and by essay type, and under each topic, arguments for both sides. For when you know the shape and have nothing to say &mdash; keep it open while you write.</p>
-        <ul class="ih-types" aria-label="Essay types">%(types)s</ul>
+        <ul class="ih-types">%(types)s</ul>
         <span class="ih-btn">Open the question bank <span aria-hidden="true">&rarr;</span></span>
       </div>
     </a>
@@ -1150,7 +1168,12 @@ if __name__ == '__main__':
         sys.exit(0)
     check = '--check' in sys.argv
     failures = contrast_report()
-    stale = build(check=check)
+    # The route pages share this page's pictures; building one alone can
+    # prune a picture the others still show. Build all six.
+    import build_ielts_routes
+    stale, refused = build_ielts_routes.build_all(check=check, force='--force' in sys.argv)
+    if refused:
+        sys.exit(2)
     if failures:
         sys.exit('! %d contrast pair(s) fail' % failures)
     if check and stale:

@@ -106,9 +106,16 @@ session's fallback cache is not stale — see the `seo.py` warning in
 If the lesson REPLACES old pages (a merge, a rebuild under a new name):
 delete their rows, or the library shows both.
 
-## 4. SEO — always last, always checked
+**An IELTS lesson also goes on its route.** Add it to `tools/ielts_routes.py`
+in its track, in teaching order (file, title, desc, descriptive tags only).
+The five route pages and `ielts.html` are generated from that file; never
+edit them by hand, because the builder refuses to overwrite a hand-edited
+page and stops the whole run.
+
+## 4. Hubs, then SEO — always last, always checked
 
 ```
+python3 tools/build_hubs.py      # topic hubs, all six IELTS pages, the Sherpa check
 python3 tools/seo.py
 git diff --stat library.html llms.txt lesson-meta.json sitemap.xml
 ```
