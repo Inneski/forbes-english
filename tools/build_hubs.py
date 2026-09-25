@@ -253,7 +253,7 @@ def index_page(allm, images, style, fonts, nav):
         for t in sorted(groups[g], key=lambda x: x['order']):
             rows = allm[t['slug']]
             free = sum(1 for r in rows if r.get('access') != 'pro')
-            desc = t['desc'] or 'The IELTS Academic route: Writing, Speaking, Listening and the vocabulary that feeds them.'
+            desc = t['desc'] or 'The IELTS Academic route: Writing, Speaking, Listening, Reading and the vocabulary that feeds them.'
             desc = desc.split(': ', 1)[-1] if ': ' in desc else desc
             body.append('''      <a class="topic-card" href="%s">
         <h3>%s</h3>
@@ -306,6 +306,10 @@ def main():
     for f, n, free in written:
         print('  %-32s %3d lessons, %2d free' % (f, n, free))
     print('  grammar.html: %d topics' % len(written))
+    # The IELTS landing page is generated from the five IELTS route pages
+    # and the catalogue, so it goes stale the same way these do.
+    import build_ielts_hub
+    build_ielts_hub.build(rows, images)
     print('  now run: python tools/seo.py')
 
 

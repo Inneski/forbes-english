@@ -96,9 +96,10 @@ PAGES = {
                      'What a Forbes English subscription costs, and which '
                      'lessons are free forever.', 0.7),
     'ielts.html': ('IELTS Academic',
-                   'The IELTS Academic route — Writing, Speaking, Listening, '
-                   'Reading and the vocabulary that feeds them, in the order '
-                   'they should be taught.', 0.9, '/ielts-model-answers/hero.jpg'),
+                   'IELTS Academic in five routes — Writing, Speaking, '
+                   'Listening, Reading, and the vocabulary that feeds Speaking '
+                   'and Writing — each in teaching order. The first lesson on '
+                   'every route is free.', 0.9, '/ielts-essay/hero.jpg'),
     'ielts-writing.html': ('IELTS Academic Writing',
                    'A twelve-lesson route through IELTS Academic Writing — '
                    'Task 1 reports and Task 2 essays, in the order they '
@@ -138,8 +139,10 @@ SKIP = {'locked.html', 'account.html', 'index_1.html', 'front-page.html'}
 
 
 # ── data ───────────────────────────────────────────────────────────────
-def lessons():
-    """The lessons table, live if reachable and from cache if not."""
+def lessons(write_cache=True):
+    """The lessons table, live if reachable and from cache if not.
+    `write_cache=False` is for read-only callers such as a --check run,
+    which must not dirty tools/lessons.json in the shared tree."""
     try:
         req = urllib.request.Request(
             SUPABASE_URL + '/rest/v1/lessons'
@@ -152,8 +155,9 @@ def lessons():
             headers={'apikey': SUPABASE_ANON,
                      'Authorization': 'Bearer ' + SUPABASE_ANON})
         rows = json.loads(urllib.request.urlopen(req, timeout=20).read())
-        with open(CACHE, 'w', encoding='utf-8', newline='\n') as fh:
-            json.dump(rows, fh, ensure_ascii=False, indent=1)
+        if write_cache:
+            with open(CACHE, 'w', encoding='utf-8', newline='\n') as fh:
+                json.dump(rows, fh, ensure_ascii=False, indent=1)
         return rows, 'supabase'
     except Exception as e:                                  # noqa: BLE001
         print('  ! supabase unreachable (%s) — using %s' % (e, CACHE))
@@ -603,7 +607,8 @@ def llms_txt(rows, index, images):
             t['name'], SITE, topics.hub_url(t['slug']),
             trim(html.unescape(re.sub('<[^>]+>', '', t['desc'])), 160)))
     out.append('- [IELTS Academic](%s/ielts.html): the exam route — Writing, '
-               'Speaking and Listening in teaching order.' % SITE)
+               'Speaking, Listening, Reading and Vocabulary, each in teaching '
+               'order, with the first lesson on every route free.' % SITE)
     out.append('')
     section('Free lessons', free)
     section('Subscriber lessons', pro)

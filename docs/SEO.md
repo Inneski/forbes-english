@@ -34,6 +34,13 @@ the chrome cannot drift. Slugs are real search phrases; check a new slug
 against the root before adding one, because lesson asset folders live
 there too.
 
+It then refreshes **`ielts.html`** itself through `tools/build_ielts_hub.py`,
+which reads the five IELTS route pages and the catalogue. That page carries
+its own BreadcrumbList + ItemList JSON-LD (every IELTS lesson, in teaching
+order) at the foot of its generated body. Only its body and its second,
+`ih-` style block are generated. The first `<style>` block (the one the
+other hubs lift) is still hand-kept.
+
 **`tools/seo.py` changed in four ways:**
 
 1. **Page titles say the grammar point.** `page_title()` appends the

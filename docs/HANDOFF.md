@@ -11,6 +11,78 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-25 — The IELTS landing page, redesigned and now generated
+
+Innes: *"IELTS needs a more attractive landing page/hub."* `ielts.html` was a
+hand-written list of five text cards and one picture, and its counts had
+gone stale twice (Speaking said 1 of 3 on 09-13; Reading said 3 in one
+place and 4 beside it).
+
+- **It is generated now**: `tools/build_ielts_hub.py`, which
+  `tools/build_hubs.py` calls, so the normal pipeline keeps it current.
+  Routes, order, groups, lesson titles and pictures come from the five route
+  pages; Free comes from the catalogue; Question Bank figures from
+  `ielts_bank_data.py`. Add a lesson to a route page and the landing page
+  follows. `--check` is read-only (page, pictures and the `lessons.json`
+  cache: `seo.lessons()` gained `write_cache=False` for it).
+- **Two fences** in `ielts.html`: `IELTS-HUB-CSS` (a second, `ih-`-prefixed
+  style block) and `IELTS-HUB` (everything below the nav). The first
+  `<style>` block and the nav stay hand-kept, because `build_hubs.py` and
+  `build_ielts_bank.py` lift them into every grammar hub and the Question
+  Bank. Verified: those pages rebuild byte-identical.
+- **Design**: built on the IELTS illustration series. Palette from a montage
+  of all 26 heroes (`--palette` reproduces it: extract-palette light and
+  dark, plus an 8-colour quantise for the art fields). Blues = the papers
+  you take in, reds = the papers you produce, green = vocabulary. Sections:
+  hero (the Essay deck's flag-and-walker picture); the test drawn to scale
+  (minutes as width, or as height when stacked below 1040px, at 4px a
+  minute); the five routes as numbered chapters listing every lesson as a
+  stop, Free marked; "Already know what is costing you?" (ten symptoms, each
+  paraphrased from the lesson it links to); the Question Bank; GT and
+  teacher notes; a Pro band over a mosaic of the series. All contrast pairs
+  are listed in the builder and measured on every run.
+- **Pictures**: web-sized copies in `ielts-hub/`, named by a hash of their
+  inputs. If a source picture changes, the name changes too, `--check` says
+  STALE, and a rebuild writes the new copy and deletes the old one.
+- **Claims are computed, not typed**: "the first lesson on every route is
+  free" is checked against the catalogue (the copy adapts and the builder
+  warns if it stops being true); "every lesson ends with language you
+  produce" became "all but two": `forbes-english-ielts-bar-charts-c1` and
+  `-maps-and-data-c1` have no activation slide and no textarea.
+- **Reviewed**: five adversarial reviewers (facts, links/data, a11y,
+  responsive, builder) plus a verifier; 23 of their 42 findings were
+  confirmed, and all 23 are fixed. The main ones: labels clipped by
+  `overflow:hidden` at 761–980px (the bar now stacks below 1040), the
+  mobile figure not actually to scale, the hero CTA over the walking figure
+  near 1240px (measured clear at 60 viewport sizes now), focus rings under
+  3:1 on dark bands, a run-together accessible name, and headings missing
+  from the notes.
+- **Also fixed**: the "fourteen lessons / Writing, Speaking and Listening"
+  blurbs on `index.html` and `library.html` (both count-free now);
+  `llms.txt`'s IELTS line; `grammar.html`'s IELTS fallback line (it left out
+  Reading); `ielts-writing.html` made the same "every lesson" overclaim;
+  `ielts-listening.html` put the drills deck under "The four sections —
+  one lesson each" (it has its own track now);
+  `english-vocabulary.html` picked up four IELTS descriptions corrected
+  in the decks but never rebuilt into the hub.
+- **Not committed by this session**: `library.html`, `llms.txt` and
+  `sitemap.xml` also carry another session's uncommitted VfB Stuttgart
+  changes (a `LESSON_IMAGES` entry pointing at the untracked
+  `vfb-stuttgart/hero.jpg`), so they were left alone. My one-line banner edit
+  in `library.html` rides along with that session's commit; `llms.txt` and
+  the sitemap regenerate from the committed `seo.py` on the next run.
+- **Open, needs Innes**: `pricing.html` "What exactly is free?" still says
+  sixteen lessons and "197 lessons and counting". The catalogue has 62 free
+  and 262 Pro rows, and the FAQ never mentions the five free IELTS first
+  lessons. That is commercial copy, so it was left for him. The landing page
+  links to it as "Plans and prices", not "what is free". The drills deck is
+  B2 in the catalogue and "B2–C1" on its cover; the teacher note says "starts
+  at B2", which is true either way.
+- **Next, if wanted**: the five route pages (`ielts-writing.html` …) are
+  still the old text-card design; they would take the same treatment.
+
+---
+
 ## 2026-09-24 — IELTS Reading: Yes, No, Not Given shipped
 
 Innes dropped twelve renders in `incoming/` and said *"check incoming"*. The
