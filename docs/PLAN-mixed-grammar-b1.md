@@ -212,6 +212,17 @@ carry no artwork at all — flat `--void`, which is what the panel block means b
 "nothing is plated because nothing is over anything". Do not also set `data-bg`
 on them; that would reintroduce style 1 underneath style 2.
 
+> **Corrected 2026-09-25, from a local render of the built deck.** "Flat
+> `--void`" in this table is not what the engine does. A slide with no
+> `data-bg` does not go flat: `.bg-layer` paints `--hero` at 0.72 behind every
+> slide that does not paint its own background, and only `panel` and
+> `divider` slides do. So slides 4–13, 17–20, 23–28, 31–35 and 38–44 all sit
+> on the **cover's** wash, under plated cards — house rule 3, unchanged. The
+> activation slide is not a panel either: `D.activate()` takes `bg=`, so it is
+> `activate-notepad.jpg` washed the same way. The consequence for the art is
+> the one worth keeping: the cover is the backdrop of 33 of the 45 slides,
+> which is the real reason its middle has to be empty.
+
 **Forty-five slides, and that is deliberate.** §7's "split beyond twenty-four"
 is written for a teaching lesson; a 35-item test does not split usefully, and
 this is already Part 1 of two. The precedent is the exam decks, which run to 50

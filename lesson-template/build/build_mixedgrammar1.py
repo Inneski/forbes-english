@@ -19,9 +19,13 @@ PANEL block says §5's washed hero "is wrong when the artwork is the point — a
 flat-vector illustration dimmed by a quarter and covered by a card is neither
 legible nor worth looking at". So each section opens with `D.divider()`
 showing its picture whole, then a `D.panel()` carrying the instruction with
-the same picture cropped to a 548px column at full opacity, and the question
-slides sit on flat --void with no `bg=` at all. Setting one would put style 1
-back underneath style 2.
+the same picture cropped to a 548px column at full opacity. The question
+slides carry no `bg=`, and that does NOT leave them on flat --void: the
+engine's `.bg-layer` paints `--hero` at 0.72 behind every slide that does not
+paint its own background, and only panels and dividers do. So all 33
+question slides sit on the COVER's wash (house rule 3) — measured on a local
+render, 2026-09-25. That is why the cover brief asks for an empty middle: the
+cover is the backdrop of most of the deck, not of one slide.
 
 Panels alternate `side='right'` down the deck — "inverted panels", per the
 template's own comment: it "stops a long deck reading as one template". On
