@@ -143,6 +143,30 @@ def check(rows, page=PAGE):
             bad.append('%s: map dot %s, its camp %s is %s (build_sherpa.py asserts this)'
                        % (f, dots.get(f), twin, want_c))
 
+    # the contour background: small text must still clear 4.5:1 where the
+    # darkest line crosses it (the line colour at its strongest opacity,
+    # composited onto the paper)
+    tile = re.search(r'background-image:url\("([^"]+\.svg)"\)', s)
+    if tile:
+        svg_path = os.path.join(ROOT, tile.group(1).replace('%20', ' '))
+        if not os.path.exists(svg_path):
+            bad.append('background tile %s does not exist' % tile.group(1))
+        else:
+            svg = open(svg_path, encoding='utf-8').read()
+            stroke = re.search(r'stroke="(#[0-9A-Fa-f]{6})"', svg)
+            ops = [float(x) for x in re.findall(r'stroke-opacity="([0-9.]+)"', svg)]
+            tok = dict(re.findall(r'(--[a-z-]+):(#[0-9A-Fa-f]{6})', s))
+            if stroke and ops and '--paper' in tok:
+                a, p = max(ops), tok['--paper']
+                mix = '#' + ''.join('%02X' % round(int(stroke.group(1)[i:i + 2], 16) * a
+                                                   + int(p[i:i + 2], 16) * (1 - a)) for i in (1, 3, 5))
+                for name in ('--accent-text', '--ink-soft', '--ink'):
+                    if name in tok and contrast(tok[name], mix) < 4.5:
+                        bad.append('%s %s is %.2f:1 where a contour line (%s) crosses it'
+                                   % (name, tok[name], contrast(tok[name], mix), mix))
+                if '.kicker{color:var(--accent-text);}' not in s:
+                    bad.append('.kicker is not on --accent-text, the shade measured against the contours')
+
     # no free lesson may be locked behind Pro lessons only: a free learner
     # could never open it (used to sat behind camp 3 until 2026-09-25)
     slug = lambda f: f[len(FAMILY):-5]

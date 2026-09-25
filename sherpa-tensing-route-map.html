@@ -256,6 +256,70 @@
   @media (prefers-reduced-motion:reduce){
     .camp-row,.desc-row,.off-row,.btn,.cloud-link,.route-seg,.camp-dot .dot-label,.up-link{transition:none;}
   }
+  /* ── the contour background, and the sherpa's guide (2026-09-26) ── */
+  /* --accent-text: --accent-dark walked 8% towards the ink until small text
+     clears 4.5:1 on the darkest point a contour line makes (tools/topo_tile.py,
+     measured by tools/check_route_map.py) */
+  :root{ --accent-text:#A34E69; }
+  body{background-image:url("Sherpa%20Tensing/topo-tile.svg");background-size:640px 640px;}
+  @media print{ body{background-image:none;} }
+  .kicker{color:var(--accent-text);}
+  .map-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,390px);gap:18px 40px;align-items:end;}
+  .guide{display:flex;gap:14px;align-items:center;background:var(--card);border:1px solid var(--accent-light);
+         border-radius:var(--radius);padding:12px 14px 12px 12px;box-shadow:var(--lift);}
+  .guide-face{width:84px;height:105px;object-fit:cover;border-radius:10px;flex:none;display:block;}
+  .guide-kick{margin:0;font:600 12px/1.2 'Inter',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-text);}
+  .guide-line{margin:5px 0 10px;font-size:13.5px;line-height:1.5;color:var(--ink-soft);}
+  .guide-btn{padding:9px 16px;font-size:13px;}
+  @media (max-width:860px){ .map-head{grid-template-columns:minmax(0,1fr);} }
+
+  dialog.guide-dialog{width:min(780px,calc(100vw - 32px));max-height:min(90vh,940px);overflow:auto;padding:24px 28px 22px;
+         border:0;border-radius:18px;background:var(--card);color:var(--ink);box-shadow:0 30px 80px -24px rgba(43,15,29,.55);}
+  dialog.guide-dialog::backdrop{background:rgba(43,15,29,.5);}
+  html:not(.js) #guide:target{display:block;position:static;margin:32px auto;}
+  .gd-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;}
+  .gd-top form{margin:0;}
+  .gd-x{width:44px;height:44px;border-radius:50%;border:1px solid var(--accent-light);background:var(--card);color:var(--ink);
+        font-size:24px;line-height:1;cursor:pointer;flex:none;}
+  .gd-x:hover{background:var(--accent-lighter);}
+  .gd-sec{border-top:1px solid var(--accent-light);margin-top:18px;padding-top:16px;}
+  .gd-sec h3{font-size:19px;margin:0 0 6px;}
+  .gd-sec p{margin:0 0 8px;font-size:14.5px;line-height:1.6;color:var(--ink-soft);}
+  .gd-sec p b{color:var(--ink);}
+  .tg{width:calc(100% + 12px);border-collapse:separate;border-spacing:6px;margin:6px -6px 2px;table-layout:fixed;}
+  .tg col.tg-time{width:68px;}
+  .tg th{font:600 11px/1.25 'Inter',sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);
+         text-align:left;vertical-align:bottom;padding:0 2px 2px;}
+  .tg tbody th{vertical-align:middle;}
+  .tg td{padding:0;}
+  .tg a,.gd-going a{display:flex;flex-direction:column;gap:3px;min-height:56px;padding:8px 10px;border-radius:10px;
+        background:var(--c);color:var(--k);text-decoration:none;font:700 12px/1.25 'Inter',sans-serif;letter-spacing:.02em;
+        transition:transform .12s ease;}
+  .tg a:hover,.gd-going a:hover{transform:translateY(-1px);}
+  .tg a b,.gd-going a b{font-size:11px;font-weight:700;}
+  .gd-going{display:flex;align-items:center;gap:12px;margin:10px 0 0;}
+  .gd-going a{min-height:0;flex:none;}
+  .gd-going p{margin:0;}
+  .gd-faces{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:10px 0 12px;}
+  .gd-faces figure{margin:0;}
+  .gd-faces img{width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:50% 45%;border-radius:12px;display:block;}
+  .gd-faces figcaption{font-size:13.5px;line-height:1.5;color:var(--ink-soft);margin-top:8px;}
+  .gd-faces figcaption b{color:var(--ink);}
+  .gd-ex{display:block;margin-top:3px;color:var(--ink);font-style:italic;}
+  .gd-foot{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;padding-top:16px;border-top:1px solid var(--accent-light);}
+  .gd-foot form{margin:0;}
+  .gd-foot button{cursor:pointer;}
+  .guide-btn:focus-visible,.gd-x:focus-visible,.tg a:focus-visible,.gd-going a:focus-visible,
+  .gd-foot .btn:focus-visible{outline:3px solid var(--ink);outline-offset:3px;}
+  @media (max-width:560px){
+    dialog.guide-dialog{padding:18px 16px 16px;}
+    .tg{border-spacing:4px;width:calc(100% + 8px);margin:6px -4px 2px;}
+    .tg col.tg-time{width:50px;}
+    .tg th{font-size:10.5px;letter-spacing:0;text-transform:none;font-weight:700;}
+    .tg a{padding:6px 6px;font-size:10.5px;min-height:52px;}
+    .gd-faces{grid-template-columns:1fr;}
+  }
+  @media (prefers-reduced-motion:reduce){ .tg a,.gd-going a{transition:none;} }
 </style>
 </head>
 <body>
@@ -478,7 +542,7 @@
 
 <div class="wordmark">
   <div class="brand">Sherpa <span>Tensing</span></div>
-  <div class="sub"><a href="index.html" style="color:var(--accent-dark);text-decoration:none;font-weight:600;">Forbes English</a> &middot; a route up the tenses</div>
+  <div class="sub"><a href="index.html" style="color:var(--accent-text);text-decoration:none;font-weight:600;">Forbes English</a> &middot; a route up the tenses</div>
 </div>
 
 <main>
@@ -504,9 +568,19 @@
   </header>
 
   <div class="map-head" id="the-map">
-    <p class="kicker">The map</p>
-    <h2 class="section-title">Up in active, down in passive</h2>
-    <p class="map-how">The way up has no locks: start at whichever camp you need. Each stop on the way down opens when you finish the camp it comes from; until then its marker is grey.</p>
+    <div>
+      <p class="kicker">The map</p>
+      <h2 class="section-title">Up in active, down in passive</h2>
+      <p class="map-how">The way up has no locks: start at whichever camp you need. Each stop on the way down opens when you finish the camp it comes from; until then its marker is grey.</p>
+    </div>
+    <div class="guide">
+      <img class="guide-face" src="Sherpa%20Tensing/sherpa-guide.jpg" width="360" height="450" alt="" loading="lazy">
+      <div>
+        <p class="guide-kick">New here?</p>
+        <p class="guide-line">Two minutes on what a tense is, what active and passive mean, and why the camps come in this order.</p>
+        <a class="btn btn-main guide-btn" href="#guide" aria-haspopup="dialog">What am I looking at?</a>
+      </div>
+    </div>
   </div>
 
   <div class="panels">
@@ -529,9 +603,9 @@
 <path id="asc-seg-4" class="route-seg" data-color="#36797E" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M250,443 L533,404"/>
 <path id="asc-seg-5" class="route-seg" data-color="#70A43A" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M533,404 L283,365"/>
 <path id="asc-seg-6" class="route-seg" data-color="#F1D779" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M283,365 L500,326"/>
-<path id="asc-seg-7" class="route-seg" data-color="#F0723F" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M500,326 L317,287"/>
-<path id="asc-seg-8" class="route-seg" data-color="#46B0AB" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M317,287 L467,248"/>
-<path id="asc-seg-9" class="route-seg" data-color="#F0A500" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M467,248 L350,209"/>
+<path id="asc-seg-7" class="route-seg" data-color="#DB815F" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M500,326 L317,287"/>
+<path id="asc-seg-8" class="route-seg" data-color="#6DBECD" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M317,287 L467,248"/>
+<path id="asc-seg-9" class="route-seg" data-color="#E1AB5A" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M467,248 L350,209"/>
 <path id="asc-seg-10" class="route-seg" data-color="#6E0B24" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M350,209 L433,170"/>
 <path id="asc-seg-11" class="route-seg" data-color="#4B1A7A" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M433,170 L383,131"/>
 <path id="asc-seg-12" class="route-seg" data-color="#454545" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M383,131 L400,90"/>
@@ -565,17 +639,17 @@
   <g transform="translate(283,365)"><g stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round" fill="none"><path d="M-6,-2 q2.5,-3.5 5,0 q2.5,3.5 5,0"/><path d="M-6,3 q2.5,-3.5 5,0 q2.5,3.5 5,0"/></g></g>
   <text class="dot-label" x="265" y="365" text-anchor="end" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Past continuous</text>
 </g>
-<g class="camp-dot live" data-color="#F0723F" data-href="sherpa-tensing-camp-seven-future-simple.html" data-seg="asc-seg-7">
+<g class="camp-dot live" data-color="#DB815F" data-href="sherpa-tensing-camp-seven-future-simple.html" data-seg="asc-seg-7">
   <circle class="dot-fill" cx="500" cy="326" r="11" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
   <g transform="translate(500,326)"><path d="M-3,-6 v12 M-3,-6 l6,3 l-6,3" fill="none" stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></g>
   <text class="dot-label" x="518" y="326" text-anchor="start" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Future simple</text>
 </g>
-<g class="camp-dot live" data-color="#46B0AB" data-href="sherpa-tensing-camp-eight-present-perfect-continuous.html" data-seg="asc-seg-8">
+<g class="camp-dot live" data-color="#6DBECD" data-href="sherpa-tensing-camp-eight-present-perfect-continuous.html" data-seg="asc-seg-8">
   <circle class="dot-fill" cx="317" cy="287" r="11" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
   <g transform="translate(317,287)"><g stroke="#FFFFFF" stroke-width="1.3" stroke-linecap="round" fill="none"><path d="M-6,1 A6,6 0 0 1 6,1"/><path d="M-3,5 q1.5,-1.8 3,0 q1.5,1.8 3,0"/></g></g>
   <text class="dot-label" x="299" y="287" text-anchor="end" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Present perfect continuous</text>
 </g>
-<g class="camp-dot live" data-color="#F0A500" data-href="sherpa-tensing-camp-nine-future-continuous.html" data-seg="asc-seg-9">
+<g class="camp-dot live" data-color="#E1AB5A" data-href="sherpa-tensing-camp-nine-future-continuous.html" data-seg="asc-seg-9">
   <circle class="dot-fill" cx="467" cy="248" r="11" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
   <g transform="translate(467,248)"><g stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round" fill="none"><path d="M-6,-2 q2.5,-3.5 5,0 q2.5,3.5 5,0"/><path d="M-6,3 q2.5,-3.5 5,0 q2.5,3.5 5,0"/></g></g>
   <text class="dot-label" x="485" y="248" text-anchor="start" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Future continuous</text>
@@ -616,9 +690,9 @@
         <path id="desc-seg-2" class="route-seg" data-color="#454545" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M400,90 L417,131"/>
 <path id="desc-seg-3" class="route-seg" data-color="#4B1A7A" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M417,131 L367,170"/>
 <path id="desc-seg-4" class="route-seg" data-color="#6E0B24" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M367,170 L450,209"/>
-<path id="desc-seg-5" class="route-seg" data-color="#F0A500" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M450,209 L333,248"/>
-<path id="desc-seg-6" class="route-seg" data-color="#46B0AB" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M333,248 L483,287"/>
-<path id="desc-seg-7" class="route-seg" data-color="#F0723F" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M483,287 L300,326"/>
+<path id="desc-seg-5" class="route-seg" data-color="#E1AB5A" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M450,209 L333,248"/>
+<path id="desc-seg-6" class="route-seg" data-color="#6DBECD" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M333,248 L483,287"/>
+<path id="desc-seg-7" class="route-seg" data-color="#DB815F" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M483,287 L300,326"/>
 <path id="desc-seg-8" class="route-seg" data-color="#F1D779" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M300,326 L517,365"/>
 <path id="desc-seg-9" class="route-seg" data-color="#70A43A" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M517,365 L267,404"/>
 <path id="desc-seg-10" class="route-seg" data-color="#36797E" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M267,404 L550,443"/>
@@ -647,19 +721,19 @@
   <g transform="translate(450,209)"><path d="M-6,3 A6,6 0 0 1 6,3" fill="none" stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round"/></g>
   <text class="dot-label" x="468" y="209" text-anchor="start" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Past perfect passive</text>
 </g>
-<g class="camp-dot no-camp" data-color="#F0A500" data-seg="desc-seg-5">
+<g class="camp-dot no-camp" data-color="#E1AB5A" data-seg="desc-seg-5">
   <polygon class="dot-fill" points="333,236 345,248 333,260 321,248" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
-  <g transform="translate(333,248)"><g stroke="#F0A500" stroke-width="1.4" stroke-linecap="round" fill="none"><path d="M-6,-2 q2.5,-3.5 5,0 q2.5,3.5 5,0"/><path d="M-6,3 q2.5,-3.5 5,0 q2.5,3.5 5,0"/>
+  <g transform="translate(333,248)"><g stroke="#E1AB5A" stroke-width="1.4" stroke-linecap="round" fill="none"><path d="M-6,-2 q2.5,-3.5 5,0 q2.5,3.5 5,0"/><path d="M-6,3 q2.5,-3.5 5,0 q2.5,3.5 5,0"/>
 </g></g>
   <text class="dot-label" x="315" y="248" text-anchor="end" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Future continuous passive &mdash; no camp</text>
 </g>
-<g class="camp-dot no-camp" data-color="#46B0AB" data-seg="desc-seg-6">
+<g class="camp-dot no-camp" data-color="#6DBECD" data-seg="desc-seg-6">
   <polygon class="dot-fill" points="483,275 495,287 483,299 471,287" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
-  <g transform="translate(483,287)"><g stroke="#46B0AB" stroke-width="1.3" stroke-linecap="round" fill="none"><path d="M-6,1 A6,6 0 0 1 6,1"/><path d="M-3,5 q1.5,-1.8 3,0 q1.5,1.8 3,0"/>
+  <g transform="translate(483,287)"><g stroke="#6DBECD" stroke-width="1.3" stroke-linecap="round" fill="none"><path d="M-6,1 A6,6 0 0 1 6,1"/><path d="M-3,5 q1.5,-1.8 3,0 q1.5,1.8 3,0"/>
 </g></g>
   <text class="dot-label" x="501" y="287" text-anchor="start" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Present perfect continuous passive &mdash; no camp</text>
 </g>
-<g class="camp-dot live" data-color="#F0723F" data-href="sherpa-tensing-descent-seven-future-simple-passive.html" data-seg="desc-seg-7">
+<g class="camp-dot live" data-color="#DB815F" data-href="sherpa-tensing-descent-seven-future-simple-passive.html" data-seg="desc-seg-7">
   <polygon class="dot-fill" points="300,314 312,326 300,338 288,326" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
   <g transform="translate(300,326)"><path d="M-3,-6 v12 M-3,-6 l6,3 l-6,3" fill="none" stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></g>
   <text class="dot-label" x="282" y="326" text-anchor="end" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Future simple passive</text>
@@ -726,9 +800,9 @@
       <div class="zone-sub">common, but need more care</div>
       <ol>
         <li><a class="camp-row" href="sherpa-tensing-camp-six-past-continuous.html" style="background:#F1D779;color:#1A1206;"><span class="camp-num">6</span><span class="camp-name">Past continuous</span><span class="row-meta"><span class="lvl" title="Level">A2</span><span class="tick" aria-hidden="true"></span></span></a></li>
-        <li><a class="camp-row" href="sherpa-tensing-camp-seven-future-simple.html" style="background:#F0723F;color:#1A1206;"><span class="camp-num">7</span><span class="camp-name">Future simple</span><span class="row-meta"><span class="lvl" title="Level">A2</span><span class="tick" aria-hidden="true"></span></span></a></li>
-        <li><a class="camp-row" href="sherpa-tensing-camp-eight-present-perfect-continuous.html" style="background:#46B0AB;color:#1A1206;"><span class="camp-num">8</span><span class="camp-name">Present perfect continuous</span><span class="row-meta"><span class="lvl" title="Level">B1</span><span class="tick" aria-hidden="true"></span></span></a></li>
-        <li><a class="camp-row" href="sherpa-tensing-camp-nine-future-continuous.html" style="background:#F0A500;color:#1A1206;"><span class="camp-num">9</span><span class="camp-name">Future continuous</span><span class="row-meta"><span class="lvl" title="Level">B1</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="camp-row" href="sherpa-tensing-camp-seven-future-simple.html" style="background:#DB815F;color:#1A1206;"><span class="camp-num">7</span><span class="camp-name">Future simple</span><span class="row-meta"><span class="lvl" title="Level">A2</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="camp-row" href="sherpa-tensing-camp-eight-present-perfect-continuous.html" style="background:#6DBECD;color:#1A1206;"><span class="camp-num">8</span><span class="camp-name">Present perfect continuous</span><span class="row-meta"><span class="lvl" title="Level">B1</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="camp-row" href="sherpa-tensing-camp-nine-future-continuous.html" style="background:#E1AB5A;color:#1A1206;"><span class="camp-num">9</span><span class="camp-name">Future continuous</span><span class="row-meta"><span class="lvl" title="Level">B1</span><span class="tick" aria-hidden="true"></span></span></a></li>
       </ol>
     </div>
     <div class="zone-card">
@@ -754,7 +828,7 @@
         <li><a class="desc-row" href="sherpa-tensing-descent-four-present-perfect-passive.html" data-camp="4" style="--c:#36797E;"><span class="diamond" aria-hidden="true"></span><span class="off-text"><span class="camp-name">Present perfect passive</span><span class="from">camp 4</span></span><span class="row-meta"><span class="lvl" title="Level">B1</span><span class="tick" aria-hidden="true"></span></span></a></li>
         <li><a class="desc-row" href="sherpa-tensing-descent-nine-going-to-passive.html" data-camp="5" style="--c:#70A43A;"><span class="diamond" aria-hidden="true"></span><span class="off-text"><span class="camp-name">Going to passive</span><span class="from">camp 5</span></span><span class="row-meta"><span class="lvl" title="Level">B1</span><span class="tick" aria-hidden="true"></span></span></a></li>
         <li><a class="desc-row" href="sherpa-tensing-descent-eight-past-continuous-passive.html" data-camp="6" style="--c:#F1D779;"><span class="diamond" aria-hidden="true"></span><span class="off-text"><span class="camp-name">Past continuous passive</span><span class="from">camp 6</span></span><span class="row-meta"><span class="lvl" title="Level">B2</span><span class="tick" aria-hidden="true"></span></span></a></li>
-        <li><a class="desc-row" href="sherpa-tensing-descent-seven-future-simple-passive.html" data-camp="7" style="--c:#F0723F;"><span class="diamond" aria-hidden="true"></span><span class="off-text"><span class="camp-name">Future simple passive</span><span class="from">camp 7</span></span><span class="row-meta"><span class="lvl" title="Level">B1</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="desc-row" href="sherpa-tensing-descent-seven-future-simple-passive.html" data-camp="7" style="--c:#DB815F;"><span class="diamond" aria-hidden="true"></span><span class="off-text"><span class="camp-name">Future simple passive</span><span class="from">camp 7</span></span><span class="row-meta"><span class="lvl" title="Level">B1</span><span class="tick" aria-hidden="true"></span></span></a></li>
         <li><a class="desc-row" href="sherpa-tensing-descent-ten-past-perfect-passive.html" data-camp="10" style="--c:#6E0B24;"><span class="diamond" aria-hidden="true"></span><span class="off-text"><span class="camp-name">Past perfect passive</span><span class="from">camp 10</span></span><span class="row-meta"><span class="lvl" title="Level">B2</span><span class="tick" aria-hidden="true"></span></span></a></li>
         <li><a class="desc-row" href="sherpa-tensing-descent-twelve-future-perfect-passive.html" data-camp="12" style="--c:#454545;"><span class="diamond" aria-hidden="true"></span><span class="off-text"><span class="camp-name">Future perfect passive</span><span class="from">camp 12</span></span><span class="row-meta"><span class="lvl" title="Level">C1</span><span class="tick" aria-hidden="true"></span></span></a></li>
       </ol>
@@ -791,6 +865,80 @@
     <a class="btn btn-main" href="pricing.html">Plans and prices <span aria-hidden="true">&rarr;</span></a>
   </div>
 </main>
+
+<dialog class="guide-dialog" id="guide" aria-labelledby="guide-h">
+  <div class="gd-top">
+    <div>
+      <p class="kicker">Before you climb</p>
+      <h2 class="section-title" id="guide-h">What you&rsquo;re looking at</h2>
+    </div>
+    <form method="dialog"><button class="gd-x" type="submit" aria-label="Close the guide">&times;</button></form>
+  </div>
+
+  <section class="gd-sec" aria-labelledby="gd-1">
+    <h3 id="gd-1">A tense is a time and a shape</h3>
+    <p>Every tense puts an action in the past, the present or the future, and gives it one of four shapes: <b>simple</b> (the plain fact), <b>continuous</b> (in progress), <b>perfect</b> (done before a later point) or <b>perfect continuous</b> (in progress up to that point). Three times, four shapes: twelve of the thirteen camps. Every form below is &ldquo;she&rdquo; + CLIMB, and the number is its camp.</p>
+    <table class="tg">
+      <caption class="sr-only">The twelve tenses by time and shape; each one links to its camp.</caption>
+      <colgroup><col class="tg-time"><col><col><col><col></colgroup>
+      <thead><tr><td></td><th scope="col">Simple</th><th scope="col">Continuous</th><th scope="col">Perfect</th><th scope="col">Perfect continuous</th></tr></thead>
+      <tbody>
+          <tr><th scope="row">Past</th><td><a href="sherpa-tensing-camp-three-past-simple.html" style="--c:#B08968;--k:#1A1206"><b>3</b><span>CLIMBED</span></a></td><td><a href="sherpa-tensing-camp-six-past-continuous.html" style="--c:#F1D779;--k:#1A1206"><b>6</b><span>WAS CLIMBING</span></a></td><td><a href="sherpa-tensing-camp-ten-past-perfect.html" style="--c:#6E0B24;--k:#FFFFFF"><b>10</b><span>HAD CLIMBED</span></a></td><td><a href="sherpa-tensing-camp-eleven-past-perfect-continuous.html" style="--c:#4B1A7A;--k:#FFFFFF"><b>11</b><span>HAD BEEN CLIMBING</span></a></td></tr>
+          <tr><th scope="row">Present</th><td><a href="sherpa-tensing-camp-two-present-simple.html" style="--c:#7A93B5;--k:#0A131F"><b>2</b><span>CLIMBS</span></a></td><td><a href="sherpa-tensing-camp-one-present-continuous.html" style="--c:#E66085;--k:#2E000D"><b>1</b><span>IS CLIMBING</span></a></td><td><a href="sherpa-tensing-camp-four-present-perfect.html" style="--c:#36797E;--k:#FFFFFF"><b>4</b><span>HAS CLIMBED</span></a></td><td><a href="sherpa-tensing-camp-eight-present-perfect-continuous.html" style="--c:#6DBECD;--k:#1A1206"><b>8</b><span>HAS BEEN CLIMBING</span></a></td></tr>
+          <tr><th scope="row">Future</th><td><a href="sherpa-tensing-camp-seven-future-simple.html" style="--c:#DB815F;--k:#1A1206"><b>7</b><span>WILL CLIMB</span></a></td><td><a href="sherpa-tensing-camp-nine-future-continuous.html" style="--c:#E1AB5A;--k:#1A1206"><b>9</b><span>WILL BE CLIMBING</span></a></td><td><a href="sherpa-tensing-camp-twelve-future-perfect.html" style="--c:#454545;--k:#FFFFFF"><b>12</b><span>WILL HAVE CLIMBED</span></a></td><td><a href="sherpa-tensing-camp-thirteen-future-perfect-continuous.html" style="--c:#B0B0B0;--k:#1A1206"><b>13</b><span>WILL HAVE BEEN CLIMBING</span></a></td></tr>
+      </tbody>
+    </table>
+    <div class="gd-going"><a href="sherpa-tensing-camp-five-going-to.html" style="--c:#70A43A;--k:#1A1206"><b>5</b><span>IS GOING TO CLIMB</span></a><p>The thirteenth camp is a future you can already see coming.</p></div>
+  </section>
+
+  <section class="gd-sec" aria-labelledby="gd-2">
+    <h3 id="gd-2">Two faces: active and passive</h3>
+    <div class="gd-faces">
+      <figure>
+        <img src="Sherpa%20Tensing/sherpa-day.jpg" width="1200" height="672" alt="" loading="lazy">
+        <figcaption><b>The ascent &middot; active.</b> The doer comes first.<span class="gd-ex">The porters ARE CARRYING the tents.</span></figcaption>
+      </figure>
+      <figure>
+        <img src="Sherpa%20Tensing/sherpa-night.jpg" width="1200" height="672" alt="" loading="lazy">
+        <figcaption><b>The descent &middot; passive.</b> What the action happens to comes first, and the doer can drop out.<span class="gd-ex">The tents ARE BEING CARRIED.</span></figcaption>
+      </figure>
+    </div>
+    <p>Same tense, turned round: the passive is BE in that tense + the PAST PARTICIPLE. So every stop on the way down is the twin of a camp on the way up, and it opens when you finish that camp.</p>
+  </section>
+
+  <section class="gd-sec" aria-labelledby="gd-3">
+    <h3 id="gd-3">Why this order</h3>
+    <p>The camps climb in the order you will need them, not the order grammar books use. The <b>foundation camps</b> are the tenses you use every day; <b>the ridge</b> is common but needs more care; the <b>summit push</b> is rare and mostly written. Four passives have no camp: you can build them &mdash; HAS BEEN BEING CLEANED &mdash; but nobody says them.</p>
+    <p>On the map, a circle is active, a diamond is passive, and grey means not open yet. The clouds are &ldquo;used to&rdquo; and &ldquo;be used to&rdquo;; the moon is the causative.</p>
+  </section>
+
+  <div class="gd-foot">
+    <a class="btn btn-main" href="sherpa-tensing-camp-one-present-continuous.html">Start at camp one &middot; free <span aria-hidden="true">&rarr;</span></a>
+    <form method="dialog"><button class="btn btn-ghost" type="submit">Back to the map</button></form>
+  </div>
+</dialog>
+
+<script>
+// the guide: a modal dialog where the browser has one; without script the
+// #guide link shows it in place (html:not(.js) #guide:target)
+document.documentElement.classList.add("js");
+(function(){
+  var d = document.getElementById("guide"), opener = document.querySelector(".guide-btn");
+  if (!d || !opener || typeof d.showModal !== "function") return;
+  function open(e){ if (e) e.preventDefault(); if (!d.open) d.showModal(); }
+  opener.addEventListener("click", open);
+  d.addEventListener("click", function(e){
+    if (e.target !== d) return;
+    var r = d.getBoundingClientRect();
+    if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) d.close();
+  });
+  d.addEventListener("close", function(){
+    if (location.hash === "#guide") history.replaceState(null, "", location.pathname + location.search);
+    opener.focus();
+  });
+  if (location.hash === "#guide") open();
+})();
+</script>
 
 <script>
 // ── what you have earned, and where you earned it ──

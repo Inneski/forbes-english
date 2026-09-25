@@ -11,6 +11,47 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-26 — Sherpa hub: contour background, the sherpa's guide, three recoloured camps
+
+Innes, in three messages: *"try a faint topology background pattern"*;
+*"the hub doesnt really explain very well what people are looking at, a
+brief overview of tenses and active and passive? even as an optional small
+pop up window? There should be a sherpa somewhere (see incoming)"*; *"make
+the present perfect continuous colour a bit more towards baby blue-ish
+turquoise and make the oranges more tasteful"*.
+
+- **Contours**: `Sherpa Tensing/topo-tile.svg`, a seamless 640px tile from
+  `tools/topo_tile.py` (seed 7; the command is in its docstring), in the
+  page's pink at 6% / 10%. Where a line crosses the small pink labels they
+  fell to 4.1:1, so small text on the paper now uses `--accent-text`
+  `#A34E69` (the old shade walked 8% towards the ink). `check_route_map.py`
+  now measures that: it caught the old shade at 4.08:1.
+- **The guide**: a card beside "The map" with a portrait of the sherpa from
+  his render (`Sherpa Tensing/sherpa-guide.jpg`) and "What am I looking
+  at?", which opens a `<dialog>`: a tense is a time and a shape (the twelve
+  as a 3x4 grid of camp-coloured links, every form "she" + CLIMB in CAPS,
+  going to as the thirteenth); active and passive with his two renders, day
+  for the ascent and night for the descent (`sherpa-day.jpg`,
+  `sherpa-night.jpg`); why this order; how to read the map. `#guide` opens
+  it directly; without script the link shows it in place. Esc, the close
+  button and a backdrop click close it and return focus.
+- **Colours**: `lesson-template/recolour_family.py` (the sibling of
+  `soften_family.py`, same find-the-family-by-hue method, two new moves).
+  Camp 8 turned 20° towards blue and lightened: `#46B0AB` -> `#6DBECD`.
+  Camps 7 and 9 muted to 72% chroma at the same lightness: `#F0723F` ->
+  `#DB815F`, `#F0A500` -> `#E1AB5A`. Three candidate sets were rendered
+  side by side first. Moved on the route map, camps 7, 8 and 9 and descent
+  seven; every token floor re-measured and walked back where needed. Camp 8's
+  "THE EVIDENCE" tag was white on the fill (2.6:1, 2.1:1 after the turn) and
+  now uses the page's on-accent ink. The five library cards that are renders
+  of these diagrams were re-rendered (`SherpaCamps/camp-seven…`,
+  `camp-eight…`, `camp-nine…`, `descent-seven…`, `Sherpa Tensing/thumb-route-map.png`).
+- **Not moved, deliberately**: `lesson-template/tense-palette.css` and the
+  Block Camp pages that load it keep the old three values (a separate family
+  with its own colour gates), as do the stopped Sherpa deck builder's
+  `sherpa/content/*.json` palettes and `mixed_b1_data.py`. If Innes wants the
+  new colours site-wide, that is the next job.
+
 ## 2026-09-25 — The five IELTS route pages: generated, in the landing page's family
 
 Innes: *"do you think the other IELTS should be more like the landing
