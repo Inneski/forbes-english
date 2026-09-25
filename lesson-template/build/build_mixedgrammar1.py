@@ -66,31 +66,33 @@ F = 'MixedGrammarPart1'
 
 E = I.T['en']          # one source for the English; see the i18n docstring
 
-# ── PROVISIONAL PALETTE — re-derive before shipping ────────────────────
-# This is `extract-palette.py MixedGrammarPart1/hero.jpg --light` run against
-# the OLD desert hero, which the Noma Bar cover replaces. Every contrast row
-# PASSes, so the deck builds and checks clean, but the colours belong to a
-# picture this deck no longer uses. Re-run the extractor on the real cover
-# and paste the block over this one:
-#
+# ── PALETTE — derived from the cover, every contrast row PASS ──────────
 #   python3 lesson-template/extract-palette.py MixedGrammarPart1/hero.jpg --light
 #
-# Light is near-certain — Noma Bar is flat bright colour on a pale ground —
-# but confirm it rather than assume it: assemble() derives data-theme from
-# --void's luminance, so a dark palette pasted here silently flips the deck.
+# The cover is `a_notepad_and_a_sharp_pencil_on_a_bare_desk…` 9ca3d7 #1, a
+# notepad and pencil low on a pale desk under a pink wall: Innes's pick on
+# 2026-09-25 from two stand-ins, because the cover the plan briefs (a pencil
+# whose shadow curves into a question mark) has not been generated. When it
+# is: prep it to hero.jpg, re-run the line above, paste over this block.
+#
+# Light, and measured rather than assumed: the hero's mean luminance is 182,
+# and the dark derivation puts that pastel wall under a #0e0d09 canvas.
+# --void lands at HSL lightness 0.761, the ~0.76 of §4a. assemble() derives
+# data-theme from --void's luminance, so a dark block pasted here would
+# silently flip the whole deck.
 PALETTE = """  --hero: url('%s/hero.jpg');
 
-  --void          : #d8cbac;
-  --surface       : #e1d9c4;
-  --surface2      : #dcd1b8;
-  --border        : #965b4a;
+  --void          : #d8c6ac;
+  --surface       : #e1d6c4;
+  --surface2      : #dccdb8;
+  --border        : #965e4a;
   --text          : #2a1711;
-  --text-dim      : #5e392e;
-  --accent        : #a82702;
-  --accent-bright : #761b00;
-  --accent-dim    : #ed6036;
-  --secondary     : #5b6c6f;
-  --contrast      : #075541;""" % F
+  --text-dim      : #5e3b2e;
+  --accent        : #a42a00;
+  --accent-bright : #711d00;
+  --accent-dim    : #ef612f;
+  --secondary     : #72aab3;
+  --contrast      : #075544;""" % F
 
 # ── the seven pictures ─────────────────────────────────────────────────
 # One per section plus the cover. Each appears twice: whole on its divider,
