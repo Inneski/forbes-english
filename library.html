@@ -1393,6 +1393,77 @@ function normalizeForSearch(s) {
   return s.toLowerCase().replace(/[_\-.]+/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
+// Search used to match the title and filename only, so "bike" could not find
+// "Beyond the Handlebars: Cycling Vocabulary and Inference". Each lesson is
+// now searched on everything seo.py writes about it in lesson-meta.json —
+// description, the teach-card headings, topic hubs — plus its categories and
+// level. Every word of the query must match somewhere (in any order). The
+// word as typed matches anywhere; its synonyms and bare form ("bikes" ->
+// "bike") only at the start of a word, so "tv" cannot hit inside another.
+function searchWords(s) {
+  return s.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
+}
+const SEARCH_SYNONYMS = [
+  ['bike', 'biking', 'biker', 'bicycle', 'cycling', 'cyclist', 'cycle', 'handlebar'],
+  ['car', 'driving', 'driver', 'automotive'],
+  ['football', 'soccer'],
+  ['film', 'movie', 'cinema'],
+  ['tv', 'television'],
+  ['job', 'career', 'employment', 'workplace'],
+  ['interview', 'recruitment', 'hiring'],
+  ['money', 'finance', 'financial', 'banking'],
+  ['food', 'cooking', 'cuisine', 'restaurant', 'recipe'],
+  ['travel', 'tourism', 'holiday', 'vacation'],
+  ['phone', 'telephone', 'mobile'],
+  ['health', 'medical', 'doctor', 'medicine', 'hospital'],
+  ['computer', 'technology', 'digital'],
+  ['music', 'song'],
+  ['game', 'gaming', 'rpg'],
+  ['business', 'company', 'corporate', 'management'],
+  ['environment', 'climate', 'nature'],
+  ['house', 'housing', 'interior'],
+  ['exam', 'ielts'],
+  ['speaking', 'conversation', 'discussion', 'roleplay'],
+];
+const SYNONYMS_OF = new Map();
+SEARCH_SYNONYMS.forEach(group => group.forEach(w => SYNONYMS_OF.set(w, group)));
+
+function wordForms(w) {
+  const forms = new Set([w]);
+  if (w.length > 4 && w.endsWith('ies')) forms.add(w.slice(0, -3) + 'y');
+  else if (w.length > 4 && w.endsWith('es')) forms.add(w.slice(0, -2));
+  if (w.length > 3 && w.endsWith('s') && !w.endsWith('ss')) forms.add(w.slice(0, -1));
+  if (w.length > 5 && w.endsWith('ing')) forms.add(w.slice(0, -3));
+  [...forms].forEach(f => (SYNONYMS_OF.get(f) || []).forEach(s => forms.add(s)));
+  return [...forms];
+}
+
+// file -> lesson-meta.json entry. Loaded after first paint; until it lands,
+// search runs on title, filename and categories as it always did.
+let LESSON_META = {};
+const searchTextCache = new Map();
+function searchText(l) {
+  let t = searchTextCache.get(l.file);
+  if (t === undefined) {
+    const m = LESSON_META[l.file] || {};
+    const topics = (m.topics || []).map(x => x.name).join(' ');
+    // A teach card is "Heading: explanation"; the heading is the keyword.
+    const teaches = (m.teaches || []).map(x => String(x).split(':')[0]).join(' ');
+    t = ' ' + searchWords([l.title, l.file, (l.categories || []).join(' '), l.level || '',
+                           m.description || '', teaches, topics].join(' '));
+    searchTextCache.set(l.file, t);
+  }
+  return t;
+}
+function matchesSearch(l, q) {
+  if (!q) return true;
+  const hay = searchText(l);
+  if (normalizeForSearch(hay).includes(q)) return true;
+  const words = searchWords(q).split(' ').filter(Boolean);
+  return words.length > 0 && words.every(w =>
+    hay.includes(w) || wordForms(w).some(f => hay.includes(' ' + f)));
+}
+
 // hero image for cards where custom lesson art exists — file (as in LESSONS) -> image path
 const LESSON_IMAGES = {
   "blockcamp-present-simple.html": "BlockCamp/present-simple-1a.jpg",
@@ -1901,7 +1972,7 @@ function render() {
     const matchesLevel = activeLevel === 'ALL' || l.level === activeLevel;
     const matchesCategory = activeCategory === 'ALL' || l.categories.includes(activeCategory);
     const matchesFree = !freeOnly || l.access === 'Free';
-    const matchesQuery = !q || normalizeForSearch(l.title).includes(q) || normalizeForSearch(l.file).includes(q);
+    const matchesQuery = matchesSearch(l, q);
     return matchesLevel && matchesCategory && matchesFree && matchesQuery;
   });
   // Three bands, in this order: pinned, then every other finished lesson
@@ -1988,6 +2059,14 @@ function render() {
 searchEl.addEventListener('input', render);
 renderStats();
 render();
+fetch('/lesson-meta.json')
+  .then(r => r.ok ? r.json() : {})
+  .then(meta => {
+    LESSON_META = meta || {};
+    searchTextCache.clear();
+    if (searchEl.value.trim()) render();
+  })
+  .catch(() => {});
 if (window.applyHashCategory) window.applyHashCategory();
 window.addEventListener('hashchange', () => { if (window.applyHashCategory) window.applyHashCategory(); });
 })();

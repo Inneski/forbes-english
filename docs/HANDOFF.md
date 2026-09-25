@@ -11,6 +11,25 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-25 — Library search finds lessons by keyword, not just by title
+
+Innes searched "bike" and got nothing: the lesson is *Beyond the
+Handlebars: Cycling Vocabulary…*, and the search box matched only the title
+and the filename. `library.html` now also fetches `/lesson-meta.json` (the
+file `seo.py` already writes for the Worker) after first paint and searches
+each lesson's description, teach-card headings, topic hubs, categories and
+level too. Every query word must match, in any order; a word also matches its
+bare form (`bikes` → `bike`) and a short synonym list (`SEARCH_SYNONYMS`:
+bike/cycling, soccer/football, movie/film, …). Synonyms match only at the
+start of a word, so a two-letter entry cannot hit inside another word — keep
+it that way when adding groups. Measured on the cached catalogue: `bike`,
+`bicycle`, `soccer`, `movie` went from 0 hits to 2, 2, 5, 7; `perfect present`
+from 0 to 20.
+
+**How to make a lesson findable:** give it a description that says what it is
+about in plain words. The title alone is what the old search had, and it is
+not enough.
+
 ## 2026-09-25 — Must & Have To: VfB Stuttgart rebuilt as a deck; order decoys; results messages printed their markup on 23 decks
 
 Innes: *"https://forbesenglish.com/must-have-to-vfb-stuttgart make this house
