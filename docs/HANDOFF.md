@@ -559,6 +559,24 @@ template's whole UI_I18N block. These decks define the four keys themselves.
 
 ---
 
+## 2026-09-25 — Sherpa deck redesign STOPPED by Innes; the old pages stay
+
+Innes looked at the preview of the redesign (route-map colours, card
+covers, one dyed texture set: `87054ed`) on his new Midjourney heroes and
+said: "stop work on that, it doesn't look better than what I had." Work on
+it has stopped. **Do not ship the Sherpa decks, and do not resume this
+redesign, without Innes asking.** The live site still serves the old
+scrolling Sherpa pages, untouched throughout.
+
+State left behind:
+- `main` has the builder at the redesign (`87054ed`) and the artwork brief
+  and prompts rewritten for it; nothing learner-facing uses either.
+- The branch `sherpa-preview` on origin (commit `aa985cb`: 25 built decks
+  plus his hero picks) still serves an unlisted, noindexed preview at
+  `sherpa-preview.forbes-english.pages.dev`, with **no paywall**, so the
+  Pro Sherpa lessons are open there. Delete the branch if Innes agrees.
+- His new renders are still in `incoming/sherpa/` and `incoming/`.
+
 ## 2026-09-23 — Sherpa Tensing rebuilt as decks, NOT shipped: waiting for Innes's artwork
 
 **State.** All 25 camps, descents and clouds build as 16:9 decks from one
