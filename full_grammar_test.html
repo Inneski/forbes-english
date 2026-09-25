@@ -97,6 +97,25 @@
   text-decoration: underline; text-underline-offset: 3px;
 }
 .audio-replay:hover { color: var(--text); }
+/* The same recording, docked in the deck bar on the question slides that
+   follow a data-carry audio slide, so it can be started after reading and
+   keeps its place while the learner answers. */
+.audio-dock {
+  display: flex; align-items: center; gap: 10px; flex: 0 1 auto; min-width: 0;
+  font-family: var(--font-mono); font-size: 12px; color: var(--text);
+}
+.audio-dock[hidden] { display: none; }
+.dock-play {
+  flex: 0 0 auto; width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid var(--accent); background: var(--scrim); color: var(--accent-bright);
+  cursor: pointer; font-size: 13px; line-height: 1; display: grid; place-items: center;
+}
+.dock-play:disabled { cursor: default; border-color: var(--border); color: var(--text-dim); }
+.dock-track { width: 120px; height: 4px; border-radius: 2px; background: var(--inset2); overflow: hidden; }
+.dock-fill { height: 100%; width: 0; background: var(--accent); transition: width .2s linear; }
+.dock-time, .dock-state { white-space: nowrap; }
+.dock-state { color: var(--text-dim); }
+.dock-state.done { color: var(--accent-bright); }
 
 /* ── Fixed tokens: identical in every lesson. Do not edit. ── */
 :root {
@@ -697,6 +716,21 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
 /* ── RTL ── */
 [dir="rtl"] .opt { text-align: right; }
 [dir="rtl"] .opt:hover:not(:disabled) { transform: translateX(-3px); }
+/* English on an Arabic page. The page is dir="rtl", so an English sentence
+   inherited a right-to-left base direction and drew its full stop and
+   question mark at the wrong end: ".We are not in a position…", "?Which
+   phrasing…" (measured on the negotiation deck, 2026-09-24). Everything that
+   holds the English being taught now takes its direction from its own first
+   letter. A context line or stem that a builder translates starts with
+   Arabic, so it stays right-to-left; explanations are untouched. */
+[dir="rtl"] :is(.q-ctx, .q-stem, .opt, .sort-item, .match-item, .chunk,
+                .bank-chip, .review-list li) { unicode-bidi: plaintext; }
+/* An English phrase quoted inside Arabic running text (a teach card, an
+   explanation) was cut by the line break and its halves reordered: "it is
+   often" closed one line and "claimed" opened the next. Each quoted phrase is
+   now one unit, set in its own direction; a long one wraps inside itself. */
+[dir="rtl"] :is(.card, .feedback, .prose) em { display: inline-block;
+                                             unicode-bidi: plaintext; }
 
 
 /* ── ACTIVATION ──────────────────────────────────────────────────── */
@@ -1677,6 +1711,39 @@ html[data-style="editorial"] .match-item,
 html[data-style="editorial"] .sort-item {
   background: var(--surface); border: 2px solid var(--border);
 }
+
+/* ── answered states, restated at the editorial specificity ──────────
+   The base rules above are `html[data-style="editorial"] .opt`, which is
+   (0,2,1). The default answered states are `.opt.wrong` / `.opt.correct`,
+   which are (0,2,0). So the base rule WON, and its `background: var(--surface)`
+   plus `border: 2px solid …` repainted every answered option back to neutral.
+
+   The engine was never broken: measured on the Watts deck, a clicked wrong
+   option carried `class="opt wrong"` and the feedback read "Not quite …",
+   while the computed colours of the wrong, the correct and an untouched
+   option were all identical — rgb(255,255,255) on rgb(190,208,203). A
+   learner got no red, no green, and no sight of the right answer.
+
+   Same trap for .match-item and .sort-item, whose base rule uses the `border`
+   shorthand and so also outranks their own .picked/.done/.miss border-colors.
+   Restating the states here is the whole fix; nothing in the engine changes. */
+html[data-style="editorial"] .opt.correct {
+  border-color: var(--ok);
+  background: color-mix(in srgb, var(--ok) 20%, var(--surface));
+}
+html[data-style="editorial"] .opt.wrong {
+  border-color: var(--no);
+  background: color-mix(in srgb, var(--no) 18%, var(--surface));
+}
+html[data-style="editorial"] .match-item.picked,
+html[data-style="editorial"] .sort-item.picked {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 22%, var(--surface));
+}
+html[data-style="editorial"] .match-item.done,
+html[data-style="editorial"] .sort-item.placed { border-color: var(--ok); }
+html[data-style="editorial"] .match-item.miss,
+html[data-style="editorial"] .sort-item.miss { border-color: var(--no); }
 /* The rule is a thing a builder PLACES, not something every heading grows.
    The source deck has it under the cover title and nowhere else; putting it
    on all thirty-two slides was mine and it was wrong. Emit
@@ -1709,6 +1776,12 @@ html[data-style="editorial"] .stamp {
   color: var(--text-dim);
 }
 .fb-l1 { display: block; margin-top: 3px; font-size: .9em; opacity: .85; }
+
+.slide[data-type="cover"] {
+  --accent        : #63efe3;
+  --accent-bright : #01cdbc;
+  --accent-dim    : #1dd9c9;
+}
 </style>
 </head>
 <body>
@@ -3780,6 +3853,9 @@ const countIn = s => s.dataset.type === 'gap'   ? s.querySelectorAll('.gap').len
                    : 1;
 const maxScore = scored.reduce((n, s) => n + Math.max(1, countIn(s)), 0);
 let idx = 0, score = 0;
+// Called with the new index after every slide change, for behaviour that
+// belongs to a range of slides rather than to one (the docked recording).
+const slideHooks = [];
 const answered = new WeakSet();
 
 /* ── Branch mode ────────────────────────────────────────────────────────
@@ -3931,6 +4007,7 @@ function show(n) {
   if (slides[idx].dataset.type === 'results') renderResults();
   markRail(slides[idx]);
   if (slides[idx]._enter) slides[idx]._enter();
+  slideHooks.forEach(f => f(idx));
   const gap = slides[idx].querySelector('.gap');
   if (gap && !answered.has(slides[idx])) setTimeout(() => gap.focus(), 60);
 }
@@ -4023,7 +4100,11 @@ function renderResults() {
   document.getElementById('scoreVal').textContent = score;
   document.getElementById('scoreMax').textContent = max;
   const pct = max ? score / max : 0;
-  document.getElementById('scoreMsg').textContent =
+  // innerHTML, not textContent: these are authored UI_I18N strings, written
+  // with entities and <em> like every other key. As text they printed
+  // "Perfect score &mdash; …" and "Look again at <em>mustn't</em>" literally
+  // on sixteen decks; the Block Camp engine made the same change earlier.
+  document.getElementById('scoreMsg').innerHTML =
     pct === 1 ? t('resPerfect') : pct >= .75 ? t('resStrong')
     : pct >= .5 ? t('resMid') : t('resLow');
 
@@ -4227,11 +4308,19 @@ slides.filter(s => s.dataset.type === 'match').forEach(slide => {
    It behaves like the test, deliberately:
      · one play — the button locks once it has been pressed
      · no scrubbing — the bar reports progress, it does not accept clicks
-     · the slide's [data-action="next"] Continue button stays disabled until
-       the recording ends, so nobody reaches the questions early
    A replay control appears only after it has finished, and it says in words
    that the real test does not offer one. A classroom needs to replay; a
-   learner practising alone should know that is not the exam. */
+   learner practising alone should know that is not the exam.
+
+   With data-carry on the box (every deck.audio() slide since 2026-09-23) the
+   recording behaves like the real paper, where you read first and answer as
+   you listen: Continue is open, leaving the slide does not stop it, and the
+   question slides after it — up to the next audio, results or activation
+   slide — carry a small player in the deck bar that shows the time and can
+   start it. Leaving that range pauses it; coming back resumes it.
+
+   Without data-carry the old contract holds: Continue stays disabled until
+   the recording ends, and leaving the slide stops it. */
 slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
   const box = slide.querySelector('.audio');
   if (!box || !box.dataset.src) return;
@@ -4267,8 +4356,39 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
   row.append(btn, meta); wrap.append(row, state);
   box.replaceChildren(wrap);
 
+  const carry = 'carry' in box.dataset;
   const cont = slide.querySelector('[data-action="next"]');
-  if (cont) cont.disabled = true;
+  if (cont && !carry) cont.disabled = true;
+
+  /* The docked copy: built for carry slides only, and put in the deck bar
+     where the ledger sits, so it never takes room from a slide. */
+  let dock = null, dockBtn = null, dockFill = null, dockTime = null, dockState = null;
+  if (carry) {
+    const at = slides.indexOf(slide);
+    let end = at + 1;
+    while (end < slides.length
+           && !['audio', 'results', 'activate'].includes(slides[end].dataset.type)) end++;
+    dock = document.createElement('div'); dock.className = 'audio-dock'; dock.hidden = true;
+    dockBtn = document.createElement('button');
+    dockBtn.className = 'dock-play'; dockBtn.type = 'button'; dockBtn.textContent = '▶';
+    dockBtn.dataset.i18nAria = 'audioPlay'; dockBtn.setAttribute('aria-label', t('audioPlay'));
+    const dockTrack = document.createElement('div'); dockTrack.className = 'dock-track';
+    dockFill = document.createElement('div'); dockFill.className = 'dock-fill';
+    dockTrack.append(dockFill);
+    dockTime = document.createElement('span'); dockTime.className = 'dock-time'; dockTime.textContent = '0:00';
+    dockState = document.createElement('span'); dockState.className = 'dock-state';
+    dock.append(dockBtn, dockTrack, dockTime, dockState);
+    const bar = document.querySelector('.deck-bar');
+    bar.insertBefore(dock, bar.querySelector('[data-action="prev"]'));
+    let autoPaused = false;
+    slideHooks.push(i => {
+      const inRange = i > at && i < end;
+      dock.hidden = !inRange;
+      if (i === at || inRange) {
+        if (autoPaused) { autoPaused = false; audio.play().catch(() => {}); }
+      } else if (!audio.paused) { autoPaused = true; audio.pause(); }
+    });
+  }
 
   const mmss = n => Number.isFinite(n)
     ? Math.floor(n / 60) + ':' + String(Math.floor(n % 60)).padStart(2, '0') : '';
@@ -4279,11 +4399,16 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
     fill.style.width = (audio.currentTime / audio.duration * 100) + '%';
     now.textContent = mmss(audio.currentTime);
     left.textContent = mmss(audio.duration - audio.currentTime);
+    if (dock) {
+      dockFill.style.width = fill.style.width;
+      dockTime.textContent = mmss(audio.currentTime) + ' / ' + mmss(audio.duration);
+    }
   });
   audio.addEventListener('error', () => {
     state.dataset.i18n = 'audioMissing';
     state.textContent = t('audioMissing');
     btn.disabled = true;
+    if (dockBtn) dockBtn.disabled = true;
     if (cont) cont.disabled = false;   // never trap a learner behind a broken file
   });
   audio.addEventListener('ended', () => {
@@ -4293,6 +4418,11 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
     state.textContent = t('audioDone');
     state.classList.add('done');
     if (cont) cont.disabled = false;
+    if (dock) {
+      dockFill.style.width = '100%';
+      dockState.textContent = '✓';
+      dockState.classList.add('done');
+    }
     const again = document.createElement('button');
     again.className = 'audio-replay'; again.type = 'button';
     again.dataset.i18n = 'audioReplay';
@@ -4301,13 +4431,17 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
       audio.currentTime = 0; audio.play();
       state.dataset.i18n = 'audioPlaying';
       state.textContent = t('audioPlaying'); state.classList.remove('done');
+      if (dock) { dockState.textContent = ''; dockState.classList.remove('done'); }
       again.remove();
     });
     wrap.append(again);
   });
 
-  btn.addEventListener('click', () => {
+  const start = () => {
     btn.disabled = true;
+    // The running time says it is playing; the deck bar has no room for
+    // the sentence the main player shows.
+    if (dockBtn) dockBtn.disabled = true;
     state.dataset.i18n = 'audioPlaying';
     state.textContent = t('audioPlaying');
     audio.play().catch(() => {
@@ -4316,11 +4450,14 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
     state.textContent = t('audioMissing');
       if (cont) cont.disabled = false;
     });
-  });
+  };
+  btn.addEventListener('click', start);
+  if (dockBtn) dockBtn.addEventListener('click', start);
 
-  // Leaving the slide stops the recording rather than letting it run on
-  // behind the questions.
-  slide._leave = () => { if (!audio.paused) audio.pause(); };
+  // Without data-carry, leaving the slide stops the recording rather than
+  // letting it run on behind the questions. With it, the range hook above
+  // decides.
+  if (!carry) slide._leave = () => { if (!audio.paused) audio.pause(); };
 });
 
 /* Sentence building. Author as
@@ -4328,11 +4465,22 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
    with a [data-action="check-order"] button and a .feedback alongside it.
    The engine shuffles the chunks into a pool; clicking places one, clicking a
    placed one takes it back. One point for the whole sentence — a half-right
-   word order is not half-right English. */
+   word order is not half-right English.
+
+   Optional data-decoys="chunk|chunk" deals extra pieces into the pool that
+   belong in no answer. It exists for the item where the sentence is easy to
+   order and the point is choosing the form: "Does the captain HAVE TO …"
+   against a spare "has to" tests DOES + HAVE, which ordering alone never
+   does. Decoys take indices after the answer's, so a sentence is right only
+   if it is exactly the answer's chunks in order and nothing else. Without
+   the attribute nothing changes. */
 slides.filter(s => s.dataset.type === 'order').forEach(slide => {
   const box = slide.querySelector('.order');
   if (!box) return;
   const answer = box.dataset.answer.split('|').map(x => x.trim());
+  const decoys = (box.dataset.decoys || '').split('|').map(x => x.trim()).filter(Boolean);
+  const pieces = () => answer.map((txt, i) => ({ txt, i }))
+    .concat(decoys.map((txt, k) => ({ txt, i: answer.length + k })));
   const target = document.createElement('div'); target.className = 'order-target';
   const pool   = document.createElement('div'); pool.className   = 'order-pool';
   /* A FAIR SHUFFLE CAN DEAL THE ANSWER. With four chunks, Fisher-Yates lands
@@ -4342,10 +4490,12 @@ slides.filter(s => s.dataset.type === 'order').forEach(slide => {
      the shuffle is uniform and healthy - which is the problem, not the excuse.
      Re-deal while the order is the answer. Bounded, and skipped for a
      one-chunk sentence, which has no other order to offer. */
-  let deal = answer.map((txt, i) => ({ txt, i }));
+  let deal = pieces();
   for (let tries = 0; tries < 12; tries++) {
-    deal = shuffled(answer.map((txt, i) => ({ txt, i })));
-    if (answer.length < 2 || deal.some((c, i) => c.i !== i)) break;
+    deal = shuffled(pieces());
+    // With decoys mixed in, the tell is still the answer's own chunks
+    // appearing in answer order, so judge those alone.
+    if (answer.length < 2 || deal.filter(c => c.i < answer.length).some((c, i) => c.i !== i)) break;
   }
   deal
         .forEach(({ txt, i }) => {
@@ -4353,6 +4503,7 @@ slides.filter(s => s.dataset.type === 'order').forEach(slide => {
           b.className = 'chunk';
           b.textContent = txt;
           b.dataset.i = i;
+          if (i >= answer.length) b.dataset.decoy = '';
           pool.appendChild(b);
         });
   box.replaceChildren(target, pool);
@@ -4367,9 +4518,17 @@ slides.filter(s => s.dataset.type === 'order').forEach(slide => {
   slide._check = () => {
     if (answered.has(slide)) return;
     // Marking a half-built sentence teaches nothing; wait until it is complete.
-    if (target.children.length < answer.length) return;
+    // A placed decoy is wrong wherever it sits, so a short build that uses one
+    // ("VfB | had to | play | extra time.", four pieces of five) is finished,
+    // and wrong. Without this, Check did nothing for exactly the learner who
+    // fell into the trap the decoy was set for.
+    const usedDecoy = [...target.children].some(c => 'decoy' in c.dataset);
+    if (target.children.length < answer.length && !usedDecoy) return;
     answered.add(slide);
-    const ok = [...target.children].map(c => +c.dataset.i).every((v, i) => v === i);
+    // The length test matters only with decoys: the answer in order with a
+    // decoy placed after it would otherwise pass, index for index.
+    const ok = target.children.length === answer.length
+      && [...target.children].map(c => +c.dataset.i).every((v, i) => v === i);
     target.classList.add(ok ? 'correct' : 'wrong');
     box.querySelectorAll('.chunk').forEach(c => c.disabled = true);
     if (ok) score++;

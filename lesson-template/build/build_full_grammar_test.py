@@ -242,6 +242,26 @@ PALETTE = '''  --hero: url('%s/arrival.jpg');
   --secondary     : #0f2831;
   --contrast      : #1ded92;''' % F
 
+# The cover alone takes a rotated accent family. The derived coral is the
+# colour of the tower and the sun in arrival.jpg, so the logo mark, the
+# accent word in the title and the Begin button all sank into the picture.
+# Innes, 2026-09-25: "I want the cover text in different colors (not red or
+# orange or pink)". Teal is the complement of that coral and passes every
+# contrast row. The three values are pasted verbatim from
+#   python3 lesson-template/extract-palette.py grammarjail/arrival.jpg \
+#       --accent-hue 175
+# — the canvas, surfaces and text it derives are identical to PALETTE's,
+# so only the accent family is overridden. Scoped to the cover section,
+# which is where every consumer of --accent on that slide lives; the other
+# 63 slides sit on other artwork and keep the coral.
+COVER_CSS = '''
+.slide[data-type="cover"] {
+  --accent        : #63efe3;
+  --accent-bright : #01cdbc;
+  --accent-dim    : #1dd9c9;
+}
+'''
+
 # The escape, in order: arrival, the cell, the cameras, the works, the
 # lookout, the corridor, the run, the climb. Fifteen grammar sections ride
 # across seven of them. Uncaptioned — nothing on a slide describes what is
@@ -1294,7 +1314,7 @@ if __name__ == '__main__':
     s = D.assemble(TPL, OUT, body, PALETTE,
                    'Escape from Grammar Jail (B1) | Forbes English', I,
                    langs=I.LANGS)
-    s = s.replace('</style>\n</head>', CSS + '</style>\n</head>', 1)
+    s = s.replace('</style>\n</head>', CSS + COVER_CSS + '</style>\n</head>', 1)
     script = SCRIPT % json.dumps(l1, ensure_ascii=False)
     assert s.count('</script>\n</body>') == 1
     s = s.replace('</script>\n</body>', '</script>\n' + script + '\n</body>', 1)

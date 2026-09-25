@@ -11,6 +11,30 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-25 — Grammar Jail cover: teal accent, cover only
+
+Innes: *"I want the cover text in different colors (not red or orange or
+pink)"*. The derived coral is the colour of the tower and the sun in
+`arrival.jpg`, so the logo mark, "Grammar Jail" and Begin sank into the
+picture. `build_full_grammar_test.py` now adds `COVER_CSS`, which redefines
+only `--accent`, `--accent-bright` and `--accent-dim` on
+`.slide[data-type="cover"]`. The values come straight from `extract-palette.py
+grammarjail/arrival.jpg --accent-hue 175`, with every contrast row passing,
+so nothing is hand-picked. The other 63 slides keep the coral.
+
+**Scoping a rotation to one section works for any deck.** Every consumer of
+the accent on the cover (`.fe-logo-mark`, `.cover-title em`, `.btn-solid`
+and its hover) reads the custom property, so three declarations on the
+section recolour all of it. That is the move when Innes objects to the cover
+and not to the deck. For the whole deck, paste the rotated block into
+`PALETTE` instead. Hues 50 (butter yellow, from the sky), 195 and 210 were
+also rendered. 50 reads as amber next to the coral, and the two blues sit
+close to the slate sky.
+
+The rebuild also brought in template changes committed since the last
+Grammar Jail build: the results message rendered as HTML, the RTL `plaintext`
+fix and the audio dock (inert here, since the deck has no audio).
+
 ## 2026-09-25 — B1 Mixed Grammar Test Part 2 shipped; Part 1 second pass; one lesson had two builders
 
 **Part 2 is live**: `build_mixedgrammar2.py` + `i18n_mixedgrammar2.py`, 44
