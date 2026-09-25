@@ -11,6 +11,152 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-16 — B1 Mixed Grammar Test: audited, blocked on artwork
+
+`forbes-english-b1-mixed-grammar-test.html` is an old scrolling page and needs
+the full §10 rebuild. **It is blocked by §5c, not by effort**: five sections
+plus an activation stage want six backgrounds and `MixedGrammarPart1/` holds
+one landscape image and a square thumbnail. Nothing was built; the live page is
+untouched.
+
+The audit, the slide plan and the Midjourney shopping list are in
+**`docs/PLAN-mixed-grammar-b1.md`**. Headlines:
+
+- Ten house-style failures, the interesting ones being a hand-picked mint
+  palette over a coral desert hero, the hero boxed in a card (§5b), no language
+  switcher at all (the `EN ↔ ES` badge is a CSS tooltip on six vocabulary
+  words), no activation stage, and twelve invented `--tense-*` hexes that are
+  all near-misses of the published values in `tense-palette.css`.
+- The multiple-choice set **passes** ANSWERS — the distractors were written
+  properly. Port the 35 items as they are.
+- **Four content bugs found in the data**, live right now: `ec6` marks *"the
+  girl that is sitting there"* wrong while `tf6` in the same test teaches that
+  *that* is acceptable; `ec2` and `ec1` reject the contracted forms
+  (*"I'll call you"*, *"She's lived here"*); Section 4 shuffles single words
+  where §7 wants phrase chunks.
+- Plans out at **40 slides**, over §7's split-at-24 line on purpose — a 35-item
+  test does not split usefully and this is already Part 1 of two. Precedent is
+  the exam decks at 50 and 69.
+
+Part 2 is structurally identical (10/8/6/5/6, all new sentences) with the same
+one-image problem, and is briefed in the same document so both can come out of
+one Midjourney sitting; Part 1 does not wait on them.
+
+### 2026-09-25 — the Mixed Grammar builder is written and verified
+
+`lesson-template/build/build_mixedgrammar1.py` + `i18n_mixedgrammar1.py`.
+45 slides, house style 2, panels alternating sides, all 35 items, en/de/es
+complete. Built against placeholder artwork, checked, then the placeholders and
+the generated HTML were deleted — **a deck whose seven pictures do not exist
+must not go live.** The lesson is now blocked on artwork and nothing else.
+
+**Thirteen of fourteen gates pass. LOGO cannot be verified from a cloud
+session.** The page loads DM Sans and carries the corrected §2 geometry, but
+the headless browser the checker launches cannot reach `fonts.googleapis.com`
+in this sandbox — `curl` gets a 200, Chromium does not. The control is
+conclusive: `forbes-c1-negotiation.html`, the deck HOUSE-STYLE names as the
+worked reference, fails LOGO identically here. **Do not chase a LOGO failure
+from a cloud session before running the control**; and re-run the checker
+locally before shipping anything that depends on it.
+
+**Also: `npm install playwright` gets a version whose browser is not on disk.**
+`check-lesson.js` already handles it — it launches `/opt/pw-browsers/chromium`
+when that path exists — but any new script has to pass
+`executablePath: '/opt/pw-browsers/chromium'` or it dies with "Executable
+doesn't exist at .../chromium_headless_shell-1243".
+
+**A fifth content bug, found while building.** The engine's `flatten()`
+normalises case, curly quotes, dashes and whitespace, but it does **not** strip
+terminal punctuation. So any gap whose answer is a whole sentence marks a
+learner wrong for typing the full stop they were asked to type. It affects any
+deck with sentence-length gap answers, not just this one — `sentences()` in
+`build_mixedgrammar1.py` is the fix, expanding each answer with and without it.
+
+`seo.py` was run and its diff read per the standing warning: 303 sitemap URLs
+before and after with an identical set, 295 `llms.txt` entries unchanged,
+`library.html` untouched. It did not clobber anything this time.
+
+### 2026-09-25 — "house style 2" means the PANEL layout, not an art direction
+
+Recorded because it cost four rounds of misreading. When Innes says *"use the
+second house style"* about a deck, he means the **second slide treatment in
+`lesson-template.html`**, not Noma Bar versus anything else:
+
+| | Style 1 — washed hero (HOUSE-STYLE §5) | Style 2 — panel |
+|---|---|---|
+| Picture | behind everything at `--bg-opacity: .72`, under a wash | owns a column at **full opacity**, bleeding off three edges |
+| Text | in a translucent `.card` over the artwork | a clean column on flat `--void`, nothing plated |
+| Right for | photographic or atmospheric artwork | **flat-vector illustration** |
+
+The template says so itself, in the PANEL block: *"§5 washes the hero to 0.72
+and plates the text on top of it, which is right when the artwork is
+atmosphere. It is wrong when the artwork is the point — a flat-vector
+illustration dimmed by a quarter and covered by a card is neither legible nor
+worth looking at."* `deck.py` has had `panel()` and `divider()` all along.
+
+**"Inverted panels"** is `D.panel(..., side='right')` → `data-side="right"` →
+`flex-direction: row-reverse`. Per the CSS comment, alternating the side "stops
+a long deck reading as one template".
+
+**`build_twinpeaks2.py` is the only builder in the repo using either**, and it
+is the worked reference: 23 slides on **five** pictures, sides alternating,
+`pos=` re-cropping the same file per reuse.
+
+**The trap nobody has written down: a panel crops to portrait.** `--panel-w` is
+548px of a 1280×720 stage painted `cover`, so a panel takes a **548×720 slice,
+aspect 0.76**, out of a 16:9 source and discards the rest. Flat-vector art with
+one object on an empty ground survives it; a wide landscape composition does
+not. `pos=` picks the slice, `width=` widens the column. Budget for tuning
+each picture by eye.
+
+**HOUSE-STYLE.md documents style 1 only.** §5, §5b and §5c are all written as
+though the washed hero is the only treatment, and §5c's "one background per
+section" reads as a `data-bg` count. Under style 2 the requirement is met by
+the section's divider and panel showing the picture at full opacity, and
+question slides carry no artwork at all. Worth a §5d when someone next edits
+that file.
+
+### 2026-09-24 — the style is Noma Bar, and that moved the count to 14
+
+Innes's call. The stem is the one already documented in
+`PLAN-foundations-grammar-business.md`, and the reference set is the
+`HOUSE STYLE/` folder at the repo root — flat shapes, solid colour, one idea in
+negative space. The briefs were rewritten as *ideas* rather than scenes,
+because a Noma Bar brief that names a place gets you a place.
+
+Two consequences worth carrying forward:
+
+- **The heroes are now on the shopping list too**, 7 per lesson rather than 6.
+  The two desert pictures are the other style, and §0.3 makes the hero the
+  background of every slide, so a cinematic cover over six flat interiors is
+  worse than either. They stay on disk unreferenced — good enough for a lesson
+  of their own later. The library thumbnails are the same problem and want
+  recutting from the new heroes.
+- **The theme measurement in the plan's §3 is superseded.** It analysed a hero
+  the deck will no longer use, so the palette has to be re-derived from the new
+  one. Light is still the likely answer — Noma Bar is bright flat colour on a
+  pale ground — but run the extractor both ways and read the report.
+
+**`--no photorealistic, gradient, texture, grain, depth of field, perspective`
+belongs on every prompt.** Nine PNGs at the repo root are named
+`blackisler_flat_vector_illustration_cel-shaded_solid_flat_col_*` and not one
+of them is flat vector — the one opened to check is a painterly Minecraft
+sunset with gradients and depth of field. The words in the stem did not survive
+the generation, and **a filename is not evidence of style**. Check output
+against `HOUSE STYLE/`, not against a filename.
+
+**Next session:** if the fourteen pictures are in `incoming/`, the plan's §6 is
+the command sequence. If not, this stays blocked — do not convert on a thin set
+and reuse the hero across five sections.
+
+**A cloud session cannot reach `incoming/`.** Confirmed again on 2026-09-24,
+with the path Innes gave: `C:\Users\black\Documents\FORBES\incoming\B1 test`.
+There is no `/mnt/c`, no drive mount of any kind, and a filesystem sweep for
+images newer than the clone returns nothing. The route is a local `/publish`,
+or `prep-artwork.py` locally and push the folder.
+
+---
+
 ## 2026-09-25 — Must & Have To: VfB Stuttgart rebuilt as a deck; order decoys; results messages printed their markup on 23 decks
 
 Innes: *"https://forbesenglish.com/must-have-to-vfb-stuttgart make this house
