@@ -11,6 +11,78 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-25 — Must & Have To: VfB Stuttgart rebuilt as a deck; order decoys; results messages printed their markup on 23 decks
+
+Innes: *"https://forbesenglish.com/must-have-to-vfb-stuttgart make this house
+style and check incoming for images"*. The scrolling page is now a 19-slide
+deck at the same URL: `build_vfb_musthaveto.py` + `i18n_vfb_musthaveto.py`,
+EN / DE / ES, light theme (the derivation lands the accent on `#b81000`, the
+club's own red). The builder docstring has the full audit; the short of it:
+
+- **The old page was broken as well as old.** `TOTAL = 19` against 18 items,
+  so the results panel never opened. Exercise 1's Check marked Exercise 4's
+  boxes blank and locked them. Every MC key carried an emoji its distractors
+  did not, and MC5 labelled its options ❌ ❌ ✅. Four items marked correct
+  English wrong by scoring the soft MUST = inside / HAVE TO = outside
+  tendency as a rule. Fabricated quotes from Hoeneß and Undav are now *the
+  coach* and *our striker*.
+- **Art**: 10 of Innes's 14 renders (dropped 01:42–01:47) into
+  `vfb-stuttgart/`, one per section; all 14 sources are in
+  `incoming/_previous/vfb-stuttgart/`. The Noma Bar kick was used and then
+  pulled: its goalpost sits exactly where the 2.34:1 → 16:9 crop falls, a
+  white strip down every MC slide. `player-dribble.jpg` (the old page's only
+  picture) is `git rm`'d. The Frankfurt render in `incoming/` is not this
+  lesson's and was left alone.
+- **Adversarial review** (4 reviewers + 4 skeptics; 36 findings, several
+  the same defect seen by two reviewers; one refuted outright, a few in part)
+  found three more right-marked-wrong items (*need to*, *needed
+  to*, *mustn't* in a sentence that lost its pinning clause), three MC tells,
+  a teach slide printing two build-it answers verbatim (`check-teach-leak.js`
+  agreed), and "MUST never takes DO" tested but never taught. All fixed.
+
+### Engine and checker (shared — every deck gets these on rebuild)
+
+- **`order` slides take optional decoys**: `data-decoys` / `deck.order(…,
+  decoys=[…])`, HOUSE-STYLE §7. Inert without the attribute; `deck.order`
+  output for existing callers is byte-identical (measured against HEAD). A
+  build that uses a decoy is marked even when short — otherwise *VfB | had to
+  | play | extra time.* (four pieces of five) left Check silent for exactly
+  the learner who fell into the trap.
+- **`#scoreMsg` is written with `innerHTML`**, as Block Camp's engine already
+  did. With `textContent`, 23 shipped decks printed `&mdash;`, `&rsquo;` or
+  `<em>` literally in their results message from some score band upward.
+  Those 23 had the one token patched in their generated HTML (identical to
+  what a rebuild now produces): alchemist, alcatraz, campaign review, body
+  idioms / parts, credit where it's due, holding the line, lego passive,
+  lesson (2), lesson-2, self-improvement, minecraft b1 / editorial / lesson,
+  modal verbs B1, possessive pronouns, escalating a complaint, lego b2 pt2,
+  nature agency pt2, risk management, harari, stranger things b1, tense
+  review. 86 more decks still write it as text, with plain strings, so fine.
+- **`check-lesson.js`**: ENTITIES now checks the four `res*` keys, but only
+  on a page whose engine still writes them as text (a source regex cannot
+  tell otherwise, and Block Camp would fail falsely). ACTIONS answers order
+  slides without the decoys and requires `.order-target.correct` — before, a
+  deck whose order test could never pass still passed on its feedback alone.
+  REVIEW now misses order slides too (this deck: 18 items, was measured as
+  15). Old vs new checker over all 68 decks with order slides: no gate
+  changed result (four OPTS lines differ only in which shuffled example they
+  quote).
+
+### Open — needs Innes
+
+- **The catalogue row still says `deck: false`.** This session's Supabase
+  write was refused by the permission layer. One field:
+  `update public.lessons set deck = true where file = 'must-have-to-vfb-stuttgart.html';`
+  then `tools/seo.py` again (it refreshes `tools/lessons.json` itself when it
+  can reach Supabase).
+- `lesson-template/bgmeasure.py` and `checker/shots.js` hard-code Linux
+  Chromium paths and do not run on this Windows clone (bgmeasure also needs
+  Python Playwright, not installed). Luminance here was measured from
+  screenshots instead: 0.29–0.47 mean per slide, saturated coral rather than
+  pale, every slide legible.
+
+---
+
 ## 2026-09-25 — The IELTS landing page, redesigned and now generated
 
 Innes: *"IELTS needs a more attractive landing page/hub."* `ielts.html` was a
