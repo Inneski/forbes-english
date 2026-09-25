@@ -369,7 +369,15 @@ plate at 14 or more.
     (`max-age=0, must-revalidate`, so no stale copies). Verified in headless
     Edge: 9 of 13 clips decode audio, unmuted. **Still silent at source:
     slides 10, 15, 19, 21** (bg25 bg19 bg11 bg41). If he asks again, check
-    `webkitAudioDecodedByteCount` per slide before touching the code. 13.8 MB in all (bg25 is the largest: 16.7 s,
+    `webkitAudioDecodedByteCount` per slide before touching the code.
+  * **2026-09-25: `incoming/block vids 2/` is now the full source set.** Innes
+    moved the shipped sources in beside five new renders with sound:
+    slides 9, 10, 19 and two Gemini clips (`gemini_generated_video_3ba52d4d` =
+    slide 14 / bg38, the newer of two there; `…308c6c3f` = Results / bg41). No
+    watermark on either Gemini clip (corners checked at full size). **12 of 13
+    now have sound; only slide 15 (sort, bg19) is silent at source.** To tell
+    new files from moved ones, compare checksums, not names: `19 slide.mp4`
+    and `slide 19.mp4` are one file, and `20 slide.mp4` is the shipped one. 13.8 MB in all (bg25 is the largest: 16.7 s,
     3.7 MB). Only the current slide's clip is fetched.
   * An earlier reading put the first batch of clips on the time-signals slides
     (`9178aef`). It was reverted in `5ad6a6a`, and that page is static.
