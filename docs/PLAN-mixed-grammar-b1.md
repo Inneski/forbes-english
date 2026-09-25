@@ -343,6 +343,14 @@ the shadow should sweep away from the middle, not through it.
 
 ### Part 2 — the desert set, which is already half-bought
 
+> **Shipped 2026-09-25** (`build_mixedgrammar2.py`, 44 slides). All three
+> "to generate" pictures below had been generated on 09-24 and were in
+> `incoming/`. The plates as built: `s1-crossroads` a11ede #3, `s2-window`
+> 3807bc #2, `s3-fork` 724b7d #2, `s4-siding` 4ff123 #1, `s5-shutter`
+> 946662 #1, `activate-tailgate` 9d586b #0 (#2 has the two looking away
+> from each other, not talking). The gas station was `git mv`'d to
+> `hero.jpg`.
+
 `MixedGrammarPart2/desert-gas-station-sunset.jpg` (2200×1232, mean luminance
 148) is already in the repo and is a good hero, so Part 2 needs no cover at
 all. Three section backgrounds are in `incoming` already:

@@ -11,6 +11,58 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-25 — B1 Mixed Grammar Test Part 2 shipped; Part 1 second pass; one lesson had two builders
+
+**Part 2 is live**: `build_mixedgrammar2.py` + `i18n_mixedgrammar2.py`, 44
+slides, EN/DE/ES, the panel sibling of Part 1. The art is the desert family
+(plan §5): the gas station is the cover (`git mv`'d to `hero.jpg`), and six
+of Innes's 09-24 renders are the plates. The mapping is in the plan. All
+gates pass, LOGO included; the answered state fits in en/de/es; the print
+export is 44 pages. Part 2 is Pro, so curl gets the gate page; check it
+through `lesson-meta.json` or by logging in.
+
+**The same two pages had two builders, and nobody knew.** `19b39ed`
+(09-23) built both parts as *editorial* decks in six languages
+(`build_mixed_b1.py`, waiting on 14 plates at 7:6). The cloud session that
+wrote the *panel* builders started from a base 118 commits older and never
+saw it. "House style 2" had been read both ways: editorial (as for Watts)
+on 09-23, the panel layout in the plan on 09-25. Panels won. Innes had the
+16:9 art made for that plan, and Part 1 had already shipped as panels. Left
+alone, the editorial builder would have overwritten both live decks the day
+its plates landed. It now writes previews only; its FR/IT/PT text is kept.
+**Before writing a builder for a page that already exists, run
+`grep -l "<page>.html" lesson-template/build/*.py`.** A second builder for
+one page is how `last-bounty-rpg` came to exist twice.
+
+**What the editorial audit knew and the panel build did not**, now fixed in
+Part 1 (`7e31cd9`) and built into Part 2:
+- "serves MUCH fresh seafood" was accepted and its explanation taught it.
+- The correction "I have much money" is itself unnatural English; the item
+  is a negative now.
+- Correct alternatives were marked wrong (IS GOING TO, 'S LIVED, WHO'S, …).
+- The explanations broke the CAPS / double-quote rule. All of them are now
+  the audit's EN/DE/ES text, ported by script (`sentences()` and the key
+  maps are in the builders; the script was a one-off).
+
+**Two answer leaks Part 1 shipped with this morning, both fixed.** No gate
+catches either, and both are worth one:
+1. The story panel printed the passage **with every answer filled in**, one
+   slide before the gap slides that score them. Both story panels now print
+   the gaps.
+2. **Slide titles contained the key**: "The best of them" over *the best*,
+   "If it rains" over *rains*, "If I had the time" over *had*. The
+   error-correction titles named the error ("A double comparative"). Titles
+   now name the scene. A title that contains an MC key or a gap answer is
+   measurable; nothing measures it yet.
+
+**Needs Innes: the catalogue.** Session writes to `public.lessons` are refused:
+```sql
+update public.lessons set deck = true
+where file in ('forbes-english-b1-mixed-grammar-test.html',
+               'forbes-english-b1-mixed-grammar-test-part2.html',
+               'must-have-to-vfb-stuttgart.html');
+```
+
 ## 2026-09-25 — B1 Mixed Grammar Test Part 1: SHIPPED as a 45-slide deck (audited 2026-09-16)
 
 ### 2026-09-25 — shipped, from a local session
@@ -876,6 +928,12 @@ The two gitignored `_forbes-english-b1-mixed-grammar-test*` previews go through
 `assemble()` too and are fixed on their next build.
 
 ## 2026-09-23 — B1 Mixed Grammar Test 1 + 2: editorial decks, six languages, NOT shipped: waiting for 14 plates
+
+> **Superseded 2026-09-25.** Both parts shipped as panel decks instead
+> (entry at the top of this file). `build_mixed_b1.py` now writes previews
+> only, whatever is on disk. Do not commission the 14 plates. Its audit and
+> its EN/DE/ES text were ported into the panel builders. Its FR/IT/PT are
+> kept for a later language pass.
 
 Innes: *"make these house style and add languages"*, then *"house style 2
 and ask for shopping list images"*. "House style 2" is the editorial style
