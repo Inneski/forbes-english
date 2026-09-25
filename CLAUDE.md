@@ -241,6 +241,12 @@ done
 node lesson-template/check-library.js --vs-origin     # must PASS
 ```
 
+If you repointed a row on purpose (a rebuilt lesson moving to its new
+`hero.jpg`), name it: `--vs-origin --expect <lesson.html>`. Any row that
+differs from origin fails unless it is named *and* origin has not changed it
+since your base. Before 2026-09-25 the gate failed every deliberate repoint,
+which taught sessions to read past its FAIL. `--self-test` proves the cases.
+
 **Verifying after the upload is not enough.** A byte-for-byte match against
 `origin/main` only proves your bytes landed — which is exactly what a clobber
 looks like too. The uploader replaces the file wholesale, so any entry added to

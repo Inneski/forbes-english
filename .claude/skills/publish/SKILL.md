@@ -126,20 +126,31 @@ the library.
 
 ```
 node lesson-template/check-library.js --vs-origin     # must PASS
-git add -A
-git status --short          # no incoming/, no PNGs, no node_modules
-git commit
+#   repointed a row on purpose?  --vs-origin --expect <page-name>.html
+git add <each new file, by name>
+git commit -o <every file you changed, by name> -m "..."
 git push origin main
 ```
+
+Name the files. `git add -A` and a bare `git commit` are refused by
+`.claude/hooks/git-guard.js`: other sessions share this tree and its index,
+so a sweep commits their half-finished work under your message (CLAUDE.md,
+"Several sessions share this tree"). The regenerated indexes (`library.html`,
+`sitemap.xml`, `lesson-meta.json`, `llms.txt`, any hub page `build_hubs.py`
+rewrote) go in the same `-o` list. No `incoming/`, no PNGs.
 
 The site follows `origin/main` within a few minutes. Open the live URL and
 click through it before saying it is done.
 
 ## 7. Clear the drop folder and report
 
-`rm incoming/*` once everything is in git. Then say what shipped, what you
-found, and what you changed — including anything in the source lesson that
-was wrong and got fixed.
+Once everything is in git, move **this batch's** source files — the ones you
+published, by name — into `incoming/_previous/<page-name>/`, as
+`_previous/vfb-stuttgart/` was. Never `rm incoming/*`: the folder is shared
+across lessons (297 files on 2026-09-25, "only seven belong to this one"), so
+a sweep deletes other lessons' artwork that exists nowhere else on disk. Then
+say what shipped, what you found, and what you changed — including anything
+in the source lesson that was wrong and got fixed.
 
 ## What NOT to do
 
