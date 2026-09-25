@@ -1764,6 +1764,16 @@ Four changes were made to his file and nothing else:
    never a key shortened. The three idioms are a closed set asked three times,
    so that one was fixed by padding all three to a phrase.
 
+   **2026-09-25: the idiom padding was reverted.** `backpedal` had been padded
+   to `begin to backpedal` (18 chars, to match `an uphill struggle`), and in Q1,
+   *"the manager began to ___"*, the key then read **"began to begin to
+   backpedal"**. Innes caught it mid-lesson. It is `backpedal` again in all
+   three items. Idiom Q2's key is the longest option once more, and that is
+   accepted: *"was ___"* takes a noun phrase and `an uphill struggle` is the
+   only one on offer, so grammar gives Q2 away whatever the lengths. Length
+   padding cannot make that item fair, and nothing may be padded into a form
+   that doesn't read correctly in every stem it appears in.
+
 **It does not meet house style and that is the decision, not an oversight.**
 No language switcher (rule 5), no activation stage (rule 6), no derived
 palette (rule 4), its own chrome rather than the deck engine's.
