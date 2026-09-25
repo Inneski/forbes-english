@@ -155,6 +155,12 @@ An optional 26th file, `hero-route-map`, would give it and its library
 card a banner: *the whole mountain, one face in daylight and the other at
 dusk, both routes faintly visible.*
 
+**Filled 2026-09-25**, with one of Innes's own renders from `incoming/sherpa/`
+(the long final snowfield, a stair of steps up the ridge to the summit): it
+is the hub's hero at `Sherpa Tensing/hero-route-map.jpg`, 1200px, not in
+`SherpaTensing/`. A commissioned replacement goes to that path, or the
+page's `<img src>` moves with it. The library card is still the SVG render.
+
 ### The textures — 7 files, `--ar 16:9`
 
 One per **section role**, one set for both faces. They sit under text

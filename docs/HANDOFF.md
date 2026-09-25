@@ -11,6 +11,59 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-25 — Sherpa route map: refined, not redesigned
+
+Innes: *"improve my sherpa tensing hub subtly like the way you did my
+IELTS"*. He had stopped the Sherpa **deck** redesign the same day ("doesn't
+look better than what I had"), so the pink, Fraunces/Inter, the two SVG
+maps and the coloured camp rows all stay. `sherpa-tensing-route-map.html`
+is still hand-maintained; there is no builder.
+
+- **Added**: a hero with one of his own renders from `incoming/sherpa/`
+  (steps up a ridge to the summit) at `Sherpa Tensing/hero-route-map.jpg`;
+  a counts row (13 up · 9 down · 3 off the route · 4 free); a start button
+  that becomes "Carry on: camp N" / "Head down: …" / "Climb it again" from
+  `sherpa.progress.v1`; **every lesson listed** — the 9 descents and the 3
+  off-route lessons were reachable only by clicking the maps — with Free,
+  level and a done tick; notes (where you are / why four stops are dark /
+  teaching); a free/Pro line.
+- **Fixed**: the intro still said "the two that are already open" (all 13
+  are); the legend described a tap-to-reveal that no longer did anything
+  but paint a locked marker in the "open" colour (a tap now says why it is
+  locked); camps 3, 5 and 7 carried white text at 2.9–3.2:1 and now take
+  the dark ink `#1A1206` the other light rows use; the SVG clouds were
+  double tab stops inside a `role=img`; blocked storage made the teacher
+  switch do nothing; the page never repainted on back-navigation.
+- **Changed a lock rule, deliberately**: *used to* is Free in the
+  catalogue but opened only after camp 3, which is Pro, so a free learner
+  could never reach it. It now opens after camp 2 **or** 3 (a present-simple
+  habit moved into the past). Tell Innes if he wants it back on camp 3
+  alone; then it must stop being advertised as free.
+- **`tools/check_route_map.py`** (new; `build_hubs.py` runs it warn-only):
+  every Sherpa lesson has one row; Free and level match the catalogue; the
+  counts and the free/Pro sentence add up; the 13 colour-key rows
+  `build_sherpa.py` reads are there and pass 4.5:1; list and map colours
+  agree with each twin camp; **no free lesson waits only on Pro lessons**.
+  Verified against 12 deliberately broken copies, all caught.
+- **Reviewed**: five lenses plus a skeptic each; 51 of 52 findings
+  confirmed, all fixed except the three below.
+
+**Needs Innes:**
+- `pricing.html` still says the whole Sherpa route is free, "Free
+  permanently, including camps added later" and "all four camps". The
+  catalogue has 4 of 25 Sherpa lessons free. The route map's "Plans and
+  prices" button now leads there. Commercial copy, so left for him (the
+  IELTS entry below already flagged the same FAQ's stale counts).
+- Two descent files are numbered by an older order: `descent-nine-going-to`
+  is camp 5's passive and `descent-eight-past-continuous` is camp 6's, and
+  their catalogue titles say "Descent Nine" / "Descent Eight". The route
+  map labels them by camp; retitling needs a catalogue update (SQL for
+  Innes — MCP writes are refused).
+- **If the Sherpa decks are ever resumed**: `build_sherpa.py`'s
+  `colour_key()` reads row ink off this page, so camps 3, 5 and 7 (and
+  descents three, nine and seven) would now build with dark ink instead of
+  white. Decide that with Innes then; the builder was not touched.
+
 ## 2026-09-25 — Grammar Jail cover: teal accent, cover only
 
 Innes: *"I want the cover text in different colors (not red or orange or

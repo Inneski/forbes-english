@@ -40,7 +40,7 @@
   .intro{padding:36px 0 8px;max-width:64ch;}
   .intro .eyebrow{
     display:inline-block;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
-    color:var(--accent-dark);background:var(--accent-lighter);padding:6px 12px;border-radius:999px;margin-bottom:14px;
+    color:var(--accent-dark);background:var(--card);border:1px solid var(--accent-light);padding:6px 12px;border-radius:999px;margin-bottom:14px;
   }
   .intro h1{font-size:34px;}
   .intro p{color:var(--ink-soft);font-size:16px;}
@@ -107,7 +107,7 @@
       text-decoration:none; box-shadow:0 2px 10px rgba(0,0,0,.10);
       transition:background .18s ease, color .18s ease, transform .18s ease;
     }
-    .up-link:hover{ background:var(--accent,#333); color:#fff; transform:translateX(-2px); }
+    .up-link:hover{ background:var(--accent-dark,#333); color:#fff; transform:translateX(-2px); }
     .up-link .arw{ font-size:15px; line-height:1; }
     @media print{ .up-link{ display:none; } }
     @media (max-width:640px){
@@ -124,6 +124,138 @@
   .teach-btn:hover{background:#FBEEF3;border-color:#E66085;}
   .teach-btn.on{background:#E66085;border-color:#E66085;color:#2E000D;}
   .camp-dot.locked-dot{cursor:help;}
+
+  /* ── the hero, the counts, and every stop listed (2026-09-25) ── */
+  :root{
+    --night:#172731; --night-ink:#F3EEE7; --night-soft:#B7C4CB;
+    --free:#AD5470; --locked:#7A8891; --lift:0 3px 10px rgba(43,15,29,.16);
+  }
+  .hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);gap:52px;align-items:center;padding:26px 0 4px;}
+  .hero .intro{padding:0;max-width:none;}
+  .intro h1{font-size:clamp(32px,4.1vw,46px);line-height:1.08;letter-spacing:-.01em;text-wrap:balance;}
+  .intro .lead{font-size:17px;max-width:48ch;margin:0 0 22px;}
+  .counts{list-style:none;margin:0 0 26px;padding:16px 0 0;border-top:1px solid var(--accent-light);
+          display:grid;grid-template-columns:repeat(4,max-content);justify-content:start;gap:10px 28px;}
+  @media (max-width:1075px) and (min-width:861px),(max-width:515px){
+    .counts{grid-template-columns:repeat(2,max-content);}
+  }
+  .counts li{display:flex;align-items:baseline;gap:7px;font-size:13.5px;color:var(--ink-soft);}
+  .counts b{font-family:'Fraunces',serif;font-weight:600;font-size:32px;line-height:1;color:var(--ink);}
+  .counts .is-free b{color:var(--free);}
+  .cta{display:flex;flex-wrap:wrap;gap:12px;}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:999px;
+       font:600 14px/1.2 'Inter',sans-serif;text-decoration:none;border:1.5px solid var(--ink);
+       transition:transform .15s ease,background .15s ease;}
+  .btn-main{background:var(--ink);color:var(--paper);}
+  .btn-main:hover{transform:translateY(-1px);background:#45182D;}
+  .btn-ghost{background:transparent;color:var(--ink);}
+  .btn-ghost:hover{background:var(--card);}
+  .hero-art{margin:0;border-radius:18px;overflow:hidden;aspect-ratio:3/2;background:#C3B6B4;
+            box-shadow:0 22px 44px -22px rgba(43,15,29,.5);}
+  .hero-art img{width:100%;height:100%;object-fit:cover;object-position:40% 50%;display:block;}
+  @media (max-width:860px){
+    .hero{grid-template-columns:1fr;gap:26px;padding-top:22px;}
+    .hero-art{order:-1;aspect-ratio:16/10;}
+  }
+
+  .kicker{font:600 12px/1.2 'Inter',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-dark);margin:0 0 6px;}
+  .section-title{font-family:'Fraunces',serif;font-weight:600;color:var(--ink);font-size:26px;line-height:1.2;margin:0;}
+  .map-head{margin:40px 0 0;}
+  .map-how{font-size:15px;color:var(--ink-soft);max-width:68ch;margin:8px 0 0;text-wrap:pretty;}
+  .section-title,.zone-card h3,.note h3{text-wrap:balance;}
+  @media (max-width:600px){ .wordmark .sub{display:none;} }
+  #every-stop,#the-map{scroll-margin-top:72px;}
+  @media (max-width:640px){ #every-stop,#the-map{scroll-margin-top:56px;} }
+  .zone-card .zone-sub{text-wrap:pretty;}
+  .map-hint{font-size:13px;color:var(--ink);margin:10px 4px 0;min-height:1.3em;}
+  .legend .dot:not(.lit-demo){box-shadow:inset 0 0 0 1px var(--locked);}
+  .list-head{margin:60px 0 0;}
+  .list-head + .zones{margin-top:18px;}
+  .zones-lower{margin-top:16px;}
+  .zones-lower .desc-card{grid-column:span 2;}
+
+  .camp-row .camp-num{opacity:1;}
+  .camp-row .camp-name{min-width:0;}
+  .row-meta{display:flex;align-items:center;gap:8px;flex:none;margin-left:auto;}
+  .lvl{font-size:11px;font-weight:700;letter-spacing:.06em;font-variant-numeric:tabular-nums;}
+  .tag-free{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;line-height:1;
+            padding:4px 8px;border-radius:999px;background:#FFFFFF;color:var(--ink);}
+  .tick{display:none;width:18px;height:18px;border-radius:50%;border:1.5px solid currentColor;
+        place-items:center;flex:none;}
+  .tick::before{content:"";width:7px;height:3.5px;border-left:2px solid currentColor;border-bottom:2px solid currentColor;
+                transform:translateY(-1px) rotate(-45deg);}
+  .is-done .tick{display:grid;}
+  .sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;}
+
+  .desc-list{display:grid !important;grid-template-columns:1fr 1fr;gap:8px;}
+  .desc-list > li{display:flex;}
+  .desc-row{display:flex;align-items:center;gap:12px;min-height:48px;padding:10px 14px 10px 12px;border-radius:10px;
+            background:var(--night);color:var(--night-ink);text-decoration:none;
+            border-left:8px solid var(--c);transition:transform .12s ease,box-shadow .12s ease;}
+  .desc-row:hover{transform:translateX(2px);box-shadow:var(--lift);}
+  .desc-row .diamond{width:11px;height:11px;flex:none;background:var(--c);transform:rotate(45deg);
+                     outline:1.5px solid var(--night-ink);outline-offset:-1px;}
+  .desc-row .off-text{display:flex;flex-direction:column;flex:1;min-width:0;line-height:1.3;}
+  .desc-row .camp-name{font-weight:600;font-size:14px;}
+  .desc-row .from{font-size:11.5px;color:var(--night-soft);}
+  /* not yet earned: the map's grey marker, on the same night ground */
+  .desc-row.locked-link,.off-row.locked-link{opacity:1;pointer-events:auto;cursor:help;}
+  .desc-row.locked-link{border-left-color:var(--locked);}
+  .desc-row.locked-link:hover,.off-row.locked-link:hover{transform:none;box-shadow:none;}
+  .desc-row.locked-link .diamond{background:var(--locked);}
+  .desc-row.locked-link .camp-name{color:var(--night-soft);}
+  .desc-row.locked-link .from::before{content:"after ";}
+  .desc-row:not(.locked-link) .from::before{content:"from ";}
+  .off-row.locked-link{background:var(--card);}
+  .off-row.locked-link .glyph{background:var(--locked);}
+  .locked-link .from::after{content:"";display:inline-block;width:9px;height:10px;margin-left:6px;vertical-align:-1px;background:currentColor;
+    -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9 10'%3E%3Cpath d='M2 4V3a2.5 2.5 0 0 1 5 0v1h1v6H1V4zm1 0h3V3a1.5 1.5 0 0 0-3 0z'/%3E%3C/svg%3E") center/contain no-repeat;
+            mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9 10'%3E%3Cpath d='M2 4V3a2.5 2.5 0 0 1 5 0v1h1v6H1V4zm1 0h3V3a1.5 1.5 0 0 0-3 0z'/%3E%3C/svg%3E") center/contain no-repeat;}
+
+  .off-list{gap:8px;}
+  .off-row{display:flex;align-items:center;gap:12px;min-height:48px;padding:10px 14px;border-radius:10px;
+           background:var(--accent-lighter);color:var(--ink);text-decoration:none;border:1px solid var(--accent-light);
+           transition:transform .12s ease,box-shadow .12s ease;}
+  .off-row:hover{transform:translateX(2px);box-shadow:var(--lift);}
+  .off-row .off-text{display:flex;flex-direction:column;flex:1;min-width:0;line-height:1.3;}
+  .off-row .camp-name{font-weight:600;font-size:14px;}
+  .off-row .from{font-size:11.5px;color:var(--ink-soft);}
+  .off-row .tag-free{background:var(--ink);color:var(--paper);}
+  .glyph{flex:none;background:var(--c);}
+  .glyph-cloud{width:26px;height:15px;
+    -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 17'%3E%3Cpath d='M6 17C1 17 0 12 3 10c1-2 3-2 4-2 1-5 5-7 9-5 2-3 8-3 9 2 4 0 6 3 5 6 1 3-1 6-4 6z'/%3E%3C/svg%3E") center/contain no-repeat;
+            mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 17'%3E%3Cpath d='M6 17C1 17 0 12 3 10c1-2 3-2 4-2 1-5 5-7 9-5 2-3 8-3 9 2 4 0 6 3 5 6 1 3-1 6-4 6z'/%3E%3C/svg%3E") center/contain no-repeat;}
+  .glyph-moon{width:26px;height:18px;
+    -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M12 1a9 9 0 1 0 7 13A7 7 0 1 1 12 1z'/%3E%3C/svg%3E") center/contain no-repeat;
+            mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M12 1a9 9 0 1 0 7 13A7 7 0 1 1 12 1z'/%3E%3C/svg%3E") center/contain no-repeat;}
+
+  .notes{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px;}
+  .note{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:18px 20px;}
+  .note h3{font-size:15px;margin-bottom:6px;}
+  .note p{margin:0;font-size:13.5px;line-height:1.6;color:var(--ink-soft);}
+  .note .lock-note{margin:0;font-size:13.5px;}
+  .note a{color:var(--accent-dark);font-weight:600;}
+  .camp-row,.desc-row,.off-row{flex-wrap:wrap;row-gap:4px;}
+  .camp-row .camp-name,.desc-row .off-text,.off-row .off-text{flex:1 1 0;min-width:min-content;}
+  .desc-list .desc-row{flex:1;}
+  .pro-line{display:flex;align-items:center;justify-content:space-between;gap:18px 28px;flex-wrap:wrap;margin-top:28px;
+            padding:22px 26px;border-radius:var(--radius);background:var(--accent-lighter);border:1px solid var(--accent-light);}
+  .pro-line p{margin:0;max-width:70ch;font-size:15px;color:var(--ink);}
+
+  .camp-row:focus-visible,.desc-row:focus-visible,.off-row:focus-visible,.btn:focus-visible,
+  .note a:focus-visible,.teach-btn:focus-visible,.up-link:focus-visible{outline:3px solid var(--ink);outline-offset:3px;}
+  @media (max-width:1040px){
+    .zones-lower{grid-template-columns:minmax(0,1fr);}
+    .zones-lower .desc-card{grid-column:auto;}
+  }
+  @media (max-width:760px){ .desc-list{grid-template-columns:1fr;} }
+  @media (max-width:760px){
+    .zones-lower .desc-card{grid-column:auto;}
+    .notes{grid-template-columns:1fr;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .camp-row,.desc-row,.off-row,.btn,.cloud-link,.route-seg,.camp-dot .dot-label,.up-link{transition:none;}
+  }
 </style>
 </head>
 <body>
@@ -350,23 +482,44 @@
 </div>
 
 <main>
-  <div class="intro">
-    <span class="eyebrow">Route map</span>
-    <h1>Thirteen camps, two faces</h1>
-    <p>The ascent, in active voice, ordered by how often you'll actually reach for each tense. The descent, in passive voice, the same thirteen camps in reverse. Every marker starts dim &mdash; click one to light it up and see what it is. The two that are already open climb straight through in full colour.</p>
+  <header class="hero">
+    <div class="intro">
+      <span class="eyebrow">Route map</span>
+      <h1>Thirteen camps, two faces</h1>
+      <p class="lead">The ascent, in active voice, ordered by how often you'll actually reach for each tense. The descent, in passive voice, the same thirteen camps in reverse &mdash; nine of them with a passive worth learning.</p>
+      <ul class="counts" aria-label="What is on the route">
+        <li><b>13</b> camps up</li>
+        <li><b>9</b> passives down</li>
+        <li><b>3</b> off the route</li>
+        <li class="is-free"><b>4</b> free</li>
+      </ul>
+      <div class="cta">
+        <a class="btn btn-main" id="hero-go" href="sherpa-tensing-camp-one-present-continuous.html">Start at camp one &middot; free <span aria-hidden="true">&rarr;</span></a>
+        <a class="btn btn-ghost" href="#every-stop">Every stop <span aria-hidden="true">&darr;</span></a>
+      </div>
+    </div>
+    <div class="hero-art">
+      <img src="Sherpa%20Tensing/hero-route-map.jpg" width="1200" height="672" alt="" fetchpriority="high">
+    </div>
+  </header>
+
+  <div class="map-head" id="the-map">
+    <p class="kicker">The map</p>
+    <h2 class="section-title">Up in active, down in passive</h2>
+    <p class="map-how">The way up has no locks: start at whichever camp you need. Each stop on the way down opens when you finish the camp it comes from; until then its marker is grey.</p>
   </div>
 
   <div class="panels">
     <div class="map-card">
       <h3>The ascent</h3>
       <div class="map-sub">active voice &middot; base camp to summit</div>
-      <svg viewBox="0 0 800 620" role="img" aria-label="A layered mountain silhouette with thirteen dim markers along a path from base to peak, representing the thirteen tenses in active voice; click a marker to reveal it">
+      <svg viewBox="0 0 800 620" role="img" aria-label="The ascent: a mountain with thirteen coloured camp markers on a path from base camp to the summit, one for each tense in active voice, and two clouds for used to and be used to. Every stop is also listed below the map.">
         <use href="#epic-day-v2"/>
-        <a href="sherpa-tensing-cloud-used-to.html"><g transform="translate(33 88)"><g filter="url(#cloud-shadow)" class="cloud-link" role="link" tabindex="0">
+        <a href="sherpa-tensing-cloud-used-to.html" tabindex="-1"><g transform="translate(33 88)"><g filter="url(#cloud-shadow)" class="cloud-link">
         <path d="M9 61 C-2 54 4 39 17 37 C20 20 38 13 52 21 C62 4 89 5 98 23 C118 15 139 28 140 47 C157 46 168 58 163 69 L18 69 C12 69 9 66 9 61 Z" fill="#F3E9DE" stroke="#AEBFC0" stroke-width="1.6"/>
         <text x="82" y="51" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" font-weight="700" fill="#3A5059">used to</text>
       </g></g></a>
-        <a href="sherpa-tensing-cloud-be-used-to.html"><g transform="translate(579 78)"><g filter="url(#cloud-shadow)" class="cloud-link" role="link" tabindex="0">
+        <a href="sherpa-tensing-cloud-be-used-to.html" tabindex="-1"><g transform="translate(579 78)"><g filter="url(#cloud-shadow)" class="cloud-link">
         <path d="M7 67 C-4 58 3 43 18 41 C20 24 38 15 54 22 C67 2 96 6 103 25 C125 15 150 29 149 51 C169 49 180 64 173 76 L20 76 C14 76 9 72 7 67 Z" fill="#F1E6DC" stroke="#AABABD" stroke-width="1.6"/>
         <text x="89" y="57" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" font-weight="700" fill="#3A5059">to be used to doing</text>
       </g></g></a>
@@ -453,9 +606,9 @@
     <div class="map-card">
       <h3>The descent</h3>
       <div class="map-sub">passive voice &middot; summit to ground</div>
-      <svg class="descent-map" viewBox="0 0 800 620" role="img" aria-label="A rugged mountain at night with thirteen dim diamond markers along a path from peak to base, representing the same thirteen tenses in passive voice; click a marker to reveal it">
+      <svg class="descent-map" viewBox="0 0 800 620" role="img" aria-label="The descent: the same mountain at night, with a diamond marker for each tense in passive voice from the summit down. Nine are lessons, each opening when you finish its camp; four stay dark because nobody uses those passives. The moon is the causative. Every stop is also listed below the map.">
         <use href="#epic-night-v2"/>
-        <a href="sherpa-tensing-cloud-causative.html"><g class="cloud-link" role="link" tabindex="0">
+        <a href="sherpa-tensing-cloud-causative.html" tabindex="-1"><g class="cloud-link">
           <circle cx="116" cy="111" r="49" fill="none" stroke="#F0E6D2" stroke-width="1.4" opacity=".55"/>
           <rect x="52" y="28" width="128" height="26" rx="13" fill="#101C26" stroke="#8FA6B4" stroke-width="1.4" opacity=".95"/>
           <text x="116" y="46" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" font-weight="700" fill="#E7DDCB">causative</text>
@@ -546,46 +699,96 @@
   </div>
 
   <div class="legend">
-    <span class="legend-item"><span class="dot"></span>tap to reveal</span>
-    <span class="legend-item"><span class="dot lit-demo"></span>revealed / open lesson</span>
+    <span class="legend-item"><span class="dot lit-demo"></span>coloured &mdash; tap to go</span>
+    <span class="legend-item"><span class="dot"></span>grey &mdash; opens when you finish its camp</span>
     <span class="legend-item">circle = active voice, diamond = passive voice</span>
   </div>
+  <p class="map-hint" aria-live="polite"></p>
 
+  <div class="list-head" id="every-stop">
+    <h2 class="kicker">Every stop</h2>
+    <p class="section-title">The ascent &middot; active voice</p>
+  </div>
   <div class="zones">
     <div class="zone-card">
       <h3>Foundation camps</h3>
       <div class="zone-sub">reach for these daily</div>
       <ol>
-        <li><a class="camp-row" href="sherpa-tensing-camp-one-present-continuous.html" style="background:#E66085;color:#2E000D;"><span class="camp-num">1</span><span class="camp-name">Present continuous</span></a></li>
-        <li><a class="camp-row" href="sherpa-tensing-camp-two-present-simple.html" style="background:#7A93B5;color:#0A131F;"><span class="camp-num">2</span><span class="camp-name">Present simple</span></a></li>
-        <li><a class="camp-row" href="sherpa-tensing-camp-three-past-simple.html" style="background:#B08968;color:#FFFFFF;"><span class="camp-num">3</span><span class="camp-name">Past simple</span></a></li>
-        <li><a class="camp-row" href="sherpa-tensing-camp-four-present-perfect.html" style="background:#36797E;color:#FFFFFF;"><span class="camp-num">4</span><span class="camp-name">Present perfect</span></a></li>
-        <li><a class="camp-row" href="sherpa-tensing-camp-five-going-to.html" style="background:#70A43A;color:#FFFFFF;"><span class="camp-num">5</span><span class="camp-name">Going to</span></a></li>
+        <li><a class="camp-row" href="sherpa-tensing-camp-one-present-continuous.html" style="background:#E66085;color:#2E000D;"><span class="camp-num">1</span><span class="camp-name">Present continuous</span><span class="row-meta"><span class="tag-free">Free</span><span class="lvl" title="Level">A2</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="camp-row" href="sherpa-tensing-camp-two-present-simple.html" style="background:#7A93B5;color:#0A131F;"><span class="camp-num">2</span><span class="camp-name">Present simple</span><span class="row-meta"><span class="tag-free">Free</span><span class="lvl" title="Level">A2</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="camp-row" href="sherpa-tensing-camp-three-past-simple.html" style="background:#B08968;color:#1A1206;"><span class="camp-num">3</span><span class="camp-name">Past simple</span><span class="row-meta"><span class="lvl" title="Level">A2</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="camp-row" href="sherpa-tensing-camp-four-present-perfect.html" style="background:#36797E;color:#FFFFFF;"><span class="camp-num">4</span><span class="camp-name">Present perfect</span><span class="row-meta"><span class="lvl" title="Level">B1</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="camp-row" href="sherpa-tensing-camp-five-going-to.html" style="background:#70A43A;color:#1A1206;"><span class="camp-num">5</span><span class="camp-name">Going to</span><span class="row-meta"><span class="lvl" title="Level">A2</span><span class="tick" aria-hidden="true"></span></span></a></li>
       </ol>
     </div>
     <div class="zone-card">
       <h3>The ridge</h3>
       <div class="zone-sub">common, but need more care</div>
       <ol>
-        <li><a class="camp-row" href="sherpa-tensing-camp-six-past-continuous.html" style="background:#F1D779;color:#1A1206;"><span class="camp-num">6</span><span class="camp-name">Past continuous</span></a></li>
-        <li><a class="camp-row" href="sherpa-tensing-camp-seven-future-simple.html" style="background:#F0723F;color:#FFFFFF;"><span class="camp-num">7</span><span class="camp-name">Future simple</span></a></li>
-        <li><a class="camp-row" href="sherpa-tensing-camp-eight-present-perfect-continuous.html" style="background:#46B0AB;color:#1A1206;"><span class="camp-num">8</span><span class="camp-name">Present perfect continuous</span></a></li>
-        <li><a class="camp-row" href="sherpa-tensing-camp-nine-future-continuous.html" style="background:#F0A500;color:#1A1206;"><span class="camp-num">9</span><span class="camp-name">Future continuous</span></a></li>
+        <li><a class="camp-row" href="sherpa-tensing-camp-six-past-continuous.html" style="background:#F1D779;color:#1A1206;"><span class="camp-num">6</span><span class="camp-name">Past continuous</span><span class="row-meta"><span class="lvl" title="Level">A2</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="camp-row" href="sherpa-tensing-camp-seven-future-simple.html" style="background:#F0723F;color:#1A1206;"><span class="camp-num">7</span><span class="camp-name">Future simple</span><span class="row-meta"><span class="lvl" title="Level">A2</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="camp-row" href="sherpa-tensing-camp-eight-present-perfect-continuous.html" style="background:#46B0AB;color:#1A1206;"><span class="camp-num">8</span><span class="camp-name">Present perfect continuous</span><span class="row-meta"><span class="lvl" title="Level">B1</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="camp-row" href="sherpa-tensing-camp-nine-future-continuous.html" style="background:#F0A500;color:#1A1206;"><span class="camp-num">9</span><span class="camp-name">Future continuous</span><span class="row-meta"><span class="lvl" title="Level">B1</span><span class="tick" aria-hidden="true"></span></span></a></li>
       </ol>
     </div>
     <div class="zone-card">
       <h3>Summit push</h3>
       <div class="zone-sub">rare, mostly written English</div>
       <ol>
-        <li><a class="camp-row" href="sherpa-tensing-camp-ten-past-perfect.html" style="background:#6E0B24;color:#FFFFFF;"><span class="camp-num">10</span><span class="camp-name">Past perfect</span></a></li>
-        <li><a class="camp-row" href="sherpa-tensing-camp-eleven-past-perfect-continuous.html" style="background:#4B1A7A;color:#FFFFFF;"><span class="camp-num">11</span><span class="camp-name">Past perfect continuous</span></a></li>
-        <li><a class="camp-row" href="sherpa-tensing-camp-twelve-future-perfect.html" style="background:#454545;color:#FFFFFF;"><span class="camp-num">12</span><span class="camp-name">Future perfect</span></a></li>
-        <li><a class="camp-row" href="sherpa-tensing-camp-thirteen-future-perfect-continuous.html" style="background:#B0B0B0;color:#1A1206;"><span class="camp-num">13</span><span class="camp-name">Future perfect continuous</span></a></li>
+        <li><a class="camp-row" href="sherpa-tensing-camp-ten-past-perfect.html" style="background:#6E0B24;color:#FFFFFF;"><span class="camp-num">10</span><span class="camp-name">Past perfect</span><span class="row-meta"><span class="lvl" title="Level">B2</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="camp-row" href="sherpa-tensing-camp-eleven-past-perfect-continuous.html" style="background:#4B1A7A;color:#FFFFFF;"><span class="camp-num">11</span><span class="camp-name">Past perfect continuous</span><span class="row-meta"><span class="lvl" title="Level">B2</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="camp-row" href="sherpa-tensing-camp-twelve-future-perfect.html" style="background:#454545;color:#FFFFFF;"><span class="camp-num">12</span><span class="camp-name">Future perfect</span><span class="row-meta"><span class="lvl" title="Level">B2</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="camp-row" href="sherpa-tensing-camp-thirteen-future-perfect-continuous.html" style="background:#B0B0B0;color:#1A1206;"><span class="camp-num">13</span><span class="camp-name">Future perfect continuous</span><span class="row-meta"><span class="lvl" title="Level">C1</span><span class="tick" aria-hidden="true"></span></span></a></li>
       </ol>
-      <p class="zone-note" style="margin:18px 0 0;font-family:Inter,sans-serif;font-size:12.5px;line-height:1.6;color:#6A5A62;max-width:62ch">
-        <strong>Four descent stops stay dark on purpose.</strong> The passive of the present perfect continuous, the past perfect continuous, the future continuous and the future perfect continuous can all be derived &mdash; <em>has been being cleaned</em>, <em>will be being cleaned</em> &mdash; and native speakers avoid every one of them, rewriting round them instead. There is nothing there to learn, so there is no camp there.
-      </p>
     </div>
+  </div>
+
+  <div class="zones zones-lower">
+    <div class="zone-card desc-card">
+      <h3>The descent &middot; passive voice</h3>
+      <div class="zone-sub">each one opens when you finish the camp it comes from</div>
+      <ol class="desc-list">
+        <li><a class="desc-row" href="sherpa-tensing-descent-one-present-continuous-passive.html" data-camp="1" style="--c:#E66085;"><span class="diamond" aria-hidden="true"></span><span class="off-text"><span class="camp-name">Present continuous passive</span><span class="from">camp 1</span></span><span class="row-meta"><span class="tag-free">Free</span><span class="lvl" title="Level">B1</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="desc-row" href="sherpa-tensing-descent-two-present-simple-passive.html" data-camp="2" style="--c:#7A93B5;"><span class="diamond" aria-hidden="true"></span><span class="off-text"><span class="camp-name">Present simple passive</span><span class="from">camp 2</span></span><span class="row-meta"><span class="lvl" title="Level">A2</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="desc-row" href="sherpa-tensing-descent-three-past-simple-passive.html" data-camp="3" style="--c:#B08968;"><span class="diamond" aria-hidden="true"></span><span class="off-text"><span class="camp-name">Past simple passive</span><span class="from">camp 3</span></span><span class="row-meta"><span class="lvl" title="Level">B1</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="desc-row" href="sherpa-tensing-descent-four-present-perfect-passive.html" data-camp="4" style="--c:#36797E;"><span class="diamond" aria-hidden="true"></span><span class="off-text"><span class="camp-name">Present perfect passive</span><span class="from">camp 4</span></span><span class="row-meta"><span class="lvl" title="Level">B1</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="desc-row" href="sherpa-tensing-descent-nine-going-to-passive.html" data-camp="5" style="--c:#70A43A;"><span class="diamond" aria-hidden="true"></span><span class="off-text"><span class="camp-name">Going to passive</span><span class="from">camp 5</span></span><span class="row-meta"><span class="lvl" title="Level">B1</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="desc-row" href="sherpa-tensing-descent-eight-past-continuous-passive.html" data-camp="6" style="--c:#F1D779;"><span class="diamond" aria-hidden="true"></span><span class="off-text"><span class="camp-name">Past continuous passive</span><span class="from">camp 6</span></span><span class="row-meta"><span class="lvl" title="Level">B2</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="desc-row" href="sherpa-tensing-descent-seven-future-simple-passive.html" data-camp="7" style="--c:#F0723F;"><span class="diamond" aria-hidden="true"></span><span class="off-text"><span class="camp-name">Future simple passive</span><span class="from">camp 7</span></span><span class="row-meta"><span class="lvl" title="Level">B1</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="desc-row" href="sherpa-tensing-descent-ten-past-perfect-passive.html" data-camp="10" style="--c:#6E0B24;"><span class="diamond" aria-hidden="true"></span><span class="off-text"><span class="camp-name">Past perfect passive</span><span class="from">camp 10</span></span><span class="row-meta"><span class="lvl" title="Level">B2</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="desc-row" href="sherpa-tensing-descent-twelve-future-perfect-passive.html" data-camp="12" style="--c:#454545;"><span class="diamond" aria-hidden="true"></span><span class="off-text"><span class="camp-name">Future perfect passive</span><span class="from">camp 12</span></span><span class="row-meta"><span class="lvl" title="Level">C1</span><span class="tick" aria-hidden="true"></span></span></a></li>
+      </ol>
+    </div>
+    <div class="zone-card off-card">
+      <h3>Off the route</h3>
+      <div class="zone-sub">not tenses, but they argue with one</div>
+      <ol class="off-list">
+        <li><a class="off-row" href="sherpa-tensing-cloud-used-to.html" style="--c:#3F6577;"><span class="glyph glyph-cloud" aria-hidden="true"></span><span class="off-text"><span class="camp-name">used to</span><span class="from">off camp 2 or 3</span></span><span class="row-meta"><span class="tag-free">Free</span><span class="lvl" title="Level">A2</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="off-row" href="sherpa-tensing-cloud-be-used-to.html" style="--c:#6A5E8C;"><span class="glyph glyph-cloud" aria-hidden="true"></span><span class="off-text"><span class="camp-name">be used to + <span style="white-space:nowrap">-ing</span></span><span class="from">off camp 2</span></span><span class="row-meta"><span class="lvl" title="Level">B1</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="off-row" href="sherpa-tensing-cloud-causative.html" style="--c:#3F6577;"><span class="glyph glyph-moon" aria-hidden="true"></span><span class="off-text"><span class="camp-name">The causative</span><span class="from">off your first descent</span></span><span class="row-meta"><span class="lvl" title="Level">B2</span><span class="tick" aria-hidden="true"></span></span></a></li>
+      </ol>
+    </div>
+  </div>
+
+  <h2 class="sr-only">About the route</h2>
+  <div class="notes">
+    <div class="note">
+      <h3>Where you are</h3>
+      <p class="lock-note">Nine of the camps open a passive; <em>used to</em> comes off camp 2 or 3, <em>be used to</em> off camp 2, the causative off your first descent.</p>
+    </div>
+    <div class="note">
+      <h3>Four descent stops stay dark on purpose</h3>
+      <p class="zone-note">The passive of the present perfect continuous, the past perfect continuous, the future continuous and the future perfect continuous can all be derived &mdash; <em>has been being cleaned</em>, <em>will be being cleaned</em> &mdash; and native speakers avoid every one of them, rewriting round them instead. There is nothing there to learn, so there is no camp there.</p>
+    </div>
+    <div class="note">
+      <h3>Teaching this?</h3>
+      <p>The switch under the map lifts every progress lock in this browser at once &mdash; for a class screen, or a class that has done the climb before. Pro lessons still need Pro. <a href="block-camp.html">Block Camp</a> climbs nine of these tenses in a blocky, voxel-built world.</p>
+    </div>
+  </div>
+
+  <div class="pro-line">
+    <p><strong>Four lessons are free, with no sign-in:</strong> camps one and two, the passive that camp one opens, and <em>used to</em>. Pro opens the other twenty-one, and every other lesson on the site.</p>
+    <a class="btn btn-main" href="pricing.html">Plans and prices <span aria-hidden="true">&rarr;</span></a>
   </div>
 </main>
 
@@ -605,8 +808,13 @@
     "descent-twelve-future-perfect-passive":   ["camp-twelve-future-perfect", "camp 12, future perfect"]
   };
 
-  function read(){ try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }
-  function write(p){ try { localStorage.setItem(KEY, JSON.stringify(p)); } catch (e) {} }
+  var mem = null;   // stands in for storage when the browser blocks it
+  function read(){ if (mem) return mem; try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }
+  function write(p){ try { localStorage.setItem(KEY, JSON.stringify(p)); mem = null; } catch (e) { mem = p; } }
+  function slugOf(a){
+    return (a.getAttribute("href") || a.getAttribute("data-locked") || "")
+      .replace("sherpa-tensing-", "").replace(".html", "");
+  }
 
   function paint(){
     var p = read(), all = p["*all*"] === true;
@@ -624,7 +832,7 @@
       var slug = href.replace("sherpa-tensing-", "").replace(".html", "");
       var pair = PAIR[slug];
       if (!pair) return;
-      if (done(pair[0])){
+      if (done(pair[0]) || !!p[slug]){
         g.setAttribute("data-href", href);
         g.removeAttribute("data-locked-href");
         g.classList.remove("locked-dot");
@@ -639,31 +847,101 @@
     });
 
     // the off-route grammar, earned from the tense it argues with
-    function gate(sel, ok, why){
-      document.querySelectorAll(sel).forEach(function(a){
-        var href = a.getAttribute("href") || a.getAttribute("data-locked");
-        if (!href) return;
+    function lockLink(a, ok, why){
+      var href = a.getAttribute("href") || a.getAttribute("data-locked");
+      if (!href) return;
+      ok = ok || !!p[slugOf(a)];
+      if (a.classList.contains("desc-row") || a.classList.contains("off-row")){
+        var sr = a.querySelector(".sr-lock");
         if (ok){
-          a.setAttribute("href", href);
-          a.removeAttribute("data-locked");
-          a.classList.remove("locked-link");
-          a.removeAttribute("aria-disabled");
-          a.removeAttribute("title");
+          a.removeAttribute("role");
+          if (sr) sr.parentNode.removeChild(sr);
         } else {
-          a.setAttribute("data-locked", href);
-          a.removeAttribute("href");
-          a.classList.add("locked-link");
-          a.setAttribute("aria-disabled", "true");
-          a.setAttribute("title", why);
+          a.setAttribute("role", "link");
+          if (!sr){ sr = document.createElement("span"); sr.className = "sr-only sr-lock"; a.appendChild(sr); }
+          sr.textContent = " (locked: " + why + ")";
         }
-      });
+      }
+      if (ok){
+        a.setAttribute("href", href);
+        a.removeAttribute("data-locked");
+        a.classList.remove("locked-link");
+        a.removeAttribute("aria-disabled");
+        a.removeAttribute("title");
+      } else {
+        a.setAttribute("data-locked", href);
+        a.removeAttribute("href");
+        a.classList.add("locked-link");
+        a.setAttribute("aria-disabled", "true");
+        a.setAttribute("title", why);
+      }
     }
-    gate('a[href*="cloud-used-to"], a[data-locked*="cloud-used-to"]', done("camp-three-past-simple"),
-         "Finish camp 3, past simple \u2014 used to is the thing it turns into.");
+    function gate(sel, ok, why){
+      document.querySelectorAll(sel).forEach(function(a){ lockLink(a, ok, why); });
+    }
+    gate('a[href*="cloud-used-to"], a[data-locked*="cloud-used-to"]', done("camp-three-past-simple") || done("camp-two-present-simple"),
+         "Finish camp 2 or camp 3 \u2014 used to is a present-simple habit, moved into the past.");
     gate('a[href*="cloud-be-used-to"], a[data-locked*="cloud-be-used-to"]', done("camp-two-present-simple"),
          "Finish camp 2, present simple \u2014 be used to is a state, not an event.");
     gate('a[href*="cloud-causative"], a[data-locked*="cloud-causative"]', descents >= 1 || all,
          "Finish any one descent camp \u2014 the causative is a passive wearing a hat.");
+
+    // the list under the map: the descent rows keep the map's locks, and
+    // anything you have finished gets a tick (the teacher switch ticks nothing)
+    document.querySelectorAll(".desc-row").forEach(function(a){
+      var pair = PAIR[slugOf(a)];
+      if (pair) lockLink(a, done(pair[0]), "Finish " + pair[1] + " and this one opens.");
+    });
+    document.querySelectorAll(".camp-row, .desc-row, .off-row").forEach(function(a){
+      var fin = !!p[slugOf(a)], sr = a.querySelector(".sr-done");
+      a.classList.toggle("is-done", fin);
+      if (fin && !sr){
+        sr = document.createElement("span");
+        sr.className = "sr-only sr-done";
+        sr.textContent = " (done)";
+        a.appendChild(sr);
+      } else if (!fin && sr){
+        sr.parentNode.removeChild(sr);
+      }
+    });
+
+    // the hero button picks up where you left off
+    var go = document.getElementById("hero-go");
+    if (go){
+      if (!go.getAttribute("data-first")) go.setAttribute("data-first", go.innerHTML);
+      var next = null, label = "";
+      if (camps > 0 || descents > 0){
+        document.querySelectorAll(".camp-row").forEach(function(a){
+          if (!next && !a.classList.contains("is-done")) next = a;
+        });
+        if (next){
+          label = "Carry on: camp " + next.querySelector(".camp-num").textContent
+                + " &middot; " + next.querySelector(".camp-name").textContent;
+        } else {
+          document.querySelectorAll(".desc-row[href]").forEach(function(a){
+            if (!next && !a.classList.contains("is-done")) next = a;
+          });
+          if (next) label = "Head down: " + next.querySelector(".camp-name").textContent.toLowerCase();
+        }
+        if (!next){
+          document.querySelectorAll(".off-row[href]").forEach(function(a){
+            if (!next && !a.classList.contains("is-done")) next = a;
+          });
+          if (next) label = "Off the route: " + next.querySelector(".camp-name").textContent;
+        }
+        if (!next){
+          next = document.querySelector(".camp-row");
+          label = "Climb it again: camp one";
+        }
+      }
+      if (next){
+        go.setAttribute("href", next.getAttribute("href"));
+        go.innerHTML = label + ' <span aria-hidden="true">&rarr;</span>';
+      } else {
+        go.setAttribute("href", "sherpa-tensing-camp-one-present-continuous.html");
+        go.innerHTML = go.getAttribute("data-first");
+      }
+    }
 
     var note = document.querySelector(".lock-note");
     if (!note){
@@ -677,10 +955,10 @@
     var tail;
     if (all){
       tail = "everything is open.";
-    } else if (locked === 0 && camps >= 13){
+    } else if (locked === 0 && camps >= 13 && descents >= 1){
       tail = "the whole mountain is open, both faces.";
     } else {
-      tail = "each camp opens its own passive; <em>used to</em> comes off camp 3, "
+      tail = "nine of the camps open a passive; <em>used to</em> comes off camp 2 or 3, "
            + "<em>be used to</em> off camp 2, the causative off your first descent.";
     }
     note.innerHTML = bits.join(" &middot; ") + " &mdash; " + tail;
@@ -691,15 +969,14 @@
     if (btn){
       btn.classList.toggle("on", all);
       btn.textContent = all ? "Locks off \u2014 everything is open" : "I\u2019m teaching this \u2014 open everything";
-      btn.setAttribute("aria-pressed", all ? "true" : "false");
     }
   }
 
   var row = document.createElement("div");
   row.className = "teach-row";
-  row.innerHTML = '<button class="teach-btn" id="teach-btn" type="button" aria-pressed="false"></button>'
-                + '<span>Learners earn each stop by finishing the camp above it. '
-                + 'Teachers, and anyone in a hurry, can open the lot.</span>';
+  row.innerHTML = '<button class="teach-btn" id="teach-btn" type="button"></button>'
+                + '<span>Learners open each passive, and the three lessons off the route, by finishing '
+                + 'the camp it comes from. Teachers, and anyone in a hurry, can open the lot.</span>';
   var legend = document.querySelector(".legend");
   if (legend && legend.parentNode) legend.parentNode.insertBefore(row, legend.nextSibling);
   row.querySelector("#teach-btn").addEventListener("click", function(){
@@ -710,6 +987,8 @@
   });
 
   paint();
+  window.addEventListener("pageshow", function(e){ if (e.persisted) paint(); });
+  window.addEventListener("storage", function(e){ if (e.key === KEY){ mem = null; paint(); } });
 })();
 </script>
 
@@ -722,7 +1001,7 @@ function sherpaPaintDots(){
     var segId = g.getAttribute("data-seg");
     var segEl = segId ? document.getElementById(segId) : null;
     var open = !!g.getAttribute("data-href");
-    if (open || g.classList.contains("lit")){
+    if (open){
       fillEl.setAttribute("fill", color);
       if (segEl) segEl.setAttribute("stroke", color);
     } else {
@@ -735,8 +1014,11 @@ document.querySelectorAll(".camp-dot").forEach(function(g){
   g.addEventListener("click", function(){
     var href = g.getAttribute("data-href");
     if (href){ window.location.href = href; return; }
-    g.classList.toggle("lit");
-    sherpaPaintDots();
+    var hint = document.querySelector(".map-hint"), lab = g.querySelector(".dot-label");
+    if (!hint || !lab) return;
+    hint.textContent = g.classList.contains("no-camp")
+      ? lab.textContent.replace(/\s*\u2014\s*no camp$/, "") + ": no camp here \u2014 see the note below the lists."
+      : lab.textContent + ": " + (g.getAttribute("title") || "not open yet.");
   });
 });
 window.sherpaPaintDots = sherpaPaintDots;
