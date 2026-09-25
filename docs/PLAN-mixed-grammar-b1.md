@@ -417,8 +417,71 @@ hero (`LibraryCards/` at 1200×512, per the publish skill).
 `tools/topics.py` already maps both parts to `tense-review`, so the hub picks
 them up with no override needed.
 
-The builder is `lesson-template/build/build_mixedgrammar1.py` and does not
-exist yet. It wants `deck.py` and `chrome_i18n.py` as usual, and
-`assemble(..., langs=('en', 'de', 'es'))` **passed explicitly** — the default is
-still `('en', 'de')` and nothing fails if it is forgotten. Teach cards in the
-six-item form, so the German and Spanish rule text travels with its heading.
+## 7. The builder exists and is verified — 2026-09-25
+
+`lesson-template/build/build_mixedgrammar1.py` and
+`lesson-template/build/i18n_mixedgrammar1.py` are written, committed and
+**checked end to end against placeholder artwork**, which was then deleted. All
+35 items are in it, in house style 2, with panels alternating sides.
+
+```
+wrote forbes-english-b1-mixed-grammar-test.html — 45 slides
+LAYOUT PASS · PAINT PASS · ENTITIES PASS · KEYS PASS · ANSWERS PASS
+BANK PASS · MARKUP PASS · SORT PASS · ACTIONS PASS · EXPLAIN PASS
+RESOLVE PASS · ACTIVATION PASS · I18N PASS (3 complete languages)
+ART PASS (7/7) · HEAD PASS (after seo.py) · RUNTIME PASS
+LOGO FAIL  ← see below
+```
+
+**Thirteen of fourteen gates pass. LOGO cannot be verified from a cloud
+session and its failure here is an artifact, not a defect.** The page loads DM
+Sans from Google Fonts and carries the corrected §2 geometry (`x="105.205"`,
+`letter-spacing="10.41"`). The control proves it: `forbes-c1-negotiation.html`
+— the deck HOUSE-STYLE names as the worked reference — fails LOGO identically
+in this sandbox. `curl` reaches `fonts.googleapis.com` with a 200, but the
+headless browser the checker launches does not, so ENGLISH measures in a
+fallback face. **Re-run the checker locally before shipping**; that is the only
+gate still outstanding.
+
+`seo.py` was run and its diff checked against CLAUDE.md's warning: 303 sitemap
+URLs before and after with an identical URL set, 295 `llms.txt` entries before
+and after, `library.html` untouched. Nothing was silently dropped. The
+generated HTML and those index files were then reverted, because **a deck whose
+seven pictures do not exist must not go live** — the panels would paint flat
+`--surface2` and the cover would have no hero.
+
+**So the remaining work is the artwork and nothing else.** Drop the seven
+files in and run:
+
+```
+python3 lesson-template/build/build_mixedgrammar1.py
+node   lesson-template/check-lesson.js forbes-english-b1-mixed-grammar-test.html
+python3 tools/seo.py
+```
+
+Two things in the builder are deliberately provisional and marked in the
+source:
+
+- **`PALETTE` is derived from the old desert hero.** It passes every contrast
+  row so the deck builds and checks clean, but re-run `extract-palette.py` on
+  the real Noma Bar cover and paste the block over it. `assemble()` derives
+  `data-theme` from `--void`'s luminance, so a dark palette pasted there
+  silently flips the whole deck to dark.
+- **`POS = {}` is empty.** A panel crops 548×720 out of a 16:9 source (§4), so
+  each picture will want a `pos='38% 50%'`-style slice chosen by eye. Centre is
+  the honest default until the real artwork exists.
+
+### What the builder carries that the old page did not
+
+- `assemble(..., langs=('en', 'de', 'es'))` **passed explicitly** — the default
+  is still `('en', 'de')` and nothing fails if it is forgotten.
+- All 35 explanations as `UI_I18N` keys rather than English literals, so they
+  translate with the deck. §7 calls this "the better choice on a lesson that
+  ships more than one language"; this one ships three.
+- The four content fixes from §2. `ec6` now accepts "that", `ec1`/`ec2` accept
+  the contracted forms, and Section 4 is chunked at the joints.
+- A fifth fix found while building: **the engine's `flatten()` folds case,
+  quotes, dashes and whitespace but does NOT strip a trailing full stop**, so a
+  learner typing a full corrected sentence with its own punctuation was marked
+  wrong. `sentences()` in the builder expands every error-correction answer
+  with and without it.

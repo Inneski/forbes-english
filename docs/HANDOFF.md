@@ -42,6 +42,40 @@ Part 2 is structurally identical (10/8/6/5/6, all new sentences) with the same
 one-image problem, and is briefed in the same document so both can come out of
 one Midjourney sitting; Part 1 does not wait on them.
 
+### 2026-09-25 — the Mixed Grammar builder is written and verified
+
+`lesson-template/build/build_mixedgrammar1.py` + `i18n_mixedgrammar1.py`.
+45 slides, house style 2, panels alternating sides, all 35 items, en/de/es
+complete. Built against placeholder artwork, checked, then the placeholders and
+the generated HTML were deleted — **a deck whose seven pictures do not exist
+must not go live.** The lesson is now blocked on artwork and nothing else.
+
+**Thirteen of fourteen gates pass. LOGO cannot be verified from a cloud
+session.** The page loads DM Sans and carries the corrected §2 geometry, but
+the headless browser the checker launches cannot reach `fonts.googleapis.com`
+in this sandbox — `curl` gets a 200, Chromium does not. The control is
+conclusive: `forbes-c1-negotiation.html`, the deck HOUSE-STYLE names as the
+worked reference, fails LOGO identically here. **Do not chase a LOGO failure
+from a cloud session before running the control**; and re-run the checker
+locally before shipping anything that depends on it.
+
+**Also: `npm install playwright` gets a version whose browser is not on disk.**
+`check-lesson.js` already handles it — it launches `/opt/pw-browsers/chromium`
+when that path exists — but any new script has to pass
+`executablePath: '/opt/pw-browsers/chromium'` or it dies with "Executable
+doesn't exist at .../chromium_headless_shell-1243".
+
+**A fifth content bug, found while building.** The engine's `flatten()`
+normalises case, curly quotes, dashes and whitespace, but it does **not** strip
+terminal punctuation. So any gap whose answer is a whole sentence marks a
+learner wrong for typing the full stop they were asked to type. It affects any
+deck with sentence-length gap answers, not just this one — `sentences()` in
+`build_mixedgrammar1.py` is the fix, expanding each answer with and without it.
+
+`seo.py` was run and its diff read per the standing warning: 303 sitemap URLs
+before and after with an identical set, 295 `llms.txt` entries unchanged,
+`library.html` untouched. It did not clobber anything this time.
+
 ### 2026-09-25 — "house style 2" means the PANEL layout, not an art direction
 
 Recorded because it cost four rounds of misreading. When Innes says *"use the
