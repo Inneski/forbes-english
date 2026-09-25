@@ -42,6 +42,46 @@ Part 2 is structurally identical (10/8/6/5/6, all new sentences) with the same
 one-image problem, and is briefed in the same document so both can come out of
 one Midjourney sitting; Part 1 does not wait on them.
 
+### 2026-09-25 — "house style 2" means the PANEL layout, not an art direction
+
+Recorded because it cost four rounds of misreading. When Innes says *"use the
+second house style"* about a deck, he means the **second slide treatment in
+`lesson-template.html`**, not Noma Bar versus anything else:
+
+| | Style 1 — washed hero (HOUSE-STYLE §5) | Style 2 — panel |
+|---|---|---|
+| Picture | behind everything at `--bg-opacity: .72`, under a wash | owns a column at **full opacity**, bleeding off three edges |
+| Text | in a translucent `.card` over the artwork | a clean column on flat `--void`, nothing plated |
+| Right for | photographic or atmospheric artwork | **flat-vector illustration** |
+
+The template says so itself, in the PANEL block: *"§5 washes the hero to 0.72
+and plates the text on top of it, which is right when the artwork is
+atmosphere. It is wrong when the artwork is the point — a flat-vector
+illustration dimmed by a quarter and covered by a card is neither legible nor
+worth looking at."* `deck.py` has had `panel()` and `divider()` all along.
+
+**"Inverted panels"** is `D.panel(..., side='right')` → `data-side="right"` →
+`flex-direction: row-reverse`. Per the CSS comment, alternating the side "stops
+a long deck reading as one template".
+
+**`build_twinpeaks2.py` is the only builder in the repo using either**, and it
+is the worked reference: 23 slides on **five** pictures, sides alternating,
+`pos=` re-cropping the same file per reuse.
+
+**The trap nobody has written down: a panel crops to portrait.** `--panel-w` is
+548px of a 1280×720 stage painted `cover`, so a panel takes a **548×720 slice,
+aspect 0.76**, out of a 16:9 source and discards the rest. Flat-vector art with
+one object on an empty ground survives it; a wide landscape composition does
+not. `pos=` picks the slice, `width=` widens the column. Budget for tuning
+each picture by eye.
+
+**HOUSE-STYLE.md documents style 1 only.** §5, §5b and §5c are all written as
+though the washed hero is the only treatment, and §5c's "one background per
+section" reads as a `data-bg` count. Under style 2 the requirement is met by
+the section's divider and panel showing the picture at full opacity, and
+question slides carry no artwork at all. Worth a §5d when someone next edits
+that file.
+
 ### 2026-09-24 — the style is Noma Bar, and that moved the count to 14
 
 Innes's call. The stem is the one already documented in

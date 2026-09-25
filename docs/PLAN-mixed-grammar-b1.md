@@ -114,30 +114,118 @@ the coral sky — the best thing in the picture — goes to mud.
 and keep them inside a band of roughly ±20 of the hero's. Anything under 90 is
 an automatic refusal for a light deck.
 
-## 4. The slide plan, and where each picture goes
+## 4. House style 2 — the panel layout, not the washed hero
 
-Backgrounds are `data-bg` swaps per §5b, set on **every slide in the section**,
-not only its divider, so each section reads as one place.
+**Innes's instruction, 2026-09-25, and it is the one that decides the deck.**
+"House style 2" is not an art direction. It is the *second slide treatment*
+in `lesson-template.html`, and the template states the distinction itself:
 
-| Slides | Content | Background |
+> §5 washes the hero to 0.72 and plates the text on top of it, which is right
+> when the artwork is atmosphere. **It is wrong when the artwork is the point —
+> a flat-vector illustration dimmed by a quarter and covered by a card is
+> neither legible nor worth looking at.**
+>
+> So: the picture owns `--panel-w` of the stage at FULL opacity, bleeding off
+> three edges, and the text owns what is left, on flat `--void`. […] Nothing is
+> plated here, because nothing is over anything. Do not add a wash, a scrim or
+> a card to the text column.
+>
+> — `lesson-template.html`, the PANEL block
+
+So the two styles are:
+
+| | Style 1 — washed hero (§5) | Style 2 — panel |
 |---|---|---|
-| 1 | Cover | `hero.jpg` |
-| 2–12 | Divider + 10 multiple-choice, one per slide | `s1-doors.jpg` |
-| 13–18 | Divider, Elena's story as a `teach` slide, then 4 gap slides of 2 | `s2-cup-clock.jpg` |
-| 19–25 | Divider + 6 true/false | `s3-thumb-shadow.jpg` |
-| 26–31 | Divider + 5 `order` slides | `s4-bars-arrow.jpg` |
-| 32–38 | Divider + 6 error-correction gaps | `s5-eraser-bulb.jpg` |
-| 39 | Results | `hero.jpg` |
-| 40 | Activation — speaking + writing | `activate-two-bubbles.jpg` |
+| Picture | behind everything at `--bg-opacity: .72`, under a wash | owns a column at **full opacity**, bleeding off three edges |
+| Text | in a translucent `.card` over the artwork | in a clean column on flat `--void`, nothing plated |
+| Right for | photographic or atmospheric artwork | **flat-vector illustration** |
 
-**Forty slides, and that is deliberate.** §7's "split beyond twenty-four" is
-written for a teaching lesson; a 35-item test does not split usefully, and this
-is already Part 1 of two. The precedent is the exam decks, which run to 50 and
-69 slides (`exam-prep-5hour-course-part2.html`,
-`exam-prep-5hour-courseEXP.html`). If Innes would rather it ran shorter, the
-one lever that does not cost content is folding Section 3 into two `sort`
-slides of three statements into TRUE / FALSE bins — 40 slides becomes 36. Both
-bins receive items (4 true, 2 false), so the SORT gate is satisfied.
+The Noma Bar batch is flat-vector illustration, so style 2 is not a preference
+here — style 1 would actively wreck it. `deck.py` already has both:
+`D.panel()` and `D.divider()` against `D.teach()`.
+
+**The worked reference is `build_twinpeaks2.py`** — 23 slides on **five**
+pictures, alternating sides, `pos=` re-cropping the same file for each reuse.
+Read it before writing this builder.
+
+### Inverted panels
+
+`D.panel(..., side='right')` emits `data-side="right"`, and the template flips
+the row:
+
+```css
+.slide[data-layout="panel"][data-side="right"] { flex-direction: row-reverse; }
+```
+
+The CSS comment gives the reason: *"Alternate the side down the deck: it stops
+a long deck reading as one template, and lets each picture be cropped toward
+the side its subject actually occupies."* On a forty-slide deck that is not
+decoration, it is the thing that stops it feeling like a form. Alternate every
+panel, as Twin Peaks does.
+
+### The crop — this changes the art brief
+
+A panel picture occupies `--panel-w`, **548px by default, of a 1280×720
+stage**, painted `cover`. That is a **548×720 portrait window, aspect 0.76** —
+a tall vertical slice taken out of a 16:9 source. Most of the width is thrown
+away.
+
+Three consequences:
+
+- **The subject has to survive a tall narrow crop.** Noma Bar suits this better
+  than the desert scenes did — one object on an empty ground crops cleanly,
+  where a wide landscape loses its composition entirely.
+- **`pos=` picks the slice** (`--pic-pos`), e.g. `pos='38% 50%'`. Twin Peaks
+  uses it on three of its five pictures. Budget for tuning each one by eye.
+- **`width=` widens the column** (`--panel-w`) for a picture that needs it.
+
+The cover still wants a true 16:9 — it is the one full-bleed slide — and so do
+the `divider()` openers, which show a picture whole across the stage.
+
+### The slide plan
+
+Each section opens with a `divider()` showing its picture whole, then a
+`panel()` carrying the section instruction with the same picture cropped to a
+column, then its question slides on flat `--void`.
+
+| Slides | Content | Layout |
+|---|---|---|
+| 1 | Cover | full-bleed `hero.jpg` |
+| 2–3 | Section 1 divider, then instruction panel | `s1-clipboard.jpg`, panel left |
+| 4–13 | 10 multiple-choice, one per slide | flat `--void` |
+| 14–15 | Section 2 divider + panel | `s2-clock.jpg`, panel **right** |
+| 16–20 | Elena's story as a panel, then 4 gap slides of 2 | panel left, then flat |
+| 21–22 | Section 3 divider + panel | `s3-key-padlock.jpg`, panel **right** |
+| 23–28 | 6 true/false | flat `--void` |
+| 29–30 | Section 4 divider + panel | `s4-index-cards.jpg`, panel left |
+| 31–35 | 5 `order` slides | flat `--void` |
+| 36–37 | Section 5 divider + panel | `s5-tool-roll.jpg`, panel **right** |
+| 38–43 | 6 error-correction gaps | flat `--void` |
+| 44 | Results | flat `--void` |
+| 45 | Activation — speaking + writing | `activate-notepad.jpg`, panel left |
+
+**§5c is satisfied differently under style 2, and better.** The rule wants a
+distinct picture per section; here each section's picture is shown *whole* on
+its divider and again *cropped* on its panel, at full opacity both times,
+rather than being dimmed to a ghost behind ten question slides. Question slides
+carry no artwork at all — flat `--void`, which is what the panel block means by
+"nothing is plated because nothing is over anything". Do not also set `data-bg`
+on them; that would reintroduce style 1 underneath style 2.
+
+**Forty-five slides, and that is deliberate.** §7's "split beyond twenty-four"
+is written for a teaching lesson; a 35-item test does not split usefully, and
+this is already Part 1 of two. The precedent is the exam decks, which run to 50
+and 69 slides (`exam-prep-5hour-course-part2.html`,
+`exam-prep-5hour-courseEXP.html`). Style 2 adds five over the earlier plan —
+the divider and panel per section are what give the artwork its full-opacity
+moment, and they are the reason the deck can carry forty-five slides without
+reading as one template.
+
+If Innes would rather it ran shorter, the one lever that does not cost content
+is folding Section 3 into two `sort` slides of three statements into TRUE /
+FALSE bins — 45 becomes 41. Both bins receive items (4 true, 2 false), so the
+SORT gate is satisfied. Dropping the panels to save slides is the wrong lever:
+it is the house style 2 instruction.
 
 ## 5. Shopping list — seven images for Part 1
 
@@ -171,38 +259,113 @@ brain that is also a barbell, a face whose negative space is a second face. So
 each subject below names an *idea*, not a place, and the test is whether it
 still reads at thumbnail size.
 
-Two constraints the editorial originals do not have, both from the deck:
+Three constraints the editorial originals do not have, all from the deck:
 
-- **16:9 with an empty middle.** Noma Bar's own work is mostly square or
-  portrait with the pun dead centre. Ours cannot be — the cover lockup sits in
-  the middle of the frame (§2) and the interior slides put a `.card` there.
-  Push the idea to one third and let flat colour carry the rest.
+- **The cover wants an empty middle.** The stacked Forbes/ENGLISH lockup and
+  the 62px title both land dead centre (§2, §6). Push the idea to one third and
+  let flat colour carry the rest. This applies to `hero.jpg` and to the
+  `divider()` openers, which show a picture whole across the stage.
+- **The panel slides crop to a tall column — see §4.** `--panel-w` is 548px of
+  a 1280×720 stage, so a panel takes a **548×720 portrait slice** out of the
+  16:9 source and throws the rest away. A single object on an empty ground
+  survives that; a composition spread across the width does not. Keep the idea
+  inside a vertical third, and expect to tune each one with `pos=`.
 - **Bright.** Light deck, so a light ground. See §3.
 
 **Spec.** 16:9, 2000px or wider on the long edge. No lettering anywhere in the
 picture. Run everything through `prep-artwork.py` rather than saving by hand.
 
-| File | The idea |
+**Style 2 uses pictures harder, so it needs fewer of them.**
+`build_twinpeaks2.py` runs 23 slides on five. If one of the seven below is weak
+at full size, reusing a strong one at a different `pos=` beats shipping a poor
+picture — that is exactly what the reference build does.
+
+### One style per deck — Part 1 Noma Bar, Part 2 desert
+
+**Settled 2026-09-25.** Innes has generated both families and both are good;
+§0.3 is what stops them being mixed, since the hero becomes the background of
+every slide and a flat-vector cover over cinematic interiors is worse than
+either alone. So each deck takes one family whole. Nothing is wasted, and the
+two sibling decks end up visually distinct, which they should be anyway.
+
+### Part 1 — Noma Bar, and six of the seven already exist
+
+Six files in `Documents\FORBES\incoming` map onto the five sections and the
+activation stage almost exactly — four rows with three ticked for multiple
+choice, cards knocked over for reordering, a tool roll for error correction, a
+notepad and pencil for the speaking-and-writing stage. That is not
+coincidence; the batch was generated for this lesson.
+
+**The right-hand column is read off filenames in a screenshot, so confirm it
+against `prep-artwork.py --dry-run` before committing.** Rename on the way in
+with `--names`; the Midjourney names do not belong in the repo.
+
+| File | Where it comes from |
 |---|---|
-| `MixedGrammarPart1/hero.jpg` | a pen nib, and the split down its centre is also a fork in a road running to the horizon — one object, two readings |
-| `MixedGrammarPart1/s1-doors.jpg` | four identical flat doors in a row, three shut and one ajar, the wedge of space behind the open one forming a tick |
-| `MixedGrammarPart1/s2-cup-clock.jpg` | a coffee cup seen from directly above, the dark circle of coffee also a clock face with no numerals, one hand near seven |
-| `MixedGrammarPart1/s3-thumb-shadow.jpg` | a thumbs-up in flat colour whose cast shadow is unmistakably a thumbs-down |
-| `MixedGrammarPart1/s4-bars-arrow.jpg` | five flat bars of different lengths in a jumbled stack, the gaps between them resolving into a single arrow pointing right |
-| `MixedGrammarPart1/s5-eraser-bulb.jpg` | an eraser part-way along a line, and the cleared space behind it is the shape of a lightbulb |
-| `MixedGrammarPart1/activate-two-bubbles.jpg` | two speech bubbles overlapping, and the lens of overlap between them is a pen nib |
+| `MixedGrammarPart1/hero.jpg` | **to generate** — see the cover brief below |
+| `MixedGrammarPart1/s1-clipboard.jpg` | have — `a_clipboard_with_four_rows_three_ticked_and_the_fo…` |
+| `MixedGrammarPart1/s2-clock.jpg` | have — `a_large_clock…`, or `a_first-floor_apartment_window_early_morning_curta…` if that reads better for Elena's morning |
+| `MixedGrammarPart1/s3-key-padlock.jpg` | have — `a_brass_key_lying_beside_a_padlock_the_teeth_plain…` |
+| `MixedGrammarPart1/s4-index-cards.jpg` | have — `a_box_of_index_cards_knocked_over_the_cards_fanned…` |
+| `MixedGrammarPart1/s5-tool-roll.jpg` | have — `a_canvas_tool_roll_unrolled_flat_on_a_bench_tools…` |
+| `MixedGrammarPart1/activate-notepad.jpg` | have — `a_desk_with_a_notepad_and_a_pencil_wide_negative_s…` |
 
-**The hero is now on the list, and that is the cost of the style change.**
-`desert-building-sunset-clouds.jpg` is a good picture but it is the *other*
-style, and §0.3 makes the hero the background of every slide — a cinematic
-cover over six flat-vector interiors is worse than either style alone. So the
-count goes from six to seven. The two desert pictures stay on disk unreferenced
-rather than being deleted; they are good enough to carry a lesson of their own
-later, and git keeps the blobs regardless. **If you would rather keep the
-desert covers and save two generations, say so** — it is a defensible call and
-it is yours, not mine.
+Spares in the same batch, if one of the above disappoints at full size:
+`a_departure_board_mid-flip_negative_space…` (reordering),
+`a_bare_light_bulb_hanging_from_a_cord_switched_on…` (error correction),
+`a_jigsaw…` (reordering), `a_crisp_card_folder_with_three_identical_sheets…`.
 
-### And seven more for Part 2, for the same sitting
+#### The cover brief — the one still to generate
+
+Innes's call, 2026-09-25: the cover is Noma Bar. It has to sit in the same
+family as the six above — an everyday desk object, flat, muted, wide empty
+space — rather than being a cleverer idea in a different register.
+
+> **a single pencil lying low and to the left on a plain pale ground, its cast
+> shadow curving away from it into a question mark, the rest of the frame
+> empty**
+
+Stem and `--no` clause as above. The empty middle matters more here than
+anywhere else: the stacked Forbes/ENGLISH lockup and the 62px cover title both
+land dead centre (§2, §6), so the pencil belongs in the lower-left third and
+the shadow should sweep away from the middle, not through it.
+
+### Part 2 — the desert set, which is already half-bought
+
+`MixedGrammarPart2/desert-gas-station-sunset.jpg` (2200×1232, mean luminance
+148) is already in the repo and is a good hero, so Part 2 needs no cover at
+all. Three section backgrounds are in `incoming` already:
+
+| File | Where it comes from |
+|---|---|
+| `MixedGrammarPart2/hero.jpg` | have — `git mv` the existing `desert-gas-station-sunset.jpg` |
+| `MixedGrammarPart2/s1-crossroads.jpg` | have — `a_desert_crossroads_at_dusk_four_blank_signposts_p…` |
+| `MixedGrammarPart2/s2-window.jpg` | have — `a_first-floor_apartment_window_early_morning_curta…` |
+| `MixedGrammarPart2/s4-siding.jpg` | have — `a_desert_rail_siding_at_dusk_five_freight_cars_bei…` |
+| `MixedGrammarPart2/s3-fork.jpg` | **to generate** — a two-lane road forking around a rock outcrop, one lane in low sun and the other in shadow, a single figure where they split |
+| `MixedGrammarPart2/s5-shutter.jpg` | **to generate** — a roadside diner at dusk with one shutter hanging crooked, a ladder against the wall, a figure halfway up straightening it |
+| `MixedGrammarPart2/activate-tailgate.jpg` | **to generate** — two figures on a pickup tailgate at dusk, turned to face each other mid-conversation, an open notebook between them |
+
+Those three take the **desert** stem, not the Noma Bar one:
+
+```
+flat vector illustration, cel-shaded, solid flat colour, minimalist,
+mid-century American Southwest roadside at dusk, coral and salmon sky with
+slate-blue and pale concrete solids, black silhouettes, ochre sand, subtle
+halftone grain, wide landscape, subject off-centre with the middle of the
+frame readable, no text, no lettering, no numbers --ar 16:9
+```
+
+`MixedGrammarPart1/desert-building-sunset-clouds.jpg` is now spare. It is the
+same family as Part 2, so it is the obvious fallback there if one of the three
+above never gets generated — or it keeps for a lesson of its own. Do not
+delete it; git keeps the blob either way and it costs nothing to leave.
+
+**Both library thumbnails want recutting** once the heroes settle — Part 1's
+from the new Noma Bar cover, Part 2's from the gas station. `LibraryCards/` at
+1200×512, per the publish skill.
+
+### Superseded — the all-Noma-Bar list for Part 2
 
 Identical five sections, identical problem. Different ideas rather than
 recoloured twins, so the two decks do not read as one.
