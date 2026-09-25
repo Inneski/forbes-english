@@ -373,8 +373,18 @@ def match(pairs, eyebrow_key, eyebrow, title_key, title, hint_key, hint,
 
 
 def order(items, eyebrow_key, eyebrow, title_key, title, hint_key, hint, why,
-          folder='', bg=None):
-    assert not any('|' in t for t in items), 'order chunks must not contain "|"'
+          folder='', bg=None, decoys=None):
+    """decoys: optional extra chunks dealt into the pool that belong in no
+    answer — the spare "has to" beside "Does | the captain | have to". Use
+    them where the point is choosing the form, not just ordering it, and say
+    in the hint that a piece is left over. A decoy that could also build a
+    correct sentence is a second right answer the engine will mark wrong, so
+    pick one that is wrong in every position. Callers that pass none get
+    byte-identical output."""
+    assert not any('|' in t for t in list(items) + list(decoys or [])), \
+        'order chunks must not contain "|"'
+    assert not set(decoys or []) & set(items), \
+        'order: a decoy identical to an answer chunk is indistinguishable from it'
     return '''
     <section class="slide" data-type="order"%s>
       <div class="slide-head"><div>
@@ -383,7 +393,7 @@ def order(items, eyebrow_key, eyebrow, title_key, title, hint_key, hint, why,
       </div></div>
       <div class="slide-body">
         <p class="order-hint" data-i18n="%s">%s</p>
-        <div class="order" data-answer="%s"></div>
+        <div class="order" data-answer="%s"%s></div>
         <div style="margin-top:12px">
           <button class="btn" data-action="check-order" data-i18n="btnCheck">Check</button>
         </div>
@@ -391,7 +401,9 @@ def order(items, eyebrow_key, eyebrow, title_key, title, hint_key, hint, why,
       </div>
     </section>
 ''' % (_bg(folder, bg), eyebrow_key, eyebrow, title_key, title, hint_key, hint,
-       " | ".join(items), esc(why))
+       " | ".join(items),
+       ' data-decoys="%s"' % esc(" | ".join(decoys)) if decoys else '',
+       esc(why))
 
 
 def search(i, total, stem, items, eyebrow_key, eyebrow, title_key, title,

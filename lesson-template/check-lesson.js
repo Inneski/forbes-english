@@ -534,7 +534,10 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
           });
           const b = s.querySelector('[data-action="check"]'); if (b) b.click();
         } else if (type === 'order') {
-          [...s.querySelectorAll('.chunk')]
+          // Decoys left in the pool, as a learner who got it right leaves
+          // them. Clicking every chunk built answer + decoy, which the engine
+          // marks wrong — and the gate passed anyway, on the feedback alone.
+          [...s.querySelectorAll('.chunk:not([data-decoy])')]
             .sort((a, b) => +a.dataset.i - +b.dataset.i)
             .forEach(c => c.click());
           const b = s.querySelector('[data-action="check-order"], [data-action="check"]');
@@ -558,10 +561,16 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
         continue;
       }
       await wait();
-      const marked = s.querySelector('.feedback.show')
-        || s.querySelector('.opt.correct, .gap.correct, .order-target.correct, '
-                           + '.sort-item.placed, .find.correct, .lock-cell.ok');
-      if (!marked) out.push({ n: i + 1, type, why: 'answering it correctly changed nothing' });
+      // For a sentence the question is not "did anything happen" but "does
+      // the right sentence score": a deck whose order test could never pass
+      // still shows feedback, and passed this gate on that alone.
+      const marked = type === 'order'
+        ? s.querySelector('.order-target.correct')
+        : s.querySelector('.feedback.show')
+          || s.querySelector('.opt.correct, .gap.correct, .order-target.correct, '
+                             + '.sort-item.placed, .find.correct, .lock-cell.ok');
+      if (!marked) out.push({ n: i + 1, type, why: type === 'order'
+        ? 'building the answer sentence does not score' : 'answering it correctly changed nothing' });
     }
     return out;
   });
@@ -684,6 +693,13 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
         s.querySelectorAll('input.gap').forEach(g => { g.value = 'zzqx'; });
         const b = s.querySelector('[data-action="check"]');
         if (b) b.click();
+      } else if (s.dataset.type === 'order') {
+        // Every chunk, decoys too, in reverse: never the answer. Order slides
+        // were skipped here, so the worst case measured short of the real one.
+        [...s.querySelectorAll('.chunk')]
+          .sort((a, b) => +b.dataset.i - +a.dataset.i).forEach(c => c.click());
+        const b = s.querySelector('[data-action="check-order"], [data-action="check"]');
+        if (b) b.click();
       }
       await wait();
     }
@@ -727,9 +743,19 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
   head('ENTITIES');
   const textKeys = ['scoreLabel', 'glossHide', 'glossShow', 'btnCopied',
                     'actPlaceholder'];
+  // The results message is the same failure again, on engines that write
+  // #scoreMsg with textContent: "Perfect score &mdash; …" and "Look again at
+  // <em>mustn't</em>" printed literally on sixteen decks. The template writes
+  // it with innerHTML since 2026-09-25 (Block Camp's engine did earlier), so
+  // this fires only on a page still carrying the old engine — a rebuild on
+  // the current template clears it.
+  const resAsText = /getElementById\('scoreMsg'\)\.textContent\s*=/.test(src);
+  const resKeys = ['resPerfect', 'resStrong', 'resMid', 'resLow'];
   const entityHits = [];
   for (const m of src.matchAll(/^\s{4}(\w+):\s*(["'])(.*?)\2,?\s*$/gm)) {
     if (textKeys.includes(m[1]) && /&[a-zA-Z#0-9]+;/.test(m[3])) entityHits.push(`${m[1]}: ${m[3]}`);
+    else if (resAsText && resKeys.includes(m[1]) && /&[a-zA-Z#0-9]+;|<\/?\w/.test(m[3]))
+      entityHits.push(`${m[1]}: ${m[3]}`);
   }
   // The authored placeholder="..." in the markup is what a learner sees before
   // any language is chosen, so it is checked too.

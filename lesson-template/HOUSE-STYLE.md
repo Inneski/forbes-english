@@ -451,6 +451,20 @@ lie about where they are. It scores **one point for the whole sentence**: a
 half-right word order is not half-right English. Chunk the sentence at the
 joints you are teaching, never mid-phrase.
 
+**Decoys** (`data-decoys="has to"`, or `decoys=[…]` on `deck.order`) deal
+spare pieces into the pool that belong in no answer. Use them when ordering
+is easy and the point is choosing the form: *Does | the captain | have to |
+take | the penalty?* with a spare *has to* tests DOES + HAVE, which ordering
+alone never does. Say in the hint that a piece is left over. **A decoy must
+be wrong in every position.** A spare *must* there would let a learner build
+*Must the captain take the penalty?*, which is correct English that the
+engine marks wrong. A build that uses a decoy is marked as soon as Check is
+pressed, even when it is shorter than the answer, because a decoy that
+stands in for two pieces (*had to* for *didn't | have to*) otherwise leaves
+a finished-looking wrong sentence that Check silently ignores. Added
+2026-09-25 for `must-have-to-vfb-stuttgart`, whose old word-builder dealt
+spare words and lost its point without them.
+
 **Gap fill.** `data-answer="was postponed|got postponed"` — pipe-separated
 alternatives, matched case-insensitively and whitespace-tolerantly.
 Several gaps can share a slide: wrap each in `<div class="card gap-row">` with

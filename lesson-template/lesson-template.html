@@ -2357,7 +2357,11 @@ function renderResults() {
   document.getElementById('scoreVal').textContent = score;
   document.getElementById('scoreMax').textContent = max;
   const pct = max ? score / max : 0;
-  document.getElementById('scoreMsg').textContent =
+  // innerHTML, not textContent: these are authored UI_I18N strings, written
+  // with entities and <em> like every other key. As text they printed
+  // "Perfect score &mdash; …" and "Look again at <em>mustn't</em>" literally
+  // on sixteen decks; the Block Camp engine made the same change earlier.
+  document.getElementById('scoreMsg').innerHTML =
     pct === 1 ? t('resPerfect') : pct >= .75 ? t('resStrong')
     : pct >= .5 ? t('resMid') : t('resLow');
 
@@ -2718,11 +2722,22 @@ slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
    with a [data-action="check-order"] button and a .feedback alongside it.
    The engine shuffles the chunks into a pool; clicking places one, clicking a
    placed one takes it back. One point for the whole sentence — a half-right
-   word order is not half-right English. */
+   word order is not half-right English.
+
+   Optional data-decoys="chunk|chunk" deals extra pieces into the pool that
+   belong in no answer. It exists for the item where the sentence is easy to
+   order and the point is choosing the form: "Does the captain HAVE TO …"
+   against a spare "has to" tests DOES + HAVE, which ordering alone never
+   does. Decoys take indices after the answer's, so a sentence is right only
+   if it is exactly the answer's chunks in order and nothing else. Without
+   the attribute nothing changes. */
 slides.filter(s => s.dataset.type === 'order').forEach(slide => {
   const box = slide.querySelector('.order');
   if (!box) return;
   const answer = box.dataset.answer.split('|').map(x => x.trim());
+  const decoys = (box.dataset.decoys || '').split('|').map(x => x.trim()).filter(Boolean);
+  const pieces = () => answer.map((txt, i) => ({ txt, i }))
+    .concat(decoys.map((txt, k) => ({ txt, i: answer.length + k })));
   const target = document.createElement('div'); target.className = 'order-target';
   const pool   = document.createElement('div'); pool.className   = 'order-pool';
   /* A FAIR SHUFFLE CAN DEAL THE ANSWER. With four chunks, Fisher-Yates lands
@@ -2732,10 +2747,12 @@ slides.filter(s => s.dataset.type === 'order').forEach(slide => {
      the shuffle is uniform and healthy - which is the problem, not the excuse.
      Re-deal while the order is the answer. Bounded, and skipped for a
      one-chunk sentence, which has no other order to offer. */
-  let deal = answer.map((txt, i) => ({ txt, i }));
+  let deal = pieces();
   for (let tries = 0; tries < 12; tries++) {
-    deal = shuffled(answer.map((txt, i) => ({ txt, i })));
-    if (answer.length < 2 || deal.some((c, i) => c.i !== i)) break;
+    deal = shuffled(pieces());
+    // With decoys mixed in, the tell is still the answer's own chunks
+    // appearing in answer order, so judge those alone.
+    if (answer.length < 2 || deal.filter(c => c.i < answer.length).some((c, i) => c.i !== i)) break;
   }
   deal
         .forEach(({ txt, i }) => {
@@ -2743,6 +2760,7 @@ slides.filter(s => s.dataset.type === 'order').forEach(slide => {
           b.className = 'chunk';
           b.textContent = txt;
           b.dataset.i = i;
+          if (i >= answer.length) b.dataset.decoy = '';
           pool.appendChild(b);
         });
   box.replaceChildren(target, pool);
@@ -2757,9 +2775,17 @@ slides.filter(s => s.dataset.type === 'order').forEach(slide => {
   slide._check = () => {
     if (answered.has(slide)) return;
     // Marking a half-built sentence teaches nothing; wait until it is complete.
-    if (target.children.length < answer.length) return;
+    // A placed decoy is wrong wherever it sits, so a short build that uses one
+    // ("VfB | had to | play | extra time.", four pieces of five) is finished,
+    // and wrong. Without this, Check did nothing for exactly the learner who
+    // fell into the trap the decoy was set for.
+    const usedDecoy = [...target.children].some(c => 'decoy' in c.dataset);
+    if (target.children.length < answer.length && !usedDecoy) return;
     answered.add(slide);
-    const ok = [...target.children].map(c => +c.dataset.i).every((v, i) => v === i);
+    // The length test matters only with decoys: the answer in order with a
+    // decoy placed after it would otherwise pass, index for index.
+    const ok = target.children.length === answer.length
+      && [...target.children].map(c => +c.dataset.i).every((v, i) => v === i);
     target.classList.add(ok ? 'correct' : 'wrong');
     box.querySelectorAll('.chunk').forEach(c => c.disabled = true);
     if (ok) score++;
