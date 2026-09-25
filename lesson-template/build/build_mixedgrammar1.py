@@ -52,6 +52,33 @@ Found in the old TEST_DATA, and live on the site until this build:
 True/false runs as `mc` with two options; there is no `tf` slide type. The
 ANSWERS gate is satisfied either way, since "False" beats "True" by one
 character and the gate needs both a 10% margin and four absolute characters.
+
+Second pass, the same day: what the first build still got wrong
+---------------------------------------------------------------
+An editorial build of both parts (`build_mixed_b1.py`, 19b39ed, 09-23) had
+audited the same content more closely, and this builder was written without
+it. Its findings are ported here, and that builder is retired:
+
+5. The story accepted "serves MUCH fresh seafood". MUCH belongs to negatives
+   and questions; the affirmative takes A LOT OF (or LOTS OF), and the
+   explanation used to teach the opposite.
+6. `ec5` corrected "I have many money" to "I have much money" — itself
+   unnatural English, and the same mistake as 5. It is a negative now, "I
+   don't have many money", where MUCH is the natural fix.
+7. Correct alternatives were marked wrong: "is going to meet", "are going to
+   go", "She's lived here for 5 years", "the girl who's / sitting there".
+8. The explanations cited forms in lowercase and single quotes. The house
+   convention is grammar forms in CAPS and cited words in double quotes; the
+   ported text follows it, in each language's own quotation marks.
+
+And two answer leaks this deck introduced itself:
+
+9. The story panel printed the passage with every answer filled in, one
+   slide before the gap slides that score those answers. It shows the gaps
+   now, with the verb in brackets.
+10. Three slide titles contained their keys — "The best of them", "If it
+    rains", "If I had the time" — and the error-correction titles named the
+    error ("A double comparative"). Titles name the scene now.
 """
 import os
 import sys
@@ -201,43 +228,47 @@ MC = [
 #  SECTION 2 · Elena's week — eight gaps over four slides
 # ══════════════════════════════════════════════════════════════════════
 # §6: "A reading passage with eight gaps becomes four slides of two." The
-# passage itself is read whole on a panel first, with the answers shown, so
-# the learner meets it as a text before meeting it as a test.
+# passage itself is read whole on a panel first, WITH ITS GAPS, so the
+# learner meets it as a text before meeting it as a test. (The first version
+# printed it with every answer filled in, one slide before the questions.)
 GAP = [
+    # One row, two gaps, one explanation that makes both points (g1w).
     [('Elena usually ______ at seven o’clock, but this morning she ______ '
       'because her alarm didn’t ring. <em>(get up / oversleep)</em>',
       ['gets up', 'overslept'], 'g1w')],
     [('She ______ in this apartment for almost three years now. '
-      '<em>(live)</em>', ['has lived|’s lived|has been living'], 'g2aw'),
+      '<em>(live)</em>',
+      ['has lived|’s lived|has been living|’s been living'], 'g2aw'),
      ('Last night, while she ______ a book, her neighbour knocked on the '
       'door. <em>(read)</em>', ['was reading'], 'g2bw')],
     [('Tomorrow, Elena ______ her sister for lunch — they’ve already booked '
-      'a table. <em>(meet)</em>', ['is meeting|’s meeting'], 'g3aw'),
+      'a table. <em>(meet)</em>',
+      ['is meeting|’s meeting|is going to meet|’s going to meet'], 'g3aw'),
      ('If the weather ______ nice this weekend, they’ll go to the coast. '
       '<em>(be)</em>', ['is|’s'], 'g3bw')],
     [('If the weather is nice, they ______ to the coast afterwards. '
-      '<em>(go)</em>', ['will go|’ll go'], 'g4aw'),
+      '<em>(go)</em>',
+      ['will go|’ll go|are going to go|’re going to go'], 'g4aw'),
+     # MUCH is for negatives and questions; "serves much seafood" is not
+     # English, so it is no longer accepted (it was, and g4bw taught it).
      ('The new restaurant serves ______ fresh seafood. '
-      '<em>(a lot of / much)</em>', ['a lot of|much|lots of'], 'g4bw')],
+      '<em>(a lot of / much)</em>', ['a lot of|lots of'], 'g4bw')],
 ]
-# The first slide carries two gaps in one row, so it needs its explanations
-# per gap rather than per row — the row is teaching two different tenses and
-# one shared explanation can only make one of the two points (§7).
-GAP1_EXPLAINS = ['g1aw', 'g1bw']
 
 # ══════════════════════════════════════════════════════════════════════
 #  SECTION 3 · six rules, four true and two myths
 # ══════════════════════════════════════════════════════════════════════
+# Worded as the editorial audit had them: cited words in double quotes,
+# forms in CAPS. English in every language, like the stems.
 TF = [
-    ('We use the Present Perfect with a specific finished time, like '
-     '‘yesterday’ or ‘in 2010’.', False, 't1w'),
-    ('‘Must’ and ‘have to’ can both express obligation, but only ‘have to’ '
-     'has a past form (‘had to’).', True, 't2w'),
-    ('In the First Conditional, we use ‘will’ in the if-clause.', False, 't3w'),
-    ('Superlative adjectives are usually preceded by ‘the’.', True, 't4w'),
-    ('The passive voice is formed with the verb ‘to be’ + past participle.',
-     True, 't5w'),
-    ('We use ‘who’ for people and ‘which’ for things in relative clauses.',
+    ('We use the Present Perfect with a finished time, like “yesterday” or '
+     '“in 2010”.', False, 't1w'),
+    ('“Must” and “have to” both express obligation, but only “have to” has a '
+     'past form: “had to”.', True, 't2w'),
+    ('In the first conditional, we use “will” after “if”.', False, 't3w'),
+    ('A superlative usually has “the” in front of it.', True, 't4w'),
+    ('The passive is BE + past participle.', True, 't5w'),
+    ('In relative clauses we use “who” for people and “which” for things.',
      True, 't6w'),
 ]
 
@@ -260,7 +291,7 @@ EC = [
      sentences('She has lived here for five years',
                'She has lived here for 5 years',
                'She’s lived here for five years',
-               "She's lived here for five years"), 'ec1w'),
+               'She’s lived here for 5 years'), 'ec1w'),
     ('If I will have time, I will call you.',
      sentences('If I have time, I will call you',
                'If I have time I will call you',
@@ -271,14 +302,22 @@ EC = [
      sentences('This song is better than the last one'), 'ec3w'),
     ('The letter was wrote by my grandmother.',
      sentences('The letter was written by my grandmother'), 'ec4w'),
-    ('I have many money in my wallet.',
-     sentences('I have much money in my wallet',
-               'I have a lot of money in my wallet'), 'ec5w'),
+    # Was "I have many money" → "I have much money", which is itself not
+    # natural English: MUCH belongs to negatives and questions, the point the
+    # story's seafood gap makes. A negative makes MUCH the natural fix.
+    ('I don’t have many money in my wallet.',
+     sentences('I don’t have much money in my wallet',
+               'I do not have much money in my wallet',
+               'I don’t have a lot of money in my wallet',
+               'I do not have a lot of money in my wallet'), 'ec5w'),
     # 'That' is accepted here because tf6, four sections earlier in this same
     # test, teaches that it can replace either. The old page marked it wrong.
+    # So is dropping the pronoun and BE altogether: "the girl sitting there".
     ('The girl which is sitting there is my cousin.',
      sentences('The girl who is sitting there is my cousin',
-               'The girl that is sitting there is my cousin'), 'ec6w'),
+               'The girl that is sitting there is my cousin',
+               'The girl who’s sitting there is my cousin',
+               'The girl sitting there is my cousin'), 'ec6w'),
 ]
 
 
@@ -357,15 +396,15 @@ def build():
                        folder=F, bg=ACT_PIC),
         ])
 
-    # The two-gap first reading slide teaches two tenses in one row, so each
-    # input carries its own data-explain, appended after the row's. See §7.
-    first = slides.index('data-type="gap"')
-    head, tail = slides[:first], slides[first:]
-    for key in GAP1_EXPLAINS:
-        tail = tail.replace('<input class="gap" data-answer=',
-                            '<input class="gap" data-explain="%s" data-answer='
-                            % key, 1)
-    slides = head + tail
+    # The first reading row holds two gaps and two tenses. It used to inject a
+    # per-input explanation for each, under a row explanation that was a note
+    # to the author ("…which is why it is one row and not two"). g1w now makes
+    # both points itself, in the house convention, so nothing is injected.
+    n = slides.count('<section class="slide')     # the cover is "slide is-active"
+    for code in I.T:
+        assert I.T[code]['chipCount'].split()[0] == str(n), (
+            'chipCount in %s says %s, the deck has %d slides'
+            % (code, I.T[code]['chipCount'], n))
 
     D.assemble(TPL, OUT, slides, PALETTE,
                'B1 Mixed Grammar Test', I, langs=('en', 'de', 'es'))

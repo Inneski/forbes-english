@@ -39,6 +39,21 @@ TAIL = {
     'es': {'ledClues': "'Pistas'", 'ledDp': "'DP'", 'ledTime': "'Tiempo'"},
 }
 
+# The passage, identical in every language: it is the English under test.
+# Printed WITH its gaps on the story panel, so the learner reads the whole
+# text before answering it in pieces. The first version printed it with the
+# answers filled in, one slide before the slides that score them.
+STORY_A = ('Elena usually ______ <em>(get up)</em> at seven o’clock, but this '
+           'morning she ______ <em>(oversleep)</em> because her alarm didn’t ring. '
+           'She ______ <em>(live)</em> in this apartment for almost three years '
+           'now, and she loves the quiet street.')
+STORY_B = ('Last night, while she ______ <em>(read)</em> a book, her neighbour '
+           'knocked on the door to borrow some sugar. Tomorrow, Elena ______ '
+           '<em>(meet)</em> her sister for lunch — they’ve already booked a table. '
+           'If the weather ______ <em>(be)</em> nice this weekend, they ______ '
+           '<em>(go)</em> to the coast afterwards. The new restaurant serves '
+           '______ <em>(a lot of / much)</em> fresh seafood.')
+
 T = {}
 
 # ══════════════════════════════════════════════════════════════════════
@@ -84,13 +99,15 @@ T['en'] = dict(
 
     # ── the reading passage ───────────────────────────────────────────
     storyT='Elena’s week',
-    storyA='Elena usually <em>gets up</em> at seven o’clock, but this morning she <em>overslept</em> because her alarm didn’t ring. She <em>has lived</em> in this apartment for almost three years now, and she loves the quiet street.',
-    storyB='Last night, while she <em>was reading</em> a book, her neighbour knocked on the door to borrow some sugar. Tomorrow, Elena <em>is meeting</em> her sister for lunch. If the weather <em>is</em> nice this weekend, they <em>will go</em> to the coast afterwards.',
+    storyA=STORY_A,
+    storyB=STORY_B,
 
     # ── multiple choice ───────────────────────────────────────────────
-    q1t='Right now', q2t='Interrupted', q3t='Since 2019', q4t='A prediction',
-    q5t='The best of them', q6t='The law', q7t='If it rains',
-    q8t='If I had the time', q9t='Built in 1889', q10t='The woman next door',
+    # The scene, never the grammar or the answer: "If it rains" was the title
+    # of an item whose key is "rains".
+    q1t='At the door', q2t='The phone', q3t='Madrid', q4t='The tournament',
+    q5t='Film of the year', q6t='In the car', q7t='The picnic',
+    q8t='Free time', q9t='The bridge', q10t='The woman next door',
 
     # ── true or false ─────────────────────────────────────────────────
     t1t='Present perfect and finished time', t2t='Must and have to',
@@ -108,8 +125,9 @@ T['en'] = dict(
     g3t='Tomorrow, and the weekend', g4t='At the restaurant',
     gapHint='Write the verb in the form the sentence needs.',
 
-    ec1t='For or since', ec2t='Will in the if-clause', ec3t='A double comparative',
-    ec4t='The wrong participle', ec5t='Much or many', ec6t='Which or who',
+    # Not the error's name: "A double comparative" did the finding for them.
+    ec1t='Five years', ec2t='A phone call', ec3t='The new song',
+    ec4t='An old letter', ec5t='The wallet', ec6t='My cousin',
     ecHint='Type the whole sentence, corrected.',
 
     # ── activation ────────────────────────────────────────────────────
@@ -163,12 +181,12 @@ T['de'] = dict(
     s5b='Schreib den ganzen Satz korrigiert. Groß- und Kleinschreibung und Satzzeichen werden ignoriert, die üblichen Kurzformen werden akzeptiert.',
 
     storyT='Elenas Woche',
-    storyA='Elena usually <em>gets up</em> at seven o’clock, but this morning she <em>overslept</em> because her alarm didn’t ring. She <em>has lived</em> in this apartment for almost three years now, and she loves the quiet street.',
-    storyB='Last night, while she <em>was reading</em> a book, her neighbour knocked on the door to borrow some sugar. Tomorrow, Elena <em>is meeting</em> her sister for lunch. If the weather <em>is</em> nice this weekend, they <em>will go</em> to the coast afterwards.',
+    storyA=STORY_A,
+    storyB=STORY_B,
 
-    q1t='Gerade jetzt', q2t='Unterbrochen', q3t='Seit 2019', q4t='Eine Vorhersage',
-    q5t='Der beste von allen', q6t='Das Gesetz', q7t='Wenn es regnet',
-    q8t='Wenn ich Zeit hätte', q9t='1889 gebaut', q10t='Die Frau von nebenan',
+    q1t='An der Tür', q2t='Das Telefon', q3t='Madrid', q4t='Das Turnier',
+    q5t='Film des Jahres', q6t='Im Auto', q7t='Das Picknick',
+    q8t='Freizeit', q9t='Die Brücke', q10t='Die Frau von nebenan',
 
     t1t='Present Perfect und abgeschlossene Zeit', t2t='Must und have to',
     t3t='Will im if-Satz', t4t='The vor dem Superlativ',
@@ -183,8 +201,8 @@ T['de'] = dict(
     g3t='Morgen, und das Wochenende', g4t='Im Restaurant',
     gapHint='Schreib das Verb in der Form, die der Satz braucht.',
 
-    ec1t='For oder since', ec2t='Will im if-Satz', ec3t='Ein doppelter Komparativ',
-    ec4t='Das falsche Partizip', ec5t='Much oder many', ec6t='Which oder who',
+    ec1t='Fünf Jahre', ec2t='Ein Anruf', ec3t='Das neue Lied',
+    ec4t='Ein alter Brief', ec5t='Das Portemonnaie', ec6t='Meine Cousine',
     ecHint='Schreib den ganzen Satz korrigiert.',
 
     actTitle='Jetzt anwenden',
@@ -237,12 +255,12 @@ T['es'] = dict(
     s5b='Escribe la frase entera, corregida. Se ignoran mayúsculas y puntos, y se aceptan las contracciones habituales.',
 
     storyT='La semana de Elena',
-    storyA='Elena usually <em>gets up</em> at seven o’clock, but this morning she <em>overslept</em> because her alarm didn’t ring. She <em>has lived</em> in this apartment for almost three years now, and she loves the quiet street.',
-    storyB='Last night, while she <em>was reading</em> a book, her neighbour knocked on the door to borrow some sugar. Tomorrow, Elena <em>is meeting</em> her sister for lunch. If the weather <em>is</em> nice this weekend, they <em>will go</em> to the coast afterwards.',
+    storyA=STORY_A,
+    storyB=STORY_B,
 
-    q1t='Ahora mismo', q2t='Interrumpido', q3t='Desde 2019', q4t='Una predicción',
-    q5t='La mejor de todas', q6t='La ley', q7t='Si llueve',
-    q8t='Si tuviera tiempo', q9t='Construido en 1889', q10t='La mujer de al lado',
+    q1t='En la puerta', q2t='El teléfono', q3t='Madrid', q4t='El torneo',
+    q5t='La película del año', q6t='En el coche', q7t='El pícnic',
+    q8t='Tiempo libre', q9t='El puente', q10t='La mujer de al lado',
 
     t1t='Present perfect y tiempo terminado', t2t='Must y have to',
     t3t='Will en la oración con if', t4t='The delante del superlativo',
@@ -257,8 +275,8 @@ T['es'] = dict(
     g3t='Mañana, y el fin de semana', g4t='En el restaurante',
     gapHint='Escribe el verbo en la forma que pide la frase.',
 
-    ec1t='For o since', ec2t='Will en la oración con if', ec3t='Un comparativo doble',
-    ec4t='El participio equivocado', ec5t='Much o many', ec6t='Which o who',
+    ec1t='Cinco años', ec2t='Una llamada', ec3t='La canción nueva',
+    ec4t='Una carta antigua', ec5t='La cartera', ec6t='Mi prima',
     ecHint='Escribe la frase entera, corregida.',
 
     actTitle='Ahora úsalo',
@@ -283,134 +301,130 @@ T['es'] = dict(
 # and Spanish text — 'was cooking' is the thing being explained, not a word to
 # translate.
 EXPLAIN = {}
-
+# Ported 2026-09-25 from mixed_b1_<lang>.py P1 (19b39ed), replacing the
+# first version, which cited forms in lowercase and single quotes. House
+# convention: grammar forms in CAPS, cited words in double quotes.
 EXPLAIN['en'] = dict(
-    q1w="Present Continuous, for something happening right now. ‘Listen!’ points at this moment, so ‘knocks’, ‘knocked’ and ‘was knocking’ all miss it.",
-    q2w="‘While’ + Past Continuous sets a longer background action that another past event cuts into — here ‘rang’. The other three are present tenses and cannot sit beside a past event.",
-    q3w="‘Since’ + a point in time needs the Present Perfect. ‘Lives’ and ‘is living’ are present tenses, and ‘lived’ is Past Simple, which ‘since 2019’ will not take.",
-    q4w="‘I think…’ introduces an opinion with no evidence behind it, and that is the classic trigger for ‘will’. The others are present or past forms and predict nothing.",
-    q5w="‘The’ plus a comparison against everything else in a group calls for the superlative. ‘The goodest’ and ‘more good’ are not English forms at all, and ‘the better’ is a comparative.",
-    q6w="‘Must’ is strong obligation, which is what a law is. ‘Might’ and ‘could’ are possibility, and ‘would’ belongs to hypothetical situations.",
-    q7w="The if-clause of a First Conditional takes the Present Simple. ‘Will rain’ and ‘would rain’ cannot go inside it, and ‘rained’ is the wrong tense for a real future possibility.",
-    q8w="‘Would learn’ in the main clause makes this a Second Conditional, and its if-clause needs the Past Simple. The situation is imagined, not likely.",
-    q9w="A bridge does not build itself, so this needs the passive: ‘be’ + past participle. ‘Built’ alone has lost its auxiliary, and the other two are active.",
-    q10w="‘Who’ opens a relative clause describing a person. ‘Which’ is for things, ‘whose’ shows possession, and ‘where’ points at a place.",
+    q1w="“Listen!” means now, so the action is in progress: IS + knocking. “Knocks” is a habit; “knocked” and “was knocking” are past.",
+    q2w="WHILE + WAS / WERE + -ING gives the longer background action; the Past Simple (“rang”) interrupts it. The other three are present forms.",
+    q3w="SINCE + a point in time (2019) needs HAS / HAVE + past participle. “Lived” cannot go with “since”, and the present forms cannot either.",
+    q4w="“I think” introduces an opinion about the future: WILL + verb. “Is winning” would mean the match is happening now.",
+    q5w="Compared with every film this year, so the superlative: THE BEST. “Goodest” and “more good” do not exist; “better” compares only two.",
+    q6w="A law is a strong obligation: MUST + verb. “Might” and “could” are possibility; “would” is imaginary.",
+    q7w="First conditional: IF + Present Simple, then WILL in the other clause. WILL never goes after IF here.",
+    q8w="“Would learn” shows an imaginary situation, so the second conditional: IF + Past Simple (“had”).",
+    q9w="A bridge does not build itself, so the passive: WAS + past participle. “Built” alone is active and has no subject doing it.",
+    q10w="WHO for people. WHICH is for things, WHOSE for possession, WHERE for places.",
 
-    t1w="False. The Present Perfect never combines with a finished time expression. For ‘yesterday’ or ‘in 2010’ English uses the Past Simple: ‘I visited Paris in 2010.’",
-    t2w="True. ‘Must’ has no past form of its own, so for obligation in the past English switches to ‘had to’.",
-    t3w="False. The if-clause takes the Present Simple — ‘If it rains…’ — and ‘will’ goes in the main clause: ‘…we’ll cancel the picnic.’",
-    t4w="True. ‘The’ marks one thing out as unique inside its group: the best, the tallest, the most expensive.",
-    t5w="True. Always ‘be’ plus the past participle of the main verb: is built, was written, has been finished.",
-    t6w="True. ‘Who’ is kept for people and ‘which’ for things — though ‘that’ can replace either one in everyday speech.",
+    t1w="False. A finished time takes the Past Simple: “I visited Paris in 2010”, not “I have visited”.",
+    t2w="True. MUST has no past form of its own, so for the past we use HAD TO.",
+    t3w="False. After IF, the Present Simple (“If it rains”); WILL goes in the other clause (“we’ll stay in”).",
+    t4w="True. THE marks one thing as the only one in its group: THE best, THE tallest, THE most expensive.",
+    t5w="True. “Is built”, “was written”, “has been finished”: always a form of BE + past participle.",
+    t6w="True. THAT can replace either in everyday English, but WHO is only for people and WHICH only for things.",
 
-    o1w="Passive: subject + ‘be’ (was) + past participle (built). The date goes last.",
-    o2w="‘Who lives next door’ is a relative clause describing ‘the man’, so it sits directly after it and before the main verb.",
-    o3w="Question word + auxiliary (‘did’) + subject + base verb. Note that ‘go’ stays in its base form once ‘did’ has taken the past.",
-    o4w="Second Conditional: if + Past Simple (‘were’), then would + base verb (‘I’d travel’).",
-    o5w="‘Much’ intensifies the comparative ‘bigger’, and ‘than’ introduces the second thing being compared.",
+    o1w="The passive: subject + WAS + past participle, then the time.",
+    o2w="“Who lives next door” comes straight after “the man” and tells us which man. Then the main verb, IS.",
+    o3w="Question word + DID + subject + base verb. After DID the verb has no -ED: “go”, not “went”.",
+    o4w="Second conditional: IF + Past Simple (“were”), then WOULD (’D) + verb.",
+    o5w="MUCH goes in front of a comparative to make it stronger; THAN introduces the second thing.",
 
-    g1w="Two different times in one sentence, which is why it is one row and not two.",
-    g1aw="‘Usually’ marks a habit, so this is the Present Simple: gets up.",
-    g1bw="‘This morning’ with a finished event takes the Past Simple. Oversleep is irregular: overslept.",
-    g2aw="‘For almost three years now’ is a period running up to the present, which is the Present Perfect: has lived.",
-    g2bw="‘While’ marks the longer background action that ‘knocked’ interrupts, so it takes the Past Continuous: was reading.",
-    g3aw="A fixed arrangement — the table is already booked — takes the Present Continuous even though it is in the future: is meeting.",
-    g3bw="The if-clause of a First Conditional takes the Present Simple, never ‘will’.",
-    g4aw="The main clause of a First Conditional is where ‘will’ belongs: will go.",
-    g4bw="‘Seafood’ is uncountable, so it takes ‘a lot of’ or ‘much’ — never ‘many’.",
+    g1w="“Usually” is a habit: Present Simple, and “she” takes -S (“gets up”). “This morning” is finished: Past Simple “overslept” (irregular).",
+    g2aw="“For almost three years now” runs up to today: HAS + lived. HAS BEEN living is also correct.",
+    g2bw="WHILE + WAS + -ING for the longer action; the knock (“knocked”) interrupts it.",
+    g3aw="A table is booked, so it is an arrangement: IS + meeting. IS GOING TO meet is also correct.",
+    g3bw="First conditional. After IF, the Present Simple (“is”), never WILL.",
+    g4aw="First conditional. The result takes WILL + go (“they’ll go”). ARE GOING TO go is also correct.",
+    g4bw="In a positive sentence we say A LOT OF. MUCH is for negatives and questions: “They don’t serve much seafood.”",
 
-    ec1w="‘For’ goes with a length of time (‘five years’); ‘since’ goes with a starting point (‘2019’, ‘March’). A duration needs ‘for’.",
-    ec2w="The if-clause of a First Conditional never takes ‘will’ — only the main clause does.",
-    ec3w="‘Better’ is already a comparative, so it never takes ‘more’ in front of it. Double comparatives like ‘more better’ do not exist in standard English.",
-    ec4w="The passive needs the past participle, not the past simple: write → wrote → written. So ‘was wrote’ becomes ‘was written’.",
-    ec5w="‘Money’ is uncountable, so it pairs with ‘much’. ‘Many’ is for countable plural nouns.",
-    ec6w="‘Which’ refers to things, not people, so this needs ‘who’. ‘That’ is also accepted here — it can replace either in everyday speech.",
+    ec1w="FOR + a length of time (five years). SINCE + a starting point (2019, March).",
+    ec2w="After IF in a first conditional, the Present Simple: “If I have time”. WILL stays in the other clause.",
+    ec3w="“Better” is already a comparative. MORE + BETTER is never correct.",
+    ec4w="The passive needs the past participle: write → wrote → WRITTEN.",
+    ec5w="“Money” is uncountable: MUCH, not MANY. MANY is for plural nouns: “many coins”.",
+    ec6w="WHICH is for things. For a person, WHO (or THAT).",
 )
 
 EXPLAIN['de'] = dict(
-    q1w="Present Continuous, für etwas, das gerade jetzt passiert. ‘Listen!’ zeigt auf diesen Moment, also passen ‘knocks’, ‘knocked’ und ‘was knocking’ alle nicht.",
-    q2w="‘While’ + Past Continuous beschreibt eine längere Hintergrundhandlung, in die ein anderes Ereignis hineinschneidet — hier ‘rang’. Die anderen drei sind Präsensformen und können nicht neben einem Ereignis in der Vergangenheit stehen.",
-    q3w="‘Since’ + Zeitpunkt verlangt das Present Perfect. ‘Lives’ und ‘is living’ sind Präsensformen, und ‘lived’ ist Past Simple, was ‘since 2019’ nicht zulässt.",
-    q4w="‘I think…’ leitet eine Meinung ohne konkrete Anhaltspunkte ein, und das ist der klassische Auslöser für ‘will’. Die anderen sind Gegenwarts- oder Vergangenheitsformen und sagen nichts voraus.",
-    q5w="‘The’ plus ein Vergleich mit allem anderen in einer Gruppe verlangt den Superlativ. ‘The goodest’ und ‘more good’ gibt es im Englischen gar nicht, und ‘the better’ ist ein Komparativ.",
-    q6w="‘Must’ ist starke Verpflichtung, und genau das ist ein Gesetz. ‘Might’ und ‘could’ drücken Möglichkeit aus, ‘would’ gehört zu hypothetischen Situationen.",
-    q7w="Der if-Satz eines First Conditional steht im Present Simple. ‘Will rain’ und ‘would rain’ können nicht hinein, und ‘rained’ ist die falsche Zeit für eine reale Zukunftsmöglichkeit.",
-    q8w="‘Would learn’ im Hauptsatz macht daraus ein Second Conditional, und dessen if-Satz braucht das Past Simple. Die Situation ist vorgestellt, nicht wahrscheinlich.",
-    q9w="Eine Brücke baut sich nicht selbst, also braucht es das Passiv: ‘be’ + Partizip Perfekt. ‘Built’ allein fehlt das Hilfsverb, die beiden anderen sind aktiv.",
-    q10w="‘Who’ eröffnet einen Relativsatz über eine Person. ‘Which’ steht für Dinge, ‘whose’ zeigt Besitz an, und ‘where’ verweist auf einen Ort.",
+    q1w="„Listen!“ heißt jetzt, die Handlung läuft gerade: IS + knocking. „Knocks“ ist eine Gewohnheit; „knocked“ und „was knocking“ sind Vergangenheit.",
+    q2w="WHILE + WAS / WERE + -ING für die längere Hintergrundhandlung; das Past Simple („rang“) unterbricht sie. Die anderen drei sind Gegenwartsformen.",
+    q3w="SINCE + Zeitpunkt (2019) braucht HAS / HAVE + Partizip. „Lived“ passt nicht zu „since“, die Gegenwartsformen auch nicht.",
+    q4w="„I think“ leitet eine Meinung über die Zukunft ein: WILL + Verb. „Is winning“ hieße, das Spiel läuft gerade.",
+    q5w="Verglichen mit allen Filmen des Jahres, also der Superlativ: THE BEST. „Goodest“ und „more good“ gibt es nicht; „better“ vergleicht nur zwei.",
+    q6w="Ein Gesetz ist eine starke Pflicht: MUST + Verb. „Might“ und „could“ drücken Möglichkeit aus, „would“ etwas Gedachtes.",
+    q7w="Bedingungssatz Typ 1: IF + Present Simple, WILL im anderen Satzteil. Nach IF steht hier nie WILL.",
+    q8w="„Would learn“ zeigt eine gedachte Situation, also Typ 2: IF + Past Simple („had“).",
+    q9w="Eine Brücke baut sich nicht selbst, also Passiv: WAS + Partizip. „Built“ allein ist aktiv, und niemand tut es.",
+    q10w="WHO für Personen. WHICH für Dinge, WHOSE für Besitz, WHERE für Orte.",
 
-    t1w="Falsch. Das Present Perfect steht nie mit einer abgeschlossenen Zeitangabe. Für ‘yesterday’ oder ‘in 2010’ nimmt das Englische das Past Simple: ‘I visited Paris in 2010.’",
-    t2w="Richtig. ‘Must’ hat keine eigene Vergangenheitsform, deshalb wechselt das Englische für Verpflichtung in der Vergangenheit zu ‘had to’.",
-    t3w="Falsch. Der if-Satz steht im Present Simple — ‘If it rains…’ — und ‘will’ gehört in den Hauptsatz: ‘…we’ll cancel the picnic.’",
-    t4w="Richtig. ‘The’ hebt eine Sache als einzigartig in ihrer Gruppe hervor: the best, the tallest, the most expensive.",
-    t5w="Richtig. Immer ‘be’ plus Partizip Perfekt des Hauptverbs: is built, was written, has been finished.",
-    t6w="Richtig. ‘Who’ bleibt Personen vorbehalten und ‘which’ den Dingen — auch wenn ‘that’ in der Alltagssprache beides ersetzen kann.",
+    t1w="Falsch. Eine abgeschlossene Zeit verlangt das Past Simple: „I visited Paris in 2010“, nicht „I have visited“.",
+    t2w="Richtig. MUST hat keine eigene Vergangenheitsform, für die Vergangenheit nehmen wir HAD TO.",
+    t3w="Falsch. Nach IF steht Present Simple („If it rains“); WILL kommt in den anderen Satzteil („we’ll stay in“).",
+    t4w="Richtig. THE hebt eine Sache als die einzige ihrer Gruppe hervor: THE best, THE tallest, THE most expensive.",
+    t5w="Richtig. „Is built“, „was written“, „has been finished“: immer eine Form von BE + Partizip.",
+    t6w="Richtig. THAT kann im Alltag beide ersetzen, aber WHO steht nur für Personen und WHICH nur für Dinge.",
 
-    o1w="Passiv: Subjekt + ‘be’ (was) + Partizip Perfekt (built). Die Jahreszahl steht am Ende.",
-    o2w="‘Who lives next door’ ist ein Relativsatz zu ‘the man’, steht also direkt dahinter und vor dem Hauptverb.",
-    o3w="Fragewort + Hilfsverb (‘did’) + Subjekt + Grundform. Beachte: ‘go’ bleibt in der Grundform, sobald ‘did’ die Vergangenheit übernommen hat.",
-    o4w="Second Conditional: if + Past Simple (‘were’), dann would + Grundform (‘I’d travel’).",
-    o5w="‘Much’ verstärkt den Komparativ ‘bigger’, und ‘than’ leitet das zweite Vergleichsobjekt ein.",
+    o1w="Passiv: Subjekt + WAS + Partizip, dann die Zeit.",
+    o2w="„Who lives next door“ steht direkt nach „the man“ und sagt, welcher Mann. Dann das Hauptverb, IS.",
+    o3w="Fragewort + DID + Subjekt + Grundform. Nach DID hat das Verb kein -ED: „go“, nicht „went“.",
+    o4w="Bedingungssatz Typ 2: IF + Past Simple („were“), dann WOULD (’D) + Verb.",
+    o5w="MUCH vor dem Komparativ verstärkt ihn; THAN leitet das Zweite ein.",
 
-    g1w="Zwei verschiedene Zeiten in einem Satz — deshalb ist es eine Zeile und nicht zwei.",
-    g1aw="‘Usually’ kennzeichnet eine Gewohnheit, also Present Simple: gets up.",
-    g1bw="‘This morning’ mit einem abgeschlossenen Ereignis verlangt das Past Simple. Oversleep ist unregelmäßig: overslept.",
-    g2aw="‘For almost three years now’ ist ein Zeitraum, der bis in die Gegenwart reicht — das ist das Present Perfect: has lived.",
-    g2bw="‘While’ markiert die längere Hintergrundhandlung, die ‘knocked’ unterbricht, also Past Continuous: was reading.",
-    g3aw="Eine feste Verabredung — der Tisch ist schon reserviert — steht im Present Continuous, auch wenn sie in der Zukunft liegt: is meeting.",
-    g3bw="Der if-Satz eines First Conditional steht im Present Simple, nie mit ‘will’.",
-    g4aw="Der Hauptsatz eines First Conditional ist der Ort für ‘will’: will go.",
-    g4bw="‘Seafood’ ist nicht zählbar, nimmt also ‘a lot of’ oder ‘much’ — nie ‘many’.",
+    g1w="„Usually“ ist eine Gewohnheit: Present Simple, und „she“ bekommt -S („gets up“). „This morning“ ist vorbei: Past Simple „overslept“ (unregelmäßig).",
+    g2aw="„For almost three years now“ reicht bis heute: HAS + lived. HAS BEEN living ist auch richtig.",
+    g2bw="WHILE + WAS + -ING für die längere Handlung; das Klopfen („knocked“) unterbricht sie.",
+    g3aw="Der Tisch ist reserviert, es ist also eine Verabredung: IS + meeting. IS GOING TO meet ist auch richtig.",
+    g3bw="Bedingungssatz Typ 1. Nach IF steht Present Simple („is“), nie WILL.",
+    g4aw="Bedingungssatz Typ 1. Die Folge bekommt WILL + go („they’ll go“). ARE GOING TO go ist auch richtig.",
+    g4bw="Im bejahten Satz sagt man A LOT OF. MUCH steht in verneinten Sätzen und Fragen: „They don’t serve much seafood.“",
 
-    ec1w="‘For’ steht bei einer Zeitdauer (‘five years’), ‘since’ bei einem Anfangspunkt (‘2019’, ‘March’). Eine Dauer braucht ‘for’.",
-    ec2w="Der if-Satz eines First Conditional nimmt nie ‘will’ — das tut nur der Hauptsatz.",
-    ec3w="‘Better’ ist bereits ein Komparativ und steht deshalb nie mit ‘more’ davor. Doppelte Komparative wie ‘more better’ gibt es im Standardenglischen nicht.",
-    ec4w="Das Passiv braucht das Partizip Perfekt, nicht das Past Simple: write → wrote → written. Aus ‘was wrote’ wird also ‘was written’.",
-    ec5w="‘Money’ ist nicht zählbar und steht deshalb mit ‘much’. ‘Many’ gehört zu zählbaren Pluralformen.",
-    ec6w="‘Which’ bezieht sich auf Dinge, nicht auf Personen, hier braucht es also ‘who’. ‘That’ wird hier ebenfalls akzeptiert — es kann in der Alltagssprache beides ersetzen.",
+    ec1w="FOR + Zeitdauer (five years). SINCE + Zeitpunkt (2019, March).",
+    ec2w="Nach IF im Bedingungssatz Typ 1 steht Present Simple: „If I have time“. WILL bleibt im anderen Satzteil.",
+    ec3w="„Better“ ist schon ein Komparativ. MORE + BETTER ist nie richtig.",
+    ec4w="Das Passiv braucht das Partizip: write → wrote → WRITTEN.",
+    ec5w="„Money“ ist unzählbar: MUCH, nicht MANY. MANY steht vor Pluralnomen: „many coins“.",
+    ec6w="WHICH steht für Dinge. Für eine Person WHO (oder THAT).",
 )
 
 EXPLAIN['es'] = dict(
-    q1w="Present Continuous, para algo que está ocurriendo ahora mismo. ‘Listen!’ señala este momento, así que ‘knocks’, ‘knocked’ y ‘was knocking’ no encajan.",
-    q2w="‘While’ + Past Continuous describe una acción de fondo más larga que otro hecho pasado interrumpe — aquí ‘rang’. Las otras tres son formas de presente y no pueden acompañar a un hecho en pasado.",
-    q3w="‘Since’ + un momento concreto exige el Present Perfect. ‘Lives’ e ‘is living’ son presentes, y ‘lived’ es Past Simple, que no admite ‘since 2019’.",
-    q4w="‘I think…’ introduce una opinión sin pruebas detrás, y ese es el detonante clásico de ‘will’. Las demás son formas de presente o pasado y no predicen nada.",
-    q5w="‘The’ más una comparación con todo lo demás de un grupo pide el superlativo. ‘The goodest’ y ‘more good’ no existen en inglés, y ‘the better’ es un comparativo.",
-    q6w="‘Must’ expresa obligación fuerte, que es justo lo que es una ley. ‘Might’ y ‘could’ expresan posibilidad, y ‘would’ pertenece a situaciones hipotéticas.",
-    q7w="La oración con if de un First Conditional va en Present Simple. ‘Will rain’ y ‘would rain’ no caben dentro, y ‘rained’ es el tiempo equivocado para una posibilidad futura real.",
-    q8w="‘Would learn’ en la oración principal convierte esto en un Second Conditional, y su oración con if necesita el Past Simple. La situación es imaginada, no probable.",
-    q9w="Un puente no se construye solo, así que hace falta la pasiva: ‘be’ + participio. A ‘built’ solo le falta el auxiliar, y las otras dos son activas.",
-    q10w="‘Who’ abre una oración de relativo referida a una persona. ‘Which’ es para cosas, ‘whose’ indica posesión y ‘where’ señala un lugar.",
+    q1w="«Listen!» significa ahora: la acción está en curso, IS + knocking. «Knocks» es un hábito; «knocked» y «was knocking» son pasado.",
+    q2w="WHILE + WAS / WERE + -ING da la acción de fondo, más larga; el Past Simple («rang») la interrumpe. Las otras tres son formas de presente.",
+    q3w="SINCE + un momento (2019) pide HAS / HAVE + participio. «Lived» no va con «since», y las formas de presente tampoco.",
+    q4w="«I think» introduce una opinión sobre el futuro: WILL + verbo. «Is winning» querría decir que el partido se juega ahora.",
+    q5w="Comparado con todas las películas del año, así que el superlativo: THE BEST. «Goodest» y «more good» no existen; «better» compara solo dos.",
+    q6w="Una ley es una obligación fuerte: MUST + verbo. «Might» y «could» son posibilidad; «would» es hipotético.",
+    q7w="Primer condicional: IF + Present Simple, y WILL en la otra parte. Aquí WILL nunca va después de IF.",
+    q8w="«Would learn» muestra una situación imaginaria, así que segundo condicional: IF + Past Simple («had»).",
+    q9w="Un puente no se construye solo, así que la pasiva: WAS + participio. «Built» solo es activa y nadie hace la acción.",
+    q10w="WHO para personas. WHICH para cosas, WHOSE para posesión, WHERE para lugares.",
 
-    t1w="Falso. El Present Perfect nunca se combina con una expresión de tiempo terminado. Para ‘yesterday’ o ‘in 2010’ el inglés usa el Past Simple: ‘I visited Paris in 2010.’",
-    t2w="Verdadero. ‘Must’ no tiene forma de pasado propia, así que para la obligación en pasado el inglés pasa a ‘had to’.",
-    t3w="Falso. La oración con if va en Present Simple — ‘If it rains…’ — y ‘will’ va en la principal: ‘…we’ll cancel the picnic.’",
-    t4w="Verdadero. ‘The’ señala algo como único dentro de su grupo: the best, the tallest, the most expensive.",
-    t5w="Verdadero. Siempre ‘be’ más el participio del verbo principal: is built, was written, has been finished.",
-    t6w="Verdadero. ‘Who’ se reserva para personas y ‘which’ para cosas — aunque ‘that’ puede sustituir a cualquiera de los dos en el habla cotidiana.",
+    t1w="Falso. Un tiempo terminado pide el Past Simple: «I visited Paris in 2010», no «I have visited».",
+    t2w="Verdadero. MUST no tiene pasado propio, así que para el pasado usamos HAD TO.",
+    t3w="Falso. Después de IF, Present Simple («If it rains»); WILL va en la otra parte («we’ll stay in»).",
+    t4w="Verdadero. THE señala una cosa como la única de su grupo: THE best, THE tallest, THE most expensive.",
+    t5w="Verdadero. «Is built», «was written», «has been finished»: siempre una forma de BE + participio.",
+    t6w="Verdadero. En el inglés de cada día THAT puede sustituir a los dos, pero WHO es solo para personas y WHICH solo para cosas.",
 
-    o1w="Pasiva: sujeto + ‘be’ (was) + participio (built). La fecha va al final.",
-    o2w="‘Who lives next door’ es una oración de relativo referida a ‘the man’, así que va justo detrás y antes del verbo principal.",
-    o3w="Palabra interrogativa + auxiliar (‘did’) + sujeto + verbo en forma base. Fíjate en que ‘go’ se queda en forma base una vez que ‘did’ ha asumido el pasado.",
-    o4w="Second Conditional: if + Past Simple (‘were’), y luego would + forma base (‘I’d travel’).",
-    o5w="‘Much’ intensifica el comparativo ‘bigger’, y ‘than’ introduce el segundo elemento de la comparación.",
+    o1w="La pasiva: sujeto + WAS + participio, y luego el tiempo.",
+    o2w="«Who lives next door» va justo después de «the man» y dice qué hombre. Luego el verbo principal, IS.",
+    o3w="Palabra interrogativa + DID + sujeto + infinitivo. Después de DID el verbo no lleva -ED: «go», no «went».",
+    o4w="Segundo condicional: IF + Past Simple («were»), luego WOULD (’D) + verbo.",
+    o5w="MUCH delante de un comparativo lo refuerza; THAN introduce lo segundo.",
 
-    g1w="Dos tiempos distintos en una sola frase, y por eso es una fila y no dos.",
-    g1aw="‘Usually’ marca un hábito, así que es Present Simple: gets up.",
-    g1bw="‘This morning’ con un hecho terminado pide el Past Simple. Oversleep es irregular: overslept.",
-    g2aw="‘For almost three years now’ es un periodo que llega hasta el presente, es decir el Present Perfect: has lived.",
-    g2bw="‘While’ marca la acción de fondo más larga que ‘knocked’ interrumpe, así que va en Past Continuous: was reading.",
-    g3aw="Un plan fijado — la mesa ya está reservada — va en Present Continuous aunque se refiera al futuro: is meeting.",
-    g3bw="La oración con if de un First Conditional va en Present Simple, nunca con ‘will’.",
-    g4aw="La oración principal de un First Conditional es donde va ‘will’: will go.",
-    g4bw="‘Seafood’ es incontable, así que lleva ‘a lot of’ o ‘much’ — nunca ‘many’.",
+    g1w="«Usually» es un hábito: Present Simple, y «she» lleva -S («gets up»). «This morning» ya terminó: Past Simple «overslept» (irregular).",
+    g2aw="«For almost three years now» llega hasta hoy: HAS + lived. HAS BEEN living también es correcto.",
+    g2bw="WHILE + WAS + -ING para la acción más larga; el golpe en la puerta («knocked») la interrumpe.",
+    g3aw="La mesa está reservada, así que es un plan fijo: IS + meeting. IS GOING TO meet también es correcto.",
+    g3bw="Primer condicional. Después de IF, Present Simple («is»), nunca WILL.",
+    g4aw="Primer condicional. El resultado lleva WILL + go («they’ll go»). ARE GOING TO go también es correcto.",
+    g4bw="En una frase afirmativa decimos A LOT OF. MUCH es para negativas y preguntas: «They don’t serve much seafood.»",
 
-    ec1w="‘For’ acompaña a una duración (‘five years’); ‘since’ acompaña a un punto de partida (‘2019’, ‘March’). Una duración necesita ‘for’.",
-    ec2w="La oración con if de un First Conditional nunca lleva ‘will’ — solo la principal lo hace.",
-    ec3w="‘Better’ ya es un comparativo, así que nunca lleva ‘more’ delante. Los comparativos dobles como ‘more better’ no existen en inglés estándar.",
-    ec4w="La pasiva necesita el participio, no el pasado simple: write → wrote → written. Así que ‘was wrote’ pasa a ‘was written’.",
-    ec5w="‘Money’ es incontable, así que se combina con ‘much’. ‘Many’ es para sustantivos contables en plural.",
-    ec6w="‘Which’ se refiere a cosas, no a personas, así que aquí hace falta ‘who’. ‘That’ también se acepta — puede sustituir a cualquiera de los dos en el habla cotidiana.",
+    ec1w="FOR + una duración (five years). SINCE + un punto de partida (2019, March).",
+    ec2w="Después de IF en el primer condicional, Present Simple: «If I have time». WILL se queda en la otra parte.",
+    ec3w="«Better» ya es comparativo. MORE + BETTER nunca es correcto.",
+    ec4w="La pasiva necesita el participio: write → wrote → WRITTEN.",
+    ec5w="«Money» es incontable: MUCH, no MANY. MANY es para sustantivos en plural: «many coins».",
+    ec6w="WHICH es para cosas. Para una persona, WHO (o THAT).",
 )
 
 for _c in T:
