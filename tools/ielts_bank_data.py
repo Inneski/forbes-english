@@ -20,8 +20,8 @@ both views.
 TYPES = {
  'opinion':   ('Opinion',          'To what extent do you agree?'),
  'discussion':('Discussion',       'Discuss both views and give your own opinion.'),
- 'outweigh':  ('Outweigh',         'Do the advantages outweigh the disadvantages?'),
- 'measure':   ('Problem & measure','What problems… and what measures?'),
+ 'outweigh':  ('Advantages and disadvantages', 'Do the advantages outweigh the disadvantages?'),
+ 'measure':   ('Problem and solution','What problems… and what measures?'),
  'direct':    ('Direct question',  'Two questions in one prompt.'),
 }
 
