@@ -12,6 +12,78 @@ stale copy.
 ---
 
 
+## 2026-09-26 — Sherpa: Faktum, bigger type, a living sheen on the contours, camp six yellow
+
+Innes, in order: *"this should be yellow to distinguish it from past
+simple"* (camp six), *"change text to Faktum font and make some bigger
+including the main Title Sherpa Tensing"*, *"faktum in all those pages"*,
+*"can you put a magic animated living shiny sheen wave effect across the
+topology?"*, *"'SHERPA TENSING' should be bigger and 'route up the tenses'
+too"*. Commits `6b8618d` (yellow) and the one carrying this entry.
+
+- **Camp six yellow** — `lesson-template/split_accent.py`. A pale key colour
+  cannot be both itself and a 3:1 text colour, so the page splits: `--accent`
+  is the fill (`#F1CF50`, from the key `#F1D779` in OKLCh), `--accent-text`
+  (the old `#A8860B`) carries the two text uses. `recolour_family.floors()`
+  measures 3:1 on `--accent-text` when a page has one, so a later pass cannot
+  walk the fill back to mustard. Descent eight takes the same yellow. Camp
+  one (baby pink) has the same shape of problem if Innes ever asks.
+- **Faktum on all 26 pages** — `tools/sherpa_type.py` (fonts in
+  `Sherpa Tensing/fonts/`, from `~/Downloads/Archives/Faktum-Font.zip` via
+  `--install`; Rene Bieder EULA, self-hosted like the Sailing lesson's). The
+  page CSS is never edited: a fenced block repeats every font rule one class
+  stronger, in the same @media, so the cascade keeps its winners. Wordmark
+  `clamp(30px,5vw,42px)`, its line `clamp(14px,1.6vw,17px)`, headings +15%
+  (40px and up stay), body +1px (floor 12px), a `clamp()` grows only at the
+  top, camp two's frequency widget keeps its sizes (`KEEP_SIZE`). Form
+  controls get Faktum outright (30 buttons were in Arial). Fraunces is gone
+  from the font link; Inter stays as the fallback for Cyrillic, Arabic, CJK
+  and symbols (Faktum covers every Latin letter on these pages).
+  **`node tools/sherpa_type_check.js`** serves the repo and HEAD side by side
+  and fails on non-Faktum Latin text, sideways scroll, text spilling a box,
+  a wordmark on two lines, and SVG labels that newly collide; things already
+  wrong at HEAD are listed, not failed. It found and fixed: the wordmark
+  wrapping on a phone (now its own row below 700px), camp two's widget
+  overflowing, and five pre-existing label faults (camp six and descent
+  eight labels into the NOW bar, moved onto the bar they name; camp one
+  HAPPENING and descent one IS BEING DONE crossed by NOW, given an SVG paper
+  halo; descent twelve WILL HAVE BEEN DONE wider than its bar, two lines).
+- **The sheen** — `tools/sherpa_sheen.py`: two slanted bands of light
+  (repeating gradients, one period per cycle, so no seam) drift across the
+  page in opposite directions and light the contours through a mask of
+  `Sherpa Tensing/topo-sheen.svg` (the tile at full opacity, 1.5x width),
+  cut to the contour areas on lesson pages, the whole tile on the route map.
+  Colours per page from its own tokens in OKLCh. Off under
+  prefers-reduced-motion and in print. Transform-only:
+  **`node tools/sherpa_sheen_perf.js`** — at rest it costs 0 style recalcs
+  and <1% main thread; when something else drives frames it costs a few
+  (55 vs 60 fps on a 4x-throttled phone, 48 on the hub). The first version
+  of that tool measured only the busy case and made it look like a
+  main-thread animation; read both lines.
+- **The route map now wears halos too** (in its sheen block): the light
+  crosses its whole page. `tools/sherpa_topo_clear.js` now covers all 26
+  pages, finds shapes by geometry (`isPointInFill`, since the map's clouds
+  have pointer-events:none), and accepts SVG's paper-outline halo.
+- The three generated blocks (`sherpa-topo`, `sherpa-type`, `sherpa-sheen`)
+  each rewrite themselves in place; before, each tool re-inserted at
+  `</head>` and made the other look stale. All three `--check` clean.
+- All Sherpa diagram cards and the route map thumbnail re-rendered (their
+  labels are Faktum now).
+
+**Next (Innes asked, not done here): translation on the lesson pages.** With
+a language on, the hub is complete, but a lesson page translates only the
+rule-card examples that carry `data-tr`: its title, intro, headings, rule
+text, notes, diagram intros and quiz hints stay English (measured with German:
+~1,300 English-only blocks over 25 pages, of which the chrome is what should
+translate; conjugation tables, quiz stems, options and signal-word lists are
+the English being taught and stay). About 100 example sentences have no
+translation at all (`.ex` without `data-tr`, `p.example`, `.use-ex`).
+
+**Machine note:** a `find / -iname Monocraft*.ttf` from another session
+(started 16:39) was still sweeping the whole disk at 19:30 and slowed every
+tool here; Bash calls timed out while PowerShell answered.
+
+
 ## 2026-09-26 — The logo is one standard on every page, and a check holds it there
 
 Innes flagged interior-design-vocabulary: a tiny "Forbes" over an oversized

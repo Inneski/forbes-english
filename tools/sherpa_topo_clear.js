@@ -21,12 +21,15 @@ const ROOT = path.resolve(__dirname, '..');
 const { chromium } = require(path.join(ROOT, 'node_modules', 'playwright'));
 
 const files = process.argv.slice(2).length ? process.argv.slice(2)
-  : fs.readdirSync(ROOT).filter(f => /^sherpa-tensing-.*\.html$/.test(f) && f !== 'sherpa-tensing-route-map.html').sort();
+  : fs.readdirSync(ROOT).filter(f => /^sherpa-tensing-.*\.html$/.test(f)).sort();   // the route map too: the sheen crosses its text
 const WIDTHS = [390, 768, 1280, 1920];
 
 function measure() {
   const before = getComputedStyle(document.body, '::before');
-  if (before.content === 'none' || !/url\(/.test(before.maskImage || before.webkitMaskImage || '')) return { missing: true };
+  // lines come from the contour layer (body::before) on a lesson page, or the page
+  // background on the route map; the sheen (div.topo-sheen) lights them on both
+  const layer = before.content !== 'none' && /url\(/.test(before.maskImage || before.webkitMaskImage || '');
+  if (!layer && !document.querySelector('.topo-sheen')) return { missing: true };
   // the paper, as computed style writes it
   const probe = document.createElement('i');
   probe.style.color = getComputedStyle(document.documentElement).getPropertyValue('--paper').trim();
@@ -49,7 +52,7 @@ function measure() {
   while ((n = tw.nextNode())) {
     if (!n.textContent.trim()) continue;
     const el = n.parentElement;
-    if (el.closest('script,style,noscript')) continue;
+    if (el.closest('script,style,noscript,.sr-only')) continue;       // .sr-only is never drawn
     const cs = getComputedStyle(el);
     if (cs.visibility === 'hidden' || cs.display === 'none' || +cs.opacity === 0) continue;
     const rg = document.createRange();
@@ -61,16 +64,26 @@ function measure() {
     const svg = el.closest('svg');
     if (svg) {
       if (g !== null) continue;              // the svg sits on a card
-      window.scrollTo(0, rc.top + scrollY - innerHeight / 2);
-      const r2 = rg.getBoundingClientRect();
-      const hits = document.elementsFromPoint(r2.left + r2.width / 2, r2.top + r2.height / 2);
+      // a paper outline behind the glyphs (paint-order: stroke) is SVG's halo
+      const ts = getComputedStyle(el.closest('text') || el);
+      if (ts.paintOrder.startsWith('stroke') && ts.stroke === paper && parseFloat(ts.strokeWidth) >= 2) continue;
+      // is the label's centre inside a filled shape drawn before it? Geometry, not
+      // elementsFromPoint, which skips shapes with pointer-events:none (the map's clouds)
+      const t = el.closest('text') || el;
       let shape = getComputedStyle(svg).backgroundColor !== 'rgba(0, 0, 0, 0)';
-      for (const h of hits) {
-        if (shape || h === svg) break;
-        if (h.closest && h.closest('svg') === svg && !/^(text|tspan)$/i.test(h.tagName)) {
-          const s = getComputedStyle(h);
-          if (s.fill && s.fill !== 'none' && +s.fillOpacity > 0.3 && +s.opacity > 0.3) shape = true;
-        }
+      const cx = rc.left + rc.width / 2, cy = rc.top + rc.height / 2;
+      for (const sh of svg.querySelectorAll('rect,path,polygon,circle,ellipse')) {
+        if (shape) break;
+        if (sh.closest('defs,clipPath,mask,pattern,symbol')) continue;
+        if (!(sh.compareDocumentPosition(t) & Node.DOCUMENT_POSITION_FOLLOWING)) continue;   // drawn after the label
+        const s = getComputedStyle(sh);
+        let op = 1;
+        for (let a = sh; a && a !== svg; a = a.parentElement) op *= +getComputedStyle(a).opacity;
+        if (!s.fill || s.fill === 'none' || +s.fillOpacity * op < 0.3 || s.display === 'none') continue;
+        const m = sh.getScreenCTM();
+        if (!m) continue;
+        const p = new DOMPoint(cx, cy).matrixTransform(m.inverse());
+        if (sh.isPointInFill(p)) shape = true;
       }
       if (!shape) out.push(`svg text on the bare paper: ${label}`);
       continue;

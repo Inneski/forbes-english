@@ -57,8 +57,10 @@ HALO = '0 0 2px var(--paper),0 0 4px var(--paper),0 0 6px var(--paper),0 0 8px v
 AREAS = [('L', 24, 1240, 1100), ('R', 46, 1240, 1100), ('L', 68, 1240, 1100), ('R', 88, 1240, 1000)]
 
 
-def block():
-    tile = 'url("%s") 0 0/640px 640px repeat' % TILE.replace(' ', '%20')
+def area_mask(tile_path):
+    """The mask declarations: the tile intersected with the union of the areas.
+    tools/sherpa_sheen.py draws its glint through the same areas with its own tile."""
+    tile = 'url("%s") 0 0/640px 640px repeat' % tile_path.replace(' ', '%20')
     layers = [tile,
               'linear-gradient(#000 0,#000 40%,transparent 100%) 0 0/100% 900px no-repeat',
               'linear-gradient(to top,#000 0,#000 30%,transparent 100%) 0 100%/100% 700px no-repeat']
@@ -67,16 +69,21 @@ def block():
         layers.append('radial-gradient(closest-side,#000 35%%,transparent 100%%) %s %d%%/%dpx %dpx no-repeat'
                       % (x, y, w, h))
     n = len(layers) - 1
+    return ['  -webkit-mask:%s;' % ','.join(layers),
+            '  mask:%s;' % ','.join(layers),
+            '  /* after the shorthand, which resets it: the tile intersects the union of the areas */',
+            '  -webkit-mask-composite:%s;' % ','.join(['source-in'] + ['source-over'] * n),
+            '  mask-composite:%s;' % ','.join(['intersect'] + ['add'] * n)]
+
+
+def block():
     css = ['/* contour areas (tools/sherpa_topo.py): the hub\'s tile as a mask, drawn in this',
            '   page\'s --accent-dark, in six areas; text on the paper wears a paper halo */',
            'body{position:relative;}',
            'body::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;',
-           '  background:var(--accent-dark);opacity:%s;' % OPACITY,
-           '  -webkit-mask:%s;' % ','.join(layers),
-           '  mask:%s;' % ','.join(layers),
-           '  /* after the shorthand, which resets it: the tile intersects the union of the areas */',
-           '  -webkit-mask-composite:%s;' % ','.join(['source-in'] + ['source-over'] * n),
-           '  mask-composite:%s;}' % ','.join(['intersect'] + ['add'] * n),
+           '  background:var(--accent-dark);opacity:%s;' % OPACITY] + area_mask(TILE)
+    css[-1] += '}'
+    css += [
            '%s{text-shadow:%s;}' % (','.join(HALO_ON), HALO),
            '/* these two take a background on hover, where a halo would be a glow */',
            '.btnrow > a.route-link:hover,.voice-bar a.ghost:hover{text-shadow:none;}',
@@ -106,7 +113,10 @@ def main():
         if not re.search(r'<main\b', src):
             bad.append('%s: no <main>: not a lesson page' % name)
             continue
-        new = FENCE.sub('', src).replace('</head>', block() + '</head>', 1)
+        # rewrite the block where it stands (tools/sherpa_type.py keeps one beside it,
+        # and moving either would make the other look stale); insert only when absent
+        new = (FENCE.sub(lambda m: block(), src, count=1) if FENCE.search(src)
+               else src.replace('</head>', block() + '</head>', 1))
         if check:
             if new != src:
                 bad.append('%s: contour block missing or stale' % name)
