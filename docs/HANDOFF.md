@@ -66,6 +66,24 @@ turquoise and make the oranges more tasteful"*.
   now uses the page's on-accent ink. The five library cards that are renders
   of these diagrams were re-rendered (`SherpaCamps/camp-seven…`,
   `camp-eight…`, `camp-nine…`, `descent-seven…`, `Sherpa Tensing/thumb-route-map.png`).
+- **Later the same day**, Innes: *"maybe a darker thinner line would look
+  better"* — the contours are now 0.6px/1px in the dark plum `#5A2438`, and
+  the small pink labels on the paper carry a paper-coloured halo (survey-map
+  style) so no line touches them (`534050a`). Then: *"Make present continuous
+  a baby pink, number 5 also softer green and 8 even more baby blue
+  turquoise"* — pass `2026-09-26b` of `recolour_family.py`: camp 1 `#E66085`
+  -> `#F2ADBF`, camp 5 `#70A43A` -> `#99BA7D`, camp 8 `#6DBECD` -> `#97D0E5`,
+  on camps 1, 5, 8 and descents one and nine. The tool is now run by pass
+  name and refuses a pass that has been applied; its lightness lift scales
+  with distance from white (a flat lift burned camp one's pale ripple rings
+  to white). **On the route map only the colour-key uses move**: `#E66085`
+  is also the hub's own accent, and a baby pink cannot carry text, so the
+  hub keeps its pink. Each camp page's text-bearing `--accent` was walked
+  back to 3:1 and `--accent-dark` to 4.5:1, so on camp one the text accents
+  are a dusty rose (`#BE7D8F`, `#926674`) while the fills are baby pink.
+  Descent nine's "GOING TO BE DONE" label was wider than its bar (dark
+  letters on the dark page; it was already so before) and is now two lines.
+  Six more cards re-rendered, camp one's from `svg.ring-hero-svg`.
 - **Not moved, deliberately**: `lesson-template/tense-palette.css` and the
   Block Camp pages that load it keep the old three values (a separate family
   with its own colour gates), as do the stopped Sherpa deck builder's
