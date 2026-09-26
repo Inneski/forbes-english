@@ -12,6 +12,62 @@ stale copy.
 ---
 
 
+## 2026-09-26 — The logo is one standard on every page, and a check holds it there
+
+Innes flagged interior-design-vocabulary: a tiny "Forbes" over an oversized
+ENGLISH that overlapped it, against library.html's lockup, which he called
+well proportioned. A render of every page's logo into one contact sheet found
+the same fault, or a stand-in for the logo, on about 180 pages. Commits
+`5bc1371` `1c5a5bf` `c6eb802` `74a3e53` `223c416`, all pushed and verified
+live.
+
+**The standard** (HOUSE-STYLE §2 has the numbers): the Forbes trace, ENGLISH
+beneath it with its ink exactly the wordmark's width. The width is set with
+SVG `textLength`, never letter-spacing, so it holds in any face, including a
+fallback. Three forms:
+
+- **decks**: the template's `.fe-logo`, DM Sans 600. It is now
+  `x="24.41" textLength="151.2"`; all 145 built decks were moved over.
+- **hand-built lessons**: ENGLISH as `<text x="675" y="1034" textLength="1520">`
+  inside the trace's SVG, DM Sans 600, in the page's own two colours.
+- **chrome and top bands** (library, index, front-page, pricing, 404, locked,
+  account, ielts.html's band and so every hub, Block Camp, level-checker's
+  band): `.fe-logo-en` / `.tb-logo-en`, Barlow Condensed 800, gold.
+
+**`python3 tools/check_logos.py`** fails any page off the standard. Proven
+failing on pre-fix copies of seven pages, one per fault type. 377 pages pass.
+Run it after adding a hand-built page.
+
+What was wrong, for the record:
+
+- 68 hand-built lessons drew ENGLISH as SVG text with hand-set tracking, most
+  of them far wider than the wordmark. They were converted in place, each
+  keeping its logo box, so no layout moved.
+- 33 used a stand-in: an FE roundel or monogram, "Forbes English" typed in the
+  page's face, a JPEG of the logo (vw_grammar_atelier), or the wordmark over a
+  separately styled ENGLISH `<div>`.
+- The chrome's JS width-matcher never ran on index.html, because ENGLISH was
+  `display:block`, so it measured the whole column. It was missing from pricing,
+  404 and locked. 404 and locked also set "Forbes" in Playfair text. The
+  matcher is gone: ENGLISH lives inside the SVG.
+- The hub band set ENGLISH at .385em of a 2.93em wordmark, which was squashed.
+  Fixed in ielts.html and in the Block Camp templates, then regenerated.
+- The 26 Block Camp decks never load DM Sans, so ENGLISH fell back to Arial,
+  5–10% narrow, and failed check-lesson.js. `textLength` fixes the width; they
+  now PASS with the note "fallback face, width pinned".
+
+Not changed: level-checker's masthead, which takes the level's face on purpose
+and is exempt in the checker. Pages with no Forbes mark at all were also left
+alone: wild-frame's film emblem, the Sherpa pages, the RPGs, the cheat sheets.
+`forbes-english-ielts-listening-s2.html` was open in another session, so its
+deck logo still has the old tracking. The next rebuild from the template
+fixes it.
+
+`HOUSE STYLE/forbes-english-logo.svg` (untracked, 2026-09-24) sets ENGLISH in a
+slab serif after logo 4. It is not what the site uses. Innes pointed at the
+library lockup as the one to match.
+
+
 ## 2026-09-26 — grammar.html redesigned: a landing page with the tenses in colour
 
 Innes: *"redesign this forbesenglish.com/grammar so it looks cool like my
