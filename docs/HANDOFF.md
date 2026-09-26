@@ -12,6 +12,54 @@ stale copy.
 ---
 
 
+## 2026-09-26 — Block Camp Present Continuous 1a: right answers bring the picture to life
+
+Innes dropped 13 Gemini clips in `incoming/Present continuous Block Camp
+videos/` for `blockcamp-present-continuous.html`, then: *"alternate the two
+end ones on a loop, rolling guy comes with high score."* Same mechanism as
+Present Simple Part 1 (the 2026-09-23 entry), plus an end loop.
+
+  * **Every clip was placed by its first frame**, not by its content: a
+    64×36 RGB mean difference against all 41 plates. Ten opened on their
+    plate at 2.5–3.6 levels (next best 30+). `34860b1e` → bg09 at 12.8 is
+    the same frame with a figure rising into shot. Three are re-framed
+    renders of their scene (bg27 villagers 41.7, bg32 portal 29.9, bg36
+    creeper 36.8), so those slides now use the clip's own first frame as the
+    plate — `bg27-fountain.jpg`, `bg32-portal.jpg`, `bg36-creeper.jpg`, the
+    `bg12-dig` idiom. The time-signals page keeps the originals.
+  * Map: bg09 34860b1e · bg33 798e7046 · bg11 4168d20e · bg27 785d5b17 ·
+    bg18 618c595a · bg08 4e0ec43a · bg26 93a3acb7 · bg36 258d25f5 ·
+    bg23 9aa9f920 · bg15 d2f14f0a · bg37 ddfcc482 · bg41 b2e1cfda ·
+    bg32 6e0fb119. **Q1 (bg14, feeding the chickens) has no clip**: none of
+    the 13 opens on it.
+  * **"The two end ones"** are the last two slides: Results (bg41,
+    celebration) and Activate (bg32, the portal). Each opens on its own clip
+    1.2 s after arrival, then they alternate for as long as the slide is up
+    (`data-clip-loop`). **"Rolling guy"** is the Steve-vs-skeleton clip
+    (bg08, the sort slide's own reward; he dive-rolls at 2–3 s). At 75%+ —
+    the deck's own Strong and Perfect bands — he joins the round, second
+    (`data-clip-high`). First round has sound; later rounds are silent,
+    because the Activate loop runs under a speaking task. Two `<video>`
+    elements, so each cut goes from one clip's last frame straight to the
+    next one's first. Pauses in a hidden tab.
+  * Gap 2's clip is the bell: `data-clip-key` on "ringing the bell right
+    now". Gap 1's creeper matches none of its three sentences, so all three
+    must be right.
+  * Encoded as before (H.264 CRF 27 veryslow, faststart, AAC 96k). **All 13
+    carry sound at source.** 15 MB.
+  * Tested in headless Edge: all 12 play on a right answer with audio
+    decoding; wrong mc, wrong sort/match/order, a wrong gap and a wrong key
+    gap do not; leaving a slide parks the clip; both end slides loop in order
+    at low and high score, swap elements on every cut, mute from round two;
+    hidden tab pauses. Screenshots of the three new plates: no card crosses
+    a character.
+  * **Found and fixed:** slide 17 (Gap 2) overflowed by 3px (word-bank
+    margin 12 → 8px).
+  * **Found, not fixed:** `check-lesson.js` LOGO fails on all 26 Block Camp
+    decks (ENGLISH not in DM Sans). That conflicts with the slab-serif
+    wordmark rule, so it is a family-wide call, not a one-deck patch.
+  * `blockcamp-present-continuous-2.html` (1b) still has no clips.
+
 ## 2026-09-26 — The Writer's Nightmare: SHIPPED as a 38-slide panel deck, 11 languages
 
 `build_writersnightmare.py` + `i18n_writersnightmare.py` (English) and one

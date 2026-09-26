@@ -207,6 +207,21 @@ html, body {
     linear-gradient(180deg, var(--wash-edge) 0%, var(--wash-mid) 20%,
                             var(--wash-mid) 80%, var(--wash-edge) 100%);
 }
+/* A correct answer can bring the slide's picture to life (data-clip). The clip
+   opens on the plate's exact frame, so it sits between the picture and the
+   wash at the picture's own strength and the handover cannot be seen.
+   THE STILL MUST GO WHILE THE CLIP SHOWS. Both are translucent, so with the
+   still left in place it showed through the moving clip as a ghost frame.
+   The swap is instant on purpose: a fade would dip the picture, and the
+   first frame is the still, so a cut is invisible. There are two clip
+   elements so a looping slide can cut from one clip's last frame straight
+   onto the next one's first. */
+.bg-clip {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  opacity: 0; filter: saturate(0.92); pointer-events: none;
+}
+.bg-clip.run { opacity: var(--bg-opacity); }
+.bg-layer.clip-on::before { opacity: 0; }
 /* The cover slide shows the hero at FULL strength — no wash, no dimming. */
 .stage.on-cover .bg-layer::before { opacity: 1; filter: none; }
 /* Centre scrim: guarantees cover-text contrast over ANY hero — light, dark,
@@ -889,7 +904,7 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
     width: 1280px; height: auto;      /* let the slides stack into pages */
     overflow: visible; box-shadow: none;
   }
-  .bg-layer, .deck-bar, .lang-select, .nav-btn, .deck-rail { display: none !important; }
+  .bg-layer, .bg-clip, .deck-bar, .lang-select, .nav-btn, .deck-rail { display: none !important; }
   /* A delayed animation must never decide what lands on a printed page. */
   .slide.is-active .card,
   .slide.is-active .card + .card,
@@ -2047,7 +2062,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
   <div class="stage" id="stage">
 
     <!-- Background pattern: driven entirely by --hero in the CSS above. -->
-    <div class="bg-layer" role="presentation"></div>
+    <div class="bg-layer" role="presentation"><video class="bg-clip" playsinline preload="none" aria-hidden="true"></video><video class="bg-clip" playsinline preload="none" aria-hidden="true"></video></div>
 
     <!-- ══════════════════════════════════════════════════════════
          REPLACE 2 of 2: SLIDES
@@ -2248,7 +2263,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="mc" data-bg="present-continuous-time-signals/bg09.jpg" data-side="left" data-vpos="top" data-nudge="right">
+    <section class="slide" data-type="mc" data-bg="present-continuous-time-signals/bg09.jpg" data-clip="present-continuous-time-signals/bg09.mp4" data-side="left" data-vpos="top" data-nudge="right">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="qEyebrow">Practice</span> &middot; 2 / 6</div>
         <h2 class="slide-title" data-i18n="qTitleSpell">Spell the -ing form</h2>
@@ -2267,7 +2282,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="mc" data-bg="present-continuous-time-signals/bg33.jpg" data-side="left" data-vpos="top">
+    <section class="slide" data-type="mc" data-bg="present-continuous-time-signals/bg33.jpg" data-clip="present-continuous-time-signals/bg33.mp4" data-side="left" data-vpos="top">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="qEyebrow">Practice</span> &middot; 3 / 6</div>
         <h2 class="slide-title" data-i18n="qTitleForm">Choose the right form</h2>
@@ -2286,7 +2301,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="mc" data-bg="present-continuous-time-signals/bg11.jpg" data-side="left" data-vpos="top" data-nudge="fine" style="--nx:133px">
+    <section class="slide" data-type="mc" data-bg="present-continuous-time-signals/bg11.jpg" data-clip="present-continuous-time-signals/bg11.mp4" data-side="left" data-vpos="top" data-nudge="fine" style="--nx:133px">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="qEyebrow">Practice</span> &middot; 4 / 6</div>
         <h2 class="slide-title" data-i18n="qTitleForm">Choose the right form</h2>
@@ -2305,7 +2320,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="mc" data-bg="present-continuous-time-signals/bg27.jpg" data-side="left" data-vpos="top">
+    <section class="slide" data-type="mc" data-bg="present-continuous-time-signals/bg27-fountain.jpg" data-clip="present-continuous-time-signals/bg27.mp4" data-side="left" data-vpos="top">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="qEyebrow">Practice</span> &middot; 5 / 6</div>
         <h2 class="slide-title" data-i18n="qTitleSignal">Choose the right signal</h2>
@@ -2324,7 +2339,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="mc" data-bg="present-continuous-time-signals/bg18.jpg" data-side="right" data-vpos="top">
+    <section class="slide" data-type="mc" data-bg="present-continuous-time-signals/bg18.jpg" data-clip="present-continuous-time-signals/bg18.mp4" data-side="right" data-vpos="top">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="qEyebrow">Practice</span> &middot; 6 / 6</div>
         <h2 class="slide-title" data-i18n="qTitleTense">Which tense does it need?</h2>
@@ -2343,7 +2358,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="sort" data-bg="present-continuous-time-signals/bg08.jpg" data-side="right" data-vpos="top">
+    <section class="slide" data-type="sort" data-bg="present-continuous-time-signals/bg08.jpg" data-clip="present-continuous-time-signals/bg08.mp4" data-side="right" data-vpos="top">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="sortEyebrow">Practice</div>
         <h2 class="slide-title" data-i18n="sortTitle">How does each verb take -ing?</h2>
@@ -2366,7 +2381,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="match" data-bg="present-continuous-time-signals/bg26.jpg" data-side="right" data-vpos="top">
+    <section class="slide" data-type="match" data-bg="present-continuous-time-signals/bg26.jpg" data-clip="present-continuous-time-signals/bg26.mp4" data-side="right" data-vpos="top">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="matchEyebrow">Practice</div>
         <h2 class="slide-title" data-i18n="matchTitle">How wide is that &lsquo;now&rsquo;?</h2>
@@ -2387,7 +2402,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="gap" data-bg="present-continuous-time-signals/bg36.jpg" data-side="right" data-vpos="bottom" data-nudge="up">
+    <section class="slide" data-type="gap" data-bg="present-continuous-time-signals/bg36-creeper.jpg" data-clip="present-continuous-time-signals/bg36.mp4" data-side="right" data-vpos="bottom" data-nudge="up">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="gap1Eyebrow">Practice</span> &middot; 1 / 2</div>
         <h2 class="slide-title" data-i18n="gap1Title">Write the -ing form</h2>
@@ -2413,13 +2428,13 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="gap" data-bg="present-continuous-time-signals/bg23.jpg" data-side="left" data-vpos="top">
+    <section class="slide" data-type="gap" data-bg="present-continuous-time-signals/bg23.jpg" data-clip="present-continuous-time-signals/bg23.mp4" data-side="left" data-vpos="top">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="gap2Eyebrow">Practice</span> &middot; 2 / 2</div>
         <h2 class="slide-title" data-i18n="gap2Title">Which words fit a tense in motion?</h2>
       </div></div>
       <div class="slide-body">
-        <div class="act-target" style="margin-bottom:12px">
+        <div class="act-target" style="margin-bottom:8px">
           <span class="act-target-label" data-i18n="bankLabel">Word bank:</span>
           <span class="bank-chip">every day</span> <span class="bank-chip">right now</span> <span class="bank-chip">these days</span> <span class="bank-chip">this evening</span>
         </div>
@@ -2429,7 +2444,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
           <p class="feedback" data-explain="<strong>these days</strong> stretches over weeks.<span class=&quot;sup&quot; data-lang=&quot;es&quot;><b>ES</b><span>abarca semanas</span></span><span class=&quot;sup&quot; data-lang=&quot;de&quot;><b>DE</b><span>&uuml;ber Wochen</span></span>"></p>
         </div>
         <div class="card gap-row" style="padding:12px 16px">
-          <p class="q-stem" style="margin-bottom:0;font-size:19px">Look! The villager is ringing the bell <input class="gap" data-answer="right now" aria-label="gap" style="width:210px">.</p>
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">Look! The villager is ringing the bell <input class="gap" data-answer="right now" data-clip-key aria-label="gap" style="width:210px">.</p>
           <p class="feedback" data-explain="<strong>right now</strong> is this exact second.<span class=&quot;sup&quot; data-lang=&quot;es&quot;><b>ES</b><span>este mismo segundo</span></span><span class=&quot;sup&quot; data-lang=&quot;de&quot;><b>DE</b><span>genau diese Sekunde</span></span>"></p>
         </div>
         <div class="card gap-row" style="padding:12px 16px">
@@ -2443,7 +2458,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="order" data-bg="present-continuous-time-signals/bg15.jpg" data-side="left" data-vpos="top">
+    <section class="slide" data-type="order" data-bg="present-continuous-time-signals/bg15.jpg" data-clip="present-continuous-time-signals/bg15.mp4" data-side="left" data-vpos="top">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="ord1Eyebrow">Practice</div>
         <h2 class="slide-title" data-i18n="ord1Title">Build the sentence</h2>
@@ -2459,7 +2474,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="order" data-bg="present-continuous-time-signals/bg37.jpg" data-side="right" data-vpos="top">
+    <section class="slide" data-type="order" data-bg="present-continuous-time-signals/bg37.jpg" data-clip="present-continuous-time-signals/bg37.mp4" data-side="right" data-vpos="top">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="ord1Eyebrow">Practice</div>
         <h2 class="slide-title" data-i18n="ord1Title">Build the sentence</h2>
@@ -2475,7 +2490,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="results" data-bg="present-continuous-time-signals/bg41.jpg" data-side="right" data-vpos="top">
+    <section class="slide" data-type="results" data-bg="present-continuous-time-signals/bg41.jpg" data-clip="present-continuous-time-signals/bg41.mp4" data-clip-auto data-clip-loop="present-continuous-time-signals/bg32.mp4" data-clip-high="present-continuous-time-signals/bg08.mp4" data-side="right" data-vpos="top">
       <div class="slide-body" style="align-items:center;text-align:center">
         <div class="score-big"><span id="scoreVal">0</span><span class="dim" style="font-size:34px">/<span id="scoreMax">0</span></span></div>
         <p class="prose" style="margin-top:18px" id="scoreMsg"></p>
@@ -2484,7 +2499,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="activate" data-bg="present-continuous-time-signals/bg32.jpg">
+    <section class="slide" data-type="activate" data-bg="present-continuous-time-signals/bg32-portal.jpg" data-clip="present-continuous-time-signals/bg32.mp4" data-clip-auto data-clip-loop="present-continuous-time-signals/bg41.mp4" data-clip-high="present-continuous-time-signals/bg08.mp4">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="actEyebrow">Activation</div>
         <h2 class="slide-title" data-i18n="actTitle">Now describe what is happening</h2>
@@ -3827,6 +3842,11 @@ function show(n) {
   // under the wash — so extra artwork never becomes a pasted-in box.
   stage.style.setProperty('--hero', slides[idx].dataset.bg
     ? `url('${slides[idx].dataset.bg}')` : '');
+  clipPark(); clipArm(slides[idx]);
+  if (slides[idx].hasAttribute('data-clip-auto')) {
+    const here = slides[idx];
+    setTimeout(() => clipPlay(here), 1200);
+  }
   // In branch mode idx/length is meaningless — a learner sees roughly half the
   // nodes — so progress and the counter come from the node itself.
   const cur = slides[idx];
@@ -3858,16 +3878,20 @@ function show(n) {
   if (gap && !answered.has(slides[idx])) setTimeout(() => gap.focus(), 60);
 }
 
-function renderResults() {
-  // Branch mode scores out of what this learner actually met. Counting every
-  // question in the file would mark them against a paper half of which was
-  // on the road not taken.
-  const max = BRANCH
+// Branch mode scores out of what this learner actually met. Counting every
+// question in the file would mark them against a paper half of which was
+// on the road not taken.
+function scoreOutOf() {
+  return BRANCH
     ? [...seenScored].reduce((n, s) => n + Math.max(1, countIn(s)), 0)
     : maxScore;
+}
+function scorePct() { const max = scoreOutOf(); return max ? score / max : 0; }
+
+function renderResults() {
   document.getElementById('scoreVal').textContent = score;
-  document.getElementById('scoreMax').textContent = max;
-  const pct = max ? score / max : 0;
+  document.getElementById('scoreMax').textContent = scoreOutOf();
+  const pct = scorePct();
   // innerHTML, not textContent: these strings are authored HTML like every
   // other data-i18n value, so &lsquo;did&rsquo; has to arrive as a quote mark
   // and not as the six literal characters "&lsquo;". The band was the one
@@ -3883,6 +3907,95 @@ function updateScoreChip() {
 }
 
 /* ── Answer handling ── */
+/* Correct-answer clips. A slide with data-clip fetches its clip when it is
+   shown and plays it once when the learner gets it right (anything that
+   reports through feedback() with ok, plus checkGaps below); the clip then
+   holds on its last frame. On a gap slide the clip illustrates one sentence,
+   so the gap marked data-clip-key decides; without one, every gap must be
+   right. A slide marked data-clip-auto plays 1.2 s after it is shown instead.
+   data-clip-loop makes it go round: its own clip, then the listed ones, then
+   its own again. data-clip-high joins the round, second, when the score is in
+   the top two bands (75%+). The first round has sound, later rounds are
+   silent: this loops under the speaking task. Leaving the slide rewinds.
+   Never under reduced motion or Save-Data, and a refused autoplay or a load
+   error leaves the still picture. */
+var clips = [...document.querySelectorAll('.bg-clip')];
+var bgClip = clips[0];
+var clipList = [], clipAt = 0, clipRound = 0;
+var clipCalm = (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) ||
+               !!(navigator.connection && navigator.connection.saveData);
+clips.forEach(v => {
+  v.addEventListener('playing', () => {
+    if (v !== bgClip) return;
+    v.classList.add('run');
+    v.parentNode.classList.add('clip-on');
+    clips.forEach(o => { if (o !== v) { o.pause(); o.classList.remove('run'); } });
+    clipQueue();
+  });
+  v.addEventListener('ended', () => { if (v === bgClip) clipNext(); });
+});
+function clipOther() { return clips.find(v => v !== bgClip); }
+function clipArm(slide) {
+  if (clipCalm || !bgClip || !slide || !slide.dataset.clip) return;
+  if (bgClip.getAttribute('src') !== slide.dataset.clip) {
+    bgClip.src = slide.dataset.clip;
+    bgClip.preload = 'auto';
+  }
+}
+function clipPark() {
+  clips.forEach(v => {
+    v.pause();
+    v.classList.remove('run');
+    if (v.readyState) v.currentTime = 0;
+  });
+  if (bgClip) bgClip.parentNode.classList.remove('clip-on');
+  clipList = []; clipAt = 0; clipRound = 0;
+}
+/* The answer click is the user gesture that lets a browser play sound, so
+   play() runs inside it. If sound is still refused (iOS on a timed clip,
+   say), play muted rather than not at all. */
+function clipStart(v, slide, muted) {
+  v.muted = muted;
+  const p = v.play();
+  if (p && p.catch) p.catch(() => {
+    if (slides[idx] !== slide || v.muted) return;
+    v.muted = true;
+    const q = v.play();
+    if (q && q.catch) q.catch(() => {});
+  });
+}
+function clipPlay(slide) {
+  if (clipCalm || !bgClip || !slide.dataset.clip || slides[idx] !== slide) return;
+  clipArm(slide);
+  if (slide.dataset.clipLoop) {
+    clipList = [slide.dataset.clip,
+                scorePct() >= .75 ? slide.dataset.clipHigh : '',
+                ...slide.dataset.clipLoop.split(/\s+/)].filter(Boolean);
+    clipAt = 0; clipRound = 0;
+  }
+  clipStart(bgClip, slide, false);
+}
+// While one clip of a round plays, the other element fetches the next.
+function clipQueue() {
+  if (clipList.length < 2) return;
+  const next = clipOther(), src = clipList[(clipAt + 1) % clipList.length];
+  if (next.getAttribute('src') !== src) { next.src = src; next.preload = 'auto'; }
+  else if (next.readyState) next.currentTime = 0;
+}
+// The ended clip keeps its last frame on screen until the next one is playing.
+function clipNext() {
+  if (clipList.length < 2 || document.hidden) return;
+  clipAt = (clipAt + 1) % clipList.length;
+  if (clipAt === 0) clipRound++;
+  bgClip = clipOther();
+  clipStart(bgClip, slides[idx], clipRound > 0);
+}
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) { clips.forEach(v => v.pause()); return; }
+  if (!clipList.length || !bgClip.classList.contains('run')) return;
+  if (bgClip.ended) clipNext(); else clipStart(bgClip, slides[idx], true);
+});
+
 function award(slide, ok) {
   if (answered.has(slide)) return;
   answered.add(slide);
@@ -3891,6 +4004,7 @@ function award(slide, ok) {
 }
 
 function feedback(slide, ok, extra, ownExplain) {
+  if (ok) clipPlay(slide);
   const el = slide.querySelector('.feedback');
   if (!el) return;
   // An option's own explanation wins: telling a learner why THEIR answer was
@@ -4476,6 +4590,9 @@ function checkGaps(slide) {
   const btn = slide.querySelector('[data-action="check"]');
   if (btn) btn.disabled = true;
   updateScoreChip();
+  const clipKey = slide.querySelector('.gap[data-clip-key]');
+  if (clipKey ? clipKey.classList.contains('correct') : !slide.querySelector('.gap.wrong'))
+    clipPlay(slide);
   // In branch mode a gap slide may pay into the ledger, but only when every
   // gap on it is right. Without this a scored slide costs the learner effort
   // and returns nothing to the state that picks their ending.
