@@ -75,17 +75,22 @@ HEX = r'(?<!&)#([0-9A-Fa-f]{6})\b'
 SHARED_ON = 4        # a colour on this many Sherpa pages is shared diagram furniture
 
 
-def move(dh=0.0, dl=0.0, kc=1.0):
+def move(dh=0.0, dl=0.0, kc=1.0, from_accent=False):
     """Turn hue by dh degrees, cut chroma by kc, and lift lightness by dl.
 
     Only the light half of the ramp lifts, and in proportion to its distance
     from white, so the accent gets the full dl and a pale tint almost none
     instead of burning out to #FFFFFF. (Pass a first ran with a flat lift,
     which washed camp 8's time band to #E2FFFF; the review caught it and the
-    pages were replayed from ff8173e with this one — see --replay.)"""
+    pages were replayed from ff8173e with this one — see --replay.)
+
+    from_accent=True (pass c): "the light half" starts at the accent itself
+    rather than at L 0.5, for dark accents (maroon, violet) that would
+    otherwise not lift at all; anything darker than the accent stays put."""
     def f(h, acc_L):
         L, C, H = to_lch(h)
-        up = dl * (1 - L) / max(1e-6, 1 - acc_L) if L > 0.5 else 0.0
+        floor = acc_L - 1e-3 if from_accent else 0.5
+        up = dl * (1 - L) / max(1e-6, 1 - acc_L) if L > floor else 0.0
         return from_lch(L + up, C * kc, H + math.radians(dh))
     return f
 
@@ -111,6 +116,19 @@ PASSES = {
             'sherpa-tensing-descent-nine-going-to-passive.html']),
         ('8 present perfect continuous', '#6DBECD', move(12, .07, .80), 14, [
             'sherpa-tensing-camp-eight-present-perfect-continuous.html']),
+    ],
+    # Innes: "softer colors on 4, 10 & 11". 10 and 11 took the middle of three
+    # candidates; 4 the gentlest, because at that lightness present perfect
+    # sat too close to camp 8's new light turquoise on the map.
+    '2026-09-26c': [
+        ('4 present perfect', '#36797E', move(0, .10, .70, True), 14, [
+            'sherpa-tensing-camp-four-present-perfect.html',
+            'sherpa-tensing-descent-four-present-perfect-passive.html']),
+        ('10 past perfect', '#6E0B24', move(0, .16, .60, True), 14, [
+            'sherpa-tensing-camp-ten-past-perfect.html',
+            'sherpa-tensing-descent-ten-past-perfect-passive.html']),
+        ('11 past perfect continuous', '#4B1A7A', move(0, .16, .60, True), 14, [
+            'sherpa-tensing-camp-eleven-past-perfect-continuous.html']),
     ],
 }
 
@@ -252,6 +270,10 @@ def recolour_map(src, canon):
         n0 += k
         src, k = re.subn(r'(--c:)%s' % re.escape(old), lambda m: m.group(1) + new, src, flags=re.I)
         n0 += k
+        # the glyph on a "no camp" diamond is stroked in its tense's colour
+        # (passes a-c missed it: camp 8's and 11's kept their old colours)
+        src, k = re.subn(r'(stroke=")%s(")' % re.escape(old), lambda m: m.group(1) + new + m.group(2), src, flags=re.I)
+        n0 += k
         # a chip carries its ink as --k next to --c; keep it the row's ink
         src = re.sub(r'(--c:%s;--k:)#[0-9A-Fa-f]{6}' % re.escape(new), lambda m: m.group(1) + ink, src, flags=re.I)
         lines.append('  %s  %s -> %s: %d key use(s); row text %s at %.2f' % (MAP, old, new, n0, ink, contrast(new, ink)))
@@ -315,7 +337,12 @@ def main():
     if gone:
         sys.exit('! %s: %s no longer on the route map; this pass has been applied'
                  % (args[0], ', '.join(gone)))
-    print('\n  pass %s%s\n' % (args[0], '   [dry run]' if DRY else ''))
+    # the same two guards replay() applies: shared furniture never moves, and a
+    # label keeps its contrast. (Until 2026-09-26 this path had neither; pass c
+    # went through it and lifted camp 10's and 11's captions to 2.3:1.)
+    sherpa = [p for p in os.listdir(ROOT) if p.startswith('sherpa-tensing-') and p.endswith('.html') and p != MAP]
+    shared = shared_colours(open(os.path.join(ROOT, p), encoding='utf-8').read() for p in sherpa)
+    print('\n  pass %s%s   (%d shared colours held)\n' % (args[0], '   [dry run]' if DRY else '', len(shared)))
     fails, canon = 0, {}
     for name, accent, fn, tol, files in fams:
         canon[accent] = fn(accent, to_lch(accent)[0])
@@ -323,12 +350,14 @@ def main():
         for f in files:
             path = os.path.join(ROOT, f)
             src = open(path, encoding='utf-8').read()
-            mapping = collect(src, accent, fn, tol)
+            paper = tokens(src).get('--paper', '#FFFFFF')
+            mapping = collect(src, accent, fn, tol, shared)
             for old, new in sorted(mapping.items()):
                 print('      %-50s %s -> %s' % (os.path.basename(f), old, new))
             new_src, lines, bad = floors(rewrite(src, mapping))
+            new_src, tl = keep_text(new_src, mapping, paper)
             fails += bad
-            print('\n'.join(lines))
+            print('\n'.join(lines + tl))
             if not DRY and new_src != src:
                 open(path, 'w', encoding='utf-8', newline='\n').write(new_src)
         print('')

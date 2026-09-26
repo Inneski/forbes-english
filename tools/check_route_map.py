@@ -10,7 +10,10 @@ them. This checks both directions, so a catalogue change or a careless edit
 shows up as a line of output instead of a wrong badge nobody notices.
 
     python tools/check_route_map.py              # exit 1 if anything is wrong
-    python tools/check_route_map.py <copy.html>  # check a copy instead
+    python tools/check_route_map.py <copy.html>  # check a copy instead (map only)
+
+With no argument it also checks the course pages: text drawn on each page's
+--accent must clear 4.5:1 (check_pages).
 
 `tools/build_hubs.py` runs the same check (warn-only) on every hub build,
 because that is when a catalogue change is most likely to have happened.
@@ -184,6 +187,12 @@ def check(rows, page=PAGE):
                     if contrast(col, mix) < 4.5:
                         bad.append('.%s text %s is %.2f:1 where a contour line crosses it' % (rule, col, contrast(col, mix)))
 
+    # the glyph on a "no camp" diamond is drawn in the tense's key colour, and
+    # a recolour has to move it too (camp 8's and 11's were left behind)
+    for col, body in re.findall(r'<g class="camp-dot no-camp" data-color="(#[0-9A-Fa-f]{6})"[^>]*>(.*?)</g>\s*<text', s, re.S):
+        for st in set(re.findall(r'stroke="(#[0-9A-Fa-f]{6})"', body)) - {'#FFFFFF', col.upper(), col.lower(), col}:
+            bad.append('a "no camp" glyph is stroked %s but its diamond\'s key colour is %s' % (st, col))
+
     # no free lesson may be locked behind Pro lessons only: a free learner
     # could never open it (used to sat behind camp 3 until 2026-09-25)
     slug = lambda f: f[len(FAMILY):-5]
@@ -205,10 +214,55 @@ def check(rows, page=PAGE):
     return bad
 
 
+def _css_rules(src):
+    """(selector, body) for every rule in the page's <style> blocks. Split on
+    braces rather than matched with one regex: a regex over a whole lesson
+    backtracks for minutes."""
+    out = []
+    for css in re.findall(r'<style[^>]*>(.*?)</style>', src, re.S):
+        for chunk in css.split('}'):
+            if '{' in chunk:
+                sel, _, body = chunk.rpartition('{')
+                out.append((sel.split('{')[-1].strip(), body))
+    return out
+
+
+def check_pages(root=ROOT):
+    """The course pages themselves. Every rule that paints text on
+    var(--accent) (next button, next-camp link, the translation toggle, the
+    voice-bar hover) must clear 4.5:1. Found 2026-09-26: 36 such rules on ten
+    pages drew white on a light accent (1.64:1 on descent one), because the
+    pages were built when every accent was dark and each recolour since has
+    been checked on its accent, not on what is written on it."""
+    bad = []
+    for f in sorted(os.listdir(root)):
+        if not (f.startswith(FAMILY) and f.endswith('.html')) or f == MAP:
+            continue
+        s = open(os.path.join(root, f), encoding='utf-8').read()
+        tok = {k: v.upper() for k, v in re.findall(r'(--[a-z-]+)\s*:\s*(#[0-9A-Fa-f]{6})', s)}
+        acc = tok.get('--accent')
+        if not acc:
+            bad.append('%s: no --accent' % f)
+            continue
+        for sel, body in _css_rules(s):
+            if not re.search(r'background(?:-color)?:\s*var\(--accent\)\s*(?:;|$)', body):
+                continue
+            c = re.search(r'(?<![-a-z])color:\s*(#[0-9A-Fa-f]{6}|#[0-9A-Fa-f]{3}\b|var\(--[a-z-]+\))', body)
+            if not c:
+                continue
+            v = c.group(1)
+            col = tok.get(v[4:-1]) if v.startswith('var(') else (
+                '#' + ''.join(ch * 2 for ch in v[1:]) if len(v) == 4 else v).upper()
+            if col and contrast(col, acc) < 4.5:
+                bad.append('%s: %s draws %s on --accent %s at %.2f:1' % (f, sel, v, acc, contrast(col, acc)))
+    return bad
+
+
 def report(rows, source=None):
     """Warn-only, for build_hubs.py. Never stops the build."""
     try:
         bad = check(rows)
+        pages = check_pages()
     except Exception as e:                       # noqa: BLE001
         print('  ! route map check skipped: %s' % e)
         return []
@@ -219,14 +273,18 @@ def report(rows, source=None):
             print('      ' + b)
     else:
         print('  sherpa-tensing-route-map.html: lists, badges, counts and locks agree%s' % src)
-    return bad
+    if pages:
+        print('  ! Sherpa pages with text on the accent under 4.5:1:')
+        for b in pages:
+            print('      ' + b)
+    return bad + pages
 
 
 def main():
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     import seo
     rows, source = seo.lessons(write_cache=False)
-    bad = check(rows, *(sys.argv[1:2]))
+    bad = check(rows, *(sys.argv[1:2])) + (check_pages() if len(sys.argv) < 2 else [])
     for b in bad:
         print('FAIL ' + b)
     print('%s: %d problem(s) (catalogue from %s)' % (
