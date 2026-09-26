@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// What the sheen (tools/sherpa_sheen.py) costs, on a phone-sized page with the
+// What the sheen (tools/sherpa_sheen.py) and the route map's drifting clouds (tools/sherpa_sky.py) cost, on a phone-sized page with the
 // CPU slowed 4x, with and without it.
 //
 //   node tools/sherpa_sheen_perf.js [page.html ...]   # default: two lesson pages and the route map
@@ -42,7 +42,7 @@ async function sample(b, url, sheen) {
   const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true });
   const p = await ctx.newPage();
   await p.goto(url, { waitUntil: 'load' });
-  if (!sheen) await p.addStyleTag({ content: '.topo-sheen{display:none!important}' });
+  if (!sheen) await p.addStyleTag({ content: '.topo-sheen,.sherpa-sky{display:none!important}' });
   const cdp = await ctx.newCDPSession(p);
   await cdp.send('Emulation.setCPUThrottlingRate', { rate: 4 });
   await cdp.send('Performance.enable');

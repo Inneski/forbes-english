@@ -454,11 +454,29 @@ g[filter="url(#cloud-shadow)"] text{paint-order:stroke;stroke:var(--paper);strok
 @media print{.topo-sheen{display:none;}}
 </style>
 <!-- SHERPA-SHEEN:end -->
+<!-- SHERPA-SKY:start -->
+<style id="sherpa-sky">
+/* clouds drifting across the map, seen from above (tools/sherpa_sky.py): two tiles,
+   each sliding exactly one tile per loop, by transform only */
+body{position:relative;}
+.sherpa-sky{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden;}
+.sherpa-sky i{position:absolute;top:0;left:0;will-change:transform;}
+.sherpa-sky i:nth-child(1){width:calc(100% + 1800px);height:calc(100% + 1400px);background:url("Sherpa%20Tensing/sky-far.webp") 0 0/1800px 1400px repeat;animation:sherpa-sky-far 240s linear infinite;}
+@keyframes sherpa-sky-far{from{transform:translate(-1800px,-1400px)}to{transform:translate(0,0)}}
+.sherpa-sky i:nth-child(2){width:calc(100% + 2300px);height:calc(100% + 1800px);background:url("Sherpa%20Tensing/sky-near.webp") 0 0/2300px 1800px repeat;animation:sherpa-sky-near 150s linear infinite;}
+@keyframes sherpa-sky-near{from{transform:translate(-2300px,-1800px)}to{transform:translate(0,0)}}
+@media (prefers-reduced-motion:reduce){.sherpa-sky i{animation:none;transform:translate(-40%,-30%);}}
+@media print{.sherpa-sky{display:none;}}
+</style>
+<!-- SHERPA-SKY:end -->
 </head>
 <body>
 <!-- SHERPA-SHEEN-EL:start -->
 <div class="topo-sheen" aria-hidden="true"><i></i><i></i></div>
 <!-- SHERPA-SHEEN-EL:end -->
+<!-- SHERPA-SKY-EL:start -->
+<div class="sherpa-sky" aria-hidden="true"><i></i><i></i></div>
+<!-- SHERPA-SKY-EL:end -->
 <a class="up-link" href="index.html"><span class="arw" aria-hidden="true">&larr;</span>Forbes English</a>
 
 

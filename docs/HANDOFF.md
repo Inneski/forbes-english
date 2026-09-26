@@ -36,9 +36,17 @@ too"*. Commits `6b8618d` (yellow) and the one carrying this entry.
   `clamp(30px,5vw,42px)`, its line `clamp(14px,1.6vw,17px)`, headings +15%
   (40px and up stay), body +1px (floor 12px), a `clamp()` grows only at the
   top, camp two's frequency widget keeps its sizes (`KEEP_SIZE`). Form
-  controls get Faktum outright (30 buttons were in Arial). Fraunces is gone
-  from the font link; Inter stays as the fallback for Cyrillic, Arabic, CJK
-  and symbols (Faktum covers every Latin letter on these pages).
+  controls get Faktum outright (30 buttons were in Arial). Inter stays as
+  the fallback for Cyrillic, Arabic, CJK and symbols (Faktum covers every
+  Latin letter on these pages). **Headings stayed Fraunces** (`6c9d6ba`;
+  Innes, same evening: *"revert to previous font for headers e.g. Thirteen
+  camps, two faces"*): every rule that set Fraunces (titles, section and
+  card headings, the wordmark, the hub's numerals) gets `--sherpa-display`;
+  the type check reads each element's own font with the block switched off
+  and holds Fraunces to Fraunces, the rest to Faktum. It serves on
+  `localhost`, and asks only that Fraunces is linked and declared: among a
+  dozen headless pages its faces stayed "unloaded" while the same page
+  alone loaded them.
   **`node tools/sherpa_type_check.js`** serves the repo and HEAD side by side
   and fails on non-Faktum Latin text, sideways scroll, text spilling a box,
   a wordmark on two lines, and SVG labels that newly collide; things already
@@ -64,6 +72,18 @@ too"*. Commits `6b8618d` (yellow) and the one carrying this entry.
   crosses its whole page. `tools/sherpa_topo_clear.js` now covers all 26
   pages, finds shapes by geometry (`isPointInFill`, since the map's clouds
   have pointer-events:none), and accepts SVG's paper-outline halo.
+- **Clouds drifting across the route map** (Innes: *"aerial shot of clouds
+  moving in the background like in the mythsmap.english-heritage.org.uk"*;
+  their saved page is in `incoming/`). Theirs: ~90 copies of three cloud
+  PNGs scattered over a map-sized layer that drifts along the live wind
+  over 300s and fades at the loop. Ours: `tools/make_clouds.py` draws the
+  clouds from noise (nothing of theirs is used: their images are English
+  Heritage's artwork), `tools/sherpa_sky.py` bakes them, each with a soft
+  ground shadow, into two seamless tiles (`Sherpa Tensing/sky-far.webp`
+  63 KB, `sky-near.webp` 123 KB) that each slide one tile per loop (240s,
+  150s): no seam, transform only, behind the content, over the contours and
+  the sheen. Route map only so far. Frame cost with the sheen, 4x-throttled
+  phone: nothing at rest, 41 vs 60 fps while something else animates.
 - The three generated blocks (`sherpa-topo`, `sherpa-type`, `sherpa-sheen`)
   each rewrite themselves in place; before, each tool re-inserted at
   `</head>` and made the other look stale. All three `--check` clean.
