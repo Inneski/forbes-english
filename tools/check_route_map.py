@@ -143,9 +143,11 @@ def check(rows, page=PAGE):
             bad.append('%s: map dot %s, its camp %s is %s (build_sherpa.py asserts this)'
                        % (f, dots.get(f), twin, want_c))
 
-    # the contour background: small text must still clear 4.5:1 where the
-    # darkest line crosses it (the line colour at its strongest opacity,
-    # composited onto the paper)
+    # the contour background: text on the paper must still clear 4.5:1 where
+    # the darkest line crosses it. A stroke thinner than a pixel covers only
+    # part of one, so a line's darkest point is its opacity x its width
+    # (capped at 1), composited onto the paper. Labels with a paper halo
+    # (text-shadow in --paper) never touch a line and are measured on paper.
     tile = re.search(r'background-image:url\("([^"]+\.svg)"\)', s)
     if tile:
         svg_path = os.path.join(ROOT, tile.group(1).replace('%20', ' '))
@@ -154,18 +156,28 @@ def check(rows, page=PAGE):
         else:
             svg = open(svg_path, encoding='utf-8').read()
             stroke = re.search(r'stroke="(#[0-9A-Fa-f]{6})"', svg)
-            ops = [float(x) for x in re.findall(r'stroke-opacity="([0-9.]+)"', svg)]
+            lines = [(float(o), float(w)) for o, w in re.findall(
+                r'<path stroke-opacity="([0-9.]+)" stroke-width="([0-9.]+)"', svg)]
             tok = dict(re.findall(r'(--[a-z-]+):(#[0-9A-Fa-f]{6})', s))
-            if stroke and ops and '--paper' in tok:
-                a, p = max(ops), tok['--paper']
+            if not stroke or not lines:
+                bad.append('could not read the contour tile\'s stroke colour and opacities')
+            elif '--paper' in tok:
+                a, p = max(o * min(1.0, w) for o, w in lines), tok['--paper']
                 mix = '#' + ''.join('%02X' % round(int(stroke.group(1)[i:i + 2], 16) * a
                                                    + int(p[i:i + 2], 16) * (1 - a)) for i in (1, 3, 5))
+                halo = re.search(r'\.kicker[^{]*\{text-shadow:[^}]*var\(--paper\)', s)
                 for name in ('--accent-text', '--ink-soft', '--ink'):
-                    if name in tok and contrast(tok[name], mix) < 4.5:
-                        bad.append('%s %s is %.2f:1 where a contour line (%s) crosses it'
-                                   % (name, tok[name], contrast(tok[name], mix), mix))
+                    against = p if (name == '--accent-text' and halo) else mix
+                    if name in tok and contrast(tok[name], against) < 4.5:
+                        bad.append('%s %s is %.2f:1 %s' % (
+                            name, tok[name], contrast(tok[name], against),
+                            'on the paper' if against == p else 'where a contour line (%s) crosses it' % mix))
                 if '.kicker{color:var(--accent-text);}' not in s:
                     bad.append('.kicker is not on --accent-text, the shade measured against the contours')
+                # older rules that set a grey by hex on text that sits on the paper
+                for rule, col in re.findall(r'\.(teach-row|legend|map-how|lead)\{[^}]*?color:(#[0-9A-Fa-f]{6})', s):
+                    if contrast(col, mix) < 4.5:
+                        bad.append('.%s text %s is %.2f:1 where a contour line crosses it' % (rule, col, contrast(col, mix)))
 
     # no free lesson may be locked behind Pro lessons only: a free learner
     # could never open it (used to sat behind camp 3 until 2026-09-25)

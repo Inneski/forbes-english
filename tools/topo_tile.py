@@ -2,7 +2,9 @@
 
 The Sherpa route map's background, `Sherpa Tensing/topo-tile.svg`, is:
 
-    py tools/topo_tile.py "Sherpa Tensing/topo-tile.svg" --seed 7 --opacity .06 --index-opacity .10
+    py tools/topo_tile.py "Sherpa Tensing/topo-tile.svg" --seed 7 --colour '#5A2438'         --width .6 --opacity .24 --index-width 1 --index-opacity .17
+
+(thin plum lines, 2026-09-26: Innes found the first, 1px pink version too soft)
 
 Same arguments, same file: the seed fixes the terrain. If the colour or
 opacity changes, re-run `py tools/check_route_map.py`: it measures the
@@ -32,6 +34,7 @@ ap.add_argument('--colour', default='#AD5470')
 ap.add_argument('--opacity', type=float, default=.08)
 ap.add_argument('--index-opacity', type=float, default=.14)
 ap.add_argument('--width', type=float, default=1.0)
+ap.add_argument('--index-width', type=float, default=None)
 a = ap.parse_args()
 
 S = a.size
@@ -150,6 +153,6 @@ svg = ('<svg xmlns="http://www.w3.org/2000/svg" width="%d" height="%d" viewBox="
        '<path stroke-opacity="%s" stroke-width="%s" d="%s"/>'
        '<path stroke-opacity="%s" stroke-width="%s" d="%s"/>'
        '</g></svg>\n' % (S, S, S, S, a.colour, a.opacity, a.width, ''.join(paths_minor),
-                         a.index_opacity, round(a.width * 1.5, 2), ''.join(paths_index)))
+                         a.index_opacity, a.index_width or round(a.width * 1.5, 2), ''.join(paths_index)))
 open(a.out, 'w', encoding='utf-8', newline='\n').write(svg)
 print('%s: %d minor, %d index paths, %.1f KB' % (a.out, len(paths_minor), len(paths_index), len(svg) / 1024))
