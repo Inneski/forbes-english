@@ -12,6 +12,40 @@ stale copy.
 ---
 
 
+## 2026-09-26 — Beyond the Handlebars: a wrong key, and DE/ES that covered only the chrome
+
+Innes, from the collocation slide: *"not enough translations … are these not
+all correct?"* Both true.
+
+- **Collocation Q1 marked a right answer wrong.** *___ a steady cadence*:
+  Maintain / **Achieve** / Perform, with "achieve" called wrong. "Achieve a
+  steady cadence" is good English. The distractor is now **Complete** (a
+  clean miss, and the same length as the key). Changed in the live page and
+  in `build_handlebars.py`, including the COLL_TEACH rule that said "English
+  does not achieve a cadence".
+- **The live page translated only its `data-i18n` chrome.** Its own comment
+  read rule 8 as "only the chrome", so quiz explanations, the quiz controls
+  ("Question 1 / 4 · Score", "Check answer", "Answer:"), the 22 component
+  definitions, the 12 rider cards, the dilemmas, role-play and debate briefs,
+  idiom definitions, eyebrows and the finish-line tasks all stayed English in
+  DE/ES. They translate now: static nodes via new `bth*` keys in `TR`, and
+  script-drawn text via `QT`/`QL`/`TX` + `tx()` in the main script, which the
+  switcher redraws on change. Still English, deliberately: stems, options,
+  reading passages, example sentences, sentence frames, the essay question.
+  The page is still hand-maintained (see the 2026-09-17 entry), so edit it
+  directly.
+- **`build_handlebars.py` had the same gap** (the house-style reference
+  copy). Explanations and teach-card rules now go through keys (`EN_KEYS`,
+  with DE/ES in `i18n_handlebars.QX`).
+- `check-lesson.js` fails the live page on the same five accepted checks as
+  before, and nothing new.
+
+**Pattern worth checking in other ChatGPT-built decks:** a switcher that
+covers only `data-i18n` nodes misses everything the script draws. Switch
+to DE and walk the text nodes. Anything English that isn't under test is a
+defect.
+
+
 ## 2026-09-26 — Sherpa: softer 4/10/11, readable buttons, contour areas on every page, translations reviewed
 
 Innes: *"softer colors on 4, 10 & 11"*, *"present continuous ripple diagram
