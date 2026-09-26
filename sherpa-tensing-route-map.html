@@ -135,10 +135,7 @@
   .intro h1{font-size:clamp(32px,4.1vw,46px);line-height:1.08;letter-spacing:-.01em;text-wrap:balance;}
   .intro .lead{font-size:17px;max-width:48ch;margin:0 0 22px;}
   .counts{list-style:none;margin:0 0 26px;padding:16px 0 0;border-top:1px solid var(--accent-light);
-          display:grid;grid-template-columns:repeat(4,max-content);justify-content:start;gap:10px 28px;}
-  @media (max-width:1075px) and (min-width:861px),(max-width:515px){
-    .counts{grid-template-columns:repeat(2,max-content);}
-  }
+          display:flex;flex-wrap:wrap;gap:10px 26px;}
   .counts li{display:flex;align-items:baseline;gap:7px;font-size:13.5px;color:var(--ink-soft);}
   .counts b{font-family:'Fraunces',serif;font-weight:600;font-size:32px;line-height:1;color:var(--ink);}
   .counts .is-free b{color:var(--free);}
@@ -204,8 +201,6 @@
   .desc-row.locked-link:hover,.off-row.locked-link:hover{transform:none;box-shadow:none;}
   .desc-row.locked-link .diamond{background:var(--locked);}
   .desc-row.locked-link .camp-name{color:var(--night-soft);}
-  .desc-row.locked-link .from::before{content:"after ";}
-  .desc-row:not(.locked-link) .from::before{content:"from ";}
   .off-row.locked-link{background:var(--card);}
   .off-row.locked-link .glyph{background:var(--locked);}
   .locked-link .from::after{content:"";display:inline-block;width:9px;height:10px;margin-left:6px;vertical-align:-1px;background:currentColor;
@@ -261,8 +256,12 @@
      carry a paper-coloured halo, as labels on a survey map do, so no line
      ever touches their glyphs; body text is measured against the darkest
      line itself (tools/check_route_map.py) */
-  :root{ --accent-text:#A34E69; }
-  body{background-image:url("Sherpa%20Tensing/topo-tile.svg");background-size:640px 640px;}
+  :root{ --accent-text:#A34E69; --paper-deep:#F5E7E8; }
+  /* the paper darkens towards the foot: --paper-deep is the paper blended 10%
+     towards --accent-dark, measured with a contour line over it */
+  body{background-image:url("Sherpa%20Tensing/topo-tile.svg"),linear-gradient(180deg,var(--paper) 0%,var(--paper) 15%,var(--paper-deep) 100%);
+       background-size:640px 640px,100% 100%;background-repeat:repeat,no-repeat;}
+  [lang="ja"]{word-break:auto-phrase;}
   @media print{ body{background-image:none;} }
   .kicker{color:var(--accent-text);}
   .kicker,.wordmark .brand,.wordmark .sub a{text-shadow:0 0 2px var(--paper),0 0 2px var(--paper),0 0 4px var(--paper);}
@@ -338,6 +337,12 @@
   .js .gd-nojs{display:none;}
   html:not(.js) #guide form{display:none;}
   @media (prefers-reduced-motion:reduce){ .tg a,.gd-going a{transition:none;} }
+  /* ── the language switch (2026-09-26) ── */
+  .wm-right{display:flex;align-items:center;gap:14px;}
+  .lang-select{font:600 13px/1.2 'Inter',sans-serif;color:var(--ink);background:var(--card);cursor:pointer;
+               border:1px solid var(--accent-light);border-radius:999px;padding:7px 12px;min-height:34px;}
+  .lang-select:focus-visible{outline:3px solid var(--ink);outline-offset:2px;}
+  html:not(.js) .lang-select{display:none;}
 </style>
 </head>
 <body>
@@ -560,24 +565,27 @@
 
 <div class="wordmark">
   <div class="brand">Sherpa <span>Tensing</span></div>
-  <div class="sub"><a href="index.html" style="color:var(--accent-text);text-decoration:none;font-weight:600;">Forbes English</a> &middot; a route up the tenses</div>
+  <div class="wm-right">
+    <div class="sub"><a href="index.html" style="color:var(--accent-text);text-decoration:none;font-weight:600;">Forbes English</a> &middot; <span data-t="sub">a route up the tenses</span></div>
+    <select class="lang-select" aria-label="Language" data-t-aria="langGroup"><option value="en" lang="en">English</option><option value="de" lang="de">Deutsch</option><option value="es" lang="es">Español</option><option value="fr" lang="fr">Français</option><option value="it" lang="it">Italiano</option><option value="pt" lang="pt">Português</option><option value="ru" lang="ru">Русский</option><option value="ar" lang="ar" dir="rtl">العربية</option><option value="zh" lang="zh">中文</option><option value="ja" lang="ja">日本語</option></select>
+  </div>
 </div>
 
 <main>
   <header class="hero">
     <div class="intro">
-      <span class="eyebrow">Route map</span>
-      <h1>Thirteen camps, two faces</h1>
-      <p class="lead">The ascent, in active voice, ordered by how often you'll actually reach for each tense. The descent, in passive voice, the same thirteen camps in reverse &mdash; nine of them with a passive worth learning.</p>
-      <ul class="counts" aria-label="What is on the route">
-        <li><b>13</b> camps up</li>
-        <li><b>9</b> passives down</li>
-        <li><b>3</b> off the route</li>
-        <li class="is-free"><b>4</b> free</li>
+      <span class="eyebrow" data-t="eyebrow">Route map</span>
+      <h1 data-t="h1">Thirteen camps, two faces</h1>
+      <p class="lead" data-t="lead">The ascent, in active voice, ordered by how often you'll actually reach for each tense. The descent, in passive voice, the same thirteen camps in reverse &mdash; nine of them with a passive worth learning.</p>
+      <ul class="counts" aria-label="What is on the route" data-t-aria="countsAria">
+        <li><b>13</b> <span data-t="cUp">camps up</span></li>
+        <li><b>9</b> <span data-t="cDown">passives down</span></li>
+        <li><b>3</b> <span data-t="cOff">off the route</span></li>
+        <li class="is-free"><b>4</b> <span data-t="cFree">free</span></li>
       </ul>
       <div class="cta">
         <a class="btn btn-main" id="hero-go" href="sherpa-tensing-camp-one-present-continuous.html">Start at camp one &middot; free <span aria-hidden="true">&rarr;</span></a>
-        <a class="btn btn-ghost" href="#every-stop">Every stop <span aria-hidden="true">&darr;</span></a>
+        <a class="btn btn-ghost" href="#every-stop"><span data-t="everyStop">Every stop</span> <span aria-hidden="true">&darr;</span></a>
       </div>
     </div>
     <div class="hero-art">
@@ -587,25 +595,25 @@
 
   <div class="map-head" id="the-map">
     <div>
-      <p class="kicker">The map</p>
-      <h2 class="section-title">Up in active, down in passive</h2>
-      <p class="map-how">The way up has no locks: start at whichever camp you need. Each stop on the way down opens when you finish the camp it comes from; until then its marker is grey.</p>
+      <p class="kicker" data-t="mapKick">The map</p>
+      <h2 class="section-title" data-t="mapH2">Up in active, down in passive</h2>
+      <p class="map-how" data-t="mapHow">The way up has no locks: start at whichever camp you need. Each stop on the way down opens when you finish the camp it comes from; until then its marker is grey.</p>
     </div>
     <div class="guide">
       <img class="guide-face" src="Sherpa%20Tensing/sherpa-guide.jpg" width="360" height="450" alt="" loading="lazy">
       <div>
-        <p class="guide-kick">New here?</p>
-        <p class="guide-line">Two minutes on what a tense is, what active and passive mean, and why the camps come in this order.</p>
-        <a class="btn btn-main guide-btn" href="#guide" aria-haspopup="dialog">What am I looking at?</a>
+        <p class="guide-kick" data-t="guideKick">New here?</p>
+        <p class="guide-line" data-t="guideLine">Two minutes on what a tense is, what active and passive mean, and why the camps come in this order.</p>
+        <a class="btn btn-main guide-btn" href="#guide" aria-haspopup="dialog" data-t="guideBtn">What am I looking at?</a>
       </div>
     </div>
   </div>
 
   <div class="panels">
     <div class="map-card">
-      <h3>The ascent</h3>
-      <div class="map-sub">active voice &middot; base camp to summit</div>
-      <svg viewBox="0 0 800 620" role="img" aria-label="The ascent: a mountain with thirteen coloured camp markers on a path from base camp to the summit, one for each tense in active voice, and two clouds for used to and be used to. Every stop is also listed below the map.">
+      <h3 data-t="ascH">The ascent</h3>
+      <div class="map-sub" data-t="ascSub">active voice &middot; base camp to summit</div>
+      <svg viewBox="0 0 800 620" role="img" data-t-aria="ascAria" aria-label="The ascent: a mountain with thirteen coloured camp markers on a path from base camp to the summit, one for each tense in active voice, and two clouds for used to and be used to. Every stop is also listed below the map.">
         <use href="#epic-day-v2"/>
         <a href="sherpa-tensing-cloud-used-to.html" tabindex="-1"><g transform="translate(33 88)"><g filter="url(#cloud-shadow)" class="cloud-link">
         <path d="M9 61 C-2 54 4 39 17 37 C20 20 38 13 52 21 C62 4 89 5 98 23 C118 15 139 28 140 47 C157 46 168 58 163 69 L18 69 C12 69 9 66 9 61 Z" fill="#F3E9DE" stroke="#AEBFC0" stroke-width="1.6"/>
@@ -696,9 +704,9 @@
     </div>
 
     <div class="map-card">
-      <h3>The descent</h3>
-      <div class="map-sub">passive voice &middot; summit to ground</div>
-      <svg class="descent-map" viewBox="0 0 800 620" role="img" aria-label="The descent: the same mountain at night, with a diamond marker for each tense in passive voice from the summit down. Nine are lessons, each opening when you finish its camp; four stay dark because nobody uses those passives. The moon is the causative. Every stop is also listed below the map.">
+      <h3 data-t="descH">The descent</h3>
+      <div class="map-sub" data-t="descSub">passive voice &middot; summit to ground</div>
+      <svg class="descent-map" viewBox="0 0 800 620" role="img" data-t-aria="descAria" aria-label="The descent: the same mountain at night, with a diamond marker for each tense in passive voice from the summit down. Nine are lessons, each opening when you finish its camp; four stay dark because nobody uses those passives. The moon is the causative. Every stop is also listed below the map.">
         <use href="#epic-night-v2"/>
         <a href="sherpa-tensing-cloud-causative.html" tabindex="-1"><g class="cloud-link">
           <circle cx="116" cy="111" r="49" fill="none" stroke="#F0E6D2" stroke-width="1.4" opacity=".55"/>
@@ -791,113 +799,113 @@
   </div>
 
   <div class="legend">
-    <span class="legend-item"><span class="dot lit-demo"></span>coloured &mdash; tap to go</span>
-    <span class="legend-item"><span class="dot"></span>grey &mdash; opens when you finish its camp</span>
-    <span class="legend-item">circle = active voice, diamond = passive voice</span>
+    <span class="legend-item"><span class="dot lit-demo"></span><span data-t="lgColour">coloured &mdash; tap to go</span></span>
+    <span class="legend-item"><span class="dot"></span><span data-t="lgGrey">grey &mdash; opens when you finish its camp</span></span>
+    <span class="legend-item" data-t="lgShape">circle = active voice, diamond = passive voice</span>
   </div>
   <p class="map-hint" aria-live="polite"></p>
 
   <div class="list-head" id="every-stop">
-    <h2 class="kicker">Every stop</h2>
-    <p class="section-title">The ascent &middot; active voice</p>
+    <h2 class="kicker" data-t="everyStop">Every stop</h2>
+    <p class="section-title" data-t="ascList">The ascent &middot; active voice</p>
   </div>
   <div class="zones">
     <div class="zone-card">
-      <h3>Foundation camps</h3>
-      <div class="zone-sub">reach for these daily</div>
+      <h3 data-t="zFH">Foundation camps</h3>
+      <div class="zone-sub" data-t="zFSub">reach for these daily</div>
       <ol>
-        <li><a class="camp-row" href="sherpa-tensing-camp-one-present-continuous.html" style="background:#F2ADBF;color:#1A1206;"><span class="camp-num">1</span><span class="camp-name">Present continuous</span><span class="row-meta"><span class="tag-free">Free</span><span class="lvl" title="Level">A2</span><span class="tick" aria-hidden="true"></span></span></a></li>
-        <li><a class="camp-row" href="sherpa-tensing-camp-two-present-simple.html" style="background:#7A93B5;color:#0A131F;"><span class="camp-num">2</span><span class="camp-name">Present simple</span><span class="row-meta"><span class="tag-free">Free</span><span class="lvl" title="Level">A2</span><span class="tick" aria-hidden="true"></span></span></a></li>
-        <li><a class="camp-row" href="sherpa-tensing-camp-three-past-simple.html" style="background:#B08968;color:#1A1206;"><span class="camp-num">3</span><span class="camp-name">Past simple</span><span class="row-meta"><span class="lvl" title="Level">A2</span><span class="tick" aria-hidden="true"></span></span></a></li>
-        <li><a class="camp-row" href="sherpa-tensing-camp-four-present-perfect.html" style="background:#36797E;color:#FFFFFF;"><span class="camp-num">4</span><span class="camp-name">Present perfect</span><span class="row-meta"><span class="lvl" title="Level">B1</span><span class="tick" aria-hidden="true"></span></span></a></li>
-        <li><a class="camp-row" href="sherpa-tensing-camp-five-going-to.html" style="background:#99BA7D;color:#1A1206;"><span class="camp-num">5</span><span class="camp-name">Going to</span><span class="row-meta"><span class="lvl" title="Level">A2</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="camp-row" href="sherpa-tensing-camp-one-present-continuous.html" style="background:#F2ADBF;color:#1A1206;"><span class="camp-num">1</span><span class="camp-name">Present continuous</span><span class="row-meta"><span class="tag-free" data-t="free">Free</span><span class="lvl" title="Level" data-t-title="level">A2</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="camp-row" href="sherpa-tensing-camp-two-present-simple.html" style="background:#7A93B5;color:#0A131F;"><span class="camp-num">2</span><span class="camp-name">Present simple</span><span class="row-meta"><span class="tag-free" data-t="free">Free</span><span class="lvl" title="Level" data-t-title="level">A2</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="camp-row" href="sherpa-tensing-camp-three-past-simple.html" style="background:#B08968;color:#1A1206;"><span class="camp-num">3</span><span class="camp-name">Past simple</span><span class="row-meta"><span class="lvl" title="Level" data-t-title="level">A2</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="camp-row" href="sherpa-tensing-camp-four-present-perfect.html" style="background:#36797E;color:#FFFFFF;"><span class="camp-num">4</span><span class="camp-name">Present perfect</span><span class="row-meta"><span class="lvl" title="Level" data-t-title="level">B1</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="camp-row" href="sherpa-tensing-camp-five-going-to.html" style="background:#99BA7D;color:#1A1206;"><span class="camp-num">5</span><span class="camp-name">Going to</span><span class="row-meta"><span class="lvl" title="Level" data-t-title="level">A2</span><span class="tick" aria-hidden="true"></span></span></a></li>
       </ol>
     </div>
     <div class="zone-card">
-      <h3>The ridge</h3>
-      <div class="zone-sub">common, but need more care</div>
+      <h3 data-t="zRH">The ridge</h3>
+      <div class="zone-sub" data-t="zRSub">common, but need more care</div>
       <ol>
-        <li><a class="camp-row" href="sherpa-tensing-camp-six-past-continuous.html" style="background:#F1D779;color:#1A1206;"><span class="camp-num">6</span><span class="camp-name">Past continuous</span><span class="row-meta"><span class="lvl" title="Level">A2</span><span class="tick" aria-hidden="true"></span></span></a></li>
-        <li><a class="camp-row" href="sherpa-tensing-camp-seven-future-simple.html" style="background:#DB815F;color:#1A1206;"><span class="camp-num">7</span><span class="camp-name">Future simple</span><span class="row-meta"><span class="lvl" title="Level">A2</span><span class="tick" aria-hidden="true"></span></span></a></li>
-        <li><a class="camp-row" href="sherpa-tensing-camp-eight-present-perfect-continuous.html" style="background:#97D0E5;color:#1A1206;"><span class="camp-num">8</span><span class="camp-name">Present perfect continuous</span><span class="row-meta"><span class="lvl" title="Level">B1</span><span class="tick" aria-hidden="true"></span></span></a></li>
-        <li><a class="camp-row" href="sherpa-tensing-camp-nine-future-continuous.html" style="background:#E1AB5A;color:#1A1206;"><span class="camp-num">9</span><span class="camp-name">Future continuous</span><span class="row-meta"><span class="lvl" title="Level">B1</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="camp-row" href="sherpa-tensing-camp-six-past-continuous.html" style="background:#F1D779;color:#1A1206;"><span class="camp-num">6</span><span class="camp-name">Past continuous</span><span class="row-meta"><span class="lvl" title="Level" data-t-title="level">A2</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="camp-row" href="sherpa-tensing-camp-seven-future-simple.html" style="background:#DB815F;color:#1A1206;"><span class="camp-num">7</span><span class="camp-name">Future simple</span><span class="row-meta"><span class="lvl" title="Level" data-t-title="level">A2</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="camp-row" href="sherpa-tensing-camp-eight-present-perfect-continuous.html" style="background:#97D0E5;color:#1A1206;"><span class="camp-num">8</span><span class="camp-name">Present perfect continuous</span><span class="row-meta"><span class="lvl" title="Level" data-t-title="level">B1</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="camp-row" href="sherpa-tensing-camp-nine-future-continuous.html" style="background:#E1AB5A;color:#1A1206;"><span class="camp-num">9</span><span class="camp-name">Future continuous</span><span class="row-meta"><span class="lvl" title="Level" data-t-title="level">B1</span><span class="tick" aria-hidden="true"></span></span></a></li>
       </ol>
     </div>
     <div class="zone-card">
-      <h3>Summit push</h3>
-      <div class="zone-sub">rare, mostly written English</div>
+      <h3 data-t="zSH">Summit push</h3>
+      <div class="zone-sub" data-t="zSSub">rare, mostly written English</div>
       <ol>
-        <li><a class="camp-row" href="sherpa-tensing-camp-ten-past-perfect.html" style="background:#6E0B24;color:#FFFFFF;"><span class="camp-num">10</span><span class="camp-name">Past perfect</span><span class="row-meta"><span class="lvl" title="Level">B2</span><span class="tick" aria-hidden="true"></span></span></a></li>
-        <li><a class="camp-row" href="sherpa-tensing-camp-eleven-past-perfect-continuous.html" style="background:#4B1A7A;color:#FFFFFF;"><span class="camp-num">11</span><span class="camp-name">Past perfect continuous</span><span class="row-meta"><span class="lvl" title="Level">B2</span><span class="tick" aria-hidden="true"></span></span></a></li>
-        <li><a class="camp-row" href="sherpa-tensing-camp-twelve-future-perfect.html" style="background:#454545;color:#FFFFFF;"><span class="camp-num">12</span><span class="camp-name">Future perfect</span><span class="row-meta"><span class="lvl" title="Level">B2</span><span class="tick" aria-hidden="true"></span></span></a></li>
-        <li><a class="camp-row" href="sherpa-tensing-camp-thirteen-future-perfect-continuous.html" style="background:#B0B0B0;color:#1A1206;"><span class="camp-num">13</span><span class="camp-name">Future perfect continuous</span><span class="row-meta"><span class="lvl" title="Level">C1</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="camp-row" href="sherpa-tensing-camp-ten-past-perfect.html" style="background:#6E0B24;color:#FFFFFF;"><span class="camp-num">10</span><span class="camp-name">Past perfect</span><span class="row-meta"><span class="lvl" title="Level" data-t-title="level">B2</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="camp-row" href="sherpa-tensing-camp-eleven-past-perfect-continuous.html" style="background:#4B1A7A;color:#FFFFFF;"><span class="camp-num">11</span><span class="camp-name">Past perfect continuous</span><span class="row-meta"><span class="lvl" title="Level" data-t-title="level">B2</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="camp-row" href="sherpa-tensing-camp-twelve-future-perfect.html" style="background:#454545;color:#FFFFFF;"><span class="camp-num">12</span><span class="camp-name">Future perfect</span><span class="row-meta"><span class="lvl" title="Level" data-t-title="level">B2</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="camp-row" href="sherpa-tensing-camp-thirteen-future-perfect-continuous.html" style="background:#B0B0B0;color:#1A1206;"><span class="camp-num">13</span><span class="camp-name">Future perfect continuous</span><span class="row-meta"><span class="lvl" title="Level" data-t-title="level">C1</span><span class="tick" aria-hidden="true"></span></span></a></li>
       </ol>
     </div>
   </div>
 
   <div class="zones zones-lower">
     <div class="zone-card desc-card">
-      <h3>The descent &middot; passive voice</h3>
-      <div class="zone-sub">each one opens when you finish the camp it comes from</div>
+      <h3 data-t="descList">The descent &middot; passive voice</h3>
+      <div class="zone-sub" data-t="descListSub">each one opens when you finish the camp it comes from</div>
       <ol class="desc-list">
-        <li><a class="desc-row" href="sherpa-tensing-descent-one-present-continuous-passive.html" data-camp="1" style="--c:#F2ADBF;"><span class="diamond" aria-hidden="true"></span><span class="off-text"><span class="camp-name">Present continuous passive</span><span class="from">camp 1</span></span><span class="row-meta"><span class="tag-free">Free</span><span class="lvl" title="Level">B1</span><span class="tick" aria-hidden="true"></span></span></a></li>
-        <li><a class="desc-row" href="sherpa-tensing-descent-two-present-simple-passive.html" data-camp="2" style="--c:#7A93B5;"><span class="diamond" aria-hidden="true"></span><span class="off-text"><span class="camp-name">Present simple passive</span><span class="from">camp 2</span></span><span class="row-meta"><span class="lvl" title="Level">A2</span><span class="tick" aria-hidden="true"></span></span></a></li>
-        <li><a class="desc-row" href="sherpa-tensing-descent-three-past-simple-passive.html" data-camp="3" style="--c:#B08968;"><span class="diamond" aria-hidden="true"></span><span class="off-text"><span class="camp-name">Past simple passive</span><span class="from">camp 3</span></span><span class="row-meta"><span class="lvl" title="Level">B1</span><span class="tick" aria-hidden="true"></span></span></a></li>
-        <li><a class="desc-row" href="sherpa-tensing-descent-four-present-perfect-passive.html" data-camp="4" style="--c:#36797E;"><span class="diamond" aria-hidden="true"></span><span class="off-text"><span class="camp-name">Present perfect passive</span><span class="from">camp 4</span></span><span class="row-meta"><span class="lvl" title="Level">B1</span><span class="tick" aria-hidden="true"></span></span></a></li>
-        <li><a class="desc-row" href="sherpa-tensing-descent-nine-going-to-passive.html" data-camp="5" style="--c:#99BA7D;"><span class="diamond" aria-hidden="true"></span><span class="off-text"><span class="camp-name">Going to passive</span><span class="from">camp 5</span></span><span class="row-meta"><span class="lvl" title="Level">B1</span><span class="tick" aria-hidden="true"></span></span></a></li>
-        <li><a class="desc-row" href="sherpa-tensing-descent-eight-past-continuous-passive.html" data-camp="6" style="--c:#F1D779;"><span class="diamond" aria-hidden="true"></span><span class="off-text"><span class="camp-name">Past continuous passive</span><span class="from">camp 6</span></span><span class="row-meta"><span class="lvl" title="Level">B2</span><span class="tick" aria-hidden="true"></span></span></a></li>
-        <li><a class="desc-row" href="sherpa-tensing-descent-seven-future-simple-passive.html" data-camp="7" style="--c:#DB815F;"><span class="diamond" aria-hidden="true"></span><span class="off-text"><span class="camp-name">Future simple passive</span><span class="from">camp 7</span></span><span class="row-meta"><span class="lvl" title="Level">B1</span><span class="tick" aria-hidden="true"></span></span></a></li>
-        <li><a class="desc-row" href="sherpa-tensing-descent-ten-past-perfect-passive.html" data-camp="10" style="--c:#6E0B24;"><span class="diamond" aria-hidden="true"></span><span class="off-text"><span class="camp-name">Past perfect passive</span><span class="from">camp 10</span></span><span class="row-meta"><span class="lvl" title="Level">B2</span><span class="tick" aria-hidden="true"></span></span></a></li>
-        <li><a class="desc-row" href="sherpa-tensing-descent-twelve-future-perfect-passive.html" data-camp="12" style="--c:#454545;"><span class="diamond" aria-hidden="true"></span><span class="off-text"><span class="camp-name">Future perfect passive</span><span class="from">camp 12</span></span><span class="row-meta"><span class="lvl" title="Level">C1</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="desc-row" href="sherpa-tensing-descent-one-present-continuous-passive.html" data-camp="1" style="--c:#F2ADBF;"><span class="diamond" aria-hidden="true"></span><span class="off-text"><span class="camp-name">Present continuous passive</span><span class="from">from camp 1</span></span><span class="row-meta"><span class="tag-free" data-t="free">Free</span><span class="lvl" title="Level" data-t-title="level">B1</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="desc-row" href="sherpa-tensing-descent-two-present-simple-passive.html" data-camp="2" style="--c:#7A93B5;"><span class="diamond" aria-hidden="true"></span><span class="off-text"><span class="camp-name">Present simple passive</span><span class="from">from camp 2</span></span><span class="row-meta"><span class="lvl" title="Level" data-t-title="level">A2</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="desc-row" href="sherpa-tensing-descent-three-past-simple-passive.html" data-camp="3" style="--c:#B08968;"><span class="diamond" aria-hidden="true"></span><span class="off-text"><span class="camp-name">Past simple passive</span><span class="from">from camp 3</span></span><span class="row-meta"><span class="lvl" title="Level" data-t-title="level">B1</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="desc-row" href="sherpa-tensing-descent-four-present-perfect-passive.html" data-camp="4" style="--c:#36797E;"><span class="diamond" aria-hidden="true"></span><span class="off-text"><span class="camp-name">Present perfect passive</span><span class="from">from camp 4</span></span><span class="row-meta"><span class="lvl" title="Level" data-t-title="level">B1</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="desc-row" href="sherpa-tensing-descent-nine-going-to-passive.html" data-camp="5" style="--c:#99BA7D;"><span class="diamond" aria-hidden="true"></span><span class="off-text"><span class="camp-name">Going to passive</span><span class="from">from camp 5</span></span><span class="row-meta"><span class="lvl" title="Level" data-t-title="level">B1</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="desc-row" href="sherpa-tensing-descent-eight-past-continuous-passive.html" data-camp="6" style="--c:#F1D779;"><span class="diamond" aria-hidden="true"></span><span class="off-text"><span class="camp-name">Past continuous passive</span><span class="from">from camp 6</span></span><span class="row-meta"><span class="lvl" title="Level" data-t-title="level">B2</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="desc-row" href="sherpa-tensing-descent-seven-future-simple-passive.html" data-camp="7" style="--c:#DB815F;"><span class="diamond" aria-hidden="true"></span><span class="off-text"><span class="camp-name">Future simple passive</span><span class="from">from camp 7</span></span><span class="row-meta"><span class="lvl" title="Level" data-t-title="level">B1</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="desc-row" href="sherpa-tensing-descent-ten-past-perfect-passive.html" data-camp="10" style="--c:#6E0B24;"><span class="diamond" aria-hidden="true"></span><span class="off-text"><span class="camp-name">Past perfect passive</span><span class="from">from camp 10</span></span><span class="row-meta"><span class="lvl" title="Level" data-t-title="level">B2</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="desc-row" href="sherpa-tensing-descent-twelve-future-perfect-passive.html" data-camp="12" style="--c:#454545;"><span class="diamond" aria-hidden="true"></span><span class="off-text"><span class="camp-name">Future perfect passive</span><span class="from">from camp 12</span></span><span class="row-meta"><span class="lvl" title="Level" data-t-title="level">C1</span><span class="tick" aria-hidden="true"></span></span></a></li>
       </ol>
     </div>
     <div class="zone-card off-card">
-      <h3>Off the route</h3>
-      <div class="zone-sub">not tenses, but they argue with one</div>
+      <h3 data-t="offH">Off the route</h3>
+      <div class="zone-sub" data-t="offSub">not tenses, but they argue with one</div>
       <ol class="off-list">
-        <li><a class="off-row" href="sherpa-tensing-cloud-used-to.html" style="--c:#3F6577;"><span class="glyph glyph-cloud" aria-hidden="true"></span><span class="off-text"><span class="camp-name">used to</span><span class="from">off camp 2 or 3</span></span><span class="row-meta"><span class="tag-free">Free</span><span class="lvl" title="Level">A2</span><span class="tick" aria-hidden="true"></span></span></a></li>
-        <li><a class="off-row" href="sherpa-tensing-cloud-be-used-to.html" style="--c:#6A5E8C;"><span class="glyph glyph-cloud" aria-hidden="true"></span><span class="off-text"><span class="camp-name">be used to + <span style="white-space:nowrap">-ing</span></span><span class="from">off camp 2</span></span><span class="row-meta"><span class="lvl" title="Level">B1</span><span class="tick" aria-hidden="true"></span></span></a></li>
-        <li><a class="off-row" href="sherpa-tensing-cloud-causative.html" style="--c:#3F6577;"><span class="glyph glyph-moon" aria-hidden="true"></span><span class="off-text"><span class="camp-name">The causative</span><span class="from">off your first descent</span></span><span class="row-meta"><span class="lvl" title="Level">B2</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="off-row" href="sherpa-tensing-cloud-used-to.html" style="--c:#3F6577;"><span class="glyph glyph-cloud" aria-hidden="true"></span><span class="off-text"><span class="camp-name">used to</span><span class="from" data-t="offUsedTo">off camp 2 or 3</span></span><span class="row-meta"><span class="tag-free" data-t="free">Free</span><span class="lvl" title="Level" data-t-title="level">A2</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="off-row" href="sherpa-tensing-cloud-be-used-to.html" style="--c:#6A5E8C;"><span class="glyph glyph-cloud" aria-hidden="true"></span><span class="off-text"><span class="camp-name">be used to + <span style="white-space:nowrap">-ing</span></span><span class="from" data-t="offBeUsedTo">off camp 2</span></span><span class="row-meta"><span class="lvl" title="Level" data-t-title="level">B1</span><span class="tick" aria-hidden="true"></span></span></a></li>
+        <li><a class="off-row" href="sherpa-tensing-cloud-causative.html" style="--c:#3F6577;"><span class="glyph glyph-moon" aria-hidden="true"></span><span class="off-text"><span class="camp-name">The causative</span><span class="from" data-t="offCausative">off your first descent</span></span><span class="row-meta"><span class="lvl" title="Level" data-t-title="level">B2</span><span class="tick" aria-hidden="true"></span></span></a></li>
       </ol>
     </div>
   </div>
 
-  <h2 class="sr-only">About the route</h2>
+  <h2 class="sr-only" data-t="aboutRoute">About the route</h2>
   <div class="notes">
     <div class="note">
-      <h3>Where you are</h3>
+      <h3 data-t="whereH">Where you are</h3>
       <p class="lock-note">Nine of the camps open a passive; <em>used to</em> comes off camp 2 or 3, <em>be used to</em> off camp 2, the causative off your first descent.</p>
     </div>
     <div class="note">
-      <h3>Four descent stops stay dark on purpose</h3>
-      <p class="zone-note">The passive of the present perfect continuous, the past perfect continuous, the future continuous and the future perfect continuous can all be derived &mdash; HAS BEEN BEING CLEANED, WILL BE BEING CLEANED &mdash; and native speakers avoid every one of them, rewriting round them instead. There is nothing there to learn, so there is no camp there.</p>
+      <h3 data-t="darkH">Four descent stops stay dark on purpose</h3>
+      <p class="zone-note" data-t="darkP">The passive of the present perfect continuous, the past perfect continuous, the future continuous and the future perfect continuous can all be derived &mdash; HAS BEEN BEING CLEANED, WILL BE BEING CLEANED &mdash; and native speakers avoid every one of them, rewriting round them instead. There is nothing there to learn, so there is no camp there.</p>
     </div>
     <div class="note">
-      <h3>Teaching this?</h3>
-      <p>The switch under the map lifts every progress lock in this browser at once &mdash; for a class screen, or a class that has done the climb before. Pro lessons still need Pro. <a href="block-camp.html">Block Camp</a> climbs nine of these tenses in a blocky, voxel-built world.</p>
+      <h3 data-t="teachH">Teaching this?</h3>
+      <p data-t="teachP">The switch under the map lifts every progress lock in this browser at once &mdash; for a class screen, or a class that has done the climb before. Pro lessons still need Pro. <a href="block-camp.html">Block Camp</a> climbs nine of these tenses in a blocky, voxel-built world.</p>
     </div>
   </div>
 
   <div class="pro-line">
-    <p><strong>Four lessons are free, with no sign-in:</strong> camps one and two, the passive that camp one opens, and <em>used to</em>. Pro opens the other twenty-one, and every other lesson on the site.</p>
-    <a class="btn btn-main" href="pricing.html">Plans and prices <span aria-hidden="true">&rarr;</span></a>
+    <p data-t="proP"><strong>Four lessons are free, with no sign-in:</strong> camps one and two, the passive that camp one opens, and <em>used to</em>. Pro opens the other twenty-one, and every other lesson on the site.</p>
+    <a class="btn btn-main" href="pricing.html"><span data-t="plans">Plans and prices</span> <span aria-hidden="true">&rarr;</span></a>
   </div>
 </main>
 
 <dialog class="guide-dialog" id="guide" aria-labelledby="guide-h">
   <div class="gd-top">
     <div>
-      <p class="kicker">Before you climb</p>
-      <h2 class="section-title" id="guide-h">What you&rsquo;re looking at</h2>
+      <p class="kicker" data-t="gKick">Before you climb</p>
+      <h2 class="section-title" id="guide-h" data-t="gTitle">What you&rsquo;re looking at</h2>
     </div>
-    <form method="dialog"><button class="gd-x" type="submit" aria-label="Close the guide">&times;</button></form>
+    <form method="dialog"><button class="gd-x" type="submit" aria-label="Close the guide" data-t-aria="gClose">&times;</button></form>
   </div>
 
   <section class="gd-sec" aria-labelledby="gd-1">
-    <h3 id="gd-1">A tense is a time and a shape</h3>
-    <p>Every tense puts an action in the past, the present or the future, and gives it one of four shapes: <b>simple</b> (the plain fact), <b>continuous</b> (in progress), <b>perfect</b> (looking back from a later point: now, or a time in the past or future) or <b>perfect continuous</b> (in progress up to that point). Three times, four shapes: twelve of the thirteen camps. Every form below is &ldquo;she&rdquo; + CLIMB, and the number is its camp.</p>
+    <h3 id="gd-1" data-t="g1H">A tense is a time and a shape</h3>
+    <p data-t="g1P">Every tense puts an action in the past, the present or the future, and gives it one of four shapes: <b>simple</b> (the plain fact), <b>continuous</b> (in progress), <b>perfect</b> (looking back from a later point: now, or a time in the past or future) or <b>perfect continuous</b> (in progress up to that point). Three times, four shapes: twelve of the thirteen camps. Every form below is &ldquo;she&rdquo; + CLIMB, and the number is its camp.</p>
     <table class="tg">
-      <caption class="sr-only">The twelve tenses by time and shape; each one links to its camp.</caption>
+      <caption class="sr-only" data-t="gCaption">The twelve tenses by time and shape; each one links to its camp.</caption>
       <colgroup><col class="tg-time"><col><col><col><col></colgroup>
       <thead><tr><td></td><th scope="col">Simple</th><th scope="col">Continuous</th><th scope="col">Perfect</th><th scope="col">Perfect continuous</th></tr></thead>
       <tbody>
@@ -906,34 +914,34 @@
           <tr><th scope="row">Future</th><td><a href="sherpa-tensing-camp-seven-future-simple.html" style="--c:#DB815F;--k:#1A1206"><b>7</b><span>WILL CLIMB</span></a></td><td><a href="sherpa-tensing-camp-nine-future-continuous.html" style="--c:#E1AB5A;--k:#1A1206"><b>9</b><span>WILL BE CLIMBING</span></a></td><td><a href="sherpa-tensing-camp-twelve-future-perfect.html" style="--c:#454545;--k:#FFFFFF"><b>12</b><span>WILL HAVE CLIMBED</span></a></td><td><a href="sherpa-tensing-camp-thirteen-future-perfect-continuous.html" style="--c:#B0B0B0;--k:#1A1206"><b>13</b><span>WILL HAVE BEEN CLIMBING</span></a></td></tr>
       </tbody>
     </table>
-    <div class="gd-going"><a href="sherpa-tensing-camp-five-going-to.html" style="--c:#99BA7D;--k:#1A1206"><b>5</b><span>IS GOING TO CLIMB</span></a><p>The one left over, camp 5, is a future you can already see coming.</p></div>
+    <div class="gd-going"><a href="sherpa-tensing-camp-five-going-to.html" style="--c:#99BA7D;--k:#1A1206"><b>5</b><span>IS GOING TO CLIMB</span></a><p data-t="gGoing">The one left over, camp 5, is a future you can already see coming.</p></div>
   </section>
 
   <section class="gd-sec" aria-labelledby="gd-2">
-    <h3 id="gd-2">Two faces: active and passive</h3>
+    <h3 id="gd-2" data-t="g2H">Two faces: active and passive</h3>
     <div class="gd-faces">
       <figure>
         <img src="Sherpa%20Tensing/sherpa-day.jpg" width="1200" height="672" alt="" loading="lazy">
-        <figcaption><b>The ascent &middot; active.</b> The doer comes first.<span class="gd-ex">The porters ARE CARRYING the tents.</span></figcaption>
+        <figcaption><span data-t="gAsc"><b>The ascent &middot; active.</b> The doer comes first.</span><span class="gd-ex">The porters ARE CARRYING the tents.</span></figcaption>
       </figure>
       <figure>
         <img src="Sherpa%20Tensing/sherpa-night.jpg" width="1200" height="672" alt="" loading="lazy">
-        <figcaption><b>The descent &middot; passive.</b> What the action happens to comes first, and the doer can drop out.<span class="gd-ex">The tents ARE BEING CARRIED.</span></figcaption>
+        <figcaption><span data-t="gDesc"><b>The descent &middot; passive.</b> What the action happens to comes first, and the doer can drop out.</span><span class="gd-ex">The tents ARE BEING CARRIED.</span></figcaption>
       </figure>
     </div>
-    <p>Same tense, turned round: the passive is BE in that tense + the PAST PARTICIPLE. So every stop on the way down is the twin of a camp on the way up, and it opens when you finish that camp.</p>
+    <p data-t="g2P">Same tense, turned round: the passive is BE in that tense + the PAST PARTICIPLE. So every stop on the way down is the twin of a camp on the way up, and it opens when you finish that camp.</p>
   </section>
 
   <section class="gd-sec" aria-labelledby="gd-3">
-    <h3 id="gd-3">Why this order</h3>
-    <p>The camps climb in the order you will need them, not the order grammar books use. The <b>foundation camps</b> are the tenses you use every day; <b>the ridge</b> is common but needs more care; the <b>summit push</b> is rare and mostly written. Four passives have no camp: you can build them &mdash; HAS BEEN BEING CLEANED &mdash; but nobody says them.</p>
-    <p>On the map, a circle is active, a diamond is passive, and grey means not open yet; a faint diamond marked &ldquo;no camp&rdquo; never opens. The clouds are &ldquo;used to&rdquo; and &ldquo;be used to&rdquo;; the moon is the causative.</p>
+    <h3 id="gd-3" data-t="g3H">Why this order</h3>
+    <p data-t="g3P">The camps climb in the order you will need them, not the order grammar books use. The <b>foundation camps</b> are the tenses you use every day; <b>the ridge</b> is common but needs more care; the <b>summit push</b> is rare and mostly written. Four passives have no camp: you can build them &mdash; HAS BEEN BEING CLEANED &mdash; but nobody says them.</p>
+    <p data-t="g3Map">On the map, a circle is active, a diamond is passive, and grey means not open yet; a faint diamond marked &ldquo;no camp&rdquo; never opens. The clouds are &ldquo;used to&rdquo; and &ldquo;be used to&rdquo;; the moon is the causative.</p>
   </section>
 
   <div class="gd-foot">
-    <a class="btn btn-main" href="sherpa-tensing-camp-one-present-continuous.html">Start at camp one &middot; free <span aria-hidden="true">&rarr;</span></a>
-    <form method="dialog"><button class="btn btn-ghost" type="submit">Back to the map</button></form>
-    <a class="btn btn-ghost gd-nojs" href="#the-map">Back to the map</a>
+    <a class="btn btn-main" href="sherpa-tensing-camp-one-present-continuous.html"><span data-t="startFree">Start at camp one &middot; free</span> <span aria-hidden="true">&rarr;</span></a>
+    <form method="dialog"><button class="btn btn-ghost" type="submit" data-t="backMap">Back to the map</button></form>
+    <a class="btn btn-ghost gd-nojs" href="#the-map" data-t="backMap">Back to the map</a>
   </div>
 </dialog>
 
@@ -966,19 +974,70 @@ document.documentElement.classList.add("js");
 </script>
 
 <script>
+// ── the hub in German and Spanish (2026-09-26). English is the source; the
+// rest is swapped in. Tense and lesson names, CAPS forms and the English
+// examples stay English: they are what is being taught. ?lang=de|es sets it.
+(function(){
+  var KEY = "sherpa.lang.v1";
+  /*I18N:start*/var EN = {"carryOn": "Carry on: camp {n} &middot; {name}", "headDown": "Head down: {name}", "offRoute": "Off the route: {name}", "again": "Climb it again: camp one", "startFree": "Start at camp one &middot; free", "lockNote": "<strong>{c} of 13</strong> camps &middot; <strong>{d} of 9</strong> descents &mdash; {tail}", "tailAll": "everything is open.", "tailWhole": "the whole mountain is open, both faces.", "tailDefault": "nine of the camps open a passive; <em>used to</em> comes off camp 2 or 3, <em>be used to</em> off camp 2, the causative off your first descent.", "teachOff": "I&rsquo;m teaching this &mdash; open everything", "teachOn": "Locks off &mdash; everything is open", "teachWhy": "Learners open each passive, and the three lessons off the route, by finishing the camp it comes from. Teachers, and anyone in a hurry, can open the lot.", "pair": "camp {n}, {tense}", "whyDescent": "Finish {pair} and this one opens.", "whyUsedTo": "Finish camp 2 or camp 3 &mdash; used to is a present-simple habit, moved into the past.", "whyBeUsedTo": "Finish camp 2, present simple &mdash; be used to is a state, not an event.", "whyCausative": "Finish any one descent camp &mdash; the causative is a passive wearing a hat.", "srLocked": " (locked: {why})", "srDone": " (done)", "fromOpen": "from camp {n}", "fromLocked": "after camp {n}", "hintNoCamp": "{label}: no camp here &mdash; see the note below the lists.", "hintLocked": "{label}: {why}"}, T = {"de": {"langGroup": "Sprache", "sub": "ein Weg hinauf durch die Zeitformen", "eyebrow": "Routenkarte", "h1": "Dreizehn Lager, zwei Seiten", "lead": "Der Aufstieg im Aktiv, geordnet danach, wie oft du jede Zeitform wirklich brauchst. Der Abstieg im Passiv: dieselben dreizehn Lager in umgekehrter Reihenfolge &mdash; neun davon mit einem Passiv, das sich zu lernen lohnt.", "countsAria": "Was auf der Route liegt", "cUp": "Lager bergauf", "cDown": "Passivformen bergab", "cOff": "abseits der Route", "cFree": "kostenlos", "everyStop": "Alle Stationen", "mapKick": "Die Karte", "mapH2": "Hinauf im Aktiv, hinab im Passiv", "mapHow": "Der Weg hinauf hat keine Sperren: Fang bei dem Lager an, das du brauchst. Jede Station auf dem Weg hinab öffnet sich, wenn du das Lager abschließt, aus dem sie kommt; bis dahin ist ihre Markierung grau.", "guideKick": "Neu hier?", "guideLine": "Zwei Minuten dazu, was eine Zeitform ist, was Aktiv und Passiv bedeuten und warum die Lager in dieser Reihenfolge kommen.", "guideBtn": "Was sehe ich hier?", "ascH": "Der Aufstieg", "ascSub": "Aktiv &middot; vom Basislager zum Gipfel", "descH": "Der Abstieg", "descSub": "Passiv &middot; vom Gipfel ins Tal", "ascAria": "Der Aufstieg: ein Berg mit dreizehn farbigen Lagermarkierungen auf einem Weg vom Basislager zum Gipfel, eine für jede Zeitform im Aktiv, und zwei Wolken für used to und be used to. Alle Stationen stehen auch unter der Karte.", "descAria": "Der Abstieg: derselbe Berg bei Nacht, mit einer Rauten-Markierung für jede Zeitform im Passiv, vom Gipfel abwärts. Neun sind Lektionen, die sich jeweils öffnen, wenn du ihr Lager abschließt; vier bleiben dunkel, weil niemand diese Passivformen benutzt. Der Mond ist das Kausativ. Alle Stationen stehen auch unter der Karte.", "lgColour": "farbig &mdash; antippen und los", "lgGrey": "grau &mdash; öffnet sich, wenn du sein Lager abschließt", "lgShape": "Kreis = Aktiv, Raute = Passiv", "ascList": "Der Aufstieg &middot; Aktiv", "zFH": "Basislager", "zFSub": "die brauchst du jeden Tag", "zRH": "Der Grat", "zRSub": "häufig, aber mit mehr Sorgfalt", "zSH": "Gipfelsturm", "zSSub": "selten, meist im geschriebenen Englisch", "descList": "Der Abstieg &middot; Passiv", "descListSub": "jede öffnet sich, wenn du das Lager abschließt, aus dem sie kommt", "offH": "Abseits der Route", "offSub": "keine Zeitformen, aber sie streiten mit einer", "offUsedTo": "ab Lager 2 oder 3", "offBeUsedTo": "ab Lager 2", "offCausative": "ab deiner ersten Abstiegsstation", "free": "Gratis", "level": "Niveau", "aboutRoute": "Über die Route", "whereH": "Wo du stehst", "darkH": "Vier Stationen des Abstiegs bleiben absichtlich dunkel", "darkP": "Das Passiv des present perfect continuous, des past perfect continuous, des future continuous und des future perfect continuous lässt sich bilden &mdash; HAS BEEN BEING CLEANED, WILL BE BEING CLEANED &mdash;, aber Muttersprachler meiden jede dieser Formen und formulieren den Satz um. Da gibt es nichts zu lernen, also gibt es dort kein Lager.", "teachH": "Du unterrichtest?", "teachP": "Der Schalter unter der Karte hebt in diesem Browser alle Fortschrittssperren auf einmal auf &mdash; für die Leinwand im Unterricht oder eine Klasse, die den Aufstieg schon kennt. Pro-Lektionen brauchen weiterhin Pro. <a href=\"block-camp.html\">Block Camp</a> steigt durch neun dieser Zeitformen, in einer Welt aus Blöcken.", "proP": "<strong>Vier Lektionen sind kostenlos, ohne Anmeldung:</strong> Lager eins und zwei, das Passiv, das Lager eins öffnet, und <em>used to</em>. Pro öffnet die anderen einundzwanzig und jede weitere Lektion auf der Website.", "plans": "Tarife und Preise", "gKick": "Bevor du losgehst", "gTitle": "Was du hier siehst", "gClose": "Anleitung schließen", "g1H": "Eine Zeitform ist eine Zeit und eine Form", "g1P": "Jede Zeitform legt eine Handlung in die Vergangenheit, die Gegenwart oder die Zukunft und gibt ihr eine von vier Formen: <b>simple</b> (die einfache Tatsache), <b>continuous</b> (gerade im Gange), <b>perfect</b> (der Blick zurück von einem späteren Punkt aus: jetzt oder ein Zeitpunkt in der Vergangenheit oder Zukunft) oder <b>perfect continuous</b> (im Gange bis zu diesem Punkt). Drei Zeiten, vier Formen: zwölf der dreizehn Lager. Jede Form unten ist &bdquo;she&ldquo; + CLIMB, und die Zahl ist ihr Lager.", "gCaption": "Die zwölf Zeitformen nach Zeit und Form; jede verlinkt auf ihr Lager.", "gGoing": "Das übrige, Lager 5, ist eine Zukunft, die man schon kommen sieht.", "g2H": "Zwei Seiten: Aktiv und Passiv", "gAsc": "<b>Der Aufstieg &middot; Aktiv.</b> Wer handelt, steht vorn.", "gDesc": "<b>Der Abstieg &middot; Passiv.</b> Das, womit etwas geschieht, steht vorn, und wer handelt, kann wegfallen.", "g2P": "Dieselbe Zeitform, umgedreht: Das Passiv ist BE in dieser Zeitform + PAST PARTICIPLE. Deshalb ist jede Station auf dem Weg hinab der Zwilling eines Lagers auf dem Weg hinauf, und sie öffnet sich, wenn du dieses Lager abschließt.", "g3H": "Warum diese Reihenfolge", "g3P": "Die Lager steigen in der Reihenfolge an, in der du sie brauchst, nicht in der Reihenfolge der Grammatikbücher. Die <b>Basislager</b> sind die Zeitformen, die du jeden Tag benutzt; <b>der Grat</b> ist häufig, braucht aber mehr Sorgfalt; der <b>Gipfelsturm</b> ist selten und meist geschrieben. Vier Passivformen haben kein Lager: Man kann sie bilden &mdash; HAS BEEN BEING CLEANED &mdash;, aber niemand sagt sie.", "g3Map": "Auf der Karte ist ein Kreis aktiv, eine Raute passiv, und grau heißt: noch nicht offen; eine blasse Raute mit &bdquo;no camp&ldquo; öffnet sich nie. Die Wolken sind &bdquo;used to&ldquo; und &bdquo;be used to&ldquo;; der Mond ist das Kausativ.", "startFree": "Im ersten Lager beginnen &middot; kostenlos", "backMap": "Zurück zur Karte", "carryOn": "Weiter: Lager {n} &middot; {name}", "headDown": "Bergab: {name}", "offRoute": "Abseits der Route: {name}", "again": "Noch einmal hinauf: Lager eins", "lockNote": "<strong>{c} von 13</strong> Lagern &middot; <strong>{d} von 9</strong> Abstiegsstationen &mdash; {tail}", "tailAll": "alles ist offen.", "tailWhole": "der ganze Berg ist offen, beide Seiten.", "tailDefault": "neun der Lager öffnen ein Passiv; <em>used to</em> kommt ab Lager 2 oder 3, <em>be used to</em> ab Lager 2, das Kausativ ab deiner ersten Abstiegsstation.", "teachOff": "Ich unterrichte das &mdash; alles öffnen", "teachOn": "Sperren aus &mdash; alles ist offen", "teachWhy": "Lernende öffnen jedes Passiv und die drei Lektionen abseits der Route, indem sie das Lager abschließen, aus dem es kommt. Lehrkräfte und alle, die es eilig haben, können alles öffnen.", "pair": "Lager {n} ({tense})", "whyDescent": "Schließ {pair} ab, dann öffnet sich diese Station.", "whyUsedTo": "Schließ Lager 2 oder Lager 3 ab &mdash; used to ist eine Gewohnheit aus dem present simple, in die Vergangenheit verschoben.", "whyBeUsedTo": "Schließ Lager 2 (present simple) ab &mdash; be used to ist ein Zustand, kein Ereignis.", "whyCausative": "Schließ irgendeine Station des Abstiegs ab &mdash; das Kausativ ist ein Passiv mit Hut.", "srLocked": " (gesperrt: {why})", "srDone": " (erledigt)", "fromOpen": "aus Lager {n}", "fromLocked": "nach Lager {n}", "hintNoCamp": "{label}: hier gibt es kein Lager &mdash; siehe die Notiz unter den Listen.", "hintLocked": "{label}: {why}"}, "es": {"langGroup": "Idioma", "sub": "una ruta de subida por los tiempos verbales", "eyebrow": "Mapa de la ruta", "h1": "Trece campamentos, dos caras", "lead": "La subida, en voz activa, ordenada según la frecuencia con que de verdad usarás cada tiempo. La bajada, en voz pasiva: los mismos trece campamentos al revés &mdash; nueve de ellos con una pasiva que merece la pena aprender.", "countsAria": "Qué hay en la ruta", "cUp": "campamentos de subida", "cDown": "pasivas de bajada", "cOff": "fuera de la ruta", "cFree": "gratis", "everyStop": "Todas las paradas", "mapKick": "El mapa", "mapH2": "Subida en activa, bajada en pasiva", "mapHow": "La subida no tiene candados: empieza en el campamento que necesites. Cada parada de la bajada se abre cuando terminas el campamento del que viene; hasta entonces, su marca es gris.", "guideKick": "¿Primera vez aquí?", "guideLine": "Dos minutos sobre qué es un tiempo verbal, qué significan activa y pasiva, y por qué los campamentos van en este orden.", "guideBtn": "¿Qué estoy viendo?", "ascH": "La subida", "ascSub": "voz activa &middot; del campamento base a la cumbre", "descH": "La bajada", "descSub": "voz pasiva &middot; de la cumbre al valle", "ascAria": "La subida: una montaña con trece marcas de colores en un camino del campamento base a la cumbre, una por cada tiempo en voz activa, y dos nubes para used to y be used to. Todas las paradas aparecen también debajo del mapa.", "descAria": "La bajada: la misma montaña de noche, con un rombo para cada tiempo en voz pasiva, de la cumbre hacia abajo. Nueve son lecciones y cada una se abre cuando terminas su campamento; cuatro siguen a oscuras porque nadie usa esas pasivas. La luna es el causativo. Todas las paradas aparecen también debajo del mapa.", "lgColour": "en color &mdash; toca para ir", "lgGrey": "gris &mdash; se abre cuando terminas su campamento", "lgShape": "círculo = voz activa, rombo = voz pasiva", "ascList": "La subida &middot; voz activa", "zFH": "Campamentos base", "zFSub": "los usarás a diario", "zRH": "La cresta", "zRSub": "frecuentes, pero piden más cuidado", "zSH": "Ataque a la cumbre", "zSSub": "raros, sobre todo en inglés escrito", "descList": "La bajada &middot; voz pasiva", "descListSub": "cada una se abre cuando terminas el campamento del que viene", "offH": "Fuera de la ruta", "offSub": "no son tiempos, pero discuten con uno", "offUsedTo": "desde el campamento 2 o 3", "offBeUsedTo": "desde el campamento 2", "offCausative": "desde tu primera parada de bajada", "free": "Gratis", "level": "Nivel", "aboutRoute": "Sobre la ruta", "whereH": "Dónde estás", "darkH": "Cuatro paradas de la bajada siguen a oscuras a propósito", "darkP": "La pasiva del present perfect continuous, del past perfect continuous, del future continuous y del future perfect continuous se puede formar &mdash;HAS BEEN BEING CLEANED, WILL BE BEING CLEANED&mdash;, pero los hablantes nativos las evitan todas y dan la vuelta a la frase. Ahí no hay nada que aprender, así que no hay campamento.", "teachH": "¿Das clase?", "teachP": "El interruptor debajo del mapa quita de una vez todos los candados de progreso en este navegador &mdash; para la pantalla de clase, o para un grupo que ya ha hecho la subida. Las lecciones Pro siguen necesitando Pro. <a href=\"block-camp.html\">Block Camp</a> recorre nueve de estos tiempos en un mundo hecho de bloques.", "proP": "<strong>Cuatro lecciones son gratis, sin registrarte:</strong> los campamentos uno y dos, la pasiva que abre el campamento uno y <em>used to</em>. Pro abre las otras veintiuna, y todas las demás lecciones del sitio.", "plans": "Planes y precios", "gKick": "Antes de subir", "gTitle": "Qué estás viendo", "gClose": "Cerrar la guía", "g1H": "Un tiempo verbal es un momento y una forma", "g1P": "Cada tiempo verbal sitúa una acción en el pasado, el presente o el futuro, y le da una de cuatro formas: <b>simple</b> (el hecho sin más), <b>continuous</b> (en curso), <b>perfect</b> (mirando atrás desde un punto posterior: ahora, o un momento del pasado o del futuro) o <b>perfect continuous</b> (en curso hasta ese punto). Tres momentos, cuatro formas: doce de los trece campamentos. Cada forma de abajo es &laquo;she&raquo; + CLIMB, y el número es su campamento.", "gCaption": "Los doce tiempos por momento y forma; cada uno enlaza con su campamento.", "gGoing": "El que sobra, el campamento 5, es un futuro que ya se ve venir.", "g2H": "Dos caras: activa y pasiva", "gAsc": "<b>La subida &middot; activa.</b> Quien hace la acción va primero.", "gDesc": "<b>La bajada &middot; pasiva.</b> Va primero aquello a lo que le ocurre la acción, y quien la hace puede desaparecer.", "g2P": "El mismo tiempo, dado la vuelta: la pasiva es BE en ese tiempo + el PAST PARTICIPLE. Por eso cada parada de la bajada es la gemela de un campamento de la subida, y se abre cuando terminas ese campamento.", "g3H": "Por qué este orden", "g3P": "Los campamentos suben en el orden en que los vas a necesitar, no en el de los libros de gramática. Los <b>campamentos base</b> son los tiempos que usas a diario; <b>la cresta</b> es frecuente pero pide más cuidado; el <b>ataque a la cumbre</b> es raro y sobre todo escrito. Cuatro pasivas no tienen campamento: se pueden formar &mdash;HAS BEEN BEING CLEANED&mdash;, pero nadie las dice.", "g3Map": "En el mapa, un círculo es voz activa, un rombo es voz pasiva, y el gris significa que aún no está abierto; un rombo tenue marcado &laquo;no camp&raquo; no se abre nunca. Las nubes son &laquo;used to&raquo; y &laquo;be used to&raquo;; la luna es el causativo.", "startFree": "Empezar en el campamento uno &middot; gratis", "backMap": "Volver al mapa", "carryOn": "Sigue: campamento {n} &middot; {name}", "headDown": "Baja: {name}", "offRoute": "Fuera de la ruta: {name}", "again": "Súbelo otra vez: campamento uno", "lockNote": "<strong>{c} de 13</strong> campamentos &middot; <strong>{d} de 9</strong> paradas de bajada &mdash; {tail}", "tailAll": "todo está abierto.", "tailWhole": "toda la montaña está abierta, por las dos caras.", "tailDefault": "nueve de los campamentos abren una pasiva; <em>used to</em> se abre desde el campamento 2 o 3, <em>be used to</em> desde el 2, y el causativo desde tu primera parada de bajada.", "teachOff": "Estoy dando clase &mdash; abrir todo", "teachOn": "Sin candados &mdash; todo está abierto", "teachWhy": "Los alumnos abren cada pasiva, y las tres lecciones fuera de la ruta, terminando el campamento del que vienen. Los profesores, y quien tenga prisa, pueden abrirlo todo.", "pair": "el campamento {n} ({tense})", "whyDescent": "Termina {pair} y esta se abre.", "whyUsedTo": "Termina el campamento 2 o el 3 &mdash; used to es un hábito del present simple llevado al pasado.", "whyBeUsedTo": "Termina el campamento 2 (present simple) &mdash; be used to es un estado, no un suceso.", "whyCausative": "Termina cualquier parada de la bajada &mdash; el causativo es una pasiva con sombrero.", "srLocked": " (bloqueado: {why})", "srDone": " (hecho)", "fromOpen": "del campamento {n}", "fromLocked": "tras el campamento {n}", "hintNoCamp": "{label}: aquí no hay campamento &mdash; mira la nota debajo de las listas.", "hintLocked": "{label}: {why}"}, "fr": {"langGroup": "Langue", "sub": "une route qui monte à travers les temps", "eyebrow": "Carte de l'itinéraire", "h1": "Treize camps, deux faces", "lead": "La montée, à la voix active, classée selon la fréquence à laquelle tu utiliseras vraiment chaque temps. La descente, à la voix passive : les treize mêmes camps dans l'autre sens &mdash; dont neuf avec un passif qui vaut la peine d'être appris.", "countsAria": "Ce qu'il y a sur l'itinéraire", "cUp": "camps à la montée", "cDown": "passifs à la descente", "cOff": "hors de l'itinéraire", "cFree": "gratuites", "everyStop": "Toutes les étapes", "mapKick": "La carte", "mapH2": "En montant à l'actif, en descendant au passif", "mapHow": "La montée n'a pas de verrou : commence au camp dont tu as besoin. Chaque étape de la descente s'ouvre quand tu termines le camp dont elle vient ; en attendant, son repère est gris.", "guideKick": "Nouveau ici ?", "guideLine": "Deux minutes pour comprendre ce qu'est un temps, ce que veulent dire actif et passif, et pourquoi les camps viennent dans cet ordre.", "guideBtn": "Qu'est-ce que je regarde ?", "ascH": "La montée", "ascSub": "voix active &middot; du camp de base au sommet", "descH": "La descente", "descSub": "voix passive &middot; du sommet à la vallée", "ascAria": "La montée : une montagne avec treize repères de couleur sur un chemin du camp de base au sommet, un pour chaque temps à la voix active, et deux nuages pour used to et be used to. Toutes les étapes sont aussi listées sous la carte.", "descAria": "La descente : la même montagne la nuit, avec un losange pour chaque temps à la voix passive, du sommet vers le bas. Neuf sont des leçons, chacune s'ouvre quand tu termines son camp ; quatre restent sombres parce que personne n'utilise ces passifs. La lune, c'est le causatif. Toutes les étapes sont aussi listées sous la carte.", "lgColour": "en couleur &mdash; touche pour y aller", "lgGrey": "gris &mdash; s'ouvre quand tu termines son camp", "lgShape": "cercle = voix active, losange = voix passive", "ascList": "La montée &middot; voix active", "zFH": "Camps de base", "zFSub": "à utiliser tous les jours", "zRH": "L'arête", "zRSub": "fréquents, mais demandent plus de soin", "zSH": "Assaut final", "zSSub": "rares, surtout à l'écrit", "descList": "La descente &middot; voix passive", "descListSub": "chacune s'ouvre quand tu termines le camp dont elle vient", "offH": "Hors de l'itinéraire", "offSub": "ce ne sont pas des temps, mais ils discutent avec un temps", "offUsedTo": "après le camp 2 ou 3", "offBeUsedTo": "après le camp 2", "offCausative": "après ta première étape de descente", "free": "Gratuit", "level": "Niveau", "aboutRoute": "À propos de l'itinéraire", "whereH": "Où tu en es", "darkH": "Quatre étapes de la descente restent sombres exprès", "darkP": "Le passif du present perfect continuous, du past perfect continuous, du future continuous et du future perfect continuous peut se construire &mdash; HAS BEEN BEING CLEANED, WILL BE BEING CLEANED &mdash; mais les anglophones les évitent tous et reformulent la phrase. Il n'y a rien à apprendre là, donc il n'y a pas de camp.", "teachH": "Tu enseignes ?", "teachP": "L'interrupteur sous la carte lève d'un coup tous les verrous de progression dans ce navigateur &mdash; pour l'écran de la classe, ou pour un groupe qui a déjà fait la montée. Les leçons Pro demandent toujours Pro. <a href=\"block-camp.html\">Block Camp</a> gravit neuf de ces temps dans un monde fait de blocs.", "proP": "<strong>Quatre leçons sont gratuites, sans inscription :</strong> les camps un et deux, le passif qu'ouvre le camp un, et <em>used to</em>. Pro ouvre les vingt et une autres, et toutes les autres leçons du site.", "plans": "Formules et tarifs", "gKick": "Avant de monter", "gTitle": "Ce que tu regardes", "gClose": "Fermer le guide", "g1H": "Un temps, c'est un moment et une forme", "g1P": "Chaque temps place une action dans le passé, le présent ou le futur, et lui donne l'une de quatre formes : <b>simple</b> (le fait tout court), <b>continuous</b> (en cours), <b>perfect</b> (un regard en arrière depuis un point plus tardif : maintenant, ou un moment du passé ou du futur) ou <b>perfect continuous</b> (en cours jusqu'à ce point). Trois moments, quatre formes : douze des treize camps. Chaque forme ci-dessous est &laquo;&nbsp;she&nbsp;&raquo; + CLIMB, et le numéro est son camp.", "gCaption": "Les douze temps par moment et par forme ; chacun renvoie à son camp.", "gGoing": "Celui qui reste, le camp 5, est un futur qu'on voit déjà venir.", "g2H": "Deux faces : actif et passif", "gAsc": "<b>La montée &middot; actif.</b> Celui qui agit vient en premier.", "gDesc": "<b>La descente &middot; passif.</b> Ce qui subit l'action vient en premier, et celui qui agit peut disparaître.", "g2P": "Le même temps, retourné : le passif, c'est BE à ce temps + le PAST PARTICIPLE. Voilà pourquoi chaque étape de la descente est la jumelle d'un camp de la montée, et s'ouvre quand tu termines ce camp.", "g3H": "Pourquoi cet ordre", "g3P": "Les camps montent dans l'ordre où tu en auras besoin, pas dans celui des livres de grammaire. Les <b>camps de base</b> sont les temps que tu utilises tous les jours ; <b>l'arête</b> est fréquente mais demande plus de soin ; l'<b>assaut final</b> est rare et surtout écrit. Quatre passifs n'ont pas de camp : on peut les construire &mdash; HAS BEEN BEING CLEANED &mdash; mais personne ne les dit.", "g3Map": "Sur la carte, un cercle est actif, un losange est passif, et le gris veut dire pas encore ouvert ; un losange pâle marqué &laquo;&nbsp;no camp&nbsp;&raquo; ne s'ouvre jamais. Les nuages sont &laquo;&nbsp;used to&nbsp;&raquo; et &laquo;&nbsp;be used to&nbsp;&raquo; ; la lune, c'est le causatif.", "startFree": "Commencer au camp un &middot; gratuit", "backMap": "Retour à la carte", "carryOn": "Continue : camp {n} &middot; {name}", "headDown": "Descends : {name}", "offRoute": "Hors de l'itinéraire : {name}", "again": "Remonte : camp un", "lockNote": "<strong>{c} sur 13</strong> camps &middot; <strong>{d} sur 9</strong> étapes de descente &mdash; {tail}", "tailAll": "tout est ouvert.", "tailWhole": "toute la montagne est ouverte, sur ses deux faces.", "tailDefault": "neuf des camps ouvrent un passif ; <em>used to</em> s'ouvre après le camp 2 ou 3, <em>be used to</em> après le camp 2, et le causatif après ta première étape de descente.", "teachOff": "J'enseigne ce cours &mdash; tout ouvrir", "teachOn": "Verrous levés &mdash; tout est ouvert", "teachWhy": "Les apprenants ouvrent chaque passif, et les trois leçons hors de l'itinéraire, en terminant le camp dont ils viennent. Les enseignants, et ceux qui sont pressés, peuvent tout ouvrir.", "pair": "le camp {n} ({tense})", "whyDescent": "Termine {pair} et celle-ci s'ouvre.", "whyUsedTo": "Termine le camp 2 ou le camp 3 &mdash; used to est une habitude du present simple, passée au passé.", "whyBeUsedTo": "Termine le camp 2 (present simple) &mdash; be used to est un état, pas un événement.", "whyCausative": "Termine n'importe quelle étape de la descente &mdash; le causatif est un passif qui porte un chapeau.", "srLocked": " (verrouillé : {why})", "srDone": " (terminé)", "fromOpen": "du camp {n}", "fromLocked": "après le camp {n}", "hintNoCamp": "{label} : pas de camp ici &mdash; lis la note sous les listes.", "hintLocked": "{label} : {why}"}, "it": {"langGroup": "Lingua", "sub": "un percorso in salita tra i tempi verbali", "eyebrow": "Mappa del percorso", "h1": "Tredici campi, due versanti", "lead": "La salita, in forma attiva, in ordine di quanto spesso userai davvero ogni tempo. La discesa, in forma passiva: gli stessi tredici campi al contrario &mdash; nove dei quali con un passivo che vale la pena imparare.", "countsAria": "Che cosa c'è sul percorso", "cUp": "campi in salita", "cDown": "passivi in discesa", "cOff": "fuori percorso", "cFree": "gratis", "everyStop": "Tutte le tappe", "mapKick": "La mappa", "mapH2": "Su all'attivo, giù al passivo", "mapHow": "La salita non ha lucchetti: comincia dal campo che ti serve. Ogni tappa della discesa si apre quando finisci il campo da cui viene; fino ad allora il suo segnaposto è grigio.", "guideKick": "Sei nuovo qui?", "guideLine": "Due minuti su che cos'è un tempo verbale, che cosa significano attivo e passivo, e perché i campi sono in quest'ordine.", "guideBtn": "Che cosa sto guardando?", "ascH": "La salita", "ascSub": "forma attiva &middot; dal campo base alla vetta", "descH": "La discesa", "descSub": "forma passiva &middot; dalla vetta a valle", "ascAria": "La salita: una montagna con tredici segnaposti colorati su un sentiero dal campo base alla vetta, uno per ogni tempo in forma attiva, e due nuvole per used to e be used to. Tutte le tappe sono elencate anche sotto la mappa.", "descAria": "La discesa: la stessa montagna di notte, con un rombo per ogni tempo in forma passiva, dalla vetta in giù. Nove sono lezioni, ognuna si apre quando finisci il suo campo; quattro restano al buio perché nessuno usa quei passivi. La luna è il causativo. Tutte le tappe sono elencate anche sotto la mappa.", "lgColour": "a colori &mdash; tocca per andare", "lgGrey": "grigio &mdash; si apre quando finisci il suo campo", "lgShape": "cerchio = forma attiva, rombo = forma passiva", "ascList": "La salita &middot; forma attiva", "zFH": "Campi base", "zFSub": "li userai ogni giorno", "zRH": "La cresta", "zRSub": "frequenti, ma chiedono più attenzione", "zSH": "Assalto alla vetta", "zSSub": "rari, soprattutto nell'inglese scritto", "descList": "La discesa &middot; forma passiva", "descListSub": "ognuna si apre quando finisci il campo da cui viene", "offH": "Fuori percorso", "offSub": "non sono tempi, ma discutono con uno", "offUsedTo": "dopo il campo 2 o 3", "offBeUsedTo": "dopo il campo 2", "offCausative": "dopo la tua prima tappa in discesa", "free": "Gratis", "level": "Livello", "aboutRoute": "Sul percorso", "whereH": "A che punto sei", "darkH": "Quattro tappe della discesa restano al buio apposta", "darkP": "Il passivo del present perfect continuous, del past perfect continuous, del future continuous e del future perfect continuous si può costruire &mdash; HAS BEEN BEING CLEANED, WILL BE BEING CLEANED &mdash; ma i madrelingua li evitano tutti e riformulano la frase. Lì non c'è niente da imparare, quindi non c'è un campo.", "teachH": "Insegni?", "teachP": "L'interruttore sotto la mappa toglie in un colpo tutti i lucchetti di avanzamento in questo browser &mdash; per lo schermo della classe, o per una classe che ha già fatto la salita. Le lezioni Pro richiedono sempre Pro. <a href=\"block-camp.html\">Block Camp</a> sale lungo nove di questi tempi in un mondo fatto di blocchi.", "proP": "<strong>Quattro lezioni sono gratis, senza registrazione:</strong> i campi uno e due, il passivo che apre il campo uno e <em>used to</em>. Pro apre le altre ventuno, e tutte le altre lezioni del sito.", "plans": "Piani e prezzi", "gKick": "Prima di salire", "gTitle": "Che cosa stai guardando", "gClose": "Chiudi la guida", "g1H": "Un tempo verbale è un momento e una forma", "g1P": "Ogni tempo colloca un'azione nel passato, nel presente o nel futuro, e le dà una di quattro forme: <b>simple</b> (il fatto e basta), <b>continuous</b> (in corso), <b>perfect</b> (uno sguardo indietro da un punto successivo: adesso, o un momento del passato o del futuro) o <b>perfect continuous</b> (in corso fino a quel punto). Tre momenti, quattro forme: dodici dei tredici campi. Ogni forma qui sotto è &laquo;she&raquo; + CLIMB, e il numero è il suo campo.", "gCaption": "I dodici tempi per momento e forma; ognuno porta al suo campo.", "gGoing": "Quello che resta, il campo 5, è un futuro che si vede già arrivare.", "g2H": "Due versanti: attivo e passivo", "gAsc": "<b>La salita &middot; attivo.</b> Chi compie l'azione viene prima.", "gDesc": "<b>La discesa &middot; passivo.</b> Viene prima ciò che subisce l'azione, e chi la compie può sparire.", "g2P": "Lo stesso tempo, capovolto: il passivo è BE in quel tempo + il PAST PARTICIPLE. Per questo ogni tappa della discesa è la gemella di un campo della salita, e si apre quando finisci quel campo.", "g3H": "Perché quest'ordine", "g3P": "I campi salgono nell'ordine in cui ti serviranno, non in quello dei libri di grammatica. I <b>campi base</b> sono i tempi che usi ogni giorno; <b>la cresta</b> è frequente ma chiede più attenzione; l'<b>assalto alla vetta</b> è raro e soprattutto scritto. Quattro passivi non hanno un campo: si possono costruire &mdash; HAS BEEN BEING CLEANED &mdash; ma nessuno li dice.", "g3Map": "Sulla mappa, un cerchio è attivo, un rombo è passivo, e il grigio vuol dire non ancora aperto; un rombo tenue con scritto &laquo;no camp&raquo; non si apre mai. Le nuvole sono &laquo;used to&raquo; e &laquo;be used to&raquo;; la luna è il causativo.", "startFree": "Comincia dal campo uno &middot; gratis", "backMap": "Torna alla mappa", "carryOn": "Continua: campo {n} &middot; {name}", "headDown": "Scendi: {name}", "offRoute": "Fuori percorso: {name}", "again": "Risali: campo uno", "lockNote": "<strong>{c} su 13</strong> campi &middot; <strong>{d} su 9</strong> tappe in discesa &mdash; {tail}", "tailAll": "è tutto aperto.", "tailWhole": "tutta la montagna è aperta, su entrambi i versanti.", "tailDefault": "nove dei campi aprono un passivo; <em>used to</em> si apre dopo il campo 2 o 3, <em>be used to</em> dopo il campo 2, e il causativo dopo la tua prima tappa in discesa.", "teachOff": "Sto insegnando &mdash; apri tutto", "teachOn": "Lucchetti tolti &mdash; è tutto aperto", "teachWhy": "Gli studenti aprono ogni passivo, e le tre lezioni fuori percorso, finendo il campo da cui vengono. Gli insegnanti, e chi ha fretta, possono aprire tutto.", "pair": "il campo {n} ({tense})", "whyDescent": "Finisci {pair} e questa si apre.", "whyUsedTo": "Finisci il campo 2 o il campo 3 &mdash; used to è un'abitudine del present simple spostata nel passato.", "whyBeUsedTo": "Finisci il campo 2 (present simple) &mdash; be used to è uno stato, non un evento.", "whyCausative": "Finisci una qualsiasi tappa della discesa &mdash; il causativo è un passivo con il cappello.", "srLocked": " (bloccato: {why})", "srDone": " (fatto)", "fromOpen": "dal campo {n}", "fromLocked": "dopo il campo {n}", "hintNoCamp": "{label}: qui non c'è un campo &mdash; leggi la nota sotto gli elenchi.", "hintLocked": "{label}: {why}"}, "pt": {"langGroup": "Idioma", "sub": "uma trilha de subida pelos tempos verbais", "eyebrow": "Mapa da trilha", "h1": "Treze acampamentos, duas faces", "lead": "A subida, na voz ativa, em ordem de quanto você vai usar de verdade cada tempo. A descida, na voz passiva: os mesmos treze acampamentos ao contrário &mdash; nove deles com uma passiva que vale a pena aprender.", "countsAria": "O que há na trilha", "cUp": "acampamentos na subida", "cDown": "passivas na descida", "cOff": "fora da trilha", "cFree": "grátis", "everyStop": "Todas as paradas", "mapKick": "O mapa", "mapH2": "Subida na ativa, descida na passiva", "mapHow": "A subida não tem cadeados: comece pelo acampamento de que você precisa. Cada parada da descida se abre quando você termina o acampamento de onde ela vem; até lá, o marcador dela fica cinza.", "guideKick": "Primeira vez aqui?", "guideLine": "Dois minutos sobre o que é um tempo verbal, o que significam ativa e passiva, e por que os acampamentos vêm nesta ordem.", "guideBtn": "O que estou vendo?", "ascH": "A subida", "ascSub": "voz ativa &middot; do acampamento-base ao cume", "descH": "A descida", "descSub": "voz passiva &middot; do cume ao vale", "ascAria": "A subida: uma montanha com treze marcadores coloridos numa trilha do acampamento-base ao cume, um para cada tempo na voz ativa, e duas nuvens para used to e be used to. Todas as paradas também estão listadas abaixo do mapa.", "descAria": "A descida: a mesma montanha à noite, com um losango para cada tempo na voz passiva, do cume para baixo. Nove são lições, e cada uma se abre quando você termina o acampamento dela; quatro ficam apagadas porque ninguém usa essas passivas. A lua é o causativo. Todas as paradas também estão listadas abaixo do mapa.", "lgColour": "colorido &mdash; toque para ir", "lgGrey": "cinza &mdash; abre quando você termina o acampamento", "lgShape": "círculo = voz ativa, losango = voz passiva", "ascList": "A subida &middot; voz ativa", "zFH": "Acampamentos-base", "zFSub": "você vai usar todo dia", "zRH": "A crista", "zRSub": "comuns, mas pedem mais cuidado", "zSH": "Ataque ao cume", "zSSub": "raros, sobretudo no inglês escrito", "descList": "A descida &middot; voz passiva", "descListSub": "cada uma se abre quando você termina o acampamento de onde ela vem", "offH": "Fora da trilha", "offSub": "não são tempos, mas discutem com um", "offUsedTo": "depois do acampamento 2 ou 3", "offBeUsedTo": "depois do acampamento 2", "offCausative": "depois da sua primeira parada na descida", "free": "Grátis", "level": "Nível", "aboutRoute": "Sobre a trilha", "whereH": "Onde você está", "darkH": "Quatro paradas da descida ficam apagadas de propósito", "darkP": "A passiva do present perfect continuous, do past perfect continuous, do future continuous e do future perfect continuous pode ser formada &mdash; HAS BEEN BEING CLEANED, WILL BE BEING CLEANED &mdash; mas os falantes nativos evitam todas elas e reformulam a frase. Não há nada para aprender ali, então não há acampamento.", "teachH": "Você dá aula?", "teachP": "O botão abaixo do mapa tira de uma vez todos os cadeados de progresso neste navegador &mdash; para a tela da sala de aula, ou para uma turma que já fez a subida. As lições Pro continuam exigindo Pro. <a href=\"block-camp.html\">Block Camp</a> sobe por nove destes tempos num mundo feito de blocos.", "proP": "<strong>Quatro lições são grátis, sem cadastro:</strong> os acampamentos um e dois, a passiva que o acampamento um abre, e <em>used to</em>. O Pro abre as outras vinte e uma, e todas as outras lições do site.", "plans": "Planos e preços", "gKick": "Antes de subir", "gTitle": "O que você está vendo", "gClose": "Fechar o guia", "g1H": "Um tempo verbal é um momento e uma forma", "g1P": "Cada tempo coloca uma ação no passado, no presente ou no futuro, e dá a ela uma de quatro formas: <b>simple</b> (o fato puro), <b>continuous</b> (em andamento), <b>perfect</b> (um olhar para trás a partir de um ponto posterior: agora, ou um momento do passado ou do futuro) ou <b>perfect continuous</b> (em andamento até esse ponto). Três momentos, quatro formas: doze dos treze acampamentos. Cada forma abaixo é &ldquo;she&rdquo; + CLIMB, e o número é o acampamento dela.", "gCaption": "Os doze tempos por momento e forma; cada um leva ao seu acampamento.", "gGoing": "O que sobra, o acampamento 5, é um futuro que já dá para ver chegando.", "g2H": "Duas faces: ativa e passiva", "gAsc": "<b>A subida &middot; ativa.</b> Quem faz a ação vem primeiro.", "gDesc": "<b>A descida &middot; passiva.</b> Vem primeiro aquilo que sofre a ação, e quem a faz pode sumir.", "g2P": "O mesmo tempo, virado ao contrário: a passiva é BE nesse tempo + o PAST PARTICIPLE. Por isso cada parada da descida é gêmea de um acampamento da subida, e se abre quando você termina esse acampamento.", "g3H": "Por que esta ordem", "g3P": "Os acampamentos sobem na ordem em que você vai precisar deles, não na dos livros de gramática. Os <b>acampamentos-base</b> são os tempos que você usa todo dia; <b>a crista</b> é comum, mas pede mais cuidado; o <b>ataque ao cume</b> é raro e sobretudo escrito. Quatro passivas não têm acampamento: dá para formá-las &mdash; HAS BEEN BEING CLEANED &mdash; mas ninguém as diz.", "g3Map": "No mapa, um círculo é ativa, um losango é passiva, e o cinza quer dizer ainda não aberto; um losango apagado marcado &ldquo;no camp&rdquo; nunca se abre. As nuvens são &ldquo;used to&rdquo; e &ldquo;be used to&rdquo;; a lua é o causativo.", "startFree": "Começar no acampamento um &middot; grátis", "backMap": "Voltar ao mapa", "carryOn": "Continue: acampamento {n} &middot; {name}", "headDown": "Desça: {name}", "offRoute": "Fora da trilha: {name}", "again": "Suba de novo: acampamento um", "lockNote": "<strong>{c} de 13</strong> acampamentos &middot; <strong>{d} de 9</strong> paradas na descida &mdash; {tail}", "tailAll": "tudo está aberto.", "tailWhole": "a montanha inteira está aberta, nas duas faces.", "tailDefault": "nove dos acampamentos abrem uma passiva; <em>used to</em> se abre depois do acampamento 2 ou 3, <em>be used to</em> depois do 2, e o causativo depois da sua primeira parada na descida.", "teachOff": "Estou dando aula &mdash; abrir tudo", "teachOn": "Sem cadeados &mdash; tudo está aberto", "teachWhy": "Os alunos abrem cada passiva, e as três lições fora da trilha, terminando o acampamento de onde elas vêm. Professores, e quem estiver com pressa, podem abrir tudo.", "pair": "o acampamento {n} ({tense})", "whyDescent": "Termine {pair} e esta se abre.", "whyUsedTo": "Termine o acampamento 2 ou o 3 &mdash; used to é um hábito do present simple levado para o passado.", "whyBeUsedTo": "Termine o acampamento 2 (present simple) &mdash; be used to é um estado, não um acontecimento.", "whyCausative": "Termine qualquer parada da descida &mdash; o causativo é uma passiva de chapéu.", "srLocked": " (bloqueado: {why})", "srDone": " (feito)", "fromOpen": "do acampamento {n}", "fromLocked": "depois do acampamento {n}", "hintNoCamp": "{label}: aqui não há acampamento &mdash; veja a nota abaixo das listas.", "hintLocked": "{label}: {why}"}, "ru": {"langGroup": "Язык", "sub": "маршрут вверх по временам", "eyebrow": "Карта маршрута", "h1": "Тринадцать лагерей, два склона", "lead": "Подъём — в активном залоге, по порядку того, как часто тебе на самом деле понадобится каждое время. Спуск — в пассивном: те же тринадцать лагерей в обратном порядке &mdash; у девяти из них есть пассив, который стоит выучить.", "countsAria": "Что есть на маршруте", "cUp": "лагерей на подъёме", "cDown": "пассивов на спуске", "cOff": "в стороне от маршрута", "cFree": "бесплатно", "everyStop": "Все остановки", "mapKick": "Карта", "mapH2": "Вверх — в активе, вниз — в пассиве", "mapHow": "На подъёме нет замков: начинай с того лагеря, который тебе нужен. Каждая остановка на спуске открывается, когда ты проходишь лагерь, из которого она выходит; до этого её отметка серая.", "guideKick": "Впервые здесь?", "guideLine": "Две минуты о том, что такое время глагола, что значат актив и пассив и почему лагеря идут в таком порядке.", "guideBtn": "Что я вижу?", "ascH": "Подъём", "ascSub": "активный залог &middot; от базового лагеря до вершины", "descH": "Спуск", "descSub": "пассивный залог &middot; от вершины к подножию", "ascAria": "Подъём: гора с тринадцатью цветными отметками лагерей на тропе от базового лагеря до вершины, по одной на каждое время в активном залоге, и два облака для used to и be used to. Все остановки перечислены и под картой.", "descAria": "Спуск: та же гора ночью, с ромбом для каждого времени в пассивном залоге, от вершины вниз. Девять из них — уроки, каждый открывается, когда ты проходишь его лагерь; четыре остаются тёмными, потому что этими пассивами никто не пользуется. Луна — это каузатив. Все остановки перечислены и под картой.", "lgColour": "цветная &mdash; нажми, чтобы перейти", "lgGrey": "серая &mdash; откроется, когда пройдёшь её лагерь", "lgShape": "круг = активный залог, ромб = пассивный залог", "ascList": "Подъём &middot; активный залог", "zFH": "Базовые лагеря", "zFSub": "нужны каждый день", "zRH": "Гребень", "zRSub": "встречаются часто, но требуют внимания", "zSH": "Штурм вершины", "zSSub": "редкие, в основном в письменном английском", "descList": "Спуск &middot; пассивный залог", "descListSub": "каждая открывается, когда ты проходишь лагерь, из которого она выходит", "offH": "В стороне от маршрута", "offSub": "это не времена, но они спорят с одним из них", "offUsedTo": "после лагеря 2 или 3", "offBeUsedTo": "после лагеря 2", "offCausative": "после твоей первой остановки на спуске", "free": "Бесплатно", "level": "Уровень", "aboutRoute": "О маршруте", "whereH": "Где ты сейчас", "darkH": "Четыре остановки спуска намеренно остаются тёмными", "darkP": "Пассив от present perfect continuous, past perfect continuous, future continuous и future perfect continuous построить можно &mdash; HAS BEEN BEING CLEANED, WILL BE BEING CLEANED &mdash; но носители языка избегают их все и перестраивают фразу. Учить там нечего, поэтому и лагеря там нет.", "teachH": "Ты преподаёшь?", "teachP": "Переключатель под картой снимает все замки прогресса в этом браузере сразу &mdash; для экрана в классе или для группы, которая уже прошла подъём. Для уроков Pro по-прежнему нужен Pro. <a href=\"block-camp.html\">Block Camp</a> проходит девять из этих времён в мире из блоков.", "proP": "<strong>Четыре урока бесплатны, без регистрации:</strong> лагеря один и два, пассив, который открывает лагерь один, и <em>used to</em>. Pro открывает остальные двадцать один и все остальные уроки на сайте.", "plans": "Тарифы и цены", "gKick": "Перед подъёмом", "gTitle": "Что ты видишь", "gClose": "Закрыть подсказку", "g1H": "Время — это момент и форма", "g1P": "Каждое время помещает действие в прошлое, настоящее или будущее и придаёт ему одну из четырёх форм: <b>simple</b> (просто факт), <b>continuous</b> (в процессе), <b>perfect</b> (взгляд назад из более поздней точки: сейчас, или момент в прошлом или будущем) или <b>perfect continuous</b> (в процессе вплоть до этой точки). Три момента, четыре формы: двенадцать из тринадцати лагерей. Каждая форма ниже — это &laquo;she&raquo; + CLIMB, а число — её лагерь.", "gCaption": "Двенадцать времён по моменту и форме; каждое ведёт в свой лагерь.", "gGoing": "Оставшийся, лагерь 5, — это будущее, которое уже видно издалека.", "g2H": "Два склона: актив и пассив", "gAsc": "<b>Подъём &middot; актив.</b> Тот, кто действует, стоит первым.", "gDesc": "<b>Спуск &middot; пассив.</b> Первым стоит то, с чем происходит действие, а того, кто действует, можно опустить.", "g2P": "То же время, перевёрнутое: пассив — это BE в этом времени + PAST PARTICIPLE. Поэтому каждая остановка на спуске — близнец лагеря на подъёме и открывается, когда ты проходишь этот лагерь.", "g3H": "Почему такой порядок", "g3P": "Лагеря идут в том порядке, в каком они тебе понадобятся, а не как в учебниках грамматики. <b>Базовые лагеря</b> — это времена, которыми ты пользуешься каждый день; <b>гребень</b> встречается часто, но требует внимания; <b>штурм вершины</b> редок и в основном письменный. У четырёх пассивов нет лагеря: их можно построить &mdash; HAS BEEN BEING CLEANED &mdash; но никто так не говорит.", "g3Map": "На карте круг — это актив, ромб — пассив, а серый цвет значит «ещё не открыто»; бледный ромб с надписью &laquo;no camp&raquo; не откроется никогда. Облака — это &laquo;used to&raquo; и &laquo;be used to&raquo;; луна — каузатив.", "startFree": "Начать с первого лагеря &middot; бесплатно", "backMap": "Назад к карте", "carryOn": "Дальше: лагерь {n} &middot; {name}", "headDown": "Вниз: {name}", "offRoute": "В стороне от маршрута: {name}", "again": "Подняться снова: лагерь один", "lockNote": "<strong>{c} из 13</strong> лагерей &middot; <strong>{d} из 9</strong> остановок спуска &mdash; {tail}", "tailAll": "всё открыто.", "tailWhole": "вся гора открыта, оба склона.", "tailDefault": "девять лагерей открывают пассив; <em>used to</em> открывается после лагеря 2 или 3, <em>be used to</em> — после лагеря 2, каузатив — после твоей первой остановки на спуске.", "teachOff": "Я преподаю &mdash; открыть всё", "teachOn": "Замки сняты &mdash; всё открыто", "teachWhy": "Ученики открывают каждый пассив и три урока в стороне от маршрута, проходя лагерь, из которого они выходят. Преподаватели и все, кто спешит, могут открыть всё сразу.", "pair": "лагерь {n} ({tense})", "whyDescent": "Пройди {pair}, и эта остановка откроется.", "whyUsedTo": "Пройди лагерь 2 или лагерь 3 &mdash; used to — это привычка из present simple, перенесённая в прошлое.", "whyBeUsedTo": "Пройди лагерь 2 (present simple) &mdash; be used to — это состояние, а не событие.", "whyCausative": "Пройди любую остановку на спуске &mdash; каузатив — это пассив в шляпе.", "srLocked": " (закрыто: {why})", "srDone": " (пройдено)", "fromOpen": "из лагеря {n}", "fromLocked": "после лагеря {n}", "hintNoCamp": "{label}: здесь нет лагеря &mdash; смотри заметку под списками.", "hintLocked": "{label}: {why}"}, "ar": {"langGroup": "اللغة", "sub": "طريق صاعد عبر الأزمنة", "eyebrow": "خريطة الطريق", "h1": "ثلاثة عشر مخيمًا، ووجهان", "lead": "الصعود بصيغة المبني للمعلوم، مرتّبًا بحسب عدد المرات التي ستحتاج فيها فعلًا إلى كل زمن. والنزول بصيغة المبني للمجهول: المخيمات الثلاثة عشر نفسها بترتيب معكوس &mdash; تسعة منها فيها مبني للمجهول يستحق التعلّم.", "countsAria": "ما الموجود على الطريق", "cUp": "مخيمًا في الصعود", "cDown": "صيغ مجهول في النزول", "cOff": "خارج الطريق", "cFree": "مجانية", "everyStop": "كل المحطات", "mapKick": "الخريطة", "mapH2": "صعودًا بالمعلوم، ونزولًا بالمجهول", "mapHow": "لا أقفال في طريق الصعود: ابدأ من المخيم الذي تحتاجه. وكل محطة في طريق النزول تُفتح حين تُنهي المخيم الذي تأتي منه؛ وحتى ذلك الحين تبقى علامتها رمادية.", "guideKick": "جديد هنا؟", "guideLine": "دقيقتان عن معنى الزمن، ومعنى المبني للمعلوم والمبني للمجهول، ولماذا تأتي المخيمات بهذا الترتيب.", "guideBtn": "ما الذي أراه؟", "ascH": "الصعود", "ascSub": "المبني للمعلوم &middot; من المخيم الأساسي إلى القمة", "descH": "النزول", "descSub": "المبني للمجهول &middot; من القمة إلى الوادي", "ascAria": "الصعود: جبل عليه ثلاث عشرة علامة ملوّنة للمخيمات على درب من المخيم الأساسي إلى القمة، علامة لكل زمن بصيغة المبني للمعلوم، وسحابتان لـ used to و be used to. كل المحطات مذكورة أيضًا تحت الخريطة.", "descAria": "النزول: الجبل نفسه ليلًا، عليه معيّن لكل زمن بصيغة المبني للمجهول، من القمة إلى الأسفل. تسعة منها دروس، يُفتح كل منها حين تُنهي مخيمه؛ وأربعة تبقى مظلمة لأن أحدًا لا يستعمل صيغ المجهول تلك. والقمر هو صيغة السببية. كل المحطات مذكورة أيضًا تحت الخريطة.", "lgColour": "ملوّنة &mdash; اضغط للانتقال", "lgGrey": "رمادية &mdash; تُفتح حين تُنهي مخيمها", "lgShape": "دائرة = المبني للمعلوم، معيّن = المبني للمجهول", "ascList": "الصعود &middot; المبني للمعلوم", "zFH": "المخيمات الأساسية", "zFSub": "تستعملها كل يوم", "zRH": "الحافة", "zRSub": "شائعة، لكنها تحتاج إلى عناية أكبر", "zSH": "الهجوم على القمة", "zSSub": "نادرة، وأغلبها في الإنجليزية المكتوبة", "descList": "النزول &middot; المبني للمجهول", "descListSub": "كل واحدة تُفتح حين تُنهي المخيم الذي تأتي منه", "offH": "خارج الطريق", "offSub": "ليست أزمنة، لكنها تتجادل مع زمن", "offUsedTo": "بعد المخيم 2 أو 3", "offBeUsedTo": "بعد المخيم 2", "offCausative": "بعد أول محطة لك في النزول", "free": "مجاني", "level": "المستوى", "aboutRoute": "عن الطريق", "whereH": "أين أنت الآن", "darkH": "أربع محطات في النزول تبقى مظلمة عن قصد", "darkP": "يمكن بناء المبني للمجهول من present perfect continuous و past perfect continuous و future continuous و future perfect continuous &mdash; HAS BEEN BEING CLEANED، WILL BE BEING CLEANED &mdash; لكن أهل اللغة يتجنّبونها كلها ويعيدون صياغة الجملة. لا شيء هناك يُتعلَّم، ولذلك لا مخيم هناك.", "teachH": "هل تُدرِّس؟", "teachP": "المفتاح الموجود تحت الخريطة يرفع كل أقفال التقدّم في هذا المتصفح دفعة واحدة &mdash; لشاشة الصف، أو لمجموعة أنهت الصعود من قبل. دروس Pro ما زالت تحتاج إلى Pro. <a href=\"block-camp.html\">Block Camp</a> يصعد عبر تسعة من هذه الأزمنة في عالم مبني من المكعّبات.", "proP": "<strong>أربعة دروس مجانية، بلا تسجيل:</strong> المخيمان الأول والثاني، والمبني للمجهول الذي يفتحه المخيم الأول، و<em>used to</em>. أما Pro فيفتح الواحد والعشرين الباقية، وكل الدروس الأخرى في الموقع.", "plans": "الخطط والأسعار", "gKick": "قبل أن تصعد", "gTitle": "ما الذي تراه", "gClose": "إغلاق الدليل", "g1H": "الزمن وقتٌ وشكل", "g1P": "كل زمن يضع الفعل في الماضي أو الحاضر أو المستقبل، ويعطيه واحدًا من أربعة أشكال: <b>simple</b> (الحقيقة المجرّدة)، <b>continuous</b> (جارٍ الآن)، <b>perfect</b> (نظرة إلى الوراء من نقطة لاحقة: الآن، أو لحظة في الماضي أو المستقبل) أو <b>perfect continuous</b> (جارٍ حتى تلك النقطة). ثلاثة أوقات، وأربعة أشكال: اثنا عشر مخيمًا من ثلاثة عشر. كل صيغة أدناه هي &laquo;she&raquo; + CLIMB، والرقم هو مخيمها.", "gCaption": "الأزمنة الاثنا عشر بحسب الوقت والشكل؛ كل واحد منها يقود إلى مخيمه.", "gGoing": "الباقي، المخيم 5، مستقبلٌ تراه قادمًا من الآن.", "g2H": "وجهان: المعلوم والمجهول", "gAsc": "<b>الصعود &middot; المبني للمعلوم.</b> الفاعل يأتي أولًا.", "gDesc": "<b>النزول &middot; المبني للمجهول.</b> يأتي أولًا ما يقع عليه الفعل، ويمكن أن يختفي الفاعل.", "g2P": "الزمن نفسه، مقلوبًا: المبني للمجهول هو BE في ذلك الزمن + PAST PARTICIPLE. ولهذا فكل محطة في النزول توأمٌ لمخيم في الصعود، وتُفتح حين تُنهي ذلك المخيم.", "g3H": "لماذا هذا الترتيب", "g3P": "تصعد المخيمات بالترتيب الذي ستحتاجها به، لا بترتيب كتب القواعد. <b>المخيمات الأساسية</b> هي الأزمنة التي تستعملها كل يوم؛ و<b>الحافة</b> شائعة لكنها تحتاج إلى عناية أكبر؛ و<b>الهجوم على القمة</b> نادر وأغلبه مكتوب. أربع صيغ للمجهول لا مخيم لها: يمكن بناؤها &mdash; HAS BEEN BEING CLEANED &mdash; لكن لا أحد يقولها.", "g3Map": "على الخريطة، الدائرة للمبني للمعلوم، والمعيّن للمبني للمجهول، والرمادي يعني أنه لم يُفتح بعد؛ والمعيّن الباهت المكتوب عليه &laquo;no camp&raquo; لا يُفتح أبدًا. السحابتان هما &laquo;used to&raquo; و&laquo;be used to&raquo;؛ والقمر هو صيغة السببية.", "startFree": "ابدأ من المخيم الأول &middot; مجانًا", "backMap": "العودة إلى الخريطة", "carryOn": "تابع: المخيم {n} &middot; {name}", "headDown": "انزل: {name}", "offRoute": "خارج الطريق: {name}", "again": "اصعد من جديد: المخيم الأول", "lockNote": "<strong>{c} من 13</strong> مخيمًا &middot; <strong>{d} من 9</strong> محطات نزول &mdash; {tail}", "tailAll": "كل شيء مفتوح.", "tailWhole": "الجبل كله مفتوح، بوجهيه.", "tailDefault": "تسعة من المخيمات تفتح صيغة مجهول؛ <em>used to</em> يُفتح بعد المخيم 2 أو 3، و<em>be used to</em> بعد المخيم 2، والسببية بعد أول محطة لك في النزول.", "teachOff": "أنا أُدرِّس هذا &mdash; افتح كل شيء", "teachOn": "الأقفال مرفوعة &mdash; كل شيء مفتوح", "teachWhy": "يفتح المتعلّمون كل صيغة مجهول، والدروس الثلاثة خارج الطريق، بإنهاء المخيم الذي تأتي منه. أما المعلّمون، ومن كان على عجلة، فيمكنهم فتح كل شيء.", "pair": "المخيم {n} ({tense})", "whyDescent": "أنهِ {pair} فتُفتح هذه المحطة.", "whyUsedTo": "أنهِ المخيم 2 أو المخيم 3 &mdash; used to عادةٌ من present simple نُقلت إلى الماضي.", "whyBeUsedTo": "أنهِ المخيم 2 (present simple) &mdash; be used to حالةٌ لا حدث.", "whyCausative": "أنهِ أي محطة في النزول &mdash; السببية مبني للمجهول يعتمر قبعة.", "srLocked": " (مقفل: {why})", "srDone": " (مُنجَز)", "fromOpen": "من المخيم {n}", "fromLocked": "بعد المخيم {n}", "hintNoCamp": "{label}: لا مخيم هنا &mdash; انظر الملاحظة تحت القوائم.", "hintLocked": "{label}: {why}"}, "zh": {"langGroup": "语言", "sub": "一条向上穿越时态的路线", "eyebrow": "路线图", "h1": "十三座营地，两面山坡", "lead": "上山用主动语态，按你真正会用到每个时态的频率排列。下山用被动语态：还是这十三座营地，顺序反过来 &mdash; 其中九座有值得学的被动语态。", "countsAria": "路线上有什么", "cUp": "座上山营地", "cDown": "个下山被动", "cOff": "条路线外的课", "cFree": "节免费", "everyStop": "所有站点", "mapKick": "地图", "mapH2": "上山用主动，下山用被动", "mapHow": "上山的路没有锁：从你需要的营地开始。下山路上的每一站，要等你完成它所对应的营地才会打开；在那之前，它的标记是灰色的。", "guideKick": "第一次来？", "guideLine": "用两分钟了解什么是时态、主动和被动是什么意思，以及营地为什么按这个顺序排列。", "guideBtn": "我在看什么？", "ascH": "上山", "ascSub": "主动语态 &middot; 从大本营到山顶", "descH": "下山", "descSub": "被动语态 &middot; 从山顶到山谷", "ascAria": "上山：一座山，从大本营到山顶的小路上有十三个彩色营地标记，每个对应一个主动语态的时态，还有两朵云，分别是 used to 和 be used to。所有站点也列在地图下方。", "descAria": "下山：夜里的同一座山，从山顶往下，每个被动语态的时态都有一个菱形标记。其中九个是课程，完成对应的营地就会打开；四个一直是暗的，因为没人用那些被动形式。月亮是使役结构。所有站点也列在地图下方。", "lgColour": "彩色 &mdash; 点一下就去", "lgGrey": "灰色 &mdash; 完成它的营地后打开", "lgShape": "圆形 = 主动语态，菱形 = 被动语态", "ascList": "上山 &middot; 主动语态", "zFH": "大本营", "zFSub": "天天都用得上", "zRH": "山脊", "zRSub": "常用，但需要多加注意", "zSH": "冲顶", "zSSub": "少见，多用于书面英语", "descList": "下山 &middot; 被动语态", "descListSub": "每一站都在你完成对应的营地后打开", "offH": "路线之外", "offSub": "它们不是时态，却总和某个时态较劲", "offUsedTo": "完成营地 2 或 3 后", "offBeUsedTo": "完成营地 2 后", "offCausative": "完成你的第一个下山站后", "free": "免费", "level": "级别", "aboutRoute": "关于这条路线", "whereH": "你现在在哪里", "darkH": "下山路上有四站故意留暗", "darkP": "present perfect continuous、past perfect continuous、future continuous 和 future perfect continuous 的被动语态都能造出来 &mdash; HAS BEEN BEING CLEANED、WILL BE BEING CLEANED &mdash; 但母语者全都避免使用，而是把句子换个说法。那里没什么可学的，所以也就没有营地。", "teachH": "你在教学吗？", "teachP": "地图下方的开关可以在这个浏览器里一次解除所有进度锁 &mdash; 适合课堂大屏幕，或已经爬过一遍的班级。Pro 课程仍然需要 Pro。<a href=\"block-camp.html\">Block Camp</a> 在一个由方块搭成的世界里走过其中九个时态。", "proP": "<strong>四节课免费，无需注册：</strong>营地一和营地二、营地一打开的被动语态，以及 <em>used to</em>。Pro 解锁其余二十一节课，以及网站上的所有其他课程。", "plans": "方案与价格", "gKick": "出发之前", "gTitle": "你在看什么", "gClose": "关闭说明", "g1H": "时态 = 时间 + 形态", "g1P": "每个时态都把动作放在过去、现在或将来，并给它四种形态之一：<b>simple</b>（单纯的事实）、<b>continuous</b>（正在进行）、<b>perfect</b>（从较晚的某个时间点回头看：现在，或过去、将来的某一刻）或 <b>perfect continuous</b>（一直持续到那个时间点）。三个时间，四种形态：十三座营地中的十二座。下面每个形式都是 &ldquo;she&rdquo; + CLIMB，数字是它所在的营地。", "gCaption": "十二个时态，按时间和形态排列；每个都链接到自己的营地。", "gGoing": "剩下的那一个，营地 5，是一个已经能看到正在到来的将来。", "g2H": "两面山坡：主动与被动", "gAsc": "<b>上山 &middot; 主动。</b>做动作的人在前面。", "gDesc": "<b>下山 &middot; 被动。</b>承受动作的事物在前面，做动作的人可以不出现。", "g2P": "同一个时态，倒过来：被动语态就是该时态的 BE + PAST PARTICIPLE。所以下山的每一站都是上山某个营地的双胞胎，完成那个营地它就会打开。", "g3H": "为什么是这个顺序", "g3P": "营地按照你会需要它们的顺序往上排，而不是语法书的顺序。<b>大本营</b>是你每天都用的时态；<b>山脊</b>很常用，但需要多加注意；<b>冲顶</b>少见，多出现在书面语里。有四个被动语态没有营地：它们造得出来 &mdash; HAS BEEN BEING CLEANED &mdash; 但没人这么说。", "g3Map": "在地图上，圆形是主动，菱形是被动，灰色表示还没打开；标着 &ldquo;no camp&rdquo; 的浅色菱形永远不会打开。两朵云是 &ldquo;used to&rdquo; 和 &ldquo;be used to&rdquo;；月亮是使役结构。", "startFree": "从营地一开始 &middot; 免费", "backMap": "回到地图", "carryOn": "继续：营地 {n} &middot; {name}", "headDown": "下山：{name}", "offRoute": "路线之外：{name}", "again": "再爬一次：营地一", "lockNote": "<strong>{c} / 13</strong> 座营地 &middot; <strong>{d} / 9</strong> 个下山站 &mdash; {tail}", "tailAll": "全部已打开。", "tailWhole": "整座山都已打开，两面都是。", "tailDefault": "九座营地各自打开一个被动语态；<em>used to</em> 在营地 2 或 3 之后打开，<em>be used to</em> 在营地 2 之后，使役结构在你的第一个下山站之后。", "teachOff": "我在教这个 &mdash; 全部打开", "teachOn": "锁已解除 &mdash; 全部已打开", "teachWhy": "学习者完成对应的营地，就能打开每个被动语态和三节路线外的课。老师和赶时间的人可以一次全部打开。", "pair": "营地 {n}（{tense}）", "whyDescent": "完成{pair}，这一站就会打开。", "whyUsedTo": "完成营地 2 或营地 3 &mdash; used to 是把 present simple 的习惯搬到了过去。", "whyBeUsedTo": "完成营地 2（present simple）&mdash; be used to 是一种状态，而不是一个事件。", "whyCausative": "完成任意一个下山站 &mdash; 使役结构就是戴了帽子的被动语态。", "srLocked": "（已锁：{why}）", "srDone": "（已完成）", "fromOpen": "来自营地 {n}", "fromLocked": "营地 {n} 之后", "hintNoCamp": "{label}：这里没有营地 &mdash; 请看列表下方的说明。", "hintLocked": "{label}：{why}"}, "ja": {"langGroup": "言語", "sub": "時制をのぼっていくルート", "eyebrow": "ルートマップ", "h1": "13のキャンプ、2つの斜面", "lead": "登りは能動態で、それぞれの時制を実際にどれくらい使うかの順に並んでいます。下りは受動態で、同じ13のキャンプを逆の順にたどります &mdash; そのうち9つには、学ぶ価値のある受動態があります。", "countsAria": "ルートにあるもの", "cUp": "登りのキャンプ", "cDown": "下りの受動態", "cOff": "ルート外", "cFree": "無料", "everyStop": "すべての地点", "mapKick": "マップ", "mapH2": "登りは能動態、下りは受動態", "mapHow": "登りの道に鍵はありません。必要なキャンプから始めてください。下りの各地点は、その元になるキャンプを終えると開きます。それまでは印が灰色です。", "guideKick": "はじめてですか？", "guideLine": "時制とは何か、能動態と受動態とは何か、そしてキャンプがなぜこの順に並んでいるのかを2分で説明します。", "guideBtn": "何を見ているの？", "ascH": "登り", "ascSub": "能動態 &middot; ベースキャンプから山頂へ", "descH": "下り", "descSub": "受動態 &middot; 山頂からふもとへ", "ascAria": "登り：ベースキャンプから山頂への道に13の色つきのキャンプの印がある山。能動態の時制ごとに1つずつ、そして used to と be used to の2つの雲があります。すべての地点はマップの下にも一覧があります。", "descAria": "下り：夜の同じ山。山頂から下へ、受動態の時制ごとにひし形の印があります。9つはレッスンで、それぞれそのキャンプを終えると開きます。4つは誰も使わない受動態なので暗いままです。月は使役です。すべての地点はマップの下にも一覧があります。", "lgColour": "色つき &mdash; タップで移動", "lgGrey": "灰色 &mdash; そのキャンプを終えると開く", "lgShape": "丸 = 能動態、ひし形 = 受動態", "ascList": "登り &middot; 能動態", "zFH": "ベースキャンプ", "zFSub": "毎日使うもの", "zRH": "稜線", "zRSub": "よく使うが、注意が必要", "zSH": "山頂アタック", "zSSub": "まれで、主に書き言葉の英語", "descList": "下り &middot; 受動態", "descListSub": "それぞれ、元のキャンプを終えると開きます", "offH": "ルート外", "offSub": "時制ではないが、ある時制とぶつかり合うもの", "offUsedTo": "キャンプ2か3のあと", "offBeUsedTo": "キャンプ2のあと", "offCausative": "最初の下りの地点のあと", "free": "無料", "level": "レベル", "aboutRoute": "このルートについて", "whereH": "今どこにいるか", "darkH": "下りの4つの地点は、わざと暗いままにしています", "darkP": "present perfect continuous、past perfect continuous、future continuous、future perfect continuous の受動態は、作ることはできます &mdash; HAS BEEN BEING CLEANED、WILL BE BEING CLEANED &mdash; が、ネイティブスピーカーはどれも避けて、文を言い換えます。学ぶことが何もないので、そこにはキャンプがありません。", "teachH": "教えていますか？", "teachP": "マップの下のスイッチで、このブラウザーの進行状況の鍵を一度にすべて外せます &mdash; 教室のスクリーン用や、すでに登ったことのあるクラス向けです。Pro のレッスンには引き続き Pro が必要です。<a href=\"block-camp.html\">Block Camp</a> は、ブロックでできた世界でこのうち9つの時制を登ります。", "proP": "<strong>4つのレッスンは無料で、登録も不要です：</strong>キャンプ1と2、キャンプ1が開く受動態、そして <em>used to</em>。Pro では残りの21と、サイトのほかのすべてのレッスンが開きます。", "plans": "プランと料金", "gKick": "登る前に", "gTitle": "いま見ているもの", "gClose": "ガイドを閉じる", "g1H": "時制＝時と形", "g1P": "どの時制も、動作を過去・現在・未来のどこかに置き、4つの形のどれかを与えます：<b>simple</b>（そのままの事実）、<b>continuous</b>（進行中）、<b>perfect</b>（あとの時点から振り返る：今、または過去か未来のある時点）、<b>perfect continuous</b>（その時点まで進行中）。3つの時と4つの形で、13のキャンプのうち12になります。下の形はすべて &ldquo;she&rdquo; + CLIMB で、数字はそのキャンプです。", "gCaption": "12の時制を時と形で並べたもの。それぞれ自分のキャンプにつながっています。", "gGoing": "残りの1つ、キャンプ5は、もう来るのが見えている未来です。", "g2H": "2つの斜面：能動態と受動態", "gAsc": "<b>登り &middot; 能動態。</b>動作をする人が先に来ます。", "gDesc": "<b>下り &middot; 受動態。</b>動作を受けるものが先に来て、動作をする人は消えることもあります。", "g2P": "同じ時制を裏返したもの：受動態は、その時制の BE + PAST PARTICIPLE です。だから下りの各地点は登りのキャンプの双子で、そのキャンプを終えると開きます。", "g3H": "なぜこの順番か", "g3P": "キャンプは文法書の順ではなく、あなたが必要になる順に登っていきます。<b>ベースキャンプ</b>は毎日使う時制、<b>稜線</b>はよく使うが注意が必要なもの、<b>山頂アタック</b>はまれで主に書き言葉です。4つの受動態にはキャンプがありません。作れはします &mdash; HAS BEEN BEING CLEANED &mdash; が、誰も言いません。", "g3Map": "マップでは、丸が能動態、ひし形が受動態、灰色はまだ開いていないことを表します。&ldquo;no camp&rdquo; と書かれた薄いひし形は、決して開きません。雲は &ldquo;used to&rdquo; と &ldquo;be used to&rdquo;、月は使役です。", "startFree": "キャンプ1から始める &middot; 無料", "backMap": "マップに戻る", "carryOn": "続き：キャンプ{n} &middot; {name}", "headDown": "下りへ：{name}", "offRoute": "ルート外：{name}", "again": "もう一度登る：キャンプ1", "lockNote": "<strong>13のうち{c}</strong>キャンプ &middot; <strong>9のうち{d}</strong>下りの地点 &mdash; {tail}", "tailAll": "すべて開いています。", "tailWhole": "山全体が、両方の斜面とも開いています。", "tailDefault": "9つのキャンプがそれぞれ受動態を開きます。<em>used to</em> はキャンプ2か3のあと、<em>be used to</em> はキャンプ2のあと、使役は最初の下りの地点のあとに開きます。", "teachOff": "授業で使う &mdash; すべて開く", "teachOn": "鍵を解除 &mdash; すべて開いています", "teachWhy": "学習者は、元になるキャンプを終えることで各受動態とルート外の3つのレッスンを開きます。先生や急いでいる人は、すべてを一度に開けます。", "pair": "キャンプ{n}（{tense}）", "whyDescent": "{pair}を終えると、ここが開きます。", "whyUsedTo": "キャンプ2かキャンプ3を終えてください &mdash; used to は present simple の習慣を過去に移したものです。", "whyBeUsedTo": "キャンプ2（present simple）を終えてください &mdash; be used to は出来事ではなく状態です。", "whyCausative": "下りの地点をどれか1つ終えてください &mdash; 使役は帽子をかぶった受動態です。", "srLocked": "（ロック中：{why}）", "srDone": "（完了）", "fromOpen": "キャンプ{n}から", "fromLocked": "キャンプ{n}のあと", "hintNoCamp": "{label}：ここにはキャンプがありません &mdash; 一覧の下のメモを見てください。", "hintLocked": "{label}：{why}"}};/*I18N:end*/
+  var RTL = { ar: 1 };
+  var cur = "en", orig = {}, origAria = {}, origTitle = {};
+  function stored(){ try { return localStorage.getItem(KEY); } catch (e) { return null; } }
+  function initial(){
+    var q = (location.search.match(/[?&]lang=([a-z]{2})\b/) || [])[1];
+    if (q && q !== "en" && !T[q]) q = null;
+    return q || (T[stored()] ? stored() : "en");
+  }
+  window.sherpaT = function(key, vars){
+    var s = (cur !== "en" && T[cur][key]) || EN[key] || key;
+    for (var k in (vars || {})) s = s.split("{" + k + "}").join(vars[k]);
+    return s;
+  };
+  function each(sel, attr, store, set){
+    document.querySelectorAll(sel).forEach(function(el){
+      var k = el.getAttribute(attr);
+      if (!(k in store)) store[k] = set ? el.getAttribute(set) : el.innerHTML;
+      var v = cur === "en" ? store[k] : (T[cur][k] || store[k]);
+      if (set) el.setAttribute(set, v.replace(/&mdash;/g, "\u2014").replace(/&middot;/g, "\u00b7")); else el.innerHTML = v;
+      if (!set) {
+        if (cur === "en") { el.removeAttribute("lang"); el.removeAttribute("dir"); }
+        else { el.setAttribute("lang", cur); if (RTL[cur]) el.setAttribute("dir", "rtl"); else el.removeAttribute("dir"); }
+      }
+    });
+  }
+  function apply(l){
+    cur = T[l] ? l : "en";
+    document.documentElement.lang = cur;
+    each("[data-t]", "data-t", orig, null);
+    each("[data-t-aria]", "data-t-aria", origAria, "aria-label");
+    each("[data-t-title]", "data-t-title", origTitle, "title");
+    var sel = document.querySelector(".lang-select");
+    if (sel) sel.value = cur;
+    if (window.sherpaRepaint) window.sherpaRepaint();
+  }
+  window.sherpaLang = { apply: apply, initial: initial };
+  var sel = document.querySelector(".lang-select");
+  if (sel) sel.addEventListener("change", function(){
+    try { localStorage.setItem(KEY, sel.value); } catch (e) {}
+    apply(sel.value);
+  });
+})();
+</script>
+
+<script>
 // ── what you have earned, and where you earned it ──
 (function(){
   var KEY = "sherpa.progress.v1";
   var PAIR = {
-    "descent-one-present-continuous-passive":  ["camp-one-present-continuous", "camp 1, present continuous"],
-    "descent-two-present-simple-passive":      ["camp-two-present-simple", "camp 2, present simple"],
-    "descent-three-past-simple-passive":       ["camp-three-past-simple", "camp 3, past simple"],
-    "descent-four-present-perfect-passive":    ["camp-four-present-perfect", "camp 4, present perfect"],
-    "descent-nine-going-to-passive":           ["camp-five-going-to", "camp 5, going to"],
-    "descent-eight-past-continuous-passive":   ["camp-six-past-continuous", "camp 6, past continuous"],
-    "descent-seven-future-simple-passive":     ["camp-seven-future-simple", "camp 7, future simple"],
-    "descent-ten-past-perfect-passive":        ["camp-ten-past-perfect", "camp 10, past perfect"],
-    "descent-twelve-future-perfect-passive":   ["camp-twelve-future-perfect", "camp 12, future perfect"]
+    "descent-one-present-continuous-passive": ["camp-one-present-continuous", 1, "present continuous"],
+    "descent-two-present-simple-passive": ["camp-two-present-simple", 2, "present simple"],
+    "descent-three-past-simple-passive": ["camp-three-past-simple", 3, "past simple"],
+    "descent-four-present-perfect-passive": ["camp-four-present-perfect", 4, "present perfect"],
+    "descent-nine-going-to-passive": ["camp-five-going-to", 5, "going to"],
+    "descent-eight-past-continuous-passive": ["camp-six-past-continuous", 6, "past continuous"],
+    "descent-seven-future-simple-passive": ["camp-seven-future-simple", 7, "future simple"],
+    "descent-ten-past-perfect-passive": ["camp-ten-past-perfect", 10, "past perfect"],
+    "descent-twelve-future-perfect-passive": ["camp-twelve-future-perfect", 12, "future perfect"]
   };
 
   var mem = null;   // stands in for storage when the browser blocks it
@@ -1015,7 +1074,7 @@ document.documentElement.classList.add("js");
         g.setAttribute("data-locked-href", href);
         g.removeAttribute("data-href");
         g.classList.add("locked-dot");
-        g.setAttribute("title", "Finish " + pair[1] + " and this one opens.");
+        g.setAttribute("title", sherpaT("whyDescent", {pair: sherpaT("pair", {n: pair[1], tense: pair[2]})}).replace(/&mdash;/g, "\u2014"));
       }
     });
 
@@ -1032,7 +1091,7 @@ document.documentElement.classList.add("js");
         } else {
           a.setAttribute("role", "link");
           if (!sr){ sr = document.createElement("span"); sr.className = "sr-only sr-lock"; a.appendChild(sr); }
-          sr.textContent = " (locked: " + why + ")";
+          sr.textContent = sherpaT("srLocked", {why: why});
         }
       }
       if (ok){
@@ -1052,18 +1111,22 @@ document.documentElement.classList.add("js");
     function gate(sel, ok, why){
       document.querySelectorAll(sel).forEach(function(a){ lockLink(a, ok, why); });
     }
+    function why(k){ return sherpaT(k).replace(/&mdash;/g, "\u2014"); }
     gate('a[href*="cloud-used-to"], a[data-locked*="cloud-used-to"]', done("camp-three-past-simple") || done("camp-two-present-simple"),
-         "Finish camp 2 or camp 3 \u2014 used to is a present-simple habit, moved into the past.");
+         why("whyUsedTo"));
     gate('a[href*="cloud-be-used-to"], a[data-locked*="cloud-be-used-to"]', done("camp-two-present-simple"),
-         "Finish camp 2, present simple \u2014 be used to is a state, not an event.");
+         why("whyBeUsedTo"));
     gate('a[href*="cloud-causative"], a[data-locked*="cloud-causative"]', descents >= 1 || all,
-         "Finish any one descent camp \u2014 the causative is a passive wearing a hat.");
+         why("whyCausative"));
 
     // the list under the map: the descent rows keep the map's locks, and
     // anything you have finished gets a tick (the teacher switch ticks nothing)
     document.querySelectorAll(".desc-row").forEach(function(a){
       var pair = PAIR[slugOf(a)];
-      if (pair) lockLink(a, done(pair[0]), "Finish " + pair[1] + " and this one opens.");
+      if (!pair) return;
+      lockLink(a, done(pair[0]), sherpaT("whyDescent", {pair: sherpaT("pair", {n: pair[1], tense: pair[2]})}).replace(/&mdash;/g, "\u2014"));
+      var fr = a.querySelector(".from");
+      if (fr) fr.innerHTML = sherpaT(a.classList.contains("locked-link") ? "fromLocked" : "fromOpen", {n: a.getAttribute("data-camp")});
     });
     document.querySelectorAll(".camp-row, .desc-row, .off-row").forEach(function(a){
       var fin = !!p[slugOf(a)], sr = a.querySelector(".sr-done");
@@ -1071,7 +1134,7 @@ document.documentElement.classList.add("js");
       if (fin && !sr){
         sr = document.createElement("span");
         sr.className = "sr-only sr-done";
-        sr.textContent = " (done)";
+        sr.textContent = sherpaT("srDone");
         a.appendChild(sr);
       } else if (!fin && sr){
         sr.parentNode.removeChild(sr);
@@ -1088,23 +1151,23 @@ document.documentElement.classList.add("js");
           if (!next && !a.classList.contains("is-done")) next = a;
         });
         if (next){
-          label = "Carry on: camp " + next.querySelector(".camp-num").textContent
-                + " &middot; " + next.querySelector(".camp-name").textContent;
+          label = sherpaT("carryOn", {n: next.querySelector(".camp-num").textContent,
+                                      name: next.querySelector(".camp-name").textContent});
         } else {
           document.querySelectorAll(".desc-row[href]").forEach(function(a){
             if (!next && !a.classList.contains("is-done")) next = a;
           });
-          if (next) label = "Head down: " + next.querySelector(".camp-name").textContent.toLowerCase();
+          if (next) label = sherpaT("headDown", {name: next.querySelector(".camp-name").textContent.toLowerCase()});
         }
         if (!next){
           document.querySelectorAll(".off-row[href]").forEach(function(a){
             if (!next && !a.classList.contains("is-done")) next = a;
           });
-          if (next) label = "Off the route: " + next.querySelector(".camp-name").textContent;
+          if (next) label = sherpaT("offRoute", {name: next.querySelector(".camp-name").textContent});
         }
         if (!next){
           next = document.querySelector(".camp-row");
-          label = "Climb it again: camp one";
+          label = sherpaT("again");
         }
       }
       if (next){
@@ -1112,7 +1175,7 @@ document.documentElement.classList.add("js");
         go.innerHTML = label + ' <span aria-hidden="true">&rarr;</span>';
       } else {
         go.setAttribute("href", "sherpa-tensing-camp-one-present-continuous.html");
-        go.innerHTML = go.getAttribute("data-first");
+        go.innerHTML = '<span data-t="startFree">' + sherpaT("startFree") + '</span> <span aria-hidden="true">&rarr;</span>';
       }
     }
 
@@ -1123,33 +1186,22 @@ document.documentElement.classList.add("js");
       var host = document.querySelector(".zone-note");
       if (host && host.parentNode) host.parentNode.insertBefore(note, host);
     }
-    var bits = ["<strong>" + camps + " of 13</strong> camps",
-                "<strong>" + descents + " of 9</strong> descents"];
-    var tail;
-    if (all){
-      tail = "everything is open.";
-    } else if (locked === 0 && camps >= 13 && descents >= 1){
-      tail = "the whole mountain is open, both faces.";
-    } else {
-      tail = "nine of the camps open a passive; <em>used to</em> comes off camp 2 or 3, "
-           + "<em>be used to</em> off camp 2, the causative off your first descent.";
-    }
-    note.innerHTML = bits.join(" &middot; ") + " &mdash; " + tail;
+    var tail = all ? "tailAll" : (locked === 0 && camps >= 13 && descents >= 1) ? "tailWhole" : "tailDefault";
+    note.innerHTML = sherpaT("lockNote", {c: camps, d: descents, tail: sherpaT(tail)});
 
     if (window.sherpaPaintDots) window.sherpaPaintDots();
 
     var btn = document.getElementById("teach-btn");
     if (btn){
       btn.classList.toggle("on", all);
-      btn.textContent = all ? "Locks off \u2014 everything is open" : "I\u2019m teaching this \u2014 open everything";
+      btn.innerHTML = sherpaT(all ? "teachOn" : "teachOff");
     }
   }
 
   var row = document.createElement("div");
   row.className = "teach-row";
   row.innerHTML = '<button class="teach-btn" id="teach-btn" type="button"></button>'
-                + '<span>Learners open each passive, and the three lessons off the route, by finishing '
-                + 'the camp it comes from. Teachers, and anyone in a hurry, can open the lot.</span>';
+                + '<span data-t="teachWhy">' + sherpaT("teachWhy") + '</span>';
   var legend = document.querySelector(".legend");
   if (legend && legend.parentNode) legend.parentNode.insertBefore(row, legend.nextSibling);
   row.querySelector("#teach-btn").addEventListener("click", function(){
@@ -1159,6 +1211,7 @@ document.documentElement.classList.add("js");
     paint();
   });
 
+  window.sherpaRepaint = paint;
   paint();
   window.addEventListener("pageshow", function(e){ if (e.persisted) paint(); });
   window.addEventListener("storage", function(e){ if (e.key === KEY){ mem = null; paint(); } });
@@ -1189,13 +1242,17 @@ document.querySelectorAll(".camp-dot").forEach(function(g){
     if (href){ window.location.href = href; return; }
     var hint = document.querySelector(".map-hint"), lab = g.querySelector(".dot-label");
     if (!hint || !lab) return;
-    hint.textContent = g.classList.contains("no-camp")
-      ? lab.textContent.replace(/\s*\u2014\s*no camp$/, "") + ": no camp here \u2014 see the note below the lists."
-      : lab.textContent + ": " + (g.getAttribute("title") || "not open yet.");
+    hint.innerHTML = g.classList.contains("no-camp")
+      ? sherpaT("hintNoCamp", {label: lab.textContent.replace(/\s*\u2014\s*no camp$/, "")})
+      : sherpaT("hintLocked", {label: lab.textContent, why: g.getAttribute("title") || ""});
   });
 });
 window.sherpaPaintDots = sherpaPaintDots;
 sherpaPaintDots();
+</script>
+
+<script>
+if (window.sherpaLang) sherpaLang.apply(sherpaLang.initial());
 </script>
 
 

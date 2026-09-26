@@ -99,7 +99,8 @@ def check(rows, page=PAGE):
     kinds = [k for k, _, _, _ in listed]
     want = {'camps up': kinds.count('camp'), 'passives down': kinds.count('desc'),
             'off the route': kinds.count('off'), 'free': len(free)}
-    got = dict((lab.strip(), int(n)) for n, lab in re.findall(r'<li[^>]*><b>(\d+)</b>([a-z ]+)</li>', s))
+    got = dict((lab.strip(), int(n)) for n, lab in re.findall(
+        r'<li[^>]*><b>(\d+)</b>\s*(?:<span[^>]*>)?([a-z ]+)(?:</span>)?</li>', s))
     for lab, n in want.items():
         if got.get(lab) != n:
             bad.append('hero count "%s" says %s, the lists say %d' % (lab, got.get(lab), n))
@@ -149,6 +150,7 @@ def check(rows, page=PAGE):
     # (capped at 1), composited onto the paper. Labels with a paper halo
     # (text-shadow in --paper) never touch a line and are measured on paper.
     tile = re.search(r'background-image:url\("([^"]+\.svg)"\)', s)
+    deep = re.search(r'--paper-deep:(#[0-9A-Fa-f]{6})', s)
     if tile:
         svg_path = os.path.join(ROOT, tile.group(1).replace('%20', ' '))
         if not os.path.exists(svg_path):
@@ -163,6 +165,9 @@ def check(rows, page=PAGE):
                 bad.append('could not read the contour tile\'s stroke colour and opacities')
             elif '--paper' in tok:
                 a, p = max(o * min(1.0, w) for o, w in lines), tok['--paper']
+                # the paper darkens towards the foot of the page: measure the darker end
+                if deep and _lum(deep.group(1)) < _lum(p):
+                    p = deep.group(1).upper()
                 mix = '#' + ''.join('%02X' % round(int(stroke.group(1)[i:i + 2], 16) * a
                                                    + int(p[i:i + 2], 16) * (1 - a)) for i in (1, 3, 5))
                 halo = re.search(r'\.kicker[^{]*\{text-shadow:[^}]*var\(--paper\)', s)

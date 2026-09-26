@@ -79,6 +79,38 @@ three MC keys that were the longest option).
 - **Catalogue:** `deck` is still false. SQL for Innes:
   `update public.lessons set deck = true where file = 'forbes-english-writers-nightmare.html';`
 
+## 2026-09-26 — Sherpa hub in ten languages, and a paper gradient
+
+Innes: *"sherpa hub page needs the full languages that are in the rest of
+the sherpa course"* (after *"just the landing page /hub needs translated"* —
+the IELTS pages were not asked for). The hub now switches between English,
+German, Spanish, French, Italian, Portuguese, Russian, Arabic, Chinese and
+Japanese (the camps' example languages) from a select in the header;
+remembered as `sherpa.lang.v1`, and `?lang=de` etc. sets it.
+
+- **`tools/sherpa_hub_i18n.py` holds every translation** and injects them
+  into the page between `/*I18N:start*/` and `/*I18N:end*/`. English stays
+  the page source (search, no-script, `check_route_map.py`). Elements carry
+  `data-t` / `data-t-aria` / `data-t-title`; sentences the progress script
+  builds go through `sherpaT(key, vars)` and have English in `EN`. `--check`
+  fails on a missing key, a dropped `{placeholder}` or a changed set of
+  `<b>/<em>/<strong>/<a>` tags. **Add or change hub copy there, not in the
+  page**, then run it.
+- Not translated on purpose: tense and lesson names, CAPS forms, the English
+  example sentences, the SVG map labels. Arabic text is `dir="rtl"` element
+  by element so the maps and grid keep their layout; Japanese headings use
+  `word-break:auto-phrase`.
+- The descent rows' "from camp N" / "after camp N" moved from CSS
+  `::before` into the script so they can be translated; the counts row wraps
+  (German pushed "4 kostenlos" under the hero picture).
+- Registers follow the course chrome: informal du / tú / tu / ты; Brazilian
+  "você" for Portuguese; MSA for Arabic; です/ます for Japanese. **The seven
+  newer languages were written in-session and have not had a native check.**
+- **Paper gradient** (*"give hub background subtle gradient light at top and
+  darker bottom"*): `--paper` to `--paper-deep` `#F5E7E8` (the paper 10%
+  towards `--accent-dark`); `check_route_map.py` measures body text against
+  the darker end with a contour line over it.
+
 ## 2026-09-26 — Sherpa hub: contour background, the sherpa's guide, three recoloured camps
 
 Innes, in three messages: *"try a faint topology background pattern"*;
