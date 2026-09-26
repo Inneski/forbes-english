@@ -210,6 +210,28 @@
                      color:var(--ink-soft);padding:8px 12px;}
   .voice-bar a.ghost:hover{background:var(--accent-lighter);color:var(--accent-dark);border-color:var(--accent);}
 </style>
+<!-- SHERPA-TOPO:start -->
+<style id="sherpa-topo">
+/* contour areas (tools/sherpa_topo.py): the hub's tile as a mask, drawn in this
+   page's --accent-dark, in the margins only: the lesson column stays clear */
+body{position:relative;}
+body::before,body::after{content:"";position:absolute;left:0;right:0;z-index:-1;pointer-events:none;
+  background:var(--accent-dark);opacity:1;}
+/* the mask shorthand resets mask-composite, so the composite comes after it, */
+/* in the same rule: without it the three layers add up to a solid block   */
+body::before{top:0;height:min(820px,100vh);
+  -webkit-mask:url("Sherpa%20Tensing/topo-tile.svg") 0 0/640px 640px repeat,linear-gradient(to bottom,#000 0,#000 35%,transparent 100%),linear-gradient(to right,#000 0,#000 calc(50% - 572px),transparent calc(50% - 516px),transparent calc(50% + 516px),#000 calc(50% + 572px),#000 100%);
+  mask:url("Sherpa%20Tensing/topo-tile.svg") 0 0/640px 640px repeat,linear-gradient(to bottom,#000 0,#000 35%,transparent 100%),linear-gradient(to right,#000 0,#000 calc(50% - 572px),transparent calc(50% - 516px),transparent calc(50% + 516px),#000 calc(50% + 572px),#000 100%);
+  -webkit-mask-composite:source-in;mask-composite:intersect;}
+body::after{bottom:0;height:min(560px,70vh);
+  -webkit-mask:url("Sherpa%20Tensing/topo-tile.svg") 0 0/640px 640px repeat,linear-gradient(to top,#000 0,#000 30%,transparent 100%),linear-gradient(to right,#000 0,#000 calc(50% - 572px),transparent calc(50% - 516px),transparent calc(50% + 516px),#000 calc(50% + 572px),#000 100%);
+  mask:url("Sherpa%20Tensing/topo-tile.svg") 0 0/640px 640px repeat,linear-gradient(to top,#000 0,#000 30%,transparent 100%),linear-gradient(to right,#000 0,#000 calc(50% - 572px),transparent calc(50% - 516px),transparent calc(50% + 516px),#000 calc(50% + 572px),#000 100%);
+  -webkit-mask-composite:source-in;mask-composite:intersect;}
+/* the one text in the margin, the gate's dashed "Show me anyway": a paper halo */
+.voice-bar a.ghost{text-shadow:0 0 2px var(--paper),0 0 4px var(--paper),0 0 6px var(--paper),0 0 8px var(--paper);}
+@media print{body::before,body::after{display:none;}}
+</style>
+<!-- SHERPA-TOPO:end -->
 </head>
 <body>
 <a class="up-link" href="sherpa-tensing-route-map.html"><span class="arw" aria-hidden="true">&larr;</span>Route map</a>
