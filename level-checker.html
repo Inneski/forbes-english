@@ -96,11 +96,13 @@
 <meta name="twitter:image" content="https://forbesenglish.com/og-forbes-english.png">
 <!-- SEO:end -->
 <title>Level Checker | Forbes English</title>
+<!-- The band's ENGLISH only: Barlow Condensed cut to those seven letters. Its
+     width is pinned by textLength, so it cannot reflow anything when it lands. -->
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&text=ENGLISH&display=swap" rel="stylesheet">
 <style>
-/* No @import. Courier New is a system face, so nothing is fetched: the page
-   paints correctly on the FIRST frame instead of reflowing when a webfont
-   lands. That also removes the document.fonts.ready dependency the snapper
-   was carrying — it still waits, it just resolves instantly now.
+/* No @import. Courier New is a system face, so nothing is fetched for the
+   page itself: it paints correctly on the FIRST frame instead of reflowing
+   when a webfont lands. The one fetch above is the band logo's seven letters.
    To go back to the Playfair/Lato/Barlow set, restore the @import and swap
    --face / --face-display below; nothing else references a family. */
 
@@ -355,21 +357,17 @@ h1{font-family:var(--face);font-size:33px;line-height:calc(var(--line)*2);
 .tb-logo{display:block;text-decoration:none;line-height:1;flex:none;
   color:var(--paper);font-size:26px}
 .tb-logo-mark{display:block;width:2.93em;height:auto}
-.tb-logo-sub{display:block;font-family:var(--face);font-weight:var(--weight);
-  font-size:.385em;letter-spacing:.562em;margin:.13em -.562em 0 0;white-space:nowrap}
-/* Tracking derived the way the IELTS write-up prescribes: render at 0, measure
-   the INK of each line from a 4x screenshot column by column, then
-   letter-spacing = (markInk - subInk) / (chars - 1)  ->  six gaps for the
-   seven letters of ENGLISH. Measured 299px vs 164px at 4x = 5.63px at 1x
-   against a 10.01px sub = .562em. The negative right margin cancels the gap
-   CSS also adds after the LAST letter, or the block runs one gap long. */
+.tb-logo-en { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 261px; fill: var(--gold-bright, #e8c04a); }
+/* The band carries the site's standard lockup (as ielts.html, library.html):
+   ENGLISH is SVG text inside the wordmark's SVG, Barlow Condensed 800, its
+   ink pinned to the wordmark's ink by textLength. It no longer takes --face;
+   the masthead below is the lockup that morphs with the level. */
 .tb-links{display:flex;align-items:center;gap:clamp(10px,2vw,22px);flex-wrap:wrap}
 /* The nav is site chrome, not page content, so it does NOT take --face.
    Courier is a wide monospace: five links in it made this band 58px where
    ielts.html is 52.2, and wrapped to 110px at 430 and 148px at 360 against
    their 52.2 and 86. A narrow system sans costs no fetch and brings the band
-   back in line with the rest of the site. The lockup keeps Courier, because
-   its tracking was measured against Courier ink. */
+   back in line with the rest of the site. */
 .tb-links a{font-family:'Arial Narrow','Helvetica Neue Condensed',
   'Liberation Sans Narrow',Arial,sans-serif;
   font-weight:700;letter-spacing:.06em;
@@ -395,7 +393,7 @@ h1{font-family:var(--face);font-size:33px;line-height:calc(var(--line)*2);
 <div class="topband">
   <div class="tb-inner">
     <a class="tb-logo" href="index.html" aria-label="Forbes English — home">
-  <svg class="tb-logo-mark" viewBox="670 345 1530 420" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <svg class="tb-logo-mark" viewBox="670 345 1530 738" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
   <g transform="translate(0,1504) scale(0.1,-0.1)" fill="currentColor" stroke="none">
   <path d="M14940 11379 c-58 -10 -226 -34 -375 -54 -148 -20 -305 -41 -348 -47
   l-78 -10 3 -146 3 -146 76 -12 c42 -6 85 -17 97 -23 27 -15 66 -67 82 -111 21
@@ -454,8 +452,8 @@ h1{font-family:var(--face);font-size:33px;line-height:calc(var(--line)*2);
   -103 -5 0 -8 15 -8 33 0 18 -7 134 -15 258 -15 218 -16 225 -41 247 -14 12
   -33 22 -42 21 -9 0 -199 -27 -422 -60z"/>
   </g>
+  <text class="tb-logo-en" x="680" y="1054" textLength="1510" lengthAdjust="spacing">ENGLISH</text>
   </svg>
-      <span class="tb-logo-sub">ENGLISH</span>
     </a>
     <div class="tb-links">
       <a href="library.html">Lessons</a>
