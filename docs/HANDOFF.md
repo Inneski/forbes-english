@@ -12,6 +12,58 @@ stale copy.
 ---
 
 
+## 2026-09-26 — grammar.html redesigned: a landing page with the tenses in colour
+
+Innes: *"redesign this forbesenglish.com/grammar so it looks cool like my
+IELTS hub, or Sherpa Hub or Block Camp hub with colour coded tenses"*.
+`grammar.html` was three paragraphs and nineteen white cards in the topic
+pages' chrome. It is now a landing page in the IELTS hub's family.
+
+- **New builder, `tools/build_grammar_hub.py`**, called by `build_hubs.py`
+  for the landing page only (the topic pages are unchanged in structure).
+  `page()` in `build_hubs.py` gained `body_class` and `wrap=False` so the
+  landing page can go full-bleed. `--check` measures every text-on-fill
+  pair, one per tense square included; `--palette` re-derives the colours.
+- **The signature figure is the tense code**: twelve tenses as a grid of
+  time across (past, present, future) by shape down (simple, continuous,
+  perfect, perfect continuous), going to as a thirteenth square under the
+  future, each in its tense colour, each opening its topic page — or, where
+  one lesson stands alone (past perfect continuous, future continuous,
+  future perfect, future perfect continuous), that lesson. Counts, level
+  spans and Free per square come from the catalogue: the future hub is
+  split by regex into will / going to / the two perfects; the past perfect
+  hub minus its continuous. Below 680px it stacks by time.
+- **The colours are read off `sherpa-tensing-route-map.html`**, not typed:
+  the guide's 3x4 grid carries `--c`/`--k` per camp, and `tense_colours()`
+  lifts them with a regex, so the next recolour pass reaches this page on
+  the next `build_hubs.py`. `tense-palette.css` and Block Camp keep their
+  older values by design (HANDOFF 2026-09-26, Sherpa), so this page follows
+  the map, which HOUSE-STYLE §5a names as where the code is published.
+  Every ink is re-measured on its fill (all 13 pass, 5.5–13:1); a failing
+  one would be swapped for the better of ink/white and reported.
+- **Palette derived from the hero** (`Sherpa Tensing/hero-route-map.jpg`,
+  the ridge — the route up the mountain is the route through the tenses;
+  light and dark runs of `extract-palette.py` plus an 8-colour quantise for
+  the art fields). It comes out a sibling of the IELTS page's, which is the
+  point. Sections: hero; the tense grid and a Tense Review bar; every topic
+  as a card with its hub's picture (tense cards wear their colour as a top
+  rule and a swatch; Skills as three wider plates); Sherpa Tensing and
+  Block Camp as two picture plates with live counts; two notes; a Level
+  Checker closing band over the ridge.
+- **Pictures**: web-sized copies (640px) of each hub's hero in
+  `grammar-hub/`, named by a hash of the source bytes, pruned when
+  superseded — the IELTS hub's scheme. 19 files, committed by name.
+- **Topic pages** carry the same swatch before the eyebrow and before the
+  tense topics in "Other topics", so the colour follows a click through.
+- **seo.py**: `topics.hub_pages()` now gives grammar.html a share image
+  (the hero, imported from the builder) and a description that names the
+  colour code.
+- **Not done**: no hand-picked colour anywhere; a square's real backdrop on
+  the route plates is picture-plus-scrim, measured only as token-on-rock,
+  so those plates hold a near-solid scrim under the copy rather than a
+  measured one.
+
+
 ## 2026-09-26 — Beyond the Handlebars: a wrong key, and DE/ES that covered only the chrome
 
 Innes, from the collocation slide: *"not enough translations … are these not

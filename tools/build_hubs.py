@@ -52,6 +52,9 @@ STYLE_EXTRA = """
 .chip { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; font-size: .78rem; color: var(--green-deep); background: #fff; border: 1px solid rgba(20,48,31,0.14); border-radius: 20px; padding: 6px 13px; text-decoration: none; }
 .chip:hover { border-color: var(--gold); background: var(--gold-pale); }
 .chip small { font-weight: 600; color: var(--muted); margin-left: 4px; }
+/* the tense colour, as on grammar.html's cards: a swatch, never a text colour */
+.tswatch { display: inline-block; width: .85em; height: .85em; border-radius: 3px; background: var(--tc); vertical-align: -.08em; margin-right: .5em; }
+.chip .tswatch { width: .7em; height: .7em; margin-right: .4em; }
 .topic-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
 .topic-card { display: block; background: #fff; border: 1px solid rgba(20,48,31,0.10); border-radius: var(--radius); padding: 18px 20px; text-decoration: none; color: inherit; box-shadow: 0 2px 10px rgba(20,48,31,0.05); transition: transform .15s ease, box-shadow .15s ease; }
 .topic-card:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(20,48,31,0.13); }
@@ -89,7 +92,11 @@ def esc(t):
     return seo.esc(t)
 
 
-def page(title, style, fonts, nav, body, ld):
+def page(title, style, fonts, nav, body, ld, body_class='', wrap=True):
+    """The shell every hub shares. `wrap` puts the body in the topic
+    pages' column; the landing page manages its own full-bleed bands."""
+    if wrap:
+        body = '<div class="wrap">\n%s\n</div>' % body
     return '''<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -102,15 +109,14 @@ def page(title, style, fonts, nav, body, ld):
 %s
 <script type="application/ld+json">%s</script>
 </head>
-<body>
+<body%s>
 %s
-<div class="wrap">
 %s
-</div>
 </body>
 </html>
 ''' % (esc(title), seo.START, seo.END, fonts, style,
-       json.dumps(ld, ensure_ascii=False, separators=(',', ':')), nav, body)
+       json.dumps(ld, ensure_ascii=False, separators=(',', ':')),
+       ' class="%s"' % body_class if body_class else '', nav, body)
 
 
 def crumb(*parts):
@@ -154,7 +160,15 @@ def describe(r):
     return seo.describe(src, r)
 
 
-def topic_page(t, rows, images, allm, style, fonts, nav):
+def swatch(slug, tc):
+    """The tense colour a topic wears on grammar.html, as a swatch before
+    its name, or nothing for a topic that has none."""
+    import build_grammar_hub
+    col = tc.get(build_grammar_hub.TOPIC_COLOUR.get(slug, ''))
+    return '<span class="tswatch" style="--tc:%s" aria-hidden="true"></span>' % col[0] if col else ''
+
+
+def topic_page(t, rows, images, allm, style, fonts, nav, tc):
     free = [r for r in rows if r.get('access') != 'pro']
     span = topics.level_span(rows)
     heroimg = topics.hero(rows, images)
@@ -164,8 +178,8 @@ def topic_page(t, rows, images, allm, style, fonts, nav):
 
     body = [crumb(('Home', 'index.html'), ('Grammar', 'grammar.html'), (t['name'], None))]
     body.append('  <div class="hero">\n    <div>')
-    body.append('      <div class="eyebrow">%s &middot; %s &middot; %d lesson%s%s</div>'
-                % (esc(t['group']), esc(span) or 'All levels', len(rows),
+    body.append('      <div class="eyebrow">%s%s &middot; %s &middot; %d lesson%s%s</div>'
+                % (swatch(t['slug'], tc), esc(t['group']), esc(span) or 'All levels', len(rows),
                    '' if len(rows) == 1 else 's',
                    ' &middot; %d free' % len(free) if free else ''))
     body.append('      <h1>%s</h1>' % t['h1'])
@@ -205,8 +219,8 @@ def topic_page(t, rows, images, allm, style, fonts, nav):
     body.append('    <div class="track-head"><h2>Other topics</h2></div>')
     body.append('    <div class="chips">')
     for o, orows in related:
-        body.append('      <a class="chip" href="%s">%s<small>%d</small></a>'
-                    % (topics.hub_url(o['slug']), o['name'], len(orows)))
+        body.append('      <a class="chip" href="%s">%s%s<small>%d</small></a>'
+                    % (topics.hub_url(o['slug']), swatch(o['slug'], tc), o['name'], len(orows)))
     body.append('    </div>\n  </section>')
 
     body.append('''  <div class="note">
@@ -230,67 +244,14 @@ def topic_page(t, rows, images, allm, style, fonts, nav):
                 style, fonts, nav, '\n'.join(body), ld)
 
 
-def index_page(allm, images, style, fonts, nav):
-    body = [crumb(('Home', 'index.html'), ('Grammar', None))]
-    body.append('''  <div class="hero">
-    <div>
-      <div class="eyebrow">Grammar &middot; A1 to C2</div>
-      <h1>English grammar, <em>by topic</em></h1>
-      <div class="prose">
-        <p>Every grammar lesson on the site, shelved by the point it teaches. Each topic page explains the rule in plain sentences &mdash; the form, what it is for, and the mistake that gives a level away &mdash; and then lists the lessons that drill it, by level, free ones first.</p>
-        <p>The tenses are taught in the order a learner meets them: Present Simple and Continuous, then the Past Simple, then the Present Perfect and the line between it and the past, then the future forms, and the perfect tenses last. The passive, the modals, prepositions and conditionals sit alongside, and the review pages put everything side by side once the pieces are in place.</p>
-        <p>Every lesson is a 16:9 deck that opens in the browser: the rule on the slide, then practice, then a speaking task, with a language switcher for the explanations. Teachers present from them; learners work through them alone.</p>
-      </div>
-    </div>
-    <div class="hero-side">
-      <ul class="facts">
-        <li><b>Where to start</b><a href="level-checker.html">The free Level Checker</a> tests the tenses adaptively, six questions a level, and names the lesson to open first.</li>
-        <li><b>Two routes through the tenses</b><a href="sherpa-tensing-route-map.html">Sherpa Tensing</a> climbs them in order, active then passive; <a href="block-camp.html">Block Camp</a> does the same in Minecraft.</li>
-        <li><b>Exam English</b><a href="ielts.html">IELTS Academic</a> has its own route: Writing, Speaking, Listening, Reading and Vocabulary, in teaching order.</li>
-      </ul>
-    </div>
-  </div>''')
-    groups = {}
-    for t in topics.TOPICS:
-        if not allm[t['slug']]:
-            continue
-        groups.setdefault(t['group'], []).append(t)
-    for g in ('Tenses', 'Grammar', 'Skills'):
-        if g not in groups:
-            continue
-        body.append('  <section class="track">')
-        body.append('    <div class="track-head"><h2>%s</h2></div>' % esc(g))
-        body.append('    <div class="topic-grid">')
-        for t in sorted(groups[g], key=lambda x: x['order']):
-            rows = allm[t['slug']]
-            free = sum(1 for r in rows if r.get('access') != 'pro')
-            desc = t['desc'] or 'The IELTS Academic route: Writing, Speaking, Listening, Reading and the vocabulary that feeds them.'
-            desc = desc.split(': ', 1)[-1] if ': ' in desc else desc
-            body.append('''      <a class="topic-card" href="%s">
-        <h3>%s</h3>
-        <p>%s</p>
-        <div class="tags"><span class="tag">%s</span><span class="tag">%d lesson%s</span>%s</div>
-      </a>''' % (topics.hub_url(t['slug']), esc(t['name']), esc(seo.trim(desc, 150)),
-                 esc(topics.level_span(rows) or 'All levels'), len(rows),
-                 '' if len(rows) == 1 else 's',
-                 '<span class="tag tag-free">%d free</span>' % free if free else ''))
-        body.append('    </div>\n  </section>')
-    body.append('''  <div class="note">
-    <div>
-      <h3>Looking for one lesson in particular?</h3>
-      <p>The library lists every lesson on the site, filterable by level, topic and whether it is free, with a picture for each so a class can pick by eye.</p>
-    </div>
-    <a href="library.html">Open the library &rarr;</a>
-  </div>''')
-    ld = {'@context': 'https://schema.org', '@graph': [
-        breadcrumb_ld(('Home', 'index.html'), ('Grammar', 'grammar.html')),
-        {'@type': 'ItemList', 'name': 'English grammar topics',
-         'itemListElement': [
-             {'@type': 'ListItem', 'position': i + 1,
-              'url': '%s/%s' % (SITE, topics.hub_url(t['slug'])), 'name': t['name']}
-             for i, t in enumerate(x for x in topics.TOPICS if allm[x['slug']])]}]}
+def index_page(rows, images, allm, style, fonts, nav):
+    """grammar.html — the landing page, from tools/build_grammar_hub.py:
+    a full-bleed hero, the tense grid in colour, every topic as a card
+    with its picture, the two routes, and a closing band."""
+    import build_grammar_hub
+    css, body, ld = build_grammar_hub.render(rows, images, allm)
     return page('English Grammar by Topic: Tenses, Modals, Passive, Prepositions',
-                style, fonts, nav, '\n'.join(body), ld)
+                style + css, fonts, nav, body, ld, body_class='gh', wrap=False)
 
 
 def main():
@@ -300,6 +261,8 @@ def main():
             and r['file'] not in seo.SKIP]
     allm = topics.members(rows, images, seo.coming_soon)
     style, fonts, nav = chrome()
+    import build_grammar_hub
+    tc = build_grammar_hub.tense_colours(quiet=True)
     written = []
     for t in topics.generated():
         trows = allm[t['slug']]
@@ -309,15 +272,14 @@ def main():
         out = os.path.join(ROOT, topics.hub_url(t['slug']))
         open(out, 'w', encoding='utf-8', newline='\n').write(
             topic_page(t, trows, images, allm, style, fonts,
-                       nav_for(nav, 'true' if t.get('group') in ('Tenses', 'Grammar') else None)))
+                       nav_for(nav, 'true' if t.get('group') in ('Tenses', 'Grammar') else None), tc))
         written.append((topics.hub_url(t['slug']), len(trows),
                         sum(1 for r in trows if r.get('access') != 'pro')))
     open(os.path.join(ROOT, 'grammar.html'), 'w', encoding='utf-8', newline='\n').write(
-        index_page(allm, images, style, fonts, nav_for(nav, 'page')))
+        index_page(rows, images, allm, style, fonts, nav_for(nav, 'page')))
     print('  lessons: %d (from %s)' % (len(rows), source))
     for f, n, free in written:
         print('  %-32s %3d lessons, %2d free' % (f, n, free))
-    print('  grammar.html: %d topics' % len(written))
     # The five IELTS route pages and the landing page are generated from
     # tools/ielts_routes.py and the catalogue, so they go stale the same way
     # these do. All six at once: they share their pictures.

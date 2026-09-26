@@ -34,6 +34,12 @@ the chrome cannot drift. Slugs are real search phrases; check a new slug
 against the root before adding one, because lesson asset folders live
 there too.
 
+**`grammar.html` itself comes from `tools/build_grammar_hub.py`** (called
+by `build_hubs.py`): a landing page in the IELTS hub's family, with the
+twelve tenses as a colour-coded grid whose colours are read off the Sherpa
+route map, every topic as a card with its picture, and every count from
+the catalogue. Its card pictures are hashed web copies in `grammar-hub/`.
+
 It then refreshes the five IELTS route pages (`tools/build_ielts_routes.py`)
 and **`ielts.html`** itself (`tools/build_ielts_hub.py`), both from
 `tools/ielts_routes.py` and the catalogue. Each route page carries its own

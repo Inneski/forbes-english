@@ -437,12 +437,15 @@ def hero(rows, images):
 # hero: the same tuple shape as its PAGES table. The hero is the picture of
 # the first free lesson on the topic, chosen at build time — see build_hubs.
 def hub_pages():
+    # The landing page's share image is its hero, which build_grammar_hub
+    # owns; imported here rather than typed twice.
+    import build_grammar_hub
     out = {'grammar.html': (
         'English Grammar by Topic: Tenses, Modals, Passive, Prepositions',
         'Every Forbes English grammar lesson sorted by topic and level — '
-        'the tenses, modal verbs, the passive, prepositions, conditionals, '
-        'gerunds and infinitives — each with the rule explained and the '
-        'lessons that drill it.', 0.9)}
+        'the twelve tenses in colour, modal verbs, the passive, prepositions, '
+        'conditionals, gerunds and infinitives — each with the rule explained '
+        'and the lessons that drill it.', 0.9, build_grammar_hub.HERO_OG)}
     for t in generated():
         out[hub_url(t['slug'])] = (
             '%s: English lessons and exercises' % t['name'], t['desc'], 0.8)
