@@ -12,6 +12,66 @@ stale copy.
 ---
 
 
+## 2026-09-26 — Sherpa: softer 4/10/11, readable buttons, contour areas on every page, translations reviewed
+
+Innes: *"softer colors on 4, 10 & 11"*, *"present continuous ripple diagram
+too faint or washed over, some parts could have topology background
+areas"*, *"parts of each background"*. Four commits: `70a9cb4`, `1e2d28b`,
+`c20af7a`, and this entry.
+
+- **Pass `2026-09-26c`** (`lesson-template/recolour_family.py`): camp 4
+  `#36797E` -> `#689497`, 10 `#6E0B24` -> `#8D5358`, 11 `#4B1A7A` ->
+  `#705991`, on camps 4, 10, 11 and descents four and ten. `move()` gained
+  `from_accent`: the lift normally starts at L 0.5, so a dark accent
+  (maroon, violet) would not have moved.
+- **Bug in the tool, fixed:** the forward path (`main`) never applied the
+  shared-colour hold or `keep_text()`; only `--replay` did. Passes a and b
+  went through replay; pass c went forward and lifted camp 10's and 11's
+  captions to 2.3:1. Replayed from HEAD with both guards; `main()` has them
+  now. `recolour_map()` also moves the glyph on a "no camp" diamond (8's and
+  11's had kept their old colours since pass b).
+- **Text on the accent, course-wide.** 36 CSS rules on 11 pages (next
+  button, next-camp link, translation toggle, voice-bar hover) drew white on
+  a light accent, as low as 1.64:1 on descent one. They date from when every
+  accent was dark; each recolour checked the accent, not what is written on
+  it. Every such page has an `--on-accent` now (camp 13's grey clears 4.5
+  with neither white nor its ink, so its ink is darkened in OKLCh until it
+  does). **`tools/check_route_map.py` measures it** (`check_pages()`: 36
+  failures at `a222e42`, 0 now), plus the no-camp glyph colour. Both run
+  warn-only from `build_hubs.py`.
+- **Camp one's ripple**: stops re-derived from `#F2ADBF`'s hue, deeper to
+  the centre; rings a mid rose. Card re-rendered.
+- **Contour areas on all 25 lesson pages** (`tools/sherpa_topo.py`): the
+  hub's tile as a mask in each page's `--accent-dark`, a band down from the
+  top and one up from the foot, **in the margins beside the 1000px column
+  only**. Behind the text it could not work: eight camps' `--accent` sits at
+  3.0:1 and `--accent-dark` just over 4.5:1 after the recolours, so any line
+  under a glyph breaks a floor. Below ~1080px the page is plain. The gate's
+  "Show me anyway" is the one text in a margin and has a paper halo.
+  **`node tools/sherpa_topo_clear.js`** measures it (every page, four
+  widths, fixed text at both scroll ends; fails on a copy without the halo
+  and on one with a narrowed carve). The `mask` shorthand resets
+  `mask-composite`: the composite must follow it in the same rule, or the
+  layers add up to a solid block. **If a Sherpa page is ever regenerated**
+  (`build_sherpa.py` would overwrite them), re-run `sherpa_topo.py`;
+  `--check` fails a page whose block is missing.
+- **Hub translations reviewed** (workflow: one native-level reader per
+  language group, a second reader per proposed change): 121 accepted, 11
+  turned down, applied through `tools/sherpa_hub_i18n.py`. The notable ones
+  were meaning errors: "the passive that opens camp one" in it/es/de (it is
+  camp one that opens the passive), fr "à travers les temps" (= through the
+  ages). French also gets no-break spaces before `: ; ? !`.
+- Cards re-rendered: camp one, four, ten, eleven; descent four, ten; the
+  route map thumbnail. The re-rendered cards are 1202x646 (the SVG's own
+  box), like the eight from earlier today; the rest are 1200x675.
+
+**Still open (Innes):** unchanged from the entries below: `pricing.html`
+says the whole Sherpa route is free; descent numbering titles need the
+catalogue SQL; Block Camp's `tense-palette.css` and the stopped deck
+builder's JSON palettes still hold the old tense colours (now also 4, 10,
+11).
+
+
 ## 2026-09-26 — Block Camp Present Continuous 1a: right answers bring the picture to life
 
 Innes dropped 13 Gemini clips in `incoming/Present continuous Block Camp
