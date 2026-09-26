@@ -11,6 +11,26 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+
+## 2026-09-26 — The Writer's Nightmare: SHIPPED as a 38-slide panel deck, 11 languages
+
+`build_writersnightmare.py` + `i18n_writersnightmare.py` (English) and one
+`i18n_writersnightmare_<code>.py` per language: de es fr it pt ru ar zh ja hr.
+House style 2 (panels), dark palette from the typewriter hero. All gates pass,
+answered state fits in all 11. Content fixes are in the builder docstring
+(faulty comparison in the story, a fragment, a referentless "it", wrong
+pronunciation rules for "experts" and "growth", "auto" for "automatically",
+three MC keys that were the longest option).
+
+- **Art is thin (§5c).** The lesson has ONE picture; every panel and divider
+  re-crops the hero with pos=. To finish it properly, brief four flat-vector
+  plates in the hero's style (pink field, blue-grey objects, black ink):
+  a blinking cursor on an empty page; two magnets pulling together; a
+  sprouting pencil (growth); a mouth / sound-wave for pronunciation. Drop them
+  in `incoming/`, prep into `WritersNightmare/`, and swap `pic=` per stage.
+- **Catalogue:** `deck` is still false. SQL for Innes:
+  `update public.lessons set deck = true where file = 'forbes-english-writers-nightmare.html';`
+
 ## 2026-09-26 — Sherpa hub: contour background, the sherpa's guide, three recoloured camps
 
 Innes, in three messages: *"try a faint topology background pattern"*;
