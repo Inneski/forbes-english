@@ -216,23 +216,22 @@
 <!-- SHERPA-TOPO:start -->
 <style id="sherpa-topo">
 /* contour areas (tools/sherpa_topo.py): the hub's tile as a mask, drawn in this
-   page's --accent-dark, in the margins only: the lesson column stays clear */
+   page's --accent-dark, in six areas; text on the paper wears a paper halo */
 body{position:relative;}
-body::before,body::after{content:"";position:absolute;left:0;right:0;z-index:-1;pointer-events:none;
-  background:var(--accent-dark);opacity:1;}
-/* the mask shorthand resets mask-composite, so the composite comes after it, */
-/* in the same rule: without it the three layers add up to a solid block   */
-body::before{top:0;height:min(820px,100vh);
-  -webkit-mask:url("Sherpa%20Tensing/topo-tile.svg") 0 0/640px 640px repeat,linear-gradient(to bottom,#000 0,#000 35%,transparent 100%),linear-gradient(to right,#000 0,#000 calc(50% - 572px),transparent calc(50% - 516px),transparent calc(50% + 516px),#000 calc(50% + 572px),#000 100%);
-  mask:url("Sherpa%20Tensing/topo-tile.svg") 0 0/640px 640px repeat,linear-gradient(to bottom,#000 0,#000 35%,transparent 100%),linear-gradient(to right,#000 0,#000 calc(50% - 572px),transparent calc(50% - 516px),transparent calc(50% + 516px),#000 calc(50% + 572px),#000 100%);
-  -webkit-mask-composite:source-in;mask-composite:intersect;}
-body::after{bottom:0;height:min(560px,70vh);
-  -webkit-mask:url("Sherpa%20Tensing/topo-tile.svg") 0 0/640px 640px repeat,linear-gradient(to top,#000 0,#000 30%,transparent 100%),linear-gradient(to right,#000 0,#000 calc(50% - 572px),transparent calc(50% - 516px),transparent calc(50% + 516px),#000 calc(50% + 572px),#000 100%);
-  mask:url("Sherpa%20Tensing/topo-tile.svg") 0 0/640px 640px repeat,linear-gradient(to top,#000 0,#000 30%,transparent 100%),linear-gradient(to right,#000 0,#000 calc(50% - 572px),transparent calc(50% - 516px),transparent calc(50% + 516px),#000 calc(50% + 572px),#000 100%);
-  -webkit-mask-composite:source-in;mask-composite:intersect;}
-/* the one text in the margin, the gate's dashed "Show me anyway": a paper halo */
-.voice-bar a.ghost{text-shadow:0 0 2px var(--paper),0 0 4px var(--paper),0 0 6px var(--paper),0 0 8px var(--paper);}
-@media print{body::before,body::after{display:none;}}
+body::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:var(--accent-dark);opacity:1;
+  -webkit-mask:url("Sherpa%20Tensing/topo-tile.svg") 0 0/640px 640px repeat,linear-gradient(#000 0,#000 40%,transparent 100%) 0 0/100% 900px no-repeat,linear-gradient(to top,#000 0,#000 30%,transparent 100%) 0 100%/100% 700px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) -620px 24%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) calc(100% + 620px) 46%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) -620px 68%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) calc(100% + 620px) 88%/1240px 1000px no-repeat;
+  mask:url("Sherpa%20Tensing/topo-tile.svg") 0 0/640px 640px repeat,linear-gradient(#000 0,#000 40%,transparent 100%) 0 0/100% 900px no-repeat,linear-gradient(to top,#000 0,#000 30%,transparent 100%) 0 100%/100% 700px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) -620px 24%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) calc(100% + 620px) 46%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) -620px 68%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) calc(100% + 620px) 88%/1240px 1000px no-repeat;
+  /* after the shorthand, which resets it: the tile intersects the union of the areas */
+  -webkit-mask-composite:source-in,source-over,source-over,source-over,source-over,source-over,source-over;
+  mask-composite:intersect,add,add,add,add,add,add;}
+.wordmark,h1,h1 ~ p,.camp > .camp-label,.camp > h2,.camp > p.example,.camp > p.chart-note,.btnrow > a.route-link,.tr-bar > .tr-label,.voice-bar a.ghost{text-shadow:0 0 2px var(--paper),0 0 4px var(--paper),0 0 6px var(--paper),0 0 8px var(--paper);}
+/* these two take a background on hover, where a halo would be a glow */
+.btnrow > a.route-link:hover,.voice-bar a.ghost:hover{text-shadow:none;}
+/* a hero diagram paints a paper rectangle: feather its edge into a clearing */
+svg.hero-diagram{background:var(--paper);box-shadow:0 0 18px 14px var(--paper);}
+.ring-hero-svg{border-radius:50%;box-shadow:0 0 16px 10px var(--paper);}
+@media print{body::before{display:none;}}
 </style>
 <!-- SHERPA-TOPO:end -->
 </head>
