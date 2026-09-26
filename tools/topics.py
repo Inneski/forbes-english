@@ -446,6 +446,13 @@ def hub_pages():
         'the twelve tenses in colour, modal verbs, the passive, prepositions, '
         'conditionals, gerunds and infinitives — each with the rule explained '
         'and the lessons that drill it.', 0.9, build_grammar_hub.HERO_OG)}
+    import build_rpg_hub
+    out['rpg.html'] = (
+        'English Role-Playing Games: Branching Stories Where the Grammar Decides',
+        'Branching English adventures from A1 to C1 — voxel-built Block Camp quests '
+        'and story games from Sherlock Holmes to a Paris boardroom — where every '
+        'choice is a grammar question and the answer decides the ending. Several '
+        'are free.', 0.9, build_rpg_hub.HERO_OG)
     for t in generated():
         out[hub_url(t['slug'])] = (
             '%s: English lessons and exercises' % t['name'], t['desc'], 0.8)

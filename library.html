@@ -97,68 +97,111 @@
     font-size: 0.72rem;
     margin-bottom: 10px;
   }
-  .stats {
+  .hero-lede {
+    color: #cddccf;
+    font-size: 0.95rem;
+    margin: -4px 0 14px;
+  }
+  /* The hubs: one plate per landing page, each wearing that page's own
+     hero (library-hub/, written by tools/build_library_plates.py so a
+     plate and the page it opens show the same picture). Six at equal
+     weight — Innes, 2026-09-26: "RPGS deserves an equal button with
+     IELTS, Block Camp & Sherpa … Grammar has it's own cool hub now …
+     Work with me is important." These replaced six green stat buttons
+     (lesson plans, grammar activities, RPGs, slide decks, video lessons,
+     work with me) and four route banners: video lessons are not an
+     entity yet, and every lesson will be a slide deck. Counts come from
+     the live catalogue in renderHubs(); a plate without one keeps its
+     meta line empty, and :empty hides it. */
+  .hubs {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 12px;
-    max-width: 620px;
+    max-width: 1100px;
     margin: 0 auto;
   }
-  @media (max-width: 620px) { .stats { grid-template-columns: repeat(2, 1fr); } }
-  .stat {
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.15);
+  .hub {
+    --hub-c: var(--gold-bright);
+    position: relative;
+    isolation: isolate;
+    display: block;
+    overflow: hidden;
+    aspect-ratio: 16 / 8;
+    min-height: 150px;
     border-radius: var(--radius);
-    padding: 10px 18px;
-    min-width: 110px;
-  }
-  .stat-num {
-    font-family: 'Playfair Display', serif;
-    font-weight: 900;
-    font-size: 1.3rem;
-    color: var(--gold-bright);
-    line-height: 1;
-  }
-  .stat-lbl {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    color: #cddccf;
-    font-size: 0.65rem;
-    margin-top: 3px;
-    text-transform: uppercase;
-  }
-  .stat-deck {
-    background: #2fae5c;
-    border: 1px solid #38c96a;
-    border-radius: var(--radius);
-    padding: 16px 12px;
+    background: var(--green-mid);
+    border: 1px solid rgba(255,255,255,0.14);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
     text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 7px;
-    box-shadow: 0 4px 16px rgba(47,174,92,.35);
-    transition: background .15s ease, transform .15s ease;
+    color: #fff;
+    text-align: left;
+    transition: transform .15s ease, box-shadow .15s ease;
   }
-  .stat-deck:hover { background: #38c96a; transform: translateY(-2px); }
-  .stat-ico {
-    font-size: 1.35rem;
-    line-height: 1;
-    height: 1.35rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .hub:hover, .hub:focus-visible { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.35); }
+  .hub:focus-visible { outline: 3px solid var(--gold-bright); outline-offset: 2px; }
+  .hub img {
+    position: absolute; inset: 0; z-index: -2;
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    transition: transform .4s ease;
   }
-  .stat-deck .stat-lbl {
-    color: #0f1a13;
-    opacity: 1;
-    margin-top: 0;
-    text-align: center;
-    line-height: 1.25;
-    font-size: 0.7rem;
-    letter-spacing: 0.6px;
+  .hub:hover img { transform: scale(1.04); }
+  .hub::before {
+    content: ''; position: absolute; inset: 0; z-index: -1;
+    background: linear-gradient(180deg, rgba(10,24,16,0.04) 0%, rgba(10,24,16,0.42) 42%, rgba(10,24,16,0.92) 100%);
+  }
+  .hub::after {
+    content: ''; position: absolute; left: 0; right: 0; top: 0; height: 4px;
+    background: var(--hub-c);
+  }
+  .hub-text {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 12px 14px 12px;
+    display: flex; flex-direction: column; gap: 3px;
+  }
+  .hub-kicker {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.68rem;
+    color: var(--gold-bright);
+  }
+  .hub-title {
+    font-family: 'Playfair Display', serif; font-weight: 900;
+    font-size: 1.35rem; line-height: 1.1;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.6);
+  }
+  .hub-sub { font-size: 0.8rem; line-height: 1.4; color: #e6ede8; max-width: 46ch; }
+  .hub-meta {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.72rem;
+    color: #cddccf; margin-top: 3px;
+  }
+  .hub-meta b { color: var(--gold-bright); font-weight: 800; }
+  .hub-meta:empty { display: none; }
+  /* Each plate's top rule is its hub's published colour: Sherpa's pink
+     and Block Camp's blue as on index.html, IELTS gold, the RPG hub's
+     coral (--rh-coral, derived from its hero in tools/build_rpg_hub.py),
+     Grammar the present-simple square off the route map. Work With Me is
+     gold all round: it is the one plate that is not a collection. */
+  .hub-sherpa { --hub-c: #D23E6E; }
+  .hub-ielts { --hub-c: var(--gold-bright); }
+  .hub-blockcamp { --hub-c: #3E5C8F; }
+  .hub-rpg { --hub-c: #ee756a; }
+  .hub-grammar { --hub-c: #7A93B5; }
+  .hub-work { --hub-c: var(--gold-bright); border-color: var(--gold-bright); }
+  .hero-also {
+    margin: 14px 0 0;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+    letter-spacing: 0.5px; font-size: 0.8rem; text-transform: uppercase;
+    color: #cddccf;
+  }
+  .hero-also a { color: var(--gold-light); text-decoration: none; }
+  .hero-also a:hover { color: var(--gold-bright); text-decoration: underline; }
+  @media (max-width: 900px) { .hubs { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) {
+    .hubs { gap: 8px; }
+    .hub { aspect-ratio: 4 / 3; min-height: 0; }
+    .hub-sub { display: none; }
+    .hub-title { font-size: 1.12rem; }
+    .hub-text { padding: 10px 11px 10px; }
   }
 
   main { max-width: 1100px; margin: 0 auto; padding: 32px 24px 80px; }
@@ -356,64 +399,6 @@
     font-family: 'Barlow Condensed', sans-serif;
     font-size: 1.1rem;
   }
-  .sherpa-banner {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    max-width: 620px;
-    margin: 12px auto 0;
-    padding: 14px 20px;
-    border-radius: var(--radius);
-    background: linear-gradient(135deg, #D23E6E, #B25A76);
-    border: 1px solid #F882AE;
-    text-decoration: none;
-    box-shadow: 0 4px 16px rgba(210,62,110,.30);
-    transition: transform .15s ease, box-shadow .15s ease;
-  }
-  .sherpa-banner:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(210,62,110,.45); }
-  /* The routes are a family now — Sherpa for the tenses, IELTS for the exam.
-     Side by side so neither reads as the only one; stacked on narrow. */
-  .route-banners {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    gap: 12px;
-    max-width: 1100px;
-    margin: 12px auto 0;
-  }
-  .route-banners .sherpa-banner { max-width: none; margin: 0; }
-  @media (max-width: 900px) { .route-banners { grid-template-columns: 1fr 1fr; } }
-  @media (max-width: 560px) { .route-banners { grid-template-columns: 1fr; } }
-  /* Gold is a light ground, so this banner carries dark text where the pink
-     and blue ones carry white. The previous #B8962E with white text measured
-     2.82:1, under the 4.50 AA floor for text this size — it had been live and
-     hard to read in bright light. Note this file's --green-deep is #1b3a28,
-     lighter than index.html's #14301f, and lands at 4.42 on the gradient's
-     deep end, still under the floor. Both pages therefore use the literal
-     #102818 so they match each other rather than two different greens.
-     Worst point anywhere on the gradient: 4.95. Measure the DEEP end. */
-  .sherpa-banner.ielts-banner {
-    background: linear-gradient(135deg, var(--gold-bright), var(--gold));
-    border-color: var(--gold-bright);
-    box-shadow: 0 4px 16px rgba(184,150,46,.30);
-  }
-  .sherpa-banner.ielts-banner:hover { box-shadow: 0 6px 20px rgba(184,150,46,.45); }
-  .sherpa-banner.ielts-banner .sherpa-title { color: #102818; }
-  .sherpa-banner.ielts-banner .sherpa-sub { color: rgba(16, 40, 24, 0.92); }
-  .sherpa-banner.blockcamp-banner {
-    background: linear-gradient(135deg, #3E5C8F, #2C4470);
-    border-color: #7FA8D9;
-    box-shadow: 0 4px 16px rgba(62,92,143,.30);
-  }
-  .sherpa-banner.blockcamp-banner:hover { box-shadow: 0 6px 20px rgba(62,92,143,.45); }
-  .sherpa-banner.blockcamp-banner .sherpa-sub { color: #DCE6F5; }
-  /* Sailing's own teal, lifted from the lesson's --accent/--accent-dark. */
-  .sherpa-banner.sailing-banner {
-    background: linear-gradient(135deg, #1B7A87, #0E5460);
-    border-color: #5FB4C0;
-    box-shadow: 0 4px 16px rgba(27,122,135,.30);
-  }
-  .sherpa-banner.sailing-banner:hover { box-shadow: 0 6px 20px rgba(27,122,135,.45); }
-  .sherpa-banner.sailing-banner .sherpa-sub { color: #D6EEF1; }
   /* Filtering to IELTS gives you fourteen lessons in no particular order. The
      hub is the order, so say so at the point the filter is used. */
   /* Collections: what the shelf opens on. One hero card per collection,
@@ -599,22 +584,6 @@
     .cat-hub { flex-wrap: wrap; }
     .cat-hub .cat-hub-go { margin-left: 0; width: 100%; }
   }
-  .sherpa-banner .sherpa-ico { font-size: 1.7rem; line-height: 1; }
-  .sherpa-banner .sherpa-text { text-align: left; }
-  .sherpa-banner .sherpa-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 800;
-    font-size: 0.95rem;
-    letter-spacing: 0.4px;
-    color: #fff;
-    text-transform: uppercase;
-  }
-  .sherpa-banner .sherpa-sub {
-    font-family: 'Lato', sans-serif;
-    font-size: 0.78rem;
-    color: #FDEAF1;
-    margin-top: 2px;
-  }
 </style>
 </head>
 <body>
@@ -695,37 +664,64 @@
 <div class="hero">
   <div class="hero-inner">
     <div class="hero-tag">Lesson Library</div>
-    <div class="stats" id="stats"></div>
-    <div class="route-banners">
-      <a class="sherpa-banner" href="sherpa-tensing-route-map.html">
-        <div class="sherpa-ico">🏔️</div>
-        <div class="sherpa-text">
-          <div class="sherpa-title">Sherpa Tensing</div>
-          <div class="sherpa-sub">The route up the tenses — 13 camps, active &amp; passive voice</div>
-        </div>
+    <p class="hero-lede">Six ways in: a route, an exam, a world, a game, a grammar point &mdash; or a teacher.</p>
+    <nav class="hubs" aria-label="Where to start">
+      <a class="hub hub-sherpa" href="sherpa-tensing-route-map.html">
+        <img src="library-hub/sherpa.jpg" alt="" width="800" height="448">
+        <span class="hub-text">
+          <span class="hub-kicker">The route up the tenses</span>
+          <span class="hub-title">Sherpa Tensing</span>
+          <span class="hub-sub">Thirteen camps up in the active voice, nine back down in the passive, and a map that shows where you are.</span>
+          <span class="hub-meta" data-count="sherpa"></span>
+        </span>
       </a>
-      <a class="sherpa-banner ielts-banner" href="ielts.html">
-        <div class="sherpa-ico">🎓</div>
-        <div class="sherpa-text">
-          <div class="sherpa-title">IELTS Academic</div>
-          <div class="sherpa-sub">All four papers and vocabulary in order, a free first lesson on each route, and a free Task 2 question bank</div>
-        </div>
+      <a class="hub hub-ielts" href="ielts.html">
+        <img src="library-hub/ielts.jpg" alt="" width="800" height="448">
+        <span class="hub-text">
+          <span class="hub-kicker">The exam, in five routes</span>
+          <span class="hub-title">IELTS Academic</span>
+          <span class="hub-sub">Writing, Speaking, Listening, Reading and the vocabulary that feeds them, in teaching order. The first lesson on every route is free.</span>
+          <span class="hub-meta" data-count="ielts"></span>
+        </span>
       </a>
-      <a class="sherpa-banner blockcamp-banner" href="block-camp.html">
-        <div class="sherpa-ico">🧱</div>
-        <div class="sherpa-text">
-          <div class="sherpa-title">Block Camp</div>
-          <div class="sherpa-sub">Branching RPGs and Minecraft grammar lessons, together</div>
-        </div>
+      <a class="hub hub-blockcamp" href="block-camp.html">
+        <img src="library-hub/block-camp.jpg" alt="" width="800" height="450">
+        <span class="hub-text">
+          <span class="hub-kicker">A voxel world</span>
+          <span class="hub-title">Block Camp</span>
+          <span class="hub-sub">The tenses on a trail, active up and passive down, and branching adventures with a grammar point built into the plot.</span>
+          <span class="hub-meta" data-count="blockcamp"></span>
+        </span>
       </a>
-      <a class="sherpa-banner sailing-banner" href="sailing-the-seas-of-grammar.html">
-        <div class="sherpa-ico">⛵</div>
-        <div class="sherpa-text">
-          <div class="sherpa-title">Sailing the Seas of Grammar</div>
-          <div class="sherpa-sub">Gerunds and infinitives, charted as two coastlines and a click-through map</div>
-        </div>
+      <a class="hub hub-rpg" href="rpg.html">
+        <img src="library-hub/rpg.jpg" alt="" width="800" height="341">
+        <span class="hub-text">
+          <span class="hub-kicker">Choose your words, choose your ending</span>
+          <span class="hub-title">Role-Playing Games</span>
+          <span class="hub-sub">Branching stories where every choice is a grammar question and the wrong answer takes the story somewhere else.</span>
+          <span class="hub-meta" data-count="rpg"></span>
+        </span>
       </a>
-    </div>
+      <a class="hub hub-grammar" href="grammar.html">
+        <img src="library-hub/grammar.jpg" alt="" width="800" height="448">
+        <span class="hub-text">
+          <span class="hub-kicker">Every grammar lesson, by topic</span>
+          <span class="hub-title">Grammar</span>
+          <span class="hub-sub">The twelve tenses in colour, then the passive, modals, prepositions and conditionals: the rule explained, then the lessons that drill it.</span>
+          <span class="hub-meta"></span>
+        </span>
+      </a>
+      <a class="hub hub-work" href="mailto:forbes@goodtimebook.com">
+        <img src="library-hub/work.jpg" alt="" width="800" height="341">
+        <span class="hub-text">
+          <span class="hub-kicker">Lessons with the teacher</span>
+          <span class="hub-title">Work With Me</span>
+          <span class="hub-sub">Say what you need &mdash; an exam, a job, a level &mdash; and when. A message is all it takes.</span>
+          <span class="hub-meta">forbes@goodtimebook.com</span>
+        </span>
+      </a>
+    </nav>
+    <p class="hero-also">Also: <a href="sailing-the-seas-of-grammar.html">Sailing the Seas of Grammar</a> &middot; <a href="level-checker.html">Level Checker</a> &middot; <a href="pricing.html">Plans &amp; prices</a></p>
   </div>
 </div>
 <main>
@@ -1304,68 +1300,56 @@ const countEl = document.getElementById('count');
 const emptyEl = document.getElementById('empty');
 const hubEl = document.getElementById('catHub');
 const searchEl = document.getElementById('search');
-const statsEl = document.getElementById('stats');
 
-function renderStats() {
-  const counts = { 'Grammar activity': 0, 'Role Playing Games': 0 };
-  LESSONS.forEach(l => {
-    if (l.categories.includes('Grammar activity')) counts['Grammar activity']++;
-    if (l.categories.includes('Role Playing Games')) counts['Role Playing Games']++;
-  });
-  statsEl.innerHTML = `
-    <a class="stat-deck" href="#" id="lessonPlansBtn"><div class="stat-ico">📚</div><div class="stat-lbl">${LESSONS.length} Lesson Plans</div></a>
-    <a class="stat-deck" href="#" id="grammarBtn"><div class="stat-ico">✏️</div><div class="stat-lbl">${counts['Grammar activity']} Grammar Activities</div></a>
-    <a class="stat-deck" href="#cat=Role+Playing+Games" id="rpgBtn"><div class="stat-ico">🎲</div><div class="stat-lbl">${counts['Role Playing Games']} Role-Playing Games</div></a>
-    <a class="stat-deck" href="#cat=Slide+Decks"><div class="stat-ico">▶</div><div class="stat-lbl">Open Slide Deck</div></a>
-    <a class="stat-deck" href="#cat=Video+Lessons" id="videoLessonsBtn"><div class="stat-ico">🎬</div><div class="stat-lbl">Video Lessons</div></a>
-    <a class="stat-deck" href="mailto:forbes@goodtimebook.com"><div class="stat-ico">✉️</div><div class="stat-lbl">Work With Me</div></a>
-  `;
-  document.getElementById('lessonPlansBtn').addEventListener('click', (e) => {
-    e.preventDefault();
-    showAll = true;
-    render();
-    window.scrollTo({top: document.querySelector('main').offsetTop - 20, behavior: 'smooth'});
-  });
-  document.getElementById('grammarBtn').addEventListener('click', (e) => {
-    e.preventDefault();
-    window.scrollTo({top: document.querySelector('main').offsetTop - 20, behavior: 'smooth'});
-  });
-  function goToCategory(cat) {
-    activeCategory = cat;
-    showAll = false;
-    document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === cat));
-    render();
-    window.scrollTo({top: document.querySelector('main').offsetTop - 20, behavior: 'smooth'});
-  }
-  document.getElementById('videoLessonsBtn').addEventListener('click', (e) => {
-    e.preventDefault();
-    goToCategory('Video Lessons');
-  });
-  // Filters, rather than just scrolling like the Speaking button it replaces —
-  // that one moved the page and left the grid showing everything, so it read
-  // as broken.
-  document.getElementById('rpgBtn').addEventListener('click', (e) => {
-    e.preventDefault();
-    goToCategory('Role Playing Games');
-  });
-  window.applyHashCategory = function() {
-    const hash = window.location.hash;
-    if (/^#all\b/.test(hash)) {
-      // The whole shelf, whatever was open before: #all after #cat=IELTS
-      // otherwise kept the IELTS filter and showed fourteen lessons.
-      activeCategory = 'ALL';
-      showAll = true;
-      document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === 'ALL'));
-      render();
-      return;
-    }
-    const m = hash.match(/cat=([^&]+)/);
-    if (m) {
-      const cat = decodeURIComponent(m[1].replace(/\+/g, ' '));
-      if (categories.includes(cat)) goToCategory(cat);
-    }
+// The six hub plates in the hero carry live counts from the catalogue, so
+// a plate never says a number the shelf disagrees with. Finished lessons
+// only, like the shelf; Free is the catalogue's access column. Sherpa is
+// a file prefix rather than a category because "Tenses" is wider than
+// the route. Grammar and Work With Me carry no count: the grammar hub
+// counts by topic (tools/topics.py), a different number from anything a
+// category here could give.
+function renderHubs() {
+  const ready = LESSONS.filter(l => !comingSoon(l));
+  const inCats = (...cats) => ready.filter(l => cats.some(c => l.categories.includes(c)));
+  const sets = {
+    // The route map is a catalogue row too (free, so a class can open it);
+    // it is the hub, not a lesson, so it is not counted on its own plate.
+    sherpa: ready.filter(l => /^sherpa-tensing-/.test(l.file) && !/route-map/.test(l.file)),
+    ielts: inCats('IELTS'),
+    blockcamp: inCats('Block Camp', 'Block Camp RPGs'),
+    rpg: inCats('Role Playing Games'),
   };
+  document.querySelectorAll('.hub-meta[data-count]').forEach(el => {
+    const set = sets[el.dataset.count] || [];
+    const free = set.filter(l => l.access === 'Free').length;
+    el.innerHTML = `<b>${set.length}</b> lesson${set.length === 1 ? '' : 's'}`
+      + (free ? ` &middot; <b>${free}</b> free` : '');
+  });
 }
+function goToCategory(cat) {
+  activeCategory = cat;
+  showAll = false;
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === cat));
+  render();
+  window.scrollTo({top: document.querySelector('main').offsetTop - 20, behavior: 'smooth'});
+}
+window.applyHashCategory = function() {
+  const hash = window.location.hash;
+  if (/^#all\b/.test(hash)) {
+    // The whole shelf, whatever was open before: #all after #cat=IELTS
+    // otherwise kept the IELTS filter and showed fourteen lessons.
+    activeCategory = 'ALL';
+    showAll = true;
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === 'ALL'));
+    render();
+    return;
+  }
+  const m = hash.match(/cat=([^&]+)/);
+  if (m) {
+    const cat = decodeURIComponent(m[1].replace(/\+/g, ' '));
+    if (categories.includes(cat)) goToCategory(cat);
+  }
+};
 
 function normalizeForSearch(s) {
   return s.toLowerCase().replace(/[_\-.]+/g, ' ').replace(/\s+/g, ' ').trim();
@@ -1722,7 +1706,7 @@ const BLOCK_CAMP_ORDER = new Map([
 // takes the newest lesson in it that has art. `hub` is a route page that
 // puts the lessons in order, offered from the header when there is one.
 const COLLECTIONS = [
-  { cat: 'Role Playing Games', title: 'Role-Playing Games', hero: 'sherlock-scarlet-star.html',
+  { cat: 'Role Playing Games', title: 'Role-Playing Games', hero: 'sherlock-scarlet-star.html', hub: 'rpg.html',
     blurb: 'Branching stories with several endings. Every choice is a grammar question, and the wrong answer takes the story somewhere else.' },
   { cat: 'Block Camp RPGs', title: 'Block Camp RPGs', hero: 'block-camp/dracula-castle-of-if.html', hub: 'block-camp.html',
     blurb: 'The Minecraft-world adventures: Blocula, the Lost Yellow Road, Wonderland and the rest. One grammar point each, nine languages, a glowing object on every picture.' },
@@ -1964,7 +1948,7 @@ function render() {
 }
 
 searchEl.addEventListener('input', render);
-renderStats();
+renderHubs();
 render();
 if (window.applyHashCategory) window.applyHashCategory();
 window.addEventListener('hashchange', () => { if (window.applyHashCategory) window.applyHashCategory(); });

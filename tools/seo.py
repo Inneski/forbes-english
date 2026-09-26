@@ -609,6 +609,10 @@ def llms_txt(rows, index, images):
     out.append('- [IELTS Academic](%s/ielts.html): the exam route — Writing, '
                'Speaking, Listening, Reading and Vocabulary, each in teaching '
                'order, with the first lesson on every route free.' % SITE)
+    out.append('- [Role-playing games](%s/rpg.html): every branching adventure on '
+               'the site by level — Block Camp quests and story games from Sherlock '
+               'Holmes to a Paris boardroom — where each choice is a grammar '
+               'question and the answer decides the ending.' % SITE)
     out.append('')
     section('Free lessons', free)
     section('Subscriber lessons', pro)

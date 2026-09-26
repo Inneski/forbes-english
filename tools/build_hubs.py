@@ -74,10 +74,13 @@ def chrome():
     nav = nav.replace(' aria-current="page"', '')
     if GRAMMAR_LINK not in nav:
         print('  ! the top band has no %s; no hub will mark Grammar as current' % GRAMMAR_LINK)
+    if RPG_LINK not in nav:
+        print('  ! the top band has no %s; rpg.html will not mark itself as current' % RPG_LINK)
     return style, fonts, nav
 
 
 GRAMMAR_LINK = '<a href="grammar.html">Grammar</a>'
+RPG_LINK = '<a href="rpg.html">RPGs</a>'
 
 
 def nav_for(nav, current):
@@ -86,6 +89,11 @@ def nav_for(nav, current):
     if not current:
         return nav
     return nav.replace(GRAMMAR_LINK, '<a href="grammar.html" aria-current="%s">Grammar</a>' % current)
+
+
+def nav_for_rpg(nav):
+    """The top band with RPGs marked as the current page."""
+    return nav.replace(RPG_LINK, '<a href="rpg.html" aria-current="page">RPGs</a>')
 
 
 def esc(t):
@@ -277,6 +285,16 @@ def main():
                         sum(1 for r in trows if r.get('access') != 'pro')))
     open(os.path.join(ROOT, 'grammar.html'), 'w', encoding='utf-8', newline='\n').write(
         index_page(rows, images, allm, style, fonts, nav_for(nav, 'page')))
+    # rpg.html — the role-playing games landing page, from tools/build_rpg_hub.py:
+    # the same shell, its own style block, full-bleed.
+    import build_rpg_hub
+    rcss, rbody, rld = build_rpg_hub.render(rows, images)
+    open(os.path.join(ROOT, 'rpg.html'), 'w', encoding='utf-8', newline='\n').write(
+        page('Role-playing games', style + rcss, fonts, nav_for_rpg(nav), rbody, rld,
+             body_class='rh', wrap=False))
+    # The six plates at the top of library.html wear the hubs' own heroes.
+    import build_library_plates
+    build_library_plates.build()
     print('  lessons: %d (from %s)' % (len(rows), source))
     for f, n, free in written:
         print('  %-32s %3d lessons, %2d free' % (f, n, free))

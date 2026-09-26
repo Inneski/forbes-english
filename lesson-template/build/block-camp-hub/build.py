@@ -160,7 +160,7 @@ ADVENTURES = [
   ('Present Simple',),'A2','pro','new'),
  ('block-camp/last-bounty-rpg.html','block-camp/last-bounty-rpg/duel.webp','The Last Bounty',
   'You rode in for a five-hundred-dollar outlaw and found the man who killed your brother. Two story choices decide who has to find the courage &mdash; and a wrong answer never ends the run here: it explains the rule and lets you put it right, with the points going to whoever gets it first time.',
-  ('Past Simple',),'A2','pro','new'),
+  ('Past Simple',),'A2','free','new'),
  ('block-camp/fistful-of-lies-rpg.html','block-camp/fistful-of-lies-rpg/22_dawn.webp','A Fistful of Lies',
   'Fifty dollars for one hour at a saloon piano, and nobody minds that you cannot play. Two branching trails through a robbery that runs on finished past actions &mdash; question the dealer or search the office, save your friend or stop the wagon &mdash; and four clue tiles that decide whether the case closes.',
   ('Past Simple',),'A1&ndash;A2','pro','new'),

@@ -40,6 +40,14 @@ twelve tenses as a colour-coded grid whose colours are read off the Sherpa
 route map, every topic as a card with its picture, and every count from
 the catalogue. Its card pictures are hashed web copies in `grammar-hub/`.
 
+**`rpg.html` comes from `tools/build_rpg_hub.py`** (also called by
+`build_hubs.py`): the role-playing games landing page, same family. Which
+lessons are RPGs is the library's own rule, ported verbatim; Block Camp
+blurbs are imported from the Block Camp hub builder, the story games'
+live in `GAMES`. Covers are hashed web copies in `rpg-hub/`. The same run
+refreshes `library-hub/` (`tools/build_library_plates.py`), the six
+fixed-name plate pictures at the top of the hand-kept `library.html`.
+
 It then refreshes the five IELTS route pages (`tools/build_ielts_routes.py`)
 and **`ielts.html`** itself (`tools/build_ielts_hub.py`), both from
 `tools/ielts_routes.py` and the catalogue. Each route page carries its own
