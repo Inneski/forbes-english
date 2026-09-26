@@ -198,7 +198,10 @@ def floors(src):
     if not paper or not acc:
         return src, ['      (no --paper/--accent tokens)'], 0
     dark_page = to_lch(paper)[0] < 0.5
-    for tok, floor in (('--accent', 3.0), ('--accent-dark', 4.5)):
+    # a page split by split_accent.py (camp six) keeps --accent as a fill and
+    # draws its accent text in --accent-text: the 3:1 floor belongs to that
+    text = '--accent-text' if '--accent-text' in t else '--accent'
+    for tok, floor in ((text, 3.0), ('--accent-dark', 4.5)):
         v = t.get(tok)
         if not v:
             continue
