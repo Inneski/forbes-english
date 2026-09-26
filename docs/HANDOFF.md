@@ -131,10 +131,14 @@ Present Simple Part 1 (the 2026-09-23 entry), plus an end loop.
   * **"The two end ones"** are the last two slides: Results (bg41,
     celebration) and Activate (bg32, the portal). Each opens on its own clip
     1.2 s after arrival, then they alternate for as long as the slide is up
-    (`data-clip-loop`). **"Rolling guy"** is the Steve-vs-skeleton clip
-    (bg08, the sort slide's own reward; he dive-rolls at 2–3 s). At 75%+ —
-    the deck's own Strong and Perfect bands — he joins the round, second
-    (`data-clip-high`). First round has sound; later rounds are silent,
+    (`data-clip-loop`). **"Rolling guy"** is Innes's `this.mp4`, sent
+    after the first push (my first guess, the Steve-vs-skeleton dive roll,
+    was wrong; that stays as the sort slide's own reward): a bowler tumbles
+    out of the portal and his ball rolls at the camera past the pins. It is
+    `bg32-roll.mp4`, named after the portal plate it is set at (35.0 from
+    the nearest plate, so it opens with a cut, like every change of clip in
+    the round). At 75%+ — the deck's own Strong and Perfect bands — he joins
+    the round, second (`data-clip-high`). First round has sound; later rounds are silent,
     because the Activate loop runs under a speaking task. Two `<video>`
     elements, so each cut goes from one clip's last frame straight to the
     next one's first. Pauses in a hidden tab.
