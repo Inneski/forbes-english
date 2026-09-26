@@ -278,7 +278,7 @@
   dialog.guide-dialog{width:min(780px,calc(100vw - 32px));max-height:min(90vh,940px);overflow:auto;padding:24px 28px 22px;
          border:0;border-radius:18px;background:var(--card);color:var(--ink);box-shadow:0 30px 80px -24px rgba(43,15,29,.55);}
   dialog.guide-dialog::backdrop{background:rgba(43,15,29,.5);}
-  html:not(.js) #guide:target{display:block;position:static;margin:32px auto;}
+  html:not(.js) #guide:target{display:block;position:static;margin:32px auto;max-height:none;overflow:visible;}
   .gd-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;}
   .gd-top form{margin:0;}
   .gd-x{width:44px;height:44px;border-radius:50%;border:1px solid var(--accent-light);background:var(--card);color:var(--ink);
@@ -321,6 +321,22 @@
     .tg a{padding:6px 6px;font-size:10.5px;min-height:52px;}
     .gd-faces{grid-template-columns:1fr;}
   }
+  @media (max-width:440px){
+    .tg,.tg thead,.tg tbody{display:block;width:auto;margin:6px 0 2px;}
+    .tg colgroup{display:none;}
+    .tg thead td{position:absolute;}
+    .tg tr{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin-bottom:6px;}
+    .tg tbody th{grid-column:1/-1;padding:4px 2px 0;}
+    .tg a{padding:6px 5px;letter-spacing:0;}
+  }
+  @media (max-width:359px){
+    dialog.guide-dialog{padding:16px 12px 14px;}
+    .tg th{font-size:10px;}
+    .tg a{padding:6px 4px;font-size:10px;}
+  }
+  /* without script the guide shows in place, and its dialog buttons would do nothing */
+  .js .gd-nojs{display:none;}
+  html:not(.js) #guide form{display:none;}
   @media (prefers-reduced-motion:reduce){ .tg a,.gd-going a{transition:none;} }
 </style>
 </head>
@@ -854,7 +870,7 @@
     </div>
     <div class="note">
       <h3>Four descent stops stay dark on purpose</h3>
-      <p class="zone-note">The passive of the present perfect continuous, the past perfect continuous, the future continuous and the future perfect continuous can all be derived &mdash; <em>has been being cleaned</em>, <em>will be being cleaned</em> &mdash; and native speakers avoid every one of them, rewriting round them instead. There is nothing there to learn, so there is no camp there.</p>
+      <p class="zone-note">The passive of the present perfect continuous, the past perfect continuous, the future continuous and the future perfect continuous can all be derived &mdash; HAS BEEN BEING CLEANED, WILL BE BEING CLEANED &mdash; and native speakers avoid every one of them, rewriting round them instead. There is nothing there to learn, so there is no camp there.</p>
     </div>
     <div class="note">
       <h3>Teaching this?</h3>
@@ -879,7 +895,7 @@
 
   <section class="gd-sec" aria-labelledby="gd-1">
     <h3 id="gd-1">A tense is a time and a shape</h3>
-    <p>Every tense puts an action in the past, the present or the future, and gives it one of four shapes: <b>simple</b> (the plain fact), <b>continuous</b> (in progress), <b>perfect</b> (done before a later point) or <b>perfect continuous</b> (in progress up to that point). Three times, four shapes: twelve of the thirteen camps. Every form below is &ldquo;she&rdquo; + CLIMB, and the number is its camp.</p>
+    <p>Every tense puts an action in the past, the present or the future, and gives it one of four shapes: <b>simple</b> (the plain fact), <b>continuous</b> (in progress), <b>perfect</b> (looking back from a later point: now, or a time in the past or future) or <b>perfect continuous</b> (in progress up to that point). Three times, four shapes: twelve of the thirteen camps. Every form below is &ldquo;she&rdquo; + CLIMB, and the number is its camp.</p>
     <table class="tg">
       <caption class="sr-only">The twelve tenses by time and shape; each one links to its camp.</caption>
       <colgroup><col class="tg-time"><col><col><col><col></colgroup>
@@ -890,7 +906,7 @@
           <tr><th scope="row">Future</th><td><a href="sherpa-tensing-camp-seven-future-simple.html" style="--c:#DB815F;--k:#1A1206"><b>7</b><span>WILL CLIMB</span></a></td><td><a href="sherpa-tensing-camp-nine-future-continuous.html" style="--c:#E1AB5A;--k:#1A1206"><b>9</b><span>WILL BE CLIMBING</span></a></td><td><a href="sherpa-tensing-camp-twelve-future-perfect.html" style="--c:#454545;--k:#FFFFFF"><b>12</b><span>WILL HAVE CLIMBED</span></a></td><td><a href="sherpa-tensing-camp-thirteen-future-perfect-continuous.html" style="--c:#B0B0B0;--k:#1A1206"><b>13</b><span>WILL HAVE BEEN CLIMBING</span></a></td></tr>
       </tbody>
     </table>
-    <div class="gd-going"><a href="sherpa-tensing-camp-five-going-to.html" style="--c:#99BA7D;--k:#1A1206"><b>5</b><span>IS GOING TO CLIMB</span></a><p>The thirteenth camp is a future you can already see coming.</p></div>
+    <div class="gd-going"><a href="sherpa-tensing-camp-five-going-to.html" style="--c:#99BA7D;--k:#1A1206"><b>5</b><span>IS GOING TO CLIMB</span></a><p>The one left over, camp 5, is a future you can already see coming.</p></div>
   </section>
 
   <section class="gd-sec" aria-labelledby="gd-2">
@@ -911,12 +927,13 @@
   <section class="gd-sec" aria-labelledby="gd-3">
     <h3 id="gd-3">Why this order</h3>
     <p>The camps climb in the order you will need them, not the order grammar books use. The <b>foundation camps</b> are the tenses you use every day; <b>the ridge</b> is common but needs more care; the <b>summit push</b> is rare and mostly written. Four passives have no camp: you can build them &mdash; HAS BEEN BEING CLEANED &mdash; but nobody says them.</p>
-    <p>On the map, a circle is active, a diamond is passive, and grey means not open yet. The clouds are &ldquo;used to&rdquo; and &ldquo;be used to&rdquo;; the moon is the causative.</p>
+    <p>On the map, a circle is active, a diamond is passive, and grey means not open yet; a faint diamond marked &ldquo;no camp&rdquo; never opens. The clouds are &ldquo;used to&rdquo; and &ldquo;be used to&rdquo;; the moon is the causative.</p>
   </section>
 
   <div class="gd-foot">
     <a class="btn btn-main" href="sherpa-tensing-camp-one-present-continuous.html">Start at camp one &middot; free <span aria-hidden="true">&rarr;</span></a>
     <form method="dialog"><button class="btn btn-ghost" type="submit">Back to the map</button></form>
+    <a class="btn btn-ghost gd-nojs" href="#the-map">Back to the map</a>
   </div>
 </dialog>
 
@@ -938,7 +955,13 @@ document.documentElement.classList.add("js");
     if (location.hash === "#guide") history.replaceState(null, "", location.pathname + location.search);
     opener.focus();
   });
-  if (location.hash === "#guide") open();
+  function fromHash(){
+    if (location.hash !== "#guide") return;
+    history.replaceState(null, "", location.pathname + location.search);
+    open();
+  }
+  window.addEventListener("hashchange", fromHash);
+  fromHash();
 })();
 </script>
 

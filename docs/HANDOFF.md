@@ -84,6 +84,29 @@ turquoise and make the oranges more tasteful"*.
   Descent nine's "GOING TO BE DONE" label was wider than its bar (dark
   letters on the dark page; it was already so before) and is now two lines.
   Six more cards re-rendered, camp one's from `svg.ring-hero-svg`.
+- **Review round (19 confirmed findings), all fixed.** The recolour tools'
+  hex pattern also matched character references: August's
+  `soften_family.py` run had already turned camp 8's padlock `&#128274;`
+  into `&#328F81;`, and today's pass moved it again. The pattern now skips
+  `&#` in all three tools, and the padlock is back. The hue filter had also
+  caught shared diagram furniture (camp 7's NOW halo, camp 9's PAST/FUTURE
+  captions); colours on 4+ Sherpa pages are now held. Pass a's flat lift
+  had washed camp 8's time band to `#E2FFFF`. The eight camp and descent
+  pages were **replayed from `ff8173e`** with the corrected tool
+  (`recolour_family.py --replay ff8173e 2026-09-26a 2026-09-26b`), and the
+  hand fixes re-applied (camp 8's tag ink, descent nine's two-line label).
+  The tool now also holds `--accent-dark` to 4.5:1 on `--accent-lighter`
+  (the eyebrow chip) and keeps every SVG label at least as legible as it
+  was. Camp 9 and descents one, seven and nine drew white on the accent
+  (1.6–3.1:1) on `.next-btn` and the next-camp link; they now have an
+  `--on-accent`, the best of white, ink and paper. In the guide: the
+  "perfect" gloss now looks back "from a later point: now, or a time in the
+  past or future"; "the thirteenth camp" (under the cell numbered 13) is now
+  "the one left over, camp 5"; the grid stacks by time below 440px (it
+  overflowed its cells at 320–395); without script it shows in place with a
+  working way back; the `#guide` deep link and a hash change open it with
+  focus on the close button. The route map card is framed as before (camp
+  one back in view).
 - **Not moved, deliberately**: `lesson-template/tense-palette.css` and the
   Block Camp pages that load it keep the old three values (a separate family
   with its own colour gates), as do the stopped Sherpa deck builder's
