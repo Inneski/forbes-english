@@ -124,8 +124,10 @@ Present Simple Part 1 (the 2026-09-23 entry), plus an end loop.
   * Map: bg09 34860b1e · bg33 798e7046 · bg11 4168d20e · bg27 785d5b17 ·
     bg18 618c595a · bg08 4e0ec43a · bg26 93a3acb7 · bg36 258d25f5 ·
     bg23 9aa9f920 · bg15 d2f14f0a · bg37 ddfcc482 · bg41 b2e1cfda ·
-    bg32 6e0fb119. **Q1 (bg14, feeding the chickens) has no clip**: none of
-    the 13 opens on it.
+    bg32 6e0fb119. Q1 (slide 8, bg14, feeding the chickens) had none of the
+    13; Innes then added `clucking.mp4` for it (Alex feeds them, a rooster
+    struts up to camera). A re-framed render (14.8), so its plate is
+    `bg14-cluck.jpg`. **All 12 scored slides now have a clip.**
   * **"The two end ones"** are the last two slides: Results (bg41,
     celebration) and Activate (bg32, the portal). Each opens on its own clip
     1.2 s after arrival, then they alternate for as long as the slide is up
