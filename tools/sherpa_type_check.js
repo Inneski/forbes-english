@@ -57,7 +57,7 @@ function serve() {
       rsp.writeHead(200, { 'Content-Type': TYPES[path.extname(u)] || 'application/octet-stream' });
       rsp.end(body);
     });
-    srv.listen(0, '127.0.0.1', () => res(srv));
+    srv.listen(0, 'localhost', () => res(srv));   // localhost: under 127.0.0.1, Google's Fraunces never loaded
   });
 }
 
@@ -74,7 +74,8 @@ function measure() {
   }
   out.overflowX = Math.max(0, document.documentElement.scrollWidth - innerWidth);
   const LATIN = /[A-Za-zÀ-ɏ]/;
-  const seen = new Set();
+  const first = el => getComputedStyle(el).fontFamily.split(',')[0].replace(/["']/g, '').trim();
+  const els = [];
   const tw = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
   let n;
   while ((n = tw.nextNode())) {
@@ -82,9 +83,28 @@ function measure() {
     if (!t) continue;
     const el = n.parentElement;
     if (el.closest('script,style,noscript,.sr-only') || !vis(el)) continue;
-    if (!LATIN.test(t)) continue;
-    const fam = getComputedStyle(el).fontFamily.split(',')[0].replace(/["']/g, '').trim();
-    if (fam !== 'Faktum' && !seen.has(el)) { seen.add(el); out.notFaktum.push(`${el.tagName.toLowerCase()} "${t.slice(0, 24)}" in ${fam}`); }
+    if (!LATIN.test(t) || els.some(e => e.el === el)) continue;
+    els.push({ el, t });
+  }
+  // what the page's own CSS says, with the generated block switched off: a heading
+  // that was Fraunces stays Fraunces (Innes: "revert to previous font for headers");
+  // everything else must now be Faktum
+  const typeBlock = document.getElementById('sherpa-type');
+  if (typeBlock) typeBlock.disabled = true;
+  els.forEach(e => { e.own = first(e.el); });
+  if (typeBlock) typeBlock.disabled = false;
+  // Google serves Fraunces as several unicode-range faces; check() can say false while the
+  // Latin one is loaded and drawing, so ask whether any Fraunces face has loaded
+  // the page links Google's Fraunces and its faces are declared. (Whether a headless page
+  // among a dozen has fetched the file yet proved unreliable to ask: the faces stayed
+  // "unloaded" in this tool while the same page, opened alone, loaded them.)
+  out.fraunces = !els.some(e => e.own === 'Fraunces') ||
+    (!!document.querySelector('link[href*="family=Fraunces"]') && [...document.fonts].some(f => /Fraunces/.test(f.family)));
+  out.frauncesFaces = [...document.fonts].filter(f => /Fraunces/.test(f.family)).map(f => f.weight + ':' + f.status).join(' ') || 'no Fraunces faces';
+  for (const e of els) {
+    const want = e.own === 'Fraunces' ? 'Fraunces' : 'Faktum';
+    const now = first(e.el);
+    if (now !== want) out.notFaktum.push(`${e.el.tagName.toLowerCase()} "${e.t.slice(0, 24)}" in ${now}, wants ${want}`);
   }
   // boxes: an element that paints a background or border and whose content outgrows it
   for (const el of document.body.querySelectorAll('*')) {
@@ -152,6 +172,10 @@ async function run(b, url, w, tries = 2) {
   await p.route(/googletagmanager|google-analytics|supabase|plausible/, r => r.abort());
   try {
     await p.goto(url, { waitUntil: 'load', timeout: 60000 });
+    // fetch both families outright: a headless page may not have asked for a face yet,
+    // and load() fails the face (status "error") if the file cannot be fetched or read
+    await p.evaluate(() => Promise.all(['600 16px Fraunces', '400 16px Faktum', '600 16px Faktum']
+      .map(f => document.fonts.load(f).catch(() => null))));
     await p.evaluate(() => document.fonts.ready);
     await p.waitForTimeout(300);
     return await p.evaluate(measure);
@@ -179,11 +203,12 @@ async function run(b, url, w, tries = 2) {
       const { f, l, w } = q.shift();
       const qs = l === 'en' ? '' : `?lang=${l}`;
       const [now, base] = await Promise.all([
-        run(b, `http://127.0.0.1:${port}/${f}${qs}`, w),
-        run(b, `http://127.0.0.1:${port}/__base__/${f}${qs}`, w)]);
+        run(b, `http://localhost:${port}/${f}${qs}`, w),
+        run(b, `http://localhost:${port}/__base__/${f}${qs}`, w)]);
       const tag = `${f.replace('sherpa-tensing-', '')}${l === 'en' ? '' : ' [' + l + ']'} @${w}`;
       if (now.error || base.error) { lines.push(`FAIL ${tag}: could not load: ${now.error || base.error}`); fails++; continue; }
       if (!now.faktum) { lines.push(`FAIL ${tag}: Faktum did not load`); fails++; }
+      if (!now.fraunces) { lines.push(`FAIL ${tag}: Fraunces (the headings) did not load (${now.frauncesFaces})`); fails++; }
       for (const x of now.notFaktum) { lines.push(`FAIL ${tag}: not Faktum: ${x}`); fails++; }
       if (now.overflowX > 1) {
         if (base.overflowX > 1) already.add(`${tag}: page scrolls sideways (${base.overflowX}px before, ${now.overflowX}px now)`);

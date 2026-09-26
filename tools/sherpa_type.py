@@ -31,7 +31,11 @@ to Faktum outright.
 FONTS. Faktum (Rene Bieder) is self-hosted, like the Sailing lesson's.
 It covers every Latin letter on these pages; symbols (check marks, arrows)
 and Cyrillic, Arabic and CJK fall back glyph by glyph to Inter, which stays
-loaded for that. Fraunces is dropped from the Google Fonts link.
+loaded for that. HEADINGS KEEP FRAUNCES: Innes, the same evening, "revert
+to previous font for headers e.g. Thirteen camps, two faces". Every rule
+that set Fraunces (titles, section and card headings, the wordmark, the
+hub's numerals) gets --sherpa-display, which is Fraunces; every rule that
+set Inter gets Faktum. The sizes hold either way.
 """
 import io
 import glob
@@ -49,6 +53,7 @@ FACES = [  # (file, weight, style)
     ('Faktum-BoldItalic', 700, 'italic'), ('Faktum-ExtraBold', 800, 'normal')]
 PRELOAD = ['Faktum-Regular', 'Faktum-SemiBold']
 STACK = "'Faktum','Inter',system-ui,sans-serif"
+DISPLAY = "'Fraunces',serif"                 # headings and the wordmark: their serif, as before
 WORDMARK = 'clamp(30px,5vw,42px)'          # Innes: "SHERPA TENSING should be bigger"
 WORDMARK_SUB = 'clamp(14px,1.6vw,17px)'    # ... "and 'route up the tenses' too"
 START, END = '<!-- SHERPA-TYPE:start -->', '<!-- SHERPA-TYPE:end -->'
@@ -169,7 +174,9 @@ def overrides(css):
             decls = []
             for prop, val in re.findall(r'(?:^|;)\s*(font-family|font-size|font)\s*:\s*([^;]+)', body):
                 if prop == 'font-family':
-                    decls.append('font-family:var(--sherpa-font)%s' % (' !important' if '!important' in val else ''))
+                    # headings keep their serif: Innes, "revert to previous font for headers"
+                    fam = 'var(--sherpa-display)' if 'Fraunces' in val else 'var(--sherpa-font)'
+                    decls.append('font-family:%s%s' % (fam, ' !important' if '!important' in val else ''))
                 elif prop == 'font-size':
                     v = new_size(val, prelude)
                     if v:
@@ -181,7 +188,8 @@ def overrides(css):
                     m = re.match(r'(.*?)([\d.]+)px(/\S+)?\s+.+$', val.strip())
                     if not m:
                         sys.exit('! a font: shorthand sherpa_type.py cannot read: %s { font: %s }' % (prelude, val))
-                    decls.append('font:%s%spx%s var(--sherpa-font)' % (m.group(1), fmt(scale(float(m.group(2)))), m.group(3) or ''))
+                    decls.append('font:%s%spx%s %s' % (m.group(1), fmt(scale(float(m.group(2)))), m.group(3) or '',
+                                                        'var(--sherpa-display)' if 'Fraunces' in val else 'var(--sherpa-font)'))
             if decls:
                 rules.append('%s{%s;}' % (bump(re.sub(r'\s+', ' ', prelude)), ';'.join(decls)))
     return '\n'.join(rules)
@@ -200,7 +208,7 @@ def block(src):
     return (START + '\n' + pre + '\n<style id="sherpa-type">\n'
             '/* Faktum and the type a size up (tools/sherpa_type.py): each rule below repeats one of\n'
             '   the page\'s own, one class stronger, in the same order and @media */\n'
-            + faces + '\n:root{--sherpa-font:%s;}\n' % STACK
+            + faces + '\n:root{--sherpa-font:%s;--sherpa-display:%s;}\n' % (STACK, DISPLAY)
             + ':root svg text,:root svg tspan{font-family:var(--sherpa-font);}\n'
             + '/* form controls do not inherit a font: without this, 30 buttons drew in Arial */\n'
             + ':root button,:root input,:root select,:root textarea{font-family:var(--sherpa-font);}\n'
@@ -213,8 +221,15 @@ def block(src):
             + '</style>\n' + END + '\n')
 
 
-def drop_fraunces(src):
-    return re.sub(r'family=Fraunces:[^&"]*&', '', src)
+FRAUNCES = 'family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&'
+
+
+def keep_fraunces(src):
+    """The headings are Fraunces again, so its Google Fonts family must be loaded
+    (the first version of this tool took it out of the link)."""
+    if 'family=Fraunces' in src:
+        return src
+    return src.replace('fonts.googleapis.com/css2?family=Inter', 'fonts.googleapis.com/css2?' + FRAUNCES + 'family=Inter', 1)
 
 
 def pages():
@@ -243,7 +258,7 @@ def main():
         # rewrite the block where it stands (tools/sherpa_topo.py keeps one beside it,
         # and moving either would make the other look stale); insert only when absent
         b = block(base)
-        new = drop_fraunces(FENCE.sub(lambda m: b, src, count=1) if FENCE.search(src)
+        new = keep_fraunces(FENCE.sub(lambda m: b, src, count=1) if FENCE.search(src)
                             else src.replace('</head>', b + '</head>', 1))
         if check:
             if new != src:
