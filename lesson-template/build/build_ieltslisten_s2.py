@@ -32,12 +32,15 @@ guide says is closed), a second one that was defensible (anticlockwise from
 the main gate, where the group is standing next to the glasshouse), the
 "behind = across" chip, and the entry-price note, which printed the "free under
 16" that its own explanation called the trap.
+
+Ten languages since 2026-09-25, all complete.
 """
 import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import deck as D
+from ielts_langs import LANGS
 from ieltslisten_s2_data import (TURNS, AUDIO, PLACES, NOTES, NOTES_BANK, MC)
 import i18n_ieltslisten_s2 as I
 
@@ -156,7 +159,7 @@ def build(make_audio=False):
 
     s = D.assemble(TPL, OUT, slides, PALETTE,
                    'IELTS Listening Section 2: The Monologue and the Map | Forbes English',
-                   I, langs=('en', 'de', 'es'))
+                   I, langs=LANGS)
     print('wrote %s — %d slides, %d scored points, %d:%02d of audio, %d bytes'
           % (OUT, s.count('<section class="slide'),
              len(PLACES) + sum(r[0].count('______') for r in NOTES) + len(MC),

@@ -12,6 +12,27 @@ stale copy.
 ---
 
 
+## 2026-09-27 — IELTS Listening Section 2 in ten languages: committed, two days late
+
+`forbes-english-ielts-listening-s2.html`, `build_ieltslisten_s2.py` and
+`i18n_ieltslisten_s2.py` had sat in the working tree since 2026-09-25 01:15,
+complete (all ten languages through `ielts_langs.LANGS`; every example a
+learner is meant to SAY in the activation kept in English) but never
+committed, and no session owned them. Rebuilt from the builder so the deck
+takes the template's `textLength` logo fix, then check-lesson.js clean,
+check_logos.py clean, seo.py run (only a sitemap lastmod moved).
+`docs/CHATGPT-DECK-BRIEF.md`, on disk since 2026-09-17 and cited in this file
+but untracked, is in git from the same commit.
+
+Still on disk and not this session's: the Sherpa lesson-i18n work (23 pages,
+five `tools/sherpa_lesson_*` files, `lesson-template/sherpa-i18n/`; its entry
+is below), `.74.` (a zero-byte file from a shell typo, 2026-09-16; safe to
+delete), the two slab-serif logo SVGs in `HOUSE STYLE/`,
+`docs/at-work/book-1.pdf` and the Holding the Line pptx. The 2026-09-10 stash
+is byte-identical to `archive/stash-2026-09-10-fistful-frankenstein`; it can
+be dropped from Innes's own terminal.
+
+
 ## 2026-09-27 — Contingency Plans & Trade-offs: built as a 54-slide panel deck, NOT shipped: waiting for 6 plates
 
 `build_contingencytradeoffs.py` + `i18n_contingencytradeoffs.py` (English) and
@@ -331,8 +352,8 @@ Not changed: level-checker's masthead, which takes the level's face on purpose
 and is exempt in the checker. Pages with no Forbes mark at all were also left
 alone: wild-frame's film emblem, the Sherpa pages, the RPGs, the cheat sheets.
 `forbes-english-ielts-listening-s2.html` was open in another session, so its
-deck logo still has the old tracking. The next rebuild from the template
-fixes it.
+deck logo kept the old tracking until 2026-09-27, when it was rebuilt from
+the template and committed (see that day's entry above). It passes now.
 
 `HOUSE STYLE/forbes-english-logo.svg` (untracked, 2026-09-24) sets ENGLISH in a
 slab serif after logo 4. It is not what the site uses. Innes pointed at the
