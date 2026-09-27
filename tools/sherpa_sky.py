@@ -1,32 +1,39 @@
 #!/usr/bin/env python3
-"""Clouds drifting across the Sherpa route map, seen from above.
+"""Clouds drifting across every Sherpa page, seen from above.
 
-    python tools/sherpa_sky.py            # make the tiles and add or refresh the layer
-    python tools/sherpa_sky.py --check    # exit 1 if the layer is missing or stale
-    node   tools/sherpa_sheen_perf.js     # the same frame measurement applies
+    python tools/sherpa_sky.py            # make the clouds and add or refresh the layer on all 26 pages
+    python tools/sherpa_sky.py --check    # exit 1 if a page's layer is missing or stale
+    node   tools/sherpa_sheen_perf.js     # the frame measurement, with and without the effects
 
 Innes, 2026-09-26: "get aerial shot of clouds moving in the background like
-in the https://mythsmap.english-heritage.org.uk/", and on whether we could
-make the clouds ourselves: yes. The clouds come from tools/make_clouds.py,
-drawn from noise; nothing of English Heritage's is used.
+in the https://mythsmap.english-heritage.org.uk/", then "put the clouds on tense
+pages too but lose the visible hard edge around the clouds". The clouds come
+from tools/make_clouds.py, drawn from noise; nothing of English Heritage's is used.
 
-HOW THEIRS WORKS (read from their saved page): ~90 cloud images, 600x400,
-three variants, scattered at random over a layer the size of the map; the
-whole layer drifts along the live wind direction over 300s and fades out at
-the end of each loop; half the clouds sit at another "altitude" and move
-faster when the map is dragged.
+HOW THEIRS WORKS (read from their saved page, in incoming/): ~90 cloud images,
+600x400, three variants, scattered over a layer the size of the map, which
+drifts along the live wind direction over 300s and fades out at each loop.
 
-HOW THIS WORKS: the clouds are baked into two repeating tiles, a far one
-(small, faint, slow) and a near one (larger, brighter, faster), each cloud
-with a soft shadow on the ground beneath it, which is what makes a cloud
-read as seen from above. Each tile is drawn with its clouds wrapped across
-its edges, so it repeats without a seam, and each layer slides exactly one
-tile per loop, so the loop has no seam either: no fade needed. Only
-`transform` animates. The layer sits behind the page's content, above the
-paper, the contours and the sheen; the text on the paper already wears a
-paper halo (tools/sherpa_sheen.py), so no cloud crosses a glyph.
-prefers-reduced-motion holds the clouds still; print hides them.
+HOW THIS WORKS: six cloud images, each with a soft shadow on the ground beneath
+it (what makes a cloud read as seen from above), baked on a canvas padded well
+past the blur so no edge is cut; the tool refuses a cloud whose border is not
+clear. Nine of them drift across a FIXED, screen-sized layer, each on its own
+loop, near clouds larger and quicker, far ones smaller, fainter and slower,
+staggered by negative delays so the sky is never empty. The page scrolls
+beneath them, as the ground does under an aircraft.
+
+WHY SCREEN-SIZED. The first version slid two page-sized tiles; on a long tense
+page at phone density those were layers of hundreds of millions of pixels,
+and with the sheen the page fell to 17 fps whenever anything else animated
+(tools/sherpa_sheen_perf.js, 4x-throttled phone). Nine cloud-sized layers
+cost a small fraction of that and do not grow with the page.
+
+Only `transform` animates. The layer sits behind the content, above the paper,
+the contours and the sheen; text on the paper wears a paper halo, so no cloud
+crosses a glyph. On a night page (the descents) the sky is fainter. For
+prefers-reduced-motion the clouds stand still where they are; print hides them.
 """
+import glob
 import io
 import os
 import re
@@ -39,78 +46,79 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import make_clouds                                         # noqa: E402
 
-PAGE = 'sherpa-tensing-route-map.html'
 DIR = 'Sherpa Tensing'
-# name: (tile w, tile h, clouds, scale range, opacity, shadow alpha, seconds per tile, seed)
-LAYERS = {
-    'far':  (1800, 1400, 7, (0.30, 0.46), 0.62, 0.10, 240, 11),
-    'near': (2300, 1800, 6, (0.55, 0.80), 0.95, 0.18, 150, 23),
-}
+IMAGES = 6                  # cloud-1 .. cloud-6.webp, seeds 3100 + i
+SHADOW = 0.16               # the shadow's strength
+# each cloud on the page: (image, width px, top % of the screen, seconds to cross, delay fraction, opacity)
+CLOUDS = [
+    (1, 560, 8, 95, 0.10, 0.95), (2, 480, 38, 110, 0.55, 0.95), (3, 620, 64, 85, 0.30, 0.95), (4, 430, 84, 120, 0.80, 0.9),
+    (5, 300, 20, 170, 0.20, 0.6), (6, 260, 50, 190, 0.65, 0.55), (1, 280, 74, 180, 0.45, 0.6), (2, 240, 2, 200, 0.90, 0.5),
+    (3, 270, 92, 175, 0.05, 0.55)]
+DARK_OPACITY = 0.38         # on a night page white clouds glare: fainter, as clouds seen at night
 CSS_START, CSS_END = '<!-- SHERPA-SKY:start -->', '<!-- SHERPA-SKY:end -->'
 EL_START, EL_END = '<!-- SHERPA-SKY-EL:start -->', '<!-- SHERPA-SKY-EL:end -->'
 CSS_FENCE = re.compile(re.escape(CSS_START) + r'.*?' + re.escape(CSS_END) + r'\n?', re.S)
 EL_FENCE = re.compile(re.escape(EL_START) + r'.*?' + re.escape(EL_END) + r'\n?', re.S)
-ELEMENT = EL_START + '\n<div class="sherpa-sky" aria-hidden="true"><i></i><i></i></div>\n' + EL_END + '\n'
+ELEMENT = (EL_START + '\n<div class="sherpa-sky" aria-hidden="true">' + '<i></i>' * len(CLOUDS) + '</div>\n' + EL_END + '\n')
 
 
-def tile(name):
-    tw, th, n, (s0, s1), opacity, shadow_a, _, seed = LAYERS[name]
-    rng = np.random.default_rng(seed)
-    canvas = Image.new('RGBA', (tw, th), (0, 0, 0, 0))
-    shadows = Image.new('RGBA', (tw, th), (0, 0, 0, 0))
-    # spread the clouds: one per horizontal band, jittered, so they never pile up
-    for i in range(n):
-        c = make_clouds.cloud(seed * 100 + i)
-        s = rng.uniform(s0, s1)
-        c = c.resize((int(c.width * s), int(c.height * s)), Image.LANCZOS)
-        a = np.asarray(c, np.float32)
-        a[..., 3] *= opacity
-        c = Image.fromarray(a.clip(0, 255).astype(np.uint8), 'RGBA')
-        x = int(rng.uniform(0, tw))
-        y = int(th * (i + rng.uniform(0.1, 0.9)) / n)
-        # its shadow on the ground: the same shape, dark, blurred, off to the lower right
-        sh = np.zeros((c.height, c.width, 4), np.float32)
-        sh[..., 3] = np.asarray(c, np.float32)[..., 3] * shadow_a / max(opacity, 1e-3)
-        sh[..., :3] = (40, 34, 38)
-        sh = Image.fromarray(sh.clip(0, 255).astype(np.uint8), 'RGBA').filter(ImageFilter.GaussianBlur(18 * s + 6))
-        off = (int(60 * s + 20), int(90 * s + 30))
-        # wrap across every edge, so the tile repeats without a seam
-        for dx in (-tw, 0, tw):
-            for dy in (-th, 0, th):
-                shadows.alpha_composite(sh, (x + dx + off[0], y + dy + off[1])) if -sh.width < x + dx + off[0] < tw and -sh.height < y + dy + off[1] < th else None
-                canvas.alpha_composite(c, (x + dx, y + dy)) if -c.width < x + dx < tw and -c.height < y + dy < th else None
-    out = Image.alpha_composite(shadows, canvas)
-    path = os.path.join(ROOT, DIR, 'sky-%s.webp' % name)
-    out.save(path, 'WEBP', quality=82, method=6)
-    return path
+def image(k):
+    """Cloud k with its ground shadow, on a canvas padded past the blur."""
+    c = make_clouds.cloud(3100 + k)
+    a = np.asarray(c, np.float32)[..., 3]
+    radius = 22
+    pad = int(3 * radius) + 4
+    off = (40, 60)                                       # the sun is to the upper left
+    w, h = c.width + 2 * pad + off[0], c.height + 2 * pad + off[1]
+    sh = np.zeros((h, w, 4), np.float32)
+    sh[pad + off[1]:pad + off[1] + c.height, pad + off[0]:pad + off[0] + c.width, 3] = a * SHADOW
+    sh[..., :3] = (40, 34, 38)
+    shadow = Image.fromarray(sh.clip(0, 255).astype(np.uint8), 'RGBA').filter(ImageFilter.GaussianBlur(radius))
+    out = shadow.copy()
+    out.alpha_composite(c, (pad, pad))
+    al = np.asarray(out)[..., 3]
+    edge = max(al[0].max(), al[-1].max(), al[:, 0].max(), al[:, -1].max())
+    if edge > 0:                                          # the measurement: a cut shows as a hard edge
+        sys.exit('! cloud-%d has alpha %d on its border: it would show a hard edge' % (k, edge))
+    path = os.path.join(ROOT, DIR, 'cloud-%d.webp' % k)
+    out.save(path, 'WEBP', quality=84, method=6)
+    return path, out.size
 
 
-def block():
-    css = ['/* clouds drifting across the map, seen from above (tools/sherpa_sky.py): two tiles,',
-           '   each sliding exactly one tile per loop, by transform only */',
-           'body{position:relative;}',
-           '.sherpa-sky{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden;}',
-           '.sherpa-sky i{position:absolute;top:0;left:0;will-change:transform;}']
-    for k, name in enumerate(('far', 'near'), 1):
-        tw, th, _, _, _, _, secs, _ = LAYERS[name]
-        url = '%s/sky-%s.webp' % (DIR.replace(' ', '%20'), name)
-        css += ['.sherpa-sky i:nth-child(%d){width:calc(100%% + %dpx);height:calc(100%% + %dpx);'
-                'background:url("%s") 0 0/%dpx %dpx repeat;animation:sherpa-sky-%s %ds linear infinite;}'
-                % (k, tw, th, url, tw, th, name, secs),
-                '@keyframes sherpa-sky-%s{from{transform:translate(-%dpx,-%dpx)}to{transform:translate(0,0)}}'
-                % (name, tw, th)]
-    css += ['@media (prefers-reduced-motion:reduce){.sherpa-sky i{animation:none;transform:translate(-40%,-30%);}}',
+def dark(src):
+    m = re.search(r'--paper\s*:\s*#([0-9A-Fa-f]{6})', src)
+    if not m:
+        return False
+    r, g, b = (int(m.group(1)[i:i + 2], 16) for i in (0, 2, 4))
+    return (0.2126 * r + 0.7152 * g + 0.0722 * b) < 110
+
+
+def block(sizes, is_dark=False):
+    css = ['/* clouds drifting across the screen, seen from above (tools/sherpa_sky.py): nine clouds,',
+           '   each on its own loop, in a fixed screen-sized layer, by transform only */',
+           '.sherpa-sky{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;%s}'
+           % ('opacity:%s;' % DARK_OPACITY if is_dark else ''),
+           '.sherpa-sky i{position:absolute;left:0;background:0 0/100% 100% no-repeat;will-change:transform;'
+           'animation:sherpa-sky-drift linear infinite;}',
+           '@keyframes sherpa-sky-drift{from{transform:translateX(-100%)}to{transform:translateX(100vw)}}']
+    for n, (k, w, top, secs, delay, op) in enumerate(CLOUDS, 1):
+        iw, ih = sizes[k]
+        css.append('.sherpa-sky i:nth-child(%d){top:%d%%;width:%dpx;height:%dpx;background-image:url("%s/cloud-%d.webp");'
+                   'animation-duration:%ds;animation-delay:-%ds;opacity:%s;}'
+                   % (n, top, w, round(w * ih / iw), DIR.replace(' ', '%20'), k, secs, round(secs * delay), op))
+    css += ['/* the smallest phones: the far clouds only would crowd, so the near ones shrink */',
+            '@media (max-width:560px){.sherpa-sky i{transform-origin:0 0;}.sherpa-sky i:nth-child(-n+4){scale:.7;}}',
+            '@media (prefers-reduced-motion:reduce){.sherpa-sky i{animation-play-state:paused;}}',
             '@media print{.sherpa-sky{display:none;}}']
     return CSS_START + '\n<style id="sherpa-sky">\n' + '\n'.join(css) + '\n</style>\n' + CSS_END + '\n'
 
 
-def apply(src):
-    b = block()
+def apply(src, sizes):
+    b = block(sizes, dark(src))
     src = CSS_FENCE.sub(lambda m: b, src, count=1) if CSS_FENCE.search(src) else src.replace('</head>', b + '</head>', 1)
     if EL_FENCE.search(src):
         return EL_FENCE.sub(lambda m: ELEMENT, src, count=1)
-    # after the sheen, so the clouds pass over the lit contours
-    anchor = '<!-- SHERPA-SHEEN-EL:end -->\n'
+    anchor = '<!-- SHERPA-SHEEN-EL:end -->\n'               # after the sheen: clouds over the lit contours
     if anchor in src:
         return src.replace(anchor, anchor + ELEMENT, 1)
     return re.sub(r'(<body\b[^>]*>\n?)', lambda m: m.group(1) + ELEMENT, src, count=1)
@@ -119,26 +127,36 @@ def apply(src):
 def main():
     check = '--check' in sys.argv
     bad = []
-    if not check:
-        for name in LAYERS:
-            p = tile(name)
-            print('  %s  %d KB' % (os.path.relpath(p, ROOT), os.path.getsize(p) // 1024))
-    for name in LAYERS:
-        if not os.path.exists(os.path.join(ROOT, DIR, 'sky-%s.webp' % name)):
-            bad.append('sky-%s.webp missing' % name)
-    p = os.path.join(ROOT, PAGE)
-    src = io.open(p, encoding='utf-8').read()
-    new = apply(src)
-    if check:
-        if new != src:
-            bad.append('%s: sky layer missing or stale' % PAGE)
-    elif new != src:
-        io.open(p, 'w', encoding='utf-8', newline='\n').write(new)
-        print('  ' + PAGE)
+    sizes = {}
+    for k in range(1, IMAGES + 1):
+        p = os.path.join(ROOT, DIR, 'cloud-%d.webp' % k)
+        if check:
+            if not os.path.exists(p):
+                bad.append('cloud-%d.webp missing' % k)
+                continue
+            sizes[k] = Image.open(p).size
+        else:
+            p, sizes[k] = image(k)
+            print('  %s  %dx%d  %d KB' % (os.path.relpath(p, ROOT), sizes[k][0], sizes[k][1], os.path.getsize(p) // 1024))
+    if bad:
+        for b in bad:
+            print('FAIL ' + b)
+        sys.exit(1)
+    for p in sorted(glob.glob(os.path.join(ROOT, 'sherpa-tensing-*.html'))):
+        name = os.path.basename(p)
+        src = io.open(p, encoding='utf-8').read()
+        new = apply(src, sizes)
+        if check:
+            if new != src:
+                bad.append('%s: sky layer missing or stale' % name)
+        elif new != src:
+            io.open(p, 'w', encoding='utf-8', newline='\n').write(new)
     for b in bad:
         print('FAIL ' + b)
     if check:
-        print('PASS' if not bad else 'FAIL: %d' % len(bad))
+        print('PASS: 26 pages' if not bad else 'FAIL: %d' % len(bad))
+    else:
+        print('  26 pages')
     sys.exit(1 if bad else 0)
 
 

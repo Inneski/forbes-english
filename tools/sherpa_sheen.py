@@ -92,10 +92,14 @@ def band_css(i, angle, period, band, secs, direction, opacity):
             'var(--sheen-hot) %dpx,var(--sheen) %dpx,transparent %dpx)'
             % (angle, lead, lead + band * 0.4, lead + band * 0.5, lead + band * 0.6, period))
     hp = period / math.sin(math.radians(angle))          # the pattern's horizontal period
-    frm, to = ('-%.1fpx' % hp, '0') if direction > 0 else ('0', '-%.1fpx' % hp)
-    return ['.topo-sheen i:nth-child(%d){left:-%dpx;right:-%dpx;background:%s;opacity:%s;' % (i, math.ceil(hp), math.ceil(hp), grad, opacity),
+    # a screen-high strip, one period wider than the page, sliding exactly one period: no seam.
+    # Starts one period to the left when it moves right, at 0 when it moves left.
+    lead_in = -math.ceil(hp) if direction > 0 else 0
+    to = '%.1fpx' % (hp if direction > 0 else -hp)
+    return ['.topo-sheen i:nth-child(%d){width:calc(100%% + %dpx);margin-left:%dpx;%sbackground:%s;opacity:%s;'
+            % (i, math.ceil(hp), lead_in, 'margin-top:-100vh;' if i > 1 else '', grad, opacity),
             '  animation:topo-sheen-%d %ss linear infinite;}' % (i, secs),
-            '@keyframes topo-sheen-%d{from{transform:translateX(%s)}to{transform:translateX(%s)}}' % (i, frm, to)]
+            '@keyframes topo-sheen-%d{from{transform:translateX(0)}to{transform:translateX(%s)}}' % (i, to)]
 
 
 def block(src, is_map):
@@ -110,9 +114,13 @@ def block(src, is_map):
            '   moved by transform only, seen through the contour lines */',
            ':root{--sheen:%s;--sheen-hot:%s;}' % (sheen, hot),
            'body{position:relative;}',
-           '.topo-sheen{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden;'] + mask
+           '.topo-sheen{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden;overflow:clip;'] + mask
     css[-1] += '}'
-    css += ['.topo-sheen i{position:absolute;top:0;bottom:0;will-change:transform;}']
+    # the bands are screen-high strips that stick to the top of the screen while the page (and
+    # its masked contours) scrolls under them: page-high bands were layers of hundreds of
+    # millions of pixels on a long page at phone density, and cost frames (sherpa_sheen_perf.js).
+    # overflow:clip, not hidden, or sticky has nothing to stick to
+    css += ['.topo-sheen i{display:block;position:sticky;top:0;height:100vh;will-change:transform;}']
     for i, b in enumerate(BANDS, 1):
         css += band_css(i, *b)
     if is_map:

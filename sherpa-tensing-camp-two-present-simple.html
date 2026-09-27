@@ -305,34 +305,59 @@ svg.hero-diagram{background:var(--paper);box-shadow:0 0 18px 14px var(--paper);}
    moved by transform only, seen through the contour lines */
 :root{--sheen:#4386DE;--sheen-hot:#A8A5FF;}
 body{position:relative;}
-.topo-sheen{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden;
+.topo-sheen{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden;overflow:clip;
   -webkit-mask:url("Sherpa%20Tensing/topo-sheen.svg") 0 0/640px 640px repeat,linear-gradient(#000 0,#000 40%,transparent 100%) 0 0/100% 900px no-repeat,linear-gradient(to top,#000 0,#000 30%,transparent 100%) 0 100%/100% 700px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) -620px 24%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) calc(100% + 620px) 46%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) -620px 68%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) calc(100% + 620px) 88%/1240px 1000px no-repeat;
   mask:url("Sherpa%20Tensing/topo-sheen.svg") 0 0/640px 640px repeat,linear-gradient(#000 0,#000 40%,transparent 100%) 0 0/100% 900px no-repeat,linear-gradient(to top,#000 0,#000 30%,transparent 100%) 0 100%/100% 700px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) -620px 24%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) calc(100% + 620px) 46%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) -620px 68%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) calc(100% + 620px) 88%/1240px 1000px no-repeat;
   /* after the shorthand, which resets it: the tile intersects the union of the areas */
   -webkit-mask-composite:source-in,source-over,source-over,source-over,source-over,source-over,source-over;
   mask-composite:intersect,add,add,add,add,add,add;}
-.topo-sheen i{position:absolute;top:0;bottom:0;will-change:transform;}
-.topo-sheen i:nth-child(1){left:-1625px;right:-1625px;background:repeating-linear-gradient(100deg,transparent 0,transparent 1300px,var(--sheen) 1420px,var(--sheen-hot) 1450px,var(--sheen) 1480px,transparent 1600px);opacity:0.95;
+.topo-sheen i{display:block;position:sticky;top:0;height:100vh;will-change:transform;}
+.topo-sheen i:nth-child(1){width:calc(100% + 1625px);margin-left:-1625px;background:repeating-linear-gradient(100deg,transparent 0,transparent 1300px,var(--sheen) 1420px,var(--sheen-hot) 1450px,var(--sheen) 1480px,transparent 1600px);opacity:0.95;
   animation:topo-sheen-1 11s linear infinite;}
-@keyframes topo-sheen-1{from{transform:translateX(-1624.7px)}to{transform:translateX(0)}}
-.topo-sheen i:nth-child(2){left:-2419px;right:-2419px;background:repeating-linear-gradient(72deg,transparent 0,transparent 2100px,var(--sheen) 2180px,var(--sheen-hot) 2200px,var(--sheen) 2220px,transparent 2300px);opacity:0.6;
+@keyframes topo-sheen-1{from{transform:translateX(0)}to{transform:translateX(1624.7px)}}
+.topo-sheen i:nth-child(2){width:calc(100% + 2419px);margin-left:0px;margin-top:-100vh;background:repeating-linear-gradient(72deg,transparent 0,transparent 2100px,var(--sheen) 2180px,var(--sheen-hot) 2200px,var(--sheen) 2220px,transparent 2300px);opacity:0.6;
   animation:topo-sheen-2 19s linear infinite;}
 @keyframes topo-sheen-2{from{transform:translateX(0)}to{transform:translateX(-2418.4px)}}
 @media (prefers-reduced-motion:reduce){.topo-sheen{display:none;}}
 @media print{.topo-sheen{display:none;}}
 </style>
 <!-- SHERPA-SHEEN:end -->
+<!-- SHERPA-SKY:start -->
+<style id="sherpa-sky">
+/* clouds drifting across the screen, seen from above (tools/sherpa_sky.py): nine clouds,
+   each on its own loop, in a fixed screen-sized layer, by transform only */
+.sherpa-sky{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;}
+.sherpa-sky i{position:absolute;left:0;background:0 0/100% 100% no-repeat;will-change:transform;animation:sherpa-sky-drift linear infinite;}
+@keyframes sherpa-sky-drift{from{transform:translateX(-100%)}to{transform:translateX(100vw)}}
+.sherpa-sky i:nth-child(1){top:8%;width:560px;height:311px;background-image:url("Sherpa%20Tensing/cloud-1.webp");animation-duration:95s;animation-delay:-10s;opacity:0.95;}
+.sherpa-sky i:nth-child(2){top:38%;width:480px;height:260px;background-image:url("Sherpa%20Tensing/cloud-2.webp");animation-duration:110s;animation-delay:-61s;opacity:0.95;}
+.sherpa-sky i:nth-child(3){top:64%;width:620px;height:339px;background-image:url("Sherpa%20Tensing/cloud-3.webp");animation-duration:85s;animation-delay:-26s;opacity:0.95;}
+.sherpa-sky i:nth-child(4){top:84%;width:430px;height:230px;background-image:url("Sherpa%20Tensing/cloud-4.webp");animation-duration:120s;animation-delay:-96s;opacity:0.9;}
+.sherpa-sky i:nth-child(5){top:20%;width:300px;height:162px;background-image:url("Sherpa%20Tensing/cloud-5.webp");animation-duration:170s;animation-delay:-34s;opacity:0.6;}
+.sherpa-sky i:nth-child(6){top:50%;width:260px;height:149px;background-image:url("Sherpa%20Tensing/cloud-6.webp");animation-duration:190s;animation-delay:-124s;opacity:0.55;}
+.sherpa-sky i:nth-child(7){top:74%;width:280px;height:156px;background-image:url("Sherpa%20Tensing/cloud-1.webp");animation-duration:180s;animation-delay:-81s;opacity:0.6;}
+.sherpa-sky i:nth-child(8){top:2%;width:240px;height:130px;background-image:url("Sherpa%20Tensing/cloud-2.webp");animation-duration:200s;animation-delay:-180s;opacity:0.5;}
+.sherpa-sky i:nth-child(9){top:92%;width:270px;height:147px;background-image:url("Sherpa%20Tensing/cloud-3.webp");animation-duration:175s;animation-delay:-9s;opacity:0.55;}
+/* the smallest phones: the far clouds only would crowd, so the near ones shrink */
+@media (max-width:560px){.sherpa-sky i{transform-origin:0 0;}.sherpa-sky i:nth-child(-n+4){scale:.7;}}
+@media (prefers-reduced-motion:reduce){.sherpa-sky i{animation-play-state:paused;}}
+@media print{.sherpa-sky{display:none;}}
+</style>
+<!-- SHERPA-SKY:end -->
 </head>
 <body>
 <!-- SHERPA-SHEEN-EL:start -->
 <div class="topo-sheen" aria-hidden="true"><i></i><i></i></div>
 <!-- SHERPA-SHEEN-EL:end -->
+<!-- SHERPA-SKY-EL:start -->
+<div class="sherpa-sky" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+<!-- SHERPA-SKY-EL:end -->
 <a class="up-link" href="sherpa-tensing-route-map.html"><span class="arw" aria-hidden="true">&larr;</span>Route map</a>
 
 
 <div class="wordmark">
-  <div class="brand">Sherpa <span>Tensing</span></div>
-  <div class="sub">Forbes English &middot; a route up the tenses</div>
+  <div class="brand"><a href="sherpa-tensing-route-map.html" style="color:inherit;text-decoration:none">Sherpa <span>Tensing</span></a></div>
+  <div class="sub"><a href="index.html" style="color:var(--accent-dark);text-decoration:none;font-weight:600;">Forbes English</a> &middot; a route up the tenses</div>
 </div>
 
 <main>
@@ -1038,8 +1063,8 @@ var I18N = {
     chartColSubj: "Subject", chartColAff: "Affirmative", chartColNeg: "Negative", chartColQ: "Question",
     labelSignals: "Trail markers",
     signalsTitle: "Signal words",
-    signal1h: "Frequency, peak to base", signal1li1: "nie (0%)", signal1li2: "selten, kaum, fast nie (2-5%)", signal1li3: "manchmal, gelegentlich (20-40%)", signal1li4: "oft, h&auml;ufig (50%)", signal1li5: "gew&ouml;hnlich, normalerweise, in der Regel (80-95%)", signal1li6: "immer (100%)",
-    signal2h: "Time expressions", signal2li2: "einmal pro Woche / zweimal im Monat", signal2li3: "dreimal im Jahr", signal2li4: "ab und zu", signal2li5: "im Allgemeinen / in der Regel",
+    signal1h: "Frequency, peak to base", signal1li1: "never (0%)", signal1li2: "rarely, seldom, hardly ever (2-5%)", signal1li3: "sometimes, occasionally (20-40%)", signal1li4: "often, frequently (50%)", signal1li5: "usually, normally, generally (80-95%)", signal1li6: "always (100%)",
+    signal2h: "Time expressions", signal2li2: "once a week / twice a month", signal2li3: "three times a year", signal2li4: "now and again", signal2li5: "in general / as a rule",
     labelQuiz: "The climb",
     quizTitle: "Practice",
     nextBtn: "Next checkpoint",
@@ -1090,8 +1115,8 @@ var I18N = {
     chartColSubj: "Subjekt", chartColAff: "Bejaht", chartColNeg: "Verneint", chartColQ: "Frage",
     labelSignals: "Wegmarken",
     signalsTitle: "Signalw&ouml;rter",
-    signal1h: "H&auml;ufigkeit, von hoch zu niedrig", signal1li1: "mai (0%)", signal1li2: "raramente, di rado, quasi mai (2-5%)", signal1li3: "a volte, occasionalmente (20-40%)", signal1li4: "spesso, frequentemente (50%)", signal1li5: "di solito, normalmente, generalmente (80-95%)", signal1li6: "sempre (100%)",
-    signal2h: "Zeitausdr&uuml;cke", signal2li2: "una volta a settimana / due volte al mese", signal2li3: "tre volte all&#39;anno", signal2li4: "di tanto in tanto", signal2li5: "in generale / di regola",
+    signal1h: "H&auml;ufigkeit, von hoch zu niedrig", signal1li1: "nie (0%)", signal1li2: "selten, kaum, fast nie (2-5%)", signal1li3: "manchmal, gelegentlich (20-40%)", signal1li4: "oft, h&auml;ufig (50%)", signal1li5: "gew&ouml;hnlich, normalerweise, in der Regel (80-95%)", signal1li6: "immer (100%)",
+    signal2h: "Zeitausdr&uuml;cke", signal2li2: "einmal pro Woche / zweimal im Monat", signal2li3: "dreimal im Jahr", signal2li4: "ab und zu", signal2li5: "im Allgemeinen / in der Regel",
     labelQuiz: "Der Aufstieg",
     quizTitle: "&Uuml;bung",
     nextBtn: "N&auml;chster Kontrollpunkt",
@@ -1142,8 +1167,8 @@ var I18N = {
     chartColSubj: "Soggetto", chartColAff: "Affermativa", chartColNeg: "Negativa", chartColQ: "Domanda",
     labelSignals: "Segnavia",
     signalsTitle: "Parole segnale",
-    signal1h: "Frequenza, dall'alto al basso", signal1li1: "nunca (0%)", signal1li2: "raramente, rara vez, casi nunca (2-5%)", signal1li3: "a veces, ocasionalmente (20-40%)", signal1li4: "a menudo, frecuentemente (50%)", signal1li5: "normalmente, generalmente, por lo general (80-95%)", signal1li6: "siempre (100%)",
-    signal2h: "Espressioni di tempo", signal2li2: "una vez por semana / dos veces al mes", signal2li3: "tres veces al a&ntilde;o", signal2li4: "de vez en cuando", signal2li5: "en general / por regla general",
+    signal1h: "Frequenza, dall'alto al basso", signal1li1: "mai (0%)", signal1li2: "raramente, di rado, quasi mai (2-5%)", signal1li3: "a volte, occasionalmente (20-40%)", signal1li4: "spesso, frequentemente (50%)", signal1li5: "di solito, normalmente, generalmente (80-95%)", signal1li6: "sempre (100%)",
+    signal2h: "Espressioni di tempo", signal2li2: "una volta a settimana / due volte al mese", signal2li3: "tre volte all&#39;anno", signal2li4: "di tanto in tanto", signal2li5: "in generale / di regola",
     labelQuiz: "La scalata",
     quizTitle: "Esercizio",
     nextBtn: "Prossimo checkpoint",
@@ -1194,8 +1219,8 @@ var I18N = {
     chartColSubj: "Sujeto", chartColAff: "Afirmativa", chartColNeg: "Negativa", chartColQ: "Pregunta",
     labelSignals: "Se&ntilde;ales del camino",
     signalsTitle: "Palabras se&ntilde;al",
-    signal1h: "Frecuencia, de mayor a menor", signal1li1: "nigdy (0%)", signal1li2: "rzadko, prawie nigdy (2-5%)", signal1li3: "czasami, sporadycznie (20-40%)", signal1li4: "często, regularnie (50%)", signal1li5: "zwykle, zazwyczaj, ogólnie (80-95%)", signal1li6: "zawsze (100%)",
-    signal2h: "Expresiones de tiempo", signal2li2: "raz w tygodniu / dwa razy w miesiącu", signal2li3: "trzy razy w roku", signal2li4: "od czasu do czasu", signal2li5: "ogólnie rzecz biorąc / z reguły",
+    signal1h: "Frecuencia, de mayor a menor", signal1li1: "nunca (0%)", signal1li2: "raramente, rara vez, casi nunca (2-5%)", signal1li3: "a veces, ocasionalmente (20-40%)", signal1li4: "a menudo, frecuentemente (50%)", signal1li5: "normalmente, generalmente, por lo general (80-95%)", signal1li6: "siempre (100%)",
+    signal2h: "Expresiones de tiempo", signal2li2: "una vez por semana / dos veces al mes", signal2li3: "tres veces al a&ntilde;o", signal2li4: "de vez en cuando", signal2li5: "en general / por regla general",
     labelQuiz: "La ascensi&oacute;n",
     quizTitle: "Pr&aacute;ctica",
     nextBtn: "Siguiente punto de control",
@@ -1246,8 +1271,8 @@ var I18N = {
     chartColSubj: "Podmiot", chartColAff: "Twierdzenie", chartColNeg: "Przeczenie", chartColQ: "Pytanie",
     labelSignals: "Znaki na szlaku",
     signalsTitle: "Słowa sygnałowe",
-    signal1h: "Częstotliwość, od najwyższej do najniższej", signal1li1: "从不 (0%)", signal1li2: "很少、几乎不 (2-5%)", signal1li3: "有时、偶尔 (20-40%)", signal1li4: "经常、频繁地 (50%)", signal1li5: "通常、一般来说 (80-95%)", signal1li6: "总是 (100%)",
-    signal2h: "Wyrażenia czasowe", signal2li2: "每周一次 / 每月两次", signal2li3: "每年三次", signal2li4: "偶尔、时不时", signal2li5: "一般来说 / 通常情况下",
+    signal1h: "Częstotliwość, od najwyższej do najniższej", signal1li1: "nigdy (0%)", signal1li2: "rzadko, prawie nigdy (2-5%)", signal1li3: "czasami, sporadycznie (20-40%)", signal1li4: "często, regularnie (50%)", signal1li5: "zwykle, zazwyczaj, ogólnie (80-95%)", signal1li6: "zawsze (100%)",
+    signal2h: "Wyrażenia czasowe", signal2li2: "raz w tygodniu / dwa razy w miesiącu", signal2li3: "trzy razy w roku", signal2li4: "od czasu do czasu", signal2li5: "ogólnie rzecz biorąc / z reguły",
     labelQuiz: "Wspinaczka",
     quizTitle: "Ćwiczenie",
     nextBtn: "Następny punkt kontrolny",
@@ -1298,8 +1323,8 @@ var I18N = {
     chartColSubj: "主语", chartColAff: "肯定式", chartColNeg: "否定式", chartColQ: "疑问式",
     labelSignals: "路标词",
     signalsTitle: "信号词",
-    signal1h: "频率，由高到低", signal1li1: "jamais (0%)", signal1li2: "rarement, presque jamais (2-5%)", signal1li3: "parfois, occasionnellement (20-40%)", signal1li4: "souvent, fr&eacute;quemment (50%)", signal1li5: "habituellement, normalement, g&eacute;n&eacute;ralement (80-95%)", signal1li6: "toujours (100%)",
-    signal2h: "时间表达", signal2li2: "une fois par semaine / deux fois par mois", signal2li3: "trois fois par an", signal2li4: "de temps en temps", signal2li5: "en g&eacute;n&eacute;ral / en r&egrave;gle g&eacute;n&eacute;rale",
+    signal1h: "频率，由高到低", signal1li1: "从不 (0%)", signal1li2: "很少、几乎不 (2-5%)", signal1li3: "有时、偶尔 (20-40%)", signal1li4: "经常、频繁地 (50%)", signal1li5: "通常、一般来说 (80-95%)", signal1li6: "总是 (100%)",
+    signal2h: "时间表达", signal2li2: "每周一次 / 每月两次", signal2li3: "每年三次", signal2li4: "偶尔、时不时", signal2li5: "一般来说 / 通常情况下",
     labelQuiz: "攀登",
     quizTitle: "练习",
     nextBtn: "下一检查点",
@@ -1350,8 +1375,8 @@ var I18N = {
     chartColSubj: "Sujet", chartColAff: "Affirmative", chartColNeg: "N&eacute;gative", chartColQ: "Question",
     labelSignals: "Balises du sentier",
     signalsTitle: "Mots signaux",
-    signal1h: "Fr&eacute;quence, du plus haut au plus bas", signal1li1: "никогда (0%)", signal1li2: "редко, почти никогда (2-5%)", signal1li3: "иногда, время от времени (20-40%)", signal1li4: "часто (50%)", signal1li5: "обычно, как правило (80-95%)", signal1li6: "всегда (100%)",
-    signal2h: "Expressions de temps", signal2li2: "раз в неделю / два раза в месяц", signal2li3: "три раза в год", signal2li4: "время от времени", signal2li5: "в общем / как правило",
+    signal1h: "Fr&eacute;quence, du plus haut au plus bas", signal1li1: "jamais (0%)", signal1li2: "rarement, presque jamais (2-5%)", signal1li3: "parfois, occasionnellement (20-40%)", signal1li4: "souvent, fr&eacute;quemment (50%)", signal1li5: "habituellement, normalement, g&eacute;n&eacute;ralement (80-95%)", signal1li6: "toujours (100%)",
+    signal2h: "Expressions de temps", signal2li2: "une fois par semaine / deux fois par mois", signal2li3: "trois fois par an", signal2li4: "de temps en temps", signal2li5: "en g&eacute;n&eacute;ral / en r&egrave;gle g&eacute;n&eacute;rale",
     labelQuiz: "L'ascension",
     quizTitle: "Entra&icirc;nement",
     nextBtn: "Point de contr&ocirc;le suivant",
@@ -1402,8 +1427,8 @@ var I18N = {
     chartColSubj: "Лицо", chartColAff: "Утверждение", chartColNeg: "Отрицание", chartColQ: "Вопрос",
     labelSignals: "Путевые метки",
     signalsTitle: "Слова-сигналы",
-    signal1h: "Частотность, от высокой к низкой", signal1li1: "never (0%)", signal1li2: "rarely, seldom, hardly ever (2-5%)", signal1li3: "sometimes, occasionally (20-40%)", signal1li4: "often, frequently (50%)", signal1li5: "usually, normally, generally (80-95%)", signal1li6: "always (100%)",
-    signal2h: "Временные выражения", signal2li2: "once a week / twice a month", signal2li3: "three times a year", signal2li4: "now and again", signal2li5: "in general / as a rule",
+    signal1h: "Частотность, от высокой к низкой", signal1li1: "никогда (0%)", signal1li2: "редко, почти никогда (2-5%)", signal1li3: "иногда, время от времени (20-40%)", signal1li4: "часто (50%)", signal1li5: "обычно, как правило (80-95%)", signal1li6: "всегда (100%)",
+    signal2h: "Временные выражения", signal2li2: "раз в неделю / два раза в месяц", signal2li3: "три раза в год", signal2li4: "время от времени", signal2li5: "в общем / как правило",
     labelQuiz: "Восхождение",
     quizTitle: "Практика",
     nextBtn: "Следующий пункт",

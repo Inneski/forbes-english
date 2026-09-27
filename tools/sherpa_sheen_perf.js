@@ -16,6 +16,14 @@
 //     are reported for both, and the difference is printed, not failed.
 // The first version of this tool measured only the busy case, which made the
 // sheen look like a main-thread animation; it is not one (2026-09-26).
+//
+// RUN IT IN REAL CHROME. Playwright's bundled headless shell composites in
+// software: there, masked, animated layers cost every frame, and the busy case
+// read 15-20 fps whatever the design. The installed Chrome, headless, uses the
+// GPU as a phone does: the same pages read 53-56 fps. So this launches the
+// installed Chrome when there is one (channel "chrome"), warms it up on one
+// page first (the first load reads low while the GPU starts), and says which
+// browser it measured in.
 const path = require('path');
 const http = require('http');
 const fs = require('fs');
@@ -68,7 +76,15 @@ async function sample(b, url, sheen) {
 (async () => {
   const srv = await serve();
   const base = `http://127.0.0.1:${srv.address().port}/`;
-  const b = await chromium.launch();
+  let b, where = 'installed Chrome, GPU compositing';
+  try {
+    b = await chromium.launch({ channel: 'chrome', headless: true, args: ['--enable-gpu', '--ignore-gpu-blocklist'] });
+  } catch (e) {
+    b = await chromium.launch();
+    where = 'bundled headless shell, SOFTWARE compositing: busy figures read far lower than a phone';
+  }
+  console.log('measured in: ' + where);
+  await sample(b, base + files[0], true);                 // warm-up, discarded
   let bad = 0;
   for (const f of files) {
     const off = await sample(b, base + f, false);

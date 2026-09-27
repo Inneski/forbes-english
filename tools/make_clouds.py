@@ -20,7 +20,7 @@ density's own slope, cool grey on the shadow side, warm white on top.
 import argparse
 import os
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageFilter
 
 W, H = 820, 448
 
@@ -93,13 +93,26 @@ def cloud(seed, cw=1000, ch=600):
     shade = 0.70 + 0.24 * lit + 0.08 * smoothstep(0.3, 0.8, core) + 0.04 * (fine - 0.5)
     shade = shade + 0.18 * (1 - smoothstep(0.1, 0.6, alpha))   # no dark fringe where it thins
     shade = np.clip(shade, 0.64, 1.0)
+    # the light's modelling belongs inside the cloud: at the silhouette the density falls
+    # fastest, so the light test is strongest there and drew a grey contour round the lower
+    # right of every cloud. Fade the shading to bright white toward the edge.
+    inner = smoothstep(0.30, 0.90, alpha)
+    shade = 0.975 * (1 - inner) + shade * inner
+    # feather the silhouette: a cloud from above has no outline. Innes saw "a visible hard
+    # edge around the clouds"; the alpha rose from nothing to solid in a few pixels, so the
+    # rim read as a line. Blur the alpha by ~1% of the cloud's width, and keep the thin
+    # outer part white rather than grey.
+    feather = Image.fromarray((alpha * 255).clip(0, 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(cw * 0.011))
+    soft = np.asarray(feather, np.float32) / 255
+    alpha = np.minimum(soft, alpha * 0.35 + soft * 0.65)
+    shade = shade + (1 - shade) * (1 - smoothstep(0.0, 0.45, alpha)) * 0.8
     r = 255 * shade
     g = 255 * np.clip(shade * 0.997 + 0.003, 0, 1)
     b = 255 * np.clip(shade * 1.015 + 0.018, 0, 1)
     rgba = np.dstack([r, g, b, alpha * 255]).clip(0, 255).astype(np.uint8)
-    ys, xs = np.nonzero(rgba[..., 3] > 3)
-    return Image.fromarray(rgba, 'RGBA').crop((max(0, xs.min() - 12), max(0, ys.min() - 12),
-                                               min(cw, xs.max() + 12), min(ch, ys.max() + 12)))
+    ys, xs = np.nonzero(rgba[..., 3] > 0)
+    return Image.fromarray(rgba, 'RGBA').crop((max(0, xs.min() - 4), max(0, ys.min() - 4),
+                                               min(cw, xs.max() + 5), min(ch, ys.max() + 5)))
 
 
 def main():

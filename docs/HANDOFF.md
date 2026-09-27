@@ -144,12 +144,39 @@ too"*. Commits `6b8618d` (yellow) and the one carrying this entry.
   PNGs scattered over a map-sized layer that drifts along the live wind
   over 300s and fades at the loop. Ours: `tools/make_clouds.py` draws the
   clouds from noise (nothing of theirs is used: their images are English
-  Heritage's artwork), `tools/sherpa_sky.py` bakes them, each with a soft
-  ground shadow, into two seamless tiles (`Sherpa Tensing/sky-far.webp`
-  63 KB, `sky-near.webp` 123 KB) that each slide one tile per loop (240s,
-  150s): no seam, transform only, behind the content, over the contours and
-  the sheen. Route map only so far. Frame cost with the sheen, 4x-throttled
-  phone: nothing at rest, 41 vs 60 fps while something else animates.
+  Heritage's artwork). **Now on all 26 pages** (*"put the clouds on tense
+  pages too but lose the visible hard edge"*): `tools/sherpa_sky.py` makes
+  six cloud images (`Sherpa Tensing/cloud-1..6.webp`, ~35 KB each), each with
+  its ground shadow blurred on a canvas padded past the blur (blurred inside
+  the cloud's own box, the shadow was cut off along a straight edge), and
+  refuses any whose border alpha is not zero. The "hard edge" Innes saw was
+  mostly the cloud's own rim: the lighting test is strongest where density
+  falls fastest, so `make_clouds.py` now feathers the alpha and fades the
+  shading to white toward the edge. Nine clouds drift across a FIXED,
+  screen-sized layer, each on its own loop (the old page-sized tiles are
+  gone); the night pages (descents) get it at 0.38 opacity.
+- **Frame cost, and how to measure it.** `tools/sherpa_sheen_perf.js` runs
+  in the installed Chrome (GPU compositing). Playwright's bundled headless
+  shell composites in software and reads 15-20 fps for ANY design with the
+  masked sheen, which misled me into a redesign; in real Chrome the same
+  pages read 42-56 fps while something else animates, and nothing at rest.
+  Busy figures swung 15-42 between identical runs while a 56-agent workflow
+  and another session's disk-wide `find` loaded the machine: trust the
+  at-rest figures, rerun the busy ones on a quiet machine. The sheen's bands
+  are now screen-high sticky strips (`overflow:clip` on the contour layer, or
+  sticky has nothing to stick to). If a phone ever struggles, the lever is
+  `.topo-sheen{display:none}` under a width query.
+- **Descent two (present simple passive)**: its `--accent` was `#182030`, a
+  navy 1.13:1 on its own paper, so "Tensing", the markers and the buttons all
+  but vanished. Now baby blue `#A7C7F2`, in camp two's hue (Innes: *"TENSING
+  should be baby blue"*), with the paper as ink on it. `check_route_map.py`
+  now fails any page whose wordmark "Tensing" is under 3:1 on its paper; it
+  failed descent two's old navy and found camp three at 2.95 (the tan keeps
+  its fills; its two text uses got `--accent-text` `#AD8766`, 3.04).
+- **Links home** (*"should be links to main page on every page in
+  sherpa"*): `tools/sherpa_links.py` makes "Sherpa Tensing" link to the route
+  map and "Forbes English" to `index.html` on all 25 lesson pages, as the
+  route map already did.
 - The three generated blocks (`sherpa-topo`, `sherpa-type`, `sherpa-sheen`)
   each rewrite themselves in place; before, each tool re-inserted at
   `</head>` and made the other look stale. All three `--check` clean.

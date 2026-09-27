@@ -244,6 +244,14 @@ def check_pages(root=ROOT):
         if not acc:
             bad.append('%s: no --accent' % f)
             continue
+        # the wordmark's "Tensing" is drawn in the accent: it must be seen on its own page.
+        # Descent two's accent was a navy one step off its paper (1.13:1), found 2026-09-26
+        span = [re.search(r'(?<![-a-z])color:\s*var\((--[a-z-]+)\)', b) for sl, b in _css_rules(s)
+                if sl.strip().endswith('.wordmark .brand span')]
+        span = [m.group(1) for m in span if m]
+        if span and tok.get(span[-1]) and tok.get('--paper') and contrast(tok[span[-1]], tok['--paper']) < 3:
+            bad.append('%s: the wordmark\'s "Tensing" (%s %s) is %.2f:1 on the paper' % (
+                f, span[-1], tok[span[-1]], contrast(tok[span[-1]], tok['--paper'])))
         for sel, body in _css_rules(s):
             if not re.search(r'background(?:-color)?:\s*var\(--accent\)\s*(?:;|$)', body):
                 continue

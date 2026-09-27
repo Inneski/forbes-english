@@ -58,7 +58,7 @@ WORDMARK = 'clamp(30px,5vw,42px)'          # Innes: "SHERPA TENSING should be bi
 WORDMARK_SUB = 'clamp(14px,1.6vw,17px)'    # ... "and 'route up the tenses' too"
 START, END = '<!-- SHERPA-TYPE:start -->', '<!-- SHERPA-TYPE:end -->'
 FENCE = re.compile(re.escape(START) + r'.*?' + re.escape(END) + r'\n?', re.S)
-GENERATED = ('sherpa-topo', 'sherpa-type')
+GENERATED = ('sherpa-topo', 'sherpa-type', 'sherpa-lesson-i18n')   # the last sets its own fonts
 
 
 def scale(px):
