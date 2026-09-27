@@ -11,6 +11,58 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-27 — Block Camp: a map button on every deck, and the next camp once you finish
+
+Innes: *"we need a navigational button on each level back to the main camp
+at all times and to the next camp once you finish each camp"*. Until now a
+camp deck's only way out was the Part 1 / Part 2 chip or the browser's back
+button.
+
+- **`block-camp/camp-nav.js`**, loaded with `defer` beside `camp-save.js` in
+  all 26 decks, adds two buttons to the deck bar. **Map**, first in the bar
+  on every slide: *Route map* on the climb (`block-camp-map.html`), *Descent
+  map* on the descent (`block-camp-descent-map.html`). "Main camp" was read
+  as the route map, the page the learner picks a camp from, which is the
+  course's "main page" in Innes's Sherpa request too (`tools/sherpa_links.py`).
+  **Next camp**, beside the › arrow, appears when the last slide is reached
+  and stays: the save file's `done` brings it back on the next visit, from the
+  cover. It wears the next camp's map colour and a padlock when that lesson
+  is Pro. Labels in all ten deck languages, the Sherpa hub's reviewed words
+  for map / camp / descent; camp names stay English.
+- **The route**: both parts of camp N lead to camp N+1 **Part 1** (Part 2 is
+  already in the bar, and the free path runs through the Part 1s); camp 9
+  leads into station 9; station 16 (the Trial) to 17; 17 to the adventures on
+  the hub (`block-camp.html#adventures`).
+- **It is generated**: `lesson-template/build/block-camp-nav/build.py` +
+  `template.js` write `block-camp/camp-nav.js`. Order, names and colours are
+  the hub builder's CLIMB / DESCENT / CAMP / INK, imported the way the quest
+  builder does. Access comes from `lesson-meta.json`, the file the Worker
+  gates from. **Re-run it after any Block Camp access change or a new
+  camp/station**; `build.py --check` fails while it is stale.
+- Camp 9's chip (*Route map →*) and the stations' chip (*Descent map*, in
+  English whatever the language) pointed at the same map as the new button,
+  so they are gone: `camp09.py` has `part_link=''`, `build_descent.py` has
+  `drop_part_link()`. `build_descent.py` also writes LF now; on Windows it
+  wrote CRLF. `camp09.py`'s synthetic row said `access='pro'`, stale since
+  `e709bfc`, and now says free.
+- `check-lesson.js`: all 26 decks pass. Verified headless in en, de, es, ja,
+  ru and ar (RTL mirrors, the arrow flips), no overflow in the bar.
+
+**Found, not fixed**
+
+- **The descent decks lag their chassis.** Rebuilding stations 9-16 today
+  would add the seven languages (fr…ja) the camp decks gained since, carrying
+  the camps' ACTIVE-voice results messages (the builder prints the warning),
+  plus CSS fallbacks. Station 17 and camp 9 rebuild clean. So for this change
+  the ten decks were edited by hand with exactly the two edits the builders
+  now make (script tag in, chip out), and not rebuilt. A real rebuild of
+  9-16 needs those seven languages written for the passive first.
+- **The › arrow never greys out on a last slide.** `show()` disables
+  `document.querySelector('[data-action="next"]')`, which is the cover's
+  *Begin* button, because it comes first in the DOM. The bar's › stays lit and
+  does nothing. The same line is in 148 pages and in
+  `lesson-template/lesson-template.html`, so fixing it is a separate change.
+
 ## 2026-09-27 — IELTS proofread: the hub, the five routes, the Question Bank and the decks' instructions
 
 Innes: *"proofread IELTS like you are an Oxford University Press proofreading

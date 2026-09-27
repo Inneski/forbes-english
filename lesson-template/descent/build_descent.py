@@ -279,12 +279,15 @@ def rescore(tail, messages):
 # and pointing into Part I: the first rebuild after the chip shipped put
 # "Part 2 ->" on the Trial, aimed at Present Perfect Continuous Part 2.
 #
-# Deleting it would leave a station with no way out but the browser's back
-# button, so it is retargeted instead, at the thing a station actually has a
-# sibling relationship with: the descent route map. The data-i18n key is
-# dropped with it - the chassis dictionary still holds the CAMP's word for
-# "Part 2" in all three languages, and leaving the key would put that back on
-# screen the moment somebody chose Deutsch. Same trap as the cover chips.
+# It used to be retargeted at the descent route map, because deleting it left
+# a station with no way out but the browser's back button. Since 2026-09-27 it
+# is deleted: every Block Camp deck now carries its own map button -
+# block-camp/camp-nav.js, loaded beside camp-save.js, so it arrives with the
+# chassis - and on a station that button already says "Descent map" in all
+# three languages. Retargeting the chip as well put two buttons to one map in
+# the bar, the second one in English whatever the learner had chosen, since
+# its data-i18n key had to go (the chassis dictionary holds the CAMP's word
+# for "Part 2", the same trap as the cover chips).
 PART_LINK = re.compile(r'<a class="part-link"[^>]*>.*?</a>', re.S)
 
 
@@ -539,10 +542,8 @@ def rejoin_split_chains(html):
     return html
 
 
-def retarget_part_link(out, st):
-    link = ('<a class="part-link" id="partLink" href="block-camp-descent-map.html">'
-            'Descent map</a>')
-    return PART_LINK.sub(link, out)
+def drop_part_link(out, st):
+    return PART_LINK.sub('', out)
 
 
 def build(st):
@@ -568,7 +569,7 @@ def build(st):
     body = rejoin_split_chains(body)
     body = split_negatives(body)
     out = head + body + tail
-    out = retarget_part_link(out, st)
+    out = drop_part_link(out, st)
     if st.get('tr'):
         # THE CHASSIS DICTIONARY IS THE CAMP'S, NOT THE STATION'S. The EN/DE
         # panel read BW_TR from the active camp the station descends past, so
@@ -586,7 +587,9 @@ def build(st):
         from build_camp import seo
         out = seo(out, st)
     path = os.path.join(ROOT, st['file'])
-    open(path, 'w', encoding='utf-8').write(out)
+    # newline='\n': the repo is LF, and on Windows a bare text-mode write
+    # turns every line into CRLF, so a one-word fix diffs as the whole deck.
+    open(path, 'w', encoding='utf-8', newline='\n').write(out)
     return path
 
 

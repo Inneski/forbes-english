@@ -846,13 +846,20 @@ CAMP = dict(
     slides=S,
     i18n=I18N,
     tr=TR,
-    part_link='<a class="part-link" id="partLink" href="block-camp-map.html" data-i18n="partLink">Route map &rarr;</a>',
+    # No chip. Camp 9 has no Part 2, so the chassis's Part 1 / Part 2 chip
+    # was pointed at the route map instead - and since 2026-09-27 every deck
+    # carries a route-map button of its own (block-camp/camp-nav.js, which
+    # rides in with the chassis). Two buttons to one map is one too many.
+    part_link='',
     # The catalogue row this deck gets in Supabase `lessons` (and the same
-    # dict appended to tools/lessons.json). Camps 1-3 Part 1 are free; camp 9
-    # is pro like every camp from 4 on.
+    # dict appended to tools/lessons.json). It was written 'pro', when only
+    # camps 1-3 had a free Part 1; e709bfc (2026-09-15) freed this one so the
+    # past perfect hub had an open lesson, and the row here now says so. It
+    # only matters before the deck has a real row - seo.py writes from the
+    # catalogue once it does.
     row=dict(file='blockcamp-past-perfect.html',
              title='Block Camp — Past Perfect 1a: The Earlier Past',
-             level='B1', access='pro', deck=True, video=False,
+             level='B1', access='free', deck=True, video=False,
              created_at='2026-09-04T00:00:00+00:00', sort_order=None),
     card='BlockCamp/past-perfect-1a.jpg',
 )
