@@ -67,22 +67,25 @@ colour looks deliberate next to the card, but it is no longer required.
 
 | camp | tense | colour | ink on it | zone |
 |---|---|---|---|---|
-| 1 | present continuous | `#E66085` rose pink | dark | foundation |
+| 1 | present continuous | `#F2ADBF` baby pink | dark | foundation |
 | 2 | present simple | `#7A93B5` slate blue | dark | foundation |
-| 3 | past simple | `#B08968` earth brown | white | foundation |
-| 4 | present perfect | `#36797E` deep teal | white | foundation |
-| 5 | going to | `#70A43A` moss green | white | foundation |
+| 3 | past simple | `#B08968` earth brown | dark | foundation |
+| 4 | present perfect | `#689497` soft teal | dark | foundation |
+| 5 | going to | `#99BA7D` soft sage | dark | foundation |
 | 6 | past continuous | `#F1D779` yellow | dark | ridge |
-| 7 | future simple | `#F0723F` orange | white | ridge |
-| 8 | present perfect continuous | `#46B0AB` turquoise | dark | ridge |
-| 9 | future continuous | `#F0A500` amber | dark | ridge |
-| 10 | past perfect | `#6E0B24` maroon | white | summit push |
-| 11 | past perfect continuous | `#4B1A7A` violet | white | summit push |
+| 7 | future simple | `#DB815F` muted terracotta | dark | ridge |
+| 8 | present perfect continuous | `#97D0E5` baby-blue turquoise | dark | ridge |
+| 9 | future continuous | `#E1AB5A` soft ochre | dark | ridge |
+| 10 | past perfect | `#8D5358` dusty rosewood | white | summit push |
+| 11 | past perfect continuous | `#705991` muted violet | white | summit push |
 | 12 | future perfect | `#454545` charcoal | white | summit push |
 | 13 | future perfect continuous | `#B0B0B0` silver | dark | summit push |
 
-A descent takes its twin camp's colour (descent eight is camp six's
-yellow). The clouds are off the key and keep their own page colours
+Camps 1, 4, 5, 7, 8, 9, 10 and 11 were recoloured on 2026-09-26 at Innes's
+request (`lesson-template/recolour_family.py`), and camps 3, 4, 5 and 7 now
+carry dark ink; the stopped deck builder's `sherpa/content/*.json` palettes still hold
+the old values. A descent takes its twin camp's colour (descent eight is
+camp six's yellow). The clouds are off the key and keep their own page colours
 (`#3F6577` slate for used to and the causative, `#6A5E8C` dusty violet for
 be used to).
 
@@ -154,6 +157,12 @@ The route map hub is not rebuilt and keeps its interactive SVG mountains.
 An optional 26th file, `hero-route-map`, would give it and its library
 card a banner: *the whole mountain, one face in daylight and the other at
 dusk, both routes faintly visible.*
+
+**Filled 2026-09-25**, with one of Innes's own renders from `incoming/sherpa/`
+(the long final snowfield, a stair of steps up the ridge to the summit): it
+is the hub's hero at `Sherpa Tensing/hero-route-map.jpg`, 1200px, not in
+`SherpaTensing/`. A commissioned replacement goes to that path, or the
+page's `<img src>` moves with it. The library card is still the SVG render.
 
 ### The textures — 7 files, `--ar 16:9`
 

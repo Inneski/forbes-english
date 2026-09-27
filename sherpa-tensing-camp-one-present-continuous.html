@@ -29,11 +29,11 @@
     --ink-soft:#6B4A57;
     --paper:#FDF7F5;
     --card:#FFFFFF;
-    --accent:#E66085;
-    --accent-dark:#AD5470;
+    --accent:#BE7D8F;
+    --accent-dark:#8E6371;
     --accent-light:#FCDBEA;
     --accent-lighter:#FEEFF4;
-    --on-accent:#2E000D;
+    --on-accent:#220C12;
     --good:#1E7A4C;
     --good-bg:#E5F5EC;
     --bad:#B23A3A;
@@ -305,7 +305,7 @@
     text-align:left;
     padding:12px 16px;
     border-radius:10px;
-    border:1px solid #E3CBD5;
+    border:1px solid #EFE3E8;
     background:#fff;
     font-family:'Inter',sans-serif;
     font-size:15px;
@@ -341,7 +341,7 @@
     font-size:14px;
     cursor:pointer;
   }
-  .next-btn:disabled{background:#E3CBD5;cursor:not-allowed;}
+  .next-btn:disabled{background:#EFE3E8;cursor:not-allowed;}
 
   #results{display:none;text-align:center;padding:12px 0 8px;}
   #results .score{
@@ -442,14 +442,151 @@
                      color:var(--ink-soft);padding:8px 12px;}
   .voice-bar a.ghost:hover{background:var(--accent-lighter);color:var(--accent-dark);border-color:var(--accent);}
 </style>
+<!-- SHERPA-TOPO:start -->
+<style id="sherpa-topo">
+/* contour areas (tools/sherpa_topo.py): the hub's tile as a mask, drawn in this
+   page's --accent-dark, in six areas; text on the paper wears a paper halo */
+body{position:relative;}
+body::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:var(--accent-dark);opacity:1;
+  -webkit-mask:url("Sherpa%20Tensing/topo-tile.svg") 0 0/640px 640px repeat,linear-gradient(#000 0,#000 40%,transparent 100%) 0 0/100% 900px no-repeat,linear-gradient(to top,#000 0,#000 30%,transparent 100%) 0 100%/100% 700px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) -620px 24%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) calc(100% + 620px) 46%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) -620px 68%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) calc(100% + 620px) 88%/1240px 1000px no-repeat;
+  mask:url("Sherpa%20Tensing/topo-tile.svg") 0 0/640px 640px repeat,linear-gradient(#000 0,#000 40%,transparent 100%) 0 0/100% 900px no-repeat,linear-gradient(to top,#000 0,#000 30%,transparent 100%) 0 100%/100% 700px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) -620px 24%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) calc(100% + 620px) 46%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) -620px 68%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) calc(100% + 620px) 88%/1240px 1000px no-repeat;
+  /* after the shorthand, which resets it: the tile intersects the union of the areas */
+  -webkit-mask-composite:source-in,source-over,source-over,source-over,source-over,source-over,source-over;
+  mask-composite:intersect,add,add,add,add,add,add;}
+.wordmark,h1,h1 ~ p,.camp > .camp-label,.camp > h2,.camp > p.example,.camp > p.chart-note,.btnrow > a.route-link,.tr-bar > .tr-label,.voice-bar a.ghost{text-shadow:0 0 2px var(--paper),0 0 4px var(--paper),0 0 6px var(--paper),0 0 8px var(--paper);}
+/* these two take a background on hover, where a halo would be a glow */
+.btnrow > a.route-link:hover,.voice-bar a.ghost:hover{text-shadow:none;}
+/* a hero diagram paints a paper rectangle: feather its edge into a clearing */
+svg.hero-diagram{background:var(--paper);box-shadow:0 0 18px 14px var(--paper);}
+.ring-hero-svg{border-radius:50%;box-shadow:0 0 16px 10px var(--paper);}
+@media print{body::before{display:none;}}
+</style>
+<!-- SHERPA-TOPO:end -->
+<!-- SHERPA-TYPE:start -->
+<link rel="preload" href="Sherpa%20Tensing/fonts/Faktum-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="Sherpa%20Tensing/fonts/Faktum-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
+<style id="sherpa-type">
+/* Faktum and the type a size up (tools/sherpa_type.py): each rule below repeats one of
+   the page's own, one class stronger, in the same order and @media */
+@font-face{font-family:'Faktum';src:url('Sherpa%20Tensing/fonts/Faktum-Regular.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap;}
+@font-face{font-family:'Faktum';src:url('Sherpa%20Tensing/fonts/Faktum-RegularItalic.woff2') format('woff2');font-weight:400;font-style:italic;font-display:swap;}
+@font-face{font-family:'Faktum';src:url('Sherpa%20Tensing/fonts/Faktum-Medium.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap;}
+@font-face{font-family:'Faktum';src:url('Sherpa%20Tensing/fonts/Faktum-SemiBold.woff2') format('woff2');font-weight:600;font-style:normal;font-display:swap;}
+@font-face{font-family:'Faktum';src:url('Sherpa%20Tensing/fonts/Faktum-SemiBoldItalic.woff2') format('woff2');font-weight:600;font-style:italic;font-display:swap;}
+@font-face{font-family:'Faktum';src:url('Sherpa%20Tensing/fonts/Faktum-Bold.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap;}
+@font-face{font-family:'Faktum';src:url('Sherpa%20Tensing/fonts/Faktum-BoldItalic.woff2') format('woff2');font-weight:700;font-style:italic;font-display:swap;}
+@font-face{font-family:'Faktum';src:url('Sherpa%20Tensing/fonts/Faktum-ExtraBold.woff2') format('woff2');font-weight:800;font-style:normal;font-display:swap;}
+:root{--sherpa-font:'Faktum','Inter',system-ui,sans-serif;--sherpa-display:'Fraunces',serif;}
+:root svg text,:root svg tspan{font-family:var(--sherpa-font);}
+/* form controls do not inherit a font: without this, 30 buttons drew in Arial */
+:root button,:root input,:root select,:root textarea{font-family:var(--sherpa-font);}
+:root body{font-family:var(--sherpa-font);}
+:root h1,:root h2,:root h3{font-family:var(--sherpa-display);}
+:root .wordmark .brand{font-family:var(--sherpa-display);font-size:clamp(30px,5vw,42px);}
+:root .wordmark .sub{font-size:clamp(14px,1.6vw,17px);}
+:root .lang-select{font-family:var(--sherpa-font);font-size:14px;}
+:root .lang-globe-btn{font-size:16px;}
+:root .lang-menu button{font-family:var(--sherpa-font);font-size:14px;}
+:root .ring-hero-svg .ring-label{font-family:var(--sherpa-font);font-size:16px;}
+:root .chart-wrap h3{font-size:16px;}
+:root .chart-note{font-size:14px;}
+:root table.conj{font-size:15px;}
+:root table.conj th{font-family:var(--sherpa-display);font-size:14px;}
+:root .hero .eyebrow{font-size:13px;}
+:root .hero h1{font-size:43.5px;}
+:root .hero p{font-size:17px;}
+:root .camp .camp-label{font-size:13px;}
+:root .rule-card h3{font-size:17px;}
+:root .rule-card p{font-size:15px;}
+:root .rule-card .ex{font-size:15px;}
+:root .signal-box h3{font-size:16px;}
+:root .signal-box ul{font-size:15px;}
+:root .diagram-intro{font-size:15px;}
+:root .diagram-caption{font-family:var(--sherpa-font);font-size:16px;}
+:root .progress-row{font-size:14px;}
+:root .q-prompt{font-size:18px;}
+:root .q-hint{font-size:14px;}
+:root .opt-btn{font-family:var(--sherpa-font);font-size:16px;}
+:root .feedback{font-size:15px;}
+:root .next-btn{font-family:var(--sherpa-font);font-size:15px;}
+:root #results .score{font-family:var(--sherpa-display);font-size:52px;}
+:root .retry-btn{font-family:var(--sherpa-font);}
+:root .route-nav a{font-family:var(--sherpa-font);font-size:15px;}
+:root .up-link{font:600 15px/1 var(--sherpa-font);}
+:root .up-link .arw{font-size:16px;}
+@media (max-width:640px){
+:root .up-link{font-size:14px;}
+}
+:root .tr-bar{font-family:var(--sherpa-font);font-size:13.5px;}
+:root .tr-bar .tr-label{font-size:12px;}
+:root .voice-bar{font-family:var(--sherpa-font);font-size:13px;}
+:root .voice-bar .tick{font-size:14px;}
+/* the wordmark is a name: one line, and on a narrow screen it takes the row to
+   itself, with the line beside it (or the hub's language menu) underneath */
+:root .wordmark .brand{white-space:nowrap;}
+@media (max-width:700px){:root .wordmark{flex-wrap:wrap;row-gap:6px;}:root .wordmark .brand{flex:1 0 100%;}}
+</style>
+<!-- SHERPA-TYPE:end -->
+<!-- SHERPA-SHEEN:start -->
+<style id="sherpa-sheen">
+/* a living sheen across the contours (tools/sherpa_sheen.py): two bands of light,
+   moved by transform only, seen through the contour lines */
+:root{--sheen:#CC5A80;--sheen-hot:#F99080;}
+body{position:relative;}
+.topo-sheen{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden;overflow:clip;
+  -webkit-mask:url("Sherpa%20Tensing/topo-sheen.svg") 0 0/640px 640px repeat,linear-gradient(#000 0,#000 40%,transparent 100%) 0 0/100% 900px no-repeat,linear-gradient(to top,#000 0,#000 30%,transparent 100%) 0 100%/100% 700px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) -620px 24%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) calc(100% + 620px) 46%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) -620px 68%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) calc(100% + 620px) 88%/1240px 1000px no-repeat;
+  mask:url("Sherpa%20Tensing/topo-sheen.svg") 0 0/640px 640px repeat,linear-gradient(#000 0,#000 40%,transparent 100%) 0 0/100% 900px no-repeat,linear-gradient(to top,#000 0,#000 30%,transparent 100%) 0 100%/100% 700px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) -620px 24%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) calc(100% + 620px) 46%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) -620px 68%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) calc(100% + 620px) 88%/1240px 1000px no-repeat;
+  /* after the shorthand, which resets it: the tile intersects the union of the areas */
+  -webkit-mask-composite:source-in,source-over,source-over,source-over,source-over,source-over,source-over;
+  mask-composite:intersect,add,add,add,add,add,add;}
+.topo-sheen i{display:block;position:sticky;top:0;height:100vh;will-change:transform;}
+.topo-sheen i:nth-child(1){width:calc(100% + 1625px);margin-left:-1625px;background:repeating-linear-gradient(100deg,transparent 0,transparent 1300px,var(--sheen) 1420px,var(--sheen-hot) 1450px,var(--sheen) 1480px,transparent 1600px);opacity:0.95;
+  animation:topo-sheen-1 11s linear infinite;}
+@keyframes topo-sheen-1{from{transform:translateX(0)}to{transform:translateX(1624.7px)}}
+.topo-sheen i:nth-child(2){width:calc(100% + 2419px);margin-left:0px;margin-top:-100vh;background:repeating-linear-gradient(72deg,transparent 0,transparent 2100px,var(--sheen) 2180px,var(--sheen-hot) 2200px,var(--sheen) 2220px,transparent 2300px);opacity:0.6;
+  animation:topo-sheen-2 19s linear infinite;}
+@keyframes topo-sheen-2{from{transform:translateX(0)}to{transform:translateX(-2418.4px)}}
+@media (prefers-reduced-motion:reduce){.topo-sheen{display:none;}}
+@media print{.topo-sheen{display:none;}}
+</style>
+<!-- SHERPA-SHEEN:end -->
+<!-- SHERPA-SKY:start -->
+<style id="sherpa-sky">
+/* clouds drifting across the screen, seen from above (tools/sherpa_sky.py): nine clouds,
+   each on its own loop, in a fixed screen-sized layer, by transform only */
+.sherpa-sky{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;}
+.sherpa-sky i{position:absolute;left:0;background:0 0/100% 100% no-repeat;will-change:transform;animation:sherpa-sky-drift linear infinite;}
+@keyframes sherpa-sky-drift{from{transform:translateX(-100%)}to{transform:translateX(100vw)}}
+.sherpa-sky i:nth-child(1){top:8%;width:560px;height:311px;background-image:url("Sherpa%20Tensing/cloud-1.webp");animation-duration:95s;animation-delay:-10s;opacity:0.95;}
+.sherpa-sky i:nth-child(2){top:38%;width:480px;height:260px;background-image:url("Sherpa%20Tensing/cloud-2.webp");animation-duration:110s;animation-delay:-61s;opacity:0.95;}
+.sherpa-sky i:nth-child(3){top:64%;width:620px;height:339px;background-image:url("Sherpa%20Tensing/cloud-3.webp");animation-duration:85s;animation-delay:-26s;opacity:0.95;}
+.sherpa-sky i:nth-child(4){top:84%;width:430px;height:230px;background-image:url("Sherpa%20Tensing/cloud-4.webp");animation-duration:120s;animation-delay:-96s;opacity:0.9;}
+.sherpa-sky i:nth-child(5){top:20%;width:300px;height:162px;background-image:url("Sherpa%20Tensing/cloud-5.webp");animation-duration:170s;animation-delay:-34s;opacity:0.6;}
+.sherpa-sky i:nth-child(6){top:50%;width:260px;height:149px;background-image:url("Sherpa%20Tensing/cloud-6.webp");animation-duration:190s;animation-delay:-124s;opacity:0.55;}
+.sherpa-sky i:nth-child(7){top:74%;width:280px;height:156px;background-image:url("Sherpa%20Tensing/cloud-1.webp");animation-duration:180s;animation-delay:-81s;opacity:0.6;}
+.sherpa-sky i:nth-child(8){top:2%;width:240px;height:130px;background-image:url("Sherpa%20Tensing/cloud-2.webp");animation-duration:200s;animation-delay:-180s;opacity:0.5;}
+.sherpa-sky i:nth-child(9){top:92%;width:270px;height:147px;background-image:url("Sherpa%20Tensing/cloud-3.webp");animation-duration:175s;animation-delay:-9s;opacity:0.55;}
+/* the smallest phones: the far clouds only would crowd, so the near ones shrink */
+@media (max-width:560px){.sherpa-sky i{transform-origin:0 0;}.sherpa-sky i:nth-child(-n+4){scale:.7;}}
+@media (prefers-reduced-motion:reduce){.sherpa-sky i{animation-play-state:paused;}}
+@media print{.sherpa-sky{display:none;}}
+</style>
+<!-- SHERPA-SKY:end -->
 </head>
 <body>
+<!-- SHERPA-SHEEN-EL:start -->
+<div class="topo-sheen" aria-hidden="true"><i></i><i></i></div>
+<!-- SHERPA-SHEEN-EL:end -->
+<!-- SHERPA-SKY-EL:start -->
+<div class="sherpa-sky" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+<!-- SHERPA-SKY-EL:end -->
 <a class="up-link" href="sherpa-tensing-route-map.html"><span class="arw" aria-hidden="true">&larr;</span>Route map</a>
 
 
 <div class="wordmark">
-  <div class="brand">Sherpa <span>Tensing</span></div>
-  <div class="sub">Forbes English &middot; a route up the tenses</div>
+  <div class="brand"><a href="sherpa-tensing-route-map.html" style="color:inherit;text-decoration:none">Sherpa <span>Tensing</span></a></div>
+  <div class="sub"><a href="index.html" style="color:var(--accent-dark);text-decoration:none;font-weight:600;">Forbes English</a> &middot; a route up the tenses</div>
 </div>
 
 <main>
@@ -464,45 +601,45 @@
     <div class="ring-hero"><svg class="ring-hero-svg" viewBox="0 0 400 400" role="img" aria-label="Concentric pink rings radiating outward from now at the centre, through today, this week, this month, to this year at the edge">
       <defs>
         <radialGradient id="ringHeroGrad" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stop-color="#793B4E"/>
-          <stop offset="16%" stop-color="#E66085"/>
-          <stop offset="35%" stop-color="#F882AE"/>
-          <stop offset="55%" stop-color="#FCCADD"/>
-          <stop offset="78%" stop-color="#FEEFF4"/>
+          <stop offset="0%" stop-color="#721E3D"/>
+          <stop offset="16%" stop-color="#C14B73"/>
+          <stop offset="35%" stop-color="#DD7092"/>
+          <stop offset="55%" stop-color="#F299B2"/>
+          <stop offset="78%" stop-color="#FDC2D1"/>
           <stop offset="100%" stop-color="var(--paper)"/>
         </radialGradient>
       </defs>
       <circle cx="200" cy="200" r="190" fill="url(#ringHeroGrad)"/>
-      <circle cx="200" cy="200" r="12" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.367"/>
-      <circle cx="200" cy="200" r="18" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.356"/>
-      <circle cx="200" cy="200" r="24" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.345"/>
-      <circle cx="200" cy="200" r="30" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.333"/>
-      <circle cx="200" cy="200" r="36" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.322"/>
-      <circle cx="200" cy="200" r="42" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.310"/>
-      <circle cx="200" cy="200" r="48" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.299"/>
-      <circle cx="200" cy="200" r="54" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.288"/>
-      <circle cx="200" cy="200" r="60" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.276"/>
-      <circle cx="200" cy="200" r="66" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.265"/>
-      <circle cx="200" cy="200" r="72" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.254"/>
-      <circle cx="200" cy="200" r="78" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.242"/>
-      <circle cx="200" cy="200" r="84" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.231"/>
-      <circle cx="200" cy="200" r="90" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.219"/>
-      <circle cx="200" cy="200" r="96" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.208"/>
-      <circle cx="200" cy="200" r="102" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.197"/>
-      <circle cx="200" cy="200" r="108" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.185"/>
-      <circle cx="200" cy="200" r="114" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.174"/>
-      <circle cx="200" cy="200" r="120" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.163"/>
-      <circle cx="200" cy="200" r="126" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.151"/>
-      <circle cx="200" cy="200" r="132" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.140"/>
-      <circle cx="200" cy="200" r="138" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.129"/>
-      <circle cx="200" cy="200" r="144" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.117"/>
-      <circle cx="200" cy="200" r="150" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.106"/>
-      <circle cx="200" cy="200" r="156" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.094"/>
-      <circle cx="200" cy="200" r="162" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.083"/>
-      <circle cx="200" cy="200" r="168" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.072"/>
-      <circle cx="200" cy="200" r="174" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.060"/>
-      <circle cx="200" cy="200" r="180" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.049"/>
-      <circle cx="200" cy="200" r="186" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.038"/>
+      <circle cx="200" cy="200" r="12" fill="none" stroke="#AD4568" stroke-width="1" opacity="0.619"/>
+      <circle cx="200" cy="200" r="18" fill="none" stroke="#AD4568" stroke-width="1" opacity="0.601"/>
+      <circle cx="200" cy="200" r="24" fill="none" stroke="#AD4568" stroke-width="1" opacity="0.583"/>
+      <circle cx="200" cy="200" r="30" fill="none" stroke="#AD4568" stroke-width="1" opacity="0.562"/>
+      <circle cx="200" cy="200" r="36" fill="none" stroke="#AD4568" stroke-width="1" opacity="0.544"/>
+      <circle cx="200" cy="200" r="42" fill="none" stroke="#AD4568" stroke-width="1" opacity="0.524"/>
+      <circle cx="200" cy="200" r="48" fill="none" stroke="#AD4568" stroke-width="1" opacity="0.505"/>
+      <circle cx="200" cy="200" r="54" fill="none" stroke="#AD4568" stroke-width="1" opacity="0.486"/>
+      <circle cx="200" cy="200" r="60" fill="none" stroke="#AD4568" stroke-width="1" opacity="0.466"/>
+      <circle cx="200" cy="200" r="66" fill="none" stroke="#AD4568" stroke-width="1" opacity="0.448"/>
+      <circle cx="200" cy="200" r="72" fill="none" stroke="#AD4568" stroke-width="1" opacity="0.429"/>
+      <circle cx="200" cy="200" r="78" fill="none" stroke="#AD4568" stroke-width="1" opacity="0.409"/>
+      <circle cx="200" cy="200" r="84" fill="none" stroke="#AD4568" stroke-width="1" opacity="0.390"/>
+      <circle cx="200" cy="200" r="90" fill="none" stroke="#AD4568" stroke-width="1" opacity="0.370"/>
+      <circle cx="200" cy="200" r="96" fill="none" stroke="#AD4568" stroke-width="1" opacity="0.351"/>
+      <circle cx="200" cy="200" r="102" fill="none" stroke="#AD4568" stroke-width="1" opacity="0.333"/>
+      <circle cx="200" cy="200" r="108" fill="none" stroke="#AD4568" stroke-width="1" opacity="0.312"/>
+      <circle cx="200" cy="200" r="114" fill="none" stroke="#AD4568" stroke-width="1" opacity="0.294"/>
+      <circle cx="200" cy="200" r="120" fill="none" stroke="#AD4568" stroke-width="1" opacity="0.275"/>
+      <circle cx="200" cy="200" r="126" fill="none" stroke="#AD4568" stroke-width="1" opacity="0.255"/>
+      <circle cx="200" cy="200" r="132" fill="none" stroke="#AD4568" stroke-width="1" opacity="0.236"/>
+      <circle cx="200" cy="200" r="138" fill="none" stroke="#AD4568" stroke-width="1" opacity="0.217"/>
+      <circle cx="200" cy="200" r="144" fill="none" stroke="#AD4568" stroke-width="1" opacity="0.198"/>
+      <circle cx="200" cy="200" r="150" fill="none" stroke="#AD4568" stroke-width="1" opacity="0.179"/>
+      <circle cx="200" cy="200" r="156" fill="none" stroke="#AD4568" stroke-width="1" opacity="0.159"/>
+      <circle cx="200" cy="200" r="162" fill="none" stroke="#AD4568" stroke-width="1" opacity="0.140"/>
+      <circle cx="200" cy="200" r="168" fill="none" stroke="#AD4568" stroke-width="1" opacity="0.121"/>
+      <circle cx="200" cy="200" r="174" fill="none" stroke="#AD4568" stroke-width="1" opacity="0.101"/>
+      <circle cx="200" cy="200" r="180" fill="none" stroke="#AD4568" stroke-width="1" opacity="0.083"/>
+      <circle cx="200" cy="200" r="186" fill="none" stroke="#AD4568" stroke-width="1" opacity="0.064"/>
       <circle cx="200" cy="200" r="28" fill="none" stroke="#ffffff" stroke-width="1.4" opacity="0.55"/>
       <circle cx="200" cy="200" r="60" fill="none" stroke="#ffffff" stroke-width="1.4" opacity="0.55"/>
       <circle cx="200" cy="200" r="95" fill="none" stroke="#ffffff" stroke-width="1.4" opacity="0.55"/>
@@ -575,12 +712,12 @@
         </marker>
       </defs>
       <rect x="0" y="0" width="640" height="344" fill="var(--paper)"/>
-      <rect x="296" y="104" width="48" height="30" rx="15" fill="#E66085"/>
-      <text x="354" y="123" font-family="Inter, sans-serif" font-size="11.5" font-weight="700" fill="#8E1140" data-i18n="dgSec" pointer-events="none">this second</text>
-      <rect x="226" y="146" width="188" height="30" rx="15" fill="#D9698C"/>
-      <text x="424" y="165" font-family="Inter, sans-serif" font-size="11.5" font-weight="700" fill="#8E1140" data-i18n="dgMonth" pointer-events="none">this month</text>
-      <rect x="116" y="188" width="408" height="30" rx="15" fill="#EDB5C6"/>
-      <text x="534" y="207" font-family="Inter, sans-serif" font-size="11.5" font-weight="700" fill="#8E1140" data-i18n="dgEra" pointer-events="none">this era</text>
+      <rect x="296" y="104" width="48" height="30" rx="15" fill="#F2ADBF"/>
+      <text x="354" y="123" font-family="Inter, sans-serif" font-size="11.5" font-weight="700" fill="#713A4A" data-i18n="dgSec" pointer-events="none">this second</text>
+      <rect x="226" y="146" width="188" height="30" rx="15" fill="#EAB0C2"/>
+      <text x="424" y="165" font-family="Inter, sans-serif" font-size="11.5" font-weight="700" fill="#713A4A" data-i18n="dgMonth" pointer-events="none">this month</text>
+      <rect x="116" y="188" width="408" height="30" rx="15" fill="#F4D7E1"/>
+      <text x="534" y="207" font-family="Inter, sans-serif" font-size="11.5" font-weight="700" fill="#713A4A" data-i18n="dgEra" pointer-events="none">this era</text>
       <line x1="24" y1="299" x2="616" y2="299" stroke="#1c130c" stroke-width="2"
             marker-start="url(#ah-el)" marker-end="url(#ah-el)"/>
       <rect x="311.5" y="38" width="17.0" height="261" fill="#D98A72"/>
@@ -703,17 +840,17 @@
           <svg viewBox="0 0 640 344" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A timeline from past to future. A pink ripple rises from now, and a second, dashed ripple stands further along the line in the future.">
       <defs>
         <radialGradient id="ripNow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stop-color="#AD5470"/>
-          <stop offset="18%" stop-color="#E66085"/>
-          <stop offset="42%" stop-color="#F882AE"/>
-          <stop offset="70%" stop-color="#FCCADD"/>
+          <stop offset="0%" stop-color="#D2A2B1"/>
+          <stop offset="18%" stop-color="#F2ADBF"/>
+          <stop offset="42%" stop-color="#FBBED5"/>
+          <stop offset="70%" stop-color="#FCE3EE"/>
           <stop offset="100%" stop-color="#FEEFF4"/>
         </radialGradient>
         <radialGradient id="ripFut" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stop-color="#AD5470"/>
-          <stop offset="18%" stop-color="#E66085"/>
-          <stop offset="42%" stop-color="#F882AE"/>
-          <stop offset="70%" stop-color="#FCCADD"/>
+          <stop offset="0%" stop-color="#D2A2B1"/>
+          <stop offset="18%" stop-color="#F2ADBF"/>
+          <stop offset="42%" stop-color="#FBBED5"/>
+          <stop offset="70%" stop-color="#FCE3EE"/>
           <stop offset="100%" stop-color="#FEEFF4"/>
         </radialGradient>
         <marker id="ah-rip" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
@@ -724,21 +861,21 @@
       <rect x="0" y="0" width="640" height="344" fill="var(--paper)"/>
       <g clip-path="url(#aboveLine)">
       <circle cx="500" cy="299" r="88" fill="url(#ripFut)"/>
-      <circle cx="500" cy="299" r="11.0" fill="none" stroke="#E66085" stroke-width="1" stroke-dasharray="4 5" opacity="0.37"/>
-      <circle cx="500" cy="299" r="22.0" fill="none" stroke="#E66085" stroke-width="1" stroke-dasharray="4 5" opacity="0.34"/>
-      <circle cx="500" cy="299" r="33.0" fill="none" stroke="#E66085" stroke-width="1" stroke-dasharray="4 5" opacity="0.31"/>
-      <circle cx="500" cy="299" r="44.0" fill="none" stroke="#E66085" stroke-width="1" stroke-dasharray="4 5" opacity="0.28"/>
-      <circle cx="500" cy="299" r="55.0" fill="none" stroke="#E66085" stroke-width="1" stroke-dasharray="4 5" opacity="0.25"/>
-      <circle cx="500" cy="299" r="66.0" fill="none" stroke="#E66085" stroke-width="1" stroke-dasharray="4 5" opacity="0.22"/>
-      <circle cx="500" cy="299" r="77.0" fill="none" stroke="#E66085" stroke-width="1" stroke-dasharray="4 5" opacity="0.19"/>
+      <circle cx="500" cy="299" r="11.0" fill="none" stroke="#F2ADBF" stroke-width="1" stroke-dasharray="4 5" opacity="0.37"/>
+      <circle cx="500" cy="299" r="22.0" fill="none" stroke="#F2ADBF" stroke-width="1" stroke-dasharray="4 5" opacity="0.34"/>
+      <circle cx="500" cy="299" r="33.0" fill="none" stroke="#F2ADBF" stroke-width="1" stroke-dasharray="4 5" opacity="0.31"/>
+      <circle cx="500" cy="299" r="44.0" fill="none" stroke="#F2ADBF" stroke-width="1" stroke-dasharray="4 5" opacity="0.28"/>
+      <circle cx="500" cy="299" r="55.0" fill="none" stroke="#F2ADBF" stroke-width="1" stroke-dasharray="4 5" opacity="0.25"/>
+      <circle cx="500" cy="299" r="66.0" fill="none" stroke="#F2ADBF" stroke-width="1" stroke-dasharray="4 5" opacity="0.22"/>
+      <circle cx="500" cy="299" r="77.0" fill="none" stroke="#F2ADBF" stroke-width="1" stroke-dasharray="4 5" opacity="0.19"/>
       <circle cx="320" cy="299" r="88" fill="url(#ripNow)"/>
-      <circle cx="320" cy="299" r="11.0" fill="none" stroke="#E66085" stroke-width="1" opacity="0.37"/>
-      <circle cx="320" cy="299" r="22.0" fill="none" stroke="#E66085" stroke-width="1" opacity="0.34"/>
-      <circle cx="320" cy="299" r="33.0" fill="none" stroke="#E66085" stroke-width="1" opacity="0.31"/>
-      <circle cx="320" cy="299" r="44.0" fill="none" stroke="#E66085" stroke-width="1" opacity="0.28"/>
-      <circle cx="320" cy="299" r="55.0" fill="none" stroke="#E66085" stroke-width="1" opacity="0.25"/>
-      <circle cx="320" cy="299" r="66.0" fill="none" stroke="#E66085" stroke-width="1" opacity="0.22"/>
-      <circle cx="320" cy="299" r="77.0" fill="none" stroke="#E66085" stroke-width="1" opacity="0.19"/>
+      <circle cx="320" cy="299" r="11.0" fill="none" stroke="#F2ADBF" stroke-width="1" opacity="0.37"/>
+      <circle cx="320" cy="299" r="22.0" fill="none" stroke="#F2ADBF" stroke-width="1" opacity="0.34"/>
+      <circle cx="320" cy="299" r="33.0" fill="none" stroke="#F2ADBF" stroke-width="1" opacity="0.31"/>
+      <circle cx="320" cy="299" r="44.0" fill="none" stroke="#F2ADBF" stroke-width="1" opacity="0.28"/>
+      <circle cx="320" cy="299" r="55.0" fill="none" stroke="#F2ADBF" stroke-width="1" opacity="0.25"/>
+      <circle cx="320" cy="299" r="66.0" fill="none" stroke="#F2ADBF" stroke-width="1" opacity="0.22"/>
+      <circle cx="320" cy="299" r="77.0" fill="none" stroke="#F2ADBF" stroke-width="1" opacity="0.19"/>
       </g>
       <line x1="24" y1="299" x2="616" y2="299" stroke="#1c130c" stroke-width="2"
             marker-start="url(#ah-rip)" marker-end="url(#ah-rip)"/>
@@ -747,10 +884,10 @@
       <text x="150" y="26" text-anchor="middle" class="diagram-caption" fill="#8A7E84" style="letter-spacing:.14em" pointer-events="none">PAST</text>
       <text x="320" y="26" text-anchor="middle" class="diagram-caption" fill="#3E6A85" pointer-events="none">NOW</text>
       <text x="500" y="26" text-anchor="middle" class="diagram-caption" fill="#8A7E84" style="letter-spacing:.14em" pointer-events="none">FUTURE</text>
-      <text x="320" y="192" text-anchor="middle" class="diagram-caption" fill="#AD5470" style="letter-spacing:.06em" pointer-events="none" data-i18n="dgNowCap">HAPPENING</text>
-      <text x="500" y="192" text-anchor="middle" class="diagram-caption" fill="#AD5470" style="letter-spacing:.06em" pointer-events="none" data-i18n="dgFutCap">ARRANGED</text>
-      <text x="320" y="319" text-anchor="middle" class="dg-reveal-1" font-family="Inter, sans-serif" font-size="11.5" fill="#906777" pointer-events="none" data-i18n="dgNowSub">right now, still moving</text>
-      <text x="500" y="319" text-anchor="middle" class="dg-reveal-1" font-family="Inter, sans-serif" font-size="11.5" fill="#906777" pointer-events="none" data-i18n="dgFutSub">fixed, with a time and a place</text>
+      <text x="320" y="192" text-anchor="middle" class="diagram-caption" fill="#926674" style="paint-order:stroke;stroke:var(--paper);stroke-width:5px;stroke-linejoin:round;letter-spacing:.06em" pointer-events="none" data-i18n="dgNowCap">HAPPENING</text>
+      <text x="500" y="192" text-anchor="middle" class="diagram-caption" fill="#926674" style="letter-spacing:.06em" pointer-events="none" data-i18n="dgFutCap">ARRANGED</text>
+      <text x="320" y="319" text-anchor="middle" class="dg-reveal-1" font-family="Inter, sans-serif" font-size="11.5" fill="#816D75" pointer-events="none" data-i18n="dgNowSub">right now, still moving</text>
+      <text x="500" y="319" text-anchor="middle" class="dg-reveal-1" font-family="Inter, sans-serif" font-size="11.5" fill="#816D75" pointer-events="none" data-i18n="dgFutSub">fixed, with a time and a place</text>
     </svg>
         </div>
       </div>
@@ -1134,14 +1271,14 @@ var I18N = {
     ringNow: "jetzt", ringToday: "heute", ringWeek: "diese Woche", ringMonth: "diesen Monat", ringYear: "dieses Jahr",
     labelQuiz: "Der Aufstieg",
     quizTitle: "&Uuml;bung",
-    nextBtn: "N&auml;chster Kontrollpunkt",
+    nextBtn: "Nächster Kontrollpunkt",
     summitBtn: "Gipfel erreichen",
     checkpointWord: "Kontrollpunkt", ofWord: "von", scoreWord: "Punkte",
     labelResults: "Gipfelbuch",
     retryBtn: "Noch einmal klettern",
     baseCampBtn: "&larr; Zur&uuml;ck zum Basislager",
     nextCampBtn: "N&auml;chstes Camp: Present Simple &rarr;",
-    msgPerfect: "Perfekter Aufstieg. Camp eins geh&ouml;rt dir.",
+    msgPerfect: "Perfekter Aufstieg. Camp eins gehört dir.",
     msgStrong: "Starke Kletterleistung. Ein paar Details vor Camp zwei noch feilen.",
     msgOk: "Guter erster Versuch. Ein weiterer Durchgang lohnt sich, bevor es weitergeht.",
     labelFuture: "Eine Welle weiter vorn",
@@ -1213,7 +1350,7 @@ var I18N = {
     retryBtn: "Scala di nuovo",
     baseCampBtn: "&larr; Torna al campo base",
     nextCampBtn: "Prossimo campo: presente semplice &rarr;",
-    msgPerfect: "Scalata perfetta. Il campo uno &egrave; tuo.",
+    msgPerfect: "Scalata perfetta. Il campo uno è tuo.",
     msgStrong: "Scalata forte. Qualche dettaglio da rifinire prima del campo due.",
     msgOk: "Buon primo tentativo. Vale la pena riprovare prima di proseguire.",
     labelFuture: "Un’onda più avanti",
@@ -1260,7 +1397,7 @@ var I18N = {
     elasticNote: "As&iacute; que la pregunta no es &quot;&iquest;est&aacute; pasando en este segundo?&quot; sino &quot;&iquest;est&aacute; sin terminar?&quot; Si sigue en marcha en alg&uacute;n sentido, el present continuous es el correcto.",
     dgSec: "este segundo",
     dgMonth: "este mes",
-    dgEra: "esta &eacute;poca",
+    dgEra: "esta época",
     dgSub: "ahora se estira hasta donde la frase lo necesite",
     labelForm: "Construyendo el tiempo verbal",
     formTitle: "C&oacute;mo se forma",
@@ -1275,17 +1412,17 @@ var I18N = {
     signalsTitle: "Palabras se&ntilde;al",
     signal1h: "El grupo del ahora", signal1li2: "en este momento", signal1li3: "actualmente", signal1li4: "mientras hablamos", signal1li5: "hoy / hoy en d&iacute;a",
     signal2h: "Los c&iacute;rculos m&aacute;s amplios", signal2li0: "hoy", signal2li1: "esta semana", signal2li2: "este mes", signal2li3: "este a&ntilde;o",
-    ringNow: "ahora", ringToday: "hoy", ringWeek: "esta semana", ringMonth: "este mes", ringYear: "este a&ntilde;o",
+    ringNow: "ahora", ringToday: "hoy", ringWeek: "esta semana", ringMonth: "este mes", ringYear: "este año",
     labelQuiz: "La ascensi&oacute;n",
     quizTitle: "Pr&aacute;ctica",
     nextBtn: "Siguiente punto de control",
     summitBtn: "Llegar a la cima",
-    checkpointWord: "Punto de control", ofWord: "de", scoreWord: "Puntuaci&oacute;n",
+    checkpointWord: "Punto de control", ofWord: "de", scoreWord: "Puntuación",
     labelResults: "Diario de cumbre",
     retryBtn: "Escalar de nuevo",
     baseCampBtn: "&larr; Volver al campamento base",
     nextCampBtn: "Siguiente campamento: presente simple &rarr;",
-    msgPerfect: "Ascensi&oacute;n perfecta. El campamento uno es tuyo.",
+    msgPerfect: "Ascensión perfecta. El campamento uno es tuyo.",
     msgStrong: "Buena escalada. Un par de detalles que pulir antes del campamento dos.",
     msgOk: "Buen primer intento. Vale la pena otro intento antes de seguir.",
     labelFuture: "Una onda más adelante",
@@ -1331,9 +1468,9 @@ var I18N = {
     el3ex: '"Klimat si&#281; zmienia."',
     elasticNote: "Pytanie nie brzmi &quot;czy dzieje si&#281; w tej sekundzie?&quot;, lecz &quot;czy jest niedoko&#324;czone?&quot; Je&#347;li rzecz wci&#261;&#380; trwa w jakimkolwiek sensie, present continuous jest poprawny.",
     dgSec: "ta sekunda",
-    dgMonth: "ten miesi&#261;c",
+    dgMonth: "ten miesiąc",
     dgEra: "ta epoka",
-    dgSub: "teraz rozci&#261;ga si&#281; tak, jak potrzebuje zdanie",
+    dgSub: "teraz rozciąga się tak, jak potrzebuje zdanie",
     labelForm: "Budowanie czasu",
     formTitle: "Jak się go tworzy",
     form1h: "Twierdzenie", form1p: "podmiot + am / is / are + czasownik-ing", form1ex: '"I am reading a great book."',
@@ -1476,8 +1613,8 @@ var I18N = {
     elasticNote: "La question n&#39;est donc pas &quot;est-ce que cela se passe &agrave; cette seconde&nbsp;?&quot; mais &quot;est-ce inachev&eacute;&nbsp;?&quot; Si la chose est encore en cours dans un sens qui compte, le present continuous convient.",
     dgSec: "cette seconde",
     dgMonth: "ce mois-ci",
-    dgEra: "cette &eacute;poque",
-    dgSub: "maintenant s&#39;&eacute;tire autant que la phrase l&#39;exige",
+    dgEra: "cette époque",
+    dgSub: "maintenant s'étire autant que la phrase l'exige",
     labelForm: "Construire le temps",
     formTitle: "Comment il se construit",
     form1h: "Forme affirmative", form1p: "sujet + am / is / are + verbe-ing", form1ex: '"I am reading a great book."',
@@ -1491,18 +1628,18 @@ var I18N = {
     signalsTitle: "Mots signaux",
     signal1h: "Le groupe du pr&eacute;sent", signal1li2: "en ce moment", signal1li3: "actuellement", signal1li4: "pendant que nous parlons", signal1li5: "aujourd'hui / de nos jours",
     signal2h: "Les cercles plus larges", signal2li0: "aujourd'hui", signal2li1: "cette semaine", signal2li2: "ce mois-ci", signal2li3: "cette ann&eacute;e",
-    ringNow: "maintenant", ringToday: "aujourd'hui", ringWeek: "cette semaine", ringMonth: "ce mois-ci", ringYear: "cette ann&eacute;e",
+    ringNow: "maintenant", ringToday: "aujourd'hui", ringWeek: "cette semaine", ringMonth: "ce mois-ci", ringYear: "cette année",
     labelQuiz: "L'ascension",
     quizTitle: "Entra&icirc;nement",
-    nextBtn: "Point de contr&ocirc;le suivant",
+    nextBtn: "Point de contrôle suivant",
     summitBtn: "Atteindre le sommet",
-    checkpointWord: "Point de contr&ocirc;le", ofWord: "sur", scoreWord: "Score",
+    checkpointWord: "Point de contrôle", ofWord: "sur", scoreWord: "Score",
     labelResults: "Journal de sommet",
     retryBtn: "Grimper &agrave; nouveau",
     baseCampBtn: "&larr; Retour au camp de base",
     nextCampBtn: "Camp suivant : pr&eacute;sent simple &rarr;",
-    msgPerfect: "Ascension parfaite. Le camp un est &agrave; toi.",
-    msgStrong: "Belle ascension. Quelques d&eacute;tails &agrave; peaufiner avant le camp deux.",
+    msgPerfect: "Ascension parfaite. Le camp un est à toi.",
+    msgStrong: "Belle ascension. Quelques détails à peaufiner avant le camp deux.",
     msgOk: "Bon premier essai. Une nouvelle tentative vaut le coup avant de continuer.",
     labelFuture: "Une onde plus loin",
     futureTitle: "L'arrangement déjà pris",
@@ -1592,6 +1729,291 @@ var I18N = {
     dgFutCap: "НАЗНАЧЕНО",
     dgNowSub: "прямо сейчас, ещё в движении",
     dgFutSub: "твёрдо, со временем и местом"
+  },
+  pt: {
+    eyebrow: "Acampamento um &middot; present continuous",
+    heroTitle: "A ondulação",
+    heroP: "Toda trilha começa de onde você está. Este acampamento é sobre o agora &mdash; e sobre tudo o que está perto o bastante do agora para ainda estar em movimento.",
+    labelRules: "Briefing no acampamento-base",
+    rulesTitle: "Quando usar",
+    rule1h: "Acontecendo agora mesmo",
+    rule1p: "Algo está em andamento neste exato momento.",
+    rule2h: "Uma situação temporária",
+    rule2p: "Vale por enquanto, mas não é permanente &mdash; vai mudar.",
+    rule3h: "Uma tendência",
+    rule3p: "Algo está mudando ao longo de um período de tempo.",
+    rule4h: "Um plano futuro já marcado",
+    rule4p: "Um compromisso pessoal já marcado para um momento específico.",
+    rule5h: "Descrever uma foto",
+    rule5p: "O que se vê acontecendo em uma imagem, congelado no momento.",
+    rule6h: "Um hábito irritante",
+    rule6p: "Uma ação repetida que irrita quem fala &mdash; always mais o continuous.",
+    labelElastic: "O momento elástico",
+    elasticTitle: "Quanto dura o agora?",
+    elasticIntro: "O agora não é um ponto na linha. Ele é elástico &mdash; estica até onde a frase precisar, e o present continuous estica junto. É por isso que o mesmo tempo verbal cobre este segundo e este século.",
+    el1h: "Este segundo",
+    el1p: "O agora mais estreito: está acontecendo enquanto você fala.",
+    el2h: "Esta semana, este mês",
+    el2p: "Você não está fazendo isso neste instante, mas a atividade está em aberto e inacabada.",
+    el3h: "Esta era",
+    el3p: "O agora pode ter décadas de largura. Nada disso está acontecendo na sala onde você está.",
+    elasticNote: "Então o teste não é “está acontecendo neste segundo?”, mas “está inacabado?” Se a coisa ainda está em curso em qualquer sentido que importe para quem fala, o present continuous é o certo.",
+    dgSec: "este segundo",
+    dgMonth: "este mês",
+    dgEra: "esta era",
+    dgSub: "o agora estica até onde a frase precisar",
+    labelForm: "Construindo o tempo verbal",
+    formTitle: "Como se forma",
+    form1h: "Afirmativa",
+    form1p: "sujeito + am / is / are + verbo-ing",
+    form2h: "Negativa",
+    form2p: "sujeito + am / is / are + not + verbo-ing",
+    form3h: "Perguntas de sim ou não",
+    form3p: "Am / Is / Are + sujeito + verbo-ing?",
+    form4h: "Perguntas com wh-",
+    form4p: "palavra interrogativa + am / is / are + sujeito + verbo-ing?",
+    chartTitle: "Tabela de conjugação",
+    chartColSubj: "Sujeito",
+    chartColAff: "Afirmativa",
+    chartColNeg: "Negativa",
+    chartColQ: "Pergunta",
+    labelSignals: "Marcos da trilha",
+    signalsTitle: "Palavras-sinal",
+    signal1h: "O grupo do agora",
+    signal1li2: "no momento",
+    signal1li3: "atualmente",
+    signal1li4: "enquanto falamos",
+    signal1li5: "hoje / hoje em dia",
+    signal2h: "Os anéis que se alargam",
+    signal2li0: "hoje",
+    signal2li1: "esta semana",
+    signal2li2: "este mês",
+    signal2li3: "este ano",
+    ringNow: "agora",
+    ringToday: "hoje",
+    ringWeek: "esta semana",
+    ringMonth: "este mês",
+    ringYear: "este ano",
+    labelQuiz: "A escalada",
+    quizTitle: "Prática",
+    nextBtn: "Próximo ponto de controle",
+    summitBtn: "Chegar ao cume",
+    checkpointWord: "Ponto de controle",
+    ofWord: "de",
+    scoreWord: "Pontuação",
+    labelResults: "Diário do cume",
+    retryBtn: "Suba de novo",
+    baseCampBtn: "&larr; Voltar ao acampamento-base",
+    nextCampBtn: "Próximo acampamento: present simple &rarr;",
+    msgPerfect: "Subida perfeita. O acampamento um é seu.",
+    msgStrong: "Boa escalada. Faltam alguns detalhes para ajustar antes do acampamento dois.",
+    msgOk: "Boa primeira tentativa. Vale fazer mais uma rodada antes de seguir em frente.",
+    labelFuture: "Uma ondulação mais adiante",
+    futureTitle: "O compromisso que você já marcou",
+    futureIntro: "O present continuous não fala só do agora. Leve a mesma ondulação mais adiante na linha e ela vira um compromisso: algo já combinado entre pessoas, situado no futuro e que se comporta exatamente como se já estivesse em andamento. Os anéis tracejados são a diferença — o evento está acertado, mas ainda não começou.",
+    fut1h: "Tem que estar combinado",
+    fut1p: "Alguém concordou com isso. Há um horário e, geralmente, um lugar.",
+    fut1ex: "\"We're meeting the Berlin team at nine on Thursday.\"",
+    fut2h: "Não serve para previsões",
+    fut2p: "Se ninguém combinou, o present continuous não dá conta.",
+    fut2ex: "\"It's raining tomorrow.\" ✗  \"It's going to rain.\" ✓",
+    fut3h: "O teste da agenda",
+    fut3p: "Se dá para anotar na agenda, este tempo verbal serve.",
+    fut3ex: "\"I'm flying to Oslo on the 14th.\"",
+    dgNowCap: "ACONTECENDO",
+    dgFutCap: "COMBINADO",
+    dgNowSub: "agora mesmo, ainda em movimento",
+    dgFutSub: "marcado, com hora e lugar"
+  },
+  ar: {
+    eyebrow: "المخيم الأول &middot; present continuous",
+    heroTitle: "التموّج",
+    heroP: "كل طريق يبدأ من حيث تقف. هذا المخيم عن الآن &mdash; وعن كل ما هو قريب من الآن بما يكفي ليظل متحركًا.",
+    labelRules: "إحاطة في المخيم الأساسي",
+    rulesTitle: "متى تستعمله",
+    rule1h: "يحدث الآن",
+    rule1p: "شيء قيد الحدوث في هذه اللحظة بالذات.",
+    rule2h: "وضع مؤقت",
+    rule2p: "صحيح في الوقت الحالي، لكنه ليس دائمًا &mdash; فهو سيتغيّر.",
+    rule3h: "اتجاه",
+    rule3p: "شيء يتغيّر على امتداد فترة من الزمن.",
+    rule4h: "خطة مستقبلية محدّدة",
+    rule4p: "ترتيب شخصي محدّد مسبقًا لوقت معيّن.",
+    rule5h: "وصف صورة",
+    rule5p: "ما يظهر أنه يحدث في صورة، متجمّدًا في لحظته.",
+    rule6h: "عادة مزعجة",
+    rule6p: "فعل متكرّر يزعج المتكلّم &mdash; always مع continuous.",
+    labelElastic: "اللحظة المرنة",
+    elasticTitle: "كم يطول الآن؟",
+    elasticIntro: "الآن ليس نقطة على الخط. إنه مرن &mdash; يمتد إلى المدى الذي تحتاجه الجملة، ويمتد معه present continuous. ولهذا يغطّي الزمن نفسه هذه الثانية وهذا القرن.",
+    el1h: "هذه الثانية",
+    el1p: "أضيق معاني الآن: الشيء يحدث وأنت تتكلّم.",
+    el2h: "هذا الأسبوع، هذا الشهر",
+    el2p: "لا تفعله في هذه اللحظة بالذات، لكن النشاط مفتوح ولم يكتمل.",
+    el3h: "هذا العصر",
+    el3p: "قد يمتد الآن عقودًا. لا شيء من هذا يحدث في الغرفة التي تجلس فيها.",
+    elasticNote: "إذن فالاختبار ليس «هل يحدث في هذه الثانية؟» بل «هل هو غير مكتمل؟». إذا كان الأمر لا يزال جاريًا بأي معنى يهمّ المتكلّم، فإن present continuous هو الصحيح.",
+    dgSec: "هذه الثانية",
+    dgMonth: "هذا الشهر",
+    dgEra: "هذا العصر",
+    dgSub: "الآن يمتد إلى المدى الذي تحتاجه الجملة",
+    labelForm: "بناء الزمن",
+    formTitle: "كيف يُبنى",
+    form1h: "الإثبات",
+    form1p: "الفاعل + am / is / are + الفعل + ing",
+    form2h: "النفي",
+    form2p: "الفاعل + am / is / are + not + الفعل + ing",
+    form3h: "أسئلة نعم/لا",
+    form3p: "&#x2067;Am / Is / Are + الفاعل + الفعل + ing؟&#x2069;",
+    form4h: "أسئلة ‎wh-",
+    form4p: "أداة الاستفهام + am / is / are + الفاعل + الفعل + ing؟",
+    chartTitle: "جدول التصريف",
+    chartColSubj: "الضمير",
+    chartColAff: "الإثبات",
+    chartColNeg: "النفي",
+    chartColQ: "السؤال",
+    labelSignals: "علامات الدرب",
+    signalsTitle: "الكلمات الدالّة",
+    signal1h: "مجموعة الآن",
+    signal1li2: "في هذه اللحظة",
+    signal1li3: "حاليًا",
+    signal1li4: "ونحن نتكلّم",
+    signal1li5: "اليوم / هذه الأيام",
+    signal2h: "الحلقات المتّسعة",
+    signal2li0: "اليوم",
+    signal2li1: "هذا الأسبوع",
+    signal2li2: "هذا الشهر",
+    signal2li3: "هذه السنة",
+    ringNow: "الآن",
+    ringToday: "اليوم",
+    ringWeek: "هذا الأسبوع",
+    ringMonth: "هذا الشهر",
+    ringYear: "هذه السنة",
+    labelQuiz: "التسلّق",
+    quizTitle: "تدريب",
+    nextBtn: "نقطة التحقّق التالية",
+    summitBtn: "ابلغ القمة",
+    checkpointWord: "نقطة التحقّق",
+    ofWord: "من",
+    scoreWord: "النتيجة",
+    labelResults: "سجل القمة",
+    retryBtn: "اصعد من جديد",
+    baseCampBtn: "&#x2067;&rarr; العودة إلى المخيم الأساسي&#x2069;",
+    nextCampBtn: "&#x2067;المخيم التالي: present simple &larr;&#x2069;",
+    msgPerfect: "صعود مثالي. المخيم الأول لك.",
+    msgStrong: "تسلّق قوي. بقيت تفاصيل قليلة تحتاج إلى إحكام قبل المخيم الثاني.",
+    msgOk: "محاولة أولى جيدة. تستحق جولة أخرى قبل أن تمضي قُدُمًا.",
+    labelFuture: "تموّج أبعد على الخط",
+    futureTitle: "الترتيب الذي اتفقت عليه مسبقًا",
+    futureIntro: "لا يقتصر present continuous على الآن. حرّك التموّج نفسه على الخط فيصبح ترتيبًا متفقًا عليه: شيئًا حُسم مسبقًا بين أشخاص، يقع في المستقبل ويتصرّف تمامًا كأنه جارٍ بالفعل. الحلقات المتقطّعة هي الفرق — الحدث محسوم، لكنه لم يبدأ بعد.",
+    fut1h: "يجب أن يكون متّفقًا عليه",
+    fut1p: "هناك من وافق عليه. له وقت محدّد، وفي العادة مكان أيضًا.",
+    fut1ex: "\"We're meeting the Berlin team at nine on Thursday.\"",
+    fut2h: "ليس للتنبّؤات",
+    fut2p: "إذا لم يرتّبه أحد، فلا يستطيع present continuous أن يعبّر عنه.",
+    fut2ex: "\"It's raining tomorrow.\" ✗  \"It's going to rain.\" ✓",
+    fut3h: "اختبار المفكّرة",
+    fut3p: "إذا كان بإمكانك أن تكتبه في مفكّرتك، فهذا الزمن يناسبه.",
+    fut3ex: "\"I'm flying to Oslo on the 14th.\"",
+    dgNowCap: "يحدث الآن",
+    dgFutCap: "متّفق عليه",
+    dgNowSub: "الآن تمامًا، ولا يزال يتحرك",
+    dgFutSub: "محسوم، بوقت ومكان"
+  },
+  ja: {
+    eyebrow: "キャンプ1 &middot; present continuous",
+    heroTitle: "さざ波",
+    heroP: "どのルートも、今いる場所から始まります。このキャンプで扱うのは「今」、そして今に十分近く、まだ動き続けているものすべてです。",
+    labelRules: "ベースキャンプでのブリーフィング",
+    rulesTitle: "どんなときに使うか",
+    rule1h: "まさに今起きていること",
+    rule1p: "ちょうどこの瞬間に進行中のことです。",
+    rule2h: "一時的な状況",
+    rule2p: "今は当てはまりますが、ずっと続くわけではありません（いずれ変わります）。",
+    rule3h: "変化の傾向",
+    rule3p: "ある期間にわたって、何かが変化しています。",
+    rule4h: "確定した未来の予定",
+    rule4p: "特定の日時に向けて、すでに決まっている個人的な予定です。",
+    rule5h: "写真の描写",
+    rule5p: "画像の中で目に見えて起きていること、その瞬間で止まった動きです。",
+    rule6h: "いらだたしい癖",
+    rule6p: "話し手をいらだたせる、繰り返される行動です（always + continuous）。",
+    labelElastic: "伸び縮みする「今」",
+    elasticTitle: "「今」はどれくらいの長さ？",
+    elasticIntro: "「今」は線上の一点ではありません。伸び縮みするもので、文が必要とするところまで伸び、present continuous も一緒に伸びます。だからこそ、同じ時制でこの一秒もこの一世紀も表せるのです。",
+    el1h: "この一秒",
+    el1p: "いちばん狭い「今」：話しているその最中に起きていることです。",
+    el2h: "今週、今月",
+    el2p: "この瞬間にしているわけではありませんが、その活動はまだ続いていて、終わっていません。",
+    el3h: "この時代",
+    el3p: "「今」は数十年の幅を持つこともあります。ここで起きていることは、どれも今いる部屋の中で起きているわけではありません。",
+    elasticNote: "つまり、判断の基準は「この一秒に起きているか？」ではなく「まだ終わっていないか？」です。話し手にとって意味のある何らかの形でまだ続いているなら、present continuous が正解です。",
+    dgSec: "この一秒",
+    dgMonth: "今月",
+    dgEra: "この時代",
+    dgSub: "「今」は文が必要とするだけ伸びる",
+    labelForm: "時制の組み立て",
+    formTitle: "形の作り方",
+    form1h: "肯定文",
+    form1p: "主語 + am / is / are + 動詞の -ing 形",
+    form2h: "否定文",
+    form2p: "主語 + am / is / are + not + 動詞の -ing 形",
+    form3h: "Yes/No 疑問文",
+    form3p: "Am / Is / Are + 主語 + 動詞の -ing 形？",
+    form4h: "疑問詞で始まる疑問文",
+    form4p: "疑問詞 + am / is / are + 主語 + 動詞の -ing 形？",
+    chartTitle: "活用表",
+    chartColSubj: "主語",
+    chartColAff: "肯定文",
+    chartColNeg: "否定文",
+    chartColQ: "疑問文",
+    labelSignals: "道しるべ",
+    signalsTitle: "目印になる語",
+    signal1h: "「今」のグループ",
+    signal1li2: "今のところ",
+    signal1li3: "現在",
+    signal1li4: "こうしている間にも",
+    signal1li5: "今日 / 近ごろ",
+    signal2h: "広がっていく輪",
+    signal2li0: "今日",
+    signal2li1: "今週",
+    signal2li2: "今月",
+    signal2li3: "今年",
+    ringNow: "今",
+    ringToday: "今日",
+    ringWeek: "今週",
+    ringMonth: "今月",
+    ringYear: "今年",
+    labelQuiz: "登攀",
+    quizTitle: "練習",
+    nextBtn: "次のチェックポイント",
+    summitBtn: "登頂する",
+    checkpointWord: "チェックポイント",
+    ofWord: "/",
+    scoreWord: "スコア",
+    labelResults: "登頂記録",
+    retryBtn: "もう一度登る",
+    baseCampBtn: "&larr; ベースキャンプに戻る",
+    nextCampBtn: "次のキャンプ：present simple &rarr;",
+    msgPerfect: "完璧な登頂です。キャンプ1はあなたのものです。",
+    msgStrong: "力強い登りです。キャンプ2の前に、細かい点をいくつか固めておきましょう。",
+    msgOk: "最初の挑戦としては上出来です。先へ進む前に、もう一度通しておく価値があります。",
+    labelFuture: "少し先のさざ波",
+    futureTitle: "すでに取り決めた予定",
+    futureIntro: "present continuous は「今」だけのものではありません。同じさざ波を線の先へ動かすと、それは取り決めになります。人と人との間ですでに決まっていて、未来に位置しながら、まるで進行中であるかのようにふるまう出来事です。点線の輪がその違いです：出来事は確定していますが、まだ始まってはいません。",
+    fut1h: "取り決めが必要",
+    fut1p: "誰かが同意しています。時間があり、たいていは場所もあります。",
+    fut1ex: "\"We're meeting the Berlin team at nine on Thursday.\"",
+    fut2h: "予測には使えない",
+    fut2p: "誰も取り決めていないことは、present continuous では表せません。",
+    fut2ex: "\"It's raining tomorrow.\" ✗  \"It's going to rain.\" ✓",
+    fut3h: "手帳テスト",
+    fut3p: "手帳に書き込めることなら、この時制で表せます。",
+    fut3ex: "\"I'm flying to Oslo on the 14th.\"",
+    dgNowCap: "進行中",
+    dgFutCap: "取り決め済み",
+    dgNowSub: "今まさに、まだ動いている",
+    dgFutSub: "確定済み、時間と場所つき"
   }
 };
 
@@ -1696,7 +2118,10 @@ var LANGS = [
   { code: "pl", label: "PL &middot; Polski" },
   { code: "zh", label: "ZH &middot; &#20013;&#25991;" },
   { code: "fr", label: "FR &middot; Fran&ccedil;ais" },
-  { code: "ru", label: "RU &middot; &#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;" }
+  { code: "ru", label: "RU &middot; &#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;" },
+  { code: "pt", label: "PT &middot; Portugu&ecirc;s" },
+  { code: "ar", label: "AR &middot; &#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;" },
+  { code: "ja", label: "JA &middot; &#26085;&#26412;&#35486;" }
 ];
 
 function isSvgEl(el){
@@ -1776,6 +2201,7 @@ function refreshSectionTranslation(sectionId){
     if (t[key] === I18N.en[key]) return;
     var sub = document.createElement("span");
     sub.className = "i18n-inline";
+    if (lang === "ar") { sub.setAttribute("dir", "rtl"); sub.style.textAlign = "right"; }
     sub.innerHTML = t[key];
     el.appendChild(sub);
   });

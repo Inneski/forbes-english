@@ -135,7 +135,9 @@ def rewrite(path, mapping):
             return m.group(0)            # a token that was never the accent
         n[0] += 1
         return mapping[h]
-    out = re.sub(r'#([0-9A-Fa-f]{6})', sub, src)
+    # (?<!&): not the digits of a character reference. The August run of this
+    # tool turned camp 8's padlock, &#128274;, into &#328F81; (fixed 2026-09-26).
+    out = re.sub(r'(?<!&)#([0-9A-Fa-f]{6})', sub, src)
     if out != src and not DRY:
         open(full, 'w', encoding='utf-8').write(out)
     return n[0]

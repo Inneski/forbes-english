@@ -213,14 +213,151 @@
                      color:var(--ink-soft);padding:8px 12px;}
   .voice-bar a.ghost:hover{background:var(--accent-lighter);color:var(--accent-dark);border-color:var(--accent);}
 </style>
+<!-- SHERPA-TOPO:start -->
+<style id="sherpa-topo">
+/* contour areas (tools/sherpa_topo.py): the hub's tile as a mask, drawn in this
+   page's --accent-dark, in six areas; text on the paper wears a paper halo */
+body{position:relative;}
+body::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:var(--accent-dark);opacity:1;
+  -webkit-mask:url("Sherpa%20Tensing/topo-tile.svg") 0 0/640px 640px repeat,linear-gradient(#000 0,#000 40%,transparent 100%) 0 0/100% 900px no-repeat,linear-gradient(to top,#000 0,#000 30%,transparent 100%) 0 100%/100% 700px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) -620px 24%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) calc(100% + 620px) 46%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) -620px 68%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) calc(100% + 620px) 88%/1240px 1000px no-repeat;
+  mask:url("Sherpa%20Tensing/topo-tile.svg") 0 0/640px 640px repeat,linear-gradient(#000 0,#000 40%,transparent 100%) 0 0/100% 900px no-repeat,linear-gradient(to top,#000 0,#000 30%,transparent 100%) 0 100%/100% 700px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) -620px 24%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) calc(100% + 620px) 46%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) -620px 68%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) calc(100% + 620px) 88%/1240px 1000px no-repeat;
+  /* after the shorthand, which resets it: the tile intersects the union of the areas */
+  -webkit-mask-composite:source-in,source-over,source-over,source-over,source-over,source-over,source-over;
+  mask-composite:intersect,add,add,add,add,add,add;}
+.wordmark,h1,h1 ~ p,.camp > .camp-label,.camp > h2,.camp > p.example,.camp > p.chart-note,.btnrow > a.route-link,.tr-bar > .tr-label,.voice-bar a.ghost{text-shadow:0 0 2px var(--paper),0 0 4px var(--paper),0 0 6px var(--paper),0 0 8px var(--paper);}
+/* these two take a background on hover, where a halo would be a glow */
+.btnrow > a.route-link:hover,.voice-bar a.ghost:hover{text-shadow:none;}
+/* a hero diagram paints a paper rectangle: feather its edge into a clearing */
+svg.hero-diagram{background:var(--paper);box-shadow:0 0 18px 14px var(--paper);}
+.ring-hero-svg{border-radius:50%;box-shadow:0 0 16px 10px var(--paper);}
+@media print{body::before{display:none;}}
+</style>
+<!-- SHERPA-TOPO:end -->
+<!-- SHERPA-TYPE:start -->
+<link rel="preload" href="Sherpa%20Tensing/fonts/Faktum-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="Sherpa%20Tensing/fonts/Faktum-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
+<style id="sherpa-type">
+/* Faktum and the type a size up (tools/sherpa_type.py): each rule below repeats one of
+   the page's own, one class stronger, in the same order and @media */
+@font-face{font-family:'Faktum';src:url('Sherpa%20Tensing/fonts/Faktum-Regular.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap;}
+@font-face{font-family:'Faktum';src:url('Sherpa%20Tensing/fonts/Faktum-RegularItalic.woff2') format('woff2');font-weight:400;font-style:italic;font-display:swap;}
+@font-face{font-family:'Faktum';src:url('Sherpa%20Tensing/fonts/Faktum-Medium.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap;}
+@font-face{font-family:'Faktum';src:url('Sherpa%20Tensing/fonts/Faktum-SemiBold.woff2') format('woff2');font-weight:600;font-style:normal;font-display:swap;}
+@font-face{font-family:'Faktum';src:url('Sherpa%20Tensing/fonts/Faktum-SemiBoldItalic.woff2') format('woff2');font-weight:600;font-style:italic;font-display:swap;}
+@font-face{font-family:'Faktum';src:url('Sherpa%20Tensing/fonts/Faktum-Bold.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap;}
+@font-face{font-family:'Faktum';src:url('Sherpa%20Tensing/fonts/Faktum-BoldItalic.woff2') format('woff2');font-weight:700;font-style:italic;font-display:swap;}
+@font-face{font-family:'Faktum';src:url('Sherpa%20Tensing/fonts/Faktum-ExtraBold.woff2') format('woff2');font-weight:800;font-style:normal;font-display:swap;}
+:root{--sherpa-font:'Faktum','Inter',system-ui,sans-serif;--sherpa-display:'Fraunces',serif;}
+:root svg text,:root svg tspan{font-family:var(--sherpa-font);}
+/* form controls do not inherit a font: without this, 30 buttons drew in Arial */
+:root button,:root input,:root select,:root textarea{font-family:var(--sherpa-font);}
+:root body{font-family:var(--sherpa-font);}
+:root h1,:root h2,:root h3{font-family:var(--sherpa-display);}
+:root .wordmark .brand{font-family:var(--sherpa-display);font-size:clamp(30px,5vw,42px);}
+:root .wordmark .sub{font-size:clamp(14px,1.6vw,17px);}
+:root .lang-select{font-family:var(--sherpa-font);font-size:14px;}
+:root .lang-globe-btn{font-size:16px;}
+:root .lang-menu button{font-family:var(--sherpa-font);font-size:14px;}
+:root .chart-wrap h3{font-size:16px;}
+:root .chart-note{font-size:14px;}
+:root table.conj{font-size:15px;}
+:root table.conj th{font-family:var(--sherpa-display);font-size:14px;}
+:root .hero .eyebrow{font-size:13px;}
+:root .hero h1{font-size:43.5px;}
+:root .hero p{font-size:17px;}
+:root .camp .camp-label{font-size:13px;}
+:root .rule-card h3{font-size:17px;}
+:root .rule-card p{font-size:15px;}
+:root .rule-card .ex{font-size:15px;}
+:root .signal-box h3{font-size:16px;}
+:root .signal-box ul{font-size:15px;}
+:root .diagram-intro{font-size:15px;}
+:root .diagram-caption{font-family:var(--sherpa-font);font-size:16px;}
+:root .progress-row{font-size:14px;}
+:root .q-prompt{font-size:18px;}
+:root .q-hint{font-size:14px;}
+:root .opt-btn{font-family:var(--sherpa-font);font-size:16px;}
+:root .feedback{font-size:15px;}
+:root .next-btn{font-family:var(--sherpa-font);font-size:15px;}
+:root #results .score{font-family:var(--sherpa-display);font-size:52px;}
+:root .retry-btn{font-family:var(--sherpa-font);}
+:root .route-nav a{font-family:var(--sherpa-font);font-size:15px;}
+:root .up-link{font:600 15px/1 var(--sherpa-font);}
+:root .up-link .arw{font-size:16px;}
+@media (max-width:640px){
+:root .up-link{font-size:14px;}
+}
+:root .tr-bar{font-family:var(--sherpa-font);font-size:13.5px;}
+:root .tr-bar .tr-label{font-size:12px;}
+:root .voice-bar{font-family:var(--sherpa-font);font-size:13px;}
+:root .voice-bar .tick{font-size:14px;}
+:root #frequency-timeline-deluxe{font-family:var(--sherpa-font);}
+/* the wordmark is a name: one line, and on a narrow screen it takes the row to
+   itself, with the line beside it (or the hub's language menu) underneath */
+:root .wordmark .brand{white-space:nowrap;}
+@media (max-width:700px){:root .wordmark{flex-wrap:wrap;row-gap:6px;}:root .wordmark .brand{flex:1 0 100%;}}
+</style>
+<!-- SHERPA-TYPE:end -->
+<!-- SHERPA-SHEEN:start -->
+<style id="sherpa-sheen">
+/* a living sheen across the contours (tools/sherpa_sheen.py): two bands of light,
+   moved by transform only, seen through the contour lines */
+:root{--sheen:#4386DE;--sheen-hot:#A8A5FF;}
+body{position:relative;}
+.topo-sheen{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden;overflow:clip;
+  -webkit-mask:url("Sherpa%20Tensing/topo-sheen.svg") 0 0/640px 640px repeat,linear-gradient(#000 0,#000 40%,transparent 100%) 0 0/100% 900px no-repeat,linear-gradient(to top,#000 0,#000 30%,transparent 100%) 0 100%/100% 700px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) -620px 24%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) calc(100% + 620px) 46%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) -620px 68%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) calc(100% + 620px) 88%/1240px 1000px no-repeat;
+  mask:url("Sherpa%20Tensing/topo-sheen.svg") 0 0/640px 640px repeat,linear-gradient(#000 0,#000 40%,transparent 100%) 0 0/100% 900px no-repeat,linear-gradient(to top,#000 0,#000 30%,transparent 100%) 0 100%/100% 700px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) -620px 24%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) calc(100% + 620px) 46%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) -620px 68%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) calc(100% + 620px) 88%/1240px 1000px no-repeat;
+  /* after the shorthand, which resets it: the tile intersects the union of the areas */
+  -webkit-mask-composite:source-in,source-over,source-over,source-over,source-over,source-over,source-over;
+  mask-composite:intersect,add,add,add,add,add,add;}
+.topo-sheen i{display:block;position:sticky;top:0;height:100vh;will-change:transform;}
+.topo-sheen i:nth-child(1){width:calc(100% + 1625px);margin-left:-1625px;background:repeating-linear-gradient(100deg,transparent 0,transparent 1300px,var(--sheen) 1420px,var(--sheen-hot) 1450px,var(--sheen) 1480px,transparent 1600px);opacity:0.95;
+  animation:topo-sheen-1 11s linear infinite;}
+@keyframes topo-sheen-1{from{transform:translateX(0)}to{transform:translateX(1624.7px)}}
+.topo-sheen i:nth-child(2){width:calc(100% + 2419px);margin-left:0px;margin-top:-100vh;background:repeating-linear-gradient(72deg,transparent 0,transparent 2100px,var(--sheen) 2180px,var(--sheen-hot) 2200px,var(--sheen) 2220px,transparent 2300px);opacity:0.6;
+  animation:topo-sheen-2 19s linear infinite;}
+@keyframes topo-sheen-2{from{transform:translateX(0)}to{transform:translateX(-2418.4px)}}
+@media (prefers-reduced-motion:reduce){.topo-sheen{display:none;}}
+@media print{.topo-sheen{display:none;}}
+</style>
+<!-- SHERPA-SHEEN:end -->
+<!-- SHERPA-SKY:start -->
+<style id="sherpa-sky">
+/* clouds drifting across the screen, seen from above (tools/sherpa_sky.py): nine clouds,
+   each on its own loop, in a fixed screen-sized layer, by transform only */
+.sherpa-sky{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;}
+.sherpa-sky i{position:absolute;left:0;background:0 0/100% 100% no-repeat;will-change:transform;animation:sherpa-sky-drift linear infinite;}
+@keyframes sherpa-sky-drift{from{transform:translateX(-100%)}to{transform:translateX(100vw)}}
+.sherpa-sky i:nth-child(1){top:8%;width:560px;height:311px;background-image:url("Sherpa%20Tensing/cloud-1.webp");animation-duration:95s;animation-delay:-10s;opacity:0.95;}
+.sherpa-sky i:nth-child(2){top:38%;width:480px;height:260px;background-image:url("Sherpa%20Tensing/cloud-2.webp");animation-duration:110s;animation-delay:-61s;opacity:0.95;}
+.sherpa-sky i:nth-child(3){top:64%;width:620px;height:339px;background-image:url("Sherpa%20Tensing/cloud-3.webp");animation-duration:85s;animation-delay:-26s;opacity:0.95;}
+.sherpa-sky i:nth-child(4){top:84%;width:430px;height:230px;background-image:url("Sherpa%20Tensing/cloud-4.webp");animation-duration:120s;animation-delay:-96s;opacity:0.9;}
+.sherpa-sky i:nth-child(5){top:20%;width:300px;height:162px;background-image:url("Sherpa%20Tensing/cloud-5.webp");animation-duration:170s;animation-delay:-34s;opacity:0.6;}
+.sherpa-sky i:nth-child(6){top:50%;width:260px;height:149px;background-image:url("Sherpa%20Tensing/cloud-6.webp");animation-duration:190s;animation-delay:-124s;opacity:0.55;}
+.sherpa-sky i:nth-child(7){top:74%;width:280px;height:156px;background-image:url("Sherpa%20Tensing/cloud-1.webp");animation-duration:180s;animation-delay:-81s;opacity:0.6;}
+.sherpa-sky i:nth-child(8){top:2%;width:240px;height:130px;background-image:url("Sherpa%20Tensing/cloud-2.webp");animation-duration:200s;animation-delay:-180s;opacity:0.5;}
+.sherpa-sky i:nth-child(9){top:92%;width:270px;height:147px;background-image:url("Sherpa%20Tensing/cloud-3.webp");animation-duration:175s;animation-delay:-9s;opacity:0.55;}
+/* the smallest phones: the far clouds only would crowd, so the near ones shrink */
+@media (max-width:560px){.sherpa-sky i{transform-origin:0 0;}.sherpa-sky i:nth-child(-n+4){scale:.7;}}
+@media (prefers-reduced-motion:reduce){.sherpa-sky i{animation-play-state:paused;}}
+@media print{.sherpa-sky{display:none;}}
+</style>
+<!-- SHERPA-SKY:end -->
 </head>
 <body>
+<!-- SHERPA-SHEEN-EL:start -->
+<div class="topo-sheen" aria-hidden="true"><i></i><i></i></div>
+<!-- SHERPA-SHEEN-EL:end -->
+<!-- SHERPA-SKY-EL:start -->
+<div class="sherpa-sky" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+<!-- SHERPA-SKY-EL:end -->
 <a class="up-link" href="sherpa-tensing-route-map.html"><span class="arw" aria-hidden="true">&larr;</span>Route map</a>
 
 
 <div class="wordmark">
-  <div class="brand">Sherpa <span>Tensing</span></div>
-  <div class="sub">Forbes English &middot; a route up the tenses</div>
+  <div class="brand"><a href="sherpa-tensing-route-map.html" style="color:inherit;text-decoration:none">Sherpa <span>Tensing</span></a></div>
+  <div class="sub"><a href="index.html" style="color:var(--accent-dark);text-decoration:none;font-weight:600;">Forbes English</a> &middot; a route up the tenses</div>
 </div>
 
 <main>
@@ -422,7 +559,7 @@
           #frequency-timeline-deluxe .ft-word-scale { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 5px; margin: 14px 0 18px; }
           #frequency-timeline-deluxe .ft-word { display: grid; align-content: center; min-height: 52px; padding: 6px 4px; color: var(--ft-muted); text-align: center; background: rgba(255, 255, 255, 0.58); border: 1px solid var(--ft-border); border-radius: 10px; cursor: pointer; transition: background .15s ease, border-color .15s ease, transform .15s ease; }
           #frequency-timeline-deluxe .ft-word:hover { border-color: var(--ft-blue); transform: translateY(-1px); }
-          #frequency-timeline-deluxe .ft-word strong { display: block; color: inherit; font-size: 11px; font-weight: 700; }
+          #frequency-timeline-deluxe .ft-word strong { display: block; color: inherit; font-size: 11px; font-weight: 700; hyphens: auto; overflow-wrap: break-word; }
           #frequency-timeline-deluxe .ft-word span { display: block; margin-top: 2px; font-size: 10px; }
           #frequency-timeline-deluxe .ft-word.is-active { color: var(--ft-blue-deep); background: var(--ft-blue-soft); border-color: var(--ft-blue); box-shadow: 0 5px 18px rgba(22, 52, 92, 0.16); transform: translateY(-2px); }
           #frequency-timeline-deluxe .ft-examples { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
@@ -926,8 +1063,8 @@ var I18N = {
     chartColSubj: "Subject", chartColAff: "Affirmative", chartColNeg: "Negative", chartColQ: "Question",
     labelSignals: "Trail markers",
     signalsTitle: "Signal words",
-    signal1h: "Frequency, peak to base", signal1li1: "nie (0%)", signal1li2: "selten, kaum, fast nie (2-5%)", signal1li3: "manchmal, gelegentlich (20-40%)", signal1li4: "oft, h&auml;ufig (50%)", signal1li5: "gew&ouml;hnlich, normalerweise, in der Regel (80-95%)", signal1li6: "immer (100%)",
-    signal2h: "Time expressions", signal2li2: "einmal pro Woche / zweimal im Monat", signal2li3: "dreimal im Jahr", signal2li4: "ab und zu", signal2li5: "im Allgemeinen / in der Regel",
+    signal1h: "Frequency, peak to base", signal1li1: "never (0%)", signal1li2: "rarely, seldom, hardly ever (2-5%)", signal1li3: "sometimes, occasionally (20-40%)", signal1li4: "often, frequently (50%)", signal1li5: "usually, normally, generally (80-95%)", signal1li6: "always (100%)",
+    signal2h: "Time expressions", signal2li2: "once a week / twice a month", signal2li3: "three times a year", signal2li4: "now and again", signal2li5: "in general / as a rule",
     labelQuiz: "The climb",
     quizTitle: "Practice",
     nextBtn: "Next checkpoint",
@@ -978,11 +1115,11 @@ var I18N = {
     chartColSubj: "Subjekt", chartColAff: "Bejaht", chartColNeg: "Verneint", chartColQ: "Frage",
     labelSignals: "Wegmarken",
     signalsTitle: "Signalw&ouml;rter",
-    signal1h: "H&auml;ufigkeit, von hoch zu niedrig", signal1li1: "mai (0%)", signal1li2: "raramente, di rado, quasi mai (2-5%)", signal1li3: "a volte, occasionalmente (20-40%)", signal1li4: "spesso, frequentemente (50%)", signal1li5: "di solito, normalmente, generalmente (80-95%)", signal1li6: "sempre (100%)",
-    signal2h: "Zeitausdr&uuml;cke", signal2li2: "una volta a settimana / due volte al mese", signal2li3: "tre volte all&#39;anno", signal2li4: "di tanto in tanto", signal2li5: "in generale / di regola",
+    signal1h: "H&auml;ufigkeit, von hoch zu niedrig", signal1li1: "nie (0%)", signal1li2: "selten, kaum, fast nie (2-5%)", signal1li3: "manchmal, gelegentlich (20-40%)", signal1li4: "oft, h&auml;ufig (50%)", signal1li5: "gew&ouml;hnlich, normalerweise, in der Regel (80-95%)", signal1li6: "immer (100%)",
+    signal2h: "Zeitausdr&uuml;cke", signal2li2: "einmal pro Woche / zweimal im Monat", signal2li3: "dreimal im Jahr", signal2li4: "ab und zu", signal2li5: "im Allgemeinen / in der Regel",
     labelQuiz: "Der Aufstieg",
     quizTitle: "&Uuml;bung",
-    nextBtn: "N&auml;chster Kontrollpunkt",
+    nextBtn: "Nächster Kontrollpunkt",
     summitBtn: "Gipfel erreichen",
     checkpointWord: "Kontrollpunkt", ofWord: "von", scoreWord: "Punkte",
     labelResults: "Gipfelbuch",
@@ -990,7 +1127,7 @@ var I18N = {
     baseCampBtn: "&larr; Zur&uuml;ck zum Basislager",
     nextCampBtn: "N&auml;chstes Camp w&auml;hlen &rarr;",
     msgPerfect: "Fester Grund. Grundgestein gesichert.",
-    msgStrong: "Sicherer Stand. Ein paar lose Steine vor Camp drei noch pr&uuml;fen.",
+    msgStrong: "Sicherer Stand. Ein paar lose Steine vor Camp drei noch prüfen.",
     msgOk: "Guter erster Versuch. Ein weiterer Durchgang lohnt sich, bevor es weitergeht.",
     labelSched: "Aushang an der Wand",
     schedTitle: "Die Zukunft, die schon im Fahrplan steht",
@@ -1030,8 +1167,8 @@ var I18N = {
     chartColSubj: "Soggetto", chartColAff: "Affermativa", chartColNeg: "Negativa", chartColQ: "Domanda",
     labelSignals: "Segnavia",
     signalsTitle: "Parole segnale",
-    signal1h: "Frequenza, dall'alto al basso", signal1li1: "nunca (0%)", signal1li2: "raramente, rara vez, casi nunca (2-5%)", signal1li3: "a veces, ocasionalmente (20-40%)", signal1li4: "a menudo, frecuentemente (50%)", signal1li5: "normalmente, generalmente, por lo general (80-95%)", signal1li6: "siempre (100%)",
-    signal2h: "Espressioni di tempo", signal2li2: "una vez por semana / dos veces al mes", signal2li3: "tres veces al a&ntilde;o", signal2li4: "de vez en cuando", signal2li5: "en general / por regla general",
+    signal1h: "Frequenza, dall'alto al basso", signal1li1: "mai (0%)", signal1li2: "raramente, di rado, quasi mai (2-5%)", signal1li3: "a volte, occasionalmente (20-40%)", signal1li4: "spesso, frequentemente (50%)", signal1li5: "di solito, normalmente, generalmente (80-95%)", signal1li6: "sempre (100%)",
+    signal2h: "Espressioni di tempo", signal2li2: "una volta a settimana / due volte al mese", signal2li3: "tre volte all&#39;anno", signal2li4: "di tanto in tanto", signal2li5: "in generale / di regola",
     labelQuiz: "La scalata",
     quizTitle: "Esercizio",
     nextBtn: "Prossimo checkpoint",
@@ -1082,18 +1219,18 @@ var I18N = {
     chartColSubj: "Sujeto", chartColAff: "Afirmativa", chartColNeg: "Negativa", chartColQ: "Pregunta",
     labelSignals: "Se&ntilde;ales del camino",
     signalsTitle: "Palabras se&ntilde;al",
-    signal1h: "Frecuencia, de mayor a menor", signal1li1: "nigdy (0%)", signal1li2: "rzadko, prawie nigdy (2-5%)", signal1li3: "czasami, sporadycznie (20-40%)", signal1li4: "często, regularnie (50%)", signal1li5: "zwykle, zazwyczaj, ogólnie (80-95%)", signal1li6: "zawsze (100%)",
-    signal2h: "Expresiones de tiempo", signal2li2: "raz w tygodniu / dwa razy w miesiącu", signal2li3: "trzy razy w roku", signal2li4: "od czasu do czasu", signal2li5: "ogólnie rzecz biorąc / z reguły",
+    signal1h: "Frecuencia, de mayor a menor", signal1li1: "nunca (0%)", signal1li2: "raramente, rara vez, casi nunca (2-5%)", signal1li3: "a veces, ocasionalmente (20-40%)", signal1li4: "a menudo, frecuentemente (50%)", signal1li5: "normalmente, generalmente, por lo general (80-95%)", signal1li6: "siempre (100%)",
+    signal2h: "Expresiones de tiempo", signal2li2: "una vez por semana / dos veces al mes", signal2li3: "tres veces al a&ntilde;o", signal2li4: "de vez en cuando", signal2li5: "en general / por regla general",
     labelQuiz: "La ascensi&oacute;n",
     quizTitle: "Pr&aacute;ctica",
     nextBtn: "Siguiente punto de control",
     summitBtn: "Llegar a la cima",
-    checkpointWord: "Punto de control", ofWord: "de", scoreWord: "Puntuaci&oacute;n",
+    checkpointWord: "Punto de control", ofWord: "de", scoreWord: "Puntuación",
     labelResults: "Diario de cumbre",
     retryBtn: "Escalar de nuevo",
     baseCampBtn: "&larr; Volver al campamento base",
     nextCampBtn: "Elige tu pr&oacute;ximo campamento &rarr;",
-    msgPerfect: "Terreno s&oacute;lido. Lecho de roca asegurado.",
+    msgPerfect: "Terreno sólido. Lecho de roca asegurado.",
     msgStrong: "Buen apoyo. Un par de piedras sueltas que revisar antes del campamento tres.",
     msgOk: "Buen primer intento. Vale la pena otro intento antes de seguir.",
     labelSched: "Colgado en la pared",
@@ -1134,8 +1271,8 @@ var I18N = {
     chartColSubj: "Podmiot", chartColAff: "Twierdzenie", chartColNeg: "Przeczenie", chartColQ: "Pytanie",
     labelSignals: "Znaki na szlaku",
     signalsTitle: "Słowa sygnałowe",
-    signal1h: "Częstotliwość, od najwyższej do najniższej", signal1li1: "从不 (0%)", signal1li2: "很少、几乎不 (2-5%)", signal1li3: "有时、偶尔 (20-40%)", signal1li4: "经常、频繁地 (50%)", signal1li5: "通常、一般来说 (80-95%)", signal1li6: "总是 (100%)",
-    signal2h: "Wyrażenia czasowe", signal2li2: "每周一次 / 每月两次", signal2li3: "每年三次", signal2li4: "偶尔、时不时", signal2li5: "一般来说 / 通常情况下",
+    signal1h: "Częstotliwość, od najwyższej do najniższej", signal1li1: "nigdy (0%)", signal1li2: "rzadko, prawie nigdy (2-5%)", signal1li3: "czasami, sporadycznie (20-40%)", signal1li4: "często, regularnie (50%)", signal1li5: "zwykle, zazwyczaj, ogólnie (80-95%)", signal1li6: "zawsze (100%)",
+    signal2h: "Wyrażenia czasowe", signal2li2: "raz w tygodniu / dwa razy w miesiącu", signal2li3: "trzy razy w roku", signal2li4: "od czasu do czasu", signal2li5: "ogólnie rzecz biorąc / z reguły",
     labelQuiz: "Wspinaczka",
     quizTitle: "Ćwiczenie",
     nextBtn: "Następny punkt kontrolny",
@@ -1186,8 +1323,8 @@ var I18N = {
     chartColSubj: "主语", chartColAff: "肯定式", chartColNeg: "否定式", chartColQ: "疑问式",
     labelSignals: "路标词",
     signalsTitle: "信号词",
-    signal1h: "频率，由高到低", signal1li1: "jamais (0%)", signal1li2: "rarement, presque jamais (2-5%)", signal1li3: "parfois, occasionnellement (20-40%)", signal1li4: "souvent, fr&eacute;quemment (50%)", signal1li5: "habituellement, normalement, g&eacute;n&eacute;ralement (80-95%)", signal1li6: "toujours (100%)",
-    signal2h: "时间表达", signal2li2: "une fois par semaine / deux fois par mois", signal2li3: "trois fois par an", signal2li4: "de temps en temps", signal2li5: "en g&eacute;n&eacute;ral / en r&egrave;gle g&eacute;n&eacute;rale",
+    signal1h: "频率，由高到低", signal1li1: "从不 (0%)", signal1li2: "很少、几乎不 (2-5%)", signal1li3: "有时、偶尔 (20-40%)", signal1li4: "经常、频繁地 (50%)", signal1li5: "通常、一般来说 (80-95%)", signal1li6: "总是 (100%)",
+    signal2h: "时间表达", signal2li2: "每周一次 / 每月两次", signal2li3: "每年三次", signal2li4: "偶尔、时不时", signal2li5: "一般来说 / 通常情况下",
     labelQuiz: "攀登",
     quizTitle: "练习",
     nextBtn: "下一检查点",
@@ -1238,19 +1375,19 @@ var I18N = {
     chartColSubj: "Sujet", chartColAff: "Affirmative", chartColNeg: "N&eacute;gative", chartColQ: "Question",
     labelSignals: "Balises du sentier",
     signalsTitle: "Mots signaux",
-    signal1h: "Fr&eacute;quence, du plus haut au plus bas", signal1li1: "никогда (0%)", signal1li2: "редко, почти никогда (2-5%)", signal1li3: "иногда, время от времени (20-40%)", signal1li4: "часто (50%)", signal1li5: "обычно, как правило (80-95%)", signal1li6: "всегда (100%)",
-    signal2h: "Expressions de temps", signal2li2: "раз в неделю / два раза в месяц", signal2li3: "три раза в год", signal2li4: "время от времени", signal2li5: "в общем / как правило",
+    signal1h: "Fr&eacute;quence, du plus haut au plus bas", signal1li1: "jamais (0%)", signal1li2: "rarement, presque jamais (2-5%)", signal1li3: "parfois, occasionnellement (20-40%)", signal1li4: "souvent, fr&eacute;quemment (50%)", signal1li5: "habituellement, normalement, g&eacute;n&eacute;ralement (80-95%)", signal1li6: "toujours (100%)",
+    signal2h: "Expressions de temps", signal2li2: "une fois par semaine / deux fois par mois", signal2li3: "trois fois par an", signal2li4: "de temps en temps", signal2li5: "en g&eacute;n&eacute;ral / en r&egrave;gle g&eacute;n&eacute;rale",
     labelQuiz: "L'ascension",
     quizTitle: "Entra&icirc;nement",
-    nextBtn: "Point de contr&ocirc;le suivant",
+    nextBtn: "Point de contrôle suivant",
     summitBtn: "Atteindre le sommet",
-    checkpointWord: "Point de contr&ocirc;le", ofWord: "sur", scoreWord: "Score",
+    checkpointWord: "Point de contrôle", ofWord: "sur", scoreWord: "Score",
     labelResults: "Journal de sommet",
     retryBtn: "Grimper &agrave; nouveau",
     baseCampBtn: "&larr; Retour au camp de base",
     nextCampBtn: "Choisir le prochain camp &rarr;",
-    msgPerfect: "Sol solide. Socle rocheux assur&eacute;.",
-    msgStrong: "Bon appui. Quelques pierres branlantes &agrave; v&eacute;rifier avant le camp trois.",
+    msgPerfect: "Sol solide. Socle rocheux assuré.",
+    msgStrong: "Bon appui. Quelques pierres branlantes à vérifier avant le camp trois.",
     msgOk: "Bon premier essai. Une nouvelle tentative vaut le coup avant de continuer.",
     labelSched: "Affiché au mur",
     schedTitle: "Le futur qui figure déjà à l'horaire",
@@ -1290,8 +1427,8 @@ var I18N = {
     chartColSubj: "Лицо", chartColAff: "Утверждение", chartColNeg: "Отрицание", chartColQ: "Вопрос",
     labelSignals: "Путевые метки",
     signalsTitle: "Слова-сигналы",
-    signal1h: "Частотность, от высокой к низкой", signal1li1: "never (0%)", signal1li2: "rarely, seldom, hardly ever (2-5%)", signal1li3: "sometimes, occasionally (20-40%)", signal1li4: "often, frequently (50%)", signal1li5: "usually, normally, generally (80-95%)", signal1li6: "always (100%)",
-    signal2h: "Временные выражения", signal2li2: "once a week / twice a month", signal2li3: "three times a year", signal2li4: "now and again", signal2li5: "in general / as a rule",
+    signal1h: "Частотность, от высокой к низкой", signal1li1: "никогда (0%)", signal1li2: "редко, почти никогда (2-5%)", signal1li3: "иногда, время от времени (20-40%)", signal1li4: "часто (50%)", signal1li5: "обычно, как правило (80-95%)", signal1li6: "всегда (100%)",
+    signal2h: "Временные выражения", signal2li2: "раз в неделю / два раза в месяц", signal2li3: "три раза в год", signal2li4: "время от времени", signal2li5: "в общем / как правило",
     labelQuiz: "Восхождение",
     quizTitle: "Практика",
     nextBtn: "Следующий пункт",
@@ -1318,6 +1455,234 @@ var I18N = {
     sch3ex: "\"I meet Ana tomorrow.\" ✗  \"I'm meeting Ana tomorrow.\" ✓",
     dgCap: "РАСПИСАНИЕ",
     dgSub: "напечатанное время, а не план"
+  },
+  pt: {
+    eyebrow: "Acampamento dois &middot; present simple",
+    heroTitle: "A base rochosa",
+    heroP: "Antes do agora, antes de toda esta escalada, existe a própria montanha. O present simple é o chão firme sobre o qual todo o resto se apoia: fatos, hábitos, coisas que não se movem.",
+    labelRules: "Briefing no acampamento-base",
+    rulesTitle: "Quando usar",
+    rule1h: "Fatos e verdades gerais",
+    rule1p: "Coisas que são sempre verdade, não importa quando você confira.",
+    rule2h: "Estados permanentes",
+    rule2p: "Não se espera que mudem tão cedo.",
+    rule3h: "Hábitos e rotinas",
+    rule3p: "Ações repetidas, geralmente com uma palavra de frequência.",
+    rule4h: "Horários e cronogramas",
+    rule4p: "Horários fixos e oficiais &mdash; mesmo para um evento futuro.",
+    rule5h: "Verbos de estado",
+    rule5p: "Pensamentos, sentimentos, sentidos e posse raramente são usados no continuous.",
+    rule6h: "Instruções e indicações de caminho",
+    rule6p: "Sequências passo a passo, como uma receita ou um trajeto.",
+    labelForm: "Construindo o tempo verbal",
+    formTitle: "Como se forma",
+    form1h: "Afirmativa",
+    form1p: "sujeito + verbo (+s / -es com he / she / it)",
+    form2h: "Negativa",
+    form2p: "sujeito + do / does + not + forma base",
+    form3h: "Perguntas de sim ou não",
+    form3p: "Do / Does + sujeito + forma base?",
+    form4h: "Perguntas com wh-",
+    form4p: "palavra interrogativa + do / does + sujeito + forma base?",
+    chartTitle: "Tabela de conjugação",
+    chartColSubj: "Sujeito",
+    chartColAff: "Afirmativa",
+    chartColNeg: "Negativa",
+    chartColQ: "Pergunta",
+    labelSignals: "Marcos da trilha",
+    signalsTitle: "Palavras-sinal",
+    signal1h: "Frequência, do cume à base",
+    signal1li1: "nunca (0%)",
+    signal1li2: "raramente, poucas vezes, quase nunca (2-5%)",
+    signal1li3: "às vezes, ocasionalmente (20-40%)",
+    signal1li4: "muitas vezes, frequentemente (50%)",
+    signal1li5: "geralmente, normalmente, em geral (80-95%)",
+    signal1li6: "sempre (100%)",
+    signal2h: "Expressões de tempo",
+    signal2li2: "uma vez por semana / duas vezes por mês",
+    signal2li3: "três vezes por ano",
+    signal2li4: "de vez em quando",
+    signal2li5: "em geral / via de regra",
+    labelQuiz: "A escalada",
+    quizTitle: "Prática",
+    nextBtn: "Próximo ponto de controle",
+    summitBtn: "Chegar ao cume",
+    checkpointWord: "Ponto de controle",
+    ofWord: "de",
+    scoreWord: "Pontuação",
+    labelResults: "Diário do cume",
+    retryBtn: "Suba de novo",
+    baseCampBtn: "&larr; Voltar ao acampamento-base",
+    nextCampBtn: "Escolha seu próximo acampamento &rarr;",
+    msgPerfect: "Chão firme. Base rochosa garantida.",
+    msgStrong: "Passo seguro. Algumas pedras soltas para conferir antes do acampamento três.",
+    msgOk: "Boa primeira tentativa. Vale a pena mais uma passada antes de seguir em frente.",
+    labelSched: "Afixado na parede",
+    schedTitle: "O futuro que já está no quadro de horários",
+    schedIntro: "A base rochosa vai mais longe do que parece. Quando um horário foi publicado por outra pessoa — uma companhia ferroviária, um cinema, uma escola —, o inglês o trata como um fato, e não como um plano, e um fato leva o present simple mesmo quando acontece na semana que vem. O bloco está no tempo futuro, mas é o mesmo chão firme.",
+    sch1h: "Horários e programações",
+    sch1p: "Trens, voos, filmes, aulas — qualquer coisa com um horário publicado.",
+    sch1ex: "\"The train leaves at 6:40.\" · \"The film starts at eight.\"",
+    sch2h: "Outra pessoa definiu o horário",
+    sch2p: "Não foi você quem decidiu, e você não pode mudá-lo. Esse é o teste.",
+    sch2ex: "\"Our flight lands at midnight.\"",
+    sch3h: "Não para os seus próprios planos",
+    sch3p: "Um compromisso pessoal leva o present continuous.",
+    sch3ex: "\"I meet Ana tomorrow.\" ✗  \"I'm meeting Ana tomorrow.\" ✓",
+    dgCap: "QUADRO DE HORÁRIOS",
+    dgSub: "um horário impresso, não um plano"
+  },
+  ar: {
+    eyebrow: "المخيم الثاني &middot; present simple",
+    heroTitle: "الأساس الصخري",
+    heroP: "قبل الآن، وقبل هذا التسلّق كلّه، هناك الجبل نفسه. زمن present simple هو الأرض الصلبة التي يقوم عليها كل ما عداه: الحقائق، والعادات، والأشياء التي لا تتحرّك.",
+    labelRules: "إحاطة في المخيم الأساسي",
+    rulesTitle: "متى تستعمله",
+    rule1h: "الحقائق والمسلّمات العامة",
+    rule1p: "أشياء صحيحة دائمًا، مهما كان الوقت الذي تتحقّق فيه منها.",
+    rule2h: "الحالات الدائمة",
+    rule2p: "لا يُتوقَّع أن تتغيّر في وقت قريب.",
+    rule3h: "العادات والأعمال الروتينية",
+    rule3p: "أفعال متكرّرة، تأتي عادةً مع كلمة تدلّ على التكرار.",
+    rule4h: "الجداول والمواعيد",
+    rule4p: "أوقات ثابتة ورسمية &mdash; حتى لحدث في المستقبل.",
+    rule5h: "أفعال الحالة",
+    rule5p: "الأفكار والمشاعر والحواس والملكية نادرًا ما تأتي في صيغة continuous.",
+    rule6h: "التعليمات والإرشادات",
+    rule6p: "خطوات متتابعة واحدة تلو الأخرى، كوصفة طبخ أو وصف طريق.",
+    labelForm: "بناء الزمن",
+    formTitle: "كيف يُبنى",
+    form1h: "الإثبات",
+    form1p: "الفاعل + الفعل (+s / -es مع he / she / it)",
+    form2h: "النفي",
+    form2p: "الفاعل + do / does + not + التصريف الأول",
+    form3h: "أسئلة نعم/لا",
+    form3p: "&#x2067;Do / Does + الفاعل + التصريف الأول؟&#x2069;",
+    form4h: "أسئلة ‎wh-",
+    form4p: "أداة الاستفهام + do / does + الفاعل + التصريف الأول؟",
+    chartTitle: "جدول التصريف",
+    chartColSubj: "الضمير",
+    chartColAff: "الإثبات",
+    chartColNeg: "النفي",
+    chartColQ: "السؤال",
+    labelSignals: "علامات الدرب",
+    signalsTitle: "الكلمات الدالّة",
+    signal1h: "التكرار، من القمة إلى القاعدة",
+    signal1li1: "أبدًا (0%)",
+    signal1li2: "نادرًا، قلّما، نادرًا جدًا (2-5%)",
+    signal1li3: "أحيانًا، من حين لآخر (20-40%)",
+    signal1li4: "كثيرًا، مرارًا (50%)",
+    signal1li5: "عادةً، في العادة، عمومًا (80-95%)",
+    signal1li6: "دائمًا (100%)",
+    signal2h: "تعابير زمنية",
+    signal2li2: "مرة في الأسبوع / مرتين في الشهر",
+    signal2li3: "ثلاث مرات في السنة",
+    signal2li4: "بين الحين والآخر",
+    signal2li5: "بشكل عام / كقاعدة عامة",
+    labelQuiz: "التسلّق",
+    quizTitle: "تدريب",
+    nextBtn: "نقطة التحقّق التالية",
+    summitBtn: "ابلغ القمة",
+    checkpointWord: "نقطة التحقّق",
+    ofWord: "من",
+    scoreWord: "النتيجة",
+    labelResults: "سجل القمة",
+    retryBtn: "اصعد من جديد",
+    baseCampBtn: "&rarr; العودة إلى المخيم الأساسي",
+    nextCampBtn: "اختر مخيمك التالي &larr;",
+    msgPerfect: "أرض صلبة. الأساس الصخري مؤمَّن.",
+    msgStrong: "خطوات ثابتة. بضعة أحجار مفكّكة تحتاج إلى تفقّدها قبل المخيم الثالث.",
+    msgOk: "محاولة أولى جيدة. تستحق جولة أخرى قبل أن تتابع.",
+    labelSched: "معلَّق على الجدار",
+    schedTitle: "المستقبل المدوَّن مسبقًا في جدول مواعيد",
+    schedIntro: "يمتدّ الأساس الصخري أبعد مما يبدو. حين يكون الموعد قد نشره طرف آخر — شركة سكك حديدية، أو سينما، أو مدرسة — تعامله الإنجليزية على أنه حقيقة لا خطة، والحقيقة تأخذ زمن present simple حتى لو وقعت في الأسبوع القادم. تقع الكتلة في الزمن المستقبل، لكنها الأرض الصلبة نفسها.",
+    sch1h: "الجداول والبرامج",
+    sch1p: "القطارات والرحلات الجوية والأفلام والدروس — كل ما له موعد منشور.",
+    sch1ex: "\"The train leaves at 6:40.\" · \"The film starts at eight.\"",
+    sch2h: "شخص آخر حدّد الموعد",
+    sch2p: "لم تقرّره أنت ولا تستطيع تغييره. هذا هو الاختبار.",
+    sch2ex: "\"Our flight lands at midnight.\"",
+    sch3h: "ليس لخططك الشخصية",
+    sch3p: "الترتيب الشخصي يأخذ زمن present continuous بدلًا منه.",
+    sch3ex: "\"I meet Ana tomorrow.\" ✗  \"I'm meeting Ana tomorrow.\" ✓",
+    dgCap: "جدول المواعيد",
+    dgSub: "وقت مطبوع، لا خطة"
+  },
+  ja: {
+    eyebrow: "キャンプ2 &middot; present simple",
+    heroTitle: "岩盤",
+    heroP: "「今」より前、この登山のすべてより前に、山そのものがあります。present simple は、事実、習慣、動かないものといった、ほかのすべてが立つ固い地面です。",
+    labelRules: "ベースキャンプでのブリーフィング",
+    rulesTitle: "どんなときに使うか",
+    rule1h: "一般的な事実と真理",
+    rule1p: "いつ確かめても、常に正しいこと。",
+    rule2h: "恒久的な状態",
+    rule2p: "当分は変わらないと考えられること。",
+    rule3h: "習慣と日課",
+    rule3p: "繰り返される行動。ふつうは頻度を表す語と一緒に使います。",
+    rule4h: "時刻表と予定表",
+    rule4p: "決まった公式の時刻（未来の出来事であっても）。",
+    rule5h: "状態動詞",
+    rule5p: "思考、感情、感覚、所有を表す動詞が continuous になることはまれです。",
+    rule6h: "指示と道案内",
+    rule6p: "レシピや道順のように、一つずつ順を追って進む手順。",
+    labelForm: "時制の組み立て",
+    formTitle: "形の作り方",
+    form1h: "肯定文",
+    form1p: "主語 + 動詞（he / she / it のときは +s / -es）",
+    form2h: "否定文",
+    form2p: "主語 + do / does + not + 原形",
+    form3h: "Yes/No 疑問文",
+    form3p: "Do / Does + 主語 + 原形？",
+    form4h: "疑問詞で始まる疑問文",
+    form4p: "疑問詞 + do / does + 主語 + 原形？",
+    chartTitle: "活用表",
+    chartColSubj: "主語",
+    chartColAff: "肯定文",
+    chartColNeg: "否定文",
+    chartColQ: "疑問文",
+    labelSignals: "道しるべ",
+    signalsTitle: "目印になる語",
+    signal1h: "頻度：山頂からふもとへ",
+    signal1li1: "決して〜ない（0%）",
+    signal1li2: "めったに〜ない、ほとんど〜ない（2-5%）",
+    signal1li3: "ときどき、たまに（20-40%）",
+    signal1li4: "よく、しばしば（50%）",
+    signal1li5: "たいてい、ふつうは、一般に（80-95%）",
+    signal1li6: "いつも（100%）",
+    signal2h: "時の表現",
+    signal2li2: "週に1回 / 月に2回",
+    signal2li3: "年に3回",
+    signal2li4: "ときおり",
+    signal2li5: "一般に / 原則として",
+    labelQuiz: "登攀",
+    quizTitle: "練習",
+    nextBtn: "次のチェックポイント",
+    summitBtn: "登頂する",
+    checkpointWord: "チェックポイント",
+    ofWord: "/",
+    scoreWord: "スコア",
+    labelResults: "登頂記録",
+    retryBtn: "もう一度登る",
+    baseCampBtn: "&larr; ベースキャンプに戻る",
+    nextCampBtn: "次のキャンプを選ぶ &rarr;",
+    msgPerfect: "足場は万全。岩盤を確保しました。",
+    msgStrong: "足取りは安定しています。キャンプ3の前に、浮き石をいくつか確かめておきましょう。",
+    msgOk: "最初の挑戦としては上出来です。先に進む前に、もう一度通しておく価値があります。",
+    labelSched: "壁に貼り出されたもの",
+    schedTitle: "すでに時刻表に載っている未来",
+    schedIntro: "岩盤は見た目よりも遠くまで広がっています。時刻が他者（鉄道会社、映画館、学校など）によって公表されている場合、英語ではそれを計画ではなく事実として扱います。そして事実は、来週起こることであっても present simple をとります。このブロックは未来の時間に置かれていますが、同じ固い地面です。",
+    sch1h: "時刻表とプログラム",
+    sch1p: "列車、飛行機、映画、授業など、公表された時刻があるものすべて。",
+    sch1ex: "\"The train leaves at 6:40.\" · \"The film starts at eight.\"",
+    sch2h: "時刻を決めたのは他の誰か",
+    sch2p: "あなたが決めたわけではなく、動かすこともできません。それが判断の基準です。",
+    sch2ex: "\"Our flight lands at midnight.\"",
+    sch3h: "自分の予定には使わない",
+    sch3p: "個人的な約束には、代わりに present continuous を使います。",
+    sch3ex: "\"I meet Ana tomorrow.\" ✗  \"I'm meeting Ana tomorrow.\" ✓",
+    dgCap: "時刻表",
+    dgSub: "計画ではなく、印刷された時刻"
   }
 };
 
@@ -1423,7 +1788,10 @@ var LANGS = [
   { code: "pl", label: "PL &middot; Polski" },
   { code: "zh", label: "ZH &middot; &#20013;&#25991;" },
   { code: "fr", label: "FR &middot; Fran&ccedil;ais" },
-  { code: "ru", label: "RU &middot; &#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;" }
+  { code: "ru", label: "RU &middot; &#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;" },
+  { code: "pt", label: "PT &middot; Portugu&ecirc;s" },
+  { code: "ar", label: "AR &middot; &#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;" },
+  { code: "ja", label: "JA &middot; &#26085;&#26412;&#35486;" }
 ];
 
 function isSvgEl(el){
@@ -1503,6 +1871,7 @@ function refreshSectionTranslation(sectionId){
     if (t[key] === I18N.en[key]) return;
     var sub = document.createElement("span");
     sub.className = "i18n-inline";
+    if (lang === "ar") { sub.setAttribute("dir", "rtl"); sub.style.textAlign = "right"; }
     sub.innerHTML = t[key];
     el.appendChild(sub);
   });

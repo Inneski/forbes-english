@@ -101,7 +101,7 @@ PAGES = {
                    'and Writing — each in teaching order. The first lesson on '
                    'every route is free.', 0.9, '/ielts-essay/hero.jpg'),
     'ielts-writing.html': ('IELTS Academic Writing',
-                   'A twelve-lesson route through IELTS Academic Writing — '
+                   'A route through IELTS Academic Writing, lesson by lesson — '
                    'Task 1 reports and Task 2 essays, in the order they '
                    'should be taught.', 0.9, '/ielts-model-answers/hero.jpg'),
     'ielts-speaking.html': ('IELTS Speaking',
@@ -609,6 +609,10 @@ def llms_txt(rows, index, images):
     out.append('- [IELTS Academic](%s/ielts.html): the exam route — Writing, '
                'Speaking, Listening, Reading and Vocabulary, each in teaching '
                'order, with the first lesson on every route free.' % SITE)
+    out.append('- [Role-playing games](%s/rpg.html): every branching adventure on '
+               'the site by level — Block Camp quests and story games from Sherlock '
+               'Holmes to a Paris boardroom — where each choice is a grammar '
+               'question and the answer decides the ending.' % SITE)
     out.append('')
     section('Free lessons', free)
     section('Subscriber lessons', pro)
@@ -667,7 +671,7 @@ def crawlable_list(rows, images):
 
 # ── run ────────────────────────────────────────────────────────────────
 def main(check=False):
-    rows, source = lessons()
+    rows, source = lessons(write_cache=not check)
     images = lesson_images()
     print('  lessons: %d (from %s) · thumbnails: %d' % (len(rows), source,
                                                         len(images)))

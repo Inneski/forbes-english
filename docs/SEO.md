@@ -34,8 +34,23 @@ the chrome cannot drift. Slugs are real search phrases; check a new slug
 against the root before adding one, because lesson asset folders live
 there too.
 
-It then refreshes **`ielts.html`** itself through `tools/build_ielts_hub.py`,
-which reads the five IELTS route pages and the catalogue. That page carries
+**`grammar.html` itself comes from `tools/build_grammar_hub.py`** (called
+by `build_hubs.py`): a landing page in the IELTS hub's family, with the
+twelve tenses as a colour-coded grid whose colours are read off the Sherpa
+route map, every topic as a card with its picture, and every count from
+the catalogue. Its card pictures are hashed web copies in `grammar-hub/`.
+
+**`rpg.html` comes from `tools/build_rpg_hub.py`** (also called by
+`build_hubs.py`): the role-playing games landing page, same family. Which
+lessons are RPGs is the library's own rule, ported verbatim; Block Camp
+blurbs are imported from the Block Camp hub builder, the story games'
+live in `GAMES`. Covers are hashed web copies in `rpg-hub/`.
+
+It then refreshes the five IELTS route pages (`tools/build_ielts_routes.py`)
+and **`ielts.html`** itself (`tools/build_ielts_hub.py`), both from
+`tools/ielts_routes.py` and the catalogue. Each route page carries its own
+BreadcrumbList + ItemList JSON-LD; its title and description still come
+from `PAGES` in `seo.py`. The landing page carries
 its own BreadcrumbList + ItemList JSON-LD (every IELTS lesson, in teaching
 order) at the foot of its generated body. Only its body and its second,
 `ih-` style block are generated. The first `<style>` block (the one the

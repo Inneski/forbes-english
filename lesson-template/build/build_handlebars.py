@@ -272,7 +272,7 @@ PRECISE = [
 
 COLL_TEACH = [
     ('colMaintain', 'maintain a steady cadence',
-     'English <em>maintains</em> a cadence. It does not achieve one or perform one.',
+     'English <em>maintains</em> a cadence: you keep it steady. You do not complete one or perform one.',
      'colMaintainN', 'Also: maintain a pace, maintain your line.'),
     ('colShift', 'shift <strong>into</strong> a lower gear',
      'You shift <em>into</em> a gear — not <em>on</em> it and not <em>at</em> it.',
@@ -335,10 +335,14 @@ VOCAB = [
 ]
 
 COLL = [
+    # "Achieve" was the distractor until 2026-09-26, and marked wrong — but
+    # "achieve a steady cadence" is good English (reach one), so a learner
+    # who knew the phrase lost the point. "Complete" is a clean miss and is
+    # the same length as the key.
     dict(stem='Complete the phrase: <em>______</em> a steady cadence.',
-         options=['Maintain', 'Achieve', 'Perform'], correct=0,
+         options=['Maintain', 'Complete', 'Perform'], correct=0,
          why='Maintain a steady cadence — keep your pedalling rhythm consistent.',
-         ex=[None, 'You achieve a result, not an ongoing rhythm.',
+         ex=[None, 'You complete a task or a route, not a rhythm.',
              'You perform an action, not a cadence.']),
     dict(stem='Before the climb, she shifted <em>______</em> a lower gear.',
          options=['on', 'into', 'at'], correct=1,
@@ -441,6 +445,40 @@ SHOP_DIALOGUE = [
 
 
 # ── bespoke slides ─────────────────────────────────────────────────────
+# ── translation keys for the explanations and the teach-card rules ──────
+# The stems and options are the English under test and stay English. What a
+# learner reads *about* them — the rule on a teach card, the reason behind a
+# right or wrong answer — is scaffolding, and until 2026-09-26 it stayed in
+# English whatever language was picked. Each string is swapped for a
+# UI_I18N key here; the English is registered under it (EN_KEYS, merged into
+# i18n_handlebars.T['en'] in build()), and German and Spanish live in
+# i18n_handlebars.QX.
+EN_KEYS = {}
+
+
+def _key(k, text):
+    EN_KEYS[k] = text
+    return k
+
+
+def _keyed_bank(bank, prefix):
+    for n, q in enumerate(bank, 1):
+        q['why'] = _key('%s%dW' % (prefix, n), q['why'])
+        q['ex'] = [_key('%s%dE%d' % (prefix, n, m), e) if e else None
+                   for m, e in enumerate(q['ex'])]
+
+
+def _keyed_cards(cards):
+    return [(c[0], c[1], _key(c[0] + 'B', c[2]), c[2], c[3], c[4]) for c in cards]
+
+
+FIT, CONTROL, DRIVE, PRECISE, COLL_TEACH, IDIOM_TEACH = (
+    _keyed_cards(c) for c in (FIT, CONTROL, DRIVE, PRECISE, COLL_TEACH, IDIOM_TEACH))
+_keyed_bank(VOCAB, 'vocab')
+_keyed_bank(COLL, 'coll')
+_keyed_bank(INFER, 'infer')
+
+
 def riders_slide():
     cells = "\n          ".join(
         '<button class="rider" type="button" data-rider="%d" aria-pressed="%s">'
@@ -1051,6 +1089,7 @@ def build(style=None, out=None):
     )
 
     import i18n_handlebars as I
+    I.T['en'].update(EN_KEYS)
     out_path = out or OUT
     palette = (D.editorial_palette('%s/hero.jpg' % F) if style == 'editorial'
                else PALETTE)

@@ -30,6 +30,1022 @@ from 0 to 20.
 about in plain words. The title alone is what the old search had, and it is
 not enough.
 
+## 2026-09-27 — Sherpa lesson pages: translation on every page, in the camp one pattern
+
+Innes: *"you have to be more thorough in your translation work - still some
+important text has nothing"*, then *"Passive has no translation"*. Measured
+with German on: eight of the nine descents had no translation at all; the
+other fifteen pages translated ten example sentences each; only camps one and
+two carried a real system (a globe on each section; each English line keeps
+its translation beneath it). ~1,300 English-only blocks over 25 pages.
+
+**What ships.** The camp one pattern on the other 23 pages, in the course's
+nine languages (de es fr it pt ru ar zh ja), injected by
+`tools/sherpa_lesson_i18n.py` (fenced `SHERPA-LESSON-I18N` block at the end
+of `<body>`: styles, the page's own strings, `tools/sherpa_lesson_i18n_runtime.js`).
+A globe under each section heading translates that section; the quiz's hint
+and feedback are translated as it rewrites them (a MutationObserver that
+disconnects while it writes), its own words swapped ("Checkpoint {n} of {m}",
+Score, the buttons). Examples stay English and show a translation line from
+the "Examples in" bar, which the descents now get. HOUSE-STYLE §8 holds: the
+English being taught (conjugation tables, grammar forms, signal-word lists,
+quiz stems and options, "Not this" wrong sentences) is never translated. **A
+language is offered on a page only when every string that page needs has
+it**, so an unfinished language never appears (Japanese was pending on one
+page at commit time; it appears when its strings land).
+
+**The pipeline** (see the tool's docstring): `node tools/sherpa_lesson_strings.js`
+(renders each page, collects every text block with its section, the quiz's
+hints and explanations normalised through the DOM, the results messages, the
+diagram labels) → `py tools/sherpa_lesson_master.py` (2,821 unique strings,
+translated once, reused on every page) → classify (chrome / example / keep)
+and translate (workflow; glossary `lesson-template/sherpa-i18n/work/glossary.json`,
+110 terms, the hub's reviewed wording wins; tense names stay English, lower
+case) → `py tools/sherpa_lesson_i18n.py --merge` (translators' files, then
+reviewers' corrections, then `work/fixes.json`, hand fixes that no merge
+undoes) → inject → `--check` (tags, placeholders, CAPS grammar tokens kept in
+English; all-caps labels are translated whole) → `node tools/sherpa_lesson_i18n_check.js`
+(browser, every page × language: every explanation has its line, every
+example its translation, the whole quiz answered in the language, Arabic
+right to left, no English the master does not know, no sideways scroll).
+
+**Reviews.** German was reviewed at native level (22 corrections: "stretch"
+of time had become a distance, an example flipped from still-reading to
+finished, English under study translated). The other eight reviews and two
+Japanese chunks were cut off twice (session limit, then a network drop) and
+run paced, two at a time (`sherpa-lesson-i18n-finish` workflow); re-run
+`--merge`, inject, `--check` and the browser check when they land, and
+commit. Hand-fixed meanwhile: the diagrams' NOW label named in prose had
+become AHORA / ADESSO / «الآن» / “现在” in 22 strings (the label stays NOW).
+
+**Camps one and two** (`tools/sherpa_own_i18n.py`, `85139d8`): Portuguese,
+Arabic and Japanese added to their own tables and globes; camp two's
+frequency words sat one language along (German learners saw Italian); 21
+values written as text showed raw entities ("Puntuaci&oacute;n").
+
+
+## 2026-09-27 — Library hero: six hub plates; rpg.html, the role-playing games hub
+
+Innes, with a screenshot of `library.html#cat=Slide+Decks`: *"give this a
+makeover like we did for IELTS, Sherpa etc. The six green buttons arent
+so important. Video lessons are not yet developed as an entity. RPGS
+deserves an equal button with IELTS, Block Camp & Sherpa, Grammar has
+it's own cool hub now. RPGs should have a hub too. Work with me is
+important. They will all be slide decks eventually so that isnt really a
+thing."*
+
+- **The library's hero band is six flat coloured buttons at equal
+  weight**: Sherpa Tensing, IELTS Academic, Block Camp, Role-Playing
+  Games, Grammar, Work With Me. They replaced the six green stat buttons
+  (lesson plans / grammar activities / RPGs / slide decks / video lessons
+  / work with me) and the four route banners. A first cut put each hub's
+  hero picture behind the text (`f4fe9dc`); Innes: *"the colored buttons
+  were nicer. Having a lot of text crammed over a busy background doesnt
+  work"* — so the pictures and `library-hub/` went the same day, and each
+  button is its hub's published colour (see the CSS comment), an icon,
+  the name, one short line. Counts on
+  `renderHubs()` — finished lessons only, Free from the access column —
+  so they cannot disagree with the shelf. Grammar carries no count (the
+  hub counts by topic, a different number). Work With Me shows the
+  address. **Sailing the Seas of Grammar** lost its banner: it is one
+  lesson, now on the Grammar hub's gerunds card; it stays one click away
+  on the "Also:" line under the plates, with the Level Checker and Plans.
+  `#cat=…` links still work (`goToCategory`/`applyHashCategory` are
+  top-level now); the dead `.cat-hub` bar is still in the file, unused.
+- **`rpg.html` is new, generated by `tools/build_rpg_hub.py`** from
+  `build_hubs.py`, in the IELTS/grammar landing-page family: hero (the
+  Scarlet Star's Holmes), counts, how a game works, the free games as
+  plates, every game by level band (A1–A2 / B1–B2 / C1) with world, grammar,
+  level and Free/Pro chips, two plates (Block Camp, and the classroom
+  roleplays on the library), notes, a closing band over a mosaic of the
+  covers. **Which lessons are RPGs is the library's own regex, ported
+  verbatim** (`RPG_PATTERN` + `block-camp/`), so the page and the filter
+  agree: 23 games, 4 free. Block Camp blurbs and grammar chips are
+  imported from `block-camp-hub/build.py`'s `ADVENTURES`; the nine story
+  games have theirs in `GAMES`, written from each page's own cover copy.
+  Level and Free come from the catalogue. Palette derived from the hero
+  (`--palette` prints the recipe); 22 text-on-fill pairs measured by
+  `--check`, all pass. Covers are hashed web copies in `rpg-hub/`.
+- **The top band has an RPGs link** between Grammar and Speaking, on
+  `ielts.html` (the source every hub lifts) and `index.html`, so the 27
+  generated hub pages and the Question Bank were rebuilt for it. Block
+  Camp's and the Sherpa map's own navs are separate and unchanged.
+- **seo.py**: `topics.hub_pages()` gives rpg.html its title,
+  description and share image (the hero); `llms.txt` has a line for it.
+- **Fixed alongside**: the Block Camp hub marked The Last Bounty Pro
+  while the catalogue (which the Worker enforces) says Free; `ADVENTURES`
+  now says free and `block-camp.html` was rebuilt (one chip changed).
+- **Not done / for Innes**: `index.html`'s tile row still has "Slide
+  Deck" and "Video Lessons" tiles and its feature row still lacks the
+  RPG hub and Grammar — the ask was the library; the front page is the
+  same conversation to have. The library's category pills still include
+  "Video Lessons" (3 lessons) and "Slide Decks" (136), as real filters.
+  A GAMES entry is needed when a story RPG that is not Block Camp is
+  added, or the builder cards it with its title alone and says so.
+- **Verified** locally at desktop and phone widths (no horizontal
+  overflow, every picture resolves, counts render), the site's own
+  gates (`check-library.js --vs-origin` PASS, `build_rpg_hub.py --check`
+  PASS), and `seo.py` twice with the four indexes diffed — nothing
+  removed. The built-in browser pane timed out on most screenshots of
+  rpg.html (the hero rendered once, after fronting the tab; scrolled
+  views did not), so below the hero the visual check is a PIL contact
+  sheet of every picture plus DOM measurements, not a render. Open it.
+
+## 2026-09-26 — Sherpa: Faktum, bigger type, a living sheen on the contours, camp six yellow
+
+Innes, in order: *"this should be yellow to distinguish it from past
+simple"* (camp six), *"change text to Faktum font and make some bigger
+including the main Title Sherpa Tensing"*, *"faktum in all those pages"*,
+*"can you put a magic animated living shiny sheen wave effect across the
+topology?"*, *"'SHERPA TENSING' should be bigger and 'route up the tenses'
+too"*. Commits `6b8618d` (yellow) and the one carrying this entry.
+
+- **Camp six yellow** — `lesson-template/split_accent.py`. A pale key colour
+  cannot be both itself and a 3:1 text colour, so the page splits: `--accent`
+  is the fill (`#F1CF50`, from the key `#F1D779` in OKLCh), `--accent-text`
+  (the old `#A8860B`) carries the two text uses. `recolour_family.floors()`
+  measures 3:1 on `--accent-text` when a page has one, so a later pass cannot
+  walk the fill back to mustard. Descent eight takes the same yellow. Camp
+  one (baby pink) has the same shape of problem if Innes ever asks.
+- **Faktum on all 26 pages** — `tools/sherpa_type.py` (fonts in
+  `Sherpa Tensing/fonts/`, from `~/Downloads/Archives/Faktum-Font.zip` via
+  `--install`; Rene Bieder EULA, self-hosted like the Sailing lesson's). The
+  page CSS is never edited: a fenced block repeats every font rule one class
+  stronger, in the same @media, so the cascade keeps its winners. Wordmark
+  `clamp(30px,5vw,42px)`, its line `clamp(14px,1.6vw,17px)`, headings +15%
+  (40px and up stay), body +1px (floor 12px), a `clamp()` grows only at the
+  top, camp two's frequency widget keeps its sizes (`KEEP_SIZE`). Form
+  controls get Faktum outright (30 buttons were in Arial). Inter stays as
+  the fallback for Cyrillic, Arabic, CJK and symbols (Faktum covers every
+  Latin letter on these pages). **Headings stayed Fraunces** (`6c9d6ba`;
+  Innes, same evening: *"revert to previous font for headers e.g. Thirteen
+  camps, two faces"*): every rule that set Fraunces (titles, section and
+  card headings, the wordmark, the hub's numerals) gets `--sherpa-display`;
+  the type check reads each element's own font with the block switched off
+  and holds Fraunces to Fraunces, the rest to Faktum. It serves on
+  `localhost`, and asks only that Fraunces is linked and declared: among a
+  dozen headless pages its faces stayed "unloaded" while the same page
+  alone loaded them.
+  **`node tools/sherpa_type_check.js`** serves the repo and HEAD side by side
+  and fails on non-Faktum Latin text, sideways scroll, text spilling a box,
+  a wordmark on two lines, and SVG labels that newly collide; things already
+  wrong at HEAD are listed, not failed. It found and fixed: the wordmark
+  wrapping on a phone (now its own row below 700px), camp two's widget
+  overflowing, and five pre-existing label faults (camp six and descent
+  eight labels into the NOW bar, moved onto the bar they name; camp one
+  HAPPENING and descent one IS BEING DONE crossed by NOW, given an SVG paper
+  halo; descent twelve WILL HAVE BEEN DONE wider than its bar, two lines).
+- **The sheen** — `tools/sherpa_sheen.py`: two slanted bands of light
+  (repeating gradients, one period per cycle, so no seam) drift across the
+  page in opposite directions and light the contours through a mask of
+  `Sherpa Tensing/topo-sheen.svg` (the tile at full opacity, 1.5x width),
+  cut to the contour areas on lesson pages, the whole tile on the route map.
+  Colours per page from its own tokens in OKLCh. Off under
+  prefers-reduced-motion and in print. Transform-only:
+  **`node tools/sherpa_sheen_perf.js`** — at rest it costs 0 style recalcs
+  and <1% main thread; when something else drives frames it costs a few
+  (55 vs 60 fps on a 4x-throttled phone, 48 on the hub). The first version
+  of that tool measured only the busy case and made it look like a
+  main-thread animation; read both lines.
+- **The route map now wears halos too** (in its sheen block): the light
+  crosses its whole page. `tools/sherpa_topo_clear.js` now covers all 26
+  pages, finds shapes by geometry (`isPointInFill`, since the map's clouds
+  have pointer-events:none), and accepts SVG's paper-outline halo.
+- **Clouds drifting across the route map** (Innes: *"aerial shot of clouds
+  moving in the background like in the mythsmap.english-heritage.org.uk"*;
+  their saved page is in `incoming/`). Theirs: ~90 copies of three cloud
+  PNGs scattered over a map-sized layer that drifts along the live wind
+  over 300s and fades at the loop. Ours: `tools/make_clouds.py` draws the
+  clouds from noise (nothing of theirs is used: their images are English
+  Heritage's artwork). **Now on all 26 pages** (*"put the clouds on tense
+  pages too but lose the visible hard edge"*): `tools/sherpa_sky.py` makes
+  six cloud images (`Sherpa Tensing/cloud-1..6.webp`, ~35 KB each), each with
+  its ground shadow blurred on a canvas padded past the blur (blurred inside
+  the cloud's own box, the shadow was cut off along a straight edge), and
+  refuses any whose border alpha is not zero. The "hard edge" Innes saw was
+  mostly the cloud's own rim: the lighting test is strongest where density
+  falls fastest, so `make_clouds.py` now feathers the alpha and fades the
+  shading to white toward the edge. Nine clouds drift across a FIXED,
+  screen-sized layer, each on its own loop (the old page-sized tiles are
+  gone); the night pages (descents) get it at 0.38 opacity.
+- **Frame cost, and how to measure it.** `tools/sherpa_sheen_perf.js` runs
+  in the installed Chrome (GPU compositing). Playwright's bundled headless
+  shell composites in software and reads 15-20 fps for ANY design with the
+  masked sheen, which misled me into a redesign; in real Chrome the same
+  pages read 42-56 fps while something else animates, and nothing at rest.
+  Busy figures swung 15-42 between identical runs while a 56-agent workflow
+  and another session's disk-wide `find` loaded the machine: trust the
+  at-rest figures, rerun the busy ones on a quiet machine. The sheen's bands
+  are now screen-high sticky strips (`overflow:clip` on the contour layer, or
+  sticky has nothing to stick to). If a phone ever struggles, the lever is
+  `.topo-sheen{display:none}` under a width query.
+- **Descent two (present simple passive)**: its `--accent` was `#182030`, a
+  navy 1.13:1 on its own paper, so "Tensing", the markers and the buttons all
+  but vanished. Now baby blue `#A7C7F2`, in camp two's hue (Innes: *"TENSING
+  should be baby blue"*), with the paper as ink on it. `check_route_map.py`
+  now fails any page whose wordmark "Tensing" is under 3:1 on its paper; it
+  failed descent two's old navy and found camp three at 2.95 (the tan keeps
+  its fills; its two text uses got `--accent-text` `#AD8766`, 3.04).
+- **Links home** (*"should be links to main page on every page in
+  sherpa"*): `tools/sherpa_links.py` makes "Sherpa Tensing" link to the route
+  map and "Forbes English" to `index.html` on all 25 lesson pages, as the
+  route map already did.
+- The three generated blocks (`sherpa-topo`, `sherpa-type`, `sherpa-sheen`)
+  each rewrite themselves in place; before, each tool re-inserted at
+  `</head>` and made the other look stale. All three `--check` clean.
+- All Sherpa diagram cards and the route map thumbnail re-rendered (their
+  labels are Faktum now).
+
+**Next (Innes asked, not done here): translation on the lesson pages.** With
+a language on, the hub is complete, but a lesson page translates only the
+rule-card examples that carry `data-tr`: its title, intro, headings, rule
+text, notes, diagram intros and quiz hints stay English (measured with German:
+~1,300 English-only blocks over 25 pages, of which the chrome is what should
+translate; conjugation tables, quiz stems, options and signal-word lists are
+the English being taught and stay). About 100 example sentences have no
+translation at all (`.ex` without `data-tr`, `p.example`, `.use-ex`).
+
+**Machine note:** a `find / -iname Monocraft*.ttf` from another session
+(started 16:39) was still sweeping the whole disk at 19:30 and slowed every
+tool here; Bash calls timed out while PowerShell answered.
+
+
+## 2026-09-26 — The logo is one standard on every page, and a check holds it there
+
+Innes flagged interior-design-vocabulary: a tiny "Forbes" over an oversized
+ENGLISH that overlapped it, against library.html's lockup, which he called
+well proportioned. A render of every page's logo into one contact sheet found
+the same fault, or a stand-in for the logo, on about 180 pages. Commits
+`5bc1371` `1c5a5bf` `c6eb802` `74a3e53` `223c416`, all pushed and verified
+live.
+
+**The standard** (HOUSE-STYLE §2 has the numbers): the Forbes trace, ENGLISH
+beneath it with its ink exactly the wordmark's width. The width is set with
+SVG `textLength`, never letter-spacing, so it holds in any face, including a
+fallback. Three forms:
+
+- **decks**: the template's `.fe-logo`, DM Sans 600. It is now
+  `x="24.41" textLength="151.2"`; all 145 built decks were moved over.
+- **hand-built lessons**: ENGLISH as `<text x="675" y="1034" textLength="1520">`
+  inside the trace's SVG, DM Sans 600, in the page's own two colours.
+- **chrome and top bands** (library, index, front-page, pricing, 404, locked,
+  account, ielts.html's band and so every hub, Block Camp, level-checker's
+  band): `.fe-logo-en` / `.tb-logo-en`, Barlow Condensed 800, gold.
+
+**`python3 tools/check_logos.py`** fails any page off the standard. Proven
+failing on pre-fix copies of seven pages, one per fault type. 377 pages pass.
+Run it after adding a hand-built page.
+
+What was wrong, for the record:
+
+- 68 hand-built lessons drew ENGLISH as SVG text with hand-set tracking, most
+  of them far wider than the wordmark. They were converted in place, each
+  keeping its logo box, so no layout moved.
+- 33 used a stand-in: an FE roundel or monogram, "Forbes English" typed in the
+  page's face, a JPEG of the logo (vw_grammar_atelier), or the wordmark over a
+  separately styled ENGLISH `<div>`.
+- The chrome's JS width-matcher never ran on index.html, because ENGLISH was
+  `display:block`, so it measured the whole column. It was missing from pricing,
+  404 and locked. 404 and locked also set "Forbes" in Playfair text. The
+  matcher is gone: ENGLISH lives inside the SVG.
+- The hub band set ENGLISH at .385em of a 2.93em wordmark, which was squashed.
+  Fixed in ielts.html and in the Block Camp templates, then regenerated.
+- The 26 Block Camp decks never load DM Sans, so ENGLISH fell back to Arial,
+  5–10% narrow, and failed check-lesson.js. `textLength` fixes the width; they
+  now PASS with the note "fallback face, width pinned".
+
+Not changed: level-checker's masthead, which takes the level's face on purpose
+and is exempt in the checker. Pages with no Forbes mark at all were also left
+alone: wild-frame's film emblem, the Sherpa pages, the RPGs, the cheat sheets.
+`forbes-english-ielts-listening-s2.html` was open in another session, so its
+deck logo still has the old tracking. The next rebuild from the template
+fixes it.
+
+`HOUSE STYLE/forbes-english-logo.svg` (untracked, 2026-09-24) sets ENGLISH in a
+slab serif after logo 4. It is not what the site uses. Innes pointed at the
+library lockup as the one to match.
+
+
+## 2026-09-26 — grammar.html redesigned: a landing page with the tenses in colour
+
+Innes: *"redesign this forbesenglish.com/grammar so it looks cool like my
+IELTS hub, or Sherpa Hub or Block Camp hub with colour coded tenses"*.
+`grammar.html` was three paragraphs and nineteen white cards in the topic
+pages' chrome. It is now a landing page in the IELTS hub's family.
+
+- **New builder, `tools/build_grammar_hub.py`**, called by `build_hubs.py`
+  for the landing page only (the topic pages are unchanged in structure).
+  `page()` in `build_hubs.py` gained `body_class` and `wrap=False` so the
+  landing page can go full-bleed. `--check` measures every text-on-fill
+  pair, one per tense square included; `--palette` re-derives the colours.
+- **The signature figure is the tense code**: twelve tenses as a grid of
+  time across (past, present, future) by shape down (simple, continuous,
+  perfect, perfect continuous), going to as a thirteenth square under the
+  future, each in its tense colour, each opening its topic page — or, where
+  one lesson stands alone (past perfect continuous, future continuous,
+  future perfect, future perfect continuous), that lesson. Counts, level
+  spans and Free per square come from the catalogue: the future hub is
+  split by regex into will / going to / the two perfects; the past perfect
+  hub minus its continuous. Below 680px it stacks by time.
+- **The colours are read off `sherpa-tensing-route-map.html`**, not typed:
+  the guide's 3x4 grid carries `--c`/`--k` per camp, and `tense_colours()`
+  lifts them with a regex, so the next recolour pass reaches this page on
+  the next `build_hubs.py`. `tense-palette.css` and Block Camp keep their
+  older values by design (HANDOFF 2026-09-26, Sherpa), so this page follows
+  the map, which HOUSE-STYLE §5a names as where the code is published.
+  Every ink is re-measured on its fill (all 13 pass, 5.5–13:1); a failing
+  one would be swapped for the better of ink/white and reported.
+- **Palette derived from the hero** (`Sherpa Tensing/hero-route-map.jpg`,
+  the ridge — the route up the mountain is the route through the tenses;
+  light and dark runs of `extract-palette.py` plus an 8-colour quantise for
+  the art fields). It comes out a sibling of the IELTS page's, which is the
+  point. Sections: hero; the tense grid and a Tense Review bar; every topic
+  as a card with its hub's picture (tense cards wear their colour as a top
+  rule and a swatch; Skills as three wider plates); Sherpa Tensing and
+  Block Camp as two picture plates with live counts; two notes; a Level
+  Checker closing band over the ridge.
+- **Pictures**: web-sized copies (640px) of each hub's hero in
+  `grammar-hub/`, named by a hash of the source bytes, pruned when
+  superseded — the IELTS hub's scheme. 19 files, committed by name.
+- **Topic pages** carry the same swatch before the eyebrow and before the
+  tense topics in "Other topics", so the colour follows a click through.
+- **seo.py**: `topics.hub_pages()` now gives grammar.html a share image
+  (the hero, imported from the builder) and a description that names the
+  colour code.
+- **Not done**: no hand-picked colour anywhere; a square's real backdrop on
+  the route plates is picture-plus-scrim, measured only as token-on-rock,
+  so those plates hold a near-solid scrim under the copy rather than a
+  measured one.
+
+
+## 2026-09-26 — Beyond the Handlebars: a wrong key, and DE/ES that covered only the chrome
+
+Innes, from the collocation slide: *"not enough translations … are these not
+all correct?"* Both true.
+
+- **Collocation Q1 marked a right answer wrong.** *___ a steady cadence*:
+  Maintain / **Achieve** / Perform, with "achieve" called wrong. "Achieve a
+  steady cadence" is good English. The distractor is now **Complete** (a
+  clean miss, and the same length as the key). Changed in the live page and
+  in `build_handlebars.py`, including the COLL_TEACH rule that said "English
+  does not achieve a cadence".
+- **The live page translated only its `data-i18n` chrome.** Its own comment
+  read rule 8 as "only the chrome", so quiz explanations, the quiz controls
+  ("Question 1 / 4 · Score", "Check answer", "Answer:"), the 22 component
+  definitions, the 12 rider cards, the dilemmas, role-play and debate briefs,
+  idiom definitions, eyebrows and the finish-line tasks all stayed English in
+  DE/ES. They translate now: static nodes via new `bth*` keys in `TR`, and
+  script-drawn text via `QT`/`QL`/`TX` + `tx()` in the main script, which the
+  switcher redraws on change. Still English, deliberately: stems, options,
+  reading passages, example sentences, sentence frames, the essay question.
+  The page is still hand-maintained (see the 2026-09-17 entry), so edit it
+  directly.
+- **`build_handlebars.py` had the same gap** (the house-style reference
+  copy). Explanations and teach-card rules now go through keys (`EN_KEYS`,
+  with DE/ES in `i18n_handlebars.QX`).
+- `check-lesson.js` fails the live page on the same five accepted checks as
+  before, and nothing new.
+
+**Pattern worth checking in other ChatGPT-built decks:** a switcher that
+covers only `data-i18n` nodes misses everything the script draws. Switch
+to DE and walk the text nodes. Anything English that isn't under test is a
+defect.
+
+
+## 2026-09-26 — Sherpa: softer 4/10/11, readable buttons, contour areas on every page, translations reviewed
+
+Innes: *"softer colors on 4, 10 & 11"*, *"present continuous ripple diagram
+too faint or washed over, some parts could have topology background
+areas"*, *"parts of each background"*. Four commits: `70a9cb4`, `1e2d28b`,
+`c20af7a`, and this entry.
+
+- **Pass `2026-09-26c`** (`lesson-template/recolour_family.py`): camp 4
+  `#36797E` -> `#689497`, 10 `#6E0B24` -> `#8D5358`, 11 `#4B1A7A` ->
+  `#705991`, on camps 4, 10, 11 and descents four and ten. `move()` gained
+  `from_accent`: the lift normally starts at L 0.5, so a dark accent
+  (maroon, violet) would not have moved.
+- **Bug in the tool, fixed:** the forward path (`main`) never applied the
+  shared-colour hold or `keep_text()`; only `--replay` did. Passes a and b
+  went through replay; pass c went forward and lifted camp 10's and 11's
+  captions to 2.3:1. Replayed from HEAD with both guards; `main()` has them
+  now. `recolour_map()` also moves the glyph on a "no camp" diamond (8's and
+  11's had kept their old colours since pass b).
+- **Text on the accent, course-wide.** 36 CSS rules on 11 pages (next
+  button, next-camp link, translation toggle, voice-bar hover) drew white on
+  a light accent, as low as 1.64:1 on descent one. They date from when every
+  accent was dark; each recolour checked the accent, not what is written on
+  it. Every such page has an `--on-accent` now (camp 13's grey clears 4.5
+  with neither white nor its ink, so its ink is darkened in OKLCh until it
+  does). **`tools/check_route_map.py` measures it** (`check_pages()`: 36
+  failures at `a222e42`, 0 now), plus the no-camp glyph colour. Both run
+  warn-only from `build_hubs.py`.
+- **Camp one's ripple**: stops re-derived from `#F2ADBF`'s hue, deeper to
+  the centre; rings a mid rose. Card re-rendered.
+- **Contour areas on all 25 lesson pages** (`tools/sherpa_topo.py`): the
+  hub's tile as a mask in each page's `--accent-dark`, a band down from the
+  top and one up from the foot, **in the margins beside the 1000px column
+  only**. Behind the text it could not work: eight camps' `--accent` sits at
+  3.0:1 and `--accent-dark` just over 4.5:1 after the recolours, so any line
+  under a glyph breaks a floor. Below ~1080px the page is plain. The gate's
+  "Show me anyway" is the one text in a margin and has a paper halo.
+  **`node tools/sherpa_topo_clear.js`** measures it (every page, four
+  widths, fixed text at both scroll ends; fails on a copy without the halo
+  and on one with a narrowed carve). The `mask` shorthand resets
+  `mask-composite`: the composite must follow it in the same rule, or the
+  layers add up to a solid block. **If a Sherpa page is ever regenerated**
+  (`build_sherpa.py` would overwrite them), re-run `sherpa_topo.py`;
+  `--check` fails a page whose block is missing.
+- **Hub translations reviewed** (workflow: one native-level reader per
+  language group, a second reader per proposed change): 121 accepted, 11
+  turned down, applied through `tools/sherpa_hub_i18n.py`. The notable ones
+  were meaning errors: "the passive that opens camp one" in it/es/de (it is
+  camp one that opens the passive), fr "à travers les temps" (= through the
+  ages). French also gets no-break spaces before `: ; ? !`.
+- Cards re-rendered: camp one, four, ten, eleven; descent four, ten; the
+  route map thumbnail. The re-rendered cards are 1202x646 (the SVG's own
+  box), like the eight from earlier today; the rest are 1200x675.
+
+**Still open (Innes):** unchanged from the entries below: `pricing.html`
+says the whole Sherpa route is free; descent numbering titles need the
+catalogue SQL; Block Camp's `tense-palette.css` and the stopped deck
+builder's JSON palettes still hold the old tense colours (now also 4, 10,
+11).
+
+
+## 2026-09-26 — Block Camp Present Continuous 1a: right answers bring the picture to life
+
+Innes dropped 13 Gemini clips in `incoming/Present continuous Block Camp
+videos/` for `blockcamp-present-continuous.html`, then: *"alternate the two
+end ones on a loop, rolling guy comes with high score."* Same mechanism as
+Present Simple Part 1 (the 2026-09-23 entry), plus an end loop.
+
+  * **Every clip was placed by its first frame**, not by its content: a
+    64×36 RGB mean difference against all 41 plates. Ten opened on their
+    plate at 2.5–3.6 levels (next best 30+). `34860b1e` → bg09 at 12.8 is
+    the same frame with a figure rising into shot. Three are re-framed
+    renders of their scene (bg27 villagers 41.7, bg32 portal 29.9, bg36
+    creeper 36.8), so those slides now use the clip's own first frame as the
+    plate — `bg27-fountain.jpg`, `bg32-portal.jpg`, `bg36-creeper.jpg`, the
+    `bg12-dig` idiom. The time-signals page keeps the originals.
+  * Map: bg09 34860b1e · bg33 798e7046 · bg11 4168d20e · bg27 785d5b17 ·
+    bg18 618c595a · bg08 4e0ec43a · bg26 93a3acb7 · bg36 258d25f5 ·
+    bg23 9aa9f920 · bg15 d2f14f0a · bg37 ddfcc482 · bg41 b2e1cfda ·
+    bg32 6e0fb119. Q1 (slide 8, bg14, feeding the chickens) had none of the
+    13; Innes then added `clucking.mp4` for it (Alex feeds them, a rooster
+    struts up to camera). A re-framed render (14.8), so its plate is
+    `bg14-cluck.jpg`. **All 12 scored slides now have a clip.**
+  * **"The two end ones"** are the last two slides: Results (bg41,
+    celebration) and Activate (bg32, the portal). Each opens on its own clip
+    1.2 s after arrival, then they alternate for as long as the slide is up
+    (`data-clip-loop`). **"Rolling guy"** is Innes's `this.mp4`, sent
+    after the first push (my first guess, the Steve-vs-skeleton dive roll,
+    was wrong; that stays as the sort slide's own reward): a bowler tumbles
+    out of the portal and his ball rolls at the camera past the pins. It is
+    `bg32-roll.mp4`, named after the portal plate it is set at (35.0 from
+    the nearest plate, so it opens with a cut, like every change of clip in
+    the round). At 75%+ — the deck's own Strong and Perfect bands — he joins
+    the round, second (`data-clip-high`). First round has sound; later rounds are silent,
+    because the Activate loop runs under a speaking task. Two `<video>`
+    elements, so each cut goes from one clip's last frame straight to the
+    next one's first. Pauses in a hidden tab.
+  * Gap 2's clip is the bell: `data-clip-key` on "ringing the bell right
+    now". Gap 1's creeper matches none of its three sentences, so all three
+    must be right.
+  * Encoded as before (H.264 CRF 27 veryslow, faststart, AAC 96k). **All 13
+    carry sound at source.** 15 MB.
+  * Tested in headless Edge: all 12 play on a right answer with audio
+    decoding; wrong mc, wrong sort/match/order, a wrong gap and a wrong key
+    gap do not; leaving a slide parks the clip; both end slides loop in order
+    at low and high score, swap elements on every cut, mute from round two;
+    hidden tab pauses. Screenshots of the three new plates: no card crosses
+    a character.
+  * **Found and fixed:** slide 17 (Gap 2) overflowed by 3px (word-bank
+    margin 12 → 8px).
+  * **Found, not fixed:** `check-lesson.js` LOGO fails on all 26 Block Camp
+    decks (ENGLISH not in DM Sans). That conflicts with the slab-serif
+    wordmark rule, so it is a family-wide call, not a one-deck patch.
+  * `blockcamp-present-continuous-2.html` (1b) still has no clips.
+
+## 2026-09-26 — The Writer's Nightmare: SHIPPED as a 38-slide panel deck, 11 languages
+
+`build_writersnightmare.py` + `i18n_writersnightmare.py` (English) and one
+`i18n_writersnightmare_<code>.py` per language: de es fr it pt ru ar zh ja hr.
+House style 2 (panels), dark palette from the typewriter hero. All gates pass,
+answered state fits in all 11. Content fixes are in the builder docstring
+(faulty comparison in the story, a fragment, a referentless "it", wrong
+pronunciation rules for "experts" and "growth", "auto" for "automatically",
+three MC keys that were the longest option).
+
+- **Art is thin (§5c).** The lesson has ONE picture; every panel and divider
+  re-crops the hero with pos=. To finish it properly, brief four flat-vector
+  plates in the hero's style (pink field, blue-grey objects, black ink):
+  a blinking cursor on an empty page; two magnets pulling together; a
+  sprouting pencil (growth); a mouth / sound-wave for pronunciation. Drop them
+  in `incoming/`, prep into `WritersNightmare/`, and swap `pic=` per stage.
+- **Catalogue:** `deck` is still false. SQL for Innes:
+  `update public.lessons set deck = true where file = 'forbes-english-writers-nightmare.html';`
+
+## 2026-09-26 — Sherpa hub in ten languages, and a paper gradient
+
+Innes: *"sherpa hub page needs the full languages that are in the rest of
+the sherpa course"* (after *"just the landing page /hub needs translated"* —
+the IELTS pages were not asked for). The hub now switches between English,
+German, Spanish, French, Italian, Portuguese, Russian, Arabic, Chinese and
+Japanese (the camps' example languages) from a select in the header;
+remembered as `sherpa.lang.v1`, and `?lang=de` etc. sets it.
+
+- **`tools/sherpa_hub_i18n.py` holds every translation** and injects them
+  into the page between `/*I18N:start*/` and `/*I18N:end*/`. English stays
+  the page source (search, no-script, `check_route_map.py`). Elements carry
+  `data-t` / `data-t-aria` / `data-t-title`; sentences the progress script
+  builds go through `sherpaT(key, vars)` and have English in `EN`. `--check`
+  fails on a missing key, a dropped `{placeholder}` or a changed set of
+  `<b>/<em>/<strong>/<a>` tags. **Add or change hub copy there, not in the
+  page**, then run it.
+- Not translated on purpose: tense and lesson names, CAPS forms, the English
+  example sentences, the SVG map labels. Arabic text is `dir="rtl"` element
+  by element so the maps and grid keep their layout; Japanese headings use
+  `word-break:auto-phrase`.
+- The descent rows' "from camp N" / "after camp N" moved from CSS
+  `::before` into the script so they can be translated; the counts row wraps
+  (German pushed "4 kostenlos" under the hero picture).
+- Registers follow the course chrome: informal du / tú / tu / ты; Brazilian
+  "você" for Portuguese; MSA for Arabic; です/ます for Japanese. **The seven
+  newer languages were written in-session and have not had a native check.**
+- **Paper gradient** (*"give hub background subtle gradient light at top and
+  darker bottom"*): `--paper` to `--paper-deep` `#F5E7E8` (the paper 10%
+  towards `--accent-dark`); `check_route_map.py` measures body text against
+  the darker end with a contour line over it.
+
+## 2026-09-26 — Sherpa hub: contour background, the sherpa's guide, three recoloured camps
+
+Innes, in three messages: *"try a faint topology background pattern"*;
+*"the hub doesnt really explain very well what people are looking at, a
+brief overview of tenses and active and passive? even as an optional small
+pop up window? There should be a sherpa somewhere (see incoming)"*; *"make
+the present perfect continuous colour a bit more towards baby blue-ish
+turquoise and make the oranges more tasteful"*.
+
+- **Contours**: `Sherpa Tensing/topo-tile.svg`, a seamless 640px tile from
+  `tools/topo_tile.py` (seed 7; the command is in its docstring), in the
+  page's pink at 6% / 10%. Where a line crosses the small pink labels they
+  fell to 4.1:1, so small text on the paper now uses `--accent-text`
+  `#A34E69` (the old shade walked 8% towards the ink). `check_route_map.py`
+  now measures that: it caught the old shade at 4.08:1.
+- **The guide**: a card beside "The map" with a portrait of the sherpa from
+  his render (`Sherpa Tensing/sherpa-guide.jpg`) and "What am I looking
+  at?", which opens a `<dialog>`: a tense is a time and a shape (the twelve
+  as a 3x4 grid of camp-coloured links, every form "she" + CLIMB in CAPS,
+  going to as the thirteenth); active and passive with his two renders, day
+  for the ascent and night for the descent (`sherpa-day.jpg`,
+  `sherpa-night.jpg`); why this order; how to read the map. `#guide` opens
+  it directly; without script the link shows it in place. Esc, the close
+  button and a backdrop click close it and return focus.
+- **Colours**: `lesson-template/recolour_family.py` (the sibling of
+  `soften_family.py`, same find-the-family-by-hue method, two new moves).
+  Camp 8 turned 20° towards blue and lightened: `#46B0AB` -> `#6DBECD`.
+  Camps 7 and 9 muted to 72% chroma at the same lightness: `#F0723F` ->
+  `#DB815F`, `#F0A500` -> `#E1AB5A`. Three candidate sets were rendered
+  side by side first. Moved on the route map, camps 7, 8 and 9 and descent
+  seven; every token floor re-measured and walked back where needed. Camp 8's
+  "THE EVIDENCE" tag was white on the fill (2.6:1, 2.1:1 after the turn) and
+  now uses the page's on-accent ink. The five library cards that are renders
+  of these diagrams were re-rendered (`SherpaCamps/camp-seven…`,
+  `camp-eight…`, `camp-nine…`, `descent-seven…`, `Sherpa Tensing/thumb-route-map.png`).
+- **Later the same day**, Innes: *"maybe a darker thinner line would look
+  better"* — the contours are now 0.6px/1px in the dark plum `#5A2438`, and
+  the small pink labels on the paper carry a paper-coloured halo (survey-map
+  style) so no line touches them (`534050a`). Then: *"Make present continuous
+  a baby pink, number 5 also softer green and 8 even more baby blue
+  turquoise"* — pass `2026-09-26b` of `recolour_family.py`: camp 1 `#E66085`
+  -> `#F2ADBF`, camp 5 `#70A43A` -> `#99BA7D`, camp 8 `#6DBECD` -> `#97D0E5`,
+  on camps 1, 5, 8 and descents one and nine. The tool is now run by pass
+  name and refuses a pass that has been applied; its lightness lift scales
+  with distance from white (a flat lift burned camp one's pale ripple rings
+  to white). **On the route map only the colour-key uses move**: `#E66085`
+  is also the hub's own accent, and a baby pink cannot carry text, so the
+  hub keeps its pink. Each camp page's text-bearing `--accent` was walked
+  back to 3:1 and `--accent-dark` to 4.5:1, so on camp one the text accents
+  are a dusty rose (`#BE7D8F`, `#926674`) while the fills are baby pink.
+  Descent nine's "GOING TO BE DONE" label was wider than its bar (dark
+  letters on the dark page; it was already so before) and is now two lines.
+  Six more cards re-rendered, camp one's from `svg.ring-hero-svg`.
+- **Review round (19 confirmed findings), all fixed.** The recolour tools'
+  hex pattern also matched character references: August's
+  `soften_family.py` run had already turned camp 8's padlock `&#128274;`
+  into `&#328F81;`, and today's pass moved it again. The pattern now skips
+  `&#` in all three tools, and the padlock is back. The hue filter had also
+  caught shared diagram furniture (camp 7's NOW halo, camp 9's PAST/FUTURE
+  captions); colours on 4+ Sherpa pages are now held. Pass a's flat lift
+  had washed camp 8's time band to `#E2FFFF`. The eight camp and descent
+  pages were **replayed from `ff8173e`** with the corrected tool
+  (`recolour_family.py --replay ff8173e 2026-09-26a 2026-09-26b`), and the
+  hand fixes re-applied (camp 8's tag ink, descent nine's two-line label).
+  The tool now also holds `--accent-dark` to 4.5:1 on `--accent-lighter`
+  (the eyebrow chip) and keeps every SVG label at least as legible as it
+  was. Camp 9 and descents one, seven and nine drew white on the accent
+  (1.6–3.1:1) on `.next-btn` and the next-camp link; they now have an
+  `--on-accent`, the best of white, ink and paper. In the guide: the
+  "perfect" gloss now looks back "from a later point: now, or a time in the
+  past or future"; "the thirteenth camp" (under the cell numbered 13) is now
+  "the one left over, camp 5"; the grid stacks by time below 440px (it
+  overflowed its cells at 320–395); without script it shows in place with a
+  working way back; the `#guide` deep link and a hash change open it with
+  focus on the close button. The route map card is framed as before (camp
+  one back in view).
+- **Not moved, deliberately**: `lesson-template/tense-palette.css` and the
+  Block Camp pages that load it keep the old three values (a separate family
+  with its own colour gates), as do the stopped Sherpa deck builder's
+  `sherpa/content/*.json` palettes and `mixed_b1_data.py`. If Innes wants the
+  new colours site-wide, that is the next job.
+
+## 2026-09-25 — The five IELTS route pages: generated, in the landing page's family
+
+Innes: *"do you think the other IELTS should be more like the landing
+page?"* Yes, in look, not in structure: `ielts-writing.html` … were the
+older hand-written text-card design, so the redesigned `ielts.html` led into
+pages that looked like another site (and whose nav had lost Level Check).
+This supersedes "Next, if wanted" in the landing-page entry below.
+
+- **`tools/ielts_routes.py` is now the source of truth** for every IELTS
+  lesson, its order, track, description and tags, and each route page's
+  copy (lifted verbatim from the old pages). **`tools/build_ielts_routes.py`**
+  writes the five route pages; `build_ielts_hub.py` reads the same file for
+  the landing page (it used to parse the route pages; verified it rebuilt
+  `ielts.html` byte-identical before any design change). Route order,
+  number, name and colour stay in `build_ielts_hub.ROUTES`.
+- **All six pages build together** (`build_all`), from `build_hubs.py` or
+  either script, because they share the web-sized pictures in `ielts-hub/`
+  and a rebuild prunes superseded copies.
+- **Hand edits are refused.** Each route page carries
+  `<!-- IELTS-ROUTE: … sha=… -->`. A page changed since generation (outside
+  the SEO fence and `<title>`), or one without the marker, stops the run:
+  nothing is written and `build_hubs.py` exits 2. Tested by hand-editing
+  `ielts-reading.html`: refused, then `--force` restored it byte-identical.
+- **Design**: the landing page's `ih-` block carried whole, plus an `ir-`
+  block. Route number and H1, ledes, counts, "Start free", the route picture
+  in a 4:3 frame (`hero_pos` per route keeps the subject in view); the
+  callout; tracks with a sticky heading and a numbered stop list, each
+  lesson an h3 with its description and tags; Writing's Question Bank card;
+  the teaching note beside all five routes; a Pro band.
+- **Computed, not typed**: Free and level (catalogue), counts, the level
+  span (Listening is B2–C1: the drills deck is B2), "Start here" on the
+  lesson the start button opens, Writing's "all but two end with writing
+  you produce" (`produces()`), `{levels}` in Writing's teaching note. The
+  landing page's kicker now says B2–C1 for the same reason.
+- **Copy changed**: three teaching notes said "The lesson …" from when their
+  route had one lesson; they say "The first lesson …" (checked against the
+  decks' last slides). "New" and hand-typed Pro/level tags are gone.
+- **Also fixed on the way**: `tools/topics.py` had literal backspace bytes
+  where `\b` was meant in the IELTS pattern, so all 28 IELTS decks were filed
+  under Vocabulary, and every IELTS gate page's "More on this" pointed at the
+  vocabulary hub (now IELTS Academic; the vocabulary hub drops from 98 to 71
+  lessons). The landing page's focus ring on dark bands lost to a more
+  specific rule (2.6–2.9:1; now 9.6:1). Grammar hubs never marked Grammar as
+  current (the nav link they looked for had changed). `seo.py --check`
+  rewrote `tools/lessons.json`. The Writing meta description typed "twelve".
+  `/publish` now puts a new IELTS lesson in `tools/ielts_routes.py` and runs
+  `build_hubs.py`.
+- **Reviewed**: five lenses plus a skeptic each; 45 of 46 findings
+  confirmed, all fixed. Measured after: no overflow on any route page at ten
+  widths from 320 to 1440; one `aria-current="page"` per page.
+- **Not committed by this session**: `llms.txt` and the
+  `forbes-english-writers-nightmare.html` entry in `lesson-meta.json` carry
+  another session's uncommitted Writer's Nightmare work; they were left out.
+
+## 2026-09-25 — Sherpa route map: refined, not redesigned
+
+Innes: *"improve my sherpa tensing hub subtly like the way you did my
+IELTS"*. He had stopped the Sherpa **deck** redesign the same day ("doesn't
+look better than what I had"), so the pink, Fraunces/Inter, the two SVG
+maps and the coloured camp rows all stay. `sherpa-tensing-route-map.html`
+is still hand-maintained; there is no builder.
+
+- **Added**: a hero with one of his own renders from `incoming/sherpa/`
+  (steps up a ridge to the summit) at `Sherpa Tensing/hero-route-map.jpg`;
+  a counts row (13 up · 9 down · 3 off the route · 4 free); a start button
+  that becomes "Carry on: camp N" / "Head down: …" / "Climb it again" from
+  `sherpa.progress.v1`; **every lesson listed** — the 9 descents and the 3
+  off-route lessons were reachable only by clicking the maps — with Free,
+  level and a done tick; notes (where you are / why four stops are dark /
+  teaching); a free/Pro line.
+- **Fixed**: the intro still said "the two that are already open" (all 13
+  are); the legend described a tap-to-reveal that no longer did anything
+  but paint a locked marker in the "open" colour (a tap now says why it is
+  locked); camps 3, 5 and 7 carried white text at 2.9–3.2:1 and now take
+  the dark ink `#1A1206` the other light rows use; the SVG clouds were
+  double tab stops inside a `role=img`; blocked storage made the teacher
+  switch do nothing; the page never repainted on back-navigation.
+- **Changed a lock rule, deliberately**: *used to* is Free in the
+  catalogue but opened only after camp 3, which is Pro, so a free learner
+  could never reach it. It now opens after camp 2 **or** 3 (a present-simple
+  habit moved into the past). Tell Innes if he wants it back on camp 3
+  alone; then it must stop being advertised as free.
+- **`tools/check_route_map.py`** (new; `build_hubs.py` runs it warn-only):
+  every Sherpa lesson has one row; Free and level match the catalogue; the
+  counts and the free/Pro sentence add up; the 13 colour-key rows
+  `build_sherpa.py` reads are there and pass 4.5:1; list and map colours
+  agree with each twin camp; **no free lesson waits only on Pro lessons**.
+  Verified against 12 deliberately broken copies, all caught.
+- **Reviewed**: five lenses plus a skeptic each; 51 of 52 findings
+  confirmed, all fixed except the three below.
+
+**Needs Innes:**
+- `pricing.html` still says the whole Sherpa route is free, "Free
+  permanently, including camps added later" and "all four camps". The
+  catalogue has 4 of 25 Sherpa lessons free. The route map's "Plans and
+  prices" button now leads there. Commercial copy, so left for him (the
+  IELTS entry below already flagged the same FAQ's stale counts).
+- Two descent files are numbered by an older order: `descent-nine-going-to`
+  is camp 5's passive and `descent-eight-past-continuous` is camp 6's, and
+  their catalogue titles say "Descent Nine" / "Descent Eight". The route
+  map labels them by camp; retitling needs a catalogue update (SQL for
+  Innes — MCP writes are refused).
+- **If the Sherpa decks are ever resumed**: `build_sherpa.py`'s
+  `colour_key()` reads row ink off this page, so camps 3, 5 and 7 (and
+  descents three, nine and seven) would now build with dark ink instead of
+  white. Decide that with Innes then; the builder was not touched.
+
+## 2026-09-25 — Grammar Jail cover: teal accent, cover only
+
+Innes: *"I want the cover text in different colors (not red or orange or
+pink)"*. The derived coral is the colour of the tower and the sun in
+`arrival.jpg`, so the logo mark, "Grammar Jail" and Begin sank into the
+picture. `build_full_grammar_test.py` now adds `COVER_CSS`, which redefines
+only `--accent`, `--accent-bright` and `--accent-dim` on
+`.slide[data-type="cover"]`. The values come straight from `extract-palette.py
+grammarjail/arrival.jpg --accent-hue 175`, with every contrast row passing,
+so nothing is hand-picked. The other 63 slides keep the coral.
+
+**Scoping a rotation to one section works for any deck.** Every consumer of
+the accent on the cover (`.fe-logo-mark`, `.cover-title em`, `.btn-solid`
+and its hover) reads the custom property, so three declarations on the
+section recolour all of it. That is the move when Innes objects to the cover
+and not to the deck. For the whole deck, paste the rotated block into
+`PALETTE` instead. Hues 50 (butter yellow, from the sky), 195 and 210 were
+also rendered. 50 reads as amber next to the coral, and the two blues sit
+close to the slate sky.
+
+The rebuild also brought in template changes committed since the last
+Grammar Jail build: the results message rendered as HTML, the RTL `plaintext`
+fix and the audio dock (inert here, since the deck has no audio).
+
+## 2026-09-25 — B1 Mixed Grammar Test Part 2 shipped; Part 1 second pass; one lesson had two builders
+
+**Part 2 is live**: `build_mixedgrammar2.py` + `i18n_mixedgrammar2.py`, 44
+slides, EN/DE/ES, the panel sibling of Part 1. The art is the desert family
+(plan §5): the gas station is the cover (`git mv`'d to `hero.jpg`), and six
+of Innes's 09-24 renders are the plates. The mapping is in the plan. All
+gates pass, LOGO included; the answered state fits in en/de/es; the print
+export is 44 pages. Part 2 is Pro, so curl gets the gate page; check it
+through `lesson-meta.json` or by logging in.
+
+**The same two pages had two builders, and nobody knew.** `19b39ed`
+(09-23) built both parts as *editorial* decks in six languages
+(`build_mixed_b1.py`, waiting on 14 plates at 7:6). The cloud session that
+wrote the *panel* builders started from a base 118 commits older and never
+saw it. "House style 2" had been read both ways: editorial (as for Watts)
+on 09-23, the panel layout in the plan on 09-25. Panels won. Innes had the
+16:9 art made for that plan, and Part 1 had already shipped as panels. Left
+alone, the editorial builder would have overwritten both live decks the day
+its plates landed. It now writes previews only; its FR/IT/PT text is kept.
+**Before writing a builder for a page that already exists, run
+`grep -l "<page>.html" lesson-template/build/*.py`.** A second builder for
+one page is how `last-bounty-rpg` came to exist twice.
+
+**What the editorial audit knew and the panel build did not**, now fixed in
+Part 1 (`7e31cd9`) and built into Part 2:
+- "serves MUCH fresh seafood" was accepted and its explanation taught it.
+- The correction "I have much money" is itself unnatural English; the item
+  is a negative now.
+- Correct alternatives were marked wrong (IS GOING TO, 'S LIVED, WHO'S, …).
+- The explanations broke the CAPS / double-quote rule. All of them are now
+  the audit's EN/DE/ES text, ported by script (`sentences()` and the key
+  maps are in the builders; the script was a one-off).
+
+**Two answer leaks Part 1 shipped with this morning, both fixed.** No gate
+catches either, and both are worth one:
+1. The story panel printed the passage **with every answer filled in**, one
+   slide before the gap slides that score them. Both story panels now print
+   the gaps.
+2. **Slide titles contained the key**: "The best of them" over *the best*,
+   "If it rains" over *rains*, "If I had the time" over *had*. The
+   error-correction titles named the error ("A double comparative"). Titles
+   now name the scene. A title that contains an MC key or a gap answer is
+   measurable; nothing measures it yet.
+
+**Needs Innes: the catalogue.** Session writes to `public.lessons` are refused:
+```sql
+update public.lessons set deck = true
+where file in ('forbes-english-b1-mixed-grammar-test.html',
+               'forbes-english-b1-mixed-grammar-test-part2.html',
+               'must-have-to-vfb-stuttgart.html');
+```
+
+## 2026-09-25 — B1 Mixed Grammar Test Part 1: SHIPPED as a 45-slide deck (audited 2026-09-16)
+
+### 2026-09-25 — shipped, from a local session
+
+Live at the same URL and byte-for-byte what `4e8fc67` committed (curl'd, and
+the library row, card image and tense-review hub are live too). 45 slides,
+EN/DE/ES, house style 2. `check-lesson.js`: all checks passed, **LOGO
+188px/188px locally**, so the cloud failure below was the sandbox, as it
+predicted. `answered-overflow.js` fits in en/de/es; a print export gives 45
+pages at 16:9 with backgrounds.
+
+- **Art.** Six plates from `incoming/`; the mapping is in `90e78aa`'s
+  message. The plan's "`a_large_clock…`" is really
+  `a_large_plain_wall_clock_beside_a_stack…`, and its apartment-window
+  alternative is from the 09-24 desert batch the plan gives Part 2, so it
+  stayed out. `POS` was set by eye from renders of each 548×720 crop. The
+  seven sources are now in `incoming/_previous/forbes-english-b1-mixed-grammar-test/`.
+- **The cover is a stand-in, and Innes chose it.** The briefed cover (a
+  pencil whose shadow curves into a question mark, plan §5) had not been
+  generated: nothing in `incoming/` or Downloads. §14 says ask, so two
+  stand-ins were built for real and he picked
+  `a_notepad_and_a_sharp_pencil_on_a_bare_desk…` 9ca3d7 #1. **When the
+  question-mark render exists:** `prep-artwork.py <it> --into
+  MixedGrammarPart1 --names hero`, `extract-palette.py … --light`, paste over
+  `PALETTE`, rebuild, check, `build_hubs.py`, `seo.py`. Nothing else moves;
+  the library row already points at `hero.jpg`.
+- **The question slides are not flat `--void`**, whatever the builder and
+  the plan said. With no `data-bg`, `.bg-layer` paints `--hero` at 0.72
+  behind every slide that doesn't paint its own background, and only panel
+  and divider slides do. So **the cover is the backdrop of 33 of the 45
+  slides.** That's why a stand-in needed an empty middle, and why the desk
+  render (the activation plate) was the wrong one: it would have put one
+  picture behind 34 slides. Corrected in the builder, the plan and the
+  style-2 note below.
+- **Needs Innes: the catalogue row still says `deck = false`.** Session writes
+  to `public.lessons` are refused here, so:
+  ```sql
+  update public.lessons set deck = true
+  where file in ('forbes-english-b1-mixed-grammar-test.html',
+                 'must-have-to-vfb-stuttgart.html');
+  ```
+  VfB's flag has been pending since this morning's rebuild.
+- **`check-library.js --vs-origin` failed every deliberate repoint**, since
+  any value that differed from origin was a FAIL. It now takes `--expect
+  <lesson.html>`, which passes only if origin still holds the base's value
+  for that row. Undeclared differences fail as before. `--self-test` runs ten
+  cases, including 2026-08-25 and `f6be885`. CLAUDE.md and the publish skill
+  say so.
+- **The publish skill's ship and clear steps were stale.** Step 6 used
+  `add -A` and a bare commit, both refused by the guard; step 7 emptied
+  `incoming/`, which is shared (297 files today). Both now name files.
+- **git-guard reads commit-message text as commands.** A `-m` whose own line
+  says "git add -A" is refused as if you ran it. Put such a message in a
+  file and `git commit -o … -F <file>`.
+- `MixedGrammarPart1/mixed-grammar-part1-thumb.jpg` (the old desert square)
+  and `desert-building-sunset-clouds.jpg` are now unreferenced and left on
+  disk. The plan keeps the latter as Part 2's fallback.
+
+### 2026-09-16 — the audit, when it was blocked on artwork
+
+`forbes-english-b1-mixed-grammar-test.html` is an old scrolling page and needs
+the full §10 rebuild. **It is blocked by §5c, not by effort**: five sections
+plus an activation stage want six backgrounds and `MixedGrammarPart1/` holds
+one landscape image and a square thumbnail. Nothing was built; the live page is
+untouched.
+
+The audit, the slide plan and the Midjourney shopping list are in
+**`docs/PLAN-mixed-grammar-b1.md`**. Headlines:
+
+- Ten house-style failures, the interesting ones being a hand-picked mint
+  palette over a coral desert hero, the hero boxed in a card (§5b), no language
+  switcher at all (the `EN ↔ ES` badge is a CSS tooltip on six vocabulary
+  words), no activation stage, and twelve invented `--tense-*` hexes that are
+  all near-misses of the published values in `tense-palette.css`.
+- The multiple-choice set **passes** ANSWERS — the distractors were written
+  properly. Port the 35 items as they are.
+- **Four content bugs found in the data**, live right now: `ec6` marks *"the
+  girl that is sitting there"* wrong while `tf6` in the same test teaches that
+  *that* is acceptable; `ec2` and `ec1` reject the contracted forms
+  (*"I'll call you"*, *"She's lived here"*); Section 4 shuffles single words
+  where §7 wants phrase chunks.
+- Plans out at **40 slides**, over §7's split-at-24 line on purpose — a 35-item
+  test does not split usefully and this is already Part 1 of two. Precedent is
+  the exam decks at 50 and 69.
+
+Part 2 is structurally identical (10/8/6/5/6, all new sentences) with the same
+one-image problem, and is briefed in the same document so both can come out of
+one Midjourney sitting; Part 1 does not wait on them.
+
+### 2026-09-25 — the Mixed Grammar builder is written and verified
+
+`lesson-template/build/build_mixedgrammar1.py` + `i18n_mixedgrammar1.py`.
+45 slides, house style 2, panels alternating sides, all 35 items, en/de/es
+complete. Built against placeholder artwork, checked, then the placeholders and
+the generated HTML were deleted — **a deck whose seven pictures do not exist
+must not go live.** The lesson is now blocked on artwork and nothing else.
+
+**Thirteen of fourteen gates pass. LOGO cannot be verified from a cloud
+session.** The page loads DM Sans and carries the corrected §2 geometry, but
+the headless browser the checker launches cannot reach `fonts.googleapis.com`
+in this sandbox — `curl` gets a 200, Chromium does not. The control is
+conclusive: `forbes-c1-negotiation.html`, the deck HOUSE-STYLE names as the
+worked reference, fails LOGO identically here. **Do not chase a LOGO failure
+from a cloud session before running the control**; and re-run the checker
+locally before shipping anything that depends on it.
+
+**Also: `npm install playwright` gets a version whose browser is not on disk.**
+`check-lesson.js` already handles it — it launches `/opt/pw-browsers/chromium`
+when that path exists — but any new script has to pass
+`executablePath: '/opt/pw-browsers/chromium'` or it dies with "Executable
+doesn't exist at .../chromium_headless_shell-1243".
+
+**A fifth content bug, found while building.** The engine's `flatten()`
+normalises case, curly quotes, dashes and whitespace, but it does **not** strip
+terminal punctuation. So any gap whose answer is a whole sentence marks a
+learner wrong for typing the full stop they were asked to type. It affects any
+deck with sentence-length gap answers, not just this one — `sentences()` in
+`build_mixedgrammar1.py` is the fix, expanding each answer with and without it.
+
+`seo.py` was run and its diff read per the standing warning: 303 sitemap URLs
+before and after with an identical set, 295 `llms.txt` entries unchanged,
+`library.html` untouched. It did not clobber anything this time.
+
+### 2026-09-25 — "house style 2" means the PANEL layout, not an art direction
+
+Recorded because it cost four rounds of misreading. When Innes says *"use the
+second house style"* about a deck, he means the **second slide treatment in
+`lesson-template.html`**, not Noma Bar versus anything else:
+
+| | Style 1 — washed hero (HOUSE-STYLE §5) | Style 2 — panel |
+|---|---|---|
+| Picture | behind everything at `--bg-opacity: .72`, under a wash | owns a column at **full opacity**, bleeding off three edges |
+| Text | in a translucent `.card` over the artwork | a clean column on flat `--void`, nothing plated |
+| Right for | photographic or atmospheric artwork | **flat-vector illustration** |
+
+The template says so itself, in the PANEL block: *"§5 washes the hero to 0.72
+and plates the text on top of it, which is right when the artwork is
+atmosphere. It is wrong when the artwork is the point — a flat-vector
+illustration dimmed by a quarter and covered by a card is neither legible nor
+worth looking at."* `deck.py` has had `panel()` and `divider()` all along.
+
+**"Inverted panels"** is `D.panel(..., side='right')` → `data-side="right"` →
+`flex-direction: row-reverse`. Per the CSS comment, alternating the side "stops
+a long deck reading as one template".
+
+**`build_twinpeaks2.py` is the only builder in the repo using either**, and it
+is the worked reference: 23 slides on **five** pictures, sides alternating,
+`pos=` re-cropping the same file per reuse.
+
+**The trap nobody has written down: a panel crops to portrait.** `--panel-w` is
+548px of a 1280×720 stage painted `cover`, so a panel takes a **548×720 slice,
+aspect 0.76**, out of a 16:9 source and discards the rest. Flat-vector art with
+one object on an empty ground survives it; a wide landscape composition does
+not. `pos=` picks the slice, `width=` widens the column. Budget for tuning
+each picture by eye.
+
+**HOUSE-STYLE.md documents style 1 only.** §5, §5b and §5c are all written as
+though the washed hero is the only treatment, and §5c's "one background per
+section" reads as a `data-bg` count. Under style 2 the requirement is met by
+the section's divider and panel showing the picture at full opacity. Question
+slides without a `bg=` still carry artwork: the cover's wash (corrected
+2026-09-25, see above). Worth a §5d when someone next edits that file.
+
+### 2026-09-24 — the style is Noma Bar, and that moved the count to 14
+
+Innes's call. The stem is the one already documented in
+`PLAN-foundations-grammar-business.md`, and the reference set is the
+`HOUSE STYLE/` folder at the repo root — flat shapes, solid colour, one idea in
+negative space. The briefs were rewritten as *ideas* rather than scenes,
+because a Noma Bar brief that names a place gets you a place.
+
+Two consequences worth carrying forward:
+
+- **The heroes are now on the shopping list too**, 7 per lesson rather than 6.
+  The two desert pictures are the other style, and §0.3 makes the hero the
+  background of every slide, so a cinematic cover over six flat interiors is
+  worse than either. They stay on disk unreferenced — good enough for a lesson
+  of their own later. The library thumbnails are the same problem and want
+  recutting from the new heroes.
+- **The theme measurement in the plan's §3 is superseded.** It analysed a hero
+  the deck will no longer use, so the palette has to be re-derived from the new
+  one. Light is still the likely answer — Noma Bar is bright flat colour on a
+  pale ground — but run the extractor both ways and read the report.
+
+**`--no photorealistic, gradient, texture, grain, depth of field, perspective`
+belongs on every prompt.** Nine PNGs at the repo root are named
+`blackisler_flat_vector_illustration_cel-shaded_solid_flat_col_*` and not one
+of them is flat vector — the one opened to check is a painterly Minecraft
+sunset with gradients and depth of field. The words in the stem did not survive
+the generation, and **a filename is not evidence of style**. Check output
+against `HOUSE STYLE/`, not against a filename.
+
+**Next session:** if the fourteen pictures are in `incoming/`, the plan's §6 is
+the command sequence. If not, this stays blocked — do not convert on a thin set
+and reuse the hero across five sections.
+
+**A cloud session cannot reach `incoming/`.** Confirmed again on 2026-09-24,
+with the path Innes gave: `C:\Users\black\Documents\FORBES\incoming\B1 test`.
+There is no `/mnt/c`, no drive mount of any kind, and a filesystem sweep for
+images newer than the clone returns nothing. The route is a local `/publish`,
+or `prep-artwork.py` locally and push the folder.
+
+---
+
 ## 2026-09-25 — Must & Have To: VfB Stuttgart rebuilt as a deck; order decoys; results messages printed their markup on 23 decks
 
 Innes: *"https://forbesenglish.com/must-have-to-vfb-stuttgart make this house
@@ -691,6 +1707,12 @@ The two gitignored `_forbes-english-b1-mixed-grammar-test*` previews go through
 `assemble()` too and are fixed on their next build.
 
 ## 2026-09-23 — B1 Mixed Grammar Test 1 + 2: editorial decks, six languages, NOT shipped: waiting for 14 plates
+
+> **Superseded 2026-09-25.** Both parts shipped as panel decks instead
+> (entry at the top of this file). `build_mixed_b1.py` now writes previews
+> only, whatever is on disk. Do not commission the 14 plates. Its audit and
+> its EN/DE/ES text were ported into the panel builders. Its FR/IT/PT are
+> kept for a later language pass.
 
 Innes: *"make these house style and add languages"*, then *"house style 2
 and ask for shopping list images"*. "House style 2" is the editorial style
@@ -1782,6 +2804,16 @@ Four changes were made to his file and nothing else:
    option** — vocab Q2, reading Q1/Q2/Q3, idiom Q2. Distractors lengthened,
    never a key shortened. The three idioms are a closed set asked three times,
    so that one was fixed by padding all three to a phrase.
+
+   **2026-09-25: the idiom padding was reverted.** `backpedal` had been padded
+   to `begin to backpedal` (18 chars, to match `an uphill struggle`), and in Q1,
+   *"the manager began to ___"*, the key then read **"began to begin to
+   backpedal"**. Innes caught it mid-lesson. It is `backpedal` again in all
+   three items. Idiom Q2's key is the longest option once more, and that is
+   accepted: *"was ___"* takes a noun phrase and `an uphill struggle` is the
+   only one on offer, so grammar gives Q2 away whatever the lengths. Length
+   padding cannot make that item fair, and nothing may be padded into a form
+   that doesn't read correctly in every stem it appears in.
 
 **It does not meet house style and that is the decision, not an oversight.**
 No language switcher (rule 5), no activation stage (rule 6), no derived

@@ -13,6 +13,9 @@
  *
  *   node lesson-template/check-library.js            # check the working copy
  *   node lesson-template/check-library.js --vs-origin  # also diff against origin/main
+ *   node lesson-template/check-library.js --vs-origin --expect <lesson.html>
+ *                                   # ...when you repointed that row on purpose
+ *   node lesson-template/check-library.js --self-test  # prove the origin gate
  *
  * The second form is the one to run BEFORE uploading library.html: it
  * reports any entry that exists on origin and not in your copy, which is
@@ -34,6 +37,73 @@ function parseMap(src) {
   let x;
   while ((x = re.exec(m[1]))) out.push({ lesson: x[1], image: x[2] });
   return out;
+}
+
+/* ── this copy against origin, as a pure function so it can be tested ──
+   theirs: origin/main's entries. mine: this copy, lesson -> image. base: the
+   map at merge-base(HEAD, origin/main), or null if it cannot be read.
+   expect: the lessons this session repointed ON PURPOSE (--expect).
+
+   An entry whose value differs from origin used to fail outright. That is
+   right for the two incidents this gate exists for — a stale base
+   (2026-08-25) and a stale in-memory copy written back over a fresh file
+   (f6be885) — and wrong for the one thing a session is supposed to do here:
+   repoint a rebuilt lesson at its new hero. That differs from origin by
+   definition until it is pushed, so the gate could only be passed by not
+   making the change (2026-09-25, the Mixed Grammar rebuild).
+
+   A three-way check alone cannot tell those apart: after the in-memory
+   revert, base and origin agree and only this copy differs, which is
+   exactly what a deliberate change looks like. So intent has to be SAID.
+   A difference passes only if the session names the lesson with --expect
+   AND origin still holds the base's value for it — that second half is
+   what stops a declared change from overwriting a newer one on origin.
+   Everything else still fails, as before. */
+function againstOrigin(theirs, mine, base, expect) {
+  const lost = theirs.filter(e => !mine.has(e.lesson)).map(e => e.lesson + ' -> ' + e.image);
+  const differ = theirs.filter(e => mine.has(e.lesson) && mine.get(e.lesson) !== e.image);
+  const ours = differ.filter(e => expect.has(e.lesson) && base !== null
+                                  && base.get(e.lesson) === e.image);
+  const stale = differ.filter(e => !ours.includes(e));
+  return { lost, stale, ours };
+}
+
+const EXPECT = new Set();
+process.argv.forEach((a, i, all) => {
+  if (a === '--expect' && all[i + 1]) EXPECT.add(all[i + 1]);
+  else if (a.startsWith('--expect=')) a.slice(9).split(',').forEach(l => l && EXPECT.add(l));
+});
+
+/* Measured, not trusted: every case the gate has to get right, including
+   the two it was written for. Run after touching againstOrigin(). */
+if (process.argv.includes('--self-test')) {
+  const M = o => new Map(Object.entries(o));
+  const T = o => Object.entries(o).map(([lesson, image]) => ({ lesson, image }));
+  //  name                                           base      origin    mine      expect  lost stale ours
+  const cases = [
+    ['deliberate repoint, declared',                 {a: 'A'}, {a: 'A'}, {a: 'B'}, ['a'], 0, 0, 1],
+    ['deliberate repoint, NOT declared',             {a: 'A'}, {a: 'A'}, {a: 'B'}, [],    0, 1, 0],
+    ['stale base reverts origin (2026-08-25)',       {a: 'A'}, {a: 'B'}, {a: 'A'}, [],    0, 1, 0],
+    ['stale base, and the session declares it',      {a: 'A'}, {a: 'B'}, {a: 'A'}, ['a'], 0, 1, 0],
+    ['in-memory copy written back (f6be885)',        {a: 'B'}, {a: 'B'}, {a: 'A'}, [],    0, 1, 0],
+    ['both changed it; origin moved since the base', {a: 'A'}, {a: 'B'}, {a: 'C'}, ['a'], 0, 1, 0],
+    ['already in step with origin',                  {a: 'A'}, {a: 'B'}, {a: 'B'}, [],    0, 0, 0],
+    ['added on origin since the base, missing here', {},       {a: 'B'}, {},       [],    1, 0, 0],
+    ['no base readable: a declaration proves nothing', null,   {a: 'A'}, {a: 'B'}, ['a'], 0, 1, 0],
+    ['one declared, one not: only the declared passes',
+                                         {a: 'A', b: 'X'}, {a: 'A', b: 'X'}, {a: 'B', b: 'Y'}, ['a'], 0, 1, 1],
+  ];
+  let bad = 0;
+  for (const [name, b, o, m, ex, l, s, u] of cases) {
+    const r = againstOrigin(T(o), M(m), b && M(b), new Set(ex));
+    const ok = r.lost.length === l && r.stale.length === s && r.ours.length === u;
+    if (!ok) bad++;
+    console.log('  ' + (ok ? GRN + 'ok ' : RED + 'BAD') + OFF + '  ' + name
+                + (ok ? '' : '   lost/stale/ours = ' + [r.lost.length, r.stale.length, r.ours.length]
+                             + ', expected ' + [l, s, u]));
+  }
+  console.log('\n  ' + (bad ? RED + bad + ' case(s) wrong' : GRN + cases.length + ' cases right') + OFF + '\n');
+  process.exit(bad ? 1 : 0);
 }
 
 const src = fs.readFileSync(LIB, 'utf8');
@@ -114,7 +184,13 @@ if (process.argv.includes('--vs-origin')) {
     execSync('git fetch origin -q', { cwd: ROOT, stdio: 'ignore' });
     const theirs = parseMap(execSync('git show origin/main:library.html', { cwd: ROOT }).toString());
     const mine = new Map(seen);   // lesson -> image
-    const lost = theirs.filter(e => !mine.has(e.lesson)).map(e => e.lesson + ' -> ' + e.image);
+    let base = null;
+    try {
+      const ref = execSync('git merge-base HEAD origin/main', { cwd: ROOT }).toString().trim();
+      base = new Map(parseMap(execSync('git show ' + ref + ':library.html', { cwd: ROOT }).toString())
+                     .map(e => [e.lesson, e.image]));
+    } catch (e) { /* no common base: nothing can be declared, every difference fails */ }
+    const { lost, stale, ours } = againstOrigin(theirs, mine, base, EXPECT);
     say(!lost.length, 'no entry on origin is missing from this copy',
         lost.map(d => '        ' + d).join('\n') +
         (lost.length ? '\n        ^ uploading this file would delete those cards' : ''));
@@ -122,13 +198,27 @@ if (process.argv.includes('--vs-origin')) {
     /* Presence is not enough. On 2026-08-25 an IELTS upload passed the check
        above and still reverted a thumbnail: the entry was present in both
        copies, with a stale VALUE, because the local base predated the commit
-       that changed it. A key that exists is not a key that matches. */
-    const stale = theirs
-      .filter(e => mine.has(e.lesson) && mine.get(e.lesson) !== e.image)
-      .map(e => e.lesson + '\n          origin ' + e.image + '\n          yours  ' + mine.get(e.lesson));
+       that changed it. A key that exists is not a key that matches.
+       The one sanctioned difference is a declared one; see againstOrigin(). */
     say(!stale.length, 'no entry on origin is silently changed by this copy',
-        stale.map(d => '        ' + d).join('\n') +
-        (stale.length ? '\n        ^ uploading this file would revert those thumbnails' : ''));
+        stale.map(e => '        ' + e.lesson + '\n          origin ' + e.image
+                       + '\n          yours  ' + mine.get(e.lesson)
+                       + (EXPECT.has(e.lesson)
+                          ? '\n          declared, but origin has changed this entry since your base:'
+                            + ' re-read library.html from origin and re-apply'
+                          : '')).join('\n') +
+        (stale.length ? '\n        ^ uploading this file would revert those thumbnails.'
+                        + ' If one is a repoint you made on purpose, name it: --expect <lesson.html>' : ''));
+    if (ours.length) {
+      console.log(DIM + ours.map(e => '        declared: ' + e.lesson + '\n          origin '
+                                      + e.image + '\n          yours  ' + mine.get(e.lesson)).join('\n') + OFF);
+    }
+    const unused = [...EXPECT].filter(l => !ours.some(e => e.lesson === l)
+                                           && !stale.some(e => e.lesson === l));
+    if (unused.length) {
+      say('warn', '--expect names a lesson this copy does not change',
+          unused.map(l => '        ' + l).join('\n'));
+    }
   } catch (e) {
     console.log('  ' + YEL + 'SKIP' + OFF + '  could not read origin/main (' + e.message.split('\n')[0] + ')');
   }

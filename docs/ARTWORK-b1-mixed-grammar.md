@@ -1,5 +1,13 @@
 # Artwork brief: B1 Mixed Grammar Test, parts 1 and 2
 
+> **SUPERSEDED 2026-09-25: do not commission these fourteen plates.** Both
+> parts shipped as *panel* decks (`build_mixedgrammar1.py`,
+> `build_mixedgrammar2.py`) on 16:9 art from the other brief,
+> `docs/PLAN-mixed-grammar-b1.md` §5: Noma Bar for Part 1, the desert
+> roadside for Part 2. That is the art Innes actually generated. The
+> editorial builder this brief serves, `build_mixed_b1.py`, now writes
+> previews only. It is kept for its French, Italian and Portuguese text.
+
 The shopping list Innes asked for on 2026-09-23 ("house style 2 and ask for
 shopping list images"). **Fourteen plates, seven per part. The heroes are
 already on disk and stay.** Both decks are built and pass every check; they

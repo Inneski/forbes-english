@@ -76,26 +76,41 @@ embedded in the template. Copy it verbatim. Its geometry is:
 
 - `viewBox="0 0 200 78"`
 - Forbes glyph: `transform="translate(-42.74,-30.22) scale(0.099477)"`
-- ENGLISH: `x="105.205" y="72.6"`, `font-size="20.8"`,
-  `letter-spacing="10.41"`, `font-weight="600"`, DM Sans
+- ENGLISH: `x="24.41" y="72.6" textLength="151.2" lengthAdjust="spacing"`,
+  `font-size="20.8"`, `font-weight="600"`, DM Sans. No `letter-spacing`, no
+  `text-anchor`.
 
-Both lines then render 148.4 units wide, left edge at x=25.8. Do not nudge
-these numbers. If the two lines are different widths, the lockup is wrong.
+Forbes renders 148.4 units wide from x=25.8, and so does ENGLISH's ink:
+`textLength` fixes the word's advance at 151.2, and DM Sans's E and H carry
+1.4 units of side bearing each. Do not nudge these numbers. If the two lines
+are different widths, the lockup is wrong.
 
-**`x` is not 100, and that is deliberate.** Letter-spacing is added after the
-*last* glyph as well as between glyphs, so with `text-anchor="middle"` the
-browser centres a box that is one whole space wider than the ink — which
-leaves the visible word half a space left of centre. `x = 100 + letter-spacing
-/ 2` puts the ink back on the centre line. Change one of the two and you must
-change the other.
+**Why `textLength` and not letter-spacing (2026-09-26).** Tracking only
+balances the lockup in the one face it was measured against. In any other face
+ENGLISH comes out a different width: the 26 Block Camp decks, which never load
+DM Sans, rendered it 5–10% narrow, and about a hundred hand-built pages had
+drifted to a tiny "Forbes" over an oversized ENGLISH. `textLength` makes the
+browser space the letters to a width given in the SVG's own units, so the
+word matches the wordmark in DM Sans, Arial, or whatever the fallback chain
+finds. (Arial Bold's side bearings happen to equal DM Sans's, so its ink
+lands in the same place too.) Before this, the template set
+`x="105.205" letter-spacing="10.41"` (itself a 2026-09-09 correction of
+`x="100" letter-spacing="8"`); every deck was moved over in one pass.
 
-**Corrected 2026-09-09.** This section previously specified `x="100"` and
-`letter-spacing="8"` and claimed they rendered at 148.4/25.8. They did not:
-measured in headless Chromium at 1400×820 with DM Sans 600 loaded, Forbes ran
-25.809 → 174.192 (148.383 wide, exactly as documented) and ENGLISH ran
-29.037 → 162.963 — 133.927 wide, 9.75% narrow and 3.2 units left of where the
-mark starts. The values above are solved against that same measurement and land
-ENGLISH on 25.805 → 174.195. Every page in the repo was updated in one pass.
+**The rest of the site uses the same geometry.** One standard, three forms,
+all checked by `python3 tools/check_logos.py` (exit 1 on any deviation):
+
+| where | ENGLISH | markup |
+|---|---|---|
+| decks | DM Sans 600 | the template's `.fe-logo`, above |
+| hand-built lessons | DM Sans 600 | ENGLISH as `<text x="675" y="1034" textLength="1520" lengthAdjust="spacing">` inside the SVG that holds the trace, in the trace's own units (font-size 209) |
+| site chrome and top bands (library, index, pricing, hubs, Block Camp) | Barlow Condensed 800, `--gold-bright` | `<text class="fe-logo-en" x="680" y="1054" textLength="1510" lengthAdjust="spacing">` in `viewBox="670 345 1530 738"`, font-size 261 |
+
+What `check_logos.py` refuses: ENGLISH as its own `<span>`/`<div>` under the
+wordmark, ENGLISH as SVG text with hand-set tracking, "Forbes" typed as text
+instead of the trace, and an FE monogram standing in for the logo. The
+level-checker masthead is the one exemption: it takes the level's face on
+purpose.
 
 **Colour:** the Forbes mark takes `var(--accent)`; ENGLISH takes
 `var(--text)`. Both come from the palette, so the logo belongs to each
@@ -117,19 +132,16 @@ Leave it off when the accent already stands clear. If the accent is so light
 or so loud that the mark stops reading, `var(--text)` for both is the safe
 fallback.
 
-**The font must actually be loaded before the wordmark shows.** DM Sans at
-`letter-spacing: 10.41` is what makes ENGLISH exactly as wide as Forbes; in a
-fallback face the balance collapses. The template handles this — the wordmark
-is hidden until `document.fonts.ready` resolves (with a 1.5s failsafe). Keep
-that mechanism.
+**The wordmark still waits for its font.** The width no longer depends on
+DM Sans, but the face does, so the template keeps ENGLISH hidden until
+`document.fonts.ready` resolves (with a 1.5s failsafe). Keep that mechanism.
 
 **26 Block Camp decks do not load DM Sans at all.** They embed Carlito,
 JetBrains Mono, Pixelify Sans and Silkscreen as data URIs and never fetch the
-Google font, so the wordmark falls through to Arial and the lockup cannot be
-balanced at any letter-spacing — the fallback measures 89 units on one machine
-and 96 on another. Those files keep `x="100"` / `letter-spacing="8"`, which is
-what they shipped with, until DM Sans 600 is embedded alongside their other
-four faces. `check-lesson.js` now says so instead of reporting a width.
+Google font, so ENGLISH shows in Arial after the failsafe. With `textLength`
+it is still exactly the wordmark's width; `check-lesson.js` reports it as a
+PASS with "fallback face, width pinned". Embedding DM Sans 600 alongside their
+other four faces would restore the face as well.
 
 Size: `232px` on the cover, `152px` anywhere else.
 

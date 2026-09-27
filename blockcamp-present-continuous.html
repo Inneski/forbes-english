@@ -207,6 +207,21 @@ html, body {
     linear-gradient(180deg, var(--wash-edge) 0%, var(--wash-mid) 20%,
                             var(--wash-mid) 80%, var(--wash-edge) 100%);
 }
+/* A correct answer can bring the slide's picture to life (data-clip). The clip
+   opens on the plate's exact frame, so it sits between the picture and the
+   wash at the picture's own strength and the handover cannot be seen.
+   THE STILL MUST GO WHILE THE CLIP SHOWS. Both are translucent, so with the
+   still left in place it showed through the moving clip as a ghost frame.
+   The swap is instant on purpose: a fade would dip the picture, and the
+   first frame is the still, so a cut is invisible. There are two clip
+   elements so a looping slide can cut from one clip's last frame straight
+   onto the next one's first. */
+.bg-clip {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  opacity: 0; filter: saturate(0.92); pointer-events: none;
+}
+.bg-clip.run { opacity: var(--bg-opacity); }
+.bg-layer.clip-on::before { opacity: 0; }
 /* The cover slide shows the hero at FULL strength — no wash, no dimming. */
 .stage.on-cover .bg-layer::before { opacity: 1; filter: none; }
 /* Centre scrim: guarantees cover-text contrast over ANY hero — light, dark,
@@ -889,7 +904,7 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
     width: 1280px; height: auto;      /* let the slides stack into pages */
     overflow: visible; box-shadow: none;
   }
-  .bg-layer, .deck-bar, .lang-select, .nav-btn, .deck-rail { display: none !important; }
+  .bg-layer, .bg-clip, .deck-bar, .lang-select, .nav-btn, .deck-rail { display: none !important; }
   /* A delayed animation must never decide what lands on a printed page. */
   .slide.is-active .card,
   .slide.is-active .card + .card,
@@ -2047,7 +2062,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
   <div class="stage" id="stage">
 
     <!-- Background pattern: driven entirely by --hero in the CSS above. -->
-    <div class="bg-layer" role="presentation"></div>
+    <div class="bg-layer" role="presentation"><video class="bg-clip" playsinline preload="none" aria-hidden="true"></video><video class="bg-clip" playsinline preload="none" aria-hidden="true"></video></div>
 
     <!-- ══════════════════════════════════════════════════════════
          REPLACE 2 of 2: SLIDES
@@ -2063,7 +2078,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
       <div class="cover-inner">
         <svg class="fe-logo" viewBox="0 0 200 78" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Forbes English">
           <g class="fe-logo-mark" transform="translate(-42.74,-30.22) scale(0.099477)"><g transform="translate(0,1504) scale(0.1,-0.1)" fill="currentColor" stroke="none"><path d="M14940 11379 c-58 -10 -226 -34 -375 -54 -148 -20 -305 -41 -348 -47 l-78 -10 3 -146 3 -146 76 -12 c42 -6 85 -17 97 -23 27 -15 66 -67 82 -111 21 -57 27 -487 25 -1635 -2 -832 -6 -1120 -18 -1295 -8 -124 -14 -226 -13 -227 9 -9 462 -54 473 -47 7 5 40 61 72 124 32 63 63 116 68 117 6 2 43 -24 84 -58 105 -89 177 -133 272 -167 125 -45 205 -57 372 -57 316 1 518 82 725 294 141 144 224 297 285 521 74 276 91 648 42 925 -32 176 -68 310 -113 418 -164 392 -526 609 -944 565 -204 -21 -372 -97 -522 -237 l-48 -44 0 656 0 655 -31 31 c-35 36 -40 36 -189 10z m788 -1611 c112 -42 190 -158 236 -353 43 -182 55 -299 51 -525 -6 -382 -71 -618 -205 -744 -76 -71 -126 -91 -235 -91 -57 0 -110 6 -145 17 -71 22 -169 81 -225 135 l-45 43 0 669 0 669 54 49 c84 77 226 144 331 156 51 6 127 -4 183 -25z"/><path d="M6896 11053 c-4 -71 -3 -141 2 -158 8 -28 13 -31 89 -46 44 -9 95 -21 112 -29 43 -17 88 -72 98 -117 11 -50 10 -2471 0 -2545 -5 -31 -18 -72 -30 -89 -26 -39 -95 -76 -157 -84 -25 -3 -62 -8 -82 -11 l-38 -6 0 -159 0 -159 755 0 755 0 -2 163 -3 162 -87 7 c-175 13 -250 55 -284 158 -16 49 -18 108 -22 558 l-3 502 236 0 c344 0 346 -1 410 -267 l18 -73 168 0 169 0 -2 553 -3 552 -167 3 c-167 2 -168 2 -172 -20 -2 -13 -9 -54 -16 -93 -21 -126 -70 -206 -139 -225 -20 -5 -141 -10 -268 -10 l-233 0 0 555 0 556 428 -3 c473 -3 469 -3 540 -71 46 -44 78 -108 132 -267 l46 -135 203 -3 203 -2 -6 67 c-3 38 -15 205 -26 373 -11 168 -22 347 -26 398 l-6 92 -1293 0 -1292 0 -7 -127z"/><path d="M10520 10306 c-503 -73 -861 -361 -1014 -817 -51 -153 -68 -261 -73 -477 -6 -224 4 -336 43 -502 62 -263 143 -419 296 -569 255 -249 547 -361 939 -361 298 0 517 60 724 198 282 187 439 437 517 823 20 100 23 142 23 339 -1 205 -3 236 -27 350 -76 353 -203 581 -425 759 -147 119 -353 211 -551 247 -120 22 -335 26 -452 10z m325 -436 c141 -69 239 -258 297 -571 20 -108 22 -158 23 -384 0 -288 -10 -379 -57 -540 -52 -176 -121 -278 -224 -330 -47 -24 -73 -30 -145 -33 -171 -8 -285 53 -372 199 -95 161 -150 473 -142 809 10 449 121 745 315 845 58 30 81 34 170 32 67 -2 96 -7 135 -27z"/><path d="M18255 10313 c-141 -16 -204 -29 -292 -58 -271 -90 -467 -237 -611 -458 -182 -280 -257 -619 -223 -1007 37 -415 159 -696 387 -893 253 -218 538 -317 914 -317 341 1 615 84 815 247 60 49 185 177 191 195 4 14 -19 57 -77 144 -45 69 -86 127 -91 130 -5 3 -43 -17 -86 -44 -164 -106 -284 -154 -430 -173 -168 -22 -350 5 -497 76 -134 64 -216 161 -275 323 -33 90 -77 320 -67 347 6 13 94 15 776 15 l769 0 7 113 c7 120 -6 307 -31 447 -62 340 -198 580 -413 723 -95 64 -242 133 -334 156 -127 33 -318 48 -432 34z m221 -427 c132 -62 228 -270 241 -528 l6 -118 -408 0 -408 0 7 68 c25 246 110 453 221 538 87 66 245 85 341 40z"/><path d="M20656 10309 c-301 -29 -581 -166 -723 -354 -56 -73 -116 -197 -140 -285 -13 -48 -17 -103 -17 -210 0 -129 3 -155 28 -235 35 -114 68 -174 134 -246 129 -140 318 -226 797 -364 192 -55 255 -84 317 -146 106 -107 103 -287 -8 -389 -84 -78 -192 -107 -357 -97 -209 13 -353 92 -403 223 -10 27 -32 101 -49 164 l-30 115 -219 3 -219 2 6 -256 c4 -142 7 -304 7 -360 0 -122 -15 -107 173 -170 263 -88 487 -124 781 -124 205 0 315 10 436 41 164 41 281 102 392 207 155 146 233 326 245 562 12 245 -69 470 -218 604 -123 111 -266 178 -599 281 -385 119 -458 152 -515 234 -28 40 -30 49 -29 124 1 125 43 190 154 241 111 51 254 56 389 14 121 -37 177 -121 236 -353 l20 -80 205 0 205 0 3 346 2 347 -112 40 c-318 112 -594 149 -892 121z"/><path d="M12620 10249 c-223 -32 -411 -61 -417 -64 -10 -3 -13 -42 -13 -149 l0 -144 58 -7 c111 -13 183 -65 199 -143 4 -20 8 -397 8 -837 0 -787 0 -801 -21 -840 -26 -52 -87 -83 -177 -92 l-67 -6 0 -41 c0 -23 -3 -94 -7 -158 l-6 -118 702 0 701 0 0 159 0 158 -83 6 c-146 12 -214 43 -253 119 -27 51 -37 294 -30 722 7 428 12 470 69 579 82 157 210 228 407 226 76 0 166 -18 278 -54 12 -4 22 -3 22 1 0 5 20 167 44 359 25 193 41 353 38 356 -14 14 -115 29 -188 29 -112 0 -217 -25 -319 -75 -170 -83 -273 -193 -362 -382 -26 -56 -51 -103 -55 -103 -5 0 -8 15 -8 33 0 18 -7 134 -15 258 -15 218 -16 225 -41 247 -14 12 -33 22 -42 21 -9 0 -199 -27 -422 -60z"/></g></g>
-          <text class="fe-logo-word" x="100" y="72.6" text-anchor="middle" font-family="'DM Sans', Arial, sans-serif" font-size="20.8" font-weight="600" letter-spacing="8">ENGLISH</text>
+          <text class="fe-logo-word" x="24.41" y="72.6" textLength="151.2" lengthAdjust="spacing" font-family="'DM Sans', Arial, sans-serif" font-size="20.8" font-weight="600">ENGLISH</text>
         </svg>
         <h1 class="cover-title" data-i18n="coverTitle">Present Continuous</h1>
         <p class="cover-sub" data-i18n="coverSub">Part 1: what is happening right now</p>
@@ -2229,7 +2244,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="mc" data-bg="present-continuous-time-signals/bg14.jpg" data-side="right" data-vpos="top">
+    <section class="slide" data-type="mc" data-bg="present-continuous-time-signals/bg14-cluck.jpg" data-clip="present-continuous-time-signals/bg14.mp4" data-side="right" data-vpos="top">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="qEyebrow">Practice</span> &middot; 1 / 6</div>
         <h2 class="slide-title" data-i18n="qTitleForm">Choose the right form</h2>
@@ -2248,7 +2263,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="mc" data-bg="present-continuous-time-signals/bg09.jpg" data-side="left" data-vpos="top" data-nudge="right">
+    <section class="slide" data-type="mc" data-bg="present-continuous-time-signals/bg09.jpg" data-clip="present-continuous-time-signals/bg09.mp4" data-side="left" data-vpos="top" data-nudge="right">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="qEyebrow">Practice</span> &middot; 2 / 6</div>
         <h2 class="slide-title" data-i18n="qTitleSpell">Spell the -ing form</h2>
@@ -2267,7 +2282,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="mc" data-bg="present-continuous-time-signals/bg33.jpg" data-side="left" data-vpos="top">
+    <section class="slide" data-type="mc" data-bg="present-continuous-time-signals/bg33.jpg" data-clip="present-continuous-time-signals/bg33.mp4" data-side="left" data-vpos="top">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="qEyebrow">Practice</span> &middot; 3 / 6</div>
         <h2 class="slide-title" data-i18n="qTitleForm">Choose the right form</h2>
@@ -2286,7 +2301,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="mc" data-bg="present-continuous-time-signals/bg11.jpg" data-side="left" data-vpos="top" data-nudge="fine" style="--nx:133px">
+    <section class="slide" data-type="mc" data-bg="present-continuous-time-signals/bg11.jpg" data-clip="present-continuous-time-signals/bg11.mp4" data-side="left" data-vpos="top" data-nudge="fine" style="--nx:133px">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="qEyebrow">Practice</span> &middot; 4 / 6</div>
         <h2 class="slide-title" data-i18n="qTitleForm">Choose the right form</h2>
@@ -2305,7 +2320,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="mc" data-bg="present-continuous-time-signals/bg27.jpg" data-side="left" data-vpos="top">
+    <section class="slide" data-type="mc" data-bg="present-continuous-time-signals/bg27-fountain.jpg" data-clip="present-continuous-time-signals/bg27.mp4" data-side="left" data-vpos="top">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="qEyebrow">Practice</span> &middot; 5 / 6</div>
         <h2 class="slide-title" data-i18n="qTitleSignal">Choose the right signal</h2>
@@ -2324,7 +2339,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="mc" data-bg="present-continuous-time-signals/bg18.jpg" data-side="right" data-vpos="top">
+    <section class="slide" data-type="mc" data-bg="present-continuous-time-signals/bg18.jpg" data-clip="present-continuous-time-signals/bg18.mp4" data-side="right" data-vpos="top">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="qEyebrow">Practice</span> &middot; 6 / 6</div>
         <h2 class="slide-title" data-i18n="qTitleTense">Which tense does it need?</h2>
@@ -2343,7 +2358,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="sort" data-bg="present-continuous-time-signals/bg08.jpg" data-side="right" data-vpos="top">
+    <section class="slide" data-type="sort" data-bg="present-continuous-time-signals/bg08.jpg" data-clip="present-continuous-time-signals/bg08.mp4" data-side="right" data-vpos="top">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="sortEyebrow">Practice</div>
         <h2 class="slide-title" data-i18n="sortTitle">How does each verb take -ing?</h2>
@@ -2366,7 +2381,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="match" data-bg="present-continuous-time-signals/bg26.jpg" data-side="right" data-vpos="top">
+    <section class="slide" data-type="match" data-bg="present-continuous-time-signals/bg26.jpg" data-clip="present-continuous-time-signals/bg26.mp4" data-side="right" data-vpos="top">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="matchEyebrow">Practice</div>
         <h2 class="slide-title" data-i18n="matchTitle">How wide is that &lsquo;now&rsquo;?</h2>
@@ -2387,7 +2402,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="gap" data-bg="present-continuous-time-signals/bg36.jpg" data-side="right" data-vpos="bottom" data-nudge="up">
+    <section class="slide" data-type="gap" data-bg="present-continuous-time-signals/bg36-creeper.jpg" data-clip="present-continuous-time-signals/bg36.mp4" data-side="right" data-vpos="bottom" data-nudge="up">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="gap1Eyebrow">Practice</span> &middot; 1 / 2</div>
         <h2 class="slide-title" data-i18n="gap1Title">Write the -ing form</h2>
@@ -2413,13 +2428,13 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="gap" data-bg="present-continuous-time-signals/bg23.jpg" data-side="left" data-vpos="top">
+    <section class="slide" data-type="gap" data-bg="present-continuous-time-signals/bg23.jpg" data-clip="present-continuous-time-signals/bg23.mp4" data-side="left" data-vpos="top">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="gap2Eyebrow">Practice</span> &middot; 2 / 2</div>
         <h2 class="slide-title" data-i18n="gap2Title">Which words fit a tense in motion?</h2>
       </div></div>
       <div class="slide-body">
-        <div class="act-target" style="margin-bottom:12px">
+        <div class="act-target" style="margin-bottom:8px">
           <span class="act-target-label" data-i18n="bankLabel">Word bank:</span>
           <span class="bank-chip">every day</span> <span class="bank-chip">right now</span> <span class="bank-chip">these days</span> <span class="bank-chip">this evening</span>
         </div>
@@ -2429,7 +2444,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
           <p class="feedback" data-explain="<strong>these days</strong> stretches over weeks.<span class=&quot;sup&quot; data-lang=&quot;es&quot;><b>ES</b><span>abarca semanas</span></span><span class=&quot;sup&quot; data-lang=&quot;de&quot;><b>DE</b><span>&uuml;ber Wochen</span></span>"></p>
         </div>
         <div class="card gap-row" style="padding:12px 16px">
-          <p class="q-stem" style="margin-bottom:0;font-size:19px">Look! The villager is ringing the bell <input class="gap" data-answer="right now" aria-label="gap" style="width:210px">.</p>
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">Look! The villager is ringing the bell <input class="gap" data-answer="right now" data-clip-key aria-label="gap" style="width:210px">.</p>
           <p class="feedback" data-explain="<strong>right now</strong> is this exact second.<span class=&quot;sup&quot; data-lang=&quot;es&quot;><b>ES</b><span>este mismo segundo</span></span><span class=&quot;sup&quot; data-lang=&quot;de&quot;><b>DE</b><span>genau diese Sekunde</span></span>"></p>
         </div>
         <div class="card gap-row" style="padding:12px 16px">
@@ -2443,14 +2458,14 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="order" data-bg="present-continuous-time-signals/bg15.jpg" data-side="left" data-vpos="top">
+    <section class="slide" data-type="order" data-bg="present-continuous-time-signals/bg15.jpg" data-clip="present-continuous-time-signals/bg15.mp4" data-side="left" data-vpos="top">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="ord1Eyebrow">Practice</div>
         <h2 class="slide-title" data-i18n="ord1Title">Build the sentence</h2>
       </div></div>
       <div class="slide-body">
         <p class="order-hint" data-i18n="ord1Hint">Click the words in the right order.</p>
-        <div class="order" data-answer="Alex | is feeding | the chickens | right now ."></div>
+        <div class="order" data-answer="The bees | are flying | right now ."></div>
         <div style="margin-top:12px">
           <button class="btn" data-action="check-order" data-i18n="btnCheck">Check</button>
         </div>
@@ -2459,7 +2474,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="order" data-bg="present-continuous-time-signals/bg37.jpg" data-side="right" data-vpos="top">
+    <section class="slide" data-type="order" data-bg="present-continuous-time-signals/bg37.jpg" data-clip="present-continuous-time-signals/bg37.mp4" data-side="right" data-vpos="top">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="ord1Eyebrow">Practice</div>
         <h2 class="slide-title" data-i18n="ord1Title">Build the sentence</h2>
@@ -2475,7 +2490,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="results" data-bg="present-continuous-time-signals/bg41.jpg" data-side="right" data-vpos="top">
+    <section class="slide" data-type="results" data-bg="present-continuous-time-signals/bg41.jpg" data-clip="present-continuous-time-signals/bg41.mp4" data-clip-auto data-clip-loop="present-continuous-time-signals/bg32.mp4" data-clip-high="present-continuous-time-signals/bg32-roll.mp4" data-side="right" data-vpos="top">
       <div class="slide-body" style="align-items:center;text-align:center">
         <div class="score-big"><span id="scoreVal">0</span><span class="dim" style="font-size:34px">/<span id="scoreMax">0</span></span></div>
         <p class="prose" style="margin-top:18px" id="scoreMsg"></p>
@@ -2484,7 +2499,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="activate" data-bg="present-continuous-time-signals/bg32.jpg">
+    <section class="slide" data-type="activate" data-bg="present-continuous-time-signals/bg32-portal.jpg" data-clip="present-continuous-time-signals/bg32.mp4" data-clip-auto data-clip-loop="present-continuous-time-signals/bg41.mp4" data-clip-high="present-continuous-time-signals/bg32-roll.mp4">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="actEyebrow">Activation</div>
         <h2 class="slide-title" data-i18n="actTitle">Now describe what is happening</h2>
@@ -3827,6 +3842,11 @@ function show(n) {
   // under the wash — so extra artwork never becomes a pasted-in box.
   stage.style.setProperty('--hero', slides[idx].dataset.bg
     ? `url('${slides[idx].dataset.bg}')` : '');
+  clipPark(); clipArm(slides[idx]);
+  if (slides[idx].hasAttribute('data-clip-auto')) {
+    const here = slides[idx];
+    setTimeout(() => clipPlay(here), 1200);
+  }
   // In branch mode idx/length is meaningless — a learner sees roughly half the
   // nodes — so progress and the counter come from the node itself.
   const cur = slides[idx];
@@ -3858,16 +3878,20 @@ function show(n) {
   if (gap && !answered.has(slides[idx])) setTimeout(() => gap.focus(), 60);
 }
 
-function renderResults() {
-  // Branch mode scores out of what this learner actually met. Counting every
-  // question in the file would mark them against a paper half of which was
-  // on the road not taken.
-  const max = BRANCH
+// Branch mode scores out of what this learner actually met. Counting every
+// question in the file would mark them against a paper half of which was
+// on the road not taken.
+function scoreOutOf() {
+  return BRANCH
     ? [...seenScored].reduce((n, s) => n + Math.max(1, countIn(s)), 0)
     : maxScore;
+}
+function scorePct() { const max = scoreOutOf(); return max ? score / max : 0; }
+
+function renderResults() {
   document.getElementById('scoreVal').textContent = score;
-  document.getElementById('scoreMax').textContent = max;
-  const pct = max ? score / max : 0;
+  document.getElementById('scoreMax').textContent = scoreOutOf();
+  const pct = scorePct();
   // innerHTML, not textContent: these strings are authored HTML like every
   // other data-i18n value, so &lsquo;did&rsquo; has to arrive as a quote mark
   // and not as the six literal characters "&lsquo;". The band was the one
@@ -3883,6 +3907,95 @@ function updateScoreChip() {
 }
 
 /* ── Answer handling ── */
+/* Correct-answer clips. A slide with data-clip fetches its clip when it is
+   shown and plays it once when the learner gets it right (anything that
+   reports through feedback() with ok, plus checkGaps below); the clip then
+   holds on its last frame. On a gap slide the clip illustrates one sentence,
+   so the gap marked data-clip-key decides; without one, every gap must be
+   right. A slide marked data-clip-auto plays 1.2 s after it is shown instead.
+   data-clip-loop makes it go round: its own clip, then the listed ones, then
+   its own again. data-clip-high joins the round, second, when the score is in
+   the top two bands (75%+). The first round has sound, later rounds are
+   silent: this loops under the speaking task. Leaving the slide rewinds.
+   Never under reduced motion or Save-Data, and a refused autoplay or a load
+   error leaves the still picture. */
+var clips = [...document.querySelectorAll('.bg-clip')];
+var bgClip = clips[0];
+var clipList = [], clipAt = 0, clipRound = 0;
+var clipCalm = (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) ||
+               !!(navigator.connection && navigator.connection.saveData);
+clips.forEach(v => {
+  v.addEventListener('playing', () => {
+    if (v !== bgClip) return;
+    v.classList.add('run');
+    v.parentNode.classList.add('clip-on');
+    clips.forEach(o => { if (o !== v) { o.pause(); o.classList.remove('run'); } });
+    clipQueue();
+  });
+  v.addEventListener('ended', () => { if (v === bgClip) clipNext(); });
+});
+function clipOther() { return clips.find(v => v !== bgClip); }
+function clipArm(slide) {
+  if (clipCalm || !bgClip || !slide || !slide.dataset.clip) return;
+  if (bgClip.getAttribute('src') !== slide.dataset.clip) {
+    bgClip.src = slide.dataset.clip;
+    bgClip.preload = 'auto';
+  }
+}
+function clipPark() {
+  clips.forEach(v => {
+    v.pause();
+    v.classList.remove('run');
+    if (v.readyState) v.currentTime = 0;
+  });
+  if (bgClip) bgClip.parentNode.classList.remove('clip-on');
+  clipList = []; clipAt = 0; clipRound = 0;
+}
+/* The answer click is the user gesture that lets a browser play sound, so
+   play() runs inside it. If sound is still refused (iOS on a timed clip,
+   say), play muted rather than not at all. */
+function clipStart(v, slide, muted) {
+  v.muted = muted;
+  const p = v.play();
+  if (p && p.catch) p.catch(() => {
+    if (slides[idx] !== slide || v.muted) return;
+    v.muted = true;
+    const q = v.play();
+    if (q && q.catch) q.catch(() => {});
+  });
+}
+function clipPlay(slide) {
+  if (clipCalm || !bgClip || !slide.dataset.clip || slides[idx] !== slide) return;
+  clipArm(slide);
+  if (slide.dataset.clipLoop) {
+    clipList = [slide.dataset.clip,
+                scorePct() >= .75 ? slide.dataset.clipHigh : '',
+                ...slide.dataset.clipLoop.split(/\s+/)].filter(Boolean);
+    clipAt = 0; clipRound = 0;
+  }
+  clipStart(bgClip, slide, false);
+}
+// While one clip of a round plays, the other element fetches the next.
+function clipQueue() {
+  if (clipList.length < 2) return;
+  const next = clipOther(), src = clipList[(clipAt + 1) % clipList.length];
+  if (next.getAttribute('src') !== src) { next.src = src; next.preload = 'auto'; }
+  else if (next.readyState) next.currentTime = 0;
+}
+// The ended clip keeps its last frame on screen until the next one is playing.
+function clipNext() {
+  if (clipList.length < 2 || document.hidden) return;
+  clipAt = (clipAt + 1) % clipList.length;
+  if (clipAt === 0) clipRound++;
+  bgClip = clipOther();
+  clipStart(bgClip, slides[idx], clipRound > 0);
+}
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) { clips.forEach(v => v.pause()); return; }
+  if (!clipList.length || !bgClip.classList.contains('run')) return;
+  if (bgClip.ended) clipNext(); else clipStart(bgClip, slides[idx], true);
+});
+
 function award(slide, ok) {
   if (answered.has(slide)) return;
   answered.add(slide);
@@ -3891,6 +4004,7 @@ function award(slide, ok) {
 }
 
 function feedback(slide, ok, extra, ownExplain) {
+  if (ok) clipPlay(slide);
   const el = slide.querySelector('.feedback');
   if (!el) return;
   // An option's own explanation wins: telling a learner why THEIR answer was
@@ -4476,6 +4590,9 @@ function checkGaps(slide) {
   const btn = slide.querySelector('[data-action="check"]');
   if (btn) btn.disabled = true;
   updateScoreChip();
+  const clipKey = slide.querySelector('.gap[data-clip-key]');
+  if (clipKey ? clipKey.classList.contains('correct') : !slide.querySelector('.gap.wrong'))
+    clipPlay(slide);
   // In branch mode a gap slide may pay into the ledger, but only when every
   // gap on it is right. Without this a scored slide costs the learner effort
   // and returns nothing to the state that picks their ending.
@@ -4657,7 +4774,7 @@ const ready = () => document.body.classList.add('fonts-ready');
 if (document.fonts && document.fonts.ready) { document.fonts.ready.then(ready); setTimeout(ready, 1500); }
 else ready();
 </script>
-<script>window.BW_TR={"es": {"carry → carrying": "llevar → llevando", "carrying": "llevando", "play → playing": "jugar → jugando", "playing": "jugando", "open → opening": "abrir → abriendo", "opening": "abriendo", "make → making": "hacer → haciendo", "making": "haciendo", "ride → riding": "montar → montando", "riding": "montando", "dance → dancing": "bailar → bailando", "dancing": "bailando", "sit → sitting": "sentarse → sentándose", "sitting": "sentado / sentándose", "run → running": "correr → corriendo", "running": "corriendo", "swim → swimming": "nadar → nadando", "swimming": "nadando", "Alex ______ the chickens right now.": "Alex ______ a las gallinas ahora mismo.", "is feeding": "está dando de comer", "feeds": "da de comer", "feeding": "dando de comer", "are feeding": "están dando de comer", "Alex is ______ bread. (make)": "Alex está ______ pan. (hacer)", "(make)": "(hacer)", "makeing": "(mal escrito)", "makking": "(mal escrito)", "makes": "hace", "We ______ the bridge now. We stopped an hour ago.": "Nosotros ______ el puente ahora. Paramos hace una hora.", "aren’t building": "no estamos construyendo", "don’t building": "(no existe)", "not are building": "(no existe)", "isn’t building": "no está construyendo", "______ the Witch brewing a potion?": "¿______ la Bruja preparando una poción?", "Do": "(auxiliar del present simple)", "Does": "(auxiliar del present simple)", "Is": "está", "Has": "tiene", "They are ______ talking. They started an hour ago.": "Siguen ______ hablando. Empezaron hace una hora.", "still": "todavía", "yesterday": "ayer", "every day": "cada día", "last week": "la semana pasada", "Steve ______ every day, but today he ______.": "Steve ______ cada día, pero hoy ______.", "is mining … rests": "está picando … descansa", "is mining … is resting": "está picando … está descansando", "mines … is resting": "pica … está descansando", "mines … rests": "pica … descansa", "carry": "llevar", "dance": "bailar", "run": "correr", "swim": "nadar", "sit": "sentarse", "play": "jugar", "ride": "montar", "make": "hacer", "open": "abrir", "just add -ing": "solo añade -ing", "drop the e": "quita la e", "double the consonant": "duplica la consonante", "right now": "ahora mismo", "at the moment": "en este momento", "just now": "hace un momento", "these days": "estos días", "for now": "por ahora", "at this very moment": "en este mismísimo momento", "now, as we speak": "ahora, mientras hablamos", "temporarily, not forever": "temporalmente, no para siempre", "at this exact second": "en este segundo exacto", "around now, over weeks": "por estos días, durante semanas", "it began earlier and has not stopped": "empezó antes y no ha parado", "Alex is bread. (make)": "Alex está ______ pan. (hacer)", "Steve is a skeleton. (fight)": "Steve está ______ contra un esqueleto. (luchar)", "(fight)": "(luchar)", "The Enderman is a block. (carry)": "El Enderman está ______ un bloque. (llevar)", "(carry)": "(llevar)", "this evening": "esta tarde-noche", "They are building a castle — it has taken weeks.": "Están construyendo un castillo ______ — ha llevado semanas.", "Look! The villager is ringing the bell .": "¡Mira! El aldeano está tocando la campana ______.", "Steve is studying , after dinner.": "Steve está estudiando ______, después de cenar.", "the chickens": "las gallinas", "Alex": "Alex", "right now .": "ahora mismo .", "Steve and Alex": "Steve y Alex", "Are": "(auxiliar: están)", "building": "construyendo", "a house ?": "una casa ?", "Look!": "¡Mira!", "today": "hoy", "this morning": "esta mañana", "tonight": "esta noche"}, "de": {"carry → carrying": "tragen → tragend", "carrying": "tragend", "play → playing": "spielen → spielend", "playing": "spielend", "open → opening": "öffnen → öffnend", "opening": "öffnend", "make → making": "machen → machend", "making": "machend", "ride → riding": "reiten → reitend", "riding": "reitend", "dance → dancing": "tanzen → tanzend", "dancing": "tanzend", "sit → sitting": "sitzen → sitzend", "sitting": "sitzend", "run → running": "rennen → rennend", "running": "rennend", "swim → swimming": "schwimmen → schwimmend", "swimming": "schwimmend", "Alex ______ the chickens right now.": "Alex ______ gerade die Hühner.", "is feeding": "füttert gerade", "feeds": "füttert", "feeding": "fütternd", "are feeding": "füttern gerade", "Alex is ______ bread. (make)": "Alex ______ gerade Brot. (machen)", "(make)": "(machen)", "makeing": "(falsch geschrieben)", "makking": "(falsch geschrieben)", "makes": "macht", "We ______ the bridge now. We stopped an hour ago.": "Wir ______ die Brücke jetzt. Wir haben vor einer Stunde aufgehört.", "aren’t building": "bauen gerade nicht", "don’t building": "(gibt es nicht)", "not are building": "(gibt es nicht)", "isn’t building": "baut gerade nicht", "______ the Witch brewing a potion?": "______ die Hexe gerade einen Trank?", "Do": "(Hilfsverb des Present Simple)", "Does": "(Hilfsverb des Present Simple)", "Is": "ist", "Has": "hat", "They are ______ talking. They started an hour ago.": "Sie reden ______. Sie haben vor einer Stunde angefangen.", "still": "noch immer", "yesterday": "gestern", "every day": "jeden Tag", "last week": "letzte Woche", "Steve ______ every day, but today he ______.": "Steve ______ jeden Tag, aber heute ______ er.", "is mining … rests": "baut gerade ab … ruht", "is mining … is resting": "baut gerade ab … ruht gerade", "mines … is resting": "baut ab … ruht gerade", "mines … rests": "baut ab … ruht", "carry": "tragen", "dance": "tanzen", "run": "rennen", "swim": "schwimmen", "sit": "sitzen", "play": "spielen", "ride": "reiten", "make": "machen", "open": "öffnen", "just add -ing": "einfach -ing anhängen", "drop the e": "das e fällt weg", "double the consonant": "den Konsonanten verdoppeln", "right now": "gerade jetzt", "at the moment": "im Moment", "just now": "eben gerade", "these days": "zurzeit", "for now": "fürs Erste", "at this very moment": "in genau diesem Moment", "now, as we speak": "jetzt, während wir sprechen", "temporarily, not forever": "vorübergehend, nicht für immer", "at this exact second": "in genau dieser Sekunde", "around now, over weeks": "um jetzt herum, über Wochen", "it began earlier and has not stopped": "es begann früher und hat nicht aufgehört", "Alex is bread. (make)": "Alex ______ gerade Brot. (machen)", "Steve is a skeleton. (fight)": "Steve ______ gerade gegen ein Skelett. (kämpfen)", "(fight)": "(kämpfen)", "The Enderman is a block. (carry)": "Der Enderman ______ gerade einen Block. (tragen)", "(carry)": "(tragen)", "this evening": "heute Abend", "They are building a castle — it has taken weeks.": "Sie bauen ______ eine Burg — es hat Wochen gedauert.", "Look! The villager is ringing the bell .": "Schau! Der Dorfbewohner läutet ______ die Glocke.", "Steve is studying , after dinner.": "Steve lernt ______, nach dem Abendessen.", "the chickens": "die Hühner", "Alex": "Alex", "right now .": "gerade jetzt .", "Steve and Alex": "Steve und Alex", "Are": "(Hilfsverb: sind)", "building": "bauend", "a house ?": "ein Haus ?", "Look!": "Schau!", "today": "heute", "this morning": "heute Morgen", "tonight": "heute Abend"}};</script>
+<script>window.BW_TR={"es": {"carry → carrying": "llevar → llevando", "carrying": "llevando", "play → playing": "jugar → jugando", "playing": "jugando", "open → opening": "abrir → abriendo", "opening": "abriendo", "make → making": "hacer → haciendo", "making": "haciendo", "ride → riding": "montar → montando", "riding": "montando", "dance → dancing": "bailar → bailando", "dancing": "bailando", "sit → sitting": "sentarse → sentándose", "sitting": "sentado / sentándose", "run → running": "correr → corriendo", "running": "corriendo", "swim → swimming": "nadar → nadando", "swimming": "nadando", "Alex ______ the chickens right now.": "Alex ______ a las gallinas ahora mismo.", "is feeding": "está dando de comer", "feeds": "da de comer", "feeding": "dando de comer", "are feeding": "están dando de comer", "Alex is ______ bread. (make)": "Alex está ______ pan. (hacer)", "(make)": "(hacer)", "makeing": "(mal escrito)", "makking": "(mal escrito)", "makes": "hace", "We ______ the bridge now. We stopped an hour ago.": "Nosotros ______ el puente ahora. Paramos hace una hora.", "aren’t building": "no estamos construyendo", "don’t building": "(no existe)", "not are building": "(no existe)", "isn’t building": "no está construyendo", "______ the Witch brewing a potion?": "¿______ la Bruja preparando una poción?", "Do": "(auxiliar del present simple)", "Does": "(auxiliar del present simple)", "Is": "está", "Has": "tiene", "They are ______ talking. They started an hour ago.": "Siguen ______ hablando. Empezaron hace una hora.", "still": "todavía", "yesterday": "ayer", "every day": "cada día", "last week": "la semana pasada", "Steve ______ every day, but today he ______.": "Steve ______ cada día, pero hoy ______.", "is mining … rests": "está picando … descansa", "is mining … is resting": "está picando … está descansando", "mines … is resting": "pica … está descansando", "mines … rests": "pica … descansa", "carry": "llevar", "dance": "bailar", "run": "correr", "swim": "nadar", "sit": "sentarse", "play": "jugar", "ride": "montar", "make": "hacer", "open": "abrir", "just add -ing": "solo añade -ing", "drop the e": "quita la e", "double the consonant": "duplica la consonante", "right now": "ahora mismo", "at the moment": "en este momento", "just now": "hace un momento", "these days": "estos días", "for now": "por ahora", "at this very moment": "en este mismísimo momento", "now, as we speak": "ahora, mientras hablamos", "temporarily, not forever": "temporalmente, no para siempre", "at this exact second": "en este segundo exacto", "around now, over weeks": "por estos días, durante semanas", "it began earlier and has not stopped": "empezó antes y no ha parado", "Alex is bread. (make)": "Alex está ______ pan. (hacer)", "Steve is a skeleton. (fight)": "Steve está ______ contra un esqueleto. (luchar)", "(fight)": "(luchar)", "The Enderman is a block. (carry)": "El Enderman está ______ un bloque. (llevar)", "(carry)": "(llevar)", "this evening": "esta tarde-noche", "They are building a castle — it has taken weeks.": "Están construyendo un castillo ______ — ha llevado semanas.", "Look! The villager is ringing the bell .": "¡Mira! El aldeano está tocando la campana ______.", "Steve is studying , after dinner.": "Steve está estudiando ______, después de cenar.", "The bees": "Las abejas", "are flying": "están volando", "right now .": "ahora mismo .", "Steve and Alex": "Steve y Alex", "Are": "(auxiliar: están)", "building": "construyendo", "a house ?": "una casa ?", "Look!": "¡Mira!", "today": "hoy", "this morning": "esta mañana", "tonight": "esta noche"}, "de": {"carry → carrying": "tragen → tragend", "carrying": "tragend", "play → playing": "spielen → spielend", "playing": "spielend", "open → opening": "öffnen → öffnend", "opening": "öffnend", "make → making": "machen → machend", "making": "machend", "ride → riding": "reiten → reitend", "riding": "reitend", "dance → dancing": "tanzen → tanzend", "dancing": "tanzend", "sit → sitting": "sitzen → sitzend", "sitting": "sitzend", "run → running": "rennen → rennend", "running": "rennend", "swim → swimming": "schwimmen → schwimmend", "swimming": "schwimmend", "Alex ______ the chickens right now.": "Alex ______ gerade die Hühner.", "is feeding": "füttert gerade", "feeds": "füttert", "feeding": "fütternd", "are feeding": "füttern gerade", "Alex is ______ bread. (make)": "Alex ______ gerade Brot. (machen)", "(make)": "(machen)", "makeing": "(falsch geschrieben)", "makking": "(falsch geschrieben)", "makes": "macht", "We ______ the bridge now. We stopped an hour ago.": "Wir ______ die Brücke jetzt. Wir haben vor einer Stunde aufgehört.", "aren’t building": "bauen gerade nicht", "don’t building": "(gibt es nicht)", "not are building": "(gibt es nicht)", "isn’t building": "baut gerade nicht", "______ the Witch brewing a potion?": "______ die Hexe gerade einen Trank?", "Do": "(Hilfsverb des Present Simple)", "Does": "(Hilfsverb des Present Simple)", "Is": "ist", "Has": "hat", "They are ______ talking. They started an hour ago.": "Sie reden ______. Sie haben vor einer Stunde angefangen.", "still": "noch immer", "yesterday": "gestern", "every day": "jeden Tag", "last week": "letzte Woche", "Steve ______ every day, but today he ______.": "Steve ______ jeden Tag, aber heute ______ er.", "is mining … rests": "baut gerade ab … ruht", "is mining … is resting": "baut gerade ab … ruht gerade", "mines … is resting": "baut ab … ruht gerade", "mines … rests": "baut ab … ruht", "carry": "tragen", "dance": "tanzen", "run": "rennen", "swim": "schwimmen", "sit": "sitzen", "play": "spielen", "ride": "reiten", "make": "machen", "open": "öffnen", "just add -ing": "einfach -ing anhängen", "drop the e": "das e fällt weg", "double the consonant": "den Konsonanten verdoppeln", "right now": "gerade jetzt", "at the moment": "im Moment", "just now": "eben gerade", "these days": "zurzeit", "for now": "fürs Erste", "at this very moment": "in genau diesem Moment", "now, as we speak": "jetzt, während wir sprechen", "temporarily, not forever": "vorübergehend, nicht für immer", "at this exact second": "in genau dieser Sekunde", "around now, over weeks": "um jetzt herum, über Wochen", "it began earlier and has not stopped": "es begann früher und hat nicht aufgehört", "Alex is bread. (make)": "Alex ______ gerade Brot. (machen)", "Steve is a skeleton. (fight)": "Steve ______ gerade gegen ein Skelett. (kämpfen)", "(fight)": "(kämpfen)", "The Enderman is a block. (carry)": "Der Enderman ______ gerade einen Block. (tragen)", "(carry)": "(tragen)", "this evening": "heute Abend", "They are building a castle — it has taken weeks.": "Sie bauen ______ eine Burg — es hat Wochen gedauert.", "Look! The villager is ringing the bell .": "Schau! Der Dorfbewohner läutet ______ die Glocke.", "Steve is studying , after dinner.": "Steve lernt ______, nach dem Abendessen.", "The bees": "Die Bienen", "are flying": "fliegen gerade", "right now .": "gerade jetzt .", "Steve and Alex": "Steve und Alex", "Are": "(Hilfsverb: sind)", "building": "bauend", "a house ?": "ein Haus ?", "Look!": "Schau!", "today": "heute", "this morning": "heute Morgen", "tonight": "heute Abend"}};</script>
 <script>
 /* TRANSLATE-ON-REQUEST.
    The dictionary is keyed by the EXACT normalised English on screen, and the

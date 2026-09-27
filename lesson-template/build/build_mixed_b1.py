@@ -1,6 +1,19 @@
 # -*- coding: utf-8 -*-
 """B1 Mixed Grammar Test, parts 1 and 2 — rebuilt as editorial decks (§15).
 
+**SUPERSEDED 2026-09-25. This builder never writes a live page any more.**
+Both parts shipped as panel decks from `build_mixedgrammar1.py` and
+`build_mixedgrammar2.py`: "house style 2", as Innes clarified it on 09-25, is
+the panel layout, not §15, and he had the 16:9 art made for that plan
+(`docs/PLAN-mixed-grammar-b1.md`), not the 7:6 plates this one waits for.
+Its audit, its answer-key fixes and its EN/DE/ES explanations were ported
+into those two builders. It stays for one reason: `mixed_b1_fr.py`, `_it.py`
+and `_pt.py` hold French, Italian and Portuguese for all 35 items of both
+parts — most of a second language pass for the panel decks. It writes the
+gitignored `_…` preview only, whatever is on disk; left as it was, the day
+its seven plates per part landed it would have overwritten the live decks.
+Do not commission the 14 plates in docs/ARTWORK-b1-mixed-grammar.md.
+
     py lesson-template/build/build_mixed_b1.py        # both parts
     py lesson-template/build/build_mixed_b1.py 2      # one part
     py lesson-template/build/build_mixed_b1.py --stand-in   # hero in every
@@ -74,7 +87,7 @@ PART = {
                    'must', 'if I had &hellip;, I would', 'was built', 'who / which']),
     2: dict(out='forbes-english-b1-mixed-grammar-test-part2.html',
             folder='MixedGrammarPart2',
-            hero='desert-gas-station-sunset.jpg',
+            hero='hero.jpg',            # was desert-gas-station-sunset.jpg
             title='B1 Mixed Grammar Test, Part 2 — Forbes English',
             gloss={6: 'gForbidden'},
             chips=['I&rsquo;m flying', 'if it rains', 'mustn&rsquo;t',
@@ -226,7 +239,9 @@ def build(part, stand_in=False):
         EN['actWriteKind'], EN['actWriteBrief'], EN['actPlaceholder'],
         folder=F, bg=pic('plate-act')), 0, size=None))
 
-    out = cfg['out'] if ready else '_' + cfg['out']
+    # Superseded (see the docstring): a preview, never the live page, even
+    # when every plate is on disk. `ready` still drives the missing-plate note.
+    out = '_' + cfg['out']
     s = D.assemble(TPL, out, ''.join(slides),
                    D.editorial_palette('%s/%s' % (F, cfg['hero'])),
                    cfg['title'], L, langs=I.available(), style='editorial')
