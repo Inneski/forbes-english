@@ -48,6 +48,38 @@ button.
 - `check-lesson.js`: all 26 decks pass. Verified headless in en, de, es, ja,
   ru and ar (RTL mirrors, the arrow flips), no overflow in the bar.
 
+**Free / Pro: the map, the hub and the quest had not followed the catalogue**
+
+The next-camp button reads access from the catalogue, and on its first
+render it disagreed with the route map beside it. `e709bfc` (2026-09-15)
+freed the 1a deck of camps 4, 5, 6, 8 and 9 and eight Time Signals
+references so every topic hub had an open lesson. The hub kept printing Pro
+on all thirteen, the quest padlocked the five camps, and the route map
+padlocked six: Past Simple 1a had been locked there since 09-03, when that
+fix went into the hub but not the map. `checker/check-access.py`, the gate
+written for exactly this, had been blind since the hub's dark rebuild (its
+pattern matched no card), so nothing reported it.
+
+- `block-camp-hub/build.py` has `access(page, fallback)`, which reads
+  `lesson-meta.json`. The literal Free/Pro in its tables is now only the
+  fallback for a page the catalogue does not list. The hub cards, the quest
+  (`block-camp-quest/build.py`) and the deck buttons all go through it. The
+  hub's track note is generated too: *"Part 1 free on every camp but 7"*.
+  Camp 7 (Present Perfect) is the one 1a still Pro, because its hub's free
+  lesson is the Time Signals reference.
+- The route map is hand-kept, so `check-access.py --fix` sets its padlocks
+  (stop, lesson panel, phone list) from the catalogue. Its key no longer
+  names which camps are free: *"Needs a subscription — every other lesson
+  here is free."*
+- `check-access.py` now checks all four (hub, quest, nav, map) against
+  `lesson-meta.json`, fails when it finds nothing to check, and warns if
+  `tools/lessons.json` disagrees. It was run against the old hub (13 FAIL),
+  the old quest (6 FAIL) and a page with no cards (FAIL: blind) before being
+  trusted. **Run it whenever a Block Camp access flag moves.** Rebuild the
+  hub, quest and nav, and run `--fix` for the map.
+- The quest rebuild also carries *The Last Bounty* as free. The hub table
+  said so already, but quest.html had not been rebuilt since.
+
 **Found, not fixed**
 
 - **The descent decks lag their chassis.** Rebuilding stations 9-16 today

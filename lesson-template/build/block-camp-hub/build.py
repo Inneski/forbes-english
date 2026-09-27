@@ -14,7 +14,7 @@ or the build will put the old one back.
 The published HTML is the site's copy; this script is how it was made. Keep
 both in the repo (see docs/HANDOFF.md, 2026-09-04, and the Block Camp deck
 generator that was lost with a sandbox)."""
-import base64, mimetypes, os, re, sys, tempfile
+import base64, json, mimetypes, os, re, sys, tempfile
 
 REPO = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..'))
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -31,6 +31,29 @@ def present(path):
     the same builder run before and after the past-perfect branch lands: camp
     9, station 17 and the ninth reference appear the moment their files do."""
     return os.path.exists(os.path.join(REPO, path))
+
+# ── FREE OR PRO IS THE CATALOGUE'S ANSWER, NOT THIS FILE'S ──────────────
+# The access written into the tables below - FREE_CLIMB, and the 'free' /
+# 'pro' in DESCENT, REFS and ADVENTURES - is only a fallback now, for a page
+# the catalogue does not list yet. It used to be the answer, and it went stale
+# twice: 9c0381a (Past Simple 1a freed, the hub still said Pro), then e709bfc
+# on 2026-09-15, which freed five more camp 1a decks and eight Time Signals
+# references so every topic hub had an open lesson. The hub printed Pro on all
+# thirteen until 2026-09-27. lesson-meta.json is the file the Worker builds
+# its gate pages from, so it is what a Free or Pro chip has to agree with.
+# The quest and the deck buttons (block-camp-nav) read it through access()
+# too, and checker/check-access.py holds all of them, and the hand-kept route
+# map, to it.
+def _catalogue():
+    try:
+        meta = json.load(open(os.path.join(REPO, 'lesson-meta.json'), encoding='utf-8'))
+    except (OSError, ValueError):
+        return {}
+    return {f: row['access'] for f, row in meta.items() if row.get('access')}
+CATALOGUE = _catalogue()
+
+def access(page, fallback):
+    return CATALOGUE.get(page.split('#')[0], fallback)
 
 CLIMB = [
  (1,'Present Simple','present-simple','A1','A2'),
@@ -98,11 +121,43 @@ def climb_cards():
     for n,name,slug,l1,l2 in CLIMB:
         if present(f'blockcamp-{slug}.html'):
             out.append(card(f'blockcamp-{slug}.html', f'BlockCamp/{slug}-1a.jpg', n, str(n), name, l1,
-                            'free' if (n,1) in FREE_CLIMB else 'pro', CAMP[n], INK[n], 'Part 1'))
+                            access(f'blockcamp-{slug}.html', 'free' if (n,1) in FREE_CLIMB else 'pro'),
+                            CAMP[n], INK[n], 'Part 1'))
         if present(f'blockcamp-{slug}-2.html'):
             out.append(card(f'blockcamp-{slug}-2.html', f'BlockCamp/{slug}-1b.jpg', n, str(n), name, l2,
-                            'pro', CAMP[n], INK[n], 'Part 2'))
+                            access(f'blockcamp-{slug}-2.html', 'pro'), CAMP[n], INK[n], 'Part 2'))
     return '\n'.join(out)
+
+def _runs(nums):
+    """[1,2,3,5,6,8] -> '1&ndash;3, 5, 6 and 8': a run of three or more is a range."""
+    groups, out = [], []
+    for n in nums:
+        if groups and n == groups[-1][-1] + 1: groups[-1].append(n)
+        else: groups.append([n])
+    for g in groups:
+        out += [f'{g[0]}&ndash;{g[-1]}'] if len(g) > 2 else [str(x) for x in g]
+    return out[0] if len(out) == 1 else ', '.join(out[:-1]) + ' and ' + out[-1]
+
+def climb_free_note():
+    """The track note's free clause, from the same access() the chips use:
+    it said 'Part 1 free on camps 1-3' for twelve days after camps 4, 5, 6,
+    8 and 9 went free."""
+    camps = [n for n,_,s,_,_ in CLIMB if present(f'blockcamp-{s}.html')]
+    free = [n for n,_,s,_,_ in CLIMB if present(f'blockcamp-{s}.html')
+            and access(f'blockcamp-{s}.html', 'free' if (n,1) in FREE_CLIMB else 'pro') == 'free']
+    if not free: return ''
+    if free == camps: return ' &middot; Part 1 free on every camp'
+    if len(camps) - len(free) == 1:
+        return ' &middot; Part 1 free on every camp but %d' % next(n for n in camps if n not in free)
+    return ' &middot; Part 1 free on camp%s %s' % ('s' if len(free) > 1 else '', _runs(free))
+
+def descent_free_note():
+    stations = [st for st,_,_,s,_,_ in DESCENT if present(f'blockcamp-passive-{s}.html')]
+    free = [st for st,_,_,s,_,acc in DESCENT if present(f'blockcamp-passive-{s}.html')
+            and access(f'blockcamp-passive-{s}.html', acc) == 'free']
+    if not free: return ''
+    if free == stations: return ' &middot; every station free'
+    return ' &middot; station%s %s free' % ('s' if len(free) > 1 else '', _runs(free))
 
 def count_climb():
     return sum(present(f'blockcamp-{s}.html') + present(f'blockcamp-{s}-2.html') for _,_,s,_,_ in CLIMB)
@@ -118,7 +173,8 @@ def descent_cards():
             col,ink = CAMP[camp],INK[camp]
         else:
             col,ink = '#e8c04a','#0b1a12'
-        out.append(card(f'blockcamp-passive-{slug}.html', f'BlockCamp/passive-{st}-{slug}.jpg', st, str(st), name, lvl, acc, col, ink,
+        out.append(card(f'blockcamp-passive-{slug}.html', f'BlockCamp/passive-{st}-{slug}.jpg', st, str(st), name, lvl,
+                        access(f'blockcamp-passive-{slug}.html', acc), col, ink,
                         'Station %d' % st if camp else 'Station 16 &middot; every tense, no labels'))
     return '\n'.join(out)
 
@@ -126,7 +182,7 @@ def count_descent():
     return sum(present(f'blockcamp-passive-{s}.html') for _,_,_,s,_,_ in DESCENT)
 
 def ref_cards():
-    return '\n'.join(card(h,i,n,'',t,l,a,CAMP[n],INK[n]) for n,t,h,i,l,a in REFS if present(h))
+    return '\n'.join(card(h,i,n,'',t,l,access(h,a),CAMP[n],INK[n]) for n,t,h,i,l,a in REFS if present(h))
 
 def count_refs():
     return sum(present(h) for _,_,h,_,_,_ in REFS)
@@ -186,7 +242,7 @@ def adventure_cards():
     for href,img,title,desc,gram,lvl,acc,tag in ADVENTURES:
         if not present(href): continue
         lead = {'start':'<span class="chip chip-start">Start here</span>','new':'<span class="chip chip-new">New</span>'}.get(tag,'')
-        pro = ('<span class="chip chip-free">Free</span>' if acc=='free' else
+        pro = ('<span class="chip chip-free">Free</span>' if access(href, acc)=='free' else
                '<span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span>')
         chipset = lead + ''.join(f'<span class="chip">{g}</span>' for g in gram) + f'<span class="chip">{lvl}</span>' + pro
         out.append(f'      <li><a class="card" href="{href}">\n        <span class="thumb"><img src="{img}" alt="" loading="lazy"></span>\n        <span class="body">\n          <span class="card-title">{title}</span>\n          <span class="desc">{desc}</span>\n          <span class="chips">{chipset}</span>\n        </span>\n      </a></li>')
@@ -204,7 +260,7 @@ WORDS = {3:'three',4:'four',5:'five',6:'six',7:'seven',8:'eight',9:'nine',10:'te
 # the first gap; the neighbours are filled in so the next one does not.
 
 def more_cards():
-    return '\n'.join(card(h,i,0,'',t,l,'pro') for t,h,i,l in MORE)
+    return '\n'.join(card(h,i,0,'',t,l,access(h,'pro')) for t,h,i,l in MORE)
 
 def build(inline):
     # Every read is explicitly utf-8: on Windows the default is cp1252, which
@@ -217,6 +273,8 @@ def build(inline):
               .replace('{{NAV}}', rd('nav.html'))
               .replace('{{CLIMB}}', climb_cards())
               .replace('{{DESCENT}}', descent_cards())
+              .replace('{{CLIMB_FREE}}', climb_free_note())
+              .replace('{{DESCENT_FREE}}', descent_free_note())
               .replace('{{REFS}}', ref_cards())
               .replace('{{MORE}}', more_cards())
               .replace('{{ADV}}', adventure_cards())

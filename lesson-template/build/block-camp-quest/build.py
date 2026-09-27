@@ -35,15 +35,20 @@ def up(p): return '../' + p                      # a root-relative asset, seen f
 def unescape(s): return s.replace('&rsquo;', '’').replace('&mdash;', '—').replace('&ndash;', '–').replace('&amp;', '&')
 
 # ---- the map data ---------------------------------------------------------
+# Free or Pro comes from hub.access(), which asks lesson-meta.json - what the
+# Worker gates on - and only falls back to the hub's tables for a page the
+# catalogue does not list yet. Reading FREE_CLIMB directly left five free
+# camps padlocked here after e709bfc freed them.
 camps = []
 for n, name, slug, l1, l2 in hub.CLIMB:
     parts = []
     if present(f'blockcamp-{slug}.html'):
         parts.append({'id': f'blockcamp-{slug}', 'href': up(f'blockcamp-{slug}.html'), 'label': 'Part 1', 'level': l1,
-                      'access': 'free' if (n, 1) in hub.FREE_CLIMB else 'pro', 'img': up(f'BlockCamp/{slug}-1a.jpg')})
+                      'access': hub.access(f'blockcamp-{slug}.html', 'free' if (n, 1) in hub.FREE_CLIMB else 'pro'),
+                      'img': up(f'BlockCamp/{slug}-1a.jpg')})
     if present(f'blockcamp-{slug}-2.html'):
         parts.append({'id': f'blockcamp-{slug}-2', 'href': up(f'blockcamp-{slug}-2.html'), 'label': 'Part 2', 'level': l2,
-                      'access': 'pro', 'img': up(f'BlockCamp/{slug}-1b.jpg')})
+                      'access': hub.access(f'blockcamp-{slug}-2.html', 'pro'), 'img': up(f'BlockCamp/{slug}-1b.jpg')})
     if parts:
         camps.append({'n': n, 'name': name, 'slug': slug, 'colour': hub.CAMP[n], 'ink': hub.INK[n], 'parts': parts})
 
@@ -52,7 +57,8 @@ for st, camp, name, slug, lvl, acc in hub.DESCENT:
     if not present(f'blockcamp-passive-{slug}.html'): continue
     stations.append({'st': st, 'camp': camp, 'name': name, 'id': f'blockcamp-passive-{slug}', 'href': up(f'blockcamp-passive-{slug}.html'),
                      'colour': hub.CAMP[camp] if camp else '#e8c04a', 'ink': hub.INK[camp] if camp else '#0b1a12',
-                     'level': lvl, 'access': acc, 'img': up(f'BlockCamp/passive-{st}-{slug}.jpg'), 'trial': not camp})
+                     'level': lvl, 'access': hub.access(f'blockcamp-passive-{slug}.html', acc),
+                     'img': up(f'BlockCamp/passive-{st}-{slug}.jpg'), 'trial': not camp})
 
 by_name = {name: n for n, name, *_ in hub.CLIMB}
 by_name['Future Simple: Will'] = by_name['Future Simple']
@@ -62,7 +68,8 @@ for href, img, title, desc, gram, lvl, acc, tag in hub.ADVENTURES:
     pid = re.sub(r'\.html$', '', href.split('/')[-1])
     adventures.append({'id': pid, 'href': href.split('/', 1)[1] if href.startswith('block-camp/') else up(href),
                        'img': img.split('/', 1)[1] if img.startswith('block-camp/') else up(img),
-                       'title': unescape(title), 'desc': unescape(desc), 'gram': list(gram), 'level': unescape(lvl), 'access': acc,
+                       'title': unescape(title), 'desc': unescape(desc), 'gram': list(gram), 'level': unescape(lvl),
+                       'access': hub.access(href, acc),
                        'camp': by_name.get(gram[0])})
 
 DATA = {'camps': camps, 'stations': stations, 'adventures': adventures}

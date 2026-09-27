@@ -22,13 +22,13 @@ click away in the deck bar, and the free path through the line runs through
 the Part 1s. The top of the climb leads into the descent, station 9; the end
 of the descent leads to the adventures on the hub.
 
-ACCESS IS THE CATALOGUE'S, not a table here. It is read from lesson-meta.json,
-the file the Worker builds its gate pages from, so the padlock on a button
-says what the click will actually meet. The hub once hardcoded Free/Pro by
-hand and contradicted the paywall for days (checker/check-access.py tells
-that story). When a Block Camp lesson's access changes, seo.py rewrites
-lesson-meta.json; re-run this and commit block-camp/camp-nav.js with it -
---check fails until you do.
+ACCESS IS THE CATALOGUE'S, not a table here: hub.access(), which reads
+lesson-meta.json - the file the Worker builds its gate pages from - so the
+padlock on a button says what the click will actually meet. The hub, the
+quest and these buttons share that one function; checker/check-access.py
+holds them and the hand-kept route map to it. When a Block Camp lesson's
+access changes, seo.py rewrites lesson-meta.json; re-run this and commit
+block-camp/camp-nav.js with it - --check fails until you do.
 """
 import importlib.util, json, os, sys
 
@@ -49,28 +49,21 @@ END = {'href': 'block-camp.html#adventures', 'colour': '#e8c04a', 'ink': '#0b1a1
 TRIAL = ('#e8c04a', '#0b1a12')
 
 
-def catalogue():
-    """{file: access} from lesson-meta.json, the Worker's own list. A deck
-    too new to have a row is treated as Pro: a padlock that turns out not
-    to be needed costs less than a free-looking link to a paywall."""
-    path = os.path.join(REPO, 'lesson-meta.json')
-    meta = json.load(open(path, encoding='utf-8'))
-    return {f: (row.get('access') or 'pro') for f, row in meta.items()}
-
-
 def route():
-    acc = catalogue()
     climb, descent = [], []
     for n, name, slug, _l1, _l2 in hub.CLIMB:
         for part, f in ((1, 'blockcamp-%s.html' % slug), (2, 'blockcamp-%s-2.html' % slug)):
             if hub.present(f):
+                fallback = 'free' if (n, part) in hub.FREE_CLIMB else 'pro'
                 climb.append(dict(file=f, line='climb', n=n, part=part, name=name,
-                                  colour=hub.CAMP[n], ink=hub.INK[n]))
-    for st, camp, name, slug, _lvl, _acc in hub.DESCENT:
+                                  colour=hub.CAMP[n], ink=hub.INK[n],
+                                  access=hub.access(f, fallback)))
+    for st, camp, name, slug, _lvl, acc in hub.DESCENT:
         f = 'blockcamp-passive-%s.html' % slug
         if hub.present(f):
             colour, ink = (hub.CAMP[camp], hub.INK[camp]) if camp else TRIAL
-            descent.append(dict(file=f, line='descent', n=st, name=name, colour=colour, ink=ink))
+            descent.append(dict(file=f, line='descent', n=st, name=name, colour=colour, ink=ink,
+                                access=hub.access(f, acc)))
 
     firsts = [d for d in climb if d['part'] == 1]
     decks = {}
@@ -82,7 +75,7 @@ def route():
     for d in climb + descent:
         key = d['file'][:-len('.html')]
         entry = {'href': d['file'], 'line': d['line'], 'n': d['n'], 'name': d['name'],
-                 'colour': d['colour'], 'ink': d['ink'], 'access': acc.get(d['file'], 'pro'),
+                 'colour': d['colour'], 'ink': d['ink'], 'access': d['access'],
                  'next': d['next']['file'][:-len('.html')] if d['next'] else 'end'}
         if 'part' in d:
             entry['part'] = d['part']
