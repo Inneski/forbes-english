@@ -12,6 +12,37 @@ stale copy.
 ---
 
 
+## 2026-09-27 — Contingency Plans & Trade-offs: built as a 54-slide panel deck, NOT shipped: waiting for 6 plates
+
+`build_contingencytradeoffs.py` + `i18n_contingencytradeoffs.py` (English) and
+`i18n_contingencytradeoffs_de.py`. House style 2 (panels), dark palette from
+`Construction3/hero.jpg`, sides alternating. The old page was a 720px quiz
+with the 58-word glossary shown only after the last question; the deck
+teaches the glossary first in three thematic stages (cards, six to a slide,
+then a five-pair match on words the quiz never tests), then the 28 questions,
+results and activation. Content fixes are in the builder docstring: level B2
+on the page vs C1 in the catalogue (C1); seven MC keys that were the only
+longest option; a shortfall "between" two things; an "unintended delay"; a
+vapour barrier treated as insulation; one-sense definitions of
+"compromised", "conduct", "stuck", "current"; single-quoted citations.
+
+- **Art (Innes: *"u will need artwork"*).** Brief:
+  `docs/ARTWORK-contingency-trade-offs.md`, **six plates** by slot
+  (`plate-cover`, `-plans`, `-site`, `-people`, `-test`, `-act`), 16:9 with the
+  subject in a named third so the 548×720 panel crop keeps it. Until all six
+  are in `Construction3/` the builder writes only the gitignored
+  `_contingency-trade-offs-vocab.html`, laid out on the four staged site
+  pictures; **the live page is untouched** and keeps its SEO block. When the
+  plates land: prep, rebuild (writes live), `tools/seo.py` (read its diff),
+  gates. Three crane renders already in `incoming/` are near-misses, noted
+  in the brief.
+- **Gates on the preview:** `check-lesson.js` all pass bar HEAD (a preview
+  gets no SEO block, as with Mixed Grammar), LOGO pass; `answered-overflow.js`
+  fits in en and de. German was needed for the I18N gate (English plus one);
+  written in-session, no native check.
+- **Catalogue, after it ships:** `deck` is still false. SQL for Innes:
+  `update public.lessons set deck = true where file = 'contingency-trade-offs-vocab.html';`
+
 ## 2026-09-27 — Sherpa lesson pages: translation on every page, in the camp one pattern
 
 Innes: *"you have to be more thorough in your translation work - still some
