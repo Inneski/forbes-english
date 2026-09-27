@@ -11,6 +11,90 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-27 — IELTS proofread: the hub, the five routes, the Question Bank and the decks' instructions
+
+Innes: *"proofread IELTS like you are an Oxford University Press proofreading
+expert … must be easy for students to understand the instructions."* Method:
+the visible text of each of the seven IELTS pages was extracted (one block
+per line, tagged by element) and read as a reader sees it, then diffed
+before and after the rebuild so only intended changes went out; the slide
+text of all 28 decks (34k words) was swept for instruction lines. Everything
+was fixed at source — `tools/build_ielts_hub.py`, `tools/ielts_routes.py`,
+`tools/ielts_bank_data.py`, `tools/build_ielts_bank.py`, `tools/seo.py` —
+and the six pages plus the bank regenerated, `seo.py` last.
+
+**Changed on the pages**
+
+- Lesson titles were in two cases on one list (*Matching Headings* next to
+  *Summary and sentence completion*): all title case now, as the catalogue
+  and the deck covers are. Nine titles in `ielts_routes.py`.
+- The route instruction reads for a learner: *"Each route is in order: every
+  lesson builds on the ones before it, so start at the top and work down."*
+  The bank's: *"Choose a topic or an essay type to filter the list, or search
+  for a word."*
+- "GT" spelt out as General Training (hub note, Writing callout); "Two
+  modules" → "Two parts" on the Maps lesson, since *module* means
+  Academic/GT everywhere else on the page; "question types" → "essay types"
+  on the Writing route (question types are TFNG etc. on Reading); the
+  official criterion names on the Speaking route (*Grammatical Range and
+  Accuracy*, not "Grammar"); Part 2 is "one minute to prepare and up to two
+  to talk"; the Writing teaching note no longer says "Parts 1 to 3 run as a
+  course" (stale from the five-lesson page) but "The route runs as a course;
+  the Model Answer Vault (Part 4)…"; *plain-text file*; curly quotes and
+  apostrophes throughout; a comma splice on the TFNG description; cited words
+  italicised (*most* against *all*).
+- Question Bank: 46 opinion prompts said "To what extent do you agree?" —
+  the exam always says **"…agree or disagree?"**, and a candidate practising
+  the short form may think agreeing is required. All 46 carry the full form;
+  so do `TYPES`, Part 6's "five instructions" slide and Part 1b's two
+  prompts. Two prompts were duplicates across topics (fresh-water shortages
+  in Environment *and* Energy; the ageing population in Health *and*
+  Population) — one of each pair replaced. One "outweigh" prompt was not in
+  the exam's form ("Do the reasons given for this outweigh the case against
+  it?") and is now. "In many countries" takes the comma it has in the other
+  six prompts; Parts 5 and 6 quote those prompts the same way. Two
+  arguments reworded for sense ("Its value is partly the part that…"; "has
+  bargaining power a worker who cannot does not"). The closing link goes to
+  the Writing route, where the essay types are taught, not the hub.
+- **Part 6 numbered its questions 3, 4, 4, 5** in the static HTML while the
+  en/de dicts said 3, 4, 5, 6; the static text now matches. Still 176
+  prompts, 22 topics; `build_ielts_routes.py --check` clean; the three
+  decks pass `check-lesson.js`.
+
+**How the older Writing decks are built.** Parts 1, 1b, 2, 2b, 4, 5, 6, 7,
+8, 9 and Speaking Parts 1–2 have **no builder**: they are hand-written HTML
+with an inline `T = {en:{…}, de:{…}}` dict (`fr:{}` etc. empty) and the
+English also typed statically in the markup. A text fix goes in three
+places — the static element, `en`, `de` — or the page shows one thing on
+load and another after the i18n pass, which is exactly how Part 6's
+numbering drifted.
+
+**Queries left for Innes** (not changed, because each is a rename across
+decks and the catalogue, or a judgement):
+
+- IELTS has called the Listening parts **Part 1–4, not Section 1–4, since
+  January 2020** (Cambridge IELTS 15 onward). The whole Listening route,
+  its five deck titles, the catalogue rows and every slide say *Section*.
+  Candidates will meet *Part* on the day.
+- The five essay types have three sets of names: Part 1b says *Problem &
+  Solution* / *Advantages & Disadvantages*; the Lab says *Advantage /
+  Disadvantage* / *Cause / Problem / Solution*; the bank and Parts 5–6 say
+  *Outweigh* / *Problem & measure*. One set would help.
+- The Speaking Parts 1–2 deck lists the criteria as "Fluency & Coherence,
+  Lexical Resource, Grammar, Pronunciation" (S02). The route page now uses
+  the official names; the deck still says *Grammar*.
+- "Discuss both views and give your own opinion" — the exam's wording is
+  "Discuss both *these* views…". Left as is: it does not mislead.
+- *Band 7+* (capital) in Part 1 against *band 6* everywhere else; straight
+  double quotes inside Parts 1, 2, 2b, S1, S2, S4, drills and TFNG where the
+  same decks use curly ones elsewhere. Cosmetic; each deck is its own edit.
+
+**Observed:** in a local session `seo.py` reproduced the peer session's
+uncommitted `library.html`, `lesson-meta.json` and `llms.txt` byte for byte
+(Supabase reachable, 324 rows), and changed only the seven IELTS `lastmod`
+lines in `sitemap.xml` beyond what that session had already changed. The
+CLAUDE.md warning about the cache fallback is a cloud-session hazard only.
+
 ## 2026-09-25 — Library search finds lessons by keyword, not just by title
 
 Innes searched "bike" and got nothing: the lesson is *Beyond the

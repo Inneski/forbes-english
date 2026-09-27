@@ -95,8 +95,8 @@ ROUTES = [
          meta='With recordings &middot; both modules',
          pitch='Every recording is played once, so reading the questions before '
                'the audio starts matters more than anything you do while it '
-               'runs. The mechanics first, then the four sections, one lesson '
-               'each, each playing its recording once as the test does &mdash; '
+               'runs. The mechanics first, then one lesson on each of the four '
+               'sections, each playing its recording once, as the test does &mdash; '
                'and a drills deck for numbers and spelling.',
          pos='40% 50%'),
     dict(key='reading', hub='ielts-reading.html', name='Reading', family='recv',
@@ -787,7 +787,7 @@ def hero(routes, f):
     <div class="ih-hero-copy">
       <p class="ih-kicker">Exam route &middot; %(span)s &middot; the Academic module</p>
       <h1 class="ih-h1" id="ih-h1">IELTS <em>Academic</em></h1>
-      <p class="ih-lede">Writing, Speaking, Listening, Reading, and the vocabulary that feeds two of them &mdash; %(nroutes_w)s routes, each in the order it should be taught.</p>
+      <p class="ih-lede">Writing, Speaking, Listening, Reading, and the vocabulary that feeds Speaking and Writing: %(nroutes_w)s routes, each in the order it should be taught.</p>
       <ul class="ih-stats">
         <li><b>%(total)d</b><span>%(lessons)s</span></li>
         <li><b>%(nroutes)d</b><span>routes</span></li>
@@ -922,7 +922,7 @@ def routes_html(routes, f):
       <div class="ih-sechead">
         <p class="ih-kicker">%(n_w)s routes</p>
         <h2 class="ih-h2" id="ih-routes-h">Pick a route. Walk it in order.</h2>
-        <p>Each route is ordered: the later lessons assume the earlier ones, so start at the top of one and work down rather than picking lessons at random.%(free)s</p>
+        <p>Each route is in order: every lesson builds on the ones before it, so start at the top and work down rather than picking lessons at random.%(free)s</p>
         <p>%(decks)s</p>
       </div>
       <ol class="ih-jump" aria-label="Jump to a route">
@@ -999,11 +999,11 @@ def notes_html(routes):
   <div class="ih-wrap ih-notes-grid">
     <div class="ih-note">
       <h3>Sitting General Training?</h3>
-      <p><strong>This is the Academic module.</strong> Speaking and Listening are identical on General Training, and Reading uses the same question types &mdash; but GT Task 1 is a letter, not a report, so the Task 1 lessons will not match a GT paper. Task 2 is the same on both.</p>
+      <p><strong>This is the Academic module.</strong> Speaking and Listening are identical on General Training, and Reading uses the same question types &mdash; but General Training Task 1 is a letter, not a report, so the Task 1 lessons will not match a General Training paper. Task 2 is the same on both.</p>
     </div>
     <div class="ih-note">
       <h3>Teaching this rather than sitting it?</h3>
-      <p>The Writing route runs as a course; the Model Answer Vault works on its own as a marking clinic, and the Writing Studio exports a learner&rsquo;s planning notes and final essay as a plain text file for correction. Speaking is built for pairs.</p>
+      <p>The Writing route runs as a course; the Model Answer Vault works on its own as a marking clinic, and the Writing Studio exports a learner&rsquo;s planning notes and final essay as a plain-text file for correction. Speaking is built for pairs.</p>
       <p>%s &mdash; bring a strong B2 class and expect to slow down.</p>
     </div>
   </div>

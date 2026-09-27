@@ -211,7 +211,7 @@ h1 em {{ font-style:normal; color:var(--pink-mid); }}
     <div>
       <div class="eyebrow">IELTS Academic Writing · Task 2 · Free</div>
       <h1>Question Bank <em>&amp; Ideas</em></h1>
-      <p class="lede"><strong>{TOTAL} questions, sorted by topic and by essay type.</strong> Filter to the type you are practising, or search for a word.</p>
+      <p class="lede"><strong>{TOTAL} questions, sorted by topic and by essay type.</strong> Choose a topic or an essay type to filter the list, or search for a word.</p>
       <p class="lede">Under each topic sit arguments for <em>both</em> sides — written as reasons rather than slogans, because the thing that stops most candidates is not the shape of the essay. It is having nothing to say.</p>
     </div>
     <figure class="hero-art">
@@ -247,9 +247,9 @@ h1 em {{ font-style:normal; color:var(--pink-mid); }}
   <div class="note">
     <div>
       <h3>Have the ideas, not sure of the shape?</h3>
-      <p>Each essay type on this page is taught in the course — what the instruction obliges you to produce, a band 9 model, and the band 6 answer that got the shape right and the question wrong.</p>
+      <p>Each essay type on this page is taught on the Writing route — what the instruction obliges you to produce, a band 9 model, and the band 6 answer that got the shape right and the question wrong.</p>
     </div>
-    <a href="ielts.html">The IELTS Academic route &rarr;</a>
+    <a href="ielts-writing.html">The IELTS Writing route &rarr;</a>
   </div>
 
 </div>

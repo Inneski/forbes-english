@@ -115,7 +115,7 @@ PAGES = {
                    'section starts.', 0.9, '/ielts-listening/hero.jpg'),
     'ielts-reading.html': ('IELTS Reading',
                    'The IELTS Reading route — twelve-plus question types, '
-                   'the same on both modules. True/False/Not Given first, '
+                   'the same on both modules. True, False, Not Given first, '
                    'because it is the type candidates find hardest to call, '
                    'and technique wins those marks back.', 0.9,
                    '/ielts-reading/hero.jpg'),

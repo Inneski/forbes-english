@@ -57,8 +57,8 @@ ROUTES = [{'hub': 'ielts-writing.html',
            'Every lesson is click-through and scored where scoring teaches something. '
            '{silent}'],
   'callout': '<strong>This is the Academic module.</strong> Task 2 is the same on General '
-             'Training, but GT Task 1 is a letter, not a report — so the Task 1 lessons below '
-             'will not match a GT paper.',
+             'Training, but General Training Task 1 is a letter, not a report — so the Task 1 '
+             'lessons below will not match a General Training paper.',
   'art': 'ielts-model-answers/hero.jpg',
   'hero_pos': '75% 50%',
   'art_alt': 'Illustration of a wall of card-index drawers, one pulled open with a sheet of '
@@ -81,7 +81,7 @@ ROUTES = [{'hub': 'ielts-writing.html',
                           {'file': 'forbes-english-ielts-bar-charts-c1.html',
                            'title': 'The Bar Chart',
                            'desc': 'Introduction, overview, two body paragraphs — built around '
-                                   "a live animated chart of the lesson's own data, so you can "
+                                   'a live animated chart of the lesson&rsquo;s own data, so you can '
                                    'see what each sentence is describing.',
                            'tags': ['Task 1']},
                           {'file': 'forbes-english-ielts-line-graph-part8.html',
@@ -93,7 +93,7 @@ ROUTES = [{'hub': 'ielts-writing.html',
                            'tags': ['Part 8', 'Trends &amp; tense']},
                           {'file': 'forbes-english-ielts-maps-and-data-c1.html',
                            'title': 'Maps &amp; Accurate Data',
-                           'desc': 'Two modules: the location language a map report runs on, '
+                           'desc': 'Two parts: the location language a map report runs on, '
                                    'and the vocabulary of approximation for the many values '
                                    'that are not exact numbers.',
                            'tags': ['Task 1']}]},
@@ -102,8 +102,8 @@ ROUTES = [{'hub': 'ielts-writing.html',
                       'is where the hours go',
               'lessons': [{'file': 'forbes-english-ielts-academic-writing-part1b.html',
                            'title': 'IELTS Academic Writing: The Essay',
-                           'desc': 'The shape of a Task 2 essay, the four question types and '
-                                   'how to spot them, and the linking words bank to keep open '
+                           'desc': 'The shape of a Task 2 essay, the four essay types and '
+                                   'how to spot them, and the linking-words bank to keep open '
                                    'while you write.',
                            'tags': ['Part 1b']},
                           {'file': 'forbes-english-ielts-writing-lab-part2.html',
@@ -128,8 +128,8 @@ ROUTES = [{'hub': 'ielts-writing.html',
                           {'file': 'forbes-english-ielts-outweigh-part5.html',
                            'title': 'Weighing It Up',
                            'desc': 'The two types that get written as though they were '
-                                   'something else — "do the advantages outweigh?" and "what '
-                                   'problems, what measures?" — each with a band 9 answer and '
+                                   'something else — &ldquo;do the advantages outweigh?&rdquo; and &ldquo;what '
+                                   'problems, what measures?&rdquo; — each with a band 9 answer and '
                                    'the band 6 that forgot to answer.',
                            'tags': ['Part 5', 'Outweigh &amp; measures']},
                           {'file': 'forbes-english-ielts-two-questions-part6.html',
@@ -141,8 +141,8 @@ ROUTES = [{'hub': 'ielts-writing.html',
                           {'file': 'forbes-english-ielts-writing-studio-part3.html',
                            'title': 'The Writing Studio',
                            'desc': 'Now write two of your own, timed, with planning fields and '
-                                   'a live word counter. Nothing here is auto-scored — it '
-                                   'downloads for a teacher to mark.',
+                                   'a live word counter. Nothing here is auto-scored — your work '
+                                   'downloads as a file for a teacher to mark.',
                            'tags': ['Part 3', 'Timed practice']}]}],
   'reference': [{'h': 'Reference',
                  'note': 'free · no sign-in · keep it open while you write',
@@ -155,20 +155,20 @@ ROUTES = [{'hub': 'ielts-writing.html',
                                       'and have nothing to say.',
                               'tags': []}]}],
   'teach': {'h': 'Teaching this rather than sitting it?',
-            'p': ['Parts 1 to 3 run as a course; Part 4 works on its own as a marking clinic, '
-                  "and the Writing Studio exports a learner's planning notes and final essay "
-                  'as a plain text file for correction. {levels} — bring a strong '
+            'p': ['The route runs as a course; the Model Answer Vault (Part 4) works on its own as a marking clinic, '
+                  'and the Writing Studio exports a learner&rsquo;s planning notes and final essay '
+                  'as a plain-text file for correction. {levels} — bring a strong '
                   'B2 class and expect to slow down.']}},
  {'hub': 'ielts-speaking.html',
   'module': 'One test for both modules',
   'h1': ('IELTS', 'Speaking'),
   'lede': ['Eleven to fourteen minutes, three parts, one examiner. <strong>Academic and '
-           'General Training sit the same test</strong> and it is marked the same way, so '
+           'General Training sit the same test</strong>, and it is marked the same way, so '
            'everything here applies whichever module you are taking.',
-           'All four criteria are about language, not knowledge &mdash; Fluency &amp; '
-           'Coherence, Lexical Resource, Grammar and Pronunciation, a quarter each. The topic '
+           'All four criteria are about language, not knowledge &mdash; Fluency and '
+           'Coherence, Lexical Resource, Grammatical Range and Accuracy, and Pronunciation &mdash; a quarter each. The topic '
            'is only an excuse to produce English.'],
-  'callout': '<strong>Parts 1 and 2 first.</strong> Part 3 is the abstract discussion and it '
+  'callout': '<strong>Parts 1 and 2 first.</strong> Part 3 is the abstract discussion, and it '
              'needs the other two working before it is worth attempting. Pronunciation runs '
              'alongside all three &mdash; it is a quarter of the mark in every part of the '
              'test.',
@@ -179,7 +179,7 @@ ROUTES = [{'hub': 'ielts-writing.html',
   'tracks': [{'h': 'The route &mdash; three parts, and the quarter that runs through all of '
                    'them',
               'note': '4&ndash;5 minutes of questions &middot; a card, one minute to prepare '
-                      'and two to talk &middot; then the discussion',
+                      'and up to two to talk &middot; then the discussion',
               'lessons': [{'file': 'forbes-english-ielts-speaking-part1-2.html',
                            'title': 'Answering at Length',
                            'desc': 'How long an answer should be, four ways to extend one '
@@ -188,15 +188,15 @@ ROUTES = [{'hub': 'ielts-writing.html',
                                    'seconds.',
                            'tags': ['Parts 1 &amp; 2']},
                           {'file': 'forbes-english-ielts-speaking-part3.html',
-                           'title': 'Part 3 &mdash; the discussion',
+                           'title': 'Part 3 &mdash; The Discussion',
                            'desc': 'Five or six questions on the same topic as your card, but '
                                    'abstract, and the examiner is allowed to push back. Moving '
                                    'from your own life to the general case is the skill, and '
                                    'it is the one Part 1 does not teach.',
                            'tags': ['Part 3']},
                           {'file': 'forbes-english-ielts-pronunciation.html',
-                           'title': 'Pronunciation &amp; fluency',
-                           'desc': 'A quarter of the marks sits on pronunciation and most '
+                           'title': 'Pronunciation &amp; Fluency',
+                           'desc': 'A quarter of the marks sits on pronunciation, and most '
                                    'candidates never practise it deliberately. Stress, '
                                    'chunking and the pauses that read as thinking rather than '
                                    'as stalling &mdash; and why an accent costs nothing at '
@@ -225,8 +225,8 @@ ROUTES = [{'hub': 'ielts-writing.html',
   'hero_pos': '25% 50%',
   'art_alt': 'Illustration of a chalkboard with a listening exercise sketched on it',
   'tracks': [{'h': 'The mechanics &mdash; before you listen to anything',
-              'note': 'Question types &middot; the answer sheet &middot; what loses marks that '
-                      'has nothing to do with hearing',
+              'note': 'Question types &middot; the answer sheet &middot; the marks lost for reasons '
+                      'that have nothing to do with hearing',
               'lessons': [{'file': 'forbes-english-ielts-listening-part9.html',
                            'title': 'How the Listening Test Works',
                            'desc': 'The four sections and what changes between them, every '
@@ -239,28 +239,28 @@ ROUTES = [{'hub': 'ielts-writing.html',
               'note': 'One recording per lesson &middot; each plays its section once, as the '
                       'test does',
               'lessons': [{'file': 'forbes-english-ielts-listening-s1.html',
-                           'title': 'Section 1 &mdash; the everyday conversation',
+                           'title': 'Section 1 &mdash; The Everyday Conversation',
                            'desc': 'Two speakers arranging something practical, and a form to '
                                    'complete. The easiest section on the paper and the one '
                                    'where careless spelling and stray words throw away marks '
                                    'that were already won.',
                            'tags': ['Audio', 'Form completion']},
                           {'file': 'forbes-english-ielts-listening-s2.html',
-                           'title': 'Section 2 &mdash; the monologue and the map',
+                           'title': 'Section 2 &mdash; The Monologue and the Map',
                            'desc': 'One speaker describing a place to people who are standing '
                                    'in it. Placing things on a layout while a voice walks you '
                                    'round it, which is a skill of orientation rather than of '
                                    'vocabulary.',
                            'tags': ['Audio', 'Places and positions']},
                           {'file': 'forbes-english-ielts-listening-s3.html',
-                           'title': 'Section 3 &mdash; the academic discussion',
+                           'title': 'Section 3 &mdash; The Academic Discussion',
                            'desc': 'Three voices &mdash; two students and a tutor &mdash; '
                                    'disagreeing, correcting each other and changing their '
                                    'minds. Tracking who says what is the whole difficulty, and '
-                                   'it is where most candidates first drop.',
+                                   'it is where most candidates first drop marks.',
                            'tags': ['Audio', 'Three speakers']},
                           {'file': 'forbes-english-ielts-listening-s4.html',
-                           'title': 'Section 4 &mdash; the lecture',
+                           'title': 'Section 4 &mdash; The Lecture',
                            'desc': 'One voice, several minutes, no break in the middle and no '
                                    'second chance to re-read the questions. Note completion at '
                                    'speed, and how to recover the thread after you have lost '
@@ -269,7 +269,7 @@ ROUTES = [{'hub': 'ielts-writing.html',
              {'h': 'Drills &mdash; numbers, spelling and accents',
               'note': 'Short drills with audio &middot; tested constantly, taught rarely',
               'lessons': [{'file': 'forbes-english-ielts-listening-drills.html',
-                           'title': 'Numbers, spelling and accents',
+                           'title': 'Numbers, Spelling and Accents',
                            'desc': 'Short drills on the things that are tested constantly and '
                                    'taught rarely: spelled-out names, <em>double</em> and '
                                    '<em>treble</em>, dates and times, and the range of accents '
@@ -304,10 +304,10 @@ ROUTES = [{'hub': 'ielts-writing.html',
               'lessons': [{'file': 'forbes-english-ielts-reading-tfng.html',
                            'title': 'True, False, Not Given',
                            'desc': 'The whole lesson is one distinction: FALSE means a '
-                                   'sentence in the passage contradicts the statement, NOT '
+                                   'sentence in the passage contradicts the statement; NOT '
                                    'GIVEN means the passage is silent. Plus the qualifier that '
-                                   'decides a third of them &mdash; most against all, may '
-                                   'against is.',
+                                   'decides a third of them &mdash; <em>most</em> against <em>all</em>, <em>may</em> '
+                                   'against <em>is</em>.',
                            'tags': ['Both modules']},
                           {'file': 'forbes-english-ielts-reading-ynng.html',
                            'title': 'Yes, No, Not Given',
@@ -325,7 +325,7 @@ ROUTES = [{'hub': 'ielts-writing.html',
                                    'leave the headings that fit two paragraphs until last.',
                            'tags': ['Out of order']},
                           {'file': 'forbes-english-ielts-reading-completion.html',
-                           'title': 'Summary and sentence completion',
+                           'title': 'Summary and Sentence Completion',
                            'desc': 'Where the word limit does the damage. Answers come '
                                    'straight from the passage, spelling counts, and &ldquo;no '
                                    'more than two words&rdquo; means a three-word answer '
@@ -358,21 +358,21 @@ ROUTES = [{'hub': 'ielts-writing.html',
               'note': '25% of Speaking &middot; 25% of Writing &middot; the same criterion, '
                       'marked twice',
               'lessons': [{'file': 'forbes-english-ielts-lexical-resource.html',
-                           'title': 'Lexical Resource &mdash; what is actually scored',
+                           'title': 'Lexical Resource &mdash; What Is Actually Scored',
                            'desc': 'Precision over rarity, the pairing rather than the word, '
                                    'and paraphrase as the skill that pays in two papers at '
                                    'once. Ends by building one page of a topic bank in five '
                                    'minutes, which is the method the rest of the route uses.',
                            'tags': ['Speaking &amp; Writing']},
                           {'file': 'forbes-english-ielts-vocabulary-environment.html',
-                           'title': 'Topic bank &mdash; environment and energy',
+                           'title': 'Topic Bank &mdash; Environment and Energy',
                            'desc': 'The first of the banks, built by idea rather than '
                                    'alphabetically: emissions, renewables, consumption and '
                                    'waste, each arriving with two phrases and an argument '
                                    'already attached.',
                            'tags': ['Topic bank']},
                           {'file': 'forbes-english-ielts-vocabulary-work.html',
-                           'title': 'Topic bank &mdash; work, automation and cities',
+                           'title': 'Topic Bank &mdash; Work, Automation and Cities',
                            'desc': 'Three topics that come up again and again in Part 3 and '
                                    'Task 2, and the collocations that make an answer on any of '
                                    'them sound like someone who has thought about it before.',
