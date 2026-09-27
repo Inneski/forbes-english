@@ -12,6 +12,60 @@ stale copy.
 ---
 
 
+## 2026-09-27 — Sherpa lesson pages: translation on every page, in the camp one pattern
+
+Innes: *"you have to be more thorough in your translation work - still some
+important text has nothing"*, then *"Passive has no translation"*. Measured
+with German on: eight of the nine descents had no translation at all; the
+other fifteen pages translated ten example sentences each; only camps one and
+two carried a real system (a globe on each section; each English line keeps
+its translation beneath it). ~1,300 English-only blocks over 25 pages.
+
+**What ships.** The camp one pattern on the other 23 pages, in the course's
+nine languages (de es fr it pt ru ar zh ja), injected by
+`tools/sherpa_lesson_i18n.py` (fenced `SHERPA-LESSON-I18N` block at the end
+of `<body>`: styles, the page's own strings, `tools/sherpa_lesson_i18n_runtime.js`).
+A globe under each section heading translates that section; the quiz's hint
+and feedback are translated as it rewrites them (a MutationObserver that
+disconnects while it writes), its own words swapped ("Checkpoint {n} of {m}",
+Score, the buttons). Examples stay English and show a translation line from
+the "Examples in" bar, which the descents now get. HOUSE-STYLE §8 holds: the
+English being taught (conjugation tables, grammar forms, signal-word lists,
+quiz stems and options, "Not this" wrong sentences) is never translated. **A
+language is offered on a page only when every string that page needs has
+it**, so an unfinished language never appears (Japanese was pending on one
+page at commit time; it appears when its strings land).
+
+**The pipeline** (see the tool's docstring): `node tools/sherpa_lesson_strings.js`
+(renders each page, collects every text block with its section, the quiz's
+hints and explanations normalised through the DOM, the results messages, the
+diagram labels) → `py tools/sherpa_lesson_master.py` (2,821 unique strings,
+translated once, reused on every page) → classify (chrome / example / keep)
+and translate (workflow; glossary `lesson-template/sherpa-i18n/work/glossary.json`,
+110 terms, the hub's reviewed wording wins; tense names stay English, lower
+case) → `py tools/sherpa_lesson_i18n.py --merge` (translators' files, then
+reviewers' corrections, then `work/fixes.json`, hand fixes that no merge
+undoes) → inject → `--check` (tags, placeholders, CAPS grammar tokens kept in
+English; all-caps labels are translated whole) → `node tools/sherpa_lesson_i18n_check.js`
+(browser, every page × language: every explanation has its line, every
+example its translation, the whole quiz answered in the language, Arabic
+right to left, no English the master does not know, no sideways scroll).
+
+**Reviews.** German was reviewed at native level (22 corrections: "stretch"
+of time had become a distance, an example flipped from still-reading to
+finished, English under study translated). The other eight reviews and two
+Japanese chunks were cut off twice (session limit, then a network drop) and
+run paced, two at a time (`sherpa-lesson-i18n-finish` workflow); re-run
+`--merge`, inject, `--check` and the browser check when they land, and
+commit. Hand-fixed meanwhile: the diagrams' NOW label named in prose had
+become AHORA / ADESSO / «الآن» / “现在” in 22 strings (the label stays NOW).
+
+**Camps one and two** (`tools/sherpa_own_i18n.py`, `85139d8`): Portuguese,
+Arabic and Japanese added to their own tables and globes; camp two's
+frequency words sat one language along (German learners saw Italian); 21
+values written as text showed raw entities ("Puntuaci&oacute;n").
+
+
 ## 2026-09-27 — Library hero: six hub plates; rpg.html, the role-playing games hub
 
 Innes, with a screenshot of `library.html#cat=Slide+Decks`: *"give this a
@@ -22,15 +76,16 @@ it's own cool hub now. RPGs should have a hub too. Work with me is
 important. They will all be slide decks eventually so that isnt really a
 thing."*
 
-- **The library's hero band is six picture plates at equal weight**:
-  Sherpa Tensing, IELTS Academic, Block Camp, Role-Playing Games,
-  Grammar, Work With Me. They replaced the six green stat buttons
+- **The library's hero band is six flat coloured buttons at equal
+  weight**: Sherpa Tensing, IELTS Academic, Block Camp, Role-Playing
+  Games, Grammar, Work With Me. They replaced the six green stat buttons
   (lesson plans / grammar activities / RPGs / slide decks / video lessons
-  / work with me) and the four route banners. Each plate wears its hub's
-  own hero, as a fixed-name web copy in `library-hub/` written by
-  **`tools/build_library_plates.py`** (run by `build_hubs.py`; sources
-  imported from the hub builders, so a change of hero follows). Counts on
-  the four collection plates come from the live catalogue in
+  / work with me) and the four route banners. A first cut put each hub's
+  hero picture behind the text (`f4fe9dc`); Innes: *"the colored buttons
+  were nicer. Having a lot of text crammed over a busy background doesnt
+  work"* — so the pictures and `library-hub/` went the same day, and each
+  button is its hub's published colour (see the CSS comment), an icon,
+  the name, one short line. Counts on
   `renderHubs()` — finished lessons only, Free from the access column —
   so they cannot disagree with the shelf. Grammar carries no count (the
   hub counts by topic, a different number). Work With Me shows the

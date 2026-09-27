@@ -292,9 +292,6 @@ def main():
     open(os.path.join(ROOT, 'rpg.html'), 'w', encoding='utf-8', newline='\n').write(
         page('Role-playing games', style + rcss, fonts, nav_for_rpg(nav), rbody, rld,
              body_class='rh', wrap=False))
-    # The six plates at the top of library.html wear the hubs' own heroes.
-    import build_library_plates
-    build_library_plates.build()
     print('  lessons: %d (from %s)' % (len(rows), source))
     for f, n, free in written:
         print('  %-32s %3d lessons, %2d free' % (f, n, free))

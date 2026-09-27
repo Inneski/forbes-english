@@ -44,9 +44,7 @@ the catalogue. Its card pictures are hashed web copies in `grammar-hub/`.
 `build_hubs.py`): the role-playing games landing page, same family. Which
 lessons are RPGs is the library's own rule, ported verbatim; Block Camp
 blurbs are imported from the Block Camp hub builder, the story games'
-live in `GAMES`. Covers are hashed web copies in `rpg-hub/`. The same run
-refreshes `library-hub/` (`tools/build_library_plates.py`), the six
-fixed-name plate pictures at the top of the hand-kept `library.html`.
+live in `GAMES`. Covers are hashed web copies in `rpg-hub/`.
 
 It then refreshes the five IELTS route pages (`tools/build_ielts_routes.py`)
 and **`ielts.html`** itself (`tools/build_ielts_hub.py`), both from

@@ -97,22 +97,19 @@
     font-size: 0.72rem;
     margin-bottom: 10px;
   }
-  .hero-lede {
-    color: #cddccf;
-    font-size: 0.95rem;
-    margin: -4px 0 14px;
-  }
-  /* The hubs: one plate per landing page, each wearing that page's own
-     hero (library-hub/, written by tools/build_library_plates.py so a
-     plate and the page it opens show the same picture). Six at equal
-     weight — Innes, 2026-09-26: "RPGS deserves an equal button with
-     IELTS, Block Camp & Sherpa … Grammar has it's own cool hub now …
-     Work with me is important." These replaced six green stat buttons
-     (lesson plans, grammar activities, RPGs, slide decks, video lessons,
-     work with me) and four route banners: video lessons are not an
-     entity yet, and every lesson will be a slide deck. Counts come from
-     the live catalogue in renderHubs(); a plate without one keeps its
-     meta line empty, and :empty hides it. */
+  /* The hubs: one coloured button per landing page, six at equal weight
+     (Innes, 2026-09-26: "RPGS deserves an equal button with IELTS, Block
+     Camp & Sherpa … Grammar has it's own cool hub now … Work with me is
+     important"). A first version put each hub's hero behind the text;
+     Innes, 2026-09-27: "the colored buttons were nicer. Having a lot of
+     text crammed over a busy background doesnt work." So: flat colour,
+     an icon, the name, one short line, and a live count from the
+     catalogue (renderHubs()). Each button's colour is its hub's published
+     one: Sherpa's pink and Block Camp's blue as on index.html, IELTS
+     gold, the RPG hub's coral (--rh-coral, derived from its hero in
+     tools/build_rpg_hub.py), Grammar the present-simple square off the
+     route map, Work With Me the green the old stat buttons wore. Light
+     fills carry dark ink (--hub-ink), measured at 4.5:1 or better. */
   .hubs {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -121,72 +118,42 @@
     margin: 0 auto;
   }
   .hub {
-    --hub-c: var(--gold-bright);
-    position: relative;
-    isolation: isolate;
-    display: block;
-    overflow: hidden;
-    aspect-ratio: 16 / 8;
-    min-height: 150px;
+    --hub-a: #D23E6E; --hub-b: #B25A76; --hub-line: #F882AE; --hub-ink: #fff; --hub-dim: #FDEAF1;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    min-height: 92px;
     border-radius: var(--radius);
-    background: var(--green-mid);
-    border: 1px solid rgba(255,255,255,0.14);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    background: linear-gradient(135deg, var(--hub-a), var(--hub-b));
+    border: 1px solid var(--hub-line);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.22);
     text-decoration: none;
-    color: #fff;
+    color: var(--hub-ink);
     text-align: left;
     transition: transform .15s ease, box-shadow .15s ease;
   }
-  .hub:hover, .hub:focus-visible { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.35); }
+  .hub:hover, .hub:focus-visible { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(0,0,0,0.32); }
   .hub:focus-visible { outline: 3px solid var(--gold-bright); outline-offset: 2px; }
-  .hub img {
-    position: absolute; inset: 0; z-index: -2;
-    width: 100%; height: 100%; object-fit: cover; display: block;
-    transition: transform .4s ease;
-  }
-  .hub:hover img { transform: scale(1.04); }
-  .hub::before {
-    content: ''; position: absolute; inset: 0; z-index: -1;
-    background: linear-gradient(180deg, rgba(10,24,16,0.04) 0%, rgba(10,24,16,0.42) 42%, rgba(10,24,16,0.92) 100%);
-  }
-  .hub::after {
-    content: ''; position: absolute; left: 0; right: 0; top: 0; height: 4px;
-    background: var(--hub-c);
-  }
-  .hub-text {
-    position: absolute; left: 0; right: 0; bottom: 0;
-    padding: 12px 14px 12px;
-    display: flex; flex-direction: column; gap: 3px;
-  }
-  .hub-kicker {
-    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.68rem;
-    color: var(--gold-bright);
-  }
+  .hub-ico { font-size: 1.7rem; line-height: 1; flex: none; }
+  .hub-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
   .hub-title {
-    font-family: 'Playfair Display', serif; font-weight: 900;
-    font-size: 1.35rem; line-height: 1.1;
-    text-shadow: 0 1px 6px rgba(0,0,0,0.6);
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 800;
+    font-size: 1.05rem; letter-spacing: 0.4px; text-transform: uppercase; line-height: 1.1;
   }
-  .hub-sub { font-size: 0.8rem; line-height: 1.4; color: #e6ede8; max-width: 46ch; }
+  .hub-sub { font-size: 0.8rem; line-height: 1.35; color: var(--hub-dim); }
   .hub-meta {
     font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.72rem;
-    color: #cddccf; margin-top: 3px;
+    text-transform: uppercase; letter-spacing: 0.5px; font-size: 0.72rem;
+    color: var(--hub-dim); margin-top: 2px;
   }
-  .hub-meta b { color: var(--gold-bright); font-weight: 800; }
+  .hub-meta b { color: var(--hub-ink); font-weight: 800; }
   .hub-meta:empty { display: none; }
-  /* Each plate's top rule is its hub's published colour: Sherpa's pink
-     and Block Camp's blue as on index.html, IELTS gold, the RPG hub's
-     coral (--rh-coral, derived from its hero in tools/build_rpg_hub.py),
-     Grammar the present-simple square off the route map. Work With Me is
-     gold all round: it is the one plate that is not a collection. */
-  .hub-sherpa { --hub-c: #D23E6E; }
-  .hub-ielts { --hub-c: var(--gold-bright); }
-  .hub-blockcamp { --hub-c: #3E5C8F; }
-  .hub-rpg { --hub-c: #ee756a; }
-  .hub-grammar { --hub-c: #7A93B5; }
-  .hub-work { --hub-c: var(--gold-bright); border-color: var(--gold-bright); }
+  .hub-ielts { --hub-a: var(--gold-bright); --hub-b: var(--gold); --hub-line: var(--gold-bright); --hub-ink: #102818; --hub-dim: rgba(16,40,24,0.9); }
+  .hub-blockcamp { --hub-a: #3E5C8F; --hub-b: #2C4470; --hub-line: #7FA8D9; --hub-dim: #DCE6F5; }
+  .hub-rpg { --hub-a: #ee756a; --hub-b: #e06d5a; --hub-line: #f5a89f; --hub-ink: #10293d; --hub-dim: rgba(16,41,61,0.9); }
+  .hub-grammar { --hub-a: #7A93B5; --hub-b: #6B86AA; --hub-line: #A9BCD6; --hub-ink: #0A131F; --hub-dim: rgba(10,19,31,0.9); }
+  .hub-work { --hub-a: #2fae5c; --hub-b: #29a256; --hub-line: #38c96a; --hub-ink: #0f1a13; --hub-dim: rgba(15,26,19,0.9); }
   .hero-also {
     margin: 14px 0 0;
     font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
@@ -198,10 +165,8 @@
   @media (max-width: 900px) { .hubs { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 560px) {
     .hubs { gap: 8px; }
-    .hub { aspect-ratio: 4 / 3; min-height: 0; }
+    .hub { padding: 12px 12px; min-height: 0; gap: 10px; }
     .hub-sub { display: none; }
-    .hub-title { font-size: 1.12rem; }
-    .hub-text { padding: 10px 11px 10px; }
   }
 
   main { max-width: 1100px; margin: 0 auto; padding: 32px 24px 80px; }
@@ -664,59 +629,52 @@
 <div class="hero">
   <div class="hero-inner">
     <div class="hero-tag">Lesson Library</div>
-    <p class="hero-lede">Six ways in: a route, an exam, a world, a game, a grammar point &mdash; or a teacher.</p>
     <nav class="hubs" aria-label="Where to start">
       <a class="hub hub-sherpa" href="sherpa-tensing-route-map.html">
-        <img src="library-hub/sherpa.jpg" alt="" width="800" height="448">
+        <span class="hub-ico" aria-hidden="true">🏔️</span>
         <span class="hub-text">
-          <span class="hub-kicker">The route up the tenses</span>
           <span class="hub-title">Sherpa Tensing</span>
-          <span class="hub-sub">Thirteen camps up in the active voice, nine back down in the passive, and a map that shows where you are.</span>
+          <span class="hub-sub">The route up the tenses, active and passive</span>
           <span class="hub-meta" data-count="sherpa"></span>
         </span>
       </a>
       <a class="hub hub-ielts" href="ielts.html">
-        <img src="library-hub/ielts.jpg" alt="" width="800" height="448">
+        <span class="hub-ico" aria-hidden="true">🎓</span>
         <span class="hub-text">
-          <span class="hub-kicker">The exam, in five routes</span>
           <span class="hub-title">IELTS Academic</span>
-          <span class="hub-sub">Writing, Speaking, Listening, Reading and the vocabulary that feeds them, in teaching order. The first lesson on every route is free.</span>
+          <span class="hub-sub">All four papers and vocabulary, in order</span>
           <span class="hub-meta" data-count="ielts"></span>
         </span>
       </a>
       <a class="hub hub-blockcamp" href="block-camp.html">
-        <img src="library-hub/block-camp.jpg" alt="" width="800" height="450">
+        <span class="hub-ico" aria-hidden="true">🧱</span>
         <span class="hub-text">
-          <span class="hub-kicker">A voxel world</span>
           <span class="hub-title">Block Camp</span>
-          <span class="hub-sub">The tenses on a trail, active up and passive down, and branching adventures with a grammar point built into the plot.</span>
+          <span class="hub-sub">The tenses on a voxel trail, plus adventures</span>
           <span class="hub-meta" data-count="blockcamp"></span>
         </span>
       </a>
       <a class="hub hub-rpg" href="rpg.html">
-        <img src="library-hub/rpg.jpg" alt="" width="800" height="341">
+        <span class="hub-ico" aria-hidden="true">🎲</span>
         <span class="hub-text">
-          <span class="hub-kicker">Choose your words, choose your ending</span>
           <span class="hub-title">Role-Playing Games</span>
-          <span class="hub-sub">Branching stories where every choice is a grammar question and the wrong answer takes the story somewhere else.</span>
+          <span class="hub-sub">Branching stories where the grammar decides</span>
           <span class="hub-meta" data-count="rpg"></span>
         </span>
       </a>
       <a class="hub hub-grammar" href="grammar.html">
-        <img src="library-hub/grammar.jpg" alt="" width="800" height="448">
+        <span class="hub-ico" aria-hidden="true">✏️</span>
         <span class="hub-text">
-          <span class="hub-kicker">Every grammar lesson, by topic</span>
           <span class="hub-title">Grammar</span>
-          <span class="hub-sub">The twelve tenses in colour, then the passive, modals, prepositions and conditionals: the rule explained, then the lessons that drill it.</span>
+          <span class="hub-sub">Every grammar lesson by topic, tenses in colour</span>
           <span class="hub-meta"></span>
         </span>
       </a>
       <a class="hub hub-work" href="mailto:forbes@goodtimebook.com">
-        <img src="library-hub/work.jpg" alt="" width="800" height="341">
+        <span class="hub-ico" aria-hidden="true">✉️</span>
         <span class="hub-text">
-          <span class="hub-kicker">Lessons with the teacher</span>
           <span class="hub-title">Work With Me</span>
-          <span class="hub-sub">Say what you need &mdash; an exam, a job, a level &mdash; and when. A message is all it takes.</span>
+          <span class="hub-sub">Lessons with the teacher</span>
           <span class="hub-meta">forbes@goodtimebook.com</span>
         </span>
       </a>
