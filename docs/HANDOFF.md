@@ -336,11 +336,11 @@ plum at the same 40% (`tools/topo_tile.py` docstring has the command), and the
 map's sheen keeps `MAP_CHROMA` of its vivid colour (`tools/sherpa_sheen.py`;
 the lesson pages keep the full light). Camp colours on the map are untouched.
 Marked "try": if Innes wants it back, the old values are in `3376645`.
-Since: "Tensing" grey, with a soft pastel light of the camps' colours washing
-across it every ten seconds (`tools/sherpa_wash.py`, reads the camp markers;
-re-run it after recolouring a camp). Two tries before it, both rejected: the
-whole word in drifting camp colours, then a narrow streak of them held dark
-("a hard edged band, I meant something ethereal magical tasteful"). `check_route_map.py` read CSS tokens with
+Since: "Tensing" grey, with a faint oil-film sheen of the camps' colours
+drifting on it (`tools/sherpa_wash.py`, reads the camp markers; re-run it
+after recolouring a camp). Three tries before it were rejected, listed in the
+tool's docstring; the lesson: Innes wants subtle, a tint on the grey, not a
+colour effect. `check_route_map.py` read CSS tokens with
 `--[a-z-]+`, so no token with a digit in its name was ever measured; fixed,
 and it now checks the map's own wordmark too.
 

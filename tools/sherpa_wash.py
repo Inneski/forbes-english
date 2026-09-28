@@ -1,40 +1,40 @@
 #!/usr/bin/env python3
-"""A thin sheen of the thirteen camps' colours floating across the route map's "Tensing".
+"""An oil-film sheen on the route map's "Tensing", in the camps' colours.
 
     python tools/sherpa_wash.py            # write the block and the markup into the route map
     python tools/sherpa_wash.py --check    # exit 1 if either is missing or stale
 
-Innes, 2026-09-28: "some kind of multicolored ... random pixel color wash or
-waves of color that's constantly changing just on the word tensing"; the
-first try filled the whole word with two drifting runs of colour. Then: "try
-something like that but more of a thinner wave sheen that floats across";
-that was a narrow streak of the camps' colours held dark, thirteen slivers
-side by side, and read as "a hard edged band, I meant something ethereal
-magical tasteful - a bright multicoloured sheen wash". So now: the word
-keeps its grey (--tensing), and a soft light washes across it, as over
-mother-of-pearl, with a faint bloom round the word while it passes.
+Innes, 2026-09-28, four tries in one afternoon, each answer the brief for
+the next:
+  1 "some kind of multicolored ... random pixel color wash or waves of color
+    that's constantly changing just on the word tensing" -> the whole word in
+    two drifting runs of camp colour;
+  2 "more of a thinner wave sheen that floats across" -> a narrow streak of
+    thirteen dark slivers: "a hard edged band";
+  3 "something ethereal magical tasteful - a bright multicoloured sheen
+    wash" -> a wide pastel light, feathered, passing every ten seconds;
+  4 "more subtly and more of a sheen like the reflection of oil" -> this.
+The word keeps its grey (--tensing). On it lie two faint films of the camps'
+colours, at different angles and band widths, so where they cross the
+colours interfere as a film of oil does; both drift slowly, on different
+paths, there and back, so the pattern never settles. Over them a wide, soft
+band of the paper's own light glides once each way: the reflection, which
+is what makes a film read as a sheen and not as paint.
 
 THE COLOURS are the camps' own, read from the map's camp markers
 (<g class="camp-dot" data-color=... data-href="sherpa-tensing-camp-N-...">),
-so a camp recoloured on the map is recoloured in the light on the next run:
-the chromatic ones, sorted by hue so they flow as a spectrum rather than
-stripe, each lifted to one pastel lightness and chroma (PASTEL). They are
-light, and are meant to be: the word's resting grey is what must be read
-(tools/check_route_map.py measures --tensing at 3:1), and the light is a
-passing highlight on a logotype, which WCAG 1.4.3 leaves out of its
-contrast rule. The ink shadow keeps the letters' shape under it.
+so a camp recoloured on the map is recoloured in the film on the next run:
+the chromatic ones, sorted by hue so they run as a spectrum rather than
+stripe, each at one lightness and chroma (FILM), mixed in OKLab. The films
+are faint (FILMS' opacities), so the word stays grey with colour in it. The
+resting grey is what tools/check_route_map.py measures at 3:1; the sheen is
+a tint on a logotype, which WCAG 1.4.3 leaves out of its contrast rule.
 
-NO EDGES: each colour's opacity swells from nothing to PEAK and back along
-the band (sin^2), and the gradient mixes in OKLab, so hue melts into hue and
-the light into the grey.
-
-THE MOTION: the light sits in the middle of a background WIDE words wide,
-not repeated, and background-position carries it from off the word's left
-to off its right, eased, in SWEEP of every LOOP seconds; the rest of the loop
-it waits outside the word. The bloom (a drop-shadow in the middle colour)
-rises and falls with it. Only background-position and the word's filter
-animate, over a word-sized box. prefers-reduced-motion leaves the light
-outside: plain grey.
+THE MOTION: every layer is three times the word each way and never
+repeated, so moving anywhere within 0-100% the word never meets an edge.
+One animation moves all of them, DRIFT seconds each way (alternate), eased.
+Only background-position animates, over a word-sized box.
+prefers-reduced-motion holds it still: a still film on the grey.
 
 THE SHADOW is a filter: a text-shadow is painted over a background clipped
 to the text and would darken it; a drop-shadow is cast by the painted
@@ -60,14 +60,12 @@ FENCE = re.compile(re.escape(START) + r'.*?' + re.escape(END) + r'\n?', re.S)
 MARK_OLD = '<div class="brand">Sherpa <span>Tensing</span></div>'
 MARK_NEW = '<div class="brand">Sherpa <span><i class="wash">Tensing</i></span></div>'
 NUM = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen']
-WIDE = 4            # the background is this many words wide; the light sits in its middle
-BAND = (30, 70)     # the light's extent, in % of that background (1.6 words, most of it faint)
-PEAK = 0.82         # the light's opacity at its heart; it falls away as sin^2 either side
-PASTEL = (0.87, 0.105)   # OKLCh lightness and chroma of the light's colours
-ANGLE = 110         # deg: a slant, as light falls
-LOOP = 10           # seconds from one pass to the next
-SWEEP = 0.68        # the part of the loop spent crossing
-GLOW = 0.55         # the bloom round the word at the light's height, as opacity
+FILM = (0.78, 0.13)      # OKLCh lightness and chroma of the film's colours: a touch lighter than the grey
+# the two films: (angle deg, em per colour, opacity). Different angles and band widths, so where
+# they cross the colours interfere, as a film of oil does, instead of lying in one set of stripes
+FILMS = [(118, 0.15, 0.20), (32, 0.21, 0.16)]
+DRIFT = 22               # seconds for one drift, there and back again as one breath (alternate)
+GLINT = 0.45             # the reflection's strength at its middle, as opacity of the paper's colour
 
 
 def camp_colours(src):
@@ -82,53 +80,52 @@ def camp_colours(src):
 
 
 
-def shimmer(src):
-    """the camps' colours as light: the chromatic ones, in order of hue so they flow as a
-    spectrum does, each lifted to one pastel lightness and chroma"""
+def film_colours(src):
+    """the camps' colours as a thin film: the chromatic ones, in order of hue so they run as
+    a spectrum does, each at one lightness and chroma"""
     lch = [S.to_lch(c) for c in camp_colours(src)]
     hues = sorted(h for L, C, h in lch if C > 0.03)     # the greys (camps 12, 13) have no hue to give
-    return [S.from_lch(PASTEL[0], PASTEL[1], h) for h in hues]
+    return [S.from_lch(FILM[0], FILM[1], h) for h in hues]
 
 
-def light(n):
-    """the band: each colour at an opacity that swells from nothing to PEAK and back (sin^2),
-    mixed in OKLab so neighbouring hues melt into each other"""
-    a, b = BAND
-    stops = ['transparent %.1f%%' % a]
-    for i in range(n):
-        t = (i + 1) / (n + 1)
-        alpha = PEAK * math.sin(math.pi * t) ** 2
-        stops.append('color-mix(in srgb,var(--shimmer-%d) %d%%,transparent) %.2f%%'
-                     % (i + 1, round(alpha * 100), a + (b - a) * t))
-    stops.append('transparent %.1f%%' % b)
-    return 'linear-gradient(%ddeg in oklab,%s)' % (ANGLE, ','.join(stops))
+def film(n, angle, step, alpha):
+    """a repeating run through the spectrum, back to where it began, faint: mixed in OKLab so
+    hue melts into hue, as interference colours do"""
+    stops = ['color-mix(in srgb,var(--shimmer-%d) %d%%,transparent) %.2fem'
+             % (i % n + 1, round(alpha * 100), i * step) for i in range(n + 1)]
+    return 'repeating-linear-gradient(%ddeg in oklab,%s)' % (angle, ','.join(stops))
 
 
 def block(src):
-    colours = shimmer(src)
+    colours = film_colours(src)
+    n = len(colours)
     ink = 'color-mix(in srgb,var(--ink) %d%%,transparent)'
-    shadow = 'drop-shadow(0 0 1px var(--paper)) drop-shadow(0 2px 1.5px %s) drop-shadow(0 8px 10px %s)' % (ink % 42, ink % 34)
-    mid = 'var(--shimmer-%d)' % (len(colours) // 2 + 1)
-    glow = lambda a: 'drop-shadow(0 0 9px color-mix(in srgb,%s %d%%,transparent))' % (mid, round(a * 100))
-    s = round(SWEEP * 100)
+    films = [film(n, *f) for f in FILMS]
+    grey = 'linear-gradient(var(--tensing),var(--tensing))'
+    # the reflection: a wide soft band of the paper's own light gliding over the film, which is
+    # what makes a film read as a sheen rather than as paint
+    glint = ('linear-gradient(105deg,transparent 30%%,color-mix(in srgb,var(--paper) %d%%,transparent) 50%%,'
+             'transparent 70%%)' % round(GLINT * 100))
     css = [
-        '/* "Tensing": a soft light of the camps\' colours washes across its grey, as over',
-        '   mother-of-pearl, and the word blooms faintly as it passes (tools/sherpa_wash.py) */',
+        '/* "Tensing": its grey under a thin film of the camps\' colours, as oil on a wet road,',
+        '   two films at different angles drifting slowly over each other (tools/sherpa_wash.py) */',
         ':root{%s}' % ' '.join('--shimmer-%d:%s;' % (i + 1, c) for i, c in enumerate(colours)),
         '.wordmark .brand .wash{font-style:normal;}',
         '@supports ((-webkit-background-clip:text) or (background-clip:text)){',
         '  .wordmark .brand .wash{display:inline-block;padding:0 .04em .1em;margin:0 -.04em -.1em;color:transparent;',
         '    text-shadow:none;-webkit-background-clip:text;background-clip:text;',
-        '    background-image:%s,linear-gradient(var(--tensing),var(--tensing));' % light(len(colours)),
-        '    background-size:%d00%% 100%%,100%% 100%%;background-repeat:no-repeat;' % WIDE,
-        '    filter:%s %s;' % (shadow, glow(0)),
-        '    animation:st-sheen %ds cubic-bezier(.45,.05,.55,.95) infinite;}' % LOOP,
+        '    background-image:%s,%s,%s;' % (glint, ','.join(films), grey),
+        # three times the word each way and never repeated: the films can drift anywhere in
+        # 0-100% and the word never meets an edge, so there is no seam to see
+        '    background-size:300%% 100%%,300%% 300%%,300%% 300%%,100%% 100%%;background-repeat:no-repeat;',
+        '    filter:drop-shadow(0 0 1px var(--paper)) drop-shadow(0 2px 1.5px %s) drop-shadow(0 8px 10px %s);'
+        % (ink % 42, ink % 34),
+        '    animation:st-oil %ds ease-in-out infinite alternate;}' % DRIFT,
         '}',
-        # 100%: the light is off the word's left; 0%: off its right. Then it waits.
-        # The bloom rises and falls with it, at its height when the light is mid-word
-        '@keyframes st-sheen{0%%{background-position:100%% 0,0 0;filter:%s %s}' % (shadow, glow(0)),
-        '  %d%%{filter:%s %s}' % (s // 2, shadow, glow(GLOW)),
-        '  %d%%,100%%{background-position:0%% 0,0 0;filter:%s %s}}' % (s, shadow, glow(0)),
+        # the two films take different paths, so their crossing never settles
+        # (the reflection crosses the word once each way: 100% is off its left, 0% off its right)
+        '@keyframes st-oil{0%{background-position:100% 0,0% 10%,100% 0%,0 0}'
+        '50%{background-position:50% 0,55% 90%,35% 70%,0 0}100%{background-position:0% 0,100% 35%,0% 100%,0 0}}',
         '@media (prefers-reduced-motion:reduce){.wordmark .brand .wash{animation:none;}}',
     ]
     return START + '\n<style id="sherpa-wash">\n' + '\n'.join(css) + '\n</style>\n' + END + '\n', colours
@@ -144,14 +141,14 @@ def main():
     if check:
         if new != src:
             bad.append('sheen block or markup missing or stale')
-        print('PASS: a light of %d camp colours washes across "Tensing"' % len(wash) if not bad
+        print('PASS: a film of %d camp colours lies on "Tensing"' % len(wash) if not bad
               else 'FAIL: ' + '; '.join(bad))
         sys.exit(1 if bad else 0)
     if bad:
         raise SystemExit('FAIL: ' + bad[0])
     if new != src:
         io.open(MAP, 'w', encoding='utf-8', newline='\n').write(new)
-    print('  light: ' + ' '.join(wash))
+    print('  film: ' + ' '.join(wash))
 
 
 if __name__ == '__main__':
