@@ -30,6 +30,14 @@ is the accent pushed vivid (L 0.62) with a brighter, warmer centre; on a
 dark descent it is the accent near white. Text is untouched: every text on
 the paper already wears the paper halo (tools/sherpa_topo.py), which the
 light passes behind. prefers-reduced-motion switches it off, as does print.
+
+The route map's light is then greyed: Innes, 2026-09-28, "try the hub page as
+Sherpa Tensing with a greyish pink and reduce the pink saturation on the
+topology too". Its pinks went to 40% of their OKLCh chroma, and so did its
+contour tile (tools/topo_tile.py). The vivid floor above would have pushed the
+light back to full pink whatever the accent, so on the map the light keeps
+MAP_CHROMA of it too. The lesson pages keep theirs: a pale camp colour needs
+the floor to be seen at all.
 """
 import glob
 import io
@@ -59,6 +67,8 @@ ELEMENT = EL_START + '\n<div class="topo-sheen" aria-hidden="true"><i></i><i></i
 HUB_HALO = ['.wordmark .sub', '.counts', '.intro h1', '.intro .lead', '.section-title', '.map-how',
             '.legend', '.teach-row > span', '.btn-ghost']
 HALO = sherpa_topo.HALO
+
+MAP_CHROMA = 0.40      # the route map's light, at the chroma its greyed pinks keep
 
 # (angle deg, period px along the gradient, band px, seconds, direction, opacity)
 BANDS = [(100, 1600, 300, 11, 1, 0.95), (72, 2300, 200, 19, -1, 0.6)]
@@ -106,6 +116,7 @@ def block(src, is_map):
     t = tokens(src)
     sheen, hot = colours(t)
     if is_map:
+        sheen, hot = (from_lch(L, C * MAP_CHROMA, H) for L, C, H in (to_lch(sheen), to_lch(hot)))
         tile = 'url("%s") 0 0/640px 640px repeat' % SHEEN_TILE.replace(' ', '%20')
         mask = ['  -webkit-mask:%s;' % tile, '  mask:%s;' % tile]
     else:

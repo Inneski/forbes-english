@@ -2,9 +2,12 @@
 
 The Sherpa route map's background, `Sherpa Tensing/topo-tile.svg`, is:
 
-    py tools/topo_tile.py "Sherpa Tensing/topo-tile.svg" --seed 7 --colour '#5A2438'         --width .6 --opacity .24 --index-width 1 --index-opacity .17
+    py tools/topo_tile.py "Sherpa Tensing/topo-tile.svg" --seed 7 --colour '#483239'         --width .6 --opacity .24 --index-width 1 --index-opacity .17
 
-(thin plum lines, 2026-09-26: Innes found the first, 1px pink version too soft)
+(thin plum lines, 2026-09-26: Innes found the first, 1px pink version too soft;
+then greyed, 2026-09-28, "reduce the pink saturation on the topology": the
+plum #5A2438 at 40% of its OKLCh chroma, same lightness and hue, as the hub's
+pinks went greyish the same way)
 
 Same arguments, same file: the seed fixes the terrain. If the colour or
 opacity changes, re-run `py tools/check_route_map.py`: it measures the

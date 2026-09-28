@@ -324,6 +324,17 @@ in "Sherpa Tensing は"). `seo.py` takes the hub's description from that lead;
 gets committed. Not committed with it here because both carried a peer's
 uncommitted topic work at the time.
 
+**Route map greyed** (2026-09-28). Innes: *"try the hub page as Sherpa Tensing
+with a greyish pink and reduce the pink saturation on the topology too"*. The
+map's pinks (`--accent` family, `--accent-text`, `--paper-deep`, the teaching
+button, "free") are the old ones at 40% of their OKLCh chroma, same hue, each
+text colour darkened only as far as its floor needs ("Tensing" 3.03 on the
+paper; the small text ≥4.5 on the deepest paper). The contour tile is the old
+plum at the same 40% (`tools/topo_tile.py` docstring has the command), and the
+map's sheen keeps `MAP_CHROMA` of its vivid colour (`tools/sherpa_sheen.py`;
+the lesson pages keep the full light). Camp colours on the map are untouched.
+Marked "try": if Innes wants it back, the old values are in `3376645`.
+
 **Camps one and two** (`tools/sherpa_own_i18n.py`, `85139d8`): Portuguese,
 Arabic and Japanese added to their own tables and globes; camp two's
 frequency words sat one language along (German learners saw Italian); 21
