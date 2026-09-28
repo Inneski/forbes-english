@@ -300,13 +300,15 @@ right to left, no English the master does not know, no sideways scroll).
 
 **Reviews.** German (22 corrections: "stretch" of time had become a distance,
 an example flipped from still-reading to finished, English under study
-translated) and French (24) are reviewed at native level and merged. **Still
-to land: es it pt ru ar zh ja** — the `sherpa-lesson-i18n-reviews` workflow,
-paced two at a time because fanned-out agents died on the session limit
-three times; each writes `work/review-<lang>.json`. When a file lands:
-`py tools/sherpa_lesson_i18n.py --merge`, then with no flag (inject), then
-`--check`, then `node tools/sherpa_lesson_i18n_check.js --langs <lang>
-<the 23 pages>`, and commit. Hand-fixed meanwhile: the diagrams' NOW label
+translated) and French (24) were reviewed first; then, 2026-09-28, es 14, it
+19, pt 20, ru 28, ar 41, zh 30, ja 31 — all nine languages reviewed at native
+level and merged, browser check 23 pages × 9 languages PASS. Common faults:
+a stretch of time rendered as a distance; continuous and perfect examples
+turned into finished actions; "deadline clause" as a contract clause; the
+Japanese kept `<em>` in eight example translations, which are inserted as
+text and would have shown the tags. Reviews run paced, two at a time: fanned
+out, agents died on the session limit three times. The review files are
+scratch (`work/` is gitignored); what they changed lives in `master.json`. Hand-fixed meanwhile: the diagrams' NOW label
 named in prose had become AHORA / ADESSO / «الآن» / “现在” in 22 strings (the
 label stays NOW).
 
