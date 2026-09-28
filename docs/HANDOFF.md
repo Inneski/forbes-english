@@ -336,6 +336,11 @@ plum at the same 40% (`tools/topo_tile.py` docstring has the command), and the
 map's sheen keeps `MAP_CHROMA` of its vivid colour (`tools/sherpa_sheen.py`;
 the lesson pages keep the full light). Camp colours on the map are untouched.
 Marked "try": if Innes wants it back, the old values are in `3376645`.
+Since: "Tensing" grey, then a living wash of the thirteen camps' colours
+(`tools/sherpa_wash.py`, reads the camp markers, darkens each to 3:1; re-run
+it after recolouring a camp). `check_route_map.py` read CSS tokens with
+`--[a-z-]+`, so no token with a digit in its name was ever measured; fixed,
+and it now checks the map's own wordmark too.
 
 **Camps one and two** (`tools/sherpa_own_i18n.py`, `85139d8`): Portuguese,
 Arabic and Japanese added to their own tables and globes; camp two's

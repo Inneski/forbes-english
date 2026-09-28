@@ -240,7 +240,8 @@ def check_pages(root=ROOT):
         if not (f.startswith(FAMILY) and f.endswith('.html')):
             continue
         s = open(os.path.join(root, f), encoding='utf-8').read()
-        tok = {k: v.upper() for k, v in re.findall(r'(--[a-z-]+)\s*:\s*(#[0-9A-Fa-f]{6})', s)}
+        # digits too: --wash-6 is a token ([a-z-] alone read none of them, and passed a pale wash)
+        tok = {k: v.upper() for k, v in re.findall(r'(--[a-z0-9-]+)\s*:\s*(#[0-9A-Fa-f]{6})', s)}
         acc = tok.get('--accent')
         if not acc:
             bad.append('%s: no --accent' % f)
@@ -253,6 +254,12 @@ def check_pages(root=ROOT):
         if span and tok.get(span[-1]) and tok.get('--paper') and contrast(tok[span[-1]], tok['--paper']) < 3:
             bad.append('%s: the wordmark\'s "Tensing" (%s %s) is %.2f:1 on the paper' % (
                 f, span[-1], tok[span[-1]], contrast(tok[span[-1]], tok['--paper'])))
+        # the route map's "Tensing" is a wash of the camps' colours (tools/sherpa_wash.py):
+        # every stop must be seen, as the grey had to be; a mix is never lighter than its stops
+        for k in sorted(t for t in tok if t.startswith('--wash-')):
+            if tok.get('--paper') and contrast(tok[k], tok['--paper']) < 3:
+                bad.append('%s: the wordmark wash %s %s is %.2f:1 on the paper' % (
+                    f, k, tok[k], contrast(tok[k], tok['--paper'])))
         for sel, body in _css_rules(s):
             if not re.search(r'background(?:-color)?:\s*var\(--accent\)\s*(?:;|$)', body):
                 continue
