@@ -9,6 +9,11 @@ rest of the sherpa course" — the ten the camps offer for their examples:
 English plus German, Spanish, French, Italian, Portuguese, Russian, Arabic,
 Chinese and Japanese.
 
+Innes, 2026-09-27: "you should mention that Sherpa Tensing is a guide to English
+tenses". The tagline (sub) says so, as it does on every lesson page
+(tools/sherpa_links.py), and the lead now opens with it, which is also where
+tools/seo.py takes the page's search description from.
+
 HOW THE PAGE USES THIS. English is the page source (for search, no-script
 visitors and tools/check_route_map.py). Every translated element carries
 data-t="key" (its innerHTML), data-t-aria="key" (aria-label) or
@@ -61,9 +66,9 @@ EN = dict(
 LANGS = {}
 
 LANGS['de'] = dict(
-    langGroup='Sprache', sub='ein Weg hinauf durch die Zeitformen', eyebrow='Routenkarte',
+    langGroup='Sprache', sub='ein Leitfaden zu den englischen Zeitformen', eyebrow='Routenkarte',
     h1='Dreizehn Lager, zwei Seiten',
-    lead='Der Aufstieg im Aktiv, geordnet danach, wie oft du jede Zeitform wirklich brauchst. Der Abstieg im Passiv: dieselben dreizehn Lager in umgekehrter Reihenfolge &mdash; neun davon mit einem Passiv, das sich zu lernen lohnt.',
+    lead='Sherpa Tensing ist ein Leitfaden zu den englischen Zeitformen: Jede Zeitform ist ein Lager am Berg. Der Aufstieg im Aktiv, geordnet danach, wie oft du jede Zeitform wirklich brauchst. Der Abstieg im Passiv: dieselben dreizehn Lager in umgekehrter Reihenfolge &mdash; neun davon mit einem Passiv, das sich zu lernen lohnt.',
     countsAria='Was auf der Route liegt', cUp='Lager bergauf', cDown='Passivformen bergab', cOff='abseits der Route', cFree='kostenlos',
     everyStop='Alle Stationen', mapKick='Die Karte', mapH2='Hinauf im Aktiv, hinab im Passiv',
     mapHow='Der Weg hinauf hat keine Sperren: Fang bei dem Lager an, das du brauchst. Jede Station auf dem Weg hinab öffnet sich, wenn du das Lager abschließt, aus dem sie kommt; bis dahin ist ihre Markierung grau.',
@@ -115,9 +120,9 @@ LANGS['de'] = dict(
 )
 
 LANGS['es'] = dict(
-    langGroup='Idioma', sub='una ruta de subida por los tiempos verbales', eyebrow='Mapa de la ruta',
+    langGroup='Idioma', sub='una guía de los tiempos verbales del inglés', eyebrow='Mapa de la ruta',
     h1='Trece campamentos, dos caras',
-    lead='La subida, en voz activa, ordenada según la frecuencia con que de verdad usarás cada tiempo. La bajada, en voz pasiva: los mismos trece campamentos al revés &mdash; nueve de ellos con una pasiva que merece la pena aprender.',
+    lead='Sherpa Tensing es una guía de los tiempos verbales del inglés: cada tiempo es un campamento en la montaña. La subida, en voz activa, ordenada según la frecuencia con que de verdad usarás cada tiempo. La bajada, en voz pasiva: los mismos trece campamentos al revés &mdash; nueve de ellos con una pasiva que merece la pena aprender.',
     countsAria='Qué hay en la ruta', cUp='campamentos de subida', cDown='pasivas de bajada', cOff='fuera de la ruta', cFree='gratis',
     everyStop='Todas las paradas', mapKick='El mapa', mapH2='Subida en activa, bajada en pasiva',
     mapHow='La subida no tiene candados: empieza en el campamento que necesites. Cada parada de la bajada se abre cuando terminas el campamento del que viene; hasta entonces, su marca es gris.',
@@ -169,9 +174,9 @@ LANGS['es'] = dict(
 )
 
 LANGS['fr'] = dict(
-    langGroup='Langue', sub='un itinéraire qui gravit les temps verbaux', eyebrow="Carte de l'itinéraire",
+    langGroup='Langue', sub='un guide des temps verbaux anglais', eyebrow="Carte de l'itinéraire",
     h1='Treize camps, deux faces',
-    lead="La montée, à la voix active, classée selon la fréquence à laquelle tu utiliseras vraiment chaque temps. La descente, à la voix passive\xa0: les treize mêmes camps dans l'autre sens &mdash; dont neuf avec un passif qui vaut la peine d'être appris.",
+    lead="Sherpa Tensing est un guide des temps verbaux anglais\xa0: chaque temps est un camp sur la montagne. La montée, à la voix active, classée selon la fréquence à laquelle tu utiliseras vraiment chaque temps. La descente, à la voix passive\xa0: les treize mêmes camps dans l'autre sens &mdash; dont neuf avec un passif qui vaut la peine d'être appris.",
     countsAria="Ce qu'il y a sur l'itinéraire", cUp='camps à la montée', cDown='passifs à la descente', cOff="hors de l'itinéraire", cFree='gratuites',
     everyStop='Toutes les étapes', mapKick='La carte', mapH2="En montant à l'actif, en descendant au passif",
     mapHow="La montée n'a pas de verrou\xa0: commence au camp dont tu as besoin. Chaque étape de la descente s'ouvre quand tu termines le camp d'où elle vient\xa0; en attendant, son repère est gris.",
@@ -223,9 +228,9 @@ LANGS['fr'] = dict(
 )
 
 LANGS['it'] = dict(
-    langGroup='Lingua', sub='un percorso in salita tra i tempi verbali', eyebrow='Mappa del percorso',
+    langGroup='Lingua', sub='una guida ai tempi verbali inglesi', eyebrow='Mappa del percorso',
     h1='Tredici campi, due versanti',
-    lead='La salita, in forma attiva, ordinata in base a quanto spesso userai davvero ogni tempo. La discesa, in forma passiva: gli stessi tredici campi al contrario &mdash; nove dei quali con un passivo che vale la pena imparare.',
+    lead='Sherpa Tensing è una guida ai tempi verbali inglesi: ogni tempo è un campo sulla montagna. La salita, in forma attiva, ordinata in base a quanto spesso userai davvero ogni tempo. La discesa, in forma passiva: gli stessi tredici campi al contrario &mdash; nove dei quali con un passivo che vale la pena imparare.',
     countsAria="Che cosa c'è sul percorso", cUp='campi in salita', cDown='passivi in discesa', cOff='fuori percorso', cFree='gratis',
     everyStop='Tutte le tappe', mapKick='La mappa', mapH2="Su all'attivo, giù al passivo",
     mapHow="La salita non ha lucchetti: comincia dal campo che ti serve. Ogni tappa della discesa si apre quando finisci il campo da cui viene; fino ad allora il suo segnaposto è grigio.",
@@ -277,9 +282,9 @@ LANGS['it'] = dict(
 )
 
 LANGS['pt'] = dict(
-    langGroup='Idioma', sub='uma trilha de subida pelos tempos verbais', eyebrow='Mapa da trilha',
+    langGroup='Idioma', sub='um guia dos tempos verbais do inglês', eyebrow='Mapa da trilha',
     h1='Treze acampamentos, duas faces',
-    lead='A subida, na voz ativa, ordenada pela frequência com que você vai realmente usar cada tempo. A descida, na voz passiva: os mesmos treze acampamentos ao contrário &mdash; nove deles com uma passiva que vale a pena aprender.',
+    lead='Sherpa Tensing é um guia dos tempos verbais do inglês: cada tempo é um acampamento na montanha. A subida, na voz ativa, ordenada pela frequência com que você vai realmente usar cada tempo. A descida, na voz passiva: os mesmos treze acampamentos ao contrário &mdash; nove deles com uma passiva que vale a pena aprender.',
     countsAria='O que há na trilha', cUp='acampamentos na subida', cDown='passivas na descida', cOff='fora da trilha', cFree='grátis',
     everyStop='Todas as paradas', mapKick='O mapa', mapH2='Subida na ativa, descida na passiva',
     mapHow="A subida não tem cadeados: comece pelo acampamento de que você precisa. Cada parada da descida se abre quando você termina o acampamento de onde ela vem; até lá, o marcador dela fica cinza.",
@@ -331,9 +336,9 @@ LANGS['pt'] = dict(
 )
 
 LANGS['ru'] = dict(
-    langGroup='Язык', sub='маршрут вверх по английским временам', eyebrow='Карта маршрута',
+    langGroup='Язык', sub='путеводитель по английским временам', eyebrow='Карта маршрута',
     h1='Тринадцать лагерей, два склона',
-    lead='Подъём — в активном залоге, и лагеря на нём расставлены по тому, как часто тебе на самом деле понадобится каждое время. Спуск — в пассивном: те же тринадцать лагерей в обратном порядке &mdash; у девяти из них есть пассив, который стоит выучить.',
+    lead='Sherpa Tensing — путеводитель по английским временам: каждое время — это лагерь на горе. Подъём — в активном залоге, и лагеря на нём расставлены по тому, как часто тебе на самом деле понадобится каждое время. Спуск — в пассивном: те же тринадцать лагерей в обратном порядке &mdash; у девяти из них есть пассив, который стоит выучить.',
     countsAria='Что есть на маршруте', cUp='лагерей на подъёме', cDown='пассивов на спуске', cOff='в стороне от маршрута', cFree='бесплатных',
     everyStop='Все остановки', mapKick='Карта', mapH2='Вверх — в активном залоге, вниз — в пассивном',
     mapHow='На подъёме нет замков: начинай с того лагеря, который тебе нужен. Каждая остановка на спуске открывается, когда ты проходишь лагерь, к которому она привязана; до этого её отметка серая.',
@@ -385,9 +390,9 @@ LANGS['ru'] = dict(
 )
 
 LANGS['ar'] = dict(
-    langGroup='اللغة', sub='طريق صاعد عبر الأزمنة', eyebrow='خريطة الطريق',
+    langGroup='اللغة', sub='دليل أزمنة اللغة الإنجليزية', eyebrow='خريطة الطريق',
     h1='ثلاثة عشر مخيمًا، ووجهان',
-    lead='الصعود بصيغة المبني للمعلوم، مرتّبًا بحسب عدد المرات التي ستحتاج فيها فعلًا إلى كل زمن. والنزول بصيغة المبني للمجهول: المخيمات الثلاثة عشر نفسها بترتيب معكوس &mdash; لتسعة منها صيغة مجهول تستحق التعلّم.',
+    lead='Sherpa Tensing دليل إلى أزمنة اللغة الإنجليزية: كل زمن مخيّم على الجبل. الصعود بصيغة المبني للمعلوم، مرتّبًا بحسب عدد المرات التي ستحتاج فيها فعلًا إلى كل زمن. والنزول بصيغة المبني للمجهول: المخيمات الثلاثة عشر نفسها بترتيب معكوس &mdash; لتسعة منها صيغة مجهول تستحق التعلّم.',
     countsAria='ما يوجد على الطريق', cUp='مخيمًا في الصعود', cDown='صيغ مجهول في النزول', cOff='خارج الطريق', cFree='مجانية',
     everyStop='كل المحطات', mapKick='الخريطة', mapH2='صعودًا بالمعلوم، ونزولًا بالمجهول',
     mapHow='لا أقفال في طريق الصعود: ابدأ من المخيم الذي تحتاجه. وكل محطة في طريق النزول تُفتح حين تُنهي المخيم الذي تأتي منه؛ وحتى ذلك الحين تبقى علامتها رمادية.',
@@ -439,9 +444,9 @@ LANGS['ar'] = dict(
 )
 
 LANGS['zh'] = dict(
-    langGroup='语言', sub='一条向上穿越时态的路线', eyebrow='路线图',
+    langGroup='语言', sub='英语时态指南', eyebrow='路线图',
     h1='十三座营地，两面山坡',
-    lead='上山用主动语态，按你实际用到各个时态的频率排列。下山用被动语态：还是这十三座营地，顺序反过来&mdash;&mdash;其中九座有值得学的被动语态。',
+    lead='Sherpa Tensing 是一份英语时态指南：每个时态都是山上的一座营地。上山用主动语态，按你实际用到各个时态的频率排列。下山用被动语态：还是这十三座营地，顺序反过来&mdash;&mdash;其中九座有值得学的被动语态。',
     countsAria='路线上有什么', cUp='座上山营地', cDown='个下山被动语态', cOff='节路线外的课', cFree='节免费课',
     everyStop='所有站点', mapKick='地图', mapH2='上山用主动，下山用被动',
     mapHow='上山的路没有锁：从你需要的营地开始。下山路上的每一站，要等你完成它所对应的营地才会打开；在那之前，它的标记是灰色的。',
@@ -493,9 +498,9 @@ LANGS['zh'] = dict(
 )
 
 LANGS['ja'] = dict(
-    langGroup='言語', sub='時制をのぼっていくルート', eyebrow='ルートマップ',
+    langGroup='言語', sub='英語の時制ガイド', eyebrow='ルートマップ',
     h1='13のキャンプ、2つの斜面',
-    lead='登りは能動態で、実際によく使う時制から順に並んでいます。下りは受動態で、同じ13のキャンプを逆の順にたどります。そのうち9つには、学ぶ価値のある受動態があります。',
+    lead='Sherpa Tensing は英語の時制ガイドです。時制のひとつひとつが、この山のキャンプです。登りは能動態で、実際によく使う時制から順に並んでいます。下りは受動態で、同じ13のキャンプを逆の順にたどります。そのうち9つには、学ぶ価値のある受動態があります。',
     countsAria='ルートにあるもの', cUp='登りのキャンプ', cDown='下りの受動態', cOff='ルート外のレッスン', cFree='レッスン無料',
     everyStop='すべての地点', mapKick='マップ', mapH2='登りは能動態、下りは受動態',
     mapHow='登りの道にロックはありません。必要なキャンプから始めてください。下りの各地点は、その元になるキャンプを終えると開きます。それまでは印が灰色です。',

@@ -271,8 +271,17 @@ the "Examples in" bar, which the descents now get. HOUSE-STYLE §8 holds: the
 English being taught (conjugation tables, grammar forms, signal-word lists,
 quiz stems and options, "Not this" wrong sentences) is never translated. **A
 language is offered on a page only when every string that page needs has
-it**, so an unfinished language never appears (Japanese was pending on one
-page at commit time; it appears when its strings land).
+it**, so an unfinished language never appears. All nine are complete on all
+23 pages; the browser check passes 23 pages × 9 languages.
+
+**Diagram labels that run long** are shrunk to fit by the runtime's `fit()`,
+from their anchor, down to 60%, then held with `textLength`. One
+proportional step was not enough: a diagram scaled to a phone draws 11.5px
+type at ~6px on screen, where Chrome snaps glyphs to whole pixels, so German's
+"eine Gewohnheit oder ein Zustand, vorbei und erledigt" measured 284 wide at
+both 11.5 and 10.75. `fit()` measures after each step. It also used to clear
+every label's inline `font-size` (camp eight's "THE EVIDENCE" is 12.5px
+inline); it now keeps the label's own.
 
 **The pipeline** (see the tool's docstring): `node tools/sherpa_lesson_strings.js`
 (renders each page, collects every text block with its section, the quiz's
@@ -289,14 +298,31 @@ English; all-caps labels are translated whole) → `node tools/sherpa_lesson_i18
 example its translation, the whole quiz answered in the language, Arabic
 right to left, no English the master does not know, no sideways scroll).
 
-**Reviews.** German was reviewed at native level (22 corrections: "stretch"
-of time had become a distance, an example flipped from still-reading to
-finished, English under study translated). The other eight reviews and two
-Japanese chunks were cut off twice (session limit, then a network drop) and
-run paced, two at a time (`sherpa-lesson-i18n-finish` workflow); re-run
-`--merge`, inject, `--check` and the browser check when they land, and
-commit. Hand-fixed meanwhile: the diagrams' NOW label named in prose had
-become AHORA / ADESSO / «الآن» / “现在” in 22 strings (the label stays NOW).
+**Reviews.** German (22 corrections: "stretch" of time had become a distance,
+an example flipped from still-reading to finished, English under study
+translated) and French (24) are reviewed at native level and merged. **Still
+to land: es it pt ru ar zh ja** — the `sherpa-lesson-i18n-reviews` workflow,
+paced two at a time because fanned-out agents died on the session limit
+three times; each writes `work/review-<lang>.json`. When a file lands:
+`py tools/sherpa_lesson_i18n.py --merge`, then with no flag (inject), then
+`--check`, then `node tools/sherpa_lesson_i18n_check.js --langs <lang>
+<the 23 pages>`, and commit. Hand-fixed meanwhile: the diagrams' NOW label
+named in prose had become AHORA / ADESSO / «الآن» / “现在” in 22 strings (the
+label stays NOW).
+
+**"A guide to English tenses."** Innes, 2026-09-27: *"you should mention that
+Sherpa Tensing is a guide to English tenses"*. The line beside the name on
+all 26 pages said "a route up the tenses" — no subject, to anyone arriving
+from a search. It now says "a guide to English tenses" (`TAGLINE` in
+`tools/sherpa_links.py`, whose `--check` fails a page that says anything
+else), and the route map's lead opens "Sherpa Tensing is a guide to English
+tenses: each tense is a camp on the mountain." Both are in the hub's nine
+languages (`tools/sherpa_hub_i18n.py`), reviewed at native level: two
+corrections (Arabic tagline in the construct form, دليل أزمنة…; a space
+in "Sherpa Tensing は"). `seo.py` takes the hub's description from that lead;
+`lesson-meta.json` and `library.html` pick it up on the next `seo.py` run that
+gets committed. Not committed with it here because both carried a peer's
+uncommitted topic work at the time.
 
 **Camps one and two** (`tools/sherpa_own_i18n.py`, `85139d8`): Portuguese,
 Arabic and Japanese added to their own tables and globes; camp two's
