@@ -336,9 +336,11 @@ plum at the same 40% (`tools/topo_tile.py` docstring has the command), and the
 map's sheen keeps `MAP_CHROMA` of its vivid colour (`tools/sherpa_sheen.py`;
 the lesson pages keep the full light). Camp colours on the map are untouched.
 Marked "try": if Innes wants it back, the old values are in `3376645`.
-Since: "Tensing" grey, with a faint oil-film sheen of the camps' colours
-drifting on it (`tools/sherpa_wash.py`, reads the camp markers; re-run it
-after recolouring a camp). Three tries before it were rejected, listed in the
+Since: "Tensing" grey at rest, with a soft band of light gliding across it
+twice every 14 s, carrying all the colour: an oil film of the camps' colours
+on a copy of the word (`::after`, alt text "") masked by the moving band
+(`tools/sherpa_wash.py`, reads the camp markers; re-run it after recolouring
+a camp). Three tries before it were rejected, listed in the
 tool's docstring; the lesson: Innes wants subtle, a tint on the grey, not a
 colour effect. The first oil version shipped standing still ("Can't see any
 movement now"): its background-size line kept a literal `300%%` because it

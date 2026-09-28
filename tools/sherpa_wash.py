@@ -13,7 +13,9 @@ the next:
     thirteen dark slivers: "a hard edged band";
   3 "something ethereal magical tasteful - a bright multicoloured sheen
     wash" -> a wide pastel light, feathered, passing every ten seconds;
-  4 "more subtly and more of a sheen like the reflection of oil" -> this.
+  4 "more subtly and more of a sheen like the reflection of oil" -> two
+    faint films always on the grey, a pale reflection gliding over them;
+  5 "Make the gliding band carry all the color" -> this.
 The word keeps its grey (--tensing). On it lie two faint films of the camps'
 colours, at different angles and band widths, so where they cross the
 colours interfere as a film of oil does; both drift slowly, on different
@@ -60,38 +62,45 @@ FENCE = re.compile(re.escape(START) + r'.*?' + re.escape(END) + r'\n?', re.S)
 MARK_OLD = '<div class="brand">Sherpa <span>Tensing</span></div>'
 MARK_NEW = '<div class="brand">Sherpa <span><i class="wash">Tensing</i></span></div>'
 NUM = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen']
-FILM = (0.78, 0.13)      # OKLCh lightness and chroma of the film's colours: a touch lighter than the grey
+WORD = 'Tensing'
+FILM = (0.76, 0.14)      # OKLCh lightness and chroma of the film's colours
 # the two films: (angle deg, em per colour, opacity). Different angles and band widths, so where
-# they cross the colours interfere, as a film of oil does, instead of lying in one set of stripes
-FILMS = [(118, 0.13, 0.24), (32, 0.18, 0.20)]
+# they cross the colours interfere, as a film of oil does, instead of lying in one set of stripes.
+# Seen only through the band, so they can be strong
+FILMS = [(118, 0.13, 0.85), (32, 0.18, 0.55)]
+LIGHT = 0.22             # the paper's own light in the band, over the film: the reflection
+# the band's window, a mask (only its alpha counts): (position %, opacity) across it, soft all through
+WINDOW = [(33, 0), (41, 0.3), (47, 0.85), (50, 1), (53, 0.85), (59, 0.3), (67, 0)]
+ANGLE = 105              # deg: the band's slant, as light falls
 LOOP = 14                # seconds for the films to go once round their paths
-GLINT = 0.6              # the reflection's strength at its middle, as opacity of the paper's colour
-PASSES = [(0.0, 0.3), (0.5, 0.8)]   # when in the loop the reflection crosses, left to right
+PASSES = [(0.0, 0.3), (0.5, 0.8)]   # when in the loop the band crosses, left to right
 GRID = 0.025             # keyframe spacing through the loop
 
 
 def paths(t):
-    """where each layer's background sits at loop time t (0-1): the reflection, then the two
-    films on closed Lissajous curves (they end where they began, so the loop has no seam and
-    no stop-and-turn), then the grey"""
-    glint = 100
+    """at loop time t (0-1): where the band's window sits (100% is off the word's left, 0% off
+    its right), and where the two films sit, on closed Lissajous curves (they end where they
+    began, so the loop has no seam and no stop-and-turn)"""
+    band = 100
     for s, e in PASSES:
         if s <= t <= e:
             u = (t - s) / (e - s)
-            glint = 100 - 100 * (3 * u * u - 2 * u ** 3)   # eased: floats in, floats out
+            band = 100 - 100 * (3 * u * u - 2 * u ** 3)    # eased: floats in, floats out
     w = 2 * math.pi * t
     a = (50 + 50 * math.sin(w), 50 + 50 * math.sin(2 * w + 0.6))
     b = (50 + 50 * math.cos(w), 50 - 50 * math.sin(w + 1.1))
-    return '%.1f%% 0,%.1f%% %.1f%%,%.1f%% %.1f%%,0 0' % ((glint,) + a + b)
+    return band, '0 0,%.1f%% %.1f%%,%.1f%% %.1f%%' % (a + b)
 
 
 def keyframes():
     ts = {round(i * GRID, 4) for i in range(int(round(1 / GRID)) + 1)}
     for s, e in PASSES:
-        ts |= {s, e, round(e + 0.001, 4)}           # the reflection leaves off the right, reappears off the left
+        ts |= {s, e, round(e + 0.001, 4)}           # the band leaves off the right, reappears off the left
     out = []
     for t in sorted(ts):
-        out.append('%.1f%%{background-position:%s}' % (t * 100, paths(t)))
+        band, films = paths(t)
+        out.append('%.1f%%{background-position:%s;-webkit-mask-position:%.1f%% 0;mask-position:%.1f%% 0}'
+                   % (t * 100, films, band, band))
     return '@keyframes st-oil{%s}' % ''.join(out)
 
 
@@ -116,8 +125,8 @@ def film_colours(src):
 
 
 def film(n, angle, step, alpha):
-    """a repeating run through the spectrum, back to where it began, faint: mixed in OKLab so
-    hue melts into hue, as interference colours do"""
+    """a repeating run through the spectrum, back to where it began: mixed in OKLab so hue
+    melts into hue, as interference colours do"""
     stops = ['color-mix(in srgb,var(--shimmer-%d) %d%%,transparent) %.2fem'
              % (i % n + 1, round(alpha * 100), i * step) for i in range(n + 1)]
     return 'repeating-linear-gradient(%ddeg in oklab,%s)' % (angle, ','.join(stops))
@@ -128,31 +137,35 @@ def block(src):
     n = len(colours)
     ink = 'color-mix(in srgb,var(--ink) %d%%,transparent)'
     films = [film(n, *f) for f in FILMS]
-    grey = 'linear-gradient(var(--tensing),var(--tensing))'
-    # the reflection: a wide soft band of the paper's own light gliding over the film, which is
-    # what makes a film read as a sheen rather than as paint
-    glint = ('linear-gradient(105deg,transparent 38%%,color-mix(in srgb,var(--paper) %d%%,transparent) 50%%,'
-             'transparent 62%%)' % round(GLINT * 100))
+    light = 'linear-gradient({0},{0})'.format('color-mix(in srgb,var(--paper) %d%%,transparent)' % round(LIGHT * 100))
+    window = 'linear-gradient(%ddeg,%s)' % (ANGLE, ','.join(
+        ('color-mix(in srgb,#000 %d%%,transparent) %d%%' % (round(o * 100), at)) if 0 < o < 1
+        else ('#000 %d%%' % at if o else 'transparent %d%%' % at) for at, o in WINDOW))
     css = [
-        '/* "Tensing": its grey under a thin film of the camps\' colours, as oil on a wet road,',
-        '   two films at different angles drifting slowly over each other (tools/sherpa_wash.py) */',
+        '/* "Tensing": grey at rest; a soft band of light glides across it carrying all the colour,',
+        '   a film of the camps\' colours as oil on a wet road, seen only where the light is.',
+        '   The film is on a copy of the word laid over it, masked by the moving band (tools/sherpa_wash.py) */',
         ':root{%s}' % ' '.join('--shimmer-%d:%s;' % (i + 1, c) for i, c in enumerate(colours)),
-        '.wordmark .brand .wash{font-style:normal;}',
-        '@supports ((-webkit-background-clip:text) or (background-clip:text)){',
-        '  .wordmark .brand .wash{display:inline-block;padding:0 .04em .1em;margin:0 -.04em -.1em;color:transparent;',
-        '    text-shadow:none;-webkit-background-clip:text;background-clip:text;',
-        '    background-image:%s,%s,%s;' % (glint, ','.join(films), grey),
+        '.wordmark .brand .wash{font-style:normal;position:relative;display:inline-block;padding:0 .04em .1em;margin:0 -.04em -.1em;',
+        '  text-shadow:none;filter:drop-shadow(0 0 1px var(--paper)) drop-shadow(0 2px 1.5px %s) drop-shadow(0 8px 10px %s);}'
+        % (ink % 42, ink % 34),
+        '@supports ((-webkit-background-clip:text) or (background-clip:text)) and ((-webkit-mask-image:none) or (mask-image:none)){',
+        # alt text "": the copy is decoration, a screen reader has already read the word
+        '  .wordmark .brand .wash::after{content:"%s"/"";position:absolute;left:0;top:0;padding:inherit;white-space:nowrap;' % WORD,
+        '    pointer-events:none;color:transparent;-webkit-background-clip:text;background-clip:text;',
+        '    background-image:%s,%s;' % (light, ','.join(films)),
         # three times the word each way and never repeated: the films can drift anywhere in
         # 0-100% and the word never meets an edge, so there is no seam to see
-        '    background-size:300% 100%,300% 300%,300% 300%,100% 100%;background-repeat:no-repeat;',
-        '    filter:drop-shadow(0 0 1px var(--paper)) drop-shadow(0 2px 1.5px %s) drop-shadow(0 8px 10px %s);'
-        % (ink % 42, ink % 34),
+        '    background-size:100% 100%,300% 300%,300% 300%;background-repeat:no-repeat;',
+        '    -webkit-mask-image:%s;mask-image:%s;' % (window, window),
+        '    -webkit-mask-size:300% 100%;mask-size:300% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;',
+        '    -webkit-mask-position:100% 0;mask-position:100% 0;',
         '    animation:st-oil %ds linear infinite;}' % LOOP,
         '}',
-        # the films circle on different curves, so their crossing never settles; the
-        # reflection crosses left to right twice a loop (100% is off the word's left, 0% off its right)
+        # the films circle on different curves inside the band, so the colour it carries never
+        # settles; the band crosses left to right twice a loop
         keyframes(),
-        '@media (prefers-reduced-motion:reduce){.wordmark .brand .wash{animation:none;}}',
+        '@media (prefers-reduced-motion:reduce){.wordmark .brand .wash::after{animation:none;}}',
     ]
     # a line written with %% but never %-formatted reaches the page as "300%%", which the browser
     # drops without a word: the layers fell back to the word's own size, so moving them moved
