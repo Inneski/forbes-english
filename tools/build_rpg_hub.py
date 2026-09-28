@@ -508,7 +508,7 @@ body.rh {
 .rh-free-card {
   position: relative; isolation: isolate; overflow: hidden;
   display: flex; flex-direction: column; justify-content: flex-end; gap: 6px;
-  min-height: clamp(260px, 26vw, 320px); padding: clamp(16px, 2.2vw, 22px);
+  min-height: clamp(400px, 36vw, 480px); padding: clamp(16px, 2.2vw, 22px);
   border-radius: 16px; text-decoration: none; color: var(--rh-ink-text);
   box-shadow: 0 14px 32px var(--rh-shadow);
   transition: transform .18s ease, box-shadow .18s ease;
@@ -519,8 +519,8 @@ body.rh {
 .rh-free-card::before {
   content: ''; position: absolute; inset: 0; z-index: -1;
   background: linear-gradient(180deg, transparent 0%%,
-    color-mix(in srgb, var(--rh-night) 30%%, transparent) 30%%,
-    color-mix(in srgb, var(--rh-night) 90%%, transparent) 62%%,
+    color-mix(in srgb, var(--rh-night) 30%%, transparent) 42%%,
+    color-mix(in srgb, var(--rh-night) 90%%, transparent) 68%%,
     color-mix(in srgb, var(--rh-night) 96%%, transparent) 100%%);
 }
 .rh-free-card .rh-kicker { color: var(--rh-ink-accent); margin: 0; }
@@ -669,7 +669,7 @@ def _free_card(g):
             '<p class="rh-kicker">%s &middot; %s</p><h3>%s</h3><p>%s</p>'
             '<span class="rh-meta">%s</span></a></li>'
             % (esc(seo.quote(g['file'])), esc(thumb), where, esc(g['level'].replace('-', '–')),
-               g['title'], seo.trim(g['blurb'], 120) if g['blurb'] else '',
+               g['title'], seo.trim(g['blurb'], 80) if g['blurb'] else '',
                _pills(g, world=False)))
 
 
