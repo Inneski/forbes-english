@@ -219,35 +219,35 @@ is byte-identical to `archive/stash-2026-09-10-fistful-frankenstein`; it can
 be dropped from Innes's own terminal.
 
 
-## 2026-09-27 — Contingency Plans & Trade-offs: built as a 54-slide panel deck, NOT shipped: waiting for 6 plates
+## 2026-09-28 — Contingency Plans & Trade-offs: SHIPPED as a 54-slide panel deck, EN/DE/ES
 
-`build_contingencytradeoffs.py` + `i18n_contingencytradeoffs.py` (English) and
-`i18n_contingencytradeoffs_de.py`. House style 2 (panels), dark palette from
-`Construction3/hero.jpg`, sides alternating. The old page was a 720px quiz
-with the 58-word glossary shown only after the last question; the deck
-teaches the glossary first in three thematic stages (cards, six to a slide,
-then a five-pair match on words the quiz never tests), then the 28 questions,
-results and activation. Content fixes are in the builder docstring: level B2
-on the page vs C1 in the catalogue (C1); seven MC keys that were the only
-longest option; a shortfall "between" two things; an "unintended delay"; a
-vapour barrier treated as insulation; one-sense definitions of
-"compromised", "conduct", "stuck", "current"; single-quoted citations.
+`build_contingencytradeoffs.py` + `i18n_contingencytradeoffs.py` (EN) and
+`_de` / `_es`. House style 2 (panels), dark palette from
+`Construction3/plate-cover.jpg` (all rows PASS). The old page was a 720px quiz
+with the 58-word glossary shown only after the last question; the deck teaches
+the glossary first in three stages (cards six to a slide, then a five-pair
+match on words the quiz never tests), then the 28 questions, results and
+activation. Content fixes are in the builder docstring (level B2 vs C1 → C1;
+seven MC keys that were the only longest option; a shortfall "between";
+an "unintended delay"; a vapour barrier treated as insulation; one-sense
+definitions of "compromised", "conduct", "stuck", "current").
 
-- **Art (Innes: *"u will need artwork"*).** Brief:
-  `docs/ARTWORK-contingency-trade-offs.md`, **six plates** by slot
-  (`plate-cover`, `-plans`, `-site`, `-people`, `-test`, `-act`), 16:9 with the
-  subject in a named third so the 548×720 panel crop keeps it. Until all six
-  are in `Construction3/` the builder writes only the gitignored
-  `_contingency-trade-offs-vocab.html`, laid out on the four staged site
-  pictures; **the live page is untouched** and keeps its SEO block. When the
-  plates land: prep, rebuild (writes live), `tools/seo.py` (read its diff),
-  gates. Three crane renders already in `incoming/` are near-misses, noted
-  in the brief.
-- **Gates on the preview:** `check-lesson.js` all pass bar HEAD (a preview
-  gets no SEO block, as with Mixed Grammar), LOGO pass; `answered-overflow.js`
-  fits in en and de. German was needed for the I18N gate (English plus one);
-  written in-session, no native check.
-- **Catalogue, after it ships:** `deck` is still false. SQL for Innes:
+- **Art:** six plates from Innes's `incoming/contingency/` batch, briefed in
+  `docs/ARTWORK-contingency-trade-offs.md`: cover = half-built tower + crane
+  at dusk; plans = crane hook over a balance beam; site = wall cutaway with a
+  water drip; people = worker hunched on a beam; test = scaffold towers with
+  red crane (variant _3); act = two folding chairs between site cabins. The
+  microphone render was stray. `hero.jpg`/`a`/`b`/`c` stay on disk, unused.
+- **Gates:** `check-lesson.js` all pass; `answered-overflow.js` fits en, de,
+  es; `check-library.js --vs-origin` PASS. DE and ES written in-session, no
+  native check.
+- **Not committed with it, on purpose:** `build_hubs.py`/`seo.py` also rewrote
+  `library.html`, `lesson-meta.json`, `llms.txt` and ~25 hub pages, but those
+  diffs are dominated by another session's uncommitted `tools/topics.py` /
+  `check-library.js` (LESSON_TAGS) work. They were left for that session; its
+  next `seo.py` run carries this lesson's new description ("The vocabulary of
+  planning, risk and materials") into them. The page's own SEO block is in.
+- **Catalogue:** `deck` is still false. SQL for Innes:
   `update public.lessons set deck = true where file = 'contingency-trade-offs-vocab.html';`
 
 ## 2026-09-27 — Sherpa lesson pages: translation on every page, in the camp one pattern

@@ -68,20 +68,20 @@ SITE, ACT = PIC['plate-site'], PIC['plate-act']
 
 E = I.T['en']
 
-# py lesson-template/extract-palette.py Construction3/hero.jpg
+# py lesson-template/extract-palette.py Construction3/plate-cover.jpg
 PALETTE = """  --hero: url('%s/%s');
 
-  --void          : #0c0e0a;
-  --surface       : #161c13;
-  --surface2      : #20281c;
-  --border        : #665754;
+  --void          : #0b100e;
+  --surface       : #131f1b;
+  --surface2      : #1b2b26;
+  --border        : #9a4d3b;
   --text          : #f5f2f2;
-  --text-dim      : #bfa9a3;
-  --accent        : #bc7664;
-  --accent-bright : #d69f91;
-  --accent-dim    : #844e40;
-  --secondary     : #b0c7cc;
-  --contrast      : #32d8aa;""" % (F, HERO)
+  --text-dim      : #bfa8a3;
+  --accent        : #e67055;
+  --accent-bright : #f3a290;
+  --accent-dim    : #bd3f22;
+  --secondary     : #31494e;
+  --contrast      : #1dedb0;""" % (F, HERO)
 
 # (headword, definition key) per card slide, three per stage row
 VOCAB = {
@@ -262,7 +262,7 @@ def build():
     for s, a, b in SECTIONS:
         quiz.append(quiz_intro(s, STRIP,
                                ['left', 'right', 'left'][s - 1],
-                               ['15% 50%', '50% 50%', '85% 50%'][s - 1]))
+                               ['8% 50%', '55% 50%', '97% 50%'][s - 1]))
         for i in range(a, b):
             stem, opts, c = MC[i]
             quiz.append(D.mc(i + 1, len(MC),
@@ -275,17 +275,17 @@ def build():
                  ('Count', E['chipCount'])]),
 
         divider(1, SUN),
-        intro(1, SUN, 'left', '88% 50%'),
+        intro(1, SUN, 'left', '35% 50%'),
         cards('e1', 1), cards('e1', 2), cards('e1', 3),
         match('e1', 1),
 
         divider(2, SITE),
-        intro(2, SITE, 'right', '40% 50%'),
+        intro(2, SITE, 'right', '14% 50%'),
         cards('e2', 4), cards('e2', 5), cards('e2', 6),
         match('e2', 2),
 
         divider(3, CLOUD),
-        intro(3, CLOUD, 'left', '82% 50%'),
+        intro(3, CLOUD, 'left', '72% 50%'),
         cards('e3', 7), cards('e3', 8), cards('e3', 9), cards('e3', 10),
         match('e3', 3),
 

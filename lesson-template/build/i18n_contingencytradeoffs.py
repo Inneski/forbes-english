@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Interface strings for Contingency Plans & Trade-offs (C1).
 
-English and German (German written in-session, no native check). The lesson is a C1 vocabulary list of 58 items taught
+English, German and Spanish (DE and ES written in-session, no native check). The lesson is a C1 vocabulary list of 58 items taught
 through English definitions, so a language pass is 58 definitions plus 28
 explanations per language — not cheap, and not asked for. Every string the
 learner reads is keyed here, so adding a language later is one module per
@@ -21,7 +21,7 @@ LIFT = ['btnStart', 'btnCheck', 'btnNext', 'btnRestart', 'scoreLabel', 'slideOf'
         'actSpeakWord', 'actWriteWord',
         'resPerfect', 'resStrong', 'resMid', 'resLow']
 
-LANGS = ('en', 'de')
+LANGS = ('en', 'de', 'es')
 
 T = {}
 
