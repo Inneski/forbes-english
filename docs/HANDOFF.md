@@ -340,7 +340,13 @@ Since: "Tensing" grey, with a faint oil-film sheen of the camps' colours
 drifting on it (`tools/sherpa_wash.py`, reads the camp markers; re-run it
 after recolouring a camp). Three tries before it were rejected, listed in the
 tool's docstring; the lesson: Innes wants subtle, a tint on the grey, not a
-colour effect. `check_route_map.py` read CSS tokens with
+colour effect. The first oil version shipped standing still ("Can't see any
+movement now"): its background-size line kept a literal `300%%` because it
+was never %-formatted, the browser dropped it, and layers the word's own size
+cannot be moved by a percentage. The tool now refuses to write `%%`. Measure
+motion, don't eyeball stills: freeze every other animation on the page (the
+clouds moving behind the word looked like the word moving), then compare the
+word's own pixels a second apart — 0.03/255 standing still, 3.9/255 now. `check_route_map.py` read CSS tokens with
 `--[a-z-]+`, so no token with a digit in its name was ever measured; fixed,
 and it now checks the map's own wordmark too.
 

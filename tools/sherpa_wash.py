@@ -63,9 +63,36 @@ NUM = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', '
 FILM = (0.78, 0.13)      # OKLCh lightness and chroma of the film's colours: a touch lighter than the grey
 # the two films: (angle deg, em per colour, opacity). Different angles and band widths, so where
 # they cross the colours interfere, as a film of oil does, instead of lying in one set of stripes
-FILMS = [(118, 0.15, 0.20), (32, 0.21, 0.16)]
-DRIFT = 22               # seconds for one drift, there and back again as one breath (alternate)
-GLINT = 0.45             # the reflection's strength at its middle, as opacity of the paper's colour
+FILMS = [(118, 0.13, 0.24), (32, 0.18, 0.20)]
+LOOP = 14                # seconds for the films to go once round their paths
+GLINT = 0.6              # the reflection's strength at its middle, as opacity of the paper's colour
+PASSES = [(0.0, 0.3), (0.5, 0.8)]   # when in the loop the reflection crosses, left to right
+GRID = 0.025             # keyframe spacing through the loop
+
+
+def paths(t):
+    """where each layer's background sits at loop time t (0-1): the reflection, then the two
+    films on closed Lissajous curves (they end where they began, so the loop has no seam and
+    no stop-and-turn), then the grey"""
+    glint = 100
+    for s, e in PASSES:
+        if s <= t <= e:
+            u = (t - s) / (e - s)
+            glint = 100 - 100 * (3 * u * u - 2 * u ** 3)   # eased: floats in, floats out
+    w = 2 * math.pi * t
+    a = (50 + 50 * math.sin(w), 50 + 50 * math.sin(2 * w + 0.6))
+    b = (50 + 50 * math.cos(w), 50 - 50 * math.sin(w + 1.1))
+    return '%.1f%% 0,%.1f%% %.1f%%,%.1f%% %.1f%%,0 0' % ((glint,) + a + b)
+
+
+def keyframes():
+    ts = {round(i * GRID, 4) for i in range(int(round(1 / GRID)) + 1)}
+    for s, e in PASSES:
+        ts |= {s, e, round(e + 0.001, 4)}           # the reflection leaves off the right, reappears off the left
+    out = []
+    for t in sorted(ts):
+        out.append('%.1f%%{background-position:%s}' % (t * 100, paths(t)))
+    return '@keyframes st-oil{%s}' % ''.join(out)
 
 
 def camp_colours(src):
@@ -104,8 +131,8 @@ def block(src):
     grey = 'linear-gradient(var(--tensing),var(--tensing))'
     # the reflection: a wide soft band of the paper's own light gliding over the film, which is
     # what makes a film read as a sheen rather than as paint
-    glint = ('linear-gradient(105deg,transparent 30%%,color-mix(in srgb,var(--paper) %d%%,transparent) 50%%,'
-             'transparent 70%%)' % round(GLINT * 100))
+    glint = ('linear-gradient(105deg,transparent 38%%,color-mix(in srgb,var(--paper) %d%%,transparent) 50%%,'
+             'transparent 62%%)' % round(GLINT * 100))
     css = [
         '/* "Tensing": its grey under a thin film of the camps\' colours, as oil on a wet road,',
         '   two films at different angles drifting slowly over each other (tools/sherpa_wash.py) */',
@@ -117,17 +144,22 @@ def block(src):
         '    background-image:%s,%s,%s;' % (glint, ','.join(films), grey),
         # three times the word each way and never repeated: the films can drift anywhere in
         # 0-100% and the word never meets an edge, so there is no seam to see
-        '    background-size:300%% 100%%,300%% 300%%,300%% 300%%,100%% 100%%;background-repeat:no-repeat;',
+        '    background-size:300% 100%,300% 300%,300% 300%,100% 100%;background-repeat:no-repeat;',
         '    filter:drop-shadow(0 0 1px var(--paper)) drop-shadow(0 2px 1.5px %s) drop-shadow(0 8px 10px %s);'
         % (ink % 42, ink % 34),
-        '    animation:st-oil %ds ease-in-out infinite alternate;}' % DRIFT,
+        '    animation:st-oil %ds linear infinite;}' % LOOP,
         '}',
-        # the two films take different paths, so their crossing never settles
-        # (the reflection crosses the word once each way: 100% is off its left, 0% off its right)
-        '@keyframes st-oil{0%{background-position:100% 0,0% 10%,100% 0%,0 0}'
-        '50%{background-position:50% 0,55% 90%,35% 70%,0 0}100%{background-position:0% 0,100% 35%,0% 100%,0 0}}',
+        # the films circle on different curves, so their crossing never settles; the
+        # reflection crosses left to right twice a loop (100% is off the word's left, 0% off its right)
+        keyframes(),
         '@media (prefers-reduced-motion:reduce){.wordmark .brand .wash{animation:none;}}',
     ]
+    # a line written with %% but never %-formatted reaches the page as "300%%", which the browser
+    # drops without a word: the layers fell back to the word's own size, so moving them moved
+    # nothing, and the first oil sheen shipped standing still (2026-09-28)
+    bad = [l for l in css if '%%' in l]
+    if bad:
+        raise SystemExit('FAIL: unformatted %%%% in the CSS: ' + bad[0].strip()[:80])
     return START + '\n<style id="sherpa-wash">\n' + '\n'.join(css) + '\n</style>\n' + END + '\n', colours
 
 
