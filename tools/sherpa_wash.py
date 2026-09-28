@@ -1,33 +1,36 @@
 #!/usr/bin/env python3
-"""A living wash of the thirteen camps' colours on the route map's "Tensing".
+"""A thin sheen of the thirteen camps' colours floating across the route map's "Tensing".
 
     python tools/sherpa_wash.py            # write the block and the markup into the route map
     python tools/sherpa_wash.py --check    # exit 1 if either is missing or stale
 
 Innes, 2026-09-28: "some kind of multicolored ... random pixel color wash or
-waves of color that's constantly changing just on the word tensing".
+waves of color that's constantly changing just on the word tensing"; the
+first try filled the whole word with two drifting runs of colour. Then: "try
+something like that but more of a thinner wave sheen that floats across".
+So the word keeps its grey (--tensing), and a narrow, soft-edged, slanted
+streak of the camps' colours, packed tight like light through a prism,
+floats across it, rests off the word, and comes round again.
 
 THE COLOURS are the camps' own, read from the map's camp markers
 (<g class="camp-dot" data-color=... data-href="sherpa-tensing-camp-N-...">),
-so a camp recoloured on the map is recoloured in the wash on the next run.
+so a camp recoloured on the map is recoloured in the sheen on the next run.
 Each is darkened in OKLCh, same hue and chroma, only as far as FLOOR on the
-paper: "Tensing" is display type and must be seen, as its grey had to be.
-That floor holds for the whole wash, not just the stops: the gradients and
-the layer blend mix in sRGB, and a mix of two colours in gamma space is never
-lighter than the lighter of them (each channel's x^2.2 is convex), so nothing
-in between the stops falls under it. tools/check_route_map.py measures the
-tokens.
+paper: "Tensing" is display type and must be seen while the streak crosses
+it, as its grey must. The floor holds between the stops too: gradients and
+the soft edges over the grey mix in sRGB, and a mix of two colours in gamma
+space is never lighter than the lighter of them (each channel's x^2.2 is
+convex). tools/check_route_map.py measures every token.
 
-THE MOTION is two layers clipped to the letters: the camps in route order,
-sliding right; over them, the same colours in another order, spaced wider,
-half transparent, sliding left. Each travels exactly one of its own periods
-per loop, so neither has a seam, and they cross at different speeds, so the
-mix keeps changing. Only background-position animates, over a word-sized box.
-prefers-reduced-motion holds it still (still multicoloured).
+THE MOTION: the streak sits in the middle of a background three words wide,
+not repeated, and background-position carries it from off the word's left
+to off its right, eased, in SWEEP of every LOOP seconds; the rest of the loop
+it waits outside the word. Only background-position animates, over a
+word-sized box. prefers-reduced-motion leaves it outside: plain grey.
 
-THE SHADOW moves from text-shadow to filter: a text-shadow is painted over a
-background clipped to the text and would darken the colours, a drop-shadow
-is cast by the painted letters. Same halo and ink shadow as "Sherpa".
+THE SHADOW is a filter: a text-shadow is painted over a background clipped
+to the text and would darken it; a drop-shadow is cast by the painted
+letters. Same halo and ink shadow as "Sherpa".
 
 The markup: the word is wrapped once, <span><i class="wash">Tensing</i></span>,
 because the outer span carries the arrival animation, whose filter (blur to
@@ -49,10 +52,12 @@ MARK_OLD = '<div class="brand">Sherpa <span>Tensing</span></div>'
 MARK_NEW = '<div class="brand">Sherpa <span><i class="wash">Tensing</i></span></div>'
 FLOOR = 3.0
 NUM = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen']
-STEP = 1.1          # em per colour, the camps in route order (back layer)
-STEP_FRONT = 1.7    # em per colour, shuffled, half transparent (front layer)
-LOOP = 26           # seconds for each layer to travel one of its periods
-SHUFFLE = [6, 1, 9, 4, 12, 7, 2, 10, 5, 0, 8, 3, 11]   # the second layer's order: no neighbours from the first
+WIDE = 3            # the background is this many words wide; the streak sits in its middle
+BAND = (44, 56)     # the streak's colours, in % of that background (~2/5 of the word)
+FEATHER = 2.5       # % of soft edge either side
+ANGLE = 105         # deg: a slant, as light falls
+LOOP = 8            # seconds from one pass to the next
+SWEEP = 0.62        # the part of the loop spent crossing
 
 
 def camp_colours(src):
@@ -78,41 +83,35 @@ def hold(h, ground):
     return S.from_lch(L, C, H)
 
 
-def layer(order, step, alpha):
-    """one horizontal run through the colours, ending where it began: tiled at its own
-    period, it repeats without a seam"""
-    stops = []
-    for i, k in enumerate(order + order[:1]):
-        c = 'var(--wash-%d)' % (k + 1)
-        if alpha < 1:
-            c = 'color-mix(in srgb,%s %d%%,transparent)' % (c, round(alpha * 100))
-        stops.append('%s %.2fem' % (c, i * step))
-    return 'linear-gradient(90deg,%s)' % ','.join(stops), len(order) * step
+def streak(n):
+    a, b = BAND
+    stops = ['transparent %.1f%%' % (a - FEATHER)]
+    stops += ['var(--wash-%d) %.2f%%' % (i + 1, a + (b - a) * i / (n - 1)) for i in range(n)]
+    stops += ['transparent %.1f%%' % (b + FEATHER)]
+    return 'linear-gradient(%ddeg,%s)' % (ANGLE, ','.join(stops))
 
 
 def block(src):
     ground = paper(src)
     wash = [hold(c, ground) for c in camp_colours(src)]
-    front, pf = layer(SHUFFLE, STEP_FRONT, .55)
-    back, pb = layer(list(range(len(wash))), STEP, 1)
     ink = 'color-mix(in srgb,var(--ink) %d%%,transparent)'
     css = [
-        '/* "Tensing" in a living wash of the thirteen camps\' colours (tools/sherpa_wash.py):',
-        '   each darkened to %.1f:1 on the paper, two layers drifting against each other */' % FLOOR,
+        '/* "Tensing": a thin sheen of the thirteen camps\' colours floats across its grey',
+        '   (tools/sherpa_wash.py); each colour darkened to %.1f:1 on the paper */' % FLOOR,
         ':root{%s}' % ' '.join('--wash-%d:%s;' % (i + 1, c) for i, c in enumerate(wash)),
         '.wordmark .brand .wash{font-style:normal;}',
         '@supports ((-webkit-background-clip:text) or (background-clip:text)){',
         '  .wordmark .brand .wash{display:inline-block;padding:0 .04em .1em;margin:0 -.04em -.1em;color:transparent;',
         '    text-shadow:none;-webkit-background-clip:text;background-clip:text;',
-        '    background-image:%s,%s;' % (front, back),
-        '    background-size:%.2fem 100%%,%.2fem 100%%;background-repeat:repeat-x;' % (pf, pb),
+        '    background-image:%s,linear-gradient(var(--tensing),var(--tensing));' % streak(len(wash)),
+        '    background-size:%d00%% 100%%,100%% 100%%;background-repeat:no-repeat;' % WIDE,
         '    filter:drop-shadow(0 0 1px var(--paper)) drop-shadow(0 2px 1.5px %s) drop-shadow(0 8px 10px %s);'
         % (ink % 42, ink % 34),
-        '    animation:st-wash %ds linear infinite;}' % LOOP,
+        '    animation:st-sheen %ds cubic-bezier(.45,.05,.55,.95) infinite;}' % LOOP,
         '}',
-        # each layer slides exactly one of its own periods per loop, the camps in route order
-        # to the right, the shuffled ones to the left: no seam, and never the same mix twice
-        '@keyframes st-wash{from{background-position:0 0,0 0}to{background-position:-%.2fem 0,%.2fem 0}}' % (pf, pb),
+        # 100%: the streak is off the word's left; 0%: off its right. Then it waits.
+        '@keyframes st-sheen{0%%{background-position:100%% 0,0 0}%d%%,100%%{background-position:0%% 0,0 0}}'
+        % round(SWEEP * 100),
         '@media (prefers-reduced-motion:reduce){.wordmark .brand .wash{animation:none;}}',
     ]
     return START + '\n<style id="sherpa-wash">\n' + '\n'.join(css) + '\n</style>\n' + END + '\n', wash
@@ -127,8 +126,8 @@ def main():
     bad = [] if MARK_NEW in new else ['wordmark not in the expected form']
     if check:
         if new != src:
-            bad.append('wash block or markup missing or stale')
-        print('PASS: "Tensing" washes in %d camp colours, each >= %.1f:1' % (len(wash), FLOOR) if not bad
+            bad.append('sheen block or markup missing or stale')
+        print('PASS: "Tensing" carries a sheen of %d camp colours, each >= %.1f:1' % (len(wash), FLOOR) if not bad
               else 'FAIL: ' + '; '.join(bad))
         sys.exit(1 if bad else 0)
     if bad:
