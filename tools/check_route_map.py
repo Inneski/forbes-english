@@ -236,7 +236,8 @@ def check_pages(root=ROOT):
     been checked on its accent, not on what is written on it."""
     bad = []
     for f in sorted(os.listdir(root)):
-        if not (f.startswith(FAMILY) and f.endswith('.html')) or f == MAP:
+        # the map too: its "Tensing" went grey on 2026-09-28 and nothing measured it
+        if not (f.startswith(FAMILY) and f.endswith('.html')):
             continue
         s = open(os.path.join(root, f), encoding='utf-8').read()
         tok = {k: v.upper() for k, v in re.findall(r'(--[a-z-]+)\s*:\s*(#[0-9A-Fa-f]{6})', s)}

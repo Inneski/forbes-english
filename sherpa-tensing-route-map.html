@@ -26,7 +26,7 @@
 <style>
   :root{
     --ink:#2B0F1D; --ink-soft:#6B4A57; --paper:#FDF7F5; --card:#FFFFFF;
-    --accent:#B7818C; --accent-dark:#846069; --accent-light:#EFE1E7; --accent-lighter:#F8F2F4;
+    --tensing:#909090; --accent:#B7818C; --accent-dark:#846069; --accent-light:#EFE1E7; --accent-lighter:#F8F2F4;
     --radius:14px;
   }
   *{box-sizing:border-box;}
@@ -34,7 +34,7 @@
   h1,h2,h3{font-family:'Fraunces',serif;font-weight:600;margin:0 0 .4em;color:var(--ink);}
   .wordmark{display:flex;align-items:center;justify-content:space-between;max-width:1160px;margin:0 auto;padding:28px 24px 0;}
   .wordmark .brand{font-family:'Fraunces',serif;font-weight:700;font-size:20px;letter-spacing:.02em;}
-  .wordmark .brand span{color:var(--accent);}
+  .wordmark .brand span{color:var(--tensing);}
   .wordmark .sub{font-size:13px;color:var(--ink-soft);}
   main{max-width:1160px;margin:0 auto;padding:0 24px 80px;}
   .intro{padding:36px 0 8px;max-width:64ch;}
@@ -257,14 +257,16 @@
      ever touches their glyphs; body text is measured against the darkest
      line itself (tools/check_route_map.py) */
   :root{ --accent-text:#83616A; --paper-deep:#EFE9EA; }
-  /* the paper darkens towards the foot: --paper-deep is the paper blended 10%
-     towards --accent-dark, measured with a contour line over it */
+  /* the paper darkens towards the foot: --paper-deep was the paper blended 10%
+     towards --accent-dark, now that at 40% of its chroma (2026-09-28), measured with a contour line over it */
   body{background-image:url("Sherpa%20Tensing/topo-tile.svg"),linear-gradient(180deg,var(--paper) 0%,var(--paper) 15%,var(--paper-deep) 100%);
        background-size:640px 640px,100% 100%;background-repeat:repeat,no-repeat;}
   [lang="ja"]{word-break:auto-phrase;}
   @media print{ body{background-image:none;} }
   .kicker{color:var(--accent-text);}
-  .kicker,.wordmark .brand,.wordmark .sub a{text-shadow:0 0 2px var(--paper),0 0 2px var(--paper),0 0 4px var(--paper);}
+  .kicker,.wordmark .sub a{text-shadow:0 0 2px var(--paper),0 0 2px var(--paper),0 0 4px var(--paper);}
+  /* the name stands off the map: its paper halo, then a soft shadow in the ink */
+  .wordmark .brand{text-shadow:0 0 2px var(--paper),0 0 2px var(--paper),0 2px 3px color-mix(in srgb,var(--ink) 30%,transparent),0 6px 16px color-mix(in srgb,var(--ink) 22%,transparent);}
   .map-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,390px);gap:18px 40px;align-items:end;}
   .guide{display:flex;gap:14px;align-items:center;background:var(--card);border:1px solid var(--accent-light);
          border-radius:var(--radius);padding:12px 14px 12px 12px;box-shadow:var(--lift);}
