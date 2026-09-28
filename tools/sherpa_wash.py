@@ -63,12 +63,12 @@ MARK_OLD = '<div class="brand">Sherpa <span>Tensing</span></div>'
 MARK_NEW = '<div class="brand">Sherpa <span><i class="wash">Tensing</i></span></div>'
 NUM = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen']
 WORD = 'Tensing'
-FILM = (0.76, 0.14)      # OKLCh lightness and chroma of the film's colours
+FILM = (0.84, 0.10)      # OKLCh lightness and chroma of the film's colours
 # the two films: (angle deg, em per colour, opacity). Different angles and band widths, so where
 # they cross the colours interfere, as a film of oil does, instead of lying in one set of stripes.
 # Seen only through the band, so they can be strong
-FILMS = [(118, 0.13, 0.85), (32, 0.18, 0.55)]
-LIGHT = 0.22             # the paper's own light in the band, over the film: the reflection
+FILMS = [(118, 0.13, 0.30), (32, 0.18, 0.20)]
+LIGHT = 0.50             # the paper's own light in the band, over the film: the reflection
 # the band's window, a mask (only its alpha counts): (position %, opacity) across it, soft all through
 WINDOW = [(33, 0), (41, 0.3), (47, 0.85), (50, 1), (53, 0.85), (59, 0.3), (67, 0)]
 ANGLE = 105              # deg: the band's slant, as light falls
