@@ -266,7 +266,19 @@
   .kicker{color:var(--accent-text);}
   .kicker,.wordmark .sub a{text-shadow:0 0 2px var(--paper),0 0 2px var(--paper),0 0 4px var(--paper);}
   /* the name stands off the map: its paper halo, then a soft shadow in the ink */
-  .wordmark .brand{text-shadow:0 0 2px var(--paper),0 0 2px var(--paper),0 2px 3px color-mix(in srgb,var(--ink) 30%,transparent),0 6px 16px color-mix(in srgb,var(--ink) 22%,transparent);}
+  .wordmark .brand{text-shadow:0 0 2px var(--paper),0 0 2px var(--paper),0 2px 3px color-mix(in srgb,var(--ink) 42%,transparent),0 8px 22px color-mix(in srgb,var(--ink) 34%,transparent);}
+  /* arrival (Innes, 2026-09-28: "some kind of effect for the text to arrive/fly onto the page"):
+     "Sherpa" glides in from the left out of a blur, "Tensing" follows from the right, then the
+     hero's lines rise in one after another. Transform, opacity and filter only; once, on load */
+  @keyframes st-in-left{from{opacity:0;transform:translateX(-48px);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
+  @keyframes st-in-right{from{opacity:0;transform:translateX(64px);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
+  @keyframes st-rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+  .wordmark .brand{animation:st-in-left .9s cubic-bezier(.2,.8,.2,1) both;}
+  .wordmark .brand span{display:inline-block;animation:st-in-right .9s cubic-bezier(.2,.8,.2,1) .28s both;}
+  .intro > *{animation:st-rise .8s cubic-bezier(.2,.8,.2,1) both;}
+  .intro > :nth-child(1){animation-delay:.45s}.intro > :nth-child(2){animation-delay:.55s}.intro > :nth-child(3){animation-delay:.68s}
+  .intro > :nth-child(4){animation-delay:.8s}.intro > :nth-child(5){animation-delay:.92s}
+  @media (prefers-reduced-motion:reduce){.wordmark .brand,.wordmark .brand span,.intro > *{animation:none;}}
   .map-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,390px);gap:18px 40px;align-items:end;}
   .guide{display:flex;gap:14px;align-items:center;background:var(--card);border:1px solid var(--accent-light);
          border-radius:var(--radius);padding:12px 14px 12px 12px;box-shadow:var(--lift);}
