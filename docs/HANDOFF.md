@@ -54,8 +54,12 @@ asked for subtitles on all the videos, with a choice of language.
     slide 10**, where that frame put Alex under the answer card; it keeps
     `bg07.jpg` and cuts into the clip. Gap keys: slide 17 on *lived* (the
     clip leaves the village), slide 18 on *yesterday* (a roof finished).
-    **Still without a clip:** slides 9, 12, 13, 20, 21, 22 (bg02 bg24 bg16
-    bg37 bg41 bg19).
+    2026-09-30: slide 9 (bg02, 6e9dfebb: Steve with the diamond, "Yeah, I
+    closed it. That's how I roll.") and slide 12 (bg24, 443c1a23: Alex's
+    saplings, the cowboy asks "When did you plant these trees?"; Whisper
+    heard "plants") added, both on their own first-frame plates, with
+    subtitles. **Still without a clip:** slides 13, 20, 21, 22 (bg16 bg37
+    bg41 bg19).
   * **Subtitles**: `lesson-template/build/blockcamp_subs.py` holds every cue
     in en de es fr it pt ru ar zh ja and writes `window.CLIP_SUBS`, the CSS
     and the player (`blockcamp_subs.css`, `.js`) into the three decks between

@@ -137,6 +137,22 @@ SUBS = {
   ],
 
   # ── Past Simple, Part 1 ─────────────────────────────────────────────
+  PA + 'bg02.mp4': [
+    c(0.4, 2.2, 'Yeah, I closed it.', 'Ja, ich hab sie zugemacht.', 'Sí, la cerré.', 'Ouais, je l’ai fermée.',
+      'Sì, l’ho chiusa.', 'É, eu fechei.', 'Ага, я её закрыл.', 'نعم، أغلقتُه.', '对，我关上了。',
+      'うん、閉めたよ。'),
+    c(2.2, 99, 'That’s how I roll.', 'So mach ich das eben.', 'Así soy yo.', 'C’est comme ça que je fais.',
+      'Io faccio così.', 'É assim que eu faço.', 'Вот так я и живу.', 'هكذا أنا.', '我就是这么酷。',
+      'これがぼくのやり方さ。'),
+  ],
+  PA + 'bg24.mp4': [
+    c(3.3, 4.4, 'Hey!', 'Hey!', '¡Eh!', 'Hé !', 'Ehi!', 'Ei!', 'Эй!', 'مرحبًا!', '嘿！', 'やあ！'),
+    c(4.6, 99, 'When did you plant these trees?', 'Wann hast du diese Bäume gepflanzt?',
+      '¿Cuándo plantaste estos árboles?', 'Quand est-ce que tu as planté ces arbres ?',
+      'Quando hai piantato questi alberi?', 'Quando você plantou estas árvores?',
+      'Когда ты посадила эти деревья?', 'متى زرعتِ هذه الأشجار؟', '这些树你是什么时候种的？',
+      'この木はいつ植えたの？'),
+  ],
   PA + 'bg05.mp4': [
     c(3.4, 4.3, 'Well…', 'Na…', 'Vaya…', 'Tiens…', 'Bene…', 'Ora…', 'Так…', 'حسنًا…', '哎呀……', 'おやおや…'),
     c(7.9, 99, 'Well, well, what do we have here?', 'Na, na, was haben wir denn hier?',
