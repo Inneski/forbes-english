@@ -11,6 +11,34 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-29 — Search keywords from each lesson's own text; results ranked
+
+Follow-up to the 09-25 library search entry. Counting what search could read,
+30 live lessons (mostly Block Camp RPGs, whose description is the generated
+"An interactive B2 English lesson from Forbes English: <title>") had nothing
+beyond their title: Blocula did not answer to "coffin" or "crypt".
+
+- **`tools/seo.py` now writes `keywords` into every `lesson-meta.json` entry**
+  (`page_words()` + `search_keywords()`): up to 24 words that are frequent in
+  the lesson and rare across the library (tf-idf), taken from visible text and
+  script string literals. A text chunk counts only if it reads as English
+  (English function words outnumber the German/Spanish/French/Italian/
+  Portuguese/Polish/Turkish/Dutch ones), and a word must appear in two such
+  chunks — the RPGs keep nine translations in unlabelled arrays, and without
+  those two rules Blocula's list was "zaman, gdyby, loups". A handful of
+  foreign grammar labels still slip through on multilingual camp pages
+  (`podmiot`, `interrogativa`); harmless, they only match if typed. Tried and
+  dropped: excluding words seen more often in foreign sentences, which also
+  removed *saloon*, *sheriff* and every character name.
+- Median searchable words per live lesson: 19 → 42. Lessons with ≤2 words
+  beyond their title: 30 → 5, all `.pptx` deck viewers (text is in images)
+  or German-only. `lesson-meta.json` 212 → 295 KB; the Worker ignores the new
+  field.
+- **`library.html` ranks results**: card text (title, file, categories,
+  level) beats description/teach cards/topics, which beats keywords. "bike"
+  lists Beyond the Handlebars and the Ridgeline Run before the IELTS map
+  that mentions bicycles. Synonym group added: vampire/dracula/blocula.
+
 ## 2026-09-27 — Block Camp: a map button on every deck, and the next camp once you finish
 
 Innes: *"we need a navigational button on each level back to the main camp

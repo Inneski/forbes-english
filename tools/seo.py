@@ -670,6 +670,125 @@ def crawlable_list(rows, images):
 
 
 # ── run ────────────────────────────────────────────────────────────────
+# --- search keywords -------------------------------------------------------
+#
+# The library's search box reads lesson-meta.json. With only the title,
+# description and teach cards to go on, 30 lessons (mostly the Block Camp RPGs,
+# whose description is the generated "An interactive B2 English lesson from
+# Forbes English: <title>") could be found by nothing but their title: Blocula
+# did not answer to "vampire" or "castle". So each lesson also carries the
+# words that are frequent in it and rare across the library — tf-idf over the
+# page's visible text and the string literals of its scripts, which is where
+# the RPGs and decks keep their story. Filler, code, UI chrome and the German
+# and Spanish course strings are filtered out; words the title or description
+# already carry are skipped, since search reads those anyway.
+KEYWORDS_PER_LESSON = 24
+_STOP = set("""
+about above across after again against almost along already also although always among another answer answers
+any anyone anything around back became because become been before behind being below best better between
+both bring brought came cannot card cards check choose chosen click close come comes could correct course
+daily does doing done down during each either else enough even ever every example examples exercise
+exercises false feel find first five four from full further gave give given goes going gone good great
+have having here hint hints into itself just keep kind know last later least left less like little long
+look made make makes making many maybe more most much must myself near need never next nine none nothing
+now often once only onto other others ought over page part people perhaps place please point quite rather
+read ready really right round said same score second seen self sentence sentences seven several shall
+should show shown since slide slides some something sometimes soon start still such sure take taken tell
+than that their them then there these they thing things think this those though three through time
+today together told tomorrow took toward towards true twice under until upon used using very want well
+went were what when where whether which while whole whom whose will with within without word words work
+would wrong year years your yours yourself yesterday level levels lesson lessons english forbes activity
+activities question questions next previous submit reset continue finish finished begin tries
+incorrect skip menu open play pause sound audio video image images picture pictures button drag drop
+write type typed typing option options translation translate language languages spanish german deutsch
+español ingles inglés doesn isn wasn don didn aren couldn wouldn shouldn haven hasn won const function return null undefined https http forbesenglish
+""".split())
+# The most common German and Spanish function words: every deck ships both
+# languages, and without these they fill the top of the list.
+_STOP |= set("""
+aber alle auch auf aus bei bist dann das dass dein deine dem den der des die dies diese dieser doch
+durch ein eine einem einen einer eines etwa für habe haben hast hat hatte ich ihr ihre ist jetzt kann
+kein keine mehr mein meine mich mit nach nicht noch nur oder ohne satz schon sehr sein seine sich sie
+sind über richtig falsch und uns unter vom von vor war waren was weil wenn werden wie wird wir zum zur
+antwort frage fragen weiter wähle
+algo aquí cada como cómo con cual cuando del desde donde ella ellos entre era eres esa ese eso esta
+este esto están hay las les los más muy nada nos para pero por porque puede qué que sea ser sin sobre
+son también tiene todo tus una uno unos usted correcto incorrecto respuesta pregunta siguiente elige
+frase
+""".split())
+
+
+# A sentence counts as English when English function words outnumber the
+# commonest ones of the languages the courses are translated into. The RPGs
+# carry nine translations in plain arrays with no language key, so this is
+# the only handle there is: without it Blocula's keywords were "zaman, gdyby,
+# loups". Words that only ever appear in a one-word string are not counted
+# either — that is where translated vocabulary sits ("bici", "löffel").
+_EN_FUNC = set("""the and are was were you your to of it he she they we this that with for
+have has had would can not on at be what who an my his her our their do does did
+""".split())
+_FOREIGN_FUNC = set("""der das und ist nicht ich du sie wir ein eine mit zu von den dem auf für es
+el la los las y yo tú que un una con del en por para se le les et est ne pas je tu il elle
+avec du des pour è non io che di per os as é não eu você um uma com do da em w na nie jest
+się że jak bir ve bu için ile het een en niet ik je van met
+""".split())
+
+
+def page_words(src):
+    """The words a lesson says in English: visible text plus script strings."""
+    src = re.sub(r'<!-- SEO:start -->.*?<!-- SEO:end -->', ' ', src, flags=re.S)
+    src = re.sub(r'<style\b.*?</style>', ' ', src, flags=re.S | re.I)
+    chunks = []
+
+    def keep_strings(m):
+        chunks.extend(x[1:-1] for x in re.findall(
+            r'"(?:[^"\\\n]|\\.){3,}"|\'(?:[^\'\\\n]|\\.){3,}\'|`[^`]{3,}`', m.group(1)))
+        return '<br>'
+    src = re.sub(r'<script\b[^>]*>(.*?)</script>', keep_strings, src, flags=re.S | re.I)
+    chunks.extend(re.split(r'<[^>]+>', src))
+    out = []
+    seen_in = {}                                  # word -> English chunks it is in
+    for n, chunk in enumerate(chunks):
+        raw = re.findall(r'[A-Za-zÀ-ÿ]+', html.unescape(chunk))
+        low = [w.lower() for w in raw]
+        en = sum(w in _EN_FUNC for w in low)
+        if len(low) < 4 or en < 2 or en <= sum(w in _FOREIGN_FUNC for w in low):
+            continue
+        for w, lw in zip(raw, low):
+            # camelCase and SHOUTING are code or chrome; accents are not English.
+            if re.search(r'[a-z][A-Z]', w) or (w.isupper() and len(w) > 1):
+                continue
+            if 4 <= len(lw) <= 18 and lw.isascii() and lw not in _STOP:
+                out.append(lw)
+                seen_in.setdefault(lw, set()).add(n)
+    # One sentence is not enough: a gloss like "subject: podmiot" passes the
+    # English test once, a lesson's real vocabulary comes back again and again.
+    return [w for w in out if len(seen_in[w]) >= 2]
+
+
+def search_keywords(docs, index):
+    """Top tf-idf words per lesson; docs is file -> list of words."""
+    import math
+    from collections import Counter
+    counts = {f: Counter(ws) for f, ws in docs.items()}
+    df = Counter()
+    for c in counts.values():
+        df.update(c.keys())
+    n = max(len(counts), 1)
+    for f, c in counts.items():
+        known = set(re.findall(r'[a-zà-ÿ]+', (index[f]['title'] + ' ' + f + ' '
+                                              + index[f]['description']).lower()))
+        scored = []
+        for w, k in c.items():
+            if k < 2 or df[w] > n * 0.12 or w in known:
+                continue
+            if w.endswith('s') and w[:-1] in c:      # bikes -> bike
+                continue
+            scored.append((-(1 + math.log(k)) * math.log(n / df[w]), w))
+        scored.sort()
+        index[f]['keywords'] = [w for _, w in scored[:KEYWORDS_PER_LESSON]]
+
+
 def main(check=False):
     rows, source = lessons(write_cache=not check)
     images = lesson_images()
@@ -686,6 +805,7 @@ def main(check=False):
     changed = skipped = 0
     unfenced = []
     index = {}
+    docs = {}
 
     for r in rows:
         f = os.path.join(ROOT, r['file'])
@@ -729,10 +849,13 @@ def main(check=False):
         # unfinished lesson; the library derives the same state itself.
         if soon:
             index[r['file']]['coming_soon'] = True
+        docs[r['file']] = page_words(src)
         if new != src:
             changed += 1
             if not check:
                 open(f, 'w', encoding='utf-8', newline='\n').write(new)
+
+    search_keywords(docs, index)
 
     for f, meta in PAGES.items():
         t, d = meta[0], meta[1]
