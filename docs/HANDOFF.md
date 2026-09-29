@@ -11,6 +11,50 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-29 — Block Camp Past Simple 1 clips; subtitles on every Block Camp clip, ten languages
+
+Innes dropped 8 Gemini clips in `incoming/Past simple Part 1 plates/` and
+asked for subtitles on all the videos, with a choice of language.
+
+  * **Past Simple Part 1**: same engine as Present Continuous (two clip
+    elements, end-loop support unused). Placed by first frame: bg18 36cc6a3b
+    (slide 11), bg05 542b4bcf (14), bg25 fa51a43a (15), bg30 3d810465 (16),
+    bg32 190fdc96 (17), bg23 7b98243a (18), bg28 d1eabc03 (19), and bg07
+    0b364dbd (slide 10, the "stray", confirmed by Innes: 38 from any plate,
+    Alex at the oven with a cowboy). All are re-framed (16–28), so each
+    slide's plate is the clip's first frame, `bgNN-clip.jpg` — **except
+    slide 10**, where that frame put Alex under the answer card; it keeps
+    `bg07.jpg` and cuts into the clip. Gap keys: slide 17 on *lived* (the
+    clip leaves the village), slide 18 on *yesterday* (a roof finished).
+    **Still without a clip:** slides 9, 12, 13, 20, 21, 22 (bg02 bg24 bg16
+    bg37 bg41 bg19).
+  * **Subtitles**: `lesson-template/build/blockcamp_subs.py` holds every cue
+    in en de es fr it pt ru ar zh ja and writes `window.CLIP_SUBS`, the CSS
+    and the player (`blockcamp_subs.css`, `.js`) into the three decks between
+    `CLIP SUBTITLES` markers. Idempotent. **Edit the .py and re-run it**; a
+    hand edit in a deck is overwritten. A new clip with speech needs its cues
+    added there.
+  * Transcribed locally: `faster-whisper` medium.en (installed 2026-09-29,
+    model in `~/.cache/huggingface`). Whisper stretches a first word back over
+    silence, so cue starts are set where the words cluster, not at the first
+    word. It also invented words in noise, all dropped: "You" (skeleton
+    fight), "I'll see you next time" (PC bell), "Hmmm", "Ugh", villager
+    babble. One mishearing corrected: "Steve **minds**" → *mines*. 17 clips
+    have speech, 33 cues; the other 19 are music or effects only.
+  * Player: a **CC menu beside the language picker** — off, or any of the ten
+    — independent of the deck language (someone reading in German may want
+    the English they hear), remembered in `localStorage` (`bc-cc`), English
+    by default. Captions show only while a clip plays or holds its last
+    frame, so a last line stays up on the held frame; Arabic runs RTL.
+  * Tested in headless Edge: all 8 Past Simple clips play on a right answer;
+    captions land on cue in en/de/ar/ja, hide between lines and with CC off,
+    hide on leaving the slide, and the choice survives a reload. Works on
+    Present Simple's older one-element engine too. All three decks pass
+    `check-lesson.js`.
+  * **Translations are mine, not reviewed.** Colloquial lines (the
+    "reckon / crack on" pair on PC slide 19, "aye?") are rendered by sense.
+    A native check of zh/ja/ar would be worth it.
+
 ## 2026-09-29 — Two site-wide lists: the revamp artwork shopping list, and what has never been proofread
 
 Innes, 2026-09-27: *"find the non house style lessons and create art shopping
