@@ -11,6 +11,43 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-29 — Two site-wide lists: the revamp artwork shopping list, and what has never been proofread
+
+Innes, 2026-09-27: *"find the non house style lessons and create art shopping
+list for revamp, also list ones you have not proofread like Oxford University
+Press."* Two documents, both measured against `tools/lessons.json` (324
+rows), the files on disk and this file, both with their method at the bottom
+so they can be regenerated instead of trusted:
+
+- **`docs/ARTWORK-revamp-shopping-list.md`.** A file is a deck if it contains
+  `class="stage-wrap"`: **140** are, not the 136 the catalogue's `deck` flag
+  says (ten decks flagged false, six non-decks flagged true — §12 of the
+  list has the SQL-shaped facts). 14 Block Camp RPGs and 26 Sherpa pages are
+  their own standards. **144 catalogued lessons are still scrolling pages**;
+  19 are left alone on purpose (the nine Minecraft time-signals pages that
+  are Block Camp's art quarry, the five `.pptx` deck-viewers, Beyond the
+  Handlebars, the Kraken, Stranger Gears, the falling-card game, Sailing).
+  The other **125** are the revamp backlog: **545 plates to order** across
+  110 rows (need = cover + one per section + activation, capped at eight;
+  105 usable pictures already on disk, none checked by eye for style), with
+  a cover and a plate subject per slot in the Noma Bar / panel idiom of the
+  Mixed Grammar and Contingency briefs. Eleven rows merge or retire first,
+  including `preview.html`, which is the pre-rebuild original of the
+  possessives deck sitting in the catalogue as a lesson, and
+  `german_firefighter_happy.html`, which is a German-language lesson.
+- **`docs/PROOFREAD-STATUS.md`.** "Proofread" means the 2026-09-27 IELTS
+  method (visible text extracted per element and read as a reader, fixed at
+  source, diffed). Only the IELTS hub, five routes, Question Bank and the
+  decks' instruction lines have had it. Everything else is at best
+  *audited* — keys, distractors, gates at rebuild — with non-English
+  "written in-session, no native check". **116 scrolling pages have never
+  been opened by a session at all**, and the one Innes named, the OUP
+  reimagining `docs/at-work/` (75 units, ~65k words, every dialogue and
+  exercise an AI draft), has been laid out three times and read by nobody.
+
+Nothing in either file was run through `prep-artwork.py`; the counts are
+measurements of structure, not judgements of pictures.
+
 ## 2026-09-27 — Block Camp: a map button on every deck, and the next camp once you finish
 
 Innes: *"we need a navigational button on each level back to the main camp
