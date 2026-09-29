@@ -51,6 +51,10 @@ asked for subtitles on all the videos, with a choice of language.
     hide on leaving the slide, and the choice survives a reload. Works on
     Present Simple's older one-element engine too. All three decks pass
     `check-lesson.js`.
+  * **Replay button** (same script): bottom-left above the deck bar, shown
+    once a clip has played on the slide (while it plays and on the held last
+    frame), restarts it from 0 with sound. Hidden before a right answer and
+    after leaving the slide. Tested in all three decks.
   * **Translations are mine, not reviewed.** Colloquial lines (the
     "reckon / crack on" pair on PC slide 19, "aye?") are rendered by sense.
     A native check of zh/ja/ar would be worth it.
