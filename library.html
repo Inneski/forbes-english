@@ -1316,7 +1316,8 @@ function normalizeForSearch(s) {
 // Search used to match the title and filename only, so "bike" could not find
 // "Beyond the Handlebars: Cycling Vocabulary and Inference". Each lesson is
 // now searched on everything seo.py writes about it in lesson-meta.json —
-// description, the teach-card headings, topic hubs — plus its categories and
+// description, the teach-card headings, topic hubs, and the ~24 keywords
+// search_keywords() picks from the lesson's own text — plus its categories and
 // level. Every word of the query must match somewhere (in any order). The
 // word as typed matches anywhere; its synonyms and bare form ("bikes" ->
 // "bike") only at the start of a word, so "tv" cannot hit inside another.
@@ -1344,6 +1345,7 @@ const SEARCH_SYNONYMS = [
   ['house', 'housing', 'interior'],
   ['exam', 'ielts'],
   ['speaking', 'conversation', 'discussion', 'roleplay'],
+  ['vampire', 'dracula', 'blocula'],
 ];
 const SYNONYMS_OF = new Map();
 SEARCH_SYNONYMS.forEach(group => group.forEach(w => SYNONYMS_OF.set(w, group)));
@@ -1362,27 +1364,43 @@ function wordForms(w) {
 // search runs on title, filename and categories as it always did.
 let LESSON_META = {};
 const searchTextCache = new Map();
-function searchText(l) {
+// Three layers, strongest first: what the card itself shows (title, file,
+// categories, level); what seo.py says about the lesson (description, teach
+// headings, topic hubs); and the words the lesson's own text uses most
+// (keywords, from search_keywords() in seo.py). A result is ranked by the
+// first layer that matches, so the lesson with "bike" in its title comes
+// ahead of an IELTS map that happens to mention bicycles.
+function searchLayers(l) {
   let t = searchTextCache.get(l.file);
   if (t === undefined) {
     const m = LESSON_META[l.file] || {};
     const topics = (m.topics || []).map(x => x.name).join(' ');
     // A teach card is "Heading: explanation"; the heading is the keyword.
     const teaches = (m.teaches || []).map(x => String(x).split(':')[0]).join(' ');
-    t = ' ' + searchWords([l.title, l.file, (l.categories || []).join(' '), l.level || '',
-                           m.description || '', teaches, topics].join(' '));
+    const card = ' ' + searchWords([l.title, l.file, (l.categories || []).join(' '), l.level || ''].join(' '));
+    const about = card + ' ' + searchWords([m.description || '', teaches, topics].join(' '));
+    const all = about + ' ' + searchWords((m.keywords || []).join(' '));
+    t = [card, about, all];
     searchTextCache.set(l.file, t);
   }
   return t;
 }
-function matchesSearch(l, q) {
-  if (!q) return true;
-  const hay = searchText(l);
+function layerMatches(hay, q) {
   if (normalizeForSearch(hay).includes(q)) return true;
   const words = searchWords(q).split(' ').filter(Boolean);
   return words.length > 0 && words.every(w =>
     hay.includes(w) || wordForms(w).some(f => hay.includes(' ' + f)));
 }
+// 3 = matches on the card, 2 = on the description, 1 = on keywords, 0 = none.
+function searchRank(l, q) {
+  if (!q) return 3;
+  const layers = searchLayers(l);
+  for (let i = 0; i < layers.length; i++) {
+    if (layerMatches(layers[i], q)) return 3 - i;
+  }
+  return 0;
+}
+function matchesSearch(l, q) { return searchRank(l, q) > 0; }
 
 // hero image for cards where custom lesson art exists — file (as in LESSONS) -> image path
 const LESSON_IMAGES = {
@@ -1926,6 +1944,10 @@ function render() {
   filtered.sort((a, b) => {
     const d = band(a) - band(b);
     if (d) return d;
+    if (q) {
+      const r = searchRank(b, q) - searchRank(a, q);
+      if (r) return r;
+    }
     if (band(a) === 0 && a.sort_order !== b.sort_order) return a.sort_order - b.sort_order;
     if (activeCategory === 'Block Camp' && BLOCK_CAMP_ORDER.has(a.file) && BLOCK_CAMP_ORDER.has(b.file)) {
       return BLOCK_CAMP_ORDER.get(a.file) - BLOCK_CAMP_ORDER.get(b.file);
