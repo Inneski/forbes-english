@@ -11,6 +11,34 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-29 — Per-track pricing: Block Camp and IELTS plans (live, not yet on sale)
+
+Three products: Forbes English Pro (full, unchanged, on `profiles`), Block
+Camp (monthly) and IELTS (one payment, 90-day term). Both standalone plans
+also open Sherpa Tensing.
+
+- **Supabase:** `lessons.track` (general/blockcamp/ielts/sherpa), a
+  before-insert trigger that sets it from the filename prefix, and
+  `user_plans` (RLS: read your own). All in `deploy/schema-tracks.sql`.
+  **A new deck whose file does not start `blockcamp-`, `forbes-english-ielts-`
+  or `sherpa-tensing-` lands on `general`** — set `track` by hand for
+  e.g. `block-camp/*-rpg.html` RPGs if they belong to Block Camp.
+- **Worker** (`a817e010`): gate = `callerAccess().covers(track)`;
+  `PRODUCTS` says what each plan opens; standalone Stripe events go to
+  `user_plans`, never `profiles`. 13 gate tests in `deploy/test-paywall.mjs`.
+- **Pricing page:** Block Camp and IELTS cards with € — and disabled
+  "Available soon" buttons. To open for sale: create the Stripe prices, set
+  `STRIPE_PRICE_ID_BLOCKCAMP` / `STRIPE_PRICE_ID_IELTS` on the Worker, put
+  the prices in, remove `data-soon disabled`. Innes has not set prices.
+- **Not yet on main:** the library badges ("Block Camp plan", "IELTS plan",
+  "Any plan") — commit `48236bc4` on branch `per-track-pricing`
+  (worktree `../FORBES-tracks`). Held back because `library.html` had
+  another session's uncommitted edits. Apply `accessBadgeHTML` from that
+  commit once it is clean, then delete the worktree and branch.
+- **Gate text per track** needs `track` in `lesson-meta.json`, which the
+  next `seo.py` run on main writes; until then every gate says "Forbes
+  English Pro" (access itself is already correct).
+
 ## 2026-09-29 — Block Camp Past Simple 1 clips; subtitles on every Block Camp clip, ten languages
 
 Innes dropped 8 Gemini clips in `incoming/Past simple Part 1 plates/` and
