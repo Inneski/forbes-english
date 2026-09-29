@@ -232,7 +232,7 @@ async function sbGetLessons() {
   const { data, error } = await sbWithTimeout(
     window.sb
       .from("lessons")
-      .select("file, title, level, video, deck, access, sort_order, created_at")
+      .select("file, title, level, video, deck, access, track, sort_order, created_at")
       .order("sort_order", { ascending: true, nullsFirst: false })
       .order("id", { ascending: true }),
     8000,

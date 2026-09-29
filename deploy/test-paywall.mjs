@@ -12,6 +12,25 @@ const src = readFileSync('src/index.js', 'utf8');
 const mod = await import('data:text/javascript;base64,' + Buffer.from(src).toString('base64'));
 
 const PRO = ['forbes-c1-negotiation.html', 'koolhas & Lamb.html', 'Race Day - The Falcon Racing Story (B1 F1 RPG).html', 'block-camp/last-train-home-rpg.html'];
+// Per-track pricing (2026-09-28): lessons carry a track, and the standalone
+// plans in user_plans open their own track plus Sherpa Tensing.
+const TRACK = {
+  'block-camp/last-train-home-rpg.html': 'blockcamp',
+  'blockcamp-demo.html': 'blockcamp',
+  'forbes-english-ielts-demo.html': 'ielts',
+  'sherpa-tensing-demo.html': 'sherpa',
+};
+PRO.push('blockcamp-demo.html', 'forbes-english-ielts-demo.html', 'sherpa-tensing-demo.html');
+const PAST = new Date(Date.now() - 86400000).toISOString();
+const FUTURE = new Date(Date.now() + 86400000).toISOString();
+// token -> [profile row, user_plans rows]. 'good-token' is the full plan.
+const USERS = {
+  'bc-token':      [{subscription_status: null}, [{product: 'blockcamp', status: 'active', ends_at: null}]],
+  'ielts-token':   [{subscription_status: null}, [{product: 'ielts', status: 'active', ends_at: FUTURE}]],
+  'ielts-expired': [{subscription_status: null}, [{product: 'ielts', status: 'active', ends_at: PAST}]],
+  'bc-canceled':   [{subscription_status: null}, [{product: 'blockcamp', status: 'canceled', ends_at: null}]],
+  'owner-token':   [{subscription_status: 'canceled', owner: true}, []],
+};
 const env = {
   SITE_URL: 'https://x.test',
   SUPABASE_URL: 'https://sb.test',
@@ -35,9 +54,14 @@ const env = {
 let activeToken = 'good-token';
 globalThis.fetch = async (url, opts) => {
   const u = String(url);
-  if (u.includes('/rest/v1/lessons')) return new Response(JSON.stringify(PRO.map(f => ({file:f}))), {status:200});
+  const auth = (opts?.headers?.Authorization) || '';
+  const user = USERS[auth.replace('Bearer ', '')];
+  if (u.includes('/rest/v1/lessons')) return new Response(JSON.stringify(PRO.map(f => ({file:f, track: TRACK[f] || 'general'}))), {status:200});
+  // The full-plan user's user_plans read is left to throw (below): a failed
+  // plans read must never cost a full subscriber their access.
+  if (u.includes('/rest/v1/user_plans') && user) return new Response(JSON.stringify(user[1]), {status:200});
   if (u.includes('/rest/v1/profiles')) {
-    const auth = (opts?.headers?.Authorization) || '';
+    if (user) return new Response(JSON.stringify([user[0]]), {status:200});
     if (auth === `Bearer ${activeToken}`) return new Response(JSON.stringify([{subscription_status:'active'}]), {status:200});
     return new Response('{"message":"JWT expired"}', {status:401});
   }
@@ -80,6 +104,20 @@ const cases = [
   ['/',                           null, 'lesson', 'root'],
   ['/Ukraine/rebuild-hero.jpg',   null, 'lesson', 'image in a folder'],
   ['/sb-client.js',               null, 'lesson', 'script'],
+  // Tracks. Full covers all; each standalone plan its own track + Sherpa.
+  ['/blockcamp-demo.html',            'fe_at=good-token',    'lesson', 'full plan opens Block Camp'],
+  ['/forbes-english-ielts-demo.html', 'fe_at=good-token',    'lesson', 'full plan opens IELTS'],
+  ['/blockcamp-demo.html',            'fe_at=bc-token',      'lesson', 'Block Camp plan opens Block Camp'],
+  ['/block-camp/last-train-home-rpg', 'fe_at=bc-token',      'lesson', 'Block Camp plan opens a Block Camp RPG'],
+  ['/sherpa-tensing-demo.html',       'fe_at=bc-token',      'lesson', 'Block Camp plan opens Sherpa Tensing'],
+  ['/forbes-english-ielts-demo.html', 'fe_at=bc-token',      'gate',   'Block Camp plan does NOT open IELTS'],
+  ['/forbes-c1-negotiation.html',     'fe_at=bc-token',      'gate',   'Block Camp plan does NOT open general'],
+  ['/forbes-english-ielts-demo.html', 'fe_at=ielts-token',   'lesson', 'IELTS plan in term opens IELTS'],
+  ['/sherpa-tensing-demo.html',       'fe_at=ielts-token',   'lesson', 'IELTS plan opens Sherpa Tensing'],
+  ['/blockcamp-demo.html',            'fe_at=ielts-token',   'gate',   'IELTS plan does NOT open Block Camp'],
+  ['/forbes-english-ielts-demo.html', 'fe_at=ielts-expired', 'gate',   'IELTS plan past its term is closed'],
+  ['/blockcamp-demo.html',            'fe_at=bc-canceled',   'gate',   'canceled Block Camp plan is closed'],
+  ['/forbes-english-ielts-demo.html', 'fe_at=owner-token',   'lesson', 'owner opens everything'],
 ];
 
 let pass = 0, fail = 0;

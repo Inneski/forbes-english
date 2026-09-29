@@ -14,11 +14,25 @@
 //   STRIPE_SECRET_KEY, STRIPE_PRICE_ID_MONTHLY, STRIPE_PRICE_ID_SEMIANNUAL,
 //   STRIPE_PRICE_ID_ANNUAL, STRIPE_WEBHOOK_SECRET, SITE_URL,
 //   SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY
+// Per-track products (optional until the Stripe prices exist; checkout for a
+// product whose price is unset answers 500 and nothing else changes):
+//   STRIPE_PRICE_ID_BLOCKCAMP   recurring price, Block Camp
+//   STRIPE_PRICE_ID_IELTS       one-time price, IELTS
+//   IELTS_TERM_DAYS             length of the IELTS term (default 90)
 
 const PLAN_ENV_KEYS = {
   monthly: "STRIPE_PRICE_ID_MONTHLY",
   semiannual: "STRIPE_PRICE_ID_SEMIANNUAL",
   annual: "STRIPE_PRICE_ID_ANNUAL",
+};
+
+// The standalone products. `full` (the plans above, held on `profiles`)
+// covers every track; these cover their own track plus Sherpa Tensing.
+// A lesson's track is `lessons.track`; the rows a user holds are `user_plans`
+// (deploy/schema-tracks.sql).
+const PRODUCTS = {
+  blockcamp: { envKey: "STRIPE_PRICE_ID_BLOCKCAMP", mode: "subscription", tracks: ["blockcamp", "sherpa"] },
+  ielts:     { envKey: "STRIPE_PRICE_ID_IELTS",     mode: "payment",      tracks: ["ielts", "sherpa"] },
 };
 
 export default {
@@ -125,7 +139,7 @@ async function gateLessonRequest(request, url, env, ctx) {
   if (!proFiles) return null;
   if (!proFiles.has(file)) return null;
 
-  if (await hasActiveSubscription(request, env)) {
+  if ((await callerAccess(request, env)).covers(proFiles.get(file))) {
     // Serve it, but marked private. A pro lesson must never sit in a shared
     // cache where the next person through gets it without the check.
     const res = await env.ASSETS.fetch(request);
@@ -165,19 +179,21 @@ function lessonFileFor(pathname) {
 }
 
 /**
- * The set of lesson filenames that require a subscription, read from the
+ * The lesson filenames that require a subscription, mapped to their track, read from the
  * `lessons` table and cached at the edge. Cached for five minutes so flipping
  * a lesson to free in the database takes effect without a deploy, while a
  * burst of traffic does not become a burst of Supabase queries.
  */
 async function getProFiles(env, ctx) {
-  const cacheKey = new Request(`${env.SITE_URL}/__internal/pro-lessons`);
+  // v2: the cached body became [file, track] pairs when tracks arrived; a new
+  // key means a stale v1 array is never read as pairs.
+  const cacheKey = new Request(`${env.SITE_URL}/__internal/pro-lessons-v2`);
   const cache = caches.default;
 
   const cached = await cache.match(cacheKey);
   if (cached) {
     try {
-      return new Set(await cached.json());
+      return new Map(await cached.json());
     } catch {
       /* fall through and re-fetch */
     }
@@ -186,11 +202,11 @@ async function getProFiles(env, ctx) {
   let files;
   try {
     const res = await fetch(
-      `${env.SUPABASE_URL}/rest/v1/lessons?select=file&access=eq.pro`,
+      `${env.SUPABASE_URL}/rest/v1/lessons?select=file,track&access=eq.pro`,
       { headers: { apikey: env.SUPABASE_ANON_KEY, Authorization: `Bearer ${env.SUPABASE_ANON_KEY}` } }
     );
     if (!res.ok) return null;
-    files = (await res.json()).map((r) => r.file);
+    files = (await res.json()).map((r) => [r.file, r.track || "general"]);
   } catch {
     return null;
   }
@@ -200,35 +216,52 @@ async function getProFiles(env, ctx) {
     headers: { "Content-Type": "application/json", "Cache-Control": "max-age=300" },
   });
   if (ctx && ctx.waitUntil) ctx.waitUntil(cache.put(cacheKey, toCache));
-  return new Set(files);
+  return new Map(files);
 }
 
 /**
- * Verifies the caller's Supabase session and checks their subscription in a
- * single request: PostgREST rejects an invalid or expired token outright, and
- * the row-level policy on `profiles` means the row that comes back can only
- * ever be the caller's own. There is no way to ask it for somebody else's.
+ * What the caller may open. Verifies the Supabase session and reads their
+ * access with their own token: PostgREST rejects an invalid or expired token
+ * outright, and the row-level policies on `profiles` and `user_plans` mean
+ * the rows that come back can only ever be the caller's own.
+ *
+ * Returns { full, tracks, covers(track) }. `full` is the owner or an active
+ * whole-library subscription; `tracks` is what the standalone plans add.
  */
-async function hasActiveSubscription(request, env) {
+const NO_ACCESS = { full: false, tracks: new Set(), covers: () => false };
+
+async function callerAccess(request, env) {
   const token = readCookie(request.headers.get("Cookie"), SESSION_COOKIE);
-  if (!token) return false;
+  if (!token) return NO_ACCESS;
+  const headers = { apikey: env.SUPABASE_ANON_KEY, Authorization: `Bearer ${token}` };
 
-  let rows;
+  // Read in parallel, fail separately: a missing table or a failed read of
+  // user_plans costs the standalone plans only, never a full subscriber.
+  const plansRead = fetch(`${env.SUPABASE_URL}/rest/v1/user_plans?select=product,status,ends_at`, { headers })
+    .then((r) => (r.ok ? r.json() : []))
+    .catch(() => []);
+  let profile;
   try {
-    const res = await fetch(
-      `${env.SUPABASE_URL}/rest/v1/profiles?select=subscription_status,owner&limit=1`,
-      { headers: { apikey: env.SUPABASE_ANON_KEY, Authorization: `Bearer ${token}` } }
-    );
-    if (!res.ok) return false;
-    rows = await res.json();
+    const pr = await fetch(`${env.SUPABASE_URL}/rest/v1/profiles?select=subscription_status,owner&limit=1`, { headers });
+    if (!pr.ok) return NO_ACCESS;           // a bad token fails here
+    profile = (await pr.json())[0];
   } catch {
-    return false;
+    return NO_ACCESS;
   }
+  const plans = await plansRead;
+  if (!profile) return NO_ACCESS;
 
-  if (!Array.isArray(rows) || rows.length === 0) return false;
   // `owner` is deliberately separate from subscription_status: the person who
   // runs the site should not lose access to it because of a billing event.
-  return rows[0].owner === true || ACTIVE_STATUSES.has(rows[0].subscription_status);
+  const full = profile.owner === true || ACTIVE_STATUSES.has(profile.subscription_status);
+  const tracks = new Set();
+  const now = Date.now();
+  for (const p of Array.isArray(plans) ? plans : []) {
+    if (!ACTIVE_STATUSES.has(p.status)) continue;
+    if (p.ends_at && Date.parse(p.ends_at) <= now) continue;
+    for (const t of PRODUCTS[p.product]?.tracks || []) tracks.add(t);
+  }
+  return { full, tracks, covers: (track) => full || tracks.has(track) };
 }
 
 function readCookie(header, name) {
@@ -319,6 +352,15 @@ function escapeHtml(s) {
  * escaped: the values come from a database row, and a lesson title with an
  * ampersand in it should not be able to close a tag.
  */
+// Which plans open a lesson, by its track (lesson-meta.json carries it from
+// lessons.track). Must agree with PRODUCTS above and with pricing.html.
+const PLAN_LINE = {
+  general:   "is part of Forbes English Pro.",
+  blockcamp: "is part of the Block Camp plan, and of Forbes English Pro.",
+  ielts:     "is part of the IELTS plan, and of Forbes English Pro.",
+  sherpa:    "comes with every plan: Forbes English Pro, Block Camp or IELTS.",
+};
+
 function personaliseGate(html, m, url) {
   const title = escapeHtml(m.title || "");
   const desc = escapeHtml(m.description || "");
@@ -381,8 +423,8 @@ function personaliseGate(html, m, url) {
           .join(" &middot; ")}${level ? ` &middot; <a href="/level-checker.html">Check your level</a>` : ""}</p>`
       : "",
     `<p class="lede paywalled">The lesson itself &mdash; every slide, every exercise and`,
-    ` the answers &mdash; is part of Forbes English Pro. Plenty of the library is free`,
-    ` and always will be.</p>`,
+    ` the answers &mdash; ${PLAN_LINE[m.track] || PLAN_LINE.general}`,
+    ` Plenty of the library is free and always will be.</p>`,
   ].join("");
 
   return html
@@ -399,6 +441,7 @@ function personaliseGate(html, m, url) {
 async function handlePaywallStatus(request, url, env, ctx) {
   const proFiles = await getProFiles(env, ctx);
   const sample = "forbes-c1-negotiation.html";
+  const access = await callerAccess(request, env);
 
   const report = {
     // Deliberately NOT reported: whether page requests reach this Worker.
@@ -413,7 +456,10 @@ async function handlePaywallStatus(request, url, env, ctx) {
     proLessonCount: proFiles ? proFiles.size : null,
     sampleLessonIsGated: proFiles ? proFiles.has(sample) : null,
     callerHasSessionCookie: Boolean(readCookie(request.headers.get("Cookie"), SESSION_COOKIE)),
-    callerSubscribed: await hasActiveSubscription(request, env),
+    callerSubscribed: access.full,
+    callerTracks: [...access.tracks],
+    hasBlockCampPrice: Boolean(env.STRIPE_PRICE_ID_BLOCKCAMP),
+    hasIeltsPrice: Boolean(env.STRIPE_PRICE_ID_IELTS),
   };
 
   report.configOk =
@@ -447,10 +493,11 @@ async function handleCreateCheckoutSession(request, env) {
     return json({ error: "Invalid JSON body" }, 400);
   }
 
-  const { userId, userEmail, plan } = body;
+  const { userId, userEmail, plan, product } = body;
   if (!userId || !userEmail) {
     return json({ error: "userId and userEmail are required" }, 400);
   }
+  if (product) return createProductCheckout(env, userId, userEmail, product);
 
   const envKey = PLAN_ENV_KEYS[plan];
   if (!envKey) {
@@ -494,6 +541,51 @@ async function handleCreateCheckoutSession(request, env) {
   return json({ url: session.url });
 }
 
+/**
+ * Checkout for a standalone product (Block Camp, IELTS). Kept apart from the
+ * full plan so the full plan's params are untouched. IELTS is a one-time
+ * payment: no subscription, so the term is stored as `ends_at` by the webhook.
+ */
+async function createProductCheckout(env, userId, userEmail, product) {
+  const def = PRODUCTS[product];
+  if (!def) {
+    return json({ error: `product must be one of: ${Object.keys(PRODUCTS).join(", ")}` }, 400);
+  }
+  const priceId = env[def.envKey];
+  if (!priceId) {
+    return json({ error: `Server is missing the ${def.envKey} environment variable` }, 500);
+  }
+
+  const params = new URLSearchParams({
+    mode: def.mode,
+    "managed_payments[enabled]": "false",
+    "line_items[0][price]": priceId,
+    "line_items[0][quantity]": "1",
+    customer_email: userEmail,
+    "metadata[supabase_user_id]": userId,
+    "metadata[product]": product,
+    success_url: `${env.SITE_URL}/account.html?checkout=success`,
+    cancel_url: `${env.SITE_URL}/account.html?checkout=cancelled`,
+  });
+  if (def.mode === "subscription") {
+    params.set("subscription_data[metadata][supabase_user_id]", userId);
+    params.set("subscription_data[metadata][product]", product);
+  }
+
+  const stripeRes = await fetch("https://api.stripe.com/v1/checkout/sessions", {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${env.STRIPE_SECRET_KEY}`,
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: params,
+  });
+  if (!stripeRes.ok) {
+    return json({ error: "Stripe error", detail: await stripeRes.text() }, 502);
+  }
+  return json({ url: (await stripeRes.json()).url });
+}
+
 // ─────────────────────────────────────────────────────────────────────────
 // POST /api/stripe-webhook
 // ─────────────────────────────────────────────────────────────────────────
@@ -514,7 +606,22 @@ async function handleStripeWebhook(request, env) {
       const session = event.data.object;
       const userId = session.metadata?.supabase_user_id;
       const plan = session.metadata?.plan;
-      if (userId) {
+      const product = session.metadata?.product;
+      if (userId && PRODUCTS[product]) {
+        // A standalone product goes in user_plans, never on the profile:
+        // writing it there would read as a whole-library subscription.
+        const days = Number(env.IELTS_TERM_DAYS) || 90;
+        await insertUserPlan(env, {
+          user_id: userId,
+          product,
+          status: "active",
+          stripe_subscription_id: session.subscription || null,
+          stripe_checkout_session_id: session.id,
+          ends_at: PRODUCTS[product].mode === "payment"
+            ? new Date(Date.now() + days * 86400000).toISOString()
+            : null,
+        });
+      } else if (userId) {
         await updateProfile(env, userId, {
           stripe_customer_id: session.customer,
           stripe_subscription_id: session.subscription,
@@ -527,6 +634,13 @@ async function handleStripeWebhook(request, env) {
         case "customer.subscription.updated": {
       const sub = event.data.object;
       const plan = sub.metadata?.plan;
+      // A standalone subscription updates its own row. Patching the profile
+      // by customer here would overwrite the full plan's status with Block
+      // Camp's for anyone who holds both.
+      if (PRODUCTS[sub.metadata?.product]) {
+        await updateUserPlanBySubscription(env, sub.id, { status: sub.status });
+        break;
+      }
       // Since Stripe API 2025-03-31 the period end lives on the subscription
       // item, not the subscription. Reading sub.current_period_end gave
       // undefined -> Invalid Date -> toISOString() threw, so every
@@ -544,6 +658,10 @@ async function handleStripeWebhook(request, env) {
     }
     case "customer.subscription.deleted": {
       const sub = event.data.object;
+      if (PRODUCTS[sub.metadata?.product]) {
+        await updateUserPlanBySubscription(env, sub.id, { status: "canceled" });
+        break;
+      }
       await updateProfileByCustomer(env, sub.customer, {
         subscription_status: "canceled",
       });
@@ -567,6 +685,23 @@ async function updateProfile(env, userId, fields) {
 
 async function updateProfileByCustomer(env, stripeCustomerId, fields) {
   await fetch(`${env.SUPABASE_URL}/rest/v1/profiles?stripe_customer_id=eq.${stripeCustomerId}`, {
+    method: "PATCH",
+    headers: supabaseHeaders(env),
+    body: JSON.stringify(fields),
+  });
+}
+
+async function insertUserPlan(env, row) {
+  // on_conflict makes a redelivered webhook a no-op instead of a second row.
+  await fetch(`${env.SUPABASE_URL}/rest/v1/user_plans?on_conflict=stripe_checkout_session_id`, {
+    method: "POST",
+    headers: { ...supabaseHeaders(env), "Prefer": "return=minimal,resolution=ignore-duplicates" },
+    body: JSON.stringify(row),
+  });
+}
+
+async function updateUserPlanBySubscription(env, stripeSubscriptionId, fields) {
+  await fetch(`${env.SUPABASE_URL}/rest/v1/user_plans?stripe_subscription_id=eq.${stripeSubscriptionId}`, {
     method: "PATCH",
     headers: supabaseHeaders(env),
     body: JSON.stringify(fields),

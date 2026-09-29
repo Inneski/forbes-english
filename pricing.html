@@ -427,6 +427,45 @@
     </div>
   </div>
 
+  <!-- Per-track plans (2026-09-28). PRICES ARE PLACEHOLDERS: Innes sets them.
+       Rule: each below the full plan (roughly half to two-thirds); the full
+       plan below the two added together. To open a plan for sale, create its
+       Stripe price, set STRIPE_PRICE_ID_BLOCKCAMP / _IELTS on the Worker, put
+       the price in below and delete that button's data-soon and disabled. -->
+  <div class="paid-intro">
+    <div class="eyebrow">Or just the part you need</div>
+    <h2 class="paid-title">Block Camp and IELTS on their own</h2>
+    <p>Each comes with the whole Sherpa Tensing route as well.</p>
+  </div>
+
+  <div class="plans">
+    <div class="plan-card" data-product="blockcamp">
+      <div class="plan-name">Block Camp</div>
+      <div class="plan-price">&euro;&thinsp;&mdash;<span>&nbsp;/ month</span></div>
+      <div class="plan-sub">For parents. Billed every month</div>
+      <ul class="plan-features">
+        <li>Every Block Camp lesson and RPG</li>
+        <li>New Block Camp lessons as they're published</li>
+        <li>The Sherpa Tensing route</li>
+        <li>Cancel anytime</li>
+      </ul>
+      <button class="plan-btn" data-product="blockcamp" data-soon disabled>Available soon</button>
+    </div>
+
+    <div class="plan-card" data-product="ielts">
+      <div class="plan-name">IELTS</div>
+      <div class="plan-price">&euro;&thinsp;&mdash;<span>&nbsp;/ 3 months</span></div>
+      <div class="plan-sub">One payment. Nothing renews</div>
+      <ul class="plan-features">
+        <li>Every IELTS lesson: Writing, Reading, Listening, Speaking</li>
+        <li>New IELTS lessons during your three months</li>
+        <li>The Sherpa Tensing route</li>
+        <li>No subscription to cancel</li>
+      </ul>
+      <button class="plan-btn" data-product="ielts" data-soon disabled>Available soon</button>
+    </div>
+  </div>
+
   <div class="faq">
     <h2>Questions</h2>
     <details class="faq-item">
@@ -436,6 +475,10 @@
     <details class="faq-item">
       <summary>What's the difference between the plans?</summary>
       <p>All three plans include exactly the same access to every lesson on the site. The only difference is how often you're billed and the price — six-month and annual billing both work out to &euro;7.50/month, a 17% saving over paying monthly.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Block Camp or IELTS, or Forbes English Pro?</summary>
+      <p>Forbes English Pro opens every lesson, Block Camp and IELTS included. Take Block Camp or IELTS on its own if that is all you need. Both come with the Sherpa Tensing route. You can hold both, and upgrade to Pro at any time.</p>
     </details>
     <details class="faq-item">
       <summary>What exactly is free?</summary>
@@ -457,8 +500,10 @@ function showBanner(msg, cls) {
   banner.className = "status-banner show" + (cls ? " " + cls : "");
 }
 
+// `plan` is a full-plan interval (monthly/semiannual/annual) or, for a
+// standalone plan, "product:blockcamp" / "product:ielts".
 async function startCheckout(plan) {
-  const buttons = document.querySelectorAll(".plan-btn");
+  const buttons = document.querySelectorAll(".plan-btn:not([data-soon])");
   buttons.forEach(b => b.disabled = true);
 
   const user = await sbGetUser();
@@ -468,13 +513,17 @@ async function startCheckout(plan) {
     return;
   }
 
-  const clicked = document.querySelector(`.plan-btn[data-plan="${plan}"]`);
+  const product = plan.startsWith("product:") ? plan.slice(8) : null;
+  const clicked = document.querySelector(product
+    ? `.plan-btn[data-product="${product}"]` : `.plan-btn[data-plan="${plan}"]`);
   if (clicked) clicked.textContent = "Redirecting to checkout…";
 
   const res = await fetch("/api/create-checkout-session", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ userId: user.id, userEmail: user.email, plan }),
+    body: JSON.stringify(product
+      ? { userId: user.id, userEmail: user.email, product }
+      : { userId: user.id, userEmail: user.email, plan }),
   });
   const data = await res.json();
 
@@ -487,7 +536,8 @@ async function startCheckout(plan) {
 }
 
 document.querySelectorAll(".plan-btn").forEach(btn => {
-  btn.addEventListener("click", () => startCheckout(btn.dataset.plan));
+  btn.addEventListener("click", () => startCheckout(
+    btn.dataset.product ? "product:" + btn.dataset.product : btn.dataset.plan));
 });
 
 // If we're already logged in and arrived here right after login with an

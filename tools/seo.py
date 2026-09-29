@@ -150,7 +150,7 @@ def lessons(write_cache=True):
             # writes into <div id="grid"> is what a crawler sees and what a
             # visitor gets when Supabase is unreachable, so if the two orders
             # disagree the fallback silently shows a different library.
-            '?select=file,title,level,access,deck,video,created_at,sort_order'
+            '?select=file,title,level,access,track,deck,video,created_at,sort_order'
             '&order=sort_order.asc.nullslast,id.asc',
             headers={'apikey': SUPABASE_ANON,
                      'Authorization': 'Bearer ' + SUPABASE_ANON})
@@ -715,6 +715,11 @@ def main(check=False):
         index[r['file']] = {'title': clean(r['title']), 'description': desc,
                             'level': r.get('level'), 'image': img,
                             'access': r['access'],
+                            # Which plans open it (general / blockcamp /
+                            # ielts / sherpa). The Worker names them on the
+                            # gate page; a cache row from before the column
+                            # existed is general.
+                            'track': r.get('track') or 'general',
                             # The public excerpt a gate page prints: what
                             # the lesson teaches, in its own rule sentences,
                             # and the topic hubs it belongs to. Same words
