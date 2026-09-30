@@ -163,6 +163,17 @@ asked for subtitles on all the videos, with a choice of language.
     Tested in Chromium touch/mouse emulation. **Not testable here on iOS**:
     Playwright's Windows WebKit has no Web Audio at all (`AudioContext`
     undefined). Needs a check on a real iPhone.
+  * **A black slide (Innes, on his laptop, 2026-09-30)**: a clip holds its
+    last frame, and Past Simple slide 17's clip (190fdc96, "I left the
+    village...") faded to black over its last 20 frames (131 -> 24), so the
+    slide went black after a right answer. Re-cut at 9.125 s, before the
+    fade, audio faded over the cut. **`lesson-template/checker/check-clips.py`**
+    now measures it: every data-clip / -loop / -high in the 26 decks must
+    exist and must not end on a fade (final frame < 45% of the last two
+    seconds' brightest and < 60/255, or < 15 outright; a clip dark
+    throughout, like Present Simple's night scene on slide 20, passes).
+    Verified failing on the faded original. **Run it after adding clips;
+    cut any Gemini clip that fades out (`ffmpeg -t`).**
   * **Next camp button** (`lesson-template/build/block-camp-nav/template.js`,
     all 26 decks): Innes, "too big and will lead to mistakes. Only provide on
     last screen." Now a 34 px chip, name only ("4 · Past Continuous →", the
