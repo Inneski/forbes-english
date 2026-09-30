@@ -39,6 +39,7 @@ calibrated to the painted dots the same way (blob-detect them, as eb491249 did).
 """
 import json
 import os
+import re
 import subprocess
 import sys
 
@@ -46,10 +47,11 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))
 sys.path.insert(0, HERE)
 from sailing_map import _roughen, _path, _offscreen, W, H   # noqa: E402
+import sea_paint as P                                        # noqa: E402
 
 OUT = os.path.join(ROOT, 'docs', 'sea-charts')
 
-SEA_TOP, SEA_BOT = '#DEEFF6', '#B2D5E4'
+SEA_TOP, SEA_BOT = '#D8EAE8', '#B2D1D6'
 LINE = '#2B4A57'
 TIDE, TIDE_INK = '#22707F', '#1A5A66'
 S_SAND, S_INK = '#C09A55', '#6B5320'
@@ -72,30 +74,35 @@ def _defs(uid):
     </linearGradient>
     <marker id="%(u)s-tide" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6"
             markerHeight="6" orient="auto"><path d="M 0 1 L 9 5 L 0 9 z" fill="%(c)s"/></marker>
-    <pattern id="%(u)s-sand" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
-      <rect width="10" height="10" fill="#F7EBD2"/>
-      <line x1="0" y1="0" x2="0" y2="10" stroke="#E3C88F" stroke-width="3.4"/>
+    <pattern id="%(u)s-sand" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(20)">
+      <rect width="7" height="7" fill="#F3E4C3"/>
+      <circle cx="2" cy="2" r=".75" fill="#B08A45"/><circle cx="5.5" cy="5" r=".55" fill="#B08A45"/>
     </pattern>
     <pattern id="%(u)s-fields" width="26" height="26" patternUnits="userSpaceOnUse">
       <path d="M 0 0 H 26 M 0 0 V 26" stroke="#5E7A3E" stroke-width=".9" opacity=".35"/>
     </pattern>
-  </defs>''' % {'u': uid, 't': SEA_TOP, 'b': SEA_BOT, 'c': TIDE}
+    %(paint)s
+  </defs>''' % {'u': uid, 't': SEA_TOP, 'b': SEA_BOT, 'c': TIDE, 'paint': P.DEFS}
 
 
 def _wave(x, y, w=28):
-    return ('<path d="M %d %d q %d -5 %d 0 q %d 5 %d 0" fill="none" stroke="#84B4C9" '
-            'stroke-width="1.6" stroke-linecap="round" opacity=".6"/>'
-            % (x, y, w // 4, w // 2, w // 4, w // 2))
+    return P.swell(x, y, w / 28)
 
 
-def _land(lid, coast, beach, fill, overlay=None):
-    """A landmass: a pale beach band, the land, a coastline. lid is the id the
-    label check looks the fill up by."""
+def _land(lid, pts, beach, fill, overlay=None, kind='hills', avoid=(), marks=(), seed=1):
+    """A landmass: a pale beach band, the land shaded darker toward its coast,
+    engraved cliffs, its terrain (kept clear of avoid, the label boxes), its
+    landmarks, and an ink coastline. lid is the id the label check looks the
+    fill up by."""
+    coast = _path(pts)
     extra = ('<path d="%s" fill="%s"/>' % (coast, overlay)) if overlay else ''
-    return ('<g class="land"><path d="%s" fill="none" stroke="%s" stroke-width="16" '
-            'stroke-linejoin="round"/><path id="%s" class="fill" d="%s" fill="%s" stroke="%s" '
-            'stroke-width="2.2" stroke-linejoin="round"/>%s</g>'
-            % (coast, beach, lid, coast, fill, LINE, extra))
+    ground = P.terrain(pts, kind, list(avoid) + P.landmark_boxes(marks), seed) if kind else ''
+    return ('<g class="land"><path d="%s" fill="none" stroke="%s" stroke-width="10" '
+            'stroke-linejoin="round" opacity=".9"/><path id="%s" class="fill" d="%s" fill="%s" '
+            'filter="url(#sc-relief)"/>%s%s%s%s<path d="%s" fill="none" stroke="%s" '
+            'stroke-width="1.5" stroke-linejoin="round"/></g>'
+            % (coast, beach, lid, coast, fill, extra, P.hatch(pts, seed), ground,
+               P.landmarks(marks), coast, P.INK))
 
 
 def _places(items, ink, lid, size=11):
@@ -132,26 +139,12 @@ def _current(uid, y, x_from, x_to, label, sub=None, label_dy=-22):
     return '<g class="current">%s</g>' % s
 
 
-def _compass(hint, cx=500, cy=92):
-    return '''<g class="compass">
-    <circle cx="%(x)d" cy="%(y)d" r="36" fill="#FFFFFF" opacity=".6"/>
-    <circle cx="%(x)d" cy="%(y)d" r="36" fill="none" stroke="%(t)s" stroke-width="1.4"/>
-    <path d="M %(x)d %(n)d L %(e)d %(m)d L %(x)d %(s)d L %(w)d %(m)d Z" fill="#D89257" stroke="#2B4A57" stroke-width="1"/>
-    <path d="M %(W)d %(y)d L %(a)d %(k)d L %(E)d %(y)d L %(a)d %(j)d Z" fill="#2B4A57" opacity=".72"/>
-    %(hint)s
-  </g>''' % {'x': cx, 'y': cy, 'n': cy - 32, 's': cy + 32, 'm': cy - 4, 'e': cx + 7,
-             'w': cx - 7, 'W': cx - 32, 'E': cx + 32, 'a': cx - 4, 'k': cy - 7,
-             'j': cy + 7, 't': TIDE,
-             'hint': _sea_text(cx, cy - 44, hint, TIDE_INK, spacing='.06em')}
+def _compass(hint, cx=500, cy=94):
+    return P.compass_rose(cx, cy, 34) + _sea_text(cx, cy - 56, hint, TIDE_INK, spacing='.06em')
 
 
 def _ship(x, y, scale=1.0):
-    return '''<g class="ship" transform="translate(%s %s) scale(%s)">
-    <path d="M -28 38 L 28 38 L 19 52 L -19 52 Z" fill="#3B2A1E"/>
-    <path d="M 0 0 L 0 38" stroke="#3B2A1E" stroke-width="2.4"/>
-    <path d="M 2 4 L 28 33 L 2 33 Z" fill="#FBF6EC" stroke="#3B2A1E" stroke-width="1.3"/>
-    <path d="M -4 10 L -27 33 L -4 33 Z" fill="#FBF6EC" stroke="#3B2A1E" stroke-width="1.3"/>
-  </g>''' % (x, y, scale)
+    return P.galleon(x, y, scale)
 
 
 def _flag(x, y_base, y_top, text, fill, ink, point=-1):
@@ -208,8 +201,9 @@ def _island_title(x, y, name, sub, ink, size=15.5):
 
 def _svg(uid, title, body):
     return ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %d" width="%d" height="%d">'
-            '<title>%s</title>\n<style>@import url(\'%s\');</style>\n  %s\n  %s\n</svg>\n'
-            % (W, H, W, H, title, FONTS.replace('&', '&amp;'), _defs(uid), body))
+            '<title>%s</title>\n<style>@import url(\'%s\');</style>\n  %s\n  %s\n  %s\n  %s\n</svg>\n'
+            % (W, H, W, H, title, FONTS.replace('&', '&amp;'), _defs(uid), P.sheet_open(), body,
+               P.sheet_close()))
 
 
 def _sea(uid, waves):
@@ -294,37 +288,55 @@ def _pair_places():
     return west, east
 
 
+COUNT_TITLES = [
+    (56, 592, 'COUNTANIA', 'a / an &#183; many &#183; a few &#183; -s', 'start'),
+    (946, 592, 'UNCOUNTANIA', 'much &#183; a little &#183; no a / an &#183; no -s', 'end'),
+]
+
+
+def _title_boxes(x, y, name, sub, anchor):
+    return [P.text_box(x, y, name, 22, anchor, k=.78), P.text_box(x, y + 19, sub, 11, anchor)]
+
+
 def countable_chart(uid='cu'):
-    west_coast = _path(_roughen(COUNT_OUTLINE, seed=11, hold=_offscreen))
-    east_coast = _path(_roughen(UNCOUNT_OUTLINE, seed=29, hold=_offscreen))
-    isle = _path(_roughen(DOUBLE_OUTLINE, seed=47, ratio=0.11))
-    cape = _path(_roughen(COUNT_CAPE, seed=61, levels=2, ratio=0.10))
+    west_pts = _roughen(COUNT_OUTLINE, seed=11, hold=_offscreen)
+    east_pts = _roughen(UNCOUNT_OUTLINE, seed=29, hold=_offscreen)
+    isle_pts = _roughen(DOUBLE_OUTLINE, seed=47, ratio=0.11)
+    cape_pts = _roughen(COUNT_CAPE, seed=61, levels=2, ratio=0.10)
     west, east = _pair_places()
+    (wx, wy, wn, ws, wa), (ex, ey, en, es, ea) = COUNT_TITLES
     body = '\n  '.join([
         _sea(uid, [(344, 214), (618, 206), (342, 330), (620, 440), (352, 600),
                    (606, 628), (420, 470), (330, 140), (650, 130)]),
+        P.rings([_path(p) for p in (west_pts, east_pts, isle_pts, cape_pts)]),
         _shallows(uid, COUNT_SHALLOWS, 59, 512, 540, 'THE SHALLOWS',
                   'either shore, same word',
                   ['some &#183; any &#183; a lot of &#183; plenty of',
                    'no &#183; enough &#183; more &#183; most']),
-        _land(uid + '-west', west_coast, C_BEACH, C_LAND),
-        _land(uid + '-east', east_coast, U_BEACH, U_LAND),
-        _land(uid + '-isle', isle, LILAC_BEACH, LILAC),
-        _land(uid + '-cape', cape, U_BEACH, U_LAND),
+        _land(uid + '-west', west_pts, C_BEACH, C_LAND, kind='orchard', seed=11,
+              avoid=P.place_boxes(west) + _title_boxes(wx, wy, wn, ws, wa),
+              marks=[('crates', 236, 452), ('crates', 226, 118)]),
+        _land(uid + '-east', east_pts, U_BEACH, U_LAND, kind='wheat', seed=29,
+              avoid=P.place_boxes(east) + _title_boxes(ex, ey, en, es, ea),
+              marks=[('mill', 952, 140), ('mill', 962, 402)]),
+        _land(uid + '-isle', isle_pts, LILAC_BEACH, LILAC, kind='hills', seed=47,
+              avoid=P.place_boxes(DOUBLE_PLACES, 10.5), marks=[('lighthouse', 572, 292)]),
+        _land(uid + '-cape', cape_pts, U_BEACH, U_LAND, kind='wheat', seed=61,
+              avoid=[P.text_box(682, 482, 'THE FALSE CAPE', 10.5, k=.72),
+                     P.text_box(680, 497, 'the news is &#183; maths is', 9)]),
         _flag(606, 480, 408, '-S', C_LAND, '#3A1004', point=1),
         _land_text(uid + '-cape', 682, 482, 'THE FALSE CAPE', U_INK),
         _land_text(uid + '-cape', 680, 497, 'the news is &#183; maths is', U_INK, size=9,
                    weight=600, spacing='0'),
         _current(uid, 174, 618, 352, 'THE PIECE-OF FERRY RUNS WEST',
                  'a piece of advice &#183; a bottle of water &#183; a slice of bread'),
-        _ship(404, 157, 0.42),
+        _ship(412, 160, 0.3),
         _compass('&#9664; HOW MANY? &#183; HOW MUCH? &#9654;'),
-        _ship(302, 578),
+        _ship(334, 566, 0.78),
+        P.serpent(600, 636, .8),
         _island_title(500, 224, 'DOUBLE ISLE', 'both shores &#183; two meanings', LILAC_INK),
-        _title(56, 592, 'COUNTANIA', 'a / an &#183; many &#183; a few &#183; -s', C_INK,
-               land=uid + '-west'),
-        _title(946, 592, 'UNCOUNTANIA', 'much &#183; a little &#183; no a / an &#183; no -s',
-               U_INK, anchor='end', land=uid + '-east'),
+        _title(wx, wy, wn, ws, C_INK, land=uid + '-west'),
+        _title(ex, ey, en, es, U_INK, anchor=ea, land=uid + '-east'),
         _places(west, C_INK, uid + '-west'),
         _places(east, U_INK, uid + '-east'),
         _places(DOUBLE_PLACES, LILAC_INK, uid + '-isle', 10.5),
@@ -352,7 +364,7 @@ CARGO = [
     ('letter', 6, 'mail'),
 ]
 PLURAL = {'loaf': 'loaves'}
-GALLEY = ['coffee', 'chicken', 'paper', 'glass', 'cake', 'hair']
+GALLEY = ['coffee', 'chicken', 'paper', 'glass', 'cake', 'chocolate']
 
 WOOD, WOOD_DARK, WOOD_INK = '#E9D3AE', '#B98B55', '#3E2A12'
 
@@ -430,10 +442,18 @@ def hold_chart(uid='hd'):
         + '<rect x="%d" y="%d" width="%d" height="%d" fill="%s" opacity=".3"/>'
         % (x_l, band[0], x_r - x_l, band[1], LILAC)
         + '<rect x="%d" y="%d" width="%d" height="%d" fill="%s" opacity=".38"/>'
-        % (x_r, band[0], W - x_r, band[1], U_LAND) + '</g>',
+        % (x_r, band[0], W - x_r, band[1], U_LAND)
+        # planking, faint enough to sit behind the cargo
+        + '<path d="%s" stroke="%s" stroke-width=".8" opacity=".3"/>'
+        % (''.join('M0 %dH1000' % y for y in range(HULL_TOP + 22, KEEL, 17)), WOOD_INK) + '</g>',
         '<path d="M %d %d L %d %d M %d %d L %d %d" stroke="%s" stroke-width="5"/>'
         % (x_l, HULL_TOP - 3, x_l, KEEL, x_r, HULL_TOP - 9, x_r, KEEL, WOOD_DARK),
         '<path d="%s" fill="none" stroke="%s" stroke-width="3"/>' % (_hull(), WOOD_INK),
+        # rigging from each masthead down to the rail
+        '<path d="%s" stroke="%s" stroke-width=".8" opacity=".55"/>'
+        % (''.join('M%d %dL%d %dM%d %dL%d %d' % (x, top, x - 120, HULL_TOP - 1, x, top, x + 120,
+                                                  HULL_TOP - 9)
+                   for x, top in ((216, 40), (500, 22), (786, 40))), WOOD_INK),
         _mast(216, 40, 'HOW MANY?', C_LAND, '#3A1004', 1),
         _mast(500, 22, 'BOTH', LILAC, LILAC_INK, 1, width=90),
         _mast(786, 40, 'HOW MUCH?', U_LAND, U_INK, -1),
@@ -489,11 +509,11 @@ REGULAR_PLACES = [
 # (id, outline, seed, land, beach, ink, title x, name, pattern, places); the
 # title sits a fixed height above the island's own top, clear of its beach
 ISLANDS = [
-    ('bell', [(724, 48), (774, 52), (812, 74), (822, 108), (806, 142), (770, 162),
-              (722, 166), (678, 154), (650, 128), (652, 92), (676, 62)], 71,
+    ('bell', [(724, 60), (774, 64), (812, 84), (822, 114), (806, 146), (770, 164),
+              (722, 168), (678, 158), (650, 134), (652, 100), (676, 72)], 71,
      '#DC9A6A', '#F5DCC6', '#4A200A', 736, 'BELL ISLAND', 'ring &#183; rang &#183; rung',
-     [(698, 96, 'Sing Sound'), (774, 100, 'Drink Cove'), (700, 136, 'Swim Bay'),
-      (772, 140, 'Begin Point')]),
+     [(698, 104, 'Sing Sound'), (774, 108, 'Drink Cove'), (700, 142, 'Swim Bay'),
+      (772, 146, 'Begin Point')]),
     ('ought', [(900, 110), (948, 118), (984, 146), (992, 190), (984, 238), (958, 272),
                (916, 286), (874, 272), (848, 238), (842, 190), (858, 146)], 73,
      '#CFAE5A', '#F2E3B8', '#46340A', 918, 'OUGHT ISLAND', 'buy &#183; bought &#183; bought',
@@ -537,17 +557,29 @@ def _rock(x, y, r, fill='#9A8C7A'):
                fill, LINE))
 
 
+# landmarks on the islands, placed clear of their four labels
+ISLAND_MARKS = {'bell': [('bell', 736, 82)], 'wind': [('windmill', 732, 250)],
+                'keep': [('keep', 960, 402)], 'broke': [('wreck', 732, 548)], 'ought': []}
+
+
 def verbs_chart(uid='rv'):
-    west_coast = _path(_roughen(REGULAR_OUTLINE, seed=17, ratio=0.06, hold=_offscreen))
-    forked = _path(_roughen(FORKED_OUTLINE, seed=37, ratio=0.11))
+    west_pts = _roughen(REGULAR_OUTLINE, seed=17, ratio=0.06, hold=_offscreen)
+    forked_pts = _roughen(FORKED_OUTLINE, seed=37, ratio=0.11)
+    island_pts = {iid: _roughen(outline, seed=seed, ratio=0.16)
+                  for iid, outline, seed, *_ in ISLANDS}
+    province_boxes = [P.text_box(20, top + 24, label, 9.5, 'start', k=.75) for top, _b, label in PROVINCES]
     parts = [
         _sea(uid, [(340, 216), (560, 222), (352, 420), (600, 400), (330, 620),
                    (560, 470), (820, 300), (330, 140), (610, 160)]),
+        P.rings([_path(p) for p in [west_pts, forked_pts] + list(island_pts.values())]),
         _shallows(uid, VERB_SHALLOWS, 43, 470, 548, 'THE SHALLOWS',
                   'either form, same meaning',
                   ['learnt / learned &#183; dreamt / dreamed',
                    'burnt / burned &#183; spelt / spelled']),
-        _land(uid + '-west', west_coast, R_BEACH, R_LAND, overlay='url(#%s-fields)' % uid),
+        _land(uid + '-west', west_pts, R_BEACH, R_LAND, overlay='url(#%s-fields)' % uid,
+              kind='fields', seed=17,
+              avoid=P.place_boxes(REGULAR_PLACES) + province_boxes
+              + _title_boxes(56, 600, 'REGULARIA', 'verb + -ed', 'start')),
     ]
     # province borders: dashed county lines from the back of the land to the coast
     for y in (PROVINCES[1][0], PROVINCES[2][0]):
@@ -559,12 +591,12 @@ def verbs_chart(uid='rv'):
                      'opacity=".85">%s</text>' % (uid, top + 24, SANS, R_INK, label))
     for iid, outline, seed, land, beach, ink, tx, name, pattern, places in ISLANDS:
         ty = min(y for _x, y in outline) - TITLE_LIFT
-        coast = _path(_roughen(outline, seed=seed, ratio=0.16))
-        parts.append(_land('%s-%s' % (uid, iid), coast, beach, land))
+        parts.append(_land('%s-%s' % (uid, iid), island_pts[iid], beach, land, kind='hills',
+                           seed=seed, avoid=P.place_boxes(places, 10), marks=ISLAND_MARKS[iid]))
         parts.append(_island_title(tx, ty, name, pattern, ink, size=12.5))
         parts.append(_places(places, ink, '%s-%s' % (uid, iid), 10))
     for x, y, r in STILL_ROCKS:
-        parts.append(_rock(x, y, r))
+        parts.append(P.rock(x, y, r))
     parts.append(_sea_text(640, 628, 'THE STILL ROCKS', '#3E3528', size=10, spacing='.08em'))
     parts.append(_sea_text(640, 641, 'cut &#183; put &#183; hit &#183; let &#183; cost: no change',
                            '#3E3528', size=9, weight=600, spacing='0'))
@@ -575,14 +607,15 @@ def verbs_chart(uid='rv'):
         parts.append(_sea_text(x, y + 23, verb, '#3E3528', size=10, weight=700, spacing='0'))
     parts.append(_sea_text(890, 520, 'THE LONE STACKS', '#3E3528', size=10, spacing='.08em'))
     parts += [
-        _land(uid + '-forked', forked, LILAC_BEACH, LILAC),
+        _land(uid + '-forked', forked_pts, LILAC_BEACH, LILAC, kind='hills', seed=37,
+              avoid=P.place_boxes(FORKED_PLACES, 10.5)),
         _island_title(462, FORKED_OUTLINE[0][1] - TITLE_LIFT, 'FORKED ISLE', 'one verb &#183; two meanings &#183; two pasts',
                       LILAC_INK, size=14),
         _places(FORKED_PLACES, LILAC_INK, uid + '-forked', 10.5),
         _current(uid, 190, 610, 330, 'NEW VERBS SAIL WEST', 'texted &#183; emailed &#183; googled'),
         _current(uid, 450, 620, 340, 'SOME OLD ONES ARE DRIFTING WEST'),
         _compass('&#9664; WALKED &#183; WENT &#9654;', cx=470),
-        _ship(588, 292, 0.8),
+        _ship(592, 282, 0.62),
         _title(56, 600, 'REGULARIA', 'verb + <tspan font-style="italic">-ed</tspan>', R_INK,
                land=uid + '-west'),
         _title(986, 614, 'IRREGULARIA', 'no one rule &#183; but families', '#3E3528', anchor='end'),
@@ -634,13 +667,17 @@ const path = require('path');
         const hit = lands.find(l => corners(box(t), 7).some(c => inFill(l, c)));
         if (hit) wet.push(t.textContent + ' (on ' + hit.id + ')');
       }
+      // nothing may run under the ruled border (sea_paint.FRAME) or off the sheet
+      const edge = texts.filter(t => { const b = box(t);
+        return b.x < 11 || b.y < 11 || b.x + b.width > 989 || b.y + b.height > 649; })
+        .map(t => t.textContent);
       const bs = texts.map(t => [t.textContent, box(t)]);
       for (let i = 0; i < bs.length; i++) for (let j = i + 1; j < bs.length; j++) {
         const [a, A] = bs[i], [c, C] = bs[j];
         if (A.x < C.x + C.width - 1 && C.x < A.x + A.width - 1 &&
             A.y < C.y + C.height - 3 && C.y < A.y + A.height - 3) clash.push(a + ' | ' + c);
       }
-      return { fonts: [...new Set(fonts)], off_land: off, on_land: wet, overlaps: clash };
+      return { fonts: [...new Set(fonts)], off_land: off, on_land: wet, overlaps: clash, off_sheet: edge };
     });
     await p.screenshot({ path: out });
     await p.close();
@@ -651,13 +688,24 @@ const path = require('path');
 """
 
 
+def plain(svg):
+    """The same drawing with nothing written on it and no harbour dots: the
+    composition reference Midjourney gets, since any lettering in an image
+    prompt comes back as pseudo-writing."""
+    svg = re.sub(r'<text\b.*?</text>', '', svg, flags=re.S)
+    svg = re.sub(r'<circle cx="\d+" cy="\d+" r="2\.8"[^>]*/>', '', svg)
+    return svg.replace('<title>', '<title>Unlabelled: ')
+
+
 def main():
     os.makedirs(OUT, exist_ok=True)
     jobs = []
     for name, fn in CHARTS:
-        svg = os.path.join(OUT, name + '.svg')
-        open(svg, 'w', encoding='utf-8', newline='\n').write(fn())
-        jobs.append((svg, os.path.join(OUT, name + '.png')))
+        src = fn()
+        for suffix, body in (('', src), ('-plain', plain(src))):
+            svg = os.path.join(OUT, name + suffix + '.svg')
+            open(svg, 'w', encoding='utf-8', newline='\n').write(body)
+            jobs.append((svg, os.path.join(OUT, name + suffix + '.png')))
     script = os.path.join(HERE, '_raster_sea_charts.js')
     open(script, 'w', encoding='utf-8', newline='\n').write(RASTER_JS)
     try:
@@ -671,8 +719,9 @@ def main():
     report = json.loads(res.stdout.strip().splitlines()[-1])
     bad = False
     for name, r in report.items():
-        faults = [(k, r[k]) for k in ('off_land', 'on_land', 'overlaps') if r[k]]
-        missing = {'Inter', 'Fraunces'} - set(r['fonts'])
+        faults = [(k, r[k]) for k in ('off_land', 'on_land', 'overlaps', 'off_sheet') if r[k]]
+        # a plain copy has no words, so it loads no fonts; that is not a fault
+        missing = set() if '-plain' in name else {'Inter', 'Fraunces'} - set(r['fonts'])
         print('%-22s %s%s' % (name, 'OK' if not faults and not missing else 'FAIL',
                               '  (fonts missing: %s)' % ', '.join(sorted(missing)) if missing else ''))
         for k, v in faults:
