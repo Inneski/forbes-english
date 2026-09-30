@@ -20,7 +20,7 @@ always, then one key per gloss language — so a page shows English with the
 gloss beneath it, never a translation instead of the English. Options are
 glossed too (Innes's Blocula does the same); the English stays on top.
 """
-import base64, html, json, os, re
+import base64, html, json, os, re, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.normpath(os.path.join(HERE, '..', '..', '..'))
@@ -852,6 +852,11 @@ def assemble(spec, out=None):
         m = re.search(r'<!-- SEO:start -->.*?<!-- SEO:end -->', prev, re.S)
         if m:
             page = re.sub(r'<!-- SEO:start -->.*?<!-- SEO:end -->', lambda _: m.group(0), page, count=1, flags=re.S)
+    # A Block Camp RPG's soundtrack (lesson-template/build/block-camp-music/
+    # deck_music.py maps page -> track). A game not in that table gets none.
+    sys.path.insert(0, os.path.join(REPO, 'lesson-template', 'build', 'block-camp-music'))
+    import deck_music
+    page = deck_music.set_music(page, spec['file'])
     open(out, 'w', encoding='utf-8', newline='\n').write(page)
     n_q = sum(1 for s in spec['scenes'].values() if s['kind'] == 'question')
     print('wrote %s — %d scenes, %d questions, %d KB, langs %s' % (

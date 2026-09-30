@@ -189,6 +189,22 @@ def chorus(x, period, depth_ms=2.5, base_ms=7.0, mix=0.5, t0=0.0):
 
 
 # ── out ─────────────────────────────────────────────────────────────────────
+def record_loop(name, start, end):
+    """block-camp/music/loops.json: where each track loops. deck_music.py
+    reads it to write the pages' data-loop, so a re-render can never leave a
+    page looping at the old length. Six decimals: sub-sample at 48 kHz."""
+    import json
+    p = os.path.join(ROOT, 'block-camp', 'music', 'loops.json')
+    try:
+        loops = json.load(open(p, encoding='utf-8'))
+    except FileNotFoundError:
+        loops = {}
+    loops[name] = [round(start, 6), round(end, 6)]
+    tmp = p + '.tmp'
+    json.dump(dict(sorted(loops.items())), open(tmp, 'w', encoding='utf-8'), indent=1)
+    os.replace(tmp, p)
+
+
 def finish(tl, mix, name, target_db=-16.5, wav=None):
     mix = hp1(mix, 30)
     a, b = tl.smp(-PAD), tl.smp(tl.loop + PAD)
@@ -207,6 +223,7 @@ def finish(tl, mix, name, target_db=-16.5, wav=None):
     subprocess.run([ff, '-y', '-v', 'error', '-f', 's16le', '-ar', str(SR), '-ac', '2', '-i', '-',
                     '-c:a', 'aac', '-b:a', '128k', '-movflags', '+faststart', dst], input=pcm, check=True)
     print('wrote', os.path.relpath(dst, ROOT), f'   data-loop="{PAD} {PAD + tl.loop:g}"')
+    record_loop(name, PAD, PAD + tl.loop)
     if wav:
         subprocess.run([ff, '-y', '-v', 'error', '-f', 's16le', '-ar', str(SR), '-ac', '2', '-i', '-', wav],
                        input=pcm, check=True)

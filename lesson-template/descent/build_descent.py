@@ -586,6 +586,10 @@ def build(st):
         sys.path.insert(0, os.path.join(ROOT, 'lesson-template', 'camp'))
         from build_camp import seo
         out = seo(out, st)
+    # The chassis's own music and subtitle layer are not this station's.
+    sys.path.insert(0, os.path.join(ROOT, 'lesson-template', 'build', 'block-camp-music'))
+    import deck_music
+    out = deck_music.set_music(deck_music.strip_clip_subs(out), st['file'])
     path = os.path.join(ROOT, st['file'])
     # newline='\n': the repo is LF, and on Windows a bare text-mode write
     # turns every line into CRLF, so a one-word fix diffs as the whole deck.

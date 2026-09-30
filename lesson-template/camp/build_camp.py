@@ -154,6 +154,10 @@ def build(spec):
                   % json.dumps(spec['tr'], ensure_ascii=False), tail, count=1, flags=re.S)
     out = head + body + tail
     out = PART_LINK.sub(spec['part_link'], out)
+    # 7. The chassis's own music and subtitle layer are not this deck's.
+    sys.path.insert(0, os.path.join(ROOT, 'lesson-template', 'build', 'block-camp-music'))
+    import deck_music
+    out = deck_music.set_music(deck_music.strip_clip_subs(out), spec['file'])
 
     out = seo(out, spec)
     path = os.path.join(ROOT, spec['file'])

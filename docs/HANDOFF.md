@@ -101,6 +101,35 @@ also open Sherpa Tensing.
   next `seo.py` run on main writes; until then every gate says "Forbes
   English Pro" (access itself is already correct).
 
+## 2026-09-30 — Block Camp: a soundtrack for every camp (18 tracks, 26 decks)
+
+Innes asked for the whole of Block Camp to have music like Past Simple's
+"Lakeside". 15 new original tracks, one per camp, each composed in code in
+`lesson-template/build/block-camp-music/<name>.py` on `synthkit.py` and then
+reviewed by a second agent that listened by measurement (key profile, note-
+level clash scan, band levels, seam) and fixed what it found: semitone rubs
+between parts, a drone that phased 9 dB, an out-of-key hand drum, inaudible
+thunder and rain, releases smearing chord changes. All 15 were "fixed", all
+seams measure 0.0000.
+
+  * **`block-camp/music/loops.json`** is the loop manifest. `synthkit.finish()`
+    and `lakeside.py` rewrite their entry on every render, and
+    `deck_music.py` writes each page's tag from it, so a re-render cannot
+    leave a page looping at the old length. Six decimals: `%g` wrote
+    67.166667 as 67.1667, 1.6 samples off, a tick every lap.
+  * `py lesson-template/build/block-camp-music/deck_music.py` wires every
+    page in `TRACK`; `--check` reports drift. `build_camp.py` (camp 9) and
+    `build_descent.py` (the stations) call it, and strip the chassis's clip
+    subtitles, so a rebuild no longer inherits Past Simple's music.
+  * `camp-music.js` now mounts in three places: the deck bar; the RPG
+    engine's HUD beside SOUND (plus an M key); or a floating corner button
+    for the hand-built RPGs whose HUD is redrawn per scene. `rpg.py` calls
+    `set_music()` too. **No RPG has a track yet**: add a line to `TRACK`
+    (`'block-camp/<game>.html': '<track>'`) and rebuild the RPG, or run
+    `deck_music.py` for a hand-built one.
+  * Test: all 26 decks load their track, start on the first gesture, loop at
+    the manifest's points, gain 0.2, no page errors. PASS.
+
 ## 2026-09-30 — Block Camp on a phone: a real phone layout for all 26 decks
 
 Innes: "Block Camp needs to be more ergonomic for phone use." Measured

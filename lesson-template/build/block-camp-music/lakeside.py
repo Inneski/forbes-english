@@ -330,6 +330,8 @@ def main():
     subprocess.run([ff, '-y', '-v', 'error', '-f', 's16le', '-ar', str(SR), '-ac', '2', '-i', '-',
                     '-c:a', 'aac', '-b:a', '128k', '-movflags', '+faststart', OUT], input=pcm, check=True)
     print('wrote', os.path.relpath(OUT, ROOT))
+    from synthkit import record_loop          # the manifest deck_music.py reads
+    record_loop('past-simple', PAD, PAD + LOOP)
     if '--wav' in sys.argv:
         w = sys.argv[sys.argv.index('--wav') + 1]
         subprocess.run([ff, '-y', '-v', 'error', '-f', 's16le', '-ar', str(SR), '-ac', '2', '-i', '-', w],

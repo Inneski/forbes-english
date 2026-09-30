@@ -17,10 +17,19 @@
   'use strict';
   var me = document.currentScript;
   var track = me && me.getAttribute('data-track');
-  var bar = document.querySelector('.deck-bar');
   var AC = window.AudioContext || window.webkitAudioContext;
-  if (!track || !bar || !AC || document.querySelector('.camp-music')) return;
+  if (!track || !AC || document.querySelector('.camp-music, .camp-music-rpg, .camp-music-float')) return;
   if (navigator.connection && navigator.connection.saveData) return;
+  /* Where the switch goes (2026-09-30, the RPGs got music too):
+       deck  - the grammar decks' .deck-bar, after the route-map chip;
+       rpg   - the RPG engine's HUD (lesson-template/build/rpg/rpg.py), after
+               its SOUND button, as one more .utility button in its style;
+       float - anything else (the three hand-built RPGs redraw their HUD
+               on every scene, which would wipe an inserted button): a small
+               round button fixed in the bottom-left corner. */
+  var bar = document.querySelector('.deck-bar');
+  var rpgSound = document.querySelector('#sound.utility');
+  var mode = bar ? 'deck' : rpgSound ? 'rpg' : 'float';
   var loop = (me.getAttribute('data-loop') || '').split(/\s+/).map(Number);
 
   // Silent, not just lower, under a clip: several clips carry their own music
@@ -45,17 +54,39 @@
     '.camp-music[aria-pressed="false"]{color:var(--text-dim)}' +
     '.camp-music[aria-pressed="false"] .cm-note{opacity:.45}' +
     '.camp-music .cm-x{display:none}.camp-music[aria-pressed="false"] .cm-x{display:inline}' +
-    '@media print{.camp-music{display:none!important}}';
+    '.camp-music-rpg[aria-pressed="false"]{opacity:.7}' +
+    '.camp-music-float{position:fixed;z-index:60;left:calc(12px + env(safe-area-inset-left,0px));' +
+    'bottom:calc(12px + env(safe-area-inset-bottom,0px));width:44px;height:44px;border-radius:50%;padding:0;' +
+    'display:grid;place-items:center;cursor:pointer;color:var(--bone,var(--text,#f3ead3));' +
+    'background:color-mix(in srgb,var(--panel,var(--void,#15181e)) 88%,transparent);' +
+    'border:1px solid color-mix(in srgb,var(--accent,#d9b25a) 60%,transparent)}' +
+    '.camp-music-float svg{width:20px;height:20px}' +
+    '.camp-music-float[aria-pressed="false"] .cm-note{opacity:.45}' +
+    '.camp-music-float .cm-x{display:none}.camp-music-float[aria-pressed="false"] .cm-x{display:inline}' +
+    '@media print{.camp-music,.camp-music-rpg,.camp-music-float{display:none!important}}';
   document.head.appendChild(css);
 
-  var btn = document.createElement('button');
-  btn.type = 'button'; btn.className = 'camp-music';
-  btn.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" ' +
+  var NOTE = '<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" ' +
     'stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><g class="cm-note"><path d="M6 12.5V3.2l7-1.4v9.1"/>' +
     '<circle cx="4.2" cy="12.5" r="1.9"/><circle cx="11.2" cy="10.9" r="1.9"/></g>' +
-    '<path class="cm-x" d="M1.5 1.5l13 13"/></svg><span class="cm-l"></span>';
-  var home = bar.querySelector('.camp-home');
-  bar.insertBefore(btn, home ? home.nextSibling : bar.firstChild);
+    '<path class="cm-x" d="M1.5 1.5l13 13"/></svg>';
+  var btn = document.createElement('button');
+  btn.type = 'button';
+  if (mode === 'deck') {
+    btn.className = 'camp-music';
+    btn.innerHTML = NOTE + '<span class="cm-l"></span>';
+    var home = bar.querySelector('.camp-home');
+    bar.insertBefore(btn, home ? home.nextSibling : bar.firstChild);
+  } else if (mode === 'rpg') {
+    // The engine's utility buttons are an emoji plus a .u-label; follow suit.
+    btn.className = 'utility camp-music-rpg';
+    btn.innerHTML = '🎵<span class="u-label cm-l"></span>';
+    rpgSound.parentNode.insertBefore(btn, rpgSound.nextSibling);
+  } else {
+    btn.className = 'camp-music-float';
+    btn.innerHTML = NOTE;
+    document.body.appendChild(btn);
+  }
 
   var on = true;
   try { on = localStorage.getItem('bc-music') !== 'off'; } catch (_) {}
@@ -63,8 +94,10 @@
   function label() {
     var lang = (document.documentElement.getAttribute('lang') || 'en').toLowerCase().slice(0, 2);
     var L = T[lang] || T.en;
-    btn.querySelector('.cm-l').textContent = L[0];
+    var l = btn.querySelector('.cm-l');
+    if (l) l.textContent = mode === 'rpg' ? (on ? L[1] : L[2]).toUpperCase() : L[0];
     btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    btn.setAttribute('aria-label', on ? L[1] : L[2]);
     btn.title = on ? L[1] : L[2];
   }
   label();
@@ -160,6 +193,10 @@
     if (on) { unlock(); start(); }
     apply();
     if (!on && ctx) setTimeout(function () { if (!on && ctx) ctx.suspend(); }, 600);
+  });
+  // The RPGs' help line offers S for sound and F for fullscreen; M is music.
+  if (mode === 'rpg') document.addEventListener('keydown', function (e) {
+    if ((e.key === 'm' || e.key === 'M') && !e.target.matches('input, textarea, select')) btn.click();
   });
   document.addEventListener('visibilitychange', function () {
     if (!ctx) return;
