@@ -328,10 +328,10 @@ QUIZ = [
      'Refuse belongs to Infinitivia: refuse to do. Compare deny, which belongs to the other shore and takes -ing.'),
     ('He left the ship without ___ anyone.',
      'What kind of word is <em>without</em>?', 'telling',
-     ['telling', 'to tell', 'tell', 'having tell'],
+     ['telling', 'to tell', 'tell', 'have told'],
      'Without is a preposition, and every preposition runs west. After any preposition the verb can only be -ing.'),
     ('I look forward to ___ you again next season.',
-     'Try putting <em>it</em> after the <em>to</em>.', 'seeing',
+     'Can you say <em>I look forward to it</em>? Then what kind of word is <em>to</em>?', 'seeing',
      ['seeing', 'see', 'to see', 'have seen'],
      'This is the False Cape. &#8220;I look forward to it&#8221; works, so the to is a preposition, not an infinitive &mdash; and prepositions take -ing.'),
     ('She was tired, so she stopped ___ the chart and rubbed her eyes.',
@@ -348,7 +348,7 @@ QUIZ = [
      'Remember + to is an instruction about the future: do not forget. Remember + -ing would be a memory of having already done it.'),
     ('I&#39;ll never forget ___ land for the first time.',
      'Is this a memory or an omission?', 'seeing',
-     ['seeing', 'to see', 'see', 'to have see'],
+     ['seeing', 'to see', 'see', 'to have seen'],
      'Forget + -ing is about the memory of something that really happened. Forget + to means you failed to do it.'),
     ('It&#39;s no use ___ about the weather.',
      'A fixed expression from the western shore.', 'complaining',
@@ -356,7 +356,7 @@ QUIZ = [
      'It&#39;s no use, there&#39;s no point and it&#39;s worth all take -ing. They travel as a small family.'),
     ('The captain told ___ below.',
      'Who was told?', 'us to go',
-     ['us to go', 'to go us', 'us going', 'that go us'],
+     ['us to go', 'to go us', 'us going', 'that we go'],
      'Tell needs an object before the infinitive: tell somebody to do something. &#8220;The captain told to go&#8221; leaves a listener waiting for a name.'),
     ('She let the new hand ___ the wheel for an hour.',
      'One of the verbs that drops the <em>to</em>.', 'take',
@@ -526,6 +526,10 @@ EXTRA_CSS = '''
   @font-face{font-family:'Faktum';src:url('sailing-the-seas-of-grammar/fonts/Faktum-Bold.woff2') format('woff2');
              font-weight:700;font-style:normal;font-display:swap;}
   .wordmark .brand,.hero h1{font-family:'Faktum','Fraunces',serif;font-weight:700;}
+  /* ── italic inside italic is invisible. The hints and the rule-card
+     examples are set in italic, and their <em> marks the words being taught
+     (the "it" and "to" of the False Cape test), so it stands upright. ── */
+  .q-hint em,.rule-card .ex em{font-style:normal;font-weight:600;}
   /* ── the sea chart ── */
   .diagram-panels.three{grid-template-columns:repeat(3,1fr);}
   @media (max-width:820px){.diagram-panels.three{grid-template-columns:1fr;}}
