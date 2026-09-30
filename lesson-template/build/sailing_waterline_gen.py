@@ -224,8 +224,8 @@ body::after{{left:50%;right:0;
 if __name__ == '__main__':
     args = [a for a in sys.argv[1:] if not a.startswith('--')]
     tint = '--no-tint' not in sys.argv
-    op = args[0] if len(args) > 0 else '.14'
-    pop = args[1] if len(args) > 1 else '.09'
+    op = args[0] if len(args) > 0 else '.22'
+    pop = args[1] if len(args) > 1 else '.13'
     name = args[2] if len(args) > 2 else 'pattern.css'
     out = css(op, pop, tint)
     with open(os.path.join(HERE, name), 'w', encoding='utf-8', newline='\n') as fh:
