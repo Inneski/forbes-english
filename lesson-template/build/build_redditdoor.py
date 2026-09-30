@@ -51,24 +51,31 @@ PIC = {s: (s + '.jpg') if READY else PLACEHOLDER[s] for s in SLOTS}
 OUT = LIVE if READY else PREVIEW
 HERO, DOOR, GATE, ROOM, FOLLOW, ACT = (PIC[s] for s in SLOTS)
 
+# The drop folder the brief tells Innes to use. Innes, 2026-09-30: "make sure
+# the folder exists or you tell me to make it in future, hard wire that". A
+# brief that names a folder nobody created is a brief he cannot act on, so
+# the builder makes it whenever the plates are still missing.
+DROP = os.path.join('incoming', 'reddit-door')
+if not READY:
+    os.makedirs(DROP, exist_ok=True)
+
 E = I.T['en']
 
 # py lesson-template/extract-palette.py RedditFrench/plate-cover.jpg
-# (derived from the placeholder cafe-hero.jpg until the plate lands; every
-# row PASS)
+# (2026-09-30, the Haussmann door; every row PASS)
 PALETTE = """  --hero: url('%s/%s');
 
-  --void          : #0c0e0a;
-  --surface       : #171b14;
-  --surface2      : #21271c;
-  --border        : #7f4a3d;
+  --void          : #0d1212;
+  --surface       : #171f1f;
+  --surface2      : #202a2a;
+  --border        : #804d48;
   --text          : #f5f2f2;
-  --text-dim      : #bfa9a3;
-  --accent        : #d8654a;
-  --accent-bright : #e99480;
-  --accent-dim    : #9e3e28;
-  --secondary     : #3a4d4d;
-  --contrast      : #1dedb0;""" % (F, HERO)
+  --text-dim      : #bfa6a3;
+  --accent        : #d3665b;
+  --accent-bright : #e6978f;
+  --accent-dim    : #a03c32;
+  --secondary     : #394c5e;
+  --contrast      : #1fea9b;""" % (F, HERO)
 
 # (phrase, body key, example) — the phrase and the example stay in English
 CARDS = {
@@ -280,13 +287,13 @@ def build():
                  ('Count', E['chipCount'])]),
 
         divider(1, DOOR),
-        intro(1, DOOR, 'left', '20% 50%'),
+        intro(1, DOOR, 'left', '14% 50%'),
         cards(1, 1), cards(1, 2),
         mc(0), mc(1), mc(2),
         gap(1, GAP1[:2], BANK1, 1, 'gt1'), gap(2, GAP1[2:], BANK1, 1, 'gt1'),
 
         divider(2, GATE),
-        intro(2, GATE, 'right', '80% 50%'),
+        intro(2, GATE, 'right', '78% 50%'),
         cards(2, 3), cards(2, 4),
         D.order(ORDER1, 'e2', E['e2'], 'ot1', E['ot1'], 'oh1', E['oh1'], 'ow1'),
         D.order(ORDER2, 'e2', E['e2'], 'ot2', E['ot2'], 'oh2', E['oh2'], 'ow2',
@@ -301,7 +308,7 @@ def build():
         mc(5), mc(6), mc(7),
 
         divider(4, FOLLOW),
-        intro(4, FOLLOW, 'right', '30% 50%'),
+        intro(4, FOLLOW, 'right', '86% 50%'),
         cards(4, 7), cards(4, 8),
         gap(3, GAP2[:2], BANK2, 4, 'gt2'), gap(4, GAP2[2:], BANK2, 4, 'gt2'),
         D.sort_slide(SORT_BINS, SORT_ITEMS, 'e4', E['e4'], 'st', E['st'], 'sh', E['sh'],

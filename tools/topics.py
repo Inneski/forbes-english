@@ -344,6 +344,18 @@ OVERRIDES = {
     'forbes-english-past-modals-minecraft.html': ['modal-verbs'],
     'block-camp/dracula-castle-of-if.html': ['conditionals', 'passive-voice'],
     'block-camp/long-way-home-rpg.html': ['tense-review', 'past-simple', 'past-continuous', 'past-perfect'],
+    # Found in the 2026-09-27 library audit (LESSON_TAGS in library.html),
+    # all four sitting on the vocabulary hub. The Alchemist's grammar section
+    # is the past perfect; Alcatraz is five rooms of mixed A2 grammar; Under
+    # Load (Q&A after a conference talk) and Taking It Apart (presenting
+    # engineering research) are professional English with Spanish support.
+    'alchemist_b2_lesson.html': ['past-perfect'],
+    'escape-from-alcatraz-a2.html': ['tense-review'],
+    'under-load-b1-b2-es.html': ['business-english'],
+    # Getting in the Door: cold outreach and the gatekeeper call; no grammar
+    # in the title.
+    'forbes-reddit-french-door-c1.html': ['business-english'],
+    'takingitaparta2es.html': ['business-english'],
 }
 
 BY_SLUG = {t['slug']: t for t in TOPICS}

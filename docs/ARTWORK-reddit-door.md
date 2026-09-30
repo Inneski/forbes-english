@@ -1,18 +1,24 @@
 # Artwork brief: Reddit × French Market — Getting in the Door (C1)
 
+> **DONE 2026-09-30.** Innes rendered all six the same afternoon (nine
+> files, two variants each of the door, the telephone and the chairs);
+> they are `RedditFrench/plate-*.jpg` and the deck is live. Kept for the
+> record and as the pattern for the next brief. The sources are in
+> `incoming/_previous/forbes-reddit-french-door-c1/`.
+
 Innes, 2026-09-30: *"Make a new one that would fit with the others and ask
 for artwork etc, house style 2"*. **Six plates, one per slot.** The deck is
 built and passes every gate against placeholders;
 `build_redditdoor.py` writes the gitignored preview
 `_forbes-reddit-french-door-c1.html` until all six files below exist in
 `RedditFrench/`, then writes the live `forbes-reddit-french-door-c1.html`.
-The live page does not exist until then (the Contingency precedent).
+The builder also creates the drop folder `incoming/reddit-door/` whenever
+it runs in preview mode, so the path this brief names always exists.
 
 Two renders were attached to the request from the phone. **They did not
 reach this machine**: a picture attached through Remote Control is not
 written to the local transcript, so they could not be recovered the way a
-desktop attachment can. Drop them in `incoming/reddit-door/` and they will
-be slotted in.
+desktop attachment can. The drop folder is what worked.
 
 ## Format: house style 2, the panel
 

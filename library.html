@@ -716,8 +716,8 @@
 <h3>A1</h3>
 <ul>
 <li><a href="/going-to-infinitive.html">Be Going To + Infinitive: Time Signals (Minecraft ed.)</a></li>
-<li><a href="/blockcamp-going-to.html">Block Camp — Going To 1a: The Plan You Already Made</a></li>
-<li><a href="/blockcamp-past-continuous.html">Block Camp — Past Continuous 1a: You Were In The Middle Of It</a></li>
+<li><a href="/blockcamp-going-to.html">Block Camp — Going To 1a: The Plan You Already Made</a> — subscribers</li>
+<li><a href="/blockcamp-past-continuous.html">Block Camp — Past Continuous 1a: You Were In The Middle Of It</a> — subscribers</li>
 <li><a href="/blockcamp-past-simple.html">Block Camp — Past Simple 1a: It Is Finished</a></li>
 <li><a href="/blockcamp-present-continuous.html">Block Camp — Present Continuous 1a: Happening Now</a></li>
 <li><a href="/blockcamp-present-simple.html">Block Camp — Present Simple 1a: Habits &amp; Facts</a></li>
@@ -741,8 +741,8 @@
 <ul>
 <li><a href="/blockcamp-passive-present-continuous.html">Block Camp II — Passive 10: Present Continuous Passive</a> — subscribers</li>
 <li><a href="/blockcamp-passive-past-simple.html">Block Camp II — Passive 11: Past Simple Passive</a> — subscribers</li>
-<li><a href="/blockcamp-passive-present-simple.html">Block Camp II — Passive 9: Present Simple Passive</a></li>
-<li><a href="/blockcamp-future-simple.html">Block Camp — Future Simple 1a: The Future You Believe In</a></li>
+<li><a href="/blockcamp-passive-present-simple.html">Block Camp II — Passive 9: Present Simple Passive</a> — subscribers</li>
+<li><a href="/blockcamp-future-simple.html">Block Camp — Future Simple 1a: The Future You Believe In</a> — subscribers</li>
 <li><a href="/blockcamp-going-to-2.html">Block Camp — Going To 1b: Evidence, the Edge &amp; the Plan That Failed</a> — subscribers</li>
 <li><a href="/blockcamp-past-continuous-2.html">Block Camp — Past Continuous 1b: The Thing That Cut Across It</a> — subscribers</li>
 <li><a href="/blockcamp-past-simple-2.html">Block Camp — Past Simple 1b: Telling the Story</a> — subscribers</li>
@@ -790,9 +790,9 @@
 <li><a href="/blockcamp-passive-trial.html">Block Camp II — Passive 16: The Trial</a> — subscribers</li>
 <li><a href="/blockcamp-passive-past-perfect.html">Block Camp II — Passive 17: Past Perfect Passive</a> — subscribers</li>
 <li><a href="/blockcamp-future-simple-2.html">Block Camp — Future Simple 1b: Will Or Going To?</a> — subscribers</li>
-<li><a href="/blockcamp-past-perfect.html">Block Camp — Past Perfect 1a: The Earlier Past</a></li>
+<li><a href="/blockcamp-past-perfect.html">Block Camp — Past Perfect 1a: The Earlier Past</a> — subscribers</li>
 <li><a href="/blockcamp-present-perfect-2.html">Block Camp — Present Perfect 1b: How Long, And From When</a> — subscribers</li>
-<li><a href="/blockcamp-present-perfect-continuous.html">Block Camp — Present Perfect Continuous 1a: How Long, And The Mud On Your Boots</a></li>
+<li><a href="/blockcamp-present-perfect-continuous.html">Block Camp — Present Perfect Continuous 1a: How Long, And The Mud On Your Boots</a> — subscribers</li>
 <li><a href="/blockcamp-present-perfect-continuous-2.html">Block Camp — Present Perfect Continuous 1b: The Activity, Not The Result</a> — subscribers</li>
 <li><a href="/english_class_picture_description.html">Describing a Picture</a> — subscribers</li>
 <li><a href="/ecuador_english_lesson_part2.html">English Through Ecuador — Part 2</a> — subscribers</li>
@@ -974,6 +974,7 @@
 <li><a href="/reading-a-room-cafe-kowloon.html">Reading a Room: Cafe Kowloon</a></li>
 <li><a href="/reading-the-elevation-c1.html">Reading the Elevation: Describing Buildings</a></li>
 <li><a href="/forbes-roleplay-reddit-french-TEST-p3.html">Reddit French Market — Role-Play Negotiation (C1)</a> — subscribers</li>
+<li><a href="/forbes-reddit-french-door-c1.html">Reddit × French Market: Getting in the Door (C1)</a> — subscribers</li>
 <li><a href="/forbes-english-c1-scooter-tricks.html">Sending It: The Language of Scooter Tricks (C1)</a> — subscribers</li>
 <li><a href="/sherpa-tensing-camp-thirteen-future-perfect-continuous.html">Sherpa Tensing — Camp Thirteen: Future Perfect Continuous</a> — subscribers</li>
 <li><a href="/sherpa-tensing-descent-twelve-future-perfect-passive.html">Sherpa Tensing — Descent Twelve: Future Perfect Passive</a> — subscribers</li>
@@ -1062,26 +1063,73 @@ const NOT_ACTUALLY_SPEAKING = new Set([
 ]);
 
 // A lesson whose title is its story, not its syllabus, is invisible to every
-// grammar regex below. The Scarlet Star teaches past modals and reported
-// speech; its title says "The Scarlet Star" and nothing else, and renaming it
-// to carry the keywords would spoil a card that sells the case, not the
-// syllabus. Listed by file, so the tags stay true without touching the title.
-const GRAMMAR_TAGS = {
-  'sherlock-scarlet-star.html': ['Modal Verbs', 'Tenses', 'Reported Speech']
+// regex below. The Scarlet Star teaches past modals and reported speech; its
+// title says "The Scarlet Star" and nothing else, and renaming it to carry the
+// keywords would spoil a card that sells the case, not the syllabus. Listed by
+// file, so the tags stay true without touching the title.
+//
+// This was GRAMMAR_TAGS, with one entry. On 2026-09-27 Innes went looking for
+// the workplace-conflict decks and found Holding the Line filed under nothing
+// but "Slide Decks": 54 live lessons had no subject at all, only a format or
+// the "Lesson plan" fallback, because their titles are situations ("Holding
+// the Line", "The Docket", "Under Load"). Each entry below was read from the
+// lesson itself (builder docstring or page text), not guessed from the title.
+// check-library.js fails any live lesson that is left with no subject.
+const LESSON_TAGS = {
+  'sherlock-scarlet-star.html': ['Modal Verbs', 'Tenses', 'Reported Speech'],
+  // The four C1 workplace-conflict decks. Holding the Line and Credit Where
+  // It's Due are mirror images on the agentless passive (shield vs. erasure).
+  'forbes-english-holding-the-line-c1.html': ['Workplace Conflict', 'Workplace Communication', 'Negotiation', 'Passive Voice'],
+  'forbes-english-credit-where-its-due-c1.html': ['Workplace Conflict', 'Workplace Communication', 'Passive Voice'],
+  'carrying-the-load-c1.html': ['Workplace Conflict', 'Workplace Communication'],
+  'forbes-escalating-a-complaint-c1.html': ['Workplace Conflict', 'Workplace Communication'],
+  // Getting in the Door: cold outreach, the gatekeeper call, the first
+  // meeting the French way, the follow-up. Prospecting, not a grammar.
+  'forbes-reddit-french-door-c1.html': ['Negotiation', 'Workplace Communication'],
+  // Work, under titles that name the task rather than the field.
+  'forbes-campaign-review-b2.html': ['Workplace Communication'],
+  'forbes-risk-management-c1-c2.html': ['Workplace Communication'],
+  'forbes-english-lesson (data).html': ['Workplace Communication'],
+  'forbes-english-lesson-managing energy.html': ['Energy', 'Workplace Communication'],
+  'vapour-barriers-lesson.html': ['Construction'],
+  'under-load-b1-b2-es.html': ['Workplace Communication'],             // Q&A after a conference talk
+  'takingitaparta2es.html': ['Technology & AI', 'Workplace Communication'], // robotic arms, presenting research
+  'forbes-coding-interview-c1.html': ['Technology & AI', 'Workplace Communication'],
+  'Forbes English - Buying Selling Sharing Online (B2).html': ['Business'],
+  'forbes-english-the-ten-year-bet-C1.html': ['Technology & AI'],     // the Musk interview
+  // Stories and set texts.
+  'alchemist_b2_lesson.html': ['Tenses'],                              // past perfect
+  'forbes-english-the-docket-b2.html': ['Film & TV', 'Vocabulary'],    // true-crime series
+  'forbes-english-writers-nightmare.html': ['Vocabulary'],
+  // Grammar courses and escape rooms that mix several points.
+  'escape-from-alcatraz-a2.html': ['Grammar activity', 'Prepositions', 'Tenses', 'Modal Verbs'],
+  'forbes-english-b1-adjective-order-escape-room.html': ['Grammar activity'],
+  'exam-prep-5hour-courseEXP.html': ['Tenses', 'Vocabulary'],
+  'exam-prep-5hour-course-part2.html': ['Sentence Building', 'Grammar activity'],
+  // Vocabulary lessons whose titles name the subject but not the lesson type.
+  'forbes-english-photography-b2.html': ['Vocabulary'],
+  'forbes-english-body-parts-c1.html': ['Vocabulary'],
+  'forbes-english-body-parts-c1-zh.html': ['Vocabulary'],
+  'english_class_picture_description.html': ['Vocabulary'],
+  'reading-the-elevation-c1.html': ['Architectural Design', 'Vocabulary'],
+  'forbes-english-hiking-c1.html': ['Vocabulary'],
+  'forbes-english-hiking-c1-part2.html': ['Vocabulary']
 };
 
 function detectCategories(item) {
   const t = (item.title + ' ' + item.file).toLowerCase();
   const cats = [];
-  if (/stranger[\s_-]?things|twin[\s_-]?peaks|harry[\s_-]?quebert|filmmaking|\bfilm\b|cinema|top gear/.test(t)) cats.push('Film & TV');
+  if (/stranger[\s_-]?things|twin[\s_-]?peaks|harry[\s_-]?quebert|filmmaking|\bfilm\b|cinema|top gear|star[\s_-]?wars|harry[\s_-]?potter|breaking[\s_-]?bad|silver pines/.test(t)) cats.push('Film & TV');
+  if (/bront|alchemist|curious incident|harry[\s_-]?quebert|writer'?s nightmare|literature/.test(t)) cats.push('Literature');
   // "el zar" was in here because the name reads as "the Tsar". It is a band:
   // every example in that lesson is a tour, a label, a producer or a venue.
   // "venezuela" was catching a used-to lesson set on a hacienda with no
   // political content at all. A place name is a setting, not a subject.
-  if (/geopolitics|ukraine|harari|davos|friedrich.*prussia|\bjfk\b|falklands/.test(t)) cats.push('Geopolitics');
+  if (/geopolitics|ukraine|harari|davos|friedrich.*prussia|\bjfk\b|falklands|civics/.test(t)) cats.push('Geopolitics');
   if (/el zar/.test(t)) cats.push('Music', 'Negotiation');
-  if (/nietzsche|eckhart tolle|\btolle\b/.test(t)) cats.push('Philosophy');
-  if (/minecraft|\blego\b|\bdnd\b|dungeon|d&d/.test(t)) cats.push('Gaming');
+  if (/nietzsche|eckhart tolle|\btolle\b|alan watts/.test(t)) cats.push('Philosophy');
+  if (/impostor|self[\s_-]?improvement|language of flow/.test(t)) cats.push('Psychology');
+  if (/minecraft|\blego\b|\bdnd\b|dungeon|d&d|gaming/.test(t)) cats.push('Gaming');
   // Minecraft is also its own filter: it is the single biggest run of themed
   // lessons on the site, and 'Gaming' buries it among the RPG and Lego ones.
   if (/minecraft|dino-?craft/.test(t)) cats.push('Minecraft');
@@ -1092,8 +1140,8 @@ function detectCategories(item) {
   if (/^block-camp\//.test(item.file)) cats.push('Block Camp RPGs');
   if (/^blockcamp-/.test(item.file) || /block camp/.test(t)) cats.push('Block Camp');
   if (/football|soccer|champions league|eintracht|vfb[\s_-]?stuttgart/.test(t)) cats.push('Football');
-  if (/football|soccer|champions league|eintracht|vfb[\s_-]?stuttgart|\bgolf\b|tennis|skiing|\bski\b|water polo|\bmtb\b|mountain[\s_-]?bik|ridgeline|dartboard|scooter tricks/.test(t)) cats.push('Sports');
-  if (/architect|rem koolhaas|max lamb|interior design|restaurant interior|\binterior\b|cafe kowloon/.test(t)) cats.push('Architectural Design');
+  if (/football|soccer|champions league|eintracht|vfb[\s_-]?stuttgart|\bgolf\b|tennis|skiing|\bski\b|water polo|\bmtb\b|mountain[\s_-]?bik|ridgeline|dartboard|scooter tricks|hiking|cycling|\bracing\b/.test(t)) cats.push('Sports');
+  if (/architect|koolhaa?s|max lamb|interior design|restaurant interior|\binterior\b|cafe kowloon/.test(t)) cats.push('Architectural Design');
   if (/fashion|atelier|couture/.test(t)) cats.push('Fashion');
   if (/construction|site visit|contracts?\b/.test(t)) cats.push('Construction');
   if (/refinery|turnaround|pipeline|petrochemical|\boil\b|\bgas\b|geoscience/.test(t)) cats.push('Energy');
@@ -1102,29 +1150,44 @@ function detectCategories(item) {
   if (/business|market prospecting|strategic vocabulary|supply chain|staffing strateg|sales tactics|e-?commerce|product strategy/.test(t)) cats.push('Business');
   if (/animal welfare|\bfawn\b|\bdeer\b|mower/.test(t)) cats.push('Animal Welfare');
   if (/ecuador|penguin|dinosaur|dino-craft|conservation|nature/.test(t)) cats.push('Nature & Wildlife');
-  if (/email|talking with clients|meetings?\b|professional speaking|dailies review|workplace roleplay|coo briefings|decision-making under uncertainty|contingency|fireshield|energy sector project management|design pitch/.test(t)) cats.push('Workplace Communication');
+  // Presentations, feedback and talking about a product are work
+  // conversations whatever industry they sit in.
+  if (/email|talking with clients|meetings?\b|professional speaking|dailies review|workplace|coo briefings|decision-making under uncertainty|contingency|fireshield|energy sector project management|design pitch|feedback|presentations?\b|presenting|product[\s_-]?(strategy|speaking)/.test(t)) cats.push('Workplace Communication');
+  if (/ordering food|snack attack|everyday (words|english)/.test(t)) cats.push('Everyday English');
   if (/fire[\s_-]?brigade|feuerwehr|firefighter/.test(t)) cats.push('Emergency Services');
   if (/taekwondo/.test(t)) cats.push('Martial Arts');
   if (/\bielts\b/.test(t)) cats.push('IELTS');
-  if (/\bmodals?\b|\bmust\b|have to|\bshould\b|might vs|going to|deduction/.test(t)) cats.push('Modal Verbs');
+  // `going to` was in this rule, which filed every going-to lesson (Block
+  // Camp, Sherpa camp five, the Minecraft time signals) under Modal Verbs.
+  // It is a future form; Tenses has it.
+  if (/\bmodals?\b|\bmust\b|have to|\bshould\b|might vs|deduction/.test(t)) cats.push('Modal Verbs');
   // `used to` and `be used to + -ing` are past-habit forms taught alongside the
   // tenses, and three lessons on them had no topic category at all -- they were
-  // reachable only under ALL and Lesson plan.
-  if (/past simple|present perfect|present continuous|present simple|past continuous|past modals|future simple|used to|\btense\b|going to/.test(t)) cats.push('Tenses');
+  // reachable only under ALL and Lesson plan. The perfect and future forms
+  // were missing the same way: Sherpa camps nine to thirteen and the Past
+  // Perfect time signals had no Tenses tag.
+  if (/past simple|present perfect|present continuous|present simple|past continuous|past perfect|future continuous|future perfect|past modals|future simple|used to|\btense\b|going to/.test(t)) cats.push('Tenses');
+  if (/conditional|if-clauses|castle[\s_-]?of[\s_-]?if/.test(t)) cats.push('Conditionals');
   if (/reported speech|indirect speech|backshift|say(s|ing)? (that|he|she|they)/.test(t)) cats.push('Reported Speech');
   if (/preposition/.test(t)) cats.push('Prepositions');
   if (/phrasal verb|take.{0,3}put|make.{0,3}do/.test(t)) cats.push('Phrasal Verbs');
-  if (/passive/.test(t)) cats.push('Passive Voice');
-  if (/gerund|infinitive/.test(t)) cats.push('Gerunds & Infinitives');
-  (GRAMMAR_TAGS[item.file] || []).forEach(c => cats.push(c));
+  if (/passive|causative/.test(t)) cats.push('Passive Voice');
+  // "Be Going To + Infinitive" is a future lesson, not a verb-pattern one.
+  if (/gerund|infinitive/.test(t) && !/going to/.test(t)) cats.push('Gerunds & Infinitives');
+  // The small grammar that holds a sentence together: question words and
+  // forms, pronouns, word order, linking, so/neither, some/any.
+  if (/question words|question forms|pronoun|adjective order|linking (devices|words)|so[\s/-]?neither/.test(t)) cats.push('Sentence Building');
+  if (/vocabulary|everyday words|\bphrases\b|idioms|the language of|words of force/.test(t)) cats.push('Vocabulary');
+  (LESSON_TAGS[item.file] || []).forEach(c => cats.push(c));
   // Business is a collection, and ten lessons is not a collection. The
-  // workplace and negotiation material is business English by any other
-  // name, so it shelves under Business as well as under its own heading.
-  if (cats.includes('Workplace Communication') || cats.includes('Negotiation')) cats.push('Business');
+  // workplace, negotiation and conflict material is business English by any
+  // other name, and so is the industry English (energy, construction): it
+  // shelves under Business as well as under its own heading.
+  if (['Workplace Communication', 'Negotiation', 'Workplace Conflict', 'Energy', 'Construction'].some(c => cats.includes(c))) cats.push('Business');
   if (item.video) cats.push('Video Lessons');
   if (NOT_ACTUALLY_SPEAKING.has(item.file)) {
     cats.push('Grammar activity');
-  } else if (/quiz|grammar[\s_-]?test|jeopardy|grammar atelier|time signals/.test(t)) {
+  } else if (/quiz|grammar[\s_-]?test|jeopardy|grammar atelier|grammar court|time signals|common mistakes|swiss[\s_-]?mistakes/.test(t)) {
     cats.push('Grammar activity');
   } else if (/roleplay|role-play|escape room|alias|speaking activity/.test(t)) {
     cats.push('Speaking activity');
@@ -1139,6 +1202,15 @@ function detectCategories(item) {
 // would not protect anything.
 function detectAccess(item) {
   return item.access === 'free' ? 'Free' : 'Pro';
+}
+// What the card says it is about. "Slide Decks" is a format and "Lesson
+// plan" is the no-match fallback: both stay as filters, but a card that
+// reads "SLIDE DECKS" tells a teacher nothing about the lesson. They show
+// only when there is nothing else to show.
+const NOT_A_SUBJECT = new Set(['Slide Decks', 'Lesson plan']);
+function cardCategories(l) {
+  const subjects = l.categories.filter(c => !NOT_A_SUBJECT.has(c));
+  return subjects.length ? subjects : l.categories;
 }
 
 LESSONS.forEach(l => {
@@ -1165,12 +1237,16 @@ levels.forEach(lvl => {
   levelFilters.appendChild(btn);
 });
 
-const categories = ['ALL', 'Film & TV', 'Geopolitics', 'Philosophy', 'Gaming', 'Minecraft', 'Role Playing Games', 'Block Camp RPGs', 'Block Camp', 'Sports', 'Football', 'Architectural Design', 'Fashion', 'Music', 'Construction', 'Energy', 'Technology & AI', 'Negotiation', 'Business', 'Animal Welfare', 'Nature & Wildlife', 'Workplace Communication', 'Emergency Services', 'Martial Arts', 'IELTS', 'Video Lessons', 'Modal Verbs', 'Tenses', 'Prepositions', 'Phrasal Verbs', 'Passive Voice', 'Gerunds & Infinitives', 'Reported Speech', 'Grammar activity', 'Speaking activity', 'Lesson plan', 'Slide Decks'];
+// The work pills sit together (Business, then the three kinds of work
+// conversation), and the grammar pills run in the grammar hub's order.
+const categories = ['ALL', 'Film & TV', 'Literature', 'Geopolitics', 'Philosophy', 'Psychology', 'Gaming', 'Minecraft', 'Role Playing Games', 'Block Camp RPGs', 'Block Camp', 'Sports', 'Football', 'Architectural Design', 'Fashion', 'Music', 'Construction', 'Energy', 'Technology & AI', 'Business', 'Workplace Communication', 'Workplace Conflict', 'Negotiation', 'Everyday English', 'Animal Welfare', 'Nature & Wildlife', 'Emergency Services', 'Martial Arts', 'IELTS', 'Video Lessons', 'Vocabulary', 'Tenses', 'Modal Verbs', 'Conditionals', 'Passive Voice', 'Prepositions', 'Phrasal Verbs', 'Gerunds & Infinitives', 'Reported Speech', 'Sentence Building', 'Grammar activity', 'Speaking activity', 'Lesson plan', 'Slide Decks'];
 const catLabels = {
   'ALL': 'All',
   'Film & TV': 'Film & TV',
+  'Literature': 'Literature',
   'Geopolitics': 'Geopolitics',
   'Philosophy': 'Philosophy',
+  'Psychology': 'Psychology',
   'Gaming': 'Gaming',
   'Minecraft': 'Minecraft',
   'Role Playing Games': 'Role Playing Games',
@@ -1188,12 +1264,17 @@ const catLabels = {
   'Animal Welfare': 'Animal Welfare',
   'Nature & Wildlife': 'Nature & Wildlife',
   'Workplace Communication': 'Workplace Communication',
+  'Workplace Conflict': 'Workplace Conflict',
+  'Everyday English': 'Everyday English',
   'Emergency Services': 'Emergency Services',
   'Martial Arts': 'Martial Arts',
   'Music': 'Music',
   'IELTS': 'IELTS',
   'Video Lessons': 'Video Lessons',
+  'Vocabulary': 'Vocabulary',
   'Modal Verbs': 'Modal Verbs',
+  'Conditionals': 'Conditionals',
+  'Sentence Building': 'Sentence Building',
   'Tenses': 'Tenses',
   'Prepositions': 'Prepositions',
   'Phrasal Verbs': 'Phrasal Verbs',
@@ -1500,6 +1581,7 @@ const LESSON_IMAGES = {
   "must-have-to-lego-polish.html": "lego-polish/lego-skyline-comparison.jpg",
   "forbes-dnd-rpg.html": "dnd-rpg/parisian-office-scene.jpg",
   "forbes-dnd-rpg-part2.html": "dnd-rpg/parisian-office-scene.jpg",
+  "forbes-reddit-french-door-c1.html": "RedditFrench/plate-cover.jpg",
   "forbes-english-football-b1.html": "FootballB1/hero.jpg",
   "active_passive_refinery_lesson.html": "RefineryAP/hero.jpg",
   "active_passive_refinery_quiz_part2.html": "refinery/refinery-scene-1.jpg",
@@ -1743,7 +1825,7 @@ const COLLECTIONS = [
     wash: ['#15294c', '#050a15'],
     blurb: 'The grammar climb: one tense per camp, active on the way up and passive on the way down, in the same order as Sherpa Tensing.' },
   { cat: 'Business', title: 'Business English', hero: 'Forbes English - Decision-Making Under Uncertainty.html',
-    blurb: 'Meetings, negotiation, emails, pitches and the language of decisions. B2 to C2, most of it built around a roleplay.' },
+    blurb: 'Meetings, negotiation, emails, pitches, presentations, difficult conversations, and the English of energy and construction projects.' },
   { cat: 'IELTS', title: 'IELTS Academic', hero: 'forbes-english-ielts-bar-charts-c1.html', hub: 'ielts.html',
     blurb: 'Writing Task 1 and Task 2, Speaking and Listening, in the order they should be taken, with a free Task 2 question bank.' },
   { cat: 'Football', title: 'Football', hero: 'football_c1_roleplay.html',
@@ -1753,7 +1835,9 @@ const COLLECTIONS = [
   { cat: 'Minecraft', title: 'Minecraft', hero: 'forbes-english-minecraft-c1.html',
     blurb: 'The biggest run of themed lessons on the site: grammar and vocabulary set in the game, B1 to C1.' },
   { cat: 'Workplace Communication', title: 'Workplace Communication', hero: 'forbes-english-meetings.html',
-    blurb: 'Meetings, emails, feedback, escalation and briefings — the conversations a job is made of.' },
+    blurb: 'Meetings, emails, feedback, presentations and briefings — the conversations a job is made of.' },
+  { cat: 'Workplace Conflict', title: 'Workplace Conflict', hero: 'forbes-english-holding-the-line-c1.html',
+    blurb: 'The unreasonable manager, the colleague who does not pull their weight, the credit someone else took, the complaint that has to go upstairs. What to say, and what to say next.' },
   { cat: 'Negotiation', title: 'Negotiation', hero: 'forbes-c1-negotiation.html',
     blurb: 'Offers, concessions, deadlock and the language that moves a deal. C1 and up.' },
   { cat: 'Film & TV', title: 'Film & TV', hero: 'twin-peaks-b2-discussion.html',
@@ -1952,7 +2036,7 @@ function render() {
       <div class="card-body">
         <div class="card-top">
           <div>
-            <div class="card-cat">${l.categories.join(' · ')}</div>
+            <div class="card-cat">${cardCategories(l).join(' · ')}</div>
             ${l.level ? `<span class="badge${l.level.startsWith('C') ? ' gold' : ''}">${l.level}</span>` : ''}
           </div>
           ${soon ? '<span class="access-badge soon">Coming soon</span>'

@@ -36,7 +36,7 @@ the same.
 - `build_sailing.py` was already modified by another session when this
   started. It was left alone.
 
-## 2026-09-30 — Reddit × French Market: Getting in the Door (C1): BUILT, waiting on six plates
+## 2026-09-30 — Reddit × French Market: Getting in the Door (C1): SHIPPED
 
 Innes: *"Make a new one that would fit with the others and ask for artwork
 etc, house style 2"* — for his Reddit client partner prospecting the French
@@ -52,25 +52,26 @@ of the meeting, silence as thinking), the follow-up. Same cast as the RPGs.
   three phrases each (24 phrases), 10 MC, 4 gap slides (two rows each: four
   rows ran 84px over), 2 order (one with a decoy), a match, a three-bin sort
   (pushy / pitched / apologetic), results, activation.
-- **Gates:** `check-lesson.js` all PASS but HEAD (no SEO block: `seo.py` runs
-  at publish; the preview is not in the catalogue). `answered-overflow.js`
-  fits in en/de/es (one German explanation trimmed twice to get there).
-- **Art: none yet.** Writes only the gitignored
-  `_forbes-reddit-french-door-c1.html` on the café and desk pictures until
-  all six `RedditFrench/plate-*.jpg` exist. The brief, prompts, thirds and
-  drop-in steps are `docs/ARTWORK-reddit-door.md`.
-- **Innes attached two 2944×1648 renders with the request, from the
-  phone. They never reached this machine** — see the CLAUDE.md note. He
-  needs to drop them in `incoming/reddit-door/`.
-- **Still to do at publish** (in the brief): `extract-palette.py` on the real
-  cover into `PALETTE`; `LESSON_IMAGES` row; `OVERRIDES` line in
-  `tools/topics.py` (`['business-english']`); `build_hubs.py`; `seo.py`;
-  catalogue row:
-  ```sql
-  insert into public.lessons (file, title, level, access, deck)
-  values ('forbes-reddit-french-door-c1.html',
-          'Reddit × French Market: Getting in the Door (C1)', 'C1', 'pro', true);
-  ```
+- **Art.** Briefed in `docs/ARTWORK-reddit-door.md` at midday; Innes
+  rendered all six by 16:00 into `incoming/reddit-door/` (nine files, two
+  variants each of the door, the telephone and the chairs). Picks: door `_0`
+  (figure in the gap) for the cover, telephone `_1` (cord into the open
+  door), chairs `_0` (the pavement pair). `pos=` set by eye from a contact
+  sheet: 14 / 78 / 50 / 86%. Palette from `plate-cover.jpg`, every row PASS.
+- **Gates:** `check-lesson.js` all PASS; `answered-overflow.js` fits in
+  en/de/es; `check-library.js --vs-origin` PASS after a `LESSON_TAGS` line
+  (Negotiation, Workplace Communication) — the peer's 09-27 audit gate.
+- **Catalogue:** row inserted via the Supabase connector (asked for by the
+  publish), mirrored to `tools/lessons.json`; `OVERRIDES` → business-english.
+- **Two things learned, both hard-wired:** a phone attachment does not
+  reach the local transcript (CLAUDE.md, "Getting files"), and a brief that
+  names a drop folder creates it — the builder makes `incoming/reddit-door/`
+  in preview mode, and CLAUDE.md now says so under "The default action".
+- **Rode along in the commit:** another session's uncommitted 09-27 library
+  audit (`LESSON_TAGS` in `library.html`, four `OVERRIDES` in `topics.py`)
+  and the hub pages `build_hubs.py` regenerated from it. Deterministic from
+  the catalogue and `topics.py`, so a peer re-running the tools gets the
+  same bytes; named here so nobody looks for it under its own message.
 
 ## 2026-09-29 — Per-track pricing: Block Camp and IELTS plans (live, not yet on sale)
 

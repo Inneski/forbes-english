@@ -31,6 +31,16 @@ found and what you changed. `lesson-template/HOUSE-STYLE.md` §14 lists the four
 situations that genuinely warrant a question. Everything else: apply the
 standard and say what you did.
 
+**An artwork brief that names a drop folder creates it.** Innes,
+2026-09-30, after a brief told him to use `incoming/reddit-door/` and the
+folder did not exist: *"make sure the folder exists or you tell me to make
+it in future, hard wire that."* So: `mkdir -p incoming/<lesson>` in the same
+step that writes the brief (the builder should do it whenever it runs in
+preview mode, as `build_redditdoor.py` does), and the report says either
+"the folder exists" or "make `incoming/<lesson>/`". Never a bare path he has
+to guess about. `incoming/*` is gitignored, so the folder is local only and
+a cloud session has to say "make it" every time.
+
 ## Getting files from Innes's machine into the repo
 
 **Tested 2026-09-07, and the previous version of this section was wrong.**
