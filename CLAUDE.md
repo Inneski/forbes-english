@@ -80,8 +80,12 @@ claude.ai/code or the Claude app. Such a session is still local: it reads
 `incoming/`, pushes, and reaches the live site. Where the session runs
 decides it, not where Innes types — a `win32` platform and
 `C:\Users\black\Documents\FORBES` mean local. The machine has to be on with
-the app open. Not yet tested: whether a picture attached from the phone
-reaches the local `.jsonl` the way a desktop attachment does.
+the app open. **Tested 2026-09-30: a picture attached from the phone does
+NOT reach the local `.jsonl`.** Two 2944×1648 renders arrived in the
+model's context; the transcript on disk held only the images the session's
+own `Read` calls had produced. So a phone attachment is a cloud attachment
+for file purposes: ask Innes to drop the file in `incoming/` (or attach it
+from the desktop app) rather than walking the JSON for it.
 
 Use cloud sessions for anything that starts from what is already in git.
 
