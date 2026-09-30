@@ -501,6 +501,24 @@ LIGHTBOX_JS = '''(function(){
 })();
 '''
 
+# Gulls over the strait, seen from above (gulls.js, shared with the folklore
+# map). Innes, 2026-10-01, after English Heritage's Myths Map. They keep to
+# the two channels either side of Twofold Isle, clear of the teaching labels
+# in mid-strait: three fly north up the eastern channel, and twenty seconds
+# later two fly south down the western one, over the ship. Each flock flies
+# in a loose line, not abreast: the channels are only a tenth of the picture wide.
+GULLS_JS = open('lesson-template/build/gulls.js', encoding='utf-8').read() + '''
+flyGulls(document.getElementById("hero-map-btn"), {
+  aspect: 1536 / 1024, size: 6, seed: 11,
+  flocks: [
+    {from: [70, 118], to: [65, -18], flight: 14, cycle: 40, at: 1.5,
+     birds: [[0, 0, 1.05], [-1.4, .55, .95], [-2.7, -.35, 1]]},
+    {from: [35, -18], to: [31, 118], flight: 16, cycle: 40, at: 21,
+     birds: [[0, 0, 1], [-1.3, -.45, .92]]}
+  ]
+});
+'''
+
 # ═════════════════════════════════════════════════════════════════════
 EXTRA_CSS = '''
   /* ── the hero map, click to expand ── */
@@ -644,7 +662,7 @@ PALETTE = palette('#12262E', '#4E6B77', '#F4F9FA', '#1B7A87', '#0E5460', '#B9DCE
 s = assemble(
     HERO,
     WEST + EAST + DIAGRAM + CAPE + ISLE + SHALLOWS + SIGNALS,
-    DIAGRAM_JS + LIGHTBOX_JS,
+    DIAGRAM_JS + LIGHTBOX_JS + GULLS_JS,
     questions(QUIZ),
     PALETTE,
     '<title>Sailing the Seas of Grammar &mdash; Gerunds and Infinitives</title>',
