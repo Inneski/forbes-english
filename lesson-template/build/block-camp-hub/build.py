@@ -69,7 +69,7 @@ CLIMB = [
 FREE_CLIMB = {(1,1),(2,1),(3,1)}
 
 DESCENT = [
- (9,1,'Present Simple Passive','present-simple','A2','free'),
+ (9,1,'Present Simple Passive','present-simple','A2','pro'),
  (10,2,'Present Continuous Passive','present-continuous','A2','pro'),
  (11,3,'Past Simple Passive','past-simple','A2','pro'),
  (12,4,'Past Continuous Passive','past-continuous','B1','pro'),

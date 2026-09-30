@@ -100,6 +100,41 @@ also open Sherpa Tensing.
   next `seo.py` run on main writes; until then every gate says "Forbes
   English Pro" (access itself is already correct).
 
+## 2026-09-30 — Block Camp: only the three decks with animated rewards are free
+
+Innes: "only the ones with animated rewards should be free at this point."
+Free now: `blockcamp-present-simple.html`, `-present-continuous.html`,
+`-past-simple.html` (the three with correct-answer clips). Made Pro: Past
+Continuous 1, Going To 1, Future Simple 1, Present Perfect Continuous 1,
+Past Perfect, Passive Present Simple (ids 283 285 287 291 304 295). The
+other 20 were Pro already. This reverses e709bfc (2026-09-15), which freed
+those 1a decks so every topic hub had an open lesson; each hub still has a
+free Time Signals reference.
+
+  * The switch is `public.lessons.access` in Supabase; the Worker reads the
+    Pro list live (5-minute edge cache). **Innes ran the SQL himself**: the
+    session's own write was refused by the auto-mode classifier, as before
+    (memory: supabase writes refused).
+  * Then, in this order: `tools/seo.py` (lesson-meta.json and tools/lessons.json
+    now carry `track` on every row for the first time: a big but correct
+    diff; the six decks' JSON-LD; sitemap; llms.txt), the hub, quest and nav
+    builders, `check-access.py --fix` for the hand-kept route map, then
+    `check-access.py`: PASS hub 57, quest 40, nav 26, map 52. seo.py last:
+    0 rewritten. Fallbacks brought into line: camp09.py's synthetic row and
+    the hub builder's DESCENT station 9 now say 'pro'.
+  * **Not done, on purpose:** `library.html`'s crawlable static list,
+    `grammar.html` and the topic hub pages (their Free tags). Another
+    session's library-tagging work has sat uncommitted in exactly those
+    files (and `tools/topics.py`, `check-library.js`) since 2026-09-27;
+    regenerating and committing them would have shipped it. The library's
+    live grid reads Supabase in the browser, so what visitors see is right.
+    **When that work is committed, run `tools/build_hubs.py` then
+    `tools/seo.py`** and the static list and hub tags follow.
+  * Open for Innes: the village (`block-camp/village.html`) links every
+    camp's Part 1 with no padlock, so camps 4-9's rangers now lead to a gate
+    unannounced; the descent now has no free entry point; the gate text
+    names a Block Camp plan that is not on sale yet (no Stripe price).
+
 ## 2026-09-29 — Block Camp Past Simple 1 clips; subtitles on every Block Camp clip, ten languages
 
 Innes dropped 8 Gemini clips in `incoming/Past simple Part 1 plates/` and

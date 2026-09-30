@@ -856,10 +856,11 @@ CAMP = dict(
     # camps 1-3 had a free Part 1; e709bfc (2026-09-15) freed this one so the
     # past perfect hub had an open lesson, and the row here now says so. It
     # only matters before the deck has a real row - seo.py writes from the
-    # catalogue once it does.
+    # catalogue once it does. 2026-09-30: Pro again - Innes, "only the ones
+    # with animated rewards should be free", and camp 9 has none.
     row=dict(file='blockcamp-past-perfect.html',
              title='Block Camp — Past Perfect 1a: The Earlier Past',
-             level='B1', access='free', deck=True, video=False,
+             level='B1', access='pro', deck=True, video=False,
              created_at='2026-09-04T00:00:00+00:00', sort_order=None),
     card='BlockCamp/past-perfect-1a.jpg',
 )
