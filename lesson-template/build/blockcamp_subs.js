@@ -28,13 +28,16 @@
   var cap = document.createElement('div');
   cap.className = 'clip-cap'; cap.setAttribute('aria-hidden', 'true');
   stage.appendChild(cap);
-  var NAMES = { off: 'CC off', en: 'CC English', de: 'CC Deutsch', es: 'CC Español',
-    fr: 'CC Français', it: 'CC Italiano', pt: 'CC Português', ru: 'CC Русский',
-    ar: 'CC العربية', zh: 'CC 中文', ja: 'CC 日本語' };
+  // Short codes: the deck bar is full. The full name is each option's title.
+  var NAMES = { off: 'CC off', en: 'CC EN', de: 'CC DE', es: 'CC ES', fr: 'CC FR', it: 'CC IT',
+    pt: 'CC PT', ru: 'CC RU', ar: 'CC AR', zh: 'CC ZH', ja: 'CC JA' };
+  var FULL = { off: 'Subtitles off', en: 'English', de: 'Deutsch', es: 'Español', fr: 'Français',
+    it: 'Italiano', pt: 'Português', ru: 'Русский', ar: 'العربية', zh: '中文', ja: '日本語' };
   var sel = document.createElement('select');
   sel.className = 'cc-select'; sel.id = 'ccSelect';
   sel.setAttribute('aria-label', 'Subtitles');
-  Object.keys(NAMES).forEach(function (k) { sel.add(new Option(NAMES[k], k)); });
+  Object.keys(NAMES).forEach(function (k) { var o = new Option(NAMES[k], k); o.title = FULL[k]; sel.add(o); });
+  sel.title = 'Subtitles';
   var lang = 'en';
   try { lang = localStorage.getItem('bc-cc') || 'en'; } catch (_) {}
   if (!NAMES[lang]) lang = 'en';

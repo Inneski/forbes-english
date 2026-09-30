@@ -58,8 +58,39 @@ asked for subtitles on all the videos, with a choice of language.
     closed it. That's how I roll.") and slide 12 (bg24, 443c1a23: Alex's
     saplings, the cowboy asks "When did you plant these trees?"; Whisper
     heard "plants") added, both on their own first-frame plates, with
-    subtitles. **Still without a clip:** slides 13, 20, 21, 22 (bg16 bg37
-    bg41 bg19).
+    subtitles. Then slide 20 (bg37, 3e704431: the fox steals the farmer's
+    meal, "Where are you going with my succulent meal? Come back here!"),
+    Results (bg41, 83a92184, 20 s: Steve walks home to a party; 8d325709 is
+    a byte-identical copy) and the last slide (bg19, 3c65cc87, 20 s:
+    fishing, its own music). Results and the last slide loop into each other
+    as in Present Continuous (no high-score clip here). All on first-frame
+    plates; on slide 20 the word chips sit over the fox's ears, as they did
+    on the original plate. **Still without a clip: slide 13 (bg16)** —
+    Innes is sending it.
+  * **Soundtrack, Past Simple Parts 1 and 2** (Innes: "give the whole of
+    past simple a sound track that can be toggled off"). `block-camp/
+    camp-music.js`, loaded with `data-track` and `data-loop`, puts a Music
+    toggle in the deck bar after the route map. The track is Innes's own
+    promo chiptune (`Videos/Block Camp promo - music (full level).mp3`), cut
+    to `block-camp/music/past-simple.m4a`: the four 7.5 s phrases from 5.47
+    to 35.47 s (35.47 is the ending hit), the seam crossfaded from the audio
+    that really leads into 5.47, with 0.5 s of true continuation either side
+    so Web Audio's loopStart/loopEnd (0.5, 30.5) loop it sample-accurately.
+    `<audio loop>` gaps on every lap, so it is not used. On by default,
+    starts on the first click or key, remembered off (`bc-music`), 0.2 gain.
+    **Silent while any clip plays with sound** (Innes: the fishing clip has
+    its own music; "the animations in general could dip out soundtrack"); on
+    the end slides the later, muted laps let it back in. Suspended in a
+    hidden tab; not loaded under Save-Data. Another camp gets music by
+    adding the same script tag with its own track.
+  * **Next camp button** (`lesson-template/build/block-camp-nav/template.js`,
+    all 26 decks): Innes, "too big and will lead to mistakes. Only provide on
+    last screen." Now a 34 px chip, name only ("4 · Past Continuous →", the
+    words "Next camp" in its title and for screen readers), shown only while
+    the last slide is on screen: the saved "finished" state no longer shows
+    it from the cover. The bar is full (map, music, two language menus, part
+    chip), so the arrows are `flex:none` and the progress bar keeps 60 px,
+    and the CC menu reads "CC EN".
   * **Subtitles**: `lesson-template/build/blockcamp_subs.py` holds every cue
     in en de es fr it pt ru ar zh ja and writes `window.CLIP_SUBS`, the CSS
     and the player (`blockcamp_subs.css`, `.js`) into the three decks between

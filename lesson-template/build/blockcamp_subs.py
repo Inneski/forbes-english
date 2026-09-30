@@ -210,6 +210,16 @@ SUBS = {
       'Ça fait du bien d’être chez soi.', 'È bello essere a casa.', 'É bom estar em casa.',
       'Как хорошо быть дома.', 'ما أجمل أن نكون في البيت.', '到家真好。', 'やっぱり家はいいな。'),
   ],
+  PA + 'bg37.mp4': [
+    c(1.0, 3.9, 'Where are you going with my succulent meal?',
+      'Wohin willst du mit meinem saftigen Essen?', '¿Adónde vas con mi suculenta comida?',
+      'Où tu vas avec mon succulent repas ?', 'Dove vai con il mio succulento pranzo?',
+      'Aonde você vai com a minha refeição suculenta?', 'Куда это ты с моим сочным обедом?',
+      'إلى أين تذهب بوجبتي الشهية؟', '你要把我美味的饭菜拿到哪里去？',
+      'ぼくのおいしいごはんを持ってどこへ行くんだ？'),
+    c(4.0, 99, 'Come back here!', 'Komm sofort zurück!', '¡Vuelve aquí!', 'Reviens ici !', 'Torna qui!',
+      'Volte aqui!', 'А ну вернись!', 'عُد إلى هنا!', '给我回来！', '戻ってこい！'),
+  ],
   PA + 'bg32.mp4': [
     c(1.0, 7.8, 'I left the village and set off for the big wide world.',
       'Ich verließ das Dorf und machte mich auf in die große weite Welt.',

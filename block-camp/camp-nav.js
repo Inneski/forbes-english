@@ -17,12 +17,14 @@
    every slide, never over the artwork, and already under the learner's hand:
 
      - the route map, first in the bar, on every slide from the cover on;
-     - the next camp, beside the forward arrow, once this camp is finished -
-       its last slide reached, now or on an earlier visit. The save file
-       (camp-save.js) remembers, so a finished camp offers the next one from
-       the cover. It wears the next camp's colour, the colour its stop wears
-       on the map, and a padlock when the lesson it opens is Pro, because a
-       link that lands on a paywall without saying so is the thing the map's
+     - the next camp, beside the forward arrow, ON THE LAST SLIDE ONLY, as a
+       chip the size of the map button. Innes, 2026-09-30: the first version
+       (54px, and shown on every slide once a camp had been finished) sat
+       beside the next-slide arrow "too big and will lead to mistakes". On
+       the last slide that arrow is disabled, so the two cannot be confused.
+       It wears the next camp's colour, the colour its stop wears on the
+       map, and a padlock when the lesson it opens is Pro, because a link
+       that lands on a paywall without saying so is the thing the map's
        padlocks exist to prevent.
 
    One file for all 26 decks, loaded with <script src> beside camp-save.js,
@@ -108,34 +110,38 @@
     '  transition:border-color .15s ease,color .15s ease}',
     '.camp-home:hover,.camp-home:focus-visible{border-color:var(--accent);color:var(--accent-bright)}',
     '.camp-home svg{width:17px;height:17px;flex:none}',
-    '.camp-next{display:inline-flex;align-items:center;gap:12px;flex:none;box-sizing:border-box;',
-    '  height:54px;padding:0 16px 0 18px;border-radius:12px;text-decoration:none;',
+    '.camp-next{display:inline-flex;align-items:center;gap:8px;flex:none;box-sizing:border-box;',
+    '  height:34px;padding:0 10px 0 12px;border-radius:6px;text-decoration:none;white-space:nowrap;',
     '  background:var(--nc);color:var(--nci);',
-    '  box-shadow:0 3px 0 color-mix(in srgb,var(--nc) 55%,var(--void));',
+    '  box-shadow:0 2px 0 color-mix(in srgb,var(--nc) 55%,var(--void));',
     '  transition:transform .15s ease,box-shadow .15s ease}',
     '.camp-next[hidden]{display:none}',
-    '.camp-next:hover,.camp-next:focus-visible{transform:translateY(-2px);',
-    '  box-shadow:0 5px 0 color-mix(in srgb,var(--nc) 55%,var(--void))}',
-    '.camp-next-t{display:flex;flex-direction:column;gap:3px;line-height:1.1;text-align:start}',
-    '.camp-next-cap{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase}',
-    '.camp-next-name{font-family:var(--font-display);font-size:16px;font-weight:700;white-space:nowrap}',
-    '.camp-next-go{font-size:22px;line-height:1}',
+    '.camp-next:hover,.camp-next:focus-visible{transform:translateY(-1px);',
+    '  box-shadow:0 3px 0 color-mix(in srgb,var(--nc) 55%,var(--void))}',
+    '.camp-next-t{display:flex;align-items:baseline;gap:7px;line-height:1;text-align:start}',
+    /* The bar also holds the map, music, both language menus and the part
+       chip, so the chip carries only where it goes; "Next camp" is its title
+       and its screen-reader words. The arrows must never be squeezed. */
+    '.camp-next-cap{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}',
+    '.deck-bar .nav-btn{flex:none}',
+    '.deck-bar .progress{min-width:60px}',
+    '.camp-next-name{font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}',
+    '.camp-next-go{font-size:15px;line-height:1}',
     '[dir="rtl"] .camp-next-go{transform:scaleX(-1)}',
     '.camp-next-lock{display:inline-block;width:.72em;height:.84em;margin-inline-start:.45em;',
     '  vertical-align:-.06em;background:currentColor;',
     '  -webkit-mask:url("' + LOCK() + '") no-repeat center/contain;mask:url("' + LOCK() + '") no-repeat center/contain}',
     '.camp-sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;',
     '  clip:rect(0 0 0 0);white-space:nowrap;border:0}',
-    /* It arrives, once, the moment the last slide is reached: in from the
-       arrow's side, then three rings, so the eye that is on the forward arrow
-       finds it. A camp finished on an earlier visit shows it still. */
+    /* It arrives when the last slide is reached: in from the arrow's side,
+       then three rings, so the eye that is on the forward arrow finds it. */
     '.camp-next.is-new{animation:camp-next-in .45s cubic-bezier(.2,.8,.3,1.2) both,',
     '  camp-next-ring 1.6s ease-out .45s 3}',
     '@keyframes camp-next-in{from{opacity:0;transform:translateX(14px) scale(.92)}to{opacity:1;transform:none}}',
     '@keyframes camp-next-ring{',
-    '  0%{box-shadow:0 3px 0 color-mix(in srgb,var(--nc) 55%,var(--void)),0 0 0 0 color-mix(in srgb,var(--nc) 70%,transparent)}',
-    '  70%{box-shadow:0 3px 0 color-mix(in srgb,var(--nc) 55%,var(--void)),0 0 0 12px color-mix(in srgb,var(--nc) 0%,transparent)}',
-    '  100%{box-shadow:0 3px 0 color-mix(in srgb,var(--nc) 55%,var(--void)),0 0 0 0 color-mix(in srgb,var(--nc) 0%,transparent)}}',
+    '  0%{box-shadow:0 2px 0 color-mix(in srgb,var(--nc) 55%,var(--void)),0 0 0 0 color-mix(in srgb,var(--nc) 70%,transparent)}',
+    '  70%{box-shadow:0 2px 0 color-mix(in srgb,var(--nc) 55%,var(--void)),0 0 0 9px color-mix(in srgb,var(--nc) 0%,transparent)}',
+    '  100%{box-shadow:0 2px 0 color-mix(in srgb,var(--nc) 55%,var(--void)),0 0 0 0 color-mix(in srgb,var(--nc) 0%,transparent)}}',
     '@media (prefers-reduced-motion:reduce){.camp-next.is-new{animation:none}}'
   ].join('\n');
 
@@ -216,24 +222,17 @@
       { attributes: true, attributeFilter: ['lang'] });
   }
 
-  // ── finished? ──
+  // ── on the last slide only ──
   var slides = document.querySelectorAll('.slide');
   var last = slides[slides.length - 1];
-  function saved() {
-    try {
-      var e = window.CampSave && window.CampSave.load().deck[id];
-      return !!(e && e.done);
-    } catch (_) { return false; }
+  function sync() {
+    var on = !!(last && last.classList.contains('is-active'));
+    if (on === !next.hidden) return;
+    next.hidden = !on;
+    next.classList.toggle('is-new', on);
   }
-  function reveal(fresh) {
-    if (!next.hidden) return;
-    next.hidden = false;
-    if (fresh) next.classList.add('is-new');
-  }
-  if (saved() || (last && last.classList.contains('is-active'))) reveal(false);
+  sync();
   if (last && window.MutationObserver) {
-    new MutationObserver(function () {
-      if (last.classList.contains('is-active')) reveal(true);
-    }).observe(last, { attributes: true, attributeFilter: ['class'] });
+    new MutationObserver(sync).observe(last, { attributes: true, attributeFilter: ['class'] });
   }
 })();
