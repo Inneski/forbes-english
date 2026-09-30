@@ -310,6 +310,11 @@ if __name__ == '__main__':
     # default translates every \n to \r\n, so a one-line blurb edit comes back
     # as all 569 lines changed (CLAUDE.md, "Working from Windows").
     site = build(False)
+    # The hub's theme tune (block-camp/music/block-camp-theme.m4a): the tag
+    # comes from deck_music.py like every camp's, so it follows loops.json.
+    sys.path.insert(0, os.path.join(REPO, 'lesson-template', 'build', 'block-camp-music'))
+    import deck_music
+    site = deck_music.set_music(site, 'block-camp.html')
     open(os.path.join(REPO,'block-camp.html'),'w',encoding='utf-8',newline='\n').write(site)
     prev = build(True)
     open(os.path.join(os.environ.get('PREVIEW_DIR') or tempfile.gettempdir(), 'block-camp-hub-preview.html'),

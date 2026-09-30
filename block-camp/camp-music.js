@@ -58,7 +58,9 @@
     '.camp-music-float{position:fixed;z-index:60;left:calc(12px + env(safe-area-inset-left,0px));' +
     'bottom:calc(12px + env(safe-area-inset-bottom,0px));width:44px;height:44px;border-radius:50%;padding:0;' +
     'display:grid;place-items:center;cursor:pointer;color:var(--bone,var(--text,#f3ead3));' +
-    'background:color-mix(in srgb,var(--panel,var(--void,#15181e)) 88%,transparent);' +
+    // Solid, not a tint of the page's panel: on the hub that panel is
+    // see-through and the text behind showed through the button.
+    'background:#14201a;box-shadow:0 2px 10px #0008;' +
     'border:1px solid color-mix(in srgb,var(--accent,#d9b25a) 60%,transparent)}' +
     '.camp-music-float svg{width:20px;height:20px}' +
     '.camp-music-float[aria-pressed="false"] .cm-note{opacity:.45}' +

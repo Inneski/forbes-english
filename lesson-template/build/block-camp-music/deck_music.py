@@ -50,6 +50,8 @@ TRACK = {
     'blockcamp-passive-present-perfect.html': 'passive-present-perfect',
     'blockcamp-passive-trial.html': 'passive-trial',
     'blockcamp-passive-past-perfect.html': 'passive-past-perfect',
+    # the hub, block-camp.html: its own theme (theme.py)
+    'block-camp.html': 'block-camp-theme',
 }
 
 MUSIC_TAG = re.compile(r'\n?<script src="[^"]*camp-music\.js"[^>]*></script>')

@@ -101,6 +101,16 @@ also open Sherpa Tensing.
   next `seo.py` run on main writes; until then every gate says "Forbes
   English Pro" (access itself is already correct).
 
+## 2026-09-30 — Block Camp hub: a theme tune
+
+Innes: "hub page needs a theme tune too". `block-camp-music/theme.py` ->
+`block-camp/music/block-camp-theme.m4a`: D major, 120 BPM, 72 s loop,
+intro-A-A'-B-A'', hook A4 D5 F#5 A5 F#5 | E5 C#5 E5 A4, clash assertion at
+import, seam 0.0000, measured against the camp tracks for brightness. The
+hub is `'block-camp.html'` in deck_music's TRACK; the hub builder calls
+`set_music()`. No deck bar there, so camp-music.js uses its floating
+corner button (now solid: the hub's panel colour is see-through).
+
 ## 2026-09-30 — Block Camp: a soundtrack for every camp (18 tracks, 26 decks)
 
 Innes asked for the whole of Block Camp to have music like Past Simple's
