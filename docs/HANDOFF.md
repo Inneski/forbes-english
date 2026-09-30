@@ -151,6 +151,18 @@ asked for subtitles on all the videos, with a choice of language.
     the end slides the later, muted laps let it back in. Suspended in a
     hidden tab; not loaded under Save-Data. Another camp gets music by
     adding the same script tag with its own track.
+  * **Phones (2026-09-30, Innes: "music or maybe audio doesnt work on
+    phone")**: the first version started the audio only on `pointerdown`,
+    which on a touch screen is not a user activation (HTML spec; iOS Safari
+    enforces it), so on an iPhone the music never started. Now it creates
+    and resumes the context inside pointerdown/pointerup/touchend/click/
+    keydown, plays a one-sample silent buffer there (iOS's unlock), sets
+    `navigator.audioSession.type = 'playback'` where it exists (iOS 17+) so
+    the silent switch does not mute it, and a tap on Music while the music
+    is meant to be on but silent starts it instead of switching it off.
+    Tested in Chromium touch/mouse emulation. **Not testable here on iOS**:
+    Playwright's Windows WebKit has no Web Audio at all (`AudioContext`
+    undefined). Needs a check on a real iPhone.
   * **Next camp button** (`lesson-template/build/block-camp-nav/template.js`,
     all 26 decks): Innes, "too big and will lead to mistakes. Only provide on
     last screen." Now a 34 px chip, name only ("4 · Past Continuous →", the

@@ -71,12 +71,39 @@
   if (window.MutationObserver) new MutationObserver(label).observe(document.documentElement,
     { attributes: true, attributeFilter: ['lang'] });
 
-  var ctx = null, gain = null, loading = null;
-  function start() {
-    if (ctx) return loading;
+  /* PHONES. Safari on iPhone only lets audio start inside a real gesture -
+     the finger LIFTING (touchend, click), not landing: a touch pointerdown is
+     not a user activation in the HTML spec, and the first version listened
+     only to pointerdown, so on an iPhone the music never started (Innes,
+     2026-09-30: "music or maybe audio doesnt work on phone"). Chrome let it
+     through because it resumes on any later call once the page has been
+     touched at all. So: create and resume the context synchronously inside
+     every gesture event until it runs, and play a one-sample silent buffer
+     there, which is what opens iOS's audio path.
+     An iPhone's silent switch also mutes Web Audio (not <video>) unless the
+     page declares itself playback; navigator.audioSession does that on iOS 17+. */
+  var ctx = null, gain = null, loading = null, started = false, blipped = false;
+  function ensureContext() {
+    if (ctx) return;
+    try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (_) {}
     ctx = new AC();
     gain = ctx.createGain(); gain.gain.value = 0; gain.connect(ctx.destination);
-    loading = fetch(track).then(function (r) { return r.arrayBuffer(); })
+  }
+  function unlock() {
+    ensureContext();
+    if (ctx.state !== 'running') { var p = ctx.resume(); if (p && p.catch) p.catch(function () {}); }
+    if (!blipped) {
+      try {
+        var s = ctx.createBufferSource();
+        s.buffer = ctx.createBuffer(1, 1, 22050); s.connect(ctx.destination); s.start(0);
+        blipped = true;
+      } catch (_) {}
+    }
+  }
+  function start() {
+    ensureContext();
+    if (loading) return loading;
+    loading = fetch(track).then(function (r) { if (!r.ok) throw new Error(r.status); return r.arrayBuffer(); })
       .then(function (b) { return new Promise(function (ok, no) { ctx.decodeAudioData(b, ok, no); }); })
       .then(function (buf) {
         var src = ctx.createBufferSource();
@@ -84,11 +111,13 @@
         if (loop.length === 2 && loop[1] > loop[0]) { src.loopStart = loop[0]; src.loopEnd = loop[1]; }
         src.connect(gain);
         src.start(0, loop.length === 2 ? loop[0] : 0);
+        started = true;
         apply();
       })
       .catch(function () { btn.hidden = true; });
     return loading;
   }
+  function playing() { return !!(ctx && started && ctx.state === 'running'); }
   function target() {
     if (!on) return 0;
     var vs = document.querySelectorAll('.bg-clip');
@@ -103,28 +132,38 @@
     if (!ctx || !gain) return;
     var g = target();
     if (g !== last) { gain.gain.setTargetAtTime(g, ctx.currentTime, g < last ? 0.08 : 0.6); last = g; }
-    if (on && !document.hidden && ctx.state === 'suspended') ctx.resume();
+    // Chrome resumes here once the page has had any gesture; iOS ignores it
+    // and waits for the next gesture below.
+    if (on && !document.hidden && ctx.state !== 'running') {
+      var p = ctx.resume(); if (p && p.catch) p.catch(function () {});
+    }
   }
   setInterval(apply, 150);
 
   function gesture() {
-    if (!on) return;
+    if (!on || document.hidden) return;
+    unlock();
     start();
-    if (ctx && ctx.state === 'suspended') ctx.resume();
   }
-  document.addEventListener('pointerdown', gesture, true);
-  document.addEventListener('keydown', gesture, true);
+  ['pointerdown', 'pointerup', 'touchend', 'click', 'keydown'].forEach(function (ev) {
+    document.addEventListener(ev, gesture, { capture: true, passive: true });
+  });
 
   btn.addEventListener('click', function () {
+    // A tap on Music while it is meant to be on but is not sounding yet (the
+    // first tap of the visit, or after the phone suspended it) is a request
+    // to hear it, not to switch it off.
+    if (on && !playing()) { unlock(); start(); apply(); return; }
     on = !on;
     try { localStorage.setItem('bc-music', on ? 'on' : 'off'); } catch (_) {}
     label();
-    if (on) start();
+    if (on) { unlock(); start(); }
     apply();
     if (!on && ctx) setTimeout(function () { if (!on && ctx) ctx.suspend(); }, 600);
   });
   document.addEventListener('visibilitychange', function () {
     if (!ctx) return;
-    if (document.hidden) ctx.suspend(); else if (on) ctx.resume();
+    var p = document.hidden ? ctx.suspend() : (on ? ctx.resume() : null);
+    if (p && p.catch) p.catch(function () {});
   });
 })();
