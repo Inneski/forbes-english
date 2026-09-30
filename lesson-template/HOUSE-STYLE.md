@@ -402,6 +402,18 @@ eight sentences becomes three slides of three. A reading passage with eight
 gaps becomes four slides of two. Learners get more clicks; they never get a
 6-point font or a hidden overflow.
 
+**The one exception: a phone.** Scaled to an iPhone in portrait the canvas
+is drawn at 0.30 — a 23px question is 7px and a button 16px — so "never
+shrink the type" and "nothing scrolls" cannot both hold there. The Block
+Camp decks load `block-camp/camp-phone.css` + `.js`, which below a 0.62
+scale stop scaling the canvas: the slide's picture becomes a band (top in
+portrait, the side opposite the text in landscape), the slide scrolls
+beside it at real sizes, and the bar's secondary controls go into a menu.
+**Author against the canvas exactly as before**; the phone layer reflows
+what you author and must not be "fixed" back into the canvas. Its gate is
+`node lesson-template/checker/check-phone.mjs` (needs a local server; see
+its header), because check-lesson.js runs at 1400×820 and never sees it.
+
 Type scale — do not deviate:
 
 | Element | Size |

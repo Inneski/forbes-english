@@ -100,6 +100,51 @@ also open Sherpa Tensing.
   next `seo.py` run on main writes; until then every gate says "Forbes
   English Pro" (access itself is already correct).
 
+## 2026-09-30 — Block Camp on a phone: a real phone layout for all 26 decks
+
+Innes: "Block Camp needs to be more ergonomic for phone use." Measured
+first: on an iPhone in portrait the 1280x720 canvas was drawn at 0.30, so a
+question was 7px, an option 16px tall, the nav buttons 16px, and the slide a
+390x219 strip in a black screen.
+
+  * **`block-camp/camp-phone.css` + `camp-phone.js`**, loaded from `<head>`
+    (not deferred, so the mode is set before first paint) in all 26 decks,
+    plus `viewport-fit=cover`. Below a canvas scale of 0.62 (about 794x446)
+    `html.bc-phone` goes on and the canvas stops scaling: the slide's picture
+    is a band (top in portrait, left column in landscape, focal point from
+    data-side), whole and unwashed so a correct-answer clip plays in full;
+    the slide scrolls beside it at real sizes (questions 19px, options 48px,
+    inputs 16px+ so iOS does not zoom); a bottom bar holds menu, prev,
+    count, score, next, and on the last slide the Next-camp chip in place of
+    the dead next. The map, music, language, CC, EN/xx and Part 2 move into
+    a menu sheet (same nodes, moved and moved back, never cloned). Laptops,
+    iPads in landscape and check-lesson.js (1400x820) never see it.
+  * Touch fixes: Return in a gap moves to the next empty gap (it used to mark
+    the WHOLE slide, empty gaps wrong, no second try); the deck's
+    autofocus-on-arrival is undone so the keyboard does not open before the
+    sentence is read; autocapitalize/autocorrect off; the bar hides while
+    typing; sticky :hover (which looked like "picked") reset; feedback
+    scrolled into view; sort items not draggable; "-ing" kept whole in
+    titles and bin labels; instructions in the reading face (Silkscreen's
+    "CLICK" read as "CUCK" at 12px).
+  * **Gate: `node lesson-template/checker/check-phone.mjs`** (needs
+    `py -m http.server 8765`; `--lang de`, `--shots DIR`). iPhone 13
+    portrait and landscape, every slide of every deck: FAILS content
+    spilling sideways or above the slide, content text under 11px, tap
+    targets under 40px, bar controls off screen. 1138 slide views PASS.
+    It found the activation slide's body spilling up over its title (a
+    flex body centred in a fixed height); that check was added after it
+    slipped past the first version. Plus a 4-agent visual review of 52
+    sheets: 189 findings, the real ones fixed (Next-camp chip clipped at
+    both ends on long names, right-aligned pills and hint buttons from
+    right-hand canvas columns, Begin below the fold on long covers,
+    half-width cards, a gap slide opening scrolled). Results screens stay
+    centred on purpose; two-column match tiles wrap at 390px and work.
+  * HOUSE-STYLE §layout now records the phone exception to "nothing
+    scrolls" so nobody "fixes" the phone back into the canvas.
+  * Behaviour test (menu, language from the menu, outside tap, Return
+    between gaps, rotation, back to desktop size, desktop untouched): PASS.
+
 ## 2026-09-30 — Block Camp: only the three decks with animated rewards are free
 
 Innes: "only the ones with animated rewards should be free at this point."
