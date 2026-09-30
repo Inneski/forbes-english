@@ -11,6 +11,31 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-09-30 — Three more sea charts (countable/uncountable ×2, regular/irregular): LAYOUTS DONE, waiting on ChatGPT
+
+Innes asked for more maps in the Gerundia/Infinitivia style, for countable
+and uncountable nouns (or "two rooms full of one or the other with an interim
+space where they share stuff"), and for regular and irregular verbs. The
+Gerundia chart began as a coded schematic that ChatGPT repainted, so these do
+the same.
+
+- **Builder** `lesson-template/build/sea_charts.py` (imports `_roughen` from
+  `sailing_map.py` and does not edit it). It writes `docs/sea-charts/` —
+  `countable-chart`, `countable-hold` (the two rooms, as a ship's hold) and
+  `verbs-chart` — each as SVG plus a PNG at 2000×1320. It exits non-zero if a
+  label spills off its land or hull, a sea caption touches a beach, or two
+  labels overlap. That is measured in headless Chromium with the real fonts,
+  and it was verified failing on three deliberately broken copies.
+- **Brief** `docs/ARTWORK-sea-charts.md`: what every feature teaches, the
+  exact two-turn ChatGPT prompts (labelled, then clean), the file names for
+  `incoming/sea-charts/`, and the steps after (blob-detect the dots,
+  recalibrate, build two pages on the Sailing machinery, EN+DE+ES).
+- **Open question for Innes (§14):** for the nouns, the map, the hold or
+  both. Recommended: both in one lesson, with the hold as the idea and the
+  map as the clickable hero.
+- `build_sailing.py` was already modified by another session when this
+  started. It was left alone.
+
 ## 2026-09-30 — Reddit × French Market: Getting in the Door (C1): BUILT, waiting on six plates
 
 Innes: *"Make a new one that would fit with the others and ask for artwork
