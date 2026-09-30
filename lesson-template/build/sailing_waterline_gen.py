@@ -32,7 +32,7 @@ import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
-W, H = 200, 1200             # tile size (px)
+W, H = 980, 1200             # tile size (px): each coast reaches the page's centre line
 BASE = 34                    # mean shoreline distance from the page edge (never < 6)
 
 # harmonics of the coast: (k, amplitude px, phase)
@@ -40,9 +40,16 @@ HARM = [(1, 7.0, 0.3), (2, 6.0, 1.9), (3, 5.0, 4.1), (5, 4.5, 2.6),
         (7, 3.6, 5.2), (11, 2.0, 0.9), (16, 1.3, 3.7), (21, 0.8, 2.2)]
 
 # waterline distances from the shore (cumulative gaps) and relative alpha.
+# Innes, 2026-09-30: "too subtle and doesn't cover enough". So past the ninth
+# line the water keeps going, gaps widening to 40px, all the way to the
+# page's centre line, where the other coast's lines take over.
 GAPS = [10, 11, 12, 13.5, 15, 17, 19, 21.5, 24]
+while sum(GAPS) < W - 30:
+    GAPS.append(min(40, GAPS[-1] + 2))
 DIST = [sum(GAPS[:i]) for i in range(len(GAPS) + 1)]
 ALPHA = [1.0, .86, .78, .71, .65, .59, .54, .49, .45, .41]
+ALPHA = [max(.5, a) for a in ALPHA]
+ALPHA += [.5] * (len(DIST) - len(ALPHA))
 assert len(ALPHA) == len(DIST)
 
 def shore(y):
@@ -175,48 +182,50 @@ def encode(s):
 def css(opacity, phone_opacity, tint=True):
     left = encode(svg_coast(False, tint))
     right = encode(svg_coast(True, tint))
-    # One layer as wide as the page; the column is centred, so its edges are
-    # 50% -+ 500px. Zero coverage from 4px outside the column inwards, and on
-    # a phone from 24px in (the text zone). The ramp is 70px.
-    B = 'max(24px,calc(50% - 504px))'
-    A = 'max(8px,calc(50% - 574px))'
-    B2 = 'min(calc(100% - 24px),calc(50% + 504px))'
-    A2 = 'min(calc(100% - 8px),calc(50% + 574px))'
-    fade = f"linear-gradient(to right,var(--ink) {A},transparent {B},transparent {B2},var(--ink) {A2})"
+    # Each coast owns half the page: body::before the left half, body::after
+    # the right, so the two sets of waterlines never cross. Full strength in
+    # the margins; behind the 1000px column the lines carry on at COL of it.
+    # The fill stops 2px short of the page bottom: at a fractional DPR Chrome
+    # paints a part-pixel row unmasked.
+    COL = 70
+    colmix = f'color-mix(in srgb,var(--ink) {COL}%,transparent)'
+    L = f"linear-gradient(to right,var(--ink) max(8px,calc(100% - 574px)),{colmix} max(24px,calc(100% - 504px)))"
+    R = f"linear-gradient(to left,var(--ink) max(8px,calc(100% - 574px)),{colmix} max(24px,calc(100% - 504px)))"
     return f"""/* Waterlining: each side of the page is a coast; waterlines run out from
-   it into the margin, each smoother, wider-spaced and fainter than the last,
-   over a faint shallow-water tint. Zero from 4px outside the 1000px column
-   (on a phone, from the 24px inset). The fill stops 2px short of the page
-   bottom: at a fractional DPR Chrome paints a part-pixel row unmasked. */
-@supports ((mask-image:none) or (-webkit-mask-image:none)){{
-:root{{--wl:{fade},
-  url("data:image/svg+xml,{left}"),
-  url("data:image/svg+xml,{right}");}}
+   it across the page, each smoother, wider-spaced and fainter than the last,
+   over a faint shallow-water tint by the shore. Each coast owns half the page,
+   so the two sets never cross; behind the reading column the lines carry on
+   at {COL}% strength. Cards and the hero image are opaque and sit above. */
+@supports ((mask-image:none) or (-webkit-mask-image:none)) and (color:color-mix(in srgb,red 50%,transparent)){{
 body{{position:relative;}}
-body::before{{
-  content:"";position:absolute;top:0;right:0;bottom:0;left:0;
+body::before,body::after{{
+  content:"";position:absolute;top:0;bottom:0;
   z-index:-1;pointer-events:none;
   background:linear-gradient(var(--accent) calc(100% - 2px),transparent 0);opacity:{opacity};
-  -webkit-mask-image:var(--wl);mask-image:var(--wl);
-  -webkit-mask-repeat:no-repeat,repeat-y,repeat-y;mask-repeat:no-repeat,repeat-y,repeat-y;
-  -webkit-mask-size:100% 100%,{W}px {H}px,{W}px {H}px;mask-size:100% 100%,{W}px {H}px,{W}px {H}px;
-  -webkit-mask-position:0 0,0 0,100% 0;mask-position:0 0,0 0,100% 0;
-  -webkit-mask-composite:source-in,source-over,source-over;mask-composite:intersect,add,add;
+  -webkit-mask-repeat:no-repeat,repeat-y;mask-repeat:no-repeat,repeat-y;
+  -webkit-mask-size:100% 100%,{W}px {H}px;mask-size:100% 100%,{W}px {H}px;
+  -webkit-mask-composite:source-in;mask-composite:intersect;
 }}
-/* no margins: a sliver of water at each edge, fainter, clear of the text */
+body::before{{left:0;right:50%;
+  -webkit-mask-image:{L},url("data:image/svg+xml,{left}");
+  mask-image:{L},url("data:image/svg+xml,{left}");
+  -webkit-mask-position:0 0,0 0;mask-position:0 0,0 0;}}
+body::after{{left:50%;right:0;
+  -webkit-mask-image:{R},url("data:image/svg+xml,{right}");
+  mask-image:{R},url("data:image/svg+xml,{right}");
+  -webkit-mask-position:0 0,100% 0;mask-position:0 0,100% 0;}}
 @media (max-width:1060px){{
-  body::before{{opacity:{phone_opacity};
-    -webkit-mask-position:0 0,-20px 0,calc(100% + 20px) 0;mask-position:0 0,-20px 0,calc(100% + 20px) 0;}}
+  body::before,body::after{{opacity:{phone_opacity};}}
 }}
-@media print{{body::before{{display:none;}}}}
+@media print{{body::before,body::after{{display:none;}}}}
 }}
 """
 
 if __name__ == '__main__':
     args = [a for a in sys.argv[1:] if not a.startswith('--')]
     tint = '--no-tint' not in sys.argv
-    op = args[0] if len(args) > 0 else '.05'
-    pop = args[1] if len(args) > 1 else '.04'
+    op = args[0] if len(args) > 0 else '.09'
+    pop = args[1] if len(args) > 1 else '.06'
     name = args[2] if len(args) > 2 else 'pattern.css'
     out = css(op, pop, tint)
     with open(os.path.join(HERE, name), 'w', encoding='utf-8', newline='\n') as fh:
