@@ -4991,21 +4991,31 @@ document.addEventListener('click', function (e) {
   var SUBS = window.CLIP_SUBS || {};
   var stage = document.getElementById('stage');
   /* REPLAY. Once a clip has played on a slide, a button brings it back from
-     the start, with sound: the click is the gesture that allows it. */
+     the start, with sound: the click is the gesture that allows it. It stays
+     on that slide after leaving and coming back (Innes, 2026-09-30: "some of
+     them dont have replay buttons" - leaving a slide rewinds its clip, and
+     the button used to follow the running clip, not the slide). */
   var replay = document.createElement('button');
   replay.type = 'button'; replay.className = 'clip-replay';
   replay.innerHTML = '&#8635; Replay';
   replay.setAttribute('aria-label', 'Replay the animation');
   stage.appendChild(replay);
+  var played = new WeakSet();
+  function onSlide() { try { return slides[idx]; } catch (_) { return null; } }
+  [].forEach.call(document.querySelectorAll('.bg-clip'), function (v) {
+    v.addEventListener('playing', function () { var s = onSlide(); if (s) played.add(s); });
+  });
   replay.addEventListener('click', function () {
     var v = document.querySelector('.bg-clip.run');
-    if (!v) return;
+    if (!v) { var s = onSlide(); if (s && typeof clipPlay === 'function') clipPlay(s); return; }
     v.currentTime = 0; v.muted = false;
     var p = v.play();
     if (p && p.catch) p.catch(function () { v.muted = true; v.play().catch(function () {}); });
   });
   (function watch() {
-    replay.classList.toggle('show', !!document.querySelector('.bg-clip.run'));
+    var s = onSlide();
+    replay.classList.toggle('show', !!document.querySelector('.bg-clip.run') ||
+      !!(s && s.dataset && s.dataset.clip && played.has(s)));
     requestAnimationFrame(watch);
   })();
   if (!Object.keys(SUBS).length) return;
