@@ -101,8 +101,18 @@ asked for subtitles on all the videos, with a choice of language.
     fishing, its own music). Results and the last slide loop into each other
     as in Present Continuous (no high-score clip here). All on first-frame
     plates; on slide 20 the word chips sit over the fox's ears, as they did
-    on the original plate. **Still without a clip: slide 13 (bg16)** —
-    Innes is sending it.
+    on the original plate. Slide 13 (bg16, c538d7ab, 20 s: the miners "hit
+    the mother lode", the rock is "an ancient statue", a golem wakes, "Get
+    back!") added 2026-09-30 on its own first-frame plate with six cues.
+    **Every Past Simple Part 1 question slide now has a clip.**
+  * **Present Continuous slide 9 is now "Alex is ___ bread. (bake)"**, key
+    *baking*, at Innes's request: the clip says "Alex is baking bread". Same
+    silent-e rule. Changed with it: the four options (bakeing / bakking /
+    baking / bakes), both explanations, the ES/DE glosses (hornear, backen),
+    and `window.BW_TR`'s es/de keys (the old sentence and makeing / makking
+    / makes removed, the new ones added). The gap slide's "Alex is ___
+    bread. (make)" is a different item and is unchanged, so its BW_TR key
+    stays.
   * **Soundtrack, Past Simple Parts 1 and 2** (Innes: "give the whole of
     past simple a sound track that can be toggled off"). `block-camp/
     camp-music.js`, loaded with `data-track` and `data-loop`, puts a Music
