@@ -72,7 +72,7 @@ LIGHT = 0.50             # the paper's own light in the band, over the film: the
 # the band's window, a mask (only its alpha counts): (position %, opacity) across it, soft all through
 WINDOW = [(33, 0), (41, 0.3), (47, 0.85), (50, 1), (53, 0.85), (59, 0.3), (67, 0)]
 ANGLE = 105              # deg: the band's slant, as light falls
-LOOP = 14                # seconds for the films to go once round their paths
+LOOP = 28                # seconds for the films to go once round their paths (14 until "slow down the speed of the sheen")
 PASSES = [(0.0, 0.3), (0.5, 0.8)]   # when in the loop the band crosses, left to right
 GRID = 0.025             # keyframe spacing through the loop
 
