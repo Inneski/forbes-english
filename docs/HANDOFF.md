@@ -144,6 +144,25 @@ also open Sherpa Tensing.
   next `seo.py` run on main writes; until then every gate says "Forbes
   English Pro" (access itself is already correct).
 
+## 2026-10-01 — Block Camp Past Continuous 1 clips (12)
+
+Innes dropped 12 Gemini clips in `incoming/Past continuous Part 1 plates/`
+(the 12th, 4c1157aa, added later with an OLD mtime: count files, don't
+filter by date). Placed by first frame against each plate's centre 16:9
+crop (a plain stretch misreads by 12-20): slide 9 bg15 c4161f04, 10 bg38
+65cbc566, 11 bg09 394a1d63, 12 bg36 a7c58e0f, 13 bg11 442c1467 (re-framed),
+14 bg05 4c1157aa (re-framed), 15 bg08 4737f982, 16 bg18 0c8b2a66, 17 bg27
+f01152f0, 19 bg24 02b22a36 (re-framed; numerically nearer bg25, placed by
+the contact sheet and Innes's "slide 19 - bg24"), 20 bg33 ae93f462, Results
+bg25 443b0395. Re-framed slides use `bgNN-clip.jpg`. No clip: slide 18
+(bg23) and the last slide (bg31), so Results plays once, no loop. Gap slide
+17 has no clip key (all three gaps). Engine ported from Past Simple; this
+deck has no scorePct (guarded). 22 cues in ten languages via
+blockcamp_subs.py (faster-whisper medium.en); bg27's "What was I doing?" is
+low-confidence. Translations unreviewed. Tests: check-lesson, check-phone,
+170 Playwright checks desktop + phone. **Open: Innes to say whether this
+deck becomes free like the other three clip decks.**
+
 ## 2026-09-30 — Block Camp hub: a theme tune
 
 Innes: "hub page needs a theme tune too". `block-camp-music/theme.py` ->

@@ -7,7 +7,7 @@ a first word back over any silence before it. Clips with no speech, or only
 noise that Whisper turned into words (the skeleton fight's "You", the bell's
 "I'll see you next time", "Hmmm", "Ugh", the villagers' babble), have none.
 
-Run this to write window.CLIP_SUBS into the three decks:
+Run this to write window.CLIP_SUBS into the four decks:
     py lesson-template/build/blockcamp_subs.py
 """
 import json, os, re
@@ -21,6 +21,7 @@ def c(start, end, *texts):
 PS = 'present-simple-time-signals/'
 PC = 'present-continuous-time-signals/'
 PA = 'past-simple-time-signals/'
+PP = 'past-continuous-time-signals/'
 
 SUBS = {
   # ── Present Simple, Part 1 ──────────────────────────────────────────
@@ -250,12 +251,164 @@ SUBS = {
       'غادرتُ القرية وانطلقتُ إلى العالم الواسع.', '我离开了村子，出发去看广阔的世界。',
       '村を出て、広い世界へ旅立ったんだ。'),
   ],
+  # ── Past Continuous, Part 1 ─────────────────────────────────────────
+  PP + 'bg15.mp4': [
+    c(0.0, 2.3, 'While I was riding through the fields,', 'Während ich durch die Felder ritt,',
+      'Mientras cabalgaba por los campos,', 'Pendant que je traversais les champs à cheval,',
+      'Mentre cavalcavo per i campi,', 'Enquanto eu cavalgava pelos campos,',
+      'Пока я скакала по полям,', 'بينما كنتُ أركب الحصان عبر الحقول،', '我骑马穿过田野的时候，',
+      '畑を馬で走っていたら、'),
+    c(2.7, 99, 'I saw a buffalo on the horizon.', 'sah ich am Horizont einen Büffel.',
+      'vi un búfalo en el horizonte.', 'j’ai vu un bison à l’horizon.',
+      'ho visto un bufalo all’orizzonte.', 'vi um búfalo no horizonte.',
+      'я увидела на горизонте бизона.', 'رأيتُ جاموسًا في الأفق.', '看见地平线上有一头野牛。',
+      '地平線にバッファローが見えたの。'),
+  ],
+  PP + 'bg38.mp4': [
+    c(2.7, 4.7, 'I was digging a tunnel all morning.', 'Ich habe den ganzen Morgen einen Tunnel gegraben.',
+      'Estuve cavando un túnel toda la mañana.', 'J’ai creusé un tunnel toute la matinée.',
+      'Ho scavato un tunnel tutta la mattina.', 'Passei a manhã toda cavando um túnel.',
+      'Я всё утро копал туннель.', 'كنتُ أحفر نفقًا طوال الصباح.', '我一上午都在挖隧道。',
+      '午前中ずっとトンネルを掘ってたんだ。'),
+    c(4.9, 99, 'It was pretty hard work, my friend.', 'Das war ganz schön harte Arbeit, mein Freund.',
+      'Fue un trabajo bastante duro, amigo.', 'C’était plutôt dur, mon ami.',
+      'È stato un lavoro piuttosto duro, amico mio.', 'Foi um trabalho bem pesado, meu amigo.',
+      'Тяжёлая была работа, друг мой.', 'كان عملًا شاقًا يا صديقي.', '这活儿可真累啊，朋友。',
+      'かなりきつい仕事だったよ、友よ。'),
+  ],
+  PP + 'bg09.mp4': [
+    c(0.9, 4.2, 'So, what were they doing during the eclipse yesterday?',
+      'Und, was haben sie gestern während der Sonnenfinsternis gemacht?',
+      'Entonces, ¿qué estaban haciendo durante el eclipse de ayer?',
+      'Alors, qu’est-ce qu’ils faisaient pendant l’éclipse hier ?',
+      'Allora, cosa stavano facendo ieri durante l’eclissi?',
+      'E aí, o que eles estavam fazendo durante o eclipse ontem?',
+      'Ну и что они делали вчера во время затмения?',
+      'إذن، ماذا كانوا يفعلون أثناء الكسوف أمس؟', '那么，昨天日食的时候他们在干什么？',
+      'それで、きのうの日食のとき、みんな何をしてたの？'),
+    c(5.3, 99, 'I was just staring at the square sun.', 'Ich habe nur die eckige Sonne angestarrt.',
+      'Yo solo estaba mirando el sol cuadrado.', 'Moi, je regardais juste le soleil carré.',
+      'Io stavo solo fissando il sole quadrato.', 'Eu só estava olhando para o sol quadrado.',
+      'Я просто смотрел на квадратное солнце.', 'كنتُ أحدّق فقط في الشمس المربعة.',
+      '我只是一直盯着那个方形的太阳。', '僕は四角い太陽をじっと見てただけだよ。'),
+  ],
+  PP + 'bg36.mp4': [
+    c(3.1, 5.4, 'What were you doing when I called last night?',
+      'Was hast du gemacht, als ich gestern Abend angerufen habe?',
+      '¿Qué estabas haciendo cuando te llamé anoche?',
+      'Qu’est-ce que tu faisais quand j’ai appelé hier soir ?',
+      'Cosa stavi facendo quando ti ho chiamato ieri sera?',
+      'O que você estava fazendo quando eu liguei ontem à noite?',
+      'Что ты делал, когда я звонил вчера вечером?',
+      'ماذا كنتَ تفعل عندما اتصلتُ بك الليلة الماضية؟', '昨晚我打电话的时候你在干什么？',
+      'ゆうべ電話したとき、何してたの？'),
+    c(5.6, 99, 'I was busy fighting off a zombie horde outside.',
+      'Ich war draußen damit beschäftigt, eine Zombiehorde abzuwehren.',
+      'Estaba ocupado luchando contra una horda de zombis afuera.',
+      'J’étais occupé à repousser une horde de zombies dehors.',
+      'Ero impegnato a respingere un’orda di zombie qui fuori.',
+      'Eu estava ocupado lutando contra uma horda de zumbis lá fora.',
+      'Я был занят — отбивался от толпы зомби на улице.',
+      'كنتُ مشغولًا بصدّ جيش من الزومبي في الخارج.', '我在外面忙着打退一大群僵尸。',
+      '外でゾンビの群れと戦うのにいそがしかったんだ。'),
+  ],
+  PP + 'bg11.mp4': [
+    c(1.7, 4.6, 'Where did they say the nearest store was?',
+      'Wo, haben sie gesagt, ist der nächste Laden?',
+      '¿Dónde dijeron que estaba la tienda más cercana?',
+      'Ils ont dit que le magasin le plus proche était où ?',
+      'Dove hanno detto che era il negozio più vicino?',
+      'Onde disseram que ficava a loja mais próxima?',
+      'Где, они сказали, ближайший магазин?',
+      'أين قالوا إن أقرب متجر يقع؟', '他们说最近的商店在哪儿来着？',
+      'いちばん近いお店はどこだって言ってた？'),
+    c(5.0, 99, 'I wasn’t listening. I’m sorry.', 'Ich habe nicht zugehört. Tut mir leid.',
+      'No estaba escuchando. Lo siento.', 'Je n’écoutais pas. Désolé.',
+      'Non stavo ascoltando. Scusa.', 'Eu não estava prestando atenção. Desculpa.',
+      'Я не слушал. Извини.', 'لم أكن أستمع. آسف.', '我刚才没在听。对不起。',
+      '聞いてなかった。ごめんね。'),
+  ],
+  PP + 'bg05.mp4': [
+    c(2.7, 5.5, 'No, we were climbing at eight o’clock, so we were.',
+      'Nein, wir sind um acht Uhr geklettert, wirklich.',
+      'No, a las ocho estábamos escalando, de verdad.',
+      'Non, à huit heures on grimpait, je te dis.',
+      'No, alle otto stavamo arrampicando, davvero.',
+      'Não, às oito horas a gente estava escalando, sim.',
+      'Нет, в восемь часов мы лазали по скалам, вот так.',
+      'لا، كنا نتسلّق في الساعة الثامنة، حقًا.', '不，八点钟的时候我们在攀岩，真的。',
+      'ちがうよ、八時にはぼくたち山登りしてたんだ、ほんとに。'),
+    c(5.6, 99, 'We weren’t fishing at all!', 'Wir haben überhaupt nicht geangelt!',
+      '¡No estábamos pescando para nada!', 'On ne pêchait pas du tout !',
+      'Non stavamo affatto pescando!', 'A gente não estava pescando nada!',
+      'Мы вовсе не рыбачили!', 'لم نكن نصطاد السمك أبدًا!', '我们根本没在钓鱼！',
+      '釣りなんて全然してなかったよ！'),
+  ],
+  PP + 'bg08.mp4': [
+    c(0.0, 1.6, 'We need to find shelter soon.', 'Wir müssen bald einen Unterschlupf finden.',
+      'Tenemos que encontrar refugio pronto.', 'Il faut vite trouver un abri.',
+      'Dobbiamo trovare un riparo presto.', 'Precisamos achar um abrigo logo.',
+      'Нам надо скорее найти укрытие.', 'يجب أن نجد مأوى قريبًا.', '我们得赶快找个地方躲一躲。',
+      '早くかくれる場所を見つけなきゃ。'),
+    c(1.7, 3.9, 'Wait, look over there in the tall grass.', 'Warte, schau mal da drüben im hohen Gras.',
+      'Espera, mira allí, en la hierba alta.', 'Attends, regarde là-bas, dans les hautes herbes.',
+      'Aspetta, guarda laggiù nell’erba alta.', 'Espera, olha ali no capim alto.',
+      'Стой, смотри — вон там, в высокой траве.', 'انتظر، انظر هناك في العشب الطويل.',
+      '等等，看那边的高草丛里。', '待って、あそこの高い草の中を見て。'),
+    c(4.4, 99, 'I think they might be hunting us.', 'Ich glaube, die jagen uns vielleicht.',
+      'Creo que nos están cazando.', 'Je crois qu’ils nous chassent.',
+      'Credo che ci stiano dando la caccia.', 'Acho que eles estão caçando a gente.',
+      'Кажется, они на нас охотятся.', 'أظن أنهم ربما يطاردوننا.', '我觉得它们可能在追捕我们。',
+      'あいつら、ぼくたちをねらってるのかも。'),
+  ],
+  PP + 'bg18.mp4': [
+    c(5.0, 99, 'Hey, you dropped this on the ground!', 'Hey, das hast du auf den Boden fallen lassen!',
+      '¡Eh, se te cayó esto al suelo!', 'Hé, tu as fait tomber ça par terre !',
+      'Ehi, ti è caduto questo per terra!', 'Ei, você deixou cair isto no chão!',
+      'Эй, ты уронил это на землю!', 'مرحبًا، لقد أسقطتَ هذا على الأرض!', '嘿，你的东西掉地上了！',
+      'ねえ、これ地面に落としたよ！'),
+  ],
+  PP + 'bg27.mp4': [
+    c(1.8, 99, 'What was I doing?', 'Was habe ich gerade gemacht?', '¿Qué estaba haciendo yo?',
+      'Qu’est-ce que je faisais, déjà ?', 'Cosa stavo facendo?', 'O que eu estava fazendo mesmo?',
+      'Что я делал?', 'ماذا كنتُ أفعل؟', '我刚才在干什么来着？', 'あれ、ぼく何してたんだっけ？'),
+  ],
+  PP + 'bg24.mp4': [
+    c(4.9, 99, 'We sure did bake a lot of bread, didn’t we, honey?',
+      'Wir haben echt viel Brot gebacken, was, Schatz?',
+      'Sí que horneamos mucho pan, ¿verdad, cariño?',
+      'On a vraiment fait cuire beaucoup de pain, hein, chéri ?',
+      'Abbiamo proprio sfornato un sacco di pane, vero, tesoro?',
+      'A gente assou muito pão mesmo, não foi, querido?',
+      'Ну мы и напекли хлеба, правда, дорогой?',
+      'لقد خبزنا الكثير من الخبز، أليس كذلك يا عزيزي؟', '我们真是烤了好多面包啊，对吧，亲爱的？',
+      'ほんとにたくさんパンを焼いたね、ねえ、あなた？'),
+  ],
+  PP + 'bg25.mp4': [
+    c(1.0, 2.1, 'What do you have there?', 'Was hast du da?', '¿Qué tienes ahí?', 'Qu’est-ce que tu as là ?',
+      'Cos’hai lì?', 'O que você tem aí?', 'Что это у тебя?', 'ماذا لديك هناك؟', '你拿着什么？',
+      'それ、なに持ってるの？'),
+    c(2.2, 4.1, 'Something special for tonight?', 'Etwas Besonderes für heute Abend?',
+      '¿Algo especial para esta noche?', 'Quelque chose de spécial pour ce soir ?',
+      'Qualcosa di speciale per stasera?', 'Algo especial para hoje à noite?',
+      'Что-то особенное на этот вечер?', 'شيء مميز لهذه الليلة؟', '今晚的特别礼物吗？',
+      '今夜のための特別なもの？'),
+    c(4.2, 7.0, 'To the best view in the world!', 'Auf die schönste Aussicht der Welt!',
+      '¡Por la mejor vista del mundo!', 'À la plus belle vue du monde !',
+      'Alla vista più bella del mondo!', 'À melhor vista do mundo!',
+      'За самый лучший вид на свете!', 'نخب أجمل منظر في العالم!', '敬世界上最美的风景！',
+      '世界一のながめに乾杯！'),
+    c(8.2, 99, 'Quick, make a wish!', 'Schnell, wünsch dir was!', '¡Rápido, pide un deseo!',
+      'Vite, fais un vœu !', 'Presto, esprimi un desiderio!', 'Rápido, faz um pedido!',
+      'Скорее, загадай желание!', 'بسرعة، تمنَّ أمنية!', '快，许个愿！', '早く、願いごとをして！'),
+  ],
 }
 
 DECKS = {
   'blockcamp-present-simple.html': PS,
   'blockcamp-present-continuous.html': PC,
   'blockcamp-past-simple.html': PA,
+  'blockcamp-past-continuous.html': PP,
 }
 
 HERE = os.path.dirname(os.path.abspath(__file__))

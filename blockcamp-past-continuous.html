@@ -209,6 +209,21 @@ html, body {
     linear-gradient(180deg, var(--wash-edge) 0%, var(--wash-mid) 20%,
                             var(--wash-mid) 80%, var(--wash-edge) 100%);
 }
+/* A correct answer can bring the slide's picture to life (data-clip). The clip
+   opens on the plate's exact frame, so it sits between the picture and the
+   wash at the picture's own strength and the handover cannot be seen.
+   THE STILL MUST GO WHILE THE CLIP SHOWS. Both are translucent, so with the
+   still left in place it showed through the moving clip as a ghost frame.
+   The swap is instant on purpose: a fade would dip the picture, and the
+   first frame is the still, so a cut is invisible. There are two clip
+   elements so a looping slide can cut from one clip's last frame straight
+   onto the next one's first. */
+.bg-clip {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  opacity: 0; filter: saturate(0.92); pointer-events: none;
+}
+.bg-clip.run { opacity: var(--bg-opacity); }
+.bg-layer.clip-on::before { opacity: 0; }
 /* The cover slide shows the hero at FULL strength — no wash, no dimming. */
 .stage.on-cover .bg-layer::before { opacity: 1; filter: none; }
 /* Centre scrim: guarantees cover-text contrast over ANY hero — light, dark,
@@ -544,6 +559,41 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
   color: var(--text); }
 .stage.on-cover .part-link { opacity: .9; }
 
+/* ── CLIP SUBTITLES ── */
+/* Captions for what is said in a correct-answer clip.
+   They sit low and centred, over the picture but above the deck bar, and only
+   while a clip with a cue is playing. The CC menu beside the language picker
+   chooses the subtitle language on its own, because a learner reading the
+   deck in German may still want the English words they hear. */
+.clip-cap {
+  position: absolute; z-index: 4; left: 50%; bottom: 72px;
+  transform: translateX(-50%); max-width: 820px; width: max-content;
+  padding: 8px 18px; border-radius: 8px; text-align: center;
+  font-family: var(--font-read, var(--font-ui)); font-size: 24px; line-height: 1.3;
+  color: var(--text); background: var(--scrim);
+  pointer-events: none; opacity: 0; transition: opacity .12s linear;
+}
+.clip-cap.show { opacity: 1; }
+.cc-select {
+  font-family: var(--font-mono); font-size: 12px;
+  background: var(--scrim); color: var(--text);
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  border-radius: 6px; padding: 6px 10px; cursor: pointer;
+}
+.cc-select:focus { outline: 1px solid var(--accent); }
+.clip-replay {
+  position: absolute; z-index: 4; left: 26px; bottom: 72px;
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase;
+  background: var(--scrim); color: var(--text); cursor: pointer;
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  border-radius: 6px; padding: 7px 12px;
+  opacity: 0; pointer-events: none; transition: opacity .2s linear;
+}
+.clip-replay.show { opacity: 1; pointer-events: auto; }
+.clip-replay:hover { background: var(--accent); color: var(--void); }
+.clip-replay:focus-visible { outline: 1px solid var(--accent); }
+@media print { .clip-replay, .clip-cap, .cc-select { display: none !important; } }
+/* ── /CLIP SUBTITLES ── */
 /* ── RESULTS ── */
 .score-big {
   font-family: var(--font-display); font-size: 84px; font-weight: 900;
@@ -891,7 +941,7 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
     width: 1280px; height: auto;      /* let the slides stack into pages */
     overflow: visible; box-shadow: none;
   }
-  .bg-layer, .deck-bar, .lang-select, .nav-btn, .deck-rail { display: none !important; }
+  .bg-layer, .bg-clip, .deck-bar, .lang-select, .nav-btn, .deck-rail { display: none !important; }
   /* A delayed animation must never decide what lands on a printed page. */
   .slide.is-active .card,
   .slide.is-active .card + .card,
@@ -2074,7 +2124,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
   <div class="stage" id="stage">
 
     <!-- Background pattern: driven entirely by --hero in the CSS above. -->
-    <div class="bg-layer" role="presentation"></div>
+    <div class="bg-layer" role="presentation"><video class="bg-clip" playsinline preload="none" aria-hidden="true"></video><video class="bg-clip" playsinline preload="none" aria-hidden="true"></video></div>
 
     <!-- ══════════════════════════════════════════════════════════
          REPLACE 2 of 2: SLIDES
@@ -2274,7 +2324,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="mc" data-bg="past-continuous-time-signals/bg15.jpg" data-side="left" data-vpos="top">
+    <section class="slide" data-type="mc" data-bg="past-continuous-time-signals/bg15.jpg" data-clip="past-continuous-time-signals/bg15.mp4" data-side="left" data-vpos="top">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="qEyebrow">Practice</span> &middot; 1 / 6</div>
         <h2 class="slide-title" data-i18n="qTitleSpell">Spell the -ing form</h2>
@@ -2293,7 +2343,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="mc" data-bg="past-continuous-time-signals/bg38.jpg" data-side="right" data-vpos="bottom" data-nudge="up">
+    <section class="slide" data-type="mc" data-bg="past-continuous-time-signals/bg38.jpg" data-clip="past-continuous-time-signals/bg38.mp4" data-side="right" data-vpos="bottom" data-nudge="up">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="qEyebrow">Practice</span> &middot; 2 / 6</div>
         <h2 class="slide-title" data-i18n="qTitleSpell">Spell the -ing form</h2>
@@ -2312,7 +2362,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="mc" data-bg="past-continuous-time-signals/bg09.jpg" data-side="right" data-vpos="bottom" data-nudge="up">
+    <section class="slide" data-type="mc" data-bg="past-continuous-time-signals/bg09.jpg" data-clip="past-continuous-time-signals/bg09.mp4" data-side="right" data-vpos="bottom" data-nudge="up">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="qEyebrow">Practice</span> &middot; 3 / 6</div>
         <h2 class="slide-title" data-i18n="qTitleForm">Choose the right form</h2>
@@ -2331,7 +2381,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="mc" data-bg="past-continuous-time-signals/bg36.jpg" data-side="right" data-vpos="top">
+    <section class="slide" data-type="mc" data-bg="past-continuous-time-signals/bg36.jpg" data-clip="past-continuous-time-signals/bg36.mp4" data-side="right" data-vpos="top">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="qEyebrow">Practice</span> &middot; 4 / 6</div>
         <h2 class="slide-title" data-i18n="qTitleAsk">Asking and saying no</h2>
@@ -2350,7 +2400,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="mc" data-bg="past-continuous-time-signals/bg11.jpg" data-side="left" data-vpos="top">
+    <section class="slide" data-type="mc" data-bg="past-continuous-time-signals/bg11-clip.jpg" data-clip="past-continuous-time-signals/bg11.mp4" data-side="left" data-vpos="top">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="qEyebrow">Practice</span> &middot; 5 / 6</div>
         <h2 class="slide-title" data-i18n="qTitleAsk">Asking and saying no</h2>
@@ -2369,7 +2419,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="mc" data-bg="past-continuous-time-signals/bg05.jpg" data-side="left" data-vpos="top">
+    <section class="slide" data-type="mc" data-bg="past-continuous-time-signals/bg05-clip.jpg" data-clip="past-continuous-time-signals/bg05.mp4" data-side="left" data-vpos="top">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="qEyebrow">Practice</span> &middot; 6 / 6</div>
         <h2 class="slide-title" data-i18n="qTitleForm">Choose the right form</h2>
@@ -2388,7 +2438,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="sort" data-bg="past-continuous-time-signals/bg08.jpg" data-side="right" data-vpos="top">
+    <section class="slide" data-type="sort" data-bg="past-continuous-time-signals/bg08.jpg" data-clip="past-continuous-time-signals/bg08.mp4" data-side="right" data-vpos="top">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="sortEyebrow">Practice</div>
         <h2 class="slide-title" data-i18n="sortTitle">&lsquo;was&rsquo;, or &lsquo;were&rsquo;?</h2>
@@ -2411,7 +2461,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="match" data-bg="past-continuous-time-signals/bg18.jpg" data-side="right" data-vpos="bottom">
+    <section class="slide" data-type="match" data-bg="past-continuous-time-signals/bg18.jpg" data-clip="past-continuous-time-signals/bg18.mp4" data-side="right" data-vpos="bottom">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="matchEyebrow">Practice</div>
         <h2 class="slide-title" data-i18n="matchTitle">Match the -ing form</h2>
@@ -2432,7 +2482,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="gap" data-bg="past-continuous-time-signals/bg27.jpg" data-side="left" data-vpos="top">
+    <section class="slide" data-type="gap" data-bg="past-continuous-time-signals/bg27.jpg" data-clip="past-continuous-time-signals/bg27.mp4" data-side="left" data-vpos="top">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="gap1Eyebrow">Practice</span> &middot; 1 / 2</div>
         <h2 class="slide-title" data-i18n="gap1Title">Spell the -ing form</h2>
@@ -2488,7 +2538,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="order" data-bg="past-continuous-time-signals/bg24.jpg" data-side="right" data-vpos="top">
+    <section class="slide" data-type="order" data-bg="past-continuous-time-signals/bg24-clip.jpg" data-clip="past-continuous-time-signals/bg24.mp4" data-side="right" data-vpos="top">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="ord1Eyebrow">Practice</div>
         <h2 class="slide-title" data-i18n="ord1Title">Build the sentence</h2>
@@ -2504,7 +2554,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="order" data-bg="past-continuous-time-signals/bg33.jpg" data-side="center" data-vpos="top">
+    <section class="slide" data-type="order" data-bg="past-continuous-time-signals/bg33.jpg" data-clip="past-continuous-time-signals/bg33.mp4" data-side="center" data-vpos="top">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="ord1Eyebrow">Practice</div>
         <h2 class="slide-title" data-i18n="ord1Title">Build the sentence</h2>
@@ -2520,7 +2570,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="results" data-bg="past-continuous-time-signals/bg25.jpg" data-side="left">
+    <section class="slide" data-type="results" data-bg="past-continuous-time-signals/bg25.jpg" data-clip="past-continuous-time-signals/bg25.mp4" data-clip-auto data-side="left">
       <div class="slide-body" style="align-items:center;text-align:center">
         <div class="score-big"><span id="scoreVal">0</span><span class="dim" style="font-size:34px">/<span id="scoreMax">0</span></span></div>
         <p class="prose" style="margin-top:18px" id="scoreMsg"></p>
@@ -3824,6 +3874,11 @@ function show(n) {
   // under the wash — so extra artwork never becomes a pasted-in box.
   stage.style.setProperty('--hero', slides[idx].dataset.bg
     ? `url('${slides[idx].dataset.bg}')` : '');
+  clipPark(); clipArm(slides[idx]);
+  if (slides[idx].hasAttribute('data-clip-auto')) {
+    const here = slides[idx];
+    setTimeout(() => clipPlay(here), 1200);
+  }
   // In branch mode idx/length is meaningless — a learner sees roughly half the
   // nodes — so progress and the counter come from the node itself.
   const cur = slides[idx];
@@ -3880,6 +3935,95 @@ function updateScoreChip() {
 }
 
 /* ── Answer handling ── */
+/* Correct-answer clips. A slide with data-clip fetches its clip when it is
+   shown and plays it once when the learner gets it right (anything that
+   reports through feedback() with ok, plus checkGaps below); the clip then
+   holds on its last frame. On a gap slide the clip illustrates one sentence,
+   so the gap marked data-clip-key decides; without one, every gap must be
+   right. A slide marked data-clip-auto plays 1.2 s after it is shown instead.
+   data-clip-loop makes it go round: its own clip, then the listed ones, then
+   its own again. data-clip-high joins the round, second, when the score is in
+   the top two bands (75%+). The first round has sound, later rounds are
+   silent: this loops under the speaking task. Leaving the slide rewinds.
+   Never under reduced motion or Save-Data, and a refused autoplay or a load
+   error leaves the still picture. */
+var clips = [...document.querySelectorAll('.bg-clip')];
+var bgClip = clips[0];
+var clipList = [], clipAt = 0, clipRound = 0;
+var clipCalm = (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) ||
+               !!(navigator.connection && navigator.connection.saveData);
+clips.forEach(v => {
+  v.addEventListener('playing', () => {
+    if (v !== bgClip) return;
+    v.classList.add('run');
+    v.parentNode.classList.add('clip-on');
+    clips.forEach(o => { if (o !== v) { o.pause(); o.classList.remove('run'); } });
+    clipQueue();
+  });
+  v.addEventListener('ended', () => { if (v === bgClip) clipNext(); });
+});
+function clipOther() { return clips.find(v => v !== bgClip); }
+function clipArm(slide) {
+  if (clipCalm || !bgClip || !slide || !slide.dataset.clip) return;
+  if (bgClip.getAttribute('src') !== slide.dataset.clip) {
+    bgClip.src = slide.dataset.clip;
+    bgClip.preload = 'auto';
+  }
+}
+function clipPark() {
+  clips.forEach(v => {
+    v.pause();
+    v.classList.remove('run');
+    if (v.readyState) v.currentTime = 0;
+  });
+  if (bgClip) bgClip.parentNode.classList.remove('clip-on');
+  clipList = []; clipAt = 0; clipRound = 0;
+}
+/* The answer click is the user gesture that lets a browser play sound, so
+   play() runs inside it. If sound is still refused (iOS on a timed clip,
+   say), play muted rather than not at all. */
+function clipStart(v, slide, muted) {
+  v.muted = muted;
+  const p = v.play();
+  if (p && p.catch) p.catch(() => {
+    if (slides[idx] !== slide || v.muted) return;
+    v.muted = true;
+    const q = v.play();
+    if (q && q.catch) q.catch(() => {});
+  });
+}
+function clipPlay(slide) {
+  if (clipCalm || !bgClip || !slide.dataset.clip || slides[idx] !== slide) return;
+  clipArm(slide);
+  if (slide.dataset.clipLoop) {
+    clipList = [slide.dataset.clip,
+                (typeof scorePct === 'function' && scorePct() >= .75) ? slide.dataset.clipHigh : '',
+                ...slide.dataset.clipLoop.split(/\s+/)].filter(Boolean);
+    clipAt = 0; clipRound = 0;
+  }
+  clipStart(bgClip, slide, false);
+}
+// While one clip of a round plays, the other element fetches the next.
+function clipQueue() {
+  if (clipList.length < 2) return;
+  const next = clipOther(), src = clipList[(clipAt + 1) % clipList.length];
+  if (next.getAttribute('src') !== src) { next.src = src; next.preload = 'auto'; }
+  else if (next.readyState) next.currentTime = 0;
+}
+// The ended clip keeps its last frame on screen until the next one is playing.
+function clipNext() {
+  if (clipList.length < 2 || document.hidden) return;
+  clipAt = (clipAt + 1) % clipList.length;
+  if (clipAt === 0) clipRound++;
+  bgClip = clipOther();
+  clipStart(bgClip, slides[idx], clipRound > 0);
+}
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) { clips.forEach(v => v.pause()); return; }
+  if (!clipList.length || !bgClip.classList.contains('run')) return;
+  if (bgClip.ended) clipNext(); else clipStart(bgClip, slides[idx], true);
+});
+
 function award(slide, ok) {
   if (answered.has(slide)) return;
   answered.add(slide);
@@ -3888,6 +4032,7 @@ function award(slide, ok) {
 }
 
 function feedback(slide, ok, extra, ownExplain) {
+  if (ok) clipPlay(slide);
   const el = slide.querySelector('.feedback');
   if (!el) return;
   // An option's own explanation wins: telling a learner why THEIR answer was
@@ -4473,6 +4618,9 @@ function checkGaps(slide) {
   const btn = slide.querySelector('[data-action="check"]');
   if (btn) btn.disabled = true;
   updateScoreChip();
+  const clipKey = slide.querySelector('.gap[data-clip-key]');
+  if (clipKey ? clipKey.classList.contains('correct') : !slide.querySelector('.gap.wrong'))
+    clipPlay(slide);
   // In branch mode a gap slide may pay into the ledger, but only when every
   // gap on it is right. Without this a scored slide costs the learner effort
   // and returns nothing to the state that picks their ending.
@@ -4818,5 +4966,98 @@ document.addEventListener('click', function (e) {
   });
 })();
 </script>
+<!-- CLIP SUBTITLES -->
+<script>window.CLIP_SUBS={"past-continuous-time-signals/bg15.mp4":[[0.0,2.3,{"en":"While I was riding through the fields,","de":"Während ich durch die Felder ritt,","es":"Mientras cabalgaba por los campos,","fr":"Pendant que je traversais les champs à cheval,","it":"Mentre cavalcavo per i campi,","pt":"Enquanto eu cavalgava pelos campos,","ru":"Пока я скакала по полям,","ar":"بينما كنتُ أركب الحصان عبر الحقول،","zh":"我骑马穿过田野的时候，","ja":"畑を馬で走っていたら、"}],[2.7,99,{"en":"I saw a buffalo on the horizon.","de":"sah ich am Horizont einen Büffel.","es":"vi un búfalo en el horizonte.","fr":"j’ai vu un bison à l’horizon.","it":"ho visto un bufalo all’orizzonte.","pt":"vi um búfalo no horizonte.","ru":"я увидела на горизонте бизона.","ar":"رأيتُ جاموسًا في الأفق.","zh":"看见地平线上有一头野牛。","ja":"地平線にバッファローが見えたの。"}]],"past-continuous-time-signals/bg38.mp4":[[2.7,4.7,{"en":"I was digging a tunnel all morning.","de":"Ich habe den ganzen Morgen einen Tunnel gegraben.","es":"Estuve cavando un túnel toda la mañana.","fr":"J’ai creusé un tunnel toute la matinée.","it":"Ho scavato un tunnel tutta la mattina.","pt":"Passei a manhã toda cavando um túnel.","ru":"Я всё утро копал туннель.","ar":"كنتُ أحفر نفقًا طوال الصباح.","zh":"我一上午都在挖隧道。","ja":"午前中ずっとトンネルを掘ってたんだ。"}],[4.9,99,{"en":"It was pretty hard work, my friend.","de":"Das war ganz schön harte Arbeit, mein Freund.","es":"Fue un trabajo bastante duro, amigo.","fr":"C’était plutôt dur, mon ami.","it":"È stato un lavoro piuttosto duro, amico mio.","pt":"Foi um trabalho bem pesado, meu amigo.","ru":"Тяжёлая была работа, друг мой.","ar":"كان عملًا شاقًا يا صديقي.","zh":"这活儿可真累啊，朋友。","ja":"かなりきつい仕事だったよ、友よ。"}]],"past-continuous-time-signals/bg09.mp4":[[0.9,4.2,{"en":"So, what were they doing during the eclipse yesterday?","de":"Und, was haben sie gestern während der Sonnenfinsternis gemacht?","es":"Entonces, ¿qué estaban haciendo durante el eclipse de ayer?","fr":"Alors, qu’est-ce qu’ils faisaient pendant l’éclipse hier ?","it":"Allora, cosa stavano facendo ieri durante l’eclissi?","pt":"E aí, o que eles estavam fazendo durante o eclipse ontem?","ru":"Ну и что они делали вчера во время затмения?","ar":"إذن، ماذا كانوا يفعلون أثناء الكسوف أمس؟","zh":"那么，昨天日食的时候他们在干什么？","ja":"それで、きのうの日食のとき、みんな何をしてたの？"}],[5.3,99,{"en":"I was just staring at the square sun.","de":"Ich habe nur die eckige Sonne angestarrt.","es":"Yo solo estaba mirando el sol cuadrado.","fr":"Moi, je regardais juste le soleil carré.","it":"Io stavo solo fissando il sole quadrato.","pt":"Eu só estava olhando para o sol quadrado.","ru":"Я просто смотрел на квадратное солнце.","ar":"كنتُ أحدّق فقط في الشمس المربعة.","zh":"我只是一直盯着那个方形的太阳。","ja":"僕は四角い太陽をじっと見てただけだよ。"}]],"past-continuous-time-signals/bg36.mp4":[[3.1,5.4,{"en":"What were you doing when I called last night?","de":"Was hast du gemacht, als ich gestern Abend angerufen habe?","es":"¿Qué estabas haciendo cuando te llamé anoche?","fr":"Qu’est-ce que tu faisais quand j’ai appelé hier soir ?","it":"Cosa stavi facendo quando ti ho chiamato ieri sera?","pt":"O que você estava fazendo quando eu liguei ontem à noite?","ru":"Что ты делал, когда я звонил вчера вечером?","ar":"ماذا كنتَ تفعل عندما اتصلتُ بك الليلة الماضية؟","zh":"昨晚我打电话的时候你在干什么？","ja":"ゆうべ電話したとき、何してたの？"}],[5.6,99,{"en":"I was busy fighting off a zombie horde outside.","de":"Ich war draußen damit beschäftigt, eine Zombiehorde abzuwehren.","es":"Estaba ocupado luchando contra una horda de zombis afuera.","fr":"J’étais occupé à repousser une horde de zombies dehors.","it":"Ero impegnato a respingere un’orda di zombie qui fuori.","pt":"Eu estava ocupado lutando contra uma horda de zumbis lá fora.","ru":"Я был занят — отбивался от толпы зомби на улице.","ar":"كنتُ مشغولًا بصدّ جيش من الزومبي في الخارج.","zh":"我在外面忙着打退一大群僵尸。","ja":"外でゾンビの群れと戦うのにいそがしかったんだ。"}]],"past-continuous-time-signals/bg11.mp4":[[1.7,4.6,{"en":"Where did they say the nearest store was?","de":"Wo, haben sie gesagt, ist der nächste Laden?","es":"¿Dónde dijeron que estaba la tienda más cercana?","fr":"Ils ont dit que le magasin le plus proche était où ?","it":"Dove hanno detto che era il negozio più vicino?","pt":"Onde disseram que ficava a loja mais próxima?","ru":"Где, они сказали, ближайший магазин?","ar":"أين قالوا إن أقرب متجر يقع؟","zh":"他们说最近的商店在哪儿来着？","ja":"いちばん近いお店はどこだって言ってた？"}],[5.0,99,{"en":"I wasn’t listening. I’m sorry.","de":"Ich habe nicht zugehört. Tut mir leid.","es":"No estaba escuchando. Lo siento.","fr":"Je n’écoutais pas. Désolé.","it":"Non stavo ascoltando. Scusa.","pt":"Eu não estava prestando atenção. Desculpa.","ru":"Я не слушал. Извини.","ar":"لم أكن أستمع. آسف.","zh":"我刚才没在听。对不起。","ja":"聞いてなかった。ごめんね。"}]],"past-continuous-time-signals/bg05.mp4":[[2.7,5.5,{"en":"No, we were climbing at eight o’clock, so we were.","de":"Nein, wir sind um acht Uhr geklettert, wirklich.","es":"No, a las ocho estábamos escalando, de verdad.","fr":"Non, à huit heures on grimpait, je te dis.","it":"No, alle otto stavamo arrampicando, davvero.","pt":"Não, às oito horas a gente estava escalando, sim.","ru":"Нет, в восемь часов мы лазали по скалам, вот так.","ar":"لا، كنا نتسلّق في الساعة الثامنة، حقًا.","zh":"不，八点钟的时候我们在攀岩，真的。","ja":"ちがうよ、八時にはぼくたち山登りしてたんだ、ほんとに。"}],[5.6,99,{"en":"We weren’t fishing at all!","de":"Wir haben überhaupt nicht geangelt!","es":"¡No estábamos pescando para nada!","fr":"On ne pêchait pas du tout !","it":"Non stavamo affatto pescando!","pt":"A gente não estava pescando nada!","ru":"Мы вовсе не рыбачили!","ar":"لم نكن نصطاد السمك أبدًا!","zh":"我们根本没在钓鱼！","ja":"釣りなんて全然してなかったよ！"}]],"past-continuous-time-signals/bg08.mp4":[[0.0,1.6,{"en":"We need to find shelter soon.","de":"Wir müssen bald einen Unterschlupf finden.","es":"Tenemos que encontrar refugio pronto.","fr":"Il faut vite trouver un abri.","it":"Dobbiamo trovare un riparo presto.","pt":"Precisamos achar um abrigo logo.","ru":"Нам надо скорее найти укрытие.","ar":"يجب أن نجد مأوى قريبًا.","zh":"我们得赶快找个地方躲一躲。","ja":"早くかくれる場所を見つけなきゃ。"}],[1.7,3.9,{"en":"Wait, look over there in the tall grass.","de":"Warte, schau mal da drüben im hohen Gras.","es":"Espera, mira allí, en la hierba alta.","fr":"Attends, regarde là-bas, dans les hautes herbes.","it":"Aspetta, guarda laggiù nell’erba alta.","pt":"Espera, olha ali no capim alto.","ru":"Стой, смотри — вон там, в высокой траве.","ar":"انتظر، انظر هناك في العشب الطويل.","zh":"等等，看那边的高草丛里。","ja":"待って、あそこの高い草の中を見て。"}],[4.4,99,{"en":"I think they might be hunting us.","de":"Ich glaube, die jagen uns vielleicht.","es":"Creo que nos están cazando.","fr":"Je crois qu’ils nous chassent.","it":"Credo che ci stiano dando la caccia.","pt":"Acho que eles estão caçando a gente.","ru":"Кажется, они на нас охотятся.","ar":"أظن أنهم ربما يطاردوننا.","zh":"我觉得它们可能在追捕我们。","ja":"あいつら、ぼくたちをねらってるのかも。"}]],"past-continuous-time-signals/bg18.mp4":[[5.0,99,{"en":"Hey, you dropped this on the ground!","de":"Hey, das hast du auf den Boden fallen lassen!","es":"¡Eh, se te cayó esto al suelo!","fr":"Hé, tu as fait tomber ça par terre !","it":"Ehi, ti è caduto questo per terra!","pt":"Ei, você deixou cair isto no chão!","ru":"Эй, ты уронил это на землю!","ar":"مرحبًا، لقد أسقطتَ هذا على الأرض!","zh":"嘿，你的东西掉地上了！","ja":"ねえ、これ地面に落としたよ！"}]],"past-continuous-time-signals/bg27.mp4":[[1.8,99,{"en":"What was I doing?","de":"Was habe ich gerade gemacht?","es":"¿Qué estaba haciendo yo?","fr":"Qu’est-ce que je faisais, déjà ?","it":"Cosa stavo facendo?","pt":"O que eu estava fazendo mesmo?","ru":"Что я делал?","ar":"ماذا كنتُ أفعل؟","zh":"我刚才在干什么来着？","ja":"あれ、ぼく何してたんだっけ？"}]],"past-continuous-time-signals/bg24.mp4":[[4.9,99,{"en":"We sure did bake a lot of bread, didn’t we, honey?","de":"Wir haben echt viel Brot gebacken, was, Schatz?","es":"Sí que horneamos mucho pan, ¿verdad, cariño?","fr":"On a vraiment fait cuire beaucoup de pain, hein, chéri ?","it":"Abbiamo proprio sfornato un sacco di pane, vero, tesoro?","pt":"A gente assou muito pão mesmo, não foi, querido?","ru":"Ну мы и напекли хлеба, правда, дорогой?","ar":"لقد خبزنا الكثير من الخبز، أليس كذلك يا عزيزي؟","zh":"我们真是烤了好多面包啊，对吧，亲爱的？","ja":"ほんとにたくさんパンを焼いたね、ねえ、あなた？"}]],"past-continuous-time-signals/bg25.mp4":[[1.0,2.1,{"en":"What do you have there?","de":"Was hast du da?","es":"¿Qué tienes ahí?","fr":"Qu’est-ce que tu as là ?","it":"Cos’hai lì?","pt":"O que você tem aí?","ru":"Что это у тебя?","ar":"ماذا لديك هناك؟","zh":"你拿着什么？","ja":"それ、なに持ってるの？"}],[2.2,4.1,{"en":"Something special for tonight?","de":"Etwas Besonderes für heute Abend?","es":"¿Algo especial para esta noche?","fr":"Quelque chose de spécial pour ce soir ?","it":"Qualcosa di speciale per stasera?","pt":"Algo especial para hoje à noite?","ru":"Что-то особенное на этот вечер?","ar":"شيء مميز لهذه الليلة؟","zh":"今晚的特别礼物吗？","ja":"今夜のための特別なもの？"}],[4.2,7.0,{"en":"To the best view in the world!","de":"Auf die schönste Aussicht der Welt!","es":"¡Por la mejor vista del mundo!","fr":"À la plus belle vue du monde !","it":"Alla vista più bella del mondo!","pt":"À melhor vista do mundo!","ru":"За самый лучший вид на свете!","ar":"نخب أجمل منظر في العالم!","zh":"敬世界上最美的风景！","ja":"世界一のながめに乾杯！"}],[8.2,99,{"en":"Quick, make a wish!","de":"Schnell, wünsch dir was!","es":"¡Rápido, pide un deseo!","fr":"Vite, fais un vœu !","it":"Presto, esprimi un desiderio!","pt":"Rápido, faz um pedido!","ru":"Скорее, загадай желание!","ar":"بسرعة، تمنَّ أمنية!","zh":"快，许个愿！","ja":"早く、願いごとをして！"}]]};</script>
+<script>
+/* CLIP SUBTITLES. window.CLIP_SUBS maps a clip's path to its cues,
+   [start, end, {en, de, es, ...}] in seconds. The CC menu picks the language
+   (or off) and is remembered per viewer; it starts in English, the language
+   being spoken. Captions follow whichever clip element is on screen. */
+(function () {
+  var SUBS = window.CLIP_SUBS || {};
+  var stage = document.getElementById('stage');
+  /* REPLAY. Once a clip has played on a slide, a button brings it back from
+     the start, with sound: the click is the gesture that allows it. It stays
+     on that slide after leaving and coming back (Innes, 2026-09-30: "some of
+     them dont have replay buttons" - leaving a slide rewinds its clip, and
+     the button used to follow the running clip, not the slide). */
+  var replay = document.createElement('button');
+  replay.type = 'button'; replay.className = 'clip-replay';
+  replay.innerHTML = '&#8635; Replay';
+  replay.setAttribute('aria-label', 'Replay the animation');
+  stage.appendChild(replay);
+  var played = new WeakSet();
+  function onSlide() { try { return slides[idx]; } catch (_) { return null; } }
+  [].forEach.call(document.querySelectorAll('.bg-clip'), function (v) {
+    v.addEventListener('playing', function () { var s = onSlide(); if (s) played.add(s); });
+  });
+  replay.addEventListener('click', function () {
+    var v = document.querySelector('.bg-clip.run');
+    if (!v) { var s = onSlide(); if (s && typeof clipPlay === 'function') clipPlay(s); return; }
+    v.currentTime = 0; v.muted = false;
+    var p = v.play();
+    if (p && p.catch) p.catch(function () { v.muted = true; v.play().catch(function () {}); });
+  });
+  (function watch() {
+    var s = onSlide();
+    replay.classList.toggle('show', !!document.querySelector('.bg-clip.run') ||
+      !!(s && s.dataset && s.dataset.clip && played.has(s)));
+    requestAnimationFrame(watch);
+  })();
+  if (!Object.keys(SUBS).length) return;
+  var cap = document.createElement('div');
+  cap.className = 'clip-cap'; cap.setAttribute('aria-hidden', 'true');
+  stage.appendChild(cap);
+  // Short codes: the deck bar is full. The full name is each option's title.
+  var NAMES = { off: 'CC off', en: 'CC EN', de: 'CC DE', es: 'CC ES', fr: 'CC FR', it: 'CC IT',
+    pt: 'CC PT', ru: 'CC RU', ar: 'CC AR', zh: 'CC ZH', ja: 'CC JA' };
+  var FULL = { off: 'Subtitles off', en: 'English', de: 'Deutsch', es: 'Español', fr: 'Français',
+    it: 'Italiano', pt: 'Português', ru: 'Русский', ar: 'العربية', zh: '中文', ja: '日本語' };
+  var sel = document.createElement('select');
+  sel.className = 'cc-select'; sel.id = 'ccSelect';
+  sel.setAttribute('aria-label', 'Subtitles');
+  Object.keys(NAMES).forEach(function (k) { var o = new Option(NAMES[k], k); o.title = FULL[k]; sel.add(o); });
+  sel.title = 'Subtitles';
+  var lang = 'en';
+  try { lang = localStorage.getItem('bc-cc') || 'en'; } catch (_) {}
+  if (!NAMES[lang]) lang = 'en';
+  sel.value = lang;
+  var anchor = document.getElementById('langSelect');
+  anchor.parentNode.insertBefore(sel, anchor.nextSibling);
+  sel.addEventListener('change', function () {
+    lang = sel.value;
+    try { localStorage.setItem('bc-cc', lang); } catch (_) {}
+    shown = null; render();
+  });
+  var shown = null;
+  function current() {
+    var vs = document.querySelectorAll('.bg-clip');
+    for (var i = 0; i < vs.length; i++) {
+      var v = vs[i];
+      if (v.classList.contains('run') && (!v.paused || v.ended)) return v;
+    }
+    return null;
+  }
+  function tick() { render(); requestAnimationFrame(tick); }
+  function render() {
+    var v = lang === 'off' ? null : current(), line = '';
+    if (v) {
+      var cues = SUBS[v.getAttribute('src')] || [], t = v.currentTime;
+      for (var i = 0; i < cues.length; i++) {
+        if (t >= cues[i][0] && t < cues[i][1]) { line = cues[i][2][lang] || cues[i][2].en || ''; break; }
+      }
+    }
+    if (line !== shown) {
+      shown = line;
+      cap.textContent = line;
+      cap.dir = lang === 'ar' ? 'rtl' : 'ltr';
+      cap.lang = lang;
+      cap.classList.toggle('show', !!line);
+    }
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
+<!-- /CLIP SUBTITLES -->
 </body>
 </html>
