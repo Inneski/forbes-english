@@ -28,6 +28,14 @@ stale copy.
   Innes, not his own MythosMap). The Sailing flocks are configured in
   `GULLS_JS` in `build_sailing.py`. Verify motion by pausing
   `document.getAnimations()` and setting `currentTime`, not by waiting.
+- **Sky** (`182b2454`): the Sherpa clouds (tools/sherpa_sky.py, imported) and
+  screen-wide gulls (`skyGulls`) in fixed layers behind the content; the
+  waterlines moved to z-index -2 beneath them; Sherpa paper halo on text.
+- **Sound** (`dd7e827f`): `lesson-template/build/sailing_sound.py` renders
+  `sailing-the-seas-of-grammar/sound/` (sea loop, five gulls, foghorn,
+  accordion waltz); `sailing_sound.js` (inlined) plays them, on by default,
+  starting on the first gesture, button bottom-left. Rates and levels are at
+  the bottom of that file. Never heard by the builder: Innes judges it by ear.
 - **Next:** the same birds on the folklore-explorer illustrated map (Leaflet)
   were handed to a session in that repo. Its map files were uncommitted
   there on 2026-10-01, another session's work in progress.
