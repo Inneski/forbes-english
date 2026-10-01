@@ -517,7 +517,34 @@ flyGulls(document.getElementById("hero-map-btn"), {
      birds: [[0, 0, 1], [-1.3, -.45, .92]]}
   ]
 });
+skyGulls(document.getElementById("gull-sky"), {
+  px: function (w) { return w < 560 ? 26 : 34; }, seed: 5,
+  flocks: [
+    {from: [-8, 78], to: [108, 22], flight: 17, cycle: 46, at: 2,
+     birds: [[0, 0, 1], [-1.5, 1.1, .95], [-1.1, -1.3, 1.05]]},
+    {from: [108, 12], to: [-8, 46], flight: 15, cycle: 46, at: 25,
+     birds: [[0, 0, 1], [-1.4, -1, .92]]},
+    {from: [30, 108], to: [52, -8], flight: 12, cycle: 70, at: 40,
+     birds: [[0, 0, 1]]}
+  ]
+});
 '''
+
+# The sky, as on every Sherpa page (Innes, 2026-10-01: "my plan was for the
+# birds to fly over the whole page and add some clouds like sherpa tensing").
+# The same nine clouds from tools/sherpa_sky.py drift across a fixed,
+# screen-sized layer; the gulls above cross the whole screen in their own
+# fixed layer just beneath it, so a cloud passes over a gull, as it would from
+# above. Both sit above the waterlines (z-index -2) and behind the content;
+# text on the paper wears the Sherpa paper halo (tools/sherpa_topo.py), so no
+# cloud, gull or waterline crosses a glyph.
+sys.path.insert(0, 'tools')
+import sherpa_sky, sherpa_topo
+SKY_CSS = ('  /* ── the sky: clouds and gulls (see build_sailing.py) ── */\n'
+           '  .gull-sky{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;}\n'
+           '  @media print{.gull-sky{display:none;}}\n'
+           '  ' + ','.join(sherpa_topo.HALO_ON) + '{text-shadow:' + sherpa_topo.HALO + ';}\n')
+SKY_EL = '<div class="gull-sky" id="gull-sky" aria-hidden="true"></div>\n' + sherpa_sky.ELEMENT
 
 # ═════════════════════════════════════════════════════════════════════
 EXTRA_CSS = '''
@@ -555,12 +582,13 @@ EXTRA_CSS = '''
    it across the page, each smoother, wider-spaced and fainter than the last,
    over a faint shallow-water tint by the shore. Each coast owns half the page,
    so the two sets never cross; behind the reading column the lines carry on
-   at 70% strength. Cards and the hero image are opaque and sit above. */
+   at 70% strength. Cards and the hero image are opaque and sit above;
+   the sky (clouds and gulls, z-index -1) passes over the water. */
 @supports ((mask-image:none) or (-webkit-mask-image:none)) and (color:color-mix(in srgb,red 50%,transparent)){
 body{position:relative;}
 body::before,body::after{
   content:"";position:absolute;top:0;bottom:0;
-  z-index:-1;pointer-events:none;
+  z-index:-2;pointer-events:none;
   background:linear-gradient(var(--accent) calc(100% - 2px),transparent 0);opacity:.22;
   -webkit-mask-repeat:no-repeat,repeat-y;mask-repeat:no-repeat,repeat-y;
   -webkit-mask-size:100% 100%,980px 1200px;mask-size:100% 100%,980px 1200px;
@@ -647,7 +675,7 @@ REPLACEMENTS = [
      '"Good first attempt. Start with the current: every preposition takes -ing."'),
     ('/* ── NOW vs WILL DIAGRAM CAMP ── */', '/* ── THE SEA CHART ── */'),
     ('// ── NOW vs WILL diagram interactivity ──', '// ── the chart, made clickable ──'),
-    ('\n</style>', EXTRA_CSS + '</style>'),
+    ('\n</style>', EXTRA_CSS + SKY_CSS + '</style>'),
     ('<div class="camp-label">The fork in the path</div>',
      '<div class="camp-label">The strait</div>'),
     ('<div class="camp-label">Trail markers</div>',
@@ -690,6 +718,14 @@ for i in range(len(EX)):
     assert r and len(r) == 9, 'missing or short translation for example %d: %s' % (i, EX[i])
     rows.append('"%d": %s' % (i, __import__('json').dumps(r, ensure_ascii=False)))
 s = re.sub(r'var EX_TR = \{.*?\};\n', 'var EX_TR = {%s};\n' % ", ".join(rows), s, count=1, flags=re.S)
+
+# ── the sky: the Sherpa clouds' style in the head, the two layers first in the body ──
+from PIL import Image
+_sizes = {k: Image.open('Sherpa Tensing/cloud-%d.webp' % k).size for k in range(1, sherpa_sky.IMAGES + 1)}
+assert s.count('</head>') == 1
+s = s.replace('</head>', sherpa_sky.block(_sizes) + '</head>', 1)
+s, n = re.subn(r'(<body\b[^>]*>\n?)', lambda m: m.group(1) + SKY_EL, s, count=1)
+assert n == 1, 'no <body> to hang the sky on'
 
 open(OUT, 'w', encoding='utf-8', newline='').write(s)
 print('wrote %s — %d examples, %d questions, %d bytes' % (OUT, len(EX), len(QUIZ), len(s)))

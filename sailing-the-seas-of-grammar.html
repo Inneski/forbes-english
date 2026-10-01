@@ -214,12 +214,13 @@
    it across the page, each smoother, wider-spaced and fainter than the last,
    over a faint shallow-water tint by the shore. Each coast owns half the page,
    so the two sets never cross; behind the reading column the lines carry on
-   at 70% strength. Cards and the hero image are opaque and sit above. */
+   at 70% strength. Cards and the hero image are opaque and sit above;
+   the sky (clouds and gulls, z-index -1) passes over the water. */
 @supports ((mask-image:none) or (-webkit-mask-image:none)) and (color:color-mix(in srgb,red 50%,transparent)){
 body{position:relative;}
 body::before,body::after{
   content:"";position:absolute;top:0;bottom:0;
-  z-index:-1;pointer-events:none;
+  z-index:-2;pointer-events:none;
   background:linear-gradient(var(--accent) calc(100% - 2px),transparent 0);opacity:.22;
   -webkit-mask-repeat:no-repeat,repeat-y;mask-repeat:no-repeat,repeat-y;
   -webkit-mask-size:100% 100%,980px 1200px;mask-size:100% 100%,980px 1200px;
@@ -279,9 +280,39 @@ body::after{left:50%;right:0;
     .diagram-stage .chart-toggle-wrap{width:720px;max-width:none;}
     .chart-scroll-hint{display:block;}
   }
+  /* ── the sky: clouds and gulls (see build_sailing.py) ── */
+  .gull-sky{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;}
+  @media print{.gull-sky{display:none;}}
+  .wordmark,h1,h1 ~ p,.camp > .camp-label,.camp > h2,.camp > p.example,.camp > p.chart-note,.btnrow > a.route-link,.tr-bar > .tr-label,.voice-bar a.ghost{text-shadow:0 0 2px var(--paper),0 0 4px var(--paper),0 0 6px var(--paper),0 0 8px var(--paper);}
 </style>
+<!-- SHERPA-SKY:start -->
+<style id="sherpa-sky">
+/* clouds drifting across the screen, seen from above (tools/sherpa_sky.py): nine clouds,
+   each on its own loop, in a fixed screen-sized layer, by transform only */
+.sherpa-sky{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;}
+.sherpa-sky i{position:absolute;left:0;background:0 0/100% 100% no-repeat;will-change:transform;animation:sherpa-sky-drift linear infinite;}
+@keyframes sherpa-sky-drift{from{transform:translateX(-100%)}to{transform:translateX(100vw)}}
+.sherpa-sky i:nth-child(1){top:8%;width:560px;height:311px;background-image:url("Sherpa%20Tensing/cloud-1.webp");animation-duration:95s;animation-delay:-10s;opacity:0.95;}
+.sherpa-sky i:nth-child(2){top:38%;width:480px;height:260px;background-image:url("Sherpa%20Tensing/cloud-2.webp");animation-duration:110s;animation-delay:-61s;opacity:0.95;}
+.sherpa-sky i:nth-child(3){top:64%;width:620px;height:339px;background-image:url("Sherpa%20Tensing/cloud-3.webp");animation-duration:85s;animation-delay:-26s;opacity:0.95;}
+.sherpa-sky i:nth-child(4){top:84%;width:430px;height:230px;background-image:url("Sherpa%20Tensing/cloud-4.webp");animation-duration:120s;animation-delay:-96s;opacity:0.9;}
+.sherpa-sky i:nth-child(5){top:20%;width:300px;height:162px;background-image:url("Sherpa%20Tensing/cloud-5.webp");animation-duration:170s;animation-delay:-34s;opacity:0.6;}
+.sherpa-sky i:nth-child(6){top:50%;width:260px;height:149px;background-image:url("Sherpa%20Tensing/cloud-6.webp");animation-duration:190s;animation-delay:-124s;opacity:0.55;}
+.sherpa-sky i:nth-child(7){top:74%;width:280px;height:156px;background-image:url("Sherpa%20Tensing/cloud-1.webp");animation-duration:180s;animation-delay:-81s;opacity:0.6;}
+.sherpa-sky i:nth-child(8){top:2%;width:240px;height:130px;background-image:url("Sherpa%20Tensing/cloud-2.webp");animation-duration:200s;animation-delay:-180s;opacity:0.5;}
+.sherpa-sky i:nth-child(9){top:92%;width:270px;height:147px;background-image:url("Sherpa%20Tensing/cloud-3.webp");animation-duration:175s;animation-delay:-9s;opacity:0.55;}
+/* the smallest phones: the far clouds only would crowd, so the near ones shrink */
+@media (max-width:560px){.sherpa-sky i{transform-origin:0 0;}.sherpa-sky i:nth-child(-n+4){scale:.7;}}
+@media (prefers-reduced-motion:reduce){.sherpa-sky i{animation-play-state:paused;}}
+@media print{.sherpa-sky{display:none;}}
+</style>
+<!-- SHERPA-SKY:end -->
 </head>
 <body>
+<div class="gull-sky" id="gull-sky" aria-hidden="true"></div>
+<!-- SHERPA-SKY-EL:start -->
+<div class="sherpa-sky" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+<!-- SHERPA-SKY-EL:end -->
 <a class="up-link" href="library.html"><span class="arw" aria-hidden="true">&larr;</span>Lesson library</a>
 
 
@@ -898,6 +929,10 @@ document.querySelectorAll("#name-bar button").forEach(function(b){
  *     }],                       //   offsets in wingspans
  *   })
  *
+ * For a sky the size of the screen use skyGulls(container, opts) with
+ * px: 34 (a wingspan in CSS px, or a function of the screen's width): it
+ * rebuilds the flocks when the screen's width changes.
+ *
  * from/to are where the LEADER crosses in and out; the route is lengthened
  * so the whole flock, shadows included, is out of the picture at both ends
  * (at the same speed), and a flock waiting for its turn is never seen.
@@ -978,7 +1013,10 @@ document.querySelectorAll("#name-bar button").forEach(function(b){
       doc.head.appendChild(st);
     }
     var aspect = opts.aspect || (container.clientWidth / Math.max(1, container.clientHeight)) || 1.5;
-    var size = opts.size || 4.6;
+    // px: a wingspan in CSS pixels (or a function of the container's width)
+    // instead of a share of the container, for a screen-sized sky
+    var px = typeof opts.px === 'function' ? opts.px(container.clientWidth) : opts.px;
+    var size = px ? px / Math.max(1, container.clientWidth) * 100 : (opts.size || 4.6);
     var rand = rng(opts.seed || 7);
     var bw = size / 100 * aspect;       // wingspan in units where the height is 1
 
@@ -1040,8 +1078,37 @@ document.querySelectorAll("#name-bar button").forEach(function(b){
     return { layer: layer, stop: function () { layer.remove(); } };
   }
 
+  // For a layer the size of the screen: the same flocks, rebuilt when the
+  // screen's width changes (headings depend on its shape), each flock picking
+  // up where it was. A change of height alone (a phone's address bar coming
+  // and going) is ignored, or the birds would jump on every scroll.
+  function skyGulls(container, opts) {
+    var now = function () { return root.performance ? root.performance.now() : Date.now(); };
+    var t0 = now(), cur = null, width = -1, timer = null;
+    function build() {
+      if (container.clientWidth === width) return;
+      width = container.clientWidth;
+      var el = (now() - t0) / 1000;
+      var o = {};
+      for (var k in opts) o[k] = opts[k];
+      o.aspect = container.clientWidth / Math.max(1, container.clientHeight);
+      o.flocks = opts.flocks.map(function (f) {
+        var g = {};
+        for (var k in f) g[k] = f[k];
+        g.at = (f.at || 0) + el;
+        return g;
+      });
+      if (cur) cur.stop();
+      cur = flyGulls(container, o);
+    }
+    build();
+    root.addEventListener('resize', function () { clearTimeout(timer); timer = setTimeout(build, 250); });
+    return { stop: function () { if (cur) cur.stop(); } };
+  }
+
   root.flyGulls = flyGulls;
-  if (typeof module !== 'undefined' && module.exports) module.exports = flyGulls;
+  root.skyGulls = skyGulls;
+  if (typeof module !== 'undefined' && module.exports) module.exports = { flyGulls: flyGulls, skyGulls: skyGulls };
 })(typeof window !== 'undefined' ? window : this);
 
 flyGulls(document.getElementById("hero-map-btn"), {
@@ -1051,6 +1118,17 @@ flyGulls(document.getElementById("hero-map-btn"), {
      birds: [[0, 0, 1.05], [-1.4, .55, .95], [-2.7, -.35, 1]]},
     {from: [35, -18], to: [31, 118], flight: 16, cycle: 40, at: 21,
      birds: [[0, 0, 1], [-1.3, -.45, .92]]}
+  ]
+});
+skyGulls(document.getElementById("gull-sky"), {
+  px: function (w) { return w < 560 ? 26 : 34; }, seed: 5,
+  flocks: [
+    {from: [-8, 78], to: [108, 22], flight: 17, cycle: 46, at: 2,
+     birds: [[0, 0, 1], [-1.5, 1.1, .95], [-1.1, -1.3, 1.05]]},
+    {from: [108, 12], to: [-8, 46], flight: 15, cycle: 46, at: 25,
+     birds: [[0, 0, 1], [-1.4, -1, .92]]},
+    {from: [30, 108], to: [52, -8], flight: 12, cycle: 70, at: 40,
+     birds: [[0, 0, 1]]}
   ]
 });
 // ── QUIZ ──

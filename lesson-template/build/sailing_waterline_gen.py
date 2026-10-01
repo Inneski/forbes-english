@@ -195,12 +195,13 @@ def css(opacity, phone_opacity, tint=True):
    it across the page, each smoother, wider-spaced and fainter than the last,
    over a faint shallow-water tint by the shore. Each coast owns half the page,
    so the two sets never cross; behind the reading column the lines carry on
-   at {COL}% strength. Cards and the hero image are opaque and sit above. */
+   at {COL}% strength. Cards and the hero image are opaque and sit above;
+   the sky (clouds and gulls, z-index -1) passes over the water. */
 @supports ((mask-image:none) or (-webkit-mask-image:none)) and (color:color-mix(in srgb,red 50%,transparent)){{
 body{{position:relative;}}
 body::before,body::after{{
   content:"";position:absolute;top:0;bottom:0;
-  z-index:-1;pointer-events:none;
+  z-index:-2;pointer-events:none;
   background:linear-gradient(var(--accent) calc(100% - 2px),transparent 0);opacity:{opacity};
   -webkit-mask-repeat:no-repeat,repeat-y;mask-repeat:no-repeat,repeat-y;
   -webkit-mask-size:100% 100%,{W}px {H}px;mask-size:100% 100%,{W}px {H}px;

@@ -25,6 +25,10 @@
  *     }],                       //   offsets in wingspans
  *   })
  *
+ * For a sky the size of the screen use skyGulls(container, opts) with
+ * px: 34 (a wingspan in CSS px, or a function of the screen's width): it
+ * rebuilds the flocks when the screen's width changes.
+ *
  * from/to are where the LEADER crosses in and out; the route is lengthened
  * so the whole flock, shadows included, is out of the picture at both ends
  * (at the same speed), and a flock waiting for its turn is never seen.
@@ -105,7 +109,10 @@
       doc.head.appendChild(st);
     }
     var aspect = opts.aspect || (container.clientWidth / Math.max(1, container.clientHeight)) || 1.5;
-    var size = opts.size || 4.6;
+    // px: a wingspan in CSS pixels (or a function of the container's width)
+    // instead of a share of the container, for a screen-sized sky
+    var px = typeof opts.px === 'function' ? opts.px(container.clientWidth) : opts.px;
+    var size = px ? px / Math.max(1, container.clientWidth) * 100 : (opts.size || 4.6);
     var rand = rng(opts.seed || 7);
     var bw = size / 100 * aspect;       // wingspan in units where the height is 1
 
@@ -167,6 +174,35 @@
     return { layer: layer, stop: function () { layer.remove(); } };
   }
 
+  // For a layer the size of the screen: the same flocks, rebuilt when the
+  // screen's width changes (headings depend on its shape), each flock picking
+  // up where it was. A change of height alone (a phone's address bar coming
+  // and going) is ignored, or the birds would jump on every scroll.
+  function skyGulls(container, opts) {
+    var now = function () { return root.performance ? root.performance.now() : Date.now(); };
+    var t0 = now(), cur = null, width = -1, timer = null;
+    function build() {
+      if (container.clientWidth === width) return;
+      width = container.clientWidth;
+      var el = (now() - t0) / 1000;
+      var o = {};
+      for (var k in opts) o[k] = opts[k];
+      o.aspect = container.clientWidth / Math.max(1, container.clientHeight);
+      o.flocks = opts.flocks.map(function (f) {
+        var g = {};
+        for (var k in f) g[k] = f[k];
+        g.at = (f.at || 0) + el;
+        return g;
+      });
+      if (cur) cur.stop();
+      cur = flyGulls(container, o);
+    }
+    build();
+    root.addEventListener('resize', function () { clearTimeout(timer); timer = setTimeout(build, 250); });
+    return { stop: function () { if (cur) cur.stop(); } };
+  }
+
   root.flyGulls = flyGulls;
-  if (typeof module !== 'undefined' && module.exports) module.exports = flyGulls;
+  root.skyGulls = skyGulls;
+  if (typeof module !== 'undefined' && module.exports) module.exports = { flyGulls: flyGulls, skyGulls: skyGulls };
 })(typeof window !== 'undefined' ? window : this);
