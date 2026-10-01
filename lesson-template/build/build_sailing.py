@@ -540,6 +540,15 @@ skyGulls(document.getElementById("gull-sky"), {
 # cloud, gull or waterline crosses a glyph.
 sys.path.insert(0, 'tools')
 import sherpa_sky, sherpa_topo
+
+# The sound: the sea, gulls, a foghorn now and then, an accordion drifting in
+# and out (Innes, 2026-10-01). Rendered by sailing_sound.py; the loop points
+# come from its loops.json, so a re-render can't leave the page looping at a
+# stale length.
+import json as _json
+_loops = _json.load(open('sailing-the-seas-of-grammar/sound/loops.json', encoding='utf-8'))
+GULLS_JS += ('window.SEA_SOUND = {dir: "sailing-the-seas-of-grammar/sound/", loop: %s, gulls: 5};\n'
+             % _json.dumps(_loops['sea'])) + open('lesson-template/build/sailing_sound.js', encoding='utf-8').read()
 SKY_CSS = ('  /* ── the sky: clouds and gulls (see build_sailing.py) ── */\n'
            '  .gull-sky{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;}\n'
            '  @media print{.gull-sky{display:none;}}\n'
