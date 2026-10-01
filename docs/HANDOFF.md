@@ -31,11 +31,11 @@ stale copy.
 - **Sky** (`182b2454`): the Sherpa clouds (tools/sherpa_sky.py, imported) and
   screen-wide gulls (`skyGulls`) in fixed layers behind the content; the
   waterlines moved to z-index -2 beneath them; Sherpa paper halo on text.
-- **Sound** (`dd7e827f`): `lesson-template/build/sailing_sound.py` renders
-  `sailing-the-seas-of-grammar/sound/` (sea loop, five gulls, foghorn,
-  accordion waltz); `sailing_sound.js` (inlined) plays them, on by default,
-  starting on the first gesture, button bottom-left. Rates and levels are at
-  the bottom of that file. Never heard by the builder: Innes judges it by ear.
+- **Music**: Innes swapped the sea-and-gulls soundscape (`dd7e827f`, removed)
+  for calm arcade music: `lesson-template/build/sailing_music.py` renders
+  `sailing-the-seas-of-grammar/music.m4a` (D major, 80 bpm: a beat is a whole
+  number of samples, or the seamless loop drifts) and `music.json`; played by
+  `block-camp/camp-music.js` as the round button bottom-left.
 - **Next:** the same birds on the folklore-explorer illustrated map (Leaflet)
   were handed to a session in that repo. Its map files were uncommitted
   there on 2026-10-01, another session's work in progress.

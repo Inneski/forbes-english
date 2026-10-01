@@ -541,14 +541,16 @@ skyGulls(document.getElementById("gull-sky"), {
 sys.path.insert(0, 'tools')
 import sherpa_sky, sherpa_topo
 
-# The sound: the sea, gulls, a foghorn now and then, an accordion drifting in
-# and out (Innes, 2026-10-01). Rendered by sailing_sound.py; the loop points
-# come from its loops.json, so a re-render can't leave the page looping at a
+# The music: calm arcade music (Innes, 2026-10-01: "just make some arcade
+# style calming music", in place of a sea-and-gulls soundscape). Rendered by
+# sailing_music.py and played by Block Camp's camp-music.js (a round button
+# bottom-left, on by default, starting on the first gesture). The loop points
+# come from music.json, so a re-render can't leave the page looping at a
 # stale length.
 import json as _json
-_loops = _json.load(open('sailing-the-seas-of-grammar/sound/loops.json', encoding='utf-8'))
-GULLS_JS += ('window.SEA_SOUND = {dir: "sailing-the-seas-of-grammar/sound/", loop: %s, gulls: 5};\n'
-             % _json.dumps(_loops['sea'])) + open('lesson-template/build/sailing_sound.js', encoding='utf-8').read()
+_music = _json.load(open('sailing-the-seas-of-grammar/music.json', encoding='utf-8'))
+MUSIC_TAG = ('<script src="block-camp/camp-music.js" data-track="sailing-the-seas-of-grammar/music.m4a" '
+             'data-loop="%g %g" defer></script>\n' % tuple(_music['loop']))
 SKY_CSS = ('  /* ── the sky: clouds and gulls (see build_sailing.py) ── */\n'
            '  .gull-sky{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;}\n'
            '  @media print{.gull-sky{display:none;}}\n'
@@ -735,6 +737,8 @@ assert s.count('</head>') == 1
 s = s.replace('</head>', sherpa_sky.block(_sizes) + '</head>', 1)
 s, n = re.subn(r'(<body\b[^>]*>\n?)', lambda m: m.group(1) + SKY_EL, s, count=1)
 assert n == 1, 'no <body> to hang the sky on'
+assert s.count('</body>') == 1
+s = s.replace('</body>', MUSIC_TAG + '</body>', 1)
 
 open(OUT, 'w', encoding='utf-8', newline='').write(s)
 print('wrote %s — %d examples, %d questions, %d bytes' % (OUT, len(EX), len(QUIZ), len(s)))
