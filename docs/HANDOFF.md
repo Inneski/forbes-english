@@ -11,6 +11,20 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-10-01 — Have Your Say 1 + 2: writing a comment on South Africa (B1–B2): SHIPPED
+
+`writing-a-comment-south-africa.html` (structure) and `-part-2.html` (useful
+phrases, from Innes's "Comment: More useful phrases" sheet). Builder
+`lesson-template/build/build_comment_sa.py` makes both. Part 1 came in finished
+from outside the pipeline, so its markup lives in
+`lesson-template/build/comment-south-africa/part1.src.html` with picture
+placeholders; edit that file for Part 1 slide text. Art in `CommentSouthAfrica/`
+(16 plates), palettes derived from `ridge.jpg` / `coast.jpg`.
+Instruction fixes made in Part 1: the writing task pointed at a nonexistent
+"worksheet", and the speaking task said "statement 6" without quoting it.
+Library: no Writing filter pill exists, so both decks are tagged Geopolitics
+(Part 2 Vocabulary too). If writing lessons grow, add a Writing category.
+
 ## 2026-10-01 — Sailing the Seas: waterlined background, and gulls over the hero: SHIPPED
 
 - **Background** (`46d9e7f5`): waterlines run from both page edges to the
