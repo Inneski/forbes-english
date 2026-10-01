@@ -52,6 +52,9 @@ TRACK = {
     'blockcamp-passive-past-perfect.html': 'passive-past-perfect',
     # the hub, block-camp.html: its own theme (theme.py)
     'block-camp.html': 'block-camp-theme',
+    # the two route maps: one mountain-flute atmosphere (summit.py)
+    'block-camp-map.html': 'route-map',
+    'block-camp-descent-map.html': 'route-map',
 }
 
 MUSIC_TAG = re.compile(r'\n?<script src="[^"]*camp-music\.js"[^>]*></script>')
