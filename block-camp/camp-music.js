@@ -32,9 +32,11 @@
   var mode = bar ? 'deck' : rpgSound ? 'rpg' : 'float';
   var loop = (me.getAttribute('data-loop') || '').split(/\s+/).map(Number);
 
-  // Silent, not just lower, under a clip: several clips carry their own music
-  // (the fishing one, 2026-09-30) and two tunes at once is a clash.
-  var LEVEL = 0.2, DUCK = 0;
+  // Innes, 2026-10-01: "lower backing track, dont stop when playing clips".
+  // 0.12 (was 0.2, -4.4 dB). Under a clip it keeps playing at half, so the
+  // clip's lines stay clear (it used to go silent, because some clips carry
+  // their own music).
+  var LEVEL = 0.12, DUCK = 0.06;
   var T = {
     en: ['Music', 'Music on', 'Music off'], de: ['Musik', 'Musik an', 'Musik aus'],
     es: ['Música', 'Música activada', 'Música desactivada'], fr: ['Musique', 'Musique activée', 'Musique coupée'],
