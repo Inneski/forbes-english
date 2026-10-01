@@ -1223,6 +1223,11 @@ def build(slug, langs=None):
             s = s.replace("  { code:'hr', label:'Hrvatski'  }",
                           "  { code:'hr', label:'Hrvatski'  },\n  { code:'%s', label:'%s' }" % (code, label), 1)
     s = s.replace('\n</body>', '\n' + tail_script(c) + example_tr(c) + '</body>', 1)
+    # The mountain-flute soundtrack: block-camp-music/deck_music.py maps every
+    # sherpa-tensing page to it, and camp-music.js adds its corner switch.
+    sys.path.insert(0, os.path.join(ROOT, 'lesson-template', 'build', 'block-camp-music'))
+    import deck_music
+    s = deck_music.set_music(s, c['file'])
     open(out, 'w', encoding='utf-8', newline='').write(s)
     print('%s -> %s: %d slides, langs %s' % (slug, c['file'], n, '+'.join(langs)))
     return out

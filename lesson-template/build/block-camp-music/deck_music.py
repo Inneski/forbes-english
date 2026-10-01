@@ -57,6 +57,13 @@ TRACK = {
     'block-camp-descent-map.html': 'route-map',
 }
 
+# Sherpa Tensing (the Himalayan tense climb, built by build_sherpa.py): the
+# route maps' mountain flute on every page. Innes, 2026-10-01: "the music on
+# block-camp-descent-map would be good on sherpa tensing".
+import glob as _glob
+for _f in sorted(_glob.glob(os.path.join(ROOT, 'sherpa-tensing*.html'))):
+    TRACK[os.path.basename(_f)] = 'route-map'
+
 MUSIC_TAG = re.compile(r'\n?<script src="[^"]*camp-music\.js"[^>]*></script>')
 NAV_TAG = re.compile(r'<script src="([^"]*)camp-nav\.js"[^>]*></script>')
 SUBS = re.compile(r'<!-- CLIP SUBTITLES -->.*?<!-- /CLIP SUBTITLES -->\n?', re.S)
