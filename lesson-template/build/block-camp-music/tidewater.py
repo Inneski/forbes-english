@@ -28,12 +28,32 @@ wow; a round soft bass; a brushed shaker and a hand drum tuned to D3 and E4;
 sea-wash noise breaking every two bars; and a trumpet (band-limited harmonics
 that brighten as it swells, a formant near 1.25 kHz, breath at the attack, a
 scoop into each note, lip vibrato that deepens on long notes) through a
-dotted-quarter echo and a long reverb. 20 bars = 82.5 s, a seamless loop (see
+dotted-quarter echo and a long reverb.
+
+Innes, 2026-10-01: "a SUB 37 keyboard playing 2 square wave LFOs modulating
+the oscillators slightly off pitch with each other at the equivalent of a 2nd
+and 4th, short attack long delay and release, filter settings pretty low". So
+a Moog Sub 37 patch, mono, one note a chord (two in the sus4 bar), all the
+way through (level by section A .55, B 1, A' .65, C .9, B' 1): oscillator 1
+a saw at -4 cents, its square LFO (120 cycles a lap, 1.455 Hz) stepping it up
+a major 2nd and back; oscillator 2 a square at +5 cents, its square LFO (124 a
+lap, 1.503 Hz) stepping it up a perfect 4th, so the two drift in and out of
+step four times a lap. Steps slewed ~4 ms, 25 ms glide between notes. Slight
+tanh drive into a four-pole low-pass (two biquads, Q .54 and 1.1) at 260 Hz +
+1.2x the note + a 520 Hz filter envelope decaying over 1.4 s: 400 Hz-1 kHz.
+Amp: 10 ms attack, a slow decay to .62, released after 70% of the note
+(tau .75 s, about 2.2 s to -25 dB), retriggered mono. A dotted-half (two
+beats, 2.06 s) ping-pong echo, feedback .42, repeats low-passed at 1.1 kHz,
+then the reverb. Each note's base is searched so that it, its 2nd and its 4th
+all sit a tone or more from everything sounding there (on D the root's 4th, G,
+would rub the F#, so it plays A-B-D). 20 bars = 82.5 s, a seamless loop (see
 synthkit.py).
 
 Checked in code at import: every long or on-beat note of the solos, the guitar
 melody and the flute is a chord tone; every bass note is a chord tone and sits
-neither a semitone nor a minor ninth from anything the guitar or organ holds.
+neither a semitone nor a minor ninth from anything the guitar or organ holds;
+every Sub 37 pitch (base, 2nd, 4th) is in the key and no semitone, major
+seventh or minor ninth from the chord, guitar, organ, bass or line above it.
 
     py lesson-template/build/block-camp-music/tidewater.py [--wav preview.wav] [--stems]
 """
@@ -109,6 +129,7 @@ def part(name, b):
     }[name]
 
 
+SUB_GAIN = 0.24
 ORGAN_LEVEL = (0.5, 0.7, 0.8, 1.0, 0.8)        # by section, A B A' C B'
 
 # ── the lines: (midi, eighths), 0 = rest; 48 eighths = 4 bars ───────────────
@@ -293,6 +314,120 @@ for _b in range(BARS):              # every bass note: a chord tone, no rub with
         _c = chord_at(_b, _e)
         assert _m % 12 in tones(_c), f'bass {_m} not in {_c} (bar {_b})'
         assert not any(clash(_m, o) for o in above(_c)), f'bass {_m} rubs against {_c} (bar {_b} eighth {_e})'
+
+
+# ── the Sub 37 ──────────────────────────────────────────────────────────────
+# A Moog Sub 37 patch, one note a chord (two in the sus4 bar). Oscillator 1
+# is a square LFO stepping between the note and a 2nd above it; oscillator 2
+# is a second square LFO stepping between the note and a 4th above. So each
+# note is a trio - base, 2nd, 4th - and the base is chosen so that none of the
+# three sits a semitone (or a major seventh / minor ninth) from anything
+# sounding there: the chord, the guitar's thumb, the organ, the bass line and
+# the solo, melody or flute. On a plain D chord the root would not do (its G
+# rubs the F#); the search lands on A (A, B, D) instead.
+KEY = {PC[s] for s in 'D E F# G A B C C#'.split()}
+SUB_LEVEL = (0.55, 1.0, 0.65, 0.9, 1.0)          # by section, A B A' C B'
+
+
+def rubs(p, q):
+    return (p - q) % 12 in (1, 11)
+
+
+def line_pcs(b, e0, e1):
+    """Pitch classes of the solo / melody / flute sounding in bar b, eighths e0..e1."""
+    out = set()
+    for _, mel, bar0 in LINES:
+        pos = 0
+        for m, d in mel:
+            q0, q1 = bar0 * 12 + pos, bar0 * 12 + pos + d
+            if m and q0 < b * 12 + e1 and q1 > b * 12 + e0:
+                out.add(m % 12)
+            pos += d
+    return out
+
+
+def around(b, e0, sl):
+    name = chord_at(b, e0)
+    return (tones(name) | {m % 12 for m in above(name)} | line_pcs(b, e0, e0 + sl)
+            | {m % 12 for e, m, d in bass_line(b) if e < e0 + sl and e + d > e0})
+
+
+def sub_pick(b, e0, sl):
+    """(base pc, 2nd in semitones): chord tones first, then the key; a major 2nd before a minor."""
+    name = chord_at(b, e0); near = around(b, e0, sl)
+    order = [PC[s] for s in CH[name][4].split()] + sorted(KEY - tones(name))
+    for pc in order:
+        for sec in (2, 1):
+            trio = (pc, (pc + sec) % 12, (pc + 5) % 12)
+            if all(x in KEY for x in trio) and not any(rubs(x, o) for x in trio for o in near):
+                return pc, sec
+    raise AssertionError(f'Sub 37: no rub-free note in bar {b} eighth {e0} ({name})')
+
+
+SUB = {}                                          # (bar, eighth) -> (midi, eighths, 2nd)
+for _b in range(BARS):
+    for _e0, _sl, _ in segments(_b):
+        _pc, _sec = sub_pick(_b, _e0, _sl)
+        SUB[_b, _e0] = (45 + (_pc - 9) % 12, _sl, _sec)       # A2 .. G#3
+for (_b, _e0), (_m, _sl, _sec) in SUB.items():   # the three stepped pitches against everything held there
+    _near = around(_b, _e0, _sl)
+    for _x in (_m, _m + _sec, _m + 5):
+        assert _x % 12 in KEY and not any(rubs(_x % 12, o) for o in _near), f'Sub 37 {_x} rubs in bar {_b}'
+
+
+def blep(ph, dt):
+    y = np.zeros_like(ph)
+    a = ph < dt; u = ph[a] / dt[a]; y[a] = 2 * u - u * u - 1
+    z = ph > 1 - dt; u = (ph[z] - 1) / dt[z]; y[z] = u * u + 2 * u + 1
+    return y
+
+
+def loop_phase(f):
+    """Phase (cycles) of frequency f, nudged by under a thousandth of a hertz so
+    that it advances a whole number of cycles per lap: seam-exact."""
+    ph = np.cumsum(f / SR); i0, N = tl.smp(0), int(round(LOOP * SR))
+    d = ph[i0 + N] - ph[i0]
+    ph -= (d - np.round(d)) / N * np.arange(len(ph))
+    return ph % 1.0
+
+
+def sub37():
+    n = tl.n; t = np.arange(n) / SR - tl.t0
+    base = np.zeros(n); sec = np.zeros(n); starts = []
+    for b in tl.bars_range():
+        for e0, sl, _ in segments(b):
+            m, _, s2 = SUB[b % BARS, e0]; i = max(tl.smp(b * BAR + e0 * E8), 0)
+            base[i:] = m; sec[i:] = s2; starts.append((i, sl))
+    base[:starts[0][0]] = base[starts[0][0]]
+    base = lp1(base, 7.0)                                         # a 25 ms glide
+    # square LFOs in integer samples (a sine's sign flickers at its exact zeros from lap to lap)
+    N = int(round(LOOP * SR)); idx = np.arange(n) - tl.smp(0)
+    sq1 = ((idx * 120) % N < N // 2).astype(float)                # 1.455 Hz
+    sq2 = ((idx * 124) % N < N // 2).astype(float)                # 1.503 Hz: they drift apart and back 4 times a lap
+    off1 = lp1(lp1(sq1 * sec, 60), 60)                            # slewed ~4 ms: no click at the step
+    off2 = lp1(lp1(sq2 * 5.0, 60), 60)
+    f1 = hz(base + off1 - 0.04); f2 = hz(base + off2 + 0.05)      # -4 / +5 cents
+    p1, p2 = loop_phase(f1), loop_phase(f2)
+    d1, d2 = f1 / SR, f2 / SR
+    saw1 = 2 * p1 - 1 - blep(p1, d1)
+    sq_2 = np.where(p2 < 0.5, 1.0, -1.0) + blep(p2, d2) - blep((p2 + 0.5) % 1.0, d2)
+    x = 0.6 * saw1 + 0.45 * sq_2
+    x = np.tanh(1.8 * x) / np.tanh(1.8)                           # a little drive into the ladder
+    # mono, retriggered: each note attacks (10 ms) from wherever the last one's release had got to
+    amp = np.zeros(n); fenv = np.zeros(n); lvl = 0.0
+    for j, (i, sl) in enumerate(starts):
+        k = starts[j + 1][0] if j + 1 < len(starts) else n
+        tt = np.arange(k - i) / SR; gate = sl * E8 * 0.7
+        att = np.minimum(1, tt / 0.010)
+        held = 0.62 + 0.38 * np.exp(-np.maximum(tt - 0.010, 0) / 0.9)
+        env = (lvl + (1 - lvl) * att) * np.where(tt < 0.010, 1, held)
+        rel = np.where(tt < gate, 1.0, np.exp(-np.maximum(tt - gate, 0) / 0.75))   # ~2.2 s to -25 dB
+        amp[i:k] = env * rel; lvl = amp[k - 1]
+        fenv[i:k] = np.minimum(1, tt / 0.010) * np.exp(-tt / 1.4)
+    fc = (260 + 520 * fenv + 1.2 * hz(base))[::CHUNK]              # 400 Hz .. ~1 kHz
+    y = tv_lp(tv_lp(x, fc, 0.54), fc, 1.1)                        # four poles, gentle resonance
+    lv = np.interp((t % LOOP) / BAR, np.arange(BARS + 1), [SUB_LEVEL[(b % BARS) // 4] for b in range(BARS + 1)])
+    return hp1(y * amp * lp1(lv, 0.5), 40)
 
 
 def shaker(seed):
@@ -489,10 +624,12 @@ def render(wav=None):
     melx = melx + pingpong(melx, 2 * E8, 0.3, 4, 3000) * 0.5
     flutex = chorus(flute.x, LOOP / 40, depth_ms=2.0, base_ms=8.0, mix=0.5, t0=tl.t0)
     tptx = tpt.x + pingpong(tpt.x, BEAT, 0.36, 5, 2400) * 0.75
+    sub = sub37(); sub = np.stack([sub * 0.95, sub * 1.05], 1) * SUB_GAIN
+    subx = sub + pingpong(sub, 2 * BEAT, 0.42, 6, 1100) * 0.6     # a dotted-half echo, darkening
     wet = reverb(gtrx * 0.22 + melx * 0.3 + orgx * 0.3 + flutex * 0.45 + tptx * 0.6
-                 + perc_.x * 0.12 + sea.x * 0.3, make_ir(3.6, dark=3600, seed=17, pre=0.03))
+                 + perc_.x * 0.12 + sea.x * 0.3 + subx * 0.35, make_ir(3.6, dark=3600, seed=17, pre=0.03))
     stems = dict(guitar=gtrx, melody=melx, organ=orgx, flute=flutex, bass=bass.x, perc=perc_.x,
-                 sea=sea.x, trumpet=tptx, reverb=wet * 0.5)
+                 sea=sea.x, trumpet=tptx, sub37=subx, reverb=wet * 0.5)
     mix = sum(stems.values())
     if '--stems' in sys.argv:
         i0 = tl.smp(0)
