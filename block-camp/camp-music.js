@@ -202,6 +202,19 @@
   if (mode === 'rpg') document.addEventListener('keydown', function (e) {
     if ((e.key === 'm' || e.key === 'M') && !e.target.matches('input, textarea, select')) btn.click();
   });
+  /* Start on arrival (Innes, 2026-10-01: "it just needs to come on
+     automatically"). Browsers decide: Chrome and Edge let audio start
+     without a gesture once this site has been interacted with (arriving by
+     a click from the hub, a deck or a map), so it plays at once there. Where
+     the browser refuses (a first visit, Safari), the context waits in
+     'suspended' and the first gesture below resumes it, as before. */
+  if (on && !document.hidden) {
+    try {
+      ensureContext();
+      var r = ctx.resume(); if (r && r.catch) r.catch(function () {});
+      start(); apply();
+    } catch (_) {}
+  }
   document.addEventListener('visibilitychange', function () {
     if (!ctx) return;
     var p = document.hidden ? ctx.suspend() : (on ? ctx.resume() : null);
