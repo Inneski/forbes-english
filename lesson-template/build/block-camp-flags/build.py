@@ -216,7 +216,7 @@ LAMP_CAPTIONS = {
     12: {'caption': 'Storey 4’s lamp WAS BEING LIT when the wind dropped.', 'verb': 'WAS BEING LIT'},
     13: {'caption': 'Look at the lamps: the beacon IS GOING TO BE LIT!', 'verb': 'IS GOING TO BE LIT'},
     14: {'caption': 'The beacon WILL BE SEEN from the valley.', 'verb': 'WILL BE SEEN'},
-    15: {'caption': 'Storey 7’s lamp HAS BEEN LIT since sunset.', 'verb': 'HAS BEEN LIT'},
+    15: {'caption': 'Storey 7’s lamp HAS BEEN LIT, so the deck is bright.', 'verb': 'HAS BEEN LIT'},  # not 'since sunset': that reads as a state ('lit' = adjective), not the passive
     16: {'caption': 'The Trial HAS BEEN PASSED: the gold lamp is yours.', 'verb': 'HAS BEEN PASSED',
          'tense': 'Present Perfect Passive'},
     17: {'caption': 'By the time it got dark, the roof lamp HAD BEEN HUNG.', 'verb': 'HAD BEEN HUNG'},

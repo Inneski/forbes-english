@@ -270,8 +270,9 @@ docs/ARTWORK-lookout.md (drop folder incoming/lookout/, exists).
     Tests: node test (2.6M checks, 16 mutants caught), check-flags (177),
     Results harness on all 26 decks x 3 phone sizes vs HEAD, check-access
     PASS, seo --check 0 rewrites.
-  * Owed: an independent house tense review of the 18 captions (they pass
-    the builder's check and one reviewer's pass). Russian card lines use a
+  * Tense review of the 18 captions done 2026-10-02: 17 sound; lamp 15
+    'HAS BEEN LIT since sunset' (a state, 'lit' as adjective) became
+    'HAS BEEN LIT, so the deck is bright' (action + present result). Russian card lines use a
     fallback font (Pixelify has no Cyrillic; pre-existing).
 
 ## 2026-10-02 — Block Camp camp flags (achievement record)
