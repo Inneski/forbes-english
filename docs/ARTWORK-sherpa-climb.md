@@ -4,7 +4,12 @@ Innes, 2026-10-02, after the first build: *"Your characters will be getting
 replaced and a lot of those landscapes gonna be people."*
 
 So this brief pins each picture to its moment in the story, says who is in
-the frame, and gives the file name the game picks up. **Drop the renders in
+the frame, and gives the file name the game picks up.
+
+**Making them in ChatGPT from a character deck:** paste
+`docs/CHATGPT-CLIMB-ART-BRIEF.md`: the same fifteen scenes, written as a
+prompt, with the deck attached as the reference for the people. This file
+stays the reference for file names and for what replaces what. **Drop the renders in
 `incoming/sherpa-climb/`** (the folder exists on Innes's machine; it is
 gitignored, so a cloud session has to say "make it").
 
