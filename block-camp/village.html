@@ -296,7 +296,12 @@ function talkTo(r) {
 function quiz(r, i, right) {
   const c = r.camp, q = c.q[i];
   if (i >= c.q.length) return finish(r, right);
-  const opts = q.o.map((o, k) => `<button class="opt" data-k="${k}"><i>${k + 1}</i>${esc(o)}</button>`).join('');
+  // The data lists the right answer first in every question, so a learner
+  // who noticed could tap 1 for all 27. Shown in a fixed per-question order
+  // instead (the same every visit); data-k keeps the option's own index.
+  const shift = (i + c.q.length + q.p.length) % q.o.length;
+  const order = q.o.map((_, k) => (k + shift) % q.o.length);
+  const opts = order.map((k, n) => `<button class="opt" data-k="${k}"><i>${n + 1}</i>${esc(q.o[k])}</button>`).join('');
   say(c.ranger, `${c.tense} · ${i + 1}/${c.q.length}`, esc(q.p).replace('___', '<b>____</b>'), opts, '');
   let answered = false;
   document.querySelectorAll('#talk .opt').forEach(b => b.onclick = () => {
