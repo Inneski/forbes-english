@@ -144,6 +144,25 @@ also open Sherpa Tensing.
   next `seo.py` run on main writes; until then every gate says "Forbes
   English Pro" (access itself is already correct).
 
+## 2026-10-02 — Block Camp: end-screen choice on every deck; Past Continuous 1 free
+
+  * `block-camp/camp-end.js?v=2` is now loaded by all 26 decks (after the
+    camp-music tag): the activation slide keeps its word bank and offers
+    Discuss / Write as big buttons, one card open at a time, labels in ten
+    languages, both cards in print. Tested on all 26: two buttons, each
+    opens its own card, no page errors. Builders that copy a Part I deck as
+    a chassis (build_camp.py, build_descent.py) inherit the tag.
+  * Past Continuous Part 1 is free (Innes asked; it now has clips on every
+    question slide). `public.lessons.access` id 283 set to 'free` by this
+    session (the write went through because he asked for it explicitly).
+    Then seo.py, the hub (FREE_CLIMB gains (4,1); note now "Part 1 free on
+    camps 1-4"), quest and nav builders, check-access --fix: PASS hub 57,
+    quest 40, nav 26, map 52. build_hubs.py NOT run (the other session's
+    library-tagging work is still uncommitted in check-library.js); the
+    Free tag on grammar.html and topic hubs follows when it is.
+  * Past Continuous slide 18 got its clip (3a92fac4, horse jump); the end
+    slide's Results loop was removed at Innes's request (each plays its own).
+
 ## 2026-10-01 — Block Camp Past Continuous 1 clips (12)
 
 Innes dropped 12 Gemini clips in `incoming/Past continuous Part 1 plates/`

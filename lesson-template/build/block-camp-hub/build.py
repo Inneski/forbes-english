@@ -66,7 +66,7 @@ CLIMB = [
  (8,'Present Perfect Continuous','present-perfect-continuous','B1','B1'),
  (9,'Past Perfect','past-perfect','B1','B1'),
 ]
-FREE_CLIMB = {(1,1),(2,1),(3,1)}
+FREE_CLIMB = {(1,1),(2,1),(3,1),(4,1)}
 
 DESCENT = [
  (9,1,'Present Simple Passive','present-simple','A2','pro'),
