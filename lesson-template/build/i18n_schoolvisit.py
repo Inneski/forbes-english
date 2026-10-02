@@ -94,7 +94,7 @@ T['en'] = dict(
     b15w='After a negative, ANY: “don’t watch any TV”. MUCH is also right — “don’t watch much TV”.',
     b16w='After a negative, ANYTHING. “I don’t watch anything on TV” — or “much”, which is also accepted.',
     b17w='A power CUT (British) or a power OUTAGE (American): the electricity stops.',
-    b18w='TOLD + person: “told me she wanted”. With SAY it would be “said she wanted”, with no “me”.',
+    b18w='TOLD + person: “told me she wanted”. SAY needs TO before the person: “said to me she wanted”. Only “said me” is wrong.',
 
     # ── Part 3 · ask the author ───────────────────────────────────────
     cHint='Write the question in natural English.',

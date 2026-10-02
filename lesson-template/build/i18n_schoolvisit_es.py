@@ -62,7 +62,7 @@ T = dict(
     b15w='Después de una negación, ANY: “don’t watch any TV”. MUCH también es correcto — “don’t watch much TV”.',
     b16w='Después de una negación, ANYTHING. “I don’t watch anything on TV” — o “much”, que también se acepta.',
     b17w='Un power CUT (británico) o un power OUTAGE (americano): se va la luz.',
-    b18w='TOLD + persona: “told me she wanted”. Con SAY sería “said she wanted”, sin “me”.',
+    b18w='TOLD + persona: “told me she wanted”. SAY necesita TO antes de la persona: “said to me she wanted”. Solo “said me” está mal.',
 
     cHint='Escribe la pregunta en inglés natural.',
     c1t='Lo que preguntan los niños', c2t='Más manos levantadas',

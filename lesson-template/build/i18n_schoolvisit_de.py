@@ -61,7 +61,7 @@ T = dict(
     b15w='Nach einer Verneinung ANY: „don’t watch any TV“. MUCH ist auch richtig — „don’t watch much TV“.',
     b16w='Nach einer Verneinung ANYTHING. „I don’t watch anything on TV“ — oder „much“, das ebenfalls akzeptiert wird.',
     b17w='Ein power CUT (britisch) oder ein power OUTAGE (amerikanisch): der Strom fällt aus.',
-    b18w='TOLD + Person: „told me she wanted“. Mit SAY wäre es „said she wanted“, ohne „me“.',
+    b18w='TOLD + Person: „told me she wanted“. SAY braucht TO vor der Person: „said to me she wanted“. Nur „said me“ ist falsch.',
 
     cHint='Schreib die Frage in natürlichem Englisch.',
     c1t='Was die Kinder fragen', c2t='Noch mehr Hände oben',

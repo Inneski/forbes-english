@@ -193,7 +193,7 @@ GAPS = [
     [('There was a power ______ during the storm.',
       ['cut|outage|failure'], 'b17w'),
      ('My neighbour ______ me she wanted to read the book. <em>(say / tell)</em>',
-      ['told'], 'b18w')],
+      ['told|said to'], 'b18w')],
 ]
 GAP_W = [230, 190, 190, 190]
 
