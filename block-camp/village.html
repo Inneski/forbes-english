@@ -33,27 +33,52 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--cream);font-fami
 .tb-cta{background:#234a33;border:1px solid rgba(232,192,74,.35)}
 .tb-cta-gold{background:#b8962e;color:var(--green-deep)!important;font-weight:700}
 @media(max-width:620px){.tb-links a:not(.tb-cta):not(.tb-cta-gold){display:none}}
+.topband{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+/* Full screen (camp-full.js sets html.camp-fs) and the Home Screen app (html.camp-app):
+   the site band goes, size() re-reads its height (0) and the stage takes the whole screen.
+   Only then does the stage reach the notch, so only then do the top insets apply. */
+html.camp-fs .topband,html.camp-app .topband{display:none}
+:root{--safe-top:0px;--tools-h:32px;--below-tools:calc(12px + var(--safe-top) + var(--tools-h) + 8px)}
+html.camp-fs,html.camp-app{--safe-top:env(safe-area-inset-top,0px)}
+@media(pointer:coarse){:root{--tools-h:44px}}
 
 #stage{position:fixed;inset:0;top:var(--top,44px)}
 canvas#world{position:absolute;inset:0;width:100%;height:100%;display:block}
 .paper{background:var(--paper);color:var(--paper-ink);border:3px solid var(--paper-edge);box-shadow:inset 0 0 0 2px #d9c39a,0 6px 0 rgba(0,0,0,.35);border-radius:2px}
-#met{position:absolute;left:16px;top:16px;padding:10px 16px;font-size:clamp(16px,2.4vw,26px);letter-spacing:.04em;z-index:4;pointer-events:none}
-#hint{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);padding:10px 20px;font-size:clamp(15px,2.2vw,24px);z-index:4;opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap}
+#met{position:absolute;left:calc(16px + env(safe-area-inset-left,0px));top:calc(16px + var(--safe-top));padding:10px 16px;font-size:clamp(16px,2.4vw,26px);letter-spacing:.04em;z-index:4;pointer-events:none}
+#hint{position:absolute;left:50%;bottom:calc(22px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);padding:10px 20px;font-size:clamp(15px,2.2vw,24px);z-index:4;opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap}
 #hint.on{opacity:1}
-#caption{position:absolute;left:50%;top:18%;transform:translateX(-50%);padding:12px 22px;font-size:clamp(18px,3vw,34px);z-index:4;opacity:0;transition:opacity .35s;pointer-events:none;max-width:min(92vw,900px);text-align:center;line-height:1.25}
+/* centred by margins, not by left:50% + translate: that shrank the box to half the screen */
+#caption{position:absolute;left:0;right:0;margin:0 auto;width:max-content;top:18%;padding:12px 22px;font-size:clamp(18px,3vw,34px);z-index:4;opacity:0;transition:opacity .35s;pointer-events:none;max-width:min(92vw,900px);text-align:center;line-height:1.25}
 #caption.on{opacity:1}
 #caption b{color:#b3452c}
-.tools{position:absolute;right:12px;top:12px;display:flex;gap:6px;z-index:4}
-.tools button,.tools a{font:inherit;font-size:13px;padding:6px 9px;background:rgba(11,26,18,.75);color:var(--cream);border:1px solid rgba(232,192,74,.45);border-radius:6px;cursor:pointer;text-decoration:none}
+.tools{position:absolute;right:calc(12px + env(safe-area-inset-right,0px));top:calc(12px + var(--safe-top));display:flex;gap:6px;z-index:4}
+.tools button,.tools a{font:inherit;font-size:13px;padding:6px 9px;background:rgba(11,26,18,.75);color:var(--cream);border:1px solid rgba(232,192,74,.45);border-radius:6px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:4px;min-height:var(--tools-h)}
+.tools .cf-i{width:16px;height:16px;flex:none}
+.tools .lb{text-transform:lowercase}
 .tools button[aria-pressed=true]{background:var(--gold);color:var(--green-deep)}
-#help{display:none;position:absolute;right:12px;top:52px;padding:12px 14px;font-size:13px;line-height:1.5;z-index:4;max-width:280px}
+#help{display:none;position:absolute;right:calc(12px + env(safe-area-inset-right,0px));top:var(--below-tools);padding:12px 14px;font-size:13px;line-height:1.5;z-index:4;max-width:280px;max-height:calc(100% - var(--below-tools) - 12px);overflow:auto;overscroll-behavior:contain}
 #help.on{display:block}
+.t-only{display:none}
+/* a touch screen: 44px tools, the words for fingers, not keys */
+@media(pointer:coarse){
+  .tools button,.tools a{font-size:15px;min-width:44px;padding:6px 10px}
+  .tools .cf-i{width:20px;height:20px}
+  #help{font-size:15px;max-width:min(320px,calc(100% - 24px))}
+  .k-only{display:none}.t-only{display:inline}
+}
+/* a phone held upright: icons only, or the row runs into MET */
+@media(pointer:coarse) and (max-width:599px){.tools .lb{display:none}.tools button,.tools a{font-size:20px;padding:0;width:44px}}
+/* still too narrow for MET and the row side by side: MET drops below the row */
+@media(pointer:coarse) and (max-width:360px),(pointer:fine) and (max-width:440px){#met{top:var(--below-tools)}}
 
 /* the talk box */
-#talk{position:absolute;left:50%;bottom:16px;transform:translateX(-50%) translateY(120%);width:min(94vw,820px);padding:16px 18px 14px;z-index:5;transition:transform .25s;font-size:clamp(14px,1.9vw,20px);line-height:1.35}
+#talk{position:absolute;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(120%);width:min(94vw,820px);max-height:calc(100% - 24px - var(--safe-top) - env(safe-area-inset-bottom,0px));overflow:auto;overscroll-behavior:contain;padding:16px 18px 14px;z-index:5;transition:transform .25s;font-size:clamp(14px,1.9vw,20px);line-height:1.35}
 #talk.on{transform:translateX(-50%) translateY(0)}
-#talk .who{font-size:.72em;letter-spacing:.1em;color:#8a5a2b;margin-bottom:6px;display:flex;justify-content:space-between;gap:12px}
-#talk .who span:last-child{color:#5a4632}
+#talk .who{font-size:.72em;letter-spacing:.1em;color:#8a5a2b;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+#talk #tTense{color:#5a4632;margin-left:auto}
+#tClose{flex:none;font:inherit;font-size:22px;line-height:1;width:32px;height:32px;margin:-8px -10px -8px 0;padding:0;background:transparent;color:#8a5a2b;border:0;border-radius:3px;cursor:pointer}
+#tClose:hover,#tClose:focus-visible{background:#ead8b0}
 #talk .say{min-height:2.7em}
 #talk .say b{color:#b3452c}
 #talk .opts{display:grid;gap:6px;margin-top:10px}
@@ -70,11 +95,19 @@ canvas#world{position:absolute;inset:0;width:100%;height:100%;display:block}
 #talk .btn.alt{background:transparent;color:#8a5a2b;border:2px solid #8a5a2b}
 
 /* touch controls */
-#pad{position:absolute;left:14px;bottom:18px;display:none;grid-template-columns:repeat(2,64px);grid-template-rows:64px;gap:8px;z-index:5;touch-action:none}
+#pad{position:absolute;left:calc(14px + env(safe-area-inset-left,0px));bottom:calc(18px + env(safe-area-inset-bottom,0px));display:none;grid-template-columns:repeat(2,64px);grid-template-rows:64px;gap:8px;z-index:5;touch-action:none}
 #pad button{font:inherit;font-size:20px;background:rgba(11,26,18,.6);color:var(--cream);border:1px solid rgba(232,192,74,.45);border-radius:8px;touch-action:none;user-select:none;-webkit-user-select:none}
 #pad button:active{background:var(--gold);color:var(--green-deep)}
-#act{position:absolute;right:16px;bottom:22px;display:none;width:74px;height:74px;border-radius:50%;font:inherit;font-size:14px;background:var(--gold);color:var(--green-deep);border:3px solid #8a5a2b;z-index:5;touch-action:none;user-select:none}
-@media(pointer:coarse){#pad{display:grid}#act{display:block}#hint{bottom:110px}}
+#act{position:absolute;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(22px + env(safe-area-inset-bottom,0px));display:none;width:74px;height:74px;border-radius:50%;font:inherit;font-size:16px;background:var(--gold);color:var(--green-deep);border:3px solid #8a5a2b;z-index:5;touch-action:none;user-select:none}
+@media(pointer:coarse){#pad{display:grid}#act{display:block}#hint{bottom:calc(110px + env(safe-area-inset-bottom,0px))}
+  /* fingers: 44px answers and buttons, no keyboard numbers, a 44px close */
+  #talk .opt{min-height:44px;grid-template-columns:1fr}#talk .opt i{display:none}
+  #talk .btn{min-height:44px}
+  #tClose{width:44px;height:44px;margin:-12px -14px -12px 0;font-size:26px}}
+/* while a ranger talks the pad and TALK would sit on the dialog's buttons: they go */
+body.talking #pad,body.talking #act{display:none}
+/* a phone on its side: the three answers side by side, so a question fits the screen */
+@media(max-height:500px) and (min-width:560px){#talk .opts{grid-template-columns:repeat(3,1fr)}#talk{padding:12px 16px 10px}#talk .say{min-height:0}}
 .burst{position:absolute;pointer-events:none;z-index:6}
 </style>
 </head>
@@ -157,28 +190,30 @@ canvas#world{position:absolute;inset:0;width:100%;height:100%;display:block}
   <canvas id="world"></canvas>
   <div id="met" class="paper">MET 0/9</div>
   <div class="tools">
-    <button id="sound" type="button" aria-pressed="false" title="S">🔈 sound</button>
-    <button id="helpBtn" type="button" aria-pressed="false">? help</button>
-    <a href="quest.html" title="Your map, badges and save">⌂ map</a>
+    <button id="sound" type="button" aria-pressed="false" aria-label="Sound" title="Sound (M)"><span class="ic">🔈</span><span class="lb"> sound</span></button>
+    <button id="helpBtn" type="button" aria-pressed="false" aria-label="Help" title="Help"><span class="ic">?</span><span class="lb"> help</span></button>
+    <a href="quest.html" aria-label="Map" title="Your map, badges and save"><span class="ic">⌂</span><span class="lb"> map</span></a>
+    <button id="full" type="button" data-camp-full aria-label="Full screen" title="Full screen"><svg class="cf-i" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg><span class="cf-l lb">Full screen</span></button>
   </div>
-  <div id="help" class="paper">Arrow keys (or A/D) walk you along the trail; tap the trail to walk there. Stand by a ranger and press <b>SPACE</b> to talk. Each ranger asks three questions in their tense. Get all three and watch the sky. Every ranger can also open their camp's lesson; the tent and the tower at the two ends of the trail are doors too. Progress is saved in this browser.</div>
+  <div id="help" class="paper"><span class="k-only">Arrow keys (or A/D) walk you along the trail; tap the trail to walk there. Stand by a ranger and press <b>SPACE</b> to talk.</span><span class="t-only">Hold <b>◀</b> or <b>▶</b> to walk along the trail, or tap the trail to walk there. Stand by a ranger and tap <b>TALK</b>.</span> Each ranger asks three questions in their tense. Get all three and watch the sky. Every ranger can also open their camp's lesson; the tent and the tower at the two ends of the trail are doors too. Progress is saved in this browser.</div>
   <div id="caption" class="paper"></div>
   <div id="hint" class="paper">PRESS SPACE</div>
   <div id="talk" class="paper" role="dialog" aria-live="polite">
-    <div class="who"><span id="tWho"></span><span id="tTense"></span></div>
+    <div class="who"><span id="tWho"></span><span id="tTense"></span><button id="tClose" type="button" aria-label="Close" title="Close">×</button></div>
     <div class="say" id="tSay"></div>
     <div class="opts" id="tOpts"></div>
     <div class="fb" id="tFb"></div>
     <div class="row" id="tRow"></div>
   </div>
-  <div id="pad"><button data-k="back">◀</button><button data-k="fwd">▶</button></div>
-  <button id="act" type="button">SPACE</button>
+  <div id="pad"><button data-k="back" aria-label="Walk back, towards your tent">◀</button><button data-k="fwd" aria-label="Walk on, towards the tower">▶</button></div>
+  <button id="act" type="button">TALK</button>
 </div>
 
 <script src="camp-save.js"></script>
+<script src="camp-full.js" defer></script>
 <script>
 'use strict';
-const CAMPS = [{"n":1,"tense":"Present Simple","colour":"#7A93B5","ink":"#0b1a12","href":"../blockcamp-present-simple.html","ranger":"Ranger Sam","hi":"Morning! I light these lamps every evening. Same time, every day.","weather":[["sun","It rains here every afternoon. Every morning, the sun shines."]],"q":[{"p":"The ranger ___ the lamps every evening.","o":["lights","is lighting","lit"],"a":0,"fb":"A habit, every evening: Present Simple, and he/she/it takes -s."},{"p":"Water ___ at 100 degrees.","o":["boils","is boiling","boiled"],"a":0,"fb":"A fact that is always true takes the Present Simple."},{"p":"She ___ coffee.","o":["doesn't drink","don't drink","not drinks"],"a":0,"fb":"Negative with he/she/it: doesn't + the bare verb."}]},{"n":2,"tense":"Present Continuous","colour":"#E66085","ink":"#0b1a12","href":"../blockcamp-present-continuous.html","ranger":"Ranger Mia","hi":"Look at the sky! Something is happening up there right now.","weather":[["rain","It is raining."]],"q":[{"p":"Look! It ___.","o":["is raining","rains","rained"],"a":0,"fb":"Happening right now, as we watch: Present Continuous."},{"p":"They ___ a tent at the moment.","o":["are putting up","put up","have put up"],"a":0,"fb":"An action in progress at this moment: are + -ing."},{"p":"Why ___ you laughing?","o":["are","do","did"],"a":0,"fb":"Questions in the Present Continuous start with am/is/are."}]},{"n":3,"tense":"Past Simple","colour":"#B08968","ink":"#0b1a12","href":"../blockcamp-past-simple.html","ranger":"Ranger Tom","hi":"It rained all night. I crossed the bridge at dawn and it was still wet.","weather":[["rain","It rained."],["clear","It rained, and then it stopped."]],"q":[{"p":"We ___ the bridge yesterday.","o":["crossed","cross","have crossed"],"a":0,"fb":"Finished, with a time in the past (yesterday): Past Simple."},{"p":"He ___ go to the cinema last night.","o":["didn't","doesn't","hasn't"],"a":0,"fb":"Past negative: didn't + the bare verb."},{"p":"___ you see the tiger?","o":["Did","Do","Have"],"a":0,"fb":"Past Simple questions start with Did."}]},{"n":4,"tense":"Past Continuous","colour":"#F1D779","ink":"#0b1a12","href":"../blockcamp-past-continuous.html","ranger":"Ranger Ana","hi":"When you arrived, I was watching the clouds. They were moving fast.","weather":[["rain","It was raining when you arrived."],["clear",""]],"q":[{"p":"It ___ when we arrived.","o":["was raining","rained","is raining"],"a":0,"fb":"In progress at a moment in the past: was/were + -ing."},{"p":"They ___ while the ranger talked.","o":["were listening","listened","are listening"],"a":0,"fb":"A longer action around a shorter one: Past Continuous."},{"p":"What ___ you doing at eight o'clock?","o":["were","did","are"],"a":0,"fb":"Questions: was/were + subject + -ing."}]},{"n":5,"tense":"Going To","colour":"#70A43A","ink":"#0b1a12","href":"../blockcamp-going-to.html","ranger":"Ranger Leo","hi":"See those clouds? I know what they mean. Something is going to happen.","weather":[["clouds","It is going to rain."],["rain","It is raining."]],"q":[{"p":"Look at those clouds. It ___ rain.","o":["is going to","will","is"],"a":0,"fb":"Evidence now (the clouds) about the future: going to."},{"p":"I ___ climb the tower tomorrow.","o":["am going to","will going to","going to"],"a":0,"fb":"A plan already made: am/is/are going to."},{"p":"___ they going to camp here?","o":["Are","Do","Will"],"a":0,"fb":"Questions: Are/Is + subject + going to."}]},{"n":6,"tense":"Future Simple","colour":"#F0723F","ink":"#0b1a12","href":"../blockcamp-future-simple.html","ranger":"Ranger Zoe","hi":"Don't worry about the weather. I'll tell you what it will do tonight.","weather":[["night","It will be cold tonight."],["clear",""]],"q":[{"p":"Don't worry, I ___ help you.","o":["will","am going to","would"],"a":0,"fb":"A decision made at the moment of speaking: will."},{"p":"It ___ be cold tonight.","o":["will","is","was"],"a":0,"fb":"A prediction with no evidence in front of us: will."},{"p":"I think she ___ come.","o":["won't","willn't","doesn't will"],"a":0,"fb":"The negative of will is won't."}]},{"n":7,"tense":"Present Perfect","colour":"#2E7D65","ink":"#f2f7f3","href":"../blockcamp-present-perfect.html","ranger":"Ranger Kai","hi":"I've climbed that tower three times. I've never seen a view like it.","weather":[["rain","It has been raining."],["clear","It has stopped raining."]],"q":[{"p":"I ___ the tower three times.","o":["have climbed","climbed","am climbing"],"a":0,"fb":"Experience up to now, no time given: Present Perfect."},{"p":"___ you ever seen snow?","o":["Have","Did","Do"],"a":0,"fb":"Ever + experience: Have/Has + subject + past participle."},{"p":"She ___ just left.","o":["has","have","had"],"a":0,"fb":"A recent action with 'just': has + past participle."}]},{"n":8,"tense":"Present Perfect Continuous","colour":"#46B0AB","ink":"#0b1a12","href":"../blockcamp-present-perfect-continuous.html","ranger":"Ranger Ivy","hi":"It's been raining for hours. I've been waiting here since dawn.","weather":[["rain","It has been raining all day."],["clear",""]],"q":[{"p":"It ___ for hours.","o":["has been raining","has rained","is raining"],"a":0,"fb":"Still going on, with 'for hours': Present Perfect Continuous."},{"p":"How long ___ you been waiting?","o":["have","did","are"],"a":0,"fb":"Questions: How long + have/has + subject + been + -ing."},{"p":"They ___ since dawn.","o":["have been walking","walk","are walking"],"a":0,"fb":"Since dawn until now, still happening: have been + -ing."}]},{"n":9,"tense":"Past Perfect","colour":"#d66d77","ink":"#0b1a12","href":"../blockcamp-past-perfect.html","ranger":"Ranger Rex","hi":"By the time you got here, the rain had stopped. Lucky you.","weather":[["rain",""],["clear","The rain had stopped when you arrived."]],"q":[{"p":"When we got there, the rain ___.","o":["had stopped","stopped","has stopped"],"a":0,"fb":"The earlier of two past events: had + past participle."},{"p":"She ___ never seen a tiger before that day.","o":["had","has","was"],"a":0,"fb":"Before a past moment: Past Perfect."},{"p":"___ they left before you arrived?","o":["Had","Did","Have"],"a":0,"fb":"Questions: Had + subject + past participle."}]}];
+const CAMPS = [{"n":1,"tense":"Present Simple","colour":"#7A93B5","ink":"#0b1a12","href":"../blockcamp-present-simple.html","access":"free","ranger":"Ranger Sam","hi":"Morning! I light these lamps every evening. Same time, every day.","weather":[["sun","It rains here every afternoon. Every morning, the sun shines."]],"q":[{"p":"The ranger ___ the lamps every evening.","o":["lights","is lighting","lit"],"a":0,"fb":"A habit, every evening: Present Simple, and he/she/it takes -s."},{"p":"Water ___ at 100 degrees.","o":["boils","is boiling","boiled"],"a":0,"fb":"A fact that is always true takes the Present Simple."},{"p":"She ___ coffee.","o":["doesn't drink","don't drink","not drinks"],"a":0,"fb":"Negative with he/she/it: doesn't + the bare verb."}]},{"n":2,"tense":"Present Continuous","colour":"#E66085","ink":"#0b1a12","href":"../blockcamp-present-continuous.html","access":"free","ranger":"Ranger Mia","hi":"Look at the sky! Something is happening up there right now.","weather":[["rain","It is raining."]],"q":[{"p":"Look! It ___.","o":["is raining","rains","rained"],"a":0,"fb":"Happening right now, as we watch: Present Continuous."},{"p":"They ___ a tent at the moment.","o":["are putting up","put up","have put up"],"a":0,"fb":"An action in progress at this moment: are + -ing."},{"p":"Why ___ you laughing?","o":["are","do","did"],"a":0,"fb":"Questions in the Present Continuous start with am/is/are."}]},{"n":3,"tense":"Past Simple","colour":"#B08968","ink":"#0b1a12","href":"../blockcamp-past-simple.html","access":"free","ranger":"Ranger Tom","hi":"It rained all night. I crossed the bridge at dawn and it was still wet.","weather":[["rain","It rained."],["clear","It rained, and then it stopped."]],"q":[{"p":"We ___ the bridge yesterday.","o":["crossed","cross","have crossed"],"a":0,"fb":"Finished, with a time in the past (yesterday): Past Simple."},{"p":"He ___ go to the cinema last night.","o":["didn't","doesn't","hasn't"],"a":0,"fb":"Past negative: didn't + the bare verb."},{"p":"___ you see the tiger?","o":["Did","Do","Have"],"a":0,"fb":"Past Simple questions start with Did."}]},{"n":4,"tense":"Past Continuous","colour":"#F1D779","ink":"#0b1a12","href":"../blockcamp-past-continuous.html","access":"free","ranger":"Ranger Ana","hi":"When you arrived, I was watching the clouds. They were moving fast.","weather":[["rain","It was raining when you arrived."],["clear",""]],"q":[{"p":"It ___ when we arrived.","o":["was raining","rained","is raining"],"a":0,"fb":"In progress at a moment in the past: was/were + -ing."},{"p":"They ___ while the ranger talked.","o":["were listening","listened","are listening"],"a":0,"fb":"A longer action around a shorter one: Past Continuous."},{"p":"What ___ you doing at eight o'clock?","o":["were","did","are"],"a":0,"fb":"Questions: was/were + subject + -ing."}]},{"n":5,"tense":"Going To","colour":"#70A43A","ink":"#0b1a12","href":"../blockcamp-going-to.html","access":"pro","ranger":"Ranger Leo","hi":"See those clouds? I know what they mean. Something is going to happen.","weather":[["clouds","It is going to rain."],["rain","It is raining."]],"q":[{"p":"Look at those clouds. It ___ rain.","o":["is going to","will","is"],"a":0,"fb":"Evidence now (the clouds) about the future: going to."},{"p":"I ___ climb the tower tomorrow.","o":["am going to","will going to","going to"],"a":0,"fb":"A plan already made: am/is/are going to."},{"p":"___ they going to camp here?","o":["Are","Do","Will"],"a":0,"fb":"Questions: Are/Is + subject + going to."}]},{"n":6,"tense":"Future Simple","colour":"#F0723F","ink":"#0b1a12","href":"../blockcamp-future-simple.html","access":"pro","ranger":"Ranger Zoe","hi":"Don't worry about the weather. I'll tell you what it will do tonight.","weather":[["night","It will be cold tonight."],["clear",""]],"q":[{"p":"Don't worry, I ___ help you.","o":["will","am going to","would"],"a":0,"fb":"A decision made at the moment of speaking: will."},{"p":"It ___ be cold tonight.","o":["will","is","was"],"a":0,"fb":"A prediction with no evidence in front of us: will."},{"p":"I think she ___ come.","o":["won't","willn't","doesn't will"],"a":0,"fb":"The negative of will is won't."}]},{"n":7,"tense":"Present Perfect","colour":"#2E7D65","ink":"#f2f7f3","href":"../blockcamp-present-perfect.html","access":"pro","ranger":"Ranger Kai","hi":"I've climbed that tower three times. I've never seen a view like it.","weather":[["rain","It has been raining."],["clear","It has stopped raining."]],"q":[{"p":"I ___ the tower three times.","o":["have climbed","climbed","am climbing"],"a":0,"fb":"Experience up to now, no time given: Present Perfect."},{"p":"___ you ever seen snow?","o":["Have","Did","Do"],"a":0,"fb":"Ever + experience: Have/Has + subject + past participle."},{"p":"She ___ just left.","o":["has","have","had"],"a":0,"fb":"A recent action with 'just': has + past participle."}]},{"n":8,"tense":"Present Perfect Continuous","colour":"#46B0AB","ink":"#0b1a12","href":"../blockcamp-present-perfect-continuous.html","access":"pro","ranger":"Ranger Ivy","hi":"It's been raining for hours. I've been waiting here since dawn.","weather":[["rain","It has been raining all day."],["clear",""]],"q":[{"p":"It ___ for hours.","o":["has been raining","has rained","is raining"],"a":0,"fb":"Still going on, with 'for hours': Present Perfect Continuous."},{"p":"How long ___ you been waiting?","o":["have","did","are"],"a":0,"fb":"Questions: How long + have/has + subject + been + -ing."},{"p":"They ___ since dawn.","o":["have been walking","walk","are walking"],"a":0,"fb":"Since dawn until now, still happening: have been + -ing."}]},{"n":9,"tense":"Past Perfect","colour":"#d66d77","ink":"#0b1a12","href":"../blockcamp-past-perfect.html","access":"pro","ranger":"Ranger Rex","hi":"By the time you got here, the rain had stopped. Lucky you.","weather":[["rain",""],["clear","The rain had stopped when you arrived."]],"q":[{"p":"When we got there, the rain ___.","o":["had stopped","stopped","has stopped"],"a":0,"fb":"The earlier of two past events: had + past participle."},{"p":"She ___ never seen a tiger before that day.","o":["had","has","was"],"a":0,"fb":"Before a past moment: Past Perfect."},{"p":"___ they left before you arrived?","o":["Had","Did","Have"],"a":0,"fb":"Questions: Had + subject + past participle."}]}];
 
 /* ---- the scene: the hub's trail painting, walked along its own path ----------
    Coordinates are pixels of the 1600x900 picture. TRAIL is the painted path
@@ -221,8 +256,14 @@ addEventListener('keydown', e => { if (e.repeat) return; const k = DIRS[e.key]; 
   if (talking && /^[1-4]$/.test(e.key)) { const b = document.querySelectorAll('#talk .opt')[+e.key - 1]; if (b && !b.disabled) b.click(); } });
 addEventListener('keyup', e => { const k = DIRS[e.key]; if (k) keys[k] = false; });
 document.querySelectorAll('#pad button').forEach(b => { const k = b.dataset.k; const on = e => { e.preventDefault(); keys[k] = true; player.target = null; }, off = e => { e.preventDefault(); keys[k] = false; };
-  b.addEventListener('pointerdown', on); b.addEventListener('pointerup', off); b.addEventListener('pointercancel', off); b.addEventListener('pointerleave', off); });
-document.getElementById('act').addEventListener('click', () => { if (talking) { const b = document.querySelector('#tRow .btn:last-child'); if (b) b.click(); } else act(); });
+  b.addEventListener('pointerdown', on); b.addEventListener('pointerup', e => { off(e); popOut(); }); b.addEventListener('pointercancel', off); b.addEventListener('pointerleave', off); });
+/* "Pop out": the learner's first game tap (pad, TALK, the picture) takes a phone full screen where it can.
+   camp-full.js does nothing on a laptop, an iPhone, or after the learner has left full screen in this tab.
+   It has to run inside the tap: a touch pointerdown does not count as one, pointerup and click do. */
+function popOut() { if (window.CampFull) try { CampFull.popOut(); } catch (_) {} }
+/* fingers or keys: what the hint and the help say */
+const COARSE = matchMedia('(pointer: coarse)');
+document.getElementById('act').addEventListener('click', () => { popOut(); if (talking) { const b = document.querySelector('#tRow .btn:last-child'); if (b) b.click(); } else act(); });
 
 function stepPlayer() {
   if (talking) { player.walk = 0; return; }
@@ -237,17 +278,20 @@ function act() { const s = near(); if (!s) return; if (s.kind === 'ranger') talk
 
 /* ---- the talk box ------------------------------------------------------------ */
 const $ = id => document.getElementById(id);
-function openTalk() { talking = true; $('talk').classList.add('on'); }
-function closeTalk() { talking = false; $('talk').classList.remove('on'); }
+function openTalk() { talking = true; keys.fwd = keys.back = false; document.body.classList.add('talking'); $('talk').classList.add('on'); }
+function closeTalk() { talking = false; document.body.classList.remove('talking'); $('talk').classList.remove('on'); }
+$('tClose').onclick = closeTalk;
 function esc(s) { return String(s).replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c])); }
 function say(who, tense, html, opts, fb) { $('tWho').textContent = who; $('tTense').textContent = tense; $('tSay').innerHTML = html; $('tOpts').innerHTML = opts || ''; $('tFb').innerHTML = fb || ''; $('tRow').innerHTML = ''; openTalk(); }
+/* a Pro deck says so before the learner lands on the gate page (access from lesson-meta.json, via build.py) */
+function lessonLabel(c) { return c.access === 'pro' ? 'Open the lesson 🔒 Pro' : 'Open the lesson'; }
 function btn(label, fn, alt) { const b = document.createElement('button'); b.className = 'btn' + (alt ? ' alt' : ''); b.textContent = label; b.onclick = fn; $('tRow').append(b); }
 function enter(s) { say(s.label, '', s.kind === 'tent' ? 'Your tent. The map of everything you have done, your badges and your save code are inside.' : 'The lookout tower. From the top you can see the far side of the hill — the same tenses, in the passive.'); btn('Not now', closeTalk, true); btn('Go', () => { location.href = s.href; }); }
 function talkTo(r) {
   r.face = player.d < r.d ? 3 : 1;
   const c = r.camp, done = !!save.met[c.n];
   say(c.ranger, c.tense, `${esc(c.hi)}${done ? '<br><small>You have already met me. Want the questions again?</small>' : ''}`);
-  btn('Later', closeTalk, true); btn('Open the lesson', () => { location.href = c.href; }, true); btn(done ? 'Ask me again' : 'Ask me', () => quiz(r, 0, 0));
+  btn('Later', closeTalk, true); btn(lessonLabel(c), () => { location.href = c.href; }, true); btn(done ? 'Ask me again' : 'Ask me', () => quiz(r, 0, 0));
 }
 function quiz(r, i, right) {
   const c = r.camp, q = c.q[i];
@@ -270,7 +314,7 @@ function finish(r, right) {
   if (all && !save.met[c.n]) save.met[c.n] = true;
   persist(); applyMet();
   if (all) { say(c.ranger, c.tense, `${right}/${c.q.length}. Well done. Now look at the sky.`); btn('Look up', () => { closeTalk(); weatherShow(c.weather); }); }
-  else { say(c.ranger, c.tense, `${right}/${c.q.length}. Not yet. Read the camp and come back, I'm not going anywhere.`); btn('Open the lesson', () => { location.href = c.href; }, true); btn('OK', closeTalk); }
+  else { say(c.ranger, c.tense, `${right}/${c.q.length}. Not yet. Read the camp and come back, I'm not going anywhere.`); btn(lessonLabel(c), () => { location.href = c.href; }, true); btn('OK', closeTalk); }
 }
 
 /* ---- weather: the reward ----------------------------------------------------- */
@@ -301,6 +345,12 @@ let VW = 1, VH = 1, DPR = 1;
 function size() { const st = $('stage'); const top = document.querySelector('.topband'); st.style.setProperty('--top', (top ? top.offsetHeight : 0) + 'px');
   VW = st.clientWidth; VH = st.clientHeight; DPR = Math.min(2, devicePixelRatio || 1); cv.width = Math.round(VW * DPR); cv.height = Math.round(VH * DPR); }
 addEventListener('resize', size); size();
+/* The band's height changes after the script runs (its fonts arrive and it stops wrapping) and goes to 0
+   in full screen; --top has to follow it or a dark strip is left between the band and the game. */
+['fullscreenchange', 'webkitfullscreenchange'].forEach(ev => document.addEventListener(ev, () => { size(); requestAnimationFrame(size); }));
+addEventListener('load', size);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(size);
+if (window.ResizeObserver) { const ro = new ResizeObserver(() => size()); const tb = document.querySelector('.topband'); if (tb) ro.observe(tb); ro.observe($('stage')); }
 const img = new Image(); img.src = SCENE.src;
 
 const PX = 3;   /* a sprite cell, in picture pixels at full depth */
@@ -353,14 +403,16 @@ function loop(now) { const dt = Math.min(50, now - last); last = now; frame++;
   if (night > 0) { ctx.fillStyle = `rgba(8,14,40,${.55 * night})`; ctx.fillRect(0, 0, cv.width, cv.height); ctx.fillStyle = `rgba(255,255,255,${.8 * night})`; for (let i = 0; i < 40; i++) ctx.fillRect((i * 97) % cv.width, (i * 61) % (cv.height / 3), 2 * DPR, 2 * DPR); }
   if (sun > 0) { ctx.fillStyle = `rgba(255,220,120,${.18 * sun})`; ctx.fillRect(0, 0, cv.width, cv.height); const gr = ctx.createRadialGradient(cv.width * .85, 0, 10, cv.width * .85, 0, cv.width * .5); gr.addColorStop(0, `rgba(255,240,200,${.5 * sun})`); gr.addColorStop(1, 'rgba(255,240,200,0)'); ctx.fillStyle = gr; ctx.fillRect(0, 0, cv.width, cv.height); }
   /* the hint */
-  const n = talking ? null : near(); const hint = $('hint');
-  if (n) { hint.textContent = n.kind === 'ranger' ? `PRESS SPACE · ${n.camp.ranger.toUpperCase()}` : `PRESS SPACE · ${n.label.toUpperCase().split(' · ')[0]}`; hint.classList.add('on'); } else hint.classList.remove('on');
+  const n = talking ? null : near(); const hint = $('hint'), actBtn = $('act');
+  const verb = n && n.kind !== 'ranger' ? 'OPEN' : 'TALK'; if (actBtn.textContent !== verb) actBtn.textContent = verb;
+  /* the hint stands down while a weather caption is up: on a phone they share the middle of the screen */
+  if (n && !$('caption').classList.contains('on')) { const t = `${COARSE.matches ? 'TAP ' + verb : 'PRESS SPACE'} · ${n.kind === 'ranger' ? n.camp.ranger.toUpperCase() : n.label.toUpperCase().split(' · ')[0]}`; if (hint.textContent !== t) hint.textContent = t; hint.classList.add('on'); } else hint.classList.remove('on');
   requestAnimationFrame(loop);
 }
 requestAnimationFrame(loop);
 
 /* tap or click the picture: walk to the nearest point of the trail, or talk to a ranger you are standing by */
-cv.addEventListener('click', e => { if (talking) return; const r = cv.getBoundingClientRect(); const wx = (e.clientX - r.left) * DPR / camZ + camX, wy = (e.clientY - r.top) * DPR / camZ + camY;
+cv.addEventListener('click', e => { popOut(); if (talking) return; const r = cv.getBoundingClientRect(); const wx = (e.clientX - r.left) * DPR / camZ + camX, wy = (e.clientY - r.top) * DPR / camZ + camY;
   for (const s of stops) if (s.kind === 'ranger' && Math.hypot(s.x - wx, s.y - wy) < 40 * DEPTH(s.y) + 10 && Math.abs(s.d - player.d) < 34) return talkTo(s);
   const n = nearestD(wx, wy); if (n.dist < 140) player.target = n.d; });
 
@@ -368,7 +420,7 @@ cv.addEventListener('click', e => { if (talking) return; const r = cv.getBoundin
 function burstAt(el) { const r = el.getBoundingClientRect(); for (let i = 0; i < 14; i++) { const p = document.createElement('i'); p.className = 'burst'; p.style.cssText = `left:${r.left + r.width / 2}px;top:${r.top + r.height / 2}px;width:6px;height:6px;background:#e8c04a;position:fixed;transition:transform .7s ease-out,opacity .7s`; document.body.append(p);
   requestAnimationFrame(() => { const a = Math.random() * 6.28, d = 30 + Math.random() * 50; p.style.transform = `translate(${Math.cos(a) * d}px,${Math.sin(a) * d}px)`; p.style.opacity = '0'; }); setTimeout(() => p.remove(), 800); } }
 let sound = false, AC = null; try { sound = localStorage.getItem('rpg-sound') === '1'; } catch (_) {}
-function setSound(on) { sound = !!on; try { localStorage.setItem('rpg-sound', sound ? '1' : '0'); } catch (_) {} const b = $('sound'); b.setAttribute('aria-pressed', String(sound)); b.textContent = (sound ? '🔊' : '🔈') + ' sound'; }
+function setSound(on) { sound = !!on; try { localStorage.setItem('rpg-sound', sound ? '1' : '0'); } catch (_) {} const b = $('sound'); b.setAttribute('aria-pressed', String(sound)); b.querySelector('.ic').textContent = sound ? '🔊' : '🔈'; }
 function beep(ok) { if (!sound) return; try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); const o = AC.createOscillator(), gn = AC.createGain(); o.type = 'square'; o.frequency.value = ok ? 660 : 180; gn.gain.value = .06; o.connect(gn).connect(AC.destination); o.start(); if (ok) o.frequency.setValueAtTime(880, AC.currentTime + .09); o.stop(AC.currentTime + (ok ? .18 : .25)); } catch (_) {} }
 setSound(sound); $('sound').onclick = () => setSound(!sound);
 $('helpBtn').onclick = () => { const on = !$('help').classList.contains('on'); $('help').classList.toggle('on', on); $('helpBtn').setAttribute('aria-pressed', String(on)); };

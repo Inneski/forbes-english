@@ -126,16 +126,28 @@ def build():
     icons = os.path.join(OUT_DIR, 'quest-icons'); os.makedirs(icons, exist_ok=True)
     for size in (192, 512):
         open(os.path.join(icons, f'icon-{size}.png'), 'wb').write(png(size))
+    # ONE app for the whole of Block Camp. camp-full.js links this manifest on
+    # every Block Camp page that has none, so the Home Screen icon is the same
+    # app wherever it was added from. Scope is a plain string prefix in WebKit
+    # and Chromium: '/block' holds /block-camp.html, both maps, /block-camp/*
+    # and every /blockcamp-* deck (clean URLs included), and nothing else on
+    # the site starts with it (case-sensitive: /BlockCamp/ images are fetched,
+    # not navigated). With the old '/block-camp/' scope 54 of the Quest's 81
+    # links - every deck, map and the hub - left the installed app.
+    # The id stays '/block-camp/quest.html' so existing installs keep updating;
+    # start_url stays the Quest, the game's front door.
     manifest = {
-        'name': 'Block Camp: The Quest', 'short_name': 'Block Camp', 'id': '/block-camp/quest.html',
-        'start_url': 'quest.html', 'scope': '/block-camp/', 'display': 'standalone', 'orientation': 'any',
+        'id': '/block-camp/quest.html', 'name': 'Block Camp', 'short_name': 'Block Camp',
+        'start_url': 'quest.html', 'scope': '/block', 'display': 'standalone', 'orientation': 'any',
         'background_color': '#14301f', 'theme_color': '#14301f',
-        'description': 'The English tense journey as a game: climb the camps, clear the adventures, collect every tile.',
+        'description': 'Block Camp from Forbes English: the English tenses as one game. Climb the camps, come down through the passive, walk the village and clear the adventures.',
         'icons': [{'src': 'quest-icons/icon-192.png', 'sizes': '192x192', 'type': 'image/png', 'purpose': 'any'},
                   {'src': 'quest-icons/icon-512.png', 'sizes': '512x512', 'type': 'image/png', 'purpose': 'any maskable'}]}
     open(os.path.join(OUT_DIR, 'manifest.webmanifest'), 'w', encoding='utf-8', newline='\n').write(json.dumps(manifest, indent=2) + '\n')
-    # the worker: network first, cache as fallback, scoped to block-camp/ so
-    # it can never serve a stale copy of anything outside the game
+    # the worker: network first, cache as fallback. Its own scope stays
+    # block-camp/ (where it is registered from), so it can never serve a stale
+    # copy of a deck or any other page; the manifest's wider scope only
+    # decides which pages open inside the installed app.
     open(os.path.join(OUT_DIR, 'sw.js'), 'w', encoding='utf-8', newline='\n').write(rd(HERE, 'sw.js'))
     print('wrote block-camp/quest.html — %d camps, %d stations, %d adventures; manifest, sw.js, 2 icons'
           % (len(camps), len(stations), len(adventures)))

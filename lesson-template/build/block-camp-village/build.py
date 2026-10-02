@@ -25,6 +25,16 @@ even spacings along it. The first build drew a tile map in code and Innes
 called the graphics "pants" — rightly. Walking on the real art is the fix.
 
 Save state: CampSave.get('village') → {met:{camp:true}, best:{camp:n}}.
+
+Phones (2026-10-02, "make block camp easier to use on mobile phones (full
+screen pop out ideally)"): camp-full.js is loaded and the tools row has its
+full-screen button; the first pad / TALK / picture tap pops a phone out to
+full screen where the browser allows it (an iPhone gets the Add to Home
+Screen how-to from the button instead). In full screen and in the Home
+Screen app the site band is hidden and size() follows it. The pad and TALK
+hide while a ranger talks (they covered 'Later' and the last button), the
+dialog has a 44px close, the words say TAP/TALK on a touch screen, and the
+dialog, help and tools respect the safe areas.
 """
 import importlib.util, json, os, re
 
@@ -93,7 +103,11 @@ camps = []
 for n, name, slug, l1, l2 in hub.CLIMB:
     if not present(f'blockcamp-{slug}.html'): continue
     r = RANGERS[n]
+    # Free or Pro, from lesson-meta.json through hub.access() as the quest does,
+    # so a Pro ranger's 'Open the lesson' carries a padlock instead of landing
+    # a free learner on the gate page unwarned.
     camps.append({'n': n, 'tense': name, 'colour': hub.CAMP[n], 'ink': hub.INK[n], 'href': f'../blockcamp-{slug}.html',
+                  'access': hub.access(f'blockcamp-{slug}.html', 'free' if (n, 1) in hub.FREE_CLIMB else 'pro'),
                   'ranger': r['name'], 'hi': r['hi'], 'weather': r['weather'],
                   'q': [{'p': p, 'o': o, 'a': a, 'fb': fb} for p, o, a, fb in r['q']]})
 

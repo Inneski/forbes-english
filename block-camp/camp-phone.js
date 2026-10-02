@@ -79,6 +79,27 @@
     sheet.addEventListener('change', function () { setTimeout(closeMenu, 150); });
     sheet.addEventListener('click', function (e) { if (e.target.closest('a')) closeMenu(); });
 
+    // ── the pop-out: Begin on a phone also goes full screen ──
+    // camp-full.js (Innes, 2026-10-02: "full screen pop out ideally") can only
+    // enter full screen from inside a tap, so it rides on the cover's own
+    // forward tap. Where the phone has no full-screen API (an iPhone) this
+    // does nothing; the bar's button explains the Home Screen instead.
+    stage.addEventListener('click', function (e) {
+      if (!html.classList.contains('bc-phone') || !window.CampFull) return;
+      var go = e.target.closest && e.target.closest('[data-action="next"]');
+      var cover = stage.querySelector('.slide.is-active[data-type="cover"]');
+      if (go && cover) window.CampFull.popOut();
+    }, true);
+
+    // ── the score, short: "★ 3/12" (camp-phone.css shows it on a phone) ──
+    var scoreEl = document.getElementById('deckScore');
+    function shortScore() {
+      var m = scoreEl.textContent.match(/(\d+\s*\/\s*\d+)\s*$/);
+      if (m) scoreEl.setAttribute('data-short', m[1].replace(/\s+/g, ''));
+      else scoreEl.removeAttribute('data-short');
+    }
+    if (scoreEl) { shortScore(); new MutationObserver(shortScore).observe(scoreEl, { childList: true, characterData: true, subtree: true }); }
+
     // ── the picture's focal point: the subject is opposite the text ──
     function focus() {
       var s = stage.querySelector('.slide.is-active');

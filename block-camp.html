@@ -94,6 +94,16 @@ img { display: block; }
 .tb-cta-gold { background: var(--gold); color: var(--green-deep) !important; padding: 6px 14px; border-radius: 20px; opacity: 1 !important; font-weight: 700; }
 .tb-cta-gold:hover { background: var(--gold-pale); }
 @media (max-width: 620px) { .tb-links a:not(.tb-cta):not(.tb-cta-gold) { display: none; } }
+/* A finger needs 44px. The band's links were 14-28px tall (Go Pro 64x26);
+   on a touch screen each is padded out to 44 and the band's own padding
+   comes in to pay for it. The hub's copy of the band only: nav.html and the
+   other pages that share it are not touched. */
+@media (pointer: coarse) {
+  .tb-inner { padding-top: 4px; padding-bottom: 4px; }
+  .tb-logo { padding: 4px 0; }
+  .tb-links { row-gap: 0; }
+  .tb-links a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; min-width: 44px; }
+}
 
 /* ── type ── */
 @font-face{font-family:'Monocraft';font-style:normal;font-weight:100 900;
@@ -198,6 +208,23 @@ img { display: block; }
 }
 .btn-glass:hover { background: rgba(255,244,214,.12); }
 .btn svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+button.btn { cursor: pointer; margin: 0; -webkit-appearance: none; appearance: none; line-height: normal; }
+@media (pointer: coarse) { .btn { min-height: 44px; } }
+/* FULL SCREEN (block-camp/camp-full.js binds every [data-camp-full]). The hub
+   is a page you scroll, so nothing pops out by itself: this is the way in,
+   beside the route map, on touch screens only. On Android it takes the page
+   full screen and the next Block Camp page puts it back on the first tap; on
+   an iPhone, which has no full screen for a page, it opens the Add to Home
+   Screen how-to; opened from the Home Screen it hides itself (.camp-app). */
+.btn-full { display: none; }
+.btn-full .cf-i { width: 1.15em; height: 1.15em; }
+@media (pointer: coarse) { .btn-full { display: inline-flex; } }
+/* MUSIC. camp-music.js puts its round button in [data-camp-music-slot]
+   instead of fixing it bottom-left, where on a phone it sat over the hero's
+   buttons and then over every card on the way down. Empty when the music is
+   off for this visitor (Save-Data, no Web Audio), so it takes no gap. */
+.cta-music { display: inline-flex; }
+.cta-music:empty { display: none; }
 
 /* the tally, sitting on the hero's bottom edge */
 .tally {
@@ -218,7 +245,7 @@ img { display: block; }
 .tally .n { font-size: clamp(1.6rem,3vw,2.3rem); line-height: 1; color: var(--c); }
 .tally .l { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; font-size: .78rem; color: var(--paper); }
 .tally .s { font-size: .85rem; color: var(--muted); }
-@media (max-width: 760px) { .tally { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 760px) { .tally { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
 /* ── sections ── */
 .wrap { max-width: 1180px; margin: 0 auto; padding: 0 clamp(20px,4vw,40px) clamp(50px,8vw,90px); }
@@ -248,14 +275,20 @@ img { display: block; }
   background: linear-gradient(90deg, rgba(var(--bg-rgb),.92) 0%, rgba(var(--bg-rgb),.6) 45%, rgba(var(--bg-rgb),.15) 100%); }
 .ms-title { display: block; font-size: clamp(1.1rem,2vw,1.5rem); }
 .ms-sub { display: block; font-size: .95rem; color: #cfdcd3; margin-top: 6px; max-width: 52ch; }
+/* Mouse and finger get their own instructions: a phone has no hover. */
+.hint-touch { display: none; }
+@media (hover: none) { .hint-mouse { display: none; } .hint-touch { display: inline; } }
 .ms-go { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; font-size: .8rem;
   border: 1px solid rgba(255,244,214,.45); border-radius: 999px; padding: 9px 16px; white-space: nowrap; }
 
 /* ── cards ── */
 .grid { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px;
-  grid-template-columns: repeat(4, 1fr); }
-@media (max-width: 1000px) { .grid { grid-template-columns: repeat(3, 1fr); } }
-@media (max-width: 700px)  { .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
+  grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 1000px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+/* minmax(0,…): a plain 1fr track is never narrower than its longest word,
+   so at 320px "Continuous" pushed the two columns 2.4px past the screen
+   and the page slid sideways under a vertical swipe. */
+@media (max-width: 700px)  { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; } }
 .card {
   position: relative; display: flex; flex-direction: column; height: 100%;
   background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
@@ -291,6 +324,17 @@ img { display: block; }
 .chip-free { background: var(--gold); color: var(--bg); }
 .chip-pro { border: 1px solid rgba(232,192,74,.5); color: var(--gold-pale); background: transparent; }
 .chip-pro svg { width: 8px; height: 10px; fill: currentColor; }
+.row > .card-title { min-width: 0; overflow-wrap: break-word; }
+@media (max-width: 360px) {
+  .grid .body { padding-left: 10px; padding-right: 10px; }
+  .grid .row { gap: 7px; }
+  .card-title { font-size: .9rem; }
+}
+/* On a phone nothing on a card is under 12px (the chips were 10.9). */
+@media (pointer: coarse) {
+  .chip, .card-sub { font-size: 12px; }
+  .chip-pro svg { width: 9px; height: 11px; }
+}
 
 /* ── adventures: three wide plates ── */
 .adv { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
@@ -308,6 +352,11 @@ img { display: block; }
 @media (max-width: 520px) {
   .adv .card { flex-direction: column; }
   .adv .thumb { width: 100%; aspect-ratio: 16/10; }
+}
+/* Fourteen adventures in one column made the phone page 21 screens long:
+   on a phone each blurb stops at three lines; the card opens the whole story. */
+@media (max-width: 520px), (pointer: coarse) and (max-width: 900px) {
+  .adv .desc { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; overflow: hidden; }
 }
 
 /* ── closing band ── */
@@ -423,9 +472,12 @@ img { display: block; }
     <p class="lede"><strong>Every lesson here is set in a blocky, voxel-built world.</strong> One trail up through the nine tenses, a second trail down the far side through the same tenses in the passive, fourteen branching adventures with a grammar point built into the plot &mdash; and every illustrated reference in one place.</p>
     <div class="cta-row">
       <a class="btn btn-gold" href="block-camp-map.html">Open the route map <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      <button type="button" class="btn btn-glass btn-full" data-camp-full><svg class="cf-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg><span class="cf-l">Full screen</span></button>
       <a class="btn btn-glass" href="#climb">Start at camp 1</a>
       <a class="btn btn-glass" href="block-camp/quest.html">Play it as a game</a>
+      <a class="btn btn-glass" href="block-camp/flags.html">Your flags</a>
       <a class="btn btn-glass" href="block-camp/village.html">Walk round the village</a>
+      <span class="cta-music" data-camp-music-slot></span>
     </div>
   </div>
 </header>
@@ -447,7 +499,7 @@ img { display: block; }
     <div class="track-rule"></div>
     <a class="map-strip" href="block-camp-map.html">
       <span class="art" style="background-image:url(BlockCamp/hub-hero.jpg);background-position:center 70%"></span>
-      <span><span class="ms-title mono">The Route Map</span><span class="ms-sub">One trail, eight camps &mdash; hover a stop to see the camp, click to open Part 1. Or play the day and watch the whole climb.</span></span>
+      <span><span class="ms-title mono">The Route Map</span><span class="ms-sub">One trail, nine camps &mdash; <span class="hint-mouse">hover a stop to see the camp, click to open Part 1</span><span class="hint-touch">tap a stop to see the camp and open Part 1</span>. Or play the day and watch the whole climb.</span></span>
       <span class="ms-go">Open the map &rarr;</span>
     </a>
     <ul class="grid">
@@ -683,6 +735,10 @@ img { display: block; }
   if (!fly || !far || !window.IntersectionObserver) return;
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   if (navigator.connection && navigator.connection.saveData) return;
+  /* Phones keep the still: the clip is 1.9 MB for a strip of hero behind a
+     near-solid overlay, and so does a slow connection on any screen. */
+  if (matchMedia('(max-width: 760px), (pointer: coarse) and (max-height: 500px)').matches) return;
+  if (navigator.connection && /(^|-)(2g|3g)$/.test(navigator.connection.effectiveType || '')) return;
 
   var HOLD = 3000;                            /* ms on each still */
   var FADE = parseFloat(getComputedStyle(hero).getPropertyValue('--hero-fade')) * 1000 || 0;
@@ -733,6 +789,7 @@ img { display: block; }
   hold();
 })();
 </script>
+<script src="block-camp/camp-full.js" defer></script>
 <script src="block-camp/camp-music.js" data-track="block-camp/music/block-camp-theme.m4a" data-loop="0.5 72.5" defer></script>
 </body>
 </html>

@@ -29,7 +29,12 @@
                round button fixed in the bottom-left corner. */
   var bar = document.querySelector('.deck-bar');
   var rpgSound = document.querySelector('#sound.utility');
-  var mode = bar ? 'deck' : rpgSound ? 'rpg' : 'float';
+  /* slot  - a page that marks an element data-camp-music-slot gets the
+             round button inside it, in the page's own flow (2026-10-02: the
+             float sat on station 9 of the descent and on the hub's buttons
+             on a phone). */
+  var slot = document.querySelector('[data-camp-music-slot]');
+  var mode = bar ? 'deck' : rpgSound ? 'rpg' : slot ? 'slot' : 'float';
   var loop = (me.getAttribute('data-loop') || '').split(/\s+/).map(Number);
 
   // Innes, 2026-10-01: "lower backing track, dont stop when playing clips".
@@ -65,6 +70,7 @@
     'background:#14201a;box-shadow:0 2px 10px #0008;' +
     'border:1px solid color-mix(in srgb,var(--accent,#d9b25a) 60%,transparent)}' +
     '.camp-music-float svg{width:20px;height:20px}' +
+    '.camp-music-float.camp-music-slot{position:static;flex:none}' +
     '.camp-music-float[aria-pressed="false"] .cm-note{opacity:.45}' +
     '.camp-music-float .cm-x{display:none}.camp-music-float[aria-pressed="false"] .cm-x{display:inline}' +
     '@media print{.camp-music,.camp-music-rpg,.camp-music-float{display:none!important}}';
@@ -86,6 +92,10 @@
     btn.className = 'utility camp-music-rpg';
     btn.innerHTML = '🎵<span class="u-label cm-l"></span>';
     rpgSound.parentNode.insertBefore(btn, rpgSound.nextSibling);
+  } else if (mode === 'slot') {
+    btn.className = 'camp-music-float camp-music-slot';
+    btn.innerHTML = NOTE;
+    slot.appendChild(btn);
   } else {
     btn.className = 'camp-music-float';
     btn.innerHTML = NOTE;

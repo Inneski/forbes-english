@@ -273,6 +273,37 @@ html.bc-phone #stage .deck-bar .progress {
 }
 html.bc-phone #stage .deck-bar .deck-count { flex: 1 1 auto !important; text-align: center; font-size: 12px !important; }
 html.bc-phone #stage .deck-bar .deck-score { font-size: 12px !important; }
+/* Five 48px buttons (menu, full screen, prev, next, and Next camp at the end)
+   leave a 320px phone about 60px in the middle, and "Puntuación 3/12" alone
+   is wider. So the bar is a grid and the count sits over the score in that
+   middle column, two short lines, instead of pushing Next off the screen. */
+html.bc-phone #stage .deck-bar {
+  display: grid !important; align-items: center;
+  grid-template-columns: auto auto auto minmax(0, 1fr) auto;
+  grid-template-rows: 1fr 1fr; column-gap: 10px !important; row-gap: 2px;
+}
+html.bc-phone #stage .deck-bar > * { grid-row: 1 / 3; }
+html.bc-phone #stage .deck-bar > .bcp-menu { grid-column: 1; }
+html.bc-phone #stage .deck-bar > .camp-full { grid-column: 2; }
+html.bc-phone #stage .deck-bar > .nav-btn[data-action="prev"] { grid-column: 3; }
+html.bc-phone #stage .deck-bar > .ledger { grid-column: 4; }
+html.bc-phone #stage .deck-bar > .deck-count { grid-column: 4; justify-self: center; }
+html.bc-phone #stage .deck-bar > .deck-score {
+  grid-column: 4; grid-row: 2; align-self: start; justify-self: center;
+  min-width: 0; max-width: 100%; overflow: hidden; text-overflow: ellipsis;
+}
+html.bc-phone #stage:not(.on-cover) .deck-bar:has(.deck-score:not(:empty)) > .deck-count { grid-row: 1; align-self: end; }
+html.bc-phone #stage.on-cover .deck-bar > .deck-score,
+html.bc-phone #stage .deck-bar > .deck-score:empty { display: none !important; }
+html.bc-phone #stage .deck-bar > .nav-btn[data-action="next"] { grid-column: 5; }
+html.bc-phone #stage .deck-bar > .camp-next { grid-column: 4 / 6; }
+/* "Puntuación 3/29" still does not fit 54px: on a phone the word goes and a
+   star stands for it (camp-phone.js copies the numbers into data-short; the
+   full text stays in the element for screen readers). */
+html.bc-phone #stage .deck-bar > .deck-score[data-short] { font-size: 0 !important; }
+html.bc-phone #stage .deck-bar > .deck-score[data-short]::after {
+  content: "\2605\00A0" attr(data-short); font-size: 12px !important; letter-spacing: .04em;
+}
 /* On the last slide the next arrow is dead; Next camp takes its place, and
    the count and score (22 / 22 is not news) give it their room. */
 html.bc-phone #stage .deck-bar:has(.camp-next:not([hidden])) :is(.nav-btn[data-action="next"], .deck-count, .deck-score) { display: none !important; }
@@ -296,6 +327,14 @@ html.bc-phone #stage .bcp-menu {
 }
 html.bc-phone #stage .bcp-menu[aria-expanded="true"] { background: var(--accent); color: var(--void); border-color: var(--accent); }
 html.bc-phone #stage .bcp-menu svg { width: 22px; height: 22px; }
+/* The full-screen toggle (camp-full.js) stays in the bar beside the menu
+   rather than going into it: it is the control a phone needs first, and on
+   an iPhone it is where the Home Screen how-to lives. */
+html.bc-phone #stage .deck-bar .camp-full {
+  width: 48px !important; height: 48px !important; min-width: 0 !important; padding: 0 !important;
+  border-radius: 10px !important; flex: none !important;
+}
+html.bc-phone #stage .deck-bar .camp-full .cf-i { width: 22px; height: 22px; }
 .bcp-sheet { display: none; }
 html.bc-phone #stage .bcp-sheet.open {
   position: absolute; left: 8px; right: 8px; bottom: calc(var(--bar-h) + 8px); z-index: 10;
@@ -313,7 +352,7 @@ html.bc-phone #stage .bcp-sheet > select { font-size: 16px !important; }
 html.bc-phone #stage .bcp-sheet > [hidden] { display: none !important; }
 
 /* ── Touch ────────────────────────────────────────────────────────────── */
-html.bc-phone #stage :is(.opt, .match-item, .sort-item, .chunk, .btn, .nav-btn, .bcp-menu) {
+html.bc-phone #stage :is(.opt, .match-item, .sort-item, .chunk, .btn, .nav-btn, .bcp-menu, .camp-full) {
   touch-action: manipulation; -webkit-tap-highlight-color: transparent;
   -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
 }

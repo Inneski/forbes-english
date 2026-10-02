@@ -17,6 +17,9 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="quest-icons/icon-192.png" type="image/png">
 <link rel="apple-touch-icon" href="quest-icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Block Camp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
@@ -57,6 +60,11 @@ button{font:inherit;color:inherit;cursor:pointer}
 .mono{font-family:'Monocraft',ui-monospace,monospace;font-synthesis:none;letter-spacing:0}
 .eyebrow{font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.16em;text-transform:uppercase;font-size:.8rem;color:var(--gold-bright)}
 .wrap{max-width:1180px;margin:0 auto;padding:0 clamp(16px,4vw,40px)}
+/* The gutter the hero and the map sections keep from the screen edge: the
+   wrap's own padding while the 1180px column fills the screen, shrinking to
+   nothing once the column's margins are wider than that (so a desktop is
+   unchanged). Without it both sat at x=0 on every phone. */
+:root{--gut:max(0px,calc(clamp(16px,4vw,40px) - max(0px,(100vw - 1180px) / 2)));--tabs-h:0px}
 
 /* ── the sky: the trail scene, drifting ── */
 .sky{position:relative;overflow:hidden;min-height:min(92vh,760px);display:grid;align-items:end;isolation:isolate}
@@ -71,7 +79,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .fireflies{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
 .fireflies i{position:absolute;width:4px;height:4px;border-radius:50%;background:#ffe9a6;box-shadow:0 0 8px 2px rgba(255,233,166,.7);opacity:0;animation:fly var(--d) ease-in-out var(--delay) infinite}
 @keyframes fly{0%{transform:translate(0,0);opacity:0}15%{opacity:.9}50%{transform:translate(var(--x),var(--y));opacity:.5}85%{opacity:.9}100%{transform:translate(0,0);opacity:0}}
-.sky-inner{position:relative;padding:clamp(48px,9vh,110px) 0 clamp(28px,4vh,44px);display:grid;grid-template-columns:minmax(0,1.15fr) minmax(300px,.85fr);gap:clamp(20px,4vw,56px);align-items:end}
+.sky-inner{position:relative;padding:clamp(48px,9vh,110px) var(--gut) clamp(28px,4vh,44px);display:grid;grid-template-columns:minmax(0,1.15fr) minmax(300px,.85fr);gap:clamp(20px,4vw,56px);align-items:end}
 @media(max-width:860px){.sky-inner{grid-template-columns:1fr}.sky{min-height:0}}
 h1.mono{margin:.35em 0 .3em;font-size:clamp(2.4rem,7vw,5.6rem);line-height:.9;color:var(--cream);text-shadow:0 4px 30px rgba(0,0,0,.6)}
 h1.mono em{font-style:normal;color:var(--gold-bright)}
@@ -104,7 +112,7 @@ h1.mono em{font-style:normal;color:var(--gold-bright)}
 .btn[hidden]{display:none}
 
 /* ── a map section ── */
-.map{padding:clamp(28px,5vw,60px) 0 10px}
+.map{padding:clamp(28px,5vw,60px) var(--gut) 10px;overflow-x:clip;scroll-margin-top:var(--tabs-h)}
 .map-head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:8px}
 .map h2{margin:0;font-size:clamp(1.5rem,3.4vw,2.4rem);line-height:1;color:var(--cream)}
 .map h2 em{font-style:normal;color:var(--c)}
@@ -190,6 +198,37 @@ h1.mono em{font-style:normal;color:var(--gold-bright)}
 .btn-danger{background:rgba(230,96,133,.15);color:#f3a5bb;border-color:rgba(230,96,133,.4)}
 .btn-danger:hover{background:rgba(230,96,133,.28)}
 
+/* ── the section tabs: phones and small tablets only ── */
+.qtabs{display:none}
+@media(max-width:860px) and (min-height:500px){
+  :root{--tabs-h:52px}
+  .qtabs{display:flex;position:sticky;top:0;z-index:6;gap:4px;padding:4px var(--gut);background:var(--bg);background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--hair);overflow-x:auto;scrollbar-width:none}
+  .qtabs::-webkit-scrollbar{display:none}
+  .qtabs a{flex:1 0 auto;display:grid;place-items:center;min-height:44px;padding:0 10px;border-radius:10px;text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:.84rem;color:var(--muted)}
+  .qtabs a[aria-current]{color:var(--green-deep);background:var(--gold-bright)}
+  /* the save code is the first thing under the Passport heading, not 2,000px below it */
+  #passport{display:flex;flex-direction:column}
+  #passport .map-head{order:-2}
+  #passport .tools{order:-1;margin:16px 0 4px}
+}
+
+/* ── full screen / Home Screen: the button is for phones and tablets ── */
+#full:not([hidden]){display:none}
+@media(pointer:coarse){#full:not([hidden]){display:inline-flex}}
+
+/* ── thumbs: every control at least 44px on a touch screen ── */
+@media(pointer:coarse){
+  .btn,.btn-sm{min-height:44px}
+  .btn-sm{font-size:.82rem}
+  .hud .who{display:flex;align-items:center;flex-wrap:wrap}
+  .hud .who button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:0 12px;margin-left:6px;font-size:.84rem;border:1px solid rgba(232,192,74,.4);border-radius:22px}
+  .pips{gap:8px}
+  .pip{min-height:44px;min-width:44px;padding:0 12px;font-size:.8rem;border-radius:22px}
+  .pip i{width:10px;height:10px}
+  .tools textarea{font-size:16px}
+  footer a{display:inline-block;padding:14px 2px}
+}
+
 /* ── toasts and the finale ── */
 .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,120%);background:var(--glass);backdrop-filter:blur(10px);border:1px solid rgba(232,192,74,.5);border-radius:14px;padding:12px 18px;display:flex;gap:12px;align-items:center;z-index:20;transition:transform .5s cubic-bezier(.2,.8,.2,1);box-shadow:0 20px 50px rgba(0,0,0,.5);max-width:calc(100vw - 32px)}
 .toast.on{transform:translate(-50%,0)}
@@ -219,7 +258,8 @@ footer a{color:var(--gold-bright)}
       <div class="cta-row">
         <a class="btn btn-gold" id="continue" href="#climb">Start at camp 1 <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
         <a class="btn btn-glass" href="../block-camp.html">Back to the hub</a>
-        <button class="btn btn-glass" id="install" hidden>Install as an app</button>
+        <button class="btn btn-glass" id="full" type="button" data-camp-full><svg class="cf-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg><span class="cf-l">Full screen</span></button>
+        <button class="btn btn-glass" id="install" type="button" hidden>Install as an app</button>
       </div>
     </div>
     <div class="hud" aria-live="polite">
@@ -235,10 +275,12 @@ footer a{color:var(--gold-bright)}
         <div><span class="n mono" id="sAdv">0/{{N_ADV}}</span><span class="l">adventures</span></div>
         <div><span class="n mono" id="sTiles">0</span><span class="l">tiles</span></div>
       </div>
-      <div class="cta-row"><a class="btn btn-glass btn-sm" id="lastLink" href="#climb">Where you were</a><a class="btn btn-glass btn-sm" href="#passport">Passport</a></div>
+      <div class="cta-row"><a class="btn btn-glass btn-sm" id="lastLink" href="#climb">Where you were</a><a class="btn btn-glass btn-sm" href="#passport">Passport &amp; save code</a><a class="btn btn-glass btn-sm" href="village.html">Walk the village</a></div>
     </div>
   </div>
 </header>
+
+<nav class="qtabs" aria-label="Quest sections"><a href="#climb">Climb</a><a href="#descent">Descent</a><a href="#adventures">Adventures</a><a href="#passport">Passport</a></nav>
 
 <main>
   <section class="map wrap" id="climb" style="--c:#7A93B5">
@@ -267,13 +309,13 @@ footer a{color:var(--gold-bright)}
 
   <section class="map wrap" id="passport" style="--c:#46B0AB">
     <div class="map-head">
-      <div><h2 class="mono">THE <em>PASSPORT</em></h2><p class="sub">A badge for every camp pitched, every station cleared and every adventure finished. Clear the lot and the lookout tower is yours.</p></div>
+      <div><h2 class="mono">THE <em>PASSPORT</em></h2><p class="sub">A badge for every camp pitched, every station cleared and every adventure finished. Clear the lot and the lookout tower is yours.</p><p class="sub"><a class="btn btn-glass btn-sm" href="flags.html">Your flags &rarr;</a></p></div>
       <div class="tally" id="tBadges"></div>
     </div>
     <ul class="badges" id="badges"></ul>
-    <div class="tools">
+    <div class="tools" id="save">
       <h3>Your save file</h3>
-      <p>Progress lives in this browser. To carry it to another device, copy the save code below and paste it in there; the paste wins, so keep the one with more in it.</p>
+      <p>Progress lives in this browser. To carry it to another device, copy the save code below and paste it in there; the paste wins, so keep the one with more in it. On an iPhone, Block Camp on the Home Screen keeps its own progress, apart from Safari: copy the code here before you add it, then paste it in the new icon.</p>
       <textarea id="saveText" spellcheck="false" aria-label="Save code"></textarea>
       <div class="row">
         <button class="btn btn-glass btn-sm" id="copySave">Copy save code</button>
@@ -290,6 +332,7 @@ footer a{color:var(--gold-bright)}
 <canvas id="fire" hidden></canvas>
 
 <script src="camp-save.js"></script>
+<script src="camp-full.js" defer></script>
 <script>
 const MAP = {{DATA}};
 const RANKS = [['Tenderfoot',0],['Scout',200],['Trailblazer',500],['Ranger',1000],['Pathfinder',1800],['Warden',2800],['Lookout Keeper',Infinity]];
@@ -344,8 +387,19 @@ function drawHud(s, sum) {
 
 /* ---- a trail: stops zig-zagging up (or down) a winding path ------------- */
 function drawTrail(el, stops, current, down) {
-  const n = stops.length, narrow = window.innerWidth < 720;
-  const rowH = narrow ? 150 : 130, H = rowH * n + 40, W = el.clientWidth || 900;
+  const n = stops.length, narrow = window.innerWidth < 720, W = el.clientWidth || 900;
+  /* the stops first, so a row is never shorter than the tallest stop (a
+     touch screen's 44px pips make a camp with three adventures ~200px tall) */
+  el.innerHTML = '';
+  const arts = stops.map((st, i) => {
+    const a = document.createElement('article');
+    a.className = 'stop ' + (i % 2 ? 'r' : 'l') + (st.done ? ' done' : st.seen ? ' part' : ' new') + (i === current ? ' now' : '');
+    a.style.setProperty('--c', st.colour); a.style.setProperty('--ci', st.ink);
+    a.innerHTML = `<a class="pin mono" href="${esc(st.href)}" aria-label="${esc(st.name)}">${st.num}</a><div><div class="name">${esc(st.name)}</div><div class="meta">${esc(st.meta)}</div><div class="pips">${st.pips}</div></div>`;
+    el.append(a); return a;
+  });
+  const tallest = Math.max(0, ...arts.map(a => a.offsetHeight));
+  const rowH = Math.max(narrow ? 150 : 130, tallest + 8), H = rowH * n + 40;
   el.style.height = H + 'px';
   const pts = stops.map((st, i) => { const k = down ? i : n - 1 - i; return {x: W * (narrow ? (i % 2 ? .62 : .38) : (i % 2 ? .66 : .34)), y: 40 + rowH * k + rowH / 2}; });
   const ordered = down ? pts : pts.slice();
@@ -355,21 +409,14 @@ function drawTrail(el, stops, current, down) {
   svg.setAttribute('viewBox', `0 0 ${W} ${H}`); svg.setAttribute('preserveAspectRatio', 'none');
   const base = document.createElementNS(svgNS, 'path'); base.setAttribute('class', 'base'); base.setAttribute('d', d);
   const lit = document.createElementNS(svgNS, 'path'); lit.setAttribute('class', 'lit'); lit.setAttribute('d', d);
-  svg.append(base, lit); el.innerHTML = ''; el.append(svg);
+  svg.append(base, lit); el.prepend(svg);
   /* light the path as far as the furthest cleared stop */
   const L = lit.getTotalLength(); let far = -1; stops.forEach((st, i) => { if (st.done) far = i; });
   lit.style.strokeDasharray = L; lit.style.strokeDashoffset = L;
   /* the curves between stops are near enough equal, so the lit share is the stop's share */
   const litLen = far < 0 ? 0 : n > 1 ? L * far / (n - 1) : L;
   requestAnimationFrame(() => requestAnimationFrame(() => { lit.style.strokeDashoffset = L - Math.min(L, litLen); }));
-  stops.forEach((st, i) => {
-    const a = document.createElement('article');
-    a.className = 'stop ' + (i % 2 ? 'r' : 'l') + (st.done ? ' done' : st.seen ? ' part' : ' new') + (i === current ? ' now' : '');
-    a.style.setProperty('--c', st.colour); a.style.setProperty('--ci', st.ink);
-    a.style.left = pts[i].x + 'px'; a.style.top = pts[i].y + 'px';
-    a.innerHTML = `<a class="pin mono" href="${esc(st.href)}" aria-label="${esc(st.name)}">${st.num}</a><div><div class="name">${esc(st.name)}</div><div class="meta">${esc(st.meta)}</div><div class="pips">${st.pips}</div></div>`;
-    el.append(a);
-  });
+  arts.forEach((a, i) => { a.style.left = pts[i].x + 'px'; a.style.top = pts[i].y + 'px'; });
   return pts;
 }
 function pip(href, label, p, done, access, cls) {
@@ -511,6 +558,18 @@ let deferredInstall = null;
 window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredInstall = e; $('install').hidden = false; });
 $('install').onclick = async () => { if (!deferredInstall) return; deferredInstall.prompt(); await deferredInstall.userChoice; deferredInstall = null; $('install').hidden = true; };
 if ('serviceWorker' in navigator && /^https?:/.test(location.protocol)) navigator.serviceWorker.register('sw.js').catch(() => {});
+
+/* ---- the section tabs (phones): light the one being read ------------------ */
+(function () {
+  const tabs = [...document.querySelectorAll('.qtabs a')]; if (!tabs.length || !window.IntersectionObserver) return;
+  const seen = new Map();
+  const io = new IntersectionObserver(es => {
+    es.forEach(e => seen.set(e.target.id, e.isIntersecting));
+    const on = tabs.map(t => t.hash.slice(1)).find(id => seen.get(id));
+    tabs.forEach(t => { if (t.hash.slice(1) === on) t.setAttribute('aria-current', 'true'); else t.removeAttribute('aria-current'); });
+  }, { rootMargin: '-60px 0px -55% 0px' });
+  tabs.forEach(t => { const s = document.getElementById(t.hash.slice(1)); if (s) io.observe(s); });
+})();
 
 /* ---- go ------------------------------------------------------------------- */
 const first = draw(true); celebrate(first);
