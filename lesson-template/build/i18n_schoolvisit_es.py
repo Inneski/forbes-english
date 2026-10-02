@@ -55,7 +55,7 @@ T = dict(
     b1t='Preguntas desde la clase', b2t='Hacerse mayor', b3t='La televisión',
     b4t='La tormenta',
 
-    b11w='Un momento en el futuro, y el sudor está en curso en ese momento: WILL BE + -ING, el Future Continuous.',
+    b11w='Un momento en el futuro: WILL + verbo, “I will sweat”. WILL BE + -ING, “I will be sweating”, lo muestra en curso en ese momento — las dos son correctas.',
     b12w='“When I was young” pone la frase en pasado: HAD. “Used to have” también vale.',
     b13w='Después de WHEN en una oración temporal usamos el Present Simple para el futuro: “when she grows up”, no “will grow”.',
     b14w='Una pregunta indirecta: ASKED + persona + WHETHER (o IF). “Asked” va en pasado porque la pregunta ya se hizo.',

@@ -54,7 +54,7 @@ T = dict(
     b1t='Fragen aus der Klasse', b2t='Erwachsen werden', b3t='Fernsehen',
     b4t='Das Gewitter',
 
-    b11w='Ein Moment in der Zukunft, und das Schwitzen ist in diesem Moment im Gang: WILL BE + -ING, das Future Continuous.',
+    b11w='Ein Moment in der Zukunft: WILL + Verb, „I will sweat“. WILL BE + -ING, „I will be sweating“, zeigt es in diesem Moment im Gang — beides ist richtig.',
     b12w='„When I was young“ setzt den Satz in die Vergangenheit: HAD. „Used to have“ geht auch.',
     b13w='Nach WHEN in einem Zeitsatz steht für die Zukunft das Present Simple: „when she grows up“, nicht „will grow“.',
     b14w='Eine indirekte Frage: ASKED + Person + WHETHER (oder IF). „Asked“ steht in der Vergangenheit, weil das Fragen vorbei ist.',

@@ -178,8 +178,8 @@ FIX = [
 #  PART 2 · complete the sentences — slides of two rows
 # ══════════════════════════════════════════════════════════════════════
 GAPS = [
-    [('When the kids start asking questions, I ______. <em>(sweat — three words)</em>',
-      ['will be sweating|’ll be sweating'], 'b11w'),
+    [('When the kids start asking questions, I ______. <em>(sweat)</em>',
+      ['will be sweating|’ll be sweating|will sweat|’ll sweat'], 'b11w'),
      ('When I was young, I ______ more time.',
       ['had|used to have'], 'b12w')],
     [('She might understand this part of my book when she ______ up.',

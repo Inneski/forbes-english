@@ -87,7 +87,7 @@ T['en'] = dict(
     b1t='Questions from the floor', b2t='Growing up', b3t='Television',
     b4t='The storm',
 
-    b11w='A moment in the future, and the sweating is in progress at that moment: WILL BE + -ING, the Future Continuous.',
+    b11w='A future moment: WILL + verb, “I will sweat”. WILL BE + -ING, “I will be sweating”, shows it in progress at that moment — both are right.',
     b12w='“When I was young” puts the sentence in the past: HAD. “Used to have” also works.',
     b13w='After WHEN in a time clause we use the Present Simple for the future: “when she grows up”, not “will grow”.',
     b14w='A reported question: ASKED + person + WHETHER (or IF). “Asked” is in the past because the asking is over.',
