@@ -240,6 +240,40 @@ also open Sherpa Tensing.
   next `seo.py` run on main writes; until then every gate says "Forbes
   English Pro" (access itself is already correct).
 
+## 2026-10-02 — Raise the Lookout, Phase A (the flags build a tower)
+
+Innes: make the flags feel like "building or trying to reach something".
+Design (4 concepts judged): docs/LOOKOUT-DESIGN.md. Every flag builds the
+learner's own lookout tower: climb flags raise 9 storeys (each with its own
+object), descent flags hang lamps that brighten the beacon, gold brings a
+storey's object to life, trim goes iron/brass/gold at 3/9/18 golds,
+adventures fly pennants, and 18/18 lights the beacon. Phase A is all
+code-drawn (no art); Phase B swaps in two ChatGPT pictures per
+docs/ARTWORK-lookout.md (drop folder incoming/lookout/, exists).
+
+  * Generated: block-camp/camp-flags.js (CampFlags.lookout(), meter(),
+    lampSprite(), next()/closestGold()) and block-camp/flags.html ("Your
+    Lookout": stage, HUD, storey sheets, build-in since
+    'forbes-camp-lookout-seen', finale, the parts list) from
+    lesson-template/build/block-camp-flags/ (build.py tables STOREYS, LAMPS,
+    TIERS; plate-tokens.json caches the plate colour samples + sha1).
+    `build.py --check` also checks captions (one CAPS verb group of the
+    storey's tense + FORM line), contrast pairs and plate freshness.
+  * Results card (block-camp/camp-end.js, no deck edits): meter + caption in
+    the deck's tense + near-miss line + Next chip, ten languages, compact on
+    html.bc-phone (the deck's closing line stays on screen), falls back to
+    the plain flag card. Hub tile and Quest HUD say "Your Lookout k/18".
+  * Free learners: past storey 4 the Next chip is padlocked to pricing.html
+    (Innes's choice); with the fe_at sign-in cookie it goes to the deck.
+    Pro is otherwise guessed from Pro pages already in the save.
+  * Review: 28 findings (0 broken, 13 ugly), all reproduced and fixed.
+    Tests: node test (2.6M checks, 16 mutants caught), check-flags (177),
+    Results harness on all 26 decks x 3 phone sizes vs HEAD, check-access
+    PASS, seo --check 0 rewrites.
+  * Owed: an independent house tense review of the 18 captions (they pass
+    the builder's check and one reviewer's pass). Russian card lines use a
+    fallback font (Pixelify has no Cyrillic; pre-existing).
+
 ## 2026-10-02 — Block Camp camp flags (achievement record)
 
 Innes: "Users need some kind of achievement record of flags obtained from

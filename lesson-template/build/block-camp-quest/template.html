@@ -101,6 +101,20 @@ h1.mono em{font-style:normal;color:var(--gold-bright)}
 .stats div{background:rgba(255,255,255,.04);border:1px solid var(--hair);border-radius:10px;padding:8px 6px;text-align:center}
 .stats .n{display:block;font-size:1.25rem;line-height:1;color:var(--gold-bright)}
 .stats .l{display:block;font-family:'Barlow Condensed',sans-serif;letter-spacing:.08em;text-transform:uppercase;font-size:.66rem;color:var(--muted);margin-top:5px}
+/* The Lookout (docs/LOOKOUT-DESIGN.md, "The Quest"): the one stat that is a
+   link, so it takes the whole row under the four and the gold edge. k/18 is
+   CampFlags.lookout(), written by drawHud(); until then (or if camp-flags.js
+   never arrives) the number is empty and the row reads LOOKOUT. */
+.stats .lk-stat{grid-column:1/-1;display:flex;align-items:center;justify-content:center;gap:10px;min-height:44px;padding:6px 12px;text-decoration:none;border-radius:10px;border:1px solid rgba(232,192,74,.45);background:rgba(232,192,74,.08);transition:background .15s}
+.stats .lk-stat:hover{background:rgba(232,192,74,.16)}
+.stats .lk-stat .l{margin:0;font-size:.8rem;color:var(--cream)}
+.stats .lk-stat .n{display:inline}
+.stats .lk-stat .n:empty{display:none}
+.stats .lk-stat .go{font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--gold-bright)}
+/* the Passport's Lookout button: two lines, centred in the pill, the second
+   in sentence case (.btn below keeps its align-items and radius) */
+.btn.btn-two{flex-direction:column;gap:2px;line-height:1.15}
+.btn-two small{font-family:'Lato',sans-serif;font-weight:400;letter-spacing:0;text-transform:none;font-size:.78rem;color:var(--muted)}
 .cta-row{display:flex;gap:10px;flex-wrap:wrap}
 .btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:.9rem;padding:11px 18px;border-radius:24px;border:1px solid transparent;transition:transform .12s,background .15s}
 .btn:hover{transform:translateY(-1px)}
@@ -230,8 +244,13 @@ h1.mono em{font-style:normal;color:var(--gold-bright)}
 }
 
 /* ── toasts and the finale ── */
-.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,120%);background:var(--glass);backdrop-filter:blur(10px);border:1px solid rgba(232,192,74,.5);border-radius:14px;padding:12px 18px;display:flex;gap:12px;align-items:center;z-index:20;transition:transform .5s cubic-bezier(.2,.8,.2,1);box-shadow:0 20px 50px rgba(0,0,0,.5);max-width:calc(100vw - 32px)}
-.toast.on{transform:translate(-50%,0)}
+/* Hidden, the toast is pushed down 120% of its own height, which for an
+   empty toast (26px) left 19px of it on screen above the 24px gap: a blank
+   pill at the foot of every visit, on top of whatever was under it, eating
+   taps there on a phone. So it is also invisible until it is on, and goes
+   invisible again only once it has slid away. */
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,120%);background:var(--glass);backdrop-filter:blur(10px);border:1px solid rgba(232,192,74,.5);border-radius:14px;padding:12px 18px;display:flex;gap:12px;align-items:center;z-index:20;visibility:hidden;transition:transform .5s cubic-bezier(.2,.8,.2,1),visibility 0s linear .5s;box-shadow:0 20px 50px rgba(11,26,18,.5);max-width:calc(100vw - 32px)}
+.toast.on{transform:translate(-50%,0);visibility:visible;transition-delay:0s}
 .toast .big{font-size:1.4rem;color:var(--gold-bright)}
 .toast .t{font-family:'Barlow Condensed',sans-serif;font-weight:800;letter-spacing:.06em;text-transform:uppercase;font-size:.9rem}
 .toast .s{font-size:.8rem;color:var(--muted)}
@@ -274,6 +293,7 @@ footer a{color:var(--gold-bright)}
         <div><span class="n mono" id="sStations">0/{{N_STATIONS}}</span><span class="l">stations</span></div>
         <div><span class="n mono" id="sAdv">0/{{N_ADV}}</span><span class="l">adventures</span></div>
         <div><span class="n mono" id="sTiles">0</span><span class="l">tiles</span></div>
+        <a class="lk-stat" href="flags.html"><span class="l">Lookout</span><span class="n mono" id="sLookout"></span><span class="go" aria-hidden="true">&rarr;</span></a>
       </div>
       <div class="cta-row"><a class="btn btn-glass btn-sm" id="lastLink" href="#climb">Where you were</a><a class="btn btn-glass btn-sm" href="#passport">Passport &amp; save code</a><a class="btn btn-glass btn-sm" href="village.html">Walk the village</a></div>
     </div>
@@ -309,7 +329,7 @@ footer a{color:var(--gold-bright)}
 
   <section class="map wrap" id="passport" style="--c:#46B0AB">
     <div class="map-head">
-      <div><h2 class="mono">THE <em>PASSPORT</em></h2><p class="sub">A badge for every camp pitched, every station cleared and every adventure finished. Clear the lot and the lookout tower is yours.</p><p class="sub"><a class="btn btn-glass btn-sm" href="flags.html">Your flags &rarr;</a></p></div>
+      <div><h2 class="mono">THE <em>PASSPORT</em></h2><p class="sub">A badge for every camp pitched, every station cleared and every adventure finished. Clear the lot and the lookout tower is yours.</p><p class="sub"><a class="btn btn-glass btn-sm btn-two" href="flags.html"><span>Your Lookout &rarr;</span><small id="lkSub">Light its beacon</small></a></p></div>
       <div class="tally" id="tBadges"></div>
     </div>
     <ul class="badges" id="badges"></ul>
@@ -332,6 +352,7 @@ footer a{color:var(--gold-bright)}
 <canvas id="fire" hidden></canvas>
 
 <script src="camp-save.js"></script>
+<script src="camp-flags.js?v=2"></script>
 <script src="camp-full.js" defer></script>
 <script>
 const MAP = {{DATA}};
@@ -345,7 +366,7 @@ function deckState(s, id) { const e = s.deck[id]; if (!e || !e.total) return {p:
 function advState(s, id) {
   const e = s.rpg[id]; const r = {plays: 0, best: 0, max: 0, tiles: 0, tilesMax: 0, cleared: false, master: false, endings: 0, seen: false};
   if (!e) return r; r.seen = true; r.plays = e.plays;
-  Object.values(e.parts).forEach(p => { r.best += p.best; r.max += p.max; r.tiles += p.tiles; r.tilesMax += p.tilesMax; r.endings += Object.keys(p.endings).length; });
+  Object.values(e.parts).forEach(p => { r.best += p.best || 0; r.max += p.max || 0; r.tiles += p.tiles || 0; r.tilesMax += p.tilesMax || 0; r.endings += Object.keys(p.endings || {}).length; });
   const parts = Object.values(e.parts); r.cleared = parts.length > 0 && parts.every(p => p.cleared); r.master = parts.length > 0 && parts.every(p => p.master);
   return r;
 }
@@ -373,6 +394,16 @@ function drawHud(s, sum) {
   $('sStations').textContent = sum.nStations + '/' + MAP.stations.length;
   $('sAdv').textContent = sum.nAdv + '/' + MAP.adventures.length;
   $('sTiles').textContent = sum.tiles;
+  /* the Lookout: the 18 flags as a tower (camp-flags.js). Guarded, so a
+     missing script or a refused storage leaves the row as it was. */
+  try {
+    if (window.CampFlags && CampFlags.lookout) {
+      const L = CampFlags.lookout(null, s);
+      $('sLookout').textContent = L.k + '/' + L.of;
+      $('sLookout').parentNode.setAttribute('aria-label', 'Your Lookout: ' + L.k + ' of ' + L.of + ' pieces built' + (L.beacon ? ', beacon lit' : ''));
+      $('lkSub').textContent = L.beacon ? 'Its beacon is lit' : 'Light its beacon';
+    }
+  } catch (_) {}
   /* Continue: where they were, else the first thing not yet done */
   const cont = $('continue'), last = $('lastLink');
   const href = s.last ? ((s.last.dir === 'block-camp' ? '' : '../') + s.last.href) : null;
@@ -475,15 +506,29 @@ function currentIndex(stops, s) {
   if (s.last) { const j = stops.findIndex(st => st.ids.includes(s.last.id)); if (j >= 0) return j; }
   const j = stops.findIndex(st => !st.done); return j < 0 ? stops.length - 1 : j;
 }
+/* An imported or hand-edited save code can carry an adventure with no parts,
+   or a null part; advState and CampSave.xp would throw on it and stop the page.
+   Read a tidied copy (the save itself is not rewritten). */
+function tidy(s) {
+  Object.keys(s.rpg || {}).forEach(id => {
+    const e = s.rpg[id];
+    if (!e || typeof e !== 'object' || !e.parts || typeof e.parts !== 'object') { delete s.rpg[id]; return; }
+    Object.keys(e.parts).forEach(k => { if (!e.parts[k] || typeof e.parts[k] !== 'object') delete e.parts[k]; });
+  });
+  return s;
+}
 function draw(walk) {
-  const s = CampSave.load(), sum = summary(s);
+  const s = tidy(CampSave.load()), sum = summary(s);
   drawHud(s, sum);
   const climb = MAP.camps.map((c, i) => ({num: c.n, name: c.name, colour: c.colour, ink: c.ink, href: c.parts[0].href, ids: c.parts.map(p => p.id).concat(MAP.adventures.filter(a => a.camp === c.n).map(a => a.id)),
     done: sum.camps[i].done, seen: sum.camps[i].seen, meta: c.parts.map(p => p.level).filter((v, k, arr) => arr.indexOf(v) === k).join(' – ') + ' · ' + c.parts.length + (c.parts.length > 1 ? ' parts' : ' part'),
     pips: c.parts.map(p => { const d = deckState(s, p.id); return pip(p.href, p.label, d.p, d.done, p.access, 'part'); }).join('') + advPips(s, c.n, sum)}));
   const ci = currentIndex(climb, s);
   const cpts = drawTrail($('trailClimb'), climb, ci, false);
-  const prev = walk ? (+sessionStorage.getItem('bc-hiker') || 0) : null;
+  /* guarded like the write below: a browser that blocks site data throws on
+     the sessionStorage accessor itself, and this read, bare, stopped draw()
+     after the climb (no descent, no adventures, no badges, no save code) */
+  let prev = null; if (walk) { prev = 0; try { prev = +sessionStorage.getItem('bc-hiker') || 0; } catch (_) {} }
   hikerAt($('trailClimb'), cpts, ci, s.name || 'you', walk && prev !== ci ? prev : null);
   try { sessionStorage.setItem('bc-hiker', ci); } catch (_) {}
   $('tClimb').innerHTML = `<b>${sum.nCamps}</b> of ${MAP.camps.length} camps pitched`;

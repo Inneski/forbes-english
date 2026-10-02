@@ -23,19 +23,22 @@
      block-camp/camp-end.js (every deck)  record() + the Results-slide card
      block-camp-map.html, block-camp-descent-map.html
          <script src="block-camp/camp-flags.js?v=1" data-map="climb|descent" defer>
-         plants the earned flags beside the stops and adds a Flags N/9 chip
-     block-camp/flags.html                the record page
+         plants the earned flags beside the stops and adds a
+         "Flags N/9 · Lookout k/18" chip
+     block-camp/flags.html                the record page and Your Lookout
 
    API: window.CampFlags = { TABLE, PASS, GOLD, find, byHref, url, all,
-   state, record, summary, sprite, decorateMap }. Everything is inside this
-   IIFE: a deck's engine owns score, maxScore, idx, slides, show, t, ready...
-   at the top level, and a second declaration of any of them would kill a
-   script. */
+   state, record, summary, sprite, decorateMap,
+   LOOKOUT, lookout, pieceOf, meter, lampSprite, METER_CSS, towerLayers,
+   storeyPixels, palette, GRID } - the Lookout half is documented where it
+   starts, "RAISE THE LOOKOUT". Everything is inside this IIFE: a deck's
+   engine owns score, maxScore, idx, slides, show, t, ready... at the top
+   level, and a second declaration of any of them would kill a script. */
 (function () {
   'use strict';
   if (window.CampFlags) return;
 
-  var TABLE = [{"key":"climb-1","line":"climb","n":1,"label":"Present Simple","colour":"#7A93B5","ink":"#0b1a12","parts":["blockcamp-present-simple","blockcamp-present-simple-2"],"href":"blockcamp-present-simple.html","href2":"blockcamp-present-simple-2.html"},{"key":"climb-2","line":"climb","n":2,"label":"Present Continuous","colour":"#E66085","ink":"#0b1a12","parts":["blockcamp-present-continuous","blockcamp-present-continuous-2"],"href":"blockcamp-present-continuous.html","href2":"blockcamp-present-continuous-2.html"},{"key":"climb-3","line":"climb","n":3,"label":"Past Simple","colour":"#B08968","ink":"#0b1a12","parts":["blockcamp-past-simple","blockcamp-past-simple-2"],"href":"blockcamp-past-simple.html","href2":"blockcamp-past-simple-2.html"},{"key":"climb-4","line":"climb","n":4,"label":"Past Continuous","colour":"#F1D779","ink":"#0b1a12","parts":["blockcamp-past-continuous","blockcamp-past-continuous-2"],"href":"blockcamp-past-continuous.html","href2":"blockcamp-past-continuous-2.html"},{"key":"climb-5","line":"climb","n":5,"label":"Going To","colour":"#70A43A","ink":"#0b1a12","parts":["blockcamp-going-to","blockcamp-going-to-2"],"href":"blockcamp-going-to.html","href2":"blockcamp-going-to-2.html"},{"key":"climb-6","line":"climb","n":6,"label":"Future Simple","colour":"#F0723F","ink":"#0b1a12","parts":["blockcamp-future-simple","blockcamp-future-simple-2"],"href":"blockcamp-future-simple.html","href2":"blockcamp-future-simple-2.html"},{"key":"climb-7","line":"climb","n":7,"label":"Present Perfect","colour":"#2E7D65","ink":"#f2f7f3","parts":["blockcamp-present-perfect","blockcamp-present-perfect-2"],"href":"blockcamp-present-perfect.html","href2":"blockcamp-present-perfect-2.html"},{"key":"climb-8","line":"climb","n":8,"label":"Present Perfect Continuous","colour":"#46B0AB","ink":"#0b1a12","parts":["blockcamp-present-perfect-continuous","blockcamp-present-perfect-continuous-2"],"href":"blockcamp-present-perfect-continuous.html","href2":"blockcamp-present-perfect-continuous-2.html"},{"key":"climb-9","line":"climb","n":9,"label":"Past Perfect","colour":"#d66d77","ink":"#0b1a12","parts":["blockcamp-past-perfect"],"href":"blockcamp-past-perfect.html","href2":null},{"key":"descent-9","line":"descent","n":9,"label":"Present Simple Passive","colour":"#7A93B5","ink":"#0b1a12","parts":["blockcamp-passive-present-simple"],"href":"blockcamp-passive-present-simple.html","href2":null,"trial":false},{"key":"descent-10","line":"descent","n":10,"label":"Present Continuous Passive","colour":"#E66085","ink":"#0b1a12","parts":["blockcamp-passive-present-continuous"],"href":"blockcamp-passive-present-continuous.html","href2":null,"trial":false},{"key":"descent-11","line":"descent","n":11,"label":"Past Simple Passive","colour":"#B08968","ink":"#0b1a12","parts":["blockcamp-passive-past-simple"],"href":"blockcamp-passive-past-simple.html","href2":null,"trial":false},{"key":"descent-12","line":"descent","n":12,"label":"Past Continuous Passive","colour":"#F1D779","ink":"#0b1a12","parts":["blockcamp-passive-past-continuous"],"href":"blockcamp-passive-past-continuous.html","href2":null,"trial":false},{"key":"descent-13","line":"descent","n":13,"label":"Going To Passive","colour":"#70A43A","ink":"#0b1a12","parts":["blockcamp-passive-going-to"],"href":"blockcamp-passive-going-to.html","href2":null,"trial":false},{"key":"descent-14","line":"descent","n":14,"label":"Future Simple Passive","colour":"#F0723F","ink":"#0b1a12","parts":["blockcamp-passive-future-simple"],"href":"blockcamp-passive-future-simple.html","href2":null,"trial":false},{"key":"descent-15","line":"descent","n":15,"label":"Present Perfect Passive","colour":"#2E7D65","ink":"#f2f7f3","parts":["blockcamp-passive-present-perfect"],"href":"blockcamp-passive-present-perfect.html","href2":null,"trial":false},{"key":"descent-16","line":"descent","n":16,"label":"The Trial","colour":"#e8c04a","ink":"#0b1a12","parts":["blockcamp-passive-trial"],"href":"blockcamp-passive-trial.html","href2":null,"trial":true},{"key":"descent-17","line":"descent","n":17,"label":"Past Perfect Passive","colour":"#d66d77","ink":"#0b1a12","parts":["blockcamp-passive-past-perfect"],"href":"blockcamp-passive-past-perfect.html","href2":null,"trial":false}];
+  var TABLE = [{"key":"climb-1","line":"climb","n":1,"label":"Present Simple","colour":"#7A93B5","ink":"#0b1a12","parts":["blockcamp-present-simple","blockcamp-present-simple-2"],"access":["free","pro"],"href":"blockcamp-present-simple.html","href2":"blockcamp-present-simple-2.html"},{"key":"climb-2","line":"climb","n":2,"label":"Present Continuous","colour":"#E66085","ink":"#0b1a12","parts":["blockcamp-present-continuous","blockcamp-present-continuous-2"],"access":["free","pro"],"href":"blockcamp-present-continuous.html","href2":"blockcamp-present-continuous-2.html"},{"key":"climb-3","line":"climb","n":3,"label":"Past Simple","colour":"#B08968","ink":"#0b1a12","parts":["blockcamp-past-simple","blockcamp-past-simple-2"],"access":["free","pro"],"href":"blockcamp-past-simple.html","href2":"blockcamp-past-simple-2.html"},{"key":"climb-4","line":"climb","n":4,"label":"Past Continuous","colour":"#F1D779","ink":"#0b1a12","parts":["blockcamp-past-continuous","blockcamp-past-continuous-2"],"access":["free","pro"],"href":"blockcamp-past-continuous.html","href2":"blockcamp-past-continuous-2.html"},{"key":"climb-5","line":"climb","n":5,"label":"Going To","colour":"#70A43A","ink":"#0b1a12","parts":["blockcamp-going-to","blockcamp-going-to-2"],"access":["pro","pro"],"href":"blockcamp-going-to.html","href2":"blockcamp-going-to-2.html"},{"key":"climb-6","line":"climb","n":6,"label":"Future Simple","colour":"#F0723F","ink":"#0b1a12","parts":["blockcamp-future-simple","blockcamp-future-simple-2"],"access":["pro","pro"],"href":"blockcamp-future-simple.html","href2":"blockcamp-future-simple-2.html"},{"key":"climb-7","line":"climb","n":7,"label":"Present Perfect","colour":"#2E7D65","ink":"#f2f7f3","parts":["blockcamp-present-perfect","blockcamp-present-perfect-2"],"access":["pro","pro"],"href":"blockcamp-present-perfect.html","href2":"blockcamp-present-perfect-2.html"},{"key":"climb-8","line":"climb","n":8,"label":"Present Perfect Continuous","colour":"#46B0AB","ink":"#0b1a12","parts":["blockcamp-present-perfect-continuous","blockcamp-present-perfect-continuous-2"],"access":["pro","pro"],"href":"blockcamp-present-perfect-continuous.html","href2":"blockcamp-present-perfect-continuous-2.html"},{"key":"climb-9","line":"climb","n":9,"label":"Past Perfect","colour":"#d66d77","ink":"#0b1a12","parts":["blockcamp-past-perfect"],"access":["pro"],"href":"blockcamp-past-perfect.html","href2":null},{"key":"descent-9","line":"descent","n":9,"label":"Present Simple Passive","colour":"#7A93B5","ink":"#0b1a12","parts":["blockcamp-passive-present-simple"],"access":["pro"],"href":"blockcamp-passive-present-simple.html","href2":null,"trial":false},{"key":"descent-10","line":"descent","n":10,"label":"Present Continuous Passive","colour":"#E66085","ink":"#0b1a12","parts":["blockcamp-passive-present-continuous"],"access":["pro"],"href":"blockcamp-passive-present-continuous.html","href2":null,"trial":false},{"key":"descent-11","line":"descent","n":11,"label":"Past Simple Passive","colour":"#B08968","ink":"#0b1a12","parts":["blockcamp-passive-past-simple"],"access":["pro"],"href":"blockcamp-passive-past-simple.html","href2":null,"trial":false},{"key":"descent-12","line":"descent","n":12,"label":"Past Continuous Passive","colour":"#F1D779","ink":"#0b1a12","parts":["blockcamp-passive-past-continuous"],"access":["pro"],"href":"blockcamp-passive-past-continuous.html","href2":null,"trial":false},{"key":"descent-13","line":"descent","n":13,"label":"Going To Passive","colour":"#70A43A","ink":"#0b1a12","parts":["blockcamp-passive-going-to"],"access":["pro"],"href":"blockcamp-passive-going-to.html","href2":null,"trial":false},{"key":"descent-14","line":"descent","n":14,"label":"Future Simple Passive","colour":"#F0723F","ink":"#0b1a12","parts":["blockcamp-passive-future-simple"],"access":["pro"],"href":"blockcamp-passive-future-simple.html","href2":null,"trial":false},{"key":"descent-15","line":"descent","n":15,"label":"Present Perfect Passive","colour":"#2E7D65","ink":"#f2f7f3","parts":["blockcamp-passive-present-perfect"],"access":["pro"],"href":"blockcamp-passive-present-perfect.html","href2":null,"trial":false},{"key":"descent-16","line":"descent","n":16,"label":"The Trial","colour":"#e8c04a","ink":"#0b1a12","parts":["blockcamp-passive-trial"],"access":["pro"],"href":"blockcamp-passive-trial.html","href2":null,"trial":true},{"key":"descent-17","line":"descent","n":17,"label":"Past Perfect Passive","colour":"#d66d77","ink":"#0b1a12","parts":["blockcamp-passive-past-perfect"],"access":["pro"],"href":"blockcamp-passive-past-perfect.html","href2":null,"trial":false}];
   var PASS = 0.5, GOLD = 0.75, KEY = 'flags';
 
   /* Where the site root is, from this script's own address (it lives in
@@ -241,13 +244,658 @@
       rects(pole, 'cf-pole') + rects(cloth, 'cf-cloth') + '</svg>';
   }
 
+  /* ══ RAISE THE LOOKOUT ══════════════════════════════════════════════════
+     docs/LOOKOUT-DESIGN.md, Phase A (no art: everything here is code).
+     The nine climb flags raise a lookout tower, one storey per tense; the
+     nine descent flags hang a lamp on each storey and feed the beacon on the
+     roof; at 18/18 the beacon fires. Gold flags bring each storey's object
+     to life and turn the trim iron (3 golds), brass (9), gold (18). Part 2
+     stars light the Summit Flag constellation; cleared adventures fly as
+     pennants. Latched and order-free, like the flags: an early storey stands
+     on the ghost of the ones below it, an early lamp hangs lit on its ghost.
+
+     LK is the builder's: STOREYS (object, gold effect, caption, FORM, goal),
+     LAMPS (station -> storey), TIERS, FLAME, MILESTONES, ADVENTURES (the
+     hub's, in the Quest's order, each with its camp colour and free/pro),
+     the plate-sampled TOKENS and the Go Pro target. Colours below are those
+     tokens, CAMP/INK from TABLE and the sprite palette above, or mixes of
+     them; none is picked here. */
+  var LK = {"tiers":[3,9,18],"tierNames":["oak","iron","brass","gold"],"flame":[1,4,7],"duskStep":0.04,"storeys":[{"n":1,"object":"Cobblestone footings, arched door, cream canvas awning, iron lantern","effect":"The lantern lights: a warm pool and a 2-frame flicker","desc":"Stone footings, an arched door and an iron lantern","goldDesc":"the lantern lights up the door","caption":"The lantern LIGHTS the door every evening.","verb":"LIGHTS","goal":"lays the footings","tense":"Present Simple","form":"PRESENT SIMPLE · LIGHTS","formShort":"PRESENT SIMPLE · LIGHTS"},{"n":2,"object":"Rope-and-pulley hoist lifting a canvas bundle","effect":"The pulley wheel turns gold (2-frame turn)","desc":"A pulley hoist lifting a canvas bundle","goldDesc":"the pulley wheel turns gold and lifts the bundle higher","caption":"Look! The hoist IS LIFTING the canvas.","verb":"IS LIFTING","goal":"raises storey 2","tense":"Present Continuous","form":"PRESENT CONTINUOUS · IS LIFTING","formShort":"PRESENT CONT. · IS LIFTING"},{"n":3,"object":"Stacked logs and an empty iron fire basket","effect":"The basket catches: a 3-frame pixel flame","desc":"Stacked logs and an empty iron fire basket","goldDesc":"a fire burns in the basket","caption":"You STACKED the logs a minute ago.","verb":"STACKED","goal":"raises storey 3","tense":"Past Simple","form":"PAST SIMPLE · STACKED","formShort":"PAST SIMPLE · STACKED"},{"n":4,"object":"Small stone hearth with a chimney pipe","effect":"The hearth mouth glows and 3 smoke puffs rise","desc":"A small stone hearth with a chimney pipe","goldDesc":"the hearth glows and smoke rises","caption":"The fire WAS BURNING when you finished the hearth.","verb":"WAS BURNING","goal":"raises storey 4","tense":"Past Continuous","form":"PAST CONTINUOUS · WAS BURNING","formShort":"PAST CONT. · WAS BURNING"},{"n":5,"object":"Signpost with two arrows pointing up, a rolled map on a crate","effect":"The signpost's big arrow turns gold","desc":"Two signposts pointing up, and a rolled map on a crate","goldDesc":"the big arrow turns gold","caption":"Look at the sign: you ARE GOING TO REACH the top!","verb":"ARE GOING TO REACH","goal":"raises storey 5","tense":"Going To","form":"GOING TO · ARE GOING TO REACH","formShort":"GOING TO · ARE GOING TO REACH"},{"n":6,"object":"Brass telescope on a tripod","effect":"A glint at the lens every 6 s","desc":"A brass telescope on a tripod","goldDesc":"the telescope turns gold and its lens glints","caption":"One day you WILL SEE the far side from here.","verb":"WILL SEE","goal":"raises storey 6","tense":"Future Simple","form":"FUTURE SIMPLE · WILL SEE","formShort":"FUTURE SIMPLE · WILL SEE"},{"n":7,"object":"Wrap-around deck and railing, a small cairn and a pair of boots","effect":"A gold capstone on the cairn, and the boots glint","desc":"A deck with a railing, a small cairn of stones and a pair of boots","goldDesc":"a gold stone tops the cairn and the boots shine","caption":"So far, you HAVE BUILT the deck and its railing.","verb":"HAVE BUILT","goal":"raises storey 7","tense":"Present Perfect","form":"PRESENT PERFECT · HAVE BUILT","formShort":"PRESENT PERFECT · HAVE BUILT"},{"n":8,"object":"Cabin with glass windows and a hanging lantern","effect":"The windows glow warm","desc":"A cabin with glass windows and a lantern inside","goldDesc":"the windows glow warm","caption":"You HAVE BEEN BUILDING since breakfast.","verb":"HAVE BEEN BUILDING","goal":"raises storey 8","tense":"Present Perfect Continuous","form":"PRESENT PERFECT CONTINUOUS · HAVE BEEN BUILDING","formShort":"PRESENT PERFECT CONT. · HAVE BEEN BUILDING"},{"n":9,"object":"Stepped green roof with a stone beacon cradle","effect":"The cradle stones turn gold","desc":"A stepped green roof with a stone cradle for the beacon","goldDesc":"the cradle stones turn gold","caption":"The sun HAD SET by the time the roof went on.","verb":"HAD SET","goal":"puts the roof on","tense":"Past Perfect","form":"PAST PERFECT · HAD SET","formShort":"PAST PERFECT · HAD SET"}],"lamps":[{"n":1,"station":9,"tense":"Present Simple Passive","caption":"The lamps ARE LIT every evening.","verb":"ARE LIT","form":"PRESENT SIMPLE PASSIVE · ARE LIT","formShort":"PRESENT SIMPLE PASSIVE · ARE LIT","goal":"lights lamp 1"},{"n":2,"station":10,"tense":"Present Continuous Passive","caption":"Look! Storey 2’s lamp IS BEING LIT.","verb":"IS BEING LIT","form":"PRESENT CONTINUOUS PASSIVE · IS BEING LIT","formShort":"PRESENT CONT. PASSIVE · IS BEING LIT","goal":"lights lamp 2"},{"n":3,"station":11,"tense":"Past Simple Passive","caption":"Storey 3’s lamp WAS LIT at sunset.","verb":"WAS LIT","form":"PAST SIMPLE PASSIVE · WAS LIT","formShort":"PAST SIMPLE PASSIVE · WAS LIT","goal":"lights lamp 3"},{"n":4,"station":12,"tense":"Past Continuous Passive","caption":"Storey 4’s lamp WAS BEING LIT when the wind dropped.","verb":"WAS BEING LIT","form":"PAST CONTINUOUS PASSIVE · WAS BEING LIT","formShort":"PAST CONT. PASSIVE · WAS BEING LIT","goal":"lights lamp 4"},{"n":5,"station":13,"tense":"Going To Passive","caption":"Look at the lamps: the beacon IS GOING TO BE LIT!","verb":"IS GOING TO BE LIT","form":"GOING TO PASSIVE · IS GOING TO BE LIT","formShort":"GOING TO PASSIVE · IS GOING TO BE LIT","goal":"lights lamp 5"},{"n":6,"station":14,"tense":"Future Simple Passive","caption":"The beacon WILL BE SEEN from the valley.","verb":"WILL BE SEEN","form":"FUTURE SIMPLE PASSIVE · WILL BE SEEN","formShort":"FUTURE SIMPLE PASSIVE · WILL BE SEEN","goal":"lights lamp 6"},{"n":7,"station":15,"tense":"Present Perfect Passive","caption":"Storey 7’s lamp HAS BEEN LIT since sunset.","verb":"HAS BEEN LIT","form":"PRESENT PERFECT PASSIVE · HAS BEEN LIT","formShort":"PRESENT PERFECT PASSIVE · HAS BEEN LIT","goal":"lights lamp 7"},{"n":8,"station":16,"tense":"Present Perfect Passive","caption":"The Trial HAS BEEN PASSED: the gold lamp is yours.","verb":"HAS BEEN PASSED","form":"PRESENT PERFECT PASSIVE · HAS BEEN PASSED","formShort":"PRESENT PERFECT PASSIVE · HAS BEEN PASSED","goal":"lights the gold lamp"},{"n":9,"station":17,"tense":"Past Perfect Passive","caption":"By the time it got dark, the roof lamp HAD BEEN HUNG.","verb":"HAD BEEN HUNG","form":"PAST PERFECT PASSIVE · HAD BEEN HUNG","formShort":"PAST PERFECT PASSIVE · HAD BEEN HUNG","goal":"lights lamp 9"}],"milestones":[{"id":"begun","test":"k","at":1,"toast":"Your Lookout has begun"},{"id":"four","test":"built","at":4,"toast":"Four storeys up"},{"id":"halfway","test":"k","at":9,"toast":"Halfway"},{"id":"stands","test":"built","at":9,"toast":"THE LOOKOUT STANDS"},{"id":"beacon","test":"k","at":18,"toast":"Every lamp is lit · BEACON LIT"},{"id":"iron","test":"golds","at":3,"toast":"Iron trim"},{"id":"brass","test":"golds","at":9,"toast":"Brass trim"},{"id":"golden","test":"golds","at":18,"toast":"GOLDEN LOOKOUT"},{"id":"summitFlag","test":"stars","at":8,"toast":"The Summit Flag"},{"id":"fullSummit","test":"adventures","at":14,"toast":"A full summit"}],"adventures":[{"id":"last-train-home-rpg","href":"block-camp/last-train-home-rpg.html","title":"The Last Train Home","short":"The Last Train Home","camp":6,"colour":"#F0723F","ink":"#0b1a12","access":"pro"},{"id":"dracula-castle-of-if","href":"block-camp/dracula-castle-of-if.html","title":"Grammar Stoker’s Blocula","short":"Grammar Stoker’s Blocula","camp":0,"colour":"#e8c04a","ink":"#0b1a12","access":"pro"},{"id":"long-way-home-rpg","href":"block-camp/long-way-home-rpg.html","title":"The Long Way Home","short":"The Long Way Home","camp":0,"colour":"#e8c04a","ink":"#0b1a12","access":"pro"},{"id":"lost-yellow-road-rpg","href":"block-camp/lost-yellow-road-rpg.html","title":"The Lost Yellow Road","short":"The Lost Yellow Road","camp":4,"colour":"#F1D779","ink":"#0b1a12","access":"pro"},{"id":"frankenstein-green-prometheus-rpg","href":"block-camp/frankenstein-green-prometheus-rpg.html","title":"Frankenstein Part I: Ambitions","short":"Frankenstein Part I","camp":5,"colour":"#70A43A","ink":"#0b1a12","access":"pro"},{"id":"frankenstein-consequences-rpg","href":"block-camp/frankenstein-consequences-rpg.html","title":"Frankenstein Part II: Consequences","short":"Frankenstein Part II","camp":5,"colour":"#70A43A","ink":"#0b1a12","access":"pro"},{"id":"sherlock-blue-hour-rpg","href":"block-camp/sherlock-blue-hour-rpg.html","title":"Sherlock Holmes: The Blue Hour","short":"Sherlock Holmes","camp":1,"colour":"#7A93B5","ink":"#0b1a12","access":"pro"},{"id":"last-bounty-rpg","href":"block-camp/last-bounty-rpg.html","title":"The Last Bounty","short":"The Last Bounty","camp":3,"colour":"#B08968","ink":"#0b1a12","access":"free"},{"id":"fistful-of-lies-rpg","href":"block-camp/fistful-of-lies-rpg.html","title":"A Fistful of Lies","short":"A Fistful of Lies","camp":3,"colour":"#B08968","ink":"#0b1a12","access":"pro"},{"id":"wonderland-stolen-now-rpg","href":"block-camp/wonderland-stolen-now-rpg.html","title":"Wonderland: The Stolen Now","short":"Wonderland","camp":2,"colour":"#E66085","ink":"#0b1a12","access":"pro"},{"id":"nautilus-black-archive-rpg","href":"block-camp/nautilus-black-archive-rpg.html","title":"Nautilus: The Black Archive","short":"Nautilus","camp":7,"colour":"#2E7D65","ink":"#f2f7f3","access":"pro"},{"id":"twenty-thousand-leagues-rpg","href":"block-camp/twenty-thousand-leagues-rpg.html","title":"Twenty Thousand Leagues: The Sealed Log","short":"Twenty Thousand Leagues","camp":9,"colour":"#d66d77","ink":"#0b1a12","access":"pro"},{"id":"nautilus-black-archive-deep-rpg","href":"block-camp/nautilus-black-archive-deep-rpg.html","title":"Nautilus: The Black Archive (Deep-Sea)","short":"Nautilus","camp":7,"colour":"#2E7D65","ink":"#f2f7f3","access":"pro"},{"id":"frostbound-river-rpg","href":"block-camp/frostbound-river-rpg.html","title":"Frostbound: The River Remembers","short":"Frostbound","camp":1,"colour":"#7A93B5","ink":"#0b1a12","access":"pro"}],"tokens":{"BLUEPRINT":"#cdd4d5","CANVAS":"#ceab76","CLOUD":"#d8ccb3","DUSK":"#1c2121","GRASS":"#617328","GRASS_DK":"#394418","HUD":"#171b1c","PAD":"#f1c47e","ROOF":"#6c8462","ROOF_DK":"#43523d","SHEET":"#0e1011","SKY_HOR":"#e6d0ad","SKY_TOP":"#afbabb","TWI":"#465253"},"inkDk":"#0b1a12","goPro":"pricing.html"};
+
+  function h2(v) { v = Math.max(0, Math.min(255, Math.round(v))).toString(16); return v.length < 2 ? '0' + v : v; }
+  function hx(c) { c = String(c).replace('#', ''); return [parseInt(c.substr(0, 2), 16), parseInt(c.substr(2, 2), 16), parseInt(c.substr(4, 2), 16)]; }
+  function mix(a, b, t) { var A = hx(a), B = hx(b); return '#' + h2(A[0] + (B[0] - A[0]) * t) + h2(A[1] + (B[1] - A[1]) * t) + h2(A[2] + (B[2] - A[2]) * t); }
+  function r4(x) { return Math.round(x * 10000) / 10000; }
+
+  function entryOf(line, n) {
+    for (var i = 0; i < TABLE.length; i++) if (TABLE[i].line === line && TABLE[i].n === n) return TABLE[i];
+    return null;
+  }
+  function accessOf(e, part) { return (e && e.access && e.access[(part || 1) - 1]) || 'pro'; }
+
+  /* which piece a TABLE entry builds: climb N -> storey N, station S -> the
+     lamp on storey S-8 (the Trial, 16, is storey 8's gold lamp) */
+  var PIECE = {};
+  LK.storeys.forEach(function (s) { PIECE['climb-' + s.n] = { kind: 'storey', d: s }; });
+  LK.lamps.forEach(function (l) { PIECE['descent-' + l.station] = { kind: 'lamp', d: l }; });
+  function pieceOf(entry) {
+    var p = entry && PIECE[entry.key];
+    return p ? { kind: p.kind, n: p.d.n, key: p.kind + '-' + p.d.n, caption: p.d.caption, verb: p.d.verb,
+                 form: p.d.form, formShort: p.d.formShort, tense: p.d.tense, goal: p.d.goal } : null;
+  }
+
+  function tierOf(g) { var t = 0; for (var i = 0; i < LK.tiers.length; i++) if (g >= LK.tiers[i]) t = i + 1; return t; }
+  function flameOf(lit) { var f = 0; for (var i = 0; i < LK.flame.length; i++) if (lit >= LK.flame[i]) f = i + 1; return f; }
+
+  function loadSave() { try { return (window.CampSave && window.CampSave.load()) || {}; } catch (_) { return {}; } }
+
+  /* Is this learner Pro? There is no Pro flag in the browser, so the evidence
+     is a Pro deck or adventure that has written to the save: the Worker
+     serves a free learner a gate page, which writes nothing. With none, a
+     Pro target carries a padlock and links to Go Pro (Innes, 2026-10-02: a
+     free learner's Next chip after storey 4 names the next camp with a
+     padlock and goes to Go Pro). opts.pro overrides the guess. */
+  function proSeen(flags, save) {
+    var seen = false;
+    TABLE.forEach(function (e) {
+      e.parts.forEach(function (id, i) {
+        if (seen || accessOf(e, i + 1) !== 'pro') return;
+        var f = flags[id], d = save && save.deck && save.deck[id];
+        if ((f && (f.plays > 0 || f.pct > 0 || f.pass)) || (d && d.seen > 0)) seen = true;
+      });
+    });
+    LK.adventures.forEach(function (a) { if (a.access === 'pro' && save && save.rpg && save.rpg[a.id]) seen = true; });
+    return seen;
+  }
+  /* Signed in? sb-client.js mirrors the session into the readable cookie
+     fe_at, which the Worker reads to decide what to serve (src/index.js,
+     SESSION_COOKIE). It says nothing about the plan, and sb-client.js does
+     not run on Block Camp pages, so it is only a hint: a member who began on
+     the free camps has no Pro deck in the save yet. So a padlocked target
+     keeps its padlock (it is a Pro lesson), but for a signed-in learner it
+     links to the deck itself: the Worker serves a member the lesson and a
+     signed-in free learner the lesson's own gate page, which sells Pro. With
+     no cookie it goes to Go Pro (Innes, 2026-10-02). opts.signedIn overrides. */
+  function signedInHint() {
+    try { return /(?:^|;\s*)fe_at=[^;\s]/.test(String(document.cookie || '')); } catch (_) { return false; }
+  }
+
+  /* the Quest's advState rule: cleared = every part cleared; master = every
+     part on its master ending */
+  function advState(save, id) {
+    var e = save && save.rpg && save.rpg[id], r = { seen: !!e, cleared: false, master: false };
+    if (!e || !e.parts) return r;
+    var parts = Object.keys(e.parts).map(function (k) { return e.parts[k]; });
+    r.cleared = parts.length > 0 && parts.every(function (p) { return p && p.cleared; });
+    r.master = parts.length > 0 && parts.every(function (p) { return p && p.master; });
+    return r;
+  }
+
+  /* lookout(flags?, save?, opts?) - the whole Lookout as plain data.
+       flags  the 'flags' record (default: this learner's, CampFlags.all())
+       save   the CampSave file, for adventures and the name (default: load())
+       opts   { pro: true|false } overrides the Pro guess (proSeen)
+     Every count agrees with summary(flags): k = total, built = climb,
+     lit = descent, golds, stars. */
+  function lookout(flags, save, opts) {
+    opts = opts || {};
+    flags = flags || all();
+    if (save == null) save = loadSave();
+    var pro = typeof opts.pro === 'boolean' ? opts.pro : proSeen(flags, save);
+    var signed = typeof opts.signedIn === 'boolean' ? opts.signedIn : signedInHint();
+    var goPro = url(LK.goPro);
+    /* where a target links: a padlocked one goes to Go Pro unless the
+       learner is signed in (then the Worker decides at the deck) */
+    function via(lock, deck) { return { viaPro: !!(lock && !signed), href: lock && !signed ? goPro : deck }; }
+
+    function mk(kind, D, e) {
+      var st = state(e, flags), on = st.earned;
+      return {
+        kind: kind, n: D.n, key: kind + '-' + D.n, station: kind === 'lamp' ? D.station : null, entry: e,
+        on: on, built: kind === 'storey' && on, lit: kind === 'lamp' && on,
+        gold: st.gold, star: st.star, starSaved: st.starSaved, hasStar: st.hasStar,
+        best: st.best, best2: st.best2,
+        toPass: on ? 0 : r4(Math.max(0, PASS - (st.best || 0))),
+        toGold: st.gold ? 0 : r4(Math.max(0, GOLD - (st.best || 0))),
+        access: accessOf(e, 1), access2: e.parts.length > 1 ? accessOf(e, 2) : null,
+        href: url(e.href), href2: e.href2 ? url(e.href2) : null,
+        tense: D.tense, caption: D.caption, verb: D.verb, form: D.form, formShort: D.formShort, goal: D.goal,
+        object: D.object || null, effect: D.effect || null, desc: D.desc || null, goldDesc: D.goldDesc || null
+      };
+    }
+    var storeys = [], lamps = [];
+    LK.storeys.forEach(function (S) { var e = entryOf('climb', S.n); if (e) storeys.push(mk('storey', S, e)); });
+    LK.lamps.forEach(function (D) { var e = entryOf('descent', D.station); if (e) lamps.push(mk('lamp', D, e)); });
+    var pieces = storeys.concat(lamps);
+    function count(list, f) { var c = 0; list.forEach(function (p) { if (f(p)) c++; }); return c; }
+
+    var advs = LK.adventures.map(function (a, i) {
+      var r = advState(save, a.id);
+      return { i: i, n: i + 1, id: a.id, key: 'adv-' + a.id, title: a.title, short: a.short, camp: a.camp,
+               colour: a.colour, ink: a.ink, href: url(a.href), access: a.access,
+               padlock: a.access === 'pro' && !pro, seen: r.seen, cleared: r.cleared, master: r.cleared && r.master };
+    });
+
+    var built = count(storeys, function (p) { return p.on; }), lit = count(lamps, function (p) { return p.on; });
+    var golds = count(pieces, function (p) { return p.gold; });
+    var L = {
+      storeys: storeys, lamps: lamps, pieces: pieces, adventures: advs,
+      built: built, builtOf: storeys.length, lit: lit, litOf: lamps.length,
+      k: built + lit, of: pieces.length,
+      golds: golds, goldsOf: pieces.length,
+      stars: count(storeys, function (p) { return p.star; }), starsOf: count(storeys, function (p) { return p.hasStar; }),
+      starsWaiting: count(storeys, function (p) { return p.starSaved && !p.on; }),
+      advCleared: count(advs, function (a) { return a.cleared; }), advOf: advs.length,
+      advMaster: count(advs, function (a) { return a.master; }),
+      tier: tierOf(golds), flame: flameOf(lit), dusk: r4(lit * LK.duskStep),
+      golden: golds >= LK.tiers[LK.tiers.length - 1],
+      standing: built === 9,
+      beacon: built === 9 && lit === 9,
+      name: String((save && save.name) || ''),
+      pro: pro, signedIn: signed, goPro: goPro
+    };
+    L.tierName = LK.tierNames[L.tier];
+
+    var val = { k: L.k, built: built, lit: lit, golds: golds, stars: L.stars, adventures: L.advCleared };
+    L.milestones = LK.milestones.map(function (m) {
+      return { id: m.id, test: m.test, at: m.at, toast: m.toast, reached: (val[m.test] || 0) >= m.at };
+    });
+
+    /* every earned thing, as a key: what flags.html diffs against its
+       'forbes-camp-lookout-seen' marker to decide what builds in */
+    var keys = [];
+    pieces.forEach(function (p) { if (p.on) keys.push(p.key); });
+    pieces.forEach(function (p) { if (p.gold) keys.push('gold-' + p.key); });
+    storeys.forEach(function (p) { if (p.star) keys.push('star-' + p.n); });
+    advs.forEach(function (a) { if (a.cleared) keys.push(a.key); if (a.master) keys.push('master-' + a.id); });
+    L.milestones.forEach(function (m) { if (m.reached) keys.push('ms-' + m.id); });
+    L.keys = keys;
+
+    function pc(x) { return Math.floor((x || 0) * 100 + 1e-9); }
+    function target(kind, p, part) {
+      var e = p.entry, acc = part === 2 ? p.access2 : p.access, deck = part === 2 ? p.href2 : p.href;
+      var best = part === 2 ? p.best2 : p.best, lock = acc === 'pro' && !pro;
+      var title = kind === 'lamp' ? 'Station ' + e.n + ' · ' + e.label : 'Camp ' + e.n + ' · ' + e.label + ' Part ' + part;
+      var goal = Math.round(PASS * 100) + '% ' + (kind === 'star' ? 'adds a star to flag ' + p.n : p.goal);
+      var v = via(lock, deck);
+      return { kind: kind, n: p.n, key: kind === 'star' ? 'star-' + p.n : p.key, piece: p, entry: e, part: part,
+               id: e.parts[part - 1], title: title, goal: goal, text: title + ' · ' + goal,
+               need: PASS, best: best == null ? null : best, toGo: r4(Math.max(0, PASS - (best || 0))),
+               access: acc, padlock: lock, deckHref: deck, goPro: goPro, viaPro: v.viaPro, href: v.href };
+    }
+    /* Next: the lowest unbuilt storey; then the lowest unlit lamp; then a
+       missing star; then an unfinished adventure (design 2). null when the
+       whole summit is done. */
+    L.next = function () {
+      var i;
+      for (i = 0; i < storeys.length; i++) if (!storeys[i].on) return target('storey', storeys[i], 1);
+      for (i = 0; i < lamps.length; i++) if (!lamps[i].on) return target('lamp', lamps[i], 1);
+      for (i = 0; i < storeys.length; i++) if (storeys[i].hasStar && !storeys[i].star) return target('star', storeys[i], 2);
+      for (i = 0; i < advs.length; i++) if (!advs[i].cleared) {
+        var a = advs[i], goal = 'clear it to fly its pennant', va = via(a.padlock, a.href);
+        return { kind: 'adventure', n: a.n, key: a.key, adventure: a, entry: null, part: null, id: a.id,
+                 title: a.title, goal: goal, text: a.title + ' · ' + goal, need: null, best: null, toGo: null,
+                 access: a.access, padlock: a.padlock, deckHref: a.href, goPro: goPro, viaPro: va.viaPro, href: va.href };
+      }
+      return null;
+    };
+    /* Closest to gold: the planted piece nearest 75% (ties: the climb first,
+       lowest first). null once every planted piece is gold. */
+    L.closestGold = function () {
+      var b = null;
+      pieces.forEach(function (p) { if (p.on && !p.gold && p.best != null && (!b || p.best > b.best)) b = p; });
+      if (!b) return null;
+      var title = (b.kind === 'lamp' ? 'Station ' : 'Camp ') + b.entry.n, lock = b.access === 'pro' && !pro, vb = via(lock, b.href);
+      return { kind: b.kind, n: b.n, key: b.key, piece: b, entry: b.entry, part: 1, id: b.entry.parts[0],
+               title: title, text: title + ' · ' + pc(b.best) + '% → ' + Math.round(GOLD * 100) + '%',
+               need: GOLD, best: b.best, toGo: r4(GOLD - b.best),
+               access: b.access, padlock: lock, deckHref: b.href, goPro: goPro, viaPro: vb.viaPro, href: vb.href };
+    };
+    /* target('storey-3' | 'lamp-2' | an entry, part?) - that deck as a Next
+       target, by the same padlock and link rules: what a Part 2 deck points
+       back to while its Part 1 is still unplanted */
+    L.target = function (x, part) {
+      var p = L.piece(x);
+      return p ? target(p.kind, p, part === 2 && p.href2 ? 2 : 1) : null;
+    };
+    /* piece('storey-3' | 'lamp-2' | 'climb-3' | 'descent-10' | a TABLE entry) */
+    L.piece = function (x) {
+      var k = x && typeof x === 'object' ? x.key : String(x || '');
+      var m = PIECE[k];
+      if (m) k = m.kind + '-' + m.d.n;
+      for (var i = 0; i < pieces.length; i++) if (pieces[i].key === k) return pieces[i];
+      return null;
+    };
+    return L;
+  }
+
+  /* ── the code tower ───────────────────────────────────────────────────
+     21 x 52 cells, each cell 2 x 2 sub-pixels (42 x 104), so the nine
+     objects keep sub-cell detail at 1 px per sub-pixel. The grid and every
+     object are the mockup's (scratchpad flags-fun/mockup/lookout.js, judged
+     on its contact sheet); anchors are in sub-pixels. */
+  var GW = 21, GH = 52, SW = 2 * GW, SH = 2 * GH, BUNT = 12;
+  var ROWS = { 9: [8, 13], 8: [14, 18], 7: [19, 21], 6: [22, 26], 5: [27, 31], 4: [32, 36], 3: [37, 41], 2: [42, 46], 1: [47, 51] };
+  var P = (function () {
+    var p = { WOOD: WOOD, WOOD_DK: WOOD_DK, CLAMP: CLAMP, STONE_HI: STONE_HI, STONE: STONE, STONE_DK: STONE_DK,
+              GOLD_HI: GOLD_HI, GOLD_C: GOLD_C, GOLD_DK: GOLD_DK, GHOST: GHOST, GHOST_DK: GHOST_DK, INK: LK.inkDk };
+    for (var k in LK.tokens) p[k] = LK.tokens[k];
+    p.ROOF_HI = mix(p.ROOF, p.SKY_HOR, 0.35); p.BEAM_LO = mix(p.WOOD, p.WOOD_DK, 0.5); p.LEG_HI = mix(p.WOOD_DK, p.WOOD, 0.5);
+    p.BAY = mix(p.WOOD_DK, p.DUSK, 0.62); p.BACK = mix(p.WOOD_DK, p.DUSK, 0.30);
+    p.ROPE = mix(p.CANVAS, p.WOOD_DK, 0.45); p.STRIPE = mix(p.CANVAS, p.WOOD, 0.45);
+    p.GLASS = p.BLUEPRINT; p.GLASS_GOLD = mix(p.BLUEPRINT, p.GOLD_HI, 0.75);
+    p.DOOR_HI = mix(p.WOOD_DK, p.WOOD, 0.35); p.TUBE_LO = mix(p.GOLD_DK, p.WOOD_DK, 0.4);
+    p.TIER = [p.WOOD_DK, p.CLAMP, p.GOLD_DK, p.GOLD_C];          // oak, iron, brass, gold
+    return p;
+  })();
+
+  function Px(w, h) { this.w = w; this.h = h; this.a = []; }
+  Px.prototype.s = function (x, y, c) {
+    if (!c || x < 0 || y < 0 || x >= this.w || y >= this.h) return;
+    (this.a[y] || (this.a[y] = []))[x] = c;
+  };
+  Px.prototype.r = function (x, y, w, h, c) { for (var j = 0; j < h; j++) for (var i = 0; i < w; i++) this.s(x + i, y + j, c); };
+  Px.prototype.c = function (x, y, c) { this.r(2 * x, 2 * y, 2, 2, c); };
+  Px.prototype.cr = function (x0, x1, y, c) { for (var x = x0; x <= x1; x++) this.c(x, y, c); };
+  Px.prototype.get = function (x, y) { return this.a[y] ? this.a[y][x] : undefined; };
+  Px.prototype.each = function (fn) {
+    for (var y = 0; y < this.a.length; y++) if (this.a[y]) for (var x = 0; x < this.a[y].length; x++) if (this.a[y][x]) fn(x, y, this.a[y][x]);
+  };
+  Px.prototype.box = function () {
+    var b = null;
+    this.each(function (x, y) { if (!b) b = [x, y, x, y]; else { b[0] = Math.min(b[0], x); b[1] = Math.min(b[1], y); b[2] = Math.max(b[2], x); b[3] = Math.max(b[3], y); } });
+    return b;
+  };
+  /* one [x, y, w, colour] per horizontal run of one colour */
+  Px.prototype.runs = function () {
+    var out = [];
+    for (var y = 0; y < this.a.length; y++) {
+      var row = this.a[y]; if (!row) continue;
+      var x = 0;
+      while (x < row.length) {
+        var c = row[x]; if (!c) { x++; continue; }
+        var x2 = x; while (x2 + 1 < row.length && row[x2 + 1] === c) x2++;
+        out.push([x, y, x2 - x + 1, c]); x = x2 + 1;
+      }
+    }
+    return out;
+  };
+
+  /* storey n's own pixels; gold switches on its gold effect (design 4) */
+  function storeyPx(n, gold) {
+    var t = ROWS[n][0], b = ROWS[n][1], m = new Px(SW, SH), T2 = 2 * t, x, y, k;
+    if (n === 1) {                                         // footings, door, awning, lantern
+      m.cr(3, 17, t, P.STONE_HI);
+      for (y = t + 1; y < b; y++) for (x = 3; x <= 17; x++) {
+        var dk = (x * 7 + y * 5) % 4 === 0;
+        m.c(x, y, dk ? P.STONE_DK : P.STONE);
+        if (!dk) m.s(2 * x, 2 * y, P.STONE_HI);
+      }
+      m.cr(2, 18, b, P.STONE_DK);
+      for (x = 2; x <= 18; x++) m.s(2 * x + 1, 2 * b, P.STONE);
+      m.r(18, 97, 6, 5, P.WOOD_DK); m.r(19, 96, 4, 1, P.WOOD_DK);                  // arched door
+      m.r(20, 97, 2, 5, gold ? P.GOLD_DK : P.DOOR_HI); m.s(22, 99, gold ? P.GOLD_HI : P.GOLD_DK);   // gold: lit by the lantern
+      for (x = 16; x <= 25; x++) { m.s(x, 95, x % 4 < 2 ? P.CANVAS : P.STRIPE); if (x % 2 === 0) m.s(x, 96, x % 4 < 2 ? P.CANVAS : P.STRIPE); }
+      m.s(26, 97, P.CLAMP); m.r(26, 98, 2, 1, P.STONE_DK);                          // iron lantern
+      m.r(26, 99, 2, 1, gold ? P.GOLD_HI : P.GOLD_DK); m.r(26, 100, 2, 1, P.STONE_DK);
+    } else if (n >= 2 && n <= 6) {
+      var I0 = T2 + 2, F = T2 + 8;                                               // interior top, floor sub-row
+      m.r(12, I0, 18, 6, P.BAY);                                                 // the bay's shaded inside
+      for (x = 15; x <= 27; x += 4) m.r(x, I0, 1, 6, P.BACK);                   // the back wall's plank seams
+      for (y = 2 * t; y <= 2 * b + 1; y++) { m.s(10, y, P.WOOD_DK); m.s(11, y, P.LEG_HI); m.s(30, y, P.WOOD_DK); m.s(31, y, P.LEG_HI); }
+      for (x = 8; x <= 33; x++) { m.s(x, T2, P.WOOD); m.s(x, T2 + 1, P.BEAM_LO); } // ring beam
+      [[12, T2 + 4], [13, T2 + 3], [14, T2 + 2], [29, T2 + 4], [28, T2 + 3], [27, T2 + 2]].forEach(function (p) { m.s(p[0], p[1], P.WOOD); });
+      for (x = 12; x <= 29; x++) { m.s(x, F, P.LEG_HI); m.s(x, F + 1, P.WOOD_DK); }  // landing
+      if (n === 2) {                                   // the hoist IS LIFTING the canvas
+        var wy = I0, ring = gold ? P.GOLD_C : P.CLAMP;
+        m.r(19, wy, 3, 1, ring); m.s(19, wy + 1, ring); m.s(21, wy + 1, ring); m.s(20, wy + 1, gold ? P.GOLD_HI : P.STONE_DK); m.r(19, wy + 2, 3, 1, ring);
+        for (k = 0; k < 4; k++) m.s(22 + k, wy + 2 + k, P.ROPE);                 // haul line to the floor
+        var by = gold ? I0 + 3 : I0 + 4;                                         // gold: raised a row
+        if (!gold) m.s(20, I0 + 3, P.ROPE);
+        m.r(16, by, 9, 2, P.CANVAS); m.s(16, by, P.WOOD_DK); m.s(16, by + 1, P.WOOD_DK); m.s(24, by, P.WOOD_DK); m.s(24, by + 1, P.WOOD_DK);
+        m.r(17, by + 1, 7, 1, P.STRIPE);
+      } else if (n === 3) {                            // you STACKED the logs; the basket
+        var log = function (lx, ly) { m.s(lx, ly, P.CANVAS); m.s(lx + 1, ly, P.WOOD); m.s(lx, ly + 1, P.WOOD); m.s(lx + 1, ly + 1, P.WOOD_DK); };
+        log(13, I0 + 4); log(15, I0 + 4); log(17, I0 + 4); log(14, I0 + 2); log(16, I0 + 2); log(15, I0);
+        m.r(22, I0 + 3, 5, 1, P.CLAMP); m.r(22, I0 + 4, 5, 1, P.STONE_DK); m.r(23, I0 + 5, 3, 1, P.STONE_DK);
+        m.s(22, I0 + 5, P.STONE_DK); m.s(26, I0 + 5, P.STONE_DK);
+        if (gold) { m.s(24, I0, P.GOLD_C); m.s(23, I0 + 1, P.GOLD_C); m.s(24, I0 + 1, P.GOLD_HI); m.s(25, I0 + 2, P.GOLD_C); m.s(23, I0 + 2, P.GOLD_C); m.s(24, I0 + 2, P.GOLD_HI); m.s(24, I0 + 3, P.GOLD_DK); }
+      } else if (n === 4) {                            // the hearth WAS BURNING
+        for (y = I0 + 3; y <= I0 + 5; y++) for (x = 16; x <= 25; x++) m.s(x, y, (x + (y % 2) * 2) % 4 === 0 ? P.STONE_DK : P.STONE);
+        m.r(16, I0 + 2, 10, 1, P.STONE_HI);
+        m.r(22, I0, 2, 2, P.STONE_DK); m.s(23, I0, P.STONE);                     // chimney pipe
+        m.r(19, I0 + 4, 4, 2, P.STONE_DK); m.r(20, I0 + 3, 2, 1, P.STONE_DK);     // the hearth mouth
+        if (gold) {                                    // the whole mouth glows
+          m.r(19, I0 + 4, 4, 2, P.GOLD_C); m.s(20, I0 + 5, P.GOLD_HI); m.s(21, I0 + 4, P.GOLD_HI);
+          m.r(20, I0 + 3, 2, 1, P.GOLD_DK);
+        }
+      } else if (n === 5) {                            // you ARE GOING TO REACH the top
+        // two signposts, each an arrow pointing up the tower: a big one on
+        // a post, a small one beside it; gold turns the big arrow gold
+        var hd = gold ? P.GOLD_C : P.WOOD, tip = gold ? P.GOLD_HI : P.WOOD, rim = gold ? P.GOLD_DK : P.BEAM_LO;
+        // (the posts are the light wood: a dark post vanished into the bay
+        // and left a head that read as a dome)
+        m.r(18, I0, 2, 1, tip); m.r(17, I0 + 1, 4, 1, hd); m.r(16, I0 + 2, 6, 1, hd);
+        m.s(16, I0 + 2, rim); m.s(21, I0 + 2, rim);
+        m.r(18, I0 + 3, 1, 3, P.WOOD); m.r(19, I0 + 3, 1, 3, P.BEAM_LO);        // its post, to the floor
+        m.s(14, I0 + 2, P.WOOD); m.r(13, I0 + 3, 3, 1, P.WOOD); m.r(14, I0 + 4, 1, 2, P.WOOD);    // the small one
+        m.r(23, I0 + 4, 5, 2, P.WOOD); m.s(25, I0 + 4, P.WOOD_DK); m.s(25, I0 + 5, P.WOOD_DK);       // crate
+        m.r(23, I0 + 3, 5, 1, P.CANVAS); m.s(27, I0 + 3, P.STRIPE);                                   // the rolled map
+      } else if (n === 6) {                            // you WILL SEE the far side
+        [[20, 3], [19, 4], [18, 5], [21, 4], [22, 5], [20, 4], [20, 5]].forEach(function (q) { m.s(q[0], I0 + q[1], P.WOOD); });
+        var tube = [[15, I0 + 4], [16, I0 + 4], [17, I0 + 3], [18, I0 + 3], [19, I0 + 2], [20, I0 + 2], [21, I0 + 1], [22, I0 + 1], [23, I0], [24, I0]];
+        tube.forEach(function (p, i) { m.s(p[0], p[1], i < 2 ? P.STONE_DK : P.GOLD_DK); m.s(p[0], p[1] + 1, i < 2 ? P.STONE_DK : P.TUBE_LO); });
+        m.s(25, I0, P.CLAMP); m.s(25, I0 + 1, P.CLAMP);
+        if (gold) { m.s(26, I0, P.GOLD_HI); m.s(27, I0, P.GOLD_C); m.s(26, I0 + 1, P.GOLD_C); for (k = 0; k < 6; k++) if (k % 2 === 0) m.s(17 + k, tube[2 + k][1], P.GOLD_C); }
+      }
+    } else if (n === 7) {                              // you HAVE BUILT the deck
+      for (x = 2; x <= 39; x++) { m.s(x, 38, P.WOOD); m.s(x, 39, P.BEAM_LO); m.s(x, 42, P.LEG_HI); m.s(x, 43, P.WOOD_DK); }
+      for (x = 1; x <= 19; x += 2) m.r(2 * x, 40, 2, 2, P.WOOD_DK);
+      m.r(2, 36, 4, 2, P.STONE); m.s(2, 37, P.STONE_DK); m.r(3, 35, 2, 1, P.STONE_HI); m.s(3, 34, P.STONE);   // the cairn
+      if (gold) { m.r(3, 34, 2, 1, P.GOLD_C); m.s(4, 33, P.GOLD_HI); m.r(3, 35, 2, 1, P.GOLD_DK); }        // a gold capstone
+      m.r(6, 36, 2, 2, P.WOOD); m.r(8, 36, 2, 2, P.WOOD); m.s(6, 37, P.WOOD_DK); m.s(8, 37, P.WOOD_DK);       // the boots
+      if (gold) { m.s(7, 36, P.GOLD_HI); m.s(9, 36, P.GOLD_HI); }                                          // their buckles shine
+    } else if (n === 8) {                              // you HAVE BEEN BUILDING since breakfast
+      for (y = 28; y <= 37; y++) for (x = 10; x <= 31; x++) m.s(x, y, P.WOOD_DK);
+      for (x = 10; x <= 31; x++) { m.s(x, 28, P.WOOD); m.s(x, 29, P.BEAM_LO); m.s(x, 36, P.LEG_HI); }
+      var win = gold ? P.GLASS_GOLD : P.GLASS;
+      [[12, 19], [22, 29]].forEach(function (w) { for (x = w[0]; x <= w[1]; x++) for (y = 30; y <= 34; y++) m.s(x, y, (x === (w[0] + w[1] + 1) / 2 || y === 32) ? P.WOOD_DK : win); });
+      m.s(25, 30, P.CLAMP); m.s(25, 31, P.STONE_DK); m.s(25, 32, gold ? P.GOLD_HI : P.GOLD_DK); m.s(25, 33, P.STONE_DK); // lantern inside
+    } else if (n === 9) {                              // the sun HAD SET by the time the roof went on
+      var spans = [[9, 11], [8, 12], [6, 14], [5, 15], [3, 17], [2, 18]];
+      for (var i = 0; i < 6; i++) {
+        y = t + i;
+        for (x = spans[i][0]; x <= spans[i][1]; x++) m.c(x, y, y === b ? P.ROOF_DK : P.ROOF);
+        for (x = 2 * spans[i][0]; x <= 2 * spans[i][1] + 1; x++) if (y !== b) m.s(x, 2 * y, P.ROOF_HI);
+      }
+      var cr = gold ? P.GOLD_C : P.STONE_HI, cr2 = gold ? P.GOLD_HI : P.STONE;
+      m.r(18, 15, 6, 1, cr); m.r(18, 14, 2, 1, cr2); m.r(22, 14, 2, 1, cr2);       // the beacon cradle
+    }
+    return m;
+  }
+  /* the ring-beam caps that carry the trim tier, in cells */
+  function capCells(n) {
+    var t = ROWS[n][0], b = ROWS[n][1];
+    return ({ 1: [[3, t], [17, t]], 7: [[1, 19], [19, 19]], 8: [[5, t], [15, t]], 9: [[2, b], [18, b]] })[n] || [[4, t], [16, t]];
+  }
+  function material(c) {
+    if (c === P.STONE || c === P.STONE_HI || c === P.STONE_DK) return 's';
+    if (c === P.WOOD || c === P.WOOD_DK || c === P.BEAM_LO || c === P.LEG_HI || c === P.BACK) return 'w';
+    if (c === P.ROOF || c === P.ROOF_HI || c === P.ROOF_DK) return 'r';
+    if (c === P.CANVAS || c === P.STRIPE || c === P.ROPE) return 'c';
+    return c;
+  }
+  /* each lamp: its 3 x 5 body's top-left (an ink lid, three rows of glass,
+     an ink foot) and the iron hook that holds it (the last hook pixel is the
+     ring, directly above the body). Every body sits inside its own storey's
+     rows, level with that storey's number tag: lamp 7 hangs under the deck
+     rail's left end, lamp 9 stands on the roof's lower step (test-lookout.js
+     checks both, so no row carries two lamps and none is left without). */
+  function lampAnchor(n) {
+    var t = ROWS[n][0];
+    if (n === 1) return { x: 3, y: 96, hook: [[4, 94], [5, 94], [4, 95]] };   // off the footings
+    if (n === 7) return { x: 0, y: 39, hook: [[1, 38]] };                     // under the deck rail's left end
+    if (n === 8) return { x: 7, y: 30, hook: [[8, 28], [9, 28], [8, 29]] };   // off the cabin wall
+    if (n === 9) return { x: 6, y: 19, hook: [[7, 18]] };                     // on the roof's lower step, by its handle
+    return { x: 5, y: 2 * t + 2, hook: [[6, 2 * t], [7, 2 * t], [6, 2 * t + 1]] };   // off the ring beam
+  }
+  var LAMP_H = 5;
+  /* each storey's flag: pole x, top and height; a 4 x 3 cloth flies right
+     from the top. 8 and 7 share the cabin's height, so 8 flies high under
+     the eave and 7 low on a short pole off the deck's end: side by side at
+     one height their cloths read as one two-tone banner. */
+  function flagAnchor(n) {
+    if (n === 9) return { x: 34, y: 16, h: 8 };         // on the roof's lower step
+    if (n === 8) return { x: 32, y: 29, h: 9 };         // beside the cabin, under the eave
+    if (n === 7) return { x: 37, y: 33, h: 5 };         // on the deck's end
+    if (n === 1) return { x: 36, y: 94, h: 8 };         // on the footings' base
+    return { x: 34, y: 2 * (ROWS[n][1] + 1) - 8, h: 8 };   // on the ring beam's end
+  }
+  var FLAMES = {                                        // [y, x, w, D|C|H] in sub-pixels, over the cradle
+    1: [[13, 19, 4, 'D'], [12, 20, 2, 'C']],
+    2: [[13, 18, 6, 'D'], [12, 19, 4, 'C'], [11, 19, 4, 'C'], [11, 20, 2, 'H'], [10, 20, 2, 'H']],
+    3: [[13, 18, 6, 'D'], [12, 18, 6, 'C'], [11, 19, 4, 'C'], [11, 20, 2, 'H'], [10, 19, 4, 'H'], [9, 20, 2, 'H'], [8, 21, 1, 'H']]
+  };
+  /* The Summit Flag: 3 stars for the pole, 5 for the pennant (design 3) */
+  var SKY_STARS = [[3, 3], [3, 8], [3, 13], [7, 3], [10, 5], [13, 7], [10, 9], [7, 11]];
+  var SKY_PATH = [2, 1, 0, 3, 4, 5, 6, 7, 1];
+  var EAVE = [38, 27], MAST = 48;
+
+  function line(m, x0, y0, x1, y1, c) {                // Bresenham
+    var dx = Math.abs(x1 - x0), dy = -Math.abs(y1 - y0), sx = x0 < x1 ? 1 : -1, sy = y0 < y1 ? 1 : -1, e = dx + dy;
+    for (;;) { m.s(x0, y0, c); if (x0 === x1 && y0 === y1) break; var e2 = 2 * e; if (e2 >= dy) { e += dy; x0 += sx; } if (e2 <= dx) { e += dx; y0 += sy; } }
+  }
+
+  /* The tower as ordered layers of sub-pixels, for the SVG meter and for a
+     canvas stage alike: [{id, cls, opacity, px: Px}]. opts as meter(). */
+  function towerLayers(L, opts) {
+    opts = opts || {};
+    var bunting = opts.bunting !== false, W = SW + (bunting ? BUNT : 0), layers = [], boxes = {};
+    function layer(id, cls, opacity) { var l = { id: id, cls: cls || '', opacity: opacity == null ? 1 : opacity, px: new Px(W, SH) }; layers.push(l); return l.px; }
+    var climbCol = {}; L.storeys.forEach(function (p) { climbCol[p.n] = p.entry; });
+    var byN = {}; L.storeys.forEach(function (p) { byN[p.n] = p; });
+    var lampN = {}; L.lamps.forEach(function (p) { lampN[p.n] = p; });
+    var trim = P.TIER[L.tier];
+
+    // the sky: The Summit Flag
+    if (opts.sky !== false) {
+      if (L.stars >= 8) { var ln = layer('sky-lines', 'lk-sky', 0.45); for (var q = 0; q + 1 < SKY_PATH.length; q++) { var A = SKY_STARS[SKY_PATH[q]], B = SKY_STARS[SKY_PATH[q + 1]]; line(ln, A[0], A[1], B[0], B[1], P.CLOUD); } }
+      var dim = layer('sky-dim', 'lk-sky', 0.5), sky = layer('sky', 'lk-sky');
+      SKY_STARS.forEach(function (s, i) {
+        var p = byN[i + 1], on = p && p.star, wait = p && p.starSaved && !p.star;
+        if (!on && !wait) { dim.s(s[0], s[1], P.GHOST); return; }
+        var c = on ? P.GOLD_HI : P.GOLD_DK;
+        sky.s(s[0], s[1], c); sky.s(s[0] - 1, s[1], c); sky.s(s[0] + 1, s[1], c); sky.s(s[0], s[1] - 1, c); sky.s(s[0], s[1] + 1, c);
+      });
+    }
+    // the beam: all nine storeys and all nine lamps
+    if (L.beacon) {
+      for (var k = 0; k < 6; k++) {
+        var bm = layer('beam-' + k, 'lk-beam', r4(0.35 + 0.65 * (k + 1) / 6)), y0 = Math.round(14 * k / 6), y1 = Math.round(14 * (k + 1) / 6);
+        for (var i = 0; i < 9; i++) bm.r(16 + i, y0, 1, y1 - y0, (climbCol[i + 1] || {}).colour || P.GOLD_C);
+        if (L.golden) bm.r(20, y0, 1, y1 - y0, P.GOLD_HI);
+      }
+    }
+    // the storeys: built in colour with their trim, unbuilt as blueprint ghost
+    for (var n = 1; n <= 9; n++) {
+      var piece = byN[n], built = !!(piece && piece.on), sp = storeyPx(n, built && piece.gold);
+      var bx = sp.box(); boxes['storey-' + n] = bx;
+      if (!built) {
+        var gf = layer('storey-' + n, 'lk-ghost lk-s' + n, 0.18), ge = layer('storey-' + n + '-edge', 'lk-ghost lk-s' + n, 0.42);
+        sp.each(function (x, y, c) {
+          if (c === P.BAY || c === P.BACK) return;
+          var mc = material(c);
+          function nb(dx, dy) { var o = sp.get(x + dx, y + dy); return o && o !== P.BAY && o !== P.BACK ? material(o) : null; }
+          var edge = nb(-1, 0) !== mc || nb(0, -1) !== mc || nb(1, 0) === null || nb(0, 1) === null;
+          (edge ? ge : gf).s(x, y, P.BLUEPRINT);
+        });
+        continue;
+      }
+      var lp = layer('storey-' + n, 'lk-s' + n);
+      sp.each(function (x, y, c) { lp.s(x, y, c); });
+      capCells(n).forEach(function (cc) { lp.c(cc[0], cc[1], trim); });
+    }
+    // flags on the built storeys' right corners
+    var fl = layer('flags', 'lk-flags');
+    L.storeys.forEach(function (p) {
+      if (!p.on) return;
+      var a = flagAnchor(p.n), e = p.entry;
+      fl.r(a.x, a.y, 1, a.h, P.WOOD);
+      if (p.gold) fl.s(a.x, a.y - 1, P.GOLD_C);
+      fl.r(a.x + 1, a.y, 4, 3, e.colour);
+      if (p.star) fl.s(a.x + 2, a.y + 1, e.ink);
+      boxes['flag-' + p.n] = [a.x, a.y - 1, a.x + 4, a.y + a.h - 1];
+    });
+    // lamps: a pool of their colour, the lamp, the hook. An unlit lamp is
+    // not drawn at all: a pale ring beside the number tags read as a zero
+    // (the storey sheet says "Not lit yet")
+    var pool = layer('pools', 'lk-pool', 0.38), pool2 = layer('pools-gold', 'lk-pool', 0.2);
+    for (n = 1; n <= 9; n++) {
+      var lpc = lampN[n], a = lampAnchor(n), B = a.y + LAMP_H - 1;
+      boxes['lamp-' + n] = [a.x, Math.min(a.hook[0][1], a.y - 1), a.x + 2, B];
+      if (!lpc || !lpc.on) continue;
+      // the pool: a rounded ring of the lamp's colour (corners left out so it
+      // reads as light, not a box); a gold lamp's is a ring wider (design 3)
+      var col = lpc.entry.colour;
+      for (var yy = a.y - 2; yy <= B + 2; yy++) for (var xx = a.x - 2; xx <= a.x + 4; xx++) {
+        var dx = xx < a.x ? a.x - xx : xx > a.x + 2 ? xx - a.x - 2 : 0, dy = yy < a.y ? a.y - yy : yy > B ? yy - B : 0;
+        if (!dx && !dy) continue;
+        if (dx + dy === 1) pool.s(xx, yy, col);
+        else if (lpc.gold && dx + dy === 2) pool2.s(xx, yy, col);
+      }
+      // a lantern, not a battery: a narrow ink lid, the glass the widest and
+      // brightest part (a GOLD_HI flame in it), an ink foot. Ink is the only
+      // thing that touches the glass (build.py --check: every station colour
+      // reads on it at 3:1 or better); gold sits on the lid as a crown
+      var lm = layer('lamp-' + n, 'lk-l' + n);
+      a.hook.forEach(function (h) { lm.s(h[0], h[1], P.CLAMP); });
+      lm.r(a.x, a.y, 3, 1, P.INK); lm.r(a.x, a.y + 1, 3, 3, col); lm.s(a.x + 1, a.y + 1, P.GOLD_HI); lm.s(a.x + 1, a.y + 2, P.GOLD_HI);
+      lm.s(a.x + 1, B, P.INK);
+      if (lpc.gold) { lm.r(a.x, a.y - 1, 3, 1, P.GOLD_C); lm.s(a.x + 1, a.y - 1, P.GOLD_HI); }
+    }
+    // the beacon flame: one step bigger at 1, 4 and 7 lamps, on the cradle or its ghost
+    if (L.flame) {
+      var fm = layer('flame', 'lk-flame'), FC = { D: P.GOLD_DK, C: P.GOLD_C, H: P.GOLD_HI };
+      FLAMES[L.flame].forEach(function (r) { fm.r(r[1], r[0], r[2], 1, FC[r[3]]); });
+    }
+    // the bunting: a mast at the summit's edge, a guy line to the eave, a
+    // pennant per adventure in the Quest's order (camp colour; gold tip on a
+    // master ending; ghost while not cleared)
+    if (bunting && L.adventures.length) {
+      var ms = layer('mast', 'lk-mast');
+      line(ms, EAVE[0], EAVE[1], MAST - 1, 18, P.WOOD_DK);
+      ms.r(MAST, 18, 1, SH - 18, P.WOOD_DK);
+      ms.r(MAST - 1, 17, 3, 1, trim);
+      var pg = layer('pennants-ghost', 'lk-ghost', 0.45), pn = layer('pennants', 'lk-pennants');
+      L.adventures.forEach(function (ad, i) {
+        var y = 21 + Math.round(i * 5.5), m = ad.cleared ? pn : pg, c = ad.cleared ? ad.colour : P.GHOST;
+        m.r(MAST + 1, y, 2, 1, c); m.r(MAST + 1, y + 1, 4, 1, c); m.r(MAST + 1, y + 2, 2, 1, c);
+        if (ad.cleared && ad.master) m.s(MAST + 4, y + 1, P.GOLD_C);
+        boxes['adv-' + ad.id] = [MAST + 1, y, MAST + 4, y + 2];
+      });
+    }
+    return { w: W, h: SH, layers: layers, boxes: boxes };
+  }
+
+  /* meter(L?, opts?) - the tower as a crispEdges SVG string, 1 px per
+     sub-pixel by default (42 x 104, or 54 x 104 with the bunting mast).
+       L        lookout() (default: this learner's)
+       opts.px        CSS px per sub-pixel (default 1; 2 = the hub's 4 px a cell)
+       opts.bunting   false drops the mast and pennants (exactly 42 wide)
+       opts.sky       false drops the constellation
+       opts.bg        false drops the backing panel (dusk deepens it per lamp)
+       opts.focus     a piece key ('storey-4', 'lamp-2'): outlined in GOLD_HI
+       opts.fresh     true: the focus piece builds in, bottom up, in 6 steps
+                      (METER_CSS; frozen under prefers-reduced-motion)
+       opts.rows      a window this many cells tall, centred on the focus
+                      (or the top built storey), with a scroll rail
+       opts.cls, opts.label, opts.decorative   as sprite() */
+  var METER_CSS =
+    '.lk-meter{display:block;image-rendering:pixelated}' +
+    '@media (prefers-reduced-motion:no-preference){' +
+      '.lk-meter .lk-new .lk-b{animation:lk-in .15s steps(1,start) both}' +
+      '.lk-meter .lk-new .lk-b0{animation-delay:.25s}.lk-meter .lk-new .lk-b1{animation-delay:.4s}' +
+      '.lk-meter .lk-new .lk-b2{animation-delay:.55s}.lk-meter .lk-new .lk-b3{animation-delay:.7s}' +
+      '.lk-meter .lk-new .lk-b4{animation-delay:.85s}.lk-meter .lk-new .lk-b5{animation-delay:1s}' +
+      '.lk-meter .lk-hi{animation:lk-hi .6s steps(2) 1.15s 3 both}' +
+      '.lk-meter .lk-beam{animation:lk-beam 4s steps(4,end) infinite}}' +
+    '@keyframes lk-in{from{opacity:0}to{opacity:1}}' +
+    '@keyframes lk-hi{from{opacity:.25}to{opacity:1}}' +
+    '@keyframes lk-beam{0%,100%{opacity:1}50%{opacity:.82}}';
+  function meterCss() {
+    try {
+      if (document.getElementById('lk-meter-css')) return;
+      var s = document.createElement('style'); s.id = 'lk-meter-css'; s.textContent = METER_CSS;
+      (document.head || document.documentElement).appendChild(s);
+    } catch (_) {}
+  }
+
+  function meter(L, opts) {
+    opts = opts || {};
+    L = L || lookout();
+    var T = towerLayers(L, opts), W = T.w, H = T.h, px = opts.px || 1;
+    var focus = opts.focus && T.boxes[opts.focus] ? opts.focus : null;
+    var vy = 0, vh = H, rail = '';
+    if (opts.rows && opts.rows < GH) {
+      var mid;
+      if (focus) mid = (T.boxes[focus][1] + T.boxes[focus][3]) / 4;
+      else { var top = null; L.storeys.forEach(function (p) { if (p.on) top = p.n; }); mid = (ROWS[top || 1][0] + ROWS[top || 1][1] + 1) / 2; }
+      var rows = Math.max(8, Math.round(opts.rows)), t0 = Math.max(0, Math.min(GH - rows, Math.round(mid - rows / 2)));
+      vy = 2 * t0; vh = 2 * rows;
+      if (opts.rail !== false) {
+        rail = '<rect x="' + (W + 1) + '" y="' + vy + '" width="2" height="' + vh + '" fill="' + P.GHOST_DK + '"/>' +
+               '<rect x="' + (W + 1) + '" y="' + (vy + Math.round(t0 / GH * vh)) + '" width="2" height="' + Math.round(rows / GH * vh) + '" fill="' + P.CLOUD + '"/>';
+        W += 3;
+      }
+    }
+    var out = '';
+    if (opts.bg !== false) out += '<rect class="lk-bg" x="0" y="' + vy + '" width="' + W + '" height="' + vh + '" fill="' + mix(P.HUD, P.SKY_TOP, r4(0.10 * (1 - Math.min(1, L.dusk / 0.36)))) + '"/>';
+    T.layers.forEach(function (l) {
+      var runs = l.px.runs(); if (!runs.length) return;
+      var isNew = opts.fresh && focus && (l.id === focus || (focus.indexOf('storey-') === 0 && l.id === focus + '-edge'));
+      var g = '<g class="' + l.cls + (l.id === focus ? ' lk-focus' : '') + (isNew ? ' lk-new' : '') + '"' + (l.opacity < 1 ? ' opacity="' + l.opacity + '"' : '') + '>';
+      if (isNew) {
+        // six bands, bottom up: the build-in steps
+        var bb = T.boxes[focus], hgt = bb[3] - bb[1] + 1, bands = ['', '', '', '', '', ''];
+        runs.forEach(function (r) { var k = Math.min(5, Math.floor((bb[3] - r[1]) * 6 / hgt)); bands[k] += '<rect x="' + r[0] + '" y="' + r[1] + '" width="' + r[2] + '" height="1" fill="' + r[3] + '"/>'; });
+        bands.forEach(function (s, k) { if (s) g += '<g class="lk-b lk-b' + k + '">' + s + '</g>'; });
+      } else {
+        runs.forEach(function (r) { g += '<rect x="' + r[0] + '" y="' + r[1] + '" width="' + r[2] + '" height="1" fill="' + r[3] + '"/>'; });
+      }
+      out += g + '</g>';
+    });
+    if (focus) {
+      var b = T.boxes[focus], st0 = focus.indexOf('storey-') === 0;
+      var x0 = st0 ? 0 : Math.max(0, b[0] - 1), x1 = st0 ? SW - 1 : b[2] + 1, y0 = Math.max(0, b[1] - 1), y1 = Math.min(SH - 1, b[3] + 1);
+      out += '<g class="lk-hi" fill="' + P.GOLD_HI + '">' +
+        '<rect x="' + x0 + '" y="' + y0 + '" width="' + (x1 - x0 + 1) + '" height="1"/><rect x="' + x0 + '" y="' + y1 + '" width="' + (x1 - x0 + 1) + '" height="1"/>' +
+        '<rect x="' + x0 + '" y="' + y0 + '" width="1" height="' + (y1 - y0 + 1) + '"/><rect x="' + x1 + '" y="' + y0 + '" width="1" height="' + (y1 - y0 + 1) + '"/></g>';
+    }
+    if (opts.fresh) meterCss();
+    var label = opts.label || ('Your Lookout: ' + L.k + ' of ' + L.of + ' built, ' + L.golds + ' gold' + (L.beacon ? ', beacon lit' : ''));
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 ' + vy + ' ' + W + ' ' + vh + '" width="' + W * px + '" height="' + vh * px +
+      '" shape-rendering="crispEdges" class="lk-meter' + (opts.cls ? ' ' + opts.cls : '') + '"' +
+      (opts.decorative ? ' aria-hidden="true"' : ' role="img" aria-label="' + label.replace(/"/g, '&quot;') + '"') + '>' +
+      out + rail + '</svg>';
+  }
+
+  /* lampSprite(entry, st, size?, opts?) - a station's lamp on the flag
+     sprite's 16 x 16 grid: an iron ring, a cap, glass in the station colour
+     round a GOLD_HI flame core, framed in the dark INK (every station colour
+     reads at 3:1 or better on it; build.py --check measures it). Gold puts a
+     gold cap on top and a gold foot under it - gold never touches the glass,
+     so the Trial's gold glass still reads. Unlit: a dim ghost outline.
+     st: 'locked' | 'lit' | 'gold', or { lit|earned, gold }. */
+  function lampSprite(entry, st, size, opts) {
+    opts = opts || {}; size = size || 64;
+    var lit = st && typeof st === 'object' ? !!(st.lit || st.earned || st.on) : String(st || 'locked') !== 'locked';
+    var gold = lit && (st && typeof st === 'object' ? !!st.gold : /gold/.test(String(st)));
+    var g = blank(), F = lit ? LK.inkDk : GHOST, G = lit ? entry.colour : '', x, y;
+    function put(x0, x1, yy, c) { for (var xx = x0; xx <= x1; xx++) g[yy][xx] = c; }
+    put(7, 8, 1, lit ? CLAMP : GHOST_DK); g[2][6] = g[2][9] = lit ? CLAMP : GHOST_DK;          // ring
+    put(6, 9, 3, gold ? GOLD_C : F); if (gold) put(7, 8, 3, GOLD_HI);                        // cap
+    put(4, 11, 4, F);                                                                        // brim
+    for (y = 5; y <= 11; y++) { g[y][4] = F; g[y][11] = F; put(5, 10, y, G); }               // glass
+    if (lit) { put(7, 8, 7, GOLD_HI); put(6, 9, 8, GOLD_HI); put(6, 9, 9, GOLD_HI); put(7, 8, 10, GOLD_HI); }   // flame core
+    put(4, 11, 12, F);                                                                       // base
+    put(6, 9, 13, gold ? GOLD_C : F); if (gold) g[13][6] = GOLD_HI;                          // foot
+    var what = (entry.trial ? 'The Trial' : 'Station ' + entry.n) + ' lamp';
+    var label = !lit ? what + ': not lit' : what + ': lit' + (gold ? ', gold' : '');
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="' + size + '" height="' + size +
+      '" shape-rendering="crispEdges" class="lk-lamp' + (lit ? '' : ' cf-locked') + (gold ? ' cf-gold' : '') +
+      (opts.cls ? ' ' + opts.cls : '') + '"' + (lit ? '' : ' opacity=".62"') +
+      (opts.decorative ? ' aria-hidden="true"' : ' role="img" aria-label="' + label + '"') + '>' +
+      rects(g, 'lk-lamp-px') + '</svg>';
+  }
+
   /* ── the route maps ──────────────────────────────────────────────────
      Built from the DOM at runtime on purpose: checker/check-access.py --fix
      rewrites every static <a href="blockcamp-…"> on the climb map, including
      one written as a string in a script. Nothing here writes markup that
-     links to a deck. */
+     links to a deck. The pins' shadow is the hub's dark INK, not black
+     (CLAUDE.md: never a hardcoded pure black or white). */
   var CSS =
-    '.cf-pin{position:absolute;left:calc(50% - 7px);bottom:calc(100% - 5px);width:32px;height:32px;pointer-events:none;z-index:2;filter:drop-shadow(0 2px 3px rgba(0,0,0,.55))}' +
+    '.cf-pin{position:absolute;left:calc(50% - 7px);bottom:calc(100% - 5px);width:32px;height:32px;pointer-events:none;z-index:2;filter:drop-shadow(0 2px 3px rgba(' + hx(LK.inkDk).join(',') + ',.55))}' +
     '.cf-pin svg{display:block;width:100%;height:100%}' +
     '.route-node .cf-pin{left:calc(86% - 7px);bottom:calc(84% - 2px)}' +
     '.cf-row{flex:none;margin-left:auto;width:32px;height:32px}.cf-row svg{display:block;width:32px;height:32px}' +
@@ -291,9 +939,12 @@
       var shown = TABLE.filter(function (e) { return e.line === line; })[0];
       var chip = el('a', 'cf-chip');
       chip.href = url('block-camp/flags.html');
+      // "Flags 4/9 · Lookout 7/18 →": this line's flags, then the whole
+      // Lookout (every planted flag is a storey or a lamp, so k = total)
       chip.innerHTML = (shown ? sprite(shown, sum[line] ? 'earned' : 'locked', 16, { decorative: true }) : '') +
-        '<span>Flags <b>' + sum[line] + '/' + sum[line + 'Of'] + '</b> &middot; Your flags &rarr;</span>';
-      chip.setAttribute('aria-label', 'Your flags: ' + sum[line] + ' of ' + sum[line + 'Of'] + ' planted');
+        '<span>Flags <b>' + sum[line] + '/' + sum[line + 'Of'] + '</b> &middot; Lookout <b>' + sum.total + '/' + sum.of + '</b> &rarr;</span>';
+      chip.setAttribute('aria-label', 'Your Lookout: ' + sum[line] + ' of ' + sum[line + 'Of'] + ' flags planted here, ' +
+        sum.total + ' of ' + sum.of + ' pieces built');
       var bar = line === 'climb' ? document.querySelector('.tourbar') : document.querySelector('.masthead');
       if (bar) {
         var hint = line === 'climb' ? bar.querySelector('.hint') : null;
@@ -306,7 +957,12 @@
     TABLE: TABLE, PASS: PASS, GOLD: GOLD, KEY: KEY,
     find: find, byHref: byHref, url: url, pageId: pageId,
     all: all, state: state, record: record, summary: summary,
-    sprite: sprite, decorateMap: decorateMap
+    sprite: sprite, decorateMap: decorateMap,
+    // the Lookout
+    LOOKOUT: LK, lookout: lookout, pieceOf: pieceOf, meter: meter, lampSprite: lampSprite,
+    METER_CSS: METER_CSS, towerLayers: towerLayers, storeyPixels: storeyPx, palette: P,
+    GRID: { GW: GW, GH: GH, SUB: 2, SW: SW, SH: SH, BUNT: BUNT, ROWS: ROWS, caps: capCells, lamp: lampAnchor, LAMP_H: LAMP_H,
+            flag: flagAnchor, FLAMES: FLAMES, STARS: SKY_STARS, STAR_PATH: SKY_PATH, EAVE: EAVE, MAST: MAST }
   };
 
   var mapKind = me && me.getAttribute && me.getAttribute('data-map');

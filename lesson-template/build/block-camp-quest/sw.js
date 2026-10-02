@@ -11,12 +11,16 @@
    response may not answer a navigation: the installed app's offline launch
    (start_url quest.html) failed with ERR_FAILED. Every copy is now stored as
    a plain response, and an offline navigation tries the clean and the .html
-   spelling of the URL before falling back to the Quest. */
-const VERSION = 'block-camp-quest-v2';
+   spelling of the URL before falling back to the Quest.
+
+   v3 (2026-10-02): quest.html loads camp-flags.js?v=2 (the Lookout stat), so
+   it is precached with the rest; without it an installed Quest opened
+   offline before an online visit showed "Lookout ->" with no count. */
+const VERSION = 'block-camp-quest-v3';
 // Must all load, or the worker does not install.
 const CORE = ['quest.html', 'camp-save.js', 'manifest.webmanifest', 'quest-icons/icon-192.png', 'quest-icons/icon-512.png'];
 // Nice to have offline; one missing does not stop the rest.
-const EXTRA = ['camp-full.js', 'village.html', '../BlockCamp/hub-hero.jpg'];
+const EXTRA = ['camp-flags.js?v=2', 'camp-full.js', 'village.html', '../BlockCamp/hub-hero.jpg'];
 
 // A response that followed a redirect, rebuilt as a plain one with the same
 // status, headers and bytes (a blob, which every engine accepts as a body).

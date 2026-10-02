@@ -225,6 +225,36 @@ button.btn { cursor: pointer; margin: 0; -webkit-appearance: none; appearance: n
    off for this visitor (Save-Data, no Web Audio), so it takes no gap. */
 .cta-music { display: inline-flex; }
 .cta-music:empty { display: none; }
+/* YOUR LOOKOUT (docs/LOOKOUT-DESIGN.md, "The hub"). The button is the old
+   "Your flags" one, renamed and in its old place: with storage blocked, or
+   camp-flags.js missing, it stays that plain pill and nothing else changes.
+   Otherwise the script at the bottom draws the learner's tower into it
+   (CampFlags.meter(), 2 px a cell, 54 x 104 with the bunting mast) with
+   k/18 and the next step, moves it to the end of the row (so the tab order
+   follows what is seen) and the pill opens out into a tile on its own line
+   under the others: the ::after is the line break, so a desktop's other
+   pills stay on one row. The meter carries its own colours (the hub's CAMP
+   and INK, the flag sprite's palette, the plate samples); the tile is the
+   glass pill's. */
+.btn-lookout .lk-art:empty, .btn-lookout .lk-k:empty, .btn-lookout .lk-next:empty { display: none; }
+.cta-row.lk-on::after { content: ""; flex-basis: 100%; order: 9; }
+.btn-lookout.has-meter {
+  order: 10; align-items: center; gap: 16px;
+  padding: 8px 22px 8px 8px; border-radius: var(--radius);
+}
+.btn-lookout .lk-art { flex: none; line-height: 0; }
+/* .btn svg above sizes an icon to 1em and strokes it in currentColor: the
+   meter is a picture, so it keeps its own width/height attributes and no
+   stroke (every rect in it carries its own fill). */
+.btn-lookout .lk-art svg { display: block; width: auto; height: auto; stroke: none; border-radius: 4px; }
+.btn-lookout .lk-txt { display: flex; flex-direction: column; align-items: flex-start; gap: 5px; min-width: 0; }
+.btn-lookout .lk-k { font-size: 1.7rem; line-height: 1; letter-spacing: 0; color: var(--gold); }
+.btn-lookout .lk-next {
+  font-family: 'Lato', sans-serif; font-weight: 400; font-size: .9rem; line-height: 1.4;
+  letter-spacing: 0; text-transform: none; color: var(--muted); max-width: 34ch;
+}
+.btn-lookout .lk-pro { white-space: nowrap; color: var(--gold-pale); }
+.btn-lookout .lk-pro svg { width: 9px; height: 11px; fill: currentColor; stroke: none; vertical-align: -1px; margin-right: 3px; }
 
 /* the tally, sitting on the hero's bottom edge */
 .tally {
@@ -475,7 +505,7 @@ button.btn { cursor: pointer; margin: 0; -webkit-appearance: none; appearance: n
       <button type="button" class="btn btn-glass btn-full" data-camp-full><svg class="cf-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg><span class="cf-l">Full screen</span></button>
       <a class="btn btn-glass" href="#climb">Start at camp 1</a>
       <a class="btn btn-glass" href="block-camp/quest.html">Play it as a game</a>
-      <a class="btn btn-glass" href="block-camp/flags.html">Your flags</a>
+      <a class="btn btn-glass btn-lookout" href="block-camp/flags.html" data-lookout><span class="lk-art" aria-hidden="true"></span><span class="lk-txt"><span class="lk-l">Your Lookout</span><span class="lk-k mono"></span><span class="lk-next"></span></span></a>
       <a class="btn btn-glass" href="block-camp/village.html">Walk round the village</a>
       <span class="cta-music" data-camp-music-slot></span>
     </div>
@@ -788,7 +818,43 @@ button.btn { cursor: pointer; margin: 0; -webkit-appearance: none; appearance: n
   if (document.readyState === 'complete') load(); else addEventListener('load', load);
   hold();
 })();
+
+/* YOUR LOOKOUT: the learner's tower in the hero's Lookout button (see the
+   CSS). camp-save.js and camp-flags.js load deferred below, so this waits
+   for DOMContentLoaded, which fires after them. Storage blocked: CampSave
+   still answers with an empty save, so the test is the storage itself, and
+   the button stays the plain pill it was, where it was. Back from a deck
+   through the page cache, the tower may have grown: pageshow draws it
+   again. */
+(function () {
+  var LOCK = '<svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>';
+  function draw() {
+    try {
+      var a = document.querySelector('[data-lookout]'), F = window.CampFlags;
+      if (!a || !F || !F.meter || !window.CampSave) return;
+      try { window.localStorage.getItem(window.CampSave.KEY); } catch (_) { return; }
+      var L = F.lookout(), nx = L.next(), cg = nx ? null : L.closestGold();
+      var line = (L.beacon ? 'Beacon lit! ' : '') +
+        (nx ? 'Next: ' + nx.text : cg ? 'Closest to gold: ' + cg.text : L.golden ? 'The Golden Lookout' : '');
+      var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+      var svg = F.meter(L, { decorative: true, cls: 'lk-hub' });   /* everything that can throw, before the first write */
+      if (!document.getElementById('lk-meter-css') && F.METER_CSS) {   /* the beam's pulse at 18/18; still under reduced motion */
+        var st = document.createElement('style'); st.id = 'lk-meter-css'; st.textContent = F.METER_CSS; document.head.appendChild(st);
+      }
+      a.querySelector('.lk-art').innerHTML = svg;
+      a.querySelector('.lk-k').textContent = L.k + '/' + L.of;
+      a.querySelector('.lk-next').innerHTML = esc(line.trim()) + (nx && nx.padlock ? ' <span class="lk-pro">' + LOCK + 'Pro</span>' : '');
+      a.classList.add('has-meter');
+      a.parentNode.appendChild(a);   /* last in the row, as it is drawn: the tab order follows */
+      a.parentNode.classList.add('lk-on');
+    } catch (_) {}
+  }
+  document.addEventListener('DOMContentLoaded', draw);
+  addEventListener('pageshow', function (e) { if (e.persisted) draw(); });
+})();
 </script>
+<script src="block-camp/camp-save.js" defer></script>
+<script src="block-camp/camp-flags.js?v=2" defer></script>
 <script src="block-camp/camp-full.js" defer></script>
 <script src="block-camp/camp-music.js" data-track="block-camp/music/block-camp-theme.m4a" data-loop="0.5 72.5" defer></script>
 </body>

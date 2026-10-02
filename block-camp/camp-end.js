@@ -107,64 +107,163 @@
    and it goes gold; 50% on Part 2 adds a star. camp-flags.js holds the rule
    and the save; this half only listens for the Results slide and draws.
    Nothing here declares a name at the top level: the deck's engine owns
-   score, maxScore, idx, slides, show, t... and is read through the DOM. */
+   score, maxScore, idx, slides, show, t... and is read through the DOM.
+
+   RAISE THE LOOKOUT (docs/LOOKOUT-DESIGN.md 6, Phase A). Every flag is a
+   piece of the learner's Lookout: a climb flag raises storey N, a station's
+   flag lights the lamp on storey S-8. So the card shows, beside the flag,
+   CampFlags.meter() - the 21 x 52-cell code tower at 2 px a cell (42 x 104;
+   on html.bc-phone a 40-row window scrolled to this deck's piece) - with the
+   new piece building in over six steps. Then the lines:
+     title     translated: "Storey 4 raised!", "Lamp 2 lit!", "Storey 3 is
+               gold!", "The Lookout stands!", "Beacon lit!"; on a miss the
+               near miss itself, "6% to go: 50% raises storey 4"
+     caption   on a win whose piece stands (not a star saved for a storey
+               still in blueprint), in English on purpose (it is the English
+               being practised): the piece's sentence in the deck's own tense,
+               its verb group in CAPS, and its FORM line, "PAST SIMPLE · STACKED"
+     progress  translated: "4% to gold", "Gold!", "Iron trim!", and always
+               "Lookout 7/18"
+     next      once this deck's piece is won: the next piece in the design's
+               order, "Next: Camp 4 · Past Continuous". A free learner past
+               storey 4 gets the next camp with a padlock and a Go Pro link
+               (Innes, 2026-10-02); which parts are free is the catalogue's,
+               stamped into camp-flags.js by its builder from the hub's
+               access(), never decided here
+     link      "See it built →", block-camp/flags.html#lookout
+   Anything missing or throwing (an old cached camp-flags.js, a bad save)
+   draws today's card instead: the flag, two lines, "Your flags →". Storage
+   blocked is unchanged: record() returns null and there is no card. */
 (function () {
   'use strict';
   var res = document.querySelector('.slide[data-type="results"]');
   if (!res) return;
   var src = (document.currentScript && document.currentScript.src) || '';
+  // camp-flags.js with the Lookout. The decks ask for camp-end.js?v=2 and
+  // cannot be re-tagged, so this file bumps its own request instead.
+  var FLAGS_JS = 'camp-flags.js?v=2';
 
   var T = {
     en: { planted: 'Camp {n} flag planted!', plantedSt: 'Station {n} flag planted!', gold: 'Gold flag!',
           star: 'Star added!', starSaved: 'Star saved!', flying: 'Your flag is flying',
           low: 'Score 50% to plant this camp’s flag', lowSt: 'Score 50% to plant this station’s flag',
           lowStar: 'Score 50% in Part 2 to add a star', starWait: 'Score 50% in Part 1 to plant the flag',
-          toGold: 'Score 75% for a gold flag', best: 'Best: {p}%', link: 'Your flags' },
+          toGold: 'Score 75% for a gold flag', best: 'Best: {p}%', link: 'Your flags',
+          raisedS: 'Storey {n} raised!', litL: 'Lamp {n} lit!', goldS: 'Storey {n} is gold!', goldL: 'Lamp {n} is gold!',
+          stands: 'The Lookout stands!', beacon: 'Beacon lit!', golden: 'Golden Lookout!', goldToo: 'Gold!',
+          iron: 'Iron trim!', brass: 'Brass trim!',
+          nearS: '{d}% to go: {p}% raises storey {n}', nearL: '{d}% to go: {p}% lights lamp {n}',
+          nearStar: '{d}% to go: {p}% adds a star', toGoldPc: '{d}% to gold',
+          lookout: 'Lookout {k}/{o}', stars: 'Stars {k}/{o}', seeIt: 'See it built',
+          next: 'Next: {t}', camp: 'Camp {n}', station: 'Station {n}', part2: 'Part 2', goPro: 'Go Pro' },
     de: { planted: 'Flagge für Camp {n} gesetzt!', plantedSt: 'Flagge für Station {n} gesetzt!', gold: 'Goldene Flagge!',
           star: 'Stern dazu!', starSaved: 'Stern gespeichert!', flying: 'Deine Flagge weht',
           low: 'Erreiche 50 %, um die Flagge dieses Camps zu setzen', lowSt: 'Erreiche 50 %, um die Flagge dieser Station zu setzen',
           lowStar: 'Erreiche 50 % in Teil 2 für einen Stern', starWait: 'Erreiche 50 % in Teil 1, um die Flagge zu setzen',
-          toGold: 'Mit 75 % wird die Flagge golden', best: 'Bestwert: {p} %', link: 'Deine Flaggen' },
+          toGold: 'Mit 75 % wird die Flagge golden', best: 'Bestwert: {p} %', link: 'Deine Flaggen',
+          raisedS: 'Stockwerk {n} gebaut!', litL: 'Lampe {n} leuchtet!', goldS: 'Stockwerk {n} ist golden!', goldL: 'Lampe {n} ist golden!',
+          stands: 'Der Aussichtsturm steht!', beacon: 'Leuchtfeuer entzündet!', golden: 'Goldener Aussichtsturm!', goldToo: 'Gold!',
+          iron: 'Beschläge aus Eisen!', brass: 'Beschläge aus Messing!',
+          nearS: 'Noch {d}\u00a0%: Mit {p}\u00a0% entsteht Stockwerk {n}', nearL: 'Noch {d}\u00a0%: Mit {p}\u00a0% leuchtet Lampe {n}',
+          nearStar: 'Noch {d}\u00a0%: Mit {p}\u00a0% gibt es einen Stern', toGoldPc: 'Noch {d}\u00a0% bis Gold',
+          lookout: 'Aussichtsturm {k}/{o}', stars: 'Sterne {k}/{o}', seeIt: 'Sieh, wie er wächst',
+          next: 'Als Nächstes: {t}', camp: 'Camp {n}', station: 'Station {n}', part2: 'Teil 2', goPro: 'Pro werden' },
     es: { planted: '¡Bandera del campamento {n} plantada!', plantedSt: '¡Bandera de la estación {n} plantada!', gold: '¡Bandera de oro!',
           star: '¡Estrella añadida!', starSaved: '¡Estrella guardada!', flying: 'Tu bandera ondea',
           low: 'Consigue un 50 % para plantar la bandera de este campamento', lowSt: 'Consigue un 50 % para plantar la bandera de esta estación',
           lowStar: 'Consigue un 50 % en la Parte 2 para ganar una estrella', starWait: 'Consigue un 50 % en la Parte 1 para plantar la bandera',
-          toGold: 'Con un 75 %, la bandera es de oro', best: 'Mejor: {p} %', link: 'Tus banderas' },
+          toGold: 'Con un 75 %, la bandera es de oro', best: 'Mejor: {p} %', link: 'Tus banderas',
+          raisedS: '¡Piso {n} levantado!', litL: '¡Farol {n} encendido!', goldS: '¡El piso {n} es de oro!', goldL: '¡El farol {n} es de oro!',
+          stands: '¡La atalaya está en pie!', beacon: '¡Faro encendido!', golden: '¡Atalaya de oro!', goldToo: '¡Oro!',
+          iron: '¡Remates de hierro!', brass: '¡Remates de latón!',
+          nearS: '{d}\u00a0% más: con un {p}\u00a0% se levanta el piso {n}', nearL: '{d}\u00a0% más: con un {p}\u00a0% se enciende el farol {n}',
+          nearStar: '{d}\u00a0% más: con un {p}\u00a0% ganas una estrella', toGoldPc: '{d}\u00a0% más para el oro',
+          lookout: 'Atalaya {k}/{o}', stars: 'Estrellas {k}/{o}', seeIt: 'Mira cómo crece',
+          next: 'Siguiente: {t}', camp: 'Campamento {n}', station: 'Estación {n}', part2: 'Parte 2', goPro: 'Hazte Pro' },
     fr: { planted: 'Drapeau du camp {n} planté !', plantedSt: 'Drapeau de la station {n} planté !', gold: 'Drapeau d’or !',
           star: 'Étoile ajoutée !', starSaved: 'Étoile gardée !', flying: 'Ton drapeau flotte',
           low: 'Obtiens 50 % pour planter le drapeau de ce camp', lowSt: 'Obtiens 50 % pour planter le drapeau de cette station',
           lowStar: 'Obtiens 50 % dans la partie 2 pour une étoile', starWait: 'Obtiens 50 % dans la partie 1 pour planter le drapeau',
-          toGold: 'À 75 %, le drapeau devient or', best: 'Meilleur : {p} %', link: 'Tes drapeaux' },
+          toGold: 'À 75 %, le drapeau devient or', best: 'Meilleur : {p} %', link: 'Tes drapeaux',
+          raisedS: 'Étage {n} construit\u00a0!', litL: 'Lanterne {n} allumée\u00a0!', goldS: 'L’étage {n} est en or\u00a0!', goldL: 'La lanterne {n} est en or\u00a0!',
+          stands: 'La tour de guet est debout\u00a0!', beacon: 'Le feu de la tour est allumé\u00a0!', golden: 'Tour de guet en or\u00a0!', goldToo: 'Or\u00a0!',
+          iron: 'Finitions en fer\u00a0!', brass: 'Finitions en laiton\u00a0!',
+          nearS: 'Encore {d}\u00a0%\u00a0: avec {p}\u00a0%, tu construis l’étage {n}', nearL: 'Encore {d}\u00a0%\u00a0: avec {p}\u00a0%, tu allumes la lanterne {n}',
+          nearStar: 'Encore {d}\u00a0%\u00a0: avec {p}\u00a0%, tu gagnes une étoile', toGoldPc: 'Encore {d}\u00a0% pour l’or',
+          lookout: 'Tour de guet {k}/{o}', stars: 'Étoiles {k}/{o}', seeIt: 'Regarde-la grandir',
+          next: 'Ensuite\u00a0: {t}', camp: 'Camp {n}', station: 'Station {n}', part2: 'Partie 2', goPro: 'Passe à Pro' },
     it: { planted: 'Bandiera del campo {n} piantata!', plantedSt: 'Bandiera della tappa {n} piantata!', gold: 'Bandiera d’oro!',
           star: 'Stella aggiunta!', starSaved: 'Stella salvata!', flying: 'La tua bandiera sventola',
           low: 'Fai il 50% per piantare la bandiera di questo campo', lowSt: 'Fai il 50% per piantare la bandiera di questa tappa',
           lowStar: 'Fai il 50% nella Parte 2 per una stella', starWait: 'Fai il 50% nella Parte 1 per piantare la bandiera',
-          toGold: 'Con il 75% la bandiera diventa d’oro', best: 'Migliore: {p}%', link: 'Le tue bandiere' },
+          toGold: 'Con il 75% la bandiera diventa d’oro', best: 'Migliore: {p}%', link: 'Le tue bandiere',
+          raisedS: 'Piano {n} costruito!', litL: 'Lanterna {n} accesa!', goldS: 'Il piano {n} è d’oro!', goldL: 'La lanterna {n} è d’oro!',
+          stands: 'La torre di vedetta è in piedi!', beacon: 'Faro acceso!', golden: 'Torre di vedetta d’oro!', goldToo: 'Oro!',
+          iron: 'Finiture in ferro!', brass: 'Finiture in ottone!',
+          nearS: 'Ancora {d}%: con il {p}% costruisci il piano {n}', nearL: 'Ancora {d}%: con il {p}% accendi la lanterna {n}',
+          nearStar: 'Ancora {d}%: con il {p}% guadagni una stella', toGoldPc: 'Ancora {d}% per l’oro',
+          lookout: 'Torre {k}/{o}', stars: 'Stelle {k}/{o}', seeIt: 'Guardala crescere',
+          next: 'Prossimo: {t}', camp: 'Campo {n}', station: 'Tappa {n}', part2: 'Parte 2', goPro: 'Passa a Pro' },
     pt: { planted: 'Bandeira do acampamento {n} fincada!', plantedSt: 'Bandeira da etapa {n} fincada!', gold: 'Bandeira de ouro!',
           star: 'Estrela adicionada!', starSaved: 'Estrela guardada!', flying: 'A sua bandeira está hasteada',
           low: 'Faça 50% para fincar a bandeira deste acampamento', lowSt: 'Faça 50% para fincar a bandeira desta etapa',
           lowStar: 'Faça 50% na Parte 2 para ganhar uma estrela', starWait: 'Faça 50% na Parte 1 para fincar a bandeira',
-          toGold: 'Com 75%, a bandeira fica de ouro', best: 'Melhor: {p}%', link: 'As suas bandeiras' },
+          toGold: 'Com 75%, a bandeira fica de ouro', best: 'Melhor: {p}%', link: 'As suas bandeiras',
+          raisedS: 'Andar {n} erguido!', litL: 'Lanterna {n} acesa!', goldS: 'O andar {n} é de ouro!', goldL: 'A lanterna {n} é de ouro!',
+          stands: 'A torre de vigia está de pé!', beacon: 'O farol está aceso!', golden: 'Torre de vigia de ouro!', goldToo: 'Ouro!',
+          iron: 'Acabamentos de ferro!', brass: 'Acabamentos de latão!',
+          nearS: 'Faltam {d}%: com {p}%, ergue o andar {n}', nearL: 'Faltam {d}%: com {p}%, acende a lanterna {n}',
+          nearStar: 'Faltam {d}%: com {p}%, ganha uma estrela', toGoldPc: 'Faltam {d}% para o ouro',
+          lookout: 'Torre {k}/{o}', stars: 'Estrelas {k}/{o}', seeIt: 'Veja-a crescer',
+          next: 'A seguir: {t}', camp: 'Acampamento {n}', station: 'Etapa {n}', part2: 'Parte 2', goPro: 'Torne-se Pro' },
     ru: { planted: 'Флаг лагеря {n} установлен!', plantedSt: 'Флаг станции {n} установлен!', gold: 'Золотой флаг!',
           star: 'Звезда добавлена!', starSaved: 'Звезда сохранена!', flying: 'Твой флаг развевается',
           low: 'Набери 50%, чтобы установить флаг этого лагеря', lowSt: 'Набери 50%, чтобы установить флаг этой станции',
           lowStar: 'Набери 50% во второй части, чтобы получить звезду', starWait: 'Набери 50% в первой части, чтобы установить флаг',
-          toGold: 'Набери 75% — флаг станет золотым', best: 'Лучший результат: {p}%', link: 'Твои флаги' },
+          toGold: 'Набери 75% — флаг станет золотым', best: 'Лучший результат: {p}%', link: 'Твои флаги',
+          raisedS: 'Этаж {n} построен!', litL: 'Фонарь {n} зажжён!', goldS: 'Этаж {n} стал золотым!', goldL: 'Фонарь {n} стал золотым!',
+          stands: 'Смотровая башня стоит!', beacon: 'Сигнальный огонь зажжён!', golden: 'Золотая башня!', goldToo: 'Золото!',
+          iron: 'Железная отделка!', brass: 'Латунная отделка!',
+          nearS: 'Ещё {d}%: {p}% — и этаж {n} построен', nearL: 'Ещё {d}%: {p}% — и фонарь {n} зажжён',
+          nearStar: 'Ещё {d}%: {p}% — и будет звезда', toGoldPc: 'Ещё {d}% до золота',
+          lookout: 'Башня {k}/{o}', stars: 'Звёзды {k}/{o}', seeIt: 'Посмотреть башню',
+          next: 'Дальше: {t}', camp: 'Лагерь {n}', station: 'Станция {n}', part2: 'Часть 2', goPro: 'Перейти на Pro' },
     ar: { planted: 'رُفع علم المخيم {n}!', plantedSt: 'رُفع علم المحطة {n}!', gold: 'علم ذهبي!',
           star: 'أُضيفت نجمة!', starSaved: 'حُفظت النجمة!', flying: 'علمك يرفرف',
           low: 'احصل على 50% لترفع علم هذا المخيم', lowSt: 'احصل على 50% لترفع علم هذه المحطة',
           lowStar: 'احصل على 50% في الجزء 2 لتنال نجمة', starWait: 'احصل على 50% في الجزء 1 لترفع العلم',
-          toGold: 'احصل على 75% لعلم ذهبي', best: 'الأفضل: {p}%', link: 'أعلامك' },
+          toGold: 'احصل على 75% لعلم ذهبي', best: 'الأفضل: {p}%', link: 'أعلامك',
+          raisedS: 'ارتفع الطابق {n}!', litL: 'أُضيء الفانوس {n}!', goldS: 'صار الطابق {n} ذهبيًا!', goldL: 'صار الفانوس {n} ذهبيًا!',
+          stands: 'اكتمل برج المراقبة!', beacon: 'اشتعلت المنارة!', golden: 'برج مراقبة ذهبي!', goldToo: 'ذهبي!',
+          iron: 'زخارف من الحديد!', brass: 'زخارف من النحاس الأصفر!',
+          nearS: 'بقي {d}%: {p}% ترفع الطابق {n}', nearL: 'بقي {d}%: {p}% تضيء الفانوس {n}',
+          nearStar: 'بقي {d}%: {p}% تضيف نجمة', toGoldPc: 'بقي {d}% على الذهب',
+          lookout: 'البرج {k}/{o}', stars: 'النجوم {k}/{o}', seeIt: 'شاهده يُبنى',
+          next: 'التالي: {t}', camp: 'المخيم {n}', station: 'المحطة {n}', part2: 'الجزء 2', goPro: 'اشترك في Pro' },
     zh: { planted: '营地 {n} 的旗帜已插上！', plantedSt: '第 {n} 站的旗帜已插上！', gold: '金旗！',
           star: '已添加星星！', starSaved: '星星已保存！', flying: '你的旗帜正在飘扬',
           low: '得分达到 50% 即可插上本营地的旗帜', lowSt: '得分达到 50% 即可插上本站的旗帜',
           lowStar: '第 2 部分得分达到 50% 可加一颗星', starWait: '第 1 部分得分达到 50% 即可插旗',
-          toGold: '达到 75% 可得金旗', best: '最佳：{p}%', link: '你的旗帜' },
+          toGold: '达到 75% 可得金旗', best: '最佳：{p}%', link: '你的旗帜',
+          raisedS: '第 {n} 层建成！', litL: '第 {n} 盏灯点亮！', goldS: '第 {n} 层变成金色！', goldL: '第 {n} 盏灯变成金色！',
+          stands: '瞭望塔建成了！', beacon: '烽火点燃！', golden: '金色瞭望塔！', goldToo: '金色！',
+          iron: '铁质装饰！', brass: '黄铜装饰！',
+          nearS: '还差 {d}%：达到 {p}% 建成第 {n} 层', nearL: '还差 {d}%：达到 {p}% 点亮第 {n} 盏灯',
+          nearStar: '还差 {d}%：达到 {p}% 加一颗星', toGoldPc: '距金色还差 {d}%',
+          lookout: '瞭望塔 {k}/{o}', stars: '星星 {k}/{o}', seeIt: '看它建起来',
+          next: '下一个：{t}', camp: '营地 {n}', station: '第 {n} 站', part2: '第 2 部分', goPro: '升级 Pro' },
     ja: { planted: 'キャンプ{n}に旗を立てた！', plantedSt: 'ステーション{n}に旗を立てた！', gold: '金の旗！',
           star: '星を追加！', starSaved: '星を保存！', flying: '旗がはためいている',
           low: '50%取ると、このキャンプに旗を立てられる', lowSt: '50%取ると、このステーションに旗を立てられる',
           lowStar: 'パート2で50%取ると星がつく', starWait: 'パート1で50%取ると旗を立てられる',
-          toGold: '75%で金の旗に', best: 'ベスト：{p}%', link: 'あなたの旗' }
+          toGold: '75%で金の旗に', best: 'ベスト：{p}%', link: 'あなたの旗',
+          raisedS: '{n}階ができた！', litL: 'ランタン{n}がともった！', goldS: '{n}階が金色に！', goldL: 'ランタン{n}が金色に！',
+          stands: '見張り塔が完成！', beacon: 'かがり火がともった！', golden: '金の見張り塔！', goldToo: '金！',
+          iron: '鉄の飾り！', brass: '真ちゅうの飾り！',
+          nearS: 'あと{d}%：{p}%で{n}階ができる', nearL: 'あと{d}%：{p}%でランタン{n}がともる',
+          nearStar: 'あと{d}%：{p}%で星がつく', toGoldPc: '金まであと{d}%',
+          lookout: '見張り塔 {k}/{o}', stars: '星 {k}/{o}', seeIt: '塔を見る',
+          next: '次：{t}', camp: 'キャンプ{n}', station: 'ステーション{n}', part2: 'パート2', goPro: 'Proに登録' }
   };
 
   var CSS =
@@ -190,14 +289,92 @@
     '@keyframes cf-drop{from{transform:translateY(-16px);opacity:0}to{transform:none;opacity:1}}' +
     '@keyframes cf-raise{from{transform:translateY(5px)}to{transform:none}}' +
     '@media (prefers-reduced-motion:reduce){.cf-card.cf-plant .cf-art svg,.cf-card.cf-plant .cf-cloth{animation:none}}' +
-    '@media print{.cf-card{display:none}}';
+    '@media print{.cf-card{display:none}}' +
+    /* the Lookout card: [flag + tower] [lines]. The flag and the tower stand
+       on one ground line, as the flag stands beside its storey in the meter. */
+    '.cf-card.cf-lk{gap:14px;padding:10px 18px 10px 12px}' +
+    '.cf-lk .cf-pic{flex:none;display:flex;align-items:flex-end;gap:8px}' +
+    '.cf-lk .cf-meter{flex:none;line-height:0}' +
+    '.cf-lk .cf-meter svg{display:block}' +
+    '.cf-lk .cf-txt{gap:3px}' +
+    '.cf-lk .cf-t{text-wrap:balance}' +
+    '.cf-lk .cf-cap{font-family:var(--font-ui);font-size:17px;line-height:1.3;color:var(--text);text-wrap:pretty}' +
+    '.cf-lk .cf-cap b{font-weight:inherit;color:var(--accent);white-space:nowrap}' +
+    '.cf-lk .cf-fv{white-space:nowrap}' +
+    // on an Arabic page the English lines keep their own direction but line
+    // up on the same edge as the Arabic ones
+    'html[dir="rtl"] .cf-lk .cf-cap,html[dir="rtl"] .cf-lk .cf-form{text-align:right}' +
+    '.cf-lk .cf-form{font-family:var(--font-ui);font-size:13px;line-height:1.3;letter-spacing:.06em;color:var(--text-dim)}' +
+    // the lines' order on a wide card: progress, Next, "See it built" (the
+    // markup puts the link before Next for the phone layout below)
+    '.cf-lk .cf-next{order:1}.cf-lk .cf-go{order:2}.cf-lk .cf-sw,.cf-lk .cf-sl{display:contents}' +
+    // numbers in the deck's mono face: in the UI pixel font 5 is drawn like S
+    // ("S0% raises storey 3", "Camp S")
+    '.cf-lk .cf-n{font-family:var(--font-mono),ui-monospace,monospace;font-size:.84em;letter-spacing:0}' +
+    '.cf-lk .cf-next{display:inline-flex;flex-wrap:wrap;align-items:center;gap:2px 8px;font-family:var(--font-ui);font-size:16px;' +
+      'line-height:1.3;color:var(--text);text-decoration:none}' +
+    // "Next: Camp 5 · Going To · Part 2 →" as unbreakable pieces that wrap
+    // whole, each led by its "·"; the row is pulled back by one separator and
+    // clipped, so a piece that starts a line loses its "·" instead of the
+    // line before ending on one
+    '.cf-lk .cf-nw{overflow:hidden;min-width:0;max-width:100%}' +
+    '.cf-lk .cf-nt{display:flex;flex-wrap:wrap;margin-inline-start:-.9em}' +
+    '.cf-lk .cf-ns{white-space:nowrap}.cf-lk .cf-ns.cf-ww{white-space:normal}' +
+    '.cf-lk .cf-ns::before{content:"·";display:inline-block;width:.9em;text-align:center}' +
+    '.cf-lk .cf-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}' +
+    '.cf-lk .cf-next:hover .cf-nt,.cf-lk .cf-next:focus-visible .cf-nt{text-decoration:underline}' +
+    // the padlock is the hub's and the maps' Pro chip: the same glyph, a pill
+    '.cf-lk .cf-pro{display:inline-flex;align-items:center;gap:5px;padding:1px 9px 1px 7px;border-radius:999px;white-space:nowrap;' +
+      'font-size:.85em;color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 60%,transparent)}' +
+    '.cf-lk .cf-pro svg{flex:none;width:9px;height:11px;fill:currentColor}' +
+    '.cf-lk .cf-next:hover .cf-pro,.cf-lk .cf-next:focus-visible .cf-pro{border-color:var(--accent)}' +
+    /* On a phone the Results slide has no room to spare: below the card
+       sits the deck's own closing line ("Now produce it →"), and a card much
+       taller than today's pushed it under the nav bar (2026-10-02 review:
+       the budget is today's card + 17px at 360x640, + 24px on an iPhone 13).
+       So the phone card is compact: the flag (32px) stands over a 28-row
+       window of the tower, the progress line ends in the Lookout link
+       ("17% to gold · Lookout 4/18 →"), and the Next line shows only when
+       there is no caption (flags.html carries it as well). */
+    // a little closer to the deck's closing line than its own 34px gap
+    'html.bc-phone .cf-card.cf-lk{gap:10px;margin-top:8px;margin-bottom:-12px;padding:6px 10px 6px 6px}' +
+    'html.bc-phone .cf-lk .cf-pic{flex-direction:column;align-items:center;justify-content:center;gap:4px}' +
+    'html.bc-phone .cf-card.cf-lk .cf-art,html.bc-phone .cf-card.cf-lk .cf-art svg{width:32px;height:32px}' +
+    'html.bc-phone .cf-lk .cf-txt{display:block}' +
+    'html.bc-phone .cf-lk .cf-t{display:block;font-size:17px;line-height:1.15}' +
+    'html.bc-phone .cf-lk .cf-cap{display:block;margin-top:2px;font-size:14px;line-height:1.25}' +
+    'html.bc-phone .cf-lk .cf-form{display:block;margin-bottom:1px;font-size:11px;letter-spacing:.04em}' +
+    // the progress and the link wrap whole, each led by a "·" that is
+    // clipped when it starts a line (the Next line's trick, below)
+    'html.bc-phone .cf-lk .cf-sw{display:block;overflow:hidden}' +
+    'html.bc-phone .cf-lk .cf-sl{display:flex;flex-wrap:wrap;align-items:baseline;margin-inline-start:-.9em;font-size:13.5px}' +
+    'html.bc-phone .cf-card.cf-lk .cf-s,html.bc-phone .cf-card.cf-lk .cf-go{display:block;font-size:inherit;line-height:1.3;white-space:normal}' +
+    'html.bc-phone .cf-lk .cf-s:empty{display:none}' +
+    'html.bc-phone .cf-lk .cf-s::before,html.bc-phone .cf-lk .cf-go::before{content:"·";display:inline-block;width:.9em;text-align:center;color:var(--text-dim)}' +
+    'html.bc-phone .cf-lk .cf-next{display:flex;margin-top:2px;font-size:14px}' +
+    'html.bc-phone .cf-lk.cf-hascap .cf-next{display:none}' +
+    // below 360px the text column is too narrow to hold ARE GOING TO REACH
+    // on one line: let it wrap rather than overflow
+    '@media (max-width:359px){.cf-lk .cf-cap b,.cf-lk .cf-fv{white-space:normal}}';
 
-  var card = null, last = null, counted = false;
+  var card = null, last = null, counted = false, mode = null, lk = null, won = null;
 
   function lang() { return (document.documentElement.getAttribute('lang') || 'en').toLowerCase().slice(0, 2); }
+  function phone() { return document.documentElement.classList.contains('bc-phone'); }
   function fmt(s, o) { return s.replace(/\{(\w)\}/g, function (_, k) { return o[k]; }); }
   function pc(x) { return Math.round((x || 0) * 100); }
+  // whole percent, rounded down, so "Best" and "to go" always add up to the
+  // threshold: 48.6% is 48% with 2% to go, never 49% with 1% to go
+  function pcf(x) { return Math.floor((x || 0) * 100 + 1e-6); }
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; });
+  }
+  // a no-break space before the arrow: a narrow card never strands it alone
+  // on the last line
+  function arrow() { return lang() === 'ar' ? '\u00a0←' : '\u00a0→'; }
+  function nb(s) { return String(s).replace(/ /g, '\u00a0'); }
 
+  /* ── today's card: the flag and two lines ── */
   function words(r) {
     var L = T[lang()] || T.en, st = r.state, e = r.entry, camp = e.line === 'climb';
     var planted = fmt(camp ? L.planted : L.plantedSt, { n: e.n });
@@ -214,21 +391,202 @@
       else title = camp ? L.low : L.lowSt;
       sub.push(fmt(L.best, { p: pc(st.best) }));
     }
-    return { title: title, sub: sub.join(' · '), win: win, link: L.link + (lang() === 'ar' ? ' ←' : ' →') };
+    return { title: title, sub: sub.join(' · '), win: win, link: L.link + arrow() };
   }
-
-  function paint(fresh) {
-    if (!card || !last) return;
+  function buildFlag() {
+    var F = window.CampFlags;
+    card.className = 'cf-card';
+    card.innerHTML = '<span class="cf-art"></span><span class="cf-txt"><b class="cf-t"></b><span class="cf-s"></span><a class="cf-go"></a></span>';
+    card.querySelector('.cf-go').href = F.url('block-camp/flags.html');
+    card.querySelector('.cf-art').innerHTML = F.sprite(last.entry, last.state, 64);
+    var w = words(last);
+    card.classList.toggle('cf-win', w.win);
+    if (w.win) { void card.offsetWidth; card.classList.add('cf-plant'); }
+  }
+  function textFlag() {
     var w = words(last);
     card.querySelector('.cf-t').textContent = w.title;
     card.querySelector('.cf-s').textContent = w.sub;
     card.querySelector('.cf-go').textContent = w.link;
-    if (fresh) {
-      card.querySelector('.cf-art').innerHTML = window.CampFlags.sprite(last.entry, last.state, 64);
-      card.classList.toggle('cf-win', w.win);
-      card.classList.remove('cf-plant');
-      if (w.win) { void card.offsetWidth; card.classList.add('cf-plant'); }
+  }
+
+  /* ── the Lookout card ── */
+  function lkWords(r, L, P) {
+    var F = window.CampFlags, S = T[lang()] || T.en, st = r.state, n = P.n, storey = P.kind === 'storey';
+    var passP = Math.round(F.PASS * 100), goldP = Math.round(F.GOLD * 100), tiers = F.LOOKOUT.tiers;
+    var title, prog = [], win = false, fresh = false, focus = P.key, mine = false, built = !!st.earned;
+    if (r.part === 2) {
+      // a Part 2 builds no piece: it puts a star on its storey's flag
+      mine = st.starSaved;
+      if (st.earned) focus = 'flag-' + n;
+      if (r.newlyStar || st.starSaved) {
+        title = r.newlyStar ? (st.earned ? S.star : S.starSaved) : (st.earned ? S.flying : S.starSaved);
+        win = !!r.newlyStar;
+        prog.push(st.earned ? fmt(S.stars, { k: L.stars, o: L.starsOf }) : S.starWait);
+      } else {
+        var b2 = pcf(st.best2);
+        title = fmt(S.nearStar, { d: Math.max(1, passP - b2), p: passP });
+        prog.push(fmt(S.best, { p: b2 }));
+      }
+    } else {
+      var b = pcf(st.best);
+      mine = st.earned;
+      if (r.newlyEarned) {
+        win = fresh = true;
+        var big = L.beacon || (storey && L.built === L.builtOf);
+        title = L.beacon ? S.beacon : big ? S.stands : fmt(storey ? S.raisedS : S.litL, { n: n });
+        // under a milestone title the bare "Gold!" would not say what went
+        // gold: name the piece ("Lamp 8 is gold!")
+        prog.push(st.gold ? (L.golden ? S.golden : big ? fmt(storey ? S.goldS : S.goldL, { n: n }) : S.goldToo) :
+          fmt(S.toGoldPc, { d: Math.max(1, goldP - b) }));
+      } else if (r.newlyGold) {
+        win = fresh = true;
+        title = L.golden ? S.golden : fmt(storey ? S.goldS : S.goldL, { n: n });
+      } else if (st.earned) {
+        title = S.flying;
+        if (!st.gold) prog.push(fmt(S.toGoldPc, { d: Math.max(1, goldP - b) }));
+      } else {
+        title = fmt(storey ? S.nearS : S.nearL, { d: Math.max(1, passP - b), p: passP, n: n });
+        prog.push(fmt(S.best, { p: b }));
+      }
+      // the trim turns iron at 3 golds and brass at 9 (18 is the Golden Lookout)
+      if (r.newlyGold && !L.golden) {
+        if (L.golds === tiers[0]) prog.push(S.iron);
+        else if (L.golds === tiers[1]) prog.push(S.brass);
+      }
     }
+    var look = fmt(S.lookout, { k: L.k, o: L.of });
+
+    // Next: once this deck's own piece is won, the next one in the design's
+    // order - never this deck again (its line above already says what it
+    // needs). A Part 2 whose Part 1 is not planted yet points at that Part 1:
+    // the line above has just said "Score 50% in Part 1 to plant the flag".
+    var nx = null, next = null;
+    if (mine) {
+      if (r.part === 2 && !st.earned && typeof L.target === 'function') nx = L.target(P.key, 1);
+      else if (L.next) nx = L.next();
+    }
+    if (nx && nx.id !== F.pageId()) {
+      // the pieces that wrap whole (see .cf-nt): "Next: Camp 5", "Going To",
+      // "Part 2". The tense name and an adventure's title stay English in
+      // every language, as on the maps; FSI..PDI isolate them so an Arabic
+      // line does not reorder round them
+      var pre = S.next.split('{t}'), segs;
+      if (nx.entry) {
+        segs = [{ t: pre[0] + nb(fmt(nx.entry.line === 'climb' ? S.camp : S.station, { n: nx.entry.n })) },
+                { t: '\u2068' + nb(nx.entry.label) + '\u2069' }];
+        if (nx.part === 2) segs.push({ t: nb(S.part2) });
+      } else segs = [{ t: pre[0] + '\u2068' + nx.title + '\u2069', wrap: true }];
+      if (pre[1]) segs[segs.length - 1].t += pre[1];
+      next = { segs: segs, href: nx.href, padlock: !!nx.padlock, pro: S.goPro,
+               viaPro: nx.viaPro !== undefined ? !!nx.viaPro : !!nx.padlock };
+    }
+    // the caption says the piece is there ("You STACKED the logs"), so it
+    // comes only with a win whose piece stands: not with a star saved for a
+    // storey that is still a blueprint
+    return { title: title, prog: prog.concat([look]).join(' · '), progShort: prog.join(' · '), look: look,
+             win: win, cap: win && built, fresh: fresh, focus: focus, next: next, link: S.seeIt + arrow() };
+  }
+
+  function meterSvg(fresh) {
+    var o = { focus: lk.w.focus, fresh: !!fresh, bunting: false, decorative: true, cls: 'cf-lkm' };
+    if (phone()) o.rows = 28;      // under a 32px flag: the phone card's whole height
+    lk.phone = phone();
+    return window.CampFlags.meter(lk.L, o);
+  }
+  // text with its numbers in the mono face (.cf-n)
+  function numHtml(s) { return esc(s).replace(/\d+/g, '<span class="cf-n">$&</span>'); }
+  var LOCK = '<svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>';
+
+  function buildLookout() {
+    var F = window.CampFlags;
+    if (!F || typeof F.lookout !== 'function' || typeof F.meter !== 'function' || !F.LOOKOUT) return false;
+    var L = F.lookout(), P = L.piece(last.entry);
+    if (!P || !P.caption) return false;
+    lk = { L: L, P: P };
+    lk.w = lkWords(last, L, P);
+    var html = '<span class="cf-pic"><span class="cf-art">' + F.sprite(last.entry, last.state, 64) + '</span>' +
+      '<span class="cf-meter">' + meterSvg(lk.w.fresh) + '</span></span>' +
+      '<span class="cf-txt"><b class="cf-t"></b>';
+    if (lk.w.cap) {
+      // English on purpose: the sentence is the grammar being practised, its
+      // verb group in CAPS (the builder checks there is exactly one)
+      var cap = esc(P.caption), v = esc(P.verb);
+      // dir="ltr": on an Arabic page the English keeps its own order (the
+      // full stop stays at the end of the sentence, not at its left)
+      html += '<span class="cf-cap" lang="en" dir="ltr">' + (v && cap.indexOf(v) >= 0 ? cap.replace(v, '<b>' + v + '</b>') : cap) + '</span>' +
+              '<span class="cf-form" lang="en" dir="ltr"></span>';
+    }
+    // the link before Next in the markup: on a phone it ends the progress
+    // line; on a wide card .cf-go's order puts it last
+    html += '<span class="cf-sw"><span class="cf-sl"><span class="cf-s"></span>' +
+      '<a class="cf-go" href="' + esc(F.url('block-camp/flags.html') + '#lookout') + '"></a></span></span>';
+    if (lk.w.next) {
+      html += '<a class="cf-next" href="' + esc(lk.w.next.href) + '"><span class="cf-nw"><span class="cf-nt"></span></span>' +
+        (lk.w.next.padlock ? '<span class="cf-pro">' + LOCK + '<span class="cf-prol"></span></span>' : '') +
+        '</a>';
+    }
+    html += '</span>';
+    if (!document.getElementById('lk-meter-css') && F.METER_CSS) {
+      var s = document.createElement('style'); s.id = 'lk-meter-css'; s.textContent = F.METER_CSS;
+      document.head.appendChild(s);
+    }
+    card.className = 'cf-card cf-lk';
+    card.innerHTML = html;
+    card.classList.toggle('cf-win', lk.w.win);
+    card.classList.toggle('cf-hascap', !!lk.w.cap);
+    if (lk.w.win) { void card.offsetWidth; card.classList.add('cf-plant'); }
+    return true;
+  }
+  function textLookout() {
+    var w = lk.w = lkWords(last, lk.L, lk.P), ph = phone();
+    if (lk.phone !== ph) card.querySelector('.cf-meter').innerHTML = meterSvg(false);
+    card.querySelector('.cf-t').innerHTML = numHtml(w.title);
+    // a phone's last line: "17% to gold · Lookout 4/18 →", the count the
+    // link; a wide card keeps "Lookout 4/18" in the progress line and
+    // "See it built →" on a line of its own
+    card.querySelector('.cf-s').innerHTML = numHtml(ph ? w.progShort : w.prog);
+    var go = card.querySelector('.cf-go');
+    go.innerHTML = numHtml(ph ? w.look + arrow() : w.link);
+    if (ph) go.setAttribute('aria-label', w.look + ': ' + w.link.replace(/\u00a0?[←→]$/, ''));
+    else go.removeAttribute('aria-label');
+    var f = card.querySelector('.cf-form');
+    if (f) {
+      // "PAST CONTINUOUS · WAS BURNING": the verb group in its own unbreakable
+      // span, so a narrow card wraps at the dot, never inside WAS BURNING
+      var fm = ph ? lk.P.formShort : lk.P.form, cut = fm.lastIndexOf(' · '), fv = document.createElement('span');
+      f.textContent = cut > 0 ? fm.slice(0, cut + 3) : '';
+      fv.className = 'cf-fv'; fv.textContent = cut > 0 ? fm.slice(cut + 3) : fm;
+      f.appendChild(fv);
+    }
+    var nt = card.querySelector('.cf-nt');
+    if (nt && w.next) {
+      var nx = w.next, segs = nx.segs, last2 = segs.length - 1;
+      nt.innerHTML = segs.map(function (g, i) {
+        return '<span class="cf-ns' + (g.wrap ? ' cf-ww' : '') + '">' + numHtml(g.t + (i === last2 && !nx.padlock ? arrow() : '')) + '</span>';
+      }).join('');
+      // the padlock pill: "Go Pro" where the link goes to Go Pro; a signed-in
+      // learner goes to the deck itself (the Worker decides), so it only
+      // says the lesson is Pro
+      var pl = card.querySelector('.cf-prol');
+      if (pl) pl.textContent = nx.viaPro ? nx.pro : 'Pro';
+      // read as two phrases, not "Going To Go Pro"
+      var said = segs.map(function (g) { return g.t; }).join(' · ');
+      card.querySelector('.cf-next').setAttribute('aria-label', said + (nx.padlock ? '. ' + (nx.viaPro ? nx.pro : 'Pro') : ''));
+    }
+  }
+
+  function paint(fresh) {
+    if (!card || !last) return;
+    if (fresh || !mode) {
+      mode = null;
+      try { if (buildLookout()) mode = 'lk'; } catch (_) {}
+      if (!mode) { buildFlag(); mode = 'flag'; }
+    }
+    if (mode === 'lk') {
+      try { textLookout(); return; } catch (_) { buildFlag(); mode = 'flag'; }
+    }
+    textFlag();
   }
 
   function onResults() {
@@ -238,6 +596,15 @@
     try { r = F.record({ countPlay: !counted }); } catch (_) {}
     counted = true;
     if (!r) { if (card && card.parentNode) card.parentNode.removeChild(card); card = null; return; }
+    // Paging back to fix an answer and returning records again, and the
+    // second record finds nothing new. Keep this visit's win on the card:
+    // flags are latched, so what this page raised stays raised.
+    if (won && won.entry === r.entry) {
+      r.newlyEarned = r.newlyEarned || won.newlyEarned;
+      r.newlyGold = r.newlyGold || won.newlyGold;
+      r.newlyStar = r.newlyStar || won.newlyStar;
+    }
+    if (r.newlyEarned || r.newlyGold || r.newlyStar) won = r;
     last = r;
     if (!card) {
       if (!document.getElementById('cf-card-css')) {
@@ -247,8 +614,6 @@
       card = document.createElement('div');
       card.className = 'cf-card';
       card.setAttribute('role', 'status');
-      card.innerHTML = '<span class="cf-art"></span><span class="cf-txt"><b class="cf-t"></b><span class="cf-s"></span><a class="cf-go"></a></span>';
-      card.querySelector('.cf-go').href = F.url('block-camp/flags.html');
       var msg = document.getElementById('scoreMsg');
       if (msg && res.contains(msg)) msg.parentNode.insertBefore(card, msg.nextSibling);
       else (res.querySelector('.slide-body') || res).appendChild(card);
@@ -270,16 +635,21 @@
         if (now && (!was || came)) onResults();
         on = now;
       }).observe(res, { attributes: true, attributeFilter: ['class'], attributeOldValue: true });
-      new MutationObserver(function () { paint(false); })
-        .observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+      // a new language re-words the card; turning a phone between portrait
+      // and landscape can switch html.bc-phone, which picks the tower window
+      var seen = lang() + phone();
+      new MutationObserver(function () {
+        var now = lang() + phone();
+        if (now !== seen) { seen = now; paint(false); }
+      }).observe(document.documentElement, { attributes: true, attributeFilter: ['lang', 'class'] });
     }
   }
 
   if (window.CampFlags) { start(); return; }
   var s = document.createElement('script');
   // beside this file, wherever the deck is: the decks load block-camp/camp-end.js
-  s.src = 'block-camp/camp-flags.js?v=1';
-  try { if (src) s.src = new URL('camp-flags.js?v=1', src).href; } catch (_) {}
+  s.src = 'block-camp/' + FLAGS_JS;
+  try { if (src) s.src = new URL(FLAGS_JS, src).href; } catch (_) {}
   s.onload = start;
   document.head.appendChild(s);
 })();
