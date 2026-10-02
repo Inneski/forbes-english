@@ -147,7 +147,7 @@ STYLE = """:root{--blood:#d21f3c;--deep:#16040a;--bone:#f5ead7;--ice:#a7ddf2;--g
 *{box-sizing:border-box} html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#050306;color:var(--bone);font-family:"Courier New",Courier,monospace}
 button{font:inherit}.game{position:fixed;inset:0;background:#050306}.frame{position:absolute;inset:0;overflow:hidden;container-type:inline-size}
 .scene-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;filter:saturate(1.04) contrast(1.03)}
-.hud{position:absolute;z-index:5;top:1.4cqw;left:1.5cqw;right:1.5cqw;display:flex;align-items:center;justify-content:space-between;gap:1cqw;pointer-events:none}
+.hud{position:absolute;z-index:7;top:1.4cqw;left:1.5cqw;right:1.5cqw;display:flex;align-items:center;justify-content:space-between;gap:1cqw;pointer-events:none}
 .hud-group{display:flex;gap:.55cqw;align-items:center;flex-wrap:wrap}.badge{background:var(--veil);border:1px solid var(--hair);border-radius:999px;box-shadow:0 .3cqw 1.1cqw var(--cast);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:.46cqw .86cqw;font-size:1.05cqw;letter-spacing:.04em;white-space:nowrap}.badge b{color:var(--gold)}
 .langs{display:flex;gap:.35cqw;pointer-events:auto}.lang-btn,.utility{border:1px solid var(--hair);border-radius:999px;color:var(--bone);background:var(--veil);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:.46cqw .82cqw;cursor:pointer;font-size:1cqw}.lang-btn.active{color:#fff;background:var(--blood);border-color:#ff7186}.utility:hover,.lang-btn:hover{border-color:var(--hair-lit)}
 .zone{position:absolute;z-index:4;top:8%;bottom:3.5%;left:2.2%;right:2.2%;display:flex;pointer-events:none}
@@ -188,7 +188,19 @@ button{font:inherit}.game{position:fixed;inset:0;background:#050306}.frame{posit
 .cover-title{font-size:calc(3.2*var(--u));line-height:1}.cover-title .pre{display:block;font-size:1em;letter-spacing:.04em;color:var(--bone);margin-bottom:.25em}.cover-title .big{display:block;font-size:2.5em;line-height:.92;color:var(--gold)}.final-score{font-size:calc(2*var(--u));color:var(--gold);font-weight:700}.small{font-size:calc(.86*var(--u));color:var(--muted)}
 .corner-help{position:absolute;z-index:5;right:1.5cqw;bottom:1.2cqw;color:var(--muted);font-size:.78cqw;background:none;padding:.35cqw .5cqw;text-shadow:0 .1em .5em var(--ink),0 0 .3em var(--ink);pointer-events:none}
 @media(max-aspect-ratio:4/3){.content{width:58%}.center .content{width:82%}.hot-label{font-size:1.6cqw}.lang-menu{min-width:30cqw}.lang-item{font-size:1.3cqw}.lang-item b{font-size:1.2cqw}.title{font-size:calc(4.4*var(--u))}.story,.prompt{font-size:calc(1.75*var(--u))}.option,.feedback{font-size:calc(1.4*var(--u))}.translation{font-size:calc(1.15*var(--u))}.badge{font-size:1.35cqw}.lang-btn,.utility{font-size:1.28cqw}}
-@media(max-width:calc(700*var(--u))){.hud{top:8px;left:8px;right:8px}.badge{font-size:calc(10*var(--u));padding:calc(5*var(--u)) calc(9*var(--u))}.lang-btn,.utility{font-size:calc(10*var(--u));padding:calc(5*var(--u)) calc(9*var(--u))}.zone{top:calc(58*var(--u));bottom:calc(10*var(--u));left:3%;right:3%;align-items:flex-end!important;justify-content:center!important}.content,.center .content,.tr-on .content{--u:calc(calc(1*var(--u)) * var(--fit,1));width:100%!important;margin:0!important;max-height:100%;text-align:left;padding:calc(14*var(--u));gap:calc(9*var(--u));border-radius:calc(12*var(--u))}.hot{min-width:44px;min-height:44px}.hot i,.hot::before{inset:-4px}.hot i{box-shadow:0 0 0 2px rgba(240,200,120,.9),0 0 14px 3px rgba(240,200,120,.55)}.hot::before{border-width:2px}.hot-label{font-size:calc(12*var(--u))}.lang-menu{min-width:calc(220*var(--u));padding:calc(6*var(--u));gap:calc(3*var(--u));grid-template-columns:1fr}.lang-item{font-size:calc(12*var(--u));padding:calc(5*var(--u)) calc(7*var(--u));grid-template-columns:calc(30*var(--u)) 1fr}.lang-item b,.lang-item span{font-size:12px}.lang-btn{gap:4px}.hide-btn{font-size:calc(11*var(--u))}.title.cover-title{font-size:calc(19*var(--u))}.clue,.route,.rules-intro{font-size:calc(13*var(--u));padding:calc(8*var(--u)) calc(10*var(--u))}.rule-card,.rule-note{font-size:calc(13*var(--u));padding:calc(2*var(--u)) calc(9*var(--u))}.rule-card b,.route b{font-size:calc(13*var(--u))}.final-score{font-size:calc(18*var(--u))}.small{font-size:calc(11*var(--u))}.continue,.start,.restart{font-size:calc(13*var(--u));padding:calc(10*var(--u)) calc(18*var(--u))}.option{grid-template-columns:calc(22*var(--u)) 1fr}.option .key{width:calc(20*var(--u));height:calc(20*var(--u))}.option .translation,.route .translation,.rule-card .translation{font-size:calc(11*var(--u))}.rules-intro{grid-template-columns:1fr}.rule-card:last-child{grid-column:auto}.center .rule-card,.center .rule-note,.right .rule-card,.right .rule-note{border-left:.18cqw solid var(--hair-lit);border-right:0;padding:calc(2*var(--u)) calc(9*var(--u))}.title{font-size:calc(36*var(--u))}.kicker{font-size:calc(12*var(--u))}.story,.prompt{font-size:calc(15*var(--u))}.translation{font-size:calc(12*var(--u))}.option,.feedback{font-size:calc(13*var(--u));padding:calc(8*var(--u)) calc(10*var(--u))}.center .feedback,.right .feedback{border:0;border-left:.24cqw solid var(--hair-lit);padding:calc(8*var(--u)) calc(10*var(--u))}.route-options{grid-template-columns:1fr}.corner-help{display:none}}"""
+/* Phones (2026-10-02). The block that stood here was written as
+   @media(max-width:calc(700*var(--u))): a custom property is never valid in a
+   media query, so it never applied, and a phone got the desktop's frame-width
+   scale: 2.5px text on an iPhone SE, 3px on a 13, 6px held sideways. These
+   are pixel sizes, and on a phone the panel scrolls instead of shrinking
+   (fitPanel stands down there), because shrinking is what made it unreadable. */
+/* the HUD sits over the glow (z-index 7 > 6): a marker near the top of a
+   plate lay over the buttons and took their taps */
+@media(pointer:coarse){.lang-btn,.utility{min-height:44px;min-width:44px;display:inline-flex;align-items:center;justify-content:center}.lang-item{min-height:44px}.option,.route{min-height:44px}.continue,.start,.restart{min-height:44px}.hide-btn{min-height:44px;min-width:44px}}
+.utility.home{text-decoration:none;display:inline-flex;align-items:center;gap:.35cqw}
+@media(max-width:700px),(max-height:500px) and (min-width:701px) and (pointer:coarse){.badge,.lang-btn,.utility{font-size:12px;padding:5px 9px}.lang-btn .lw,#fsLabel,#homeLabel{display:none}.corner-help{display:none}.hot{min-width:44px;min-height:44px}.hot i,.hot::before{inset:-4px}.hot i{box-shadow:0 0 0 2px color-mix(in srgb,var(--glow) 90%,transparent),0 0 14px 3px color-mix(in srgb,var(--glow) 55%,transparent)}.hot::before{border-width:2px}.hot-label{font-size:13px}.lang-menu{min-width:220px;padding:6px;gap:3px;max-height:calc(100vh - 70px);overflow:auto}.lang-item{font-size:13px;padding:5px 8px;grid-template-columns:32px 1fr}.lang-item b,.lang-item span{font-size:12px}.lang-btn{gap:4px}.content,.center .content,.tr-on .content{max-height:100%;overflow:auto;gap:9px}.kicker{font-size:12px}.translation,.tr-on .translation,.title .translation,.kicker .translation,.option .translation,.route .translation,.rule-card .translation,.tr-on .rule-card .translation{font-size:12px}.clue,.route{font-size:13px;padding:8px 10px}.rule-card,.rule-note,.tr-on .rule-card,.tr-on .rule-note{font-size:13px;padding:2px 9px}.rule-card b,.route b{font-size:13px}.final-score{font-size:18px}.small{font-size:12px}.hide-btn{font-size:12px}.continue,.start,.restart{font-size:13px;padding:10px 18px}.option{grid-template-columns:24px 1fr;gap:8px}.option .key{width:22px;height:22px}}
+@media(max-width:700px){.hud{top:8px;left:8px;right:8px}.zone{top:96px;bottom:10px;left:3%;right:3%;align-items:flex-end!important;justify-content:center!important}.content,.center .content,.tr-on .content{--u:11px;width:100%!important;margin:0!important;text-align:left!important;padding:14px;border-radius:12px}.lang-menu{grid-template-columns:1fr}.title,.tr-on .title{font-size:26px}.title.cover-title{font-size:19px}.story,.prompt,.tr-on .story{font-size:15px}.option,.feedback{font-size:14px;padding:8px 10px}.rules-intro{grid-template-columns:1fr}.rule-card:last-child{grid-column:auto}.center .rule-card,.center .rule-note,.right .rule-card,.right .rule-note{border-left:3px solid var(--hair-lit);border-right:0;padding:2px 9px}.right .rule-note,.center .rule-note{border-left-color:var(--blood)}.center .feedback,.right .feedback{border:0;border-left:3px solid var(--hair-lit);padding:8px 10px}.right .clue,.center .clue{border-right:0;border-left:3px solid var(--blood)}.route-options{grid-template-columns:1fr}.right .hide-btn{align-self:flex-end}.right .continue,.right .start,.right .restart,.center .continue,.center .start,.center .restart{align-self:flex-start}}
+@media(max-height:500px) and (min-width:701px) and (pointer:coarse){.hud{top:6px;left:max(10px,env(safe-area-inset-left));right:max(10px,env(safe-area-inset-right))}.zone{top:60px;bottom:6px;left:max(10px,env(safe-area-inset-left));right:max(10px,env(safe-area-inset-right))}.content,.tr-on .content{--u:10px;padding:10px 14px}.left .content,.right .content{width:56%!important}.center .content{width:80%!important}.lang-menu{grid-template-columns:1fr 1fr}.title,.tr-on .title{font-size:22px}.title.cover-title{font-size:15px}.story,.prompt,.tr-on .story{font-size:14px}.option,.feedback{font-size:13px;padding:6px 10px}}"""
 
 
 # ------------------------------------------------------------ serialising
@@ -336,6 +348,58 @@ def build():
                             "else if(s.kind==='failure'){if(window.CampSave)try{CampSave.rpgEnd({score:state.score,max:85,tiles:state.evidence,tilesMax:3,cleared:false,ending:state.scene})}catch(_){}html+=", 1)
     for hook in ('src="camp-save.js"', 'CampSave.visit(', "kind==='ending'){if(window.CampSave)", "kind==='failure'){if(window.CampSave)"):
         assert hook in page, 'camp save was not wired in: ' + hook
+
+    # ---- 8. phones (2026-10-02, "make block camp easier to use on mobile
+    # phones"). Full screen through block-camp/camp-full.js (it takes the
+    # #fullscreen button over: real full screen where the browser has it, the
+    # Home Screen how-to on an iPhone, where this button used to do nothing),
+    # START pops the game out on a phone, a way back to the camp map in the HUD
+    # (the game had none at all, so in the Home Screen app it was a dead end),
+    # touch wording on a touch screen, the picture slid so a portrait phone
+    # shows the object, and the panel placed under the HUD whatever its height.
+    if 'src="camp-full.js"' not in page:
+        page = page.replace('<script src="camp-save.js"></script>',
+                            '<script src="camp-save.js"></script>\n<script src="camp-full.js" defer></script>', 1)
+    if 'id="campHome"' not in page:
+        page = page.replace('<span id="fsLabel">FULLSCREEN</span></button>',
+                            '<span id="fsLabel">FULLSCREEN</span></button>\n'
+                            '        <a id="campHome" class="utility home" href="quest.html">🏕 <span id="homeLabel">CAMP MAP</span></a>', 1)
+    if 'class="lw"' not in page:
+        page = page.replace('<span id="langWord">TRANSLATE</span> · ',
+                            '<span class="lw"><span id="langWord">TRANSLATE</span> · </span>', 1)
+    if 'readTouch:T(' not in page:
+        page = page.replace("\n  read:T(", "\n  readTouch:T('TAP TO READ','TOCA PARA LEER','TIPPEN ZUM LESEN','TOUCHE POUR LIRE',"
+                            "'TOCCA PER LEGGERE','TOQUE PARA LER','DOTKNIJ, ABY CZYTAĆ','轻点阅读','タップして読む',"
+                            "'OKUMAK İÇİN DOKUN','المس للقراءة','КОСНИСЬ, ЧТОБЫ ЧИТАТЬ'),\n"
+                            "  camp:T('CAMP MAP','MAPA DEL CAMPAMENTO','LAGERKARTE','CARTE DU CAMP','MAPPA DEL CAMPO',"
+                            "'MAPA DO ACAMPAMENTO','MAPA OBOZU','营地地图','キャンプの地図','KAMP HARİTASI','خريطة المخيم','КАРТА ЛАГЕРЯ'),\n  read:T(", 1)
+    if 'const TOUCH=' not in page:
+        page = page.replace('\nfunction ui(key){',
+                            "\nconst TOUCH=()=>{try{return matchMedia('(hover:none) and (pointer:coarse)').matches}catch(_){return false}};"
+                            "\nconst PHONE=()=>{try{return matchMedia('(max-width:700px),(max-height:500px) and (min-width:701px) and (pointer:coarse)').matches}catch(_){return false}};"
+                            "\nfunction ui(key){", 1)
+        page = page.replace("hotLabel.textContent=ui('read');", "hotLabel.textContent=ui(TOUCH()?'readTouch':'read');"
+                            "{const hl=document.getElementById('homeLabel');if(hl)hl.textContent=ui('camp')}"
+                            "{const ch=document.querySelector('.corner-help');if(ch&&TOUCH())ch.textContent='tap the glowing object to read · tap the picture to hide the text · 🌐 translation · ⛶ full screen'}", 1)
+        # a portrait phone shows a third of the picture's width: slide it so
+        # the object is on screen (the engine's placeHot does the same), and
+        # keep the marker's centre below the HUD, which now sits over it
+        page = page.replace("ox=(W-dw)/2,oy=(H-dh)/2;const ix=h[0]/100,iy=0.078+h[1]/100*0.844,iw=h[2]/100,ih=h[3]/100*0.844;",
+                            "oy=(H-dh)/2;let ix=h[0]/100,iy=0.078+h[1]/100*0.844,iw=h[2]/100,ih=h[3]/100*0.844;"
+                            "const ox=dw>W?Math.min(0,Math.max(W-dw,W/2-ix*dw)):(W-dw)/2;"
+                            "sceneImage.style.objectPosition=(dw>W?ox/(W-dw)*100:50)+'% 50%';"
+                            "if(PHONE()){const hb=document.querySelector('.hud').getBoundingClientRect().bottom-frame.getBoundingClientRect().top,top=oy+iy*dh;"
+                            "if(top+ih*dh/2<hb+26)iy=(hb+26-ih*dh/2-oy)/dh}", 1)
+        page = page.replace("function fitPanel(){content.style.setProperty('--fit',1);",
+                            "function fitZone(){const h=document.querySelector('.hud');if(!h)return;zone.style.top=PHONE()?Math.ceil(h.getBoundingClientRect().bottom-frame.getBoundingClientRect().top+6)+'px':''}\n"
+                            "function fitPanel(){fitZone();content.style.setProperty('--fit',1);if(PHONE())return;", 1)
+    if 'CampFull.popOut()' not in page:
+        page = page.replace("hot.addEventListener('click'",
+                            "document.addEventListener('click',e=>{if(window.CampFull&&e.target.closest&&e.target.closest('.start'))CampFull.popOut()},true);\n"
+                            "hot.addEventListener('click'", 1)
+    for hook in ('src="camp-full.js"', 'id="campHome"', 'class="lw"', 'readTouch:T(', 'const TOUCH=', "ui(TOUCH()?'readTouch':'read')",
+                 'sceneImage.style.objectPosition=', 'function fitZone(', 'CampFull.popOut()'):
+        assert hook in page, 'phone patch was not wired in: ' + hook
 
     open(PAGE, 'w', encoding='utf-8', newline='\n').write(page)
     nq = sum(1 for s in scenes.values() if s.get('kind') == 'question')

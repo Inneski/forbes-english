@@ -34,6 +34,7 @@ LANG_NAMES = {'es': 'Español', 'de': 'Deutsch', 'fr': 'Français', 'it': 'Itali
 # every gloss language it ships — assemble() refuses a half-translated set).
 LABELS = {
     'read':       {'en': 'CLICK TO READ', 'es': 'PULSA PARA LEER', 'de': 'KLICKEN ZUM LESEN', 'fr': 'CLIQUE POUR LIRE', 'it': 'CLICCA PER LEGGERE', 'pt': 'CLIQUE PARA LER', 'ru': 'НАЖМИ, ЧТОБЫ ЧИТАТЬ', 'ar': 'انقر للقراءة', 'zh': '点击阅读', 'ja': 'クリックして読む'},
+    'readTouch':  {'en': 'TAP TO READ', 'es': 'TOCA PARA LEER', 'de': 'TIPPEN ZUM LESEN', 'fr': 'TOUCHE POUR LIRE', 'it': 'TOCCA PER LEGGERE', 'pt': 'TOCA PARA LER', 'ru': 'КОСНИСЬ, ЧТОБЫ ЧИТАТЬ', 'ar': 'المس للقراءة', 'zh': '轻点阅读', 'ja': 'タップして読む'},
     'hide':       {'en': 'HIDE', 'es': 'OCULTAR', 'de': 'AUSBLENDEN', 'fr': 'MASQUER', 'it': 'NASCONDI', 'pt': 'OCULTAR', 'ru': 'СКРЫТЬ', 'ar': 'إخفاء', 'zh': '隐藏', 'ja': '隠す'},
     'continue':   {'en': 'CONTINUE', 'es': 'CONTINUAR', 'de': 'WEITER', 'fr': 'CONTINUER', 'it': 'CONTINUA', 'pt': 'CONTINUAR', 'ru': 'ДАЛЕЕ', 'ar': 'متابعة', 'zh': '继续', 'ja': '続ける'},
     'begin':      {'en': 'BEGIN', 'es': 'EMPEZAR', 'de': 'LOSLEGEN', 'fr': 'COMMENCER', 'it': 'INIZIA', 'pt': 'COMEÇAR', 'ru': 'НАЧАТЬ', 'ar': 'ابدأ', 'zh': '开始', 'ja': '始める'},
@@ -73,6 +74,17 @@ LABELS = {
                    'ar': 'انقر على الشيء المتوهج أو ENTER للقراءة · ESC إخفاء · 1–3 اختيار · L اللغة · S الصوت · F ملء الشاشة',
                    'zh': '点击发光物体或按 ENTER 阅读 · ESC 隐藏 · 1–3 选择 · L 语言 · S 声音 · F 全屏',
                    'ja': '光る物をクリックか ENTER で読む · ESC 隠す · 1–3 選ぶ · L 言語 · S サウンド · F 全画面'},
+    # the same line for a finger: what to tap, and nothing about keys
+    'helpTouch':  {'en': 'tap the glowing object to read · tap the picture to hide the text · 🌐 translation · ⛶ full screen',
+                   'es': 'toca el objeto que brilla para leer · toca la imagen para ocultar el texto · 🌐 traducción · ⛶ pantalla completa',
+                   'de': 'tippe auf das leuchtende Objekt zum Lesen · tippe auf das Bild, um den Text auszublenden · 🌐 Übersetzung · ⛶ Vollbild',
+                   'fr': "touche l'objet lumineux pour lire · touche l'image pour masquer le texte · 🌐 traduction · ⛶ plein écran",
+                   'it': "tocca l'oggetto luminoso per leggere · tocca l'immagine per nascondere il testo · 🌐 traduzione · ⛶ schermo intero",
+                   'pt': 'toca no objeto brilhante para ler · toca na imagem para ocultar o texto · 🌐 tradução · ⛶ ecrã inteiro',
+                   'ru': 'коснись светящегося предмета, чтобы читать · коснись картинки, чтобы скрыть текст · 🌐 перевод · ⛶ во весь экран',
+                   'ar': 'المس الشيء المتوهج للقراءة · المس الصورة لإخفاء النص · 🌐 الترجمة · ⛶ ملء الشاشة',
+                   'zh': '轻点发光的物体阅读 · 轻点图片隐藏文字 · 🌐 翻译 · ⛶ 全屏',
+                   'ja': '光る物をタップして読む · 絵をタップして文を隠す · 🌐 翻訳 · ⛶ 全画面'},
 }
 
 # `link` is a URL, not prose, so it is deliberately not in here; `linkLabel`
@@ -162,7 +174,12 @@ button{font:inherit}
 .fit-contain .scene-img{object-fit:contain}
 .fit-contain{background:{{DEEP}}}
 /* ── HUD ── */
-.hud{position:absolute;z-index:5;top:calc(1.3 * var(--u));left:calc(1.5 * var(--u));right:calc(1.5 * var(--u));display:flex;align-items:center;justify-content:space-between;gap:calc(1 * var(--u));pointer-events:none}
+/* z-index 7 puts the HUD over the glowing object (6). Below it, a hotspot near
+   the top of a plate lay on the utility buttons and swallowed their taps:
+   measured 2026-10-02, the FULLSCREEN and SOUND buttons were dead on up to 13
+   scenes a page on a phone and on 3 even on a desktop. The HUD's own box is
+   pointer-events:none, so only the buttons themselves sit on top. */
+.hud{position:absolute;z-index:7;top:calc(1.3 * var(--u));left:calc(1.5 * var(--u));right:calc(1.5 * var(--u));display:flex;align-items:center;justify-content:space-between;gap:calc(1 * var(--u));pointer-events:none}
 .hud-group{display:flex;gap:calc(.55 * var(--u));align-items:center;flex-wrap:wrap}
 .badge{background:var(--panel);backdrop-filter:blur(5px);border:1px solid rgba(255,246,217,.34);box-shadow:0 0 calc(1.3 * var(--u)) var(--shadow);padding:calc(.5 * var(--u)) calc(.8 * var(--u));font-size:calc(1.15 * var(--u));letter-spacing:.04em;white-space:nowrap}
 .badge b{color:var(--accent);font-weight:700}
@@ -358,6 +375,28 @@ button{font:inherit}
 @media(max-aspect-ratio:4/3){.content{width:60%}.center .content{width:84%}.band .content{display:flex;flex-direction:column;gap:calc(.8 * var(--u))}.band .hide-btn{align-self:flex-end;margin-bottom:calc(-.3 * var(--u))}.hot-label{font-size:calc(1.8 * var(--u))}.lang-menu{min-width:calc(30 * var(--u))}.lang-item{font-size:calc(1.4 * var(--u))}.lang-item b{font-size:calc(1.3 * var(--u))}.title{font-size:calc(4.4 * var(--u))}.story,.prompt{font-size:calc(2.1 * var(--u))}.option,.feedback{font-size:calc(1.75 * var(--u))}.translation{font-size:calc(1.35 * var(--u))}.badge{font-size:calc(1.5 * var(--u))}.lang-btn,.utility{font-size:calc(1.4 * var(--u))}.clue{font-size:calc(1.7 * var(--u))}}
 /* phones: the panel is a sheet across the bottom, sizes in px */
 @media(max-width:700px){.hud{top:8px;left:8px;right:8px}.badge{font-size:11px;padding:5px 6px}.lang-btn,.utility{font-size:11px;padding:5px 6px}.zone{top:58px;bottom:10px;left:3%;right:3%;align-items:flex-end!important;justify-content:center!important}.content,.center .content,.tr-on .content{width:100%!important;margin:0!important;max-height:100%;text-align:left;padding:14px;gap:9px}.band .content{display:flex;flex-direction:column;margin-bottom:0!important}.band-text,.band-act{gap:9px}.right .content{text-align:left}.right .clue{border-right:0;border-left:4px solid var(--accent)}.right .option{text-align:left;grid-template-columns:24px 1fr}.right .option .key{order:0}.right .continue,.right .start,.right .restart,.center .continue,.center .start,.center .restart{align-self:flex-start}.right .hide-btn{align-self:flex-end}.hot{min-width:44px;min-height:44px}.hot i,.hot::before{inset:-4px}.hot i{box-shadow:0 0 0 2px #fff,0 0 0 4px rgba(70,45,0,.55),0 0 14px 3px rgba(255,240,170,.85)}.hot::before{border-width:2px}.hot-label{font-size:13px}.lang-menu{min-width:200px;padding:6px;gap:3px}.lang-item{font-size:13px;padding:6px 8px;grid-template-columns:32px 1fr}.lang-item b{font-size:12px}.hide-btn{font-size:12px}.title,.tr-on .title{font-size:26px}.cover-title{font-size:22px}.kicker{font-size:12px}.story,.prompt{font-size:17px}.clue{font-size:15px;padding:8px 10px;border-left-width:4px}.translation,.title .translation{font-size:13px}.option,.feedback{font-size:15px;padding:9px 10px}.option{grid-template-columns:24px 1fr;gap:8px}.option .key{width:22px;height:22px}.option .translation,.route .translation,.rule-card .translation,.feedback .translation{font-size:12px}.option.split{grid-template-columns:24px 1fr 1fr;gap:6px}.option .half{padding:6px 8px}.option .half small{font-size:10px}.option .half b{font-size:14px}.review div{font-size:13px;padding:6px 8px}.route-options,.rules-intro{grid-template-columns:1fr}.rule-card:last-child{grid-column:auto}.rule-card,.rule-note,.route,.chapter{font-size:14px;padding:9px}.rule-card b,.route b,.chapter b{font-size:14px}.rules-chips span{font-size:11px;padding:4px 7px}.final-score{font-size:19px}.small{font-size:12px}.continue,.start,.restart{font-size:14px;padding:11px 16px}.corner-help{display:none}.page-label{font-size:11px}.page-label .translation{font-size:10px}.page-count{font-size:12px}}
+/* ── touch (2026-10-02, "make block camp easier to use on mobile phones") ──
+   A finger needs 44px. The utilities were 25px tall on a phone and 17px on a
+   phone held sideways; the language items 30px and 14px. */
+@media(pointer:coarse){.lang-btn,.utility{min-height:44px;min-width:44px;display:inline-flex;align-items:center;justify-content:center}.lang-item{min-height:44px}.option,.route,.chapter{min-height:44px}.continue,.start,.restart{min-height:44px}a.start,a.restart{display:inline-flex;flex-direction:column;justify-content:center}}
+/* the way back to the camp: the browser's own Back is gone in full screen and
+   in the Home Screen app (camp-full.js sets html.camp-fs / html.camp-app), so
+   the HUD carries one there, and only there */
+.utility.home{display:none;text-decoration:none}
+html.camp-fs .utility.home,html.camp-app .utility.home{display:inline-flex;align-items:center;justify-content:center}
+/* phones, either way up: no room for four labelled buttons beside the score,
+   so the utilities are icons (the label stays in the accessibility tree) and
+   TRANSLATE shows only the language it is set to. Nothing under 12px. */
+@media(max-width:700px),(max-height:500px) and (min-width:701px) and (pointer:coarse){#sound .u-label,#fullscreen .u-label,.camp-music-rpg .u-label,.home .u-label{max-width:0;opacity:0;margin:0}.lang-btn .lw{display:none}.lang-btn .u-label{margin-left:6px}.lang-menu{max-height:calc(100vh - 64px);overflow:auto}.badge,.lang-btn,.utility{font-size:12px}.rules-chips span,.page-label,.page-label .translation,.option .half small{font-size:12px}}
+/* the cover's own sizes (.is-cover .story, .is-cover .cover-title) outrank the
+   phone sheet's, so on a phone the cover read at 6px and 11px in a 64% strip;
+   the kicker's gloss (.kicker .translation) the same way, at 3px */
+@media(max-width:700px){.kicker .translation,.chapter .translation{font-size:12px}.is-cover .content{max-width:100%}.is-cover .cover-title{font-size:24px}.is-cover .story{font-size:14px;max-width:none}}
+@media(max-width:700px) and (pointer:coarse){.hud>.hud-group:last-child{min-width:96px;justify-content:flex-end}.lang-btn,.utility{padding:0 8px}.hide-btn{min-height:44px;padding:0 10px;margin:-14px -14px -10px 0}}
+/* a phone on its side: 750x342. The frame-width scale (--u) made that 5px help
+   text and 10px story text, so it gets pixel sizes like the portrait sheet,
+   with the panel kept to its side so the picture still shows. */
+@media(max-height:500px) and (min-width:701px) and (pointer:coarse){.hud{top:6px;left:max(10px,env(safe-area-inset-left));right:max(10px,env(safe-area-inset-right))}.badge{padding:5px 7px}.lang-btn,.utility{padding:0 9px}.zone{bottom:6px;left:max(10px,env(safe-area-inset-left));right:max(10px,env(safe-area-inset-right))}.content,.tr-on .content{max-height:100%;padding:10px 14px;gap:8px}.left .content,.right .content{width:56%!important}.center .content,.band .content{width:80%!important}.band .content{column-gap:16px;row-gap:4px;margin-bottom:0}.band-text,.band-act{gap:8px}.is-cover .zone{bottom:6px}.is-cover .content{max-width:82%;padding:22px 18px 8px;gap:5px}.is-cover .cover-title,.cover-title{font-size:22px}.is-cover .story{font-size:14px;max-width:none}.title,.tr-on .title{font-size:22px}.kicker,.kicker .translation{font-size:12px}.story,.prompt{font-size:15px}.clue{font-size:14px;padding:7px 10px}.translation,.title .translation{font-size:12px}.option,.feedback{font-size:14px;padding:6px 10px}.option{grid-template-columns:24px 1fr;gap:8px}.right .option{grid-template-columns:1fr 24px}.option .key{width:22px;height:22px}.option .translation,.route .translation,.chapter .translation,.rule-card .translation,.feedback .translation{font-size:12px}.option.split{grid-template-columns:24px 1fr 1fr;gap:6px}.right .option.split{grid-template-columns:1fr 1fr 24px}.option .half{padding:4px 8px}.option .half b{font-size:14px}.review div{font-size:13px;padding:6px 8px}.rule-card,.rule-note,.route,.chapter{font-size:13px;padding:8px}.rule-card b,.route b,.chapter b{font-size:13px}.route{min-height:44px}.final-score{font-size:18px}.small{font-size:12px}.continue,.start,.restart{font-size:14px;padding:9px 16px}.hide-btn{font-size:12px;min-height:36px}.hot{min-width:44px;min-height:44px}.hot i,.hot::before{inset:-4px}.hot i{box-shadow:0 0 0 2px #fff,0 0 0 4px rgba(70,45,0,.55),0 0 14px 3px rgba(255,240,170,.85)}.hot::before{border-width:2px}.hot-label{font-size:13px}.corner-help{display:none}.page-count{font-size:12px}.lang-menu{min-width:200px;padding:6px;gap:3px}.lang-item{font-size:13px;padding:6px 8px;grid-template-columns:32px 1fr}.lang-item b{font-size:12px}}
 """
 
 BODY = r"""
@@ -374,12 +413,12 @@ BODY = r"""
       </div>
       <div class="hud-group">
         <div class="langs">
-          <button id="langBtn" class="lang-btn utility" aria-haspopup="true" aria-expanded="false">🌐<span class="u-label"><span id="langWord">TRANSLATE</span> · <b id="langCur">OFF</b> ▾</span></button>
+          <button id="langBtn" class="lang-btn utility" aria-haspopup="true" aria-expanded="false">🌐<span class="u-label"><span class="lw"><span id="langWord">TRANSLATE</span> · </span><b id="langCur">OFF</b> ▾</span></button>
           <div id="langMenu" class="lang-menu" hidden></div>
         </div>
         <button id="sound" class="utility" title="S" aria-pressed="false">🔈<span class="u-label" id="soundLabel">SOUND OFF</span></button>
         <button id="fullscreen" class="utility fs" title="F">⛶<span class="u-label" id="fsLabel">FULLSCREEN</span></button>
-      </div>
+{{HOME}}      </div>
     </header>
     <div id="zone" class="zone"><article id="content" class="content"></article></div>
     <div id="help" class="corner-help"></div>
@@ -448,6 +487,8 @@ const MARK=/\[\[(\/?)([ab])\]\]/g;
 const bare=s=>String(s??'').replace(MARK,'');          /* plain text: alt, review, answer read-back */
 const esct=s=>esc(s).replace(MARK,(_,c,k)=>c?'</span>':'<span class="tone-'+k+'">');
 const tx=(o,l)=>o?(l&&o[l]?o[l]:o.en):'';
+/* a finger, not a mouse: TAP TO READ, and a help line with no keys in it */
+const TOUCH=()=>{try{return matchMedia('(hover:none) and (pointer:coarse)').matches}catch(_){return false}};
 function ui(key,vars){let s=tx(G.labels[key],state.lang==='off'?null:state.lang);if(vars)for(const k in vars)s=s.replace('{'+k+'}',vars[k]);return s}
 /* a gloss identical to the English (a formula, a name) is not shown — it would only repeat the line */
 const gloss=obj=>state.lang!=='off'&&obj[state.lang]&&obj[state.lang]!==obj.en?obj[state.lang]:'';
@@ -459,12 +500,14 @@ function optMarkup(o){if(!o.parts)return `<span>${label(o)}</span>`;return o.par
 /* `tilesLabel` lets a chapter rename its own collectibles — the Kraken saga
    counts EVIDENCE in part one, MARKER BARRELS in part two and THE LAST FOUR
    in part three, on the same HUD badge. A lesson without one uses ui('tiles'). */
-function updateHUD(){const c=CH();const onHub=G.scenes[state.scene]?.kind==='hub';document.getElementById('score').textContent=state.score;document.getElementById('tiles').textContent='◆'.repeat(state.tiles)+'◇'.repeat(Math.max(0,c.tiles-state.tiles));document.getElementById('chances').textContent='♥'.repeat(state.chances)+'♡'.repeat(Math.max(0,c.chances-state.chances));document.getElementById('lblPoints').textContent=ui('points');document.getElementById('lblTiles').textContent=c.tilesLabel?tx(c.tilesLabel,state.lang==='off'?null:state.lang):ui('tiles');document.getElementById('lblChances').textContent=ui('chances');document.getElementById('tilesBadge').hidden=!c.tiles||onHub;document.getElementById('chancesBadge').hidden=!c.chances||onHub;document.getElementById('progressBadge').hidden=!c.total||onHub;if(c.total){document.getElementById('lblProgress').textContent=ui('progress');document.getElementById('progress').textContent=`${state.answered}/${c.total}`}document.getElementById('help').textContent=ui('help');fitZone()}
+function updateHUD(){const c=CH();const onHub=G.scenes[state.scene]?.kind==='hub';document.getElementById('score').textContent=state.score;document.getElementById('tiles').textContent='◆'.repeat(state.tiles)+'◇'.repeat(Math.max(0,c.tiles-state.tiles));document.getElementById('chances').textContent='♥'.repeat(state.chances)+'♡'.repeat(Math.max(0,c.chances-state.chances));document.getElementById('lblPoints').textContent=ui('points');document.getElementById('lblTiles').textContent=c.tilesLabel?tx(c.tilesLabel,state.lang==='off'?null:state.lang):ui('tiles');document.getElementById('lblChances').textContent=ui('chances');document.getElementById('tilesBadge').hidden=!c.tiles||onHub;document.getElementById('chancesBadge').hidden=!c.chances||onHub;document.getElementById('progressBadge').hidden=!c.total||onHub;if(c.total){document.getElementById('lblProgress').textContent=ui('progress');document.getElementById('progress').textContent=`${state.answered}/${c.total}`}document.getElementById('help').textContent=ui(TOUCH()?'helpTouch':'help');{const hl=document.getElementById('homeLabel');if(hl)hl.textContent=ui('camp')}fitZone()}
 /* On a phone the HUD wraps onto as many rows as its translated labels need, so
    a fixed panel top (58px) let a tall panel slide under the buttons: measured
    on the Kraken in Arabic on 2026-09-23. The panel now starts below the HUD,
    whatever height it has. Wider windows keep the stylesheet's own top. */
-function fitZone(){const z=document.getElementById('zone'),h=document.querySelector('.hud');if(!z||!h)return;if(window.matchMedia('(max-width:700px)').matches){z.style.top=Math.ceil(h.getBoundingClientRect().bottom-frame.getBoundingClientRect().top+6)+'px'}else z.style.top=''}
+/* a phone on its side gets the same treatment: its HUD is a row of 44px
+   buttons over a 342px frame */
+function fitZone(){const z=document.getElementById('zone'),h=document.querySelector('.hud');if(!z||!h)return;if(window.matchMedia('(max-width:700px),(max-height:500px) and (min-width:701px) and (pointer:coarse)').matches){z.style.top=Math.ceil(h.getBoundingClientRect().bottom-frame.getBoundingClientRect().top+6)+'px'}else z.style.top=''}
 /* A cover whose plate carries a painted title lockup has no title of its own: the h1 would only say the same thing again. */
 /* the kicker and title belong to the scene, so they stay put while the story
    pages under them — a title that reappeared on every tap would read as a new
@@ -492,7 +535,10 @@ function placeHot(s){const h=pageHot(s),IW=s.imgW||G.imgW,IH=s.imgH||G.imgH;cons
   /* cover crops the picture; slide it so the object stays on screen (a portrait phone shows a third of the width) */
   const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));const ox=dw>W?clamp(W/2-h[0]/100*dw,W-dw,0):(W-dw)/2,oy=dh>H?clamp(H/2-h[1]/100*dh,H-dh,0):(H-dh)/2;
   sceneImage.style.objectPosition=`${dw>W?ox/(W-dw)*100:50}% ${dh>H?oy/(H-dh)*100:50}%`;
-  const cx=ox+h[0]/100*dw,cy=oy+h[1]/100*dh,w=h[2]/100*dw,hh=h[3]/100*dh;hot.style.left=cx+'px';hot.style.top=cy+'px';hot.style.width=w+'px';hot.style.height=hh+'px';hot.classList.toggle('above',cy+hh/2>H*.84);hotLabel.textContent=ui('read');
+  /* the HUD sits over the glow (z-index 7), so on a phone an object at the very top of the plate
+     would sit under the buttons and take no tap: its centre is kept just below the HUD instead. */
+  let cy=oy+h[1]/100*dh;if(window.matchMedia('(max-width:700px),(max-height:500px) and (min-width:701px) and (pointer:coarse)').matches){const hb=document.querySelector('.hud').getBoundingClientRect().bottom-frame.getBoundingClientRect().top;cy=Math.max(cy,hb+26)}
+  const cx=ox+h[0]/100*dw,w=h[2]/100*dw,hh=h[3]/100*dh;hot.style.left=cx+'px';hot.style.top=cy+'px';hot.style.width=w+'px';hot.style.height=hh+'px';hot.classList.toggle('above',cy+hh/2>H*.84);hotLabel.textContent=ui(TOUCH()?'readTouch':'read');
   document.getElementById('fsLabel').textContent=ui('fullscreen');document.getElementById('soundLabel').textContent=ui(sound?'soundOn':'soundOff');document.getElementById('langWord').textContent=ui('translate');document.getElementById('langCur').textContent=state.lang==='off'?'OFF':G.names[state.lang];
   document.querySelectorAll('.lang-item').forEach(b=>b.classList.toggle('active',b.dataset.lang===state.lang))}
 function setOpen(on){state.open=!!on;{const want=G.dir+pageImg();if(sceneImage.getAttribute('src')!==want)sceneImage.src=want}if(on){const hr=hot.getBoundingClientRect(),zr=zone.getBoundingClientRect();const cl=zr.left+content.offsetLeft,ct=zr.top+content.offsetTop;content.style.transformOrigin=`${hr.left+hr.width/2-cl}px ${hr.top+hr.height/2-ct}px`}frame.classList.toggle('open',state.open)}
@@ -606,6 +652,10 @@ function toHub(){state=fresh(state.lang,null);render()}
 function setLang(){const wasOpen=state.open;render();if(wasOpen)setOpen(true)}
 document.getElementById('sound').addEventListener('click',()=>{setSound(!sound);beep(true)});
 document.getElementById('fullscreen').addEventListener('click',()=>{if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();else document.exitFullscreen?.()});
+/* In Block Camp, block-camp/camp-full.js takes this button over (an iPhone has no
+   Fullscreen API, so there it explains the Home Screen instead of doing nothing),
+   and the first START on a phone pops the game out to full screen. */
+document.addEventListener('click',e=>{if(window.CampFull&&e.target.closest&&e.target.closest('.start'))CampFull.popOut()},true);
 document.addEventListener('keydown',e=>{const k=e.key;if(k.toLowerCase()==='l'){const all=['off',...LANGS];state.lang=all[(all.indexOf(state.lang)+1)%all.length];setLang();return}if(k==='Escape'){if(!langMenu.hidden){closeMenu();return}closePanel();return}if(k.toLowerCase()==='f'){document.getElementById('fullscreen').click();return}if(k.toLowerCase()==='s'){document.getElementById('sound').click();return}if(!state.open&&(k==='Enter'||NUM.includes(k))){openPanel();return}const s=G.scenes[state.scene];if(NUM.includes(k)){const i=Number(k)-1;if(s.kind==='question')document.querySelector(`.option[data-i="${i}"]`)?.click();if(s.kind==='choice')document.querySelectorAll('.route')[i]?.click();return}if(k==='Enter')document.querySelector('.continue:not([hidden]),.start,.restart')?.click()});
 setSound(sound);render();
 """
@@ -630,7 +680,7 @@ PAGE = """<!doctype html>
 <script>
 {{JS}}
 </script>
-</body>
+{{FULL}}</body>
 </html>
 """
 
@@ -837,8 +887,15 @@ def assemble(spec, out=None):
     # overworld to report to: `camp: False` empties the link and the save
     if spec.get('camp', True) is False:
         camp = ''
+    # the HUD's way back to the camp, shown only in full screen and in the
+    # Home Screen app, where the browser's own Back is gone
+    body = body.replace('{{HOME}}', '' if not camp else
+                        '<a id="campHome" class="utility home" href="%s">🏕<span class="u-label" id="homeLabel">CAMP MAP</span></a>\n' % camp)
     js = save_js + '\n' + JS.replace('{{GAME}}', json.dumps(game, ensure_ascii=False, separators=(',', ':'))).replace('{{CAMP}}', camp)
-    page = (PAGE.replace('{{FONTS}}', font_css()).replace('{{CSS}}', css.strip())
+    # Full screen and the Home Screen app (block-camp/camp-full.js), for Block
+    # Camp games only; a page opened from disk just goes without it.
+    full = '' if not camp else '<script src="%s" defer></script>\n' % camp.replace('quest.html', 'camp-full.js')
+    page = (PAGE.replace('{{FULL}}', full).replace('{{FONTS}}', font_css()).replace('{{CSS}}', css.strip())
                 .replace('{{BODY}}', body.strip()).replace('{{JS}}', js.strip())
                 .replace('{{TITLE}}', html.escape(spec['title'])).replace('{{DESC}}', html.escape(spec['description']))
                 .replace('{{FILE}}', spec['file']))

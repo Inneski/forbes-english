@@ -231,9 +231,48 @@
 }
 @media(max-width:560px){.copy{padding-top:2.4rem}}
 </style>
+<style id="phone-v3">
+/* Phones, 2026-10-02 ("make block camp easier to use on mobile phones").
+   Full screen (block-camp/camp-full.js: real full screen where the browser has
+   it, the Home Screen how-to on an iPhone) and the way back to the camp map,
+   which the game had neither of: in the Home Screen app, with no Back, it was
+   a dead end. Measured before: CODEX/OFF/ES/DE/START OVER 24-25px tall, the
+   HUD labels 6.4px. */
+.cover-tools{position:absolute;z-index:3;top:max(.8rem,env(safe-area-inset-top));right:max(.8rem,env(safe-area-inset-right));display:flex;gap:.4rem}
+.ct-fs,.ct-camp{display:inline-flex;align-items:center;justify-content:center;min-width:34px;padding:.4rem .5rem;color:#fff4d6;background:rgba(5,11,13,.72);border:2px solid rgba(255,244,214,.7);font:900 .55rem/1 "Courier New",Courier,monospace;letter-spacing:.07em;text-decoration:none;white-space:nowrap;cursor:pointer}
+.ct-fs span{font-size:1.6em;line-height:1}.ct-fs .cf-i{width:15px;height:15px}
+.ct-fs:hover,.ct-camp:hover{color:#211a18;background:#ffc857}
+.ct-fs[aria-pressed="true"]{color:#211a18;background:#ffc857;border-color:#ffc857}
+.ct-fs:focus-visible,.ct-camp:focus-visible{outline:4px solid #ffc857;outline-offset:3px}
+.ending-actions{display:flex;flex-wrap:wrap;gap:.8rem}.ending-camp{display:inline-flex;align-items:center;text-decoration:none}
+@media (pointer:coarse){
+  .hud .tools button,.hud .tools .langsel button,.hud .tools .ct-camp,.hud .tools .ct-fs,.hud .tools .restart,.cover-tools .ct-fs,.cover-tools .ct-camp,.cover-lang button{min-width:44px;min-height:44px;font-size:12px}
+  .primary,.feedback .primary.small{min-height:44px}
+}
+@media (max-width:880px){
+  .hud{row-gap:.35rem}
+  .hud .tools{position:static;grid-column:1/-1;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:.3rem}
+  .hud-stat span,.cover-lang i,.offline-facts,.langsel i,.scene-stamp b,.eyebrow,.ending-card .eyebrow,.final-stats span{font-size:12px}
+  .hud-stat strong{font-size:.85rem}
+  .copy,.pos-centre .copy,.pos-right .copy{padding-bottom:11rem}
+  .scene-stamp{display:none}
+}
+/* a phone held upright: the bar stays on the screen while the scene scrolls
+   under it. It used to sit at the foot of the first screenful and scroll away
+   with it, over the middle of a long scene's options. */
+@media (max-width:880px) and (min-height:501px){
+  .game .hud{position:fixed;bottom:0;padding-top:.45rem;padding-bottom:max(.45rem,env(safe-area-inset-bottom))}
+  .copy,.pos-centre .copy,.pos-right .copy{padding-bottom:11.5rem}
+}
+@media (max-width:560px) and (min-height:501px){
+  .game .hud{grid-template-columns:auto minmax(36px,1fr) auto auto;column-gap:.5rem}
+  .hud-stat span{white-space:nowrap}
+}
+</style>
 </head>
 <body>
   <main id="offline-cover" class="offline-cover">
+    <div class="cover-tools"><button type="button" class="ct-fs" data-camp-full aria-label="Full screen"><span aria-hidden="true">⛶</span></button><a class="ct-camp" href="quest.html">CAMP MAP</a></div>
     <section class="offline-cover-copy">
       <p class="offline-brand">FORBES ENGLISH · BLOCK CAMP</p>
       <h1>THE LONG<br><span>WAY HOME</span></h1>
@@ -251,6 +290,7 @@
   <div id="app" hidden></div>
   <noscript><main class="fatal"><h1>JAVASCRIPT IS REQUIRED</h1><p>Enable JavaScript to play the interactive game.</p></main></noscript>
 <script src="camp-save.js"></script>
+<script src="camp-full.js" defer></script>
   <script>
 let odysseyLaunched = false;
 function launchOdyssey(){
@@ -647,11 +687,12 @@ function launchOdyssey(){
       app.innerHTML = `
       <main id="slide-${String(state.scene + 1).padStart(2, "0")}" class="game play slide pos-${position} v-${visual.vert} ${lang === "off" ? "" : "tr-on"} visual-${visual.key}" style="--base:${theme.base};--light:${theme.light};--dark:${theme.dark};--accent:${theme.accent};--hot:${theme.hot};--cream:${theme.cream};--scene-image:url('${visual.image}');--scene-x:${visual.x};--scene-y:${visual.y || "center"};--scene-zoom:${visual.zoom};--scene-filter:${visual.filter}">
         <div class="scene-art" aria-hidden="true"></div><div class="wash wash-${position}" aria-hidden="true"></div><div class="grain" aria-hidden="true"></div>
-        <header class="hud"><div class="hud-stat"><span>GLORY</span><strong>${state.score}</strong></div><div class="meter"><i style="width:${progress}%"></i><b style="left:${progress}%"></b></div><div class="hud-stat centre-stat"><span>SLIDE</span><strong>${state.scene + 1} / ${scenes.length}</strong></div><div class="hud-stat"><span>CREW \xB7 SUPPLIES</span><strong>${state.crew} \xB7 ${state.supplies}</strong></div><div class="hud-stat chances"><span>CHANCES</span><strong>${"\u2665".repeat(state.hearts)}${"\u2661".repeat(5 - state.hearts)}</strong></div><div class="tools"><button data-action="codex">CODEX</button><span class="langsel" role="group" aria-label="Translation language"><i>TRANSLATE</i>${["off","es","de"].map((L) => `<button data-action="lang" data-lang="${L}" class="${lang === L ? "on" : ""}" aria-pressed="${lang === L}">${L.toUpperCase()}</button>`).join("")}</span><button class="restart" data-action="reset">START OVER</button></div></header>
+        <header class="hud"><div class="hud-stat"><span>GLORY</span><strong>${state.score}</strong></div><div class="meter"><i style="width:${progress}%"></i><b style="left:${progress}%"></b></div><div class="hud-stat centre-stat"><span>SLIDE</span><strong>${state.scene + 1} / ${scenes.length}</strong></div><div class="hud-stat"><span>CREW \xB7 SUPPLIES</span><strong>${state.crew} \xB7 ${state.supplies}</strong></div><div class="hud-stat chances"><span>CHANCES</span><strong>${"\u2665".repeat(state.hearts)}${"\u2661".repeat(5 - state.hearts)}</strong></div><div class="tools"><button data-action="codex">CODEX</button><span class="langsel" role="group" aria-label="Translation language"><i>TRANSLATE</i>${["off","es","de"].map((L) => `<button data-action="lang" data-lang="${L}" class="${lang === L ? "on" : ""}" aria-pressed="${lang === L}">${L.toUpperCase()}</button>`).join("")}</span><button type="button" class="ct-fs" data-camp-full aria-label="Full screen"><span aria-hidden="true">⛶</span></button><a class="ct-camp" href="quest.html">CAMP MAP</a><button class="restart" data-action="reset">START OVER</button></div></header>
         <section class="copy" aria-live="polite"><p class="eyebrow">${esc(scene.chapter)} \xB7 ${esc(scene.location)}</p><h1>${esc(scene.title)}</h1><p class="story">${esc(scene.narrative)}${tx ? gloss(tx.n) : ""}</p><div class="clue"><strong>${esc(scene.focus)} \xB7 ${scene.kind === "choice" ? "ROUTE DECISION" : scene.kind === "boss" ? "BOSS TEST \xB7 DOUBLE GLORY" : "NARRATIVE TENSE TEST"}</strong></div><h2>${esc(scene.prompt)}${tx ? gloss(tx.p) : ""}</h2>${!state.answered ? `<div class="answers">${options}</div>` : ""}${feedback}</section>
         <div class="scene-stamp" aria-hidden="true"><span>${String(state.scene + 1).padStart(2, "0")}</span><b>${esc(scene.location)}</b></div>
         ${codex ? codexHtml() : ""}
       </main>`;
+      if (window.CampFull) app.querySelectorAll("[data-camp-full]").forEach(CampFull.bind);
     } catch (err) {
       console.error(err);
       app.innerHTML = `<main class="fatal"><h1>THE THREAD BROKE</h1><p>The voyage hit a damaged save. Reset it and return to Troy.</p><button data-action="reset">RESET VOYAGE</button><a href="#">RETURN TO COVER</a></main>`;
@@ -667,7 +708,7 @@ function launchOdyssey(){
     document.body.className = `ending-${tone}`;
     document.title = `${e.title} \u2014 The Long Way Home`;
     history.replaceState(null, "", "#ending");
-    app.innerHTML = `<main class="ending ending-${tone}"><div class="scene-art" aria-hidden="true"></div><div class="wash" aria-hidden="true"></div><div class="grain" aria-hidden="true"></div><section class="ending-card"><p class="eyebrow">${e.success ? "GLORIOUS RETURN" : "VOYAGE ENDED"} \xB7 ${e.rank}</p><h1>${e.title}</h1><p>${e.text}</p><div class="final-stats"><div><strong>${state.score}</strong><span>GLORY</span></div><div><strong>${state.hearts}/5</strong><span>HEARTS</span></div><div><strong>${state.crew}</strong><span>CREW</span></div><div><strong>${state.supplies}</strong><span>SUPPLIES</span></div></div><p class="ending-rule">Past simple moved your story. Past continuous built its world. Past perfect revealed what had come before.</p><button class="primary" data-action="reset">${ui[lang].restart}</button></section></main>`;
+    app.innerHTML = `<main class="ending ending-${tone}"><div class="scene-art" aria-hidden="true"></div><div class="wash" aria-hidden="true"></div><div class="grain" aria-hidden="true"></div><section class="ending-card"><p class="eyebrow">${e.success ? "GLORIOUS RETURN" : "VOYAGE ENDED"} \xB7 ${e.rank}</p><h1>${e.title}</h1><p>${e.text}</p><div class="final-stats"><div><strong>${state.score}</strong><span>GLORY</span></div><div><strong>${state.hearts}/5</strong><span>HEARTS</span></div><div><strong>${state.crew}</strong><span>CREW</span></div><div><strong>${state.supplies}</strong><span>SUPPLIES</span></div></div><p class="ending-rule">Past simple moved your story. Past continuous built its world. Past perfect revealed what had come before.</p><div class="ending-actions"><button class="primary" data-action="reset">${ui[lang].restart}</button><a class="primary ending-camp" href="quest.html">CAMP MAP</a></div></section></main>`;
   }
   function choose(index) {
     if (state.answered) return;
@@ -739,6 +780,7 @@ function launchOdyssey(){
 })();
 
 }
+document.getElementById("begin-voyage").addEventListener("click", function () { if (window.CampFull) CampFull.popOut(); });
 document.getElementById("begin-voyage").addEventListener("click", launchOdyssey);
 (function coverLang(){
   var KEY = "odyssey-tense-lang";

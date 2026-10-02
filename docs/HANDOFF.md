@@ -11,6 +11,60 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-10-02 — Block Camp on phones: full screen, one Home Screen app, every page fixed
+
+Innes: *"make block camp easier to use on mobile phones (full screen pop out
+ideally)"*. Audited every page family at iPhone 13 portrait/landscape, iPhone
+SE, Galaxy S9+ and Pixel 7, each finding re-measured by a second agent.
+
+**What a page can and cannot do (researched, primary sources):**
+- **iPhone has no Fullscreen API** for anything but `<video>`, iOS 17 through
+  27 (`document.fullscreenEnabled` is undefined). Chrome/Firefox on iOS are
+  the same engine. iPad has it. Safari's bars cannot be hidden by a page.
+- The only bar-free iPhone route is the **Home Screen web app**. Since iOS 26
+  every icon added to the Home Screen opens as a web app by default; iOS
+  17/18 need the manifest or `apple-mobile-web-app-capable`.
+- **iOS Home Screen apps have separate storage and cookies from Safari**:
+  progress (`forbes-camp-save`) and the Pro sign-in do not carry over. The
+  how-to says so and points to the Quest's save code.
+- Android: real full screen from a tap, but it **ends at every page
+  navigation** and cannot be re-entered without a new tap.
+- Manifest scope is a **plain string prefix** in both WebKit and Chromium:
+  scope `/block` covers `/block-camp.html`, both maps, `/block-camp/*` and
+  every `/blockcamp-*` deck, and nothing else on the site.
+
+**What shipped:**
+- **`block-camp/camp-full.js`** (shared): the toggle. Real full screen where
+  the API exists; on a phone the deck's Begin / the RPG's START pops it out;
+  the choice is kept in `sessionStorage['camp-full']` and comes back on the
+  first tap of the next page (a navigation is not counted as leaving). On an
+  iPhone the same button opens an Add-to-Home-Screen how-to in ten languages
+  (translations unreviewed). Hidden when launched from the Home Screen
+  (`html.camp-app`). `html.camp-fs` while full screen: pages hide their nav
+  band under it. It also injects the manifest + apple meta into every Block
+  Camp page that has none.
+- **Manifest** (written by `block-camp-quest/build.py`): name "Block Camp",
+  **scope `/block`** (was `/block-camp/`, which threw every deck out of the
+  installed app), id unchanged so existing installs update, start_url the
+  Quest. `sw.js` v2 re-wraps the Worker's 307-redirected responses (offline
+  launch failed on the live site).
+- **Decks**: the toggle sits in the phone bar beside the menu; the bar is a
+  grid with count over score so Next stays on screen at 320px; on a phone the
+  score shows as "★ 3/12" (`data-short`, set by camp-phone.js). check-phone:
+  26 decks, 1138 views PASS.
+- **Hub, village, Quest, both maps**: see commits `a7527f83`, `b2033b57`,
+  `07ed2161`. Highlights: route-map stops overlapped at 21px on a phone (wrong
+  camp opened) and now open a card; village dialog buttons were under the
+  touch pad (no way to say "Later"); every village question's answer was
+  option 1; Quest save code is under Passport; music button in a
+  `data-camp-music-slot` instead of floating over buttons and station 9.
+- **RPGs**: `rpg.py` loads camp-full.js and pops out on START (the
+  FULLSCREEN button did nothing on an iPhone).
+
+**Needs a real iPhone (cannot be emulated):** install from Safari, open a
+deck from the Quest (should stay in the app), sign in inside the app, go
+offline and relaunch. Safe-area insets were written but not seen.
+
 ## 2026-10-01 — Have Your Say 1 + 2: writing a comment on South Africa (B1–B2): SHIPPED
 
 `writing-a-comment-south-africa.html` (structure) and `-part-2.html` (useful
