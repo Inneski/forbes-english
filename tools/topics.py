@@ -281,6 +281,7 @@ OVERRIDES = {
     'blockcamp-passive-trial.html': ['passive-voice'],
     'sherpa-tensing-cloud-causative.html': ['passive-voice'],
     'sherpa-tensing-route-map.html': ['tense-review'],
+    'sherpa-tensing-the-climb.html': ['tense-review'],   # the Sherpa game: all thirteen tenses
     'harry-quebert-b2.html': [],
     'forbes-english-lesson-2.html': ['business-english'],
     'forbes-english-speaking-2.html': ['business-english'],
