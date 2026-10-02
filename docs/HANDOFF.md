@@ -11,6 +11,48 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-10-02 — The School Visit: Correction Test (A2–B1): BUILT, waiting on one catalogue row
+
+Innes: *"make style 2 for this and take real names out"*, with a pasted
+27-item correction test he wrote for a student (an author invited to talk
+about her book at a school; say/tell, double negatives, "for explain",
+"in my house have", "was rain"). The sheet named a real child; she is "my
+neighbour" throughout.
+
+- **Builder** `lesson-template/build/build_schoolvisit.py`, strings in
+  `i18n_schoolvisit.py` + `_de` + `_es` (in-session, no native check).
+  `school-visit-correction-test-a2-b1.html`, 32 slides, panel layout:
+  four dividers + four panels, 10 typed corrections (one a slide), 4 gap
+  slides of two rows, 2 "ask the author" slides (the prompt is the only
+  chrome deliberately in the learner's language: Spanish = the sheet's own
+  lines; EN/DE "a child wants to know …"), 5 MC, results, activation.
+- **Accepted answers widened past the sheet's key** — see the builder
+  docstring: "It rained", "There is a generator in my house", "I know
+  nothing about", "for explaining", DOESN'T where still true, "used to
+  have", MUCH for the two ANY gaps. The MC with Spanish inside its stem
+  is a translatable context line now.
+- **Art:** Innes's twelve 2026-10-02 renders ("screenprint texture,
+  minimal"), six prepped into `SchoolVisit/plate-*.jpg`: cover = mountains
+  under a pink moon (the second Venezuela batch), fix = the author at the
+  board, gaps = her hand writing, ask = a boy turned to her, choose = the
+  lectern on pink, act = writing on the floor among books. `pos=` set
+  from PIL crops of the 548×720 window: 14 / 28 / 10 / 50%. Light palette
+  from the cover, every row PASS. Sources moved to
+  `incoming/_previous/school-visit-correction-test-a2-b1/`.
+- **Gates:** `check-lesson.js` all PASS except HEAD; `answered-overflow.js`
+  fits en/de/es; `check-library.js --vs-origin` PASS. Library tag
+  "Grammar activity", `OVERRIDES` → tense-review.
+- **HEAD fails because the catalogue row is missing.** The Supabase insert
+  was refused by the harness (unasked write). Innes runs:
+  `insert into public.lessons (file, title, level, access, track, deck, video)
+  values ('school-visit-correction-test-a2-b1.html', 'The School Visit:
+  Correction Test (A2–B1)', 'A2-B1', 'pro', 'general', true, false);`
+  then `py tools/seo.py` and commit the page plus the four indexes. Until
+  then the page is live at its URL and in no index.
+- `grammar.html` / `past-continuous.html` were rewritten by `build_hubs.py`
+  from a peer's "Past Continuous 1 free" catalogue change and left for
+  that session.
+
 ## 2026-10-02 — Block Camp on phones: full screen, one Home Screen app, every page fixed
 
 Innes: *"make block camp easier to use on mobile phones (full screen pop out

@@ -356,6 +356,9 @@ OVERRIDES = {
     # in the title.
     'forbes-reddit-french-door-c1.html': ['business-english'],
     'takingitaparta2es.html': ['business-english'],
+    # The School Visit: a correction test over say/tell, negatives, purpose
+    # clauses and subjects; the title names no grammar.
+    'school-visit-correction-test-a2-b1.html': ['tense-review'],
 }
 
 BY_SLUG = {t['slug']: t for t in TOPICS}
