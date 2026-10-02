@@ -23,7 +23,8 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DIR = os.path.join(ROOT, 'lesson-template', 'sherpa-i18n')
-OWN_SYSTEM = ('camp-one-present-continuous', 'camp-two-present-simple')
+OWN_SYSTEM = ('camp-one-present-continuous', 'camp-two-present-simple',
+              'the-climb')  # the game carries its own ten-language strings (lesson-template/build/sherpa-climb)
 LANGS = ['de', 'es', 'fr', 'it', 'pt', 'ru', 'ar', 'zh', 'ja']
 
 # strings the page's script writes, and the controls around the lesson

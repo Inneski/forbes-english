@@ -26,6 +26,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PAGE = os.path.join(ROOT, 'sherpa-tensing-route-map.html')
 FAMILY = 'sherpa-tensing-'
 MAP = 'sherpa-tensing-route-map.html'
+# in the family and the catalogue, but not a stop on the route: no row, not in the counts
+NOT_A_STOP = {'sherpa-tensing-the-climb.html'}
 
 _UNITS = ('zero one two three four five six seven eight nine ten eleven twelve thirteen '
           'fourteen fifteen sixteen seventeen eighteen nineteen').split()
@@ -64,7 +66,8 @@ def rows_of(s):
 def check(rows, page=PAGE):
     """Return a list of problems (empty when the page agrees with everything)."""
     s = open(page, encoding='utf-8').read()
-    cat = {r['file']: r for r in rows if r['file'].startswith(FAMILY) and r['file'] != MAP}
+    cat = {r['file']: r for r in rows if r['file'].startswith(FAMILY) and r['file'] != MAP
+           and r['file'] not in NOT_A_STOP}
     free = {f for f, r in cat.items() if r.get('access') != 'pro'}
     bad = []
 
