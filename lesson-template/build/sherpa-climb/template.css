@@ -1,0 +1,477 @@
+/* The Climb (lesson-template/build/sherpa-climb). The :root lines above this are the route
+   map's own tokens, read by build.py. Sizes are written as the camp pages write theirs:
+   tools/sherpa_type.py then repeats each px size a step up (+1px under 20px, x1.15 to 39px). */
+*{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;
+     background-image:linear-gradient(180deg,var(--paper) 0%,var(--paper) 18%,var(--paper-deep) 100%);background-repeat:no-repeat;}
+h1,h2,h3{font-family:'Fraunces',serif;font-weight:600;margin:0 0 .4em;color:var(--ink);}
+[lang="ja"]{word-break:auto-phrase;}
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;}
+button{font-family:'Inter',sans-serif;}
+
+/* the wordmark, as on every Sherpa page; the hub's language menu and the sound buttons beside it */
+.wordmark{display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:1160px;margin:0 auto;padding:28px 24px 0;}
+.wordmark .brand{font-family:'Fraunces',serif;font-weight:700;font-size:20px;letter-spacing:.02em;}
+.wordmark .brand span{color:var(--tensing);}
+.wordmark .sub{font-size:13px;color:var(--ink-soft);}
+.wm-right{display:flex;align-items:center;justify-content:flex-end;gap:14px;flex-wrap:wrap;}
+.util{display:flex;align-items:center;gap:8px;text-shadow:none;}
+.ubtn,.util .camp-music-float.camp-music-slot{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;padding:0;cursor:pointer;
+  background:color-mix(in srgb,var(--card) 88%,transparent);color:var(--ink);border:1px solid var(--accent-light);box-shadow:none;}
+.ubtn svg{width:20px;height:20px;}
+.ubtn:hover,.util .camp-music-float.camp-music-slot:hover{background:var(--card);border-color:var(--accent);}
+.ubtn[aria-pressed="false"] .snd-on,.ubtn[aria-pressed="true"] .snd-off{display:none;}
+.ubtn[aria-pressed="false"] svg{opacity:.6;}
+.slot{display:contents;}
+.lang-select{font-family:'Inter',sans-serif;font-size:13px;font-weight:600;line-height:1.2;color:var(--ink);background:var(--card);cursor:pointer;
+             border:1px solid var(--accent-light);border-radius:999px;padding:7px 12px;min-height:44px;text-shadow:none;}
+.lang-select.solo{display:none;}
+@media (max-width:600px){ .wordmark .sub{display:none;} }
+
+/* the pinned way back (as on the camp pages) */
+body{padding-top:46px;}
+.up-link{position:fixed;top:16px;left:16px;z-index:60;display:inline-flex;align-items:center;gap:8px;padding:9px 16px 9px 13px;border-radius:999px;
+  background:var(--card);color:var(--accent-dark);border:1.5px solid var(--accent-light);font:600 14px/1 'Inter',system-ui,sans-serif;letter-spacing:.01em;
+  text-decoration:none;box-shadow:0 2px 10px color-mix(in srgb,var(--ink) 10%,transparent);transition:background .18s ease,color .18s ease,transform .18s ease;}
+.up-link:hover{background:var(--accent-dark);color:var(--card);transform:translateX(-2px);}
+.up-link .arw{font-size:15px;line-height:1;}
+@media (max-width:640px){ .up-link{top:10px;left:10px;padding:7px 13px 7px 10px;font-size:13px;} }
+
+main{max-width:1160px;margin:0 auto;padding:0 24px 80px;}
+
+/* the hero */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:48px;align-items:center;padding:30px 0 8px;}
+.kicker-pill{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-text);
+  background:var(--card);border:1px solid var(--accent-light);padding:6px 12px;border-radius:999px;margin-bottom:14px;}
+.hero h1{font-size:clamp(36px,4.6vw,56px);line-height:1.04;letter-spacing:-.01em;margin:0 0 12px;}
+.hero .lead{font-size:17px;color:var(--ink-soft);max-width:44ch;margin:0 0 24px;text-wrap:pretty;}
+.cta{display:flex;flex-wrap:wrap;gap:12px;}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:11px 20px;border-radius:999px;
+     font-family:'Inter',sans-serif;font-size:14px;font-weight:600;line-height:1.2;text-decoration:none;border:1.5px solid var(--ink);cursor:pointer;
+     transition:transform .15s ease,background .15s ease;}
+.btn-main{background:var(--ink);color:var(--paper);}
+.btn-main:hover{transform:translateY(-1px);background:color-mix(in srgb,var(--ink) 82%,var(--accent-dark));}
+.btn-ghost{background:transparent;color:var(--ink);text-shadow:0 0 2px var(--paper),0 0 4px var(--paper),0 0 6px var(--paper),0 0 8px var(--paper);}
+.btn-ghost:hover{background:var(--card);text-shadow:none;}
+.hero-art{margin:0;border-radius:18px;overflow:hidden;aspect-ratio:3/2;background:var(--paper-deep);
+          box-shadow:0 22px 44px -22px color-mix(in srgb,var(--ink) 50%,transparent);}
+.hero-art img{width:100%;height:100%;object-fit:cover;object-position:50% 40%;display:block;}
+@media (max-width:860px){
+  .hero{grid-template-columns:minmax(0,1fr);gap:24px;padding-top:22px;}
+  .hero-art{order:-1;aspect-ratio:16/10;}
+}
+
+/* text straight on the paper wears the paper halo (tools/sherpa_topo.py) */
+.on-paper{text-shadow:0 0 2px var(--paper),0 0 4px var(--paper),0 0 6px var(--paper),0 0 8px var(--paper);}
+.sec{margin-top:60px;scroll-margin-top:64px;}
+.section-title{font-family:'Fraunces',serif;font-weight:600;font-size:26px;line-height:1.2;margin:0 0 14px;text-wrap:balance;}
+.note-line{font-size:15px;color:var(--ink-soft);margin:-6px 0 0;max-width:68ch;}
+.gl{display:block;font-style:italic;font-size:.88em;line-height:1.45;color:var(--ink-soft);margin-top:2px;}
+.gl:empty{display:none;}
+
+/* the team */
+.brief{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:16px 20px;margin:0 0 14px;}
+.brief-who{margin:0 0 6px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-text);}
+.brief ul{list-style:none;margin:0;padding:0;display:grid;gap:6px;}
+.brief li{font-size:15px;line-height:1.5;}
+.brief-more{display:none;align-items:center;gap:6px;min-height:44px;margin:4px 0 -6px;padding:0;border:0;background:none;color:var(--accent-dark);
+            font-size:14px;font-weight:600;text-decoration:underline;text-underline-offset:3px;cursor:pointer;}
+.team{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;}
+.member{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:10px 12px;min-height:96px;}
+.member .fig{width:56px;height:70px;flex:none;border-radius:10px;overflow:hidden;
+             background:linear-gradient(180deg,color-mix(in srgb,var(--accent-lighter) 70%,var(--card)) 0%,var(--paper-deep) 100%);}
+.member .fig img,.member .fig svg{width:100%;height:100%;object-fit:cover;object-position:50% 28%;display:block;}
+.mtext{min-width:0;line-height:1.35;}
+.mtext b{display:block;font-weight:600;font-size:15px;}
+.mtext .role{display:block;font-size:13px;color:var(--ink-soft);}
+.momo{margin:12px 0 0;font-size:14px;color:var(--ink-soft);}
+@media (max-width:1060px){ .team{grid-template-columns:repeat(3,minmax(0,1fr));} }
+/* a phone: one compact row per member, "Ana · the planner" on one line, and the guide's
+   first line with the other two behind "How it works", so the camps are not two screens down */
+@media (max-width:640px){
+  .team{grid-template-columns:minmax(0,1fr);gap:6px;}
+  .member{min-height:0;padding:6px 12px 6px 6px;gap:12px;}
+  .member .fig{width:36px;height:44px;border-radius:8px;}
+  .mtext b,.mtext .role{display:inline;}
+  .mtext b::after{content:" · ";font-weight:400;color:var(--ink-soft);}
+  .brief{padding:12px 16px;}
+  .brief li:nth-child(n+2){display:none;}
+  .brief.open li{display:block;}
+  .brief-more{display:inline-flex;}
+  .brief.open .brief-more{display:none;}
+}
+
+/* choose a camp: the mountain beside the list */
+.camps{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:20px;align-items:start;margin-top:18px;}
+.map-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:12px;position:sticky;top:72px;}
+.mtn{position:relative;aspect-ratio:800/620;border-radius:10px;overflow:hidden;}
+.mtn svg{position:absolute;inset:0;width:100%;height:100%;display:block;}
+.mtn-over{will-change:transform;}
+.mtn .dot{cursor:pointer;}
+.mtn .dot.soon{cursor:default;}
+.mtn .hit{fill:transparent;}
+.mtn .dot-label{opacity:0;pointer-events:none;paint-order:stroke;stroke:var(--paper);stroke-width:5px;stroke-linejoin:round;transition:opacity .15s ease;}
+.mtn .dot:hover .dot-label,.mtn .dot.lit .dot-label{opacity:1;}
+.mtn .dot.lit .dot-fill,.mtn .dot:hover .dot-fill{stroke:var(--ink);stroke-width:3;}
+.mtn .dflag{display:none;}
+.mtn .dflag.plain,.mtn .dflag.gold{display:inline;}
+.mtn .dflag .pennant{fill:var(--card);}
+.mtn .dflag.gold .pennant{fill:var(--gold);}
+.mtn .seg{transition:stroke .3s ease;}
+.picks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;}
+.pick{display:flex;align-items:center;gap:12px;width:100%;min-height:54px;padding:10px 14px;border-radius:12px;background:var(--card);
+      border:1px solid var(--accent-light);color:var(--ink);font-size:15px;line-height:1.3;text-align:left;cursor:pointer;
+      transition:transform .12s ease,box-shadow .12s ease,border-color .12s ease;}
+.pick:hover,.pick.lit{transform:translateX(2px);box-shadow:0 3px 10px color-mix(in srgb,var(--ink) 16%,transparent);border-color:var(--c,var(--accent));}
+.pick-num{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--c,var(--ink));color:var(--k,var(--paper));
+          font-weight:700;font-size:13px;flex:none;font-variant-numeric:tabular-nums;}
+.pick-num svg{width:18px;height:18px;}
+.pick-name{flex:1 1 auto;min-width:0;font-weight:600;}
+.pick-meta{display:flex;align-items:center;gap:10px;flex:none;color:var(--ink-soft);font-variant-numeric:tabular-nums;}
+.pick-lvl{font-size:11px;font-weight:700;letter-spacing:.06em;}
+.pick-best{font-size:13px;font-weight:600;color:var(--ink);}
+.pick-best:empty,.pick-flag:empty{display:none;}
+.pick-flag svg{width:18px;height:20px;display:block;}
+.pick-summit{border-style:dashed;}
+.flag-ico .pennant{fill:var(--card);}
+.flag-ico.gold .pennant{fill:var(--gold);}
+/* a tablet or a touch screen: the markers are too small to tap, so the list is the control */
+@media (max-width:899px),(pointer:coarse){ .map-card .mtn{pointer-events:none;} }
+@media (max-width:700px){
+  .camps{grid-template-columns:minmax(0,1fr);}
+  .map-card{position:static;max-width:360px;width:100%;justify-self:center;padding:8px;}
+  .mtn .dot-label{display:none;}
+}
+
+.btn:focus-visible,.pick:focus-visible,.ubtn:focus-visible,.up-link:focus-visible,.pill:focus-visible,.opt:focus-visible,
+.read:focus-visible,.lang-select:focus-visible,.typer input:focus-visible,.util .camp-music-float.camp-music-slot:focus-visible,
+.brief-more:focus-visible,.gd-x:focus-visible{outline:3px solid var(--ink);outline-offset:3px;}
+
+/* ── the climb itself: a layer over the page, the camp's scene behind the card ──────────
+   --cardw and --gut place the card; the veil and the bar follow them. data-side="left"
+   (build.py, from the scene) mirrors the card, the veil, the mini-map and the keys line. */
+.play{display:none;--cardw:min(500px,42vw);--gut:clamp(16px,3.2vw,48px);--top:84px;}
+body.playing{overflow:hidden;}
+body.playing .play{display:block;position:fixed;inset:0;z-index:80;background:var(--paper-deep);overflow:hidden;}
+body.playing .up-link{display:none;}
+.scene{position:absolute;inset:0;}
+.scene img{width:100%;height:100%;object-fit:cover;object-position:50% 50%;display:block;transition:opacity .45s ease;}
+.scene img.loading{opacity:0;}
+.scene img:not([src]){visibility:hidden;}
+/* the veil: paper behind the card's column only, feathered just past its edge */
+.veil{position:absolute;inset:0;pointer-events:none;
+      background:linear-gradient(270deg,color-mix(in srgb,var(--paper) 58%,transparent) 0,
+                 color-mix(in srgb,var(--paper) 30%,transparent) calc(var(--cardw) + var(--gut)),transparent calc(var(--cardw) + var(--gut) + 72px)),
+                 linear-gradient(180deg,color-mix(in srgb,var(--paper) 30%,transparent) 0,transparent 110px);}
+.play[data-side="left"] .veil{
+      background:linear-gradient(90deg,color-mix(in srgb,var(--paper) 58%,transparent) 0,
+                 color-mix(in srgb,var(--paper) 30%,transparent) calc(var(--cardw) + var(--gut)),transparent calc(var(--cardw) + var(--gut) + 72px)),
+                 linear-gradient(180deg,color-mix(in srgb,var(--paper) 30%,transparent) 0,transparent 110px);}
+.pbar{position:absolute;left:0;right:0;top:0;z-index:4;display:flex;align-items:center;gap:10px;padding:14px 18px;}
+.pill{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:6px 15px;border-radius:999px;white-space:nowrap;
+      background:color-mix(in srgb,var(--paper) 84%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+      border:1px solid color-mix(in srgb,var(--card) 70%,transparent);color:var(--ink);font-size:14px;font-weight:600;
+      box-shadow:0 2px 12px -4px color-mix(in srgb,var(--ink) 30%,transparent);}
+button.pill{cursor:pointer;}
+button.pill:hover{background:var(--card);}
+.pb-chip{background:var(--c,var(--ink));color:var(--k,var(--paper));border-color:transparent;}
+.pbar .pb-chip{-webkit-backdrop-filter:none;backdrop-filter:none;}
+.pb-alt b{font-variant-numeric:tabular-nums;font-weight:700;}
+.pips{list-style:none;margin:0 0 0 4px;padding:8px 12px;display:flex;gap:6px;align-items:center;border-radius:999px;
+      background:color-mix(in srgb,var(--paper) 84%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+      border:1px solid color-mix(in srgb,var(--card) 70%,transparent);}
+.pips li{width:11px;height:11px;flex:none;border-radius:50%;border:1.5px solid color-mix(in srgb,var(--ink) 45%,transparent);background:transparent;transition:background .25s ease,border-color .25s ease;}
+.pips li.on{background:var(--c);border-color:color-mix(in srgb,var(--c) 70%,var(--ink));}
+.pips li.miss{border-color:var(--bad);border-width:2.5px;}
+.pips li.now{box-shadow:0 0 0 2px var(--paper),0 0 0 4px var(--ink);}
+.pb-utils{margin-left:auto;display:flex;align-items:center;}
+.pb-utils .util{gap:6px;}
+.pb-utils .lang-select{max-width:8.5em;}
+.pb-utils .ubtn,.pb-utils .camp-music-float.camp-music-slot{background:color-mix(in srgb,var(--paper) 84%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  border-color:color-mix(in srgb,var(--card) 70%,transparent);}
+
+/* the mini-map (computers): where you are on the mountain, on the side away from the card */
+.mini{position:absolute;z-index:2;left:20px;bottom:20px;width:clamp(170px,15vw,220px);padding:8px;border-radius:16px;
+      background:color-mix(in srgb,var(--paper) 78%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+      border:1px solid color-mix(in srgb,var(--card) 70%,transparent);box-shadow:0 10px 30px -14px color-mix(in srgb,var(--ink) 45%,transparent);}
+.play[data-side="left"] .mini{left:auto;right:20px;}
+.mtn-mini{aspect-ratio:500/540;}
+.mtn-mini .dot{cursor:default;}
+.mtn-mini .pulse{transform-box:fill-box;transform-origin:center;opacity:0;}
+.mtn-mini .pulse.on{opacity:.7;animation:climb-pulse 2.6s ease-in-out infinite;}
+@keyframes climb-pulse{0%,100%{transform:scale(.8);opacity:.7}50%{transform:scale(1.15);opacity:.15}}
+.climber{transition:transform .9s cubic-bezier(.3,.7,.3,1);}
+
+/* the card: a glass panel on the quieter side. It never scrolls: it is as tall as what is on it */
+.card{position:absolute;z-index:3;top:var(--top);bottom:24px;right:var(--gut);width:var(--cardw);display:flex;flex-direction:column;justify-content:center;gap:10px;pointer-events:none;}
+.play[data-side="left"] .card{right:auto;left:var(--gut);}
+.card-in{pointer-events:auto;max-height:100%;overflow:auto;overscroll-behavior:contain;
+         background:color-mix(in srgb,var(--paper) 86%,transparent);-webkit-backdrop-filter:blur(16px) saturate(1.1);backdrop-filter:blur(16px) saturate(1.1);
+         border:1px solid color-mix(in srgb,var(--card) 75%,transparent);border-radius:18px;padding:22px 24px;
+         box-shadow:0 24px 60px -28px color-mix(in srgb,var(--ink) 55%,transparent);}
+.card-in:focus{outline:none;}
+.keys{pointer-events:auto;align-self:flex-end;margin:0;font-size:12px;color:var(--ink-soft);padding:4px 12px;border-radius:999px;
+      background:color-mix(in srgb,var(--paper) 78%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);}
+.play[data-side="left"] .keys{align-self:flex-start;}
+.keys:empty{display:none;}
+/* where the bar has no room for the camp chip and the progress dots, they ride on the card */
+.sheet-head{display:none;align-items:center;flex-wrap:wrap;gap:6px 10px;margin:0 0 12px;}
+.sheet-head .pb-chip{display:inline-flex;align-items:center;min-height:26px;padding:2px 11px;border-radius:999px;font-size:12px;font-weight:700;line-height:1.3;}
+.sheet-head .pips{margin:0;padding:0;gap:5px;background:none;border:0;-webkit-backdrop-filter:none;backdrop-filter:none;}
+.sheet-head .pips li{width:10px;height:10px;}
+.k{margin:0 0 4px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);}
+.tense{font-family:'Fraunces',serif;font-weight:600;font-size:31px;line-height:1.1;margin:0 0 14px;color:var(--d,var(--ink));text-wrap:balance;}
+.tip{margin:0 0 14px;padding:10px 14px;border-left:5px solid var(--c,var(--accent));border-radius:0 12px 12px 0;background:color-mix(in srgb,var(--m,var(--accent-lighter)) 60%,var(--card));font-size:15px;line-height:1.5;}
+.cap{font-weight:700;letter-spacing:.02em;}
+.lines{list-style:none;margin:0;padding:0;display:grid;gap:12px;}
+.line{display:grid;grid-template-columns:38px minmax(0,1fr);gap:10px;align-items:start;}
+.fig-s{width:38px;height:46px;border-radius:9px;overflow:hidden;background:linear-gradient(180deg,color-mix(in srgb,var(--accent-lighter) 70%,var(--card)) 0%,var(--paper-deep) 100%);}
+.fig-s img,.fig-s svg{width:100%;height:100%;object-fit:cover;object-position:50% 28%;display:block;}
+.who{margin:0;font-size:13px;font-weight:700;line-height:1.3;}
+.via{font-weight:500;color:var(--ink-soft);}
+.via .gl{display:inline;margin:0 0 0 4px;}
+.en{margin:2px 0 0;font-size:16px;line-height:1.5;}
+.acts{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-top:18px;}
+.read{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 6px;color:var(--accent-dark);font-weight:600;font-size:14px;text-underline-offset:3px;}
+
+/* a question */
+.q-top{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.q-top .fig-s{width:34px;height:40px;}
+.q-who{font-size:14px;font-weight:700;line-height:1.3;}
+.again{margin-left:auto;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:999px;background:var(--bad-bg);color:var(--bad);}
+.tchip{margin-left:auto;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--c);color:var(--k);white-space:nowrap;}
+.q-ask{margin:0 0 4px;font-size:13px;color:var(--ink-soft);}
+.answered .q-ask{display:none;}
+.q-line{margin:0 0 16px;font-size:21px;line-height:1.45;}
+.gap{display:inline-block;min-width:3.4em;height:1em;border-bottom:2px dashed color-mix(in srgb,var(--ink) 55%,transparent);vertical-align:-.1em;margin:0 .12em;}
+.cue{color:var(--ink-soft);font-size:.78em;white-space:nowrap;}
+/* the marked form: neutral chrome, never a camp colour (at the summit push that colour was the key) */
+mark.spot{color:inherit;font-weight:600;padding:0 .1em;border-radius:3px;background:linear-gradient(transparent 52%,var(--accent-light) 52%,var(--accent-light) 92%,transparent 92%);
+          box-shadow:inset 0 -3px 0 var(--ink);}
+.opts{display:grid;gap:8px;}
+.opt{display:flex;align-items:center;gap:12px;width:100%;min-height:50px;padding:9px 14px;border-radius:12px;text-align:left;cursor:pointer;
+     border:1.5px solid color-mix(in srgb,var(--ink) 18%,transparent);background:var(--card);color:var(--ink);font-size:17px;font-weight:500;line-height:1.3;
+     transition:border-color .12s ease,background .12s ease;}
+.opt:hover:not(:disabled){border-color:var(--ink);}
+.opt kbd{display:grid;place-items:center;width:26px;height:26px;flex:none;border-radius:7px;background:var(--accent-lighter);border:1px solid var(--accent-light);
+         font-family:'Inter',sans-serif;font-size:12px;font-weight:700;color:var(--ink-soft);}
+.opt .mk{margin-left:auto;font-weight:700;}
+.opt:disabled{cursor:default;}
+.opt.right{border-color:var(--good);background:var(--good-bg);}
+.opt.wrong{border-color:var(--bad);background:var(--bad-bg);}
+.opt.right .mk{color:var(--good);}
+.opt.wrong .mk{color:var(--bad);}
+/* answered: only the option chosen and the right one stay */
+.opt.out{display:none;}
+.opt.tense-opt{background:var(--c);color:var(--k);border-color:transparent;font-weight:700;}
+.opt.tense-opt kbd{background:color-mix(in srgb,var(--card) 70%,transparent);border-color:transparent;color:var(--ink);}
+.opt.tense-opt.right{box-shadow:0 0 0 3px var(--good);}
+.opt.tense-opt.wrong{box-shadow:0 0 0 3px var(--bad);}
+.opt.tense-opt .mk{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--card);}
+.opt .mk:empty{display:none;}
+.typer{display:flex;gap:8px;margin:0;}
+.typer input{flex:1;min-width:0;min-height:50px;padding:10px 14px;border-radius:12px;border:1.5px solid color-mix(in srgb,var(--ink) 28%,transparent);
+             background:var(--card);color:var(--ink);font-family:'Inter',sans-serif;font-size:17px;}
+.typer input.right{border-color:var(--good);background:var(--good-bg);}
+.typer input.wrong{border-color:var(--bad);background:var(--bad-bg);}
+.typer .btn{flex:none;}
+.typer.done .btn{display:none;}
+
+/* after an answer */
+.fb:empty{display:none;}
+.fb{margin-top:14px;padding-top:12px;border-top:1px solid color-mix(in srgb,var(--ink) 14%,transparent);}
+.verdict{display:flex;align-items:center;gap:8px;margin:0;font-size:16px;font-weight:700;}
+.verdict.good{color:var(--good);}
+.verdict.bad{color:var(--bad);}
+.verdict svg{width:20px;height:20px;flex:none;}
+.more{margin:2px 0 0;font-size:14px;color:var(--ink-soft);}
+.why{margin:8px 0 0;font-size:15px;line-height:1.5;}
+.fb .acts{margin-top:14px;}
+
+/* a camp reached, and the summit */
+.reached{display:flex;align-items:center;gap:14px;margin:0 0 6px;}
+.reached svg{width:46px;height:52px;flex:none;}
+.reached h2{margin:0;font-size:26px;line-height:1.15;}
+.score{margin:0;font-size:17px;font-weight:600;}
+.goldline{margin:2px 0 14px;font-size:14px;color:var(--ink-soft);}
+.stats{display:flex;flex-wrap:wrap;gap:4px 18px;margin:12px 0 0;font-size:15px;font-weight:600;}
+.v-top .acts{margin-top:12px;}
+.rv-h{margin:16px 0 8px;font-family:'Fraunces',serif;font-size:19px;font-weight:600;}
+.rv-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;}
+.rv-chips{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px;flex:1 1 220px;}
+.rv-chips li{font-size:12px;font-weight:700;line-height:1.3;padding:4px 10px;border-radius:999px;background:var(--c);color:var(--k);white-space:nowrap;}
+.rv-chips li.rv-more{background:var(--accent-light);color:var(--ink);}
+.rv-open{flex:none;}
+.rv-n{text-shadow:none;display:inline-grid;place-items:center;min-width:24px;height:24px;padding:0 6px;border-radius:999px;background:var(--ink);color:var(--paper);font-size:12px;}
+.rv-none{margin:0;font-size:15px;color:var(--ink-soft);}
+
+/* the lines missed first time, in the route map's own dialog */
+dialog.guide-dialog{width:min(680px,calc(100vw - 32px));max-height:min(86vh,900px);max-height:min(86dvh,900px);overflow:auto;padding:22px 26px 20px;
+       border:0;border-radius:18px;background:var(--card);color:var(--ink);box-shadow:0 30px 80px -24px color-mix(in srgb,var(--ink) 55%,transparent);}
+dialog.guide-dialog::backdrop{background:color-mix(in srgb,var(--ink) 50%,transparent);}
+.gd-top{display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.gd-top form,.gd-foot form{margin:0;}
+.rv-title{margin:0;font-size:24px;line-height:1.2;}
+.gd-x{width:44px;height:44px;border-radius:50%;border:1px solid var(--accent-light);background:var(--card);color:var(--ink);
+      font-size:24px;line-height:1;cursor:pointer;flex:none;}
+.gd-x:hover{background:var(--accent-lighter);}
+.gd-foot{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;padding-top:16px;border-top:1px solid var(--accent-light);}
+.rv{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:14px;}
+.rv-g{border-left:5px solid var(--c);padding:2px 0 2px 12px;}
+.rv-g p{margin:0 0 4px;font-size:15px;line-height:1.5;}
+.rv-g .rv-t{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:4px;}
+@media (max-width:560px){ dialog.guide-dialog{padding:16px 14px 14px;} }
+
+@media (min-width:900px){ .keys{display:block;} }
+
+/* a computer under 1180px: the bar keeps one row; the camp chip and the dots ride on the card */
+@media (max-width:1179px){
+  .pbar .pb-chip,.pbar .pb-pips{display:none;}
+  .sheet-head{display:flex;}
+}
+.play[data-view="arrive"] .sheet-head,.play[data-view="summit"] .sheet-head{display:none;}
+
+/* a short computer screen (1366x768, 1024x768, 1280x720): the same card, set tighter */
+@media (min-width:900px) and (max-height:820px){
+  .play{--top:76px;}
+  .card{bottom:16px;}
+  .card-in{padding:18px 20px;}
+  .q-line{font-size:20px;margin-bottom:12px;}
+  .opt{min-height:46px;padding:7px 14px;}
+  .tense{font-size:28px;margin-bottom:10px;}
+  .tip{margin-bottom:10px;padding:8px 12px;}
+  .lines{gap:8px;}
+  .fb{margin-top:10px;padding-top:10px;}
+  .fb .acts{margin-top:10px;}
+  .acts{margin-top:12px;}
+}
+
+/* phones and tablets: the scene stays full-bleed, one row of pills over it, and a card that
+   is only as tall as what is on it, rising from the bottom */
+@media (max-width:899px){
+  .play{--top:auto;}
+  .keys,.mini{display:none;}
+  .veil{background:linear-gradient(0deg,color-mix(in srgb,var(--paper) 40%,transparent) 0,transparent 55%),
+                   linear-gradient(180deg,color-mix(in srgb,var(--paper) 26%,transparent) 0,transparent 90px);}
+  .play[data-side="left"] .veil{background:linear-gradient(0deg,color-mix(in srgb,var(--paper) 40%,transparent) 0,transparent 55%),
+                   linear-gradient(180deg,color-mix(in srgb,var(--paper) 26%,transparent) 0,transparent 90px);}
+  .pbar{flex-wrap:wrap;gap:8px;padding:10px 12px;}
+  .pbar .pb-chip,.pbar .pb-pips{display:none;}
+  .sheet-head{display:flex;}
+  .pb-utils .lang-select{max-width:7.5em;}
+  .card,.play[data-side="left"] .card{top:auto;bottom:16px;left:50%;right:auto;width:min(560px,calc(100vw - 32px));transform:translateX(-50%);justify-content:flex-end;}
+  .card-in{max-height:calc(100vh - 88px);max-height:calc(100dvh - 88px);padding:18px 18px;}
+  .tense{font-size:27px;}
+  .q-line{font-size:18px;}
+}
+/* a phone held upright: a bottom sheet the width of the screen */
+@media (max-width:599px){
+  .card,.play[data-side="left"] .card{left:0;right:0;bottom:0;width:auto;transform:none;}
+  .card-in{border-radius:20px 20px 0 0;border-bottom:0;padding:14px 16px calc(14px + env(safe-area-inset-bottom,0px));
+           max-height:calc(100vh - 72px);max-height:calc(100dvh - 72px);background:color-mix(in srgb,var(--paper) 93%,transparent);}
+  .q-top{margin-bottom:8px;}
+  .q-top .fig-s{width:30px;height:36px;}
+  .q-line{margin-bottom:12px;}
+  .opt{min-height:48px;}
+  .tip{padding:8px 12px;}
+  .lines{gap:10px;}
+  .acts{margin-top:14px;}
+  .fb{margin-top:12px;padding-top:10px;}
+  .fb .acts{margin-top:12px;}
+}
+/* a narrow phone with the language menu showing: the back button keeps its arrow only */
+@media (max-width:440px){
+  .pbar:has(.lang-select:not(.solo)) .pb-back .lbl{display:none;}
+  .pbar:has(.lang-select:not(.solo)) .pb-back{padding:6px 14px;}
+}
+/* a phone on its side, or any screen under 560px tall: the computer's arrangement, tight.
+   The card takes the full height on the quieter side, the bar the rest of the top row */
+@media (max-height:560px) and (min-aspect-ratio:1/1){
+  .play{--cardw:min(460px,56vw);--gut:8px;--top:8px;}
+  .keys,.mini{display:none;}
+  .veil{background:linear-gradient(270deg,color-mix(in srgb,var(--paper) 58%,transparent) 0,
+                   color-mix(in srgb,var(--paper) 30%,transparent) calc(var(--cardw) + var(--gut)),transparent calc(var(--cardw) + var(--gut) + 60px));}
+  .play[data-side="left"] .veil{background:linear-gradient(90deg,color-mix(in srgb,var(--paper) 58%,transparent) 0,
+                   color-mix(in srgb,var(--paper) 30%,transparent) calc(var(--cardw) + var(--gut)),transparent calc(var(--cardw) + var(--gut) + 60px));}
+  .pbar{flex-wrap:wrap;gap:6px;padding:8px 10px;right:calc(var(--cardw) + var(--gut));}
+  .play[data-side="left"] .pbar{left:calc(var(--cardw) + var(--gut));right:0;}
+  .pbar .pb-chip,.pbar .pb-pips{display:none;}
+  .sheet-head{display:flex;margin-bottom:8px;}
+  .card,.play[data-side="left"] .card{top:var(--top);bottom:8px;width:var(--cardw);transform:none;justify-content:center;}
+  .card{left:auto;right:var(--gut);}
+  .play[data-side="left"] .card{left:var(--gut);right:auto;}
+  .card-in{max-height:100%;border-radius:16px;border-bottom:1px solid color-mix(in srgb,var(--card) 75%,transparent);padding:12px 16px;
+           background:color-mix(in srgb,var(--paper) 88%,transparent);}
+  .k{margin-bottom:2px;}
+  .tense{font-size:23px;margin-bottom:8px;}
+  .tip{font-size:14px;margin-bottom:8px;padding:6px 10px;}
+  .lines{gap:6px;}
+  .line{grid-template-columns:30px minmax(0,1fr);gap:8px;}
+  .line .fig-s{width:30px;height:36px;}
+  .en{font-size:14px;line-height:1.4;}
+  .q-top{margin-bottom:4px;gap:8px;}
+  .q-top .fig-s{width:24px;height:28px;border-radius:6px;}
+  .q-who{font-size:13px;}
+  .q-ask{font-size:12px;margin-bottom:2px;}
+  .q-line{font-size:17px;line-height:1.35;margin-bottom:8px;}
+  .opts{gap:6px;}
+  .opt{min-height:44px;padding:5px 12px;font-size:16px;}
+  .typer input{min-height:44px;padding:6px 12px;}
+  .typer .btn{min-height:44px;}
+  .fb{margin-top:8px;padding-top:6px;}
+  .verdict{font-size:15px;}
+  .more{font-size:13px;margin-top:0;}
+  .why{font-size:14px;line-height:1.4;margin-top:4px;}
+  .fb .acts,.acts{margin-top:8px;}
+  .btn{min-height:44px;padding:8px 18px;}
+  .reached svg{width:34px;height:38px;}
+  .reached h2{font-size:22px;}
+  .goldline{margin-bottom:8px;}
+  .rv-h{margin:10px 0 6px;font-size:17px;}
+  .stats{margin-top:6px;}
+  /* the summit screen is the end of the climb, not a line to answer: it takes the width
+     under the bar, in two columns (the words at the top; the way on and the review) */
+  .play[data-view="summit"]{--cardw:calc(100vw - 16px);--top:60px;}
+  .play[data-view="summit"] .pbar,.play[data-side="left"][data-view="summit"] .pbar{left:0;right:0;}
+  .v-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto auto auto auto 1fr;column-gap:24px;align-items:start;}
+  .v-top > .tense{grid-column:1;grid-row:1;}
+  .v-top > .lines{grid-column:1;grid-row:2 / span 4;}
+  .v-top > .stats{grid-column:2;grid-row:1;margin-top:4px;}
+  .v-top > .acts{grid-column:2;grid-row:2;}
+  .v-top > .rv-h{grid-column:2;grid-row:3;}
+  .v-top > .rv-row,.v-top > .rv-none{grid-column:2;grid-row:4;}
+}
+
+/* the card is still too tall for the screen (a long C1 line on a phone on its side): the
+   page's script tightens it a step at a time until it fits (template.js fit()) */
+.fit1 .q-ask{display:none;}
+.fit1 .line{grid-template-columns:minmax(0,1fr);}
+.fit1 .line .fig-s,.fit1 .q-top .fig-s{display:none;}
+.fit1 .q-top{margin-bottom:4px;}
+.fit1 .lines{gap:6px;}
+.fit1 .tip{margin-bottom:8px;}
+.fit1 .tense{margin-bottom:6px;}
+.fit1 .acts,.fit1 .fb .acts{margin-top:8px;}
+.fit1 .fb{margin-top:8px;padding-top:8px;}
+.fit1 .sheet-head{margin-bottom:6px;}
+.fit1 .stats{margin-top:6px;}
+.fit1 .rv-h{margin:10px 0 6px;}
+/* "Next" beside the verdict; a line answered right shows its answer in the sentence only */
+.fit2 .fb{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:12px;}
+.fit2 .fb > *{grid-column:1;}
+.fit2 .fb .acts{grid-column:2;grid-row:1 / span 2;margin:0;align-self:start;}
+.fit2 .v-q.answered:not([data-kind="spot"]) .opt.right{display:none;}
+.fit2 .v-q.answered .opt{min-height:36px;padding-top:3px;padding-bottom:3px;}   /* answered: no longer a tap target */
+.fit2 .q-line{margin-bottom:8px;}
+.fit3 .q-line{font-size:16px;line-height:1.35;}
+.fit3 .en,.fit3 .why,.fit3 .tip{font-size:13px;line-height:1.4;}
+.fit3 .tense{font-size:21px;}
+.fit3 .opt{min-height:44px;padding:4px 12px;font-size:15px;}
+
+@media (prefers-reduced-motion:reduce){
+  .pick,.btn,.up-link,.mtn .seg,.mtn .dot-label,.scene img,.pips li,.opt{transition:none;}
+  .climber{transition:none;}
+  .mtn-mini .pulse.on{animation:none;opacity:.6;}
+}
+@media print{ .play,.util{display:none!important;} body.playing{overflow:visible;} }
