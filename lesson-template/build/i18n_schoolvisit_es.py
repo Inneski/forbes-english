@@ -57,7 +57,7 @@ T = dict(
 
     b11w='Un momento en el futuro: WILL + verbo, “I will sweat”. WILL BE + -ING, “I will be sweating”, lo muestra en curso en ese momento — las dos son correctas.',
     b12w='“When I was young” pone la frase en pasado: HAD. “Used to have” también vale.',
-    b13w='Después de WHEN en una oración temporal usamos el Present Simple para el futuro: “when she grows up”, no “will grow”.',
+    b13w='Después de WHEN en una oración temporal usamos una forma de presente para el futuro: “when she grows up”, o “when she is grown up” (GROWN-UP es un adjetivo: adulta). Nunca “will grow”.',
     b14w='Una pregunta indirecta: ASKED + persona + WHETHER (o IF). “Asked” va en pasado porque la pregunta ya se hizo.',
     b15w='Después de una negación, ANY: “don’t watch any TV”. MUCH también es correcto — “don’t watch much TV”.',
     b16w='Después de una negación, ANYTHING. “I don’t watch anything on TV” — o “much”, que también se acepta.',

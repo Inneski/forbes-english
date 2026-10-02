@@ -89,7 +89,7 @@ T['en'] = dict(
 
     b11w='A future moment: WILL + verb, “I will sweat”. WILL BE + -ING, “I will be sweating”, shows it in progress at that moment — both are right.',
     b12w='“When I was young” puts the sentence in the past: HAD. “Used to have” also works.',
-    b13w='After WHEN in a time clause we use the Present Simple for the future: “when she grows up”, not “will grow”.',
+    b13w='After WHEN in a time clause we use a present form for the future: “when she grows up”, or “when she is grown up” (GROWN-UP is an adjective: an adult). Never “will grow”.',
     b14w='A reported question: ASKED + person + WHETHER (or IF). “Asked” is in the past because the asking is over.',
     b15w='After a negative, ANY: “don’t watch any TV”. MUCH is also right — “don’t watch much TV”.',
     b16w='After a negative, ANYTHING. “I don’t watch anything on TV” — or “much”, which is also accepted.',

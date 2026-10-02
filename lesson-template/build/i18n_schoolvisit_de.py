@@ -56,7 +56,7 @@ T = dict(
 
     b11w='Ein Moment in der Zukunft: WILL + Verb, „I will sweat“. WILL BE + -ING, „I will be sweating“, zeigt es in diesem Moment im Gang — beides ist richtig.',
     b12w='„When I was young“ setzt den Satz in die Vergangenheit: HAD. „Used to have“ geht auch.',
-    b13w='Nach WHEN in einem Zeitsatz steht für die Zukunft das Present Simple: „when she grows up“, nicht „will grow“.',
+    b13w='Nach WHEN in einem Zeitsatz steht für die Zukunft eine Präsensform: „when she grows up“ oder „when she is grown up“ (GROWN-UP ist ein Adjektiv: erwachsen). Nie „will grow“.',
     b14w='Eine indirekte Frage: ASKED + Person + WHETHER (oder IF). „Asked“ steht in der Vergangenheit, weil das Fragen vorbei ist.',
     b15w='Nach einer Verneinung ANY: „don’t watch any TV“. MUCH ist auch richtig — „don’t watch much TV“.',
     b16w='Nach einer Verneinung ANYTHING. „I don’t watch anything on TV“ — oder „much“, das ebenfalls akzeptiert wird.',

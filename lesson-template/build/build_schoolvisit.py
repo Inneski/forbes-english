@@ -183,7 +183,7 @@ GAPS = [
      ('When I was young, I ______ more time.',
       ['had|used to have'], 'b12w')],
     [('She might understand this part of my book when she ______ up.',
-      ['grows'], 'b13w'),
+      ['grows|is grown|has grown|’s grown'], 'b13w'),
      ('My neighbour ______ her teacher whether they played games in class. <em>(ask)</em>',
       ['asked'], 'b14w')],
     [('We don’t watch ______ TV at home.',
