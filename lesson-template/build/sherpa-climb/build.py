@@ -459,6 +459,16 @@ HAT = {'ana': 'beanie', 'otto': 'brim', 'sam': 'hood', 'doris': 'radio'}
 
 
 def figure(who, route):
+    # Innes's own character art, when it arrives, wins over the drawn figure with no code
+    # change: SherpaClimb/cast-<who>.jpg (portrait, ~4:5; prep it with tools/prep-artwork.py
+    # and docs/ARTWORK-sherpa-climb.md). Until then: Tensing is the course's sherpa render,
+    # the others the SVG figures below.
+    art = os.path.join(ROOT, 'SherpaClimb', 'cast-%s.jpg' % who)
+    if os.path.exists(art):
+        from PIL import Image
+        w, h = Image.open(art).size
+        return ('<img src="SherpaClimb/cast-%s.jpg" width="%d" height="%d" alt="" '
+                'loading="lazy" decoding="async">' % (who, w, h))
     if who == 'tensing':
         return ('<img src="Sherpa%20Tensing/sherpa-guide.jpg" width="360" height="450" alt="" '
                 'loading="lazy" decoding="async">')
@@ -691,7 +701,10 @@ def scene(n):
     return 'SherpaClimb/summit' if n == 'summit' else 'SherpaClimb/camp-%02d' % n
 
 
-TOP_SCENE = 'Sherpa Tensing/sherpa-day.jpg'     # the summit screen, after the push
+# the summit screen, after the push: the team on top (docs/ARTWORK-sherpa-climb.md) once it
+# exists, the course's sherpa render until then
+TOP_SCENE = ('SherpaClimb/summit-top.jpg' if os.path.exists(os.path.join(ROOT, 'SherpaClimb', 'summit-top.jpg'))
+             else 'Sherpa Tensing/sherpa-day.jpg')
 
 
 def quiet_side(path):

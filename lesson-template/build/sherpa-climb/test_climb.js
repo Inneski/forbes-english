@@ -572,7 +572,7 @@ async function gateSize(b, base, C, w, h) {
       await p.evaluate(ids => { const s = JSON.parse(localStorage.getItem('sherpa.climb.v1') || '{"v":1,"camps":{},"summit":null,"last":null,"misses":{}}');
         ids.forEach(id => { s.misses[id] = true; }); localStorage.setItem('sherpa.climb.v1', JSON.stringify(s)); }, ids);
     }
-    await p.goto(base + PAGE + '?gate=' + hash + '#' + hash, { waitUntil: 'load' });   // a new query: a real load, not a hash change
+    await p.goto(base + PAGE + '?gate=' + hash + (opt('--lang') ? '&lang=' + opt('--lang') : '') + '#' + hash, { waitUntil: 'load' });   // --lang xx: the gate with that gloss under every line   // a new query: a real load, not a hash change
     await p.waitForSelector('#view .v-arrive');
     await p.waitForTimeout(150);
     await check(`${hash} arrival`);
