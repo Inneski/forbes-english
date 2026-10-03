@@ -385,6 +385,21 @@ also open Sherpa Tensing.
   next `seo.py` run on main writes; until then every gate says "Forbes
   English Pro" (access itself is already correct).
 
+## 2026-10-04 — Grand Hotel in the catalogue; Block Camp Free/Pro caught up with pricing
+
+  * Innes asked: catalogue row **343** inserted for
+    block-camp/grand-hotel-rpg.html (B1-B2, pro), the SQL from the Grand
+    Hotel entry below. seo.py then indexed it.
+  * seo.py also picked up the pricing go-live's access change in Supabase
+    (made 2026-10-03 by the pricing work, not this session): Present
+    Continuous 1, Past Simple 1, Past Continuous 1 and The Last Bounty are
+    now pro, Frostbound River free; only Present Simple 1 is a free deck.
+    The hub, Quest, camp-nav and the climb map still said free (the Worker
+    already gated them), so they were rebuilt from the catalogue:
+    FREE_CLIMB = {(1,1)}, hub/quest/nav/flags builders, check-access --fix.
+    check-access PASS (hub 58, quest 41, nav 26, map 52). Hub note: "Part 1
+    free on camp 1", in all ten languages.
+
 ## 2026-10-03 — Block Camp hub in ten languages; one language for the whole line
 
 Innes: "block camp hub needs a translation option and button". The hub
