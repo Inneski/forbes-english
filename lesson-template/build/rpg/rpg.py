@@ -559,6 +559,11 @@ function render(){const s=G.scenes[state.scene];frame.className=`frame ${s.pos||
   const hide=`<button class="hide-btn" onclick="closePanel()" title="Esc">✕ ${ui('hide')}</button>`;
   const pgs=scenePages(s),np=pgs.length,pi=Math.min(state.page||0,np-1);
   let html=head(s,pgs[pi]),act='';
+  /* routeStory on a scene that is not an ending: a paragraph added under the
+     story, chosen by a route taken earlier (the Grand Hotel's partner returns
+     with the receipt or the key record). Same rule as on an ending — the first
+     key that appears in state.route wins; no match prints nothing. */
+  if(s.kind!=='ending'&&s.routeStory&&pi===np-1){const r=(Object.entries(s.routeStory).find(([k])=>state.route.includes(k))||[])[1];if(r)html+=line(r,'story')}
   /* mid-story: the only thing on offer is the next page. The scene's own
      action — question, routes, restart — waits for the last one. */
   if(pi<np-1){content.innerHTML=hide+html+`<div class="story-pager"><span class="page-count">${pi+1} / ${np}</span><button class="continue" onclick="nextPage()">${ui('readOn')}</button></div>`;content.scrollTop=0;updateHUD();setOpen(false);return}
@@ -568,7 +573,7 @@ function render(){const s=G.scenes[state.scene];frame.className=`frame ${s.pos||
   else if(s.kind==='question'){act+=`${(!G.pageClues&&s.clue)?`<div class="clue"><b>${ui('visual')}</b><br>${label(Array.isArray(s.clue)?s.clue[0]:s.clue)}</div>`:''}<div class="prompt">${label(s.prompt)}</div><div class="options">${s.opts.map((o,i)=>`<button class="option${o.parts?' split':''}" data-i="${i}" onclick="answer(${i})"><span class="key">${i+1}</span>${optMarkup(o)}</button>`).join('')}</div><div id="feedback" class="feedback"></div><button id="continue" class="continue" hidden onclick="advance()">${ui('continue')}</button>`}
   else if(s.kind==='choice'){act+=`<div class="route-options">${s.routes.map((r,i)=>`<button class="route" onclick="chooseRoute(${i})"><b>${i+1} · ${label(r.name)}</b>${label(r.desc)}</button>`).join('')}</div>`}
   else if(s.kind==='hub'){act+=`<div class="chapter-list">${G.chapters.map((c,i)=>`<button class="chapter" onclick="startChapter(${i})"><b>${i+1} · ${label(c.title)}</b>${c.lead?label(c.lead):''}</button>`).join('')}</div>${s.small?`<div class="small">${label(s.small)}</div>`:''}`}
-  else if(s.kind==='ending'){const c=CH();/* an ending may close with a paragraph that depends on the route taken (routeStory) */const rt=s.routeStory?(Object.entries(s.routeStory).find(([k])=>state.route.includes(k))||[])[1]:null;const rev=G.repair?(state.mistakes.length?`<div class="review">${state.mistakes.map(id=>{const m=G.scenes[id];return `<div>${esct(m.prompt.en)}<br><b>${esc(optText(m.opts[m.answer]))}</b> — ${label(m.fb)}</div>`}).join('')}</div>`:`<div class="small">${ui('perfect')}</div>`):'';const ft=G.repair?` · ${state.score/(G.points||1)}/${c.total} ${ui('firstTry')}`:'';
+  else if(s.kind==='ending'){const c=CH();/* an ending may close with a paragraph that depends on the route taken (routeStory) */const rt=s.routeStory?(Object.entries(s.routeStory).find(([k])=>state.route.includes(k))||[])[1]:null;const rev=G.repair?(state.mistakes.length?`<div class="review">${state.mistakes.map(id=>{const m=G.scenes[id];return `<div>${esct(m.prompt.en)}<br><b>${esc(optText(m.opts[m.answer]))}</b> — ${label(fbFor(m,m.answer))}</div>`}).join('')}</div>`:`<div class="small">${ui('perfect')}</div>`):'';const ft=G.repair?` · ${state.score/(G.points||1)}/${c.total} ${ui('firstTry')}`:'';
     /* the next chapter is offered from every ending, won or lost — a part
        three that can only be reached by mastering part two is a part three
        most learners never see. */
@@ -591,11 +596,19 @@ window.addEventListener('resize',()=>{placeHot(G.scenes[state.scene]);fitZone()}
 const langMenu=document.getElementById('langMenu'), langBtn=document.getElementById('langBtn');
 function closeMenu(){langMenu.hidden=true;langBtn.setAttribute('aria-expanded','false')}
 function toggleMenu(){langMenu.hidden=!langMenu.hidden;langBtn.setAttribute('aria-expanded',String(!langMenu.hidden))}
-function go(id){state.scene=id;state.page=0;render()}
+/* 'resolve' as a target works from anywhere (a story page or a route), not
+   only as a question's `next`: the Grand Hotel reads a closing page before the
+   ending is decided. */
+function go(id){if(id==='resolve')id=resolve();state.scene=id;state.page=0;render()}
 /* paging keeps the panel up — the reader is mid-sentence, and folding it away
    on every tap would mean re-opening the object three times to read one scene */
 function nextPage(){state.page=(state.page||0)+1;render();setOpen(true)}
-function displayAnswer(i,apply){const s=G.scenes[state.scene];const buttons=[...document.querySelectorAll('.option')];const ok=i===s.answer;const p=s.points||G.points;const fb=document.getElementById('feedback');const expl=s.fb?`<br>${label(s.fb)}`:'';
+/* `fb` is one line under every answer, or — when an export explains each
+   option (the Grand Hotel) — a list, one line per option: the reader sees why
+   the option THEY chose is right or wrong, and after a wrong answer the key's
+   own line under it. */
+function fbFor(s,i){return Array.isArray(s.fb)?s.fb[i]:s.fb}
+function displayAnswer(i,apply){const s=G.scenes[state.scene];const buttons=[...document.querySelectorAll('.option')];const ok=i===s.answer;const p=s.points||G.points;const fb=document.getElementById('feedback');const expl=Array.isArray(s.fb)?`<br>${label(s.fb[i])}${ok||!s.fb[s.answer]?'':`<br>${label(s.fb[s.answer])}`}`:s.fb?`<br>${label(s.fb)}`:'';
   /* the story's consequence of this answer — "The bell rings. Mrs Rennie sits
      down on the step." or "Brannan rings it anyway." — shown under the verdict
      and above the grammar, so the answer changes the story as well as the score */
@@ -627,7 +640,13 @@ function answer(i){if(Object.prototype.hasOwnProperty.call(state.results,state.s
    below does. A 60/70 run with one collectible missing is `missing`; the
    ladder called it `failed` because the last answer was wrong, which is a
    different game from the one the export shipped. */
-function resolve(){const c=CH();if(c.passScore!=null){const live=!c.chances||state.chances>0;if(!live||state.score<c.passScore)return c.endings.failed;if(state.tiles<c.tiles)return c.endings.missing;if(state.score>=c.max)return c.endings.master;return c.endings.complete}
+/* `ladder` is the fourth way: rungs of {min, tiles, route, ending}, best first,
+   the first rung whose score floor, tile floor and required routes the run
+   meets. The Grand Hotel's best ending needs a score, four verified clues AND
+   two particular story choices; no other rule can say that. Consulted first;
+   a lesson without one is unchanged. */
+function resolve(){const c=CH();if(c.ladder&&c.ladder.length){const r=c.ladder.find(r=>state.score>=(r.min||0)&&state.tiles>=(r.tiles||0)&&(r.route||[]).every(x=>state.route.includes(x)));if(r)return r.ending}
+  if(c.passScore!=null){const live=!c.chances||state.chances>0;if(!live||state.score<c.passScore)return c.endings.failed;if(state.tiles<c.tiles)return c.endings.missing;if(state.score>=c.max)return c.endings.master;return c.endings.complete}
   if(c.bands&&c.bands.length){const b=c.bands.find(b=>state.score>=b[0]);if(b)return b[1]}
   const alive=!c.chances||state.chances>0;const full=state.tiles>=c.tiles&&alive;const flawless=state.finalCorrect&&full&&state.score>=c.max;if(flawless&&(!state.endingPick||state.endingMaster))return c.endings.master;if(state.endingPick&&alive&&c.endings[state.endingPick]&&!(state.endingMin&&state.score<state.endingMin))return c.endings[state.endingPick];if(state.finalCorrect&&full&&state.score>=c.completeScore)return c.endings.complete;if(state.finalCorrect&&state.tiles<c.tiles)return c.endings.missing;return c.endings.failed}
 /* `G.chances &&` is the same guard resolve() carries: a lesson with no chance
@@ -798,10 +817,10 @@ def validate(spec):
                 raise SystemExit('scene %s: next %r does not exist' % (sid, nxt))
         elif s['kind'] == 'choice':
             for r in s['routes']:
-                if r['target'] not in scenes or ('else' in r and r['else'] not in scenes):
+                if (r['target'] != 'resolve' and r['target'] not in scenes) or ('else' in r and r['else'] not in scenes):
                     raise SystemExit('scene %s: route target %r missing' % (sid, r['target']))
         elif s['kind'] in ('intro', 'rules', 'story'):
-            if s['next'] not in scenes:
+            if s['next'] != 'resolve' and s['next'] not in scenes:
                 raise SystemExit('scene %s: next %r missing' % (sid, s['next']))
     for key, sid in spec['endings'].items():
         if scenes.get(sid, {}).get('kind') != 'ending':
@@ -834,6 +853,12 @@ def validate(spec):
             raise SystemExit('bands must run highest first: %s+ follows %s+' % (lo, bands[i - 1][0]))
     if bands and bands[-1][0] > 0:
         raise SystemExit('the last band must be 0 — a score below %s reaches no ending' % bands[-1][0])
+    ladder = spec.get('ladder') or []
+    for i, r in enumerate(ladder):
+        if scenes.get(r.get('ending'), {}).get('kind') != 'ending':
+            raise SystemExit('ladder rung %d -> %r is not an ending scene' % (i, r.get('ending')))
+    if ladder and (ladder[-1].get('min') or ladder[-1].get('tiles') or ladder[-1].get('route')):
+        raise SystemExit('the last ladder rung must have no conditions — a run below it reaches no ending')
     _check_answer_key(scenes)
     labels = dict(LABELS, **spec.get('labels', {}))
     _check_langs(labels, langs, 'labels')
@@ -866,6 +891,7 @@ def assemble(spec, out=None):
         'chances': spec['chances'], 'completeScore': spec.get('complete_score', spec['max']),
         'repair': bool(spec.get('repair')), 'total': spec.get('total', 0),
         'bands': spec.get('bands') or [],
+        'ladder': spec.get('ladder') or [],
         'chapters': spec.get('chapters') or None,
         'fit': spec.get('fit', 'cover'),
         'pageClues': bool(spec.get('page_clues')),
