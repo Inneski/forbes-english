@@ -39,3 +39,36 @@ alter table public.profiles
 -- with the service role, neither of which these revokes touch.
 drop policy if exists "Users can update their own profile" on public.profiles;
 revoke insert, update, delete on public.profiles from anon, authenticated;
+
+-- ── Step 2: Term 1 / Term 2 tagging (PENDING — Innes to run) ────────────
+-- The session's write was refused by the permission layer on 2026-10-03.
+-- Term 1: deck first, quest second, mission as numbered in the handoff.
+update public.lessons l set term = 1, mission = v.m
+from (values
+  ('blockcamp-present-simple.html',1),('block-camp/frostbound-river-rpg.html',1),
+  ('blockcamp-present-simple-2.html',2),('block-camp/sherlock-blue-hour-rpg.html',2),
+  ('blockcamp-present-continuous.html',3),('block-camp/wonderland-stolen-now-rpg.html',3),
+  ('blockcamp-present-continuous-2.html',4),
+  ('blockcamp-past-simple.html',5),('block-camp/last-bounty-rpg.html',5),
+  ('blockcamp-past-simple-2.html',6),('block-camp/fistful-of-lies-rpg.html',6),
+  ('blockcamp-past-continuous.html',7),('block-camp/lost-yellow-road-rpg.html',7),
+  ('blockcamp-past-continuous-2.html',8),
+  ('blockcamp-going-to.html',9),('block-camp/frankenstein-green-prometheus-rpg.html',9),
+  ('blockcamp-going-to-2.html',10),('block-camp/frankenstein-consequences-rpg.html',10),
+  ('blockcamp-future-simple.html',11),('block-camp/last-train-home-rpg.html',11),
+  ('blockcamp-future-simple-2.html',12)
+) v(f, m)
+where l.file = v.f;                                   -- expect UPDATE 21
+
+-- Term 2: not on sale. The handoff gives no mission numbers, so mission
+-- stays null until Term 2 is priced. Past perfect 1b is not built yet.
+update public.lessons set term = 2, mission = null
+where file in (
+  'blockcamp-present-perfect.html','blockcamp-present-perfect-2.html',
+  'block-camp/nautilus-black-archive-rpg.html',
+  'blockcamp-present-perfect-continuous.html','blockcamp-present-perfect-continuous-2.html',
+  'blockcamp-past-perfect.html',
+  'block-camp/twenty-thousand-leagues-rpg.html','block-camp/long-way-home-rpg.html',
+  'blockcamp-passive-present-simple.html','blockcamp-passive-present-continuous.html',
+  'blockcamp-passive-past-simple.html','blockcamp-passive-past-continuous.html',
+  'blockcamp-passive-going-to.html','blockcamp-passive-future-simple.html');  -- expect UPDATE 14
