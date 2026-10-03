@@ -14,14 +14,14 @@ faces", so they are drawn from behind)
     Tensing  the guide. The course's name made a person. Gives the tip and the
              arrival/leaving lines; never speaks a quiz line. No pronoun is
              ever used for Tensing.
-    Ana      the planner: the schedule, the forecast, what happens next.
+    Myra     the planner (called Ana until Innes renamed her, 2026-10-03): the schedule, the forecast, what happens next.
     Otto     the old hand: stories of climbs he has done before.
     Sam      first big climb: what is happening, what he has done so far.
-    Doris    base camp radio ("Doris has just made coffee" is camp four's own
-             example).
-    Momo     the yak, at base camp with Doris ("he"). A running joke, never a
+    Navya    base camp radio. (Called Doris until Innes renamed her, 2026-10-03;
+             camp four's own example is "Doris has just made coffee".)
+    Momo     the yak, at base camp with Navya ("he"). A running joke, never a
              speaker.
-Every radio line, Doris's or the team's, ends "Over."
+Every radio line, Navya's or the team's, ends "Over."
 
 THE STORY'S FACTS (two reviews found the story contradicting itself; keep
 these true when you change a line)
@@ -34,7 +34,7 @@ these true when you change a line)
     the hut is found locked at camp ten and opened at camp eleven.
     Otto first climbed in 1987, climbed THIS mountain in 1998 (the last peak in
     the valley), has known Tensing nearly twenty years, and next June will have
-    been climbing for forty. Doris has known Otto twenty years. Sam is going to
+    been climbing for forty. Navya has known Otto twenty years. Sam is going to
     meet his sister in Kathmandu after the climb; the plane home leaves on the
     20th.
 
@@ -82,10 +82,10 @@ hand over an answer from the same camp; **bold** marks the form in them.
 
 CAST = {
     'tensing': {'name': 'Tensing', 'role': 'the guide'},
-    'ana':     {'name': 'Ana',     'role': 'the planner'},
+    'ana':     {'name': 'Myra',     'role': 'the planner'},
     'otto':    {'name': 'Otto',    'role': 'the old hand'},
     'sam':     {'name': 'Sam',     'role': 'first big climb'},
-    'doris':   {'name': 'Doris',   'role': 'base camp radio'},
+    'doris':   {'name': 'Navya',   'role': 'base camp radio'},
 }
 VIA = {'radio': 'on the radio', 'diary': 'diary', 'note': 'note'}
 
@@ -130,7 +130,7 @@ CAMPS = [
              'answer': 'is staying', 'options': ['is staying', 'stays', 'is stay'],
              'fb': '"this week" = for now, not for ever: IS + VERB-ING.'},
             {'id': 'c1-7', 'kind': 'type', 'who': 'sam', 'via': 'diary',
-             'text': "Day one. Right now Otto and Ana _____ breakfast, and I'm starving! (cook)",
+             'text': "Day one. Right now Otto and Myra _____ breakfast, and I'm starving! (cook)",
              'answer': 'are cooking', 'accept': ['are cooking'],
              'fb': '"Right now" = in the middle of it: ARE + COOKING.'},
             {'id': 'c1-8', 'kind': 'choose', 'who': 'sam',
@@ -298,7 +298,7 @@ CAMPS = [
              'answer': 'Are ... going to need', 'options': ['Are ... going to need', 'Do ... going to need', 'Are ... going to needing'],
              'fb': 'A question about what is coming: ARE + we + GOING TO + BASE VERB? Not DO.'},
             {'id': 'c5-5', 'kind': 'spot', 'who': 'sam', 'via': 'radio',
-             'text': "Don't worry, Doris. I'm sure Momo [will be] fine. Over.",
+             'text': "Don't worry, Navya. I'm sure Momo [will be] fine. Over.",
              'answer': 7, 'options': [7, 5, 9],
              'fb': 'WILL + BE after "I\'m sure": an opinion about the future. Future simple, not going to.'},
             {'id': 'c5-6', 'kind': 'choose', 'who': 'ana',
@@ -470,7 +470,7 @@ CAMPS = [
              'answer': 'will be blowing', 'accept': ['will be blowing', 'is going to be blowing'],
              'fb': '"This time tomorrow" = in the middle of it then: WILL BE + BLOWING.'},
             {'id': 'c9-4', 'kind': 'choose', 'who': 'otto',
-             'text': "Don't call Doris now. She _____ lunch. (have)",
+             'text': "Don't call Navya now. She _____ lunch. (have)",
              'answer': "'ll be having", 'options': ["'ll be having", "'ll having", "'s be having"],
              'fb': "A confident guess about now: WILL ('LL) BE + VERB-ING."},
             {'id': 'c9-5', 'kind': 'spot', 'who': 'sam',
@@ -486,7 +486,7 @@ CAMPS = [
              'answer': 'will be sleeping', 'accept': ['will be sleeping', 'am going to be sleeping', 'will be asleep', 'am going to be asleep'],
              'fb': '"At midnight tonight" = in the middle of it then: WILL BE + SLEEPING.'},
             {'id': 'c9-8', 'kind': 'choose', 'who': 'ana', 'via': 'radio',
-             'text': "Don't worry if you can't reach us tomorrow morning, Doris. We _____ the radio. Over. (not / use)",
+             'text': "Don't worry if you can't reach us tomorrow morning, Navya. We _____ the radio. Over. (not / use)",
              'answer': "won't be using", 'options': ["won't be using", "won't be use", "aren't be using"],
              'fb': "Not in progress at that future time: WON'T BE + VERB-ING."},
         ],
@@ -618,7 +618,7 @@ CAMPS = [
              'answer': 'will already have flown', 'accept': ['will already have flown', 'will have already flown', 'will have flown', 'am going to have already flown', 'am going to have flown', 'will already have flown back', 'will have already flown back', 'will have flown back'],
              'fb': '"by the time you read this" = done before then: WILL + ALREADY + HAVE + PAST PARTICIPLE. FLY → FLOWN.'},
             {'id': 'c12-8', 'kind': 'choose', 'who': 'sam', 'via': 'radio',
-             'text': "_____ Momo _____ all the grass at base camp by the time we get back, Doris? Over. (eat)",
+             'text': "_____ Momo _____ all the grass at base camp by the time we get back, Navya? Over. (eat)",
              'answer': 'Will ... have eaten', 'options': ['Will ... have eaten', 'Will ... has eaten', 'Has ... eaten'],
              'fb': 'A question about a future deadline: WILL + subject + HAVE + PAST PARTICIPLE?'},
         ],
@@ -662,7 +662,7 @@ CAMPS = [
              'answer': 'will have been wearing', 'accept': ['will have been wearing', 'will have worn', 'am going to have been wearing', 'am going to have worn'],
              'fb': '"for two weeks" up to a future point: WILL HAVE BEEN + WEARING.'},
             {'id': 'c13-8', 'kind': 'choose', 'who': 'ana', 'via': 'radio',
-             'text': "Don't worry, Doris. When the bus comes, we _____ for long. Over. (not / wait)",
+             'text': "Don't worry, Navya. When the bus comes, we _____ for long. Over. (not / wait)",
              'answer': "won't have been waiting", 'options': ["won't have been waiting", "haven't been waiting", "won't have been wait"],
              'fb': "Not long, up to a future moment: WON'T HAVE BEEN + VERB-ING."},
         ],

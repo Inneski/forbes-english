@@ -25,6 +25,11 @@ Nothing in the game's code needs to change when a picture arrives:
   can say `'side': 'left'`.
 - **The summit screen:** `SherpaClimb/summit-top.jpg` replaces the course's
   sherpa render (`Sherpa Tensing/sherpa-day.jpg`) once it exists.
+- **Base camp:** `SherpaClimb/base-camp.jpg` (+ `-sm`), with Navya on the radio
+  and Momo beside her, becomes the picture on the start screen. Until it
+  exists, that picture is camp two's scene.
+- **Momo:** `SherpaClimb/cast-momo.jpg` sits beside "And Momo, the yak at base
+  camp" under the team. He never speaks, so he gets no team card.
 
 After dropping files: `py tools/prep-artwork.py incoming/sherpa-climb/<file>
 --into SherpaClimb --names <name> --width 1600 --quality 82` (scenes) or
@@ -66,11 +71,11 @@ every portrait so they read as one team. File names are the game's keys.
 | File | Who | What the lines say about them |
 |---|---|---|
 | `cast-tensing.jpg` | **Tensing**, the guide | Calm, has never got lost in twenty years, watches the sky before waking the team, gets the locked hut door open. (Optional: the course's own sherpa render is already used.) |
-| `cast-ana.jpg` | **Ana**, the planner | Brisk; the schedule, the forecast, the map; decides "we leave at six". |
+| `cast-ana.jpg` | **Myra**, the planner | Brisk; the schedule, the forecast, the map; decides "we leave at six". |
 | `cast-otto.jpg` | **Otto**, the old hand | Climbing since 1987, first up this mountain in 1998 with his brother; snores, sings the same song for an hour, loses glasses that are on his head; once rescued after two days in the snow. Older. |
 | `cast-sam.jpg` | **Sam**, first big climb | Young, keen, keeps a diary, sore legs, the same socks for two weeks; meeting his sister in Kathmandu after the climb. |
-| `cast-doris.jpg` | **Doris**, base camp radio | At base camp with a radio handset and a coffee; has known Otto twenty years. |
-| (no file) | **Momo**, the yak | Never speaks, so he has no portrait. He can appear in Doris's base-camp scenes. |
+| `cast-doris.jpg` | **Navya**, base camp radio | At base camp with a radio handset and a coffee; has known Otto twenty years. |
+| (no file) | **Momo**, the yak | Never speaks, so he has no portrait. He can appear in Navya's base-camp scenes. |
 
 Prompt pattern:
 
@@ -86,11 +91,11 @@ can keep it where a camp needs no people.
 
 | File | Camp · tense | The moment (from the lines) | In the frame | Now |
 |---|---|---|---|---|
-| `camp-01.jpg` | 1 · present continuous | Dawn by the lake, day one. The sun **is coming** up; Otto and Ana **are cooking** breakfast; Sam **is tying** his boots. | The team packing up at the water's edge, small, to one side | the tarn with rings |
+| `camp-01.jpg` | 1 · present continuous | Dawn by the lake, day one. The sun **is coming** up; Otto and Myra **are cooking** breakfast; Sam **is tying** his boots. | The team packing up at the water's edge, small, to one side | the tarn with rings |
 | `camp-02.jpg` | 2 · present simple | The foot of the granite rock. Every morning Tensing **watches** the sky first, then wakes the team. | Tensing alone on a rock, looking up; tents behind | the granite foot |
 | `camp-03.jpg` | 3 · past simple | Evening at the struck campsite after fourteen kilometres. An eagle **flew** over them. | Sam writing his diary on a rock; an eagle overhead | the struck campsite |
 | `camp-04.jpg` | 4 · present perfect | They **have climbed** twelve hundred metres. Otto **has gone** to look at the ice; a rope runs up from the small lower camp. | Two small figures on a rope up the slope | the rope from the camp |
-| `camp-05.jpg` | 5 · going to | The plan: the meadow tomorrow, then the ridge. Clouds say it **is going to** rain tonight. | Ana pointing ahead with a map, the ridge and the weather beyond | the meadow and the ridge |
+| `camp-05.jpg` | 5 · going to | The plan: the meadow tomorrow, then the ridge. Clouds say it **is going to** rain tonight. | Myra pointing ahead with a map, the ridge and the weather beyond | the meadow and the ridge |
 | `camp-06.jpg` | 6 · past continuous | The storm on the ridge: they **were crossing** when it hit; hail; a rock fell past Sam. | The team roped together on a narrow ridge in slanting hail | clouds massing on the ridge |
 | `camp-07.jpg` | 7 · will | Weather building that nobody can read yet; Otto **will carry** Sam's bag. | Otto taking a pack from Sam, a wall of cloud behind | the bank of weather |
 | `camp-08.jpg` | 8 · present perfect continuous | They **have been climbing** since dawn; wet snow, sore feet; Otto **has been singing** for an hour. | Boot tracks in wet snow with the tired team far along them | the boot tracks |
@@ -102,6 +107,6 @@ can keep it where a camp needs no people.
 | `summit.jpg` | the summit push | The last pitch to the top at sunrise. | The team on the final ridge, the sun coming up | a second cairn render |
 | `summit-top.jpg` | the summit screen | "We've made it. Look down: every camp is behind us." | The whole team on the top, seen from behind, the camps far below | the sherpa render (`sherpa-day.jpg`) |
 
-Doris and Momo stay at base camp, so they are never on the mountain in a
+Navya and Momo stay at base camp, so they are never on the mountain in a
 camp scene. If you want them in a picture, the arrival line of camp one
 ("I'm watching you through the telescope. Wave!") is the moment.

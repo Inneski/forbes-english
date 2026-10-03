@@ -85,7 +85,8 @@ main{max-width:1160px;margin:0 auto;padding:0 24px 80px;}
 .mtext{min-width:0;line-height:1.35;}
 .mtext b{display:block;font-weight:600;font-size:15px;}
 .mtext .role{display:block;font-size:13px;color:var(--ink-soft);}
-.momo{margin:12px 0 0;font-size:14px;color:var(--ink-soft);}
+.momo{margin:12px 0 0;font-size:14px;color:var(--ink-soft);display:flex;align-items:center;gap:12px;}
+.momo img{width:56px;height:70px;object-fit:cover;object-position:50% 30%;border-radius:10px;flex:none;display:block;}
 @media (max-width:1060px){ .team{grid-template-columns:repeat(3,minmax(0,1fr));} }
 /* a phone: one compact row per member, "Ana · the planner" on one line, and the guide's
    first line with the other two behind "How it works", so the camps are not two screens down */
@@ -146,7 +147,7 @@ main{max-width:1160px;margin:0 auto;padding:0 24px 80px;}
 
 .btn:focus-visible,.pick:focus-visible,.ubtn:focus-visible,.up-link:focus-visible,.pill:focus-visible,.opt:focus-visible,
 .read:focus-visible,.lang-select:focus-visible,.typer input:focus-visible,.util .camp-music-float.camp-music-slot:focus-visible,
-.brief-more:focus-visible,.gd-x:focus-visible{outline:3px solid var(--ink);outline-offset:3px;}
+.brief-more:focus-visible,.gd-x:focus-visible,.gtog:focus-visible{outline:3px solid var(--ink);outline-offset:3px;}
 
 /* ── the climb itself: a layer over the page, the camp's scene behind the card ──────────
    --cardw and --gut place the card; the veil and the bar follow them. data-side="left"
@@ -230,7 +231,28 @@ button.pill:hover{background:var(--card);}
 .fig-s img,.fig-s svg{width:100%;height:100%;object-fit:cover;object-position:50% 28%;display:block;}
 .who{margin:0;font-size:13px;font-weight:700;line-height:1.3;}
 .via{font-weight:500;color:var(--ink-soft);}
+/* on a card, a line's gloss sits in the English's own box (template.js pair()), so it is
+   sized from it, never under 12.5px */
+.card-in .gl{font-size:max(12.5px,.86em);}
 .via .gl{display:inline;margin:0 0 0 4px;}
+/* the card's "Translation" toggle (template.js fit()): shown only while the card is too
+   full for the glosses beneath the English. Pressed, each gloss takes its English's place,
+   in the same box (gsw); pressed again, the English is back */
+.c-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px 12px;}
+.c-top > :first-child{min-width:0;}
+.gtog{display:none;position:relative;align-items:center;gap:5px;flex:none;margin-left:auto;min-height:30px;padding:3px 11px 3px 8px;
+      border-radius:999px;border:1px solid color-mix(in srgb,var(--ink) 24%,transparent);background:var(--card);color:var(--ink);
+      font-size:12px;font-weight:600;line-height:1.2;white-space:nowrap;cursor:pointer;}
+.gtog svg{width:16px;height:16px;flex:none;}
+.gtog:hover{border-color:var(--ink);}
+.gtog[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+.gtog::after{content:"";position:absolute;inset:-7px -3px;}   /* a 44px target for a finger, at 30px to look at */
+.again ~ .gtog{margin-left:0;}
+.fitG .gtog{display:inline-flex;}
+.fitG .gl{display:none;}
+.fitG.gsw .tx{display:none;}
+.fitG.gsw .gl{display:block;font-size:1em;line-height:inherit;margin:0;color:inherit;}
+.fitG.gsw .via .gl{display:inline;}
 .en{margin:2px 0 0;font-size:16px;line-height:1.5;}
 .acts{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-top:18px;}
 .read{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 6px;color:var(--accent-dark);font-weight:600;font-size:14px;text-underline-offset:3px;}
@@ -389,6 +411,9 @@ dialog.guide-dialog::backdrop{background:color-mix(in srgb,var(--ink) 50%,transp
    The card takes the full height on the quieter side, the bar the rest of the top row */
 @media (max-height:560px) and (min-aspect-ratio:1/1){
   .play{--cardw:min(460px,56vw);--gut:8px;--top:8px;}
+  /* fit4, the last resort: a long summit answer in French, Portuguese or Russian on a phone on its
+     side; the card takes more of the width so the lines wrap less (the scene still shows) */
+  .card:has(> .card-in.fit4){--cardw:min(580px,70vw);}
   .keys,.mini{display:none;}
   .veil{background:linear-gradient(270deg,color-mix(in srgb,var(--paper) 58%,transparent) 0,
                    color-mix(in srgb,var(--paper) 30%,transparent) calc(var(--cardw) + var(--gut)),transparent calc(var(--cardw) + var(--gut) + 60px));}
@@ -430,17 +455,14 @@ dialog.guide-dialog::backdrop{background:color-mix(in srgb,var(--ink) 50%,transp
   .goldline{margin-bottom:8px;}
   .rv-h{margin:10px 0 6px;font-size:17px;}
   .stats{margin-top:6px;}
-  /* the summit screen is the end of the climb, not a line to answer: it takes the width
-     under the bar, in two columns (the words at the top; the way on and the review) */
+  /* the summit is the end of the climb, not a line to answer: both its steps take the width
+     under the bar, in two columns (step one: the closing lines, two by two; step two: the
+     scores and the way on, beside the review) */
   .play[data-view="summit"]{--cardw:calc(100vw - 16px);--top:60px;}
   .play[data-view="summit"] .pbar,.play[data-side="left"][data-view="summit"] .pbar{left:0;right:0;}
-  .v-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto auto auto auto 1fr;column-gap:24px;align-items:start;}
-  .v-top > .tense{grid-column:1;grid-row:1;}
-  .v-top > .lines{grid-column:1;grid-row:2 / span 4;}
-  .v-top > .stats{grid-column:2;grid-row:1;margin-top:4px;}
-  .v-top > .acts{grid-column:2;grid-row:2;}
-  .v-top > .rv-h{grid-column:2;grid-row:3;}
-  .v-top > .rv-row,.v-top > .rv-none{grid-column:2;grid-row:4;}
+  .v-top .lines{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:24px;}
+  .v-top.s2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:24px;align-items:start;}
+  .v-top.s2 .rv-h{margin-top:4px;}
 }
 
 /* the card is still too tall for the screen (a long C1 line on a phone on its side): the
@@ -468,6 +490,11 @@ dialog.guide-dialog::backdrop{background:color-mix(in srgb,var(--ink) 50%,transp
 .fit3 .en,.fit3 .why,.fit3 .tip{font-size:13px;line-height:1.4;}
 .fit3 .tense{font-size:21px;}
 .fit3 .opt{min-height:44px;padding:4px 12px;font-size:15px;}
+.fit4 .q-line{font-size:15px;line-height:1.3;margin-bottom:4px;}
+.fit4 .en,.fit4 .why,.fit4 .tip{font-size:12px;line-height:1.35;}
+.fit4 .lines{gap:3px;}
+.fit4 .fb{margin-top:4px;padding-top:4px;}
+.fit4 .acts,.fit4 .fb .acts{margin-top:4px;}
 
 @media (prefers-reduced-motion:reduce){
   .pick,.btn,.up-link,.mtn .seg,.mtn .dot-label,.scene img,.pips li,.opt{transition:none;}

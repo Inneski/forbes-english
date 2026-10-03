@@ -91,6 +91,26 @@
     return '<' + (tag || 'span') + ' class="gl" lang="' + lang + '"' + (I.rtl.indexOf(lang) >= 0 ? ' dir="rtl"' : '') + '>' +
       rich(g, caps) + '</' + (tag || 'span') + '>';
   }
+  /* A narrative line on a card: the English, and the learner's language in the same box,
+     beneath it (.gl). When the card has no room for both, fit() hides the glosses and shows
+     the card's "Translation" toggle, which puts each gloss in place of its English (.tx) in
+     that same box, and back. With no gloss (English) it is just the English. */
+  function pair(en, caps) {
+    var g = glHtml(en, caps);
+    return g ? '<span class="tx" lang="en">' + rich(en, caps) + '</span>' + g : rich(en, caps);
+  }
+  var GLOBE = '<svg viewBox="0 0 20 20" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5">' +
+    '<circle cx="10" cy="10" r="7.5"/><ellipse cx="10" cy="10" rx="3.2" ry="7.5"/><path d="M2.5 10h15M3.9 6.5h12.2M3.9 13.5h12.2"/></svg>';
+  // the card's one toggle (shown only while fit() has the glosses hidden); none in English
+  function togHtml() {
+    if (lang === 'en') return '';
+    return '<button class="gtog" id="gtog" type="button" aria-pressed="' + gsw.on + '" lang="' + lang + '"' +
+      (I.rtl.indexOf(lang) >= 0 ? ' dir="rtl"' : '') + '>' + GLOBE + '<span>' + esc(t('translation')) + '</span></button>';
+  }
+  /* The toggle's position is remembered for the card on screen only: a new card starts with
+     the English. A redraw of the same card (a language change, a resize) keeps it. */
+  var gsw = { on: false };
+  function newCard() { gsw = { on: false }; }
   function fmt(n) {
     try { return new Intl.NumberFormat(lang === 'en' ? 'en-GB' : lang, { numberingSystem: 'latn' }).format(n); }
     catch (e) { return String(n); }
@@ -366,20 +386,22 @@
     p.setAttribute('class', 'pulse on');
   }
 
+  function viaHtml(via) { return via ? ' <span class="via">· ' + pair(D.via[via]) + '</span>' : ''; }
   function lineHtml(ln) {
-    var via = ln.via ? ' <span class="via">· ' + esc(D.via[ln.via]) + glHtml(D.via[ln.via]) + '</span>' : '';
-    return '<li class="line">' + fig(ln.who) + '<div><p class="who">' + esc(D.cast[ln.who].name) + via + '</p>' +
-      '<p class="en">' + rich(ln.en) + '</p>' + glHtml(ln.en, false, 'p') + '</div></li>';
+    return '<li class="line">' + fig(ln.who) + '<div><p class="who">' + esc(D.cast[ln.who].name) + viaHtml(ln.via) + '</p>' +
+      '<p class="en">' + pair(ln.en) + '</p></div></li>';
   }
 
   function showArrive(keepFocus) {
     setView('arrive');
+    if (!keepFocus) newCard();
     var st = run.stage, camp = run.kind === 'camp';
     var tn = camp ? TENSES[String(st.n)] : null;
     var html = '<div class="v-arrive" style="' + (camp ? campColours(st.n) : '') + '">' +
-      '<p class="k">' + esc(camp ? t('campAlt', { n: st.n, alt: fmt(st.alt) }) : t('summitAlt', { alt: fmt(st.alt) })) + '</p>' +
+      '<div class="c-top"><p class="k">' + esc(camp ? t('campAlt', { n: st.n, alt: fmt(st.alt) }) : t('summitAlt', { alt: fmt(st.alt) })) + '</p>' +
+      togHtml() + '</div>' +
       '<h2 class="tense">' + esc(camp ? tn.name : t('summitPush')) + '</h2>' +
-      '<p class="tip">' + rich(st.tip, true) + glHtml(st.tip, true) + '</p>' +
+      '<p class="tip">' + pair(st.tip, true) + '</p>' +
       '<ul class="lines">' + (st.arrive || []).map(lineHtml).join('') + '</ul>' +
       '<div class="acts"><button class="btn btn-main" id="begin" type="button">' + esc(t('start')) + ' <span aria-hidden="true">&rarr;</span></button>' +
       (camp ? '<a class="read" href="' + esc(tn.href) + '">' + esc(t('readFirst', { n: st.n })) + '</a>' : '') + '</div></div>';
@@ -403,6 +425,7 @@
     run.cur = { idx: idx, back: !!run.seen[it.id], order: it.kind === 'type' ? null : shuffled(it.options),
                 typed: '', answered: false, ok: null, val: null, at: 0, shownAt: Date.now() };
     run.seen[it.id] = true;
+    newCard();
     renderQ(true);
   }
 
@@ -410,17 +433,16 @@
     var cur = run.cur, it = run.items[cur.idx];
     setView('q');
     var ask = it.kind === 'spot' ? t('askSpot') : it.kind === 'type' ? t('askType') : t(it.gaps === 2 ? 'askChoose2' : 'askChoose');
-    var via = it.via ? ' <span class="via">· ' + esc(D.via[it.via]) + glHtml(D.via[it.via]) + '</span>' : '';
     // no tense name before the answer: at the summit push it would be the key
-    var top = '<div class="q-top">' + fig(it.who) + '<span class="q-who">' + esc(D.cast[it.who].name) + via + '</span>' +
-      (cur.back ? '<span class="again">' + esc(t('again')) + '</span>' : '') + '</div>';
+    var top = '<div class="q-top">' + fig(it.who) + '<span class="q-who">' + esc(D.cast[it.who].name) + viaHtml(it.via) + '</span>' +
+      (cur.back ? '<span class="again">' + esc(t('again')) + '</span>' : '') + togHtml() + '</div>';
     var ctl = '';
     if (it.kind === 'type') {
       ctl = '<form class="typer" id="typer" autocomplete="off"><input id="typed" type="text" autocapitalize="off" autocorrect="off" ' +
         'autocomplete="off" spellcheck="false" enterkeyhint="done" aria-label="' + esc(t('typeAria')) + '" placeholder="' + esc(t('typeHint')) + '">' +
         '<button class="btn btn-main" type="submit">' + esc(t('check')) + '</button></form>';
     } else {
-      ctl = '<div class="opts">' + cur.order.map(function (o, i) {
+      ctl = '<div class="opts" lang="en">' + cur.order.map(function (o, i) {
         if (it.kind === 'spot') {
           var ot = TENSES[String(o)];
           return '<button class="opt tense-opt" type="button" data-v="' + o + '" style="--c:' + ot.fill + ';--k:' + ot.ink + '">' +
@@ -509,7 +531,7 @@
       '<p class="verdict ' + (ok ? 'good' : 'bad') + '">' + svgMark(ok) + '<span class="vt">' + esc(t(ok ? 'right' : 'wrong')) + '</span>' + chip + '</p>' +
       (ok ? '' : '<p class="more">' + esc(t('wrongMore')) + '</p>') +
       '<p class="sr-only" lang="en">' + it.fixed + '</p>' +
-      '<p class="why">' + rich(it.fb, true) + '</p>' + glHtml(it.fb, true, 'p') +
+      '<p class="why">' + pair(it.fb, true) + '</p>' +
       '<div class="acts"><button class="btn btn-main next" id="next" type="button">' + esc(t('next')) + ' <span aria-hidden="true">&rarr;</span></button></div>';
     marks($('#fb .verdict .vt')); marks($('#fb .more') || document.createElement('i'));
     $('#next').addEventListener('click', function (e) { if (e.detail > 1) return; next(); });
@@ -548,17 +570,18 @@
     }
     put(s);
     run.cur = null;
-    if (run.kind === 'summit') return showTop();
+    if (run.kind === 'summit') { run.top = 1; return showTop(); }
     showDone();
   }
   function firstRight() { return run.items.filter(function (it) { return run.first[it.id]; }).length; }
 
   function showDone(keepFocus) {
     setView('done');
+    if (!keepFocus) newCard();
     var st = run.stage, total = run.items.length, k = firstRight(), gold = k / total >= .75;
     var nx = after(st.n);
     var html = '<div class="v-done" style="' + campColours(st.n) + '">' +
-      '<div class="reached">' + flagSvg(gold, t(gold ? 'flagGold' : 'flagPlain')) + '<h2>' + esc(t('reached', { n: st.n })) + '</h2></div>' +
+      '<div class="reached">' + flagSvg(gold, t(gold ? 'flagGold' : 'flagPlain')) + '<h2>' + esc(t('reached', { n: st.n })) + '</h2>' + togHtml() + '</div>' +
       '<p class="score">' + esc(t('firstTry', { k: k, m: total })) + '</p>' +
       '<p class="goldline">' + esc(t(gold ? 'goldYes' : 'goldNo')) + '</p>' +
       (st.done ? '<ul class="lines">' + lineHtml(st.done) + '</ul>' : '') +
@@ -572,9 +595,11 @@
     if (!keepFocus) focusCard($('#onward') || $('#tocamps'));
   }
 
-  /* The summit: the push's last line and the ending, the stats, the way on, and the lines
-     missed first time counted per camp. The lines themselves open in a dialog (the route
-     map's own), which may scroll: it is a list to read, not a game panel. */
+  /* The summit, in two steps, each a card that fits on its own. Step one is the end of the
+     story: the push's last line and the ending, and "See your climb". Step two is the
+     climb: the stats, the way on, and the lines missed first time counted per camp. Those
+     lines themselves open in a dialog (the route map's own), which may scroll: it is a list
+     to read, not a game panel. */
   function missedByCamp() {
     var s = load(), groups = {}, order = [];
     Object.keys(s.misses).forEach(function (id) {
@@ -589,17 +614,35 @@
   }
   function showTop(keepFocus) {
     setView('summit');
+    if (!keepFocus) newCard();
     var s = load();
     sceneOf = 'top';
     setScene(sceneSrc('top'));
     setSide(D.top.side);
     setAlt(altNow());
+    var lines = (SUMMIT && SUMMIT.done ? [SUMMIT.done] : []).concat(D.outro || []);
+    if (run.top !== 2 && lines.length) {
+      render('<div class="v-top s1">' +
+        '<div class="c-top"><h2 class="tense">' + esc(t('summitH')) + '</h2>' + togHtml() + '</div>' +
+        '<ul class="lines">' + lines.map(lineHtml).join('') + '</ul>' +
+        '<div class="acts"><button class="btn btn-main" id="seeclimb" type="button">' + esc(t('seeClimb')) +
+        ' <span aria-hidden="true">&rarr;</span></button></div></div>');
+      paintBar(); paintMini(false);
+      // the second click of a double-click on the last "Next" lands here: not a step on
+      $('#seeclimb').addEventListener('click', function (e) {
+        if (e.detail > 1 || !run || view !== 'summit') return;
+        run.top = 2; run.topAt = Date.now();
+        showTop();
+      });
+      if (!keepFocus) focusCard($('#seeclimb'));
+      return;
+    }
+    run.top = 2;
     var golds = CAMPS.filter(function (c) { return isGold(s.camps[c.n]); }).length;
     var sum = 0, tot = 0;
     CAMPS.forEach(function (c) { var r = s.camps[c.n]; if (r) { sum += r.best; tot += r.total; } });
     var m = missedByCamp(), count = 0;
     m.order.forEach(function (key) { count += m.groups[key].length; });
-    var lines = (SUMMIT && SUMMIT.done ? [SUMMIT.done] : []).concat(D.outro || []);
     // the camps with the most to look at again, four at most; the rest are a count, and
     // every line is in the dialog
     var most = m.order.slice().sort(function (a, b) { return m.groups[b].length - m.groups[a].length || +a - +b; });
@@ -611,18 +654,22 @@
         '</ul><button class="btn btn-ghost rv-open" id="rv-open" type="button">' + esc(t('rvOpen')) +
         ' <span class="rv-n">' + count + '</span></button></div>'
       : '<p class="rv-none">' + esc(t('reviewNone')) + '</p>';
-    var html = '<div class="v-top">' +
-      '<h2 class="tense">' + esc(t('summitH')) + '</h2>' +
-      (lines.length ? '<ul class="lines">' + lines.map(lineHtml).join('') + '</ul>' : '') +
+    // two halves: the scores and the way on, then the review (side by side on a phone on
+    // its side, one under the other elsewhere)
+    var html = '<div class="v-top s2"><div class="t2-a">' +
+      '<h2 class="tense">' + esc(t(lines.length ? 'yourClimb' : 'summitH')) + '</h2>' +
       '<p class="stats"><span>' + esc(t('goldCount', { x: golds, m: CAMPS.length })) + '</span>' +
       (tot ? '<span>' + esc(t('overall', { p: Math.round(100 * sum / tot) })) + '</span>' : '') + '</p>' +
       '<div class="acts"><button class="btn btn-main" id="again" type="button">' + esc(t('climbAgain')) + '</button>' +
       '<a class="btn btn-ghost" href="sherpa-tensing-route-map.html">' + esc(t('upLink')) + '</a>' +
       '<a class="read" href="sherpa-tensing-route-map.html#the-map">' + esc(t('wayDown')) + ' <span aria-hidden="true">&rarr;</span></a></div>' +
-      '<h3 class="rv-h">' + esc(t('review')) + '</h3>' + review + '</div>';
+      '</div><div class="t2-b"><h3 class="rv-h">' + esc(t('review')) + '</h3>' + review + '</div></div>';
     render(html);
     paintBar(); paintMini(false);
-    $('#again').addEventListener('click', function () {
+    $('#again').addEventListener('click', function (e) {
+      // the Enter or the second click that took you to this step is not also "Climb again":
+      // it would clear the lines to look at again before you had seen them
+      if (e.detail > 1 || Date.now() - (run.topAt || 0) < CLICK_GAP) return;
       var s2 = load(); s2.misses = {}; s2.last = null; put(s2);
       if (CAMPS[0]) play(CAMPS[0].n);
     });
@@ -659,13 +706,43 @@
   /* Innes: "NO scrolling" in a game panel. The card is laid out to fit every screen down to
      a phone on its side; if a long line still makes it taller than the screen, it tightens
      a step at a time (fit1: spacing, no portraits; fit2: "Next" beside the verdict, the
-     right option only in the sentence; fit3: a size smaller) until it fits. */
-  var FITS = ['fit1', 'fit2', 'fit3'];
+     right option only in the sentence; fit3: a size smaller) until it fits.
+     In a learner's language the glosses beneath the English come first: they give way only
+     when the tightest step still does not fit (never one that fits). Then fitG hides them
+     and shows the card's "Translation" toggle, and the ladder is climbed again from the
+     bottom, for the first step at which the card fits with the English AND with the
+     translations in its place (gsw), so pressing the toggle moves nothing. */
+  var FITS = ['fit1', 'fit2', 'fit3', 'fit4'];   // fit4: the last resort, a German translation swapped in on a phone on its side
   function fit() {
     var card = $('#card');
     if (!card || !body.classList.contains('playing')) return;
-    FITS.forEach(function (c) { card.classList.remove(c); });
-    for (var i = 0; i < FITS.length && card.scrollHeight > card.clientHeight + 1; i++) card.classList.add(FITS[i]);
+    function step(k, g, sw) {
+      FITS.forEach(function (c, i) { card.classList.toggle(c, i < k); });
+      card.classList.toggle('fitG', g);
+      card.classList.toggle('gsw', g && sw);
+    }
+    function over() { return card.scrollHeight > card.clientHeight + 1; }
+    var k;
+    for (k = 0; k <= FITS.length; k++) { step(k, false, false); if (!over()) return paintTog(); }
+    var glossed = $$('.gl', card).some(function (g) { return g.textContent.trim(); });
+    if (!glossed) return paintTog();     // nothing to give way: the tightest step (keepNextInView)
+    for (k = 0; k <= FITS.length; k++) {
+      step(k, true, true);
+      if (over()) continue;
+      step(k, true, false);
+      if (!over()) break;
+    }
+    step(Math.min(k, FITS.length), true, gsw.on);
+    paintTog();
+  }
+  function paintTog() {
+    var b = $('#gtog');
+    if (b) b.setAttribute('aria-pressed', String(gsw.on));
+  }
+  function toggleGloss() {
+    gsw.on = !gsw.on;
+    fit();
+    if (run && view === 'q' && run.cur && run.cur.answered) keepNextInView();
   }
   function focusCard(el) {
     var target = el || $('#card');
@@ -738,6 +815,10 @@
     more.setAttribute('aria-expanded', String(open));
   });
   $('#back').addEventListener('click', leave);
+  // the card's "Translation" toggle is drawn with each card, so it is caught here
+  $('#card').addEventListener('click', function (e) {
+    if (e.target && e.target.closest && e.target.closest('#gtog')) toggleGloss();
+  });
   $('#snd').addEventListener('click', function () { setSound(!sound); beep(true); });
   $('#lang').addEventListener('change', function () {
     try { localStorage.setItem(LKEY, this.value); } catch (e) {}
@@ -760,6 +841,11 @@
     if (dlg && dlg.open) return;                      // the dialog has its own keys (Esc closes it)
     var tag = (e.target && e.target.tagName) || '';
     var playing = body.classList.contains('playing');
+    // Enter held down repeats: in the game that would answer, go on and start again on its
+    // own (a held Enter on "See your climb" reached "Climb again"). One press, one step
+    if (playing && e.repeat && tag !== 'SELECT' && (e.key === 'Enter' || (e.key === ' ' && tag !== 'INPUT' && tag !== 'TEXTAREA'))) {
+      e.preventDefault(); return;
+    }
     if (e.key === 'Escape' && playing && tag !== 'SELECT') { e.preventDefault(); leave(); return; }
     if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
     if (e.key === 's' || e.key === 'S') { setSound(!sound); beep(true); return; }

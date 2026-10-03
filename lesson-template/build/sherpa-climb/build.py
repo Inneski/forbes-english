@@ -123,6 +123,8 @@ EN = {
     'wrong':       ('Not quite. The rope holds.', 'after a wrong answer: nobody falls'),
     'wrongMore':   ('This line comes back before you leave the camp.', 'after a wrong answer'),
     'next':        ('Next', 'button to the next line'),
+    'translation': ('Translation', 'small toggle on a card too full for the translations beneath the English: it shows '
+                                   'the translation in place of the English, and pressed again, the English'),
     'keys':        ('Keys: 1–3 choose · Enter next · S sound · Esc camps', 'keyboard help under the card (computers only)'),
     'keysType':    ('Keys: Enter checks, then Enter next · Esc camps', 'the same, under a line you type into'),
     'keysMove':    ('Keys: Enter goes on · S sound · Esc camps', 'the same, on the arrival and end cards'),
@@ -133,6 +135,9 @@ EN = {
     'onTo':        ('On to camp {n}', 'button to the next camp'),
     'onTop':       ('On to the summit', 'button after the last camp'),
     'summitH':     ('The summit', 'heading of the end screen'),
+    'seeClimb':    ('See your climb', 'end screen, first step (the last lines of the story): button to the second step, '
+                                      'the scores and the lines to look at again'),
+    'yourClimb':   ('Your climb', 'end screen, second step: heading over the scores'),
     'goldCount':   ('Gold flags: {x} of {m}', 'end screen: camps with a gold flag'),
     'overall':     ('First try overall: {p}%', 'end screen: right first time, across the camps played'),
     'review':      ('Worth another look', 'end screen: the lines missed first time'),
@@ -456,6 +461,33 @@ def pack(fill):
 # ── the team, seen from behind (the art rule: no faces) ─────────────────────────
 PACK_FROM = {'ana': 2, 'otto': 3, 'sam': 7, 'doris': 11}
 HAT = {'ana': 'beanie', 'otto': 'brim', 'sam': 'hood', 'doris': 'radio'}
+
+
+def _size(rel):
+    from PIL import Image
+    return Image.open(os.path.join(ROOT, rel)).size
+
+
+def hero_img():
+    """The start screen's picture: base camp (Navya and Momo, where the story starts) once
+    SherpaClimb/base-camp.jpg exists; camp two's scene until then."""
+    name = 'base-camp' if os.path.exists(os.path.join(ROOT, 'SherpaClimb', 'base-camp.jpg')) else 'camp-02'
+    w, h = _size('SherpaClimb/%s.jpg' % name)
+    sm = 'SherpaClimb/%s-sm.jpg' % name
+    if os.path.exists(os.path.join(ROOT, sm)):
+        return ('<img src="%s" srcset="%s 960w, SherpaClimb/%s.jpg %dw" sizes="(max-width:860px) 100vw, 560px" '
+                'width="%d" height="%d" alt="" fetchpriority="high">' % (sm, sm, name, w, w, h))
+    return '<img src="SherpaClimb/%s.jpg" width="%d" height="%d" alt="" fetchpriority="high">' % (name, w, h)
+
+
+def momo_img():
+    """Momo never speaks, so he is not a team card; his portrait, once it exists, sits
+    beside his line under the team (SherpaClimb/cast-momo.jpg)."""
+    rel = 'SherpaClimb/cast-momo.jpg'
+    if not os.path.exists(os.path.join(ROOT, rel)):
+        return ''
+    w, h = _size(rel)
+    return '<img src="%s" width="%d" height="%d" alt="" loading="lazy" decoding="async">' % (rel, w, h)
 
 
 def figure(who, route):
@@ -883,6 +915,8 @@ def build(strict=False):
         'SPRITE': sprite,
         'INTRO': intro,
         'TEAM': team,
+        'HERO_IMG': hero_img(),
+        'MOMO_IMG': momo_img(),
         'PICKS': ''.join(picks),
         'MAP_START': mountain(route, content_ns, False),
         'MAP_MINI': mountain(route, content_ns, True),

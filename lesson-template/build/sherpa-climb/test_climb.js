@@ -11,6 +11,10 @@
 //   node lesson-template/build/sherpa-climb/test_climb.js --no-gate       # skip the five-size no-scroll gate (quick)
 //   node lesson-template/build/sherpa-climb/test_climb.js --shots <dir>   # where the screenshots go (default:
 //                                                                          # $CLIMB_SHOTS, else <temp>/sherpa-climb-shots)
+//   node lesson-template/build/sherpa-climb/test_climb.js --lang de       # the gate in a learner's language: a gloss
+//                                                                          # under every line, or the card's toggle
+//   node lesson-template/build/sherpa-climb/test_climb.js --gate-only     # the gate alone (the play-through is in
+//                                                                          # English whatever --lang says)
 //
 // Serves the repo (as tools/sherpa_type_check.js does) and plays camp one with one line
 // deliberately wrong first time (it must come back, and the score must be n-1 of n), then
@@ -19,7 +23,10 @@
 // buttons stay on screen. Then the no-scroll gate (Innes: "NO scrolling" in a game panel):
 // at 1366x768, 1280x720, 1024x768, 844x390 and 360x740, every camp's arrival card, every
 // line asked and answered (wrong first: the tallest state), every camp-complete card and,
-// with a SUMMIT, the summit screen with 25+ lines to look at again: the card must not scroll.
+// with a SUMMIT, both steps of the summit screen (the second with 25+ lines to look at
+// again): the card must not scroll. With --lang, wherever a card shows its "Translation"
+// toggle (the glosses did not fit beneath the English), the gate also presses it and
+// measures the card with the translation in place of the English, then presses it again.
 // If the page offers more than one language, a switch in the middle of a line must keep it.
 // The canon tests run the canon() that ships: they read it out of the built page.
 const http = require('http');
@@ -34,6 +41,8 @@ const opt = k => { const i = argv.indexOf(k); return i >= 0 ? argv[i + 1] : null
 const PAGE_FILE = opt('--page') ? path.resolve(opt('--page')) : path.join(ROOT, PAGE);
 const SHOTS = opt('--shots') || process.env.CLIMB_SHOTS || path.join(require('os').tmpdir(), 'sherpa-climb-shots');
 const GATE_SIZES = [[1366, 768], [1280, 720], [1024, 768], [844, 390], [360, 740]];
+const SHOT_SIZES = ['1280x720', '844x390', '360x740'];   // the gate photographs its key states at these
+const LANG = opt('--lang') || 'en';
 const GAP = 420;   // ms: the page ignores a click or Enter within 350ms of a line appearing or being answered
 const TYPES = { '.html': 'text/html', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.jpg': 'image/jpeg',
   '.png': 'image/png', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json',
@@ -424,17 +433,47 @@ async function run(b, base, C, dev, vp) {
     ok(!leak.chip, `${dev} summit push: no tense name on a line before it is answered`);
     const seqS = await playCamp(p, dev, Object.assign({}, S, { n: 'summit' }), C, async () => {}, { keys: false, wrongId: S.items[0].id, contracted: [] });
     if (seqS) ok(seqS[seqS.length - 1] === S.items[0].id, `${dev} summit push: the missed line came back last`, seqS.join(' '));
-    await p.waitForSelector('#view .v-top');
+    // step one: the end of the story, and one button on
+    await p.waitForSelector('#view .v-top.s1');
+    const top1 = await p.evaluate(() => ({
+      h: document.querySelector('.v-top .tense').textContent, lines: document.querySelectorAll('.v-top .lines .line').length,
+      btns: [...document.querySelectorAll('#view button, #view a')].map(b => b.textContent.trim()),
+      stats: !!document.querySelector('.v-top .stats'), focus: document.activeElement && document.activeElement.id }));
+    const wantLines = (S.done ? 1 : 0) + (C.outro || []).length;
+    ok(top1.h === 'The summit' && top1.lines === wantLines && !top1.stats,
+      `${dev} summit, step one: "The summit", the push's last line and ${(C.outro || []).length} closing line(s), no scores yet`, top1.h + ' ' + top1.lines);
+    ok(top1.btns.length === 1 && /^See your climb/.test(top1.btns[0]) && top1.focus === 'seeclimb',
+      `${dev} summit, step one: one button, "See your climb", with the focus on it`, JSON.stringify(top1));
+    if (dev === 'phone') await layoutCheck(p, dev, 'summit step one');
+    await shot('summit-1');
+    if (keys) {
+      // Enter, held: the first press goes on, the repeats must not reach "Climb again"
+      await p.waitForTimeout(GAP);
+      await p.keyboard.down('Enter');
+      await p.waitForSelector('#view .v-top.s2');
+      await p.waitForTimeout(GAP);            // past the page's 350ms guard: only the repeat check stops these
+      await p.keyboard.down('Enter');
+      await p.keyboard.down('Enter');
+      await p.keyboard.up('Enter');
+      await p.waitForTimeout(150);
+      const held = await p.evaluate(() => ({ view: window.SherpaClimb.state().view, s2: !!document.querySelector('#view .v-top.s2'),
+        misses: Object.keys(JSON.parse(localStorage.getItem('sherpa.climb.v1')).misses).length }));
+      ok(held.view === 'summit' && held.s2 && held.misses > 0, `${dev} summit: Enter goes to step two, and Enter held down does not climb again`, JSON.stringify(held));
+    } else {
+      await p.waitForTimeout(GAP);
+      await p.click('#seeclimb');
+    }
+    // step two: the climb
+    await p.waitForSelector('#view .v-top.s2');
     const top = await p.evaluate(() => ({
       h: document.querySelector('.v-top .tense').textContent, lines: document.querySelectorAll('.v-top .lines .line').length,
       stats: document.querySelector('.v-top .stats').textContent, chips: document.querySelectorAll('.v-top .rv-chips li:not(.rv-more)').length,
       more: (document.querySelector('.v-top .rv-more') || {}).textContent || '',
-      scene: document.querySelector('#scene').getAttribute('src'),
+      scene: document.querySelector('#scene').getAttribute('src'), focus: document.activeElement && document.activeElement.id,
       links: [...document.querySelectorAll('.v-top a')].map(a => a.getAttribute('href')),
       save: JSON.parse(localStorage.getItem('sherpa.climb.v1')) }));
-    const wantLines = (S.done ? 1 : 0) + (C.outro || []).length;
-    ok(top.h === 'The summit' && top.lines === wantLines, `${dev} summit screen: "The summit", the push's last line and ${(C.outro || []).length} closing line(s)`, top.h + ' ' + top.lines);
-    ok(/Gold flags: \d+ of \d+/.test(top.stats) && /First try overall: \d+%/.test(top.stats), `${dev} summit screen: the stats`, top.stats);
+    ok(top.h === 'Your climb' && top.lines === 0 && top.focus === 'again', `${dev} summit, step two: "Your climb", the focus on "Climb again"`, JSON.stringify({ h: top.h, lines: top.lines, focus: top.focus }));
+    ok(/Gold flags: \d+ of \d+/.test(top.stats) && /First try overall: \d+%/.test(top.stats), `${dev} summit, step two: the stats`, top.stats);
     const missed = Object.keys(top.save.misses);
     const camps = new Set(missed.map(id => id.startsWith('s-') ? String(S.items.find(x => x.id === id).camp) : id.split('-')[0].slice(1)));
     ok(top.chips === Math.min(4, camps.size) && top.more === (camps.size > 4 ? '+' + (camps.size - 4) : '') && missed.includes(S.items[0].id),
@@ -448,11 +487,12 @@ async function run(b, base, C, dev, vp) {
     await p.waitForTimeout(200);
     const still = await p.evaluate(() => ({ open: document.querySelector('#rv').open, playing: document.body.classList.contains('playing') }));
     ok(!still.open && still.playing, `${dev} summit screen: Esc closes the list, not the game`);
-    ok(/sherpa-day\.jpg$/.test(top.scene) && top.links.includes('sherpa-tensing-route-map.html#the-map'),
+    ok(/(sherpa-day|summit-top)\.jpg$/.test(top.scene) &&   // Innes's team-on-top art once it exists
+       top.links.includes('sherpa-tensing-route-map.html#the-map'),
       `${dev} summit screen: the sherpa's picture, and the way down to the passive`, top.scene);
     ok(top.save.summit && top.save.summit.total === S.items.length && top.save.summit.best === S.items.length - 1, `${dev} save: summit best`, JSON.stringify(top.save.summit));
-    if (dev === 'phone') await layoutCheck(p, dev, 'summit screen');
-    await shot('summit');
+    if (dev === 'phone') await layoutCheck(p, dev, 'summit step two');
+    await shot('summit-2');
     await p.click('#again');
     await p.waitForSelector('#view .v-arrive');
     const again = await p.evaluate(() => ({ s: JSON.parse(localStorage.getItem('sherpa.climb.v1')), k: document.querySelector('.v-arrive .k').textContent }));
@@ -552,18 +592,103 @@ async function langSwitch(p, base, C, dev, other) {
   }
 }
 
+// ── the glosses and the card's "Translation" toggle ─────────────────────────────
+/* Where the glosses are on the card, and whether the toggle should be showing: hidden
+   glosses must not have fitted (fitG is measured against the tightest step with them
+   beneath), and each gloss must share its English's box, RTL per element in Arabic. */
+function glossState(p) {
+  return p.evaluate(() => {
+    const c = document.querySelector('#card');
+    const shown = el => !!el && el.getClientRects().length > 0 && getComputedStyle(el).visibility !== 'hidden';
+    const gl = [...c.querySelectorAll('.gl')].filter(g => g.textContent.trim());
+    const tx = [...c.querySelectorAll('.tx')];
+    const tog = c.querySelector('#gtog');
+    let fitsTight = null;
+    if (c.classList.contains('fitG')) {
+      const keep = c.className, top = c.scrollTop;
+      c.classList.remove('fitG', 'gsw'); c.classList.add('fit1', 'fit2', 'fit3');
+      fitsTight = c.scrollHeight <= c.clientHeight + 1;
+      c.className = keep; c.scrollTop = top;
+    }
+    const lang = document.documentElement.lang, rtl = window.CLIMB_I18N.rtl.indexOf(lang) >= 0;
+    return { g: c.classList.contains('fitG'), sw: c.classList.contains('gsw'), n: gl.length, glShown: gl.filter(shown).length,
+      tx: tx.length, txShown: tx.filter(shown).length, tog: shown(tog), pressed: tog ? tog.getAttribute('aria-pressed') : null,
+      label: tog ? tog.textContent.trim() : null, want: lang === 'en' ? null : (window.CLIMB_I18N.t[lang] || {})['Translation'],
+      togLang: tog ? tog.getAttribute('lang') : null, lang, fitsTight,
+      dirOk: gl.every(g => (g.getAttribute('dir') === 'rtl') === rtl),
+      inBox: gl.every(g => g.previousElementSibling && g.previousElementSibling.classList.contains('tx')),
+      txEn: tx.every(x => x.getAttribute('lang') === 'en') };
+  });
+}
+function glossProblems(s, on) {
+  const bad = [];
+  if (!s.dirOk) bad.push('a gloss without dir="rtl" (or with it in a left-to-right language)');
+  if (!s.inBox || !s.txEn || s.tx !== s.n) bad.push(`${s.n} gloss(es) for ${s.tx} English line(s) in the same box`);
+  if (!s.g) {
+    if (s.glShown !== s.n) bad.push(`${s.n - s.glShown} gloss(es) hidden though they fit`);
+    if (s.tog) bad.push('the toggle shows though the glosses fit');
+    if (s.txShown !== s.tx) bad.push('English hidden with no toggle');
+    return bad;
+  }
+  if (s.fitsTight !== false) bad.push('the glosses were hidden though they fit beneath at the tightest step');
+  if (!s.tog) bad.push('the glosses are hidden and no toggle shows');
+  if (s.label !== s.want || s.togLang !== s.lang) bad.push(`the toggle reads "${s.label}" (${s.togLang}), not "${s.want}" (${s.lang})`);
+  if (s.pressed !== String(!!on)) bad.push(`aria-pressed="${s.pressed}", the card shows ${on ? 'the translation' : 'the English'}`);
+  if (on ? s.glShown !== s.n || s.txShown !== 0 : s.glShown !== 0 || s.txShown !== s.tx)
+    bad.push(on ? `pressed: ${s.glShown} of ${s.n} gloss(es) in place, ${s.txShown} English line(s) still showing`
+      : `${s.txShown} of ${s.tx} English line(s) showing, ${s.glShown} gloss(es) beneath`);
+  return bad;
+}
+
 // ── the no-scroll gate ───────────────────────────────────────────────────────────
 async function gateSize(b, base, C, w, h) {
   const errors = [];
   const dev = `${w}x${h}`;
   const { ctx, p } = await newPage(b, base, { width: w, height: h }, errors, dev);
   const bad = [];
-  let states = 0;
-  const check = async where => {
-    states++;
-    const pr = boxProblems(await boxOf(p));
-    if (pr.length) bad.push(`${where}: ${pr.join(', ')}`);
+  let states = 0, toggled = 0;
+  const shots = SHOT_SIZES.includes(dev);
+  const taken = new Set();
+  const slug = s => s.replace(/[^a-z0-9-]+/gi, '-').replace(/^-|-$/g, '').toLowerCase();
+  const snap = async (key, where) => {
+    if (!shots || taken.has(key)) return;
+    taken.add(key);
+    await p.screenshot({ path: path.join(SHOTS, `gate-${LANG}-${dev}-${key}${where ? '-' + slug(where) : ''}.png`) });
   };
+  /* one state of a card: no scroll, every control on screen, and the glosses beneath the
+     English or, where they do not fit, the toggle; pressed, the card must still fit with
+     the translation in place of the English, and pressed again, be as it was. `kind` names
+     the screenshots: the first card of each kind, and the first with the toggle */
+  const check = async (where, kind) => {
+    states++;
+    const box = await boxOf(p);
+    const pr = boxProblems(box);
+    const s = await glossState(p);
+    pr.push(...glossProblems(s, false));
+    if (LANG === 'en' && (s.n || s.tog)) pr.push('glosses or a toggle in English');
+    if (kind) await snap(kind, where);
+    if (s.tog) {
+      toggled++;
+      if (kind) await snap(`${kind}-toggle-off`, where);
+      await p.click('#gtog');
+      await p.waitForTimeout(60);
+      const on = await glossState(p);
+      const onPr = [...boxProblems(await boxOf(p)), ...glossProblems(on, true)];
+      if (onPr.length) pr.push('translation in place: ' + onPr.join(', '));
+      if (kind) await snap(`${kind}-toggle-on`, where);
+      await p.click('#gtog');
+      await p.waitForTimeout(60);
+      const off = await glossState(p);
+      const offBox = await boxOf(p);
+      const offPr = [...boxProblems(offBox), ...glossProblems(off, false)];
+      if (Math.abs(offBox.card.bottom - box.card.bottom) > 0.5 || Math.abs(offBox.card.top - box.card.top) > 0.5)
+        offPr.push(`the card moved from ${Math.round(box.card.top)}-${Math.round(box.card.bottom)} to ${Math.round(offBox.card.top)}-${Math.round(offBox.card.bottom)}`);
+      if (offPr.length) pr.push('pressed again: ' + offPr.join(', '));
+    }
+    if (pr.length) bad.push(`${where}: ${pr.join(', ')}`);
+    return s;
+  };
+  let keysTried = false;
   const stages = C.camps.map(c => ({ hash: 'camp-' + c.n, stage: c })).concat(C.summit ? [{ hash: 'summit', stage: C.summit }] : []);
   for (const { hash, stage } of stages) {
     if (hash === 'summit') {
@@ -572,12 +697,38 @@ async function gateSize(b, base, C, w, h) {
       await p.evaluate(ids => { const s = JSON.parse(localStorage.getItem('sherpa.climb.v1') || '{"v":1,"camps":{},"summit":null,"last":null,"misses":{}}');
         ids.forEach(id => { s.misses[id] = true; }); localStorage.setItem('sherpa.climb.v1', JSON.stringify(s)); }, ids);
     }
-    await p.goto(base + PAGE + '?gate=' + hash + (opt('--lang') ? '&lang=' + opt('--lang') : '') + '#' + hash, { waitUntil: 'load' });   // --lang xx: the gate with that gloss under every line   // a new query: a real load, not a hash change
+    await p.goto(base + PAGE + '?gate=' + hash + (LANG !== 'en' ? '&lang=' + LANG : '') + '#' + hash, { waitUntil: 'load' });   // a new query: a real load, not a hash change
     await p.waitForSelector('#view .v-arrive');
     await p.waitForTimeout(150);
-    await check(`${hash} arrival`);
-    await p.click('#begin');
-    await p.waitForTimeout(GAP);
+    if (hash === stages[0].hash) {
+      // a language the page does not offer falls back to English: that would be a gate run
+      // in English under another name
+      const docLang = await p.evaluate(() => document.documentElement.lang);
+      if (!ok(docLang === LANG, `${dev} the gate runs in ${LANG}`, docLang)) break;
+    }
+    const arr = await check(`${hash} arrival`, 'arrive');
+    if (arr.tog && !keysTried) {
+      // the first card with a toggle: it works from the keyboard (Enter on it is not
+      // "Start"), and its position belongs to this card only: the next card starts in English
+      keysTried = true;
+      await p.focus('#gtog');
+      await p.keyboard.press('Enter');
+      const k1 = await p.evaluate(() => ({ view: window.SherpaClimb.state().view, pressed: document.querySelector('#gtog').getAttribute('aria-pressed') }));
+      await p.setViewportSize({ width: w, height: h - 1 });          // a redraw of the same card keeps it
+      await p.waitForTimeout(300);
+      await p.setViewportSize({ width: w, height: h });
+      await p.waitForTimeout(300);
+      const k2 = await glossState(p);
+      await p.click('#begin');
+      await p.waitForTimeout(GAP);
+      const k3 = await glossState(p);
+      ok(k1.view === 'arrive' && k1.pressed === 'true' && k2.sw && k2.pressed === 'true' && !k3.sw && (k3.pressed === null || k3.pressed === 'false'),
+        `${dev} ${LANG} the toggle: Enter on it shows the translation and does not start; a resize keeps it; the next card starts in English`,
+        JSON.stringify({ k1, k2: { sw: k2.sw, pressed: k2.pressed }, k3: { sw: k3.sw, pressed: k3.pressed } }));
+    } else {
+      await p.click('#begin');
+      await p.waitForTimeout(GAP);
+    }
     const items = Object.fromEntries(stage.items.map(it => [it.id, it]));
     const seen = new Set();
     for (let step = 0; step < stage.items.length * 3; step++) {
@@ -588,26 +739,32 @@ async function gateSize(b, base, C, w, h) {
       seen.add(it.id);
       if (first) await check(`${it.id} asked`);
       await answerItem(p, it, first, it.kind === 'type' ? it.accept[0] : null, false);
-      if (first) await check(`${it.id} answered wrong`);
+      if (first) await check(`${it.id} answered wrong`, 'answered-wrong');
       await p.waitForTimeout(GAP);
       await p.click('#next');
       await p.waitForTimeout(GAP);
     }
-    await p.waitForSelector(hash === 'summit' ? '#view .v-top' : '#view .v-done');
-    await p.waitForTimeout(150);
-    await check(hash === 'summit' ? 'summit screen' : `${hash} complete`);
     if (hash === 'summit') {
+      // the summit in two steps, each measured on its own
+      await p.waitForSelector('#view .v-top.s1');
+      await p.waitForTimeout(150);
+      await check('summit step one', 'summit-1');
+      await p.waitForTimeout(GAP);
+      await p.click('#seeclimb');
+      await p.waitForSelector('#view .v-top.s2');
+      await p.waitForTimeout(150);
+      await check('summit step two', 'summit-2');
       const n = await p.evaluate(() => document.querySelector('.rv-n') && +document.querySelector('.rv-n').textContent);
-      ok(n >= 25, `${dev} the summit screen was measured with ${n} lines to look at again`);
-      if (w === 360) await p.screenshot({ path: path.join(SHOTS, `gate-${dev}-summit.png`) });
-    }
-    if (hash === 'camp-' + C.camps[C.camps.length - 1].n || (hash === 'camp-1' && C.camps.length < 10)) {
-      await p.screenshot({ path: path.join(SHOTS, `gate-${dev}-${hash}-done.png`) });
+      ok(n >= 25, `${dev} ${LANG} summit step two was measured with ${n} lines to look at again`);
+    } else {
+      await p.waitForSelector('#view .v-done');
+      await p.waitForTimeout(150);
+      await check(`${hash} complete`, 'complete');
     }
   }
-  ok(!bad.length, `${dev} no-scroll gate: ${states} states across ${stages.length} stage(s), the card never scrolls and every control is on screen`,
+  ok(!bad.length, `${dev} ${LANG} no-scroll gate: ${states} states across ${stages.length} stage(s)${toggled ? `, ${toggled} with the translation toggle pressed and released` : ''}, the card never scrolls and every control is on screen`,
     bad.slice(0, 6).join(' | ') + (bad.length > 6 ? ` | and ${bad.length - 6} more` : ''));
-  ok(!errors.length, `${dev} gate: no console errors or page errors`, errors.slice(0, 3).join(' | '));
+  ok(!errors.length, `${dev} ${LANG} gate: no console errors or page errors`, errors.slice(0, 3).join(' | '));
   await ctx.close();
 }
 
@@ -623,7 +780,8 @@ async function gateSize(b, base, C, w, h) {
       const { chromium } = require(path.join(ROOT, 'node_modules', 'playwright'));
       const b = await chromium.launch();
       try {
-        await Promise.all([
+        if (argv.includes('--gate-only')) notes.push('--gate-only: the play-through (in English) was skipped');
+        else await Promise.all([
           run(b, base, C, 'desktop', { width: 1280, height: 800 }),
           run(b, base, C, 'phone', { width: 390, height: 844 }),
         ]);

@@ -14,8 +14,8 @@ The steps for that session are at the bottom of this file.
 
 **Check the deck against the cast before you start.** All 117 lines of the
 game are written for these five people, and the pronouns are fixed:
-**Tensing** (the guide), **Ana** (she, the planner), **Otto** (he, the old
-hand, the oldest), **Sam** (he, young, first big climb) and **Doris** (she,
+**Tensing** (the guide), **Myra** (she, the planner), **Otto** (he, the old
+hand, the oldest), **Sam** (he, young, first big climb) and **Navya** (she,
 base-camp radio), plus **Momo**, a yak. If your deck has different names, a
 different number of people, or Sam or Otto as a woman, tell Claude first:
 the lines can change, and it is quicker before the pictures exist than after.
@@ -38,12 +38,12 @@ on the sheet in every scene: the same face, hair, build, clothes, pack and
 colours. Nobody changes outfit during the climb, except for adding a hat,
 goggles or a head torch higher up.
 - **Tensing**: the mountain guide. Calm, experienced, always at the front.
-- **Ana**: the planner. Brisk; carries the map and the schedule.
+- **Myra**: the planner. Brisk; carries the map and the schedule.
 - **Otto**: the old hand. The oldest; has climbed for forty years.
 - **Sam**: young, on his first big climb. Keen, sometimes exhausted.
-- **Doris**: runs the radio at base camp. She stays at the bottom and is
+- **Navya**: runs the radio at base camp. She stays at the bottom and is
   never on the mountain.
-- **Momo**: a yak who lives at base camp with Doris. Never on the mountain.
+- **Momo**: a yak who lives at base camp with Navya. Never on the mountain.
 
 **The style for every scene.** Match the attached sheet's drawing style.
 The palette is soft pink and slate blue with snow white and dark rock: dawn
@@ -64,7 +64,7 @@ watermark in any picture.
 **The fifteen scenes.**
 
 1. **Camp one, the lake at dawn (day one).** The sun is coming up over a
-   still mountain lake. Otto and Ana are cooking breakfast on a small stove
+   still mountain lake. Otto and Myra are cooking breakfast on a small stove
    by the tents; Sam is tying his boots; Tensing stands holding a radio to
    one ear, listening to the weather report. The team is on the LEFT; the lake and
    the rising sun fill the right.
@@ -78,11 +78,11 @@ watermark in any picture.
    People on the LEFT; the valley and the evening sky on the right.
 4. **Camp four, the rope.** A steeper slope with a small lower camp. A single
    fixed rope runs from the camp up the slope; Otto is small, high up the
-   rope, going to look at the ice; Sam and Ana watch from the tents. A small
+   rope, going to look at the ice; Sam and Myra watch from the tents. A small
    pile of stones (a cairn Otto built two years ago) stands near the tents.
    Action on the RIGHT; the calm slope and sky on the left.
 5. **Camp five, the plan.** A high meadow with a ridge ahead and dark clouds
-   gathering beyond it. Ana holds out a map and points at the ridge; Sam
+   gathering beyond it. Myra holds out a map and points at the ridge; Sam
    leans in to look; Otto unpacks a big bag of food for dinner. People on the
    LEFT; the ridge and the gathering weather on the right.
 6. **Camp six, the storm on the ridge.** A narrow rocky ridge in sudden
@@ -111,7 +111,7 @@ watermark in any picture.
     in behind. The hut and the team on the LEFT; the snowfield on the
     right.
 12. **Camp twelve, the cairn.** A tall stone cairn on a snowy plateau below
-    the summit, pale clear sky. Ana checks her watch and points up; the
+    the summit, pale clear sky. Myra checks her watch and points up; the
     others rest against the cairn. Cairn and team on the RIGHT; the sky on
     the left.
 13. **Camp thirteen, four in the morning.** Night, stars, a long snowfield
@@ -127,10 +127,53 @@ watermark in any picture.
     rest.
 
 That is all fifteen. If I then ask for **portraits**, make one per person
-(Tensing, Ana, Otto, Sam, Doris), portrait format 1024 × 1536: head and
+(Tensing, Myra, Otto, Sam, Navya), portrait format 1024 × 1536: head and
 shoulders to the waist, plain pale background, the same light for all
-five, each exactly as on the sheet. Give Doris her radio handset and a mug
+five, each exactly as on the sheet. Give Navya her radio handset and a mug
 of coffee.
+
+---
+
+## Round two (2026-10-03): base camp, Momo, and camp one again
+
+Innes, after the first set: *"doris doesnt appear or momo and the one shot
+with momo looks shit"*. The first brief kept Navya and Momo off the mountain
+and gave base camp no picture, so they had nowhere to be; ChatGPT then
+squeezed Momo into a corner of camp one, where he does not belong. Paste
+these three into the **same chat** (it still has the deck and the style), one
+at a time, and save them as `camp-01.png`, `base-camp.png` and
+`cast-momo.png`. The game picks them up by name: base camp becomes the
+picture on the game's opening screen, and Momo's portrait sits beside his
+line under the team.
+
+---
+
+*(A is done: Innes had already made it, as "shot without momo.png" in the
+first package; it is camp one now. Only B and C are still to make.)*
+
+**A. Camp one again, without the yak.** Same style and the same four
+climbers as before. The lake at dawn, day one. Give the people room: spread
+them across the LEFT two-thirds, nobody cropped by the edge. Otto and Myra
+crouch at a small stove making breakfast; Sam sits on a rock tying his
+boots; Tensing stands a little apart, holding a radio to one ear. There is
+**no yak and no animal** in this picture. The still lake and the rising sun
+fill the right. Landscape, 1536 × 1024.
+
+**B. Base camp, where Navya and Momo live.** The same style. The base camp
+at the foot of the mountain, with big tents, prayer flags, and the whole
+mountain rising huge behind. **Navya** (exactly as in her portrait: grey
+hat, glasses, coral-and-blue jacket) sits at a folding table outside the
+radio tent, with the handset to her mouth and a mug of coffee beside her.
+**Momo the yak** stands next to her: a big, shaggy, dark-brown yak with a
+woven red halter, friendly and a bit of a menace, chewing on something he
+shouldn't (a sock or a glove). Navya and Momo are on the LEFT, both a good
+size, nobody cropped. The calm sky and the mountain are on the right. No text.
+Landscape, 1536 × 1024.
+
+**C. Momo's portrait.** Like the five team portraits: the same plain pale
+background, the same light and the same style. Momo the yak, head and
+shoulders, looking at the viewer with a sock hanging out of his mouth.
+Portrait, 1024 × 1536.
 
 ---
 
@@ -142,7 +185,7 @@ replaces what, and how the game picks each picture up with no code change.
 1. **Sort.** Look at every file in `incoming/sherpa-climb/` and name them by
    scene, using the list above (camp-01 … camp-13, summit, summit-top,
    cast-<who>). Check each picture's people against the deck. In particular,
-   are Doris and Momo off the mountain? Are the people in the half the scene
+   are Navya and Momo off the mountain? Are the people in the half the scene
    asked for?
 2. **Scenes:** `py tools/prep-artwork.py incoming/sherpa-climb/<file>
    --into SherpaClimb --names camp-06 --width 1600 --quality 82`. It flags a
