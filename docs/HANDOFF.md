@@ -240,6 +240,21 @@ also open Sherpa Tensing.
   next `seo.py` run on main writes; until then every gate says "Forbes
   English Pro" (access itself is already correct).
 
+## 2026-10-03 — Raise the Lookout, Phase B (Innes's painted tower)
+
+Innes made the two ChatGPT pictures (incoming/lookout/, local). `build.py
+--ingest/--trace/--proof` (new art.py) cleans the tower's alpha haze, cuts
+nine storeys on the beams (bands cover 100%, 0 overlap), makes the ghost
+from the tower's own pixels, measures the summit pad and writes
+BlockCamp/lookout/*.webp and storeys.json (sha1s of plates and webps, so
+--check fails if the art changes). block-camp/camp-lookout.js (from
+template-lookout.js) paints the stage on flags.html and a small window on
+the Results card (camp-end.js, lazy); the Phase A code tower is the
+fallback (pictures or script blocked, ?art=code). Tested 0/1/4/6/12/18 at
+375, 390, 1280; Results card height unchanged on phones; storage blocked
+safe. Left: desktop flags/constellation small at dpr 1; camp-lookout.js?v=1
+must be bumped by hand on an API change.
+
 ## 2026-10-02 — Raise the Lookout, Phase A (the flags build a tower)
 
 Innes: make the flags feel like "building or trying to reach something".

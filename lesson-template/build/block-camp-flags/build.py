@@ -11,13 +11,21 @@ on every camp of the climb and every station of the descent - and, since
     py lesson-template/build/block-camp-flags/build.py --self-test  # the caption gate
                                                                   # refuses wrong-tense
                                                                   # probes and broken
-                                                                  # copies
+                                                                  # copies; the art gate
+                                                                  # refuses broken traces
+
+  Phase B, Innes's art (incoming/lookout/, gitignored; art.py does the work):
+    ... build.py --ingest   clean the tower's alpha, write BlockCamp/lookout/*.webp
+    ... build.py --trace    measure storeys.json: bands, anchors, the pad, the lip
+    ... build.py --proof    incoming/lookout/proof-trace.png, the trace drawn out
+  Each also rebuilds the three outputs. Never tools/prep-artwork.py here: it
+  writes 16:9 JPEG and would drop the alpha.
 
 Innes, 2026-10-02: "Users need some kind of achievement record of flags
 obtained from all the camps." Then: "think of a way to make this more fun
 like you are building or trying to reach something" - Raise the Lookout.
 
-Writes two files:
+Writes three files:
 
   block-camp/camp-flags.js   from template.js - window.CampFlags: the flag
                              table, the rule, the record, the pixel sprite,
@@ -25,17 +33,29 @@ Writes two files:
                              (lookout(), meter(), lampSprite()). Loaded by
                              camp-end.js on every deck, by both route maps
                              and by flags.html.
-  block-camp/flags.html      from template.html - "Your Lookout": the code
-                             tower on a canvas stage with its HUD, sheets and
-                             build-in, then "the parts list" (the eighteen
-                             flags in two rows, as storeys and lamps).
+  block-camp/flags.html      from template.html - "Your Lookout": the
+                             painted tower (camp-lookout.js) or, if that or
+                             its pictures fail, the code tower, on a canvas
+                             stage with its HUD, sheets and build-in, then
+                             "the parts list" (the eighteen flags in two
+                             rows, as storeys and lamps).
+  block-camp/camp-lookout.js from template-lookout.js + storeys.json - the
+                             Phase B renderer: the painted stage for
+                             flags.html and the small Results window that
+                             camp-end.js loads lazily.
 
-and keeps one cache beside this file:
+and keeps two files beside this one:
 
   plate-tokens.json          the colours sampled from the two plates, with
                              each plate's sha1. Rebuilt (PIL) only when a
                              plate or a sample box changes; --check fails if a
                              plate changed and the cache was not re-sampled.
+  storeys.json               the trace of Innes's two plates (art.py --trace):
+                             the nine bands, every anchor, the pad, the lip,
+                             the plates' and the pictures' sha1. --check fails
+                             if a plate in incoming/lookout/ or a picture in
+                             BlockCamp/lookout/ changed without a re-trace, or
+                             the trace breaks a design 9.7 rule.
 
 THE TABLE IS THE HUB'S. Camps, stations, names and colours are
 block-camp-hub/build.py's CLIMB, DESCENT, CAMP and INK, imported the way the
@@ -94,7 +114,11 @@ REPO = os.path.normpath(os.path.join(HERE, '..', '..', '..'))
 HUB = os.path.join(REPO, 'lesson-template', 'build', 'block-camp-hub')
 OUT_JS = os.path.join(REPO, 'block-camp', 'camp-flags.js')
 OUT_HTML = os.path.join(REPO, 'block-camp', 'flags.html')
+OUT_LK = os.path.join(REPO, 'block-camp', 'camp-lookout.js')
 TOKENS_JSON = os.path.join(HERE, 'plate-tokens.json')
+
+sys.path.insert(0, HERE)
+import art  # noqa: E402  (Phase B: ingest, trace, proof, and the art gate)
 
 spec = importlib.util.spec_from_file_location('hub', os.path.join(HUB, 'build.py'))
 hub = importlib.util.module_from_spec(spec)
@@ -578,6 +602,7 @@ def check_contrast(rows, ink_dk, toks=None):
         if r['line'] == 'descent':
             pairs.append(('lamp lid on %s glass' % r['key'], ink_dk, r['colour']))
     pairs.append(('gold crown on lamp lid', pal['GOLD_C'], ink_dk))
+    pairs.append(('ink digit on a ghost tag (camp-lookout.js)', ink_dk, pal['GHOST']))
     pairs.append(('gold crown highlight on lamp lid', pal['GOLD_HI'], ink_dk))
     if toks:
         tiers = trim_tiers()
@@ -631,6 +656,9 @@ def render(write_tokens=True):
     data = json.dumps(rows, ensure_ascii=False, separators=(',', ':'))
     lkdata = json.dumps(lk, ensure_ascii=False, separators=(',', ':'))
     js = rd(HERE, 'template.js').replace('{{TABLE}}', data).replace('{{LOOKOUT}}', lkdata)
+    trace = load_trace()
+    artd = art.art_data(trace)
+    js_lk = rd(HERE, 'template-lookout.js').replace('{{ART}}', json.dumps(artd, ensure_ascii=False, separators=(',', ':')))
 
     nav = rd(HUB, 'nav.html')
     nav = re.sub(r'href="(?!https?:|mailto:|#|\.\./)([^"]+)"', r'href="../\1"', nav)
@@ -648,31 +676,47 @@ def render(write_tokens=True):
             .replace('{{N_DESCENT}}', str(n_desc))
             .replace('{{N_STAR}}', str(n_star))
             .replace('{{N_ALL}}', str(len(rows)))
-            .replace('{{LOOKOUT}}', lkdata))
-    return js, html, rows, lk
+            .replace('{{LOOKOUT}}', lkdata)
+            .replace('{{LK_V}}', hashlib.sha1(js_lk.encode('utf-8')).hexdigest()[:8]))
+    return js, html, rows, lk, js_lk, trace
+
+
+def load_trace():
+    try:
+        return json.load(open(art.STOREYS_JSON, encoding='utf-8'))
+    except (OSError, ValueError) as e:
+        raise ValueError('storeys.json is missing or unreadable (%s): run build.py --ingest --trace on a machine '
+                         'with incoming/lookout/' % e)
 
 
 def main():
     check = '--check' in sys.argv
     if '--self-test' in sys.argv:
-        missed = self_test()
+        missed = self_test() + art_self_test()
         if missed:
             print('\n'.join('FAIL: ' + m for m in missed))
             sys.exit(1)
-        print('OK: the caption gate refuses all %d wrong-tense probes and every broken copy'
-              % sum(len(v) for v in SHAPE_PROBES.values()))
+        print('OK: the caption gate refuses all %d wrong-tense probes and every broken copy; '
+              'the art gate refuses %d broken traces' % (sum(len(v) for v in SHAPE_PROBES.values()), len(ART_CASES)))
         return
+    phase_b = [a for a in ('--ingest', '--trace', '--proof') if a in sys.argv]
+    if phase_b and not check:
+        toks, _ = tokens(True)
+        for line in art.run('--ingest' in phase_b, '--trace' in phase_b, '--proof' in phase_b, toks):
+            print(line)
     try:
-        js, html, rows, lk = render(write_tokens=not check)
+        js, html, rows, lk, js_lk, trace = render(write_tokens=not check)
     except ValueError as e:
         print('FAIL: %s' % e)
         sys.exit(1)
-    leftover = sorted(set(re.findall(r'\{\{[A-Z_]+\}\}', js + html)))
+    leftover = sorted(set(re.findall(r'\{\{[A-Z_]+\}\}', js + html + js_lk)))
     problems = ['unfilled placeholder %s' % p for p in leftover]
     problems += check_captions(lk['storeys'], lk['lamps'])
     bad, low = check_contrast(rows, lk['inkDk'], lk['tokens'])
     problems += bad
-    pairs = ((OUT_JS, js), (OUT_HTML, html))
+    problems += ['art: ' + p for p in art.check_art(trace)]
+    have_src = os.path.exists(art.SRC_TOWER) and os.path.exists(art.SRC_SUMMIT)
+    pairs = ((OUT_JS, js), (OUT_HTML, html), (OUT_LK, js_lk))
     if check:
         stale = []
         for path, text in pairs:
@@ -687,19 +731,95 @@ def main():
         if problems:
             print('\n'.join('FAIL: ' + p for p in problems))
             sys.exit(1)
-        print('OK: camp-flags.js and flags.html match the hub tables (%d flags); %d captions pass; '
-              'contrast pairs >= %.2f:1; plate tokens current'
-              % (len(rows), len(lk['storeys']) + len(lk['lamps']), low))
+        print('OK: camp-flags.js, flags.html and camp-lookout.js match the hub tables (%d flags) and the trace; '
+              '%d captions pass; contrast pairs >= %.2f:1; plate tokens current; the trace tiles the tower '
+              '(%.2f%%, smallest storey %d px), every anchor in place, the pictures as traced%s'
+              % (len(rows), len(lk['storeys']) + len(lk['lamps']), low, 100 * trace['coverage'],
+                 min(q['h'] for q in trace['storeys']),
+                 '; the plates as traced' if have_src else ' (the raw plates are not on this machine: their sha1 is not checked)'))
         return
     if problems:
         print('\n'.join('FAIL: ' + p for p in problems))
         sys.exit(1)
     for path, text in pairs:
         open(path, 'w', encoding='utf-8', newline='\n').write(text)
-    print('wrote block-camp/camp-flags.js and block-camp/flags.html - %d climb, %d descent flags; '
+    print('wrote block-camp/camp-flags.js, block-camp/flags.html and block-camp/camp-lookout.js - %d climb, %d descent flags; '
           'lookout: %d storeys, %d lamps, %d adventures'
           % (sum(r['line'] == 'climb' for r in rows), sum(r['line'] == 'descent' for r in rows),
              len(lk['storeys']), len(lk['lamps']), len(lk['adventures'])))
+
+
+# broken copies of the trace that the art gate must refuse (--self-test)
+def _broken_traces(T):
+    import copy
+
+    def mod(fn):
+        c = copy.deepcopy(T)
+        fn(c)
+        return c
+
+    def by(c, n):
+        return [s for s in c['storeys'] if s['n'] == n][0]
+
+    def cross(c):                     # storey 5's top cut dropped below its bottom
+        s5, s6 = by(c, 5), by(c, 6)
+        s5['top'] = [[0, 1024, s5['y1'] + 5]]
+        s6['bot'] = s5['top']
+
+    def gap(c):                       # storey 4's top no longer meets storey 5's bottom
+        by(c, 4)['top'] = [[r[0], r[1], r[2] + 3] for r in by(c, 4)['top']]
+
+    def thin(c):
+        by(c, 7)['h'] = int(0.05 * c['towerH'])
+
+    def far(c):
+        by(c, 3)['fx']['c'] = [40, 40]
+
+    def wrong_row(c):
+        by(c, 2)['flag'] = [by(c, 2)['flag'][0], by(c, 5)['flag'][1]]
+
+    def lamp_on_tag(c):
+        by(c, 4)['lamp']['hook'] = [int(c['tagX']) + 30, by(c, 4)['mid'][1] - 20]
+
+    def no_caps(c):
+        by(c, 6)['caps'] = []
+
+    def high(c):
+        c['place']['top'] = 0.03 * 1536
+
+    def cover(c):
+        c['coverage'] = 0.98
+
+    def plate(c):
+        c['src']['lookout'] = '0' * 40
+
+    return [('crossed cuts', mod(cross)), ('a gap between bands', mod(gap)), ('a storey under 6%', mod(thin)),
+            ('an effect outside the tower', mod(far)), ('a flag on the wrong storey', mod(wrong_row)),
+            ('a lamp on a tag', mod(lamp_on_tag)), ('a storey with no caps', mod(no_caps)),
+            ('the tower too high', mod(high)), ('coverage under 99.5%', mod(cover)), ('a changed plate', mod(plate))]
+
+
+ART_CASES = ['crossed cuts', 'a gap between bands', 'a storey under 6%', 'an effect outside the tower',
+             'a flag on the wrong storey', 'a lamp on a tag', 'a storey with no caps', 'the tower too high',
+             'coverage under 99.5%', 'a changed plate']
+
+
+def art_self_test():
+    """The art gate passes the real trace and refuses every broken copy. A
+    changed plate can only be seen where the plates are (have_src)."""
+    missed = []
+    try:
+        T = load_trace()
+    except ValueError as e:
+        return [str(e)]
+    if art.check_art(T):
+        missed.append('the real trace does not pass: %s' % art.check_art(T))
+    for name, c in _broken_traces(T):
+        if name == 'a changed plate' and not (os.path.exists(art.SRC_TOWER) and os.path.exists(art.SRC_SUMMIT)):
+            continue
+        if not art.check_art(c):
+            missed.append('a broken trace passed: ' + name)
+    return missed
 
 
 if __name__ == '__main__':

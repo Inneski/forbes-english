@@ -1,7 +1,7 @@
 <!-- Generated 2026-10-02 by a design workflow (4 concepts: Raise the Lookout 22.5,
 Beacon Peak 21.5, Lookout Town 17, the Flagship airship 14.5; judged on fun,
 art feasibility and fit), for Innes: "think of a way to make this more fun like
-you are building or trying to reach something". Not built yet. The art brief is
+you are building or trying to reach something". Phase A (code tower) shipped 2026-10-02; Phase B (Innes's painted tower) 2026-10-03. The art brief is
 docs/ARTWORK-lookout.md; the code-drawn mockup lives in the session scratchpad. -->
 
 # Raise the Lookout: final design

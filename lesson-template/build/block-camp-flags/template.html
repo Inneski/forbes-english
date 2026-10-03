@@ -76,6 +76,10 @@ button{font:inherit;color:inherit;cursor:pointer}
 .lk-preview{display:inline-block;margin:10px 0 0;padding:4px 10px;border-radius:8px;border:1px dashed rgba(232,192,74,.6);color:var(--gold-pale);font-size:.8rem}
 .lk-stage{grid-area:stage;position:relative;height:min(88vh,1000px);width:calc(min(88vh,1000px) * .74);border-radius:var(--radius);overflow:hidden;border:1px solid var(--hair);background:var(--lk-sky,var(--green-mid));touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .lk-stage canvas{position:absolute;left:0;top:0;display:block;image-rendering:pixelated}
+/* Phase B: the painted stage is the 2:3 plate (camp-lookout.js covers the
+   stage with it, cropping the sides by at most 15%) */
+.lk-stage.lk-art{width:calc(min(88vh,1000px) * 2 / 3)}
+.lk-stage.lk-art canvas{image-rendering:auto}
 .lk-over{position:absolute;inset:0}
 .lk-hit{position:absolute;display:block;margin:0;padding:0;border:0;border-radius:6px;background:transparent}
 .lk-hit:hover{background:var(--wash)}
@@ -118,6 +122,7 @@ button{font:inherit;color:inherit;cursor:pointer}
   .lk-head{margin-bottom:10px}
   .lk-head h1{margin-bottom:0}
   .lk-stage{width:100%;height:min(150vw,max(420px,calc(100vh - 190px)),900px);height:min(150vw,max(420px,calc(100svh - 190px)),900px)}
+  .lk-stage.lk-art{width:100%;height:min(150vw,1000px)}
   .lk-hud{margin-top:14px}
   .lede{margin-top:16px}
 }
@@ -127,6 +132,7 @@ button{font:inherit;color:inherit;cursor:pointer}
   .lk-part{grid-template-columns:48px minmax(0,1fr);gap:10px;padding:8px 0}
   .lk-part .art svg{width:48px;height:48px}
   .lk-stage{width:auto;margin:0 calc(-1 * var(--gut));border-radius:0;border-width:1px 0}
+  .lk-stage.lk-art{width:auto}
   .lk-stats .n{font-size:1.15rem}
   .lk-cap{left:8px;right:8px;top:8px;padding:8px 10px}
   .lk-cap.low{top:auto;bottom:8px}
@@ -340,6 +346,7 @@ footer{padding:36px 0 48px;color:var(--muted);font-size:.84rem}
 
 <script src="camp-save.js"></script>
 <script src="camp-flags.js?v=2"></script>
+<script src="camp-lookout.js?v={{LK_V}}"></script>
 <script>
 (function () {
   'use strict';
@@ -361,14 +368,16 @@ footer{padding:36px 0 48px;color:var(--muted);font-size:.84rem}
   var REDUCE = media('(prefers-reduced-motion: reduce)');
   function loadSave() { try { return (window.CampSave && window.CampSave.load()) || {}; } catch (_) { return {}; } }
 
-  /* ?lookout=0|4|6|9|12|ooo|18|gold|stars forces a state without reading or
-     writing anything (design 9: the proof and a browser check use the same
-     inputs); &play=1 builds the whole state in; &name= names the plaque. */
+  /* ?lookout=0|1|4|6|9|12|ooo|18|gold|stars forces a state without reading
+     or writing anything (design 9: the proof and a browser check use the
+     same inputs); &play=1 builds the whole state in; &name= names the
+     plaque; &art=code shows the Phase A code tower instead of the painting. */
   var Q = {};
   try { location.search.replace(/^\?/, '').split('&').forEach(function (kv) { if (!kv) return; var i = kv.indexOf('='); Q[decodeURIComponent(i < 0 ? kv : kv.slice(0, i))] = i < 0 ? '1' : decodeURIComponent(kv.slice(i + 1)); }); } catch (_) {}
   var ALL9 = [1, 2, 3, 4, 5, 6, 7, 8, 9], ALL8 = [1, 2, 3, 4, 5, 6, 7, 8];
   var PRESETS = {
     '0': { s: [], g: [], l: [], lg: [], st: [], adv: [], m: [], near: { 'climb-1': 0.38 }, pro: false },
+    '1': { s: [1], g: [], l: [], lg: [], st: [], adv: [], m: [], near: { 'climb-1': 0.6, 'climb-2': 0.42 }, pro: false },
     '4': { s: [1, 2, 3, 4], g: [1, 3, 4], l: [], lg: [], st: [], adv: [], m: [], near: { 'climb-2': 0.68 }, pro: false },
     '6': { s: [1, 2, 3, 4, 5, 6], g: [1, 2, 3], l: [], lg: [], st: [1, 2], adv: [7], m: [], near: { 'climb-4': 0.66 } },
     '9': { s: ALL9, g: [1, 2, 3, 4, 5], l: [], lg: [], st: [1, 2, 3], adv: [3, 7], m: [] },
@@ -440,7 +449,13 @@ footer{padding:36px 0 48px;color:var(--muted);font-size:.84rem}
   drawParts();
 
   /* ══ YOUR LOOKOUT ══════════════════════════════════════════════════════
-     The stage is camp-flags.js's code tower (towerLayers, storeyPixels,
+     Phase B: when camp-lookout.js and its three pictures load, PAINT is its
+     stage() - Innes's painted tower on the summit - and every drawing call
+     below hands over to it (scene, frame, the build-in steps, the hit bands,
+     the hiker's path); its boxes and points come back in CSS px, so g.k is 1.
+     Anything failing (the script, a picture, a throw while drawing) and the
+     stage is what it was in Phase A:
+     camp-flags.js's code tower (towerLayers, storeyPixels,
      GRID, palette) drawn on a canvas with the summit round it: the
      mockup's sky, ridges, pad, lip, plaque, tags, constellation and bunting
      (scratchpad flags-fun/mockup/lookout.js), measured in tower sub-pixels
@@ -503,9 +518,11 @@ footer{padding:36px 0 48px;color:var(--muted);font-size:.84rem}
 
   /* ── geometry: integer device pixels per sub-pixel ── */
   var g = null;   // the current layout
+  var PAINT = null;
   function layout() {
     var cssW = stage.clientWidth, cssH = stage.clientHeight;
     var dpr = Math.max(1, Math.min(3, window.devicePixelRatio || 1));
+    if (PAINT) return PAINT.layout(cssW, cssH, dpr);
     var dW = Math.max(1, Math.round(cssW * dpr)), dH = Math.max(1, Math.round(cssH * dpr));
     var u = Math.max(1, Math.floor(Math.min(dH / 116, dW / 74)));
     var Ws = dW / u, Hs = dH / u, base = Math.floor(Hs - 12), ty = base - 103;
@@ -621,7 +638,7 @@ footer{padding:36px 0 48px;color:var(--muted);font-size:.84rem}
     function yAt(xq) { for (var j = 1; j < pts.length; j++) if (pts[j][0] >= xq) return pts[j - 1][1] + (xq - pts[j - 1][0]) / ((pts[j][0] - pts[j - 1][0]) || 1) * (pts[j][1] - pts[j - 1][1]); return pts[pts.length - 1][1]; }
     return { pts: pts, at: at, yAt: yAt, total: lens[lens.length - 1], mx: mx, my: my };
   }
-  function signBox() { var y = g.base - 17.5; return [g.mx - 4.25, y - 0.25, 8.5, 4.5]; }
+  function signBox() { if (PAINT) return PAINT.signRect(); var y = g.base - 17.5; return [g.mx - 4.25, y - 0.25, 8.5, 4.5]; }
 
   /* ── the static scene for a view, into an offscreen canvas ── */
   var off = document.createElement('canvas'), oc = off.getContext('2d');
@@ -832,9 +849,13 @@ footer{padding:36px 0 48px;color:var(--muted);font-size:.84rem}
     var now = REDUCE ? 0 : (window.performance ? performance.now() : Date.now());
     ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.imageSmoothingEnabled = false;
     ctx.clearRect(0, 0, g.dW, g.dH); ctx.drawImage(off, 0, 0);
-    drawBeam(ctx, V, REDUCE ? 1 : (Math.floor(now / 1000) % 4 === 2 ? 0.82 : 1));
-    drawEffects(ctx, V, now);
-    drawMarks(ctx);
+    if (PAINT) {
+      try { PAINT.frame(ctx, V, now, beamRise); PAINT.marks(ctx, marks); } catch (_) { unpaint(); return; }
+    } else {
+      drawBeam(ctx, V, REDUCE ? 1 : (Math.floor(now / 1000) % 4 === 2 ? 0.82 : 1));
+      drawEffects(ctx, V, now);
+      drawMarks(ctx);
+    }
     if (anim && anim.draw) anim.draw(ctx, now);
   }
   /* something on the stage moves: a gold effect, the beacon flame, the beam */
@@ -854,12 +875,24 @@ footer{padding:36px 0 48px;color:var(--muted);font-size:.84rem}
       else if (id === loopId) loop();
     }, anim ? 40 : 150);
   }
-  function paint() { scene(V); frame(); }
+  function paint() {
+    if (PAINT) {
+      try { PAINT.scene(oc, V); cv.lkBoxes = { W: g.cssW, H: g.cssH, u: 1, painted: true, boxes: g.boxes }; }
+      catch (_) { unpaint(); return; }
+    } else scene(V);
+    frame();
+  }
+  /* the painting failed while drawing: back to the code tower, as it stands */
+  function unpaint() {
+    if (!PAINT) return;
+    PAINT = null; stage.classList.remove('lk-art'); stage.setAttribute('data-art', 'code'); g = null;
+    try { resize(); } catch (_) { fail(); }
+  }
 
   /* ── overlays: hit targets (44px), NEW tags, the hiker ── */
   var over = $('lkOver');
   function hitBands() {
-    var k = g.k, vis = [9, 8, 7, 6, 5, 4, 3, 2, 1].map(function (n) { var r = G.ROWS[n]; return { n: n, top: (g.ty + 2 * r[0]) * k, bot: (g.ty + 2 * (r[1] + 1)) * k }; });
+    var k = g.k, vis = PAINT ? PAINT.bands() : [9, 8, 7, 6, 5, 4, 3, 2, 1].map(function (n) { var r = G.ROWS[n]; return { n: n, top: (g.ty + 2 * r[0]) * k, bot: (g.ty + 2 * (r[1] + 1)) * k }; });
     var hs = vis.map(function (v) { return Math.max(44, v.bot - v.top); }), total = hs.reduce(function (a, b) { return a + b; }, 0);
     var top = (vis[0].top + vis[8].bot) / 2 - total / 2;
     top = Math.max(0, Math.min(g.cssH - total, top));
@@ -868,7 +901,7 @@ footer{padding:36px 0 48px;color:var(--muted);font-size:.84rem}
   }
   function overlays() {
     over.innerHTML = '';
-    var k = g.k, left = (g.tx - 7.5) * k, right = (g.tx + 46) * k;
+    var k = g.k, lr = PAINT ? PAINT.hitX() : [(g.tx - 7.5) * k, (g.tx + 46) * k], left = lr[0], right = lr[1];
     hitBands().slice().reverse().forEach(function (b) {
       var p = L.piece('storey-' + b.n), lp = L.piece('lamp-' + b.n);
       if (!p) return;
@@ -935,6 +968,7 @@ footer{padding:36px 0 48px;color:var(--muted);font-size:.84rem}
     over.appendChild(t);
   }
   function pieceTop(key) {          // the top of a piece, in CSS px (where the caption card must not sit)
+    if (PAINT) return PAINT.pieceTop(key);
     var m = /^(storey|lamp|star|adv)-(.+)$/.exec(key), k = g.k;
     if (!m) return null;
     if (m[1] === 'storey') { var r = G.ROWS[+m[2]]; return [(g.tx + 21) * k, (g.ty + 2 * r[0] + 1) * k]; }
@@ -1115,6 +1149,7 @@ footer{padding:36px 0 48px;color:var(--muted);font-size:.84rem}
   function hframe(i, s) { var out = []; FRAMES[i].split('\n').forEach(function (r, y) { r.split('').forEach(function (c, x2) { if (HINK[c]) out.push((x2 * s).toFixed(2) + 'px ' + (y * s).toFixed(2) + 'px 0 0 ' + HINK[c]); }); }); return out.join(','); }
   var hiker = null, hikerOn = null;
   function hikerPath() {   // the pad, each storey's floor (zig-zag), then the roof beside the cradle
+    if (PAINT) return PAINT.hikerPath();
     var pts = [[g.tx - 2, g.base]];
     for (var n = 1; n <= 8; n++) pts.push([g.tx + 21 + (n % 2 ? -5 : 5), g.ty + 2 * (G.ROWS[n][1] + 1) - (n === 7 ? 4 : 0)]);
     pts.push([g.tx + 13, g.ty + 20]);
@@ -1197,20 +1232,24 @@ footer{padding:36px 0 48px;color:var(--muted);font-size:.84rem}
   function playStep(s) {
     var p = s.p, quick = MONTAGE, D = quick ? 300 : 900;
     if (s.kind === 'storey') {
-      var r = G.ROWS[p.n], top = g.ty + 2 * r[0], bot = g.ty + 2 * (r[1] + 1), dust = storeyColours(p.n), seed = p.n * 17;
       hide['reveal-' + p.n] = 1; delete hide[p.key]; hide['drop-' + p.n] = 1; setView(hide);
       if (!quick || s.last) caption('Storey ' + p.n + ' raised!', p, s.last);
-      return animate(D, function (c2, t) {
-        var k = Math.min(6, Math.floor(t * 6) + 1), y = bot - (bot - top) * k / 6;
-        drawStorey(c2, p.n, V, true, p.gold, y);
-        for (var i = 0; i < 10; i++) {   // dust in the storey's own colours
-          var q = rnd(seed + i), dx = (q - 0.5) * 44, dy = -rnd(seed + i * 3) * 3 * t;
-          c2.globalAlpha = 0.7 * (1 - t); R(c2, g.tx + 21 + dx * (0.4 + t * 0.6), y + 1 + dy, 1, 1, dust[i % dust.length]); c2.globalAlpha = 1;
-        }
-      }).then(function () {
+      var build = PAINT ? function (c2, t) { PAINT.buildStorey(c2, V, p, t); } : (function () {
+        var r = G.ROWS[p.n], top = g.ty + 2 * r[0], bot = g.ty + 2 * (r[1] + 1), dust = storeyColours(p.n), seed = p.n * 17;
+        return function (c2, t) {
+          var k = Math.min(6, Math.floor(t * 6) + 1), y = bot - (bot - top) * k / 6;
+          drawStorey(c2, p.n, V, true, p.gold, y);
+          for (var i = 0; i < 10; i++) {   // dust in the storey's own colours
+            var q = rnd(seed + i), dx = (q - 0.5) * 44, dy = -rnd(seed + i * 3) * 3 * t;
+            c2.globalAlpha = 0.7 * (1 - t); R(c2, g.tx + 21 + dx * (0.4 + t * 0.6), y + 1 + dy, 1, 1, dust[i % dust.length]); c2.globalAlpha = 1;
+          }
+        };
+      })();
+      return animate(D, build).then(function () {
         delete hide['reveal-' + p.n]; setView(hide);
-        var a = flagAt(p.n);
+        var a = PAINT ? null : flagAt(p.n);
         return animate(quick ? 200 : 500, function (c2, t) {
+          if (PAINT) { PAINT.dropFlag(c2, V, p, t); return; }
           drawFlag(c2, p.entry, { earned: true, gold: p.gold, star: p.star }, g.tx + a[0], g.ty + a[1], Math.round(-16 * g.dpr * (1 - easeBack(t))));
         });
       }).then(function () { delete hide['drop-' + p.n]; setView(hide); return wait(quick ? 0 : 700); });
@@ -1218,8 +1257,9 @@ footer{padding:36px 0 48px;color:var(--muted);font-size:.84rem}
     if (s.kind === 'lamp') {
       delete hide[p.key]; hide['swing-' + p.n] = 1; setView(hide);
       if (!quick || s.last) caption('Lamp ' + p.n + ' lit!', p, s.last);
-      var T = F.towerLayers(V, { bunting: false, sky: false }), lay = T.layers.filter(function (l) { return l.id === 'lamp-' + p.n; })[0], c = lampCentre(p.n);
+      var T = PAINT ? null : F.towerLayers(V, { bunting: false, sky: false }), lay = T && T.layers.filter(function (l) { return l.id === 'lamp-' + p.n; })[0], c = PAINT ? null : lampCentre(p.n);
       return animate(quick ? 300 : 600, function (c2, t) {
+        if (PAINT) { PAINT.swingLamp(c2, V, p, t); return; }
         var sw = [-1, 1, -1, 1, 0, 0][Math.min(5, Math.floor(t * 6))] * (t < 0.66 ? 1 : 0);
         disc(c2, g.tx + c[0], g.ty + c[1], p.gold ? 6.5 : 5, p.entry.colour, POOL * Math.min(1, Math.ceil(t * 4) / 4), 5);
         if (lay) runs(c2, lay.px, g.tx + sw, g.ty);
@@ -1228,8 +1268,9 @@ footer{padding:36px 0 48px;color:var(--muted);font-size:.84rem}
     if (s.kind === 'gild') {
       delete hide['gold-' + p.key]; setView(hide);
       caption((p.kind === 'lamp' ? 'Lamp ' : 'Storey ') + p.n + ' is gold!', p, s.last);
-      var box2 = p.kind === 'storey' ? [0, 2 * G.ROWS[p.n][0], 42, 2 * (G.ROWS[p.n][1] - G.ROWS[p.n][0] + 1)] : [G.lamp(p.n).x - 2, G.lamp(p.n).y - 2, 7, 8];
+      var box2 = PAINT ? null : p.kind === 'storey' ? [0, 2 * G.ROWS[p.n][0], 42, 2 * (G.ROWS[p.n][1] - G.ROWS[p.n][0] + 1)] : [G.lamp(p.n).x - 2, G.lamp(p.n).y - 2, 7, 8];
       return animate(quick ? 300 : 700, function (c2, t) {   // one faint light sweep
+        if (PAINT) { PAINT.sweep(c2, V, p, t); return; }
         c2.save(); c2.beginPath(); c2.rect(Math.round((g.tx + box2[0]) * g.u), Math.round((g.ty + box2[1]) * g.u), Math.round(box2[2] * g.u), Math.round(box2[3] * g.u)); c2.clip();
         c2.globalAlpha = 0.3; var x0 = box2[0] - 6 + (box2[2] + 12) * t;
         for (var i = 0; i < 4; i++) R(c2, g.tx + x0 + i - box2[3] * 0.0, g.ty + box2[1], 1.5, box2[3], P.GOLD_HI);
@@ -1240,6 +1281,7 @@ footer{padding:36px 0 48px;color:var(--muted);font-size:.84rem}
       delete hide['star-' + p.n]; hide['pop-' + p.n] = 1; setView(hide);
       var sb = g.boxes.filter(function (b) { return b.k === 'star' + p.n; })[0];
       return animate(quick ? 300 : 600, function (c2, t) {
+        if (PAINT) { PAINT.popStar(c2, V, p, t); return; }
         if (!sb) return;
         var scl = Math.max(1, Math.round(g.u / 2)) * (t < 0.5 ? 2 : 1), X0 = Math.round((sb.x0 + 1.75) * g.u - 3.5 * scl), Y0 = Math.round((sb.y0 + 1.5) * g.u - 3 * scl);
         c2.fillStyle = P.GOLD_HI;
@@ -1249,8 +1291,9 @@ footer{padding:36px 0 48px;color:var(--muted);font-size:.84rem}
     if (s.kind === 'pennants') {
       s.list.forEach(function (a) { delete hide[a.key]; delete hide['master-' + a.id]; hide['drop-' + a.key] = 1; });
       setView(hide);
-      var bu = bunting();
+      var bu = PAINT ? null : bunting();
       return animate(500, function (c2, t) {
+        if (PAINT) { PAINT.dropPennants(c2, V, s.list, t); return; }
         s.list.forEach(function (a) { pennant(c2, bu, a.i, a, -2.5 * (1 - easeBack(t)), V.adventures.length); });
       }).then(function () { s.list.forEach(function (a) { delete hide['drop-' + a.key]; }); setView(hide); });
     }
@@ -1372,13 +1415,39 @@ footer{padding:36px 0 48px;color:var(--muted);font-size:.84rem}
   stage.hidden = false; $('lkHud').hidden = false;
   try { hud(); } catch (_) { fail(); return; }
   var started = false;
-  function start() {
+  function start(assets) {
     if (started) return; started = true;
-    try { resize(); } catch (_) { fail(); return; }
-    play().then(function () { overlays(); loop(); stage.setAttribute('data-playing', '0'); }, function () { loop(); stage.setAttribute('data-playing', '0'); });
+    if (assets && assets.tower) {
+      try { PAINT = window.CampLookout.stage(assets); stage.classList.add('lk-art'); stage.setAttribute('data-art', 'painted'); }
+      catch (_) { PAINT = null; }
+    }
+    try { resize(); } catch (_) {
+      if (!PAINT) { fail(); return; }
+      PAINT = null; stage.classList.remove('lk-art'); g = null;
+      try { resize(); } catch (_2) { fail(); return; }
+    }
+    if (!PAINT) stage.setAttribute('data-art', 'code');
+    play().then(function () { overlays(); loop(); stage.setAttribute('data-playing', '0'); adopt(); }, function () { loop(); stage.setAttribute('data-playing', '0'); adopt(); });
   }
   var fontsReady = document.fonts && document.fonts.load ? Promise.all([document.fonts.load('700 16px Monocraft'), document.fonts.load('400 16px Monocraft')]) : Promise.resolve();
-  Promise.race([fontsReady, wait(600)]).then(start, start);
+  /* the painted tower if its pictures arrive within 2.5 s (about 220 KB on a
+     phone); otherwise, or with ?art=code, the code tower */
+  var artReady = Q.art !== 'code' && window.CampLookout && window.CampLookout.load
+    ? window.CampLookout.load('stage', 20000).then(null, function () { return null; }) : Promise.resolve(null);
+  Promise.all([Promise.race([fontsReady, wait(600)]).then(null, function () {}),
+               Promise.race([artReady, wait(2600).then(function () { return null; })])])
+    .then(function (r) { start(r[1]); }, function () { start(null); });
+  /* pictures that arrive after the stage started (a slow phone): the code
+     tower hands over to the painting as soon as no build-in is playing */
+  var late = null;
+  artReady.then(function (a) { late = a; adopt(); });
+  function adopt() {
+    if (PAINT || !late || !started || !g || stage.hidden || stage.getAttribute('data-playing') === '1' || Q.art === 'code') return;
+    try { PAINT = window.CampLookout.stage(late); } catch (_) { PAINT = null; return; }
+    late = null;
+    stage.classList.add('lk-art'); stage.setAttribute('data-art', 'painted'); g = null;
+    try { resize(); } catch (_) { unpaint(); }
+  }
   var rt = 0;
   window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { if (started) { resize(); } }, 150); });
   document.addEventListener('visibilitychange', function () { if (!document.hidden) loop(); });
