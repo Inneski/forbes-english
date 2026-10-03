@@ -6,6 +6,20 @@
 <title>Block Camp | Forbes English</title>
 {{SEO}}
 <meta name="theme-color" content="#0a1830">
+<script>
+/* The language, before the first paint (see LANGUAGE in the CSS): html[lang]
+   and [dir] from the learner's choice, so an Arabic page is laid out right to
+   left from the start, and the words hidden until the script at the bottom
+   has swapped them in - or for three seconds, if it never does. */
+(function () {
+  var h = document.documentElement, l = (location.search.match(/[?&]lang=([a-z]{2})\b/) || [])[1];
+  if (!l) try { l = localStorage.getItem('{{I18N_KEY}}'); } catch (_) {}
+  if (!l || !/^({{I18N_CODES}})$/.test(l)) return;
+  h.lang = l; h.dir = /^({{I18N_RTL}})$/.test(l) ? 'rtl' : 'ltr';
+  h.classList.add('i18n-wait');
+  setTimeout(function () { h.classList.remove('i18n-wait'); }, 3000);
+})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Lato:wght@400;700&display=swap" rel="stylesheet">
@@ -41,11 +55,17 @@
   --radius:    14px;
   --c:         var(--gold);   /* per-card camp colour */
   --ci:        #0b1a12;       /* ink that sits on --c */
+  /* What a font stack falls back to for the glyphs Lato, Barlow Condensed
+     and the Monocraft subset do not have. In English these are the stacks'
+     old tails, so nothing changes; in Russian, Arabic, Chinese and Japanese
+     they name fonts that have the script (see LANGUAGE, below). */
+  --fb:        sans-serif;
+  --fbm:       ui-monospace, monospace;
 }
 * { box-sizing: border-box; }
 html { background: var(--bg); }
 body {
-  margin: 0; font-family: 'Lato', sans-serif; color: var(--cream);
+  margin: 0; font-family: 'Lato', var(--fb); color: var(--cream);
   background:
     radial-gradient(900px 520px at 85% 30%, rgba(64,118,196,.10), transparent 60%),
     radial-gradient(700px 500px at 5% 80%, rgba(70,176,171,.07), transparent 60%),
@@ -69,7 +89,7 @@ img { display: block; }
 @media (max-width: 1024px) { .tb-nav-sub { display: none; } }
 .tb-links { display: flex; align-items: center; gap: clamp(12px, 2vw, 26px); flex-wrap: wrap; }
 .tb-links a {
-  font-family: 'Barlow Condensed', sans-serif; font-weight: 600;
+  font-family: 'Barlow Condensed', var(--fb); font-weight: 600;
   letter-spacing: 0.06em; font-size: 0.78rem; text-transform: uppercase;
   color: #faf8f3; text-decoration: none; opacity: 0.85; transition: opacity .15s ease;
 }
@@ -93,9 +113,9 @@ img { display: block; }
 
 /* ── type ── */
 {{MONOCRAFT}}
-.mono { font-family: 'Monocraft', ui-monospace, monospace; font-synthesis: none; letter-spacing: 0; }
+.mono { font-family: 'Monocraft', var(--fbm); font-synthesis: none; letter-spacing: 0; }
 .eyebrow {
-  font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+  font-family: 'Barlow Condensed', var(--fb); font-weight: 700;
   letter-spacing: .16em; text-transform: uppercase; font-size: .8rem; color: var(--gold);
 }
 
@@ -177,7 +197,7 @@ img { display: block; }
 .cta-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
 .btn {
   display: inline-flex; align-items: center; gap: 10px;
-  font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+  font-family: 'Barlow Condensed', var(--fb); font-weight: 700;
   letter-spacing: .1em; text-transform: uppercase; font-size: .88rem;
   text-decoration: none; padding: 13px 22px; border-radius: 999px;
   transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
@@ -223,7 +243,7 @@ button.btn { cursor: pointer; margin: 0; -webkit-appearance: none; appearance: n
 .cta-row.lk-on::after { content: ""; flex-basis: 100%; order: 9; }
 .btn-lookout.has-meter {
   order: 10; align-items: center; gap: 16px;
-  padding: 8px 22px 8px 8px; border-radius: var(--radius);
+  padding-block: 8px; padding-inline: 8px 22px; border-radius: var(--radius);
 }
 .btn-lookout .lk-art { flex: none; line-height: 0; }
 /* .btn svg above sizes an icon to 1em and strokes it in currentColor: the
@@ -233,11 +253,11 @@ button.btn { cursor: pointer; margin: 0; -webkit-appearance: none; appearance: n
 .btn-lookout .lk-txt { display: flex; flex-direction: column; align-items: flex-start; gap: 5px; min-width: 0; }
 .btn-lookout .lk-k { font-size: 1.7rem; line-height: 1; letter-spacing: 0; color: var(--gold); }
 .btn-lookout .lk-next {
-  font-family: 'Lato', sans-serif; font-weight: 400; font-size: .9rem; line-height: 1.4;
+  font-family: 'Lato', var(--fb); font-weight: 400; font-size: .9rem; line-height: 1.4;
   letter-spacing: 0; text-transform: none; color: var(--muted); max-width: 34ch;
 }
 .btn-lookout .lk-pro { white-space: nowrap; color: var(--gold-pale); }
-.btn-lookout .lk-pro svg { width: 9px; height: 11px; fill: currentColor; stroke: none; vertical-align: -1px; margin-right: 3px; }
+.btn-lookout .lk-pro svg { width: 9px; height: 11px; fill: currentColor; stroke: none; vertical-align: -1px; margin-inline-end: 3px; }
 
 /* the tally, sitting on the hero's bottom edge */
 .tally {
@@ -256,7 +276,7 @@ button.btn { cursor: pointer; margin: 0; -webkit-appearance: none; appearance: n
 }
 .tally a:hover { transform: translateY(-3px); border-color: var(--c); }
 .tally .n { font-size: clamp(1.6rem,3vw,2.3rem); line-height: 1; color: var(--c); }
-.tally .l { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; font-size: .78rem; color: var(--paper); }
+.tally .l { font-family: 'Barlow Condensed', var(--fb); font-weight: 700; letter-spacing: .12em; text-transform: uppercase; font-size: .78rem; color: var(--paper); }
 .tally .s { font-size: .85rem; color: var(--muted); }
 @media (max-width: 760px) { .tally { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
@@ -291,7 +311,7 @@ button.btn { cursor: pointer; margin: 0; -webkit-appearance: none; appearance: n
 /* Mouse and finger get their own instructions: a phone has no hover. */
 .hint-touch { display: none; }
 @media (hover: none) { .hint-mouse { display: none; } .hint-touch { display: inline; } }
-.ms-go { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; font-size: .8rem;
+.ms-go { font-family: 'Barlow Condensed', var(--fb); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; font-size: .8rem;
   border: 1px solid rgba(255,244,214,.45); border-radius: 999px; padding: 9px 16px; white-space: nowrap; }
 
 /* ── cards ── */
@@ -321,16 +341,16 @@ button.btn { cursor: pointer; margin: 0; -webkit-appearance: none; appearance: n
   flex: none; width: 26px; height: 26px; border-radius: 50%;
   display: grid; place-items: center;
   background: var(--c); color: var(--ci);
-  font-family: 'Monocraft', ui-monospace, monospace; font-synthesis: none; font-size: .8rem; line-height: 1;
+  font-family: 'Monocraft', var(--fbm); font-synthesis: none; font-size: .8rem; line-height: 1;
   box-shadow: 0 0 14px -2px var(--c);
 }
 .body { display: flex; flex-direction: column; gap: 5px; padding: 12px 14px 14px; flex: 1; }
 .card-title { font-weight: 700; font-size: 1rem; line-height: 1.35; color: var(--cream); letter-spacing: -.005em; }
-.card-sub { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; font-size: .74rem; color: var(--c); }
+.card-sub { font-family: 'Barlow Condensed', var(--fb); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; font-size: .74rem; color: var(--c); }
 .chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: auto; padding-top: 6px; }
 .chip {
   display: inline-flex; align-items: center; gap: 4px;
-  font-family: 'Barlow Condensed', sans-serif; font-weight: 700; text-transform: uppercase;
+  font-family: 'Barlow Condensed', var(--fb); font-weight: 700; text-transform: uppercase;
   letter-spacing: .08em; font-size: .68rem; padding: 3px 9px; border-radius: 20px;
   background: rgba(255,255,255,.08); color: var(--muted);
 }
@@ -393,6 +413,74 @@ button.btn { cursor: pointer; margin: 0; -webkit-appearance: none; appearance: n
 .note h3 { margin: 0 0 8px; font-size: 1.15rem; color: var(--paper); }
 .note p { margin: 0; line-height: 1.6; color: var(--muted); font-size: .98rem; max-width: 62ch; }
 
+/* ── LANGUAGE ────────────────────────────────────────────────────────
+   Innes, 2026-10-03: "block camp hub needs a translation option and
+   button". The ten languages the decks offer, from a glass pill in the
+   hero's top corner: a globe, the language's own name and a chevron. The
+   native <select> lies over the pill at opacity 0, so a tap opens the
+   phone's own picker and a keyboard gets a real select, named "Language"
+   in the language on screen. The words are hub_i18n.py beside build.py,
+   swapped in by the script at the bottom through data-i18n; the choice is
+   the line's, localStorage 'bc-lang', and ?lang=xx sets it. Tense, camp
+   and lesson names stay English, as they do on every deck. */
+.hero-inner { position: relative; }
+.lang-pick { position: absolute; z-index: 2; top: clamp(12px, 2vw, 22px); inset-inline-end: clamp(20px,4vw,40px); }
+.lang-btn {
+  position: relative; gap: 8px; cursor: pointer;
+  padding-block: 10px; padding-inline: 13px 16px; border-color: rgba(232,192,74,.5);
+}
+.lang-btn .lang-globe { width: 1.25em; height: 1.25em; color: var(--gold); stroke-width: 1.8; }
+.lang-btn .lang-chev { width: .9em; height: .9em; }
+.lang-btn select {
+  position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; padding: 0; border: 0;
+  opacity: 0; cursor: pointer; font-size: 16px;   /* under 16px, iOS zooms the page to it */
+  -webkit-appearance: none; appearance: none; color: var(--cream); background: var(--bg);
+}
+.lang-btn:has(select:focus-visible) { outline: 2px solid var(--gold); outline-offset: 3px; }
+@supports not selector(:has(*)) { .lang-btn:focus-within { outline: 2px solid var(--gold); outline-offset: 3px; } }
+/* On a phone the pill sits above the eyebrow, not over it. */
+@media (max-width: 760px) { .hero-inner { padding-top: 76px; } }
+/* Until the bottom script has swapped the words (the head script set this). */
+html.i18n-wait [data-i18n] { visibility: hidden; }
+
+/* Scripts the page's fonts do not draw. Lato, Barlow Condensed and the
+   Monocraft subset are Latin only (accents included, measured), so Russian,
+   Arabic, Chinese and Japanese fall through to --fb and --fbm, which name
+   fonts that have the script; a heading falls back to a bold sans, never a
+   monospace. */
+html[lang="ru"] { --fbm: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif; }
+html[lang="ar"] { --fb: 'Segoe UI', Tahoma, 'Geeza Pro', 'Noto Sans Arabic', 'Noto Naskh Arabic', sans-serif; --fbm: var(--fb); }
+html[lang="zh"] { --fb: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', 'Noto Sans CJK SC', sans-serif; --fbm: var(--fb); }
+html[lang="ja"] { --fb: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', YuGothic, Meiryo, 'Noto Sans JP', 'Noto Sans CJK JP', sans-serif; --fbm: var(--fb); }
+html:is([lang="ru"], [lang="ar"], [lang="zh"], [lang="ja"]) .mono:not(h1) { font-weight: 700; }
+/* Arabic letters join up: spacing them out breaks every word apart. */
+html[lang="ar"] :is(.eyebrow, .btn, .chip, .card-sub, .tally .l, .ms-go, .tb-links a) { letter-spacing: 0; }
+html:is([lang="zh"], [lang="ja"]) :is(.eyebrow, .btn, .chip, .card-sub, .tally .l, .ms-go, .tb-links a) { letter-spacing: .04em; }
+
+/* RIGHT TO LEFT. In Arabic the copy sits on the right, so the hero's art
+   turns round with it (the tower stands on the left, clear of the words)
+   and every fade that darkens the copy's side runs the other way. */
+[dir="rtl"] .hero-art, [dir="rtl"] .hero-fly { transform: scaleX(-1); }
+[dir="rtl"] .hero::before {
+  background:
+    linear-gradient(270deg, rgba(var(--bg-rgb),.94) 0%, rgba(var(--bg-rgb),.80) 32%, rgba(var(--bg-rgb),.26) 60%, rgba(var(--bg-rgb),0) 100%),
+    linear-gradient(180deg, rgba(var(--bg-rgb),.46) 0%, rgba(var(--bg-rgb),0) 28%, rgba(var(--bg-rgb),0) 62%, var(--bg) 100%);
+}
+@media (max-width: 760px) {
+  [dir="rtl"] .hero::before { background:
+    linear-gradient(180deg, rgba(var(--bg-rgb),.80) 0%, rgba(var(--bg-rgb),.72) 55%, rgba(var(--bg-rgb),.40) 80%, var(--bg) 100%); }
+}
+[dir="rtl"] .map-strip::before {
+  background: linear-gradient(270deg, rgba(var(--bg-rgb),.92) 0%, rgba(var(--bg-rgb),.6) 45%, rgba(var(--bg-rgb),.15) 100%); }
+[dir="rtl"] .track-rule { background: linear-gradient(270deg, var(--gold), rgba(232,192,74,0)); }
+[dir="rtl"] .btn .arr { transform: scaleX(-1); }
+/* The two marks that are English letters, not words: the logo's ENGLISH is
+   SVG text, which in a right-to-left page anchors at its far end and falls
+   out of the picture; the wordmark's letters are inline blocks, which a
+   right-to-left line lays out last to first ("PMAC KCOLB"). The wordmark's
+   span carries dir="ltr" in the markup. */
+[dir="rtl"] .tb-logo { direction: ltr; }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }
@@ -403,44 +491,52 @@ button.btn { cursor: pointer; margin: 0; -webkit-appearance: none; appearance: n
 {{NAV}}
 
 <header class="hero">
-  <div class="hero-art" role="img" aria-label="A voxel woodland trail from a tent, over a bridge, up to a lookout tower, and the view from the tower's top floor over the far side"></div>
+  <div class="hero-art" role="img" aria-label="A voxel woodland trail from a tent, over a bridge, up to a lookout tower, and the view from the tower's top floor over the far side" data-i18n-aria="heroAria"></div>
   <video class="hero-fly" data-src="BlockCamp/hub-flythrough.mp4" muted playsinline preload="none" disablepictureinpicture disableremoteplayback aria-hidden="true"></video>
   <div class="hero-art hero-far" aria-hidden="true"></div>
   <div class="hero-inner">
-    <div class="eyebrow">Forbes English &middot; Grammar, block by block</div>
-    <h1 class="mono" aria-label="Block Camp"><span aria-hidden="true"><span class="j">B</span><span class="j">L</span><span class="j">O</span><span class="j">C</span><span class="j">K</span> <em><span class="j">C</span><span class="j">A</span><span class="j">M</span><span class="j">P</span></em></span></h1>
-    <p class="lede"><strong>Every lesson here is set in a blocky, voxel-built world.</strong> One trail up through the {{W_TENSES}} tenses, a second trail down the far side through the same tenses in the passive, {{W_ADV}} branching adventures with a grammar point built into the plot &mdash; and every illustrated reference in one place.</p>
+    <div class="lang-pick" hidden>
+      <label class="btn btn-glass lang-btn" title="Language" data-i18n-title="langLabel">
+        <svg class="lang-globe" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.7 3.9 5.7 3.9 9s-1.3 6.3-3.9 9M12 3c-2.6 2.7-3.9 5.7-3.9 9s1.3 6.3 3.9 9"/></svg>
+        <span class="lang-cur" aria-hidden="true">English</span>
+        <svg class="lang-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        <select id="hubLang" aria-label="Language" data-i18n-aria="langLabel">{{LANG_OPTIONS}}</select>
+      </label>
+    </div>
+    <div class="eyebrow" data-i18n="eyebrow">Forbes English &middot; Grammar, block by block</div>
+    <h1 class="mono" aria-label="Block Camp"><span aria-hidden="true" dir="ltr"><span class="j">B</span><span class="j">L</span><span class="j">O</span><span class="j">C</span><span class="j">K</span> <em><span class="j">C</span><span class="j">A</span><span class="j">M</span><span class="j">P</span></em></span></h1>
+    <p class="lede" data-i18n="lede"><strong>Every lesson here is set in a blocky, voxel-built world.</strong> One trail up through the {{W_TENSES}} tenses, a second trail down the far side through the same tenses in the passive, {{W_ADV}} branching adventures with a grammar point built into the plot &mdash; and every illustrated reference in one place.</p>
     <div class="cta-row">
-      <a class="btn btn-gold" href="block-camp-map.html">Open the route map <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      <a class="btn btn-gold" href="block-camp-map.html"><span data-i18n="ctaMap">Open the route map</span> <svg class="arr" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
       <button type="button" class="btn btn-glass btn-full" data-camp-full><svg class="cf-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg><span class="cf-l">Full screen</span></button>
-      <a class="btn btn-glass" href="#climb">Start at camp 1</a>
-      <a class="btn btn-glass" href="block-camp/quest.html">Play it as a game</a>
-      <a class="btn btn-glass btn-lookout" href="block-camp/flags.html" data-lookout><span class="lk-art" aria-hidden="true"></span><span class="lk-txt"><span class="lk-l">Your Lookout</span><span class="lk-k mono"></span><span class="lk-next"></span></span></a>
-      <a class="btn btn-glass" href="block-camp/village.html">Walk round the village</a>
+      <a class="btn btn-glass" href="#climb" data-i18n="ctaStart">Start at camp 1</a>
+      <a class="btn btn-glass" href="block-camp/quest.html" data-i18n="ctaGame">Play it as a game</a>
+      <a class="btn btn-glass btn-lookout" href="block-camp/flags.html" data-lookout><span class="lk-art" aria-hidden="true"></span><span class="lk-txt"><span class="lk-l" data-i18n="ctaLookout">Your Lookout</span><span class="lk-k mono"></span><span class="lk-next"></span></span></a>
+      <a class="btn btn-glass" href="block-camp/village.html" data-i18n="ctaVillage">Walk round the village</a>
       <span class="cta-music" data-camp-music-slot></span>
     </div>
   </div>
 </header>
 
-<nav class="tally" aria-label="What is here">
-  <a href="#climb" style="--c:#7A93B5"><span class="n mono">{{N_CLIMB}}</span><span class="l">Units</span><span class="s">the climb &middot; {{W_TENSES}} tenses, two parts each</span></a>
-  <a href="#descent" style="--c:#E66085"><span class="n mono">{{N_DESCENT}}</span><span class="l">Stations</span><span class="s">the descent &middot; every camp in the passive</span></a>
-  <a href="#adventures" style="--c:#F0723F"><span class="n mono">{{N_ADV}}</span><span class="l">Adventures</span><span class="s">branching RPGs &middot; multiple endings</span></a>
-  <a href="#references" style="--c:#46B0AB"><span class="n mono">{{N_REFS}}</span><span class="l">References</span><span class="s">illustrated &middot; 41 scenes each</span></a>
+<nav class="tally" aria-label="What is here" data-i18n-aria="tallyAria">
+  <a href="#climb" style="--c:#7A93B5"><span class="n mono">{{N_CLIMB}}</span><span class="l" data-i18n="tUnits">Units</span><span class="s" data-i18n="tUnitsS">the climb &middot; {{W_TENSES}} tenses, two parts each</span></a>
+  <a href="#descent" style="--c:#E66085"><span class="n mono">{{N_DESCENT}}</span><span class="l" data-i18n="tStations">Stations</span><span class="s" data-i18n="tStationsS">the descent &middot; every camp in the passive</span></a>
+  <a href="#adventures" style="--c:#F0723F"><span class="n mono">{{N_ADV}}</span><span class="l" data-i18n="tAdv">Adventures</span><span class="s" data-i18n="tAdvS">branching RPGs &middot; multiple endings</span></a>
+  <a href="#references" style="--c:#46B0AB"><span class="n mono">{{N_REFS}}</span><span class="l" data-i18n="tRefs">References</span><span class="s" data-i18n="tRefsS">illustrated &middot; 41 scenes each</span></a>
 </nav>
 
 <div class="wrap">
 
   <section class="track" id="climb">
     <div class="track-head">
-      <h2 class="mono"><span class="k">I.</span> The climb</h2>
-      <span class="track-note">{{W_CLIMB}} units &middot; two per tense &middot; active voice{{CLIMB_FREE}}</span>
+      <h2 class="mono"><span class="k">I.</span> <span data-i18n="climbH">The climb</span></h2>
+      <span class="track-note" data-i18n="climbNote">{{W_CLIMB}} units &middot; two per tense &middot; active voice{{CLIMB_FREE}}</span>
     </div>
     <div class="track-rule"></div>
     <a class="map-strip" href="block-camp-map.html">
       <span class="art" style="background-image:url(BlockCamp/hub-hero.jpg);background-position:center 70%"></span>
-      <span><span class="ms-title mono">The Route Map</span><span class="ms-sub">One trail, {{W_TENSES}} camps &mdash; <span class="hint-mouse">hover a stop to see the camp, click to open Part 1</span><span class="hint-touch">tap a stop to see the camp and open Part 1</span>. Or play the day and watch the whole climb.</span></span>
-      <span class="ms-go">Open the map &rarr;</span>
+      <span><span class="ms-title mono" data-i18n="mapTitle">The Route Map</span><span class="ms-sub" data-i18n="mapSub">One trail, {{W_TENSES}} camps &mdash; <span class="hint-mouse">hover a stop to see the camp, click to open Part 1</span><span class="hint-touch">tap a stop to see the camp and open Part 1</span>. Or play the day and watch the whole climb.</span></span>
+      <span class="ms-go" data-i18n="openMap">Open the map &rarr;</span>
     </a>
     <ul class="grid">
 {{CLIMB}}
@@ -449,18 +545,18 @@ button.btn { cursor: pointer; margin: 0; -webkit-appearance: none; appearance: n
 
   <section class="track" id="descent">
     <div class="track-head">
-      <h2 class="mono"><span class="k">II.</span> The descent</h2>
-      <span class="track-note">{{W_DESCENT}} stations &middot; the same camps in the passive{{DESCENT_FREE}}</span>
+      <h2 class="mono"><span class="k">II.</span> <span data-i18n="descH">The descent</span></h2>
+      <span class="track-note" data-i18n="descNote">{{W_DESCENT}} stations &middot; the same camps in the passive{{DESCENT_FREE}}</span>
     </div>
     <div class="track-rule"></div>
-    <p class="track-blurb">On the far side of the watchtower, a second trail takes you back down through
+    <p class="track-blurb" data-i18n="descBlurb">On the far side of the watchtower, a second trail takes you back down through
       every camp again with the doer taken out of the sentence. Each station wears its camp&rsquo;s
       colour and re-uses its scenery, so passing camp 3 on the way down looks like camp 3. The Trial
       at the end takes the labels off.</p>
     <a class="map-strip" href="block-camp-descent-map.html">
       <span class="art" style="background-image:url(BlockCampDescent/watchtower-far-side.jpg);background-position:center 55%"></span>
-      <span><span class="ms-title mono">The Descent Route</span><span class="ms-sub">The far side of the watchtower &mdash; {{W_DESCENT}} stations down to the valley.</span></span>
-      <span class="ms-go">Open the map &rarr;</span>
+      <span><span class="ms-title mono" data-i18n="descStrip">The Descent Route</span><span class="ms-sub" data-i18n="descStripSub">The far side of the watchtower &mdash; {{W_DESCENT}} stations down to the valley.</span></span>
+      <span class="ms-go" data-i18n="openMap">Open the map &rarr;</span>
     </a>
     <ul class="grid">
 {{DESCENT}}
@@ -469,8 +565,8 @@ button.btn { cursor: pointer; margin: 0; -webkit-appearance: none; appearance: n
 
   <section class="track" id="adventures">
     <div class="track-head">
-      <h2 class="mono"><span class="k">III.</span> Adventures</h2>
-      <span class="track-note">click-through &middot; branching story &middot; multiple endings</span>
+      <h2 class="mono"><span class="k">III.</span> <span data-i18n="advH">Adventures</span></h2>
+      <span class="track-note" data-i18n="advNote">click-through &middot; branching story &middot; multiple endings</span>
     </div>
     <div class="track-rule"></div>
     <ul class="adv">
@@ -480,8 +576,8 @@ button.btn { cursor: pointer; margin: 0; -webkit-appearance: none; appearance: n
 
   <section class="track" id="references">
     <div class="track-head">
-      <h2 class="mono"><span class="k">IV.</span> Grammar References</h2>
-      <span class="track-note">{{W_REFS}} tenses &middot; use, form, questions and signals &middot; 41 illustrated scenes each</span>
+      <h2 class="mono"><span class="k">IV.</span> <span data-i18n="refsH">Grammar References</span></h2>
+      <span class="track-note" data-i18n="refsNote">{{W_REFS}} tenses &middot; use, form, questions and signals &middot; 41 illustrated scenes each</span>
     </div>
     <div class="track-rule"></div>
     <ul class="grid">
@@ -491,8 +587,8 @@ button.btn { cursor: pointer; margin: 0; -webkit-appearance: none; appearance: n
 
   <section class="track" id="more">
     <div class="track-head">
-      <h2 class="mono"><span class="k">V.</span> More Minecraft Lessons</h2>
-      <span class="track-note">standalone grammar lessons, A2&ndash;C1</span>
+      <h2 class="mono"><span class="k">V.</span> <span data-i18n="moreH">More Minecraft Lessons</span></h2>
+      <span class="track-note" data-i18n="moreNote">standalone grammar lessons, A2&ndash;C1</span>
     </div>
     <div class="track-rule"></div>
     <ul class="grid">
@@ -502,14 +598,74 @@ button.btn { cursor: pointer; margin: 0; -webkit-appearance: none; appearance: n
 
   <div class="note">
     <div>
-      <h3 class="mono">Browse everything</h3>
-      <p>All {{N_TOTAL}} Block Camp units, the {{W_ADV}} adventures and every reference, alongside the rest of the library.</p>
+      <h3 class="mono" data-i18n="noteH">Browse everything</h3>
+      <p data-i18n="noteP">All {{N_TOTAL}} Block Camp units, the {{W_ADV}} adventures and every reference, alongside the rest of the library.</p>
     </div>
-    <a class="btn btn-gold" href="library.html">All lessons &rarr;</a>
+    <a class="btn btn-gold" href="library.html" data-i18n="allLessons">All lessons &rarr;</a>
   </div>
 
 </div>
 
+<script type="application/json" id="hub-i18n">{{I18N_JSON}}</script>
+<script>
+/* LANGUAGE (see the CSS). English is the page: every [data-i18n] element
+   keeps the English it was built with and takes its language's string from
+   #hub-i18n, which build.py writes from hub_i18n.py with every count already
+   filled in; data-n fills a {n}. data-i18n-aria and data-i18n-title do the
+   same for aria-label and title. The choice is the line's, localStorage
+   'bc-lang' (the head script has already set html[lang] and [dir] from it),
+   and ?lang=xx sets it. camp-music.js and camp-full.js follow html[lang] by
+   themselves; the Lookout tile below draws its line again when it changes.
+   Storage blocked: the picker still changes this page, nothing is kept. */
+(function () {
+  var html = document.documentElement, D = null;
+  try { D = JSON.parse(document.getElementById('hub-i18n').textContent); } catch (_) {}
+  if (!D || !D.t) { html.lang = 'en'; html.dir = 'ltr'; html.classList.remove('i18n-wait'); return; }
+  var T = D.t, NAMES = {}, RTL = {}, cur = 'en';
+  D.langs.forEach(function (p) { NAMES[p[0]] = p[1]; });
+  D.rtl.forEach(function (l) { RTL[l] = 1; });
+  var sel = document.getElementById('hubLang'), cap = document.querySelector('.lang-cur');
+  var dec = document.createElement('textarea');
+  function ok(l) { return l === 'en' || !!(l && T[l]); }
+  function stored() { try { return localStorage.getItem(D.key); } catch (_) { return null; } }
+  function store(l) { try { localStorage.setItem(D.key, l); } catch (_) {} }
+  function plain(s) { dec.innerHTML = s; return dec.value; }
+  function swap(attr, prop) {
+    [].forEach.call(document.querySelectorAll('[' + attr + ']'), function (el) {
+      var en = el._i18n || (el._i18n = {}), slot = prop || 'html';
+      if (!(slot in en)) en[slot] = prop ? el.getAttribute(prop) || '' : el.innerHTML;
+      var v = cur === 'en' ? null : T[cur][el.getAttribute(attr)], n = el.getAttribute('data-n');
+      if (v == null) v = en[slot];
+      else if (n != null) v = v.split('{n}').join(n);
+      if (prop) el.setAttribute(prop, plain(v));
+      else if (el.innerHTML !== v) el.innerHTML = v;
+    });
+  }
+  function apply(l) {
+    cur = ok(l) ? l : 'en';
+    html.lang = cur;
+    html.dir = RTL[cur] ? 'rtl' : 'ltr';
+    swap('data-i18n'); swap('data-i18n-aria', 'aria-label'); swap('data-i18n-title', 'title');
+    if (sel) sel.value = cur;
+    if (cap) cap.textContent = NAMES[cur];
+  }
+  try {
+    var q = (location.search.match(/[?&]lang=([a-z]{2})\b/) || [])[1];
+    if (ok(q)) store(q);
+    apply(ok(q) ? q : stored());
+  } catch (_) {}
+  html.classList.remove('i18n-wait');
+  window.BCHubLang = { data: D, lang: function () { return cur; } };
+  if (sel) {
+    sel.addEventListener('change', function () { store(sel.value); apply(sel.value); });
+    sel.closest('.lang-pick').hidden = false;
+  }
+  /* chosen in a deck or another tab meanwhile, or back through the page cache */
+  function again() { var s = stored(); if (ok(s) && s !== cur) apply(s); }
+  addEventListener('pageshow', function (e) { if (e.persisted) again(); });
+  addEventListener('storage', function (e) { if (e.key === D.key) again(); });
+})();
+</script>
 <script>
 /* The hero's flight (see the HERO comment in the CSS): trail, HOLD, fly up
    the tower, far side (the logo's letters hop), HOLD, dissolve back over
@@ -585,25 +741,73 @@ button.btn { cursor: pointer; margin: 0; -webkit-appearance: none; appearance: n
    still answers with an empty save, so the test is the storage itself, and
    the button stays the plain pill it was, where it was. Back from a deck
    through the page cache, the tower may have grown: pageshow draws it
-   again. */
+   again.
+
+   The line under k/18 is camp-flags.js's English ("Next: Camp 1 · Present
+   Simple Part 1 · 50% lays the footings"). In another language it is said
+   again from the same parts: the hub's words for Camp / Station / Part /
+   Next, the camp's name kept English (as everywhere in the line), and the
+   goal matched against hub_i18n.GOALS - which build.py checks against every
+   goal camp-flags.js can give. A change of language draws it again. */
 (function () {
   var LOCK = '<svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>';
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  var GOALS = null;
+  function say(L, nx, cg) {
+    var H = window.BCHubLang, lang = H ? H.lang() : 'en', D = H && H.data,
+        S = D && D.lk[lang], P = D && D.t[lang];
+    if (!S || !P) {
+      return esc(((L.beacon ? 'Beacon lit! ' : '') +
+        (nx ? 'Next: ' + nx.text : cg ? 'Closest to gold: ' + cg.text : L.golden ? 'The Golden Lookout' : '')).trim());
+    }
+    if (!GOALS) GOALS = D.goals.map(function (g) { return [new RegExp(g[0]), g[1]]; });
+    var f = function (s, o) { return String(s).replace(/\{(\w)\}/g, function (m, k) { return o[k] != null ? o[k] : m; }); };
+    var en = function (s) { return '<bdi lang="en">' + esc(s) + '</bdi>'; };
+    var put = function (s, t) { return esc(s).replace('{t}', function () { return t; }); };
+    function goal(g) {
+      for (var i = 0; i < GOALS.length; i++) {
+        var m = GOALS[i][0].exec(g || '');
+        if (m) return esc(f(S[GOALS[i][1]], { p: m[1], n: m[2] }));
+      }
+      return en(g);
+    }
+    /* "Camp 3", "Teil 2": a narrow tile never strands the number (camp-end.js does the same) */
+    var nb = function (s) { return String(s).replace(/ /g, ' '); };
+    function where(t) {
+      var lamp = t.kind === 'lamp';
+      return esc(nb(f(lamp ? P.station : S.camp, { n: t.entry.n }))) + ' · ' + en(t.entry.label) +
+        (lamp ? '' : ' · ' + esc(nb(f(P.part, { n: t.part }))));
+    }
+    function target(t) {
+      if (t.kind === 'adventure') {
+        var slug = String(t.deckHref || t.href || '').split('#')[0].split('/').pop().replace(/\.html$/, '');
+        var title = P['adv.' + slug + '.t'];
+        return (title ? esc(title) : en(t.title)) + ' · ' + goal(t.goal);
+      }
+      return where(t) + ' · ' + goal(t.goal);
+    }
+    var out = [];
+    if (L.beacon) out.push(esc(S.beacon));
+    if (nx) out.push(put(S.next, target(nx)));
+    else if (cg) out.push(put(S.closest, esc(nb(f(cg.kind === 'lamp' ? P.station : S.camp, { n: cg.entry.n }))) + ' · ' +
+      esc(f(S.gGold, { b: Math.floor((cg.best || 0) * 100 + 1e-9), g: Math.round(cg.need * 100) }))));
+    else if (L.golden) out.push(esc(S.golden));
+    return out.join(' ');
+  }
   function draw() {
     try {
       var a = document.querySelector('[data-lookout]'), F = window.CampFlags;
       if (!a || !F || !F.meter || !window.CampSave) return;
       try { window.localStorage.getItem(window.CampSave.KEY); } catch (_) { return; }
       var L = F.lookout(), nx = L.next(), cg = nx ? null : L.closestGold();
-      var line = (L.beacon ? 'Beacon lit! ' : '') +
-        (nx ? 'Next: ' + nx.text : cg ? 'Closest to gold: ' + cg.text : L.golden ? 'The Golden Lookout' : '');
-      var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+      var line = say(L, nx, cg);
       var svg = F.meter(L, { decorative: true, cls: 'lk-hub' });   /* everything that can throw, before the first write */
       if (!document.getElementById('lk-meter-css') && F.METER_CSS) {   /* the beam's pulse at 18/18; still under reduced motion */
         var st = document.createElement('style'); st.id = 'lk-meter-css'; st.textContent = F.METER_CSS; document.head.appendChild(st);
       }
       a.querySelector('.lk-art').innerHTML = svg;
       a.querySelector('.lk-k').textContent = L.k + '/' + L.of;
-      a.querySelector('.lk-next').innerHTML = esc(line.trim()) + (nx && nx.padlock ? ' <span class="lk-pro">' + LOCK + 'Pro</span>' : '');
+      a.querySelector('.lk-next').innerHTML = line + (nx && nx.padlock ? ' <span class="lk-pro">' + LOCK + 'Pro</span>' : '');
       a.classList.add('has-meter');
       a.parentNode.appendChild(a);   /* last in the row, as it is drawn: the tab order follows */
       a.parentNode.classList.add('lk-on');
@@ -611,6 +815,8 @@ button.btn { cursor: pointer; margin: 0; -webkit-appearance: none; appearance: n
   }
   document.addEventListener('DOMContentLoaded', draw);
   addEventListener('pageshow', function (e) { if (e.persisted) draw(); });
+  if (window.MutationObserver) new MutationObserver(draw).observe(document.documentElement,
+    { attributes: true, attributeFilter: ['lang'] });
 })();
 </script>
 <script src="block-camp/camp-save.js" defer></script>

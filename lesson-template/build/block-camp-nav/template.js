@@ -205,3 +205,20 @@
     new MutationObserver(sync).observe(last, { attributes: true, attributeFilter: ['class'] });
   }
 })();
+
+/* LANGUAGE ACROSS THE LINE (Innes, 2026-10-03: "block camp hub needs a translation option and button"). The language a learner picks - on the hub
+   (block-camp.html) or in any deck - is the whole line's: localStorage 'bc-lang'.
+   The deck builds its menu inline (initLang) before this deferred file runs, so this
+   only moves the menu to the stored language when the deck offers it (the descent
+   decks offer en/de/es), and keeps the learner's choice when it changes here.
+   Storage blocked: nothing happens, the deck starts in English as before. */
+(function () {
+  var sel = document.getElementById('langSelect'), KEY = 'bc-lang', l = null;
+  if (!sel) return;
+  try { l = localStorage.getItem(KEY); } catch (_) { return; }
+  if (l && l !== sel.value && [].some.call(sel.options, function (o) { return o.value === l; })) {
+    sel.value = l;
+    sel.dispatchEvent(new Event('change'));
+  }
+  sel.addEventListener('change', function () { try { localStorage.setItem(KEY, sel.value); } catch (_) {} });
+})();

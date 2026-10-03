@@ -13,8 +13,18 @@ or the build will put the old one back.
 
 The published HTML is the site's copy; this script is how it was made. Keep
 both in the repo (see docs/HANDOFF.md, 2026-09-04, and the Block Camp deck
-generator that was lost with a sandbox)."""
-import base64, json, mimetypes, os, re, sys, tempfile
+generator that was lost with a sandbox).
+
+LANGUAGES (2026-10-03). The hub speaks the ten languages the decks offer.
+The words are hub_i18n.py, beside this file; the English stays in the
+template and the tables below, and every translated element carries a
+data-i18n key. build() checks the page against the table before it writes
+anything - a key with no string in some language, a tag lost in a
+translation, a count left unfilled, or a Lookout goal camp-flags.js can say
+that the tile cannot - and stops with the list. The choice is remembered as
+localStorage 'bc-lang'."""
+import base64, importlib.util, json, mimetypes, os, re, sys, tempfile
+from html.parser import HTMLParser
 
 REPO = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..'))
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -103,17 +113,24 @@ MORE = [
  ('Minecraft C1 Lesson','forbes-english-minecraft-c1.html','minecraft/minecraft-landscape-thumb.jpg','C1'),
 ]
 
+FREE_CHIP = '<span class="chip chip-free" data-i18n="free">Free</span>'
+PRO_CHIP = '<span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span>'
+
 def chips(level, access):
-    a = '<span class="chip chip-free">Free</span>' if access=='free' else '<span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span>'
+    a = FREE_CHIP if access=='free' else PRO_CHIP
     return f'<span class="chips"><span class="chip">{level}</span>{a}</span>'
 
-def card(href, img, num, badge_text, title, level, access, colour=None, ink=None, sub=None):
+def card(href, img, num, badge_text, title, level, access, colour=None, ink=None, sub=None, sub_key=None, sub_n=None):
+    """sub_key / sub_n: the card-sub's data-i18n key and the number its {n}
+    takes ("Part 1" is part / 1). The title is a camp, tense or lesson name,
+    which stays English in every language, as on the decks' covers."""
     style = f' style="--c:{colour};--ci:{ink}"' if colour else ''
     badge = f'<span class="num" aria-hidden="true">{badge_text}</span>' if badge_text else ''
-    subh = f'<span class="card-sub">{sub}</span>' if sub else ''
+    key = (f' data-i18n="{sub_key}"' + (f' data-n="{sub_n}"' if sub_n is not None else '')) if sub_key else ''
+    subh = f'<span class="card-sub"{key}>{sub}</span>' if sub else ''
     return (f'<li><a class="card"{style} href="{href}">'
             f'<span class="thumb"><img src="{img}" alt="" loading="lazy"></span>'
-            f'<span class="body"><span class="row">{badge}<span class="card-title">{title}</span></span>{subh}{chips(level,access)}</span>'
+            f'<span class="body"><span class="row">{badge}<span class="card-title" lang="en">{title}</span></span>{subh}{chips(level,access)}</span>'
             f'</a></li>')
 
 def climb_cards():
@@ -122,40 +139,51 @@ def climb_cards():
         if present(f'blockcamp-{slug}.html'):
             out.append(card(f'blockcamp-{slug}.html', f'BlockCamp/{slug}-1a.jpg', n, str(n), name, l1,
                             access(f'blockcamp-{slug}.html', 'free' if (n,1) in FREE_CLIMB else 'pro'),
-                            CAMP[n], INK[n], 'Part 1'))
+                            CAMP[n], INK[n], 'Part 1', 'part', 1))
         if present(f'blockcamp-{slug}-2.html'):
             out.append(card(f'blockcamp-{slug}-2.html', f'BlockCamp/{slug}-1b.jpg', n, str(n), name, l2,
-                            access(f'blockcamp-{slug}-2.html', 'pro'), CAMP[n], INK[n], 'Part 2'))
+                            access(f'blockcamp-{slug}-2.html', 'pro'), CAMP[n], INK[n], 'Part 2', 'part', 2))
     return '\n'.join(out)
 
-def _runs(nums):
-    """[1,2,3,5,6,8] -> '1&ndash;3, 5, 6 and 8': a run of three or more is a range."""
+def _runs(nums, sep=', ', conj=' and ', wrap=str):
+    """[1,2,3,5,6,8] -> '1&ndash;3, 5, 6 and 8': a run of three or more is a range.
+    sep / conj / wrap say it in another language (wrap isolates a range
+    inside right-to-left text, where '1–4' would otherwise read '4–1')."""
     groups, out = [], []
     for n in nums:
         if groups and n == groups[-1][-1] + 1: groups[-1].append(n)
         else: groups.append([n])
     for g in groups:
-        out += [f'{g[0]}&ndash;{g[-1]}'] if len(g) > 2 else [str(x) for x in g]
-    return out[0] if len(out) == 1 else ', '.join(out[:-1]) + ' and ' + out[-1]
+        out += [wrap(f'{g[0]}&ndash;{g[-1]}')] if len(g) > 2 else [str(x) for x in g]
+    return out[0] if len(out) == 1 else sep.join(out[:-1]) + conj + out[-1]
 
-def climb_free_note():
+def climb_free_note(F=None, wrap=str):
     """The track note's free clause, from the same access() the chips use:
     it said 'Part 1 free on camps 1-3' for twelve days after camps 4, 5, 6,
-    8 and 9 went free."""
+    8 and 9 went free. F is a language's FREE table (hub_i18n.py); without
+    one, the English."""
     camps = [n for n,_,s,_,_ in CLIMB if present(f'blockcamp-{s}.html')]
     free = [n for n,_,s,_,_ in CLIMB if present(f'blockcamp-{s}.html')
             and access(f'blockcamp-{s}.html', 'free' if (n,1) in FREE_CLIMB else 'pro') == 'free']
     if not free: return ''
+    if F:
+        if free == camps: return F['every']
+        if len(camps) - len(free) == 1:
+            return F['but'].replace('{n}', str(next(n for n in camps if n not in free)))
+        return F['one' if len(free) == 1 else 'many'].replace('{list}', _runs(free, F['sep'], F['conj'], wrap))
     if free == camps: return ' &middot; Part 1 free on every camp'
     if len(camps) - len(free) == 1:
         return ' &middot; Part 1 free on every camp but %d' % next(n for n in camps if n not in free)
     return ' &middot; Part 1 free on camp%s %s' % ('s' if len(free) > 1 else '', _runs(free))
 
-def descent_free_note():
+def descent_free_note(F=None, wrap=str):
     stations = [st for st,_,_,s,_,_ in DESCENT if present(f'blockcamp-passive-{s}.html')]
     free = [st for st,_,_,s,_,acc in DESCENT if present(f'blockcamp-passive-{s}.html')
             and access(f'blockcamp-passive-{s}.html', acc) == 'free']
     if not free: return ''
+    if F:
+        if free == stations: return F['dEvery']
+        return F['dOne' if len(free) == 1 else 'dMany'].replace('{list}', _runs(free, F['sep'], F['conj'], wrap))
     if free == stations: return ' &middot; every station free'
     return ' &middot; station%s %s free' % ('s' if len(free) > 1 else '', _runs(free))
 
@@ -175,7 +203,8 @@ def descent_cards():
             col,ink = '#e8c04a','#0b1a12'
         out.append(card(f'blockcamp-passive-{slug}.html', f'BlockCamp/passive-{st}-{slug}.jpg', st, str(st), name, lvl,
                         access(f'blockcamp-passive-{slug}.html', acc), col, ink,
-                        'Station %d' % st if camp else 'Station 16 &middot; every tense, no labels'))
+                        'Station %d' % st if camp else 'Station %d &middot; every tense, no labels' % st,
+                        'station' if camp else 'trialSub', st))
     return '\n'.join(out)
 
 def count_descent():
@@ -240,15 +269,22 @@ ADVENTURES = [
   ('Mixed Tenses',),'B1&ndash;B2','pro','new'),
 ]
 
+def adv_slug(href):
+    """block-camp/last-train-home-rpg.html -> last-train-home-rpg: the
+    adventure's key in hub_i18n.ADV and in the page's data-i18n."""
+    return os.path.splitext(os.path.basename(href))[0]
+
 def adventure_cards():
     out=[]
     for href,img,title,desc,gram,lvl,acc,tag in ADVENTURES:
         if not present(href): continue
-        lead = {'start':'<span class="chip chip-start">Start here</span>','new':'<span class="chip chip-new">New</span>'}.get(tag,'')
-        pro = ('<span class="chip chip-free">Free</span>' if access(href, acc)=='free' else
-               '<span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span>')
-        chipset = lead + ''.join(f'<span class="chip">{g}</span>' for g in gram) + f'<span class="chip">{lvl}</span>' + pro
-        out.append(f'      <li><a class="card" href="{href}">\n        <span class="thumb"><img src="{img}" alt="" loading="lazy"></span>\n        <span class="body">\n          <span class="card-title">{title}</span>\n          <span class="desc">{desc}</span>\n          <span class="chips">{chipset}</span>\n        </span>\n      </a></li>')
+        lead = {'start':'<span class="chip chip-start" data-i18n="startHere">Start here</span>',
+                'new':'<span class="chip chip-new" data-i18n="new">New</span>'}.get(tag,'')
+        pro = FREE_CHIP if access(href, acc)=='free' else PRO_CHIP
+        # the grammar chips are what is being taught: English, as in the decks
+        chipset = lead + ''.join(f'<span class="chip" lang="en">{g}</span>' for g in gram) + f'<span class="chip">{lvl}</span>' + pro
+        k = adv_slug(href)
+        out.append(f'      <li><a class="card" href="{href}">\n        <span class="thumb"><img src="{img}" alt="" loading="lazy"></span>\n        <span class="body">\n          <span class="card-title" data-i18n="adv.{k}.t">{title}</span>\n          <span class="desc" data-i18n="adv.{k}.d">{desc}</span>\n          <span class="chips">{chipset}</span>\n        </span>\n      </a></li>')
     return '\n'.join(out)
 
 def count_adv():
@@ -265,15 +301,163 @@ WORDS = {3:'three',4:'four',5:'five',6:'six',7:'seven',8:'eight',9:'nine',10:'te
 def more_cards():
     return '\n'.join(card(h,i,0,'',t,l,access(h,'pro')) for t,h,i,l in MORE)
 
+
+# ── LANGUAGES ──────────────────────────────────────────────────────────
+def load_i18n():
+    """hub_i18n.py, by path: the quest, nav, flags and village builders load
+    this file by path too, and none of them needs the words."""
+    spec = importlib.util.spec_from_file_location('hub_i18n', os.path.join(HERE, 'hub_i18n.py'))
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+def plural(lang, n):
+    """Which of a {k|...} noun's forms a count takes."""
+    if lang == 'ru':
+        return 0 if n % 10 == 1 and n % 100 != 11 else 1 if 2 <= n % 10 <= 4 and not 12 <= n % 100 <= 14 else 2
+    if lang == 'ar':   # one | two | 3-10 | 11-99 | 100+
+        return 0 if n == 1 else 1 if n == 2 else 2 if 3 <= n % 100 <= 10 else 3 if 11 <= n % 100 <= 99 else 4
+    return 0 if n == 1 else 1
+
+def fill(s, lang, vals):
+    """{tenses} -> 9; {tenses|время|времени|времён} -> '9 времён'; {free} ->
+    the clause. Anything not in vals ({n}, the Lookout's {t}) is left."""
+    def sub(m):
+        k, forms = m.group(1), m.group(2)
+        if k not in vals: return m.group(0)
+        v = vals[k]
+        if forms is None or isinstance(v, str): return str(v)
+        fs = forms[1:].split('|')
+        return f'{v} {fs[min(plural(lang, v), len(fs) - 1)]}'
+    return re.sub(r'\{(\w+)((?:\|[^|{}]+)+)?\}', sub, s)
+
+NAV_KEYS = (('<a href="library.html">', 'navLessons'),
+            ('<a href="pricing.html" class="tb-cta-gold">', 'navGoPro'),
+            ('<a href="mailto:forbes@goodtimebook.com" class="tb-cta">', 'navWork'))
+
+def nav_i18n(nav):
+    """The hub's copy of the band gets its three keys (nav.html stays the
+    shared original). A link that has moved is said, and stays English."""
+    for tag, key in NAV_KEYS:
+        if tag in nav: nav = nav.replace(tag, tag[:-1] + f' data-i18n="{key}">', 1)
+        else: print(f'WARNING: nav.html has no {tag} - "{key}" stays English', file=sys.stderr)
+    return nav
+
+def i18n_table(I):
+    """Everything the page's script needs, every count and free clause
+    already filled in."""
+    nums = dict(tenses=count_tenses(), adv=count_adv(), climb=count_climb(), descent=count_descent(),
+                refs=count_refs(), total=count_climb() + count_descent())
+    T = {}
+    for lang, _ in I.LANGS[1:]:
+        F = I.FREE[lang]
+        wrap = (lambda s: f'<bdi dir="ltr">{s}</bdi>') if lang in I.RTL else str
+        free = {'climbNote': climb_free_note(F, wrap), 'descNote': descent_free_note(F, wrap)}
+        t = {k: fill(v, lang, dict(nums, free=free.get(k, ''))) for k, v in I.UI[lang].items()}
+        for slug, (title, desc) in I.ADV[lang].items():
+            t[f'adv.{slug}.t'], t[f'adv.{slug}.d'] = title, desc
+        T[lang] = t
+    return {'key': I.KEY, 'langs': I.LANGS, 'rtl': list(I.RTL), 'goals': I.GOALS,
+            't': T, 'lk': {l: I.LK[l] for l, _ in I.LANGS[1:]}}
+
+VOID = {'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'source', 'track', 'wbr'}
+
+class _Keys(HTMLParser):
+    """Every translated element in the built page: key -> (English inner
+    HTML or attribute, has data-n)."""
+    def __init__(self, src):
+        super().__init__(convert_charrefs=False)
+        self.src, self.depth, self.open, self.found = src, 0, [], {}
+        self.starts = [0] + [m.end() for m in re.finditer('\n', src)]
+    def _at(self):
+        line, col = self.getpos()
+        return self.starts[line - 1] + col
+    def _attrs(self, a):
+        for at, prop in (('data-i18n-aria', 'aria-label'), ('data-i18n-title', 'title')):
+            if at in a: self.found.setdefault(a[at], (a.get(prop) or '', False))
+    def handle_startendtag(self, tag, attrs):
+        self._attrs(dict(attrs))
+    def handle_starttag(self, tag, attrs):
+        a = dict(attrs)
+        self._attrs(a)
+        if tag in VOID: return
+        self.depth += 1
+        if 'data-i18n' in a:
+            self.open.append((self.depth, a['data-i18n'], self._at() + len(self.get_starttag_text()), 'data-n' in a))
+    def handle_endtag(self, tag):
+        if tag in VOID: return
+        if self.open and self.open[-1][0] == self.depth:
+            _, key, start, has_n = self.open.pop()
+            self.found.setdefault(key, (self.src[start:self._at()], has_n))
+        self.depth -= 1
+
+def _tags(s):
+    # <bdi> is a translation's own business: it isolates "1–4" in Arabic.
+    return sorted(t for t in re.findall(r'<(\w+)(?:[^>]*?\sclass="([^"]*)")?[^>]*>', s) if t[0] != 'bdi')
+
+def check_i18n(page, I, table):
+    """The page against the table: what a learner would otherwise find as an
+    English line in a German page, or a half-filled count. Returns the
+    problems; build() refuses to write while there are any."""
+    p = _Keys(page); p.feed(page); p.close()
+    found, bad = p.found, []
+    if p.open: bad.append('unclosed data-i18n element(s): %s' % [k for _, k, _, _ in p.open])
+    for lang, t in table['t'].items():
+        for key, (en, has_n) in found.items():
+            if key not in t:
+                bad.append(f'{lang}: no "{key}" (English: {en[:60]!r})'); continue
+            if _tags(en) != _tags(t[key]):
+                bad.append(f'{lang}: "{key}" tags {_tags(t[key])} != English {_tags(en)}')
+            left = set(re.findall(r'\{\w+\}', t[key])) - ({'{n}'} if has_n else set())
+            if left: bad.append(f'{lang}: "{key}" has {sorted(left)} left unfilled')
+            if has_n != (key in I.N_KEYS): bad.append(f'{lang}: "{key}" data-n and N_KEYS disagree')
+        stale = sorted(set(t) - set(found))
+        if stale: print(f'WARNING: {lang}: in hub_i18n.py, not on the page: {stale}', file=sys.stderr)
+    want = set(I.LK['de'])
+    for lang, s in table['lk'].items():
+        if set(s) != want: bad.append(f'{lang}: Lookout keys differ: {sorted(set(s) ^ want)}')
+        need = {k for _, k in I.GOALS}
+        if need - set(s): bad.append(f'{lang}: no Lookout goal for {sorted(need - set(s))}')
+    for lang, _ in I.LANGS[1:]:
+        if set(I.FREE[lang]) != set(I.FREE['de']): bad.append(f'{lang}: free-note keys differ')
+    # Every goal the tile can be handed must be one the tile can say.
+    try:
+        flags = open(os.path.join(REPO, 'block-camp', 'camp-flags.js'), encoding='utf-8').read()
+        goals = re.findall(r'"goal":"([^"]*)"', flags)
+        if not goals: bad.append('camp-flags.js: no "goal" strings found to check the Lookout against')
+        said = ['50% ' + g for g in goals] + ['50% adds a star to flag 1', 'clear it to fly its pennant']
+        for g in ('adds a star to flag ', 'clear it to fly its pennant'):
+            if g not in flags: bad.append(f'camp-flags.js no longer says "{g}": update hub_i18n.GOALS')
+        for g in said:
+            if not any(re.match(rx, g) for rx, _ in I.GOALS):
+                bad.append(f'camp-flags.js goal "{g}" matches nothing in hub_i18n.GOALS')
+    except OSError:
+        print('WARNING: block-camp/camp-flags.js not found; Lookout goals not checked', file=sys.stderr)
+    return bad
+
+def i18n_json(table):
+    # inside <script type="application/json">: nothing may close the element
+    return json.dumps(table, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
+
+def lang_options(I):
+    return ''.join(f'<option value="{c}" lang="{c}"' + (' dir="rtl"' if c in I.RTL else '') + f'>{name}</option>'
+                   for c, name in I.LANGS)
+
 def build(inline):
     # Every read is explicitly utf-8: on Windows the default is cp1252, which
     # turns every em-dash and box-drawing rule in the template into mojibake.
     # It used to survive only because the write was cp1252 too and undid it.
     rd = lambda n: open(os.path.join(HERE,n), encoding='utf-8').read()
+    I = load_i18n()
+    table = i18n_table(I)
     tpl = rd('template.html')
     tpl = (tpl.replace('{{SEO}}', rd('seo.html'))
               .replace('{{MONOCRAFT}}', rd('monocraft.css'))
-              .replace('{{NAV}}', rd('nav.html'))
+              .replace('{{NAV}}', nav_i18n(rd('nav.html')))
+              .replace('{{I18N_KEY}}', I.KEY)
+              .replace('{{I18N_CODES}}', '|'.join(c for c, _ in I.LANGS[1:]))
+              .replace('{{I18N_RTL}}', '|'.join(I.RTL))
+              .replace('{{LANG_OPTIONS}}', lang_options(I))
               .replace('{{CLIMB}}', climb_cards())
               .replace('{{DESCENT}}', descent_cards())
               .replace('{{CLIMB_FREE}}', climb_free_note())
@@ -291,6 +475,10 @@ def build(inline):
               .replace('{{W_REFS}}', WORDS.get(count_refs(), str(count_refs())))
               .replace('{{W_TENSES}}', WORDS.get(count_tenses(), str(count_tenses())))
               .replace('{{N_TOTAL}}', WORDS.get(count_climb()+count_descent(), str(count_climb()+count_descent()))))
+    bad = check_i18n(tpl, I, table)
+    if bad:
+        sys.exit('block-camp hub: the translations do not match the page (nothing written):\n  ' + '\n  '.join(bad))
+    tpl = tpl.replace('{{I18N_JSON}}', i18n_json(table))
     if inline:
         def sub(m):
             p = m.group(2)

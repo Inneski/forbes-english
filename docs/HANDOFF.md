@@ -385,6 +385,27 @@ also open Sherpa Tensing.
   next `seo.py` run on main writes; until then every gate says "Forbes
   English Pro" (access itself is already correct).
 
+## 2026-10-03 — Block Camp hub in ten languages; one language for the whole line
+
+Innes: "block camp hub needs a translation option and button". The hub
+(block-camp-hub/build.py) has a language pill top right (globe + native
+name, a real <select> on top) for the decks' ten languages; every visible
+string comes from lesson-template/build/block-camp-hub/hub_i18n.py (the
+build refuses a missing key, dropped tag or unfilled count). Tense/camp/
+lesson names stay English, as in the decks. Arabic mirrors; non-Latin
+scripts fall back to system fonts (the hub's fonts are Latin-only).
+?lang=xx works. Translations are not native-reviewed yet.
+
+  * The choice is the whole line's: localStorage 'bc-lang'. The decks
+    saved no language before; block-camp-nav/template.js (-> camp-nav.js,
+    loaded by all 26 decks) now applies the stored language if the deck
+    offers it (descent decks: en/de/es) and stores a change. Tested: de on
+    the hub -> deck in German; ja in a deck -> hub in Japanese.
+  * camp-flags.js rebuilt: the Grand Hotel adventure (2c3a7307) made 15,
+    the Lookout counted 14.
+  * Open, not mine: check-access.py fails on block-camp/grand-hotel-rpg.html
+    (no Supabase catalogue row yet); add the row, then run seo.py.
+
 ## 2026-10-03 — Raise the Lookout, Phase B (Innes's painted tower)
 
 Innes made the two ChatGPT pictures (incoming/lookout/, local). `build.py
