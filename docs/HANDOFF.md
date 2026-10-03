@@ -11,6 +11,52 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-10-03 — The Last Night at the Grand Hotel: Block Camp RPG, waiting on one catalogue row
+
+Innes sent `Grand_Hotel_The_Last_Night.html` (12 MB): *"turn this into a
+block camp lesson — can you grade the colours so the yellow isnt so yellow"*.
+
+- **`block-camp/grand-hotel-rpg.html`**, built by
+  `lesson-template/build/build_grand_hotel.py` (its docstring is the full
+  account). Mixed tenses, B1-B2, hub gold `#e8c04a`: 30 pages, 28 two-blank
+  questions, 5 points a first-time right answer, no lives, 5 clue questions
+  (the tiles), three story choices, three endings decided by score + clues +
+  choices. Nine languages; Spanish to Japanese in
+  `rpg/grand-hotel-rpg/translations/`, keyed by `strings.json`.
+- **A sixth export kind**: one `<script id="game-data" type="application/json">`
+  — `pages`, `guide`, `cast`, and `art` with each picture inline plus its
+  own object name and centre. `json.loads` on that block reads all of it.
+- **The grade.** Plates had an amber cast (blue 40-58 levels under red and
+  green). Each got a partial white balance in Lab — a*/b* pulled toward
+  neutral by 55% of the plate's own midtone cast, tapered off in highlights
+  so lamps stay warm — then the yellow-orange band desaturated 20%. Neutral
+  plates (cable car, storm, descent) barely move. One knob if Innes wants
+  more or less: `wb=0.55` in `rpg/grand-hotel-rpg/grade.py`, run over the
+  export's raw plates (decode `art[*].src` from the export).
+- **Engine additions, generic, every RPG re-run in `d4ff8de2`:** `fb` as a
+  list (one explanation per option, the key's line shown under a wrong
+  answer); `routeStory` on any scene; `ladder` endings (score floor + tile
+  floor + required routes); `go('resolve')` from a story page or route.
+- **Changed from the export:** every explanation rewritten to the CAPS
+  convention; six keys that were the longest option fixed (13, 17, 19, 20,
+  22, 27 — two new near-miss distractors); page 19's broken distractor "will
+  have" + "use"; six hotspots moved (key, socket, evidence paper, lock
+  light, envelope, the descent's cable car). The export's modal chrome
+  (tense guide, notebook, page map, guest book, teacher room, progress
+  export) is not carried; the five briefing cards are its guide condensed.
+- **Checked:** panel checker PASS in all ten languages on both window
+  shapes; six scripted play-throughs land on the export's endings; closed
+  scenes tiled and every glow on its object; phone at 390x844.
+- **Waiting on Innes:** the catalogue row (unasked Supabase writes get
+  refused). Until it exists the page is live but not in the library,
+  sitemap or `lesson-meta.json`. Run this, then `python3 tools/seo.py`:
+
+  ```sql
+  insert into lessons (file, title, level, access, deck, video, sort_order)
+  select 'block-camp/grand-hotel-rpg.html', 'The Last Night at the Grand Hotel — Mixed Tenses Voxel RPG (B1-B2)', 'B1-B2', 'pro', false, false, 0
+  where not exists (select 1 from lessons where file = 'block-camp/grand-hotel-rpg.html');
+  ```
+
 ## 2026-10-03 — Sherpa route map: route lines pick a camp, a tap card on phones
 
 Innes: *"make sherpa tensing easier to use on mobile and the route lines on

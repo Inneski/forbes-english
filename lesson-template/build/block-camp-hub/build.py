@@ -235,6 +235,9 @@ ADVENTURES = [
  ('block-camp/frostbound-river-rpg.html','block-camp/frostbound-river-rpg/01_intro.webp','Frostbound: The River Remembers',
   'A voice under the ice, two sisters who follow it north, and a dam their kingdom is proud of for the wrong reasons. Four branching choices through a frozen forest &mdash; the ridge or the trail, the fire spirit or the stone giants &mdash; where every question asks what somebody does every time, and your score alone decides which of three endings the flood leaves behind.',
   ('Present Simple',),'A1&ndash;A2','pro','new'),
+ ('block-camp/grand-hotel-rpg.html','block-camp/grand-hotel-rpg/01_arrival.webp','The Last Night at the Grand Hotel',
+  'A mountain hotel on its last night, an owner who vanishes in eleven seconds of darkness, and a deadline at midnight. Twenty-eight time checks across every tense &mdash; five of them clues that break an alibi &mdash; and three decisions about who to trust, what to save first and who gets to hear the truth.',
+  ('Mixed Tenses',),'B1&ndash;B2','pro','new'),
 ]
 
 def adventure_cards():

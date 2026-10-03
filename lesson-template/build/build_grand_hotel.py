@@ -27,7 +27,7 @@ was given a partial white balance in Lab: a* and b* pulled toward neutral by
 highlights so the lamps and chandeliers stay warm and off in deep shadow, then
 the yellow-orange hue band desaturated by 20%. A plate that was already
 neutral (the cable car, the storm, the descent) barely moves, because the
-correction is its own cast. The script is in the 2026-10-03 HANDOFF entry.
+correction is its own cast. The script is rpg/grand-hotel-rpg/grade.py.
 
 The export's rules, kept exactly: 28 questions, +5 for a correct FIRST
 answer, nothing for a wrong one and no lives — a mistake explains and the
