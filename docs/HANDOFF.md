@@ -11,6 +11,29 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-10-03 — Sherpa route map: route lines pick a camp, a tap card on phones
+
+Innes: *"make sherpa tensing easier to use on mobile and the route lines on
+the mountain clickable to activate a camp"*. On a 390px phone each map was
+308px wide: markers 8px, labels 5px, nothing hittable.
+
+- **One handler per map** (the dots script at the foot of
+  `sherpa-tensing-route-map.html`) replaces the per-dot listeners. A click
+  goes to the camp whose marker, label or coloured line is nearest
+  (radii in CSS px, converted at the map's drawn size; a line belongs to the
+  dot whose `data-seg` names it, so its colour says which camp it is).
+  Clouds and the moon stay ordinary links.
+- **Mouse:** straight to the camp, as before. Hovering lights the line and
+  label.
+- **Touch/pen:** the first tap picks the camp (ring, thick line, bold label)
+  and opens a card at the foot of the screen holding a clone of that camp's
+  row from the list, so the name, level, Free tag and lock come along already
+  translated. Tapping the row, or the same camp again, goes. Locked descents
+  show their reason; the four no-camp stops show `hintNoCamp`. To close it:
+  ×, Esc, or a tap elsewhere.
+- **Phones (≤640px):** the maps run to the card edges (308 → 340px).
+- New string `pickClose` in `tools/sherpa_hub_i18n.py`, all ten languages.
+
 ## 2026-10-03 — Sherpa Tensing: The Climb, a tense game: LIVE, waiting on one catalogue row
 
 Innes: *"an interactive game for sherpa tensing to practice the tenses and

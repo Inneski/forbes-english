@@ -61,6 +61,7 @@ EN = dict(
     whyCausative='Finish any one descent camp &mdash; the causative is a passive wearing a hat.',
     srLocked=' (locked: {why})', srDone=' (done)', fromOpen='from camp {n}', fromLocked='after camp {n}',
     hintNoCamp='{label}: no camp here &mdash; see the note below the lists.', hintLocked='{label}: {why}',
+    pickClose='Close',
 )
 
 LANGS = {}
@@ -117,6 +118,7 @@ LANGS['de'] = dict(
     whyCausative='Schließ irgendeine Station des Abstiegs ab &mdash; das Kausativ ist ein Passiv mit Hut.',
     srLocked=' (gesperrt: {why})', srDone=' (erledigt)', fromOpen='aus Lager {n}', fromLocked='nach Lager {n}',
     hintNoCamp='{label}: hier gibt es kein Lager &mdash; siehe die Notiz unter den Listen.', hintLocked='{label}: {why}',
+    pickClose='Schließen',
 )
 
 LANGS['es'] = dict(
@@ -171,6 +173,7 @@ LANGS['es'] = dict(
     whyCausative='Termina cualquier parada de la bajada &mdash; el causativo es una pasiva con sombrero.',
     srLocked=' (bloqueado: {why})', srDone=' (hecho)', fromOpen='del campamento {n}', fromLocked='tras el campamento {n}',
     hintNoCamp='{label}: aquí no hay campamento &mdash; mira la nota debajo de las listas.', hintLocked='{label}: {why}',
+    pickClose='Cerrar',
 )
 
 LANGS['fr'] = dict(
@@ -225,6 +228,7 @@ LANGS['fr'] = dict(
     whyCausative="Termine n'importe quelle étape de la descente &mdash; le causatif est un passif qui porte un chapeau.",
     srLocked=' (verrouillé\xa0: {why})', srDone=' (terminé)', fromOpen='du camp {n}', fromLocked='après le camp {n}',
     hintNoCamp='{label}\xa0: pas de camp ici &mdash; lis la note sous les listes.', hintLocked='{label}. {why}',
+    pickClose='Fermer',
 )
 
 LANGS['it'] = dict(
@@ -279,6 +283,7 @@ LANGS['it'] = dict(
     whyCausative='Finisci una qualsiasi tappa della discesa &mdash; il causativo è un passivo con il cappello.',
     srLocked=' (bloccato: {why})', srDone=' (fatto)', fromOpen='dal campo {n}', fromLocked='dopo il campo {n}',
     hintNoCamp='{label}: qui non c\'è un campo &mdash; leggi la nota sotto gli elenchi.', hintLocked='{label}. {why}',
+    pickClose='Chiudi',
 )
 
 LANGS['pt'] = dict(
@@ -333,6 +338,7 @@ LANGS['pt'] = dict(
     whyCausative='Termine qualquer parada da descida &mdash; o causativo é uma passiva de chapéu.',
     srLocked=' (bloqueado: {why})', srDone=' (feito)', fromOpen='do acampamento {n}', fromLocked='depois do acampamento {n}',
     hintNoCamp='{label}: aqui não há acampamento &mdash; veja a nota abaixo das listas.', hintLocked='{label}. {why}',
+    pickClose='Fechar',
 )
 
 LANGS['ru'] = dict(
@@ -387,6 +393,7 @@ LANGS['ru'] = dict(
     whyCausative='Пройди любую остановку на спуске, ведь каузатив — это пассив в шляпе.',
     srLocked=' (закрыто: {why})', srDone=' (пройдено)', fromOpen='из лагеря {n}', fromLocked='после лагеря {n}',
     hintNoCamp='{label}: здесь нет лагеря &mdash; см. пояснение под списками.', hintLocked='{label}: {why}',
+    pickClose='Закрыть',
 )
 
 LANGS['ar'] = dict(
@@ -441,6 +448,7 @@ LANGS['ar'] = dict(
     whyCausative='أنهِ أي محطة في النزول &mdash; صيغة السببية مبنيٌّ للمجهول يعتمر قبعة.',
     srLocked=' (مقفل: {why})', srDone=' (مُنجَز)', fromOpen='من المخيم {n}', fromLocked='بعد المخيم {n}',
     hintNoCamp='&#x2067;{label}: لا مخيم هنا &mdash; انظر الملاحظة تحت القوائم.&#x2069;', hintLocked='&#x2067;{label}: {why}&#x2069;',
+    pickClose='إغلاق',
 )
 
 LANGS['zh'] = dict(
@@ -495,6 +503,7 @@ LANGS['zh'] = dict(
     whyCausative='完成任意一个下山站&mdash;&mdash;使役结构就是戴了帽子的被动语态。',
     srLocked='（已锁：{why}）', srDone='（已完成）', fromOpen='来自营地 {n}', fromLocked='营地 {n} 之后',
     hintNoCamp='{label}：这里没有营地&mdash;&mdash;请看列表下方的说明。', hintLocked='{label}：{why}',
+    pickClose='关闭',
 )
 
 LANGS['ja'] = dict(
@@ -549,6 +558,7 @@ LANGS['ja'] = dict(
     whyCausative='下りの地点をどれか1つ終えてください。使役は帽子をかぶった受動態です。',
     srLocked='（ロック中：{why}）', srDone='（完了）', fromOpen='キャンプ{n}から', fromLocked='キャンプ{n}のあと',
     hintNoCamp='{label}：ここにはキャンプがありません。一覧の下の説明を見てください。', hintLocked='{label}：{why}',
+    pickClose='閉じる',
 )
 
 # ── the check and the injection ─────────────────────────────────────────
