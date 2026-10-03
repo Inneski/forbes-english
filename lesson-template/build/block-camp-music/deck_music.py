@@ -55,6 +55,9 @@ TRACK = {
     # the two route maps: one mountain-flute atmosphere (summit.py)
     'block-camp-map.html': 'route-map',
     'block-camp-descent-map.html': 'route-map',
+    # The Last Night at the Grand Hotel, the first RPG with a soundtrack
+    # (grand_hotel.py). Innes, 2026-10-03: "add some fitting music".
+    'block-camp/grand-hotel-rpg.html': 'grand-hotel',
 }
 
 # Sherpa Tensing (the Himalayan tense climb, built by build_sherpa.py): the

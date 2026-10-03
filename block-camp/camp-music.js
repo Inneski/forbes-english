@@ -43,12 +43,23 @@
   // their own music).
   var LEVEL = 0.12, DUCK = 0.06;
   var T = {
-    en: ['Music', 'Music on', 'Music off'], de: ['Musik', 'Musik an', 'Musik aus'],
-    es: ['Música', 'Música activada', 'Música desactivada'], fr: ['Musique', 'Musique activée', 'Musique coupée'],
-    it: ['Musica', 'Musica attiva', 'Musica spenta'], pt: ['Música', 'Música ligada', 'Música desligada'],
-    ru: ['Музыка', 'Музыка включена', 'Музыка выключена'], ar: ['الموسيقى', 'الموسيقى تعمل', 'الموسيقى متوقفة'],
-    zh: ['音乐', '音乐已开', '音乐已关'], ja: ['音楽', '音楽オン', '音楽オフ']
+    en: ['Music', 'Music on', 'Music off', 'Music volume'], de: ['Musik', 'Musik an', 'Musik aus', 'Musiklautstärke'],
+    es: ['Música', 'Música activada', 'Música desactivada', 'Volumen de la música'],
+    fr: ['Musique', 'Musique activée', 'Musique coupée', 'Volume de la musique'],
+    it: ['Musica', 'Musica attiva', 'Musica spenta', 'Volume della musica'],
+    pt: ['Música', 'Música ligada', 'Música desligada', 'Volume da música'],
+    ru: ['Музыка', 'Музыка включена', 'Музыка выключена', 'Громкость музыки'],
+    ar: ['الموسيقى', 'الموسيقى تعمل', 'الموسيقى متوقفة', 'مستوى صوت الموسيقى'],
+    zh: ['音乐', '音乐已开', '音乐已关', '音乐音量'], ja: ['音楽', '音楽オン', '音楽オフ', '音楽の音量']
   };
+  /* VOLUME (Innes, 2026-10-03: "add volume sliders on all block camps").
+     A slider 0-100 beside the switch, remembered per viewer ('bc-music-vol').
+     50 is the level above, unchanged for anyone who never touches it; each
+     step either side is 0.24 dB, so the ends are +-12 dB (100 = 0.48 gain,
+     still under full scale on a -16.5 dBFS track), and 0 is silence. */
+  var vol = 50;
+  try { var sv = parseInt(localStorage.getItem('bc-music-vol'), 10); if (sv >= 0 && sv <= 100) vol = sv; } catch (_) {}
+  function mul() { return vol <= 0 ? 0 : Math.pow(10, (vol - 50) / 50 * 12 / 20); }
 
   var css = document.createElement('style');
   css.textContent =
@@ -73,7 +84,37 @@
     '.camp-music-float.camp-music-slot{position:static;flex:none}' +
     '.camp-music-float[aria-pressed="false"] .cm-note{opacity:.45}' +
     '.camp-music-float .cm-x{display:none}.camp-music-float[aria-pressed="false"] .cm-x{display:inline}' +
-    '@media print{.camp-music,.camp-music-rpg,.camp-music-float{display:none!important}}';
+    // the volume slider: one input, dressed for wherever the switch went
+    '.camp-vol{-webkit-appearance:none;appearance:none;display:block;width:84px;height:22px;margin:0;padding:0;' +
+    'background:transparent;cursor:pointer;--cv-fill:var(--accent,#d9b25a);' +
+    '--cv-track:color-mix(in srgb,currentColor 28%,transparent)}' +
+    '.camp-vol:focus{outline:none}.camp-vol:focus-visible{outline:2px solid var(--cv-fill);outline-offset:3px;border-radius:3px}' +
+    '.camp-vol::-webkit-slider-runnable-track{height:4px;border-radius:2px;' +
+    'background:linear-gradient(to right,var(--cv-fill) var(--cv,50%),var(--cv-track) var(--cv,50%))}' +
+    '.camp-vol::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:14px;height:14px;margin-top:-5px;' +
+    'border-radius:50%;border:0;background:var(--cv-fill)}' +
+    '.camp-vol::-moz-range-track{height:4px;border-radius:2px;background:var(--cv-track)}' +
+    '.camp-vol::-moz-range-progress{height:4px;border-radius:2px;background:var(--cv-fill)}' +
+    '.camp-vol::-moz-range-thumb{width:14px;height:14px;border-radius:50%;border:0;background:var(--cv-fill)}' +
+    '.camp-vol.cv-off{opacity:.5}' +
+    '.camp-music-grp{display:inline-flex;align-items:center;gap:10px;flex:none;color:var(--text)}' +
+    // RPG HUD: a pill in the engine's .utility style (the class supplies the
+    // border, panel and padding); wider steps for a finger on a phone
+    '.camp-vol-rpg{display:inline-flex;align-items:center;color:var(--bone)}' +
+    '.camp-vol-rpg .camp-vol{width:calc(6 * var(--u,10px));min-width:64px;height:calc(1.6 * var(--u,10px));min-height:18px}' +
+    // hub, maps, climb: a solid pill beside the round button, as the button is solid
+    '.camp-vol-pill{display:inline-flex;align-items:center;align-self:center;box-sizing:border-box;height:44px;' +
+    'padding:0 14px;margin-left:8px;border-radius:22px;background:#14201a;box-shadow:0 2px 10px #0008;' +
+    'color:var(--bone,var(--text,#f3ead3));' +
+    'border:1px solid color-mix(in srgb,var(--accent,#d9b25a) 60%,transparent)}' +
+    '.camp-vol-pill .camp-vol{width:78px}' +
+    // the floating button (pages with no bar, HUD or slot): the slider opens
+    // beside it on hover or keyboard focus, so it never sits over the page
+    '.camp-vol-float{position:fixed;z-index:60;margin:0;left:calc(64px + env(safe-area-inset-left,0px));' +
+    'bottom:calc(12px + env(safe-area-inset-bottom,0px));opacity:0;pointer-events:none;transition:opacity .15s}' +
+    '.camp-vol-float.cv-show{opacity:1;pointer-events:auto}' +
+    '@media (hover:none){.camp-vol-float{display:none}}' +
+    '@media print{.camp-music,.camp-music-rpg,.camp-music-float,.camp-vol,.camp-vol-rpg,.camp-vol-pill{display:none!important}}';
   document.head.appendChild(css);
 
   var NOTE = '<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" ' +
@@ -82,24 +123,66 @@
     '<path class="cm-x" d="M1.5 1.5l13 13"/></svg>';
   var btn = document.createElement('button');
   btn.type = 'button';
+  var range = document.createElement('input');
+  range.type = 'range'; range.min = '0'; range.max = '100'; range.step = '1';
+  range.className = 'camp-vol';
+  range.value = String(vol);
+  var volBox;                                   // what holds the slider, hidden with the button
   if (mode === 'deck') {
     btn.className = 'camp-music';
     btn.innerHTML = NOTE + '<span class="cm-l"></span>';
+    volBox = document.createElement('span');
+    volBox.className = 'camp-music-grp';
+    volBox.appendChild(btn); volBox.appendChild(range);
     var home = bar.querySelector('.camp-home');
-    bar.insertBefore(btn, home ? home.nextSibling : bar.firstChild);
+    bar.insertBefore(volBox, home ? home.nextSibling : bar.firstChild);
   } else if (mode === 'rpg') {
     // The engine's utility buttons are an emoji plus a .u-label; follow suit.
     btn.className = 'utility camp-music-rpg';
     btn.innerHTML = '🎵<span class="u-label cm-l"></span>';
     rpgSound.parentNode.insertBefore(btn, rpgSound.nextSibling);
+    volBox = document.createElement('span');
+    volBox.className = 'utility camp-vol-rpg';
+    volBox.appendChild(range);
+    btn.parentNode.insertBefore(volBox, btn.nextSibling);
+    // the engine sized its panel under the HUD before these two were in it;
+    // on a phone the HUD gains a row, so ask it to measure again
+    if (typeof window.fitZone === 'function') try { window.fitZone(); } catch (_) {}
   } else if (mode === 'slot') {
     btn.className = 'camp-music-float camp-music-slot';
     btn.innerHTML = NOTE;
     slot.appendChild(btn);
+    volBox = document.createElement('span');
+    volBox.className = 'camp-vol-pill';
+    volBox.appendChild(range);
+    slot.appendChild(volBox);
+    // as tall as the round button the page drew (44 px on the hub, 36 on
+    // the maps), and the slot's own gap instead of ours when it has one
+    var bh = btn.offsetHeight;
+    if (bh) { volBox.style.height = bh + 'px'; volBox.style.borderRadius = bh / 2 + 'px'; }
+    if (parseFloat(getComputedStyle(slot).columnGap) > 0) volBox.style.marginLeft = '0';
   } else {
     btn.className = 'camp-music-float';
     btn.innerHTML = NOTE;
     document.body.appendChild(btn);
+    volBox = document.createElement('span');
+    volBox.className = 'camp-vol-pill camp-vol-float';
+    volBox.appendChild(range);
+    document.body.appendChild(volBox);
+    // open on hover or focus of either, close a moment after both are left
+    var hideT = null;
+    var show = function () { clearTimeout(hideT); volBox.classList.add('cv-show'); };
+    var hide = function () {
+      clearTimeout(hideT);
+      hideT = setTimeout(function () {
+        if (!btn.matches(':hover') && !volBox.matches(':hover') && !volBox.contains(document.activeElement) &&
+            !btn.matches(':focus-visible')) volBox.classList.remove('cv-show');
+      }, 700);
+    };
+    [btn, volBox].forEach(function (el) {
+      el.addEventListener('mouseenter', show); el.addEventListener('mouseleave', hide);
+      el.addEventListener('focusin', show); el.addEventListener('focusout', hide);
+    });
   }
 
   var on = true;
@@ -113,6 +196,10 @@
     btn.setAttribute('aria-pressed', on ? 'true' : 'false');
     btn.setAttribute('aria-label', on ? L[1] : L[2]);
     btn.title = on ? L[1] : L[2];
+    range.setAttribute('aria-label', L[3]);
+    range.title = L[3];
+    range.classList.toggle('cv-off', !on);
+    range.style.setProperty('--cv', vol + '%');
   }
   label();
   if (window.MutationObserver) new MutationObserver(label).observe(document.documentElement,
@@ -161,7 +248,7 @@
         started = true;
         apply();
       })
-      .catch(function () { btn.hidden = true; });
+      .catch(function () { btn.hidden = true; volBox.hidden = true; });
     return loading;
   }
   function playing() { return !!(ctx && started && ctx.state === 'running'); }
@@ -170,15 +257,16 @@
     var vs = document.querySelectorAll('.bg-clip');
     for (var i = 0; i < vs.length; i++) {
       var v = vs[i];
-      if (v.classList.contains('run') && !v.paused && !v.ended && !v.muted) return DUCK;
+      if (v.classList.contains('run') && !v.paused && !v.ended && !v.muted) return DUCK * mul();
     }
-    return LEVEL;
+    return LEVEL * mul();
   }
   var last = -1;
-  function apply() {
+  function apply(fast) {
     if (!ctx || !gain) return;
     var g = target();
-    if (g !== last) { gain.gain.setTargetAtTime(g, ctx.currentTime, g < last ? 0.08 : 0.6); last = g; }
+    // a slider moves the level at once; the switch and the clips fade
+    if (g !== last) { gain.gain.setTargetAtTime(g, ctx.currentTime, fast ? 0.03 : g < last ? 0.08 : 0.6); last = g; }
     // Chrome resumes here once the page has had any gesture; iOS ignores it
     // and waits for the next gesture below.
     if (on && !document.hidden && ctx.state !== 'running') {
@@ -208,6 +296,24 @@
     apply();
     if (!on && ctx) setTimeout(function () { if (!on && ctx) ctx.suspend(); }, 600);
   });
+  /* The slider. Moving it while the music is off is a request to hear it, so
+     it switches the music on. Its keys stay its own (a deck turns the slide
+     on the arrow keys), and a mouse or finger lets go of it afterwards, so
+     the next arrow key goes back to the deck. */
+  function setVol(v) {
+    vol = Math.max(0, Math.min(100, Math.round(v)));
+    try { localStorage.setItem('bc-music-vol', String(vol)); } catch (_) {}
+    if (!on && vol > 0) {
+      on = true;
+      try { localStorage.setItem('bc-music', 'on'); } catch (_) {}
+    }
+    label();
+    if (on) { unlock(); start(); }
+    apply(true);
+  }
+  range.addEventListener('input', function () { setVol(Number(range.value)); });
+  range.addEventListener('keydown', function (e) { e.stopPropagation(); });
+  range.addEventListener('pointerup', function () { setTimeout(function () { range.blur(); }, 0); });
   // The RPGs' help line offers S for sound and F for fullscreen; M is music.
   if (mode === 'rpg') document.addEventListener('keydown', function (e) {
     if ((e.key === 'm' || e.key === 'M') && !e.target.matches('input, textarea, select')) btn.click();

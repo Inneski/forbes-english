@@ -11,6 +11,40 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-10-03 — Block Camp music: a volume slider everywhere; the Grand Hotel gets a soundtrack
+
+Innes: *"add volume sliders on all block camps"*, and for the Grand Hotel
+*"add some fitting music"* (the Udio recording he had made, a Chrome capture
+in Downloads, was corrupted, so it is not used).
+
+- **The slider is in `block-camp/camp-music.js`**, so every page that plays
+  camp music has it: the 26 decks (after the Music switch in the deck bar),
+  the hub and both route maps (a pill beside the round button, as tall as
+  that button), the Grand Hotel's HUD (a `.utility` pill after the music
+  button). The Sherpa pages and `sailing-the-seas-of-grammar` share the
+  player, so they have it too; where the round button floats (no bar, HUD or
+  slot) the slider opens beside it on hover or keyboard focus and is not
+  shown on touch screens, so it never covers a phone page.
+- 0-100, default 50 = the old level exactly; each step is 0.24 dB, so the
+  ends are +-12 dB, and 0 is silence. Remembered per viewer in
+  `bc-music-vol`. Moving it while the music is off switches the music on.
+  Its arrow keys do not reach the deck, and a mouse lets go of it after a
+  drag so the next arrow key turns the slide again. Measured in the browser:
+  gain 0.478 / 0 / 0.12 at 100 / 0 / 50.
+- In an RPG the player now calls the engine's `fitZone()` after adding its
+  two controls: on a phone the HUD gains a row and the panel has to start
+  under it.
+- **"Grand Hotel"**, `lesson-template/build/block-camp-music/grand_hotel.py`
+  -> `block-camp/music/grand-hotel.m4a`: A minor, 112.5 BPM, 32 bars, a
+  Mitteleuropean grand-hotel caper (balalaika tremolo, cimbalom, harmonium,
+  contrabass oom-pah, sleigh bells, a woodblock clock, a midnight chime).
+  Mapped in `deck_music.py`'s TRACK, so `build_grand_hotel.py` wires it on
+  every build. The first engine RPG with music; its help line now names
+  "M music" in all ten languages.
+- `deck_music.py --check` reports the two route maps as DIFFERS. That is the
+  tag's position, not its content (the maps place it themselves since the
+  2026-10-02 phone work); left alone.
+
 ## 2026-10-03 — The Last Night at the Grand Hotel: Block Camp RPG, waiting on one catalogue row
 
 Innes sent `Grand_Hotel_The_Last_Night.html` (12 MB): *"turn this into a

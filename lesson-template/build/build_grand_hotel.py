@@ -350,8 +350,10 @@ LABELS = {
     # no lives in this game: a wrong answer costs the points and nothing else
     'wrong': T('NO POINTS'),
     'progress': T('TIME CHECKS'),
+    # M is the soundtrack's key (block-camp/camp-music.js); this is the one
+    # RPG with music, so the one help line that names it
     'help': T('click the glowing object or ENTER to read · ESC hide · 1-4 answer · '
-              'L language · S sound · F fullscreen'),
+              'L language · S sound · M music · F fullscreen'),
 }
 
 
