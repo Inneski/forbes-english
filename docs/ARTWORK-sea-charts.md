@@ -112,7 +112,7 @@ with a layout. The labels are fitted to what you paint afterwards.
 Every prompt ends with the same **style stem**:
 
 ```text
-antique hand-painted illustration, watercolour and fine ink hatching on aged parchment, warm lantern light, cutaway view of a wooden ship's interior, no text, no lettering, no labels, no numbers --ar 3:4 --sref https://forbesenglish.com/sailing-the-seas-of-grammar/chart-clean.jpg --no text, letters, words, writing, numbers
+antique hand-painted illustration, watercolour and fine ink hatching on aged parchment, warm lantern light, cutaway view of a wooden ship's interior --ar 3:4 --sref https://forbesenglish.com/sailing-the-seas-of-grammar/chart-clean.jpg --no text, letters, words, writing, numbers
 ```
 
 Paste each subject below in front of the stem.
@@ -133,7 +133,12 @@ Notes:
   whole point. If a render swaps chairs for barrels, reroll it.
 
 Drop them in **`incoming/sea-charts/`** as `hold-count`, `hold-bulk` and
-`hold-galley` (PNG or JPG).
+`hold-galley` (PNG or JPG). The folder already exists on Innes's machine
+(created 2026-10-04). `incoming/` is gitignored, so a cloud session has to
+ask for it to be made.
+
+The stem keeps "no text" out of the prompt itself. Midjourney tends to read
+a negative in the prompt as a subject. `--no` is the reliable way to say it.
 
 ## Upgrading the maps (optional)
 
