@@ -36,3 +36,32 @@ Stripe has a CLI tool (`stripe listen --forward-to localhost:8788/api/stripe-web
 ---
 
 That's the full path from where the repo sits now to a live, subscription-capable `forbesenglish.com`. Steps 1–3 (GitHub → Cloudflare Pages → DNS) get the site *live* on its own; Steps 4–6 (Supabase + Stripe) add the paywall on top whenever you're ready for that part — they don't have to happen in the same sitting.
+
+## The one-off products (pricing go-live, 2026-10-04)
+
+The four price IDs and the FOUNDER promotion code are not secret, so they
+live in `wrangler.toml` under `[vars]` beside the full-plan prices:
+`STRIPE_PRICE_ID_BLOCKCAMP`, `STRIPE_PRICE_ID_IELTS`,
+`STRIPE_PRICE_ID_IELTS_MARKING`, `STRIPE_PRICE_ID_MARKING`,
+`STRIPE_PROMO_FOUNDER`. What each purchase grants is read from the Stripe
+**product** metadata (`product`, `term`, `marking_credits`), listed in
+`docs/HANDOFF.md`. Change a grant there, not in code.
+
+They are sold through **Managed Payments** (Stripe as seller of record: it
+charges and remits the VAT and sends the receipts, from Link). Before the
+first sale, in the Stripe dashboard:
+
+1. Settings → Managed Payments: switch it on and accept its terms.
+2. Developers → Webhooks → the forbesenglish.com endpoint: listen to
+   `checkout.session.async_payment_succeeded` as well as
+   `checkout.session.completed` (a delayed payment method grants on the
+   second event, not the first).
+
+Optional, the marking-inbox email: turn on Email Routing for
+forbesenglish.com in Cloudflare, verify the inbox as a destination, then
+uncomment the `[[send_email]]` block at the end of `wrangler.toml` and add
+`MARKING_MAIL_FROM` (an address on forbesenglish.com) and `MARKING_MAIL_TO`
+under `[vars]`. Without it, purchases work and no email is sent.
+
+Tests: `node deploy/test-webhook.mjs` (checkout, founder count, webhook)
+and `node deploy/test-paywall.mjs`.

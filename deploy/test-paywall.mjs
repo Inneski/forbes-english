@@ -8,12 +8,16 @@
 // for '.html' is not a gate. Percent-encoding is the same trap.
 //
 import { readFileSync } from 'fs';
-const src = readFileSync('src/index.js', 'utf8');
+// cloudflare:email exists only in the Workers runtime; a stand-in class
+// lets Node load the module (deploy/test-webhook.mjs checks the mail).
+const src = readFileSync('src/index.js', 'utf8').replace(
+  /^import \{ EmailMessage \} from "cloudflare:email";$/m,
+  'class EmailMessage { constructor(f, t, r) { this.from = f; this.to = t; this.raw = r; } }');
 const mod = await import('data:text/javascript;base64,' + Buffer.from(src).toString('base64'));
 
 const PRO = ['forbes-c1-negotiation.html', 'koolhas & Lamb.html', 'Race Day - The Falcon Racing Story (B1 F1 RPG).html', 'block-camp/last-train-home-rpg.html'];
-// Per-track pricing (2026-09-28): lessons carry a track, and the standalone
-// plans in user_plans open their own track plus Sherpa Tensing.
+// Per-track pricing: lessons carry a track, and the one-off plans in
+// user_plans open their own track (2026-10-04: no longer Sherpa as well).
 const TRACK = {
   'block-camp/last-train-home-rpg.html': 'blockcamp',
   'blockcamp-demo.html': 'blockcamp',
@@ -104,16 +108,18 @@ const cases = [
   ['/',                           null, 'lesson', 'root'],
   ['/Ukraine/rebuild-hero.jpg',   null, 'lesson', 'image in a folder'],
   ['/sb-client.js',               null, 'lesson', 'script'],
-  // Tracks. Full covers all; each standalone plan its own track + Sherpa.
+  // Tracks. Full covers all, Sherpa included; since the pricing go-live
+  // (2026-10-04) each one-off plan opens its own track and nothing else.
   ['/blockcamp-demo.html',            'fe_at=good-token',    'lesson', 'full plan opens Block Camp'],
   ['/forbes-english-ielts-demo.html', 'fe_at=good-token',    'lesson', 'full plan opens IELTS'],
   ['/blockcamp-demo.html',            'fe_at=bc-token',      'lesson', 'Block Camp plan opens Block Camp'],
   ['/block-camp/last-train-home-rpg', 'fe_at=bc-token',      'lesson', 'Block Camp plan opens a Block Camp RPG'],
-  ['/sherpa-tensing-demo.html',       'fe_at=bc-token',      'lesson', 'Block Camp plan opens Sherpa Tensing'],
+  ['/sherpa-tensing-demo.html',       'fe_at=bc-token',      'gate',   'Block Camp plan does NOT open Sherpa (full plan only)'],
   ['/forbes-english-ielts-demo.html', 'fe_at=bc-token',      'gate',   'Block Camp plan does NOT open IELTS'],
   ['/forbes-c1-negotiation.html',     'fe_at=bc-token',      'gate',   'Block Camp plan does NOT open general'],
   ['/forbes-english-ielts-demo.html', 'fe_at=ielts-token',   'lesson', 'IELTS plan in term opens IELTS'],
-  ['/sherpa-tensing-demo.html',       'fe_at=ielts-token',   'lesson', 'IELTS plan opens Sherpa Tensing'],
+  ['/sherpa-tensing-demo.html',       'fe_at=ielts-token',   'gate',   'IELTS plan does NOT open Sherpa (full plan only)'],
+  ['/sherpa-tensing-demo.html',       'fe_at=good-token',    'lesson', 'full plan opens Sherpa Tensing'],
   ['/blockcamp-demo.html',            'fe_at=ielts-token',   'gate',   'IELTS plan does NOT open Block Camp'],
   ['/forbes-english-ielts-demo.html', 'fe_at=ielts-expired', 'gate',   'IELTS plan past its term is closed'],
   ['/blockcamp-demo.html',            'fe_at=bc-canceled',   'gate',   'canceled Block Camp plan is closed'],

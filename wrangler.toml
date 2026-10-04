@@ -12,6 +12,15 @@ SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 STRIPE_PRICE_ID_MONTHLY = "price_1UCRRK0R7wvAnqirFeZ7QIOr"
 STRIPE_PRICE_ID_SEMIANNUAL = "price_1UCRRK0R7wvAnqirxBfL63pX"
 STRIPE_PRICE_ID_ANNUAL = "price_1UCRRK0R7wvAnqirG5pvoKXS"
+# The one-off products (pricing go-live, 2026-10-04). Sold through Managed
+# Payments; what each grants is in its Stripe product metadata. IDs and the
+# metadata table: docs/HANDOFF.md.
+STRIPE_PRICE_ID_BLOCKCAMP = "price_1UMrG40R7wvAnqirYtSLCZnY"
+STRIPE_PRICE_ID_IELTS = "price_1UMrLI0R7wvAnqirWYHjtsg2"
+STRIPE_PRICE_ID_IELTS_MARKING = "price_1UMrR60R7wvAnqirEMCYlH9q"
+STRIPE_PRICE_ID_MARKING = "price_1UMrYb0R7wvAnqiritAkZlT5"
+# FOUNDER: EUR 7 off Block Camp Term 1, 50 redemptions.
+STRIPE_PROMO_FOUNDER = "promo_1UMrlb0R7wvAnqirXLEXdWdf"
 
 [assets]
 directory = "."
@@ -25,3 +34,11 @@ not_found_handling = "404-page"
 # With it, every request enters the Worker; anything it does not gate falls
 # through to env.ASSETS.fetch() at ~0.6ms.
 run_worker_first = true
+
+# The marking inbox is emailed when essay credits are bought (src/index.js,
+# notifyMarking). Off until Email Routing is on for forbesenglish.com and the
+# inbox is a verified destination there; then uncomment, set the two
+# addresses, and add MARKING_MAIL_FROM / MARKING_MAIL_TO under [vars].
+# [[send_email]]
+# name = "MARKING_MAIL"
+# destination_address = "you@example.com"

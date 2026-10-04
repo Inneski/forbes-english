@@ -14,11 +14,19 @@
 //   STRIPE_SECRET_KEY, STRIPE_PRICE_ID_MONTHLY, STRIPE_PRICE_ID_SEMIANNUAL,
 //   STRIPE_PRICE_ID_ANNUAL, STRIPE_WEBHOOK_SECRET, SITE_URL,
 //   SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY
-// Per-track products (optional until the Stripe prices exist; checkout for a
-// product whose price is unset answers 500 and nothing else changes):
-//   STRIPE_PRICE_ID_BLOCKCAMP   recurring price, Block Camp
-//   STRIPE_PRICE_ID_IELTS       one-time price, IELTS
-//   IELTS_TERM_DAYS             length of the IELTS term (default 90)
+// The one-off products (pricing go-live, 2026-10-04; IDs in docs/HANDOFF.md).
+// Checkout for a product whose price is unset answers 500 and nothing else
+// changes:
+//   STRIPE_PRICE_ID_BLOCKCAMP       €19, Block Camp Term 1
+//   STRIPE_PRICE_ID_IELTS           €25, IELTS
+//   STRIPE_PRICE_ID_IELTS_MARKING   €69, IELTS + two marked essays
+//   STRIPE_PRICE_ID_MARKING         €49, two marked essays on any account
+//   STRIPE_PROMO_FOUNDER            promo_… for FOUNDER (€7 off Term 1, 50 uses)
+// Optional: MARKING_MAIL, a Cloudflare send_email binding, plus
+// MARKING_MAIL_FROM — the marking inbox is told when credits are bought.
+
+// Email Routing's message type, for the marking-inbox note (notifyMarking).
+import { EmailMessage } from "cloudflare:email";
 
 const PLAN_ENV_KEYS = {
   monthly: "STRIPE_PRICE_ID_MONTHLY",
@@ -26,13 +34,26 @@ const PLAN_ENV_KEYS = {
   annual: "STRIPE_PRICE_ID_ANNUAL",
 };
 
-// The standalone products. `full` (the plans above, held on `profiles`)
-// covers every track; these cover their own track plus Sherpa Tensing.
-// A lesson's track is `lessons.track`; the rows a user holds are `user_plans`
-// (deploy/schema-tracks.sql).
-const PRODUCTS = {
-  blockcamp: { envKey: "STRIPE_PRICE_ID_BLOCKCAMP", mode: "subscription", tracks: ["blockcamp", "sherpa"] },
-  ielts:     { envKey: "STRIPE_PRICE_ID_IELTS",     mode: "payment",      tracks: ["ielts", "sherpa"] },
+// What the pricing page can buy, by the key its buttons send. All are single
+// payments through Managed Payments (Stripe as seller of record: it charges
+// and remits the VAT). What a purchase grants is read back from the Stripe
+// *product's* metadata in the webhook, not from this table, so a Payment
+// Link sold outside this page grants the same thing.
+const CHECKOUT_PRODUCTS = {
+  blockcamp:     { envKey: "STRIPE_PRICE_ID_BLOCKCAMP", founder: true },
+  ielts:         { envKey: "STRIPE_PRICE_ID_IELTS" },
+  ielts_marking: { envKey: "STRIPE_PRICE_ID_IELTS_MARKING" },
+  marking:       { envKey: "STRIPE_PRICE_ID_MARKING" },
+};
+
+// The tracks a `user_plans` row opens, by its `product`. The full plan (held
+// on `profiles`) opens every track, Sherpa Tensing included; a one-off opens
+// only its own. Marking opens no lessons: it only carries credits.
+// A lesson's track is `lessons.track` (deploy/schema-tracks.sql).
+const PLAN_TRACKS = {
+  blockcamp: ["blockcamp"],
+  ielts: ["ielts"],
+  marking: [],
 };
 
 export default {
@@ -54,6 +75,11 @@ export default {
     // wired up, and how many lessons the gate can see.
     if (url.pathname === "/api/paywall-status") {
       return handlePaywallStatus(request, url, env, ctx);
+    }
+
+    // The founder offer's places left, for the pricing page's strip.
+    if (url.pathname === "/api/founder-status") {
+      return handleFounderStatus(env, ctx);
     }
 
     // ── RETIRED URLS ─────────────────────────────────────────────────
@@ -259,7 +285,7 @@ async function callerAccess(request, env) {
   for (const p of Array.isArray(plans) ? plans : []) {
     if (!ACTIVE_STATUSES.has(p.status)) continue;
     if (p.ends_at && Date.parse(p.ends_at) <= now) continue;
-    for (const t of PRODUCTS[p.product]?.tracks || []) tracks.add(t);
+    for (const t of PLAN_TRACKS[p.product] || []) tracks.add(t);
   }
   return { full, tracks, covers: (track) => full || tracks.has(track) };
 }
@@ -353,12 +379,12 @@ function escapeHtml(s) {
  * ampersand in it should not be able to close a tag.
  */
 // Which plans open a lesson, by its track (lesson-meta.json carries it from
-// lessons.track). Must agree with PRODUCTS above and with pricing.html.
+// lessons.track). Must agree with PLAN_TRACKS above and with pricing.html.
 const PLAN_LINE = {
   general:   "is part of Forbes English Pro.",
-  blockcamp: "is part of the Block Camp plan, and of Forbes English Pro.",
-  ielts:     "is part of the IELTS plan, and of Forbes English Pro.",
-  sherpa:    "comes with every plan: Forbes English Pro, Block Camp or IELTS.",
+  blockcamp: "is part of Block Camp Term 1, and of Forbes English Pro.",
+  ielts:     "is part of IELTS, and of Forbes English Pro.",
+  sherpa:    "is part of Forbes English Pro.",
 };
 
 function personaliseGate(html, m, url) {
@@ -460,6 +486,10 @@ async function handlePaywallStatus(request, url, env, ctx) {
     callerTracks: [...access.tracks],
     hasBlockCampPrice: Boolean(env.STRIPE_PRICE_ID_BLOCKCAMP),
     hasIeltsPrice: Boolean(env.STRIPE_PRICE_ID_IELTS),
+    hasIeltsMarkingPrice: Boolean(env.STRIPE_PRICE_ID_IELTS_MARKING),
+    hasMarkingPrice: Boolean(env.STRIPE_PRICE_ID_MARKING),
+    hasFounderPromo: Boolean(env.STRIPE_PROMO_FOUNDER),
+    hasMarkingMail: Boolean(env.MARKING_MAIL && env.MARKING_MAIL_FROM),
   };
 
   report.configOk =
@@ -520,7 +550,9 @@ async function handleCreateCheckoutSession(request, env) {
     "subscription_data[metadata][supabase_user_id]": userId,
     "subscription_data[metadata][plan]": plan,
     success_url: `${env.SITE_URL}/account.html?checkout=success`,
-    cancel_url: `${env.SITE_URL}/account.html?checkout=cancelled`,
+    // Back to where they started: account.html ignores ?checkout=cancelled,
+    // pricing.html says "no charge was made".
+    cancel_url: `${env.SITE_URL}/pricing.html?checkout=cancelled`,
   });
 
   const stripeRes = await fetch("https://api.stripe.com/v1/checkout/sessions", {
@@ -542,14 +574,19 @@ async function handleCreateCheckoutSession(request, env) {
 }
 
 /**
- * Checkout for a standalone product (Block Camp, IELTS). Kept apart from the
- * full plan so the full plan's params are untouched. IELTS is a one-time
- * payment: no subscription, so the term is stored as `ends_at` by the webhook.
+ * Checkout for a one-off product (Block Camp Term 1, IELTS, IELTS + Marking,
+ * Marking). Kept apart from the full plan so the full plan's params are
+ * untouched. Every product is a single payment through Managed Payments:
+ * Stripe is the seller of record, charges the VAT inside the VAT-inclusive
+ * price and remits it, and sends the receipt. Managed Payments forbids the
+ * tax, payment-method, shipping and receipt-email parameters, so none are
+ * sent. Block Camp gets the FOUNDER code applied for the buyer while places
+ * remain; nobody has to type it.
  */
 async function createProductCheckout(env, userId, userEmail, product) {
-  const def = PRODUCTS[product];
+  const def = CHECKOUT_PRODUCTS[product];
   if (!def) {
-    return json({ error: `product must be one of: ${Object.keys(PRODUCTS).join(", ")}` }, 400);
+    return json({ error: `product must be one of: ${Object.keys(CHECKOUT_PRODUCTS).join(", ")}` }, 400);
   }
   const priceId = env[def.envKey];
   if (!priceId) {
@@ -557,22 +594,38 @@ async function createProductCheckout(env, userId, userEmail, product) {
   }
 
   const params = new URLSearchParams({
-    mode: def.mode,
-    "managed_payments[enabled]": "false",
+    mode: "payment",
+    "managed_payments[enabled]": "true",
     "line_items[0][price]": priceId,
     "line_items[0][quantity]": "1",
     customer_email: userEmail,
     "metadata[supabase_user_id]": userId,
     "metadata[product]": product,
     success_url: `${env.SITE_URL}/account.html?checkout=success`,
-    cancel_url: `${env.SITE_URL}/account.html?checkout=cancelled`,
+    cancel_url: `${env.SITE_URL}/pricing.html?checkout=cancelled`,
   });
-  if (def.mode === "subscription") {
-    params.set("subscription_data[metadata][supabase_user_id]", userId);
-    params.set("subscription_data[metadata][product]", product);
+
+  const founder = def.founder && env.STRIPE_PROMO_FOUNDER ? await getFounderStatus(env) : null;
+  if (founder && founder.remaining > 0) {
+    params.set("discounts[0][promotion_code]", env.STRIPE_PROMO_FOUNDER);
   }
 
-  const stripeRes = await fetch("https://api.stripe.com/v1/checkout/sessions", {
+  let stripeRes = await createCheckoutSession(env, params);
+  // The last founder place can go between the count and this call. Stripe
+  // then refuses the code; the buyer still gets a checkout, at €19, rather
+  // than an error.
+  if (!stripeRes.ok && params.has("discounts[0][promotion_code]")) {
+    params.delete("discounts[0][promotion_code]");
+    stripeRes = await createCheckoutSession(env, params);
+  }
+  if (!stripeRes.ok) {
+    return json({ error: "Stripe error", detail: await stripeRes.text() }, 502);
+  }
+  return json({ url: (await stripeRes.json()).url });
+}
+
+function createCheckoutSession(env, params) {
+  return fetch("https://api.stripe.com/v1/checkout/sessions", {
     method: "POST",
     headers: {
       "Authorization": `Bearer ${env.STRIPE_SECRET_KEY}`,
@@ -580,10 +633,59 @@ async function createProductCheckout(env, userId, userEmail, product) {
     },
     body: params,
   });
-  if (!stripeRes.ok) {
-    return json({ error: "Stripe error", detail: await stripeRes.text() }, 502);
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// GET /api/founder-status  — the founder offer's places left
+// ─────────────────────────────────────────────────────────────────────────
+
+/**
+ * Reads the FOUNDER promotion code from Stripe: its limit and how often it
+ * has been redeemed. Cached for a minute at the edge, so a busy pricing page
+ * is not a Stripe request per visitor. Anything other than a clean read is
+ * null, and the page then shows the plain €19: it must never advertise an
+ * offer that may have run out.
+ */
+async function getFounderStatus(env, ctx) {
+  if (!env.STRIPE_PROMO_FOUNDER || !env.STRIPE_SECRET_KEY) return null;
+  const cacheKey = new Request(`${env.SITE_URL}/__internal/founder-status-v1`);
+  const cache = typeof caches !== "undefined" ? caches.default : null;
+  if (cache) {
+    const hit = await cache.match(cacheKey);
+    if (hit) {
+      try { return await hit.json(); } catch { /* re-read */ }
+    }
   }
-  return json({ url: (await stripeRes.json()).url });
+  let status;
+  try {
+    const res = await fetch(
+      `https://api.stripe.com/v1/promotion_codes/${encodeURIComponent(env.STRIPE_PROMO_FOUNDER)}`,
+      { headers: { "Authorization": `Bearer ${env.STRIPE_SECRET_KEY}` } }
+    );
+    if (!res.ok) return null;
+    const promo = await res.json();
+    const limit = Number(promo.max_redemptions);
+    const used = Number(promo.times_redeemed) || 0;
+    if (!(limit > 0)) return null;
+    status = { limit, remaining: promo.active ? Math.max(0, limit - used) : 0 };
+  } catch {
+    return null;
+  }
+  if (cache) {
+    const put = cache.put(cacheKey, new Response(JSON.stringify(status), {
+      headers: { "Content-Type": "application/json", "Cache-Control": "max-age=60" },
+    }));
+    if (ctx && ctx.waitUntil) ctx.waitUntil(put); else await put;
+  }
+  return status;
+}
+
+async function handleFounderStatus(env, ctx) {
+  const status = await getFounderStatus(env, ctx);
+  if (!status) return json({ error: "Founder status unavailable" }, 503);
+  return new Response(JSON.stringify(status), {
+    headers: { "Content-Type": "application/json", "Cache-Control": "public, max-age=60" },
+  });
 }
 
 // ─────────────────────────────────────────────────────────────────────────
@@ -600,45 +702,49 @@ async function handleStripeWebhook(request, env) {
   }
 
   const event = JSON.parse(rawBody);
+  // A write that fails answers 500, so Stripe redelivers the event (it
+  // retries for three days). Until 2026-10-04 every write's result was
+  // ignored and the webhook said 200 regardless: a Supabase hiccup at the
+  // wrong moment was a sale that never granted anything.
+  const failed = () => new Response("Could not record the event; Stripe will retry", { status: 500 });
 
   switch (event.type) {
-    case "checkout.session.completed": {
+    case "checkout.session.completed":
+    case "checkout.session.async_payment_succeeded": {
       const session = event.data.object;
       const userId = session.metadata?.supabase_user_id;
-      const plan = session.metadata?.plan;
-      const product = session.metadata?.product;
-      if (userId && PRODUCTS[product]) {
-        // A standalone product goes in user_plans, never on the profile:
-        // writing it there would read as a whole-library subscription.
-        const days = Number(env.IELTS_TERM_DAYS) || 90;
-        await insertUserPlan(env, {
-          user_id: userId,
-          product,
-          status: "active",
-          stripe_subscription_id: session.subscription || null,
-          stripe_checkout_session_id: session.id,
-          ends_at: PRODUCTS[product].mode === "payment"
-            ? new Date(Date.now() + days * 86400000).toISOString()
-            : null,
-        });
-      } else if (userId) {
-        await updateProfile(env, userId, {
-          stripe_customer_id: session.customer,
-          stripe_subscription_id: session.subscription,
-          subscription_status: "active",
-          ...(plan ? { plan } : {}),
-        });
+
+      if (session.mode === "payment") {
+        // A delayed method (a bank debit) completes the session unpaid and
+        // pays later; the grant waits for async_payment_succeeded.
+        if (session.payment_status !== "paid" && session.payment_status !== "no_payment_required") break;
+        // A sale not started from the site (no signed-in user) has nothing
+        // to attach to. It is in the Stripe dashboard; nothing to do here.
+        if (!userId) break;
+        if (!(await grantOneOff(env, event, session, userId))) return failed();
+        break;
       }
+
+      // The full plan: a subscription, held on the profile as before.
+      if (event.type !== "checkout.session.completed" || !userId) break;
+      const plan = session.metadata?.plan;
+      const ok = await updateProfile(env, userId, {
+        stripe_customer_id: session.customer,
+        stripe_subscription_id: session.subscription,
+        subscription_status: "active",
+        ...(plan ? { plan } : {}),
+      });
+      if (!ok) return failed();
       break;
     }
-        case "customer.subscription.updated": {
+    case "customer.subscription.updated": {
       const sub = event.data.object;
       const plan = sub.metadata?.plan;
-      // A standalone subscription updates its own row. Patching the profile
-      // by customer here would overwrite the full plan's status with Block
-      // Camp's for anyone who holds both.
-      if (PRODUCTS[sub.metadata?.product]) {
-        await updateUserPlanBySubscription(env, sub.id, { status: sub.status });
+      // A standalone subscription updates its own row. None is sold any more
+      // (every product is one-off since 2026-10-04); kept so a row made by
+      // the 2026-09-28 plans can still be closed.
+      if (sub.metadata?.product) {
+        if (!(await updateUserPlanBySubscription(env, sub.id, { status: sub.status }))) return failed();
         break;
       }
       // Since Stripe API 2025-03-31 the period end lives on the subscription
@@ -647,24 +753,23 @@ async function handleStripeWebhook(request, env) {
       // subscription.updated event would have 500'd. Fall back to the old
       // field for older payloads, and skip the date rather than crash.
       const periodEnd = sub.items?.data?.[0]?.current_period_end ?? sub.current_period_end;
-      await updateProfileByCustomer(env, sub.customer, {
+      const ok = await updateProfileByCustomer(env, sub.customer, {
         subscription_status: sub.status,
         ...(typeof periodEnd === "number"
           ? { current_period_end: new Date(periodEnd * 1000).toISOString() }
           : {}),
         ...(plan ? { plan } : {}),
       });
+      if (!ok) return failed();
       break;
     }
     case "customer.subscription.deleted": {
       const sub = event.data.object;
-      if (PRODUCTS[sub.metadata?.product]) {
-        await updateUserPlanBySubscription(env, sub.id, { status: "canceled" });
+      if (sub.metadata?.product) {
+        if (!(await updateUserPlanBySubscription(env, sub.id, { status: "canceled" }))) return failed();
         break;
       }
-      await updateProfileByCustomer(env, sub.customer, {
-        subscription_status: "canceled",
-      });
+      if (!(await updateProfileByCustomer(env, sub.customer, { subscription_status: "canceled" }))) return failed();
       break;
     }
     default:
@@ -675,33 +780,160 @@ async function handleStripeWebhook(request, env) {
   return json({ received: true });
 }
 
-async function updateProfile(env, userId, fields) {
-  await fetch(`${env.SUPABASE_URL}/rest/v1/profiles?id=eq.${userId}`, {
+/**
+ * Records a one-off purchase as a `user_plans` row. What it grants comes
+ * from the Stripe product's metadata (set in the dashboard; see the table in
+ * docs/HANDOFF.md): `product` (blockcamp | ielts | marking), `term`, and
+ * `marking_credits`. One row per purchase, keyed by the Checkout Session, so
+ * a redelivered event is a no-op: a marking add-on is a new row with its two
+ * credits rather than "+2" on an older row, because an increment cannot be
+ * made safe against redelivery. An account's credits are the sum of its rows.
+ * Nothing bought here expires (Innes, 2026-10-04): ends_at stays null.
+ * Returns false only when the purchase could not be recorded.
+ */
+async function grantOneOff(env, event, session, userId) {
+  let items;
+  try {
+    const res = await fetch(
+      `https://api.stripe.com/v1/checkout/sessions/${encodeURIComponent(session.id)}/line_items?expand[]=data.price.product&limit=10`,
+      { headers: { "Authorization": `Bearer ${env.STRIPE_SECRET_KEY}` } }
+    );
+    if (!res.ok) return false;
+    items = (await res.json()).data || [];
+  } catch {
+    return false;
+  }
+
+  const item = items.find((li) => {
+    const p = String(li.price?.product?.metadata?.product || "").trim().toLowerCase();
+    return Object.prototype.hasOwnProperty.call(PLAN_TRACKS, p);
+  });
+  // A paid session whose product carries no recognised metadata is a
+  // dashboard mistake, not a retryable failure: say so in the log and stop.
+  if (!item) {
+    console.error(`checkout ${session.id}: no line item with product metadata blockcamp|ielts|marking`);
+    return true;
+  }
+
+  const meta = item.price.product.metadata;
+  const product = String(meta.product).trim().toLowerCase();
+  const qty = Number(item.quantity) || 1;
+  const credits = Math.max(0, parseInt(meta.marking_credits, 10) || 0) * qty;
+  const term = parseInt(meta.term, 10);
+  const paidAt = new Date((event.created || Date.now() / 1000) * 1000).toISOString();
+
+  const inserted = await insertUserPlan(env, {
+    user_id: userId,
+    product,
+    status: "active",
+    stripe_checkout_session_id: session.id,
+    // The weekly drip counts from here for a term buyer.
+    starts_at: paidAt,
+    ends_at: null,
+    term: product === "blockcamp" ? (term > 0 ? term : 1) : null,
+    marking_credits: credits,
+  });
+  if (inserted === null) return false;
+
+  // Only a first delivery that actually made the row tells the marking
+  // inbox; a redelivery would otherwise send the same email again.
+  if (inserted && credits > 0) {
+    await notifyMarking(env, {
+      credits,
+      productName: item.price.product.name || product,
+      buyer: session.customer_details?.email || session.customer_email || "",
+      userId,
+      sessionId: session.id,
+      paidAt,
+    });
+  }
+  return true;
+}
+
+/**
+ * Tells the marking inbox that essay credits were bought. Uses a Cloudflare
+ * Email Routing `send_email` binding, which can only send to a verified
+ * address on the forbesenglish.com zone (enough for Innes's own inbox; a
+ * parent's address needs a real transactional sender). Without the binding
+ * this is a no-op, and a mail failure never fails the purchase: Stripe's
+ * own payment emails to the account owner are the backstop.
+ */
+async function notifyMarking(env, info) {
+  if (!env.MARKING_MAIL || !env.MARKING_MAIL_FROM || !env.MARKING_MAIL_TO) return;
+  const clean = (s) => String(s).replace(/[\r\n]+/g, " ").slice(0, 200);
+  const raw = [
+    `From: Forbes English <${clean(env.MARKING_MAIL_FROM)}>`,
+    `To: <${clean(env.MARKING_MAIL_TO)}>`,
+    `Subject: Marking bought: ${info.credits} essays (${clean(info.productName)})`,
+    `Message-ID: <${clean(info.sessionId)}@forbesenglish.com>`,
+    `Date: ${new Date().toUTCString()}`,
+    "MIME-Version: 1.0",
+    "Content-Type: text/plain; charset=utf-8",
+    "Content-Transfer-Encoding: 8bit",
+    "",
+    `${clean(info.buyer) || "A buyer"} bought ${clean(info.productName)}: ${info.credits} essays to mark.`,
+    "",
+    `Paid: ${info.paidAt}`,
+    `Supabase user: ${clean(info.userId)}`,
+    `Stripe checkout: ${clean(info.sessionId)}`,
+    "",
+  ].join("\r\n");
+  try {
+    await env.MARKING_MAIL.send(new EmailMessage(env.MARKING_MAIL_FROM, env.MARKING_MAIL_TO, raw));
+  } catch (err) {
+    console.error("marking email failed:", err && err.message);
+  }
+}
+
+// Each write reports whether it landed, so the webhook can ask Stripe to
+// redeliver instead of dropping a purchase.
+async function supabaseWrite(url, init) {
+  try {
+    const res = await fetch(url, init);
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
+function updateProfile(env, userId, fields) {
+  return supabaseWrite(`${env.SUPABASE_URL}/rest/v1/profiles?id=eq.${encodeURIComponent(userId)}`, {
     method: "PATCH",
     headers: supabaseHeaders(env),
     body: JSON.stringify(fields),
   });
 }
 
-async function updateProfileByCustomer(env, stripeCustomerId, fields) {
-  await fetch(`${env.SUPABASE_URL}/rest/v1/profiles?stripe_customer_id=eq.${stripeCustomerId}`, {
+function updateProfileByCustomer(env, stripeCustomerId, fields) {
+  return supabaseWrite(`${env.SUPABASE_URL}/rest/v1/profiles?stripe_customer_id=eq.${encodeURIComponent(stripeCustomerId)}`, {
     method: "PATCH",
     headers: supabaseHeaders(env),
     body: JSON.stringify(fields),
   });
 }
 
+/**
+ * Inserts a user_plans row, ignoring a duplicate Checkout Session (a
+ * redelivered webhook). Returns true when a row was made, false when it
+ * already existed, and null when the write failed.
+ */
 async function insertUserPlan(env, row) {
-  // on_conflict makes a redelivered webhook a no-op instead of a second row.
-  await fetch(`${env.SUPABASE_URL}/rest/v1/user_plans?on_conflict=stripe_checkout_session_id`, {
-    method: "POST",
-    headers: { ...supabaseHeaders(env), "Prefer": "return=minimal,resolution=ignore-duplicates" },
-    body: JSON.stringify(row),
-  });
+  try {
+    const res = await fetch(`${env.SUPABASE_URL}/rest/v1/user_plans?on_conflict=stripe_checkout_session_id`, {
+      method: "POST",
+      headers: { ...supabaseHeaders(env), "Prefer": "return=representation,resolution=ignore-duplicates" },
+      body: JSON.stringify(row),
+    });
+    if (!res.ok) return null;
+    const rows = await res.json().catch(() => []);
+    return Array.isArray(rows) && rows.length > 0;
+  } catch {
+    return null;
+  }
 }
 
-async function updateUserPlanBySubscription(env, stripeSubscriptionId, fields) {
-  await fetch(`${env.SUPABASE_URL}/rest/v1/user_plans?stripe_subscription_id=eq.${stripeSubscriptionId}`, {
+function updateUserPlanBySubscription(env, stripeSubscriptionId, fields) {
+  return supabaseWrite(`${env.SUPABASE_URL}/rest/v1/user_plans?stripe_subscription_id=eq.${encodeURIComponent(stripeSubscriptionId)}`, {
     method: "PATCH",
     headers: supabaseHeaders(env),
     body: JSON.stringify(fields),
