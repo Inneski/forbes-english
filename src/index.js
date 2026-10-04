@@ -535,6 +535,14 @@ function escapeHtml(s) {
  * escaped: the values come from a database row, and a lesson title with an
  * ampersand in it should not be able to close a tag.
  */
+// What a lesson belongs to, for the gate page's label: Block Camp Term 1
+// (its own missions and the specials), IELTS, or Forbes English Pro.
+function planName(track, term) {
+  if (track === "blockcamp" && (Number(term) === 1 || !term)) return "Block Camp Term 1";
+  if (track === "ielts") return "IELTS";
+  return "Forbes English Pro";
+}
+
 // Which plans open a lesson, by its track and, for Block Camp, its term (the
 // gate's own catalogue row; lesson-meta.json as the fallback). Must agree
 // with PLAN_TRACKS above and with pricing.html. Only Term 1 is on sale.
@@ -601,7 +609,7 @@ function personaliseGate(html, m, url, lesson = null, notYet = null, access = NO
   ].filter(Boolean).join("\n");
 
   const intro = [
-    `<div class="eyebrow">Subscribers only${level ? ` &middot; ${level}` : ""}</div>`,
+    `<div class="eyebrow">${planName(lesson ? lesson.track : m.track, lesson ? lesson.term : null)}${level ? ` &middot; ${level}` : ""}</div>`,
     `<h1>${title}</h1>`,
     `<p class="lede">${desc}</p>`,
     // The public excerpt. This is the part of a gated page that has
@@ -677,7 +685,7 @@ function gateFlags(lesson, m, notYet, checked) {
 }
 
 // A final refusal keeps the way to the plans and the free lessons, and drops
-// "Already subscribed? ... this page will let you straight through", which
+// "Already bought it? ... this page will let you straight through", which
 // would not be true.
 function finalOffer(html) {
   return html.replace(/<!-- GATE:offer -->[\s\S]*?<!-- \/GATE:offer -->/,

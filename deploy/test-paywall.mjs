@@ -185,7 +185,7 @@ for (const [path, cookie, want, why] of cases) {
   const res = await get(path, cookie);
   const body = await res.clone().text();
   const kind = body.includes('name="fe-gate" content="not-yet"') ? 'notyet'
-    : body.includes('GATE PAGE') || body.includes('Subscribers only') ? 'gate' : 'lesson';
+    : body.includes('GATE PAGE') || body.includes('name="fe-track"') ? 'gate' : 'lesson';
   // A gate must answer 200 or it can never be indexed; see locked() in src.
   const ok = kind === want && res.status === 200;
   ok ? pass++ : fail++;
@@ -219,7 +219,7 @@ for (const [path, cookie, want, why] of cases) {
 
 // A refusal the Worker reached from the reader's own rows is final: the page
 // says so (fe-gate=checked), so its script does not reload, and it drops
-// "Already subscribed? ... let you straight through". With no cookie the
+// "Already bought it? ... let you straight through". With no cookie the
 // Worker could not tell, so the retry stays.
 {
   const real = readFileSync('locked.html', 'utf8');
@@ -232,13 +232,13 @@ for (const [path, cookie, want, why] of cases) {
     { headers: cookie ? { Cookie: cookie } : {} }), realEnv, ctx).then((r) => r.text());
   const term2 = await fetchReal('/blockcamp-term2.html', 'fe_at=bc-old');
   const anon = await fetchReal('/blockcamp-term2.html', null);
-  const ok = term2.includes('name="fe-gate" content="checked"') && !term2.includes('Already subscribed?') &&
-    term2.includes('See plans') && !anon.includes('content="checked"') && anon.includes('Already subscribed?');
+  const ok = term2.includes('name="fe-gate" content="checked"') && !term2.includes('Already bought it?') &&
+    term2.includes('See plans') && !anon.includes('content="checked"') && anon.includes('Already bought it?');
   ok ? pass++ : fail++;
   console.log(`${ok ? ' PASS' : ' FAIL'}  a final refusal is marked "checked" and drops the retry promise; an anonymous one keeps it`);
   const ny = await fetchReal('/blockcamp-m3.html', 'fe_at=bc-token');
   const link = ny.includes('href="/blockcamp-demo.html">Mission 2 is open now</a>') && ny.includes('Back to Block Camp') &&
-    !ny.includes('Already subscribed?') && /UTC<\/time>/.test(ny);
+    !ny.includes('Already bought it?') && /UTC<\/time>/.test(ny);
   link ? pass++ : fail++;
   console.log(`${link ? ' PASS' : ' FAIL'}  not-yet page links to the mission that is open now; its no-JS date says UTC`);
 }
