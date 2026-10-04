@@ -49,8 +49,8 @@ The terrain is part of the grammar:
   separate farmhouses. Everything there can be counted.
 - **Uncountania** is wheat and dunes, stuff you can only measure.
 - **Regularia** is a tidy grid of fields.
-- **Each irregular island** has its own landmark: Bell Island a bell tower,
-  Windward Isle a windmill, Keep Island a castle keep, Broken Reef a wreck.
+- **Each irregular island** has its own landmark: I·A·U Island a bell tower,
+  -EW Island a windmill, -T Island a castle keep, -EN Island a wreck.
 
 `terrain()` never plants anything inside a label's box.
 
@@ -94,8 +94,8 @@ nouns and the traps.
 
 | On the chart | What it teaches |
 |---|---|
-| **Regularia** (green, west) | One continent, one rule (*verb + -ed*), and the smoothest coast on the chart. Three provinces by sound: **/t/** (Stop Harbour, Walk Ridge, Watch Head, Cook Cove), **/d/** (Play Bay, Study Sands, Travel Tarn, Call Crag), **/ɪd/** (Start Point, Wait Moor, Visit Fell, Land's End). The spelling rules are in the names: *stopped, studied, travelled, played*. |
-| **The archipelago** (Irregularia: no one rule, but families) | Each family is an island. **Bell Island** *ring · rang · rung* (sing, drink, swim, begin). **Ought Island** *buy · bought* (bring, think, catch, teach). **Windward Isle** *blow · blew · blown* (grow, know, throw, fly). **Keep Island** *keep · kept*, the -t endings (sleep, feel, leave, build). **Broken Reef** *break · broke · broken* (speak, steal, wake, choose). |
+| **Regularia** (green, west) | The biggest land and the smoothest coast on the chart, with one rule: *verb + -ed, and almost every other verb*. Three provinces by sound, six harbours each. **/t/**: Stop Harbour, Walk Ridge, Watch Head, Cook Cove, Like Mere, Laugh Rock. **/d/**: Play Bay, Study Sands, Travel Tarn, Call Crag, Live Ness, Open Sound. **/ɪd/**: Start Point, Wait Moor, Visit Fell, Need Haven, Decide Head, Land's End. The spelling rules are in the names: *stopped* (double), *liked, lived, decided* (just -d), *studied* (y → i), *travelled* (British double l), *opened* (no double, because the stress is on *op-*). |
+| **The archipelago** (Irregularia: no one rule, but families) | Each family is an island named after the sound it shares. **I·A·U Island** *ring · rang · rung* (sing, drink, swim, begin). **Ought Island** *buy · bought* (bring, think, catch, teach). **-EW Island** *blow · blew · blown* (grow, know, throw, fly). **-T Island** *keep · kept* (sleep, feel, leave, build). **-EN Island** *speak · spoke · spoken*, where the third form ends in -en (break, take, give, write). |
 | **The Still Rocks / the Lone Stacks** | *cut · put · hit · let · cost*, which never change. *go · be · do · see*, which belong to no family. |
 | **Forked Isle** (lilac) | One verb, two meanings, two past forms: *lie (lied / lay), hang (hanged / hung), shine (shined / shone)*. |
 | **Currents west** | New verbs arrive regular (*texted, emailed, googled*). Some old ones are drifting west too, into the Shallows (*learnt / learned, dreamt / dreamed, burnt / burned, spelt / spelled*). |

@@ -489,29 +489,40 @@ def hold_chart(uid='hd'):
 
 R_LAND, R_BEACH, R_INK = '#9DB86E', '#E3EDC9', '#223A10'     # Regularia, tidy fields
 
-# one continent, a smooth coast: the ratio is half the others', on purpose
+# one continent, a smooth coast: the ratio is half the others', on purpose.
+# It is the biggest land on the chart because nearly every verb lives here.
 REGULAR_OUTLINE = [
-    (150, 30), (222, 62), (258, 112), (262, 170), (286, 220), (300, 272),
-    (292, 326), (280, 378), (290, 430), (302, 478), (284, 526), (270, 566),
-    (238, 600), (180, 626), (100, 644),
+    (214, 30), (292, 60), (326, 108), (330, 166), (342, 220), (350, 272),
+    (340, 326), (328, 378), (338, 430), (348, 478), (330, 526), (314, 566),
+    (282, 600), (210, 628), (110, 646),
     (-30, 654), (-30, 18),
 ]
 PROVINCES = [(30, 212, '-ED SAYS /t/'), (212, 414, '-ED SAYS /d/'), (414, 596, '-ED SAYS /&#618;d/')]
+# six per sound, in three staggered columns. The spelling rules ride along:
+# stopped (double), liked / lived / decided (just -d), studied (y to i),
+# travelled (British double l), opened (no double: the stress is on op-)
+_L, _M, _R = 60, 156, 252
 REGULAR_PLACES = [
-    (98, 80, 'Stop Harbour'), (196, 110, 'Walk Ridge'),
-    (96, 150, 'Watch Head'), (206, 184, 'Cook Cove'),
-    (98, 262, 'Play Bay'), (214, 290, 'Study Sands'),
-    (100, 332, 'Travel Tarn'), (214, 372, 'Call Crag'),
-    (98, 464, 'Start Point'), (214, 494, 'Wait Moor'),
-    (100, 534, 'Visit Fell'), (206, 566, 'Land&#8217;s End'),
+    (_L, 84, 'Stop Harbour'), (_R, 84, 'Walk Ridge'), (_M, 118, 'Watch Head'),
+    (_L, 152, 'Cook Cove'), (_R, 152, 'Like Mere'), (_M, 186, 'Laugh Rock'),
+    (_L, 266, 'Play Bay'), (_R, 266, 'Study Sands'), (_M, 300, 'Travel Tarn'),
+    (_L, 334, 'Call Crag'), (_R, 334, 'Live Ness'), (_M, 368, 'Open Sound'),
+    (_L, 462, 'Start Point'), (_R, 462, 'Wait Moor'), (_M, 492, 'Visit Fell'),
+    (_L, 522, 'Need Haven'), (_R, 522, 'Decide Head'), (_M, 552, 'Land&#8217;s End'),
 ]
+REGULAR_TITLE = (56, 584, 'REGULARIA', 'verb + <tspan font-style="italic">-ed</tspan>')
+REGULAR_EVERY = 'and almost every other verb'
+
+# Each island is named after the sound its family shares, the way Ought
+# Island always was. (The first names were puns, Bell Island for ring rang
+# rung, and only made sense once you already knew the family.)
 
 # (id, outline, seed, land, beach, ink, title x, name, pattern, places); the
 # title sits a fixed height above the island's own top, clear of its beach
 ISLANDS = [
     ('bell', [(724, 60), (774, 64), (812, 84), (822, 114), (806, 146), (770, 164),
               (722, 168), (678, 158), (650, 134), (652, 100), (676, 72)], 71,
-     '#DC9A6A', '#F5DCC6', '#4A200A', 736, 'BELL ISLAND', 'ring &#183; rang &#183; rung',
+     '#DC9A6A', '#F5DCC6', '#4A200A', 736, 'I &#183; A &#183; U ISLAND', 'ring &#183; rang &#183; rung',
      [(698, 104, 'Sing Sound'), (774, 108, 'Drink Cove'), (700, 142, 'Swim Bay'),
       (772, 146, 'Begin Point')]),
     ('ought', [(900, 110), (948, 118), (984, 146), (992, 190), (984, 238), (958, 272),
@@ -521,33 +532,33 @@ ISLANDS = [
       (910, 260, 'Teach Ness')]),
     ('wind', [(712, 232), (760, 236), (796, 258), (806, 294), (792, 330), (756, 350),
               (708, 352), (668, 336), (648, 302), (656, 264), (680, 242)], 79,
-     '#A7B8C8', '#E1E9F0', '#1E2E3E', 728, 'WINDWARD ISLE', 'blow &#183; blew &#183; blown',
+     '#A7B8C8', '#E1E9F0', '#1E2E3E', 728, '-EW ISLAND', 'blow &#183; blew &#183; blown',
      [(694, 280, 'Grow Fell'), (768, 284, 'Know Mere'), (698, 322, 'Throw Rock'),
       (762, 326, 'Fly Pike')]),
     ('keep', [(900, 338), (948, 346), (982, 372), (990, 412), (978, 452), (944, 476),
               (898, 482), (856, 466), (834, 430), (840, 390), (864, 356)], 89,
-     '#C7899A', '#F0DCE2', '#431A26', 912, 'KEEP ISLAND', 'keep &#183; kept &#183; kept',
+     '#C7899A', '#F0DCE2', '#431A26', 912, '-T ISLAND', 'keep &#183; kept &#183; kept',
      [(904, 382, 'Sleep Sands'), (908, 412, 'Feel Moor'), (906, 442, 'Leave Harbour'),
       (910, 472, 'Build Peak')]),
     ('broke', [(716, 432), (764, 436), (800, 458), (810, 494), (796, 530), (760, 550),
                (712, 552), (670, 536), (650, 502), (658, 464), (682, 442)], 97,
-     '#DDB08C', '#F6E4D2', '#482A12', 730, 'BROKEN REEF', 'break &#183; broke &#183; broken',
-     [(696, 478, 'Speak Point'), (768, 482, 'Steal Cove'), (700, 520, 'Wake Head'),
-      (766, 524, 'Choose Bay')]),
+     '#DDB08C', '#F6E4D2', '#482A12', 730, '-EN ISLAND', 'speak &#183; spoke &#183; spoken',
+     [(696, 478, 'Break Point'), (768, 482, 'Take Head'), (700, 520, 'Give Cove'),
+      (766, 524, 'Write Bay')]),
 ]
 TITLE_LIFT = 31
 FORKED_OUTLINE = [
-    (452, 272), (496, 278), (526, 300), (534, 334), (518, 366), (484, 384),
-    (440, 384), (406, 366), (392, 332), (402, 298), (424, 280),
+    (492, 272), (536, 278), (566, 300), (574, 334), (558, 366), (524, 384),
+    (480, 384), (446, 366), (432, 332), (442, 298), (464, 280),
 ]
-FORKED_PLACES = [(462, 312, 'Lie Harbour'), (430, 346, 'Hang Head'), (492, 356, 'Shine Ness')]
+FORKED_PLACES = [(502, 312, 'Lie Harbour'), (470, 346, 'Hang Head'), (532, 356, 'Shine Ness')]
 VERB_SHALLOWS = [
-    (470, 510), (540, 519), (588, 536), (612, 560), (588, 588), (538, 606),
-    (470, 614), (402, 606), (352, 588), (328, 560), (352, 536), (400, 519),
+    (488, 512), (548, 521), (590, 538), (610, 562), (590, 590), (546, 606),
+    (488, 614), (430, 606), (386, 590), (366, 562), (386, 538), (428, 521),
 ]
 # the verbs that never change, as a scatter of low rocks, and the four that
 # follow no family at all, as sea stacks
-STILL_ROCKS = [(628, 590, 9), (646, 600, 6), (612, 606, 7), (660, 586, 5)]
+STILL_ROCKS = [(646, 592, 9), (664, 602, 6), (630, 608, 7), (678, 588, 5)]
 LONE_STACKS = [(830, 548, 'go'), (870, 540, 'be'), (910, 550, 'do'), (950, 542, 'see')]
 
 
@@ -572,18 +583,19 @@ def verbs_chart(uid='rv'):
         _sea(uid, [(340, 216), (560, 222), (352, 420), (600, 400), (330, 620),
                    (560, 470), (820, 300), (330, 140), (610, 160)]),
         P.rings([_path(p) for p in [west_pts, forked_pts] + list(island_pts.values())]),
-        _shallows(uid, VERB_SHALLOWS, 43, 470, 548, 'THE SHALLOWS',
+        _shallows(uid, VERB_SHALLOWS, 43, 488, 550, 'THE SHALLOWS',
                   'either form, same meaning',
                   ['learnt / learned &#183; dreamt / dreamed',
                    'burnt / burned &#183; spelt / spelled']),
         _land(uid + '-west', west_pts, R_BEACH, R_LAND, overlay='url(#%s-fields)' % uid,
               kind='fields', seed=17,
               avoid=P.place_boxes(REGULAR_PLACES) + province_boxes
-              + _title_boxes(56, 600, 'REGULARIA', 'verb + -ed', 'start')),
+              + _title_boxes(REGULAR_TITLE[0], REGULAR_TITLE[1], 'REGULARIA', 'verb + -ed', 'start')
+              + [P.text_box(REGULAR_TITLE[0] + 2, REGULAR_TITLE[1] + 34, REGULAR_EVERY, 10, 'start')]),
     ]
     # province borders: dashed county lines from the back of the land to the coast
     for y in (PROVINCES[1][0], PROVINCES[2][0]):
-        parts.append('<path d="M 0 %d L 272 %d" stroke="%s" stroke-width="1.4" '
+        parts.append('<path d="M 0 %d L 300 %d" stroke="%s" stroke-width="1.4" '
                      'stroke-dasharray="3 4" opacity=".7"/>' % (y, y + 4, R_INK))
     for top, _bottom, label in PROVINCES:
         parts.append('<text class="place" data-land="%s-west" x="20" y="%d" %s font-size="9.5" '
@@ -597,8 +609,8 @@ def verbs_chart(uid='rv'):
         parts.append(_places(places, ink, '%s-%s' % (uid, iid), 10))
     for x, y, r in STILL_ROCKS:
         parts.append(P.rock(x, y, r))
-    parts.append(_sea_text(640, 628, 'THE STILL ROCKS', '#3E3528', size=10, spacing='.08em'))
-    parts.append(_sea_text(640, 641, 'cut &#183; put &#183; hit &#183; let &#183; cost: no change',
+    parts.append(_sea_text(682, 628, 'THE STILL ROCKS', '#3E3528', size=10, spacing='.08em'))
+    parts.append(_sea_text(682, 641, 'cut &#183; put &#183; hit &#183; let &#183; cost: no change',
                            '#3E3528', size=9, weight=600, spacing='0'))
     for x, y, verb in LONE_STACKS:
         parts.append('<path d="M %d %d L %d %d L %d %d L %d %d Z" fill="#8A7E70" stroke="%s" '
@@ -609,15 +621,18 @@ def verbs_chart(uid='rv'):
     parts += [
         _land(uid + '-forked', forked_pts, LILAC_BEACH, LILAC, kind='hills', seed=37,
               avoid=P.place_boxes(FORKED_PLACES, 10.5)),
-        _island_title(462, FORKED_OUTLINE[0][1] - TITLE_LIFT, 'FORKED ISLE', 'one verb &#183; two meanings &#183; two pasts',
+        _island_title(502, FORKED_OUTLINE[0][1] - TITLE_LIFT, 'FORKED ISLE', 'one verb &#183; two meanings &#183; two pasts',
                       LILAC_INK, size=14),
         _places(FORKED_PLACES, LILAC_INK, uid + '-forked', 10.5),
-        _current(uid, 190, 610, 330, 'NEW VERBS SAIL WEST', 'texted &#183; emailed &#183; googled'),
-        _current(uid, 450, 620, 340, 'SOME OLD ONES ARE DRIFTING WEST'),
-        _compass('&#9664; WALKED &#183; WENT &#9654;', cx=470),
-        _ship(592, 282, 0.62),
-        _title(56, 600, 'REGULARIA', 'verb + <tspan font-style="italic">-ed</tspan>', R_INK,
+        _current(uid, 190, 616, 376, 'NEW VERBS SAIL WEST', 'texted &#183; emailed &#183; googled'),
+        _current(uid, 450, 626, 386, 'SOME OLD ONES ARE DRIFTING WEST'),
+        _compass('&#9664; WALKED &#183; WENT &#9654;', cx=494),
+        _ship(612, 296, 0.42),
+        _title(REGULAR_TITLE[0], REGULAR_TITLE[1], REGULAR_TITLE[2], REGULAR_TITLE[3], R_INK,
                land=uid + '-west'),
+        _land_text(uid + '-west', REGULAR_TITLE[0] + 2, REGULAR_TITLE[1] + 34, REGULAR_EVERY, R_INK,
+                   size=10, weight=600, spacing='0').replace('text-anchor="middle"',
+                                                             'text-anchor="start" font-style="italic"'),
         _title(986, 614, 'IRREGULARIA', 'no one rule &#183; but families', '#3E3528', anchor='end'),
         _places(REGULAR_PLACES, R_INK, uid + '-west'),
     ]
