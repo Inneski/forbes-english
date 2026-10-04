@@ -161,6 +161,21 @@ the marking-inbox notice goes through Resend too. Table
 **Needs Innes:** a Resend account, forbesenglish.com verified there (DNS
 records in Cloudflare), and `RESEND_API_KEY` as a Worker secret. Steps in
 `deploy/06-environment-variables.md`. Until then the cron sends nothing.
+**Steps 8-9 reviewed** (17 confirmed; fixes `5319ad16`): the email job pages and
+chunks its reads, marks a claim sent only on success and retries stale ones,
+runs **hourly** (inside Resend's 24h idempotency window) with a per-run call
+budget; the account page handles a full-plan checkout, a failed read, Back
+from Stripe and a slow device clock. Schema: `mission_emails_claims_and_email_sync`
+(claimed_at; profiles.email follows auth.users.email) APPLIED 4 Oct.
+The pricing work uses **info@forbesenglish.com** (sender, reply-to, essays,
+marking inbox, cancel line), matching the site-wide switch in `52e2c0e4`.
+**Before go-live, merge main into pricing-go-live** in `../FORBES-pricing`:
+main has moved (the address switch touched pages the branch also changes).
+`tools/seo.py`'s pricing description on main is the OLD page's until the
+merge (`3a3da4cb`); the branch carries the new one.
+**Needs Innes before RESEND_API_KEY is set:** a privacy notice (controller,
+contact, data held, purposes, processors Supabase/Stripe/Cloudflare/Resend,
+transfers, rights) -- it needs his name/address, like the terms page.
 
 - **Step 1, schema: APPLIED** (Supabase migration `pricing_go_live_schema`,
   file `deploy/schema-pricing.sql`). `lessons.term/mission`,
