@@ -84,6 +84,15 @@ Founder: coupon `nlxRQksc` "Founder price", €7 off once, applies to
 `/api/founder-status` reads that promo's `times_redeemed`. Forbes English
 Pro (`prod_VCr9pX02HJ6n0e`) still has no product category.
 
+**Step 4 (Worker) is on branch `pricing-go-live`** (`6cb3d803`): one-off
+checkout with Managed Payments on, FOUNDER auto-applied, `/api/founder-status`,
+and the webhook. Verified in the live dashboard on 4 Oct: Managed Payments
+is already "Ready to use" (terms accepted, on by default; the Worker turns
+it off for the Pro subscription), and the webhook endpoint
+`we_1UCRVD0R7wvAnqir5hFaGqwg` now listens to 4 events, including
+`checkout.session.async_payment_succeeded` (Innes added it). The marking
+email needs Email Routing on forbesenglish.com and the inbox address.
+
 - **Step 1, schema: APPLIED** (Supabase migration `pricing_go_live_schema`,
   file `deploy/schema-pricing.sql`). `lessons.term/mission`,
   `user_plans.term/starts_at/marking_credits`, `profiles.blockcamp_first_open`;
