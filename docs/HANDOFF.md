@@ -114,6 +114,17 @@ block of `deploy/schema-pricing.sql`, to run in the same sitting as the
 deploy. The step 2 tagging SQL must run before the deploy too, or a Term 1
 buyer gets nothing past the free Mission 1.
 
+**Step 5 reviewed** (four lenses + skeptic, 15 confirmed; fixes `8b856a3b`):
+the subscriber clock starts on any Block Camp lesson and, in the background,
+on the free Mission 1; `block-camp/camp-full.js` refreshes a stored session
+whose fe_at cookie has lapsed and re-asks with a HEAD; final refusals carry
+`fe-gate=checked` (no retry, no false promise); the not-yet page links to the
+mission open now; `/api/paywall-status` has `blockCampDripReady`; the hub's
+"Start here" is Frostbound (Mission 1), rebuilt from the hub builder.
+Added to the go-live copy sweep: `block-camp/camp-flags.js` (the Lookout)
+treats any Pro part seen as the full plan, so a Term 1 buyer's milestones and
+padlocks read wrong (source: `lesson-template/build/block-camp-flags/`).
+
 - **Step 1, schema: APPLIED** (Supabase migration `pricing_go_live_schema`,
   file `deploy/schema-pricing.sql`). `lessons.term/mission`,
   `user_plans.term/starts_at/marking_credits`, `profiles.blockcamp_first_open`;
