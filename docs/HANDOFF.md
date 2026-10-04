@@ -99,7 +99,8 @@ buyer from the Supabase token not the body, FOUNDER dropped only on a 400
 about the code, full-plan events write Stripe's current subscription, and the
 signature check takes every v1 with a 5-minute tolerance.
 **Needs Innes before go-live:**
-- Add `charge.refunded` and `charge.dispute.closed` to the webhook endpoint.
+- ~~Add `charge.refunded` and `charge.dispute.closed` to the webhook endpoint.~~
+  DONE by Innes; verified 4 Oct: the endpoint listens to 6 events.
 - Decide the two marking products: Stripe's Managed Payments eligibility
   excludes products that "involve human intervention"; teacher-marked essays
   do. Flip `managed` in `CHECKOUT_PRODUCTS` per his decision.
