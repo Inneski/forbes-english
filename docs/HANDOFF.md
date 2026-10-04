@@ -93,6 +93,21 @@ it off for the Pro subscription), and the webhook endpoint
 `checkout.session.async_payment_succeeded` (Innes added it). The marking
 email needs Email Routing on forbesenglish.com and the inbox address.
 
+**Step 4 reviewed** (four lenses + skeptic, 23 confirmed; fixes in `a9955b36`
+on the branch): refunds/lost disputes close one-off grants, checkout takes the
+buyer from the Supabase token not the body, FOUNDER dropped only on a 400
+about the code, full-plan events write Stripe's current subscription, and the
+signature check takes every v1 with a 5-minute tolerance.
+**Needs Innes before go-live:**
+- Add `charge.refunded` and `charge.dispute.closed` to the webhook endpoint.
+- Decide the two marking products: Stripe's Managed Payments eligibility
+  excludes products that "involve human intervention"; teacher-marked essays
+  do. Flip `managed` in `CHECKOUT_PRODUCTS` per his decision.
+**Carried to later steps:** step 5 must limit a term buyer to their own
+term's lessons (today a blockcamp row opens the whole track, Term 2 too);
+step 8 must make account.html read `user_plans`, because one-off buyers land
+there after paying (`success_url`) and it still says "Not subscribed".
+
 - **Step 1, schema: APPLIED** (Supabase migration `pricing_go_live_schema`,
   file `deploy/schema-pricing.sql`). `lessons.term/mission`,
   `user_plans.term/starts_at/marking_credits`, `profiles.blockcamp_first_open`;
