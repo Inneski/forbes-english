@@ -155,6 +155,7 @@ async function withRanges(request, res) {
 
 const SESSION_COOKIE = "fe_at";
 const ACTIVE_STATUSES = new Set(["active", "trialing"]);
+const WEEK_MS = 7 * 86400000;
 
 /**
  * Returns a Response when the request is for a gated lesson the caller may
@@ -166,13 +167,30 @@ async function gateLessonRequest(request, url, env, ctx) {
   const file = lessonFileFor(url.pathname);
   if (!file) return null;
 
-  const proFiles = await getProFiles(env, ctx);
+  const catalogue = await getCatalogue(env, ctx);
   // Fail OPEN, not closed: if Supabase is unreachable we would rather serve a
   // pro lesson to a stranger than show every paying subscriber a paywall.
-  if (!proFiles) return null;
-  if (!proFiles.has(file)) return null;
+  if (!catalogue) return null;
+  const lesson = catalogue.get(file);
+  if (!lesson) return null;
 
-  if ((await callerAccess(request, env)).covers(proFiles.get(file))) {
+  if (lesson.access !== "pro") {
+    // A free Block Camp lesson (Mission 1) is where a subscriber's weekly
+    // clock should start, so a signed-in visit is noted. It never blocks.
+    if (lesson.track === "blockcamp" && readCookie(request.headers.get("Cookie"), SESSION_COOKIE)) {
+      const access = await callerAccess(request, env);
+      startBlockCampClock(access, env, ctx);
+    }
+    return null;
+  }
+
+  const access = await callerAccess(request, env);
+  const verdict = lesson.track === "blockcamp"
+    ? blockCampVerdict(lesson, access, Date.now())
+    : { open: access.covers(lesson.track) };
+  if (verdict.startClock) startBlockCampClock(access, env, ctx);
+
+  if (verdict.open) {
     // Serve it, but marked private. A pro lesson must never sit in a shared
     // cache where the next person through gets it without the check.
     const res = await env.ASSETS.fetch(request);
@@ -182,7 +200,67 @@ async function gateLessonRequest(request, url, env, ctx) {
     return out;
   }
 
-  return locked(request, url, env, ctx);
+  return locked(request, url, env, ctx, lesson, verdict.notYet || null);
+}
+
+/**
+ * Block Camp opens one mission a week (Innes, 2026-10-03): a lesson tagged
+ * mission M opens once M-1 whole weeks have passed since the clock started.
+ * Owners are exempt. Two ways in, and either is enough:
+ *
+ *  - The full plan. The clock is profiles.blockcamp_first_open, set on the
+ *    subscriber's first Block Camp visit. A lesson with no mission number
+ *    (Term 2 until it is numbered, the mixed-tense specials) is not dripped.
+ *  - A term bought outright (user_plans, product blockcamp). The clock is
+ *    that row's starts_at, the moment of payment. Only lessons tagged with
+ *    the row's term and a mission open this way: a Term 1 buyer does not get
+ *    Term 2, and an untagged lesson is not part of any term.
+ *
+ * Returns { open } or { open: false, notYet: { mission, opensAt } } when the
+ * caller holds the lesson but its week has not come, plus startClock when a
+ * subscriber's clock has not been started yet.
+ */
+function blockCampVerdict(lesson, access, now) {
+  if (access.owner) return { open: true };
+  const mission = Number(lesson.mission) || null;
+  const opensAfter = (start) => start + (mission - 1) * WEEK_MS;
+  let notYet = null;
+  const later = (opensAt) => {
+    if (!notYet || opensAt < notYet.opensAt) notYet = { mission, opensAt };
+  };
+  let startClock = false;
+
+  if (access.full) {
+    if (!mission) return { open: true };
+    let start = access.blockCampFirstOpen;
+    if (!start) { start = now; startClock = true; }
+    if (now >= opensAfter(start)) return { open: true, startClock };
+    later(opensAfter(start));
+  }
+
+  if (mission && lesson.term) {
+    for (const plan of access.blockCampPlans) {
+      if ((plan.term || 1) !== Number(lesson.term)) continue;
+      if (now >= opensAfter(plan.startsAt)) return { open: true, startClock };
+      later(opensAfter(plan.startsAt));
+    }
+  }
+  return { open: false, notYet, startClock };
+}
+
+/**
+ * Records a subscriber's first Block Camp visit, once. The browser cannot
+ * write profiles (deploy/schema-pricing.sql), so this uses the service key;
+ * the is.null filter makes it a no-op once set, however many requests race.
+ */
+function startBlockCampClock(access, env, ctx) {
+  if (!access.full || access.owner || access.blockCampFirstOpen || !access.userId) return;
+  if (!env.SUPABASE_SERVICE_ROLE_KEY) return;
+  const write = fetch(
+    `${env.SUPABASE_URL}/rest/v1/profiles?id=eq.${encodeURIComponent(access.userId)}&blockcamp_first_open=is.null`,
+    { method: "PATCH", headers: supabaseHeaders(env), body: JSON.stringify({ blockcamp_first_open: new Date().toISOString() }) }
+  ).catch(() => {});
+  if (ctx && ctx.waitUntil) ctx.waitUntil(write);
 }
 
 /**
@@ -212,15 +290,17 @@ function lessonFileFor(pathname) {
 }
 
 /**
- * The lesson filenames that require a subscription, mapped to their track, read from the
- * `lessons` table and cached at the edge. Cached for five minutes so flipping
- * a lesson to free in the database takes effect without a deploy, while a
- * burst of traffic does not become a burst of Supabase queries.
+ * The lessons the gate has to look at: every pro lesson, plus every Block
+ * Camp lesson (the free Mission 1 starts a subscriber's weekly clock), each
+ * with its track, access, term and mission, read from the `lessons` table
+ * and cached at the edge for five minutes, so flipping a lesson to free in
+ * the database takes effect without a deploy, while a burst of traffic does
+ * not become a burst of Supabase queries.
  */
-async function getProFiles(env, ctx) {
-  // v2: the cached body became [file, track] pairs when tracks arrived; a new
-  // key means a stale v1 array is never read as pairs.
-  const cacheKey = new Request(`${env.SITE_URL}/__internal/pro-lessons-v2`);
+async function getCatalogue(env, ctx) {
+  // v3: rows became objects carrying access/term/mission (pricing go-live);
+  // a new key means a stale v2 array of pairs is never read as rows.
+  const cacheKey = new Request(`${env.SITE_URL}/__internal/gate-catalogue-v3`);
   const cache = caches.default;
 
   const cached = await cache.match(cacheKey);
@@ -232,24 +312,28 @@ async function getProFiles(env, ctx) {
     }
   }
 
-  let files;
+  let rows;
   try {
     const res = await fetch(
-      `${env.SUPABASE_URL}/rest/v1/lessons?select=file,track&access=eq.pro`,
+      `${env.SUPABASE_URL}/rest/v1/lessons?select=file,track,access,term,mission&or=(access.eq.pro,track.eq.blockcamp)`,
       { headers: { apikey: env.SUPABASE_ANON_KEY, Authorization: `Bearer ${env.SUPABASE_ANON_KEY}` } }
     );
     if (!res.ok) return null;
-    files = (await res.json()).map((r) => [r.file, r.track || "general"]);
+    rows = (await res.json()).map((r) => [r.file, {
+      track: r.track || "general",
+      access: r.access === "free" ? "free" : "pro",
+      term: r.term ?? null,
+      mission: r.mission ?? null,
+    }]);
   } catch {
     return null;
   }
 
-  const body = JSON.stringify(files);
-  const toCache = new Response(body, {
+  const toCache = new Response(JSON.stringify(rows), {
     headers: { "Content-Type": "application/json", "Cache-Control": "max-age=300" },
   });
   if (ctx && ctx.waitUntil) ctx.waitUntil(cache.put(cacheKey, toCache));
-  return new Map(files);
+  return new Map(rows);
 }
 
 /**
@@ -258,10 +342,15 @@ async function getProFiles(env, ctx) {
  * outright, and the row-level policies on `profiles` and `user_plans` mean
  * the rows that come back can only ever be the caller's own.
  *
- * Returns { full, tracks, covers(track) }. `full` is the owner or an active
- * whole-library subscription; `tracks` is what the standalone plans add.
+ * Returns { owner, full, tracks, covers(track), blockCampPlans,
+ * blockCampFirstOpen, userId }. `full` is the owner or an active
+ * whole-library subscription; `tracks` is what the one-off plans add;
+ * `blockCampPlans` are the active Block Camp terms with their start times.
  */
-const NO_ACCESS = { full: false, tracks: new Set(), covers: () => false };
+const NO_ACCESS = {
+  owner: false, full: false, tracks: new Set(), covers: () => false,
+  blockCampPlans: [], blockCampFirstOpen: null, userId: null,
+};
 
 async function callerAccess(request, env) {
   const token = readCookie(request.headers.get("Cookie"), SESSION_COOKIE);
@@ -269,13 +358,13 @@ async function callerAccess(request, env) {
   const headers = { apikey: env.SUPABASE_ANON_KEY, Authorization: `Bearer ${token}` };
 
   // Read in parallel, fail separately: a missing table or a failed read of
-  // user_plans costs the standalone plans only, never a full subscriber.
-  const plansRead = fetch(`${env.SUPABASE_URL}/rest/v1/user_plans?select=product,status,ends_at`, { headers })
+  // user_plans costs the one-off plans only, never a full subscriber.
+  const plansRead = fetch(`${env.SUPABASE_URL}/rest/v1/user_plans?select=product,status,ends_at,starts_at,term`, { headers })
     .then((r) => (r.ok ? r.json() : []))
     .catch(() => []);
   let profile;
   try {
-    const pr = await fetch(`${env.SUPABASE_URL}/rest/v1/profiles?select=subscription_status,owner&limit=1`, { headers });
+    const pr = await fetch(`${env.SUPABASE_URL}/rest/v1/profiles?select=id,subscription_status,owner,blockcamp_first_open&limit=1`, { headers });
     if (!pr.ok) return NO_ACCESS;           // a bad token fails here
     profile = (await pr.json())[0];
   } catch {
@@ -286,15 +375,27 @@ async function callerAccess(request, env) {
 
   // `owner` is deliberately separate from subscription_status: the person who
   // runs the site should not lose access to it because of a billing event.
-  const full = profile.owner === true || ACTIVE_STATUSES.has(profile.subscription_status);
+  const owner = profile.owner === true;
+  const full = owner || ACTIVE_STATUSES.has(profile.subscription_status);
   const tracks = new Set();
+  const blockCampPlans = [];
   const now = Date.now();
   for (const p of Array.isArray(plans) ? plans : []) {
     if (!ACTIVE_STATUSES.has(p.status)) continue;
     if (p.ends_at && Date.parse(p.ends_at) <= now) continue;
     for (const t of PLAN_TRACKS[p.product] || []) tracks.add(t);
+    if (p.product === "blockcamp") {
+      const startsAt = Date.parse(p.starts_at);
+      if (Number.isFinite(startsAt)) blockCampPlans.push({ term: Number(p.term) || 1, startsAt });
+    }
   }
-  return { full, tracks, covers: (track) => full || tracks.has(track) };
+  const firstOpen = profile.blockcamp_first_open ? Date.parse(profile.blockcamp_first_open) : NaN;
+  return {
+    owner, full, tracks, blockCampPlans,
+    covers: (track) => full || tracks.has(track),
+    blockCampFirstOpen: Number.isFinite(firstOpen) ? firstOpen : null,
+    userId: profile.id || null,
+  };
 }
 
 function readCookie(header, name) {
@@ -326,14 +427,14 @@ function readCookie(header, name) {
  * The per-lesson text comes from `lesson-meta.json`, which `tools/seo.py`
  * generates from the same `lessons` table this gate reads.
  */
-async function locked(request, url, env, ctx) {
+async function locked(request, url, env, ctx, lesson = null, notYet = null) {
   const page = await env.ASSETS.fetch(new Request(`${url.origin}/locked.html`));
   let html = page.ok ? await page.text() : "<h1>This lesson is for subscribers.</h1>";
 
   const file = lessonFileFor(url.pathname);
   const meta = await getLessonMeta(request, url, env, ctx);
   const m = file && meta ? meta[file] : null;
-  if (m) html = personaliseGate(html, m, url);
+  if (m || notYet) html = personaliseGate(html, m || {}, url, lesson, notYet);
 
   return new Response(html, {
     status: 200,
@@ -385,16 +486,16 @@ function escapeHtml(s) {
  * escaped: the values come from a database row, and a lesson title with an
  * ampersand in it should not be able to close a tag.
  */
-// Which plans open a lesson, by its track (lesson-meta.json carries it from
-// lessons.track). Must agree with PLAN_TRACKS above and with pricing.html.
-const PLAN_LINE = {
-  general:   "is part of Forbes English Pro.",
-  blockcamp: "is part of Block Camp Term 1, and of Forbes English Pro.",
-  ielts:     "is part of IELTS, and of Forbes English Pro.",
-  sherpa:    "is part of Forbes English Pro.",
-};
+// Which plans open a lesson, by its track and, for Block Camp, its term (the
+// gate's own catalogue row; lesson-meta.json as the fallback). Must agree
+// with PLAN_TRACKS above and with pricing.html. Only Term 1 is on sale.
+function planLine(track, term) {
+  if (track === "blockcamp" && Number(term) === 1) return "is part of Block Camp Term 1, and of Forbes English Pro.";
+  if (track === "ielts") return "is part of IELTS, and of Forbes English Pro.";
+  return "is part of Forbes English Pro.";
+}
 
-function personaliseGate(html, m, url) {
+function personaliseGate(html, m, url, lesson = null, notYet = null) {
   const title = escapeHtml(m.title || "");
   const desc = escapeHtml(m.description || "");
   const level = escapeHtml(m.level || "");
@@ -456,15 +557,45 @@ function personaliseGate(html, m, url) {
           .join(" &middot; ")}${level ? ` &middot; <a href="/level-checker.html">Check your level</a>` : ""}</p>`
       : "",
     `<p class="lede paywalled">The lesson itself &mdash; every slide, every exercise and`,
-    ` the answers &mdash; ${PLAN_LINE[m.track] || PLAN_LINE.general}`,
+    ` the answers &mdash; ${planLine(lesson ? lesson.track : m.track, lesson ? lesson.term : null)}`,
     ` Plenty of the library is free and always will be.</p>`,
   ].join("");
 
-  return html
-    .replace(/<title>[\s\S]*?<\/title>/, `<title>${title} | Forbes English</title>`)
-    .replace("<!-- LESSON:head -->", head)
-    .replace(/<!-- LESSON:intro -->[\s\S]*?<!-- \/LESSON:intro -->/,
-             `<!-- LESSON:intro -->${intro}<!-- /LESSON:intro -->`);
+  // The page also tells its own script what it is gating: the track, so the
+  // "already subscribed?" retry can recognise a one-off plan, and whether
+  // this is a mission that is the caller's but not open yet (no retry then).
+  const flags = [
+    `<meta name="fe-track" content="${escapeHtml((lesson && lesson.track) || m.track || "general")}">`,
+    notYet ? `<meta name="fe-gate" content="not-yet">` : "",
+  ].filter(Boolean).join("\n");
+
+  let out = html
+    .replace(/<title>[\s\S]*?<\/title>/, `<title>${title || "Not open yet"} | Forbes English</title>`)
+    .replace("<!-- LESSON:head -->", `${head}\n${flags}`);
+
+  if (notYet) {
+    // The caller holds this mission; its week has not come. Not a sales
+    // page: no price, no "subscribers only", just when it opens. The date is
+    // printed in UTC and the page's script re-renders it in the reader's own
+    // time zone.
+    const when = new Date(notYet.opensAt);
+    const utc = when.toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", timeZone: "UTC" });
+    const waiting = [
+      `<div class="eyebrow">Block Camp &middot; Mission ${notYet.mission}</div>`,
+      `<h1>${title || `Mission ${notYet.mission}`}</h1>`,
+      `<p class="lede">Mission ${notYet.mission} opens on <strong><time datetime="${when.toISOString()}" data-local>${utc}</time></strong>.`,
+      ` One new mission opens each week, and every mission stays open once it has.</p>`,
+    ].join("");
+    out = out
+      .replace(/<!-- LESSON:intro -->[\s\S]*?<!-- \/LESSON:intro -->/,
+               `<!-- LESSON:intro -->${waiting}<!-- /LESSON:intro -->`)
+      .replace(/<!-- GATE:offer -->[\s\S]*?<!-- \/GATE:offer -->/,
+               `<!-- GATE:offer --><div class="actions"><a class="btn" href="/block-camp.html">Back to Block Camp</a></div><!-- /GATE:offer -->`);
+    return out;
+  }
+
+  return out.replace(/<!-- LESSON:intro -->[\s\S]*?<!-- \/LESSON:intro -->/,
+                     `<!-- LESSON:intro -->${intro}<!-- /LESSON:intro -->`);
 }
 
 // ─────────────────────────────────────────────────────────────────────────
@@ -472,7 +603,8 @@ function personaliseGate(html, m, url) {
 // ─────────────────────────────────────────────────────────────────────────
 
 async function handlePaywallStatus(request, url, env, ctx) {
-  const proFiles = await getProFiles(env, ctx);
+  const catalogue = await getCatalogue(env, ctx);
+  const pro = catalogue ? [...catalogue].filter(([, l]) => l.access === "pro") : null;
   const sample = "forbes-c1-negotiation.html";
   const access = await callerAccess(request, env);
 
@@ -485,9 +617,11 @@ async function handlePaywallStatus(request, url, env, ctx) {
     hasSupabaseUrl: Boolean(env.SUPABASE_URL),
     hasAnonKey: Boolean(env.SUPABASE_ANON_KEY),
     hasServiceRoleKey: Boolean(env.SUPABASE_SERVICE_ROLE_KEY),
-    catalogueReadable: proFiles !== null,
-    proLessonCount: proFiles ? proFiles.size : null,
-    sampleLessonIsGated: proFiles ? proFiles.has(sample) : null,
+    catalogueReadable: catalogue !== null,
+    proLessonCount: pro ? pro.length : null,
+    sampleLessonIsGated: pro ? pro.some(([f]) => f === sample) : null,
+    // Block Camp lessons the weekly drip can act on (term and mission set).
+    blockCampMissionCount: catalogue ? [...catalogue.values()].filter((l) => l.track === "blockcamp" && l.term && l.mission).length : null,
     callerHasSessionCookie: Boolean(readCookie(request.headers.get("Cookie"), SESSION_COOKIE)),
     callerSubscribed: access.full,
     callerTracks: [...access.tracks],

@@ -18,27 +18,51 @@ const mod = await import('data:text/javascript;base64,' + Buffer.from(src).toStr
 const PRO = ['forbes-c1-negotiation.html', 'koolhas & Lamb.html', 'Race Day - The Falcon Racing Story (B1 F1 RPG).html', 'block-camp/last-train-home-rpg.html'];
 // Per-track pricing: lessons carry a track, and the one-off plans in
 // user_plans open their own track (2026-10-04: no longer Sherpa as well).
+// Block Camp lessons also carry a term and a mission (the weekly drip,
+// pricing go-live 2026-10-04): mission M opens M-1 whole weeks after the
+// clock starts. Mission 1 is free.
 const TRACK = {
-  'block-camp/last-train-home-rpg.html': 'blockcamp',
-  'blockcamp-demo.html': 'blockcamp',
-  'forbes-english-ielts-demo.html': 'ielts',
-  'sherpa-tensing-demo.html': 'sherpa',
+  'block-camp/last-train-home-rpg.html': ['blockcamp', 1, 11],
+  'blockcamp-demo.html':                 ['blockcamp', 1, 2],
+  'blockcamp-m3.html':                   ['blockcamp', 1, 3],
+  'blockcamp-term2.html':                ['blockcamp', 2, null],
+  'blockcamp-term2-m1.html':             ['blockcamp', 2, 1],
+  'blockcamp-t1-unnumbered.html':        ['blockcamp', 1, null],
+  'block-camp/special-rpg.html':         ['blockcamp', null, null],
+  'forbes-english-ielts-demo.html':      ['ielts'],
+  'sherpa-tensing-demo.html':            ['sherpa'],
 };
-PRO.push('blockcamp-demo.html', 'forbes-english-ielts-demo.html', 'sherpa-tensing-demo.html');
-const PAST = new Date(Date.now() - 86400000).toISOString();
-const FUTURE = new Date(Date.now() + 86400000).toISOString();
+PRO.push('blockcamp-demo.html', 'blockcamp-m3.html', 'blockcamp-term2.html', 'blockcamp-term2-m1.html',
+  'blockcamp-t1-unnumbered.html', 'block-camp/special-rpg.html',
+  'forbes-english-ielts-demo.html', 'sherpa-tensing-demo.html');
+const FREE_BC = { 'blockcamp-m1.html': ['blockcamp', 1, 1] };
+const DAY = 86400000;
+const ago = (days) => new Date(Date.now() - days * DAY).toISOString();
+const PAST = ago(1);
+const FUTURE = new Date(Date.now() + DAY).toISOString();
 // token -> [profile row, user_plans rows]. 'good-token' is the full plan.
 const USERS = {
-  'bc-token':      [{subscription_status: null}, [{product: 'blockcamp', status: 'active', ends_at: null}]],
+  // A Term 1 buyer 8 days in: Missions 1-2 open, 3 opens on day 14.
+  'bc-token':      [{id: 'u-bc', subscription_status: null}, [{product: 'blockcamp', status: 'active', ends_at: null, term: 1, starts_at: ago(8)}]],
+  // A Term 1 buyer 80 days in: everything in Term 1 open (Mission 11 needs 70).
+  'bc-old':        [{id: 'u-bco', subscription_status: null}, [{product: 'blockcamp', status: 'active', ends_at: null, term: 1, starts_at: ago(80)}]],
+  // A subscriber who has never opened Block Camp: the clock starts now.
+  'sub-new':       [{id: 'u-new', subscription_status: 'active', blockcamp_first_open: null}, []],
+  // A subscriber who started Block Camp 9 days ago and also bought Term 1
+  // today: either way in is enough.
+  'sub-and-term':  [{id: 'u-st', subscription_status: 'active', blockcamp_first_open: ago(9)},
+                    [{product: 'blockcamp', status: 'active', ends_at: null, term: 1, starts_at: ago(0)}]],
   'ielts-token':   [{subscription_status: null}, [{product: 'ielts', status: 'active', ends_at: FUTURE}]],
   'ielts-expired': [{subscription_status: null}, [{product: 'ielts', status: 'active', ends_at: PAST}]],
-  'bc-canceled':   [{subscription_status: null}, [{product: 'blockcamp', status: 'canceled', ends_at: null}]],
+  'bc-canceled':   [{subscription_status: null}, [{product: 'blockcamp', status: 'canceled', ends_at: null, term: 1, starts_at: ago(80)}]],
+  'bc-refunded':   [{subscription_status: null}, [{product: 'blockcamp', status: 'refunded', ends_at: null, term: 1, starts_at: ago(80)}]],
   'owner-token':   [{subscription_status: 'canceled', owner: true}, []],
 };
 const env = {
   SITE_URL: 'https://x.test',
   SUPABASE_URL: 'https://sb.test',
   SUPABASE_ANON_KEY: 'anon',
+  SUPABASE_SERVICE_ROLE_KEY: 'service',
   // Distinct bodies per asset. Since the gate began answering 200 (so that a
   // gated lesson can be indexed at all), the status alone no longer tells a
   // gate from a lesson — the body has to, or these tests pass vacuously.
@@ -60,17 +84,28 @@ globalThis.fetch = async (url, opts) => {
   const u = String(url);
   const auth = (opts?.headers?.Authorization) || '';
   const user = USERS[auth.replace('Bearer ', '')];
-  if (u.includes('/rest/v1/lessons')) return new Response(JSON.stringify(PRO.map(f => ({file:f, track: TRACK[f] || 'general'}))), {status:200});
+  if (u.includes('/rest/v1/lessons')) {
+    const row = (f, access, [track, term, mission] = []) => ({ file: f, track: track || 'general', access, term: term ?? null, mission: mission ?? null });
+    return new Response(JSON.stringify([
+      ...PRO.map((f) => row(f, 'pro', TRACK[f])),
+      ...Object.entries(FREE_BC).map(([f, t]) => row(f, 'free', t)),
+    ]), {status:200});
+  }
+  if (u.includes('/rest/v1/profiles') && opts?.method === 'PATCH') {
+    patched.push({ url: u, body: JSON.parse(opts.body), auth: opts.headers?.Authorization });
+    return new Response(null, {status:204});
+  }
   // The full-plan user's user_plans read is left to throw (below): a failed
   // plans read must never cost a full subscriber their access.
   if (u.includes('/rest/v1/user_plans') && user) return new Response(JSON.stringify(user[1]), {status:200});
   if (u.includes('/rest/v1/profiles')) {
     if (user) return new Response(JSON.stringify([user[0]]), {status:200});
-    if (auth === `Bearer ${activeToken}`) return new Response(JSON.stringify([{subscription_status:'active'}]), {status:200});
+    if (auth === `Bearer ${activeToken}`) return new Response(JSON.stringify([{id: 'u-good', subscription_status:'active', blockcamp_first_open: ago(100)}]), {status:200});
     return new Response('{"message":"JWT expired"}', {status:401});
   }
   throw new Error('unexpected fetch ' + u);
 };
+const patched = [];
 const store = new Map();
 globalThis.caches = { default: {
   async match(k){ const v = store.get(k.url); return v ? new Response(v) : undefined; },
@@ -110,10 +145,24 @@ const cases = [
   ['/sb-client.js',               null, 'lesson', 'script'],
   // Tracks. Full covers all, Sherpa included; since the pricing go-live
   // (2026-10-04) each one-off plan opens its own track and nothing else.
-  ['/blockcamp-demo.html',            'fe_at=good-token',    'lesson', 'full plan opens Block Camp'],
+  ['/blockcamp-demo.html',            'fe_at=good-token',    'lesson', 'full plan opens Block Camp (clock 100 days old)'],
   ['/forbes-english-ielts-demo.html', 'fe_at=good-token',    'lesson', 'full plan opens IELTS'],
-  ['/blockcamp-demo.html',            'fe_at=bc-token',      'lesson', 'Block Camp plan opens Block Camp'],
-  ['/block-camp/last-train-home-rpg', 'fe_at=bc-token',      'lesson', 'Block Camp plan opens a Block Camp RPG'],
+  // The weekly drip. 'notyet' = the "Mission N opens on ..." page.
+  ['/blockcamp-demo.html',            'fe_at=bc-token',      'lesson', 'Term 1, day 8: Mission 2 open'],
+  ['/blockcamp-m3.html',              'fe_at=bc-token',      'notyet', 'Term 1, day 8: Mission 3 not yet (opens day 14)'],
+  ['/block-camp/last-train-home-rpg', 'fe_at=bc-token',      'notyet', 'Term 1, day 8: Mission 11 RPG not yet'],
+  ['/block-camp/last-train-home-rpg', 'fe_at=bc-old',        'lesson', 'Term 1, day 80: Mission 11 RPG open'],
+  ['/blockcamp-term2.html',           'fe_at=bc-old',        'gate',   'Term 1 buyer does NOT get a Term 2 lesson'],
+  ['/block-camp/special-rpg.html',    'fe_at=bc-old',        'gate',   'Term 1 buyer does NOT get an untagged Block Camp lesson'],
+  ['/blockcamp-term2-m1.html',        'fe_at=bc-old',        'gate',   'Term 1 buyer does NOT get Term 2 Mission 1, numbered or not'],
+  ['/blockcamp-t1-unnumbered.html',   'fe_at=bc-old',        'gate',   'Term 1 buyer does NOT get a Term 1 lesson with no mission'],
+  ['/blockcamp-m1.html',              null,                  'lesson', 'Mission 1 is free to everyone'],
+  ['/blockcamp-demo.html',            'fe_at=sub-new',       'notyet', 'subscriber, first Block Camp visit: Mission 2 not yet'],
+  ['/blockcamp-term2.html',           'fe_at=sub-new',       'lesson', 'subscriber: an unnumbered lesson is not dripped'],
+  ['/blockcamp-demo.html',            'fe_at=sub-and-term',  'lesson', 'subscriber clock (day 9) opens Mission 2 although the term clock (day 0) does not'],
+  ['/blockcamp-m3.html',              'fe_at=sub-and-term',  'notyet', 'Mission 3 at day 9: closed by both clocks'],
+  ['/blockcamp-demo.html',            'fe_at=bc-refunded',   'gate',   'refunded Term 1 is closed'],
+  ['/blockcamp-m3.html',              'fe_at=owner-token',   'lesson', 'owner is never dripped'],
   ['/sherpa-tensing-demo.html',       'fe_at=bc-token',      'gate',   'Block Camp plan does NOT open Sherpa (full plan only)'],
   ['/forbes-english-ielts-demo.html', 'fe_at=bc-token',      'gate',   'Block Camp plan does NOT open IELTS'],
   ['/forbes-c1-negotiation.html',     'fe_at=bc-token',      'gate',   'Block Camp plan does NOT open general'],
@@ -130,11 +179,41 @@ let pass = 0, fail = 0;
 for (const [path, cookie, want, why] of cases) {
   const res = await get(path, cookie);
   const body = await res.clone().text();
-  const kind = body.includes('GATE PAGE') || body.includes('Subscribers only') ? 'gate' : 'lesson';
+  const kind = body.includes('name="fe-gate" content="not-yet"') ? 'notyet'
+    : body.includes('GATE PAGE') || body.includes('Subscribers only') ? 'gate' : 'lesson';
   // A gate must answer 200 or it can never be indexed; see locked() in src.
   const ok = kind === want && res.status === 200;
   ok ? pass++ : fail++;
   console.log(`${ok ? ' PASS' : ' FAIL'}  ${kind.padEnd(6)} ${String(res.status).padEnd(4)} (want ${want})  ${path.slice(0,46).padEnd(48)} ${why}`);
+}
+
+// A subscriber's first Block Camp visit starts their clock: one PATCH, with
+// the service key, guarded by is.null; a free Mission 1 visit counts.
+{
+  const writes = patched.filter((p) => p.url.includes('id=eq.u-new'));
+  const ok = writes.length >= 1 && writes.every((p) => p.url.includes('blockcamp_first_open=is.null') &&
+    p.auth === 'Bearer service' && typeof p.body.blockcamp_first_open === 'string') &&
+    !patched.some((p) => /u-good|u-st|u-bc|owner/.test(p.url));
+  ok ? pass++ : fail++;
+  console.log(`${ok ? ' PASS' : ' FAIL'}  only a subscriber without a clock gets one, via the service key, guarded by is.null`);
+  patched.length = 0;
+  await get('/blockcamp-m1.html', 'fe_at=sub-new');
+  const free = patched.some((p) => p.url.includes('id=eq.u-new'));
+  free ? pass++ : fail++;
+  console.log(`${free ? ' PASS' : ' FAIL'}  opening the free Mission 1 starts a subscriber's clock too`);
+}
+
+// The not-yet page says when, in a machine-readable time the page localises.
+{
+  const res = await get('/blockcamp-m3.html', 'fe_at=bc-token');
+  const body = await res.text();
+  const m = body.match(/<time datetime="([^"]+)" data-local>/);
+  const due = m ? Date.parse(m[1]) : NaN;
+  const want = Date.parse(USERS['bc-token'][1][0].starts_at) + 14 * DAY;
+  const ok = Math.abs(due - want) < 1000 && body.includes('Mission 3 opens on') && !body.includes('GATE PAGE') &&
+    (res.headers.get('Cache-Control') || '').includes('no-store');
+  ok ? pass++ : fail++;
+  console.log(`${ok ? ' PASS' : ' FAIL'}  not-yet page: "Mission 3 opens on" the right date (${m && m[1]}), not cached`);
 }
 
 // The gate page must carry THIS lesson's title and description, not a generic
