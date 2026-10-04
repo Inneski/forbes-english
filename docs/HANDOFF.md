@@ -47,6 +47,18 @@ unrelated lesson fix. `fcbd7c21` put `pricing.html` back to its old version
 on `main`. The schema SQL, this entry and the `seo.py` tweak stayed in. To
 go live: `git show a4c60285:pricing.html > pricing.html`.
 
+**Since then (4 Oct, pricing session):** the pricing page now lives on
+branch `pricing-go-live` (worktree `../FORBES-pricing`) so no other
+session's push can carry it; go live by merging that branch, not with the
+`git show` above. Innes decided a one-off purchase must not expire:
+**Block Camp Term 1 is yours to keep** (no 16-week end; missions still
+unlock one a week). The webhook writes `ends_at = null` for blockcamp;
+IELTS stays 90 days. Stripe: live account `acct_1U2Ej70R7wvAnqir`; Stripe
+Tax is NOT set up and flags thresholds in Germany and the UAE; the account
+has Managed Payments (Stripe as seller of record, VAT "managed for you"),
+which the Worker currently disables per checkout. Innes is creating the
+four products by hand (session clicks in live Stripe were refused).
+
 - **Step 1, schema: APPLIED** (Supabase migration `pricing_go_live_schema`,
   file `deploy/schema-pricing.sql`). `lessons.term/mission`,
   `user_plans.term/starts_at/marking_credits`, `profiles.blockcamp_first_open`;
