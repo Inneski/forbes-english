@@ -138,6 +138,22 @@ Step 6 (pricing page) is current with steps 4-5 on the branch.
 skill. Still on the copy sweep: the site nav's "Go Pro" button (hand-kept in
 ielts.html's nav and copied by the hub builders) and the open naming question,
 Pro vs "Forbes English full".
+**Step 8 (account page) on the branch** (`e173fcfc`): one card per thing held
+(Block Camp week and missions, IELTS, essays left + EUR 49 button, full plan
+last when the reader has a one-off); waits for the exact purchase after
+checkout (`?cs=`). Test: `deploy/test-account.cjs` (playwright).
+**Essay credits are counted down by hand.** The page tells buyers to email
+essays to forbes@goodtimebook.com; after marking one, run (with their email):
+
+```sql
+update public.user_plans set marking_credits = marking_credits - 1
+where id = (select p.id from public.user_plans p join auth.users u on u.id = p.user_id
+            where u.email = 'buyer@example.com' and p.status = 'active'
+              and p.marking_credits > 0
+            order by p.created_at limit 1);           -- expect UPDATE 1
+```
+
+An upload form that spends a credit itself would replace this; not built.
 
 - **Step 1, schema: APPLIED** (Supabase migration `pricing_go_live_schema`,
   file `deploy/schema-pricing.sql`). `lessons.term/mission`,
