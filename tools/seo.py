@@ -92,9 +92,12 @@ PAGES = {
                      'Every Forbes English lesson, by level and topic: '
                      'A1 to C2 grammar, vocabulary, exam prep and '
                      'business English.', 0.9),
+    # The pricing go-live's description ("Block Camp Term 1, IELTS with
+    # essay marking, ...") is on branch pricing-go-live with the new page;
+    # main keeps the old page's until that merges.
     'pricing.html': ('Plans and pricing',
-                     'Block Camp Term 1, IELTS with essay marking, or the '
-                     'whole library by the month — and which lessons are free.', 0.7),
+                     'What a Forbes English subscription costs, and which '
+                     'lessons are free forever.', 0.7),
     'ielts.html': ('IELTS Academic',
                    'IELTS Academic in five routes — Writing, Speaking, '
                    'Listening, Reading, and the vocabulary that feeds Speaking '
