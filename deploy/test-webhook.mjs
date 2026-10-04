@@ -209,6 +209,8 @@ reset();
     s['metadata[product]'] === 'blockcamp' && s['metadata[supabase_user_id]'] === 'user-1',
     'Block Camp: one-off, Managed Payments on, FOUNDER applied, user and product in metadata');
   check(s.cancel_url === 'https://x.test/pricing.html?checkout=cancelled', 'cancel returns to pricing.html');
+  check(s.success_url === 'https://x.test/account.html?checkout=success&cs={CHECKOUT_SESSION_ID}',
+    'success returns to the account page with the session id for Stripe to fill in');
   for (const [product, price] of [['ielts', 'price_ielts'], ['ielts_marking', 'price_im'], ['marking', 'price_mk']]) {
     calls = [];
     await checkout({ product });

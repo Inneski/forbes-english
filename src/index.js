@@ -866,7 +866,9 @@ async function createProductCheckout(env, userId, userEmail, product) {
     customer_email: userEmail,
     "metadata[supabase_user_id]": userId,
     "metadata[product]": product,
-    success_url: `${env.SITE_URL}/account.html?checkout=success`,
+    // Stripe fills in the session id: account.html waits for that very
+    // purchase to be recorded (the webhook can land a moment after the buyer).
+    success_url: `${env.SITE_URL}/account.html?checkout=success&cs={CHECKOUT_SESSION_ID}`,
     cancel_url: `${env.SITE_URL}/pricing.html?checkout=cancelled`,
   });
 
