@@ -1292,7 +1292,7 @@ function supabaseHeaders(env) {
  * retry within 24 hours a no-op at Resend's end, on top of our own claim.
  * Returns true when Resend accepted it.
  */
-async function sendMail(env, { to, subject, text, html, key }) {
+async function sendMail(env, { to, subject, text, html, key, headers }) {
   if (!env.RESEND_API_KEY || !env.MAIL_FROM) return false;
   try {
     const res = await fetch("https://api.resend.com/emails", {
@@ -1304,69 +1304,100 @@ async function sendMail(env, { to, subject, text, html, key }) {
       },
       body: JSON.stringify({
         from: env.MAIL_FROM, to: [to], subject, text, ...(html ? { html } : {}),
-        reply_to: env.MAIL_REPLY_TO || "forbes@goodtimebook.com",
+        ...(headers ? { headers } : {}),
+        reply_to: env.MAIL_REPLY_TO || "info@forbesenglish.com",
       }),
     });
-    if (!res.ok) console.error(`email to ${to} refused by Resend: ${res.status} ${await res.text().catch(() => "")}`);
+    // Logged by key, never by address: the logs are not where readers'
+    // email addresses should end up.
+    if (!res.ok) console.error(`email ${key || "(unkeyed)"} refused by Resend: ${res.status} ${await res.text().catch(() => "")}`);
     return res.ok;
   } catch (err) {
-    console.error(`email to ${to} failed: ${err && err.message}`);
+    console.error(`email ${key || "(unkeyed)"} failed: ${err && err.message}`);
     return false;
   }
 }
 
 /**
- * Once a day (the cron in wrangler.toml): every Block Camp reader whose
+ * Every hour (the cron in wrangler.toml): every Block Camp reader whose
  * next mission opened in the last 48 hours gets one email saying so, with
  * the deck and the quest and a link. Term 1 buyers count from their
- * payment, subscribers from their first Block Camp visit, exactly as the
- * gate does. Mission 1 opens on purchase and is not mailed; a mission that
- * opened longer ago is never mailed late (a missed day, or a subscriber
- * whose clock was set back at go-live, gets no catch-up flood). The owner,
- * and anyone with profiles.blockcamp_emails = false, get none.
+ * payment, subscribers from their first Block Camp visit, and the earlier
+ * clock wins, exactly as the gate does. Mission 1 opens on purchase and is
+ * not mailed; a mission that opened longer ago is never mailed late (no
+ * catch-up flood for a subscriber whose clock was set back at go-live). The
+ * owner, and anyone with profiles.blockcamp_emails = false, get none.
  *
- * Each email is claimed in blockcamp_mission_emails before it is sent, so
- * two runs cannot both send it; a send that fails gives the claim back, and
- * the next run tries again while the 48 hours last.
+ * Exactly once: each email is claimed in blockcamp_mission_emails
+ * (claimed_at) before it is sent and marked sent (sent_at) only when Resend
+ * accepts it. A claim left unsent for ten minutes -- a refused send, a lost
+ * reply, a run cut short -- is taken again by a later run. Runs are hourly,
+ * so a retry falls inside the 24 hours Resend keeps its idempotency key,
+ * and an email Resend did take is not delivered twice.
+ *
+ * Every Supabase and Resend call counts against a per-run budget
+ * (EMAIL_SUBREQUEST_BUDGET, default 40: under the Workers Free plan's 50
+ * subrequests). A run that reaches it stops cleanly and the next run
+ * carries on; set the budget higher on the Paid plan.
  */
 const MISSION_EMAIL_WINDOW_MS = 48 * 3600000;
+const STALE_CLAIM_MS = 10 * 60000;
+const PAGE = 1000;
 
 async function sendMissionEmails(env, now = Date.now()) {
-  const summary = { sent: 0, failed: 0, skipped: 0 };
+  const summary = { sent: 0, failed: 0, skipped: 0, deferred: 0 };
   if (!env.RESEND_API_KEY || !env.MAIL_FROM || !env.SUPABASE_SERVICE_ROLE_KEY) {
     console.log("mission emails: not configured (RESEND_API_KEY, MAIL_FROM, SUPABASE_SERVICE_ROLE_KEY)");
     return { ...summary, off: true };
   }
+  const budget = Number(env.EMAIL_SUBREQUEST_BUDGET) || 40;
+  let used = 0;
+  const call = (url, init) => { used++; return fetch(url, init); };
   const svc = { headers: supabaseHeaders(env) };
+  const anon = { headers: { apikey: env.SUPABASE_ANON_KEY, Authorization: `Bearer ${env.SUPABASE_ANON_KEY}` } };
   const read = async (path, init = svc) => {
-    const res = await fetch(`${env.SUPABASE_URL}/rest/v1/${path}`, init);
+    const res = await call(`${env.SUPABASE_URL}/rest/v1/${path}`, init);
     if (!res.ok) throw new Error(`${path.split("?")[0]} ${res.status}`);
     return res.json();
   };
+  // A list read that cannot be cut short by PostgREST's row cap.
+  const readAll = async (path, order, init = svc) => {
+    const out = [];
+    for (let off = 0; ; off += PAGE) {
+      const page = await read(`${path}&order=${order}&limit=${PAGE}&offset=${off}`, init);
+      out.push(...page);
+      if (page.length < PAGE) return out;
+    }
+  };
+  const t = (ms) => new Date(ms).toISOString();
 
   let plans, subs, lessons;
   try {
     [plans, subs, lessons] = await Promise.all([
-      read("user_plans?select=user_id,term,starts_at&product=eq.blockcamp&status=in.(active,trialing)"),
-      read("profiles?select=id&blockcamp_first_open=not.is.null&subscription_status=in.(active,trialing)"),
-      read("lessons?select=file,title,mission&track=eq.blockcamp&term=eq.1&mission=not.is.null",
-        { headers: { apikey: env.SUPABASE_ANON_KEY, Authorization: `Bearer ${env.SUPABASE_ANON_KEY}` } }),
+      readAll("user_plans?select=user_id,term,starts_at&product=eq.blockcamp&status=in.(active,trialing)", "user_id,starts_at"),
+      readAll("profiles?select=id&blockcamp_first_open=not.is.null&subscription_status=in.(active,trialing)", "id"),
+      read("lessons?select=file,title,mission&track=eq.blockcamp&term=eq.1&mission=not.is.null", anon),
     ]);
   } catch (err) {
     console.error(`mission emails: could not read the catalogue or the plans: ${err.message}`);
     return { ...summary, error: true };
   }
 
-  const ids = [...new Set(plans.map((p) => p.user_id).concat(subs.map((s) => s.id)))];
-  if (!ids.length) return summary;
-  let profiles;
-  try {
-    profiles = await read(`profiles?select=id,email,owner,subscription_status,blockcamp_first_open,blockcamp_emails&id=in.(${ids.map(encodeURIComponent).join(",")})`);
-  } catch (err) {
-    console.error(`mission emails: could not read the profiles: ${err.message}`);
-    return { ...summary, error: true };
+  // The profiles, a hundred ids a request: one URL with every reader in it
+  // stops working at a few hundred (measured: refused at ~680 ids).
+  const ids = [...new Set(plans.map((x) => x.user_id).concat(subs.map((s) => s.id)))];
+  const profiles = [];
+  for (let k = 0; k < ids.length; k += 100) {
+    try {
+      profiles.push(...await read(`profiles?select=id,email,owner,subscription_status,blockcamp_first_open,blockcamp_emails` +
+        `&id=in.(${ids.slice(k, k + 100).map(encodeURIComponent).join(",")})`));
+    } catch (err) {
+      console.error(`mission emails: profiles ${k}-${k + 99} unreadable, skipped this run: ${err.message}`);
+    }
   }
 
+  // Who is due: no calls spent yet.
+  const due = [];
   for (const p of profiles) {
     if (p.owner || p.blockcamp_emails === false || !p.email) { summary.skipped++; continue; }
     const starts = plans.filter((x) => x.user_id === p.id && (Number(x.term) || 1) === 1)
@@ -1374,32 +1405,61 @@ async function sendMissionEmails(env, now = Date.now()) {
     if (ACTIVE_STATUSES.has(p.subscription_status) && p.blockcamp_first_open) starts.push(Date.parse(p.blockcamp_first_open));
     const start = Math.min(...starts.filter(Number.isFinite));
     if (!Number.isFinite(start)) { summary.skipped++; continue; }
-
     const mission = Math.floor((now - start) / WEEK_MS) + 1;
     const opensAt = start + (mission - 1) * WEEK_MS;
     if (mission < 2 || mission > 12 || now - opensAt > MISSION_EMAIL_WINDOW_MS) { summary.skipped++; continue; }
+    due.push({ p, mission, opensAt });
+  }
 
-    // Claim it. A duplicate means another run already did.
-    const claim = await fetch(
-      `${env.SUPABASE_URL}/rest/v1/blockcamp_mission_emails?on_conflict=user_id,term,mission`,
-      { method: "POST",
-        headers: { ...supabaseHeaders(env), "Prefer": "return=representation,resolution=ignore-duplicates" },
-        body: JSON.stringify({ user_id: p.id, term: 1, mission }) }
-    ).then(async (r) => (r.ok ? (await r.json()).length > 0 : null)).catch(() => null);
-    if (claim === false) { summary.skipped++; continue; }
-    if (claim === null) { summary.failed++; console.error(`mission emails: could not claim ${p.id} mission ${mission}`); continue; }
+  // What is already claimed for them, a hundred readers a request, so a
+  // reader mailed earlier in the 48 hours costs this run nothing.
+  const known = new Map();
+  for (let k = 0; k < due.length; k += 100) {
+    if (used >= budget) break;
+    try {
+      const rows = await read(`blockcamp_mission_emails?select=user_id,mission,sent_at,claimed_at&term=eq.1` +
+        `&user_id=in.(${due.slice(k, k + 100).map((d) => encodeURIComponent(d.p.id)).join(",")})`);
+      for (const r of rows) known.set(`${r.user_id}/${r.mission}`, r);
+    } catch (err) {
+      console.error(`mission emails: claims ${k}-${k + 99} unreadable: ${err.message}`);
+    }
+  }
+
+  for (const { p, mission, opensAt } of due) {
+    const had = known.get(`${p.id}/${mission}`);
+    if (had && had.sent_at) { summary.skipped++; continue; }
+    // Claimed and not sent: another run is on it, unless the claim is stale.
+    const stale = had && Date.parse(had.claimed_at) < now - STALE_CLAIM_MS;
+    if (had && !stale) { summary.skipped++; continue; }
+
+    // Claim (1), send (1), mark sent (1): stop before the budget.
+    if (used + 3 > budget) { summary.deferred++; continue; }
+    const row = `user_id=eq.${encodeURIComponent(p.id)}&term=eq.1&mission=eq.${mission}`;
+    const claimed = await (had
+      // Take the stale claim over, only if it is still unsent and stale.
+      ? call(`${env.SUPABASE_URL}/rest/v1/blockcamp_mission_emails?${row}` +
+          `&sent_at=is.null&claimed_at=lt.${encodeURIComponent(t(now - STALE_CLAIM_MS))}`,
+          { method: "PATCH", headers: { ...supabaseHeaders(env), "Prefer": "return=representation" },
+            body: JSON.stringify({ claimed_at: t(now) }) })
+      : call(`${env.SUPABASE_URL}/rest/v1/blockcamp_mission_emails?on_conflict=user_id,term,mission`,
+          { method: "POST", headers: { ...supabaseHeaders(env), "Prefer": "return=representation,resolution=ignore-duplicates" },
+            body: JSON.stringify({ user_id: p.id, term: 1, mission, claimed_at: t(now) }) }))
+      .then(async (r) => (r.ok ? (await r.json()).length > 0 : null)).catch(() => null);
+    if (claimed === false) { summary.skipped++; continue; }   // another run got there first
+    if (claimed === null) { summary.failed++; console.error(`mission emails: could not claim ${p.id} mission ${mission}`); continue; }
 
     const mail = missionEmail(env, mission, lessons, opensAt);
-    const ok = await sendMail(env, { to: p.email, ...mail, key: `mission-${p.id}-1-${mission}` });
-    if (ok) { summary.sent++; continue; }
-    summary.failed++;
-    // Give the claim back so the next run can try again.
-    await fetch(
-      `${env.SUPABASE_URL}/rest/v1/blockcamp_mission_emails?user_id=eq.${encodeURIComponent(p.id)}&term=eq.1&mission=eq.${mission}`,
-      { method: "DELETE", headers: supabaseHeaders(env) }
-    ).catch(() => {});
+    const optOut = env.MAIL_REPLY_TO || "info@forbesenglish.com";
+    used++;
+    const ok = await sendMail(env, { to: p.email, ...mail, key: `mission-${p.id}-1-${mission}`,
+      headers: { "List-Unsubscribe": `<mailto:${optOut}?subject=Stop%20Block%20Camp%20emails>` } });
+    if (!ok) { summary.failed++; continue; }   // the claim goes stale and a later run retries
+    summary.sent++;
+    await call(`${env.SUPABASE_URL}/rest/v1/blockcamp_mission_emails?${row}`,
+      { method: "PATCH", headers: supabaseHeaders(env), body: JSON.stringify({ sent_at: t(now) }) })
+      .catch(() => console.error(`mission emails: sent but not marked: ${p.id} mission ${mission}`));
   }
-  console.log(`mission emails: ${JSON.stringify(summary)}`);
+  console.log(`mission emails: ${JSON.stringify(summary)} (${used} of ${budget} calls)`);
   return summary;
 }
 
@@ -1411,8 +1471,9 @@ function missionEmail(env, mission, lessons, opensAt) {
   const clean = (t) => String(t || "").replace(/^Block Camp\s*[—–-]\s*/, "");
   const link = `${env.SITE_URL}/${deck ? deck.file : "block-camp.html"}`;
   const next = mission < 12
-    ? `Mission ${mission + 1} opens on ${new Date(opensAt + WEEK_MS).toLocaleDateString("en-GB",
-        { weekday: "long", day: "numeric", month: "long", timeZone: "UTC" })}.`
+    ? `Mission ${mission + 1} opens on ${new Date(opensAt + WEEK_MS).toLocaleString("en-GB",
+        { weekday: "long", day: "numeric", month: "long", hour: "2-digit", minute: "2-digit",
+          timeZone: "UTC", timeZoneName: "short" })}.`
     : "That is the last mission of Term 1: every mission is open now, and yours to keep.";
   const lines = [
     `Mission ${mission} of Block Camp Term 1 is open.`,

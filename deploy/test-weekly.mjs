@@ -18,8 +18,8 @@ const at = (days) => new Date(NOW - days * DAY).toISOString();
 const env = {
   SITE_URL: 'https://forbesenglish.com', SUPABASE_URL: 'https://sb.test',
   SUPABASE_ANON_KEY: 'anon', SUPABASE_SERVICE_ROLE_KEY: 'service',
-  RESEND_API_KEY: 're_test', MAIL_FROM: 'Forbes English <missions@forbesenglish.com>',
-  MAIL_REPLY_TO: 'forbes@goodtimebook.com', MARKING_MAIL_TO: 'forbes@goodtimebook.com',
+  RESEND_API_KEY: 're_test', MAIL_FROM: 'Forbes English <info@forbesenglish.com>',
+  MAIL_REPLY_TO: 'info@forbesenglish.com', MARKING_MAIL_TO: 'info@forbesenglish.com',
 };
 const LESSONS = [];
 for (let m = 1; m <= 12; m++) {
@@ -29,8 +29,14 @@ for (let m = 1; m <= 12; m++) {
 
 let PLANS, PROFILES, claims, mails, resendFails, readFail, calls;
 function reset() {
-  PLANS = []; PROFILES = []; claims = new Set(); mails = []; resendFails = 0; readFail = false; calls = [];
+  PLANS = []; PROFILES = []; claims = new Map(); mails = []; resendFails = 0; readFail = false; calls = [];
 }
+// PostgREST's paging, so a read that forgot it would be cut off at 1000.
+const page = (rows, u) => {
+  const q = new URL(u.replace(/ /g, '%20')).searchParams;
+  const off = Number(q.get('offset') || 0), lim = Math.min(Number(q.get('limit') || 1000), 1000);
+  return rows.slice(off, off + lim);
+};
 const profile = (id, extra = {}) => ({ id, email: `${id}@example.com`, owner: false, subscription_status: 'inactive',
   blockcamp_first_open: null, blockcamp_emails: true, ...extra });
 
@@ -45,26 +51,39 @@ globalThis.fetch = async (url, opts = {}) => {
     return new Response('{"id":"e1"}', { status: 200 });
   }
   if (readFail && method === 'GET') return new Response('{}', { status: 500 });
-  if (u.startsWith('https://sb.test/rest/v1/user_plans')) return new Response(JSON.stringify(PLANS.map(({ user_id, term, starts_at }) => ({ user_id, term, starts_at }))));
+  if (u.startsWith('https://sb.test/rest/v1/user_plans')) return new Response(JSON.stringify(page(PLANS.map(({ user_id, term, starts_at }) => ({ user_id, term, starts_at })), u)));
   if (u.startsWith('https://sb.test/rest/v1/profiles?select=id&')) {
-    return new Response(JSON.stringify(PROFILES.filter((p) => p.blockcamp_first_open && ['active', 'trialing'].includes(p.subscription_status)).map((p) => ({ id: p.id }))));
+    return new Response(JSON.stringify(page(PROFILES.filter((p) => p.blockcamp_first_open && ['active', 'trialing'].includes(p.subscription_status)).map((p) => ({ id: p.id })), u)));
   }
   if (u.startsWith('https://sb.test/rest/v1/profiles?select=id,email')) {
     const ids = u.match(/id=in\.\(([^)]*)\)/)[1].split(',');
+    if (ids.length > 100) return new Response('{"message":"URL too long"}', { status: 400 });
     return new Response(JSON.stringify(PROFILES.filter((p) => ids.includes(p.id))));
   }
   if (u.startsWith('https://sb.test/rest/v1/lessons')) return new Response(JSON.stringify(LESSONS));
+  if (u.startsWith('https://sb.test/rest/v1/blockcamp_mission_emails') && method === 'GET') {
+    const ids = u.match(/user_id=in\.\(([^)]*)\)/)[1].split(',');
+    if (ids.length > 100) return new Response('{"message":"URL too long"}', { status: 400 });
+    const rows = [...claims].map(([k, v]) => { const [user_id, term, mission] = k.split('/'); return { user_id, mission: Number(mission), ...v }; })
+      .filter((r) => ids.includes(r.user_id));
+    return new Response(JSON.stringify(rows));
+  }
   if (u.startsWith('https://sb.test/rest/v1/blockcamp_mission_emails') && method === 'POST') {
     const row = JSON.parse(opts.body);
     const k = `${row.user_id}/${row.term}/${row.mission}`;
     if (claims.has(k)) return new Response('[]', { status: 201 });
-    claims.add(k);
+    claims.set(k, { claimed_at: row.claimed_at, sent_at: null });
     return new Response(JSON.stringify([row]), { status: 201 });
   }
-  if (u.startsWith('https://sb.test/rest/v1/blockcamp_mission_emails') && method === 'DELETE') {
+  if (u.startsWith('https://sb.test/rest/v1/blockcamp_mission_emails') && method === 'PATCH') {
     const m = u.match(/user_id=eq\.([^&]+)&term=eq\.(\d+)&mission=eq\.(\d+)/);
-    claims.delete(`${m[1]}/${m[2]}/${m[3]}`);
-    return new Response(null, { status: 204 });
+    const k = `${m[1]}/${m[2]}/${m[3]}`;
+    const row = claims.get(k);
+    const body = JSON.parse(opts.body);
+    const lt = (u.match(/claimed_at=lt\.([^&]+)/) || [])[1];
+    const ok = row && (!u.includes('sent_at=is.null') || row.sent_at === null) && (!lt || Date.parse(row.claimed_at) < Date.parse(lt));
+    if (ok) Object.assign(row, body);
+    return new Response(JSON.stringify(ok ? [row] : []), { status: 200 });
   }
   throw new Error('unexpected fetch ' + method + ' ' + u);
 };
@@ -90,13 +109,17 @@ await run();
 {
   const m = mails[0];
   check(mails.length === 1 && m.to[0] === 'buyer@example.com' && m.subject === 'Mission 4 is open — Block Camp' &&
-    m.from === env.MAIL_FROM && m.reply_to === 'forbes@goodtimebook.com' && m.auth === 'Bearer re_test',
+    m.from === env.MAIL_FROM && m.reply_to === 'info@forbesenglish.com' && m.auth === 'Bearer re_test',
     'Term 1 buyer, Mission 4 opened 12h ago: one email, from MAIL_FROM, replies to the site address');
   check(/Deck: Deck 4/.test(m.text) && !/Quest:/.test(m.text) && /https:\/\/forbesenglish\.com\/blockcamp-m4\.html/.test(m.text) &&
     /Missions 1 to 4 are open now\. Mission 5 opens on /.test(m.text) && /To stop these emails, reply/.test(m.text) &&
     /href="https:\/\/forbesenglish\.com\/blockcamp-m4\.html"/.test(m.html),
     'the email names the deck (Mission 4 has no quest), links to it, says when the next one opens, and how to stop');
-  check(m.key === 'mission-buyer-1-4' && claims.has('buyer/1/4'), 'claimed before sending, with an idempotency key');
+  check(m.key === 'mission-buyer-1-4' && claims.get('buyer/1/4') && claims.get('buyer/1/4').sent_at,
+    'claimed before sending, marked sent after, with an idempotency key');
+  check(/^<mailto:info@forbesenglish\.com\?subject=Stop%20Block%20Camp%20emails>$/.test((m.headers || {})['List-Unsubscribe'] || ''),
+    'a List-Unsubscribe header points at the reply address');
+  check(/Mission 5 opens on \w+day \d+ \w+ at \d\d:\d\d UTC\./.test(m.text), 'the next opening says its time, in UTC');
   await run(NOW + 3600000);
   check(mails.length === 1, 'the next run the same day sends nothing more');
 }
@@ -140,9 +163,32 @@ PROFILES = [profile('retry')];
 PLANS = [{ user_id: 'retry', term: 1, starts_at: at(7.2) }];
 resendFails = 1;
 await run();
-check(mails.length === 0 && !claims.has('retry/1/2'), 'Resend refuses: nothing sent, claim given back');
-await run(NOW + DAY / 2);
-check(mails.length === 1 && claims.has('retry/1/2'), 'the next run sends it');
+check(mails.length === 0 && claims.get('retry/1/2') && claims.get('retry/1/2').sent_at === null,
+  'Resend refuses: nothing sent, the claim stays unsent');
+await run(NOW + 5 * 60000);
+check(mails.length === 0, 'a run five minutes later leaves a fresh claim alone (another run may be sending)');
+await run(NOW + 3600000);
+check(mails.length === 1 && claims.get('retry/1/2').sent_at, 'the next hourly run takes the stale claim and sends it');
+
+// Many readers: the profiles are read a hundred at a time, plans past the
+// 1000-row cap are paged in, and the per-run budget defers the rest.
+reset();
+for (let k = 0; k < 1100; k++) {
+  const id = `r${String(k).padStart(4, '0')}`;
+  PROFILES.push(profile(id));
+  PLANS.push({ user_id: id, term: 1, starts_at: k < 1099 ? at(32) : at(7.2) });   // only the last is due
+}
+await run(NOW, { ...env, EMAIL_SUBREQUEST_BUDGET: '1000' });
+check(mails.length === 1 && mails[0].to[0] === 'r1099@example.com',
+  '1100 readers: every one read (in pages and in chunks of 100), the one due is mailed');
+reset();
+for (let k = 0; k < 30; k++) { PROFILES.push(profile(`d${k}`)); PLANS.push({ user_id: `d${k}`, term: 1, starts_at: at(7.2) }); }
+await run();
+const first = mails.length;
+await run(NOW + 3600000);
+const second = mails.length - first;
+check(first > 0 && first < 30 && second >= first && logs.some((l) => /"deferred":\d+/.test(l)),
+  `the default budget stops a run cleanly (${first} of 30); the next hour carries on at the same pace (${second} more), the ones already mailed costing nothing`);
 
 // Off, or blind: nothing sent, nothing claimed.
 reset();
@@ -152,6 +198,7 @@ check(mails.length === 0 && calls.length === 0 && logs.some((l) => /not configur
 readFail = true;
 await run();
 check(mails.length === 0 && claims.size === 0, 'Supabase unreadable: nothing sent, nothing claimed');
+check(!logs.some((l) => /@example\.com/.test(l)), 'no reader\'s email address appears in the logs');
 
 // The marking inbox goes through Resend too.
 {
@@ -172,7 +219,7 @@ check(mails.length === 0 && claims.size === 0, 'Supabase unreadable: nothing sen
   const res = await mod.default.fetch(new Request('https://x.test/api/stripe-webhook', { method: 'POST', body: payload,
     headers: { 'stripe-signature': `t=${t},v1=${sig}` } }), { ...env, STRIPE_WEBHOOK_SECRET: 'whsec', STRIPE_SECRET_KEY: 'sk' }, { waitUntil() {} });
   const m = mails[0];
-  check(res.status === 200 && m && m.to[0] === 'forbes@goodtimebook.com' && /2 essays/.test(m.subject) &&
+  check(res.status === 200 && m && m.to[0] === 'info@forbesenglish.com' && /2 essays/.test(m.subject) &&
     /p@example\.com/.test(m.text) && m.key === 'marking-cs_m', 'essay credits bought: the marking inbox is told, through Resend');
 }
 

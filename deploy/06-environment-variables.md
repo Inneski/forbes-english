@@ -70,12 +70,10 @@ Checkout needs the buyer signed in: the Worker reads the Supabase token from
 the Authorization header (pricing.html sends it) or the `fe_at` cookie and
 asks Supabase who it is. Nothing in the request body decides the account.
 
-Optional, the marking-inbox email: turn on Email Routing for
-forbesenglish.com in Cloudflare, verify the inbox as a destination, then
-uncomment the `[[send_email]]` block at the end of `wrangler.toml` and add
-`MARKING_MAIL_FROM` (an address on forbesenglish.com) and `MARKING_MAIL_TO`
-under `[vars]`. Without it, purchases work and no email is sent.
-`/api/paywall-status` reports `hasMarkingMail: true` once all three are set.
+The marking-inbox notice ("essay credits bought") goes through Resend with
+the weekly email: see the next section. (Fallback without Resend: a
+Cloudflare `[[send_email]]` binding named `MARKING_MAIL` plus
+`MARKING_MAIL_FROM` under `[vars]`.)
 
 Tests: `node deploy/test-webhook.mjs` (checkout, founder count, webhook)
 and `node deploy/test-paywall.mjs`.
@@ -87,20 +85,42 @@ and nothing else changes; `/api/paywall-status` reports `hasMissionEmail`
 and `hasMarkingMail`.
 
 1. Make a Resend account and add the domain **forbesenglish.com**. Resend
-   lists DNS records (SPF, DKIM, and a return-path); add them in
-   Cloudflare → forbesenglish.com → DNS, and wait for Resend to show the
-   domain as verified.
+   lists DNS records (DKIM, and SPF/MX on a `send` subdomain); add them in
+   Cloudflare → forbesenglish.com → DNS at exactly the names Resend shows,
+   and wait for Resend to show the domain as verified. **Leave the root MX
+   and root SPF records alone**: they are what delivers mail sent *to*
+   info@forbesenglish.com today.
 2. Create an API key in Resend (sending access is enough).
 3. Cloudflare → Workers → forbes-english → Settings → Variables and secrets:
    add `RESEND_API_KEY` as a **secret**. The rest is already in
-   `wrangler.toml`: `MAIL_FROM` (missions@forbesenglish.com),
-   `MAIL_REPLY_TO` and `MARKING_MAIL_TO` (forbes@goodtimebook.com).
-4. The cron (`[triggers]` in `wrangler.toml`, 06:00 UTC daily) deploys with
-   the Worker. Cloudflare → the Worker → Settings → Triggers shows it.
+   `wrangler.toml`: `MAIL_FROM` (info@forbesenglish.com),
+   `MAIL_REPLY_TO` and `MARKING_MAIL_TO` (info@forbesenglish.com).
+4. Send one real email with the key, from info@forbesenglish.com to your
+   own address (Resend's dashboard has a test send), and check it arrives.
+   `/api/paywall-status` reporting `hasMissionEmail: true` only says the
+   key is *set*, not that sending works.
+5. The cron (`[triggers]` in `wrangler.toml`, every hour) deploys with the
+   Worker. Cloudflare → the Worker → Settings → Triggers shows it, and the
+   Worker's logs (kept by `[observability]`) show one summary line per run:
+   `mission emails: {"sent":…,"failed":…,"skipped":…,"deferred":…}`.
+   After a reader's Mission 2 comes due there should be a row in
+   `blockcamp_mission_emails` with `sent_at` set; a row with `sent_at` empty
+   for more than an hour means sending is failing (the log line says why).
+
+Each run stops at `EMAIL_SUBREQUEST_BUDGET` calls (default 40, under the
+Workers Free plan's 50); the next hourly run carries on. On the Paid plan,
+add `EMAIL_SUBREQUEST_BUDGET = "900"` under `[vars]`.
 
 Who gets the email: every Block Camp reader (Term 1 buyer, or subscriber
 with a started clock) whose next mission opened in the last 48 hours; not
 Mission 1, not the owner, not anyone with `profiles.blockcamp_emails =
-false` (set it by hand when someone replies asking to stop). Each email is
-recorded in `blockcamp_mission_emails` before it is sent, so nobody gets
-the same mission twice. Test: `node deploy/test-weekly.mjs`.
+false` (set it by hand when someone replies asking to stop, or uses their
+mail app's unsubscribe, which sends a "Stop Block Camp emails" email to
+info@forbesenglish.com). Each email is claimed in `blockcamp_mission_emails`
+before it is sent and marked sent only when Resend accepts it, so nobody
+gets the same mission twice and a failed send is retried. Test:
+`node deploy/test-weekly.mjs`.
+
+**Before setting the key:** the site needs a privacy notice that names
+Resend (and Supabase, Stripe, Cloudflare) as processors. See
+docs/HANDOFF.md.

@@ -158,6 +158,7 @@
     background: var(--green-pale); color: var(--green-deep); font-weight: 700;
     border-radius: var(--radius); padding: 12px 14px; margin: -12px 0 22px; font-size: 0.9rem;
   }
+  .notice-warn { background: #fbeaea; color: #8a2e2e; }
   .missions { list-style: none; margin: 6px 0 12px; }
   .mission { padding: 9px 0; border-bottom: 1px solid var(--border); display: grid; gap: 2px; }
   .mission:last-child { border-bottom: none; }
@@ -282,6 +283,7 @@
     <h1>My account</h1>
     <p class="lead" id="account-email"></p>
     <p class="notice" id="checkout-notice" hidden></p>
+    <p class="notice notice-warn" id="plans-error" hidden>Could not load your purchases &mdash; reload the page.</p>
 
     <div class="card" id="full-card">
       <h2 class="card-h">Forbes English full</h2>
@@ -293,7 +295,7 @@
         <span class="status-label">Renews / expires</span>
         <span class="status-value" id="sub-period">&mdash;</span>
       </div>
-      <p class="card-note" id="cancel-note" hidden>To cancel, email <a href="mailto:forbes@goodtimebook.com">forbes@goodtimebook.com</a>. You keep access until the end of the period you have paid for.</p>
+      <p class="card-note" id="cancel-note" hidden>To cancel, email <a href="mailto:info@forbesenglish.com">info@forbesenglish.com</a>. You keep access until the end of the period you have paid for.</p>
       <button class="btn btn-gold" id="subscribe-btn" hidden onclick="window.location.href='pricing.html'">View plans</button>
     </div>
 
@@ -331,7 +333,7 @@
         <span class="status-label">Essays left to mark</span>
         <span class="status-value" id="marking-credits">&mdash;</span>
       </div>
-      <p class="card-note" id="marking-how" hidden>To send an essay, email it to <a id="marking-mail" href="mailto:forbes@goodtimebook.com">forbes@goodtimebook.com</a> from <strong id="marking-from"></strong>, and say in the subject whether it is Task 1 or Task 2. Each essay uses one; it comes back within 5 working days with a band estimate and corrections. Every essay is read and marked by a CELTA-qualified teacher &mdash; never by software.</p>
+      <p class="card-note" id="marking-how" hidden>To send an essay, email it to <a id="marking-mail" href="mailto:info@forbesenglish.com">info@forbesenglish.com</a> from <strong id="marking-from"></strong>, and say in the subject whether it is Task 1 or Task 2. Each essay uses one; it comes back within 5 working days with a band estimate and corrections. Every essay is read and marked by a CELTA-qualified teacher &mdash; never by software.</p>
       <p class="error-msg" id="marking-error"></p>
       <button class="btn btn-gold" id="marking-buy" data-product="marking">Buy two marked essays &mdash; &euro;49</button>
     </div>
@@ -547,6 +549,9 @@ document.getElementById("logout-btn").addEventListener("click", async () => {
 // after paying and read "Not subscribed".
 const WEEK_MS = 7 * 86400000;
 const LIVE = (s) => s === "active" || s === "trialing";
+// The last purchases read that worked: a later read that fails (a poll
+// after checkout, a bad moment on a phone) keeps these on screen.
+let lastPlans = null;
 
 async function readRows(query) {
   if (!window.sb) return null;
@@ -627,8 +632,11 @@ async function fillSubscription(user) {
   document.getElementById("cancel-note").hidden = !(isActive && !isOwner);
 
   // ── what the one-offs add ──
+  if (plans) lastPlans = plans;
+  const knownPlans = plans || lastPlans;
+  document.getElementById("plans-error").hidden = Boolean(knownPlans);
   const now = Date.now();
-  const rows = (plans || []).filter((p) => LIVE(p.status) && (!p.ends_at || Date.parse(p.ends_at) > now));
+  const rows = (knownPlans || []).filter((p) => LIVE(p.status) && (!p.ends_at || Date.parse(p.ends_at) > now));
   const bcRows = rows.filter((p) => p.product === "blockcamp");
   const hasIelts = rows.some((p) => p.product === "ielts");
   const credits = rows.reduce((n, p) => n + (Number(p.marking_credits) || 0), 0);
@@ -641,6 +649,7 @@ async function fillSubscription(user) {
   const fullCard = document.getElementById("full-card");
   const logout = document.getElementById("logout-btn");
   if (!isOwner && !isActive && ownsSomething) fullCard.parentNode.insertBefore(fullCard, logout);
+  else document.getElementById("plans-error").after(fullCard);
 
   // ── Block Camp: a term bought, or the full plan's weekly clock ──
   const termStarts = bcRows.map((p) => Date.parse(p.starts_at)).filter(Number.isFinite);
@@ -650,7 +659,7 @@ async function fillSubscription(user) {
   document.getElementById("bc-card").hidden = !showBc;
   if (showBc) {
     const start = starts.length ? Math.min(...starts) : null;
-    const openNow = isOwner ? 12 : start ? Math.min(12, Math.floor((now - start) / WEEK_MS) + 1) : 1;
+    const openNow = isOwner ? 12 : start ? Math.max(1, Math.min(12, Math.floor((now - start) / WEEK_MS) + 1)) : 1;
     document.getElementById("bc-title").textContent = bcRows.length ? "Block Camp Term 1" : "Block Camp";
     document.getElementById("bc-term-row").hidden = !bcRows.length;
     document.getElementById("bc-term").textContent = "Term 1";
@@ -667,10 +676,10 @@ async function fillSubscription(user) {
   document.getElementById("ielts-card").hidden = !hasIelts;
 
   // ── Essay marking: credits, how to send one, two more for €49 ──
-  document.getElementById("marking-credits").textContent = plans ? String(credits) : "—";
+  document.getElementById("marking-credits").textContent = knownPlans ? String(credits) : "—";
   document.getElementById("marking-how").hidden = !(credits > 0);
   const mail = document.getElementById("marking-mail");
-  mail.href = "mailto:forbes@goodtimebook.com?subject=" + encodeURIComponent("IELTS essay to mark (Task 1 / Task 2)");
+  mail.href = "mailto:info@forbesenglish.com?subject=" + encodeURIComponent("IELTS essay to mark (Task 1 / Task 2)");
 
   return { ownsSomething, isActive, isOwner, sessions: new Set(rows.map((p) => p.stripe_checkout_session_id)) };
 }
@@ -701,6 +710,15 @@ document.getElementById("marking-buy").addEventListener("click", async (e) => {
   err.classList.add("show");
 });
 
+// Back from Stripe with the Back button: the browser may restore this page
+// from its cache with the button still disabled and saying "Redirecting".
+window.addEventListener("pageshow", (e) => {
+  if (!e.persisted) return;
+  const btn = document.getElementById("marking-buy");
+  btn.disabled = false;
+  btn.innerHTML = "Buy two marked essays &mdash; &euro;49";
+});
+
 // Back from Stripe. The webhook that records the purchase can land a few
 // seconds after the buyer does, so say so, and look again until it shows.
 // A one-off comes back with its Checkout Session id (?cs=), so the page
@@ -710,8 +728,10 @@ async function afterCheckout(user, first) {
   const note = document.getElementById("checkout-notice");
   if (params.get("checkout") !== "success") return;
   const cs = params.get("cs");
+  // A one-off returns with its session id; the full plan returns without
+  // one, and is ready when the subscription itself shows as active.
   const ready = (seen) => Boolean(seen) &&
-    (cs ? seen.sessions.has(cs) : (seen.ownsSomething || seen.isActive || seen.isOwner));
+    (cs ? seen.sessions.has(cs) : (seen.isActive || seen.isOwner));
   note.hidden = false;
   note.textContent = "Payment received — setting up your access…";
   let seen = first;

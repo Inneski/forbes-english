@@ -26,14 +26,16 @@ function fake(sc) {
   return `
   (function(){
     const SC = ${JSON.stringify(sc)};
-    let planReads = 0;
+    let planReads = 0, profileReads = 0;
     function q(table){
-      const data = () => table === 'profiles' ? [SC.profile]
+      const data = () => table === 'profiles' ? [++profileReads > (SC.profileAfter || 1e9) ? SC.profileLater : SC.profile]
         : table === 'user_plans' ? (++planReads > (SC.plansAfter || 0) ? SC.plans : (SC.plansBefore || []))
         : SC.lessons;
       const o = { select(){return o;}, eq(){return o;}, order(){return o;},
         single(){ return Promise.resolve({ data: data()[0], error: null }); },
-        then(res, rej){ return Promise.resolve({ data: data(), error: null }).then(res, rej); } };
+        then(res, rej){
+          if (SC.plansError && table === 'user_plans') return Promise.resolve({ data: null, error: { message: 'boom' } }).then(res, rej);
+          return Promise.resolve({ data: data(), error: null }).then(res, rej); } };
       return o;
     }
     const client = { from: q, auth: {
@@ -73,6 +75,9 @@ async function scenario(b, sc, path = '/account.html') {
       firstLockedWhen: (document.querySelector('.mission.locked .mission-when') || {}).textContent || null,
       specials: vis('bc-specials'), ielts: vis('ielts-card'), credits: txt('marking-credits'), how: vis('marking-how'),
       notice: vis('checkout-notice') ? txt('checkout-notice') : null,
+      plansError: vis('plans-error'),
+      fullFirst: (() => { const f = document.getElementById('full-card'), b = document.getElementById('bc-card');
+        return Boolean(f.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING); })(),
     };
   });
   if (sc.click) {
@@ -122,6 +127,25 @@ const ago = (d) => new Date(Date.now() - d * DAY).toISOString();
     (v, posts) => v.badge === 'Not subscribed' && v.subscribe && !v.bc && !v.ielts && v.credits === '0' &&
       posts.length === 1 && posts[0].auth === 'Bearer tok-nothing-yet' && posts[0].body === '{"product":"marking"}' &&
       /went wrong/.test(v.marked.err) && !v.marked.disabled && /\u20ac49/.test(v.marked.label));
+  // Owns Term 1, buys the full plan: no ?cs=, so it waits for the
+  // subscription itself, then puts the full plan's card back on top.
+  const t1 = { product: 'blockcamp', status: 'active', term: 1, starts_at: ago(8), ends_at: null, marking_credits: 0, stripe_checkout_session_id: 'cs_bc' };
+  await run({ name: 'one-off-owner-buys-full-plan', email: 'f@example.com', profile: { subscription_status: 'inactive', owner: false },
+      profileAfter: 1, profileLater: { subscription_status: 'active', owner: false, blockcamp_first_open: null,
+        current_period_end: new Date(Date.now() + 30 * DAY).toISOString() },
+      plans: [t1], lessons: TERM1, wait: 4200 },
+    '/account.html?checkout=success',
+    (v) => v.badge === 'Active' && v.notice === 'Thank you \u2014 your purchase is ready.' && v.fullFirst);
+  // The purchases read fails: say so, rather than showing nothing owned.
+  await run({ name: 'plans-read-fails', email: 'e@example.com', profile: { subscription_status: 'inactive', owner: false },
+      plans: [t1], plansError: true, lessons: TERM1 },
+    '/account.html',
+    (v) => v.plansError && v.credits === '\u2014' && !v.bc);
+  // A device clock a little behind: never 'Week 0', Mission 1 open.
+  await run({ name: 'clock-behind', email: 'c@example.com', profile: { subscription_status: 'inactive', owner: false },
+      plans: [{ ...t1, starts_at: new Date(Date.now() + 3600000).toISOString() }], lessons: TERM1 },
+    '/account.html',
+    (v) => v.week === 'Week 1 of 12' && v.openLinks === 2);
   await b.close();
   process.exit(results.every(Boolean) ? 0 : 1);
 })();

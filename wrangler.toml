@@ -25,10 +25,10 @@ STRIPE_PROMO_FOUNDER = "promo_1UMrlb0R7wvAnqirXLEXdWdf"
 # (Workers -> forbes-english -> Settings -> Variables and secrets), never
 # here. MAIL_FROM must be on a domain verified in Resend. Until the key is
 # set, the cron runs and sends nothing.
-MAIL_FROM = "Forbes English <missions@forbesenglish.com>"
-MAIL_REPLY_TO = "forbes@goodtimebook.com"
+MAIL_FROM = "Forbes English <info@forbesenglish.com>"
+MAIL_REPLY_TO = "info@forbesenglish.com"
 # Told when essay credits are bought; the address buyers send essays to.
-MARKING_MAIL_TO = "forbes@goodtimebook.com"
+MARKING_MAIL_TO = "info@forbesenglish.com"
 
 [assets]
 directory = "."
@@ -43,8 +43,16 @@ not_found_handling = "404-page"
 # through to env.ASSETS.fetch() at ~0.6ms.
 run_worker_first = true
 
-# The weekly "Mission N is open" email: once a day at 06:00 UTC, the Worker
-# mails every Block Camp reader whose next mission opened in the last 48
-# hours (src/index.js, sendMissionEmails).
+# The weekly "Mission N is open" email: every hour, the Worker mails each
+# Block Camp reader whose next mission opened in the last 48 hours
+# (src/index.js, sendMissionEmails). Hourly so the email follows the
+# unlock within the hour, and so a retry stays inside Resend's 24-hour
+# idempotency window. Each run stops at EMAIL_SUBREQUEST_BUDGET calls
+# (default 40, for the Workers Free plan) and the next run carries on.
 [triggers]
-crons = ["0 6 * * *"]
+crons = ["0 * * * *"]
+
+# Keep the Worker's logs (the cron's summary line and any failed send) for
+# a few days, so a broken email setup can be seen afterwards.
+[observability]
+enabled = true
