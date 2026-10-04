@@ -108,6 +108,12 @@ term's lessons (today a blockcamp row opens the whole track, Term 2 too);
 step 8 must make account.html read `user_plans`, because one-off buyers land
 there after paying (`success_url`) and it still says "Not subscribed".
 
+**Step 5 (gate + weekly drip) on the branch** (`1842880f`). Innes, 4 Oct:
+current Pro subscribers are **exempt** from the drip; the SQL is the last
+block of `deploy/schema-pricing.sql`, to run in the same sitting as the
+deploy. The step 2 tagging SQL must run before the deploy too, or a Term 1
+buyer gets nothing past the free Mission 1.
+
 - **Step 1, schema: APPLIED** (Supabase migration `pricing_go_live_schema`,
   file `deploy/schema-pricing.sql`). `lessons.term/mission`,
   `user_plans.term/starts_at/marking_credits`, `profiles.blockcamp_first_open`;

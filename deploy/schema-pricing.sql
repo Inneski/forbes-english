@@ -94,3 +94,15 @@ begin
   end if;
   return new;
 end $$;
+
+-- ── Go-live: current subscribers keep every Block Camp mission ──────────
+-- Run in the same sitting as the pricing-go-live Worker deploy, not before.
+-- Innes, 2026-10-04: the weekly drip applies to new subscribers; anyone
+-- subscribed when the gate goes live is exempt, so nobody who is already
+-- paying loses Missions 2-12. Starting their clock 12 weeks back opens all
+-- twelve. Two monthly subscribers on 2026-10-04; the owner is exempt anyway.
+update public.profiles
+set blockcamp_first_open = now() - interval '12 weeks'
+where subscription_status in ('active', 'trialing')
+  and not owner
+  and blockcamp_first_open is null;                   -- expect UPDATE 2
