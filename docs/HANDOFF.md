@@ -11,6 +11,30 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-10-04 — Marilyn + JFK prepositions: answer audit, Spanish
+
+Innes caught two wrong keys live in class. Full audit of both:
+
+- **`marilyn_prepositions.html`** (old standalone page, not a deck, no
+  builder). Fixed: grate → *over* (was *across*); every item where a
+  distractor was also correct (*during/inside/within/outside/about/of/
+  regarding/by*); false facts (she did not "move to Hollywood at sixteen",
+  DiMaggio was not a "short courtship"). Added an EN/ES selector: questions
+  stay English, everything else (instructions, feedback, every explanation,
+  free-writing chrome) has a Spanish version. Still fails check-lesson's
+  deck checks (no activate slide, no UI_I18N, no .fe-logo) — it needs a
+  rebuild to house style; not done.
+- **`jfk_prepositions_b2.html`**: "fourth president to die in office" was
+  false (eighth; fourth *killed*); three word-order sentences were invented
+  events (protesters, a recording device, transferred files) — replaced
+  with documented ones; t3 card said general place before specific, which
+  its own example contradicts. ES added (67/67 keys). `.opt` shrink-wrap
+  fix applied, so check-lesson passes clean.
+- **`build_jfk.py` + `i18n_jfk.py` are stale**: the shipped page carries
+  sweeps (logo, wash, opt width) the builder does not, and stage 2 no longer
+  matches the template. Content edits were mirrored into both builders, but
+  re-running them would regress the page. Rebuild on `deck.py` before using.
+
 ## 2026-10-04 — Pricing go-live (Innes's 3 Oct handoff): steps 1, 2 and 6 done; 3–5, 7–9 open
 
 Innes's plan, in order: schema → Term 1 tagging → Stripe prices → webhook →

@@ -41,9 +41,9 @@ EN = """const UI_I18N = {
     t2n:'These are not rules you work out. They are collocations you collect — and the wrong one is instantly audible.',
 
     t3e:'Language focus · 3 of 3', t3t:'Place, then time, then why',
-    t3a:'When several prepositional phrases stack up, English orders them: <strong>place</strong> first, then the <strong>more specific place</strong>, then <strong>time</strong>.',
+    t3a:'When several prepositional phrases stack up, English orders them: the <strong>most specific place</strong> first, then the <strong>wider place</strong>, then <strong>time</strong>.',
     t3b:'<em>Kennedy gave his final speech <strong>at the Hotel Texas</strong> <strong>in Fort Worth</strong> <strong>on the morning of his death</strong>.</em>',
-    t3n:'Purpose (<em>to investigate the events</em>) and simultaneous action (<em>demanding a re-examination</em>) come last of all.',
+    t3n:'Purpose (<em>to investigate the events</em>, <em>to see the president</em>) comes last of all.',
 
     a1t:'Choose the best preposition',
     a1e1:'Activity 1 · Place &amp; movement — 1/5', a1e2:'Activity 1 · Place &amp; movement — 2/5',
@@ -96,9 +96,9 @@ EN = """const UI_I18N = {
     t2n:'Das sind keine Regeln, die man herleitet. Das sind Kollokationen, die man sammelt — und die falsche hört man sofort.',
 
     t3e:'Sprachlicher Schwerpunkt · 3 von 3', t3t:'Ort, dann Zeit, dann Zweck',
-    t3a:'Stehen mehrere Präpositionalphrasen hintereinander, ordnet das Englische sie: zuerst der <strong>Ort</strong>, dann der <strong>genauere Ort</strong>, dann die <strong>Zeit</strong>.',
+    t3a:'Stehen mehrere Präpositionalphrasen hintereinander, ordnet das Englische sie: zuerst der <strong>genaueste Ort</strong>, dann der <strong>größere Ort</strong>, dann die <strong>Zeit</strong>.',
     t3b:'<em>Kennedy gave his final speech <strong>at the Hotel Texas</strong> <strong>in Fort Worth</strong> <strong>on the morning of his death</strong>.</em>',
-    t3n:'Zweck (<em>to investigate the events</em>) und gleichzeitige Handlung (<em>demanding a re-examination</em>) stehen ganz am Schluss.',
+    t3n:'Der Zweck (<em>to investigate the events</em>, <em>to see the president</em>) steht ganz am Schluss.',
 
     a1t:'Wähle die passende Präposition',
     a1e1:'Aufgabe 1 · Ort &amp; Bewegung — 1/5', a1e2:'Aufgabe 1 · Ort &amp; Bewegung — 2/5',
@@ -115,12 +115,67 @@ EN = """const UI_I18N = {
     a3e3:'Aufgabe 3 · Satzstellung — 3/5', a3e4:'Aufgabe 3 · Satzstellung — 4/5',
     a3e5:'Aufgabe 3 · Satzstellung — 5/5'
   },
+  es: {
+    btnStart:'Empezar →', btnCheck:'Comprobar', btnNext:'Siguiente →', btnRestart:'Empezar de nuevo',
+    orderHint:'Haz clic en las partes en orden · vuelve a hacer clic en una para quitarla',
+    scoreLabel:'Puntos', slideOf:(a,b)=>`${a} / ${b}`,
+    fbCorrect:'Correcto.', fbWrong:'No del todo.', fbAnswer:'Respuesta:',
+    resNext:'Reconocer el idioma es la mitad del trabajo. Ahora, a producirlo →',
+    actEyebrow:'Activación', actTitle:'Ponlo en práctica',
+    actUse:'Usa al menos tres:',
+    actSpeakKind:'Debate · en parejas', actWriteKind:'Escritura · 180–220 palabras',
+    actSpeakBrief:'Sesenta años después, el expediente sigue abierto. Habladlo.',
+    actSpeak1:'Un archivo guarda documentos que se han ocultado al público durante décadas. Defiende que se publiquen ya — y después defiende que sigan sellados.',
+    actSpeak2:'Tu compañero dice que nunca se puede confiar en ninguna versión oficial de nada. Defiende la postura contraria.',
+    actSpeak3:'Describe un lugar que conozcas bien con tanta precisión que tu compañero pudiera recorrerlo: qué hay en cada sitio y qué se mueve a lo largo de él, de un lado a otro o a través de él.',
+    actWriteBrief:'Escribe la crónica de un acontecimiento público —real o inventado— que se volvió a investigar años después. Sitúalo con exactitud: dónde, luego dónde con más precisión, luego cuándo.',
+    actPlaceholder:'Escribe aquí tu respuesta…',
+    btnCopy:'Copiar', btnCopied:'Copiado',
+    wordCount:(n)=>`${n} ${n===1?'palabra':'palabras'}`,
+    resPerfect:'Impecable. Todas bien.',
+    resStrong:'Muy buen trabajo — la regla ha calado.',
+    resMid:'Buen comienzo. Merece la pena repasarlo otra vez.',
+    resLow:'Repasa las diapositivas de explicación y vuelve a intentarlo.',
+    coverTitle:'JFK &amp; <em>Preposiciones</em>',
+    coverSub:'Las palabras pequeñas que sitúan un suceso en un lugar, en una década y bajo sospecha',
+    chipLevel:'B2 Intermedio alto', chipFocus:'Preposiciones', chipCount:'15 preguntas',
+
+    t1e:'Foco lingüístico · 1 de 3', t1t:'Dónde ocurrió',
+    t1a:'Para una plaza o un espacio público con nombre, el inglés usa <strong>in</strong> — <em>in Dealey Plaza</em>, <em>in Fort Worth</em>. <strong>Inside</strong> necesita paredes. <strong>Within</strong> es formal y marca un límite.',
+    t1b:'El movimiento tiene sus propias preposiciones. <strong>Along</strong> sigue la longitud de una calle, <strong>across</strong> la cruza de un lado a otro, <strong>through</strong> entra por un lado y sale por el otro.',
+    t1n:'Una caravana avanza <em>along</em> Elm Street. Una bala pasa <em>through</em> un cuerpo. La misma calle, otra geometría.',
+
+    t2e:'Foco lingüístico · 2 de 3', t2t:'Bajo sospecha',
+    t2a:'Algunos sustantivos llevan una preposición y ninguna otra. <strong>Under</strong> acompaña al examen y la presión: <em>under suspicion</em>, <em>under scrutiny</em>, <em>under investigation</em>.',
+    t2b:'Otras van dentro del propio verbo. <strong>Tamper with</strong>, <strong>act on your own</strong>, <strong>die in office</strong> — cambia la preposición y la expresión se rompe.',
+    t2n:'No son reglas que se deducen. Son colocaciones que se coleccionan — y la incorrecta se nota al instante.',
+
+    t3e:'Foco lingüístico · 3 de 3', t3t:'Lugar, luego tiempo, luego para qué',
+    t3a:'Cuando se acumulan varios sintagmas preposicionales, el inglés los ordena: primero el <strong>lugar más concreto</strong>, luego el <strong>más amplio</strong>, después el <strong>tiempo</strong>.',
+    t3b:'<em>Kennedy gave his final speech <strong>at the Hotel Texas</strong> <strong>in Fort Worth</strong> <strong>on the morning of his death</strong>.</em>',
+    t3n:'La finalidad (<em>to investigate the events</em>, <em>to see the president</em>) va al final de todo.',
+
+    a1t:'Elige la mejor preposición',
+    a1e1:'Actividad 1 · Lugar y movimiento — 1/5', a1e2:'Actividad 1 · Lugar y movimiento — 2/5',
+    a1e3:'Actividad 1 · Lugar y movimiento — 3/5', a1e4:'Actividad 1 · Lugar y movimiento — 4/5',
+    a1e5:'Actividad 1 · Lugar y movimiento — 5/5',
+
+    a2t:'Completa la frase',
+    a2e1:'Actividad 2 · Expresiones fijas — 1/5', a2e2:'Actividad 2 · Expresiones fijas — 2/5',
+    a2e3:'Actividad 2 · Expresiones fijas — 3/5', a2e4:'Actividad 2 · Expresiones fijas — 4/5',
+    a2e5:'Actividad 2 · Expresiones fijas — 5/5',
+
+    a3t:'Construye la frase',
+    a3e1:'Actividad 3 · Orden de palabras — 1/5', a3e2:'Actividad 3 · Orden de palabras — 2/5',
+    a3e3:'Actividad 3 · Orden de palabras — 3/5', a3e4:'Actividad 3 · Orden de palabras — 4/5',
+    a3e5:'Actividad 3 · Orden de palabras — 5/5'
+  },
   /* Fill these in later — English shows through until you do. */
-  es:{}, fr:{}, it:{}, pt:{}, ru:{}, ar:{}, zh:{}, ja:{}
+  fr:{}, it:{}, pt:{}, ru:{}, ar:{}, zh:{}, ja:{}
 };"""
 
 start = s.index('const UI_I18N = {')
-end = s.index('};', s.index('es:{}, fr:{}')) + 2
+end = s.index('};', s.index('fr:{}, it:{}')) + 2
 s = s[:start] + EN + s[end:]
 open('jfk_prepositions_b2.html', 'w', encoding='utf-8', newline='').write(s)
 print('written')

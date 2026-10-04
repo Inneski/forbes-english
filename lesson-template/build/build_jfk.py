@@ -55,7 +55,7 @@ MC = [
   "from",
   "<strong>Keep something from someone</strong> means to withhold or conceal it deliberately."),
 
- ("The CIA has been <em>_______</em> suspicion ever since declassified files suggested prior knowledge of Oswald.",
+ ("The CIA has been <em>_______</em> suspicion for decades, partly because it was already watching Oswald before the assassination.",
   [("below", "'Below' is purely spatial — it describes a position, not a state."),
    ("beneath", "'Beneath' is the literary form of 'below'; it does not collocate with 'suspicion'."),
    ("under", None),
@@ -67,7 +67,7 @@ MC = [
 GAP = [
  ("Oswald was shot dead <input class=\"gap\" data-answer=\"by\" size=\"7\" aria-label=\"gap\"> a Dallas nightclub owner named Jack Ruby, just two days after the assassination.",
   "<strong>By</strong> introduces the agent in a passive sentence — the person who performed the action."),
- ("Kennedy was the fourth US president to die <input class=\"gap\" data-answer=\"in\" size=\"7\" aria-label=\"gap\"> office, following Lincoln, Garfield and McKinley.",
+ ("Kennedy was the fourth US president to be killed <input class=\"gap\" data-answer=\"in\" size=\"7\" aria-label=\"gap\"> office, after Lincoln, Garfield and McKinley.",
   "<strong>In office</strong> is the fixed expression for the period when a politician holds their post."),
  ("The &lsquo;magic bullet&rsquo; theory claims that a single bullet passed <input class=\"gap\" data-answer=\"through\" size=\"9\" aria-label=\"gap\"> both Kennedy and Governor Connally.",
   "<strong>Pass through</strong> describes movement entering and leaving a solid object or body."),
@@ -80,14 +80,14 @@ GAP = [
 ORDER = [
  (["Kennedy", "gave his final speech", "at the Hotel Texas", "in Fort Worth", "on the morning of his death"],
   "Subject → verb phrase → place → more specific place → time. In English the time expression comes last."),
- (["The Warren Commission", "was established", "within weeks", "of the assassination", "to investigate the events"],
-  "<strong>Within weeks of</strong> is a two-part prepositional phrase. The infinitive of purpose comes last."),
- (["Protesters", "gathered", "outside the Warren Commission building", "throughout the inquiry", "demanding a full re-examination"],
-  "Place ('outside') comes before time ('throughout'). The participle phrase describes simultaneous action and comes last."),
- (["A recording device", "was found", "beneath the dashboard", "of the presidential limousine", "after the car was examined"],
-  "<strong>Beneath</strong> gives the specific place, 'of' links it to the whole, and 'after' places it in sequence."),
- (["The case files", "were transferred", "from the National Archives", "to a secure location", "prior to their planned release"],
-  "<strong>From … to</strong> expresses movement between two points. 'Prior to' introduces the time clause and comes last."),
+ (["The Warren Commission", "was established", "within a week", "of the assassination", "to investigate the events"],
+  "<strong>Within a week of</strong> is a two-part prepositional phrase. The infinitive of purpose comes last."),
+ (["Thousands of people", "lined", "the streets of Dallas", "on 22 November", "to see the president"],
+  "Place ('the streets of Dallas') comes before time ('on 22 November'). The infinitive of purpose comes last."),
+ (["The rifle", "was found", "between two rows of boxes", "on the sixth floor", "of the Texas School Book Depository"],
+  "English zooms out: <strong>between</strong> the boxes, <strong>on</strong> the floor, <strong>of</strong> the building — smallest place first."),
+ (["The motorcade", "turned", "onto Elm Street", "in Dealey Plaza", "just before 12.30 p.m."],
+  "The movement comes first (<strong>onto</strong> Elm Street), then the wider place (<strong>in</strong> Dealey Plaza), then the time."),
 ]
 
 def mc_slide(n, stem, opts, key, explain):

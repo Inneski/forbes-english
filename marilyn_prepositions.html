@@ -78,6 +78,24 @@
     white-space: nowrap;
   }
   .score-pill span { color: var(--cream); font-weight: 700; }
+  .score-pill span.lbl { color: inherit; font-weight: inherit; }
+  .header-right { display: flex; align-items: center; gap: 10px; }
+  .lang-select {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 7px 12px;
+    font: inherit;
+    font-size: 13px;
+    color: var(--cream);
+    cursor: pointer;
+  }
+  .lang-select:focus { outline: 1px solid var(--gold); }
+  .lang-select option { background: var(--card); }
+  @media (max-width: 520px) {
+    header { flex-wrap: wrap; gap: 12px; }
+    .header-right { margin-left: auto; }
+  }
 
   /* ── HERO ── */
   .hero {
@@ -626,7 +644,10 @@
         </g><text x="675" y="1034" textLength="1520" lengthAdjust="spacing" fill="#f5e6c4" style="font-family:DM Sans,Arial,sans-serif;font-size:209px;font-weight:600;letter-spacing:0">ENGLISH</text></g>
 </svg>
   </div>
-  <div class="score-pill">Score: <span id="score-display">0</span> / <span id="total-display">15</span></div>
+  <div class="header-right">
+    <select class="lang-select" id="lang-select" aria-label="Language"><option value="en">English</option><option value="es">Español</option></select>
+    <div class="score-pill"><span class="lbl" data-i18n="score">Score:</span> <span id="score-display">0</span> / <span id="total-display">15</span></div>
+  </div>
 </header>
 
 <!-- HERO -->
@@ -635,9 +656,9 @@
     <img src="Marilyn/marilyn-hero.jpg" alt="Stylised portrait illustration of Marilyn Monroe">
   </div>
   <div class="hero-text">
-    <div class="lesson-tag">B1 · Prepositions</div>
+    <div class="lesson-tag" data-i18n="tag">B1 · Prepositions</div>
     <h1>The Mystery<br><em>of Marilyn Monroe</em></h1>
-    <p>Practise prepositions of place, time, and movement through the story of Hollywood's most iconic — and most mysterious — star.</p>
+    <p data-i18n="heroSub">Practise prepositions of place, time, and movement through the story of Hollywood's most iconic — and most mysterious — star.</p>
   </div>
 </div>
 
@@ -649,14 +670,14 @@
        ══════════════════════════════════ -->
   <div class="activity active" id="act1">
     <div class="activity-header">
-      <div class="activity-label">Activity 1 of 3</div>
-      <div class="activity-title">Multiple Choice</div>
-      <div class="activity-instructions">Choose the correct preposition to complete each sentence about Marilyn Monroe's life and the theories surrounding her death.</div>
+      <div class="activity-label" data-i18n="act1Label">Activity 1 of 3</div>
+      <div class="activity-title" data-i18n="act1Title">Multiple Choice</div>
+      <div class="activity-instructions" data-i18n="act1Inst">Choose the correct preposition to complete each sentence about Marilyn Monroe's life and the theories surrounding her death.</div>
     </div>
     <div class="progress-bar-wrap"><div class="progress-bar-fill" id="pb1" style="width:0%"></div></div>
     <div id="mc-container"></div>
     <div style="display:flex;justify-content:flex-end">
-      <button class="btn-next" id="mc-next">Next question →</button>
+      <button class="btn-next" id="mc-next" data-i18n="next">Next question →</button>
     </div>
   </div>
 
@@ -665,14 +686,14 @@
        ══════════════════════════════════ -->
   <div class="activity" id="act2">
     <div class="activity-header">
-      <div class="activity-label">Activity 2 of 3</div>
-      <div class="activity-title">Fill in the Blank</div>
-      <div class="activity-instructions">Select the correct preposition from the dropdown menu to complete each sentence.</div>
+      <div class="activity-label" data-i18n="act2Label">Activity 2 of 3</div>
+      <div class="activity-title" data-i18n="act2Title">Fill in the Blank</div>
+      <div class="activity-instructions" data-i18n="act2Inst">Select the correct preposition from the dropdown menu to complete each sentence.</div>
     </div>
     <div class="progress-bar-wrap"><div class="progress-bar-fill" id="pb2" style="width:0%"></div></div>
     <div id="fitb-container"></div>
     <div style="display:flex;justify-content:flex-end">
-      <button class="btn-next" id="fitb-next">Next question →</button>
+      <button class="btn-next" id="fitb-next" data-i18n="next">Next question →</button>
     </div>
   </div>
 
@@ -681,14 +702,14 @@
        ══════════════════════════════════ -->
   <div class="activity" id="act3">
     <div class="activity-header">
-      <div class="activity-label">Activity 3 of 3</div>
-      <div class="activity-title">Drag & Drop</div>
-      <div class="activity-instructions">Drag the correct preposition from the word bank into the gap in each sentence.</div>
+      <div class="activity-label" data-i18n="act3Label">Activity 3 of 3</div>
+      <div class="activity-title" data-i18n="act3Title">Drag & Drop</div>
+      <div class="activity-instructions" data-i18n="act3Inst">Drag the correct preposition from the word bank into the gap in each sentence.</div>
     </div>
     <div class="progress-bar-wrap"><div class="progress-bar-fill" id="pb3" style="width:0%"></div></div>
     <div id="dnd-container"></div>
     <div style="display:flex;justify-content:flex-end">
-      <button class="btn-next" id="dnd-next">Next question →</button>
+      <button class="btn-next" id="dnd-next" data-i18n="next">Next question →</button>
     </div>
   </div>
 
@@ -698,40 +719,101 @@
 <div id="final-screen">
   <div class="final-star">★</div>
   <div class="final-score" id="final-score">0</div>
-  <div class="final-label">out of 15</div>
+  <div class="final-label" data-i18n="outOf">out of 15</div>
   <div class="final-msg" id="final-msg"></div>
-  <button class="btn-restart" onclick="restartAll()">Start again</button>
+  <button class="btn-restart" onclick="restartAll()" data-i18n="restart">Start again</button>
 </div>
 
 <!-- FREE WRITING SECTION -->
 <div id="freewrite-section">
   <div class="fw-header">
-    <div class="fw-label">One Last Scene</div>
-    <div class="fw-title">Write What You See</div>
-    <div class="fw-instructions">Look closely at the image below and write a short paragraph describing it. Try to use at least six different prepositions of place and movement (in, on, above, below, across, beside, through, behind...).</div>
+    <div class="fw-label" data-i18n="fwLabel">One Last Scene</div>
+    <div class="fw-title" data-i18n="fwTitle">Write What You See</div>
+    <div class="fw-instructions" data-i18n="fwInst">Look closely at the image below and write a short paragraph describing it. Try to use at least six different prepositions of place and movement (in, on, above, below, across, beside, through, behind...).</div>
   </div>
 
   <div class="fw-img-wrap">
     <img src="Marilyn/marilyn-detail.jpg" alt="Close-up detail illustration of Marilyn Monroe's face">
   </div>
 
-  <textarea class="fw-textarea" id="fw-textarea" placeholder="Start writing here... (aim for 80-120 words)"></textarea>
+  <textarea class="fw-textarea" id="fw-textarea" data-i18n-ph="fwPh" placeholder="Start writing here... (aim for 80-120 words)"></textarea>
   <div class="fw-meta">
     <div class="fw-word-count" id="fw-word-count">0 words</div>
   </div>
 
   <div class="fw-actions">
     <button class="fw-btn" id="fw-model-btn" onclick="toggleModel()">Show model paragraph</button>
-    <button class="fw-btn fw-btn-solid" onclick="downloadWriting()">⬇ Download my writing</button>
+    <button class="fw-btn fw-btn-solid" onclick="downloadWriting()" data-i18n="fwDownload">⬇ Download my writing</button>
   </div>
 
   <div class="fw-model" id="fw-model">
-    <span class="fw-model-label">Model paragraph</span>
+    <span class="fw-model-label" data-i18n="fwModel">Model paragraph</span>
     In this close-up, the camera looks up at her face from below. Her platinum hair falls across her forehead and spills over her shoulder, catching the light along its edges. One eye stares past the lens, half hidden beneath a heavy lash line, while a beauty mark rests just above her lip. A streak of colour runs down her cheek like paint dripping from a poster left out in the rain. Behind her, pale lines curl through the shadows, echoing the shape of old film reels.
   </div>
 </div>
 
 <script>
+/* ═══════════════════════════════════════
+   LANGUAGE — the questions stay English; everything around them
+   (instructions, feedback, explanations) follows the selector.
+═══════════════════════════════════════ */
+const STR = {
+  en: {
+    score: 'Score:', tag: 'B1 · Prepositions',
+    heroSub: "Practise prepositions of place, time, and movement through the story of Hollywood's most iconic — and most mysterious — star.",
+    act1Label: 'Activity 1 of 3', act1Title: 'Multiple Choice',
+    act1Inst: "Choose the correct preposition to complete each sentence about Marilyn Monroe's life and the theories surrounding her death.",
+    act2Label: 'Activity 2 of 3', act2Title: 'Fill in the Blank',
+    act2Inst: 'Select the correct preposition from the dropdown menu to complete each sentence.',
+    act3Label: 'Activity 3 of 3', act3Title: 'Drag & Drop',
+    act3Inst: 'Drag the correct preposition from the word bank into the gap in each sentence.',
+    next: 'Next question →', outOf: 'out of 15', restart: 'Start again',
+    fwLabel: 'One Last Scene', fwTitle: 'Write What You See',
+    fwInst: 'Look closely at the image below and write a short paragraph describing it. Try to use at least six different prepositions of place and movement (in, on, above, below, across, beside, through, behind...).',
+    fwPh: 'Start writing here... (aim for 80-120 words)',
+    fwShow: 'Show model paragraph', fwHide: 'Hide model paragraph',
+    fwDownload: '⬇ Download my writing', fwModel: 'Model paragraph',
+    fwEmpty: 'Write something first!',
+    words: n => n + ' word' + (n === 1 ? '' : 's'),
+    qOf: (a, b) => `Question ${a} of ${b}`,
+    choose: '— choose —', check: 'Check answer', dragHere: 'drag here',
+    correct: '✓ Correct!', wrong: '✗ Not quite.', answerIs: 'The correct answer is',
+    fin90: "Extraordinary! You've cracked the case — your preposition skills are as iconic as Marilyn herself.",
+    fin70: "Well done, darling. You've got a good eye for detail — keep practising and you'll reach the top.",
+    fin50: "A solid start. The mystery isn't over — review the answers and try again to sharpen your skills.",
+    fin0: 'Everyone starts somewhere. Revisit the lesson, and remember: even Marilyn had to rehearse.'
+  },
+  es: {
+    score: 'Puntos:', tag: 'B1 · Preposiciones',
+    heroSub: 'Practica las preposiciones de lugar, tiempo y movimiento con la historia de la estrella más icónica —y más misteriosa— de Hollywood.',
+    act1Label: 'Actividad 1 de 3', act1Title: 'Opción múltiple',
+    act1Inst: 'Elige la preposición correcta para completar cada frase sobre la vida de Marilyn Monroe y las teorías sobre su muerte.',
+    act2Label: 'Actividad 2 de 3', act2Title: 'Completa el hueco',
+    act2Inst: 'Elige la preposición correcta en el menú desplegable para completar cada frase.',
+    act3Label: 'Actividad 3 de 3', act3Title: 'Arrastra y suelta',
+    act3Inst: 'Arrastra la preposición correcta del banco de palabras al hueco de cada frase.',
+    next: 'Siguiente pregunta →', outOf: 'de 15', restart: 'Empezar de nuevo',
+    fwLabel: 'Una última escena', fwTitle: 'Escribe lo que ves',
+    fwInst: 'Mira con atención la imagen de abajo y escribe en inglés un párrafo breve que la describa. Intenta usar al menos seis preposiciones distintas de lugar y movimiento (in, on, above, below, across, beside, through, behind...).',
+    fwPh: 'Empieza a escribir aquí... (entre 80 y 120 palabras)',
+    fwShow: 'Ver párrafo modelo', fwHide: 'Ocultar párrafo modelo',
+    fwDownload: '⬇ Descargar mi texto', fwModel: 'Párrafo modelo',
+    fwEmpty: '¡Escribe algo primero!',
+    words: n => n + (n === 1 ? ' palabra' : ' palabras'),
+    qOf: (a, b) => `Pregunta ${a} de ${b}`,
+    choose: '— elige —', check: 'Comprobar', dragHere: 'arrastra aquí',
+    correct: '✓ ¡Correcto!', wrong: '✗ No del todo.', answerIs: 'La respuesta correcta es',
+    fin90: '¡Extraordinario! Has resuelto el caso: tus preposiciones son tan icónicas como la propia Marilyn.',
+    fin70: 'Muy bien. Tienes buen ojo para los detalles; sigue practicando y llegarás a lo más alto.',
+    fin50: 'Un buen comienzo. El misterio no ha terminado: repasa las respuestas y vuelve a intentarlo.',
+    fin0: 'Todo el mundo empieza por algún sitio. Repasa la lección y recuerda: hasta Marilyn tenía que ensayar.'
+  }
+};
+let lang = 'en';
+try { if (localStorage.getItem('marilyn-lang') === 'es') lang = 'es'; } catch (e) {}
+const T = k => STR[lang][k];
+const EXP = q => (lang === 'es' && q.exp_es) ? q.exp_es : q.exp;
+
 /* ═══════════════════════════════════════
    DATA
 ═══════════════════════════════════════ */
@@ -741,69 +823,79 @@ const mcQuestions = [
     q: "Marilyn Monroe was born ___ 1 June 1926, in Los Angeles.",
     opts: ["at", "on", "in", "during"],
     correct: 1,
-    exp: "<strong>On</strong> is used with specific dates and days of the week. We say 'on 1 June', 'on Monday', etc."
+    exp: "<strong>On</strong> is used with specific dates and days of the week. We say 'on 1 June', 'on Monday', etc.",
+    exp_es: "<strong>On</strong> se usa con fechas concretas y con los días de la semana: 'on 1 June', 'on Monday'."
   },
   {
     q: "She lived ___ a difficult childhood, moving between foster homes and an orphanage.",
-    opts: ["during", "through", "along", "beside"],
+    opts: ["over", "through", "along", "beside"],
     correct: 1,
-    exp: "<strong>Through</strong> expresses experiencing a difficult period from start to finish. 'During' is close, but 'through' emphasises overcoming the whole experience."
+    exp: "<strong>Through</strong> means experiencing a difficult period from start to finish: 'live through a war', 'go through a hard time'.",
+    exp_es: "<strong>Through</strong> significa vivir una etapa difícil de principio a fin: 'live through a war', 'go through a hard time'."
   },
   {
     q: "Monroe was found dead ___ her bedroom in Brentwood, California.",
-    opts: ["on", "inside", "in", "within"],
+    opts: ["on", "at", "in", "to"],
     correct: 2,
-    exp: "<strong>In</strong> is the standard preposition for rooms. 'In her bedroom' is the natural, correct expression."
+    exp: "<strong>In</strong> is the standard preposition for rooms: 'in her bedroom', 'in the kitchen'.",
+    exp_es: "<strong>In</strong> es la preposición habitual para las habitaciones: 'in her bedroom', 'in the kitchen'."
   },
   {
     q: "Her body was discovered ___ the early hours of 5 August 1962.",
-    opts: ["in", "during", "at", "on"],
+    opts: ["in", "at", "on", "to"],
     correct: 0,
-    exp: "<strong>In</strong> is used with 'the early hours'. Compare: 'in the morning', 'in the evening', 'in the early hours'."
+    exp: "<strong>In</strong> is used with 'the early hours'. Compare: 'in the morning', 'in the evening', 'in the early hours'.",
+    exp_es: "<strong>In</strong> se usa con 'the early hours', igual que 'in the morning' o 'in the evening'."
   },
   {
     q: "Many people believe there was a conspiracy ___ the highest levels of government.",
-    opts: ["at", "from", "by", "inside"],
+    opts: ["at", "on", "by", "to"],
     correct: 0,
-    exp: "<strong>At</strong> is used to describe position within a hierarchy: 'at the highest levels', 'at the top of the organisation'."
+    exp: "<strong>At</strong> describes a position in a hierarchy: 'at the highest levels', 'at the top of the organisation'.",
+    exp_es: "<strong>At</strong> indica una posición dentro de una jerarquía: 'at the highest levels', 'at the top of the organisation'."
   }
 ];
 
 const fitbQuestions = [
   {
-    sentence_before: "Monroe moved",
-    sentence_after: "Hollywood at the age of sixteen to pursue her dream of becoming a model.",
-    opts: ["to", "into", "towards", "through"],
+    sentence_before: "In 1946 she signed her first film contract",
+    sentence_after: "20th Century Fox.",
+    opts: ["with", "by", "of", "under"],
     correct: 0,
-    exp: "<strong>To</strong> indicates movement towards a destination. 'Moved to Hollywood' means she relocated there permanently."
+    exp: "<strong>With</strong> follows 'sign a contract' to name the other side of the deal: 'sign a contract with a studio'.",
+    exp_es: "<strong>With</strong> va detrás de 'sign a contract' para nombrar a la otra parte del acuerdo: 'sign a contract with a studio'."
   },
   {
     sentence_before: "She married the baseball player Joe DiMaggio",
-    sentence_after: "January 1954, after a short courtship.",
-    opts: ["at", "in", "on", "during"],
+    sentence_after: "January 1954, after dating him for two years.",
+    opts: ["at", "in", "on", "for"],
     correct: 1,
-    exp: "<strong>In</strong> is used with months and years: 'in January', 'in 1954', 'in the 1960s'."
+    exp: "<strong>In</strong> is used with months and years: 'in January', 'in 1954', 'in the 1960s'.",
+    exp_es: "<strong>In</strong> se usa con meses y años: 'in January', 'in 1954', 'in the 1960s'."
   },
   {
     sentence_before: "Conspiracy theorists claim that powerful people wanted to keep her",
     sentence_after: "of public life.",
-    opts: ["away", "out", "outside", "apart"],
+    opts: ["away", "out", "aside", "apart"],
     correct: 1,
-    exp: "<strong>Out of</strong> is the correct phrasal expression here. 'Keep someone out of' a situation means to prevent them from being involved."
+    exp: "<strong>Out of</strong> is the correct expression here. 'Keep someone out of' a situation means to prevent them from being involved.",
+    exp_es: "<strong>Out of</strong> es la expresión correcta. 'Keep someone out of' algo significa impedir que esa persona participe."
   },
   {
     sentence_before: "Her famous white dress blew up",
     sentence_after: "a subway grate during filming in New York.",
     opts: ["over", "along", "through", "across"],
     correct: 0,
-    exp: "<strong>Over</strong> means directly above something. She was standing over the grate, and the air from the train below blew her dress up."
+    exp: "<strong>Over</strong> means directly above something. She was standing over the grate, and the air from the train below blew her dress up.",
+    exp_es: "<strong>Over</strong> significa justo encima de algo. Estaba de pie sobre la rejilla y el aire del metro, desde abajo, le levantó el vestido."
   },
   {
     sentence_before: "The FBI kept a file",
     sentence_after: "Monroe for many years because of her political associations.",
-    opts: ["about", "of", "on", "over"],
+    opts: ["at", "of", "on", "over"],
     correct: 2,
-    exp: "<strong>On</strong> is used in the expression 'keep a file on someone'. It is the standard collocation in law enforcement and intelligence contexts."
+    exp: "<strong>On</strong> is used in the expression 'keep a file on someone'. It is the standard collocation in law enforcement and intelligence contexts.",
+    exp_es: "<strong>On</strong> es la colocación fija: 'keep a file on someone' (tener un expediente sobre alguien). Es la forma habitual en el lenguaje policial y de inteligencia."
   }
 ];
 
@@ -813,35 +905,40 @@ const dndQuestions = [
     after: "the cover of the very first issue of Playboy magazine in 1953.",
     correct: "on",
     pool: ["on", "in", "at", "above"],
-    exp: "<strong>On</strong> is used with surfaces like covers, pages, and screens: 'on the cover', 'on page 5', 'on television'."
+    exp: "<strong>On</strong> is used with surfaces like covers, pages, and screens: 'on the cover', 'on page 5', 'on television'.",
+    exp_es: "<strong>On</strong> se usa con superficies como portadas, páginas y pantallas: 'on the cover', 'on page 5', 'on television'."
   },
   {
     before: "She was famous",
     after: "her breathy singing voice and her natural charm.",
     correct: "for",
     pool: ["for", "of", "with", "by"],
-    exp: "<strong>Famous for</strong> is the correct collocation when describing what made someone well known. 'Famous of' is not standard English."
+    exp: "<strong>Famous for</strong> is the correct collocation when describing what made someone well known. 'Famous of' is not standard English.",
+    exp_es: "<strong>Famous for</strong> es la colocación correcta para decir por qué alguien es conocido. 'Famous of' no es inglés estándar."
   },
   {
     before: "She died",
     after: "the age of thirty-six, at the height of her fame.",
     correct: "at",
     pool: ["at", "in", "on", "by"],
-    exp: "<strong>At</strong> is always used with ages: 'at the age of thirty-six', 'at thirty-six', 'at a young age'."
+    exp: "<strong>At</strong> is always used with ages: 'at the age of thirty-six', 'at thirty-six', 'at a young age'.",
+    exp_es: "<strong>At</strong> se usa siempre con la edad: 'at the age of thirty-six', 'at thirty-six', 'at a young age'."
   },
   {
     before: "Some believe she was silenced because she knew too much",
     after: "the Kennedy family's private affairs.",
     correct: "about",
-    pool: ["about", "of", "on", "regarding"],
-    exp: "<strong>About</strong> is the natural preposition after 'know' when referring to a subject or topic: 'know about something'."
+    pool: ["about", "for", "at", "to"],
+    exp: "<strong>About</strong> is the natural preposition after 'know' when referring to a subject or topic: 'know about something'.",
+    exp_es: "<strong>About</strong> es la preposición natural detrás de 'know' cuando se habla de un tema: 'know about something'."
   },
   {
-    before: "Her death was officially ruled a probable suicide",
+    before: "The coroner said she had died",
     after: "an overdose of barbiturates.",
     correct: "from",
-    pool: ["from", "by", "due", "through"],
-    exp: "<strong>From</strong> is used when describing the cause of death in medical or formal language: 'died from an overdose', 'died from cancer'."
+    pool: ["from", "at", "on", "under"],
+    exp: "<strong>Die from</strong> (or <strong>die of</strong>) gives the cause of death: 'died from an overdose', 'died of cancer'.",
+    exp_es: "<strong>Die from</strong> (o <strong>die of</strong>) indica la causa de la muerte: 'died from an overdose', 'died of cancer'."
   }
 ];
 
@@ -854,8 +951,21 @@ let fitbIndex = 0;
 let dndIndex = 0;
 const TOTAL = 15;
 const labels = ['A','B','C','D'];
+// Feedback is kept as a function so a language switch can rewrite it in place.
+const fbFns = {};
+let finalPct = null;
 
 function updateScore(){ document.getElementById('score-display').textContent = score; }
+
+function qCounter(i, n){
+  return `<div class="question-counter" data-qc="${i}|${n}">${T('qOf')(i, n)}</div>`;
+}
+
+function verdict(ok, answer, q){
+  return ok
+    ? `<span class="feedback-correct">${T('correct')}</span> ${EXP(q)}`
+    : `<span class="feedback-wrong">${T('wrong')}</span> ${T('answerIs')} <strong>${answer}</strong>. ${EXP(q)}`;
+}
 
 /* ═══════════════════════════════════════
    ACTIVITY 1 – MULTIPLE CHOICE
@@ -865,11 +975,12 @@ function renderMC(){
   const pb = ((mcIndex)/mcQuestions.length)*100;
   document.getElementById('pb1').style.width = pb+'%';
   document.getElementById('mc-next').classList.remove('show');
+  delete fbFns['mc-feedback'];
 
   const container = document.getElementById('mc-container');
   container.innerHTML = `
     <div class="question-card">
-      <div class="question-counter">Question ${mcIndex+1} of ${mcQuestions.length}</div>
+      ${qCounter(mcIndex+1, mcQuestions.length)}
       <div class="question-text">${q.q}</div>
       <div class="options" id="mc-opts">
         ${q.opts.map((o,i)=>`
@@ -887,16 +998,16 @@ function answerMC(chosen){
   const btns = document.querySelectorAll('.option-btn');
   btns.forEach(b=>b.disabled=true);
 
-  if(chosen===correct){
+  const ok = chosen===correct;
+  if(ok){
     score++;
     updateScore();
     btns[chosen].classList.add('correct');
-    showFeedback('mc-feedback',true,`<span class="feedback-correct">✓ Correct!</span> ${q.exp}`);
   } else {
     btns[chosen].classList.add('wrong');
     btns[correct].classList.add('correct');
-    showFeedback('mc-feedback',false,`<span class="feedback-wrong">✗ Not quite.</span> The correct answer is <strong>${q.opts[correct]}</strong>. ${q.exp}`);
   }
+  showFeedback('mc-feedback', () => verdict(ok, q.opts[correct], q));
   document.getElementById('pb1').style.width = ((mcIndex+1)/mcQuestions.length)*100+'%';
   document.getElementById('mc-next').classList.add('show');
 }
@@ -915,18 +1026,19 @@ function renderFITB(){
   const pb = ((fitbIndex)/fitbQuestions.length)*100;
   document.getElementById('pb2').style.width = pb+'%';
   document.getElementById('fitb-next').classList.remove('show');
+  delete fbFns['fitb-feedback'];
 
   const container = document.getElementById('fitb-container');
   const selectHtml = `<select class="fitb-select" id="fitb-select">
-    <option value="">— choose —</option>
+    <option value="" data-i18n="choose">${T('choose')}</option>
     ${q.opts.map((o,i)=>`<option value="${i}">${o}</option>`).join('')}
   </select>`;
 
   container.innerHTML = `
     <div class="question-card">
-      <div class="question-counter">Question ${fitbIndex+1} of ${fitbQuestions.length}</div>
+      ${qCounter(fitbIndex+1, fitbQuestions.length)}
       <div class="question-text">${q.sentence_before} ${selectHtml} ${q.sentence_after}</div>
-      <button class="fitb-submit" id="fitb-submit-btn" onclick="answerFITB()">Check answer</button>
+      <button class="fitb-submit" id="fitb-submit-btn" onclick="answerFITB()" data-i18n="check">${T('check')}</button>
       <div class="feedback-box" id="fitb-feedback"></div>
     </div>`;
 }
@@ -939,13 +1051,9 @@ function answerFITB(){
   sel.disabled = true;
   document.getElementById('fitb-submit-btn').disabled = true;
 
-  if(chosen===q.correct){
-    score++;
-    updateScore();
-    showFeedback('fitb-feedback',true,`<span class="feedback-correct">✓ Correct!</span> ${q.exp}`);
-  } else {
-    showFeedback('fitb-feedback',false,`<span class="feedback-wrong">✗ Not quite.</span> The correct answer is <strong>${q.opts[q.correct]}</strong>. ${q.exp}`);
-  }
+  const ok = chosen===q.correct;
+  if(ok){ score++; updateScore(); }
+  showFeedback('fitb-feedback', () => verdict(ok, q.opts[q.correct], q));
   document.getElementById('pb2').style.width = ((fitbIndex+1)/fitbQuestions.length)*100+'%';
   document.getElementById('fitb-next').classList.add('show');
 }
@@ -966,6 +1074,7 @@ function renderDND(){
   const pb = ((dndIndex)/dndQuestions.length)*100;
   document.getElementById('pb3').style.width = pb+'%';
   document.getElementById('dnd-next').classList.remove('show');
+  delete fbFns['dnd-feedback'];
 
   // Shuffle pool display
   const shuffled = [...q.pool].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
@@ -973,12 +1082,12 @@ function renderDND(){
   const container = document.getElementById('dnd-container');
   container.innerHTML = `
     <div class="question-card">
-      <div class="question-counter">Question ${dndIndex+1} of ${dndQuestions.length}</div>
+      ${qCounter(dndIndex+1, dndQuestions.length)}
       <div class="word-bank" id="dnd-bank">
         ${shuffled.map(w=>`<div class="word-chip" draggable="true" data-word="${w}" id="chip-${w}">${w}</div>`).join('')}
       </div>
       <div class="drag-sentence">
-        ${q.before} <span class="drop-zone" id="dnd-drop" data-hint="drag here">drag here</span> ${q.after}
+        ${q.before} <span class="drop-zone" id="dnd-drop" data-hint="drag here">${T('dragHere')}</span> ${q.after}
       </div>
       <div class="feedback-box" id="dnd-feedback"></div>
     </div>`;
@@ -1023,15 +1132,15 @@ function checkDND(){
   // disable all chips
   document.querySelectorAll('.word-chip').forEach(c=>{ c.draggable=false; c.style.cursor='default'; });
 
-  if(placed===q.correct){
+  const ok = placed===q.correct;
+  if(ok){
     score++;
     updateScore();
     dz.classList.add('dz-correct');
-    showFeedback('dnd-feedback',true,`<span class="feedback-correct">✓ Correct!</span> ${q.exp}`);
   } else {
     dz.classList.add('dz-wrong');
-    showFeedback('dnd-feedback',false,`<span class="feedback-wrong">✗ Not quite.</span> The correct answer is <strong>${q.correct}</strong>. ${q.exp}`);
   }
+  showFeedback('dnd-feedback', () => verdict(ok, q.correct, q));
   document.getElementById('pb3').style.width = ((dndIndex+1)/dndQuestions.length)*100+'%';
   document.getElementById('dnd-next').classList.add('show');
 }
@@ -1063,9 +1172,10 @@ document.getElementById('dnd-next').addEventListener('click',()=>{
 /* ═══════════════════════════════════════
    HELPERS
 ═══════════════════════════════════════ */
-function showFeedback(id, correct, html){
+function showFeedback(id, fn){
+  fbFns[id] = fn;
   const fb = document.getElementById(id);
-  fb.innerHTML = html;
+  fb.innerHTML = fn();
   fb.classList.add('show');
 }
 
@@ -1074,23 +1184,24 @@ function switchActivity(from, to){
   document.getElementById(to).classList.add('active');
 }
 
+function finalMsg(){
+  if(finalPct===null) return;
+  const k = finalPct>=0.9 ? 'fin90' : finalPct>=0.7 ? 'fin70' : finalPct>=0.5 ? 'fin50' : 'fin0';
+  document.getElementById('final-msg').textContent = T(k);
+}
+
 function showFinalScreen(){
   document.getElementById('activity-wrapper').style.display='none';
   const fs = document.getElementById('final-screen');
   fs.classList.add('show');
   document.getElementById('final-score').textContent = score;
-  const pct = score/TOTAL;
-  let msg;
-  if(pct>=0.9) msg="Extraordinary! You've cracked the case — your preposition skills are as iconic as Marilyn herself.";
-  else if(pct>=0.7) msg="Well done, darling. You've got a good eye for detail — keep practising and you'll reach the top.";
-  else if(pct>=0.5) msg="A solid start. The mystery isn't over — review the answers and try again to sharpen your skills.";
-  else msg="Everyone starts somewhere. Revisit the lesson, and remember: even Marilyn had to rehearse.";
-  document.getElementById('final-msg').textContent = msg;
+  finalPct = score/TOTAL;
+  finalMsg();
   document.getElementById('freewrite-section').classList.add('show');
 }
 
 function restartAll(){
-  score=0; mcIndex=0; fitbIndex=0; dndIndex=0;
+  score=0; mcIndex=0; fitbIndex=0; dndIndex=0; finalPct=null;
   updateScore();
   document.getElementById('final-screen').classList.remove('show');
   document.getElementById('freewrite-section').classList.remove('show');
@@ -1107,23 +1218,24 @@ function restartAll(){
 const fwTextarea = document.getElementById('fw-textarea');
 const fwWordCount = document.getElementById('fw-word-count');
 
-fwTextarea.addEventListener('input', () => {
+function updateWordCount(){
   const words = fwTextarea.value.trim().split(/\s+/).filter(w => w.length > 0);
   const count = fwTextarea.value.trim() === '' ? 0 : words.length;
-  fwWordCount.textContent = count + ' word' + (count === 1 ? '' : 's');
+  fwWordCount.textContent = T('words')(count);
   fwWordCount.classList.toggle('ok', count >= 80);
-});
+}
+fwTextarea.addEventListener('input', updateWordCount);
 
 function toggleModel(){
   const model = document.getElementById('fw-model');
   const btn = document.getElementById('fw-model-btn');
   model.classList.toggle('show');
-  btn.textContent = model.classList.contains('show') ? 'Hide model paragraph' : 'Show model paragraph';
+  btn.textContent = model.classList.contains('show') ? T('fwHide') : T('fwShow');
 }
 
 function downloadWriting(){
   const text = fwTextarea.value.trim();
-  if(!text){ alert('Write something first!'); return; }
+  if(!text){ alert(T('fwEmpty')); return; }
   const content = 'Forbes English — The Mystery of Marilyn Monroe\nFree writing: Write What You See\n\n' + text + '\n';
   const blob = new Blob([content], {type: 'text/plain'});
   const url = URL.createObjectURL(blob);
@@ -1137,9 +1249,40 @@ function downloadWriting(){
 }
 
 /* ═══════════════════════════════════════
+   APPLY LANGUAGE
+═══════════════════════════════════════ */
+function applyLang(){
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-i18n]').forEach(el => { el.innerHTML = T(el.dataset.i18n); });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => { el.placeholder = T(el.dataset.i18nPh); });
+  document.querySelectorAll('[data-qc]').forEach(el => {
+    const [a, b] = el.dataset.qc.split('|'); el.textContent = T('qOf')(a, b);
+  });
+  const dz = document.getElementById('dnd-drop');
+  if(dz && !dz.dataset.placed) dz.textContent = T('dragHere');
+  Object.keys(fbFns).forEach(id => {
+    const fb = document.getElementById(id);
+    if(fb) fb.innerHTML = fbFns[id]();
+  });
+  const model = document.getElementById('fw-model');
+  document.getElementById('fw-model-btn').textContent = model.classList.contains('show') ? T('fwHide') : T('fwShow');
+  updateWordCount();
+  finalMsg();
+}
+
+const langSel = document.getElementById('lang-select');
+langSel.value = lang;
+langSel.addEventListener('change', () => {
+  lang = langSel.value;
+  try { localStorage.setItem('marilyn-lang', lang); } catch (e) {}
+  applyLang();
+});
+
+/* ═══════════════════════════════════════
    INIT
 ═══════════════════════════════════════ */
 renderMC();
+applyLang();
 </script>
 </body>
 </html>
