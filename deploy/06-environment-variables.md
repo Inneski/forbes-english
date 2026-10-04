@@ -79,3 +79,28 @@ under `[vars]`. Without it, purchases work and no email is sent.
 
 Tests: `node deploy/test-webhook.mjs` (checkout, founder count, webhook)
 and `node deploy/test-paywall.mjs`.
+
+## Email: the weekly "Mission N is open" and the marking inbox (step 9)
+
+Sent through **Resend** (resend.com). Until the key is set, nothing is sent
+and nothing else changes; `/api/paywall-status` reports `hasMissionEmail`
+and `hasMarkingMail`.
+
+1. Make a Resend account and add the domain **forbesenglish.com**. Resend
+   lists DNS records (SPF, DKIM, and a return-path); add them in
+   Cloudflare → forbesenglish.com → DNS, and wait for Resend to show the
+   domain as verified.
+2. Create an API key in Resend (sending access is enough).
+3. Cloudflare → Workers → forbes-english → Settings → Variables and secrets:
+   add `RESEND_API_KEY` as a **secret**. The rest is already in
+   `wrangler.toml`: `MAIL_FROM` (missions@forbesenglish.com),
+   `MAIL_REPLY_TO` and `MARKING_MAIL_TO` (forbes@goodtimebook.com).
+4. The cron (`[triggers]` in `wrangler.toml`, 06:00 UTC daily) deploys with
+   the Worker. Cloudflare → the Worker → Settings → Triggers shows it.
+
+Who gets the email: every Block Camp reader (Term 1 buyer, or subscriber
+with a started clock) whose next mission opened in the last 48 hours; not
+Mission 1, not the owner, not anyone with `profiles.blockcamp_emails =
+false` (set it by hand when someone replies asking to stop). Each email is
+recorded in `blockcamp_mission_emails` before it is sent, so nobody gets
+the same mission twice. Test: `node deploy/test-weekly.mjs`.

@@ -21,6 +21,14 @@ STRIPE_PRICE_ID_IELTS_MARKING = "price_1UMrR60R7wvAnqirEMCYlH9q"
 STRIPE_PRICE_ID_MARKING = "price_1UMrYb0R7wvAnqiritAkZlT5"
 # FOUNDER: EUR 7 off Block Camp Term 1, 50 redemptions.
 STRIPE_PROMO_FOUNDER = "promo_1UMrlb0R7wvAnqirXLEXdWdf"
+# Email (pricing step 9). RESEND_API_KEY is a secret: set it in Cloudflare
+# (Workers -> forbes-english -> Settings -> Variables and secrets), never
+# here. MAIL_FROM must be on a domain verified in Resend. Until the key is
+# set, the cron runs and sends nothing.
+MAIL_FROM = "Forbes English <missions@forbesenglish.com>"
+MAIL_REPLY_TO = "forbes@goodtimebook.com"
+# Told when essay credits are bought; the address buyers send essays to.
+MARKING_MAIL_TO = "forbes@goodtimebook.com"
 
 [assets]
 directory = "."
@@ -35,10 +43,8 @@ not_found_handling = "404-page"
 # through to env.ASSETS.fetch() at ~0.6ms.
 run_worker_first = true
 
-# The marking inbox is emailed when essay credits are bought (src/index.js,
-# notifyMarking). Off until Email Routing is on for forbesenglish.com and the
-# inbox is a verified destination there; then uncomment, set the two
-# addresses, and add MARKING_MAIL_FROM / MARKING_MAIL_TO under [vars].
-# [[send_email]]
-# name = "MARKING_MAIL"
-# destination_address = "you@example.com"
+# The weekly "Mission N is open" email: once a day at 06:00 UTC, the Worker
+# mails every Block Camp reader whose next mission opened in the last 48
+# hours (src/index.js, sendMissionEmails).
+[triggers]
+crons = ["0 6 * * *"]

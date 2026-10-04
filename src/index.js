@@ -22,9 +22,12 @@
 //   STRIPE_PRICE_ID_IELTS_MARKING   €69, IELTS + two marked essays
 //   STRIPE_PRICE_ID_MARKING         €49, two marked essays on any account
 //   STRIPE_PROMO_FOUNDER            promo_… for FOUNDER (€7 off Term 1, 50 uses)
-// Optional: MARKING_MAIL, a Cloudflare send_email binding, plus
-// MARKING_MAIL_FROM and MARKING_MAIL_TO — the marking inbox is told when
-// credits are bought.
+// Email (step 9): RESEND_API_KEY (a secret) and MAIL_FROM (an address on
+// a domain verified in Resend) send the weekly "Mission N is open" email
+// from the daily cron, and tell MARKING_MAIL_TO when essay credits are
+// bought. Without them nothing is sent and nothing else changes. (A
+// Cloudflare send_email binding, MARKING_MAIL + MARKING_MAIL_FROM, still
+// works for the marking inbox alone.)
 
 // Email Routing's message type, for the marking-inbox note (notifyMarking).
 import { EmailMessage } from "cloudflare:email";
@@ -64,6 +67,11 @@ const PLAN_TRACKS = {
 };
 
 export default {
+  // The daily cron (wrangler.toml [triggers]): the weekly mission emails.
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(sendMissionEmails(env, event && event.scheduledTime ? event.scheduledTime : Date.now()));
+  },
+
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
@@ -727,7 +735,10 @@ async function handlePaywallStatus(request, url, env, ctx) {
     hasIeltsMarkingPrice: Boolean(env.STRIPE_PRICE_ID_IELTS_MARKING),
     hasMarkingPrice: Boolean(env.STRIPE_PRICE_ID_MARKING),
     hasFounderPromo: Boolean(env.STRIPE_PROMO_FOUNDER),
-    hasMarkingMail: Boolean(env.MARKING_MAIL && env.MARKING_MAIL_FROM && env.MARKING_MAIL_TO),
+    hasMarkingMail: Boolean(env.MARKING_MAIL_TO &&
+      ((env.RESEND_API_KEY && env.MAIL_FROM) || (env.MARKING_MAIL && env.MARKING_MAIL_FROM))),
+    // The weekly "Mission N is open" email (the daily cron) can send.
+    hasMissionEmail: Boolean(env.RESEND_API_KEY && env.MAIL_FROM && env.SUPABASE_SERVICE_ROLE_KEY),
   };
 
   report.configOk =
@@ -1164,8 +1175,23 @@ function encodeHeader(s) {
 }
 
 async function notifyMarking(env, info) {
-  if (!env.MARKING_MAIL || !env.MARKING_MAIL_FROM || !env.MARKING_MAIL_TO) return;
+  if (!env.MARKING_MAIL_TO) return;
   const clean = (s) => String(s).replace(/[\r\n]+/g, " ").slice(0, 200);
+  const subject = `Marking bought: ${info.credits} essays (${clean(info.productName)})`;
+  const text = [
+    `${clean(info.buyer) || "A buyer"} bought ${clean(info.productName)}: ${info.credits} essays to mark.`,
+    "",
+    `Paid: ${info.paidAt}`,
+    `Supabase user: ${clean(info.userId)}`,
+    `Stripe checkout: ${clean(info.sessionId)}`,
+  ].join("\n");
+  // Resend first: it is what the weekly mission email uses, so one setup
+  // covers both. The Email Routing binding is the fallback.
+  if (env.RESEND_API_KEY && env.MAIL_FROM) {
+    await sendMail(env, { to: env.MARKING_MAIL_TO, subject, text, key: `marking-${info.sessionId}` });
+    return;
+  }
+  if (!env.MARKING_MAIL || !env.MARKING_MAIL_FROM) return;
   const raw = [
     `From: Forbes English <${clean(env.MARKING_MAIL_FROM)}>`,
     `To: <${clean(env.MARKING_MAIL_TO)}>`,
@@ -1257,6 +1283,167 @@ function supabaseHeaders(env) {
 // Verifies the `Stripe-Signature` header using the raw request body, per
 // https://stripe.com/docs/webhooks#verify-manually — implemented with the
 // Web Crypto API since Cloudflare Workers don't have Node's `crypto`.
+// ─────────────────────────────────────────────────────────────────────────
+// Email: Resend, and the weekly "Mission N is open" (pricing step 9)
+// ─────────────────────────────────────────────────────────────────────────
+
+/**
+ * Sends one email through Resend (https://resend.com/docs). `key` makes a
+ * retry within 24 hours a no-op at Resend's end, on top of our own claim.
+ * Returns true when Resend accepted it.
+ */
+async function sendMail(env, { to, subject, text, html, key }) {
+  if (!env.RESEND_API_KEY || !env.MAIL_FROM) return false;
+  try {
+    const res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${env.RESEND_API_KEY}`,
+        "Content-Type": "application/json",
+        ...(key ? { "Idempotency-Key": key.slice(0, 256) } : {}),
+      },
+      body: JSON.stringify({
+        from: env.MAIL_FROM, to: [to], subject, text, ...(html ? { html } : {}),
+        reply_to: env.MAIL_REPLY_TO || "forbes@goodtimebook.com",
+      }),
+    });
+    if (!res.ok) console.error(`email to ${to} refused by Resend: ${res.status} ${await res.text().catch(() => "")}`);
+    return res.ok;
+  } catch (err) {
+    console.error(`email to ${to} failed: ${err && err.message}`);
+    return false;
+  }
+}
+
+/**
+ * Once a day (the cron in wrangler.toml): every Block Camp reader whose
+ * next mission opened in the last 48 hours gets one email saying so, with
+ * the deck and the quest and a link. Term 1 buyers count from their
+ * payment, subscribers from their first Block Camp visit, exactly as the
+ * gate does. Mission 1 opens on purchase and is not mailed; a mission that
+ * opened longer ago is never mailed late (a missed day, or a subscriber
+ * whose clock was set back at go-live, gets no catch-up flood). The owner,
+ * and anyone with profiles.blockcamp_emails = false, get none.
+ *
+ * Each email is claimed in blockcamp_mission_emails before it is sent, so
+ * two runs cannot both send it; a send that fails gives the claim back, and
+ * the next run tries again while the 48 hours last.
+ */
+const MISSION_EMAIL_WINDOW_MS = 48 * 3600000;
+
+async function sendMissionEmails(env, now = Date.now()) {
+  const summary = { sent: 0, failed: 0, skipped: 0 };
+  if (!env.RESEND_API_KEY || !env.MAIL_FROM || !env.SUPABASE_SERVICE_ROLE_KEY) {
+    console.log("mission emails: not configured (RESEND_API_KEY, MAIL_FROM, SUPABASE_SERVICE_ROLE_KEY)");
+    return { ...summary, off: true };
+  }
+  const svc = { headers: supabaseHeaders(env) };
+  const read = async (path, init = svc) => {
+    const res = await fetch(`${env.SUPABASE_URL}/rest/v1/${path}`, init);
+    if (!res.ok) throw new Error(`${path.split("?")[0]} ${res.status}`);
+    return res.json();
+  };
+
+  let plans, subs, lessons;
+  try {
+    [plans, subs, lessons] = await Promise.all([
+      read("user_plans?select=user_id,term,starts_at&product=eq.blockcamp&status=in.(active,trialing)"),
+      read("profiles?select=id&blockcamp_first_open=not.is.null&subscription_status=in.(active,trialing)"),
+      read("lessons?select=file,title,mission&track=eq.blockcamp&term=eq.1&mission=not.is.null",
+        { headers: { apikey: env.SUPABASE_ANON_KEY, Authorization: `Bearer ${env.SUPABASE_ANON_KEY}` } }),
+    ]);
+  } catch (err) {
+    console.error(`mission emails: could not read the catalogue or the plans: ${err.message}`);
+    return { ...summary, error: true };
+  }
+
+  const ids = [...new Set(plans.map((p) => p.user_id).concat(subs.map((s) => s.id)))];
+  if (!ids.length) return summary;
+  let profiles;
+  try {
+    profiles = await read(`profiles?select=id,email,owner,subscription_status,blockcamp_first_open,blockcamp_emails&id=in.(${ids.map(encodeURIComponent).join(",")})`);
+  } catch (err) {
+    console.error(`mission emails: could not read the profiles: ${err.message}`);
+    return { ...summary, error: true };
+  }
+
+  for (const p of profiles) {
+    if (p.owner || p.blockcamp_emails === false || !p.email) { summary.skipped++; continue; }
+    const starts = plans.filter((x) => x.user_id === p.id && (Number(x.term) || 1) === 1)
+      .map((x) => Date.parse(x.starts_at));
+    if (ACTIVE_STATUSES.has(p.subscription_status) && p.blockcamp_first_open) starts.push(Date.parse(p.blockcamp_first_open));
+    const start = Math.min(...starts.filter(Number.isFinite));
+    if (!Number.isFinite(start)) { summary.skipped++; continue; }
+
+    const mission = Math.floor((now - start) / WEEK_MS) + 1;
+    const opensAt = start + (mission - 1) * WEEK_MS;
+    if (mission < 2 || mission > 12 || now - opensAt > MISSION_EMAIL_WINDOW_MS) { summary.skipped++; continue; }
+
+    // Claim it. A duplicate means another run already did.
+    const claim = await fetch(
+      `${env.SUPABASE_URL}/rest/v1/blockcamp_mission_emails?on_conflict=user_id,term,mission`,
+      { method: "POST",
+        headers: { ...supabaseHeaders(env), "Prefer": "return=representation,resolution=ignore-duplicates" },
+        body: JSON.stringify({ user_id: p.id, term: 1, mission }) }
+    ).then(async (r) => (r.ok ? (await r.json()).length > 0 : null)).catch(() => null);
+    if (claim === false) { summary.skipped++; continue; }
+    if (claim === null) { summary.failed++; console.error(`mission emails: could not claim ${p.id} mission ${mission}`); continue; }
+
+    const mail = missionEmail(env, mission, lessons, opensAt);
+    const ok = await sendMail(env, { to: p.email, ...mail, key: `mission-${p.id}-1-${mission}` });
+    if (ok) { summary.sent++; continue; }
+    summary.failed++;
+    // Give the claim back so the next run can try again.
+    await fetch(
+      `${env.SUPABASE_URL}/rest/v1/blockcamp_mission_emails?user_id=eq.${encodeURIComponent(p.id)}&term=eq.1&mission=eq.${mission}`,
+      { method: "DELETE", headers: supabaseHeaders(env) }
+    ).catch(() => {});
+  }
+  console.log(`mission emails: ${JSON.stringify(summary)}`);
+  return summary;
+}
+
+/** The email for one mission: subject, plain text and HTML. */
+function missionEmail(env, mission, lessons, opensAt) {
+  const these = lessons.filter((l) => Number(l.mission) === mission);
+  const deck = these.find((l) => l.file.startsWith("blockcamp-"));
+  const quest = these.find((l) => !l.file.startsWith("blockcamp-"));
+  const clean = (t) => String(t || "").replace(/^Block Camp\s*[—–-]\s*/, "");
+  const link = `${env.SITE_URL}/${deck ? deck.file : "block-camp.html"}`;
+  const next = mission < 12
+    ? `Mission ${mission + 1} opens on ${new Date(opensAt + WEEK_MS).toLocaleDateString("en-GB",
+        { weekday: "long", day: "numeric", month: "long", timeZone: "UTC" })}.`
+    : "That is the last mission of Term 1: every mission is open now, and yours to keep.";
+  const lines = [
+    `Mission ${mission} of Block Camp Term 1 is open.`,
+    "",
+    deck ? `Deck: ${clean(deck.title)}` : "",
+    quest ? `Quest: ${clean(quest.title)}` : "",
+    "",
+    `Open Mission ${mission}: ${link}`,
+    "",
+    `Missions 1 to ${mission} are open now. ${next}`,
+    "",
+    "Forbes English",
+    "",
+    "You are getting this because Block Camp is on your Forbes English account. To stop these emails, reply and say so.",
+  ].filter((l, i, a) => l !== "" || a[i - 1] !== "");
+  const e = escapeHtml;
+  const html = [
+    `<div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.5;color:#111;max-width:520px">`,
+    `<p style="font-size:20px;font-weight:bold;margin:0 0 12px">Mission ${mission} is open</p>`,
+    `<p style="margin:0 0 12px">Mission ${mission} of Block Camp Term 1 is open.</p>`,
+    deck ? `<p style="margin:0">Deck: <strong>${e(clean(deck.title))}</strong></p>` : "",
+    quest ? `<p style="margin:0">Quest: <strong>${e(clean(quest.title))}</strong></p>` : "",
+    `<p style="margin:20px 0"><a href="${e(link)}" style="background:#1b3a28;color:#faf8f3;padding:12px 22px;border-radius:999px;text-decoration:none;font-weight:bold">Open Mission ${mission}</a></p>`,
+    `<p style="margin:0 0 12px">Missions 1 to ${mission} are open now. ${e(next)}</p>`,
+    `<p style="margin:0 0 24px">Forbes English</p>`,
+    `<p style="font-size:12px;color:#6b7a6b;margin:0">You are getting this because Block Camp is on your Forbes English account. To stop these emails, reply and say so.</p>`,
+    `</div>`,
+  ].join("");
+  return { subject: `Mission ${mission} is open — Block Camp`, text: lines.join("\n"), html };
+}
+
 /** The subscription as Stripe has it now, or null if it cannot be read. */
 async function currentSubscription(env, id) {
   try {
