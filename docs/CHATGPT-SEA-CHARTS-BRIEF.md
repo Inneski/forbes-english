@@ -1,91 +1,104 @@
-# Brief for ChatGPT: the ship's hold, and upgrades for the two new sea charts
+# Brief for ChatGPT: the ship's rooms, and upgrades for the two new sea charts
 
 **How to use this file.** Each block between the rules is a message for
-ChatGPT. Attach the images it names, then paste the text. Do one picture per
-conversation. Save what comes back into
-`C:\Users\black\Documents\FORBES\incoming\sea-charts\` under the name each
-part gives, and tell Claude it's there.
+ChatGPT. Paste them in order. Save each picture into
+`C:\Users\black\Documents\FORBES\incoming\sea-charts\` under the name given
+above its message, and tell Claude they're there.
 
-**Why ChatGPT and not Midjourney.** ChatGPT copies an attached layout
-closely, and that is how the Gerundia chart was made. The words on these
-pictures are written by the lesson page, on top of the art. When ChatGPT keeps
-the layout, every word lands where it belongs without being moved by hand.
+**No words go in any picture.** The lesson page labels the objects itself,
+on top of the art. That keeps the labels translatable, and ChatGPT's
+lettering is never quite right.
 
-**The images to attach are on the PC:**
+## Part 1: the three rooms of the ship (needed for the lesson)
 
-| name in the prompts | file |
-|---|---|
-| the style picture (with words) | `FORBES\sailing-the-seas-of-grammar\hero.jpg` |
-| the style picture (no words) | `FORBES\sailing-the-seas-of-grammar\chart-clean.jpg` |
-| the hold layout | `FORBES\docs\sea-charts\countable-hold-plain.png` |
-| the countable map layout | `FORBES\docs\sea-charts\countable-chart.png` |
-| the verbs map layout | `FORBES\docs\sea-charts\verbs-chart.png` |
+These are real rooms, painted as scenes you could stand inside. There are
+two rooms full of one kind of noun or the other, and the space between them
+where both kinds sit together. **Do all three in one conversation**, so they
+come out as the same ship in the same light.
 
-## Part 1: the ship's hold (needed for the lesson)
+**Attach first:** `FORBES\sailing-the-seas-of-grammar\chart-clean.jpg`, the
+Gerundia chart, so the rooms belong to the same family. It travels with the
+first message only.
 
-**Attach:** `chart-clean.jpg` first, then `countable-hold-plain.png`.
-**Save as:** `hold.png`
+### Picture 1, the store cabin: everything countable. Save as `room-count.png`.
 
 ---
 
-I'm attaching two images.
+The attached image is from a series of illustrated grammar sea charts. Paint a picture in the same style: hand-painted, watercolour with fine ink hatching, aged parchment tones.
 
-Image 1 is a finished illustration from a series of grammar sea charts. Match its style exactly: hand-painted, watercolour with fine ink hatching on aged parchment, the same palette, the same line work.
+Paint a real room inside an old wooden sailing ship: the ship's store cabin, seen as if you are standing in the doorway. It has curved timber walls, low beams, a round porthole and warm lantern light. Landscape, 3:2.
 
-Image 2 is a flat layout diagram. Repaint it as a detailed illustration in the style of image 1, and keep the layout exactly. That means the same ship, the same three rooms in the same places, the same six rows at the same heights, and the masts and pennants where they are. Landscape, 3:2.
+The room is full of SEPARATE THINGS, each one standing on its own, so you could count every one:
+- wooden chairs standing in a row
+- leather suitcases stacked neatly
+- gold coins laid out in a line on the table
+- loaves of bread on a shelf
+- tools hanging one by one on hooks on the wall
+- a few sealed letters on a desk
+- bottles in a rack, books on a shelf, apples in an open crate, a lantern or two
 
-It is a wooden sailing ship seen in cutaway, with the hull opened lengthways to show three rooms side by side. Paint real objects where the diagram has placeholders.
+Everything is tidy and orderly, and nothing is heaped or spilling. Keep the objects large and clearly separate, because labels will be added to them later.
 
-LEFT ROOM, warm terracotta tint: the counting hold. Each small square in the diagram is ONE separate object, standing apart from its neighbours, with a small blank paper tag. The rows, from top to bottom:
-1. 3 wooden chairs
-2. 4 leather suitcases
-3. 6 gold coins
-4. 4 loaves of bread
-5. 5 tools: a hammer, a saw, a spanner, a chisel, a screwdriver
-6. 6 sealed letters
-Everything is neat and orderly, and nothing touches anything else. Leave the plank wall to the left of each row empty, because words will go there.
-
-RIGHT ROOM, golden wheat tint: the bulk hold. It holds THE SAME six cargoes in the same six rows, but each cargo is piled into a single heap where the diagram has a mound:
-1. a jumbled heap of furniture: chairs, tables and a cupboard tangled together
-2. a mound of luggage
-3. a spilled heap of coins and banknotes
-4. a pile of bread
-5. a heap of tools and equipment
-6. a burst sack of mail spilling letters
-It is untidy and overflowing, and nothing stands apart. The cargo must match the left room row for row. That sameness is the point of the picture.
-
-MIDDLE ROOM, soft lilac tint: the galley. Each row has one single thing on the left (where the diagram has one small square) and, on the right, the stuff that thing is made of (where the diagram has a small mound):
-1. a cup of coffee | an open sack of coffee beans
-2. a live hen | sliced roast chicken on a plate
-3. a folded newspaper | a stack of blank paper
-4. a drinking glass | a pane of window glass
-5. a whole iced cake | a slice of cake
-6. a single wrapped chocolate | a broken bar of chocolate
-
-Keep a plain band across the top of each room, above the rows, because titles go there. The three pennants are plain coloured cloth: terracotta, lilac and gold.
-
-Do not write any words, letters or numbers anywhere. The tags, the pennants and the walls all stay blank.
+Do not write any words, letters or numbers anywhere in the picture.
 
 ---
 
-**If it comes back with writing on it,** reply: *"Same picture, but remove
-every word, letter and number. The tags and pennants stay blank. Change
-nothing else."*
+### Picture 2, the cargo hold: everything uncountable. Save as `room-bulk.png`.
 
-**If the bulk hold has different cargo from the counting hold** (barrels
-instead of furniture, say), reply: *"The right room must hold exactly the
-same six cargoes as the left room, in the same rows, but heaped: furniture,
-luggage, money, bread, equipment, mail. Change nothing else."*
+---
+
+Now the cargo hold of the same ship, in the same style and the same light, seen as if you are standing at the bottom of the ladder. Landscape, 3:2.
+
+This room is full of STUFF IN HEAPS that you could only measure, never count:
+- grain pouring from a chute into a golden mound
+- a hill of sand
+- a heap of coffee beans
+- rice spilling from torn sacks
+- water sloshing ankle-deep across the floor
+- and the same kinds of cargo as the store cabin, but piled up: a tangled heap of furniture, a mountain of luggage, a spilled heap of coins and banknotes, a burst sack of mail spilling letters
+
+Nothing stands apart, and everything is piled, poured or spilling. Keep the big heaps clearly separate from each other, because labels will be added to them later.
+
+Do not write any words, letters or numbers anywhere in the picture.
+
+---
+
+### Picture 3, the galley between them: both. Save as `room-galley.png`.
+
+---
+
+Now the ship's galley, the small kitchen between the store cabin and the cargo hold. Same ship, same style, same light, seen as if you are standing in it. Through an open door on the left you can just see the tidy store cabin, and through an open hatch on the right, the heaped cargo hold. Landscape, 3:2.
+
+On the long wooden table there are pairs, each a single thing next to the stuff it is made of:
+- a cup of coffee next to an open sack of coffee beans
+- a live hen on a stool next to a plate of sliced roast chicken
+- a folded newspaper next to a stack of blank paper
+- a drinking glass next to a pane of window glass leaning on the wall
+- a whole iced cake next to a slice of cake on a plate
+- a lantern hanging above the table, and sunlight streaming in through the porthole
+
+Space the pairs out along the table so each pair is easy to tell apart, because labels will be added to them later.
+
+Do not write any words, letters or numbers anywhere in the picture.
+
+---
+
+**If a picture comes back with writing on it,** reply: *"Same picture, but
+remove every word, letter and number. Change nothing else."*
+
+**If the cargo hold comes back tidy,** reply: *"Nothing in the hold should
+stand on its own. Everything is heaped, poured or spilling. Change nothing
+else."*
 
 ## Part 2: upgrading the maps (optional)
 
 The two maps are finished as they are. This is the upgrade you said you
 planned, done the way the Gerundia chart was made: the labelled chart first,
-then the same picture with the words removed. Do it once per map, each in its
-own conversation.
+then the same picture with the words removed. Do one map per conversation.
 
-**Attach:** `hero.jpg` first, then the map's layout (`countable-chart.png`
-or `verbs-chart.png`).
+**Attach:** `FORBES\sailing-the-seas-of-grammar\hero.jpg` first, then the
+map's layout: `FORBES\docs\sea-charts\countable-chart.png` or
+`FORBES\docs\sea-charts\verbs-chart.png`.
 **Save as:** `countable-chart.png` or `verbs-chart.png`
 
 ---

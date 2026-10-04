@@ -475,30 +475,43 @@ Library: no Writing filter pill exists, so both decks are tagged Geopolitics
   were handed to a session in that repo. Its map files were uncommitted
   there on 2026-10-01, another session's work in progress.
 
-## 2026-09-30 — Three more sea charts (countable/uncountable ×2, regular/irregular): LAYOUTS DONE, waiting on ChatGPT
+## 2026-09-30 → 10-04 — Two more sea charts painted, the ship's rooms briefed to ChatGPT; the countable lesson NOT YET BUILT
 
-Innes asked for more maps in the Gerundia/Infinitivia style, for countable
-and uncountable nouns (or "two rooms full of one or the other with an interim
-space where they share stuff"), and for regular and irregular verbs. The
-Gerundia chart began as a coded schematic that ChatGPT repainted, so these do
-the same.
+Innes asked for more maps in the Gerundia/Infinitivia style: countable and
+uncountable nouns, and regular and irregular verbs. For the nouns he also
+wanted "two pictures of rooms full of one or the other with an interim space
+where they share stuff", with *"the rooms can be in a ship"* and *"both in
+one lesson"*.
 
-- **Builder** `lesson-template/build/sea_charts.py` (imports `_roughen` from
-  `sailing_map.py` and does not edit it). It writes `docs/sea-charts/` —
-  `countable-chart`, `countable-hold` (the two rooms, as a ship's hold) and
-  `verbs-chart` — each as SVG plus a PNG at 2000×1320. It exits non-zero if a
-  label spills off its land or hull, a sea caption touches a beach, or two
-  labels overlap. That is measured in headless Chromium with the real fonts,
-  and it was verified failing on three deliberately broken copies.
-- **Brief** `docs/ARTWORK-sea-charts.md`: what every feature teaches, the
-  exact two-turn ChatGPT prompts (labelled, then clean), the file names for
-  `incoming/sea-charts/`, and the steps after (blob-detect the dots,
-  recalibrate, build two pages on the Sailing machinery, EN+DE+ES).
-- **Open question for Innes (§14):** for the nouns, the map, the hold or
-  both. Recommended: both in one lesson, with the hold as the idea and the
-  map as the clickable hero.
-- `build_sailing.py` was already modified by another session when this
-  started. It was left alone.
+- **Two maps, finished art, painted in code.** They are built by
+  `lesson-template/build/sea_charts.py`, with the engraving done by
+  `sea_paint.py`: parchment, a degree-band border, water lines, hatched
+  cliffs, a compass rose, and terrain that carries the grammar (Countania in
+  nine-tree orchards, Uncountania in wheat and dunes). The output is
+  `docs/sea-charts/countable-chart` and `verbs-chart`, labelled and `-plain`.
+  The builder exits non-zero if a label leaves its land, touches a beach,
+  overlaps another, or runs under the border. That is measured in headless
+  Chromium, and each fault class was verified failing on a broken copy.
+- **The verbs chart was revised on 10-04 after Innes asked "what is Bell
+  Island?".** The islands are now named after the sound their family shares
+  (I·A·U, Ought, -EW, -T, -EN), and Regularia has 18 verbs.
+- **The rooms are real painted scenes, made by Innes in ChatGPT.** A coded
+  cross-section of the ship was tried and dropped: *"not what I had in mind, I
+  imagined real rooms"*. The paste-ready prompts are
+  `docs/CHATGPT-SEA-CHARTS-BRIEF.md`, part 1 (`room-count`, `room-bulk`,
+  `room-galley`). Part 2 is optional map upgrades, done the Gerundia way.
+  `incoming/sea-charts/` exists on his machine.
+- **Still to do:** the countable/uncountable lesson page itself, on the
+  Sailing machinery (`build_sailing.py` is the model: `assemble()` from the
+  legacy camp shell, `EX_TR` nine-language example reveal). It needs the
+  rooms opening their parts, then the clickable map, with labels pinned to
+  the room pictures once they exist. `docs/ARTWORK-sea-charts.md` has the
+  design and the steps.
+- **Ideas Innes was given for further maps:** comparatives (*-er* / *more*,
+  with a two-syllable island), present perfect / past simple (time-word
+  shores, a *this morning* island), state / action verbs (a *think, have,
+  see* island), make / do, in / on / at, negative prefixes, British /
+  American English.
 
 ## 2026-09-30 — Reddit × French Market: Getting in the Door (C1): SHIPPED
 

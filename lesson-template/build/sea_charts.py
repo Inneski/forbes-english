@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-"""Three more charts for the Sailing the Seas of Grammar family, drawn the
-way the Gerundia chart was first drawn: as a coded schematic that ChatGPT then
-repaints as an illustrated sea chart (the brief is docs/ARTWORK-sea-charts.md).
+"""Two more charts for the Sailing the Seas of Grammar family, painted in code
+(sea_paint.py does the engraving) in the same 1000x660 space as the Gerundia
+chart. They can be upgraded later in ChatGPT the way that chart was:
+docs/CHATGPT-SEA-CHARTS-BRIEF.md, part 2.
 
     py lesson-template/build/sea_charts.py
 
@@ -21,12 +22,12 @@ countable   COUNTANIA and UNCOUNTANIA. Every harbour on the uncountable
             the Shallows (quantifiers that work on either shore) and the
             piece-of ferry, the one way across: a piece of advice.
 
-hold        Innes's other idea for the same point, 2026-09-30: "two pictures
-            of rooms full of one or the other with an interim space where they
-            share stuff". Kept nautical as a ship in cross-section: the
-            counting hold (chairs, one by one, tagged), the bulk hold (the same
-            cargo as heaps: furniture) and the galley between them, where a
-            coffee and coffee sit on the same table.
+            Innes's other picture of the same point, "rooms full of one or the
+            other with an interim space where they share stuff", is not drawn
+            here. He means real rooms in a ship, painted as scenes, so they
+            are ChatGPT's (CHATGPT-SEA-CHARTS-BRIEF.md, part 1). A coded
+            cross-section of the ship was tried and dropped on 2026-10-04:
+            "not what I had in mind, I imagined real rooms".
 
 verbs       REGULARIA, one tidy continent with one rule and three sounds, and
             the irregular verbs as an archipelago: no single rule, but
@@ -345,146 +346,7 @@ def countable_chart(uid='cu'):
 
 
 # ─────────────────────────────────────────────────────────────────────
-# 2. The ship's hold: the same point as two rooms and the space between
-# ─────────────────────────────────────────────────────────────────────
-
-HULL_TOP, KEEL = 166, 566
-WATERLINE = 424
-BULKHEADS = (392, 608)
-ROWS = [268, 318, 368, 418, 468, 518]
-
-# (countable, how many, uncountable). The bulk hold carries the same cargo as
-# the counting hold; only the word changes.
-CARGO = [
-    ('chair', 3, 'furniture'),
-    ('suitcase', 4, 'luggage'),
-    ('coin', 6, 'money'),
-    ('loaf', 4, 'bread'),
-    ('tool', 5, 'equipment'),
-    ('letter', 6, 'mail'),
-]
-PLURAL = {'loaf': 'loaves'}
-GALLEY = ['coffee', 'chicken', 'paper', 'glass', 'cake', 'chocolate']
-
-WOOD, WOOD_DARK, WOOD_INK = '#E9D3AE', '#B98B55', '#3E2A12'
-
-
-def _hull():
-    """Stern to the west, square; bow to the east, curved; cut open lengthways."""
-    return ('M 42 %d L 960 %d C 958 300, 930 470, 850 %d L 130 %d C 70 556, 44 500, 42 %d Z'
-            % (HULL_TOP, HULL_TOP - 14, KEEL, KEEL, HULL_TOP))
-
-
-def _counted(x0, y, n, ink, size=18, step=24):
-    """n things, each one separate and numbered: the counting hold's idiom."""
-    out = []
-    for i in range(n):
-        x = x0 + i * step
-        out.append('<rect x="%d" y="%d" width="%d" height="%d" rx="3" fill="#FFFCF4" '
-                   'stroke="%s" stroke-width="1.3"/>'
-                   '<text class="tag" x="%d" y="%d" text-anchor="middle" %s font-size="9" '
-                   'font-weight="700" fill="%s">%d</text>'
-                   % (x, y - 15, size, size, ink, x + size / 2, y - 3, SANS, ink, i + 1))
-    return ''.join(out)
-
-
-def _heap(xc, y, w, h, fill, ink, word, size=11.5, caps=True):
-    """One pile, one word: the bulk hold's idiom."""
-    return ('<path d="M %d %d C %d %d, %d %d, %d %d Z" fill="%s" stroke="%s" stroke-width="1.3"/>'
-            '<text class="tag" x="%d" y="%d" text-anchor="middle" %s font-size="%s" '
-            'font-weight="700" letter-spacing="%s" fill="%s">%s</text>'
-            % (xc - w / 2, y, xc - w / 3, y - h * 1.3, xc + w / 3, y - h * 1.3, xc + w / 2, y,
-               fill, ink, xc, y - h * .28, SANS, size, '.08em' if caps else '0', ink,
-               word.upper() if caps else word))
-
-
-def _mast(x, top, label, fill, ink, point, width=132):
-    """A mast flying a swallowtail with the question its hold answers."""
-    tip = x + width * point
-    return ('<path d="M %d %d L %d %d" stroke="%s" stroke-width="4"/>'
-            '<path d="M %d %d L %d %d L %d %d L %d %d L %d %d Z" fill="%s" stroke="%s" stroke-width="1.5"/>'
-            '<text class="sea" x="%d" y="%d" text-anchor="middle" %s font-size="11.5" '
-            'font-weight="700" letter-spacing=".06em" fill="%s">%s</text>'
-            % (x, HULL_TOP, x, top, WOOD_INK,
-               x, top, tip, top, tip - 14 * point, top + 16, tip, top + 32, x, top + 32, fill, LINE,
-               x + (width - 14) / 2 * point, top + 20, SANS, ink, label))
-
-
-def hold_chart(uid='hd'):
-    x_l, x_r = BULKHEADS
-    rows = []
-    for (thing, n, stuff), y in zip(CARGO, ROWS):
-        plural = PLURAL.get(thing, thing + 's')
-        rows.append('<text class="tag" x="88" y="%d" %s font-size="11" font-weight="600" '
-                    'fill="%s">%s</text>' % (y - 2, SANS, C_INK,
-                                             'a %s &#183; %d %s' % (thing, n, plural)))
-        rows.append(_counted(232, y, n, C_INK))
-        rows.append(_heap(748, y + 2, 200, 24, U_LAND, U_INK, stuff))
-    # the galley keeps one of each: a single counted thing and a small heap
-    for word, y in zip(GALLEY, ROWS):
-        rows.append(_counted(404, y, 1, LILAC_INK))
-        rows.append('<text class="tag" x="428" y="%d" %s font-size="11" font-weight="600" '
-                    'fill="%s">a %s</text>' % (y - 2, SANS, LILAC_INK, word))
-        rows.append(_heap(556, y + 2, 84, 17, LILAC, LILAC_INK, word, size=10.5, caps=False))
-
-    band = HULL_TOP + 12, KEEL - HULL_TOP - 12
-    body = '\n  '.join([
-        '<clipPath id="%s-hull"><path d="%s"/></clipPath>' % (uid, _hull()),
-        '<rect x="0" y="0" width="%d" height="%d" fill="url(#%s-sea)"/>' % (W, H, uid),
-        '<rect x="0" y="%d" width="%d" height="%d" fill="#8FC0D6"/>' % (WATERLINE, W, H - WATERLINE),
-        '\n  '.join(_wave(x, WATERLINE + dy) for x, dy in
-                    [(12, 30), (930, 40), (20, 150), (940, 170), (380, 204), (600, 196)]),
-        '<path id="%s-inside" class="fill" d="%s" fill="%s"/>' % (uid, _hull(), WOOD),
-        # the three compartments, tinted after the three regions of the chart
-        '<g clip-path="url(#%s-hull)">' % uid
-        + '<rect x="0" y="%d" width="%d" height="%d" fill="%s" opacity=".34"/>'
-        % (band[0], x_l, band[1], C_LAND)
-        + '<rect x="%d" y="%d" width="%d" height="%d" fill="%s" opacity=".3"/>'
-        % (x_l, band[0], x_r - x_l, band[1], LILAC)
-        + '<rect x="%d" y="%d" width="%d" height="%d" fill="%s" opacity=".38"/>'
-        % (x_r, band[0], W - x_r, band[1], U_LAND)
-        # planking, faint enough to sit behind the cargo
-        + '<path d="%s" stroke="%s" stroke-width=".8" opacity=".3"/>'
-        % (''.join('M0 %dH1000' % y for y in range(HULL_TOP + 22, KEEL, 17)), WOOD_INK) + '</g>',
-        '<path d="M %d %d L %d %d M %d %d L %d %d" stroke="%s" stroke-width="5"/>'
-        % (x_l, HULL_TOP - 3, x_l, KEEL, x_r, HULL_TOP - 9, x_r, KEEL, WOOD_DARK),
-        '<path d="%s" fill="none" stroke="%s" stroke-width="3"/>' % (_hull(), WOOD_INK),
-        # rigging from each masthead down to the rail
-        '<path d="%s" stroke="%s" stroke-width=".8" opacity=".55"/>'
-        % (''.join('M%d %dL%d %dM%d %dL%d %d' % (x, top, x - 120, HULL_TOP - 1, x, top, x + 120,
-                                                  HULL_TOP - 9)
-                   for x, top in ((216, 40), (500, 22), (786, 40))), WOOD_INK),
-        _mast(216, 40, 'HOW MANY?', C_LAND, '#3A1004', 1),
-        _mast(500, 22, 'BOTH', LILAC, LILAC_INK, 1, width=90),
-        _mast(786, 40, 'HOW MUCH?', U_LAND, U_INK, -1),
-        _sea_text(220, HULL_TOP + 36, 'THE COUNTING HOLD', C_INK, size=15, spacing='.05em', serif=True),
-        _sea_text(220, HULL_TOP + 51, 'one by one &#183; a &#183; many &#183; a few', C_INK, size=9.5,
-                  weight=600, spacing='0'),
-        _sea_text(500, HULL_TOP + 36, 'THE GALLEY', LILAC_INK, size=15, spacing='.05em', serif=True),
-        _sea_text(500, HULL_TOP + 51, 'both &#183; two meanings', LILAC_INK, size=9.5, weight=600,
-                  spacing='0'),
-        _sea_text(760, HULL_TOP + 36, 'THE BULK HOLD', U_INK, size=15, spacing='.05em', serif=True),
-        _sea_text(760, HULL_TOP + 51, 'in heaps &#183; much &#183; a little &#183; no -s', U_INK,
-                  size=9.5, weight=600, spacing='0'),
-        '\n  '.join(rows),
-        _sea_text(500, 606, 'THE SAME CARGO &#183; A DIFFERENT WORD', TIDE_INK, size=12, spacing='.1em'),
-        _sea_text(500, 626, 'a chair is furniture &#183; a coin is money &#183; a letter is mail',
-                  TIDE_INK, size=10, weight=600, spacing='0', italic=True),
-    ])
-    # everything written below deck has to stay inside the hull, and the check
-    # holds it to that the same way it holds a harbour name to its coast
-    inside = 'class="place" data-land="%s-inside"' % uid
-    body = body.replace('class="tag"', inside)
-    for title in ('THE COUNTING HOLD', 'THE GALLEY', 'THE BULK HOLD', 'one by one', 'both &#183; two',
-                  'in heaps'):
-        i = body.index('>' + title)
-        j = body.rindex('class="sea"', 0, i)
-        body = body[:j] + inside + body[j + len('class="sea"'):]
-    return _svg(uid, 'The ship&#39;s hold: countable and uncountable nouns', body)
-
-
-# ─────────────────────────────────────────────────────────────────────
-# 3. REGULARIA and the irregular archipelago
+# 2. REGULARIA and the irregular archipelago
 # ─────────────────────────────────────────────────────────────────────
 
 R_LAND, R_BEACH, R_INK = '#9DB86E', '#E3EDC9', '#223A10'     # Regularia, tidy fields
@@ -642,7 +504,6 @@ def verbs_chart(uid='rv'):
 
 CHARTS = [
     ('countable-chart', countable_chart),
-    ('countable-hold', hold_chart),
     ('verbs-chart', verbs_chart),
 ]
 

@@ -1,4 +1,4 @@
-# Artwork: three more sea charts for Sailing the Seas of Grammar
+# Artwork: two more sea charts, and the ship's rooms, for Sailing the Seas of Grammar
 
 Innes, 2026-09-30: *"make extra maps with nautical theme like gerundia
 infinitivia but for countable and uncountable nouns although perhaps that can
@@ -7,7 +7,8 @@ where they share stuff, also possible for regular and irregular verbs"*.
 Then: *"both in one lesson"*, *"the rooms can be in a ship"*, and *"I will
 make the images on request using midjourney … I planned to upgrade whatever
 you made anyway but I was specially talking about the countable noun
-images"*.
+images"*, *"make it for chat gpt"*, and of a coded cross-section of the ship:
+*"not what I had in mind, I imagined real rooms"* (2026-10-04).
 
 So the work is split:
 
@@ -15,14 +16,14 @@ So the work is split:
   and `sea_paint.py`. They have parchment, a ruled border with a degree band,
   water lines along every coast, hatched cliffs, terrain and a compass rose.
   They are finished art and can be upgraded later.
-- **The countable-noun picture, the ship's hold, is Innes's**, made in
-  ChatGPT from `docs/CHATGPT-SEA-CHARTS-BRIEF.md` (he first said Midjourney,
-  then on 2026-10-04 *"make it for chat gpt"*). The coded hold stands in
-  until it arrives.
+- **The countable-noun pictures are Innes's**, made in ChatGPT from
+  `docs/CHATGPT-SEA-CHARTS-BRIEF.md`. They are three real rooms in one ship,
+  painted as scenes you could stand in, not a diagram. Nothing stands in for
+  them: the coded cross-section was dropped.
 
 Everything is written by a separate label layer, never by the painting. That
-keeps the words translatable and lets the page switch between place names
-and bare nouns. It also means any upgrade that keeps the coastlines keeps
+keeps the words translatable and lets the map switch between place names and
+bare nouns. It also means any map upgrade that keeps the coastlines keeps
 every label.
 
 ## The builder, and its check
@@ -35,7 +36,7 @@ This writes each chart to `docs/sea-charts/` as `<name>.svg` / `.png`
 (labelled) and `<name>-plain.svg` / `.png` (paint only). It exits non-zero if
 any of these happen:
 
-- a harbour name leaves its coast, or a caption on the hold leaves the hull
+- a harbour name leaves its coast
 - a caption meant for open water touches a beach
 - two labels touch
 - anything runs under the ruled border
@@ -69,27 +70,29 @@ The terrain is part of the grammar:
 | **The piece-of ferry** | The one way across, west only: *a piece of advice · a bottle of water · a slice of bread*. |
 | **The Shallows** | Quantifiers that work on either shore: *some, any, a lot of, plenty of, no, enough, more, most*. |
 
-## 2. `countable-hold`: the rooms, in a ship
+## The ship's rooms: countable and uncountable as places you can stand in
 
-![ship's hold](sea-charts/countable-hold.png)
+Three pictures, three rooms of one ship. They are made in ChatGPT
+(`CHATGPT-SEA-CHARTS-BRIEF.md`, part 1) and labelled by the page afterwards.
 
-The same point shown as rooms. There are two holds, and between them is the
-galley, where both kinds of noun sit together.
+- **The store cabin, `room-count`** (HOW MANY?). Everything is separate and
+  countable: chairs in a row, suitcases, coins laid out on the table, loaves,
+  tools on hooks, letters, bottles, books, apples.
+- **The cargo hold, `room-bulk`** (HOW MUCH?). Everything is in heaps you
+  could only measure: grain from a chute, sand, coffee beans, rice, water
+  across the floor. It also holds the same kinds of cargo as the cabin, piled
+  up: furniture, luggage, money, mail. **The same cargo, a different word.**
+- **The galley between them, `room-galley`** (BOTH). The single thing sits
+  next to the stuff it is made of: *a coffee / coffee*, *a chicken / chicken*,
+  *a paper / paper*, *a glass / glass*, *a cake / cake*, *a light / light*
+  (the lantern, and the sunlight through the porthole).
 
-- **The counting hold** (HOW MANY?): chairs, suitcases, coins, loaves, tools
-  and letters. Each one sits apart and carries a tag: *a chair · 3 chairs*.
-- **The bulk hold** (HOW MUCH?): the same cargo in heaps, with one word on
-  each heap: FURNITURE, LUGGAGE, MONEY, BREAD, EQUIPMENT, MAIL.
-- **The galley** (BOTH): one of each thing beside the stuff it is made of:
-  *a coffee / coffee*, *a chicken / chicken*, *a paper / paper*,
-  *a glass / glass*, *a cake / cake*, *a chocolate / chocolate*. Hair stays
-  on the map as Hair Head. A single hair can't be painted recognisably.
+In the lesson, the rooms come first because they give the idea. Each one
+opens its own part: the cabin opens Countania, the hold opens Uncountania,
+and the galley opens Double Isle. Then comes the map, which is clickable and
+carries the nouns and the traps.
 
-In the lesson, the hold comes first because it gives the idea: **the same
-cargo, a different word**. Then the map, which is clickable and carries the
-nouns and the traps.
-
-## 3. `verbs-chart`: Regularia and the irregular archipelago
+## 2. `verbs-chart`: Regularia and the irregular archipelago
 
 ![verbs chart](sea-charts/verbs-chart.png)
 
@@ -106,17 +109,13 @@ sentences, not a place.
 
 ## The pictures: ChatGPT, from `docs/CHATGPT-SEA-CHARTS-BRIEF.md`
 
-Innes, 2026-10-04: *"make it for chat gpt"*. The prompts Innes pastes are in
-**`docs/CHATGPT-SEA-CHARTS-BRIEF.md`**, written to ChatGPT, with the images
-to attach.
+The prompts Innes pastes are in **`docs/CHATGPT-SEA-CHARTS-BRIEF.md`**,
+written to ChatGPT.
 
-- **The hold is one picture, `hold.png`.** ChatGPT repaints
-  `countable-hold-plain.png` with the real objects in place of the
-  placeholders and blank tags, and keeps the layout. That way the hold's label
-  layer lands without re-fitting. (An earlier plan for Midjourney was three
-  separate room pictures. Midjourney does not keep a layout, so every label
-  would have had to be re-fitted.)
-- **The map upgrades are optional**, done the Gerundia way: the labelled
+- **Part 1, the three rooms.** One conversation, so they come out as one
+  ship in one light. No words in the pictures. The objects are asked for large
+  and well spaced, so labels can be pinned to them.
+- **Part 2, map upgrades (optional)**, done the Gerundia way: the labelled
   repaint first, then a clean copy with the harbour dots kept
   (`countable-chart-clean.png`, `verbs-chart-clean.png`). Blob-detect the
   dots on the clean copy and move the place coordinates in `sea_charts.py`
@@ -129,8 +128,8 @@ has to ask for it to be made.
 ## After the rooms arrive (for the session that picks this up)
 
 1. `tools/prep-artwork.py` on each file.
-2. Check the hold's label layer (item tags, heap names, galley pairs) against
-   the painted objects. ChatGPT keeps a layout closely but not exactly, so
-   nudge the coordinates where it drifted, then re-run the page builder.
+2. Pin a label to each object in the three rooms (*a chair · three chairs*
+   in the cabin, FURNITURE and SAND in the hold, *a coffee / coffee* in the
+   galley). Place them by measuring the picture, and check them at phone width.
 3. `extract-palette.py` on the lesson's hero, then `build_hubs.py`,
    `seo.py`, and the catalogue row.
