@@ -52,8 +52,8 @@ branch `pricing-go-live` (worktree `../FORBES-pricing`) so no other
 session's push can carry it; go live by merging that branch, not with the
 `git show` above. Innes decided a one-off purchase must not expire:
 **Block Camp Term 1 is yours to keep** (no 16-week end; missions still
-unlock one a week). The webhook writes `ends_at = null` for blockcamp;
-IELTS stays 90 days. Stripe: live account `acct_1U2Ej70R7wvAnqir`; Stripe
+unlock one a week), and so is IELTS (no 90 days). The webhook writes
+`ends_at = null` for blockcamp and ielts. Stripe: live account `acct_1U2Ej70R7wvAnqir`; Stripe
 Tax is NOT set up and flags thresholds in Germany and the UAE; the account
 has Managed Payments (Stripe as seller of record, VAT "managed for you"),
 which the Worker currently disables per checkout. Innes is creating the
