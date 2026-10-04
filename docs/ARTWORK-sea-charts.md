@@ -15,9 +15,10 @@ So the work is split:
   and `sea_paint.py`. They have parchment, a ruled border with a degree band,
   water lines along every coast, hatched cliffs, terrain and a compass rose.
   They are finished art and can be upgraded later.
-- **The countable-noun pictures, the ship's rooms, are Innes's**, made in
-  Midjourney from the requests below. The coded hold stands in until they
-  arrive.
+- **The countable-noun picture, the ship's hold, is Innes's**, made in
+  ChatGPT from `docs/CHATGPT-SEA-CHARTS-BRIEF.md` (he first said Midjourney,
+  then on 2026-10-04 *"make it for chat gpt"*). The coded hold stands in
+  until it arrives.
 
 Everything is written by a separate label layer, never by the painting. That
 keeps the words translatable and lets the page switch between place names
@@ -103,61 +104,33 @@ nouns and the traps.
 *Didn't went* belongs in the lesson, not on the map. It is a rule about
 sentences, not a place.
 
-## Midjourney requests: the countable-noun rooms
+## The pictures: ChatGPT, from `docs/CHATGPT-SEA-CHARTS-BRIEF.md`
 
-There are three pictures, and they sit side by side on the page as three
-rooms of one ship. Each one is its own image, so none of them has to line up
-with a layout. The labels are fitted to what you paint afterwards.
+Innes, 2026-10-04: *"make it for chat gpt"*. The prompts Innes pastes are in
+**`docs/CHATGPT-SEA-CHARTS-BRIEF.md`**, written to ChatGPT, with the images
+to attach.
 
-Every prompt ends with the same **style stem**:
+- **The hold is one picture, `hold.png`.** ChatGPT repaints
+  `countable-hold-plain.png` with the real objects in place of the
+  placeholders and blank tags, and keeps the layout. That way the hold's label
+  layer lands without re-fitting. (An earlier plan for Midjourney was three
+  separate room pictures. Midjourney does not keep a layout, so every label
+  would have had to be re-fitted.)
+- **The map upgrades are optional**, done the Gerundia way: the labelled
+  repaint first, then a clean copy with the harbour dots kept
+  (`countable-chart-clean.png`, `verbs-chart-clean.png`). Blob-detect the
+  dots on the clean copy and move the place coordinates in `sea_charts.py`
+  to match, as `eb491249` did for `sailing_map.py`.
 
-```text
-antique hand-painted illustration, watercolour and fine ink hatching on aged parchment, warm lantern light, cutaway view of a wooden ship's interior --ar 3:4 --sref https://forbesenglish.com/sailing-the-seas-of-grammar/chart-clean.jpg --no text, letters, words, writing, numbers
-```
-
-Paste each subject below in front of the stem.
-
-| file | subject |
-|---|---|
-| `hold-count` | `the counting hold of a wooden sailing ship, cargo set out one by one in neat separate rows on plank shelves: three wooden chairs, four leather suitcases, six gold coins in a line, four loaves of bread, five tools, six sealed letters, every item apart from the others with a small blank paper tag, orderly and tidy,` |
-| `hold-bulk` | `the bulk hold of the same wooden sailing ship, the same cargo piled into heaps with nothing separate: a jumbled heap of furniture, a mound of luggage, a spilled heap of coins and banknotes, a pile of bread, a heap of tools and equipment, a burst sack of mail spilling letters, untidy and overflowing,` |
-| `hold-galley` | `the ship's galley between the two holds, a long wooden table with pairs set side by side: one cup of coffee beside an open sack of coffee beans, a live hen beside a roast chicken on a plate, a folded newspaper beside a ream of blank paper, a drinking glass beside a leaning pane of glass, a whole iced cake beside a single slice, one wrapped chocolate beside a broken bar of chocolate,` |
-
-Notes:
-
-- **The tags are blank on purpose.** The page writes *a chair · 3 chairs* on
-  top of them. Midjourney lettering comes out as pseudo-writing.
-- **The three have to read as one ship.** Use the same `--sref` and the same
-  seed for all three if you can, and pick renders with similar light.
-- **The bulk hold must be the same cargo as the counting hold.** That is the
-  whole point. If a render swaps chairs for barrels, reroll it.
-
-Drop them in **`incoming/sea-charts/`** as `hold-count`, `hold-bulk` and
-`hold-galley` (PNG or JPG). The folder already exists on Innes's machine
-(created 2026-10-04). `incoming/` is gitignored, so a cloud session has to
-ask for it to be made.
-
-The stem keeps "no text" out of the prompt itself. Midjourney tends to read
-a negative in the prompt as a subject. `--no` is the reliable way to say it.
-
-## Upgrading the maps (optional)
-
-The painted charts are finished art, but they can be upgraded. The safe
-route is the Midjourney editor's **Retexture**. Upload the `-plain.png` for
-the chart, use a prompt like
-`antique hand-painted sea chart, watercolour and ink on parchment --sref <the chart-clean URL above>`,
-and it repaints while keeping the coastlines, which is what keeps every label
-on its land. Name the result `countable-chart-upgrade` or
-`verbs-chart-upgrade` and drop it in `incoming/sea-charts/`. The label check
-runs against it before it goes on a page.
-
-A fresh composition from a plain prompt would not keep the coastlines, and
-the labels would need re-fitting.
+Everything lands in **`incoming/sea-charts/`**. The folder exists on Innes's
+machine (created 2026-10-04). `incoming/` is gitignored, so a cloud session
+has to ask for it to be made.
 
 ## After the rooms arrive (for the session that picks this up)
 
 1. `tools/prep-artwork.py` on each file.
-2. Fit the hold's label layer (item tags, heap names, galley pairs) to the
-   painted objects, then re-run the page builder.
+2. Check the hold's label layer (item tags, heap names, galley pairs) against
+   the painted objects. ChatGPT keeps a layout closely but not exactly, so
+   nudge the coordinates where it drifted, then re-run the page builder.
 3. `extract-palette.py` on the lesson's hero, then `build_hubs.py`,
    `seo.py`, and the catalogue row.
