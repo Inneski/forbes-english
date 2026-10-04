@@ -21,9 +21,16 @@ Innes caught two wrong keys live in class. Full audit of both:
   regarding/by*); false facts (she did not "move to Hollywood at sixteen",
   DiMaggio was not a "short courtship"). Added an EN/ES selector: questions
   stay English, everything else (instructions, feedback, every explanation,
-  free-writing chrome) has a Spanish version. Still fails check-lesson's
-  deck checks (no activate slide, no UI_I18N, no .fe-logo) — it needs a
-  rebuild to house style; not done.
+  free-writing chrome) has a Spanish version. **Superseded the same day:**
+  rebuilt as a house style 2 panel deck, `build_marilyn.py` /
+  `i18n_marilyn.py`, 26 slides, EN/DE/ES, all fifteen items kept and
+  regrouped (time / place and movement / fixed partners) plus a sort of
+  four L1 slips, check-lesson clean, answered state fits in all three.
+  Live on crops of the two portraits; three plates briefed in
+  `docs/ARTWORK-marilyn.md`, drop folder `incoming/marilyn/`, the builder
+  swaps each in when its file lands. Catalogue still says `deck = false`
+  (session writes to `lessons` are refused): Innes to run
+  `update lessons set deck = true where file = 'marilyn_prepositions.html';`
 - **`jfk_prepositions_b2.html`**: "fourth president to die in office" was
   false (eighth; fourth *killed*); three word-order sentences were invented
   events (protesters, a recording device, transferred files) — replaced
