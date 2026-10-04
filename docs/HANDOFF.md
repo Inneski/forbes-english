@@ -154,6 +154,13 @@ where id = (select p.id from public.user_plans p join auth.users u on u.id = p.u
 ```
 
 An upload form that spends a credit itself would replace this; not built.
+**Step 9 (weekly mission email) on the branch** (`869813bb`): daily cron
+06:00 UTC, "Mission N is open" with deck, quest and link, through **Resend**;
+the marking-inbox notice goes through Resend too. Table
+`blockcamp_mission_emails` and `profiles.blockcamp_emails` APPLIED 4 Oct.
+**Needs Innes:** a Resend account, forbesenglish.com verified there (DNS
+records in Cloudflare), and `RESEND_API_KEY` as a Worker secret. Steps in
+`deploy/06-environment-variables.md`. Until then the cron sends nothing.
 
 - **Step 1, schema: APPLIED** (Supabase migration `pricing_go_live_schema`,
   file `deploy/schema-pricing.sql`). `lessons.term/mission`,
