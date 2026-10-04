@@ -238,6 +238,7 @@ below tells a session to apply branch `48236bc4`'s "Any plan" badges:
   handoff lists only €8.99/month). His call whether they stay.
 - The site says "Forbes English Pro" everywhere else; the handoff and the
   new page say "Forbes English full". One name, his choice.
+  DECIDED 5 Oct: **Forbes English Pro** (branch `pricing-go-live` renamed).
 - Before taking money from EU consumers: a terms page with seller identity
   and the 14-day withdrawal information, and Stripe's consent to immediate
   access (needs his name/address; the review flagged its absence).
