@@ -25,11 +25,11 @@ for k, v in pal.items():
 MC = [
  ("Kennedy was assassinated <em>_______</em> Dealey Plaza in Dallas, Texas, on 22 November 1963.",
   [("inside", "'Inside' implies an enclosed interior with walls — a plaza is open ground."),
-   ("within", "'Within' is formal and draws a boundary; it is not how English names a public square."),
+   ("on", "'On' is for streets — 'on Elm Street' — not for a square or plaza."),
    ("in", None),
    ("around", "'Around' suggests movement in the vicinity rather than a fixed location.")],
   "in",
-  "<strong>In</strong> is the standard preposition for named public spaces, squares and plazas."),
+  "<strong>In</strong> is the standard preposition for named squares and plazas — 'in Dealey Plaza', 'in Times Square'."),
 
  ("The Warren Commission concluded that Lee Harvey Oswald acted <em>_______</em> his own, without co-conspirators.",
   [("on", None),
@@ -48,10 +48,10 @@ MC = [
   "<strong>Along</strong> describes movement following the length of a road or path."),
 
  ("Many documents relating to the assassination were kept <em>_______</em> the public for decades.",
-  [("away from", "Possible in speech, but 'kept away from' suggests physical distance, not concealment."),
-   ("hidden from", "'Hidden' is a second verb, not a preposition — the sentence already has 'kept'."),
+  [("off", "'Keep off' is for physical surfaces — 'keep off the grass'. It does not mean withholding."),
+   ("against", "'Against' means opposition or contact — 'against the law', 'against the wall'."),
    ("from", None),
-   ("out of reach of", "Too long and too literal; it describes distance rather than deliberate withholding.")],
+   ("of", "'Of' does not follow 'keep' to mean withholding — 'kept of the public' is not English.")],
   "from",
   "<strong>Keep something from someone</strong> means to withhold or conceal it deliberately."),
 
