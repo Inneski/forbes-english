@@ -11,6 +11,78 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-10-04 — Pricing go-live (Innes's 3 Oct handoff): steps 1, 2 and 6 done; 3–5, 7–9 open
+
+Innes's plan, in order: schema → Term 1 tagging → Stripe prices → webhook →
+Worker gate with weekly drip → pricing page → IELTS page → account page →
+weekly email, checking in after each step. **Nothing is pushed**: he wants
+a go-ahead before anything goes live.
+
+- **Step 1, schema: APPLIED** (Supabase migration `pricing_go_live_schema`,
+  file `deploy/schema-pricing.sql`). `lessons.term/mission`,
+  `user_plans.term/starts_at/marking_credits`, `profiles.blockcamp_first_open`;
+  `user_plans.product` now allows `marking`.
+  **Also closed a paywall hole:** `profiles` had an "update their own
+  profile" policy plus default grants, so any signed-in user could PATCH
+  `owner = true` with the anon key. Policy dropped; insert/update/delete
+  revoked from anon and authenticated. Nothing in the site wrote to it.
+- **Step 2, tagging: PENDING, Innes to run.** Session writes to `lessons`
+  were refused. The SQL is step 2 and 2b in `deploy/schema-pricing.sql`
+  (expect UPDATE 21, 14, 1). Term 2 rows get `term = 2` with no mission
+  numbers: the handoff gives none, and Term 2 is not on sale.
+  2b retags Grand Hotel `blockcamp` (its row went in as `general`) and
+  teaches `lessons_default_track()` the `block-camp/` folder.
+- **Step 6, pricing page: BUILT, not pushed.** `pricing.html` has the three
+  cards (Block Camp Term 1, IELTS €25/€69, full €8.99), every mandated
+  string verbatim, and a self-contained preview
+  `docs/previews/pricing-preview.html` (gitignored). Four-lens review +
+  skeptic per finding: 36 confirmed, the 17 on the page fixed, behaviour-
+  tested headlessly (5 buy paths, failed checkout restores the page; the
+  test fails against a copy with the card-wiping bug put back).
+  This closes the two older "Needs Innes" notes about pricing.html's Sherpa
+  and free-count copy.
+- **The page's contract with the Worker** (for steps 3–5): products
+  `blockcamp` (one-off now, not a subscription), `ielts`, `ielts_marking`,
+  `marking`; plans `monthly/semiannual/annual` unchanged; a new
+  `GET /api/founder-status` → `{limit, remaining}` from the promotion code's
+  `times_redeemed`. The page shows €19 until that answers with places left.
+  Also needed: `cancel_url` → `pricing.html?checkout=cancelled` (it points
+  at account.html, which ignores it); a Stripe billing-portal route, because
+  nothing lets a subscriber cancel (the page now says "email
+  forbes@goodtimebook.com"); a way to send an essay and spend a credit.
+- **Supabase quota:** the Mythos org was over its free Cached Egress
+  (Folklore-Explorer's `entry-images`, not this project). Restriction on
+  1 Nov would 402 every request and the gate fails open. Innes put Mythos on
+  Pro on 4 Oct; the plan was to transfer `forbes-english` to his new free
+  org "Forbes ENGLISH" and then downgrade Mythos. **Not transferred yet**
+  as of this entry.
+
+**Go-live copy sweep (ship with the Stripe/gate steps, not before):** the
+review found these still describe the old products. `locked.html` and the
+gate strings in `src/index.js` (Block Camp/IELTS "include Sherpa"; the
+retry only checks `profiles`; no "mission not open yet" message);
+`tools/build_ielts_hub.py` + `build_ielts_routes.py` sell only "Pro";
+`account.html` shows Block Camp/IELTS buyers as "Not subscribed" (step 8);
+`block-camp/camp-nav.js` lock label ", subscribers only" (source:
+`lesson-template/build/block-camp-nav/template.js` + `check-access.py`
+LOCK); `tools/build_rpg_hub.py` "One subscription opens every game";
+`tools/seo.py` llms.txt "need a subscription"; the paywall tests in
+`deploy/test-paywall.mjs` assert plans open Sherpa. The 2026-09-29 entry
+below tells a session to apply branch `48236bc4`'s "Any plan" badges:
+**superseded**. Sherpa is full-plan only now.
+
+**Needs Innes:**
+- Run step 2/2b SQL; finish the project transfer.
+- "12 missions … each with a quest" is his wording, but missions 4, 8 and
+  12 have no quest. The drip opens mission 4 on day 21 after the first sale.
+- The page keeps €45/6 months and €90/year as "pay ahead" links (the
+  handoff lists only €8.99/month). His call whether they stay.
+- The site says "Forbes English Pro" everywhere else; the handoff and the
+  new page say "Forbes English full". One name, his choice.
+- Before taking money from EU consumers: a terms page with seller identity
+  and the 14-day withdrawal information, and Stripe's consent to immediate
+  access (needs his name/address; the review flagged its absence).
+
 ## 2026-10-03 — Block Camp music: a volume slider everywhere; the Grand Hotel gets a soundtrack
 
 Innes: *"add volume sliders on all block camps"*, and for the Grand Hotel

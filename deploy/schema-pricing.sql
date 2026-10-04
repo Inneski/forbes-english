@@ -72,3 +72,25 @@ where file in (
   'blockcamp-passive-present-simple.html','blockcamp-passive-present-continuous.html',
   'blockcamp-passive-past-simple.html','blockcamp-passive-past-continuous.html',
   'blockcamp-passive-going-to.html','blockcamp-passive-future-simple.html');  -- expect UPDATE 14
+
+-- ── Step 2b: Block Camp adventures get their track (PENDING — Innes) ─────
+-- Grand Hotel's row (added 2026-10-04 by another session) went in as
+-- 'general': lessons_default_track() only knows the blockcamp-* deck names,
+-- not the block-camp/ folder. Under the per-track gate a Term 1 buyer could
+-- not open it. Fix the row and the trigger so the next adventure is right.
+update public.lessons set track = 'blockcamp'
+where file = 'block-camp/grand-hotel-rpg.html';      -- expect UPDATE 1
+
+create or replace function public.lessons_default_track() returns trigger
+language plpgsql as $$
+begin
+  if new.track is null or new.track = 'general' then
+    new.track := case
+      when new.file like 'blockcamp-%'            then 'blockcamp'
+      when new.file like 'block-camp/%'           then 'blockcamp'
+      when new.file like 'forbes-english-ielts-%' then 'ielts'
+      when new.file like 'sherpa-tensing-%'       then 'sherpa'
+      else 'general' end;
+  end if;
+  return new;
+end $$;

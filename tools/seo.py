@@ -93,8 +93,8 @@ PAGES = {
                      'A1 to C2 grammar, vocabulary, exam prep and '
                      'business English.', 0.9),
     'pricing.html': ('Plans and pricing',
-                     'What a Forbes English subscription costs, and which '
-                     'lessons are free forever.', 0.7),
+                     'Block Camp Term 1, IELTS with essay marking, or the '
+                     'whole library by the month — and which lessons are free.', 0.7),
     'ielts.html': ('IELTS Academic',
                    'IELTS Academic in five routes — Writing, Speaking, '
                    'Listening, Reading, and the vocabulary that feeds Speaking '
