@@ -133,6 +133,11 @@ Consequence: **tagging a special into a term later takes it away from Term 1
 buyers who already have it** (the gate opens no-term lessons, not a fixed
 list). Before tagging Term 3, decide whether those buyers keep them.
 Step 6 (pricing page) is current with steps 4-5 on the branch.
+**Step 7 (IELTS pages) on the branch:** header, closing panels selling IELTS
+(prices in `PRICE_*` at the top of `tools/build_ielts_hub.py`), ItemList by
+skill. Still on the copy sweep: the site nav's "Go Pro" button (hand-kept in
+ielts.html's nav and copied by the hub builders) and the open naming question,
+Pro vs "Forbes English full".
 
 - **Step 1, schema: APPLIED** (Supabase migration `pricing_go_live_schema`,
   file `deploy/schema-pricing.sql`). `lessons.term/mission`,
