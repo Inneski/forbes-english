@@ -143,7 +143,7 @@ Pro vs "Forbes English full".
 last when the reader has a one-off); waits for the exact purchase after
 checkout (`?cs=`). Test: `deploy/test-account.cjs` (playwright).
 **Essay credits are counted down by hand.** The page tells buyers to email
-essays to forbes@goodtimebook.com; after marking one, run (with their email):
+essays to info@forbesenglish.com; after marking one, run (with their email):
 
 ```sql
 update public.user_plans set marking_credits = marking_credits - 1
@@ -193,7 +193,7 @@ records in Cloudflare), and `RESEND_API_KEY` as a Worker secret. Steps in
   Also needed: `cancel_url` → `pricing.html?checkout=cancelled` (it points
   at account.html, which ignores it); a Stripe billing-portal route, because
   nothing lets a subscriber cancel (the page now says "email
-  forbes@goodtimebook.com"); a way to send an essay and spend a credit.
+  info@forbesenglish.com"); a way to send an essay and spend a credit.
 - **Supabase quota:** the Mythos org was over its free Cached Egress
   (Folklore-Explorer's `entry-images`, not this project). Restriction on
   1 Nov would 402 every request and the gate fails open. Innes put Mythos on
@@ -15212,3 +15212,15 @@ need deciding before it can be: the story panels run 60–150 words against
 the engine's 28-word wall, so `rpg.py` needs a paged story panel or the
 blocks need splitting; and the prologue is a story-only scene, which the
 engine has no slot for (fold it into the briefing screen if it stays).
+
+## 2026-10-04 — info@forbesenglish.com exists
+
+Cloudflare Email Routing on forbesenglish.com forwards `info@` to Innes's
+Gmail (catch-all drops). The Namecheap `eforward*` MX and SPF records that
+blocked activation were deleted. Every `mailto:forbes@goodtimebook.com` on
+the site is now `info@forbesenglish.com`, including the nav source in
+`lesson-template/build/block-camp-hub/build.py`. Three pages were open in
+another session at the time and still carry the old address until that
+session commits: `grammar.html`, `past-continuous.html`, `rpg.html` — a
+hub rebuild fixes the first and last. Sending *as* info@ from Gmail
+(Send mail as + app password) is Innes's step, not done yet.

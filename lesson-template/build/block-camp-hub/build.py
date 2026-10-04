@@ -333,7 +333,7 @@ def fill(s, lang, vals):
 
 NAV_KEYS = (('<a href="library.html">', 'navLessons'),
             ('<a href="pricing.html" class="tb-cta-gold">', 'navGoPro'),
-            ('<a href="mailto:forbes@goodtimebook.com" class="tb-cta">', 'navWork'))
+            ('<a href="mailto:info@forbesenglish.com" class="tb-cta">', 'navWork'))
 
 def nav_i18n(nav):
     """The hub's copy of the band gets its three keys (nav.html stays the
