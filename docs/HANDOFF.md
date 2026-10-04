@@ -15239,3 +15239,13 @@ another session at the time and still carry the old address until that
 session commits: `grammar.html`, `past-continuous.html`, `rpg.html` — a
 hub rebuild fixes the first and last. Sending *as* info@ from Gmail
 (Send mail as + app password) is Innes's step, not done yet.
+
+## 2026-10-05 — www.forbesenglish.com redirects to the apex
+
+www answered 525 for as long as the site has existed: its DNS record was a
+proxied CNAME to Namecheap's parking page and the Worker was bound only to
+the apex Custom Domain. `wrangler.toml` now declares both — the apex as
+`custom_domain`, www as a zone route — and `src/index.js` 301s any www
+request to the apex, path and query intact. The CNAME was left alone; the
+route takes precedence. Check with `curl -sI https://www.forbesenglish.com/`
+→ 301 to the apex.
