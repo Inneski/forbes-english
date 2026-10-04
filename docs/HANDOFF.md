@@ -42,6 +42,11 @@ Worker gate with weekly drip → pricing page → IELTS page → account page �
 weekly email, checking in after each step. **Nothing is pushed**: he wants
 a go-ahead before anything goes live.
 
+**Correction, later on 4 Oct:** `a4c60285` was pushed by accident with an
+unrelated lesson fix. `fcbd7c21` put `pricing.html` back to its old version
+on `main`. The schema SQL, this entry and the `seo.py` tweak stayed in. To
+go live: `git show a4c60285:pricing.html > pricing.html`.
+
 - **Step 1, schema: APPLIED** (Supabase migration `pricing_go_live_schema`,
   file `deploy/schema-pricing.sql`). `lessons.term/mission`,
   `user_plans.term/starts_at/marking_credits`, `profiles.blockcamp_first_open`;
