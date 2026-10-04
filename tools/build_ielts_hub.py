@@ -1046,7 +1046,7 @@ def close_html(routes, f, series):
     <h2 class="ih-h2" id="ih-close-h">%s</h2>
     <p>%sIELTS is %s for every lesson here, yours to keep. With marking it is %s: %s.</p>
     <p class="ih-close-human">%s</p>
-    <p>Forbes English full, %s a month, includes IELTS and every other lesson on the site.</p>
+    <p>Forbes English Pro, %s a month, includes IELTS and every other lesson on the site.</p>
     <div class="ih-ctas">
       <a class="ih-btn" href="pricing.html#ielts">See the IELTS plans <span aria-hidden="true">&rarr;</span></a>
       <a class="ih-btn ih-btn-quiet" href="library.html#cat=IELTS">Every IELTS lesson in the library</a>
