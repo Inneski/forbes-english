@@ -66,6 +66,24 @@ has Managed Payments (Stripe as seller of record, VAT "managed for you"),
 which the Worker currently disables per checkout. Innes is creating the
 four products by hand (session clicks in live Stripe were refused).
 
+**Step 3, Stripe: DONE 4 Oct, verified read-only in the live shell.** All
+one-off, EUR, `tax_behavior: inclusive`, category `txcd_20060358`. The
+metadata is on the **products**, not the prices (one price each), so the
+webhook reads `line_items.data.price.product.metadata`.
+
+| Product | Product ID | Price ID | Metadata |
+|---|---|---|---|
+| Block Camp Term 1, €19 | `prod_VNcVC9TpjY3wV8` | `price_1UMrG40R7wvAnqirYtSLCZnY` | product=blockcamp, term=1, marking_credits=0 |
+| IELTS, €25 | `prod_VNcalkwGfoanmY` | `price_1UMrLI0R7wvAnqirWYHjtsg2` | product=ielts, marking_credits=0 |
+| IELTS + Marking, €69 | `prod_VNcg8XlxivpFyr` | `price_1UMrR60R7wvAnqirEMCYlH9q` | product=ielts, marking_credits=2 |
+| Marking — two essays, €49 | `prod_VNcoLe8aDfBwSk` | `price_1UMrYb0R7wvAnqiritAkZlT5` | product=marking, marking_credits=2 |
+
+Founder: coupon `nlxRQksc` "Founder price", €7 off once, applies to
+`prod_VNcVC9TpjY3wV8` only; promotion code `FOUNDER`
+(`promo_1UMrlb0R7wvAnqirXLEXdWdf`), `max_redemptions: 50`. The Worker's
+`/api/founder-status` reads that promo's `times_redeemed`. Forbes English
+Pro (`prod_VCr9pX02HJ6n0e`) still has no product category.
+
 - **Step 1, schema: APPLIED** (Supabase migration `pricing_go_live_schema`,
   file `deploy/schema-pricing.sql`). `lessons.term/mission`,
   `user_plans.term/starts_at/marking_credits`, `profiles.blockcamp_first_open`;
