@@ -799,7 +799,7 @@ def render(rows, images):
       <div class="rh-note">
         <h3>Playing alone?</h3>
         <p>Every game keeps a score and the endings are worth a second run &mdash; a different tense at the fork is a different story. The Block Camp games translate their story text into other languages from the panel; the questions stay in English.</p>
-        <p>The free ones need nothing. The rest open with a Pro sign-in, which also opens <a href="library.html">every other lesson on the site</a>.</p>
+        <p>The free ones need nothing. Block Camp Term 1 opens the Block Camp games, a mission a week, with the specials from day one; <a href="pricing.html">Forbes English Pro</a> opens every game here and <a href="library.html">every other lesson on the site</a>.</p>
       </div>
     </div>
   </div>
@@ -811,8 +811,8 @@ def render(rows, images):
   <img class="rh-close-art" src="%s" alt="" loading="lazy" width="1536" height="%d">
   <div class="rh-close-in">
     <p class="rh-kicker">Free and Pro</p>
-    <h2 class="rh-h2" id="rh-close-h">%s are free. <em>The rest come with Pro</em></h2>
-    <p>One subscription opens every game here and every lesson on the site. The free ones stay free, sign-in or not.</p>
+    <h2 class="rh-h2" id="rh-close-h">%s are free. <em>The rest come with a plan</em></h2>
+    <p>Forbes English Pro opens every game here and every lesson on the site. Block Camp Term 1, one payment, opens the Block Camp games a mission a week, and the specials straight away. The free ones stay free, sign-in or not.</p>
     <div class="rh-ctas">
       <a class="rh-btn" href="pricing.html">Plans &amp; prices</a>
       <a class="rh-btn rh-btn-quiet" href="#free">Back to the free games</a>
