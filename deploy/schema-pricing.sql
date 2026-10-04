@@ -106,3 +106,19 @@ set blockcamp_first_open = now() - interval '12 weeks'
 where subscription_status in ('active', 'trialing')
   and not owner
   and blockcamp_first_open is null;                   -- expect UPDATE 2
+
+-- ── Step 9: the weekly "Mission N is open" email (APPLIED 2026-10-04) ──
+-- Migration `blockcamp_mission_emails`. One row per email sent, claimed
+-- before sending so a mission is never mailed twice; RLS on with no
+-- policies, so only the Worker (service role) reads or writes it.
+-- profiles.blockcamp_emails: false stops the emails for that account (set
+-- by hand when someone replies asking to stop).
+create table if not exists public.blockcamp_mission_emails (
+  user_id uuid not null references auth.users(id) on delete cascade,
+  term int not null check (term > 0),
+  mission int not null check (mission > 0),
+  sent_at timestamptz not null default now(),
+  primary key (user_id, term, mission)
+);
+alter table public.blockcamp_mission_emails enable row level security;
+alter table public.profiles add column if not exists blockcamp_emails boolean not null default true;
