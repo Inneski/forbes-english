@@ -126,6 +126,14 @@ Added to the go-live copy sweep: `block-camp/camp-flags.js` (the Lookout)
 treats any Pro part seen as the full plan, so a Term 1 buyer's milestones and
 padlocks read wrong (source: `lesson-template/build/block-camp-flags/`).
 
+**Innes, 4 Oct: Term 1 buyers also get the Block Camp specials** (every
+Block Camp lesson with no term: Grand Hotel, Nautilus Deep, Dracula, the
+passive trial / present perfect / past perfect decks), open from day one.
+Consequence: **tagging a special into a term later takes it away from Term 1
+buyers who already have it** (the gate opens no-term lessons, not a fixed
+list). Before tagging Term 3, decide whether those buyers keep them.
+Step 6 (pricing page) is current with steps 4-5 on the branch.
+
 - **Step 1, schema: APPLIED** (Supabase migration `pricing_go_live_schema`,
   file `deploy/schema-pricing.sql`). `lessons.term/mission`,
   `user_plans.term/starts_at/marking_credits`, `profiles.blockcamp_first_open`;
