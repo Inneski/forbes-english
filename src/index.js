@@ -39,6 +39,13 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
+    // www is the apex. One host for Google, one for cookies, one for the
+    // Stripe return URLs (SITE_URL is the apex).
+    if (url.hostname === "www.forbesenglish.com") {
+      url.hostname = "forbesenglish.com";
+      return Response.redirect(url.toString(), 301);
+    }
+
     if (request.method === "POST" && url.pathname === "/api/create-checkout-session") {
       return handleCreateCheckoutSession(request, env);
     }
