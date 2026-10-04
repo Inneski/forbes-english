@@ -220,9 +220,9 @@ async function gateLessonRequest(request, url, env, ctx) {
  *    subscriber's first Block Camp visit. A lesson with no mission number
  *    (Term 2 until it is numbered, the mixed-tense specials) is not dripped.
  *  - A term bought outright (user_plans, product blockcamp). The clock is
- *    that row's starts_at, the moment of payment. Only lessons tagged with
- *    the row's term and a mission open this way: a Term 1 buyer does not get
- *    Term 2, and an untagged lesson is not part of any term.
+ *    that row's starts_at, the moment of payment. Lessons tagged with the
+ *    row's term and a mission open this way, a week at a time; a Term 1
+ *    buyer does not get Term 2. The specials (no term) open at once.
  *
  * Returns { open } or { open: false, notYet: { mission, opensAt, openNow,
  * term } } when the caller holds the lesson but its week has not come
@@ -251,6 +251,12 @@ function blockCampVerdict(lesson, access, now) {
     if (now >= opensAfter(start)) return { open: true, startClock };
     later(start);
   }
+
+  // The specials -- Block Camp lessons in no term (Grand Hotel, Nautilus
+  // Deep, Dracula, the passive extras) -- come with any term bought, open
+  // from day one (Innes, 2026-10-04). Tagging one into a term later would
+  // take it away from buyers who already have it.
+  if (!lesson.term && access.blockCampPlans.length) return { open: true, startClock };
 
   if (mission && lesson.term) {
     for (const plan of access.blockCampPlans) {
@@ -518,7 +524,8 @@ function escapeHtml(s) {
 // gate's own catalogue row; lesson-meta.json as the fallback). Must agree
 // with PLAN_TRACKS above and with pricing.html. Only Term 1 is on sale.
 function planLine(track, term) {
-  if (track === "blockcamp" && Number(term) === 1) return "is part of Block Camp Term 1, and of Forbes English Pro.";
+  // Term 1 and the specials (no term) both come with Block Camp Term 1.
+  if (track === "blockcamp" && (Number(term) === 1 || !term)) return "is part of Block Camp Term 1, and of Forbes English Pro.";
   if (track === "ielts") return "is part of IELTS, and of Forbes English Pro.";
   return "is part of Forbes English Pro.";
 }
