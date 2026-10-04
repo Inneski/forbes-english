@@ -239,6 +239,16 @@ below tells a session to apply branch `48236bc4`'s "Any plan" badges:
 - The site says "Forbes English Pro" everywhere else; the handoff and the
   new page say "Forbes English full". One name, his choice.
   DECIDED 5 Oct: **Forbes English Pro** (branch `pricing-go-live` renamed).
+- Missions 4, 8 and 12 have no quest (Present Continuous 1b, Past Continuous
+  1b, Future Simple 1b). Innes, 5 Oct: he builds them in about two days; the
+  "each with a quest" line stays. **When each quest is published, tag it into
+  its mission** (or the gate keeps it from Term 1 buyers' weekly unlock and
+  treats it as a special instead):
+
+  ```sql
+  update public.lessons set term = 1, mission = 4   -- 8, 12 for the others
+  where file = 'block-camp/<new-quest>-rpg.html';  -- expect UPDATE 1
+  ```
 - Before taking money from EU consumers: a terms page with seller identity
   and the 14-day withdrawal information, and Stripe's consent to immediate
   access (needs his name/address; the review flagged its absence).
