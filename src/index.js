@@ -23,7 +23,8 @@
 //   STRIPE_PRICE_ID_MARKING         €49, two marked essays on any account
 //   STRIPE_PROMO_FOUNDER            promo_… for FOUNDER (€7 off Term 1, 50 uses)
 // Optional: MARKING_MAIL, a Cloudflare send_email binding, plus
-// MARKING_MAIL_FROM — the marking inbox is told when credits are bought.
+// MARKING_MAIL_FROM and MARKING_MAIL_TO — the marking inbox is told when
+// credits are bought.
 
 // Email Routing's message type, for the marking-inbox note (notifyMarking).
 import { EmailMessage } from "cloudflare:email";
@@ -35,15 +36,21 @@ const PLAN_ENV_KEYS = {
 };
 
 // What the pricing page can buy, by the key its buttons send. All are single
-// payments through Managed Payments (Stripe as seller of record: it charges
-// and remits the VAT). What a purchase grants is read back from the Stripe
-// *product's* metadata in the webhook, not from this table, so a Payment
-// Link sold outside this page grants the same thing.
+// payments. `managed` sends the sale through Managed Payments (Stripe as
+// seller of record: it charges and remits the VAT). Stripe's eligibility
+// rules exclude a product that "involves human intervention", which a
+// teacher-marked essay is; whether the two marking products stay managed is
+// Innes's call (docs/HANDOFF.md, pricing step 4). A sale with it off is
+// taxed like the full plan: not at all by Stripe.
+// What a purchase grants is read back from the Stripe *product's* metadata
+// in the webhook, not from this table. The buyer's account comes only from
+// the session's metadata.supabase_user_id, which this checkout sets: an
+// anonymous Payment Link sale is charged but grants nothing (it is logged).
 const CHECKOUT_PRODUCTS = {
-  blockcamp:     { envKey: "STRIPE_PRICE_ID_BLOCKCAMP", founder: true },
-  ielts:         { envKey: "STRIPE_PRICE_ID_IELTS" },
-  ielts_marking: { envKey: "STRIPE_PRICE_ID_IELTS_MARKING" },
-  marking:       { envKey: "STRIPE_PRICE_ID_MARKING" },
+  blockcamp:     { envKey: "STRIPE_PRICE_ID_BLOCKCAMP", managed: true, founder: true },
+  ielts:         { envKey: "STRIPE_PRICE_ID_IELTS", managed: true },
+  ielts_marking: { envKey: "STRIPE_PRICE_ID_IELTS_MARKING", managed: true },
+  marking:       { envKey: "STRIPE_PRICE_ID_MARKING", managed: true },
 };
 
 // The tracks a `user_plans` row opens, by its `product`. The full plan (held
@@ -489,7 +496,7 @@ async function handlePaywallStatus(request, url, env, ctx) {
     hasIeltsMarkingPrice: Boolean(env.STRIPE_PRICE_ID_IELTS_MARKING),
     hasMarkingPrice: Boolean(env.STRIPE_PRICE_ID_MARKING),
     hasFounderPromo: Boolean(env.STRIPE_PROMO_FOUNDER),
-    hasMarkingMail: Boolean(env.MARKING_MAIL && env.MARKING_MAIL_FROM),
+    hasMarkingMail: Boolean(env.MARKING_MAIL && env.MARKING_MAIL_FROM && env.MARKING_MAIL_TO),
   };
 
   report.configOk =
@@ -515,6 +522,30 @@ async function handlePaywallStatus(request, url, env, ctx) {
 // POST /api/create-checkout-session
 // ─────────────────────────────────────────────────────────────────────────
 
+/**
+ * The signed-in caller, from the Supabase access token in the Authorization
+ * header (pricing.html sends it) or the fe_at cookie (sb-client.js keeps it
+ * in step). Supabase checks the token; nothing in the request body is
+ * trusted for who is buying.
+ */
+async function signedInUser(request, env) {
+  const auth = request.headers.get("Authorization") || "";
+  const token = (auth.match(/^Bearer\s+(.+)$/i) || [])[1] ||
+    readCookie(request.headers.get("Cookie"), SESSION_COOKIE);
+  if (!token) return { error: "Sign in first", status: 401 };
+  try {
+    const res = await fetch(`${env.SUPABASE_URL}/auth/v1/user`, {
+      headers: { apikey: env.SUPABASE_ANON_KEY, Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) return { error: "Sign in first", status: 401 };
+    const user = await res.json();
+    if (!user || !user.id || !user.email) return { error: "Sign in first", status: 401 };
+    return { id: user.id, email: user.email };
+  } catch {
+    return { error: "Could not check your sign-in; please try again", status: 502 };
+  }
+}
+
 async function handleCreateCheckoutSession(request, env) {
   let body;
   try {
@@ -523,10 +554,13 @@ async function handleCreateCheckoutSession(request, env) {
     return json({ error: "Invalid JSON body" }, 400);
   }
 
-  const { userId, userEmail, plan, product } = body;
-  if (!userId || !userEmail) {
-    return json({ error: "userId and userEmail are required" }, 400);
-  }
+  // The buyer is whoever is signed in. Until 2026-10-04 the account came
+  // from userId/userEmail in the body, so anyone could open a checkout
+  // attached to any account id; a body's ids are now ignored.
+  const caller = await signedInUser(request, env);
+  if (caller.error) return json({ error: caller.error }, caller.status);
+  const { id: userId, email: userEmail } = caller;
+  const { plan, product } = body;
   if (product) return createProductCheckout(env, userId, userEmail, product);
 
   const envKey = PLAN_ENV_KEYS[plan];
@@ -595,7 +629,7 @@ async function createProductCheckout(env, userId, userEmail, product) {
 
   const params = new URLSearchParams({
     mode: "payment",
-    "managed_payments[enabled]": "true",
+    "managed_payments[enabled]": def.managed ? "true" : "false",
     "line_items[0][price]": priceId,
     "line_items[0][quantity]": "1",
     customer_email: userEmail,
@@ -612,9 +646,20 @@ async function createProductCheckout(env, userId, userEmail, product) {
 
   let stripeRes = await createCheckoutSession(env, params);
   // The last founder place can go between the count and this call. Stripe
-  // then refuses the code; the buyer still gets a checkout, at €19, rather
-  // than an error.
+  // then refuses the code (a 400 about the discount), and the buyer still
+  // gets a checkout, at €19, rather than an error. Any other failure (a 429,
+  // a 5xx) keeps the code and goes back as an error the page can retry:
+  // a founder must never be charged €19 because Stripe hiccuped.
   if (!stripeRes.ok && params.has("discounts[0][promotion_code]")) {
+    const text = await stripeRes.text();
+    let err = {};
+    try { err = JSON.parse(text).error || {}; } catch { /* not JSON */ }
+    const aboutCode = stripeRes.status === 400 && (
+      /^discounts/.test(String(err.param || "")) ||
+      /promotion_code|coupon/.test(String(err.code || "")) ||
+      /promotion code|coupon/i.test(String(err.message || "")));
+    if (!aboutCode) return json({ error: "Stripe error", detail: text }, 502);
+    console.error(`FOUNDER refused, checkout at full price: ${err.message || text}`);
     params.delete("discounts[0][promotion_code]");
     stripeRes = await createCheckoutSession(env, params);
   }
@@ -648,36 +693,39 @@ function createCheckoutSession(env, params) {
  */
 async function getFounderStatus(env, ctx) {
   if (!env.STRIPE_PROMO_FOUNDER || !env.STRIPE_SECRET_KEY) return null;
-  const cacheKey = new Request(`${env.SITE_URL}/__internal/founder-status-v1`);
+  const cacheKey = new Request(`${env.SITE_URL}/__internal/founder-status-v2`);
   const cache = typeof caches !== "undefined" ? caches.default : null;
   if (cache) {
     const hit = await cache.match(cacheKey);
     if (hit) {
-      try { return await hit.json(); } catch { /* re-read */ }
+      try {
+        const v = await hit.json();
+        return v && v.limit ? v : null;
+      } catch { /* re-read */ }
     }
   }
-  let status;
+  // A failed read is cached as {} for the same minute, so a failing Stripe
+  // is asked once a minute rather than once per visitor.
+  let status = {};
   try {
     const res = await fetch(
       `https://api.stripe.com/v1/promotion_codes/${encodeURIComponent(env.STRIPE_PROMO_FOUNDER)}`,
       { headers: { "Authorization": `Bearer ${env.STRIPE_SECRET_KEY}` } }
     );
-    if (!res.ok) return null;
-    const promo = await res.json();
-    const limit = Number(promo.max_redemptions);
-    const used = Number(promo.times_redeemed) || 0;
-    if (!(limit > 0)) return null;
-    status = { limit, remaining: promo.active ? Math.max(0, limit - used) : 0 };
-  } catch {
-    return null;
-  }
+    if (res.ok) {
+      const promo = await res.json();
+      const limit = Number(promo.max_redemptions);
+      const used = Number(promo.times_redeemed) || 0;
+      if (limit > 0) status = { limit, remaining: promo.active ? Math.max(0, limit - used) : 0 };
+    }
+  } catch { /* status stays {} */ }
   if (cache) {
     const put = cache.put(cacheKey, new Response(JSON.stringify(status), {
       headers: { "Content-Type": "application/json", "Cache-Control": "max-age=60" },
     }));
     if (ctx && ctx.waitUntil) ctx.waitUntil(put); else await put;
   }
-  return status;
+  return status.limit ? status : null;
 }
 
 async function handleFounderStatus(env, ctx) {
@@ -719,57 +767,71 @@ async function handleStripeWebhook(request, env) {
         // pays later; the grant waits for async_payment_succeeded.
         if (session.payment_status !== "paid" && session.payment_status !== "no_payment_required") break;
         // A sale not started from the site (no signed-in user) has nothing
-        // to attach to. It is in the Stripe dashboard; nothing to do here.
-        if (!userId) break;
+        // to attach to. Logged so it can be granted by hand.
+        if (!userId) {
+          console.error(`checkout ${session.id}: paid one-off with no supabase_user_id, nothing granted ` +
+            `(buyer ${session.customer_details?.email || session.customer_email || "unknown"})`);
+          break;
+        }
         if (!(await grantOneOff(env, event, session, userId))) return failed();
         break;
       }
 
-      // The full plan: a subscription, held on the profile as before.
-      if (event.type !== "checkout.session.completed" || !userId) break;
+      // The full plan: a subscription, held on the profile as before. Its
+      // status is read from Stripe now, not taken from this event: a
+      // redelivered or late event must not write a stale "active" over a
+      // cancellation that happened since.
+      if (event.type !== "checkout.session.completed" || !userId || !session.subscription) break;
+      const sub = await currentSubscription(env, session.subscription);
+      if (!sub) return failed();
       const plan = session.metadata?.plan;
       const ok = await updateProfile(env, userId, {
         stripe_customer_id: session.customer,
         stripe_subscription_id: session.subscription,
-        subscription_status: "active",
+        ...subscriptionFields(sub),
         ...(plan ? { plan } : {}),
       });
       if (!ok) return failed();
       break;
     }
-    case "customer.subscription.updated": {
-      const sub = event.data.object;
-      const plan = sub.metadata?.plan;
+    case "customer.subscription.updated":
+    case "customer.subscription.deleted": {
+      const evSub = event.data.object;
       // A standalone subscription updates its own row. None is sold any more
       // (every product is one-off since 2026-10-04); kept so a row made by
       // the 2026-09-28 plans can still be closed.
-      if (sub.metadata?.product) {
-        if (!(await updateUserPlanBySubscription(env, sub.id, { status: sub.status }))) return failed();
+      if (evSub.metadata?.product) {
+        const status = event.type === "customer.subscription.deleted" ? "canceled" : evSub.status;
+        if (!(await updateUserPlanBySubscription(env, evSub.id, { status }))) return failed();
         break;
       }
-      // Since Stripe API 2025-03-31 the period end lives on the subscription
-      // item, not the subscription. Reading sub.current_period_end gave
-      // undefined -> Invalid Date -> toISOString() threw, so every
-      // subscription.updated event would have 500'd. Fall back to the old
-      // field for older payloads, and skip the date rather than crash.
-      const periodEnd = sub.items?.data?.[0]?.current_period_end ?? sub.current_period_end;
+      // The full plan. The event says *that* something changed; what it is
+      // now is read from Stripe, so events arriving out of order or again
+      // after a retry all settle on the same, current state.
+      const sub = await currentSubscription(env, evSub.id);
+      if (!sub) return failed();
+      const plan = sub.metadata?.plan;
       const ok = await updateProfileByCustomer(env, sub.customer, {
-        subscription_status: sub.status,
-        ...(typeof periodEnd === "number"
-          ? { current_period_end: new Date(periodEnd * 1000).toISOString() }
-          : {}),
+        ...subscriptionFields(sub),
         ...(plan ? { plan } : {}),
       });
       if (!ok) return failed();
       break;
     }
-    case "customer.subscription.deleted": {
-      const sub = event.data.object;
-      if (sub.metadata?.product) {
-        if (!(await updateUserPlanBySubscription(env, sub.id, { status: "canceled" }))) return failed();
-        break;
-      }
-      if (!(await updateProfileByCustomer(env, sub.customer, { subscription_status: "canceled" }))) return failed();
+    case "charge.refunded":
+    case "charge.dispute.closed": {
+      // Nothing one-off expires, and under Managed Payments Stripe can refund
+      // a buyer without asking: a full refund or a lost chargeback has to
+      // close the grant, or it stays open for good. A partial refund and a
+      // dispute that was won leave it alone. The full plan is not affected
+      // here; its subscription status governs it.
+      const obj = event.data.object;
+      if (event.type === "charge.refunded" && obj.refunded !== true) break;
+      if (event.type === "charge.dispute.closed" && obj.status !== "lost") break;
+      const pi = typeof obj.payment_intent === "string" ? obj.payment_intent : obj.payment_intent?.id;
+      if (!pi) break;
+      const res = await revokeOneOff(env, pi, event.type === "charge.refunded" ? "refunded" : "disputed");
+      if (!res) return failed();
       break;
     }
     default:
@@ -858,13 +920,23 @@ async function grantOneOff(env, event, session, userId) {
  * this is a no-op, and a mail failure never fails the purchase: Stripe's
  * own payment emails to the account owner are the backstop.
  */
+// A header value with non-ASCII in it (the em dash in "Marking — two
+// essays") as an RFC 2047 encoded word; plain ASCII goes through untouched.
+function encodeHeader(s) {
+  if (/^[\x20-\x7e]*$/.test(s)) return s;
+  const bytes = new TextEncoder().encode(s);
+  let bin = "";
+  for (const b of bytes) bin += String.fromCharCode(b);
+  return `=?UTF-8?B?${btoa(bin)}?=`;
+}
+
 async function notifyMarking(env, info) {
   if (!env.MARKING_MAIL || !env.MARKING_MAIL_FROM || !env.MARKING_MAIL_TO) return;
   const clean = (s) => String(s).replace(/[\r\n]+/g, " ").slice(0, 200);
   const raw = [
     `From: Forbes English <${clean(env.MARKING_MAIL_FROM)}>`,
     `To: <${clean(env.MARKING_MAIL_TO)}>`,
-    `Subject: Marking bought: ${info.credits} essays (${clean(info.productName)})`,
+    `Subject: ${encodeHeader(`Marking bought: ${info.credits} essays (${clean(info.productName)})`)}`,
     `Message-ID: <${clean(info.sessionId)}@forbesenglish.com>`,
     `Date: ${new Date().toUTCString()}`,
     "MIME-Version: 1.0",
@@ -952,17 +1024,79 @@ function supabaseHeaders(env) {
 // Verifies the `Stripe-Signature` header using the raw request body, per
 // https://stripe.com/docs/webhooks#verify-manually — implemented with the
 // Web Crypto API since Cloudflare Workers don't have Node's `crypto`.
+/** The subscription as Stripe has it now, or null if it cannot be read. */
+async function currentSubscription(env, id) {
+  try {
+    const res = await fetch(`https://api.stripe.com/v1/subscriptions/${encodeURIComponent(id)}`,
+      { headers: { "Authorization": `Bearer ${env.STRIPE_SECRET_KEY}` } });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
+
+// Since Stripe API 2025-03-31 the period end lives on the subscription item,
+// not the subscription. Reading sub.current_period_end gave undefined ->
+// Invalid Date -> toISOString() threw. Fall back to the old field for older
+// payloads, and skip the date rather than crash.
+function subscriptionFields(sub) {
+  const periodEnd = sub.items?.data?.[0]?.current_period_end ?? sub.current_period_end;
+  return {
+    subscription_status: sub.status,
+    ...(typeof periodEnd === "number"
+      ? { current_period_end: new Date(periodEnd * 1000).toISOString() }
+      : {}),
+  };
+}
+
+/**
+ * Closes the one-off grant bought with this PaymentIntent: its row stops
+ * counting (callerAccess only counts active rows) and its essay credits go.
+ * True when done or when there is nothing to close (the full plan, or a
+ * sale that never granted anything); null when Stripe or Supabase failed.
+ */
+async function revokeOneOff(env, paymentIntent, status) {
+  let session;
+  try {
+    const res = await fetch(
+      `https://api.stripe.com/v1/checkout/sessions?payment_intent=${encodeURIComponent(paymentIntent)}&limit=1`,
+      { headers: { "Authorization": `Bearer ${env.STRIPE_SECRET_KEY}` } });
+    if (!res.ok) return null;
+    session = ((await res.json()).data || [])[0];
+  } catch {
+    return null;
+  }
+  if (!session || session.mode !== "payment") return true;
+  const ok = await supabaseWrite(
+    `${env.SUPABASE_URL}/rest/v1/user_plans?stripe_checkout_session_id=eq.${encodeURIComponent(session.id)}`,
+    { method: "PATCH", headers: supabaseHeaders(env), body: JSON.stringify({ status, marking_credits: 0 }) });
+  return ok || null;
+}
+
+// Verifies the `Stripe-Signature` header using the raw request body, per
+// https://docs.stripe.com/webhooks#verify-manually — implemented with the
+// Web Crypto API since Cloudflare Workers don't have Node's `crypto`.
+// The header can carry several v1 signatures (while the endpoint secret is
+// being rolled, one per secret): any match is enough. A timestamp more than
+// five minutes off is refused, so a captured event cannot be replayed later
+// (Stripe re-signs every retry with a fresh timestamp). The comparison
+// takes the same time whatever the input.
+const SIGNATURE_TOLERANCE_SECONDS = 300;
+
 async function verifyStripeSignature(rawBody, signatureHeader, webhookSecret) {
   if (!signatureHeader || !webhookSecret) return false;
 
-  const parts = Object.fromEntries(
-    signatureHeader.split(",").map((pair) => pair.split("="))
-  );
-  const timestamp = parts.t;
-  const expectedSig = parts.v1;
-  if (!timestamp || !expectedSig) return false;
+  const items = signatureHeader.split(",").map((pair) => {
+    const i = pair.indexOf("=");
+    return i < 0 ? ["", ""] : [pair.slice(0, i).trim(), pair.slice(i + 1).trim()];
+  });
+  const timestamp = items.find(([k]) => k === "t")?.[1];
+  const signatures = items.filter(([k]) => k === "v1").map(([, v]) => v);
+  if (!timestamp || signatures.length === 0) return false;
+  const ts = Number(timestamp);
+  if (!Number.isFinite(ts) || Math.abs(Date.now() / 1000 - ts) > SIGNATURE_TOLERANCE_SECONDS) return false;
 
-  const signedPayload = `${timestamp}.${rawBody}`;
   const key = await crypto.subtle.importKey(
     "raw",
     new TextEncoder().encode(webhookSecret),
@@ -970,12 +1104,19 @@ async function verifyStripeSignature(rawBody, signatureHeader, webhookSecret) {
     false,
     ["sign"]
   );
-  const sigBuffer = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(signedPayload));
-  const computedSig = [...new Uint8Array(sigBuffer)]
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("");
+  const sigBuffer = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(`${timestamp}.${rawBody}`));
+  const computed = [...new Uint8Array(sigBuffer)].map((b) => b.toString(16).padStart(2, "0")).join("");
 
-  return computedSig === expectedSig;
+  return signatures.some((s) => sameString(s, computed));
+}
+
+// Constant-time string equality: every character is compared, whatever the
+// first difference.
+function sameString(a, b) {
+  if (a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return diff === 0;
 }
 
 function json(data, status = 200) {

@@ -48,20 +48,34 @@ live in `wrangler.toml` under `[vars]` beside the full-plan prices:
 `docs/HANDOFF.md`. Change a grant there, not in code.
 
 They are sold through **Managed Payments** (Stripe as seller of record: it
-charges and remits the VAT and sends the receipts, from Link). Before the
-first sale, in the Stripe dashboard:
+charges and remits the VAT and sends the receipts, from Link), per product:
+the `managed` flag in `CHECKOUT_PRODUCTS` in `src/index.js`. Stripe's
+eligibility rules exclude products that involve human work, which essay
+marking does; see docs/HANDOFF.md for the decision on the two marking
+products. In the Stripe dashboard:
 
-1. Settings → Managed Payments: switch it on and accept its terms.
-2. Developers → Webhooks → the forbesenglish.com endpoint: listen to
-   `checkout.session.async_payment_succeeded` as well as
-   `checkout.session.completed` (a delayed payment method grants on the
-   second event, not the first).
+1. Settings → Managed Payments: on and "Ready to use" (checked 4 Oct 2026).
+2. Developers → Webhooks → `forbes-english-worker-live`
+   (`we_1UCRVD0R7wvAnqir5hFaGqwg`) must listen to:
+   - `checkout.session.completed` and `checkout.session.async_payment_succeeded`
+     (a delayed payment method grants on the second, not the first; added
+     4 Oct);
+   - `customer.subscription.updated` and `customer.subscription.deleted`
+     (the full plan);
+   - `charge.refunded` and `charge.dispute.closed`: a full refund or a lost
+     chargeback closes a one-off grant and clears its essay credits. Nothing
+     one-off expires, so without these a refunded buyer keeps everything.
+
+Checkout needs the buyer signed in: the Worker reads the Supabase token from
+the Authorization header (pricing.html sends it) or the `fe_at` cookie and
+asks Supabase who it is. Nothing in the request body decides the account.
 
 Optional, the marking-inbox email: turn on Email Routing for
 forbesenglish.com in Cloudflare, verify the inbox as a destination, then
 uncomment the `[[send_email]]` block at the end of `wrangler.toml` and add
 `MARKING_MAIL_FROM` (an address on forbesenglish.com) and `MARKING_MAIL_TO`
 under `[vars]`. Without it, purchases work and no email is sent.
+`/api/paywall-status` reports `hasMarkingMail: true` once all three are set.
 
 Tests: `node deploy/test-webhook.mjs` (checkout, founder count, webhook)
 and `node deploy/test-paywall.mjs`.

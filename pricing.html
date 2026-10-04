@@ -594,12 +594,15 @@ async function startCheckout(plan) {
 
   let data = {};
   try {
+    // The Worker works out who is buying from this token (or the fe_at
+    // cookie), never from the body: a body naming an account proves nothing.
+    const session = await sbGetSession();
+    const headers = { "Content-Type": "application/json" };
+    if (session && session.access_token) headers.Authorization = `Bearer ${session.access_token}`;
     const res = await fetch("/api/create-checkout-session", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(product
-        ? { userId: user.id, userEmail: user.email, product }
-        : { userId: user.id, userEmail: user.email, plan }),
+      headers,
+      body: JSON.stringify(product ? { product } : { plan }),
     });
     data = await res.json();
   } catch (e) { /* handled below */ }
