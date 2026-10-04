@@ -111,7 +111,9 @@ globalThis.caches = { default: {
   async match(k){ const v = store.get(k.url); return v ? new Response(v) : undefined; },
   async put(k,v){ store.set(k.url, await v.text()); },
 }};
-const ctx = { waitUntil: (p) => p };
+const pending = [];
+const ctx = { waitUntil: (p) => { pending.push(p); } };
+const settle = async () => { while (pending.length) await pending.shift(); };
 
 async function get(path, cookie) {
   const headers = cookie ? { Cookie: cookie } : {};
@@ -190,17 +192,52 @@ for (const [path, cookie, want, why] of cases) {
 // A subscriber's first Block Camp visit starts their clock: one PATCH, with
 // the service key, guarded by is.null; a free Mission 1 visit counts.
 {
+  await settle();
   const writes = patched.filter((p) => p.url.includes('id=eq.u-new'));
   const ok = writes.length >= 1 && writes.every((p) => p.url.includes('blockcamp_first_open=is.null') &&
     p.auth === 'Bearer service' && typeof p.body.blockcamp_first_open === 'string') &&
     !patched.some((p) => /u-good|u-st|u-bc|owner/.test(p.url));
   ok ? pass++ : fail++;
   console.log(`${ok ? ' PASS' : ' FAIL'}  only a subscriber without a clock gets one, via the service key, guarded by is.null`);
-  patched.length = 0;
-  await get('/blockcamp-m1.html', 'fe_at=sub-new');
-  const free = patched.some((p) => p.url.includes('id=eq.u-new'));
+  await settle(); patched.length = 0;
+  const m1 = await get('/blockcamp-m1.html', 'fe_at=sub-new');
+  const servedAtOnce = m1.status === 200 && (await m1.text()).includes('LESSON BODY');
+  await settle();
+  const free = servedAtOnce && patched.some((p) => p.url.includes('id=eq.u-new'));
   free ? pass++ : fail++;
-  console.log(`${free ? ' PASS' : ' FAIL'}  opening the free Mission 1 starts a subscriber's clock too`);
+  console.log(`${free ? ' PASS' : ' FAIL'}  opening the free Mission 1 serves it at once and starts a subscriber's clock in the background`);
+  patched.length = 0;
+  await get('/blockcamp-term2.html', 'fe_at=sub-new');
+  await settle();
+  const unnumbered = patched.some((p) => p.url.includes('id=eq.u-new'));
+  unnumbered ? pass++ : fail++;
+  console.log(`${unnumbered ? ' PASS' : ' FAIL'}  a Pro Block Camp lesson with no mission starts the clock too`);
+}
+
+// A refusal the Worker reached from the reader's own rows is final: the page
+// says so (fe-gate=checked), so its script does not reload, and it drops
+// "Already subscribed? ... let you straight through". With no cookie the
+// Worker could not tell, so the retry stays.
+{
+  const real = readFileSync('locked.html', 'utf8');
+  const realEnv = { ...env, ASSETS: { fetch: (req) => {
+    const p = decodeURIComponent(new URL(req.url).pathname);
+    if (p === '/locked.html') return new Response(real, { status: 200 });
+    return env.ASSETS.fetch(req);
+  } } };
+  const fetchReal = (path, cookie) => mod.default.fetch(new Request('https://x.test' + path,
+    { headers: cookie ? { Cookie: cookie } : {} }), realEnv, ctx).then((r) => r.text());
+  const term2 = await fetchReal('/blockcamp-term2.html', 'fe_at=bc-old');
+  const anon = await fetchReal('/blockcamp-term2.html', null);
+  const ok = term2.includes('name="fe-gate" content="checked"') && !term2.includes('Already subscribed?') &&
+    term2.includes('See plans') && !anon.includes('content="checked"') && anon.includes('Already subscribed?');
+  ok ? pass++ : fail++;
+  console.log(`${ok ? ' PASS' : ' FAIL'}  a final refusal is marked "checked" and drops the retry promise; an anonymous one keeps it`);
+  const ny = await fetchReal('/blockcamp-m3.html', 'fe_at=bc-token');
+  const link = ny.includes('href="/blockcamp-demo.html">Mission 2 is open now</a>') && ny.includes('Back to Block Camp') &&
+    !ny.includes('Already subscribed?') && /UTC<\/time>/.test(ny);
+  link ? pass++ : fail++;
+  console.log(`${link ? ' PASS' : ' FAIL'}  not-yet page links to the mission that is open now; its no-JS date says UTC`);
 }
 
 // The not-yet page says when, in a machine-readable time the page localises.
@@ -265,6 +302,21 @@ globalThis.fetch = realFetch;
   ok ? pass++ : fail++;
   console.log(`${ok ? ' PASS' : ' FAIL'}  every URL on the gate page resolves to the site root, not the lesson's folder` +
     (escapes.length ? `\n        leaks: ${escapes.join(', ')}` : ''));
+}
+
+// The free Mission 1 never waits on Supabase: with the reader's profile read
+// hanging, the lesson still goes out (the clock is noted in the background).
+{
+  const hang = globalThis.fetch;
+  globalThis.fetch = (url, opts) => (String(opts?.headers?.Authorization || '').includes('hang-token')
+    ? new Promise(() => {}) : hang(url, opts));
+  const res = await Promise.race([get('/blockcamp-m1.html', 'fe_at=hang-token'),
+    new Promise((r) => setTimeout(() => r(null), 500))]);
+  const ok = res && res.status === 200 && (await res.text()).includes('LESSON BODY');
+  ok ? pass++ : fail++;
+  console.log(`${ok ? ' PASS' : ' FAIL'}  free Mission 1 is served even while Supabase hangs (the clock waits, the reader does not)`);
+  globalThis.fetch = hang;
+  pending.length = 0;
 }
 
 console.log(`\n  ${pass} passed, ${fail} failed`);

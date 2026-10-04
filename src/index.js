@@ -176,10 +176,15 @@ async function gateLessonRequest(request, url, env, ctx) {
 
   if (lesson.access !== "pro") {
     // A free Block Camp lesson (Mission 1) is where a subscriber's weekly
-    // clock should start, so a signed-in visit is noted. It never blocks.
-    if (lesson.track === "blockcamp" && readCookie(request.headers.get("Cookie"), SESSION_COOKIE)) {
-      const access = await callerAccess(request, env);
-      startBlockCampClock(access, env, ctx);
+    // clock should start, so a signed-in visit is noted -- in the
+    // background: the lesson goes out at once, it never waits on Supabase.
+    // (block-camp/camp-full.js re-asks with a fresh cookie when the reader
+    // arrived signed in but with the hour-long cookie already gone.)
+    if (lesson.track === "blockcamp" && ctx && ctx.waitUntil &&
+        readCookie(request.headers.get("Cookie"), SESSION_COOKIE)) {
+      ctx.waitUntil(callerAccess(request, env)
+        .then((access) => startBlockCampClock(access, env))
+        .catch(() => {}));
     }
     return null;
   }
@@ -188,7 +193,10 @@ async function gateLessonRequest(request, url, env, ctx) {
   const verdict = lesson.track === "blockcamp"
     ? blockCampVerdict(lesson, access, Date.now())
     : { open: access.covers(lesson.track) };
-  if (verdict.startClock) startBlockCampClock(access, env, ctx);
+  if (verdict.startClock) {
+    const write = startBlockCampClock(access, env);
+    if (ctx && ctx.waitUntil) ctx.waitUntil(write);
+  }
 
   if (verdict.open) {
     // Serve it, but marked private. A pro lesson must never sit in a shared
@@ -200,7 +208,7 @@ async function gateLessonRequest(request, url, env, ctx) {
     return out;
   }
 
-  return locked(request, url, env, ctx, lesson, verdict.notYet || null);
+  return locked(request, url, env, ctx, lesson, verdict.notYet || null, access, catalogue);
 }
 
 /**
@@ -216,33 +224,39 @@ async function gateLessonRequest(request, url, env, ctx) {
  *    the row's term and a mission open this way: a Term 1 buyer does not get
  *    Term 2, and an untagged lesson is not part of any term.
  *
- * Returns { open } or { open: false, notYet: { mission, opensAt } } when the
- * caller holds the lesson but its week has not come, plus startClock when a
- * subscriber's clock has not been started yet.
+ * Returns { open } or { open: false, notYet: { mission, opensAt, openNow,
+ * term } } when the caller holds the lesson but its week has not come
+ * (openNow: the highest mission open on the clock that opens it soonest),
+ * plus startClock when a subscriber's clock has not been started yet -- on
+ * any Block Camp lesson they open, numbered or not.
  */
 function blockCampVerdict(lesson, access, now) {
   if (access.owner) return { open: true };
   const mission = Number(lesson.mission) || null;
   const opensAfter = (start) => start + (mission - 1) * WEEK_MS;
   let notYet = null;
-  const later = (opensAt) => {
-    if (!notYet || opensAt < notYet.opensAt) notYet = { mission, opensAt };
+  const later = (start) => {
+    const opensAt = opensAfter(start);
+    if (!notYet || opensAt < notYet.opensAt) {
+      notYet = { mission, opensAt, term: Number(lesson.term) || 1,
+                 openNow: Math.floor((now - start) / WEEK_MS) + 1 };
+    }
   };
   let startClock = false;
 
   if (access.full) {
-    if (!mission) return { open: true };
+    if (!mission) return { open: true, startClock: !access.blockCampFirstOpen };
     let start = access.blockCampFirstOpen;
     if (!start) { start = now; startClock = true; }
     if (now >= opensAfter(start)) return { open: true, startClock };
-    later(opensAfter(start));
+    later(start);
   }
 
   if (mission && lesson.term) {
     for (const plan of access.blockCampPlans) {
       if ((plan.term || 1) !== Number(lesson.term)) continue;
       if (now >= opensAfter(plan.startsAt)) return { open: true, startClock };
-      later(opensAfter(plan.startsAt));
+      later(plan.startsAt);
     }
   }
   return { open: false, notYet, startClock };
@@ -253,14 +267,24 @@ function blockCampVerdict(lesson, access, now) {
  * write profiles (deploy/schema-pricing.sql), so this uses the service key;
  * the is.null filter makes it a no-op once set, however many requests race.
  */
-function startBlockCampClock(access, env, ctx) {
-  if (!access.full || access.owner || access.blockCampFirstOpen || !access.userId) return;
-  if (!env.SUPABASE_SERVICE_ROLE_KEY) return;
-  const write = fetch(
+function startBlockCampClock(access, env) {
+  if (!access.full || access.owner || access.blockCampFirstOpen || !access.userId) return Promise.resolve(true);
+  // Without the key the clock can never be saved, and a subscriber's
+  // Mission 2 would never open: /api/paywall-status reports the key.
+  if (!env.SUPABASE_SERVICE_ROLE_KEY) {
+    console.error(`blockcamp clock not saved for ${access.userId}: SUPABASE_SERVICE_ROLE_KEY unset`);
+    return Promise.resolve(false);
+  }
+  return fetch(
     `${env.SUPABASE_URL}/rest/v1/profiles?id=eq.${encodeURIComponent(access.userId)}&blockcamp_first_open=is.null`,
     { method: "PATCH", headers: supabaseHeaders(env), body: JSON.stringify({ blockcamp_first_open: new Date().toISOString() }) }
-  ).catch(() => {});
-  if (ctx && ctx.waitUntil) ctx.waitUntil(write);
+  ).then((res) => {
+    if (!res.ok) console.error(`blockcamp clock not saved for ${access.userId}: PATCH profiles ${res.status}`);
+    return res.ok;
+  }).catch((err) => {
+    console.error(`blockcamp clock not saved for ${access.userId}: ${err && err.message}`);
+    return false;
+  });
 }
 
 /**
@@ -349,7 +373,7 @@ async function getCatalogue(env, ctx) {
  */
 const NO_ACCESS = {
   owner: false, full: false, tracks: new Set(), covers: () => false,
-  blockCampPlans: [], blockCampFirstOpen: null, userId: null,
+  blockCampPlans: [], blockCampFirstOpen: null, userId: null, checked: false,
 };
 
 async function callerAccess(request, env) {
@@ -359,9 +383,10 @@ async function callerAccess(request, env) {
 
   // Read in parallel, fail separately: a missing table or a failed read of
   // user_plans costs the one-off plans only, never a full subscriber.
+  let plansOk = true;
   const plansRead = fetch(`${env.SUPABASE_URL}/rest/v1/user_plans?select=product,status,ends_at,starts_at,term`, { headers })
-    .then((r) => (r.ok ? r.json() : []))
-    .catch(() => []);
+    .then((r) => (r.ok ? r.json() : (plansOk = false, [])))
+    .catch(() => (plansOk = false, []));
   let profile;
   try {
     const pr = await fetch(`${env.SUPABASE_URL}/rest/v1/profiles?select=id,subscription_status,owner,blockcamp_first_open&limit=1`, { headers });
@@ -395,6 +420,9 @@ async function callerAccess(request, env) {
     covers: (track) => full || tracks.has(track),
     blockCampFirstOpen: Number.isFinite(firstOpen) ? firstOpen : null,
     userId: profile.id || null,
+    // Both reads came back with this caller's own rows: what the gate
+    // decided from them is final, and the page's retry would change nothing.
+    checked: plansOk,
   };
 }
 
@@ -427,14 +455,14 @@ function readCookie(header, name) {
  * The per-lesson text comes from `lesson-meta.json`, which `tools/seo.py`
  * generates from the same `lessons` table this gate reads.
  */
-async function locked(request, url, env, ctx, lesson = null, notYet = null) {
+async function locked(request, url, env, ctx, lesson = null, notYet = null, access = NO_ACCESS, catalogue = null) {
   const page = await env.ASSETS.fetch(new Request(`${url.origin}/locked.html`));
   let html = page.ok ? await page.text() : "<h1>This lesson is for subscribers.</h1>";
 
   const file = lessonFileFor(url.pathname);
   const meta = await getLessonMeta(request, url, env, ctx);
   const m = file && meta ? meta[file] : null;
-  if (m || notYet) html = personaliseGate(html, m || {}, url, lesson, notYet);
+  html = personaliseGate(html, m, url, lesson, notYet, access, catalogue);
 
   return new Response(html, {
     status: 200,
@@ -495,7 +523,18 @@ function planLine(track, term) {
   return "is part of Forbes English Pro.";
 }
 
-function personaliseGate(html, m, url, lesson = null, notYet = null) {
+function personaliseGate(html, m, url, lesson = null, notYet = null, access = NO_ACCESS, catalogue = null) {
+  const checked = Boolean(access && access.checked);
+  if (!m) {
+    // No metadata row: the page stays generic, but its script still needs
+    // to know what it is gating and whether the answer is final.
+    if (!notYet) {
+      const flags = gateFlags(lesson, {}, null, checked);
+      html = html.replace("<!-- LESSON:head -->", flags);
+      return checked ? finalOffer(html) : html;
+    }
+    m = {};
+  }
   const title = escapeHtml(m.title || "");
   const desc = escapeHtml(m.description || "");
   const level = escapeHtml(m.level || "");
@@ -561,13 +600,7 @@ function personaliseGate(html, m, url, lesson = null, notYet = null) {
     ` Plenty of the library is free and always will be.</p>`,
   ].join("");
 
-  // The page also tells its own script what it is gating: the track, so the
-  // "already subscribed?" retry can recognise a one-off plan, and whether
-  // this is a mission that is the caller's but not open yet (no retry then).
-  const flags = [
-    `<meta name="fe-track" content="${escapeHtml((lesson && lesson.track) || m.track || "general")}">`,
-    notYet ? `<meta name="fe-gate" content="not-yet">` : "",
-  ].filter(Boolean).join("\n");
+  const flags = gateFlags(lesson, m, notYet, checked);
 
   let out = html
     .replace(/<title>[\s\S]*?<\/title>/, `<title>${title || "Not open yet"} | Forbes English</title>`)
@@ -579,23 +612,66 @@ function personaliseGate(html, m, url, lesson = null, notYet = null) {
     // printed in UTC and the page's script re-renders it in the reader's own
     // time zone.
     const when = new Date(notYet.opensAt);
-    const utc = when.toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", timeZone: "UTC" });
+    const utc = when.toLocaleString("en-GB", { weekday: "long", day: "numeric", month: "long",
+      hour: "2-digit", minute: "2-digit", timeZone: "UTC", timeZoneName: "short" });
+    // "Next camp" and the end card link straight to the next mission, which
+    // may not be open yet: name the one that is, and link to it.
+    const current = openMissionDeck(catalogue, notYet.term, notYet.openNow);
     const waiting = [
       `<div class="eyebrow">Block Camp &middot; Mission ${notYet.mission}</div>`,
       `<h1>${title || `Mission ${notYet.mission}`}</h1>`,
       `<p class="lede">Mission ${notYet.mission} opens on <strong><time datetime="${when.toISOString()}" data-local>${utc}</time></strong>.`,
       ` One new mission opens each week, and every mission stays open once it has.</p>`,
     ].join("");
+    const buttons = [
+      current ? `<a class="btn" href="/${escapeHtml(current)}">Mission ${notYet.openNow} is open now</a>` : "",
+      `<a class="btn${current ? " ghost" : ""}" href="/block-camp.html">Back to Block Camp</a>`,
+    ].join("");
     out = out
       .replace(/<!-- LESSON:intro -->[\s\S]*?<!-- \/LESSON:intro -->/,
                `<!-- LESSON:intro -->${waiting}<!-- /LESSON:intro -->`)
       .replace(/<!-- GATE:offer -->[\s\S]*?<!-- \/GATE:offer -->/,
-               `<!-- GATE:offer --><div class="actions"><a class="btn" href="/block-camp.html">Back to Block Camp</a></div><!-- /GATE:offer -->`);
+               `<!-- GATE:offer --><div class="actions">${buttons}</div><!-- /GATE:offer -->`);
     return out;
   }
 
-  return out.replace(/<!-- LESSON:intro -->[\s\S]*?<!-- \/LESSON:intro -->/,
-                     `<!-- LESSON:intro -->${intro}<!-- /LESSON:intro -->`);
+  out = out.replace(/<!-- LESSON:intro -->[\s\S]*?<!-- \/LESSON:intro -->/,
+                    `<!-- LESSON:intro -->${intro}<!-- /LESSON:intro -->`);
+  return checked ? finalOffer(out) : out;
+}
+
+// What the gate page's own script needs to know: the track, so the
+// "already subscribed?" retry can recognise a one-off plan; and whether a
+// retry can help at all. It cannot on a mission the reader holds but whose
+// week has not come ("not-yet"), nor when the Worker read the reader's own
+// rows and still said no ("checked"): only a missing or expired token is
+// worth a fresh session and a reload.
+function gateFlags(lesson, m, notYet, checked) {
+  return [
+    `<meta name="fe-track" content="${escapeHtml((lesson && lesson.track) || m.track || "general")}">`,
+    notYet ? `<meta name="fe-gate" content="not-yet">`
+      : checked ? `<meta name="fe-gate" content="checked">` : "",
+  ].filter(Boolean).join("\n");
+}
+
+// A final refusal keeps the way to the plans and the free lessons, and drops
+// "Already subscribed? ... this page will let you straight through", which
+// would not be true.
+function finalOffer(html) {
+  return html.replace(/<!-- GATE:offer -->[\s\S]*?<!-- \/GATE:offer -->/,
+    `<!-- GATE:offer --><div class="actions"><a class="btn" href="/pricing.html">See plans &amp; what's free</a>` +
+    `<a class="btn ghost" href="/library.html?free=1">Browse free lessons</a></div><!-- /GATE:offer -->`);
+}
+
+// The deck for a given mission of a term (the decks are blockcamp-*.html;
+// the quests that share the mission sit in block-camp/).
+function openMissionDeck(catalogue, term, mission) {
+  if (!catalogue || !(mission > 0)) return null;
+  for (const [file, l] of catalogue) {
+    if (l.track === "blockcamp" && Number(l.term) === term && Number(l.mission) === mission &&
+        file.startsWith("blockcamp-")) return file;
+  }
+  return null;
 }
 
 // ─────────────────────────────────────────────────────────────────────────
@@ -620,8 +696,22 @@ async function handlePaywallStatus(request, url, env, ctx) {
     catalogueReadable: catalogue !== null,
     proLessonCount: pro ? pro.length : null,
     sampleLessonIsGated: pro ? pro.some(([f]) => f === sample) : null,
-    // Block Camp lessons the weekly drip can act on (term and mission set).
-    blockCampMissionCount: catalogue ? [...catalogue.values()].filter((l) => l.track === "blockcamp" && l.term && l.mission).length : null,
+    // The weekly drip needs Term 1 tagged (deploy/schema-pricing.sql step 2):
+    // missions 1-12 present, Mission 1 free. Without the service key a
+    // subscriber's clock is never saved and their Mission 2 never opens.
+    ...(() => {
+      const t1 = catalogue ? [...catalogue].filter(([, l]) => l.track === "blockcamp" && Number(l.term) === 1 && l.mission) : [];
+      const missions = [...new Set(t1.map(([, l]) => Number(l.mission)))].sort((a, b) => a - b);
+      return {
+        term1Missions: missions,
+        mission1Free: t1.some(([, l]) => Number(l.mission) === 1) &&
+          t1.filter(([, l]) => Number(l.mission) === 1).every(([, l]) => l.access === "free"),
+        blockCampDripReady: missions.length === 12 && missions[0] === 1 && missions[11] === 12 &&
+          Boolean(env.SUPABASE_SERVICE_ROLE_KEY),
+      };
+    })(),
+    callerBlockCampFirstOpen: access.blockCampFirstOpen ? new Date(access.blockCampFirstOpen).toISOString() : null,
+    callerBlockCampPlans: access.blockCampPlans.map((b) => ({ term: b.term, startsAt: new Date(b.startsAt).toISOString() })),
     callerHasSessionCookie: Boolean(readCookie(request.headers.get("Cookie"), SESSION_COOKIE)),
     callerSubscribed: access.full,
     callerTracks: [...access.tracks],

@@ -221,10 +221,16 @@ def count_refs():
 # lesson-template/build/rpg/ (see its README); a card appears once its page
 # exists, and the tally strip / lede counts follow. `chips` are the grammar
 # chips in order; `tag` is the coloured lead chip (start / new) or None.
+# "Start here" is Frostbound River, Mission 1's free adventure: under the
+# weekly drip (pricing go-live, 2026-10-04) a later mission is not open to a
+# new family, so the first card has to be the first mission.
 ADVENTURES = [
+ ('block-camp/frostbound-river-rpg.html','block-camp/frostbound-river-rpg/01_intro.webp','Frostbound: The River Remembers',
+  'A voice under the ice, two sisters who follow it north, and a dam their kingdom is proud of for the wrong reasons. Four branching choices through a frozen forest &mdash; the ridge or the trail, the fire spirit or the stone giants &mdash; where every question asks what somebody does every time, and your score alone decides which of three endings the flood leaves behind.',
+  ('Present Simple',),'A1&ndash;A2','pro','start'),
  ('block-camp/last-train-home-rpg.html','block-camp/last-train-home-rpg/01_cover.webp','The Last Train Home',
   'A cyberpunk megacity, a curfew closing in, and one train left before the checkpoints seal the district. Every route out is a prediction about what will happen next.',
-  ('Future Simple',),'A1&ndash;A2','pro','start'),
+  ('Future Simple',),'A1&ndash;A2','pro','new'),
  ('block-camp/dracula-castle-of-if.html','LibraryCards/dracula-castle-of-if.jpg','Grammar Stoker&rsquo;s Blocula',
   'Bram Stoker&rsquo;s castle as a branching grammar nightmare. The west door is locked, the iron key hangs on the Count&rsquo;s coat, and the last act asks whether you go down to the crypt or out through the courtyard &mdash; every route runs on a conditional, every report comes back in the passive.',
   ('Conditionals','Passive'),'B2','pro','new'),
@@ -261,9 +267,6 @@ ADVENTURES = [
  ('block-camp/nautilus-black-archive-deep-rpg.html','block-camp/nautilus-black-archive-deep-rpg/39_archive.webp','Nautilus: The Black Archive (Deep-Sea)',
   'The Black Archive again, painted: the same signal under the Atlantic and the same drowned city, lit by lamps rather than built from blocks. Two branching descents &mdash; the crystal trench or the ruined temple, the engine room or the open water &mdash; and every question asks the one thing: a finished result, or an activity still running.',
   ('Present Perfect','Present Perfect Continuous'),'B1','pro','new'),
- ('block-camp/frostbound-river-rpg.html','block-camp/frostbound-river-rpg/01_intro.webp','Frostbound: The River Remembers',
-  'A voice under the ice, two sisters who follow it north, and a dam their kingdom is proud of for the wrong reasons. Four branching choices through a frozen forest &mdash; the ridge or the trail, the fire spirit or the stone giants &mdash; where every question asks what somebody does every time, and your score alone decides which of three endings the flood leaves behind.',
-  ('Present Simple',),'A1&ndash;A2','pro','new'),
  ('block-camp/grand-hotel-rpg.html','block-camp/grand-hotel-rpg/01_arrival.webp','The Last Night at the Grand Hotel',
   'A mountain hotel on its last night, an owner who vanishes in eleven seconds of darkness, and a deadline at midnight. Twenty-eight time checks across every tense &mdash; five of them clues that break an alibi &mdash; and three decisions about who to trust, what to save first and who gets to hear the truth.',
   ('Mixed Tenses',),'B1&ndash;B2','pro','new'),
