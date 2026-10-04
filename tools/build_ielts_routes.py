@@ -389,7 +389,7 @@ def close_html(r, series):
     free = sum(1 for l in stops if l['free'])
     pro = len(stops) - free
     if free and pro:
-        head = '%s %s free. Pro opens the other %s.' % (
+        head = '%s %s free. IELTS opens the other %s.' % (
             hub.words(free).capitalize(), 'lesson on this route is' if free == 1 else 'lessons on this route are',
             hub.words(pro))
         lead = 'Free lessons need no account. '
@@ -397,21 +397,24 @@ def close_html(r, series):
         head = 'Every lesson on this route is free.'
         lead = ''
     else:
-        head = 'Every lesson on this route comes with Pro.'
+        head = 'Every lesson on this route comes with IELTS.'
         lead = ''
     art = ('<img class="ih-close-art" src="%s" alt="" loading="lazy" decoding="async">\n  ' % series
            if series else '')
     return """<section class="ih-close ir-close" aria-labelledby="ir-close-h">
   %s<div class="ih-close-in">
-    <p class="ih-kicker">Forbes English Pro</p>
+    <p class="ih-kicker">IELTS &middot; one payment, yours to keep</p>
     <h2 class="ih-h2" id="ir-close-h">%s</h2>
-    <p>%sPro is every lesson on the site &mdash; IELTS and everything else &mdash; with new ones as they are published.</p>
+    <p>%sIELTS is %s for every IELTS lesson, on all five routes, yours to keep. With marking it is %s: %s.</p>
+    <p class="ih-close-human">%s</p>
+    <p>Forbes English full, %s a month, includes IELTS and every other lesson on the site.</p>
     <div class="ih-ctas">
-      <a class="ih-btn" href="pricing.html">Plans and prices <span aria-hidden="true">&rarr;</span></a>
+      <a class="ih-btn" href="pricing.html#ielts">See the IELTS plans <span aria-hidden="true">&rarr;</span></a>
       <a class="ih-btn ih-btn-quiet" href="library.html#cat=IELTS">Every IELTS lesson in the library</a>
     </div>
   </div>
-</section>""" % (art, head, lead)
+</section>""" % (art, head, lead, hub.PRICE_IELTS, hub.PRICE_IELTS_MARKING, hub.MARKING_LINE,
+                 hub.HUMAN_LINE, hub.PRICE_FULL)
 
 
 def ld(r):
@@ -425,7 +428,8 @@ def ld(r):
          'numberOfItems': len(r['stops']),
          'itemListElement': [
              {'@type': 'ListItem', 'position': l['n'],
-              'url': '%s/%s' % (SITE, seo.quote(l['file'])), 'name': l['full']}
+              'url': '%s/%s' % (SITE, seo.quote(l['file'])),
+              'name': 'IELTS %s: %s' % (r['name'], seo.clean(l['title']))}
              for l in r['stops']]}]}
 
 
