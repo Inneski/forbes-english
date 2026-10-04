@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-"""Three more charts for the Sailing the Seas of Grammar family, drawn the
-way the Gerundia chart was first drawn: as a coded schematic that ChatGPT then
-repaints as an illustrated sea chart (the brief is docs/ARTWORK-sea-charts.md).
+"""Two more charts for the Sailing the Seas of Grammar family, painted in code
+(sea_paint.py does the engraving) in the same 1000x660 space as the Gerundia
+chart. They can be upgraded later in ChatGPT the way that chart was:
+docs/CHATGPT-SEA-CHARTS-BRIEF.md, part 2.
 
     py lesson-template/build/sea_charts.py
 
@@ -21,12 +22,12 @@ countable   COUNTANIA and UNCOUNTANIA. Every harbour on the uncountable
             the Shallows (quantifiers that work on either shore) and the
             piece-of ferry, the one way across: a piece of advice.
 
-hold        Innes's other idea for the same point, 2026-09-30: "two pictures
-            of rooms full of one or the other with an interim space where they
-            share stuff". Kept nautical as a ship in cross-section: the
-            counting hold (chairs, one by one, tagged), the bulk hold (the same
-            cargo as heaps: furniture) and the galley between them, where a
-            coffee and coffee sit on the same table.
+            Innes's other picture of the same point, "rooms full of one or the
+            other with an interim space where they share stuff", is not drawn
+            here. He means real rooms in a ship, painted as scenes, so they
+            are ChatGPT's (CHATGPT-SEA-CHARTS-BRIEF.md, part 1). A coded
+            cross-section of the ship was tried and dropped on 2026-10-04:
+            "not what I had in mind, I imagined real rooms".
 
 verbs       REGULARIA, one tidy continent with one rule and three sounds, and
             the irregular verbs as an archipelago: no single rule, but
@@ -345,173 +346,45 @@ def countable_chart(uid='cu'):
 
 
 # ─────────────────────────────────────────────────────────────────────
-# 2. The ship's hold: the same point as two rooms and the space between
-# ─────────────────────────────────────────────────────────────────────
-
-HULL_TOP, KEEL = 166, 566
-WATERLINE = 424
-BULKHEADS = (392, 608)
-ROWS = [268, 318, 368, 418, 468, 518]
-
-# (countable, how many, uncountable). The bulk hold carries the same cargo as
-# the counting hold; only the word changes.
-CARGO = [
-    ('chair', 3, 'furniture'),
-    ('suitcase', 4, 'luggage'),
-    ('coin', 6, 'money'),
-    ('loaf', 4, 'bread'),
-    ('tool', 5, 'equipment'),
-    ('letter', 6, 'mail'),
-]
-PLURAL = {'loaf': 'loaves'}
-GALLEY = ['coffee', 'chicken', 'paper', 'glass', 'cake', 'chocolate']
-
-WOOD, WOOD_DARK, WOOD_INK = '#E9D3AE', '#B98B55', '#3E2A12'
-
-
-def _hull():
-    """Stern to the west, square; bow to the east, curved; cut open lengthways."""
-    return ('M 42 %d L 960 %d C 958 300, 930 470, 850 %d L 130 %d C 70 556, 44 500, 42 %d Z'
-            % (HULL_TOP, HULL_TOP - 14, KEEL, KEEL, HULL_TOP))
-
-
-def _counted(x0, y, n, ink, size=18, step=24):
-    """n things, each one separate and numbered: the counting hold's idiom."""
-    out = []
-    for i in range(n):
-        x = x0 + i * step
-        out.append('<rect x="%d" y="%d" width="%d" height="%d" rx="3" fill="#FFFCF4" '
-                   'stroke="%s" stroke-width="1.3"/>'
-                   '<text class="tag" x="%d" y="%d" text-anchor="middle" %s font-size="9" '
-                   'font-weight="700" fill="%s">%d</text>'
-                   % (x, y - 15, size, size, ink, x + size / 2, y - 3, SANS, ink, i + 1))
-    return ''.join(out)
-
-
-def _heap(xc, y, w, h, fill, ink, word, size=11.5, caps=True):
-    """One pile, one word: the bulk hold's idiom."""
-    return ('<path d="M %d %d C %d %d, %d %d, %d %d Z" fill="%s" stroke="%s" stroke-width="1.3"/>'
-            '<text class="tag" x="%d" y="%d" text-anchor="middle" %s font-size="%s" '
-            'font-weight="700" letter-spacing="%s" fill="%s">%s</text>'
-            % (xc - w / 2, y, xc - w / 3, y - h * 1.3, xc + w / 3, y - h * 1.3, xc + w / 2, y,
-               fill, ink, xc, y - h * .28, SANS, size, '.08em' if caps else '0', ink,
-               word.upper() if caps else word))
-
-
-def _mast(x, top, label, fill, ink, point, width=132):
-    """A mast flying a swallowtail with the question its hold answers."""
-    tip = x + width * point
-    return ('<path d="M %d %d L %d %d" stroke="%s" stroke-width="4"/>'
-            '<path d="M %d %d L %d %d L %d %d L %d %d L %d %d Z" fill="%s" stroke="%s" stroke-width="1.5"/>'
-            '<text class="sea" x="%d" y="%d" text-anchor="middle" %s font-size="11.5" '
-            'font-weight="700" letter-spacing=".06em" fill="%s">%s</text>'
-            % (x, HULL_TOP, x, top, WOOD_INK,
-               x, top, tip, top, tip - 14 * point, top + 16, tip, top + 32, x, top + 32, fill, LINE,
-               x + (width - 14) / 2 * point, top + 20, SANS, ink, label))
-
-
-def hold_chart(uid='hd'):
-    x_l, x_r = BULKHEADS
-    rows = []
-    for (thing, n, stuff), y in zip(CARGO, ROWS):
-        plural = PLURAL.get(thing, thing + 's')
-        rows.append('<text class="tag" x="88" y="%d" %s font-size="11" font-weight="600" '
-                    'fill="%s">%s</text>' % (y - 2, SANS, C_INK,
-                                             'a %s &#183; %d %s' % (thing, n, plural)))
-        rows.append(_counted(232, y, n, C_INK))
-        rows.append(_heap(748, y + 2, 200, 24, U_LAND, U_INK, stuff))
-    # the galley keeps one of each: a single counted thing and a small heap
-    for word, y in zip(GALLEY, ROWS):
-        rows.append(_counted(404, y, 1, LILAC_INK))
-        rows.append('<text class="tag" x="428" y="%d" %s font-size="11" font-weight="600" '
-                    'fill="%s">a %s</text>' % (y - 2, SANS, LILAC_INK, word))
-        rows.append(_heap(556, y + 2, 84, 17, LILAC, LILAC_INK, word, size=10.5, caps=False))
-
-    band = HULL_TOP + 12, KEEL - HULL_TOP - 12
-    body = '\n  '.join([
-        '<clipPath id="%s-hull"><path d="%s"/></clipPath>' % (uid, _hull()),
-        '<rect x="0" y="0" width="%d" height="%d" fill="url(#%s-sea)"/>' % (W, H, uid),
-        '<rect x="0" y="%d" width="%d" height="%d" fill="#8FC0D6"/>' % (WATERLINE, W, H - WATERLINE),
-        '\n  '.join(_wave(x, WATERLINE + dy) for x, dy in
-                    [(12, 30), (930, 40), (20, 150), (940, 170), (380, 204), (600, 196)]),
-        '<path id="%s-inside" class="fill" d="%s" fill="%s"/>' % (uid, _hull(), WOOD),
-        # the three compartments, tinted after the three regions of the chart
-        '<g clip-path="url(#%s-hull)">' % uid
-        + '<rect x="0" y="%d" width="%d" height="%d" fill="%s" opacity=".34"/>'
-        % (band[0], x_l, band[1], C_LAND)
-        + '<rect x="%d" y="%d" width="%d" height="%d" fill="%s" opacity=".3"/>'
-        % (x_l, band[0], x_r - x_l, band[1], LILAC)
-        + '<rect x="%d" y="%d" width="%d" height="%d" fill="%s" opacity=".38"/>'
-        % (x_r, band[0], W - x_r, band[1], U_LAND)
-        # planking, faint enough to sit behind the cargo
-        + '<path d="%s" stroke="%s" stroke-width=".8" opacity=".3"/>'
-        % (''.join('M0 %dH1000' % y for y in range(HULL_TOP + 22, KEEL, 17)), WOOD_INK) + '</g>',
-        '<path d="M %d %d L %d %d M %d %d L %d %d" stroke="%s" stroke-width="5"/>'
-        % (x_l, HULL_TOP - 3, x_l, KEEL, x_r, HULL_TOP - 9, x_r, KEEL, WOOD_DARK),
-        '<path d="%s" fill="none" stroke="%s" stroke-width="3"/>' % (_hull(), WOOD_INK),
-        # rigging from each masthead down to the rail
-        '<path d="%s" stroke="%s" stroke-width=".8" opacity=".55"/>'
-        % (''.join('M%d %dL%d %dM%d %dL%d %d' % (x, top, x - 120, HULL_TOP - 1, x, top, x + 120,
-                                                  HULL_TOP - 9)
-                   for x, top in ((216, 40), (500, 22), (786, 40))), WOOD_INK),
-        _mast(216, 40, 'HOW MANY?', C_LAND, '#3A1004', 1),
-        _mast(500, 22, 'BOTH', LILAC, LILAC_INK, 1, width=90),
-        _mast(786, 40, 'HOW MUCH?', U_LAND, U_INK, -1),
-        _sea_text(220, HULL_TOP + 36, 'THE COUNTING HOLD', C_INK, size=15, spacing='.05em', serif=True),
-        _sea_text(220, HULL_TOP + 51, 'one by one &#183; a &#183; many &#183; a few', C_INK, size=9.5,
-                  weight=600, spacing='0'),
-        _sea_text(500, HULL_TOP + 36, 'THE GALLEY', LILAC_INK, size=15, spacing='.05em', serif=True),
-        _sea_text(500, HULL_TOP + 51, 'both &#183; two meanings', LILAC_INK, size=9.5, weight=600,
-                  spacing='0'),
-        _sea_text(760, HULL_TOP + 36, 'THE BULK HOLD', U_INK, size=15, spacing='.05em', serif=True),
-        _sea_text(760, HULL_TOP + 51, 'in heaps &#183; much &#183; a little &#183; no -s', U_INK,
-                  size=9.5, weight=600, spacing='0'),
-        '\n  '.join(rows),
-        _sea_text(500, 606, 'THE SAME CARGO &#183; A DIFFERENT WORD', TIDE_INK, size=12, spacing='.1em'),
-        _sea_text(500, 626, 'a chair is furniture &#183; a coin is money &#183; a letter is mail',
-                  TIDE_INK, size=10, weight=600, spacing='0', italic=True),
-    ])
-    # everything written below deck has to stay inside the hull, and the check
-    # holds it to that the same way it holds a harbour name to its coast
-    inside = 'class="place" data-land="%s-inside"' % uid
-    body = body.replace('class="tag"', inside)
-    for title in ('THE COUNTING HOLD', 'THE GALLEY', 'THE BULK HOLD', 'one by one', 'both &#183; two',
-                  'in heaps'):
-        i = body.index('>' + title)
-        j = body.rindex('class="sea"', 0, i)
-        body = body[:j] + inside + body[j + len('class="sea"'):]
-    return _svg(uid, 'The ship&#39;s hold: countable and uncountable nouns', body)
-
-
-# ─────────────────────────────────────────────────────────────────────
-# 3. REGULARIA and the irregular archipelago
+# 2. REGULARIA and the irregular archipelago
 # ─────────────────────────────────────────────────────────────────────
 
 R_LAND, R_BEACH, R_INK = '#9DB86E', '#E3EDC9', '#223A10'     # Regularia, tidy fields
 
-# one continent, a smooth coast: the ratio is half the others', on purpose
+# one continent, a smooth coast: the ratio is half the others', on purpose.
+# It is the biggest land on the chart because nearly every verb lives here.
 REGULAR_OUTLINE = [
-    (150, 30), (222, 62), (258, 112), (262, 170), (286, 220), (300, 272),
-    (292, 326), (280, 378), (290, 430), (302, 478), (284, 526), (270, 566),
-    (238, 600), (180, 626), (100, 644),
+    (214, 30), (292, 60), (326, 108), (330, 166), (342, 220), (350, 272),
+    (340, 326), (328, 378), (338, 430), (348, 478), (330, 526), (314, 566),
+    (282, 600), (210, 628), (110, 646),
     (-30, 654), (-30, 18),
 ]
 PROVINCES = [(30, 212, '-ED SAYS /t/'), (212, 414, '-ED SAYS /d/'), (414, 596, '-ED SAYS /&#618;d/')]
+# six per sound, in three staggered columns. The spelling rules ride along:
+# stopped (double), liked / lived / decided (just -d), studied (y to i),
+# travelled (British double l), opened (no double: the stress is on op-)
+_L, _M, _R = 60, 156, 252
 REGULAR_PLACES = [
-    (98, 80, 'Stop Harbour'), (196, 110, 'Walk Ridge'),
-    (96, 150, 'Watch Head'), (206, 184, 'Cook Cove'),
-    (98, 262, 'Play Bay'), (214, 290, 'Study Sands'),
-    (100, 332, 'Travel Tarn'), (214, 372, 'Call Crag'),
-    (98, 464, 'Start Point'), (214, 494, 'Wait Moor'),
-    (100, 534, 'Visit Fell'), (206, 566, 'Land&#8217;s End'),
+    (_L, 84, 'Stop Harbour'), (_R, 84, 'Walk Ridge'), (_M, 118, 'Watch Head'),
+    (_L, 152, 'Cook Cove'), (_R, 152, 'Like Mere'), (_M, 186, 'Laugh Rock'),
+    (_L, 266, 'Play Bay'), (_R, 266, 'Study Sands'), (_M, 300, 'Travel Tarn'),
+    (_L, 334, 'Call Crag'), (_R, 334, 'Live Ness'), (_M, 368, 'Open Sound'),
+    (_L, 462, 'Start Point'), (_R, 462, 'Wait Moor'), (_M, 492, 'Visit Fell'),
+    (_L, 522, 'Need Haven'), (_R, 522, 'Decide Head'), (_M, 552, 'Land&#8217;s End'),
 ]
+REGULAR_TITLE = (56, 584, 'REGULARIA', 'verb + <tspan font-style="italic">-ed</tspan>')
+REGULAR_EVERY = 'and almost every other verb'
+
+# Each island is named after the sound its family shares, the way Ought
+# Island always was. (The first names were puns, Bell Island for ring rang
+# rung, and only made sense once you already knew the family.)
 
 # (id, outline, seed, land, beach, ink, title x, name, pattern, places); the
 # title sits a fixed height above the island's own top, clear of its beach
 ISLANDS = [
     ('bell', [(724, 60), (774, 64), (812, 84), (822, 114), (806, 146), (770, 164),
               (722, 168), (678, 158), (650, 134), (652, 100), (676, 72)], 71,
-     '#DC9A6A', '#F5DCC6', '#4A200A', 736, 'BELL ISLAND', 'ring &#183; rang &#183; rung',
+     '#DC9A6A', '#F5DCC6', '#4A200A', 736, 'I &#183; A &#183; U ISLAND', 'ring &#183; rang &#183; rung',
      [(698, 104, 'Sing Sound'), (774, 108, 'Drink Cove'), (700, 142, 'Swim Bay'),
       (772, 146, 'Begin Point')]),
     ('ought', [(900, 110), (948, 118), (984, 146), (992, 190), (984, 238), (958, 272),
@@ -521,33 +394,33 @@ ISLANDS = [
       (910, 260, 'Teach Ness')]),
     ('wind', [(712, 232), (760, 236), (796, 258), (806, 294), (792, 330), (756, 350),
               (708, 352), (668, 336), (648, 302), (656, 264), (680, 242)], 79,
-     '#A7B8C8', '#E1E9F0', '#1E2E3E', 728, 'WINDWARD ISLE', 'blow &#183; blew &#183; blown',
+     '#A7B8C8', '#E1E9F0', '#1E2E3E', 728, '-EW ISLAND', 'blow &#183; blew &#183; blown',
      [(694, 280, 'Grow Fell'), (768, 284, 'Know Mere'), (698, 322, 'Throw Rock'),
       (762, 326, 'Fly Pike')]),
     ('keep', [(900, 338), (948, 346), (982, 372), (990, 412), (978, 452), (944, 476),
               (898, 482), (856, 466), (834, 430), (840, 390), (864, 356)], 89,
-     '#C7899A', '#F0DCE2', '#431A26', 912, 'KEEP ISLAND', 'keep &#183; kept &#183; kept',
+     '#C7899A', '#F0DCE2', '#431A26', 912, '-T ISLAND', 'keep &#183; kept &#183; kept',
      [(904, 382, 'Sleep Sands'), (908, 412, 'Feel Moor'), (906, 442, 'Leave Harbour'),
       (910, 472, 'Build Peak')]),
     ('broke', [(716, 432), (764, 436), (800, 458), (810, 494), (796, 530), (760, 550),
                (712, 552), (670, 536), (650, 502), (658, 464), (682, 442)], 97,
-     '#DDB08C', '#F6E4D2', '#482A12', 730, 'BROKEN REEF', 'break &#183; broke &#183; broken',
-     [(696, 478, 'Speak Point'), (768, 482, 'Steal Cove'), (700, 520, 'Wake Head'),
-      (766, 524, 'Choose Bay')]),
+     '#DDB08C', '#F6E4D2', '#482A12', 730, '-EN ISLAND', 'speak &#183; spoke &#183; spoken',
+     [(696, 478, 'Break Point'), (768, 482, 'Take Head'), (700, 520, 'Give Cove'),
+      (766, 524, 'Write Bay')]),
 ]
 TITLE_LIFT = 31
 FORKED_OUTLINE = [
-    (452, 272), (496, 278), (526, 300), (534, 334), (518, 366), (484, 384),
-    (440, 384), (406, 366), (392, 332), (402, 298), (424, 280),
+    (492, 272), (536, 278), (566, 300), (574, 334), (558, 366), (524, 384),
+    (480, 384), (446, 366), (432, 332), (442, 298), (464, 280),
 ]
-FORKED_PLACES = [(462, 312, 'Lie Harbour'), (430, 346, 'Hang Head'), (492, 356, 'Shine Ness')]
+FORKED_PLACES = [(502, 312, 'Lie Harbour'), (470, 346, 'Hang Head'), (532, 356, 'Shine Ness')]
 VERB_SHALLOWS = [
-    (470, 510), (540, 519), (588, 536), (612, 560), (588, 588), (538, 606),
-    (470, 614), (402, 606), (352, 588), (328, 560), (352, 536), (400, 519),
+    (488, 512), (548, 521), (590, 538), (610, 562), (590, 590), (546, 606),
+    (488, 614), (430, 606), (386, 590), (366, 562), (386, 538), (428, 521),
 ]
 # the verbs that never change, as a scatter of low rocks, and the four that
 # follow no family at all, as sea stacks
-STILL_ROCKS = [(628, 590, 9), (646, 600, 6), (612, 606, 7), (660, 586, 5)]
+STILL_ROCKS = [(646, 592, 9), (664, 602, 6), (630, 608, 7), (678, 588, 5)]
 LONE_STACKS = [(830, 548, 'go'), (870, 540, 'be'), (910, 550, 'do'), (950, 542, 'see')]
 
 
@@ -572,18 +445,19 @@ def verbs_chart(uid='rv'):
         _sea(uid, [(340, 216), (560, 222), (352, 420), (600, 400), (330, 620),
                    (560, 470), (820, 300), (330, 140), (610, 160)]),
         P.rings([_path(p) for p in [west_pts, forked_pts] + list(island_pts.values())]),
-        _shallows(uid, VERB_SHALLOWS, 43, 470, 548, 'THE SHALLOWS',
+        _shallows(uid, VERB_SHALLOWS, 43, 488, 550, 'THE SHALLOWS',
                   'either form, same meaning',
                   ['learnt / learned &#183; dreamt / dreamed',
                    'burnt / burned &#183; spelt / spelled']),
         _land(uid + '-west', west_pts, R_BEACH, R_LAND, overlay='url(#%s-fields)' % uid,
               kind='fields', seed=17,
               avoid=P.place_boxes(REGULAR_PLACES) + province_boxes
-              + _title_boxes(56, 600, 'REGULARIA', 'verb + -ed', 'start')),
+              + _title_boxes(REGULAR_TITLE[0], REGULAR_TITLE[1], 'REGULARIA', 'verb + -ed', 'start')
+              + [P.text_box(REGULAR_TITLE[0] + 2, REGULAR_TITLE[1] + 34, REGULAR_EVERY, 10, 'start')]),
     ]
     # province borders: dashed county lines from the back of the land to the coast
     for y in (PROVINCES[1][0], PROVINCES[2][0]):
-        parts.append('<path d="M 0 %d L 272 %d" stroke="%s" stroke-width="1.4" '
+        parts.append('<path d="M 0 %d L 300 %d" stroke="%s" stroke-width="1.4" '
                      'stroke-dasharray="3 4" opacity=".7"/>' % (y, y + 4, R_INK))
     for top, _bottom, label in PROVINCES:
         parts.append('<text class="place" data-land="%s-west" x="20" y="%d" %s font-size="9.5" '
@@ -597,8 +471,8 @@ def verbs_chart(uid='rv'):
         parts.append(_places(places, ink, '%s-%s' % (uid, iid), 10))
     for x, y, r in STILL_ROCKS:
         parts.append(P.rock(x, y, r))
-    parts.append(_sea_text(640, 628, 'THE STILL ROCKS', '#3E3528', size=10, spacing='.08em'))
-    parts.append(_sea_text(640, 641, 'cut &#183; put &#183; hit &#183; let &#183; cost: no change',
+    parts.append(_sea_text(682, 628, 'THE STILL ROCKS', '#3E3528', size=10, spacing='.08em'))
+    parts.append(_sea_text(682, 641, 'cut &#183; put &#183; hit &#183; let &#183; cost: no change',
                            '#3E3528', size=9, weight=600, spacing='0'))
     for x, y, verb in LONE_STACKS:
         parts.append('<path d="M %d %d L %d %d L %d %d L %d %d Z" fill="#8A7E70" stroke="%s" '
@@ -609,15 +483,18 @@ def verbs_chart(uid='rv'):
     parts += [
         _land(uid + '-forked', forked_pts, LILAC_BEACH, LILAC, kind='hills', seed=37,
               avoid=P.place_boxes(FORKED_PLACES, 10.5)),
-        _island_title(462, FORKED_OUTLINE[0][1] - TITLE_LIFT, 'FORKED ISLE', 'one verb &#183; two meanings &#183; two pasts',
+        _island_title(502, FORKED_OUTLINE[0][1] - TITLE_LIFT, 'FORKED ISLE', 'one verb &#183; two meanings &#183; two pasts',
                       LILAC_INK, size=14),
         _places(FORKED_PLACES, LILAC_INK, uid + '-forked', 10.5),
-        _current(uid, 190, 610, 330, 'NEW VERBS SAIL WEST', 'texted &#183; emailed &#183; googled'),
-        _current(uid, 450, 620, 340, 'SOME OLD ONES ARE DRIFTING WEST'),
-        _compass('&#9664; WALKED &#183; WENT &#9654;', cx=470),
-        _ship(592, 282, 0.62),
-        _title(56, 600, 'REGULARIA', 'verb + <tspan font-style="italic">-ed</tspan>', R_INK,
+        _current(uid, 190, 616, 376, 'NEW VERBS SAIL WEST', 'texted &#183; emailed &#183; googled'),
+        _current(uid, 450, 626, 386, 'SOME OLD ONES ARE DRIFTING WEST'),
+        _compass('&#9664; WALKED &#183; WENT &#9654;', cx=494),
+        _ship(612, 296, 0.42),
+        _title(REGULAR_TITLE[0], REGULAR_TITLE[1], REGULAR_TITLE[2], REGULAR_TITLE[3], R_INK,
                land=uid + '-west'),
+        _land_text(uid + '-west', REGULAR_TITLE[0] + 2, REGULAR_TITLE[1] + 34, REGULAR_EVERY, R_INK,
+                   size=10, weight=600, spacing='0').replace('text-anchor="middle"',
+                                                             'text-anchor="start" font-style="italic"'),
         _title(986, 614, 'IRREGULARIA', 'no one rule &#183; but families', '#3E3528', anchor='end'),
         _places(REGULAR_PLACES, R_INK, uid + '-west'),
     ]
@@ -627,7 +504,6 @@ def verbs_chart(uid='rv'):
 
 CHARTS = [
     ('countable-chart', countable_chart),
-    ('countable-hold', hold_chart),
     ('verbs-chart', verbs_chart),
 ]
 

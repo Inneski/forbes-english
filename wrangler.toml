@@ -2,6 +2,16 @@ name = "forbes-english"
 main = "src/index.js"
 compatibility_date = "2024-09-23"
 
+# The apex is a Custom Domain (its DNS record is the Worker itself). www is
+# a plain route: its DNS record is a leftover proxied CNAME to Namecheap's
+# parking page, which without this route answered 525 on every request.
+# With the route the Worker gets www first and src/index.js redirects it to
+# the apex, so the CNAME target never matters.
+routes = [
+  { pattern = "forbesenglish.com", custom_domain = true },
+  { pattern = "www.forbesenglish.com/*", zone_name = "forbesenglish.com" },
+]
+
 [vars]
 SITE_URL = "https://forbesenglish.com"
 SUPABASE_URL = "https://tusioporxpjtegjlqkkb.supabase.co"

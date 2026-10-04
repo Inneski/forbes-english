@@ -94,3 +94,61 @@ begin
   end if;
   return new;
 end $$;
+
+-- ── Go-live: current subscribers keep every Block Camp mission ──────────
+-- Run immediately BEFORE merging pricing-go-live (main's Worker ignores the
+-- column, so nothing changes until the new gate is live). If it is run a
+-- little after instead, the second condition still catches a clock the new
+-- Worker started in between.
+-- Innes, 2026-10-04: the weekly drip applies to new subscribers; anyone
+-- subscribed when the gate goes live is exempt, so nobody who is already
+-- paying loses Missions 2-12. Starting their clock 12 weeks back opens all
+-- twelve. Two monthly subscribers on 2026-10-04; the owner is exempt anyway.
+update public.profiles
+set blockcamp_first_open = now() - interval '12 weeks'
+where subscription_status in ('active', 'trialing')
+  and not owner
+  and (blockcamp_first_open is null
+       or blockcamp_first_open > now() - interval '1 day');   -- expect UPDATE 2
+
+-- ── Step 9: the weekly "Mission N is open" email (APPLIED 2026-10-04) ──
+-- Migration `blockcamp_mission_emails`. One row per email sent, claimed
+-- before sending so a mission is never mailed twice; RLS on with no
+-- policies, so only the Worker (service role) reads or writes it.
+-- profiles.blockcamp_emails: false stops the emails for that account (set
+-- by hand when someone replies asking to stop).
+create table if not exists public.blockcamp_mission_emails (
+  user_id uuid not null references auth.users(id) on delete cascade,
+  term int not null check (term > 0),
+  mission int not null check (mission > 0),
+  sent_at timestamptz not null default now(),
+  primary key (user_id, term, mission)
+);
+alter table public.blockcamp_mission_emails enable row level security;
+alter table public.profiles add column if not exists blockcamp_emails boolean not null default true;
+
+-- ── Step 9 review (APPLIED 2026-10-04, migration
+--    `mission_emails_claims_and_email_sync`) ─────────────────────────────
+-- A claim is made before sending (claimed_at) and marked sent only once
+-- Resend accepts it (sent_at); a claim left unsent for 10 minutes is taken
+-- again by a later run, so a failed or interrupted send is retried rather
+-- than lost.
+alter table public.blockcamp_mission_emails
+  add column if not exists claimed_at timestamptz not null default now();
+alter table public.blockcamp_mission_emails alter column sent_at drop not null;
+alter table public.blockcamp_mission_emails alter column sent_at drop default;
+
+-- profiles.email was written once, at sign-up; the mission email goes to
+-- it. Keep it in step when someone changes their login address (Supabase
+-- changes auth.users.email only after the new address is confirmed).
+create or replace function public.sync_profile_email()
+returns trigger language plpgsql security definer set search_path = public as $$
+begin
+  update public.profiles set email = new.email where id = new.id;
+  return new;
+end $$;
+drop trigger if exists on_auth_user_email_changed on auth.users;
+create trigger on_auth_user_email_changed
+  after update of email on auth.users
+  for each row when (old.email is distinct from new.email)
+  execute function public.sync_profile_email();

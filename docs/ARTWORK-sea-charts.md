@@ -1,4 +1,4 @@
-# Artwork: three more sea charts for Sailing the Seas of Grammar
+# Artwork: two more sea charts, and the ship's rooms, for Sailing the Seas of Grammar
 
 Innes, 2026-09-30: *"make extra maps with nautical theme like gerundia
 infinitivia but for countable and uncountable nouns although perhaps that can
@@ -7,7 +7,8 @@ where they share stuff, also possible for regular and irregular verbs"*.
 Then: *"both in one lesson"*, *"the rooms can be in a ship"*, and *"I will
 make the images on request using midjourney … I planned to upgrade whatever
 you made anyway but I was specially talking about the countable noun
-images"*.
+images"*, *"make it for chat gpt"*, and of a coded cross-section of the ship:
+*"not what I had in mind, I imagined real rooms"* (2026-10-04).
 
 So the work is split:
 
@@ -15,13 +16,14 @@ So the work is split:
   and `sea_paint.py`. They have parchment, a ruled border with a degree band,
   water lines along every coast, hatched cliffs, terrain and a compass rose.
   They are finished art and can be upgraded later.
-- **The countable-noun pictures, the ship's rooms, are Innes's**, made in
-  Midjourney from the requests below. The coded hold stands in until they
-  arrive.
+- **The countable-noun pictures are Innes's**, made in ChatGPT from
+  `docs/CHATGPT-SEA-CHARTS-BRIEF.md`. They are three real rooms in one ship,
+  painted as scenes you could stand in, not a diagram. Nothing stands in for
+  them: the coded cross-section was dropped.
 
 Everything is written by a separate label layer, never by the painting. That
-keeps the words translatable and lets the page switch between place names
-and bare nouns. It also means any upgrade that keeps the coastlines keeps
+keeps the words translatable and lets the map switch between place names and
+bare nouns. It also means any map upgrade that keeps the coastlines keeps
 every label.
 
 ## The builder, and its check
@@ -34,7 +36,7 @@ This writes each chart to `docs/sea-charts/` as `<name>.svg` / `.png`
 (labelled) and `<name>-plain.svg` / `.png` (paint only). It exits non-zero if
 any of these happen:
 
-- a harbour name leaves its coast, or a caption on the hold leaves the hull
+- a harbour name leaves its coast
 - a caption meant for open water touches a beach
 - two labels touch
 - anything runs under the ruled border
@@ -49,8 +51,8 @@ The terrain is part of the grammar:
   separate farmhouses. Everything there can be counted.
 - **Uncountania** is wheat and dunes, stuff you can only measure.
 - **Regularia** is a tidy grid of fields.
-- **Each irregular island** has its own landmark: Bell Island a bell tower,
-  Windward Isle a windmill, Keep Island a castle keep, Broken Reef a wreck.
+- **Each irregular island** has its own landmark: I·A·U Island a bell tower,
+  -EW Island a windmill, -T Island a castle keep, -EN Island a wreck.
 
 `terrain()` never plants anything inside a label's box.
 
@@ -68,34 +70,36 @@ The terrain is part of the grammar:
 | **The piece-of ferry** | The one way across, west only: *a piece of advice · a bottle of water · a slice of bread*. |
 | **The Shallows** | Quantifiers that work on either shore: *some, any, a lot of, plenty of, no, enough, more, most*. |
 
-## 2. `countable-hold`: the rooms, in a ship
+## The ship's rooms: countable and uncountable as places you can stand in
 
-![ship's hold](sea-charts/countable-hold.png)
+Three pictures, three rooms of one ship. They are made in ChatGPT
+(`CHATGPT-SEA-CHARTS-BRIEF.md`, part 1) and labelled by the page afterwards.
 
-The same point shown as rooms. There are two holds, and between them is the
-galley, where both kinds of noun sit together.
+- **The store cabin, `room-count`** (HOW MANY?). Everything is separate and
+  countable: chairs in a row, suitcases, coins laid out on the table, loaves,
+  tools on hooks, letters, bottles, books, apples.
+- **The cargo hold, `room-bulk`** (HOW MUCH?). Everything is in heaps you
+  could only measure: grain from a chute, sand, coffee beans, rice, water
+  across the floor. It also holds the same kinds of cargo as the cabin, piled
+  up: furniture, luggage, money, mail. **The same cargo, a different word.**
+- **The galley between them, `room-galley`** (BOTH). The single thing sits
+  next to the stuff it is made of: *a coffee / coffee*, *a chicken / chicken*,
+  *a paper / paper*, *a glass / glass*, *a cake / cake*, *a light / light*
+  (the lantern, and the sunlight through the porthole).
 
-- **The counting hold** (HOW MANY?): chairs, suitcases, coins, loaves, tools
-  and letters. Each one sits apart and carries a tag: *a chair · 3 chairs*.
-- **The bulk hold** (HOW MUCH?): the same cargo in heaps, with one word on
-  each heap: FURNITURE, LUGGAGE, MONEY, BREAD, EQUIPMENT, MAIL.
-- **The galley** (BOTH): one of each thing beside the stuff it is made of:
-  *a coffee / coffee*, *a chicken / chicken*, *a paper / paper*,
-  *a glass / glass*, *a cake / cake*, *a chocolate / chocolate*. Hair stays
-  on the map as Hair Head. A single hair can't be painted recognisably.
+In the lesson, the rooms come first because they give the idea. Each one
+opens its own part: the cabin opens Countania, the hold opens Uncountania,
+and the galley opens Double Isle. Then comes the map, which is clickable and
+carries the nouns and the traps.
 
-In the lesson, the hold comes first because it gives the idea: **the same
-cargo, a different word**. Then the map, which is clickable and carries the
-nouns and the traps.
-
-## 3. `verbs-chart`: Regularia and the irregular archipelago
+## 2. `verbs-chart`: Regularia and the irregular archipelago
 
 ![verbs chart](sea-charts/verbs-chart.png)
 
 | On the chart | What it teaches |
 |---|---|
-| **Regularia** (green, west) | One continent, one rule (*verb + -ed*), and the smoothest coast on the chart. Three provinces by sound: **/t/** (Stop Harbour, Walk Ridge, Watch Head, Cook Cove), **/d/** (Play Bay, Study Sands, Travel Tarn, Call Crag), **/ɪd/** (Start Point, Wait Moor, Visit Fell, Land's End). The spelling rules are in the names: *stopped, studied, travelled, played*. |
-| **The archipelago** (Irregularia: no one rule, but families) | Each family is an island. **Bell Island** *ring · rang · rung* (sing, drink, swim, begin). **Ought Island** *buy · bought* (bring, think, catch, teach). **Windward Isle** *blow · blew · blown* (grow, know, throw, fly). **Keep Island** *keep · kept*, the -t endings (sleep, feel, leave, build). **Broken Reef** *break · broke · broken* (speak, steal, wake, choose). |
+| **Regularia** (green, west) | The biggest land and the smoothest coast on the chart, with one rule: *verb + -ed, and almost every other verb*. Three provinces by sound, six harbours each. **/t/**: Stop Harbour, Walk Ridge, Watch Head, Cook Cove, Like Mere, Laugh Rock. **/d/**: Play Bay, Study Sands, Travel Tarn, Call Crag, Live Ness, Open Sound. **/ɪd/**: Start Point, Wait Moor, Visit Fell, Need Haven, Decide Head, Land's End. The spelling rules are in the names: *stopped* (double), *liked, lived, decided* (just -d), *studied* (y → i), *travelled* (British double l), *opened* (no double, because the stress is on *op-*). |
+| **The archipelago** (Irregularia: no one rule, but families) | Each family is an island named after the sound it shares. **I·A·U Island** *ring · rang · rung* (sing, drink, swim, begin). **Ought Island** *buy · bought* (bring, think, catch, teach). **-EW Island** *blow · blew · blown* (grow, know, throw, fly). **-T Island** *keep · kept* (sleep, feel, leave, build). **-EN Island** *speak · spoke · spoken*, where the third form ends in -en (break, take, give, write). |
 | **The Still Rocks / the Lone Stacks** | *cut · put · hit · let · cost*, which never change. *go · be · do · see*, which belong to no family. |
 | **Forked Isle** (lilac) | One verb, two meanings, two past forms: *lie (lied / lay), hang (hanged / hung), shine (shined / shone)*. |
 | **Currents west** | New verbs arrive regular (*texted, emailed, googled*). Some old ones are drifting west too, into the Shallows (*learnt / learned, dreamt / dreamed, burnt / burned, spelt / spelled*). |
@@ -103,56 +107,29 @@ nouns and the traps.
 *Didn't went* belongs in the lesson, not on the map. It is a rule about
 sentences, not a place.
 
-## Midjourney requests: the countable-noun rooms
+## The pictures: ChatGPT, from `docs/CHATGPT-SEA-CHARTS-BRIEF.md`
 
-There are three pictures, and they sit side by side on the page as three
-rooms of one ship. Each one is its own image, so none of them has to line up
-with a layout. The labels are fitted to what you paint afterwards.
+The prompts Innes pastes are in **`docs/CHATGPT-SEA-CHARTS-BRIEF.md`**,
+written to ChatGPT.
 
-Every prompt ends with the same **style stem**:
+- **Part 1, the three rooms.** One conversation, so they come out as one
+  ship in one light. No words in the pictures. The objects are asked for large
+  and well spaced, so labels can be pinned to them.
+- **Part 2, map upgrades (optional)**, done the Gerundia way: the labelled
+  repaint first, then a clean copy with the harbour dots kept
+  (`countable-chart-clean.png`, `verbs-chart-clean.png`). Blob-detect the
+  dots on the clean copy and move the place coordinates in `sea_charts.py`
+  to match, as `eb491249` did for `sailing_map.py`.
 
-```text
-antique hand-painted illustration, watercolour and fine ink hatching on aged parchment, warm lantern light, cutaway view of a wooden ship's interior, no text, no lettering, no labels, no numbers --ar 3:4 --sref https://forbesenglish.com/sailing-the-seas-of-grammar/chart-clean.jpg --no text, letters, words, writing, numbers
-```
-
-Paste each subject below in front of the stem.
-
-| file | subject |
-|---|---|
-| `hold-count` | `the counting hold of a wooden sailing ship, cargo set out one by one in neat separate rows on plank shelves: three wooden chairs, four leather suitcases, six gold coins in a line, four loaves of bread, five tools, six sealed letters, every item apart from the others with a small blank paper tag, orderly and tidy,` |
-| `hold-bulk` | `the bulk hold of the same wooden sailing ship, the same cargo piled into heaps with nothing separate: a jumbled heap of furniture, a mound of luggage, a spilled heap of coins and banknotes, a pile of bread, a heap of tools and equipment, a burst sack of mail spilling letters, untidy and overflowing,` |
-| `hold-galley` | `the ship's galley between the two holds, a long wooden table with pairs set side by side: one cup of coffee beside an open sack of coffee beans, a live hen beside a roast chicken on a plate, a folded newspaper beside a ream of blank paper, a drinking glass beside a leaning pane of glass, a whole iced cake beside a single slice, one wrapped chocolate beside a broken bar of chocolate,` |
-
-Notes:
-
-- **The tags are blank on purpose.** The page writes *a chair · 3 chairs* on
-  top of them. Midjourney lettering comes out as pseudo-writing.
-- **The three have to read as one ship.** Use the same `--sref` and the same
-  seed for all three if you can, and pick renders with similar light.
-- **The bulk hold must be the same cargo as the counting hold.** That is the
-  whole point. If a render swaps chairs for barrels, reroll it.
-
-Drop them in **`incoming/sea-charts/`** as `hold-count`, `hold-bulk` and
-`hold-galley` (PNG or JPG).
-
-## Upgrading the maps (optional)
-
-The painted charts are finished art, but they can be upgraded. The safe
-route is the Midjourney editor's **Retexture**. Upload the `-plain.png` for
-the chart, use a prompt like
-`antique hand-painted sea chart, watercolour and ink on parchment --sref <the chart-clean URL above>`,
-and it repaints while keeping the coastlines, which is what keeps every label
-on its land. Name the result `countable-chart-upgrade` or
-`verbs-chart-upgrade` and drop it in `incoming/sea-charts/`. The label check
-runs against it before it goes on a page.
-
-A fresh composition from a plain prompt would not keep the coastlines, and
-the labels would need re-fitting.
+Everything lands in **`incoming/sea-charts/`**. The folder exists on Innes's
+machine (created 2026-10-04). `incoming/` is gitignored, so a cloud session
+has to ask for it to be made.
 
 ## After the rooms arrive (for the session that picks this up)
 
 1. `tools/prep-artwork.py` on each file.
-2. Fit the hold's label layer (item tags, heap names, galley pairs) to the
-   painted objects, then re-run the page builder.
+2. Pin a label to each object in the three rooms (*a chair · three chairs*
+   in the cabin, FURNITURE and SAND in the hold, *a coffee / coffee* in the
+   galley). Place them by measuring the picture, and check them at phone width.
 3. `extract-palette.py` on the lesson's hero, then `build_hubs.py`,
    `seo.py`, and the catalogue row.

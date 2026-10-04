@@ -21,9 +21,16 @@ Innes caught two wrong keys live in class. Full audit of both:
   regarding/by*); false facts (she did not "move to Hollywood at sixteen",
   DiMaggio was not a "short courtship"). Added an EN/ES selector: questions
   stay English, everything else (instructions, feedback, every explanation,
-  free-writing chrome) has a Spanish version. Still fails check-lesson's
-  deck checks (no activate slide, no UI_I18N, no .fe-logo) — it needs a
-  rebuild to house style; not done.
+  free-writing chrome) has a Spanish version. **Superseded the same day:**
+  rebuilt as a house style 2 panel deck, `build_marilyn.py` /
+  `i18n_marilyn.py`, 26 slides, EN/DE/ES, all fifteen items kept and
+  regrouped (time / place and movement / fixed partners) plus a sort of
+  four L1 slips, check-lesson clean, answered state fits in all three.
+  Live on crops of the two portraits; three plates briefed in
+  `docs/ARTWORK-marilyn.md`, drop folder `incoming/marilyn/`, the builder
+  swaps each in when its file lands. Catalogue still says `deck = false`
+  (session writes to `lessons` are refused): Innes to run
+  `update lessons set deck = true where file = 'marilyn_prepositions.html';`
 - **`jfk_prepositions_b2.html`**: "fourth president to die in office" was
   false (eighth; fourth *killed*); three word-order sentences were invented
   events (protesters, a recording device, transferred files) — replaced
@@ -46,6 +53,129 @@ a go-ahead before anything goes live.
 unrelated lesson fix. `fcbd7c21` put `pricing.html` back to its old version
 on `main`. The schema SQL, this entry and the `seo.py` tweak stayed in. To
 go live: `git show a4c60285:pricing.html > pricing.html`.
+
+**Since then (4 Oct, pricing session):** the pricing page now lives on
+branch `pricing-go-live` (worktree `../FORBES-pricing`) so no other
+session's push can carry it; go live by merging that branch, not with the
+`git show` above. Innes decided a one-off purchase must not expire:
+**Block Camp Term 1 is yours to keep** (no 16-week end; missions still
+unlock one a week), and so is IELTS (no 90 days). The webhook writes
+`ends_at = null` for blockcamp and ielts. Stripe: live account `acct_1U2Ej70R7wvAnqir`; Stripe
+Tax is NOT set up and flags thresholds in Germany and the UAE; the account
+has Managed Payments (Stripe as seller of record, VAT "managed for you"),
+which the Worker currently disables per checkout. Innes is creating the
+four products by hand (session clicks in live Stripe were refused).
+
+**Step 3, Stripe: DONE 4 Oct, verified read-only in the live shell.** All
+one-off, EUR, `tax_behavior: inclusive`, category `txcd_20060358`. The
+metadata is on the **products**, not the prices (one price each), so the
+webhook reads `line_items.data.price.product.metadata`.
+
+| Product | Product ID | Price ID | Metadata |
+|---|---|---|---|
+| Block Camp Term 1, €19 | `prod_VNcVC9TpjY3wV8` | `price_1UMrG40R7wvAnqirYtSLCZnY` | product=blockcamp, term=1, marking_credits=0 |
+| IELTS, €25 | `prod_VNcalkwGfoanmY` | `price_1UMrLI0R7wvAnqirWYHjtsg2` | product=ielts, marking_credits=0 |
+| IELTS + Marking, €69 | `prod_VNcg8XlxivpFyr` | `price_1UMrR60R7wvAnqirEMCYlH9q` | product=ielts, marking_credits=2 |
+| Marking — two essays, €49 | `prod_VNcoLe8aDfBwSk` | `price_1UMrYb0R7wvAnqiritAkZlT5` | product=marking, marking_credits=2 |
+
+Founder: coupon `nlxRQksc` "Founder price", €7 off once, applies to
+`prod_VNcVC9TpjY3wV8` only; promotion code `FOUNDER`
+(`promo_1UMrlb0R7wvAnqirXLEXdWdf`), `max_redemptions: 50`. The Worker's
+`/api/founder-status` reads that promo's `times_redeemed`. Forbes English
+Pro (`prod_VCr9pX02HJ6n0e`) still has no product category.
+
+**Step 4 (Worker) is on branch `pricing-go-live`** (`6cb3d803`): one-off
+checkout with Managed Payments on, FOUNDER auto-applied, `/api/founder-status`,
+and the webhook. Verified in the live dashboard on 4 Oct: Managed Payments
+is already "Ready to use" (terms accepted, on by default; the Worker turns
+it off for the Pro subscription), and the webhook endpoint
+`we_1UCRVD0R7wvAnqir5hFaGqwg` now listens to 4 events, including
+`checkout.session.async_payment_succeeded` (Innes added it). The marking
+email needs Email Routing on forbesenglish.com and the inbox address.
+
+**Step 4 reviewed** (four lenses + skeptic, 23 confirmed; fixes in `a9955b36`
+on the branch): refunds/lost disputes close one-off grants, checkout takes the
+buyer from the Supabase token not the body, FOUNDER dropped only on a 400
+about the code, full-plan events write Stripe's current subscription, and the
+signature check takes every v1 with a 5-minute tolerance.
+**Needs Innes before go-live:**
+- ~~Add `charge.refunded` and `charge.dispute.closed` to the webhook endpoint.~~
+  DONE by Innes; verified 4 Oct: the endpoint listens to 6 events.
+- Decide the two marking products: Stripe's Managed Payments eligibility
+  excludes products that "involve human intervention"; teacher-marked essays
+  do. Flip `managed` in `CHECKOUT_PRODUCTS` per his decision.
+**Carried to later steps:** step 5 must limit a term buyer to their own
+term's lessons (today a blockcamp row opens the whole track, Term 2 too);
+step 8 must make account.html read `user_plans`, because one-off buyers land
+there after paying (`success_url`) and it still says "Not subscribed".
+
+**Step 5 (gate + weekly drip) on the branch** (`1842880f`). Innes, 4 Oct:
+current Pro subscribers are **exempt** from the drip; the SQL is the last
+block of `deploy/schema-pricing.sql`, to run in the same sitting as the
+deploy. The step 2 tagging SQL must run before the deploy too, or a Term 1
+buyer gets nothing past the free Mission 1.
+
+**Step 5 reviewed** (four lenses + skeptic, 15 confirmed; fixes `8b856a3b`):
+the subscriber clock starts on any Block Camp lesson and, in the background,
+on the free Mission 1; `block-camp/camp-full.js` refreshes a stored session
+whose fe_at cookie has lapsed and re-asks with a HEAD; final refusals carry
+`fe-gate=checked` (no retry, no false promise); the not-yet page links to the
+mission open now; `/api/paywall-status` has `blockCampDripReady`; the hub's
+"Start here" is Frostbound (Mission 1), rebuilt from the hub builder.
+Added to the go-live copy sweep: `block-camp/camp-flags.js` (the Lookout)
+treats any Pro part seen as the full plan, so a Term 1 buyer's milestones and
+padlocks read wrong (source: `lesson-template/build/block-camp-flags/`).
+
+**Innes, 4 Oct: Term 1 buyers also get the Block Camp specials** (every
+Block Camp lesson with no term: Grand Hotel, Nautilus Deep, Dracula, the
+passive trial / present perfect / past perfect decks), open from day one.
+Consequence: **tagging a special into a term later takes it away from Term 1
+buyers who already have it** (the gate opens no-term lessons, not a fixed
+list). Before tagging Term 3, decide whether those buyers keep them.
+Step 6 (pricing page) is current with steps 4-5 on the branch.
+**Step 7 (IELTS pages) on the branch:** header, closing panels selling IELTS
+(prices in `PRICE_*` at the top of `tools/build_ielts_hub.py`), ItemList by
+skill. Still on the copy sweep: the site nav's "Go Pro" button (hand-kept in
+ielts.html's nav and copied by the hub builders) and the open naming question,
+Pro vs "Forbes English full".
+**Step 8 (account page) on the branch** (`e173fcfc`): one card per thing held
+(Block Camp week and missions, IELTS, essays left + EUR 49 button, full plan
+last when the reader has a one-off); waits for the exact purchase after
+checkout (`?cs=`). Test: `deploy/test-account.cjs` (playwright).
+**Essay credits are counted down by hand.** The page tells buyers to email
+essays to info@forbesenglish.com; after marking one, run (with their email):
+
+```sql
+update public.user_plans set marking_credits = marking_credits - 1
+where id = (select p.id from public.user_plans p join auth.users u on u.id = p.user_id
+            where u.email = 'buyer@example.com' and p.status = 'active'
+              and p.marking_credits > 0
+            order by p.created_at limit 1);           -- expect UPDATE 1
+```
+
+An upload form that spends a credit itself would replace this; not built.
+**Step 9 (weekly mission email) on the branch** (`869813bb`): daily cron
+06:00 UTC, "Mission N is open" with deck, quest and link, through **Resend**;
+the marking-inbox notice goes through Resend too. Table
+`blockcamp_mission_emails` and `profiles.blockcamp_emails` APPLIED 4 Oct.
+**Needs Innes:** a Resend account, forbesenglish.com verified there (DNS
+records in Cloudflare), and `RESEND_API_KEY` as a Worker secret. Steps in
+`deploy/06-environment-variables.md`. Until then the cron sends nothing.
+**Steps 8-9 reviewed** (17 confirmed; fixes `5319ad16`): the email job pages and
+chunks its reads, marks a claim sent only on success and retries stale ones,
+runs **hourly** (inside Resend's 24h idempotency window) with a per-run call
+budget; the account page handles a full-plan checkout, a failed read, Back
+from Stripe and a slow device clock. Schema: `mission_emails_claims_and_email_sync`
+(claimed_at; profiles.email follows auth.users.email) APPLIED 4 Oct.
+The pricing work uses **info@forbesenglish.com** (sender, reply-to, essays,
+marking inbox, cancel line), matching the site-wide switch in `52e2c0e4`.
+**Before go-live, merge main into pricing-go-live** in `../FORBES-pricing`:
+main has moved (the address switch touched pages the branch also changes).
+`tools/seo.py`'s pricing description on main is the OLD page's until the
+merge (`3a3da4cb`); the branch carries the new one.
+**Needs Innes before RESEND_API_KEY is set:** a privacy notice (controller,
+contact, data held, purposes, processors Supabase/Stripe/Cloudflare/Resend,
+transfers, rights) -- it needs his name/address, like the terms page.
 
 - **Step 1, schema: APPLIED** (Supabase migration `pricing_go_live_schema`,
   file `deploy/schema-pricing.sql`). `lessons.term/mission`,
@@ -78,7 +208,7 @@ go live: `git show a4c60285:pricing.html > pricing.html`.
   Also needed: `cancel_url` → `pricing.html?checkout=cancelled` (it points
   at account.html, which ignores it); a Stripe billing-portal route, because
   nothing lets a subscriber cancel (the page now says "email
-  forbes@goodtimebook.com"); a way to send an essay and spend a credit.
+  info@forbesenglish.com"); a way to send an essay and spend a credit.
 - **Supabase quota:** the Mythos org was over its free Cached Egress
   (Folklore-Explorer's `entry-images`, not this project). Restriction on
   1 Nov would 402 every request and the gate fails open. Innes put Mythos on
@@ -108,6 +238,17 @@ below tells a session to apply branch `48236bc4`'s "Any plan" badges:
   handoff lists only €8.99/month). His call whether they stay.
 - The site says "Forbes English Pro" everywhere else; the handoff and the
   new page say "Forbes English full". One name, his choice.
+  DECIDED 5 Oct: **Forbes English Pro** (branch `pricing-go-live` renamed).
+- Missions 4, 8 and 12 have no quest (Present Continuous 1b, Past Continuous
+  1b, Future Simple 1b). Innes, 5 Oct: he builds them in about two days; the
+  "each with a quest" line stays. **When each quest is published, tag it into
+  its mission** (or the gate keeps it from Term 1 buyers' weekly unlock and
+  treats it as a special instead):
+
+  ```sql
+  update public.lessons set term = 1, mission = 4   -- 8, 12 for the others
+  where file = 'block-camp/<new-quest>-rpg.html';  -- expect UPDATE 1
+  ```
 - Before taking money from EU consumers: a terms page with seller identity
   and the 14-day withdrawal information, and Stripe's consent to immediate
   access (needs his name/address; the review flagged its absence).
@@ -396,30 +537,43 @@ Library: no Writing filter pill exists, so both decks are tagged Geopolitics
   were handed to a session in that repo. Its map files were uncommitted
   there on 2026-10-01, another session's work in progress.
 
-## 2026-09-30 — Three more sea charts (countable/uncountable ×2, regular/irregular): LAYOUTS DONE, waiting on ChatGPT
+## 2026-09-30 → 10-04 — Two more sea charts painted, the ship's rooms briefed to ChatGPT; the countable lesson NOT YET BUILT
 
-Innes asked for more maps in the Gerundia/Infinitivia style, for countable
-and uncountable nouns (or "two rooms full of one or the other with an interim
-space where they share stuff"), and for regular and irregular verbs. The
-Gerundia chart began as a coded schematic that ChatGPT repainted, so these do
-the same.
+Innes asked for more maps in the Gerundia/Infinitivia style: countable and
+uncountable nouns, and regular and irregular verbs. For the nouns he also
+wanted "two pictures of rooms full of one or the other with an interim space
+where they share stuff", with *"the rooms can be in a ship"* and *"both in
+one lesson"*.
 
-- **Builder** `lesson-template/build/sea_charts.py` (imports `_roughen` from
-  `sailing_map.py` and does not edit it). It writes `docs/sea-charts/` —
-  `countable-chart`, `countable-hold` (the two rooms, as a ship's hold) and
-  `verbs-chart` — each as SVG plus a PNG at 2000×1320. It exits non-zero if a
-  label spills off its land or hull, a sea caption touches a beach, or two
-  labels overlap. That is measured in headless Chromium with the real fonts,
-  and it was verified failing on three deliberately broken copies.
-- **Brief** `docs/ARTWORK-sea-charts.md`: what every feature teaches, the
-  exact two-turn ChatGPT prompts (labelled, then clean), the file names for
-  `incoming/sea-charts/`, and the steps after (blob-detect the dots,
-  recalibrate, build two pages on the Sailing machinery, EN+DE+ES).
-- **Open question for Innes (§14):** for the nouns, the map, the hold or
-  both. Recommended: both in one lesson, with the hold as the idea and the
-  map as the clickable hero.
-- `build_sailing.py` was already modified by another session when this
-  started. It was left alone.
+- **Two maps, finished art, painted in code.** They are built by
+  `lesson-template/build/sea_charts.py`, with the engraving done by
+  `sea_paint.py`: parchment, a degree-band border, water lines, hatched
+  cliffs, a compass rose, and terrain that carries the grammar (Countania in
+  nine-tree orchards, Uncountania in wheat and dunes). The output is
+  `docs/sea-charts/countable-chart` and `verbs-chart`, labelled and `-plain`.
+  The builder exits non-zero if a label leaves its land, touches a beach,
+  overlaps another, or runs under the border. That is measured in headless
+  Chromium, and each fault class was verified failing on a broken copy.
+- **The verbs chart was revised on 10-04 after Innes asked "what is Bell
+  Island?".** The islands are now named after the sound their family shares
+  (I·A·U, Ought, -EW, -T, -EN), and Regularia has 18 verbs.
+- **The rooms are real painted scenes, made by Innes in ChatGPT.** A coded
+  cross-section of the ship was tried and dropped: *"not what I had in mind, I
+  imagined real rooms"*. The paste-ready prompts are
+  `docs/CHATGPT-SEA-CHARTS-BRIEF.md`, part 1 (`room-count`, `room-bulk`,
+  `room-galley`). Part 2 is optional map upgrades, done the Gerundia way.
+  `incoming/sea-charts/` exists on his machine.
+- **Still to do:** the countable/uncountable lesson page itself, on the
+  Sailing machinery (`build_sailing.py` is the model: `assemble()` from the
+  legacy camp shell, `EX_TR` nine-language example reveal). It needs the
+  rooms opening their parts, then the clickable map, with labels pinned to
+  the room pictures once they exist. `docs/ARTWORK-sea-charts.md` has the
+  design and the steps.
+- **Ideas Innes was given for further maps:** comparatives (*-er* / *more*,
+  with a two-syllable island), present perfect / past simple (time-word
+  shores, a *this morning* island), state / action verbs (a *think, have,
+  see* island), make / do, in / on / at, negative prefixes, British /
+  American English.
 
 ## 2026-09-30 — Reddit × French Market: Getting in the Door (C1): SHIPPED
 
@@ -15084,3 +15238,25 @@ need deciding before it can be: the story panels run 60–150 words against
 the engine's 28-word wall, so `rpg.py` needs a paged story panel or the
 blocks need splitting; and the prologue is a story-only scene, which the
 engine has no slot for (fold it into the briefing screen if it stays).
+
+## 2026-10-04 — info@forbesenglish.com exists
+
+Cloudflare Email Routing on forbesenglish.com forwards `info@` to Innes's
+Gmail (catch-all drops). The Namecheap `eforward*` MX and SPF records that
+blocked activation were deleted. Every `mailto:forbes@goodtimebook.com` on
+the site is now `info@forbesenglish.com`, including the nav source in
+`lesson-template/build/block-camp-hub/build.py`. Three pages were open in
+another session at the time and still carry the old address until that
+session commits: `grammar.html`, `past-continuous.html`, `rpg.html` — a
+hub rebuild fixes the first and last. Sending *as* info@ from Gmail
+(Send mail as + app password) is Innes's step, not done yet.
+
+## 2026-10-05 — www.forbesenglish.com redirects to the apex
+
+www answered 525 for as long as the site has existed: its DNS record was a
+proxied CNAME to Namecheap's parking page and the Worker was bound only to
+the apex Custom Domain. `wrangler.toml` now declares both — the apex as
+`custom_domain`, www as a zone route — and `src/index.js` 301s any www
+request to the apex, path and query intact. The CNAME was left alone; the
+route takes precedence. Check with `curl -sI https://www.forbesenglish.com/`
+→ 301 to the apex.
