@@ -147,7 +147,7 @@ def lesson_step(r, desc):
     lvl = r.get('level') or ''
     free = r.get('access') != 'pro'
     tags = ['<span class="tag tag-free">Free</span>' if free
-            else '<span class="tag">Subscribers</span>']
+            else '<span class="tag">Paid</span>']
     if lvl:
         tags.append('<span class="tag">%s</span>' % esc(lvl))
     return '''      <a class="step" href="%s">

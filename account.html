@@ -145,6 +145,32 @@
   .badge.active { background: var(--green-pale); color: var(--green-mid); }
   .badge.inactive { background: #f0e0e0; color: #8a4a4a; }
   #loading { text-align: center; color: var(--muted); padding: 40px 0; }
+  /* The account panel: one card per thing the account holds. */
+  .card + .card { margin-top: 18px; }
+  .card-h {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 1rem;
+    letter-spacing: 0.05em; text-transform: uppercase; color: var(--green-deep); margin-bottom: 4px;
+  }
+  .card-note { font-size: 0.85rem; color: var(--ink-soft); line-height: 1.5; margin: 6px 0 14px; }
+  .card-note a { color: var(--green-mid); font-weight: 700; }
+  .card .btn { margin-top: 10px; }
+  .notice {
+    background: var(--green-pale); color: var(--green-deep); font-weight: 700;
+    border-radius: var(--radius); padding: 12px 14px; margin: -12px 0 22px; font-size: 0.9rem;
+  }
+  .notice-warn { background: #fbeaea; color: #8a2e2e; }
+  .missions { list-style: none; margin: 6px 0 12px; }
+  .mission { padding: 9px 0; border-bottom: 1px solid var(--border); display: grid; gap: 2px; }
+  .mission:last-child { border-bottom: none; }
+  .mission-n {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 0.8rem;
+    letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted);
+  }
+  .mission-item { font-size: 0.9rem; }
+  .mission.open a.mission-item, .mission.special a.mission-item { color: var(--green-mid); font-weight: 700; text-decoration: none; }
+  .mission.open a.mission-item:hover, .mission.special a.mission-item:hover { text-decoration: underline; }
+  .mission.locked .mission-item { color: var(--muted); }
+  .mission-when { font-size: 0.8rem; color: var(--gold); font-weight: 700; }
   [hidden] { display: none !important; }
 </style>
 </head>
@@ -218,7 +244,7 @@
   <!-- Logged out: login/signup form -->
   <section id="auth-section" hidden>
     <h1 id="auth-title">Welcome back</h1>
-    <p class="lead" id="auth-lead">Log in to manage your subscription.</p>
+    <p class="lead" id="auth-lead">Log in to see what you have and what is open.</p>
     <div class="card">
       <div class="error-msg" id="auth-error"></div>
       <form id="auth-form">
@@ -250,11 +276,17 @@
     </div>
   </section>
 
-  <!-- Logged in: account + subscription status -->
+  <!-- Logged in: what this account holds. One card per thing: the full plan,
+       Block Camp (term buyers and subscribers), IELTS, essay marking. Filled
+       by fillAccount() below from profiles, user_plans and the catalogue. -->
   <section id="account-section" hidden>
     <h1>My account</h1>
     <p class="lead" id="account-email"></p>
-    <div class="card">
+    <p class="notice" id="checkout-notice" hidden></p>
+    <p class="notice notice-warn" id="plans-error" hidden>Could not load your purchases &mdash; reload the page.</p>
+
+    <div class="card" id="full-card">
+      <h2 class="card-h">Forbes English Pro</h2>
       <div class="status-row">
         <span class="status-label">Subscription</span>
         <span class="status-value"><span class="badge" id="sub-badge">&mdash;</span></span>
@@ -263,9 +295,53 @@
         <span class="status-label">Renews / expires</span>
         <span class="status-value" id="sub-period">&mdash;</span>
       </div>
-      <button class="btn btn-gold" id="subscribe-btn" hidden onclick="window.location.href='pricing.html'">View plans &amp; subscribe</button>
-      <button class="btn btn-primary" id="logout-btn" style="margin-top:10px;background:transparent;color:var(--green-deep);border:1.5px solid var(--border);">Log out</button>
+      <p class="card-note" id="cancel-note" hidden>To cancel, email <a href="mailto:info@forbesenglish.com">info@forbesenglish.com</a>. You keep access until the end of the period you have paid for.</p>
+      <button class="btn btn-gold" id="subscribe-btn" hidden onclick="window.location.href='pricing.html'">View plans</button>
     </div>
+
+    <div class="card" id="bc-card" hidden>
+      <h2 class="card-h" id="bc-title">Block Camp</h2>
+      <div class="status-row" id="bc-term-row">
+        <span class="status-label">Term</span>
+        <span class="status-value" id="bc-term">&mdash;</span>
+      </div>
+      <div class="status-row">
+        <span class="status-label">This week</span>
+        <span class="status-value" id="bc-week">&mdash;</span>
+      </div>
+      <div class="status-row" id="bc-access-row">
+        <span class="status-label">Access</span>
+        <span class="status-value">Yours to keep</span>
+      </div>
+      <ol class="missions" id="bc-missions"></ol>
+      <div id="bc-specials" hidden>
+        <p class="card-note">The Block Camp specials are open now, outside the weekly missions:</p>
+        <ol class="missions"><li class="mission special" id="bc-specials-list"></li></ol>
+      </div>
+      <a class="btn btn-primary" href="block-camp.html">Go to Block Camp</a>
+    </div>
+
+    <div class="card" id="ielts-card" hidden>
+      <h2 class="card-h">IELTS</h2>
+      <div class="status-row">
+        <span class="status-label">All 28 lessons</span>
+        <span class="status-value">Yours to keep</span>
+      </div>
+      <a class="btn btn-primary" href="ielts.html">Go to IELTS</a>
+    </div>
+
+    <div class="card" id="marking-card">
+      <h2 class="card-h">Essay marking</h2>
+      <div class="status-row">
+        <span class="status-label">Essays left to mark</span>
+        <span class="status-value" id="marking-credits">&mdash;</span>
+      </div>
+      <p class="card-note" id="marking-how" hidden>To send an essay, email it to <a id="marking-mail" href="mailto:info@forbesenglish.com">info@forbesenglish.com</a> from <strong id="marking-from"></strong>, and say in the subject whether it is Task 1 or Task 2. Each essay uses one; it comes back within 5 working days with a band estimate and corrections. Every essay is read and marked by a CELTA-qualified teacher &mdash; never by software.</p>
+      <p class="error-msg" id="marking-error"></p>
+      <button class="btn btn-gold" id="marking-buy" data-product="marking">Buy two marked essays &mdash; &euro;49</button>
+    </div>
+
+    <button class="btn btn-primary" id="logout-btn" style="margin-top:22px;background:transparent;color:var(--green-deep);border:1.5px solid var(--border);">Log out</button>
   </section>
 </main>
 
@@ -338,14 +414,14 @@ function applyMode(next) {
   mode = next;
   if (mode === "signup") {
     authTitle.textContent = "Create your account";
-    authLead.textContent = "Sign up to subscribe and unlock every lesson.";
+    authLead.textContent = "Create an account to buy a plan or essay marking.";
     authSubmit.textContent = "Sign up";
     switchText.textContent = "Already have an account?";
     switchLink.textContent = "Log in";
     document.getElementById("forgot-wrap").hidden = true;
   } else {
     authTitle.textContent = "Welcome back";
-    authLead.textContent = "Log in to manage your subscription.";
+    authLead.textContent = "Log in to see what you have and what is open.";
     authSubmit.textContent = "Log in";
     switchText.textContent = "Don't have an account?";
     switchLink.textContent = "Sign up";
@@ -408,9 +484,10 @@ authForm.addEventListener("submit", async (e) => {
 
   let data = null;
   let error = null;
+  const toPricing = new URLSearchParams(window.location.search).get("redirect") === "pricing";
   try {
     ({ data, error } = mode === "signup"
-      ? await sbSignUp(email, password)
+      ? await sbSignUp(email, password, toPricing ? "pricing" : null)
       : await sbSignIn(email, password));
   } catch (err) {
     // A rejected request must not leave the button spinning with no
@@ -441,11 +518,17 @@ authForm.addEventListener("submit", async (e) => {
       applyMode("login");
       return;
     }
-    showError("Check your email to confirm your account, then log in.");
+    // Signed in at once (email confirmation off): straight back to the plans.
+    if (toPricing && data && data.session) {
+      window.location.href = "pricing.html";
+      return;
+    }
+    showError(toPricing
+      ? "Check your email to confirm your account. The link brings you back to the plans to finish buying."
+      : "Check your email to confirm your account, then log in.");
     return;
   }
-  const params = new URLSearchParams(window.location.search);
-  if (params.get("redirect") === "pricing") {
+  if (toPricing) {
     window.location.href = "pricing.html";
     return;
   }
@@ -455,7 +538,7 @@ authForm.addEventListener("submit", async (e) => {
   const signedIn = data && data.user;
   if (signedIn) {
     paint(showAccount);
-    await fillSubscription(signedIn);
+    await afterCheckout(signedIn, await fillSubscription(signedIn));
     return;
   }
   await renderAccount();
@@ -466,57 +549,237 @@ document.getElementById("logout-btn").addEventListener("click", async () => {
   location.reload();
 });
 
-// Subscribe button now just links to pricing.html (see markup above),
-// where the visitor picks a plan before checkout begins.
+// Fills in the account panel. Runs after the panel is already on screen, so
+// a slow or failed read leaves a usable page rather than a blank one.
+//
+// Pricing go-live (2026-10-04): the full plan lives on `profiles`; the
+// one-offs (Block Camp Term 1, IELTS, essay marking) are rows in
+// `user_plans`, one per purchase, never expiring. Until then this panel only
+// read the profile, so someone who had just bought Block Camp landed here
+// after paying and read "Not subscribed".
+const WEEK_MS = 7 * 86400000;
+const LIVE = (s) => s === "active" || s === "trialing";
+// The last purchases read that worked: a later read that fails (a poll
+// after checkout, a bad moment on a phone) keeps these on screen.
+let lastPlans = null;
 
-// Fills in the subscription panel. Runs after the panel is already on screen,
-// so a slow or failed profile read leaves a usable page rather than a blank
-// one -- the two rows just keep their em-dashes.
+async function readRows(query) {
+  if (!window.sb) return null;
+  const res = await sbWithTimeout(query, 8000, { data: null, error: { message: "timeout" } });
+  return res && !res.error ? res.data : null;
+}
+
+// "Saturday 24 October", in the reader's own time zone.
+function day(ms) {
+  return new Date(ms).toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" });
+}
+
+// A catalogue title without the series name in front of it.
+function shortTitle(t) {
+  return String(t || "").replace(/^Block Camp(?: II)?\s*[—–-]\s*/, "");
+}
+
+// The specials: the Block Camp lessons that belong to no term. They come
+// with Term 1 and with Forbes English Pro, open from the first day. Listed
+// by name, because the Block Camp page marks them with the same padlock as
+// the Term 2 lessons, which Term 1 does not open.
+function specialsList(lessons) {
+  const li = document.getElementById("bc-specials-list");
+  li.textContent = "";
+  const these = lessons.filter((l) => !l.term)
+    .sort((a, b) => (a.file.startsWith("blockcamp-") ? 1 : 0) - (b.file.startsWith("blockcamp-") ? 1 : 0) ||
+      shortTitle(a.title).localeCompare(shortTitle(b.title)));
+  for (const l of these) {
+    const a = document.createElement("a");
+    a.className = "mission-item";
+    a.href = l.file;
+    a.textContent = `${l.file.startsWith("blockcamp-") ? "Deck" : "Adventure"}: ${shortTitle(l.title)}`;
+    li.appendChild(a);
+  }
+  return these.length;
+}
+
+function missionList(lessons, openNow, start) {
+  const ol = document.getElementById("bc-missions");
+  ol.textContent = "";
+  for (let m = 1; m <= 12; m++) {
+    const these = lessons.filter((l) => Number(l.mission) === m)
+      .sort((a, b) => (a.file.startsWith("blockcamp-") ? -1 : 1) - (b.file.startsWith("blockcamp-") ? -1 : 1));
+    if (!these.length) continue;
+    const open = m <= openNow;
+    const li = document.createElement("li");
+    li.className = "mission " + (open ? "open" : "locked");
+    const head = document.createElement("span");
+    head.className = "mission-n";
+    head.textContent = `Mission ${m}`;
+    li.appendChild(head);
+    for (const l of these) {
+      const kind = l.file.startsWith("blockcamp-") ? "Deck" : "Quest";
+      const item = document.createElement(open ? "a" : "span");
+      item.className = "mission-item";
+      if (open) item.href = l.file;
+      item.textContent = `${kind}: ${shortTitle(l.title)}`;
+      li.appendChild(item);
+    }
+    if (!open && start) {
+      const when = document.createElement("span");
+      when.className = "mission-when";
+      when.textContent = `Opens ${day(start + (m - 1) * WEEK_MS)}`;
+      li.appendChild(when);
+    }
+    ol.appendChild(li);
+  }
+}
+
 async function fillSubscription(user) {
   document.getElementById("account-email").textContent = user.email || "";
+  document.getElementById("marking-from").textContent = user.email || "your account's address";
 
-  let profile = null;
-  try {
-    profile = await sbGetProfile(user.id);
-  } catch (err) {
-    console.error("Could not read the profile:", err);
-  }
+  const [profile, plans, term1] = await Promise.all([
+    sbGetProfile(user.id).catch(() => null),
+    readRows(window.sb && window.sb.from("user_plans")
+      .select("product,status,term,starts_at,ends_at,marking_credits,stripe_checkout_session_id")),
+    // Term 1 and the specials (no term); Term 2 is not listed here.
+    readRows(window.sb && window.sb.from("lessons")
+      .select("file,title,term,mission,access").eq("track", "blockcamp").or("term.eq.1,term.is.null")),
+  ]);
 
+  // ── Forbes English Pro ──
   const badge = document.getElementById("sub-badge");
+  const isOwner = Boolean(profile && profile.owner === true);
+  const status = (profile && profile.subscription_status) || "inactive";
+  const isActive = LIVE(status);
   if (!profile) {
     badge.textContent = "Could not check";
     badge.className = "badge inactive";
-    document.getElementById("subscribe-btn").hidden = false;
-    return;
+  } else {
+    badge.textContent = isOwner ? "Owner — full access"
+      : isActive ? status[0].toUpperCase() + status.slice(1) : "Not subscribed";
+    badge.className = "badge " + (isOwner || isActive ? "active" : "inactive");
+  }
+  document.getElementById("sub-period").textContent = isOwner ? "Never expires"
+    : isActive && profile.current_period_end ? new Date(profile.current_period_end).toLocaleDateString("en-GB")
+    : "—";
+  document.getElementById("cancel-note").hidden = !(isActive && !isOwner);
+
+  // ── what the one-offs add ──
+  if (plans) lastPlans = plans;
+  const knownPlans = plans || lastPlans;
+  document.getElementById("plans-error").hidden = Boolean(knownPlans);
+  const now = Date.now();
+  const rows = (knownPlans || []).filter((p) => LIVE(p.status) && (!p.ends_at || Date.parse(p.ends_at) > now));
+  const bcRows = rows.filter((p) => p.product === "blockcamp");
+  const hasIelts = rows.some((p) => p.product === "ielts");
+  const credits = rows.reduce((n, p) => n + (Number(p.marking_credits) || 0), 0);
+  const ownsSomething = rows.length > 0;
+
+  document.getElementById("subscribe-btn").hidden = isOwner || isActive;
+  // Someone who owns only a one-off has no subscription to show, which is
+  // not the same as having nothing: what they bought comes first, and the
+  // full plan, which they do not have, moves to the end.
+  const fullCard = document.getElementById("full-card");
+  const logout = document.getElementById("logout-btn");
+  if (!isOwner && !isActive && ownsSomething) fullCard.parentNode.insertBefore(fullCard, logout);
+  else document.getElementById("plans-error").after(fullCard);
+
+  // ── Block Camp: a term bought, or the full plan's weekly clock ──
+  const termStarts = bcRows.map((p) => Date.parse(p.starts_at)).filter(Number.isFinite);
+  const subStart = profile && profile.blockcamp_first_open ? Date.parse(profile.blockcamp_first_open) : null;
+  const starts = termStarts.concat(isActive && Number.isFinite(subStart) ? [subStart] : []);
+  const showBc = bcRows.length > 0 || isOwner || isActive;
+  document.getElementById("bc-card").hidden = !showBc;
+  if (showBc) {
+    const start = starts.length ? Math.min(...starts) : null;
+    const openNow = isOwner ? 12 : start ? Math.max(1, Math.min(12, Math.floor((now - start) / WEEK_MS) + 1)) : 1;
+    document.getElementById("bc-title").textContent = bcRows.length ? "Block Camp Term 1" : "Block Camp";
+    document.getElementById("bc-term-row").hidden = !bcRows.length;
+    document.getElementById("bc-term").textContent = "Term 1";
+    document.getElementById("bc-access-row").hidden = !bcRows.length;
+    document.getElementById("bc-week").textContent = isOwner ? "Every mission open"
+      : !start ? "Starts when you open Block Camp"
+      : openNow >= 12 ? "All 12 missions open"
+      : `Week ${openNow} of 12`;
+    if (term1) missionList(term1.filter((l) => Number(l.term) === 1), openNow, isOwner ? null : start);
+    document.getElementById("bc-specials").hidden = !(term1 && specialsList(term1));
   }
 
-  const status = profile.subscription_status || "inactive";
-  const isActive = status === "active" || status === "trialing";
-  // An owner has full access without paying. Reporting only the billing
-  // status made a working account look like a broken one.
-  const isOwner = profile.owner === true;
-  const hasAccess = isOwner || isActive;
+  // ── IELTS ──
+  document.getElementById("ielts-card").hidden = !hasIelts;
 
-  badge.textContent = isOwner
-    ? "Owner \u2014 full access"
-    : isActive ? status[0].toUpperCase() + status.slice(1)
-               : "Not subscribed";
-  badge.className = "badge " + (hasAccess ? "active" : "inactive");
+  // ── Essay marking: credits, how to send one, two more for €49 ──
+  document.getElementById("marking-credits").textContent = knownPlans ? String(credits) : "—";
+  document.getElementById("marking-how").hidden = !(credits > 0);
+  const mail = document.getElementById("marking-mail");
+  mail.href = "mailto:info@forbesenglish.com?subject=" + encodeURIComponent("IELTS essay to mark (Task 1 / Task 2)");
 
-  document.getElementById("sub-period").textContent = isOwner
-    ? "Never expires"
-    : profile.current_period_end
-      ? new Date(profile.current_period_end).toLocaleDateString()
-      : "\u2014";
+  return { ownsSomething, isActive, isOwner, sessions: new Set(rows.map((p) => p.stripe_checkout_session_id)) };
+}
 
-  document.getElementById("subscribe-btn").hidden = hasAccess;
+// Two more marked essays, from any account: the same checkout as the
+// pricing page, with the sign-in token so the Worker knows who is buying.
+document.getElementById("marking-buy").addEventListener("click", async (e) => {
+  const btn = e.currentTarget;
+  const err = document.getElementById("marking-error");
+  err.classList.remove("show");
+  const label = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = "Redirecting to checkout…";
+  let data = {};
+  try {
+    const session = await sbGetSession();
+    const headers = { "Content-Type": "application/json" };
+    if (session && session.access_token) headers.Authorization = `Bearer ${session.access_token}`;
+    const res = await fetch("/api/create-checkout-session", {
+      method: "POST", headers, body: JSON.stringify({ product: "marking" }),
+    });
+    data = await res.json();
+  } catch (x) { /* handled below */ }
+  if (data.url) { window.location.href = data.url; return; }
+  btn.disabled = false;
+  btn.textContent = label;
+  err.textContent = "Something went wrong starting checkout. Please try again.";
+  err.classList.add("show");
+});
+
+// Back from Stripe with the Back button: the browser may restore this page
+// from its cache with the button still disabled and saying "Redirecting".
+window.addEventListener("pageshow", (e) => {
+  if (!e.persisted) return;
+  const btn = document.getElementById("marking-buy");
+  btn.disabled = false;
+  btn.innerHTML = "Buy two marked essays &mdash; &euro;49";
+});
+
+// Back from Stripe. The webhook that records the purchase can land a few
+// seconds after the buyer does, so say so, and look again until it shows.
+// A one-off comes back with its Checkout Session id (?cs=), so the page
+// waits for that very purchase, not for anything at all on the account.
+async function afterCheckout(user, first) {
+  const params = new URLSearchParams(window.location.search);
+  const note = document.getElementById("checkout-notice");
+  if (params.get("checkout") !== "success") return;
+  const cs = params.get("cs");
+  // A one-off returns with its session id; the full plan returns without
+  // one, and is ready when the subscription itself shows as active.
+  const ready = (seen) => Boolean(seen) &&
+    (cs ? seen.sessions.has(cs) : (seen.isActive || seen.isOwner));
+  note.hidden = false;
+  note.textContent = "Payment received — setting up your access…";
+  let seen = first;
+  for (let i = 0; i < 8 && !ready(seen); i++) {
+    await new Promise((r) => setTimeout(r, 2500));
+    seen = await fillSubscription(user);
+  }
+  note.textContent = ready(seen)
+    ? "Thank you — your purchase is ready."
+    : "Payment received. Your access is still being set up — reload this page in a minute.";
 }
 
 async function renderAccount() {
   const user = await sbGetUser();
   if (!user) { paint(showAuth); return; }
   paint(showAccount);
-  await fillSubscription(user);
+  await afterCheckout(user, await fillSubscription(user));
 }
 
 // --- first paint ---------------------------------------------------------
@@ -552,7 +815,14 @@ async function start() {
   paint(showAccount);
   const user = await sbGetUser();
   if (!user) { showAuth(); return; }
-  await fillSubscription(user);
+  // On the way to checkout (the confirmation link of a new buyer, or a
+  // pricing page that could not confirm the sign-in in time): signed in now,
+  // so back to the plans, where the purchase picks up where it left off.
+  if (new URLSearchParams(window.location.search).get("redirect") === "pricing") {
+    location.replace("pricing.html");
+    return;
+  }
+  await afterCheckout(user, await fillSubscription(user));
 }
 
 start().catch((err) => {

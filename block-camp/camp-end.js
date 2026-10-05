@@ -126,8 +126,9 @@
                "Lookout 7/18"
      next      once this deck's piece is won: the next piece in the design's
                order, "Next: Camp 4 · Past Continuous". A free learner past
-               storey 4 gets the next camp with a padlock and a Go Pro link
-               (Innes, 2026-10-02); which parts are free is the catalogue's,
+               storey 4 gets the next camp with a padlock and a link to the
+               plans (Innes, 2026-10-02; it said "Go Pro" until Block Camp
+               Term 1 went on sale); which parts are free is the catalogue's,
                stamped into camp-flags.js by its builder from the hub's
                access(), never decided here
      link      "See it built →", block-camp/flags.html#lookout
@@ -167,7 +168,7 @@
           nearS: '{d}% to go: {p}% raises storey {n}', nearL: '{d}% to go: {p}% lights lamp {n}',
           nearStar: '{d}% to go: {p}% adds a star', toGoldPc: '{d}% to gold',
           lookout: 'Lookout {k}/{o}', stars: 'Stars {k}/{o}', seeIt: 'See it built',
-          next: 'Next: {t}', camp: 'Camp {n}', station: 'Station {n}', part2: 'Part 2', goPro: 'Go Pro' },
+          next: 'Next: {t}', camp: 'Camp {n}', station: 'Station {n}', part2: 'Part 2', goPro: 'See plans', paid: 'Paid' },
     de: { planted: 'Flagge für Camp {n} gesetzt!', plantedSt: 'Flagge für Station {n} gesetzt!', gold: 'Goldene Flagge!',
           star: 'Stern dazu!', starSaved: 'Stern gespeichert!', flying: 'Deine Flagge weht',
           low: 'Erreiche 50 %, um die Flagge dieses Camps zu setzen', lowSt: 'Erreiche 50 %, um die Flagge dieser Station zu setzen',
@@ -179,7 +180,7 @@
           nearS: 'Noch {d}\u00a0%: Mit {p}\u00a0% entsteht Stockwerk {n}', nearL: 'Noch {d}\u00a0%: Mit {p}\u00a0% leuchtet Lampe {n}',
           nearStar: 'Noch {d}\u00a0%: Mit {p}\u00a0% gibt es einen Stern', toGoldPc: 'Noch {d}\u00a0% bis Gold',
           lookout: 'Aussichtsturm {k}/{o}', stars: 'Sterne {k}/{o}', seeIt: 'Sieh, wie er wächst',
-          next: 'Als Nächstes: {t}', camp: 'Camp {n}', station: 'Station {n}', part2: 'Teil 2', goPro: 'Pro werden' },
+          next: 'Als Nächstes: {t}', camp: 'Camp {n}', station: 'Station {n}', part2: 'Teil 2', goPro: 'Pläne ansehen', paid: 'Kostenpflichtig' },
     es: { planted: '¡Bandera del campamento {n} plantada!', plantedSt: '¡Bandera de la estación {n} plantada!', gold: '¡Bandera de oro!',
           star: '¡Estrella añadida!', starSaved: '¡Estrella guardada!', flying: 'Tu bandera ondea',
           low: 'Consigue un 50 % para plantar la bandera de este campamento', lowSt: 'Consigue un 50 % para plantar la bandera de esta estación',
@@ -191,7 +192,7 @@
           nearS: '{d}\u00a0% más: con un {p}\u00a0% se levanta el piso {n}', nearL: '{d}\u00a0% más: con un {p}\u00a0% se enciende el farol {n}',
           nearStar: '{d}\u00a0% más: con un {p}\u00a0% ganas una estrella', toGoldPc: '{d}\u00a0% más para el oro',
           lookout: 'Atalaya {k}/{o}', stars: 'Estrellas {k}/{o}', seeIt: 'Mira cómo crece',
-          next: 'Siguiente: {t}', camp: 'Campamento {n}', station: 'Estación {n}', part2: 'Parte 2', goPro: 'Hazte Pro' },
+          next: 'Siguiente: {t}', camp: 'Campamento {n}', station: 'Estación {n}', part2: 'Parte 2', goPro: 'Ver planes', paid: 'De pago' },
     fr: { planted: 'Drapeau du camp {n} planté !', plantedSt: 'Drapeau de la station {n} planté !', gold: 'Drapeau d’or !',
           star: 'Étoile ajoutée !', starSaved: 'Étoile gardée !', flying: 'Ton drapeau flotte',
           low: 'Obtiens 50 % pour planter le drapeau de ce camp', lowSt: 'Obtiens 50 % pour planter le drapeau de cette station',
@@ -203,7 +204,7 @@
           nearS: 'Encore {d}\u00a0%\u00a0: avec {p}\u00a0%, tu construis l’étage {n}', nearL: 'Encore {d}\u00a0%\u00a0: avec {p}\u00a0%, tu allumes la lanterne {n}',
           nearStar: 'Encore {d}\u00a0%\u00a0: avec {p}\u00a0%, tu gagnes une étoile', toGoldPc: 'Encore {d}\u00a0% pour l’or',
           lookout: 'Tour de guet {k}/{o}', stars: 'Étoiles {k}/{o}', seeIt: 'Regarde-la grandir',
-          next: 'Ensuite\u00a0: {t}', camp: 'Camp {n}', station: 'Station {n}', part2: 'Partie 2', goPro: 'Passe à Pro' },
+          next: 'Ensuite\u00a0: {t}', camp: 'Camp {n}', station: 'Station {n}', part2: 'Partie 2', goPro: 'Voir les offres', paid: 'Payant' },
     it: { planted: 'Bandiera del campo {n} piantata!', plantedSt: 'Bandiera della tappa {n} piantata!', gold: 'Bandiera d’oro!',
           star: 'Stella aggiunta!', starSaved: 'Stella salvata!', flying: 'La tua bandiera sventola',
           low: 'Fai il 50% per piantare la bandiera di questo campo', lowSt: 'Fai il 50% per piantare la bandiera di questa tappa',
@@ -215,7 +216,7 @@
           nearS: 'Ancora {d}%: con il {p}% costruisci il piano {n}', nearL: 'Ancora {d}%: con il {p}% accendi la lanterna {n}',
           nearStar: 'Ancora {d}%: con il {p}% guadagni una stella', toGoldPc: 'Ancora {d}% per l’oro',
           lookout: 'Torre {k}/{o}', stars: 'Stelle {k}/{o}', seeIt: 'Guardala crescere',
-          next: 'Prossimo: {t}', camp: 'Campo {n}', station: 'Tappa {n}', part2: 'Parte 2', goPro: 'Passa a Pro' },
+          next: 'Prossimo: {t}', camp: 'Campo {n}', station: 'Tappa {n}', part2: 'Parte 2', goPro: 'Vedi i piani', paid: 'A pagamento' },
     pt: { planted: 'Bandeira do acampamento {n} fincada!', plantedSt: 'Bandeira da etapa {n} fincada!', gold: 'Bandeira de ouro!',
           star: 'Estrela adicionada!', starSaved: 'Estrela guardada!', flying: 'A sua bandeira está hasteada',
           low: 'Faça 50% para fincar a bandeira deste acampamento', lowSt: 'Faça 50% para fincar a bandeira desta etapa',
@@ -227,7 +228,7 @@
           nearS: 'Faltam {d}%: com {p}%, ergue o andar {n}', nearL: 'Faltam {d}%: com {p}%, acende a lanterna {n}',
           nearStar: 'Faltam {d}%: com {p}%, ganha uma estrela', toGoldPc: 'Faltam {d}% para o ouro',
           lookout: 'Torre {k}/{o}', stars: 'Estrelas {k}/{o}', seeIt: 'Veja-a crescer',
-          next: 'A seguir: {t}', camp: 'Acampamento {n}', station: 'Etapa {n}', part2: 'Parte 2', goPro: 'Torne-se Pro' },
+          next: 'A seguir: {t}', camp: 'Acampamento {n}', station: 'Etapa {n}', part2: 'Parte 2', goPro: 'Ver planos', paid: 'Pago' },
     ru: { planted: 'Флаг лагеря {n} установлен!', plantedSt: 'Флаг станции {n} установлен!', gold: 'Золотой флаг!',
           star: 'Звезда добавлена!', starSaved: 'Звезда сохранена!', flying: 'Твой флаг развевается',
           low: 'Набери 50%, чтобы установить флаг этого лагеря', lowSt: 'Набери 50%, чтобы установить флаг этой станции',
@@ -239,7 +240,7 @@
           nearS: 'Ещё {d}%: {p}% — и этаж {n} построен', nearL: 'Ещё {d}%: {p}% — и фонарь {n} зажжён',
           nearStar: 'Ещё {d}%: {p}% — и будет звезда', toGoldPc: 'Ещё {d}% до золота',
           lookout: 'Башня {k}/{o}', stars: 'Звёзды {k}/{o}', seeIt: 'Посмотреть башню',
-          next: 'Дальше: {t}', camp: 'Лагерь {n}', station: 'Станция {n}', part2: 'Часть 2', goPro: 'Перейти на Pro' },
+          next: 'Дальше: {t}', camp: 'Лагерь {n}', station: 'Станция {n}', part2: 'Часть 2', goPro: 'Смотреть тарифы', paid: 'Платно' },
     ar: { planted: 'رُفع علم المخيم {n}!', plantedSt: 'رُفع علم المحطة {n}!', gold: 'علم ذهبي!',
           star: 'أُضيفت نجمة!', starSaved: 'حُفظت النجمة!', flying: 'علمك يرفرف',
           low: 'احصل على 50% لترفع علم هذا المخيم', lowSt: 'احصل على 50% لترفع علم هذه المحطة',
@@ -251,7 +252,7 @@
           nearS: 'بقي {d}%: {p}% ترفع الطابق {n}', nearL: 'بقي {d}%: {p}% تضيء الفانوس {n}',
           nearStar: 'بقي {d}%: {p}% تضيف نجمة', toGoldPc: 'بقي {d}% على الذهب',
           lookout: 'البرج {k}/{o}', stars: 'النجوم {k}/{o}', seeIt: 'شاهده يُبنى',
-          next: 'التالي: {t}', camp: 'المخيم {n}', station: 'المحطة {n}', part2: 'الجزء 2', goPro: 'اشترك في Pro' },
+          next: 'التالي: {t}', camp: 'المخيم {n}', station: 'المحطة {n}', part2: 'الجزء 2', goPro: 'عرض الخطط', paid: 'مدفوع' },
     zh: { planted: '营地 {n} 的旗帜已插上！', plantedSt: '第 {n} 站的旗帜已插上！', gold: '金旗！',
           star: '已添加星星！', starSaved: '星星已保存！', flying: '你的旗帜正在飘扬',
           low: '得分达到 50% 即可插上本营地的旗帜', lowSt: '得分达到 50% 即可插上本站的旗帜',
@@ -263,7 +264,7 @@
           nearS: '还差 {d}%：达到 {p}% 建成第 {n} 层', nearL: '还差 {d}%：达到 {p}% 点亮第 {n} 盏灯',
           nearStar: '还差 {d}%：达到 {p}% 加一颗星', toGoldPc: '距金色还差 {d}%',
           lookout: '瞭望塔 {k}/{o}', stars: '星星 {k}/{o}', seeIt: '看它建起来',
-          next: '下一个：{t}', camp: '营地 {n}', station: '第 {n} 站', part2: '第 2 部分', goPro: '升级 Pro' },
+          next: '下一个：{t}', camp: '营地 {n}', station: '第 {n} 站', part2: '第 2 部分', goPro: '查看方案', paid: '付费' },
     ja: { planted: 'キャンプ{n}に旗を立てた！', plantedSt: 'ステーション{n}に旗を立てた！', gold: '金の旗！',
           star: '星を追加！', starSaved: '星を保存！', flying: '旗がはためいている',
           low: '50%取ると、このキャンプに旗を立てられる', lowSt: '50%取ると、このステーションに旗を立てられる',
@@ -275,7 +276,7 @@
           nearS: 'あと{d}%：{p}%で{n}階ができる', nearL: 'あと{d}%：{p}%でランタン{n}がともる',
           nearStar: 'あと{d}%：{p}%で星がつく', toGoldPc: '金まであと{d}%',
           lookout: '見張り塔 {k}/{o}', stars: '星 {k}/{o}', seeIt: '塔を見る',
-          next: '次：{t}', camp: 'キャンプ{n}', station: 'ステーション{n}', part2: 'パート2', goPro: 'Proに登録' }
+          next: '次：{t}', camp: 'キャンプ{n}', station: 'ステーション{n}', part2: 'パート2', goPro: 'プランを見る', paid: '有料' }
   };
 
   var CSS =
@@ -494,7 +495,7 @@
         if (nx.part === 2) segs.push({ t: nb(S.part2) });
       } else segs = [{ t: pre[0] + '\u2068' + nx.title + '\u2069', wrap: true }];
       if (pre[1]) segs[segs.length - 1].t += pre[1];
-      next = { segs: segs, href: nx.href, padlock: !!nx.padlock, pro: S.goPro,
+      next = { segs: segs, href: nx.href, padlock: !!nx.padlock, pro: S.goPro, paid: S.paid,
                viaPro: nx.viaPro !== undefined ? !!nx.viaPro : !!nx.padlock };
     }
     // the caption says the piece is there ("You STACKED the logs"), so it
@@ -619,14 +620,14 @@
       nt.innerHTML = segs.map(function (g, i) {
         return '<span class="cf-ns' + (g.wrap ? ' cf-ww' : '') + '">' + numHtml(g.t + (i === last2 && !nx.padlock ? arrow() : '')) + '</span>';
       }).join('');
-      // the padlock pill: "Go Pro" where the link goes to Go Pro; a signed-in
-      // learner goes to the deck itself (the Worker decides), so it only
-      // says the lesson is Pro
+      // the padlock pill: "See plans" where the link goes to the plans; a
+      // signed-in learner goes to the deck itself (the Worker decides: Term 1
+      // or Pro may open it), so it only says the lesson is paid
       var pl = card.querySelector('.cf-prol');
-      if (pl) pl.textContent = nx.viaPro ? nx.pro : 'Pro';
-      // read as two phrases, not "Going To Go Pro"
+      if (pl) pl.textContent = nx.viaPro ? nx.pro : nx.paid;
+      // read as two phrases, not "Going To See plans"
       var said = segs.map(function (g) { return g.t; }).join(' · ');
-      card.querySelector('.cf-next').setAttribute('aria-label', said + (nx.padlock ? '. ' + (nx.viaPro ? nx.pro : 'Pro') : ''));
+      card.querySelector('.cf-next').setAttribute('aria-label', said + (nx.padlock ? '. ' + (nx.viaPro ? nx.pro : nx.paid) : ''));
     }
   }
 

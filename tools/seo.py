@@ -92,12 +92,9 @@ PAGES = {
                      'Every Forbes English lesson, by level and topic: '
                      'A1 to C2 grammar, vocabulary, exam prep and '
                      'business English.', 0.9),
-    # The pricing go-live's description ("Block Camp Term 1, IELTS with
-    # essay marking, ...") is on branch pricing-go-live with the new page;
-    # main keeps the old page's until that merges.
     'pricing.html': ('Plans and pricing',
-                     'What a Forbes English subscription costs, and which '
-                     'lessons are free forever.', 0.7),
+                     'Block Camp Term 1, IELTS with essay marking, or the '
+                     'whole library by the month — and which lessons are free.', 0.7),
     'ielts.html': ('IELTS Academic',
                    'IELTS Academic in five routes — Writing, Speaking, '
                    'Listening, Reading, and the vocabulary that feeds Speaking '
@@ -582,9 +579,11 @@ def llms_txt(rows, index, images):
            'switcher covering German, Spanish, French, Italian, Portuguese, '
            'Russian, Arabic, Chinese and Japanese; the English being taught '
            'stays in English.', '',
-           'Levels follow the CEFR (A1, A2, B1, B2, C1, C2). Lessons marked '
-           '*subscribers* are behind a subscription — the page describes the '
-           'lesson and is free to read; the exercises are not.', '']
+           'Levels follow the CEFR (A1, A2, B1, B2, C1, C2). The lessons under '
+           '"Paid lessons" need a plan: Forbes English Pro (monthly, every '
+           'lesson), or Block Camp Term 1 or IELTS (one payment each, for their '
+           'own lessons). The page describes the lesson and is free to read; '
+           'the exercises are not.', '']
 
     def section(name, items):
         out.append('## %s' % name)
@@ -618,12 +617,12 @@ def llms_txt(rows, index, images):
                'question and the answer decides the ending.' % SITE)
     out.append('')
     section('Free lessons', free)
-    section('Subscriber lessons', pro)
+    section('Paid lessons', pro)
     out += ['## Site', '',
             '- [Lesson library](%s/library.html): every lesson, filterable by '
             'level and topic.' % SITE,
-            '- [Plans](%s/pricing.html): what a subscription costs and what '
-            'stays free.' % SITE,
+            '- [Plans](%s/pricing.html): Forbes English Pro, Block Camp Term 1 '
+            'and IELTS, and what stays free.' % SITE,
             '- [Level Checker](%s/level-checker.html): a free adaptive '
             'placement test for the tenses, A1 to C1, that names the lesson '
             'to start on.' % SITE, '']
@@ -666,7 +665,7 @@ def crawlable_list(rows, images):
         for r in sorted(by_level[lvl], key=lambda x: clean(x['title'])):
             out.append('<li><a href="/%s">%s</a>%s</li>'
                        % (quote(r['file']), esc(clean(r['title'])),
-                          '' if r['access'] != 'pro' else ' — subscribers'))
+                          '' if r['access'] != 'pro' else ' — paid'))
         out.append('</ul>')
     out += ['</div>', LIST_END]
     return '\n'.join(out)
