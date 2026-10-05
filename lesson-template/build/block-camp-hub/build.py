@@ -114,7 +114,7 @@ MORE = [
 ]
 
 FREE_CHIP = '<span class="chip chip-free" data-i18n="free">Free</span>'
-PRO_CHIP = '<span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span>'
+PRO_CHIP = '<span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg><span data-i18n="paid">Paid</span></span>'
 
 def chips(level, access):
     a = FREE_CHIP if access=='free' else PRO_CHIP

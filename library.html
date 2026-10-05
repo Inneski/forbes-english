@@ -702,7 +702,7 @@
     <div class="cat-hub-ico">🎓</div>
     <div>
       <div class="cat-hub-title">Start at the IELTS Academic hub</div>
-      <div class="cat-hub-sub">These fourteen lessons in the order they should be taken, split by skill, plus a free Task 2 question bank</div>
+      <div class="cat-hub-sub">Every IELTS lesson in the order it should be taken, split by skill, plus a free Task 2 question bank</div>
     </div>
     <div class="cat-hub-go">Open the hub &rarr;</div>
   </a>
@@ -1213,6 +1213,8 @@ function detectCategories(item) {
 // the Cloudflare Worker enforces before it serves the file (src/index.js).
 // This badge only reports that value — it does not decide it, and hiding it
 // would not protect anything.
+// 'Pro' is the access class, the filter and the count; the card's badge says
+// 'Paid', because Block Camp Term 1 and IELTS open paid lessons too.
 function detectAccess(item) {
   return item.access === 'free' ? 'Free' : 'Pro';
 }
@@ -2058,7 +2060,7 @@ function render() {
             ${l.level ? `<span class="badge${l.level.startsWith('C') ? ' gold' : ''}">${l.level}</span>` : ''}
           </div>
           ${soon ? '<span class="access-badge soon">Coming soon</span>'
-                 : `<span class="access-badge ${l.access.toLowerCase()}">${l.access}</span>`}
+                 : `<span class="access-badge ${l.access.toLowerCase()}">${l.access === 'Pro' ? 'Paid' : l.access}</span>`}
         </div>
         <span class="card-title">${l.title}</span>
       </div>
