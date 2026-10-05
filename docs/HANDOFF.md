@@ -42,11 +42,25 @@ Innes caught two wrong keys live in class. Full audit of both:
   matches the template. Content edits were mirrored into both builders, but
   re-running them would regress the page. Rebuild on `deck.py` before using.
 
-## 2026-10-04 — Pricing go-live (Innes's 3 Oct handoff): all nine steps on branch `pricing-go-live`, not live
+## 2026-10-04 — Pricing go-live (Innes's 3 Oct handoff): LIVE since 5 Oct
 
-**To release or roll back, follow `docs/GO-LIVE-pricing.md` on the branch**
-(`git show pricing-go-live:docs/GO-LIVE-pricing.md`). It merges branch
-`rollback-guard` first; do not release by merging `pricing-go-live` alone.
+**Released 5 Oct 2026, Innes's go-ahead: release merge `9885c144`** (first
+parent `a915f6dd` = the rollback-guard merge). To roll back: section D of
+`docs/GO-LIVE-pricing.md` (`git revert -m 1 9885c144`, in a worktree of
+its own). Verified live, anonymous, the same day: `/api/paywall-status`
+configOk, blockCampDripReady, Missions 1-12 tagged, all four prices and
+FOUNDER set; `/api/founder-status` 50/50; the gate labels Mission 2 and the
+specials "Block Camp Term 1", Term 2 and general paid lessons "Forbes
+English Pro", IELTS "IELTS"; Mission 1 and Frostbound open; checkout
+without a sign-in 401. Still off by design: `hasMissionEmail`,
+`hasMarkingMail` (Resend), `hasTermsConsent` (TERMS_URL, after the terms
+page). **Still to do:** the exemption SQL (B2/C; it had not been run at
+release time: 2 subscribers unexempted), one real test purchase + refund
+(C), the quests for Missions 4/8/12. The shared checkout's `main` was left
+behind origin with 12 uncommitted builder outputs (another session's)
+overlapping the release, so a `git pull` there refuses until those are
+discarded or committed. Branches `pricing-go-live` and `rollback-guard`
+and worktree `../FORBES-pricing` can go once the test purchase passes.
 
 Innes's plan, in order: schema → Term 1 tagging → Stripe prices → webhook →
 Worker gate with weekly drip → pricing page → IELTS page → account page →
