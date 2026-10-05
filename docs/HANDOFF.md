@@ -11,6 +11,32 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-10-05 — Pricing page relaid out
+
+Innes: *"this could be layed out better"* (pricing.html). The three cards
+each had their own order of parts, so the prices and buy buttons sat at
+different heights; the Pro card had a ~230px hole above its button; IELTS
+had no headline price and its "marked by a teacher" note floated at the
+bottom; the free section left one item alone on a row.
+
+Now every card is `.pc-head` / `.pc-price` / `.pc-actions` / `.pc-body` /
+`.pc-foot` in that order, and wherever cards stand side by side they share
+rows through **subgrid** (flex column fallback), so prices, buttons and
+lists line up. Buy button first, then the try-free button. IELTS shows
+€25 as its price and IELTS + Marking (€69) as an upgrade panel where the
+others have their list. The founder offer is a dark badge on Block Camp's
+top edge ("Founder price · 50 of 50 left"), not a band inside the card,
+so it no longer pushes that card's price out of line; the sub line says
+"Founder price for the first 50 families, then €19." Pro sits beside its
+list on a tablet. Free section 2×2; FAQ has +/− markers. Small copy
+added: kickers (For children / For the exam / For everyone), "Try an
+IELTS lesson free" (→ Writing Part 1, free), "See what's free ↓".
+
+Measured headlessly (Playwright, founder-status mocked): row tops equal
+across cards at 1280 and 820, no gap leak; all seven buy controls store
+the right intent; founder endpoint failing → €19, no badge. `seo.py`
+rewrote nothing; `check_logos.py` passes.
+
 ## 2026-10-05 — Every IELTS page in ten languages
 
 Innes: *"some ielts is not translated into all the languages — fix this

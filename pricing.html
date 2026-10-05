@@ -43,6 +43,7 @@
     --white: #ffffff;
     --radius: 14px;
   }
+  html { scroll-behavior: smooth; }
   body {
     font-family: 'Lato', sans-serif;
     background: var(--cream);
@@ -62,9 +63,9 @@
   .header-link { color: var(--cream); text-decoration: none; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 0.9rem; }
   .header-link:hover { color: var(--gold-bright); }
 
-  main { max-width: 1000px; margin: 0 auto; padding: 56px 24px 90px; }
+  main { max-width: 1060px; margin: 0 auto; padding: 56px 24px 90px; }
 
-  .intro { text-align: center; max-width: 620px; margin: 0 auto 48px; }
+  .intro { text-align: center; max-width: 620px; margin: 0 auto 56px; }
   .eyebrow {
     font-family: 'Barlow Condensed', sans-serif;
     font-weight: 800;
@@ -83,70 +84,82 @@
     line-height: 1.15;
   }
   .intro p { color: var(--muted); font-size: 1rem; line-height: 1.6; }
-
-
-  /* ── FREE TIER ── */
-  .free-tier {
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-left: 5px solid var(--green-light);
-    border-radius: var(--radius);
-    padding: 30px 32px 32px;
-    margin-bottom: 52px;
-  }
-  .free-head {
-    display: flex; align-items: flex-end; justify-content: space-between;
-    gap: 20px; flex-wrap: wrap; margin-bottom: 14px;
-  }
-  .free-eyebrow {
-    font-family: 'Barlow Condensed', sans-serif; font-weight: 800;
-    letter-spacing: 0.14em; text-transform: uppercase; font-size: 0.74rem;
-    color: var(--green-light); margin-bottom: 6px;
-  }
-  .free-tier h2 {
-    font-family: 'Playfair Display', serif; font-weight: 700;
-    font-size: 1.5rem; color: var(--green-deep); line-height: 1.2;
-  }
-  .free-cta {
+  .intro .jump { margin-top: 16px; }
+  .text-cta {
     font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
     font-size: 0.95rem; color: var(--green-mid); text-decoration: none;
     border-bottom: 2px solid var(--gold-bright); padding-bottom: 2px;
     white-space: nowrap;
   }
-  .free-cta:hover { color: var(--green-deep); }
-  .free-lede { color: var(--muted); font-size: 0.96rem; line-height: 1.6; margin-bottom: 24px; max-width: 62ch; }
-  .free-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 22px 30px;
-  }
-  .free-item h3 {
-    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
-    font-size: 1.02rem; color: var(--ink); margin-bottom: 6px;
-    letter-spacing: 0.01em;
-  }
-  .free-item p { color: var(--muted); font-size: 0.9rem; line-height: 1.55; }
+  .text-cta:hover { color: var(--green-deep); }
 
-  .paid-intro { text-align: center; max-width: 620px; margin: 0 auto 32px; }
-  .paid-title {
-    font-family: 'Playfair Display', serif; font-weight: 900;
-    font-size: clamp(1.4rem, 3vw, 1.9rem); color: var(--green-deep);
-    margin-bottom: 10px; line-height: 1.2;
+  .status-banner {
+    max-width: 620px;
+    margin: 0 auto 32px;
+    padding: 12px 18px;
+    border-radius: var(--radius);
+    font-size: 0.9rem;
+    text-align: center;
+    display: none;
   }
-  .paid-intro p { color: var(--muted); font-size: 0.98rem; line-height: 1.6; }
+  .status-banner.show { display: block; }
+  .status-banner.active { background: var(--green-pale); color: var(--green-mid); }
 
+  /* ── THE THREE CARDS ──
+     Every card has the same five parts in the same order: what it is
+     (.pc-head), the price (.pc-price), the buy buttons (.pc-actions), what
+     is included (.pc-body) and the small print (.pc-foot). Wherever cards
+     stand side by side they share rows through subgrid, so the prices, the
+     buy buttons and the lists line up across the row however long each
+     card's text runs. Without subgrid support each card is a plain column. */
   .plans {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: 1fr;
     gap: 22px;
+    max-width: 520px;
+    margin: 0 auto 16px;
   }
+  /* Two cards and a full-width third between phone and desktop, rather
+     than auto-fit's 2 + 1 with the full plan stranded on its own. */
+  @media (min-width: 600px) {
+    .plans { max-width: none; grid-template-columns: repeat(2, 1fr); }
+    .plans .plan-card.featured { grid-column: 1 / -1; }
+  }
+  @media (min-width: 900px) {
+    .plans { grid-template-columns: repeat(3, 1fr); }
+    .plans .plan-card.featured { grid-column: auto; }
+  }
+
   .plan-card {
     background: var(--white);
     border: 1.5px solid var(--border);
     border-radius: var(--radius);
-    padding: 30px 26px;
+    padding: 28px 26px 26px;
     display: flex;
     flex-direction: column;
     position: relative;
-    transition: border-color .15s ease, transform .15s ease;
+  }
+  .plan-card .pc-body { flex: 1; }
+  @supports (grid-template-rows: subgrid) {
+    @media (min-width: 600px) {
+      .plan-card { display: grid; grid-row: span 5; grid-template-rows: subgrid; row-gap: 0; align-content: start; }
+      .pc-head { grid-row: 1; }
+      .pc-price { grid-row: 2; }
+      .pc-actions { grid-row: 3; }
+      .pc-body { grid-row: 4; }
+      .pc-foot { grid-row: 5; }
+    }
+    /* Full width on a tablet, Pro puts its list beside the price instead
+       of stretching four short lines across the page. */
+    @media (min-width: 600px) and (max-width: 899px) {
+      .plan-card.featured { grid-row: span 3; grid-template-columns: 1fr 1fr; column-gap: 36px; }
+      .plan-card.featured :is(.pc-head, .pc-price, .pc-actions) { grid-column: 1; }
+      .plan-card.featured .pc-body {
+        grid-column: 2; grid-row: 1 / -1; align-self: center;
+        border-top: none; padding-top: 0;
+        border-left: 1px solid var(--border); padding-left: 32px;
+      }
+    }
   }
   .plan-card.featured {
     border-color: var(--gold);
@@ -166,29 +179,76 @@
     text-transform: uppercase;
     padding: 4px 14px;
     border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  .pc-head { margin-bottom: 18px; }
+  .plan-for {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 800;
+    letter-spacing: 0.12em; text-transform: uppercase; font-size: 0.74rem;
+    color: var(--gold); margin-bottom: 6px;
   }
   .plan-name {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 800;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    font-size: 0.85rem;
-    color: var(--muted);
-    margin-bottom: 10px;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.45rem;
+    color: var(--green-deep);
+    line-height: 1.2;
+    margin-bottom: 8px;
   }
+  .plan-tag { font-size: 0.92rem; color: var(--ink-soft); line-height: 1.5; }
+
+  .pc-price { margin-bottom: 20px; }
   .plan-price {
     font-family: 'Playfair Display', serif;
     font-weight: 900;
-    font-size: 2.4rem;
+    font-size: 2.6rem;
     color: var(--green-deep);
     line-height: 1;
-    margin-bottom: 4px;
   }
-  .plan-price span { font-size: 1rem; font-weight: 400; color: var(--muted); font-family: 'Lato', sans-serif; }
-  .plan-sub { font-size: 0.85rem; color: var(--muted); margin-bottom: 22px; min-height: 1.2em; }
-  .plan-sub.savings { color: var(--green-mid); font-weight: 700; }
+  .plan-price span { font-size: 0.95rem; font-weight: 400; color: var(--muted); font-family: 'Lato', sans-serif; }
+  .plan-sub { font-size: 0.86rem; color: var(--muted); margin-top: 8px; line-height: 1.45; }
 
-  .plan-features { list-style: none; margin-bottom: 26px; flex: 1; }
+  /* The founder offer: a dark badge on Block Camp's top edge, hidden until
+     /api/founder-status reports places left (the script below). On the
+     edge, not in the card, so it never pushes the price out of line. */
+  .plan-badge.founder { display: none; background: var(--green-deep); color: var(--gold-bright); }
+  .plan-badge.founder.show { display: block; }
+
+  .pc-actions { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+  .plan-btn {
+    display: block;
+    width: 100%;
+    padding: 13px;
+    border: 1.5px solid var(--green-deep);
+    border-radius: 999px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 0.95rem;
+    letter-spacing: 0.4px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    background: var(--green-deep);
+    color: var(--cream);
+    transition: background .15s ease;
+  }
+  .plan-btn:hover:not(:disabled) { background: var(--green-mid); }
+  .plan-btn:disabled { opacity: 0.6; cursor: default; }
+  .plan-btn.secondary { background: transparent; color: var(--green-deep); }
+  .plan-btn.secondary:hover:not(:disabled) { background: var(--green-pale); }
+  .plan-card.featured .plan-btn { background: var(--gold-bright); border-color: var(--gold-bright); color: var(--green-deep); }
+  .plan-card.featured .plan-btn:hover:not(:disabled) { background: var(--gold-light); }
+
+  .plan-alt { font-size: 0.82rem; color: var(--muted); text-align: center; line-height: 1.5; }
+  .plan-fine { font-size: 0.78rem; color: var(--muted); line-height: 1.45; }
+  .plan-fine a, .plan-fine button, .plan-alt a, .plan-alt button {
+    color: var(--green-mid); font: inherit; background: none; border: none; padding: 0;
+    cursor: pointer; text-decoration: underline; text-underline-offset: 2px;
+  }
+  .plan-alt button:disabled, .plan-fine button:disabled { cursor: default; opacity: 0.6; }
+
+  .plan-features { list-style: none; border-top: 1px solid var(--border); padding-top: 20px; }
   .plan-features li {
     display: flex;
     gap: 9px;
@@ -204,114 +264,102 @@
     font-weight: 900;
     flex: none;
   }
+  .pc-foot { margin-top: 14px; }
 
-  .plan-btn {
-    display: block;
-    width: 100%;
-    padding: 13px;
-    border: none;
-    border-radius: 999px;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 800;
-    font-size: 0.95rem;
-    letter-spacing: 0.4px;
-    cursor: pointer;
-    text-align: center;
-    background: var(--green-deep);
-    color: var(--cream);
-    transition: background .15s ease;
+  /* IELTS + Marking: the upgrade inside the IELTS card, with its own price
+     and button, where the other two cards have their list. */
+  .addon {
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    background: var(--cream);
+    padding: 18px 18px 16px;
   }
-  .plan-btn:hover:not(:disabled) { background: var(--green-mid); }
-  .plan-btn:disabled { opacity: 0.6; cursor: default; }
-  .plan-card.featured .plan-btn { background: var(--gold-bright); color: var(--green-deep); }
-  .plan-card.featured .plan-btn:hover:not(:disabled) { background: var(--gold-light); }
+  .addon-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 8px; }
+  .addon-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 1.1rem; color: var(--ink); }
+  .addon-price { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.6rem; color: var(--green-deep); line-height: 1; white-space: nowrap; }
+  .addon p { font-size: 0.86rem; color: var(--ink-soft); line-height: 1.5; margin-bottom: 12px; }
+  .addon .human {
+    color: var(--green-deep); font-weight: 700;
+    background: var(--green-pale); border-radius: 8px; padding: 9px 11px;
+  }
+  .addon .plan-btn { margin-top: 4px; }
 
-  .faq { max-width: 640px; margin: 64px auto 0; }
+  .vat-note { text-align: center; color: var(--ink-soft); font-size: 0.82rem; margin-bottom: 64px; }
+
+  /* ── FREE TIER ── */
+  .free-tier {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-left: 5px solid var(--green-light);
+    border-radius: var(--radius);
+    padding: 30px 32px 32px;
+    scroll-margin-top: 24px;
+  }
+  .free-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 14px 20px; flex-wrap: wrap; margin-bottom: 14px;
+  }
+  .free-eyebrow {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 800;
+    letter-spacing: 0.14em; text-transform: uppercase; font-size: 0.74rem;
+    color: var(--green-light); margin-bottom: 6px;
+  }
+  .free-tier h2 {
+    font-family: 'Playfair Display', serif; font-weight: 700;
+    font-size: 1.5rem; color: var(--green-deep); line-height: 1.2;
+  }
+  .free-lede { color: var(--muted); font-size: 0.96rem; line-height: 1.6; margin-bottom: 26px; max-width: 62ch; }
+  .free-grid { display: grid; grid-template-columns: 1fr; gap: 22px 36px; }
+  @media (min-width: 600px) { .free-grid { grid-template-columns: repeat(2, 1fr); } }
+  .free-item { border-top: 1px solid var(--border); padding-top: 14px; }
+  .free-item h3 {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+    font-size: 1.05rem; color: var(--ink); margin-bottom: 6px;
+    letter-spacing: 0.01em;
+  }
+  .free-item p { color: var(--muted); font-size: 0.9rem; line-height: 1.55; }
+
+  /* ── QUESTIONS ── */
+  .faq { max-width: 680px; margin: 72px auto 0; }
   .faq h2 {
     font-family: 'Playfair Display', serif;
     font-weight: 700;
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     color: var(--green-deep);
-    margin-bottom: 18px;
+    margin-bottom: 14px;
     text-align: center;
   }
-  .faq-item { border-bottom: 1px solid var(--border); padding: 16px 0; }
+  .faq-item { border-bottom: 1px solid var(--border); }
+  .faq-item:first-of-type { border-top: 1px solid var(--border); }
   .faq-item summary {
     cursor: pointer;
     font-weight: 700;
-    font-size: 0.95rem;
+    font-size: 0.98rem;
     color: var(--ink);
     list-style: none;
+    padding: 17px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
   }
   .faq-item summary::-webkit-details-marker { display: none; }
-  .faq-item p { margin-top: 10px; color: var(--muted); font-size: 0.88rem; line-height: 1.55; }
+  .faq-item summary::after {
+    content: "+";
+    flex: none;
+    font-family: 'Lato', sans-serif; font-weight: 300; font-size: 1.5rem; line-height: 1;
+    color: var(--green-mid);
+  }
+  .faq-item[open] summary::after { content: "\2212"; }
+  .faq-item summary:hover { color: var(--green-mid); }
+  .faq-item p { margin: -4px 0 18px; color: var(--muted); font-size: 0.9rem; line-height: 1.6; }
 
-  .status-banner {
-    max-width: 620px;
-    margin: 0 auto 32px;
-    padding: 12px 18px;
-    border-radius: var(--radius);
-    font-size: 0.9rem;
-    text-align: center;
-    display: none;
+  @media (max-width: 599px) {
+    main { padding: 40px 16px 72px; }
+    .intro { margin-bottom: 44px; }
+    .plan-card { padding-left: 22px; padding-right: 22px; }
+    .free-tier { padding: 26px 22px 28px; }
   }
-  .status-banner.show { display: block; }
-  .status-banner.active { background: var(--green-pale); color: var(--green-mid); }
-
-  /* ── PRICING GO-LIVE (2026-10-04): three cards ── */
-  .plans-3 { align-items: stretch; margin-bottom: 14px; }
-  .vat-note { text-align: center; color: var(--ink-soft); font-size: 0.82rem; margin-bottom: 56px; }
-  .plan-tag {
-    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
-    font-size: 1.05rem; color: var(--ink); line-height: 1.35; margin-bottom: 14px;
-  }
-  .plan-fine { font-size: 0.78rem; color: var(--muted); line-height: 1.45; margin-top: 14px; }
-  .plan-fine a, .plan-fine button, .plan-alt a, .plan-alt button {
-    color: var(--green-mid); font: inherit; background: none; border: none; padding: 0;
-    cursor: pointer; text-decoration: underline; text-underline-offset: 2px;
-  }
-  .plan-alt { font-size: 0.82rem; color: var(--muted); text-align: center; margin-top: 12px; line-height: 1.5; }
-  .plan-alt button:disabled, .plan-fine button:disabled { cursor: default; opacity: 0.6; }
-  /* Two cards and a full-width third between phone and desktop, rather
-     than auto-fit's 2 + 1 with the full plan stranded on its own. */
-  @media (min-width: 600px) and (max-width: 899px) {
-    .plans-3 { grid-template-columns: repeat(2, 1fr); }
-    .plans-3 .plan-card.featured { grid-column: 1 / -1; }
-  }
-  @media (min-width: 900px) { .plans-3 { grid-template-columns: repeat(3, 1fr); } }
-
-  .founder {
-    display: none;
-    margin: -30px -26px 22px;
-    padding: 12px 26px;
-    border-radius: var(--radius) var(--radius) 0 0;
-    background: var(--green-deep);
-    color: var(--cream);
-    font-size: 0.86rem;
-    line-height: 1.4;
-  }
-  .founder.show { display: block; }
-  .founder strong { display: block; white-space: nowrap; color: var(--gold-bright); font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 1rem; letter-spacing: 0.02em; }
-
-  .plan-btn.secondary {
-    background: transparent; color: var(--green-deep);
-    border: 1.5px solid var(--green-deep); margin-bottom: 10px; text-decoration: none;
-  }
-  .plan-btn.secondary:hover { background: var(--green-pale); }
-
-  .tier { border-top: 1px solid var(--border); padding-top: 16px; margin-top: 16px; }
-  .tier:first-of-type { border-top: none; padding-top: 0; margin-top: 0; }
-  .tier-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 6px; }
-  .tier-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 1.05rem; color: var(--ink); }
-  .tier-price { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.6rem; color: var(--green-deep); line-height: 1; white-space: nowrap; }
-  .tier p { font-size: 0.86rem; color: var(--ink-soft); line-height: 1.5; margin-bottom: 12px; }
-  .tiers { flex: 1; margin-bottom: 4px; }
-  .human {
-    font-size: 0.86rem; line-height: 1.5; color: var(--green-deep); font-weight: 700;
-    background: var(--green-pale); border-radius: 10px; padding: 10px 12px; margin-top: 14px;
-  }
-
-  .free-tier { margin-bottom: 0; }
 </style>
 </head>
 <body>
@@ -390,87 +438,105 @@
     <div class="eyebrow">Plans and prices</div>
     <h1>Start free.<br>Pay for the part you need.</h1>
     <p>Block Camp and IELTS are single payments that never renew. Forbes English Pro is the whole library, by the month.</p>
+    <p class="jump"><a class="text-cta" href="#free">See what&rsquo;s free &darr;</a></p>
   </div>
 
   <!-- Pricing go-live, 2026-10-04 (docs/HANDOFF.md). Three cards, in this
        order. Prices are VAT-inclusive Stripe prices; the Worker maps each
        button's data-product / data-plan to its price ID. Only buy controls
        carry those attributes: startCheckout() relabels the element it finds,
-       so a card carrying one would be wiped out. The founder strip is filled
+       so a card carrying one would be wiped out. The founder note is filled
        from GET /api/founder-status ({ limit, remaining }); until that answers
        with remaining > 0 the card shows the regular €19, so the page never
        advertises an offer that may have run out. €19 is not struck through:
-       it has never been charged, so it cannot be shown as a former price. -->
-  <div class="plans plans-3">
+       it has never been charged, so it cannot be shown as a former price.
+       Layout (2026-10-05): each card is .pc-head / .pc-price / .pc-actions /
+       .pc-body / .pc-foot, in that order, so subgrid can line them up. -->
+  <div class="plans">
 
     <div class="plan-card" id="block-camp">
-      <div class="founder" id="founder">
-        Founder price for the first 50 families: <strong id="founder-left"></strong>
+      <div class="plan-badge founder" id="founder">Founder price &middot; <span id="founder-left"></span></div>
+      <div class="pc-head">
+        <div class="plan-for">For children</div>
+        <h2 class="plan-name">Block Camp · Term 1</h2>
+        <p class="plan-tag">12 weeks · 12 missions · one a week, each with a quest.</p>
       </div>
-      <h2 class="plan-name">Block Camp · Term 1</h2>
-      <div class="plan-price" id="bc-price">&euro;19<span>&nbsp;one payment</span></div>
-      <div class="plan-sub" id="bc-sub">Yours to keep. Nothing renews.</div>
-      <p class="plan-tag">12 weeks · 12 missions · one a week, each with a quest.</p>
-      <ul class="plan-features">
+      <div class="pc-price">
+        <div class="plan-price" id="bc-price">&euro;19<span>&nbsp;one payment</span></div>
+        <div class="plan-sub" id="bc-sub">Yours to keep. Nothing renews.</div>
+      </div>
+      <div class="pc-actions">
+        <button class="plan-btn" data-product="blockcamp" id="bc-buy">Buy Term 1 &mdash; &euro;19</button>
+        <a class="plan-btn secondary" href="blockcamp-present-simple.html">Try Mission 1 free</a>
+      </div>
+      <ul class="plan-features pc-body">
         <li>Mission 1 opens straight away, then a new one every week</li>
         <li>Every mission stays open once it unlocks</li>
         <li>Plus the six Block Camp specials, open from day one</li>
         <li>Works on phones and tablets &mdash; add it to your Home Screen and it opens like an app.</li>
         <li>Built by a CELTA-qualified teacher.</li>
       </ul>
-      <a class="plan-btn secondary" href="blockcamp-present-simple.html">Try Mission 1 free</a>
-      <button class="plan-btn" data-product="blockcamp" id="bc-buy">Buy Term 1 &mdash; &euro;19</button>
-      <p class="plan-fine">Not an official Minecraft product. Not approved by or associated with Mojang.</p>
+      <p class="plan-fine pc-foot">Not an official Minecraft product. Not approved by or associated with Mojang.</p>
     </div>
 
     <div class="plan-card" id="ielts">
-      <h2 class="plan-name">IELTS</h2>
-      <p class="plan-tag">28 lessons across Writing, Speaking, Listening and Reading.</p>
-      <div class="plan-sub">Yours to keep. One payment. Nothing renews.</div>
-      <div class="tiers">
-        <div class="tier">
-          <div class="tier-head"><span class="tier-name">IELTS</span><span class="tier-price">&euro;25</span></div>
-          <p>All 28 lessons, yours to keep.</p>
-          <button class="plan-btn" data-product="ielts">Buy IELTS &mdash; &euro;25</button>
-        </div>
-        <div class="tier">
-          <div class="tier-head"><span class="tier-name">IELTS + Marking</span><span class="tier-price">&euro;69</span></div>
-          <p>All 28 lessons, yours to keep. Two essays &mdash; one Task 1, one Task 2 &mdash; marked by Forbes English, with a band estimate and corrections, returned within 5 working days.</p>
-          <button class="plan-btn" data-product="ielts_marking">Buy IELTS + Marking &mdash; &euro;69</button>
-        </div>
+      <div class="pc-head">
+        <div class="plan-for">For the exam</div>
+        <h2 class="plan-name">IELTS</h2>
+        <p class="plan-tag">28 lessons across Writing, Speaking, Listening and Reading.</p>
       </div>
-      <p class="human">Every essay is read and marked by a CELTA-qualified teacher &mdash; never by software.</p>
-      <p class="plan-fine">Marking on its own: two essays for &euro;49, on any account.
+      <div class="pc-price">
+        <div class="plan-price">&euro;25<span>&nbsp;one payment</span></div>
+        <div class="plan-sub">Yours to keep. Nothing renews.</div>
+      </div>
+      <div class="pc-actions">
+        <button class="plan-btn" data-product="ielts">Buy IELTS &mdash; &euro;25</button>
+        <a class="plan-btn secondary" href="forbes-english-ielts-academic-writing-part1.html">Try an IELTS lesson free</a>
+      </div>
+      <div class="addon pc-body">
+        <div class="addon-head"><span class="addon-name">IELTS + Marking</span><span class="addon-price">&euro;69</span></div>
+        <p>All 28 lessons, yours to keep. Two essays &mdash; one Task 1, one Task 2 &mdash; marked by Forbes English, with a band estimate and corrections, returned within 5 working days.</p>
+        <p class="human">Every essay is read and marked by a CELTA-qualified teacher &mdash; never by software.</p>
+        <button class="plan-btn secondary" data-product="ielts_marking">Buy IELTS + Marking &mdash; &euro;69</button>
+      </div>
+      <p class="plan-fine pc-foot">Marking on its own: two essays for &euro;49, on any account.
         <button type="button" class="plan-btn-link" data-product="marking">Buy marking &mdash; &euro;49</button></p>
     </div>
 
     <div class="plan-card featured" id="full">
       <div class="plan-badge">Everything</div>
-      <h2 class="plan-name">Forbes English Pro</h2>
-      <div class="plan-price">&euro;8.99<span>&nbsp;/ month</span></div>
-      <div class="plan-sub">Billed monthly. Cancel anytime.</div>
-      <p class="plan-tag">Everything: adult courses, IELTS, Block Camp for your kids, and every new lesson.</p>
-      <ul class="plan-features">
+      <div class="pc-head">
+        <div class="plan-for">For everyone</div>
+        <h2 class="plan-name">Forbes English Pro</h2>
+        <p class="plan-tag">Everything: adult courses, IELTS, Block Camp for your kids, and every new lesson.</p>
+      </div>
+      <div class="pc-price">
+        <div class="plan-price">&euro;8.99<span>&nbsp;/ month</span></div>
+        <div class="plan-sub">Billed monthly. Cancel anytime.</div>
+      </div>
+      <div class="pc-actions">
+        <button class="plan-btn" data-plan="monthly">Subscribe &mdash; &euro;8.99 / month</button>
+        <p class="plan-alt">Or pay ahead, renewing until you cancel:
+          <button type="button" class="plan-btn-link" data-plan="semiannual">&euro;45 every six months</button> &middot;
+          <button type="button" class="plan-btn-link" data-plan="annual">&euro;90 a year</button></p>
+      </div>
+      <ul class="plan-features pc-body">
         <li>Every lesson in the library</li>
         <li>The whole Sherpa Tensing route</li>
         <li>Block Camp missions open one a week</li>
         <li>New lessons as they're published</li>
       </ul>
-      <button class="plan-btn" data-plan="monthly">Subscribe &mdash; &euro;8.99 / month</button>
-      <p class="plan-alt">Or pay ahead, renewing until you cancel:
-        <button type="button" class="plan-btn-link" data-plan="semiannual">&euro;45 every six months</button> &middot;
-        <button type="button" class="plan-btn-link" data-plan="annual">&euro;90 a year</button></p>
     </div>
   </div>
   <p class="vat-note">All prices in euros and include VAT. Checkout may show the amount in your own currency.</p>
 
-  <section class="free-tier">
+  <section class="free-tier" id="free">
     <div class="free-head">
       <div>
         <div class="free-eyebrow">Free — no account needed</div>
         <h2>What you can use right now</h2>
       </div>
-      <a class="free-cta" href="library.html?free=1">Browse the free lessons &rarr;</a>
+      <a class="text-cta" href="library.html?free=1">Browse the free lessons &rarr;</a>
     </div>
     <p class="free-lede">
       <span id="free-count">54</span> complete lessons, not previews or samples that stop halfway.
@@ -649,7 +715,7 @@ window.addEventListener("pageshow", e => { if (e.persisted) resetBuyControls(); 
     document.getElementById("founder").classList.add("show");
     document.getElementById("bc-price").innerHTML = "&euro;12<span>&nbsp;one payment</span>";
     document.getElementById("bc-sub").innerHTML =
-      "Founder price: &euro;19 after the first 50.<br>Yours to keep. Nothing renews.";
+      "Founder price for the first 50 families, then &euro;19. Yours to keep. Nothing renews.";
     const buy = document.getElementById("bc-buy");
     buy.dataset.label = "Buy Term 1 — €12";
     if (!buy.disabled) buy.textContent = buy.dataset.label;
