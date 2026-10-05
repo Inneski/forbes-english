@@ -694,7 +694,7 @@
       (tot ? '<span>' + esc(t('overall', { p: Math.round(100 * sum / tot) })) + '</span>' : '') + '</p>' +
       '<div class="acts"><button class="btn btn-main" id="again" type="button">' + esc(t('climbAgain')) + '</button>' +
       '<a class="btn btn-ghost" href="sherpa-tensing-route-map.html">' + esc(t('upLink')) + '</a>' +
-      '<a class="read" href="/*@game:climb*/sherpa-tensing-route-map.html#the-map/*@game:descent*/sherpa-tensing-the-climb.html/*@game:end*/">' + esc(t('wayDown')) + ' <span aria-hidden="true">&rarr;</span></a></div>' +
+      '<a class="read" href="/*@game:climb*/sherpa-tensing-the-descent.html/*@game:descent*/sherpa-tensing-the-climb.html/*@game:end*/">' + esc(t('wayDown')) + ' <span aria-hidden="true">&rarr;</span></a></div>' +
       '</div><div class="t2-b"><h3 class="rv-h">' + esc(t('review')) + '</h3>' + review + '</div></div>';
     render(html);
     paintBar(); paintMini(false);

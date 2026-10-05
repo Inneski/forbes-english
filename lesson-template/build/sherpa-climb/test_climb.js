@@ -47,7 +47,7 @@ const opt = k => { const i = argv.indexOf(k); return i >= 0 ? argv[i + 1] : null
 // build.py --dump: the content, the save key, the page's English)
 const GAMES = {
   climb: { page: 'sherpa-tensing-the-climb.html', other: 'sherpa.descent.v1', shots: 'sherpa-climb-shots',
-    wayDown: 'sherpa-tensing-route-map.html#the-map', top: /(sherpa-day|summit-top)\.jpg$/ },
+    wayDown: 'sherpa-tensing-the-descent.html', top: /(sherpa-day|summit-top)\.jpg$/ },
   descent: { page: 'sherpa-tensing-the-descent.html', other: 'sherpa.climb.v1', shots: 'sherpa-descent-shots',
     wayDown: 'sherpa-tensing-the-climb.html', top: /base-camp\.jpg$/ },
 };
