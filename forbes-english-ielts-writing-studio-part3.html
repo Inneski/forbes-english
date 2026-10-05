@@ -75,17 +75,13 @@
     flex-wrap:wrap;
   }
   .logo-svg{width:190px;height:auto;flex-shrink:0;}
-  .lang-toggle{
-    display:flex;gap:0;border:1.5px solid var(--navy);border-radius:999px;overflow:hidden;
-    height:fit-content;
-  }
-  .lang-toggle button{
+  .lang-select{
     font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:600;letter-spacing:0.04em;
-    background:transparent;border:none;padding:8px 14px;cursor:pointer;color:var(--navy);
-    transition:background .15s, color .15s;
+    background:transparent;border:1.5px solid var(--navy);border-radius:999px;padding:7px 14px;
+    cursor:pointer;color:var(--navy);height:fit-content;
   }
-  .lang-toggle button.active{background:var(--navy);color:var(--paper);}
-  .lang-toggle button:not(.active):hover{background:rgba(34,52,74,0.08);}
+  .lang-select:hover{background:rgba(34,52,74,0.08);}
+  .lang-select[hidden]{display:none;}
 
   .hero{margin-top:22px;position:relative;}
   .stamp{
@@ -392,17 +388,14 @@
       -33 22 -42 21 -9 0 -199 -27 -422 -60z"/>
       </g><text x="675" y="1034" textLength="1520" lengthAdjust="spacing" fill="#C1633E" style="font-family:DM Sans,Arial,sans-serif;font-size:209px;font-weight:600;letter-spacing:0">ENGLISH</text></g>
 </svg>
-      <div class="lang-toggle" role="group" aria-label="Language">
-        <button id="btn-en" class="active" onclick="setLang('en')">EN</button>
-        <button id="btn-de" onclick="setLang('de')">DE</button>
-      </div>
+      <select id="langSelect" class="lang-select" aria-label="Language"></select>
     </div>
 
     <div class="hero">
-      <span class="stamp mono" data-t="stampText">IELTS · C1</span>
-      <p class="eyebrow" data-t="eyebrow">Part 3 · Guided Planning &amp; Free Writing</p>
-      <h1 class="title" data-t="mainTitle">The Writing Studio</h1>
-      <p class="subtitle" data-t="subtitle">Plan a Task 1 report and a Task 2 essay in four steps, write them for real against the clock, then download a clean copy for your teacher to mark.</p>
+      <span class="stamp mono" data-i18n="stampText">IELTS · C1</span>
+      <p class="eyebrow" data-i18n="eyebrow">Part 3 · Guided Planning &amp; Free Writing</p>
+      <h1 class="title" data-i18n="mainTitle">The Writing Studio</h1>
+      <p class="subtitle" data-i18n="subtitle">Plan a Task 1 report and a Task 2 essay in four steps, write them for real against the clock, then download a clean copy for your teacher to mark.</p>
     </div>
 
     <svg class="skyline" viewBox="0 0 900 120" preserveAspectRatio="none" aria-hidden="true">
@@ -438,16 +431,16 @@
   </header>
 
   <nav class="tabbar" role="tablist">
-    <button class="tab active" data-tab="task1" onclick="setTab('task1')"><span class="num">01</span><span data-t="tabTask1">Task 1 Studio</span></button>
-    <button class="tab" data-tab="task2" onclick="setTab('task2')"><span class="num">02</span><span data-t="tabTask2">Task 2 Studio</span></button>
-    <button class="tab" data-tab="toolkit" onclick="setTab('toolkit')"><span class="num">03</span><span data-t="tabToolkit">Marking Toolkit</span></button>
+    <button class="tab active" data-tab="task1" onclick="setTab('task1')"><span class="num">01</span><span data-i18n="tabTask1">Task 1 Studio</span></button>
+    <button class="tab" data-tab="task2" onclick="setTab('task2')"><span class="num">02</span><span data-i18n="tabTask2">Task 2 Studio</span></button>
+    <button class="tab" data-tab="toolkit" onclick="setTab('toolkit')"><span class="num">03</span><span data-i18n="tabToolkit">Marking Toolkit</span></button>
   </nav>
 
   <!-- ============ TASK 1 STUDIO ============ -->
   <section class="panel active" id="panel-task1">
     <div class="intro-card">
-      <h2 data-t="t1PromptTitle">Today's Task 1 Prompt</h2>
-      <p class="act-instructions" data-t="t1Prompt" style="max-width:70ch;">The pie charts below show the modes of transport used by commuters in the town of Fenwick in 2005 and 2024. Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.</p>
+      <h2 data-i18n="t1PromptTitle">Today's Task 1 Prompt</h2>
+      <p class="act-instructions" data-i18n="t1Prompt" style="max-width:70ch;">The pie charts below show the modes of transport used by commuters in the town of Fenwick in 2005 and 2024. Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.</p>
       <div class="chartcard" style="margin-top:14px;">
         <div id="pie-charts"></div>
         <div class="legend" id="pie-legend" style="margin-top:10px;flex-wrap:wrap;"></div>
@@ -455,66 +448,66 @@
     </div>
 
     <div class="qcard">
-      <h3 class="act-title" data-t="planTitle">Plan It — The Four Steps</h3>
+      <h3 class="act-title" data-i18n="planTitle">Plan It — The Four Steps</h3>
       <div class="field">
-        <label data-t="t1Step1L">1 · Paraphrase the prompt</label>
-        <p class="hint" data-t="t1Step1H">Rewrite the introduction sentence in your own words — don't copy the prompt.</p>
+        <label data-i18n="t1Step1L">1 · Paraphrase the prompt</label>
+        <p class="hint" data-i18n="t1Step1H">Rewrite the introduction sentence in your own words — don't copy the prompt.</p>
         <textarea rows="2" id="t1-p1" placeholder=""></textarea>
       </div>
       <div class="field">
-        <label data-t="t1Step2L">2 · Overview — 2 to 3 trends</label>
-        <p class="hint" data-t="t1Step2H">What are the two or three biggest changes between the years? No numbers yet.</p>
+        <label data-i18n="t1Step2L">2 · Overview — 2 to 3 trends</label>
+        <p class="hint" data-i18n="t1Step2H">What are the two or three biggest changes between the years? No numbers yet.</p>
         <textarea rows="2" id="t1-p2" placeholder=""></textarea>
       </div>
       <div class="field">
-        <label data-t="t1Step3L">3 · Body paragraph 1</label>
-        <p class="hint" data-t="t1Step3H">Which categories will you group together first? Note the key figures.</p>
+        <label data-i18n="t1Step3L">3 · Body paragraph 1</label>
+        <p class="hint" data-i18n="t1Step3H">Which categories will you group together first? Note the key figures.</p>
         <textarea rows="2" id="t1-p3" placeholder=""></textarea>
       </div>
       <div class="field" style="margin-bottom:0;">
-        <label data-t="t1Step4L">4 · Body paragraph 2 + comparisons</label>
-        <p class="hint" data-t="t1Step4H">Group the rest, and note at least one direct comparison.</p>
+        <label data-i18n="t1Step4L">4 · Body paragraph 2 + comparisons</label>
+        <p class="hint" data-i18n="t1Step4H">Group the rest, and note at least one direct comparison.</p>
         <textarea rows="2" id="t1-p4" placeholder=""></textarea>
       </div>
     </div>
 
     <div class="qcard">
       <div class="studio-toolbar">
-        <h3 class="act-title" style="margin:0;" data-t="writeTitle">Write It</h3>
+        <h3 class="act-title" style="margin:0;" data-i18n="writeTitle">Write It</h3>
         <div class="timer">
           <span class="clock mono" id="t1-clock">20:00</span>
-          <button onclick="timerStart('t1')" data-t="timerStart">Start</button>
-          <button onclick="timerPause('t1')" data-t="timerPause">Pause</button>
-          <button onclick="timerReset('t1')" data-t="timerReset">Reset</button>
+          <button onclick="timerStart('t1')" data-i18n="timerStart">Start</button>
+          <button onclick="timerPause('t1')" data-i18n="timerPause">Pause</button>
+          <button onclick="timerReset('t1')" data-i18n="timerReset">Reset</button>
         </div>
       </div>
       <div class="field">
-        <label data-t="t1WriteL">Your report</label>
-        <p class="hint" data-t="t1WriteH">Aim for 150 to 180 words. Use your planning notes above, but write in full sentences.</p>
+        <label data-i18n="t1WriteL">Your report</label>
+        <p class="hint" data-i18n="t1WriteH">Aim for 150 to 180 words. Use your planning notes above, but write in full sentences.</p>
         <textarea class="writebox" id="t1-write" oninput="updateWordCount('t1')" placeholder=""></textarea>
         <div class="wordcount mono" id="t1-wordcount">0 words</div>
       </div>
     </div>
 
     <div class="qcard">
-      <h3 class="act-title" data-t="checkTitle">Before You Submit</h3>
+      <h3 class="act-title" data-i18n="checkTitle">Before You Submit</h3>
       <div class="checklist" id="t1-checklist"></div>
     </div>
 
     <div class="qcard">
       <div class="name-row">
         <div class="field" style="margin-bottom:0;">
-          <label data-t="nameL">Student name (optional)</label>
+          <label data-i18n="nameL">Student name (optional)</label>
           <input type="text" id="t1-name">
         </div>
         <div class="field" style="margin-bottom:0;">
-          <label data-t="dateL">Date</label>
+          <label data-i18n="dateL">Date</label>
           <input type="text" id="t1-date">
         </div>
       </div>
       <div class="act-controls" style="margin-top:10px;">
-        <button class="btn secondary show" onclick="resetStudio('t1')" data-t="resetAll">Clear this studio</button>
-        <button class="btn show" onclick="downloadStudio('t1')" data-t="downloadBtn">Download for your teacher</button>
+        <button class="btn secondary show" onclick="resetStudio('t1')" data-i18n="resetAll">Clear this studio</button>
+        <button class="btn show" onclick="downloadStudio('t1')" data-i18n="downloadBtn">Download for your teacher</button>
       </div>
     </div>
   </section>
@@ -522,78 +515,78 @@
   <!-- ============ TASK 2 STUDIO ============ -->
   <section class="panel" id="panel-task2">
     <div class="intro-card">
-      <h2 data-t="t2PromptTitle">Today's Task 2 Prompt</h2>
-      <p class="act-instructions" data-t="t2Prompt" style="max-width:70ch;">Some people believe that unpaid work experience benefits young people by giving them valuable skills, while others see it as a form of exploitation. Discuss both views and give your own opinion.</p>
+      <h2 data-i18n="t2PromptTitle">Today's Task 2 Prompt</h2>
+      <p class="act-instructions" data-i18n="t2Prompt" style="max-width:70ch;">Some people believe that unpaid work experience benefits young people by giving them valuable skills, while others see it as a form of exploitation. Discuss both views and give your own opinion.</p>
     </div>
 
     <div class="qcard">
-      <h3 class="act-title" data-t="typeTitle">Name the Essay Type First</h3>
-      <p class="act-instructions" data-t="typeInstr">Click the type you think this is. You'll see straight away whether you're right.</p>
+      <h3 class="act-title" data-i18n="typeTitle">Name the Essay Type First</h3>
+      <p class="act-instructions" data-i18n="typeInstr">Click the type you think this is. You'll see straight away whether you're right.</p>
       <div class="type-grid" id="type-grid"></div>
       <div class="feedback" id="type-feedback"></div>
     </div>
 
     <div class="qcard">
-      <h3 class="act-title" data-t="planTitle">Plan It — The Four Steps</h3>
+      <h3 class="act-title" data-i18n="planTitle">Plan It — The Four Steps</h3>
       <div class="field">
-        <label data-t="t2Step1L">1 · Paraphrase the background statement</label>
-        <p class="hint" data-t="t2Step1H">Rewrite the topic sentence in your own words.</p>
+        <label data-i18n="t2Step1L">1 · Paraphrase the background statement</label>
+        <p class="hint" data-i18n="t2Step1H">Rewrite the topic sentence in your own words.</p>
         <textarea rows="2" id="t2-p1" placeholder=""></textarea>
       </div>
       <div class="field">
-        <label data-t="t2Step2L">2 · Your position (thesis)</label>
-        <p class="hint" data-t="t2Step2H">One sentence stating your overall view — this becomes your thesis.</p>
+        <label data-i18n="t2Step2L">2 · Your position (thesis)</label>
+        <p class="hint" data-i18n="t2Step2H">One sentence stating your overall view — this becomes your thesis.</p>
         <textarea rows="2" id="t2-p2" placeholder=""></textarea>
       </div>
       <div class="field">
-        <label data-t="t2Step3L">3 · Idea 1 + example</label>
-        <p class="hint" data-t="t2Step3H">One idea, explained, with a specific example.</p>
+        <label data-i18n="t2Step3L">3 · Idea 1 + example</label>
+        <p class="hint" data-i18n="t2Step3H">One idea, explained, with a specific example.</p>
         <textarea rows="2" id="t2-p3" placeholder=""></textarea>
       </div>
       <div class="field" style="margin-bottom:0;">
-        <label data-t="t2Step4L">4 · Idea 2 + example</label>
-        <p class="hint" data-t="t2Step4H">The opposing view or your second point, with its own example.</p>
+        <label data-i18n="t2Step4L">4 · Idea 2 + example</label>
+        <p class="hint" data-i18n="t2Step4H">The opposing view or your second point, with its own example.</p>
         <textarea rows="2" id="t2-p4" placeholder=""></textarea>
       </div>
     </div>
 
     <div class="qcard">
       <div class="studio-toolbar">
-        <h3 class="act-title" style="margin:0;" data-t="writeTitle">Write It</h3>
+        <h3 class="act-title" style="margin:0;" data-i18n="writeTitle">Write It</h3>
         <div class="timer">
           <span class="clock mono" id="t2-clock">40:00</span>
-          <button onclick="timerStart('t2')" data-t="timerStart">Start</button>
-          <button onclick="timerPause('t2')" data-t="timerPause">Pause</button>
-          <button onclick="timerReset('t2')" data-t="timerReset">Reset</button>
+          <button onclick="timerStart('t2')" data-i18n="timerStart">Start</button>
+          <button onclick="timerPause('t2')" data-i18n="timerPause">Pause</button>
+          <button onclick="timerReset('t2')" data-i18n="timerReset">Reset</button>
         </div>
       </div>
       <div class="field">
-        <label data-t="t2WriteL">Your essay</label>
-        <p class="hint" data-t="t2WriteH">Aim for at least 250 words. Introduction, two body paragraphs, conclusion.</p>
+        <label data-i18n="t2WriteL">Your essay</label>
+        <p class="hint" data-i18n="t2WriteH">Aim for at least 250 words. Introduction, two body paragraphs, conclusion.</p>
         <textarea class="writebox" id="t2-write" oninput="updateWordCount('t2')" placeholder=""></textarea>
         <div class="wordcount mono" id="t2-wordcount">0 words</div>
       </div>
     </div>
 
     <div class="qcard">
-      <h3 class="act-title" data-t="checkTitle">Before You Submit</h3>
+      <h3 class="act-title" data-i18n="checkTitle">Before You Submit</h3>
       <div class="checklist" id="t2-checklist"></div>
     </div>
 
     <div class="qcard">
       <div class="name-row">
         <div class="field" style="margin-bottom:0;">
-          <label data-t="nameL">Student name (optional)</label>
+          <label data-i18n="nameL">Student name (optional)</label>
           <input type="text" id="t2-name">
         </div>
         <div class="field" style="margin-bottom:0;">
-          <label data-t="dateL">Date</label>
+          <label data-i18n="dateL">Date</label>
           <input type="text" id="t2-date">
         </div>
       </div>
       <div class="act-controls" style="margin-top:10px;">
-        <button class="btn secondary show" onclick="resetStudio('t2')" data-t="resetAll">Clear this studio</button>
-        <button class="btn show" onclick="downloadStudio('t2')" data-t="downloadBtn">Download for your teacher</button>
+        <button class="btn secondary show" onclick="resetStudio('t2')" data-i18n="resetAll">Clear this studio</button>
+        <button class="btn show" onclick="downloadStudio('t2')" data-i18n="downloadBtn">Download for your teacher</button>
       </div>
     </div>
   </section>
@@ -601,32 +594,32 @@
   <!-- ============ MARKING TOOLKIT ============ -->
   <section class="panel" id="panel-toolkit">
     <div class="intro-card">
-      <h2 data-t="tkTitle">How to Use This Pack</h2>
-      <p class="meta" data-t="tkMeta">FOR THE MARKING TEACHER — NOT AUTO-GRADED, BY DESIGN</p>
-      <p class="act-instructions" data-t="tkIntro" style="max-width:72ch;">Each studio produces a plain-text file with the student's plan and their finished writing, ready to open and mark by hand. Nothing here is auto-scored — this page is a quick reference for marking, not a marking engine.</p>
+      <h2 data-i18n="tkTitle">How to Use This Pack</h2>
+      <p class="meta" data-i18n="tkMeta">FOR THE MARKING TEACHER — NOT AUTO-GRADED, BY DESIGN</p>
+      <p class="act-instructions" data-i18n="tkIntro" style="max-width:72ch;">Each studio produces a plain-text file with the student's plan and their finished writing, ready to open and mark by hand. Nothing here is auto-scored — this page is a quick reference for marking, not a marking engine.</p>
     </div>
 
     <div class="toolkit-grid">
       <div class="toolkit-card">
-        <h4 data-t="critTAH">Task Achievement / Response</h4>
-        <p data-t="critTAP">Does the answer do what the prompt actually asked? For Task 1: is there a clear overview, and are the right features selected? For Task 2: is the exact question answered, with ideas developed and supported rather than just listed?</p>
+        <h4 data-i18n="critTAH">Task Achievement / Response</h4>
+        <p data-i18n="critTAP">Does the answer do what the prompt actually asked? For Task 1: is there a clear overview, and are the right features selected? For Task 2: is the exact question answered, with ideas developed and supported rather than just listed?</p>
       </div>
       <div class="toolkit-card">
-        <h4 data-t="critCCH">Coherence &amp; Cohesion</h4>
-        <p data-t="critCCP">Is the writing organised into clear paragraphs, each built around one main idea? Do linking words connect ideas naturally, without feeling forced or repeated too often?</p>
+        <h4 data-i18n="critCCH">Coherence &amp; Cohesion</h4>
+        <p data-i18n="critCCP">Is the writing organised into clear paragraphs, each built around one main idea? Do linking words connect ideas naturally, without feeling forced or repeated too often?</p>
       </div>
       <div class="toolkit-card">
-        <h4 data-t="critLRH">Lexical Resource</h4>
-        <p data-t="critLRP">Is the vocabulary varied and precise for the topic? Look for genuine paraphrasing of the prompt rather than its exact words repeated back.</p>
+        <h4 data-i18n="critLRH">Lexical Resource</h4>
+        <p data-i18n="critLRP">Is the vocabulary varied and precise for the topic? Look for genuine paraphrasing of the prompt rather than its exact words repeated back.</p>
       </div>
       <div class="toolkit-card">
-        <h4 data-t="critGRH">Grammatical Range &amp; Accuracy</h4>
-        <p data-t="critGRP">Is there a mix of simple and complex sentences? How frequent are the grammar errors, and do any of them get in the way of understanding?</p>
+        <h4 data-i18n="critGRH">Grammatical Range &amp; Accuracy</h4>
+        <p data-i18n="critGRP">Is there a mix of simple and complex sentences? How frequent are the grammar errors, and do any of them get in the way of understanding?</p>
       </div>
     </div>
 
     <div class="toolkit-card">
-      <h4 data-t="tkChecklistH">Quick-Scan Marking Checklist</h4>
+      <h4 data-i18n="tkChecklistH">Quick-Scan Marking Checklist</h4>
       <ul id="tk-checklist"></ul>
     </div>
   </section>
@@ -638,96 +631,256 @@
 /* =========================================================================
    TRANSLATIONS
    ========================================================================= */
-const UI = {
-  stampText:{en:"IELTS · C1", de:"IELTS · C1"},
-  eyebrow:{en:"Part 3 · Guided Planning & Free Writing", de:"Teil 3 · Geführte Planung & freies Schreiben"},
-  mainTitle:{en:"The Writing Studio", de:"Das Schreibstudio"},
-  subtitle:{en:"Plan a Task 1 report and a Task 2 essay in four steps, write them for real against the clock, then download a clean copy for your teacher to mark.",
-            de:"Plane einen Task-1-Bericht und einen Task-2-Essay nach vier Schritten, schreibe sie wirklich gegen die Uhr und lade dann eine saubere Kopie für deine Lehrkraft herunter."},
-  tabTask1:{en:"Task 1 Studio", de:"Task-1-Studio"},
-  tabTask2:{en:"Task 2 Studio", de:"Task-2-Studio"},
-  tabToolkit:{en:"Marking Toolkit", de:"Korrektur-Toolkit"},
+const LANGS = [
+  { code:'en', label:'English'   }, { code:'de', label:'Deutsch'  },
+  { code:'es', label:'Español'   }, { code:'fr', label:'Français' },
+  { code:'it', label:'Italiano'  }, { code:'pt', label:'Português'},
+  { code:'ru', label:'Русский'   }, { code:'ar', label:'العربية'  },
+  { code:'zh', label:'中文'       }, { code:'ja', label:'日本語'    }
+];
+const RTL_LANGS = ['ar'];
 
-  t1PromptTitle:{en:"Today's Task 1 Prompt", de:"Die heutige Task-1-Aufgabe"},
-  t1Prompt:{en:"The pie charts below show the modes of transport used by commuters in the town of Fenwick in 2005 and 2024. Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.",
-            de:"Die Kreisdiagramme unten zeigen die Verkehrsmittel, die Pendler in der Stadt Fenwick 2005 und 2024 genutzt haben. Fasse die Informationen zusammen, indem du die wichtigsten Merkmale auswählst und beschreibst, und ziehe Vergleiche, wo sinnvoll. Schreibe mindestens 150 Wörter."},
-
-  planTitle:{en:"Plan It — The Four Steps", de:"Planen — Die vier Schritte"},
-  t1Step1L:{en:"1 · Paraphrase the prompt", de:"1 · Die Aufgabe umformulieren"},
-  t1Step1H:{en:"Rewrite the introduction sentence in your own words — don't copy the prompt.",
-            de:"Formuliere den Einleitungssatz mit eigenen Worten — kopiere nicht die Aufgabenstellung."},
-  t1Step2L:{en:"2 · Overview — 2 to 3 trends", de:"2 · Übersicht — 2 bis 3 Trends"},
-  t1Step2H:{en:"What are the two or three biggest changes between the years? No numbers yet.",
-            de:"Was sind die zwei oder drei größten Veränderungen zwischen den Jahren? Noch keine Zahlen."},
-  t1Step3L:{en:"3 · Body paragraph 1", de:"3 · Hauptteil 1"},
-  t1Step3H:{en:"Which categories will you group together first? Note the key figures.",
-            de:"Welche Kategorien fasst du zuerst zusammen? Notiere die wichtigsten Zahlen."},
-  t1Step4L:{en:"4 · Body paragraph 2 + comparisons", de:"4 · Hauptteil 2 + Vergleiche"},
-  t1Step4H:{en:"Group the rest, and note at least one direct comparison.",
-            de:"Fasse den Rest zusammen und notiere mindestens einen direkten Vergleich."},
-
-  writeTitle:{en:"Write It", de:"Schreiben"},
-  t1WriteL:{en:"Your report", de:"Dein Bericht"},
-  t1WriteH:{en:"Aim for 150 to 180 words. Use your planning notes above, but write in full sentences.",
-            de:"Ziel: 150 bis 180 Wörter. Nutze deine Planungsnotizen oben, aber schreibe in vollständigen Sätzen."},
-  timerStart:{en:"Start", de:"Start"},
-  timerPause:{en:"Pause", de:"Pause"},
-  timerReset:{en:"Reset", de:"Zurücksetzen"},
-
-  checkTitle:{en:"Before You Submit", de:"Vor der Abgabe"},
-  nameL:{en:"Student name (optional)", de:"Name (optional)"},
-  dateL:{en:"Date", de:"Datum"},
-  resetAll:{en:"Clear this studio", de:"Dieses Studio leeren"},
-  downloadBtn:{en:"Download for your teacher", de:"Für die Lehrkraft herunterladen"},
-
-  t2PromptTitle:{en:"Today's Task 2 Prompt", de:"Die heutige Task-2-Aufgabe"},
-  t2Prompt:{en:"Some people believe that unpaid work experience benefits young people by giving them valuable skills, while others see it as a form of exploitation. Discuss both views and give your own opinion.",
-            de:"Manche Menschen glauben, dass unbezahlte Praktika jungen Menschen nützen, weil sie wertvolle Fähigkeiten vermitteln, während andere darin eine Form der Ausbeutung sehen. Diskutiere beide Ansichten und gib deine eigene Meinung."},
-  typeTitle:{en:"Name the Essay Type First", de:"Zuerst den Essay-Typ benennen"},
-  typeInstr:{en:"Click the type you think this is. You'll see straight away whether you're right.",
-             de:"Klicke den Typ, den du für richtig hältst. Du siehst sofort, ob du richtig liegst."},
-  t2Step1L:{en:"1 · Paraphrase the background statement", de:"1 · Die Hintergrundaussage umformulieren"},
-  t2Step1H:{en:"Rewrite the topic sentence in your own words.", de:"Formuliere den Themasatz mit eigenen Worten."},
-  t2Step2L:{en:"2 · Your position (thesis)", de:"2 · Deine Position (These)"},
-  t2Step2H:{en:"One sentence stating your overall view — this becomes your thesis.",
-            de:"Ein Satz mit deiner Gesamtmeinung — das wird deine These."},
-  t2Step3L:{en:"3 · Idea 1 + example", de:"3 · Idee 1 + Beispiel"},
-  t2Step3H:{en:"One idea, explained, with a specific example.", de:"Eine Idee, erklärt, mit einem konkreten Beispiel."},
-  t2Step4L:{en:"4 · Idea 2 + example", de:"4 · Idee 2 + Beispiel"},
-  t2Step4H:{en:"The opposing view or your second point, with its own example.",
-            de:"Die Gegenposition oder dein zweiter Punkt, mit eigenem Beispiel."},
-  t2WriteL:{en:"Your essay", de:"Dein Essay"},
-  t2WriteH:{en:"Aim for at least 250 words. Introduction, two body paragraphs, conclusion.",
-            de:"Ziel: mindestens 250 Wörter. Einleitung, zwei Hauptteile, Schluss."},
-
-  tkTitle:{en:"How to Use This Pack", de:"So nutzt du dieses Paket"},
-  tkMeta:{en:"FOR THE MARKING TEACHER — NOT AUTO-GRADED, BY DESIGN", de:"FÜR DIE KORRIGIERENDE LEHRKRAFT — ABSICHTLICH NICHT AUTOMATISCH BEWERTET"},
-  tkIntro:{en:"Each studio produces a plain-text file with the student's plan and their finished writing, ready to open and mark by hand. Nothing here is auto-scored — this page is a quick reference for marking, not a marking engine.",
-           de:"Jedes Studio erzeugt eine Textdatei mit der Planung und dem fertigen Text der Lernenden, bereit zum Öffnen und handschriftlichen Korrigieren. Hier wird nichts automatisch bewertet — diese Seite ist eine Kurzreferenz für die Korrektur, kein Bewertungssystem."},
-  critTAH:{en:"Task Achievement / Response", de:"Aufgabenerfüllung"},
-  critTAP:{en:"Does the answer do what the prompt actually asked? For Task 1: is there a clear overview, and are the right features selected? For Task 2: is the exact question answered, with ideas developed and supported rather than just listed?",
-           de:"Tut die Antwort das, was die Aufgabe tatsächlich verlangt? Bei Task 1: gibt es eine klare Übersicht, und wurden die richtigen Merkmale ausgewählt? Bei Task 2: wird die genaue Frage beantwortet, mit ausgearbeiteten und belegten statt nur aufgelisteten Ideen?"},
-  critCCH:{en:"Coherence & Cohesion", de:"Kohärenz & Kohäsion"},
-  critCCP:{en:"Is the writing organised into clear paragraphs, each built around one main idea? Do linking words connect ideas naturally, without feeling forced or repeated too often?",
-           de:"Ist der Text in klare Absätze gegliedert, jeder um eine Hauptidee herum aufgebaut? Verbinden Verbindungswörter die Ideen natürlich, ohne gezwungen oder zu oft wiederholt zu wirken?"},
-  critLRH:{en:"Lexical Resource", de:"Wortschatz"},
-  critLRP:{en:"Is the vocabulary varied and precise for the topic? Look for genuine paraphrasing of the prompt rather than its exact words repeated back.",
-           de:"Ist der Wortschatz vielfältig und präzise für das Thema? Achte auf echte Umformulierung der Aufgabe statt wörtlicher Wiederholung."},
-  critGRH:{en:"Grammatical Range & Accuracy", de:"Grammatikalische Bandbreite & Genauigkeit"},
-  critGRP:{en:"Is there a mix of simple and complex sentences? How frequent are the grammar errors, and do any of them get in the way of understanding?",
-           de:"Gibt es eine Mischung aus einfachen und komplexen Sätzen? Wie häufig sind Grammatikfehler, und behindern sie das Verständnis?"},
-  tkChecklistH:{en:"Quick-Scan Marking Checklist", de:"Schnellcheck für die Korrektur"},
+/* The strings. Written by lesson-template/build/ielts_hand_i18n.py from
+   ielts_hand/writing-studio-part3/<code>.json — edit the JSON and inject,
+   not this block. */
+const UI_I18N = {
+  en: {
+    stampText:'IELTS · C1',
+    eyebrow:'Part 3 · Guided Planning & Free Writing',
+    mainTitle:'The Writing Studio',
+    subtitle:'Plan a Task 1 report and a Task 2 essay in four steps, write them for real against the clock, then download a clean copy for your teacher to mark.',
+    tabTask1:'Task 1 Studio',
+    tabTask2:'Task 2 Studio',
+    tabToolkit:'Marking Toolkit',
+    t1PromptTitle:'Today\'s Task 1 Prompt',
+    t1Prompt:'The pie charts below show the modes of transport used by commuters in the town of Fenwick in 2005 and 2024. Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.',
+    planTitle:'Plan It — The Four Steps',
+    t1Step1L:'1 · Paraphrase the prompt',
+    t1Step1H:'Rewrite the introduction sentence in your own words — don\'t copy the prompt.',
+    t1Step2L:'2 · Overview — 2 to 3 trends',
+    t1Step2H:'What are the two or three biggest changes between the years? No numbers yet.',
+    t1Step3L:'3 · Body paragraph 1',
+    t1Step3H:'Which categories will you group together first? Note the key figures.',
+    t1Step4L:'4 · Body paragraph 2 + comparisons',
+    t1Step4H:'Group the rest, and note at least one direct comparison.',
+    writeTitle:'Write It',
+    t1WriteL:'Your report',
+    t1WriteH:'Aim for 150 to 180 words. Use your planning notes above, but write in full sentences.',
+    timerStart:'Start',
+    timerPause:'Pause',
+    timerReset:'Reset',
+    checkTitle:'Before You Submit',
+    nameL:'Student name (optional)',
+    dateL:'Date',
+    resetAll:'Clear this studio',
+    downloadBtn:'Download for your teacher',
+    t2PromptTitle:'Today\'s Task 2 Prompt',
+    t2Prompt:'Some people believe that unpaid work experience benefits young people by giving them valuable skills, while others see it as a form of exploitation. Discuss both views and give your own opinion.',
+    typeTitle:'Name the Essay Type First',
+    typeInstr:'Click the type you think this is. You\'ll see straight away whether you\'re right.',
+    t2Step1L:'1 · Paraphrase the background statement',
+    t2Step1H:'Rewrite the topic sentence in your own words.',
+    t2Step2L:'2 · Your position (thesis)',
+    t2Step2H:'One sentence stating your overall view — this becomes your thesis.',
+    t2Step3L:'3 · Idea 1 + example',
+    t2Step3H:'One idea, explained, with a specific example.',
+    t2Step4L:'4 · Idea 2 + example',
+    t2Step4H:'The opposing view or your second point, with its own example.',
+    t2WriteL:'Your essay',
+    t2WriteH:'Aim for at least 250 words. Introduction, two body paragraphs, conclusion.',
+    tkTitle:'How to Use This Pack',
+    tkMeta:'FOR THE MARKING TEACHER — NOT AUTO-GRADED, BY DESIGN',
+    tkIntro:'Each studio produces a plain-text file with the student\'s plan and their finished writing, ready to open and mark by hand. Nothing here is auto-scored — this page is a quick reference for marking, not a marking engine.',
+    critTAH:'Task Achievement / Response',
+    critTAP:'Does the answer do what the prompt actually asked? For Task 1: is there a clear overview, and are the right features selected? For Task 2: is the exact question answered, with ideas developed and supported rather than just listed?',
+    critCCH:'Coherence & Cohesion',
+    critCCP:'Is the writing organised into clear paragraphs, each built around one main idea? Do linking words connect ideas naturally, without feeling forced or repeated too often?',
+    critLRH:'Lexical Resource',
+    critLRP:'Is the vocabulary varied and precise for the topic? Look for genuine paraphrasing of the prompt rather than its exact words repeated back.',
+    critGRH:'Grammatical Range & Accuracy',
+    critGRP:'Is there a mix of simple and complex sentences? How frequent are the grammar errors, and do any of them get in the way of understanding?',
+    tkChecklistH:'Quick-Scan Marking Checklist',
+    essayType0:'Opinion',
+    essayType1:'Discussion',
+    essayType2:'Advantage / Disadvantage',
+    essayType3:'Cause / Problem / Solution',
+    essayType4:'Direct Question',
+    essayExpl:'"Discuss both views and give your own opinion" is the signal phrase for a Discussion essay — present both sides fairly, and make your own position clear in the introduction and again in the conclusion.',
+    t1Check0:'I paraphrased the prompt without copying it',
+    t1Check1:'My overview has no numbers in it',
+    t1Check2:'I supported each body paragraph with specific figures',
+    t1Check3:'I made at least one direct comparison',
+    t1Check4:'I wrote at least 150 words',
+    t2Check0:'I answered the exact question that was asked',
+    t2Check1:'I have one clear topic sentence per body paragraph',
+    t2Check2:'Each idea is supported with a specific example',
+    t2Check3:'My conclusion doesn\'t introduce any new ideas',
+    t2Check4:'I wrote at least 250 words',
+    tkCheck0:'Word count met?',
+    tkCheck1:'Clear paragraphs, each doing one job (usually four)?',
+    tkCheck2:'Task 1: overview present with no data. Task 2: position clear from the introduction?',
+    tkCheck3:'Task 1: at least one comparison. Task 2: one example per idea?',
+    tkCheck4:'Topic sentences open each body paragraph?',
+    tkCheck5:'Range of linking words, not just "and" / "but"?',
+    tkCheck6:'Recurring grammar mistakes worth flagging for next lesson?',
+    pieCat0:'Car',
+    pieCat1:'Bus',
+    pieCat2:'Train',
+    pieCat3:'Bicycle',
+    pieCat4:'Walking',
+    fbCorrect:'Correct.',
+    fbWrong:'Not quite.',
+    dlNoName:'(no name given)',
+    dlNotSelected:'(not selected)',
+    dlEssayType:'Essay type selected',
+    dlName:'Name',
+    dlDate:'Date',
+    dlWordCount:'Word count',
+    dlPrompt:'PROMPT',
+    dlPlanning:'PLANNING NOTES',
+    dlWriting:'FINAL WRITING',
+    dlChecklist:'SELF-CHECKLIST',
+    langLabel:'Language',
+    wordCount:(n)=>`${n} ${n===1?'word':'words'}`
+  },
+  de: {
+    stampText:'IELTS · C1',
+    eyebrow:'Teil 3 · Geführte Planung & freies Schreiben',
+    mainTitle:'Das Schreibstudio',
+    subtitle:'Plane einen Task-1-Bericht und einen Task-2-Essay nach vier Schritten, schreibe sie wirklich gegen die Uhr und lade dann eine saubere Kopie für deine Lehrkraft herunter.',
+    tabTask1:'Task-1-Studio',
+    tabTask2:'Task-2-Studio',
+    tabToolkit:'Korrektur-Toolkit',
+    t1PromptTitle:'Die heutige Task-1-Aufgabe',
+    t1Prompt:'Die Kreisdiagramme unten zeigen die Verkehrsmittel, die Pendler in der Stadt Fenwick 2005 und 2024 genutzt haben. Fasse die Informationen zusammen, indem du die wichtigsten Merkmale auswählst und beschreibst, und ziehe Vergleiche, wo sinnvoll. Schreibe mindestens 150 Wörter.',
+    planTitle:'Planen — Die vier Schritte',
+    t1Step1L:'1 · Die Aufgabe umformulieren',
+    t1Step1H:'Formuliere den Einleitungssatz mit eigenen Worten — kopiere nicht die Aufgabenstellung.',
+    t1Step2L:'2 · Übersicht — 2 bis 3 Trends',
+    t1Step2H:'Was sind die zwei oder drei größten Veränderungen zwischen den Jahren? Noch keine Zahlen.',
+    t1Step3L:'3 · Hauptteil 1',
+    t1Step3H:'Welche Kategorien fasst du zuerst zusammen? Notiere die wichtigsten Zahlen.',
+    t1Step4L:'4 · Hauptteil 2 + Vergleiche',
+    t1Step4H:'Fasse den Rest zusammen und notiere mindestens einen direkten Vergleich.',
+    writeTitle:'Schreiben',
+    t1WriteL:'Dein Bericht',
+    t1WriteH:'Ziel: 150 bis 180 Wörter. Nutze deine Planungsnotizen oben, aber schreibe in vollständigen Sätzen.',
+    timerStart:'Start',
+    timerPause:'Pause',
+    timerReset:'Zurücksetzen',
+    checkTitle:'Vor der Abgabe',
+    nameL:'Name (optional)',
+    dateL:'Datum',
+    resetAll:'Dieses Studio leeren',
+    downloadBtn:'Für die Lehrkraft herunterladen',
+    t2PromptTitle:'Die heutige Task-2-Aufgabe',
+    t2Prompt:'Manche Menschen glauben, dass unbezahlte Praktika jungen Menschen nützen, weil sie wertvolle Fähigkeiten vermitteln, während andere darin eine Form der Ausbeutung sehen. Diskutiere beide Ansichten und gib deine eigene Meinung.',
+    typeTitle:'Zuerst den Essay-Typ benennen',
+    typeInstr:'Klicke den Typ, den du für richtig hältst. Du siehst sofort, ob du richtig liegst.',
+    t2Step1L:'1 · Die Hintergrundaussage umformulieren',
+    t2Step1H:'Formuliere den Themasatz mit eigenen Worten.',
+    t2Step2L:'2 · Deine Position (These)',
+    t2Step2H:'Ein Satz mit deiner Gesamtmeinung — das wird deine These.',
+    t2Step3L:'3 · Idee 1 + Beispiel',
+    t2Step3H:'Eine Idee, erklärt, mit einem konkreten Beispiel.',
+    t2Step4L:'4 · Idee 2 + Beispiel',
+    t2Step4H:'Die Gegenposition oder dein zweiter Punkt, mit eigenem Beispiel.',
+    t2WriteL:'Dein Essay',
+    t2WriteH:'Ziel: mindestens 250 Wörter. Einleitung, zwei Hauptteile, Schluss.',
+    tkTitle:'So nutzt du dieses Paket',
+    tkMeta:'FÜR DIE KORRIGIERENDE LEHRKRAFT — ABSICHTLICH NICHT AUTOMATISCH BEWERTET',
+    tkIntro:'Jedes Studio erzeugt eine Textdatei mit der Planung und dem fertigen Text der Lernenden, bereit zum Öffnen und handschriftlichen Korrigieren. Hier wird nichts automatisch bewertet — diese Seite ist eine Kurzreferenz für die Korrektur, kein Bewertungssystem.',
+    critTAH:'Aufgabenerfüllung',
+    critTAP:'Tut die Antwort das, was die Aufgabe tatsächlich verlangt? Bei Task 1: gibt es eine klare Übersicht, und wurden die richtigen Merkmale ausgewählt? Bei Task 2: wird die genaue Frage beantwortet, mit ausgearbeiteten und belegten statt nur aufgelisteten Ideen?',
+    critCCH:'Kohärenz & Kohäsion',
+    critCCP:'Ist der Text in klare Absätze gegliedert, jeder um eine Hauptidee herum aufgebaut? Verbinden Verbindungswörter die Ideen natürlich, ohne gezwungen oder zu oft wiederholt zu wirken?',
+    critLRH:'Wortschatz',
+    critLRP:'Ist der Wortschatz vielfältig und präzise für das Thema? Achte auf echte Umformulierung der Aufgabe statt wörtlicher Wiederholung.',
+    critGRH:'Grammatikalische Bandbreite & Genauigkeit',
+    critGRP:'Gibt es eine Mischung aus einfachen und komplexen Sätzen? Wie häufig sind Grammatikfehler, und behindern sie das Verständnis?',
+    tkChecklistH:'Schnellcheck für die Korrektur',
+    essayType0:'Meinung',
+    essayType1:'Diskussion',
+    essayType2:'Vor- & Nachteile',
+    essayType3:'Ursache / Problem / Lösung',
+    essayType4:'Direkte Frage',
+    essayExpl:'„Discuss both views and give your own opinion" ist die Signalphrase für einen Diskussions-Essay — stelle beide Seiten fair dar und mach deine eigene Position in der Einleitung und noch einmal im Schluss deutlich.',
+    t1Check0:'Ich habe die Aufgabe umformuliert, ohne sie zu kopieren',
+    t1Check1:'Meine Übersicht enthält keine Zahlen',
+    t1Check2:'Ich habe jeden Hauptteil mit konkreten Zahlen belegt',
+    t1Check3:'Ich habe mindestens einen direkten Vergleich gemacht',
+    t1Check4:'Ich habe mindestens 150 Wörter geschrieben',
+    t2Check0:'Ich habe genau die gestellte Frage beantwortet',
+    t2Check1:'Jeder Hauptteil hat einen klaren Kernsatz',
+    t2Check2:'Jede Idee ist mit einem konkreten Beispiel belegt',
+    t2Check3:'Mein Schluss enthält keine neuen Ideen',
+    t2Check4:'Ich habe mindestens 250 Wörter geschrieben',
+    tkCheck0:'Wortzahl erreicht?',
+    tkCheck1:'Klare Absätze mit je einer Aufgabe (meist vier)?',
+    tkCheck2:'Task 1: Übersicht ohne Daten vorhanden. Task 2: Position aus der Einleitung klar?',
+    tkCheck3:'Task 1: mindestens ein Vergleich. Task 2: ein Beispiel pro Idee?',
+    tkCheck4:'Kernsätze eröffnen jeden Hauptteil?',
+    tkCheck5:'Vielfalt an Verbindungswörtern, nicht nur „and" / „but"?',
+    tkCheck6:'Wiederkehrende Grammatikfehler, die für die nächste Stunde markiert werden sollten?',
+    pieCat0:'Auto',
+    pieCat1:'Bus',
+    pieCat2:'Zug',
+    pieCat3:'Fahrrad',
+    pieCat4:'Zu Fuß',
+    fbCorrect:'Richtig.',
+    fbWrong:'Nicht ganz.',
+    dlNoName:'(kein Name angegeben)',
+    dlNotSelected:'(nicht ausgewählt)',
+    dlEssayType:'Gewählter Essay-Typ',
+    dlName:'Name',
+    dlDate:'Datum',
+    dlWordCount:'Wortzahl',
+    dlPrompt:'AUFGABE',
+    dlPlanning:'PLANUNG',
+    dlWriting:'GESCHRIEBENER TEXT',
+    dlChecklist:'SELBST-CHECKLISTE',
+    langLabel:'Sprache',
+    wordCount:(n)=>`${n} ${n===1?'Wort':'Wörter'}`
+  },
+  es: {},
+  fr: {},
+  it: {},
+  pt: {},
+  ru: {},
+  ar: {},
+  zh: {},
+  ja: {}
 };
 
-let LANG = "en";
-function t(key){ return (UI[key] && UI[key][LANG]) || (UI[key] && UI[key].en) || key; }
+let LANG = 'en';
+const t = key => (UI_I18N[LANG] && UI_I18N[LANG][key] != null) ? UI_I18N[LANG][key] : UI_I18N.en[key];
 
 function setLang(l){
   LANG = l;
-  document.getElementById('btn-en').classList.toggle('active', l==='en');
-  document.getElementById('btn-de').classList.toggle('active', l==='de');
-  document.querySelectorAll('[data-t]').forEach(el=>{ el.textContent = t(el.getAttribute('data-t')); });
+  const sel = document.getElementById('langSelect');
+  if (sel && sel.value !== l) sel.value = l;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const v = t(el.dataset.i18n);
+    if (v != null) el.innerHTML = v;
+  });
+  document.documentElement.lang = l;
+  document.documentElement.dir = RTL_LANGS.includes(l) ? 'rtl' : 'ltr';
   renderAll();
+}
+
+/* Only languages that are actually finished go in the menu: a language whose
+   key count is short of English would fall back to English halfway down the
+   page (HOUSE-STYLE §8). */
+function initLang(){
+  const sel = document.getElementById('langSelect');
+  const enKeys = Object.keys(UI_I18N.en).length;
+  LANGS.filter(l => l.code === 'en' ||
+                    Object.keys(UI_I18N[l.code] || {}).length >= enKeys)
+       .forEach(l => sel.add(new Option(l.label, l.code)));
+  sel.value = LANG;
+  sel.hidden = sel.options.length < 2;
+  sel.setAttribute('aria-label', t('langLabel'));
+  sel.addEventListener('change', () => setLang(sel.value));
 }
 
 function setTab(tab){
@@ -740,11 +893,11 @@ function setTab(tab){
    ========================================================================= */
 const PIE_DATA = {
   categories: [
-    {en:"Car", de:"Auto", color:"#C1633E"},
-    {en:"Bus", de:"Bus", color:"#6E8AA0"},
-    {en:"Train", de:"Zug", color:"#22344A"},
-    {en:"Bicycle", de:"Fahrrad", color:"#C79A4B"},
-    {en:"Walking", de:"Zu Fuß", color:"#7A9270"},
+    {key:'pieCat0', color:"#C1633E"},
+    {key:'pieCat1', color:"#6E8AA0"},
+    {key:'pieCat2', color:"#22344A"},
+    {key:'pieCat3', color:"#C79A4B"},
+    {key:'pieCat4', color:"#7A9270"},
   ],
   y2005:[52,20,10,8,10],
   y2024:[34,18,22,19,7],
@@ -790,25 +943,15 @@ function renderPieCharts(){
 function renderPieLegend(){
   const legend = document.getElementById('pie-legend');
   legend.innerHTML = PIE_DATA.categories.map(c=>
-    `<span><i class="swatch" style="background:${c.color}"></i>${LANG==='de'?c.de:c.en}</span>`
+    `<span><i class="swatch" style="background:${c.color}"></i>${t(c.key)}</span>`
   ).join('');
 }
 
 /* =========================================================================
    ESSAY TYPE CHECK (Task 2)
    ========================================================================= */
-const ESSAY_TYPES = [
-  {en:"Opinion", de:"Meinung"},
-  {en:"Discussion", de:"Diskussion"},
-  {en:"Advantage / Disadvantage", de:"Vor- & Nachteile"},
-  {en:"Cause / Problem / Solution", de:"Ursache / Problem / Lösung"},
-  {en:"Direct Question", de:"Direkte Frage"},
-];
+const ESSAY_TYPES = ['essayType0', 'essayType1', 'essayType2', 'essayType3', 'essayType4'];
 const ESSAY_CORRECT = 1; // Discussion
-const ESSAY_EXPL = {
-  en:"\"Discuss both views and give your own opinion\" is the signal phrase for a Discussion essay — present both sides fairly, and make your own position clear in the introduction and again in the conclusion.",
-  de:"„Discuss both views and give your own opinion\" ist die Signalphrase für einen Diskussions-Essay — stelle beide Seiten fair dar und mach deine eigene Position in der Einleitung und noch einmal im Schluss deutlich.",
-};
 let typeState = {selected:null, checked:false};
 
 function renderTypeGrid(){
@@ -822,13 +965,13 @@ function renderTypeGrid(){
     } else if(typeState.selected===i){
       cls+=' selected';
     }
-    return `<button class="${cls}" ${typeState.checked?'disabled':''} onclick="selectType(${i})">${LANG==='de'?et.de:et.en}</button>`;
+    return `<button class="${cls}" ${typeState.checked?'disabled':''} onclick="selectType(${i})">${t(et)}</button>`;
   }).join('');
   const fb = document.getElementById('type-feedback');
   if(typeState.checked){
     const correct = typeState.selected===ESSAY_CORRECT;
     fb.className = 'feedback show ' + (correct?'good':'bad');
-    fb.innerHTML = `<b>${correct?(LANG==='de'?'Richtig':'Correct'):(LANG==='de'?'Nicht ganz':'Not quite')}</b>${ESSAY_EXPL[LANG]}`;
+    fb.innerHTML = `<b>${correct ? t('fbCorrect') : t('fbWrong')}</b> ${t('essayExpl')}`;
   } else {
     fb.className = 'feedback';
     fb.innerHTML = '';
@@ -844,41 +987,21 @@ function selectType(i){
 /* =========================================================================
    CHECKLISTS
    ========================================================================= */
-const T1_CHECKLIST = [
-  {en:"I paraphrased the prompt without copying it", de:"Ich habe die Aufgabe umformuliert, ohne sie zu kopieren"},
-  {en:"My overview has no numbers in it", de:"Meine Übersicht enthält keine Zahlen"},
-  {en:"I supported each body paragraph with specific figures", de:"Ich habe jeden Hauptteil mit konkreten Zahlen belegt"},
-  {en:"I made at least one direct comparison", de:"Ich habe mindestens einen direkten Vergleich gemacht"},
-  {en:"I wrote at least 150 words", de:"Ich habe mindestens 150 Wörter geschrieben"},
-];
-const T2_CHECKLIST = [
-  {en:"I answered the exact question that was asked", de:"Ich habe genau die gestellte Frage beantwortet"},
-  {en:"I have one clear topic sentence per body paragraph", de:"Jeder Hauptteil hat einen klaren Kernsatz"},
-  {en:"Each idea is supported with a specific example", de:"Jede Idee ist mit einem konkreten Beispiel belegt"},
-  {en:"My conclusion doesn't introduce any new ideas", de:"Mein Schluss enthält keine neuen Ideen"},
-  {en:"I wrote at least 250 words", de:"Ich habe mindestens 250 Wörter geschrieben"},
-];
-const TK_CHECKLIST = [
-  {en:"Word count met?", de:"Wortzahl erreicht?"},
-  {en:"Clear paragraphs, each doing one job (usually four)?", de:"Klare Absätze mit je einer Aufgabe (meist vier)?"},
-  {en:"Task 1: overview present with no data. Task 2: position clear from the introduction?", de:"Task 1: Übersicht ohne Daten vorhanden. Task 2: Position aus der Einleitung klar?"},
-  {en:"Task 1: at least one comparison. Task 2: one example per idea?", de:"Task 1: mindestens ein Vergleich. Task 2: ein Beispiel pro Idee?"},
-  {en:"Topic sentences open each body paragraph?", de:"Kernsätze eröffnen jeden Hauptteil?"},
-  {en:"Range of linking words, not just \"and\" / \"but\"?", de:"Vielfalt an Verbindungswörtern, nicht nur „and\" / „but\"?"},
-  {en:"Recurring grammar mistakes worth flagging for next lesson?", de:"Wiederkehrende Grammatikfehler, die für die nächste Stunde markiert werden sollten?"},
-];
+const T1_CHECKLIST = ['t1Check0', 't1Check1', 't1Check2', 't1Check3', 't1Check4'];
+const T2_CHECKLIST = ['t2Check0', 't2Check1', 't2Check2', 't2Check3', 't2Check4'];
+const TK_CHECKLIST = ['tkCheck0', 'tkCheck1', 'tkCheck2', 'tkCheck3', 'tkCheck4', 'tkCheck5', 'tkCheck6'];
 
 function renderChecklist(items, containerId){
   const el = document.getElementById(containerId);
   el.innerHTML = items.map((it,i)=>`
     <label class="check-item">
       <input type="checkbox" id="${containerId}-${i}">
-      <span>${LANG==='de'?it.de:it.en}</span>
+      <span>${t(it)}</span>
     </label>`).join('');
 }
 function renderPlainList(items, containerId){
   const el = document.getElementById(containerId);
-  el.innerHTML = items.map(it=>`<li>${LANG==='de'?it.de:it.en}</li>`).join('');
+  el.innerHTML = items.map(it=>`<li>${t(it)}</li>`).join('');
 }
 
 /* =========================================================================
@@ -894,7 +1017,7 @@ function updateWordCount(prefix){
   const n = countWords(text);
   const target = prefix==='t1' ? 150 : 250;
   const el = document.getElementById(prefix+'-wordcount');
-  el.textContent = n + (LANG==='de'?' Wörter':' words');
+  el.textContent = t('wordCount')(n);
   el.classList.toggle('ok', n>=target);
   el.classList.toggle('low', n>0 && n<target);
 }
@@ -956,7 +1079,7 @@ function resetStudio(prefix){
 
 function downloadStudio(prefix){
   const isT1 = prefix==='t1';
-  const name = document.getElementById(prefix+'-name').value || (LANG==='de'?'(kein Name angegeben)':'(no name given)');
+  const name = document.getElementById(prefix+'-name').value || t('dlNoName');
   const date = document.getElementById(prefix+'-date').value || todayStr();
   const promptText = isT1 ? t('t1Prompt') : t('t2Prompt');
   const writeText = document.getElementById(prefix+'-write').value;
@@ -964,7 +1087,7 @@ function downloadStudio(prefix){
   const items = isT1 ? T1_CHECKLIST : T2_CHECKLIST;
   const checklistLines = items.map((it,i)=>{
     const checked = document.getElementById(prefix+'-checklist-'+i).checked;
-    return `[${checked?'x':' '}] ${LANG==='de'?it.de:it.en}`;
+    return `[${checked?'x':' '}] ${t(it)}`;
   }).join('\n');
 
   let planLines;
@@ -976,9 +1099,9 @@ function downloadStudio(prefix){
       t('t1Step4L')+': '+document.getElementById('t1-p4').value,
     ].join('\n\n');
   } else {
-    const typeLabel = typeState.checked ? (LANG==='de'?ESSAY_TYPES[typeState.selected].de:ESSAY_TYPES[typeState.selected].en) : (LANG==='de'?'(nicht ausgewählt)':'(not selected)');
+    const typeLabel = typeState.checked ? t(ESSAY_TYPES[typeState.selected]) : t('dlNotSelected');
     planLines = [
-      (LANG==='de'?'Gewählter Essay-Typ':'Essay type selected')+': '+typeLabel,
+      t('dlEssayType')+': '+typeLabel,
       t('t2Step1L')+': '+document.getElementById('t2-p1').value,
       t('t2Step2L')+': '+document.getElementById('t2-p2').value,
       t('t2Step3L')+': '+document.getElementById('t2-p3').value,
@@ -991,24 +1114,24 @@ function downloadStudio(prefix){
 `${title}
 ${'='.repeat(title.length)}
 
-${LANG==='de'?'Name':'Name'}: ${name}
-${LANG==='de'?'Datum':'Date'}: ${date}
-${LANG==='de'?'Wortzahl':'Word count'}: ${wc}
+${t('dlName')}: ${name}
+${t('dlDate')}: ${date}
+${t('dlWordCount')}: ${wc}
 
-${LANG==='de'?'AUFGABE':'PROMPT'}
-${'-'.repeat(6)}
+${t('dlPrompt')}
+${'-'.repeat(t('dlPrompt').length)}
 ${promptText}
 
-${LANG==='de'?'PLANUNG':'PLANNING NOTES'}
-${'-'.repeat(14)}
+${t('dlPlanning')}
+${'-'.repeat(t('dlPlanning').length)}
 ${planLines}
 
-${LANG==='de'?'GESCHRIEBENER TEXT':'FINAL WRITING'}
-${'-'.repeat(14)}
+${t('dlWriting')}
+${'-'.repeat(t('dlWriting').length)}
 ${writeText}
 
-${LANG==='de'?'SELBST-CHECKLISTE':'SELF-CHECKLIST'}
-${'-'.repeat(16)}
+${t('dlChecklist')}
+${'-'.repeat(t('dlChecklist').length)}
 ${checklistLines}
 `;
 
@@ -1041,6 +1164,7 @@ function renderAll(){
 
 document.getElementById('t1-date').value = todayStr();
 document.getElementById('t2-date').value = todayStr();
+initLang();
 renderAll();
 </script>
 </body>
