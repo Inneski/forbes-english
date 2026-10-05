@@ -25,6 +25,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import deck as D
+from ielts_langs import LANGS
 from ieltslisten_s4_data import (TURNS, AUDIO, NOTES, NOTES_BANK,
                                  NOTES_SLIDES)
 
@@ -198,7 +199,7 @@ def build(make_audio=False):
     import i18n_ieltslisten_s4 as I
     s = D.assemble(TPL, OUT, slides, PALETTE,
                    'IELTS Listening Section 4: The Lecture | Forbes English',
-                   I, langs=('en', 'de', 'es'))
+                   I, langs=LANGS)
     print('wrote %s — %d slides, %d scored points, %d:%02d of audio, %d bytes'
           % (OUT, s.count('<section class="slide'),
              sum(r[0].count('______') for r in NOTES),
