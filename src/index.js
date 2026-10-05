@@ -28,6 +28,8 @@
 // bought. Without them nothing is sent and nothing else changes. (A
 // Cloudflare send_email binding, MARKING_MAIL + MARKING_MAIL_FROM, still
 // works for the marking inbox alone.)
+// TERMS_URL (the terms page): once set, checkout asks EU buyers to agree
+// to the terms and to immediate access (see addConsent).
 
 // Email Routing's message type, for the marking-inbox note (notifyMarking).
 import { EmailMessage } from "cloudflare:email";
@@ -478,7 +480,7 @@ function readCookie(header, name) {
  */
 async function locked(request, url, env, ctx, lesson = null, notYet = null, access = NO_ACCESS, catalogue = null) {
   const page = await env.ASSETS.fetch(new Request(`${url.origin}/locked.html`));
-  let html = page.ok ? await page.text() : "<h1>This lesson is for subscribers.</h1>";
+  let html = page.ok ? await page.text() : "<h1>This lesson comes with a plan.</h1>";
 
   const file = lessonFileFor(url.pathname);
   const meta = await getLessonMeta(request, url, env, ctx);
@@ -752,8 +754,10 @@ async function handlePaywallStatus(request, url, env, ctx) {
     hasFounderPromo: Boolean(env.STRIPE_PROMO_FOUNDER),
     hasMarkingMail: Boolean(env.MARKING_MAIL_TO &&
       ((env.RESEND_API_KEY && env.MAIL_FROM) || (env.MARKING_MAIL && env.MARKING_MAIL_FROM))),
-    // The weekly "Mission N is open" email (the daily cron) can send.
+    // The weekly "Mission N is open" email (the hourly cron) can send.
     hasMissionEmail: Boolean(env.RESEND_API_KEY && env.MAIL_FROM && env.SUPABASE_SERVICE_ROLE_KEY),
+    // Checkout asks for the terms and immediate-access consent.
+    hasTermsConsent: Boolean(env.TERMS_URL),
   };
 
   report.configOk =
@@ -818,6 +822,8 @@ async function handleCreateCheckoutSession(request, env) {
   if (caller.error) return json({ error: caller.error }, caller.status);
   const { id: userId, email: userEmail } = caller;
   const { plan, product } = body;
+  const owned = await alreadyHas(env, userId, { plan, product });
+  if (owned) return json({ error: owned, owned: true }, 409);
   if (product) return createProductCheckout(env, userId, userEmail, product);
 
   const envKey = PLAN_ENV_KEYS[plan];
@@ -845,6 +851,7 @@ async function handleCreateCheckoutSession(request, env) {
     // pricing.html says "no charge was made".
     cancel_url: `${env.SITE_URL}/pricing.html?checkout=cancelled`,
   });
+  addConsent(params, env);
 
   const stripeRes = await fetch("https://api.stripe.com/v1/checkout/sessions", {
     method: "POST",
@@ -862,6 +869,50 @@ async function handleCreateCheckoutSession(request, env) {
 
   const session = await stripeRes.json();
   return json({ url: session.url });
+}
+
+/**
+ * What the buyer already has that this checkout would sell again, as the
+ * sentence to show them, or null. A second Term 1 or IELTS opens nothing
+ * new (and a second Term 1 spends a founder place); a second Forbes English
+ * Pro is a second subscription billing beside the first, which the site
+ * cannot see. Marking is bought as often as wanted: credits add up. A Pro
+ * subscriber may still buy a one-off to keep. A read that fails lets the
+ * sale through: a Supabase hiccup must not stop anyone paying.
+ */
+async function alreadyHas(env, userId, { plan, product }) {
+  const id = encodeURIComponent(userId);
+  const read = async (path) => {
+    const res = await fetch(`${env.SUPABASE_URL}/rest/v1/${path}`, { headers: supabaseHeaders(env) });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const rows = await res.json();
+    if (!Array.isArray(rows)) throw new Error("not a list");
+    return rows;
+  };
+  const inbox = env.MAIL_REPLY_TO || "info@forbesenglish.com";
+  try {
+    if (!product) {
+      if (!PLAN_ENV_KEYS[plan]) return null;
+      const [p] = await read(`profiles?select=subscription_status&id=eq.${id}`);
+      return p && ACTIVE_STATUSES.has(p.subscription_status)
+        ? `You already have Forbes English Pro. To change how you pay for it, email ${inbox}.`
+        : null;
+    }
+    const want = product === "ielts_marking" ? "ielts" : product;
+    if (want !== "blockcamp" && want !== "ielts") return null;
+    const rows = await read(`user_plans?select=status,ends_at,term&user_id=eq.${id}&product=eq.${want}`);
+    const now = Date.now();
+    const holds = rows.some((r) => ACTIVE_STATUSES.has(r.status) &&
+      (!r.ends_at || Date.parse(r.ends_at) > now) &&
+      (want !== "blockcamp" || (Number(r.term) || 1) === 1));
+    if (!holds) return null;
+    if (product === "blockcamp") return "You already have Block Camp Term 1. It is on your account page.";
+    if (product === "ielts") return "You already have IELTS. It is on your account page.";
+    return "You already have IELTS, so this would sell it to you twice. Two marked essays on their own are €49: Buy marking, under the IELTS card.";
+  } catch (err) {
+    console.error(`checkout: could not read what ${userId} already has (${err.message}); letting the sale through`);
+    return null;
+  }
 }
 
 /**
@@ -897,6 +948,7 @@ async function createProductCheckout(env, userId, userEmail, product) {
     success_url: `${env.SITE_URL}/account.html?checkout=success&cs={CHECKOUT_SESSION_ID}`,
     cancel_url: `${env.SITE_URL}/pricing.html?checkout=cancelled`,
   });
+  addConsent(params, env);
 
   const founder = def.founder && env.STRIPE_PROMO_FOUNDER ? await getFounderStatus(env) : null;
   if (founder && founder.remaining > 0) {
@@ -926,6 +978,21 @@ async function createProductCheckout(env, userId, userEmail, product) {
     return json({ error: "Stripe error", detail: await stripeRes.text() }, 502);
   }
   return json({ url: (await stripeRes.json()).url });
+}
+
+// An EU consumer who buys digital content keeps a 14-day right of
+// withdrawal unless they ask for access to start at once and acknowledge
+// that they lose it. Checkout asks for both once a terms page exists:
+// TERMS_URL switches it on. Stripe refuses consent_collection while no
+// terms URL is saved in its own dashboard (Settings → Business → Public
+// details), so that comes first (docs/GO-LIVE-pricing.md, A.1). Neither
+// parameter is one Managed Payments forbids.
+function addConsent(params, env) {
+  if (!env.TERMS_URL) return;
+  params.set("consent_collection[terms_of_service]", "required");
+  params.set("custom_text[terms_of_service_acceptance][message]",
+    `I agree to the [terms](${env.TERMS_URL}) and ask for access to start straight away. ` +
+    "I understand that I then lose my 14-day right to cancel.");
 }
 
 function createCheckoutSession(env, params) {
@@ -1026,10 +1093,12 @@ async function handleStripeWebhook(request, env) {
         // pays later; the grant waits for async_payment_succeeded.
         if (session.payment_status !== "paid" && session.payment_status !== "no_payment_required") break;
         // A sale not started from the site (no signed-in user) has nothing
-        // to attach to. Logged so it can be granted by hand.
+        // to attach to. Logged so it can be granted by hand: the session id
+        // finds the buyer in Stripe. Not the address: the logs are kept, and
+        // they are not where buyers' email addresses should end up.
         if (!userId) {
           console.error(`checkout ${session.id}: paid one-off with no supabase_user_id, nothing granted ` +
-            `(buyer ${session.customer_details?.email || session.customer_email || "unknown"})`);
+            `(find the buyer in Stripe by this session id)`);
           break;
         }
         if (!(await grantOneOff(env, event, session, userId))) return failed();
@@ -1415,15 +1484,15 @@ async function sendMissionEmails(env, now = Date.now()) {
   const due = [];
   for (const p of profiles) {
     if (p.owner || p.blockcamp_emails === false || !p.email) { summary.skipped++; continue; }
-    const starts = plans.filter((x) => x.user_id === p.id && (Number(x.term) || 1) === 1)
-      .map((x) => Date.parse(x.starts_at));
+    const bought = plans.filter((x) => x.user_id === p.id && (Number(x.term) || 1) === 1);
+    const starts = bought.map((x) => Date.parse(x.starts_at));
     if (ACTIVE_STATUSES.has(p.subscription_status) && p.blockcamp_first_open) starts.push(Date.parse(p.blockcamp_first_open));
     const start = Math.min(...starts.filter(Number.isFinite));
     if (!Number.isFinite(start)) { summary.skipped++; continue; }
     const mission = Math.floor((now - start) / WEEK_MS) + 1;
     const opensAt = start + (mission - 1) * WEEK_MS;
     if (mission < 2 || mission > 12 || now - opensAt > MISSION_EMAIL_WINDOW_MS) { summary.skipped++; continue; }
-    due.push({ p, mission, opensAt });
+    due.push({ p, mission, opensAt, owned: bought.length > 0 });
   }
 
   // What is already claimed for them, a hundred readers a request, so a
@@ -1440,7 +1509,7 @@ async function sendMissionEmails(env, now = Date.now()) {
     }
   }
 
-  for (const { p, mission, opensAt } of due) {
+  for (const { p, mission, opensAt, owned } of due) {
     const had = known.get(`${p.id}/${mission}`);
     if (had && had.sent_at) { summary.skipped++; continue; }
     // Claimed and not sent: another run is on it, unless the claim is stale.
@@ -1463,7 +1532,7 @@ async function sendMissionEmails(env, now = Date.now()) {
     if (claimed === false) { summary.skipped++; continue; }   // another run got there first
     if (claimed === null) { summary.failed++; console.error(`mission emails: could not claim ${p.id} mission ${mission}`); continue; }
 
-    const mail = missionEmail(env, mission, lessons, opensAt);
+    const mail = missionEmail(env, mission, lessons, opensAt, owned);
     const optOut = env.MAIL_REPLY_TO || "info@forbesenglish.com";
     used++;
     const ok = await sendMail(env, { to: p.email, ...mail, key: `mission-${p.id}-1-${mission}`,
@@ -1478,8 +1547,12 @@ async function sendMissionEmails(env, now = Date.now()) {
   return summary;
 }
 
-/** The email for one mission: subject, plain text and HTML. */
-function missionEmail(env, mission, lessons, opensAt) {
+/**
+ * The email for one mission: subject, plain text and HTML. `owned` is a
+ * reader who bought Term 1: only theirs is "yours to keep"; a subscriber's
+ * lasts as long as the subscription.
+ */
+function missionEmail(env, mission, lessons, opensAt, owned) {
   const these = lessons.filter((l) => Number(l.mission) === mission);
   const deck = these.find((l) => l.file.startsWith("blockcamp-"));
   const quest = these.find((l) => !l.file.startsWith("blockcamp-"));
@@ -1489,7 +1562,7 @@ function missionEmail(env, mission, lessons, opensAt) {
     ? `Mission ${mission + 1} opens on ${new Date(opensAt + WEEK_MS).toLocaleString("en-GB",
         { weekday: "long", day: "numeric", month: "long", hour: "2-digit", minute: "2-digit",
           timeZone: "UTC", timeZoneName: "short" })}.`
-    : "That is the last mission of Term 1: every mission is open now, and yours to keep.";
+    : `That is the last mission of Term 1: every mission is open now${owned ? ", and yours to keep" : ""}.`;
   const lines = [
     `Mission ${mission} of Block Camp Term 1 is open.`,
     "",
@@ -1551,6 +1624,13 @@ function subscriptionFields(sub) {
  * counting (callerAccess only counts active rows) and its essay credits go.
  * True when done or when there is nothing to close (the full plan, or a
  * sale that never granted anything); null when Stripe or Supabase failed.
+ *
+ * The refund can arrive before the grant: the grant failed once and Stripe
+ * is still retrying it, or the events simply came out of order. Then no row
+ * matches, and a 200 here would lose the refund for good; the late grant
+ * would make an active row nobody closes. So the refund leaves a closed row
+ * of its own, keyed by the same Checkout Session, and the late grant finds
+ * it already there (insertUserPlan ignores the duplicate) and does nothing.
  */
 async function revokeOneOff(env, paymentIntent, status) {
   let session;
@@ -1564,10 +1644,44 @@ async function revokeOneOff(env, paymentIntent, status) {
     return null;
   }
   if (!session || session.mode !== "payment") return true;
-  const ok = await supabaseWrite(
-    `${env.SUPABASE_URL}/rest/v1/user_plans?stripe_checkout_session_id=eq.${encodeURIComponent(session.id)}`,
-    { method: "PATCH", headers: supabaseHeaders(env), body: JSON.stringify({ status, marking_credits: 0 }) });
-  return ok || null;
+  let rows;
+  try {
+    const res = await fetch(
+      `${env.SUPABASE_URL}/rest/v1/user_plans?stripe_checkout_session_id=eq.${encodeURIComponent(session.id)}`,
+      { method: "PATCH", headers: { ...supabaseHeaders(env), "Prefer": "return=representation" },
+        body: JSON.stringify({ status, marking_credits: 0 }) });
+    if (!res.ok) return null;
+    rows = await res.json();
+  } catch {
+    return null;
+  }
+  if (Array.isArray(rows) && rows.length > 0) return true;
+
+  // Nothing granted yet. A sale the site can never grant (no signed-in
+  // buyer, a product it does not know) has nothing to hold closed.
+  const userId = session.metadata?.supabase_user_id;
+  const key = String(session.metadata?.product || "");
+  const product = key === "ielts_marking" ? "ielts" : key;
+  if (!userId || !Object.prototype.hasOwnProperty.call(PLAN_TRACKS, product)) return true;
+  const made = await insertUserPlan(env, {
+    user_id: userId,
+    product,
+    status,
+    stripe_checkout_session_id: session.id,
+    starts_at: new Date().toISOString(),
+    ends_at: null,
+    term: product === "blockcamp" ? 1 : null,
+    marking_credits: 0,
+  });
+  if (made === null) return null;
+  // The grant landed between the PATCH and this insert: close it after all.
+  if (made === false) {
+    return (await supabaseWrite(
+      `${env.SUPABASE_URL}/rest/v1/user_plans?stripe_checkout_session_id=eq.${encodeURIComponent(session.id)}`,
+      { method: "PATCH", headers: supabaseHeaders(env), body: JSON.stringify({ status, marking_credits: 0 }) })) || null;
+  }
+  console.log(`checkout ${session.id}: ${status} before its grant was recorded; held closed`);
+  return true;
 }
 
 // Verifies the `Stripe-Signature` header using the raw request body, per

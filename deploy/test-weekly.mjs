@@ -147,8 +147,18 @@ await run();
   const sub = mails.find((m) => m.to[0] === 'sub@example.com');
   const last = mails.find((m) => m.to[0] === 'last@example.com');
   check(sub && sub.subject.startsWith('Mission 3 ') && /Quest: Quest 3/.test(sub.text), 'subscriber 14 days in: Mission 3, deck and quest');
-  check(last && last.subject.startsWith('Mission 12 ') && /last mission of Term 1/.test(last.text), 'Mission 12: says it is the last, nothing "opens next"');
+  check(last && last.subject.startsWith('Mission 12 ') && /last mission of Term 1/.test(last.text) && !/ opens on /.test(last.text),
+    'Mission 12: says it is the last, nothing "opens next"');
+  check(last && /yours to keep/.test(last.text) && /yours to keep/.test(last.html), 'a Term 1 buyer\'s Mission 12: "yours to keep"');
 }
+// A subscriber's Mission 12 is not theirs to keep: it lasts as long as Pro.
+reset();
+PROFILES = [profile('sub12', { subscription_status: 'active', blockcamp_first_open: at(77.5) })];
+PLANS = [];
+await run();
+check(mails.length === 1 && mails[0].subject.startsWith('Mission 12 ') && /last mission of Term 1/.test(mails[0].text) &&
+  !/yours to keep/.test(mails[0].text) && !/yours to keep/.test(mails[0].html),
+  'a subscriber\'s Mission 12 does not say "yours to keep"');
 
 // Bought twice, or a term plus the full plan: one email, from the earliest clock.
 reset();

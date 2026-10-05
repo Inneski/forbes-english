@@ -45,7 +45,7 @@ const env = {
 
 // ── stubs ────────────────────────────────────────────────────────────────
 let calls, promo, sessionFail, lineItems, insertFail, patchFails, lineItemsFail, inserted;
-let subs, piSessions, logs;
+let subs, piSessions, logs, holdings, holdFail;
 const USERS = { 'tok-1': { id: 'user-1', email: 'p@example.com' } };
 
 function li(product, meta, name) {
@@ -93,12 +93,33 @@ globalThis.fetch = async (url, opts = {}) => {
     if (inserted.has(row.stripe_checkout_session_id)) {
       return ignoring ? new Response('[]', { status: 201 }) : new Response('{"code":"23505"}', { status: 409 });
     }
-    inserted.add(row.stripe_checkout_session_id);
+    inserted.set(row.stripe_checkout_session_id, { ...row });
     const wantRows = /return=representation/.test(opts.headers?.Prefer || '');
     return wantRows ? new Response(JSON.stringify([row]), { status: 201 }) : new Response(null, { status: 201 });
   }
+  // What the buyer already holds, read before a checkout.
+  if (u.startsWith('https://sb.test/rest/v1/user_plans?select=') && method === 'GET') {
+    if (holdFail) return new Response('{"message":"down"}', { status: 503 });
+    const product = new URL(u).searchParams.get('product').replace(/^eq\./, '');
+    return new Response(JSON.stringify(holdings.plans.filter((r) => r.product === product)), { status: 200 });
+  }
+  if (u.startsWith('https://sb.test/rest/v1/profiles?select=subscription_status') && method === 'GET') {
+    if (holdFail) return new Response('{"message":"down"}', { status: 503 });
+    return new Response(JSON.stringify(holdings.profile ? [holdings.profile] : []), { status: 200 });
+  }
   if (u.startsWith('https://sb.test/rest/v1/') && method === 'PATCH') {
-    return patchFails ? new Response('{}', { status: 500 }) : new Response(null, { status: 204 });
+    if (patchFails) return new Response('{}', { status: 500 });
+    // A user_plans row by its Checkout Session: changed for real, and sent
+    // back when asked, as PostgREST does (an empty list when nothing matched).
+    const cs = new URL(u).searchParams.get('stripe_checkout_session_id');
+    const matched = [];
+    if (u.startsWith('https://sb.test/rest/v1/user_plans?') && cs) {
+      const row = inserted.get(cs.replace(/^eq\./, ''));
+      if (row) { Object.assign(row, JSON.parse(opts.body)); matched.push(row); }
+    }
+    return /return=representation/.test(opts.headers?.Prefer || '')
+      ? new Response(JSON.stringify(matched), { status: 200 })
+      : new Response(null, { status: 204 });
   }
   throw new Error('unexpected fetch ' + method + ' ' + u);
 };
@@ -115,7 +136,8 @@ function reset() {
   calls = []; sent.length = 0; store.clear(); logs = [];
   promo = { active: true, max_redemptions: 50, times_redeemed: 13 };
   sessionFail = null; lineItems = {}; insertFail = false; patchFails = false; lineItemsFail = false;
-  inserted = new Set(); subs = {}; piSessions = {};
+  inserted = new Map(); subs = {}; piSessions = {};
+  holdings = { plans: [], profile: null }; holdFail = false;
 }
 
 async function sign(payload, t = Math.floor(Date.now() / 1000)) {
@@ -344,8 +366,9 @@ reset(); lineItems.cs_odd = li('sherpa', {});
 reset();
 {
   const r = await webhook(paidEvent('cs_anon', { metadata: {} }));
-  check(r.status === 200 && calls.length === 0 && logs.some((l) => /cs_anon.*parent@example\.com/.test(l)),
-    'paid session with no site user (a Payment Link) -> logged with the buyer, nothing granted');
+  check(r.status === 200 && calls.length === 0 && logs.some((l) => /cs_anon/.test(l)),
+    'paid session with no site user (a Payment Link) -> logged by its session id, nothing granted');
+  check(!logs.some((l) => /parent@example\.com/.test(l)), 'the buyer\'s email address is not written to the log');
 }
 reset();
 {
@@ -392,11 +415,13 @@ reset();
 // ── webhook: refunds and disputes ────────────────────────────────────────
 reset();
 {
-  piSessions.pi_1 = { id: 'cs_r1', mode: 'payment' };
+  piSessions.pi_1 = { id: 'cs_r1', mode: 'payment', metadata: { supabase_user_id: 'user-1', product: 'ielts_marking' } };
+  inserted.set('cs_r1', { stripe_checkout_session_id: 'cs_r1', product: 'ielts', status: 'active', marking_credits: 2 });
   const full = await webhook({ type: 'charge.refunded', data: { object: { id: 'ch_1', payment_intent: 'pi_1', refunded: true } } });
   const p = patches()[0];
   check(full.status === 200 && p && p.url.includes('user_plans?stripe_checkout_session_id=eq.cs_r1') &&
-    p.body.status === 'refunded' && p.body.marking_credits === 0,
+    p.body.status === 'refunded' && p.body.marking_credits === 0 &&
+    inserted.get('cs_r1').status === 'refunded' && insertsMade().length === 0,
     'a full refund closes the one-off and clears its credits');
   calls = [];
   await webhook({ type: 'charge.refunded', data: { object: { id: 'ch_1', payment_intent: 'pi_1', refunded: false } } });
@@ -412,6 +437,116 @@ reset();
   patchFails = true;
   const r = await webhook({ type: 'charge.refunded', data: { object: { id: 'ch_1', payment_intent: 'pi_1', refunded: true } } });
   check(r.status === 500, 'revoke write fails -> 500 so Stripe redelivers');
+}
+
+// ── webhook: a refund that arrives before its grant ──────────────────────
+// The grant failed once and Stripe is still retrying it when the refund
+// comes in. The refund must not be lost, and the late grant must not open.
+reset(); lineItems.cs_late = li('ielts', { marking_credits: '2' }, 'IELTS + Marking');
+{
+  piSessions.pi_late = { id: 'cs_late', mode: 'payment', payment_status: 'paid',
+    metadata: { supabase_user_id: 'user-1', product: 'ielts_marking' } };
+  insertFail = true;
+  const first = await webhook(paidEvent('cs_late'));
+  insertFail = false;
+  const refund = await webhook({ type: 'charge.refunded', data: { object: { id: 'ch_l', payment_intent: 'pi_late', refunded: true } } });
+  const held = inserted.get('cs_late');
+  check(first.status === 500 && refund.status === 200 && held && held.status === 'refunded' &&
+    held.marking_credits === 0 && held.product === 'ielts' && held.user_id === 'user-1',
+    'refund before the grant: a closed row is left under the same Checkout Session');
+  const late = await webhook(paidEvent('cs_late'));
+  check(late.status === 200 && inserted.get('cs_late').status === 'refunded' && inserted.size === 1 && sent.length === 0,
+    'the late grant finds that row: nothing opens, no credits, no marking email');
+}
+reset();
+{
+  piSessions.pi_d = { id: 'cs_d', mode: 'payment', metadata: { supabase_user_id: 'user-1', product: 'blockcamp' } };
+  const r = await webhook({ type: 'charge.dispute.closed', data: { object: { id: 'dp_l', payment_intent: 'pi_d', status: 'lost' } } });
+  const held = inserted.get('cs_d');
+  check(r.status === 200 && held && held.status === 'disputed' && held.product === 'blockcamp' && held.term === 1,
+    'a lost dispute before the grant is held closed too');
+}
+reset();
+{
+  piSessions.pi_a = { id: 'cs_a', mode: 'payment', metadata: {} };
+  const r = await webhook({ type: 'charge.refunded', data: { object: { id: 'ch_a', payment_intent: 'pi_a', refunded: true } } });
+  check(r.status === 200 && insertsMade().length === 0, 'a refunded sale the site could never grant (no buyer account) writes no row');
+  piSessions.pi_u = { id: 'cs_u', mode: 'payment', metadata: { supabase_user_id: 'user-1', product: 'sherpa' } };
+  const u = await webhook({ type: 'charge.refunded', data: { object: { id: 'ch_u', payment_intent: 'pi_u', refunded: true } } });
+  check(u.status === 200 && insertsMade().length === 0, 'nor one for a product the site does not sell');
+  piSessions.pi_f = { id: 'cs_f', mode: 'payment', metadata: { supabase_user_id: 'user-1', product: 'ielts' } };
+  insertFail = true;
+  const f = await webhook({ type: 'charge.refunded', data: { object: { id: 'ch_f', payment_intent: 'pi_f', refunded: true } } });
+  check(f.status === 500, 'the closed row cannot be written -> 500 so Stripe redelivers the refund');
+}
+
+// ── checkout: buying what the buyer already has ──────────────────────────
+reset();
+{
+  holdings.plans = [{ product: 'blockcamp', status: 'active', ends_at: null, term: 1 }];
+  const bc = await checkout({ product: 'blockcamp' });
+  check(bc.res.status === 409 && bc.data.owned === true && /already have Block Camp Term 1/.test(bc.data.error) &&
+    sessionsPosted().length === 0 && !stripeCalls().some((c) => c.url.includes('promotion_codes')),
+    'Term 1 already bought -> 409 with a reason, no checkout, no founder place spent');
+  calls = [];
+  const ie = await checkout({ product: 'ielts' });
+  check(ie.data.url && sessionsPosted().length === 1, 'owning Block Camp does not stop buying IELTS');
+
+  holdings.plans = [{ product: 'ielts', status: 'active', ends_at: null, term: null }];
+  calls = [];
+  const again = await checkout({ product: 'ielts' });
+  const bundle = await checkout({ product: 'ielts_marking' });
+  check(again.res.status === 409 && bundle.res.status === 409 && /€49/.test(bundle.data.error) && sessionsPosted().length === 0,
+    'IELTS already bought -> IELTS and IELTS + Marking both 409, pointing at marking on its own');
+  holdings.plans.push({ product: 'marking', status: 'active', ends_at: null, term: null });
+  calls = [];
+  const mk = await checkout({ product: 'marking' });
+  check(mk.data.url && sessionsPosted().length === 1, 'marking can always be bought again: credits add up');
+
+  holdings.plans = [{ product: 'blockcamp', status: 'refunded', ends_at: null, term: 1 }];
+  calls = [];
+  check((await checkout({ product: 'blockcamp' })).data.url, 'a refunded Term 1 can be bought again');
+  holdings.plans = [{ product: 'blockcamp', status: 'active', ends_at: null, term: 2 }];
+  check((await checkout({ product: 'blockcamp' })).data.url, 'a Term 2 row does not count as owning Term 1');
+
+  holdings = { plans: [], profile: { subscription_status: 'active' } };
+  calls = [];
+  const pro = await checkout({ plan: 'monthly' });
+  check(pro.res.status === 409 && /Forbes English Pro/.test(pro.data.error) && /info@forbesenglish\.com/.test(pro.data.error) &&
+    sessionsPosted().length === 0, 'an active Pro subscriber cannot start a second subscription');
+  const keep = await checkout({ product: 'blockcamp' });
+  check(keep.data.url, 'a Pro subscriber may still buy Term 1 to keep');
+  holdings.profile = { subscription_status: 'canceled' };
+  check((await checkout({ plan: 'monthly' })).data.url, 'a cancelled subscriber can subscribe again');
+
+  holdings = { plans: [{ product: 'ielts', status: 'active', ends_at: null }], profile: { subscription_status: 'active' } };
+  holdFail = true; calls = []; logs = [];
+  const down = await checkout({ product: 'ielts' });
+  const down2 = await checkout({ plan: 'monthly' });
+  check(down.data.url && down2.data.url && logs.some((l) => /letting the sale through/.test(l)),
+    'Supabase unreadable -> the sale goes ahead (and it is logged)');
+}
+
+// ── checkout: consent to immediate access ────────────────────────────────
+reset();
+{
+  await checkout({ product: 'ielts' });
+  await checkout({ plan: 'monthly' });
+  check(sessionsPosted().every((s) => !Object.keys(s).some((k) => /^consent_collection|^custom_text/.test(k))),
+    'no TERMS_URL -> no consent asked (Stripe would refuse it without a terms page)');
+  calls = [];
+  const withTerms = { ...env, TERMS_URL: 'https://x.test/terms.html' };
+  for (const body of [{ product: 'blockcamp' }, { product: 'marking' }, { plan: 'monthly' }]) {
+    await mod.default.fetch(new Request('https://x.test/api/create-checkout-session', {
+      method: 'POST', body: JSON.stringify(body), headers: { Authorization: 'Bearer tok-1' } }), withTerms, ctx);
+  }
+  const posted = sessionsPosted();
+  check(posted.length === 3 && posted.every((s) => s['consent_collection[terms_of_service]'] === 'required' &&
+    /\[terms\]\(https:\/\/x\.test\/terms\.html\)/.test(s['custom_text[terms_of_service_acceptance][message]']) &&
+    /14-day right/.test(s['custom_text[terms_of_service_acceptance][message]'])),
+    'TERMS_URL set -> every checkout asks for the terms and immediate access, linking the page');
+  const banned = posted.flatMap((p) => Object.keys(p).filter((k) => MP_FORBIDDEN.test(k)));
+  check(banned.length === 0, 'and the consent parameters are not ones Managed Payments forbids');
 }
 
 console.error = realError;
