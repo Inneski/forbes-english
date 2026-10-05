@@ -6,7 +6,7 @@ the character deck and Momo's portrait (`SherpaClimb/cast-momo.jpg`). Paste
 everything between the two rules, then type **next** for each scene. Twelve
 scenes.
 
-Save them into **`incoming/sherpa-descent/`** (the folder exists on Innes's
+Save them into **[C:\Users\black\Documents\FORBES\incoming\sherpa-descent](../incoming/sherpa-descent)** (the folder exists on Innes's
 machine) as `summit-night.png`, `camp-12.png`, `camp-10.png`, `camp-07.png`,
 `camp-06.png`, `camp-05.png`, `camp-04.png`, `camp-03.png`, `camp-02.png`,
 `camp-01.png`, `finale.png` and `base-camp.png`. Then tell a local Claude

@@ -5,7 +5,7 @@ deck (the sheet with the team on it), then paste everything between the two
 rules below as the first message. ChatGPT makes scene 1; type **next** for
 each scene after that. Fifteen scenes, then (optionally) five portraits.
 
-Save each picture into **`incoming/sherpa-climb/`** as you go, named
+Save each picture into **[C:\Users\black\Documents\FORBES\incoming\sherpa-climb](../incoming/sherpa-climb)** as you go, named
 `camp-01.png` … `camp-13.png`, `summit.png`, `summit-top.png` (and
 `cast-tensing.png` … if you make portraits). Other names are fine, since
 Claude can sort them by eye, but these save a step. Then tell a local Claude
