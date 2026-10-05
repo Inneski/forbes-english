@@ -539,6 +539,9 @@ function placeHot(s){const h=pageHot(s),IW=s.imgW||G.imgW,IH=s.imgH||G.imgH;cons
      would sit under the buttons and take no tap: its centre is kept just below the HUD instead. */
   let cy=oy+h[1]/100*dh;if(window.matchMedia('(max-width:700px),(max-height:500px) and (min-width:701px) and (pointer:coarse)').matches){const hb=document.querySelector('.hud').getBoundingClientRect().bottom-frame.getBoundingClientRect().top;cy=Math.max(cy,hb+26)}
   const cx=ox+h[0]/100*dw,w=h[2]/100*dw,hh=h[3]/100*dh;hot.style.left=cx+'px';hot.style.top=cy+'px';hot.style.width=w+'px';hot.style.height=hh+'px';hot.classList.toggle('above',cy+hh/2>H*.84);hotLabel.textContent=ui(TOUCH()?'readTouch':'read');
+  /* the label is centred under the glow, so an object near the edge of the frame pushed "CLICK TO READ" off it
+     (The Sun Was Sinking, 2026-10-05: 5-9 scenes clipped per window shape); slide it back inside */
+  {const lw=hotLabel.offsetWidth,m=8,dx=lw+2*m<W?clamp(cx,m+lw/2,W-m-lw/2)-cx:0;hotLabel.style.transform=`translateX(calc(-50% + ${dx}px))`}
   document.getElementById('fsLabel').textContent=ui('fullscreen');document.getElementById('soundLabel').textContent=ui(sound?'soundOn':'soundOff');document.getElementById('langWord').textContent=ui('translate');document.getElementById('langCur').textContent=state.lang==='off'?'OFF':G.names[state.lang];
   document.querySelectorAll('.lang-item').forEach(b=>b.classList.toggle('active',b.dataset.lang===state.lang))}
 function setOpen(on){state.open=!!on;{const want=G.dir+pageImg();if(sceneImage.getAttribute('src')!==want)sceneImage.src=want}if(on){const hr=hot.getBoundingClientRect(),zr=zone.getBoundingClientRect();const cl=zr.left+content.offsetLeft,ct=zr.top+content.offsetTop;content.style.transformOrigin=`${hr.left+hr.width/2-cl}px ${hr.top+hr.height/2-ct}px`}frame.classList.toggle('open',state.open)}

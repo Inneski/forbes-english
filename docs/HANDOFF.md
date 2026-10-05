@@ -11,6 +11,48 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-10-05 — The Sun Was Sinking: Block Camp RPG, waiting on one catalogue row
+
+Innes sent `The_Drowned_Sun.html` (ChatGPT-kind export, Past Continuous, A2,
+voxel jungle tomb) with "make this forbesenglish style and change title".
+It is **The Sun Was Sinking** now, at `block-camp/sun-was-sinking-rpg.html`,
+built by `lesson-template/build/build_sun_was_sinking.py` (its docstring
+lists every change). Camp 4 colour, nine languages, hub card + nine hub
+glosses, `LESSON_IMAGES` line. Panel checker clean (one advisory `tight`
+on the briefing in German, +10px; 64% covers the clasp in Spanish).
+
+What the export got wrong and was fixed: every feedback line rewritten to
+the CAPS grammar-token rule (with fresh glosses); briefing cards on The
+Lost Yellow Road's headings; "was hanged" distractor (real English) → "was
+hang"; `engine` had no past time frame; briefing and three endings moved
+off the reused cover/dawn plates; two hotspots (`ledge`, `rescue`) moved
+onto their objects.
+
+**Engine change, `rpg.py`:** the "CLICK TO READ" label under a glow was
+centred on it and ran off the frame for objects near the edge — 5-9 scenes
+per window shape here, in most languages. It now slides back inside the
+frame. **Only this page was rebuilt with it**, because a peer session was
+mid-way through adding soundtracks to every RPG (`deck_music.py`
+uncommitted) and a rebuild-all would have shipped their half-done music.
+Every other RPG picks the fix up on its next rebuild — that soundtrack
+pass is one.
+
+No soundtrack: `deck_music.py` has no track for this page.
+
+**Needs Innes** — the catalogue row (unasked Supabase writes are refused).
+Until it runs, the page is live at its URL but is not in the library, has
+no SEO block and is not in `lesson-meta.json`, so the Worker does not gate
+it as Pro:
+
+```sql
+insert into lessons (file, title, level, access, deck, video, sort_order, track)
+select 'block-camp/sun-was-sinking-rpg.html', 'The Sun Was Sinking — Past Continuous Voxel Jungle RPG (A2)', 'A2', 'pro', false, false, 0, 'blockcamp'
+where not exists (select 1 from lessons where file = 'block-camp/sun-was-sinking-rpg.html');
+```
+
+Then `py tools/seo.py` and commit `library.html`, `sitemap.xml`,
+`llms.txt`, `lesson-meta.json` and the page.
+
 ## 2026-10-05 — Pricing page relaid out
 
 Innes: *"this could be layed out better"* (pricing.html). The three cards
