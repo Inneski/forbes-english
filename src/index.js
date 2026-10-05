@@ -608,6 +608,18 @@ async function handleStripeWebhook(request, env) {
 
   const event = JSON.parse(rawBody);
 
+  // Held for the pricing Worker. These events come from the one-off sales of
+  // the pricing go-live (Block Camp Term 1, IELTS, essay marking), which only
+  // that Worker knows how to grant and close: this code would record a €49
+  // marking sale as a lifetime subscription, give IELTS 90 days, and drop
+  // refunds. It is live only after a rollback of that release
+  // (docs/GO-LIVE-pricing.md, D). A 500 makes Stripe hold the event and
+  // redeliver it for three days, so the pricing Worker, once it is back,
+  // handles it properly.
+  const held = (event.type === "checkout.session.completed" && event.data.object.mode === "payment") ||
+    ["checkout.session.async_payment_succeeded", "charge.refunded", "charge.dispute.closed"].includes(event.type);
+  if (held) return new Response("Held for the pricing Worker; Stripe will retry", { status: 500 });
+
   switch (event.type) {
     case "checkout.session.completed": {
       const session = event.data.object;
