@@ -481,6 +481,39 @@ the mountain clickable to activate a camp"*. On a 390px phone each map was
 - **Phones (≤640px):** the maps run to the card edges (308 → 340px).
 - New string `pickClose` in `tools/sherpa_hub_i18n.py`, all ten languages.
 
+## 2026-10-05 — Sherpa Tensing: The Descent, the passive game: LIVE, waiting on art and one catalogue row
+
+Innes: *"Then we make the descent and we need drama, the yak saves the day on
+a severe weather rescue mission"*.
+
+- **`sherpa-tensing-the-descent.html`**, built by the same engine as The
+  Climb: `build.py --game descent` (`--game all --check` proves both; The
+  Climb stayed byte-identical through the refactor). Content
+  `content_descent.py`: nine passive stops down the route map's night side
+  (12, 10, 7, 6, 5, 4, 3, 2, 1) and "Home to base camp", 81 items. The story
+  (in its docstring, with a day count): a storm, the wrecked hut, Otto hurt on
+  the ice wall, the porters turned back, Momo sent up, Momo finds them by the
+  smell of Sam's socks and carries Otto down. Saves in `sherpa.descent.v1`.
+- **Two adversarial reviews** changed most story lines and many accept lists.
+  The passive's own traps are in the docstring: no verb that works both ways in
+  a gap, GET-passives accepted, every tense pinned by its time words.
+- **Ten languages**: `i18n-descent/` inherits The Climb's translations by
+  English text (55 of 201) and adds 146 per language.
+  `check_lang.py --game descent <lang>`.
+- **Wired**: "Play The Descent" on the route map (ten languages), The Climb's
+  end link leads into it, library card + tags, `OVERRIDES` passive-voice +
+  tense-review, opt-outs in the Sherpa lesson tools and `check_route_map`.
+- **Art**: Innes's to make, `docs/CHATGPT-DESCENT-ART-BRIEF.md` (12 scenes),
+  drop folder `incoming/sherpa-descent/` exists. Until then each stop shows
+  The Climb's picture of the same camp (`SherpaDescent/` falls back to
+  `SherpaClimb/`).
+- **Needs Innes:** the catalogue row, then `build_hubs.py` and `seo.py`.
+  ```sql
+  insert into public.lessons (file, title, level, access, track, deck, video)
+  select 'sherpa-tensing-the-descent.html', 'Sherpa Tensing — The Descent: Passive Voice Game', 'B1-C1', 'pro', 'sherpa', false, false
+  where not exists (select 1 from public.lessons where file = 'sherpa-tensing-the-descent.html');
+  ```
+
 ## 2026-10-03 — Sherpa Tensing: The Climb, a tense game: LIVE, waiting on one catalogue row
 
 Innes: *"an interactive game for sherpa tensing to practice the tenses and
