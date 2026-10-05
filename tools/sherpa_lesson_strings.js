@@ -21,7 +21,7 @@ const OUT = path.join(ROOT, 'lesson-template', 'sherpa-i18n');
 const { chromium } = require(path.join(ROOT, 'node_modules', 'playwright'));
 const files = process.argv.slice(2).length ? process.argv.slice(2)
   : fs.readdirSync(ROOT).filter(f => /^sherpa-tensing-.*\.html$/.test(f) && f !== 'sherpa-tensing-route-map.html'
-      && f !== 'sherpa-tensing-the-climb.html').sort();  // the game has its own strings
+      && f !== 'sherpa-tensing-the-climb.html' && f !== 'sherpa-tensing-the-descent.html').sort();  // the games have its own strings
 const TYPES = { '.html': 'text/html', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.jpg': 'image/jpeg', '.png': 'image/png' };
 
 function serve() {

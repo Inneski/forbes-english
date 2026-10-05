@@ -41,7 +41,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DIR = os.path.join(ROOT, 'lesson-template', 'sherpa-i18n')
 RUNTIME = os.path.join(ROOT, 'tools', 'sherpa_lesson_i18n_runtime.js')
 OWN_SYSTEM = ('camp-one-present-continuous', 'camp-two-present-simple',
-              'the-climb')  # the game carries its own ten-language strings (lesson-template/build/sherpa-climb)
+              'the-climb', 'the-descent')  # the games carries its own ten-language strings (lesson-template/build/sherpa-climb)
 START, END = '<!-- SHERPA-LESSON-I18N:start -->', '<!-- SHERPA-LESSON-I18N:end -->'
 FENCE = re.compile(re.escape(START) + r'.*?' + re.escape(END) + r'\n?', re.S)
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))

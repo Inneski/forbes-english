@@ -24,7 +24,7 @@ const ROOT = path.resolve(__dirname, '..');
 const { chromium } = require(path.join(ROOT, 'node_modules', 'playwright'));
 const master = JSON.parse(fs.readFileSync(path.join(ROOT, 'lesson-template/sherpa-i18n/master.json'), 'utf8'));
 const OWN = ['sherpa-tensing-camp-one-present-continuous.html', 'sherpa-tensing-camp-two-present-simple.html', 'sherpa-tensing-route-map.html',
-  'sherpa-tensing-the-climb.html'];  // the game: its own strings, lesson-template/build/sherpa-climb
+  'sherpa-tensing-the-climb.html', 'sherpa-tensing-the-descent.html'];  // the games: its own strings, lesson-template/build/sherpa-climb
 const argv = process.argv.slice(2);
 const li = argv.indexOf('--langs');
 const LANGS = li >= 0 ? argv.splice(li, 2)[1].split(',') : master.langs;

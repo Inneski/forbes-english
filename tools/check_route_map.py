@@ -27,7 +27,7 @@ PAGE = os.path.join(ROOT, 'sherpa-tensing-route-map.html')
 FAMILY = 'sherpa-tensing-'
 MAP = 'sherpa-tensing-route-map.html'
 # in the family and the catalogue, but not a stop on the route: no row, not in the counts
-NOT_A_STOP = {'sherpa-tensing-the-climb.html'}
+NOT_A_STOP = {'sherpa-tensing-the-climb.html', 'sherpa-tensing-the-descent.html'}
 
 _UNITS = ('zero one two three four five six seven eight nine ten eleven twelve thirteen '
           'fourteen fifteen sixteen seventeen eighteen nineteen').split()

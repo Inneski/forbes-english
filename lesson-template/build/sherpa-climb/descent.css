@@ -1,0 +1,88 @@
+/* The Descent (lesson-template/build/sherpa-climb/descent.css). build.py appends this after
+   template.css for the descent only, so nothing here needs scoping, and The Climb never sees it.
+
+   Night goes AROUND the card, as on the route map's descent panel: the card stays paper glass,
+   where every contrast gate already holds (on --night, --good scores 2.9:1 and camp twelve's
+   #454545 1.6:1). The start screen stays paper too, framing the night mountain as the map does.
+   The colours are the map's own tokens (--night, --night-ink, --night-soft), read by build.py. */
+
+/* ── night: re-point the tokens, not the rules (custom properties resolve per element) ── */
+.veil{--paper:var(--night);}
+.mini{--paper:var(--night);}
+.pbar{--paper:var(--night);--card:var(--night);--ink:var(--night-ink);--ink-soft:var(--night-soft);}
+body.playing .play{background:var(--night);}
+
+/* ── the mountain at night, as the map's .descent-map ───────────────────────────── */
+.mtn .dot-label{fill:var(--night-ink);stroke:var(--night);stroke-width:3px;}
+.mtn .dflag path,.mtn-mini .pulse{stroke:var(--night-ink);}
+.mtn .dot.lit .dot-fill,.mtn .dot:hover .dot-fill{stroke:var(--night-ink);stroke-width:3.5;}
+/* the four passives nobody uses: faint and dashed, no number, no label, not a control */
+.mtn .no-camp{pointer-events:none;}
+.mtn .no-camp .dot-fill{opacity:.30;stroke-dasharray:3 3;}
+/* a pale casing under each leg, so camp twelve's and camp ten's dark colours still read on night */
+.mtn .seg-case{stroke:var(--night-ink);opacity:.35;}
+
+/* ── the list of camps, as the map's .desc-row: night rows, the camp colour down the side,
+   the number in a diamond ─────────────────────────────────────────────────────────── */
+.pick{background:var(--night);color:var(--night-ink);border:0;border-left:8px solid var(--c,var(--night-soft));}
+.pick-meta{color:var(--night-soft);}
+.pick-best{color:var(--night-ink);}
+.pick-num{width:26px;height:26px;margin:0 3px;border-radius:3px;transform:rotate(45deg);
+          outline:1.5px solid var(--night-ink);outline-offset:-1px;}
+.pick-num > span,.pick-num svg{transform:rotate(-45deg);}
+.pick-num svg{width:17px;height:17px;}
+.pick-summit{border-left:8px solid var(--night-soft);}
+.pick-summit .pick-num{background:var(--night-ink);color:var(--night);}
+
+/* a line in the guide's welcome that someone else says carries its speaker's name */
+.brief-by{font-weight:700;color:var(--accent-text);}
+
+/* ── the storm: snow over the scene, under the veil and the card ───────────────────────
+   CSS only: two tiled layers of flakes, each sliding one tile left and one tile down on a
+   loop, so the loop is seamless and the snow drifts on the wind. Compositor-only (transform).
+   The level is the stage's 'storm' (content_descent.py), data-storm on #play: 0 clear,
+   1 flurries, 2 snow with a darker sky, 3 whiteout. It starts subtle; --storm-k is the one
+   knob for "stronger" (2 doubles every layer's opacity, and the sky's darkening). No lightning:
+   nothing flashes. Under prefers-reduced-motion the flakes stand still. */
+.play{--storm-k:1;}
+.storm{position:absolute;inset:0;pointer-events:none;overflow:hidden;
+       --flake:color-mix(in srgb,var(--night-ink) 80%,transparent);}
+.storm::before,.storm::after{content:"";position:absolute;left:0;bottom:0;opacity:0;animation:none;
+       transition:opacity 1.2s ease;will-change:transform;}
+/* near: big flakes on a 220px tile */
+.storm::before{top:-220px;right:-220px;background-size:220px 220px;background-image:
+  radial-gradient(circle at 12% 18%,var(--flake) 0 1.7px,transparent 2.4px),
+  radial-gradient(circle at 58% 9%,var(--flake) 0 1.2px,transparent 1.9px),
+  radial-gradient(circle at 83% 41%,var(--flake) 0 1.9px,transparent 2.6px),
+  radial-gradient(circle at 34% 52%,var(--flake) 0 1.1px,transparent 1.8px),
+  radial-gradient(circle at 71% 76%,var(--flake) 0 1.6px,transparent 2.3px),
+  radial-gradient(circle at 21% 88%,var(--flake) 0 1.3px,transparent 2px),
+  radial-gradient(circle at 47% 31%,var(--flake) 0 1px,transparent 1.6px),
+  radial-gradient(circle at 93% 93%,var(--flake) 0 1.4px,transparent 2.1px);}
+/* far: small flakes on a 340px tile, slower */
+.storm::after{top:-340px;right:-340px;background-size:340px 340px;background-image:
+  radial-gradient(circle at 7% 12%,var(--flake) 0 .9px,transparent 1.5px),
+  radial-gradient(circle at 29% 37%,var(--flake) 0 .8px,transparent 1.4px),
+  radial-gradient(circle at 52% 6%,var(--flake) 0 1px,transparent 1.6px),
+  radial-gradient(circle at 76% 28%,var(--flake) 0 .8px,transparent 1.4px),
+  radial-gradient(circle at 91% 58%,var(--flake) 0 1px,transparent 1.6px),
+  radial-gradient(circle at 63% 49%,var(--flake) 0 .7px,transparent 1.3px),
+  radial-gradient(circle at 40% 71%,var(--flake) 0 .9px,transparent 1.5px),
+  radial-gradient(circle at 15% 83%,var(--flake) 0 .8px,transparent 1.4px),
+  radial-gradient(circle at 84% 90%,var(--flake) 0 1px,transparent 1.6px);}
+@keyframes storm-near{from{transform:translate3d(0,0,0)}to{transform:translate3d(-220px,220px,0)}}
+@keyframes storm-far{from{transform:translate3d(0,0,0)}to{transform:translate3d(-340px,340px,0)}}
+.play[data-storm="1"] .storm::before{opacity:calc(.25 * var(--storm-k));animation:storm-near 28s linear infinite;}
+.play[data-storm="1"] .storm::after{opacity:calc(.2 * var(--storm-k));animation:storm-far 40s linear infinite;}
+.play[data-storm="2"] .storm::before{opacity:calc(.35 * var(--storm-k));animation:storm-near 18s linear infinite;}
+.play[data-storm="2"] .storm::after{opacity:calc(.28 * var(--storm-k));animation:storm-far 26s linear infinite;}
+.play[data-storm="3"] .storm::before{opacity:calc(.45 * var(--storm-k));animation:storm-near 11s linear infinite;}
+.play[data-storm="3"] .storm::after{opacity:calc(.36 * var(--storm-k));animation:storm-far 16s linear infinite;}
+/* a heavier sky from level 2: the top of the scene darkens a little, and still shows */
+.play[data-storm="2"] .storm,.play[data-storm="3"] .storm{
+  background:linear-gradient(180deg,color-mix(in srgb,var(--night) calc(22% * var(--storm-k)),transparent) 0,transparent 70%);}
+
+@media (prefers-reduced-motion:reduce){
+  .play[data-storm] .storm::before,.play[data-storm] .storm::after{animation:none;transition:none;}
+  .storm{transition:none;}
+}

@@ -122,7 +122,7 @@
   }
 
   // ── the save ─────────────────────────────────────────────────────────────────
-  var SKEY = 'sherpa.climb.v1';
+  var SKEY = /*@game:climb*/'sherpa.climb.v1'/*@game:descent*/'sherpa.descent.v1'/*@game:end*/;
   var mem = null;   // stands in for storage when the browser blocks it (private windows)
   function fresh() { return { v: 1, camps: {}, summit: null, last: null, misses: {} }; }
   function load() {
@@ -295,6 +295,9 @@
     body.classList.remove('playing');
     $('#play').setAttribute('aria-hidden', 'true');
     $('#play').removeAttribute('data-view');
+    /*@game:descent*/
+    $('#play').removeAttribute('data-storm');
+    /*@game:end*/
     ['#start', '#wordmark', '.up-link'].forEach(function (s) { var el = $(s); if (el) el.inert = false; });
     $('.wm-right').appendChild($('#util'));
     $('#view').innerHTML = ''; $('#fb').innerHTML = '';
@@ -315,6 +318,9 @@
             first: {}, right: {}, missed: {}, seen: {}, cur: null };
     enter();
     sceneOf = stage;
+    /*@game:descent*/
+    $('#play').setAttribute('data-storm', String(stage.storm || 0));   // the snow, 0-3 (descent.css)
+    /*@game:end*/
     setScene(sceneSrc(stage));
     setSide(stage.side);
     var nx = run.kind === 'camp' ? after(stage.n) : null;
@@ -367,15 +373,38 @@
     })(t0);
   }
 
+  /*@game:descent*/
+  /* The point a fraction f of the way along a polyline, by length: the descent's legs bend
+     through the camps that have no passive, so the climber follows the route, not a chord. */
+  function along(pts, f) {
+    var len = 0, i, seg = [];
+    for (i = 1; i < pts.length; i++) { seg.push(Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1])); len += seg[i - 1]; }
+    var d = Math.max(0, Math.min(1, f)) * len;
+    for (i = 0; i < seg.length; i++) {
+      if (d <= seg[i] || i === seg.length - 1) {
+        var k = seg[i] ? Math.min(1, d / seg[i]) : 0;
+        return [pts[i][0] + (pts[i + 1][0] - pts[i][0]) * k, pts[i][1] + (pts[i + 1][1] - pts[i][1]) * k];
+      }
+      d -= seg[i];
+    }
+    return pts[0];
+  }
+
+  /*@game:end*/
   function paintMini(jump) {
     var m = $('.mtn-mini');
     if (!m || !run) return;
     paintMaps(load());
     var here = run.kind === 'camp' ? D.dots[String(run.stage.n)] : D.dots[String(D.lastRoute)];
     var n = run.kind === 'camp' ? run.stage.n : null;
+    /*@game:climb*/
     var to = run.kind === 'summit' || n === D.lastRoute ? D.peak : D.dots[String(n + 1)] || here;
     var f = view === 'summit' ? 1 : Object.keys(run.right).length / run.items.length;
     var x = here[0] + (to[0] - here[0]) * f, y = here[1] + (to[1] - here[1]) * f;
+    /*@game:descent*/
+    var f = view === 'summit' ? 1 : Object.keys(run.right).length / run.items.length;
+    var p = along(D.legs[run.kind === 'camp' ? String(n) : 'summit'], f), x = p[0], y = p[1];
+    /*@game:end*/
     var c = $('#climber');
     if (jump) { c.style.transition = 'none'; c.getBoundingClientRect(); }
     c.style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px)';
@@ -618,6 +647,9 @@
     var s = load();
     sceneOf = 'top';
     setScene(sceneSrc('top'));
+    /*@game:descent*/
+    $('#play').setAttribute('data-storm', String(D.top.storm || 0));
+    /*@game:end*/
     setSide(D.top.side);
     setAlt(altNow());
     var lines = (SUMMIT && SUMMIT.done ? [SUMMIT.done] : []).concat(D.outro || []);
@@ -662,7 +694,7 @@
       (tot ? '<span>' + esc(t('overall', { p: Math.round(100 * sum / tot) })) + '</span>' : '') + '</p>' +
       '<div class="acts"><button class="btn btn-main" id="again" type="button">' + esc(t('climbAgain')) + '</button>' +
       '<a class="btn btn-ghost" href="sherpa-tensing-route-map.html">' + esc(t('upLink')) + '</a>' +
-      '<a class="read" href="sherpa-tensing-route-map.html#the-map">' + esc(t('wayDown')) + ' <span aria-hidden="true">&rarr;</span></a></div>' +
+      '<a class="read" href="/*@game:climb*/sherpa-tensing-route-map.html#the-map/*@game:descent*/sherpa-tensing-the-climb.html/*@game:end*/">' + esc(t('wayDown')) + ' <span aria-hidden="true">&rarr;</span></a></div>' +
       '</div><div class="t2-b"><h3 class="rv-h">' + esc(t('review')) + '</h3>' + review + '</div></div>';
     render(html);
     paintBar(); paintMini(false);

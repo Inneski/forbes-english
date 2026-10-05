@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
-"""The Climb: Sherpa Tensing's tense game, built into sherpa-tensing-the-climb.html.
+"""The Climb and The Descent: Sherpa Tensing's two tense games, built into
+sherpa-tensing-the-climb.html (the active tenses, up the route map's ascent) and
+sherpa-tensing-the-descent.html (the passives, down its descent, in a night-and-storm look).
 
-    py lesson-template/build/sherpa-climb/build.py            # build the page (and i18n/strings.json)
+    py lesson-template/build/sherpa-climb/build.py            # build The Climb (and i18n/strings.json)
+    py lesson-template/build/sherpa-climb/build.py --game descent   # build The Descent (and i18n-descent/strings.json)
+    py lesson-template/build/sherpa-climb/build.py --game all --check   # prove both pages are fresh builds
     py lesson-template/build/sherpa-climb/build.py --check    # exit 1 if the page on disk is not a fresh build
     py lesson-template/build/sherpa-climb/build.py --strict   # also fail on any language not fully translated
     py lesson-template/build/sherpa-climb/build.py --dump     # print the validated content as JSON (for the test)
@@ -33,6 +37,23 @@ WHAT COMES FROM WHERE
 The page is written only when it changes, and the build is deterministic: the
 same inputs give the same bytes. An SEO block that tools/seo.py has written into
 the page on disk is carried over, so seo.py and --check do not fight.
+
+TWO GAMES, ONE ENGINE (GAMES below; --game picks one, default climb)
+    The Descent is the same page, the same template and the same rules, with:
+    content_descent.py            its stops IN PLAY ORDER (12, 10, 7, 6, 5, 4, 3, 2, 1; a stop is its
+                                  twin camp number), the finale (SUMMIT, "home to base camp") and
+                                  CHROME, which overrides the climb's English interface strings
+    the route map's descent       its nine desc rows (passive names, levels, lesson pages), its
+                                  13 diamond markers (4 of them "no camp") and desc-seg-2..13,
+                                  and #epic-night-v2
+    i18n-descent/<lang>.json      merged OVER i18n/<lang>.json: a string whose English the climb
+                                  already has inherits its translation
+    descent.css                   appended after template.css: night around the paper card, the
+                                  diamonds, the storm layer (one --storm-k knob)
+    template.js                   /*@game:climb*/A/*@game:descent*/B/*@game:end*/ fences, resolved
+                                  here; the climb's A is its original text, byte for byte
+    Altitudes come from content.py by twin camp, so the two games cannot drift. A scene
+    SherpaDescent/camp-NN.jpg that does not exist yet falls back to SherpaClimb/camp-NN.jpg.
 """
 import html as _html
 import importlib.util
@@ -44,11 +65,33 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, '..', '..', '..'))
-OUT_NAME = 'sherpa-tensing-the-climb.html'
+
+# ── the two games. Everything that differs between them is here or in a @game fence ──
+GAMES = {
+    'climb': dict(
+        content='content.py', out='sherpa-tensing-the-climb.html', i18n='i18n', inherit=None,
+        face='ascent', sprite='epic-day-v2', shape='circle', mini_vb='150 50 500 540', dir=+1,
+        scenes='SherpaClimb', scene_fallback=None, final_scene='summit', final_fallback=None,
+        hero=['SherpaClimb/base-camp', 'SherpaClimb/camp-02'],
+        top=['SherpaClimb/summit-top.jpg', 'Sherpa Tensing/sherpa-day.jpg'],
+        save='sherpa.climb.v1', id='c', final_id='s', css=None, page_title='Sherpa Tensing — The Climb',
+        final_note='the summit push', end_note='the end, at the summit'),
+    'descent': dict(
+        content='content_descent.py', out='sherpa-tensing-the-descent.html', i18n='i18n-descent', inherit='i18n',
+        face='descent', sprite='epic-night-v2', shape='diamond', mini_vb='150 70 500 540', dir=-1,
+        scenes='SherpaDescent', scene_fallback='SherpaClimb', final_scene='storm', final_fallback='SherpaClimb/camp-01',
+        hero=['SherpaDescent/summit-night', 'SherpaClimb/summit-top'],
+        top=['SherpaDescent/base-camp.jpg', 'SherpaClimb/base-camp.jpg'],
+        save='sherpa.descent.v1', id='d', final_id='r', css='descent.css', page_title='Sherpa Tensing — The Descent',
+        final_note='the finale, home to base camp', end_note='the end, at base camp'),
+}
+G = GAMES['climb']
+OUT_NAME = G['out']
 OUT = os.path.join(ROOT, OUT_NAME)
 MAP = os.path.join(ROOT, 'sherpa-tensing-route-map.html')
 CAMP_ONE = os.path.join(ROOT, 'sherpa-tensing-camp-one-present-continuous.html')
-I18N_DIR = os.path.join(HERE, 'i18n')
+I18N_DIR = os.path.join(HERE, G['i18n'])
+INHERIT_DIR = None
 STRINGS = os.path.join(I18N_DIR, 'strings.json')
 LANGS = ['de', 'es', 'fr', 'it', 'pt', 'ru', 'ar', 'zh', 'ja']
 RTL = ['ar']
@@ -149,6 +192,22 @@ EN = {
     'wayDown':     ('The way down is in the passive', 'end screen link to the passive half of the route map'),
 }
 
+def chrome(c):
+    """The interface English for this game: EN, with the content module's CHROME over it
+    (The Descent's "Right. Down you go."). The keys stay EN's, in EN's order."""
+    over = getattr(c, 'CHROME', None) or {}
+    bad = sorted(k for k in over if k not in EN)
+    if bad:
+        raise SystemExit('CHROME keys not in EN (an override needs a string to override): %s' % ', '.join(bad))
+    for k, v in over.items():
+        if not (isinstance(v, tuple) and len(v) == 2 and all(isinstance(x, str) and x for x in v)):
+            raise SystemExit('CHROME %s: (English, note for the translator), got %r' % (k, v))
+        if sorted(PLACE.findall(v[0])) != sorted(PLACE.findall(EN[k][0])) and k != 'readFirst':
+            # readFirst may drop {n}: a stop's own lesson page is not named by its camp number
+            raise SystemExit('CHROME %s: placeholders %s, the page fills %s' % (k, PLACE.findall(v[0]), PLACE.findall(EN[k][0])))
+    return {k: over.get(k, v) for k, v in EN.items()}
+
+
 SLUG = {'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5, 'six': 6, 'seven': 7, 'eight': 8,
         'nine': 9, 'ten': 10, 'eleven': 11, 'twelve': 12, 'thirteen': 13}
 
@@ -171,14 +230,30 @@ def bold(s):
 
 
 # ── content ─────────────────────────────────────────────────────────────────────
-CONTENT = os.path.join(HERE, 'content.py')
+CONTENT = os.path.join(HERE, G['content'])
 
 
-def load_content():
-    spec = importlib.util.spec_from_file_location('climb_content', CONTENT)
+def load_content(path=None):
+    spec = importlib.util.spec_from_file_location('climb_content', path or CONTENT)
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
-    return mod
+    return prepare(mod)
+
+
+def prepare(c):
+    """A stop with no 'alt' takes its twin camp's from the climb's content.py: The Descent
+    sleeps at the same camps on the way down, so the heights are written once. (The
+    climb's camps all carry their own, so for it this does nothing.)"""
+    need = [s for s in (getattr(c, 'CAMPS', None) or []) if isinstance(s, dict) and 'alt' not in s]
+    if need:
+        spec = importlib.util.spec_from_file_location('climb_alts', os.path.join(HERE, 'content.py'))
+        climb = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(climb)
+        alts = {camp['n']: camp['alt'] for camp in climb.CAMPS}
+        for s in need:
+            if s.get('n') in alts:
+                s['alt'] = alts[s['n']]
+    return c
 
 
 def gaps(text):
@@ -225,7 +300,7 @@ def validate(c, route):
         if iid in seen:
             bad.append('%s: duplicate id' % iid)
         seen.add(iid)
-        want = ('c%s-' % home) if home != 'summit' else 's-'
+        want = ('%s%s-' % (G['id'], home)) if home != 'summit' else G['final_id'] + '-'
         if not str(iid).startswith(want):
             bad.append('%s: id should start %r' % (iid, want))
         if it.get('who') not in cast:
@@ -243,8 +318,8 @@ def validate(c, route):
             bad.append('%s: fb cites a form in single quotes (use "double"): %r' % (iid, fb))
         if home == 'summit':
             if it.get('camp') not in route_ns:
-                bad.append('%s: summit item needs camp: <1-%d> (the tense it tests), got %r'
-                           % (iid, max(route_ns), it.get('camp')))
+                bad.append('%s: summit item needs camp: <%s> (the tense it tests), got %r'
+                           % (iid, ', '.join(map(str, route['order'])), it.get('camp')))
         if kind == 'choose':
             opts = it.get('options') or []
             ans = it.get('answer')
@@ -321,14 +396,19 @@ def validate(c, route):
     for i, ln in enumerate(getattr(c, 'INTRO', None) or []):
         line('INTRO[%d]' % i, ln)
     last = None
+    up = G['dir'] > 0       # the climb goes up, the descent down: numbers and heights move together
     for camp in c.CAMPS:
         n = camp.get('n')
         if n not in route_ns:
             bad.append('camp %r is not on the route map' % n)
             continue
-        if last is not None and (n <= last[0] or camp.get('alt', 0) <= last[1]):
-            bad.append('camp %d: camps go up in order, numbers and altitudes rising' % n)
+        if last is not None and ((n <= last[0] or camp.get('alt', 0) <= last[1]) if up
+                                 else (n >= last[0] or camp.get('alt', 0) >= last[1])):
+            bad.append('camp %d: camps go %s in order, numbers and altitudes %s'
+                       % (n, 'up' if up else 'down', 'rising' if up else 'falling'))
         last = (n, camp.get('alt', 0))
+        if camp.get('storm') is not None and camp['storm'] not in (0, 1, 2, 3):
+            bad.append('camp %d: storm is 0-3, got %r' % (n, camp['storm']))
         if not isinstance(camp.get('alt'), int):
             bad.append('camp %d: alt must be whole metres' % n)
         stage(camp, 'camp %d' % n, n)
@@ -336,10 +416,12 @@ def validate(c, route):
         s = c.SUMMIT
         if s.get('n') != 'summit':
             bad.append("SUMMIT: n must be 'summit'")
-        if not isinstance(s.get('alt'), int) or not isinstance(s.get('top'), int) or s['top'] <= s['alt']:
-            bad.append('SUMMIT: alt and top are whole metres, top above alt')
-        if last and isinstance(s.get('alt'), int) and s['alt'] <= last[1]:
-            bad.append('SUMMIT: alt must be above the last camp')
+        if not isinstance(s.get('alt'), int) or not isinstance(s.get('top'), int) or (s['top'] <= s['alt'] if up else s['top'] >= s['alt']):
+            bad.append('SUMMIT: alt and top are whole metres, top %s alt' % ('above' if up else 'below'))
+        if last and isinstance(s.get('alt'), int) and (s['alt'] <= last[1] if up else s['alt'] >= last[1]):
+            bad.append('SUMMIT: alt must be %s the last camp' % ('above' if up else 'below'))
+        if s.get('storm') is not None and s['storm'] not in (0, 1, 2, 3):
+            bad.append('SUMMIT: storm is 0-3, got %r' % s['storm'])
         stage(s, 'SUMMIT', 'summit')
     for i, ln in enumerate(getattr(c, 'OUTRO', None) or []):
         line('OUTRO[%d]' % i, ln)
@@ -347,7 +429,7 @@ def validate(c, route):
         if not v.get('name') or not v.get('role'):
             bad.append('CAST %s: name and role' % k)
     if bad:
-        raise SystemExit('content.py refused (%d):\n  %s' % (len(bad), '\n  '.join(bad)))
+        raise SystemExit('%s refused (%d):\n  %s' % (os.path.basename(CONTENT), len(bad), '\n  '.join(bad)))
 
 
 # ── the route map ───────────────────────────────────────────────────────────────
@@ -416,7 +498,7 @@ def read_route():
         if not m:
             raise SystemExit('route map: no #%s in the sprite' % i)
         return m.group(0)
-    order, todo = [], ['epic-day-v2']
+    order, todo = [], [G['sprite']]
     while todo:
         i = todo.pop(0)
         if i in order:
@@ -431,8 +513,92 @@ def read_route():
 
     names = re.findall(r'<option value="([a-z]{2})" lang="[a-z]{2}"(?: dir="rtl")?>([^<]+)</option>',
                        src[src.index('class="lang-select"'):])
-    return {'tok': tok, 'tenses': tenses, 'dots': dots, 'segs': segs, 'defs': defs, 'peak': peak,
-            'names': dict(names)}
+    route = {'tok': tok, 'tenses': tenses, 'dots': dots, 'segs': segs, 'defs': defs, 'peak': peak,
+             'names': dict(names), 'rows': tenses, 'order': sorted(tenses)}
+    if G['face'] == 'descent':
+        route.update(read_descent(src, tenses))
+    return route
+
+
+def read_descent(src, rows):
+    """The route map's descent, keyed by TWIN camp (a stop is the camp the team sleeps at
+    again on the way down; "Descent Eight" is the past continuous passive, from camp 6, and
+    its own number is never shown). Returns what replaces the ascent's tenses, dots, segs
+    and peak, plus the play order, the legs the climber walks and the four no-camp markers."""
+    stops = {}
+    for href, twin, c, name, lvl in re.findall(
+            r'<a class="desc-row" href="(sherpa-tensing-descent-[a-z-]+\.html)" data-camp="(\d+)" style="--c:(#[0-9A-Fa-f]{6});">'
+            r'<span class="diamond"[^>]*></span><span class="off-text"><span class="camp-name">([^<]+)</span>'
+            r'.*?<span class="lvl"[^>]*>([^<]+)</span>', src, re.S):
+        n = int(twin)
+        if n not in rows or c.upper() != rows[n]['fill']:
+            raise SystemExit('route map: desc row %s is camp %d in %s, the camp row says %s'
+                             % (href, n, c, rows.get(n, {}).get('fill')))
+        stops[n] = {'href': href, 'fill': c.upper(), 'ink': rows[n]['ink'], 'name': _html.unescape(name), 'level': lvl}
+    if len(stops) != 9:
+        raise SystemExit('route map: read %d desc rows, not 9' % len(stops))
+    by_href = {v['href']: n for n, v in stops.items()}
+    by_fill = {v['fill']: n for n, v in rows.items()}
+
+    part = src[src.index('class="descent-map"'):]
+    part = part[:part.index('</svg>')]
+    marks = {}
+    for cls, colour, href, points, glyph, lx, ly, anchor in re.findall(
+            r'<g class="camp-dot (live|no-camp)" data-color="(#[0-9A-Fa-f]{6})"(?: data-href="([^"]+)")?'
+            r'(?: data-seg="desc-seg-\d+")?\s*>\s*<polygon class="dot-fill" points="([^"]+)"[^>]*/>\s*(<g transform=.*?</g>)\s*'
+            r'<text class="dot-label" x="(\d+)" y="(\d+)" text-anchor="(start|end)"[^>]*>[^<]+</text>', part, re.S):
+        p = [tuple(int(v) for v in xy.split(',')) for xy in points.split()]
+        x, y = p[0][0], p[1][1]
+        if cls == 'live':
+            if href not in by_href:
+                raise SystemExit('route map: descent marker %s has no desc row' % href)
+            n = by_href[href]
+            if colour.upper() != stops[n]['fill']:
+                raise SystemExit('route map: descent marker %s is %s, its row %s' % (href, colour, stops[n]['fill']))
+        else:
+            n = by_fill.get(colour.upper())
+            if n is None or n in stops:
+                raise SystemExit('route map: no-camp marker %s is not a camp without a passive' % colour)
+        marks[n] = {'x': x, 'y': y, 'glyph': glyph.strip(), 'lx': int(lx), 'ly': int(ly), 'anchor': anchor,
+                    'live': cls == 'live', 'colour': colour.upper()}
+    if sorted(marks) != list(range(1, 14)) or sum(m['live'] for m in marks.values()) != 9:
+        raise SystemExit('route map: read descent markers %s, not 13 with 9 live' % sorted(marks))
+
+    raw = {}
+    for k, x1, y1, x2, y2 in re.findall(
+            r'<path id="desc-seg-(\d+)" class="route-seg" data-color="#[0-9A-Fa-f]{6}"[^>]*d="M(\d+),(\d+) L(\d+),(\d+)"', part):
+        raw[int(k)] = ((int(x1), int(y1)), (int(x2), int(y2)))
+    if sorted(raw) != list(range(2, 14)):
+        raise SystemExit('route map: read descent segments %s, not 2-13' % sorted(raw))
+    # the path, summit down: desc-seg-k runs from point k-2 to point k-1, each point a marker
+    at = {(m['x'], m['y']): n for n, m in marks.items()}
+    pts = [raw[2][0]] + [raw[k][1] for k in range(2, 14)]
+    for k in range(3, 14):
+        if raw[k][0] != raw[k - 1][1]:
+            raise SystemExit('route map: desc-seg-%d does not start where desc-seg-%d ends' % (k, k - 1))
+    if any(p not in at for p in pts):
+        raise SystemExit('route map: a descent segment ends off a marker')
+    path = [at[p] for p in pts]
+    order = [n for n in path if marks[n]['live']]
+    one, two = marks[order[-1]], marks[order[-2]]
+    foot = (one['x'], one['y'] + (one['y'] - two['y']))     # one step below the last stop: base camp
+
+    legs, segs, owner = {}, {}, {}
+    live_at = [i for i, n in enumerate(path) if marks[n]['live']]
+    for a, i in enumerate(live_at):
+        j = live_at[a + 1] if a + 1 < len(live_at) else None
+        legs[str(path[i])] = ([list(pts[q]) for q in range(i, j + 1)] if j is not None
+                              else [list(pts[i]), list(foot)])
+    for k in range(2, 14):
+        start = k - 2
+        before = [i for i in live_at if i <= start]
+        owner[k] = path[before[-1]] if before else order[0]     # the opening leg lights with the first stop
+        segs[k] = {'colour': stops[owner[k]]['fill'], 'd': 'M%d,%d L%d,%d' % (raw[k][0] + raw[k][1]), 'owner': owner[k]}
+    legs['summit'] = [list(pts[live_at[-1]]), list(foot)]
+    dots = {n: m for n, m in marks.items() if m['live']}
+    nocamp = [marks[n] for n in path if not marks[n]['live']]
+    return {'tenses': stops, 'dots': dots, 'segs': segs, 'peak': foot, 'order': order, 'legs': legs,
+            'nocamp': nocamp}
 
 
 # ── colours derived from the route map's (never picked) ────────────────────────
@@ -470,14 +636,17 @@ def _size(rel):
 
 def hero_img():
     """The start screen's picture: base camp (Navya and Momo, where the story starts) once
-    SherpaClimb/base-camp.jpg exists; camp two's scene until then."""
-    name = 'base-camp' if os.path.exists(os.path.join(ROOT, 'SherpaClimb', 'base-camp.jpg')) else 'camp-02'
-    w, h = _size('SherpaClimb/%s.jpg' % name)
-    sm = 'SherpaClimb/%s-sm.jpg' % name
+    SherpaClimb/base-camp.jpg exists; camp two's scene until then. The Descent's: the summit at
+    night (SherpaDescent/summit-night.jpg) once it exists; the team on top until then. The
+    first of the game's `hero` pictures that exists."""
+    hero = G['hero']
+    base = next((b for b in hero if os.path.exists(os.path.join(ROOT, b + '.jpg'))), hero[-1])
+    w, h = _size('%s.jpg' % base)
+    sm = '%s-sm.jpg' % base
     if os.path.exists(os.path.join(ROOT, sm)):
-        return ('<img src="%s" srcset="%s 960w, SherpaClimb/%s.jpg %dw" sizes="(max-width:860px) 100vw, 560px" '
-                'width="%d" height="%d" alt="" fetchpriority="high">' % (sm, sm, name, w, w, h))
-    return '<img src="SherpaClimb/%s.jpg" width="%d" height="%d" alt="" fetchpriority="high">' % (name, w, h)
+        return ('<img src="%s" srcset="%s 960w, %s.jpg %dw" sizes="(max-width:860px) 100vw, 560px" '
+                'width="%d" height="%d" alt="" fetchpriority="high">' % (sm, sm, base, w, w, h))
+    return '<img src="%s.jpg" width="%d" height="%d" alt="" fetchpriority="high">' % (base, w, h)
 
 
 def momo_img():
@@ -504,7 +673,7 @@ def figure(who, route):
     if who == 'tensing':
         return ('<img src="Sherpa%20Tensing/sherpa-guide.jpg" width="360" height="450" alt="" '
                 'loading="lazy" decoding="async">')
-    fill = route['tenses'][PACK_FROM.get(who, 5)]['fill']
+    fill = route['rows'][PACK_FROM.get(who, 5)]['fill']
     p = pack(fill)
     L, C, H = to_lch(p)
     p_dark = from_lch(L - 0.12, C, H).upper()
@@ -544,6 +713,8 @@ def figure(who, route):
 # ── the mountain ────────────────────────────────────────────────────────────────
 def mountain(route, content_ns, mini):
     """Two stacked SVGs: the art (never repainted) and the markers over it."""
+    if G['shape'] == 'diamond':
+        return mountain_night(route, content_ns, mini)
     tok = route['tok']
     if mini:
         vb = '150 50 500 540'
@@ -600,6 +771,74 @@ def mountain(route, content_ns, mini):
     return '<div class="mtn%s">%s%s</div>' % (' mtn-mini' if mini else '', art, ''.join(o))
 
 
+def diamond(x, y, h):
+    return '%d,%d %d,%d %d,%d %d,%d' % (x, y - h, x + h, y, x, y + h, x - h, y)
+
+
+def mountain_night(route, content_ns, mini):
+    """The Descent's mountain: the route map's night art, its diamonds (half-diagonal 12 as
+    on the map, 16 on the mini-map), the four passives nobody uses drawn faint and dashed
+    with no number and no label (the page never selects them), and each segment over a
+    pale casing so the darkest camp colours still read on night. The marker colours stay
+    in the SVG attributes; descent.css turns the inks (labels, flags, pulse) to night-ink."""
+    tok = route['tok']
+    if mini:
+        vb = G['mini_vb']
+        h, hit, scale, sw = round(12 * 1.35), 0, 1.35, 9
+    else:
+        vb = '0 0 800 620'
+        h, hit, scale, sw = 12, 24, 1, 6
+    art = ('<svg class="mtn-art" viewBox="%s" aria-hidden="true" focusable="false">'
+           '<use href="#%s" x="0" y="0" width="800" height="620"/></svg>' % (vb, G['sprite']))
+    o = ['<svg class="mtn-over" viewBox="%s" aria-hidden="true" focusable="false">' % vb]
+    for k in sorted(route['segs']):
+        s = route['segs'][k]
+        o.append('<path class="seg-case" d="%s" stroke-width="%d" stroke-linecap="round" fill="none"/>' % (s['d'], sw + 3))
+        o.append('<path class="seg" data-seg="%d" data-color="%s" d="%s" stroke="%s" stroke-width="%d" '
+                 'stroke-linecap="round" fill="none"/>' % (s['owner'], s['colour'], s['d'], GREY, sw))
+    if mini:
+        o.append('<circle class="pulse" cx="0" cy="0" r="%d" fill="none" stroke="%s" stroke-width="4"/>' % (h + 16, tok['--ink']))
+
+    def glyph_at(m):
+        g = m['glyph']
+        if scale != 1:
+            g = g.replace('transform="translate(%d,%d)"' % (m['x'], m['y']),
+                          'transform="translate(%d,%d) scale(%s)"' % (m['x'], m['y'], scale), 1)
+        return g
+    for m in route['nocamp']:
+        o.append('<g class="no-camp"><polygon class="dot-fill" points="%s" fill="%s" stroke="#FFFFFF" stroke-width="2"/>%s</g>'
+                 % (diamond(m['x'], m['y'], h), GREY, glyph_at(m)))
+    for n in route['order']:
+        d = route['dots'][n]
+        t = route['tenses'][n]
+        live = n in content_ns
+        o.append('<g class="%s" data-camp="%d" data-color="%s">' % ('dot' + ('' if live else ' soon'), n, t['fill'] if live else GREY))
+        if hit and live:
+            o.append('<circle class="hit" cx="%d" cy="%d" r="%d"/>' % (d['x'], d['y'], hit))
+        o.append('<polygon class="dot-fill" points="%s" fill="%s" stroke="#FFFFFF" stroke-width="2"/>'
+                 % (diamond(d['x'], d['y'], h), t['fill'] if live else GREY))
+        o.append(glyph_at(d))
+        if not mini:
+            o.append('<text class="dot-label" x="%d" y="%d" text-anchor="%s" dominant-baseline="central" font-size="18" '
+                     'font-weight="600" font-family="Inter, sans-serif" fill="%s">%s</text>'
+                     % (d['lx'], d['ly'], d['anchor'], tok['--ink'], esc(t['name'])))
+        fh, fw, ft = (30, 19, 12) if mini else (26, 16, 10)
+        o.append('<g class="dflag" transform="translate(%d,%d)"><path d="M0,0 V-%d" stroke="%s" stroke-width="2.4" '
+                 'stroke-linecap="round"/><path class="pennant" d="M0,-%d L%d,-%g L0,-%d Z" stroke="%s" stroke-width="1.4" '
+                 'stroke-linejoin="round"/></g>'
+                 % (d['x'] + round(h * 0.7), d['y'] - round(h * 0.5), fh, tok['--ink'],
+                    fh, fw, fh - ft / 2, fh - ft, tok['--ink']))
+        o.append('</g>')
+    if mini:
+        o.append('<g class="climber" id="climber"><g transform="translate(%d,-6) scale(1.7) translate(0,-6)">'
+                 '<rect x="-7" y="-2" width="14" height="17" rx="4" fill="%s" stroke="#FFFFFF" stroke-width="2"/>'
+                 '<rect x="-8" y="-7" width="16" height="6" rx="3" fill="%s" stroke="#FFFFFF" stroke-width="1.5"/>'
+                 '<circle cx="0" cy="-12" r="5.5" fill="%s" stroke="#FFFFFF" stroke-width="2"/></g></g>'
+                 % (h + 12, tok['--ink'], tok['--accent-dark'], tok['--ink']))
+    o.append('</svg>')
+    return '<div class="mtn%s">%s%s</div>' % (' mtn-mini' if mini else '', art, ''.join(o))
+
+
 # ── the question line, and the line put right ──────────────────────────────────
 def lines_of(it):
     """(question html, corrected html). The corrected line fills the gap(s) with the
@@ -635,15 +874,15 @@ def lines_of(it):
 
 
 # ── i18n ────────────────────────────────────────────────────────────────────────
-def strings(c, route):
+def strings(c, route, en=None):
     """Every English string a translator sees: {English: note}, in page order."""
     out = {}
 
     def add(s, note):
         if s and s not in out:
             out[s] = note
-    for key, (en, note) in EN.items():
-        add(en, note)
+    for key, (en_s, note) in (en or EN).items():
+        add(en_s, note)
     for k, v in c.CAST.items():
         add(v['role'], 'what %s does in the team (team card, speaker rows)' % v['name'])
     for k, v in c.VIA.items():
@@ -662,10 +901,22 @@ def strings(c, route):
     for camp in c.CAMPS:
         stage(camp, 'camp %d (%s)' % (camp['n'], route['tenses'][camp['n']]['name']))
     if c.SUMMIT is not None:
-        stage(c.SUMMIT, 'the summit push')
+        stage(c.SUMMIT, G['final_note'])
     for ln in getattr(c, 'OUTRO', None) or []:
-        add(ln['en'], 'the end, at the summit, said by %s' % c.CAST[ln['who']]['name'])
+        add(ln['en'], '%s, said by %s' % (G['end_note'], c.CAST[ln['who']]['name']))
     return out
+
+
+def mark_inherited(out):
+    """The Descent's list for translators: a string The Climb already has is marked, because
+    its translation is inherited from i18n/<lang>.json (the tables merge, the descent's own
+    file on top), so a translator need only do the rest."""
+    if not INHERIT_DIR:
+        return out
+    p = os.path.join(INHERIT_DIR, 'strings.json')
+    have = json.loads(read(p)) if os.path.exists(p) else {}
+    tag = ' [inherited: The Climb has this English, so its translation comes from %s/<lang>.json]' % os.path.basename(INHERIT_DIR)
+    return {k: (v + tag if k in have else v) for k, v in out.items()}
 
 
 def problems(en, tr):
@@ -681,44 +932,65 @@ def problems(en, tr):
     return bad
 
 
+def _table(p, lang):
+    try:
+        d = json.loads(read(p) or '{}')
+    except ValueError as e:
+        raise SystemExit('%s/%s.json is not JSON: %s' % (os.path.basename(os.path.dirname(p)), lang, e))
+    return {k: v for k, v in d.items() if isinstance(v, str) and v.strip()}
+
+
 def load_i18n(all_strings, strict):
+    """Each language's table: I18N_DIR/<lang>.json, merged OVER INHERIT_DIR/<lang>.json when the
+    game inherits (The Descent over The Climb: a string whose English is the same takes the
+    climb's translation unless the descent's own file says it differently). "Complete or
+    empty" applies to the merged table; stale keys are counted in the game's own file only."""
     os.makedirs(I18N_DIR, exist_ok=True)
     complete, report, errors = [], [], []
     tables = {}
+    where = os.path.basename(I18N_DIR)
     for lang in LANGS:
         p = os.path.join(I18N_DIR, lang + '.json')
         if not os.path.exists(p):
             io.open(p, 'w', encoding='utf-8', newline='\n').write('{}\n')
-        try:
-            d = json.loads(read(p) or '{}')
-        except ValueError as e:
-            raise SystemExit('i18n/%s.json is not JSON: %s' % (lang, e))
-        have = {k: v for k, v in d.items() if isinstance(v, str) and v.strip()}
+        own = _table(p, lang)
+        base = {}
+        if INHERIT_DIR and os.path.exists(os.path.join(INHERIT_DIR, lang + '.json')):
+            base = _table(os.path.join(INHERIT_DIR, lang + '.json'), lang)
+        have = dict(base)
+        have.update(own)
         missing = [s for s in all_strings if s not in have]
-        stale = [k for k in have if k not in all_strings]
+        stale = [k for k in own if k not in all_strings]
+        inherited = sum(1 for s in all_strings if s in base and s not in own)
         bad = []
         for s in all_strings:
             if s in have:
                 bad += ['%s: %r %s' % (lang, s[:60], b) for b in problems(s, have[s])]
         errors += bad
         empty = len(missing) == len(all_strings)
+        unstarted = bool(INHERIT_DIR) and not own and not empty
         if not missing and not bad:
             complete.append(lang)
             tables[lang] = {s: have[s] for s in all_strings}
             state = 'complete'
         elif empty:
             state = 'empty (not offered)'
+        elif unstarted:
+            state = 'not started, %d to translate (not offered)' % len(missing)
         else:
             state = 'PARTIAL, %d missing (not offered):' % len(missing)
-        report.append('  %s: %d/%d %s%s' % (lang, len(all_strings) - len(missing), len(all_strings), state,
-                                             (' %d stale key(s) ignored' % len(stale)) if stale else ''))
+        report.append('  %s: %d/%d %s%s%s' % (lang, len(all_strings) - len(missing), len(all_strings), state,
+                                               (', %d inherited from %s' % (inherited, os.path.basename(INHERIT_DIR)))
+                                               if INHERIT_DIR else '',
+                                               (' %d stale key(s) ignored' % len(stale)) if stale else ''))
         # which strings: by name, so a translator can finish the file. An empty file is
-        # missing all of them, and that list is i18n/strings.json itself
-        if missing and not empty:
+        # missing all of them, and that list is i18n/strings.json itself (for a game that
+        # inherits, an own file not yet started is the same: the list is its strings.json)
+        if missing and not empty and not unstarted:
             report.extend('      missing: %s' % short(s) for s in missing)
         if strict and missing:
-            errors.append('%s: %s (--strict)' % (lang, 'empty: all %d strings missing, listed in i18n/strings.json'
-                                                 % len(missing) if empty else '%d string(s) missing: %s'
+            errors.append('%s: %s (--strict)' % (lang, 'empty: all %d strings missing, listed in %s/strings.json'
+                                                 % (len(missing), where) if empty or unstarted else '%d string(s) missing: %s'
                                                  % (len(missing), '; '.join(short(s) for s in missing))))
     return complete, tables, report, errors
 
@@ -730,13 +1002,26 @@ def short(s, n=72):
 
 # ── the page ────────────────────────────────────────────────────────────────────
 def scene(n):
-    return 'SherpaClimb/summit' if n == 'summit' else 'SherpaClimb/camp-%02d' % n
+    """A stage's picture, without .jpg (the page adds -sm.jpg on a narrow screen). The
+    Descent's own art, SherpaDescent/camp-NN (twin numbers) and storm, once both sizes
+    exist; until then the climb's picture of the same camp (and camp one for the storm), so
+    nothing 404s."""
+    if n == 'summit':
+        own, fallback = '%s/%s' % (G['scenes'], G['final_scene']), G['final_fallback']
+    else:
+        own = '%s/camp-%02d' % (G['scenes'], n)
+        fallback = '%s/camp-%02d' % (G['scene_fallback'], n) if G['scene_fallback'] else None
+    if fallback is None or all(os.path.exists(os.path.join(ROOT, own + x)) for x in ('.jpg', '-sm.jpg')):
+        return own
+    return fallback
 
 
-# the summit screen, after the push: the team on top (docs/ARTWORK-sherpa-climb.md) once it
-# exists, the course's sherpa render until then
-TOP_SCENE = ('SherpaClimb/summit-top.jpg' if os.path.exists(os.path.join(ROOT, 'SherpaClimb', 'summit-top.jpg'))
-             else 'Sherpa Tensing/sherpa-day.jpg')
+def top_scene():
+    """The end screen's picture. The Climb: the team on top (docs/ARTWORK-sherpa-climb.md)
+    once it exists, the course's sherpa render until then. The Descent: base camp at last
+    (SherpaDescent/base-camp.jpg), the climb's base camp until then."""
+    top = G['top']
+    return next((p for p in top if os.path.exists(os.path.join(ROOT, p))), top[-1])
 
 
 def quiet_side(path):
@@ -785,14 +1070,63 @@ def undefined_vars(css, defined):
     return sorted({v for v in re.findall(r'var\((--[a-z0-9-]+)\s*\)', css) if v not in defined})
 
 
+def fence(js, game):
+    """template.js's few game-specific lines: /*@game:climb*/A/*@game:descent*/B/*@game:end*/
+    keeps A or B, and /*@game:descent*/B/*@game:end*/ alone is the descent's only. A marker
+    alone on its line takes the line with it, so the climb's A is its original text, byte for
+    byte (build.py --check proves it)."""
+    js = re.sub(r'^[ \t]*(/\*@game:(?:climb|descent|end)\*/)[ \t]*\n', r'\1', js, flags=re.M)
+    js = re.sub(r'/\*@game:climb\*/(.*?)/\*@game:descent\*/(.*?)/\*@game:end\*/',
+                lambda m: m.group(1) if game == 'climb' else m.group(2), js, flags=re.S)
+    js = re.sub(r'/\*@game:descent\*/(.*?)/\*@game:end\*/',
+                lambda m: m.group(1) if game == 'descent' else '', js, flags=re.S)
+    if '@game:' in js:
+        raise SystemExit('template.js: a @game fence is not closed (%s)' % js[js.index('@game:') - 10:][:60])
+    return js
+
+
+SCENE_DIV = '<div class="scene"><img id="scene" alt="" decoding="async"></div>'
+
+
+def page_template(tpl, en):
+    """The template, fitted to the game: its <title>, every data-t text and data-t-aria label
+    refilled from this game's English (for The Climb these are the template's own words, so
+    nothing changes), and for The Descent the storm layer between the scene and the veil."""
+    tpl, k = re.subn(r'<title>[^<]*</title>', lambda m: '<title>%s</title>' % esc(G['page_title']), tpl, count=1)
+    if k != 1:
+        raise SystemExit('template.html: no <title>')
+    tpl, k1 = re.subn(r'(<[^<>]*\bdata-t="(\w+)"[^<>]*>)([^<]*)<',
+                      lambda m: '%s%s<' % (m.group(1), esc(en[m.group(2)][0])), tpl)
+    tpl, k2 = re.subn(r'aria-label="[^"]*" data-t-aria="(\w+)"',
+                      lambda m: 'aria-label="%s" data-t-aria="%s"' % (attr(en[m.group(1)][0]), m.group(1)), tpl)
+    if k1 < 10 or k2 < 3:
+        raise SystemExit('template.html: refilled %d data-t text(s) and %d label(s); its literals have moved' % (k1, k2))
+    if G['face'] == 'descent':
+        if tpl.count(SCENE_DIV) != 1:
+            raise SystemExit('template.html: the scene div is not there exactly once, so the storm has nowhere to go')
+        tpl = tpl.replace(SCENE_DIV, SCENE_DIV + '\n  <div class="storm" aria-hidden="true"></div>')
+    return tpl
+
+
+SNOWFLAKE = ('<svg viewBox="0 0 20 20"><g stroke="currentColor" stroke-width="1.7" stroke-linecap="round" fill="none">'
+             '<path d="M10 1.8v16.4M2.9 5.9l14.2 8.2M2.9 14.1l14.2-8.2"/>'
+             '<path d="M7.8 3.2L10 5l2.2-1.8M7.8 16.8L10 15l2.2 1.8"/></g></svg>')
+
+
 def build(strict=False):
     c = load_content()
     route = read_route()
     validate(c, route)
+    en = chrome(c)
     tok = route['tok']
     paper = tok['--paper']
     content_ns = [camp['n'] for camp in c.CAMPS]
-    last_route = max(route['tenses'])
+    order = route['order']
+    last_route = order[-1]        # the climb: camp 13; the descent: camp 1, the last stop down
+
+    def route_next(n):
+        i = order.index(n)
+        return order[i + 1] if i + 1 < len(order) else None
 
     tenses = {}
     for n, t in sorted(route['tenses'].items()):
@@ -825,18 +1159,21 @@ def build(strict=False):
     for i, camp in enumerate(c.CAMPS):
         n = camp['n']
         nxt = c.CAMPS[i + 1] if i + 1 < len(c.CAMPS) else None
-        if nxt and nxt['n'] == n + 1:
+        if nxt and nxt['n'] == route_next(n):
             next_alt = nxt['alt']
         elif n == last_route and c.SUMMIT is not None:
             next_alt = c.SUMMIT['alt']
         elif nxt:
             next_alt = nxt['alt']
-        else:   # not written yet: climb on at the last step's rate
-            next_alt = camp['alt'] + ((camp['alt'] - alts[i - 1]) if i else 400)
-        camps.append({'n': n, 'alt': camp['alt'], 'nextAlt': next_alt, 'scene': scene(n),
-                      'side': side_of(camp, scene(n) + '.jpg'),
-                      'arrive': lines(camp.get('arrive')), 'tip': camp['tip'], 'items': items_of(camp, n),
-                      'done': lines([camp['done']])[0] if camp.get('done') else None})
+        else:   # not written yet: go on at the last step's rate (up for the climb, down for the descent)
+            next_alt = camp['alt'] + ((camp['alt'] - alts[i - 1]) if i else 400 * G['dir'])
+        st = {'n': n, 'alt': camp['alt'], 'nextAlt': next_alt, 'scene': scene(n),
+              'side': side_of(camp, scene(n) + '.jpg'),
+              'arrive': lines(camp.get('arrive')), 'tip': camp['tip'], 'items': items_of(camp, n),
+              'done': lines([camp['done']])[0] if camp.get('done') else None}
+        if 'storm' in camp:
+            st['storm'] = camp['storm']
+        camps.append(st)
     summit = None
     if c.SUMMIT is not None:
         s = c.SUMMIT
@@ -844,22 +1181,28 @@ def build(strict=False):
                   'side': side_of(s, scene('summit') + '.jpg'),
                   'arrive': lines(s.get('arrive')), 'tip': s['tip'], 'items': items_of(s, 'summit'),
                   'done': lines([s['done']])[0] if s.get('done') else None}
+        if 'storm' in s:
+            summit['storm'] = s['storm']
     figs = {who: figure(who, route) for who in c.CAST}
+    top = top_scene()
     data = {
         'camps': camps, 'summit': summit, 'outro': lines(getattr(c, 'OUTRO', None)),
         'cast': {k: {'name': v['name'], 'role': v['role']} for k, v in c.CAST.items()},
         'via': dict(c.VIA), 'figs': figs, 'tenses': tenses, 'lastRoute': last_route,
         'dots': {str(n): [d['x'], d['y']] for n, d in sorted(route['dots'].items())},
         'peak': list(route['peak']), 'grey': GREY, 'gold': GOLD,
-        'top': {'scene': TOP_SCENE.replace(' ', '%20'), 'side': side_of({}, TOP_SCENE)},
+        'top': {'scene': top.replace(' ', '%20'), 'side': side_of({}, top)},
     }
+    if G['face'] == 'descent':
+        data['legs'] = route['legs']       # the polylines the climber walks, through the no-camp markers
+        data['top']['storm'] = 0           # calm at base camp
 
-    all_strings = strings(c, route)
+    all_strings = strings(c, route, en)
     complete, tables, report, errors = load_i18n(all_strings, strict)
     if errors:
         raise SystemExit('translations refused (%d):\n  %s' % (len(errors), '\n  '.join(errors)))
     langs = ['en'] + complete
-    i18n = {'en': {k: v[0] for k, v in EN.items()}, 'langs': langs, 'rtl': RTL,
+    i18n = {'en': {k: v[0] for k, v in en.items()}, 'langs': langs, 'rtl': RTL,
             'names': {l: route['names'].get(l, l) for l in langs}, 't': tables}
 
     def js_json(obj):
@@ -873,37 +1216,46 @@ def build(strict=False):
               'style="position:absolute;overflow:hidden"><defs>\n%s\n</defs></svg>' % '\n'.join(route['defs']))
     intro = ''
     if getattr(c, 'INTRO', None):
-        li = ''.join('<li><span class="en">%s</span><span class="gl" data-gl="%s"></span></li>'
-                     % (bold(ln['en']), attr(ln['en'])) for ln in c.INTRO)
+        # the box is the guide's; a line someone else says (Navya's storm warning in The
+        # Descent) carries its speaker's name
+        li = ''.join('<li>%s<span class="en">%s</span><span class="gl" data-gl="%s"></span></li>'
+                     % ('' if ln['who'] == 'tensing' else '<span class="brief-by">%s:</span> ' % esc(c.CAST[ln['who']]['name']),
+                        bold(ln['en']), attr(ln['en'])) for ln in c.INTRO)
         # on a phone the guide's first line shows, and "How it works" opens the others
         more = ('<button class="brief-more" type="button" aria-expanded="false" aria-controls="brief-lines">'
                 '<span data-t="howItWorks">%s</span> <span aria-hidden="true">&darr;</span></button>'
-                % esc(EN['howItWorks'][0])) if len(c.INTRO) > 1 else ''
+                % esc(en['howItWorks'][0])) if len(c.INTRO) > 1 else ''
         intro = ('<div class="brief" id="brief"><p class="brief-who"><span data-t="briefWho">%s</span></p>'
-                 '<ul id="brief-lines">%s</ul>%s</div>' % (esc(EN['briefWho'][0]), li, more))
+                 '<ul id="brief-lines">%s</ul>%s</div>' % (esc(en['briefWho'][0]), li, more))
     team = ''.join('<li class="member"><span class="fig">%s</span><span class="mtext"><b>%s</b>'
                    '<span class="role">%s</span><span class="gl" data-gl="%s"></span></span></li>'
                    % (figs[k], esc(v['name']), esc(v['role']), attr(v['role'])) for k, v in c.CAST.items())
     picks = []
+    night = G['shape'] == 'diamond'
     for camp in c.CAMPS:
         t = tenses[str(camp['n'])]
+        # the descent's number sits in a diamond, turned back upright (descent.css)
+        num = ('<span>%d</span>' if night else '%d') % camp['n']
         picks.append('<li><button class="pick" type="button" data-camp="%d" style="--c:%s;--k:%s">'
-                     '<span class="pick-num">%d</span><span class="pick-name">%s</span>'
+                     '<span class="pick-num">%s</span><span class="pick-name">%s</span>'
                      '<span class="pick-meta"><span class="pick-lvl">%s</span><span class="pick-best"></span>'
                      '<span class="pick-flag"></span></span></button></li>'
-                     % (camp['n'], t['fill'], t['ink'], camp['n'], esc(t['name']), esc(t['level'])))
+                     % (camp['n'], t['fill'], t['ink'], num, esc(t['name']), esc(t['level'])))
     if c.SUMMIT is not None:
+        icon = (SNOWFLAKE if night else '<svg viewBox="0 0 20 20"><path d="M2 17 L8 6 L11 11 L13 8 L18 17 Z" '
+                'fill="currentColor"/></svg>')
         picks.append('<li><button class="pick pick-summit" type="button" data-camp="summit">'
-                     '<span class="pick-num" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M2 17 L8 6 L11 11 L13 8 L18 17 Z" '
-                     'fill="currentColor"/></svg></span><span class="pick-name" data-t="summitRow">%s</span>'
+                     '<span class="pick-num" aria-hidden="true">%s</span><span class="pick-name" data-t="summitRow">%s</span>'
                      '<span class="pick-meta"><span class="pick-best"></span><span class="pick-flag"></span></span></button></li>'
-                     % esc(EN['summitRow'][0]))
+                     % (icon, esc(en['summitRow'][0])))
     options = ''.join('<option value="%s" lang="%s"%s>%s</option>' % (l, l, ' dir="rtl"' if l in RTL else '',
                                                                       esc(i18n['names'][l])) for l in langs)
 
-    tpl = read(os.path.join(HERE, 'template.html'))
+    tpl = page_template(read(os.path.join(HERE, 'template.html')), en)
     css = read(os.path.join(HERE, 'template.css'))
-    js = read(os.path.join(HERE, 'template.js'))
+    if G['css']:
+        css = css.strip('\n') + '\n' + read(os.path.join(HERE, G['css']))
+    js = fence(read(os.path.join(HERE, 'template.js')), 'descent' if G['face'] == 'descent' else 'climb')
     undef = undefined_vars(css, list(tok) + ['--gold', '--grey'])
     if undef:
         raise SystemExit('template.css uses %s, which nothing defines (add a fallback, or the token)' % ', '.join(undef))
@@ -995,20 +1347,45 @@ def carry_seo(page, old):
 
 
 def real_strings():
-    """The translators' list always comes from the real content.py, whatever the page was
-    built from, and whether or not its gates pass: a draft must not rewrite it, and a
-    refused item still has words to translate."""
+    """The translators' list always comes from the game's real content file (content.py,
+    content_descent.py), whatever the page was built from, and whether or not its gates
+    pass: a draft must not rewrite it, and a refused item still has words to translate.
+    Until the real file exists (or while it cannot even be read for strings) the list
+    comes from the content the page is built from, and says so."""
     global CONTENT
-    keep, CONTENT = CONTENT, os.path.join(HERE, 'content.py')
-    try:
-        return strings(load_content(), read_route())
-    finally:
-        CONTENT = keep
+    real = os.path.join(HERE, G['content'])
+    keep = CONTENT
+    for path in ([real] if os.path.exists(real) else []) + ([keep] if keep != real else []):
+        CONTENT = path
+        try:
+            c = load_content()
+            return mark_inherited(strings(c, read_route(), chrome(c)))
+        except Exception as e:      # an unfinished real file: say so, and use the build's own content
+            print('  strings.json: %s could not be read for strings (%s: %s)' % (os.path.basename(path), type(e).__name__, e))
+        finally:
+            CONTENT = keep
+        if path == real:
+            print('  strings.json: from %s until %s reads' % (os.path.basename(keep), G['content']))
+    if not os.path.exists(real):
+        print('  strings.json: %s does not exist yet' % G['content'])
+    raise SystemExit('no content to list strings from')
 
 
-def main():
+def set_game(name):
+    """Point every path at one game's files (before --content/--out/--i18n, which still win)."""
+    global G, CONTENT, I18N_DIR, INHERIT_DIR, STRINGS, OUT, OUT_NAME
+    G = GAMES[name]
+    CONTENT = os.path.join(HERE, G['content'])
+    I18N_DIR = os.path.join(HERE, G['i18n'])
+    INHERIT_DIR = os.path.join(HERE, G['inherit']) if G['inherit'] else None
+    STRINGS = os.path.join(I18N_DIR, 'strings.json')
+    OUT_NAME = G['out']
+    OUT = os.path.join(ROOT, OUT_NAME)
+
+
+def run(name, args):
     global CONTENT, I18N_DIR, OUT, OUT_NAME
-    args = sys.argv[1:]
+    set_game(name)
     if '--content' in args:
         CONTENT = os.path.abspath(args[args.index('--content') + 1])
         print('content from %s' % CONTENT)
@@ -1023,10 +1400,15 @@ def main():
         c = load_content()
         route = read_route()
         validate(c, route)
-        print(json.dumps({'camps': c.CAMPS, 'summit': c.SUMMIT, 'outro': getattr(c, 'OUTRO', None),
-                          'cast': c.CAST, 'tenses': {str(n): t['name'] for n, t in route['tenses'].items()}},
+        print(json.dumps({'game': name, 'page': G['out'], 'save': G['save'], 'dir': G['dir'], 'finalId': G['final_id'],
+                          'miniVb': [int(v) for v in G['mini_vb'].split()], 'order': route['order'],
+                          'lastRoute': route['order'][-1],
+                          'camps': c.CAMPS, 'summit': c.SUMMIT, 'outro': getattr(c, 'OUTRO', None),
+                          'cast': c.CAST, 'tenses': {str(n): t['name'] for n, t in route['tenses'].items()},
+                          'hrefs': {str(n): t['href'] for n, t in route['tenses'].items()},
+                          'en': {k: v[0] for k, v in chrome(c).items()}},
                          ensure_ascii=True))  # a Windows console is cp1252: "→" in an fb would crash the print
-        return
+        return 0
     check, strict = '--check' in args, '--strict' in args
     strings_json = json.dumps(real_strings(), ensure_ascii=False, indent=1) + '\n'
     page, all_strings, report = build(strict)
@@ -1036,27 +1418,45 @@ def main():
     if bad:
         raise SystemExit('family look:\n  ' + '\n  '.join(bad))
     old_strings = read(STRINGS) if os.path.exists(STRINGS) else None
+    rel = '%s/strings.json' % G['i18n']
     print('translations (%d strings):' % len(all_strings))
     for line in report:
         print(line)
     if check:
         fails = []
         if old != page:
-            fails.append('%s is not a fresh build: run build.py' % OUT_NAME)
+            fails.append('%s is not a fresh build: run build.py%s' % (OUT_NAME, '' if name == 'climb' else ' --game ' + name))
         if old_strings != strings_json:
-            fails.append('i18n/strings.json is stale: run build.py')
+            fails.append('%s is stale: run build.py%s' % (rel, '' if name == 'climb' else ' --game ' + name))
         for f in fails:
             print('FAIL ' + f)
         print('PASS: %s is a fresh build' % OUT_NAME if not fails else 'FAIL: %d' % len(fails))
-        sys.exit(1 if fails else 0)
+        return 1 if fails else 0
     if old_strings != strings_json:
         io.open(STRINGS, 'w', encoding='utf-8', newline='\n').write(strings_json)
-        print('  wrote i18n/strings.json')
+        print('  wrote %s' % rel)
     if old != page:
         io.open(OUT, 'w', encoding='utf-8', newline='\n').write(page)
         print('  wrote %s (%d KB)' % (OUT_NAME, len(page.encode('utf-8')) // 1024))
     else:
         print('  %s unchanged' % OUT_NAME)
+    return 0
+
+
+def main():
+    args = sys.argv[1:]
+    game = args[args.index('--game') + 1] if '--game' in args else 'climb'
+    if game == 'all':
+        if any(a in args for a in ('--content', '--out', '--i18n', '--dump')):
+            raise SystemExit('--game all builds or checks the real pages only (no --content, --out, --i18n or --dump)')
+        codes = []
+        for name in GAMES:
+            print('== %s ==' % name)
+            codes.append(run(name, args))
+        sys.exit(max(codes))
+    if game not in GAMES:
+        raise SystemExit('--game is %s or all, not %r' % (' | '.join(GAMES), game))
+    sys.exit(run(game, args))
 
 
 if __name__ == '__main__':

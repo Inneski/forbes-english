@@ -1,0 +1,1854 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sherpa Tensing — The Descent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#2B0F1D;--ink-soft:#6B4A57;--paper:#FDF7F5;--card:#FFFFFF;--tensing:#7E7E7E;--accent:#B7818C;--accent-dark:#846069;--accent-light:#EFE1E7;--accent-lighter:#F8F2F4;--radius:14px;--night:#172731;--night-ink:#F3EEE7;--night-soft:#B7C4CB;--free:var(--accent-dark);--locked:#7A8891;--lift:0 3px 10px rgba(43,15,29,.16);--accent-text:#83616A;--paper-deep:#EFE9EA;--good:#1E7A4C;--good-bg:#E5F5EC;--bad:#B23A3A;--bad-bg:#FBEAEA;}:root{--gold:#D2A53B;--grey:#C9C6C2;}html:root{--sheen:#A67781;--sheen-hot:#D0A69C;}
+/* The Climb (lesson-template/build/sherpa-climb). The :root lines above this are the route
+   map's own tokens, read by build.py. Sizes are written as the camp pages write theirs:
+   tools/sherpa_type.py then repeats each px size a step up (+1px under 20px, x1.15 to 39px). */
+*{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;
+     background-image:linear-gradient(180deg,var(--paper) 0%,var(--paper) 18%,var(--paper-deep) 100%);background-repeat:no-repeat;}
+h1,h2,h3{font-family:'Fraunces',serif;font-weight:600;margin:0 0 .4em;color:var(--ink);}
+[lang="ja"]{word-break:auto-phrase;}
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;}
+button{font-family:'Inter',sans-serif;}
+
+/* the wordmark, as on every Sherpa page; the hub's language menu and the sound buttons beside it */
+.wordmark{display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:1160px;margin:0 auto;padding:28px 24px 0;}
+.wordmark .brand{font-family:'Fraunces',serif;font-weight:700;font-size:20px;letter-spacing:.02em;}
+.wordmark .brand span{color:var(--tensing);}
+.wordmark .sub{font-size:13px;color:var(--ink-soft);}
+.wm-right{display:flex;align-items:center;justify-content:flex-end;gap:14px;flex-wrap:wrap;}
+.util{display:flex;align-items:center;gap:8px;text-shadow:none;}
+.ubtn,.util .camp-music-float.camp-music-slot{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;padding:0;cursor:pointer;
+  background:color-mix(in srgb,var(--card) 88%,transparent);color:var(--ink);border:1px solid var(--accent-light);box-shadow:none;}
+.ubtn svg{width:20px;height:20px;}
+.ubtn:hover,.util .camp-music-float.camp-music-slot:hover{background:var(--card);border-color:var(--accent);}
+.ubtn[aria-pressed="false"] .snd-on,.ubtn[aria-pressed="true"] .snd-off{display:none;}
+.ubtn[aria-pressed="false"] svg{opacity:.6;}
+.slot{display:contents;}
+.lang-select{font-family:'Inter',sans-serif;font-size:13px;font-weight:600;line-height:1.2;color:var(--ink);background:var(--card);cursor:pointer;
+             border:1px solid var(--accent-light);border-radius:999px;padding:7px 12px;min-height:44px;text-shadow:none;}
+.lang-select.solo{display:none;}
+@media (max-width:600px){ .wordmark .sub{display:none;} }
+
+/* the pinned way back (as on the camp pages) */
+body{padding-top:46px;}
+.up-link{position:fixed;top:16px;left:16px;z-index:60;display:inline-flex;align-items:center;gap:8px;padding:9px 16px 9px 13px;border-radius:999px;
+  background:var(--card);color:var(--accent-dark);border:1.5px solid var(--accent-light);font:600 14px/1 'Inter',system-ui,sans-serif;letter-spacing:.01em;
+  text-decoration:none;box-shadow:0 2px 10px color-mix(in srgb,var(--ink) 10%,transparent);transition:background .18s ease,color .18s ease,transform .18s ease;}
+.up-link:hover{background:var(--accent-dark);color:var(--card);transform:translateX(-2px);}
+.up-link .arw{font-size:15px;line-height:1;}
+@media (max-width:640px){ .up-link{top:10px;left:10px;padding:7px 13px 7px 10px;font-size:13px;} }
+
+main{max-width:1160px;margin:0 auto;padding:0 24px 80px;}
+
+/* the hero */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:48px;align-items:center;padding:30px 0 8px;}
+.kicker-pill{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-text);
+  background:var(--card);border:1px solid var(--accent-light);padding:6px 12px;border-radius:999px;margin-bottom:14px;}
+.hero h1{font-size:clamp(36px,4.6vw,56px);line-height:1.04;letter-spacing:-.01em;margin:0 0 12px;}
+.hero .lead{font-size:17px;color:var(--ink-soft);max-width:44ch;margin:0 0 24px;text-wrap:pretty;}
+.cta{display:flex;flex-wrap:wrap;gap:12px;}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:11px 20px;border-radius:999px;
+     font-family:'Inter',sans-serif;font-size:14px;font-weight:600;line-height:1.2;text-decoration:none;border:1.5px solid var(--ink);cursor:pointer;
+     transition:transform .15s ease,background .15s ease;}
+.btn-main{background:var(--ink);color:var(--paper);}
+.btn-main:hover{transform:translateY(-1px);background:color-mix(in srgb,var(--ink) 82%,var(--accent-dark));}
+.btn-ghost{background:transparent;color:var(--ink);text-shadow:0 0 2px var(--paper),0 0 4px var(--paper),0 0 6px var(--paper),0 0 8px var(--paper);}
+.btn-ghost:hover{background:var(--card);text-shadow:none;}
+.hero-art{margin:0;border-radius:18px;overflow:hidden;aspect-ratio:3/2;background:var(--paper-deep);
+          box-shadow:0 22px 44px -22px color-mix(in srgb,var(--ink) 50%,transparent);}
+.hero-art img{width:100%;height:100%;object-fit:cover;object-position:50% 0%;display:block;}   /* tops never cut */
+@media (max-width:860px){
+  .hero{grid-template-columns:minmax(0,1fr);gap:24px;padding-top:22px;}
+  .hero-art{order:-1;aspect-ratio:16/10;}
+}
+
+/* text straight on the paper wears the paper halo (tools/sherpa_topo.py) */
+.on-paper{text-shadow:0 0 2px var(--paper),0 0 4px var(--paper),0 0 6px var(--paper),0 0 8px var(--paper);}
+.sec{margin-top:60px;scroll-margin-top:64px;}
+.section-title{font-family:'Fraunces',serif;font-weight:600;font-size:26px;line-height:1.2;margin:0 0 14px;text-wrap:balance;}
+.note-line{font-size:15px;color:var(--ink-soft);margin:-6px 0 0;max-width:68ch;}
+.gl{display:block;font-style:italic;font-size:.88em;line-height:1.45;color:var(--ink-soft);margin-top:2px;}
+.gl:empty{display:none;}
+
+/* the team */
+.brief{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:16px 20px;margin:0 0 14px;}
+.brief-who{margin:0 0 6px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-text);}
+.brief ul{list-style:none;margin:0;padding:0;display:grid;gap:6px;}
+.brief li{font-size:15px;line-height:1.5;}
+.brief-more{display:none;align-items:center;gap:6px;min-height:44px;margin:4px 0 -6px;padding:0;border:0;background:none;color:var(--accent-dark);
+            font-size:14px;font-weight:600;text-decoration:underline;text-underline-offset:3px;cursor:pointer;}
+.team{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;}
+.member{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:10px 12px;min-height:96px;}
+.member .fig{width:56px;height:70px;flex:none;border-radius:10px;overflow:hidden;
+             background:linear-gradient(180deg,color-mix(in srgb,var(--accent-lighter) 70%,var(--card)) 0%,var(--paper-deep) 100%);}
+.member .fig img,.member .fig svg{width:100%;height:100%;object-fit:cover;object-position:50% 28%;display:block;}
+.mtext{min-width:0;line-height:1.35;}
+.mtext b{display:block;font-weight:600;font-size:15px;}
+.mtext .role{display:block;font-size:13px;color:var(--ink-soft);}
+.momo{margin:12px 0 0;font-size:14px;color:var(--ink-soft);display:flex;align-items:center;gap:12px;}
+.momo img{width:56px;height:70px;object-fit:cover;object-position:50% 30%;border-radius:10px;flex:none;display:block;}
+@media (max-width:1060px){ .team{grid-template-columns:repeat(3,minmax(0,1fr));} }
+/* a phone: one compact row per member, "Ana · the planner" on one line, and the guide's
+   first line with the other two behind "How it works", so the camps are not two screens down */
+@media (max-width:640px){
+  .team{grid-template-columns:minmax(0,1fr);gap:6px;}
+  .member{min-height:0;padding:6px 12px 6px 6px;gap:12px;}
+  .member .fig{width:36px;height:44px;border-radius:8px;}
+  .mtext b,.mtext .role{display:inline;}
+  .mtext b::after{content:" · ";font-weight:400;color:var(--ink-soft);}
+  .brief{padding:12px 16px;}
+  .brief li:nth-child(n+2){display:none;}
+  .brief.open li{display:block;}
+  .brief-more{display:inline-flex;}
+  .brief.open .brief-more{display:none;}
+}
+
+/* choose a camp: the mountain beside the list */
+.camps{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:20px;align-items:start;margin-top:18px;}
+.map-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:12px;position:sticky;top:72px;}
+.mtn{position:relative;aspect-ratio:800/620;border-radius:10px;overflow:hidden;}
+.mtn svg{position:absolute;inset:0;width:100%;height:100%;display:block;}
+.mtn-over{will-change:transform;}
+.mtn .dot{cursor:pointer;}
+.mtn .dot.soon{cursor:default;}
+.mtn .hit{fill:transparent;}
+.mtn .dot-label{opacity:0;pointer-events:none;paint-order:stroke;stroke:var(--paper);stroke-width:5px;stroke-linejoin:round;transition:opacity .15s ease;}
+.mtn .dot:hover .dot-label,.mtn .dot.lit .dot-label{opacity:1;}
+.mtn .dot.lit .dot-fill,.mtn .dot:hover .dot-fill{stroke:var(--ink);stroke-width:3;}
+.mtn .dflag{display:none;}
+.mtn .dflag.plain,.mtn .dflag.gold{display:inline;}
+.mtn .dflag .pennant{fill:var(--card);}
+.mtn .dflag.gold .pennant{fill:var(--gold);}
+.mtn .seg{transition:stroke .3s ease;}
+.picks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;}
+.pick{display:flex;align-items:center;gap:12px;width:100%;min-height:54px;padding:10px 14px;border-radius:12px;background:var(--card);
+      border:1px solid var(--accent-light);color:var(--ink);font-size:15px;line-height:1.3;text-align:left;cursor:pointer;
+      transition:transform .12s ease,box-shadow .12s ease,border-color .12s ease;}
+.pick:hover,.pick.lit{transform:translateX(2px);box-shadow:0 3px 10px color-mix(in srgb,var(--ink) 16%,transparent);border-color:var(--c,var(--accent));}
+.pick-num{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--c,var(--ink));color:var(--k,var(--paper));
+          font-weight:700;font-size:13px;flex:none;font-variant-numeric:tabular-nums;}
+.pick-num svg{width:18px;height:18px;}
+.pick-name{flex:1 1 auto;min-width:0;font-weight:600;}
+.pick-meta{display:flex;align-items:center;gap:10px;flex:none;color:var(--ink-soft);font-variant-numeric:tabular-nums;}
+.pick-lvl{font-size:11px;font-weight:700;letter-spacing:.06em;}
+.pick-best{font-size:13px;font-weight:600;color:var(--ink);}
+.pick-best:empty,.pick-flag:empty{display:none;}
+.pick-flag svg{width:18px;height:20px;display:block;}
+.pick-summit{border-style:dashed;}
+.flag-ico .pennant{fill:var(--card);}
+.flag-ico.gold .pennant{fill:var(--gold);}
+/* a tablet or a touch screen: the markers are too small to tap, so the list is the control */
+@media (max-width:899px),(pointer:coarse){ .map-card .mtn{pointer-events:none;} }
+@media (max-width:700px){
+  .camps{grid-template-columns:minmax(0,1fr);}
+  .map-card{position:static;max-width:360px;width:100%;justify-self:center;padding:8px;}
+  .mtn .dot-label{display:none;}
+}
+
+.btn:focus-visible,.pick:focus-visible,.ubtn:focus-visible,.up-link:focus-visible,.pill:focus-visible,.opt:focus-visible,
+.read:focus-visible,.lang-select:focus-visible,.typer input:focus-visible,.util .camp-music-float.camp-music-slot:focus-visible,
+.brief-more:focus-visible,.gd-x:focus-visible,.gtog:focus-visible{outline:3px solid var(--ink);outline-offset:3px;}
+
+/* ── the climb itself: a layer over the page, the camp's scene behind the card ──────────
+   --cardw and --gut place the card; the veil and the bar follow them. data-side="left"
+   (build.py, from the scene) mirrors the card, the veil, the mini-map and the keys line. */
+.play{display:none;--cardw:min(500px,42vw);--gut:clamp(16px,3.2vw,48px);--top:84px;}
+body.playing{overflow:hidden;}
+body.playing .play{display:block;position:fixed;inset:0;z-index:80;background:var(--paper-deep);overflow:hidden;}
+body.playing .up-link{display:none;}
+.scene{position:absolute;inset:0;}
+/* Innes, 2026-10-05: "careful not to chop off tops of pictures". The scenes are 3:2, so a wider
+   screen must lose some height: it comes off the bottom (foreground rock), never the top.
+   An upright screen loses width instead, and sees only the middle third; the people stand on
+   the side opposite the card (the measured quiet side), so the window slides towards them. */
+.scene img{width:100%;height:100%;object-fit:cover;object-position:50% 0%;display:block;transition:opacity .45s ease;}
+@media (max-aspect-ratio:1/1){
+  .play[data-side="right"] .scene img{object-position:22% 0%;}
+  .play[data-side="left"] .scene img{object-position:78% 0%;}
+}
+.scene img.loading{opacity:0;}
+.scene img:not([src]){visibility:hidden;}
+/* the veil: paper behind the card's column only, feathered just past its edge */
+.veil{position:absolute;inset:0;pointer-events:none;
+      background:linear-gradient(270deg,color-mix(in srgb,var(--paper) 58%,transparent) 0,
+                 color-mix(in srgb,var(--paper) 30%,transparent) calc(var(--cardw) + var(--gut)),transparent calc(var(--cardw) + var(--gut) + 72px)),
+                 linear-gradient(180deg,color-mix(in srgb,var(--paper) 30%,transparent) 0,transparent 110px);}
+.play[data-side="left"] .veil{
+      background:linear-gradient(90deg,color-mix(in srgb,var(--paper) 58%,transparent) 0,
+                 color-mix(in srgb,var(--paper) 30%,transparent) calc(var(--cardw) + var(--gut)),transparent calc(var(--cardw) + var(--gut) + 72px)),
+                 linear-gradient(180deg,color-mix(in srgb,var(--paper) 30%,transparent) 0,transparent 110px);}
+.pbar{position:absolute;left:0;right:0;top:0;z-index:4;display:flex;align-items:center;gap:10px;padding:14px 18px;}
+.pill{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:6px 15px;border-radius:999px;white-space:nowrap;
+      background:color-mix(in srgb,var(--paper) 84%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+      border:1px solid color-mix(in srgb,var(--card) 70%,transparent);color:var(--ink);font-size:14px;font-weight:600;
+      box-shadow:0 2px 12px -4px color-mix(in srgb,var(--ink) 30%,transparent);}
+button.pill{cursor:pointer;}
+button.pill:hover{background:var(--card);}
+.pb-chip{background:var(--c,var(--ink));color:var(--k,var(--paper));border-color:transparent;}
+.pbar .pb-chip{-webkit-backdrop-filter:none;backdrop-filter:none;}
+.pb-alt b{font-variant-numeric:tabular-nums;font-weight:700;}
+.pips{list-style:none;margin:0 0 0 4px;padding:8px 12px;display:flex;gap:6px;align-items:center;border-radius:999px;
+      background:color-mix(in srgb,var(--paper) 84%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+      border:1px solid color-mix(in srgb,var(--card) 70%,transparent);}
+.pips li{width:11px;height:11px;flex:none;border-radius:50%;border:1.5px solid color-mix(in srgb,var(--ink) 45%,transparent);background:transparent;transition:background .25s ease,border-color .25s ease;}
+.pips li.on{background:var(--c);border-color:color-mix(in srgb,var(--c) 70%,var(--ink));}
+.pips li.miss{border-color:var(--bad);border-width:2.5px;}
+.pips li.now{box-shadow:0 0 0 2px var(--paper),0 0 0 4px var(--ink);}
+.pb-utils{margin-left:auto;display:flex;align-items:center;}
+.pb-utils .util{gap:6px;}
+.pb-utils .lang-select{max-width:8.5em;}
+.pb-utils .ubtn,.pb-utils .camp-music-float.camp-music-slot{background:color-mix(in srgb,var(--paper) 84%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  border-color:color-mix(in srgb,var(--card) 70%,transparent);}
+
+/* the mini-map (computers): where you are on the mountain, on the side away from the card */
+.mini{position:absolute;z-index:2;left:20px;bottom:20px;width:clamp(170px,15vw,220px);padding:8px;border-radius:16px;
+      background:color-mix(in srgb,var(--paper) 78%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+      border:1px solid color-mix(in srgb,var(--card) 70%,transparent);box-shadow:0 10px 30px -14px color-mix(in srgb,var(--ink) 45%,transparent);}
+.play[data-side="left"] .mini{left:auto;right:20px;}
+.mtn-mini{aspect-ratio:500/540;}
+.mtn-mini .dot{cursor:default;}
+.mtn-mini .pulse{transform-box:fill-box;transform-origin:center;opacity:0;}
+.mtn-mini .pulse.on{opacity:.7;animation:climb-pulse 2.6s ease-in-out infinite;}
+@keyframes climb-pulse{0%,100%{transform:scale(.8);opacity:.7}50%{transform:scale(1.15);opacity:.15}}
+.climber{transition:transform .9s cubic-bezier(.3,.7,.3,1);}
+
+/* the card: a glass panel on the quieter side. It never scrolls: it is as tall as what is on it */
+.card{position:absolute;z-index:3;top:var(--top);bottom:24px;right:var(--gut);width:var(--cardw);display:flex;flex-direction:column;justify-content:center;gap:10px;pointer-events:none;}
+.play[data-side="left"] .card{right:auto;left:var(--gut);}
+.card-in{pointer-events:auto;max-height:100%;overflow:auto;overscroll-behavior:contain;
+         background:color-mix(in srgb,var(--paper) 86%,transparent);-webkit-backdrop-filter:blur(16px) saturate(1.1);backdrop-filter:blur(16px) saturate(1.1);
+         border:1px solid color-mix(in srgb,var(--card) 75%,transparent);border-radius:18px;padding:22px 24px;
+         box-shadow:0 24px 60px -28px color-mix(in srgb,var(--ink) 55%,transparent);}
+.card-in:focus{outline:none;}
+.keys{pointer-events:auto;align-self:flex-end;margin:0;font-size:15px;color:var(--ink-soft);padding:6px 14px;border-radius:999px;
+      background:color-mix(in srgb,var(--paper) 78%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);}
+.play[data-side="left"] .keys{align-self:flex-start;}
+.keys:empty{display:none;}
+/* where the bar has no room for the camp chip and the progress dots, they ride on the card */
+.sheet-head{display:none;align-items:center;flex-wrap:wrap;gap:6px 10px;margin:0 0 12px;}
+.sheet-head .pb-chip{display:inline-flex;align-items:center;min-height:26px;padding:2px 11px;border-radius:999px;font-size:12px;font-weight:700;line-height:1.3;}
+.sheet-head .pips{margin:0;padding:0;gap:5px;background:none;border:0;-webkit-backdrop-filter:none;backdrop-filter:none;}
+.sheet-head .pips li{width:10px;height:10px;}
+.k{margin:0 0 4px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);}
+.tense{font-family:'Fraunces',serif;font-weight:600;font-size:31px;line-height:1.1;margin:0 0 14px;color:var(--d,var(--ink));text-wrap:balance;}
+.tip{margin:0 0 14px;padding:10px 14px;border-left:5px solid var(--c,var(--accent));border-radius:0 12px 12px 0;background:color-mix(in srgb,var(--m,var(--accent-lighter)) 60%,var(--card));font-size:15px;line-height:1.5;}
+.cap{font-weight:700;letter-spacing:.02em;}
+.lines{list-style:none;margin:0;padding:0;display:grid;gap:12px;}
+.line{display:grid;grid-template-columns:38px minmax(0,1fr);gap:10px;align-items:start;}
+.fig-s{width:38px;height:46px;border-radius:9px;overflow:hidden;background:linear-gradient(180deg,color-mix(in srgb,var(--accent-lighter) 70%,var(--card)) 0%,var(--paper-deep) 100%);}
+.fig-s img,.fig-s svg{width:100%;height:100%;object-fit:cover;object-position:50% 28%;display:block;}
+.who{margin:0;font-size:13px;font-weight:700;line-height:1.3;}
+.via{font-weight:500;color:var(--ink-soft);}
+/* on a card, a line's gloss sits in the English's own box (template.js pair()), so it is
+   sized from it, never under 12.5px */
+.card-in .gl{font-size:max(12.5px,.86em);}
+.via .gl{display:inline;margin:0 0 0 4px;}
+/* the card's "Translation" toggle (template.js fit()): shown only while the card is too
+   full for the glosses beneath the English. Pressed, each gloss takes its English's place,
+   in the same box (gsw); pressed again, the English is back */
+.c-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px 12px;}
+.c-top > :first-child{min-width:0;}
+.gtog{display:none;position:relative;align-items:center;gap:5px;flex:none;margin-left:auto;min-height:30px;padding:3px 11px 3px 8px;
+      border-radius:999px;border:1px solid color-mix(in srgb,var(--ink) 24%,transparent);background:var(--card);color:var(--ink);
+      font-size:12px;font-weight:600;line-height:1.2;white-space:nowrap;cursor:pointer;}
+.gtog svg{width:16px;height:16px;flex:none;}
+.gtog:hover{border-color:var(--ink);}
+.gtog[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+.gtog::after{content:"";position:absolute;inset:-7px -3px;}   /* a 44px target for a finger, at 30px to look at */
+.again ~ .gtog{margin-left:0;}
+.fitG .gtog{display:inline-flex;}
+.fitG .gl{display:none;}
+.fitG.gsw .tx{display:none;}
+.fitG.gsw .gl{display:block;font-size:1em;line-height:inherit;margin:0;color:inherit;}
+.fitG.gsw .via .gl{display:inline;}
+.en{margin:2px 0 0;font-size:16px;line-height:1.5;}
+.acts{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-top:18px;}
+.read{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 6px;color:var(--accent-dark);font-weight:600;font-size:14px;text-underline-offset:3px;}
+
+/* a question */
+.q-top{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.q-top .fig-s{width:34px;height:40px;}
+.q-who{font-size:14px;font-weight:700;line-height:1.3;}
+.again{margin-left:auto;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:999px;background:var(--bad-bg);color:var(--bad);}
+.tchip{margin-left:auto;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--c);color:var(--k);white-space:nowrap;}
+.q-ask{margin:0 0 4px;font-size:13px;color:var(--ink-soft);}
+.answered .q-ask{display:none;}
+.q-line{margin:0 0 16px;font-size:21px;line-height:1.45;}
+.gap{display:inline-block;min-width:3.4em;height:1em;border-bottom:2px dashed color-mix(in srgb,var(--ink) 55%,transparent);vertical-align:-.1em;margin:0 .12em;}
+.cue{color:var(--ink-soft);font-size:.78em;white-space:nowrap;}
+/* the marked form: neutral chrome, never a camp colour (at the summit push that colour was the key) */
+mark.spot{color:inherit;font-weight:600;padding:0 .1em;border-radius:3px;background:linear-gradient(transparent 52%,var(--accent-light) 52%,var(--accent-light) 92%,transparent 92%);
+          box-shadow:inset 0 -3px 0 var(--ink);}
+.opts{display:grid;gap:8px;}
+.opt{display:flex;align-items:center;gap:12px;width:100%;min-height:50px;padding:9px 14px;border-radius:12px;text-align:left;cursor:pointer;
+     border:1.5px solid color-mix(in srgb,var(--ink) 18%,transparent);background:var(--card);color:var(--ink);font-size:17px;font-weight:500;line-height:1.3;
+     transition:border-color .12s ease,background .12s ease;}
+.opt:hover:not(:disabled){border-color:var(--ink);}
+.opt kbd{display:grid;place-items:center;width:26px;height:26px;flex:none;border-radius:7px;background:var(--accent-lighter);border:1px solid var(--accent-light);
+         font-family:'Inter',sans-serif;font-size:12px;font-weight:700;color:var(--ink-soft);}
+.opt .mk{margin-left:auto;font-weight:700;}
+.opt:disabled{cursor:default;}
+.opt.right{border-color:var(--good);background:var(--good-bg);}
+.opt.wrong{border-color:var(--bad);background:var(--bad-bg);}
+.opt.right .mk{color:var(--good);}
+.opt.wrong .mk{color:var(--bad);}
+/* answered: only the option chosen and the right one stay */
+.opt.out{display:none;}
+.opt.tense-opt{background:var(--c);color:var(--k);border-color:transparent;font-weight:700;}
+.opt.tense-opt kbd{background:color-mix(in srgb,var(--card) 70%,transparent);border-color:transparent;color:var(--ink);}
+.opt.tense-opt.right{box-shadow:0 0 0 3px var(--good);}
+.opt.tense-opt.wrong{box-shadow:0 0 0 3px var(--bad);}
+.opt.tense-opt .mk{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--card);}
+.opt .mk:empty{display:none;}
+.typer{display:flex;gap:8px;margin:0;}
+.typer input{flex:1;min-width:0;min-height:50px;padding:10px 14px;border-radius:12px;border:1.5px solid color-mix(in srgb,var(--ink) 28%,transparent);
+             background:var(--card);color:var(--ink);font-family:'Inter',sans-serif;font-size:17px;}
+.typer input.right{border-color:var(--good);background:var(--good-bg);}
+.typer input.wrong{border-color:var(--bad);background:var(--bad-bg);}
+.typer .btn{flex:none;}
+.typer.done .btn{display:none;}
+
+/* after an answer */
+.fb:empty{display:none;}
+.fb{margin-top:14px;padding-top:12px;border-top:1px solid color-mix(in srgb,var(--ink) 14%,transparent);}
+.verdict{display:flex;align-items:center;gap:8px;margin:0;font-size:16px;font-weight:700;}
+.verdict.good{color:var(--good);}
+.verdict.bad{color:var(--bad);}
+.verdict svg{width:20px;height:20px;flex:none;}
+.more{margin:2px 0 0;font-size:14px;color:var(--ink-soft);}
+.why{margin:8px 0 0;font-size:15px;line-height:1.5;}
+.fb .acts{margin-top:14px;}
+
+/* a camp reached, and the summit */
+.reached{display:flex;align-items:center;gap:14px;margin:0 0 6px;}
+.reached svg{width:46px;height:52px;flex:none;}
+.reached h2{margin:0;font-size:26px;line-height:1.15;}
+.score{margin:0;font-size:17px;font-weight:600;}
+.goldline{margin:2px 0 14px;font-size:14px;color:var(--ink-soft);}
+.stats{display:flex;flex-wrap:wrap;gap:4px 18px;margin:12px 0 0;font-size:15px;font-weight:600;}
+.v-top .acts{margin-top:12px;}
+.rv-h{margin:16px 0 8px;font-family:'Fraunces',serif;font-size:19px;font-weight:600;}
+.rv-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;}
+.rv-chips{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px;flex:1 1 220px;}
+.rv-chips li{font-size:12px;font-weight:700;line-height:1.3;padding:4px 10px;border-radius:999px;background:var(--c);color:var(--k);white-space:nowrap;}
+.rv-chips li.rv-more{background:var(--accent-light);color:var(--ink);}
+.rv-open{flex:none;}
+.rv-n{text-shadow:none;display:inline-grid;place-items:center;min-width:24px;height:24px;padding:0 6px;border-radius:999px;background:var(--ink);color:var(--paper);font-size:12px;}
+.rv-none{margin:0;font-size:15px;color:var(--ink-soft);}
+
+/* the lines missed first time, in the route map's own dialog */
+dialog.guide-dialog{width:min(680px,calc(100vw - 32px));max-height:min(86vh,900px);max-height:min(86dvh,900px);overflow:auto;padding:22px 26px 20px;
+       border:0;border-radius:18px;background:var(--card);color:var(--ink);box-shadow:0 30px 80px -24px color-mix(in srgb,var(--ink) 55%,transparent);}
+dialog.guide-dialog::backdrop{background:color-mix(in srgb,var(--ink) 50%,transparent);}
+.gd-top{display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.gd-top form,.gd-foot form{margin:0;}
+.rv-title{margin:0;font-size:24px;line-height:1.2;}
+.gd-x{width:44px;height:44px;border-radius:50%;border:1px solid var(--accent-light);background:var(--card);color:var(--ink);
+      font-size:24px;line-height:1;cursor:pointer;flex:none;}
+.gd-x:hover{background:var(--accent-lighter);}
+.gd-foot{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;padding-top:16px;border-top:1px solid var(--accent-light);}
+.rv{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:14px;}
+.rv-g{border-left:5px solid var(--c);padding:2px 0 2px 12px;}
+.rv-g p{margin:0 0 4px;font-size:15px;line-height:1.5;}
+.rv-g .rv-t{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:4px;}
+@media (max-width:560px){ dialog.guide-dialog{padding:16px 14px 14px;} }
+
+@media (min-width:900px){ .keys{display:block;} }
+
+/* a computer under 1180px: the bar keeps one row; the camp chip and the dots ride on the card */
+@media (max-width:1179px){
+  .pbar .pb-chip,.pbar .pb-pips{display:none;}
+  .sheet-head{display:flex;}
+}
+.play[data-view="arrive"] .sheet-head,.play[data-view="summit"] .sheet-head{display:none;}
+
+/* a short computer screen (1366x768, 1024x768, 1280x720): the same card, set tighter */
+@media (min-width:900px) and (max-height:820px){
+  .play{--top:76px;}
+  .card{bottom:16px;}
+  .card-in{padding:18px 20px;}
+  .q-line{font-size:20px;margin-bottom:12px;}
+  .opt{min-height:46px;padding:7px 14px;}
+  .tense{font-size:28px;margin-bottom:10px;}
+  .tip{margin-bottom:10px;padding:8px 12px;}
+  .lines{gap:8px;}
+  .fb{margin-top:10px;padding-top:10px;}
+  .fb .acts{margin-top:10px;}
+  .acts{margin-top:12px;}
+}
+
+/* phones and tablets: the scene stays full-bleed, one row of pills over it, and a card that
+   is only as tall as what is on it, rising from the bottom */
+@media (max-width:899px){
+  .play{--top:auto;}
+  .keys,.mini{display:none;}
+  .veil{background:linear-gradient(0deg,color-mix(in srgb,var(--paper) 40%,transparent) 0,transparent 55%),
+                   linear-gradient(180deg,color-mix(in srgb,var(--paper) 26%,transparent) 0,transparent 90px);}
+  .play[data-side="left"] .veil{background:linear-gradient(0deg,color-mix(in srgb,var(--paper) 40%,transparent) 0,transparent 55%),
+                   linear-gradient(180deg,color-mix(in srgb,var(--paper) 26%,transparent) 0,transparent 90px);}
+  .pbar{flex-wrap:wrap;gap:8px;padding:10px 12px;}
+  .pbar .pb-chip,.pbar .pb-pips{display:none;}
+  .sheet-head{display:flex;}
+  .pb-utils .lang-select{max-width:7.5em;}
+  .card,.play[data-side="left"] .card{top:auto;bottom:16px;left:50%;right:auto;width:min(560px,calc(100vw - 32px));transform:translateX(-50%);justify-content:flex-end;}
+  .card-in{max-height:calc(100vh - 88px);max-height:calc(100dvh - 88px);padding:18px 18px;}
+  .tense{font-size:27px;}
+  .q-line{font-size:18px;}
+}
+/* a phone held upright: a bottom sheet the width of the screen */
+@media (max-width:599px){
+  .card,.play[data-side="left"] .card{left:0;right:0;bottom:0;width:auto;transform:none;}
+  .card-in{border-radius:20px 20px 0 0;border-bottom:0;padding:14px 16px calc(14px + env(safe-area-inset-bottom,0px));
+           max-height:calc(100vh - 72px);max-height:calc(100dvh - 72px);background:color-mix(in srgb,var(--paper) 93%,transparent);}
+  .q-top{margin-bottom:8px;}
+  .q-top .fig-s{width:30px;height:36px;}
+  .q-line{margin-bottom:12px;}
+  .opt{min-height:48px;}
+  .tip{padding:8px 12px;}
+  .lines{gap:10px;}
+  .acts{margin-top:14px;}
+  .fb{margin-top:12px;padding-top:10px;}
+  .fb .acts{margin-top:12px;}
+}
+/* a narrow phone with the language menu showing: the back button keeps its arrow only */
+@media (max-width:440px){
+  .pbar:has(.lang-select:not(.solo)) .pb-back .lbl{display:none;}
+  .pbar:has(.lang-select:not(.solo)) .pb-back{padding:6px 14px;}
+}
+/* a phone on its side, or any screen under 560px tall: the computer's arrangement, tight.
+   The card takes the full height on the quieter side, the bar the rest of the top row */
+@media (max-height:560px) and (min-aspect-ratio:1/1){
+  .play{--cardw:min(460px,56vw);--gut:8px;--top:8px;}
+  /* fit4, the last resort: a long summit answer in French, Portuguese or Russian on a phone on its
+     side; the card takes more of the width so the lines wrap less (the scene still shows) */
+  .card:has(> .card-in.fit4){--cardw:min(580px,70vw);}
+  .keys,.mini{display:none;}
+  .veil{background:linear-gradient(270deg,color-mix(in srgb,var(--paper) 58%,transparent) 0,
+                   color-mix(in srgb,var(--paper) 30%,transparent) calc(var(--cardw) + var(--gut)),transparent calc(var(--cardw) + var(--gut) + 60px));}
+  .play[data-side="left"] .veil{background:linear-gradient(90deg,color-mix(in srgb,var(--paper) 58%,transparent) 0,
+                   color-mix(in srgb,var(--paper) 30%,transparent) calc(var(--cardw) + var(--gut)),transparent calc(var(--cardw) + var(--gut) + 60px));}
+  .pbar{flex-wrap:wrap;gap:6px;padding:8px 10px;right:calc(var(--cardw) + var(--gut));}
+  .play[data-side="left"] .pbar{left:calc(var(--cardw) + var(--gut));right:0;}
+  .pbar .pb-chip,.pbar .pb-pips{display:none;}
+  .sheet-head{display:flex;margin-bottom:8px;}
+  .card,.play[data-side="left"] .card{top:var(--top);bottom:8px;width:var(--cardw);transform:none;justify-content:center;}
+  .card{left:auto;right:var(--gut);}
+  .play[data-side="left"] .card{left:var(--gut);right:auto;}
+  .card-in{max-height:100%;border-radius:16px;border-bottom:1px solid color-mix(in srgb,var(--card) 75%,transparent);padding:12px 16px;
+           background:color-mix(in srgb,var(--paper) 88%,transparent);}
+  .k{margin-bottom:2px;}
+  .tense{font-size:23px;margin-bottom:8px;}
+  .tip{font-size:14px;margin-bottom:8px;padding:6px 10px;}
+  .lines{gap:6px;}
+  .line{grid-template-columns:30px minmax(0,1fr);gap:8px;}
+  .line .fig-s{width:30px;height:36px;}
+  .en{font-size:14px;line-height:1.4;}
+  .q-top{margin-bottom:4px;gap:8px;}
+  .q-top .fig-s{width:24px;height:28px;border-radius:6px;}
+  .q-who{font-size:13px;}
+  .q-ask{font-size:12px;margin-bottom:2px;}
+  .q-line{font-size:17px;line-height:1.35;margin-bottom:8px;}
+  .opts{gap:6px;}
+  .opt{min-height:44px;padding:5px 12px;font-size:16px;}
+  .typer input{min-height:44px;padding:6px 12px;}
+  .typer .btn{min-height:44px;}
+  .fb{margin-top:8px;padding-top:6px;}
+  .verdict{font-size:15px;}
+  .more{font-size:13px;margin-top:0;}
+  .why{font-size:14px;line-height:1.4;margin-top:4px;}
+  .fb .acts,.acts{margin-top:8px;}
+  .btn{min-height:44px;padding:8px 18px;}
+  .reached svg{width:34px;height:38px;}
+  .reached h2{font-size:22px;}
+  .goldline{margin-bottom:8px;}
+  .rv-h{margin:10px 0 6px;font-size:17px;}
+  .stats{margin-top:6px;}
+  /* the summit is the end of the climb, not a line to answer: both its steps take the width
+     under the bar, in two columns (step one: the closing lines, two by two; step two: the
+     scores and the way on, beside the review) */
+  .play[data-view="summit"]{--cardw:calc(100vw - 16px);--top:60px;}
+  .play[data-view="summit"] .pbar,.play[data-side="left"][data-view="summit"] .pbar{left:0;right:0;}
+  .v-top .lines{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:24px;}
+  .v-top.s2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:24px;align-items:start;}
+  .v-top.s2 .rv-h{margin-top:4px;}
+}
+
+/* the card is still too tall for the screen (a long C1 line on a phone on its side): the
+   page's script tightens it a step at a time until it fits (template.js fit()) */
+.fit1 .q-ask{display:none;}
+.fit1 .line{grid-template-columns:minmax(0,1fr);}
+.fit1 .line .fig-s,.fit1 .q-top .fig-s{display:none;}
+.fit1 .q-top{margin-bottom:4px;}
+.fit1 .lines{gap:6px;}
+.fit1 .tip{margin-bottom:8px;}
+.fit1 .tense{margin-bottom:6px;}
+.fit1 .acts,.fit1 .fb .acts{margin-top:8px;}
+.fit1 .fb{margin-top:8px;padding-top:8px;}
+.fit1 .sheet-head{margin-bottom:6px;}
+.fit1 .stats{margin-top:6px;}
+.fit1 .rv-h{margin:10px 0 6px;}
+/* "Next" beside the verdict; a line answered right shows its answer in the sentence only */
+.fit2 .fb{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:12px;}
+.fit2 .fb > *{grid-column:1;}
+.fit2 .fb .acts{grid-column:2;grid-row:1 / span 2;margin:0;align-self:start;}
+.fit2 .v-q.answered:not([data-kind="spot"]) .opt.right{display:none;}
+.fit2 .v-q.answered .opt{min-height:36px;padding-top:3px;padding-bottom:3px;}   /* answered: no longer a tap target */
+.fit2 .q-line{margin-bottom:8px;}
+.fit3 .q-line{font-size:16px;line-height:1.35;}
+.fit3 .en,.fit3 .why,.fit3 .tip{font-size:13px;line-height:1.4;}
+.fit3 .tense{font-size:21px;}
+.fit3 .opt{min-height:44px;padding:4px 12px;font-size:15px;}
+.fit4 .q-line{font-size:15px;line-height:1.3;margin-bottom:4px;}
+.fit4 .en,.fit4 .why,.fit4 .tip{font-size:12px;line-height:1.35;}
+.fit4 .lines{gap:3px;}
+.fit4 .fb{margin-top:4px;padding-top:4px;}
+.fit4 .acts,.fit4 .fb .acts{margin-top:4px;}
+
+@media (prefers-reduced-motion:reduce){
+  .pick,.btn,.up-link,.mtn .seg,.mtn .dot-label,.scene img,.pips li,.opt{transition:none;}
+  .climber{transition:none;}
+  .mtn-mini .pulse.on{animation:none;opacity:.6;}
+}
+@media print{ .play,.util{display:none!important;} body.playing{overflow:visible;} }
+/* The Descent (lesson-template/build/sherpa-climb/descent.css). build.py appends this after
+   template.css for the descent only, so nothing here needs scoping, and The Climb never sees it.
+
+   Night goes AROUND the card, as on the route map's descent panel: the card stays paper glass,
+   where every contrast gate already holds (on --night, --good scores 2.9:1 and camp twelve's
+   #454545 1.6:1). The start screen stays paper too, framing the night mountain as the map does.
+   The colours are the map's own tokens (--night, --night-ink, --night-soft), read by build.py. */
+
+/* ── night: re-point the tokens, not the rules (custom properties resolve per element) ── */
+.veil{--paper:var(--night);}
+.mini{--paper:var(--night);}
+.pbar{--paper:var(--night);--card:var(--night);--ink:var(--night-ink);--ink-soft:var(--night-soft);}
+body.playing .play{background:var(--night);}
+
+/* ── the mountain at night, as the map's .descent-map ───────────────────────────── */
+.mtn .dot-label{fill:var(--night-ink);stroke:var(--night);stroke-width:3px;}
+.mtn .dflag path,.mtn-mini .pulse{stroke:var(--night-ink);}
+.mtn .dot.lit .dot-fill,.mtn .dot:hover .dot-fill{stroke:var(--night-ink);stroke-width:3.5;}
+/* the four passives nobody uses: faint and dashed, no number, no label, not a control */
+.mtn .no-camp{pointer-events:none;}
+.mtn .no-camp .dot-fill{opacity:.30;stroke-dasharray:3 3;}
+/* a pale casing under each leg, so camp twelve's and camp ten's dark colours still read on night */
+.mtn .seg-case{stroke:var(--night-ink);opacity:.35;}
+
+/* ── the list of camps, as the map's .desc-row: night rows, the camp colour down the side,
+   the number in a diamond ─────────────────────────────────────────────────────────── */
+.pick{background:var(--night);color:var(--night-ink);border:0;border-left:8px solid var(--c,var(--night-soft));}
+.pick-meta{color:var(--night-soft);}
+.pick-best{color:var(--night-ink);}
+.pick-num{width:26px;height:26px;margin:0 3px;border-radius:3px;transform:rotate(45deg);
+          outline:1.5px solid var(--night-ink);outline-offset:-1px;}
+.pick-num > span,.pick-num svg{transform:rotate(-45deg);}
+.pick-num svg{width:17px;height:17px;}
+.pick-summit{border-left:8px solid var(--night-soft);}
+.pick-summit .pick-num{background:var(--night-ink);color:var(--night);}
+
+/* a line in the guide's welcome that someone else says carries its speaker's name */
+.brief-by{font-weight:700;color:var(--accent-text);}
+
+/* ── the storm: snow over the scene, under the veil and the card ───────────────────────
+   CSS only: two tiled layers of flakes, each sliding one tile left and one tile down on a
+   loop, so the loop is seamless and the snow drifts on the wind. Compositor-only (transform).
+   The level is the stage's 'storm' (content_descent.py), data-storm on #play: 0 clear,
+   1 flurries, 2 snow with a darker sky, 3 whiteout. It starts subtle; --storm-k is the one
+   knob for "stronger" (2 doubles every layer's opacity, and the sky's darkening). No lightning:
+   nothing flashes. Under prefers-reduced-motion the flakes stand still. */
+.play{--storm-k:1;}
+.storm{position:absolute;inset:0;pointer-events:none;overflow:hidden;
+       --flake:color-mix(in srgb,var(--night-ink) 80%,transparent);}
+.storm::before,.storm::after{content:"";position:absolute;left:0;bottom:0;opacity:0;animation:none;
+       transition:opacity 1.2s ease;will-change:transform;}
+/* near: big flakes on a 220px tile */
+.storm::before{top:-220px;right:-220px;background-size:220px 220px;background-image:
+  radial-gradient(circle at 12% 18%,var(--flake) 0 1.7px,transparent 2.4px),
+  radial-gradient(circle at 58% 9%,var(--flake) 0 1.2px,transparent 1.9px),
+  radial-gradient(circle at 83% 41%,var(--flake) 0 1.9px,transparent 2.6px),
+  radial-gradient(circle at 34% 52%,var(--flake) 0 1.1px,transparent 1.8px),
+  radial-gradient(circle at 71% 76%,var(--flake) 0 1.6px,transparent 2.3px),
+  radial-gradient(circle at 21% 88%,var(--flake) 0 1.3px,transparent 2px),
+  radial-gradient(circle at 47% 31%,var(--flake) 0 1px,transparent 1.6px),
+  radial-gradient(circle at 93% 93%,var(--flake) 0 1.4px,transparent 2.1px);}
+/* far: small flakes on a 340px tile, slower */
+.storm::after{top:-340px;right:-340px;background-size:340px 340px;background-image:
+  radial-gradient(circle at 7% 12%,var(--flake) 0 .9px,transparent 1.5px),
+  radial-gradient(circle at 29% 37%,var(--flake) 0 .8px,transparent 1.4px),
+  radial-gradient(circle at 52% 6%,var(--flake) 0 1px,transparent 1.6px),
+  radial-gradient(circle at 76% 28%,var(--flake) 0 .8px,transparent 1.4px),
+  radial-gradient(circle at 91% 58%,var(--flake) 0 1px,transparent 1.6px),
+  radial-gradient(circle at 63% 49%,var(--flake) 0 .7px,transparent 1.3px),
+  radial-gradient(circle at 40% 71%,var(--flake) 0 .9px,transparent 1.5px),
+  radial-gradient(circle at 15% 83%,var(--flake) 0 .8px,transparent 1.4px),
+  radial-gradient(circle at 84% 90%,var(--flake) 0 1px,transparent 1.6px);}
+@keyframes storm-near{from{transform:translate3d(0,0,0)}to{transform:translate3d(-220px,220px,0)}}
+@keyframes storm-far{from{transform:translate3d(0,0,0)}to{transform:translate3d(-340px,340px,0)}}
+.play[data-storm="1"] .storm::before{opacity:calc(.25 * var(--storm-k));animation:storm-near 28s linear infinite;}
+.play[data-storm="1"] .storm::after{opacity:calc(.2 * var(--storm-k));animation:storm-far 40s linear infinite;}
+.play[data-storm="2"] .storm::before{opacity:calc(.35 * var(--storm-k));animation:storm-near 18s linear infinite;}
+.play[data-storm="2"] .storm::after{opacity:calc(.28 * var(--storm-k));animation:storm-far 26s linear infinite;}
+.play[data-storm="3"] .storm::before{opacity:calc(.45 * var(--storm-k));animation:storm-near 11s linear infinite;}
+.play[data-storm="3"] .storm::after{opacity:calc(.36 * var(--storm-k));animation:storm-far 16s linear infinite;}
+/* a heavier sky from level 2: the top of the scene darkens a little, and still shows */
+.play[data-storm="2"] .storm,.play[data-storm="3"] .storm{
+  background:linear-gradient(180deg,color-mix(in srgb,var(--night) calc(22% * var(--storm-k)),transparent) 0,transparent 70%);}
+
+@media (prefers-reduced-motion:reduce){
+  .play[data-storm] .storm::before,.play[data-storm] .storm::after{animation:none;transition:none;}
+  .storm{transition:none;}
+}
+</style>
+<!-- SHERPA-TYPE:start -->
+<link rel="preload" href="Sherpa%20Tensing/fonts/Faktum-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="Sherpa%20Tensing/fonts/Faktum-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
+<style id="sherpa-type">
+/* Faktum and the type a size up (tools/sherpa_type.py): each rule below repeats one of
+   the page's own, one class stronger, in the same order and @media */
+@font-face{font-family:'Faktum';src:url('Sherpa%20Tensing/fonts/Faktum-Regular.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap;}
+@font-face{font-family:'Faktum';src:url('Sherpa%20Tensing/fonts/Faktum-RegularItalic.woff2') format('woff2');font-weight:400;font-style:italic;font-display:swap;}
+@font-face{font-family:'Faktum';src:url('Sherpa%20Tensing/fonts/Faktum-Medium.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap;}
+@font-face{font-family:'Faktum';src:url('Sherpa%20Tensing/fonts/Faktum-SemiBold.woff2') format('woff2');font-weight:600;font-style:normal;font-display:swap;}
+@font-face{font-family:'Faktum';src:url('Sherpa%20Tensing/fonts/Faktum-SemiBoldItalic.woff2') format('woff2');font-weight:600;font-style:italic;font-display:swap;}
+@font-face{font-family:'Faktum';src:url('Sherpa%20Tensing/fonts/Faktum-Bold.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap;}
+@font-face{font-family:'Faktum';src:url('Sherpa%20Tensing/fonts/Faktum-BoldItalic.woff2') format('woff2');font-weight:700;font-style:italic;font-display:swap;}
+@font-face{font-family:'Faktum';src:url('Sherpa%20Tensing/fonts/Faktum-ExtraBold.woff2') format('woff2');font-weight:800;font-style:normal;font-display:swap;}
+:root{--sherpa-font:'Faktum','Inter',system-ui,sans-serif;--sherpa-display:'Fraunces',serif;}
+:root svg text,:root svg tspan{font-family:var(--sherpa-font);}
+/* form controls do not inherit a font: without this, 30 buttons drew in Arial */
+:root button,:root input,:root select,:root textarea{font-family:var(--sherpa-font);}
+:root body{font-family:var(--sherpa-font);}
+:root h1,:root h2,:root h3{font-family:var(--sherpa-display);}
+:root button{font-family:var(--sherpa-font);}
+:root .wordmark .brand{font-family:var(--sherpa-display);font-size:clamp(30px,5vw,42px);}
+:root .wordmark .sub{font-size:clamp(14px,1.6vw,17px);}
+:root .lang-select{font-family:var(--sherpa-font);font-size:14px;}
+:root .up-link{font:600 15px/1 var(--sherpa-font);}
+:root .up-link .arw{font-size:16px;}
+@media (max-width:640px){
+:root .up-link{font-size:14px;}
+}
+:root .kicker-pill{font-size:13px;}
+:root .hero h1{font-size:clamp(36px,5.29vw,56px);}
+:root .hero .lead{font-size:18px;}
+:root .btn{font-family:var(--sherpa-font);font-size:15px;}
+:root .section-title{font-family:var(--sherpa-display);font-size:30px;}
+:root .note-line{font-size:16px;}
+:root .brief-who{font-size:13px;}
+:root .brief li{font-size:16px;}
+:root .brief-more{font-size:15px;}
+:root .mtext b{font-size:16px;}
+:root .mtext .role{font-size:14px;}
+:root .momo{font-size:15px;}
+:root .pick{font-size:16px;}
+:root .pick-num{font-size:14px;}
+:root .pick-lvl{font-size:12px;}
+:root .pick-best{font-size:14px;}
+:root .pill{font-size:15px;}
+:root .keys{font-size:16px;}
+:root .sheet-head .pb-chip{font-size:13px;}
+:root .k{font-size:13px;}
+:root .tense{font-family:var(--sherpa-display);font-size:35.5px;}
+:root .tip{font-size:16px;}
+:root .who{font-size:14px;}
+:root .gtog{font-size:13px;}
+:root .en{font-size:17px;}
+:root .read{font-size:15px;}
+:root .q-who{font-size:15px;}
+:root .again{font-size:12px;}
+:root .tchip{font-size:13px;}
+:root .q-ask{font-size:14px;}
+:root .q-line{font-size:24px;}
+:root .opt{font-size:18px;}
+:root .opt kbd{font-family:var(--sherpa-font);font-size:13px;}
+:root .typer input{font-family:var(--sherpa-font);font-size:18px;}
+:root .verdict{font-size:17px;}
+:root .more{font-size:15px;}
+:root .why{font-size:16px;}
+:root .reached h2{font-size:30px;}
+:root .score{font-size:18px;}
+:root .goldline{font-size:15px;}
+:root .stats{font-size:16px;}
+:root .rv-h{font-family:var(--sherpa-display);font-size:20px;}
+:root .rv-chips li{font-size:13px;}
+:root .rv-n{font-size:13px;}
+:root .rv-none{font-size:16px;}
+:root .rv-title{font-size:27.5px;}
+:root .gd-x{font-size:27.5px;}
+:root .rv-g p{font-size:16px;}
+:root .rv-g .rv-t{font-size:13px;}
+@media (min-width:900px) and (max-height:820px){
+:root .q-line{font-size:23px;}
+:root .tense{font-size:32px;}
+}
+@media (max-width:899px){
+:root .tense{font-size:31px;}
+:root .q-line{font-size:19px;}
+}
+@media (max-height:560px) and (min-aspect-ratio:1/1){
+:root .tense{font-size:26.5px;}
+:root .tip{font-size:15px;}
+:root .en{font-size:15px;}
+:root .q-who{font-size:14px;}
+:root .q-ask{font-size:13px;}
+:root .q-line{font-size:18px;}
+:root .opt{font-size:17px;}
+:root .verdict{font-size:16px;}
+:root .more{font-size:14px;}
+:root .why{font-size:15px;}
+:root .reached h2{font-size:25.5px;}
+:root .rv-h{font-size:18px;}
+}
+:root .fit3 .q-line{font-size:17px;}
+:root .fit3 .en,:root .fit3 .why,:root .fit3 .tip{font-size:14px;}
+:root .fit3 .tense{font-size:24px;}
+:root .fit3 .opt{font-size:16px;}
+:root .fit4 .q-line{font-size:16px;}
+:root .fit4 .en,:root .fit4 .why,:root .fit4 .tip{font-size:13px;}
+/* the wordmark is a name: one line, and on a narrow screen it takes the row to
+   itself, with the line beside it (or the hub's language menu) underneath */
+:root .wordmark .brand{white-space:nowrap;}
+@media (max-width:700px){:root .wordmark{flex-wrap:wrap;row-gap:6px;}:root .wordmark .brand{flex:1 0 100%;}}
+</style>
+<!-- SHERPA-TYPE:end -->
+<!-- SHERPA-TOPO:start -->
+<style id="sherpa-topo">
+/* contour areas (tools/sherpa_topo.py): the hub's tile as a mask, drawn in this
+   page's --accent-dark, in six areas; text on the paper wears a paper halo */
+body{position:relative;}
+body::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:var(--accent-dark);opacity:1;
+  -webkit-mask:url("Sherpa%20Tensing/topo-tile.svg") 0 0/640px 640px repeat,linear-gradient(#000 0,#000 40%,transparent 100%) 0 0/100% 900px no-repeat,linear-gradient(to top,#000 0,#000 30%,transparent 100%) 0 100%/100% 700px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) -620px 24%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) calc(100% + 620px) 46%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) -620px 68%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) calc(100% + 620px) 88%/1240px 1000px no-repeat;
+  mask:url("Sherpa%20Tensing/topo-tile.svg") 0 0/640px 640px repeat,linear-gradient(#000 0,#000 40%,transparent 100%) 0 0/100% 900px no-repeat,linear-gradient(to top,#000 0,#000 30%,transparent 100%) 0 100%/100% 700px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) -620px 24%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) calc(100% + 620px) 46%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) -620px 68%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) calc(100% + 620px) 88%/1240px 1000px no-repeat;
+  /* after the shorthand, which resets it: the tile intersects the union of the areas */
+  -webkit-mask-composite:source-in,source-over,source-over,source-over,source-over,source-over,source-over;
+  mask-composite:intersect,add,add,add,add,add,add;}
+.wordmark,h1,h1 ~ p,.camp > .camp-label,.camp > h2,.camp > p.example,.camp > p.chart-note,.btnrow > a.route-link,.tr-bar > .tr-label,.voice-bar a.ghost{text-shadow:0 0 2px var(--paper),0 0 4px var(--paper),0 0 6px var(--paper),0 0 8px var(--paper);}
+/* these two take a background on hover, where a halo would be a glow */
+.btnrow > a.route-link:hover,.voice-bar a.ghost:hover{text-shadow:none;}
+/* a hero diagram paints a paper rectangle: feather its edge into a clearing */
+svg.hero-diagram{background:var(--paper);box-shadow:0 0 18px 14px var(--paper);}
+.ring-hero-svg{border-radius:50%;box-shadow:0 0 16px 10px var(--paper);}
+@media print{body::before{display:none;}}
+</style>
+<!-- SHERPA-TOPO:end -->
+<!-- SHERPA-SHEEN:start -->
+<style id="sherpa-sheen">
+/* a living sheen across the contours (tools/sherpa_sheen.py): two bands of light,
+   moved by transform only, seen through the contour lines */
+:root{--sheen:#CE5979;--sheen-hot:#F89179;}
+body{position:relative;}
+.topo-sheen{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden;overflow:clip;
+  -webkit-mask:url("Sherpa%20Tensing/topo-sheen.svg") 0 0/640px 640px repeat,linear-gradient(#000 0,#000 40%,transparent 100%) 0 0/100% 900px no-repeat,linear-gradient(to top,#000 0,#000 30%,transparent 100%) 0 100%/100% 700px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) -620px 24%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) calc(100% + 620px) 46%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) -620px 68%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) calc(100% + 620px) 88%/1240px 1000px no-repeat;
+  mask:url("Sherpa%20Tensing/topo-sheen.svg") 0 0/640px 640px repeat,linear-gradient(#000 0,#000 40%,transparent 100%) 0 0/100% 900px no-repeat,linear-gradient(to top,#000 0,#000 30%,transparent 100%) 0 100%/100% 700px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) -620px 24%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) calc(100% + 620px) 46%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) -620px 68%/1240px 1100px no-repeat,radial-gradient(closest-side,#000 35%,transparent 100%) calc(100% + 620px) 88%/1240px 1000px no-repeat;
+  /* after the shorthand, which resets it: the tile intersects the union of the areas */
+  -webkit-mask-composite:source-in,source-over,source-over,source-over,source-over,source-over,source-over;
+  mask-composite:intersect,add,add,add,add,add,add;}
+.topo-sheen i{display:block;position:sticky;top:0;height:100vh;will-change:transform;}
+.topo-sheen i:nth-child(1){width:calc(100% + 1625px);margin-left:-1625px;background:repeating-linear-gradient(100deg,transparent 0,transparent 1300px,var(--sheen) 1420px,var(--sheen-hot) 1450px,var(--sheen) 1480px,transparent 1600px);opacity:0.95;
+  animation:topo-sheen-1 11s linear infinite;}
+@keyframes topo-sheen-1{from{transform:translateX(0)}to{transform:translateX(1624.7px)}}
+.topo-sheen i:nth-child(2){width:calc(100% + 2419px);margin-left:0px;margin-top:-100vh;background:repeating-linear-gradient(72deg,transparent 0,transparent 2100px,var(--sheen) 2180px,var(--sheen-hot) 2200px,var(--sheen) 2220px,transparent 2300px);opacity:0.6;
+  animation:topo-sheen-2 19s linear infinite;}
+@keyframes topo-sheen-2{from{transform:translateX(0)}to{transform:translateX(-2418.4px)}}
+@media (prefers-reduced-motion:reduce){.topo-sheen{display:none;}}
+@media print{.topo-sheen{display:none;}}
+</style>
+<!-- SHERPA-SHEEN:end -->
+<!-- SHERPA-SKY:start -->
+<style id="sherpa-sky">
+/* clouds drifting across the screen, seen from above (tools/sherpa_sky.py): nine clouds,
+   each on its own loop, in a fixed screen-sized layer, by transform only */
+.sherpa-sky{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;}
+.sherpa-sky i{position:absolute;left:0;background:0 0/100% 100% no-repeat;will-change:transform;animation:sherpa-sky-drift linear infinite;}
+@keyframes sherpa-sky-drift{from{transform:translateX(-100%)}to{transform:translateX(100vw)}}
+.sherpa-sky i:nth-child(1){top:8%;width:560px;height:311px;background-image:url("Sherpa%20Tensing/cloud-1.webp");animation-duration:95s;animation-delay:-10s;opacity:0.95;}
+.sherpa-sky i:nth-child(2){top:38%;width:480px;height:260px;background-image:url("Sherpa%20Tensing/cloud-2.webp");animation-duration:110s;animation-delay:-61s;opacity:0.95;}
+.sherpa-sky i:nth-child(3){top:64%;width:620px;height:339px;background-image:url("Sherpa%20Tensing/cloud-3.webp");animation-duration:85s;animation-delay:-26s;opacity:0.95;}
+.sherpa-sky i:nth-child(4){top:84%;width:430px;height:230px;background-image:url("Sherpa%20Tensing/cloud-4.webp");animation-duration:120s;animation-delay:-96s;opacity:0.9;}
+.sherpa-sky i:nth-child(5){top:20%;width:300px;height:162px;background-image:url("Sherpa%20Tensing/cloud-5.webp");animation-duration:170s;animation-delay:-34s;opacity:0.6;}
+.sherpa-sky i:nth-child(6){top:50%;width:260px;height:149px;background-image:url("Sherpa%20Tensing/cloud-6.webp");animation-duration:190s;animation-delay:-124s;opacity:0.55;}
+.sherpa-sky i:nth-child(7){top:74%;width:280px;height:156px;background-image:url("Sherpa%20Tensing/cloud-1.webp");animation-duration:180s;animation-delay:-81s;opacity:0.6;}
+.sherpa-sky i:nth-child(8){top:2%;width:240px;height:130px;background-image:url("Sherpa%20Tensing/cloud-2.webp");animation-duration:200s;animation-delay:-180s;opacity:0.5;}
+.sherpa-sky i:nth-child(9){top:92%;width:270px;height:147px;background-image:url("Sherpa%20Tensing/cloud-3.webp");animation-duration:175s;animation-delay:-9s;opacity:0.55;}
+/* the smallest phones: the far clouds only would crowd, so the near ones shrink */
+@media (max-width:560px){.sherpa-sky i{transform-origin:0 0;}.sherpa-sky i:nth-child(-n+4){scale:.7;}}
+@media (prefers-reduced-motion:reduce){.sherpa-sky i{animation-play-state:paused;}}
+@media print{.sherpa-sky{display:none;}}
+</style>
+<!-- SHERPA-SKY:end -->
+<!-- SHERPA-ARRIVE:start -->
+<style id="sherpa-arrive">
+/* arrival (tools/sherpa_arrive.py): the name flies in, the hero rises, once */
+@keyframes st-in-left{from{opacity:0;transform:translateX(-48px);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
+@keyframes st-in-right{from{opacity:0;transform:translateX(64px);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
+@keyframes st-rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes st-fade{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:none}}
+.wordmark .brand{animation:st-in-left .9s cubic-bezier(.2,.8,.2,1) both;}
+.wordmark .brand span{display:inline-block;animation:st-in-right .9s cubic-bezier(.2,.8,.2,1) .28s both;}
+.hero > div:first-child > *{animation:st-rise .8s cubic-bezier(.2,.8,.2,1) both;}
+.hero > div:first-child > :nth-child(1){animation-delay:.45s}.hero > div:first-child > :nth-child(2){animation-delay:.55s}.hero > div:first-child > :nth-child(3){animation-delay:.68s}.hero > div:first-child > :nth-child(n+4){animation-delay:.8s}
+.hero > :not(:first-child){animation:st-fade 1s cubic-bezier(.2,.8,.2,1) .75s both;}
+@media (prefers-reduced-motion:reduce){.wordmark .brand,.wordmark .brand span,.hero > div:first-child > *,.hero > :not(:first-child){animation:none;}}
+</style>
+<!-- SHERPA-ARRIVE:end -->
+</head>
+<body>
+<!-- SHERPA-SHEEN-EL:start -->
+<div class="topo-sheen" aria-hidden="true"><i></i><i></i></div>
+<!-- SHERPA-SHEEN-EL:end -->
+<!-- SHERPA-SKY-EL:start -->
+<div class="sherpa-sky" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+<!-- SHERPA-SKY-EL:end -->
+<a class="up-link" href="sherpa-tensing-route-map.html"><span class="arw" aria-hidden="true">&larr;</span><span data-t="upLink">Route map</span></a>
+<svg class="sprite" width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;overflow:hidden"><defs>
+<filter id="mountain-grain" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency=".42" numOctaves="3" seed="11" result="noise"/>
+      <feColorMatrix in="noise" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 .17 0"/>
+    </filter>
+<clipPath id="night-v2-clip">
+      <path d="M0 620 L72 570 L129 527 L188 468 L241 430 L278 345 L337 307 L367 211 L408 78 L438 153 L477 191 L509 270 L559 306 L594 390 L654 429 L701 507 L759 546 L800 586 L800 620 Z"/>
+    </clipPath>
+<pattern id="night-etch-v2" width="15" height="15" patternUnits="userSpaceOnUse" patternTransform="rotate(24)">
+      <path d="M0 3 H15 M0 11 H15" stroke="#B9CBCC" stroke-width="1" opacity=".16"/>
+    </pattern>
+<linearGradient id="night-v2-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#101D29"/>
+      <stop offset=".62" stop-color="#1B2E3A"/>
+      <stop offset="1" stop-color="#304653"/>
+    </linearGradient>
+<symbol id="epic-night-v2" viewBox="0 0 800 620">
+      <rect width="800" height="620" fill="url(#night-v2-sky)"/>
+      <circle cx="116" cy="111" r="49" fill="#E7DDCB" opacity=".92"/>
+      <circle cx="138" cy="92" r="49" fill="#111F2B"/>
+      <g fill="#D7E2E0" opacity=".74">
+        <circle cx="46" cy="64" r="1.3"/><circle cx="207" cy="63" r="1"/><circle cx="268" cy="127" r="1.4"/>
+        <circle cx="335" cy="51" r="1"/><circle cx="512" cy="67" r="1.3"/><circle cx="579" cy="143" r="1"/>
+        <circle cx="662" cy="79" r="1.5"/><circle cx="745" cy="126" r="1"/><circle cx="700" cy="220" r="1.2"/>
+      </g>
+      <path d="M0 501 L83 444 L158 486 L239 404 L322 470 L410 387 L498 466 L591 398 L681 458 L748 399 L800 429 L800 620 L0 620 Z" fill="#263B48"/>
+      <path d="M0 552 L102 498 L185 539 L272 467 L360 537 L453 456 L542 524 L632 465 L720 518 L800 463 L800 620 L0 620 Z" fill="#314A57" opacity=".83"/>
+
+      <!-- separate silhouette: a narrow horn and fractured descent face -->
+      <path d="M0 620 L72 570 L129 527 L188 468 L241 430 L278 345 L337 307 L367 211 L408 78 L438 153 L477 191 L509 270 L559 306 L594 390 L654 429 L701 507 L759 546 L800 586 L800 620 Z" fill="#344B58" stroke="#9EB0B1" stroke-width="1.4" stroke-opacity=".35"/>
+      <path d="M0 620 L72 570 L129 527 L188 468 L241 430 L278 345 L337 307 L367 211 L408 78 L386 224 L348 288 L324 370 L274 413 L241 498 L182 525 L135 592 L117 620 Z" fill="#1F3542"/>
+      <path d="M408 78 L438 153 L477 191 L509 270 L559 306 L594 390 L654 429 L701 507 L759 546 L800 586 L744 561 L684 530 L622 486 L570 447 L526 382 L483 339 L444 242 Z" fill="#526B75"/>
+      <path d="M408 78 L438 153 L477 191 L458 209 L432 181 L414 128 Z" fill="#D0D9D5"/>
+      <path d="M367 211 L408 78 L395 232 L367 299 L336 342 L346 266 Z" fill="#82989C"/>
+      <path d="M278 345 L337 307 L316 401 L274 461 L225 500 L245 424 Z" fill="#697F86"/>
+      <path d="M438 258 L486 287 L535 335 L583 382 L637 444 L694 510 L633 477 L575 441 L520 402 L474 346 Z" fill="#72868A" opacity=".68"/>
+      <path d="M345 438 L397 374 L446 425 L501 466 L558 516 L600 582 L533 544 L468 508 L405 475 Z" fill="#526B74" opacity=".75"/>
+
+      <rect width="800" height="620" fill="url(#night-etch-v2)" clip-path="url(#night-v2-clip)"/>
+      <rect width="800" height="620" clip-path="url(#night-v2-clip)" filter="url(#mountain-grain)" opacity=".5"/>
+      <g fill="none" stroke="#BCCBCB" stroke-linecap="round" opacity=".22" clip-path="url(#night-v2-clip)">
+        <path d="M66 583 C167 535 231 445 285 349 S367 185 397 102" stroke-width="5" stroke-dasharray="1 12"/>
+        <path d="M445 196 C513 272 566 356 624 426 S706 520 772 570" stroke-width="4" stroke-dasharray="2 13"/>
+      </g>
+      <path d="M0 586 L79 560 L160 584 L244 554 L331 590 L421 557 L514 585 L608 551 L704 580 L800 546 L800 620 L0 620 Z" fill="#1B303C" opacity=".94"/>
+    </symbol>
+</defs></svg>
+<div class="wordmark" id="wordmark">
+  <div class="brand"><a href="sherpa-tensing-route-map.html" style="color:inherit;text-decoration:none">Sherpa <span>Tensing</span></a></div>
+  <div class="wm-right">
+    <div class="sub"><a href="index.html" style="color:var(--accent-dark);text-decoration:none;font-weight:600;">Forbes English</a> &middot; a guide to English tenses</div>
+    <div class="util" id="util">
+      <button class="ubtn" id="snd" type="button" aria-pressed="false" aria-label="Sound off" title="Sound off"><svg viewBox="0 0 20 20" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h3l4-3.5v11L6 12H3z" fill="currentColor" stroke-width="1.2"/><path class="snd-on" d="M13 7.2a4 4 0 0 1 0 5.6M15.4 5a7 7 0 0 1 0 10"/><path class="snd-off" d="M13.5 7.5l4 5M17.5 7.5l-4 5"/></svg></button>
+      <span class="slot" data-camp-music-slot></span>
+      <select class="lang-select solo" id="lang" aria-label="Language" data-t-aria="langLabel"><option value="en" lang="en">English</option></select>
+    </div>
+  </div>
+</div>
+
+<main id="start">
+  <section class="hero" id="hero">
+    <div>
+      <span class="kicker-pill" data-t="kicker">Passive game</span>
+      <h1 data-t="title">The Descent</h1>
+      <p class="lead" data-t="lead">Come down the mountain with Tensing and the team. Every camp on the way down is one passive, and a storm is coming.</p>
+      <div class="cta">
+        <button class="btn btn-main" id="go" type="button"><span id="go-label" data-t="startOne">Start at camp twelve</span> <span aria-hidden="true">&rarr;</span></button>
+        <a class="btn btn-ghost" href="#choose"><span data-t="chooseBtn">Choose a camp</span> <span aria-hidden="true">&darr;</span></a>
+      </div>
+    </div>
+    <figure class="hero-art">
+      <img src="SherpaClimb/summit-top-sm.jpg" srcset="SherpaClimb/summit-top-sm.jpg 960w, SherpaClimb/summit-top.jpg 1536w" sizes="(max-width:860px) 100vw, 560px" width="1536" height="1024" alt="" fetchpriority="high">
+    </figure>
+  </section>
+
+  <section class="sec" id="team" aria-labelledby="team-h">
+    <h2 class="section-title on-paper" id="team-h" data-t="teamH">The team</h2>
+    <div class="brief" id="brief"><p class="brief-who"><span data-t="briefWho">Tensing, the guide</span></p><ul id="brief-lines"><li><span class="en">We made it to the top. Now the hard part: getting down.</span><span class="gl" data-gl="We made it to the top. Now the hard part: getting down."></span></li><li><span class="brief-by">Navya:</span> <span class="en">Base camp here. A big storm <b>has been forecast</b> for tonight. Get down fast. Over.</span><span class="gl" data-gl="Base camp here. A big storm **has been forecast** for tonight. Get down fast. Over."></span></li><li><span class="en">On the way down, it's not who did it. It's what <b>was done</b>.</span><span class="gl" data-gl="On the way down, it&#x27;s not who did it. It&#x27;s what **was done**."></span></li></ul><button class="brief-more" type="button" aria-expanded="false" aria-controls="brief-lines"><span data-t="howItWorks">How it works</span> <span aria-hidden="true">&darr;</span></button></div>
+    <ul class="team"><li class="member"><span class="fig"><img src="SherpaClimb/cast-tensing.jpg" width="800" height="1000" alt="" loading="lazy" decoding="async"></span><span class="mtext"><b>Tensing</b><span class="role">the guide</span><span class="gl" data-gl="the guide"></span></span></li><li class="member"><span class="fig"><img src="SherpaClimb/cast-ana.jpg" width="800" height="1000" alt="" loading="lazy" decoding="async"></span><span class="mtext"><b>Myra</b><span class="role">the planner</span><span class="gl" data-gl="the planner"></span></span></li><li class="member"><span class="fig"><img src="SherpaClimb/cast-otto.jpg" width="800" height="1000" alt="" loading="lazy" decoding="async"></span><span class="mtext"><b>Otto</b><span class="role">the old hand</span><span class="gl" data-gl="the old hand"></span></span></li><li class="member"><span class="fig"><img src="SherpaClimb/cast-sam.jpg" width="800" height="1000" alt="" loading="lazy" decoding="async"></span><span class="mtext"><b>Sam</b><span class="role">first big climb</span><span class="gl" data-gl="first big climb"></span></span></li><li class="member"><span class="fig"><img src="SherpaClimb/cast-doris.jpg" width="800" height="1000" alt="" loading="lazy" decoding="async"></span><span class="mtext"><b>Navya</b><span class="role">base camp radio</span><span class="gl" data-gl="base camp radio"></span></span></li></ul>
+    <p class="momo on-paper"><img src="SherpaClimb/cast-momo.jpg" width="800" height="1200" alt="" loading="lazy" decoding="async"><span data-t="momo">And Momo, the yak at base camp. Remember him.</span></p>
+  </section>
+
+  <section class="sec" id="choose" aria-labelledby="choose-h">
+    <h2 class="section-title on-paper" id="choose-h" data-t="chooseH">Choose a camp</h2>
+    <p class="note-line on-paper" data-t="chooseHow">The way down has no locks either: start at whichever camp you need.</p>
+    <div class="camps">
+      <div class="map-card" role="img" aria-label="The mountain at night, with a diamond for each passive on the way down. Every camp is also listed here." data-t-aria="mapAria"><div class="mtn"><svg class="mtn-art" viewBox="0 0 800 620" aria-hidden="true" focusable="false"><use href="#epic-night-v2" x="0" y="0" width="800" height="620"/></svg><svg class="mtn-over" viewBox="0 0 800 620" aria-hidden="true" focusable="false"><path class="seg-case" d="M400,90 L417,131" stroke-width="9" stroke-linecap="round" fill="none"/><path class="seg" data-seg="12" data-color="#454545" d="M400,90 L417,131" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none"/><path class="seg-case" d="M417,131 L367,170" stroke-width="9" stroke-linecap="round" fill="none"/><path class="seg" data-seg="12" data-color="#454545" d="M417,131 L367,170" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none"/><path class="seg-case" d="M367,170 L450,209" stroke-width="9" stroke-linecap="round" fill="none"/><path class="seg" data-seg="12" data-color="#454545" d="M367,170 L450,209" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none"/><path class="seg-case" d="M450,209 L333,248" stroke-width="9" stroke-linecap="round" fill="none"/><path class="seg" data-seg="10" data-color="#8D5358" d="M450,209 L333,248" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none"/><path class="seg-case" d="M333,248 L483,287" stroke-width="9" stroke-linecap="round" fill="none"/><path class="seg" data-seg="10" data-color="#8D5358" d="M333,248 L483,287" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none"/><path class="seg-case" d="M483,287 L300,326" stroke-width="9" stroke-linecap="round" fill="none"/><path class="seg" data-seg="10" data-color="#8D5358" d="M483,287 L300,326" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none"/><path class="seg-case" d="M300,326 L517,365" stroke-width="9" stroke-linecap="round" fill="none"/><path class="seg" data-seg="7" data-color="#DB815F" d="M300,326 L517,365" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none"/><path class="seg-case" d="M517,365 L267,404" stroke-width="9" stroke-linecap="round" fill="none"/><path class="seg" data-seg="6" data-color="#F1D779" d="M517,365 L267,404" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none"/><path class="seg-case" d="M267,404 L550,443" stroke-width="9" stroke-linecap="round" fill="none"/><path class="seg" data-seg="5" data-color="#99BA7D" d="M267,404 L550,443" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none"/><path class="seg-case" d="M550,443 L233,482" stroke-width="9" stroke-linecap="round" fill="none"/><path class="seg" data-seg="4" data-color="#689497" d="M550,443 L233,482" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none"/><path class="seg-case" d="M233,482 L583,521" stroke-width="9" stroke-linecap="round" fill="none"/><path class="seg" data-seg="3" data-color="#B08968" d="M233,482 L583,521" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none"/><path class="seg-case" d="M583,521 L400,560" stroke-width="9" stroke-linecap="round" fill="none"/><path class="seg" data-seg="2" data-color="#7A93B5" d="M583,521 L400,560" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none"/><g class="no-camp"><polygon class="dot-fill" points="400,78 412,90 400,102 388,90" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/><g transform="translate(400,90)"><g stroke="#B0B0B0" stroke-width="1.3" stroke-linecap="round" fill="none"><path d="M-6,1 A6,6 0 0 1 6,1"/><path d="M-3,5 q1.5,-1.8 3,0 q1.5,1.8 3,0"/>
+</g></g></g><g class="no-camp"><polygon class="dot-fill" points="367,158 379,170 367,182 355,170" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/><g transform="translate(367,170)"><g stroke="#705991" stroke-width="1.3" stroke-linecap="round" fill="none"><path d="M-6,1 A6,6 0 0 1 6,1"/><path d="M-3,5 q1.5,-1.8 3,0 q1.5,1.8 3,0"/>
+</g></g></g><g class="no-camp"><polygon class="dot-fill" points="333,236 345,248 333,260 321,248" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/><g transform="translate(333,248)"><g stroke="#E1AB5A" stroke-width="1.4" stroke-linecap="round" fill="none"><path d="M-6,-2 q2.5,-3.5 5,0 q2.5,3.5 5,0"/><path d="M-6,3 q2.5,-3.5 5,0 q2.5,3.5 5,0"/>
+</g></g></g><g class="no-camp"><polygon class="dot-fill" points="483,275 495,287 483,299 471,287" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/><g transform="translate(483,287)"><g stroke="#97D0E5" stroke-width="1.3" stroke-linecap="round" fill="none"><path d="M-6,1 A6,6 0 0 1 6,1"/><path d="M-3,5 q1.5,-1.8 3,0 q1.5,1.8 3,0"/>
+</g></g></g><g class="dot" data-camp="12" data-color="#454545"><circle class="hit" cx="417" cy="131" r="24"/><polygon class="dot-fill" points="417,119 429,131 417,143 405,131" fill="#454545" stroke="#FFFFFF" stroke-width="2"/><g transform="translate(417,131)"><path d="M-6,3 A6,6 0 0 1 6,3" fill="none" stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round"/></g><text class="dot-label" x="435" y="131" text-anchor="start" dominant-baseline="central" font-size="18" font-weight="600" font-family="Inter, sans-serif" fill="#2B0F1D">Future perfect passive</text><g class="dflag" transform="translate(425,125)"><path d="M0,0 V-26" stroke="#2B0F1D" stroke-width="2.4" stroke-linecap="round"/><path class="pennant" d="M0,-26 L16,-21 L0,-16 Z" stroke="#2B0F1D" stroke-width="1.4" stroke-linejoin="round"/></g></g><g class="dot" data-camp="10" data-color="#8D5358"><circle class="hit" cx="450" cy="209" r="24"/><polygon class="dot-fill" points="450,197 462,209 450,221 438,209" fill="#8D5358" stroke="#FFFFFF" stroke-width="2"/><g transform="translate(450,209)"><path d="M-6,3 A6,6 0 0 1 6,3" fill="none" stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round"/></g><text class="dot-label" x="468" y="209" text-anchor="start" dominant-baseline="central" font-size="18" font-weight="600" font-family="Inter, sans-serif" fill="#2B0F1D">Past perfect passive</text><g class="dflag" transform="translate(458,203)"><path d="M0,0 V-26" stroke="#2B0F1D" stroke-width="2.4" stroke-linecap="round"/><path class="pennant" d="M0,-26 L16,-21 L0,-16 Z" stroke="#2B0F1D" stroke-width="1.4" stroke-linejoin="round"/></g></g><g class="dot" data-camp="7" data-color="#DB815F"><circle class="hit" cx="300" cy="326" r="24"/><polygon class="dot-fill" points="300,314 312,326 300,338 288,326" fill="#DB815F" stroke="#FFFFFF" stroke-width="2"/><g transform="translate(300,326)"><path d="M-3,-6 v12 M-3,-6 l6,3 l-6,3" fill="none" stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></g><text class="dot-label" x="282" y="326" text-anchor="end" dominant-baseline="central" font-size="18" font-weight="600" font-family="Inter, sans-serif" fill="#2B0F1D">Future simple passive</text><g class="dflag" transform="translate(308,320)"><path d="M0,0 V-26" stroke="#2B0F1D" stroke-width="2.4" stroke-linecap="round"/><path class="pennant" d="M0,-26 L16,-21 L0,-16 Z" stroke="#2B0F1D" stroke-width="1.4" stroke-linejoin="round"/></g></g><g class="dot" data-camp="6" data-color="#F1D779"><circle class="hit" cx="517" cy="365" r="24"/><polygon class="dot-fill" points="517,353 529,365 517,377 505,365" fill="#F1D779" stroke="#FFFFFF" stroke-width="2"/><g transform="translate(517,365)"><g stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round" fill="none"><path d="M-6,-2 q2.5,-3.5 5,0 q2.5,3.5 5,0"/><path d="M-6,3 q2.5,-3.5 5,0 q2.5,3.5 5,0"/></g></g><text class="dot-label" x="535" y="365" text-anchor="start" dominant-baseline="central" font-size="18" font-weight="600" font-family="Inter, sans-serif" fill="#2B0F1D">Past continuous passive</text><g class="dflag" transform="translate(525,359)"><path d="M0,0 V-26" stroke="#2B0F1D" stroke-width="2.4" stroke-linecap="round"/><path class="pennant" d="M0,-26 L16,-21 L0,-16 Z" stroke="#2B0F1D" stroke-width="1.4" stroke-linejoin="round"/></g></g><g class="dot" data-camp="5" data-color="#99BA7D"><circle class="hit" cx="267" cy="404" r="24"/><polygon class="dot-fill" points="267,392 279,404 267,416 255,404" fill="#99BA7D" stroke="#FFFFFF" stroke-width="2"/><g transform="translate(267,404)"><g stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round" fill="none"><circle r="6"/><path d="M0,-2.5 L0,0 L2.5,1.5"/></g></g><text class="dot-label" x="249" y="404" text-anchor="end" dominant-baseline="central" font-size="18" font-weight="600" font-family="Inter, sans-serif" fill="#2B0F1D">Going to passive</text><g class="dflag" transform="translate(275,398)"><path d="M0,0 V-26" stroke="#2B0F1D" stroke-width="2.4" stroke-linecap="round"/><path class="pennant" d="M0,-26 L16,-21 L0,-16 Z" stroke="#2B0F1D" stroke-width="1.4" stroke-linejoin="round"/></g></g><g class="dot" data-camp="4" data-color="#689497"><circle class="hit" cx="550" cy="443" r="24"/><polygon class="dot-fill" points="550,431 562,443 550,455 538,443" fill="#689497" stroke="#FFFFFF" stroke-width="2"/><g transform="translate(550,443)"><path d="M-6,3 A6,6 0 0 1 6,3" fill="none" stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round"/></g><text class="dot-label" x="568" y="443" text-anchor="start" dominant-baseline="central" font-size="18" font-weight="600" font-family="Inter, sans-serif" fill="#2B0F1D">Present perfect passive</text><g class="dflag" transform="translate(558,437)"><path d="M0,0 V-26" stroke="#2B0F1D" stroke-width="2.4" stroke-linecap="round"/><path class="pennant" d="M0,-26 L16,-21 L0,-16 Z" stroke="#2B0F1D" stroke-width="1.4" stroke-linejoin="round"/></g></g><g class="dot" data-camp="3" data-color="#B08968"><circle class="hit" cx="233" cy="482" r="24"/><polygon class="dot-fill" points="233,470 245,482 233,494 221,482" fill="#B08968" stroke="#FFFFFF" stroke-width="2"/><g transform="translate(233,482)"><path d="M-3,-6 v12 M-3,-6 l6,3 l-6,3" fill="none" stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></g><text class="dot-label" x="215" y="482" text-anchor="end" dominant-baseline="central" font-size="18" font-weight="600" font-family="Inter, sans-serif" fill="#2B0F1D">Past simple passive</text><g class="dflag" transform="translate(241,476)"><path d="M0,0 V-26" stroke="#2B0F1D" stroke-width="2.4" stroke-linecap="round"/><path class="pennant" d="M0,-26 L16,-21 L0,-16 Z" stroke="#2B0F1D" stroke-width="1.4" stroke-linejoin="round"/></g></g><g class="dot" data-camp="2" data-color="#7A93B5"><circle class="hit" cx="583" cy="521" r="24"/><polygon class="dot-fill" points="583,509 595,521 583,533 571,521" fill="#7A93B5" stroke="#FFFFFF" stroke-width="2"/><g transform="translate(583,521)"><path d="M-3,-6 v12 M-3,-6 l6,3 l-6,3" fill="none" stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></g><text class="dot-label" x="601" y="521" text-anchor="start" dominant-baseline="central" font-size="18" font-weight="600" font-family="Inter, sans-serif" fill="#2B0F1D">Present simple passive</text><g class="dflag" transform="translate(591,515)"><path d="M0,0 V-26" stroke="#2B0F1D" stroke-width="2.4" stroke-linecap="round"/><path class="pennant" d="M0,-26 L16,-21 L0,-16 Z" stroke="#2B0F1D" stroke-width="1.4" stroke-linejoin="round"/></g></g><g class="dot" data-camp="1" data-color="#F2ADBF"><circle class="hit" cx="400" cy="560" r="24"/><polygon class="dot-fill" points="400,548 412,560 400,572 388,560" fill="#F2ADBF" stroke="#FFFFFF" stroke-width="2"/><g transform="translate(400,560)"><g stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round" fill="none"><path d="M-6,-2 q2.5,-3.5 5,0 q2.5,3.5 5,0"/><path d="M-6,3 q2.5,-3.5 5,0 q2.5,3.5 5,0"/></g></g><text class="dot-label" x="418" y="560" text-anchor="start" dominant-baseline="central" font-size="18" font-weight="600" font-family="Inter, sans-serif" fill="#2B0F1D">Present continuous passive</text><g class="dflag" transform="translate(408,554)"><path d="M0,0 V-26" stroke="#2B0F1D" stroke-width="2.4" stroke-linecap="round"/><path class="pennant" d="M0,-26 L16,-21 L0,-16 Z" stroke="#2B0F1D" stroke-width="1.4" stroke-linejoin="round"/></g></g></svg></div></div>
+      <ol class="picks"><li><button class="pick" type="button" data-camp="12" style="--c:#454545;--k:#FFFFFF"><span class="pick-num"><span>12</span></span><span class="pick-name">Future perfect passive</span><span class="pick-meta"><span class="pick-lvl">C1</span><span class="pick-best"></span><span class="pick-flag"></span></span></button></li><li><button class="pick" type="button" data-camp="10" style="--c:#8D5358;--k:#FFFFFF"><span class="pick-num"><span>10</span></span><span class="pick-name">Past perfect passive</span><span class="pick-meta"><span class="pick-lvl">B2</span><span class="pick-best"></span><span class="pick-flag"></span></span></button></li><li><button class="pick" type="button" data-camp="7" style="--c:#DB815F;--k:#1A1206"><span class="pick-num"><span>7</span></span><span class="pick-name">Future simple passive</span><span class="pick-meta"><span class="pick-lvl">B1</span><span class="pick-best"></span><span class="pick-flag"></span></span></button></li><li><button class="pick" type="button" data-camp="6" style="--c:#F1D779;--k:#1A1206"><span class="pick-num"><span>6</span></span><span class="pick-name">Past continuous passive</span><span class="pick-meta"><span class="pick-lvl">B2</span><span class="pick-best"></span><span class="pick-flag"></span></span></button></li><li><button class="pick" type="button" data-camp="5" style="--c:#99BA7D;--k:#1A1206"><span class="pick-num"><span>5</span></span><span class="pick-name">Going to passive</span><span class="pick-meta"><span class="pick-lvl">B1</span><span class="pick-best"></span><span class="pick-flag"></span></span></button></li><li><button class="pick" type="button" data-camp="4" style="--c:#689497;--k:#1A1206"><span class="pick-num"><span>4</span></span><span class="pick-name">Present perfect passive</span><span class="pick-meta"><span class="pick-lvl">B1</span><span class="pick-best"></span><span class="pick-flag"></span></span></button></li><li><button class="pick" type="button" data-camp="3" style="--c:#B08968;--k:#1A1206"><span class="pick-num"><span>3</span></span><span class="pick-name">Past simple passive</span><span class="pick-meta"><span class="pick-lvl">B1</span><span class="pick-best"></span><span class="pick-flag"></span></span></button></li><li><button class="pick" type="button" data-camp="2" style="--c:#7A93B5;--k:#0A131F"><span class="pick-num"><span>2</span></span><span class="pick-name">Present simple passive</span><span class="pick-meta"><span class="pick-lvl">A2</span><span class="pick-best"></span><span class="pick-flag"></span></span></button></li><li><button class="pick" type="button" data-camp="1" style="--c:#F2ADBF;--k:#1A1206"><span class="pick-num"><span>1</span></span><span class="pick-name">Present continuous passive</span><span class="pick-meta"><span class="pick-lvl">B1</span><span class="pick-best"></span><span class="pick-flag"></span></span></button></li><li><button class="pick pick-summit" type="button" data-camp="summit"><span class="pick-num" aria-hidden="true"><svg viewBox="0 0 20 20"><g stroke="currentColor" stroke-width="1.7" stroke-linecap="round" fill="none"><path d="M10 1.8v16.4M2.9 5.9l14.2 8.2M2.9 14.1l14.2-8.2"/><path d="M7.8 3.2L10 5l2.2-1.8M7.8 16.8L10 15l2.2 1.8"/></g></svg></span><span class="pick-name" data-t="summitRow">Home to base camp · all nine passives</span><span class="pick-meta"><span class="pick-best"></span><span class="pick-flag"></span></span></button></li></ol>
+    </div>
+  </section>
+</main>
+
+<div class="play" id="play" aria-hidden="true">
+  <div class="scene"><img id="scene" alt="" decoding="async"></div>
+  <div class="storm" aria-hidden="true"></div>
+  <div class="veil"></div>
+  <header class="pbar">
+    <button class="pill pb-back" id="back" type="button" aria-label="Back to the camps" data-t-aria="backAria"><span aria-hidden="true">&larr;</span> <span class="lbl" data-t="camps">Camps</span></button>
+    <span class="pill pb-chip" id="chip"></span>
+    <span class="pill pb-alt"><span class="sr-only" data-t="altitude">Altitude</span><span><b id="alt">0</b> m</span></span>
+    <ol class="pips pb-pips" id="pips"></ol>
+    <div class="pb-utils" id="utils-slot"></div>
+  </header>
+  <aside class="mini" aria-hidden="true"><div class="mtn mtn-mini"><svg class="mtn-art" viewBox="150 70 500 540" aria-hidden="true" focusable="false"><use href="#epic-night-v2" x="0" y="0" width="800" height="620"/></svg><svg class="mtn-over" viewBox="150 70 500 540" aria-hidden="true" focusable="false"><path class="seg-case" d="M400,90 L417,131" stroke-width="12" stroke-linecap="round" fill="none"/><path class="seg" data-seg="12" data-color="#454545" d="M400,90 L417,131" stroke="#C9C6C2" stroke-width="9" stroke-linecap="round" fill="none"/><path class="seg-case" d="M417,131 L367,170" stroke-width="12" stroke-linecap="round" fill="none"/><path class="seg" data-seg="12" data-color="#454545" d="M417,131 L367,170" stroke="#C9C6C2" stroke-width="9" stroke-linecap="round" fill="none"/><path class="seg-case" d="M367,170 L450,209" stroke-width="12" stroke-linecap="round" fill="none"/><path class="seg" data-seg="12" data-color="#454545" d="M367,170 L450,209" stroke="#C9C6C2" stroke-width="9" stroke-linecap="round" fill="none"/><path class="seg-case" d="M450,209 L333,248" stroke-width="12" stroke-linecap="round" fill="none"/><path class="seg" data-seg="10" data-color="#8D5358" d="M450,209 L333,248" stroke="#C9C6C2" stroke-width="9" stroke-linecap="round" fill="none"/><path class="seg-case" d="M333,248 L483,287" stroke-width="12" stroke-linecap="round" fill="none"/><path class="seg" data-seg="10" data-color="#8D5358" d="M333,248 L483,287" stroke="#C9C6C2" stroke-width="9" stroke-linecap="round" fill="none"/><path class="seg-case" d="M483,287 L300,326" stroke-width="12" stroke-linecap="round" fill="none"/><path class="seg" data-seg="10" data-color="#8D5358" d="M483,287 L300,326" stroke="#C9C6C2" stroke-width="9" stroke-linecap="round" fill="none"/><path class="seg-case" d="M300,326 L517,365" stroke-width="12" stroke-linecap="round" fill="none"/><path class="seg" data-seg="7" data-color="#DB815F" d="M300,326 L517,365" stroke="#C9C6C2" stroke-width="9" stroke-linecap="round" fill="none"/><path class="seg-case" d="M517,365 L267,404" stroke-width="12" stroke-linecap="round" fill="none"/><path class="seg" data-seg="6" data-color="#F1D779" d="M517,365 L267,404" stroke="#C9C6C2" stroke-width="9" stroke-linecap="round" fill="none"/><path class="seg-case" d="M267,404 L550,443" stroke-width="12" stroke-linecap="round" fill="none"/><path class="seg" data-seg="5" data-color="#99BA7D" d="M267,404 L550,443" stroke="#C9C6C2" stroke-width="9" stroke-linecap="round" fill="none"/><path class="seg-case" d="M550,443 L233,482" stroke-width="12" stroke-linecap="round" fill="none"/><path class="seg" data-seg="4" data-color="#689497" d="M550,443 L233,482" stroke="#C9C6C2" stroke-width="9" stroke-linecap="round" fill="none"/><path class="seg-case" d="M233,482 L583,521" stroke-width="12" stroke-linecap="round" fill="none"/><path class="seg" data-seg="3" data-color="#B08968" d="M233,482 L583,521" stroke="#C9C6C2" stroke-width="9" stroke-linecap="round" fill="none"/><path class="seg-case" d="M583,521 L400,560" stroke-width="12" stroke-linecap="round" fill="none"/><path class="seg" data-seg="2" data-color="#7A93B5" d="M583,521 L400,560" stroke="#C9C6C2" stroke-width="9" stroke-linecap="round" fill="none"/><circle class="pulse" cx="0" cy="0" r="32" fill="none" stroke="#2B0F1D" stroke-width="4"/><g class="no-camp"><polygon class="dot-fill" points="400,74 416,90 400,106 384,90" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/><g transform="translate(400,90) scale(1.35)"><g stroke="#B0B0B0" stroke-width="1.3" stroke-linecap="round" fill="none"><path d="M-6,1 A6,6 0 0 1 6,1"/><path d="M-3,5 q1.5,-1.8 3,0 q1.5,1.8 3,0"/>
+</g></g></g><g class="no-camp"><polygon class="dot-fill" points="367,154 383,170 367,186 351,170" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/><g transform="translate(367,170) scale(1.35)"><g stroke="#705991" stroke-width="1.3" stroke-linecap="round" fill="none"><path d="M-6,1 A6,6 0 0 1 6,1"/><path d="M-3,5 q1.5,-1.8 3,0 q1.5,1.8 3,0"/>
+</g></g></g><g class="no-camp"><polygon class="dot-fill" points="333,232 349,248 333,264 317,248" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/><g transform="translate(333,248) scale(1.35)"><g stroke="#E1AB5A" stroke-width="1.4" stroke-linecap="round" fill="none"><path d="M-6,-2 q2.5,-3.5 5,0 q2.5,3.5 5,0"/><path d="M-6,3 q2.5,-3.5 5,0 q2.5,3.5 5,0"/>
+</g></g></g><g class="no-camp"><polygon class="dot-fill" points="483,271 499,287 483,303 467,287" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/><g transform="translate(483,287) scale(1.35)"><g stroke="#97D0E5" stroke-width="1.3" stroke-linecap="round" fill="none"><path d="M-6,1 A6,6 0 0 1 6,1"/><path d="M-3,5 q1.5,-1.8 3,0 q1.5,1.8 3,0"/>
+</g></g></g><g class="dot" data-camp="12" data-color="#454545"><polygon class="dot-fill" points="417,115 433,131 417,147 401,131" fill="#454545" stroke="#FFFFFF" stroke-width="2"/><g transform="translate(417,131) scale(1.35)"><path d="M-6,3 A6,6 0 0 1 6,3" fill="none" stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round"/></g><g class="dflag" transform="translate(428,123)"><path d="M0,0 V-30" stroke="#2B0F1D" stroke-width="2.4" stroke-linecap="round"/><path class="pennant" d="M0,-30 L19,-24 L0,-18 Z" stroke="#2B0F1D" stroke-width="1.4" stroke-linejoin="round"/></g></g><g class="dot" data-camp="10" data-color="#8D5358"><polygon class="dot-fill" points="450,193 466,209 450,225 434,209" fill="#8D5358" stroke="#FFFFFF" stroke-width="2"/><g transform="translate(450,209) scale(1.35)"><path d="M-6,3 A6,6 0 0 1 6,3" fill="none" stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round"/></g><g class="dflag" transform="translate(461,201)"><path d="M0,0 V-30" stroke="#2B0F1D" stroke-width="2.4" stroke-linecap="round"/><path class="pennant" d="M0,-30 L19,-24 L0,-18 Z" stroke="#2B0F1D" stroke-width="1.4" stroke-linejoin="round"/></g></g><g class="dot" data-camp="7" data-color="#DB815F"><polygon class="dot-fill" points="300,310 316,326 300,342 284,326" fill="#DB815F" stroke="#FFFFFF" stroke-width="2"/><g transform="translate(300,326) scale(1.35)"><path d="M-3,-6 v12 M-3,-6 l6,3 l-6,3" fill="none" stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></g><g class="dflag" transform="translate(311,318)"><path d="M0,0 V-30" stroke="#2B0F1D" stroke-width="2.4" stroke-linecap="round"/><path class="pennant" d="M0,-30 L19,-24 L0,-18 Z" stroke="#2B0F1D" stroke-width="1.4" stroke-linejoin="round"/></g></g><g class="dot" data-camp="6" data-color="#F1D779"><polygon class="dot-fill" points="517,349 533,365 517,381 501,365" fill="#F1D779" stroke="#FFFFFF" stroke-width="2"/><g transform="translate(517,365) scale(1.35)"><g stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round" fill="none"><path d="M-6,-2 q2.5,-3.5 5,0 q2.5,3.5 5,0"/><path d="M-6,3 q2.5,-3.5 5,0 q2.5,3.5 5,0"/></g></g><g class="dflag" transform="translate(528,357)"><path d="M0,0 V-30" stroke="#2B0F1D" stroke-width="2.4" stroke-linecap="round"/><path class="pennant" d="M0,-30 L19,-24 L0,-18 Z" stroke="#2B0F1D" stroke-width="1.4" stroke-linejoin="round"/></g></g><g class="dot" data-camp="5" data-color="#99BA7D"><polygon class="dot-fill" points="267,388 283,404 267,420 251,404" fill="#99BA7D" stroke="#FFFFFF" stroke-width="2"/><g transform="translate(267,404) scale(1.35)"><g stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round" fill="none"><circle r="6"/><path d="M0,-2.5 L0,0 L2.5,1.5"/></g></g><g class="dflag" transform="translate(278,396)"><path d="M0,0 V-30" stroke="#2B0F1D" stroke-width="2.4" stroke-linecap="round"/><path class="pennant" d="M0,-30 L19,-24 L0,-18 Z" stroke="#2B0F1D" stroke-width="1.4" stroke-linejoin="round"/></g></g><g class="dot" data-camp="4" data-color="#689497"><polygon class="dot-fill" points="550,427 566,443 550,459 534,443" fill="#689497" stroke="#FFFFFF" stroke-width="2"/><g transform="translate(550,443) scale(1.35)"><path d="M-6,3 A6,6 0 0 1 6,3" fill="none" stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round"/></g><g class="dflag" transform="translate(561,435)"><path d="M0,0 V-30" stroke="#2B0F1D" stroke-width="2.4" stroke-linecap="round"/><path class="pennant" d="M0,-30 L19,-24 L0,-18 Z" stroke="#2B0F1D" stroke-width="1.4" stroke-linejoin="round"/></g></g><g class="dot" data-camp="3" data-color="#B08968"><polygon class="dot-fill" points="233,466 249,482 233,498 217,482" fill="#B08968" stroke="#FFFFFF" stroke-width="2"/><g transform="translate(233,482) scale(1.35)"><path d="M-3,-6 v12 M-3,-6 l6,3 l-6,3" fill="none" stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></g><g class="dflag" transform="translate(244,474)"><path d="M0,0 V-30" stroke="#2B0F1D" stroke-width="2.4" stroke-linecap="round"/><path class="pennant" d="M0,-30 L19,-24 L0,-18 Z" stroke="#2B0F1D" stroke-width="1.4" stroke-linejoin="round"/></g></g><g class="dot" data-camp="2" data-color="#7A93B5"><polygon class="dot-fill" points="583,505 599,521 583,537 567,521" fill="#7A93B5" stroke="#FFFFFF" stroke-width="2"/><g transform="translate(583,521) scale(1.35)"><path d="M-3,-6 v12 M-3,-6 l6,3 l-6,3" fill="none" stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></g><g class="dflag" transform="translate(594,513)"><path d="M0,0 V-30" stroke="#2B0F1D" stroke-width="2.4" stroke-linecap="round"/><path class="pennant" d="M0,-30 L19,-24 L0,-18 Z" stroke="#2B0F1D" stroke-width="1.4" stroke-linejoin="round"/></g></g><g class="dot" data-camp="1" data-color="#F2ADBF"><polygon class="dot-fill" points="400,544 416,560 400,576 384,560" fill="#F2ADBF" stroke="#FFFFFF" stroke-width="2"/><g transform="translate(400,560) scale(1.35)"><g stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round" fill="none"><path d="M-6,-2 q2.5,-3.5 5,0 q2.5,3.5 5,0"/><path d="M-6,3 q2.5,-3.5 5,0 q2.5,3.5 5,0"/></g></g><g class="dflag" transform="translate(411,552)"><path d="M0,0 V-30" stroke="#2B0F1D" stroke-width="2.4" stroke-linecap="round"/><path class="pennant" d="M0,-30 L19,-24 L0,-18 Z" stroke="#2B0F1D" stroke-width="1.4" stroke-linejoin="round"/></g></g><g class="climber" id="climber"><g transform="translate(28,-6) scale(1.7) translate(0,-6)"><rect x="-7" y="-2" width="14" height="17" rx="4" fill="#2B0F1D" stroke="#FFFFFF" stroke-width="2"/><rect x="-8" y="-7" width="16" height="6" rx="3" fill="#846069" stroke="#FFFFFF" stroke-width="1.5"/><circle cx="0" cy="-12" r="5.5" fill="#2B0F1D" stroke="#FFFFFF" stroke-width="2"/></g></g></svg></div></aside>
+  <div class="card" id="cardwrap">
+    <section class="card-in" id="card" tabindex="-1">
+      <div class="sheet-head"><span class="pb-chip"></span><ol class="pips"></ol></div>
+      <div id="view"></div>
+      <div class="fb" id="fb" aria-live="polite"></div>
+    </section>
+    <p class="keys" id="keys"></p>
+  </div>
+  <dialog class="guide-dialog rv-dialog" id="rv" aria-labelledby="rv-h">
+    <div class="gd-top">
+      <h2 class="rv-title" id="rv-h">Worth another look</h2>
+      <form method="dialog"><button class="gd-x" id="rv-x" type="submit" aria-label="Close">&times;</button></form>
+    </div>
+    <ul class="rv" id="rv-list"></ul>
+    <div class="gd-foot"><form method="dialog"><button class="btn btn-main" id="rv-close" type="submit">Close</button></form></div>
+  </dialog>
+</div>
+
+<script>window.CLIMB_DATA={"camps":[{"n":12,"alt":7400,"nextAlt":6600,"scene":"SherpaClimb/camp-12","side":"left","arrive":[{"who":"ana","en":"By six tonight, this camp **will have been taken** down and every bag **will have been loaded**."},{"who":"tensing","en":"Then we go. The storm won't wait for anyone."}],"tip":"Done before a time in the future, with the doer left out: WILL HAVE BEEN + PAST PARTICIPLE. BY + a time is the deadline; BY + a person (or the snow) is the doer.","items":[{"id":"d12-1","kind":"choose","who":"ana","q":"By the time the storm arrives, we <span class=\"gap\"><\/span> off this ridge by Tensing. <span class=\"cue\">(lead)<\/span>","fixed":"By the time the storm arrives, we <b>will have been led<\/b> off this ridge by Tensing.","fb":"\"By the time the storm arrives\" = done before then, and BY TENSING is the doer: WILL HAVE BEEN + PAST PARTICIPLE. LEAD → LED.","answer":"will have been led","options":["will have been led","will have been lead","will have led"],"gaps":1,"camp":12},{"id":"d12-2","kind":"choose","who":"doris","q":"By tomorrow night, the whole team <span class=\"gap\"><\/span> safely to base camp. I promise. Over. <span class=\"cue\">(bring)<\/span>","fixed":"By tomorrow night, the whole team <b>will have been brought<\/b> safely to base camp. I promise. Over.","fb":"The team does not bring; it is brought: WILL HAVE BEEN + PAST PARTICIPLE. BRING → BROUGHT.","answer":"will have been brought","via":"radio","options":["will have been brought","will have been bringed","will have brought"],"gaps":1,"camp":12},{"id":"d12-3","kind":"type","who":"ana","q":"Go and sleep, Sam. By the time you wake up, every rope <span class=\"gap\"><\/span> twice. <span class=\"cue\">(already / check)<\/span>","fixed":"Go and sleep, Sam. By the time you wake up, every rope <b>will already have been checked<\/b> twice.","fb":"\"By the time you wake up\" = done before then: WILL + ALREADY + HAVE BEEN + CHECKED.","answer":"will already have been checked","accept":["will already have been checked","will have already been checked","will have been checked already","will have been checked","will already have got checked","will have already got checked","will already have gotten checked","will have already gotten checked","is going to have already been checked"],"camp":12},{"id":"d12-4","kind":"choose","who":"sam","q":"<span class=\"gap\"><\/span> the tents <span class=\"gap\"><\/span> before it gets dark? <span class=\"cue\">(pack)<\/span>","fixed":"<b>Will<\/b> the tents <b>have been packed<\/b> before it gets dark?","fb":"A question about a future deadline: WILL + subject + HAVE BEEN + PAST PARTICIPLE?","answer":"Will ... have been packed","options":["Will ... have been packed","Will ... has been packed","Will ... have been pack"],"gaps":2,"camp":12},{"id":"d12-5","kind":"spot","who":"otto","q":"By the time the snow reaches us, the worst of the ridge <mark class=\"spot\">will have been crossed<\/mark>.","fixed":"By the time the snow reaches us, the worst of the ridge <b>will have been crossed<\/b>.","fb":"WILL HAVE BEEN + CROSSED, done before a future moment: future perfect passive.","answer":12,"options":[12,7,10],"camp":12},{"id":"d12-6","kind":"choose","who":"ana","q":"By six, Tensing <span class=\"gap\"><\/span> every peg out of the ice. <span class=\"cue\">(pull)<\/span>","fixed":"By six, Tensing <b>will have pulled<\/b> every peg out of the ice.","fb":"Tensing does the pulling, so this one is active: WILL HAVE + PAST PARTICIPLE. A passive needs BEEN, and the thing as the subject.","answer":"will have pulled","options":["will have pulled","will have been pulled","will has pulled"],"gaps":1,"camp":12},{"id":"d12-7","kind":"type","who":"doris","q":"The forecast says that by midnight, the lower path <span class=\"gap\"><\/span> by snow. Over. <span class=\"cue\">(cover)<\/span>","fixed":"The forecast says that by midnight, the lower path <b>will have been covered<\/b> by snow. Over.","fb":"\"by midnight\" = done before then: WILL HAVE BEEN + COVERED. BY SNOW is what does it.","answer":"will have been covered","via":"radio","accept":["will have been covered","will be covered","is going to have been covered","is going to be covered","will get covered","is going to get covered","will have got covered","will have gotten covered","will have been completely covered","will be completely covered"],"camp":12},{"id":"d12-8","kind":"choose","who":"otto","q":"The hut <span class=\"gap\"><\/span> by the time we get there, so we'll light the stove ourselves. <span class=\"cue\">(not / heat)<\/span>","fixed":"The hut <b>won't have been heated<\/b> by the time we get there, so we'll light the stove ourselves.","fb":"Not done before a future moment: WON'T HAVE BEEN + PAST PARTICIPLE.","answer":"won't have been heated","options":["won't have been heated","won't have been heat","won't has been heated"],"gaps":1,"camp":12}],"done":{"who":"tensing","en":"Packs on. By tonight, every footprint up here **will have been buried**."},"storm":0},{"n":10,"alt":6600,"nextAlt":5400,"scene":"SherpaClimb/camp-10","side":"left","arrive":[{"who":"otto","en":"When we reached the hut, the door **had been torn** off by the wind."},{"who":"sam","en":"And our food **had been eaten**! By birds, I hope."}],"tip":"Done before a past moment, doer left out: HAD BEEN + PAST PARTICIPLE. Find the later past first.","items":[{"id":"d10-1","kind":"choose","who":"ana","q":"When we got back to the ledge, our spare rope <span class=\"gap\"><\/span> under a metre of snow. <span class=\"cue\">(bury)<\/span>","fixed":"When we got back to the ledge, our spare rope <b>had been buried<\/b> under a metre of snow.","fb":"\"When we got back\" is the later past; the snow came first: HAD BEEN + PAST PARTICIPLE.","answer":"had been buried","options":["had been buried","had buried","had been bury"],"gaps":1,"camp":10},{"id":"d10-2","kind":"choose","who":"otto","q":"By the time we arrived, the stove <span class=\"gap\"><\/span> by the other team. <span class=\"cue\">(take)<\/span>","fixed":"By the time we arrived, the stove <b>had been taken<\/b> by the other team.","fb":"\"By the time we arrived\" looks back from the past: HAD BEEN + PAST PARTICIPLE. TAKE → TAKEN.","answer":"had been taken","options":["had been taken","had been took","has been taken"],"gaps":1,"camp":10},{"id":"d10-3","kind":"type","who":"sam","q":"When we found Otto's hat this morning, it <span class=\"gap\"><\/span> two hundred metres by the wind. <span class=\"cue\">(blow)<\/span>","fixed":"When we found Otto's hat this morning, it <b>had been blown<\/b> two hundred metres by the wind.","fb":"Before we found it, BY THE WIND: HAD BEEN + PAST PARTICIPLE. BLOW → BLOWN.","answer":"had been blown","via":"diary","accept":["had been blown","had been blown away","had got blown","had gotten blown","had got blown away","had gotten blown away","had already been blown","had already been blown away"],"camp":10},{"id":"d10-4","kind":"choose","who":"doris","q":"<span class=\"gap\"><\/span> the radio <span class=\"gap\"><\/span> before the storm hit? It's your only line to me. Over. <span class=\"cue\">(charge)<\/span>","fixed":"<b>Had<\/b> the radio <b>been charged<\/b> before the storm hit? It's your only line to me. Over.","fb":"A question about before a past moment: HAD + subject + BEEN + PAST PARTICIPLE?","answer":"Had ... been charged","via":"radio","options":["Had ... been charged","Has ... been charged","Had ... been charge"],"gaps":2,"camp":10},{"id":"d10-5","kind":"spot","who":"otto","q":"We <mark class=\"spot\">were roped<\/mark> together by Tensing, so nobody fell far.","fixed":"We <b>were roped<\/b> together by Tensing, so nobody fell far.","fb":"WERE + ROPED: events told in order, then \"so\". Past simple passive; camp ten would be HAD BEEN ROPED.","answer":3,"options":[3,10,7],"camp":10},{"id":"d10-6","kind":"choose","who":"sam","q":"Whatever it was, it <span class=\"gap\"><\/span> the night before we arrived. <span class=\"cue\">(happen)<\/span>","fixed":"Whatever it was, it <b>had happened<\/b> the night before we arrived.","fb":"HAPPEN takes no object, so it has no passive: HAD + HAPPENED.","answer":"had happened","options":["had happened","had been happened","was happened"],"gaps":1,"camp":10},{"id":"d10-7","kind":"type","who":"ana","q":"By the time the wind dropped, our spare tent <span class=\"gap\"><\/span> halfway to camp nine. <span class=\"cue\">(carry)<\/span>","fixed":"By the time the wind dropped, our spare tent <b>had been carried<\/b> halfway to camp nine.","fb":"\"By the time the wind dropped\" is the later past: HAD BEEN + CARRIED.","answer":"had been carried","accept":["had been carried","had already been carried","had got carried","had gotten carried","had been carried away","had already got carried","had already gotten carried"],"camp":10},{"id":"d10-8","kind":"choose","who":"otto","q":"I knew that part was dangerous. I <span class=\"gap\"><\/span> about the ice by Tensing. <span class=\"cue\">(warn)<\/span>","fixed":"I knew that part was dangerous. I <b>had been warned<\/b> about the ice by Tensing.","fb":"Warned before I knew: HAD BEEN + PAST PARTICIPLE. BY TENSING is the doer.","answer":"had been warned","options":["had been warned","had warned","had been warn"],"gaps":1,"camp":10}],"done":{"who":"sam","en":"Nobody slept. By dawn, snow **had been blown** in through every crack."},"storm":1},{"n":7,"alt":5400,"nextAlt":5000,"scene":"SherpaClimb/camp-07","side":"right","arrive":[{"who":"doris","via":"radio","en":"The pass **will be closed** at noon. After that, you're on your own. Over."},{"who":"tensing","en":"Then we go now. Anyone who falls behind **will be roped** to me."}],"tip":"Promises, notices and predictions, doer left out: WILL BE + PAST PARTICIPLE.","items":[{"id":"d7-1","kind":"choose","who":"doris","q":"Don't worry. You <span class=\"gap\"><\/span> at the lake by two of our porters. Over. <span class=\"cue\">(meet)<\/span>","fixed":"Don't worry. You <b>will be met<\/b> at the lake by two of our porters. Over.","fb":"A promise, and the porters do the meeting: WILL BE + PAST PARTICIPLE. MEET → MET.","answer":"will be met","via":"radio","options":["will be met","will be meet","will meet"],"gaps":1,"camp":7},{"id":"d7-2","kind":"choose","who":"ana","q":"No helicopter <span class=\"gap\"><\/span> in this wind. It's too dangerous. <span class=\"cue\">(send)<\/span>","fixed":"No helicopter <b>will be sent<\/b> in this wind. It's too dangerous.","fb":"A helicopter does not send; it is sent: WILL BE + PAST PARTICIPLE. SEND → SENT.","answer":"will be sent","options":["will be sent","will send","will be send"],"gaps":1,"camp":7},{"id":"d7-3","kind":"type","who":"doris","q":"Your families <span class=\"gap\"><\/span> tonight that you are safe. Over. <span class=\"cue\">(tell)<\/span>","fixed":"Your families <b>will be told<\/b> tonight that you are safe. Over.","fb":"A promise, doer left out: WILL BE + TOLD.","answer":"will be told","via":"radio","accept":["will be told","are going to be told","are being told","will get told","are going to get told","are getting told"],"camp":7},{"id":"d7-4","kind":"choose","who":"sam","q":"<span class=\"gap\"><\/span> Otto's bag <span class=\"gap\"><\/span> by someone else? He's got the radio too. <span class=\"cue\">(carry)<\/span>","fixed":"<b>Will<\/b> Otto's bag <b>be carried<\/b> by someone else? He's got the radio too.","fb":"A question about the future, doer at the end: WILL + subject + BE + PAST PARTICIPLE?","answer":"Will ... be carried","options":["Will ... be carried","Will ... be carry","Will ... carried"],"gaps":2,"camp":7},{"id":"d7-5","kind":"spot","who":"ana","q":"The ropes <mark class=\"spot\">are going to be fixed<\/mark> before we start down the ice.","fixed":"The ropes <b>are going to be fixed<\/b> before we start down the ice.","fb":"ARE GOING TO BE + FIXED: already planned. Going-to passive, not camp seven.","answer":5,"options":[5,7,12],"camp":7},{"id":"d7-6","kind":"choose","who":"otto","q":"The lower path <span class=\"gap\"><\/span> until tomorrow, so we'll take the ice wall. <span class=\"cue\">(not / dig out)<\/span>","fixed":"The lower path <b>won't be dug out<\/b> until tomorrow, so we'll take the ice wall.","fb":"Not done in the future, doer left out: WON'T BE + PAST PARTICIPLE. DIG → DUG.","answer":"won't be dug out","options":["won't be dug out","won't dug out","won't be dig out"],"gaps":1,"camp":7},{"id":"d7-7","kind":"type","who":"ana","q":"Everything heavy <span class=\"gap\"><\/span> here, and we'll come back for it in spring. <span class=\"cue\">(leave)<\/span>","fixed":"Everything heavy <b>will be left<\/b> here, and we'll come back for it in spring.","fb":"Decided now, doer left out: WILL BE + LEFT.","answer":"will be left","accept":["will be left","is going to be left","is being left","will have to be left","is going to have to be left","will get left"],"camp":7},{"id":"d7-8","kind":"choose","who":"doris","q":"This time you'll be called by <span class=\"gap\"><\/span>, not by the weather station. Noon. Over.","fixed":"This time you'll be called by <b>us<\/b>, not by the weather station. Noon. Over.","fb":"After BY comes the object form: US, not WE.","answer":"us","via":"radio","options":["us","we","our"],"gaps":1,"camp":7}],"done":{"who":"otto","en":"Right. We**'ll be lowered** down the ice wall one at a time. Me last."},"storm":2},{"n":6,"alt":5000,"nextAlt":4600,"scene":"SherpaClimb/camp-06","side":"left","arrive":[{"who":"ana","en":"Otto went last, like he said. Halfway down the ice wall, the rope jammed."},{"who":"sam","en":"He **was being swung** against the ice like a bell. Then it gave, and he landed on one foot."}],"tip":"In the middle of being done when something else happened: WAS / WERE + BEING + PAST PARTICIPLE.","items":[{"id":"d6-1","kind":"type","who":"sam","q":"Otto <span class=\"gap\"><\/span> down the ice wall when the torch went out. <span class=\"cue\">(lower)<\/span>","fixed":"Otto <b>was being lowered<\/b> down the ice wall when the torch went out.","fb":"In the middle of it when the torch went out: WAS + BEING + LOWERED.","answer":"was being lowered","accept":["was being lowered","was getting lowered","was lowering"],"camp":6},{"id":"d6-2","kind":"choose","who":"ana","q":"While his ankle <span class=\"gap\"><\/span>, Otto kept making jokes. <span class=\"cue\">(strap up)<\/span>","fixed":"While his ankle <b>was being strapped up<\/b>, Otto kept making jokes.","fb":"The ankle does not strap itself: WAS + BEING + PAST PARTICIPLE. One ankle: WAS.","answer":"was being strapped up","options":["was being strapped up","was strapping up","were being strapped up"],"gaps":1,"camp":6},{"id":"d6-3","kind":"choose","who":"doris","q":"I couldn't hear you. My radio <span class=\"gap\"><\/span> when you called. Over. <span class=\"cue\">(repair)<\/span>","fixed":"I couldn't hear you. My radio <b>was being repaired<\/b> when you called. Over.","fb":"In the middle of it when you called: WAS + BEING + PAST PARTICIPLE. BEEN is for the perfect.","answer":"was being repaired","via":"radio","options":["was being repaired","was repairing","was been repaired"],"gaps":1,"camp":6},{"id":"d6-4","kind":"choose","who":"otto","q":"<span class=\"gap\"><\/span> the rope <span class=\"gap\"><\/span> properly when it jammed, or did it just catch on the ice? <span class=\"cue\">(hold)<\/span>","fixed":"<b>Was<\/b> the rope <b>being held<\/b> properly when it jammed, or did it just catch on the ice?","fb":"A question about a moment in the past: WAS + subject + BEING + PAST PARTICIPLE?","answer":"Was ... being held","options":["Was ... being held","Was ... been held","Were ... being held"],"gaps":2,"camp":6},{"id":"d6-5","kind":"spot","who":"ana","q":"The rope <mark class=\"spot\">had been checked<\/mark> twice, but it still jammed.","fixed":"The rope <b>had been checked<\/b> twice, but it still jammed.","fb":"HAD BEEN + CHECKED: done before the moment it jammed. Past perfect passive, not camp six.","answer":10,"options":[10,6,12],"camp":6},{"id":"d6-6","kind":"choose","who":"sam","q":"Two of our bags <span class=\"gap\"><\/span> towards the edge by the wind as we came down. <span class=\"cue\">(drag)<\/span>","fixed":"Two of our bags <b>were being dragged<\/b> towards the edge by the wind as we came down.","fb":"In progress as we came down, and two bags: WERE + BEING + PAST PARTICIPLE.","answer":"were being dragged","options":["were being dragged","was being dragged","were dragging"],"gaps":1,"camp":6},{"id":"d6-7","kind":"choose","who":"ana","q":"It wasn't Sam's fault. The rope <span class=\"gap\"><\/span> by anyone at that point; it just caught on the ice. <span class=\"cue\">(not / pull)<\/span>","fixed":"It wasn't Sam's fault. The rope <b>wasn't being pulled<\/b> by anyone at that point; it just caught on the ice.","fb":"Not in progress at that moment, and one rope: WASN'T + BEING + PAST PARTICIPLE.","answer":"wasn't being pulled","options":["wasn't being pulled","weren't being pulled","wasn't pulling"],"gaps":1,"camp":6},{"id":"d6-8","kind":"choose","who":"otto","q":"Everything was chaos. Snow <span class=\"gap\"><\/span> into our faces the whole time. <span class=\"cue\">(throw)<\/span>","fixed":"Everything was chaos. Snow <b>was being thrown<\/b> into our faces the whole time.","fb":"The background of the story: WAS + BEING + PAST PARTICIPLE. THROW → THROWN.","answer":"was being thrown","options":["was being thrown","was been thrown","was being threw"],"gaps":1,"camp":6}],"done":{"who":"sam","en":"As the light went, Otto **was being wrapped** in every jacket we had."},"storm":3},{"n":5,"alt":4600,"nextAlt":4200,"scene":"SherpaClimb/camp-05","side":"right","arrive":[{"who":"ana","via":"radio","en":"Navya, Otto can't walk and the porters haven't come. We**'re going to be snowed in** up here. Over."},{"who":"doris","via":"radio","en":"Not tonight you're not. You**'re going to be fetched**, and I know exactly who by. Over."}],"tip":"Already decided, or you can see it coming, doer left out: AM / IS / ARE + GOING TO BE + PAST PARTICIPLE.","items":[{"id":"d5-1","kind":"choose","who":"doris","q":"Listen. Momo <span class=\"gap\"><\/span> up to you tonight. He knows the path. Over. <span class=\"cue\">(send)<\/span>","fixed":"Listen. Momo <b>is going to be sent<\/b> up to you tonight. He knows the path. Over.","fb":"Already decided, and Momo is not the sender: IS + GOING TO BE + SENT. Keep the TO.","answer":"is going to be sent","via":"radio","options":["is going to be sent","is going to send","is going be sent"],"gaps":1,"camp":5},{"id":"d5-2","kind":"choose","who":"sam","q":"Look at that sky! We <span class=\"gap\"><\/span> in here by the snow. <span class=\"cue\">(trap)<\/span>","fixed":"Look at that sky! We <b>are going to be trapped<\/b> in here by the snow.","fb":"You can see it coming: ARE + GOING TO BE + PAST PARTICIPLE.","answer":"are going to be trapped","options":["are going to be trapped","are going to trap","are going to be trap"],"gaps":1,"camp":5},{"id":"d5-3","kind":"type","who":"ana","q":"It's decided: Otto's pack <span class=\"gap\"><\/span> between the three of us. <span class=\"cue\">(share)<\/span>","fixed":"It's decided: Otto's pack <b>is going to be shared<\/b> between the three of us.","fb":"\"It's decided\" = a plan, doer left out: IS + GOING TO BE + SHARED.","answer":"is going to be shared","accept":["is going to be shared","will be shared","is being shared","is going to get shared","is to be shared"],"camp":5},{"id":"d5-4","kind":"choose","who":"otto","q":"<span class=\"gap\"><\/span> I <span class=\"gap\"><\/span> down by a yak? Seriously? <span class=\"cue\">(carry)<\/span>","fixed":"<b>Am<\/b> I <b>going to be carried<\/b> down by a yak? Seriously?","fb":"A question about the plan: AM + I + GOING TO BE + PAST PARTICIPLE? Not DO.","answer":"Am ... going to be carried","options":["Am ... going to be carried","Do ... going to be carried","Am ... going to carried"],"gaps":2,"camp":5},{"id":"d5-5","kind":"spot","who":"doris","q":"Momo <mark class=\"spot\">will be given<\/mark> a big bag of carrots when he gets back. Over.","fixed":"Momo <b>will be given<\/b> a big bag of carrots when he gets back. Over.","fb":"WILL BE + GIVEN: a promise. Future simple passive, not GOING TO.","answer":7,"via":"radio","options":[7,5,2],"camp":5},{"id":"d5-6","kind":"choose","who":"ana","q":"Look how fast it's falling. Our tracks <span class=\"gap\"><\/span> under the snow by morning. <span class=\"cue\">(hide)<\/span>","fixed":"Look how fast it's falling. Our tracks <b>are going to be hidden<\/b> under the snow by morning.","fb":"\"Look how fast it's falling\" = you can see it coming, and \"tracks\" is plural: ARE + GOING TO BE + PAST PARTICIPLE. HIDE → HIDDEN.","answer":"are going to be hidden","options":["are going to be hidden","are going to be hide","is going to be hidden"],"gaps":1,"camp":5},{"id":"d5-7","kind":"type","who":"doris","q":"The old path <span class=\"gap\"><\/span> with flags until spring, so Momo will find his own way. Over. <span class=\"cue\">(not / be going to / mark)<\/span>","fixed":"The old path <b>isn't going to be marked<\/b> with flags until spring, so Momo will find his own way. Over.","fb":"Already decided, negative: ISN'T + GOING TO BE + MARKED.","answer":"isn't going to be marked","via":"radio","accept":["isn't going to be marked","isn't going to get marked"],"camp":5},{"id":"d5-8","kind":"choose","who":"sam","q":"Momo <span class=\"gap\"><\/span> by the wind at all. Yaks love storms! <span class=\"cue\">(not / bother)<\/span>","fixed":"Momo <b>isn't going to be bothered<\/b> by the wind at all. Yaks love storms!","fb":"You can see it coming, negative: ISN'T + GOING TO BE + PAST PARTICIPLE. Not DOESN'T.","answer":"isn't going to be bothered","options":["isn't going to be bothered","doesn't going to be bothered","isn't going to bothered"],"gaps":1,"camp":5}],"done":{"who":"tensing","en":"At first light we go on, Otto between us. We**'re going to be found**. We have to be."},"storm":3},{"n":4,"alt":4200,"nextAlt":3800,"scene":"SherpaClimb/camp-04","side":"left","arrive":[{"who":"ana","via":"radio","en":"Navya, Otto **has been carried** between two of us since dawn, and now something **has been seen** on the ridge. Something big, with horns. Over."},{"who":"doris","via":"radio","en":"Then stay where you are. That's Momo, and he**'s** never **been beaten** by a storm. Over."}],"tip":"Done, with a line to now, doer left out: HAS / HAVE BEEN + PAST PARTICIPLE.","items":[{"id":"d4-1","kind":"choose","who":"sam","q":"Listen! Momo's bell <span class=\"gap\"><\/span>! He's right above us! <span class=\"cue\">(just / hear)<\/span>","fixed":"Listen! Momo's bell <b>has just been heard<\/b>! He's right above us!","fb":"Moments ago, with the news now, and one bell: HAS + JUST + BEEN + PAST PARTICIPLE.","answer":"has just been heard","options":["has just been heard","has just heard","have just been heard"],"gaps":1,"camp":4},{"id":"d4-2","kind":"choose","who":"sam","q":"We <span class=\"gap\"><\/span> by smell! Momo followed my two-week-old socks! <span class=\"cue\">(find)<\/span>","fixed":"We <b>have been found<\/b> by smell! Momo followed my two-week-old socks!","fb":"Done, with the result now, and \"we\": HAVE BEEN + PAST PARTICIPLE. FIND → FOUND.","answer":"have been found","options":["have been found","have found","has been found"],"gaps":1,"camp":4},{"id":"d4-3","kind":"type","who":"otto","q":"The path <span class=\"gap\"><\/span> since lunchtime, so Momo is finding his own way. <span class=\"cue\">(bury)<\/span>","fixed":"The path <b>has been buried<\/b> since lunchtime, so Momo is finding his own way.","fb":"\"since lunchtime\", up to now: HAS BEEN + BURIED.","answer":"has been buried","accept":["has been buried","has got buried","has gotten buried","has been getting buried","has been completely buried","has completely been buried"],"camp":4},{"id":"d4-4","kind":"choose","who":"otto","q":"<span class=\"gap\"><\/span> the straps on Momo <span class=\"gap\"><\/span> yet? I'm not falling off a yak. <span class=\"cue\">(check)<\/span>","fixed":"<b>Have<\/b> the straps on Momo <b>been checked<\/b> yet? I'm not falling off a yak.","fb":"A question about up to now, and \"straps\": HAVE + subject + BEEN + PAST PARTICIPLE?","answer":"Have ... been checked","options":["Have ... been checked","Have ... checked","Has ... been checked"],"gaps":2,"camp":4},{"id":"d4-5","kind":"spot","who":"sam","q":"Momo <mark class=\"spot\">was sent<\/mark> up by Navya last night.","fixed":"Momo <b>was sent<\/b> up by Navya last night.","fb":"WAS + SENT with \"last night\": a finished time. Past simple passive, not camp four.","answer":3,"options":[3,4,6],"camp":4},{"id":"d4-6","kind":"choose","who":"ana","q":"Two of our tents <span class=\"gap\"><\/span> since we got here. <span class=\"cue\">(damage)<\/span>","fixed":"Two of our tents <b>have been damaged<\/b> since we got here.","fb":"\"since we got here\", up to now: HAVE BEEN + PAST PARTICIPLE.","answer":"have been damaged","options":["have been damaged","have damaged","have been damage"],"gaps":1,"camp":4},{"id":"d4-7","kind":"type","who":"ana","q":"Otto's ankle <span class=\"gap\"><\/span> again since lunchtime, so it's much better now. <span class=\"cue\">(strap up)<\/span>","fixed":"Otto's ankle <b>has been strapped up<\/b> again since lunchtime, so it's much better now.","fb":"\"since lunchtime\", and the result is here now: HAS BEEN + STRAPPED UP.","answer":"has been strapped up","accept":["has been strapped up","has been strapped","has got strapped up","has gotten strapped up"],"camp":4},{"id":"d4-8","kind":"choose","who":"doris","q":"I <span class=\"gap\"><\/span> by the weather station: the storm will end tonight. Over. <span class=\"cue\">(tell)<\/span>","fixed":"I <b>have been told<\/b> by the weather station: the storm will end tonight. Over.","fb":"News with a line to now, and \"I\": HAVE BEEN + PAST PARTICIPLE. TELL → TOLD.","answer":"have been told","via":"radio","options":["have been told","have told","has been told"],"gaps":1,"camp":4}],"done":{"who":"otto","en":"I**'ve been lifted** onto a yak. Nearly forty years of climbing, and this is how I go home."},"storm":3},{"n":3,"alt":3800,"nextAlt":3400,"scene":"SherpaClimb/camp-03","side":"right","arrive":[{"who":"ana","en":"In the whiteout, we **were led** down by a yak. Nobody **was lost**."},{"who":"sam","en":"And Otto **was carried** all afternoon on Momo's back. He sang the whole time."}],"tip":"Finished, doer left out or put back with BY: WAS / WERE + PAST PARTICIPLE.","items":[{"id":"d3-1","kind":"choose","who":"doris","q":"How <span class=\"gap\"><\/span> you <span class=\"gap\"><\/span> in all that snow? Over. <span class=\"cue\">(find)<\/span>","fixed":"How <b>were<\/b> you <b>found<\/b> in all that snow? Over.","fb":"A question about a finished event, and \"you\": WERE + \"you\" + PAST PARTICIPLE?","answer":"were ... found","via":"radio","options":["were ... found","was ... found","were ... find"],"gaps":2,"camp":3},{"id":"d3-2","kind":"choose","who":"sam","q":"The way down <span class=\"gap\"><\/span> by Momo, not by us! <span class=\"cue\">(choose)<\/span>","fixed":"The way down <b>was chosen<\/b> by Momo, not by us!","fb":"Finished, BY MOMO is the point, and one way: WAS + PAST PARTICIPLE. CHOOSE → CHOSEN.","answer":"was chosen","options":["was chosen","was choosed","were chosen"],"gaps":1,"camp":3},{"id":"d3-3","kind":"type","who":"otto","q":"This morning, I <span class=\"gap\"><\/span> onto Momo's back by Tensing and Sam. <span class=\"cue\">(lift)<\/span>","fixed":"This morning, I <b>was lifted<\/b> onto Momo's back by Tensing and Sam.","fb":"\"This morning\" is finished, and the doers come after BY: WAS + LIFTED.","answer":"was lifted","accept":["was lifted","got lifted","was lifted up","got lifted up","was carefully lifted"],"camp":3},{"id":"d3-4","kind":"choose","who":"ana","q":"The bridge over the stream <span class=\"gap\"><\/span> in 1998, the year Otto first came here. <span class=\"cue\">(build)<\/span>","fixed":"The bridge over the stream <b>was built<\/b> in 1998, the year Otto first came here.","fb":"\"in 1998\" = a finished time: WAS + PAST PARTICIPLE. BUILD → BUILT.","answer":"was built","options":["was built","was build","has been built"],"gaps":1,"camp":3},{"id":"d3-5","kind":"spot","who":"sam","q":"Momo <mark class=\"spot\">is called<\/mark> the hero of the valley now.","fixed":"Momo <b>is called<\/b> the hero of the valley now.","fb":"IS + CALLED: how things are now. Present simple passive, not camp three.","answer":2,"options":[2,3,1],"camp":3},{"id":"d3-6","kind":"choose","who":"otto","q":"My ankle <span class=\"gap\"><\/span> by a rock, not by the rope. <span class=\"cue\">(hurt)<\/span>","fixed":"My ankle <b>was hurt<\/b> by a rock, not by the rope.","fb":"Finished, with the cause after BY: WAS + HURT. HURT never changes.","answer":"was hurt","options":["was hurt","was hurted","hurt"],"gaps":1,"camp":3},{"id":"d3-7","kind":"type","who":"ana","q":"The porters <span class=\"gap\"><\/span> back by the snow below camp five. That's why Momo came. <span class=\"cue\">(turn)<\/span>","fixed":"The porters <b>were turned back<\/b> back by the snow below camp five. That's why Momo came.","fb":"A finished event, and \"porters\": WERE + TURNED BACK.","answer":"were turned back","accept":["were turned back","got turned back","had been turned back"],"camp":3},{"id":"d3-8","kind":"choose","who":"sam","q":"It all <span class=\"gap\"><\/span> so fast. One minute, whiteout; the next minute, Momo! <span class=\"cue\">(happen)<\/span>","fixed":"It all <b>happened<\/b> so fast. One minute, whiteout; the next minute, Momo!","fb":"HAPPEN takes no object, so it has no passive: just HAPPENED.","answer":"happened","options":["happened","was happened","were happened"],"gaps":1,"camp":3}],"done":{"who":"tensing","en":"That night, Momo **was given** the best dinner on the mountain: Sam's socks."},"storm":2},{"n":2,"alt":3400,"nextAlt":3000,"scene":"SherpaClimb/camp-02","side":"left","arrive":[{"who":"ana","via":"radio","en":"Navya, how does a yak find people in a whiteout? Over."},{"who":"doris","via":"radio","en":"Every yak here **is trained** for nights like that. And Momo **is** never **told** the way. He just knows. Over."}],"tip":"Facts, routines and how things are done, doer left out: AM / IS / ARE + PAST PARTICIPLE.","items":[{"id":"d2-1","kind":"choose","who":"doris","q":"Momo <span class=\"gap\"><\/span> twice a day, morning and evening. Over. <span class=\"cue\">(feed)<\/span>","fixed":"Momo <b>is fed<\/b> twice a day, morning and evening. Over.","fb":"A routine, and Momo is one yak: IS + PAST PARTICIPLE. FEED → FED.","answer":"is fed","via":"radio","options":["is fed","is feed","are fed"],"gaps":1,"camp":2},{"id":"d2-2","kind":"choose","who":"ana","q":"Rescues like this <span class=\"gap\"><\/span> by radio from base camp. <span class=\"cue\">(organise)<\/span>","fixed":"Rescues like this <b>are organised<\/b> by radio from base camp.","fb":"How things are done, and \"rescues\" is plural: ARE + PAST PARTICIPLE.","answer":"are organised","options":["are organised","are organise","is organised"],"gaps":1,"camp":2},{"id":"d2-3","kind":"type","who":"sam","q":"Every winter, the yaks <span class=\"gap\"><\/span> down in the valley. <span class=\"cue\">(keep)<\/span>","fixed":"Every winter, the yaks <b>are kept<\/b> down in the valley.","fb":"\"Every winter\" = a routine, and \"yaks\": ARE + KEPT.","answer":"are kept","accept":["are kept","get kept","are always kept","are usually kept"],"camp":2},{"id":"d2-4","kind":"choose","who":"otto","q":"<span class=\"gap\"><\/span> yaks ever <span class=\"gap\"><\/span> that high in a storm? <span class=\"cue\">(see)<\/span>","fixed":"<b>Are<\/b> yaks ever <b>seen<\/b> that high in a storm?","fb":"A question about what usually happens: ARE + subject + PAST PARTICIPLE? Not DO.","answer":"Are ... seen","options":["Are ... seen","Do ... seen","Are ... see"],"gaps":2,"camp":2},{"id":"d2-5","kind":"spot","who":"doris","q":"A bed <mark class=\"spot\">is being made up<\/mark> for Otto right now. Over.","fixed":"A bed <b>is being made up<\/b> for Otto right now. Over.","fb":"IS BEING + MADE UP with \"right now\": happening now. Present continuous passive, not camp two.","answer":1,"via":"radio","options":[1,2,4],"camp":2},{"id":"d2-6","kind":"choose","who":"ana","q":"In this valley, yaks <span class=\"gap\"><\/span> by everyone. <span class=\"cue\">(love)<\/span>","fixed":"In this valley, yaks <b>are loved<\/b> by everyone.","fb":"A general fact, and \"yaks\": ARE + PAST PARTICIPLE.","answer":"are loved","options":["are loved","are love","is loved"],"gaps":1,"camp":2},{"id":"d2-7","kind":"type","who":"doris","q":"Hot soup <span class=\"gap\"><\/span> at base camp every night at seven. It always has been. Over. <span class=\"cue\">(serve)<\/span>","fixed":"Hot soup <b>is served<\/b> at base camp every night at seven. It always has been. Over.","fb":"\"every night\" = a routine: IS + SERVED.","answer":"is served","via":"radio","accept":["is served","gets served","is always served","is usually served"],"camp":2},{"id":"d2-8","kind":"choose","who":"sam","q":"Cheese <span class=\"gap\"><\/span> from yak milk up here. It's delicious! <span class=\"cue\">(make)<\/span>","fixed":"Cheese <b>is made<\/b> from yak milk up here. It's delicious!","fb":"How things are done: IS + PAST PARTICIPLE. MAKE → MADE, and FROM for what it is made of.","answer":"is made","options":["is made","is make","makes"],"gaps":1,"camp":2}],"done":{"who":"sam","en":"Momo's bell **is heard** before he is seen. Best sound in the world."},"storm":1},{"n":1,"alt":3000,"nextAlt":2950,"scene":"SherpaClimb/camp-01","side":"right","arrive":[{"who":"doris","via":"radio","en":"I can see you through the telescope! A stretcher **is being brought** up to meet you. Over."},{"who":"sam","en":"And Momo **is being cheered** by the porters coming up the path!"}],"tip":"Being done right now, doer left out: AM / IS / ARE + BEING + PAST PARTICIPLE.","items":[{"id":"d1-1","kind":"choose","who":"ana","q":"Look! A big pot of soup <span class=\"gap\"><\/span> for us down there! <span class=\"cue\">(make)<\/span>","fixed":"Look! A big pot of soup <b>is being made<\/b> for us down there!","fb":"\"Look!\" = happening now, and soup does not make itself: IS + BEING + PAST PARTICIPLE.","answer":"is being made","options":["is being made","is making","is been made"],"gaps":1,"camp":1},{"id":"d1-2","kind":"choose","who":"ana","q":"Navya, Otto's ankle <span class=\"gap\"><\/span> by the doctor right now. Over. <span class=\"cue\">(check)<\/span>","fixed":"Navya, Otto's ankle <b>is being checked<\/b> by the doctor right now. Over.","fb":"\"right now\", done by the doctor: IS + BEING + PAST PARTICIPLE. BEEN is for the perfect.","answer":"is being checked","via":"radio","options":["is being checked","is checking","is been checked"],"gaps":1,"camp":1},{"id":"d1-3","kind":"type","who":"sam","q":"Listen! Our names <span class=\"gap\"><\/span> on the radio in Kathmandu! <span class=\"cue\">(read out)<\/span>","fixed":"Listen! Our names <b>are being read out<\/b> on the radio in Kathmandu!","fb":"\"Listen!\" = happening now: ARE + BEING + READ OUT.","answer":"are being read out","accept":["are being read out","are being read","are getting read out","are being read out loud","are being read aloud"],"camp":1},{"id":"d1-4","kind":"choose","who":"otto","q":"Why <span class=\"gap\"><\/span> I still <span class=\"gap\"><\/span>? I can almost walk now. <span class=\"cue\">(carry)<\/span>","fixed":"Why <b>am<\/b> I still <b>being carried<\/b>? I can almost walk now.","fb":"A question about right now: AM + I + BEING + PAST PARTICIPLE? Not DO.","answer":"am ... being carried","options":["am ... being carried","do ... being carried","am ... been carried"],"gaps":2,"camp":1},{"id":"d1-5","kind":"spot","who":"ana","q":"Otto's ankle <mark class=\"spot\">was strapped up<\/mark> at the ice wall.","fixed":"Otto's ankle <b>was strapped up<\/b> at the ice wall.","fb":"WAS + STRAPPED UP: finished in the past. Past simple passive, not camp one.","answer":3,"options":[3,10,1],"camp":1},{"id":"d1-6","kind":"choose","who":"sam","q":"Momo <span class=\"gap\"><\/span> by two of the porters at the moment, and he loves it. <span class=\"cue\">(brush)<\/span>","fixed":"Momo <b>is being brushed<\/b> by two of the porters at the moment, and he loves it.","fb":"\"at the moment\", and the porters are doing it to Momo: IS + BEING + PAST PARTICIPLE.","answer":"is being brushed","options":["is being brushed","is brushing","is been brushed"],"gaps":1,"camp":1},{"id":"d1-7","kind":"type","who":"ana","q":"Right now we <span class=\"gap\"><\/span> down to base camp by Momo. <span class=\"cue\">(lead)<\/span>","fixed":"Right now we <b>are being led<\/b> down to base camp by Momo.","fb":"\"Right now\", BY MOMO: ARE + BEING + LED. LEAD → LED.","answer":"are being led","accept":["are being led","are getting led"],"camp":1},{"id":"d1-8","kind":"choose","who":"sam","q":"Momo <span class=\"gap\"><\/span> any more. Otto's on the stretcher now. <span class=\"cue\">(not / ride)<\/span>","fixed":"Momo <b>isn't being ridden<\/b> any more. Otto's on the stretcher now.","fb":"Not happening now, and Momo is one yak: ISN'T + BEING + PAST PARTICIPLE. RIDE → RIDDEN.","answer":"isn't being ridden","options":["isn't being ridden","isn't being rode","aren't being ridden"],"gaps":1,"camp":1}],"done":{"who":"tensing","en":"Base camp, just below. Every one of us **is being brought** home."},"storm":0}],"summit":{"n":"summit","alt":2950,"nextAlt":2800,"scene":"SherpaClimb/camp-01","side":"right","arrive":[{"who":"doris","en":"Welcome home! The coffee **has been made** and Momo **has been fed**. Now sit down and tell me everything."}],"tip":"Every passive is BE in some tense + PAST PARTICIPLE. Find the tense of BE.","items":[{"id":"r-1","kind":"choose","who":"doris","q":"By tomorrow, your story <span class=\"gap\"><\/span> to every climber in Nepal! <span class=\"cue\">(tell)<\/span>","fixed":"By tomorrow, your story <b>will have been told<\/b> to every climber in Nepal!","fb":"\"By tomorrow\" = done before then: WILL HAVE BEEN + PAST PARTICIPLE. Camp twelve.","answer":"will have been told","options":["will have been told","will have told","will has been told"],"gaps":1,"camp":12},{"id":"r-2","kind":"choose","who":"sam","q":"When we got to the hut, our food <span class=\"gap\"><\/span> by birds. <span class=\"cue\">(eat)<\/span>","fixed":"When we got to the hut, our food <b>had been eaten<\/b> by birds.","fb":"Before we got there: HAD BEEN + PAST PARTICIPLE. EAT → EATEN. Camp ten.","answer":"had been eaten","options":["had been eaten","had eaten","had been ate"],"gaps":1,"camp":10},{"id":"r-3","kind":"type","who":"ana","q":"Next year, a new hut <span class=\"gap\"><\/span> on the ledge. I promise. <span class=\"cue\">(will / build)<\/span>","fixed":"Next year, a new hut <b>will be built<\/b> on the ledge. I promise.","fb":"A promise about next year, doer left out: WILL BE + BUILT. Camp seven.","answer":"will be built","accept":["will be built","will get built"],"camp":7},{"id":"r-4","kind":"choose","who":"otto","q":"I <span class=\"gap\"><\/span> down the ice wall when the rope jammed. <span class=\"cue\">(lower)<\/span>","fixed":"I <b>was being lowered<\/b> down the ice wall when the rope jammed.","fb":"In the middle of it when the rope jammed, and \"I\": WAS + BEING + PAST PARTICIPLE. Camp six.","answer":"was being lowered","options":["was being lowered","were being lowered","was been lowered"],"gaps":1,"camp":6},{"id":"r-5","kind":"choose","who":"doris","q":"Look at Momo's face. He <span class=\"gap\"><\/span> a medal, and he knows it! <span class=\"cue\">(give)<\/span>","fixed":"Look at Momo's face. He <b>is going to be given<\/b> a medal, and he knows it!","fb":"You can see it coming: IS + GOING TO BE + PAST PARTICIPLE. Camp five.","answer":"is going to be given","options":["is going to be given","is going to give","is going be given"],"gaps":1,"camp":5},{"id":"r-6","kind":"choose","who":"sam","q":"My socks <span class=\"gap\"><\/span> by Momo. All of them. <span class=\"cue\">(eat)<\/span>","fixed":"My socks <b>have been eaten<\/b> by Momo. All of them.","fb":"Done, and the result is here now (no socks): HAVE BEEN + PAST PARTICIPLE. Camp four.","answer":"have been eaten","options":["have been eaten","have eaten","has been eaten"],"gaps":1,"camp":4},{"id":"r-7","kind":"type","who":"otto","q":"Two days ago, I <span class=\"gap\"><\/span> down a mountain by a yak. Nobody will believe me. <span class=\"cue\">(carry)<\/span>","fixed":"Two days ago, I <b>was carried<\/b> down a mountain by a yak. Nobody will believe me.","fb":"\"Two days ago\" is finished, BY A YAK: WAS + CARRIED. Camp three.","answer":"was carried","accept":["was carried","got carried"],"camp":3},{"id":"r-8","kind":"choose","who":"doris","q":"Here, every climber <span class=\"gap\"><\/span> a hot drink on arrival. <span class=\"cue\">(hand)<\/span>","fixed":"Here, every climber <b>is handed<\/b> a hot drink on arrival.","fb":"How things are done here: IS + PAST PARTICIPLE. Camp two.","answer":"is handed","options":["is handed","is hand","hands"],"gaps":1,"camp":2},{"id":"r-9","kind":"spot","who":"doris","q":"A cake <mark class=\"spot\">is being baked<\/mark> for Momo right now.","fixed":"A cake <b>is being baked<\/b> for Momo right now.","fb":"IS BEING + BAKED, \"right now\": present continuous passive. Camp one.","answer":1,"options":[1,2,5],"camp":1}],"done":{"who":"tensing","en":"We **were saved** by a yak. Write that in your diary, Sam."},"storm":0},"outro":[{"who":"sam","via":"diary","en":"Day seventeen, Kathmandu. Otto **has been taken** to hospital. He's fine. My sister **has been told** everything."},{"who":"otto","via":"note","en":"Nearly forty years of climbing, and I **was carried** off a mountain by a yak. I'm going to need a better story."},{"who":"doris","via":"radio","en":"Momo **has been given** a medal. He ate it. Over."}],"cast":{"tensing":{"name":"Tensing","role":"the guide"},"ana":{"name":"Myra","role":"the planner"},"otto":{"name":"Otto","role":"the old hand"},"sam":{"name":"Sam","role":"first big climb"},"doris":{"name":"Navya","role":"base camp radio"}},"via":{"radio":"on the radio","diary":"diary","note":"note"},"figs":{"tensing":"<img src=\"SherpaClimb/cast-tensing.jpg\" width=\"800\" height=\"1000\" alt=\"\" loading=\"lazy\" decoding=\"async\">","ana":"<img src=\"SherpaClimb/cast-ana.jpg\" width=\"800\" height=\"1000\" alt=\"\" loading=\"lazy\" decoding=\"async\">","otto":"<img src=\"SherpaClimb/cast-otto.jpg\" width=\"800\" height=\"1000\" alt=\"\" loading=\"lazy\" decoding=\"async\">","sam":"<img src=\"SherpaClimb/cast-sam.jpg\" width=\"800\" height=\"1000\" alt=\"\" loading=\"lazy\" decoding=\"async\">","doris":"<img src=\"SherpaClimb/cast-doris.jpg\" width=\"800\" height=\"1000\" alt=\"\" loading=\"lazy\" decoding=\"async\">"},"tenses":{"1":{"name":"Present continuous passive","level":"B1","href":"sherpa-tensing-descent-one-present-continuous-passive.html","fill":"#F2ADBF","ink":"#1A1206","deep":"#9C5E70","mark":"#FFBBCD"},"2":{"name":"Present simple passive","level":"A2","href":"sherpa-tensing-descent-two-present-simple-passive.html","fill":"#7A93B5","ink":"#0A131F","deep":"#5A7293","mark":"#B9D3F8"},"3":{"name":"Past simple passive","level":"B1","href":"sherpa-tensing-descent-three-past-simple-passive.html","fill":"#B08968","ink":"#1A1206","deep":"#8E6848","mark":"#F2C8A5"},"4":{"name":"Present perfect passive","level":"B1","href":"sherpa-tensing-descent-four-present-perfect-passive.html","fill":"#689497","ink":"#1A1206","deep":"#4E797C","mark":"#ADDBDE"},"5":{"name":"Going to passive","level":"B1","href":"sherpa-tensing-descent-nine-going-to-passive.html","fill":"#99BA7D","ink":"#1A1206","deep":"#5B793F","mark":"#BCDEA0"},"6":{"name":"Past continuous passive","level":"B2","href":"sherpa-tensing-descent-eight-past-continuous-passive.html","fill":"#F1D779","ink":"#1A1206","deep":"#887000","mark":"#EBD893"},"7":{"name":"Future simple passive","level":"B1","href":"sherpa-tensing-descent-seven-future-simple-passive.html","fill":"#DB815F","ink":"#1A1206","deep":"#AF5A38","mark":"#FFBEA3"},"10":{"name":"Past perfect passive","level":"B2","href":"sherpa-tensing-descent-ten-past-perfect-passive.html","fill":"#8D5358","ink":"#FFFFFF","deep":"#8D5358","mark":"#FFBDC1"},"12":{"name":"Future perfect passive","level":"C1","href":"sherpa-tensing-descent-twelve-future-perfect-passive.html","fill":"#454545","ink":"#FFFFFF","deep":"#454545","mark":"#D1D1D1"}},"lastRoute":1,"dots":{"1":[400,560],"2":[583,521],"3":[233,482],"4":[550,443],"5":[267,404],"6":[517,365],"7":[300,326],"10":[450,209],"12":[417,131]},"peak":[400,599],"grey":"#C9C6C2","gold":"#D2A53B","top":{"scene":"SherpaClimb/base-camp.jpg","side":"right","storm":0},"legs":{"12":[[417,131],[367,170],[450,209]],"10":[[450,209],[333,248],[483,287],[300,326]],"7":[[300,326],[517,365]],"6":[[517,365],[267,404]],"5":[[267,404],[550,443]],"4":[[550,443],[233,482]],"3":[[233,482],[583,521]],"2":[[583,521],[400,560]],"1":[[400,560],[400,599]],"summit":[[400,560],[400,599]]}};window.CLIMB_I18N={"en":{"upLink":"Route map","tagline":"a guide to English tenses","langLabel":"Language","kicker":"Passive game","title":"The Descent","lead":"Come down the mountain with Tensing and the team. Every camp on the way down is one passive, and a storm is coming.","startOne":"Start at camp twelve","continue":"Continue: camp {n}","continueTop":"Continue: home to base camp","chooseBtn":"Choose a camp","teamH":"The team","briefWho":"Tensing, the guide","howItWorks":"How it works","momo":"And Momo, the yak at base camp. Remember him.","chooseH":"Choose a camp","chooseHow":"The way down has no locks either: start at whichever camp you need.","mapAria":"The mountain at night, with a diamond for each passive on the way down. Every camp is also listed here.","summitRow":"Home to base camp · all nine passives","srBest":"Best first try: {k} of {m}","flagGold":"Gold flag","flagPlain":"Flag","camps":"Camps","backAria":"Back to the camps","campN":"Camp {n}","summitPush":"Home to base camp","altitude":"Altitude","progress":"Progress: {k} of {m}","soundOn":"Sound on","soundOff":"Sound off","campAlt":"Camp {n} · {alt} m","summitAlt":"Home to base camp · {alt} m","start":"Start","readFirst":"Read the lesson first","askChoose":"Choose the words for the gap.","askChoose2":"Choose the words for the gaps.","askType":"Type the words for the gap.","askSpot":"Which tense is the marked form?","gap":"gap","typeAria":"Your answer","typeHint":"Type here","check":"Check","again":"Again","right":"Right. Down you go.","wrong":"Not quite. The rope holds.","wrongMore":"This line comes back before you leave the camp.","next":"Next","translation":"Translation","keys":"Keys: 1–3 choose · Enter next · S sound · Esc camps","keysType":"Keys: Enter checks, then Enter next · Esc camps","keysMove":"Keys: Enter goes on · S sound · Esc camps","reached":"Camp {n} reached","firstTry":"First try: {k} of {m}","goldYes":"A gold flag: 75% or more right first time.","goldNo":"A flag. Gold is 75% right first time.","onTo":"Down to camp {n}","onTop":"On to base camp","summitH":"Base camp","seeClimb":"See your descent","yourClimb":"Your descent","goldCount":"Gold flags: {x} of {m}","overall":"First try overall: {p}%","review":"Worth another look","reviewNone":"Nothing to look at again: every line right first time.","rvChip":"Camp {n} · {k}","rvOpen":"Read them again","close":"Close","climbAgain":"Down again","wayDown":"Play The Climb"},"langs":["en"],"rtl":["ar"],"names":{"en":"English"},"t":{}};</script>
+<script>
+/* The Climb (lesson-template/build/sherpa-climb/template.js). The data and the strings are
+   inlined above this by build.py: window.CLIMB_DATA (content.py + the route map) and
+   window.CLIMB_I18N (the chrome in English, and every complete language).
+
+   Saves to localStorage 'sherpa.climb.v1' only. It never writes 'sherpa.progress.v1': the
+   route map counts that as camps finished, and opens passives from it. */
+(function () {
+  'use strict';
+  var D = window.CLIMB_DATA, I = window.CLIMB_I18N;
+  var CAMPS = D.camps, SUMMIT = D.summit, TENSES = D.tenses;
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var body = document.body;
+  var ITEM = {};
+  CAMPS.forEach(function (c) { c.items.forEach(function (it) { ITEM[it.id] = it; }); });
+  if (SUMMIT) SUMMIT.items.forEach(function (it) { ITEM[it.id] = it; });
+  var RM = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
+  var COARSE = window.matchMedia ? window.matchMedia('(pointer: coarse)') : { matches: false };
+
+  /*CANON:start*/
+  /* A typed answer and the accepted ones, made comparable: NFKC, lower case, curly and back
+     quotes to ', dashes to -, "..." to a space, spaces collapsed, a final . ! ? dropped. Then
+     each contraction is expanded, so "'m tying" = "am tying" and "dont" = "do not"; "'s" and
+     "'d" could be two things, so every reading is kept (a SET of variants). Right = any variant
+     of the answer meets any variant of any accepted entry. */
+  function flat(s) {
+    s = String(s == null ? '' : s);
+    if (s.normalize) s = s.normalize('NFKC');
+    s = s.toLowerCase()
+      .replace(/[‘’‚‛′´`]/g, "'")
+      .replace(/[“”„‟″]/g, '"')
+      .replace(/[‐-―−]/g, '-')
+      .replace(/\.\.\.|…/g, ' ')
+      .replace(/\s+/g, ' ').trim()
+      .replace(/\s*[.!?]+$/, '')
+      .trim();
+    return s;
+  }
+  var NEG_BARE = /\b(dont|doesnt|didnt|isnt|arent|wasnt|werent|havent|hasnt|hadnt|wont|cant)\b/g;
+  function variants(s) {
+    s = flat(s)
+      .replace(NEG_BARE, function (m) { return m.slice(0, -1) + "'t"; })
+      .replace(/\bwon't\b/g, 'will not').replace(/\bcan't\b/g, 'can not').replace(/\bcannot\b/g, 'can not')
+      .replace(/\bshan't\b/g, 'will not').replace(/\bshall\b/g, 'will')  // BrE "I / we shall" = will
+      .replace(/n't\b/g, ' not')
+      .replace(/'m\b/g, ' am').replace(/'re\b/g, ' are').replace(/'ve\b/g, ' have').replace(/'ll\b/g, ' will');
+    var out = [s];
+    [[/'s\b/, [' is', ' has']], [/'d\b/, [' had', ' would']]].forEach(function (rule) {
+      var next = [];
+      out.forEach(function (v) {
+        var todo = [v];
+        while (todo.length) {
+          var x = todo.shift();
+          if (!rule[0].test(x) || next.length > 64) { if (next.indexOf(x) < 0) next.push(x); continue; }
+          rule[1].forEach(function (alt) { todo.push(x.replace(rule[0], alt)); });
+        }
+      });
+      out = next;
+    });
+    return out.map(function (v) { return v.replace(/\s+/g, ' ').trim(); });
+  }
+  function accepts(input, accept) {
+    var mine = variants(input);
+    if (!mine[0]) return false;
+    return (accept || []).some(function (a) {
+      return variants(a).some(function (v) { return mine.indexOf(v) >= 0; });
+    });
+  }
+  /*CANON:end*/
+
+  // ── strings ──────────────────────────────────────────────────────────────────
+  var LKEY = 'sherpa.lang.v1';
+  var lang = 'en';
+  function t(key, vars) {
+    var en = I.en[key] || key;
+    var s = (lang !== 'en' && I.t[lang] && I.t[lang][en]) || en;
+    for (var k in (vars || {})) s = s.split('{' + k + '}').join(vars[k]);
+    return s;
+  }
+  function gloss(en) { return (lang !== 'en' && en && I.t[lang] && I.t[lang][en]) || ''; }
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  var CAPS = /\b[A-Z][A-Z]+(?:['’-][A-Z]+)*\b/g;
+  function rich(s, caps) {
+    s = esc(s);
+    if (caps) s = s.replace(CAPS, '<span class="cap">$&</span>');
+    return s.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
+  }
+  function glHtml(en, caps, tag) {
+    var g = gloss(en);
+    if (!g) return '';
+    return '<' + (tag || 'span') + ' class="gl" lang="' + lang + '"' + (I.rtl.indexOf(lang) >= 0 ? ' dir="rtl"' : '') + '>' +
+      rich(g, caps) + '</' + (tag || 'span') + '>';
+  }
+  /* A narrative line on a card: the English, and the learner's language in the same box,
+     beneath it (.gl). When the card has no room for both, fit() hides the glosses and shows
+     the card's "Translation" toggle, which puts each gloss in place of its English (.tx) in
+     that same box, and back. With no gloss (English) it is just the English. */
+  function pair(en, caps) {
+    var g = glHtml(en, caps);
+    return g ? '<span class="tx" lang="en">' + rich(en, caps) + '</span>' + g : rich(en, caps);
+  }
+  var GLOBE = '<svg viewBox="0 0 20 20" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5">' +
+    '<circle cx="10" cy="10" r="7.5"/><ellipse cx="10" cy="10" rx="3.2" ry="7.5"/><path d="M2.5 10h15M3.9 6.5h12.2M3.9 13.5h12.2"/></svg>';
+  // the card's one toggle (shown only while fit() has the glosses hidden); none in English
+  function togHtml() {
+    if (lang === 'en') return '';
+    return '<button class="gtog" id="gtog" type="button" aria-pressed="' + gsw.on + '" lang="' + lang + '"' +
+      (I.rtl.indexOf(lang) >= 0 ? ' dir="rtl"' : '') + '>' + GLOBE + '<span>' + esc(t('translation')) + '</span></button>';
+  }
+  /* The toggle's position is remembered for the card on screen only: a new card starts with
+     the English. A redraw of the same card (a language change, a resize) keeps it. */
+  var gsw = { on: false };
+  function newCard() { gsw = { on: false }; }
+  function fmt(n) {
+    try { return new Intl.NumberFormat(lang === 'en' ? 'en-GB' : lang, { numberingSystem: 'latn' }).format(n); }
+    catch (e) { return String(n); }
+  }
+  function marks(el) {
+    if (lang === 'en') { el.removeAttribute('lang'); el.removeAttribute('dir'); return; }
+    el.setAttribute('lang', lang);
+    if (I.rtl.indexOf(lang) >= 0) el.setAttribute('dir', 'rtl'); else el.removeAttribute('dir');
+  }
+
+  // ── the save ─────────────────────────────────────────────────────────────────
+  var SKEY = 'sherpa.descent.v1';
+  var mem = null;   // stands in for storage when the browser blocks it (private windows)
+  function fresh() { return { v: 1, camps: {}, summit: null, last: null, misses: {} }; }
+  function load() {
+    if (mem) return mem;
+    var s = null;
+    try { s = JSON.parse(localStorage.getItem(SKEY)); } catch (e) { s = null; }
+    if (!s || s.v !== 1 || typeof s !== 'object') s = fresh();
+    if (!s.camps || typeof s.camps !== 'object') s.camps = {};
+    if (!s.misses || typeof s.misses !== 'object') s.misses = {};
+    if (!('summit' in s)) s.summit = null;
+    if (!('last' in s)) s.last = null;
+    return s;
+  }
+  function put(s) {
+    try { localStorage.setItem(SKEY, JSON.stringify(s)); mem = null; } catch (e) { mem = s; }
+  }
+
+  // ── sound: two short tones, off until asked for (rpg.py's beep) ───────────────
+  var sound = false;
+  try { sound = localStorage.getItem('sherpa-climb-sound') === '1'; } catch (e) {}
+  function beep(ok) {
+    if (!sound) return;
+    try {
+      var c = new (window.AudioContext || window.webkitAudioContext)();
+      var o = c.createOscillator(), g = c.createGain();
+      o.type = ok ? 'square' : 'sawtooth'; o.frequency.value = ok ? 620 : 180; g.gain.value = .03;
+      o.connect(g); g.connect(c.destination); o.start();
+      g.gain.exponentialRampToValueAtTime(.001, c.currentTime + .16); o.stop(c.currentTime + .18);
+      o.onended = function () { c.close(); };
+    } catch (e) {}
+  }
+  function paintSound() {
+    var b = $('#snd');
+    b.setAttribute('aria-pressed', String(sound));
+    b.setAttribute('aria-label', t(sound ? 'soundOn' : 'soundOff'));
+    b.title = t(sound ? 'soundOn' : 'soundOff') + ' (S)';
+  }
+  function setSound(on) {
+    sound = !!on;
+    try { localStorage.setItem('sherpa-climb-sound', sound ? '1' : '0'); } catch (e) {}
+    paintSound();
+  }
+
+  // ── pictures ─────────────────────────────────────────────────────────────────
+  function sceneSrc(stage) {
+    if (stage === 'top') return D.top.scene;
+    return stage.scene + (window.innerWidth < 900 ? '-sm' : '') + '.jpg';
+  }
+  function setScene(src) {
+    var img = $('#scene');
+    if (img.getAttribute('src') === src) return;
+    if (!RM.matches) img.classList.add('loading');
+    img.onload = img.onerror = function () { img.classList.remove('loading'); };
+    img.setAttribute('src', src);
+  }
+  function preload(stage) { if (stage) { var i = new Image(); i.src = sceneSrc(stage); } }
+  function fig(who, cls) { return '<span class="' + (cls || 'fig-s') + '">' + (D.figs[who] || '') + '</span>'; }
+  function flagSvg(gold, title) {
+    return '<svg class="flag-ico' + (gold ? ' gold' : '') + '" viewBox="0 0 18 20" role="img" aria-label="' + esc(title) + '">' +
+      '<title>' + esc(title) + '</title><path d="M3 19 V2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>' +
+      '<path class="pennant" d="M3 2.5 L16 6.5 L3 10.5 Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>';
+  }
+
+  // ── the start screen ─────────────────────────────────────────────────────────
+  function after(n) {
+    var i = -1;
+    CAMPS.forEach(function (c, k) { if (c.n === n) i = k; });
+    if (i >= 0 && CAMPS[i + 1]) return CAMPS[i + 1].n;
+    if (n === D.lastRoute && SUMMIT) return 'summit';
+    return null;
+  }
+  /* Where "Continue" goes: the camp left half-way, else the one after the last finished,
+     else the first not yet played (a summit run with camps unplayed sends you back down to
+     them), else nothing ("Start at camp one"). */
+  function nextTarget(s) {
+    var any = Object.keys(s.camps).length > 0 || !!s.summit;
+    if (!any && s.last == null) return null;
+    if (s.last === 'summit' && SUMMIT && !s.summit) return 'summit';
+    if (s.last != null && s.last !== 'summit' && byN(s.last)) {
+      if (!s.camps[s.last]) return s.last;
+      var a = after(s.last);
+      if (a === 'summit' ? !s.summit : (a != null && !s.camps[a])) return a;
+    }
+    for (var i = 0; i < CAMPS.length; i++) if (!s.camps[CAMPS[i].n]) return CAMPS[i].n;
+    if (SUMMIT && !s.summit) return 'summit';
+    return null;
+  }
+  function byN(n) { for (var i = 0; i < CAMPS.length; i++) if (String(CAMPS[i].n) === String(n)) return CAMPS[i]; return null; }
+  function isGold(rec) { return !!rec && (rec.gold || rec.best / rec.total >= .75); }
+
+  function paintStart() {
+    var s = load();
+    $$('.pick[data-camp]').forEach(function (b) {
+      var n = b.getAttribute('data-camp');
+      var rec = n === 'summit' ? s.summit : s.camps[n];
+      var best = $('.pick-best', b), flag = $('.pick-flag', b);
+      if (rec && rec.total) {
+        best.innerHTML = rec.best + '/' + rec.total + '<span class="sr-only"> · ' + esc(t('srBest', { k: rec.best, m: rec.total })) + '</span>';
+        flag.innerHTML = flagSvg(isGold(rec), t(isGold(rec) ? 'flagGold' : 'flagPlain'));
+      } else { best.innerHTML = ''; flag.innerHTML = ''; }
+    });
+    var go = $('#go'), label = $('#go-label');
+    var target = nextTarget(s);
+    go.setAttribute('data-target', target == null ? (CAMPS[0] ? CAMPS[0].n : '') : target);
+    if (target == null) { label.setAttribute('data-t', 'startOne'); label.textContent = t('startOne'); }
+    else if (target === 'summit') { label.setAttribute('data-t', 'continueTop'); label.textContent = t('continueTop'); }
+    else { label.removeAttribute('data-t'); label.textContent = t('continue', { n: target }); }
+    marks(label);
+    paintMaps(s);
+  }
+  function paintMaps(s) {
+    $$('.mtn').forEach(function (m) {
+      $$('.dot[data-camp]', m).forEach(function (g) {
+        var rec = s.camps[g.getAttribute('data-camp')];
+        var f = $('.dflag', g);
+        if (f) f.setAttribute('class', 'dflag' + (rec ? (isGold(rec) ? ' gold' : ' plain') : ''));
+        // the mini-map shows the climb so far: a camp takes its colour once reached, or while you are in it
+        if (m.classList.contains('mtn-mini')) {
+          var here = run && run.kind === 'camp' && String(run.stage.n) === g.getAttribute('data-camp');
+          $('.dot-fill', g).setAttribute('fill', rec || here ? g.getAttribute('data-color') : D.grey);
+        }
+      });
+      $$('.seg', m).forEach(function (p) {
+        p.setAttribute('stroke', s.camps[p.getAttribute('data-seg')] ? p.getAttribute('data-color') : D.grey);
+      });
+    });
+  }
+  function light(n, on) {
+    $$('.pick[data-camp="' + n + '"], .mtn .dot[data-camp="' + n + '"]').forEach(function (el) { el.classList.toggle('lit', on); });
+  }
+
+  // ── the climb ────────────────────────────────────────────────────────────────
+  /* run: one camp (or the summit push) under way. run.cur is the line on screen, kept whole
+     (its option order, whether it has come back, what was answered), so a language change
+     or a resize draws the same line again instead of dealing a new one. */
+  var run = null, view = 'start', shownAlt = 0, altTimer = 0, lastPick = null, sceneOf = null;
+  var CLICK_GAP = 350;   // ms: a click this soon after a line appears is the tail of a double-click
+
+  function stageOf(target) { return target === 'summit' ? SUMMIT : byN(target); }
+  function tenseOf(it) { return TENSES[String(it.camp)]; }
+  function campColours(n) {
+    var tn = TENSES[String(n)];
+    return tn ? '--c:' + tn.fill + ';--k:' + tn.ink + ';--d:' + tn.deep + ';--m:' + tn.mark : '';
+  }
+  function setView(v) {
+    view = v;
+    $('#play').setAttribute('data-view', v === 'q' && run && run.cur ? 'q-' + run.items[run.cur.idx].kind : v);
+    paintKeys();
+  }
+  function paintKeys() {
+    var k = $('#keys');
+    if (!k) return;
+    var key = view === 'q' ? (run && run.cur && run.items[run.cur.idx].kind === 'type' ? 'keysType' : 'keys') : 'keysMove';
+    k.textContent = t(key); marks(k);
+  }
+  function setSide(side) { $('#play').setAttribute('data-side', side === 'left' ? 'left' : 'right'); }
+
+  function enter() {
+    if (!body.classList.contains('playing')) {
+      body.classList.add('playing');
+      $('#play').setAttribute('aria-hidden', 'false');
+      ['#start', '#wordmark', '.up-link'].forEach(function (s) { var el = $(s); if (el) el.inert = true; });
+      $('#utils-slot').appendChild($('#util'));
+    }
+  }
+  function leave() {
+    if (!body.classList.contains('playing')) return;
+    var dlg = $('#rv'); if (dlg && dlg.open) dlg.close();
+    run = null; view = 'start'; sceneOf = null;
+    body.classList.remove('playing');
+    $('#play').setAttribute('aria-hidden', 'true');
+    $('#play').removeAttribute('data-view');
+    $('#play').removeAttribute('data-storm');
+    ['#start', '#wordmark', '.up-link'].forEach(function (s) { var el = $(s); if (el) el.inert = false; });
+    $('.wm-right').appendChild($('#util'));
+    $('#view').innerHTML = ''; $('#fb').innerHTML = '';
+    if (location.hash) try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+    paintStart();
+    var back = lastPick && $('.pick[data-camp="' + lastPick + '"]');
+    (back || $('#go')).focus({ preventScroll: false });
+  }
+
+  function play(target) {
+    var stage = stageOf(target);
+    if (!stage) return;
+    lastPick = target;
+    var s = load();
+    s.last = target; put(s);
+    run = { target: target, stage: stage, kind: target === 'summit' ? 'summit' : 'camp',
+            items: stage.items, queue: stage.items.map(function (_, i) { return i; }),
+            first: {}, right: {}, missed: {}, seen: {}, cur: null };
+    enter();
+    sceneOf = stage;
+    $('#play').setAttribute('data-storm', String(stage.storm || 0));   // the snow, 0-3 (descent.css)
+    setScene(sceneSrc(stage));
+    setSide(stage.side);
+    var nx = run.kind === 'camp' ? after(stage.n) : null;
+    preload(nx === 'summit' ? SUMMIT : nx != null ? byN(nx) : null);
+    paintBar();
+    setAlt(altNow(), true);
+    paintMini(true);
+    showArrive();
+  }
+
+  function chipText() {
+    if (!run) return '';
+    if (view === 'summit') return t('summitH');
+    return run.kind === 'camp' ? t('campN', { n: run.stage.n }) + ' · ' + TENSES[String(run.stage.n)].name : t('summitPush');
+  }
+  function paintBar() {
+    if (!run) return;
+    var style = run.kind === 'camp' && view !== 'summit' ? campColours(run.stage.n) : '';
+    $$('.pb-chip').forEach(function (chip) { chip.setAttribute('style', style); chip.textContent = chipText(); });
+    var k = Object.keys(run.right).length;
+    var html = run.items.map(function (it, i) {
+      var on = view === 'summit' || run.right[it.id];
+      var now = view === 'q' && run.cur && run.cur.idx === i;
+      var miss = !on && run.missed[it.id];
+      var tn = tenseOf(it);
+      return '<li class="' + [on ? 'on' : '', now ? 'now' : '', miss ? 'miss' : ''].join(' ').trim() + '" style="--c:' + (tn ? tn.fill : 'var(--ink)') + '"></li>';
+    }).join('');
+    $$('.pips').forEach(function (pips) {
+      pips.setAttribute('aria-label', t('progress', { k: view === 'summit' ? run.items.length : k, m: run.items.length }));
+      pips.innerHTML = html;
+    });
+  }
+
+  function altNow() {
+    if (!run) return 0;
+    if (view === 'summit') return SUMMIT ? SUMMIT.nextAlt : run.stage.nextAlt;
+    var st = run.stage, f = Object.keys(run.right).length / run.items.length;
+    return Math.round(st.alt + f * (st.nextAlt - st.alt));
+  }
+  function setAlt(v, now) {
+    var el = $('#alt');
+    cancelAnimationFrame(altTimer);
+    if (now || RM.matches) { shownAlt = v; el.textContent = fmt(v); return; }
+    var from = shownAlt, t0 = performance.now(), dur = 900;
+    (function step(ts) {
+      var p = Math.min(1, Math.max(0, (ts - t0) / dur)), e = 1 - Math.pow(1 - p, 3);
+      shownAlt = Math.round(from + (v - from) * e);
+      el.textContent = fmt(shownAlt);
+      if (p < 1) altTimer = requestAnimationFrame(step);
+    })(t0);
+  }
+
+  /* The point a fraction f of the way along a polyline, by length: the descent's legs bend
+     through the camps that have no passive, so the climber follows the route, not a chord. */
+  function along(pts, f) {
+    var len = 0, i, seg = [];
+    for (i = 1; i < pts.length; i++) { seg.push(Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1])); len += seg[i - 1]; }
+    var d = Math.max(0, Math.min(1, f)) * len;
+    for (i = 0; i < seg.length; i++) {
+      if (d <= seg[i] || i === seg.length - 1) {
+        var k = seg[i] ? Math.min(1, d / seg[i]) : 0;
+        return [pts[i][0] + (pts[i + 1][0] - pts[i][0]) * k, pts[i][1] + (pts[i + 1][1] - pts[i][1]) * k];
+      }
+      d -= seg[i];
+    }
+    return pts[0];
+  }
+
+  function paintMini(jump) {
+    var m = $('.mtn-mini');
+    if (!m || !run) return;
+    paintMaps(load());
+    var here = run.kind === 'camp' ? D.dots[String(run.stage.n)] : D.dots[String(D.lastRoute)];
+    var n = run.kind === 'camp' ? run.stage.n : null;
+    var f = view === 'summit' ? 1 : Object.keys(run.right).length / run.items.length;
+    var p = along(D.legs[run.kind === 'camp' ? String(n) : 'summit'], f), x = p[0], y = p[1];
+    var c = $('#climber');
+    if (jump) { c.style.transition = 'none'; c.getBoundingClientRect(); }
+    c.style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px)';
+    if (jump) { c.getBoundingClientRect(); c.style.transition = ''; }
+    var p = $('.pulse', m);
+    var at = run.kind === 'summit' ? D.peak : here;
+    p.setAttribute('cx', at[0]); p.setAttribute('cy', at[1]);
+    p.setAttribute('class', 'pulse on');
+  }
+
+  function viaHtml(via) { return via ? ' <span class="via">· ' + pair(D.via[via]) + '</span>' : ''; }
+  function lineHtml(ln) {
+    return '<li class="line">' + fig(ln.who) + '<div><p class="who">' + esc(D.cast[ln.who].name) + viaHtml(ln.via) + '</p>' +
+      '<p class="en">' + pair(ln.en) + '</p></div></li>';
+  }
+
+  function showArrive(keepFocus) {
+    setView('arrive');
+    if (!keepFocus) newCard();
+    var st = run.stage, camp = run.kind === 'camp';
+    var tn = camp ? TENSES[String(st.n)] : null;
+    var html = '<div class="v-arrive" style="' + (camp ? campColours(st.n) : '') + '">' +
+      '<div class="c-top"><p class="k">' + esc(camp ? t('campAlt', { n: st.n, alt: fmt(st.alt) }) : t('summitAlt', { alt: fmt(st.alt) })) + '</p>' +
+      togHtml() + '</div>' +
+      '<h2 class="tense">' + esc(camp ? tn.name : t('summitPush')) + '</h2>' +
+      '<p class="tip">' + pair(st.tip, true) + '</p>' +
+      '<ul class="lines">' + (st.arrive || []).map(lineHtml).join('') + '</ul>' +
+      '<div class="acts"><button class="btn btn-main" id="begin" type="button">' + esc(t('start')) + ' <span aria-hidden="true">&rarr;</span></button>' +
+      (camp ? '<a class="read" href="' + esc(tn.href) + '">' + esc(t('readFirst', { n: st.n })) + '</a>' : '') + '</div></div>';
+    render(html);
+    paintBar();
+    $('#begin').addEventListener('click', begin);
+    if (!keepFocus) focusCard($('#begin'));
+  }
+  function begin() { if (run && view === 'arrive') showItem(); }
+
+  function shuffled(a) {   // Fisher-Yates: never sort(() => Math.random() - .5)
+    a = a.slice();
+    for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var x = a[i]; a[i] = a[j]; a[j] = x; }
+    return a;
+  }
+
+  /* The next line in the queue becomes run.cur, dealt once: its option order and whether it
+     has come back are fixed here, and renderQ() only ever draws them. */
+  function showItem() {
+    var idx = run.queue[0], it = run.items[idx];
+    run.cur = { idx: idx, back: !!run.seen[it.id], order: it.kind === 'type' ? null : shuffled(it.options),
+                typed: '', answered: false, ok: null, val: null, at: 0, shownAt: Date.now() };
+    run.seen[it.id] = true;
+    newCard();
+    renderQ(true);
+  }
+
+  function renderQ(focus) {
+    var cur = run.cur, it = run.items[cur.idx];
+    setView('q');
+    var ask = it.kind === 'spot' ? t('askSpot') : it.kind === 'type' ? t('askType') : t(it.gaps === 2 ? 'askChoose2' : 'askChoose');
+    // no tense name before the answer: at the summit push it would be the key
+    var top = '<div class="q-top">' + fig(it.who) + '<span class="q-who">' + esc(D.cast[it.who].name) + viaHtml(it.via) + '</span>' +
+      (cur.back ? '<span class="again">' + esc(t('again')) + '</span>' : '') + togHtml() + '</div>';
+    var ctl = '';
+    if (it.kind === 'type') {
+      ctl = '<form class="typer" id="typer" autocomplete="off"><input id="typed" type="text" autocapitalize="off" autocorrect="off" ' +
+        'autocomplete="off" spellcheck="false" enterkeyhint="done" aria-label="' + esc(t('typeAria')) + '" placeholder="' + esc(t('typeHint')) + '">' +
+        '<button class="btn btn-main" type="submit">' + esc(t('check')) + '</button></form>';
+    } else {
+      ctl = '<div class="opts" lang="en">' + cur.order.map(function (o, i) {
+        if (it.kind === 'spot') {
+          var ot = TENSES[String(o)];
+          return '<button class="opt tense-opt" type="button" data-v="' + o + '" style="--c:' + ot.fill + ';--k:' + ot.ink + '">' +
+            '<kbd>' + (i + 1) + '</kbd><span>' + esc(ot.name) + '</span><span class="mk" aria-hidden="true"></span></button>';
+        }
+        return '<button class="opt" type="button" data-v="' + esc(o).replace(/"/g, '&quot;') + '"><kbd>' + (i + 1) + '</kbd><span>' + esc(o) +
+          '</span><span class="mk" aria-hidden="true"></span></button>';
+      }).join('') + '</div>';
+    }
+    var html = '<div class="v-q" data-id="' + esc(it.id) + '" data-kind="' + it.kind + '" style="' + campColours(it.camp) + '">' + top +
+      '<p class="q-ask">' + esc(ask) + '</p><p class="q-line" lang="en">' + it.q + '</p>' + ctl + '</div>';
+    render(html);
+    $$('#view .gap').forEach(function (g) { g.innerHTML = '<span class="sr-only">' + esc(t('gap')) + '</span>'; });
+    if (it.kind === 'type') {
+      var inp = $('#typed');
+      inp.value = cur.answered ? cur.val : cur.typed;
+      inp.addEventListener('input', function () { if (!cur.answered) cur.typed = inp.value; });
+      $('#typer').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var v = inp.value;
+        if (!v.trim()) { inp.focus(); return; }
+        answer(v);
+      });
+    } else {
+      $$('#view .opt').forEach(function (b) {
+        b.addEventListener('click', function (e) {
+          // the second click of a double-click on "Next" (or "Start") lands here: not an answer
+          if (e.detail > 1 || Date.now() - cur.shownAt < CLICK_GAP) return;
+          answer(b.getAttribute('data-v'), b);
+        });
+      });
+    }
+    if (cur.answered) paintAnswered(false);
+    else if (focus) focusCard(it.kind === 'type' && !COARSE.matches ? $('#typed') : null);
+    paintBar();
+  }
+
+  function svgMark(ok) {
+    return ok ? '<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="currentColor"/><path d="M6 10.5l2.6 2.6L14.2 7.4" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+      : '<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="currentColor"/><path d="M7 7l6 6M13 7l-6 6" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/></svg>';
+  }
+
+  function answer(val, btn) {
+    if (!run || view !== 'q' || !run.cur || run.cur.answered) return;
+    var cur = run.cur, it = run.items[cur.idx];
+    var ok = it.kind === 'type' ? accepts(val, it.accept) : String(val) === String(it.answer);
+    cur.answered = true; cur.ok = ok; cur.val = String(val); cur.at = Date.now();
+    if (!(it.id in run.first)) {
+      run.first[it.id] = ok;
+      var s = load();
+      if (ok) delete s.misses[it.id]; else s.misses[it.id] = true;
+      put(s);
+    }
+    if (ok) { run.right[it.id] = true; run.queue.shift(); }
+    else { run.missed[it.id] = true; run.queue.push(run.queue.shift()); }
+    beep(ok);
+    paintAnswered(true);
+    paintBar();
+    if (ok) { setAlt(altNow()); paintMini(false); }
+  }
+
+  /* The answered line: the sentence put right in place (the answer in bold, the cue gone),
+     the option you chose and the right one (the others go: they were only in the way), then
+     the verdict, the reason and "Next". Nothing advances by itself. */
+  function paintAnswered(fresh) {
+    var cur = run.cur, it = run.items[cur.idx], ok = cur.ok;
+    var v = $('#view .v-q');
+    v.classList.add('answered');
+    $('#view .q-line').innerHTML = it.fixed;
+    if (it.kind === 'type') {
+      var inp = $('#typed');
+      inp.value = cur.val; inp.readOnly = true; inp.classList.add(ok ? 'right' : 'wrong');
+      $('#typer').classList.add('done');
+    } else {
+      $$('#view .opt').forEach(function (b) {
+        var bv = b.getAttribute('data-v'), isKey = bv === String(it.answer), mine = bv === cur.val;
+        b.disabled = true;
+        if (isKey) { b.classList.add('right'); $('.mk', b).textContent = '✓'; }
+        else if (mine) { b.classList.add('wrong'); $('.mk', b).textContent = '✗'; }
+        else b.classList.add('out');
+      });
+    }
+    var tn = tenseOf(it);
+    var chip = run.kind === 'summit' && tn ? '<span class="tchip" style="' + campColours(it.camp) + '">' + esc(tn.name) + '</span>' : '';
+    $('#fb').innerHTML =
+      '<p class="verdict ' + (ok ? 'good' : 'bad') + '">' + svgMark(ok) + '<span class="vt">' + esc(t(ok ? 'right' : 'wrong')) + '</span>' + chip + '</p>' +
+      (ok ? '' : '<p class="more">' + esc(t('wrongMore')) + '</p>') +
+      '<p class="sr-only" lang="en">' + it.fixed + '</p>' +
+      '<p class="why">' + pair(it.fb, true) + '</p>' +
+      '<div class="acts"><button class="btn btn-main next" id="next" type="button">' + esc(t('next')) + ' <span aria-hidden="true">&rarr;</span></button></div>';
+    marks($('#fb .verdict .vt')); marks($('#fb .more') || document.createElement('i'));
+    $('#next').addEventListener('click', function (e) { if (e.detail > 1) return; next(); });
+    if (fresh) $('#next').focus({ preventScroll: true });
+    fit();
+    keepNextInView();
+  }
+  // the card does not scroll by design (test_climb.js measures it); if a screen is too small
+  // for that, "Next" is still brought into view
+  function keepNextInView() {
+    var n = $('#next'), card = $('#card');
+    if (!n || !card) return;
+    var r = n.getBoundingClientRect(), cr = card.getBoundingClientRect();
+    if (r.bottom > cr.bottom - 4) card.scrollTop += r.bottom - cr.bottom + 16;
+  }
+
+  function next() {
+    if (!run || view !== 'q' || !run.cur || !run.cur.answered) return;
+    if (Date.now() - run.cur.at < CLICK_GAP) return;   // the Enter or click that answered is not also a Next
+    if (!run.queue.length) return complete();
+    showItem();
+  }
+
+  function complete() {
+    var total = run.items.length, k = firstRight();
+    var s = load();
+    if (run.kind === 'camp') {
+      var n = String(run.stage.n), rec = s.camps[n] || { best: 0, total: total, gold: false, plays: 0 };
+      rec.best = Math.max(rec.best || 0, k); rec.total = total;
+      rec.gold = !!rec.gold || rec.best / total >= .75;
+      rec.plays = (rec.plays || 0) + 1;
+      s.camps[n] = rec;
+    } else {
+      var sr = s.summit || { best: 0, total: total, plays: 0 };
+      s.summit = { best: Math.max(sr.best || 0, k), total: total, plays: (sr.plays || 0) + 1 };
+    }
+    put(s);
+    run.cur = null;
+    if (run.kind === 'summit') { run.top = 1; return showTop(); }
+    showDone();
+  }
+  function firstRight() { return run.items.filter(function (it) { return run.first[it.id]; }).length; }
+
+  function showDone(keepFocus) {
+    setView('done');
+    if (!keepFocus) newCard();
+    var st = run.stage, total = run.items.length, k = firstRight(), gold = k / total >= .75;
+    var nx = after(st.n);
+    var html = '<div class="v-done" style="' + campColours(st.n) + '">' +
+      '<div class="reached">' + flagSvg(gold, t(gold ? 'flagGold' : 'flagPlain')) + '<h2>' + esc(t('reached', { n: st.n })) + '</h2>' + togHtml() + '</div>' +
+      '<p class="score">' + esc(t('firstTry', { k: k, m: total })) + '</p>' +
+      '<p class="goldline">' + esc(t(gold ? 'goldYes' : 'goldNo')) + '</p>' +
+      (st.done ? '<ul class="lines">' + lineHtml(st.done) + '</ul>' : '') +
+      '<div class="acts">' +
+      (nx != null ? '<button class="btn btn-main" id="onward" type="button">' + esc(nx === 'summit' ? t('onTop') : t('onTo', { n: nx })) + ' <span aria-hidden="true">&rarr;</span></button>' : '') +
+      '<button class="btn ' + (nx != null ? 'btn-ghost' : 'btn-main') + '" id="tocamps" type="button">' + esc(t('camps')) + '</button></div></div>';
+    render(html);
+    if ($('#onward')) $('#onward').addEventListener('click', function (e) { if (e.detail > 1) return; play(nx); });
+    $('#tocamps').addEventListener('click', leave);
+    paintBar(); setAlt(altNow(), !!keepFocus); paintMini(false);
+    if (!keepFocus) focusCard($('#onward') || $('#tocamps'));
+  }
+
+  /* The summit, in two steps, each a card that fits on its own. Step one is the end of the
+     story: the push's last line and the ending, and "See your climb". Step two is the
+     climb: the stats, the way on, and the lines missed first time counted per camp. Those
+     lines themselves open in a dialog (the route map's own), which may scroll: it is a list
+     to read, not a game panel. */
+  function missedByCamp() {
+    var s = load(), groups = {}, order = [];
+    Object.keys(s.misses).forEach(function (id) {
+      var it = ITEM[id];
+      if (!it || !s.misses[id]) return;
+      var key = String(it.camp);
+      if (!groups[key]) { groups[key] = []; order.push(key); }
+      groups[key].push(it);
+    });
+    order.sort(function (a, b) { return +a - +b; });
+    return { groups: groups, order: order };
+  }
+  function showTop(keepFocus) {
+    setView('summit');
+    if (!keepFocus) newCard();
+    var s = load();
+    sceneOf = 'top';
+    setScene(sceneSrc('top'));
+    $('#play').setAttribute('data-storm', String(D.top.storm || 0));
+    setSide(D.top.side);
+    setAlt(altNow());
+    var lines = (SUMMIT && SUMMIT.done ? [SUMMIT.done] : []).concat(D.outro || []);
+    if (run.top !== 2 && lines.length) {
+      render('<div class="v-top s1">' +
+        '<div class="c-top"><h2 class="tense">' + esc(t('summitH')) + '</h2>' + togHtml() + '</div>' +
+        '<ul class="lines">' + lines.map(lineHtml).join('') + '</ul>' +
+        '<div class="acts"><button class="btn btn-main" id="seeclimb" type="button">' + esc(t('seeClimb')) +
+        ' <span aria-hidden="true">&rarr;</span></button></div></div>');
+      paintBar(); paintMini(false);
+      // the second click of a double-click on the last "Next" lands here: not a step on
+      $('#seeclimb').addEventListener('click', function (e) {
+        if (e.detail > 1 || !run || view !== 'summit') return;
+        run.top = 2; run.topAt = Date.now();
+        showTop();
+      });
+      if (!keepFocus) focusCard($('#seeclimb'));
+      return;
+    }
+    run.top = 2;
+    var golds = CAMPS.filter(function (c) { return isGold(s.camps[c.n]); }).length;
+    var sum = 0, tot = 0;
+    CAMPS.forEach(function (c) { var r = s.camps[c.n]; if (r) { sum += r.best; tot += r.total; } });
+    var m = missedByCamp(), count = 0;
+    m.order.forEach(function (key) { count += m.groups[key].length; });
+    // the camps with the most to look at again, four at most; the rest are a count, and
+    // every line is in the dialog
+    var most = m.order.slice().sort(function (a, b) { return m.groups[b].length - m.groups[a].length || +a - +b; });
+    var shown = most.slice(0, 4);
+    var review = m.order.length
+      ? '<div class="rv-row"><ul class="rv-chips">' + shown.map(function (key) {
+          return '<li style="' + campColours(key) + '">' + esc(t('rvChip', { n: key, k: m.groups[key].length })) + '</li>';
+        }).join('') + (most.length > shown.length ? '<li class="rv-more">+' + (most.length - shown.length) + '</li>' : '') +
+        '</ul><button class="btn btn-ghost rv-open" id="rv-open" type="button">' + esc(t('rvOpen')) +
+        ' <span class="rv-n">' + count + '</span></button></div>'
+      : '<p class="rv-none">' + esc(t('reviewNone')) + '</p>';
+    // two halves: the scores and the way on, then the review (side by side on a phone on
+    // its side, one under the other elsewhere)
+    var html = '<div class="v-top s2"><div class="t2-a">' +
+      '<h2 class="tense">' + esc(t(lines.length ? 'yourClimb' : 'summitH')) + '</h2>' +
+      '<p class="stats"><span>' + esc(t('goldCount', { x: golds, m: CAMPS.length })) + '</span>' +
+      (tot ? '<span>' + esc(t('overall', { p: Math.round(100 * sum / tot) })) + '</span>' : '') + '</p>' +
+      '<div class="acts"><button class="btn btn-main" id="again" type="button">' + esc(t('climbAgain')) + '</button>' +
+      '<a class="btn btn-ghost" href="sherpa-tensing-route-map.html">' + esc(t('upLink')) + '</a>' +
+      '<a class="read" href="sherpa-tensing-the-climb.html">' + esc(t('wayDown')) + ' <span aria-hidden="true">&rarr;</span></a></div>' +
+      '</div><div class="t2-b"><h3 class="rv-h">' + esc(t('review')) + '</h3>' + review + '</div></div>';
+    render(html);
+    paintBar(); paintMini(false);
+    $('#again').addEventListener('click', function (e) {
+      // the Enter or the second click that took you to this step is not also "Climb again":
+      // it would clear the lines to look at again before you had seen them
+      if (e.detail > 1 || Date.now() - (run.topAt || 0) < CLICK_GAP) return;
+      var s2 = load(); s2.misses = {}; s2.last = null; put(s2);
+      if (CAMPS[0]) play(CAMPS[0].n);
+    });
+    if ($('#rv-open')) $('#rv-open').addEventListener('click', openReview);
+    var dlg = $('#rv');
+    if (dlg && dlg.open) fillReview();
+    if (!keepFocus) focusCard($('#again'));
+  }
+  function fillReview() {
+    var m = missedByCamp();
+    $('#rv-h').textContent = t('review'); marks($('#rv-h'));
+    $('#rv-x').setAttribute('aria-label', t('close'));
+    $('#rv-close').textContent = t('close'); marks($('#rv-close'));
+    $('#rv-list').innerHTML = m.order.map(function (key) {
+      var tn = TENSES[key];
+      return '<li class="rv-g" style="' + campColours(key) + '"><p class="rv-t">' + esc(t('campN', { n: key }) + ' · ' + tn.name) + '</p>' +
+        m.groups[key].map(function (it) { return '<p lang="en">' + it.fixed + '</p>'; }).join('') + '</li>';
+    }).join('');
+  }
+  function openReview() {
+    var dlg = $('#rv');
+    if (!dlg) return;
+    fillReview();
+    if (typeof dlg.showModal === 'function') { if (!dlg.open) dlg.showModal(); }
+    else dlg.setAttribute('open', '');
+  }
+
+  function render(html) {
+    $('#fb').innerHTML = '';
+    $('#view').innerHTML = html;
+    $('#card').scrollTop = 0;
+    fit();
+  }
+  /* Innes: "NO scrolling" in a game panel. The card is laid out to fit every screen down to
+     a phone on its side; if a long line still makes it taller than the screen, it tightens
+     a step at a time (fit1: spacing, no portraits; fit2: "Next" beside the verdict, the
+     right option only in the sentence; fit3: a size smaller) until it fits.
+     In a learner's language the glosses beneath the English come first: they give way only
+     when the tightest step still does not fit (never one that fits). Then fitG hides them
+     and shows the card's "Translation" toggle, and the ladder is climbed again from the
+     bottom, for the first step at which the card fits with the English AND with the
+     translations in its place (gsw), so pressing the toggle moves nothing. */
+  var FITS = ['fit1', 'fit2', 'fit3', 'fit4'];   // fit4: the last resort, a German translation swapped in on a phone on its side
+  function fit() {
+    var card = $('#card');
+    if (!card || !body.classList.contains('playing')) return;
+    function step(k, g, sw) {
+      FITS.forEach(function (c, i) { card.classList.toggle(c, i < k); });
+      card.classList.toggle('fitG', g);
+      card.classList.toggle('gsw', g && sw);
+    }
+    function over() { return card.scrollHeight > card.clientHeight + 1; }
+    var k;
+    for (k = 0; k <= FITS.length; k++) { step(k, false, false); if (!over()) return paintTog(); }
+    var glossed = $$('.gl', card).some(function (g) { return g.textContent.trim(); });
+    if (!glossed) return paintTog();     // nothing to give way: the tightest step (keepNextInView)
+    for (k = 0; k <= FITS.length; k++) {
+      step(k, true, true);
+      if (over()) continue;
+      step(k, true, false);
+      if (!over()) break;
+    }
+    step(Math.min(k, FITS.length), true, gsw.on);
+    paintTog();
+  }
+  function paintTog() {
+    var b = $('#gtog');
+    if (b) b.setAttribute('aria-pressed', String(gsw.on));
+  }
+  function toggleGloss() {
+    gsw.on = !gsw.on;
+    fit();
+    if (run && view === 'q' && run.cur && run.cur.answered) keepNextInView();
+  }
+  function focusCard(el) {
+    var target = el || $('#card');
+    try { target.focus({ preventScroll: true }); } catch (e) { target.focus(); }
+  }
+
+  // ── language ─────────────────────────────────────────────────────────────────
+  function stored() { try { return localStorage.getItem(LKEY); } catch (e) { return null; } }
+  function initialLang() {
+    var q = (location.search.match(/[?&]lang=([a-z]{2})\b/) || [])[1];
+    if (q && I.langs.indexOf(q) >= 0) return q;
+    var s = stored();
+    return I.langs.indexOf(s) >= 0 ? s : 'en';
+  }
+  var tagline = null;
+  function applyLang(l) {
+    lang = I.langs.indexOf(l) >= 0 ? l : 'en';
+    document.documentElement.lang = lang;
+    $$('[data-t]').forEach(function (el) { el.textContent = t(el.getAttribute('data-t')); marks(el); });
+    $$('[data-t-aria]').forEach(function (el) { el.setAttribute('aria-label', t(el.getAttribute('data-t-aria'))); });
+    $$('[data-gl]').forEach(function (el) {
+      var g = gloss(el.getAttribute('data-gl'));
+      el.innerHTML = g ? rich(g) : '';
+      if (g) marks(el);
+    });
+    // the tagline stays byte-exact in the source (tools/sherpa_links.py); swap its words here
+    var sub = $('.wordmark .sub');
+    if (sub) {
+      if (!tagline) { var n = sub.lastChild; if (n && n.nodeType === 3) tagline = n; }
+      if (tagline) tagline.nodeValue = ' · ' + t('tagline');
+    }
+    var sel = $('#lang'); if (sel) sel.value = lang;
+    paintSound();
+    paintStart();
+    paintKeys();
+    if (run) {
+      // the same view again, in the new language: the same line, its options in the same
+      // order, what was typed, the answer if one was given. The focus stays on the menu
+      if (view === 'arrive') showArrive(true);
+      else if (view === 'done') showDone(true);
+      else if (view === 'summit') showTop(true);
+      else if (view === 'q' && run.cur) renderQ(false);
+      paintBar();
+      setAlt(altNow(), true);
+    }
+  }
+
+  // ── wiring ───────────────────────────────────────────────────────────────────
+  $('#go').addEventListener('click', function () {
+    var tgt = this.getAttribute('data-target');
+    play(tgt === 'summit' ? 'summit' : +tgt);
+  });
+  $$('.pick[data-camp]').forEach(function (b) {
+    var n = b.getAttribute('data-camp');
+    b.addEventListener('click', function () { play(n === 'summit' ? 'summit' : +n); });
+    b.addEventListener('mouseenter', function () { light(n, true); });
+    b.addEventListener('mouseleave', function () { light(n, false); });
+    b.addEventListener('focus', function () { light(n, true); });
+    b.addEventListener('blur', function () { light(n, false); });
+  });
+  $$('.mtn:not(.mtn-mini) .dot[data-camp]:not(.soon)').forEach(function (g) {
+    var n = g.getAttribute('data-camp');
+    g.addEventListener('click', function () { if (byN(n)) play(+n); });
+    g.addEventListener('mouseenter', function () { light(n, true); });
+    g.addEventListener('mouseleave', function () { light(n, false); });
+  });
+  var more = $('.brief-more');
+  if (more) more.addEventListener('click', function () {
+    var open = $('#brief').classList.toggle('open');
+    more.setAttribute('aria-expanded', String(open));
+  });
+  $('#back').addEventListener('click', leave);
+  // the card's "Translation" toggle is drawn with each card, so it is caught here
+  $('#card').addEventListener('click', function (e) {
+    if (e.target && e.target.closest && e.target.closest('#gtog')) toggleGloss();
+  });
+  $('#snd').addEventListener('click', function () { setSound(!sound); beep(true); });
+  $('#lang').addEventListener('change', function () {
+    try { localStorage.setItem(LKEY, this.value); } catch (e) {}
+    applyLang(this.value);
+  });
+  (function () {
+    var dlg = $('#rv');
+    if (!dlg) return;
+    dlg.addEventListener('click', function (e) {
+      if (e.target !== dlg) return;
+      var r = dlg.getBoundingClientRect();
+      if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) dlg.close();
+    });
+    dlg.addEventListener('close', function () { var o = $('#rv-open'); if (o) o.focus(); });
+  })();
+  function isControl(el) { return !!(el && el.closest && el.closest('button, a, select, input, textarea')); }
+  document.addEventListener('keydown', function (e) {
+    if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey) return;
+    var dlg = $('#rv');
+    if (dlg && dlg.open) return;                      // the dialog has its own keys (Esc closes it)
+    var tag = (e.target && e.target.tagName) || '';
+    var playing = body.classList.contains('playing');
+    // Enter held down repeats: in the game that would answer, go on and start again on its
+    // own (a held Enter on "See your climb" reached "Climb again"). One press, one step
+    if (playing && e.repeat && tag !== 'SELECT' && (e.key === 'Enter' || (e.key === ' ' && tag !== 'INPUT' && tag !== 'TEXTAREA'))) {
+      e.preventDefault(); return;
+    }
+    if (e.key === 'Escape' && playing && tag !== 'SELECT') { e.preventDefault(); leave(); return; }
+    if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+    if (e.key === 's' || e.key === 'S') { setSound(!sound); beep(true); return; }
+    if (!playing || !run) return;
+    if (view === 'arrive' && e.key === 'Enter' && !isControl(e.target)) { e.preventDefault(); begin(); return; }
+    if (view === 'q' && run.cur && !run.cur.answered && /^[1-3]$/.test(e.key)) {
+      var b = $$('#view .opt')[+e.key - 1];
+      if (b) { e.preventDefault(); answer(b.getAttribute('data-v'), b); }
+      return;
+    }
+    if (view === 'q' && run.cur && run.cur.answered && (e.key === 'Enter' || e.key === ' ') && !isControl(e.target)) { e.preventDefault(); next(); return; }
+    if ((view === 'done' || view === 'summit') && e.key === 'Enter' && !isControl(e.target)) {
+      var p = $('#view .btn-main'); if (p) { e.preventDefault(); p.click(); }
+    }
+  });
+  // a turned phone or a resized window: the right scene for the width, and "Next" in view
+  var resizeT = 0;
+  window.addEventListener('resize', function () {
+    clearTimeout(resizeT);
+    resizeT = setTimeout(function () {
+      if (!run) return;
+      if (sceneOf) setScene(sceneSrc(sceneOf));
+      fit();
+      if (view === 'q' && run.cur && run.cur.answered) keepNextInView();
+    }, 120);
+  });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { if (run) fit(); });
+  window.addEventListener('storage', function (e) { if (e.key === SKEY && !run) paintStart(); });
+  window.addEventListener('pageshow', function (e) { if (e.persisted && !run) paintStart(); });
+
+  applyLang(initialLang());
+  var h = (location.hash.match(/^#(camp-(\d+)|summit)$/) || []);
+  if (h[2] && byN(+h[2])) play(+h[2]);
+  else if (h[1] === 'summit' && SUMMIT) play('summit');
+
+  // for tests and for a teacher's console: read-only views of the game
+  window.SherpaClimb = { canon: { flat: flat, variants: variants, accepts: accepts }, state: function () { return { view: view, run: run }; } };
+})();
+</script>
+<script src="block-camp/camp-music.js" data-track="block-camp/music/route-map.m4a" data-loop="0.5 72.5" defer></script>
+</body>
+</html>
