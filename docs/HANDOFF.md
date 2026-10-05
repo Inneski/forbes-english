@@ -11,6 +11,59 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-10-05 — Every IELTS page in ten languages
+
+Innes: *"some ielts is not translated into all the languages — fix this
+now."* The 2026-09-24 rule (`ielts_langs.py`: ten languages to all IELTS)
+had reached the builder decks only. Found and fixed, all live:
+
+- **Eleven hand-written decks were EN+DE**, seven of them with
+  English-only `data-explain` feedback: Academic Writing part 1 and 1b,
+  Writing Lab 2 and 2b, Model Answers 4, Outweigh 5, Two Questions 6,
+  Intro & Overview 7, Line Graph 8, Listening 9, Speaking 1–2. They have no
+  builder, so the fix is a JSON-per-language store plus an injector:
+  `lesson-template/build/ielts_hand_i18n.py` (`extract | inject | status`),
+  sources in `lesson-template/build/ielts_hand/<slug>/{en,de,…,ja}.json`,
+  translators' brief in `ielts_hand/TRANSLATING.md`. Explanations are now
+  keys (`x{slide}{letter}`) resolved by `explainOf`. **To change wording:
+  edit the JSON, `inject`, run check-lesson and answered-overflow.**
+- **Three scrolling pages** (Writing Studio part 3, Bar Charts C1, Maps &
+  Accurate Data C1) had an EN/DE toggle or no i18n at all. Converted to the
+  deck shape (`UI_I18N`, `#langSelect`, `data-i18n`, keyed explanations,
+  `fmt()` with `{a}/{b}`), same JSON store, ten languages. Checker for them:
+  `node lesson-template/checker/scroll-i18n.js <page>`. They still break
+  rule 1 (not 16:9 decks); that is a separate rebuild.
+- **Three builder decks were EN/DE/ES**: Listening Section 3, Section 4 and
+  the drills. Seven languages appended to their `i18n_ieltslisten_*.py` in
+  Section 2's shape by the new `lesson-template/build/i18n_from_json.py`
+  (JSON → `T['xx'] = dict(...)` blocks, TAIL_MORE wired in, builder switched
+  to `langs=LANGS`; re-runnable, replaces its own blocks). Rebuilt,
+  check-lesson and answered-overflow clean in all ten — four French strings
+  on the drills' first numbers slide were shortened to fit.
+
+Conventions followed everywhere, after the German: names, quoted recording
+speech, signposts, one-word answers and criterion names stay English
+(inside `<bdi>` in Arabic); numbers are translated; `actPlaceholder` stays
+English. Visual spot check: Maps page, Writing Studio and two decks in ar/ja
+at desktop and phone width. It caught two Arabic-only defects on the three
+scrolling pages, both fixed in their CSS: the logo's ENGLISH `<text>` was
+drawn outside its SVG under `direction: rtl` (`.logo-svg{direction:ltr}`),
+and the English questions, options, cloze sentences, reorder chunks, match
+items and the essay textareas took the page's RTL direction, flipping their
+punctuation (`[dir=rtl] .q-text, .opt, … {direction:ltr;text-align:left}`).
+The Studio's footer was still English in every language; it now has a key.
+
+Process notes. Four parallel translator subagents hit the session usage
+cap and two died mid-file; the rest was written in the main session, one
+file per Write, committed per deck. The first push of Section 3 was
+rejected because the pricing release had moved `origin/main`; the merge was
+blocked by a peer's leftovers in the shared tree and resolved as CLAUDE.md
+now describes ("When push is rejected"). `seo.py` ran after every rebuild;
+one run regenerated `pricing.html`, which a peer had left modified — the
+local copy was the stale pre-release generation and the release's committed
+version superseded it. Pre-existing and benign: check-lesson's German
+tag-mismatch warnings on part 4 (`s11A`, `s6Note`).
+
 ## 2026-10-04 — Marilyn + JFK prepositions: answer audit, Spanish
 
 Innes caught two wrong keys live in class. Full audit of both:

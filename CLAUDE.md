@@ -352,6 +352,23 @@ form that gets through.
 - **`docs/HANDOFF.md` is shared too.** Write your entry and commit it at
   once. If `git diff docs/HANDOFF.md` shows an entry that is not yours, it
   rides along with your commit; that is fine, the content survives.
+- **When `git push` is rejected (non-fast-forward), a peer has pushed.**
+  `git fetch origin`, then `git merge origin/main` — never `pull --rebase`
+  or `--autostash` here. The merge refuses while the tree holds a peer's
+  edits to files the incoming commits touch. Before touching any of them,
+  compare: `git hash-object <file>` against
+  `git rev-parse origin/main:<file>`. Identical — an untracked copy of a
+  file the peer has since committed, or an edit equal to what is coming —
+  means `rm` or `git checkout -- <file>` loses nothing, because the merge
+  writes the same bytes back. A generated page (hub, index) whose local
+  copy is an *older* generation than origin's is superseded; the same
+  applies, and the tools reproduce it. Anything else: stop and say so. A
+  conflict in `sitemap.xml`, `lesson-meta.json`, `library.html` or
+  `llms.txt` is resolved by re-running `tools/seo.py`, not by hand. Finish
+  with `GIT_EDITOR=true git merge --continue`: a partial `commit -o` is
+  impossible during a merge, and the merge commit carries only the index,
+  so peers' unstaged edits stay out of it. Done this way 2026-10-05
+  (HANDOFF).
 - **A worktree is the escape hatch, not the default.** Inside a linked
   worktree the guard stands down and git is unrestricted, because that tree
   is yours alone. Use one for a branch, a risky refactor, or anything that
