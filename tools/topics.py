@@ -282,6 +282,7 @@ OVERRIDES = {
     'sherpa-tensing-cloud-causative.html': ['passive-voice'],
     'sherpa-tensing-route-map.html': ['tense-review'],
     'sherpa-tensing-the-climb.html': ['tense-review'],   # the Sherpa game: all thirteen tenses
+    'sherpa-tensing-the-descent.html': ['passive-voice', 'tense-review'],   # its second half: nine passives
     'harry-quebert-b2.html': [],
     'forbes-english-lesson-2.html': ['business-english'],
     'forbes-english-speaking-2.html': ['business-english'],
