@@ -26,6 +26,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import deck as D
+from ielts_langs import LANGS
 from ieltslisten_drills_data import (CLIPS, NUMBERS_A, NUMBERS_B, NUMBERS_BANK,
                                      SPELLING, SPELLING_BANK,
                                      PAIRS_BINS, PAIRS_ITEMS, PAIRS_WHY, MC)
@@ -205,7 +206,7 @@ def build(make_audio=False):
     import i18n_ieltslisten_drills as I
     s = D.assemble(TPL, OUT, slides, PALETTE,
                    'IELTS Listening: Numbers, Spelling and Accents | Forbes English',
-                   I, langs=('en', 'de', 'es'))
+                   I, langs=LANGS)
     pts = (sum(r[0].count('______') for r in NUMBERS_A + NUMBERS_B + SPELLING)
            + len(PAIRS_ITEMS) + len(MC))
     print('wrote %s — %d slides, %d scored points, %d clips, %d bytes'
