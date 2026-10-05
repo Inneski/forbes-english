@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- LESSON:head -->
-<title>This lesson is for subscribers</title>
+<title>This lesson comes with a plan | Forbes English</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Barlow+Condensed:wght@700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <!-- Served from our own origin, not a CDN: a blocked cdn.jsdelivr.net
@@ -212,7 +212,9 @@
 // The Worker marks what it is gating: <meta name="fe-track"> (so a one-off
 // plan for that track counts as access too: Block Camp Term 1, IELTS), and
 // <meta name="fe-gate" content="not-yet"> on a Block Camp mission the reader
-// holds but whose week has not come, where retrying would change nothing.
+// holds but whose week has not come, and content="checked" on a refusal the
+// Worker reached from the reader's own account (a Term 1 buyer on a Term 2
+// lesson): in both, retrying would change nothing.
 const gateMeta = (name) => (document.querySelector(`meta[name="${name}"]`) || {}).content || '';
 
 // "Mission 4 opens on Monday 12 October": the Worker prints the date in UTC;
@@ -227,7 +229,7 @@ document.querySelectorAll('time[data-local]').forEach((t) => {
 });
 
 (async () => {
-  if (gateMeta('fe-gate') === 'not-yet') return;
+  if (['not-yet', 'checked'].includes(gateMeta('fe-gate'))) return;
   if (sessionStorage.getItem('fe-retried') === location.pathname) {
     sessionStorage.removeItem('fe-retried');
     return;

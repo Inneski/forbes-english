@@ -19,6 +19,15 @@ names.forEach((n, i) => {
   TERM1.push({ file: `blockcamp-m${i + 1}.html`, title: `Block Camp \u2014 ${n}`, term: 1, mission: i + 1, access: i ? 'pro' : 'free' });
   if (![3, 7, 11].includes(i)) TERM1.push({ file: `block-camp/quest-${i + 1}.html`, title: `Quest ${i + 1}`, term: 1, mission: i + 1, access: i ? 'pro' : 'free' });
 });
+// The specials (no term) come back from the same read; a Term 2 row is in
+// the fake's answer too, to prove the page lists it nowhere (the fake ignores
+// the query's filters).
+const SPECIALS = [
+  { file: 'block-camp/grand-hotel-rpg.html', title: 'The Last Night at the Grand Hotel', term: null, mission: null, access: 'pro' },
+  { file: 'blockcamp-passive-trial.html', title: 'Block Camp II — Passive 16: The Trial', term: null, mission: null, access: 'pro' },
+];
+const TERM2 = { file: 'blockcamp-present-perfect.html', title: 'Block Camp — Present Perfect 1a', term: 2, mission: null, access: 'pro' };
+TERM1.push(...SPECIALS, TERM2);
 
 // The fake client: profiles / user_plans / lessons, per scenario. `plansAfter`
 // lets a purchase appear only on a later read (the webhook landing late).
@@ -31,7 +40,7 @@ function fake(sc) {
       const data = () => table === 'profiles' ? [++profileReads > (SC.profileAfter || 1e9) ? SC.profileLater : SC.profile]
         : table === 'user_plans' ? (++planReads > (SC.plansAfter || 0) ? SC.plans : (SC.plansBefore || []))
         : SC.lessons;
-      const o = { select(){return o;}, eq(){return o;}, order(){return o;},
+      const o = { select(){return o;}, eq(){return o;}, or(){return o;}, is(){return o;}, order(){return o;},
         single(){ return Promise.resolve({ data: data()[0], error: null }); },
         then(res, rej){
           if (SC.plansError && table === 'user_plans') return Promise.resolve({ data: null, error: { message: 'boom' } }).then(res, rej);
@@ -40,8 +49,10 @@ function fake(sc) {
     }
     const client = { from: q, auth: {
       onAuthStateChange(){ return { data: { subscription: { unsubscribe(){} } } }; },
-      getSession: async () => ({ data: { session: { access_token: 'tok-' + SC.name, expires_at: Date.now()/1000 + 3600 } } }),
-      getUser: async () => ({ data: { user: { id: 'u', email: SC.email } } }),
+      getSession: async () => ({ data: { session: SC.signedOut ? null : { access_token: 'tok-' + SC.name, expires_at: Date.now()/1000 + 3600 } } }),
+      getUser: async () => ({ data: { user: SC.signedOut ? null : { id: 'u', email: SC.email } } }),
+      signUp: async (args) => { window.__signup = args;
+        return { data: { user: { id: 'n', identities: [{}] }, session: null }, error: null }; },
     } };
     window.supabase = { createClient: () => client };
   })();`;
@@ -64,7 +75,15 @@ async function scenario(b, sc, path = '/account.html') {
   });
   await page.goto('https://x.test' + path);
   await page.waitForTimeout(sc.wait || 1200);
+  if (sc.signup) {
+    await page.click('#switch-link');
+    await page.fill('#email', 'new@example.com');
+    await page.fill('#password', 'secret123');
+    await page.click('#auth-submit');
+    await page.waitForTimeout(400);
+  }
   const view = await page.evaluate(() => {
+    if (location.pathname !== '/account.html') return { path: location.pathname };
     const vis = (id) => { const e = document.getElementById(id); return e && !e.hidden && !e.closest('[hidden]'); };
     const txt = (id) => (document.getElementById(id) || {}).textContent;
     return {
@@ -74,6 +93,10 @@ async function scenario(b, sc, path = '/account.html') {
       locked: [...document.querySelectorAll('.mission.locked')].length,
       firstLockedWhen: (document.querySelector('.mission.locked .mission-when') || {}).textContent || null,
       specials: vis('bc-specials'), ielts: vis('ielts-card'), credits: txt('marking-credits'), how: vis('marking-how'),
+      specialsLinks: [...document.querySelectorAll('#bc-specials a')].map((a) => a.getAttribute('href') + ' ' + a.textContent),
+      listed: [...document.querySelectorAll('#bc-card a')].map((a) => a.getAttribute('href')),
+      authMsg: txt('auth-error'),
+      signupRedirect: window.__signup ? window.__signup.options.emailRedirectTo : null,
       notice: vis('checkout-notice') ? txt('checkout-notice') : null,
       plansError: vis('plans-error'),
       fullFirst: (() => { const f = document.getElementById('full-card'), b = document.getElementById('bc-card');
@@ -109,12 +132,16 @@ const ago = (d) => new Date(Date.now() - d * DAY).toISOString();
     '/account.html?checkout=success&cs=cs_new',
     (v) => v.badge === 'Not subscribed' && v.bc && v.bcTitle === 'Block Camp Term 1' && v.term === 'Term 1' &&
       v.week === 'Week 2 of 12' && v.openLinks === 4 && v.locked === 10 && /^Opens /.test(v.firstLockedWhen) &&
-      v.specials && v.ielts && v.credits === '2' && v.how && v.notice === 'Thank you \u2014 your purchase is ready.');
+      v.specials && v.ielts && v.credits === '2' && v.how && v.notice === 'Thank you \u2014 your purchase is ready.' &&
+      // The specials by name, linked straight to the lessons; Term 2 nowhere.
+      v.specialsLinks.length === 2 && v.specialsLinks[0] === 'block-camp/grand-hotel-rpg.html Adventure: The Last Night at the Grand Hotel' &&
+      v.specialsLinks[1] === 'blockcamp-passive-trial.html Deck: Passive 16: The Trial' &&
+      !v.listed.includes('blockcamp-present-perfect.html'));
   await run({ name: 'subscriber', email: 's@example.com', profile: { subscription_status: 'active', owner: false,
       current_period_end: new Date(Date.now() + 9 * DAY).toISOString(), blockcamp_first_open: ago(20) }, plans: [], lessons: TERM1 },
     '/account.html',
     (v) => v.badge === 'Active' && v.cancel && !v.subscribe && v.bc && v.bcTitle === 'Block Camp' && v.term === null &&
-      v.week === 'Week 3 of 12' && !v.specials && !v.ielts && v.credits === '0' && !v.how && v.notice === null);
+      v.week === 'Week 3 of 12' && v.specials && v.specialsLinks.length === 2 && !v.ielts && v.credits === '0' && !v.how && v.notice === null);
   await run({ name: 'ielts-only', email: 'i@example.com', profile: { subscription_status: 'inactive', owner: false },
       plans: [{ product: 'ielts', status: 'active', term: null, starts_at: ago(3), ends_at: null, marking_credits: 0 }], lessons: TERM1 },
     '/account.html',
@@ -146,6 +173,20 @@ const ago = (d) => new Date(Date.now() - d * DAY).toISOString();
       plans: [{ ...t1, starts_at: new Date(Date.now() + 3600000).toISOString() }], lessons: TERM1 },
     '/account.html',
     (v) => v.week === 'Week 1 of 12' && v.openLinks === 2);
+  // On the way to checkout and signed in (a confirmation link, or a pricing
+  // page that timed out): straight back to the plans.
+  await run({ name: 'signed-in-back-to-pricing', email: 'p@example.com', profile: { subscription_status: 'inactive', owner: false },
+      plans: [], lessons: TERM1 },
+    '/account.html?redirect=pricing',
+    (v) => v.path === '/pricing.html');
+  // A new buyer signing up from pricing: the confirmation link comes back
+  // through the account page to the plans, and the page says so.
+  await run({ name: 'sign-up-from-pricing', email: 'x', signedOut: true, signup: true, profile: null, plans: [], lessons: TERM1 },
+    '/account.html?redirect=pricing',
+    (v) => v.signupRedirect === 'https://x.test/account.html?redirect=pricing' && /back to the plans/.test(v.authMsg));
+  await run({ name: 'sign-up-plain', email: 'x', signedOut: true, signup: true, profile: null, plans: [], lessons: TERM1 },
+    '/account.html',
+    (v) => v.signupRedirect === 'https://x.test/account.html' && /then log in/.test(v.authMsg));
   await b.close();
   process.exit(results.every(Boolean) ? 0 : 1);
 })();

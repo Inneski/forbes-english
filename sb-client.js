@@ -148,12 +148,16 @@ if (window.sb) {
 // link below. Without it the confirmation link falls back to the project's
 // Site URL and drops a newly confirmed user on the library, with nothing
 // telling them a plan is the next step.
-async function sbSignUp(email, password) {
+// `back` is where the confirmation link returns the new account: "pricing"
+// for a buyer who signed up on the way to checkout, so they land back on the
+// plans (account.html forwards them). Nothing else is accepted, so the link
+// can never be pointed anywhere else.
+async function sbSignUp(email, password, back) {
   if (!window.sb) return SB_NO_CLIENT;
   return window.sb.auth.signUp({
     email,
     password,
-    options: { emailRedirectTo: `${location.origin}/account.html` },
+    options: { emailRedirectTo: `${location.origin}/account.html${back === "pricing" ? "?redirect=pricing" : ""}` },
   });
 }
 

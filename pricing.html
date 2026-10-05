@@ -414,7 +414,7 @@
       <ul class="plan-features">
         <li>Mission 1 opens straight away, then a new one every week</li>
         <li>Every mission stays open once it unlocks</li>
-        <li>Plus the Block Camp specials, open from day one</li>
+        <li>Plus the six Block Camp specials, open from day one</li>
         <li>Works on phones and tablets &mdash; add it to your Home Screen and it opens like an app.</li>
         <li>Built by a CELTA-qualified teacher.</li>
       </ul>
@@ -512,7 +512,7 @@
     <h2>Questions</h2>
     <details class="faq-item">
       <summary>How does Block Camp work?</summary>
-      <p>Term 1 is twelve missions. Mission 1 opens as soon as you pay, and a new mission opens every seven days after that. Once a mission opens it stays open for good: Term 1 is yours to keep, so a missed week is never lost. The Block Camp specials &mdash; extra adventures and decks outside the twelve missions &mdash; come with it and are open from day one. On a phone or tablet, add Block Camp to your Home Screen and it opens full screen, like an app.</p>
+      <p>Term 1 is twelve missions. Mission 1 opens as soon as you pay, and a new mission opens every seven days after that. Once a mission opens it stays open for good: Term 1 is yours to keep, so a missed week is never lost. The six Block Camp specials come with it and are open from day one: three adventures (The Last Night at the Grand Hotel, Blocula, and the deep-sea Nautilus: The Black Archive) and three passive-voice decks (Present Perfect Passive, The Trial and Past Perfect Passive). Term 2 &mdash; the present perfect and past perfect lessons, passive stations 9 to 14, and the adventures The Long Way Home, Nautilus: The Black Archive and Twenty Thousand Leagues &mdash; is not part of Term 1; Forbes English Pro opens it. On a phone or tablet, add Block Camp to your Home Screen and it opens full screen, like an app.</p>
     </details>
     <details class="faq-item">
       <summary>Is anything a subscription?</summary>
@@ -524,7 +524,7 @@
     </details>
     <details class="faq-item">
       <summary>Who will I see on my receipt and bank statement?</summary>
-      <p>Block Camp and IELTS are sold through Link, Stripe&rsquo;s checkout. Your receipt comes from Link, and your bank statement shows LINK.COM. Link also handles VAT on your purchase.</p>
+      <p>Block Camp, IELTS and essay marking are sold through Link, Stripe&rsquo;s checkout. Your receipt comes from Link, and your bank statement shows LINK.COM. Link also handles VAT on your purchase.</p>
     </details>
     <details class="faq-item">
       <summary>Who marks the IELTS essays?</summary>
@@ -615,6 +615,10 @@ async function startCheckout(plan) {
 
   if (data.url) {
     window.location.href = data.url;
+  } else if (data.owned && data.error) {
+    // Already bought: the Worker says what they have and where it is.
+    resetBuyControls();
+    showBanner(data.error, "active");
   } else {
     resetBuyControls();
     showBanner("Something went wrong starting checkout. Please try again.", "");
@@ -672,14 +676,20 @@ window.addEventListener("pageshow", e => { if (e.persisted) resetBuyControls(); 
   try {
     const raw = localStorage.getItem(INTENT_KEY);
     if (raw) {
-      localStorage.removeItem(INTENT_KEY);
       const v = JSON.parse(raw);
       if (v && typeof v.plan === "string" && Date.now() - Number(v.t) < INTENT_TTL) intended = v.plan;
+      else localStorage.removeItem(INTENT_KEY);
     }
-  } catch (e) { /* an old bare-string intent, or no storage: start nothing */ }
+  } catch (e) {
+    // An old bare-string intent, or no storage: start nothing.
+    try { localStorage.removeItem(INTENT_KEY); } catch (e2) {}
+  }
   if (!intended) return;
+  // Signed out still (a new buyer between "check your email" and the
+  // confirmation link): keep the intent for when they come back signed in.
   const user = await sbGetUser();
   if (!user) return;
+  try { localStorage.removeItem(INTENT_KEY); } catch (e) {}
   showBanner("Welcome back — continuing to checkout…", "active");
   await startCheckout(intended);
 })();

@@ -167,8 +167,8 @@
     letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted);
   }
   .mission-item { font-size: 0.9rem; }
-  .mission.open a.mission-item { color: var(--green-mid); font-weight: 700; text-decoration: none; }
-  .mission.open a.mission-item:hover { text-decoration: underline; }
+  .mission.open a.mission-item, .mission.special a.mission-item { color: var(--green-mid); font-weight: 700; text-decoration: none; }
+  .mission.open a.mission-item:hover, .mission.special a.mission-item:hover { text-decoration: underline; }
   .mission.locked .mission-item { color: var(--muted); }
   .mission-when { font-size: 0.8rem; color: var(--gold); font-weight: 700; }
   [hidden] { display: none !important; }
@@ -314,7 +314,10 @@
         <span class="status-value">Yours to keep</span>
       </div>
       <ol class="missions" id="bc-missions"></ol>
-      <p class="card-note" id="bc-specials" hidden>The Block Camp specials are open too: <a href="block-camp.html">see them on the Block Camp page</a>.</p>
+      <div id="bc-specials" hidden>
+        <p class="card-note">The Block Camp specials are open now, outside the weekly missions:</p>
+        <ol class="missions"><li class="mission special" id="bc-specials-list"></li></ol>
+      </div>
       <a class="btn btn-primary" href="block-camp.html">Go to Block Camp</a>
     </div>
 
@@ -481,9 +484,10 @@ authForm.addEventListener("submit", async (e) => {
 
   let data = null;
   let error = null;
+  const toPricing = new URLSearchParams(window.location.search).get("redirect") === "pricing";
   try {
     ({ data, error } = mode === "signup"
-      ? await sbSignUp(email, password)
+      ? await sbSignUp(email, password, toPricing ? "pricing" : null)
       : await sbSignIn(email, password));
   } catch (err) {
     // A rejected request must not leave the button spinning with no
@@ -514,11 +518,17 @@ authForm.addEventListener("submit", async (e) => {
       applyMode("login");
       return;
     }
-    showError("Check your email to confirm your account, then log in.");
+    // Signed in at once (email confirmation off): straight back to the plans.
+    if (toPricing && data && data.session) {
+      window.location.href = "pricing.html";
+      return;
+    }
+    showError(toPricing
+      ? "Check your email to confirm your account. The link brings you back to the plans to finish buying."
+      : "Check your email to confirm your account, then log in.");
     return;
   }
-  const params = new URLSearchParams(window.location.search);
-  if (params.get("redirect") === "pricing") {
+  if (toPricing) {
     window.location.href = "pricing.html";
     return;
   }
@@ -566,7 +576,27 @@ function day(ms) {
 
 // A catalogue title without the series name in front of it.
 function shortTitle(t) {
-  return String(t || "").replace(/^Block Camp\s*[—–-]\s*/, "");
+  return String(t || "").replace(/^Block Camp(?: II)?\s*[—–-]\s*/, "");
+}
+
+// The specials: the Block Camp lessons that belong to no term. They come
+// with Term 1 and with Forbes English Pro, open from the first day. Listed
+// by name, because the Block Camp page marks them with the same padlock as
+// the Term 2 lessons, which Term 1 does not open.
+function specialsList(lessons) {
+  const li = document.getElementById("bc-specials-list");
+  li.textContent = "";
+  const these = lessons.filter((l) => !l.term)
+    .sort((a, b) => (a.file.startsWith("blockcamp-") ? 1 : 0) - (b.file.startsWith("blockcamp-") ? 1 : 0) ||
+      shortTitle(a.title).localeCompare(shortTitle(b.title)));
+  for (const l of these) {
+    const a = document.createElement("a");
+    a.className = "mission-item";
+    a.href = l.file;
+    a.textContent = `${l.file.startsWith("blockcamp-") ? "Deck" : "Adventure"}: ${shortTitle(l.title)}`;
+    li.appendChild(a);
+  }
+  return these.length;
 }
 
 function missionList(lessons, openNow, start) {
@@ -609,8 +639,9 @@ async function fillSubscription(user) {
     sbGetProfile(user.id).catch(() => null),
     readRows(window.sb && window.sb.from("user_plans")
       .select("product,status,term,starts_at,ends_at,marking_credits,stripe_checkout_session_id")),
+    // Term 1 and the specials (no term); Term 2 is not listed here.
     readRows(window.sb && window.sb.from("lessons")
-      .select("file,title,term,mission,access").eq("track", "blockcamp").eq("term", 1)),
+      .select("file,title,term,mission,access").eq("track", "blockcamp").or("term.eq.1,term.is.null")),
   ]);
 
   // ── Forbes English Pro ──
@@ -668,8 +699,8 @@ async function fillSubscription(user) {
       : !start ? "Starts when you open Block Camp"
       : openNow >= 12 ? "All 12 missions open"
       : `Week ${openNow} of 12`;
-    document.getElementById("bc-specials").hidden = !bcRows.length;
-    if (term1) missionList(term1, openNow, isOwner ? null : start);
+    if (term1) missionList(term1.filter((l) => Number(l.term) === 1), openNow, isOwner ? null : start);
+    document.getElementById("bc-specials").hidden = !(term1 && specialsList(term1));
   }
 
   // ── IELTS ──
@@ -784,6 +815,13 @@ async function start() {
   paint(showAccount);
   const user = await sbGetUser();
   if (!user) { showAuth(); return; }
+  // On the way to checkout (the confirmation link of a new buyer, or a
+  // pricing page that could not confirm the sign-in in time): signed in now,
+  // so back to the plans, where the purchase picks up where it left off.
+  if (new URLSearchParams(window.location.search).get("redirect") === "pricing") {
+    location.replace("pricing.html");
+    return;
+  }
   await afterCheckout(user, await fillSubscription(user));
 }
 

@@ -232,10 +232,54 @@ for (const [path, cookie, want, why] of cases) {
     { headers: cookie ? { Cookie: cookie } : {} }), realEnv, ctx).then((r) => r.text());
   const term2 = await fetchReal('/blockcamp-term2.html', 'fe_at=bc-old');
   const anon = await fetchReal('/blockcamp-term2.html', null);
-  const ok = term2.includes('name="fe-gate" content="checked"') && !term2.includes('Already bought it?') &&
-    term2.includes('See plans') && !anon.includes('content="checked"') && anon.includes('Already bought it?');
+  const headOf = (h) => h.split('</head>')[0];
+  const ok = headOf(term2).includes('name="fe-gate" content="checked"') && !term2.includes('Already bought it?') &&
+    term2.includes('See plans') && !headOf(anon).includes('name="fe-gate"') && anon.includes('Already bought it?');
   ok ? pass++ : fail++;
   console.log(`${ok ? ' PASS' : ' FAIL'}  a final refusal is marked "checked" and drops the retry promise; an anonymous one keeps it`);
+
+  // The page's own script, run against both pages for a signed-in Term 1
+  // buyer: on the "checked" page it must not reload (it would only fetch the
+  // same refusal); on the page without the flag, the same reader is reloaded,
+  // which proves the harness can see a reload at all.
+  const { runInNewContext } = await import('vm');
+  const runGateScript = async (html) => {
+    const script = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map((m) => m[1]).find((s) => s.includes('gateMeta'));
+    // Only the head's tags: the script's own comments quote these tags too.
+    const head = html.split('</head>')[0];
+    const metas = Object.fromEntries([...head.matchAll(/<meta name="([^"]+)" content="([^"]*)">/g)].map((m) => [m[1], m[2]]));
+    let reloads = 0;
+    const store = new Map();
+    const query = (rows) => ({ select: () => ({ limit: () => Promise.resolve({ data: rows }), then: (f) => f({ data: rows }) }) });
+    const sb = {
+      auth: { getSession: async () => ({ data: { session: { access_token: 't' } } }) },
+      from: (t) => query(t === 'profiles' ? [{ subscription_status: null, owner: false }]
+        : [{ product: 'blockcamp', status: 'active', ends_at: null }]),
+    };
+    const page = {
+      document: {
+        querySelector: (sel) => { const n = (sel.match(/meta\[name="([^"]+)"\]/) || [])[1]; return n && n in metas ? { content: metas[n] } : null; },
+        querySelectorAll: () => [],
+        getElementById: () => ({ classList: { add() {}, remove() {} } }),
+      },
+      sessionStorage: { getItem: (k) => store.get(k) ?? null, setItem: (k, v) => store.set(k, v), removeItem: (k) => store.delete(k) },
+      location: { pathname: '/blockcamp-term2.html', reload: () => { reloads++; } },
+      Date, Promise, console,
+    };
+    page.window = { sb };
+    runInNewContext(script, page);
+    await new Promise((r) => setTimeout(r, 20));
+    return reloads;
+  };
+  const checkedReloads = await runGateScript(term2);
+  const anonReloads = await runGateScript(anon);
+  const noLoop = checkedReloads === 0 && anonReloads === 1;
+  noLoop ? pass++ : fail++;
+  console.log(`${noLoop ? ' PASS' : ' FAIL'}  the gate page's script does not reload a "checked" refusal (reloads: checked ${checkedReloads}, unflagged ${anonReloads})`);
+  const titled = !/subscribers/i.test(real.match(/<title>[\s\S]*?<\/title>/)[0]);
+  titled ? pass++ : fail++;
+  console.log(`${titled ? ' PASS' : ' FAIL'}  the gate page's own title does not say "subscribers"`);
+
   const ny = await fetchReal('/blockcamp-m3.html', 'fe_at=bc-token');
   const link = ny.includes('href="/blockcamp-demo.html">Mission 2 is open now</a>') && ny.includes('Back to Block Camp') &&
     !ny.includes('Already bought it?') && /UTC<\/time>/.test(ny);
