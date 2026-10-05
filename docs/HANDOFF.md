@@ -42,7 +42,11 @@ Innes caught two wrong keys live in class. Full audit of both:
   matches the template. Content edits were mirrored into both builders, but
   re-running them would regress the page. Rebuild on `deck.py` before using.
 
-## 2026-10-04 — Pricing go-live (Innes's 3 Oct handoff): steps 1, 2 and 6 done; 3–5, 7–9 open
+## 2026-10-04 — Pricing go-live (Innes's 3 Oct handoff): all nine steps on branch `pricing-go-live`, not live
+
+**To release or roll back, follow `docs/GO-LIVE-pricing.md` on the branch**
+(`git show pricing-go-live:docs/GO-LIVE-pricing.md`). It merges branch
+`rollback-guard` first; do not release by merging `pricing-go-live` alone.
 
 Innes's plan, in order: schema → Term 1 tagging → Stripe prices → webhook →
 Worker gate with weekly drip → pricing page → IELTS page → account page →
@@ -252,6 +256,34 @@ below tells a session to apply branch `48236bc4`'s "Any plan" badges:
 - Before taking money from EU consumers: a terms page with seller identity
   and the 14-day withdrawal information, and Stripe's consent to immediate
   access (needs his name/address; the review flagged its absence).
+  The consent is now in code, off until `TERMS_URL` is set (after the URL
+  is saved in Stripe's Public details): GO-LIVE A.1.
+
+**5 Oct, final end-to-end review** (four lenses + skeptic: 21 confirmed, 7
+rejected), all fixed on the branch (`81407e96`, `cfadd68d`, `be6c4554`,
+`8bf20be2`; tests paywall 60, webhook 75, weekly 21, account 11, each new
+case run against a broken copy):
+- A refund or lost dispute arriving before its grant was lost and the late
+  grant opened for good; the refund now leaves a closed row the grant
+  cannot reopen. Checkout refuses (409) a second Term 1, IELTS, IELTS +
+  Marking for an IELTS owner, and a second Pro subscription.
+- The specials are named (pricing FAQ, account page links them; "outside
+  the twelve missions" took in Term 2). Paid padlocks say "Paid" and their
+  links "See plans" across Block Camp, the library, the hubs and the RPG
+  hub; the site nav's "Go Pro" button stays (it sells Pro).
+- A buyer who signs up from pricing is brought back to it by the
+  confirmation link; the gate page no longer reloads a final refusal.
+- **Rollback:** reverting the release used to bring back a webhook that
+  writes a €49/€69 sale as lifetime Pro and drops refunds (measured). Branch
+  `rollback-guard` (`643fe4b5`, on main `f0c50017`) makes the old webhook
+  answer 500 to one-off events so Stripe holds them; it is merged into the
+  release first, so `git revert -m 1` restores it. Dry-run: release tree =
+  branch tree; reverted tree = main + guard.
+- Release and rollback run in their own worktrees (a peer's push or staged
+  file could publish or block them in the shared checkout); the exemption
+  SQL runs again once the Worker is live.
+**Needs Innes, new:** if the marking products go `managed: false`, that
+needs a VAT decision first (he becomes the seller; Stripe collects none).
 
 ## 2026-10-03 — Block Camp music: a volume slider everywhere; the Grand Hotel gets a soundtrack
 
