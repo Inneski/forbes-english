@@ -11,13 +11,16 @@ question to question: two lines on arriving at a stop, one on leaving.
 THE STORY (keep it true when you change a line)
     Day 14, after the summit. Navya radios a storm warning.
     The storm is forecast for TONIGHT (Navya, the intro).
+    Days: 14 the summit, camps 12 and 10; 15 camps 7, 6 and 5; 16 camps 4 and
+    3 (Momo arrives after lunch); 17 camps 2 and 1 and base camp; Otto is in
+    hospital in Kathmandu on day 19.
     Camp 12  the race: the camp taken down, every bag loaded, by six.
     Camp 10  the hut on the way down: its door torn off by the wind, the food
              eaten by birds, the stove taken by the other team (the one that
              cut the steps on the way up). Otto's hat and the spare tent are
              blown away in the night; the team keeps its other tents.
     Camp 7   morning, the radio: the pass will be closed at noon; porters will
-             meet them at the lake; no helicopter will be sent. "We'll be
+             meet them at camp five; no helicopter will be sent. "We'll be
              lowered down the ice wall one at a time. Me last." (Otto)
     Camp 6   the ice wall: Otto, going last, was being lowered when the rope
              jammed; he was swung against the ice and landed on one foot; his
@@ -111,16 +114,16 @@ CAMPS = [
              'answer': 'will have been led', 'options': ['will have been led', 'will have been lead', 'will have led'],
              'fb': '"By the time the storm arrives" = done before then, and BY TENSING is the doer: WILL HAVE BEEN + PAST PARTICIPLE. LEAD → LED.'},
             {'id': 'd12-2', 'kind': 'choose', 'who': 'doris', 'via': 'radio',
-             'text': "By tomorrow night, the whole team _____ safely to base camp. I promise. Over. (bring)",
+             'text': "By the end of the week, the whole team _____ safely to base camp. I promise. Over. (bring)",
              'answer': 'will have been brought', 'options': ['will have been brought', 'will have been bringed', 'will have brought'],
              'fb': 'The team does not bring; it is brought: WILL HAVE BEEN + PAST PARTICIPLE. BRING → BROUGHT.'},
             {'id': 'd12-3', 'kind': 'type', 'who': 'ana',
-             'text': "Go and sleep, Sam. By the time you wake up, every rope _____ twice. (already / check)",
+             'text': "Sit down and drink your tea, Sam. By the time you've finished it, every rope _____ twice. (already / check)",
              'answer': 'will already have been checked',
              'accept': ['will already have been checked', 'will have already been checked', 'will have been checked already',
                         'will have been checked', 'will already have got checked', 'will have already got checked',
                         'will already have gotten checked', 'will have already gotten checked', 'is going to have already been checked'],
-             'fb': '"By the time you wake up" = done before then: WILL + ALREADY + HAVE BEEN + CHECKED.'},
+             'fb': '"By the time you\'ve finished it" = done before then: WILL + ALREADY + HAVE BEEN + CHECKED.'},
             {'id': 'd12-4', 'kind': 'choose', 'who': 'sam',
              'text': "_____ the tents _____ before it gets dark? (pack)",
              'answer': 'Will ... have been packed', 'options': ['Will ... have been packed', 'Will ... has been packed', 'Will ... have been pack'],
@@ -186,7 +189,7 @@ CAMPS = [
              'text': "By the time the wind dropped, our spare tent _____ halfway to camp nine. (carry)",
              'answer': 'had been carried',
              'accept': ['had been carried', 'had already been carried', 'had got carried', 'had gotten carried',
-                        'had been carried away', 'had already got carried', 'had already gotten carried'],
+                        'had been carried away', 'had already got carried', 'had already gotten carried', 'had got carried away', 'had gotten carried away', 'had been carried off'],
              'fb': '"By the time the wind dropped" is the later past: HAD BEEN + CARRIED.'},
             {'id': 'd10-8', 'kind': 'choose', 'who': 'otto',
              'text': "I knew that part was dangerous. I _____ about the ice by Tensing. (warn)",
@@ -205,7 +208,7 @@ CAMPS = [
         'tip': "Promises, notices and predictions, doer left out: WILL BE + PAST PARTICIPLE.",
         'items': [
             {'id': 'd7-1', 'kind': 'choose', 'who': 'doris', 'via': 'radio',
-             'text': "Don't worry. You _____ at the lake by two of our porters. Over. (meet)",
+             'text': "Don't worry. You _____ at camp five by two of our porters. Over. (meet)",
              'answer': 'will be met', 'options': ['will be met', 'will be meet', 'will meet'],
              'fb': 'A promise, and the porters do the meeting: WILL BE + PAST PARTICIPLE. MEET → MET.'},
             {'id': 'd7-2', 'kind': 'choose', 'who': 'ana',
@@ -215,7 +218,7 @@ CAMPS = [
             {'id': 'd7-3', 'kind': 'type', 'who': 'doris', 'via': 'radio',
              'text': "Your families _____ tonight that you are safe. Over. (tell)",
              'answer': 'will be told',
-             'accept': ['will be told', 'are going to be told', 'are being told', 'will get told', 'are going to get told', 'are getting told'],
+             'accept': ['will be told', 'are going to be told', 'are being told', 'will get told', 'are going to get told', 'are getting told', 'will all be told'],
              'fb': 'A promise, doer left out: WILL BE + TOLD.'},
             {'id': 'd7-4', 'kind': 'choose', 'who': 'sam',
              'text': "_____ Otto's bag _____ by someone else? He's got the radio too. (carry)",
@@ -232,7 +235,7 @@ CAMPS = [
             {'id': 'd7-7', 'kind': 'type', 'who': 'ana',
              'text': "Everything heavy _____ here, and we'll come back for it in spring. (leave)",
              'answer': 'will be left',
-             'accept': ['will be left', 'is going to be left', 'is being left', 'will have to be left', 'is going to have to be left', 'will get left'],
+             'accept': ['will be left', 'is going to be left', 'is being left', 'will have to be left', 'is going to have to be left', 'will get left', 'has to be left', 'must be left', 'is to be left'],
              'fb': 'Decided now, doer left out: WILL BE + LEFT.'},
             {'id': 'd7-8', 'kind': 'choose', 'who': 'doris', 'via': 'radio',
              'text': "This time you'll be called by _____, not by the weather station. Noon. Over.",
@@ -252,7 +255,7 @@ CAMPS = [
         'items': [
             {'id': 'd6-1', 'kind': 'type', 'who': 'sam',
              'text': "Otto _____ down the ice wall when the torch went out. (lower)",
-             'answer': 'was being lowered', 'accept': ['was being lowered', 'was getting lowered', 'was lowering'],
+             'answer': 'was being lowered', 'accept': ['was being lowered', 'was getting lowered', 'was lowering', 'was slowly being lowered', 'was being slowly lowered'],
              'fb': 'In the middle of it when the torch went out: WAS + BEING + LOWERED.'},
             {'id': 'd6-2', 'kind': 'choose', 'who': 'ana',
              'text': "While his ankle _____, Otto kept making jokes. (strap up)",
@@ -305,7 +308,7 @@ CAMPS = [
             {'id': 'd5-3', 'kind': 'type', 'who': 'ana',
              'text': "It's decided: Otto's pack _____ between the three of us. (share)",
              'answer': 'is going to be shared',
-             'accept': ['is going to be shared', 'will be shared', 'is being shared', 'is going to get shared', 'is to be shared'],
+             'accept': ['is going to be shared', 'will be shared', 'is being shared', 'is going to get shared', 'is to be shared', 'will get shared', 'is getting shared'],
              'fb': '"It\'s decided" = a plan, doer left out: IS + GOING TO BE + SHARED.'},
             {'id': 'd5-4', 'kind': 'choose', 'who': 'otto',
              'text': "_____ I _____ down by a yak? Seriously? (carry)",
@@ -339,8 +342,8 @@ CAMPS = [
         ],
         'tip': "Done, with a line to now, doer left out: HAS / HAVE BEEN + PAST PARTICIPLE.",
         'items': [
-            {'id': 'd4-1', 'kind': 'choose', 'who': 'sam',
-             'text': "Listen! Momo's bell _____! He's right above us! (just / hear)",
+            {'id': 'd4-1', 'kind': 'choose', 'who': 'ana', 'via': 'radio',
+             'text': "Navya, Momo's bell _____! He's right above us! Over. (just / hear)",
              'answer': 'has just been heard', 'options': ['has just been heard', 'has just heard', 'have just been heard'],
              'fb': 'Moments ago, with the news now, and one bell: HAS + JUST + BEEN + PAST PARTICIPLE.'},
             {'id': 'd4-2', 'kind': 'choose', 'who': 'sam',
@@ -348,7 +351,7 @@ CAMPS = [
              'answer': 'have been found', 'options': ['have been found', 'have found', 'has been found'],
              'fb': 'Done, with the result now, and "we": HAVE BEEN + PAST PARTICIPLE. FIND → FOUND.'},
             {'id': 'd4-3', 'kind': 'type', 'who': 'otto',
-             'text': "The path _____ since lunchtime, so Momo is finding his own way. (bury)",
+             'text': "The path _____ since lunchtime, so Momo is going by smell. (bury)",
              'answer': 'has been buried',
              'accept': ['has been buried', 'has got buried', 'has gotten buried', 'has been getting buried', 'has been completely buried', 'has completely been buried'],
              'fb': '"since lunchtime", up to now: HAS BEEN + BURIED.'},
@@ -374,7 +377,7 @@ CAMPS = [
              'answer': 'have been told', 'options': ['have been told', 'have told', 'has been told'],
              'fb': 'News with a line to now, and "I": HAVE BEEN + PAST PARTICIPLE. TELL → TOLD.'},
         ],
-        'done': {'who': 'otto', 'en': "I**'ve been lifted** onto a yak. Nearly forty years of climbing, and this is how I go home."},
+        'done': {'who': 'otto', 'en': "I**'ve been lifted** onto a yak. Nobody take a photo."},
     },
     # ------------------------------------------------------------------ 3  past simple passive  B1
     {
@@ -394,15 +397,15 @@ CAMPS = [
              'answer': 'was chosen', 'options': ['was chosen', 'was choosed', 'were chosen'],
              'fb': 'Finished, BY MOMO is the point, and one way: WAS + PAST PARTICIPLE. CHOOSE → CHOSEN.'},
             {'id': 'd3-3', 'kind': 'type', 'who': 'otto',
-             'text': "This morning, I _____ onto Momo's back by Tensing and Sam. (lift)",
+             'text': "This afternoon, I _____ onto Momo's back by Tensing and Sam. (lift)",
              'answer': 'was lifted', 'accept': ['was lifted', 'got lifted', 'was lifted up', 'got lifted up', 'was carefully lifted'],
-             'fb': '"This morning" is finished, and the doers come after BY: WAS + LIFTED.'},
+             'fb': '"This afternoon" is finished, and the doers come after BY: WAS + LIFTED.'},
             {'id': 'd3-4', 'kind': 'choose', 'who': 'ana',
              'text': "The bridge over the stream _____ in 1998, the year Otto first came here. (build)",
              'answer': 'was built', 'options': ['was built', 'was build', 'has been built'],
              'fb': '"in 1998" = a finished time: WAS + PAST PARTICIPLE. BUILD → BUILT.'},
             {'id': 'd3-5', 'kind': 'spot', 'who': 'sam',
-             'text': "Momo [is called] the hero of the valley now.",
+             'text': "At base camp, Momo [is called] \"the Boss\".",
              'answer': 2, 'options': [2, 3, 1],
              'fb': 'IS + CALLED: how things are now. Present simple passive, not camp three.'},
             {'id': 'd3-6', 'kind': 'choose', 'who': 'otto',
@@ -410,7 +413,7 @@ CAMPS = [
              'answer': 'was hurt', 'options': ['was hurt', 'was hurted', 'hurt'],
              'fb': 'Finished, with the cause after BY: WAS + HURT. HURT never changes.'},
             {'id': 'd3-7', 'kind': 'type', 'who': 'ana',
-             'text': "The porters _____ back by the snow below camp five. That's why Momo came. (turn)",
+             'text': "The porters _____ by the snow below camp five. That's why Momo came. (turn back)",
              'answer': 'were turned back', 'accept': ['were turned back', 'got turned back', 'had been turned back'],
              'fb': 'A finished event, and "porters": WERE + TURNED BACK.'},
             {'id': 'd3-8', 'kind': 'choose', 'who': 'sam',
@@ -418,7 +421,7 @@ CAMPS = [
              'answer': 'happened', 'options': ['happened', 'was happened', 'were happened'],
              'fb': 'HAPPEN takes no object, so it has no passive: just HAPPENED.'},
         ],
-        'done': {'who': 'tensing', 'en': "That night, Momo **was given** the best dinner on the mountain: Sam's socks."},
+        'done': {'who': 'tensing', 'en': "Then Momo **was given** the best dinner on the mountain: Sam's socks."},
     },
     # ------------------------------------------------------------------ 2  present simple passive  A2
     {
@@ -439,7 +442,7 @@ CAMPS = [
              'fb': 'How things are done, and "rescues" is plural: ARE + PAST PARTICIPLE.'},
             {'id': 'd2-3', 'kind': 'type', 'who': 'sam',
              'text': "Every winter, the yaks _____ down in the valley. (keep)",
-             'answer': 'are kept', 'accept': ['are kept', 'get kept', 'are always kept', 'are usually kept'],
+             'answer': 'are kept', 'accept': ['are kept', 'get kept', 'are always kept', 'are usually kept', 'are all kept'],
              'fb': '"Every winter" = a routine, and "yaks": ARE + KEPT.'},
             {'id': 'd2-4', 'kind': 'choose', 'who': 'otto',
              'text': "_____ yaks ever _____ that high in a storm? (see)",
@@ -495,12 +498,12 @@ CAMPS = [
              'answer': 3, 'options': [3, 10, 1],
              'fb': 'WAS + STRAPPED UP: finished in the past. Past simple passive, not camp one.'},
             {'id': 'd1-6', 'kind': 'choose', 'who': 'sam',
-             'text': "Momo _____ by two of the porters at the moment, and he loves it. (brush)",
-             'answer': 'is being brushed', 'options': ['is being brushed', 'is brushing', 'is been brushed'],
-             'fb': '"at the moment", and the porters are doing it to Momo: IS + BEING + PAST PARTICIPLE.'},
+             'text': "Momo _____ by every porter on the path, and he loves it. (pat)",
+             'answer': 'is being patted', 'options': ['is being patted', 'is patting', 'is been patted'],
+             'fb': 'Happening now, and the porters are doing it to Momo: IS + BEING + PAST PARTICIPLE.'},
             {'id': 'd1-7', 'kind': 'type', 'who': 'ana',
              'text': "Right now we _____ down to base camp by Momo. (lead)",
-             'answer': 'are being led', 'accept': ['are being led', 'are getting led'],
+             'answer': 'are being led', 'accept': ['are being led', 'are getting led', 'are all being led'],
              'fb': '"Right now", BY MOMO: ARE + BEING + LED. LEAD → LED.'},
             {'id': 'd1-8', 'kind': 'choose', 'who': 'sam',
              'text': "Momo _____ any more. Otto's on the stretcher now. (not / ride)",
@@ -515,7 +518,7 @@ CAMPS = [
 SUMMIT = {
     'n': 'summit', 'alt': 2950, 'top': 2800, 'storm': 0,
     'arrive': [
-        {'who': 'doris', 'en': "Welcome home! The coffee **has been made** and Momo **has been fed**. Now sit down and tell me everything."},
+        {'who': 'doris', 'en': "Welcome home! The coffee **has been made** and your beds **have been made up**. Now sit down and tell me everything."},
     ],
     'tip': "Every passive is BE in some tense + PAST PARTICIPLE. Find the tense of BE.",
     'items': [
@@ -527,7 +530,7 @@ SUMMIT = {
          'text': "When we got to the hut, our food _____ by birds. (eat)",
          'answer': 'had been eaten', 'options': ['had been eaten', 'had eaten', 'had been ate'],
          'fb': 'Before we got there: HAD BEEN + PAST PARTICIPLE. EAT → EATEN. Camp ten.'},
-        {'id': 'r-3', 'camp': 7, 'kind': 'type', 'who': 'ana',
+        {'id': 'r-3', 'camp': 7, 'kind': 'type', 'who': 'doris',
          'text': "Next year, a new hut _____ on the ledge. I promise. (will / build)",
          'answer': 'will be built', 'accept': ['will be built', 'will get built'],
          'fb': 'A promise about next year, doer left out: WILL BE + BUILT. Camp seven.'},
@@ -544,9 +547,9 @@ SUMMIT = {
          'answer': 'have been eaten', 'options': ['have been eaten', 'have eaten', 'has been eaten'],
          'fb': 'Done, and the result is here now (no socks): HAVE BEEN + PAST PARTICIPLE. Camp four.'},
         {'id': 'r-7', 'camp': 3, 'kind': 'type', 'who': 'otto',
-         'text': "Two days ago, I _____ down a mountain by a yak. Nobody will believe me. (carry)",
+         'text': "In that whiteout, I _____ down a mountain by a yak. Nobody will believe me. (carry)",
          'answer': 'was carried', 'accept': ['was carried', 'got carried'],
-         'fb': '"Two days ago" is finished, BY A YAK: WAS + CARRIED. Camp three.'},
+         'fb': '"In that whiteout" is finished, BY A YAK: WAS + CARRIED. Camp three.'},
         {'id': 'r-8', 'camp': 2, 'kind': 'choose', 'who': 'doris',
          'text': "Here, every climber _____ a hot drink on arrival. (hand)",
          'answer': 'is handed', 'options': ['is handed', 'is hand', 'hands'],
@@ -560,7 +563,7 @@ SUMMIT = {
 }
 
 OUTRO = [
-    {'who': 'sam', 'via': 'diary', 'en': "Day seventeen, Kathmandu. Otto **has been taken** to hospital. He's fine. My sister **has been told** everything."},
+    {'who': 'sam', 'via': 'diary', 'en': "Day nineteen, Kathmandu. Otto **has been taken** to hospital. He's fine. My sister **has been told** everything."},
     {'who': 'otto', 'via': 'note', 'en': "Nearly forty years of climbing, and I **was carried** off a mountain by a yak. I'm going to need a better story."},
-    {'who': 'doris', 'via': 'radio', 'en': "Momo **has been given** a medal. He ate it. Over."},
+    {'who': 'doris', 'via': 'note', 'en': "Momo **has been given** a medal. He ate it."},
 ]
