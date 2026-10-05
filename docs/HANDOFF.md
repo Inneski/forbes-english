@@ -510,7 +510,7 @@ a severe weather rescue mission"*.
 - **Needs Innes:** the catalogue row, then `build_hubs.py` and `seo.py`.
   ```sql
   insert into public.lessons (file, title, level, access, track, deck, video)
-  select 'sherpa-tensing-the-descent.html', 'Sherpa Tensing — The Descent: Passive Voice Game', 'B1-C1', 'pro', 'sherpa', false, false
+  select 'sherpa-tensing-the-descent.html', 'Sherpa Tensing — The Descent: Passive Voice Game', 'A2-C1', 'pro', 'sherpa', false, false
   where not exists (select 1 from public.lessons where file = 'sherpa-tensing-the-descent.html');
   ```
 
