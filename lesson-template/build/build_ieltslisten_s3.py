@@ -31,6 +31,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import deck as D
+from ielts_langs import LANGS
 from ieltslisten_s3_data import (TURNS, AUDIO, TOPIC, TOPIC_BANK, MC_A, WHO,
                                  WHO_WHY, MC_B, DECISIONS, DECISIONS_BANK,
                                  MC_C, MC)
@@ -242,7 +243,7 @@ def build(make_audio=False):
     import i18n_ieltslisten_s3 as I
     s = D.assemble(TPL, OUT, slides, PALETTE,
                    'IELTS Listening Section 3: The Academic Discussion | Forbes English',
-                   I, langs=('en', 'de', 'es'))
+                   I, langs=LANGS)
     print('wrote %s — %d slides, %d scored points, %d:%02d of audio, %d bytes'
           % (OUT, s.count('<section class="slide'),
              len(TOPIC) + len(WHO) + len(DECISIONS) + len(MC),
