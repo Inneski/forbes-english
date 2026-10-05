@@ -69,6 +69,16 @@ products. In the Stripe dashboard:
 Checkout needs the buyer signed in: the Worker reads the Supabase token from
 the Authorization header (pricing.html sends it) or the `fe_at` cookie and
 asks Supabase who it is. Nothing in the request body decides the account.
+It refuses (409, with a sentence the page shows) a second Term 1, a second
+IELTS, IELTS + Marking for an IELTS owner and a second Forbes English Pro;
+marking can always be bought again.
+
+**`TERMS_URL`** (a `[vars]` entry, the terms page's address) makes every
+checkout ask the buyer to agree to the terms and to immediate access, which
+ends the EU 14-day right of withdrawal for digital content. Set it only
+after the same URL is saved in Stripe (Settings → Business → Public details
+→ Terms of service): Stripe refuses a checkout that asks for consent while
+it has no terms URL. `/api/paywall-status` reports `hasTermsConsent`.
 
 The marking-inbox notice ("essay credits bought") goes through Resend with
 the weekly email: see the next section. (Fallback without Resend: a
