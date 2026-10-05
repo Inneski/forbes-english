@@ -41,6 +41,21 @@ preview mode, as `build_redditdoor.py` does), and the report says either
 to guess about. `incoming/*` is gitignored, so the folder is local only and
 a cloud session has to say "make it" every time.
 
+## Paths in a report: full and clickable, always
+
+Innes, 2026-10-05: *"give me proper links to folders from now on - what is
+docs/ ? hard wire this"*. A bare `docs/` or `incoming/sherpa-descent/` means
+nothing to him. Every file or folder named in a reply to Innes is written as
+its **full Windows path, as a clickable markdown link**, with the full path as
+the link text and the repo-relative path as the target:
+
+- [C:\Users\black\Documents\FORBES\docs\CHATGPT-DESCENT-ART-BRIEF.md](docs/CHATGPT-DESCENT-ART-BRIEF.md)
+- [C:\Users\black\Documents\FORBES\incoming\sherpa-descent](incoming/sherpa-descent)
+
+That holds for drop folders, briefs, builders and pages alike, in every
+report and every brief written for him. Code blocks and commit messages can
+keep repo-relative paths; anything he reads as an instruction gets the link.
+
 ## Getting files from Innes's machine into the repo
 
 **Tested 2026-09-07, and the previous version of this section was wrong.**
