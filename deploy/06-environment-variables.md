@@ -36,3 +36,101 @@ Stripe has a CLI tool (`stripe listen --forward-to localhost:8788/api/stripe-web
 ---
 
 That's the full path from where the repo sits now to a live, subscription-capable `forbesenglish.com`. Steps 1–3 (GitHub → Cloudflare Pages → DNS) get the site *live* on its own; Steps 4–6 (Supabase + Stripe) add the paywall on top whenever you're ready for that part — they don't have to happen in the same sitting.
+
+## The one-off products (pricing go-live, 2026-10-04)
+
+The four price IDs and the FOUNDER promotion code are not secret, so they
+live in `wrangler.toml` under `[vars]` beside the full-plan prices:
+`STRIPE_PRICE_ID_BLOCKCAMP`, `STRIPE_PRICE_ID_IELTS`,
+`STRIPE_PRICE_ID_IELTS_MARKING`, `STRIPE_PRICE_ID_MARKING`,
+`STRIPE_PROMO_FOUNDER`. What each purchase grants is read from the Stripe
+**product** metadata (`product`, `term`, `marking_credits`), listed in
+`docs/HANDOFF.md`. Change a grant there, not in code.
+
+They are sold through **Managed Payments** (Stripe as seller of record: it
+charges and remits the VAT and sends the receipts, from Link), per product:
+the `managed` flag in `CHECKOUT_PRODUCTS` in `src/index.js`. Stripe's
+eligibility rules exclude products that involve human work, which essay
+marking does; see docs/HANDOFF.md for the decision on the two marking
+products. In the Stripe dashboard:
+
+1. Settings → Managed Payments: on and "Ready to use" (checked 4 Oct 2026).
+2. Developers → Webhooks → `forbes-english-worker-live`
+   (`we_1UCRVD0R7wvAnqir5hFaGqwg`) must listen to:
+   - `checkout.session.completed` and `checkout.session.async_payment_succeeded`
+     (a delayed payment method grants on the second, not the first; added
+     4 Oct);
+   - `customer.subscription.updated` and `customer.subscription.deleted`
+     (the full plan);
+   - `charge.refunded` and `charge.dispute.closed`: a full refund or a lost
+     chargeback closes a one-off grant and clears its essay credits. Nothing
+     one-off expires, so without these a refunded buyer keeps everything.
+
+Checkout needs the buyer signed in: the Worker reads the Supabase token from
+the Authorization header (pricing.html sends it) or the `fe_at` cookie and
+asks Supabase who it is. Nothing in the request body decides the account.
+It refuses (409, with a sentence the page shows) a second Term 1, a second
+IELTS, IELTS + Marking for an IELTS owner and a second Forbes English Pro;
+marking can always be bought again.
+
+**`TERMS_URL`** (a `[vars]` entry, the terms page's address) makes every
+checkout ask the buyer to agree to the terms and to immediate access, which
+ends the EU 14-day right of withdrawal for digital content. Set it only
+after the same URL is saved in Stripe (Settings → Business → Public details
+→ Terms of service): Stripe refuses a checkout that asks for consent while
+it has no terms URL. `/api/paywall-status` reports `hasTermsConsent`.
+
+The marking-inbox notice ("essay credits bought") goes through Resend with
+the weekly email: see the next section. (Fallback without Resend: a
+Cloudflare `[[send_email]]` binding named `MARKING_MAIL` plus
+`MARKING_MAIL_FROM` under `[vars]`.)
+
+Tests: `node deploy/test-webhook.mjs` (checkout, founder count, webhook)
+and `node deploy/test-paywall.mjs`.
+
+## Email: the weekly "Mission N is open" and the marking inbox (step 9)
+
+Sent through **Resend** (resend.com). Until the key is set, nothing is sent
+and nothing else changes; `/api/paywall-status` reports `hasMissionEmail`
+and `hasMarkingMail`.
+
+1. Make a Resend account and add the domain **forbesenglish.com**. Resend
+   lists DNS records (DKIM, and SPF/MX on a `send` subdomain); add them in
+   Cloudflare → forbesenglish.com → DNS at exactly the names Resend shows,
+   and wait for Resend to show the domain as verified. **Leave the root MX
+   and root SPF records alone**: they are what delivers mail sent *to*
+   info@forbesenglish.com today.
+2. Create an API key in Resend (sending access is enough).
+3. Cloudflare → Workers → forbes-english → Settings → Variables and secrets:
+   add `RESEND_API_KEY` as a **secret**. The rest is already in
+   `wrangler.toml`: `MAIL_FROM` (info@forbesenglish.com),
+   `MAIL_REPLY_TO` and `MARKING_MAIL_TO` (info@forbesenglish.com).
+4. Send one real email with the key, from info@forbesenglish.com to your
+   own address (Resend's dashboard has a test send), and check it arrives.
+   `/api/paywall-status` reporting `hasMissionEmail: true` only says the
+   key is *set*, not that sending works.
+5. The cron (`[triggers]` in `wrangler.toml`, every hour) deploys with the
+   Worker. Cloudflare → the Worker → Settings → Triggers shows it, and the
+   Worker's logs (kept by `[observability]`) show one summary line per run:
+   `mission emails: {"sent":…,"failed":…,"skipped":…,"deferred":…}`.
+   After a reader's Mission 2 comes due there should be a row in
+   `blockcamp_mission_emails` with `sent_at` set; a row with `sent_at` empty
+   for more than an hour means sending is failing (the log line says why).
+
+Each run stops at `EMAIL_SUBREQUEST_BUDGET` calls (default 40, under the
+Workers Free plan's 50); the next hourly run carries on. On the Paid plan,
+add `EMAIL_SUBREQUEST_BUDGET = "900"` under `[vars]`.
+
+Who gets the email: every Block Camp reader (Term 1 buyer, or subscriber
+with a started clock) whose next mission opened in the last 48 hours; not
+Mission 1, not the owner, not anyone with `profiles.blockcamp_emails =
+false` (set it by hand when someone replies asking to stop, or uses their
+mail app's unsubscribe, which sends a "Stop Block Camp emails" email to
+info@forbesenglish.com). Each email is claimed in `blockcamp_mission_emails`
+before it is sent and marked sent only when Resend accepts it, so nobody
+gets the same mission twice and a failed send is retried. Test:
+`node deploy/test-weekly.mjs`.
+
+**Before setting the key:** the site needs a privacy notice that names
+Resend (and Supabase, Stripe, Cloudflare) as processors. See
+docs/HANDOFF.md.

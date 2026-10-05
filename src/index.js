@@ -14,11 +14,25 @@
 //   STRIPE_SECRET_KEY, STRIPE_PRICE_ID_MONTHLY, STRIPE_PRICE_ID_SEMIANNUAL,
 //   STRIPE_PRICE_ID_ANNUAL, STRIPE_WEBHOOK_SECRET, SITE_URL,
 //   SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY
-// Per-track products (optional until the Stripe prices exist; checkout for a
-// product whose price is unset answers 500 and nothing else changes):
-//   STRIPE_PRICE_ID_BLOCKCAMP   recurring price, Block Camp
-//   STRIPE_PRICE_ID_IELTS       one-time price, IELTS
-//   IELTS_TERM_DAYS             length of the IELTS term (default 90)
+// The one-off products (pricing go-live, 2026-10-04; IDs in docs/HANDOFF.md).
+// Checkout for a product whose price is unset answers 500 and nothing else
+// changes:
+//   STRIPE_PRICE_ID_BLOCKCAMP       €19, Block Camp Term 1
+//   STRIPE_PRICE_ID_IELTS           €25, IELTS
+//   STRIPE_PRICE_ID_IELTS_MARKING   €69, IELTS + two marked essays
+//   STRIPE_PRICE_ID_MARKING         €49, two marked essays on any account
+//   STRIPE_PROMO_FOUNDER            promo_… for FOUNDER (€7 off Term 1, 50 uses)
+// Email (step 9): RESEND_API_KEY (a secret) and MAIL_FROM (an address on
+// a domain verified in Resend) send the weekly "Mission N is open" email
+// from the daily cron, and tell MARKING_MAIL_TO when essay credits are
+// bought. Without them nothing is sent and nothing else changes. (A
+// Cloudflare send_email binding, MARKING_MAIL + MARKING_MAIL_FROM, still
+// works for the marking inbox alone.)
+// TERMS_URL (the terms page): once set, checkout asks EU buyers to agree
+// to the terms and to immediate access (see addConsent).
+
+// Email Routing's message type, for the marking-inbox note (notifyMarking).
+import { EmailMessage } from "cloudflare:email";
 
 const PLAN_ENV_KEYS = {
   monthly: "STRIPE_PRICE_ID_MONTHLY",
@@ -26,16 +40,40 @@ const PLAN_ENV_KEYS = {
   annual: "STRIPE_PRICE_ID_ANNUAL",
 };
 
-// The standalone products. `full` (the plans above, held on `profiles`)
-// covers every track; these cover their own track plus Sherpa Tensing.
-// A lesson's track is `lessons.track`; the rows a user holds are `user_plans`
-// (deploy/schema-tracks.sql).
-const PRODUCTS = {
-  blockcamp: { envKey: "STRIPE_PRICE_ID_BLOCKCAMP", mode: "subscription", tracks: ["blockcamp", "sherpa"] },
-  ielts:     { envKey: "STRIPE_PRICE_ID_IELTS",     mode: "payment",      tracks: ["ielts", "sherpa"] },
+// What the pricing page can buy, by the key its buttons send. All are single
+// payments. `managed` sends the sale through Managed Payments (Stripe as
+// seller of record: it charges and remits the VAT). Stripe's eligibility
+// rules exclude a product that "involves human intervention", which a
+// teacher-marked essay is; whether the two marking products stay managed is
+// Innes's call (docs/HANDOFF.md, pricing step 4). A sale with it off is
+// taxed like the full plan: not at all by Stripe.
+// What a purchase grants is read back from the Stripe *product's* metadata
+// in the webhook, not from this table. The buyer's account comes only from
+// the session's metadata.supabase_user_id, which this checkout sets: an
+// anonymous Payment Link sale is charged but grants nothing (it is logged).
+const CHECKOUT_PRODUCTS = {
+  blockcamp:     { envKey: "STRIPE_PRICE_ID_BLOCKCAMP", managed: true, founder: true },
+  ielts:         { envKey: "STRIPE_PRICE_ID_IELTS", managed: true },
+  ielts_marking: { envKey: "STRIPE_PRICE_ID_IELTS_MARKING", managed: true },
+  marking:       { envKey: "STRIPE_PRICE_ID_MARKING", managed: true },
+};
+
+// The tracks a `user_plans` row opens, by its `product`. The full plan (held
+// on `profiles`) opens every track, Sherpa Tensing included; a one-off opens
+// only its own. Marking opens no lessons: it only carries credits.
+// A lesson's track is `lessons.track` (deploy/schema-tracks.sql).
+const PLAN_TRACKS = {
+  blockcamp: ["blockcamp"],
+  ielts: ["ielts"],
+  marking: [],
 };
 
 export default {
+  // The daily cron (wrangler.toml [triggers]): the weekly mission emails.
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(sendMissionEmails(env, event && event.scheduledTime ? event.scheduledTime : Date.now()));
+  },
+
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
@@ -61,6 +99,11 @@ export default {
     // wired up, and how many lessons the gate can see.
     if (url.pathname === "/api/paywall-status") {
       return handlePaywallStatus(request, url, env, ctx);
+    }
+
+    // The founder offer's places left, for the pricing page's strip.
+    if (url.pathname === "/api/founder-status") {
+      return handleFounderStatus(env, ctx);
     }
 
     // ── RETIRED URLS ─────────────────────────────────────────────────
@@ -129,6 +172,7 @@ async function withRanges(request, res) {
 
 const SESSION_COOKIE = "fe_at";
 const ACTIVE_STATUSES = new Set(["active", "trialing"]);
+const WEEK_MS = 7 * 86400000;
 
 /**
  * Returns a Response when the request is for a gated lesson the caller may
@@ -140,13 +184,38 @@ async function gateLessonRequest(request, url, env, ctx) {
   const file = lessonFileFor(url.pathname);
   if (!file) return null;
 
-  const proFiles = await getProFiles(env, ctx);
+  const catalogue = await getCatalogue(env, ctx);
   // Fail OPEN, not closed: if Supabase is unreachable we would rather serve a
   // pro lesson to a stranger than show every paying subscriber a paywall.
-  if (!proFiles) return null;
-  if (!proFiles.has(file)) return null;
+  if (!catalogue) return null;
+  const lesson = catalogue.get(file);
+  if (!lesson) return null;
 
-  if ((await callerAccess(request, env)).covers(proFiles.get(file))) {
+  if (lesson.access !== "pro") {
+    // A free Block Camp lesson (Mission 1) is where a subscriber's weekly
+    // clock should start, so a signed-in visit is noted -- in the
+    // background: the lesson goes out at once, it never waits on Supabase.
+    // (block-camp/camp-full.js re-asks with a fresh cookie when the reader
+    // arrived signed in but with the hour-long cookie already gone.)
+    if (lesson.track === "blockcamp" && ctx && ctx.waitUntil &&
+        readCookie(request.headers.get("Cookie"), SESSION_COOKIE)) {
+      ctx.waitUntil(callerAccess(request, env)
+        .then((access) => startBlockCampClock(access, env))
+        .catch(() => {}));
+    }
+    return null;
+  }
+
+  const access = await callerAccess(request, env);
+  const verdict = lesson.track === "blockcamp"
+    ? blockCampVerdict(lesson, access, Date.now())
+    : { open: access.covers(lesson.track) };
+  if (verdict.startClock) {
+    const write = startBlockCampClock(access, env);
+    if (ctx && ctx.waitUntil) ctx.waitUntil(write);
+  }
+
+  if (verdict.open) {
     // Serve it, but marked private. A pro lesson must never sit in a shared
     // cache where the next person through gets it without the check.
     const res = await env.ASSETS.fetch(request);
@@ -156,7 +225,89 @@ async function gateLessonRequest(request, url, env, ctx) {
     return out;
   }
 
-  return locked(request, url, env, ctx);
+  return locked(request, url, env, ctx, lesson, verdict.notYet || null, access, catalogue);
+}
+
+/**
+ * Block Camp opens one mission a week (Innes, 2026-10-03): a lesson tagged
+ * mission M opens once M-1 whole weeks have passed since the clock started.
+ * Owners are exempt. Two ways in, and either is enough:
+ *
+ *  - The full plan. The clock is profiles.blockcamp_first_open, set on the
+ *    subscriber's first Block Camp visit. A lesson with no mission number
+ *    (Term 2 until it is numbered, the mixed-tense specials) is not dripped.
+ *  - A term bought outright (user_plans, product blockcamp). The clock is
+ *    that row's starts_at, the moment of payment. Lessons tagged with the
+ *    row's term and a mission open this way, a week at a time; a Term 1
+ *    buyer does not get Term 2. The specials (no term) open at once.
+ *
+ * Returns { open } or { open: false, notYet: { mission, opensAt, openNow,
+ * term } } when the caller holds the lesson but its week has not come
+ * (openNow: the highest mission open on the clock that opens it soonest),
+ * plus startClock when a subscriber's clock has not been started yet -- on
+ * any Block Camp lesson they open, numbered or not.
+ */
+function blockCampVerdict(lesson, access, now) {
+  if (access.owner) return { open: true };
+  const mission = Number(lesson.mission) || null;
+  const opensAfter = (start) => start + (mission - 1) * WEEK_MS;
+  let notYet = null;
+  const later = (start) => {
+    const opensAt = opensAfter(start);
+    if (!notYet || opensAt < notYet.opensAt) {
+      notYet = { mission, opensAt, term: Number(lesson.term) || 1,
+                 openNow: Math.floor((now - start) / WEEK_MS) + 1 };
+    }
+  };
+  let startClock = false;
+
+  if (access.full) {
+    if (!mission) return { open: true, startClock: !access.blockCampFirstOpen };
+    let start = access.blockCampFirstOpen;
+    if (!start) { start = now; startClock = true; }
+    if (now >= opensAfter(start)) return { open: true, startClock };
+    later(start);
+  }
+
+  // The specials -- Block Camp lessons in no term (Grand Hotel, Nautilus
+  // Deep, Dracula, the passive extras) -- come with any term bought, open
+  // from day one (Innes, 2026-10-04). Tagging one into a term later would
+  // take it away from buyers who already have it.
+  if (!lesson.term && access.blockCampPlans.length) return { open: true, startClock };
+
+  if (mission && lesson.term) {
+    for (const plan of access.blockCampPlans) {
+      if ((plan.term || 1) !== Number(lesson.term)) continue;
+      if (now >= opensAfter(plan.startsAt)) return { open: true, startClock };
+      later(plan.startsAt);
+    }
+  }
+  return { open: false, notYet, startClock };
+}
+
+/**
+ * Records a subscriber's first Block Camp visit, once. The browser cannot
+ * write profiles (deploy/schema-pricing.sql), so this uses the service key;
+ * the is.null filter makes it a no-op once set, however many requests race.
+ */
+function startBlockCampClock(access, env) {
+  if (!access.full || access.owner || access.blockCampFirstOpen || !access.userId) return Promise.resolve(true);
+  // Without the key the clock can never be saved, and a subscriber's
+  // Mission 2 would never open: /api/paywall-status reports the key.
+  if (!env.SUPABASE_SERVICE_ROLE_KEY) {
+    console.error(`blockcamp clock not saved for ${access.userId}: SUPABASE_SERVICE_ROLE_KEY unset`);
+    return Promise.resolve(false);
+  }
+  return fetch(
+    `${env.SUPABASE_URL}/rest/v1/profiles?id=eq.${encodeURIComponent(access.userId)}&blockcamp_first_open=is.null`,
+    { method: "PATCH", headers: supabaseHeaders(env), body: JSON.stringify({ blockcamp_first_open: new Date().toISOString() }) }
+  ).then((res) => {
+    if (!res.ok) console.error(`blockcamp clock not saved for ${access.userId}: PATCH profiles ${res.status}`);
+    return res.ok;
+  }).catch((err) => {
+    console.error(`blockcamp clock not saved for ${access.userId}: ${err && err.message}`);
+    return false;
+  });
 }
 
 /**
@@ -186,15 +337,17 @@ function lessonFileFor(pathname) {
 }
 
 /**
- * The lesson filenames that require a subscription, mapped to their track, read from the
- * `lessons` table and cached at the edge. Cached for five minutes so flipping
- * a lesson to free in the database takes effect without a deploy, while a
- * burst of traffic does not become a burst of Supabase queries.
+ * The lessons the gate has to look at: every pro lesson, plus every Block
+ * Camp lesson (the free Mission 1 starts a subscriber's weekly clock), each
+ * with its track, access, term and mission, read from the `lessons` table
+ * and cached at the edge for five minutes, so flipping a lesson to free in
+ * the database takes effect without a deploy, while a burst of traffic does
+ * not become a burst of Supabase queries.
  */
-async function getProFiles(env, ctx) {
-  // v2: the cached body became [file, track] pairs when tracks arrived; a new
-  // key means a stale v1 array is never read as pairs.
-  const cacheKey = new Request(`${env.SITE_URL}/__internal/pro-lessons-v2`);
+async function getCatalogue(env, ctx) {
+  // v3: rows became objects carrying access/term/mission (pricing go-live);
+  // a new key means a stale v2 array of pairs is never read as rows.
+  const cacheKey = new Request(`${env.SITE_URL}/__internal/gate-catalogue-v3`);
   const cache = caches.default;
 
   const cached = await cache.match(cacheKey);
@@ -206,24 +359,28 @@ async function getProFiles(env, ctx) {
     }
   }
 
-  let files;
+  let rows;
   try {
     const res = await fetch(
-      `${env.SUPABASE_URL}/rest/v1/lessons?select=file,track&access=eq.pro`,
+      `${env.SUPABASE_URL}/rest/v1/lessons?select=file,track,access,term,mission&or=(access.eq.pro,track.eq.blockcamp)`,
       { headers: { apikey: env.SUPABASE_ANON_KEY, Authorization: `Bearer ${env.SUPABASE_ANON_KEY}` } }
     );
     if (!res.ok) return null;
-    files = (await res.json()).map((r) => [r.file, r.track || "general"]);
+    rows = (await res.json()).map((r) => [r.file, {
+      track: r.track || "general",
+      access: r.access === "free" ? "free" : "pro",
+      term: r.term ?? null,
+      mission: r.mission ?? null,
+    }]);
   } catch {
     return null;
   }
 
-  const body = JSON.stringify(files);
-  const toCache = new Response(body, {
+  const toCache = new Response(JSON.stringify(rows), {
     headers: { "Content-Type": "application/json", "Cache-Control": "max-age=300" },
   });
   if (ctx && ctx.waitUntil) ctx.waitUntil(cache.put(cacheKey, toCache));
-  return new Map(files);
+  return new Map(rows);
 }
 
 /**
@@ -232,10 +389,15 @@ async function getProFiles(env, ctx) {
  * outright, and the row-level policies on `profiles` and `user_plans` mean
  * the rows that come back can only ever be the caller's own.
  *
- * Returns { full, tracks, covers(track) }. `full` is the owner or an active
- * whole-library subscription; `tracks` is what the standalone plans add.
+ * Returns { owner, full, tracks, covers(track), blockCampPlans,
+ * blockCampFirstOpen, userId }. `full` is the owner or an active
+ * whole-library subscription; `tracks` is what the one-off plans add;
+ * `blockCampPlans` are the active Block Camp terms with their start times.
  */
-const NO_ACCESS = { full: false, tracks: new Set(), covers: () => false };
+const NO_ACCESS = {
+  owner: false, full: false, tracks: new Set(), covers: () => false,
+  blockCampPlans: [], blockCampFirstOpen: null, userId: null, checked: false,
+};
 
 async function callerAccess(request, env) {
   const token = readCookie(request.headers.get("Cookie"), SESSION_COOKIE);
@@ -243,13 +405,14 @@ async function callerAccess(request, env) {
   const headers = { apikey: env.SUPABASE_ANON_KEY, Authorization: `Bearer ${token}` };
 
   // Read in parallel, fail separately: a missing table or a failed read of
-  // user_plans costs the standalone plans only, never a full subscriber.
-  const plansRead = fetch(`${env.SUPABASE_URL}/rest/v1/user_plans?select=product,status,ends_at`, { headers })
-    .then((r) => (r.ok ? r.json() : []))
-    .catch(() => []);
+  // user_plans costs the one-off plans only, never a full subscriber.
+  let plansOk = true;
+  const plansRead = fetch(`${env.SUPABASE_URL}/rest/v1/user_plans?select=product,status,ends_at,starts_at,term`, { headers })
+    .then((r) => (r.ok ? r.json() : (plansOk = false, [])))
+    .catch(() => (plansOk = false, []));
   let profile;
   try {
-    const pr = await fetch(`${env.SUPABASE_URL}/rest/v1/profiles?select=subscription_status,owner&limit=1`, { headers });
+    const pr = await fetch(`${env.SUPABASE_URL}/rest/v1/profiles?select=id,subscription_status,owner,blockcamp_first_open&limit=1`, { headers });
     if (!pr.ok) return NO_ACCESS;           // a bad token fails here
     profile = (await pr.json())[0];
   } catch {
@@ -260,15 +423,30 @@ async function callerAccess(request, env) {
 
   // `owner` is deliberately separate from subscription_status: the person who
   // runs the site should not lose access to it because of a billing event.
-  const full = profile.owner === true || ACTIVE_STATUSES.has(profile.subscription_status);
+  const owner = profile.owner === true;
+  const full = owner || ACTIVE_STATUSES.has(profile.subscription_status);
   const tracks = new Set();
+  const blockCampPlans = [];
   const now = Date.now();
   for (const p of Array.isArray(plans) ? plans : []) {
     if (!ACTIVE_STATUSES.has(p.status)) continue;
     if (p.ends_at && Date.parse(p.ends_at) <= now) continue;
-    for (const t of PRODUCTS[p.product]?.tracks || []) tracks.add(t);
+    for (const t of PLAN_TRACKS[p.product] || []) tracks.add(t);
+    if (p.product === "blockcamp") {
+      const startsAt = Date.parse(p.starts_at);
+      if (Number.isFinite(startsAt)) blockCampPlans.push({ term: Number(p.term) || 1, startsAt });
+    }
   }
-  return { full, tracks, covers: (track) => full || tracks.has(track) };
+  const firstOpen = profile.blockcamp_first_open ? Date.parse(profile.blockcamp_first_open) : NaN;
+  return {
+    owner, full, tracks, blockCampPlans,
+    covers: (track) => full || tracks.has(track),
+    blockCampFirstOpen: Number.isFinite(firstOpen) ? firstOpen : null,
+    userId: profile.id || null,
+    // Both reads came back with this caller's own rows: what the gate
+    // decided from them is final, and the page's retry would change nothing.
+    checked: plansOk,
+  };
 }
 
 function readCookie(header, name) {
@@ -300,14 +478,14 @@ function readCookie(header, name) {
  * The per-lesson text comes from `lesson-meta.json`, which `tools/seo.py`
  * generates from the same `lessons` table this gate reads.
  */
-async function locked(request, url, env, ctx) {
+async function locked(request, url, env, ctx, lesson = null, notYet = null, access = NO_ACCESS, catalogue = null) {
   const page = await env.ASSETS.fetch(new Request(`${url.origin}/locked.html`));
-  let html = page.ok ? await page.text() : "<h1>This lesson is for subscribers.</h1>";
+  let html = page.ok ? await page.text() : "<h1>This lesson comes with a plan.</h1>";
 
   const file = lessonFileFor(url.pathname);
   const meta = await getLessonMeta(request, url, env, ctx);
   const m = file && meta ? meta[file] : null;
-  if (m) html = personaliseGate(html, m, url);
+  html = personaliseGate(html, m, url, lesson, notYet, access, catalogue);
 
   return new Response(html, {
     status: 200,
@@ -359,16 +537,36 @@ function escapeHtml(s) {
  * escaped: the values come from a database row, and a lesson title with an
  * ampersand in it should not be able to close a tag.
  */
-// Which plans open a lesson, by its track (lesson-meta.json carries it from
-// lessons.track). Must agree with PRODUCTS above and with pricing.html.
-const PLAN_LINE = {
-  general:   "is part of Forbes English Pro.",
-  blockcamp: "is part of the Block Camp plan, and of Forbes English Pro.",
-  ielts:     "is part of the IELTS plan, and of Forbes English Pro.",
-  sherpa:    "comes with every plan: Forbes English Pro, Block Camp or IELTS.",
-};
+// What a lesson belongs to, for the gate page's label: Block Camp Term 1
+// (its own missions and the specials), IELTS, or Forbes English Pro.
+function planName(track, term) {
+  if (track === "blockcamp" && (Number(term) === 1 || !term)) return "Block Camp Term 1";
+  if (track === "ielts") return "IELTS";
+  return "Forbes English Pro";
+}
 
-function personaliseGate(html, m, url) {
+// Which plans open a lesson, by its track and, for Block Camp, its term (the
+// gate's own catalogue row; lesson-meta.json as the fallback). Must agree
+// with PLAN_TRACKS above and with pricing.html. Only Term 1 is on sale.
+function planLine(track, term) {
+  // Term 1 and the specials (no term) both come with Block Camp Term 1.
+  if (track === "blockcamp" && (Number(term) === 1 || !term)) return "is part of Block Camp Term 1, and of Forbes English Pro.";
+  if (track === "ielts") return "is part of IELTS, and of Forbes English Pro.";
+  return "is part of Forbes English Pro.";
+}
+
+function personaliseGate(html, m, url, lesson = null, notYet = null, access = NO_ACCESS, catalogue = null) {
+  const checked = Boolean(access && access.checked);
+  if (!m) {
+    // No metadata row: the page stays generic, but its script still needs
+    // to know what it is gating and whether the answer is final.
+    if (!notYet) {
+      const flags = gateFlags(lesson, {}, null, checked);
+      html = html.replace("<!-- LESSON:head -->", flags);
+      return checked ? finalOffer(html) : html;
+    }
+    m = {};
+  }
   const title = escapeHtml(m.title || "");
   const desc = escapeHtml(m.description || "");
   const level = escapeHtml(m.level || "");
@@ -413,7 +611,7 @@ function personaliseGate(html, m, url) {
   ].filter(Boolean).join("\n");
 
   const intro = [
-    `<div class="eyebrow">Subscribers only${level ? ` &middot; ${level}` : ""}</div>`,
+    `<div class="eyebrow">${planName(lesson ? lesson.track : m.track, lesson ? lesson.term : null)}${level ? ` &middot; ${level}` : ""}</div>`,
     `<h1>${title}</h1>`,
     `<p class="lede">${desc}</p>`,
     // The public excerpt. This is the part of a gated page that has
@@ -430,15 +628,82 @@ function personaliseGate(html, m, url) {
           .join(" &middot; ")}${level ? ` &middot; <a href="/level-checker.html">Check your level</a>` : ""}</p>`
       : "",
     `<p class="lede paywalled">The lesson itself &mdash; every slide, every exercise and`,
-    ` the answers &mdash; ${PLAN_LINE[m.track] || PLAN_LINE.general}`,
+    ` the answers &mdash; ${planLine(lesson ? lesson.track : m.track, lesson ? lesson.term : null)}`,
     ` Plenty of the library is free and always will be.</p>`,
   ].join("");
 
-  return html
-    .replace(/<title>[\s\S]*?<\/title>/, `<title>${title} | Forbes English</title>`)
-    .replace("<!-- LESSON:head -->", head)
-    .replace(/<!-- LESSON:intro -->[\s\S]*?<!-- \/LESSON:intro -->/,
-             `<!-- LESSON:intro -->${intro}<!-- /LESSON:intro -->`);
+  const flags = gateFlags(lesson, m, notYet, checked);
+
+  let out = html
+    .replace(/<title>[\s\S]*?<\/title>/, `<title>${title || "Not open yet"} | Forbes English</title>`)
+    .replace("<!-- LESSON:head -->", `${head}\n${flags}`);
+
+  if (notYet) {
+    // The caller holds this mission; its week has not come. Not a sales
+    // page: no price, no "subscribers only", just when it opens. The date is
+    // printed in UTC and the page's script re-renders it in the reader's own
+    // time zone.
+    const when = new Date(notYet.opensAt);
+    const utc = when.toLocaleString("en-GB", { weekday: "long", day: "numeric", month: "long",
+      hour: "2-digit", minute: "2-digit", timeZone: "UTC", timeZoneName: "short" });
+    // "Next camp" and the end card link straight to the next mission, which
+    // may not be open yet: name the one that is, and link to it.
+    const current = openMissionDeck(catalogue, notYet.term, notYet.openNow);
+    const waiting = [
+      `<div class="eyebrow">Block Camp &middot; Mission ${notYet.mission}</div>`,
+      `<h1>${title || `Mission ${notYet.mission}`}</h1>`,
+      `<p class="lede">Mission ${notYet.mission} opens on <strong><time datetime="${when.toISOString()}" data-local>${utc}</time></strong>.`,
+      ` One new mission opens each week, and every mission stays open once it has.</p>`,
+    ].join("");
+    const buttons = [
+      current ? `<a class="btn" href="/${escapeHtml(current)}">Mission ${notYet.openNow} is open now</a>` : "",
+      `<a class="btn${current ? " ghost" : ""}" href="/block-camp.html">Back to Block Camp</a>`,
+    ].join("");
+    out = out
+      .replace(/<!-- LESSON:intro -->[\s\S]*?<!-- \/LESSON:intro -->/,
+               `<!-- LESSON:intro -->${waiting}<!-- /LESSON:intro -->`)
+      .replace(/<!-- GATE:offer -->[\s\S]*?<!-- \/GATE:offer -->/,
+               `<!-- GATE:offer --><div class="actions">${buttons}</div><!-- /GATE:offer -->`);
+    return out;
+  }
+
+  out = out.replace(/<!-- LESSON:intro -->[\s\S]*?<!-- \/LESSON:intro -->/,
+                    `<!-- LESSON:intro -->${intro}<!-- /LESSON:intro -->`);
+  return checked ? finalOffer(out) : out;
+}
+
+// What the gate page's own script needs to know: the track, so the
+// "already subscribed?" retry can recognise a one-off plan; and whether a
+// retry can help at all. It cannot on a mission the reader holds but whose
+// week has not come ("not-yet"), nor when the Worker read the reader's own
+// rows and still said no ("checked"): only a missing or expired token is
+// worth a fresh session and a reload.
+function gateFlags(lesson, m, notYet, checked) {
+  return [
+    `<meta name="fe-track" content="${escapeHtml((lesson && lesson.track) || m.track || "general")}">`,
+    notYet ? `<meta name="fe-gate" content="not-yet">`
+      : checked ? `<meta name="fe-gate" content="checked">` : "",
+  ].filter(Boolean).join("\n");
+}
+
+// A final refusal keeps the way to the plans and the free lessons, and drops
+// "Already bought it? ... this page will let you straight through", which
+// would not be true.
+function finalOffer(html) {
+  return html.replace(/<!-- GATE:offer -->[\s\S]*?<!-- \/GATE:offer -->/,
+    `<!-- GATE:offer --><div class="actions"><a class="btn" href="/pricing.html">See plans &amp; what's free</a>` +
+    `<a class="btn ghost" href="/library.html?free=1">Browse free lessons</a></div><!-- /GATE:offer -->`);
+}
+
+// The deck for a given mission of a term (the decks are blockcamp-*.html;
+// the quests that share the mission sit in block-camp/).
+function openMissionDeck(catalogue, term, mission) {
+  if (!catalogue || !(mission > 0)) return null;
+  for (const [file, l] of catalogue) {
+    if (l.track === "blockcamp" && Number(l.term) === term && Number(l.mission) === mission &&
+        file.startsWith("blockcamp-")) return file;
+  }
+  return null;
 }
 
 // ─────────────────────────────────────────────────────────────────────────
@@ -446,7 +711,8 @@ function personaliseGate(html, m, url) {
 // ─────────────────────────────────────────────────────────────────────────
 
 async function handlePaywallStatus(request, url, env, ctx) {
-  const proFiles = await getProFiles(env, ctx);
+  const catalogue = await getCatalogue(env, ctx);
+  const pro = catalogue ? [...catalogue].filter(([, l]) => l.access === "pro") : null;
   const sample = "forbes-c1-negotiation.html";
   const access = await callerAccess(request, env);
 
@@ -459,14 +725,39 @@ async function handlePaywallStatus(request, url, env, ctx) {
     hasSupabaseUrl: Boolean(env.SUPABASE_URL),
     hasAnonKey: Boolean(env.SUPABASE_ANON_KEY),
     hasServiceRoleKey: Boolean(env.SUPABASE_SERVICE_ROLE_KEY),
-    catalogueReadable: proFiles !== null,
-    proLessonCount: proFiles ? proFiles.size : null,
-    sampleLessonIsGated: proFiles ? proFiles.has(sample) : null,
+    catalogueReadable: catalogue !== null,
+    proLessonCount: pro ? pro.length : null,
+    sampleLessonIsGated: pro ? pro.some(([f]) => f === sample) : null,
+    // The weekly drip needs Term 1 tagged (deploy/schema-pricing.sql step 2):
+    // missions 1-12 present, Mission 1 free. Without the service key a
+    // subscriber's clock is never saved and their Mission 2 never opens.
+    ...(() => {
+      const t1 = catalogue ? [...catalogue].filter(([, l]) => l.track === "blockcamp" && Number(l.term) === 1 && l.mission) : [];
+      const missions = [...new Set(t1.map(([, l]) => Number(l.mission)))].sort((a, b) => a - b);
+      return {
+        term1Missions: missions,
+        mission1Free: t1.some(([, l]) => Number(l.mission) === 1) &&
+          t1.filter(([, l]) => Number(l.mission) === 1).every(([, l]) => l.access === "free"),
+        blockCampDripReady: missions.length === 12 && missions[0] === 1 && missions[11] === 12 &&
+          Boolean(env.SUPABASE_SERVICE_ROLE_KEY),
+      };
+    })(),
+    callerBlockCampFirstOpen: access.blockCampFirstOpen ? new Date(access.blockCampFirstOpen).toISOString() : null,
+    callerBlockCampPlans: access.blockCampPlans.map((b) => ({ term: b.term, startsAt: new Date(b.startsAt).toISOString() })),
     callerHasSessionCookie: Boolean(readCookie(request.headers.get("Cookie"), SESSION_COOKIE)),
     callerSubscribed: access.full,
     callerTracks: [...access.tracks],
     hasBlockCampPrice: Boolean(env.STRIPE_PRICE_ID_BLOCKCAMP),
     hasIeltsPrice: Boolean(env.STRIPE_PRICE_ID_IELTS),
+    hasIeltsMarkingPrice: Boolean(env.STRIPE_PRICE_ID_IELTS_MARKING),
+    hasMarkingPrice: Boolean(env.STRIPE_PRICE_ID_MARKING),
+    hasFounderPromo: Boolean(env.STRIPE_PROMO_FOUNDER),
+    hasMarkingMail: Boolean(env.MARKING_MAIL_TO &&
+      ((env.RESEND_API_KEY && env.MAIL_FROM) || (env.MARKING_MAIL && env.MARKING_MAIL_FROM))),
+    // The weekly "Mission N is open" email (the hourly cron) can send.
+    hasMissionEmail: Boolean(env.RESEND_API_KEY && env.MAIL_FROM && env.SUPABASE_SERVICE_ROLE_KEY),
+    // Checkout asks for the terms and immediate-access consent.
+    hasTermsConsent: Boolean(env.TERMS_URL),
   };
 
   report.configOk =
@@ -492,6 +783,30 @@ async function handlePaywallStatus(request, url, env, ctx) {
 // POST /api/create-checkout-session
 // ─────────────────────────────────────────────────────────────────────────
 
+/**
+ * The signed-in caller, from the Supabase access token in the Authorization
+ * header (pricing.html sends it) or the fe_at cookie (sb-client.js keeps it
+ * in step). Supabase checks the token; nothing in the request body is
+ * trusted for who is buying.
+ */
+async function signedInUser(request, env) {
+  const auth = request.headers.get("Authorization") || "";
+  const token = (auth.match(/^Bearer\s+(.+)$/i) || [])[1] ||
+    readCookie(request.headers.get("Cookie"), SESSION_COOKIE);
+  if (!token) return { error: "Sign in first", status: 401 };
+  try {
+    const res = await fetch(`${env.SUPABASE_URL}/auth/v1/user`, {
+      headers: { apikey: env.SUPABASE_ANON_KEY, Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) return { error: "Sign in first", status: 401 };
+    const user = await res.json();
+    if (!user || !user.id || !user.email) return { error: "Sign in first", status: 401 };
+    return { id: user.id, email: user.email };
+  } catch {
+    return { error: "Could not check your sign-in; please try again", status: 502 };
+  }
+}
+
 async function handleCreateCheckoutSession(request, env) {
   let body;
   try {
@@ -500,10 +815,15 @@ async function handleCreateCheckoutSession(request, env) {
     return json({ error: "Invalid JSON body" }, 400);
   }
 
-  const { userId, userEmail, plan, product } = body;
-  if (!userId || !userEmail) {
-    return json({ error: "userId and userEmail are required" }, 400);
-  }
+  // The buyer is whoever is signed in. Until 2026-10-04 the account came
+  // from userId/userEmail in the body, so anyone could open a checkout
+  // attached to any account id; a body's ids are now ignored.
+  const caller = await signedInUser(request, env);
+  if (caller.error) return json({ error: caller.error }, caller.status);
+  const { id: userId, email: userEmail } = caller;
+  const { plan, product } = body;
+  const owned = await alreadyHas(env, userId, { plan, product });
+  if (owned) return json({ error: owned, owned: true }, 409);
   if (product) return createProductCheckout(env, userId, userEmail, product);
 
   const envKey = PLAN_ENV_KEYS[plan];
@@ -527,8 +847,11 @@ async function handleCreateCheckoutSession(request, env) {
     "subscription_data[metadata][supabase_user_id]": userId,
     "subscription_data[metadata][plan]": plan,
     success_url: `${env.SITE_URL}/account.html?checkout=success`,
-    cancel_url: `${env.SITE_URL}/account.html?checkout=cancelled`,
+    // Back to where they started: account.html ignores ?checkout=cancelled,
+    // pricing.html says "no charge was made".
+    cancel_url: `${env.SITE_URL}/pricing.html?checkout=cancelled`,
   });
+  addConsent(params, env);
 
   const stripeRes = await fetch("https://api.stripe.com/v1/checkout/sessions", {
     method: "POST",
@@ -549,14 +872,63 @@ async function handleCreateCheckoutSession(request, env) {
 }
 
 /**
- * Checkout for a standalone product (Block Camp, IELTS). Kept apart from the
- * full plan so the full plan's params are untouched. IELTS is a one-time
- * payment: no subscription, so the term is stored as `ends_at` by the webhook.
+ * What the buyer already has that this checkout would sell again, as the
+ * sentence to show them, or null. A second Term 1 or IELTS opens nothing
+ * new (and a second Term 1 spends a founder place); a second Forbes English
+ * Pro is a second subscription billing beside the first, which the site
+ * cannot see. Marking is bought as often as wanted: credits add up. A Pro
+ * subscriber may still buy a one-off to keep. A read that fails lets the
+ * sale through: a Supabase hiccup must not stop anyone paying.
+ */
+async function alreadyHas(env, userId, { plan, product }) {
+  const id = encodeURIComponent(userId);
+  const read = async (path) => {
+    const res = await fetch(`${env.SUPABASE_URL}/rest/v1/${path}`, { headers: supabaseHeaders(env) });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const rows = await res.json();
+    if (!Array.isArray(rows)) throw new Error("not a list");
+    return rows;
+  };
+  const inbox = env.MAIL_REPLY_TO || "info@forbesenglish.com";
+  try {
+    if (!product) {
+      if (!PLAN_ENV_KEYS[plan]) return null;
+      const [p] = await read(`profiles?select=subscription_status&id=eq.${id}`);
+      return p && ACTIVE_STATUSES.has(p.subscription_status)
+        ? `You already have Forbes English Pro. To change how you pay for it, email ${inbox}.`
+        : null;
+    }
+    const want = product === "ielts_marking" ? "ielts" : product;
+    if (want !== "blockcamp" && want !== "ielts") return null;
+    const rows = await read(`user_plans?select=status,ends_at,term&user_id=eq.${id}&product=eq.${want}`);
+    const now = Date.now();
+    const holds = rows.some((r) => ACTIVE_STATUSES.has(r.status) &&
+      (!r.ends_at || Date.parse(r.ends_at) > now) &&
+      (want !== "blockcamp" || (Number(r.term) || 1) === 1));
+    if (!holds) return null;
+    if (product === "blockcamp") return "You already have Block Camp Term 1. It is on your account page.";
+    if (product === "ielts") return "You already have IELTS. It is on your account page.";
+    return "You already have IELTS, so this would sell it to you twice. Two marked essays on their own are €49: Buy marking, under the IELTS card.";
+  } catch (err) {
+    console.error(`checkout: could not read what ${userId} already has (${err.message}); letting the sale through`);
+    return null;
+  }
+}
+
+/**
+ * Checkout for a one-off product (Block Camp Term 1, IELTS, IELTS + Marking,
+ * Marking). Kept apart from the full plan so the full plan's params are
+ * untouched. Every product is a single payment through Managed Payments:
+ * Stripe is the seller of record, charges the VAT inside the VAT-inclusive
+ * price and remits it, and sends the receipt. Managed Payments forbids the
+ * tax, payment-method, shipping and receipt-email parameters, so none are
+ * sent. Block Camp gets the FOUNDER code applied for the buyer while places
+ * remain; nobody has to type it.
  */
 async function createProductCheckout(env, userId, userEmail, product) {
-  const def = PRODUCTS[product];
+  const def = CHECKOUT_PRODUCTS[product];
   if (!def) {
-    return json({ error: `product must be one of: ${Object.keys(PRODUCTS).join(", ")}` }, 400);
+    return json({ error: `product must be one of: ${Object.keys(CHECKOUT_PRODUCTS).join(", ")}` }, 400);
   }
   const priceId = env[def.envKey];
   if (!priceId) {
@@ -564,22 +936,67 @@ async function createProductCheckout(env, userId, userEmail, product) {
   }
 
   const params = new URLSearchParams({
-    mode: def.mode,
-    "managed_payments[enabled]": "false",
+    mode: "payment",
+    "managed_payments[enabled]": def.managed ? "true" : "false",
     "line_items[0][price]": priceId,
     "line_items[0][quantity]": "1",
     customer_email: userEmail,
     "metadata[supabase_user_id]": userId,
     "metadata[product]": product,
-    success_url: `${env.SITE_URL}/account.html?checkout=success`,
-    cancel_url: `${env.SITE_URL}/account.html?checkout=cancelled`,
+    // Stripe fills in the session id: account.html waits for that very
+    // purchase to be recorded (the webhook can land a moment after the buyer).
+    success_url: `${env.SITE_URL}/account.html?checkout=success&cs={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${env.SITE_URL}/pricing.html?checkout=cancelled`,
   });
-  if (def.mode === "subscription") {
-    params.set("subscription_data[metadata][supabase_user_id]", userId);
-    params.set("subscription_data[metadata][product]", product);
+  addConsent(params, env);
+
+  const founder = def.founder && env.STRIPE_PROMO_FOUNDER ? await getFounderStatus(env) : null;
+  if (founder && founder.remaining > 0) {
+    params.set("discounts[0][promotion_code]", env.STRIPE_PROMO_FOUNDER);
   }
 
-  const stripeRes = await fetch("https://api.stripe.com/v1/checkout/sessions", {
+  let stripeRes = await createCheckoutSession(env, params);
+  // The last founder place can go between the count and this call. Stripe
+  // then refuses the code (a 400 about the discount), and the buyer still
+  // gets a checkout, at €19, rather than an error. Any other failure (a 429,
+  // a 5xx) keeps the code and goes back as an error the page can retry:
+  // a founder must never be charged €19 because Stripe hiccuped.
+  if (!stripeRes.ok && params.has("discounts[0][promotion_code]")) {
+    const text = await stripeRes.text();
+    let err = {};
+    try { err = JSON.parse(text).error || {}; } catch { /* not JSON */ }
+    const aboutCode = stripeRes.status === 400 && (
+      /^discounts/.test(String(err.param || "")) ||
+      /promotion_code|coupon/.test(String(err.code || "")) ||
+      /promotion code|coupon/i.test(String(err.message || "")));
+    if (!aboutCode) return json({ error: "Stripe error", detail: text }, 502);
+    console.error(`FOUNDER refused, checkout at full price: ${err.message || text}`);
+    params.delete("discounts[0][promotion_code]");
+    stripeRes = await createCheckoutSession(env, params);
+  }
+  if (!stripeRes.ok) {
+    return json({ error: "Stripe error", detail: await stripeRes.text() }, 502);
+  }
+  return json({ url: (await stripeRes.json()).url });
+}
+
+// An EU consumer who buys digital content keeps a 14-day right of
+// withdrawal unless they ask for access to start at once and acknowledge
+// that they lose it. Checkout asks for both once a terms page exists:
+// TERMS_URL switches it on. Stripe refuses consent_collection while no
+// terms URL is saved in its own dashboard (Settings → Business → Public
+// details), so that comes first (docs/GO-LIVE-pricing.md, A.1). Neither
+// parameter is one Managed Payments forbids.
+function addConsent(params, env) {
+  if (!env.TERMS_URL) return;
+  params.set("consent_collection[terms_of_service]", "required");
+  params.set("custom_text[terms_of_service_acceptance][message]",
+    `I agree to the [terms](${env.TERMS_URL}) and ask for access to start straight away. ` +
+    "I understand that I then lose my 14-day right to cancel.");
+}
+
+function createCheckoutSession(env, params) {
+  return fetch("https://api.stripe.com/v1/checkout/sessions", {
     method: "POST",
     headers: {
       "Authorization": `Bearer ${env.STRIPE_SECRET_KEY}`,
@@ -587,10 +1004,62 @@ async function createProductCheckout(env, userId, userEmail, product) {
     },
     body: params,
   });
-  if (!stripeRes.ok) {
-    return json({ error: "Stripe error", detail: await stripeRes.text() }, 502);
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// GET /api/founder-status  — the founder offer's places left
+// ─────────────────────────────────────────────────────────────────────────
+
+/**
+ * Reads the FOUNDER promotion code from Stripe: its limit and how often it
+ * has been redeemed. Cached for a minute at the edge, so a busy pricing page
+ * is not a Stripe request per visitor. Anything other than a clean read is
+ * null, and the page then shows the plain €19: it must never advertise an
+ * offer that may have run out.
+ */
+async function getFounderStatus(env, ctx) {
+  if (!env.STRIPE_PROMO_FOUNDER || !env.STRIPE_SECRET_KEY) return null;
+  const cacheKey = new Request(`${env.SITE_URL}/__internal/founder-status-v2`);
+  const cache = typeof caches !== "undefined" ? caches.default : null;
+  if (cache) {
+    const hit = await cache.match(cacheKey);
+    if (hit) {
+      try {
+        const v = await hit.json();
+        return v && v.limit ? v : null;
+      } catch { /* re-read */ }
+    }
   }
-  return json({ url: (await stripeRes.json()).url });
+  // A failed read is cached as {} for the same minute, so a failing Stripe
+  // is asked once a minute rather than once per visitor.
+  let status = {};
+  try {
+    const res = await fetch(
+      `https://api.stripe.com/v1/promotion_codes/${encodeURIComponent(env.STRIPE_PROMO_FOUNDER)}`,
+      { headers: { "Authorization": `Bearer ${env.STRIPE_SECRET_KEY}` } }
+    );
+    if (res.ok) {
+      const promo = await res.json();
+      const limit = Number(promo.max_redemptions);
+      const used = Number(promo.times_redeemed) || 0;
+      if (limit > 0) status = { limit, remaining: promo.active ? Math.max(0, limit - used) : 0 };
+    }
+  } catch { /* status stays {} */ }
+  if (cache) {
+    const put = cache.put(cacheKey, new Response(JSON.stringify(status), {
+      headers: { "Content-Type": "application/json", "Cache-Control": "max-age=60" },
+    }));
+    if (ctx && ctx.waitUntil) ctx.waitUntil(put); else await put;
+  }
+  return status.limit ? status : null;
+}
+
+async function handleFounderStatus(env, ctx) {
+  const status = await getFounderStatus(env, ctx);
+  if (!status) return json({ error: "Founder status unavailable" }, 503);
+  return new Response(JSON.stringify(status), {
+    headers: { "Content-Type": "application/json", "Cache-Control": "public, max-age=60" },
+  });
 }
 
 // ─────────────────────────────────────────────────────────────────────────
@@ -607,71 +1076,90 @@ async function handleStripeWebhook(request, env) {
   }
 
   const event = JSON.parse(rawBody);
+  // A write that fails answers 500, so Stripe redelivers the event (it
+  // retries for three days). Until 2026-10-04 every write's result was
+  // ignored and the webhook said 200 regardless: a Supabase hiccup at the
+  // wrong moment was a sale that never granted anything.
+  const failed = () => new Response("Could not record the event; Stripe will retry", { status: 500 });
 
   switch (event.type) {
-    case "checkout.session.completed": {
+    case "checkout.session.completed":
+    case "checkout.session.async_payment_succeeded": {
       const session = event.data.object;
       const userId = session.metadata?.supabase_user_id;
-      const plan = session.metadata?.plan;
-      const product = session.metadata?.product;
-      if (userId && PRODUCTS[product]) {
-        // A standalone product goes in user_plans, never on the profile:
-        // writing it there would read as a whole-library subscription.
-        const days = Number(env.IELTS_TERM_DAYS) || 90;
-        await insertUserPlan(env, {
-          user_id: userId,
-          product,
-          status: "active",
-          stripe_subscription_id: session.subscription || null,
-          stripe_checkout_session_id: session.id,
-          ends_at: PRODUCTS[product].mode === "payment"
-            ? new Date(Date.now() + days * 86400000).toISOString()
-            : null,
-        });
-      } else if (userId) {
-        await updateProfile(env, userId, {
-          stripe_customer_id: session.customer,
-          stripe_subscription_id: session.subscription,
-          subscription_status: "active",
-          ...(plan ? { plan } : {}),
-        });
-      }
-      break;
-    }
-        case "customer.subscription.updated": {
-      const sub = event.data.object;
-      const plan = sub.metadata?.plan;
-      // A standalone subscription updates its own row. Patching the profile
-      // by customer here would overwrite the full plan's status with Block
-      // Camp's for anyone who holds both.
-      if (PRODUCTS[sub.metadata?.product]) {
-        await updateUserPlanBySubscription(env, sub.id, { status: sub.status });
+
+      if (session.mode === "payment") {
+        // A delayed method (a bank debit) completes the session unpaid and
+        // pays later; the grant waits for async_payment_succeeded.
+        if (session.payment_status !== "paid" && session.payment_status !== "no_payment_required") break;
+        // A sale not started from the site (no signed-in user) has nothing
+        // to attach to. Logged so it can be granted by hand: the session id
+        // finds the buyer in Stripe. Not the address: the logs are kept, and
+        // they are not where buyers' email addresses should end up.
+        if (!userId) {
+          console.error(`checkout ${session.id}: paid one-off with no supabase_user_id, nothing granted ` +
+            `(find the buyer in Stripe by this session id)`);
+          break;
+        }
+        if (!(await grantOneOff(env, event, session, userId))) return failed();
         break;
       }
-      // Since Stripe API 2025-03-31 the period end lives on the subscription
-      // item, not the subscription. Reading sub.current_period_end gave
-      // undefined -> Invalid Date -> toISOString() threw, so every
-      // subscription.updated event would have 500'd. Fall back to the old
-      // field for older payloads, and skip the date rather than crash.
-      const periodEnd = sub.items?.data?.[0]?.current_period_end ?? sub.current_period_end;
-      await updateProfileByCustomer(env, sub.customer, {
-        subscription_status: sub.status,
-        ...(typeof periodEnd === "number"
-          ? { current_period_end: new Date(periodEnd * 1000).toISOString() }
-          : {}),
+
+      // The full plan: a subscription, held on the profile as before. Its
+      // status is read from Stripe now, not taken from this event: a
+      // redelivered or late event must not write a stale "active" over a
+      // cancellation that happened since.
+      if (event.type !== "checkout.session.completed" || !userId || !session.subscription) break;
+      const sub = await currentSubscription(env, session.subscription);
+      if (!sub) return failed();
+      const plan = session.metadata?.plan;
+      const ok = await updateProfile(env, userId, {
+        stripe_customer_id: session.customer,
+        stripe_subscription_id: session.subscription,
+        ...subscriptionFields(sub),
         ...(plan ? { plan } : {}),
       });
+      if (!ok) return failed();
       break;
     }
+    case "customer.subscription.updated":
     case "customer.subscription.deleted": {
-      const sub = event.data.object;
-      if (PRODUCTS[sub.metadata?.product]) {
-        await updateUserPlanBySubscription(env, sub.id, { status: "canceled" });
+      const evSub = event.data.object;
+      // A standalone subscription updates its own row. None is sold any more
+      // (every product is one-off since 2026-10-04); kept so a row made by
+      // the 2026-09-28 plans can still be closed.
+      if (evSub.metadata?.product) {
+        const status = event.type === "customer.subscription.deleted" ? "canceled" : evSub.status;
+        if (!(await updateUserPlanBySubscription(env, evSub.id, { status }))) return failed();
         break;
       }
-      await updateProfileByCustomer(env, sub.customer, {
-        subscription_status: "canceled",
+      // The full plan. The event says *that* something changed; what it is
+      // now is read from Stripe, so events arriving out of order or again
+      // after a retry all settle on the same, current state.
+      const sub = await currentSubscription(env, evSub.id);
+      if (!sub) return failed();
+      const plan = sub.metadata?.plan;
+      const ok = await updateProfileByCustomer(env, sub.customer, {
+        ...subscriptionFields(sub),
+        ...(plan ? { plan } : {}),
       });
+      if (!ok) return failed();
+      break;
+    }
+    case "charge.refunded":
+    case "charge.dispute.closed": {
+      // Nothing one-off expires, and under Managed Payments Stripe can refund
+      // a buyer without asking: a full refund or a lost chargeback has to
+      // close the grant, or it stays open for good. A partial refund and a
+      // dispute that was won leave it alone. The full plan is not affected
+      // here; its subscription status governs it.
+      const obj = event.data.object;
+      if (event.type === "charge.refunded" && obj.refunded !== true) break;
+      if (event.type === "charge.dispute.closed" && obj.status !== "lost") break;
+      const pi = typeof obj.payment_intent === "string" ? obj.payment_intent : obj.payment_intent?.id;
+      if (!pi) break;
+      const res = await revokeOneOff(env, pi, event.type === "charge.refunded" ? "refunded" : "disputed");
+      if (!res) return failed();
       break;
     }
     default:
@@ -682,33 +1170,185 @@ async function handleStripeWebhook(request, env) {
   return json({ received: true });
 }
 
-async function updateProfile(env, userId, fields) {
-  await fetch(`${env.SUPABASE_URL}/rest/v1/profiles?id=eq.${userId}`, {
+/**
+ * Records a one-off purchase as a `user_plans` row. What it grants comes
+ * from the Stripe product's metadata (set in the dashboard; see the table in
+ * docs/HANDOFF.md): `product` (blockcamp | ielts | marking), `term`, and
+ * `marking_credits`. One row per purchase, keyed by the Checkout Session, so
+ * a redelivered event is a no-op: a marking add-on is a new row with its two
+ * credits rather than "+2" on an older row, because an increment cannot be
+ * made safe against redelivery. An account's credits are the sum of its rows.
+ * Nothing bought here expires (Innes, 2026-10-04): ends_at stays null.
+ * Returns false only when the purchase could not be recorded.
+ */
+async function grantOneOff(env, event, session, userId) {
+  let items;
+  try {
+    const res = await fetch(
+      `https://api.stripe.com/v1/checkout/sessions/${encodeURIComponent(session.id)}/line_items?expand[]=data.price.product&limit=10`,
+      { headers: { "Authorization": `Bearer ${env.STRIPE_SECRET_KEY}` } }
+    );
+    if (!res.ok) return false;
+    items = (await res.json()).data || [];
+  } catch {
+    return false;
+  }
+
+  const item = items.find((li) => {
+    const p = String(li.price?.product?.metadata?.product || "").trim().toLowerCase();
+    return Object.prototype.hasOwnProperty.call(PLAN_TRACKS, p);
+  });
+  // A paid session whose product carries no recognised metadata is a
+  // dashboard mistake, not a retryable failure: say so in the log and stop.
+  if (!item) {
+    console.error(`checkout ${session.id}: no line item with product metadata blockcamp|ielts|marking`);
+    return true;
+  }
+
+  const meta = item.price.product.metadata;
+  const product = String(meta.product).trim().toLowerCase();
+  const qty = Number(item.quantity) || 1;
+  const credits = Math.max(0, parseInt(meta.marking_credits, 10) || 0) * qty;
+  const term = parseInt(meta.term, 10);
+  const paidAt = new Date((event.created || Date.now() / 1000) * 1000).toISOString();
+
+  const inserted = await insertUserPlan(env, {
+    user_id: userId,
+    product,
+    status: "active",
+    stripe_checkout_session_id: session.id,
+    // The weekly drip counts from here for a term buyer.
+    starts_at: paidAt,
+    ends_at: null,
+    term: product === "blockcamp" ? (term > 0 ? term : 1) : null,
+    marking_credits: credits,
+  });
+  if (inserted === null) return false;
+
+  // Only a first delivery that actually made the row tells the marking
+  // inbox; a redelivery would otherwise send the same email again.
+  if (inserted && credits > 0) {
+    await notifyMarking(env, {
+      credits,
+      productName: item.price.product.name || product,
+      buyer: session.customer_details?.email || session.customer_email || "",
+      userId,
+      sessionId: session.id,
+      paidAt,
+    });
+  }
+  return true;
+}
+
+/**
+ * Tells the marking inbox that essay credits were bought. Uses a Cloudflare
+ * Email Routing `send_email` binding, which can only send to a verified
+ * address on the forbesenglish.com zone (enough for Innes's own inbox; a
+ * parent's address needs a real transactional sender). Without the binding
+ * this is a no-op, and a mail failure never fails the purchase: Stripe's
+ * own payment emails to the account owner are the backstop.
+ */
+// A header value with non-ASCII in it (the em dash in "Marking — two
+// essays") as an RFC 2047 encoded word; plain ASCII goes through untouched.
+function encodeHeader(s) {
+  if (/^[\x20-\x7e]*$/.test(s)) return s;
+  const bytes = new TextEncoder().encode(s);
+  let bin = "";
+  for (const b of bytes) bin += String.fromCharCode(b);
+  return `=?UTF-8?B?${btoa(bin)}?=`;
+}
+
+async function notifyMarking(env, info) {
+  if (!env.MARKING_MAIL_TO) return;
+  const clean = (s) => String(s).replace(/[\r\n]+/g, " ").slice(0, 200);
+  const subject = `Marking bought: ${info.credits} essays (${clean(info.productName)})`;
+  const text = [
+    `${clean(info.buyer) || "A buyer"} bought ${clean(info.productName)}: ${info.credits} essays to mark.`,
+    "",
+    `Paid: ${info.paidAt}`,
+    `Supabase user: ${clean(info.userId)}`,
+    `Stripe checkout: ${clean(info.sessionId)}`,
+  ].join("\n");
+  // Resend first: it is what the weekly mission email uses, so one setup
+  // covers both. The Email Routing binding is the fallback.
+  if (env.RESEND_API_KEY && env.MAIL_FROM) {
+    await sendMail(env, { to: env.MARKING_MAIL_TO, subject, text, key: `marking-${info.sessionId}` });
+    return;
+  }
+  if (!env.MARKING_MAIL || !env.MARKING_MAIL_FROM) return;
+  const raw = [
+    `From: Forbes English <${clean(env.MARKING_MAIL_FROM)}>`,
+    `To: <${clean(env.MARKING_MAIL_TO)}>`,
+    `Subject: ${encodeHeader(`Marking bought: ${info.credits} essays (${clean(info.productName)})`)}`,
+    `Message-ID: <${clean(info.sessionId)}@forbesenglish.com>`,
+    `Date: ${new Date().toUTCString()}`,
+    "MIME-Version: 1.0",
+    "Content-Type: text/plain; charset=utf-8",
+    "Content-Transfer-Encoding: 8bit",
+    "",
+    `${clean(info.buyer) || "A buyer"} bought ${clean(info.productName)}: ${info.credits} essays to mark.`,
+    "",
+    `Paid: ${info.paidAt}`,
+    `Supabase user: ${clean(info.userId)}`,
+    `Stripe checkout: ${clean(info.sessionId)}`,
+    "",
+  ].join("\r\n");
+  try {
+    await env.MARKING_MAIL.send(new EmailMessage(env.MARKING_MAIL_FROM, env.MARKING_MAIL_TO, raw));
+  } catch (err) {
+    console.error("marking email failed:", err && err.message);
+  }
+}
+
+// Each write reports whether it landed, so the webhook can ask Stripe to
+// redeliver instead of dropping a purchase.
+async function supabaseWrite(url, init) {
+  try {
+    const res = await fetch(url, init);
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
+function updateProfile(env, userId, fields) {
+  return supabaseWrite(`${env.SUPABASE_URL}/rest/v1/profiles?id=eq.${encodeURIComponent(userId)}`, {
     method: "PATCH",
     headers: supabaseHeaders(env),
     body: JSON.stringify(fields),
   });
 }
 
-async function updateProfileByCustomer(env, stripeCustomerId, fields) {
-  await fetch(`${env.SUPABASE_URL}/rest/v1/profiles?stripe_customer_id=eq.${stripeCustomerId}`, {
+function updateProfileByCustomer(env, stripeCustomerId, fields) {
+  return supabaseWrite(`${env.SUPABASE_URL}/rest/v1/profiles?stripe_customer_id=eq.${encodeURIComponent(stripeCustomerId)}`, {
     method: "PATCH",
     headers: supabaseHeaders(env),
     body: JSON.stringify(fields),
   });
 }
 
+/**
+ * Inserts a user_plans row, ignoring a duplicate Checkout Session (a
+ * redelivered webhook). Returns true when a row was made, false when it
+ * already existed, and null when the write failed.
+ */
 async function insertUserPlan(env, row) {
-  // on_conflict makes a redelivered webhook a no-op instead of a second row.
-  await fetch(`${env.SUPABASE_URL}/rest/v1/user_plans?on_conflict=stripe_checkout_session_id`, {
-    method: "POST",
-    headers: { ...supabaseHeaders(env), "Prefer": "return=minimal,resolution=ignore-duplicates" },
-    body: JSON.stringify(row),
-  });
+  try {
+    const res = await fetch(`${env.SUPABASE_URL}/rest/v1/user_plans?on_conflict=stripe_checkout_session_id`, {
+      method: "POST",
+      headers: { ...supabaseHeaders(env), "Prefer": "return=representation,resolution=ignore-duplicates" },
+      body: JSON.stringify(row),
+    });
+    if (!res.ok) return null;
+    const rows = await res.json().catch(() => []);
+    return Array.isArray(rows) && rows.length > 0;
+  } catch {
+    return null;
+  }
 }
 
-async function updateUserPlanBySubscription(env, stripeSubscriptionId, fields) {
-  await fetch(`${env.SUPABASE_URL}/rest/v1/user_plans?stripe_subscription_id=eq.${stripeSubscriptionId}`, {
+function updateUserPlanBySubscription(env, stripeSubscriptionId, fields) {
+  return supabaseWrite(`${env.SUPABASE_URL}/rest/v1/user_plans?stripe_subscription_id=eq.${encodeURIComponent(stripeSubscriptionId)}`, {
     method: "PATCH",
     headers: supabaseHeaders(env),
     body: JSON.stringify(fields),
@@ -727,17 +1367,346 @@ function supabaseHeaders(env) {
 // Verifies the `Stripe-Signature` header using the raw request body, per
 // https://stripe.com/docs/webhooks#verify-manually — implemented with the
 // Web Crypto API since Cloudflare Workers don't have Node's `crypto`.
+// ─────────────────────────────────────────────────────────────────────────
+// Email: Resend, and the weekly "Mission N is open" (pricing step 9)
+// ─────────────────────────────────────────────────────────────────────────
+
+/**
+ * Sends one email through Resend (https://resend.com/docs). `key` makes a
+ * retry within 24 hours a no-op at Resend's end, on top of our own claim.
+ * Returns true when Resend accepted it.
+ */
+async function sendMail(env, { to, subject, text, html, key, headers }) {
+  if (!env.RESEND_API_KEY || !env.MAIL_FROM) return false;
+  try {
+    const res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${env.RESEND_API_KEY}`,
+        "Content-Type": "application/json",
+        ...(key ? { "Idempotency-Key": key.slice(0, 256) } : {}),
+      },
+      body: JSON.stringify({
+        from: env.MAIL_FROM, to: [to], subject, text, ...(html ? { html } : {}),
+        ...(headers ? { headers } : {}),
+        reply_to: env.MAIL_REPLY_TO || "info@forbesenglish.com",
+      }),
+    });
+    // Logged by key, never by address: the logs are not where readers'
+    // email addresses should end up.
+    if (!res.ok) console.error(`email ${key || "(unkeyed)"} refused by Resend: ${res.status} ${await res.text().catch(() => "")}`);
+    return res.ok;
+  } catch (err) {
+    console.error(`email ${key || "(unkeyed)"} failed: ${err && err.message}`);
+    return false;
+  }
+}
+
+/**
+ * Every hour (the cron in wrangler.toml): every Block Camp reader whose
+ * next mission opened in the last 48 hours gets one email saying so, with
+ * the deck and the quest and a link. Term 1 buyers count from their
+ * payment, subscribers from their first Block Camp visit, and the earlier
+ * clock wins, exactly as the gate does. Mission 1 opens on purchase and is
+ * not mailed; a mission that opened longer ago is never mailed late (no
+ * catch-up flood for a subscriber whose clock was set back at go-live). The
+ * owner, and anyone with profiles.blockcamp_emails = false, get none.
+ *
+ * Exactly once: each email is claimed in blockcamp_mission_emails
+ * (claimed_at) before it is sent and marked sent (sent_at) only when Resend
+ * accepts it. A claim left unsent for ten minutes -- a refused send, a lost
+ * reply, a run cut short -- is taken again by a later run. Runs are hourly,
+ * so a retry falls inside the 24 hours Resend keeps its idempotency key,
+ * and an email Resend did take is not delivered twice.
+ *
+ * Every Supabase and Resend call counts against a per-run budget
+ * (EMAIL_SUBREQUEST_BUDGET, default 40: under the Workers Free plan's 50
+ * subrequests). A run that reaches it stops cleanly and the next run
+ * carries on; set the budget higher on the Paid plan.
+ */
+const MISSION_EMAIL_WINDOW_MS = 48 * 3600000;
+const STALE_CLAIM_MS = 10 * 60000;
+const PAGE = 1000;
+
+async function sendMissionEmails(env, now = Date.now()) {
+  const summary = { sent: 0, failed: 0, skipped: 0, deferred: 0 };
+  if (!env.RESEND_API_KEY || !env.MAIL_FROM || !env.SUPABASE_SERVICE_ROLE_KEY) {
+    console.log("mission emails: not configured (RESEND_API_KEY, MAIL_FROM, SUPABASE_SERVICE_ROLE_KEY)");
+    return { ...summary, off: true };
+  }
+  const budget = Number(env.EMAIL_SUBREQUEST_BUDGET) || 40;
+  let used = 0;
+  const call = (url, init) => { used++; return fetch(url, init); };
+  const svc = { headers: supabaseHeaders(env) };
+  const anon = { headers: { apikey: env.SUPABASE_ANON_KEY, Authorization: `Bearer ${env.SUPABASE_ANON_KEY}` } };
+  const read = async (path, init = svc) => {
+    const res = await call(`${env.SUPABASE_URL}/rest/v1/${path}`, init);
+    if (!res.ok) throw new Error(`${path.split("?")[0]} ${res.status}`);
+    return res.json();
+  };
+  // A list read that cannot be cut short by PostgREST's row cap.
+  const readAll = async (path, order, init = svc) => {
+    const out = [];
+    for (let off = 0; ; off += PAGE) {
+      const page = await read(`${path}&order=${order}&limit=${PAGE}&offset=${off}`, init);
+      out.push(...page);
+      if (page.length < PAGE) return out;
+    }
+  };
+  const t = (ms) => new Date(ms).toISOString();
+
+  let plans, subs, lessons;
+  try {
+    [plans, subs, lessons] = await Promise.all([
+      readAll("user_plans?select=user_id,term,starts_at&product=eq.blockcamp&status=in.(active,trialing)", "user_id,starts_at"),
+      readAll("profiles?select=id&blockcamp_first_open=not.is.null&subscription_status=in.(active,trialing)", "id"),
+      read("lessons?select=file,title,mission&track=eq.blockcamp&term=eq.1&mission=not.is.null", anon),
+    ]);
+  } catch (err) {
+    console.error(`mission emails: could not read the catalogue or the plans: ${err.message}`);
+    return { ...summary, error: true };
+  }
+
+  // The profiles, a hundred ids a request: one URL with every reader in it
+  // stops working at a few hundred (measured: refused at ~680 ids).
+  const ids = [...new Set(plans.map((x) => x.user_id).concat(subs.map((s) => s.id)))];
+  const profiles = [];
+  for (let k = 0; k < ids.length; k += 100) {
+    try {
+      profiles.push(...await read(`profiles?select=id,email,owner,subscription_status,blockcamp_first_open,blockcamp_emails` +
+        `&id=in.(${ids.slice(k, k + 100).map(encodeURIComponent).join(",")})`));
+    } catch (err) {
+      console.error(`mission emails: profiles ${k}-${k + 99} unreadable, skipped this run: ${err.message}`);
+    }
+  }
+
+  // Who is due: no calls spent yet.
+  const due = [];
+  for (const p of profiles) {
+    if (p.owner || p.blockcamp_emails === false || !p.email) { summary.skipped++; continue; }
+    const bought = plans.filter((x) => x.user_id === p.id && (Number(x.term) || 1) === 1);
+    const starts = bought.map((x) => Date.parse(x.starts_at));
+    if (ACTIVE_STATUSES.has(p.subscription_status) && p.blockcamp_first_open) starts.push(Date.parse(p.blockcamp_first_open));
+    const start = Math.min(...starts.filter(Number.isFinite));
+    if (!Number.isFinite(start)) { summary.skipped++; continue; }
+    const mission = Math.floor((now - start) / WEEK_MS) + 1;
+    const opensAt = start + (mission - 1) * WEEK_MS;
+    if (mission < 2 || mission > 12 || now - opensAt > MISSION_EMAIL_WINDOW_MS) { summary.skipped++; continue; }
+    due.push({ p, mission, opensAt, owned: bought.length > 0 });
+  }
+
+  // What is already claimed for them, a hundred readers a request, so a
+  // reader mailed earlier in the 48 hours costs this run nothing.
+  const known = new Map();
+  for (let k = 0; k < due.length; k += 100) {
+    if (used >= budget) break;
+    try {
+      const rows = await read(`blockcamp_mission_emails?select=user_id,mission,sent_at,claimed_at&term=eq.1` +
+        `&user_id=in.(${due.slice(k, k + 100).map((d) => encodeURIComponent(d.p.id)).join(",")})`);
+      for (const r of rows) known.set(`${r.user_id}/${r.mission}`, r);
+    } catch (err) {
+      console.error(`mission emails: claims ${k}-${k + 99} unreadable: ${err.message}`);
+    }
+  }
+
+  for (const { p, mission, opensAt, owned } of due) {
+    const had = known.get(`${p.id}/${mission}`);
+    if (had && had.sent_at) { summary.skipped++; continue; }
+    // Claimed and not sent: another run is on it, unless the claim is stale.
+    const stale = had && Date.parse(had.claimed_at) < now - STALE_CLAIM_MS;
+    if (had && !stale) { summary.skipped++; continue; }
+
+    // Claim (1), send (1), mark sent (1): stop before the budget.
+    if (used + 3 > budget) { summary.deferred++; continue; }
+    const row = `user_id=eq.${encodeURIComponent(p.id)}&term=eq.1&mission=eq.${mission}`;
+    const claimed = await (had
+      // Take the stale claim over, only if it is still unsent and stale.
+      ? call(`${env.SUPABASE_URL}/rest/v1/blockcamp_mission_emails?${row}` +
+          `&sent_at=is.null&claimed_at=lt.${encodeURIComponent(t(now - STALE_CLAIM_MS))}`,
+          { method: "PATCH", headers: { ...supabaseHeaders(env), "Prefer": "return=representation" },
+            body: JSON.stringify({ claimed_at: t(now) }) })
+      : call(`${env.SUPABASE_URL}/rest/v1/blockcamp_mission_emails?on_conflict=user_id,term,mission`,
+          { method: "POST", headers: { ...supabaseHeaders(env), "Prefer": "return=representation,resolution=ignore-duplicates" },
+            body: JSON.stringify({ user_id: p.id, term: 1, mission, claimed_at: t(now) }) }))
+      .then(async (r) => (r.ok ? (await r.json()).length > 0 : null)).catch(() => null);
+    if (claimed === false) { summary.skipped++; continue; }   // another run got there first
+    if (claimed === null) { summary.failed++; console.error(`mission emails: could not claim ${p.id} mission ${mission}`); continue; }
+
+    const mail = missionEmail(env, mission, lessons, opensAt, owned);
+    const optOut = env.MAIL_REPLY_TO || "info@forbesenglish.com";
+    used++;
+    const ok = await sendMail(env, { to: p.email, ...mail, key: `mission-${p.id}-1-${mission}`,
+      headers: { "List-Unsubscribe": `<mailto:${optOut}?subject=Stop%20Block%20Camp%20emails>` } });
+    if (!ok) { summary.failed++; continue; }   // the claim goes stale and a later run retries
+    summary.sent++;
+    await call(`${env.SUPABASE_URL}/rest/v1/blockcamp_mission_emails?${row}`,
+      { method: "PATCH", headers: supabaseHeaders(env), body: JSON.stringify({ sent_at: t(now) }) })
+      .catch(() => console.error(`mission emails: sent but not marked: ${p.id} mission ${mission}`));
+  }
+  console.log(`mission emails: ${JSON.stringify(summary)} (${used} of ${budget} calls)`);
+  return summary;
+}
+
+/**
+ * The email for one mission: subject, plain text and HTML. `owned` is a
+ * reader who bought Term 1: only theirs is "yours to keep"; a subscriber's
+ * lasts as long as the subscription.
+ */
+function missionEmail(env, mission, lessons, opensAt, owned) {
+  const these = lessons.filter((l) => Number(l.mission) === mission);
+  const deck = these.find((l) => l.file.startsWith("blockcamp-"));
+  const quest = these.find((l) => !l.file.startsWith("blockcamp-"));
+  const clean = (t) => String(t || "").replace(/^Block Camp\s*[—–-]\s*/, "");
+  const link = `${env.SITE_URL}/${deck ? deck.file : "block-camp.html"}`;
+  const next = mission < 12
+    ? `Mission ${mission + 1} opens on ${new Date(opensAt + WEEK_MS).toLocaleString("en-GB",
+        { weekday: "long", day: "numeric", month: "long", hour: "2-digit", minute: "2-digit",
+          timeZone: "UTC", timeZoneName: "short" })}.`
+    : `That is the last mission of Term 1: every mission is open now${owned ? ", and yours to keep" : ""}.`;
+  const lines = [
+    `Mission ${mission} of Block Camp Term 1 is open.`,
+    "",
+    deck ? `Deck: ${clean(deck.title)}` : "",
+    quest ? `Quest: ${clean(quest.title)}` : "",
+    "",
+    `Open Mission ${mission}: ${link}`,
+    "",
+    `Missions 1 to ${mission} are open now. ${next}`,
+    "",
+    "Forbes English",
+    "",
+    "You are getting this because Block Camp is on your Forbes English account. To stop these emails, reply and say so.",
+  ].filter((l, i, a) => l !== "" || a[i - 1] !== "");
+  const e = escapeHtml;
+  const html = [
+    `<div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.5;color:#111;max-width:520px">`,
+    `<p style="font-size:20px;font-weight:bold;margin:0 0 12px">Mission ${mission} is open</p>`,
+    `<p style="margin:0 0 12px">Mission ${mission} of Block Camp Term 1 is open.</p>`,
+    deck ? `<p style="margin:0">Deck: <strong>${e(clean(deck.title))}</strong></p>` : "",
+    quest ? `<p style="margin:0">Quest: <strong>${e(clean(quest.title))}</strong></p>` : "",
+    `<p style="margin:20px 0"><a href="${e(link)}" style="background:#1b3a28;color:#faf8f3;padding:12px 22px;border-radius:999px;text-decoration:none;font-weight:bold">Open Mission ${mission}</a></p>`,
+    `<p style="margin:0 0 12px">Missions 1 to ${mission} are open now. ${e(next)}</p>`,
+    `<p style="margin:0 0 24px">Forbes English</p>`,
+    `<p style="font-size:12px;color:#6b7a6b;margin:0">You are getting this because Block Camp is on your Forbes English account. To stop these emails, reply and say so.</p>`,
+    `</div>`,
+  ].join("");
+  return { subject: `Mission ${mission} is open — Block Camp`, text: lines.join("\n"), html };
+}
+
+/** The subscription as Stripe has it now, or null if it cannot be read. */
+async function currentSubscription(env, id) {
+  try {
+    const res = await fetch(`https://api.stripe.com/v1/subscriptions/${encodeURIComponent(id)}`,
+      { headers: { "Authorization": `Bearer ${env.STRIPE_SECRET_KEY}` } });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
+
+// Since Stripe API 2025-03-31 the period end lives on the subscription item,
+// not the subscription. Reading sub.current_period_end gave undefined ->
+// Invalid Date -> toISOString() threw. Fall back to the old field for older
+// payloads, and skip the date rather than crash.
+function subscriptionFields(sub) {
+  const periodEnd = sub.items?.data?.[0]?.current_period_end ?? sub.current_period_end;
+  return {
+    subscription_status: sub.status,
+    ...(typeof periodEnd === "number"
+      ? { current_period_end: new Date(periodEnd * 1000).toISOString() }
+      : {}),
+  };
+}
+
+/**
+ * Closes the one-off grant bought with this PaymentIntent: its row stops
+ * counting (callerAccess only counts active rows) and its essay credits go.
+ * True when done or when there is nothing to close (the full plan, or a
+ * sale that never granted anything); null when Stripe or Supabase failed.
+ *
+ * The refund can arrive before the grant: the grant failed once and Stripe
+ * is still retrying it, or the events simply came out of order. Then no row
+ * matches, and a 200 here would lose the refund for good; the late grant
+ * would make an active row nobody closes. So the refund leaves a closed row
+ * of its own, keyed by the same Checkout Session, and the late grant finds
+ * it already there (insertUserPlan ignores the duplicate) and does nothing.
+ */
+async function revokeOneOff(env, paymentIntent, status) {
+  let session;
+  try {
+    const res = await fetch(
+      `https://api.stripe.com/v1/checkout/sessions?payment_intent=${encodeURIComponent(paymentIntent)}&limit=1`,
+      { headers: { "Authorization": `Bearer ${env.STRIPE_SECRET_KEY}` } });
+    if (!res.ok) return null;
+    session = ((await res.json()).data || [])[0];
+  } catch {
+    return null;
+  }
+  if (!session || session.mode !== "payment") return true;
+  let rows;
+  try {
+    const res = await fetch(
+      `${env.SUPABASE_URL}/rest/v1/user_plans?stripe_checkout_session_id=eq.${encodeURIComponent(session.id)}`,
+      { method: "PATCH", headers: { ...supabaseHeaders(env), "Prefer": "return=representation" },
+        body: JSON.stringify({ status, marking_credits: 0 }) });
+    if (!res.ok) return null;
+    rows = await res.json();
+  } catch {
+    return null;
+  }
+  if (Array.isArray(rows) && rows.length > 0) return true;
+
+  // Nothing granted yet. A sale the site can never grant (no signed-in
+  // buyer, a product it does not know) has nothing to hold closed.
+  const userId = session.metadata?.supabase_user_id;
+  const key = String(session.metadata?.product || "");
+  const product = key === "ielts_marking" ? "ielts" : key;
+  if (!userId || !Object.prototype.hasOwnProperty.call(PLAN_TRACKS, product)) return true;
+  const made = await insertUserPlan(env, {
+    user_id: userId,
+    product,
+    status,
+    stripe_checkout_session_id: session.id,
+    starts_at: new Date().toISOString(),
+    ends_at: null,
+    term: product === "blockcamp" ? 1 : null,
+    marking_credits: 0,
+  });
+  if (made === null) return null;
+  // The grant landed between the PATCH and this insert: close it after all.
+  if (made === false) {
+    return (await supabaseWrite(
+      `${env.SUPABASE_URL}/rest/v1/user_plans?stripe_checkout_session_id=eq.${encodeURIComponent(session.id)}`,
+      { method: "PATCH", headers: supabaseHeaders(env), body: JSON.stringify({ status, marking_credits: 0 }) })) || null;
+  }
+  console.log(`checkout ${session.id}: ${status} before its grant was recorded; held closed`);
+  return true;
+}
+
+// Verifies the `Stripe-Signature` header using the raw request body, per
+// https://docs.stripe.com/webhooks#verify-manually — implemented with the
+// Web Crypto API since Cloudflare Workers don't have Node's `crypto`.
+// The header can carry several v1 signatures (while the endpoint secret is
+// being rolled, one per secret): any match is enough. A timestamp more than
+// five minutes off is refused, so a captured event cannot be replayed later
+// (Stripe re-signs every retry with a fresh timestamp). The comparison
+// takes the same time whatever the input.
+const SIGNATURE_TOLERANCE_SECONDS = 300;
+
 async function verifyStripeSignature(rawBody, signatureHeader, webhookSecret) {
   if (!signatureHeader || !webhookSecret) return false;
 
-  const parts = Object.fromEntries(
-    signatureHeader.split(",").map((pair) => pair.split("="))
-  );
-  const timestamp = parts.t;
-  const expectedSig = parts.v1;
-  if (!timestamp || !expectedSig) return false;
+  const items = signatureHeader.split(",").map((pair) => {
+    const i = pair.indexOf("=");
+    return i < 0 ? ["", ""] : [pair.slice(0, i).trim(), pair.slice(i + 1).trim()];
+  });
+  const timestamp = items.find(([k]) => k === "t")?.[1];
+  const signatures = items.filter(([k]) => k === "v1").map(([, v]) => v);
+  if (!timestamp || signatures.length === 0) return false;
+  const ts = Number(timestamp);
+  if (!Number.isFinite(ts) || Math.abs(Date.now() / 1000 - ts) > SIGNATURE_TOLERANCE_SECONDS) return false;
 
-  const signedPayload = `${timestamp}.${rawBody}`;
   const key = await crypto.subtle.importKey(
     "raw",
     new TextEncoder().encode(webhookSecret),
@@ -745,12 +1714,19 @@ async function verifyStripeSignature(rawBody, signatureHeader, webhookSecret) {
     false,
     ["sign"]
   );
-  const sigBuffer = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(signedPayload));
-  const computedSig = [...new Uint8Array(sigBuffer)]
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("");
+  const sigBuffer = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(`${timestamp}.${rawBody}`));
+  const computed = [...new Uint8Array(sigBuffer)].map((b) => b.toString(16).padStart(2, "0")).join("");
 
-  return computedSig === expectedSig;
+  return signatures.some((s) => sameString(s, computed));
+}
+
+// Constant-time string equality: every character is compared, whatever the
+// first difference.
+function sameString(a, b) {
+  if (a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return diff === 0;
 }
 
 function json(data, status = 200) {

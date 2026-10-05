@@ -264,6 +264,17 @@ def produces(f):
     return 'data-type="activate"' in src or '<textarea' in src
 
 
+# The IELTS products as pricing.html and Stripe sell them (pricing go-live,
+# 2026-10-04): one payment each, nothing expires. The closing panels here
+# and on the route pages quote these; change them with the Stripe prices.
+PRICE_IELTS = '&euro;25'
+PRICE_IELTS_MARKING = '&euro;69'
+PRICE_FULL = '&euro;8.99'
+MARKING_LINE = ('two essays &mdash; one Task 1, one Task 2 &mdash; marked by Forbes English, '
+                'with a band estimate and corrections, returned within 5 working days')
+HUMAN_LINE = 'Every essay is read and marked by a CELTA-qualified teacher &mdash; never by software.'
+
+
 def load(rows):
     """The five routes, each lesson annotated with access and position."""
     cat = {x['file']: x for x in rows}
@@ -479,6 +490,13 @@ body.ih {
   margin: 0 0 22px; color: var(--ih-night);
 }
 .ih-h1 em { display: block; font-style: normal; color: var(--ih-accent-bright); }
+/* The landing page's promise: "IELTS," at display size, the rest of the
+   sentence under it, small enough to sit in the hero column. */
+.ih-h1-promise em {
+  font-size: .34em; line-height: 1.12; letter-spacing: -.005em;
+  margin-top: .4em; max-width: 15em; text-wrap: balance;
+}
+.ih-close-human { font-weight: 700; }
 .ih-lede { font-size: clamp(1.08rem, 1.5vw, 1.22rem); line-height: 1.58; margin: 0 0 24px; max-width: 34em; text-wrap: pretty; }
 .ih-stats {
   list-style: none; margin: 0 0 30px; padding: 16px 0 0; display: flex; flex-wrap: wrap; gap: 14px 30px;
@@ -786,7 +804,7 @@ def hero(routes, f):
   <div class="ih-hero-in">
     <div class="ih-hero-copy">
       <p class="ih-kicker">Exam route &middot; %(span)s &middot; the Academic module</p>
-      <h1 class="ih-h1" id="ih-h1">IELTS <em>Academic</em></h1>
+      <h1 class="ih-h1 ih-h1-promise" id="ih-h1">IELTS, <em>taught and marked by a CELTA-qualified teacher.</em></h1>
       <p class="ih-lede">Writing, Speaking, Listening, Reading, and the vocabulary that feeds Speaking and Writing: %(nroutes_w)s routes, each in the order it should be taught.</p>
       <ul class="ih-stats">
         <li><b>%(total)d</b><span>%(lessons)s</span></li>
@@ -1013,27 +1031,28 @@ def notes_html(routes):
 def close_html(routes, f, series):
     art = ('<img class="ih-close-art" src="%s" alt="" loading="lazy" decoding="async">\n  ' % series
            if series else '')
-    pro = f['total'] - f['free']
+    total = words(f['total']) if f['total'] < 100 else f['total']
     if f['free']:
-        head = '%s %s free. Pro opens the other %s.' % (
+        head = '%s %s free. IELTS opens all %s.' % (
             words(f['free']).capitalize() if f['free'] < 100 else f['free'],
-            'lesson is' if f['free'] == 1 else 'lessons are',
-            words(pro) if pro < 100 else pro)
+            'lesson is' if f['free'] == 1 else 'lessons are', total)
     else:
-        head = 'Every lesson here comes with Pro.'
+        head = 'IELTS opens all %s lessons.' % total
     lead = ('The first lesson on every route costs nothing and needs no account. '
             if f['firsts'] else 'Lessons marked Free cost nothing and need no account. ')
     return """<section class="ih-close" aria-labelledby="ih-close-h">
   %s<div class="ih-close-in">
-    <p class="ih-kicker">Forbes English Pro</p>
+    <p class="ih-kicker">IELTS &middot; one payment, yours to keep</p>
     <h2 class="ih-h2" id="ih-close-h">%s</h2>
-    <p>%sPro is every lesson on the site &mdash; IELTS and everything else &mdash; with new ones as they are published.</p>
+    <p>%sIELTS is %s for every lesson here, yours to keep. With marking it is %s: %s.</p>
+    <p class="ih-close-human">%s</p>
+    <p>Forbes English Pro, %s a month, includes IELTS and every other lesson on the site.</p>
     <div class="ih-ctas">
-      <a class="ih-btn" href="pricing.html">Plans and prices <span aria-hidden="true">&rarr;</span></a>
+      <a class="ih-btn" href="pricing.html#ielts">See the IELTS plans <span aria-hidden="true">&rarr;</span></a>
       <a class="ih-btn ih-btn-quiet" href="library.html#cat=IELTS">Every IELTS lesson in the library</a>
     </div>
   </div>
-</section>""" % (art, head, lead)
+</section>""" % (art, head, lead, PRICE_IELTS, PRICE_IELTS_MARKING, MARKING_LINE, HUMAN_LINE, PRICE_FULL)
 
 
 def ld(routes):
@@ -1046,7 +1065,10 @@ def ld(routes):
          'numberOfItems': len(lessons),
          'itemListElement': [
              {'@type': 'ListItem', 'position': i + 1,
-              'url': '%s/%s' % (SITE, seo.quote(s['file'])), 'name': s['full']}
+              'url': '%s/%s' % (SITE, seo.quote(s['file'])),
+              # By skill, as the page shows them: the catalogue's titles still
+              # carry the old course's "(Part 4)" numbering.
+              'name': 'IELTS %s: %s' % (s['route']['name'], seo.clean(s['title']))}
              for i, s in enumerate(lessons)]}]}
 
 

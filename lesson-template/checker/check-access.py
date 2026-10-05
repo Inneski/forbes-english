@@ -61,7 +61,7 @@ HUB_CARD = re.compile(r'<a class="card"[^>]*href="([^"]+)"[^>]*>(.*?)</a>', re.S
 # Any link on the route map to a deck, with its attributes and its content.
 MAP_LINK = re.compile(r'<a ([^>]*?)href="(blockcamp-[^"]+\.html)"([^>]*)>(.*?)</a>', re.S)
 LOCK = ('<span class="lock" aria-hidden="true"></span>'
-        '<span class="sr">, subscribers only</span>')
+        '<span class="sr">, paid lesson</span>')
 
 
 def catalogue():

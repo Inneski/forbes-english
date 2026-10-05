@@ -402,3 +402,57 @@
   window.CampFull = { toggle: toggle, popOut: popOut, isOn: isOn, can: can, installed: installed, ios: ios,
                       bind: bind, howTo: howTo, enter: enter, exit: exit };
 })();
+
+/* Block Camp's weekly clock (pricing go-live, 2026-10-04).
+
+   A subscriber's Block Camp missions open one a week, counted from their
+   first Block Camp visit. The Worker can only see that visit with the
+   fe_at cookie, which sb-client.js keeps for about an hour (the life of the
+   access token). Block Camp pages do not load sign-in, so a subscriber who
+   comes back to Mission 1 from a bookmark or an email a day later arrives
+   signed in (supabase-js keeps the session in localStorage) but without the
+   cookie, and the visit would not count.
+
+   This lives here because camp-full.js is the one script every Block Camp
+   page loads. Only when a stored session exists and the cookie does not
+   does it load sign-in (from our own origin, like every other page), let
+   sb-client.js refresh the session and write the cookie, and then ask the
+   Worker for this page again with a HEAD: the gate notes the visit. A
+   signed-out reader, or one whose cookie is fresh, costs nothing. */
+(function () {
+  'use strict';
+  var has = function () { return /(?:^|;\s*)fe_at=/.test(document.cookie); };
+  try {
+    if (has()) return;
+    var signedIn = false;
+    for (var i = 0; i < localStorage.length; i++) {
+      if (/^sb-[a-z0-9]+-auth-token$/.test(localStorage.key(i) || '')) { signedIn = true; break; }
+    }
+    if (!signedIn) return;
+  } catch (e) { return; }
+
+  function load(src) {
+    return new Promise(function (ok, no) {
+      var s = document.createElement('script');
+      s.src = src; s.onload = ok; s.onerror = no;
+      document.head.appendChild(s);
+    });
+  }
+  var tries = 0;
+  function ping() {
+    if (has()) {
+      fetch(location.pathname, { method: 'HEAD', credentials: 'same-origin', cache: 'no-store' })
+        .catch(function () {});
+    } else if (++tries < 40) {
+      setTimeout(ping, 250);
+    }
+  }
+  function start() {
+    if (window.supabase && window.sbGetSession) { ping(); return; }
+    (window.supabase ? Promise.resolve() : load('/vendor/supabase-js-2.116.0.min.js'))
+      .then(function () { return window.sbGetSession ? null : load('/sb-client.js'); })
+      .then(ping)
+      .catch(function () {});
+  }
+  if (document.readyState === 'complete') start(); else window.addEventListener('load', start);
+})();

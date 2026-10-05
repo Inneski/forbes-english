@@ -42,29 +42,29 @@
      everywhere in the line. */
   var T = {
     en: { map: 'Route map', descentMap: 'Descent map', nextCamp: 'Next camp', nextStation: 'Next station',
-          descent: 'The descent', next: 'Next', adventures: 'The adventures', pro: ', subscribers only' },
+          descent: 'The descent', next: 'Next', adventures: 'The adventures', pro: ', paid lesson' },
     de: { map: 'Routenkarte', descentMap: 'Abstiegskarte', nextCamp: 'Nächstes Lager', nextStation: 'Nächste Station',
-          descent: 'Der Abstieg', next: 'Weiter', adventures: 'Die Abenteuer', pro: ', nur für Abonnenten' },
+          descent: 'Der Abstieg', next: 'Weiter', adventures: 'Die Abenteuer', pro: ', kostenpflichtige Lektion' },
     es: { map: 'Mapa de la ruta', descentMap: 'Mapa de la bajada', nextCamp: 'Siguiente campamento', nextStation: 'Siguiente estación',
-          descent: 'La bajada', next: 'Sigue', adventures: 'Las aventuras', pro: ', solo para suscriptores' },
+          descent: 'La bajada', next: 'Sigue', adventures: 'Las aventuras', pro: ', lección de pago' },
     fr: { map: 'Carte de l’itinéraire', descentMap: 'Carte de la descente', nextCamp: 'Camp suivant', nextStation: 'Station suivante',
-          descent: 'La descente', next: 'Ensuite', adventures: 'Les aventures', pro: ', réservé aux abonnés' },
+          descent: 'La descente', next: 'Ensuite', adventures: 'Les aventures', pro: ', leçon payante' },
     it: { map: 'Mappa del percorso', descentMap: 'Mappa della discesa', nextCamp: 'Prossimo campo', nextStation: 'Prossima tappa',
-          descent: 'La discesa', next: 'Avanti', adventures: 'Le avventure', pro: ', solo per abbonati' },
+          descent: 'La discesa', next: 'Avanti', adventures: 'Le avventure', pro: ', lezione a pagamento' },
     pt: { map: 'Mapa da trilha', descentMap: 'Mapa da descida', nextCamp: 'Próximo acampamento', nextStation: 'Próxima estação',
-          descent: 'A descida', next: 'A seguir', adventures: 'As aventuras', pro: ', só para assinantes' },
+          descent: 'A descida', next: 'A seguir', adventures: 'As aventuras', pro: ', lição paga' },
     ru: { map: 'Карта маршрута', descentMap: 'Карта спуска',
           nextCamp: 'Следующий лагерь', nextStation: 'Следующая станция',
           descent: 'Спуск', next: 'Дальше', adventures: 'Приключения',
-          pro: ', только для подписчиков' },
+          pro: ', платный урок' },
     ar: { map: 'خريطة الطريق', descentMap: 'خريطة النزول',
           nextCamp: 'المخيم التالي', nextStation: 'المحطة التالية',
           descent: 'النزول', next: 'التالي', adventures: 'المغامرات',
-          pro: '، للمشتركين فقط' },
+          pro: '، درس مدفوع' },
     zh: { map: '路线图', descentMap: '下山路线图', nextCamp: '下一个营地', nextStation: '下一站',
-          descent: '下山', next: '接下来', adventures: '冒险故事', pro: '，仅限订阅用户' },
+          descent: '下山', next: '接下来', adventures: '冒险故事', pro: '，付费课程' },
     ja: { map: 'ルートマップ', descentMap: '下りのマップ', nextCamp: '次のキャンプ', nextStation: '次のステーション',
-          descent: '下り', next: '次へ', adventures: 'アドベンチャー', pro: '（購読者限定）' }
+          descent: '下り', next: '次へ', adventures: 'アドベンチャー', pro: '（有料レッスン）' }
   };
 
   /* Built from the deck's own theme tokens, so each chip sits in the palette

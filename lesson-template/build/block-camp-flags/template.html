@@ -994,10 +994,10 @@ footer{padding:36px 0 48px;color:var(--muted);font-size:.84rem}
     var n = L.next(), a = $('hNext');
     if (n) {
       var goal = esc(n.goal) + (n.best != null && n.need ? ' &middot; best ' + pc(n.best) + ', <b>' + pc(n.toGo) + ' to go</b>' : '');
-      // a padlocked deck opens Go Pro, or (signed in) the deck, where the Worker decides
-      a.innerHTML = '<span class="k">Next</span><span class="t">' + esc(n.title) + lockIf(n.padlock) + '</span><span class="g">' + goal + '</span><span class="go">' + (n.viaPro ? 'Go Pro &rarr;' : 'Go &rarr;') + '</span>';
+      // a padlocked deck opens the plans, or (signed in) the deck, where the Worker decides
+      a.innerHTML = '<span class="k">Next</span><span class="t">' + esc(n.title) + lockIf(n.padlock) + '</span><span class="g">' + goal + '</span><span class="go">' + (n.viaPro ? 'See plans &rarr;' : 'Go &rarr;') + '</span>';
       a.href = n.href; a.classList.remove('done');
-      a.setAttribute('aria-label', 'Next: ' + n.text + (n.viaPro ? '. A Pro lesson: this opens Go Pro' : n.padlock ? '. A Pro lesson' : ''));
+      a.setAttribute('aria-label', 'Next: ' + n.text + (n.viaPro ? '. A paid lesson: this opens the plans' : n.padlock ? '. A paid lesson' : ''));
     } else {
       a.innerHTML = '<span class="k">Summit</span><span class="t">Everything is built</span><span class="g">Every storey, lamp, star and pennant is yours.</span><span class="go">Quest &rarr;</span>';
       a.href = 'quest.html'; a.classList.add('done'); a.removeAttribute('aria-label');
@@ -1005,8 +1005,8 @@ footer{padding:36px 0 48px;color:var(--muted);font-size:.84rem}
     var cg = L.closestGold(), b = $('hGold');
     if (cg) {
       b.hidden = false;
-      b.innerHTML = '<span class="k">Closest to gold</span><span class="t">' + esc(cg.title) + ' &middot; ' + pc(cg.best) + ' &rarr; ' + pc(cg.need) + lockIf(cg.padlock) + '</span><span class="g">' + pc(cg.toGo) + ' to gold on ' + (cg.kind === 'lamp' ? 'lamp ' : 'storey ') + cg.n + '</span><span class="go">' + (cg.viaPro ? 'Go Pro &rarr;' : 'Go &rarr;') + '</span>';
-      b.href = cg.href; b.setAttribute('aria-label', 'Closest to gold: ' + cg.text + (cg.viaPro ? '. A Pro lesson: this opens Go Pro' : cg.padlock ? '. A Pro lesson' : ''));
+      b.innerHTML = '<span class="k">Closest to gold</span><span class="t">' + esc(cg.title) + ' &middot; ' + pc(cg.best) + ' &rarr; ' + pc(cg.need) + lockIf(cg.padlock) + '</span><span class="g">' + pc(cg.toGo) + ' to gold on ' + (cg.kind === 'lamp' ? 'lamp ' : 'storey ') + cg.n + '</span><span class="go">' + (cg.viaPro ? 'See plans &rarr;' : 'Go &rarr;') + '</span>';
+      b.href = cg.href; b.setAttribute('aria-label', 'Closest to gold: ' + cg.text + (cg.viaPro ? '. A paid lesson: this opens the plans' : cg.padlock ? '. A paid lesson' : ''));
     } else b.hidden = true;
     $('hBunt').innerHTML = pennantIcon(L.advCleared ? (L.adventures.filter(function (x) { return x.cleared; })[0] || {}).colour : null) + 'Bunting ' + L.advCleared + '/' + L.advOf;
     $('hClimb').hidden = !L.standing;
@@ -1054,7 +1054,7 @@ footer{padding:36px 0 48px;color:var(--muted);font-size:.84rem}
     out += '<div class="lk-go">' + link(s.href, s.hasStar ? 'Part 1' : 'Open', lockOf(s.access), 'main');
     if (s.href2) out += link(s.href2, 'Part 2', lockOf(s.access2));
     if (lp) out += link(lp.href, lp.entry.trial ? 'The Trial' : 'Station ' + lp.entry.n, lockOf(lp.access));
-    if (anyLock) out += '<a class="gopro" href="' + esc(L.goPro) + '">Go Pro &rarr;</a>';
+    if (anyLock) out += '<a class="gopro" href="' + esc(L.goPro) + '">See plans &rarr;</a>';
     if (n === 9 && L.standing) out += '<a href="#top" data-climb>Climb to the top</a>';
     out += '</div>';
     out += '<div class="lk-step"><button type="button" data-step="-1"' + (n <= 1 ? ' disabled' : '') + '>&lsaquo; Storey ' + Math.max(1, n - 1) + '</button>' +
@@ -1072,7 +1072,7 @@ footer{padding:36px 0 48px;color:var(--muted);font-size:.84rem}
       out += '<li>' + pennantIcon(a.cleared ? a.colour : null) + '<a href="' + esc(a.href) + '">' + esc(a.title) + (a.padlock ? PRO : '') + '</a>' +
         '<span class="st' + (a.cleared ? ' on' : '') + '">' + (a.master ? 'Master' : a.cleared ? 'Cleared' : a.seen ? 'Started' : 'Not yet') + '</span></li>';
     });
-    out += '</ul>' + (anyLock ? '<div class="lk-go"><a class="gopro" href="' + esc(L.goPro) + '">Go Pro &rarr;</a></div>' : '');
+    out += '</ul>' + (anyLock ? '<div class="lk-go"><a class="gopro" href="' + esc(L.goPro) + '">See plans &rarr;</a></div>' : '');
     show(out, P.GOLD_C, INK, from);
   }
   function show(html, c, ci, from) {

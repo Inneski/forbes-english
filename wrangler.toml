@@ -22,6 +22,23 @@ SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 STRIPE_PRICE_ID_MONTHLY = "price_1UCRRK0R7wvAnqirFeZ7QIOr"
 STRIPE_PRICE_ID_SEMIANNUAL = "price_1UCRRK0R7wvAnqirxBfL63pX"
 STRIPE_PRICE_ID_ANNUAL = "price_1UCRRK0R7wvAnqirG5pvoKXS"
+# The one-off products (pricing go-live, 2026-10-04). Sold through Managed
+# Payments; what each grants is in its Stripe product metadata. IDs and the
+# metadata table: docs/HANDOFF.md.
+STRIPE_PRICE_ID_BLOCKCAMP = "price_1UMrG40R7wvAnqirYtSLCZnY"
+STRIPE_PRICE_ID_IELTS = "price_1UMrLI0R7wvAnqirWYHjtsg2"
+STRIPE_PRICE_ID_IELTS_MARKING = "price_1UMrR60R7wvAnqirEMCYlH9q"
+STRIPE_PRICE_ID_MARKING = "price_1UMrYb0R7wvAnqiritAkZlT5"
+# FOUNDER: EUR 7 off Block Camp Term 1, 50 redemptions.
+STRIPE_PROMO_FOUNDER = "promo_1UMrlb0R7wvAnqirXLEXdWdf"
+# Email (pricing step 9). RESEND_API_KEY is a secret: set it in Cloudflare
+# (Workers -> forbes-english -> Settings -> Variables and secrets), never
+# here. MAIL_FROM must be on a domain verified in Resend. Until the key is
+# set, the cron runs and sends nothing.
+MAIL_FROM = "Forbes English <info@forbesenglish.com>"
+MAIL_REPLY_TO = "info@forbesenglish.com"
+# Told when essay credits are bought; the address buyers send essays to.
+MARKING_MAIL_TO = "info@forbesenglish.com"
 
 [assets]
 directory = "."
@@ -35,3 +52,17 @@ not_found_handling = "404-page"
 # With it, every request enters the Worker; anything it does not gate falls
 # through to env.ASSETS.fetch() at ~0.6ms.
 run_worker_first = true
+
+# The weekly "Mission N is open" email: every hour, the Worker mails each
+# Block Camp reader whose next mission opened in the last 48 hours
+# (src/index.js, sendMissionEmails). Hourly so the email follows the
+# unlock within the hour, and so a retry stays inside Resend's 24-hour
+# idempotency window. Each run stops at EMAIL_SUBREQUEST_BUDGET calls
+# (default 40, for the Workers Free plan) and the next run carries on.
+[triggers]
+crons = ["0 * * * *"]
+
+# Keep the Worker's logs (the cron's summary line and any failed send) for
+# a few days, so a broken email setup can be seen afterwards.
+[observability]
+enabled = true

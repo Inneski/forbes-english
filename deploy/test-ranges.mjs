@@ -6,7 +6,11 @@
 // cannot be fetched by range. withRanges() in src/index.js cuts ranges for
 // audio/video only; these cases pin that, and pin that nothing else changed.
 import { readFileSync } from 'fs';
-const src = readFileSync('src/index.js', 'utf8');
+// cloudflare:email exists only in the Workers runtime; a stand-in class
+// lets Node load the module (deploy/test-webhook.mjs checks the mail).
+const src = readFileSync('src/index.js', 'utf8').replace(
+  /^import \{ EmailMessage \} from "cloudflare:email";$/m,
+  'class EmailMessage { constructor(f, t, r) { this.from = f; this.to = t; this.raw = r; } }');
 const mod = await import('data:text/javascript;base64,' + Buffer.from(src).toString('base64'));
 const MP4 = readFileSync('BlockCamp/hub-flythrough.mp4');
 const env = { SITE_URL: 'https://x.test', ASSETS: { fetch: async (req) => {

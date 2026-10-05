@@ -4,18 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- SEO:start -->
-<meta name="description" content="What a Forbes English subscription costs, and which lessons are free forever.">
+<meta name="description" content="Block Camp Term 1, IELTS with essay marking, or the whole library by the month — and which lessons are free.">
 <link rel="canonical" href="https://forbesenglish.com/pricing.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Forbes English">
 <meta property="og:title" content="Plans and pricing | Forbes English">
-<meta property="og:description" content="What a Forbes English subscription costs, and which lessons are free forever.">
+<meta property="og:description" content="Block Camp Term 1, IELTS with essay marking, or the whole library by the month — and which lessons are free.">
 <meta property="og:url" content="https://forbesenglish.com/pricing.html">
 <meta property="og:image" content="https://forbesenglish.com/og-forbes-english.png">
 <meta property="og:locale" content="en_GB">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Plans and pricing | Forbes English">
-<meta name="twitter:description" content="What a Forbes English subscription costs, and which lessons are free forever.">
+<meta name="twitter:description" content="Block Camp Term 1, IELTS with essay marking, or the whole library by the month — and which lessons are free.">
 <meta name="twitter:image" content="https://forbesenglish.com/og-forbes-english.png">
 <!-- SEO:end -->
 <title>Plans and pricing | Forbes English</title>
@@ -38,7 +38,7 @@
     --cream: #faf8f3;
     --ink: #111;
     --ink-soft: #333;
-    --muted: #6b7a6b;
+    --muted: #5f6e5f;
     --border: #c8d4c8;
     --white: #ffffff;
     --radius: 14px;
@@ -257,6 +257,61 @@
   }
   .status-banner.show { display: block; }
   .status-banner.active { background: var(--green-pale); color: var(--green-mid); }
+
+  /* ── PRICING GO-LIVE (2026-10-04): three cards ── */
+  .plans-3 { align-items: stretch; margin-bottom: 14px; }
+  .vat-note { text-align: center; color: var(--ink-soft); font-size: 0.82rem; margin-bottom: 56px; }
+  .plan-tag {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+    font-size: 1.05rem; color: var(--ink); line-height: 1.35; margin-bottom: 14px;
+  }
+  .plan-fine { font-size: 0.78rem; color: var(--muted); line-height: 1.45; margin-top: 14px; }
+  .plan-fine a, .plan-fine button, .plan-alt a, .plan-alt button {
+    color: var(--green-mid); font: inherit; background: none; border: none; padding: 0;
+    cursor: pointer; text-decoration: underline; text-underline-offset: 2px;
+  }
+  .plan-alt { font-size: 0.82rem; color: var(--muted); text-align: center; margin-top: 12px; line-height: 1.5; }
+  .plan-alt button:disabled, .plan-fine button:disabled { cursor: default; opacity: 0.6; }
+  /* Two cards and a full-width third between phone and desktop, rather
+     than auto-fit's 2 + 1 with the full plan stranded on its own. */
+  @media (min-width: 600px) and (max-width: 899px) {
+    .plans-3 { grid-template-columns: repeat(2, 1fr); }
+    .plans-3 .plan-card.featured { grid-column: 1 / -1; }
+  }
+  @media (min-width: 900px) { .plans-3 { grid-template-columns: repeat(3, 1fr); } }
+
+  .founder {
+    display: none;
+    margin: -30px -26px 22px;
+    padding: 12px 26px;
+    border-radius: var(--radius) var(--radius) 0 0;
+    background: var(--green-deep);
+    color: var(--cream);
+    font-size: 0.86rem;
+    line-height: 1.4;
+  }
+  .founder.show { display: block; }
+  .founder strong { display: block; white-space: nowrap; color: var(--gold-bright); font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 1rem; letter-spacing: 0.02em; }
+
+  .plan-btn.secondary {
+    background: transparent; color: var(--green-deep);
+    border: 1.5px solid var(--green-deep); margin-bottom: 10px; text-decoration: none;
+  }
+  .plan-btn.secondary:hover { background: var(--green-pale); }
+
+  .tier { border-top: 1px solid var(--border); padding-top: 16px; margin-top: 16px; }
+  .tier:first-of-type { border-top: none; padding-top: 0; margin-top: 0; }
+  .tier-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 6px; }
+  .tier-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 1.05rem; color: var(--ink); }
+  .tier-price { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.6rem; color: var(--green-deep); line-height: 1; white-space: nowrap; }
+  .tier p { font-size: 0.86rem; color: var(--ink-soft); line-height: 1.5; margin-bottom: 12px; }
+  .tiers { flex: 1; margin-bottom: 4px; }
+  .human {
+    font-size: 0.86rem; line-height: 1.5; color: var(--green-deep); font-weight: 700;
+    background: var(--green-pale); border-radius: 10px; padding: 10px 12px; margin-top: 14px;
+  }
+
+  .free-tier { margin-bottom: 0; }
 </style>
 </head>
 <body>
@@ -329,13 +384,85 @@
 </header>
 
 <main>
-  <div class="status-banner" id="status-banner"></div>
+  <div class="status-banner" id="status-banner" role="alert"></div>
 
   <div class="intro">
-    <div class="eyebrow">Forbes English</div>
-    <h1>Start free.<br>Subscribe when you're ready.</h1>
-    <p>A set of complete lessons is free to use, with no account and no card. A subscription opens the rest of the library.</p>
+    <div class="eyebrow">Plans and prices</div>
+    <h1>Start free.<br>Pay for the part you need.</h1>
+    <p>Block Camp and IELTS are single payments that never renew. Forbes English Pro is the whole library, by the month.</p>
   </div>
+
+  <!-- Pricing go-live, 2026-10-04 (docs/HANDOFF.md). Three cards, in this
+       order. Prices are VAT-inclusive Stripe prices; the Worker maps each
+       button's data-product / data-plan to its price ID. Only buy controls
+       carry those attributes: startCheckout() relabels the element it finds,
+       so a card carrying one would be wiped out. The founder strip is filled
+       from GET /api/founder-status ({ limit, remaining }); until that answers
+       with remaining > 0 the card shows the regular €19, so the page never
+       advertises an offer that may have run out. €19 is not struck through:
+       it has never been charged, so it cannot be shown as a former price. -->
+  <div class="plans plans-3">
+
+    <div class="plan-card" id="block-camp">
+      <div class="founder" id="founder">
+        Founder price for the first 50 families: <strong id="founder-left"></strong>
+      </div>
+      <h2 class="plan-name">Block Camp · Term 1</h2>
+      <div class="plan-price" id="bc-price">&euro;19<span>&nbsp;one payment</span></div>
+      <div class="plan-sub" id="bc-sub">Yours to keep. Nothing renews.</div>
+      <p class="plan-tag">12 weeks · 12 missions · one a week, each with a quest.</p>
+      <ul class="plan-features">
+        <li>Mission 1 opens straight away, then a new one every week</li>
+        <li>Every mission stays open once it unlocks</li>
+        <li>Plus the six Block Camp specials, open from day one</li>
+        <li>Works on phones and tablets &mdash; add it to your Home Screen and it opens like an app.</li>
+        <li>Built by a CELTA-qualified teacher.</li>
+      </ul>
+      <a class="plan-btn secondary" href="blockcamp-present-simple.html">Try Mission 1 free</a>
+      <button class="plan-btn" data-product="blockcamp" id="bc-buy">Buy Term 1 &mdash; &euro;19</button>
+      <p class="plan-fine">Not an official Minecraft product. Not approved by or associated with Mojang.</p>
+    </div>
+
+    <div class="plan-card" id="ielts">
+      <h2 class="plan-name">IELTS</h2>
+      <p class="plan-tag">28 lessons across Writing, Speaking, Listening and Reading.</p>
+      <div class="plan-sub">Yours to keep. One payment. Nothing renews.</div>
+      <div class="tiers">
+        <div class="tier">
+          <div class="tier-head"><span class="tier-name">IELTS</span><span class="tier-price">&euro;25</span></div>
+          <p>All 28 lessons, yours to keep.</p>
+          <button class="plan-btn" data-product="ielts">Buy IELTS &mdash; &euro;25</button>
+        </div>
+        <div class="tier">
+          <div class="tier-head"><span class="tier-name">IELTS + Marking</span><span class="tier-price">&euro;69</span></div>
+          <p>All 28 lessons, yours to keep. Two essays &mdash; one Task 1, one Task 2 &mdash; marked by Forbes English, with a band estimate and corrections, returned within 5 working days.</p>
+          <button class="plan-btn" data-product="ielts_marking">Buy IELTS + Marking &mdash; &euro;69</button>
+        </div>
+      </div>
+      <p class="human">Every essay is read and marked by a CELTA-qualified teacher &mdash; never by software.</p>
+      <p class="plan-fine">Marking on its own: two essays for &euro;49, on any account.
+        <button type="button" class="plan-btn-link" data-product="marking">Buy marking &mdash; &euro;49</button></p>
+    </div>
+
+    <div class="plan-card featured" id="full">
+      <div class="plan-badge">Everything</div>
+      <h2 class="plan-name">Forbes English Pro</h2>
+      <div class="plan-price">&euro;8.99<span>&nbsp;/ month</span></div>
+      <div class="plan-sub">Billed monthly. Cancel anytime.</div>
+      <p class="plan-tag">Everything: adult courses, IELTS, Block Camp for your kids, and every new lesson.</p>
+      <ul class="plan-features">
+        <li>Every lesson in the library</li>
+        <li>The whole Sherpa Tensing route</li>
+        <li>Block Camp missions open one a week</li>
+        <li>New lessons as they're published</li>
+      </ul>
+      <button class="plan-btn" data-plan="monthly">Subscribe &mdash; &euro;8.99 / month</button>
+      <p class="plan-alt">Or pay ahead, renewing until you cancel:
+        <button type="button" class="plan-btn-link" data-plan="semiannual">&euro;45 every six months</button> &middot;
+        <button type="button" class="plan-btn-link" data-plan="annual">&euro;90 a year</button></p>
+    </div>
+  </div>
+  <p class="vat-note">All prices in euros and include VAT. Checkout may show the amount in your own currency.</p>
 
   <section class="free-tier">
     <div class="free-head">
@@ -346,147 +473,70 @@
       <a class="free-cta" href="library.html?free=1">Browse the free lessons &rarr;</a>
     </div>
     <p class="free-lede">
-      These are whole lessons, not previews or samples that stop halfway. Every
-      exercise works, every answer is marked, and every explanation is there.
+      <span id="free-count">54</span> complete lessons, not previews or samples that stop halfway.
+      Every exercise works, every answer is marked, and every explanation is there.
     </p>
     <div class="free-grid">
       <div class="free-item">
-        <h3>The Sherpa Tensing route</h3>
+        <h3>Block Camp Mission 1</h3>
         <p>
-          The complete tense reference — the route map plus all four camps,
-          with the colour-coded timeline diagrams. Free permanently, including
-          camps added later.
+          The Present Simple deck and its quest, Frostbound River &mdash; the same
+          first mission a Term 1 family starts with.
         </p>
       </div>
       <div class="free-item">
-        <h3>A full lesson at every level</h3>
+        <h3>A lesson in every IELTS skill</h3>
         <p>
-          Two complete lessons each at A1, A2, B1, B2 and C1, and one at C2 —
-          so you can judge the material at the level you actually teach or study.
+          A complete IELTS lesson for Writing, Speaking, Listening and Reading,
+          plus one on Lexical Resource.
         </p>
       </div>
       <div class="free-item">
-        <h3>Slide decks included</h3>
+        <h3>Lessons at every level</h3>
         <p>
-          The free set includes finished 16:9 decks you can run in a lesson or
-          print to PDF, not just worksheets.
+          Complete lessons from A1 to C2, many with finished 16:9 slide decks you
+          can run in class or print to PDF.
         </p>
       </div>
       <div class="free-item">
-        <h3>Every language toggle</h3>
+        <h3>The Sherpa Tensing route map</h3>
         <p>
-          The translation switcher, the scoring and the written-answer tools all
-          work on free lessons exactly as they do on the rest.
+          The tense route map and its first camps, with the colour-coded
+          timeline diagrams.
         </p>
       </div>
     </div>
   </section>
 
-  <div class="paid-intro">
-    <div class="eyebrow">Forbes English Pro</div>
-    <h2 class="paid-title">Everything else &mdash; 197 lessons and counting</h2>
-    <p>Full access to the entire library for as long as you're subscribed.</p>
-  </div>
-
-  <div class="plans">
-    <div class="plan-card" data-plan="monthly">
-      <div class="plan-name">Monthly</div>
-      <div class="plan-price">&euro;8.99<span>&nbsp;/ month</span></div>
-      <div class="plan-sub">Billed every month</div>
-      <ul class="plan-features">
-        <li>Full access to every lesson</li>
-        <li>New lessons as they're published</li>
-        <li>Cancel anytime</li>
-      </ul>
-      <button class="plan-btn" data-plan="monthly">Subscribe Monthly</button>
-    </div>
-
-    <div class="plan-card featured" data-plan="semiannual">
-      <div class="plan-badge">Save 17%</div>
-      <div class="plan-name">Six Months</div>
-      <div class="plan-price">&euro;45<span>&nbsp;/ 6 months</span></div>
-      <div class="plan-sub savings">&euro;7.50 / month &mdash; save 17% vs. monthly</div>
-      <ul class="plan-features">
-        <li>Full access to every lesson</li>
-        <li>New lessons as they're published</li>
-        <li>Cancel anytime</li>
-      </ul>
-      <button class="plan-btn" data-plan="semiannual">Subscribe for 6 Months</button>
-    </div>
-
-    <div class="plan-card" data-plan="annual">
-      <div class="plan-name">Annual</div>
-      <div class="plan-price">&euro;90<span>&nbsp;/ year</span></div>
-      <div class="plan-sub savings">&euro;7.50 / month &mdash; save 17% vs. monthly</div>
-      <ul class="plan-features">
-        <li>Full access to every lesson</li>
-        <li>New lessons as they're published</li>
-        <li>One payment, one renewal a year</li>
-      </ul>
-      <button class="plan-btn" data-plan="annual">Subscribe Annually</button>
-    </div>
-  </div>
-
-  <!-- Per-track plans (2026-09-28). PRICES ARE PLACEHOLDERS: Innes sets them.
-       Rule: each below the full plan (roughly half to two-thirds); the full
-       plan below the two added together. To open a plan for sale, create its
-       Stripe price, set STRIPE_PRICE_ID_BLOCKCAMP / _IELTS on the Worker, put
-       the price in below and delete that button's data-soon and disabled. -->
-  <div class="paid-intro">
-    <div class="eyebrow">Or just the part you need</div>
-    <h2 class="paid-title">Block Camp and IELTS on their own</h2>
-    <p>Each comes with the whole Sherpa Tensing route as well.</p>
-  </div>
-
-  <div class="plans">
-    <div class="plan-card" data-product="blockcamp">
-      <div class="plan-name">Block Camp</div>
-      <div class="plan-price">&euro;&thinsp;&mdash;<span>&nbsp;/ month</span></div>
-      <div class="plan-sub">For parents. Billed every month</div>
-      <ul class="plan-features">
-        <li>Every Block Camp lesson and RPG</li>
-        <li>New Block Camp lessons as they're published</li>
-        <li>The Sherpa Tensing route</li>
-        <li>Cancel anytime</li>
-      </ul>
-      <button class="plan-btn" data-product="blockcamp" data-soon disabled>Available soon</button>
-    </div>
-
-    <div class="plan-card" data-product="ielts">
-      <div class="plan-name">IELTS</div>
-      <div class="plan-price">&euro;&thinsp;&mdash;<span>&nbsp;/ 3 months</span></div>
-      <div class="plan-sub">One payment. Nothing renews</div>
-      <ul class="plan-features">
-        <li>Every IELTS lesson: Writing, Reading, Listening, Speaking</li>
-        <li>New IELTS lessons during your three months</li>
-        <li>The Sherpa Tensing route</li>
-        <li>No subscription to cancel</li>
-      </ul>
-      <button class="plan-btn" data-product="ielts" data-soon disabled>Available soon</button>
-    </div>
-  </div>
-
   <div class="faq">
     <h2>Questions</h2>
     <details class="faq-item">
-      <summary>Can I cancel anytime?</summary>
-      <p>Yes. Cancel from your account page whenever you like — you'll keep access until the end of your current billing period.</p>
+      <summary>How does Block Camp work?</summary>
+      <p>Term 1 is twelve missions. Mission 1 opens as soon as you pay, and a new mission opens every seven days after that. Once a mission opens it stays open for good: Term 1 is yours to keep, so a missed week is never lost. The six Block Camp specials come with it and are open from day one: three adventures (The Last Night at the Grand Hotel, Blocula, and the deep-sea Nautilus: The Black Archive) and three passive-voice decks (Present Perfect Passive, The Trial and Past Perfect Passive). Term 2 &mdash; the present perfect and past perfect lessons, passive stations 9 to 14, and the adventures The Long Way Home, Nautilus: The Black Archive and Twenty Thousand Leagues &mdash; is not part of Term 1; Forbes English Pro opens it. On a phone or tablet, add Block Camp to your Home Screen and it opens full screen, like an app.</p>
     </details>
     <details class="faq-item">
-      <summary>What's the difference between the plans?</summary>
-      <p>All three plans include exactly the same access to every lesson on the site. The only difference is how often you're billed and the price — six-month and annual billing both work out to &euro;7.50/month, a 17% saving over paying monthly.</p>
+      <summary>Is anything a subscription?</summary>
+      <p>Only Forbes English Pro. Block Camp, IELTS and essay marking are single payments that never renew. To cancel Forbes English Pro, email <a href="mailto:info@forbesenglish.com">info@forbesenglish.com</a> at any time; you keep access until the end of the period you have paid for.</p>
     </details>
     <details class="faq-item">
-      <summary>Block Camp or IELTS, or Forbes English Pro?</summary>
-      <p>Forbes English Pro opens every lesson, Block Camp and IELTS included. Take Block Camp or IELTS on its own if that is all you need. Both come with the Sherpa Tensing route. You can hold both, and upgrade to Pro at any time.</p>
+      <summary>What does Forbes English Pro include?</summary>
+      <p>Every lesson on the site: the adult courses, IELTS, Block Camp and the whole Sherpa Tensing route, and every new lesson as it is published. Block Camp missions open one a week for subscribers too, counted from the first Block Camp lesson you open. Essay marking is not included; two marked essays are &euro;49. You can also pay ahead: &euro;45 every six months or &euro;90 a year, both &euro;7.50 a month, renewing until you cancel.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Who will I see on my receipt and bank statement?</summary>
+      <p>Block Camp, IELTS and essay marking are sold through Link, Stripe&rsquo;s checkout. Your receipt comes from Link, and your bank statement shows LINK.COM. Link also handles VAT on your purchase.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Who marks the IELTS essays?</summary>
+      <p>Every essay is read and marked by a CELTA-qualified teacher &mdash; never by software. You get a band estimate and corrections within 5 working days.</p>
     </details>
     <details class="faq-item">
       <summary>What exactly is free?</summary>
-      <p>Sixteen complete lessons: the whole Sherpa Tensing tense reference (route map and all four camps), two full lessons each at A1, A2, B1, B2 and C1, and one at C2. They are not trimmed or time-limited &mdash; you get the entire lesson, and you don't need an account to open them.</p>
+      <p>Block Camp Mission 1, a lesson in every IELTS skill, the Sherpa Tensing route map and its first camps, and complete lessons at every level from A1 to C2. They are not trimmed or time-limited &mdash; you get the entire lesson, and you don't need an account to open them.</p>
     </details>
     <details class="faq-item">
       <summary>Do I need an account?</summary>
-      <p>Yes — you'll be asked to log in or create a free account before checkout, so we can link your subscription to your profile.</p>
+      <p>Yes — you'll be asked to log in or create a free account before checkout, so we can link what you buy to your profile.</p>
     </details>
   </div>
 </main>
@@ -498,56 +548,148 @@ const banner = document.getElementById("status-banner");
 function showBanner(msg, cls) {
   banner.textContent = msg;
   banner.className = "status-banner show" + (cls ? " " + cls : "");
+  // The banner sits above the cards; a buyer who clicked near the bottom of
+  // a card would otherwise never see it.
+  try { banner.scrollIntoView({ block: "center", behavior: "smooth" }); } catch (e) {}
 }
 
+// Every buy control on the page: the card buttons and the small link
+// buttons (pay ahead, marking on its own). Only these carry data-plan /
+// data-product, so the lookups below can never land on a whole card.
+const BUY = ".plan-btn[data-plan], .plan-btn[data-product], .plan-btn-link";
+
+function buyControl(plan) {
+  const product = plan.startsWith("product:") ? plan.slice(8) : null;
+  const attr = product ? `[data-product="${product}"]` : `[data-plan="${plan}"]`;
+  return document.querySelector(`.plan-btn${attr}, .plan-btn-link${attr}`);
+}
+
+function resetBuyControls() {
+  document.querySelectorAll(BUY).forEach(b => {
+    b.disabled = false;
+    if (b.dataset.label) b.textContent = b.dataset.label;
+  });
+}
+
+// The plan a signed-out buyer chose, kept across the sign-in round trip.
+// It expires: an intent left behind by an abandoned sign-in must not start
+// a checkout on some later visit.
+const INTENT_KEY = "fe_intended_plan";
+const INTENT_TTL = 30 * 60 * 1000;
+
 // `plan` is a full-plan interval (monthly/semiannual/annual) or, for a
-// standalone plan, "product:blockcamp" / "product:ielts".
+// one-off product, "product:blockcamp" / "product:ielts" /
+// "product:ielts_marking" / "product:marking".
 async function startCheckout(plan) {
-  const buttons = document.querySelectorAll(".plan-btn:not([data-soon])");
+  const buttons = document.querySelectorAll(BUY);
   buttons.forEach(b => b.disabled = true);
 
   const user = await sbGetUser();
   if (!user) {
-    localStorage.setItem("fe_intended_plan", plan);
+    try { localStorage.setItem(INTENT_KEY, JSON.stringify({ plan, t: Date.now() })); } catch (e) {}
     window.location.href = "account.html?redirect=pricing";
     return;
   }
 
   const product = plan.startsWith("product:") ? plan.slice(8) : null;
-  const clicked = document.querySelector(product
-    ? `.plan-btn[data-product="${product}"]` : `.plan-btn[data-plan="${plan}"]`);
-  if (clicked) clicked.textContent = "Redirecting to checkout…";
+  const clicked = buyControl(plan);
+  if (clicked) {
+    if (!clicked.dataset.label) clicked.dataset.label = clicked.textContent;
+    clicked.textContent = "Redirecting to checkout…";
+  }
 
-  const res = await fetch("/api/create-checkout-session", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(product
-      ? { userId: user.id, userEmail: user.email, product }
-      : { userId: user.id, userEmail: user.email, plan }),
-  });
-  const data = await res.json();
+  let data = {};
+  try {
+    // The Worker works out who is buying from this token (or the fe_at
+    // cookie), never from the body: a body naming an account proves nothing.
+    const session = await sbGetSession();
+    const headers = { "Content-Type": "application/json" };
+    if (session && session.access_token) headers.Authorization = `Bearer ${session.access_token}`;
+    const res = await fetch("/api/create-checkout-session", {
+      method: "POST",
+      headers,
+      body: JSON.stringify(product ? { product } : { plan }),
+    });
+    data = await res.json();
+  } catch (e) { /* handled below */ }
 
   if (data.url) {
     window.location.href = data.url;
+  } else if (data.owned && data.error) {
+    // Already bought: the Worker says what they have and where it is.
+    resetBuyControls();
+    showBanner(data.error, "active");
   } else {
-    buttons.forEach(b => b.disabled = false);
+    resetBuyControls();
     showBanner("Something went wrong starting checkout. Please try again.", "");
   }
 }
 
-document.querySelectorAll(".plan-btn").forEach(btn => {
+document.querySelectorAll(BUY).forEach(btn => {
+  btn.dataset.label = btn.textContent;
   btn.addEventListener("click", () => startCheckout(
     btn.dataset.product ? "product:" + btn.dataset.product : btn.dataset.plan));
 });
 
+// Back from Stripe: the browser may restore this page from its cache with
+// every control still disabled and reading "Redirecting to checkout…".
+window.addEventListener("pageshow", e => { if (e.persisted) resetBuyControls(); });
+
+// The founder offer: €12 instead of €19 for the first 50 Term 1 buyers.
+// The count comes from Stripe's redemptions of the promotion code, through
+// the Worker. Anything other than a clear "some left" keeps the €19 card.
+(async function founder() {
+  try {
+    const res = await fetch("/api/founder-status", { cache: "no-store" });
+    if (!res.ok) return;
+    const s = await res.json();
+    const limit = Number(s.limit), left = Number(s.remaining);
+    if (!(limit > 0) || !(left > 0) || left > limit) return;
+    document.getElementById("founder-left").textContent = `${left} of ${limit} left`;
+    document.getElementById("founder").classList.add("show");
+    document.getElementById("bc-price").innerHTML = "&euro;12<span>&nbsp;one payment</span>";
+    document.getElementById("bc-sub").innerHTML =
+      "Founder price: &euro;19 after the first 50.<br>Yours to keep. Nothing renews.";
+    const buy = document.getElementById("bc-buy");
+    buy.dataset.label = "Buy Term 1 — €12";
+    if (!buy.disabled) buy.textContent = buy.dataset.label;
+  } catch (e) { /* keep the regular price */ }
+})();
+
+// The free count, live from the catalogue so it cannot go stale the way a
+// typed number does. The static number in the HTML is the fallback. The
+// route map is a free catalogue row but not a lesson, so it is not counted.
+(async function freeCount() {
+  if (!window.sb) return;
+  try {
+    const { count, error } = await sb.from("lessons")
+      .select("id", { count: "exact", head: true })
+      .eq("access", "free").neq("file", "sherpa-tensing-route-map.html");
+    if (!error && count > 0) document.getElementById("free-count").textContent = count;
+  } catch (e) { /* keep the fallback */ }
+})();
+
 // If we're already logged in and arrived here right after login with an
 // intended plan queued up, continue straight to checkout automatically.
 (async function autoResume() {
-  const intended = localStorage.getItem("fe_intended_plan");
+  let intended = null;
+  try {
+    const raw = localStorage.getItem(INTENT_KEY);
+    if (raw) {
+      const v = JSON.parse(raw);
+      if (v && typeof v.plan === "string" && Date.now() - Number(v.t) < INTENT_TTL) intended = v.plan;
+      else localStorage.removeItem(INTENT_KEY);
+    }
+  } catch (e) {
+    // An old bare-string intent, or no storage: start nothing.
+    try { localStorage.removeItem(INTENT_KEY); } catch (e2) {}
+  }
   if (!intended) return;
+  // Signed out still (a new buyer between "check your email" and the
+  // confirmation link): keep the intent for when they come back signed in.
   const user = await sbGetUser();
   if (!user) return;
-  localStorage.removeItem("fe_intended_plan");
+  try { localStorage.removeItem(INTENT_KEY); } catch (e) {}
   showBanner("Welcome back — continuing to checkout…", "active");
   await startCheckout(intended);
 })();
