@@ -67,7 +67,7 @@ main{max-width:1160px;margin:0 auto;padding:0 24px 80px;}
 .btn-ghost:hover{background:var(--card);text-shadow:none;}
 .hero-art{margin:0;border-radius:18px;overflow:hidden;aspect-ratio:3/2;background:var(--paper-deep);
           box-shadow:0 22px 44px -22px color-mix(in srgb,var(--ink) 50%,transparent);}
-.hero-art img{width:100%;height:100%;object-fit:cover;object-position:50% 40%;display:block;}
+.hero-art img{width:100%;height:100%;object-fit:cover;object-position:50% 0%;display:block;}   /* tops never cut */
 @media (max-width:860px){
   .hero{grid-template-columns:minmax(0,1fr);gap:24px;padding-top:22px;}
   .hero-art{order:-1;aspect-ratio:16/10;}
@@ -168,7 +168,15 @@ body.playing{overflow:hidden;}
 body.playing .play{display:block;position:fixed;inset:0;z-index:80;background:var(--paper-deep);overflow:hidden;}
 body.playing .up-link{display:none;}
 .scene{position:absolute;inset:0;}
-.scene img{width:100%;height:100%;object-fit:cover;object-position:50% 50%;display:block;transition:opacity .45s ease;}
+/* Innes, 2026-10-05: "careful not to chop off tops of pictures". The scenes are 3:2, so a wider
+   screen must lose some height: it comes off the bottom (foreground rock), never the top.
+   An upright screen loses width instead, and sees only the middle third; the people stand on
+   the side opposite the card (the measured quiet side), so the window slides towards them. */
+.scene img{width:100%;height:100%;object-fit:cover;object-position:50% 0%;display:block;transition:opacity .45s ease;}
+@media (max-aspect-ratio:1/1){
+  .play[data-side="right"] .scene img{object-position:22% 0%;}
+  .play[data-side="left"] .scene img{object-position:78% 0%;}
+}
 .scene img.loading{opacity:0;}
 .scene img:not([src]){visibility:hidden;}
 /* the veil: paper behind the card's column only, feathered just past its edge */
