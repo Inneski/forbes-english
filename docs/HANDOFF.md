@@ -15525,3 +15525,4 @@ Worth knowing for the next deck built from white-ground clip art:
   `coverSub` and strips tags without adding a space: a `<br>` needs a space in front of it.
 
 The catalogue insert from the session was refused; Innes ran it (2026-10-06 15:31 UTC).
+Made free the same day at Innes's request (`access = 'free'`; the session's update went through, as an explicitly asked-for write did on 09-26). Hubs and seo.py regenerated.
