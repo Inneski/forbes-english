@@ -15500,3 +15500,20 @@ the apex Custom Domain. `wrangler.toml` now declares both — the apex as
 request to the apex, path and query intact. The CNAME was left alone; the
 route takes precedence. Check with `curl -sI https://www.forbesenglish.com/`
 → 301 to the apex.
+
+## 2026-10-06 — Have Your Say 3 — Key Topics: South Africa (B1–B2): BUILT, waiting on the catalogue row
+
+From Innes's Word sheet "Key topics for your comment in your class test". House style 2 (panels), 35 slides,
+EN/DE/ES. Builder `lesson-template/build/build_comment_sa_kt.py` + `i18n_comment_sa_kt.py`; art from the
+sheet's four pictures via `comment_sa_kt_art.py` (white ground lifted onto the deck's paper; the flag's white
+stripes are kept by a two-hull heart mask; the palette is NOT fed back, see its docstring). Every check-lesson
+gate passes except HEAD; the answered state fits in en/de/es.
+**Blocked:** the `public.lessons` insert was refused. Once Innes runs the SQL below: add the row to
+`tools/lessons.json`, `LESSON_IMAGES` (`LibraryCards/writing-a-comment-south-africa-key-topics.jpg`) and
+`LESSON_TAGS` (`['Geopolitics']`) in `library.html` (re-read from origin first), `build_hubs.py`, `seo.py`,
+check-lesson, `check-library.js --vs-origin`, push.
+```sql
+insert into public.lessons (file, title, level, access, track, deck, video) values
+('writing-a-comment-south-africa-key-topics.html',
+ 'Have Your Say 3 — Key Topics for a Comment: South Africa (B1-B2)', 'B1-B2', 'pro', 'general', true, false);
+```
