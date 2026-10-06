@@ -11,7 +11,7 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
-## 2026-10-05 — Welcome to the Jungle (was The Sun Was Sinking): Block Camp RPG, waiting on one catalogue row
+## 2026-10-05 — Welcome to the Jungle (was The Sun Was Sinking): Block Camp RPG: LIVE, catalogue row 344
 
 Innes sent `The_Drowned_Sun.html` (ChatGPT-kind export, Past Continuous, A2,
 voxel jungle tomb) with "make this forbesenglish style and change title".
@@ -42,19 +42,10 @@ pass is one.
 
 No soundtrack: `deck_music.py` has no track for this page.
 
-**Needs Innes** — the catalogue row (unasked Supabase writes are refused).
-Until it runs, the page is live at its URL but is not in the library, has
-no SEO block and is not in `lesson-meta.json`, so the Worker does not gate
-it as Pro:
-
-```sql
-insert into lessons (file, title, level, access, deck, video, sort_order, track)
-select 'block-camp/welcome-to-the-jungle-rpg.html', 'Welcome to the Jungle — Past Continuous Voxel Jungle RPG (A2)', 'A2', 'pro', false, false, 0, 'blockcamp'
-where not exists (select 1 from lessons where file = 'block-camp/welcome-to-the-jungle-rpg.html');
-```
-
-Then `py tools/seo.py` and commit `library.html`, `sitemap.xml`,
-`llms.txt`, `lesson-meta.json` and the page.
+**Catalogue row: done** (id 344, inserted 2026-10-06 when Innes said "add
+the row"), then `build_hubs.py` and `seo.py` re-run and committed. Library,
+`lesson-meta.json` (Pro gate), sitemap, llms.txt and the RPG hub all list it.
+Nothing left to run.
 
 ## 2026-10-05 — Pricing page relaid out
 
