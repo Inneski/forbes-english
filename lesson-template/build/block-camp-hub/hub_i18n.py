@@ -135,7 +135,7 @@ ADV['de'] = {
     'grand-hotel-rpg': ('Die letzte Nacht im Grand Hotel',
         'Ein Berghotel in seiner letzten Nacht, ein Besitzer, der in elf Sekunden Dunkelheit verschwindet, und eine Frist um Mitternacht. Achtundzwanzig Zeitform-Checks quer durch alle Zeitformen &mdash; fünf davon Hinweise, die ein Alibi platzen lassen &mdash; und drei Entscheidungen: wem du vertraust, was du zuerst rettest und wer die Wahrheit erfahren darf.'),
     'welcome-to-the-jungle-rpg': ('Willkommen im Dschungel',
-        'Nach acht Jahren Stille spricht Nias verschollener Mentor wieder über ein altes Funkgerät. Zwei verzweigte Wege unter dem Dschungel &mdash; unter die überflutete Treppe tauchen oder zum kaputten Kran klettern, den Mann retten, der die Flut verursacht hat, oder die letzte Aufnahme fangen &mdash;, und jede Frage will wissen, was in diesem Moment gerade geschah. Vier Sonnensteine entscheiden, ob das Tal trocken bleibt.'),
+        'Suris Dorf wird überflutet, und ein Sammler will die goldene Sonne, die seine uralte Pumpe antreibt. Zwei verzweigte Wege unter dem Dschungel &mdash; unter die überflutete Treppe tauchen oder zum kaputten Kran klettern, den Sammler retten oder die letzte Aufnahme fangen &mdash;, und jede Frage will nur eines wissen: lief es gerade, oder ist es passiert? Vier Sonnensteine entscheiden, ob das Dorf trocken bleibt.'),
 }
 
 # ── Español ─────────────────────────────────────────────────────────────
@@ -213,7 +213,7 @@ ADV['es'] = {
     'grand-hotel-rpg': ('La última noche en el Grand Hotel',
         'Un hotel de montaña en su última noche, un dueño que desaparece en once segundos de oscuridad y un plazo que termina a medianoche. Veintiocho preguntas sobre los tiempos verbales, con todos los tiempos &mdash; cinco de ellas son pistas que rompen una coartada &mdash; y tres decisiones: en quién confiar, qué salvar primero y quién puede saber la verdad.'),
     'welcome-to-the-jungle-rpg': ('Bienvenido a la jungla',
-        'Tras ocho años de silencio, el mentor desaparecido de Nia vuelve a hablar por una vieja radio. Dos caminos que se bifurcan bajo la selva &mdash; bucear bajo la escalera inundada o trepar a la grúa rota, salvar al hombre que causó la inundación o atrapar la última grabación &mdash;, donde cada pregunta pide qué estaba pasando en ese momento, y cuatro piezas solares deciden si el valle sigue seco.'),
+        'El pueblo de Suri se inunda, y un coleccionista quiere el sol dorado que mueve su antigua bomba. Dos caminos que se bifurcan bajo la selva &mdash; bucear bajo la escalera inundada o trepar a la grúa rota, salvar al coleccionista o atrapar la última grabación &mdash;, donde cada pregunta pide una sola cosa: ¿estaba pasando o pasó? Cuatro piezas solares deciden si el pueblo sigue seco.'),
 }
 
 # ── Français ────────────────────────────────────────────────────────────
@@ -291,7 +291,7 @@ ADV['fr'] = {
     'grand-hotel-rpg': ('La dernière nuit au Grand Hotel',
         'Un hôtel de montagne pendant sa dernière nuit, un propriétaire qui disparaît en onze secondes d’obscurité et une échéance à minuit. Vingt-huit questions sur les temps, tous les temps confondus &mdash; dont cinq indices qui font tomber un alibi &mdash; et trois décisions : à qui faire confiance, quoi sauver en premier et qui a le droit de connaître la vérité.'),
     'welcome-to-the-jungle-rpg': ('Bienvenue dans la jungle',
-        'Après huit ans de silence, le mentor disparu de Nia reparle dans une vieille radio. Deux routes qui bifurquent sous la jungle &mdash; plonger sous l’escalier inondé ou grimper jusqu’à la grue cassée, sauver l’homme qui a causé l’inondation ou rattraper le dernier enregistrement &mdash;, où chaque question demande ce qui se passait à ce moment-là, et quatre tuiles solaires décident si la vallée reste au sec.'),
+        'Le village de Suri est inondé, et un collectionneur veut le soleil d’or qui fait tourner sa pompe ancienne. Deux routes qui bifurquent sous la jungle &mdash; plonger sous l’escalier inondé ou grimper jusqu’à la grue cassée, sauver le collectionneur ou rattraper le dernier enregistrement &mdash;, où chaque question demande une seule chose : est-ce que ça se passait, ou est-ce que c’est arrivé ? Quatre tuiles solaires décident si le village reste au sec.'),
 }
 
 # ── Italiano ────────────────────────────────────────────────────────────
@@ -369,7 +369,7 @@ ADV['it'] = {
     'grand-hotel-rpg': ('L’ultima notte al Grand Hotel',
         'Un hotel di montagna nella sua ultima notte, un proprietario che sparisce in undici secondi di buio e una scadenza a mezzanotte. Ventotto domande sui tempi verbali, con tutti i tempi &mdash; cinque sono indizi che fanno crollare un alibi &mdash; e tre decisioni: di chi fidarti, che cosa salvare per primo e chi può sapere la verità.'),
     'welcome-to-the-jungle-rpg': ('Benvenuti nella giungla',
-        'Dopo otto anni di silenzio, il mentore scomparso di Nia torna a parlare da una vecchia radio. Due percorsi che si diramano sotto la giungla &mdash; tuffarsi sotto la scala allagata o arrampicarsi sulla gru rotta, salvare l’uomo che ha causato l’alluvione o afferrare l’ultima registrazione &mdash; dove ogni domanda chiede che cosa stava succedendo in quel momento, e quattro tessere solari decidono se la valle resta all’asciutto.'),
+        'Il villaggio di Suri si sta allagando, e un collezionista vuole il sole d’oro che muove la sua antica pompa. Due percorsi che si diramano sotto la giungla &mdash; tuffarsi sotto la scala allagata o arrampicarsi sulla gru rotta, salvare il collezionista o afferrare l’ultima registrazione &mdash; dove ogni domanda chiede una cosa sola: stava succedendo, o è successo? Quattro tessere solari decidono se il villaggio resta all’asciutto.'),
 }
 
 # ── Português (Brasil) ──────────────────────────────────────────────────
@@ -447,7 +447,7 @@ ADV['pt'] = {
     'grand-hotel-rpg': ('A última noite no Grand Hotel',
         'Um hotel na montanha em sua última noite, um dono que desaparece em onze segundos de escuridão e um prazo que termina à meia-noite. Vinte e oito perguntas sobre os tempos verbais, com todos os tempos &mdash; cinco delas são pistas que derrubam um álibi &mdash; e três decisões: em quem confiar, o que salvar primeiro e quem pode saber a verdade.'),
     'welcome-to-the-jungle-rpg': ('Bem-vindo à selva',
-        'Depois de oito anos de silêncio, o mentor desaparecido da Nia volta a falar por um velho rádio. Dois caminhos que se ramificam sob a selva &mdash; mergulhar sob a escada inundada ou subir até à grua partida, salvar o homem que causou a inundação ou apanhar a última gravação &mdash;, em que cada pergunta quer saber o que estava a acontecer naquele momento, e quatro peças solares decidem se o vale fica seco.'),
+        'A aldeia da Suri está a inundar, e um colecionador quer o sol dourado que move a sua antiga bomba. Dois caminhos que se ramificam sob a selva &mdash; mergulhar sob a escada inundada ou subir até à grua partida, salvar o colecionador ou apanhar a última gravação &mdash;, em que cada pergunta quer saber uma só coisa: estava a acontecer, ou aconteceu? Quatro peças solares decidem se a aldeia fica seca.'),
 }
 
 # ── Русский ─────────────────────────────────────────────────────────────
@@ -525,7 +525,7 @@ ADV['ru'] = {
     'grand-hotel-rpg': ('Последняя ночь в Гранд-отеле',
         'Горный отель в свою последнюю ночь, хозяин, который исчезает за одиннадцать секунд темноты, и срок до полуночи. Двадцать восемь вопросов на все времена — пять из них улики, которые разбивают алиби, — и три решения: кому доверять, что спасать первым и кто узнает правду.'),
     'welcome-to-the-jungle-rpg': ('Добро пожаловать в джунгли',
-        'После восьми лет молчания пропавший наставник Нии снова говорит по старому радио. Два разветвлённых пути под джунглями &mdash; нырнуть под затопленную лестницу или забраться на сломанный кран, спасти человека, который вызвал наводнение, или поймать последнюю запись &mdash;, где каждый вопрос спрашивает, что происходило в тот момент, а четыре солнечные плитки решают, останется ли долина сухой.'),
+        'Деревню Сури затапливает, а коллекционер хочет золотое солнце, которое приводит в движение её древний насос. Два разветвлённых пути под джунглями &mdash; нырнуть под затопленную лестницу или забраться на сломанный кран, спасти коллекционера или поймать последнюю запись &mdash;, где каждый вопрос спрашивает одно: это происходило или это произошло? Четыре солнечные плитки решают, останется ли деревня сухой.'),
 }
 
 # ── العربية ────────────────────────────────────────────────────────────
@@ -605,7 +605,7 @@ ADV['ar'] = {
     'grand-hotel-rpg': ('الليلة الأخيرة في الفندق الكبير',
         'فندق جبلي في ليلته الأخيرة، ومالك يختفي خلال إحدى عشرة ثانية من الظلام، وموعد نهائي عند منتصف الليل. ثمانية وعشرون سؤالًا عن الأزمنة، من كل الأزمنة &mdash; خمسة منها أدلّة تهدم حجّة غياب &mdash; وثلاثة قرارات: بمن تثق، وماذا تنقذ أولًا، ومن يحقّ له أن يعرف الحقيقة.'),
     'welcome-to-the-jungle-rpg': ('مرحبًا بك في الغابة',
-        'بعد ثماني سنوات من الصمت، يعود صوت معلّم نيا المفقود عبر جهاز راديو قديم. طريقان متفرعان تحت الغابة &mdash; الغوص تحت الدرج المغمور أو التسلّق إلى الرافعة المكسورة، إنقاذ الرجل الذي تسبب في الفيضان أو التقاط التسجيل الأخير &mdash; وكل سؤال يسأل عمّا كان يحدث في تلك اللحظة، وأربع قطع شمسية تقرر ما إذا كان الوادي سيبقى جافًا.'),
+        'قرية سوري تغرق، وجامع تحف يريد الشمس الذهبية التي تشغّل مضختها القديمة. طريقان متفرعان تحت الغابة &mdash; الغوص تحت الدرج المغمور أو التسلّق إلى الرافعة المكسورة، إنقاذ جامع التحف أو التقاط التسجيل الأخير &mdash; وكل سؤال يسأل شيئًا واحدًا: هل كان يحدث، أم حدث؟ وأربع قطع شمسية تقرر ما إذا كانت القرية ستبقى جافة.'),
 }
 
 # ── 中文（简体）─────────────────────────────────────────────────────────
@@ -683,7 +683,7 @@ ADV['zh'] = {
     'grand-hotel-rpg': ('大饭店的最后一夜',
         '一家山中酒店的最后一夜，一个在十一秒黑暗中消失的主人，还有一个午夜截止的期限。二十八道时态检查，覆盖所有时态&mdash;&mdash;其中五道是能拆穿不在场证明的线索&mdash;&mdash;以及三个决定：相信谁，先救什么，让谁知道真相。'),
     'welcome-to-the-jungle-rpg': ('欢迎来到丛林',
-        '沉寂八年之后，尼娅失踪的导师又从一台旧收音机里说话了。丛林之下有两条分岔路线 &mdash; 潜到被淹的台阶下，还是爬上坏掉的起重机；救起引发洪水的人，还是抓住最后一段录音 &mdash; 每道题都问那一刻正在发生什么，四块太阳石板决定山谷能否保持干燥。'),
+        '苏丽的村子正被洪水淹没，一个收藏家想夺走驱动古老水泵的金色太阳。丛林之下有两条分岔路线 &mdash; 潜到被淹的台阶下，还是爬上坏掉的起重机；救下收藏家，还是抓住最后一段录音 &mdash; 每道题只问一件事：当时正在发生，还是已经发生？四块太阳石板决定村子能否保持干燥。'),
 }
 
 # ── 日本語 ──────────────────────────────────────────────────────────────
@@ -761,5 +761,5 @@ ADV['ja'] = {
     'grand-hotel-rpg': ('グランドホテル最後の夜',
         '最後の夜をむかえた山のホテル、11秒の暗闇で消えたオーナー、そして真夜中のしめきり。すべての時制にまたがる28の時制チェック（そのうち5つはアリバイをくずす手がかり）と、3つの決断。だれを信じるか、何を先に守るか、だれに真実を伝えるか。'),
     'welcome-to-the-jungle-rpg': ('ジャングルへようこそ',
-        '八年の沈黙を破り、行方不明だったニアの師の声が古い無線から聞こえてくる。ジャングルの下で分かれる二つの道 &mdash; 水没した階段の下へ潜るか、壊れたクレーンへ登るか。洪水を起こした男を救うか、最後の録音をつかむか &mdash; どの問題もその瞬間に何が起きていたかを問い、四枚の太陽のタイルが谷を守れるかを決める。'),
+        'スリの村が洪水にのまれ、古代のポンプを動かす黄金の太陽を収集家が狙っている。ジャングルの下で分かれる二つの道 &mdash; 水没した階段の下へ潜るか、壊れたクレーンへ登るか。収集家を救うか、最後の録音をつかむか &mdash; どの問題も問うのはひとつだけ：起きている途中だったのか、起きたのか。四枚の太陽のタイルが村を守れるかを決める。'),
 }

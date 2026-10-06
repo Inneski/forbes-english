@@ -46,6 +46,19 @@ games (`sherpa-climb/build.py`, both `--game`s).
 
 ## 2026-10-05 — Welcome to the Jungle (was The Sun Was Sinking): Block Camp RPG: LIVE, catalogue row 344
 
+**Replaced 2026-10-06** with Innes's second export, `Welcome_to_the_Jungle
+(1).html` ("replace with this one"). It is a different lesson: **Past
+Continuous vs Past Simple, A2-B1**, new cast (Suri, Tavi), every question
+rewritten as a contrast, three plates redrawn (radio, echo, dawn; boxes
+unchanged and still on their objects). Same slug, same scoring. Catalogue
+row 344 updated (title, level A2-B1); hub card now carries both grammar
+chips, A2-B1 and a new description in ten languages. Builder docstring lists
+what was fixed: all 19 feedback lines in CAPS form, five distractors that
+were also correct English (four after "while", one "didn't turn"), and a
+shorter briefing note so the BEGIN button stays on screen. Panel checker
+clean (one advisory `tight`, +9px). Nothing left to run. Older notes below
+describe the first export.
+
 Innes sent `The_Drowned_Sun.html` (ChatGPT-kind export, Past Continuous, A2,
 voxel jungle tomb) with "make this forbesenglish style and change title".
 It shipped for one night as The Sun Was Sinking; on 2026-10-06 Innes named
