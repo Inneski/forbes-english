@@ -10,6 +10,11 @@ order pieces, the English example under each card, and the activation chips.
 
 Explanations put the words under discussion in CAPS and cite in double
 quotes, as the other decks do.
+
+coverSub is also the page's meta description and its line on the vocabulary
+hub: tools/seo.py takes the first coverSub it finds (English) and strips the
+tags WITHOUT adding a space, so each <br> has a space in front of it. The
+breaks keep the subtitle inside the gap between the heart and the map.
 """
 import json, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -26,7 +31,7 @@ T = {}
 # ══════════════════════════════════════════════════════════════════════
 T['en'] = dict(
     coverTitle='Key Topics:<br><em>South Africa</em>',
-    coverSub='Five topics for your comment in the class test',
+    coverSub='Independence, apartheid, Nelson Mandela, <br>the Rainbow Nation and South Africa today — <br>five topics for your class-test comment',
     chipLevel='B1–B2', chipFocus='History · society', chipCount='35 slides',
     bankLabel='Word bank:',
 
@@ -113,7 +118,7 @@ T['en'] = dict(
 # ══════════════════════════════════════════════════════════════════════
 T['de'] = dict(
     coverTitle='Kernthemen:<br><em>Südafrika</em>',
-    coverSub='Fünf Themen für deinen Kommentar in der Klassenarbeit',
+    coverSub='Unabhängigkeit, Apartheid, Nelson Mandela, <br>die Regenbogennation und Südafrika heute — <br>fünf Themen für deinen Kommentar',
     chipLevel='B1–B2', chipFocus='Geschichte · Gesellschaft', chipCount='35 Folien',
     bankLabel='Wortliste:',
 
@@ -198,7 +203,7 @@ T['de'] = dict(
 # ══════════════════════════════════════════════════════════════════════
 T['es'] = dict(
     coverTitle='Temas clave:<br><em>Sudáfrica</em>',
-    coverSub='Cinco temas para tu comentario en el examen',
+    coverSub='Independencia, apartheid, Nelson Mandela, <br>la Nación Arcoíris y la Sudáfrica de hoy: <br>cinco temas para tu comentario',
     chipLevel='B1–B2', chipFocus='Historia · sociedad', chipCount='35 diapositivas',
     bankLabel='Banco de palabras:',
 

@@ -15501,19 +15501,27 @@ request to the apex, path and query intact. The CNAME was left alone; the
 route takes precedence. Check with `curl -sI https://www.forbesenglish.com/`
 → 301 to the apex.
 
-## 2026-10-06 — Have Your Say 3 — Key Topics: South Africa (B1–B2): BUILT, waiting on the catalogue row
+## 2026-10-06 — Have Your Say 3 — Key Topics: South Africa (B1–B2): SHIPPED
 
-From Innes's Word sheet "Key topics for your comment in your class test". House style 2 (panels), 35 slides,
-EN/DE/ES. Builder `lesson-template/build/build_comment_sa_kt.py` + `i18n_comment_sa_kt.py`; art from the
-sheet's four pictures via `comment_sa_kt_art.py` (white ground lifted onto the deck's paper; the flag's white
-stripes are kept by a two-hull heart mask; the palette is NOT fed back, see its docstring). Every check-lesson
-gate passes except HEAD; the answered state fits in en/de/es.
-**Blocked:** the `public.lessons` insert was refused. Once Innes runs the SQL below: add the row to
-`tools/lessons.json`, `LESSON_IMAGES` (`LibraryCards/writing-a-comment-south-africa-key-topics.jpg`) and
-`LESSON_TAGS` (`['Geopolitics']`) in `library.html` (re-read from origin first), `build_hubs.py`, `seo.py`,
-check-lesson, `check-library.js --vs-origin`, push.
-```sql
-insert into public.lessons (file, title, level, access, track, deck, video) values
-('writing-a-comment-south-africa-key-topics.html',
- 'Have Your Say 3 — Key Topics for a Comment: South Africa (B1-B2)', 'B1-B2', 'pro', 'general', true, false);
-```
+`writing-a-comment-south-africa-key-topics.html`, from Innes's Word sheet "Key topics for your comment in
+your class test" and its four pictures. House style 2 (panels), 35 slides, EN/DE/ES, Pro. Builder
+`lesson-template/build/build_comment_sa_kt.py` + `i18n_comment_sa_kt.py`; plates from
+`comment_sa_kt_art.py` into `CommentSouthAfrica/kt-*.jpg`. check-lesson clean (LOGO 188/188), answered
+state fits in en/de/es, `check-library.js --vs-origin` PASS. Library: Geopolitics, as Parts 1 and 2; it
+lands on `english-vocabulary.html` with them (no `topics.py` override, same as the siblings).
+
+Worth knowing for the next deck built from white-ground clip art:
+- **Lifting a white ground takes white out of the picture too.** Colour-to-alpha removed the flag's white
+  stripes (they touch the ground at the heart's edge) and made the giraffe's cream translucent. What
+  worked: an alpha ramp (0 at 8 levels off white, 1 at 40) for the ground, plus an exact keep-mask for the
+  heart, built as two convex hulls either side of the cleft-to-tip line. The cleft has to be found by
+  fitting the two lobe edges: the pen stroke crosses it, and the naive lowest point was 46px off.
+- **Do not feed the derived --void back into the hero.** The extractor's void, painted in as the ground,
+  moves the next void a few levels in the same direction every pass. The paper is the void of the hero
+  composed on its original white, taken once.
+- **A two-sided cover is the wrong wash for question slides.** Options sit on the left, so the heart sat
+  under every answer button. Each stage has a one-sided `kt-*-quiz.jpg` for its non-panel slides.
+- **The cover subtitle is the meta description and the hub's line.** `seo.py describe()` takes the first
+  `coverSub` and strips tags without adding a space: a `<br>` needs a space in front of it.
+
+The catalogue insert from the session was refused; Innes ran it (2026-10-06 15:31 UTC).
