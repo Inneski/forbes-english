@@ -149,6 +149,7 @@ EN = {
     'progress':    ('Progress: {k} of {m}', 'screen-reader label of the progress dots'),
     'soundOn':     ('Sound on', 'sound effects button, when on'),
     'soundOff':    ('Sound off', 'sound effects button, when off'),
+    'nightMode':   ('Night mode', 'button that turns the page dark (pressed) or back to day'),
     'campAlt':     ('Camp {n} · {alt} m', 'small line over the tense name on arrival; {alt} is a height in metres'),
     'summitAlt':   ('Summit push · {alt} m', 'the same line for the summit push'),
     'start':       ('Start', 'button on the arrival card'),

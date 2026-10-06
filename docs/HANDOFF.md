@@ -11,6 +11,39 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-10-06 — Sherpa games: a second music track, off-white day, a night mode
+
+Innes: *"Can we have an extra music track to alternate with at touch of
+toggle?"*, then *"the white background would be better a different colour
+scheme more off white and add a dark night mode to toggle colors"*. Both
+games (`sherpa-climb/build.py`, both `--game`s).
+
+- **Dawn**, `block-camp/music/sherpa-dawn.m4a`, from
+  `lesson-template/build/block-camp-music/sherpa_dawn.py`: Summit's
+  companion, the same D-minor pentatonic over D–A, a plucked lute, a hum,
+  64 s, a seamless loop (`0.5 64.5`). Its `loops.json` entry was NOT
+  committed: a peer session had that file open. A rerun of the script
+  writes the entry again.
+- **`camp-music.js` takes a track list**: `data-tracks="file start
+  end|file start end"` on the page's music slot (not the script tag, which
+  `deck_music.py` rewrites). With more than one track it adds a next-track
+  button (slot and deck modes), crossfades about a second, and keeps the
+  choice in `bc-music-track:<first file>`. A page with one track, which is
+  every Block Camp page, is unchanged: three were checked in a browser.
+- **Day/night**: `template.css` re-points the map's tokens. Day is a warm
+  off-white (`--paper #F5EFE6`, card `#FBF8F2`). Night uses the map's
+  `--night` colours with a pale rose accent. Every text pair is 4.5:1 or
+  better in both. The moon button is `#theme`, stored as `sherpa-theme`;
+  with nothing stored the page follows the device. The clouds dim at night.
+  **The route map itself is unchanged.** If Innes wants the same on it,
+  it is the same token block plus the button.
+- **`tools/check_route_map.py` now measures each theme.** It read every hex
+  token on a page as one set, so the night grey for "Tensing" was measured
+  against the day paper (a false 2.06:1). Proved on a broken page.
+- On phones the play bar hides the volume slider so its buttons keep to one
+  row. The start page's utility row wraps; at 360 px it ran 7 px off the
+  edge even before this change.
+
 ## 2026-10-05 — Welcome to the Jungle (was The Sun Was Sinking): Block Camp RPG: LIVE, catalogue row 344
 
 Innes sent `The_Drowned_Sun.html` (ChatGPT-kind export, Past Continuous, A2,

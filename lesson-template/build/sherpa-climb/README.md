@@ -141,3 +141,7 @@ The game stores everything in `localStorage['sherpa.climb.v1']`:
 It never writes `sherpa.progress.v1`: the route map counts that store as finished camps and opens passives from it.
 
 Sound effects are off by default (`sherpa-climb-sound`). The music button is `camp-music.js` in slot mode, which shares the `bc-music` setting with every Sherpa page.
+
+Two tracks, Summit (`route-map.m4a`) and Dawn (`sherpa-dawn.m4a`, `block-camp-music/sherpa_dawn.py`), are listed in `data-tracks` on the music slot in `template.html`, not on the script tag, because `deck_music.py` rewrites that tag. With more than one track the player adds a next-track button; the choice is kept in `bc-music-track:<first track>`. In the play bar on phones the volume slider is hidden so the buttons keep to one row.
+
+Day and night: the games re-point the map's colour tokens at the top of `template.css`. Day is a warm off-white; night uses the map's `--night` colours, kept in `sherpa-theme` (with nothing kept, the page follows the device). The moon button is `#theme`; a script in `<head>` sets `data-theme` before the page paints, so it never flashes white.

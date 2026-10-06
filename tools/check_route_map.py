@@ -230,6 +230,32 @@ def _css_rules(src):
     return out
 
 
+def _theme_tokens(s):
+    """The page's hex colour tokens, once per theme: [('', day), (' at night', night)].
+    A page with a night mode (the games, 2026-10-06) re-points its tokens in rules whose
+    selector names [data-theme="dark"]; read as one set, a night grey was measured on the
+    day paper. Day is every other rule; night is day with those rules over it, a
+    var(--x) in them resolved against the two."""
+    rules = _css_rules(s)
+    day_css = ''.join(b + ';' for sl, b in rules if 'data-theme' not in sl)
+    # digits too: --wash-6 is a token ([a-z-] alone read none of them, and passed a pale wash)
+    day = {k: v.upper() for k, v in re.findall(r'(--[a-z0-9-]+)\s*:\s*(#[0-9A-Fa-f]{6})', day_css)}
+    dark_rules = [b for sl, b in rules if 'data-theme="dark"' in sl and ':root' in sl]
+    if not dark_rules:
+        return [('', day)]
+    night = dict(day)
+    for _ in range(3):                          # var(--a) naming a var(--b): a few passes settle it
+        for b in dark_rules:
+            for k, v in re.findall(r'(--[a-z0-9-]+)\s*:\s*([^;]+)', b):
+                v = v.strip()
+                ref = re.fullmatch(r'var\((--[a-z0-9-]+)\)', v)
+                if ref and ref.group(1) in night:
+                    night[k] = night[ref.group(1)]
+                elif re.fullmatch(r'#[0-9A-Fa-f]{6}', v):
+                    night[k] = v.upper()
+    return [('', day), (' at night', night)]
+
+
 def check_pages(root=ROOT):
     """The course pages themselves. Every rule that paints text on
     var(--accent) (next button, next-camp link, the translation toggle, the
@@ -243,38 +269,43 @@ def check_pages(root=ROOT):
         if not (f.startswith(FAMILY) and f.endswith('.html')):
             continue
         s = open(os.path.join(root, f), encoding='utf-8').read()
-        # digits too: --wash-6 is a token ([a-z-] alone read none of them, and passed a pale wash)
-        tok = {k: v.upper() for k, v in re.findall(r'(--[a-z0-9-]+)\s*:\s*(#[0-9A-Fa-f]{6})', s)}
-        acc = tok.get('--accent')
-        if not acc:
-            bad.append('%s: no --accent' % f)
+        for when, tok in _theme_tokens(s):
+            bad += _check_page_theme(f, s, when, tok)
+    return bad
+
+
+def _check_page_theme(f, s, when, tok):
+    bad = []
+    acc = tok.get('--accent')
+    if not acc:
+        bad.append('%s: no --accent' % f)
+        return bad
+    # the wordmark's "Tensing" is drawn in the accent: it must be seen on its own page.
+    # Descent two's accent was a navy one step off its paper (1.13:1), found 2026-09-26
+    span = [re.search(r'(?<![-a-z])color:\s*var\((--[a-z-]+)\)', b) for sl, b in _css_rules(s)
+            if sl.strip().endswith('.wordmark .brand span')]
+    span = [m.group(1) for m in span if m]
+    if span and tok.get(span[-1]) and tok.get('--paper') and contrast(tok[span[-1]], tok['--paper']) < 3:
+        bad.append('%s: the wordmark\'s "Tensing" (%s %s) is %.2f:1 on the paper%s' % (
+            f, span[-1], tok[span[-1]], contrast(tok[span[-1]], tok['--paper']), when))
+    # any --wash-N is a colour a word rests in, and must be seen like the grey. The route
+    # map's --shimmer-N (tools/sherpa_wash.py) are not: they are a light passing over its
+    # "Tensing", a logotype, whose resting grey is measured above
+    for k in sorted(t for t in tok if t.startswith('--wash-')):
+        if tok.get('--paper') and contrast(tok[k], tok['--paper']) < 3:
+            bad.append('%s: the wordmark wash %s %s is %.2f:1 on the paper%s' % (
+                f, k, tok[k], contrast(tok[k], tok['--paper']), when))
+    for sel, body in _css_rules(s):
+        if not re.search(r'background(?:-color)?:\s*var\(--accent\)\s*(?:;|$)', body):
             continue
-        # the wordmark's "Tensing" is drawn in the accent: it must be seen on its own page.
-        # Descent two's accent was a navy one step off its paper (1.13:1), found 2026-09-26
-        span = [re.search(r'(?<![-a-z])color:\s*var\((--[a-z-]+)\)', b) for sl, b in _css_rules(s)
-                if sl.strip().endswith('.wordmark .brand span')]
-        span = [m.group(1) for m in span if m]
-        if span and tok.get(span[-1]) and tok.get('--paper') and contrast(tok[span[-1]], tok['--paper']) < 3:
-            bad.append('%s: the wordmark\'s "Tensing" (%s %s) is %.2f:1 on the paper' % (
-                f, span[-1], tok[span[-1]], contrast(tok[span[-1]], tok['--paper'])))
-        # any --wash-N is a colour a word rests in, and must be seen like the grey. The route
-        # map's --shimmer-N (tools/sherpa_wash.py) are not: they are a light passing over its
-        # "Tensing", a logotype, whose resting grey is measured above
-        for k in sorted(t for t in tok if t.startswith('--wash-')):
-            if tok.get('--paper') and contrast(tok[k], tok['--paper']) < 3:
-                bad.append('%s: the wordmark wash %s %s is %.2f:1 on the paper' % (
-                    f, k, tok[k], contrast(tok[k], tok['--paper'])))
-        for sel, body in _css_rules(s):
-            if not re.search(r'background(?:-color)?:\s*var\(--accent\)\s*(?:;|$)', body):
-                continue
-            c = re.search(r'(?<![-a-z])color:\s*(#[0-9A-Fa-f]{6}|#[0-9A-Fa-f]{3}\b|var\(--[a-z-]+\))', body)
-            if not c:
-                continue
-            v = c.group(1)
-            col = tok.get(v[4:-1]) if v.startswith('var(') else (
-                '#' + ''.join(ch * 2 for ch in v[1:]) if len(v) == 4 else v).upper()
-            if col and contrast(col, acc) < 4.5:
-                bad.append('%s: %s draws %s on --accent %s at %.2f:1' % (f, sel, v, acc, contrast(col, acc)))
+        c = re.search(r'(?<![-a-z])color:\s*(#[0-9A-Fa-f]{6}|#[0-9A-Fa-f]{3}\b|var\(--[a-z-]+\))', body)
+        if not c:
+            continue
+        v = c.group(1)
+        col = tok.get(v[4:-1]) if v.startswith('var(') else (
+            '#' + ''.join(ch * 2 for ch in v[1:]) if len(v) == 4 else v).upper()
+        if col and contrast(col, acc) < 4.5:
+            bad.append('%s: %s draws %s on --accent %s at %.2f:1%s' % (f, sel, v, acc, contrast(col, acc), when))
     return bad
 
 

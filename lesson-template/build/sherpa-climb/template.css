@@ -1,6 +1,23 @@
 /* The Climb (lesson-template/build/sherpa-climb). The :root lines above this are the route
    map's own tokens, read by build.py. Sizes are written as the camp pages write theirs:
    tools/sherpa_type.py then repeats each px size a step up (+1px under 20px, x1.15 to 39px). */
+/* DAY AND NIGHT (Innes, 2026-10-06: "the white background would be better a different colour
+   scheme more off white and add a dark night mode to toggle colors"). The map's tokens above
+   stay the map's; the games re-point them here. html:root outranks the plain :root they come
+   in, wherever the two blocks land. Day is a warm off-white (paper, deep paper, card), the
+   inks unchanged; night is the map's own --night with its --night-ink and --night-soft, the
+   accent lifted to a pale rose so it reads as text. Every pair the cards use was measured:
+   ink, ink-soft and accent text are 4.8:1 or better on paper, deep paper and card in both,
+   right/wrong 4.5:1 or better on their own tints. The switch is #theme; the choice is kept
+   as 'sherpa-theme', and with none kept the page follows the device. */
+html:root{--paper:#F5EFE6;--paper-deep:#EAE2D6;--card:#FBF8F2;--accent-light:#E6D9D4;--accent-lighter:#F1E9E3;
+  --accent-text:#7A5862;--good-bg:#E3F1E6;--bad-bg:#F8E7E3;color-scheme:light;}
+html:root[data-theme="dark"]{--ink:var(--night-ink);--ink-soft:var(--night-soft);--paper:var(--night);--paper-deep:#0F1C24;
+  --card:#1F3441;--tensing:#A9A9A9;--accent:#C98E9A;--accent-dark:#E6B8C2;--accent-text:#E6B8C2;--accent-light:#335061;
+  --accent-lighter:#22394A;--good:#7DD8A4;--good-bg:#173A2B;--bad:#FF9A8F;--bad-bg:#432427;--locked:#8C9AA3;
+  --lift:0 3px 12px color-mix(in srgb,#05090C 55%,transparent);color-scheme:dark;}
+/* the drifting clouds (tools/sherpa_sky.py) are lit by the moon at night, not the sun */
+html[data-theme="dark"] .sherpa-sky{opacity:.42;filter:brightness(.82) saturate(.8);}
 *{box-sizing:border-box;}
 html{-webkit-text-size-adjust:100%;}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;
@@ -16,11 +33,13 @@ button{font-family:'Inter',sans-serif;}
 .wordmark .brand span{color:var(--tensing);}
 .wordmark .sub{font-size:13px;color:var(--ink-soft);}
 .wm-right{display:flex;align-items:center;justify-content:flex-end;gap:14px;flex-wrap:wrap;}
-.util{display:flex;align-items:center;gap:8px;text-shadow:none;}
+.util{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:8px;text-shadow:none;}
 .ubtn,.util .camp-music-float.camp-music-slot{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;padding:0;cursor:pointer;
   background:color-mix(in srgb,var(--card) 88%,transparent);color:var(--ink);border:1px solid var(--accent-light);box-shadow:none;}
 .ubtn svg{width:20px;height:20px;}
 .ubtn:hover,.util .camp-music-float.camp-music-slot:hover{background:var(--card);border-color:var(--accent);}
+#theme svg .moon{fill:none;}#theme[aria-pressed="true"] svg .moon{fill:currentColor;}
+#theme[aria-pressed="false"] svg{opacity:1;}
 .ubtn[aria-pressed="false"] .snd-on,.ubtn[aria-pressed="true"] .snd-off{display:none;}
 .ubtn[aria-pressed="false"] svg{opacity:.6;}
 .slot{display:contents;}
@@ -89,12 +108,15 @@ main{max-width:1160px;margin:0 auto;padding:0 24px 80px;}
 .momo{margin:12px 0 0;font-size:14px;color:var(--ink-soft);display:flex;align-items:center;gap:12px;}
 .momo img{width:112px;height:140px;object-fit:cover;object-position:50% 30%;border-radius:12px;flex:none;display:block;}
 @media (max-width:1060px){ .team{grid-template-columns:repeat(3,minmax(0,1fr));} }
-/* a phone: one compact row per member, "Ana · the planner" on one line, and the guide's
-   first line with the other two behind "How it works", so the camps are not two screens down */
+/* a phone: three portraits a row (two a row stacked five people three deep and put the camps
+   2031px down), and the guide's first line with the other two behind "How it works", so the
+   camps are not two screens down */
 @media (max-width:640px){
-  .team{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
-  .member{padding:8px 8px 10px;gap:8px;}
-  .momo img{width:84px;height:105px;}
+  .team{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;}
+  .member{padding:6px 6px 8px;gap:6px;}
+  .mtext b{font-size:14px;}
+  .mtext .role{font-size:12px;}
+  .momo img{width:72px;height:90px;}
   .brief{padding:12px 16px;}
   .brief li:nth-child(n+2){display:none;}
   .brief.open li{display:block;}
@@ -389,6 +411,9 @@ dialog.guide-dialog::backdrop{background:color-mix(in srgb,var(--ink) 50%,transp
   .pbar .pb-chip,.pbar .pb-pips{display:none;}
   .sheet-head{display:flex;}
   .pb-utils .lang-select{max-width:7.5em;}
+  /* the volume slider stays on the start page; over the scene the phone's own keys do it, and
+     without it the sound, music, next-track, night and language buttons keep to one row */
+  .pb-utils .camp-vol-pill{display:none;}
   .card,.play[data-side="left"] .card{top:auto;bottom:16px;left:50%;right:auto;width:min(560px,calc(100vw - 32px));transform:translateX(-50%);justify-content:flex-end;}
   .card-in{max-height:calc(100vh - 88px);max-height:calc(100dvh - 88px);padding:18px 18px;}
   .tense{font-size:27px;}
@@ -427,6 +452,7 @@ dialog.guide-dialog::backdrop{background:color-mix(in srgb,var(--ink) 50%,transp
   .play[data-side="left"] .veil{background:linear-gradient(90deg,color-mix(in srgb,var(--paper) 58%,transparent) 0,
                    color-mix(in srgb,var(--paper) 30%,transparent) calc(var(--cardw) + var(--gut)),transparent calc(var(--cardw) + var(--gut) + 60px));}
   .pbar{flex-wrap:wrap;gap:6px;padding:8px 10px;right:calc(var(--cardw) + var(--gut));}
+  .pb-utils .camp-vol-pill{display:none;}
   .play[data-side="left"] .pbar{left:calc(var(--cardw) + var(--gut));right:0;}
   .pbar .pb-chip,.pbar .pb-pips{display:none;}
   .sheet-head{display:flex;margin-bottom:8px;}

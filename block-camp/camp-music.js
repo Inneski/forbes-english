@@ -36,6 +36,25 @@
   var slot = document.querySelector('[data-camp-music-slot]');
   var mode = bar ? 'deck' : rpgSound ? 'rpg' : slot ? 'slot' : 'float';
   var loop = (me.getAttribute('data-loop') || '').split(/\s+/).map(Number);
+  /* MORE THAN ONE TRACK (Innes, 2026-10-06, the Sherpa games: "Can we have an
+     extra music track to alternate with at touch of toggle?"). A page offers
+     several with data-tracks="file start end|file start end" - on its slot,
+     not on this tag, so deck_music.py rewriting the tag never drops them -
+     and gets a switch beside the music button that moves to the next one,
+     remembered per first track ('bc-music-track:' + file). A page with one
+     track (every Block Camp page) is unchanged. */
+  var TRACKS = [{ src: track, loop: loop }];
+  var tracksAttr = (slot && slot.getAttribute('data-tracks')) || me.getAttribute('data-tracks');
+  if (tracksAttr) {
+    var parsed = tracksAttr.split('|').map(function (s) {
+      var p = s.trim().split(/\s+/);
+      return { src: p[0], loop: p.length >= 3 ? [Number(p[1]), Number(p[2])] : [] };
+    }).filter(function (t) { return t.src; });
+    if (parsed.length) TRACKS = parsed;
+  }
+  var TKEY = 'bc-music-track:' + TRACKS[0].src;
+  var cur = 0;
+  try { var ct = parseInt(localStorage.getItem(TKEY), 10); if (ct >= 0 && ct < TRACKS.length) cur = ct; } catch (_) {}
 
   // Innes, 2026-10-01: "lower backing track, dont stop when playing clips".
   // 0.12 (was 0.2, -4.4 dB). Under a clip it keeps playing at half, so the
@@ -43,14 +62,15 @@
   // their own music).
   var LEVEL = 0.12, DUCK = 0.06;
   var T = {
-    en: ['Music', 'Music on', 'Music off', 'Music volume'], de: ['Musik', 'Musik an', 'Musik aus', 'Musiklautstärke'],
-    es: ['Música', 'Música activada', 'Música desactivada', 'Volumen de la música'],
-    fr: ['Musique', 'Musique activée', 'Musique coupée', 'Volume de la musique'],
-    it: ['Musica', 'Musica attiva', 'Musica spenta', 'Volume della musica'],
-    pt: ['Música', 'Música ligada', 'Música desligada', 'Volume da música'],
-    ru: ['Музыка', 'Музыка включена', 'Музыка выключена', 'Громкость музыки'],
-    ar: ['الموسيقى', 'الموسيقى تعمل', 'الموسيقى متوقفة', 'مستوى صوت الموسيقى'],
-    zh: ['音乐', '音乐已开', '音乐已关', '音乐音量'], ja: ['音楽', '音楽オン', '音楽オフ', '音楽の音量']
+    en: ['Music', 'Music on', 'Music off', 'Music volume', 'Next track'],
+    de: ['Musik', 'Musik an', 'Musik aus', 'Musiklautstärke', 'Nächster Titel'],
+    es: ['Música', 'Música activada', 'Música desactivada', 'Volumen de la música', 'Siguiente pista'],
+    fr: ['Musique', 'Musique activée', 'Musique coupée', 'Volume de la musique', 'Morceau suivant'],
+    it: ['Musica', 'Musica attiva', 'Musica spenta', 'Volume della musica', 'Brano successivo'],
+    pt: ['Música', 'Música ligada', 'Música desligada', 'Volume da música', 'Próxima faixa'],
+    ru: ['Музыка', 'Музыка включена', 'Музыка выключена', 'Громкость музыки', 'Следующий трек'],
+    ar: ['الموسيقى', 'الموسيقى تعمل', 'الموسيقى متوقفة', 'مستوى صوت الموسيقى', 'المقطوعة التالية'],
+    zh: ['音乐', '音乐已开', '音乐已关', '音乐音量', '下一首'], ja: ['音楽', '音楽オン', '音楽オフ', '音楽の音量', '次の曲']
   };
   /* VOLUME (Innes, 2026-10-03: "add volume sliders on all block camps").
      A slider 0-100 beside the switch, remembered per viewer ('bc-music-vol').
@@ -114,6 +134,7 @@
     'bottom:calc(12px + env(safe-area-inset-bottom,0px));opacity:0;pointer-events:none;transition:opacity .15s}' +
     '.camp-vol-float.cv-show{opacity:1;pointer-events:auto}' +
     '@media (hover:none){.camp-vol-float{display:none}}' +
+    '.camp-music.camp-music-next{padding:0 9px}' +
     '@media print{.camp-music,.camp-music-rpg,.camp-music-float,.camp-vol,.camp-vol-rpg,.camp-vol-pill{display:none!important}}';
   document.head.appendChild(css);
 
@@ -121,6 +142,11 @@
     'stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><g class="cm-note"><path d="M6 12.5V3.2l7-1.4v9.1"/>' +
     '<circle cx="4.2" cy="12.5" r="1.9"/><circle cx="11.2" cy="10.9" r="1.9"/></g>' +
     '<path class="cm-x" d="M1.5 1.5l13 13"/></svg>';
+  // the next-track switch (slot and deck only; the RPGs have one track)
+  var SKIP = '<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" ' +
+    'stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3.2l7.2 4.8L3 12.8z" fill="currentColor"/>' +
+    '<path d="M13 3.2v9.6"/></svg>';
+  var nextBtn = null;
   var btn = document.createElement('button');
   btn.type = 'button';
   var range = document.createElement('input');
@@ -133,7 +159,15 @@
     btn.innerHTML = NOTE + '<span class="cm-l"></span>';
     volBox = document.createElement('span');
     volBox.className = 'camp-music-grp';
-    volBox.appendChild(btn); volBox.appendChild(range);
+    volBox.appendChild(btn);
+    if (TRACKS.length > 1) {
+      nextBtn = document.createElement('button');
+      nextBtn.type = 'button';
+      nextBtn.className = 'camp-music camp-music-next';
+      nextBtn.innerHTML = SKIP;
+      volBox.appendChild(nextBtn);
+    }
+    volBox.appendChild(range);
     var home = bar.querySelector('.camp-home');
     bar.insertBefore(volBox, home ? home.nextSibling : bar.firstChild);
   } else if (mode === 'rpg') {
@@ -161,6 +195,13 @@
     var bh = btn.offsetHeight;
     if (bh) { volBox.style.height = bh + 'px'; volBox.style.borderRadius = bh / 2 + 'px'; }
     if (parseFloat(getComputedStyle(slot).columnGap) > 0) volBox.style.marginLeft = '0';
+    if (TRACKS.length > 1) {
+      nextBtn = document.createElement('button');
+      nextBtn.type = 'button';
+      nextBtn.className = 'camp-music-float camp-music-slot camp-music-next';
+      nextBtn.innerHTML = SKIP;
+      slot.insertBefore(nextBtn, volBox);
+    }
   } else {
     btn.className = 'camp-music-float';
     btn.innerHTML = NOTE;
@@ -200,6 +241,11 @@
     range.title = L[3];
     range.classList.toggle('cv-off', !on);
     range.style.setProperty('--cv', vol + '%');
+    if (nextBtn) {
+      nextBtn.setAttribute('aria-label', L[4]);
+      nextBtn.title = L[4] + ' (' + (cur + 1) + '/' + TRACKS.length + ')';
+      nextBtn.setAttribute('data-track', String(cur + 1));
+    }
   }
   label();
   if (window.MutationObserver) new MutationObserver(label).observe(document.documentElement,
@@ -234,22 +280,55 @@
       } catch (_) {}
     }
   }
+  /* Each track is fetched and decoded once, on first need. The one sounding
+     runs through its own gain into the master, so a switch crossfades: the
+     old one falls away over about a second while the new one rises. */
+  var bufs = [], voice = null;
+  function load(i) {
+    if (!bufs[i]) bufs[i] = fetch(TRACKS[i].src)
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.arrayBuffer(); })
+      .then(function (b) { return new Promise(function (ok, no) { ctx.decodeAudioData(b, ok, no); }); });
+    return bufs[i];
+  }
+  function play(buf, i, fade) {
+    var lp = TRACKS[i].loop, now = ctx.currentTime;
+    var s = ctx.createBufferSource(), g = ctx.createGain();
+    s.buffer = buf; s.loop = true;
+    if (lp.length === 2 && lp[1] > lp[0]) { s.loopStart = lp[0]; s.loopEnd = lp[1]; }
+    g.gain.setValueAtTime(fade ? 0 : 1, now);
+    if (fade) g.gain.linearRampToValueAtTime(1, now + 1.2);
+    s.connect(g); g.connect(gain);
+    s.start(0, lp.length === 2 ? lp[0] : 0);
+    var old = voice;
+    voice = { s: s, g: g };
+    if (old) {
+      old.g.gain.cancelScheduledValues(now);
+      old.g.gain.setValueAtTime(old.g.gain.value, now);
+      old.g.gain.linearRampToValueAtTime(0, now + 1.0);
+      try { old.s.stop(now + 1.1); } catch (_) {}
+    }
+    started = true;
+    apply();
+  }
   function start() {
     ensureContext();
     if (loading) return loading;
-    loading = fetch(track).then(function (r) { if (!r.ok) throw new Error(r.status); return r.arrayBuffer(); })
-      .then(function (b) { return new Promise(function (ok, no) { ctx.decodeAudioData(b, ok, no); }); })
-      .then(function (buf) {
-        var src = ctx.createBufferSource();
-        src.buffer = buf; src.loop = true;
-        if (loop.length === 2 && loop[1] > loop[0]) { src.loopStart = loop[0]; src.loopEnd = loop[1]; }
-        src.connect(gain);
-        src.start(0, loop.length === 2 ? loop[0] : 0);
-        started = true;
-        apply();
-      })
-      .catch(function () { btn.hidden = true; volBox.hidden = true; });
+    var i = cur;
+    loading = load(i)
+      .then(function (buf) { if (!voice && i === cur) play(buf, i, false); })
+      .catch(function () { if (!voice) { btn.hidden = true; volBox.hidden = true; if (nextBtn) nextBtn.hidden = true; } });
     return loading;
+  }
+  function nextTrack() {
+    cur = (cur + 1) % TRACKS.length;
+    try { localStorage.setItem(TKEY, String(cur)); } catch (_) {}
+    // a request to hear the next one, so it switches the music on
+    if (!on) { on = true; try { localStorage.setItem('bc-music', 'on'); } catch (_) {} }
+    label();
+    unlock();
+    var i = cur;
+    load(i).then(function (buf) { if (i === cur && on) play(buf, i, !!voice); }).catch(function () {});
+    apply();
   }
   function playing() { return !!(ctx && started && ctx.state === 'running'); }
   function target() {
@@ -311,6 +390,7 @@
     if (on) { unlock(); start(); }
     apply(true);
   }
+  if (nextBtn) nextBtn.addEventListener('click', nextTrack);
   range.addEventListener('input', function () { setVol(Number(range.value)); });
   range.addEventListener('keydown', function (e) { e.stopPropagation(); });
   range.addEventListener('pointerup', function () { setTimeout(function () { range.blur(); }, 0); });

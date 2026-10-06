@@ -160,6 +160,19 @@
     b.setAttribute('aria-label', t(sound ? 'soundOn' : 'soundOff'));
     b.title = t(sound ? 'soundOn' : 'soundOff') + ' (S)';
   }
+  function paintTheme() {
+    var b = $('#theme'); if (!b) return;
+    var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    b.setAttribute('aria-pressed', String(dark));
+    b.setAttribute('aria-label', t('nightMode'));
+    b.title = t('nightMode');
+  }
+  function setTheme(dark) {
+    if (dark) document.documentElement.setAttribute('data-theme', 'dark');
+    else document.documentElement.removeAttribute('data-theme');
+    try { localStorage.setItem('sherpa-theme', dark ? 'dark' : 'light'); } catch (e) {}
+    paintTheme();
+  }
   function setSound(on) {
     sound = !!on;
     try { localStorage.setItem('sherpa-climb-sound', sound ? '1' : '0'); } catch (e) {}
@@ -510,8 +523,8 @@
   }
 
   function svgMark(ok) {
-    return ok ? '<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="currentColor"/><path d="M6 10.5l2.6 2.6L14.2 7.4" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-      : '<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="currentColor"/><path d="M7 7l6 6M13 7l-6 6" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/></svg>';
+    return ok ? '<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="currentColor"/><path d="M6 10.5l2.6 2.6L14.2 7.4" fill="none" style="stroke:var(--card)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+      : '<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="currentColor"/><path d="M7 7l6 6M13 7l-6 6" fill="none" style="stroke:var(--card)" stroke-width="2" stroke-linecap="round"/></svg>';
   }
 
   function answer(val, btn) {
@@ -808,6 +821,7 @@
     }
     var sel = $('#lang'); if (sel) sel.value = lang;
     paintSound();
+    paintTheme();
     paintStart();
     paintKeys();
     if (run) {
@@ -852,6 +866,7 @@
     if (e.target && e.target.closest && e.target.closest('#gtog')) toggleGloss();
   });
   $('#snd').addEventListener('click', function () { setSound(!sound); beep(true); });
+  $('#theme').addEventListener('click', function () { setTheme(document.documentElement.getAttribute('data-theme') !== 'dark'); });
   $('#lang').addEventListener('change', function () {
     try { localStorage.setItem(LKEY, this.value); } catch (e) {}
     applyLang(this.value);
