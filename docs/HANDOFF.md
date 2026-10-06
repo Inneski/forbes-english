@@ -550,7 +550,7 @@ the mountain clickable to activate a camp"*. On a 390px phone each map was
 - **Phones (≤640px):** the maps run to the card edges (308 → 340px).
 - New string `pickClose` in `tools/sherpa_hub_i18n.py`, all ten languages.
 
-## 2026-10-05 — Sherpa Tensing: The Descent, the passive game: LIVE, waiting on art and one catalogue row
+## 2026-10-05 — Sherpa Tensing: The Descent, the passive game: LIVE, catalogue row in 2026-10-06, waiting on art
 
 Innes: *"Then we make the descent and we need drama, the yak saves the day on
 a severe weather rescue mission"*.
@@ -583,7 +583,7 @@ a severe weather rescue mission"*.
   where not exists (select 1 from public.lessons where file = 'sherpa-tensing-the-descent.html');
   ```
 
-## 2026-10-03 — Sherpa Tensing: The Climb, a tense game: LIVE, waiting on one catalogue row
+## 2026-10-03 — Sherpa Tensing: The Climb, a tense game: LIVE, catalogue row in 2026-10-06
 
 Innes: *"an interactive game for sherpa tensing to practice the tenses and
 scale the mountain, it will have a continuity of characters and narrative
