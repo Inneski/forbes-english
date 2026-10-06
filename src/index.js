@@ -115,6 +115,8 @@ export default {
         "/fireshield-pitch-roleplay.html": "/fireshield-pitch.html",
         "/fireshield-pitch-part2.html":    "/fireshield-pitch.html",
         "/fireshield-pitch-part3.html":    "/fireshield-pitch.html",
+        // live for one night under its first name; Innes renamed it 2026-10-06
+        "/block-camp/sun-was-sinking-rpg.html": "/block-camp/welcome-to-the-jungle-rpg.html",
       };
       const to = retired[url.pathname] || retired[url.pathname + ".html"];
       if (to) return Response.redirect(url.origin + to, 301);

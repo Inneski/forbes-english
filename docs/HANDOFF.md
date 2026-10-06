@@ -11,12 +11,15 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
-## 2026-10-05 — The Sun Was Sinking: Block Camp RPG, waiting on one catalogue row
+## 2026-10-05 — Welcome to the Jungle (was The Sun Was Sinking): Block Camp RPG, waiting on one catalogue row
 
 Innes sent `The_Drowned_Sun.html` (ChatGPT-kind export, Past Continuous, A2,
 voxel jungle tomb) with "make this forbesenglish style and change title".
-It is **The Sun Was Sinking** now, at `block-camp/sun-was-sinking-rpg.html`,
-built by `lesson-template/build/build_sun_was_sinking.py` (its docstring
+It shipped for one night as The Sun Was Sinking; on 2026-10-06 Innes named
+it: "call it Welcome to the Jungle". It is at
+`block-camp/welcome-to-the-jungle-rpg.html`, built by
+`lesson-template/build/build_welcome_to_the_jungle.py`, and `src/index.js`
+301s the old `sun-was-sinking-rpg.html` to it (the builder's docstring
 lists every change). Camp 4 colour, nine languages, hub card + nine hub
 glosses, `LESSON_IMAGES` line. Panel checker clean (one advisory `tight`
 on the briefing in German, +10px; 64% covers the clasp in Spanish).
@@ -46,8 +49,8 @@ it as Pro:
 
 ```sql
 insert into lessons (file, title, level, access, deck, video, sort_order, track)
-select 'block-camp/sun-was-sinking-rpg.html', 'The Sun Was Sinking — Past Continuous Voxel Jungle RPG (A2)', 'A2', 'pro', false, false, 0, 'blockcamp'
-where not exists (select 1 from lessons where file = 'block-camp/sun-was-sinking-rpg.html');
+select 'block-camp/welcome-to-the-jungle-rpg.html', 'Welcome to the Jungle — Past Continuous Voxel Jungle RPG (A2)', 'A2', 'pro', false, false, 0, 'blockcamp'
+where not exists (select 1 from lessons where file = 'block-camp/welcome-to-the-jungle-rpg.html');
 ```
 
 Then `py tools/seo.py` and commit `library.html`, `sitemap.xml`,

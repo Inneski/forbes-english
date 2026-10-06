@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
-"""The Sun Was Sinking — Past Continuous voxel-jungle RPG (A2).
+"""Welcome to the Jungle — Past Continuous voxel-jungle RPG (A2).
 
-    python3 lesson-template/build/build_sun_was_sinking.py
+    python3 lesson-template/build/build_welcome_to_the_jungle.py
 
-Rebuilds block-camp/sun-was-sinking-rpg.html from
-lesson-template/build/rpg/sun-was-sinking-rpg/data.json — the text of the
-standalone export Innes sent on 2026-10-05 as "The Drowned Sun", pulled out
-by rpg/extract_standalone.py. Glosses come from the export's own `local`
+Rebuilds block-camp/welcome-to-the-jungle-rpg.html from
+lesson-template/build/rpg/welcome-to-the-jungle-rpg/data.json — the text of
+the standalone export Innes sent on 2026-10-05 as "The Drowned Sun", pulled
+out by rpg/extract_standalone.py. Glosses come from the export's own `local`
 blocks, flattened by rpg/make_translations.py.
 
-**Renamed on arrival.** Innes asked for a new title with the file. "The Sun
-Was Sinking" puts the lesson's own tense in its name, and the story earns it:
-the sun is the pump's power source, and the valley floods while it is gone.
-The export's "THE DROWNED SUN" survives only in data.json; the cover title
-and its nine glosses are TITLE below.
+**Renamed twice.** Innes asked for a new title with the file; it shipped for
+one night as "The Sun Was Sinking" (block-camp/sun-was-sinking-rpg.html,
+which src/index.js now redirects here), and on 2026-10-06 he named it:
+"call it Welcome to the Jungle". The export's "THE DROWNED SUN" survives only
+in data.json; the cover title and its nine glosses are TITLE below.
 
 **The ChatGPT kind of export** (docs/CHATGPT-RPG-BRIEF.md), complete in the
 same way as A Fistful of Lies — `meta`, `briefing`, per-scene `hotspot` and
@@ -47,14 +47,14 @@ What this file does that the export did not:
 
 No soundtrack: deck_music.py has no track for this page yet.
 
-Pictures: block-camp/sun-was-sinking-rpg/*.webp, 1536x1024.
+Pictures: block-camp/welcome-to-the-jungle-rpg/*.webp, 1536x1024.
 """
 import json, os, sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'rpg'))
 import rpg
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-SLUG = 'sun-was-sinking-rpg'
+SLUG = 'welcome-to-the-jungle-rpg'
 BASE = os.path.join(HERE, 'rpg', SLUG)
 DATA = json.load(open(os.path.join(BASE, 'data.json'), encoding='utf-8'))
 LANGS = rpg.NINE
@@ -110,10 +110,10 @@ def T(en, **rest):
     return dict(en=en, **rest)
 
 
-TITLE = T('THE SUN WAS SINKING',
-          es='EL SOL SE HUNDÍA', de='DIE SONNE SANK', fr='LE SOLEIL SOMBRAIT',
-          it='IL SOLE AFFONDAVA', pt='O SOL AFUNDAVA', ru='СОЛНЦЕ ТОНУЛО',
-          ar='كانت الشمس تغرق', zh='太阳正在下沉', ja='沈みゆく太陽')
+TITLE = T('WELCOME TO THE JUNGLE',
+          es='BIENVENIDO A LA JUNGLA', de='WILLKOMMEN IM DSCHUNGEL', fr='BIENVENUE DANS LA JUNGLE',
+          it='BENVENUTI NELLA GIUNGLA', pt='BEM-VINDO À SELVA', ru='ДОБРО ПОЖАЛОВАТЬ В ДЖУНГЛИ',
+          ar='مرحبًا بك في الغابة', zh='欢迎来到丛林', ja='ジャングルへようこそ')
 
 BRIEFING_KICKER = T(
     'BEFORE THE TEMPLE',
@@ -468,9 +468,9 @@ def build():
     return {
         'file': 'block-camp/%s.html' % SLUG,
         'img_dir': 'block-camp/%s' % SLUG,
-        'title': 'The Sun Was Sinking — Past Continuous Voxel Jungle RPG (A2)',
+        'title': 'Welcome to the Jungle — Past Continuous Voxel Jungle RPG (A2)',
         'description': 'An interactive A2 English lesson from Forbes English: '
-                       'The Sun Was Sinking — Past Continuous Voxel Jungle RPG (A2).',
+                       'Welcome to the Jungle — Past Continuous Voxel Jungle RPG (A2).',
         'langs': LANGS,
         # camp 4, Past Continuous, on the Block Camp route map. The export
         # asked for #86f5dc; README §1 says the camp colour wins.
