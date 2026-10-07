@@ -11,6 +11,37 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-10-07 — My Cat, Your Dog: possessive adjectives + this/that (A1, young learners): BUILT, waiting on art
+
+From Innes's coursebook sheet for William (`english lessons/student notes/
+William/possessive adjectives.pdf`): *"make a type 2 lesson and ask for
+artwork … english or german toggle in the exercise e.g. you may be asked to
+translate: should appeal to young learners"*. House style 2 (panels), 36
+slides, EN/DE/ES, new cast (Mia, Leo and their pets) and no text from the
+sheet. `build_possessive_adj.py` writes the gitignored preview
+`_forbes-english-possessive-adjectives-a1.html` on placeholder plates it
+draws (`PossessiveAdj/_ph-*.jpg`); the live page is written only once all
+five plates are in AND `PALETTE_LIVE` is pasted (it exits with the command
+otherwise). Brief: `docs/CHATGPT-POSSESSIVE-ART-BRIEF.md`; drop folder
+`incoming/possessive-adj/` exists. All gates pass except HEAD (seo.py runs
+on the live page). No catalogue row yet — not needed until it ships.
+
+**New: a translation exercise with a direction switch** (`translate()` and
+`TRANSLATE_KIT` in the builder). It is an ordinary gap slide, so scoring,
+review and print need nothing new: each row carries `data-ans-en` /
+`data-ans-de` and the switch (Deutsch → English / English → Deutsch, global
+across the deck, locked on a slide once checked) swaps the prompt and the
+answer set. Answers are expanded at build time (optional final punctuation,
+THAT'S/IT'S, ae/oe/ue/ss for umlauts). Feedback prints both sentences side
+by side. Copy it from there if another deck wants one; if a third does,
+move it into `deck.py`.
+
+**Template fix:** the "Answer:" line no longer adds a full stop to an answer
+that already ends in . ? or ! ("This is your fish.." on whole-sentence
+answers). Affects any deck on its next rebuild; nothing else changes.
+
+---
+
 ## 2026-10-06 — Sherpa games: a second music track, off-white day, a night mode
 
 Innes: *"Can we have an extra music track to alternate with at touch of

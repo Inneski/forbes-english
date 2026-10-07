@@ -3152,7 +3152,9 @@ function fillFeedback(fb, missed, gaps) {
     .map(explainOf).filter(Boolean).map(p => ' ' + p).join('');
   fb.innerHTML = (missed.length === 0 ? t('fbCorrect')
     : `${t('fbWrong')} ${t('fbAnswer')} ` +
-      missed.map(g => g.dataset.answer.split('|')[0]).join(', ') + '.') + why;
+      // A whole-sentence answer (a translation) brings its own full stop or
+      // question mark; adding ours printed "This is your fish.."
+      missed.map(g => g.dataset.answer.split('|')[0]).join(', ').replace(/([^.?!])$/, '$1.')) + why;
   fb.className = 'feedback show ' + (missed.length === 0 ? 'ok' : 'no');
 }
 
