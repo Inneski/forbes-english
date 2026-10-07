@@ -43,7 +43,7 @@ optional, THAT'S / IT'S contractions, and ä/ö/ü/ß typed as ae/oe/ue/ss for a
 keyboard without them. "Das ist" is THIS or THAT, so both are accepted;
 "Das hier" is THIS only and "das da drüben" THAT only, which is the point.
 
-**Art.** Five plates, briefed in docs/CHATGPT-POSSESSIVE-ART-BRIEF.md. Until
+**Art.** Five Midjourney plates, briefed in docs/ARTWORK-possessive-adj.md. Until
 all five are in `PossessiveAdj/` this writes a gitignored preview
 (`_forbes-english-possessive-adjectives-a1.html`) on flat placeholder plates
 it draws itself (`PossessiveAdj/_ph-*.jpg`, also gitignored), and creates
@@ -461,7 +461,7 @@ def build():
                I, langs=('en', 'de', 'es'))
     print('wrote %s — %d slides%s' % (
         OUT, slides.count('<section class="slide'),
-        '' if READY else '  (PREVIEW: plates missing, see docs/CHATGPT-POSSESSIVE-ART-BRIEF.md)'))
+        '' if READY else '  (PREVIEW: plates missing, see docs/ARTWORK-possessive-adj.md)'))
 
 
 if __name__ == '__main__':

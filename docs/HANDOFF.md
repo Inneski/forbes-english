@@ -22,7 +22,7 @@ sheet. `build_possessive_adj.py` writes the gitignored preview
 `_forbes-english-possessive-adjectives-a1.html` on placeholder plates it
 draws (`PossessiveAdj/_ph-*.jpg`); the live page is written only once all
 five plates are in AND `PALETTE_LIVE` is pasted (it exits with the command
-otherwise). Brief: `docs/CHATGPT-POSSESSIVE-ART-BRIEF.md`; drop folder
+otherwise). Brief: `docs/ARTWORK-possessive-adj.md`; drop folder
 `incoming/possessive-adj/` exists. All gates pass except HEAD (seo.py runs
 on the live page). No catalogue row yet — not needed until it ships.
 
