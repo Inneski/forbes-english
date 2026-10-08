@@ -226,6 +226,55 @@
   function byN(n) { for (var i = 0; i < CAMPS.length; i++) if (String(CAMPS[i].n) === String(n)) return CAMPS[i]; return null; }
   function isGold(rec) { return !!rec && (rec.gold || rec.best / rec.total >= .75); }
 
+  /* FREE AND PRO (Innes, 2026-10-08: "make first two camps free"). The page is free in the
+     catalogue; its first two stops play for anyone, the others and the last stage for a Pro
+     member. The check is the gate page's own (locked.html): a stored session, then the
+     visitor's profiles and user_plans rows, which row-level security lets them read. It is a
+     lock in the page, not the Worker's: the items are in the page either way. Tests set
+     window.SHERPA_PRO before the page loads. */
+  var FREE = CAMPS.slice(0, 2).map(function (c) { return String(c.n); });
+  var pro = window.SHERPA_PRO === true;
+  try { if (sessionStorage.getItem('sherpa-pro') === '1') pro = true; } catch (e) {}
+  var LOCK = '<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="3" y="7" width="10" height="7.5" rx="1.6" fill="currentColor"/>' +
+    '<path d="M5.4 7V5.2a2.6 2.6 0 0 1 5.2 0V7" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>';
+  function locked(target) { return !pro && FREE.indexOf(String(target)) < 0; }
+  function showPro() { var d = $('#pro'); if (d && !d.open) d.showModal(); }
+  function setPro(on) {
+    pro = !!on;
+    try { if (pro) sessionStorage.setItem('sherpa-pro', '1'); else sessionStorage.removeItem('sherpa-pro'); } catch (e) {}
+    paintStart();
+    if (run && view === 'done') showDone(true);
+  }
+  function checkPro() {
+    if (window.SHERPA_PRO === true) return;
+    var signed = false;
+    try {
+      for (var i = 0; i < localStorage.length; i++) if (/^sb-[a-z0-9]+-auth-token$/.test(localStorage.key(i) || '')) { signed = true; break; }
+    } catch (e) {}
+    if (!signed) { if (pro) setPro(false); return; }
+    function load(src) {
+      return new Promise(function (ok, no) {
+        var s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = no; document.head.appendChild(s);
+      });
+    }
+    var live = function (st) { return st === 'active' || st === 'trialing'; };
+    (window.supabase ? Promise.resolve() : load('vendor/supabase-js-2.116.0.min.js'))
+      .then(function () { return window.sb ? null : load('sb-client.js'); })
+      .then(function () { return window.sb.auth.getSession(); })
+      .then(function (r) {
+        if (!r || !r.data || !r.data.session) return false;
+        return Promise.all([window.sb.from('profiles').select('subscription_status,owner').limit(1),
+                            window.sb.from('user_plans').select('product,status,ends_at')]).then(function (a) {
+          var p = a[0].data && a[0].data[0], now = Date.now();
+          return !!(p && (p.owner === true || live(p.subscription_status))) || (a[1].data || []).some(function (x) {
+            return x.product === 'sherpa' && live(x.status) && (!x.ends_at || Date.parse(x.ends_at) > now);
+          });
+        });
+      })
+      .then(function (yes) { if (yes !== pro) setPro(yes); })
+      .catch(function () {});
+  }
+
   function paintStart() {
     var s = load();
     $$('.pick[data-camp]').forEach(function (b) {
@@ -236,7 +285,16 @@
         best.innerHTML = rec.best + '/' + rec.total + '<span class="sr-only"> · ' + esc(t('srBest', { k: rec.best, m: rec.total })) + '</span>';
         flag.innerHTML = flagSvg(isGold(rec), t(isGold(rec) ? 'flagGold' : 'flagPlain'));
       } else { best.innerHTML = ''; flag.innerHTML = ''; }
+      var lk = $('.pick-lock', b);
+      if (locked(n)) {
+        if (!lk) { lk = document.createElement('span'); lk.className = 'pick-lock'; $('.pick-meta', b).appendChild(lk); }
+        lk.innerHTML = LOCK + '<span class="sr-only">' + esc(t('proOnly')) + '</span>';
+        lk.title = t('proOnly');
+      } else if (lk) lk.parentNode.removeChild(lk);
     });
+    // the note under "Choose a camp": no locks for a Pro member, the free two for anyone else
+    var how = $('.note-line[data-t="chooseHow"], .note-line[data-t="chooseFree"]');
+    if (how) { var hk = pro ? 'chooseHow' : 'chooseFree'; how.setAttribute('data-t', hk); how.textContent = t(hk); marks(how); }
     var go = $('#go'), label = $('#go-label');
     var target = nextTarget(s);
     go.setAttribute('data-target', target == null ? (CAMPS[0] ? CAMPS[0].n : '') : target);
@@ -323,6 +381,7 @@
   function play(target) {
     var stage = stageOf(target);
     if (!stage) return;
+    if (locked(target)) { showPro(); return; }
     lastPick = target;
     var s = load();
     s.last = target; put(s);
@@ -628,7 +687,9 @@
       '<p class="goldline">' + esc(t(gold ? 'goldYes' : 'goldNo')) + '</p>' +
       (st.done ? '<ul class="lines">' + lineHtml(st.done) + '</ul>' : '') +
       '<div class="acts">' +
-      (nx != null ? '<button class="btn btn-main" id="onward" type="button">' + esc(nx === 'summit' ? t('onTop') : t('onTo', { n: nx })) + ' <span aria-hidden="true">&rarr;</span></button>' : '') +
+      (nx != null ? '<button class="btn btn-main" id="onward" type="button">' + esc(nx === 'summit' ? t('onTop') : t('onTo', { n: nx })) +
+        (locked(nx) ? ' <span class="onward-lock" title="' + esc(t('proOnly')) + '">' + LOCK + '<span class="sr-only">' + esc(t('proOnly')) + '</span></span>'
+                    : ' <span aria-hidden="true">&rarr;</span>') + '</button>' : '') +
       '<button class="btn ' + (nx != null ? 'btn-ghost' : 'btn-main') + '" id="tocamps" type="button">' + esc(t('camps')) + '</button></div></div>';
     render(html);
     if ($('#onward')) $('#onward').addEventListener('click', function (e) { if (e.detail > 1) return; play(nx); });
@@ -884,8 +945,8 @@
   function isControl(el) { return !!(el && el.closest && el.closest('button, a, select, input, textarea')); }
   document.addEventListener('keydown', function (e) {
     if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey) return;
-    var dlg = $('#rv');
-    if (dlg && dlg.open) return;                      // the dialog has its own keys (Esc closes it)
+    var dlg = $('#rv'), pdl = $('#pro');
+    if ((dlg && dlg.open) || (pdl && pdl.open)) return;   // the dialogs have their own keys (Esc closes them)
     var tag = (e.target && e.target.tagName) || '';
     var playing = body.classList.contains('playing');
     // Enter held down repeats: in the game that would answer, go on and start again on its
@@ -924,6 +985,7 @@
   window.addEventListener('pageshow', function (e) { if (e.persisted && !run) paintStart(); });
 
   applyLang(initialLang());
+  checkPro();
   var h = (location.hash.match(/^#(camp-(\d+)|summit)$/) || []);
   if (h[2] && byN(+h[2])) play(+h[2]);
   else if (h[1] === 'summit' && SUMMIT) play('summit');

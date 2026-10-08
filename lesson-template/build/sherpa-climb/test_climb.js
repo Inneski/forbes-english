@@ -295,6 +295,8 @@ async function playCamp(p, dev, camp, C, shot, opts) {
 
 async function newPage(b, base, vp, errors, dev) {
   const ctx = await b.newContext({ viewport: vp, reducedMotion: 'no-preference' });
+  // every camp plays: the tests are a Pro member (the free visitor has its own check, freeCheck)
+  await ctx.addInitScript(() => { window.SHERPA_PRO = true; });
   await ctx.addInitScript(([s, k, o]) => { try {
     if (!localStorage.getItem('sherpa.progress.v1')) localStorage.setItem('sherpa.progress.v1', s);
     if (!localStorage.getItem(k)) localStorage.setItem(k, o);
@@ -626,12 +628,55 @@ async function run(b, base, C, dev, vp) {
 
 // The Descent's storm: snow that moves, under the stop's level, and stands still for a
 // reader who asked for less motion. Measured, not looked at: the near layer's transform 1s apart.
+/* A visitor who is not a Pro member (Innes, 2026-10-08: "make first two camps free"): the
+   first two stops play, every other one and the last stage carry a padlock and open the box,
+   and the second stop's "on to" button wears the padlock too. */
+async function freeCheck(b, base, C) {
+  const errors = [];
+  const ctx = await b.newContext({ viewport: { width: 1280, height: 800 } });
+  const p = await ctx.newPage();
+  p.on('pageerror', e => errors.push(e.message));
+  await p.goto(base + PAGE, { waitUntil: 'load' });
+  const free = C.camps.slice(0, 2).map(c => String(c.n));
+  const locks = await p.$$eval('.pick[data-camp]', bs => bs.map(b => [b.getAttribute('data-camp'), !!b.querySelector('.pick-lock')]));
+  ok(await p.$eval('.note-line', e => e.textContent.trim()) === C.en.chooseFree, 'free visitor: the note under "Choose a camp" says the first two are free', await p.$eval('.note-line', e => e.textContent));
+  ok(locks.every(([n, l]) => l === !free.includes(n)), `free visitor: padlocks on every stop but ${free.join(' and ')}`, JSON.stringify(locks));
+  await p.click(`.pick[data-camp="${C.camps[2].n}"]`);
+  ok(await p.$eval('#pro', d => d.open && d.getBoundingClientRect().height > 0 && getComputedStyle(d).visibility !== 'hidden'), `free visitor: stop ${C.camps[2].n} opens the Pro box`);
+  ok(await p.$eval('#pro .btn-main', a => a.getAttribute('href')) === 'pricing.html', 'free visitor: the box leads to pricing.html');
+  await p.keyboard.press('Escape');
+  ok(!(await p.$eval('#pro', d => d.open && d.getBoundingClientRect().height > 0 && getComputedStyle(d).visibility !== 'hidden')) && !(await p.evaluate(() => document.body.classList.contains('playing'))), 'free visitor: Esc closes the box, the camp does not start');
+  await p.goto(base + PAGE + '?free=1#' + (C.summit ? 'summit' : 'camp-' + C.camps[2].n), { waitUntil: 'load' });
+  ok(await p.$eval('#pro', d => d.open && d.getBoundingClientRect().height > 0 && getComputedStyle(d).visibility !== 'hidden'), 'free visitor: a link straight to the last stage opens the box');
+  await p.goto(base + PAGE + '?free=2#camp-' + C.camps[1].n, { waitUntil: 'load' });
+  await p.waitForSelector('#view .v-arrive');
+  ok(await p.evaluate(() => document.body.classList.contains('playing')), `free visitor: stop ${C.camps[1].n} plays`);
+  // the second stop's end: its "on to" button shows the padlock and opens the box
+  await p.click('#view .btn-main');
+  await p.waitForFunction(() => { const r = window.SherpaClimb.state().run; return r && r.cur && document.querySelector('#view .q-line'); });
+  for (let i = 0; i < 40 && !(await p.$('#view .v-done')); i++) {
+    const it = await p.evaluate(() => { const r = window.SherpaClimb.state().run; return r.items[r.cur.idx]; });
+    await p.waitForTimeout(GAP);   // the page ignores a click within 350ms of a line appearing or being answered
+    await answerItem(p, it, false, it.accept ? it.accept[0] : null, false);
+    await p.waitForTimeout(GAP);
+    await p.click('#next');
+    // the next line is dealt (or the camp is done) before the loop answers again
+    await p.waitForFunction(() => { const r = window.SherpaClimb.state().run;
+      return !!document.querySelector('#view .v-done') || (r && r.cur && !r.cur.answered && document.querySelector('#view .q-line')); });
+  }
+  ok(!!(await p.$('#onward .onward-lock')), `free visitor: "on to ${C.camps[2].n}" after stop ${C.camps[1].n} wears the padlock`);
+  if (await p.$('#onward')) { await p.waitForTimeout(GAP); await p.click('#onward'); ok(await p.$eval('#pro', d => d.open && d.getBoundingClientRect().height > 0 && getComputedStyle(d).visibility !== 'hidden'), 'free visitor: and opens the box'); }
+  ok(errors.length === 0, 'free visitor: no page errors', errors.join(' / '));
+  await ctx.close();
+}
+
 async function stormCheck(b, base, C) {
   const stormy = C.camps.find(c => (c.storm || 0) >= 1), calm = C.camps.find(c => !(c.storm || 0));
   if (!ok(!!stormy, 'storm: the content has a stop with storm >= 1 to measure')) return;
   for (const motion of ['no-preference', 'reduce']) {
     const errors = [];
     const ctx = await b.newContext({ viewport: { width: 1280, height: 720 }, reducedMotion: motion });
+    await ctx.addInitScript(() => { window.SHERPA_PRO = true; });
     const p = await ctx.newPage();
     p.on('pageerror', e => errors.push(e.message));
     await p.goto(base + PAGE + '?storm=' + motion + '#camp-' + stormy.n, { waitUntil: 'load' });
@@ -917,7 +962,7 @@ async function gateSize(b, base, C, w, h, LANG) {
         else await Promise.all([
           run(b, base, C, 'desktop', { width: 1280, height: 800 }),
           run(b, base, C, 'phone', { width: 390, height: 844 }),
-        ].concat(GAME === 'descent' ? [stormCheck(b, base, C)] : []));
+        ].concat(GAME === 'descent' ? [stormCheck(b, base, C)] : []).concat([freeCheck(b, base, C)]));
         if (argv.includes('--no-gate')) notes.push('--no-gate: the no-scroll gate was skipped');
         else for (const lang of gateLangs) await Promise.all(GATE_SIZES.map(([w, h]) => gateSize(b, base, C, w, h, lang)));
       } catch (e) {

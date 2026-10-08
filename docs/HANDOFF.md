@@ -42,6 +42,27 @@ answers). Affects any deck on its next rebuild; nothing else changes.
 
 ---
 
+## 2026-10-08 — Sherpa games: the first two camps free
+
+Innes: *"make first two camps free"*. The camp lessons one and two were
+free already, so this is the two games.
+
+- Both catalogue rows are now `access = 'free'`, so the Worker serves the
+  pages to anyone.
+- In the page, the first two stops play for everyone: camps 1 and 2 on
+  The Climb, 12 and 10 on The Descent. Every other stop and the last stage
+  carry a padlock and open a box with "See plans" (pricing.html) and
+  "Sign in" (account.html). The note under "Choose a camp" says so. All
+  of it is in ten languages.
+- A Pro member is recognised the way `locked.html` does it: their own
+  `profiles` and `user_plans` rows through supabase-js. The scripts load
+  only when a stored session exists.
+- **This lock lives in the page, not the Worker.** The items are in the
+  HTML either way. A real lock would mean moving the Pro stops into a
+  separate Pro-flagged file.
+- Details are in `lesson-template/build/sherpa-climb/README.md`. The tests
+  run as Pro (`window.SHERPA_PRO`); `freeCheck` plays as a free visitor.
+
 ## 2026-10-06 — Sherpa games: a second music track, off-white day, a night mode
 
 Innes: *"Can we have an extra music track to alternate with at touch of
