@@ -110,6 +110,25 @@ done already: Cloudflare Web Analytics has been on for forbesenglish.com
 visit in the previous 24 hours.** That is the number everything below is
 measured against. Steps 4 and 5 remain.
 
+**Reading, 2026-10-08.** Cloudflare (bots excluded): 17 visits in 24 h,
+274 in 7 days, about 360 in 30 days. The 7-day burst is social, not search:
+`m.facebook.com` 218, `instagram.com` 28, direct 15. By country, Ukraine
+210, US 47, UAE 9. Mobile 261 of 274, mostly the Facebook in-app browser.
+It ran from Mon 5 to Wed 7 October and stopped after midday on the 7th.
+249 of the 274 visits landed on `/`, and there were 294 page views, so
+almost every visit was one page and out. Search Console, 11 Sep to
+6 Oct: 8 clicks and 47 impressions, average position 28. Six of the
+clicks were from Portugal to the home page. The top query by
+impressions was "phrasal verbs" (9 impressions, 0 clicks), on
+`phrasal-verbs.html`.
+
+How to read it again: both dashboards open in Innes's Chrome.
+Cloudflare's sign-in expires, and signing in again is his click.
+Web Analytics URLs take `&time-window=` in minutes (1440, 10080, 43200).
+The 30-day view is sampled (every figure comes out a multiple of ten), but
+the 7-day view gives exact counts. The time chart is a canvas, so read its
+shape from a screenshot.
+
 1. **Google Search Console.** search.google.com/search-console → add a
    *Domain* property for `forbesenglish.com` → verify with the DNS TXT
    record it gives you, added in the Cloudflare DNS panel (the domain's
