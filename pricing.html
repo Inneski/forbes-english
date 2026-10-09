@@ -528,7 +528,7 @@
       </ul>
     </div>
   </div>
-  <p class="vat-note">All prices in euros and include VAT. Checkout may show the amount in your own currency.</p>
+  <p class="vat-note">No account needed to buy: pay, and you are signed in. All prices in euros and include VAT. Checkout may show the amount in your own currency.</p>
 
   <section class="free-tier" id="free">
     <div class="free-head">
@@ -602,7 +602,7 @@
     </details>
     <details class="faq-item">
       <summary>Do I need an account?</summary>
-      <p>Yes — you'll be asked to log in or create a free account before checkout, so we can link what you buy to your profile.</p>
+      <p>No. Press Buy and pay; your account is made from the email you give at checkout, and you are signed in as soon as you have paid. If that email already has an account, what you buy goes on it. You can set a password afterwards, on your account page.</p>
     </details>
   </div>
 </main>
@@ -638,8 +638,10 @@ function resetBuyControls() {
 }
 
 // The plan a signed-out buyer chose, kept across the sign-in round trip.
-// It expires: an intent left behind by an abandoned sign-in must not start
-// a checkout on some later visit.
+// Nothing sets it since guest checkout (2026-10-09); autoResume still
+// honours one a browser stored before, and lets it expire: an intent left
+// behind by an abandoned sign-in must not start a checkout on some later
+// visit.
 const INTENT_KEY = "fe_intended_plan";
 const INTENT_TTL = 30 * 60 * 1000;
 
@@ -650,13 +652,10 @@ async function startCheckout(plan) {
   const buttons = document.querySelectorAll(BUY);
   buttons.forEach(b => b.disabled = true);
 
-  const user = await sbGetUser();
-  if (!user) {
-    try { localStorage.setItem(INTENT_KEY, JSON.stringify({ plan, t: Date.now() })); } catch (e) {}
-    window.location.href = "account.html?redirect=pricing";
-    return;
-  }
-
+  // Signed in or not, straight to checkout. Signed out, Stripe asks for the
+  // email and the account is made from it after payment (the Worker's guest
+  // checkout). Until 2026-10-09 a signed-out buyer was sent to make an
+  // account and confirm an email first, and nobody got through.
   const product = plan.startsWith("product:") ? plan.slice(8) : null;
   const clicked = buyControl(plan);
   if (clicked) {

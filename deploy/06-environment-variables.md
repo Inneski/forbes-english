@@ -66,12 +66,40 @@ products. In the Stripe dashboard:
      chargeback closes a one-off grant and clears its essay credits. Nothing
      one-off expires, so without these a refunded buyer keeps everything.
 
-Checkout needs the buyer signed in: the Worker reads the Supabase token from
-the Authorization header (pricing.html sends it) or the `fe_at` cookie and
-asks Supabase who it is. Nothing in the request body decides the account.
-It refuses (409, with a sentence the page shows) a second Term 1, a second
+A signed-in buyer is read from the Supabase token in the Authorization header
+(pricing.html sends it) or the `fe_at` cookie; Supabase says who it is, and
+nothing in the request body decides the account. For a signed-in buyer it
+refuses (409, with a sentence the page shows) a second Term 1, a second
 IELTS, IELTS + Marking for an IELTS owner and a second Forbes English Pro;
 marking can always be bought again.
+
+**Nobody needs an account to buy (guest checkout, 2026-10-09).** Without a
+sign-in the checkout is a guest one: Stripe asks for the email, and the
+webhook gives the purchase to the account with that email, making it (already
+confirmed, `user_metadata.via = "checkout"`, `needs_password`) when there is
+none. The success page (`account.html?claim=<session>`) calls
+`POST /api/claim-checkout`, which fulfils the purchase at once and, for an
+account the purchase made and nobody has signed into, hands out a one-time
+sign-in that the page trades for a session: the buyer lands signed in with
+no email to wait for, and the account page offers "Set a password". It all
+uses `SUPABASE_SERVICE_ROLE_KEY` (Auth admin API); `/api/paywall-status`
+reports `guestCheckout`. Rows: `public.guest_checkouts`
+(`deploy/schema-funnel.sql`).
+
+**Supabase's own email reaches only the project team's addresses** until a
+custom SMTP server is set (Authentication → Emails → SMTP Settings). Until
+then a stranger never gets a sign-up confirmation or a password reset. Use
+Resend's SMTP (host `smtp.resend.com`, port 465, user `resend`, password = a
+Resend API key, sender `info@forbesenglish.com`) once Resend is set up below:
+one setup serves both.
+
+**The funnel count**: the Worker writes campaign landings (any `utm_` tag or
+ad click id), visits to the pages that lead to a sale, every Buy press and
+its outcome, every sale and every success-page claim to
+`public.funnel_events` — no IP, no account, no cookie. `FUNNEL = "off"` in
+`[vars]` stops it. Read it in the SQL editor:
+`select * from funnel_daily order by day desc;` (more in
+`deploy/schema-funnel.sql`).
 
 **`TERMS_URL`** (a `[vars]` entry, the terms page's address) makes every
 checkout ask the buyer to agree to the terms and to immediate access, which

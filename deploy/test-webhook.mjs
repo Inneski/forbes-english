@@ -46,7 +46,12 @@ const env = {
 // ── stubs ────────────────────────────────────────────────────────────────
 let calls, promo, sessionFail, lineItems, insertFail, patchFails, lineItemsFail, inserted;
 let subs, piSessions, logs, holdings, holdFail;
+// Guest checkout: the accounts Supabase knows (email -> auth user), the
+// Checkout Sessions Stripe would return by id, guest_checkouts rows, and
+// the funnel rows written.
+let accounts, authUsers, createFail, linkFail, stripeSessions, guestRows, funnel;
 const USERS = { 'tok-1': { id: 'user-1', email: 'p@example.com' } };
+const prefer = (opts) => String(opts.headers?.Prefer || '');
 
 function li(product, meta, name) {
   return [{ quantity: 1, price: { id: 'price_x', product: { id: 'prod_x', name: name || product, metadata: { product, ...meta } } } }];
@@ -107,6 +112,61 @@ globalThis.fetch = async (url, opts = {}) => {
     if (holdFail) return new Response('{"message":"down"}', { status: 503 });
     return new Response(JSON.stringify(holdings.profile ? [holdings.profile] : []), { status: 200 });
   }
+  if (u === 'https://sb.test/rest/v1/funnel_events' && method === 'POST') {
+    funnel.push(JSON.parse(opts.body));
+    return new Response(null, { status: 201 });
+  }
+  // A Checkout Session by id (the success page's claim).
+  const gs = u.match(/^https:\/\/api\.stripe\.com\/v1\/checkout\/sessions\/([^/?]+)$/);
+  if (gs && method === 'GET') {
+    const s = stripeSessions[decodeURIComponent(gs[1])];
+    return s ? new Response(JSON.stringify(s), { status: 200 }) : new Response('{"error":{}}', { status: 404 });
+  }
+  // The account for an email, as PostgREST's ilike would match it (case
+  // ignored, "_" any one character) so the exact comparison is the Worker's.
+  if (u.startsWith('https://sb.test/rest/v1/profiles?select=id,email') && method === 'GET') {
+    const pat = decodeURIComponent(new URL(u).searchParams.get('email').replace(/^ilike\./, ''));
+    const re = new RegExp('^' + pat.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/_/g, '.').replace(/[%*]/g, '.*') + '$', 'i');
+    const rows = [...accounts].filter(([e]) => re.test(e)).map(([email, id]) => ({ id, email }));
+    return new Response(JSON.stringify(rows), { status: 200 });
+  }
+  if (u === 'https://sb.test/auth/v1/admin/users' && method === 'POST') {
+    const b = JSON.parse(opts.body);
+    if (createFail) return new Response('{"msg":"boom"}', { status: 500 });
+    if ([...accounts.keys()].some((e) => e.toLowerCase() === b.email)) return new Response('{"error_code":"email_exists"}', { status: 422 });
+    const id = `new-${accounts.size + 1}`;
+    accounts.set(b.email, id);
+    authUsers[id] = { id, email: b.email, email_confirm: b.email_confirm, user_metadata: b.user_metadata, last_sign_in_at: null };
+    return new Response(JSON.stringify(authUsers[id]), { status: 200 });
+  }
+  const au = u.match(/^https:\/\/sb\.test\/auth\/v1\/admin\/users\/([^/?]+)$/);
+  if (au && method === 'GET') {
+    const usr = authUsers[decodeURIComponent(au[1])];
+    return usr ? new Response(JSON.stringify(usr), { status: 200 }) : new Response('{}', { status: 404 });
+  }
+  if (u === 'https://sb.test/auth/v1/admin/generate_link' && method === 'POST') {
+    if (linkFail) return new Response('{}', { status: 500 });
+    const b = JSON.parse(opts.body);
+    return new Response(JSON.stringify({ action_link: `https://sb.test/auth/v1/verify?token=x&type=magiclink`, hashed_token: `th-${b.email}`, email: b.email }), { status: 200 });
+  }
+  if (u.startsWith('https://sb.test/rest/v1/guest_checkouts')) {
+    const q = new URL(u).searchParams;
+    const sid = (q.get('session_id') || '').replace(/^eq\./, '');
+    if (method === 'GET') return new Response(JSON.stringify(guestRows.has(sid) ? [guestRows.get(sid)] : []), { status: 200 });
+    if (method === 'POST') {
+      const row = JSON.parse(opts.body);
+      if (guestRows.has(row.session_id)) return new Response('[]', { status: 201 });
+      guestRows.set(row.session_id, { ...row, claimed_at: null });
+      return new Response(JSON.stringify([row]), { status: 201 });
+    }
+    if (method === 'PATCH') {
+      const row = guestRows.get(sid);
+      const ok = row && (q.get('claimed_at') !== 'is.null' || row.claimed_at === null);
+      if (ok) Object.assign(row, JSON.parse(opts.body));
+      return /return=representation/.test(prefer(opts))
+        ? new Response(JSON.stringify(ok ? [row] : []), { status: 200 }) : new Response(null, { status: 204 });
+    }
+  }
   if (u.startsWith('https://sb.test/rest/v1/') && method === 'PATCH') {
     if (patchFails) return new Response('{}', { status: 500 });
     // A user_plans row by its Checkout Session: changed for real, and sent
@@ -138,6 +198,9 @@ function reset() {
   sessionFail = null; lineItems = {}; insertFail = false; patchFails = false; lineItemsFail = false;
   inserted = new Map(); subs = {}; piSessions = {};
   holdings = { plans: [], profile: null }; holdFail = false;
+  accounts = new Map([['p@example.com', 'user-1'], ['Old.Parent@example.com', 'old-1']]);
+  authUsers = { 'user-1': { id: 'user-1', email: 'p@example.com', user_metadata: {}, last_sign_in_at: '2026-10-01T00:00:00Z' } };
+  createFail = false; linkFail = false; stripeSessions = {}; guestRows = new Map(); funnel = [];
 }
 
 async function sign(payload, t = Math.floor(Date.now() / 1000)) {
@@ -208,10 +271,20 @@ reset();
 // ── checkout: who is buying ──────────────────────────────────────────────
 reset();
 {
+  // Not signed in: a guest checkout. Stripe asks for the email; nothing
+  // names an account, and the success page gets the session id to claim.
   const none = await checkout({ product: 'ielts' }, { token: null });
-  check(none.res.status === 401 && sessionsPosted().length === 0, 'no sign-in -> 401, nothing sent to Stripe');
+  const g = sessionsPosted()[0];
+  check(none.res.status === 200 && none.data.url && g['metadata[guest]'] === '1' && !g['metadata[supabase_user_id]'] &&
+    !g.customer_email && g.success_url === 'https://x.test/account.html?checkout=success&cs={CHECKOUT_SESSION_ID}&claim={CHECKOUT_SESSION_ID}',
+    'no sign-in -> a guest checkout: no account, no email, the success page can claim it');
+  check(funnel.some((f) => f.event === 'checkout' && f.guest === true && f.outcome === 'created' && f.product === 'ielts'),
+    'the guest checkout is counted (funnel: checkout, guest, created)');
+  calls = [];
   const bad = await checkout({ product: 'ielts' }, { token: 'forged' });
-  check(bad.res.status === 401 && sessionsPosted().length === 0, 'a token Supabase rejects -> 401');
+  check(bad.res.status === 200 && sessionsPosted()[0]['metadata[guest]'] === '1' && !sessionsPosted()[0]['metadata[supabase_user_id]'],
+    'a token Supabase rejects -> a guest checkout, never the account it claims to be');
+  calls = [];
   const viaCookie = await checkout({ product: 'ielts' }, { token: null, cookie: 'x=1; fe_at=tok-1' });
   check(viaCookie.data.url && sessionsPosted()[0]['metadata[supabase_user_id]'] === 'user-1', 'the fe_at cookie signs the buyer in too');
   calls = [];
@@ -365,10 +438,10 @@ reset(); lineItems.cs_odd = li('sherpa', {});
 }
 reset();
 {
-  const r = await webhook(paidEvent('cs_anon', { metadata: {} }));
-  check(r.status === 200 && calls.length === 0 && logs.some((l) => /cs_anon/.test(l)),
-    'paid session with no site user (a Payment Link) -> logged by its session id, nothing granted');
-  check(!logs.some((l) => /parent@example\.com/.test(l)), 'the buyer\'s email address is not written to the log');
+  const r = await webhook(paidEvent('cs_anon', { metadata: {}, customer_details: {} }));
+  check(r.status === 200 && insertsMade().length === 0 && logs.some((l) => /cs_anon/.test(l)),
+    'paid session with no site user and no email -> logged by its session id, nothing granted');
+  check(!logs.some((l) => /@example\.com/.test(l)), 'no buyer\'s email address is written to the log');
 }
 reset();
 {
@@ -547,6 +620,160 @@ reset();
     'TERMS_URL set -> every checkout asks for the terms and immediate access, linking the page');
   const banned = posted.flatMap((p) => Object.keys(p).filter((k) => MP_FORBIDDEN.test(k)));
   check(banned.length === 0, 'and the consent parameters are not ones Managed Payments forbids');
+}
+
+// ── guest checkout: the full plan, and the owned refusal is counted ─────
+reset();
+{
+  const { res } = await checkout({ plan: 'monthly' }, { token: null });
+  const s = sessionsPosted()[0];
+  check(res.status === 200 && s.mode === 'subscription' && s['metadata[guest]'] === '1' && s['subscription_data[metadata][guest]'] === '1' &&
+    !s.customer_email && !s['metadata[supabase_user_id]'] && /&claim=\{CHECKOUT_SESSION_ID\}$/.test(s.success_url),
+    'guest Forbes English Pro: subscription, guest in both metadata, claimable success page');
+  holdings.plans = [{ product: 'blockcamp', status: 'active', ends_at: null, term: 1 }];
+  await checkout({ product: 'blockcamp' });
+  check(funnel.some((f) => f.event === 'checkout' && f.outcome === 'owned' && f.guest === false), 'an "already have it" refusal is counted as owned');
+}
+
+// ── guest checkout: the webhook finds or makes the account ──────────────
+const guestEvent = (id, email, extra = {}, type) => paidEvent(id, { metadata: { guest: '1', product: 'blockcamp' },
+  customer_details: { email }, ...extra }, type);
+reset(); lineItems.cs_g1 = li('blockcamp', { term: '1' }, 'Block Camp Term 1');
+{
+  const r = await webhook(guestEvent('cs_g1', 'New.Parent@Example.com'));
+  const row = insertsMade()[0];
+  const made = Object.values(authUsers).find((x) => x.email === 'new.parent@example.com');
+  check(r.status === 200 && made && made.email_confirm === true && made.user_metadata.via === 'checkout' && made.user_metadata.needs_password === true,
+    'guest, new email: the account is made, confirmed, marked as made by checkout, email lower-cased');
+  check(row && row.user_id === made.id && row.product === 'blockcamp' && guestRows.get('cs_g1').user_id === made.id &&
+    guestRows.get('cs_g1').created_account === true, 'and the purchase is on it, recorded in guest_checkouts');
+  check(funnel.filter((f) => f.event === 'paid').length === 1 && funnel.find((f) => f.event === 'paid').guest === true, 'the sale is counted once, as a guest sale');
+  const again = await webhook(guestEvent('cs_g1', 'new.parent@example.com'));
+  check(again.status === 200 && Object.keys(authUsers).length === 2 && funnel.filter((f) => f.event === 'paid').length === 1,
+    'redelivered: no second account, no second count');
+}
+reset(); lineItems.cs_g2 = li('ielts', {}, 'IELTS');
+{
+  const r = await webhook(guestEvent('cs_g2', 'old.parent@EXAMPLE.com'));
+  check(r.status === 200 && insertsMade()[0].user_id === 'old-1' && Object.keys(authUsers).length === 1 &&
+    guestRows.get('cs_g2').created_account === false, 'guest, email of an existing account (any case): the purchase goes on it, nothing made');
+}
+reset(); lineItems.cs_g3 = li('ielts', {}, 'IELTS');
+{
+  // The buyer's "_" is a one-letter wildcard to ilike, so "o_ther" also
+  // finds "oxther"; only the exact comparison keeps the two apart.
+  accounts.set('oxther@example.com', 'other-1');
+  const r = await webhook(guestEvent('cs_g3', 'o_ther@example.com'));
+  check(r.status === 200 && insertsMade()[0] && insertsMade()[0].user_id !== 'other-1' &&
+    Object.values(authUsers).some((x) => x.email === 'o_ther@example.com'),
+    'an "_" in the buyer\'s address does not match another account; theirs is made');
+}
+reset(); lineItems.cs_g4 = li('ielts', {}, 'IELTS'); createFail = true;
+{
+  const r = await webhook(guestEvent('cs_g4', 'fresh@example.com'));
+  check(r.status === 500 && insertsMade().length === 0 && !guestRows.has('cs_g4'), 'account cannot be made -> 500, Stripe redelivers, nothing granted');
+}
+reset();
+{
+  subs.sub_g = { id: 'sub_g', status: 'active', customer: 'cus_g', items: { data: [{ current_period_end: 1793000000 }] }, metadata: { plan: 'monthly', guest: '1' } };
+  const ev = { type: 'checkout.session.completed', created: 1791200000, data: { object: { id: 'cs_gsub', mode: 'subscription', customer: 'cus_g',
+    subscription: 'sub_g', metadata: { guest: '1', plan: 'monthly' }, customer_details: { email: 'sub.parent@example.com' } } } };
+  const r = await webhook(ev);
+  const made = Object.values(authUsers).find((x) => x.email === 'sub.parent@example.com');
+  const p = patches().find((x) => x.url.includes('/profiles?id='));
+  check(r.status === 200 && made && p && p.url.includes(`id=eq.${made.id}`) && p.body.subscription_status === 'active' && p.body.plan === 'monthly',
+    'guest Forbes English Pro: account made, subscription written onto it');
+  check(funnel.some((f) => f.event === 'paid' && f.product === 'monthly' && f.guest === true), 'and counted as a guest sale');
+}
+
+// ── the success page's claim ─────────────────────────────────────────────
+async function claim(cs) {
+  const res = await mod.default.fetch(new Request('https://x.test/api/claim-checkout', {
+    method: 'POST', body: JSON.stringify({ cs }), headers: { 'Content-Type': 'application/json' } }), env, ctx);
+  return { res, data: await res.json() };
+}
+const NOW = Math.floor(Date.now() / 1000);
+const guestSession = (id, email, extra = {}) => ({ id, object: 'checkout.session', mode: 'payment', status: 'complete', payment_status: 'paid',
+  created: NOW - 60, metadata: { guest: '1', product: 'blockcamp' }, customer_details: { email }, ...extra });
+reset(); lineItems.cs_live_c1aaaaaaaaaa = li('blockcamp', { term: '1' }, 'Block Camp Term 1');
+{
+  stripeSessions.cs_live_c1aaaaaaaaaa = guestSession('cs_live_c1aaaaaaaaaa', 'claim.me@example.com');
+  const a = await claim('cs_live_c1aaaaaaaaaa');
+  const made = Object.values(authUsers).find((x) => x.email === 'claim.me@example.com');
+  check(a.res.status === 200 && a.data.state === 'new_account' && a.data.token_hash === 'th-claim.me@example.com' && a.data.email === 'claim.me@example.com',
+    'claim before the webhook: the account is made and the buyer gets a one-time sign-in');
+  check(insertsMade().length === 1 && insertsMade()[0].user_id === made.id && guestRows.get('cs_live_c1aaaaaaaaaa').claimed_at,
+    'and the purchase is already on it (fulfilled by the claim), the claim marked used');
+  const b = await claim('cs_live_c1aaaaaaaaaa');
+  check(b.data.state === 'existing_account' && !b.data.token_hash, 'a second claim of the same checkout gets no sign-in');
+  const w = await webhook(guestEvent('cs_live_c1aaaaaaaaaa', 'claim.me@example.com'));
+  check(w.status === 200 && Object.keys(authUsers).length === 2 && inserted.size === 1 && funnel.filter((f) => f.event === 'paid').length === 1,
+    'the webhook arriving afterwards: same account, same row, one sale counted');
+}
+reset(); lineItems.cs_live_c2aaaaaaaaaa = li('blockcamp', { term: '1' });
+{
+  stripeSessions.cs_live_c2aaaaaaaaaa = guestSession('cs_live_c2aaaaaaaaaa', 'signed.in@example.com');
+  await webhook(guestEvent('cs_live_c2aaaaaaaaaa', 'signed.in@example.com'));
+  const made = Object.values(authUsers).find((x) => x.email === 'signed.in@example.com');
+  made.last_sign_in_at = '2026-10-09T10:00:00Z';
+  const a = await claim('cs_live_c2aaaaaaaaaa');
+  check(a.data.state === 'existing_account' && !a.data.token_hash, 'an account made by checkout but already signed into: no sign-in handed out');
+}
+reset(); lineItems.cs_live_c3aaaaaaaaaa = li('ielts', {});
+{
+  stripeSessions.cs_live_c3aaaaaaaaaa = guestSession('cs_live_c3aaaaaaaaaa', 'p@example.com');
+  const a = await claim('cs_live_c3aaaaaaaaaa');
+  check(a.data.state === 'existing_account' && a.data.email === 'p@example.com' && !a.data.token_hash && insertsMade()[0].user_id === 'user-1',
+    'email of an existing account: the purchase goes on it, and the buyer is asked to log in');
+}
+reset();
+{
+  stripeSessions.cs_live_c4aaaaaaaaaa = guestSession('cs_live_c4aaaaaaaaaa', 'slow@example.com', { payment_status: 'unpaid' });
+  stripeSessions.cs_live_c5aaaaaaaaaa = guestSession('cs_live_c5aaaaaaaaaa', 'gone@example.com', { status: 'open', payment_status: 'unpaid' });
+  stripeSessions.cs_live_c6aaaaaaaaaa = guestSession('cs_live_c6aaaaaaaaaa', 'p@example.com', { metadata: { supabase_user_id: 'user-1', product: 'ielts' } });
+  check((await claim('cs_live_c4aaaaaaaaaa')).data.state === 'processing', 'paid by a method that clears later -> processing, nothing made');
+  check((await claim('cs_live_c5aaaaaaaaaa')).data.state === 'not_paid', 'checkout not completed -> not_paid');
+  check((await claim('cs_live_c6aaaaaaaaaa')).data.state === 'signed_in_purchase', 'bought while signed in -> nothing to claim');
+  check(Object.keys(authUsers).length === 1 && insertsMade().length === 0, 'none of those made an account or granted anything');
+  check((await claim('not-a-session')).res.status === 400, 'not a session id -> 400');
+  check((await claim('cs_live_unknownaaaaaa')).res.status === 404, 'a session Stripe does not know -> 404');
+}
+reset(); lineItems.cs_live_c7aaaaaaaaaa = li('blockcamp', { term: '1' });
+{
+  stripeSessions.cs_live_c7aaaaaaaaaa = guestSession('cs_live_c7aaaaaaaaaa', 'late@example.com', { created: NOW - 3 * 86400 });
+  const a = await claim('cs_live_c7aaaaaaaaaa');
+  check(a.data.state === 'existing_account' && !a.data.token_hash && insertsMade().length === 1,
+    'a success page opened three days later: the purchase is there, but no sign-in from an old link');
+}
+reset(); lineItems.cs_live_c8aaaaaaaaaa = li('blockcamp', { term: '1' }); linkFail = true;
+{
+  stripeSessions.cs_live_c8aaaaaaaaaa = guestSession('cs_live_c8aaaaaaaaaa', 'nolink@example.com');
+  const a = await claim('cs_live_c8aaaaaaaaaa');
+  check(!a.data.token_hash && insertsMade().length === 1, 'sign-in link cannot be made: no token, the purchase still granted');
+}
+
+// ── the funnel count of page views ───────────────────────────────────────
+async function visit(path, headers = {}) {
+  funnel.length = 0;
+  await mod.default.fetch(new Request('https://x.test' + path, { headers: { Accept: 'text/html,*/*', 'User-Agent': 'Mozilla/5.0 (iPhone) FBAN/FBIOS', ...headers } }), env, ctx);
+  return funnel.slice();
+}
+reset();
+{
+  const home = await visit('/', { Referer: 'https://m.facebook.com/' });
+  check(home.length === 1 && home[0].event === 'view' && home[0].path === '/' && home[0].ref_host === 'm.facebook.com' && home[0].mobile === true,
+    'the home page is counted: view, from m.facebook.com, on a phone (Facebook\'s in-app browser is a visitor)');
+  const ad = await visit('/library.html?utm_source=facebook&utm_medium=paid&utm_campaign=bc-oct&fbclid=abc');
+  check(ad.length === 1 && ad[0].event === 'landing' && ad[0].path === '/library' && ad[0].utm_source === 'facebook' &&
+    ad[0].utm_campaign === 'bc-oct' && ad[0].click === 'fbclid', 'a tagged ad click is a landing, with its tags');
+  check((await visit('/past-simple.html')).length === 0, 'an untagged visit to an ordinary page is not counted');
+  check((await visit('/pricing', { 'User-Agent': 'facebookexternalhit/1.1' })).length === 0, 'a link preview is not counted');
+  check((await visit('/pricing', { Accept: 'image/webp' })).length === 0, 'a request that is not for a page is not counted');
+  funnel.length = 0;
+  await mod.default.fetch(new Request('https://x.test/pricing', { headers: { Accept: 'text/html', 'User-Agent': 'Mozilla/5.0' } }), { ...env, FUNNEL: 'off' }, ctx);
+  check(funnel.length === 0, 'FUNNEL=off counts nothing');
+  const priv = await visit('/pricing?email=someone@example.com');
+  check(priv.length === 1 && !JSON.stringify(priv).includes('someone@'), 'a query string is never stored, only utm_ tags');
 }
 
 console.error = realError;

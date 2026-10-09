@@ -47,10 +47,14 @@ function fake(sc) {
           return Promise.resolve({ data: data(), error: null }).then(res, rej); } };
       return o;
     }
+    // Signed out until verifyOtp trades a claim's token for a session.
+    let signedIn = !SC.signedOut;
     const client = { from: q, auth: {
       onAuthStateChange(){ return { data: { subscription: { unsubscribe(){} } } }; },
-      getSession: async () => ({ data: { session: SC.signedOut ? null : { access_token: 'tok-' + SC.name, expires_at: Date.now()/1000 + 3600 } } }),
-      getUser: async () => ({ data: { user: SC.signedOut ? null : { id: 'u', email: SC.email } } }),
+      getSession: async () => ({ data: { session: !signedIn ? null : { access_token: 'tok-' + SC.name, expires_at: Date.now()/1000 + 3600 } } }),
+      getUser: async () => ({ data: { user: !signedIn ? null : { id: 'u', email: SC.email, user_metadata: SC.meta || {} } } }),
+      verifyOtp: async (a) => { window.__verify = a; signedIn = true; return { data: { session: {} }, error: null }; },
+      updateUser: async (a) => { window.__update = a; return { data: {}, error: null }; },
       signUp: async (args) => { window.__signup = args;
         return { data: { user: { id: 'n', identities: [{}] }, session: null }, error: null }; },
     } };
@@ -70,6 +74,10 @@ async function scenario(b, sc, path = '/account.html') {
     if (u.pathname === '/api/create-checkout-session') {
       posts.push({ body: req.postData(), auth: req.headers()['authorization'] });
       return route.fulfill({ status: 500, contentType: 'application/json', body: '{"error":"x"}' });
+    }
+    if (u.pathname === '/api/claim-checkout') {
+      posts.push({ claim: req.postData() });
+      return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(sc.claim || {}) });
     }
     return route.fulfill({ status: 404, body: '' });
   });
@@ -95,7 +103,12 @@ async function scenario(b, sc, path = '/account.html') {
       specials: vis('bc-specials'), ielts: vis('ielts-card'), credits: txt('marking-credits'), how: vis('marking-how'),
       specialsLinks: [...document.querySelectorAll('#bc-specials a')].map((a) => a.getAttribute('href') + ' ' + a.textContent),
       listed: [...document.querySelectorAll('#bc-card a')].map((a) => a.getAttribute('href')),
-      authMsg: txt('auth-error'),
+      authMsg: vis('auth-section') ? txt('auth-error') : null,
+      authGood: document.getElementById('auth-error').classList.contains('good'),
+      authEmail: document.getElementById('email').value,
+      account: vis('account-section'),
+      passwordCard: vis('password-card'),
+      verify: window.__verify || null,
       signupRedirect: window.__signup ? window.__signup.options.emailRedirectTo : null,
       notice: vis('checkout-notice') ? txt('checkout-notice') : null,
       plansError: vis('plans-error'),
@@ -103,6 +116,13 @@ async function scenario(b, sc, path = '/account.html') {
         return Boolean(f.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING); })(),
     };
   });
+  if (sc.setPassword) {
+    await page.fill('#set-password', 'secret123');
+    await page.click('#password-form button');
+    await page.waitForTimeout(500);
+    view.afterPassword = await page.evaluate(() => ({ update: window.__update,
+      card: !document.getElementById('password-card').hidden, note: document.getElementById('checkout-notice').textContent }));
+  }
   if (sc.click) {
     await page.click('#marking-buy');
     await page.waitForTimeout(600);
@@ -187,6 +207,35 @@ const ago = (d) => new Date(Date.now() - d * DAY).toISOString();
   await run({ name: 'sign-up-plain', email: 'x', signedOut: true, signup: true, profile: null, plans: [], lessons: TERM1 },
     '/account.html',
     (v) => v.signupRedirect === 'https://x.test/account.html' && /then log in/.test(v.authMsg));
+  // Paid without an account (guest checkout): the success page claims the
+  // purchase, trades the one-time token for a session, and shows the
+  // account with the purchase and a "set a password" card.
+  const guestRow = { ...t1, starts_at: ago(0.01), stripe_checkout_session_id: 'cs_live_g1' };
+  await run({ name: 'guest-new-account', email: 'new.parent@example.com', signedOut: true, meta: { via: 'checkout', needs_password: true },
+      claim: { state: 'new_account', token_hash: 'th-1', email: 'new.parent@example.com' },
+      profile: { subscription_status: 'inactive', owner: false }, plans: [guestRow], lessons: TERM1, setPassword: true, shot: true },
+    '/account.html?checkout=success&cs=cs_live_g1&claim=cs_live_g1',
+    (v, posts) => v.account && v.verify && v.verify.token_hash === 'th-1' && v.verify.type === 'email' &&
+      v.bcTitle === 'Block Camp Term 1' && v.notice === 'Thank you — your purchase is ready.' && v.passwordCard &&
+      posts.some((p) => p.claim === '{"cs":"cs_live_g1"}') &&
+      v.afterPassword.update.password === 'secret123' && v.afterPassword.update.data.needs_password === false &&
+      !v.afterPassword.card && /Password saved/.test(v.afterPassword.note));
+  await run({ name: 'guest-existing-account', email: 'x', signedOut: true,
+      claim: { state: 'existing_account', email: 'old.parent@example.com' }, profile: null, plans: [], lessons: TERM1 },
+    '/account.html?checkout=success&cs=cs_live_g2&claim=cs_live_g2',
+    (v) => !v.account && v.authEmail === 'old.parent@example.com' && /on the account for old\.parent@example\.com/.test(v.authMsg) &&
+      v.authGood && !v.verify);
+  await run({ name: 'guest-processing', email: 'x', signedOut: true, claim: { state: 'processing' }, profile: null, plans: [], lessons: TERM1 },
+    '/account.html?checkout=success&cs=cs_live_g3&claim=cs_live_g3',
+    (v) => !v.account && /still confirming/.test(v.authMsg) && v.authGood);
+  await run({ name: 'guest-not-paid', email: 'x', signedOut: true, claim: { state: 'not_paid' }, profile: null, plans: [], lessons: TERM1 },
+    '/account.html?checkout=success&claim=cs_live_g4',
+    (v) => /not completed/.test(v.authMsg) && !v.authGood);
+  // Signed in already: a claim parameter is ignored, nothing is posted.
+  await run({ name: 'signed-in-ignores-claim', email: 'p@example.com', profile: { subscription_status: 'inactive', owner: false },
+      plans: [t1], lessons: TERM1 },
+    '/account.html?checkout=success&cs=cs_bc&claim=cs_bc',
+    (v, posts) => v.account && !posts.some((p) => p.claim) && !v.passwordCard);
   await b.close();
   process.exit(results.every(Boolean) ? 0 : 1);
 })();

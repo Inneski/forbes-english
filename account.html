@@ -124,6 +124,8 @@
     display: none;
   }
   .error-msg.show { display: block; }
+  /* The same box for good news (back from a checkout): not an error. */
+  .error-msg.good { background: var(--green-pale); border-color: var(--green-pale); color: var(--green-deep); }
   .status-row {
     display: flex;
     justify-content: space-between;
@@ -285,6 +287,18 @@
     <p class="notice" id="checkout-notice" hidden></p>
     <p class="notice notice-warn" id="plans-error" hidden>Could not load your purchases &mdash; reload the page.</p>
 
+    <!-- An account made by a purchase (guest checkout) has no password yet. -->
+    <div class="card" id="password-card" hidden>
+      <h2 class="card-h">Set a password</h2>
+      <p class="card-note">Your account was made when you paid, with the email you gave at checkout. Choose a password to sign in on another device.</p>
+      <div class="error-msg" id="password-error"></div>
+      <form id="password-form">
+        <label for="set-password">New password</label>
+        <input type="password" id="set-password" required autocomplete="new-password" minlength="6">
+        <button type="submit" class="btn btn-primary">Save password</button>
+      </form>
+    </div>
+
     <div class="card" id="full-card">
       <h2 class="card-h">Forbes English Pro</h2>
       <div class="status-row">
@@ -372,12 +386,13 @@ const authSubmit = document.getElementById("auth-submit");
 const switchText = document.getElementById("switch-text");
 const switchLink = document.getElementById("switch-link");
 
-function showError(msg) {
+function showError(msg, good = false) {
   authError.textContent = msg;
   authError.classList.add("show");
+  authError.classList.toggle("good", good);
 }
 function clearError() {
-  authError.classList.remove("show");
+  authError.classList.remove("show", "good");
 }
 
 function showAuth() {
@@ -470,9 +485,90 @@ document.getElementById("recover-form").addEventListener("submit", async (e) => 
   const err = document.getElementById("recover-error");
   const { error } = await sbUpdatePassword(document.getElementById("new-password").value);
   if (error) { err.textContent = error.message; err.classList.add("show"); return; }
+  // An account made by a purchase has a password now too.
+  try { await window.sb.auth.updateUser({ data: { needs_password: false } }); } catch (x) { /* only the card */ }
   document.getElementById("recover-section").hidden = true;
   await renderAccount();
 });
+
+// The account a purchase made (guest checkout): a password, so they can sign
+// in somewhere else. It clears the flag that shows this card.
+document.getElementById("password-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const err = document.getElementById("password-error");
+  err.classList.remove("show");
+  const btn = e.currentTarget.querySelector("button");
+  btn.disabled = true;
+  let error = null;
+  try {
+    ({ error } = await sbWithTimeout(window.sb.auth.updateUser({
+      password: document.getElementById("set-password").value,
+      data: { needs_password: false },
+    }), 8000, { error: { message: "That took too long. Try again." } }));
+  } catch (x) {
+    error = { message: "Could not reach the server. Try again." };
+  }
+  btn.disabled = false;
+  if (error) { err.textContent = error.message; err.classList.add("show"); return; }
+  document.getElementById("password-card").hidden = true;
+  const note = document.getElementById("checkout-notice");
+  note.hidden = false;
+  note.textContent = "Password saved. Sign in with this email and that password anywhere.";
+});
+
+// Back from a checkout made without signing in (?claim=<session>). The
+// Worker says which account the purchase went to. One the purchase made
+// comes with a one-time sign-in, traded here for a session, so the buyer
+// lands signed in without waiting for any email. One that already existed:
+// the login form, its address filled in. True when the buyer is signed in.
+async function claimCheckout(cs) {
+  paint(() => { loading.hidden = false; loading.textContent = "Payment received — setting up your account…"; });
+  const tellLogin = (msg, email, good = true) => {
+    showAuth();
+    applyMode("login");
+    if (email) document.getElementById("email").value = email;
+    showError(msg, good);
+  };
+  for (let i = 0; i < 6; i++) {
+    let data = {};
+    try {
+      const res = await fetch("/api/claim-checkout", {
+        method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ cs }),
+      });
+      data = await res.json();
+    } catch (x) { /* retried below */ }
+    if (data.state === "new_account" && data.token_hash) {
+      const res = await sbWithTimeout(window.sb.auth.verifyOtp({ token_hash: data.token_hash, type: "email" }),
+        8000, { error: { message: "timeout" } });
+      if (res && !res.error) return true;
+      tellLogin("Thank you — your purchase is on your new account for " + data.email +
+        ". To sign in, choose “Forgot your password?” below and set one.", data.email);
+      return false;
+    }
+    if (data.state === "existing_account") {
+      tellLogin("Thank you — your purchase is on the account for " + data.email +
+        ". Log in to see it (forgotten the password? Use “Forgot your password?” below).", data.email);
+      return false;
+    }
+    if (data.state === "processing") {
+      tellLogin("Thank you. Your bank is still confirming the payment; once it clears, your purchase is on " +
+        "the account for the email you gave at checkout.");
+      return false;
+    }
+    if (data.state === "not_paid") {
+      tellLogin("That checkout was not completed, and no charge was made.", null, false);
+      return false;
+    }
+    if (data.state === "signed_in_purchase") {
+      tellLogin("Log in to see your purchase.");
+      return false;
+    }
+    await new Promise((r) => setTimeout(r, 2500));
+  }
+  tellLogin("Your payment went through, but your account is not ready yet. Reload this page in a minute; " +
+    "if it still says this, write to info@forbesenglish.com.", null, false);
+  return false;
+}
 
 authForm.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -633,6 +729,8 @@ function missionList(lessons, openNow, start) {
 
 async function fillSubscription(user) {
   document.getElementById("account-email").textContent = user.email || "";
+  // Made by a purchase (guest checkout) and no password chosen yet.
+  document.getElementById("password-card").hidden = !(user.user_metadata && user.user_metadata.needs_password === true);
   document.getElementById("marking-from").textContent = user.email || "your account's address";
 
   const [profile, plans, term1] = await Promise.all([
@@ -806,6 +904,14 @@ async function start() {
     session = await sbGetSession();
   } catch (err) {
     console.error("Could not read the stored session:", err);
+  }
+
+  // Paid without signing in: sign them into the account the purchase made.
+  const q = new URLSearchParams(window.location.search);
+  const claim = q.get("checkout") === "success" ? q.get("claim") : null;
+  if (!session && claim) {
+    if (!(await claimCheckout(claim))) return;
+    session = await sbGetSession();
   }
 
   if (!session) { paint(showAuth); return; }
