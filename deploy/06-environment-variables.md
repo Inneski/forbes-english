@@ -76,15 +76,27 @@ marking can always be bought again.
 **Nobody needs an account to buy (guest checkout, 2026-10-09).** Without a
 sign-in the checkout is a guest one: Stripe asks for the email, and the
 webhook gives the purchase to the account with that email, making it (already
-confirmed, `user_metadata.via = "checkout"`, `needs_password`) when there is
-none. The success page (`account.html?claim=<session>`) calls
-`POST /api/claim-checkout`, which fulfils the purchase at once and, for an
-account the purchase made and nobody has signed into, hands out a one-time
-sign-in that the page trades for a session: the buyer lands signed in with
-no email to wait for, and the account page offers "Set a password". It all
-uses `SUPABASE_SERVICE_ROLE_KEY` (Auth admin API); `/api/paywall-status`
-reports `guestCheckout`. Rows: `public.guest_checkouts`
-(`deploy/schema-funnel.sql`).
+confirmed, its checkout recorded in `app_metadata.checkout_session`, which
+only the service role can write; `user_metadata.needs_password`) when there
+is none. Only a sale of something the site sells does this: anything else on
+the Stripe account makes no account and grants nothing. The success page
+(`account.html?claim=<session>`) calls `POST /api/claim-checkout`, which
+fulfils the purchase at once and, only for the account *that checkout*
+made, only until it is first signed into and only within two days, hands
+out a one-time sign-in that the page trades for a session: the buyer lands
+signed in with no email to wait for, and the account page offers "Set a
+password". Someone who buys with another person's address puts the
+purchase on that person's account and is signed into nothing. A second
+Forbes English Pro bought signed out never overwrites a live one, and a
+one-off bought twice is recorded; both are logged ("refund one by hand")
+and counted as `paid / duplicate`. It all uses `SUPABASE_SERVICE_ROLE_KEY`
+(Auth admin API); `/api/paywall-status` reports `guestCheckout`. Rows:
+`public.guest_checkouts` (`deploy/schema-funnel.sql`).
+
+`/api/create-checkout-session` and `/api/claim-checkout` now answer anyone,
+so give them a Cloudflare rate-limiting rule (Security → WAF → Rate
+limiting rules; the free plan has one): e.g. 20 requests a minute per IP on
+URI path starting with `/api/`.
 
 **Supabase's own email reaches only the project team's addresses** until a
 custom SMTP server is set (Authentication → Emails → SMTP Settings). Until

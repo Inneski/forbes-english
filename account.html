@@ -531,12 +531,26 @@ async function claimCheckout(cs) {
   };
   for (let i = 0; i < 6; i++) {
     let data = {};
+    let status = 0;
+    // A request that never answers must not leave the page on "setting up"
+    // for ever: each try gives up after ten seconds.
+    const stop = typeof AbortController === "function" ? new AbortController() : null;
+    const timer = stop ? setTimeout(() => stop.abort(), 10000) : null;
     try {
       const res = await fetch("/api/claim-checkout", {
         method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ cs }),
+        signal: stop ? stop.signal : undefined,
       });
+      status = res.status;
       data = await res.json();
     } catch (x) { /* retried below */ }
+    if (timer) clearTimeout(timer);
+    // An answer that will not change on asking again (not a checkout, not
+    // for this site, no account possible): say what the server said.
+    if (status && status !== 502 && status !== 503 && data.error) {
+      tellLogin(data.error, null, false);
+      return false;
+    }
     if (data.state === "new_account" && data.token_hash) {
       const res = await sbWithTimeout(window.sb.auth.verifyOtp({ token_hash: data.token_hash, type: "email" }),
         8000, { error: { message: "timeout" } });

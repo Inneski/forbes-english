@@ -77,7 +77,7 @@ async function scenario(b, sc, path = '/account.html') {
     }
     if (u.pathname === '/api/claim-checkout') {
       posts.push({ claim: req.postData() });
-      return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(sc.claim || {}) });
+      return route.fulfill({ status: sc.claimStatus || 200, contentType: 'application/json', body: JSON.stringify(sc.claim || {}) });
     }
     return route.fulfill({ status: 404, body: '' });
   });
@@ -231,6 +231,11 @@ const ago = (d) => new Date(Date.now() - d * DAY).toISOString();
   await run({ name: 'guest-not-paid', email: 'x', signedOut: true, claim: { state: 'not_paid' }, profile: null, plans: [], lessons: TERM1 },
     '/account.html?checkout=success&claim=cs_live_g4',
     (v) => /not completed/.test(v.authMsg) && !v.authGood);
+  // An answer that cannot change: shown at once, not retried.
+  await run({ name: 'guest-final-error', email: 'x', signedOut: true, claimStatus: 409,
+      claim: { error: 'This payment is not for anything sold on this site. Write to info@forbesenglish.com.' }, profile: null, plans: [], lessons: TERM1 },
+    '/account.html?checkout=success&claim=cs_live_g5',
+    (v, posts) => /not for anything sold on this site/.test(v.authMsg) && !v.authGood && posts.filter((p) => p.claim).length === 1);
   // Signed in already: a claim parameter is ignored, nothing is posted.
   await run({ name: 'signed-in-ignores-claim', email: 'p@example.com', profile: { subscription_status: 'inactive', owner: false },
       plans: [t1], lessons: TERM1 },

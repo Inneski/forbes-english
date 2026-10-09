@@ -13,10 +13,12 @@ const page0 = fs.readFileSync(ROOT + 'pricing.html', 'utf8');
 const sbClient = fs.readFileSync(ROOT + 'sb-client.js', 'utf8');
 
 const fake = (signedIn) => `(function(){
+  let inside = ${signedIn};
   const client = { from(){ const o={select(){return o;},eq(){return o;},then(r){return Promise.resolve({data:[],error:null}).then(r);}}; return o; },
     auth: { onAuthStateChange(){ return { data: { subscription: { unsubscribe(){} } } }; },
-      getSession: async () => ({ data: { session: ${signedIn} ? { access_token: 'tok-1', expires_at: Date.now()/1000 + 3600 } : null } }),
-      getUser: async () => ({ data: { user: ${signedIn} ? { id: 'u', email: 'p@example.com' } : null } }) } };
+      getSession: async () => ({ data: { session: inside ? { access_token: 'tok-1', expires_at: Date.now()/1000 + 3600 } : null } }),
+      getUser: async () => ({ data: { user: inside ? { id: 'u', email: 'p@example.com' } : null } }),
+      signOut: async (o) => { window.__signOut = o; inside = false; return { error: null }; } } };
   window.supabase = { createClient: () => client };
 })();`;
 
@@ -32,7 +34,8 @@ async function scenario(b, { signedIn, answer, click }) {
     if (u.pathname === '/api/founder-status') return route.fulfill({ contentType: 'application/json', body: '{"limit":50,"remaining":40}' });
     if (u.pathname === '/api/create-checkout-session') {
       posts.push({ body: req.postData(), auth: req.headers()['authorization'] || null });
-      return route.fulfill({ status: answer.status, contentType: 'application/json', body: JSON.stringify(answer.body) });
+      const a = typeof answer === 'function' ? answer(posts.length) : answer;
+      return route.fulfill({ status: a.status, contentType: 'application/json', body: JSON.stringify(a.body) });
     }
     if (u.pathname === '/stripe-checkout') return route.fulfill({ contentType: 'text/html', body: '<p>STRIPE</p>' });
     return route.fulfill({ status: 404, body: '' });
@@ -74,6 +77,13 @@ async function scenario(b, { signedIn, answer, click }) {
 
   r = await scenario(b, { signedIn: false, click: '.plan-btn[data-product="blockcamp"]', answer: { status: 502, body: { error: 'Stripe error' } } });
   check(r.v.path === '/pricing.html' && /went wrong/.test(r.v.banner), 'checkout fails: the page says so and stays', r);
+
+  // A sign-in this browser holds but Supabase no longer accepts: signed out
+  // here (locally), and the same purchase goes ahead as a guest.
+  r = await scenario(b, { signedIn: true, click: '.plan-btn[data-product="blockcamp"]',
+    answer: (n) => n === 1 ? { status: 401, body: { error: 'Your sign-in has expired.', stale: true } } : toStripe });
+  check(r.v.path === '/stripe-checkout' && r.posts.length === 2 && r.posts[0].auth === 'Bearer tok-1' && r.posts[1].auth === null,
+    'an expired sign-in: signed out locally, then straight to checkout as a guest', r);
 
   check(/No account needed to buy/.test(page0) && /Do I need an account\?<\/summary>\s*<p>No\./.test(page0),
     'the page says no account is needed to buy');

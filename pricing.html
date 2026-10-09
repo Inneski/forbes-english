@@ -648,7 +648,7 @@ const INTENT_TTL = 30 * 60 * 1000;
 // `plan` is a full-plan interval (monthly/semiannual/annual) or, for a
 // one-off product, "product:blockcamp" / "product:ielts" /
 // "product:ielts_marking" / "product:marking".
-async function startCheckout(plan) {
+async function startCheckout(plan, retried = false) {
   const buttons = document.querySelectorAll(BUY);
   buttons.forEach(b => b.disabled = true);
 
@@ -677,6 +677,16 @@ async function startCheckout(plan) {
     });
     data = await res.json();
   } catch (e) { /* handled below */ }
+
+  // A sign-in this browser still holds but Supabase no longer accepts: sign
+  // out here and buy as a guest, so the success page claims the purchase
+  // (a stale session would stop it from doing so).
+  if (data.stale && !retried) {
+    // Local only: the server would refuse a token it no longer accepts.
+    try { if (window.sb) await window.sb.auth.signOut({ scope: "local" }); } catch (e) { /* cleared below */ }
+    try { writeSessionCookie(null); } catch (e) {}
+    return startCheckout(plan, true);
+  }
 
   if (data.url) {
     window.location.href = data.url;
