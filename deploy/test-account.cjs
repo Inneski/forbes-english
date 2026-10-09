@@ -53,8 +53,13 @@ function fake(sc) {
       onAuthStateChange(){ return { data: { subscription: { unsubscribe(){} } } }; },
       getSession: async () => ({ data: { session: !signedIn ? null : { access_token: 'tok-' + SC.name, expires_at: Date.now()/1000 + 3600 } } }),
       getUser: async () => ({ data: { user: !signedIn ? null : { id: 'u', email: SC.email, user_metadata: SC.meta || {} } } }),
-      verifyOtp: async (a) => { window.__verify = a; signedIn = true; return { data: { session: {} }, error: null }; },
+      // verifyFailOnce: the first token is stale (replaced by a slower
+      // request), as a real one can be; the page must ask again.
+      verifyOtp: async (a) => { window.__verify = a; window.__verifies = (window.__verifies || 0) + 1;
+        if (SC.verifyFailOnce && window.__verifies === 1) return { data: {}, error: { message: 'Token has expired or is invalid' } };
+        signedIn = true; return { data: { session: {} }, error: null }; },
       updateUser: async (a) => { window.__update = a; return { data: {}, error: null }; },
+      signOut: async (o) => { window.__signOut = o; return { error: null }; },
       signUp: async (args) => { window.__signup = args;
         return { data: { user: { id: 'n', identities: [{}] }, session: null }, error: null }; },
     } };
@@ -120,7 +125,7 @@ async function scenario(b, sc, path = '/account.html') {
     await page.fill('#set-password', 'secret123');
     await page.click('#password-form button');
     await page.waitForTimeout(500);
-    view.afterPassword = await page.evaluate(() => ({ update: window.__update,
+    view.afterPassword = await page.evaluate(() => ({ update: window.__update, signOut: window.__signOut || null,
       card: !document.getElementById('password-card').hidden, note: document.getElementById('checkout-notice').textContent }));
   }
   if (sc.click) {
@@ -219,7 +224,14 @@ const ago = (d) => new Date(Date.now() - d * DAY).toISOString();
       v.bcTitle === 'Block Camp Term 1' && v.notice === 'Thank you — your purchase is ready.' && v.passwordCard &&
       posts.some((p) => p.claim === '{"cs":"cs_live_g1"}') &&
       v.afterPassword.update.password === 'secret123' && v.afterPassword.update.data.needs_password === false &&
+      v.afterPassword.signOut && v.afterPassword.signOut.scope === 'others' &&
       !v.afterPassword.card && /Password saved/.test(v.afterPassword.note));
+  // The first token fails (stale): the page asks again and signs in.
+  await run({ name: 'guest-stale-token', email: 'new.parent@example.com', signedOut: true, verifyFailOnce: true,
+      meta: { needs_password: true }, claim: { state: 'new_account', token_hash: 'th-2', email: 'new.parent@example.com' },
+      profile: { subscription_status: 'inactive', owner: false }, plans: [guestRow], lessons: TERM1, wait: 4000 },
+    '/account.html?checkout=success&cs=cs_live_g1&claim=cs_live_g1',
+    (v, posts) => v.account && posts.filter((p) => p.claim).length === 2 && v.passwordCard);
   await run({ name: 'guest-existing-account', email: 'x', signedOut: true,
       claim: { state: 'existing_account', email: 'old.parent@example.com' }, profile: null, plans: [], lessons: TERM1 },
     '/account.html?checkout=success&cs=cs_live_g2&claim=cs_live_g2',

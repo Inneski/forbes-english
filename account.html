@@ -487,6 +487,9 @@ document.getElementById("recover-form").addEventListener("submit", async (e) => 
   if (error) { err.textContent = error.message; err.classList.add("show"); return; }
   // An account made by a purchase has a password now too.
   try { await window.sb.auth.updateUser({ data: { needs_password: false } }); } catch (x) { /* only the card */ }
+  // A new password ends every other session: whoever got in before (with
+  // this address, before its owner) is signed out everywhere else.
+  try { await window.sb.auth.signOut({ scope: "others" }); } catch (x) { /* the password still changed */ }
   document.getElementById("recover-section").hidden = true;
   await renderAccount();
 });
@@ -510,6 +513,8 @@ document.getElementById("password-form").addEventListener("submit", async (e) =>
   }
   btn.disabled = false;
   if (error) { err.textContent = error.message; err.classList.add("show"); return; }
+  // As with a reset: the new password ends every other session.
+  try { await window.sb.auth.signOut({ scope: "others" }); } catch (x) { /* the password is saved */ }
   document.getElementById("password-card").hidden = true;
   const note = document.getElementById("checkout-notice");
   note.hidden = false;
@@ -555,9 +560,10 @@ async function claimCheckout(cs) {
       const res = await sbWithTimeout(window.sb.auth.verifyOtp({ token_hash: data.token_hash, type: "email" }),
         8000, { error: { message: "timeout" } });
       if (res && !res.error) return true;
-      tellLogin("Thank you — your purchase is on your new account for " + data.email +
-        ". To sign in, choose “Forgot your password?” below and set one.", data.email);
-      return false;
+      // The token can go stale (a slower earlier request replaced it):
+      // asking again gives a fresh one until the first sign-in.
+      await new Promise((r) => setTimeout(r, 1000));
+      continue;
     }
     if (data.state === "existing_account") {
       tellLogin("Thank you — your purchase is on the account for " + data.email +
@@ -579,7 +585,7 @@ async function claimCheckout(cs) {
     }
     await new Promise((r) => setTimeout(r, 2500));
   }
-  tellLogin("Your payment went through, but your account is not ready yet. Reload this page in a minute; " +
+  tellLogin("Your payment went through, but signing you in has not worked yet. Reload this page in a minute; " +
     "if it still says this, write to info@forbesenglish.com.", null, false);
   return false;
 }

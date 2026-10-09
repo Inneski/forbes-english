@@ -805,12 +805,22 @@ reset();
 {
   subs.sub_new = { id: 'sub_new', status: 'active', customer: 'cus_n', items: { data: [{ price: { id: 'price_monthly' }, current_period_end: 1793000000 }] }, metadata: {} };
   liveSubs['old-1'] = { stripe_subscription_id: 'sub_live', subscription_status: 'active' };
+  subs.sub_live = { id: 'sub_live', status: 'active', customer: 'cus_l', items: { data: [] }, metadata: {} };
   const ev = { type: 'checkout.session.completed', created: 1791200000, data: { object: { id: 'cs_dupsub', mode: 'subscription', customer: 'cus_n',
     subscription: 'sub_new', metadata: { guest: '1', plan: 'monthly' }, customer_details: { email: 'old.parent@example.com' } } } };
   const r = await webhook(ev);
   check(r.status === 200 && !patches().some((p) => p.url.includes('/profiles?id=')) && logs.some((l) => /already has live subscription sub_live/.test(l)) &&
     funnel.some((f) => f.event === 'paid' && f.outcome === 'duplicate'),
     'a second Pro bought signed out by a subscriber: the live one is not written over; flagged for a refund');
+  // The profile still says active, but Stripe has the old one cancelled (a
+  // missed event): the new, paid subscription is written.
+  subs.sub_live.status = 'canceled';
+  calls = []; funnel.length = 0;
+  const again = { ...ev, data: { object: { ...ev.data.object, id: 'cs_dupsub2' } } };
+  await webhook(again);
+  const p = patches().find((x) => x.url.includes('/profiles?id=eq.old-1'));
+  check(p && p.body.stripe_subscription_id === 'sub_new' && p.body.subscription_status === 'active',
+    'the old one cancelled at Stripe (the profile not told): the new subscription is written');
 }
 reset();
 {
@@ -912,6 +922,10 @@ reset();
       { headers: { Accept: 'text/html', 'User-Agent': 'Mozilla/5.0' } }), env, ctx);
   }
   check(funnel.length > 0 && funnel.length <= 120, `a burst of 200 tagged visits writes at most 120 rows (${funnel.length})`);
+  // A sale in the same minute is still counted: only page views are capped.
+  funnel.length = 0; lineItems.cs_after = li('ielts', {});
+  await webhook(paidEvent('cs_after'));
+  check(funnel.some((f) => f.event === 'paid'), 'a sale during the flood is still counted (only page views are capped)');
 }
 
 console.error = realError;

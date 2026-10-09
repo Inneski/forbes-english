@@ -177,9 +177,13 @@ let funnelCount = 0;
 
 function recordEvent(env, ctx, row) {
   if (env.FUNNEL === "off" || !env.SUPABASE_URL || !env.SUPABASE_SERVICE_ROLE_KEY) return;
-  const minute = Math.floor(Date.now() / 60000);
-  if (minute !== funnelMinute) { funnelMinute = minute; funnelCount = 0; }
-  if (++funnelCount > FUNNEL_PER_MINUTE) return;
+  // Only page views count against it: a Buy press, a sale or a claim comes
+  // through Stripe or a real buyer, and must never be the row dropped.
+  if (row.event === "landing" || row.event === "view") {
+    const minute = Math.floor(Date.now() / 60000);
+    if (minute !== funnelMinute) { funnelMinute = minute; funnelCount = 0; }
+    if (++funnelCount > FUNNEL_PER_MINUTE) return;
+  }
   const p = fetch(`${env.SUPABASE_URL}/rest/v1/funnel_events`, {
     method: "POST", headers: supabaseHeaders(env), body: JSON.stringify(row),
   }).then((r) => { if (!r.ok) console.error(`funnel: ${row.event} not recorded (HTTP ${r.status})`); })
@@ -1447,8 +1451,15 @@ async function fulfil(env, session, userId, event, ctx) {
   // second Forbes English Pro bought signed out by someone who has one, or
   // an old checkout's success page opened again, would cut the live one
   // off from its own events. The payment is real: flagged for a refund.
+  // Live as Stripe has it, not as the profile last heard: a missed
+  // cancellation must not keep a new, paid subscription off the account.
+  let other = null;
   if (current.stripe_subscription_id && current.stripe_subscription_id !== session.subscription &&
       ACTIVE_STATUSES.has(current.subscription_status)) {
+    other = await currentSubscription(env, current.stripe_subscription_id);
+    if (!other) return false;
+  }
+  if (other && ACTIVE_STATUSES.has(other.status)) {
     console.error(`checkout ${session.id}: ${userId} already has live subscription ${current.stripe_subscription_id}; ` +
       `${session.subscription} not written (refund one by hand)`);
     recordEvent(env, ctx, { event: "paid", product: String(plan || "plan").slice(0, 40), guest, outcome: "duplicate" });
