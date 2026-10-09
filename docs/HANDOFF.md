@@ -11,6 +11,57 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-10-09 — No sales from two campaigns: guest checkout and a funnel count
+
+Innes: *"zero sales from two internet campaigns: maybe we need to rethink
+pricing"*. Not the price, as far as anything can tell. Since the 5 Oct
+release: **0 sign-ups, 0 purchases** (Supabase), while Cloudflare counted 274
+visits in the week, 218 from `m.facebook.com` (Ukraine 210), 261 on phones,
+**249 landing on `/` and leaving after one page** (docs/SEO.md, 8 Oct
+reading). The home page's heading is "Ready-to-use materials, built for real
+classes": a teachers' page, which is where the ad sent parents and learners.
+**Open, for Innes:** where the two campaigns ran and which page each linked
+to. A campaign should link to the page of what it sells (`block-camp.html`,
+`ielts.html`, `pricing.html`), tagged
+(`?utm_source=facebook&utm_medium=paid&utm_campaign=<name>`).
+
+**Shipped (Innes: "do 1 and 2"):**
+1. **Funnel count** (`public.funnel_events`, migration
+   `funnel_events_and_guest_checkouts`, `deploy/schema-funnel.sql`): the
+   Worker records campaign landings with their tags, visits to the doors
+   into a sale (`/`, pricing, Block Camp, Mission 1, Frostbound, IELTS,
+   account, library), every Buy press and its outcome, every sale, every
+   success-page claim. No IP, account or cookie. Read it:
+   `select * from funnel_daily order by day desc;`. Cloudflare Web
+   Analytics was already on (the 8 Oct reading) for whole-site traffic.
+2. **Guest checkout:** Buy goes straight to Stripe; the purchase finds or
+   makes the account from the email given there; the success page signs the
+   buyer straight in (`/api/claim-checkout`) and offers "Set a password".
+   Two independent reviews: the first found an account takeover in the
+   claim (fixed: a sign-in only for the account *that checkout* made,
+   recorded in `app_metadata`), the second confirmed it closed. Details and
+   every rule: `deploy/06-environment-variables.md`. Tests: webhook 127,
+   account 18, the new `deploy/test-pricing.cjs` 7, paywall 60, weekly 21.
+
+**Found, needs Innes:**
+- **Supabase sends its own emails (sign-up confirmation, password reset)
+  only to the project team's addresses** until a custom SMTP server is set
+  (Authentication → Emails → SMTP Settings). So the old "sign up, confirm,
+  then pay" path never worked for a stranger, and today a buyer who closes
+  the success page before it signs them in cannot reset a password. Fix
+  with Resend's SMTP (06-environment-variables.md); one Resend setup also
+  turns on the weekly mission email and the marking inbox.
+- **A Cloudflare rate-limiting rule** on `/api/` (the checkout and claim
+  endpoints now answer anyone): Security → WAF → Rate limiting rules.
+- **Accepted risk:** someone who pays first with another person's address
+  owns that account until the real owner resets the password (which then
+  signs every other session out). Closing it needs address verification
+  before the account is made, which needs SMTP.
+- **A guest who buys what they already have** pays twice: recorded, logged
+  "refund one by hand", counted as `paid / duplicate` in the funnel.
+
+---
+
 ## 2026-10-07 — My Cat, Your Dog: possessive adjectives + this/that (A1, young learners): BUILT, waiting on art
 
 From Innes's coursebook sheet for William (`english lessons/student notes/
