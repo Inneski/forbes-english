@@ -110,6 +110,10 @@ B2). `tools/topics.py` already files it under `passive-voice`.
 
 ## Round 2 — four quiet plates for the question slides (2026-10-13)
 
+> **DONE 2026-10-13.** Picks: notebook `_2`, paper cups `_1` (the only
+> render), flask `_3`, signpost `_2`. The dandelion is now on the cover and
+> results only; every part shows two pictures.
+
 Innes, on the live deck: *"dandelion too repetitive - ask for more
 artwork"*. Every card and question slide had no picture of its own and fell
 back to the cover, so the dandelion sat behind 25 of 35 slides. **Fixed in
