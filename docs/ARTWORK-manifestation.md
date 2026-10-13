@@ -1,6 +1,8 @@
 # Artwork brief: Manifestation — Can You Think It Into Being? (B2)
 
-> **DELIVERED 2026-10-13, five of six.** Innes rendered eleven files (two or
+> **DONE 2026-10-13.** The two-chairs render came afterwards and is `plate-act`.
+>
+> **First delivery, five of six.** Innes rendered eleven files (two or
 > three variants of five slots); picks: dandelion `_0` (cover), cork board
 > `_0`, megaphone `_0`, magnifying glass `_0` (`_2` has a hand in it),
 > balance `_2` (the only one with feather against stone). **No two-chairs

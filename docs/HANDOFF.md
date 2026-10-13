@@ -11,7 +11,11 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
-## 2026-10-13 — Manifestation: Can You Think It Into Being? (B2): LIVE PAGE PUSHED, waiting on one catalogue row
+## 2026-10-13 — Manifestation: Can You Think It Into Being? (B2): SHIPPED
+
+**Closed the same day:** Innes sent the two-chairs render (now `plate-act`)
+and asked for the row to be inserted; it is (pro, B2), and hubs + SEO are
+regenerated. Everything below is history.
 
 **Art landed the same day** (five of six slots; `plate-act` is a second
 dandelion until a two-chairs render comes, see the brief). The live
