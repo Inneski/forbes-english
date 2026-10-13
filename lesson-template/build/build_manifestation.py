@@ -79,14 +79,25 @@ HERO, TREND, CLAIMS, EVIDENCE, VIEW, ACT = (PIC[s] for s in SLOTS)
 # one background per section), and the question slides take a second
 # plate per part once it lands (briefed in docs/ARTWORK-manifestation.md,
 # "Round 2"); until then they share the part's plate.
+# Innes, then: "why not use all images provided?" So every variant he
+# rendered is in: each part rotates through its own pool, in slide order,
+# and no two neighbouring slides share a picture. The panel plate leads
+# its pool because the part's first card slide follows the panel.
+POOL = {1: ['plate-trend-2', 'plate-trend-3', 'plate-trend-4', 'plate-trend-5'],
+        2: ['plate-claims-2', 'plate-claims-3', 'plate-claims-4'],
+        3: ['plate-evidence-2', 'plate-evidence-3', 'plate-evidence-4'],
+        4: ['plate-view-2', 'plate-view-3', 'plate-view-4']}
 PART_BG = {1: TREND, 2: CLAIMS, 3: EVIDENCE, 4: VIEW}
-EXTRA = {1: 'plate-trend-2', 2: 'plate-claims-2', 3: 'plate-evidence-2',
-         4: 'plate-view-2'}
+_turn = {1: 0, 2: 0, 3: 0, 4: 0}
 
 
 def qbg(part):
-    f = EXTRA[part] + '.jpg'
-    return f if os.path.exists(os.path.join(F, f)) else PART_BG[part]
+    pool = [f + '.jpg' for f in POOL[part] if os.path.exists(os.path.join(F, f + '.jpg'))]
+    if not pool:
+        return PART_BG[part]
+    f = pool[_turn[part] % len(pool)]
+    _turn[part] += 1
+    return f
 
 E = I.T['en']
 
@@ -286,7 +297,7 @@ def cards(n):
     part, tk = CARD_PART[n], CARD_TITLE[n]
     return D.teach('e%d' % part, E['e%d' % part], tk, E[tk],
                    [(None, w, k, E[k], None, ex) for w, k, ex in CARDS[n]],
-                   cols='1fr 1fr 1fr', folder=F, bg=PART_BG[part])
+                   cols='1fr 1fr 1fr', folder=F, bg=qbg(part))
 
 
 def mc(i):
