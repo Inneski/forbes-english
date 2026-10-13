@@ -75,6 +75,14 @@ export default {
   },
 
   async fetch(request, env, ctx) {
+    const res = await route(request, env, ctx);
+    // The funnel count (noteVisit) never changes or holds up a response.
+    try { noteVisit(request, res, env, ctx); } catch { /* a lost count, never a lost page */ }
+    return res;
+  },
+};
+
+async function route(request, env, ctx) {
     const url = new URL(request.url);
 
     // www is the apex. One host for Google, one for cookies, one for the
@@ -85,11 +93,18 @@ export default {
     }
 
     if (request.method === "POST" && url.pathname === "/api/create-checkout-session") {
-      return handleCreateCheckoutSession(request, env);
+      return handleCreateCheckoutSession(request, env, ctx);
     }
 
     if (request.method === "POST" && url.pathname === "/api/stripe-webhook") {
-      return handleStripeWebhook(request, env);
+      return handleStripeWebhook(request, env, ctx);
+    }
+
+    // The success page of a checkout made without signing in: the account
+    // the purchase went to, and a one-time sign-in into it when the purchase
+    // made it (handleClaimCheckout).
+    if (request.method === "POST" && url.pathname === "/api/claim-checkout") {
+      return handleClaimCheckout(request, env, ctx);
     }
 
     // A read-only health check for the paywall. The gate deliberately fails
@@ -133,8 +148,88 @@ export default {
 
     // Everything else (every page, image, etc.) is a static file.
     return withRanges(request, await env.ASSETS.fetch(request));
-  },
-};
+}
+
+// ── THE FUNNEL ───────────────────────────────────────────────────────────
+// What happens between an ad and a sale. Cloudflare Web Analytics counts
+// visits; it cannot see a Buy click, a checkout or a payment, and two
+// campaigns in October 2026 brought 274 visits and no sale with nothing to
+// say where they stopped. A row is an event, never a person: no IP, no
+// account id, no cookie (so nothing to consent to). Rows go to
+// public.funnel_events in the background; a failed write loses a count,
+// never a page. FUNNEL=off in the environment stops all of it.
+// Read it with: select * from funnel_daily order by day desc;
+
+// Pages worth counting every visit to: the doors into a sale. Anything else
+// is counted only when it is a campaign landing (a utm_ tag or a click id).
+const FUNNEL_PAGES = new Set(["/", "/pricing", "/block-camp", "/blockcamp-present-simple",
+  "/block-camp/frostbound-river-rpg", "/ielts", "/account", "/library"]);
+// Link previews and crawlers are not visitors (the Facebook in-app browser
+// is: it says FBAN/FBAV, not facebookexternalhit).
+const BOT_UA = /bot|crawl|spider|slurp|preview|externalhit|facebookcatalog|embedly|whatsapp|telegram|discord|slack|curl|wget|python|httpclient|headless|lighthouse|monitor|scanner/i;
+const CLICK_IDS = ["fbclid", "gclid", "ttclid", "msclkid", "igshid"];
+
+// A ceiling per Worker instance, so a script hammering ?utm_source= cannot
+// fill the table: at most FUNNEL_PER_MINUTE rows a minute from each.
+const FUNNEL_PER_MINUTE = 120;
+let funnelMinute = 0;
+let funnelCount = 0;
+
+function recordEvent(env, ctx, row) {
+  if (env.FUNNEL === "off" || !env.SUPABASE_URL || !env.SUPABASE_SERVICE_ROLE_KEY) return;
+  // Only page views count against it: a Buy press, a sale or a claim comes
+  // through Stripe or a real buyer, and must never be the row dropped.
+  if (row.event === "landing" || row.event === "view") {
+    const minute = Math.floor(Date.now() / 60000);
+    if (minute !== funnelMinute) { funnelMinute = minute; funnelCount = 0; }
+    if (++funnelCount > FUNNEL_PER_MINUTE) return;
+  }
+  const p = fetch(`${env.SUPABASE_URL}/rest/v1/funnel_events`, {
+    method: "POST", headers: supabaseHeaders(env), body: JSON.stringify(row),
+  }).then((r) => { if (!r.ok) console.error(`funnel: ${row.event} not recorded (HTTP ${r.status})`); })
+    .catch((err) => console.error(`funnel: ${row.event} not recorded (${err && err.message})`));
+  if (ctx && typeof ctx.waitUntil === "function") ctx.waitUntil(p);
+}
+
+// Where a request came from, without saying who: country (Cloudflare's
+// two letters), phone or not, and the referring host.
+function visitFields(request) {
+  const ua = request.headers.get("User-Agent") || "";
+  let refHost = null;
+  try { refHost = new URL(request.headers.get("Referer") || "").hostname || null; } catch { /* no referrer */ }
+  return {
+    country: (request.cf && request.cf.country) || null,
+    mobile: /Mobi|Android|iPhone|iPad/i.test(ua),
+    ref_host: refHost,
+  };
+}
+
+// A page view, counted if it is a campaign landing or one of FUNNEL_PAGES.
+// Only a 200 answer to a browser asking for HTML: the .html → clean-URL
+// redirect, images, the API and link previews are not visits.
+function noteVisit(request, res, env, ctx) {
+  if (request.method !== "GET" || !res || res.status !== 200) return;
+  const url = new URL(request.url);
+  if (url.pathname.startsWith("/api/")) return;
+  const ua = request.headers.get("User-Agent") || "";
+  if (!(request.headers.get("Accept") || "").includes("text/html") || !ua || BOT_UA.test(ua)) return;
+  const path = url.pathname.replace(/\.html$/, "").replace(/\/index$/, "/") || "/";
+  const q = url.searchParams;
+  const click = CLICK_IDS.find((k) => q.has(k)) || null;
+  // A tag is a campaign's name, never a person's: anything with an "@" in
+  // it is dropped.
+  const tag = (k) => { const v = (q.get(`utm_${k}`) || "").slice(0, 100); return v && !v.includes("@") ? v : null; };
+  const landing = Boolean(click || q.has("utm_source") || q.has("utm_campaign"));
+  if (!landing && !FUNNEL_PAGES.has(path)) return;
+  recordEvent(env, ctx, {
+    event: landing ? "landing" : "view",
+    path: path.slice(0, 200),
+    utm_source: tag("source"), utm_medium: tag("medium"),
+    utm_campaign: tag("campaign"), utm_content: tag("content"),
+    click,
+    ...visitFields(request),
+  });
+}
 
 /**
  * Byte ranges for audio and video. The asset binding answers a Range request
@@ -760,6 +855,10 @@ async function handlePaywallStatus(request, url, env, ctx) {
     hasMissionEmail: Boolean(env.RESEND_API_KEY && env.MAIL_FROM && env.SUPABASE_SERVICE_ROLE_KEY),
     // Checkout asks for the terms and immediate-access consent.
     hasTermsConsent: Boolean(env.TERMS_URL),
+    // Buying without an account first (guest checkout), and the funnel
+    // count (funnel_events) both need the service key.
+    guestCheckout: Boolean(env.SUPABASE_SERVICE_ROLE_KEY),
+    funnelOn: Boolean(env.SUPABASE_SERVICE_ROLE_KEY) && env.FUNNEL !== "off",
   };
 
   report.configOk =
@@ -795,7 +894,7 @@ async function signedInUser(request, env) {
   const auth = request.headers.get("Authorization") || "";
   const token = (auth.match(/^Bearer\s+(.+)$/i) || [])[1] ||
     readCookie(request.headers.get("Cookie"), SESSION_COOKIE);
-  if (!token) return { error: "Sign in first", status: 401 };
+  if (!token) return { error: "Sign in first", status: 401, noToken: true };
   try {
     const res = await fetch(`${env.SUPABASE_URL}/auth/v1/user`, {
       headers: { apikey: env.SUPABASE_ANON_KEY, Authorization: `Bearer ${token}` },
@@ -809,7 +908,7 @@ async function signedInUser(request, env) {
   }
 }
 
-async function handleCreateCheckoutSession(request, env) {
+async function handleCreateCheckoutSession(request, env, ctx) {
   let body;
   try {
     body = await request.json();
@@ -820,14 +919,52 @@ async function handleCreateCheckoutSession(request, env) {
   // The buyer is whoever is signed in. Until 2026-10-04 the account came
   // from userId/userEmail in the body, so anyone could open a checkout
   // attached to any account id; a body's ids are now ignored.
+  // Nobody signed in (or a token Supabase will not confirm): the buyer pays
+  // as a guest, Stripe asks for their email, and the purchase goes to the
+  // account with that email, made for them if there is none
+  // (accountForCheckout). Until 2026-10-09 this answered 401 and the page
+  // sent a buyer off to make an account and confirm an email before they
+  // could pay.
+  // A token that Supabase will not confirm is not a guest: that buyer
+  // thinks they are signed in, and their success page would not claim the
+  // purchase. The page signs them out and asks again (stale: true); a
+  // Supabase that cannot be reached is a retry, not a guest checkout.
   const caller = await signedInUser(request, env);
-  if (caller.error) return json({ error: caller.error }, caller.status);
-  const { id: userId, email: userEmail } = caller;
   const { plan, product } = body;
-  const owned = await alreadyHas(env, userId, { plan, product });
-  if (owned) return json({ error: owned, owned: true }, 409);
-  if (product) return createProductCheckout(env, userId, userEmail, product);
+  const what = String(product || plan || "").slice(0, 40) || null;
+  const guest = Boolean(caller.noToken);
+  const note = (outcome) => recordEvent(env, ctx, { event: "checkout", product: what, guest, outcome, ...visitFields(request) });
+  if (caller.error && !guest) {
+    note(caller.status === 401 ? "stale_sign_in" : "auth_unreachable");
+    return caller.status === 401
+      ? json({ error: "Your sign-in has expired.", stale: true }, 401)
+      : json({ error: caller.error }, caller.status);
+  }
+  const userId = guest ? null : caller.id;
+  const userEmail = guest ? null : caller.email;
+  const owned = guest ? null : await alreadyHas(env, userId, { plan, product });
+  if (owned) {
+    note("owned");
+    return json({ error: owned, owned: true }, 409);
+  }
+  const res = product
+    ? await createProductCheckout(env, userId, userEmail, product)
+    : await createPlanCheckout(env, userId, userEmail, plan);
+  note(res.status === 200 ? "created" : `error_${res.status}`);
+  return res;
+}
 
+// What a checkout carries to say who is buying: the signed-in account, or
+// "guest" (Stripe collects the email; the webhook and the success page find
+// or make the account from it). A guest's success page also gets the
+// session id as `claim`, for handleClaimCheckout.
+function buyerParams(userId, userEmail, prefix = "") {
+  return userId
+    ? { customer_email: userEmail, [`${prefix}metadata[supabase_user_id]`]: userId }
+    : { [`${prefix}metadata[guest]`]: "1" };
+}
+
+async function createPlanCheckout(env, userId, userEmail, plan) {
   const envKey = PLAN_ENV_KEYS[plan];
   if (!envKey) {
     return json({ error: `plan must be one of: ${Object.keys(PLAN_ENV_KEYS).join(", ")}` }, 400);
@@ -840,15 +977,14 @@ async function handleCreateCheckoutSession(request, env) {
 
   const params = new URLSearchParams({
     mode: "subscription",
-        "managed_payments[enabled]": "false",
+    "managed_payments[enabled]": "false",
     "line_items[0][price]": priceId,
     "line_items[0][quantity]": "1",
-    customer_email: userEmail,
-    "metadata[supabase_user_id]": userId,
+    ...buyerParams(userId, userEmail),
     "metadata[plan]": plan,
-    "subscription_data[metadata][supabase_user_id]": userId,
+    ...(userId ? { "subscription_data[metadata][supabase_user_id]": userId } : { "subscription_data[metadata][guest]": "1" }),
     "subscription_data[metadata][plan]": plan,
-    success_url: `${env.SITE_URL}/account.html?checkout=success`,
+    success_url: `${env.SITE_URL}/account.html?checkout=success` + (userId ? "" : "&claim={CHECKOUT_SESSION_ID}"),
     // Back to where they started: account.html ignores ?checkout=cancelled,
     // pricing.html says "no charge was made".
     cancel_url: `${env.SITE_URL}/pricing.html?checkout=cancelled`,
@@ -882,7 +1018,7 @@ async function handleCreateCheckoutSession(request, env) {
  * subscriber may still buy a one-off to keep. A read that fails lets the
  * sale through: a Supabase hiccup must not stop anyone paying.
  */
-async function alreadyHas(env, userId, { plan, product }) {
+async function alreadyHas(env, userId, { plan, product, exceptSession = null }) {
   const id = encodeURIComponent(userId);
   const read = async (path) => {
     const res = await fetch(`${env.SUPABASE_URL}/rest/v1/${path}`, { headers: supabaseHeaders(env) });
@@ -902,9 +1038,11 @@ async function alreadyHas(env, userId, { plan, product }) {
     }
     const want = product === "ielts_marking" ? "ielts" : product;
     if (want !== "blockcamp" && want !== "ielts") return null;
-    const rows = await read(`user_plans?select=status,ends_at,term&user_id=eq.${id}&product=eq.${want}`);
+    const rows = await read(`user_plans?select=status,ends_at,term,stripe_checkout_session_id&user_id=eq.${id}&product=eq.${want}`);
     const now = Date.now();
-    const holds = rows.some((r) => ACTIVE_STATUSES.has(r.status) &&
+    // exceptSession: the purchase being recorded, which may be in already
+    // (a redelivery, or the success page and the webhook both granting).
+    const holds = rows.some((r) => r.stripe_checkout_session_id !== exceptSession && ACTIVE_STATUSES.has(r.status) &&
       (!r.ends_at || Date.parse(r.ends_at) > now) &&
       (want !== "blockcamp" || (Number(r.term) || 1) === 1));
     if (!holds) return null;
@@ -942,12 +1080,12 @@ async function createProductCheckout(env, userId, userEmail, product) {
     "managed_payments[enabled]": def.managed ? "true" : "false",
     "line_items[0][price]": priceId,
     "line_items[0][quantity]": "1",
-    customer_email: userEmail,
-    "metadata[supabase_user_id]": userId,
+    ...buyerParams(userId, userEmail),
     "metadata[product]": product,
     // Stripe fills in the session id: account.html waits for that very
     // purchase to be recorded (the webhook can land a moment after the buyer).
-    success_url: `${env.SITE_URL}/account.html?checkout=success&cs={CHECKOUT_SESSION_ID}`,
+    success_url: `${env.SITE_URL}/account.html?checkout=success&cs={CHECKOUT_SESSION_ID}` +
+      (userId ? "" : "&claim={CHECKOUT_SESSION_ID}"),
     cancel_url: `${env.SITE_URL}/pricing.html?checkout=cancelled`,
   });
   addConsent(params, env);
@@ -1068,7 +1206,7 @@ async function handleFounderStatus(env, ctx) {
 // POST /api/stripe-webhook
 // ─────────────────────────────────────────────────────────────────────────
 
-async function handleStripeWebhook(request, env) {
+async function handleStripeWebhook(request, env, ctx) {
   const signature = request.headers.get("stripe-signature");
   const rawBody = await request.text();
 
@@ -1088,40 +1226,40 @@ async function handleStripeWebhook(request, env) {
     case "checkout.session.completed":
     case "checkout.session.async_payment_succeeded": {
       const session = event.data.object;
-      const userId = session.metadata?.supabase_user_id;
-
       if (session.mode === "payment") {
         // A delayed method (a bank debit) completes the session unpaid and
         // pays later; the grant waits for async_payment_succeeded.
         if (session.payment_status !== "paid" && session.payment_status !== "no_payment_required") break;
-        // A sale not started from the site (no signed-in user) has nothing
-        // to attach to. Logged so it can be granted by hand: the session id
-        // finds the buyer in Stripe. Not the address: the logs are kept, and
-        // they are not where buyers' email addresses should end up.
-        if (!userId) {
-          console.error(`checkout ${session.id}: paid one-off with no supabase_user_id, nothing granted ` +
-            `(find the buyer in Stripe by this session id)`);
-          break;
-        }
-        if (!(await grantOneOff(env, event, session, userId))) return failed();
+      } else if (event.type !== "checkout.session.completed" || !session.subscription) {
         break;
       }
-
-      // The full plan: a subscription, held on the profile as before. Its
-      // status is read from Stripe now, not taken from this event: a
-      // redelivered or late event must not write a stale "active" over a
-      // cancellation that happened since.
-      if (event.type !== "checkout.session.completed" || !userId || !session.subscription) break;
-      const sub = await currentSubscription(env, session.subscription);
-      if (!sub) return failed();
-      const plan = session.metadata?.plan;
-      const ok = await updateProfile(env, userId, {
-        stripe_customer_id: session.customer,
-        stripe_subscription_id: session.subscription,
-        ...subscriptionFields(sub),
-        ...(plan ? { plan } : {}),
-      });
-      if (!ok) return failed();
+      // Signed in at checkout, or not: then the account is the one with the
+      // email the buyer gave Stripe, made for them if there is none. That
+      // covers a Payment Link or dashboard sale too. Only a sale with no
+      // email at all has nothing to attach to; it is logged by session id
+      // (the logs are kept, and buyers' addresses do not belong in them).
+      let userId = session.metadata?.supabase_user_id;
+      if (!userId) {
+        // Anything else sold on the Stripe account makes no account and
+        // grants nothing here.
+        const sells = await sellsThis(env, session);
+        if (sells === null) return failed();
+        if (!sells) {
+          console.error(`checkout ${session.id}: paid, but not for anything this site sells; no account made`);
+          break;
+        }
+        const acct = await accountForCheckout(env, session);
+        if (!acct) return failed();
+        if (!acct.userId) {
+          console.error(`checkout ${session.id}: paid, but no account could be found or made for the buyer ` +
+            `(${acct.refused ? `auth refused the address, HTTP ${acct.refused}` : "no email"}); nothing granted, ` +
+            `grant by hand (find the buyer in Stripe by this session id)`);
+          break;
+        }
+        userId = acct.userId;
+        if (acct.created) await welcomeEmail(env, acct.email, session);
+      }
+      if (!(await fulfil(env, session, userId, event, ctx))) return failed();
       break;
     }
     case "customer.subscription.updated":
@@ -1183,23 +1321,52 @@ async function handleStripeWebhook(request, env) {
  * Nothing bought here expires (Innes, 2026-10-04): ends_at stays null.
  * Returns false only when the purchase could not be recorded.
  */
-async function grantOneOff(env, event, session, userId) {
-  let items;
+// A session's line items with their products, or null when Stripe could not
+// be read.
+async function lineItems(env, sessionId) {
   try {
     const res = await fetch(
-      `https://api.stripe.com/v1/checkout/sessions/${encodeURIComponent(session.id)}/line_items?expand[]=data.price.product&limit=10`,
+      `https://api.stripe.com/v1/checkout/sessions/${encodeURIComponent(sessionId)}/line_items?expand[]=data.price.product&limit=10`,
       { headers: { "Authorization": `Bearer ${env.STRIPE_SECRET_KEY}` } }
     );
-    if (!res.ok) return false;
-    items = (await res.json()).data || [];
+    if (!res.ok) return null;
+    return (await res.json()).data || [];
   } catch {
-    return false;
+    return null;
   }
+}
 
-  const item = items.find((li) => {
+// The line item whose product's metadata names something the site grants.
+function recognisedItem(items) {
+  return items.find((li) => {
     const p = String(li.price?.product?.metadata?.product || "").trim().toLowerCase();
     return Object.prototype.hasOwnProperty.call(PLAN_TRACKS, p);
   });
+}
+
+/**
+ * Whether a paid checkout is for something this site sells, decided before
+ * any account is found or made for a guest: a one-off whose product carries
+ * the site's metadata, or a subscription to one of the plan prices. Anything
+ * else sold on the Stripe account is not the site's to grant. Null when
+ * Stripe could not be read (the caller retries).
+ */
+async function sellsThis(env, session) {
+  if (session.mode === "payment") {
+    const items = await lineItems(env, session.id);
+    return items === null ? null : Boolean(recognisedItem(items));
+  }
+  if (!session.subscription) return false;
+  const sub = await currentSubscription(env, session.subscription);
+  if (!sub) return null;
+  const prices = Object.values(PLAN_ENV_KEYS).map((k) => env[k]).filter(Boolean);
+  return (sub.items?.data || []).some((i) => prices.includes(i.price?.id));
+}
+
+async function grantOneOff(env, event, session, userId, ctx) {
+  const items = await lineItems(env, session.id);
+  if (items === null) return false;
+  const item = recognisedItem(items);
   // A paid session whose product carries no recognised metadata is a
   // dashboard mistake, not a retryable failure: say so in the log and stop.
   if (!item) {
@@ -1213,6 +1380,13 @@ async function grantOneOff(env, event, session, userId) {
   const credits = Math.max(0, parseInt(meta.marking_credits, 10) || 0) * qty;
   const term = parseInt(meta.term, 10);
   const paidAt = new Date((event.created || Date.now() / 1000) * 1000).toISOString();
+  // Bought signed out by someone who already has it (the signed-in checkout
+  // refuses that up front). The payment is real, so it is recorded; it is
+  // flagged for a refund by hand.
+  const guest = !session.metadata?.supabase_user_id;
+  const dup = guest
+    ? await alreadyHas(env, userId, { product: String(session.metadata?.product || product), exceptSession: session.id })
+    : null;
 
   const inserted = await insertUserPlan(env, {
     user_id: userId,
@@ -1226,6 +1400,13 @@ async function grantOneOff(env, event, session, userId) {
     marking_credits: credits,
   });
   if (inserted === null) return false;
+  // Counted once: the row is keyed by the session, so a redelivery, or the
+  // success page and the webhook both granting, make one sale.
+  if (inserted) {
+    if (dup) console.error(`checkout ${session.id}: ${userId} bought ${product} again as a guest; refund one by hand`);
+    recordEvent(env, ctx, { event: "paid", product: String(session.metadata?.product || product).slice(0, 40),
+      guest, ...(dup ? { outcome: "duplicate" } : {}) });
+  }
 
   // Only a first delivery that actually made the row tells the marking
   // inbox; a redelivery would otherwise send the same email again.
@@ -1240,6 +1421,270 @@ async function grantOneOff(env, event, session, userId) {
     });
   }
   return true;
+}
+
+/**
+ * Gives a paid checkout what it bought, on `userId`: a one-off becomes its
+ * user_plans row (grantOneOff), the full plan writes the subscription onto
+ * the profile, read from Stripe as it is now (a late or redelivered event
+ * must not write "active" over a cancellation made since). Both are safe to
+ * run twice, which happens: the webhook and a guest's success page
+ * (handleClaimCheckout) each fulfil, whichever comes first. False when it
+ * could not be recorded.
+ */
+async function fulfil(env, session, userId, event, ctx) {
+  if (session.mode === "payment") return grantOneOff(env, event, session, userId, ctx);
+  const sub = await currentSubscription(env, session.subscription);
+  if (!sub) return false;
+  const plan = session.metadata?.plan;
+  const guest = !session.metadata?.supabase_user_id;
+  let current;
+  try {
+    const r = await fetch(`${env.SUPABASE_URL}/rest/v1/profiles?select=stripe_subscription_id,subscription_status` +
+      `&id=eq.${encodeURIComponent(userId)}`, { headers: supabaseHeaders(env) });
+    if (!r.ok) return false;
+    current = (await r.json())[0] || {};
+  } catch {
+    return false;
+  }
+  // A different subscription that is still live is never written over: a
+  // second Forbes English Pro bought signed out by someone who has one, or
+  // an old checkout's success page opened again, would cut the live one
+  // off from its own events. The payment is real: flagged for a refund.
+  // Live as Stripe has it, not as the profile last heard: a missed
+  // cancellation must not keep a new, paid subscription off the account.
+  let other = null;
+  if (current.stripe_subscription_id && current.stripe_subscription_id !== session.subscription &&
+      ACTIVE_STATUSES.has(current.subscription_status)) {
+    other = await currentSubscription(env, current.stripe_subscription_id);
+    if (!other) return false;
+  }
+  if (other && ACTIVE_STATUSES.has(other.status)) {
+    console.error(`checkout ${session.id}: ${userId} already has live subscription ${current.stripe_subscription_id}; ` +
+      `${session.subscription} not written (refund one by hand)`);
+    recordEvent(env, ctx, { event: "paid", product: String(plan || "plan").slice(0, 40), guest, outcome: "duplicate" });
+    return true;
+  }
+  const ok = await updateProfile(env, userId, {
+    stripe_customer_id: session.customer,
+    stripe_subscription_id: session.subscription,
+    ...subscriptionFields(sub),
+    ...(plan ? { plan } : {}),
+  });
+  // Counted once: the first time this subscription is written.
+  if (ok && current.stripe_subscription_id !== session.subscription) {
+    recordEvent(env, ctx, { event: "paid", product: String(plan || "plan").slice(0, 40), guest });
+  }
+  return ok;
+}
+
+// ── GUEST CHECKOUT ───────────────────────────────────────────────────────
+// A buyer who is not signed in pays first. The account is the one with the
+// email they gave Stripe; if there is none, the purchase makes it, already
+// confirmed (they proved the address is theirs well enough to pay from it;
+// what an impostor could do with it is own a purchase they paid for). The
+// success page then signs a new account straight in (handleClaimCheckout),
+// so no email has to arrive for the purchase to be usable. Supabase's own
+// mail only reaches the project team's addresses until a custom SMTP server
+// is set (supabase.com/docs/guides/auth/auth-smtp), which is also why the
+// old "make an account, confirm your email, then pay" path could not work
+// for a stranger.
+
+/**
+ * The account a checkout's purchase goes to: { userId, created, email },
+ * { userId: null } when Stripe has no email for the buyer or Supabase
+ * refuses the address ({ refused: <HTTP status> }), or null when Supabase
+ * could not be reached (the caller retries). The first answer for a session
+ * is kept in guest_checkouts, so the webhook and the success page, racing,
+ * agree on one account. An account made here records the checkout that made
+ * it in app_metadata, which only the service role can write: the success
+ * page signs a buyer into that account and no other (handleClaimCheckout).
+ */
+async function accountForCheckout(env, session) {
+  const email = String(session.customer_details?.email || session.customer_email || "").trim().toLowerCase();
+  if (!email) return { userId: null };
+  const rest = `${env.SUPABASE_URL}/rest/v1`;
+  const headers = supabaseHeaders(env);
+  const sid = encodeURIComponent(session.id);
+  const readRow = async () => {
+    const r = await fetch(`${rest}/guest_checkouts?select=user_id,created_account&session_id=eq.${sid}`, { headers });
+    if (!r.ok) throw new Error(`guest_checkouts HTTP ${r.status}`);
+    return (await r.json())[0] || null;
+  };
+  try {
+    const seen = await readRow();
+    if (seen) return { userId: seen.user_id, created: seen.created_account, email };
+
+    let userId = await profileIdByEmail(env, email);
+    let created = false;
+    if (!userId) {
+      const r = await fetch(`${env.SUPABASE_URL}/auth/v1/admin/users`, {
+        method: "POST", headers,
+        body: JSON.stringify({
+          email, email_confirm: true,
+          user_metadata: { needs_password: true },
+          app_metadata: { via: "checkout", checkout_session: session.id },
+        }),
+      });
+      if (r.ok) {
+        userId = (await r.json()).id;
+        created = true;
+      } else {
+        // Made a moment ago by the other path (the webhook or the success
+        // page): the email is taken, so the profile is there now.
+        userId = await profileIdByEmail(env, email);
+        if (!userId) {
+          // Auth down or busy: try again later. An address it will not take
+          // (a 4xx with no account behind it): retrying for three days will
+          // not change that, so the caller logs it for a grant by hand.
+          if (r.status >= 500 || r.status === 429) throw new Error(`could not make the account (auth HTTP ${r.status})`);
+          return { userId: null, refused: r.status, email };
+        }
+      }
+    }
+    const ins = await fetch(`${rest}/guest_checkouts?on_conflict=session_id`, {
+      method: "POST",
+      headers: { ...headers, "Prefer": "return=representation,resolution=ignore-duplicates" },
+      body: JSON.stringify({ session_id: session.id, user_id: userId, created_account: created }),
+    });
+    if (!ins.ok) throw new Error(`guest_checkouts HTTP ${ins.status}`);
+    if ((await ins.json()).length) return { userId, created, email };
+    const row = await readRow();
+    return row ? { userId: row.user_id, created: row.created_account, email } : null;
+  } catch (err) {
+    console.error(`checkout ${session.id}: no account for the buyer yet (${err && err.message})`);
+    return null;
+  }
+}
+
+// The account id for an email, from the profiles row Supabase makes for
+// every account (handle_new_user, kept in step by sync_profile_email).
+// Supabase Auth stores addresses lower-cased (checked 2026-10-09: no
+// mixed-case address in auth.users or profiles), so an exact match on the
+// lower-cased address finds it, and "_" or "%" in it are just characters.
+async function profileIdByEmail(env, email) {
+  const r = await fetch(`${env.SUPABASE_URL}/rest/v1/profiles?select=id&email=eq.${encodeURIComponent(email)}&limit=1`,
+    { headers: supabaseHeaders(env) });
+  if (!r.ok) throw new Error(`profiles HTTP ${r.status}`);
+  const row = (await r.json())[0];
+  return row ? row.id : null;
+}
+
+/**
+ * A new account made by a purchase: the email that says it exists and how
+ * to get back in. Only with Resend set up. It carries no sign-in link of its
+ * own: making one would replace the success page's, which the buyer may be
+ * about to use. Idempotent per checkout for 24 hours.
+ */
+async function welcomeEmail(env, email, session) {
+  if (!env.RESEND_API_KEY || !env.MAIL_FROM) return;
+  const what = session.mode === "payment" ? "your purchase" : "Forbes English Pro";
+  const text = [
+    `Thank you. ${what[0].toUpperCase() + what.slice(1)} is on your Forbes English account, made for this email address.`,
+    "",
+    `To sign in on any device, open ${env.SITE_URL}/account.html, choose "Forgot your password?" ` +
+      "and enter this address: you will be sent a link to set your password.",
+    "",
+    "Forbes English",
+  ].join("\n");
+  await sendMail(env, { to: email, subject: "Your Forbes English account", text, key: `welcome-${session.id}` });
+}
+
+/**
+ * POST /api/claim-checkout { cs }: the success page of a checkout made
+ * without signing in. It fulfils the purchase at once (the webhook may land
+ * a moment later and finds it done), and answers with the account it went
+ * to:
+ *   new_account       this very checkout made the account (its id is in the
+ *                     account's app_metadata, which only the service role
+ *                     writes) and nobody has signed into it yet: a one-time
+ *                     `token_hash` the page trades for a session
+ *                     (supabase.auth.verifyOtp, type "email"), so the buyer is
+ *                     signed in with no email to wait for. Asking again gives
+ *                     a new one (and voids the last) until the first sign-in,
+ *                     so a reply lost on a phone is not a locked-out buyer.
+ *   existing_account  any other account, or one already signed into: the
+ *                     page asks them to log in.
+ *   processing        paid by a method that clears later.
+ *   not_paid          the checkout was not completed.
+ *   signed_in_purchase  bought while signed in; nothing to claim.
+ * The session id is the only key, and it is in the success URL Stripe sent
+ * the buyer to. A sign-in is handed out only within two days of the
+ * checkout, only into the account that checkout made, and only until that
+ * account is first signed into. Buying with someone else's address puts the
+ * purchase on their account and signs nobody in.
+ */
+async function handleClaimCheckout(request, env, ctx) {
+  let body;
+  try { body = await request.json(); } catch { return json({ error: "Invalid JSON body" }, 400); }
+  const cs = String((body && body.cs) || "");
+  if (!/^cs_(test|live)_[A-Za-z0-9]{10,200}$/.test(cs)) return json({ error: "Not a checkout" }, 400);
+
+  let session;
+  try {
+    const r = await fetch(`https://api.stripe.com/v1/checkout/sessions/${encodeURIComponent(cs)}`,
+      { headers: { "Authorization": `Bearer ${env.STRIPE_SECRET_KEY}` } });
+    if (r.status === 404) return json({ error: "Not a checkout" }, 404);
+    if (!r.ok) return json({ error: "Could not reach the payment service; reload in a moment." }, 502);
+    session = await r.json();
+  } catch {
+    return json({ error: "Could not reach the payment service; reload in a moment." }, 502);
+  }
+  const what = String(session.metadata?.product || session.metadata?.plan || "").slice(0, 40) || null;
+  const answer = (state, extra = {}) => {
+    recordEvent(env, ctx, { event: "claim", product: what, guest: true, outcome: state });
+    return json({ state, ...extra });
+  };
+
+  if (session.metadata?.supabase_user_id) return json({ state: "signed_in_purchase" });
+  if (session.status !== "complete") return answer("not_paid");
+  if (session.payment_status !== "paid" && session.payment_status !== "no_payment_required") return answer("processing");
+
+  const sells = await sellsThis(env, session);
+  if (sells === null) return json({ error: "Could not reach the payment service; reload in a moment." }, 502);
+  if (!sells) return json({ error: "This payment is not for anything sold on this site. Write to info@forbesenglish.com." }, 409);
+  const acct = await accountForCheckout(env, session);
+  if (!acct) return json({ error: "Your payment went through, but the account is not ready yet. Reload in a moment." }, 502);
+  if (!acct.userId) return json({ error: "Your payment went through, but no account could be made for it. Write to info@forbesenglish.com." }, 500);
+
+  const recent = Date.now() / 1000 - Number(session.created || 0) < 2 * 86400;
+  // Fulfilled here too, so the account shows the purchase on arrival; a
+  // failure is left to the webhook, which retries until it lands. Not for
+  // an old success page opened again: the webhook did it long ago, and
+  // replaying an old subscription would write its state over the current one.
+  if (recent) await fulfil(env, session, acct.userId, { created: session.created }, ctx);
+
+  let fresh = false;
+  try {
+    const r = await fetch(`${env.SUPABASE_URL}/auth/v1/admin/users/${encodeURIComponent(acct.userId)}`,
+      { headers: supabaseHeaders(env) });
+    if (r.ok) {
+      const u = await r.json();
+      fresh = u.app_metadata?.checkout_session === session.id && !u.last_sign_in_at;
+    }
+  } catch { /* not fresh: they log in */ }
+  if (!recent || !fresh) return answer("existing_account", { email: acct.email });
+
+  // When it was first claimed, for the record; asking again is allowed until
+  // the first sign-in (above), each new sign-in voiding the last.
+  await supabaseWrite(`${env.SUPABASE_URL}/rest/v1/guest_checkouts?session_id=eq.${encodeURIComponent(session.id)}&claimed_at=is.null`,
+    { method: "PATCH", headers: supabaseHeaders(env), body: JSON.stringify({ claimed_at: new Date().toISOString() }) });
+
+  try {
+    const r = await fetch(`${env.SUPABASE_URL}/auth/v1/admin/generate_link`, {
+      method: "POST", headers: supabaseHeaders(env),
+      body: JSON.stringify({ type: "magiclink", email: acct.email }),
+    });
+    if (r.ok) {
+      const g = await r.json();
+      const token = g.hashed_token || g.properties?.hashed_token;
+      if (token) return answer("new_account", { email: acct.email, token_hash: token });
+    }
+    console.error(`claim ${session.id}: no sign-in link (auth HTTP ${r.status})`);
+  } catch (err) {
+    console.error(`claim ${session.id}: no sign-in link (${err && err.message})`);
+  }
+  return json({ error: "Your payment went through, but signing you in did not. Reload this page in a moment." }, 502);
 }
 
 /**
@@ -1659,12 +2104,25 @@ async function revokeOneOff(env, paymentIntent, status) {
   }
   if (Array.isArray(rows) && rows.length > 0) return true;
 
-  // Nothing granted yet. A sale the site can never grant (no signed-in
-  // buyer, a product it does not know) has nothing to hold closed.
-  const userId = session.metadata?.supabase_user_id;
-  const key = String(session.metadata?.product || "");
+  // Nothing granted yet. A sale the site does not grant has nothing to hold
+  // closed. A guest's is held on the account its email leads to (found or
+  // made, as the late grant would), so the late grant finds it closed.
+  let key = String(session.metadata?.product || "");
+  if (!key) {
+    const items = await lineItems(env, session.id);
+    if (items === null) return null;
+    const item = recognisedItem(items);
+    key = item ? String(item.price.product.metadata.product).trim().toLowerCase() : "";
+  }
   const product = key === "ielts_marking" ? "ielts" : key;
-  if (!userId || !Object.prototype.hasOwnProperty.call(PLAN_TRACKS, product)) return true;
+  if (!Object.prototype.hasOwnProperty.call(PLAN_TRACKS, product)) return true;
+  let userId = session.metadata?.supabase_user_id;
+  if (!userId) {
+    const acct = await accountForCheckout(env, session);
+    if (!acct) return null;
+    userId = acct.userId;
+  }
+  if (!userId) return true;
   const made = await insertUserPlan(env, {
     user_id: userId,
     product,
