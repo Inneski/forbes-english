@@ -907,19 +907,23 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
    (the Block Camp threshold) this bar appears OUTSIDE the scaled stage, at
    real size, and fitStage() leaves room for it. Swipe works as well. */
 .phone-nav { display: none; }
-html.is-phone .phone-nav {
-  display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
-  padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
-  background: var(--surface); border-top: 1px solid var(--border);
-}
+html.is-phone .phone-nav { display: contents; }
+/* Two small floating arrows, not a bar. Innes, 2026-10-14, on the first
+   version (a full-width bar of 52px pills): "WTF are these chunky things?"
+   44px is the smallest comfortable tap target; translucent so the slide
+   shows through, and no space is taken from the stage. */
 .phone-btn {
-  min-width: 96px; height: 52px; border-radius: 26px; cursor: pointer;
-  font: 600 30px/1 var(--font-ui); color: var(--void);
-  background: var(--accent); border: none;
+  position: fixed; bottom: calc(10px + env(safe-area-inset-bottom)); z-index: 50;
+  width: 44px; height: 44px; border-radius: 50%; cursor: pointer;
+  font: 500 24px/1 var(--font-ui); color: var(--text);
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+  backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
 }
-.phone-btn:disabled { opacity: .35; }
-.phone-count { font: 500 15px var(--font-mono, monospace); color: var(--text); }
+.phone-btn[data-action="prev"] { left: calc(10px + env(safe-area-inset-left)); }
+.phone-btn[data-action="next"] { right: calc(10px + env(safe-area-inset-right)); }
+.phone-btn:disabled { opacity: 0; pointer-events: none; }
+.phone-count { display: none; }
 html.is-phone .deck-bar .nav-btn { visibility: hidden; }
 
 /* ── MATCHING ────────────────────────────────────────────────────── */
@@ -2225,7 +2229,7 @@ function goNode(id, record) {
 if (BRANCH) ledgerInit();
 setTimeout(wireGlosses, 0);
 
-const PHONE_BAR = 72;
+const PHONE_BAR = 0;   // the arrows float; nothing is reserved
 function fitStage() {
   let s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
   const phone = s < 0.62;
