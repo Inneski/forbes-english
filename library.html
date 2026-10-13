@@ -1159,7 +1159,10 @@ function detectCategories(item) {
   // Minecraft is also its own filter: it is the single biggest run of themed
   // lessons on the site, and 'Gaming' buries it among the RPG and Lego ones.
   if (/minecraft|dino-?craft/.test(t)) cats.push('Minecraft');
-  if (/\brpg\b|role[\s_-]?playing|career quest|falcon racing|parisian conquest|wild frame|thornwick|sherlock|scarlet star/.test(t)) cats.push('Role Playing Games');
+  // The Parisian Conquest says RPG in its title but is a business-skills
+  // course in costume, not a story game: Innes, 2026-10-14, "they dont have
+  // the same vibe". Its title still shelves it under Business.
+  if (/\brpg\b|role[\s_-]?playing|career quest|falcon racing|wild frame|thornwick|sherlock|scarlet star/.test(t) && !/parisian conquest/.test(t)) cats.push('Role Playing Games');
   // The Block Camp line has two halves and Innes wants them shelved apart:
   // the branching RPGs live in block-camp/, the grammar climb is the
   // blockcamp-* pages. Both also keep their broader categories.

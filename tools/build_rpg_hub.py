@@ -15,7 +15,7 @@ deserves an equal button with IELTS, Block Camp & Sherpa ... RPGs should
 have a hub too."* Until then the RPGs were a category filter on the
 library and a collection card; the Block Camp half had a hub
 (`block-camp.html`) and the story games — Sherlock, Thornwick, the
-Kraken, Wild Frame, the Parisian Conquest — had nothing. This page is
+Kraken, Wild Frame — had nothing. This page is
 the RPG hub in the IELTS / grammar landing-page family: full-bleed hero,
 the counts, how a game works, the free ones, every game by level, the
 two neighbours (Block Camp and the classroom roleplays), notes, a
@@ -73,8 +73,11 @@ HERO_OG = '/' + seo.quote(HERO)              # seo.py puts this on the og:image
 
 # The library's rule for the "Role Playing Games" category, verbatim
 # (detectCategories in library.html). Keep the two in step.
+# The Parisian Conquest is excluded: a business course, not a story game
+# (Innes, 2026-10-14). library.html has the same exclusion.
+NOT_RPG = re.compile(r'parisian conquest')
 RPG_PATTERN = re.compile(
-    r'\brpg\b|role[\s_-]?playing|career quest|falcon racing|parisian conquest|'
+    r'\brpg\b|role[\s_-]?playing|career quest|falcon racing|'
     r'wild frame|thornwick|sherlock|scarlet star')
 BLOCK_CAMP_DIR = 'block-camp/'
 BLOCK_CAMP_HUB = os.path.join(ROOT, 'lesson-template', 'build', 'block-camp-hub', 'build.py')
@@ -129,19 +132,6 @@ GAMES = {
         'and a lead actor harder to read than the script. It starts by asking how Part One '
         'ended.',
         ('Mixed Grammar',)),
-    'forbes-dnd-rpg.html': (
-        'The Parisian Conquest',
-        'Business English as a dungeon crawl. Choose a class, roll your stats &mdash; '
-        'Eloquence, Gravitas, Cultural IQ, Resilience &mdash; and take your agency through '
-        'five dungeons, from the cold call to the throne room, to win the French market. '
-        'Your weapons are words.',
-        ('Business English', 'Negotiation')),
-    'forbes-dnd-rpg-part2.html': (
-        'The Parisian Conquest II: The Long Winter',
-        'You won the account; now keep it. Five more dungeons for the twelve months after '
-        'the pitch: saying no without damage, delivering bad news before it is discovered, '
-        'defending numbers that missed, and asking for more when you have not been perfect.',
-        ('Business English',)),
 }
 
 # ── palette ───────────────────────────────────────────────────────────
@@ -298,7 +288,7 @@ def _hay(r):
 
 
 def is_rpg(r):
-    return bool(RPG_PATTERN.search(_hay(r))) or r['file'].startswith(BLOCK_CAMP_DIR)
+    return (bool(RPG_PATTERN.search(_hay(r))) and not NOT_RPG.search(_hay(r))) or r['file'].startswith(BLOCK_CAMP_DIR)
 
 
 def block_camp_table():
