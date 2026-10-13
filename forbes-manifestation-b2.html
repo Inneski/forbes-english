@@ -1332,7 +1332,15 @@ html.is-phone .deck-bar .nav-btn { visibility: hidden; }
    picture made it obvious. Anything that paints text straight onto the stage
    belongs in that selector list. */
 .sort-bin-label { width: fit-content; margin-inline: auto; }
-.q-stem, .q-ctx, .feedback, .gap-row { width: fit-content; max-width: 100%; }
+.q-stem, .q-ctx, .feedback, .gap-row,
+.slide-body > .prose { width: fit-content; max-width: 100%; }
+/* .slide-body > .prose and the empty gap feedback, 2026-10-14. Innes, on a
+   phone: "Some fields too long". The word-bank hint ("Use the word bank.
+   One word per gap.") was a plate the full width of the canvas, and every
+   gap sentence sat in a card twice its height because the unanswered
+   .feedback kept its 26px floor plus an 18px margin. Inside a gap row it now
+   takes no room until it has something to say. */
+.gap-row .feedback:not(.show) { display: none; }
 /* .feedback and .gap-row joined on 2026-09-23. The feedback plate was the one
    on a question slide the 09-12 sweep never saw, because it is invisible until
    a learner answers: a one-line "Correct." then painted a bar edge to edge
