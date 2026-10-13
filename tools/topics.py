@@ -357,6 +357,7 @@ OVERRIDES = {
     # Getting in the Door: cold outreach and the gatekeeper call; no grammar
     # in the title.
     'forbes-reddit-french-door-c1.html': ['business-english'],
+    'forbes-manifestation-b2.html': ['passive-voice'],     # reporting claims: is said to / it is claimed that
     'takingitaparta2es.html': ['business-english'],
     # The School Visit: a correction test over say/tell, negatives, purpose
     # clauses and subjects; the title names no grammar.

@@ -11,6 +11,29 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-10-13 — Manifestation: Can You Think It Into Being? (B2): BUILT, waiting on art
+
+Innes: *"make forbes lesson on manifestation - give me artwork shopping
+list"*. New topic deck, house style 2 (panels), 35 slides, EN/DE/ES. The
+trend is the hook; the language is **reporting a claim with distance**
+(It is said that / X is said to / X is said to have done, supposedly,
+apparently, allegedly), then hedging (there is little evidence that, it
+would seem, tends to) and the balanced view (there's something to be said
+for, where it falls down is, I'd stop short of). Filed under
+`passive-voice` via `OVERRIDES` in `tools/topics.py`.
+
+`build_manifestation.py` writes the gitignored preview
+`_forbes-manifestation-b2.html` on stand-ins copied from the Alan Watts
+plates (`manifestation/_ph-*.jpg`, gitignored), which are also the style
+reference. Once all six plates are in, it stops and asks for
+`PALETTE_LIVE` (from `plate-cover`), then writes the live page. Brief:
+`docs/ARTWORK-manifestation.md`; drop folder `incoming/manifestation/`
+exists. All gates pass except HEAD (seo.py runs on the live page).
+Answered-overflow fits in en/de/es. No catalogue row yet — not needed
+until it ships.
+
+---
+
 ## 2026-10-07 — My Cat, Your Dog: possessive adjectives + this/that (A1, young learners): BUILT, waiting on art
 
 From Innes's coursebook sheet for William (`english lessons/student notes/
