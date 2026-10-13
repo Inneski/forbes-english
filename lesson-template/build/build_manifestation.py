@@ -72,6 +72,22 @@ if not READY:
 PIC = {s: (s + '.jpg') if READY else ('_ph-%s.jpg' % s) for s in SLOTS}
 HERO, TREND, CLAIMS, EVIDENCE, VIEW, ACT = (PIC[s] for s in SLOTS)
 
+# Behind cards and questions. Innes, 2026-10-13, on the first live build:
+# "dandelion too repetitive". With no data-bg every card and question
+# slide fell back to the hero, so the dandelion sat behind 25 of 35
+# slides. Now each part's slides wear that part's plate (HOUSE-STYLE §5c,
+# one background per section), and the question slides take a second
+# plate per part once it lands (briefed in docs/ARTWORK-manifestation.md,
+# "Round 2"); until then they share the part's plate.
+PART_BG = {1: TREND, 2: CLAIMS, 3: EVIDENCE, 4: VIEW}
+EXTRA = {1: 'plate-trend-2', 2: 'plate-claims-2', 3: 'plate-evidence-2',
+         4: 'plate-view-2'}
+
+
+def qbg(part):
+    f = EXTRA[part] + '.jpg'
+    return f if os.path.exists(os.path.join(F, f)) else PART_BG[part]
+
 E = I.T['en']
 
 # The live page must not ship on the stand-in's colours. Once plate-cover is
@@ -270,7 +286,7 @@ def cards(n):
     part, tk = CARD_PART[n], CARD_TITLE[n]
     return D.teach('e%d' % part, E['e%d' % part], tk, E[tk],
                    [(None, w, k, E[k], None, ex) for w, k, ex in CARDS[n]],
-                   cols='1fr 1fr 1fr')
+                   cols='1fr 1fr 1fr', folder=F, bg=PART_BG[part])
 
 
 def mc(i):
@@ -279,12 +295,13 @@ def mc(i):
     return D.mc(i + 1, len(MC), dict(stem=E[sk] if sk else stem, options=opts,
                                      correct=c, why=why),
                 'e%d' % part, E['e%d' % part], 'mt%d' % part, E['mt%d' % part],
-                ctx=E[xk], ctx_key=xk, stem_key=sk)
+                ctx=E[xk], ctx_key=xk, stem_key=sk, folder=F, bg=qbg(part))
 
 
 def gap(i, rows, bank, part, tk):
     return D.gap(i, 4, rows, bank, 'e%d' % part, E['e%d' % part],
-                 tk, E[tk], hint=E['gh'], hint_key='gh', width=150, size=20)
+                 tk, E[tk], hint=E['gh'], hint_key='gh', width=150, size=20,
+                 folder=F, bg=qbg(part))
 
 
 def build():
@@ -303,22 +320,23 @@ def build():
         cards(1), cards(2),
         mc(0), mc(1),
         D.match(MATCH, 'e1', E['e1'], 'mtt', E['mtt'], 'matchHint', E['matchHint'],
-                'matchWhy'),
+                'matchWhy', folder=F, bg=qbg(1)),
 
         divider(2, CLAIMS),
         intro(2, CLAIMS, 'right', '32% 50%'),
         cards(3), cards(4),
         gap(1, GAP1[:2], BANK1, 2, 'gt1'), gap(2, GAP1[2:], BANK1, 2, 'gt1'),
-        D.order(ORDER1, 'e2', E['e2'], 'ot1', E['ot1'], 'oh1', E['oh1'], 'ow1'),
+        D.order(ORDER1, 'e2', E['e2'], 'ot1', E['ot1'], 'oh1', E['oh1'], 'ow1',
+                folder=F, bg=qbg(2)),
         D.order(ORDER2, 'e2', E['e2'], 'ot2', E['ot2'], 'oh2', E['oh2'], 'ow2',
-                decoys=ORDER2_DECOY),
+                decoys=ORDER2_DECOY, folder=F, bg=qbg(2)),
         mc(2), mc(3),
 
         divider(3, EVIDENCE),
         intro(3, EVIDENCE, 'left', '38% 50%'),
         cards(5), cards(6),
         D.sort_slide(SORT_BINS, SORT_ITEMS, 'e3', E['e3'], 'st', E['st'], 'sh', E['sh'],
-                     'sw', bin_keys=['sb1', 'sb2']),
+                     'sw', bin_keys=['sb1', 'sb2'], folder=F, bg=qbg(3)),
         mc(4), mc(5), mc(6),
 
         divider(4, VIEW),

@@ -107,3 +107,38 @@ come back dark, drop it. Then look at every divider and panel once and tune
 (`"forbes-manifestation-b2.html": "manifestation/plate-cover.jpg"`), and the
 catalogue row (title `Manifestation: Can You Think It Into Being?`, level
 B2). `tools/topics.py` already files it under `passive-voice`.
+
+## Round 2 — four quiet plates for the question slides (2026-10-13)
+
+Innes, on the live deck: *"dandelion too repetitive - ask for more
+artwork"*. Every card and question slide had no picture of its own and fell
+back to the cover, so the dandelion sat behind 25 of 35 slides. **Fixed in
+the builder at once with the art already in:** each part's slides now wear
+that part's plate, and the dandelion is on the cover and results only.
+
+These four finish the job: a **second plate per part for the question
+slides**, so a part's teaching and its questions do not share a picture.
+`build_manifestation.py` picks each one up the moment it exists in
+`manifestation/` (`qbg()`); nothing else to edit.
+
+**They sit BEHIND text**, washed, under cards, which is a different job from
+the panels. So: **quiet, low detail, the subject small and low in the frame,
+a wide empty field above it.** Same stem as round 1, `--ar 16:9`, same
+`--sref`, with `<THIRD>` as `lower third, small`.
+
+| slot | behind | prompt subject |
+|---|---|---|
+| `plate-trend-2` | Part 1 questions + match | `a small notebook lying open on a desk, a pencil across it, one folded paper star resting on the blank page` |
+| `plate-claims-2` | Part 2 gap fills, sentence builders, questions | `two paper-cup telephones joined by a long taut string running across an empty wall` |
+| `plate-evidence-2` | Part 3 sort + questions | `a glass laboratory flask on a plain shelf with one small white cloud floating inside it` |
+| `plate-view-2` | Part 4 gap fills + questions | `a wooden signpost on an empty hilltop, two blank arms pointing in opposite directions` |
+
+Drop them in [incoming/manifestation](../incoming/manifestation) (it exists), then:
+
+```bash
+py tools/prep-artwork.py "incoming/manifestation/<four files>" --into manifestation \
+   --names plate-trend-2,plate-claims-2,plate-evidence-2,plate-view-2
+py lesson-template/build/build_manifestation.py
+py tools/seo.py
+node lesson-template/check-lesson.js forbes-manifestation-b2.html
+```
