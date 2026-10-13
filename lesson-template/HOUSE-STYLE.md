@@ -798,6 +798,12 @@ node lesson-template/check-lesson.js <lesson>.html
 It mechanically verifies the eleven things that have actually gone wrong here:
 
 - **LAYOUT** — every slide fits the canvas and nothing scrolls.
+- **OPTS / GAPW** — no answer box is far longer than what goes in it:
+  multiple-choice options, match items (column by column) and gap-fill
+  boxes alike. Innes has asked for this three times (2026-09-12, -09-24,
+  -10-13: *"hardwired as a no no"*). The template shrink-wraps all three and
+  `deck.gap()` sizes gap boxes from the slide's answers; never pass a px
+  width or a `1fr` column to get round it.
 - **ANSWERS** — no multiple-choice key is conspicuously the longest option.
   The test is a ratio **and** an absolute floor of four characters: on one-word
   options from a closed set (`can / could / must / should`) a key two

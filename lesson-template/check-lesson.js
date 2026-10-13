@@ -8,6 +8,7 @@
  *
  *   LAYOUT   every slide fits the 1280x720 canvas, and nothing scrolls
  *   OPTS     no answer box is far longer than the longest answer in its group
+ *   GAPW     no gap-fill box is far wider than the longest answer on its slide
  *   ANSWERS  the correct MC option is neither the longest nor the shortest
  *   KEYS     the key is not parked at the same option letter every time, and
  *            the runtime shuffle that hides its position is a real shuffle
@@ -168,8 +169,12 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
         for (const c of o.children) if (!(c.innerText || '').trim()) extra += c.getBoundingClientRect().width;
         return Math.max(0, ...lines.map(l => l.b - l.a)) + extra;
       };
-      new Set([...s.querySelectorAll('.opt')].map(o => o.parentElement)).forEach(par => {
-        const group = [...par.children].filter(o => o.classList.contains('opt'));
+      // .match-item joined 2026-10-13: a match grid of 1fr 1.35fr put
+      // "manifest" in a 490px box, and nothing measured it. Its group is its
+      // column, so the definitions are judged against the definitions.
+      new Set([...s.querySelectorAll('.opt, .match-item')].map(o => o.parentElement)).forEach(par => {
+        const group = [...par.children].filter(o => o.classList.contains('opt')
+                                                 || o.classList.contains('match-item'));
         const most = Math.max(...group.map(needOf));
         group.forEach(o => {
           const rr = o.getBoundingClientRect();
@@ -179,6 +184,28 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
           }
         });
       });
+
+      // ── GAPW: a gap-fill box far wider than anything typed into it ──
+      // Same instruction as OPTS, 2026-10-13: the template's .gap carried
+      // min-width: 190px, so "to" got a 190px box whatever the builder asked
+      // for. Judged per slide against the longest acceptable answer on it,
+      // because deck.gap() gives a slide's boxes one width on purpose.
+      {
+        const gaps = [...s.querySelectorAll('input.gap')];
+        if (gaps.length) {
+          const ctx = document.createElement('canvas').getContext('2d');
+          ctx.font = getComputedStyle(gaps[0]).font;
+          const need = Math.max(...gaps.flatMap(g => (g.dataset.answer || '').split('|')
+                                .map(a => ctx.measureText(a.trim()).width)));
+          gaps.forEach(g => {
+            const w = g.getBoundingClientRect().width / scale;
+            if (w >= 120 && w > need * 2 + 40) {
+              (out.gapw = out.gapw || []).push({ n: i + 1, w: Math.round(w),
+                need: Math.round(need), ans: (g.dataset.answer || '').split('|')[0] });
+            }
+          });
+        }
+      }
 
       // ── ANSWERS: is the key simply the longest option? ────────────
       if (s.dataset.type === 'mc') {
@@ -589,6 +616,14 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
   head('LAYOUT');
   if (!r.layout.length) ok('every slide fits the 1280x720 canvas');
   else r.layout.forEach(l => bad(`slide ${l.n} overflows by ${l.over}px (${l.culprit})`));
+
+  head('GAPW');
+  if (!r.gapw) ok('every gap-fill box is sized to its answers');
+  else {
+    const slidesHit = [...new Set(r.gapw.map(o => o.n))];
+    bad(`${r.gapw.length} gap box(es) on ${slidesHit.length} slide(s) are far wider than their answers — e.g. slide ${r.gapw[0].n}, "${r.gapw[0].ans}" in ${r.gapw[0].w}px`);
+    console.log(DIM('          deck.gap() sizes boxes from the answers; .gap wants min-width: 4em, as in lesson-template.html.'));
+  }
 
   head('OPTS');
   if (!r.opts) ok('every answer box is sized to its answers');

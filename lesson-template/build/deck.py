@@ -280,6 +280,17 @@ def gap(i, total, rows, bank, eyebrow_key, eyebrow, title_key, title,
     learner can ever score that point. It shipped that way on the B1
     modal-verbs deck — five "repair the sentence" items with no input box
     — because nothing failed loudly. Now it does."""
+    # Box width comes from the answers, not the caller. Innes, 2026-10-13:
+    # "you have used the unnecessarily long answer field boxes again which
+    # should be hardwired as a no no" — 150-190px boxes for "to" and "is".
+    # Every box on the slide gets the same width, set by the longest
+    # acceptable answer among them, so the box fits what is typed without
+    # telling the learner how long each answer is. `width` is kept for old
+    # callers and ignored; check-lesson.js's GAPW gate fails a box that is
+    # far wider than its answers, however it got that way.
+    longest = max([len(alt) for _, answers, _ in rows for a in answers
+                   for alt in a.split('|')] or [8])
+    box = '%dch' % max(5, longest + 3)
     out = []
     for sentence, answers, w in rows:
         assert sentence.count('______') >= len(answers), (
@@ -302,7 +313,7 @@ def gap(i, total, rows, bank, eyebrow_key, eyebrow, title_key, title,
         for a in answers:
             s = s.replace('______',
                           '<input class="gap" data-answer="%s" aria-label="gap" '
-                          'style="width:%dpx">' % (a, width), 1)
+                          'style="width:%s">' % (a, box), 1)
         out.append('''<div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:%dpx">%%s</p>%%s
         </div>''' % size % (s, ('\n          <p class="feedback" data-explain="%s"></p>' % esc(w))

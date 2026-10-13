@@ -634,8 +634,11 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
   font-family: var(--font-ui); font-size: 20px; color: var(--text);
   background: var(--inset);
   border: none; border-bottom: 2px solid var(--accent);
-  padding: 3px 10px; min-width: 190px; border-radius: 4px 4px 0 0;
+  padding: 3px 10px; min-width: 4em; border-radius: 4px 4px 0 0;
 }
+/* min-width was 190px until 2026-10-13, which overrode every builder's own
+   width and put a 190px box round "to". deck.gap() now sizes boxes from the
+   slide's answers; the floor only keeps a one-letter box clickable. */
 .gap:focus { outline: none; background: var(--inset2); }
 .gap.correct { border-bottom-color: var(--ok); color: var(--ok-text); }
 .gap.wrong   { border-bottom-color: var(--no); color: var(--no-text); }
@@ -898,7 +901,13 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
 
 
 /* ── MATCHING ────────────────────────────────────────────────────── */
-.match-grid { display: grid; grid-template-columns: 1fr 1.35fr; gap: 14px; }
+.match-grid { display: grid; grid-template-columns: fit-content(40%) fit-content(58%);
+              justify-content: start; gap: 14px; }
+/* Was 1fr 1.35fr: both columns stretched to the canvas, so "manifest" sat in
+   a 490px box. Innes, 2026-10-13: "unnecessarily long answer field boxes ...
+   hardwired as a no no". Each column is now as wide as its longest item
+   (every box in a column the same width, as with .opts), wrapping only past
+   40% / 58%. check-lesson.js's OPTS gate measures .match-item too. */
 .match-col { display: grid; gap: 8px; align-content: start; }
 .match-item {
   font-family: var(--font-ui); font-size: 15.5px; line-height: 1.4;
