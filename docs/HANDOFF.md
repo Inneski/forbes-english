@@ -11,7 +11,23 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
-## 2026-10-13 — Manifestation: Can You Think It Into Being? (B2): BUILT, waiting on art
+## 2026-10-13 — Manifestation: Can You Think It Into Being? (B2): LIVE PAGE PUSHED, waiting on one catalogue row
+
+**Art landed the same day** (five of six slots; `plate-act` is a second
+dandelion until a two-chairs render comes, see the brief). The live
+`forbes-manifestation-b2.html` is built, LESSON_IMAGES and LESSON_TAGS
+are in `library.html`. **It has no SEO block and no library card until
+the catalogue row exists**, because `seo.py` lists from Supabase:
+
+```sql
+insert into public.lessons (file, title, level, access, track, deck, video)
+select 'forbes-manifestation-b2.html', 'Manifestation: Can You Think It Into Being? (B2)', 'B2', 'pro', 'general', true, false
+where not exists (select 1 from public.lessons where file = 'forbes-manifestation-b2.html');
+```
+
+Then `py tools/build_hubs.py && py tools/seo.py`, and commit what they
+rewrite.
+
 
 Innes: *"make forbes lesson on manifestation - give me artwork shopping
 list"*. New topic deck, house style 2 (panels), 35 slides, EN/DE/ES. The

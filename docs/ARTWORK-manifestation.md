@@ -1,5 +1,16 @@
 # Artwork brief: Manifestation — Can You Think It Into Being? (B2)
 
+> **DELIVERED 2026-10-13, five of six.** Innes rendered eleven files (two or
+> three variants of five slots); picks: dandelion `_0` (cover), cork board
+> `_0`, megaphone `_0`, magnifying glass `_0` (`_2` has a hand in it),
+> balance `_2` (the only one with feather against stone). **No two-chairs
+> render came**, so `plate-act` is the second dandelion (`_2`) for now; drop
+> a two-chairs render into `incoming/manifestation/`, prep it as
+> `plate-act`, and rebuild. The balance fills its frame, so its panel uses
+> `plate-view-panel.jpg`, padded with its own sky and table rather than
+> cropped (see the builder). The palette came out of the dandelion with
+> `--light`; every row PASS.
+
 Innes, 2026-10-13: *"make forbes lesson on manifestation - give me artwork
 shopping list"*. **Six plates, one per slot.** The deck is built and passes
 every gate except HEAD (which `seo.py` writes on the live page) against

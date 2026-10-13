@@ -78,7 +78,21 @@ E = I.T['en']
 # in, run the command below and paste its ten tokens here as a string in the
 # same form as PALETTE; until then a READY build stops and says so (the
 # possessive-adjectives precedent).
-PALETTE_LIVE = None
+# py lesson-template/extract-palette.py manifestation/plate-cover.jpg --light
+# (2026-10-13, the dandelion; every row PASS)
+PALETTE_LIVE = """  --hero: url('%s/%s');
+
+  --void          : #d8c3ac;
+  --surface       : #e1d3c4;
+  --surface2      : #dccbb8;
+  --border        : #966a4a;
+  --text          : #2a1b11;
+  --text-dim      : #5e422e;
+  --accent        : #8f3d00;
+  --accent-bright : #723204;
+  --accent-dim    : #ee751c;
+  --secondary     : #93b3b1;
+  --contrast      : #075550;""" % (F, HERO)
 if READY and PALETTE_LIVE is None:
     sys.exit('plates are in: run\n  py lesson-template/extract-palette.py '
              '%s/plate-cover.jpg --light\nand paste it into PALETTE_LIVE in %s'
@@ -285,14 +299,14 @@ def build():
                  ('Count', E['chipCount'])]),
 
         divider(1, TREND),
-        intro(1, TREND, 'left', '20% 50%'),
+        intro(1, TREND, 'left', '74% 50%'),
         cards(1), cards(2),
         mc(0), mc(1),
         D.match(MATCH, 'e1', E['e1'], 'mtt', E['mtt'], 'matchHint', E['matchHint'],
                 'matchWhy'),
 
         divider(2, CLAIMS),
-        intro(2, CLAIMS, 'right', '80% 50%'),
+        intro(2, CLAIMS, 'right', '32% 50%'),
         cards(3), cards(4),
         gap(1, GAP1[:2], BANK1, 2, 'gt1'), gap(2, GAP1[2:], BANK1, 2, 'gt1'),
         D.order(ORDER1, 'e2', E['e2'], 'ot1', E['ot1'], 'oh1', E['oh1'], 'ow1'),
@@ -301,14 +315,20 @@ def build():
         mc(2), mc(3),
 
         divider(3, EVIDENCE),
-        intro(3, EVIDENCE, 'left', '50% 50%'),
+        intro(3, EVIDENCE, 'left', '38% 50%'),
         cards(5), cards(6),
         D.sort_slide(SORT_BINS, SORT_ITEMS, 'e3', E['e3'], 'st', E['st'], 'sh', E['sh'],
                      'sw', bin_keys=['sb1', 'sb2']),
         mc(4), mc(5), mc(6),
 
         divider(4, VIEW),
-        intro(4, VIEW, 'right', '70% 50%'),
+        # The scale fills the frame edge to edge, and any portrait slice of
+        # it loses either the feather or the stone, which is the picture's
+        # whole point. So the panel gets its own copy, padded rather than
+        # cropped: the scale at 4–94% of the width with the plate's own sky
+        # and table mirrored above and below (the Watts river-stone fix).
+        # The divider still shows the plate whole.
+        intro(4, 'plate-view-panel.jpg' if READY else VIEW, 'right', '50% 50%'),
         cards(7),
         gap(3, GAP2[:2], BANK2, 4, 'gt2'), gap(4, GAP2[2:], BANK2, 4, 'gt2'),
         mc(7), mc(8),
