@@ -194,7 +194,11 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
         const gaps = [...s.querySelectorAll('input.gap')];
         if (gaps.length) {
           const ctx = document.createElement('canvas').getContext('2d');
-          ctx.font = getComputedStyle(gaps[0]).font;
+          // From the parts, not cs.font: Chrome returns an empty shorthand
+          // when a longhand cannot be expressed in it, and the canvas then
+          // measures in 10px sans-serif, making every answer look tiny.
+          const gs = getComputedStyle(gaps[0]);
+          ctx.font = `${gs.fontStyle} ${gs.fontWeight} ${gs.fontSize} ${gs.fontFamily}`;
           const need = Math.max(...gaps.flatMap(g => (g.dataset.answer || '').split('|')
                                 .map(a => ctx.measureText(a.trim()).width)));
           gaps.forEach(g => {
