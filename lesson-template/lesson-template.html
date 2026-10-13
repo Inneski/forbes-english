@@ -900,6 +900,28 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
 .act-print { display: none; font-size: 14px; line-height: 1.55; white-space: pre-wrap; }
 
 
+/* ── PHONE NAVIGATION ────────────────────────────────────────────────
+   Innes, 2026-10-13: "Can't open past second page on mobile as buttons too
+   small". On a phone the 1280x720 stage is drawn at ~0.3, so the bar's
+   arrows are ~8px and a divider slide has no button of its own. Below 0.62
+   (the Block Camp threshold) this bar appears OUTSIDE the scaled stage, at
+   real size, and fitStage() leaves room for it. Swipe works as well. */
+.phone-nav { display: none; }
+html.is-phone .phone-nav {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+  background: var(--surface); border-top: 1px solid var(--border);
+}
+.phone-btn {
+  min-width: 96px; height: 52px; border-radius: 26px; cursor: pointer;
+  font: 600 30px/1 var(--font-ui); color: var(--void);
+  background: var(--accent); border: none;
+}
+.phone-btn:disabled { opacity: .35; }
+.phone-count { font: 500 15px var(--font-mono, monospace); color: var(--text); }
+html.is-phone .deck-bar .nav-btn { visibility: hidden; }
+
 /* ── MATCHING ────────────────────────────────────────────────────── */
 .match-grid { display: grid; grid-template-columns: fit-content(40%) fit-content(58%);
               justify-content: start; gap: 14px; }
@@ -1988,6 +2010,13 @@ html[data-style="editorial"] .stamp {
   </div>
 </div>
 
+<!-- Phone navigation: shown only when the stage is drawn below 0.62. -->
+<nav class="phone-nav" aria-label="Slides">
+  <button class="phone-btn" type="button" data-action="prev" aria-label="Previous">‹</button>
+  <span class="phone-count" id="phoneCount"></span>
+  <button class="phone-btn" type="button" data-action="next" aria-label="Next">›</button>
+</nav>
+
 <script>
 /* ══════════════════════════════════════════════════════════════════
    ENGINE — identical in every lesson. Do not edit below this line
@@ -2196,12 +2225,17 @@ function goNode(id, record) {
 if (BRANCH) ledgerInit();
 setTimeout(wireGlosses, 0);
 
+const PHONE_BAR = 72;
 function fitStage() {
-  const s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+  let s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+  const phone = s < 0.62;
+  document.documentElement.classList.toggle('is-phone', phone);
+  const h = window.innerHeight - (phone ? PHONE_BAR : 0);
+  if (phone) s = Math.min(window.innerWidth / 1280, h / 720);
   // Centre explicitly. Relying on the wrapper to centre an oversized child is
   // what put the stage off-screen on every viewport under 1280px wide.
   const x = (window.innerWidth  - 1280 * s) / 2;
-  const y = (window.innerHeight -  720 * s) / 2;
+  const y = (h -  720 * s) / 2;
   stage.style.transform = `translate(${x}px, ${y}px) scale(${s})`;
 }
 addEventListener('resize', fitStage);
@@ -2259,6 +2293,13 @@ function show(n) {
     BRANCH ? !trail.length : idx === 0;
   document.querySelector('[data-action="next"]').disabled =
     BRANCH ? !cur.querySelector('[data-goto]') : idx === slides.length - 1;
+  const pp = document.querySelectorAll('.phone-btn');
+  if (pp.length) {
+    pp[0].disabled = document.querySelector('[data-action="prev"]').disabled;
+    pp[1].disabled = document.querySelector('[data-action="next"]').disabled;
+    document.getElementById('phoneCount').textContent =
+      document.getElementById('deckCount').textContent;
+  }
   if (BRANCH) {
     applyLedger(cur);
     if (['mc','gap','match','order','sort','lock'].includes(cur.dataset.type))
@@ -3370,6 +3411,24 @@ function followFirst() {
   const g = slides[idx].querySelector('[data-goto]:not([disabled])');
   if (g) { applyLedger(g); goNode(g.dataset.goto); }
 }
+
+/* Swipe on a phone: horizontal, 50px+, and not started on something the
+   learner is interacting with (an option, a chip, a field, a sort item). */
+let touch0 = null;
+document.addEventListener('touchstart', e => {
+  const tt = e.target;
+  touch0 = tt.closest('button, input, textarea, select, .chunk, .sort-item, .match-item, .act-panel')
+    ? null : { x: e.touches[0].clientX, y: e.touches[0].clientY };
+}, { passive: true });
+document.addEventListener('touchend', e => {
+  if (!touch0) return;
+  const dx = e.changedTouches[0].clientX - touch0.x;
+  const dy = e.changedTouches[0].clientY - touch0.y;
+  touch0 = null;
+  if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+  if (dx < 0) BRANCH ? followFirst() : show(idx + 1);
+  else BRANCH ? (trail.length && show(trail.pop())) : show(idx - 1);
+}, { passive: true });
 
 document.addEventListener('keydown', e => {
   if (e.target.matches('input, select, textarea')) {
