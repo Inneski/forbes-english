@@ -14,6 +14,8 @@ Save as `hero.png`, `mia.png`, `leo.png`, `near-far.png`, `lake.png`, `pet-show.
 then tell a local session: *"The possessive pictures are in
 incoming/possessive-adj — put them in."*
 
+**The lesson is two decks (2026-10-14).** Part 1 uses `hero`, `mia`, `leo`; Part 2 uses `near-far`, `lake` (its cover) and `pet-show`. Each part goes live as soon as its own three pictures are in, so the first three alone are enough to ship Part 1.
+
 ## Format: house style 2, the panel
 
 Each plate is used three ways: **whole** on its stage's opening slide;
@@ -104,9 +106,11 @@ new characters need room.
 
 ```bash
 py tools/prep-artwork.py incoming/possessive-adj/hero.png incoming/possessive-adj/mia.png incoming/possessive-adj/leo.png incoming/possessive-adj/near-far.png incoming/possessive-adj/lake.png incoming/possessive-adj/pet-show.png --into PossessiveAdj --names hero,mia,leo,near-far,lake,pet-show
-py lesson-template/extract-palette.py PossessiveAdj/hero.jpg --light   # paste into PALETTE_LIVE
+py lesson-template/extract-palette.py PossessiveAdj/hero.jpg --light   # paste into PALETTE_LIVE[1]
+py lesson-template/extract-palette.py PossessiveAdj/lake.jpg --light   # paste into PALETTE_LIVE[2]
 py lesson-template/build/build_possessive_adj.py                       # now writes the live page
-node lesson-template/check-lesson.js forbes-english-possessive-adjectives-a1.html
+node lesson-template/check-lesson.js forbes-english-possessive-adjectives-a1-part1.html
+node lesson-template/check-lesson.js forbes-english-possessive-adjectives-a1-part2.html
 ```
 
 then the catalogue row, `tools/build_hubs.py`, `tools/seo.py`, commit, push.

@@ -14,9 +14,11 @@ What that session does (also in the builder's docstring,
 
 ```bash
 py tools/prep-artwork.py incoming/possessive-adj --into PossessiveAdj --names hero,mia,leo,near-far,lake,pet-show
-py lesson-template/extract-palette.py PossessiveAdj/hero.jpg --light   # paste into PALETTE_LIVE
+py lesson-template/extract-palette.py PossessiveAdj/hero.jpg --light   # paste into PALETTE_LIVE[1]
+py lesson-template/extract-palette.py PossessiveAdj/lake.jpg --light   # paste into PALETTE_LIVE[2]
 py lesson-template/build/build_possessive_adj.py                       # now writes the live page
-node lesson-template/check-lesson.js forbes-english-possessive-adjectives-a1.html
+node lesson-template/check-lesson.js forbes-english-possessive-adjectives-a1-part1.html
+node lesson-template/check-lesson.js forbes-english-possessive-adjectives-a1-part2.html
 ```
 
 then the catalogue row, `tools/build_hubs.py`, `tools/seo.py`, commit, push.
@@ -28,6 +30,8 @@ stage's opening slide; as a tall slice (about the middle-right half) beside
 the reading text; and faintly behind the questions, where the answers sit on
 the LEFT. So the people and animals go in the **right half**, and the left
 third stays plain.
+
+**The lesson is two decks (2026-10-14).** Part 1 uses `hero`, `mia`, `leo`; Part 2 uses `near-far`, `lake` (its cover) and `pet-show`. Each part goes live as soon as its own three pictures are in, so the first three alone are enough to ship Part 1.
 
 ---
 

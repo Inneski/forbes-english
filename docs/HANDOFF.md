@@ -139,6 +139,17 @@ to. A campaign should link to the page of what it sells (`block-camp.html`,
 
 ---
 
+## 2026-10-14 — My Cat, Your Dog split into two parts (25 + 27 slides)
+
+Innes: *"split"*. `build_possessive_adj.py` now writes
+`forbes-english-possessive-adjectives-a1-part1.html` (MY … THEIR, HIS / HER /
+ITS, translate ×2; plates hero, mia, leo) and `…-part2.html` (THIS / THAT,
+camping words, Sie / ihr, pet show, translate ×3; plates near-far, lake,
+pet-show; cover = lake). Each goes live independently once its three plates
+exist; `PALETTE_LIVE` is per part. The unsplit name
+`forbes-english-possessive-adjectives-a1.html` was never published, so
+nothing redirects. Two catalogue rows when they ship.
+
 ## 2026-10-14 — My Cat, Your Dog: William's camping vocabulary added (47 slides, six plates)
 
 Innes sent his annotated cover of "A1 Our Small Traditions" with *"include

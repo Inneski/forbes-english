@@ -34,14 +34,14 @@ T = {}
 # ══════════════════════════════════════════════════════════════════════
 T['en'] = dict(
     coverTitle='My Cat,<br><em>Your</em> Dog',
-    coverSub='Possessive adjectives — my, your, his, her, its, our, their — <br>and this / that, with a German ⇄ English translation game',
-    chipLevel='A1', chipFocus='my · your · his · her', chipCount='47 slides',
+    coverSub='Possessive adjectives — my, your, his, her, its, our, their — <br>with a German ⇄ English translation game. Part 1 of 2',
+    chipLevel='A1', chipFocus='my · your · his · her', chipCount='25 slides',
     bankLabel='Word bank:',
 
     d1t='Meet the Pets', d1n='Stage 1 · my, your, our, their',
     d2t='His, Her or Its?', d2n='Stage 2 · who is the owner?',
-    d3t='This or That?', d3n='Stage 3 · near and far',
-    d4t='The Pet Show', d4n='Stage 5 · translate it!',
+    d3t='This or That?', d3n='Stage 1 · near and far',
+    d4t='The Pet Show', d4n='Stage 3 · translate it!',
 
     e1='My · your · our · their', e2='His · her · its', e3='This · that',
     e4='Translate', eR='The rule',
@@ -123,7 +123,7 @@ T['en'] = dict(
     tw9='"Das da drüben ist unser Pferd." = "That is our horse." DA DRÜBEN = far: THAT.',
 
     d5t='Camping at the Lake',
-    d5n='Stage 4 · words for the camp',
+    d5n='Stage 2 · words for the camp',
     e5='At the lake',
     eV='New words',
     p5t='Camping at the lake',
@@ -159,6 +159,19 @@ T['en'] = dict(
     tw14='"Biscuit spielt mit ihm." = "Biscuit plays with him." IHM = HIM.',
     tw15='"Ist das Ihr Zelt, Herr Brown?" = "Is this your tent, Mr Brown?" Polite IHR, with a big I, = YOUR.',
 
+    d6t='Translate It!',
+    d6n='Stage 3 · German ⇄ English',
+    coverTitle2='This Is<br><em>Our</em> Tent',
+    coverSub2='This / that, camping words and Sie / ihr, <br>with a German ⇄ English translation game. Part 2 of 2',
+    chipFocus2='this · that · camping words',
+    chipCount2='27 slides',
+    actSpeakBrief2='Talk about a trip with your family: camping, the sea, a lake or a holiday flat.',
+    actSpeak12='Where do you go? "Our tent is next to the lake. The trees are behind it."',
+    actSpeak22='Point at things in the room: "This is my jumper. That is your bag over there."',
+    actSpeak32='Talk about a family you know: "Their son is … Their daughter is …"',
+    actWriteBrief2='Write five sentences about a family trip. Use OUR, THEIR, THIS, THAT, NEXT TO and BEHIND.',
+    actPlaceholder2='Our tent is …',
+
     # ── activation ───────────────────────────────────────────────────
     actTitle='Show and tell!',
     actUse='Use these words:',
@@ -181,14 +194,14 @@ T['en'] = dict(
 # ══════════════════════════════════════════════════════════════════════
 T['de'] = dict(
     coverTitle='My Cat,<br><em>Your</em> Dog',
-    coverSub='Possessivbegleiter — my, your, his, her, its, our, their — <br>und this / that, mit einem Übersetzungsspiel Deutsch ⇄ Englisch',
-    chipLevel='A1', chipFocus='my · your · his · her', chipCount='47 Folien',
+    coverSub='Possessivbegleiter — my, your, his, her, its, our, their — <br>mit einem Übersetzungsspiel Deutsch ⇄ Englisch. Teil 1 von 2',
+    chipLevel='A1', chipFocus='my · your · his · her', chipCount='25 Folien',
     bankLabel='Wortkasten:',
 
-    d1t='Die Haustiere', d1n='Teil 1 · my, your, our, their',
-    d2t='His, her oder its?', d2n='Teil 2 · Wem gehört es?',
-    d3t='This oder that?', d3n='Teil 3 · nah und fern',
-    d4t='Die Haustier-Show', d4n='Teil 5 · Übersetze!',
+    d1t='Die Haustiere', d1n='Schritt 1 · my, your, our, their',
+    d2t='His, her oder its?', d2n='Schritt 2 · Wem gehört es?',
+    d3t='This oder that?', d3n='Schritt 1 · nah und fern',
+    d4t='Die Haustier-Show', d4n='Schritt 3 · Übersetze!',
 
     e1='My · your · our · their', e2='His · her · its', e3='This · that',
     e4='Übersetzen', eR='Die Regel',
@@ -270,7 +283,7 @@ T['de'] = dict(
     tw9='„Das da drüben ist unser Pferd.“ = „That is our horse.“ DA DRÜBEN = fern: THAT.',
 
     d5t='Camping am See',
-    d5n='Teil 4 · Wörter fürs Zeltlager',
+    d5n='Schritt 2 · Wörter fürs Zeltlager',
     e5='Am See',
     eV='Neue Wörter',
     p5t='Camping am See',
@@ -306,6 +319,19 @@ T['de'] = dict(
     tw14='„Biscuit spielt mit ihm.“ = „Biscuit plays with him.“ IHM = HIM.',
     tw15='„Ist das Ihr Zelt, Herr Brown?“ = „Is this your tent, Mr Brown?“ Das höfliche IHR, groß geschrieben, = YOUR.',
 
+    d6t='Übersetze!',
+    d6n='Schritt 3 · Deutsch ⇄ Englisch',
+    coverTitle2='This Is<br><em>Our</em> Tent',
+    coverSub2='This / that, Camping-Wörter und Sie / ihr, <br>mit einem Übersetzungsspiel Deutsch ⇄ Englisch. Teil 2 von 2',
+    chipFocus2='this · that · Camping',
+    chipCount2='27 Folien',
+    actSpeakBrief2='Erzähl von einem Ausflug mit deiner Familie: Camping, das Meer, ein See oder eine Ferienwohnung.',
+    actSpeak12='Wohin fahrt ihr? „Our tent is next to the lake. The trees are behind it.“',
+    actSpeak22='Zeig auf Sachen im Raum: „This is my jumper. That is your bag over there.“',
+    actSpeak32='Erzähl von einer Familie, die du kennst: „Their son is … Their daughter is …“',
+    actWriteBrief2='Schreib fünf Sätze über einen Familienausflug. Benutze OUR, THEIR, THIS, THAT, NEXT TO und BEHIND.',
+    actPlaceholder2='Our tent is …',
+
     actTitle='Zeig und erzähl!',
     actUse='Benutze diese Wörter:',
     actSpeakBrief='Erzähl von deiner Familie und deinen Haustieren — oder von dem Haustier, das du gern hättest.',
@@ -327,14 +353,14 @@ T['de'] = dict(
 # ══════════════════════════════════════════════════════════════════════
 T['es'] = dict(
     coverTitle='My Cat,<br><em>Your</em> Dog',
-    coverSub='Adjetivos posesivos — my, your, his, her, its, our, their — <br>y this / that, con un juego de traducción alemán ⇄ inglés',
-    chipLevel='A1', chipFocus='my · your · his · her', chipCount='47 diapositivas',
+    coverSub='Adjetivos posesivos — my, your, his, her, its, our, their — <br>con un juego de traducción alemán ⇄ inglés. Parte 1 de 2',
+    chipLevel='A1', chipFocus='my · your · his · her', chipCount='25 diapositivas',
     bankLabel='Banco de palabras:',
 
-    d1t='Las mascotas', d1n='Parte 1 · my, your, our, their',
-    d2t='¿His, her o its?', d2n='Parte 2 · ¿de quién es?',
-    d3t='¿This o that?', d3n='Parte 3 · cerca y lejos',
-    d4t='El concurso de mascotas', d4n='Parte 5 · ¡tradúcelo!',
+    d1t='Las mascotas', d1n='Paso 1 · my, your, our, their',
+    d2t='¿His, her o its?', d2n='Paso 2 · ¿de quién es?',
+    d3t='¿This o that?', d3n='Paso 1 · cerca y lejos',
+    d4t='El concurso de mascotas', d4n='Paso 3 · ¡tradúcelo!',
 
     e1='My · your · our · their', e2='His · her · its', e3='This · that',
     e4='Traducir', eR='La regla',
@@ -416,7 +442,7 @@ T['es'] = dict(
     tw9='"Das da drüben ist unser Pferd." = "That is our horse." DA DRÜBEN = lejos: THAT.',
 
     d5t='De acampada en el lago',
-    d5n='Parte 4 · palabras del campamento',
+    d5n='Paso 2 · palabras del campamento',
     e5='En el lago',
     eV='Palabras nuevas',
     p5t='De acampada en el lago',
@@ -451,6 +477,19 @@ T['es'] = dict(
     tw13='"Sie ist ihre Tochter." = "She is their daughter." SIE IST = SHE IS. IHRE puede ser THEIR o HER: las dos valen.',
     tw14='"Biscuit spielt mit ihm." = "Biscuit plays with him." IHM = HIM.',
     tw15='"Ist das Ihr Zelt, Herr Brown?" = "Is this your tent, Mr Brown?" IHR de cortesía, con mayúscula, = YOUR.',
+
+    d6t='¡Tradúcelo!',
+    d6n='Paso 3 · alemán ⇄ inglés',
+    coverTitle2='This Is<br><em>Our</em> Tent',
+    coverSub2='This / that, palabras de acampada y Sie / ihr, <br>con un juego de traducción alemán ⇄ inglés. Parte 2 de 2',
+    chipFocus2='this · that · acampada',
+    chipCount2='27 diapositivas',
+    actSpeakBrief2='Habla de un viaje con tu familia: de acampada, al mar, a un lago o a un apartamento.',
+    actSpeak12='¿Adónde vais? "Our tent is next to the lake. The trees are behind it."',
+    actSpeak22='Señala cosas de la clase: "This is my jumper. That is your bag over there."',
+    actSpeak32='Habla de una familia que conoces: "Their son is … Their daughter is …"',
+    actWriteBrief2='Escribe cinco frases sobre un viaje en familia. Usa OUR, THEIR, THIS, THAT, NEXT TO y BEHIND.',
+    actPlaceholder2='Our tent is …',
 
     actTitle='¡Enseña y cuenta!',
     actUse='Usa estas palabras:',

@@ -53,17 +53,28 @@ because IHR / IHRE = HER, THEIR or YOUR is the possessive trap for a German
 speaker. Six translation rows use the same words; "Sie ist ihre Tochter"
 accepts HER and THEIR, since German cannot tell them apart there.
 
-**Art.** Six Midjourney plates, briefed in docs/ARTWORK-possessive-adj.md. Until
-all five are in `PossessiveAdj/` this writes a gitignored preview
-(`_forbes-english-possessive-adjectives-a1.html`) on flat placeholder plates
-it draws itself (`PossessiveAdj/_ph-*.jpg`, also gitignored), and creates
-the drop folder `incoming/possessive-adj/`. The live page is not written at
-all until the art is in — the Reddit-door precedent.
+**Split into two parts — Innes, 2026-10-14, "split".** 47 slides was too
+long for a nine-year-old. Part 1 (25 slides,
+`forbes-english-possessive-adjectives-a1-part1.html`): MY … THEIR, HIS / HER /
+ITS, the three tips, and the first two translate slides. Part 2 (27 slides,
+`…-part2.html`): THIS / THAT, the camping words and Sie / ihr, the pet show and
+the last three translate slides. Each has its own cover, results and
+activation; the activation chips are shuffled so the BANK gate does not read
+them as a word bank in gap order.
 
-When the plates land: `py tools/prep-artwork.py incoming/possessive-adj
---into PossessiveAdj --names hero,mia,leo,near-far,pet-show`, then
-`py lesson-template/extract-palette.py PossessiveAdj/hero.jpg --light` and
-paste its block over PALETTE_LIVE below (every row must PASS).
+**Art.** Six Midjourney plates, briefed in docs/ARTWORK-possessive-adj.md
+(ChatGPT version: docs/CHATGPT-POSSESSIVE-ART-BRIEF.md). Part 1 uses hero,
+mia, leo; Part 2 uses near-far, lake (its cover), pet-show. Each part is
+written live as soon as ITS three plates are in; until then it writes a
+gitignored `_`-prefixed preview on placeholder plates the builder draws
+(`PossessiveAdj/_ph-*.jpg`). The drop folder `incoming/possessive-adj/` is
+created while any plate is missing.
+
+When the plates land: `py tools/prep-artwork.py <the six files> --into
+PossessiveAdj --names hero,mia,leo,near-far,lake,pet-show`, then
+`py lesson-template/extract-palette.py PossessiveAdj/hero.jpg --light` (Part 1)
+and `… PossessiveAdj/lake.jpg --light` (Part 2), and paste each block into
+PALETTE_LIVE[1] / [2] below (every row must PASS).
 
 Run from the repo root:  py lesson-template/build/build_possessive_adj.py
 """
@@ -75,18 +86,34 @@ import deck as D
 import i18n_possessive_adj as I
 
 TPL = 'lesson-template/lesson-template.html'
-LIVE = 'forbes-english-possessive-adjectives-a1.html'
-PREVIEW = '_forbes-english-possessive-adjectives-a1.html'   # gitignored
 F = 'PossessiveAdj'
 
-SLOTS = ['hero', 'mia', 'leo', 'near-far', 'lake', 'pet-show']
-READY = all(os.path.exists('%s/%s.jpg' % (F, s)) for s in SLOTS)
-PIC = {s: ('%s.jpg' % s) if READY else ('_ph-%s.jpg' % s) for s in SLOTS}
-OUT = LIVE if READY else PREVIEW
+# Innes, 2026-10-14: "split". 47 slides was too long for a nine-year-old.
+# Part 1: MY ... THEIR, HIS / HER / ITS, two translate slides.
+# Part 2: THIS / THAT, the camping words and Sie / ihr, three translate slides.
+# Each part is written live only when ITS OWN plates are in; the cover of
+# each part is one of its plates (hero for Part 1, lake for Part 2).
+PARTS = {
+    1: dict(live='forbes-english-possessive-adjectives-a1-part1.html',
+            slots=['hero', 'mia', 'leo'], cover='hero',
+            title='My Cat, Your Dog — Possessive Adjectives, Part 1 (A1)'),
+    2: dict(live='forbes-english-possessive-adjectives-a1-part2.html',
+            slots=['near-far', 'lake', 'pet-show'], cover='lake',
+            title='This Is Our Tent — Possessive Adjectives, Part 2 (A1)'),
+}
+SLOTS = PARTS[1]['slots'] + PARTS[2]['slots']
+
+
+def ready(part):
+    return all(os.path.exists('%s/%s.jpg' % (F, s)) for s in PARTS[part]['slots'])
+
+
+PIC = {s: ('%s.jpg' % s) if os.path.exists('%s/%s.jpg' % (F, s)) else ('_ph-%s.jpg' % s)
+       for s in SLOTS}
 
 # Innes, 2026-09-30: "make sure the folder exists or you tell me to make it".
 DROP = os.path.join('incoming', 'possessive-adj')
-if not READY:
+if not (ready(1) and ready(2)):
     os.makedirs(DROP, exist_ok=True)
 
 E = I.T['en']
@@ -101,7 +128,7 @@ PH = {'hero': (247, 214, 170), 'mia': (205, 226, 240), 'leo': (214, 236, 200),
       'near-far': (240, 214, 226), 'lake': (200, 230, 228),
       'pet-show': (236, 230, 196)}
 
-PALETTE_PREVIEW = """  --hero: url('%s/%s');
+PALETTE_PREVIEW = """  --hero: url('%s/%%s');
 
   --void          : #d5d5b0;
   --surface       : #dfdfc7;
@@ -113,16 +140,23 @@ PALETTE_PREVIEW = """  --hero: url('%s/%s');
   --accent-bright : #693d00;
   --accent-dim    : #eb8f12;
   --secondary     : #fdfdfb;
-  --contrast      : #09636d;""" % (F, PIC['hero'])
+  --contrast      : #09636d;""" % F
 
-# Paste extract-palette.py's block for PossessiveAdj/hero.jpg here.
-PALETTE_LIVE = None
+# Paste extract-palette.py's block for each part's cover plate here
+# (Part 1: PossessiveAdj/hero.jpg, Part 2: PossessiveAdj/lake.jpg).
+# The preview uses PALETTE_PREVIEW for both parts; it is a stand-in.
+PALETTE_LIVE = {1: None, 2: None}
 
-PALETTE = PALETTE_LIVE if (READY and PALETTE_LIVE) else PALETTE_PREVIEW
-if READY and not PALETTE_LIVE:
-    sys.exit('The plates are in, but PALETTE_LIVE is empty. Run\n'
-             '  py lesson-template/extract-palette.py %s/hero.jpg --light\n'
-             'and paste its block into this builder.' % F)
+
+def palette(part):
+    cover = PARTS[part]['cover']
+    if not ready(part):
+        return PALETTE_PREVIEW % PIC[cover]
+    if not PALETTE_LIVE[part]:
+        sys.exit('Part %d: the plates are in, but PALETTE_LIVE[%d] is empty. Run\n'
+                 '  py lesson-template/extract-palette.py %s/%s.jpg --light\n'
+                 'and paste its block into this builder.' % (part, part, F, cover))
+    return PALETTE_LIVE[part]
 
 
 def placeholders():
@@ -357,7 +391,7 @@ def _expand(sentences, german):
 TR_TOTAL = sum(len(r) for r in TR)
 
 
-def translate(n, rows):
+def translate(n, rows, total, pic):
     body = []
     for de, en, more_en, more_de, why in rows:
         ans_en = _expand([en] + more_en, german=False)
@@ -384,7 +418,7 @@ def translate(n, rows):
         </div>
       </div>
     </section>
-''' % (D._bg(F, PIC['pet-show']), E['e4'], n, len(TR), E['trT'], "\n        ".join(body))
+''' % (D._bg(F, PIC[pic]), E['e4'], n, total, E['trT'], "\n        ".join(body))
 
 
 # One block for every translate slide: the switch is global, so a learner who
@@ -438,16 +472,32 @@ TRANSLATE_KIT = '''
 '''
 
 
-def build():
-    if not READY:
-        placeholders()
-    logo = D.logo_from(TPL)
-    bank_none = None
+def cover(part):
+    k = '' if part == 1 else '2'
+    return D.cover(D.logo_from(TPL), E['coverTitle' + k], E['coverSub' + k],
+                   [('Level', E['chipLevel']), ('Focus', E['chipFocus' + k]),
+                    ('Count', E['chipCount' + k])])
 
-    slides = "".join([
-        D.cover(logo, E['coverTitle'], E['coverSub'],
-                [('Level', E['chipLevel']), ('Focus', E['chipFocus']),
-                 ('Count', E['chipCount'])]),
+
+def ending(part, pic):
+    k = '' if part == 1 else '2'
+    # Not in teaching order: the BANK gate reads activation chips as a word
+    # bank, and teaching order is the gap order.
+    chips = (['their', 'this', 'her', 'my', 'that', 'its', 'your', 'our', 'his']
+             if part == 1 else
+             ['behind', 'their', 'lake', 'that', 'tent', 'next to', 'this', 'our', 'his'])
+    return [
+        D.results(folder=F, bg=PIC[pic]),
+        D.activate(E['actTitle'], E['actUse'], chips, 'Speaking', E['actSpeakBrief' + k],
+                   [E['actSpeak1' + k], E['actSpeak2' + k], E['actSpeak3' + k]],
+                   E['actWriteKind'], E['actWriteBrief' + k], E['actPlaceholder' + k],
+                   folder=F, bg=PIC[pic]),
+    ]
+
+
+def part1():
+    return [
+        cover(1),
 
         # ── stage 1 · MY, YOUR, OUR, THEIR ─────────────────────────────
         divider(1, 'mia'),
@@ -457,7 +507,7 @@ def build():
         D.mc(i + 1, len(MC1), q, 'e1', E['e1'], 'mcT', E['mcT'], folder=F, bg=PIC['mia'])
         for i, q in enumerate(MC1)
     ] + [
-        D.gap(1, 1, GAP1, bank_none, 'e1', E['e1'], 'gapT', E['gapT'], folder=F,
+        D.gap(1, 1, GAP1, None, 'e1', E['e1'], 'gapT', E['gapT'], folder=F,
               bg=PIC['mia'], hint=E['gapHint'], hint_key='gapHint', width=130, size=24),
 
         # ── stage 2 · HIS, HER, ITS ────────────────────────────────────
@@ -476,10 +526,23 @@ def build():
         D.mc(i + 1, len(MC2), q, 'e2', E['e2'], 'mcT', E['mcT'], folder=F, bg=PIC['leo'])
         for i, q in enumerate(MC2)
     ] + [
-        D.gap(1, 1, GAP2, bank_none, 'e2', E['e2'], 'gapT', E['gapT'], folder=F,
+        D.gap(1, 1, GAP2, None, 'e2', E['e2'], 'gapT', E['gapT'], folder=F,
               bg=PIC['leo'], hint=E['gapHint'], hint_key='gapHint', width=130, size=24),
 
-        # ── stage 3 · THIS and THAT ────────────────────────────────────
+        # ── stage 3 · translate: the first two sets of rows ────────────
+        divider(6, 'hero'),
+        teach('tDt', 'e4', TEACH_D, 'hero'),
+        TRANSLATE_KIT,
+    ] + [
+        translate(i + 1, r, 2, 'hero') for i, r in enumerate(TR[:2])
+    ] + ending(1, 'hero')
+
+
+def part2():
+    return [
+        cover(2),
+
+        # ── stage 1 · THIS and THAT ────────────────────────────────────
         divider(3, 'near-far'),
         panel(3, 'e3', 'near-far'),
     ] + [
@@ -491,7 +554,7 @@ def build():
                 E['orderHint'], why, folder=F, bg=PIC['near-far'], decoys=dec)
         for items, dec, why in ORDERS
     ] + [
-        # ── stage 4 · camping at the lake: William's vocabulary ────────
+        # ── stage 2 · camping at the lake: William's vocabulary ────────
         divider(5, 'lake'),
         panel(5, 'e5', 'lake'),
         teach('vAt', 'eV', VOCAB_A, 'lake', cols='1fr 1fr 1fr'),
@@ -508,33 +571,28 @@ def build():
              ctx_key=q.get('ctx'))
         for i, q in enumerate(MC4)
     ] + [
-        # ── stage 5 · translate ────────────────────────────────────────
+        # ── stage 3 · the pet show, then translate ─────────────────────
         divider(4, 'pet-show'),
         panel(4, 'e4', 'pet-show', side='right'),
         teach('tDt', 'e4', TEACH_D, 'pet-show'),
         TRANSLATE_KIT,
     ] + [
-        translate(i + 1, rows) for i, rows in enumerate(TR)
-    ] + [
-        # ── results, then activation (§10b: activation is last) ────────
-        D.results(folder=F, bg=PIC['hero']),
-        D.activate(E['actTitle'], E['actUse'],
-                   # Not in table order: the BANK gate reads chips as a word
-                   # bank, and table order is the gap order.
-                   ['their', 'this', 'her', 'my', 'that', 'its', 'your', 'our', 'his'],
-                   'Speaking', E['actSpeakBrief'],
-                   [E['actSpeak1'], E['actSpeak2'], E['actSpeak3']],
-                   E['actWriteKind'], E['actWriteBrief'], E['actPlaceholder'],
-                   folder=F, bg=PIC['hero']),
-    ])
+        translate(i + 1, r, 3, 'pet-show') for i, r in enumerate(TR[2:])
+    ] + ending(2, 'lake')
 
-    D.assemble(TPL, OUT, slides, PALETTE,
-               'My Cat, Your Dog — Possessive Adjectives and This / That (A1)',
-               I, langs=('en', 'de', 'es'))
+
+def build(part):
+    P = PARTS[part]
+    out = P['live'] if ready(part) else '_' + P['live']    # underscore = gitignored
+    slides = "".join(part1() if part == 1 else part2())
+    D.assemble(TPL, out, slides, palette(part), P['title'], I, langs=('en', 'de', 'es'))
     print('wrote %s — %d slides%s' % (
-        OUT, slides.count('<section class="slide'),
-        '' if READY else '  (PREVIEW: plates missing, see docs/ARTWORK-possessive-adj.md)'))
+        out, slides.count('<section class="slide'),
+        '' if ready(part) else '  (PREVIEW: plates missing, see docs/ARTWORK-possessive-adj.md)'))
 
 
 if __name__ == '__main__':
-    build()
+    if not (ready(1) and ready(2)):
+        placeholders()
+    build(1)
+    build(2)
