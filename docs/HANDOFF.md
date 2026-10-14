@@ -11,6 +11,38 @@ deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
 
+## 2026-10-14 — Block Camp: rules out of the slide run, opener slot on the cover
+
+Innes: *"For the block camp camps they should have the static info pages as a
+separate option to open and we will go straight into an animated opener."*
+Asked three things first (no opener asset existed for any camp); his answers:
+new opener clip per camp, rules as a cover button + deck-bar button, the four
+clip decks first.
+
+  * **`block-camp/camp-rules.js`** (new, shared). Loaded without `defer`
+    right after `camp-save.js`, i.e. before the deck's inline engine, it
+    parks every `data-type="teach"` slide in `#campRules` (class
+    `rule-slide`, outside the stage) so the engine's `querySelectorAll
+    ('.slide')` never sees them. Rules opens an overlay that puts one back in
+    the stage as `.slide.is-active`, pages with ‹ › / arrows / the deck bar's
+    own arrows, and Esc or ✕ returns to the exact slide (and cover state)
+    the learner left. Labels in the ten languages, following `<html lang>`.
+    On phones the deck-bar button carries `.part-link`, so `camp-phone.js`
+    moves it into the menu sheet.
+  * **Applied to** `blockcamp-present-simple`, `-present-continuous`,
+    `-past-simple`, `-past-continuous` (Part 1s). 22 / 21 slides → 15 each;
+    `chipCount` in every language reduced by the teach count; checker clean.
+  * **Opener**: each cover now carries `data-clip="BlockCamp/openers/<camp>-1a.mp4"
+    data-clip-auto` — the engine's own clip path, so no new video code. The
+    files do not exist yet; the request 404s and the still stays. Brief:
+    `docs/BLOCKCAMP-OPENER-BRIEF.md`.
+  * **Not done:** the other 22 camp decks (wait for Innes to approve these
+    four); the reference decks are untouched. Old `CampSave` positions are
+    slide indexes, so a learner resuming mid-deck lands up to 7 slides later
+    than they left. Accepted, not fixed.
+  * Verified headless (Chromium, 1280x720 and 390x844): cover → Begin lands on
+    the first question; Rules from cover and mid-deck; no page errors.
+
 ## 2026-10-13 — Manifestation: Can You Think It Into Being? (B2): SHIPPED
 
 **Closed the same day:** Innes sent the two-chairs render (now `plate-act`)
