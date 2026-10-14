@@ -1,24 +1,25 @@
 # Artwork shopping list — every lesson still outside the house style
 
 Asked for on 2026-09-27: *"find the non house style lessons and create art
-shopping list for revamp."* Measured 2026-09-29 against `tools/lessons.json`
-(324 rows), the files on disk and the artwork folders. Regenerate rather than
-trust: the method is at the bottom.
+shopping list for revamp."* First measured 2026-09-29; **regenerated
+2026-10-14** against `tools/lessons.json` (333 rows, cache of 2026-10-13), the
+files on disk and the artwork folders. Regenerate rather than trust: the
+method is at the bottom, and §13 says what moved between the two runs.
 
 ## The numbers
 
 | | |
 |---|---|
-| Catalogued lessons | 324 |
-| House-style decks (`class="stage-wrap"` in the file) | **140** — the catalogue's `deck` flag says 136; ten decks are flagged false and six non-decks flagged true, see §12 |
-| Block Camp RPGs (`block-camp/`, their own standard) | 14 |
-| Sherpa Tensing pages (their own pattern; deck redesign stopped by Innes 2026-09-25) | 26 |
-| **Still a scrolling page, not to house style** | **144** |
+| Catalogued lessons | 333 |
+| Slide decks (`class="stage-wrap"` in the file) | **146** — but only **87** also pass the language and artwork checks; 59 are decks short of standard, §14. Of the 87, 53 are panel layout — eleven decks are flagged `deck: false` and seven non-decks flagged true, see §12 |
+| Block Camp RPGs (`block-camp/`, their own standard) | 16 |
+| Sherpa Tensing pages (their own pattern; deck redesign stopped by Innes 2026-09-25) | 28 |
+| **Still a scrolling page, not to house style** | **143** |
 | — of which leave alone (§11: art quarry, Innes's own decks, finished RPGs) | 19 |
-| — **revamp candidates** | **125** |
+| — **revamp candidates** | **124** |
 | — of which merge or retire before ordering art (§10) | 11 |
-| **Rows in the list** | **110** (a row is a lesson, a pair or a family; 11 of them order nothing) |
-| **Plates to order** | **545** (of 655 slots; 105 usable pictures already on disk) |
+| **Rows in the list** | **109** (a row is a lesson, a pair or a family; 11 of them order nothing) |
+| **Plates to order** | **541** (of 650 slots; 104 usable pictures already on disk) |
 
 How "need" is counted, per HOUSE-STYLE §5c and the panel briefs since
 2026-09-23: **one cover, one plate per section or activity, one for the
@@ -190,7 +191,6 @@ and orders nothing.
 | `forbes-english-hiking-c1-part2.html` — error correction, true or false, gap, discourse ordering | C1 | 6 | 2 (`Hiking/`) | **4** | *(have)* | a red pencil on a map fold; a compass; a stack of stones (ordering); two rocks as seats |
 | `forbes-english-lesson-TopGear.html` — active and passive, three activities (`Top Gear/hero.jpg` plus four vectorised copies of it: one picture; the audit calls the folder 5:3 and unaudited) | B1 | 5 | 1 | **4** | *(have)* | a car on a lift (passive); a hand on a gear stick; three cones out of order; two bucket seats |
 | `top-gear-skiing-lesson.html` — ten sections, past simple (`Top Gear/` holds two distinct ski renders) | B1 | 8 | 2 | **6** | *(have)* three skiers | a starting gate; a stopwatch; a ski lodge board, blank; a trophy on snow; a crashed ski in a drift; a red pencil; two deckchairs |
-| `marilyn_prepositions.html` — **rebuilt 2026-10-04 as a panel deck; plates briefed in `docs/ARTWORK-marilyn.md`** | B1 | 5 | 2 (`Marilyn/`) | **3** | *(have)* | a subway grate with a skirt-shaped gust; a film reel; two cinema seats |
 | `friedrich_prepositions_c1.html` — three activities | C1 | 5 | 2 (`Friedrich/`) | **3** | *(have)* | a crown on a cushion; a baroque window as a cut-out; two throne-like chairs |
 | `forbes-english-bronte-lesson.html` — MC, gap, match and reorder | B2 | 5 | 1 (`bronte/`) | **4** | *(have)* triptych | a quill in an inkpot; a moor with one bare tree; three books out of order; two parlour chairs |
 | `geopolitics-english-class.html` — question formation, if-clauses, vocabulary, exercises, discussion (free) | C2 | 7 | 2 (`Geopolitics/`) | **5** | *(have)* | a question mark made of a border line; a domino run with one gap (if-clauses); a globe as a disc; a red pencil; two chairs at a round table |
@@ -215,7 +215,7 @@ and orders nothing.
 | lesson | level | need | have | order | cover | plates |
 |---|---|---|---|---|---|---|
 | `case-file-b2-roleplay.html` — Silver Pines, ten scenes (`CaseFileSilverPines/` cover is 4:3) | B2 | 8 | 0 | **8** | a road into pines under one lamp, right third, 16:9 | a sheriff's star; a footprint in sawdust; a curtain with a gap; a torn red swatch; a running figure; a tape recorder; a pinboard with string and no notes; two diner stools |
-| `forbes-dnd-rpg.html` + `forbes-dnd-rpg-part2.html` — Parisian Conquest I and II, five rooms each; one shared hero | C1 | 14 | 1 (`dnd-rpg/`) | **13** | *(have)* | a telephone (cold call); a pitch hall lectern; a labyrinth as one line; a treasury chest; a throne; a metronome (cadence); a fence line (scope); a fire extinguisher (crisis); a falling graph (numbers); a handshake (renewal); two chairs; two armchairs |
+| `forbes-dnd-rpg.html` + `forbes-dnd-rpg-part2.html` — Parisian Conquest I and II, five rooms each; Part II got its own cover 2026-10-14 (`dnd-rpg/long-winter.jpg`) | C1 | 14 | 2 (`dnd-rpg/`) | **12** | *(have)* both | a telephone (cold call); a pitch hall lectern; a labyrinth as one line; a treasury chest; a throne; a metronome (cadence); a fence line (scope); a fire extinguisher (crisis); a falling graph (numbers); a handshake (renewal); two chairs; two armchairs |
 | `Race Day - The Falcon Racing Story (B1 F1 RPG).html` — team roleplay (one hero, one inline picture) | B1 | 8 | 1 (`RaceDay/`) | **7** | *(have)* | a pit-lane light gantry; a tyre on a stand; a radio headset; a rain cloud over a track; a podium; a chequered flag; two pit-wall chairs |
 | `wild-frame.html` + `wild-frame-part-2.html` — documentary career quest, eight checkpoints each; one 1456 px hero each | B1-B2 | 16 | 2 (`WildFrame/`) | **14** | *(have)* | a camera on a tripod in long grass; a storm cloud; a pitch envelope; a squirrel silhouette; a passport; a film can; a red-carpet strip; a palace gate; a boom mic; a clapperboard; a train window; a cutting-room bin; a festival laurel as a plain wreath; two canvas chairs |
 | `forbes-english-b1-adjective-order-escape-room.html` — study, vault, final door | B1 | 5 | 1 (`LockedStudy/`) | **4** | *(have)* study | a vault wheel; a keyhole with light; a door swinging open; two library chairs |
@@ -275,14 +275,116 @@ are crops of the pages' own diagrams and are not artwork.
 
 ## 12. Catalogue rows whose `deck` flag is wrong
 
-Ten decks are `deck: false` in Supabase: `escape-from-alcatraz-a2`,
+Eleven decks are `deck: false` in Supabase: `escape-from-alcatraz-a2`, `marilyn_prepositions`,
 `forbes-english-b1-mixed-grammar-test` and `-part2`, `forbes-english-body-parts-c1`,
 `forbes-english-lego-lesson-part2`, `forbes-english-writers-nightmare`,
 `full_grammar_test`, `minecraft-lesson`, `must-have-to-vfb-stuttgart`,
 `twin_peaks_prepositions_v5` (and `contingency-trade-offs-vocab` until
-`2ee3e602`). Six non-decks are `deck: true`: the five deck-viewers and
-`beyond-the-handlebars`. The library's Deck filter and the hub pages read
+`2ee3e602`). Seven non-decks are `deck: true`: the five deck-viewers,
+`beyond-the-handlebars` and `present-simple-time-signals`. The library's Deck filter and the hub pages read
 that flag. One SQL statement each; Innes's to run.
+
+## 13. What moved between 2026-09-29 and 2026-10-14
+
+- **Nine catalogue rows added, none of them a scrolling page:** five decks
+  (`forbes-reddit-french-door-c1`, the three `writing-a-comment-south-africa`
+  decks, `forbes-manifestation-b2`), two Block Camp RPGs (`grand-hotel-rpg`,
+  `welcome-to-the-jungle-rpg`) and two Sherpa pages (`the-climb`,
+  `the-descent`). So nothing new has fallen outside the house style.
+- **One lesson left the list:** `marilyn_prepositions.html`, rebuilt as a
+  panel deck 2026-10-04 (−3 plates). Its catalogue `deck` flag is still false.
+- **One row got art:** Parisian Conquest II's own cover (−1 plate).
+- No other listed folder gained or lost a picture (compared file counts at
+  `ac7ef4a` against the tree). Nothing was re-checked by eye.
+
+## 14. Decks that are not yet to house style (59 of 146)
+
+Added 2026-10-14 after Innes: *"there are few actual decks and that category should be revised."* Being a slide deck
+(`class="stage-wrap"`) is rule 1 of six, not the whole standard. Every deck
+passes rule 6 (all 146 have an activation stage). Measured against two more checks:
+
+- **Languages (rule 5 + the 2026-09-04 minimum):** the deck's `UI_I18N` has a non-empty
+  block for both `de` and `es`. **42 fail.**
+- **Artwork (§5c):** at least four distinct pictures in the page (cover + three
+  sections/activation), not counting thumbs, library cards and the logo. **43 fail.**
+  This is a floor, not the §5c count; a five-section deck with four pictures passes here and still falls short.
+
+Layout is reported, not failed: `panel` is house style 2 (2026-09-25), `washed` is the
+original hero-wash layout that rule 3 still allows. Of the 87 that pass both checks,
+53 are panel and 34 washed. **Not measured here:** `check-lesson.js` (needs a
+browser run per deck; one sampled deck, `active_passive_refinery_lesson.html`, fails LAYOUT) and
+the six recurring item defects in HANDOFF. So 87 is a ceiling, not a count of finished decks.
+
+**Checker result, added the same day.** A full `check-lesson.js` sweep finished after the
+table was written. Of the 87, **81 exit clean** (47 of them panel), five fail on fit
+alone, and `-dinosaurs C1.html` was not run (space in the name):
+`forbes-english-minecraft-c1` (slide 23, 5px overflow),
+`nietzsche-film-vocab-c1-part5` (slide 21, 4px), and the write panel too tall on
+`forbes-english-body-parts-c1` (8px), `forbes-campaign-review-b2` (8px) and
+`forbes-english-holding-the-line-c1` (27px). All five are copy trims in the builder,
+not rebuilds. The six item defects in HANDOFF are still unmeasured.
+
+| layout | deck | short of standard |
+|---|---|---|
+| panel | `exam-prep-5hour-course-part2.html` | ships DE, needs DE+ES; 2 pictures |
+| panel | `exam-prep-5hour-courseEXP.html` | ships DE, needs DE+ES; 2 pictures |
+| panel | `forbes-conservation-c1.html` | ships DE, needs DE+ES |
+| panel | `forbes-el-zar-c2.html` | 2 pictures |
+| panel | `forbes-english-b2-lesson.html` | ships DE, needs DE+ES; 2 pictures |
+| panel | `forbes-english-emails calls part3.html` | 2 pictures |
+| panel | `forbes-english-food-ordering-a1-part2.html` | ships DE, needs DE+ES |
+| panel | `forbes-english-lego-lesson-part2.html` | 3 pictures |
+| panel | `forbes-english-lesson (flow).html` | ships DE, needs DE+ES |
+| panel | `forbes-english-lesson (talking with clients).html` | ships DE, needs DE+ES; 2 pictures |
+| panel | `forbes-english-lesson-2.html` | ships DE, needs DE+ES |
+| panel | `forbes-english-lesson-managing energy.html` | ships DE, needs DE+ES; 3 pictures |
+| panel | `forbes-english-meetings.html` | ships DE, needs DE+ES; 2 pictures |
+| panel | `forbes-english-modal-verbs-B1.html` | ships DE, needs DE+ES; 2 pictures |
+| panel | `forbes-english-the-square-a2.html` | 2 pictures |
+| panel | `forbes-english-writers-nightmare.html` | 2 pictures |
+| panel | `forbes-escalating-a-complaint-c1.html` | ships DE, needs DE+ES; 3 pictures |
+| panel | `forbes-geoscience-phrases.html` | ships DE, needs DE+ES; 2 pictures |
+| panel | `forbes-nature-agency-part1.html` | ships DE, needs DE+ES |
+| panel | `forbes-nature-agency-part2.html` | ships DE, needs DE+ES |
+| panel | `make-v-do.html` | ships DE, needs DE+ES; 3 pictures |
+| panel | `marilyn_prepositions.html` | 3 pictures |
+| panel | `reading-the-elevation-c1.html` | ships DE, needs DE+ES |
+| panel | `stranger-things-test.html` | 2 pictures |
+| washed | `Forbes English - Product Strategy & Market Research Speaking (2).html` | ships DE, needs DE+ES; 1 picture |
+| washed | `active_passive_refinery_lesson.html` | ships DE, needs DE+ES; 3 pictures |
+| washed | `alchemist_b2_lesson.html` | ships DE, needs DE+ES |
+| washed | `carrying-the-load-c1.html` | ships DE, needs DE+ES |
+| washed | `english_class_picture_description.html` | 2 pictures |
+| washed | `english_firefighter_v3.html` | ships DE, needs DE+ES |
+| washed | `football_c1_roleplay.html` | ships DE, needs DE+ES; 1 picture |
+| washed | `forbes-ai-productive-struggle-c1.html` | ships DE, needs DE+ES; 3 pictures |
+| washed | `forbes-c1-negotiation.html` | 1 picture |
+| washed | `forbes-construction-contracts.html` | ships DE, needs DE+ES; 1 picture |
+| washed | `forbes-english-dinosaur-minecraft-part2.html` | ships DE, needs DE+ES |
+| washed | `forbes-english-dinosaur-minecraft.html` | ships DE, needs DE+ES |
+| washed | `forbes-english-hiking-c1.html` | ships DE, needs DE+ES; 2 pictures |
+| washed | `forbes-english-ielts-academic-writing-part1.html` | 3 pictures |
+| washed | `forbes-english-ielts-academic-writing-part1b.html` | 3 pictures |
+| washed | `forbes-english-ielts-intro-overview-part7.html` | 2 pictures |
+| washed | `forbes-english-ielts-line-graph-part8.html` | 2 pictures |
+| washed | `forbes-english-ielts-listening-part9.html` | 2 pictures |
+| washed | `forbes-english-ielts-speaking-part1-2.html` | 2 pictures |
+| washed | `forbes-english-ielts-writing-lab-part2.html` | 2 pictures |
+| washed | `forbes-english-ielts-writing-lab-part2b.html` | 1 picture |
+| washed | `forbes-english-lesson (2).html` | ships DE, needs DE+ES; 2 pictures |
+| washed | `forbes-english-lesson-curious incident.html` | ships DE, needs DE+ES; 3 pictures |
+| washed | `forbes-english-lesson_self-improvement (self).html` | ships DE, needs DE+ES; 2 pictures |
+| washed | `forbes-english-photography-b2.html` | ships DE, needs DE+ES; 3 pictures |
+| washed | `forbes-english-possessive-pronouns-a1.html` | ships DE, needs DE+ES; 2 pictures |
+| washed | `forbes-english-product-speaking.html` | ships DE, needs DE+ES; 2 pictures |
+| washed | `forbes-english-the-docket-b2.html` | ships DE, needs DE+ES |
+| washed | `forbes-gap-fill.html` | ships DE, needs DE+ES; 2 pictures |
+| washed | `forbes_english_lesson.html` | ships DE, needs DE+ES; 1 picture |
+| washed | `impostor_syndrome_advanced_JP.html` | ships JA, needs DE+ES; 2 pictures |
+| washed | `koolhas & Lamb.html` | ships DE, needs DE+ES |
+| washed | `stranger-things-b1-lesson.html` | ships DE, needs DE+ES; 2 pictures |
+| washed | `twin-peaks-b2-discussion.html` | ships DE, needs DE+ES |
+| washed | `ukraine-reconstruction-lesson.html` | ships DE, needs DE+ES |
 
 ## Order of work
 
@@ -305,6 +407,9 @@ for r in json.load(open('tools/lessons.json',encoding='utf-8')):
     f=r['file']; s=open(f,encoding='utf-8',errors='replace').read() if os.path.exists(f) else ''
     print('DECK' if 'class="stage-wrap"' in s else '----', f)
 PY
+# 1b. what changed since the last run: picture counts per folder named in this file
+#     C=$(git log -1 --format=%h -- docs/ARTWORK-revamp-shopping-list.md)
+#     compare git ls-tree $C <dir>/ against ls <dir> (quote folder names with spaces)
 # 2. usable art: PIL over every image in the lesson's folders, keep width>=1400 and w/h>=1.5, drop *pattern*, thumbs, LibraryCards/, IELTS/
 # 3. need = 2 + sections (h2 / tab / activity headings), capped at 8
 ```
