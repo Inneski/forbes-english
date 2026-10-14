@@ -438,3 +438,11 @@ TENSE = {1: "present simple", 3: "present simple", 5: "present simple", 9: "pres
          13: "present simple", 14: "present simple", 10: "present simple", 11: "present simple"}
 for _n, _t in TENSE.items():
     C[_n]["tense"] = _t
+
+# What Innes has replaced with his own text. Everything not listed is an AI
+# draft. The proof build (build_book.py 1 --proof) prints a register from
+# this, and tags each draft dialogue on its page; the plain build prints
+# neither. Parts: "dialogue", "exercises" (everything in C[n] above).
+YOURS = {
+    5: ["dialogue"],
+}

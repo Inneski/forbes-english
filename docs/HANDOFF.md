@@ -10,6 +10,30 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
+## 2026-10-14 — Forbes English at Work, Book 1: opener check, and a publishable build
+
+Picked back up after three weeks. Two things, both now on main:
+
+  * **Openers and scenes checked against the finished dialogues.** Six
+    of fifteen units showed something their dialogue contradicts, all
+    from writing the picture off the scenario rather than the script:
+    Priya arriving at a desk she only phones (U3), Lena running where
+    Innes's own dialogue has her mountain biking (U5), Ana missing from
+    a call she speaks on (U7), Sam missing from the floor he walks (U8),
+    Tom standing in a customer's office he only phones (U11), Sam in a
+    scene of two calls between Lena and Jo (U12), Tom waving off a taxi
+    when Ana's last line is "say hi to Tom for me" (U15). Fixed in both
+    `level-1-day-one.md` and `ART-book-1.md`. **Rule for the other
+    books: write the picture from the dialogue, after it is final.**
+  * **Plain build vs proof build.** The plain build prints no slot
+    labels and no draft tags, so its pages can go on the site. `--proof`
+    restores both and adds a draft register as the last page, read from
+    `YOURS` in `content_book1.py` (today: Unit 5 dialogue only, 1 of 30
+    parts). A stage direction was also being highlighted like a phrase-
+    box line (`.dialogue em` beat `.stage em` on source order); fixed.
+
+---
+
 
 ## 2026-10-14 — Block Camp: rules out of the slide run, opener slot on the cover
 

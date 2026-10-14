@@ -81,7 +81,7 @@ and hashes. **Filenames** `art/book-1/u05-scene.png` etc. Print wants the
 
 | slot | subject |
 |---|---|
-| opener | an office desk seen straight on: a laptop with a blank screen, a second monitor still in its box, a gold cable in a tangle, a printer on a shelf; Priya's silhouette with a laptop under her arm arriving from the right |
+| opener | an office desk seen straight on: Lena with a phone to her ear and a laptop whose screen is frozen blank, a second monitor still in its box, a gold cable in a tangle, a printer on a shelf; nobody else in the room |
 | scene | Lena holding her laptop up to a phone propped on the desk so Priya on the phone screen can see it; a small light glowing on the laptop's side |
 | label | a flat-lay of desk kit: laptop, mouse, keyboard, charger, headphones, printer, a cupboard door ajar, a password sticky note left blank |
 | grammar | a supply cupboard open with shelves of boxed screens and one empty shelf |
@@ -105,9 +105,9 @@ and hashes. **Filenames** `art/book-1/u05-scene.png` etc. Print wants the
 
 | slot | subject |
 |---|---|
-| opener | one picture, two weathers: a seafront promenade in Valencia at sunrise on the right with Ana's silhouette walking, a rainy Bristol park on the left with Lena running under trees, one gold sun over the middle |
+| opener | one picture, two weathers: a seafront promenade in Valencia at sunrise on the right with Ana's silhouette walking, a rainy hillside trail near Bristol on the left with Lena on a mountain bike, one gold sun over the middle |
 | scene | two laptops facing each other across a table, each screen showing a silhouette in a headset, a mug beside each |
-| label | a weekend in objects: running shoes, a yoga mat, a cooking pot, a book, a football, a film ticket, a beach towel |
+| label | a weekend in objects: running shoes, a bike helmet, a yoga mat, a cooking pot, a book, a football, a film ticket, a beach towel |
 | grammar | a calendar week with small icons in the days, some days empty |
 | roleplay | two silhouettes on a call leaning towards each other, one laughing |
 | phrase | a raised eyebrow and a smile drawn as two curves on a cream circle, gold |
@@ -130,7 +130,7 @@ and hashes. **Filenames** `art/book-1/u05-scene.png` etc. Print wants the
 | slot | subject |
 |---|---|
 | opener | four small scenes in a row like a film strip: a train, a street with a café, a meeting room with one chair, a station at dusk; Lena's gold bag in every one |
-| scene | Lena at the Monday call pointing at a screen that shows a photo of a chair, Tom and Sam listening on the other windows |
+| scene | Lena at the Monday call pointing at a screen that shows a photo of a chair, Tom, Sam and Ana in her headset listening on the other windows |
 | label | a trip in objects: a train ticket, a coffee cup, a catalogue, a handshake, a sandwich, a house key |
 | grammar | a diary page with four short entries drawn as lines, the first ticked gold |
 | roleplay | Lena telling a story counting on her fingers, Tom listening with his cap pushed back |
@@ -141,7 +141,7 @@ and hashes. **Filenames** `art/book-1/u05-scene.png` etc. Print wants the
 
 | slot | subject |
 |---|---|
-| opener | the warehouse floor from above: Tom in a flat cap loading flat boxes into an open van, Lena at a desk by the door with a laptop, Priya crossing the floor with hers, a gold forklift parked in the corner |
+| opener | the warehouse floor from above: Tom in a flat cap loading flat boxes into an open van, Lena at a desk by the door with a laptop, Priya crossing the floor with hers, Sam in round glasses walking between them with a mug, a gold forklift parked in the corner |
 | scene | Lena and Priya side by side at one screen, Priya pointing at a column of cells |
 | label | a busy desk: a laptop with a page half written, a spreadsheet printout, a stack of boxes, a phone mid-call, a van key, a clock |
 | grammar | Tom mid-lift with a box, motion lines behind him |
@@ -177,7 +177,7 @@ and hashes. **Filenames** `art/book-1/u05-scene.png` etc. Print wants the
 
 | slot | subject |
 |---|---|
-| opener | a delivered desk in a customer's office with a crack across its top, one chair beside it and an empty outline where a second chair should be; Tom in his flat cap on the phone in the doorway |
+| opener | a picture split down the middle: on the left the Greenline office, Tom in his flat cap on the phone and Lena holding up her phone with a photo on it; on the right Mr Shaw's office in Birmingham, a delivered desk with a crack across its top, one chair beside it and an empty outline where a second should be |
 | scene | Lena photographing the cracked desktop with her phone, the crack picked out in gold |
 | label | things that go wrong: a cracked top, an empty chair outline, a late clock, a wrong-colour lamp, an order number on a label, a camera |
 | grammar | a phone held out with a photo of a crack on its screen |
@@ -190,7 +190,7 @@ and hashes. **Filenames** `art/book-1/u05-scene.png` etc. Print wants the
 | slot | subject |
 |---|---|
 | opener | a wall calendar of blank squares with one square filled gold, Lena on the phone in front of it, a camera on a tripod and two light stands leaning in the corner |
-| scene | a photographer's silhouette with a camera bag crossing the warehouse floor, Sam in his round glasses waving from a doorway |
+| scene | a split frame: Lena on the phone at her desk in Bristol on the left, Jo the photographer on the phone in a London studio on the right, a camera bag at her feet and two light stands behind her |
 | label | a photo shoot in objects: a calendar page, an invite card, a camera, two lights, a van key, a parking sign |
 | grammar | a diary page with a time crossed out and a new time written beside it, gold |
 | roleplay | Lena on the phone with a calendar in the other hand, a photographer silhouette on a split frame |
@@ -225,7 +225,7 @@ and hashes. **Filenames** `art/book-1/u05-scene.png` etc. Print wants the
 
 | slot | subject |
 |---|---|
-| opener | a taxi at the kerb outside the Greenline office at golden hour; Ana with a suitcase turning to wave; Lena, Tom and Sam in the doorway; a gold sky over the roofs |
+| opener | a taxi at the kerb outside the Greenline office at golden hour; Ana with a suitcase turning to wave; Lena on the pavement waving back; nobody else; a gold sky over the roofs |
 | scene | a notebook open on a desk with three ticks drawn down a list, a gold pen, a train ticket tucked into the corner |
 | label | a future in objects: a course certificate, a camera on a tripod, a shop front outline, a ladder, a suitcase, a phone with a heart |
 | grammar | Lena at a crossroads sign with three blank arrows, her gold bag on her shoulder |

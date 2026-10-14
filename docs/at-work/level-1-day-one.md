@@ -236,7 +236,7 @@ PRIYA: **There are some** in the cupboard. Ask Tom.
 - *Key:* 1 Is there · 2 are · 3 any · 4 any · 5 is
 
 **Artwork.**
-- `u03-opener` — an office desk seen straight on: a laptop with a blank screen, a second monitor still in its box, a gold cable in a tangle, a printer on a shelf; Priya's silhouette with a laptop under her arm arriving from the right
+- `u03-opener` — an office desk seen straight on: Lena with a phone to her ear and a laptop whose screen is frozen blank, a second monitor still in its box, a gold cable in a tangle, a printer on a shelf; nobody else in the room
 - `u03-scene` — Lena holding her laptop up to a phone propped on the desk so Priya on the phone screen can see it; a small light glowing on the laptop's side
 
 ---
@@ -362,7 +362,7 @@ ANA: Yes! Oh — *here's Sam. Let's start.*
 - *Key:* 1 I usually go running on Saturdays. · 2 She is never late. · 3 We often eat late. · 4 I am always at the gym on Sundays. · 5 They hardly ever cook in the week.
 
 **Artwork.**
-- `u05-opener` — one picture, two weathers: a seafront promenade in Valencia at sunrise on the right with Ana's silhouette walking, a rainy Bristol park on the left with Lena running under trees, one gold sun over the middle
+- `u05-opener` — one picture, two weathers: a seafront promenade in Valencia at sunrise on the right with Ana's silhouette walking, a rainy hillside trail near Bristol on the left with Lena on a mountain bike, one gold sun over the middle
 - `u05-scene` — two laptops facing each other across a table, each screen showing a silhouette in a headset, a mug beside each
 
 ---
@@ -492,7 +492,7 @@ SAM: Good. That's the next step.
 
 **Artwork.**
 - `u07-opener` — four small scenes in a row like a film strip: a train, a street with a café, a meeting room with one chair, a station at dusk; Lena's gold bag in every one
-- `u07-scene` — Lena at the Monday call pointing at a screen that shows a photo of a chair, Tom and Sam listening on the other windows
+- `u07-scene` — Lena at the Monday call pointing at a screen that shows a photo of a chair, Tom, Sam and Ana in her headset listening on the other windows
 
 ---
 
@@ -557,7 +557,7 @@ LENA: *No rush. Thanks!*
 - *Key:* 1 'm writing · 2 are … working · 3 is coming · 4 aren't packing · 5 Is … calling
 
 **Artwork.**
-- `u08-opener` — the warehouse floor from above: Tom in a flat cap loading flat boxes into an open van, Lena at a desk by the door with a laptop, Priya crossing the floor with hers, a gold forklift parked in the corner
+- `u08-opener` — the warehouse floor from above: Tom in a flat cap loading flat boxes into an open van, Lena at a desk by the door with a laptop, Priya crossing the floor with hers, Sam in round glasses walking between them with a mug, a gold forklift parked in the corner
 - `u08-scene` — Lena and Priya side by side at one screen, Priya pointing at a column of cells
 
 ---
@@ -749,7 +749,7 @@ TOM: *Thank you. And sorry again.*
 - *Key:* 1 Could · 2 Can · 3 about · 4 worry · 5 for
 
 **Artwork.**
-- `u11-opener` — a delivered desk in a customer's office with a crack across its top, one chair beside it and an empty outline where a second chair should be; Tom in his flat cap on the phone in the doorway
+- `u11-opener` — a picture split down the middle: on the left the Greenline office, Tom in his flat cap on the phone and Lena holding up her phone with a photo on it; on the right Mr Shaw's office in Birmingham, a delivered desk with a crack across its top, one chair beside it and an empty outline where a second should be
 - `u11-scene` — Lena photographing the cracked desktop with her phone, the crack picked out in gold
 
 ---
@@ -817,7 +817,7 @@ LENA: **I'm doing** it now. *Thanks for being flexible.*
 
 **Artwork.**
 - `u12-opener` — a wall calendar of blank squares with one square filled gold, Lena on the phone in front of it, a camera on a tripod and two light stands leaning in the corner
-- `u12-scene` — a photographer's silhouette with a camera bag crossing the warehouse floor, Sam in his round glasses waving from a doorway
+- `u12-scene` — a split frame: Lena on the phone at her desk in Bristol on the left, Jo the photographer on the phone in a London studio on the right, a camera bag at her feet and two light stands behind her
 
 ---
 
@@ -1017,5 +1017,5 @@ LENA: *I will. See you soon!*
 - *Key:* 1 'm going to take · 2 are … going to do · 3 isn't going to like · 4 're going to open · 5 Is
 
 **Artwork.**
-- `u15-opener` — a taxi at the kerb outside the Greenline office at golden hour; Ana with a suitcase turning to wave; Lena, Tom and Sam in the doorway; a gold sky over the roofs
+- `u15-opener` — a taxi at the kerb outside the Greenline office at golden hour; Ana with a suitcase turning to wave; Lena on the pavement waving back; nobody else; a gold sky over the roofs
 - `u15-scene` — a notebook open on a desk with three ticks drawn down a list, a gold pen, a train ticket tucked into the corner

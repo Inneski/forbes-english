@@ -34,6 +34,10 @@ import sys
 from pathlib import Path
 
 HERE = Path(__file__).parent
+# --proof: label every picture slot and tag every AI draft, plus a register
+# at the back. The plain build prints neither, so its pages can be published.
+PROOF = "--proof" in sys.argv
+YOURS = {}
 BOOKS = {
     1: ("level-1-day-one.md", "Day", "One", "A1/A2", "#B8860B", "gold"),
     2: ("level-2-joining-in.md", "Joining", "In", "A2/B1", "#2f8f7a", "sea green"),
@@ -141,6 +145,8 @@ def band(head, section, color=None):
 
 
 def plate(name, subject, h, shape="round"):
+    if not PROOF:
+        return f'<div class="plate {shape}" style="height:{h}"></div>'
     sub = f'<div class="slot-sub">{inline(subject)}</div>' if subject else ""
     return (f'<div class="plate {shape}" style="height:{h}">'
             f'<div class="slot-tag">illustration · {html.escape(name)}</div>{sub}</div>')
@@ -267,7 +273,7 @@ def unit_pages(u, c, start):
     # 4 · listen and read: the dialogue beside the scene plate
     P.append(page(
         '<div class="body">' + h("", f'Listen and read <span class="pipe">|</span> {inline(u["rows"]["Communication"])}')
-        + '<!-- dialogue: AI draft until Innes replaces it in the level file -->'
+        + ('<div class="draft">AI draft dialogue</div>' if PROOF and "dialogue" not in YOURS.get(n, []) else "")
         + split(f'<div class="dialogue">{dialogue_html(u)}</div>',
                 plate(ss, u["art"].get(ss, ""), "130mm", "arch"), A)
         + '<h3>1 · Listen and answer</h3>' + numbered([q for q, _ in c["gist"]], "ex two-col")
@@ -312,7 +318,10 @@ def build(book):
     md = (HERE / fname).read_text(encoding="utf-8")
     units = parse_units(md)
     sys.path.insert(0, str(HERE))
-    C = importlib.import_module(f"content_book{book}").C
+    mod = importlib.import_module(f"content_book{book}")
+    C = mod.C
+    global YOURS
+    YOURS = getattr(mod, "YOURS", {})
     company = re.search(r"^\*\*The company\.\*\*(.+?)(?=\n\n)", md, re.S | re.M).group(1).strip()
     year = re.search(r"^\*\*The year\.\*\*(.+?)(?=\n\n)", md, re.S | re.M).group(1).strip()
     readme = (HERE / "README.md").read_text(encoding="utf-8")
@@ -393,13 +402,24 @@ def build(book):
     for chunk in chunks(units, 3):
         pages.append(page('<div class="body">' + h("Answer key", "Every exercise") + "".join(keyblock(u) for u in chunk) + "</div>", "Answer key", num, top=band("Answer key", btitle))); num += 1
 
+    if PROOF:
+        rows = "".join(
+            f'<tr><td class="num">{u["n"]}</td><td>{inline(u["title"])}</td>'
+            + "".join(f'<td class="{"yours" if part in YOURS.get(u["n"], []) else "drafty"}">'
+                      f'{"yours" if part in YOURS.get(u["n"], []) else "AI draft"}</td>' for part in ("dialogue", "exercises"))
+            + "</tr>" for u in units)
+        mine = sum(len(v) for v in YOURS.values())
+        pages.append(page('<div class="body">' + h("Proof only", "What is still an AI draft")
+                          + f'<p class="story">{mine} of {2 * len(units)} parts are yours. This page and every label on a picture slot are printed only in the proof build.</p>'
+                          + f'<table class="map reg"><tr><th></th><th>Unit</th><th>Dialogue</th><th>Exercises</th></tr>{rows}</table></div>',
+                          "Draft register", num, top=band("Draft register", btitle))); num += 1
     css = CSS.replace("ACCENT", accent)
     doc = ("<!doctype html><html lang='en'><head><meta charset='utf-8'>"
            f"<title>Forbes English at Work · Book {book} · {html.escape(btitle)}</title>"
            "<link rel='preconnect' href='https://fonts.googleapis.com'>"
            "<link href='https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap' rel='stylesheet'>"
            f"<style>{css}</style></head><body>{''.join(pages)}</body></html>")
-    out = HERE / f"book-{book}.html"
+    out = HERE / (f"book-{book}-proof.html" if PROOF else f"book-{book}.html")
     out.write_text(doc, encoding="utf-8")
     print(f"{out.name}: {len(pages)} pages, {len(units)} units")
 
@@ -458,7 +478,7 @@ p{margin:0 0 2.2mm}
 .dialogue{font-size:9.4pt;line-height:1.32}
 .turn{display:grid;grid-template-columns:16mm 1fr;gap:2.2mm;margin-bottom:1mm}
 .who{font-family:'DM Mono',monospace;font-size:7.6pt;color:var(--accent);padding-top:.7mm}
-.stage{font-style:italic;color:var(--mute);margin:1.5mm 0}.stage em{background:none;padding:0}
+.stage{font-style:italic;color:var(--mute);margin:1.5mm 0}.dialogue .stage em{background:none;padding:0}
 .dialogue strong{color:var(--accent)}.dialogue em{background:var(--blush);padding:0 .6mm;font-style:italic;border-radius:.6mm}
 .role{display:grid;grid-template-columns:8mm 1fr;gap:2.5mm;align-items:start;background:#fff;border:.5pt solid var(--line);border-radius:2mm;padding:2mm 3mm;margin:0 0 1.8mm;font-size:9.2pt}.role p{margin:0}
 .rolelabel{font-weight:800;font-size:16pt;color:var(--accent);line-height:1}
@@ -502,9 +522,11 @@ h2 .pipe + *, h2{font-size:21pt}
 .tensepage h3,.tensepage .runin,.tensepage .pipe,.tensepage .slot-tag{color:var(--g)}
 .tensepage .panel.lp{background:color-mix(in srgb, var(--g) 22%, white)}
 .tensepage .plate{border-color:color-mix(in srgb, var(--g) 40%, white);background:color-mix(in srgb, var(--g) 16%, white)}
+.reg td.yours{color:#2e7d32;font-weight:700}.reg td.drafty{color:var(--mute)}
 .hwhead{border-top:.6pt solid var(--accent);padding-top:3mm;margin-top:4mm;font-size:10pt}
 .hw h4{color:var(--accent);font-size:8.5pt;text-transform:uppercase;letter-spacing:.08em;margin:2mm 0 1.5mm}
 """
 
 if __name__ == "__main__":
-    build(int(sys.argv[1]) if len(sys.argv) > 1 else 1)
+    args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    build(int(args[0]) if args else 1)
