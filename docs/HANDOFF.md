@@ -1432,6 +1432,14 @@ asked for subtitles on all the videos, with a choice of language.
     "reckon / crack on" pair on PC slide 19, "aye?") are rendered by sense.
     A native check of zh/ja/ar would be worth it.
 
+## 2026-10-14 — Revamp shopping list regenerated
+
+`docs/ARTWORK-revamp-shopping-list.md` re-run against 333 catalogue rows.
+143 scrolling pages (was 144), 124 revamp candidates, 541 plates to order.
+All nine rows added since 2026-09-29 are decks, RPGs or Sherpa pages; only
+Marilyn left the list. New wrong `deck` flags: `marilyn_prepositions` (false)
+and `present-simple-time-signals` (true). Details in the list's §13.
+
 ## 2026-09-29 — Two site-wide lists: the revamp artwork shopping list, and what has never been proofread
 
 Innes, 2026-09-27: *"find the non house style lessons and create art shopping
