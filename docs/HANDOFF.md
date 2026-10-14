@@ -1437,7 +1437,7 @@ asked for subtitles on all the videos, with a choice of language.
 `docs/ARTWORK-revamp-shopping-list.md` re-run against 333 catalogue rows.
 143 scrolling pages (was 144), 124 revamp candidates, 541 plates to order.
 All nine rows added since 2026-09-29 are decks, RPGs or Sherpa pages; only
-Marilyn left the list. New wrong `deck` flags: `marilyn_prepositions` (false)
+Marilyn left the list. Revised the same day: of 146 slide decks only 87 pass the DE+ES and four-picture checks; 59 decks short of standard are listed in §14. New wrong `deck` flags: `marilyn_prepositions` (false)
 and `present-simple-time-signals` (true). Details in the list's §13.
 
 ## 2026-09-29 — Two site-wide lists: the revamp artwork shopping list, and what has never been proofread

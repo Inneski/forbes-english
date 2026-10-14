@@ -11,7 +11,7 @@ method is at the bottom, and §13 says what moved between the two runs.
 | | |
 |---|---|
 | Catalogued lessons | 333 |
-| House-style decks (`class="stage-wrap"` in the file) | **146** — eleven decks are flagged `deck: false` and seven non-decks flagged true, see §12 |
+| Slide decks (`class="stage-wrap"` in the file) | **146** — but only **87** also pass the language and artwork checks; 59 are decks short of standard, §14. Of the 87, 53 are panel layout — eleven decks are flagged `deck: false` and seven non-decks flagged true, see §12 |
 | Block Camp RPGs (`block-camp/`, their own standard) | 16 |
 | Sherpa Tensing pages (their own pattern; deck redesign stopped by Innes 2026-09-25) | 28 |
 | **Still a scrolling page, not to house style** | **143** |
@@ -296,6 +296,86 @@ that flag. One SQL statement each; Innes's to run.
 - **One row got art:** Parisian Conquest II's own cover (−1 plate).
 - No other listed folder gained or lost a picture (compared file counts at
   `ac7ef4a` against the tree). Nothing was re-checked by eye.
+
+## 14. Decks that are not yet to house style (59 of 146)
+
+Added 2026-10-14 after Innes: *"there are few actual decks and that category should be revised."* Being a slide deck
+(`class="stage-wrap"`) is rule 1 of six, not the whole standard. Every deck
+passes rule 6 (all 146 have an activation stage). Measured against two more checks:
+
+- **Languages (rule 5 + the 2026-09-04 minimum):** the deck's `UI_I18N` has a non-empty
+  block for both `de` and `es`. **42 fail.**
+- **Artwork (§5c):** at least four distinct pictures in the page (cover + three
+  sections/activation), not counting thumbs, library cards and the logo. **43 fail.**
+  This is a floor, not the §5c count; a five-section deck with four pictures passes here and still falls short.
+
+Layout is reported, not failed: `panel` is house style 2 (2026-09-25), `washed` is the
+original hero-wash layout that rule 3 still allows. Of the 87 that pass both checks,
+53 are panel and 34 washed. **Not measured here:** `check-lesson.js` (needs a
+browser run per deck; one sampled deck, `active_passive_refinery_lesson.html`, fails LAYOUT) and
+the six recurring item defects in HANDOFF. So 87 is a ceiling, not a count of finished decks.
+
+| layout | deck | short of standard |
+|---|---|---|
+| panel | `exam-prep-5hour-course-part2.html` | ships DE, needs DE+ES; 2 pictures |
+| panel | `exam-prep-5hour-courseEXP.html` | ships DE, needs DE+ES; 2 pictures |
+| panel | `forbes-conservation-c1.html` | ships DE, needs DE+ES |
+| panel | `forbes-el-zar-c2.html` | 2 pictures |
+| panel | `forbes-english-b2-lesson.html` | ships DE, needs DE+ES; 2 pictures |
+| panel | `forbes-english-emails calls part3.html` | 2 pictures |
+| panel | `forbes-english-food-ordering-a1-part2.html` | ships DE, needs DE+ES |
+| panel | `forbes-english-lego-lesson-part2.html` | 3 pictures |
+| panel | `forbes-english-lesson (flow).html` | ships DE, needs DE+ES |
+| panel | `forbes-english-lesson (talking with clients).html` | ships DE, needs DE+ES; 2 pictures |
+| panel | `forbes-english-lesson-2.html` | ships DE, needs DE+ES |
+| panel | `forbes-english-lesson-managing energy.html` | ships DE, needs DE+ES; 3 pictures |
+| panel | `forbes-english-meetings.html` | ships DE, needs DE+ES; 2 pictures |
+| panel | `forbes-english-modal-verbs-B1.html` | ships DE, needs DE+ES; 2 pictures |
+| panel | `forbes-english-the-square-a2.html` | 2 pictures |
+| panel | `forbes-english-writers-nightmare.html` | 2 pictures |
+| panel | `forbes-escalating-a-complaint-c1.html` | ships DE, needs DE+ES; 3 pictures |
+| panel | `forbes-geoscience-phrases.html` | ships DE, needs DE+ES; 2 pictures |
+| panel | `forbes-nature-agency-part1.html` | ships DE, needs DE+ES |
+| panel | `forbes-nature-agency-part2.html` | ships DE, needs DE+ES |
+| panel | `make-v-do.html` | ships DE, needs DE+ES; 3 pictures |
+| panel | `marilyn_prepositions.html` | 3 pictures |
+| panel | `reading-the-elevation-c1.html` | ships DE, needs DE+ES |
+| panel | `stranger-things-test.html` | 2 pictures |
+| washed | `Forbes English - Product Strategy & Market Research Speaking (2).html` | ships DE, needs DE+ES; 1 picture |
+| washed | `active_passive_refinery_lesson.html` | ships DE, needs DE+ES; 3 pictures |
+| washed | `alchemist_b2_lesson.html` | ships DE, needs DE+ES |
+| washed | `carrying-the-load-c1.html` | ships DE, needs DE+ES |
+| washed | `english_class_picture_description.html` | 2 pictures |
+| washed | `english_firefighter_v3.html` | ships DE, needs DE+ES |
+| washed | `football_c1_roleplay.html` | ships DE, needs DE+ES; 1 picture |
+| washed | `forbes-ai-productive-struggle-c1.html` | ships DE, needs DE+ES; 3 pictures |
+| washed | `forbes-c1-negotiation.html` | 1 picture |
+| washed | `forbes-construction-contracts.html` | ships DE, needs DE+ES; 1 picture |
+| washed | `forbes-english-dinosaur-minecraft-part2.html` | ships DE, needs DE+ES |
+| washed | `forbes-english-dinosaur-minecraft.html` | ships DE, needs DE+ES |
+| washed | `forbes-english-hiking-c1.html` | ships DE, needs DE+ES; 2 pictures |
+| washed | `forbes-english-ielts-academic-writing-part1.html` | 3 pictures |
+| washed | `forbes-english-ielts-academic-writing-part1b.html` | 3 pictures |
+| washed | `forbes-english-ielts-intro-overview-part7.html` | 2 pictures |
+| washed | `forbes-english-ielts-line-graph-part8.html` | 2 pictures |
+| washed | `forbes-english-ielts-listening-part9.html` | 2 pictures |
+| washed | `forbes-english-ielts-speaking-part1-2.html` | 2 pictures |
+| washed | `forbes-english-ielts-writing-lab-part2.html` | 2 pictures |
+| washed | `forbes-english-ielts-writing-lab-part2b.html` | 1 picture |
+| washed | `forbes-english-lesson (2).html` | ships DE, needs DE+ES; 2 pictures |
+| washed | `forbes-english-lesson-curious incident.html` | ships DE, needs DE+ES; 3 pictures |
+| washed | `forbes-english-lesson_self-improvement (self).html` | ships DE, needs DE+ES; 2 pictures |
+| washed | `forbes-english-photography-b2.html` | ships DE, needs DE+ES; 3 pictures |
+| washed | `forbes-english-possessive-pronouns-a1.html` | ships DE, needs DE+ES; 2 pictures |
+| washed | `forbes-english-product-speaking.html` | ships DE, needs DE+ES; 2 pictures |
+| washed | `forbes-english-the-docket-b2.html` | ships DE, needs DE+ES |
+| washed | `forbes-gap-fill.html` | ships DE, needs DE+ES; 2 pictures |
+| washed | `forbes_english_lesson.html` | ships DE, needs DE+ES; 1 picture |
+| washed | `impostor_syndrome_advanced_JP.html` | ships JA, needs DE+ES; 2 pictures |
+| washed | `koolhas & Lamb.html` | ships DE, needs DE+ES |
+| washed | `stranger-things-b1-lesson.html` | ships DE, needs DE+ES; 2 pictures |
+| washed | `twin-peaks-b2-discussion.html` | ships DE, needs DE+ES |
+| washed | `ukraine-reconstruction-lesson.html` | ships DE, needs DE+ES |
 
 ## Order of work
 
