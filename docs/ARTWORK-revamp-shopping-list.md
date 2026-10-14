@@ -315,6 +315,15 @@ original hero-wash layout that rule 3 still allows. Of the 87 that pass both che
 browser run per deck; one sampled deck, `active_passive_refinery_lesson.html`, fails LAYOUT) and
 the six recurring item defects in HANDOFF. So 87 is a ceiling, not a count of finished decks.
 
+**Checker result, added the same day.** A full `check-lesson.js` sweep finished after the
+table was written. Of the 87, **81 exit clean** (47 of them panel), five fail on fit
+alone, and `-dinosaurs C1.html` was not run (space in the name):
+`forbes-english-minecraft-c1` (slide 23, 5px overflow),
+`nietzsche-film-vocab-c1-part5` (slide 21, 4px), and the write panel too tall on
+`forbes-english-body-parts-c1` (8px), `forbes-campaign-review-b2` (8px) and
+`forbes-english-holding-the-line-c1` (27px). All five are copy trims in the builder,
+not rebuilds. The six item defects in HANDOFF are still unmeasured.
+
 | layout | deck | short of standard |
 |---|---|---|
 | panel | `exam-prep-5hour-course-part2.html` | ships DE, needs DE+ES; 2 pictures |
