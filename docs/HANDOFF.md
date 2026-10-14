@@ -43,6 +43,8 @@ clip decks first.
   * Verified headless (Chromium, 1280x720 and 390x844): cover → Begin lands on
     the first question; Rules from cover and mid-deck; no page errors.
 
+---
+
 ## 2026-10-13 — Manifestation: Can You Think It Into Being? (B2): SHIPPED
 
 **Closed the same day:** Innes sent the two-chairs render (now `plate-act`)
