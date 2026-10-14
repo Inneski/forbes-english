@@ -5,15 +5,15 @@ the two rules, then type **next** for each picture. Five pictures.
 
 Save them into **[C:\Users\black\Documents\FORBES\incoming\possessive-adj](../incoming/possessive-adj)**
 (the folder exists on Innes's machine; the builder recreates it whenever it
-runs without the art) as `hero.png`, `mia.png`, `leo.png`, `near-far.png`
-and `pet-show.png`. Then tell a local Claude session: *"The possessive
+runs without the art) as `hero.png`, `mia.png`, `leo.png`, `near-far.png`,
+`lake.png` and `pet-show.png`. Then tell a local Claude session: *"The possessive
 pictures are in incoming/possessive-adj — put them in."*
 
 What that session does (also in the builder's docstring,
 `lesson-template/build/build_possessive_adj.py`):
 
 ```bash
-py tools/prep-artwork.py incoming/possessive-adj --into PossessiveAdj --names hero,mia,leo,near-far,pet-show
+py tools/prep-artwork.py incoming/possessive-adj --into PossessiveAdj --names hero,mia,leo,near-far,lake,pet-show
 py lesson-template/extract-palette.py PossessiveAdj/hero.jpg --light   # paste into PALETTE_LIVE
 py lesson-template/build/build_possessive_adj.py                       # now writes the live page
 node lesson-template/check-lesson.js forbes-english-possessive-adjectives-a1.html
@@ -33,9 +33,9 @@ third stays plain.
 
 I'm making the pictures for an English lesson for children of about eight to
 ten. It teaches "my, your, his, her, its, our, their" and "this / that",
-through one family and their pets. Make **five pictures**, one at a time.
+through one family and their pets. Make **six pictures**, one at a time.
 Make picture 1 now, and the next one each time I say "next". Keep the same
-characters, clothes and drawing style in all five.
+characters, clothes and drawing style in all six.
 
 **The style.** Bright, friendly, flat picture-book illustration: simple
 rounded shapes, clean flat colour, no outlines or only soft ones, a light
@@ -68,7 +68,7 @@ No text, no letters, no numbers, no logos, no signs, no watermark.
 - Characters must read clearly at phone size: big, simple, not too many
   small details.
 
-**The five pictures:**
+**The six pictures:**
 
 1. **The cover — the whole family in the garden.** Mia sits on the lawn
    hugging Pepper; Leo kneels beside her with Biscuit licking his face;
@@ -91,7 +91,13 @@ No text, no letters, no numbers, no logos, no signs, no watermark.
    obvious at a glance. Mia slightly right of centre, Leo and the distant
    horse further right; open sky and grass on the left.
 
-5. **The school pet show.** A sunny school playground with coloured
+5. **Camping at the lake, at dusk.** A beige tent right next to a lake, with
+   tall pine trees behind it. Mia reads a book inside the open tent. Leo,
+   now in a white jumper with one green stripe, sits on a blue blanket by a
+   small campfire with Biscuit beside him; Mum and Dad sit by the fire.
+   Everyone on the RIGHT; calm water and sky on the left.
+
+6. **The school pet show.** A sunny school playground with coloured
    bunting (no letters on it). Grandpa Joe with Rio the parrot on his
    shoulder; Ella and Sam proudly holding up Tank the tortoise; Mr Brown
    behind a small table with the goldfish bowl. Happy, busy, but not

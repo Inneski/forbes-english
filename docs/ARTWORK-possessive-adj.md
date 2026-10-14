@@ -1,7 +1,7 @@
 # Artwork brief (Midjourney): My Cat, Your Dog — possessive adjectives (A1, young learners)
 
 Innes, 2026-10-07: *"make a type 2 lesson and ask for artwork … should appeal
-to young learners"*, then *"it is for midjourney"*. **Five plates.** The deck
+to young learners"*, then *"it is for midjourney"*. **Six plates.** The deck
 is built and passes every gate on placeholders; `build_possessive_adj.py`
 writes the gitignored preview `_forbes-english-possessive-adjectives-a1.html`
 until all five files exist, and creates the drop folder whenever it runs
@@ -10,7 +10,7 @@ without them.
 **Drop folder (it exists):**
 [C:\Users\black\Documents\FORBES\incoming\possessive-adj](../incoming/possessive-adj)
 
-Save as `hero.png`, `mia.png`, `leo.png`, `near-far.png`, `pet-show.png`,
+Save as `hero.png`, `mia.png`, `leo.png`, `near-far.png`, `lake.png`, `pet-show.png`,
 then tell a local session: *"The possessive pictures are in
 incoming/possessive-adj — put them in."*
 
@@ -78,7 +78,14 @@ The point of the picture is that the rabbit is **close** and the horse is
 **far**. If the horse comes back big, add `tiny distant horse` again and
 reroll; do not accept a horse at the children's scale.
 
-**5 · `pet-show.png` — the school pet show**
+**5 · `lake.png` — camping at the lake** (added 2026-10-14 for William's camping vocabulary)
+```text
+a family camping at a lake at dusk, a beige tent right next to the lake with tall pine trees behind it, the girl with the brown ponytail reading a book inside the open tent, the little boy with sandy hair now wearing a white jumper with one green stripe sitting on a blue blanket by a small campfire, the golden-brown puppy beside him, mum and dad by the fire, calm water and sky on the left, <stem> --oref <cover url> --ow 100
+```
+Every word the stage teaches should be visible: tent, lake, trees behind,
+the kid on the blanket, the jumper with its stripe.
+
+**6 · `pet-show.png` — the school pet show**
 ```text
 a sunny school playground pet show with plain coloured bunting, a grandpa with a grey beard, flat cap and green cardigan with a blue and yellow parrot on his shoulder, twin girl and boy in red-and-white striped jumpers holding up a tortoise, a teacher with round glasses and a brown jacket behind a small table with a goldfish in a round bowl, happy and busy but not crowded, plain playground and sky on the left, <stem> --oref <cover url> --ow 50
 ```
@@ -96,7 +103,7 @@ new characters need room.
 ## For the session that puts them in
 
 ```bash
-py tools/prep-artwork.py incoming/possessive-adj/hero.png incoming/possessive-adj/mia.png incoming/possessive-adj/leo.png incoming/possessive-adj/near-far.png incoming/possessive-adj/pet-show.png --into PossessiveAdj --names hero,mia,leo,near-far,pet-show
+py tools/prep-artwork.py incoming/possessive-adj/hero.png incoming/possessive-adj/mia.png incoming/possessive-adj/leo.png incoming/possessive-adj/near-far.png incoming/possessive-adj/lake.png incoming/possessive-adj/pet-show.png --into PossessiveAdj --names hero,mia,leo,near-far,lake,pet-show
 py lesson-template/extract-palette.py PossessiveAdj/hero.jpg --light   # paste into PALETTE_LIVE
 py lesson-template/build/build_possessive_adj.py                       # now writes the live page
 node lesson-template/check-lesson.js forbes-english-possessive-adjectives-a1.html

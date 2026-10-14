@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """My Cat, Your Dog — possessive adjectives and THIS / THAT (A1, young learners).
 
-House style 2 (the panel deck). Built 2026-10-07 from Innes's four-page
+House style 2 (the panel deck), 47 slides. Built 2026-10-07 from Innes's four-page
 coursebook sheet for William ("possessive adjectives.pdf", in his student
 notes): possessive adjectives with a key-language table, how to form them
 (I → MY … THEY → THEIR), a picture match, a gap fill with the subject in
@@ -43,7 +43,17 @@ optional, THAT'S / IT'S contractions, and ä/ö/ü/ß typed as ae/oe/ue/ss for a
 keyboard without them. "Das ist" is THIS or THAT, so both are accepted;
 "Das hier" is THIS only and "das da drüben" THAT only, which is the point.
 
-**Art.** Five Midjourney plates, briefed in docs/ARTWORK-possessive-adj.md. Until
+**Stage 4, camping at the lake — Innes, 2026-10-14, "include this vocab"**,
+with a screenshot of his annotated cover of "A1 Our Small Traditions -
+Possessive Adjectives" (William's folder): tent, lake (der SEE) against sea
+(das MEER), trees, next to, behind, kid / child, son, daughter, jumper,
+stripe, and his SUBJEKT / OBJEKT table (Er = HE, Sie = SHE / THEY / polite
+YOU, ihm = HIM, sie = HER). The table became the "Sie, sie and ihr" slide,
+because IHR / IHRE = HER, THEIR or YOUR is the possessive trap for a German
+speaker. Six translation rows use the same words; "Sie ist ihre Tochter"
+accepts HER and THEIR, since German cannot tell them apart there.
+
+**Art.** Six Midjourney plates, briefed in docs/ARTWORK-possessive-adj.md. Until
 all five are in `PossessiveAdj/` this writes a gitignored preview
 (`_forbes-english-possessive-adjectives-a1.html`) on flat placeholder plates
 it draws itself (`PossessiveAdj/_ph-*.jpg`, also gitignored), and creates
@@ -69,7 +79,7 @@ LIVE = 'forbes-english-possessive-adjectives-a1.html'
 PREVIEW = '_forbes-english-possessive-adjectives-a1.html'   # gitignored
 F = 'PossessiveAdj'
 
-SLOTS = ['hero', 'mia', 'leo', 'near-far', 'pet-show']
+SLOTS = ['hero', 'mia', 'leo', 'near-far', 'lake', 'pet-show']
 READY = all(os.path.exists('%s/%s.jpg' % (F, s)) for s in SLOTS)
 PIC = {s: ('%s.jpg' % s) if READY else ('_ph-%s.jpg' % s) for s in SLOTS}
 OUT = LIVE if READY else PREVIEW
@@ -88,7 +98,8 @@ E = I.T['en']
 # py lesson-template/extract-palette.py PossessiveAdj/_ph-hero.jpg --light
 # (2026-10-07; every row PASS)
 PH = {'hero': (247, 214, 170), 'mia': (205, 226, 240), 'leo': (214, 236, 200),
-      'near-far': (240, 214, 226), 'pet-show': (236, 230, 196)}
+      'near-far': (240, 214, 226), 'lake': (200, 230, 228),
+      'pet-show': (236, 230, 196)}
 
 PALETTE_PREVIEW = """  --hero: url('%s/%s');
 
@@ -158,6 +169,11 @@ READ = {
         'parrot, Rio. Ella and Sam bring <strong>their</strong> tortoise, Tank.',
         '<em>“Look! That’s <strong>our</strong> teacher, Mr Brown. And this is '
         '<strong>his</strong> goldfish!”</em>'],
+    5: ['The family goes camping. <strong>Their</strong> tent is <strong>next to</strong> '
+        'the lake, and tall <strong>trees</strong> stand <strong>behind</strong> it.',
+        'Leo is the <strong>kid</strong> on the blanket. <strong>His</strong> jumper has '
+        'a green <strong>stripe</strong>. Leo is Mum and Dad’s <strong>son</strong>, and '
+        'Mia, reading in the tent, is <strong>their</strong> <strong>daughter</strong>.'],
 }
 
 
@@ -190,6 +206,22 @@ TEACH_B = [('HE → HIS', 'tB1', '“Leo loves HIS dog.”'),
 TEACH_C = [('MY dog · MY cat · MY dogs', 'tC1', '“MY dog, MY cat and MY two fish.”'),
            ('Look at the OWNER', 'tC2', '“Mia has a dog. It is HER dog.”'),
            ('ITS or IT’S?', 'tC3', '“IT’S a puppy. ITS ball is red.”')]
+# William's camping-page vocabulary (Innes's notes on "Our Small Traditions",
+# 2026-10-14): the words, and his Er / Sie / ihm table.
+VOCAB_A = [('tent', 'vA1', '“Their tent is next to the lake.”'),
+           ('lake', 'vA2', '“We swim in the lake.”'),
+           ('sea', 'vA3', '“The sea is big and salty.”'),
+           ('trees', 'vA4', '“There are tall trees behind the lake.”'),
+           ('next to', 'vA5', '“The dog is next to Leo.”'),
+           ('behind', 'vA6', '“The trees are behind the tent.”')]
+VOCAB_B = [('kid / child', 'vB1', '“The kid on the blanket is Leo.”'),
+           ('son', 'vB2', '“Leo is their son.”'),
+           ('daughter', 'vB3', '“Mia is their daughter.”'),
+           ('jumper', 'vB4', '“His jumper is white.”'),
+           ('stripe', 'vB5', '“His jumper has a green stripe.”')]
+TEACH_SIE = [('Er → HE · ihm → HIM', 'sT1', '“HE is Leo. Biscuit plays with HIM.”'),
+             ('Sie → SHE, THEY or YOU', 'sT2', '“SHE is Mia. THEY are twins. Are YOU Mr Brown?”'),
+             ('ihr / ihre → HER, THEIR or YOUR', 'sT3', '“It is HER tent. It is THEIR tent.”')]
 TEACH_D = [('Deutsch → English', 'tD1', '“Das ist meine Katze.” → “This is my cat.”'),
            ('English → Deutsch', 'tD2', '“This is my cat.” → “Das ist meine Katze.”'),
            ('Check and compare', 'tD3', 'Little mistakes count: check the spelling!')]
@@ -224,7 +256,15 @@ MC3 = [
     dict(ctx='c11', stem='“____ is his goldfish.”', options=['This', 'That'],
          correct=1, why='q11w'),
 ]
-for group in (MC1, MC2, MC3):
+MC4 = [
+    dict(ctx='c12', stem='Their tent is ____ the lake.',
+         options=['next to', 'behind', 'in', 'under'], correct=0, why='q12w'),
+    dict(ctx='c13', stem='The trees are ____ the lake.',
+         options=['behind', 'next to', 'in', 'on'], correct=0, why='q13w'),
+    dict(stem='Mum and Dad have a girl, Mia. Mia is their ____.',
+         options=['daughter', 'son', 'brother', 'cousin'], correct=0, why='q14w'),
+]
+for group in (MC1, MC2, MC3, MC4):
     D.assert_no_key_is_longest(group)
 
 # ── gap fill, the owner in brackets as on the sheet ───────────────────
@@ -273,6 +313,21 @@ TR = [
       ['That over there is our horse.', 'That is our horse over there.'],
       ['Das ist unser Pferd.', 'Das da ist unser Pferd.', 'Das dort ist unser Pferd.'],
       'tw9')],
+    [('Unser Zelt ist neben dem See.', 'Our tent is next to the lake.',
+      ['Our tent is by the lake.'], ['Unser Zelt steht neben dem See.'], 'tw10'),
+     ('Der See ist hinter den Bäumen.', 'The lake is behind the trees.', [],
+      ['Der See liegt hinter den Bäumen.'], 'tw11'),
+     ('Sein Pullover hat einen grünen Streifen.', 'His jumper has a green stripe.',
+      ['His sweater has a green stripe.', 'His pullover has a green stripe.'],
+      ['Sein Pulli hat einen grünen Streifen.'], 'tw12')],
+    # SIE IST can only be SHE (formal Sie takes SIND); IHRE is HER or THEIR.
+    [('Sie ist ihre Tochter.', 'She is their daughter.', ['She is her daughter.'],
+      [], 'tw13'),
+     ('Biscuit spielt mit ihm.', 'Biscuit plays with him.',
+      ['Biscuit is playing with him.'], [], 'tw14'),
+     ('Ist das Ihr Zelt, Herr Brown?', 'Is this your tent, Mr Brown?',
+      ['Is that your tent, Mr Brown?', 'Is it your tent, Mr Brown?'],
+      ['Ist das Ihr Zelt, Mr Brown?', 'Ist dies Ihr Zelt, Herr Brown?'], 'tw15')],
 ]
 
 
@@ -436,7 +491,24 @@ def build():
                 E['orderHint'], why, folder=F, bg=PIC['near-far'], decoys=dec)
         for items, dec, why in ORDERS
     ] + [
-        # ── stage 4 · translate ────────────────────────────────────────
+        # ── stage 4 · camping at the lake: William's vocabulary ────────
+        divider(5, 'lake'),
+        panel(5, 'e5', 'lake'),
+        teach('vAt', 'eV', VOCAB_A, 'lake', cols='1fr 1fr 1fr'),
+        teach('vBt', 'eV', VOCAB_B, 'lake', cols='1fr 1fr 1fr'),
+        teach('sTt', 'eR', TEACH_SIE, 'lake'),
+        D.match([('lake', 'der See'), ('sea', 'das Meer'), ('tent', 'das Zelt'),
+                 ('trees', 'die Bäume'), ('jumper', 'der Pullover'),
+                 ('stripe', 'der Streifen'), ('daughter', 'die Tochter')],
+                'e5', E['e5'], 'vmatchT', E['vmatchT'], 'vmatchHint', E['vmatchHint'],
+                'vmatchW', folder=F, bg=PIC['lake']),
+    ] + [
+        D.mc(i + 1, len(MC4), q, 'e5', E['e5'], 'mcT', E['mcT'], folder=F,
+             bg=PIC['lake'], ctx=E[q['ctx']] if 'ctx' in q else None,
+             ctx_key=q.get('ctx'))
+        for i, q in enumerate(MC4)
+    ] + [
+        # ── stage 5 · translate ────────────────────────────────────────
         divider(4, 'pet-show'),
         panel(4, 'e4', 'pet-show', side='right'),
         teach('tDt', 'e4', TEACH_D, 'pet-show'),

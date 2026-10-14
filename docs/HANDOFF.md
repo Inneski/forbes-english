@@ -105,6 +105,14 @@ to. A campaign should link to the page of what it sells (`block-camp.html`,
 
 ---
 
+## 2026-10-14 — My Cat, Your Dog: William's camping vocabulary added (47 slides, six plates)
+
+Innes sent his annotated cover of "A1 Our Small Traditions" with *"include
+this vocab"*. New stage 4, Camping at the Lake: two word slides, a "Sie, sie
+and ihr" slide from his Er/Sie/ihm table, an English–German match (lake =
+SEE, sea = MEER), three MC and six more translation rows. That means one more
+plate, `lake`; the builder now waits for six. Both briefs updated.
+
 ## 2026-10-07 — My Cat, Your Dog: possessive adjectives + this/that (A1, young learners): BUILT, waiting on art
 
 From Innes's coursebook sheet for William (`english lessons/student notes/
