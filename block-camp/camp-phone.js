@@ -214,12 +214,49 @@
       }
       focus();
     }
+    // ── the desktop bar fits the stage, in every language ──
+    // Innes, 2026-10-15, in class: "cant select the next button". The Rules
+    // button (camp-rules.js) took the bar past the 1280px canvas, and the
+    // translated labels took it further (it, fr, es: 1490-1510px), so the next
+    // arrow sat off the stage's right edge. Measured, not guessed: tighten one
+    // step at a time until the bar's content fits its width.
+    //   0  - always: no label wraps ("EN / PT" stood on 3 lines)
+    //   1  - smaller gaps
+    //   2  - the map and music buttons drop their words (icon + tooltip), and
+    //        the score shows as "★ 3/29", as on a phone
+    //   3  - the progress line goes; the count beside it still says "2 / 15"
+    var fitCss = document.createElement('style');
+    fitCss.textContent =
+      '#stage .deck-bar.bcf-1{gap:10px;padding-left:16px;padding-right:16px}' +
+      'html:not(.bc-phone) #stage .deck-bar > *{white-space:nowrap;flex-shrink:0}' +
+      '#stage .deck-bar.bcf-2 .camp-home-l,#stage .deck-bar.bcf-2 .cm-l{display:none}' +
+      '#stage .deck-bar.bcf-2 > .deck-score[data-short]{font-size:0}' +
+      '#stage .deck-bar.bcf-2 > .deck-score[data-short]::after{content:"\\2605\\00A0" attr(data-short);font-size:13px;letter-spacing:.04em}' +
+      '#stage .deck-bar.bcf-3 > .progress{display:none}';
+    document.head.appendChild(fitCss);
+    var FIT = ['bcf-1', 'bcf-2', 'bcf-3'];
+    function fitBar() {
+      FIT.forEach(function (c) { bar.classList.remove(c); });
+      if (html.classList.contains('bc-phone')) return;
+      var homeA = bar.querySelector('.camp-home'), homeL = homeA && homeA.querySelector('.camp-home-l');
+      if (homeL && homeL.textContent) { homeA.title = homeL.textContent; homeA.setAttribute('aria-label', homeL.textContent); }
+      for (var i = 0; i < FIT.length && bar.scrollWidth > bar.clientWidth + 1; i++) bar.classList.add(FIT[i]);
+    }
+    var ft = null;
+    function refit() { clearTimeout(ft); ft = setTimeout(fitBar, 30); }
+    // A language switch rewrites the labels; the class changes above are
+    // attributes on the bar, which this does not watch, so it cannot loop.
+    new MutationObserver(refit).observe(bar, { childList: true, characterData: true, subtree: true });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(refit);
+    addEventListener('load', refit);
+
     apply();
+    fitBar();
     var t = null;
     addEventListener('resize', function () {
       if (typing) return;
       clearTimeout(t);
-      t = setTimeout(function () { setClasses(); apply(); }, 120);
+      t = setTimeout(function () { setClasses(); apply(); fitBar(); }, 120);
     });
   });
 })();
