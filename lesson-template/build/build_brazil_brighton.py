@@ -44,6 +44,9 @@ Stages and the defects each one answers:
      THAN, DO BRASIL → IN Brazil after a superlative (the "of" problem from
      the other side), DOES at the front of a question, NÃO → DOESN'T.
      Accented letters may be typed bare (e → é, c → ç, a → ã …).
+     **The game follows the language menu** (Innes, 2026-10-15): Deutsch
+     makes it German ⇄ English, Español Spanish ⇄ English, Português and
+     English Portuguese ⇄ English. See TR below.
 
 **Art — Innes, 2026-10-15: "pics are in plus extras and use the extras".**
 Fourteen Midjourney plates in `BrazilBrighton/`, briefed in
@@ -59,6 +62,7 @@ the activation slide, which is about the learner, not about Ana.
 
 Run from the repo root:  py lesson-template/build/build_brazil_brighton.py
 """
+import json
 import os
 import sys
 import unicodedata
@@ -203,36 +207,64 @@ SORT_ITEMS = [('cold', 0), ('expensive', 1), ('big', 0), ('beautiful', 1),
 # ── word order, each with a spare piece that fits nowhere ─────────────
 ORDERS = [(['Does', 'Rafael', 'drive', 'a van?'], ['drives'], 'o1w')]
 
-# ── translation: (Portuguese, English, more English, more Portuguese, why)
+# ── translation ────────────────────────────────────────────────────────
+# Innes, 2026-10-15: "these languages should change when the language is
+# changed". The game is <UI language> ⇄ English: Deutsch in the menu means a
+# German ⇄ English game, Español Spanish, Português Portuguese. English in the
+# menu keeps Portuguese, the language the lesson was written for. Each row
+# carries every language; the first sentence of each list is the one shown,
+# the rest are also accepted. tw1-tw6 are UI_I18N keys, so the explanation
+# under a row is written for the language its sentence is in.
+TR_LANGS = ('pt', 'de', 'es')
+TR_NAMES = {'pt': 'Português', 'de': 'Deutsch', 'es': 'Español'}
 TR = [
-    [('Eu sou do Brasil.', 'I am from Brazil.', ['I’m from Brazil.'],
-      ['Sou do Brasil.'], 'tw1'),
-     ('Meu filho tem dezesseis meses.', 'My son is sixteen months old.',
-      ['My son is 16 months old.', 'My son is sixteen months.', 'My son is 16 months.'],
-      ['O meu filho tem dezesseis meses.', 'Meu filho tem 16 meses.',
-       'O meu filho tem 16 meses.'], 'tw2'),
-     ('A Escócia é mais fria que o Brasil.', 'Scotland is colder than Brazil.', [],
-      ['A Escócia é mais fria do que o Brasil.', 'Escócia é mais fria que o Brasil.',
-       'Escócia é mais fria do que o Brasil.'], 'tw3')],
-    [('Curitiba é a cidade mais fria do Brasil.', 'Curitiba is the coldest city in Brazil.',
-      [], [], 'tw4'),
-     ('Seu marido dirige um táxi?', 'Does your husband drive a taxi?', [],
-      ['O seu marido dirige um táxi?', 'Seu marido dirige táxi?',
-       'O seu marido dirige táxi?'], 'tw5'),
-     ('Ele não dirige um caminhão.', 'He doesn’t drive a lorry.',
-      ['He does not drive a lorry.', 'He doesn’t drive a truck.',
-       'He does not drive a truck.'],
-      ['Ele não dirige caminhão.'], 'tw6')],
+    [dict(en=['I am from Brazil.', 'I come from Brazil.'],
+          pt=['Eu sou do Brasil.', 'Sou do Brasil.'],
+          de=['Ich komme aus Brasilien.', 'Ich bin aus Brasilien.'],
+          es=['Soy de Brasil.', 'Yo soy de Brasil.'], why='tw1'),
+     dict(en=['My son is sixteen months old.', 'My son is 16 months old.',
+              'My son is sixteen months.', 'My son is 16 months.'],
+          pt=['Meu filho tem dezesseis meses.', 'O meu filho tem dezesseis meses.',
+              'Meu filho tem 16 meses.', 'O meu filho tem 16 meses.'],
+          de=['Mein Sohn ist sechzehn Monate alt.', 'Mein Sohn ist 16 Monate alt.'],
+          es=['Mi hijo tiene dieciséis meses.', 'Mi hijo tiene 16 meses.'], why='tw2'),
+     dict(en=['Scotland is colder than Brazil.'],
+          pt=['A Escócia é mais fria que o Brasil.', 'A Escócia é mais fria do que o Brasil.',
+              'Escócia é mais fria que o Brasil.', 'Escócia é mais fria do que o Brasil.'],
+          de=['Schottland ist kälter als Brasilien.'],
+          es=['Escocia es más fría que Brasil.'], why='tw3')],
+    [dict(en=['Curitiba is the coldest city in Brazil.'],
+          pt=['Curitiba é a cidade mais fria do Brasil.'],
+          de=['Curitiba ist die kälteste Stadt in Brasilien.',
+              'Curitiba ist die kälteste Stadt Brasiliens.'],
+          es=['Curitiba es la ciudad más fría de Brasil.',
+              'Curitiba es la ciudad más fría del Brasil.'], why='tw4'),
+     dict(en=['Does your husband drive a taxi?'],
+          pt=['Seu marido dirige um táxi?', 'O seu marido dirige um táxi?',
+              'Seu marido dirige táxi?', 'O seu marido dirige táxi?'],
+          de=['Fährt dein Mann Taxi?', 'Fährt dein Mann ein Taxi?', 'Fährt Ihr Mann Taxi?',
+              'Fährt Ihr Mann ein Taxi?'],
+          es=['¿Tu marido conduce un taxi?', '¿Tu marido conduce taxi?',
+              '¿Tu esposo conduce un taxi?', '¿Su marido conduce un taxi?'], why='tw5'),
+     dict(en=['He doesn’t drive a lorry.', 'He does not drive a lorry.',
+              'He doesn’t drive a truck.', 'He does not drive a truck.'],
+          pt=['Ele não dirige um caminhão.', 'Ele não dirige caminhão.'],
+          de=['Er fährt keinen Lastwagen.', 'Er fährt keinen LKW.', 'Er fährt keinen Laster.'],
+          es=['Él no conduce un camión.', 'Él no conduce camión.', 'No conduce un camión.'],
+          why='tw6')],
 ]
+for _set in TR:
+    for _row in _set:
+        assert set(_row) == {'en', 'why'} | set(TR_LANGS), _row
 
 
 def _bare(s):
-    """é → e, ç → c, ã → a: a keyboard with no Portuguese layout."""
+    """é → e, ç → c, ã → a, ä → a: a keyboard with no accented letters."""
     return ''.join(c for c in unicodedata.normalize('NFD', s)
                    if unicodedata.category(c) != 'Mn')
 
 
-def _expand(sentences, portuguese):
+def _expand(sentences, lang):
     """Every spelling a right answer might be typed in. The engine already
     ignores case, spacing and curly-vs-straight apostrophes."""
     out = []
@@ -242,10 +274,14 @@ def _expand(sentences, portuguese):
             out.append(s)
     for s in sentences:
         forms = [s]
-        if not portuguese:
-            for a, b in (('I am', 'I’m'),):
-                forms += [f.replace(a, b) for f in forms if a in f and b not in s]
+        if lang == 'en':
+            forms += [f.replace('I am', 'I’m') for f in forms if 'I am' in f]
         else:
+            if lang == 'de':
+                forms += [f.replace('ä', 'ae').replace('ö', 'oe').replace('ü', 'ue')
+                          .replace('ß', 'ss') for f in forms if any(c in f for c in 'äöüß')]
+            if lang == 'es':
+                forms += [f.lstrip('¿¡') for f in forms if f[0] in '¿¡']
             forms += [_bare(f) for f in forms if _bare(f) != f]
         for f in forms:
             add(f)
@@ -256,13 +292,13 @@ def _expand(sentences, portuguese):
 
 def translate(n, rows, total, pic):
     body = []
-    for pt, en, more_en, more_pt, why in rows:
-        ans_en = _expand([en] + more_en, portuguese=False)
-        ans_pt = _expand([pt] + more_pt, portuguese=True)
-        body.append('''<div class="card gap-row tr-row" data-src-pt="%s" data-src-en="%s" style="padding:12px 18px">
-          <p class="q-stem" style="margin-bottom:0;font-size:22px"><span class="tr-src">%s</span> <span class="tr-arrow" aria-hidden="true">→</span> <input class="gap tr-in" data-answer="%s" data-ans-en="%s" data-ans-pt="%s" aria-label="translation" autocomplete="off" spellcheck="false"></p>
+    for row in rows:
+        src = ' '.join('data-src-%s="%s"' % (l, D.esc(row[l][0])) for l in ('en',) + TR_LANGS)
+        ans = ' '.join('data-ans-%s="%s"' % (l, _expand(row[l], l)) for l in ('en',) + TR_LANGS)
+        body.append('''<div class="card gap-row tr-row" %s style="padding:12px 18px">
+          <p class="q-stem" style="margin-bottom:0;font-size:22px"><span class="tr-src">%s</span> <span class="tr-arrow" aria-hidden="true">→</span> <input class="gap tr-in" data-answer="%s" %s aria-label="translation" autocomplete="off" spellcheck="false"></p>
           <p class="feedback" data-explain="%s"></p>
-        </div>''' % (D.esc(pt), D.esc(en), pt, ans_en, ans_en, ans_pt, why))
+        </div>''' % (src, row['pt'][0], _expand(row['en'], 'en'), ans, row['why']))
     return '''
     <section class="slide" data-type="gap" data-translate%s>
       <div class="slide-head"><div>
@@ -270,8 +306,8 @@ def translate(n, rows, total, pic):
         <h2 class="slide-title" data-i18n="trT">%s</h2>
       </div>
         <div class="tr-toggle" role="group" aria-label="Translation direction">
-          <button type="button" class="tr-dir is-on" data-dir="pt-en" aria-pressed="true">Português → English</button>
-          <button type="button" class="tr-dir" data-dir="en-pt" aria-pressed="false">English → Português</button>
+          <button type="button" class="tr-dir is-on" data-dir="to-en" aria-pressed="true">Português → English</button>
+          <button type="button" class="tr-dir" data-dir="from-en" aria-pressed="false">English → Português</button>
         </div>
       </div>
       <div class="slide-body">%s
@@ -289,10 +325,12 @@ def translate(n, rows, total, pic):
        "\n        ".join(body))
 
 
-# The translate kit from build_possessive_adj.py, with Portuguese in place of
-# German. The switch is global, so a learner who picks English → Português
-# keeps it on the next slide; a checked slide is locked, because swapping the
-# answer set after marking would rewrite history.
+# The translate kit from build_possessive_adj.py, made to follow the language
+# menu. Two settings: the direction (to English / from English), set by the
+# switch, global, so it carries to the next slide; and the other language,
+# read from <html lang>, which the engine's applyLang() keeps current. A
+# checked slide is locked against both, because swapping the answer set after
+# marking would rewrite history.
 TRANSLATE_KIT = '''
     <style>
       .tr-toggle { display:inline-flex; flex:none; gap:0; margin:0; border:2px solid var(--accent);
@@ -307,17 +345,24 @@ TRANSLATE_KIT = '''
     </style>
     <script>
     (function () {
-      var dir = 'pt-en';
+      var NAMES = %s, dir = 'to-en';
+      function other() {
+        var l = document.documentElement.lang;
+        return NAMES[l] ? l : 'pt';   // English UI: the lesson's own Portuguese
+      }
       function apply(slide) {
         if (slide.querySelector('.tr-in:disabled')) return;   // already marked
+        var l = other();
         slide.querySelectorAll('.tr-dir').forEach(function (b) {
           var on = b.dataset.dir === dir;
           b.classList.toggle('is-on', on);
           b.setAttribute('aria-pressed', on ? 'true' : 'false');
+          b.textContent = b.dataset.dir === 'to-en' ? NAMES[l] + ' \\u2192 English'
+                                                     : 'English \\u2192 ' + NAMES[l];
         });
         slide.querySelectorAll('.tr-row').forEach(function (r) {
           var src = r.querySelector('.tr-src'), g = r.querySelector('.tr-in');
-          var from = dir === 'pt-en' ? 'pt' : 'en', to = dir === 'pt-en' ? 'en' : 'pt';
+          var from = dir === 'to-en' ? l : 'en', to = dir === 'to-en' ? 'en' : l;
           if (src.textContent !== r.getAttribute('data-src-' + from)) g.value = '';
           src.textContent = r.getAttribute('data-src-' + from);
           src.lang = from;
@@ -325,11 +370,15 @@ TRANSLATE_KIT = '''
           g.dataset.answer = g.getAttribute('data-ans-' + to);
         });
       }
+      function applyAll() { document.querySelectorAll('.slide[data-translate]').forEach(apply); }
+      new MutationObserver(applyAll).observe(document.documentElement,
+                                             { attributes: true, attributeFilter: ['lang'] });
+      document.addEventListener('DOMContentLoaded', applyAll);
       document.addEventListener('click', function (e) {
         var b = e.target.closest('.tr-dir');
         if (b && !b.disabled) {
           dir = b.dataset.dir;
-          document.querySelectorAll('.slide[data-translate]').forEach(apply);
+          applyAll();
           return;
         }
         var c = e.target.closest('.slide[data-translate] [data-action="check"]');
@@ -338,7 +387,7 @@ TRANSLATE_KIT = '''
       }, true);
     })();
     </script>
-'''
+''' % json.dumps(TR_NAMES, ensure_ascii=False)
 
 
 def slides():

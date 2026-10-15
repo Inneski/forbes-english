@@ -10,8 +10,11 @@ What translates: the chrome, slide titles, the rule on every teach card, the
 accent situation, every explanation, the task instructions. What does not
 (HOUSE-STYLE §8): the reading panels, stems, options, gap sentences, the sort
 and order pieces, the English examples under the cards, and the translation
-rows — those are Portuguese and English on purpose, in every UI language,
-because the stage is a Portuguese ⇄ English game.
+rows — those are the target language on purpose. The translation game is
+<UI language> ⇄ English (Portuguese when the UI is English), so tw1-tw6 and
+trHint are written about each language's OWN sentences: the German tw2 says
+German gives age with BE as English does, the Spanish one that TIENE is the
+trap.
 
 Grammar words in CAPS, cited words in double quotes, as in the other decks.
 
@@ -201,13 +204,13 @@ T['de'] = dict(
     tE3='Viele Leute stoppen den Laut im Hals, statt T zu sagen.',
 
     trT='Übersetze den Satz',
-    trHint='Schreib ihn auf Englisch. Mit dem Schalter geht es andersherum: English → Português.',
-    tw1='"Eu sou do Brasil." = "I am from Brazil." SOU = AM. DO BRASIL = FROM Brazil.',
-    tw2='"Meu filho tem dezesseis meses." = "My son is sixteen months old." Auf Portugiesisch HAT man ein Alter (TEM). Auf Englisch IST man es (IS).',
-    tw3='"A Escócia é mais fria que o Brasil." = "Scotland is colder than Brazil." MAIS FRIA = COLDER. QUE = THAN.',
-    tw4='"… a cidade mais fria do Brasil." = "… the coldest city IN Brazil." Nach THE + -EST steht vor einem Ort IN, nicht OF.',
-    tw5='"Seu marido dirige um táxi?" = "Does your husband drive a taxi?" Die Frage beginnt mit DOES, und DRIVE hat kein -S.',
-    tw6='"Ele não dirige um caminhão." = "He doesn’t drive a lorry." NÃO = DOESN’T. CAMINHÃO = LORRY (amerikanisch: TRUCK).',
+    trHint='Schreib ihn auf Englisch. Mit dem Schalter geht es andersherum: English → Deutsch.',
+    tw1='"Ich komme aus Brasilien." = "I am from Brazil." (oder "I come from Brazil.") AUS = FROM.',
+    tw2='"Mein Sohn ist sechzehn Monate alt." = "My son is sixteen months old." Wie im Deutschen: das Alter mit BE (IS). Im Portugiesischen HAT man es!',
+    tw3='"Schottland ist kälter als Brasilien." = "Scotland is colder than Brazil." KÄLTER = COLDER. ALS = THAN.',
+    tw4='"… die kälteste Stadt in Brasilien." = "… the coldest city IN Brazil." DIE KÄLTESTE = THE COLDEST. Nach THE + -EST steht vor einem Ort IN, nicht OF.',
+    tw5='"Fährt dein Mann Taxi?" = "Does your husband drive a taxi?" Die Frage beginnt mit DOES, und DRIVE hat kein -S.',
+    tw6='"Er fährt keinen Lastwagen." = "He doesn’t drive a lorry." KEINEN = DOESN’T … A. LASTWAGEN = LORRY (amerikanisch: TRUCK).',
 
     actTitle='Wo möchtest du leben?',
     actUse='Benutze mindestens drei:',
@@ -296,13 +299,13 @@ T['es'] = dict(
     tE3='Mucha gente corta el sonido en la garganta en vez de decir la T.',
 
     trT='Traduce la frase',
-    trHint='Escríbela en inglés. Toca el interruptor para ir al revés: English → Português.',
-    tw1='"Eu sou do Brasil." = "I am from Brazil." SOU = AM. DO BRASIL = FROM Brazil.',
-    tw2='"Meu filho tem dezesseis meses." = "My son is sixteen months old." En portugués TIENES una edad (TEM). En inglés la edad va con BE (IS).',
-    tw3='"A Escócia é mais fria que o Brasil." = "Scotland is colder than Brazil." MAIS FRIA = COLDER. QUE = THAN.',
-    tw4='"… a cidade mais fria do Brasil." = "… the coldest city IN Brazil." Después de THE + -EST, un lugar lleva IN, no OF.',
-    tw5='"Seu marido dirige um táxi?" = "Does your husband drive a taxi?" La pregunta empieza con DOES, y DRIVE no lleva -S.',
-    tw6='"Ele não dirige um caminhão." = "He doesn’t drive a lorry." NÃO = DOESN’T. CAMINHÃO = LORRY (en EE. UU.: TRUCK).',
+    trHint='Escríbela en inglés. Toca el interruptor para ir al revés: English → Español.',
+    tw1='"Soy de Brasil." = "I am from Brazil." SOY = AM. DE BRASIL = FROM Brazil.',
+    tw2='"Mi hijo tiene dieciséis meses." = "My son is sixteen months old." En español TIENES una edad (TIENE). En inglés la edad va con BE (IS).',
+    tw3='"Escocia es más fría que Brasil." = "Scotland is colder than Brazil." MÁS FRÍA = COLDER. QUE = THAN.',
+    tw4='"… la ciudad más fría de Brasil." = "… the coldest city IN Brazil." Después de THE + -EST, un lugar lleva IN, no OF.',
+    tw5='"¿Tu marido conduce un taxi?" = "Does your husband drive a taxi?" La pregunta empieza con DOES, y DRIVE no lleva -S.',
+    tw6='"Él no conduce un camión." = "He doesn’t drive a lorry." NO = DOESN’T. CAMIÓN = LORRY (en EE. UU.: TRUCK).',
 
     actTitle='¿Dónde quieres vivir?',
     actUse='Usa al menos tres:',

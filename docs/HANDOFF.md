@@ -24,6 +24,18 @@ the builder. Catalogue row inserted (pro, A1), mirrored to
 `tools/lessons.json`; `OVERRIDES` → present-simple + english-vocabulary;
 `LESSON_TAGS` Tenses / Sentence Building / Vocabulary. History below.
 
+**Later the same day:** made **free** (Innes, "make it free"; the Worker's
+gate catalogue caches for 5 min, so the gate lingers that long after a
+flip — and the gate page carries the lesson's own `<title>`, so check for
+`class="slide`, not the title). Then *"these languages should change when
+the language is changed"*: the translate game now follows the menu —
+Deutsch = German ⇄ English, Español = Spanish ⇄ English, Português and
+English = Portuguese ⇄ English. Every row carries `data-src-*` /
+`data-ans-*` for en, pt, de, es; the kit watches `<html lang>` (which
+`applyLang()` keeps current) with a MutationObserver; tw1-tw6 are written
+per language about that language's own sentence. A checked slide stays
+locked. Tested in Playwright through `#langSelect` in all directions.
+
 From Innes's running notes of a Preply trial class with a Brazilian A1
 learner in Brighton (pasted in chat, not in the repo): *"Make an english
 lesson for a portuguese A1 student on this"*. `build_brazil_brighton.py` +
