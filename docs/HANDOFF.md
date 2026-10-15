@@ -10,6 +10,27 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
+## 2026-10-15 — Two in-class bugs: Sherpa language menu, Block Camp next button
+
+- **Sherpa lesson pages: the globe's language menu opened UNDER the page.**
+  The arrival rise (`tools/sherpa_arrive.py`) leaves a transform on the hero
+  globe, so it becomes a stacking context and its menu's `z-index:30` stops
+  counting; the next section painted over the open menu. Fixed in the
+  SHERPA-ARRIVE block (globe wraps z 40, the open one 60), all 27 pages.
+  Rule: **any animation on an ancestor of a popup makes that ancestor a
+  stacking context — lift the ancestor, not the popup.**
+- **Block Camp: the next arrow was off the stage.** The Rules button
+  (`camp-rules.js`) pushed the deck bar past 1280px: en 1287, pt 1479, it
+  1510. `camp-phone.js` now measures the bar and tightens it in steps
+  (`bcf-1` gaps, `bcf-2` icon-only map/music + star score, `bcf-3` no
+  progress line) until it fits. Anything that adds a bar control must not
+  undo this; check `bar.scrollWidth <= bar.clientWidth` in it/fr.
+- **"Sherpa music in Block Camp rules"** (Innes): not reproduced. The deck
+  requests only `present-simple.m4a` ("Neon"), byte-identical to the repo;
+  the opener mp4 404s. The one real overlap: Sherpa's music IS
+  `route-map.m4a`, the Block Camp route maps' track (deck_music.py), so the
+  map sounds like Sherpa. Giving one of them its own track is open.
+
 ## 2026-10-14 — Forbes English at Work, Book 1: opener check, and a publishable build
 
 Picked back up after three weeks. Two things, both now on main:
