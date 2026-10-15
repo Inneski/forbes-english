@@ -39,6 +39,12 @@ CSS = '\n'.join([
     '.hero > div:first-child > :nth-child(3){animation-delay:.68s}'
     '.hero > div:first-child > :nth-child(n+4){animation-delay:.8s}',
     '.hero > :not(:first-child){animation:st-fade 1s %s .75s both;}' % EASE,
+    # The rise leaves a transform on the hero's globe, which makes it a
+    # stacking context: its menu's z-index then counts for nothing and every
+    # later section paints over the open menu (Innes, 2026-10-15, in class).
+    # Lift each globe above the page, and the open one above the other globes.
+    '.lang-globe-wrap{z-index:40}'
+    '.lang-globe-wrap:focus-within,.lang-globe-wrap:has(.lang-menu:not([hidden])){z-index:60}',
     '@media (prefers-reduced-motion:reduce){.wordmark .brand,.wordmark .brand span,'
     '.hero > div:first-child > *,.hero > :not(:first-child){animation:none;}}',
 ])
