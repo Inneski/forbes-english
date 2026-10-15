@@ -10,6 +10,33 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
+## 2026-10-15 — Are You a Boltzmann Brain? (C1): built on stand-ins, six plates briefed
+
+Innes: *"make a class on this"*, with the narration of a short animated
+science explainer on the Boltzmann brain paradox pasted in chat (not in the
+repo; copyrighted, so no slide quotes it — the four reading panels retell it).
+`build_boltzmann.py` + `i18n_boltzmann{,_de,_es}.py`, house style 2 (panels),
+35 slides, EN/DE/ES. Parts: the paradox (idioms: keep somebody up at night,
+claim to fame, put forward, take for granted, over and done with, something
+is amiss); entropy (entropy, closed system, tend towards, pristine,
+ephemeral, spontaneously + match); the odds (vastly more likely than, by far
+the most likely, not impossible just so unlikely that, the odds are, a slim
+chance, a near certainty; sort, gap ×2, order); what came before (MUST /
+MIGHT / CAN'T HAVE + PP and MUST / MIGHT / CAN'T BE; gap ×2, order with
+decoy "must had", MC ×2).
+
+Writes the gitignored preview `_forbes-boltzmann-brain-c1.html` on stand-ins
+copied from `Harari/`, `Geoscience/`, `alan-watts/` to `boltzmann/_ph-*.jpg`.
+Once all six plates (plate-cover, -paradox, -entropy, -odds, -before, -act)
+are in `boltzmann/`, it stops and asks for `PALETTE_LIVE` from plate-cover,
+then writes `forbes-boltzmann-brain-c1.html`. All gates pass except HEAD
+(seo.py runs on the live page); answered-overflow fits en/de/es. Midjourney
+prompts given in chat, `--sref` the live `Harari/a.jpg`; drop folder
+`incoming/boltzmann/` exists. **To ship:** palette, build, check, catalogue
+row (C1, pro?), `OVERRIDES` in `tools/topics.py` → modal verbs (it teaches
+MUST/MIGHT/CAN'T HAVE), LESSON_IMAGES + LESSON_TAGS, hubs, seo.
+
+---
 ## 2026-10-15 — Cold, Colder, the Coldest — From Brazil to Brighton (A1): SHIPPED
 
 **Shipped the same day.** Innes: *"pics are in plus extras and use the
