@@ -10,6 +10,25 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
+## 2026-10-15 — RPG soundtracks: the five finished ones shipped
+
+Innes: "last-bounty-rpg has no music". The 2026-10-05 "add soundtracks to
+the RPGs" session composed and rendered five tracks, wrote their loops and
+the `TRACK` rows in `deck_music.py`, then stopped — nothing committed, no
+page wired, for ten days. Shipped now: `last-bounty`,
+`frankenstein-ambitions`, `frankenstein-consequences`, `nautilus` (both
+Nautilus pages) and `twenty-thousand-leagues`, with their builders. Pages
+wired with `deck_music.set_music()` per page (not `main()`, which also
+rewrites the two route maps for a whitespace-only difference — not looked
+into). `rpg.py` calls `set_music()`, so a rebuild keeps the music.
+
+**Still no music (builder written, never rendered):** `last_train.py`,
+`long_way.py`, `sherlock.py`, `wonderland.py` — uncommitted in the tree.
+**No builder at all:** fistful-of-lies, frostbound-river, blocula,
+kraken, lost-yellow-road, welcome-to-the-jungle. `deck_music.py` already
+names a track for all but the jungle; each page picks its music up the
+moment `<name>.m4a` and its loops entry exist and the page is rewired.
+
 ## 2026-10-15 — Are You a Boltzmann Brain? (C1): built on stand-ins, six plates briefed
 
 Innes: *"make a class on this"*, with the narration of a short animated

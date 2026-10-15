@@ -58,6 +58,23 @@ TRACK = {
     # The Last Night at the Grand Hotel, the first RPG with a soundtrack
     # (grand_hotel.py). Innes, 2026-10-03: "add some fitting music".
     'block-camp/grand-hotel-rpg.html': 'grand-hotel',
+    # The other RPGs (Innes, 2026-10-05: "add soundtracks to the RPGs"), one
+    # original track each in its story's idiom; the two Nautilus pages share.
+    'block-camp/last-bounty-rpg.html': 'last-bounty',
+    'block-camp/fistful-of-lies-rpg.html': 'fistful-of-lies',
+    'block-camp/frostbound-river-rpg.html': 'frostbound-river',
+    'block-camp/frankenstein-green-prometheus-rpg.html': 'frankenstein-ambitions',
+    'block-camp/frankenstein-consequences-rpg.html': 'frankenstein-consequences',
+    'block-camp/dracula-castle-of-if.html': 'blocula',
+    'block-camp/nautilus-black-archive-rpg.html': 'nautilus',
+    'block-camp/nautilus-black-archive-deep-rpg.html': 'nautilus',
+    'block-camp/twenty-thousand-leagues-rpg.html': 'twenty-thousand-leagues',
+    'kraken-black-tide-rpg.html': 'kraken',
+    'block-camp/sherlock-blue-hour-rpg.html': 'sherlock-blue-hour',
+    'block-camp/wonderland-stolen-now-rpg.html': 'wonderland',
+    'block-camp/lost-yellow-road-rpg.html': 'lost-yellow-road',
+    'block-camp/last-train-home-rpg.html': 'last-train-home',
+    'block-camp/long-way-home-rpg.html': 'long-way-home',
 }
 
 # Sherpa Tensing (the Himalayan tense climb, built by build_sherpa.py): the
