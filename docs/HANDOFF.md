@@ -10,6 +10,30 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
+## 2026-10-15 — Cold, Colder, the Coldest — From Brazil to Brighton (A1): BUILT, waiting on art
+
+From Innes's running notes of a Preply trial class with a Brazilian A1
+learner in Brighton (pasted in chat, not in the repo): *"Make an english
+lesson for a portuguese A1 student on this"*. `build_brazil_brighton.py` +
+`i18n_brazil_brighton.py`, house style 2 (panels), 27 slides, EN / DE / ES /
+**PT** (Brazilian; the shared chrome's pt is European — "Ecrã inteiro" — and
+was left alone). New cast (Ana, Rafael, Theo, Lucas, Callum), none of the
+learner's own details. Stages: AM / IS / ARE + age with BE; -ER / -EST /
+MORE / THE MOST / GOOD → BETTER + THAN; four driver jobs + DO / DOES /
+DOESN'T; the Brighton accent (no final R, intrusive R, glottal stop — no
+audio); a **Portuguese ⇄ English** translate game (the German kit from
+`build_possessive_adj.py`, ported: `data-ans-pt`, accents optional). That is
+the kit's second deck; a third should move it into `deck.py`.
+
+Preview `_forbes-english-brazil-to-brighton-a1.html` on drawn placeholders;
+all gates pass except HEAD (seo.py runs on the live page);
+`answered-overflow.js` fits in en/de/es/pt; the translate game was tested
+both directions in Playwright. Five plates briefed in
+`docs/ARTWORK-brazil-brighton.md` (Midjourney, `--sref` the live
+FoodA1P2 hero); drop folder `incoming/brazil-brighton/` exists. No catalogue
+row until it ships.
+
+---
 ## 2026-10-15 — Two in-class bugs: Sherpa language menu, Block Camp next button
 
 - **Sherpa lesson pages: the globe's language menu opened UNDER the page.**
