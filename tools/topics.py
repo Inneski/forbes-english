@@ -362,6 +362,9 @@ OVERRIDES = {
     # The School Visit: a correction test over say/tell, negatives, purpose
     # clauses and subjects; the title names no grammar.
     'school-visit-correction-test-a2-b1.html': ['tense-review'],
+    # Cold, Colder, the Coldest: AM / IS / ARE, comparatives and DOES /
+    # DOESN'T for a Brazilian A1 learner; the title names none of it.
+    'forbes-english-brazil-to-brighton-a1.html': ['present-simple', 'english-vocabulary'],
 }
 
 BY_SLUG = {t['slug']: t for t in TOPICS}

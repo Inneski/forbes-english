@@ -45,17 +45,17 @@ Stages and the defects each one answers:
      the other side), DOES at the front of a question, NÃO → DOESN'T.
      Accented letters may be typed bare (e → é, c → ç, a → ã …).
 
-**Art.** Five plates, all missing on 2026-10-15: hero (Brighton seafront,
-cover + accent stage), ana, cold, drivers, homework. Until all five are in
-`BrazilBrighton/`, the builder writes the gitignored preview
-`_forbes-english-brazil-to-brighton-a1.html` on placeholder plates it draws,
-and creates the drop folder `incoming/brazil-brighton/`. When they land:
-
-  py tools/prep-artwork.py <files> --into BrazilBrighton --names hero,ana,cold,drivers,homework
-  py lesson-template/extract-palette.py BrazilBrighton/hero.jpg [--light]
-
-paste the block into PALETTE_LIVE, re-run, then the usual catalogue row,
-build_hubs.py and seo.py.
+**Art — Innes, 2026-10-15: "pics are in plus extras and use the extras".**
+Fourteen Midjourney plates in `BrazilBrighton/`, briefed in
+docs/ARTWORK-brazil-brighton.md: four seafront renders (the brightest pier
+view is the cover, `hero`; the others are `seafront-a/b/c`), two of Ana, four
+of Scotland in winter, three of the homework kitchen and one street of
+drivers. Every one is used. Within a stage the variants are dealt so that a
+picture whose figure stands on the LEFT goes where the text does not: a
+divider (full bleed), a panel's picture column, the centred results slide.
+Questions, whose answers sit on the left, get a picture with its subject on
+the right. `homework-3` shows a different, fair-haired learner, so it is on
+the activation slide, which is about the learner, not about Ana.
 
 Run from the repo root:  py lesson-template/build/build_brazil_brighton.py
 """
@@ -69,86 +69,30 @@ import i18n_brazil_brighton as I
 
 TPL = 'lesson-template/lesson-template.html'
 F = 'BrazilBrighton'
-LIVE = 'forbes-english-brazil-to-brighton-a1.html'
+OUT = 'forbes-english-brazil-to-brighton-a1.html'
 TITLE = 'Cold, Colder, the Coldest — From Brazil to Brighton (A1)'
-SLOTS = ['hero', 'ana', 'cold', 'drivers', 'homework']
-
-
-def ready():
-    return all(os.path.exists('%s/%s.jpg' % (F, s)) for s in SLOTS)
-
-
-PIC = {s: ('%s.jpg' % s) if os.path.exists('%s/%s.jpg' % (F, s)) else ('_ph-%s.jpg' % s)
-       for s in SLOTS}
-
-# Innes, 2026-09-30: "make sure the folder exists or you tell me to make it".
-DROP = os.path.join('incoming', 'brazil-brighton')
-if not ready():
-    os.makedirs(DROP, exist_ok=True)
+SLOTS = ['hero', 'seafront-a', 'seafront-b', 'seafront-c', 'ana', 'ana-2',
+         'cold', 'cold-2', 'cold-3', 'cold-4', 'drivers',
+         'homework', 'homework-2', 'homework-3']
+PIC = {s: '%s.jpg' % s for s in SLOTS}
 
 E = I.T['en']
 
-# Placeholder colours, one per slot: flat, pale, nothing to do with the
-# finished art. PALETTE_PREVIEW is extract-palette.py --light run on
-# _ph-hero.jpg, so it is derived, not picked — and it is thrown away when the
-# real hero arrives.
-PH = {'hero': (196, 222, 238), 'ana': (240, 220, 196), 'cold': (214, 226, 236),
-      'drivers': (226, 230, 204), 'homework': (236, 214, 222)}
-
-# py lesson-template/extract-palette.py BrazilBrighton/_ph-hero.jpg --light
+# py lesson-template/extract-palette.py BrazilBrighton/hero.jpg --light
 # (2026-10-15; every row PASS)
-PALETTE_PREVIEW = """  --hero: url('%s/%%s');
+PALETTE = """  --hero: url('%s/hero.jpg');
 
-  --void          : #bacaca;
-  --surface       : #ced7d7;
-  --surface2      : #c4d0d0;
-  --border        : #4a7a96;
-  --text          : #11202a;
-  --text-dim      : #2e4c5e;
-  --accent        : #015b92;
-  --accent-bright : #134766;
-  --accent-dim    : #20a0ed;
-  --secondary     : #fbfcfc;
-  --contrast      : #941421;""" % F
-
-# Paste extract-palette.py's block for BrazilBrighton/hero.jpg here.
-PALETTE_LIVE = None
-
-
-def palette():
-    if not ready():
-        return PALETTE_PREVIEW % PIC['hero']
-    if not PALETTE_LIVE:
-        sys.exit('The plates are in, but PALETTE_LIVE is empty. Run\n'
-                 '  py lesson-template/extract-palette.py %s/hero.jpg [--light]\n'
-                 'and paste its block into this builder.' % F)
-    return PALETTE_LIVE
-
-
-def placeholders():
-    """Flat stand-ins so the preview passes the ART gate and shows where each
-    picture's subject sits: a disc in the right third, the slot's name on it."""
-    from PIL import Image, ImageDraw, ImageFont
-    os.makedirs(F, exist_ok=True)
-    try:
-        font = ImageFont.truetype('arialbd.ttf', 64)
-    except OSError:
-        font = ImageFont.load_default()
-    for s in SLOTS:
-        path = '%s/_ph-%s.jpg' % (F, s)
-        if os.path.exists(path):
-            continue
-        W, H = 1536, 1024
-        bg = PH[s]
-        im = Image.new('RGB', (W, H), bg)
-        d = ImageDraw.Draw(im)
-        dark = tuple(int(c * 0.72) for c in bg)
-        cx, cy, r = int(W * 0.74), H // 2, 300
-        d.ellipse((cx - r, cy - r, cx + r, cy + r), fill=dark)
-        label = 'ART: %s' % s
-        w = d.textlength(label, font=font)
-        d.text((cx - w / 2, cy - 36), label, font=font, fill=(255, 255, 255))
-        im.save(path, quality=85)
+  --void          : #d6c4ae;
+  --surface       : #e0d4c6;
+  --surface2      : #dbcbb9;
+  --border        : #96624a;
+  --text          : #2a1911;
+  --text-dim      : #5e3d2e;
+  --accent        : #9a3405;
+  --accent-bright : #6c2200;
+  --accent-dim    : #e86b31;
+  --secondary     : #acc9d3;
+  --contrast      : #085447;""" % F
 
 
 # ── reading panels: English in every language ─────────────────────────
@@ -398,8 +342,9 @@ TRANSLATE_KIT = '''
 
 
 def slides():
-    mc = lambda qs, ek, tk, pic: [
-        D.mc(i + 1, len(qs), q, ek, E[ek], tk, E[tk], folder=F, bg=PIC[pic],
+    # pics: one per question, so a stage can deal its picture variants.
+    mc = lambda qs, ek, tk, pics: [
+        D.mc(i + 1, len(qs), q, ek, E[ek], tk, E[tk], folder=F, bg=PIC[pics[i]],
              ctx=E[q['ctx']] if 'ctx' in q else None, ctx_key=q.get('ctx'))
         for i, q in enumerate(qs)]
     # Not in teaching order: the BANK gate reads activation chips as a word
@@ -413,59 +358,55 @@ def slides():
 
         # ── stage 1 · I AM, he IS, they ARE ────────────────────────────
         divider(1, 'ana'),
-        panel(1, 'e1', 'ana'),
+        panel(1, 'e1', 'ana-2', pos='24% 50%'),
         teach('tAt', 'eR', TEACH_BE, 'ana', cols='1fr 1fr'),
         D.gap(1, 1, GAP_BE, None, 'e1', E['e1'], 'gapT', E['gapT'], folder=F,
               bg=PIC['ana'], hint=E['gapHint1'], hint_key='gapHint1', size=24),
-    ] + mc(MC_BE, 'e1', 'mcT', 'ana') + [
+    ] + mc(MC_BE, 'e1', 'mcT', ['ana', 'ana']) + [
 
         # ── stage 2 · cold, colder, the coldest ────────────────────────
-        divider(2, 'cold'),
-        panel(2, 'e2', 'cold', side='right'),
+        divider(2, 'cold-3'),
+        panel(2, 'e2', 'cold-2', side='right', pos='72% 50%'),
         teach('tBt', 'eR', TEACH_CMP, 'cold', cols='1fr 1fr'),
-    ] + mc(MC_CMP, 'e2', 'mcT', 'cold') + [
+    ] + mc(MC_CMP, 'e2', 'mcT', ['cold', 'cold-2']) + [
         D.gap(1, 1, GAP_CMP, None, 'e2', E['e2'], 'gapT', E['gapT'], folder=F,
               bg=PIC['cold'], hint=E['gapHint2'], hint_key='gapHint2', size=24),
         D.sort_slide([E['binA'], E['binB']], SORT_ITEMS, 'e2', E['e2'],
                      'sortT', E['sortT'], 'sortHint', E['sortHint'], 'sortWhy',
-                     bin_keys=['binA', 'binB'], folder=F, bg=PIC['cold']),
+                     bin_keys=['binA', 'binB'], folder=F, bg=PIC['cold-4']),
 
         # ── stage 3 · does he drive a taxi? ────────────────────────────
         divider(3, 'drivers'),
         panel(3, 'e3', 'drivers'),
         teach('jAt', 'eV', TEACH_JOBS, 'drivers', cols='1fr 1fr'),
         teach('tCt', 'eR', TEACH_DOES, 'drivers', cols='1fr 1fr'),
-    ] + mc(MC_DOES, 'e3', 'mcT', 'drivers') + [
+    ] + mc(MC_DOES, 'e3', 'mcT', ['drivers', 'drivers']) + [
         D.order(items, 'e3', E['e3'], 'orderT', E['orderT'], 'orderHint',
                 E['orderHint'], why, folder=F, bg=PIC['drivers'], decoys=dec)
         for items, dec, why in ORDERS
     ] + [
 
-        # ── stage 4 · the Brighton accent, on the cover plate (the seafront)
-        teach('tEt', 'e4', TEACH_ACC, 'hero'),
-    ] + mc(MC_ACC, 'e4', 'mc4T', 'hero') + [
+        # ── stage 4 · the Brighton accent, back on the seafront
+        teach('tEt', 'e4', TEACH_ACC, 'seafront-b'),
+    ] + mc(MC_ACC, 'e4', 'mc4T', ['seafront-a']) + [
 
         # ── stage 5 · translate ────────────────────────────────────────
         TRANSLATE_KIT,
-    ] + [translate(i + 1, r, len(TR), 'homework') for i, r in enumerate(TR)] + [
-        D.results(folder=F, bg=PIC['homework']),
+    ] + [translate(i + 1, r, len(TR), pic)
+         for i, (r, pic) in enumerate(zip(TR, ['homework', 'homework-2']))] + [
+        D.results(folder=F, bg=PIC['seafront-c']),
         D.activate(E['actTitle'], E['actUse'], chips, 'Speaking', E['actSpeakBrief'],
                    [E['actSpeak1'], E['actSpeak2'], E['actSpeak3']],
                    E['actWriteKind'], E['actWriteBrief'], E['actPlaceholder'],
-                   folder=F, bg=PIC['homework']),
+                   folder=F, bg=PIC['homework-3']),
     ])
 
 
 def build():
-    out = LIVE if ready() else '_' + LIVE    # underscore = gitignored
     s = slides()
-    D.assemble(TPL, out, s, palette(), TITLE, I, langs=('en', 'de', 'es', 'pt'))
-    print('wrote %s — %d slides%s' % (
-        out, s.count('<section class="slide'),
-        '' if ready() else '  (PREVIEW: plates missing, drop them in %s)' % DROP))
+    D.assemble(TPL, OUT, s, PALETTE, TITLE, I, langs=('en', 'de', 'es', 'pt'))
+    print('wrote %s — %d slides' % (OUT, s.count('<section class="slide')))
 
 
 if __name__ == '__main__':
-    if not ready():
-        placeholders()
     build()

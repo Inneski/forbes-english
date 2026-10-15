@@ -10,7 +10,19 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
-## 2026-10-15 — Cold, Colder, the Coldest — From Brazil to Brighton (A1): BUILT, waiting on art
+## 2026-10-15 — Cold, Colder, the Coldest — From Brazil to Brighton (A1): SHIPPED
+
+**Shipped the same day.** Innes: *"pics are in plus extras and use the
+extras"* — 14 renders, all used (`BrazilBrighton/`: hero, seafront-a/b/c,
+ana, ana-2, cold, cold-2/3/4, drivers, homework, homework-2/3). Rule used
+for dealing the variants: a figure on the LEFT goes on a divider, a panel's
+picture column or the centred results slide; questions (answers on the
+left) get a plate whose subject is on the right. `homework-3` is a
+fair-haired woman, not Ana, so it backs the activation. Palette from
+`hero.jpg --light`, every row PASS; placeholder/preview code removed from
+the builder. Catalogue row inserted (pro, A1), mirrored to
+`tools/lessons.json`; `OVERRIDES` → present-simple + english-vocabulary;
+`LESSON_TAGS` Tenses / Sentence Building / Vocabulary. History below.
 
 From Innes's running notes of a Preply trial class with a Brazilian A1
 learner in Brighton (pasted in chat, not in the repo): *"Make an english
