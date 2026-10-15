@@ -22,12 +22,29 @@ wired with `deck_music.set_music()` per page (not `main()`, which also
 rewrites the two route maps for a whitespace-only difference — not looked
 into). `rpg.py` calls `set_music()`, so a rebuild keeps the music.
 
-**Still no music (builder written, never rendered):** `last_train.py`,
-`long_way.py`, `sherlock.py`, `wonderland.py` — uncommitted in the tree.
-**No builder at all:** fistful-of-lies, frostbound-river, blocula,
-kraken, lost-yellow-road, welcome-to-the-jungle. `deck_music.py` already
-names a track for all but the jungle; each page picks its music up the
-moment `<name>.m4a` and its loops entry exist and the page is rewired.
+**Later the same day: every Block Camp RPG now has music.** The four
+written-but-unrendered builders were unrendered because two of them failed:
+`long_way.py` (a passing D5 in the aulos rubbed the lyre's Eb5 — now C, Eb
+G) and `wonderland.py` (the river's Am swell had no voicing once the tune's
+B4 ruled out C6 — `voice()` now falls back to a two-note open fifth; the
+stolen-bar run's passing tones are damped inside the beat; `ratchet()`
+indexed a negative sample). Six new tracks composed: `fistful.py` (comic
+frontier: harmonica, banjo, jaw harp on the flat-seven "lie"), `frostbound.py`
+(Nordic: willow flute, kantele, fiddle), `blocula.py` (gothic: violin,
+harpsichord, organ, bell, storm), `kraken.py` (Highland sea: low whistle,
+clarsach, horn, swell, surf), `yellow_road.py` (storybook march: celesta,
+clarinet, tuba, piccolo), `jungle.py` (marimba, log drums, flute, horn,
+forest). They share **`rpgkit.py`** (a `Song` holding the changes, every
+note, and last_bounty's `check()`; the instruments) instead of each carrying
+a 500-line copy. `welcome-to-the-jungle` added to `TRACK`. All ten pages
+wired with `set_music()` per page; `deck_music.py --check` still reports
+only the two route maps (the known whitespace difference).
+
+Not done: nobody has *listened* to the six new tracks — levels were set
+from `--stems` (A-weighted, per section), clicks from the decoded mix's HF
+jumps (≤3.2× the 99.9th percentile, like the shipped ones). If one sounds
+wrong, the builder is the place to change it. The root
+`last-train-home-rpg.html` is an older non-Block-Camp copy and has no music.
 
 ## 2026-10-15 — Are You a Boltzmann Brain? (C1): built on stand-ins, six plates briefed
 

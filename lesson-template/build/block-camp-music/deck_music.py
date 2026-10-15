@@ -75,6 +75,7 @@ TRACK = {
     'block-camp/lost-yellow-road-rpg.html': 'lost-yellow-road',
     'block-camp/last-train-home-rpg.html': 'last-train-home',
     'block-camp/long-way-home-rpg.html': 'long-way-home',
+    'block-camp/welcome-to-the-jungle-rpg.html': 'welcome-to-the-jungle',
 }
 
 # Sherpa Tensing (the Himalayan tense climb, built by build_sherpa.py): the
