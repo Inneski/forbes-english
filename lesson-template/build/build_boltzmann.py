@@ -29,13 +29,15 @@ cosmologists (the term dates from the early 2000s); the Big Bang is the
 standard resolution, and the question is open again because nobody knows
 what preceded it.
 
-**Art.** Six slot plates, Midjourney, briefed in chat (2026-10-15) with
---sref to the live Harari plate. Until all six exist in `boltzmann/` this
-writes the gitignored preview `_forbes-boltzmann-brain-c1.html` on stand-ins
-copied from `Harari/` and `Geoscience/` to `boltzmann/_ph-*.jpg` (also
-gitignored); the live page is not written at all. The palette below is the
-stand-in's (Harari/a.jpg, dark) and is replaced from plate-cover once it
-lands — the build stops and says so.
+**Art — Innes, 2026-10-16: "files in".** Thirteen Midjourney renders, all
+used, in `boltzmann/` (briefed in chat with --sref to the live Harari
+plate). No plate-odds was rendered; Part 3's reading is about universes
+forming by chance, so the two galaxy-swirl variants from the plate-before
+batch are `plate-odds` / `-2`, and the two bursts stay with Part 4. Each part
+rotates its own pool slide by slide (the Manifestation rule: no two
+neighbouring slides share a picture). The divider takes the plate whose
+subject reads whole; the panel the one whose subject survives a column crop.
+Results get the empty chairs, the activation the man at the table.
 
 MC keys are checked against the longest-option rule at build time; the
 word banks are checked against gap order. The second order slide carries a
@@ -44,7 +46,6 @@ decoy ("must had") that is wrong in every position.
 Run from the repo root:  py lesson-template/build/build_boltzmann.py
 """
 import os
-import shutil
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -52,61 +53,51 @@ import deck as D
 import i18n_boltzmann as I
 
 TPL = 'lesson-template/lesson-template.html'
-LIVE = 'forbes-boltzmann-brain-c1.html'
-PREVIEW = '_forbes-boltzmann-brain-c1.html'   # gitignored (leading underscore)
+OUT = 'forbes-boltzmann-brain-c1.html'
 F = 'boltzmann'
 TITLE = 'Are You a Boltzmann Brain? (C1) | Forbes English'
 
-SLOTS = ('plate-cover', 'plate-paradox', 'plate-entropy', 'plate-odds',
-         'plate-before', 'plate-act')
-STAND_IN = {'plate-cover': 'Harari/a.jpg', 'plate-paradox': 'Harari/hero.jpg',
-            'plate-entropy': 'Geoscience/hero.jpg', 'plate-odds': 'Harari/b.jpg',
-            'plate-before': 'Harari/c.jpg', 'plate-act': 'alan-watts/hero.jpg'}
-READY = all(os.path.exists(os.path.join(F, s + '.jpg')) for s in SLOTS)
-OUT = LIVE if READY else PREVIEW
+HERO = 'plate-cover.jpg'
+# part: (divider, panel, [rotation for cards and questions])
+ART = {1: ('plate-paradox-4', 'plate-paradox', ['plate-paradox-2', 'plate-paradox-3']),
+       2: ('plate-entropy-2', 'plate-entropy', ['plate-entropy-2', 'plate-entropy']),
+       3: ('plate-odds', 'plate-odds-2', ['plate-odds', 'plate-odds-2']),
+       4: ('plate-before', 'plate-before-2', ['plate-before', 'plate-before-2'])}
+RESULTS, ACT = 'plate-results.jpg', 'plate-act.jpg'
+for _d, _p, _pool in ART.values():
+    for _f in [_d, _p] + _pool:
+        assert os.path.exists(os.path.join(F, _f + '.jpg')), _f
+_turn = {1: 0, 2: 0, 3: 0, 4: 0}
 
-# The drop folder the brief names. Innes, 2026-09-30: "make sure the folder
-# exists or you tell me to make it in future, hard wire that".
-DROP = os.path.join('incoming', 'boltzmann')
-if not READY:
-    os.makedirs(DROP, exist_ok=True)
-    os.makedirs(F, exist_ok=True)
-    for s in SLOTS:
-        dst = os.path.join(F, '_ph-%s.jpg' % s)
-        if not os.path.exists(dst):
-            shutil.copyfile(STAND_IN[s], dst)
-PIC = {s: (s + '.jpg') if READY else ('_ph-%s.jpg' % s) for s in SLOTS}
-HERO, PARADOX, ENTROPY, ODDS, BEFORE, ACT = (PIC[s] for s in SLOTS)
-PART_BG = {1: PARADOX, 2: ENTROPY, 3: ODDS, 4: BEFORE}
+
+def qbg(part):
+    """The next picture in this part's rotation."""
+    pool = ART[part][2]
+    f = pool[_turn[part] % len(pool)]
+    _turn[part] += 1
+    return f + '.jpg'
+
 
 E = I.T['en']
 
-# Once plate-cover is in, run the command below and paste its ten tokens here
-# as a string in the same form as PALETTE; until then a READY build stops.
 # py lesson-template/extract-palette.py boltzmann/plate-cover.jpg
-PALETTE_LIVE = None
-if READY and PALETTE_LIVE is None:
-    sys.exit('plates are in: run\n  py lesson-template/extract-palette.py '
-             '%s/plate-cover.jpg\nand paste it into PALETTE_LIVE in %s'
-             % (F, os.path.basename(__file__)))
-
-# STAND-IN: py lesson-template/extract-palette.py Harari/a.jpg
-# (2026-10-15, dark, every row PASS).
+# (2026-10-16, dark, every row PASS)
 PALETTE = """  --hero: url('%s/%s');
 
-  --void          : #0e0c09;
-  --surface       : #1c1912;
-  --surface2      : #29241a;
-  --border        : #555555;
+  --void          : #090e0e;
+  --surface       : #121c1b;
+  --surface2      : #1a2927;
+  --border        : #ad4942;
   --text          : #f5f2f2;
-  --text-dim      : #bfa9a3;
-  --accent        : #a6756a;
-  --accent-bright : #c69c92;
-  --accent-dim    : #6c4f48;
-  --secondary     : #94a9ac;
-  --contrast      : #41c8a1;""" % (F, HERO)
-if PALETTE_LIVE:
-    PALETTE = PALETTE_LIVE
+  --text-dim      : #bfa5a3;
+  --accent        : #ea746b;
+  --accent-bright : #f6aca7;
+  --accent-dim    : #d43225;
+  --secondary     : #101b1a;
+  --contrast      : #1ded98;
+  /* The cover brain is the accent's own coral, so the mark vanished into
+     it in --accent. HOUSE-STYLE §2: --text is the safe fallback. */
+  --logo-mark     : var(--text);""" % (F, HERO)
 
 # ── reading panels: English in every language (the reading IS the material)
 READ = {
@@ -294,14 +285,14 @@ def panel(n, side, pos):
     a, b = READ[n]
     return D.panel('e%d' % n, E['e%d' % n], 'p%dt' % n, E['p%dt' % n],
                    [(None, a), (None, b, 'dim')],
-                   folder=F, pic=PART_BG[n], side=side, pos=pos)
+                   folder=F, pic=ART[n][1] + '.jpg', side=side, pos=pos)
 
 
 def cards(n):
     part, tk = CARD_PART[n], 'vt%d' % n
     return D.teach('e%d' % part, E['e%d' % part], tk, E[tk],
                    [(None, w, k, E[k], None, ex) for w, k, ex in CARDS[n]],
-                   cols='1fr 1fr 1fr', folder=F, bg=PART_BG[part])
+                   cols='1fr 1fr 1fr', folder=F, bg=qbg(part))
 
 
 _mc_n = [0]
@@ -312,13 +303,13 @@ def mc(i):
     return D.mc(i + 1, MC_TOTAL, dict(stem=E[sk] if sk else stem, options=opts,
                                       correct=c, why=why),
                 'e%d' % part, E['e%d' % part], 'mt%d' % part, E['mt%d' % part],
-                ctx=E[xk], ctx_key=xk, stem_key=sk, folder=F, bg=PART_BG[part])
+                ctx=E[xk], ctx_key=xk, stem_key=sk, folder=F, bg=qbg(part))
 
 
 def gap(i, rows, bank, part, tk, hk):
     return D.gap(i, 4, rows, bank, 'e%d' % part, E['e%d' % part],
                  tk, E[tk], hint=E[hk], hint_key=hk, size=20,
-                 folder=F, bg=PART_BG[part])
+                 folder=F, bg=qbg(part))
 
 
 def build():
@@ -332,37 +323,37 @@ def build():
                 [('Level', E['chipLevel']), ('Focus', E['chipFocus']),
                  ('Count', E['chipCount'])]),
 
-        divider(1, PARADOX),
-        panel(1, 'left', '70% 50%'),
+        divider(1, ART[1][0] + '.jpg'),
+        panel(1, 'left', '80% 50%'),
         cards(1), cards(2),
         mc(0), mc(1), mc(2),
 
-        divider(2, ENTROPY),
-        panel(2, 'right', '50% 50%'),
+        divider(2, ART[2][0] + '.jpg'),
+        panel(2, 'right', '58% 50%'),
         cards(3), cards(4),
         D.match(MATCH, 'e2', E['e2'], 'mtt', E['mtt'], 'matchHint', E['matchHint'],
-                'matchWhy', folder=F, bg=ENTROPY),
+                'matchWhy', folder=F, bg=qbg(2)),
         mc(3), mc(4),
 
-        divider(3, ODDS),
-        panel(3, 'left', '70% 50%'),
+        divider(3, ART[3][0] + '.jpg'),
+        panel(3, 'left', '40% 50%'),
         cards(5), cards(6),
         D.sort_slide(SORT_BINS, SORT_ITEMS, 'e3', E['e3'], 'st', E['st'], 'sh', E['sh'],
-                     'sw', bin_keys=['sb1', 'sb2'], folder=F, bg=ODDS),
+                     'sw', bin_keys=['sb1', 'sb2'], folder=F, bg=qbg(3)),
         gap(1, GAP1, BANK1, 3, 'gt1', 'gh1'), gap(2, GAP2, BANK2, 3, 'gt1', 'gh1'),
         D.order(ORDER1, 'e3', E['e3'], 'ot1', E['ot1'], 'oh1', E['oh1'], 'ow1',
-                folder=F, bg=ODDS),
+                folder=F, bg=qbg(3)),
         mc(5),
 
-        divider(4, BEFORE),
-        panel(4, 'right', '60% 50%'),
+        divider(4, ART[4][0] + '.jpg'),
+        panel(4, 'right', '70% 50%'),
         cards(7), cards(8),
         gap(3, GAP3, None, 4, 'gt2', 'gh2'), gap(4, GAP4, None, 4, 'gt2', 'gh2'),
         D.order(ORDER2, 'e4', E['e4'], 'ot1', E['ot1'], 'oh2', E['oh2'], 'ow2',
-                decoys=ORDER2_DECOY, folder=F, bg=BEFORE),
+                decoys=ORDER2_DECOY, folder=F, bg=qbg(4)),
         mc(6), mc(7),
 
-        D.results(folder=F, bg=HERO),
+        D.results(folder=F, bg=RESULTS),
         # Not in teaching order: the BANK gate reads activation chips as a
         # word bank, and teaching order is the gap order.
         D.activate(E['actTitle'], E['actUse'],
@@ -380,8 +371,7 @@ def build():
     assert ('%d slides' % n) == E['chipCount'], (n, E['chipCount'])
     langs = tuple(c for c in I.LANGS if c in I.T)
     D.assemble(TPL, OUT, slides, PALETTE, TITLE, I, langs=langs)
-    print('wrote %s — %d slides, %s%s' % (OUT, n, ','.join(langs),
-          '' if READY else ' (PREVIEW: plates missing, drop them in incoming/boltzmann/)'))
+    print('wrote %s — %d slides, %s' % (OUT, n, ','.join(langs)))
 
 
 if __name__ == '__main__':

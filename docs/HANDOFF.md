@@ -69,6 +69,26 @@ wrong, the builder is the place to change it. The root
 
 ## 2026-10-15 — Are You a Boltzmann Brain? (C1): built on stand-ins, six plates briefed
 
+**2026-10-16: LIVE, catalogue row pending (needs Innes).** Innes: *"files
+in"*: 13 renders, all used, but **no plate-odds was rendered**. The two
+galaxy-swirl variants from the plate-before batch fill it (Part 3's reading is
+about universes forming by chance). Each part rotates its own pool; panel
+crops are set per plate. Palette is from `plate-cover.jpg` (dark, every row
+PASS). `--logo-mark: var(--text)`, because the coral mark vanished into the
+coral brain. Preview/stand-in code is removed; `forbes-boltzmann-brain-c1.html`
+is built, check-lesson is clean bar HEAD, answered-overflow fits en/de/es,
+`topics.py` OVERRIDES → modal-verbs + english-vocabulary, LESSON_IMAGES +
+LESSON_TAGS are in. The insert was refused ("Modify Shared Resources"), so:
+
+```sql
+insert into public.lessons (file, title, level, access, track, deck, video)
+select 'forbes-boltzmann-brain-c1.html', 'Are You a Boltzmann Brain? (C1)', 'C1', 'pro', 'general', true, false
+where not exists (select 1 from public.lessons where file = 'forbes-boltzmann-brain-c1.html');
+```
+
+Then `py tools/build_hubs.py && py tools/seo.py` and commit what they rewrite.
+Until then the page is live at its URL with no SEO block and no library card.
+
 Innes: *"make a class on this"*, with the narration of a short animated
 science explainer on the Boltzmann brain paradox pasted in chat (not in the
 repo; copyrighted, so no slide quotes it — the four reading panels retell it).
