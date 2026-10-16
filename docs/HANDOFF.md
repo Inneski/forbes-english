@@ -10,6 +10,27 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
+## 2026-10-16 — Anatomy of a Verdict (C1, concession): script written, waiting on plates
+
+Idea 30 of a 30-idea list of adult RPGs (titles, names and plots altered from
+modern films and series). A script-first Block Camp RPG on the Loch Ness Loop
+pattern: `lesson-template/build/rpg/anatomy-of-a-verdict-rpg/`. You are juror
+twelve, Mira Castell, holding out against eleven in a Crown Court jury room;
+the case (Ruth Adair, husband fallen from a mill gallery) is invented.
+Grammar: concession (although / despite / in spite of / even so / still /
+and yet / adjective + as / much as / may … but / even if vs even though).
+25 questions, two forks (THE RECORDING / THE STAIRWELL, then THE WITNESS /
+THE CLOCK), 18 a path, key 6/6/6 and four VOTES on each of the four paths,
+32 plates at 3:2.
+
+- **Edit `script.json`, then run `assemble-script.py`.** It gates word
+  budgets, the key never longest, straight quotes, the graph and the deal,
+  then writes `data.json`, `STORY.md` and `IMAGES.md`.
+- **Not done:** the nine translations (`translations/<lang>.json`) — ChatGPT is
+  told to write no `local`; the plates and hotspot boxes (ChatGPT, from
+  `IMAGES.md`, export into `incoming/anatomy-of-a-verdict/`, which exists
+  locally); the builder; the catalogue row.
+
 ## 2026-10-15 — RPG soundtracks: the five finished ones shipped
 
 Innes: "last-bounty-rpg has no music". The 2026-10-05 "add soundtracks to
