@@ -10,26 +10,43 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
-## 2026-10-16 — Anatomy of a Verdict (C1, concession): script written, waiting on plates
+## 2026-10-16 — Anatomy of a Verdict (C1, concession): branching deck built on stand-ins, plates briefed
 
-Idea 30 of a 30-idea list of adult RPGs (titles, names and plots altered from
-modern films and series). A script-first Block Camp RPG on the Loch Ness Loop
-pattern: `lesson-template/build/rpg/anatomy-of-a-verdict-rpg/`. You are juror
-twelve, Mira Castell, holding out against eleven in a Crown Court jury room;
-the case (Ruth Adair, husband fallen from a mill gallery) is invented.
-Grammar: concession (although / despite / in spite of / even so / still /
-and yet / adjective + as / much as / may … but / even if vs even though).
-25 questions, two forks (THE RECORDING / THE STAIRWELL, then THE WITNESS /
-THE CLOCK), 18 a path, key 6/6/6 and four VOTES on each of the four paths,
-32 plates at 3:2.
+Idea 30 of a list of adult RPGs (titles, names and plots altered from modern
+films and series). First drafted as a Block Camp RPG; Innes: *"I dont want it
+to be block camp, I want it like the Sherlock one Scarlet"* — so that folder
+is deleted and this is a **branch-flow deck like `sherlock-scarlet-star.html`**:
+`lesson-template/build/build_verdict.py` + `i18n_verdict{,_de,_es}.py`. You
+are juror twelve, Mira Castell, holding out against eleven; the case (Ruth
+Adair, husband fallen from a mill gallery) is invented. 45 slides, 16 MC + a
+two-row gap per path, two forks, a ledger (Points / Patience 4 / Votes),
+gold / silver / shadow verdicts. Glosses (Translate) on every narrative line
+in DE and ES; stems and options English.
 
-- **Edit `script.json`, then run `assemble-script.py`.** It gates word
-  budgets, the key never longest, straight quotes, the graph and the deal,
-  then writes `data.json`, `STORY.md` and `IMAGES.md`.
-- **Not done:** the nine translations (`translations/<lang>.json`) — ChatGPT is
-  told to write no `local`; the plates and hotspot boxes (ChatGPT, from
-  `IMAGES.md`, export into `incoming/anatomy-of-a-verdict/`, which exists
-  locally); the builder; the catalogue row.
+- **Preview only so far:** `_forbes-anatomy-of-a-verdict-c1.html` (gitignored),
+  on Scarlet Star stand-ins and the Scarlet palette. 23 Noma Bar plates are
+  briefed in chat (Midjourney, `--sref` the live `Sherlock/hero.jpg`); drop
+  folder `incoming/verdict/` exists locally; plates go to `Verdict/<name>.jpg`
+  (names in `PLATES`). With all 23 in, the builder stops and asks for
+  `PALETTE_LIVE`, then writes `forbes-anatomy-of-a-verdict-c1.html`.
+  **To ship:** palette, build, check, catalogue row (C1), `topics.py`
+  OVERRIDES (concession → grammar), the RPG hub's `GAMES` in
+  `tools/build_rpg_hub.py`, LESSON_IMAGES, hubs, seo.
+- **Measured:** every slide fits 1280×720 with the gloss open and the
+  feedback showing, EN/DE/ES (a JS sweep, not just check-lesson, which
+  measures glosses closed). Four scripted runs: all right 18/18 + gold;
+  all wrong 0/18, shadow only.
+- **The engine shuffles MC options** (`shuffled()`), so a deck needs no
+  slot dealing; only the longest-option gate matters.
+- **Fixed in the template and in the Scarlet Star (hand-built, no builder):**
+  "Replay a new route" left every question locked on the first run's answer
+  with its Continue still pointing at that answer's node, and `spent` kept
+  every paid element, so a replay scored nothing. `resetAnswers()` and a
+  fresh `spent` on restart. Also: a gap slide's `data-dp` was paid on
+  *arrival* (show() → applyLedger) — the Scarlet Star's final locks paid a
+  learner who typed nothing; now only a clean Check pays. And the branch-mode
+  score chip showed the whole file's total; `scoreMax()` now gives chip and
+  results the same route-only count. Inert outside `data-flow="branch"`.
 
 ## 2026-10-15 — RPG soundtracks: the five finished ones shipped
 

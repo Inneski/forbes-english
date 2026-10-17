@@ -2193,7 +2193,7 @@ function drawLedger() {
 }
 /* Apply the cost or reward an element declares. Idempotent per element, so
    paging back over a node never pays twice. */
-const spent = new WeakSet();
+let spent = new WeakSet();
 function applyLedger(el) {
   if (!BRANCH || !el || spent.has(el)) return;
   spent.add(el);
@@ -2202,6 +2202,15 @@ function applyLedger(el) {
   if (el.dataset.clue) el.dataset.clue.split(/\s+/).filter(Boolean)
                           .forEach(c => ledger.clues.add(c));
   drawLedger();
+}
+/* Put a question slide back as it was before it was answered. */
+function resetAnswers(sl) {
+  sl.querySelectorAll('.opt').forEach(o => { o.disabled = false; o.classList.remove('correct', 'wrong'); });
+  sl.querySelectorAll('input.gap').forEach(g => { g.value = ''; g.disabled = false; g.classList.remove('correct', 'wrong'); });
+  sl.querySelectorAll('[data-action="branch-continue"]').forEach(b => { b.hidden = true; });
+  sl.querySelectorAll('[data-action="check"]').forEach(b => { b.disabled = false; });
+  if (['mc', 'gap'].includes(sl.dataset.type))
+    sl.querySelectorAll('.feedback').forEach(f => { f.className = 'feedback'; f.innerHTML = ''; });
 }
 /* A ledger gate: data-require="dp>=8 && time>=1 && clues>=4".
    Only these three names are in scope, and nothing is eval'd. */
@@ -2270,7 +2279,10 @@ function show(n) {
   document.querySelector('[data-action="next"]').disabled =
     BRANCH ? !cur.querySelector('[data-goto]') : idx === slides.length - 1;
   if (BRANCH) {
-    applyLedger(cur);
+    // A gap slide pays when its Check comes back clean (checkGaps), not on
+    // arrival: paying here gave the final lock's point to a learner who
+    // typed nothing.
+    if (cur.dataset.type !== 'gap') applyLedger(cur);
     if (['mc','gap','match','order','sort','lock'].includes(cur.dataset.type))
       seenScored.add(cur);
     // A ledger gate greys out the endings the run did not earn.
@@ -2291,9 +2303,7 @@ function renderResults() {
   // Branch mode scores out of what this learner actually met. Counting every
   // question in the file would mark them against a paper half of which was
   // on the road not taken.
-  const max = BRANCH
-    ? [...seenScored].reduce((n, s) => n + Math.max(1, countIn(s)), 0)
-    : maxScore;
+  const max = scoreMax();
   document.getElementById('scoreVal').textContent = score;
   document.getElementById('scoreMax').textContent = max;
   const pct = max ? score / max : 0;
@@ -2302,9 +2312,16 @@ function renderResults() {
     : pct >= .5 ? t('resMid') : t('resLow');
 }
 
+/* Branch mode scores out of what this learner actually met, in the chip as
+   on the results slide; the chip used to show the whole file's total. */
+function scoreMax() {
+  return BRANCH
+    ? [...seenScored].reduce((n, s) => n + Math.max(1, countIn(s)), 0)
+    : maxScore;
+}
 function updateScoreChip() {
   document.getElementById('deckScore').textContent =
-    maxScore ? `${t('scoreLabel')} ${score}/${maxScore}` : '';
+    maxScore ? `${t('scoreLabel')} ${score}/${scoreMax()}` : '';
 }
 
 /* ── Answer handling ── */
@@ -2962,7 +2979,13 @@ document.addEventListener('click', e => {
     // Replay resets the ledger but keeps the learner in the page, so a class
     // can run the other route immediately.
     trail.length = 0; seenScored.clear(); score = 0;
-    slides.forEach(sl => { answered.delete(sl); });
+    // A replay is a fresh run: every question opens again and every
+    // reward can be paid again. Clearing `answered` alone left each
+    // question locked on the first run's answer, its Continue still
+    // pointing where that answer went, and `spent` remembering every
+    // option already paid, so a second route scored nothing.
+    slides.forEach(sl => { answered.delete(sl); resetAnswers(sl); });
+    spent = new WeakSet();
     ledgerInit(); updateScoreChip();
     goNode(a.dataset.goto || START, false);
   }
