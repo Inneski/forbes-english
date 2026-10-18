@@ -1912,9 +1912,17 @@ function setTitleSize(portrait) {
 
 function resize() {
   const w = innerWidth, h = innerHeight, aspect = w / h;
+  // browser zoom changes the pixel ratio as well as the size: everything that
+  // draws to a buffer must follow it, or the glow layer is laid back over the
+  // scene at the wrong scale and her lit edge shows as a smaller outline above
+  // her (Innes, 2026-10-18, a zoomed Chrome)
+  const pr = Math.min(devicePixelRatio, 1.75);
+  renderer.setPixelRatio(pr);
+  composer.setPixelRatio(pr);
   renderer.setSize(w, h, false);
   composer.setSize(w, h);
   bloom.resolution.set(w / 2, h / 2);
+  water.getRenderTarget().setSize(Math.round(w * pr * 0.6), Math.round(h * pr * 0.6));
   camera.aspect = aspect;
   camera.updateProjectionMatrix();
   view.half = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
