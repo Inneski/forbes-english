@@ -42,6 +42,12 @@ in `index.html`, `library.html` (brass pills), `block-camp.html`,
 `block-camp-map.html`, `level-checker.html`, `pricing.html`, `account.html`.
 No "Speaking" (no content yet); "Library" replaced Lessons + Bookshelf.
 
+**Front-page language menu** (`I18N` in `index.html`): the same ten
+languages as Sherpa. It translates the top row, each world's words in the
+sky, the free-lessons line and the hint; brand and story names, and the
+ring's 3D titles, stay English. Remembered in `localStorage['fe-lang']`, or
+`?lang=de`. `fitRow()` drops the least-used links until the row fits.
+
 **`sherpa-tensing-route-map.html`** took the hero grammar used to wear: the
 ridge full-bleed with the copy over its sky (desktop; phones keep the card).
 
