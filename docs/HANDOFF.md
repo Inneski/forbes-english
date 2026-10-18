@@ -84,6 +84,17 @@ jumps (≤3.2× the 99.9th percentile, like the shipped ones). If one sounds
 wrong, the builder is the place to change it. The root
 `last-train-home-rpg.html` is an older non-Block-Camp copy and has no music.
 
+**2026-10-18, Last Train Home: two tracks.** Innes: *"last train home should
+have music - like vangelis"*. New `last_train_night.py` ("Night Line",
+`last-train-night.m4a`): the Blade Runner end-titles idiom on rainfall.py's
+CS-80 pads, drone, glass bell and rain, plus a sixteenth-note pulse, a
+brass lead and a big-hall snare; F# minor like the synthwave. The page opens
+on it; the synthwave (`last-train-home`) is one press of the next-track
+button away. To allow that, a `TRACK` value in `deck_music.py` may now be a
+tuple (written as `data-tracks` on the tag), and `camp-music.js` gives the
+next-track button to RPG-HUD and floating pages too (it was deck and slot
+only). Not checked in a browser: the pane would not load localhost.
+
 ## 2026-10-15 — Are You a Boltzmann Brain? (C1): built on stand-ins, six plates briefed
 
 **2026-10-18: SHIPPED.** Innes said he had run the insert, but no row

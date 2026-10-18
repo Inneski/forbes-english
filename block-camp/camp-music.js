@@ -135,6 +135,8 @@
     '.camp-vol-float.cv-show{opacity:1;pointer-events:auto}' +
     '@media (hover:none){.camp-vol-float{display:none}}' +
     '.camp-music.camp-music-next{padding:0 9px}' +
+    // a floating page with two tracks: the next-track button sits above the music button
+    '.camp-music-float.cm-float-next{bottom:calc(64px + env(safe-area-inset-bottom,0px))}' +
     '@media print{.camp-music,.camp-music-rpg,.camp-music-float,.camp-vol,.camp-vol-rpg,.camp-vol-pill{display:none!important}}';
   document.head.appendChild(css);
 
@@ -142,7 +144,8 @@
     'stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><g class="cm-note"><path d="M6 12.5V3.2l7-1.4v9.1"/>' +
     '<circle cx="4.2" cy="12.5" r="1.9"/><circle cx="11.2" cy="10.9" r="1.9"/></g>' +
     '<path class="cm-x" d="M1.5 1.5l13 13"/></svg>';
-  // the next-track switch (slot and deck only; the RPGs have one track)
+  // the next-track switch, when a page offers more than one track (2026-10-18:
+  // the RPGs too, once The Last Train Home had a Vangelis track and its synthwave)
   var SKIP = '<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" ' +
     'stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3.2l7.2 4.8L3 12.8z" fill="currentColor"/>' +
     '<path d="M13 3.2v9.6"/></svg>';
@@ -179,6 +182,13 @@
     volBox.className = 'utility camp-vol-rpg';
     volBox.appendChild(range);
     btn.parentNode.insertBefore(volBox, btn.nextSibling);
+    if (TRACKS.length > 1) {
+      nextBtn = document.createElement('button');
+      nextBtn.type = 'button';
+      nextBtn.className = 'utility camp-music-rpg camp-music-next';
+      nextBtn.innerHTML = '⏭';
+      btn.parentNode.insertBefore(nextBtn, btn.nextSibling);
+    }
     // the engine sized its panel under the HUD before these two were in it;
     // on a phone the HUD gains a row, so ask it to measure again
     if (typeof window.fitZone === 'function') try { window.fitZone(); } catch (_) {}
@@ -210,6 +220,13 @@
     volBox.className = 'camp-vol-pill camp-vol-float';
     volBox.appendChild(range);
     document.body.appendChild(volBox);
+    if (TRACKS.length > 1) {
+      nextBtn = document.createElement('button');
+      nextBtn.type = 'button';
+      nextBtn.className = 'camp-music-float cm-float-next camp-music-next';
+      nextBtn.innerHTML = SKIP;
+      document.body.appendChild(nextBtn);
+    }
     // open on hover or focus of either, close a moment after both are left
     var hideT = null;
     var show = function () { clearTimeout(hideT); volBox.classList.add('cv-show'); };

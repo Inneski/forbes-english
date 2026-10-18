@@ -73,7 +73,9 @@ TRACK = {
     'block-camp/sherlock-blue-hour-rpg.html': 'sherlock-blue-hour',
     'block-camp/wonderland-stolen-now-rpg.html': 'wonderland',
     'block-camp/lost-yellow-road-rpg.html': 'lost-yellow-road',
-    'block-camp/last-train-home-rpg.html': 'last-train-home',
+    # Innes, 2026-10-18: "last train home should have music - like vangelis".
+    # Two tracks: it opens on the Vangelis one, the synthwave a press away.
+    'block-camp/last-train-home-rpg.html': ('last-train-night', 'last-train-home'),
     'block-camp/long-way-home-rpg.html': 'long-way-home',
     'block-camp/welcome-to-the-jungle-rpg.html': 'welcome-to-the-jungle',
 }
@@ -105,16 +107,25 @@ def prefix_for(page):
 
 
 def music_tag(page):
-    name = TRACK.get(page)
-    lp = loops().get(name) if name else None
-    if not name or not lp or not os.path.exists(os.path.join(ROOT, 'block-camp', 'music', name + '.m4a')):
+    """A TRACK value is one name, or a tuple of names: the page opens on the
+    first and camp-music.js's next-track switch steps through the rest
+    (data-tracks). A name with no file or loop yet is left out."""
+    names = TRACK.get(page) or ()
+    names = (names,) if isinstance(names, str) else names
+    lps = loops()
+    names = [n for n in names if lps.get(n) and os.path.exists(os.path.join(ROOT, 'block-camp', 'music', n + '.m4a'))]
+    if not names:
         return ''
     p = prefix_for(page)
     # Six decimals, not %g: a loop of 67.166667 s written as 67.1667 puts the
     # seam 1.6 samples off and the loop ticks every lap.
     fmt = lambda x: ('%.6f' % x).rstrip('0').rstrip('.')
-    return (f'<script src="{p}camp-music.js" data-track="{p}music/{name}.m4a" '
-            f'data-loop="{fmt(lp[0])} {fmt(lp[1])}" defer></script>')
+    lp = lps[names[0]]
+    tag = (f'<script src="{p}camp-music.js" data-track="{p}music/{names[0]}.m4a" '
+           f'data-loop="{fmt(lp[0])} {fmt(lp[1])}"')
+    if len(names) > 1:
+        tag += ' data-tracks="' + '|'.join(f'{p}music/{n}.m4a {fmt(lps[n][0])} {fmt(lps[n][1])}' for n in names) + '"'
+    return tag + ' defer></script>'
 
 
 def set_music(html, page):
