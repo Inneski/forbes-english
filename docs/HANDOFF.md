@@ -86,6 +86,15 @@ wrong, the builder is the place to change it. The root
 
 ## 2026-10-15 — Are You a Boltzmann Brain? (C1): built on stand-ins, six plates briefed
 
+**2026-10-18: SHIPPED.** Innes said he had run the insert, but no row
+existed (the newest was Brazil to Brighton). On his explicit ask the same
+insert via `execute_sql` went through (pro, C1). Hubs and SEO are
+regenerated and committed. Two peer edits were left out: `library.html` (an
+uncommitted walnut-library redesign, so this run's static-list line rides
+along with that commit) and `index.html` (seo.py's new title "English,
+beautifully taught" comes from a peer's uncommitted `tools/seo.py`; reverted
+here, so theirs to ship). The history below is kept.
+
 **2026-10-16: LIVE, catalogue row pending (needs Innes).** Innes: *"files
 in"*: 13 renders, all used, but **no plate-odds was rendered**. The two
 galaxy-swirl variants from the plate-before batch fill it (Part 3's reading is
