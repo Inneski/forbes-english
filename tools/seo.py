@@ -84,7 +84,7 @@ except Exception:                      # the tool must still run without it
     _BANK_N, _BANK_T = 136, 17
 
 PAGES = {
-    'index.html': ('English lessons that are actually lessons',
+    'index.html': ('English, beautifully taught',
                    'Interactive English lessons at A1 to C2 — grammar, '
                    'vocabulary and speaking, built as 16:9 decks you can '
                    'teach from or work through alone.', 1.0),

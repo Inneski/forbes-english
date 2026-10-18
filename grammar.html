@@ -12,12 +12,12 @@
 <meta property="og:title" content="English Grammar by Topic: Tenses, Modals, Passive, Prepositions | Forbes English">
 <meta property="og:description" content="Every Forbes English grammar lesson sorted by topic and level — the twelve tenses in colour, modal verbs, the passive, prepositions, conditionals, gerunds and infinitives — each with the rule explained and the lessons that drill it.">
 <meta property="og:url" content="https://forbesenglish.com/grammar.html">
-<meta property="og:image" content="https://forbesenglish.com/Sherpa%20Tensing/hero-route-map.jpg">
+<meta property="og:image" content="https://forbesenglish.com/sailing-the-seas-of-grammar/hero.jpg">
 <meta property="og:locale" content="en_GB">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="English Grammar by Topic: Tenses, Modals, Passive, Prepositions | Forbes English">
 <meta name="twitter:description" content="Every Forbes English grammar lesson sorted by topic and level — the twelve tenses in colour, modal verbs, the passive, prepositions, conditionals, gerunds and infinitives — each with the rule explained and the lessons that drill it.">
-<meta name="twitter:image" content="https://forbesenglish.com/Sherpa%20Tensing/hero-route-map.jpg">
+<meta name="twitter:image" content="https://forbesenglish.com/sailing-the-seas-of-grammar/hero.jpg">
 <!-- SEO:end -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -197,32 +197,32 @@ h1 em { font-style: normal; color: var(--pink-mid); }
    it there. Colours: see that file's docstring. Every class is gh- prefixed
    so nothing here collides with the shared block above. */
 body.gh {
-  --gh-void: #d8bdac;
-  --gh-surface: #e1cfc4;
-  --gh-surface2: #dcc5b8;
-  --gh-border: #965c4a;
-  --gh-text: #2a1711;
-  --gh-text-dim: #5e392e;
-  --gh-accent: #963619;
-  --gh-accent-bright: #70230b;
-  --gh-accent-dim: #d27457;
-  --gh-secondary: #abc2c3;
-  --gh-contrast: #175e4d;
-  --gh-ink: #0e1112;
-  --gh-ink-surface: #181e1f;
-  --gh-ink-surface2: #21292b;
-  --gh-ink-border: #968c89;
+  --gh-void: #bacabf;
+  --gh-surface: #ced7d1;
+  --gh-surface2: #c4d0c8;
+  --gh-border: #966c4a;
+  --gh-text: #2a1c11;
+  --gh-text-dim: #5e432e;
+  --gh-accent: #924304;
+  --gh-accent-bright: #632c00;
+  --gh-accent-dim: #e87e28;
+  --gh-secondary: #aecbce;
+  --gh-contrast: #075552;
+  --gh-ink: #161610;
+  --gh-ink-surface: #242419;
+  --gh-ink-surface2: #303021;
+  --gh-ink-border: #906441;
   --gh-ink-text: #f5f3f2;
-  --gh-ink-text-dim: #bfaaa3;
-  --gh-ink-accent: #d8b7ad;
-  --gh-sky: #a7b8b9;
-  --gh-sky-deep: #7e989d;
-  --gh-snow: #d3b8af;
-  --gh-rock: #1c2223;
-  --gh-slate: #55686d;
-  --gh-stone: #a0a2a0;
-  --gh-mist: #c2c0bb;
-  --gh-cloud: #d2cbc3;
+  --gh-ink-text-dim: #bfb0a3;
+  --gh-ink-accent: #eeba90;
+  --gh-sky: #b3cfd1;
+  --gh-snow: #dc9564;
+  --gh-stone: #969477;
+  --gh-slate: #967451;
+  --gh-mist: #bcbc99;
+  --gh-rock: #5a4933;
+  --gh-cloud: #d7dac8;
+  --gh-sky-deep: #9dbbb9;
   --gh-paper: color-mix(in srgb, var(--gh-surface) 62%, var(--gh-ink-text));
   --gh-card:  color-mix(in srgb, var(--gh-surface) 30%, var(--gh-ink-text));
   --gh-line:  color-mix(in srgb, var(--gh-border) 34%, transparent);
@@ -274,25 +274,27 @@ body.gh {
 }
 .gh-pill-free { background: var(--gh-accent); color: var(--gh-ink-text); }
 
-/* ── hero: the ridge, copy over the sky ── */
+/* ── hero: the chart as a real 3D relief map: the coasts raised from the
+   chart's own colours, the sea flat, the camera looking across it into a
+   pale haze. Copy over the near sea. The flat chart under the canvas is the
+   fallback (no WebGL, no JS) and is what search engines see. ── */
 .gh-hero {
   position: relative; isolation: isolate; overflow: hidden;
   min-height: clamp(560px, 84vh, 800px); display: grid; align-items: center;
-  background: var(--gh-sky);
+  background: linear-gradient(180deg, var(--gh-cloud) 0%, var(--gh-sky) 100%);
 }
-.gh-hero-img {
-  position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%;
-  object-fit: cover; object-position: 68% 50%;
-  animation: gh-settle 2.6s cubic-bezier(.2,.7,.2,1) backwards;
-}
-@keyframes gh-settle { from { transform: scale(1.06); } to { transform: none; } }
+.gh-hero-art { position: absolute; inset: 0; z-index: -2; overflow: hidden; }
+.gh-hero-img, .gh-hero-3d { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.gh-hero-img { object-fit: cover; object-position: 50% 45%; opacity: .62; filter: saturate(.7) sepia(.12); }
+.gh-hero-3d { opacity: 0; transition: opacity 1.4s ease; touch-action: pan-y; }
+.gh-hero-art.is-3d .gh-hero-3d { opacity: 1; }
+.gh-hero-art.is-3d .gh-hero-img { opacity: 0; transition: opacity 1.4s ease; }
 .gh-hero::after {
   content: ''; position: absolute; inset: 0; z-index: -1;
   background: linear-gradient(90deg,
-    color-mix(in srgb, var(--gh-sky) 90%, transparent) 0%,
-    color-mix(in srgb, var(--gh-sky) 80%, transparent) 46%,
-    color-mix(in srgb, var(--gh-sky) 30%, transparent) 68%,
-    transparent 84%);
+    color-mix(in srgb, var(--gh-sky) 72%, transparent) 0%,
+    color-mix(in srgb, var(--gh-sky) 55%, transparent) 42%,
+    transparent 70%);
 }
 .gh-hero-in {
   width: 100%; max-width: var(--gh-max); margin: 0 auto;
@@ -317,9 +319,14 @@ body.gh {
 .gh-stats span { font-size: .95rem; line-height: 1.3; max-width: 16em; text-wrap: balance; }
 .gh-stats .gh-stat-free b { color: var(--gh-accent-bright); }
 .gh-ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+/* under the buttons: the chart's own lesson, and what Pro costs */
+.gh-sail, .gh-plans { margin: 18px 0 0; font-size: .98rem; line-height: 1.5; max-width: 34em; }
+.gh-plans { margin-top: 6px; }
+.gh-sail a, .gh-plans a { color: var(--gh-accent-bright); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
 @media (max-width: 880px) {
   .gh-hero { display: block; min-height: 0; background: var(--gh-paper); }
-  .gh-hero-img { position: relative; z-index: auto; height: auto; aspect-ratio: 16 / 10; object-position: 50% 60%; }
+  .gh-hero-art { position: relative; inset: auto; z-index: auto; aspect-ratio: 16 / 11;
+    background: linear-gradient(180deg, var(--gh-cloud) 0%, var(--gh-sky) 100%); }
   .gh-hero::after { display: none; }
   .gh-hero-in { grid-template-columns: 1fr; padding-top: 30px; padding-bottom: 44px; }
   .gh-hero-copy, .gh-hero .gh-kicker { color: var(--gh-text); }
@@ -582,7 +589,10 @@ body.gh {
 </nav>
 <main>
 <header class="gh-hero" aria-labelledby="gh-h1">
-  <img class="gh-hero-img" src="Sherpa%20Tensing/hero-route-map.jpg" width="1200" height="672" alt="A staircase cut into the snow of a mountain ridge, climbing towards a distant peak under a pale pink and blue sky" fetchpriority="high">
+  <div class="gh-hero-art" id="gh-hero-art">
+    <img class="gh-hero-img" src="sailing-the-seas-of-grammar/hero.jpg" width="1536" height="1024" alt="A hand-drawn sea chart: the orange coast of Gerundia, the green coast of Infinitivia, and Twofold Isle in the channel between them" fetchpriority="high">
+    <canvas class="gh-hero-3d" aria-hidden="true"></canvas>
+  </div>
   <div class="gh-hero-in">
     <div class="gh-hero-copy">
       <p class="gh-kicker">Grammar &middot; A1 to C2 &middot; 19 topics</p>
@@ -597,9 +607,133 @@ body.gh {
         <a class="gh-btn" href="#tenses">The tenses, in colour <span aria-hidden="true">&darr;</span></a>
         <a class="gh-btn gh-btn-quiet" href="level-checker.html">Find your level</a>
       </div>
+      <p class="gh-sail">The chart is <a href="sailing-the-seas-of-grammar.html">Sailing the Seas of Grammar</a>: gerunds or infinitives, coast by coast &rarr;</p>
+      <p class="gh-plans">Plenty of lessons are free, no sign-in. Pro opens every one &mdash; <a href="pricing.html">plans and prices</a>.</p>
     </div>
   </div>
 </header>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
+<script type="module">
+import * as THREE from 'three';
+const box = document.getElementById('gh-hero-art');
+const cv = box && box.querySelector('canvas');
+const img = box && box.querySelector('img');
+const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function go(tex) {
+  let renderer;
+  try { renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: true }); }
+  catch (e) { return; }
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  const css = getComputedStyle(document.documentElement);
+  const tok = (n, d) => (css.getPropertyValue(n).trim() || d);
+  const haze = new THREE.Color(tok('--gh-cloud', '#d7dac8'));
+  const scene = new THREE.Scene();
+  scene.fog = new THREE.Fog(haze, 6, 18);
+
+  // the chart, 18 x 12 units, lying flat
+  const W = 18, H = 12, SX = 360, SY = 240;
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+
+  // the height field, read off the picture
+  const c = document.createElement('canvas');
+  c.width = SX + 1; c.height = SY + 1;
+  const g = c.getContext('2d', { willReadFrequently: true });
+  g.drawImage(tex.image, 0, 0, SX + 1, SY + 1);
+  const px = g.getImageData(0, 0, SX + 1, SY + 1).data;
+  const n = (SX + 1) * (SY + 1), raw = new Float32Array(n);
+  for (let k = 0; k < n; k++) {
+    const r = px[k * 4], gg = px[k * 4 + 1], bl = px[k * 4 + 2];
+    // sea is told by its hue, not its shade: blue at least as strong as red,
+    // green with it. Waves, lettering and the compass drawn on the water are
+    // all blue too, so the sea stays dead flat; the orange, green and purple
+    // coasts and the sand of the Shallows rise.
+    const blueness = Math.min(bl, gg) - r;
+    const land = Math.min(1, Math.max(0, (6 - blueness) / 14));
+    const dark = 1 - (0.3 * r + 0.59 * gg + 0.11 * bl) / 255;
+    // the compass rose and its -ING / TO banner are drawn in ink and gold,
+    // not blue, but they lie on the water: keep that patch of chart flat
+    // (it spans about x 690-850, y 40-215 of the 1536 x 1024 chart)
+    const cx = (k % (SX + 1)) / SX, cy = Math.floor(k / (SX + 1)) / SY;
+    const onCompass = cx > 0.445 && cx < 0.56 && cy > 0.03 && cy < 0.215;
+    raw[k] = onCompass ? 0 : land * (0.55 + dark * 0.9);
+  }
+  // box blur: cliffs become slopes, lettering stops being bumps
+  const blur = (a, rad) => {
+    const o = new Float32Array(n), w = SX + 1, h = SY + 1;
+    for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+      let s = 0, m = 0;
+      for (let dy = -rad; dy <= rad; dy++) for (let dx = -rad; dx <= rad; dx++) {
+        const xx = x + dx, yy = y + dy;
+        if (xx >= 0 && yy >= 0 && xx < w && yy < h) { s += a[yy * w + xx]; m++; }
+      }
+      o[y * w + x] = s / m;
+    }
+    return o;
+  };
+  const hgt = blur(blur(raw, 2), 2);
+
+  const geo = new THREE.PlaneGeometry(W, H, SX, SY);
+  geo.rotateX(-Math.PI / 2);
+  const pos = geo.attributes.position;
+  for (let k = 0; k < pos.count; k++) pos.setY(k, hgt[k] * 0.42);
+  geo.computeVertexNormals();
+  const chart = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ map: tex, roughness: 0.92, metalness: 0 }));
+  scene.add(chart);
+
+  // soft sky fill and a low sun from the far left, so the hills show their relief
+  scene.add(new THREE.HemisphereLight(0xf4f1e6, 0x8a8a76, 1.55));
+  const sun = new THREE.DirectionalLight(0xfff4e0, 1.6);
+  sun.position.set(-8, 6, -6);
+  scene.add(sun);
+
+  const cam = new THREE.PerspectiveCamera(32, 1, 0.1, 60);
+  // steep enough that the chart's far edge is always above the top of the
+  // frame: the map fills the hero to the top (Innes, 2026-10-18)
+  const look = new THREE.Vector3(0, 0, -1.0);
+  let tx = 0, ty = 0, mx = 0, my = 0, back = 0;
+  addEventListener('pointermove', e => {
+    tx = (e.clientX / innerWidth - 0.5) * 2;
+    ty = (e.clientY / innerHeight - 0.5) * 2;
+  }, { passive: true });
+
+  function size() {
+    const w = box.clientWidth, h = box.clientHeight;
+    if (!w || !h) return;
+    renderer.setSize(w, h, false);
+    cam.aspect = w / h;
+    back = cam.aspect < 1.7 ? 1.6 : 0;   // narrow screens stand further back
+    cam.updateProjectionMatrix();
+    if (still) frame(performance.now());
+  }
+
+  let on = true, first = true;
+  const t0 = performance.now();
+  function frame(now) {
+    const t = (now - t0) / 1000;
+    mx += (tx - mx) * 0.04; my += (ty - my) * 0.04;
+    const drift = still ? 0 : Math.sin(t * 0.07) * 0.5;
+    const intro = still ? 0 : Math.max(0, 1 - t / 3.2) ** 3;
+    cam.position.set(drift + mx * 0.45, 8.4 + intro * 3 - my * 0.2 + back * 0.6, 5.2 + back + intro * 2);
+    cam.lookAt(look.x + drift * 0.6, 0, look.z);
+    renderer.render(scene, cam);
+    if (first) { first = false; box.classList.add('is-3d'); }
+    if (on && !still) requestAnimationFrame(frame);
+  }
+  new ResizeObserver(size).observe(box);
+  size();
+  new IntersectionObserver(es => {
+    const was = on;
+    on = es[0].isIntersecting;
+    if (on && !was && !still) requestAnimationFrame(frame);
+  }).observe(box);
+  requestAnimationFrame(frame);
+}
+// the chart is loaded afresh rather than lifted from the <img>: on some
+// GPUs an <img> handed straight to WebGL before it has decoded uploads black
+if (cv && img) new THREE.TextureLoader().load(img.currentSrc || img.src, go);
+</script>
 <section class="gh-tenses" id="tenses" aria-labelledby="gh-tenses-h">
   <div class="gh-wrap">
     <div class="gh-sechead">
@@ -723,7 +857,7 @@ body.gh {
   </div>
 </section>
 <section class="gh-close" aria-labelledby="gh-close-h">
-  <img class="gh-close-art" src="Sherpa%20Tensing/hero-route-map.jpg" alt="" loading="lazy" width="1200" height="672">
+  <img class="gh-close-art" src="sailing-the-seas-of-grammar/hero.jpg" alt="" loading="lazy" width="1200" height="672">
   <div class="gh-close-in">
     <p class="gh-kicker">Not sure of your level?</p>
     <h2 class="gh-h2" id="gh-close-h">Six questions a level, <em>then a lesson</em></h2>

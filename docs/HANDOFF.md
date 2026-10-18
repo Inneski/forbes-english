@@ -10,6 +10,44 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
+## 2026-10-18 — New front page (3D worlds), library bookshelf, grammar chart hero: SHIPPED
+
+**`index.html` is a new page**: a three.js scene (r0.160 from jsdelivr)
+after guillaumecolombel.fr. Innes's lady (`home/lady-cutout.webp`, cut by
+`tools/make_home_cutout.py`, outline in `home/lady-outline.json`) stands
+in water at the centre; the six sections are titles on a ring round her
+and each has its own world (`ENVS` in the page: Library rotunda, IELTS
+turquoise avenue, Sherpa massif, Block Camp, Grammar plaza, Level Check
+tide gauge). Drag, wheel or arrows turn her. **Edit `index.html`
+directly** — it was assembled from a scratch template that no longer
+exists; `tools/seo.py` still owns its SEO block. Its title is now
+"English, beautifully taught" (`seo.py` PAGES).
+- **Ring titles are Barlow Condensed.** Innes chose Finder, but its
+  licence is personal use only (brandsemut.com/product/finder; the trial
+  file is `home/fonts/`, untracked — do not commit it). Swap it back in
+  `buildTitle` (one comment marks the spot) only once a commercial
+  licence is bought.
+- Water: `wave` per world — `mirror` (share of reflection), `deep`,
+  `gain` (dims the reflected picture only), `rings` (3D ripple rings, Level
+  Check only). Innes hates the old flat `ripple` warp; leave it 0.
+- Sherpa's ring titles use `titleBase`/`titleFade`/`titleCurve` so the
+  neighbours stay dark on snow.
+
+**`library.html` hero** (`<style id="library-books">`): a photographed
+bookcase (`library-hub/bookcase-photo.webp`, made by
+`tools/make_library_shelf.py` from `incoming/library-books/bookcase-photo.jpg`,
+local only) with the six hub books as CSS 3D boxes on its cleared middle
+shelf: Innes's spine art (`spine-*.webp`) at rest, revolving to the leather
+cover (`book-*.webp`) on hover/focus/first tap. Plans & prices is a button
+beside the search; Bookshelf is a header pill. `tools/serve_nocache.py`
+is the preview server (`.claude/launch.json` "site") — Chrome was caching
+stale builds of the draft.
+
+**`grammar.html` hero** is the Sailing the Seas of Grammar chart as a real
+3D relief map (three.js in `tools/build_grammar_hub.py`, `CHART_3D`):
+land raised by hue, sea and compass flat. Palette re-derived from the chart.
+
+---
 ## 2026-10-16 — Anatomy of a Verdict (C1, concession): branching deck built on stand-ins, plates briefed
 
 Idea 30 of a list of adult RPGs (titles, names and plots altered from modern

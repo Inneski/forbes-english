@@ -8,411 +8,296 @@
 <link rel="canonical" href="https://forbesenglish.com/index.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Forbes English">
-<meta property="og:title" content="English lessons that are actually lessons | Forbes English">
+<meta property="og:title" content="English, beautifully taught | Forbes English">
 <meta property="og:description" content="Interactive English lessons at A1 to C2 — grammar, vocabulary and speaking, built as 16:9 decks you can teach from or work through alone.">
 <meta property="og:url" content="https://forbesenglish.com/index.html">
 <meta property="og:image" content="https://forbesenglish.com/og-forbes-english.png">
 <meta property="og:locale" content="en_GB">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="English lessons that are actually lessons | Forbes English">
+<meta name="twitter:title" content="English, beautifully taught | Forbes English">
 <meta name="twitter:description" content="Interactive English lessons at A1 to C2 — grammar, vocabulary and speaking, built as 16:9 decks you can teach from or work through alone.">
 <meta name="twitter:image" content="https://forbesenglish.com/og-forbes-english.png">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://forbesenglish.com/#org","name":"Forbes English","url":"https://forbesenglish.com/","logo":"https://forbesenglish.com/logo-forbes-english_1.png","description":"Interactive English lessons from A1 to C2, built as 16:9 decks for teachers and independent learners.","knowsLanguage":["en","de","es","fr","it","pt","ru","ar","zh","ja"]},{"@type":"WebSite","@id":"https://forbesenglish.com/#site","url":"https://forbesenglish.com/","name":"Forbes English","publisher":{"@id":"https://forbesenglish.com/#org"},"inLanguage":"en"},{"@type":"EducationalOrganization","@id":"https://forbesenglish.com/#school","name":"Forbes English","url":"https://forbesenglish.com/","parentOrganization":{"@id":"https://forbesenglish.com/#org"}}]}</script>
 <!-- SEO:end -->
-<title>English lessons that are actually lessons | Forbes English</title>
+<title>English, beautifully taught | Forbes English</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Barlow+Condensed:wght@600;700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Barlow+Condensed:wght@600;700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
+  @font-face { font-family: 'Faktum'; src: url('Sherpa%20Tensing/fonts/Faktum-ExtraBold.woff2') format('woff2'); font-weight: 800; font-display: swap; }
+  @font-face { font-family: 'Faktum'; src: url('Sherpa%20Tensing/fonts/Faktum-Bold.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+  @font-face { font-family: 'Faktum'; src: url('Sherpa%20Tensing/fonts/Faktum-BoldItalic.woff2') format('woff2'); font-weight: 700; font-style: italic; font-display: swap; }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  /* The sky is her glasses blue (#445c97), clear and cold; the glow
+     round her takes the colour of whichever section she is showing. */
   :root {
-    --green-deep:  #14301f;
-    --green-mid:   #1b3a28;
-    --green-lift:  #234a33;
-    --gold:        #b8962e;
+    --night:     #040c20;
+    --mustard:   #f7ba57;
+    --red:       #d5373b;
+    --cream:     #f6ead2;
+    --cream-dim: rgba(246, 234, 210, 0.66);
+    --cream-faint: rgba(246, 234, 210, 0.22);
     --gold-bright: #e8c04a;
-    --gold-pale:   #f2dc9e;
-    --gold-deep:   #9c7818;
-    --pink-deep:   #6e1c40;
-    --pink-mid:    #8f2856;
-    --pink-bright: #b2386f;
-    --cream:       #faf8f3;
-    --ink:         #182a1f;
-    --muted:       #5d6f64;
-    --radius:      12px;
+    --green-deep:  #14301f;
   }
-
-  html, body { height: 100%; overflow: hidden; }
+  html, body { height: 100%; overflow: hidden; background: var(--night); }
   body {
     font-family: 'Lato', sans-serif;
-    background:
-      radial-gradient(1100px 620px at 72% 42%, rgba(35,74,51,0.05), transparent 62%),
-      radial-gradient(900px 500px at 10% 0%, rgba(35,74,51,0.05), transparent 60%),
-      linear-gradient(165deg, #ffffff 0%, #f6f8f5 55%, #eef3ef 100%);
-    color: var(--ink);
+    color: var(--cream);
     -webkit-font-smoothing: antialiased;
   }
+  #world { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+  #world.hot { cursor: pointer; }
 
-  .stage {
-    height: 100%;
-    max-width: 1180px;
-    margin: 0 auto;
-    padding: clamp(14px, 2.6vh, 30px) clamp(20px, 4vw, 40px) clamp(16px, 3vh, 34px);
-    display: flex;
-    flex-direction: column;
-    gap: clamp(14px, 2.4vh, 30px);
+  /* ── loading: the stone's outline draws itself ── */
+  #loader {
+    position: fixed; inset: 0;
+    display: grid; place-items: center;
+    background: var(--night);
+    transition: opacity 1.2s ease, visibility 0s linear 1.2s;
+    z-index: 5;
+    pointer-events: none;
   }
+  #loader svg { width: min(72vw, 520px); height: auto; overflow: visible; }
+  #loader path {
+    fill: none;
+    stroke: var(--mustard);
+    stroke-width: 0.6;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: draw 2.4s cubic-bezier(.6,.1,.3,1) infinite;
+  }
+  @keyframes draw {
+    0%   { stroke-dashoffset: 1; opacity: 1; }
+    70%  { stroke-dashoffset: 0; opacity: 1; }
+    100% { stroke-dashoffset: 0; opacity: 0; }
+  }
+  .ready #loader { opacity: 0; visibility: hidden; }
 
-  /* ── masthead ── */
-  .masthead {
-    flex: none;
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 20px;
-    padding-bottom: clamp(10px, 1.6vh, 18px);
-    border-bottom: 1px solid rgba(20,48,31,0.12);
+  /* ── what sits over the scene ── */
+  .ui {
+    position: fixed; inset: 0;
+    pointer-events: none;
+    display: flex; flex-direction: column; justify-content: flex-start;
+    padding: clamp(16px, 3vh, 30px) clamp(16px, 3vw, 40px);
+    z-index: 3;
+    opacity: 0;
+    transition: opacity 1.4s ease .9s;
   }
-  .fe-logo-lockup { display: block; text-decoration: none; line-height: 1; }
-  .fe-logo-svg { width: clamp(88px, 8vw, 116px); height: auto; display: block; color: var(--green-deep); }
-  .fe-logo-en { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 261px; fill: var(--green-mid); }
-  .masthead-meta {
+  .ready .ui { opacity: 1; }
+  .ui a { pointer-events: auto; }
+
+  .top { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+  .fe-logo-lockup { display: block; color: var(--nav-logo, var(--cream)); line-height: 1; }
+  .fe-logo-svg { width: clamp(84px, 7vw, 108px); height: auto; display: block; }
+  .fe-logo-en { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 261px; fill: currentColor; }
+
+  .links { display: flex; align-items: center; gap: clamp(12px, 1.8vw, 24px); flex-wrap: wrap; justify-content: flex-end; }
+  .links a {
     font-family: 'Barlow Condensed', sans-serif;
     font-weight: 600;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    font-size: 0.68rem;
-    color: var(--muted);
-    text-align: right;
-    padding-bottom: 3px;
+    font-size: 14.5px;
+    color: var(--nav-ink, var(--cream-dim));
+    text-decoration: none;
+    transition: color .2s ease;
   }
+  .links a:hover { color: var(--nav-hover, var(--cream)); }
+  .links .pro {
+    color: var(--night);
+    background: var(--mustard);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: 700;
+  }
+  .links .pro:hover { color: var(--night); background: var(--cream); }
 
-  /* ── hero ── */
-  .hero {
-    flex: 1 1 auto;
-    min-height: 0;
-    display: grid;
-    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
-    gap: clamp(24px, 4.5vw, 60px);
-    align-items: center;
+  .ui { --accent: var(--mustard); --accent-ink: var(--mustard); }
+  /* a shade of the world's own night behind the words in the sky */
+  .ui::before {
+    content: ''; position: fixed; left: 0; right: 0; top: 0; height: 52vh; z-index: -1; pointer-events: none;
+    background: radial-gradient(85% 100% at 15% 0%, color-mix(in srgb, var(--shade, var(--night)) 90%, transparent), transparent 78%);
+    transition: background .6s ease;
   }
+  .bottom { margin-top: clamp(10px, 4vh, 44px); }
+  .copy {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 40px; align-items: end;
+    text-align: left;
+    transition: opacity .28s ease, transform .28s ease;
+    text-shadow: 0 1px 16px var(--text-glow, rgba(4, 12, 32, 0.85));
+  }
+  .copy > * { grid-column: 1; justify-self: start; }
+  .copy > .enter { grid-column: 2; grid-row: 1 / span 3; align-self: end; margin-bottom: 18px; }
+  .copy.out { opacity: 0; transform: translateY(8px); }
   .eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
+    display: inline-flex; align-items: center; gap: 10px;
     font-family: 'Barlow Condensed', sans-serif;
     font-weight: 700;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.24em;
     text-transform: uppercase;
-    font-size: 10.9px;
-    color: var(--green-mid);
-    margin-bottom: clamp(10px, 1.6vh, 16px);
+    font-size: 11px;
+    color: var(--accent-ink);
+    margin-bottom: 12px;
+    transition: color .6s ease;
   }
-  .eyebrow::before {
-    content: '';
-    width: 30px;
-    height: 1px;
-    background: var(--green-mid);
-  }
-  .hero h1 {
+  .eyebrow::before { content: ''; width: 28px; height: 1px; background: currentColor; }
+  .eyebrow .num { color: var(--cream-dim); }
+  h1 {
+    color: var(--head-ink, var(--cream));
     font-family: 'Playfair Display', serif;
     font-weight: 700;
-    font-size: clamp(28px, 3.5vw, 48px);
+    font-size: clamp(34px, 4.3vw, 66px);
     line-height: 1.06;
-    letter-spacing: -0.015em;
-    margin-bottom: clamp(10px, 1.8vh, 18px);
-    color: var(--ink);
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
   }
-  .hero h1 em {
-    font-style: italic;
-    color: var(--pink-mid);
-  }
-  .hero .lead {
-    color: var(--muted);
-    font-size: clamp(13.6px, 1.05vw, 15.7px);
-    font-weight: 300;
-    line-height: 1.6;
-    max-width: 40ch;
-  }
-
-  /* ── artwork ── */
-  /* The stage never scrolls, so the artwork must be allowed to give way
-     rather than push its own column past the hero's box. */
-  .art { position: relative; min-height: 0; margin: 0; display: flex; align-items: center; }
-  .art::before {
-    content: '';
-    position: absolute;
-    inset: 14px -14px -14px 14px;
-    border: 1px solid rgba(20,48,31,0.18);
-    border-radius: var(--radius);
-  }
-  .art img {
-    position: relative;
-    display: block;
-    width: 100%;
-    height: auto;
-    max-height: 100%;
-    object-fit: cover;
-    border-radius: var(--radius);
-    box-shadow: 0 22px 50px rgba(0,0,0,0.42);
-  }
-
-  /* ── nav deck ── */
-  .deck { flex: none; }
-  .deck-grid {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 10px;
-  }
-  .tile {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 9px;
-    padding: clamp(11px, 1.7vh, 17px) 8px;
-    border: 1px solid rgba(20,48,31,0.12);
-    border-radius: var(--radius);
-    background: #ffffff;
-    box-shadow: 0 1px 4px rgba(20,48,31,0.05);
-    text-decoration: none;
-    text-align: center;
-    transition: border-color .18s ease, background .18s ease, transform .18s ease;
-  }
-  .tile:hover {
-    border-color: rgba(20,48,31,0.5);
-    background: rgba(20,48,31,0.04);
-    transform: translateY(-3px);
-  }
-  .tile svg { width: 21px; height: 21px; stroke: var(--green-deep); fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; flex: none; }
-  .tile span {
+  h1 em { font-style: italic; color: var(--accent-ink); transition: color .6s ease; }
+  .lead { font-weight: 300; font-size: 16.5px; line-height: 1.55; color: var(--lead-ink, var(--cream-dim)); max-width: 44ch; margin-bottom: 18px; min-height: 3.1em; }
+  .enter {
+    display: inline-flex; align-items: center; gap: 10px;
     font-family: 'Barlow Condensed', sans-serif;
     font-weight: 700;
-    letter-spacing: 0.11em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    font-size: 0.68rem;
-    line-height: 1.25;
-    color: var(--ink);
-  }
-
-  /* ── featured ──
-     Geometry matched to library.html's .sherpa-banner. These ran 148.8px
-     tall at 1440 against the library's 77: the .feature-go tail ("Open the
-     route →") could not sit beside the icon and the sub in a 360px grid
-     column, so all three panels wrapped to three lines. The tail is gone
-     and the padding is pinned. Type is a shade under what it was, never
-     over: matching the library's larger 0.95rem title made the panels
-     TALLER at 900px and below, where they are already single-column and
-     were never wrapping.
-     Type here is px, not rem, deliberately: this page is a fixed stage that
-     hides its own overflow, so a browser font-size setting must not be able
-     to inflate it — claude/homepage-fixed-stage-and-browser-font-size.md. */
-  .feature {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-top: 10px;
-    padding: 12px 18px;
-    border-radius: var(--radius);
-    background: linear-gradient(100deg, var(--pink-bright), var(--pink-deep));
+    font-size: 13px;
+    color: var(--cream);
     text-decoration: none;
-    position: relative;
-    overflow: hidden;
-    transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+    padding: 11px 20px;
+    border: 1px solid var(--accent);
+    border-radius: 30px;
+    background: rgba(6, 10, 22, 0.4);
+    backdrop-filter: blur(6px);
+    transition: background .2s ease, border-color .6s ease;
   }
+  .enter span { transition: transform .2s ease; }
+  /* the way to the prices, the same on every turn */
+  .plans { grid-column: 1; margin: -6px 0 0; font-size: 15px; font-weight: 300; color: var(--lead-ink, var(--cream-dim)); }
+  .plans a { color: inherit; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+  .plans a:hover { color: var(--head-ink, var(--cream)); }
+  .enter:hover { background: rgba(246, 234, 210, 0.1); }
+  .enter:hover span { transform: translateX(4px); }
 
-  /* ── hover expansion ──
-     The panel grows and reveals its call to action, and NONE of it costs
-     layout: transform, opacity and filter only. That constraint is not
-     stylistic — this page is a fixed one-screen stage with overflow
-     hidden, and at 900x700 there are only ~17px between the bottom of the
-     hero and the top of the deck. Anything that grew a real box here would
-     reintroduce exactly the collision recorded in
-     claude/homepage-fixed-stage-and-browser-font-size.md.
-
-     scale is 1.025: the grid gap is 10px, so a hovered panel encroaches
-     ~4.5px into it and never touches its neighbour.
-
-     Gated behind (hover: hover) so a tablet — which is a real slice of this
-     audience — never lands in a stuck hover state, and the CTA is decorative
-     only: the whole panel is the link, so nothing is lost without it. */
-  .feature-go {
-    position: absolute;
-    right: 18px;
-    top: 50%;
-    transform: translate(14px, -50%);
-    opacity: 0;
+  /* the index: where each turn takes you; a click turns her there */
+  .index { list-style: none; display: grid; gap: 2px; min-width: 13.5rem; counter-reset: sec; }
+  .index a {
+    display: flex; align-items: baseline; gap: 12px;
+    padding: 7px 0 7px 16px;
+    border-left: 1px solid var(--cream-faint);
+    text-decoration: none;
     font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    font-size: 11.5px;
-    color: #ffffff;
-    white-space: nowrap;
-    pointer-events: none;
-    transition: opacity .2s ease, transform .2s ease;
+    font-size: 13px;
+    color: var(--cream-dim);
+    transition: color .25s ease, border-color .25s ease;
   }
-  @media (hover: hover) {
-    .feature:hover {
-      transform: translateY(-2px) scale(1.025);
-      box-shadow: 0 12px 28px rgba(0,0,0,0.30);
-      filter: saturate(1.12) brightness(1.06);
-      z-index: 2;
-    }
-    .feature:hover .feature-sub { opacity: 0; transform: translateX(-6px); }
-    .feature:hover .feature-go  { opacity: 1; transform: translate(0, -50%); }
+  .index a::before {
+    counter-increment: sec;
+    content: counter(sec, decimal-leading-zero);
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    opacity: 0.6;
+  }
+  .index a:hover { color: var(--cream); }
+  .index a[aria-current="true"] { color: var(--accent); border-left-color: var(--accent); }
+  /* once the ring is up it is the menu; the list stays for keyboards and
+     screen readers, and is the visible menu when there is no 3D */
+  .ready:not(.no-gl) .index {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+  }
+
+  .hint {
+    position: fixed;
+    left: 50%; bottom: clamp(18px, 4vh, 36px);
+    transform: translateX(-50%);
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-size: 11px;
+    color: var(--cream-dim);
+    pointer-events: none;
+    transition: opacity .8s ease;
+  }
+  .hint svg { width: 34px; height: 12px; stroke: currentColor; fill: none; stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; }
+  .hint.gone { opacity: 0; }
+  .no-gl .hint { display: none; }
+
+  /* Where WebGL is unavailable the lady still stands, as a flat stone. */
+  .poster { display: none; }
+  .no-gl .poster {
+    display: block;
+    position: fixed;
+    left: 50%; top: 44%;
+    width: min(84vw, 760px);
+    aspect-ratio: 2.3141;
+    transform: translate(-50%, -50%);
+    background: url('home/lady-cutout.webp') center / contain no-repeat;
+    filter: drop-shadow(0 0 40px rgba(247, 186, 87, 0.45));
+  }
+  .no-gl body { background: radial-gradient(80% 60% at 50% 45%, #1d2f5c, var(--night)); }
+
+  /* on a desktop screen the small type along the top reads larger */
+  @media (min-width: 1101px) {
+    /* 19px from 1440 up, a touch smaller below it, so the row never runs off the edge */
+    .links a { font-size: clamp(15px, 1.32vw, 19px); }
+    /* the row runs the full width, from beside the logo to the right edge */
+    .top { gap: 48px; }
+    /* the row spreads across, but starts well clear of the logo */
+    .links { flex: 1; margin-left: clamp(90px, 14vw, 260px); justify-content: space-between; flex-wrap: nowrap; gap: 12px; }
+    .links a { white-space: nowrap; letter-spacing: 0.05em; }
+    .links .pro { padding: 9px 22px; }
+    .fe-logo-svg { width: 138px; }
+    .eyebrow { font-size: 13.5px; }
+    .lead { font-size: 19.5px; }
+    .enter { font-size: 15px; padding: 13px 24px; }
+    .hint { font-size: 13px; }
+  }
+  @media (max-width: 1350px) {
+    .links .wide { display: none; }
+  }
+  @media (max-width: 760px) {
+    .links .mid { display: none; }
+    .bottom { margin-top: 18px; }
+    /* on a phone the words and the button stack, centred */
+    .copy { display: flex; flex-direction: column; align-items: center; text-align: center; }
+    .copy > * { justify-self: auto; }
+    .copy > .enter { margin-bottom: 0; }
+    .eyebrow::after { content: ''; width: 28px; height: 1px; background: currentColor; }
+    .ui::before { background: radial-gradient(90% 100% at 50% 0%, color-mix(in srgb, var(--shade, var(--night)) 84%, transparent), transparent 75%); }
+    h1 { font-size: clamp(26px, 7.4vw, 36px); margin-bottom: 8px; }
+    .lead { font-size: 13.5px; margin-bottom: 12px; min-height: 0; }
+    .eyebrow { margin-bottom: 8px; }
+    /* on a phone the index is a row of numbered stops */
+    .index { grid-template-columns: repeat(6, minmax(0, 1fr)); min-width: 0; gap: 4px; order: -1; }
+    .index a { justify-content: center; padding: 8px 0 6px; border-left: 0; border-top: 2px solid var(--cream-faint); font-size: 0; gap: 0; }
+    .index a::before { font-size: 11px; opacity: 1; }
+    .index a[aria-current="true"] { border-top-color: var(--accent); }
+    .enter { padding: 10px 18px; }
+    .hint { bottom: 22px; }
+  }
+  @media (max-height: 640px) and (min-width: 761px) {
+    .lead { display: none; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .feature, .feature-go, .feature-sub { transition: none; }
-    .feature:hover { transform: none; }
+    #loader path { animation: none; stroke-dashoffset: 0; }
+    .ui, #loader, .copy { transition: none; }
   }
-  .feature svg { width: 26px; height: 26px; stroke: #fff; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; flex: none; }
-  .feature-text { flex: 1 1 auto; min-width: 0; }
-  .feature-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 800;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    font-size: 13.5px;
-    color: #ffffff;
-    line-height: 1.2;
-  }
-  .feature-sub {
-    font-size: 12px;
-    color: rgba(255,255,255,0.85);
-    line-height: 1.35;
-    margin-top: 1px;
-    transition: opacity .18s ease, transform .18s ease;
-  }
-  .feature-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
-  .feature-row .feature { margin-top: 10px; }
-  @media (max-width: 1100px) { .feature-row { grid-template-columns: 1fr 1fr; } }
-  @media (max-width: 900px) { .feature-row { grid-template-columns: 1fr; gap: 8px; } }
-  /* IELTS runs gold to match library.html. Gold is a light ground, so this
-     panel inverts to dark text rather than the white the other two use:
-     white on #b8962e measures 2.82:1, under the 4.50 AA floor for text this
-     size, and the hover's brightness(1.06) drops it further to 2.50. Dark
-     green on this gradient measures 8.20:1 at rest and 9.35:1 hovered.
-     This is not a one-off treatment — .tb-cta-gold (the Go Pro pill) already
-     runs gold with green-deep text for the same reason.
-     Ink is the literal #102818, and the sub sits at 0.92 alpha rather than
-     0.85, because the binding case is the DEEP end of the gradient, not the
-     light one: --green-deep on #b8962e measures 5.05 but the sub at 0.85
-     falls to 4.02. At #102818 / 0.92 the worst point anywhere on the
-     gradient is 4.95. Measure the dark end, not the cover colour. */
-  .feature.feature-ielts {
-    background: linear-gradient(100deg, var(--gold-bright), var(--gold));
-  }
-  .feature.feature-ielts .feature-title,
-  .feature.feature-ielts .feature-go { color: #102818; }
-  .feature.feature-ielts .feature-sub { color: rgba(16, 40, 24, 0.92); }
-  .feature.feature-ielts svg { stroke: #102818; }
-  .feature.feature-blockcamp {
-    background: linear-gradient(100deg, #3E5C8F, #2C4470);
-  }
-
-  /* ── responsive ── */
-  @media (max-width: 900px) {
-    .hero { grid-template-columns: 1fr; gap: 18px; align-content: center; }
-    .deck-grid { grid-template-columns: repeat(3, 1fr); }
-    .hero .lead { max-width: none; }
-  }
-  @media (max-width: 560px) {
-    .deck-grid { grid-template-columns: repeat(2, 1fr); }
-    .masthead-meta { display: none; }
-    .feature-sub { display: none; }
-  }
-  @media (max-height: 660px) {
-    .hero .lead { display: none; }
-    .art::before { display: none; }
-    /* A short window plus a large browser font is the tightest case the
-       fixed stage has to survive; pull the headline down so the hero
-       still fits its box instead of spilling over the deck. */
-    .hero h1 { font-size: clamp(24px, 3vw, 40px); }
-    .eyebrow { margin-bottom: 8px; }
-    .tile { gap: 6px; }
-    .tile svg { width: 18px; height: 18px; }
-  }
-  @media (max-width: 900px) {
-       html, body { overflow-y: auto; height: auto; }
-       .stage { height: auto; min-height: 100vh; }
-       .art img { max-height: 32vh; object-fit: cover; }
-  }
-
-/* -- top band nav -- */
-body { display: flex; flex-direction: column; }
-.topband { flex: none; background: var(--green-deep); border-bottom: 1px solid rgba(232,192,74,0.25); }
-.stage { flex: 1 1 auto; min-height: 0; height: auto; }
-.tb-inner {
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 10px clamp(20px,4vw,40px);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-}
-.tb-logo {
-  display: block;
-  width: 160px;
-  height: 32px;
-  background-image: url('logo-forbes-english_1.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: left center;
-  text-indent: -9999px;
-  overflow: hidden;
-  text-decoration: none;
-}
-.tb-links { display: flex; align-items: center; gap: clamp(12px, 2vw, 26px); flex-wrap: wrap; }
-.tb-links a {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  color: var(--cream);
-  text-decoration: none;
-  opacity: 0.85;
-  transition: opacity .15s ease;
-}
-.tb-links a:hover { opacity: 1; }
-.tb-nav-sub { }
-@media (max-width: 1024px) { .tb-nav-sub { display: none; } }
-
-.tb-cta { background: var(--green-lift); color: var(--cream) !important; padding: 6px 14px; border-radius: 20px; opacity: 1 !important; border: 1px solid rgba(232,192,74,0.4); }
-.tb-cta:hover { background: var(--gold-deep); }
-.tb-cta-gold { background: var(--gold-bright); color: var(--green-deep) !important; padding: 6px 14px; border-radius: 20px; opacity: 1 !important; font-weight: 700; }
-.tb-cta-gold:hover { background: var(--gold-pale); }
-.tb-account { border: 1px solid rgba(245,240,225,0.45); padding: 6px 14px; border-radius: 20px; opacity: 1 !important; }
-.tb-account:hover { border-color: var(--gold-bright); }
-@media (max-width: 560px) {
-  .tb-links a:not(.tb-cta):not(.tb-cta-gold):not(.tb-account) { display: none; }
-}
 </style>
 </head>
 <body>
-<nav class="topband">
-  <div class="tb-inner">
+<canvas id="world" aria-hidden="true"></canvas>
+<div class="poster" aria-hidden="true"></div>
+<div id="loader" aria-hidden="true"><svg id="outline-svg" viewBox="0 0 100 50"><path id="outline" pathLength="1" d=""/></svg></div>
 
-    <div class="tb-links">
-      <a href="level-checker.html">Level<span class="tb-nav-sub"> Check</span></a>
-      <a href="library.html">Lessons</a>
-      <a href="ielts.html">IELTS<span class="tb-nav-sub"> Academic</span></a>
-      <a href="grammar.html">Grammar</a>
-      <a href="rpg.html">RPGs</a>
-      <a href="library.html#cat=Speaking+activity">Speaking</a>
-      <a href="library.html#cat=Slide+Decks">Slide Deck</a>
-      <a href="account.html" class="tb-account">Sign In</a>
-      <a href="pricing.html" class="tb-cta-gold">Go Pro</a>
-      <a href="mailto:info@forbesenglish.com" class="tb-cta">Work With Me</a>
-    </div>
-  </div>
-</nav>
-<div class="stage">
-
-  <header class="masthead">
-    <a href="library.html" class="fe-logo-lockup" aria-label="Forbes English — home">
+<div class="hint" id="hint" aria-hidden="true"><svg viewBox="0 0 34 12"><path d="M5 6h24M9 2L5 6l4 4M25 2l4 4-4 4"/></svg>Drag to turn her</div>
+<div class="ui">
+  <header class="top">
+    <a href="library.html" class="fe-logo-lockup" aria-label="Forbes English — the lesson library">
       <svg class="fe-logo-svg" viewBox="670 345 1530 738" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
 <g transform="translate(0,1504) scale(0.1,-0.1)" fill="currentColor" stroke="none">
       <path d="M14940 11379 c-58 -10 -226 -34 -375 -54 -148 -20 -305 -41 -348 -47
@@ -475,80 +360,1861 @@ body { display: flex; flex-direction: column; }
       <text class="fe-logo-en" x="680" y="1054" textLength="1510" lengthAdjust="spacing">ENGLISH</text>
       </svg>
     </a>
-    <div class="masthead-meta">Interactive ESL materials<br>A1 &ndash; C2 &middot; classroom ready</div>
+    <nav class="links" aria-label="Main">
+      <a href="level-checker.html" class="mid">Level Check</a>
+      <a href="library.html">Lessons</a>
+      <a href="library.html#shelf" class="mid">Bookshelf</a>
+      <a href="ielts.html" class="mid">IELTS</a>
+      <a href="grammar.html" class="mid">Grammar</a>
+      <a href="rpg.html" class="wide">RPGs</a>
+      <a href="block-camp.html" class="mid">Block Camp</a>
+      <a href="library.html#cat=Slide+Decks" class="wide">Slide Decks</a>
+      <a href="mailto:info@forbesenglish.com" class="wide">Work With Me</a>
+      <a href="account.html" class="mid">Sign In</a>
+      <a href="pricing.html" class="pro">Go Pro</a>
+    </nav>
   </header>
 
-  <main class="hero">
-    <div class="hero-copy">
-      <div class="eyebrow">The Lesson Library</div>
-      <h1>Ready-to-use materials,<br>built for <em>real classes</em>.</h1>
-      <p class="lead">Two hundred interactive lessons — grammar drills, speaking prompts, video work and full slide decks — searchable by level, category and topic.</p>
+  <main class="bottom">
+    <div class="copy" id="copy" aria-live="polite">
+      <div class="eyebrow"><span class="num" id="sec-num">01 / 06</span> <span id="sec-name">The Lesson Library</span></div>
+      <h1 id="sec-title">English, <em>beautifully taught</em>.</h1>
+      <p class="lead" id="sec-lead">Over three hundred interactive lessons — grammar, speaking, video work and full slide decks, ready for a real class.</p>
+      <a class="enter" id="sec-go" href="library.html"><span id="sec-cta">Enter the library</span> <span>&rarr;</span></a>
+      <p class="plans">Plenty of lessons are free, no sign-in. <a href="pricing.html">Plans &amp; prices &rarr;</a></p>
     </div>
-    <figure class="art">
-      <img src="HOUSE STYLE/blackisler_cool_female_student_studying_at_home_with_books_No_f252909d-c97d-494b-b5b6-596be1e11502_2.png" alt="Flat-vector illustration of a student in dark glasses reading a book over the back of a red sofa">
-    </figure>
+    <!-- Each stop is one full turn of the lady. The data-* text is what the
+         panel above shows when she comes round to face you; without WebGL
+         these are plain links. -->
+    <ol class="index" id="index" aria-label="Sections">
+      <li><a href="library.html" data-ring="LIBRARY" data-outline="1" data-color="#ffffff" data-ink="#f7ba57" data-cta="Enter the library"
+        data-title="English, &lt;em&gt;beautifully taught&lt;/em&gt;."
+        data-lead="Over three hundred interactive lessons — grammar, speaking, video work and full slide decks, ready for a real class.">The Lesson Library</a></li>
+      <li><a href="ielts.html" data-ring="IELTS" data-outline="1" data-color="#ffffff" data-ink="#e8c04a" data-cta="Open the IELTS routes"
+        data-title="Five routes to a &lt;em&gt;higher band&lt;/em&gt;."
+        data-lead="Writing, Speaking, Listening, Reading and Vocabulary in teaching order. The first lesson on every route is free.">IELTS Academic</a></li>
+      <li><a href="sherpa-tensing-route-map.html" data-ring="SHERPA" data-outline="1" data-color="#4a545c" data-ink="#b8564c" data-cta="Open the route map"
+        data-title="Climb the tenses, &lt;em&gt;camp by camp&lt;/em&gt;."
+        data-lead="Sherpa Tensing: thirteen camps, an active ascent and a passive descent.">Sherpa Tensing</a></li>
+      <li><a href="block-camp.html" data-ring="BLOCK CAMP" data-outline="1" data-color="#ffffff" data-ink="#a9c4f5" data-cta="Enter Block Camp"
+        data-title="Grammar you can &lt;em&gt;play&lt;/em&gt;."
+        data-lead="Branching role-playing games and Minecraft grammar lessons, together in one camp.">Block Camp</a></li>
+      <li><a href="grammar.html" data-ring="GRAMMAR" data-outline="1" data-color="#ffffff" data-ink="#f0a0a2" data-cta="Browse grammar by topic"
+        data-title="Every grammar point, &lt;em&gt;in one place&lt;/em&gt;."
+        data-lead="Tenses, modals, the passive, prepositions and more — every grammar lesson, sorted by topic.">Grammar</a></li>
+      <li><a href="level-checker.html" data-ring="LEVEL CHECK" data-outline="1" data-color="#ffffff" data-ink="#f6ead2" data-cta="Check your level"
+        data-title="Where are you, &lt;em&gt;A1 to C2&lt;/em&gt;?"
+        data-lead="A short level check that tells you where to start in the library.">Level Check</a></li>
+    </ol>
   </main>
-
-  <nav class="deck">
-    <div class="deck-grid">
-      <a class="tile" href="library.html">
-        <svg viewBox="0 0 24 24"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v16H5.5A1.5 1.5 0 0 1 4 18.5z"/><path d="M20 5.5A1.5 1.5 0 0 0 18.5 4H13v16h5.5a1.5 1.5 0 0 0 1.5-1.5z"/></svg>
-        <span>Browse<br>Lessons</span>
-      </a>
-      <a class="tile" href="library.html#cat=Grammar+activity">
-        <svg viewBox="0 0 24 24"><path d="M4 20l4.5-1.2L19 8.3a2 2 0 0 0 0-2.8l-.5-.5a2 2 0 0 0-2.8 0L5.2 15.5z"/><path d="M14.5 6.5l3 3"/></svg>
-        <span>Grammar<br>Activities</span>
-      </a>
-      <a class="tile" href="library.html#cat=Speaking+activity">
-        <svg viewBox="0 0 24 24"><path d="M20.5 12a7.5 7.5 0 0 1-7.5 7.5H9l-4.5 2.5 1.2-3.9A7.5 7.5 0 0 1 13 4.5a7.5 7.5 0 0 1 7.5 7.5z"/></svg>
-        <span>Speaking<br>Activities</span>
-      </a>
-      <a class="tile" href="library.html#cat=Slide+Decks">
-        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12.5" rx="1.6"/><path d="M12 16.5V20M8.5 20h7"/><path d="M10.5 8.4l4 1.9-4 1.9z"/></svg>
-        <span>Slide<br>Deck</span>
-      </a>
-      <a class="tile" href="library.html#cat=Video+Lessons">
-        <svg viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.2"/><path d="M10 9.2l5 2.8-5 2.8z"/></svg>
-        <span>Video<br>Lessons</span>
-      </a>
-      <a class="tile" href="mailto:info@forbesenglish.com">
-        <svg viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.2"/><path d="M3.2 6.6L12 13l8.8-6.4"/></svg>
-        <span>Work<br>With Me</span>
-      </a>
-    </div>
-
-    <div class="feature-row">
-    <a class="feature feature-ielts" href="ielts.html">
-      <svg viewBox="0 0 24 24"><path d="M5 4h11l3.5 3.5V20a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"/><path d="M15.5 4v4h4"/><path d="M7.5 12.5h9M7.5 16h6"/></svg>
-      <div class="feature-text">
-        <div class="feature-title">IELTS Academic</div>
-        <div class="feature-sub">Writing, Speaking, Listening, Reading and Vocabulary in order — the first lesson on every route is free</div>
-      </div>
-      <div class="feature-go">Open the route &rarr;</div>
-    </a>
-
-    <a class="feature" href="sherpa-tensing-route-map.html">
-      <svg viewBox="0 0 24 24"><path d="M2.5 19.5l6.2-11.4 3.4 5.6 2.3-3.6 7.1 9.4z"/><path d="M8.7 8.1l2.1 3.4"/></svg>
-      <div class="feature-text">
-        <div class="feature-title">Sherpa Tensing</div>
-        <div class="feature-sub">A route up the tenses — thirteen camps, active ascent and passive descent</div>
-      </div>
-      <div class="feature-go">Open the map &rarr;</div>
-    </a>
-
-    <a class="feature feature-blockcamp" href="block-camp.html">
-      <svg viewBox="0 0 24 24"><path d="M12 3l8 4.6v9L12 21l-8-4.4v-9z"/><path d="M12 3v9M4 7.6L12 12l8-4.4"/></svg>
-      <div class="feature-text">
-        <div class="feature-title">Block Camp</div>
-        <div class="feature-sub">Branching RPGs and Minecraft grammar lessons, together</div>
-      </div>
-      <div class="feature-go">Open Block Camp &rarr;</div>
-    </a>
-    </div>
-  </nav>
-
 </div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
 <script>
+  // Her outline, traced from the artwork by tools/make_home_cutout.py
+  // (home/lady-outline.json): x and y run 0..1 across the texture, y up.
+  // The loader draws it and the 3D slab is extruded from it, so the two
+  // always match. Drawn before the module loads, so the page is never a
+  // blank black screen.
+  window.LADY = {"aspect":2.3141,"points":[[0.0034,0.0825],[0.0039,0.0113],[0.0361,0.0113],[0.0366,0.0237],[0.0391,0.0226],[0.0391,0.0113],[0.3193,0.0113],[0.3198,0.0158],[0.3218,0.0158],[0.3223,0.0113],[0.3232,0.0113],[0.3237,0.009],[0.4819,0.009],[0.4839,0.0113],[0.4844,0.0158],[0.4863,0.0158],[0.4868,0.0113],[0.5112,0.0113],[0.5117,0.0158],[0.5137,0.0158],[0.5151,0.009],[0.6738,0.009],[0.6753,0.0147],[0.6772,0.0147],[0.6777,0.0113],[0.9609,0.0113],[0.9614,0.0249],[0.9639,0.0237],[0.9639,0.0113],[0.9951,0.0113],[0.9951,0.0836],[0.9893,0.0847],[0.9897,0.1051],[0.9888,0.1164],[0.9844,0.1401],[0.981,0.1514],[0.9746,0.1672],[0.9609,0.1887],[0.9507,0.2],[0.9316,0.2147],[0.916,0.2226],[0.9126,0.2226],[0.9082,0.226],[0.9033,0.2249],[0.9028,0.2294],[0.8965,0.2316],[0.8892,0.2373],[0.8867,0.2373],[0.8579,0.2542],[0.8555,0.2542],[0.8101,0.278],[0.8071,0.278],[0.8052,0.2802],[0.7974,0.2825],[0.793,0.2859],[0.7695,0.2949],[0.7671,0.2972],[0.7642,0.2972],[0.7617,0.2994],[0.7583,0.2994],[0.7544,0.3028],[0.751,0.3028],[0.7178,0.3164],[0.7139,0.3164],[0.7085,0.3198],[0.6841,0.3266],[0.6826,0.3808],[0.6787,0.4463],[0.6743,0.4972],[0.6733,0.5017],[0.6733,0.5085],[0.6724,0.513],[0.6704,0.539],[0.668,0.5571],[0.668,0.5627],[0.666,0.5763],[0.666,0.5819],[0.6631,0.609],[0.6621,0.6124],[0.6597,0.6373],[0.6558,0.6633],[0.6558,0.6678],[0.6455,0.7356],[0.6348,0.7955],[0.6216,0.8542],[0.6094,0.8927],[0.6006,0.913],[0.5952,0.922],[0.5903,0.9333],[0.5874,0.9356],[0.5864,0.939],[0.5854,0.939],[0.5776,0.9514],[0.5645,0.9661],[0.5493,0.9774],[0.5303,0.9864],[0.5259,0.9864],[0.5186,0.9898],[0.5146,0.9887],[0.5132,0.991],[0.5083,0.9898],[0.5073,0.9921],[0.4868,0.9921],[0.4863,0.9898],[0.4761,0.9898],[0.4692,0.9864],[0.4644,0.9864],[0.4624,0.9842],[0.4585,0.9842],[0.4453,0.9774],[0.4282,0.9638],[0.4194,0.9525],[0.417,0.9514],[0.4165,0.9492],[0.4106,0.9424],[0.4087,0.9379],[0.4048,0.9333],[0.3955,0.9141],[0.394,0.913],[0.3818,0.8825],[0.3755,0.8621],[0.3638,0.8136],[0.3521,0.7514],[0.3447,0.7062],[0.3345,0.6305],[0.3228,0.5209],[0.3228,0.5153],[0.3179,0.4667],[0.3169,0.4463],[0.3154,0.435],[0.3135,0.3944],[0.3125,0.3864],[0.311,0.3266],[0.2886,0.3198],[0.2832,0.3164],[0.2793,0.3164],[0.2769,0.3141],[0.25,0.3051],[0.2402,0.2994],[0.2056,0.2859],[0.2017,0.2825],[0.1748,0.2712],[0.1665,0.2655],[0.1641,0.2655],[0.1577,0.261],[0.1548,0.261],[0.1445,0.2542],[0.1421,0.2542],[0.1382,0.2508],[0.1357,0.2508],[0.1338,0.2486],[0.0933,0.2271],[0.0879,0.2226],[0.084,0.2226],[0.0752,0.2169],[0.0728,0.2169],[0.0557,0.2056],[0.0439,0.1944],[0.0352,0.1831],[0.0288,0.1729],[0.022,0.1582],[0.0166,0.1424],[0.0132,0.1266],[0.0107,0.1062],[0.0107,0.0847]]};
+  (function () {
+    var h = 100 / LADY.aspect, d = '';
+    LADY.points.forEach(function (p, i) {
+      d += (i ? 'L' : 'M') + (p[0] * 100).toFixed(2) + ' ' + ((1 - p[1]) * h).toFixed(2);
+    });
+    document.getElementById('outline-svg').setAttribute('viewBox', '0 0 100 ' + h.toFixed(2));
+    document.getElementById('outline').setAttribute('d', d + 'Z');
+  })();
+  // No WebGL, or the module never arrives: show the flat stone, keep the links.
+  window.__worldFallback = setTimeout(function () {
+    document.documentElement.classList.add('no-gl', 'ready');
+  }, 9000);
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { Reflector } from 'three/addons/objects/Reflector.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+
+const root = document.documentElement;
+const canvas = document.getElementById('world');
+const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const TAU = Math.PI * 2;
+
+let renderer;
+try {
+  renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
+} catch (e) {
+  clearTimeout(window.__worldFallback);
+  root.classList.add('no-gl', 'ready');
+  throw e;
+}
+renderer.setPixelRatio(Math.min(devicePixelRatio, 1.75));
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 0.92;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+const C = {
+  fog:     new THREE.Color('#0b1d42'),
+  top:     new THREE.Color('#020818'),
+  horizon: new THREE.Color('#2a4f9e'),
+  dusk:    new THREE.Color('#8fb4ff'),
+  glow:    new THREE.Color('#f7ba57'),
+  ground:  new THREE.Color('#07122a'),
+  plant:   new THREE.Color('#020611'),
+};
+
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(C.fog, 0.05);
+// The landscape stands on a turntable that turns with her, so a drag swings
+// the whole world round, as if the viewer were walking round her.
+const world = new THREE.Group();
+scene.add(world);
+const dusk = new THREE.Group();   // the open landscape: the default world
+world.add(dusk);
+
+/* sky: a gradient with a soft bloom low behind her. veil fades it to the
+   night colour while one world gives way to the next. */
+const skies = [];
+function makeSky(top, horizon, glow) {
+  const m = new THREE.Mesh(
+    new THREE.SphereGeometry(90, 32, 16),
+    new THREE.ShaderMaterial({
+      side: THREE.BackSide, depthWrite: false, fog: false,
+      uniforms: {
+        top: { value: new THREE.Color(top) }, horizon: { value: new THREE.Color(horizon) },
+        glow: { value: new THREE.Color(glow) }, veil: { value: 0 }, veilCol: { value: new THREE.Color() },
+      },
+      vertexShader: `varying vec3 vDir; void main(){ vDir = normalize(position); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`,
+      fragmentShader: `uniform vec3 top; uniform vec3 horizon; uniform vec3 glow; uniform float veil; uniform vec3 veilCol; varying vec3 vDir;
+        void main(){
+          float h = vDir.y;
+          vec3 col = mix(horizon, top, smoothstep(-0.02, 0.5, h));
+          float sun = pow(max(dot(normalize(vDir), normalize(vec3(0.0, 0.04, -1.0))), 0.0), 10.0);
+          col += glow * sun * 0.3 * (1.0 - smoothstep(0.0, 0.35, h));
+          // printed: a fine grain and uneven ink, fixed to the sky itself,
+          // so they turn with the world rather than sitting on the screen
+          vec3 d = normalize(vDir);
+          float grain = fract(sin(dot(floor(d * 620.0), vec3(12.9898, 78.233, 37.719))) * 43758.5453) - 0.5;
+          float mottle = sin(d.x * 9.0 + sin(d.y * 7.0) * 2.0) * sin(d.z * 8.0 + d.y * 5.0) * 0.5
+                       + sin(d.x * 23.0 + d.z * 17.0) * sin(d.y * 29.0 - d.x * 11.0) * 0.25;
+          col *= 1.0 + mottle * 0.07;
+          col += grain * 0.03;
+          gl_FragColor = vec4(mix(col, veilCol, veil), 1.0);
+        }`,
+    })
+  );
+  skies.push(m);
+  return m;
+}
+const sky = makeSky(C.top, C.horizon, C.dusk);
+dusk.add(sky);
+
+/* ground: rolling dunes that dip into a pond round the stone */
+// the pond runs out toward the viewer (+z), so the foreground is water
+// and her reflection, not dark ground
+function pondRadius(a) {
+  const front = Math.max(0, Math.sin(a));
+  return 5.2 + 0.9 * Math.sin(2 * a + 0.4) + 0.5 * Math.sin(3 * a + 1.9) + 11 * front * front;
+}
+function groundHeight(x, z) {
+  const d = Math.hypot(x, z), r = pondRadius(Math.atan2(z, x));
+  const shore = THREE.MathUtils.smoothstep(d, r - 0.5, r + 0.7);
+  const dunes = 0.55 * Math.sin(x * 0.18 + 1.3) * Math.cos(z * 0.15) + 0.35 * Math.sin(x * 0.07 - z * 0.11)
+              + 0.12 * Math.sin(x * 0.9) * Math.sin(z * 0.8);
+  const far = THREE.MathUtils.smoothstep(d, r, r + 12);
+  return -0.32 + shore * 0.42 + far * (dunes + 0.4);
+}
+const groundGeo = new THREE.PlaneGeometry(160, 160, 220, 220);
+groundGeo.rotateX(-Math.PI / 2);
+{
+  const p = groundGeo.attributes.position;
+  for (let i = 0; i < p.count; i++) p.setY(i, groundHeight(p.getX(i), p.getZ(i)));
+  groundGeo.computeVertexNormals();
+}
+const ground = new THREE.Mesh(groundGeo, new THREE.MeshStandardMaterial({ color: C.ground, roughness: 1 }));
+dusk.add(ground);
+
+/* water: a real mirror, darkened so it reads as still, peaty water */
+// Water, not glass: only part of the reflection shows, over the water's own
+// darker colour; each world sets the colour and the share (ENVS[…].wave).
+// The shader can also ripple the reflection, but Innes did not like it
+// (2026-10-18: "I hate the ripples"), so every world sets ripple: 0.
+// `rings` is different and was asked for (same day, "try 3d ripples in water
+// of LEVEL"): rings spreading out from her, shaded as a real surface — each
+// crest lit by the sun and each trough in shade, with a glint on the crests —
+// and the reflection only slightly bent by their slope.
+const WaterShader = {
+  name: 'RippledReflector',
+  uniforms: {
+    color: { value: null }, tDiffuse: { value: null }, textureMatrix: { value: null },
+    time: { value: 0 }, ripple: { value: 0 }, deep: { value: new THREE.Color('#1c2a33') }, mirror: { value: 0.55 }, gain: { value: 1 }, rings: { value: 0 },
+  },
+  vertexShader: `uniform mat4 textureMatrix; varying vec4 vUv; varying vec3 vPos;
+    #include <common>
+    #include <logdepthbuf_pars_vertex>
+    void main(){
+      vUv = textureMatrix * vec4(position, 1.0);
+      vPos = position;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      #include <logdepthbuf_vertex>
+    }`,
+  fragmentShader: `uniform vec3 color; uniform sampler2D tDiffuse; uniform float time; uniform float ripple;
+    uniform vec3 deep; uniform float mirror; uniform float gain; uniform float rings; varying vec4 vUv; varying vec3 vPos;
+    #include <logdepthbuf_pars_fragment>
+    float blendOverlay(float b, float c){ return b < 0.5 ? 2.0 * b * c : 1.0 - 2.0 * (1.0 - b) * (1.0 - c); }
+    vec3 blendOverlay(vec3 b, vec3 c){ return vec3(blendOverlay(b.r, c.r), blendOverlay(b.g, c.g), blendOverlay(b.b, c.b)); }
+    void main(){
+      #include <logdepthbuf_fragment>
+      vec2 p = vPos.xy;
+      float w1 = sin(p.x * 1.9 + time * 1.2) * sin(p.y * 1.4 - time * 0.9);
+      float w2 = sin(p.x * 4.3 - p.y * 3.1 + time * 2.1) * 0.5 + sin(p.y * 6.7 + time * 2.7) * 0.25;
+      vec2 off = vec2(w1 + w2, w1 * 0.6 - w2) * ripple;
+      // rings: the slope of the surface, as a normal
+      vec3 n = vec3(0.0, 0.0, 1.0);
+      if (rings > 0.0) {
+        float r = length(p) + 1e-3;
+        float env = rings * smoothstep(2.2, 4.5, r) * exp(-r * 0.04);
+        float dh = cos(r * 2.0 - time * 1.4) * env + cos(r * 3.7 - time * 2.3) * env * 0.35;
+        vec2 g = p / r * dh
+          + vec2(cos(p.x * 0.55 + p.y * 0.2 + time * 0.5), cos(p.y * 0.7 - p.x * 0.15 - time * 0.4)) * 0.22 * rings;
+        n = normalize(vec3(-g * 0.22, 1.0));
+        off += n.xy * 0.05;
+      }
+      vec4 uv = vUv;
+      uv.xy += off * uv.w;
+      vec3 refl = blendOverlay(texture2DProj(tDiffuse, uv).rgb, color);
+      // a glint where the ripples crest
+      float glint = smoothstep(0.82, 1.0, w1 * 0.6 + w2 * 0.8 + 0.4) * 0.12 * step(0.0001, ripple);
+      // gain dims the reflected picture alone, leaving the water's own colour
+      vec3 col = mix(deep, refl * gain, mirror) + glint;
+      if (rings > 0.0) {
+        // light from the sun's side: crests facing it brighten, the far
+        // faces of the troughs darken, and the steepest crests catch a glint
+        float lit = dot(n, normalize(vec3(-0.45, 0.35, 0.82)));
+        col *= 1.0 + (lit - 0.82) * 2.2;
+        col += vec3(1.0, 0.92, 0.86) * pow(max(lit, 0.0), 60.0) * 0.18;
+      }
+      gl_FragColor = vec4(col, 1.0);
+      #include <tonemapping_fragment>
+      #include <colorspace_fragment>
+    }`,
+};
+const water = new Reflector(new THREE.CircleGeometry(70, 160), {
+  clipBias: 0.003,
+  textureWidth: innerWidth * renderer.getPixelRatio() * 0.6,
+  textureHeight: innerHeight * renderer.getPixelRatio() * 0.6,
+  color: 0x5f7396,
+  shader: WaterShader,
+});
+water.receiveShadow = false;
+water.rotateX(-Math.PI / 2);
+water.position.y = 0;
+world.add(water);
+
+/* the lady: a slab cut to her own outline (hair, arms, book) and extruded */
+const W = 5.6, H = W / window.LADY.aspect;
+const pts = window.LADY.points.map(([u, v]) => new THREE.Vector2((u - 0.5) * W, v * H));
+const shape = new THREE.Shape(pts);
+const uvGen = {
+  // the outline is in the texture's own frame, so a cap vertex's UV is
+  // just its position scaled back to 0..1
+  generateTopUV(g, v, a, b, c) {
+    const f = i => new THREE.Vector2(v[i * 3] / W + 0.5, v[i * 3 + 1] / H);
+    return [f(a), f(b), f(c)];
+  },
+  generateSideWallUV() {
+    return [new THREE.Vector2(0, 0), new THREE.Vector2(1, 0), new THREE.Vector2(1, 1), new THREE.Vector2(0, 1)];
+  },
+};
+const DEPTH = 0.3;
+const stoneGeo = new THREE.ExtrudeGeometry(shape, {
+  depth: DEPTH, curveSegments: 1, steps: 1,
+  bevelEnabled: true, bevelThickness: 0.11, bevelSize: 0.05, bevelSegments: 8,
+  UVGenerator: uvGen,
+});
+stoneGeo.translate(0, 0, -DEPTH / 2);
+
+// declared before the load: the image can arrive while the module is
+// still awaiting fonts further down
+let loaded = false;
+const tex = new THREE.TextureLoader().load('home/lady-cutout.webp', () => { loaded = true; });
+tex.colorSpace = THREE.SRGBColorSpace;
+tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+const face = new THREE.MeshStandardMaterial({
+  map: tex, emissive: 0xffffff, emissiveMap: tex, emissiveIntensity: 0,
+  roughness: 0.42, metalness: 0,
+});
+// the edge is glazed, like fired porcelain: a clearcoat that catches the
+// sky as she turns, over a warm body that takes the section's glow
+const rim = new THREE.MeshPhysicalMaterial({
+  color: '#efe2cc', emissive: C.glow, emissiveIntensity: 0,
+  roughness: 0.32, clearcoat: 1, clearcoatRoughness: 0.12, sheen: 0.6, sheenColor: new THREE.Color('#ffd9a0'),
+});
+face.roughness = 0.92;
+face.fog = false; rim.fog = false;
+const stone = new THREE.Mesh(stoneGeo, [face, rim]);
+const STONE_Y = 0.22;   // she hovers just over the water, so she can turn
+stone.position.y = STONE_Y;
+scene.add(stone);
+
+/* a soft halo behind her, so she looks lit from within */
+function haloTexture() {
+  const c = document.createElement('canvas'); c.width = c.height = 256;
+  const g = c.getContext('2d'), r = g.createRadialGradient(128, 128, 0, 128, 128, 128);
+  r.addColorStop(0, 'rgba(255,214,140,0.9)'); r.addColorStop(0.35, 'rgba(247,186,87,0.35)'); r.addColorStop(1, 'rgba(247,186,87,0)');
+  g.fillStyle = r; g.fillRect(0, 0, 256, 256);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
+}
+const halo = new THREE.Sprite(new THREE.SpriteMaterial({
+  map: haloTexture(), blending: THREE.AdditiveBlending, depthWrite: false, fog: false, transparent: true, opacity: 0,
+}));
+halo.scale.set(W * 2.1, H * 2.6, 1);
+halo.position.set(0, STONE_Y + H * 0.5, -1.2);
+scene.add(halo);
+
+/* The titles stand on a ring round her, at the water, so the water
+   doubles them. One section is one stop on the ring: as she makes a full
+   turn the ring moves on one stop, and the title in front is the section
+   she is showing. Only the near half of the ring shows; the far half
+   faces away. */
+const RING_R = 3.5, TITLE_H = 0.72;
+// The ring is an ellipse: as deep in front of her and behind as a circle of
+// RING_R, but stretched sideways (SX) so its ends sweep out past both edges
+// of the page, as in the reference, with no change to the camera. Its
+// letters are drawn narrower by the same amount, so they read true in front.
+const SX = 1.12, ROLL = 0;   // the next titles come into view at the sides
+// nearly flat: the near side passes in front of her arms and the book,
+// the far side behind her, where she hides it
+// tipped back (Innes, 2026-10-18): the near side rises across her arms and
+// the far side drops away below her, under the water and out of sight
+// the front title stands on the water in front of her, below the book
+// as in the reference (guillaumecolombel.fr): tipped back so the side
+// titles sit level with the front one or just below it, feet in the water
+const RING_Y = 0.02, TILT = -0.12;
+const orbit = new THREE.Group();
+orbit.position.y = RING_Y;
+orbit.rotation.x = TILT;
+orbit.rotation.z = ROLL;     // a slight slant across the page
+orbit.scale.x = SX;
+scene.add(orbit);
+const ring = new THREE.Group();
+orbit.add(ring);
+await Promise.all([document.fonts.load('800 180px "Barlow Condensed"'), document.fonts.load('700 120px "Playfair Display"')]).catch(() => {});
+const titles = [...document.querySelectorAll('#index a')].map((a, k, all) => {
+  const word = a.dataset.ring;
+  const c = document.createElement('canvas'), g = c.getContext('2d');
+  // Barlow Condensed. Finder was tried (2026-10-18) and Innes liked it, but its
+  // licence is personal use only (brandsemut.com/product/finder): swap it back
+  // in here, with its @font-face, once a commercial licence is bought.
+  const font = '800 160px "Barlow Condensed", sans-serif';
+  g.font = font;
+  const track = 0.02 * 160;
+  const wFull = Math.ceil([...word].reduce((s, ch) => s + g.measureText(ch).width + track, 0)) + 40;
+  const w = Math.ceil(wFull / SX);
+  c.width = w; c.height = 240;
+  g.scale(1 / SX, 1);   // narrow here; the ring's stretch widens it back
+  g.font = font; g.fillStyle = '#fff'; g.textBaseline = 'middle';
+  let x = 20;
+  // a dark outline where the world behind is bright (data-outline): drawn in
+  // black, it stays black whatever colour the title is tinted
+  if (a.dataset.outline) {
+    g.strokeStyle = '#000'; g.lineWidth = 7; g.lineJoin = 'round';
+    for (const ch of word) { g.strokeText(ch, x, 124); x += g.measureText(ch).width + track; }
+    x = 20;
+  }
+  for (const ch of word) { g.fillText(ch, x, 124); x += g.measureText(ch).width + track; }
+  // printed ink: every title's letters a little uneven, like ink pulled
+  // through a screen
+  {
+    const d = g.getImageData(0, 0, c.width, c.height), rn = seeded(k + 3);
+    for (let i = 0; i < d.data.length; i += 4) {
+      if (!d.data[i + 3]) continue;
+      const px = (i / 4) % c.width, py = Math.floor(i / 4 / c.width);
+      const mottle = 0.86 + 0.14 * Math.sin(px * 0.045 + Math.sin(py * 0.05) * 2) * Math.cos(py * 0.06 + px * 0.01);
+      const v = Math.min(1, mottle + (rn() - 0.5) * 0.22);
+      d.data[i] *= v; d.data[i + 1] *= v; d.data[i + 2] *= v;
+      if (rn() < 0.025) d.data[i + 3] *= 0.4;
+    }
+    g.putImageData(d, 0, 0);
+  }
+  const map = new THREE.CanvasTexture(c);
+  map.colorSpace = THREE.SRGBColorSpace;
+  map.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  const width = TITLE_H * w / 240, arc = width / RING_R;
+  const theta = -k * TAU / all.length;
+  const geo = new THREE.CylinderGeometry(RING_R, RING_R, TITLE_H, 48, 1, true, theta - arc / 2, arc);
+  const mat = new THREE.MeshBasicMaterial({
+    map, transparent: true, depthWrite: false, side: THREE.DoubleSide, toneMapped: false, opacity: 0.4, fog: false,
+  });
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.userData.k = k;
+  mesh.userData.theta = theta;
+  mesh.userData.aspect = w / 240;
+  mesh.userData.mid = new THREE.Vector3(Math.sin(theta) * RING_R, 0, Math.cos(theta) * RING_R);
+  mesh.renderOrder = 2;
+  ring.add(mesh);
+  return mesh;
+});
+const cream = new THREE.Color('#f6ead2'), titleBase = new THREE.Color();
+const tmp = new THREE.Vector3();
+
+/* light */
+const hemi = new THREE.HemisphereLight('#5b7fd0', '#030812', 0.75);
+scene.add(hemi);
+const back = new THREE.DirectionalLight('#9cbcff', 1.3);
+back.position.set(-2, 6, -10);
+// only the sunlit worlds switch its shadow on (ENVS[…].shadows)
+back.shadow.mapSize.set(2048, 2048);
+Object.assign(back.shadow.camera, { left: -42, right: 42, top: 42, bottom: -42, near: 1, far: 160 });
+back.shadow.bias = -0.0006;
+back.shadow.normalBias = 0.04;
+world.add(back);
+const lamp = new THREE.PointLight(C.glow, 0, 14, 1.6);
+lamp.position.set(0, 0.35, 2.8);   // low, on the water and her arms, not her face
+scene.add(lamp);
+
+/* agave-like plants, black against the dusk */
+const blade = new THREE.ConeGeometry(0.07, 1, 3);
+blade.translate(0, 0.5, 0);
+const PLANTS = 170, BLADES = 7;
+const plants = new THREE.InstancedMesh(blade, new THREE.MeshStandardMaterial({ color: C.plant, roughness: 1 }), PLANTS * BLADES);
+{
+  const m = new THREE.Matrix4(), q = new THREE.Quaternion(), e = new THREE.Euler(), s = new THREE.Vector3(), p = new THREE.Vector3();
+  let k = 0, seed = 7;
+  const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  for (let i = 0; i < PLANTS; i++) {
+    let x, z, d, r;
+    do {
+      const a = rnd() * Math.PI * 2; d = 4 + Math.pow(rnd(), 0.7) * 40;
+      x = Math.cos(a) * d; z = Math.sin(a) * d - 6; r = pondRadius(Math.atan2(z, x));
+    } while (Math.hypot(x, z) < r + 0.5 || (z > 3 && Math.abs(x) < 3.2));
+    const y = groundHeight(x, z), size = 0.5 + rnd() * 0.9;
+    for (let j = 0; j < BLADES; j++) {
+      e.set((rnd() - 0.5) * 1.1, rnd() * Math.PI * 2, (rnd() - 0.5) * 1.1);
+      q.setFromEuler(e);
+      s.set(1, size * (0.6 + rnd() * 0.7), 1);
+      p.set(x + (rnd() - 0.5) * 0.25, y - 0.05, z + (rnd() - 0.5) * 0.25);
+      plants.setMatrixAt(k++, m.compose(p, q, s));
+    }
+  }
+}
+dusk.add(plants);
+
+/* ── A world per section ──
+   Each section has its own place and its own colours. The Library and
+   Block Camp are built here; the other sections use the open landscape,
+   recoloured. Coming round to a section, the old world sinks into haze
+   and the new one comes up out of it. */
+function seeded(seed) { return () => (seed = (seed * 16807) % 2147483647) / 2147483647; }
+// A tile of printed texture, near white so it only shades what it multiplies:
+// a fine grain over soft blotches of heavier and lighter ink. It sits in the
+// surfaces' own coordinates, so it turns with the world.
+const PRINT = (() => {
+  const rnd = seeded(97), N = 256;
+  const blot = document.createElement('canvas');
+  blot.width = blot.height = 16;
+  const bg = blot.getContext('2d'), bd = bg.createImageData(16, 16);
+  for (let i = 0; i < bd.data.length; i += 4) { const v = 222 + rnd() * 33; bd.data[i] = bd.data[i + 1] = bd.data[i + 2] = v; bd.data[i + 3] = 255; }
+  bg.putImageData(bd, 0, 0);
+  const c = document.createElement('canvas');
+  c.width = c.height = N;
+  const g = c.getContext('2d');
+  g.imageSmoothingEnabled = true;
+  g.drawImage(blot, 0, 0, N, N);
+  const d = g.getImageData(0, 0, N, N);
+  for (let i = 0; i < d.data.length; i += 4) {
+    const n = (rnd() - 0.5) * 34;
+    for (let k = 0; k < 3; k++) d.data[i + k] = Math.max(0, Math.min(255, d.data[i + k] + n));
+  }
+  g.putImageData(d, 0, 0);
+  return c;
+})();
+function printed(repeatX = 1, repeatY = repeatX) {
+  const tx = new THREE.CanvasTexture(PRINT);
+  tx.wrapS = tx.wrapT = THREE.RepeatWrapping;
+  tx.repeat.set(repeatX, repeatY);
+  tx.colorSpace = THREE.SRGBColorSpace;
+  return tx;
+}
+const NIGHT = new THREE.Color();
+const worldLights = {
+  warmA: new THREE.PointLight('#ffc27a', 0, 30, 1.1),
+  warmB: new THREE.PointLight('#ffb060', 0, 30, 1.1),
+  fire:  new THREE.PointLight('#ff8a3a', 0, 14, 1.4),
+};
+worldLights.warmA.position.set(-7, 6.5, -5);
+worldLights.warmB.position.set(7, 6.5, -5);
+Object.values(worldLights).forEach(l => world.add(l));
+
+/* the Library: a rotunda of shelves three galleries high, lamps on the
+   railings, a dome with a lit oculus and a shaft of light down onto her */
+function buildLibrary() {
+  const g = new THREE.Group(), rnd = seeded(11);
+  const R = 15, TIERS = 3, TIER_H = 4.2, ROWS = 4, ROW_H = TIER_H / ROWS, TOP = TIERS * TIER_H;
+  const wood = new THREE.MeshStandardMaterial({ color: '#4a2c18', roughness: 0.6, side: THREE.DoubleSide });
+  const wall = new THREE.Mesh(new THREE.CylinderGeometry(R, R, TOP, 96, 1, true),
+    new THREE.MeshStandardMaterial({ color: '#24140b', roughness: 0.9, side: THREE.BackSide, map: printed(30, 4) }));
+  wall.position.y = TOP / 2;
+  g.add(wall);
+  const boardGeo = new THREE.RingGeometry(R - 0.6, R, 128);
+  boardGeo.rotateX(-Math.PI / 2);
+  for (let tr = 0; tr < TIERS; tr++) for (let r = 0; r <= ROWS; r++) {
+    const b = new THREE.Mesh(boardGeo, wood);
+    b.position.y = tr * TIER_H + r * ROW_H + 0.002;
+    g.add(b);
+  }
+  // uprights every ten degrees
+  const SLOTS = 36, slot = TAU / SLOTS;
+  const up = new THREE.InstancedMesh(new THREE.BoxGeometry(0.16, TOP, 0.62), wood, SLOTS);
+  const m = new THREE.Matrix4(), q = new THREE.Quaternion(), s = new THREE.Vector3(), v = new THREE.Vector3(), Y = new THREE.Vector3(0, 1, 0);
+  for (let i = 0; i < SLOTS; i++) {
+    const a = i * slot;
+    up.setMatrixAt(i, m.compose(v.set(Math.sin(a) * (R - 0.3), TOP / 2, Math.cos(a) * (R - 0.3)), q.setFromAxisAngle(Y, a), s.set(1, 1, 1)));
+  }
+  g.add(up);
+  // the books: every shelf filled, spines facing in
+  const PAL = ['#7a2a22', '#aa283a', '#d5373b', '#f7ba57', '#e8d9b8', '#3e6b4f', '#2f4a3a', '#6b3a22', '#8a5a3a', '#1a2e5a', '#5a2a4a', '#c98a3a']
+    .map(c => new THREE.Color(c));
+  const books = [];
+  const Rw = R - 0.06;
+  for (let tr = 0; tr < TIERS; tr++) for (let r = 0; r < ROWS; r++) {
+    const y = tr * TIER_H + r * ROW_H + 0.02;
+    let a = rnd() * 0.02;
+    while (a < TAU) {
+      const off = a % slot;
+      if (off < 0.013 || off > slot - 0.013) { a += 0.004; continue; }
+      if (rnd() < 0.025) { a += (0.25 + rnd() * 0.5) / Rw; continue; }
+      const w = 0.07 + rnd() * 0.1, h = ROW_H * (0.6 + rnd() * 0.3), d = 0.32 + rnd() * 0.18;
+      books.push([a + w / 2 / Rw, y, w, h, d, PAL[Math.floor(rnd() * PAL.length)], 0.45 + rnd() * 0.4]);
+      a += (w + 0.006) / Rw;
+    }
+  }
+  const bookGeo = new THREE.BoxGeometry(1, 1, 1);
+  bookGeo.translate(0, 0.5, 0);
+  const bk = new THREE.InstancedMesh(bookGeo, new THREE.MeshStandardMaterial({ roughness: 0.7, map: printed(0.4) }), books.length);
+  const col = new THREE.Color();
+  books.forEach(([a, y, w, h, d, c, l], i) => {
+    const rr = Rw - d / 2;
+    bk.setMatrixAt(i, m.compose(v.set(Math.sin(a) * rr, y, Math.cos(a) * rr), q.setFromAxisAngle(Y, a), s.set(w, h, d)));
+    bk.setColorAt(i, col.copy(c).multiplyScalar(l));
+  });
+  g.add(bk);
+  // galleries: a walkway, a brass rail, balusters, columns and lamps
+  const brass = new THREE.MeshStandardMaterial({ color: '#c9a14a', metalness: 0.7, roughness: 0.35 });
+  const lampMat = new THREE.MeshStandardMaterial({ color: '#ffd38a', emissive: '#ffb347', emissiveIntensity: 2.2 });
+  const lampGeo = new THREE.SphereGeometry(0.13, 12, 8);
+  const RG = R - 1.9;
+  for (let tr = 1; tr < TIERS; tr++) {
+    const y = tr * TIER_H;
+    const walk = new THREE.Mesh(new THREE.RingGeometry(RG, R - 0.6, 128), wood);
+    walk.rotation.x = -Math.PI / 2;
+    walk.position.y = y;
+    g.add(walk);
+    const rail = new THREE.Mesh(new THREE.TorusGeometry(RG, 0.04, 6, 192), brass);
+    rail.rotation.x = Math.PI / 2;
+    rail.position.y = y + 1.0;
+    g.add(rail);
+    const BAL = 180, bal = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.02, 0.02, 1, 5), brass, BAL);
+    for (let i = 0; i < BAL; i++) {
+      const a = i / BAL * TAU;
+      bal.setMatrixAt(i, m.compose(v.set(Math.sin(a) * RG, y + 0.5, Math.cos(a) * RG), q.identity(), s.set(1, 1, 1)));
+    }
+    g.add(bal);
+    for (let i = 0; i < 24; i++) {
+      const a = (i + 0.5) / 24 * TAU, l = new THREE.Mesh(lampGeo, lampMat);
+      l.position.set(Math.sin(a) * RG, y + 1.18, Math.cos(a) * RG);
+      g.add(l);
+    }
+  }
+  const colGeo = new THREE.CylinderGeometry(0.16, 0.19, TOP, 12);
+  const colMat = new THREE.MeshStandardMaterial({ color: '#d9c39a', roughness: 0.5 });
+  for (let i = 0; i < 16; i++) {
+    const a = (i + 0.5) / 16 * TAU, c = new THREE.Mesh(colGeo, colMat);
+    c.position.set(Math.sin(a) * (RG - 0.1), TOP / 2, Math.cos(a) * (RG - 0.1));
+    g.add(c);
+  }
+  // the dome, the oculus, and the shaft of light
+  const dome = new THREE.Mesh(new THREE.SphereGeometry(R, 64, 24, 0, TAU, 0, Math.PI / 2),
+    new THREE.MeshStandardMaterial({ color: '#3a1f16', roughness: 0.8, side: THREE.BackSide, map: printed(24, 6) }));
+  dome.position.y = TOP;
+  g.add(dome);
+  const oculus = new THREE.Mesh(new THREE.CircleGeometry(2.6, 48), new THREE.MeshBasicMaterial({ color: '#fff1d6' }));
+  oculus.rotation.x = Math.PI / 2;
+  oculus.position.y = TOP + R * 0.985;
+  g.add(oculus);
+  const shaftH = TOP + R * 0.98;
+  const shaft = new THREE.Mesh(new THREE.CylinderGeometry(2.6, 4.4, shaftH, 48, 1, true),
+    new THREE.MeshBasicMaterial({ color: '#ffd9a0', transparent: true, opacity: 0.035, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide }));
+  shaft.position.y = shaftH / 2;
+  g.add(shaft);
+  return g;
+}
+
+/* Block Camp: a voxel valley round her pool by day, under a light blue
+   sky, with hills beyond, square trees, a campfire, a square sun and
+   cube clouds. Everything near the middle stays low, so nothing stands
+   between her and the viewer as the world turns. */
+function buildCamp() {
+  const g = new THREE.Group(), rnd = seeded(5);
+  const cells = [];
+  const GRASS = ['#6cc04a', '#7bcf55', '#5fb043'].map(c => new THREE.Color(c));
+  const DIRT = new THREE.Color('#8a5a32'), STONE = new THREE.Color('#a0a6ae'), SAND = new THREE.Color('#ecdca0');
+  const level = (x, z) => {
+    const d = Math.hypot(x, z), r = pondRadius(Math.atan2(z, x));
+    if (d < r - 0.3) return -1;
+    const n = 1.6 * Math.sin(x * 0.21 + 1.1) * Math.cos(z * 0.17) + 1.1 * Math.sin(x * 0.07 - z * 0.13 + 0.5)
+            + 0.6 * Math.sin(x * 0.5) * Math.sin(z * 0.45);
+    const hills = THREE.MathUtils.smoothstep(d, 14, 26) * (3 + n * 1.8);
+    return Math.max(0, Math.round((d < 13 ? 0.4 * Math.max(0, n) : 1) + hills));
+  };
+  const SPAN = 36;
+  for (let x = -SPAN; x <= SPAN; x++) for (let z = -SPAN; z <= SPAN; z++) {
+    const L = level(x, z);
+    if (L < 0) continue;
+    const shore = Math.hypot(x, z) < pondRadius(Math.atan2(z, x)) + 1.2;
+    for (let y = Math.max(0, L - 2); y <= L; y++) {
+      const c = y < L ? DIRT : shore ? SAND : L >= 6 ? STONE : GRASS[Math.floor(rnd() * 3)];
+      cells.push([x, y, z, c, 1]);
+    }
+  }
+  // trees, well back from her
+  for (let i = 0; i < 46; i++) {
+    let x, z;
+    do { const a = rnd() * TAU, d = 15 + rnd() * 18; x = Math.round(Math.cos(a) * d); z = Math.round(Math.sin(a) * d); }
+    while (level(x, z) < 0);
+    const base = level(x, z) + 1, trunk = 3 + Math.floor(rnd() * 2);
+    for (let y = 0; y < trunk; y++) cells.push([x, base + y, z, new THREE.Color('#6b4428'), 1]);
+    const leaf = new THREE.Color(rnd() < 0.5 ? '#3f9a3c' : '#4fae47');
+    for (let dx = -1; dx <= 1; dx++) for (let dz = -1; dz <= 1; dz++) for (let dy = 0; dy < 2; dy++)
+      if (rnd() > 0.12) cells.push([x + dx, base + trunk + dy - 1, z + dz, leaf, 1]);
+    cells.push([x, base + trunk + 1, z, leaf, 1]);
+  }
+  // the campfire, on the shore behind and to her left
+  const fx = -6, fz = -5, fy = level(fx, fz) + 1;
+  cells.push([fx - 0.3, fy - 0.35, fz, new THREE.Color('#4a2e18'), 0.3], [fx + 0.3, fy - 0.35, fz, new THREE.Color('#4a2e18'), 0.3]);
+  worldLights.fire.position.set(fx, fy + 0.6, fz);
+  const cube = new THREE.BoxGeometry(1, 1, 1);
+  const vox = new THREE.InstancedMesh(cube, new THREE.MeshStandardMaterial({ roughness: 0.9, flatShading: true, map: printed(0.5) }), cells.length);
+  const m = new THREE.Matrix4(), q = new THREE.Quaternion(), s = new THREE.Vector3(), v = new THREE.Vector3();
+  cells.forEach(([x, y, z, c, k], i) => {
+    // a column of level L has its top 0.15 above the water
+    vox.setMatrixAt(i, m.compose(v.set(x, y - 0.35, z), q, s.set(k, k, k)));
+    vox.setColorAt(i, c);
+  });
+  g.add(vox);
+  const flameMat = new THREE.MeshStandardMaterial({ color: '#ffb347', emissive: '#ff7a1a', emissiveIntensity: 3 });
+  const flames = [];
+  for (let i = 0; i < 4; i++) {
+    const f = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.28, 0.28), flameMat);
+    f.position.set(fx + (rnd() - 0.5) * 0.4, fy - 0.1 + i * 0.22, fz + (rnd() - 0.5) * 0.4);
+    g.add(f); flames.push(f);
+  }
+  g.userData.flames = flames;
+  // the sky: a square sun and drifting cube clouds
+  g.add(makeSky('#4f9be8', '#d4ecff', '#ffffff'));
+  const sun = new THREE.Mesh(new THREE.BoxGeometry(6, 6, 0.6), new THREE.MeshBasicMaterial({ color: '#fff3b0', fog: false }));
+  sun.position.set(-30, 34, -60);
+  sun.lookAt(0, 0, 0);
+  g.add(sun);
+  const puffs = [];
+  for (let c = 0; c < 12; c++) {
+    const a = rnd() * TAU, d = 30 + rnd() * 30, y = 18 + rnd() * 9, n = 6 + Math.floor(rnd() * 9);
+    for (let i = 0; i < n; i++) puffs.push([Math.cos(a) * d + (rnd() - 0.5) * 9, y + Math.floor(rnd() * 2) * 2, Math.sin(a) * d + (rnd() - 0.5) * 5]);
+  }
+  const clouds = new THREE.InstancedMesh(new THREE.BoxGeometry(3, 2, 3),
+    new THREE.MeshStandardMaterial({ color: '#ffffff', emissive: '#ffffff', emissiveIntensity: 0.35, roughness: 1 }), puffs.length);
+  puffs.forEach(([x, y, z], i) => clouds.setMatrixAt(i, m.compose(v.set(x, y, z), q.identity(), s.set(1, 1, 1))));
+  const sky = new THREE.Group();
+  sky.add(clouds);
+  g.add(sky);
+  g.userData.clouds = sky;
+  return g;
+}
+
+/* a floor everywhere but her pool */
+function floorWithPond(color, roughness = 0.9) {
+  const S = 140, outer = new THREE.Shape();
+  outer.moveTo(-S, -S); outer.lineTo(S, -S); outer.lineTo(S, S); outer.lineTo(-S, S); outer.lineTo(-S, -S);
+  const hole = new THREE.Path();
+  for (let i = 0; i <= 120; i++) {
+    const a = i / 120 * TAU, r = pondRadius(a) + 0.1;
+    // the shape is laid flat by rotateX(-90°), which sends its y to -z
+    i ? hole.lineTo(Math.cos(a) * r, -Math.sin(a) * r) : hole.moveTo(Math.cos(a) * r, -Math.sin(a) * r);
+  }
+  outer.holes.push(hole);
+  const geo = new THREE.ShapeGeometry(outer, 2);
+  geo.rotateX(-Math.PI / 2);
+  const m = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color, roughness, map: printed(1 / 3) }));
+  m.position.y = 0.02;
+  return m;
+}
+function stars(rnd, n = 500, color = '#f4f0d8') {
+  const sp = new Float32Array(n * 3);
+  for (let i = 0; i < n; i++) {
+    const a = rnd() * TAU, e = 0.12 + rnd() * 1.3;
+    sp.set([Math.cos(a) * Math.cos(e) * 80, Math.sin(e) * 80, Math.sin(a) * Math.cos(e) * 80], i * 3);
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(sp, 3));
+  return new THREE.Points(g, new THREE.PointsMaterial({ color, size: 1.5, sizeAttenuation: false, fog: false }));
+}
+function labelTexture(text, color = '#fff') {
+  const c = document.createElement('canvas'), g = c.getContext('2d');
+  c.width = 256; c.height = 128;
+  g.font = '800 96px "Barlow Condensed", sans-serif';
+  g.fillStyle = color; g.textAlign = 'center'; g.textBaseline = 'middle';
+  g.fillText(text, 128, 68);
+  const tx = new THREE.CanvasTexture(c);
+  tx.colorSpace = THREE.SRGBColorSpace;
+  return tx;
+}
+const M4 = new THREE.Matrix4(), Q = new THREE.Quaternion(), V = new THREE.Vector3(), S3 = new THREE.Vector3(), EU = new THREE.Euler();
+function shadowed(g) { g.traverse(o => { if (o.isMesh && !o.isSprite) { o.castShadow = true; o.receiveShadow = true; } }); return g; }
+
+/* Tree crowns for the IELTS avenue. Each is built from smooth, lumpy
+   masses rather than one faceted ball: a sum of sines pushes the surface in
+   and out like clumps of leaves, and a vertex colour darkens it toward the
+   underside and speckles it, so the instance colour reads as lit foliage. */
+function leafNoise(x, y, z, seed) {
+  return Math.sin(x * 3.1 + seed) * Math.sin(y * 2.7 + seed * 1.3) * Math.sin(z * 3.3 + seed * 0.7) * 0.6
+       + Math.sin(x * 6.3 + y * 5.1 + seed * 2.1) * Math.sin(z * 5.7 - y * 4.3 + seed) * 0.25
+       + Math.sin(x * 11 + z * 9 + seed * 3) * Math.sin(y * 12 + seed) * 0.1;
+}
+function lumpy(r, cx, cy, cz, seed, amp = 0.16, shape = null) {
+  const geo = new THREE.SphereGeometry(1, 20, 14), ps = geo.attributes.position;
+  for (let i = 0; i < ps.count; i++) {
+    let x = ps.getX(i), y = ps.getY(i), z = ps.getZ(i);
+    if (shape) [x, y, z] = shape(x, y, z);
+    const k = r * (1 + amp * leafNoise(x, y, z, seed));
+    ps.setXYZ(i, cx + x * k, cy + y * k, cz + z * k);
+  }
+  return geo;
+}
+function mergeIndexed(geos) {
+  let nv = 0, ni = 0;
+  geos.forEach(g => { nv += g.attributes.position.count; ni += g.index.count; });
+  const pos = new Float32Array(nv * 3), idx = new Uint32Array(ni);
+  let ov = 0, oi = 0;
+  geos.forEach(g => {
+    pos.set(g.attributes.position.array, ov * 3);
+    const ix = g.index.array;
+    for (let i = 0; i < ix.length; i++) idx[oi + i] = ix[i] + ov;
+    ov += g.attributes.position.count; oi += ix.length;
+  });
+  const m = new THREE.BufferGeometry();
+  m.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  m.setIndex(new THREE.BufferAttribute(idx, 1));
+  return m;
+}
+function foliage(geo, seed) {
+  // smooth normals, then shade: dark underneath, light on top, speckled
+  geo.computeVertexNormals();
+  geo.computeBoundingBox();
+  const bb = geo.boundingBox, ps = geo.attributes.position, n = ps.count;
+  const col = new Float32Array(n * 3);
+  for (let i = 0; i < n; i++) {
+    const y = (ps.getY(i) - bb.min.y) / (bb.max.y - bb.min.y);
+    const speck = Math.sin(i * 12.9898 + seed) * 43758.5453 % 1;
+    const v = 0.58 + 0.46 * Math.pow(y, 0.8) + speck * 0.07;
+    col.set([v, v * 1.01, v * 0.99], i * 3);
+  }
+  geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+  return geo;
+}
+// One deciduous tree, built properly: a tapered trunk that forks into
+// four or five tapered limbs, and a crown of about ten leafy clumps
+// gathered on the limb ends and over the top, so the outline is broken and
+// the sky shows through between clumps. Three variants, so neighbours
+// differ; each instance is then turned, sized and coloured on its own.
+function limb(a, b, r0, r1) {
+  const d = new THREE.Vector3().subVectors(b, a), L = d.length();
+  const g = new THREE.CylinderGeometry(r1, r0, L, 8, 1);
+  g.applyMatrix4(new THREE.Matrix4().compose(
+    new THREE.Vector3().addVectors(a, b).multiplyScalar(0.5),
+    new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), d.normalize()),
+    new THREE.Vector3(1, 1, 1)));
+  return g;
+}
+const TREES = [1, 2, 3].map(seed => {
+  const r = seeded(100 + seed * 17), V3 = (x, y, z) => new THREE.Vector3(x, y, z);
+  const fork = V3((r() - 0.5) * 0.15, 2.0 + r() * 0.4, (r() - 0.5) * 0.15);
+  const wood = [limb(V3(0, 0, 0), fork, 0.3, 0.2)];
+  const clumps = [];
+  const nLimbs = 4 + Math.floor(r() * 2);
+  for (let k = 0; k < nLimbs; k++) {
+    const a = k / nLimbs * TAU + r() * 0.8, out = 0.9 + r() * 0.6, up = 1.4 + r() * 1.2;
+    const mid = V3(fork.x + Math.cos(a) * out * 0.5, fork.y + up * 0.55, fork.z + Math.sin(a) * out * 0.5);
+    const tip = V3(fork.x + Math.cos(a) * out, fork.y + up, fork.z + Math.sin(a) * out);
+    wood.push(limb(fork, mid, 0.17, 0.11), limb(mid, tip, 0.11, 0.05));
+    clumps.push(lumpy(0.82 + r() * 0.3, tip.x * 1.05, tip.y + 0.15, tip.z * 1.05, seed * 10 + k, 0.2));
+    // a smaller clump part-way out, filling under the limb
+    clumps.push(lumpy(0.55 + r() * 0.2, mid.x * 1.25, mid.y + 0.1, mid.z * 1.25, seed * 10 + k + 5, 0.22));
+  }
+  // the crown's top, and one each side of it
+  clumps.push(lumpy(1.0 + r() * 0.2, 0, fork.y + 2.6 + r() * 0.3, 0, seed * 10 + 9, 0.18));
+  clumps.push(lumpy(0.7, 0.55, fork.y + 2.1, -0.3, seed * 10 + 8, 0.2));
+  const woodGeo = mergeIndexed(wood); woodGeo.computeVertexNormals();
+  return { wood: woodGeo, crown: foliage(mergeIndexed(clumps), seed) };
+});
+
+/* IELTS, in the colours of its own page (ielts.html and the ielts-hub
+   plates): duck-egg turquoise, coral salmon, near-black ink, cream. A long
+   paved avenue runs from her pool away to the horizon between rows of
+   clipped light-turquoise trees, lamps between them, lawns either side;
+   at the far end, small and inviting, the college portico and its dome.
+   A low sun from the side throws the trees' shadows across the paving. */
+function buildIelts() {
+  const g = new THREE.Group(), rnd = seeded(23);
+  g.add(makeSky('#8fb3bd', '#e9dccb', '#f6b49c'));
+  g.add(floorWithPond('#9fc6bd', 0.95));
+  const mat = (c, r = 0.9, rep = 0.35) => new THREE.MeshStandardMaterial({ color: c, roughness: r, map: printed(rep) });
+  const ink = mat('#1c2228', 0.6), cream = mat('#efe2cf'), coral = mat('#e8826c');
+  // salmon clouds low on the horizon, as on the page's hero
+  const puff = cloudTexture(rnd);
+  for (let i = 0; i < 40; i++) {
+    const a = Math.PI + (rnd() - 0.5) * 3.0, d = 60 + rnd() * 8;
+    const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: puff, color: ['#f29a84', '#f6b8a2', '#fbe3d2'][i % 3], transparent: true, opacity: 0.8, depthWrite: false, fog: false }));
+    const size = 7 + rnd() * 10;
+    s.scale.set(size * 1.5, size, 1);
+    s.position.set(Math.sin(a) * d, size * 0.25 + rnd() * 3, Math.cos(a) * d);
+    g.add(s);
+  }
+  // the avenue: cream paving with coral bands across it, ink kerbs
+  const Z0 = -7, Z1 = -100, W = 7;
+  const path = new THREE.Mesh(new THREE.PlaneGeometry(W, Z0 - Z1), cream);
+  path.rotation.x = -Math.PI / 2; path.position.set(0, 0.04, (Z0 + Z1) / 2);
+  g.add(path);
+  for (let z = Z0 - 4; z > Z1; z -= 8) {
+    const band = new THREE.Mesh(new THREE.PlaneGeometry(W, 0.5), coral);
+    band.rotation.x = -Math.PI / 2; band.position.set(0, 0.05, z);
+    g.add(band);
+  }
+  [-1, 1].forEach(sd => {
+    const kerb = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.18, Z0 - Z1), ink);
+    kerb.position.set(sd * (W / 2 + 0.15), 0.09, (Z0 + Z1) / 2);
+    g.add(kerb);
+  });
+  // two rows of deciduous trees each side: one kind, three variants, each
+  // tree turned, sized, leant and coloured on its own, pale mint to deep teal
+  const TEAL = ['#cdeee4', '#b8e6dc', '#a4dcd2', '#98d2ca', '#86c4bd', '#6fb2ae', '#5c9f9f'];
+  const rows = [6.2, 10.4], step = 5.2, n = Math.floor((Z0 - Z1) / step);
+  const max = rows.length * 2 * n;
+  const crownMat = new THREE.MeshStandardMaterial({ roughness: 0.9, vertexColors: true, map: printed(0.6), emissive: '#5f9e98', emissiveIntensity: 0.22 });
+  const inst = TREES.map(tr => ({
+    crown: new THREE.InstancedMesh(tr.crown, crownMat, max),
+    wood: new THREE.InstancedMesh(tr.wood, ink, max), n: 0 }));
+  const C = new THREE.Color();
+  rows.forEach(rx => [-1, 1].forEach(sd => {
+    for (let i = 0; i < n; i++) {
+      const z = Z0 - 2 - i * step + (rx > 8 ? step / 2 : 0) + (rnd() - 0.5) * 0.8, x = sd * (rx + (rnd() - 0.5) * 0.6);
+      const v = inst[Math.floor(rnd() * inst.length)], k = v.n++;
+      const s = 0.85 + rnd() * 0.35;
+      M4.compose(V.set(x, 0, z), Q.setFromEuler(EU.set((rnd() - 0.5) * 0.06, rnd() * TAU, (rnd() - 0.5) * 0.06)), S3.set(s, s * (0.92 + rnd() * 0.16), s));
+      v.crown.setMatrixAt(k, M4); v.wood.setMatrixAt(k, M4);
+      v.crown.setColorAt(k, C.set(TEAL[Math.floor(rnd() * TEAL.length)]));
+    }
+  }));
+  inst.forEach(v => { v.crown.count = v.wood.count = v.n; g.add(v.crown, v.wood); });
+  // lamps down the avenue edge, between the trees
+  const bulb = new THREE.MeshStandardMaterial({ color: '#fff0c8', emissive: '#ffc070', emissiveIntensity: 2.2 });
+  for (let z = Z0 - 4.6; z > Z1 + 4; z -= step * 2) [-1, 1].forEach(sd => {
+    const post = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.1, 3.4, 8), ink);
+    post.position.set(sd * (W / 2 + 0.7), 1.7, z);
+    const lamp = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.5, 0.36), bulb);
+    lamp.position.set(sd * (W / 2 + 0.7), 3.6, z);
+    g.add(post, lamp);
+  });
+  // the college at the far end: steps, portico, pediment, drum and dome
+  const pale = mat('#efe2cf'), mid = mat('#d9c7ad'), shade = mat('#8fa9b0');
+  const por = new THREE.Group();
+  por.position.set(0, 0, Z1 - 3);
+  for (let s = 0; s < 3; s++) {
+    const st = new THREE.Mesh(new THREE.BoxGeometry(16 - s * 0.8, 0.35, 4.6 - s * 0.6), pale);
+    st.position.set(0, 0.17 + s * 0.35, 1.6 - s * 0.3);
+    por.add(st);
+  }
+  const wall = new THREE.Mesh(new THREE.BoxGeometry(15, 10, 1), shade);
+  wall.position.set(0, 5, -0.6);
+  por.add(wall);
+  const shaftGeo = new THREE.CylinderGeometry(0.48, 0.56, 8.2, 20);
+  for (let i = 0; i < 8; i++) {
+    const x = -6.6 + i * (13.2 / 7);
+    const shaft = new THREE.Mesh(shaftGeo, mid); shaft.position.set(x, 5.15, 2.2);
+    const cap = new THREE.Mesh(new THREE.BoxGeometry(1.45, 0.5, 1.45), pale); cap.position.set(x, 9.4, 2.2);
+    por.add(shaft, cap);
+  }
+  const ent = new THREE.Mesh(new THREE.BoxGeometry(15.6, 1.4, 4.2), pale); ent.position.set(0, 10.35, 1.4);
+  const tri = new THREE.Shape(); tri.moveTo(-8.1, 0); tri.lineTo(8.1, 0); tri.lineTo(0, 3.1); tri.lineTo(-8.1, 0);
+  const ped = new THREE.Mesh(new THREE.ExtrudeGeometry(tri, { depth: 4.2, bevelEnabled: false }), mid);
+  ped.position.set(0, 11.05, -0.7);
+  const tymp = new THREE.Mesh(new THREE.ShapeGeometry(tri), coral); tymp.scale.setScalar(0.82); tymp.position.set(0, 11.35, 3.52);
+  por.add(ent, ped, tymp);
+  const drum = new THREE.Mesh(new THREE.CylinderGeometry(5.2, 5.2, 4, 40), mid); drum.position.set(0, 14.5, -5);
+  const dome = new THREE.Mesh(new THREE.SphereGeometry(5.3, 40, 20, 0, TAU, 0, Math.PI / 2), mat('#7fb7b0', 0.6, 4));
+  dome.position.set(0, 16.5, -5);
+  const lantern = new THREE.Mesh(new THREE.CylinderGeometry(0.8, 1.0, 2.2, 12), pale); lantern.position.set(0, 22.6, -5);
+  por.add(drum, dome, lantern);
+  g.add(por);
+  // hedges closing the lawns at the far end, so the avenue is the way through
+  [-1, 1].forEach(sd => {
+    const hedge = new THREE.Mesh(new THREE.BoxGeometry(60, 2.2, 2.4), mat('#86b9b4', 0.95, 0.6));
+    hedge.position.set(sd * 39, 1.1, Z1 + 2);
+    g.add(hedge);
+  });
+  shadowed(g);
+  inst.forEach(v => { v.crown.receiveShadow = false; });   // light crowns, not darkened by each other
+  return g;
+}
+
+/* Sherpa Tensing, in the style of its own pages (Sherpa Tensing/sherpa-day.jpg,
+   hero-route-map.jpg): a great peak smooth-shaped from a ridged height
+   field, white snow on its upper slopes, alpenglow salmon where the sun
+   catches it and slate blue in shadow; ranges behind fading in layers into
+   a dusty blue sky; the site's own cloud banks drifting low across the
+   valleys; dark slate rock round her pool; and on the peak, the route of
+   thirteen camps as small roundels joined by a thin line. */
+function valueNoise(seed) {
+  const rnd = seeded(seed), P = 256, g = new Float32Array(P * P);
+  for (let i = 0; i < g.length; i++) g[i] = rnd();
+  const at = (x, y) => g[((y & 255) * P) + (x & 255)];
+  return (x, y) => {
+    const xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi;
+    const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf);
+    return THREE.MathUtils.lerp(THREE.MathUtils.lerp(at(xi, yi), at(xi + 1, yi), u),
+                                THREE.MathUtils.lerp(at(xi, yi + 1), at(xi + 1, yi + 1), u), v);
+  };
+}
+function buildSherpa() {
+  const g = new THREE.Group(), rnd = seeded(31);
+  g.add(makeSky('#97b8cc', '#e4ebe8', '#ffe6d6'));
+  g.add(floorWithPond('#eef1f2', 0.95));
+  const noise = valueNoise(7);
+  const ridged = (x, y) => {
+    let s = 0, a = 0.5, f = 1;
+    for (let o = 0; o < 5; o++) { s += a * (1 - Math.abs(noise(x * f, y * f) * 2 - 1)); a *= 0.5; f *= 2.05; }
+    return s;
+  };
+  const SNOW = new THREE.Color('#ffffff'), GLOW = new THREE.Color('#f4a28c'), SLATE = new THREE.Color('#7f93a3'), ROCK = new THREE.Color('#3a4650'), SHADE = new THREE.Color('#a9bccb');
+  // a massif from a height field: a cone of peaks, carved by ridged noise
+  function massif(cx, cz, w, d, h, peaks, seg = 160) {
+    const geo = new THREE.PlaneGeometry(w, d, seg, Math.round(seg * d / w));
+    geo.rotateX(-Math.PI / 2);
+    const pos = geo.attributes.position, cols = [];
+    for (let i = 0; i < pos.count; i++) {
+      const x = pos.getX(i), z = pos.getZ(i);
+      let m = 0;
+      peaks.forEach(([px, pz, ph, pr]) => { m = Math.max(m, ph * Math.exp(-((x - px) ** 2 + (z - pz) ** 2) / (2 * pr * pr))); });
+      const edge = Math.min(1, (w / 2 - Math.abs(x)) / (w * 0.12), (d / 2 - Math.abs(z)) / (d * 0.12));
+      const y = Math.max(0, h * m * (0.55 + 0.6 * ridged(x * 0.05 + cx * 0.01, z * 0.05 + cz * 0.01)) * Math.max(0, edge)) - 0.5;
+      pos.setY(i, y);
+    }
+    geo.computeVertexNormals();
+    const nrm = geo.attributes.normal, sun = new THREE.Vector3(0.55, 0.45, 0.7).normalize(), c = new THREE.Color();
+    for (let i = 0; i < pos.count; i++) {
+      const y = pos.getY(i), n = new THREE.Vector3(nrm.getX(i), nrm.getY(i), nrm.getZ(i));
+      const steep = 1 - n.y, lit = Math.max(0, n.dot(sun));
+      const snowLine = h * (0.12 + 0.08 * noise(pos.getX(i) * 0.3, pos.getZ(i) * 0.3));
+      // snow lies everywhere above the line but on sheer rock; the sun warms
+      // it to alpenglow, and faces turned from the sun cool to blue-grey
+      if (y > snowLine && steep < 0.86) c.copy(SNOW).lerp(GLOW, lit * lit * 0.4);
+      else c.copy(steep > 0.9 ? ROCK : SLATE).lerp(GLOW, lit * lit * 0.15);
+      c.lerp(SHADE, Math.max(0, 0.5 - lit) * 0.9);
+      cols.push(c.r, c.g, c.b);
+    }
+    geo.setAttribute('color', new THREE.Float32BufferAttribute(cols, 3));
+    const m = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.95, map: printed(18) }));
+    m.position.set(cx, 0, cz);
+    g.add(m);
+    return m;
+  }
+  // the great peak behind her, and its shoulders
+  const MAIN = { x: 0, z: -95, h: 46 };
+  massif(MAIN.x, MAIN.z, 150, 70, MAIN.h, [[0, 0, 1, 16], [-30, 8, 0.62, 13], [28, 6, 0.7, 12], [-55, 14, 0.38, 14], [55, 12, 0.4, 13]]);
+  // layered ranges round the rest of the horizon, paler with distance
+  function range(dist, h, col, seed, from, to) {
+    const n = valueNoise(seed), pts = [];
+    const steps = 140;
+    for (let i = 0; i <= steps; i++) {
+      const a = from + (to - from) * i / steps;
+      const y = h * (0.35 + 0.65 * (1 - Math.abs(n(i * 0.09, 0) * 2 - 1)) * (0.6 + 0.4 * n(i * 0.025, 3)));
+      pts.push([a, y]);
+    }
+    const posA = [], idx = [];
+    pts.forEach(([a, y], i) => {
+      posA.push(Math.sin(a) * dist, -1, Math.cos(a) * dist, Math.sin(a) * dist, y, Math.cos(a) * dist);
+      if (i) { const k = (i - 1) * 2; idx.push(k, k + 2, k + 1, k + 1, k + 2, k + 3); }
+    });
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.Float32BufferAttribute(posA, 3));
+    geo.setIndex(idx);
+    g.add(new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: col, side: THREE.DoubleSide, fog: false })));
+  }
+  range(150, 22, '#c9d7de', 11, Math.PI * 0.35, Math.PI * 1.65);
+  range(125, 17, '#aebfca', 12, Math.PI * 0.4, Math.PI * 1.6);
+  range(105, 12, '#8ea3b1', 13, -Math.PI * 0.75, Math.PI * 0.75);
+  // the site's own clouds, low across the valleys, drifting
+  const loader = new THREE.TextureLoader();
+  const cloudTx = [1, 2, 3, 4, 5, 6].map(i => { const tx = loader.load(`Sherpa%20Tensing/cloud-${i}.webp`); tx.colorSpace = THREE.SRGBColorSpace; return tx; });
+  const clouds = [];
+  for (let i = 0; i < 26; i++) {
+    const a = Math.PI + (rnd() - 0.5) * 3.6, d = 45 + rnd() * 45;
+    const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: cloudTx[i % 6], transparent: true, opacity: 0.92, depthWrite: false, fog: false, color: '#fff6f0' }));
+    const w = 16 + rnd() * 18;
+    s.scale.set(w, w * 0.55, 1);
+    s.position.set(Math.sin(a) * d, 3 + rnd() * 9, Math.cos(a) * d);
+    s.userData = { a, d, v: (rnd() - 0.5) * 0.004 };
+    g.add(s); clouds.push(s);
+  }
+  // dark slate rock round her pool, as under the climber in the art
+  const rockMat = new THREE.MeshStandardMaterial({ color: '#2f3a42', roughness: 0.95, flatShading: true, map: printed(1) });
+  for (let i = 0; i < 16; i++) {
+    let a, d;
+    do { a = rnd() * TAU; d = 7 + rnd() * 10; } while (d < pondRadius(a) + 0.8 || (Math.sin(a) > 0.4 && d < 16));
+    const r = new THREE.Mesh(new THREE.DodecahedronGeometry(0.7 + rnd() * 1.6, 1), rockMat);
+    r.scale.set(1.3, 0.55 + rnd() * 0.4, 1);
+    r.position.set(Math.cos(a) * d, 0.1, Math.sin(a) * d);
+    r.rotation.y = rnd() * TAU;
+    g.add(r);
+  }
+  // the route: thirteen small roundels up the near face, joined by a fine line
+  const route = [];
+  const ringMat = new THREE.MeshBasicMaterial({ color: '#fbf8f4', fog: false });
+  const dotMat = new THREE.MeshBasicMaterial({ color: '#e0907a', fog: false });
+  for (let i = 0; i < 13; i++) {
+    const f = 0.06 + i / 12 * 0.86;
+    const x = MAIN.x + (i % 2 ? 1 : -1) * (1 - f) * 7, z = MAIN.z + 22 * (1 - f) + 4;
+    const y = f * MAIN.h * 0.95 + 1;
+    const P = new THREE.Vector3(x, y, z);
+    route.push(P);
+    const roundel = new THREE.Mesh(new THREE.CircleGeometry(i === 12 ? 0.75 : 0.5, 24), ringMat);
+    const dot = new THREE.Mesh(new THREE.CircleGeometry(i === 12 ? 0.5 : 0.32, 24), dotMat);
+    roundel.position.copy(P); dot.position.copy(P).z += 0.02;
+    roundel.lookAt(0, y, 0); dot.lookAt(0, y, 0);
+    g.add(roundel, dot);
+  }
+  g.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(route), new THREE.LineBasicMaterial({ color: '#fbf8f4', transparent: true, opacity: 0.7, fog: false })));
+  g.userData.tick = (t, dt) => clouds.forEach(c => {
+    c.userData.a += c.userData.v * dt * 6;
+    c.position.x = Math.sin(c.userData.a) * c.userData.d;
+    c.position.z = Math.cos(c.userData.a) * c.userData.d;
+  });
+  return g;
+}
+
+/* Grammar: a plaza of great sculptural forms, the strokes of letters made
+   architecture (after the reference Innes sent, 2026-10-18): curved walls
+   like the bowl of a C or an S, arches like an n, half and quarter discs,
+   columns, quarter-pipe ribbons and a tilted disc, in cream, coral red,
+   pink, deep teal, dusty blue and a little black, under a clear blue sky
+   with the sun throwing long soft shadows. Coloured shapes are inlaid in
+   the paving, and a small odd bird stands by the water. */
+function buildGrammar() {
+  const g = new THREE.Group(), rnd = seeded(41);
+  g.add(makeSky('#4f86cc', '#b4d0ea', '#ffffff'));
+  g.add(floorWithPond('#e6d8bf', 0.9));
+  const PAL = { cream: '#efe3cc', red: '#e8413e', pink: '#efa49a', teal: '#2f5a50', blue: '#5f86b8', sage: '#a9b6ad', black: '#222222' };
+  const WEIGHTED = ['cream', 'cream', 'cream', 'red', 'pink', 'pink', 'teal', 'blue', 'sage', 'black'];
+  const mat = name => new THREE.MeshStandardMaterial({ color: PAL[name], roughness: 0.88, map: printed(0.3), side: THREE.DoubleSide });
+  const pick = () => mat(WEIGHTED[Math.floor(rnd() * WEIGHTED.length)]);
+  // the shapes, each standing on the ground in its own frame
+  const curvedWall = (r, thick, arc, h) => {     // the bowl of a C
+    const s = new THREE.Shape();
+    s.absarc(0, 0, r + thick, -arc / 2, arc / 2, false);
+    s.absarc(0, 0, r, arc / 2, -arc / 2, true);
+    const geo = new THREE.ExtrudeGeometry(s, { depth: h, bevelEnabled: false, curveSegments: 32 });
+    geo.rotateX(-Math.PI / 2);
+    return new THREE.Mesh(geo, pick());
+  };
+  const arch = (w, h, r, depth) => {             // an n
+    const s = new THREE.Shape();
+    s.moveTo(-w / 2, 0); s.lineTo(w / 2, 0); s.lineTo(w / 2, h); s.lineTo(-w / 2, h); s.lineTo(-w / 2, 0);
+    const hole = new THREE.Path();
+    hole.moveTo(-r, 0); hole.lineTo(r, 0); hole.lineTo(r, h - r - 1); hole.absarc(0, h - r - 1, r, 0, Math.PI, false); hole.lineTo(-r, 0);
+    s.holes.push(hole);
+    return new THREE.Mesh(new THREE.ExtrudeGeometry(s, { depth, bevelEnabled: false, curveSegments: 24 }), pick());
+  };
+  const disc = (r, depth, part) => {              // half or quarter disc
+    const s = new THREE.Shape();
+    s.moveTo(0, 0); s.absarc(0, 0, r, 0, part, false); s.lineTo(0, 0);
+    return new THREE.Mesh(new THREE.ExtrudeGeometry(s, { depth, bevelEnabled: false, curveSegments: 32 }), pick());
+  };
+  const column = (r, h) => { const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, h, 40), pick()); m.position.y = h / 2; const gg = new THREE.Group(); gg.add(m); return gg; };
+  const ribbon = (r, w, arc) => {                 // a quarter-pipe sheet
+    // the arc starts level with the axis and sweeps down through the ground line and up again
+    const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, w, 32, 1, true, Math.PI, arc), pick());
+    m.rotation.z = Math.PI / 2;
+    m.position.y = r;
+    const gg = new THREE.Group(); gg.add(m); return gg;
+  };
+  const slab = (w, h, d) => { const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), pick()); m.position.y = h / 2; const gg = new THREE.Group(); gg.add(m); return gg; };
+  const MAKERS = [
+    () => curvedWall(2 + rnd() * 3, 0.8 + rnd() * 0.6, 1.6 + rnd() * 1.6, 6 + rnd() * 8),
+    () => arch(5 + rnd() * 4, 8 + rnd() * 6, 1.4 + rnd() * 1, 1 + rnd() * 1.2),
+    () => disc(3 + rnd() * 4, 0.9 + rnd() * 1.2, rnd() < 0.5 ? Math.PI : Math.PI / 2),
+    () => column(1.2 + rnd() * 1.6, 5 + rnd() * 8),
+    () => ribbon(3 + rnd() * 3, 2.5 + rnd() * 2, 1.6 + rnd() * 1.2),
+    () => slab(4 + rnd() * 6, 2 + rnd() * 4, 1 + rnd() * 2),
+  ];
+  const placed = [];
+  for (let i = 0; i < 44; i++) {
+    const a = rnd() * TAU;
+    const behind = Math.atan2(Math.sin(a + Math.PI / 2), Math.cos(a + Math.PI / 2));
+    const k = Math.floor(rnd() * MAKERS.length);
+    // dense all round, as in the reference; the forms straight behind her
+    // stand further back, so they frame her head rather than crowd it, and
+    // nothing tall stands where the camera passes as she turns
+    let d = Math.abs(behind) < 0.5 ? 24 + rnd() * 12 : 16 + rnd() * 18;
+    if (d < pondRadius(a) + 2) d = pondRadius(a) + 2 + rnd() * 4;
+    // no two forms share ground: skip a spot too near one already placed
+    const px = Math.cos(a) * d, pz = Math.sin(a) * d;
+    if (placed.some(([qx, qz]) => Math.hypot(px - qx, pz - qz) < 8)) continue;
+    placed.push([px, pz]);
+    const piece = MAKERS[k]();
+    const holder = new THREE.Group();
+    holder.add(piece);
+    holder.position.set(Math.cos(a) * d, 0, Math.sin(a) * d);
+    holder.rotation.y = rnd() * TAU;
+    g.add(holder);
+  }
+  // the tilted disc, and colour inlaid in the paving
+  const tilt = new THREE.Mesh(new THREE.CylinderGeometry(5, 5, 0.5, 48), mat('sage'));
+  tilt.position.set(15, 3.6, -12); tilt.rotation.set(1.15, 0.6, 0.2);
+  g.add(tilt);
+  ['pink', 'teal', 'blue', 'red', 'sage', 'pink'].forEach((c, i) => {
+    let a, d;
+    do { a = rnd() * TAU; d = 10 + rnd() * 16; } while (d < pondRadius(a) + 2);
+    const inlay = new THREE.Mesh(i % 2 ? new THREE.CircleGeometry(2 + rnd() * 3, 40, 0, Math.PI) : new THREE.CircleGeometry(2 + rnd() * 3, 40),
+      new THREE.MeshStandardMaterial({ color: PAL[c], roughness: 0.9, map: printed(0.3) }));
+    inlay.rotation.set(-Math.PI / 2, 0, rnd() * TAU);
+    // each inlay at its own height, so two that overlap never fight for one plane
+    inlay.position.set(Math.cos(a) * d, 0.04 + i * 0.015, Math.sin(a) * d);
+    g.add(inlay);
+  });
+  // the bird, on a little stand on the far shore
+  const bird = new THREE.Group();
+  const body = new THREE.Mesh(new THREE.SphereGeometry(0.5, 24, 16), mat('pink')); body.scale.set(1, 0.72, 0.8); body.position.y = 0.95;
+  const head = new THREE.Mesh(new THREE.SphereGeometry(0.24, 20, 14), mat('pink')); head.position.set(-0.42, 1.38, 0);
+  const mask = new THREE.Mesh(new THREE.SphereGeometry(0.245, 20, 14, 0, Math.PI, 0, Math.PI / 2), mat('black')); mask.position.copy(head.position); mask.rotation.y = Math.PI / 2;
+  const stand = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.22, 0.6, 12), mat('cream')); stand.position.y = 0.3;
+  bird.add(body, head, mask, stand);
+  bird.position.set(6.2, 0, -3.4);
+  bird.rotation.y = -0.6;
+  g.add(bird);
+  shadowed(g);
+  // words drifting past: each comes in near the viewer on the left and
+  // floats away right into the horizon, growing smaller as it goes, then
+  // starts again; they are staggered, so only a few are in the air at once
+  const DRIFT = ['present perfect', 'although', 'would have', 'whose', 'phrasal verb', 'used to',
+                 'if only', 'has been', 'passive', 'whom', 'might', 'however'];
+  const wordTex = (w, col) => {
+    const c = document.createElement('canvas'), x = c.getContext('2d');
+    x.font = 'italic 700 72px "Playfair Display", serif';
+    c.width = Math.ceil(x.measureText(w).width) + 24; c.height = 100;
+    x.font = 'italic 700 72px "Playfair Display", serif';
+    x.fillStyle = col; x.textBaseline = 'middle'; x.fillText(w, 12, 54);
+    const tx = new THREE.CanvasTexture(c); tx.colorSpace = THREE.SRGBColorSpace;
+    return [tx, c.width / c.height];
+  };
+  const drifters = DRIFT.map((w, i) => {
+    const [tx, asp] = wordTex(w, i % 3 === 1 ? '#a8282a' : '#24443d');   // deep red and dark teal
+    const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: tx, transparent: true, depthWrite: false, opacity: 0 }));
+    s.userData = { asp, phase: i / DRIFT.length, y: 1.2 + (i % 4) * 0.45, lane: (i % 3) * 2.5 };
+    g.add(s);
+    return s;
+  });
+  const A = new THREE.Vector3(), B = new THREE.Vector3();
+  g.userData.tick = t => drifters.forEach(s => {
+    const u = s.userData, f = (t / 26 + u.phase) % 1;     // 26 s from near to far
+    A.set(-14 - u.lane, u.y, -2 - u.lane); B.set(55, 1.6, -70);   // in from the left, away to the horizon on the right
+    s.position.lerpVectors(A, B, f * f * (1.6 - 0.6 * f));
+    s.scale.set(0.8 * u.asp, 0.8, 1);
+    s.material.opacity = 0.85 * Math.min(1, f * 8) * Math.min(1, (1 - f) * 3);
+  });
+  return g;
+}
+
+/* Level Check: a tide gauge in the open sea (after the IELTS report art,
+   ielts-report/hero.jpg and gauge.jpg). A dusty blue sky, a long bank of
+   salmon cumulus on the horizon, a white sun, and off to her right a tall
+   gauge post standing out of the water by a dark jetty, marked A1 to C2,
+   one band lit; a bird on top, birds on the wall, gulls overhead, and a
+   sloop under sail on her left (after Innes's Midjourney sailing still). */
+function cloudTexture(rnd) {
+  // one soft cumulus puff, mottled like ink pulled through a screen
+  const c = document.createElement('canvas'), g = c.getContext('2d');
+  c.width = c.height = 256;
+  for (let i = 0; i < 26; i++) {
+    const x = 128 + (rnd() - 0.5) * 120, y = 140 + (rnd() - 0.5) * 70 - Math.abs(x - 128) * 0.15, r = 34 + rnd() * 46;
+    const gr = g.createRadialGradient(x, y, 0, x, y, r);
+    gr.addColorStop(0, 'rgba(255,255,255,0.9)'); gr.addColorStop(0.6, 'rgba(255,255,255,0.55)'); gr.addColorStop(1, 'rgba(255,255,255,0)');
+    g.fillStyle = gr; g.beginPath(); g.arc(x, y, r, 0, TAU); g.fill();
+  }
+  const d = g.getImageData(0, 0, 256, 256);
+  for (let i = 0; i < d.data.length; i += 4) d.data[i + 3] *= 0.82 + rnd() * 0.18;   // grain in the paint
+  g.putImageData(d, 0, 0);
+  const tx = new THREE.CanvasTexture(c);
+  tx.colorSpace = THREE.SRGBColorSpace;
+  return tx;
+}
+function gaugeTexture() {
+  // the marked face of the gauge: white above, black below, a scale of
+  // ticks, the six levels named, and one band lit in salmon
+  const c = document.createElement('canvas'), g = c.getContext('2d');
+  c.width = 128; c.height = 1024;
+  g.fillStyle = '#efe9df'; g.fillRect(0, 0, 128, 1024);
+  g.fillStyle = '#1c2228'; g.fillRect(0, 610, 128, 414);
+  g.fillStyle = '#ee8c74'; g.fillRect(0, 470, 128, 70);
+  const LV = ['C2', 'C1', 'B2', 'B1', 'A2', 'A1'];
+  g.font = '800 34px "Barlow Condensed", sans-serif'; g.textBaseline = 'middle';
+  for (let i = 0; i <= 60; i++) {
+    const y = 40 + i * 9.5;
+    g.fillStyle = y > 610 ? '#cfd6dc' : '#1c2228';
+    g.fillRect(i % 5 ? 92 : 78, y, i % 5 ? 30 : 44, i % 5 ? 2 : 3);
+  }
+  LV.forEach((lv, i) => {
+    const y = 70 + i * 100;
+    g.fillStyle = y > 600 ? '#cfd6dc' : '#1c2228';
+    g.fillText(lv, 14, y);
+  });
+  const tx = new THREE.CanvasTexture(c);
+  tx.colorSpace = THREE.SRGBColorSpace;
+  tx.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  return tx;
+}
+function bird() {
+  const s = new THREE.Shape();
+  s.moveTo(0, 0); s.quadraticCurveTo(0.18, 0.16, 0.34, 0.12); s.lineTo(0.42, 0.2); s.lineTo(0.4, 0.08);
+  s.quadraticCurveTo(0.3, -0.06, 0.08, -0.04); s.lineTo(-0.1, -0.12); s.lineTo(0, 0);
+  return new THREE.Mesh(new THREE.ShapeGeometry(s), new THREE.MeshBasicMaterial({ color: '#141a20', side: THREE.DoubleSide }));
+}
+function sailTexture(lit, shade, seam, stripe) {
+  // a sail cloth: shade along the luff fading to the lit leech, panel seams
+  // running across, and a couple of coloured tell-tale lines
+  const c = document.createElement('canvas'), g = c.getContext('2d');
+  c.width = 256; c.height = 512;
+  const gr = g.createLinearGradient(0, 0, 256, 0);
+  gr.addColorStop(0, shade); gr.addColorStop(0.45, lit); gr.addColorStop(1, lit);
+  g.fillStyle = gr; g.fillRect(0, 0, 256, 512);
+  g.strokeStyle = seam; g.lineWidth = 1.6;
+  for (let y = 22; y < 512; y += 30) { g.beginPath(); g.moveTo(0, y + 10); g.lineTo(256, y - 10); g.stroke(); }
+  g.lineWidth = 1;
+  for (let i = 0; i < 9; i++) { g.beginPath(); g.moveTo(256, 512); g.lineTo(i * 30, 0); g.stroke(); }
+  if (stripe) {
+    g.strokeStyle = stripe; g.lineWidth = 2.5;
+    [150, 330].forEach(y => { g.beginPath(); g.moveTo(0, y + 10); g.lineTo(256, y - 10); g.stroke(); });
+  }
+  const tx = new THREE.CanvasTexture(c);
+  tx.colorSpace = THREE.SRGBColorSpace;
+  return tx;
+}
+function sailMesh(pts, map) {
+  // a flat sail from its corners, UVs spread over its own bounding box
+  const s = new THREE.Shape(pts.map(([x, y]) => new THREE.Vector2(x, y)));
+  const geo = new THREE.ShapeGeometry(s);
+  geo.computeBoundingBox();
+  const bb = geo.boundingBox, uv = geo.attributes.uv, ps = geo.attributes.position;
+  for (let i = 0; i < ps.count; i++)
+    uv.setXY(i, (ps.getX(i) - bb.min.x) / (bb.max.x - bb.min.x), (ps.getY(i) - bb.min.y) / (bb.max.y - bb.min.y));
+  return new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ map, side: THREE.DoubleSide }));
+}
+function sloop() {
+  const s = new THREE.Group();
+  const white = new THREE.MeshStandardMaterial({ color: '#eef0ee', roughness: 0.55 });
+  const dark = new THREE.MeshStandardMaterial({ color: '#1c2228', roughness: 0.7 });
+  const deck = new THREE.MeshStandardMaterial({ color: '#b9c6cf', roughness: 0.7 });
+  // the hull, in side profile: a raked bow, a short counter at the stern
+  const hp = new THREE.Shape();
+  hp.moveTo(-3.1, 1.0); hp.lineTo(3.4, 1.05); hp.quadraticCurveTo(2.9, 0.2, 2.2, -0.15);
+  hp.lineTo(-2.4, -0.15); hp.quadraticCurveTo(-2.9, 0.3, -3.1, 1.0);
+  const hull = new THREE.Mesh(new THREE.ExtrudeGeometry(hp, { depth: 1.5, bevelEnabled: true, bevelThickness: 0.12, bevelSize: 0.08, bevelSegments: 2 }), white);
+  hull.position.z = -0.75;
+  s.add(hull);
+  const boot = new THREE.Mesh(new THREE.BoxGeometry(4.7, 0.09, 1.78), dark);
+  boot.position.set(0.0, 0.12, 0);
+  s.add(boot);
+  // the cabin top, with its row of portholes on both sides
+  const cabin = new THREE.Mesh(new THREE.BoxGeometry(2.6, 0.42, 1.05), deck);
+  cabin.position.set(0.15, 1.27, 0);
+  s.add(cabin);
+  const portGeo = new THREE.CircleGeometry(0.075, 12);
+  for (let i = 0; i < 5; i++) for (const side of [1, -1]) {
+    const pt = new THREE.Mesh(portGeo, dark);
+    pt.position.set(-0.85 + i * 0.48, 1.27, side * 0.53);
+    pt.rotation.y = side > 0 ? 0 : Math.PI;
+    s.add(pt);
+  }
+  // rails along the deck
+  const railMat = new THREE.LineBasicMaterial({ color: '#2a3138' });
+  for (const side of [0.78, -0.78]) {
+    s.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(
+      [new THREE.Vector3(-3.0, 1.45, side), new THREE.Vector3(-1.4, 1.45, side)]), railMat));
+    s.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(
+      [new THREE.Vector3(2.0, 1.4, side), new THREE.Vector3(3.3, 1.45, 0)]), railMat));
+  }
+  // mast, boom
+  const mast = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.08, 9.6, 8), dark);
+  mast.position.set(0.7, 1.0 + 4.8, 0);
+  s.add(mast);
+  const boom = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 3.5, 6), dark);
+  boom.rotation.z = Math.PI / 2;
+  boom.position.set(-1.05, 2.05, 0);
+  s.add(boom);
+  // the sails: cream main abaft the mast, the jib forward in shadow
+  const main = sailMesh([[0.62, 2.12], [-2.75, 2.12], [0.62, 10.2]],
+    sailTexture('#f7ecdc', '#c9cfd2', 'rgba(150,130,110,0.35)', '#d98c7c'));
+  main.position.z = 0.02;
+  s.add(main);
+  const jib = sailMesh([[0.82, 9.7], [3.25, 1.2], [0.95, 1.55]],
+    sailTexture('#d9dfe3', '#8ea2b4', 'rgba(60,80,100,0.3)', null));
+  jib.position.z = 0.25;
+  s.add(jib);
+  // forestay and backstay
+  const stay = (a, b) => s.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([a, b]), railMat));
+  stay(new THREE.Vector3(0.7, 10.6, 0), new THREE.Vector3(3.4, 1.05, 0));
+  stay(new THREE.Vector3(0.7, 10.6, 0), new THREE.Vector3(-3.05, 1.05, 0));
+  // two people in the cockpit
+  const body = new THREE.CapsuleGeometry(0.13, 0.28, 4, 8), head = new THREE.SphereGeometry(0.11, 10, 8);
+  [-2.15, -1.6].forEach(x => {
+    const b = new THREE.Mesh(body, dark); b.position.set(x, 1.38, 0.2); s.add(b);
+    const h = new THREE.Mesh(head, dark); h.position.set(x, 1.72, 0.2); s.add(h);
+  });
+  return s;
+}
+function buildLevel() {
+  const g = new THREE.Group(), rnd = seeded(53);
+  g.add(makeSky('#7d9db0', '#c4d0d0', '#ffe0cc'));
+  // the sun, high on the left
+  const sun = new THREE.Mesh(new THREE.CircleGeometry(3.2, 48), new THREE.MeshBasicMaterial({ color: '#fbf6ee', fog: false }));
+  sun.position.set(-34, 26, -62);
+  sun.lookAt(0, 0, 0);
+  g.add(sun);
+  // the bank of cloud along the horizon, all the way round behind her
+  const puff = cloudTexture(rnd);
+  const cloudMat = (c, o) => new THREE.SpriteMaterial({ map: puff, color: c, transparent: true, opacity: o, depthWrite: false, fog: false });
+  const SAL = ['#f29a84', '#f4a690', '#eda08a', '#f6b8a2'];
+  for (let i = 0; i < 70; i++) {
+    const a = Math.PI + (rnd() - 0.5) * 3.3, d = 58 + rnd() * 10;
+    const s = new THREE.Sprite(cloudMat(SAL[i % 4], 0.85));
+    const size = 8 + rnd() * 11;
+    s.scale.set(size * 1.5, size, 1);
+    s.position.set(Math.sin(a) * d, size * 0.22 + rnd() * 2.5, Math.cos(a) * d);
+    g.add(s);
+  }
+  // the gauge, off to her right and behind, with its jetty
+  const GX = 17, GZ = -40, GH = 24;
+  const ink = new THREE.MeshStandardMaterial({ color: '#1c2228', roughness: 0.85, map: printed(3) });
+  const face = new THREE.MeshStandardMaterial({ map: gaugeTexture(), roughness: 0.7 });
+  const post = new THREE.Mesh(new THREE.BoxGeometry(2.0, GH, 2.0), [ink, ink, ink, ink, face, ink]);
+  post.position.set(GX, GH / 2 - 0.6, GZ);
+  post.lookAt(0, GH / 2 - 0.6, 0);     // its marked face toward her
+  g.add(post);
+  const wall = new THREE.Mesh(new THREE.BoxGeometry(34, 2.2, 3), ink);
+  wall.position.set(GX + 17.5, 0.1, GZ - 0.4);
+  g.add(wall);
+  for (let i = 0; i < 9; i++) {
+    const rk = new THREE.Mesh(new THREE.DodecahedronGeometry(0.8 + rnd() * 1.4, 0), new THREE.MeshStandardMaterial({ color: '#232a30', roughness: 0.9, flatShading: true }));
+    rk.position.set(GX + 22 + rnd() * 14, 0.2, GZ + 1.6 + rnd() * 2.5);
+    rk.rotation.set(rnd() * 3, rnd() * 3, rnd() * 3);
+    g.add(rk);
+  }
+  const b1 = bird(); b1.scale.setScalar(1.6); b1.position.set(GX - 0.2, GH - 0.55, GZ); g.add(b1);
+  [[GX + 9, GZ - 0.2], [GX + 15, GZ - 0.2]].forEach(([x, z]) => { const b = bird(); b.position.set(x, 0.85, z); g.add(b); });
+  // a sloop under sail on the horizon, far left, the size the old sail was
+  const boat = sloop();
+  boat.scale.setScalar(0.24);
+  boat.position.set(-30, 0, -48);
+  boat.lookAt(0, 0, 0);
+  g.add(boat);
+  // gulls: a few in the sky, crossing slowly with an easy beat
+  const gullGeo = new THREE.BufferGeometry();
+  gullGeo.setAttribute('position', new THREE.Float32BufferAttribute([
+    // each wing in two parts: inner arm up, outer hand swept down — the gull's M
+    0, 0, 0, -0.55, 0.28, 0, -0.5, 0.14, 0.12,
+    -0.55, 0.28, 0, -1.3, 0.05, 0, -0.5, 0.14, 0.12,
+    0, 0, 0, 0.55, 0.28, 0, 0.5, 0.14, 0.12,
+    0.55, 0.28, 0, 1.3, 0.05, 0, 0.5, 0.14, 0.12,
+    // the body
+    0, 0.04, -0.35, 0, -0.06, 0.45, 0.1, 0, 0,
+    0, 0.04, -0.35, 0, -0.06, 0.45, -0.1, 0, 0], 3));
+  const gullInk = new THREE.MeshBasicMaterial({ color: '#141a20', side: THREE.DoubleSide, fog: false });
+  const gulls = Array.from({ length: 6 }, (_, i) => {
+    const m = new THREE.Mesh(gullGeo, gullInk);
+    m.scale.setScalar(0.72);   // a wingspan of ~1.9, a little over the old gulls' 1.2
+    m.userData = { speed: 0.9 + i * 0.25, phase: i * 13, y: 9 + (i % 3) * 3.5, z: -30 - i * 6 };
+    g.add(m);
+    return m;
+  });
+  g.userData.tick = t => {
+    b1.rotation.z = Math.sin(t * 0.7) * 0.05;
+    boat.position.x = -30 + Math.sin(t * 0.05) * 3;
+    boat.rotation.z = Math.sin(t * 0.8) * 0.025;
+    gulls.forEach((m, i) => {
+      const u = m.userData;
+      m.position.set(((t * u.speed + u.phase) % 90) - 45, u.y + Math.sin(t * 0.4 + i) * 0.6, u.z);
+      m.rotation.x = 0.25;
+      m.rotation.z = Math.sin(t * 0.5 + i) * 0.12;
+      m.scale.y = m.scale.x * (0.45 + Math.abs(Math.sin(t * 2.6 + i)) * 0.75);
+    });
+  };
+  return g;
+}
+
+const library = buildLibrary(), camp = buildCamp();
+const ielts = buildIelts(), sherpa = buildSherpa(), grammarW = buildGrammar(), level = buildLevel();
+const WORLDS = [dusk, library, camp, ielts, sherpa, grammarW, level];
+[library, camp, ielts, sherpa, grammarW, level].forEach(gr => { gr.visible = false; world.add(gr); });
+camp.userData.tick = t => {
+  camp.userData.flames.forEach((f, i) => {
+    f.scale.setScalar(0.8 + 0.35 * Math.abs(Math.sin(t * 7 + i * 1.7)));
+    f.rotation.y = t * (1 + i * 0.3);
+  });
+  camp.userData.clouds.rotation.y = t * 0.006;
+};
+
+// each section's colours: the open landscape takes them whole; the built
+// worlds take the fog, light and water
+const ENVS = {
+  'library.html': { group: library, night: '#0f0805', fog: '#120904', density: 0.066, camY: 2.5, introBack: 1.2, distMax: 12.2,
+    hemi: ['#b0855a', '#0c0503', 0.42], back: '#ffcf8a', water: 0x7a6656, lights: { warmA: 12, warmB: 12 },
+    wave: { ripple: 0, deep: '#140b06', mirror: 1 } },
+  'ielts.html': { group: ielts, night: '#1d2a33', fog: '#d9e2dc', density: 0.008, camY: 1.9, backPos: [-34, 16, 22], shadows: true,
+    hemi: ['#eef0e6', '#6a8a88', 0.9], back: '#ffd2b8', water: 0x8fb3b4,
+    wave: { ripple: 0, deep: '#131e20', mirror: 0.33 } },   // 40% darker than deep #2e4a50 at 0.55 (Innes, 2026-10-18)
+  'sherpa-tensing-route-map.html': { group: sherpa, halo: 0.12, titleBase: '#262c31', titleFade: 1.0, titleCurve: 1, shade: '#eef3f6', headInk: '#26313a', leadInk: '#3c4852', night: '#1f3446', fog: '#dfe8ea', density: 0.004, camY: 1.8, backPos: [30, 26, 34],
+    hemi: ['#f2f6f8', '#8a9aa6', 0.95], back: '#ffffff', water: 0xc8d6de,
+    wave: { ripple: 0, deep: '#b4c6d4', mirror: 0.85 } },
+  'block-camp.html': { group: camp, halo: 0.3, night: '#123a66', fog: '#d4ecff', density: 0.006, camY: 1.6, backPos: [20, 30, 25],
+    hemi: ['#ffffff', '#7a9a5a', 1.1], back: '#fff4d8', water: 0x4d6684, lights: { fire: 6 },
+    wave: { ripple: 0, deep: '#1b2c42', mirror: 0.38, gain: 0.6 } },   // muted navy, not royal blue (Innes, 2026-10-18: "too garish")   // her reflection 40% darker (Innes, 2026-10-18)
+  'grammar.html': { group: grammarW, halo: 0.25, night: '#16263e', fog: '#c8dcef', density: 0.006, camY: 1.8, backPos: [28, 34, 14], shadows: true,
+    hemi: ['#dfe8f4', '#6a5a4a', 0.45], back: '#fff6e8', water: 0x8fb0d8, sun: 3.6,
+    wave: { ripple: 0, deep: '#26425e', mirror: 0.5 } },
+  'level-checker.html': { group: level, halo: 0.4, night: '#1e2c36', fog: '#bccacc', density: 0.006, camY: 1.7, backPos: [-30, 22, -40],
+    hemi: ['#d6e2e6', '#2a3a44', 0.95], back: '#ffd8c0', water: 0x6f8c98,
+    wave: { ripple: 0, deep: '#16232b', mirror: 1, rings: 1 } },
+};
+function applyEnv(e) {
+  WORLDS.forEach(gr => (gr.visible = gr === e.group));
+  scene.fog.color.set(e.fog);
+  NIGHT.set(e.night);
+  document.documentElement.style.setProperty('--night', e.night);
+  // a world bright behind the words takes dark words on a pale shade
+  const rs = document.documentElement.style;
+  if (e.shade) { rs.setProperty('--shade', e.shade); rs.setProperty('--head-ink', e.headInk); rs.setProperty('--lead-ink', e.leadInk); rs.setProperty('--text-glow', 'rgba(255, 255, 255, 0.85)');
+    rs.setProperty('--nav-ink', '#3a3f44'); rs.setProperty('--nav-hover', '#14181b'); rs.setProperty('--nav-logo', '#2b3034'); }
+  else ['--shade', '--head-ink', '--lead-ink', '--text-glow', '--nav-ink', '--nav-hover', '--nav-logo'].forEach(k => rs.removeProperty(k));
+  hemi.color.set(e.hemi[0]); hemi.groundColor.set(e.hemi[1]); hemi.intensity = e.hemi[2];
+  back.color.set(e.back);
+  back.position.set(...(e.backPos || [-2, 6, -10]));
+  water.material.uniforms.color.value.set(e.water);
+  const wave = e.wave || {};
+  water.material.uniforms.ripple.value = wave.ripple ?? 0;
+  water.material.uniforms.deep.value.set(wave.deep || '#1c2a33');
+  water.material.uniforms.mirror.value = wave.mirror ?? 0.55;
+  water.material.uniforms.gain.value = wave.gain ?? 1;
+  water.material.uniforms.rings.value = wave.rings ?? 0;
+  back.castShadow = !!e.shadows;
+  back.intensity = e.shadows ? (e.sun || 3.2) : 1.3;
+  Object.entries(worldLights).forEach(([k, l]) => (l.intensity = (e.lights || {})[k] || 0));
+  if (e.sky) {
+    const u = sky.material.uniforms;
+    u.top.value.set(e.sky[0]); u.horizon.value.set(e.sky[1]); u.glow.value.set(e.sky[2]);
+    ground.material.color.set(e.ground);
+    plants.material.color.set(e.plant);
+  }
+}
+const envFx = { cur: null, next: null, t: 0 };
+function goEnv(href) {
+  const e = ENVS[href];
+  if (!e || e === (envFx.next || envFx.cur)) return;
+  if (!envFx.cur || still) { envFx.cur = e; envFx.next = null; applyEnv(e); return; }
+  envFx.next = e; envFx.t = 0;
+  if (typeof fit === 'function' && view.half) fit();
+}
+goEnv('library.html');
+
+/* a few birds, far off */
+const birdGeo = new THREE.BufferGeometry();
+birdGeo.setAttribute('position', new THREE.Float32BufferAttribute([-0.18, 0.05, 0, 0, 0, 0, 0, -0.02, 0.03, 0.18, 0.05, 0, 0, 0, 0, 0, -0.02, 0.03], 3));
+const birdMat = new THREE.MeshBasicMaterial({ color: '#02040a', side: THREE.DoubleSide });
+const birds = Array.from({ length: 4 }, (_, i) => {
+  const b = new THREE.Mesh(birdGeo, birdMat);
+  b.userData = { speed: 0.35 + i * 0.07, phase: i * 1.7, y: 3.6 + i * 0.6, z: -9 - i * 2.5 };
+  dusk.add(b);
+  return b;
+});
+
+/* dust in the light */
+const DUST = 260;
+const dustPos = new Float32Array(DUST * 3);
+for (let i = 0; i < DUST; i++) {
+  dustPos[i * 3] = (Math.random() - 0.5) * 9;
+  dustPos[i * 3 + 1] = Math.random() * 5;
+  dustPos[i * 3 + 2] = (Math.random() - 0.5) * 6;
+}
+const dustGeo = new THREE.BufferGeometry();
+dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPos, 3));
+const dust = new THREE.Points(dustGeo, new THREE.PointsMaterial({
+  color: '#ffd9a0', size: 0.03, transparent: true, opacity: 0.0, depthWrite: false, blending: THREE.AdditiveBlending,
+}));
+scene.add(dust);
+
+/* camera and post */
+const camera = new THREE.PerspectiveCamera(36, 1, 0.1, 200);
+const composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene, camera));
+const bloom = new UnrealBloomPass(new THREE.Vector2(1, 1), 0.38, 0.75, 0.88);
+composer.addPass(bloom);
+composer.addPass(new OutputPass());
+
+
+// She must fit whatever the window. She is wide, so width usually decides;
+// on a portrait phone she is framed on her head and the arms run off the
+// sides, aimed low so she rides above the text block rather than behind it.
+const view = { dist: 10, aimY: 1, height: 1.6, pxPerStop: 400, half: 0.32, portrait: false, titleW: 3.9 };
+const N = titles.length;
+// the water draws its reflection just before the frame; the titles are
+// dimmed for that pass only, so their mirror image is a faint echo
+{
+  const draw = water.onBeforeRender;
+  water.onBeforeRender = function (...args) {
+    const keep = titles.map(m => m.material.opacity);
+    titles.forEach(m => (m.material.opacity *= 0.65));
+    draw.apply(this, args);
+    titles.forEach((m, i) => (m.material.opacity = keep[i]));
+  };
+}
+
+// On a phone the titles are cut smaller, so the camera can stay close on
+// her head and let the arms run off the sides; elsewhere they are full size.
+let titlesPortrait = null;
+function setTitleSize(portrait) {
+  if (titlesPortrait === portrait) return;
+  titlesPortrait = portrait;
+  const h = portrait ? 0.56 : TITLE_H;
+  titles.forEach(m => {
+    const arc = h * m.userData.aspect / RING_R;
+    m.geometry.dispose();
+    m.geometry = new THREE.CylinderGeometry(RING_R, RING_R, h, 48, 1, true, m.userData.theta - arc / 2, arc);
+  });
+  view.titleW = Math.max(...titles.map(m => h * m.userData.aspect));
+}
+
+function resize() {
+  const w = innerWidth, h = innerHeight, aspect = w / h;
+  renderer.setSize(w, h, false);
+  composer.setSize(w, h);
+  bloom.resolution.set(w / 2, h / 2);
+  camera.aspect = aspect;
+  camera.updateProjectionMatrix();
+  view.half = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+  view.portrait = aspect < 0.85;
+  setTitleSize(view.portrait);
+  fit();
+}
+
+// She is framed in two passes. First by the window's shape: on a phone,
+// on her head with the arms off the sides; elsewhere, the whole ring.
+// Then a test camera, placed where the real one will settle (at this
+// world's height, looking down if it looks down), measures three points:
+// the top of her head, the top of the far side of the ring, and the
+// bottom of the near side. The head and the far ring must sit below the
+// words in the sky, the near ring above the foot of the screen. She is
+// moved down or up to suit, and if both cannot hold, the camera steps
+// back. Run again whenever the words or the world change.
+const probe = new THREE.PerspectiveCamera();
+const pv = new THREE.Vector3();
+function fit() {
+  const w = innerWidth, h = innerHeight, aspect = w / h, half = view.half, portrait = view.portrait;
+  const needH = portrait ? 3.4 : 6.4, needW = portrait ? W * 0.6 : RING_R * 2 + 1.2;
+  let dist = Math.max(needH / (2 * half), needW / (2 * half * aspect));
+  if (portrait) dist = Math.max(dist, RING_R + view.titleW / 0.92 / (2 * half * aspect));
+  const env = envFx.next || envFx.cur;
+  const DIST_MAX = (env && env.distMax) || 40;
+  dist = Math.min(DIST_MAX, dist);
+  const lift = portrait ? -0.16 : -0.2;
+  let aim = STONE_Y + H / 2 - lift * dist * half;
+  const camY = (env && env.camY) || view.height;
+  const words = document.getElementById('copy').getBoundingClientRect().bottom + 18;
+  const floor = h - 34;
+  const th = titlesPortrait ? 0.56 : TITLE_H, sT = Math.sin(TILT), cT = Math.cos(TILT);
+  probe.fov = camera.fov; probe.aspect = aspect; probe.updateProjectionMatrix();
+  const sy = (y, z) => { pv.set(0, y, z).project(probe); return (1 - pv.y) / 2 * h; };
+  for (let i = 0; i < 60; i++) {
+    probe.position.set(0, camY, dist);
+    probe.lookAt(0, aim, 0);
+    probe.updateMatrixWorld();
+    const top = Math.min(sy(STONE_Y + H + 0.1, 0), sy(RING_Y + RING_R * sT + th / 2, -RING_R * cT));
+    // the whole of the front title stays in frame
+    const bottom = sy(RING_Y - RING_R * sT - th / 2, RING_R * cT);
+    const high = top < words, low = bottom > floor;
+    // no room: step back, but never past the open floor (the rotunda's
+    // columns stand at 12.8); past that, the near ring may run off the foot
+    if (high && low) {
+      // the words come first: at the limit she moves down and the front
+      // title may run off the foot
+      if (dist * 1.04 > DIST_MAX) aim += 0.04 * dist * half; else dist *= 1.04;
+    }
+    else if (high) aim += 0.04 * dist * half;       // lower her
+    else if (low) aim -= 0.04 * dist * half;        // raise her
+    else break;
+  }
+  view.dist = dist;
+  view.aimY = aim;
+  const seen = 2 * half * aspect * (dist - RING_R);
+  view.pxPerStop = Math.max(160, (TAU / N) * RING_R / seen * w);
+}
+addEventListener('resize', resize);
+resize();
+
+/* The turn is the navigation. She only moves when someone moves her: a
+   drag (mouse or finger), the wheel, or the arrow keys. Each full turn is
+   one section; let go and she settles facing you on the nearest one, and
+   the panel, the link and the glow change to it. A click on her (not a
+   drag) opens the section she is showing. */
+const links = [...document.querySelectorAll('#index a')];
+const ui = document.querySelector('.ui'), copy = document.getElementById('copy');
+const el = id => document.getElementById(id);
+const pointer = new THREE.Vector2(0, 0), aim = new THREE.Vector2(0, 0);
+const ray = new THREE.Raycaster();
+let hot = false;
+const spin = { angle: 0, target: 0, vel: 0, dragging: false, x: 0, moved: 0, lastT: 0 };
+const glowTo = new THREE.Color(links[0].dataset.color), glowNow = glowTo.clone();
+let current = 0, swapTimer = 0;
+const mod = (n, m) => ((n % m) + m) % m;
+
+function show(i) {
+  if (i === current) return;
+  current = i;
+  const a = links[i];
+  links.forEach((l, k) => l.setAttribute('aria-current', k === i ? 'true' : 'false'));
+  ui.style.setProperty('--accent', a.dataset.color);
+  // a dark section colour still needs to read as text on the night shade
+  ui.style.setProperty('--accent-ink', a.dataset.ink || a.dataset.color);
+  glowTo.set(a.dataset.color);
+  goEnv(a.getAttribute('href'));
+  copy.classList.add('out');
+  clearTimeout(swapTimer);
+  swapTimer = setTimeout(() => {
+    el('sec-num').textContent = String(i + 1).padStart(2, '0') + ' / ' + String(N).padStart(2, '0');
+    el('sec-name').textContent = a.textContent;
+    el('sec-title').innerHTML = a.dataset.title;
+    el('sec-lead').textContent = a.dataset.lead;
+    el('sec-cta').textContent = a.dataset.cta;
+    el('sec-go').href = a.getAttribute('href');
+    copy.classList.remove('out');
+    fit();
+  }, still ? 0 : 280);
+}
+links.forEach(l => l.setAttribute('aria-current', 'false'));
+links[0].setAttribute('aria-current', 'true');
+
+let hinted = false;
+function touched() {
+  if (!hinted) { hinted = true; el('hint').classList.add('gone'); }
+}
+// turn to stop k by the shortest way round from where she is
+function turnTo(k) {
+  const here = Math.round(spin.target / TAU);
+  let d = mod(k - mod(here, N), N);
+  if (d > N / 2) d -= N;
+  spin.target = (here + d) * TAU;
+  touched();
+}
+
+addEventListener('pointermove', e => {
+  pointer.set(e.clientX / innerWidth * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
+  if (!spin.dragging) return;
+  const dx = e.clientX - spin.x, now = performance.now();
+  spin.x = e.clientX;
+  spin.moved += Math.abs(dx);
+  // the front title keeps pace with the finger; one stop of the ring is
+  // one full turn of her
+  const dA = dx / view.pxPerStop * TAU;
+  spin.angle += dA;
+  spin.target = spin.angle;
+  const dt = Math.max((now - spin.lastT) / 1000, 0.008);
+  spin.vel = THREE.MathUtils.lerp(spin.vel, dA / dt, 0.4);
+  spin.lastT = now;
+  if (spin.moved > 6) touched();
+});
+canvas.addEventListener('pointerdown', e => {
+  spin.dragging = true; spin.x = e.clientX; spin.moved = 0; spin.vel = 0; spin.lastT = performance.now();
+  canvas.setPointerCapture(e.pointerId);
+});
+function release() {
+  if (!spin.dragging) return;
+  spin.dragging = false;
+  // a flick carries on to the next stop, never further: project the
+  // throw, settle on a whole turn, at most one past where she was let go
+  const base = Math.round(spin.angle / TAU);
+  const thrown = Math.round((spin.angle + spin.vel * 0.3) / TAU);
+  spin.target = THREE.MathUtils.clamp(thrown, base - 1, base + 1) * TAU;
+}
+addEventListener('pointerup', release);
+addEventListener('pointercancel', release);
+canvas.addEventListener('click', e => {
+  if (spin.moved > 6) return;
+  // a tap has no hover before it, so test her where the tap landed
+  const at = new THREE.Vector2(e.clientX / innerWidth * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
+  ray.setFromCamera(at, camera);
+  const hit = ray.intersectObjects([stone, ...titles], false)[0];
+  if (!hit) return;
+  const k = hit.object === stone ? current : hit.object.userData.k;
+  if (k === current) location.href = links[current].getAttribute('href');
+  else turnTo(k);
+});
+// the wheel: one notch-gesture, one section
+let wheelLock = 0;
+addEventListener('wheel', e => {
+  if (Math.abs(e.deltaY) + Math.abs(e.deltaX) < 4) return;
+  const now = performance.now();
+  if (now < wheelLock) return;
+  wheelLock = now + 650;
+  spin.target = (Math.round(spin.target / TAU) + (e.deltaY + e.deltaX > 0 ? 1 : -1)) * TAU;
+  touched();
+}, { passive: true });
+addEventListener('keydown', e => {
+  if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+  if (e.target.closest && e.target.closest('input, textarea')) return;
+  spin.target = (Math.round(spin.target / TAU) + (e.key === 'ArrowRight' ? 1 : -1)) * TAU;
+  touched();
+});
+// the index turns her rather than leaving the page
+links.forEach((l, k) => l.addEventListener('click', e => { e.preventDefault(); turnTo(k); }));
+
+let start = null, last = performance.now();
+const clock = { t: 0 };
+const ease = x => 1 - Math.pow(1 - x, 3);
+
+function frame(now) {
+  requestAnimationFrame(frame);
+  if (document.hidden) return;
+  const dt = Math.min((now - last) / 1000, 0.05); last = now;
+  if (!loaded) return;
+  if (start === null) {
+    start = now;
+    clearTimeout(window.__worldFallback);
+    // a slow load may have tripped the no-3D fallback first: the scene is here now
+    root.classList.remove('no-gl');
+    root.classList.add('ready');
+  }
+  clock.t += dt;
+  const t = clock.t;
+  const intro = still ? 1 : ease(Math.min((now - start) / 3800, 1));
+  const light = still ? 1 : ease(Math.min((now - start - 600) / 2600, 1) || 0);
+  const lit = Math.max(0, light);
+
+  // the stone lights up as the camera arrives
+  face.emissiveIntensity = 0.34 * lit + (hot ? 0.1 : 0);
+  rim.emissiveIntensity = 0.45 * lit;
+  // her glow reads as light on the dark worlds but stains a bright one, so
+  // the daylit worlds turn it right down (ENVS[…].halo)
+  halo.material.opacity = 0.42 * lit * ((envFx.cur && envFx.cur.halo) ?? 1);
+  lamp.intensity = 3 * lit;
+  dust.material.opacity = 0.7 * lit;
+
+  aim.lerp(pointer, still ? 1 : 0.04);
+  const px = still ? 0 : aim.x, py = still ? 0 : aim.y;
+  const drift = still ? 0 : Math.sin(t * 0.12) * 0.25;
+  view.d = view.d === undefined ? view.dist : THREE.MathUtils.damp(view.d, view.dist, 4, dt);
+  view.a = view.a === undefined ? view.aimY : THREE.MathUtils.damp(view.a, view.aimY, 4, dt);
+  // some worlds are looked down into (the rotunda), most at eye height
+  const camY = (envFx.cur && envFx.cur.camY) || view.height;
+  view.h = view.h === undefined ? camY : THREE.MathUtils.damp(view.h, camY, 2.5, dt);
+  camera.position.set(
+    px * 0.7 + drift,
+    view.h + py * 0.3 + (1 - intro) * 1.2,
+    view.d + (1 - intro) * ((envFx.cur && envFx.cur.introBack) ?? 7)
+  );
+  camera.lookAt(0, view.a, 0);
+
+  // she settles on the nearest whole turn; the section is whichever
+  // whole turn she is nearest to, so the panel changes as she comes round
+  if (!spin.dragging) {
+    spin.angle = still ? spin.target : THREE.MathUtils.damp(spin.angle, spin.target, 3.2, dt);
+  }
+  show(mod(Math.round(spin.angle / TAU), N));
+  glowNow.lerp(glowTo, 1 - Math.pow(0.02, dt));
+  halo.material.color.copy(glowNow);
+  lamp.color.copy(glowNow);
+  rim.emissive.copy(glowNow);
+  stone.position.y = STONE_Y + (still ? 0 : Math.sin(t * 0.7) * 0.05);
+  stone.rotation.y = spin.angle;
+  world.rotation.y = spin.angle;
+  water.material.uniforms.time.value = t;
+  {
+    // the old world sinks into haze, the new one is swapped in at the
+    // thickest point, and the haze clears
+    let veil = 0;
+    if (envFx.next) {
+      envFx.t += dt;
+      const IN = 0.35, OUT = 0.6;
+      if (envFx.t < IN) veil = envFx.t / IN;
+      else {
+        if (envFx.cur !== envFx.next) { envFx.cur = envFx.next; applyEnv(envFx.cur); }
+        veil = Math.max(0, 1 - (envFx.t - IN) / OUT);
+        if (veil === 0) envFx.next = null;
+      }
+    }
+    const e = envFx.cur;
+    scene.fog.density = e.density + veil * veil * 0.3;
+    skies.forEach(s => { s.material.uniforms.veil.value = veil; s.material.uniforms.veilCol.value.copy(scene.fog.color); });
+    if (!still && e.group.userData.tick) e.group.userData.tick(t, dt);
+    const fireBase = (e.lights || {}).fire || 0;
+    if (fireBase) worldLights.fire.intensity = fireBase + Math.sin(t * 9) * fireBase * 0.15 + Math.sin(t * 23) * fireBase * 0.1;
+  }
+  ring.rotation.y = spin.angle / N;
+  titles.forEach((m, k) => {
+    const on = k === current;
+    // the neighbours take the world's own title colour where it sets one (dark on the Sherpa snow)
+    const base = (envFx.cur && envFx.cur.titleBase) ? titleBase.set(envFx.cur.titleBase) : cream;
+    m.material.color.lerp(on ? glowNow : base, 1 - Math.pow(0.01, dt));
+    // titles fade as they swing round to the far side; a pale world (Sherpa's
+    // snow) keeps them more solid, or a dark title fades to pale grey
+    const z = m.localToWorld(tmp.copy(m.userData.mid)).z / RING_R;
+    const fade = (envFx.cur && envFx.cur.titleFade) || 0.42;
+    const curve = (envFx.cur && envFx.cur.titleCurve) || 2;
+    const want = on ? 1 : 0.04 + fade * Math.pow((z + 1) / 2, curve);
+    m.material.opacity = THREE.MathUtils.damp(m.material.opacity, want * lit, 6, dt);
+  });
+  stone.rotation.x = -py * 0.03;
+  halo.position.y = stone.position.y + H * 0.5;
+
+  if (!still) {
+    const p = dustGeo.attributes.position;
+    for (let i = 0; i < DUST; i++) {
+      let y = p.getY(i) + dt * 0.08;
+      if (y > 5) y = 0;
+      p.setY(i, y);
+      p.setX(i, p.getX(i) + Math.sin(t * 0.3 + i) * dt * 0.02);
+    }
+    p.needsUpdate = true;
+    for (const b of birds) {
+      const u = b.userData;
+      const x = ((t * u.speed + u.phase * 4) % 30) - 15;
+      b.position.set(x, u.y + Math.sin(t * 0.8 + u.phase) * 0.2, u.z);
+      b.scale.y = 0.4 + Math.abs(Math.sin(t * 6 + u.phase)) * 0.9;
+    }
+  }
+
+  ray.setFromCamera(pointer, camera);
+  const nowHot = ray.intersectObjects([stone, ...titles], false).length > 0;
+  if (nowHot !== hot) { hot = nowHot; canvas.classList.toggle('hot', hot); }
+
+  composer.render();
+}
+requestAnimationFrame(frame);
 </script>
 </body>
 </html>

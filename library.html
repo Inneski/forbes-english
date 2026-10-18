@@ -81,6 +81,13 @@
   }
   .nav-pill:hover { background: rgba(255,255,255,0.16); }
   .nav-pill.gold { background: var(--gold-bright); color: var(--ink); border-color: var(--gold-bright); font-weight: 800; }
+  /* Five pills in one row measured 530px wide, so a 375px phone laid the
+     whole page out at 530 and zoomed it down. On a phone they wrap. */
+  @media (max-width: 560px) {
+    .header-inner { flex-wrap: wrap; gap: 12px; }
+    .nav-links { flex-wrap: wrap; gap: 6px; }
+    .nav-pill { padding: 6px 11px; font-size: 0.78rem; }
+  }
 
   /* ── HERO ── */
   .hero {
@@ -550,6 +557,435 @@
     .cat-hub .cat-hub-go { margin-left: 0; width: 100%; }
   }
 </style>
+<style id="library-feel">
+  @font-face { font-family: 'Faktum'; src: url('Sherpa%20Tensing/fonts/Faktum-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+  @font-face { font-family: 'Faktum'; src: url('Sherpa%20Tensing/fonts/Faktum-SemiBold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+  @font-face { font-family: 'Faktum'; src: url('Sherpa%20Tensing/fonts/Faktum-Bold.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+  /* ── The library feel ──
+     The front page's Library world is a walnut rotunda lit by brass lamps
+     (index.html, buildLibrary()); this page is the room you walk into from
+     it. Everything here is a layer over the stylesheet above: the site's
+     green is swapped for walnut and brass through its own variables, so
+     every rule that already uses them follows, and the rest is
+     decoration. The six hub buttons become books on a shelf but keep
+     their own flat colours (Innes, 2026-09-27: flat colour reads; busy
+     backgrounds do not). Delete this block and the page is as it was. */
+  :root {
+    --walnut-deep: #1e110a;
+    --walnut: #2e1a0e;
+    --walnut-mid: #4a2c18;
+    --walnut-lift: #6b4226;
+    --brass: #c9a14a;
+    --brass-deep: #9c7818;
+    --parchment: #f3ead8;
+    --paper: #fffaf0;
+    --spine-shade: rgba(46, 26, 14, 0.24);
+
+    --green-deep: var(--walnut);
+    --green-mid: var(--walnut-mid);
+    --green-light: #a07a4a;
+    --green-pale: #efe3cc;
+    --gold: var(--brass-deep);
+    --cream: var(--parchment);
+    --ink: #24160d;
+    --ink-soft: #3a2616;
+    --muted: #7a6448;
+    --border: #d9c7a6;
+    --white: var(--paper);
+    --pro: var(--walnut);
+    --pro-bg: #efe3cc;
+  }
+  body {
+    background:
+      radial-gradient(1200px 500px at 50% -10%, rgba(201, 161, 74, 0.10), transparent 70%),
+      var(--parchment);
+  }
+
+  /* the room: walnut, brass trim, lamplight, and a shelf of books */
+  header { background: var(--walnut-deep); border-bottom: 1px solid rgba(201, 161, 74, 0.35); }
+  .nav-pill { border-color: rgba(201, 161, 74, 0.35); }
+  .hero {
+    position: relative;
+    padding-top: 22px;
+    padding-bottom: 26px;
+    background:
+      radial-gradient(520px 220px at 18% 0%, rgba(255, 190, 110, 0.22), transparent 70%),
+      radial-gradient(520px 220px at 82% 0%, rgba(255, 190, 110, 0.18), transparent 70%),
+      repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.015) 0 2px, transparent 2px 7px),
+      linear-gradient(180deg, var(--walnut-deep), var(--walnut) 60%, var(--walnut-mid));
+  }
+  .hero-tag {   /* an engraved brass plate */
+    display: inline-block;
+    padding: 6px 22px 5px;
+    border-radius: 3px;
+    background: linear-gradient(180deg, #e4c16a, var(--brass) 55%, #a8822e);
+    color: var(--walnut-deep);
+    letter-spacing: 4px;
+    box-shadow: inset 0 1px 0 rgba(255, 240, 200, 0.7), inset 0 -1px 0 rgba(90, 60, 20, 0.5), 0 2px 6px rgba(30, 17, 10, 0.5);
+    margin-bottom: 22px;
+  }
+
+  /* The hubs are the library's own shelf: six books standing face out, one
+     per hub, each in its hub's colour (unchanged), with a gilt-banded
+     spine. At rest a book carries only its emblem and its title, set in
+     Faktum (Innes, 2026-10-18: "dont cram writing on library books ... add
+     extra text to expanded version of book on hover"). Hovered or focused,
+     it is drawn forward off the shelf and opened out: the emblem gives way
+     to the line about the hub and its live count. Each book is a fixed
+     height, so opening one never moves the shelf or the page. They stand
+     at slightly different heights, as books do; each carries its own length
+     of shelf (as the lesson cards below do), so a row of three on a phone
+     still stands on a shelf. On a touch screen, with no hover, the count
+     shows all the time and the line stays on the hub's own page. */
+  .hubs { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; align-items: end; row-gap: 34px; }
+  .hub {
+    --h: 228px;
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    text-align: center;
+    height: var(--h);
+    min-height: 0;
+    padding: 16px 12px 14px 20px;
+    border: none;
+    border-radius: 3px 9px 9px 3px;
+    background:
+      repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 3px),
+      linear-gradient(160deg, var(--hub-a), var(--hub-b));
+    box-shadow:
+      inset 9px 0 0 rgba(30, 17, 10, 0.26), inset 10px 0 0 rgba(255, 255, 255, 0.10),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.10), 0 8px 16px rgba(30, 17, 10, 0.45);
+    transform-origin: 50% 100%;
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+  .hub:nth-child(1) { --h: 236px; }
+  .hub:nth-child(2) { --h: 220px; }
+  .hub:nth-child(3) { --h: 246px; }
+  .hub:nth-child(4) { --h: 228px; }
+  .hub:nth-child(5) { --h: 214px; }
+  .hub:nth-child(6) { --h: 232px; }
+  .hub::before {    /* gilt bands across the spine */
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 9px; border-radius: 3px 0 0 3px;
+    background: linear-gradient(180deg, transparent 8%, rgba(232, 192, 74, 0.75) 8% 9%, transparent 9% 11%,
+      rgba(232, 192, 74, 0.75) 11% 12%, transparent 12% 88%, rgba(232, 192, 74, 0.75) 88% 89%,
+      transparent 89% 91%, rgba(232, 192, 74, 0.75) 91% 92%, transparent 92%);
+    pointer-events: none;
+  }
+  .hub::after {     /* its length of shelf */
+    content: ''; position: absolute; left: -7px; right: -7px; bottom: -14px; height: 12px;
+    border-radius: 2px;
+    background: linear-gradient(180deg, #8a5a32, var(--walnut-mid) 45%, var(--walnut));
+    box-shadow: 0 7px 12px -4px rgba(10, 5, 2, 0.7);
+    transform-origin: 50% 0;
+    transition: transform .25s ease;
+    pointer-events: none;
+  }
+  .hub-ico {
+    display: grid; place-items: center;
+    width: 62px; height: 62px; border-radius: 50%;
+    font-size: 2rem;
+    background: rgba(255, 255, 255, 0.14);
+    box-shadow: inset 0 0 0 2px rgba(232, 192, 74, 0.7), 0 2px 6px rgba(30, 17, 10, 0.25);
+    overflow: hidden;
+    transition: height .25s ease, opacity .2s ease, margin .25s ease;
+  }
+  .hub-text { align-items: center; gap: 0; }
+  .hub-title {
+    font-family: 'Faktum', 'Lato', sans-serif; font-weight: 700;
+    text-transform: none; letter-spacing: -0.01em;
+    font-size: 1.22rem; line-height: 1.12;
+  }
+  .hub-sub, .hub-meta {
+    max-height: 0; opacity: 0; overflow: hidden;
+    transition: max-height .3s ease, opacity .25s ease .05s, margin .3s ease;
+  }
+  .hub-sub { font-size: 0.82rem; line-height: 1.4; }
+  .hub-meta { padding-top: 7px; border-top: 1px solid currentColor; }
+  .hub:hover, .hub:focus-visible {
+    z-index: 3;
+    transform: translateY(-10px) scale(1.08);
+    box-shadow:
+      inset 9px 0 0 rgba(30, 17, 10, 0.26), inset 10px 0 0 rgba(255, 255, 255, 0.10),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.10), 0 20px 30px rgba(30, 17, 10, 0.6);
+  }
+  /* the shelf under it stays where it was */
+  .hub:hover::after, .hub:focus-visible::after { transform: translateY(9px) scaleX(0.926); }
+  .hub:hover .hub-ico, .hub:focus-visible .hub-ico { height: 0; opacity: 0; margin-bottom: -14px; }
+  .hub:hover .hub-sub, .hub:focus-visible .hub-sub { max-height: 6em; opacity: 1; margin-top: 10px; }
+  .hub:hover .hub-meta, .hub:focus-visible .hub-meta { max-height: 3em; opacity: 1; margin-top: 10px; }
+  @media (hover: none) {
+    .hub-meta { max-height: 3em; opacity: 1; margin-top: 8px; }
+  }
+  @media (max-width: 900px) {
+    .hubs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+  @media (max-width: 560px) {
+    .hubs { gap: 8px; row-gap: 30px; }
+    .hub, .hub:nth-child(n) { --h: 150px; padding: 12px 6px 10px 14px; gap: 8px; }
+    .hub:nth-child(even) { --h: 140px; }
+    .hub-ico { width: 42px; height: 42px; font-size: 1.35rem; }
+    .hub-title { font-size: 0.95rem; }
+    .hub-meta { font-size: 0.62rem; }
+    .hub-text { max-width: 100%; }
+    .hub-title, .hub-meta { overflow-wrap: anywhere; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hub, .hub::after, .hub-ico, .hub-sub, .hub-meta { transition: none; }
+  }
+
+  /* the catalogue: a brass-edged label to search, index tabs to filter */
+  #search {
+    border: 1px solid var(--brass);
+    border-radius: 4px;
+    background: var(--paper);
+    box-shadow: inset 0 1px 3px rgba(74, 44, 24, 0.12);
+    font-family: 'Playfair Display', serif;
+  }
+  #search::placeholder { font-style: italic; color: #9a8466; }
+  #search:focus { border-color: var(--brass-deep); box-shadow: 0 0 0 3px rgba(201, 161, 74, 0.25); }
+  .filter-label { color: var(--brass-deep); }
+  .level-btn, .cat-btn, .free-toggle {
+    border-radius: 4px 4px 2px 2px;
+    border: 1px solid #cdb68a;
+    background: #fbf4e4;
+    color: var(--walnut-mid);
+    box-shadow: inset 0 -2px 0 rgba(74, 44, 24, 0.08);
+  }
+  .level-btn:hover, .cat-btn:hover, .free-toggle:hover { border-color: var(--brass); }
+  .level-btn.active, .cat-btn.active {
+    background: var(--walnut); border-color: var(--walnut); color: #f3d48a;
+  }
+  .free-toggle.active { background: #2f5a3a; border-color: #2f5a3a; color: #f3ead8; }
+  #count { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.8rem; }
+
+  /* the lessons: books, standing on shelves. Each card carries its own
+     length of shelf, a little wider than itself, so the lengths meet
+     across the column gap and every row reads as one shelf. A hovered
+     book lifts; its shelf is moved back down by the same amount, so the
+     shelf stays where it is. */
+  .grid { row-gap: 42px; column-gap: 18px; }
+  .card {
+    overflow: visible;
+    border-radius: 3px 8px 8px 3px;
+    border-color: var(--border);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset, 2px 3px 8px rgba(74, 44, 24, 0.10);
+  }
+  .card-img-wrap { border-radius: 3px 8px 0 0; }
+  .card::before {   /* the spine */
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 8px; z-index: 2;
+    border-radius: 3px 0 0 3px;
+    background:
+      linear-gradient(180deg, transparent 12%, rgba(232, 192, 74, 0.5) 12% 13%, transparent 13% 87%,
+                      rgba(232, 192, 74, 0.5) 87% 88%, transparent 88%),
+      linear-gradient(90deg, rgba(46, 26, 14, 0.38), rgba(46, 26, 14, 0.12));
+    pointer-events: none;
+  }
+  .card::after {    /* the shelf */
+    content: ''; position: absolute; left: -10px; right: -10px; bottom: -18px; height: 11px;
+    border-radius: 2px;
+    background: linear-gradient(180deg, #8a5a32, var(--walnut-mid) 45%, var(--walnut));
+    box-shadow: 0 7px 10px -4px rgba(30, 17, 10, 0.5);
+    transition: transform .15s ease;
+    pointer-events: none;
+  }
+  .card:hover { transform: translateY(-5px); box-shadow: 2px 10px 18px rgba(74, 44, 24, 0.22); border-color: var(--brass); }
+  .card:hover::after { transform: translateY(5px); }
+  .card-title { color: var(--ink); }
+  .card-cat { color: var(--brass-deep); }
+  .card.coming-soon { background: #efe3cc; }
+  .card.coming-soon .card-img-wrap {
+    background: repeating-linear-gradient(135deg, #efe3cc 0 14px, #f5ecd8 14px 28px);
+  }
+  .soon-slot { color: var(--walnut-mid); border-color: #a07a4a; background: rgba(255, 250, 240, 0.8); }
+
+  /* collections: covers on display, in gilt frames */
+  .coll { border: 1px solid var(--brass); box-shadow: 0 0 0 4px var(--parchment), 0 0 0 5px rgba(156, 120, 24, 0.55), 0 6px 18px rgba(46, 26, 14, 0.18); }
+  .coll:hover { box-shadow: 0 0 0 4px var(--parchment), 0 0 0 5px var(--brass), 0 10px 24px rgba(46, 26, 14, 0.3); }
+  .coll .coll-scrim { background: linear-gradient(180deg, rgba(30, 17, 10, 0) 35%, rgba(30, 17, 10, 0.9) 100%); }
+  .coll.coll-all { background: #efe3cc; }
+  .coll-head { border-color: var(--brass); }
+  .cat-hub { background: #fbf1d8; border-color: var(--brass); border-left-color: var(--brass-deep); }
+
+  /* the crawlable index seo.py writes into the grid (seen only before the
+     cards load): its own inline colours are the old green */
+  main #seo-lesson-index h3 { color: var(--muted); }
+  main #seo-lesson-index a { color: var(--walnut); border-bottom-color: var(--border); }
+  main #seo-lesson-index a:hover { border-bottom-color: var(--brass); }
+
+  @media (max-width: 560px) {
+    .grid { row-gap: 38px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .card::after { transition: none; }
+  }
+</style>
+<style id="library-books">
+  /* ── The shelf of six (Innes, 2026-10-18, from his own mock of this
+     page). Each hub is a leather-bound book whose cover is illustrated:
+     Sherpa Tensing in magenta with a mountain medallion, IELTS in mustard
+     with a mortarboard, Block Camp in navy with a grass block, the RPGs in
+     coral with a d20, Grammar in blue with a pencil, Work With Me in green
+     with a sealed envelope. The covers (library-hub/book-*.webp) are cut
+     from that mock and carry their own titles, so the emblem and the title
+     text are kept for screen readers only. The books stand at their own
+     heights on one walnut shelf; a hovered book lifts and a label with its
+     line and count rises over the foot of the cover. The header turns
+     brass, and the Also line is set large in gold condensed capitals.
+     Layered over #library-feel; delete it and that shelf is back. ── */
+  header {
+    background: linear-gradient(180deg, #b8902f, #9a741c);
+    border-bottom: 1px solid #6b4d12;
+  }
+  header .fe-logo-en { fill: #3a2410; }
+  header .nav-pill {
+    color: #fff6e2; background: rgba(46, 26, 14, 0.16);
+    border: 1px solid rgba(46, 26, 14, 0.5);
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: 0.02em;
+  }
+  header .nav-pill:hover { background: rgba(46, 26, 14, 0.32); }
+  header .nav-pill.gold { background: #f4c64e; color: #24160d; border-color: #f4c64e; }
+
+  .hero {
+    padding-top: 26px; padding-bottom: 30px;
+    background:
+      radial-gradient(900px 380px at 50% 18%, rgba(255, 176, 92, 0.30), transparent 70%),
+      linear-gradient(180deg, #2a160b, #3a2112 55%, #241309);
+  }
+  .hero { padding-top: 22px; padding-bottom: 0; overflow-x: clip; }   /* the shelf is window-wide; the scrollbar must not push it past the edge */
+  /* the plaque hangs on the bookcase itself: no strip above the picture */
+  .hero.hero { padding: 0; }
+  .hero-inner { position: relative; }
+  .hero-tag { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); margin: 0; z-index: 4; }
+  /* The shelf (Innes, 2026-10-18). His photograph of a wooden bookcase,
+     the whole case in view, its middle shelf cleared of the books that
+     stood there (library-hub/bookcase-photo.webp, made by
+     tools/make_library_shelf.py); the side bays' own books give the
+     scale. On the middle shelf the
+     six books stand spine out, showing Innes's spine art
+     (library-hub/spine-*.webp, the spine faces of his 3D tall-books picture). Choosing one
+     (hover, keyboard focus, or a first tap on a touch screen) pulls it
+     forward and revolves it to its wider front cover (library-hub/book-*.webp,
+     the leather covers from his mock), with a
+     label of its line and count at its foot; its slot widens to make room.
+     Sherpa Tensing stands open until another is chosen. Each book is a 3D
+     box: .cover its front, .spine its left side, .pages its fore-edge.
+     Sizes are in cqw of the shelf, so the books keep their place on it at
+     any width; on a phone the shelf keeps a readable size and scrolls. */
+  .shelf-scroll { margin: 0 calc(50% - min(50vw, 1000px)); overflow-x: auto; overflow-y: hidden; scrollbar-width: thin; }
+  .hubs.hubs {
+    container-type: inline-size;
+    display: flex; justify-content: center; align-items: flex-end; gap: 0.3cqw;
+    position: relative; margin: 0 auto; padding: 0;
+    width: 100%; min-width: 760px; max-width: 2000px;
+    aspect-ratio: 2000 / 780;
+    background: url('library-hub/bookcase-photo.webp') center / 100% 100% no-repeat;
+  }
+  .hubs.hubs::after { display: none; }
+  .hub-sherpa { --spine-art: url('library-hub/spine-sherpa.webp'); --cover: url('library-hub/book-sherpa.webp'); --sw: 114; --sh: 638; --cw: 354; --ch: 512; }
+  .hub-ielts { --spine-art: url('library-hub/spine-ielts.webp'); --cover: url('library-hub/book-ielts.webp'); --sw: 186; --sh: 638; --cw: 303; --ch: 472; }
+  .hub-blockcamp { --spine-art: url('library-hub/spine-blockcamp.webp'); --cover: url('library-hub/book-blockcamp.webp'); --sw: 228; --sh: 640; --cw: 303; --ch: 506; }
+  .hub-rpg { --spine-art: url('library-hub/spine-rpg.webp'); --cover: url('library-hub/book-rpg.webp'); --sw: 246; --sh: 640; --cw: 313; --ch: 508; }
+  .hub-grammar { --spine-art: url('library-hub/spine-grammar.webp'); --cover: url('library-hub/book-grammar.webp'); --sw: 160; --sh: 640; --cw: 307; --ch: 468; }
+  .hub-work { --spine-art: url('library-hub/spine-work.webp'); --cover: url('library-hub/book-work.webp'); --sw: 166; --sh: 640; --cw: 327; --ch: 502; }
+  .hubs .hub, .hubs .hub:nth-child(n) {
+    /* one height for the book; its spine and its cover keep their own shapes */
+    --hgt: 17cqw;
+    --spine: calc(var(--hgt) * var(--sw) / var(--sh));
+    --w: calc(var(--hgt) * var(--cw) / var(--ch));
+    position: relative; display: block; flex: 0 0 auto;
+    width: var(--spine); height: var(--hgt); margin: 0 0 8.7cqw;
+    padding: 0; background: none; border: 0; border-radius: 0; box-shadow: none; aspect-ratio: auto;
+    transform: none; overflow: visible; z-index: 1;
+    perspective: 1600px; perspective-origin: 50% 35%;
+    transition: width .6s cubic-bezier(.2, .7, .2, 1);
+  }
+  .hubs .hub::before, .hubs .hub::after { display: none; }
+  .hubs .hub > .hub-ico, .hubs .hub-title {
+    position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+  }
+  .hubs .book {
+    position: absolute; bottom: 0; left: 50%; display: block;
+    width: var(--w); height: var(--hgt);
+    transform-style: preserve-3d;
+    transform: translateX(-50%) rotateY(90deg);
+    transition: transform .6s cubic-bezier(.2, .7, .2, 1);
+  }
+  .hubs .cover, .hubs .spine, .hubs .pages { position: absolute; top: 0; bottom: 0; display: block; }
+  .hubs .cover {
+    left: 0; right: 0;
+    background: var(--cover) center / 100% 100% no-repeat;
+    border-radius: 2px 5px 5px 2px;
+    transform: translateZ(calc(var(--spine) / 2));
+    backface-visibility: hidden;
+    box-shadow: 0 1.2cqw 1.6cqw -0.6cqw rgba(10, 5, 2, 0.75);
+  }
+  .hubs .spine {
+    left: calc(50% - var(--spine) / 2); width: var(--spine);
+    transform: rotateY(-90deg) translateZ(calc(var(--w) / 2));
+    border-radius: 4px 4px 2px 2px;
+    background: var(--spine-art) center / 100% 100% no-repeat;   /* Innes's spine art */
+    box-shadow: 0 1.2cqw 1.6cqw -0.6cqw rgba(10, 5, 2, 0.75);
+  }
+  .hubs .spine-title { display: none; }   /* the spine art carries the title */
+  .hubs .spine-title {
+    writing-mode: vertical-rl;
+    font-family: 'Faktum', 'Playfair Display', serif; font-weight: 700;
+    font-size: 1.45cqw; letter-spacing: 0.06em; white-space: nowrap;
+    color: #ecd08a; text-shadow: 0 1px 0 rgba(0, 0, 0, 0.45);
+    max-height: 80%; overflow: hidden;
+  }
+  .hubs .pages {           /* the fore-edge: paper, faintly ruled */
+    left: calc(50% - var(--spine) / 2 + 3px); width: calc(var(--spine) - 6px); top: 4px; bottom: 4px;
+    transform: rotateY(90deg) translateZ(calc(var(--w) / 2 - 2px));
+    background: repeating-linear-gradient(90deg, #efe4cc 0 1px, #d9caa8 1px 2px);
+  }
+  /* chosen: the slot opens, the book comes forward and swivels face-on */
+  .hubs .hub:is(:hover, :focus-visible, .open) { width: var(--w); z-index: 3; }
+  .hubs .hub:is(:hover, :focus-visible, .open) .book { transform: translateX(-50%) translateY(-0.8cqw) translateZ(3cqw) rotateY(0deg); }
+  .hubs .hub:focus-visible { outline: none; }
+  /* one at a time: the book standing open goes back while another is chosen */
+  .hubs:is(:hover, :focus-within) .hub.open:not(:hover, :focus-visible) { width: var(--spine); z-index: 1; }
+  .hubs:is(:hover, :focus-within) .hub.open:not(:hover, :focus-visible) .book { transform: translateX(-50%) rotateY(90deg); }
+  /* the label at the foot of the cover, once it faces you */
+  .hubs .hub-text {
+    position: absolute; left: 7%; right: 7%; bottom: 4%; display: block;
+    padding: 0.5cqw 0.6cqw 0.45cqw; border-radius: 3px; text-align: center;
+    font-size: max(11px, 0.85cqw); line-height: 1.35;
+    background: rgba(30, 17, 10, 0.92);
+    box-shadow: inset 0 0 0 1px rgba(201, 161, 74, 0.6), 0 4px 10px rgba(10, 5, 2, 0.5);
+    opacity: 0; transform: translateY(6px); pointer-events: none;
+    transition: opacity .3s ease .35s, transform .3s ease .35s;
+  }
+  .hubs .hub-text, .hubs .hub-text .hub-sub, .hubs .hub-text .hub-meta { color: #f3ead8; }
+  .hubs .hub-sub, .hubs .hub-meta { display: block; max-height: none; opacity: 1; margin: 0; }
+  .hubs .hub-meta { margin-top: 5px; padding-top: 5px; border-top: 1px solid rgba(201, 161, 74, 0.6); color: #ecd08a; }
+  .hubs .hub-meta:empty { display: none; }
+  .hubs .hub:is(:hover, :focus-visible, .open) .hub-text { opacity: 1; transform: none; }
+  .hubs:is(:hover, :focus-within) .hub.open:not(:hover, :focus-visible) .hub-text { opacity: 0; transition-delay: 0s; }
+  @media (prefers-reduced-motion: reduce) {
+    .hubs .hub, .hubs .book, .hubs .hub-text { transition: none; }
+  }
+  /* on a phone the cover is small: its label shows the count only */
+  @media (max-width: 560px) {
+    .hubs .hub-text .hub-sub { display: none; }
+    .hubs .hub-meta { margin-top: 0; padding-top: 0; border-top: 0; }
+  }
+
+  /* Plans & prices: a brass button beside the search (Innes, 2026-10-18 mock);
+     the hero holds the shelf and nothing else */
+  .hero-plans-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 9px 22px 8px; border-radius: 3px;
+    background: linear-gradient(180deg, #f4d77a, #e0b54a 55%, #b88a2c);
+    color: #24160d; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; text-decoration: none;
+    font-family: 'Barlow Condensed', sans-serif; font-size: 1.15rem; white-space: nowrap; flex: 0 0 auto;
+    box-shadow: inset 0 1px 0 rgba(255, 244, 210, 0.8), 0 3px 8px rgba(10, 5, 2, 0.5);
+  }
+  .hero-plans-btn:hover { background: linear-gradient(180deg, #ffe39a, #f0c85e 55%, #c99a36); }
+
+</style>
 </head>
 <body>
 <header>
@@ -619,6 +1055,7 @@
     </a>
     <div class="nav-links">
       <a class="nav-pill" href="index.html">Front Page</a>
+      <a class="nav-pill" href="#shelf">Bookshelf</a>
       <a class="nav-pill" href="level-checker.html">Level Check</a>
       <a class="nav-pill" href="#" id="navAll">All materials</a>
       <a class="nav-pill" href="#" id="navFree">Free materials</a>
@@ -626,65 +1063,103 @@
     </div>
   </div>
 </header>
-<div class="hero">
+<div class="hero" id="shelf">
   <div class="hero-inner">
     <div class="hero-tag">Lesson Library</div>
+    <div class="shelf-scroll">
     <nav class="hubs" aria-label="Where to start">
-      <a class="hub hub-sherpa" href="sherpa-tensing-route-map.html">
-        <span class="hub-ico" aria-hidden="true">🏔️</span>
+      <a class="hub hub-sherpa open" href="sherpa-tensing-route-map.html">
+        <span class="book">
+          <span class="spine" aria-hidden="true"><span class="spine-title">Sherpa Tensing</span></span>
+          <span class="pages" aria-hidden="true"></span>
+          <span class="cover">
         <span class="hub-text">
           <span class="hub-title">Sherpa Tensing</span>
           <span class="hub-sub">The route up the tenses, active and passive</span>
           <span class="hub-meta" data-count="sherpa"></span>
         </span>
+          </span>
+        </span>
+        <span class="hub-ico" aria-hidden="true">🏔️</span>
       </a>
       <a class="hub hub-ielts" href="ielts.html">
-        <span class="hub-ico" aria-hidden="true">🎓</span>
+        <span class="book">
+          <span class="spine" aria-hidden="true"><span class="spine-title">IELTS Academic</span></span>
+          <span class="pages" aria-hidden="true"></span>
+          <span class="cover">
         <span class="hub-text">
           <span class="hub-title">IELTS Academic</span>
           <span class="hub-sub">All four papers and vocabulary, in order</span>
           <span class="hub-meta" data-count="ielts"></span>
         </span>
+          </span>
+        </span>
+        <span class="hub-ico" aria-hidden="true">🎓</span>
       </a>
       <a class="hub hub-blockcamp" href="block-camp.html">
-        <span class="hub-ico" aria-hidden="true">🧱</span>
+        <span class="book">
+          <span class="spine" aria-hidden="true"><span class="spine-title">Block Camp</span></span>
+          <span class="pages" aria-hidden="true"></span>
+          <span class="cover">
         <span class="hub-text">
           <span class="hub-title">Block Camp</span>
           <span class="hub-sub">The tenses on a voxel trail, plus adventures</span>
           <span class="hub-meta" data-count="blockcamp"></span>
         </span>
+          </span>
+        </span>
+        <span class="hub-ico" aria-hidden="true">🧱</span>
       </a>
       <a class="hub hub-rpg" href="rpg.html">
-        <span class="hub-ico" aria-hidden="true">🎲</span>
+        <span class="book">
+          <span class="spine" aria-hidden="true"><span class="spine-title">Role-Playing Games</span></span>
+          <span class="pages" aria-hidden="true"></span>
+          <span class="cover">
         <span class="hub-text">
           <span class="hub-title">Role-Playing Games</span>
           <span class="hub-sub">Branching stories where the grammar decides</span>
           <span class="hub-meta" data-count="rpg"></span>
         </span>
+          </span>
+        </span>
+        <span class="hub-ico" aria-hidden="true">🎲</span>
       </a>
       <a class="hub hub-grammar" href="grammar.html">
-        <span class="hub-ico" aria-hidden="true">✏️</span>
+        <span class="book">
+          <span class="spine" aria-hidden="true"><span class="spine-title">Grammar</span></span>
+          <span class="pages" aria-hidden="true"></span>
+          <span class="cover">
         <span class="hub-text">
           <span class="hub-title">Grammar</span>
-          <span class="hub-sub">Every grammar lesson by topic, tenses in colour</span>
+          <span class="hub-sub">Every grammar lesson by topic, tenses in colour, and Sailing the Seas of Grammar</span>
           <span class="hub-meta"></span>
         </span>
+          </span>
+        </span>
+        <span class="hub-ico" aria-hidden="true">✏️</span>
       </a>
       <a class="hub hub-work" href="mailto:info@forbesenglish.com">
-        <span class="hub-ico" aria-hidden="true">✉️</span>
+        <span class="book">
+          <span class="spine" aria-hidden="true"><span class="spine-title">Work With Me</span></span>
+          <span class="pages" aria-hidden="true"></span>
+          <span class="cover">
         <span class="hub-text">
           <span class="hub-title">Work With Me</span>
           <span class="hub-sub">Lessons with the teacher</span>
           <span class="hub-meta">info@forbesenglish.com</span>
         </span>
+          </span>
+        </span>
+        <span class="hub-ico" aria-hidden="true">✉️</span>
       </a>
     </nav>
-    <p class="hero-also">Also: <a href="sailing-the-seas-of-grammar.html">Sailing the Seas of Grammar</a> &middot; <a href="level-checker.html">Level Checker</a> &middot; <a href="pricing.html">Plans &amp; prices</a></p>
+    </div>
   </div>
 </div>
 <main>
   <div class="controls">
     <input type="text" id="search" placeholder="Search lessons by topic, e.g. golf, negotiation, Ukraine…">
+    <a class="hero-plans-btn" href="pricing.html">Plans &amp; prices <span aria-hidden="true">&rarr;</span></a>
   </div>
   <div class="filter-row" style="margin-bottom:10px;">
     <span class="filter-label">Level</span>
@@ -917,6 +1392,7 @@
 <li><a href="/forbes-english-dinosaurs.html">Advanced Dinosaur Facts | C1</a> — paid</li>
 <li><a href="/forbes-english-body-parts-c1.html">Anatomy of a Sentence (C1)</a> — paid</li>
 <li><a href="/forbes-english-architecture-c1%20%281%29.html">Architectural Presentations C1</a> — paid</li>
+<li><a href="/forbes-boltzmann-brain-c1.html">Are You a Boltzmann Brain? (C1)</a> — paid</li>
 <li><a href="/twin_peaks_prepositions_v5.html">Between Two Worlds — Advanced Prepositions (v5)</a> — paid</li>
 <li><a href="/forbes-english-lesson%20%28data%29.html">C1 Lesson: Climate Data &amp; Policy</a> — paid</li>
 <li><a href="/forbes-c1-negotiation.html">C1 Negotiation Language</a> — paid</li>
@@ -2121,6 +2597,25 @@ fetch('/lesson-meta.json')
   .catch(() => {});
 if (window.applyHashCategory) window.applyHashCategory();
 window.addEventListener('hashchange', () => { if (window.applyHashCategory) window.applyHashCategory(); });
+})();
+</script>
+<script>
+// The library shelf. On a narrow screen it scrolls sideways: open it on the
+// books in the middle, not at the bookcase's edge. On a touch screen there
+// is no hover, so the first tap on a book pulls it out and swivels it
+// face-on; a tap on the book that faces you follows its link.
+(function () {
+  var s = document.querySelector('.shelf-scroll');
+  if (s && s.scrollWidth > s.clientWidth) s.scrollLeft = (s.scrollWidth - s.clientWidth) / 2;
+  if (!matchMedia('(hover: none)').matches) return;
+  var hubs = document.querySelectorAll('.hubs .hub');
+  hubs.forEach(function (h) {
+    h.addEventListener('click', function (e) {
+      if (h.classList.contains('open')) return;
+      e.preventDefault();
+      hubs.forEach(function (o) { o.classList.toggle('open', o === h); });
+    });
+  });
 })();
 </script>
 </body>

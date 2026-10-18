@@ -28,12 +28,13 @@ by design (see HANDOFF 2026-09-26). This page follows the map: each camp's
 tense the map has no colour for is reported rather than guessed.
 
 THE PAGE PALETTE is derived from the hero, not picked: `--palette` runs
-    extract-palette.py "Sherpa Tensing/hero-route-map.jpg" --light  -> paper side
-    extract-palette.py "Sherpa Tensing/hero-route-map.jpg"          -> the dark bands
+    extract-palette.py "sailing-the-seas-of-grammar/hero.jpg" --light -> paper side
+    extract-palette.py "sailing-the-seas-of-grammar/hero.jpg"         -> the dark bands
     PIL MEDIANCUT, 8 colours                                        -> the art fields
-and prints the block to paste over PALETTE. The hero is the Sherpa ridge
-because that picture is where the tense colours come from: the route up
-the mountain is the route through the tenses.
+and prints the block to paste over PALETTE. The hero is the chart from
+Sailing the Seas of Grammar (Innes, 2026-10-18): the Sherpa ridge went
+back to the route map, where it belongs. The tense colours still come
+from the route map's own grid, not from this picture.
 
 PICTURES. Each topic card carries its hub's own hero (topics.hero — the
 first free lesson's picture) as a web-sized copy in `grammar-hub/`, named
@@ -61,9 +62,9 @@ SITE = seo.SITE
 ART = 'grammar-hub'                          # web-sized card pictures live here
 ROUTE_MAP = 'sherpa-tensing-route-map.html'
 
-HERO = 'Sherpa Tensing/hero-route-map.jpg'
-HERO_ALT = ('A staircase cut into the snow of a mountain ridge, climbing towards '
-            'a distant peak under a pale pink and blue sky')
+HERO = 'sailing-the-seas-of-grammar/hero.jpg'
+HERO_ALT = ('A hand-drawn sea chart: the orange coast of Gerundia, the green coast '
+            'of Infinitivia, and Twofold Isle in the channel between them')
 HERO_OG = '/' + seo.quote(HERO)              # seo.py puts this on the og:image
 SHERPA_ART = 'Sherpa Tensing/sherpa-day.jpg'
 BLOCKCAMP_ART = 'BlockCamp/hub-hero.jpg'
@@ -122,20 +123,151 @@ TOPIC_COLOUR = {
     'past-perfect': 'past-perfect', 'future-tenses': 'future-simple',
 }
 
+# The hero's 3D chart. Not %-formatted: it goes into the body as it is.
+# Height comes from the chart itself: a pixel's distance from the sea colour
+# says land or water, its darkness says hills, and a blur turns that into
+# slopes. The sea stays flat; the far edge fades into the page's own sky
+# colour, so the picture fills the hero edge to edge.
+CHART_3D = r"""<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
+<script type="module">
+import * as THREE from 'three';
+const box = document.getElementById('gh-hero-art');
+const cv = box && box.querySelector('canvas');
+const img = box && box.querySelector('img');
+const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function go(tex) {
+  let renderer;
+  try { renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: true }); }
+  catch (e) { return; }
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  const css = getComputedStyle(document.documentElement);
+  const tok = (n, d) => (css.getPropertyValue(n).trim() || d);
+  const haze = new THREE.Color(tok('--gh-cloud', '#d7dac8'));
+  const scene = new THREE.Scene();
+  scene.fog = new THREE.Fog(haze, 6, 18);
+
+  // the chart, 18 x 12 units, lying flat
+  const W = 18, H = 12, SX = 360, SY = 240;
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+
+  // the height field, read off the picture
+  const c = document.createElement('canvas');
+  c.width = SX + 1; c.height = SY + 1;
+  const g = c.getContext('2d', { willReadFrequently: true });
+  g.drawImage(tex.image, 0, 0, SX + 1, SY + 1);
+  const px = g.getImageData(0, 0, SX + 1, SY + 1).data;
+  const n = (SX + 1) * (SY + 1), raw = new Float32Array(n);
+  for (let k = 0; k < n; k++) {
+    const r = px[k * 4], gg = px[k * 4 + 1], bl = px[k * 4 + 2];
+    // sea is told by its hue, not its shade: blue at least as strong as red,
+    // green with it. Waves, lettering and the compass drawn on the water are
+    // all blue too, so the sea stays dead flat; the orange, green and purple
+    // coasts and the sand of the Shallows rise.
+    const blueness = Math.min(bl, gg) - r;
+    const land = Math.min(1, Math.max(0, (6 - blueness) / 14));
+    const dark = 1 - (0.3 * r + 0.59 * gg + 0.11 * bl) / 255;
+    // the compass rose and its -ING / TO banner are drawn in ink and gold,
+    // not blue, but they lie on the water: keep that patch of chart flat
+    // (it spans about x 690-850, y 40-215 of the 1536 x 1024 chart)
+    const cx = (k % (SX + 1)) / SX, cy = Math.floor(k / (SX + 1)) / SY;
+    const onCompass = cx > 0.445 && cx < 0.56 && cy > 0.03 && cy < 0.215;
+    raw[k] = onCompass ? 0 : land * (0.55 + dark * 0.9);
+  }
+  // box blur: cliffs become slopes, lettering stops being bumps
+  const blur = (a, rad) => {
+    const o = new Float32Array(n), w = SX + 1, h = SY + 1;
+    for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+      let s = 0, m = 0;
+      for (let dy = -rad; dy <= rad; dy++) for (let dx = -rad; dx <= rad; dx++) {
+        const xx = x + dx, yy = y + dy;
+        if (xx >= 0 && yy >= 0 && xx < w && yy < h) { s += a[yy * w + xx]; m++; }
+      }
+      o[y * w + x] = s / m;
+    }
+    return o;
+  };
+  const hgt = blur(blur(raw, 2), 2);
+
+  const geo = new THREE.PlaneGeometry(W, H, SX, SY);
+  geo.rotateX(-Math.PI / 2);
+  const pos = geo.attributes.position;
+  for (let k = 0; k < pos.count; k++) pos.setY(k, hgt[k] * 0.42);
+  geo.computeVertexNormals();
+  const chart = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ map: tex, roughness: 0.92, metalness: 0 }));
+  scene.add(chart);
+
+  // soft sky fill and a low sun from the far left, so the hills show their relief
+  scene.add(new THREE.HemisphereLight(0xf4f1e6, 0x8a8a76, 1.55));
+  const sun = new THREE.DirectionalLight(0xfff4e0, 1.6);
+  sun.position.set(-8, 6, -6);
+  scene.add(sun);
+
+  const cam = new THREE.PerspectiveCamera(32, 1, 0.1, 60);
+  // steep enough that the chart's far edge is always above the top of the
+  // frame: the map fills the hero to the top (Innes, 2026-10-18)
+  const look = new THREE.Vector3(0, 0, -1.0);
+  let tx = 0, ty = 0, mx = 0, my = 0, back = 0;
+  addEventListener('pointermove', e => {
+    tx = (e.clientX / innerWidth - 0.5) * 2;
+    ty = (e.clientY / innerHeight - 0.5) * 2;
+  }, { passive: true });
+
+  function size() {
+    const w = box.clientWidth, h = box.clientHeight;
+    if (!w || !h) return;
+    renderer.setSize(w, h, false);
+    cam.aspect = w / h;
+    back = cam.aspect < 1.7 ? 1.6 : 0;   // narrow screens stand further back
+    cam.updateProjectionMatrix();
+    if (still) frame(performance.now());
+  }
+
+  let on = true, first = true;
+  const t0 = performance.now();
+  function frame(now) {
+    const t = (now - t0) / 1000;
+    mx += (tx - mx) * 0.04; my += (ty - my) * 0.04;
+    const drift = still ? 0 : Math.sin(t * 0.07) * 0.5;
+    const intro = still ? 0 : Math.max(0, 1 - t / 3.2) ** 3;
+    cam.position.set(drift + mx * 0.45, 8.4 + intro * 3 - my * 0.2 + back * 0.6, 5.2 + back + intro * 2);
+    cam.lookAt(look.x + drift * 0.6, 0, look.z);
+    renderer.render(scene, cam);
+    if (first) { first = false; box.classList.add('is-3d'); }
+    if (on && !still) requestAnimationFrame(frame);
+  }
+  new ResizeObserver(size).observe(box);
+  size();
+  new IntersectionObserver(es => {
+    const was = on;
+    on = es[0].isIntersecting;
+    if (on && !was && !still) requestAnimationFrame(frame);
+  }).observe(box);
+  requestAnimationFrame(frame);
+}
+// the chart is loaded afresh rather than lifted from the <img>: on some
+// GPUs an <img> handed straight to WebGL before it has decoded uploads black
+if (cv && img) new THREE.TextureLoader().load(img.currentSrc || img.src, go);
+</script>"""
+
+
 # ── palette ───────────────────────────────────────────────────────────
 PALETTE = {
-    # extract-palette.py "Sherpa Tensing/hero-route-map.jpg" --light
-    'void': '#d8bdac', 'surface': '#e1cfc4', 'surface2': '#dcc5b8',
-    'border': '#965c4a', 'text': '#2a1711', 'text-dim': '#5e392e',
-    'accent': '#963619', 'accent-bright': '#70230b', 'accent-dim': '#d27457',
-    'secondary': '#abc2c3', 'contrast': '#175e4d',
-    # extract-palette.py "Sherpa Tensing/hero-route-map.jpg"
-    'ink': '#0e1112', 'ink-surface': '#181e1f', 'ink-surface2': '#21292b',
-    'ink-border': '#968c89', 'ink-text': '#f5f3f2', 'ink-text-dim': '#bfaaa3',
-    'ink-accent': '#d8b7ad',
-    # the hero quantised (MEDIANCUT, 8), most to least common
-    'sky': '#a7b8b9', 'sky-deep': '#7e989d', 'snow': '#d3b8af', 'rock': '#1c2223',
-    'slate': '#55686d', 'stone': '#a0a2a0', 'mist': '#c2c0bb', 'cloud': '#d2cbc3',
+    # extract-palette.py "sailing-the-seas-of-grammar/hero.jpg" --light
+    'void': '#bacabf', 'surface': '#ced7d1', 'surface2': '#c4d0c8',
+    'border': '#966c4a', 'text': '#2a1c11', 'text-dim': '#5e432e',
+    'accent': '#924304', 'accent-bright': '#632c00', 'accent-dim': '#e87e28',
+    'secondary': '#aecbce', 'contrast': '#075552',
+    # extract-palette.py "sailing-the-seas-of-grammar/hero.jpg"
+    'ink': '#161610', 'ink-surface': '#242419', 'ink-surface2': '#303021',
+    'ink-border': '#906441', 'ink-text': '#f5f3f2', 'ink-text-dim': '#bfb0a3',
+    'ink-accent': '#eeba90',
+    # the hero quantised (MEDIANCUT, 8), most to least common. The names are
+    # roles the CSS uses (sky = the sea the copy sits over, rock = the
+    # darkest land), kept from when the hero was the Sherpa ridge.
+    'sky': '#b3cfd1', 'snow': '#dc9564', 'stone': '#969477', 'slate': '#967451',
+    'mist': '#bcbc99', 'rock': '#5a4933', 'cloud': '#d7dac8', 'sky-deep': '#9dbbb9',
 }
 # Mixed, not picked: the paper and the card, the derived surface lifted
 # towards the derived light text. Resolved here so --check can measure
@@ -357,25 +489,27 @@ body.gh {
 }
 .gh-pill-free { background: var(--gh-accent); color: var(--gh-ink-text); }
 
-/* ── hero: the ridge, copy over the sky ── */
+/* ── hero: the chart as a real 3D relief map: the coasts raised from the
+   chart's own colours, the sea flat, the camera looking across it into a
+   pale haze. Copy over the near sea. The flat chart under the canvas is the
+   fallback (no WebGL, no JS) and is what search engines see. ── */
 .gh-hero {
   position: relative; isolation: isolate; overflow: hidden;
   min-height: clamp(560px, 84vh, 800px); display: grid; align-items: center;
-  background: var(--gh-sky);
+  background: linear-gradient(180deg, var(--gh-cloud) 0%%, var(--gh-sky) 100%%);
 }
-.gh-hero-img {
-  position: absolute; inset: 0; z-index: -2; width: 100%%; height: 100%%;
-  object-fit: cover; object-position: 68%% 50%%;
-  animation: gh-settle 2.6s cubic-bezier(.2,.7,.2,1) backwards;
-}
-@keyframes gh-settle { from { transform: scale(1.06); } to { transform: none; } }
+.gh-hero-art { position: absolute; inset: 0; z-index: -2; overflow: hidden; }
+.gh-hero-img, .gh-hero-3d { position: absolute; inset: 0; width: 100%%; height: 100%%; display: block; }
+.gh-hero-img { object-fit: cover; object-position: 50%% 45%%; opacity: .62; filter: saturate(.7) sepia(.12); }
+.gh-hero-3d { opacity: 0; transition: opacity 1.4s ease; touch-action: pan-y; }
+.gh-hero-art.is-3d .gh-hero-3d { opacity: 1; }
+.gh-hero-art.is-3d .gh-hero-img { opacity: 0; transition: opacity 1.4s ease; }
 .gh-hero::after {
   content: ''; position: absolute; inset: 0; z-index: -1;
   background: linear-gradient(90deg,
-    color-mix(in srgb, var(--gh-sky) 90%%, transparent) 0%%,
-    color-mix(in srgb, var(--gh-sky) 80%%, transparent) 46%%,
-    color-mix(in srgb, var(--gh-sky) 30%%, transparent) 68%%,
-    transparent 84%%);
+    color-mix(in srgb, var(--gh-sky) 72%%, transparent) 0%%,
+    color-mix(in srgb, var(--gh-sky) 55%%, transparent) 42%%,
+    transparent 70%%);
 }
 .gh-hero-in {
   width: 100%%; max-width: var(--gh-max); margin: 0 auto;
@@ -400,9 +534,14 @@ body.gh {
 .gh-stats span { font-size: .95rem; line-height: 1.3; max-width: 16em; text-wrap: balance; }
 .gh-stats .gh-stat-free b { color: var(--gh-accent-bright); }
 .gh-ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+/* under the buttons: the chart's own lesson, and what Pro costs */
+.gh-sail, .gh-plans { margin: 18px 0 0; font-size: .98rem; line-height: 1.5; max-width: 34em; }
+.gh-plans { margin-top: 6px; }
+.gh-sail a, .gh-plans a { color: var(--gh-accent-bright); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
 @media (max-width: 880px) {
   .gh-hero { display: block; min-height: 0; background: var(--gh-paper); }
-  .gh-hero-img { position: relative; z-index: auto; height: auto; aspect-ratio: 16 / 10; object-position: 50%% 60%%; }
+  .gh-hero-art { position: relative; inset: auto; z-index: auto; aspect-ratio: 16 / 11;
+    background: linear-gradient(180deg, var(--gh-cloud) 0%%, var(--gh-sky) 100%%); }
   .gh-hero::after { display: none; }
   .gh-hero-in { grid-template-columns: 1fr; padding-top: 30px; padding-bottom: 44px; }
   .gh-hero-copy, .gh-hero .gh-kicker { color: var(--gh-text); }
@@ -664,7 +803,10 @@ def render(rows, images, allm):
     # ── hero ──
     b.append('''<main>
 <header class="gh-hero" aria-labelledby="gh-h1">
-  <img class="gh-hero-img" src="%s" width="1200" height="672" alt="%s" fetchpriority="high">
+  <div class="gh-hero-art" id="gh-hero-art">
+    <img class="gh-hero-img" src="%s" width="1536" height="1024" alt="%s" fetchpriority="high">
+    <canvas class="gh-hero-3d" aria-hidden="true"></canvas>
+  </div>
   <div class="gh-hero-in">
     <div class="gh-hero-copy">
       <p class="gh-kicker">Grammar &middot; A1 to C2 &middot; %s</p>
@@ -679,10 +821,14 @@ def render(rows, images, allm):
         <a class="gh-btn" href="#tenses">The tenses, in colour <span aria-hidden="true">&darr;</span></a>
         <a class="gh-btn gh-btn-quiet" href="level-checker.html">Find your level</a>
       </div>
+      <p class="gh-sail">The chart is <a href="sailing-the-seas-of-grammar.html">Sailing the Seas of Grammar</a>: gerunds or infinitives, coast by coast &rarr;</p>
+      <p class="gh-plans">Plenty of lessons are free, no sign-in. Pro opens every one &mdash; <a href="pricing.html">plans and prices</a>.</p>
     </div>
   </div>
 </header>''' % (esc(seo.quote(HERO)), esc(HERO_ALT), plural(len(listed), 'topic'),
                 len(files), len(listed), len(free_files)))
+
+    b.append(CHART_3D)
 
     # ── the tense code ──
     b.append('''<section class="gh-tenses" id="tenses" aria-labelledby="gh-tenses-h">
