@@ -80,7 +80,7 @@ def chrome():
 
 
 GRAMMAR_LINK = '<a href="grammar.html">Grammar</a>'
-RPG_LINK = '<a href="rpg.html">RPGs</a>'
+RPG_LINK = '<a href="rpg.html" class="tb-wide">RPGs</a>'   # steps out below 1280px, as on the front page
 
 
 def nav_for(nav, current):

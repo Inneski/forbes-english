@@ -41,6 +41,13 @@ Camp, Slide Decks, Work With Me, Sign In, Go Pro — the last three-but-one
 in `index.html`, `library.html` (brass pills), `block-camp.html`,
 `block-camp-map.html`, `level-checker.html`, `pricing.html`, `account.html`.
 No "Speaking" (no content yet); "Library" replaced Lessons + Bookshelf.
+It also *looks* the same everywhere (Innes, 2026-10-19: "top line needs to
+stay consistent on every page"): the front page's sizes, Barlow Condensed
+600 capitals, logo far left, gold Go Pro. The rules are the "the top line:
+the front page's" block at the end of `ielts.html`'s first `<style>` (so the
+hubs inherit it) and a `<style id="fe-topline">` in each hand-kept page.
+Any page carrying the row must load Barlow Condensed **600**. RPGs carries
+`tb-wide` in the shared row, and `RPG_LINK` in `tools/build_hubs.py` matches it.
 
 **Front-page language menu** (`I18N` in `index.html`): the same ten
 languages as Sherpa. It translates the top row, each world's words in the

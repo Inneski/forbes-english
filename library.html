@@ -20,7 +20,7 @@
 <!-- SEO:end -->
 <title>Lesson library | Forbes English</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Barlow+Condensed:wght@700;800&family=Lato:wght@300;400;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Barlow+Condensed:wght@600;700;800&family=Lato:wght@300;400;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -857,7 +857,21 @@
   /* the plaque hangs on the bookcase itself: no strip above the picture */
   .hero.hero { padding: 0; }
   .hero-inner { position: relative; }
-  .hero-tag { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); margin: 0; z-index: 4; }
+  /* "Lesson Library" carved into the rail above the six books (Innes,
+     2026-10-19: engraved in the wood, not a plate): dark letters cut into
+     the wood, catching the light on their lower edge. The rail's front
+     sits at 20.5-25.3% of the shelf picture's height; the picture is the
+     shelf's width (at least 760px) times 780/2000, so its centre line is
+     0.0889 of that width down. */
+  .hero-tag {
+    --shelf-w: max(760px, min(100vw, 2000px));
+    position: absolute; top: calc(var(--shelf-w) * 0.0889); left: 50%; transform: translate(-50%, -50%);
+    margin: 0; z-index: 4; padding: 0; border-radius: 0; background: none; box-shadow: none; white-space: nowrap;
+    font: 700 calc(var(--shelf-w) * 0.0102)/1 'Playfair Display', Georgia, serif;
+    letter-spacing: 0.34em; text-transform: uppercase;
+    color: rgba(38, 20, 8, 0.82);
+    text-shadow: 0 1px 0 rgba(255, 214, 160, 0.42), 0 -1px 0 rgba(0, 0, 0, 0.45);
+  }
   /* The shelf (Innes, 2026-10-18). His photograph of a wooden bookcase,
      the whole case in view, its middle shelf cleared of the books that
      stood there (library-hub/bookcase-photo.webp, made by
@@ -950,7 +964,8 @@
   .hubs:is(:hover, :focus-within) .hub.open:not(:hover, :focus-visible) .book { transform: translateX(-50%) rotateY(90deg); }
   /* the label at the foot of the cover, once it faces you */
   .hubs .hub-text {
-    position: absolute; left: 7%; right: 7%; bottom: 4%; display: block;
+    /* below the book, under the shelf's front edge, not over the cover */
+    position: absolute; left: 7%; right: 7%; top: calc(100% + 2.6cqw); bottom: auto; display: block;
     padding: 0.5cqw 0.6cqw 0.45cqw; border-radius: 3px; text-align: center;
     font-size: max(11px, 0.85cqw); line-height: 1.35;
     background: rgba(30, 17, 10, 0.92);
@@ -990,6 +1005,31 @@
   .nav-pill { white-space: nowrap; }
   @media (max-width: 1280px) { .nav-links .nav-wide { display: none; } }
   @media (max-width: 620px) { .nav-links .nav-pill:not(.gold) { display: none; } }   /* a phone keeps Go Pro, like every other page */
+  /* the logo at the left edge, so the row has room (Innes, 2026-10-19) */
+  header .header-inner { max-width: none; }
+</style>
+<style id="fe-topline">
+/* ── the top line: the front page's, on every page (Innes, 2026-10-19) ── */
+header .header-inner { max-width: none; margin: 0; padding: clamp(16px, 3vh, 30px) clamp(16px, 3vw, 40px);
+  display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+header .fe-logo-svg { width: clamp(84px, 7vw, 108px); height: auto; }
+header .nav-links { display: flex; align-items: center; justify-content: flex-end; flex-wrap: nowrap; gap: clamp(12px, 1.8vw, 24px); margin: 0; }
+header .nav-links .nav-pill { font-family: 'Barlow Condensed', sans-serif; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  font-size: 14.5px; line-height: 1; color: rgba(36, 22, 13, 0.78); opacity: 1; text-decoration: none; white-space: nowrap;
+  background: none; border: 0; border-radius: 0; padding: 0; box-shadow: none; transition: color .2s ease; }
+header .nav-links .nav-pill:hover, header .nav-links .nav-pill[aria-current] { color: #24160d; background: none; }
+header .nav-links .nav-pill.gold { color: #040c20; background: #f7ba57; padding: 6px 14px; border-radius: 20px; font-weight: 700; border: 0; }
+header .nav-links .nav-pill.gold:hover { color: #040c20; background: #f6ead2; }
+@media (min-width: 1101px) {
+  header .fe-logo-svg { width: 138px; }
+  header .header-inner { gap: 48px; }
+  header .nav-links { flex: 1; margin-left: clamp(90px, 14vw, 260px); justify-content: space-between; gap: 12px; }
+  header .nav-links .nav-pill { font-size: clamp(15px, 1.32vw, 19px); letter-spacing: 0.05em; }
+  header .nav-links .nav-pill.gold { padding: 9px 22px; }
+}
+/* a phone keeps Library and Go Pro, as the front page does */
+@media (max-width: 620px) { header .nav-links .nav-pill[href="library.html"] { display: inline-block; } }
+header { padding: 0; }
 </style>
 </head>
 <body>
