@@ -161,6 +161,28 @@
     .hero{grid-template-columns:1fr;gap:26px;padding-top:22px;}
     .hero-art{order:-1;aspect-ratio:16/10;}
   }
+  /* The hero the grammar hub used to wear (Innes, 2026-10-18: the ridge is
+     Sherpa's picture, so Sherpa takes that hero when grammar moved to the
+     sea chart): the ridge full-bleed behind the hero, the copy over its sky
+     on a wash of the sky's own colour (#a9c0c1, the picture's measured
+     upper-left), fading out before the ridge. On a phone the picture stays
+     stacked above the copy, as above. */
+  @media (min-width:861px){
+    html,body{overflow-x:clip;}
+    .hero{position:relative;isolation:isolate;
+          grid-template-columns:minmax(0,600px) 1fr;gap:0;align-items:center;
+          margin:0 calc(50% - 50vw);padding:clamp(40px,7vh,80px) calc(50vw - 50%) 56px;
+          min-height:clamp(560px,84vh,800px);background:#a9c0c1;}
+    .hero-art{position:absolute;inset:0;z-index:-2;margin:0;border-radius:0;aspect-ratio:auto;box-shadow:none;}
+    .hero-art img{object-position:68% 50%;}
+    .hero .intro .lead{color:var(--ink);}   /* full ink over the picture: the soft rose was faint on the wash */
+    .hero::after{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;
+                 background:linear-gradient(90deg,
+                   color-mix(in srgb,#a9c0c1 90%,transparent) 0%,
+                   color-mix(in srgb,#a9c0c1 80%,transparent) 46%,
+                   color-mix(in srgb,#a9c0c1 30%,transparent) 68%,
+                   transparent 84%);}
+  }
 
   .kicker{font:600 12px/1.2 'Inter',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-dark);margin:0 0 6px;}
   .section-title{font-family:'Fraunces',serif;font-weight:600;color:var(--ink);font-size:26px;line-height:1.2;margin:0;}

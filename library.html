@@ -985,6 +985,11 @@
   }
   .hero-plans-btn:hover { background: linear-gradient(180deg, #ffe39a, #f0c85e 55%, #c99a36); }
 
+  /* the front page's top row (Innes, 2026-10-18) */
+  .nav-links { flex-wrap: nowrap; }
+  .nav-pill { white-space: nowrap; }
+  @media (max-width: 1280px) { .nav-links .nav-wide { display: none; } }
+  @media (max-width: 620px) { .nav-links .nav-pill:not(.gold) { display: none; } }   /* a phone keeps Go Pro, like every other page */
 </style>
 </head>
 <body>
@@ -1054,12 +1059,16 @@
       </svg>
     </a>
     <div class="nav-links">
-      <a class="nav-pill" href="index.html">Front Page</a>
-      <a class="nav-pill" href="#shelf">Bookshelf</a>
-      <a class="nav-pill" href="level-checker.html">Level Check</a>
-      <a class="nav-pill" href="#" id="navAll">All materials</a>
-      <a class="nav-pill" href="#" id="navFree">Free materials</a>
-      <a class="nav-pill gold" href="pricing.html">Go Pro</a>
+      <a href="level-checker.html" class="nav-pill">Level Check</a>
+      <a href="library.html" class="nav-pill" aria-current="page" id="navAll">Library</a>
+      <a href="ielts.html" class="nav-pill">IELTS</a>
+      <a href="grammar.html" class="nav-pill">Grammar</a>
+      <a href="rpg.html" class="nav-pill nav-wide">RPGs</a>
+      <a href="block-camp.html" class="nav-pill">Block Camp</a>
+      <a href="library.html#cat=Slide+Decks" class="nav-pill nav-wide">Slide Decks</a>
+      <a href="mailto:info@forbesenglish.com" class="nav-pill nav-wide">Work With Me</a>
+      <a href="account.html" class="nav-pill">Sign In</a>
+      <a href="pricing.html" class="nav-pill gold">Go Pro</a>
     </div>
   </div>
 </header>
@@ -1833,7 +1842,7 @@ freeToggleBtn.addEventListener('click', () => {
   render();
 });
 
-document.getElementById('navFree').addEventListener('click', (e) => {
+document.getElementById('navFree')?.addEventListener('click', (e) => {
   e.preventDefault();
   freeOnly = true;
   freeToggleBtn.classList.add('active');

@@ -33,6 +33,18 @@ exists; `tools/seo.py` still owns its SEO block. Its title is now
 - Sherpa's ring titles use `titleBase`/`titleFade`/`titleCurve` so the
   neighbours stay dark on snow.
 
+**One top row everywhere** (Innes: "the new top buttons should be consistent
+once links are opened"): Level Check, Library, IELTS, Grammar, RPGs, Block
+Camp, Slide Decks, Work With Me, Sign In, Go Pro — the last three-but-one
+(RPGs, Slide Decks, Work With Me) drop out below 1280px. Edit it in
+`ielts.html`'s topband (the hub builders copy it to 27 pages), then by hand
+in `index.html`, `library.html` (brass pills), `block-camp.html`,
+`block-camp-map.html`, `level-checker.html`, `pricing.html`, `account.html`.
+No "Speaking" (no content yet); "Library" replaced Lessons + Bookshelf.
+
+**`sherpa-tensing-route-map.html`** took the hero grammar used to wear: the
+ridge full-bleed with the copy over its sky (desktop; phones keep the card).
+
 **`library.html` hero** (`<style id="library-books">`): a photographed
 bookcase (`library-hub/bookcase-photo.webp`, made by
 `tools/make_library_shelf.py` from `incoming/library-books/bookcase-photo.jpg`,
