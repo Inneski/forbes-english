@@ -73,10 +73,12 @@
     100% { stroke-dashoffset: 0; opacity: 0; }
   }
   .ready #loader { opacity: 0; visibility: hidden; }
-  /* the loading outline is drawn where the window puts it, not where she
-     stands: it goes the moment the scene is ready, or during the fade it
-     floats over the scene, smaller and higher than her (Innes, 2026-10-18) */
-  .ready #loader svg { display: none; }
+  /* When the scene shows, the outline stops drawing itself, stays whole,
+     and is moved onto her by the scene's own camera (trackOutline), so it
+     lands on her and fades away round her as the loader goes. It used to
+     fade where the window had put it, smaller and higher than her
+     (Innes, 2026-10-18). */
+  .ready #loader path { animation: none; stroke-dasharray: none; opacity: 1; vector-effect: non-scaling-stroke; stroke-width: 2.5px; }
 
   /* ── what sits over the scene ── */
   .ui {
@@ -2109,6 +2111,25 @@ let start = null, last = performance.now();
 const clock = { t: 0 };
 const ease = x => 1 - Math.pow(1 - x, 3);
 
+// The loading outline, laid on her: the corners of her face, through the
+// camera, to the window. It glides there from where the loader drew it,
+// then follows her while the loader fades.
+const outlineSvg = document.getElementById('outline-svg');
+const OLa = new THREE.Vector3(), OLb = new THREE.Vector3();
+let outlineTrack = null;
+function trackOutline(now) {
+  const k = (now - outlineTrack.t0) / 1000;
+  if (k > 1.5) { outlineTrack = null; return; }
+  const zf = DEPTH / 2 + 0.11;
+  stone.localToWorld(OLa.set(-W / 2, 0, zf)).project(camera);
+  stone.localToWorld(OLb.set(W / 2, H, zf)).project(camera);
+  const l = (OLa.x + 1) / 2 * innerWidth, r = (OLb.x + 1) / 2 * innerWidth;
+  const b = (1 - OLa.y) / 2 * innerHeight, tp = (1 - OLb.y) / 2 * innerHeight;
+  const to = [l, tp, r - l, b - tp], e = ease(Math.min(1, k / 0.5));
+  const [x, y, w, h] = outlineTrack.from.map((f, i) => f + (to[i] - f) * e);
+  outlineSvg.style.cssText = `position:fixed;left:${x}px;top:${y}px;width:${w}px;height:${h}px;max-width:none`;
+}
+
 function frame(now) {
   requestAnimationFrame(frame);
   if (document.hidden) return;
@@ -2120,6 +2141,9 @@ function frame(now) {
     // a slow load may have tripped the no-3D fallback first: the scene is here now
     root.classList.remove('no-gl');
     root.classList.add('ready');
+    const r0 = outlineSvg.getBoundingClientRect();
+    outlineSvg.setAttribute('preserveAspectRatio', 'none');
+    outlineTrack = { t0: now, from: [r0.left, r0.top, r0.width, r0.height] };
   }
   clock.t += dt;
   const t = clock.t;
@@ -2224,6 +2248,7 @@ function frame(now) {
   const nowHot = ray.intersectObjects([stone, ...titles], false).length > 0;
   if (nowHot !== hot) { hot = nowHot; canvas.classList.toggle('hot', hot); }
 
+  if (outlineTrack) trackOutline(now);
   composer.render();
 }
 requestAnimationFrame(frame);
