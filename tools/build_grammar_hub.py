@@ -506,10 +506,17 @@ body.gh {
 .gh-hero-art.is-3d .gh-hero-img { opacity: 0; transition: opacity 1.4s ease; }
 .gh-hero::after {
   content: ''; position: absolute; inset: 0; z-index: -1;
+  /* a light wash only (Innes, 2026-10-19: the heavy one was overkill); the
+     words carry a soft pale halo instead */
   background: linear-gradient(90deg,
-    color-mix(in srgb, var(--gh-sky) 72%%, transparent) 0%%,
-    color-mix(in srgb, var(--gh-sky) 55%%, transparent) 42%%,
-    transparent 70%%);
+    color-mix(in srgb, var(--gh-sky) 36%%, transparent) 0%%,
+    color-mix(in srgb, var(--gh-sky) 22%%, transparent) 38%%,
+    transparent 58%%);
+}
+@media (min-width: 881px) {
+  .gh-hero-copy .gh-kicker, .gh-hero-copy .gh-h1, .gh-hero-copy .gh-lede, .gh-hero-copy .gh-stats, .gh-hero-copy .gh-sail, .gh-hero-copy .gh-plans {
+    text-shadow: 0 0 6px rgba(255, 252, 244, 0.9), 0 0 18px rgba(255, 252, 244, 0.65);
+  }
 }
 .gh-hero-in {
   width: 100%%; max-width: var(--gh-max); margin: 0 auto;

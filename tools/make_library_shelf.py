@@ -20,7 +20,7 @@ src = Image.open(sys.argv[1]).convert('RGB')
 out = sys.argv[2]
 X0, X1 = 408, 1606          # the middle bay, inside its uprights
 WALL, SHELF = 432, 756      # where the books' tops begin; the shelf they stand on
-CROP = (0, 150, 2000, 930)  # the whole case, a shelf above and below
+CROP = (0, 60, 2000, 930)   # the whole case: more of the shelf above, so its rail sits clear of the top line
 
 # the wall: the same panelling, clean, from under the middle shelf (its grain
 # runs upright, so it stretches upright without showing), feathered into the
