@@ -138,7 +138,7 @@ const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
 function go(tex) {
   let renderer;
   try { renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: true }); }
-  catch (e) { return; }
+  catch (e) { document.documentElement.classList.remove('gh-wait'); return; }   // no WebGL: the flat chart, at once
   renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   const css = getComputedStyle(document.documentElement);
@@ -504,6 +504,7 @@ body.gh {
 .gh-hero-3d { opacity: 0; transition: opacity 1.4s ease; touch-action: pan-y; }
 .gh-hero-art.is-3d .gh-hero-3d { opacity: 1; }
 .gh-hero-art.is-3d .gh-hero-img { opacity: 0; transition: opacity 1.4s ease; }
+.gh-wait .gh-hero-art:not(.is-3d) .gh-hero-img { opacity: 0; transition: opacity .6s ease; }   /* no flat chart before the 3D one */
 .gh-hero::after {
   content: ''; position: absolute; inset: 0; z-index: -1;
   /* a light wash only (Innes, 2026-10-19: the heavy one was overkill); the
@@ -810,6 +811,12 @@ def render(rows, images, allm):
     # ── hero ──
     b.append('''<main>
 <header class="gh-hero" aria-labelledby="gh-h1">
+  <script>
+    /* open on the hero's sky, not the flat chart: the flat picture shows only
+       if the 3D map has not arrived within five seconds (no WebGL, no module) */
+    document.documentElement.classList.add('gh-wait');
+    setTimeout(function () { if (!document.querySelector('.gh-hero-art.is-3d')) document.documentElement.classList.remove('gh-wait'); }, 5000);
+  </script>
   <div class="gh-hero-art" id="gh-hero-art">
     <img class="gh-hero-img" src="%s" width="1536" height="1024" alt="%s" fetchpriority="high">
     <canvas class="gh-hero-3d" aria-hidden="true"></canvas>
