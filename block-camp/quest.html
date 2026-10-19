@@ -263,6 +263,31 @@ footer a{color:var(--gold-bright)}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 @media(prefers-reduced-motion:reduce){.sky-art,.lantern,.fireflies i,.hiker i,.hiker .shadow,.badge.won::after,.stop.now .pin::before{animation:none}.hiker{transition:none}}
 </style>
+<style id="fe-topline">
+/* ── the top line: the front page's, on every page (Innes, 2026-10-19) ── */
+.topband .tb-inner { max-width: none; margin: 0; padding: clamp(16px, 3vh, 30px) clamp(16px, 3vw, 40px);
+  display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.topband .tb-logo-mark { width: clamp(84px, 7vw, 108px); height: auto; }
+.topband .tb-links { display: flex; align-items: center; justify-content: flex-end; flex-wrap: nowrap; gap: clamp(12px, 1.8vw, 24px); margin: 0; }
+.topband .tb-links a { font-family: 'Barlow Condensed', sans-serif; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  font-size: 14.5px; line-height: 1; color: rgba(246, 234, 210, 0.66); opacity: 1; text-decoration: none; white-space: nowrap;
+  background: none; border: 0; border-radius: 0; padding: 0; box-shadow: none; transition: color .2s ease; }
+.topband .tb-links a:hover, .topband .tb-links a[aria-current] { color: #f6ead2; background: none; }
+.topband .tb-links .tb-cta-gold { color: #040c20; background: #f7ba57; padding: 6px 14px; border-radius: 20px; font-weight: 700; border: 0; }
+.topband .tb-links .tb-cta-gold:hover { color: #040c20; background: #f6ead2; }
+@media (min-width: 1101px) {
+  .topband .tb-logo-mark { width: 138px; }
+  .topband .tb-inner { gap: 48px; }
+  .topband .tb-links { flex: 1; margin-left: clamp(90px, 14vw, 260px); justify-content: space-between; gap: 12px; }
+  .topband .tb-links a { font-size: clamp(15px, 1.32vw, 19px); letter-spacing: 0.05em; }
+  .topband .tb-links .tb-cta-gold { padding: 9px 22px; }
+}
+/* a phone keeps Library and Go Pro, as the front page does */
+@media (max-width: 620px) { .topband .tb-links a[href="../library.html"] { display: inline-block; } }
+.tb-links a { white-space: nowrap; }
+@media (max-width: 1280px) { .tb-links .tb-wide { display: none; } }
+@media (max-width: 620px) { .topband .tb-links a:not(.tb-cta-gold):not([href="../library.html"]) { display: none; } }
+</style>
 </head>
 <body>
 <nav class="topband">
@@ -331,11 +356,16 @@ footer a{color:var(--gold-bright)}
   </svg>
     </a>
     <div class="tb-links">
-      <a href="../library.html">Lessons</a>
-      <a href="../block-camp.html">Block Camp</a>
-      <a href="../ielts.html">IELTS<span class="tb-nav-sub"> Academic</span></a>
+      <a href="../level-checker.html">Level Check</a>
+      <a href="../library.html">Library</a>
+      <a href="../ielts.html">IELTS</a>
+      <a href="../grammar.html">Grammar</a>
+      <a href="../rpg.html" class="tb-wide">RPGs</a>
+      <a href="../block-camp.html" aria-current="page">Block Camp</a>
+      <a href="../library.html#cat=Slide+Decks" class="tb-wide">Slide Decks</a>
+      <a href="mailto:info@forbesenglish.com" class="tb-wide">Work With Me</a>
+      <a href="../account.html">Sign In</a>
       <a href="../pricing.html" class="tb-cta-gold">Go Pro</a>
-      <a href="mailto:info@forbesenglish.com" class="tb-cta">Work With Me</a>
     </div>
   </div>
 </nav>
@@ -600,7 +630,8 @@ function draw(walk) {
     done: sum.camps[i].done, seen: sum.camps[i].seen, meta: c.parts.map(p => p.level).filter((v, k, arr) => arr.indexOf(v) === k).join(' – ') + ' · ' + c.parts.length + (c.parts.length > 1 ? ' parts' : ' part'),
     pips: c.parts.map(p => { const d = deckState(s, p.id); return pip(p.href, p.label, d.p, d.done, p.access, 'part'); }).join('') + advPips(s, c.n, sum)}));
   const ci = currentIndex(climb, s);
-  const cpts = drawTrail($('trailClimb'), climb, ci, false);
+  // camp one first, at the top (Innes, 2026-10-19: bottom-up read 9 to 1, the wrong way round)
+  const cpts = drawTrail($('trailClimb'), climb, ci, true);
   /* guarded like the write below: a browser that blocks site data throws on
      the sessionStorage accessor itself, and this read, bare, stopped draw()
      after the climb (no descent, no adventures, no badges, no save code) */
