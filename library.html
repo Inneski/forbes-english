@@ -888,6 +888,9 @@
      Sizes are in cqw of the shelf, so the books keep their place on it at
      any width; on a phone the shelf keeps a readable size and scrolls. */
   .shelf-scroll { margin: 0 calc(50% - min(50vw, 1000px)); overflow-x: auto; overflow-y: hidden; scrollbar-width: thin; }
+  /* wider than the shelf's own width it needs no scrolling, so nothing is
+     clipped: a long label (Work With Me) hangs below the case (Innes, 2026-10-19) */
+  @media (min-width: 761px) { .shelf-scroll { overflow: visible; position: relative; z-index: 6; } }
   .hubs.hubs {
     container-type: inline-size;
     display: flex; justify-content: center; align-items: flex-end; gap: 0.3cqw;
@@ -1013,14 +1016,14 @@
 header { position: absolute; top: 0; left: 0; right: 0; z-index: 40; background: none; border: 0; box-shadow: none; }
 header .header-inner { max-width: none; margin: 0; padding: clamp(16px, 3vh, 30px) clamp(16px, 3vw, 40px);
   display: flex; align-items: center; justify-content: space-between; gap: 20px; }
-header .fe-logo-svg { width: clamp(84px, 7vw, 108px); height: auto; color: #f6ead2; filter: drop-shadow(0 0 6px rgba(10, 6, 2, 0.6)); }
-header .fe-logo-en { fill: #f7ba57; }
+header .fe-logo-svg { width: clamp(84px, 7vw, 108px); height: auto; color: #fff6e2; filter: drop-shadow(0 0 0 transparent); }
+header .fe-logo-en { fill: #3a2410; }
 header .nav-links { display: flex; align-items: center; justify-content: flex-end; flex-wrap: nowrap; gap: clamp(12px, 1.8vw, 24px); margin: 0; }
 header .nav-links .nav-pill { font-family: 'Barlow Condensed', sans-serif; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
-  font-size: 14.5px; line-height: 1; color: rgba(246, 234, 210, 0.8); opacity: 1; text-decoration: none; white-space: nowrap;
+  font-size: 14.5px; line-height: 1; color: rgba(36, 22, 13, 0.82); opacity: 1; text-decoration: none; white-space: nowrap;
   background: none; border: 0; border-radius: 0; padding: 0; box-shadow: none; transition: color .2s ease;
-  text-shadow: 0 0 6px rgba(10, 6, 2, 0.75), 0 0 14px rgba(10, 6, 2, 0.5); }   /* a soft halo, so the words read over a busy picture */
-header .nav-links .nav-pill:hover, header .nav-links .nav-pill[aria-current] { color: #f6ead2; background: none; }
+  text-shadow: none; }   /* a soft halo, so the words read over a busy picture */
+header .nav-links .nav-pill:hover, header .nav-links .nav-pill[aria-current] { color: #24160d; background: none; }
 header .nav-links .nav-pill.gold { color: #040c20; background: #f7ba57; padding: 6px 14px; border-radius: 20px; font-weight: 700; border: 0; text-shadow: none; }
 header .nav-links .nav-pill.gold:hover { color: #040c20; background: #f6ead2; }
 @media (min-width: 1101px) {
@@ -1042,9 +1045,8 @@ header + :has(> .gh-hero:first-child, > .ih-hero:first-child, > .rh-hero:first-c
 /* a phone keeps Library and Go Pro, as the front page does */
 @media (max-width: 620px) { header .nav-links .nav-pill[href="library.html"] { display: inline-block; } }
 header { padding: 0; }
+html body header { position: relative; background: linear-gradient(180deg, #b8902f, #9a741c); border-bottom: 1px solid #6b4d12; }
 header + .hero { border-top: 0; }
-/* the rail's carving clears the line only from ~1480px (its centre is 0.0889 of the width down) */
-@media (max-width: 1480px) { header + .hero { border-top: var(--tl-h) solid #1e110a; } }
 </style>
 </head>
 <body>
