@@ -708,7 +708,7 @@ html.camp-fs, html.camp-app{ --nav-h:0px !important }
     left:50%; transform:translateX(-50%); bottom:0 }
   .copy{ position:absolute; top:10px; left:calc(10px + env(safe-area-inset-left,0px)); right:auto;
     max-width:min(46ch, 52vw); border-radius:14px; padding:10px 14px 12px }
-  .caption{ top:10px; left:calc(10px + env(safe-area-inset-left,0px)); right:auto; bottom:auto;
+  .caption{ top:calc(var(--tl-h, 0px) + 6px); left:calc(10px + env(safe-area-inset-left,0px)); right:auto; bottom:auto;
     max-width:min(34ch, 52vw); border-radius:11px }
   .stop{ --dot:34px }
   .stop::after{ content:""; position:absolute; inset:-5px; border-radius:50% }
@@ -721,7 +721,7 @@ html.camp-fs, html.camp-app{ --nav-h:0px !important }
   .tour-home{ display:inline-flex; width:44px; padding:0; justify-content:center }
   .tour-home span{ display:none }
   .tourbar button{ padding:0 14px }
-  .tourbar{ width:clamp(150px, 22vw, 176px) }
+  .tourbar{ width:clamp(124px, 20vw, 176px) }   /* narrow enough to clear stop 9 on a small phone */
   .mapwrap .tourbar .tour-link{ display:flex; align-items:center; justify-content:center;
     min-height:44px; font-size:.8rem; white-space:normal; text-align:center }
   .mapwrap .tourbar .cf-chip{ justify-content:center; white-space:normal; text-align:center }
@@ -741,6 +741,23 @@ html.camp-fs, html.camp-app{ --nav-h:0px !important }
 @media (min-width:821px) and (orientation:landscape) and (max-height:500px){
   .tourbar{ max-width:none }
 }
+
+/* The bar never covers a stop (Innes, 2026-10-20). A script below tries the
+   bar's own place first, then these, and keeps the first where it covers no
+   stop, the title card, the caption or the site's line:
+   .bar-top  - top right, under the line, wrapping into the right half;
+   .bar-low  - (landscape phone) the column at the bottom right instead;
+   .bar-left - a column at the bottom left, under the title card. */
+.mapwrap .tourbar.bar-top{ top:calc(var(--tl-h, 0px) + 12px); bottom:auto;
+  max-width:min(660px, 50vw); border-radius:22px }
+.mapwrap .tourbar.bar-low{ top:auto; bottom:10px }
+.mapwrap .tourbar.bar-left{ right:auto; left:20px; flex-direction:column; align-items:stretch;
+  max-width:200px; border-radius:18px }
+.mapwrap .tourbar.bar-left .tour-tools{ justify-content:center }
+/* the hover caption leaves the corner the bar has taken, for the top right */
+.mapwrap.bar-left .caption{ left:auto; right:20px; bottom:auto; top:calc(var(--tl-h, 0px) + 12px) }
+/* the how-to pill leaves the corner the bar has taken */
+.mapwrap.bar-top .map-hint{ top:auto; bottom:22px }
 
 /* Fingers: 44px targets and no label under 12px, wherever the pointer is coarse. */
 @media (pointer:coarse){
@@ -1090,6 +1107,45 @@ html.camp-fs, html.camp-app{ --nav-h:0px !important }
   document.querySelectorAll('.stage .stop, #tour-toggle').forEach(function(a){
     ['mouseenter','focus','click','touchstart'].forEach(function(ev){ a.addEventListener(ev, hide, {passive:true}); });
   });
+})();
+</script>
+<script>
+/* Where the bar goes (see .bar-top in the CSS): the first place that covers
+   nothing that matters. Re-tried on resize and once the fonts and the flags
+   chip have settled, since both change the bar's size. */
+(function(){
+  var wrap=document.querySelector('.mapwrap'), bar=document.querySelector('.tourbar');
+  if(!wrap||!bar) return;
+  var PLACES=['', 'bar-top', 'bar-low', 'bar-left'];
+  function hit(a,b){ return a.left<b.right && b.left<a.right && a.top<b.bottom && b.top<a.bottom; }
+  function cost(){
+    var r=bar.getBoundingClientRect(), W=innerWidth, H=innerHeight, n=0;
+    if(r.left<0||r.right>W||r.bottom>H) n+=100;
+    document.querySelectorAll('.stage .stop').forEach(function(s){
+      var q=s.getBoundingClientRect();
+      if(q.right>0&&q.left<W&&q.bottom>0&&q.top<H&&hit(q,r)) n+=10; });
+    document.querySelectorAll('.stage .copy, .stage .caption, .topband .tb-inner > *').forEach(function(e){
+      if(e.offsetParent&&hit(e.getBoundingClientRect(),r)) n+=1; });
+    return n;
+  }
+  function place(){
+    PLACES.forEach(function(c){ if(c){ bar.classList.remove(c); wrap.classList.remove(c); } });
+    if(getComputedStyle(bar).position!=='absolute') return;   // a phone: the bar sits below the map
+    var best='', low=Infinity;
+    for(var i=0;i<PLACES.length;i++){
+      var c=PLACES[i];
+      if(c){ bar.classList.add(c); wrap.classList.add(c); }
+      var n=cost();
+      if(c){ bar.classList.remove(c); wrap.classList.remove(c); }
+      if(n<low){ low=n; best=c; }
+      if(n===0) break;
+    }
+    if(best){ bar.classList.add(best); wrap.classList.add(best); }
+  }
+  var t; function soon(){ clearTimeout(t); t=setTimeout(place,120); }
+  place(); addEventListener('resize',soon); addEventListener('load',place);
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(place);
+  setTimeout(place,1500);
 })();
 </script>
 </body></html>
