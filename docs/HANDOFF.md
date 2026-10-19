@@ -10,6 +10,40 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
+## 2026-10-19 — A language menu in every page's top row; pricing in ten languages
+
+Innes: *"https://forbesenglish.com/pricing should have translation button
+and in fact standard on every page same"*.
+
+- **`fe-lang.js`** (repo root) puts the front page's language menu in the
+  top row before Go Pro on every top-line page, in the row's own ink, and
+  translates the row's links from the front page's dictionary (`index.html`,
+  `I18N[*].nav` — keep the two in step). Choice in localStorage `fe-lang`
+  (the front page's key), `?lang=xx` works. It squeezes the row like the
+  front page's `fitRow()`, then shows the code (`DE ⌄`) instead of the name,
+  then drops Library.
+- **How a page gets it**: `ielts.html` carries the `<script>` inside its
+  `<nav class="topband">`, so every hub, IELTS route and the question bank
+  copy it on rebuild. Hand-kept pages (library, pricing, account,
+  level-checker, block-camp-map, block-camp/quest, flags, village) carry it
+  in `<head>`. A new top-line page needs the tag.
+- **A page's own text**: tag elements `data-fe="key"` and put
+  `<script type="application/json" id="fe-page-i18n">{"de":{key:…},…}</script>`
+  in the page. A child with an id (a live count) survives the swap; `{n}`
+  `{m}` fill from `data-n`/`data-m`; `FE_LANG.t(key, en)` for words a
+  script writes. Pricing is done this way, all 76 strings × 9 languages;
+  the generator is scratch, so edit the JSON in `pricing.html` directly.
+- **Block Camp** keeps its own menu (`#hubLang`; fe-lang.js stands down) but
+  now reads and writes `fe-lang` as well as `bc-lang`.
+- **Not done**: the Sherpa page has no shared top row at all (its own
+  wordmark and language select); account/level-checker/library body text is
+  English only.
+
+Also 2026-10-19: the RPG page's top line is white (`build_rpg_hub.py`);
+the climb map's "Hover a stop…" line left the button bar for a pill that
+fades in under the line top right (bottom right on a phone) and leaves
+after 8 s or at the first stop used.
+
 ## 2026-10-18 — New front page (3D worlds), library bookshelf, grammar chart hero: SHIPPED
 
 **`index.html` is a new page**: a three.js scene (r0.160 from jsdelivr)

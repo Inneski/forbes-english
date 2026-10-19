@@ -941,8 +941,10 @@ html:is([lang="zh"], [lang="ja"]) :is(.eyebrow, .btn, .chip, .card-sub, .tally .
   var sel = document.getElementById('hubLang'), cap = document.querySelector('.lang-cur');
   var dec = document.createElement('textarea');
   function ok(l) { return l === 'en' || !!(l && T[l]); }
-  function stored() { try { return localStorage.getItem(D.key); } catch (_) { return null; } }
-  function store(l) { try { localStorage.setItem(D.key, l); } catch (_) {} }
+  /* the site's own choice ('fe-lang', the front page's and the top row's) is
+     shared; Block Camp's key stays for its decks */
+  function stored() { try { return localStorage.getItem('fe-lang') || localStorage.getItem(D.key); } catch (_) { return null; } }
+  function store(l) { try { localStorage.setItem(D.key, l); localStorage.setItem('fe-lang', l); } catch (_) {} }
   function plain(s) { dec.innerHTML = s; return dec.value; }
   function swap(attr, prop) {
     [].forEach.call(document.querySelectorAll('[' + attr + ']'), function (el) {
@@ -977,7 +979,7 @@ html:is([lang="zh"], [lang="ja"]) :is(.eyebrow, .btn, .chip, .card-sub, .tally .
   /* chosen in a deck or another tab meanwhile, or back through the page cache */
   function again() { var s = stored(); if (ok(s) && s !== cur) apply(s); }
   addEventListener('pageshow', function (e) { if (e.persisted) again(); });
-  addEventListener('storage', function (e) { if (e.key === D.key) again(); });
+  addEventListener('storage', function (e) { if (e.key === D.key || e.key === 'fe-lang') again(); });
 })();
 </script>
 <script>
