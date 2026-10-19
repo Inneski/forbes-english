@@ -46,7 +46,15 @@ stay consistent on every page"): the front page's sizes, Barlow Condensed
 600 capitals, logo far left, gold Go Pro. The rules are the "the top line:
 the front page's" block at the end of `ielts.html`'s first `<style>` (so the
 hubs inherit it) and a `<style id="fe-topline">` in each hand-kept page.
-Any page carrying the row must load Barlow Condensed **600**. RPGs carries
+Any page carrying the row must load Barlow Condensed **600**.
+**No band** (Innes, 2026-10-19: "remove the green band … have the text over all
+the heroes directly"): the row is `position: absolute` over the page top.
+The block after it gets `border-top: var(--tl-h) solid transparent` (its own
+background shows through); a picture hero (`gh-`/`ih-`/`rh-hero`) instead
+keeps its picture to the top and pads only its words. Dark ink on pale pages,
+cream on dark ones (Block Camp, the climb, the library), each with a soft
+halo so it reads over a busy picture. A new page with the row: check that
+nothing sits under it (`elementFromPoint`/rect overlap) at 1440 and 375. RPGs carries
 `tb-wide` in the shared row, and `RPG_LINK` in `tools/build_hubs.py` matches it.
 
 **Front-page language menu** (`I18N` in `index.html`): the same ten

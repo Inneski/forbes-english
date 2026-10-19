@@ -756,15 +756,18 @@ html.camp-fs, html.camp-app{ --nav-h:0px !important }
 </style>
 <style id="fe-topline">
 /* ── the top line: the front page's, on every page (Innes, 2026-10-19) ── */
+.topband { position: absolute; top: 0; left: 0; right: 0; z-index: 40; background: none; border: 0; box-shadow: none; }
 .topband .tb-inner { max-width: none; margin: 0; padding: clamp(16px, 3vh, 30px) clamp(16px, 3vw, 40px);
   display: flex; align-items: center; justify-content: space-between; gap: 20px; }
-.topband .tb-logo-mark { width: clamp(84px, 7vw, 108px); height: auto; }
+.topband .tb-logo-mark { width: clamp(84px, 7vw, 108px); height: auto; color: #182a1f; filter: drop-shadow(0 0 6px rgba(255, 250, 240, 0.7)); }
+.topband .tb-logo-en { fill: #182a1f; }
 .topband .tb-links { display: flex; align-items: center; justify-content: flex-end; flex-wrap: nowrap; gap: clamp(12px, 1.8vw, 24px); margin: 0; }
 .topband .tb-links a { font-family: 'Barlow Condensed', sans-serif; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
-  font-size: 14.5px; line-height: 1; color: rgba(246, 234, 210, 0.66); opacity: 1; text-decoration: none; white-space: nowrap;
-  background: none; border: 0; border-radius: 0; padding: 0; box-shadow: none; transition: color .2s ease; }
-.topband .tb-links a:hover, .topband .tb-links a[aria-current] { color: #f6ead2; background: none; }
-.topband .tb-links .tb-cta-gold { color: #040c20; background: #f7ba57; padding: 6px 14px; border-radius: 20px; font-weight: 700; border: 0; }
+  font-size: 14.5px; line-height: 1; color: rgba(24, 42, 31, 0.78); opacity: 1; text-decoration: none; white-space: nowrap;
+  background: none; border: 0; border-radius: 0; padding: 0; box-shadow: none; transition: color .2s ease;
+  text-shadow: 0 0 6px rgba(255, 250, 240, 0.85), 0 0 14px rgba(255, 250, 240, 0.55); }   /* a soft halo, so the words read over a busy picture */
+.topband .tb-links a:hover, .topband .tb-links a[aria-current] { color: #182a1f; background: none; }
+.topband .tb-links .tb-cta-gold { color: #040c20; background: #f7ba57; padding: 6px 14px; border-radius: 20px; font-weight: 700; border: 0; text-shadow: none; }
 .topband .tb-links .tb-cta-gold:hover { color: #040c20; background: #f6ead2; }
 @media (min-width: 1101px) {
   .topband .tb-logo-mark { width: 138px; }
@@ -773,6 +776,15 @@ html.camp-fs, html.camp-app{ --nav-h:0px !important }
   .topband .tb-links a { font-size: clamp(15px, 1.32vw, 19px); letter-spacing: 0.05em; }
   .topband .tb-links .tb-cta-gold { padding: 9px 22px; }
 }
+/* what follows the line starts below it: the line's own height (logo height
+   is 0.4824 of its width, plus the padding above and below) */
+:root { --tl-h: calc(clamp(84px, 7vw, 108px) * 0.4824 + 2 * clamp(16px, 3vh, 30px)); }
+@media (min-width: 1101px) { :root { --tl-h: calc(138px * 0.4824 + 2 * clamp(16px, 3vh, 30px)); } }
+.topband + * { border-top: var(--tl-h) solid transparent; }
+/* a picture hero runs on up under the line; only its words move down */
+.topband + :is(.gh-hero, .ih-hero, .rh-hero),
+.topband + :has(> .gh-hero:first-child, > .ih-hero:first-child, > .rh-hero:first-child) { border-top: 0; }
+@media (min-width: 881px) { :is(.gh-hero, .ih-hero, .rh-hero) > :is(.gh-hero-in, .ih-hero-in, .rh-hero-in) { padding-top: calc(clamp(40px, 7vh, 80px) + var(--tl-h)); } }
 /* a phone keeps Library and Go Pro, as the front page does */
 @media (max-width: 620px) { .topband .tb-links a[href="library.html"] { display: inline-block; } }
 </style>
