@@ -38,6 +38,10 @@ What changed from the export, and why (none of it is on a slide):
   - The two "speak before you move on" prompts on question slides ride in
     the feedback; the rest are on the bridges, and the closing statement and
     the role-swap debrief are the activation stage.
+  - Content-aware (Innes, the same day: "move text into empty space not on
+    people's faces"): every slide's text sits in its plate's empty wall,
+    each question is a scene slide and a question slide, and the toolkit is
+    two slides. See CONTENT-AWARE PLACEMENT below.
   - The three endings were a free choice. The reasoned verdict now needs
     Patience left: lose the room five times and it will not follow you.
 
@@ -80,6 +84,164 @@ PALETTE = '''  --hero: url('ReasonableDoubt/hero.jpg');
   --secondary     : #334a4d;
   --contrast      : #0d5968;'''
 
+# ── CONTENT-AWARE PLACEMENT ────────────────────────────────────────────
+# Innes, 2026-10-23, on the first build: "move text into empty space not on
+# people's faces - what happened to content aware?" The first build washed
+# each plate full-width, the Scarlet Star way, and plated the text straight
+# across the jurors. The Scarlet Star's flat Noma Bar plates can take that;
+# these painted rooms cannot.
+#
+# Every plate here was painted for a text column on the left: the people are
+# all on the right. SUBJECT is where the first person (or the subject object,
+# on the plates with nobody in them) begins, as a fraction of the plate's
+# width, read off gridded contact sheets and cross-checked against
+# check-negative-space.py's off-grade score (which also counts the brown
+# table, so it reads every plate as busier than it is).
+#
+# Two things then put the text in the empty space:
+#   - the plate is drawn at the canvas's full height and pinned RIGHT, so it
+#     is 1080px wide and starts at x=200; its left edge fades into a strip of
+#     its own wall colour (WALL, sampled from the plate). That moves every
+#     subject 200*(1-f)px further right than a cover-fit would.
+#   - every slide pins its text to the left (data-side, the Block Camp
+#     mechanism) in a column that stops GAP px short of the first person.
+#
+# 34 of the 41 plates are a 16:9 painting letterboxed in the 3:2 frame: 80
+# flat cream rows above and below. A cover-fit cropped them away; drawn at
+# full height they show, with a hard edge 56px from the top and the bottom.
+# BAND measures them per plate and the mask dissolves that edge into the
+# wall colour (no fade at all on the seven plates painted edge to edge).
+SUBJECT = {
+    'ally': .43, 'ballot': .35, 'ballots': .36, 'cafe': .44, 'calm': .32, 'cinema': .49,
+    'concede': .37, 'divided': .40, 'door': .58, 'emptychair': .54, 'evidence': .45,
+    'fan': .40, 'filea': .55, 'filec': .42, 'ground': .40, 'hallway': .60, 'hands': .38,
+    'handshake': .42, 'hero': .50, 'isolated': .66, 'juror4': .38, 'juror9': .38,
+    'jurors': .35, 'knife': .50, 'listen': .42, 'oldman': .52, 'photograph': .45,
+    'prejudice': .42, 'quiet': .30, 'shift': .28, 'sightline': .40, 'spectacles': .50,
+    'stopwatch': .55, 'summary': .40, 'ticket': .40, 'toolkit': .50, 'tracks': .50,
+    'train': .38, 'twoknives': .40, 'verdict': .33, 'window': .52,
+}
+CANVAS_W, PLATE_W, PAD, GAP = 1280, 1080, 64, 40
+
+
+def subject_x(pic):
+    """Canvas x of the first person in a plate drawn full-height, pinned right."""
+    return CANVAS_W - PLATE_W * (1 - SUBJECT[pic])
+
+
+def lane(pic):
+    """Width of the text column: from the padding to GAP short of the subject."""
+    return int(subject_x(pic) - PAD - GAP)
+
+
+_walls = {}
+
+
+def wall(pic):
+    """The plate's own left edge as a vertical gradient: what the 200px strip
+    beside a right-pinned plate is painted with, so the wall simply carries on."""
+    if pic not in _walls:
+        from PIL import Image
+        im = Image.open('%s/%s.jpg' % (F, pic)).convert('RGB')
+        w, h = im.size
+        strip = im.crop((0, 0, max(4, w // 40), h)).resize((1, 5), Image.BOX)
+        cols = [strip.getpixel((0, i)) for i in range(5)]
+        # A table running off the plate's edge would make the strip a dark
+        # smear under the deck bar (the knife, 2026-10-23): a stop much darker
+        # than the lightest one is pulled most of the way back to the wall.
+        lum = lambda c: .2126 * c[0] + .7152 * c[1] + .0722 * c[2]
+        top = max(cols, key=lum)
+        cols = [tuple(int(a + (b - a) * .7) for a, b in zip(c, top)) if lum(c) < lum(top) - 20 else c
+                for c in cols]
+        stops = ['#%02x%02x%02x %d%%' % (c + (10 + i * 20,)) for i, c in enumerate(cols)]
+        _walls[pic] = 'linear-gradient(180deg,%s)' % ','.join(stops)
+    return _walls[pic]
+
+
+_bands = {}
+
+
+def band(pic):
+    """Canvas height of the plate's flat letterbox band (the same top and
+    bottom on every plate here), measured as rows with no texture."""
+    if pic not in _bands:
+        from PIL import Image, ImageStat
+        im = Image.open('%s/%s.jpg' % (F, pic)).convert('L')
+        w, h = im.size
+        rows = 0
+        while rows < h // 4 and ImageStat.Stat(im.crop((0, rows, w, rows + 1))).stddev[0] < 6:
+            rows += 1
+        _bands[pic] = int(rows * 720 / h)
+    return _bands[pic]
+
+
+def place(pic):
+    """The attributes that pin a slide's text into its plate's empty side."""
+    return ' data-side="left" style="--col-w:%dpx;--wall:%s;--band:%dpx"' % (lane(pic), wall(pic), band(pic))
+
+
+PLACE_CSS = '''<style>
+/* ── Reasonable Doubt: content-aware placement (build_reasonable_doubt.py) ──
+   The plate is drawn full-height and pinned right; the strip it leaves on the
+   left is painted with the plate's own wall colour, --wall on each slide. */
+.bg-layer { background: var(--wall, var(--void)); }
+.bg-layer::before {
+  background: var(--hero) right center / auto 100% no-repeat;
+  --fade: linear-gradient(180deg, transparent calc(var(--band, 0px) * .7), #000 calc(var(--band, 0px) * 1.8),
+                        #000 calc(720px - var(--band, 0px) * 1.8), transparent calc(720px - var(--band, 0px) * .7));
+  -webkit-mask-image: linear-gradient(90deg, transparent 200px, #000 330px), var(--fade);
+  -webkit-mask-composite: source-in;
+          mask-image: linear-gradient(90deg, transparent 200px, #000 330px), var(--fade);
+          mask-composite: intersect;
+}
+/* The text column: the Block Camp side-pinning rules, as shipped in
+   blockcamp-*.html. Head and body are one block, pinned left, as wide as the
+   plate's empty wall (--col-w, per slide). */
+.slide[data-side] { justify-content: center; }
+.slide[data-side] .slide-body { flex: 0 1 auto; justify-content: flex-start; }
+.slide { --centre-clear: 96px; }
+.slide[data-side]::after { content: ''; flex: 0 1 var(--centre-clear); min-height: 0; }
+.slide[data-side] > .slide-head, .slide[data-side] > .slide-body { flex-shrink: 0; }
+.slide[data-side] .slide-head { margin-bottom: 22px; }
+.slide[data-side] .slide-body, .slide[data-side] .slide-head { width: var(--col-w, 52%); margin-right: auto; }
+.slide[data-side] .opt { max-width: 100%; }
+.slide[data-side] .card { padding: 22px 26px; }
+.slide[data-side] .card.choice-row { padding: 12px 16px; }
+/* A Translate pill outside a card is a flex item of the body: keep it pill-sized. */
+.slide[data-side] .slide-body > .gloss-btn { align-self: flex-start; }
+.slide[data-side] .q-ctx { margin-bottom: 14px; }
+.slide[data-side] .q-stem { margin-bottom: 14px; }
+/* A choice is a row: what it is on the left, its button on the right. */
+.choice-row { display: flex; align-items: center; gap: 16px; padding: 14px 18px; }
+.choice-row + .choice-row { margin-top: 10px; }
+.choice-row .prose { flex: 1; font-size: 18px; line-height: 1.45; }
+.choice-row .btn { flex: none; }
+/* The cover lockup stands on the courthouse wall, not on its columns. */
+.slide[data-type="cover"][data-side] .cover-inner {
+  width: var(--col-w); align-items: flex-start; text-align: left; }
+.slide[data-type="cover"][data-side] .cover-meta { justify-content: flex-start; }
+html[data-theme="light"] .stage.on-cover .bg-layer::after {
+  background: radial-gradient(ellipse 46% 60% at 27% 50%,
+    color-mix(in srgb, var(--void) 40%, transparent) 0%, transparent 80%); }
+@media print {
+  .slide::before {
+    background: var(--hero) right center / auto 100% no-repeat, var(--wall, var(--void));
+  }
+}
+</style>
+'''
+
+# The engine sets --hero on the stage from data-bg; --wall rides along.
+PLACE_JS = '''<script>
+/* Reasonable Doubt: the strip beside a right-pinned plate wears that plate's
+   own wall colour (--wall on the slide), and its letterbox band (--band) is
+   faded out; both are set with the plate on every change. */
+slideHooks.push(i => ['--wall', '--band'].forEach(k =>
+  stage.style.setProperty(k, slides[i].style.getPropertyValue(k))));
+slideHooks[slideHooks.length - 1](0);
+</script>
+'''
+
 # ── the narrative, glossed. key -> English; DE/ES in i18n_reasonable_doubt_<code>.N ──
 N = {
     'brief': 'New York, 1957. A young man is accused of killing his father. Eleven jurors seem ready to '
@@ -87,26 +249,18 @@ N = {
              'without pretending to know what happened.',
     'toolkit': 'You can question an argument without attacking the person making it. '
                'Choose the strength of your language carefully.',
-    'evidence': 'Three claims hold the case together. Choose which one to investigate first. '
-                'Complete all three files to return to the full jury.',
-    'shift': 'The knife is no longer unique. The timing is uncertain. The view may have been obstructed. '
-             'Several jurors are reconsidering. Now you must protect a fair discussion as well as a careful argument.',
-    'shift-say': 'Say it aloud: a 30-second summary of the three files, with MIGHT HAVE, EVEN IF and ALTHOUGH.',
+    'evidence': 'Three claims hold the case together. Which one do you test first?',
+    'shift': 'The knife is not unique. The timing is uncertain. The view may have been blocked.',
     'quiet': 'A quiet juror tries to speak while two louder men argue. You can create space gently '
              'or interrupt the confrontation directly.',
     'photograph': 'Juror 3 takes out a worn photograph of himself and his son. The argument stops. You give him time. '
                   'A fair discussion sometimes needs silence more than another clever sentence.',
-    'photograph-say': 'Say it aloud, in your own words, without diagnosing him. Begin: “Take your time. We can …”',
-    'verdict': 'You have heard the arguments and tested the claims. Choose the vote you can defend.',
-    'end-doubt': 'The jury agrees on not guilty. You leave the courthouse knowing that you have not solved every '
-                 'mystery. You have insisted that a serious decision requires more than confidence, pressure or prejudice.',
-    'end-doubt-say': 'What is the difference between “not proven guilty” and “proven innocent”?',
+    'end-doubt': 'The jury agrees: not guilty. You have not solved every mystery, but you have insisted that a '
+                 'serious decision needs more than confidence, pressure or prejudice.',
     'end-open': 'The jurors remain divided. The foreman tells the court they have not reached agreement. '
                 'This is an unresolved outcome, not a victory or a defeat.',
-    'end-open-say': 'What would you need to reconsider your position? Use “I would reconsider if …”.',
     'end-haste': 'You agree to a guilty verdict for the sake of leaving. Your choice ends the discussion, '
                  'but it does not answer the doubts. Nobody in the room can say whether the decision is right.',
-    'end-haste-say': 'Complete: “We should not have … because …”. Then revisit your vote.',
 }
 
 # ── the questions. (node, eyebrow, title, story, stem, [key, wrong, wrong], why, picture[, say]) ──
@@ -118,7 +272,7 @@ Q = [
       'He must be innocent. I can feel it, so we don’t need evidence.',
       'He can’t be guilty, because he looks far too nervous.'],
      'I DON’T KNOW admits uncertainty; SHOULD proposes a next step. MUST and CAN’T claim a certainty that a feeling can’t give.',
-     'hands', 'Say one reason a confident person might still be wrong.'),
+     'hands', 'sayQ04'),
     ('q05', 'Act I · disagreeing politely', 'Hold your ground.',
      'Juror 3 calls the case obvious. The room waits for your reply. You need a question that keeps the discussion open.',
      'Which reply challenges the claim respectfully?',
@@ -158,7 +312,7 @@ Q = [
      '___ he owned one, that does not prove he used it.',
      ['Even if', 'Despite of', 'In spite'],
      'EVEN IF + clause accepts the point, not the conclusion. DESPITE never takes “of”; IN SPITE needs OF.',
-     'concede', 'Make another “Even if …” argument about the case.'),
+     'concede', 'sayQ10'),
     ('q11', 'File A · evidence checkpoint', 'File the first doubt.',
      'Write one sentence for the jury’s evidence file. It must tell a reasonable doubt apart from a claim of innocence.',
      'Which note belongs in the file?',
@@ -210,8 +364,7 @@ Q = [
      ['He may have misjudged the timing without intending to deceive us.',
       'An elderly witness like him is always unreliable, whatever he says.',
       'He must have lied to the court, because our timing was so different.'],
-     'File B is complete. MAY HAVE MISJUDGED allows an honest mistake. MUST HAVE LIED claims a deliberate '
-     'lie, and ALWAYS turns one witness into everyone.',
+     'File B is complete. MAY HAVE MISJUDGED allows an honest mistake; MUST HAVE LIED claims a deliberate one.',
      'juror9'),
 
     ('q17', 'File C · a claim of sight', 'Across the tracks.',
@@ -385,8 +538,9 @@ def head(eyebrow, title, eyebrow_key=None, title_key=None):
 
 
 def section(node, kind, act, body, pic=None, extra=''):
-    return ('\n    <section class="slide" data-type="%s" data-node="%s" data-act="%s"%s%s>\n%s'
-            '    </section>\n' % (kind, node, act, bg(pic) if pic else '', extra, body))
+    return ('\n    <section class="slide" data-type="%s" data-node="%s" data-act="%s"%s%s%s>\n%s'
+            '    </section>\n' % (kind, node, act, bg(pic) if pic else '', place(pic) if pic else '',
+                                extra, body))
 
 
 def gl(key, cls='prose'):
@@ -401,11 +555,20 @@ def teach(node, act, eyebrow, title, inner, to, pic, extra='', ek=None, tk=None)
 
 
 def say(key):
-    """A speaking prompt under a story card: glossed, dim, marked as speech."""
-    return gl(key, 'prose dim').replace('<p class="prose dim', '<p style="margin-top:12px" class="prose dim', 1)
+    """A speaking prompt under a story card. It is an instruction, so it is
+    translated in place (data-i18n) like the activation tasks, not glossed:
+    a second Translate button per card was what pushed the bridges off the
+    canvas once the column narrowed."""
+    return '<p class="prose dim" style="margin-top:12px" data-i18n="%s">%s</p>' % (key, E[key])
 
 
 def mc(q):
+    """A question is two beats, on the same plate: the SCENE (its story, which
+    the gloss translates) and the QUESTION (stem, options, feedback, which stay
+    English). One slide held both until the text moved off the jurors and into
+    the plates' empty walls, 400–720px wide: story, translation, stem, three
+    options and the feedback then overran the deck bar by up to 120px.
+    HOUSE-STYLE §6: split it, never shrink the type."""
     node, eyebrow, title, story, stem, opts, why, pic = q[:8]
     speak = q[8] if len(q) > 8 else None
     key = opts[0]
@@ -425,32 +588,33 @@ def mc(q):
         else:
             buttons.append('<button class="opt" data-time="-1"%s data-goto="%s">%s</button>' % (clue, nxt, o))
     N['q-' + node] = story
-    if speak:
-        why = '%s<br><strong>Say it aloud:</strong> %s' % (why, speak)
     count = ' · %d of %d' % (n, len(sec)) if len(sec) > 1 else ''
+    act = eyebrow.split(' · ')[0]
+    scene = teach(node, act, eyebrow + count, title,
+                  '<div class="card">%s%s</div>' % (gl('q-' + node), say(speak) if speak else ''),
+                  node + 'q', pic)
     body = (head(eyebrow + count, title) +
             '      <div class="slide-body">\n'
-            '        <p class="q-ctx gloss" data-tr="q-%s" style="margin-bottom:10px">%s</p>\n' % (node, story) +
             '        <p class="q-stem">%s</p>\n' % stem +
             '        <div class="opts">\n          %s\n        </div>\n' % '\n          '.join(buttons) +
-            # Continue sits beside the feedback, not under it: with the gloss open
-            # and a two-line explanation, a button underneath met the deck bar.
+            # Continue sits beside the feedback, not under it: a button
+            # underneath a three-line explanation met the deck bar.
             '        <div style="display:flex;gap:16px;align-items:flex-start">\n'
             '          <p class="feedback" style="flex:1" data-explain="%s"></p>\n' % D.esc(why) +
             '          <button class="btn btn-solid" style="flex:none;margin-top:10px" data-action="branch-continue" '
             'data-i18n="btnContinue" hidden>%s</button>\n'
             '        </div>\n      </div>\n' % E['btnContinue'])
-    return section(node, 'mc', eyebrow.split(' · ')[0], body, pic)
+    return scene + section(node + 'q', 'mc', act, body, pic)
 
 
-def choices(rows, cols=''):
-    """Choice cards: (label key, body key or None, goto, require)."""
-    out = '        <div class="cols%s">\n' % cols
+def choices(rows):
+    """Choice rows, stacked: (label key, body key or None, goto, require).
+    What the choice is on the left, its button on the right."""
+    out = '        <div style="margin-top:14px">\n'
     for k, bk, to, req in rows:
-        out += ('          <div class="card">\n'
+        out += ('          <div class="card choice-row">\n'
                 '            <p class="prose"><strong data-i18n="%s">%s</strong>%s</p>\n'
-                '            <div style="margin-top:12px"><button class="btn btn-solid choice" data-goto="%s"%s '
-                'data-i18n="btnChoose">%s</button></div>\n'
+                '            <button class="btn btn-solid choice" data-goto="%s"%s data-i18n="btnChoose">%s</button>\n'
                 '          </div>\n' % (k, E[k], '<br><span data-i18n="%s">%s</span>' % (bk, E[bk]) if bk else '',
                                        to, ' data-require="%s"' % req if req else '', E['btnChoose']))
     return out + '        </div>\n'
@@ -465,78 +629,81 @@ def build_slides():
 
     cover = D.cover(logo, E['coverTitle'], E['coverSub'],
                     [('Level', E['chipLevel']), ('Focus', E['chipFocus']), ('Count', E['chipCount'])])
-    cover = cover.replace('data-type="cover"', 'data-type="cover" data-node="cover" data-act=""', 1)
+    cover = cover.replace('data-type="cover"', 'data-type="cover" data-node="cover" data-act=""%s' % place('hero'), 1)
     cover = cover.replace('data-action="next"', 'data-goto="how"', 1)
 
+    # The plates' empty walls are 400–720px wide, so cards stack in one column
+    # (or two, for the cast) instead of spreading across the jurors.
     how = section('how', 'teach', E['actBefore'],
                   head(E['howEyebrow'], E['howTitle'], 'howEyebrow', 'howTitle') +
-                  '      <div class="slide-body">\n        <div class="cols cols-3">\n' +
-                  ''.join('          <div class="card"><p class="prose"><strong data-i18n="%s">%s</strong><br>'
-                          '<span data-i18n="%sBody">%s</span></p></div>\n'
+                  '      <div class="slide-body">\n        <div class="card" style="padding:18px 24px">\n' +
+                  ''.join('          <p class="prose" style="font-size:18px;line-height:1.5"><strong data-i18n="%s">%s</strong> · '
+                          '<span data-i18n="%sBody">%s</span></p>\n'
                           % (k, E[k], k, E[k + 'Body']) for k in ('howDp', 'howTime', 'howClues')) +
                   '        </div>\n'
-                  '        <p class="prose dim" style="margin-top:14px;text-align:center" data-i18n="howAloud">%s</p>\n'
+                  '        <p class="prose dim" style="margin-top:14px;font-size:18px" data-i18n="howAloud">%s</p>\n'
                   % E['howAloud'] + cont('brief') + '      </div>\n', 'jurors')
 
     brief = teach('brief', E['actBefore'], E['briefEyebrow'], E['briefTitle'],
-                  '<div class="card">%s</div>' % gl('brief'), 'cast', 'door', ek='briefEyebrow', tk='briefTitle')
+                  '<div class="card">%s</div>' % gl('brief'), 'cast', 'hero', ek='briefEyebrow', tk='briefTitle')
 
     cast = section('cast', 'teach', E['actBefore'],
                    head(E['castEyebrow'], E['castTitle'], 'castEyebrow', 'castTitle') +
-                   '      <div class="slide-body">\n        <div class="cols" style="grid-template-columns:repeat(4,1fr);gap:10px">\n' +
-                   ''.join('          <div class="card" style="padding:10px 14px"><p class="prose" style="font-size:16px">'
+                   '      <div class="slide-body">\n        <div class="cols" style="gap:8px">\n' +
+                   ''.join('          <div class="card" style="padding:8px 14px"><p class="prose" style="font-size:16px;line-height:1.4">'
                            '<strong>%02d · <span data-i18n="cast%d">%s</span></strong><br>'
                            '<span class="dim" data-i18n="cast%dBody">%s</span></p></div>\n'
                            % (i, i, E['cast%d' % i], i, E['cast%dBody' % i]) for i in range(1, 13)) +
-                   '        </div>\n' + cont('toolkit') + '      </div>\n', 'cafe')
+                   '        </div>\n' + cont('toolkit') + '      </div>\n', 'door')
 
-    toolkit = teach('toolkit', E['actBefore'], E['labEyebrow'], E['labTitle'],
-                    '<p class="prose gloss" data-tr="toolkit" style="margin-bottom:12px">%s</p>' % N['toolkit'] +
-                    '<div class="cols cols-3">%s</div>' % ''.join(
-                        '<div class="card" style="padding:12px 16px"><p class="prose" style="font-size:17px">'
-                        '<strong style="font-size:13px;letter-spacing:.04em">%s</strong><br>%s<br>'
-                        '<span class="dim" data-i18n="lab%d">%s</span></p></div>'
-                        % (h, ex, i, E['lab%d' % i]) for i, (h, ex) in enumerate(LAB, 1)),
-                    'q04', 'toolkit', ek='labEyebrow', tk='labTitle')
+    # Six forms do not fit one column of the notebook's wall: three and three.
+    def forms(part):
+        return '<div class="card" style="padding:16px 22px">%s</div>' % ''.join(
+            '<p class="prose" style="font-size:17px;line-height:1.45;margin-top:%dpx">'
+            '<strong style="font-size:12.5px;letter-spacing:.04em">%s</strong><br>%s · '
+            '<span class="dim" data-i18n="lab%d">%s</span></p>'
+            % (0 if i in (1, 4) else 12, h, ex, i, E['lab%d' % i])
+            for i, (h, ex) in enumerate(LAB, 1) if (i <= 3) == (part == 1))
+    toolkit = teach('toolkit', E['actBefore'], E['labEyebrow1'], E['labTitle'],
+                    '<p class="prose gloss" data-tr="toolkit" style="margin-bottom:12px;font-size:18px">%s</p>'
+                    % N['toolkit'] + forms(1), 'toolkit2', 'toolkit', ek='labEyebrow1', tk='labTitle')
+    toolkit += teach('toolkit2', E['actBefore'], E['labEyebrow2'], E['labTitle'],
+                     forms(2), 'q04', 'toolkit', ek='labEyebrow2', tk='labTitle')
 
     evidence = teach('evidence', 'Act II', E['hubEyebrow'], E['hubTitle'],
                      gl('evidence') + '\n' +
                      choices([('fileA', 'fileABody', 'q07', None), ('fileB', 'fileBBody', 'q12', None),
-                              ('fileC', 'fileCBody', 'q17', None)], ' cols-3') +
-                     '        <div style="margin-top:16px;display:flex;gap:14px;align-items:center">\n'
+                              ('fileC', 'fileCBody', 'q17', None)]) +
+                     '        <div style="margin-top:16px">\n'
                      '          <button class="btn btn-solid" data-goto="shift" data-require="clues>=3" '
                      'data-i18n="btnReconvene">%s</button>\n'
-                     '          <span class="prose dim" data-i18n="hubNote">%s</span>\n'
-                     '        </div>\n' % (E['btnReconvene'], E['hubNote']),
+                     '        </div>\n' % E['btnReconvene'],
                      None, 'evidence', ek='hubEyebrow', tk='hubTitle')
 
     shift = teach('shift', 'Act III', E['shiftEyebrow'], E['shiftTitle'],
-                  '<div class="card">%s%s</div>' % (gl('shift'), say('shift-say')), 'q23', 'shift',
+                  '<div class="card">%s%s</div>' % (gl('shift'), say('sayShift')), 'q23', 'shift',
                   ek='shiftEyebrow', tk='shiftTitle')
 
     quiet = teach('quiet', 'Act IV', E['forkEyebrow'], E['forkTitle'],
                   gl('quiet') + '\n' +
                   choices([('routeListen', None, 'q28', None), ('routeCalm', None, 'q29', None)]) +
-                  '        <p class="prose dim" style="margin-top:14px;text-align:center" '
+                  '        <p class="prose dim" style="margin-top:14px;font-size:18px" '
                   'data-i18n="explainFirst">%s</p>\n' % E['explainFirst'],
                   None, 'quiet', ek='forkEyebrow', tk='forkTitle')
 
     photograph = teach('photograph', 'Act V', E['photoEyebrow'], E['photoTitle'],
-                       '<div class="card">%s%s</div>' % (gl('photograph'), say('photograph-say')), 'q35',
+                       '<div class="card">%s%s</div>' % (gl('photograph'), say('sayPhoto')), 'q35',
                        'photograph', ek='photoEyebrow', tk='photoTitle')
 
     verdict = teach('verdict', 'Verdict', E['verdictEyebrow'], E['verdictTitle'],
-                    gl('verdict') + '\n' +
                     choices([('voteDoubt', 'voteDoubtBody', 'end-doubt', GOLD),
                              ('voteOpen', 'voteOpenBody', 'end-open', None),
-                             ('voteHaste', 'voteHasteBody', 'end-haste', None)], ' cols-3') +
-                    '        <p class="prose dim" style="margin-top:14px;text-align:center" '
-                    'data-i18n="verdictNote">%s</p>\n' % E['verdictNote'],
+                             ('voteHaste', 'voteHasteBody', 'end-haste', None)]),
                     None, 'verdict', ek='verdictEyebrow', tk='verdictTitle')
 
     def ending(k, pic, revisit):
         K = k.capitalize()
-        inner = '<div class="card">%s%s</div>' % (gl('end-' + k), say('end-%s-say' % k))
+        inner = '<div class="card">%s%s</div>' % (gl('end-' + k), say('say' + K))
         body = (head(E['end' + K], E['end%sTitle' % K], 'end' + K, 'end%sTitle' % K) +
                 '      <div class="slide-body" style="position:relative">\n        %s\n' % inner +
                 '        <div style="margin-top:18px;display:flex;gap:10px">\n'
@@ -548,7 +715,8 @@ def build_slides():
         return section('end-' + k, 'teach', 'Ending', body, pic)
 
     results = D.results(next_key='resRoute', next_text=E['resRoute'], folder=F, bg='hero.jpg')
-    results = results.replace('data-type="results"', 'data-type="results" data-node="results" data-act="Verdict"', 1)
+    results = results.replace('data-type="results"', 'data-type="results" data-node="results" data-act="Verdict"%s'
+                              % place('hero'), 1)
     i = results.rindex('      </div>\n    </section>')
     results = results[:i] + cont('activate', 'resNext') + results[i:]
 
@@ -556,7 +724,8 @@ def build_slides():
                      [E['actSpeak1'], E['actSpeak2'], E['actSpeak3']],
                      E['actWriteKind'], E['actWriteBrief'], E['actPlaceholder'],
                      folder=F, bg='cafe.jpg')
-    act = act.replace('data-type="activate"', 'data-type="activate" data-node="activate" data-act="Activation"', 1)
+    act = act.replace('data-type="activate"', 'data-type="activate" data-node="activate" data-act="Activation"%s'
+                      % place('cafe'), 1)
     act = act.replace('data-action="restart"', 'data-action="restart" data-goto="how"', 1)
 
     return ''.join([
@@ -608,16 +777,25 @@ def gates(slides):
         assert len(p) == 27, ('questions on a path', len(p))
     # each file's last question is the only one carrying its clue, on every option
     for node, clue in FILES.items():
-        sec = re.search(r'data-node="%s".*?</section>' % node, slides, re.S).group(0)
+        sec = re.search(r'data-node="%sq".*?</section>' % node, slides, re.S).group(0)
         assert sec.count('data-clue="%s"' % clue) == 3, node
     assert slides.count('data-clue=') == 9
-    # no two linked slides share a picture, and every plate is used once
+    # no two linked slides share a picture, except a scene and its own
+    # question (and the toolkit's two halves), which are one beat in two
     pic = dict(re.findall(r'data-node="([^"]+)"[^>]*?data-bg="([^"]+)"', slides))
     secs = re.findall(r'data-node="([^"]+)"(.*?)</section>', slides, flags=re.S)
+    pairs = {(q[0], q[0] + 'q') for q in Q} | {('toolkit', 'toolkit2')}
     for node, body in secs:
         for to in set(re.findall(r'data-goto="([^"]+)"', body)):
-            if node in pic and to in pic and pic[node] == pic[to]:
+            if node in pic and to in pic and pic[node] == pic[to] and (node, to) not in pairs:
                 raise AssertionError('%s and %s are neighbours on one picture (%s)' % (node, to, pic[node]))
+    # content-aware: every slide on a plate has a column, and the column ends
+    # GAP px short of where that plate's people begin
+    for node, attrs in re.findall(r'data-node="([^"]+)"([^>]*)>', slides):
+        bgm = re.search(r'data-bg="%s/([^"]+)\.jpg"' % F, attrs)
+        if bgm:
+            col = int(re.search(r'--col-w:(\d+)px', attrs).group(1))
+            assert PAD + col + GAP <= subject_x(bgm.group(1)) + 1, (node, col)
     for p in set(re.findall(r'data-bg="([^"]+)"', slides)) | {F + '/hero.jpg'}:
         assert os.path.exists(p), 'missing plate %s' % p
     for k in N:
@@ -644,6 +822,8 @@ def build():
     s = D.assemble(TPL, OUT, slides, PALETTE, TITLE, I, langs=langs)
     s = s.replace('<body>', '<body data-flow="branch" data-start="cover" data-time="%d">' % PATIENCE, 1)
     s = s.replace('const UI_I18N = {', narrative_tr(langs) + 'const UI_I18N = {', 1)
+    s = s.replace('</head>', PLACE_CSS + '</head>', 1)
+    s = s.replace('</body>', PLACE_JS + '</body>', 1)
     open(OUT, 'w', encoding='utf-8', newline='').write(s)
     print('wrote %s — %d slides, %s' % (OUT, n, ','.join(langs)))
 

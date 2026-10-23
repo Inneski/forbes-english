@@ -39,7 +39,8 @@ T = dict(
     cast11='El jurado de principios', cast11Body='Se toma en serio la responsabilidad.',
     cast12='El indeciso', cast12Body='Se deja influir por la sala.',
 
-    labEyebrow='Antes de la primera votación · tus herramientas', labTitle='El lenguaje de la duda.',
+    labEyebrow1='Antes de la primera votación · tus herramientas · 1 de 2',
+    labEyebrow2='Antes de la primera votación · tus herramientas · 2 de 2', labTitle='El lenguaje de la duda.',
     lab1='Una posibilidad en el pasado.', lab2='Una deducción negativa firme.',
     lab3='Conceder un punto y luego cuestionarlo.', lab4='Una condición irreal en el pasado.',
     lab5='Transmitir lo que alguien dijo.', lab6='Proponer algo o poner una condición.',
@@ -48,19 +49,24 @@ T = dict(
     fileA='Expediente A · la navaja', fileABody='La navaja poco común.',
     fileB='Expediente B · el hombre de abajo', fileBBody='¿Qué podía oír?',
     fileC='Expediente C · al otro lado de las vías', fileCBody='¿Qué podía ver?',
-    hubNote='Se abre cuando los tres expedientes están cerrados.',
 
-    shiftEyebrow='Acto III · la duda se extiende', shiftTitle='La sala empieza a cambiar.',
+    shiftEyebrow='Acto III · la duda se extiende', shiftTitle='La sala cambia.',
+    sayQ04='Di una razón por la que una persona segura de sí misma podría estar equivocada.',
+    sayQ10='Formula otro argumento con «Even if…» sobre el caso.',
     forkEyebrow='Acto IV · cómo actuar', forkTitle='¿Cómo vas a liderar?',
     routeListen='Invitar a hablar al jurado más callado', routeCalm='Interrumpir la confrontación',
     explainFirst='Explica tu elección en inglés antes de hacer clic.',
     photoEyebrow='Acto V · un momento para escuchar', photoTitle='Una foto sobre la mesa.',
+    sayShift='Dilo en voz alta: un resumen de 30 segundos de los tres expedientes, con MIGHT HAVE, EVEN IF y ALTHOUGH.',
+    sayPhoto='Dilo en voz alta, con tus palabras y sin diagnosticarlo. Empieza: «Take your time. We can…».',
+    sayDoubt='¿Qué diferencia hay entre «no se ha demostrado su culpabilidad» y «se ha demostrado su inocencia»?',
+    sayOpen='¿Qué necesitarías para reconsiderar tu postura? Usa «I would reconsider if…».',
+    sayHaste='Completa: «We should not have… because…». Después reconsidera tu voto.',
 
     verdictEyebrow='El veredicto', verdictTitle='Tu voto final.',
     voteDoubt='No culpable', voteDoubtBody='Las pruebas dejan una duda razonable.',
     voteOpen='Seguir debatiendo', voteOpenBody='Aún no podéis poneros de acuerdo.',
     voteHaste='Culpable', voteHasteBody='Solo para terminar el debate.',
-    verdictNote='Una sala que ha perdido la paciencia no te seguirá hasta «no culpable».',
     branchLocked='La sala ha dejado de escucharte',
     endDoubt='Final I · el veredicto razonado', endDoubtTitle='Una duda que vale la pena defender.',
     endOpen='Final II · la sala sin resolver', endOpenTitle='El debate continúa.',
@@ -93,27 +99,18 @@ N = {
              'condenarlo. Tú dudas de la fiabilidad de las pruebas. Tu misión: dar espacio a la duda, sin fingir '
              'que sabes qué ocurrió.',
     'toolkit': 'Puedes cuestionar un argumento sin atacar a quien lo presenta. Elige con cuidado la fuerza de tus palabras.',
-    'evidence': 'Tres afirmaciones sostienen el caso. Elige cuál investigar primero. Completa los tres expedientes '
-                'para volver al debate del jurado.',
-    'shift': 'La navaja ya no es única. El tiempo es incierto. La visión pudo estar obstruida. Varios jurados '
-             'reconsideran su postura. Ahora debes proteger tanto el debate justo como el razonamiento riguroso.',
-    'shift-say': 'Dilo en voz alta: un resumen de 30 segundos de los tres expedientes, con MIGHT HAVE, EVEN IF y ALTHOUGH.',
+    'evidence': 'Tres afirmaciones sostienen el caso. ¿Cuál examinas primero?',
+    'shift': 'La navaja no es única. El tiempo es incierto. La visión pudo estar bloqueada.',
     'quiet': 'Un jurado callado intenta hablar mientras dos hombres discuten. Puedes darle espacio con calma o '
              'interrumpir directamente la confrontación.',
     'photograph': 'El jurado 3 saca una foto gastada de él y su hijo. La discusión se detiene. Le das tiempo. '
                   'A veces, un debate justo necesita silencio más que otra frase ingeniosa.',
-    'photograph-say': 'Dilo en voz alta, con tus palabras y sin diagnosticarlo. Empieza: «Take your time. We can…».',
-    'verdict': 'Has escuchado los argumentos y examinado las afirmaciones. Elige el voto que puedas defender.',
-    'end-doubt': 'El jurado acuerda un veredicto de no culpabilidad. Sales del tribunal sabiendo que no has '
-                 'resuelto todos los misterios. Has exigido que una decisión seria se base en algo más que '
-                 'seguridad, presión o prejuicios.',
-    'end-doubt-say': '¿Qué diferencia hay entre «no se ha demostrado su culpabilidad» y «se ha demostrado su inocencia»?',
+    'end-doubt': 'El jurado acuerda: no culpable. No has resuelto todos los misterios, pero has exigido que una '
+                 'decisión seria se base en algo más que seguridad, presión o prejuicios.',
     'end-open': 'Los jurados siguen divididos. El presidente informa de que no han alcanzado un acuerdo. Es un '
                 'resultado sin resolver, no una victoria ni una derrota.',
-    'end-open-say': '¿Qué necesitarías para reconsiderar tu postura? Usa «I would reconsider if…».',
     'end-haste': 'Aceptas un veredicto de culpabilidad para poder irte. Tu decisión termina el debate, pero no '
                  'responde a las dudas. Nadie en la sala puede decir si la decisión es correcta.',
-    'end-haste-say': 'Completa: «We should not have… because…». Después reconsidera tu voto.',
     'q-q04': 'Once votos de culpabilidad. Tu mano sigue abajo. El jurado 3 se inclina: «¿Dices que sabes que es inocente?».',
     'q-q05': 'El jurado 3 dice que el caso es obvio. Todos esperan tu respuesta. Necesitas una pregunta que '
              'mantenga abierto el debate.',

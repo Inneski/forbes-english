@@ -20,7 +20,24 @@ the film's title and every "the film" are gone. Built like the Scarlet Star
 + `i18n_reasonable_doubt{,_de,_es}.py` → `reasonable-doubt-rpg.html`, plates
 in `ReasonableDoubt/` (the export's own, 3:2, via prep-artwork; light palette).
 
-- **Shape:** 43 slides. Trunk → an evidence hub (files A/B/C in any order;
+- **Content-aware, second pass (same day).** Innes, on the live first
+  build: *"move text into empty space not on people's faces - what happened
+  to content aware?"* The Verdict/Scarlet machinery washes the plate
+  full-width; nothing in a branch deck pins text to a plate's empty side.
+  The Block Camp `data-side` rules (they live only in the shipped
+  `blockcamp-*.html` pages, no builder owns them) are now ported into the
+  builder's own `PLACE_CSS`, plus: plates drawn full-height and pinned right
+  (x=200; its strip painted with the plate's own wall colour), a per-slide
+  `--col-w` that stops 40px short of where that plate's people begin
+  (`SUBJECT`, read off gridded sheets), and a build gate that asserts it.
+  The column is 400–800px, so each question is now a scene slide + a
+  question slide (72 slides), the toolkit is two, speaking prompts are
+  translated chrome, not glosses. **Trap:** 34 of the 41 export plates are
+  a 16:9 painting letterboxed in 3:2 with 80px flat bands; a cover-fit hid
+  them, full-height shows them, so the mask fades `--band` away.
+  `check-negative-space.py reasonable-doubt-rpg.html` passes. **Any story
+  deck built from `build_verdict.py` has the same full-width problem.**
+- **Shape (first pass):** 43 slides. Trunk → an evidence hub (files A/B/C in any order;
   each checkpoint's options carry `data-clue`, "Reconvene" needs
   `clues>=3`) → a two-arm fork → verdict. 27 MC on every route. Patience 5;
   the not-guilty ending needs `time>=1`. First use of a hub-and-return

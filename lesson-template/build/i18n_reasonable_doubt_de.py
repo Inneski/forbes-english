@@ -39,7 +39,8 @@ T = dict(
     cast11='Der Prinzipientreue', cast11Body='Nimmt die Verantwortung ernst.',
     cast12='Der Schwankende', cast12Body='Lässt sich vom Raum beeinflussen.',
 
-    labEyebrow='Vor der ersten Abstimmung · dein Werkzeug', labTitle='Die Sprache des Zweifels.',
+    labEyebrow1='Vor der ersten Abstimmung · dein Werkzeug · 1 von 2',
+    labEyebrow2='Vor der ersten Abstimmung · dein Werkzeug · 2 von 2', labTitle='Die Sprache des Zweifels.',
     lab1='Eine Möglichkeit in der Vergangenheit.', lab2='Eine starke negative Schlussfolgerung.',
     lab3='Einen Punkt zugestehen, dann hinterfragen.', lab4='Eine irreale Bedingung in der Vergangenheit.',
     lab5='Wiedergeben, was jemand gesagt hat.', lab6='Etwas vorschlagen oder eine Bedingung stellen.',
@@ -48,19 +49,24 @@ T = dict(
     fileA='Akte A · das Messer', fileABody='Das ungewöhnliche Messer.',
     fileB='Akte B · der Mann unten', fileBBody='Was konnte er hören?',
     fileC='Akte C · jenseits der Gleise', fileCBody='Was konnte sie sehen?',
-    hubNote='Öffnet sich, wenn alle drei Akten geschlossen sind.',
 
-    shiftEyebrow='Akt III · der Zweifel breitet sich aus', shiftTitle='Der Raum gerät in Bewegung.',
+    shiftEyebrow='Akt III · der Zweifel breitet sich aus', shiftTitle='Der Raum kippt.',
+    sayQ04='Nenne einen Grund, warum sich jemand trotz großer Sicherheit irren könnte.',
+    sayQ10='Formuliere ein weiteres Argument zum Fall mit „Even if …“.',
     forkEyebrow='Akt IV · eine Frage des Vorgehens', forkTitle='Wie willst du führen?',
     routeListen='Den stilleren Geschworenen zu Wort bitten', routeCalm='Den Streit unterbrechen',
     explainFirst='Begründe deine Wahl auf Englisch, bevor du klickst.',
     photoEyebrow='Akt V · ein Moment zum Zuhören', photoTitle='Ein Foto auf dem Tisch.',
+    sayShift='Sag es laut: eine Zusammenfassung der drei Akten in 30 Sekunden, mit MIGHT HAVE, EVEN IF und ALTHOUGH.',
+    sayPhoto='Sag es laut, mit eigenen Worten, ohne ihn zu diagnostizieren. Beginne: „Take your time. We can …“',
+    sayDoubt='Was unterscheidet „Schuld nicht bewiesen“ von „Unschuld bewiesen“?',
+    sayOpen='Was müsste geschehen, damit du umdenkst? Verwende „I would reconsider if …“.',
+    sayHaste='Ergänze: „We should not have … because …“. Überdenke dann deine Stimme.',
 
     verdictEyebrow='Das Urteil', verdictTitle='Deine letzte Stimme.',
     voteDoubt='Nicht schuldig', voteDoubtBody='Die Beweise lassen begründete Zweifel.',
     voteOpen='Weiter beraten', voteOpenBody='Ihr könnt euch noch nicht einigen.',
     voteHaste='Schuldig', voteHasteBody='Nur, um die Diskussion zu beenden.',
-    verdictNote='Ein Raum ohne Geduld folgt dir nicht zu „nicht schuldig“.',
     branchLocked='Der Raum hört dir nicht mehr zu',
     endDoubt='Ende I · das begründete Urteil', endDoubtTitle='Ein Zweifel, der sich lohnt.',
     endOpen='Ende II · der ungelöste Raum', endOpenTitle='Die Diskussion geht weiter.',
@@ -94,28 +100,18 @@ N = {
              'zulassen, ohne vorzugeben, den Ablauf zu kennen.',
     'toolkit': 'Du kannst ein Argument hinterfragen, ohne die Person anzugreifen. Wähle sorgfältig, wie '
                'bestimmt du dich ausdrückst.',
-    'evidence': 'Drei Behauptungen tragen den Fall. Wähle, welche du zuerst prüfen möchtest. Schließe alle '
-                'drei Akten ab, um zur gesamten Jury zurückzukehren.',
-    'shift': 'Das Messer ist kein Einzelstück. Der Zeitablauf ist unsicher. Die Sicht könnte behindert gewesen '
-             'sein. Mehrere Geschworene denken um. Nun musst du sowohl ein faires Gespräch als auch sorgfältige '
-             'Argumente ermöglichen.',
-    'shift-say': 'Sag es laut: eine Zusammenfassung der drei Akten in 30 Sekunden, mit MIGHT HAVE, EVEN IF und ALTHOUGH.',
+    'evidence': 'Drei Behauptungen tragen den Fall. Welche prüfst du zuerst?',
+    'shift': 'Das Messer ist kein Einzelstück. Der Zeitablauf ist unsicher. Die Sicht könnte versperrt gewesen sein.',
     'quiet': 'Ein stiller Geschworener will sprechen, während zwei lautere Männer streiten. Du kannst ruhig '
              'Raum schaffen oder den Streit direkt unterbrechen.',
     'photograph': 'Geschworener 3 holt ein abgenutztes Foto von sich und seinem Sohn hervor. Der Streit verstummt. '
                   'Du gibst ihm Zeit. Ein faires Gespräch braucht manchmal eher Stille als einen weiteren klugen Satz.',
-    'photograph-say': 'Sag es laut, mit eigenen Worten, ohne ihn zu diagnostizieren. Beginne: „Take your time. We can …“',
-    'verdict': 'Du hast die Argumente gehört und die Behauptungen geprüft. Wähle die Stimme, die du begründen kannst.',
-    'end-doubt': 'Die Jury einigt sich auf nicht schuldig. Du verlässt das Gericht, ohne jedes Rätsel gelöst zu '
-                 'haben. Du hast darauf bestanden, dass eine ernste Entscheidung mehr erfordert als Sicherheit, '
-                 'Druck oder Vorurteile.',
-    'end-doubt-say': 'Was unterscheidet „Schuld nicht bewiesen“ von „Unschuld bewiesen“?',
+    'end-doubt': 'Die Jury einigt sich: nicht schuldig. Du hast nicht jedes Rätsel gelöst, aber darauf bestanden, '
+                 'dass eine ernste Entscheidung mehr braucht als Sicherheit, Druck oder Vorurteile.',
     'end-open': 'Die Geschworenen bleiben uneinig. Der Obmann teilt dem Gericht mit, dass keine Einigung erzielt '
                 'wurde. Das Ergebnis bleibt offen; es ist weder Sieg noch Niederlage.',
-    'end-open-say': 'Was müsste geschehen, damit du umdenkst? Verwende „I would reconsider if …“.',
     'end-haste': 'Du stimmst für schuldig, um gehen zu können. Das beendet die Diskussion, beantwortet aber keine '
                  'Zweifel. Niemand im Raum kann sagen, ob die Entscheidung richtig ist.',
-    'end-haste-say': 'Ergänze: „We should not have … because …“. Überdenke dann deine Stimme.',
     'q-q04': 'Elf Stimmen für schuldig. Deine Hand bleibt unten. Geschworener 3 beugt sich vor: „Willst du behaupten, du weißt, dass er unschuldig ist?“',
     'q-q05': 'Geschworener 3 nennt den Fall eindeutig. Alle warten auf deine Antwort. Du brauchst eine Frage, die '
              'das Gespräch offenhält.',

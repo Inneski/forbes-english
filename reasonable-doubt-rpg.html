@@ -1790,6 +1790,55 @@ html[data-style="editorial"] .stamp {
   padding: 10px; transform: rotate(10deg);
 }
 </style>
+<style>
+/* ── Reasonable Doubt: content-aware placement (build_reasonable_doubt.py) ──
+   The plate is drawn full-height and pinned right; the strip it leaves on the
+   left is painted with the plate's own wall colour, --wall on each slide. */
+.bg-layer { background: var(--wall, var(--void)); }
+.bg-layer::before {
+  background: var(--hero) right center / auto 100% no-repeat;
+  --fade: linear-gradient(180deg, transparent calc(var(--band, 0px) * .7), #000 calc(var(--band, 0px) * 1.8),
+                        #000 calc(720px - var(--band, 0px) * 1.8), transparent calc(720px - var(--band, 0px) * .7));
+  -webkit-mask-image: linear-gradient(90deg, transparent 200px, #000 330px), var(--fade);
+  -webkit-mask-composite: source-in;
+          mask-image: linear-gradient(90deg, transparent 200px, #000 330px), var(--fade);
+          mask-composite: intersect;
+}
+/* The text column: the Block Camp side-pinning rules, as shipped in
+   blockcamp-*.html. Head and body are one block, pinned left, as wide as the
+   plate's empty wall (--col-w, per slide). */
+.slide[data-side] { justify-content: center; }
+.slide[data-side] .slide-body { flex: 0 1 auto; justify-content: flex-start; }
+.slide { --centre-clear: 96px; }
+.slide[data-side]::after { content: ''; flex: 0 1 var(--centre-clear); min-height: 0; }
+.slide[data-side] > .slide-head, .slide[data-side] > .slide-body { flex-shrink: 0; }
+.slide[data-side] .slide-head { margin-bottom: 22px; }
+.slide[data-side] .slide-body, .slide[data-side] .slide-head { width: var(--col-w, 52%); margin-right: auto; }
+.slide[data-side] .opt { max-width: 100%; }
+.slide[data-side] .card { padding: 22px 26px; }
+.slide[data-side] .card.choice-row { padding: 12px 16px; }
+/* A Translate pill outside a card is a flex item of the body: keep it pill-sized. */
+.slide[data-side] .slide-body > .gloss-btn { align-self: flex-start; }
+.slide[data-side] .q-ctx { margin-bottom: 14px; }
+.slide[data-side] .q-stem { margin-bottom: 14px; }
+/* A choice is a row: what it is on the left, its button on the right. */
+.choice-row { display: flex; align-items: center; gap: 16px; padding: 14px 18px; }
+.choice-row + .choice-row { margin-top: 10px; }
+.choice-row .prose { flex: 1; font-size: 18px; line-height: 1.45; }
+.choice-row .btn { flex: none; }
+/* The cover lockup stands on the courthouse wall, not on its columns. */
+.slide[data-type="cover"][data-side] .cover-inner {
+  width: var(--col-w); align-items: flex-start; text-align: left; }
+.slide[data-type="cover"][data-side] .cover-meta { justify-content: flex-start; }
+html[data-theme="light"] .stage.on-cover .bg-layer::after {
+  background: radial-gradient(ellipse 46% 60% at 27% 50%,
+    color-mix(in srgb, var(--void) 40%, transparent) 0%, transparent 80%); }
+@media print {
+  .slide::before {
+    background: var(--hero) right center / auto 100% no-repeat, var(--wall, var(--void));
+  }
+}
+</style>
 </head>
 <body data-flow="branch" data-start="cover" data-time="5">
 
@@ -1817,7 +1866,7 @@ html[data-style="editorial"] .stamp {
          ══════════════════════════════════════════════════════════ -->
 
 
-    <section class="slide is-active" data-type="cover" data-node="cover" data-act="">
+    <section class="slide is-active" data-type="cover" data-node="cover" data-act="" data-side="left" style="--col-w:636px;--wall:linear-gradient(180deg,#e7d4b2 10%,#e7d3b1 30%,#e6d2af 50%,#e6d2b0 70%,#e6d2b0 90%);--band:0px">
       <div class="cover-inner">
         <svg class="fe-logo" viewBox="0 0 200 78" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Forbes English">
           <g class="fe-logo-mark" transform="translate(-42.74,-30.22) scale(0.099477)"><g transform="translate(0,1504) scale(0.1,-0.1)" fill="currentColor" stroke="none"><path d="M14940 11379 c-58 -10 -226 -34 -375 -54 -148 -20 -305 -41 -348 -47 l-78 -10 3 -146 3 -146 76 -12 c42 -6 85 -17 97 -23 27 -15 66 -67 82 -111 21 -57 27 -487 25 -1635 -2 -832 -6 -1120 -18 -1295 -8 -124 -14 -226 -13 -227 9 -9 462 -54 473 -47 7 5 40 61 72 124 32 63 63 116 68 117 6 2 43 -24 84 -58 105 -89 177 -133 272 -167 125 -45 205 -57 372 -57 316 1 518 82 725 294 141 144 224 297 285 521 74 276 91 648 42 925 -32 176 -68 310 -113 418 -164 392 -526 609 -944 565 -204 -21 -372 -97 -522 -237 l-48 -44 0 656 0 655 -31 31 c-35 36 -40 36 -189 10z m788 -1611 c112 -42 190 -158 236 -353 43 -182 55 -299 51 -525 -6 -382 -71 -618 -205 -744 -76 -71 -126 -91 -235 -91 -57 0 -110 6 -145 17 -71 22 -169 81 -225 135 l-45 43 0 669 0 669 54 49 c84 77 226 144 331 156 51 6 127 -4 183 -25z"/><path d="M6896 11053 c-4 -71 -3 -141 2 -158 8 -28 13 -31 89 -46 44 -9 95 -21 112 -29 43 -17 88 -72 98 -117 11 -50 10 -2471 0 -2545 -5 -31 -18 -72 -30 -89 -26 -39 -95 -76 -157 -84 -25 -3 -62 -8 -82 -11 l-38 -6 0 -159 0 -159 755 0 755 0 -2 163 -3 162 -87 7 c-175 13 -250 55 -284 158 -16 49 -18 108 -22 558 l-3 502 236 0 c344 0 346 -1 410 -267 l18 -73 168 0 169 0 -2 553 -3 552 -167 3 c-167 2 -168 2 -172 -20 -2 -13 -9 -54 -16 -93 -21 -126 -70 -206 -139 -225 -20 -5 -141 -10 -268 -10 l-233 0 0 555 0 556 428 -3 c473 -3 469 -3 540 -71 46 -44 78 -108 132 -267 l46 -135 203 -3 203 -2 -6 67 c-3 38 -15 205 -26 373 -11 168 -22 347 -26 398 l-6 92 -1293 0 -1292 0 -7 -127z"/><path d="M10520 10306 c-503 -73 -861 -361 -1014 -817 -51 -153 -68 -261 -73 -477 -6 -224 4 -336 43 -502 62 -263 143 -419 296 -569 255 -249 547 -361 939 -361 298 0 517 60 724 198 282 187 439 437 517 823 20 100 23 142 23 339 -1 205 -3 236 -27 350 -76 353 -203 581 -425 759 -147 119 -353 211 -551 247 -120 22 -335 26 -452 10z m325 -436 c141 -69 239 -258 297 -571 20 -108 22 -158 23 -384 0 -288 -10 -379 -57 -540 -52 -176 -121 -278 -224 -330 -47 -24 -73 -30 -145 -33 -171 -8 -285 53 -372 199 -95 161 -150 473 -142 809 10 449 121 745 315 845 58 30 81 34 170 32 67 -2 96 -7 135 -27z"/><path d="M18255 10313 c-141 -16 -204 -29 -292 -58 -271 -90 -467 -237 -611 -458 -182 -280 -257 -619 -223 -1007 37 -415 159 -696 387 -893 253 -218 538 -317 914 -317 341 1 615 84 815 247 60 49 185 177 191 195 4 14 -19 57 -77 144 -45 69 -86 127 -91 130 -5 3 -43 -17 -86 -44 -164 -106 -284 -154 -430 -173 -168 -22 -350 5 -497 76 -134 64 -216 161 -275 323 -33 90 -77 320 -67 347 6 13 94 15 776 15 l769 0 7 113 c7 120 -6 307 -31 447 -62 340 -198 580 -413 723 -95 64 -242 133 -334 156 -127 33 -318 48 -432 34z m221 -427 c132 -62 228 -270 241 -528 l6 -118 -408 0 -408 0 7 68 c25 246 110 453 221 538 87 66 245 85 341 40z"/><path d="M20656 10309 c-301 -29 -581 -166 -723 -354 -56 -73 -116 -197 -140 -285 -13 -48 -17 -103 -17 -210 0 -129 3 -155 28 -235 35 -114 68 -174 134 -246 129 -140 318 -226 797 -364 192 -55 255 -84 317 -146 106 -107 103 -287 -8 -389 -84 -78 -192 -107 -357 -97 -209 13 -353 92 -403 223 -10 27 -32 101 -49 164 l-30 115 -219 3 -219 2 6 -256 c4 -142 7 -304 7 -360 0 -122 -15 -107 173 -170 263 -88 487 -124 781 -124 205 0 315 10 436 41 164 41 281 102 392 207 155 146 233 326 245 562 12 245 -69 470 -218 604 -123 111 -266 178 -599 281 -385 119 -458 152 -515 234 -28 40 -30 49 -29 124 1 125 43 190 154 241 111 51 254 56 389 14 121 -37 177 -121 236 -353 l20 -80 205 0 205 0 3 346 2 347 -112 40 c-318 112 -594 149 -892 121z"/><path d="M12620 10249 c-223 -32 -411 -61 -417 -64 -10 -3 -13 -42 -13 -149 l0 -144 58 -7 c111 -13 183 -65 199 -143 4 -20 8 -397 8 -837 0 -787 0 -801 -21 -840 -26 -52 -87 -83 -177 -92 l-67 -6 0 -41 c0 -23 -3 -94 -7 -158 l-6 -118 702 0 701 0 0 159 0 158 -83 6 c-146 12 -214 43 -253 119 -27 51 -37 294 -30 722 7 428 12 470 69 579 82 157 210 228 407 226 76 0 166 -18 278 -54 12 -4 22 -3 22 1 0 5 20 167 44 359 25 193 41 353 38 356 -14 14 -115 29 -188 29 -112 0 -217 -25 -319 -75 -170 -83 -273 -193 -362 -382 -26 -56 -51 -103 -55 -103 -5 0 -8 15 -8 33 0 18 -7 134 -15 258 -15 218 -16 225 -41 247 -14 12 -33 22 -42 21 -9 0 -199 -27 -422 -60z"/></g></g>
@@ -1836,25 +1885,25 @@ html[data-style="editorial"] .stamp {
       </div>
     </section>
 
-    <section class="slide" data-type="teach" data-node="how" data-act="Before you begin" data-bg="ReasonableDoubt/jurors.jpg">
+    <section class="slide" data-type="teach" data-node="how" data-act="Before you begin" data-bg="ReasonableDoubt/jurors.jpg" data-side="left" style="--col-w:474px;--wall:linear-gradient(180deg,#e9d9ba 10%,#e7d6b4 30%,#e6d5b3 50%,#e2c89d 70%,#e4d0ae 90%);--band:56px">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="howEyebrow">How the deliberation works</div>
         <h2 class="slide-title" data-i18n="howTitle">Every word you say has a price.</h2>
       </div></div>
       <div class="slide-body">
-        <div class="cols cols-3">
-          <div class="card"><p class="prose"><strong data-i18n="howDp">Points</strong><br><span data-i18n="howDpBody">A careful answer earns <strong>+1 point</strong>.</span></p></div>
-          <div class="card"><p class="prose"><strong data-i18n="howTime">Patience</strong><br><span data-i18n="howTimeBody">The room starts with five. A careless answer costs one. At zero, nobody will follow your vote.</span></p></div>
-          <div class="card"><p class="prose"><strong data-i18n="howClues">Files</strong><br><span data-i18n="howCluesBody">Three pieces of evidence, in any order. The jury reconvenes when all three are closed.</span></p></div>
+        <div class="card" style="padding:18px 24px">
+          <p class="prose" style="font-size:18px;line-height:1.5"><strong data-i18n="howDp">Points</strong> · <span data-i18n="howDpBody">A careful answer earns <strong>+1 point</strong>.</span></p>
+          <p class="prose" style="font-size:18px;line-height:1.5"><strong data-i18n="howTime">Patience</strong> · <span data-i18n="howTimeBody">The room starts with five. A careless answer costs one. At zero, nobody will follow your vote.</span></p>
+          <p class="prose" style="font-size:18px;line-height:1.5"><strong data-i18n="howClues">Files</strong> · <span data-i18n="howCluesBody">Three pieces of evidence, in any order. The jury reconvenes when all three are closed.</span></p>
         </div>
-        <p class="prose dim" style="margin-top:14px;text-align:center" data-i18n="howAloud">Read each scene aloud and explain your choice in English before you click.</p>
+        <p class="prose dim" style="margin-top:14px;font-size:18px" data-i18n="howAloud">Read each scene aloud and explain your choice in English before you click.</p>
         <div style="margin-top:18px">
           <button class="btn btn-solid" data-goto="brief" data-i18n="btnContinue">Continue →</button>
         </div>
       </div>
     </section>
 
-    <section class="slide" data-type="teach" data-node="brief" data-act="Before you begin" data-bg="ReasonableDoubt/door.jpg">
+    <section class="slide" data-type="teach" data-node="brief" data-act="Before you begin" data-bg="ReasonableDoubt/hero.jpg" data-side="left" style="--col-w:636px;--wall:linear-gradient(180deg,#e7d4b2 10%,#e7d3b1 30%,#e6d2af 50%,#e6d2b0 70%,#e6d2b0 90%);--band:0px">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="briefEyebrow">Prologue · your role</div>
         <h2 class="slide-title" data-i18n="briefTitle">You are Juror 8.</h2>
@@ -1867,25 +1916,25 @@ html[data-style="editorial"] .stamp {
       </div>
     </section>
 
-    <section class="slide" data-type="teach" data-node="cast" data-act="Before you begin" data-bg="ReasonableDoubt/cafe.jpg">
+    <section class="slide" data-type="teach" data-node="cast" data-act="Before you begin" data-bg="ReasonableDoubt/door.jpg" data-side="left" style="--col-w:722px;--wall:linear-gradient(180deg,#e7dabe 10%,#e5d7bc 30%,#e5d7bc 50%,#ddd0b5 70%,#ded1b7 90%);--band:56px">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="castEyebrow">Before the first vote · the room</div>
         <h2 class="slide-title" data-i18n="castTitle">Meet the twelve jurors.</h2>
       </div></div>
       <div class="slide-body">
-        <div class="cols" style="grid-template-columns:repeat(4,1fr);gap:10px">
-          <div class="card" style="padding:10px 14px"><p class="prose" style="font-size:16px"><strong>01 · <span data-i18n="cast1">The foreman</span></strong><br><span class="dim" data-i18n="cast1Body">Keeps the discussion moving.</span></p></div>
-          <div class="card" style="padding:10px 14px"><p class="prose" style="font-size:16px"><strong>02 · <span data-i18n="cast2">The hesitant voice</span></strong><br><span class="dim" data-i18n="cast2Body">Needs space to contribute.</span></p></div>
-          <div class="card" style="padding:10px 14px"><p class="prose" style="font-size:16px"><strong>03 · <span data-i18n="cast3">The forceful dissenter</span></strong><br><span class="dim" data-i18n="cast3Body">Carries a personal grievance.</span></p></div>
-          <div class="card" style="padding:10px 14px"><p class="prose" style="font-size:16px"><strong>04 · <span data-i18n="cast4">The analytical juror</span></strong><br><span class="dim" data-i18n="cast4Body">Trusts orderly evidence.</span></p></div>
-          <div class="card" style="padding:10px 14px"><p class="prose" style="font-size:16px"><strong>05 · <span data-i18n="cast5">The experienced observer</span></strong><br><span class="dim" data-i18n="cast5Body">Questions easy assumptions.</span></p></div>
-          <div class="card" style="padding:10px 14px"><p class="prose" style="font-size:16px"><strong>06 · <span data-i18n="cast6">The fair listener</span></strong><br><span class="dim" data-i18n="cast6Body">Protects respectful treatment.</span></p></div>
-          <div class="card" style="padding:10px 14px"><p class="prose" style="font-size:16px"><strong>07 · <span data-i18n="cast7">The impatient juror</span></strong><br><span class="dim" data-i18n="cast7Body">Wants to leave.</span></p></div>
-          <div class="card" style="padding:10px 14px"><p class="prose" style="font-size:16px"><strong>08 · <span data-i18n="cast8">You</span></strong><br><span class="dim" data-i18n="cast8Body">Ask what can really be known.</span></p></div>
-          <div class="card" style="padding:10px 14px"><p class="prose" style="font-size:16px"><strong>09 · <span data-i18n="cast9">The older ally</span></strong><br><span class="dim" data-i18n="cast9Body">Notices people and small details.</span></p></div>
-          <div class="card" style="padding:10px 14px"><p class="prose" style="font-size:16px"><strong>10 · <span data-i18n="cast10">The prejudiced voice</span></strong><br><span class="dim" data-i18n="cast10Body">Confuses stereotypes with evidence.</span></p></div>
-          <div class="card" style="padding:10px 14px"><p class="prose" style="font-size:16px"><strong>11 · <span data-i18n="cast11">The principled juror</span></strong><br><span class="dim" data-i18n="cast11Body">Takes the responsibility seriously.</span></p></div>
-          <div class="card" style="padding:10px 14px"><p class="prose" style="font-size:16px"><strong>12 · <span data-i18n="cast12">The wavering juror</span></strong><br><span class="dim" data-i18n="cast12Body">Can be influenced by the room.</span></p></div>
+        <div class="cols" style="gap:8px">
+          <div class="card" style="padding:8px 14px"><p class="prose" style="font-size:16px;line-height:1.4"><strong>01 · <span data-i18n="cast1">The foreman</span></strong><br><span class="dim" data-i18n="cast1Body">Keeps the discussion moving.</span></p></div>
+          <div class="card" style="padding:8px 14px"><p class="prose" style="font-size:16px;line-height:1.4"><strong>02 · <span data-i18n="cast2">The hesitant voice</span></strong><br><span class="dim" data-i18n="cast2Body">Needs space to contribute.</span></p></div>
+          <div class="card" style="padding:8px 14px"><p class="prose" style="font-size:16px;line-height:1.4"><strong>03 · <span data-i18n="cast3">The forceful dissenter</span></strong><br><span class="dim" data-i18n="cast3Body">Carries a personal grievance.</span></p></div>
+          <div class="card" style="padding:8px 14px"><p class="prose" style="font-size:16px;line-height:1.4"><strong>04 · <span data-i18n="cast4">The analytical juror</span></strong><br><span class="dim" data-i18n="cast4Body">Trusts orderly evidence.</span></p></div>
+          <div class="card" style="padding:8px 14px"><p class="prose" style="font-size:16px;line-height:1.4"><strong>05 · <span data-i18n="cast5">The experienced observer</span></strong><br><span class="dim" data-i18n="cast5Body">Questions easy assumptions.</span></p></div>
+          <div class="card" style="padding:8px 14px"><p class="prose" style="font-size:16px;line-height:1.4"><strong>06 · <span data-i18n="cast6">The fair listener</span></strong><br><span class="dim" data-i18n="cast6Body">Protects respectful treatment.</span></p></div>
+          <div class="card" style="padding:8px 14px"><p class="prose" style="font-size:16px;line-height:1.4"><strong>07 · <span data-i18n="cast7">The impatient juror</span></strong><br><span class="dim" data-i18n="cast7Body">Wants to leave.</span></p></div>
+          <div class="card" style="padding:8px 14px"><p class="prose" style="font-size:16px;line-height:1.4"><strong>08 · <span data-i18n="cast8">You</span></strong><br><span class="dim" data-i18n="cast8Body">Ask what can really be known.</span></p></div>
+          <div class="card" style="padding:8px 14px"><p class="prose" style="font-size:16px;line-height:1.4"><strong>09 · <span data-i18n="cast9">The older ally</span></strong><br><span class="dim" data-i18n="cast9Body">Notices people and small details.</span></p></div>
+          <div class="card" style="padding:8px 14px"><p class="prose" style="font-size:16px;line-height:1.4"><strong>10 · <span data-i18n="cast10">The prejudiced voice</span></strong><br><span class="dim" data-i18n="cast10Body">Confuses stereotypes with evidence.</span></p></div>
+          <div class="card" style="padding:8px 14px"><p class="prose" style="font-size:16px;line-height:1.4"><strong>11 · <span data-i18n="cast11">The principled juror</span></strong><br><span class="dim" data-i18n="cast11Body">Takes the responsibility seriously.</span></p></div>
+          <div class="card" style="padding:8px 14px"><p class="prose" style="font-size:16px;line-height:1.4"><strong>12 · <span data-i18n="cast12">The wavering juror</span></strong><br><span class="dim" data-i18n="cast12Body">Can be influenced by the room.</span></p></div>
         </div>
         <div style="margin-top:18px">
           <button class="btn btn-solid" data-goto="toolkit" data-i18n="btnContinue">Continue →</button>
@@ -1893,26 +1942,51 @@ html[data-style="editorial"] .stamp {
       </div>
     </section>
 
-    <section class="slide" data-type="teach" data-node="toolkit" data-act="Before you begin" data-bg="ReasonableDoubt/toolkit.jpg">
+    <section class="slide" data-type="teach" data-node="toolkit" data-act="Before you begin" data-bg="ReasonableDoubt/toolkit.jpg" data-side="left" style="--col-w:636px;--wall:linear-gradient(180deg,#e6d4b2 10%,#e4d0aa 30%,#dfc599 50%,#e4c593 70%,#decba8 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow" data-i18n="labEyebrow">Before the first vote · your toolkit</div>
+        <div class="eyebrow" data-i18n="labEyebrow1">Before the first vote · your toolkit · 1 of 2</div>
         <h2 class="slide-title" data-i18n="labTitle">The language of doubt.</h2>
       </div></div>
       <div class="slide-body" style="position:relative">
-        <p class="prose gloss" data-tr="toolkit" style="margin-bottom:12px">You can question an argument without attacking the person making it. Choose the strength of your language carefully.</p><div class="cols cols-3"><div class="card" style="padding:12px 16px"><p class="prose" style="font-size:17px"><strong style="font-size:13px;letter-spacing:.04em">MIGHT / MAY / COULD HAVE + PP</strong><br>He might have been mistaken.<br><span class="dim" data-i18n="lab1">A possibility in the past.</span></p></div><div class="card" style="padding:12px 16px"><p class="prose" style="font-size:17px"><strong style="font-size:13px;letter-spacing:.04em">CAN’T HAVE + PP</strong><br>The design can’t have been unique.<br><span class="dim" data-i18n="lab2">A strong negative deduction.</span></p></div><div class="card" style="padding:12px 16px"><p class="prose" style="font-size:17px"><strong style="font-size:13px;letter-spacing:.04em">EVEN IF / ALTHOUGH + CLAUSE · DESPITE + NOUN</strong><br>Even if he owned one, it proves nothing.<br><span class="dim" data-i18n="lab3">Concede a point, then challenge it.</span></p></div><div class="card" style="padding:12px 16px"><p class="prose" style="font-size:17px"><strong style="font-size:13px;letter-spacing:.04em">IF + HAD + PP, COULD(N’T) HAVE + PP</strong><br>If he had left earlier, he could have arrived in time.<br><span class="dim" data-i18n="lab4">An unreal past condition.</span></p></div><div class="card" style="padding:12px 16px"><p class="prose" style="font-size:17px"><strong style="font-size:13px;letter-spacing:.04em">SAID (THAT) + BACKSHIFT</strong><br>“I heard it.” → He said he had heard it.<br><span class="dim" data-i18n="lab5">Report what someone said.</span></p></div><div class="card" style="padding:12px 16px"><p class="prose" style="font-size:17px"><strong style="font-size:13px;letter-spacing:.04em">I’D RATHER WE + PAST · UNLESS</strong><br>I’d rather we voted in secret.<br><span class="dim" data-i18n="lab6">Propose, or set a condition.</span></p></div></div>
+        <p class="prose gloss" data-tr="toolkit" style="margin-bottom:12px;font-size:18px">You can question an argument without attacking the person making it. Choose the strength of your language carefully.</p><div class="card" style="padding:16px 22px"><p class="prose" style="font-size:17px;line-height:1.45;margin-top:0px"><strong style="font-size:12.5px;letter-spacing:.04em">MIGHT / MAY / COULD HAVE + PP</strong><br>He might have been mistaken. · <span class="dim" data-i18n="lab1">A possibility in the past.</span></p><p class="prose" style="font-size:17px;line-height:1.45;margin-top:12px"><strong style="font-size:12.5px;letter-spacing:.04em">CAN’T HAVE + PP</strong><br>The design can’t have been unique. · <span class="dim" data-i18n="lab2">A strong negative deduction.</span></p><p class="prose" style="font-size:17px;line-height:1.45;margin-top:12px"><strong style="font-size:12.5px;letter-spacing:.04em">EVEN IF / ALTHOUGH + CLAUSE · DESPITE + NOUN</strong><br>Even if he owned one, it proves nothing. · <span class="dim" data-i18n="lab3">Concede a point, then challenge it.</span></p></div>
+        <div style="margin-top:18px">
+          <button class="btn btn-solid" data-goto="toolkit2" data-i18n="btnContinue">Continue →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach" data-node="toolkit2" data-act="Before you begin" data-bg="ReasonableDoubt/toolkit.jpg" data-side="left" style="--col-w:636px;--wall:linear-gradient(180deg,#e6d4b2 10%,#e4d0aa 30%,#dfc599 50%,#e4c593 70%,#decba8 90%);--band:56px">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="labEyebrow2">Before the first vote · your toolkit · 2 of 2</div>
+        <h2 class="slide-title" data-i18n="labTitle">The language of doubt.</h2>
+      </div></div>
+      <div class="slide-body" style="position:relative">
+        <div class="card" style="padding:16px 22px"><p class="prose" style="font-size:17px;line-height:1.45;margin-top:0px"><strong style="font-size:12.5px;letter-spacing:.04em">IF + HAD + PP, COULD(N’T) HAVE + PP</strong><br>If he had left earlier, he could have arrived in time. · <span class="dim" data-i18n="lab4">An unreal past condition.</span></p><p class="prose" style="font-size:17px;line-height:1.45;margin-top:12px"><strong style="font-size:12.5px;letter-spacing:.04em">SAID (THAT) + BACKSHIFT</strong><br>“I heard it.” → He said he had heard it. · <span class="dim" data-i18n="lab5">Report what someone said.</span></p><p class="prose" style="font-size:17px;line-height:1.45;margin-top:12px"><strong style="font-size:12.5px;letter-spacing:.04em">I’D RATHER WE + PAST · UNLESS</strong><br>I’d rather we voted in secret. · <span class="dim" data-i18n="lab6">Propose, or set a condition.</span></p></div>
         <div style="margin-top:18px">
           <button class="btn btn-solid" data-goto="q04" data-i18n="btnContinue">Continue →</button>
         </div>
       </div>
     </section>
 
-    <section class="slide" data-type="mc" data-node="q04" data-act="Act I" data-bg="ReasonableDoubt/hands.jpg">
+    <section class="slide" data-type="teach" data-node="q04" data-act="Act I" data-bg="ReasonableDoubt/hands.jpg" data-side="left" style="--col-w:506px;--wall:linear-gradient(180deg,#e7d9be 10%,#e6d8bc 30%,#e6d8bc 50%,#e4d6bb 70%,#e5d8bd 90%);--band:56px">
+      <div class="slide-head"><div>
+        <div class="eyebrow">Act I · the first vote · 1 of 2</div>
+        <h2 class="slide-title">Eleven hands rise.</h2>
+      </div></div>
+      <div class="slide-body" style="position:relative">
+        <div class="card"><p class="prose gloss" data-tr="q-q04">Eleven votes for guilty. Your hand stays down. Juror 3 leans in: “Are you saying you know he is innocent?”</p><p class="prose dim" style="margin-top:12px" data-i18n="sayQ04">Say one reason a confident person might still be wrong.</p></div>
+        <div style="margin-top:18px">
+          <button class="btn btn-solid" data-goto="q04q" data-i18n="btnContinue">Continue →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-node="q04q" data-act="Act I" data-bg="ReasonableDoubt/hands.jpg" data-side="left" style="--col-w:506px;--wall:linear-gradient(180deg,#e7d9be 10%,#e6d8bc 30%,#e6d8bc 50%,#e4d6bb 70%,#e5d8bd 90%);--band:56px">
       <div class="slide-head"><div>
         <div class="eyebrow">Act I · the first vote · 1 of 2</div>
         <h2 class="slide-title">Eleven hands rise.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-ctx gloss" data-tr="q-q04" style="margin-bottom:10px">Eleven votes for guilty. Your hand stays down. Juror 3 leans in: “Are you saying you know he is innocent?”</p>
         <p class="q-stem">Which reply expresses uncertainty accurately?</p>
         <div class="opts">
           <button class="opt" data-time="-1" data-goto="q05">He must be innocent. I can feel it, so we don’t need evidence.</button>
@@ -1920,19 +1994,31 @@ html[data-style="editorial"] .stamp {
           <button class="opt" data-time="-1" data-goto="q05">He can’t be guilty, because he looks far too nervous.</button>
         </div>
         <div style="display:flex;gap:16px;align-items:flex-start">
-          <p class="feedback" style="flex:1" data-explain="I DON’T KNOW admits uncertainty; SHOULD proposes a next step. MUST and CAN’T claim a certainty that a feeling can’t give.<br><strong>Say it aloud:</strong> Say one reason a confident person might still be wrong."></p>
+          <p class="feedback" style="flex:1" data-explain="I DON’T KNOW admits uncertainty; SHOULD proposes a next step. MUST and CAN’T claim a certainty that a feeling can’t give."></p>
           <button class="btn btn-solid" style="flex:none;margin-top:10px" data-action="branch-continue" data-i18n="btnContinue" hidden>Continue →</button>
         </div>
       </div>
     </section>
 
-    <section class="slide" data-type="mc" data-node="q05" data-act="Act I" data-bg="ReasonableDoubt/ground.jpg">
+    <section class="slide" data-type="teach" data-node="q05" data-act="Act I" data-bg="ReasonableDoubt/ground.jpg" data-side="left" style="--col-w:528px;--wall:linear-gradient(180deg,#e6d8ba 10%,#e4d4b5 30%,#e4d4b5 50%,#dfcba9 70%,#e2d0ae 90%);--band:56px">
+      <div class="slide-head"><div>
+        <div class="eyebrow">Act I · disagreeing politely · 2 of 2</div>
+        <h2 class="slide-title">Hold your ground.</h2>
+      </div></div>
+      <div class="slide-body" style="position:relative">
+        <div class="card"><p class="prose gloss" data-tr="q-q05">Juror 3 calls the case obvious. The room waits for your reply. You need a question that keeps the discussion open.</p></div>
+        <div style="margin-top:18px">
+          <button class="btn btn-solid" data-goto="q05q" data-i18n="btnContinue">Continue →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-node="q05q" data-act="Act I" data-bg="ReasonableDoubt/ground.jpg" data-side="left" style="--col-w:528px;--wall:linear-gradient(180deg,#e6d8ba 10%,#e4d4b5 30%,#e4d4b5 50%,#dfcba9 70%,#e2d0ae 90%);--band:56px">
       <div class="slide-head"><div>
         <div class="eyebrow">Act I · disagreeing politely · 2 of 2</div>
         <h2 class="slide-title">Hold your ground.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-ctx gloss" data-tr="q-q05" style="margin-bottom:10px">Juror 3 calls the case obvious. The room waits for your reply. You need a question that keeps the discussion open.</p>
         <p class="q-stem">Which reply challenges the claim respectfully?</p>
         <div class="opts">
           <button class="opt" data-time="-1" data-goto="evidence">You clearly haven’t thought about any of this.</button>
@@ -1946,42 +2032,53 @@ html[data-style="editorial"] .stamp {
       </div>
     </section>
 
-    <section class="slide" data-type="teach" data-node="evidence" data-act="Act II" data-bg="ReasonableDoubt/evidence.jpg">
+    <section class="slide" data-type="teach" data-node="evidence" data-act="Act II" data-bg="ReasonableDoubt/evidence.jpg" data-side="left" style="--col-w:582px;--wall:linear-gradient(180deg,#e0d2b7 10%,#e1d3b8 30%,#e1d3b9 50%,#e1d4b9 70%,#e1d3b8 90%);--band:0px">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="hubEyebrow">Act II · the evidence table</div>
         <h2 class="slide-title" data-i18n="hubTitle">Where does doubt begin?</h2>
       </div></div>
       <div class="slide-body" style="position:relative">
-        <p class="prose gloss" data-tr="evidence">Three claims hold the case together. Choose which one to investigate first. Complete all three files to return to the full jury.</p>
-        <div class="cols cols-3">
-          <div class="card">
+        <p class="prose gloss" data-tr="evidence">Three claims hold the case together. Which one do you test first?</p>
+        <div style="margin-top:14px">
+          <div class="card choice-row">
             <p class="prose"><strong data-i18n="fileA">File A · the knife</strong><br><span data-i18n="fileABody">The unusual knife.</span></p>
-            <div style="margin-top:12px"><button class="btn btn-solid choice" data-goto="q07" data-i18n="btnChoose">Choose this</button></div>
+            <button class="btn btn-solid choice" data-goto="q07" data-i18n="btnChoose">Choose this</button>
           </div>
-          <div class="card">
+          <div class="card choice-row">
             <p class="prose"><strong data-i18n="fileB">File B · the man downstairs</strong><br><span data-i18n="fileBBody">What could he hear?</span></p>
-            <div style="margin-top:12px"><button class="btn btn-solid choice" data-goto="q12" data-i18n="btnChoose">Choose this</button></div>
+            <button class="btn btn-solid choice" data-goto="q12" data-i18n="btnChoose">Choose this</button>
           </div>
-          <div class="card">
+          <div class="card choice-row">
             <p class="prose"><strong data-i18n="fileC">File C · across the tracks</strong><br><span data-i18n="fileCBody">What could she see?</span></p>
-            <div style="margin-top:12px"><button class="btn btn-solid choice" data-goto="q17" data-i18n="btnChoose">Choose this</button></div>
+            <button class="btn btn-solid choice" data-goto="q17" data-i18n="btnChoose">Choose this</button>
           </div>
         </div>
-        <div style="margin-top:16px;display:flex;gap:14px;align-items:center">
+        <div style="margin-top:16px">
           <button class="btn btn-solid" data-goto="shift" data-require="clues>=3" data-i18n="btnReconvene">Reconvene the jury →</button>
-          <span class="prose dim" data-i18n="hubNote">Opens when all three files are closed.</span>
         </div>
 
       </div>
     </section>
 
-    <section class="slide" data-type="mc" data-node="q07" data-act="File A" data-bg="ReasonableDoubt/knife.jpg">
+    <section class="slide" data-type="teach" data-node="q07" data-act="File A" data-bg="ReasonableDoubt/knife.jpg" data-side="left" style="--col-w:636px;--wall:linear-gradient(180deg,#e8d7b7 10%,#e8d6b7 30%,#e5caa2 50%,#dbc29e 70%,#ada28a 90%);--band:0px">
+      <div class="slide-head"><div>
+        <div class="eyebrow">File A · the knife · 1 of 5</div>
+        <h2 class="slide-title">An unusual object.</h2>
+      </div></div>
+      <div class="slide-body" style="position:relative">
+        <div class="card"><p class="prose gloss" data-tr="q-q07">The prosecution links an unusual knife to the defendant. But a link is not the same as proof that he used it.</p></div>
+        <div style="margin-top:18px">
+          <button class="btn btn-solid" data-goto="q07q" data-i18n="btnContinue">Continue →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-node="q07q" data-act="File A" data-bg="ReasonableDoubt/knife.jpg" data-side="left" style="--col-w:636px;--wall:linear-gradient(180deg,#e8d7b7 10%,#e8d6b7 30%,#e5caa2 50%,#dbc29e 70%,#ada28a 90%);--band:0px">
       <div class="slide-head"><div>
         <div class="eyebrow">File A · the knife · 1 of 5</div>
         <h2 class="slide-title">An unusual object.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-ctx gloss" data-tr="q-q07" style="margin-bottom:10px">The prosecution links an unusual knife to the defendant. But a link is not the same as proof that he used it.</p>
         <p class="q-stem">The knife ___ to him, but we cannot be certain.</p>
         <div class="opts">
           <button class="opt" data-correct data-dp="1" data-goto="q08">might have belonged</button>
@@ -1995,13 +2092,25 @@ html[data-style="editorial"] .stamp {
       </div>
     </section>
 
-    <section class="slide" data-type="mc" data-node="q08" data-act="File A" data-bg="ReasonableDoubt/twoknives.jpg">
+    <section class="slide" data-type="teach" data-node="q08" data-act="File A" data-bg="ReasonableDoubt/twoknives.jpg" data-side="left" style="--col-w:528px;--wall:linear-gradient(180deg,#e4d4ba 10%,#e4d4ba 30%,#e6d6bb 50%,#ecdec4 70%,#e9dbc1 90%);--band:0px">
+      <div class="slide-head"><div>
+        <div class="eyebrow">File A · testing a claim · 2 of 5</div>
+        <h2 class="slide-title">A second knife.</h2>
+      </div></div>
+      <div class="slide-body" style="position:relative">
+        <div class="card"><p class="prose gloss" data-tr="q-q08">You place a second knife on the table. It is the same model. The claim that this design is unique can no longer stand.</p></div>
+        <div style="margin-top:18px">
+          <button class="btn btn-solid" data-goto="q08q" data-i18n="btnContinue">Continue →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-node="q08q" data-act="File A" data-bg="ReasonableDoubt/twoknives.jpg" data-side="left" style="--col-w:528px;--wall:linear-gradient(180deg,#e4d4ba 10%,#e4d4ba 30%,#e6d6bb 50%,#ecdec4 70%,#e9dbc1 90%);--band:0px">
       <div class="slide-head"><div>
         <div class="eyebrow">File A · testing a claim · 2 of 5</div>
         <h2 class="slide-title">A second knife.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-ctx gloss" data-tr="q-q08" style="margin-bottom:10px">You place a second knife on the table. It is the same model. The claim that this design is unique can no longer stand.</p>
         <p class="q-stem">Which sentence draws a strong negative deduction about the past?</p>
         <div class="opts">
           <button class="opt" data-time="-1" data-goto="q09">The design might have unique.</button>
@@ -2015,13 +2124,25 @@ html[data-style="editorial"] .stamp {
       </div>
     </section>
 
-    <section class="slide" data-type="mc" data-node="q09" data-act="File A" data-bg="ReasonableDoubt/juror4.jpg">
+    <section class="slide" data-type="teach" data-node="q09" data-act="File A" data-bg="ReasonableDoubt/juror4.jpg" data-side="left" style="--col-w:506px;--wall:linear-gradient(180deg,#e6d8bc 10%,#e4d5b8 30%,#e4d5b8 50%,#e4d5b8 70%,#e6d8bc 90%);--band:56px">
+      <div class="slide-head"><div>
+        <div class="eyebrow">File A · limiting your claim · 3 of 5</div>
+        <h2 class="slide-title">What does that prove?</h2>
+      </div></div>
+      <div class="slide-body" style="position:relative">
+        <div class="card"><p class="prose gloss" data-tr="q-q09">Juror 4 examines both knives. “So another person could have owned one. What follows from that?”</p></div>
+        <div style="margin-top:18px">
+          <button class="btn btn-solid" data-goto="q09q" data-i18n="btnContinue">Continue →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-node="q09q" data-act="File A" data-bg="ReasonableDoubt/juror4.jpg" data-side="left" style="--col-w:506px;--wall:linear-gradient(180deg,#e6d8bc 10%,#e4d5b8 30%,#e4d5b8 50%,#e4d5b8 70%,#e6d8bc 90%);--band:56px">
       <div class="slide-head"><div>
         <div class="eyebrow">File A · limiting your claim · 3 of 5</div>
         <h2 class="slide-title">What does that prove?</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-ctx gloss" data-tr="q-q09" style="margin-bottom:10px">Juror 4 examines both knives. “So another person could have owned one. What follows from that?”</p>
         <p class="q-stem">Choose the most careful conclusion.</p>
         <div class="opts">
           <button class="opt" data-correct data-dp="1" data-goto="q10">It weakens one claim; it doesn’t identify the killer.</button>
@@ -2035,13 +2156,25 @@ html[data-style="editorial"] .stamp {
       </div>
     </section>
 
-    <section class="slide" data-type="mc" data-node="q10" data-act="File A" data-bg="ReasonableDoubt/concede.jpg">
+    <section class="slide" data-type="teach" data-node="q10" data-act="File A" data-bg="ReasonableDoubt/concede.jpg" data-side="left" style="--col-w:495px;--wall:linear-gradient(180deg,#e9dabc 10%,#e8d8b8 30%,#e8d8b8 50%,#e8d7b6 70%,#e7d6b6 90%);--band:56px">
+      <div class="slide-head"><div>
+        <div class="eyebrow">File A · even if · 4 of 5</div>
+        <h2 class="slide-title">Concede. Then challenge.</h2>
+      </div></div>
+      <div class="slide-body" style="position:relative">
+        <div class="card"><p class="prose gloss" data-tr="q-q10">Juror 3 insists that the defendant bought a similar knife. Accept that point for the sake of argument, then question the conclusion.</p><p class="prose dim" style="margin-top:12px" data-i18n="sayQ10">Make another “Even if …” argument about the case.</p></div>
+        <div style="margin-top:18px">
+          <button class="btn btn-solid" data-goto="q10q" data-i18n="btnContinue">Continue →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-node="q10q" data-act="File A" data-bg="ReasonableDoubt/concede.jpg" data-side="left" style="--col-w:495px;--wall:linear-gradient(180deg,#e9dabc 10%,#e8d8b8 30%,#e8d8b8 50%,#e8d7b6 70%,#e7d6b6 90%);--band:56px">
       <div class="slide-head"><div>
         <div class="eyebrow">File A · even if · 4 of 5</div>
         <h2 class="slide-title">Concede. Then challenge.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-ctx gloss" data-tr="q-q10" style="margin-bottom:10px">Juror 3 insists that the defendant bought a similar knife. Accept that point for the sake of argument, then question the conclusion.</p>
         <p class="q-stem">___ he owned one, that does not prove he used it.</p>
         <div class="opts">
           <button class="opt" data-time="-1" data-goto="q11">Despite of</button>
@@ -2049,19 +2182,31 @@ html[data-style="editorial"] .stamp {
           <button class="opt" data-time="-1" data-goto="q11">In spite</button>
         </div>
         <div style="display:flex;gap:16px;align-items:flex-start">
-          <p class="feedback" style="flex:1" data-explain="EVEN IF + clause accepts the point, not the conclusion. DESPITE never takes “of”; IN SPITE needs OF.<br><strong>Say it aloud:</strong> Make another “Even if …” argument about the case."></p>
+          <p class="feedback" style="flex:1" data-explain="EVEN IF + clause accepts the point, not the conclusion. DESPITE never takes “of”; IN SPITE needs OF."></p>
           <button class="btn btn-solid" style="flex:none;margin-top:10px" data-action="branch-continue" data-i18n="btnContinue" hidden>Continue →</button>
         </div>
       </div>
     </section>
 
-    <section class="slide" data-type="mc" data-node="q11" data-act="File A" data-bg="ReasonableDoubt/filea.jpg">
+    <section class="slide" data-type="teach" data-node="q11" data-act="File A" data-bg="ReasonableDoubt/filea.jpg" data-side="left" style="--col-w:690px;--wall:linear-gradient(180deg,#ebddc0 10%,#edddbf 30%,#ecdcbe 50%,#eddcbe 70%,#ebdcc0 90%);--band:56px">
+      <div class="slide-head"><div>
+        <div class="eyebrow">File A · evidence checkpoint · 5 of 5</div>
+        <h2 class="slide-title">File the first doubt.</h2>
+      </div></div>
+      <div class="slide-body" style="position:relative">
+        <div class="card"><p class="prose gloss" data-tr="q-q11">Write one sentence for the jury’s evidence file. It must tell a reasonable doubt apart from a claim of innocence.</p></div>
+        <div style="margin-top:18px">
+          <button class="btn btn-solid" data-goto="q11q" data-i18n="btnContinue">Continue →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-node="q11q" data-act="File A" data-bg="ReasonableDoubt/filea.jpg" data-side="left" style="--col-w:690px;--wall:linear-gradient(180deg,#ebddc0 10%,#edddbf 30%,#ecdcbe 50%,#eddcbe 70%,#ebdcc0 90%);--band:56px">
       <div class="slide-head"><div>
         <div class="eyebrow">File A · evidence checkpoint · 5 of 5</div>
         <h2 class="slide-title">File the first doubt.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-ctx gloss" data-tr="q-q11" style="margin-bottom:10px">Write one sentence for the jury’s evidence file. It must tell a reasonable doubt apart from a claim of innocence.</p>
         <p class="q-stem">Which note belongs in the file?</p>
         <div class="opts">
           <button class="opt" data-correct data-dp="1" data-clue="fileA" data-goto="evidence">The knife’s design does not uniquely link it to the defendant.</button>
@@ -2075,13 +2220,25 @@ html[data-style="editorial"] .stamp {
       </div>
     </section>
 
-    <section class="slide" data-type="mc" data-node="q12" data-act="File B" data-bg="ReasonableDoubt/train.jpg">
+    <section class="slide" data-type="teach" data-node="q12" data-act="File B" data-bg="ReasonableDoubt/train.jpg" data-side="left" style="--col-w:506px;--wall:linear-gradient(180deg,#eadfc2 10%,#e9dec1 30%,#e8ddc1 50%,#e8ddc0 70%,#e2d2b4 90%);--band:56px">
+      <div class="slide-head"><div>
+        <div class="eyebrow">File B · what could he hear? · 1 of 5</div>
+        <h2 class="slide-title">A voice beneath a train.</h2>
+      </div></div>
+      <div class="slide-body" style="position:relative">
+        <div class="card"><p class="prose gloss" data-tr="q-q12">The downstairs witness says he heard a threat. An elevated train was passing at the time. Its noise matters, but you have not measured it.</p></div>
+        <div style="margin-top:18px">
+          <button class="btn btn-solid" data-goto="q12q" data-i18n="btnContinue">Continue →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-node="q12q" data-act="File B" data-bg="ReasonableDoubt/train.jpg" data-side="left" style="--col-w:506px;--wall:linear-gradient(180deg,#eadfc2 10%,#e9dec1 30%,#e8ddc1 50%,#e8ddc0 70%,#e2d2b4 90%);--band:56px">
       <div class="slide-head"><div>
         <div class="eyebrow">File B · what could he hear? · 1 of 5</div>
         <h2 class="slide-title">A voice beneath a train.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-ctx gloss" data-tr="q-q12" style="margin-bottom:10px">The downstairs witness says he heard a threat. An elevated train was passing at the time. Its noise matters, but you have not measured it.</p>
         <p class="q-stem">Which sentence questions the testimony without overstating certainty?</p>
         <div class="opts">
           <button class="opt" data-time="-1" data-goto="q13">He definitely heard nothing at all, not a single word.</button>
@@ -2095,13 +2252,25 @@ html[data-style="editorial"] .stamp {
       </div>
     </section>
 
-    <section class="slide" data-type="mc" data-node="q13" data-act="File B" data-bg="ReasonableDoubt/oldman.jpg">
+    <section class="slide" data-type="teach" data-node="q13" data-act="File B" data-bg="ReasonableDoubt/oldman.jpg" data-side="left" style="--col-w:657px;--wall:linear-gradient(180deg,#e5d6b6 10%,#e4d3b2 30%,#e3d2b2 50%,#deceaf 70%,#d8cbae 90%);--band:56px">
+      <div class="slide-head"><div>
+        <div class="eyebrow">File B · reported speech · 2 of 5</div>
+        <h2 class="slide-title">What the witness said.</h2>
+      </div></div>
+      <div class="slide-body" style="position:relative">
+        <div class="card"><p class="prose gloss" data-tr="q-q13">In court, the witness said: “I heard the argument.” Now you report his statement to the jury, with the usual backshift.</p></div>
+        <div style="margin-top:18px">
+          <button class="btn btn-solid" data-goto="q13q" data-i18n="btnContinue">Continue →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-node="q13q" data-act="File B" data-bg="ReasonableDoubt/oldman.jpg" data-side="left" style="--col-w:657px;--wall:linear-gradient(180deg,#e5d6b6 10%,#e4d3b2 30%,#e3d2b2 50%,#deceaf 70%,#d8cbae 90%);--band:56px">
       <div class="slide-head"><div>
         <div class="eyebrow">File B · reported speech · 2 of 5</div>
         <h2 class="slide-title">What the witness said.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-ctx gloss" data-tr="q-q13" style="margin-bottom:10px">In court, the witness said: “I heard the argument.” Now you report his statement to the jury, with the usual backshift.</p>
         <p class="q-stem">Choose the correctly backshifted report.</p>
         <div class="opts">
           <button class="opt" data-time="-1" data-goto="q14">He told that he had heard the argument.</button>
@@ -2115,13 +2284,25 @@ html[data-style="editorial"] .stamp {
       </div>
     </section>
 
-    <section class="slide" data-type="mc" data-node="q14" data-act="File B" data-bg="ReasonableDoubt/hallway.jpg">
+    <section class="slide" data-type="teach" data-node="q14" data-act="File B" data-bg="ReasonableDoubt/hallway.jpg" data-side="left" style="--col-w:744px;--wall:linear-gradient(180deg,#e6d8bd 10%,#e6d8bd 30%,#e7d9be 50%,#e7d9be 70%,#e6d8be 90%);--band:0px">
+      <div class="slide-head"><div>
+        <div class="eyebrow">File B · putting events in order · 3 of 5</div>
+        <h2 class="slide-title">The length of a hallway.</h2>
+      </div></div>
+      <div class="slide-body" style="position:relative">
+        <div class="card"><p class="prose gloss" data-tr="q-q14">The witness walked slowly with a limp. First the person on the stairs disappeared; then the witness reached his doorway.</p></div>
+        <div style="margin-top:18px">
+          <button class="btn btn-solid" data-goto="q14q" data-i18n="btnContinue">Continue →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-node="q14q" data-act="File B" data-bg="ReasonableDoubt/hallway.jpg" data-side="left" style="--col-w:744px;--wall:linear-gradient(180deg,#e6d8bd 10%,#e6d8bd 30%,#e7d9be 50%,#e7d9be 70%,#e6d8be 90%);--band:0px">
       <div class="slide-head"><div>
         <div class="eyebrow">File B · putting events in order · 3 of 5</div>
         <h2 class="slide-title">The length of a hallway.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-ctx gloss" data-tr="q-q14" style="margin-bottom:10px">The witness walked slowly with a limp. First the person on the stairs disappeared; then the witness reached his doorway.</p>
         <p class="q-stem">By the time he reached the door, the person ___.</p>
         <div class="opts">
           <button class="opt" data-time="-1" data-goto="q15">has already disappeared</button>
@@ -2135,13 +2316,25 @@ html[data-style="editorial"] .stamp {
       </div>
     </section>
 
-    <section class="slide" data-type="mc" data-node="q15" data-act="File B" data-bg="ReasonableDoubt/stopwatch.jpg">
+    <section class="slide" data-type="teach" data-node="q15" data-act="File B" data-bg="ReasonableDoubt/stopwatch.jpg" data-side="left" style="--col-w:690px;--wall:linear-gradient(180deg,#e9dabb 10%,#e8d8b8 30%,#e8d7b7 50%,#e8d8b7 70%,#e8dabc 90%);--band:56px">
+      <div class="slide-head"><div>
+        <div class="eyebrow">File B · the unreal past · 4 of 5</div>
+        <h2 class="slide-title">Test the timing.</h2>
+      </div></div>
+      <div class="slide-body" style="position:relative">
+        <div class="card"><p class="prose gloss" data-tr="q-q15">In your reconstruction, the walk takes longer than the witness’s estimate. It is a reconstruction, not an exact measurement.</p></div>
+        <div style="margin-top:18px">
+          <button class="btn btn-solid" data-goto="q15q" data-i18n="btnContinue">Continue →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-node="q15q" data-act="File B" data-bg="ReasonableDoubt/stopwatch.jpg" data-side="left" style="--col-w:690px;--wall:linear-gradient(180deg,#e9dabb 10%,#e8d8b8 30%,#e8d7b7 50%,#e8d8b7 70%,#e8dabc 90%);--band:56px">
       <div class="slide-head"><div>
         <div class="eyebrow">File B · the unreal past · 4 of 5</div>
         <h2 class="slide-title">Test the timing.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-ctx gloss" data-tr="q-q15" style="margin-bottom:10px">In your reconstruction, the walk takes longer than the witness’s estimate. It is a reconstruction, not an exact measurement.</p>
         <p class="q-stem">If he had moved that slowly, he ___ the door in time.</p>
         <div class="opts">
           <button class="opt" data-time="-1" data-goto="q16">couldn’t have reach</button>
@@ -2155,13 +2348,25 @@ html[data-style="editorial"] .stamp {
       </div>
     </section>
 
-    <section class="slide" data-type="mc" data-node="q16" data-act="File B" data-bg="ReasonableDoubt/juror9.jpg">
+    <section class="slide" data-type="teach" data-node="q16" data-act="File B" data-bg="ReasonableDoubt/juror9.jpg" data-side="left" style="--col-w:506px;--wall:linear-gradient(180deg,#ebdec3 10%,#ece0c5 30%,#ece0c5 50%,#ecdfc4 70%,#ebdec3 90%);--band:56px">
+      <div class="slide-head"><div>
+        <div class="eyebrow">File B · evidence checkpoint · 5 of 5</div>
+        <h2 class="slide-title">Mistaken is not dishonest.</h2>
+      </div></div>
+      <div class="slide-body" style="position:relative">
+        <div class="card"><p class="prose gloss" data-tr="q-q16">Juror 9 reminds the room that wanting to be helpful does not make someone’s memory perfect. Record the strongest doubt you can defend.</p></div>
+        <div style="margin-top:18px">
+          <button class="btn btn-solid" data-goto="q16q" data-i18n="btnContinue">Continue →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-node="q16q" data-act="File B" data-bg="ReasonableDoubt/juror9.jpg" data-side="left" style="--col-w:506px;--wall:linear-gradient(180deg,#ebdec3 10%,#ece0c5 30%,#ece0c5 50%,#ecdfc4 70%,#ebdec3 90%);--band:56px">
       <div class="slide-head"><div>
         <div class="eyebrow">File B · evidence checkpoint · 5 of 5</div>
         <h2 class="slide-title">Mistaken is not dishonest.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-ctx gloss" data-tr="q-q16" style="margin-bottom:10px">Juror 9 reminds the room that wanting to be helpful does not make someone’s memory perfect. Record the strongest doubt you can defend.</p>
         <p class="q-stem">Choose a careful statement about the witness.</p>
         <div class="opts">
           <button class="opt" data-correct data-dp="1" data-clue="fileB" data-goto="evidence">He may have misjudged the timing without intending to deceive us.</button>
@@ -2169,19 +2374,31 @@ html[data-style="editorial"] .stamp {
           <button class="opt" data-time="-1" data-clue="fileB" data-goto="evidence">He must have lied to the court, because our timing was so different.</button>
         </div>
         <div style="display:flex;gap:16px;align-items:flex-start">
-          <p class="feedback" style="flex:1" data-explain="File B is complete. MAY HAVE MISJUDGED allows an honest mistake. MUST HAVE LIED claims a deliberate lie, and ALWAYS turns one witness into everyone."></p>
+          <p class="feedback" style="flex:1" data-explain="File B is complete. MAY HAVE MISJUDGED allows an honest mistake; MUST HAVE LIED claims a deliberate one."></p>
           <button class="btn btn-solid" style="flex:none;margin-top:10px" data-action="branch-continue" data-i18n="btnContinue" hidden>Continue →</button>
         </div>
       </div>
     </section>
 
-    <section class="slide" data-type="mc" data-node="q17" data-act="File C" data-bg="ReasonableDoubt/tracks.jpg">
+    <section class="slide" data-type="teach" data-node="q17" data-act="File C" data-bg="ReasonableDoubt/tracks.jpg" data-side="left" style="--col-w:636px;--wall:linear-gradient(180deg,#e8dabd 10%,#e6d7b9 30%,#e1d1b2 50%,#c7ba9f 70%,#c8bda5 90%);--band:56px">
+      <div class="slide-head"><div>
+        <div class="eyebrow">File C · a claim of sight · 1 of 5</div>
+        <h2 class="slide-title">Across the tracks.</h2>
+      </div></div>
+      <div class="slide-body" style="position:relative">
+        <div class="card"><p class="prose gloss" data-tr="q-q17">A woman says she saw the attack from her apartment across the railway tracks. Report her claim without presenting it as a fact.</p></div>
+        <div style="margin-top:18px">
+          <button class="btn btn-solid" data-goto="q17q" data-i18n="btnContinue">Continue →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-node="q17q" data-act="File C" data-bg="ReasonableDoubt/tracks.jpg" data-side="left" style="--col-w:636px;--wall:linear-gradient(180deg,#e8dabd 10%,#e6d7b9 30%,#e1d1b2 50%,#c7ba9f 70%,#c8bda5 90%);--band:56px">
       <div class="slide-head"><div>
         <div class="eyebrow">File C · a claim of sight · 1 of 5</div>
         <h2 class="slide-title">Across the tracks.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-ctx gloss" data-tr="q-q17" style="margin-bottom:10px">A woman says she saw the attack from her apartment across the railway tracks. Report her claim without presenting it as a fact.</p>
         <p class="q-stem">She claims ___ the attack.</p>
         <div class="opts">
           <button class="opt" data-time="-1" data-goto="q18">to have saw</button>
@@ -2195,13 +2412,25 @@ html[data-style="editorial"] .stamp {
       </div>
     </section>
 
-    <section class="slide" data-type="mc" data-node="q18" data-act="File C" data-bg="ReasonableDoubt/sightline.jpg">
+    <section class="slide" data-type="teach" data-node="q18" data-act="File C" data-bg="ReasonableDoubt/sightline.jpg" data-side="left" style="--col-w:528px;--wall:linear-gradient(180deg,#e7d8bb 10%,#e7d8ba 30%,#e7d8ba 50%,#cdc3a9 70%,#aba996 90%);--band:0px">
+      <div class="slide-head"><div>
+        <div class="eyebrow">File C · possibility, not proof · 2 of 5</div>
+        <h2 class="slide-title">A moving obstruction.</h2>
+      </div></div>
+      <div class="slide-body" style="position:relative">
+        <div class="card"><p class="prose gloss" data-tr="q-q18">A passing train lay between the two buildings. You can question the view without claiming that every glimpse was impossible.</p></div>
+        <div style="margin-top:18px">
+          <button class="btn btn-solid" data-goto="q18q" data-i18n="btnContinue">Continue →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-node="q18q" data-act="File C" data-bg="ReasonableDoubt/sightline.jpg" data-side="left" style="--col-w:528px;--wall:linear-gradient(180deg,#e7d8bb 10%,#e7d8ba 30%,#e7d8ba 50%,#cdc3a9 70%,#aba996 90%);--band:0px">
       <div class="slide-head"><div>
         <div class="eyebrow">File C · possibility, not proof · 2 of 5</div>
         <h2 class="slide-title">A moving obstruction.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-ctx gloss" data-tr="q-q18" style="margin-bottom:10px">A passing train lay between the two buildings. You can question the view without claiming that every glimpse was impossible.</p>
         <p class="q-stem">Choose the accurate past-possibility form.</p>
         <div class="opts">
           <button class="opt" data-correct data-dp="1" data-goto="q19">The train could have blocked her view.</button>
@@ -2215,13 +2444,25 @@ html[data-style="editorial"] .stamp {
       </div>
     </section>
 
-    <section class="slide" data-type="mc" data-node="q19" data-act="File C" data-bg="ReasonableDoubt/spectacles.jpg">
+    <section class="slide" data-type="teach" data-node="q19" data-act="File C" data-bg="ReasonableDoubt/spectacles.jpg" data-side="left" style="--col-w:636px;--wall:linear-gradient(180deg,#e9dcc1 10%,#e8dabd 30%,#e8dabd 50%,#e8dabc 70%,#e8dbbe 90%);--band:56px">
+      <div class="slide-head"><div>
+        <div class="eyebrow">File C · a small observation · 3 of 5</div>
+        <h2 class="slide-title">The marks of spectacles.</h2>
+      </div></div>
+      <div class="slide-body" style="position:relative">
+        <div class="card"><p class="prose gloss" data-tr="q-q19">Juror 9 remembers marks on the woman’s nose, like those left by spectacles. Nobody knows whether she wore glasses when she looked out of bed.</p></div>
+        <div style="margin-top:18px">
+          <button class="btn btn-solid" data-goto="q19q" data-i18n="btnContinue">Continue →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-node="q19q" data-act="File C" data-bg="ReasonableDoubt/spectacles.jpg" data-side="left" style="--col-w:636px;--wall:linear-gradient(180deg,#e9dcc1 10%,#e8dabd 30%,#e8dabd 50%,#e8dabc 70%,#e8dbbe 90%);--band:56px">
       <div class="slide-head"><div>
         <div class="eyebrow">File C · a small observation · 3 of 5</div>
         <h2 class="slide-title">The marks of spectacles.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-ctx gloss" data-tr="q-q19" style="margin-bottom:10px">Juror 9 remembers marks on the woman’s nose, like those left by spectacles. Nobody knows whether she wore glasses when she looked out of bed.</p>
         <p class="q-stem">Which sentence avoids turning an inference into certainty?</p>
         <div class="opts">
           <button class="opt" data-time="-1" data-goto="q20">Those marks on her nose prove that she could never see anything.</button>
@@ -2235,13 +2476,25 @@ html[data-style="editorial"] .stamp {
       </div>
     </section>
 
-    <section class="slide" data-type="mc" data-node="q20" data-act="File C" data-bg="ReasonableDoubt/window.jpg">
+    <section class="slide" data-type="teach" data-node="q20" data-act="File C" data-bg="ReasonableDoubt/window.jpg" data-side="left" style="--col-w:657px;--wall:linear-gradient(180deg,#eadcbd 10%,#eadbb8 30%,#eadbb9 50%,#dcceac 70%,#e1d0ae 90%);--band:56px">
+      <div class="slide-head"><div>
+        <div class="eyebrow">File C · although · 4 of 5</div>
+        <h2 class="slide-title">Confidence and accuracy.</h2>
+      </div></div>
+      <div class="slide-body" style="position:relative">
+        <div class="card"><p class="prose gloss" data-tr="q-q20">The witness sounded certain. Acknowledge her confidence, and question whether confidence guarantees accuracy.</p></div>
+        <div style="margin-top:18px">
+          <button class="btn btn-solid" data-goto="q20q" data-i18n="btnContinue">Continue →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-node="q20q" data-act="File C" data-bg="ReasonableDoubt/window.jpg" data-side="left" style="--col-w:657px;--wall:linear-gradient(180deg,#eadcbd 10%,#eadbb8 30%,#eadbb9 50%,#dcceac 70%,#e1d0ae 90%);--band:56px">
       <div class="slide-head"><div>
         <div class="eyebrow">File C · although · 4 of 5</div>
         <h2 class="slide-title">Confidence and accuracy.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-ctx gloss" data-tr="q-q20" style="margin-bottom:10px">The witness sounded certain. Acknowledge her confidence, and question whether confidence guarantees accuracy.</p>
         <p class="q-stem">___ she sounded certain, she could still have been mistaken.</p>
         <div class="opts">
           <button class="opt" data-correct data-dp="1" data-goto="q21">Although</button>
@@ -2255,13 +2508,25 @@ html[data-style="editorial"] .stamp {
       </div>
     </section>
 
-    <section class="slide" data-type="mc" data-node="q21" data-act="File C" data-bg="ReasonableDoubt/filec.jpg">
+    <section class="slide" data-type="teach" data-node="q21" data-act="File C" data-bg="ReasonableDoubt/filec.jpg" data-side="left" style="--col-w:549px;--wall:linear-gradient(180deg,#ebdcbe 10%,#ead9b9 30%,#e9d8b8 50%,#e0cca9 70%,#dec9a5 90%);--band:56px">
+      <div class="slide-head"><div>
+        <div class="eyebrow">File C · evidence checkpoint · 5 of 5</div>
+        <h2 class="slide-title">File the final doubt.</h2>
+      </div></div>
+      <div class="slide-body" style="position:relative">
+        <div class="card"><p class="prose gloss" data-tr="q-q21">The distance, the passing train and the missing glasses all deserve consideration. Make a conditional statement, not an accusation.</p></div>
+        <div style="margin-top:18px">
+          <button class="btn btn-solid" data-goto="q21q" data-i18n="btnContinue">Continue →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-node="q21q" data-act="File C" data-bg="ReasonableDoubt/filec.jpg" data-side="left" style="--col-w:549px;--wall:linear-gradient(180deg,#ebdcbe 10%,#ead9b9 30%,#e9d8b8 50%,#e0cca9 70%,#dec9a5 90%);--band:56px">
       <div class="slide-head"><div>
         <div class="eyebrow">File C · evidence checkpoint · 5 of 5</div>
         <h2 class="slide-title">File the final doubt.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-ctx gloss" data-tr="q-q21" style="margin-bottom:10px">The distance, the passing train and the missing glasses all deserve consideration. Make a conditional statement, not an accusation.</p>
         <p class="q-stem">If she hadn’t been wearing her glasses, she ___ him clearly.</p>
         <div class="opts">
           <button class="opt" data-time="-1" data-clue="fileC" data-goto="evidence">might not saw</button>
@@ -2275,26 +2540,38 @@ html[data-style="editorial"] .stamp {
       </div>
     </section>
 
-    <section class="slide" data-type="teach" data-node="shift" data-act="Act III" data-bg="ReasonableDoubt/shift.jpg">
+    <section class="slide" data-type="teach" data-node="shift" data-act="Act III" data-bg="ReasonableDoubt/shift.jpg" data-side="left" style="--col-w:398px;--wall:linear-gradient(180deg,#e5d7bb 10%,#e2d3b6 30%,#d5caaf 50%,#c0b39b 70%,#c1b59f 90%);--band:56px">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="shiftEyebrow">Act III · doubt is spreading</div>
-        <h2 class="slide-title" data-i18n="shiftTitle">The room begins to shift.</h2>
+        <h2 class="slide-title" data-i18n="shiftTitle">The room shifts.</h2>
       </div></div>
       <div class="slide-body" style="position:relative">
-        <div class="card"><p class="prose gloss" data-tr="shift">The knife is no longer unique. The timing is uncertain. The view may have been obstructed. Several jurors are reconsidering. Now you must protect a fair discussion as well as a careful argument.</p><p style="margin-top:12px" class="prose dim gloss" data-tr="shift-say">Say it aloud: a 30-second summary of the three files, with MIGHT HAVE, EVEN IF and ALTHOUGH.</p></div>
+        <div class="card"><p class="prose gloss" data-tr="shift">The knife is not unique. The timing is uncertain. The view may have been blocked.</p><p class="prose dim" style="margin-top:12px" data-i18n="sayShift">Say it aloud: a 30-second summary of the three files, with MIGHT HAVE, EVEN IF and ALTHOUGH.</p></div>
         <div style="margin-top:18px">
           <button class="btn btn-solid" data-goto="q23" data-i18n="btnContinue">Continue →</button>
         </div>
       </div>
     </section>
 
-    <section class="slide" data-type="mc" data-node="q23" data-act="Act III" data-bg="ReasonableDoubt/ballots.jpg">
+    <section class="slide" data-type="teach" data-node="q23" data-act="Act III" data-bg="ReasonableDoubt/ballots.jpg" data-side="left" style="--col-w:484px;--wall:linear-gradient(180deg,#eadabc 10%,#eadaba 30%,#ead8b6 50%,#ead8b7 70%,#eadabb 90%);--band:56px">
+      <div class="slide-head"><div>
+        <div class="eyebrow">Act III · making a proposal · 1 of 4</div>
+        <h2 class="slide-title">A private change of mind.</h2>
+      </div></div>
+      <div class="slide-body" style="position:relative">
+        <div class="card"><p class="prose gloss" data-tr="q-q23">Some jurors worry about looking weak if they change their vote. You propose a secret ballot to reduce the pressure.</p></div>
+        <div style="margin-top:18px">
+          <button class="btn btn-solid" data-goto="q23q" data-i18n="btnContinue">Continue →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-node="q23q" data-act="Act III" data-bg="ReasonableDoubt/ballots.jpg" data-side="left" style="--col-w:484px;--wall:linear-gradient(180deg,#eadabc 10%,#eadaba 30%,#ead8b6 50%,#ead8b7 70%,#eadabb 90%);--band:56px">
       <div class="slide-head"><div>
         <div class="eyebrow">Act III · making a proposal · 1 of 4</div>
         <h2 class="slide-title">A private change of mind.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-ctx gloss" data-tr="q-q23" style="margin-bottom:10px">Some jurors worry about looking weak if they change their vote. You propose a secret ballot to reduce the pressure.</p>
         <p class="q-stem">I’d rather we ___ in secret this time.</p>
         <div class="opts">
           <button class="opt" data-time="-1" data-goto="q24">to vote</button>
@@ -2308,13 +2585,25 @@ html[data-style="editorial"] .stamp {
       </div>
     </section>
 
-    <section class="slide" data-type="mc" data-node="q24" data-act="Act III" data-bg="ReasonableDoubt/ally.jpg">
+    <section class="slide" data-type="teach" data-node="q24" data-act="Act III" data-bg="ReasonableDoubt/ally.jpg" data-side="left" style="--col-w:560px;--wall:linear-gradient(180deg,#e7d7b9 10%,#e7d6b4 30%,#e6d5b4 50%,#e0cdac 70%,#dacaad 90%);--band:56px">
+      <div class="slide-head"><div>
+        <div class="eyebrow">Act III · listening for meaning · 2 of 4</div>
+        <h2 class="slide-title">The first ally.</h2>
+      </div></div>
+      <div class="slide-body" style="position:relative">
+        <div class="card"><p class="prose gloss" data-tr="q-q24">Juror 9 supports continuing the discussion. He does not claim the defendant is innocent; he respects the courage it takes to stand alone.</p></div>
+        <div style="margin-top:18px">
+          <button class="btn btn-solid" data-goto="q24q" data-i18n="btnContinue">Continue →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-node="q24q" data-act="Act III" data-bg="ReasonableDoubt/ally.jpg" data-side="left" style="--col-w:560px;--wall:linear-gradient(180deg,#e7d7b9 10%,#e7d6b4 30%,#e6d5b4 50%,#e0cdac 70%,#dacaad 90%);--band:56px">
       <div class="slide-head"><div>
         <div class="eyebrow">Act III · listening for meaning · 2 of 4</div>
         <h2 class="slide-title">The first ally.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-ctx gloss" data-tr="q-q24" style="margin-bottom:10px">Juror 9 supports continuing the discussion. He does not claim the defendant is innocent; he respects the courage it takes to stand alone.</p>
         <p class="q-stem">Which sentence paraphrases his position accurately?</p>
         <div class="opts">
           <button class="opt" data-time="-1" data-goto="q25">He knows the defendant did nothing wrong.</button>
@@ -2328,13 +2617,25 @@ html[data-style="editorial"] .stamp {
       </div>
     </section>
 
-    <section class="slide" data-type="mc" data-node="q25" data-act="Act III" data-bg="ReasonableDoubt/ticket.jpg">
+    <section class="slide" data-type="teach" data-node="q25" data-act="Act III" data-bg="ReasonableDoubt/ticket.jpg" data-side="left" style="--col-w:528px;--wall:linear-gradient(180deg,#e7d9bd 10%,#e4d6b9 30%,#e4d6b9 50%,#ddcfb1 70%,#e3d1b2 90%);--band:56px">
+      <div class="slide-head"><div>
+        <div class="eyebrow">Act III · challenging a motive · 3 of 4</div>
+        <h2 class="slide-title">A ticket is not an argument.</h2>
+      </div></div>
+      <div class="slide-body" style="position:relative">
+        <div class="card"><p class="prose gloss" data-tr="q-q25">Juror 7 checks his watch. He will vote either way if it gets him out of the room. Challenge the reason, not his intelligence.</p></div>
+        <div style="margin-top:18px">
+          <button class="btn btn-solid" data-goto="q25q" data-i18n="btnContinue">Continue →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-node="q25q" data-act="Act III" data-bg="ReasonableDoubt/ticket.jpg" data-side="left" style="--col-w:528px;--wall:linear-gradient(180deg,#e7d9bd 10%,#e4d6b9 30%,#e4d6b9 50%,#ddcfb1 70%,#e3d1b2 90%);--band:56px">
       <div class="slide-head"><div>
         <div class="eyebrow">Act III · challenging a motive · 3 of 4</div>
         <h2 class="slide-title">A ticket is not an argument.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-ctx gloss" data-tr="q-q25" style="margin-bottom:10px">Juror 7 checks his watch. He will vote either way if it gets him out of the room. Challenge the reason, not his intelligence.</p>
         <p class="q-stem">Which reply keeps the verdict connected to the evidence?</p>
         <div class="opts">
           <button class="opt" data-time="-1" data-goto="q26">Any quick decision is better than another hour of this discussion.</button>
@@ -2348,13 +2649,25 @@ html[data-style="editorial"] .stamp {
       </div>
     </section>
 
-    <section class="slide" data-type="mc" data-node="q26" data-act="Act III" data-bg="ReasonableDoubt/prejudice.jpg">
+    <section class="slide" data-type="teach" data-node="q26" data-act="Act III" data-bg="ReasonableDoubt/prejudice.jpg" data-side="left" style="--col-w:549px;--wall:linear-gradient(180deg,#e6d8b9 10%,#e5d4b3 30%,#e4d4b3 50%,#dfcba5 70%,#d8cdb0 90%);--band:56px">
+      <div class="slide-head"><div>
+        <div class="eyebrow">Act III · challenging a generalisation · 4 of 4</div>
+        <h2 class="slide-title">When prejudice speaks.</h2>
+      </div></div>
+      <div class="slide-body" style="position:relative">
+        <div class="card"><p class="prose gloss" data-tr="q-q26">Juror 10 makes a sweeping claim about people from the defendant’s neighbourhood. The room goes still. Bring the discussion back to this person and this case.</p></div>
+        <div style="margin-top:18px">
+          <button class="btn btn-solid" data-goto="q26q" data-i18n="btnContinue">Continue →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-node="q26q" data-act="Act III" data-bg="ReasonableDoubt/prejudice.jpg" data-side="left" style="--col-w:549px;--wall:linear-gradient(180deg,#e6d8b9 10%,#e5d4b3 30%,#e4d4b3 50%,#dfcba5 70%,#d8cdb0 90%);--band:56px">
       <div class="slide-head"><div>
         <div class="eyebrow">Act III · challenging a generalisation · 4 of 4</div>
         <h2 class="slide-title">When prejudice speaks.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-ctx gloss" data-tr="q-q26" style="margin-bottom:10px">Juror 10 makes a sweeping claim about people from the defendant’s neighbourhood. The room goes still. Bring the discussion back to this person and this case.</p>
         <p class="q-stem">Which reply challenges the faulty reasoning directly?</p>
         <div class="opts">
           <button class="opt" data-correct data-dp="1" data-goto="quiet">That’s a generalisation, not evidence about this defendant.</button>
@@ -2368,35 +2681,47 @@ html[data-style="editorial"] .stamp {
       </div>
     </section>
 
-    <section class="slide" data-type="teach" data-node="quiet" data-act="Act IV" data-bg="ReasonableDoubt/quiet.jpg">
+    <section class="slide" data-type="teach" data-node="quiet" data-act="Act IV" data-bg="ReasonableDoubt/quiet.jpg" data-side="left" style="--col-w:420px;--wall:linear-gradient(180deg,#eadbbc 10%,#e9d9b9 30%,#e8d8b7 50%,#e6d4b3 70%,#e6d4b7 90%);--band:56px">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="forkEyebrow">Act IV · a choice of approach</div>
         <h2 class="slide-title" data-i18n="forkTitle">How will you lead?</h2>
       </div></div>
       <div class="slide-body" style="position:relative">
         <p class="prose gloss" data-tr="quiet">A quiet juror tries to speak while two louder men argue. You can create space gently or interrupt the confrontation directly.</p>
-        <div class="cols">
-          <div class="card">
+        <div style="margin-top:14px">
+          <div class="card choice-row">
             <p class="prose"><strong data-i18n="routeListen">Invite the quieter juror to speak</strong></p>
-            <div style="margin-top:12px"><button class="btn btn-solid choice" data-goto="q28" data-i18n="btnChoose">Choose this</button></div>
+            <button class="btn btn-solid choice" data-goto="q28" data-i18n="btnChoose">Choose this</button>
           </div>
-          <div class="card">
+          <div class="card choice-row">
             <p class="prose"><strong data-i18n="routeCalm">Interrupt the confrontation</strong></p>
-            <div style="margin-top:12px"><button class="btn btn-solid choice" data-goto="q29" data-i18n="btnChoose">Choose this</button></div>
+            <button class="btn btn-solid choice" data-goto="q29" data-i18n="btnChoose">Choose this</button>
           </div>
         </div>
-        <p class="prose dim" style="margin-top:14px;text-align:center" data-i18n="explainFirst">Explain your choice in English before you click.</p>
+        <p class="prose dim" style="margin-top:14px;font-size:18px" data-i18n="explainFirst">Explain your choice in English before you click.</p>
 
       </div>
     </section>
 
-    <section class="slide" data-type="mc" data-node="q28" data-act="Act IV" data-bg="ReasonableDoubt/listen.jpg">
+    <section class="slide" data-type="teach" data-node="q28" data-act="Act IV" data-bg="ReasonableDoubt/listen.jpg" data-side="left" style="--col-w:549px;--wall:linear-gradient(180deg,#e6d7bb 10%,#e3d3b6 30%,#e3d3b6 50%,#e2d0b3 70%,#ddc9ac 90%);--band:56px">
+      <div class="slide-head"><div>
+        <div class="eyebrow">Act IV · the listening route</div>
+        <h2 class="slide-title">Make room for a voice.</h2>
+      </div></div>
+      <div class="slide-body" style="position:relative">
+        <div class="card"><p class="prose gloss" data-tr="q-q28">You turn towards the quieter juror. He begins, but Juror 3 cuts across him. Ask the room to listen before judging.</p></div>
+        <div style="margin-top:18px">
+          <button class="btn btn-solid" data-goto="q28q" data-i18n="btnContinue">Continue →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-node="q28q" data-act="Act IV" data-bg="ReasonableDoubt/listen.jpg" data-side="left" style="--col-w:549px;--wall:linear-gradient(180deg,#e6d7bb 10%,#e3d3b6 30%,#e3d3b6 50%,#e2d0b3 70%,#ddc9ac 90%);--band:56px">
       <div class="slide-head"><div>
         <div class="eyebrow">Act IV · the listening route</div>
         <h2 class="slide-title">Make room for a voice.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-ctx gloss" data-tr="q-q28" style="margin-bottom:10px">You turn towards the quieter juror. He begins, but Juror 3 cuts across him. Ask the room to listen before judging.</p>
         <p class="q-stem">Could we ___ before responding?</p>
         <div class="opts">
           <button class="opt" data-time="-1" data-goto="q30">listen him out</button>
@@ -2410,13 +2735,25 @@ html[data-style="editorial"] .stamp {
       </div>
     </section>
 
-    <section class="slide" data-type="mc" data-node="q29" data-act="Act IV" data-bg="ReasonableDoubt/calm.jpg">
+    <section class="slide" data-type="teach" data-node="q29" data-act="Act IV" data-bg="ReasonableDoubt/calm.jpg" data-side="left" style="--col-w:441px;--wall:linear-gradient(180deg,#e7d8ba 10%,#e5d5b4 30%,#e5d4b4 50%,#e4d4b3 70%,#e1cfae 90%);--band:56px">
+      <div class="slide-head"><div>
+        <div class="eyebrow">Act IV · the direct route</div>
+        <h2 class="slide-title">Lower the temperature.</h2>
+      </div></div>
+      <div class="slide-body" style="position:relative">
+        <div class="card"><p class="prose gloss" data-tr="q-q29">Your interruption stops the argument, but the room is tense. Make calm a condition for making progress.</p></div>
+        <div style="margin-top:18px">
+          <button class="btn btn-solid" data-goto="q29q" data-i18n="btnContinue">Continue →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-node="q29q" data-act="Act IV" data-bg="ReasonableDoubt/calm.jpg" data-side="left" style="--col-w:441px;--wall:linear-gradient(180deg,#e7d8ba 10%,#e5d5b4 30%,#e5d4b4 50%,#e4d4b3 70%,#e1cfae 90%);--band:56px">
       <div class="slide-head"><div>
         <div class="eyebrow">Act IV · the direct route</div>
         <h2 class="slide-title">Lower the temperature.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-ctx gloss" data-tr="q-q29" style="margin-bottom:10px">Your interruption stops the argument, but the room is tense. Make calm a condition for making progress.</p>
         <p class="q-stem">We won’t make progress ___ we let each other finish.</p>
         <div class="opts">
           <button class="opt" data-correct data-dp="1" data-goto="q30">unless</button>
@@ -2430,13 +2767,25 @@ html[data-style="editorial"] .stamp {
       </div>
     </section>
 
-    <section class="slide" data-type="mc" data-node="q30" data-act="Act IV" data-bg="ReasonableDoubt/fan.jpg">
+    <section class="slide" data-type="teach" data-node="q30" data-act="Act IV" data-bg="ReasonableDoubt/fan.jpg" data-side="left" style="--col-w:528px;--wall:linear-gradient(180deg,#e7d7b9 10%,#e6d6b6 30%,#e6d5b6 50%,#e1d1b3 70%,#d2c4a8 90%);--band:56px">
+      <div class="slide-head"><div>
+        <div class="eyebrow">Act IV · despite + noun · 1 of 4</div>
+        <h2 class="slide-title">Rain against the window.</h2>
+      </div></div>
+      <div class="slide-body" style="position:relative">
+        <div class="card"><p class="prose gloss" data-tr="q-q30">Rain cools the city, but the discussion stays heated. The foreman turns on the fan and asks everyone to continue.</p></div>
+        <div style="margin-top:18px">
+          <button class="btn btn-solid" data-goto="q30q" data-i18n="btnContinue">Continue →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-node="q30q" data-act="Act IV" data-bg="ReasonableDoubt/fan.jpg" data-side="left" style="--col-w:528px;--wall:linear-gradient(180deg,#e7d7b9 10%,#e6d6b6 30%,#e6d5b6 50%,#e1d1b3 70%,#d2c4a8 90%);--band:56px">
       <div class="slide-head"><div>
         <div class="eyebrow">Act IV · despite + noun · 1 of 4</div>
         <h2 class="slide-title">Rain against the window.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-ctx gloss" data-tr="q-q30" style="margin-bottom:10px">Rain cools the city, but the discussion stays heated. The foreman turns on the fan and asks everyone to continue.</p>
         <p class="q-stem">___ the tension, the jury kept discussing the evidence.</p>
         <div class="opts">
           <button class="opt" data-time="-1" data-goto="q31">Although</button>
@@ -2450,13 +2799,25 @@ html[data-style="editorial"] .stamp {
       </div>
     </section>
 
-    <section class="slide" data-type="mc" data-node="q31" data-act="Act IV" data-bg="ReasonableDoubt/cinema.jpg">
+    <section class="slide" data-type="teach" data-node="q31" data-act="Act IV" data-bg="ReasonableDoubt/cinema.jpg" data-side="left" style="--col-w:625px;--wall:linear-gradient(180deg,#e9dec3 10%,#e8dfc2 30%,#e9dfc3 50%,#e8dec2 70%,#e8dec2 90%);--band:56px">
+      <div class="slide-head"><div>
+        <div class="eyebrow">Act IV · explaining an alternative · 2 of 4</div>
+        <h2 class="slide-title">A memory under pressure.</h2>
+      </div></div>
+      <div class="slide-body" style="position:relative">
+        <div class="card"><p class="prose gloss" data-tr="q-q31">The defendant struggled to recall details of his evening at the cinema. Juror 4 treats that as suspicious. Offer another explanation.</p></div>
+        <div style="margin-top:18px">
+          <button class="btn btn-solid" data-goto="q31q" data-i18n="btnContinue">Continue →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-node="q31q" data-act="Act IV" data-bg="ReasonableDoubt/cinema.jpg" data-side="left" style="--col-w:625px;--wall:linear-gradient(180deg,#e9dec3 10%,#e8dfc2 30%,#e9dfc3 50%,#e8dec2 70%,#e8dec2 90%);--band:56px">
       <div class="slide-head"><div>
         <div class="eyebrow">Act IV · explaining an alternative · 2 of 4</div>
         <h2 class="slide-title">A memory under pressure.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-ctx gloss" data-tr="q-q31" style="margin-bottom:10px">The defendant struggled to recall details of his evening at the cinema. Juror 4 treats that as suspicious. Offer another explanation.</p>
         <p class="q-stem">Which explanation is cautious and relevant?</p>
         <div class="opts">
           <button class="opt" data-correct data-dp="1" data-goto="q32">Stress may have affected his ability to remember details.</button>
@@ -2470,13 +2831,25 @@ html[data-style="editorial"] .stamp {
       </div>
     </section>
 
-    <section class="slide" data-type="mc" data-node="q32" data-act="Act IV" data-bg="ReasonableDoubt/ballot.jpg">
+    <section class="slide" data-type="teach" data-node="q32" data-act="Act IV" data-bg="ReasonableDoubt/ballot.jpg" data-side="left" style="--col-w:474px;--wall:linear-gradient(180deg,#ebdcbf 10%,#eadbbc 30%,#e9daba 50%,#ecdcbc 70%,#ebddbf 90%);--band:56px">
+      <div class="slide-head"><div>
+        <div class="eyebrow">Act IV · reporting a decision · 3 of 4</div>
+        <h2 class="slide-title">Changing a vote.</h2>
+      </div></div>
+      <div class="slide-body" style="position:relative">
+        <div class="card"><p class="prose gloss" data-tr="q-q32">One juror says: “I will reconsider my vote.” Later, you report this promise to the foreman, with the usual backshift.</p></div>
+        <div style="margin-top:18px">
+          <button class="btn btn-solid" data-goto="q32q" data-i18n="btnContinue">Continue →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-node="q32q" data-act="Act IV" data-bg="ReasonableDoubt/ballot.jpg" data-side="left" style="--col-w:474px;--wall:linear-gradient(180deg,#ebdcbf 10%,#eadbbc 30%,#e9daba 50%,#ecdcbc 70%,#ebddbf 90%);--band:56px">
       <div class="slide-head"><div>
         <div class="eyebrow">Act IV · reporting a decision · 3 of 4</div>
         <h2 class="slide-title">Changing a vote.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-ctx gloss" data-tr="q-q32" style="margin-bottom:10px">One juror says: “I will reconsider my vote.” Later, you report this promise to the foreman, with the usual backshift.</p>
         <p class="q-stem">Choose the correct report.</p>
         <div class="opts">
           <button class="opt" data-time="-1" data-goto="q33">He said he will reconsider my vote.</button>
@@ -2490,13 +2863,25 @@ html[data-style="editorial"] .stamp {
       </div>
     </section>
 
-    <section class="slide" data-type="mc" data-node="q33" data-act="Act V" data-bg="ReasonableDoubt/isolated.jpg">
+    <section class="slide" data-type="teach" data-node="q33" data-act="Act V" data-bg="ReasonableDoubt/isolated.jpg" data-side="left" style="--col-w:808px;--wall:linear-gradient(180deg,#e6d8b9 10%,#e4d4b3 30%,#d5c9ab 50%,#c2b195 70%,#e0cca9 90%);--band:56px">
+      <div class="slide-head"><div>
+        <div class="eyebrow">Act V · evidence and emotion · 4 of 4</div>
+        <h2 class="slide-title">The last resistance.</h2>
+      </div></div>
+      <div class="slide-body" style="position:relative">
+        <div class="card"><p class="prose gloss" data-tr="q-q33">Juror 3 is increasingly isolated. He speaks about ungrateful sons, then falls silent. His anger may come from somewhere beyond this case.</p></div>
+        <div style="margin-top:18px">
+          <button class="btn btn-solid" data-goto="q33q" data-i18n="btnContinue">Continue →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-node="q33q" data-act="Act V" data-bg="ReasonableDoubt/isolated.jpg" data-side="left" style="--col-w:808px;--wall:linear-gradient(180deg,#e6d8b9 10%,#e4d4b3 30%,#d5c9ab 50%,#c2b195 70%,#e0cca9 90%);--band:56px">
       <div class="slide-head"><div>
         <div class="eyebrow">Act V · evidence and emotion · 4 of 4</div>
         <h2 class="slide-title">The last resistance.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-ctx gloss" data-tr="q-q33" style="margin-bottom:10px">Juror 3 is increasingly isolated. He speaks about ungrateful sons, then falls silent. His anger may come from somewhere beyond this case.</p>
         <p class="q-stem">Which question combines empathy with a return to the evidence?</p>
         <div class="opts">
           <button class="opt" data-time="-1" data-goto="photograph">Why are you always so unreasonable with everyone in this room?</button>
@@ -2510,26 +2895,38 @@ html[data-style="editorial"] .stamp {
       </div>
     </section>
 
-    <section class="slide" data-type="teach" data-node="photograph" data-act="Act V" data-bg="ReasonableDoubt/photograph.jpg">
+    <section class="slide" data-type="teach" data-node="photograph" data-act="Act V" data-bg="ReasonableDoubt/photograph.jpg" data-side="left" style="--col-w:582px;--wall:linear-gradient(180deg,#e8d7b6 10%,#e8d8b7 30%,#e9d7b5 50%,#e9d6b5 70%,#e7d3b3 90%);--band:0px">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="photoEyebrow">Act V · a moment to listen</div>
         <h2 class="slide-title" data-i18n="photoTitle">A photograph on the table.</h2>
       </div></div>
       <div class="slide-body" style="position:relative">
-        <div class="card"><p class="prose gloss" data-tr="photograph">Juror 3 takes out a worn photograph of himself and his son. The argument stops. You give him time. A fair discussion sometimes needs silence more than another clever sentence.</p><p style="margin-top:12px" class="prose dim gloss" data-tr="photograph-say">Say it aloud, in your own words, without diagnosing him. Begin: “Take your time. We can …”</p></div>
+        <div class="card"><p class="prose gloss" data-tr="photograph">Juror 3 takes out a worn photograph of himself and his son. The argument stops. You give him time. A fair discussion sometimes needs silence more than another clever sentence.</p><p class="prose dim" style="margin-top:12px" data-i18n="sayPhoto">Say it aloud, in your own words, without diagnosing him. Begin: “Take your time. We can …”</p></div>
         <div style="margin-top:18px">
           <button class="btn btn-solid" data-goto="q35" data-i18n="btnContinue">Continue →</button>
         </div>
       </div>
     </section>
 
-    <section class="slide" data-type="mc" data-node="q35" data-act="Act V" data-bg="ReasonableDoubt/summary.jpg">
+    <section class="slide" data-type="teach" data-node="q35" data-act="Act V" data-bg="ReasonableDoubt/summary.jpg" data-side="left" style="--col-w:528px;--wall:linear-gradient(180deg,#e6d9bd 10%,#e3d5b8 30%,#e2d4b8 50%,#deceb1 70%,#dfcfb2 90%);--band:56px">
+      <div class="slide-head"><div>
+        <div class="eyebrow">Act V · claim, reason, limit</div>
+        <h2 class="slide-title">Make the final argument.</h2>
+      </div></div>
+      <div class="slide-body" style="position:relative">
+        <div class="card"><p class="prose gloss" data-tr="q-q35">The foreman asks you to summarise. Connect the evidence to your conclusion, and make clear what you still do not know.</p></div>
+        <div style="margin-top:18px">
+          <button class="btn btn-solid" data-goto="q35q" data-i18n="btnContinue">Continue →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-node="q35q" data-act="Act V" data-bg="ReasonableDoubt/summary.jpg" data-side="left" style="--col-w:528px;--wall:linear-gradient(180deg,#e6d9bd 10%,#e3d5b8 30%,#e2d4b8 50%,#deceb1 70%,#dfcfb2 90%);--band:56px">
       <div class="slide-head"><div>
         <div class="eyebrow">Act V · claim, reason, limit</div>
         <h2 class="slide-title">Make the final argument.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-ctx gloss" data-tr="q-q35" style="margin-bottom:10px">The foreman asks you to summarise. Connect the evidence to your conclusion, and make clear what you still do not know.</p>
         <p class="q-stem">Which summary is the most defensible?</p>
         <div class="opts">
           <button class="opt" data-time="-1" data-goto="verdict">He looks innocent to me, and by now most of you in this room agree with me.</button>
@@ -2543,52 +2940,50 @@ html[data-style="editorial"] .stamp {
       </div>
     </section>
 
-    <section class="slide" data-type="teach" data-node="verdict" data-act="Verdict" data-bg="ReasonableDoubt/verdict.jpg">
+    <section class="slide" data-type="teach" data-node="verdict" data-act="Verdict" data-bg="ReasonableDoubt/verdict.jpg" data-side="left" style="--col-w:452px;--wall:linear-gradient(180deg,#e6d7bb 10%,#e4d4b6 30%,#e3d3b4 50%,#e2d1b2 70%,#e4d6b8 90%);--band:56px">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="verdictEyebrow">The verdict</div>
         <h2 class="slide-title" data-i18n="verdictTitle">Your final vote.</h2>
       </div></div>
       <div class="slide-body" style="position:relative">
-        <p class="prose gloss" data-tr="verdict">You have heard the arguments and tested the claims. Choose the vote you can defend.</p>
-        <div class="cols cols-3">
-          <div class="card">
+                <div style="margin-top:14px">
+          <div class="card choice-row">
             <p class="prose"><strong data-i18n="voteDoubt">Not guilty</strong><br><span data-i18n="voteDoubtBody">The evidence leaves reasonable doubt.</span></p>
-            <div style="margin-top:12px"><button class="btn btn-solid choice" data-goto="end-doubt" data-require="time>=1" data-i18n="btnChoose">Choose this</button></div>
+            <button class="btn btn-solid choice" data-goto="end-doubt" data-require="time>=1" data-i18n="btnChoose">Choose this</button>
           </div>
-          <div class="card">
+          <div class="card choice-row">
             <p class="prose"><strong data-i18n="voteOpen">More discussion</strong><br><span data-i18n="voteOpenBody">You cannot agree yet.</span></p>
-            <div style="margin-top:12px"><button class="btn btn-solid choice" data-goto="end-open" data-i18n="btnChoose">Choose this</button></div>
+            <button class="btn btn-solid choice" data-goto="end-open" data-i18n="btnChoose">Choose this</button>
           </div>
-          <div class="card">
+          <div class="card choice-row">
             <p class="prose"><strong data-i18n="voteHaste">Guilty</strong><br><span data-i18n="voteHasteBody">Simply to end the discussion.</span></p>
-            <div style="margin-top:12px"><button class="btn btn-solid choice" data-goto="end-haste" data-i18n="btnChoose">Choose this</button></div>
+            <button class="btn btn-solid choice" data-goto="end-haste" data-i18n="btnChoose">Choose this</button>
           </div>
         </div>
-        <p class="prose dim" style="margin-top:14px;text-align:center" data-i18n="verdictNote">A room that has lost its patience will not follow you to not guilty.</p>
 
       </div>
     </section>
 
-    <section class="slide" data-type="teach" data-node="end-doubt" data-act="Ending" data-bg="ReasonableDoubt/handshake.jpg">
+    <section class="slide" data-type="teach" data-node="end-doubt" data-act="Ending" data-bg="ReasonableDoubt/handshake.jpg" data-side="left" style="--col-w:549px;--wall:linear-gradient(180deg,#e5d6b7 10%,#e1d0ae 30%,#dfcfaf 50%,#dcceb0 70%,#d8cdb1 90%);--band:56px">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="endDoubt">Ending I · the reasoned verdict</div>
         <h2 class="slide-title" data-i18n="endDoubtTitle">A doubt worth defending.</h2>
       </div></div>
       <div class="slide-body" style="position:relative">
-        <div class="card"><p class="prose gloss" data-tr="end-doubt">The jury agrees on not guilty. You leave the courthouse knowing that you have not solved every mystery. You have insisted that a serious decision requires more than confidence, pressure or prejudice.</p><p style="margin-top:12px" class="prose dim gloss" data-tr="end-doubt-say">What is the difference between “not proven guilty” and “proven innocent”?</p></div>
+        <div class="card"><p class="prose gloss" data-tr="end-doubt">The jury agrees: not guilty. You have not solved every mystery, but you have insisted that a serious decision needs more than confidence, pressure or prejudice.</p><p class="prose dim" style="margin-top:12px" data-i18n="sayDoubt">What is the difference between “not proven guilty” and “proven innocent”?</p></div>
         <div style="margin-top:18px;display:flex;gap:10px">
           <button class="btn btn-solid" data-goto="results" data-i18n="btnContinue">Continue →</button>
         </div>
       </div>
     </section>
 
-    <section class="slide" data-type="teach" data-node="end-open" data-act="Ending" data-bg="ReasonableDoubt/divided.jpg">
+    <section class="slide" data-type="teach" data-node="end-open" data-act="Ending" data-bg="ReasonableDoubt/divided.jpg" data-side="left" style="--col-w:528px;--wall:linear-gradient(180deg,#e5d8be 10%,#e2d5ba 30%,#e2d4ba 50%,#e2d5bb 70%,#e5d8be 90%);--band:56px">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="endOpen">Ending II · the unresolved room</div>
         <h2 class="slide-title" data-i18n="endOpenTitle">The discussion continues.</h2>
       </div></div>
       <div class="slide-body" style="position:relative">
-        <div class="card"><p class="prose gloss" data-tr="end-open">The jurors remain divided. The foreman tells the court they have not reached agreement. This is an unresolved outcome, not a victory or a defeat.</p><p style="margin-top:12px" class="prose dim gloss" data-tr="end-open-say">What would you need to reconsider your position? Use “I would reconsider if …”.</p></div>
+        <div class="card"><p class="prose gloss" data-tr="end-open">The jurors remain divided. The foreman tells the court they have not reached agreement. This is an unresolved outcome, not a victory or a defeat.</p><p class="prose dim" style="margin-top:12px" data-i18n="sayOpen">What would you need to reconsider your position? Use “I would reconsider if …”.</p></div>
         <div style="margin-top:18px;display:flex;gap:10px">
           <button class="btn btn-solid" data-goto="results" data-i18n="btnContinue">Continue →</button>
           <button class="btn" data-goto="verdict" data-i18n="btnRevisit">Revisit your vote</button>
@@ -2596,13 +2991,13 @@ html[data-style="editorial"] .stamp {
       </div>
     </section>
 
-    <section class="slide" data-type="teach" data-node="end-haste" data-act="Ending" data-bg="ReasonableDoubt/emptychair.jpg">
+    <section class="slide" data-type="teach" data-node="end-haste" data-act="Ending" data-bg="ReasonableDoubt/emptychair.jpg" data-side="left" style="--col-w:679px;--wall:linear-gradient(180deg,#e3d3b6 10%,#decdad 30%,#d8c9ad 50%,#b0a590 70%,#ccbda3 90%);--band:56px">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="endHaste">Ending III · the abandoned argument</div>
         <h2 class="slide-title" data-i18n="endHasteTitle">The cost of hurrying.</h2>
       </div></div>
       <div class="slide-body" style="position:relative">
-        <div class="card"><p class="prose gloss" data-tr="end-haste">You agree to a guilty verdict for the sake of leaving. Your choice ends the discussion, but it does not answer the doubts. Nobody in the room can say whether the decision is right.</p><p style="margin-top:12px" class="prose dim gloss" data-tr="end-haste-say">Complete: “We should not have … because …”. Then revisit your vote.</p></div>
+        <div class="card"><p class="prose gloss" data-tr="end-haste">You agree to a guilty verdict for the sake of leaving. Your choice ends the discussion, but it does not answer the doubts. Nobody in the room can say whether the decision is right.</p><p class="prose dim" style="margin-top:12px" data-i18n="sayHaste">Complete: “We should not have … because …”. Then revisit your vote.</p></div>
         <div style="margin-top:18px;display:flex;gap:10px">
           <button class="btn btn-solid" data-goto="results" data-i18n="btnContinue">Continue →</button>
           <button class="btn" data-goto="verdict" data-i18n="btnRevisit">Revisit your vote</button>
@@ -2610,7 +3005,7 @@ html[data-style="editorial"] .stamp {
       </div>
     </section>
 
-    <section class="slide" data-type="results" data-node="results" data-act="Verdict" data-bg="ReasonableDoubt/hero.jpg">
+    <section class="slide" data-type="results" data-node="results" data-act="Verdict" data-side="left" style="--col-w:636px;--wall:linear-gradient(180deg,#e7d4b2 10%,#e7d3b1 30%,#e6d2af 50%,#e6d2b0 70%,#e6d2b0 90%);--band:0px" data-bg="ReasonableDoubt/hero.jpg">
       <div class="slide-body" style="align-items:center;text-align:center">
         <div class="score-big"><span id="scoreVal">0</span><span class="dim" style="font-size:34px">/<span id="scoreMax">0</span></span></div>
         <p class="prose" style="margin-top:18px" id="scoreMsg"></p>
@@ -2625,7 +3020,7 @@ html[data-style="editorial"] .stamp {
       </div>
     </section>
 
-    <section class="slide" data-type="activate" data-node="activate" data-act="Activation" data-bg="ReasonableDoubt/cafe.jpg">
+    <section class="slide" data-type="activate" data-node="activate" data-act="Activation" data-side="left" style="--col-w:571px;--wall:linear-gradient(180deg,#e7d8ba 10%,#e5d4b4 30%,#e3d2b0 50%,#e5d3b1 70%,#e7d8b9 90%);--band:56px" data-bg="ReasonableDoubt/cafe.jpg">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="actEyebrow">Activation</div>
         <h2 class="slide-title" data-i18n="actTitle">Now argue it yourself.</h2>
@@ -2744,19 +3139,13 @@ const NARRATIVE_TR = {
  "de": {
   "brief": "New York, 1957. Ein junger Mann soll seinen Vater getötet haben. Elf Geschworene scheinen zur Verurteilung bereit. Du zweifelst an der Zuverlässigkeit der Beweise. Deine Aufgabe: Zweifel zulassen, ohne vorzugeben, den Ablauf zu kennen.",
   "toolkit": "Du kannst ein Argument hinterfragen, ohne die Person anzugreifen. Wähle sorgfältig, wie bestimmt du dich ausdrückst.",
-  "evidence": "Drei Behauptungen tragen den Fall. Wähle, welche du zuerst prüfen möchtest. Schließe alle drei Akten ab, um zur gesamten Jury zurückzukehren.",
-  "shift": "Das Messer ist kein Einzelstück. Der Zeitablauf ist unsicher. Die Sicht könnte behindert gewesen sein. Mehrere Geschworene denken um. Nun musst du sowohl ein faires Gespräch als auch sorgfältige Argumente ermöglichen.",
-  "shift-say": "Sag es laut: eine Zusammenfassung der drei Akten in 30 Sekunden, mit MIGHT HAVE, EVEN IF und ALTHOUGH.",
+  "evidence": "Drei Behauptungen tragen den Fall. Welche prüfst du zuerst?",
+  "shift": "Das Messer ist kein Einzelstück. Der Zeitablauf ist unsicher. Die Sicht könnte versperrt gewesen sein.",
   "quiet": "Ein stiller Geschworener will sprechen, während zwei lautere Männer streiten. Du kannst ruhig Raum schaffen oder den Streit direkt unterbrechen.",
   "photograph": "Geschworener 3 holt ein abgenutztes Foto von sich und seinem Sohn hervor. Der Streit verstummt. Du gibst ihm Zeit. Ein faires Gespräch braucht manchmal eher Stille als einen weiteren klugen Satz.",
-  "photograph-say": "Sag es laut, mit eigenen Worten, ohne ihn zu diagnostizieren. Beginne: „Take your time. We can …“",
-  "verdict": "Du hast die Argumente gehört und die Behauptungen geprüft. Wähle die Stimme, die du begründen kannst.",
-  "end-doubt": "Die Jury einigt sich auf nicht schuldig. Du verlässt das Gericht, ohne jedes Rätsel gelöst zu haben. Du hast darauf bestanden, dass eine ernste Entscheidung mehr erfordert als Sicherheit, Druck oder Vorurteile.",
-  "end-doubt-say": "Was unterscheidet „Schuld nicht bewiesen“ von „Unschuld bewiesen“?",
+  "end-doubt": "Die Jury einigt sich: nicht schuldig. Du hast nicht jedes Rätsel gelöst, aber darauf bestanden, dass eine ernste Entscheidung mehr braucht als Sicherheit, Druck oder Vorurteile.",
   "end-open": "Die Geschworenen bleiben uneinig. Der Obmann teilt dem Gericht mit, dass keine Einigung erzielt wurde. Das Ergebnis bleibt offen; es ist weder Sieg noch Niederlage.",
-  "end-open-say": "Was müsste geschehen, damit du umdenkst? Verwende „I would reconsider if …“.",
   "end-haste": "Du stimmst für schuldig, um gehen zu können. Das beendet die Diskussion, beantwortet aber keine Zweifel. Niemand im Raum kann sagen, ob die Entscheidung richtig ist.",
-  "end-haste-say": "Ergänze: „We should not have … because …“. Überdenke dann deine Stimme.",
   "q-q04": "Elf Stimmen für schuldig. Deine Hand bleibt unten. Geschworener 3 beugt sich vor: „Willst du behaupten, du weißt, dass er unschuldig ist?“",
   "q-q05": "Geschworener 3 nennt den Fall eindeutig. Alle warten auf deine Antwort. Du brauchst eine Frage, die das Gespräch offenhält.",
   "q-q07": "Die Anklage bringt ein ungewöhnliches Messer mit dem Angeklagten in Verbindung. Das beweist jedoch nicht, dass er es benutzt hat.",
@@ -2789,19 +3178,13 @@ const NARRATIVE_TR = {
  "es": {
   "brief": "Nueva York, 1957. Un joven está acusado de matar a su padre. Once jurados parecen dispuestos a condenarlo. Tú dudas de la fiabilidad de las pruebas. Tu misión: dar espacio a la duda, sin fingir que sabes qué ocurrió.",
   "toolkit": "Puedes cuestionar un argumento sin atacar a quien lo presenta. Elige con cuidado la fuerza de tus palabras.",
-  "evidence": "Tres afirmaciones sostienen el caso. Elige cuál investigar primero. Completa los tres expedientes para volver al debate del jurado.",
-  "shift": "La navaja ya no es única. El tiempo es incierto. La visión pudo estar obstruida. Varios jurados reconsideran su postura. Ahora debes proteger tanto el debate justo como el razonamiento riguroso.",
-  "shift-say": "Dilo en voz alta: un resumen de 30 segundos de los tres expedientes, con MIGHT HAVE, EVEN IF y ALTHOUGH.",
+  "evidence": "Tres afirmaciones sostienen el caso. ¿Cuál examinas primero?",
+  "shift": "La navaja no es única. El tiempo es incierto. La visión pudo estar bloqueada.",
   "quiet": "Un jurado callado intenta hablar mientras dos hombres discuten. Puedes darle espacio con calma o interrumpir directamente la confrontación.",
   "photograph": "El jurado 3 saca una foto gastada de él y su hijo. La discusión se detiene. Le das tiempo. A veces, un debate justo necesita silencio más que otra frase ingeniosa.",
-  "photograph-say": "Dilo en voz alta, con tus palabras y sin diagnosticarlo. Empieza: «Take your time. We can…».",
-  "verdict": "Has escuchado los argumentos y examinado las afirmaciones. Elige el voto que puedas defender.",
-  "end-doubt": "El jurado acuerda un veredicto de no culpabilidad. Sales del tribunal sabiendo que no has resuelto todos los misterios. Has exigido que una decisión seria se base en algo más que seguridad, presión o prejuicios.",
-  "end-doubt-say": "¿Qué diferencia hay entre «no se ha demostrado su culpabilidad» y «se ha demostrado su inocencia»?",
+  "end-doubt": "El jurado acuerda: no culpable. No has resuelto todos los misterios, pero has exigido que una decisión seria se base en algo más que seguridad, presión o prejuicios.",
   "end-open": "Los jurados siguen divididos. El presidente informa de que no han alcanzado un acuerdo. Es un resultado sin resolver, no una victoria ni una derrota.",
-  "end-open-say": "¿Qué necesitarías para reconsiderar tu postura? Usa «I would reconsider if…».",
   "end-haste": "Aceptas un veredicto de culpabilidad para poder irte. Tu decisión termina el debate, pero no responde a las dudas. Nadie en la sala puede decir si la decisión es correcta.",
-  "end-haste-say": "Completa: «We should not have… because…». Después reconsidera tu voto.",
   "q-q04": "Once votos de culpabilidad. Tu mano sigue abajo. El jurado 3 se inclina: «¿Dices que sabes que es inocente?».",
   "q-q05": "El jurado 3 dice que el caso es obvio. Todos esperan tu respuesta. Necesitas una pregunta que mantenga abierto el debate.",
   "q-q07": "La acusación relaciona una navaja poco común con el acusado. Pero esa relación no demuestra que él la utilizara.",
@@ -2922,7 +3305,6 @@ const UI_I18N = {
     howTimeBody: "The room starts with five. A careless answer costs one. At zero, nobody will follow your vote.",
     howTitle: "Every word you say has a price.",
     hubEyebrow: "Act II · the evidence table",
-    hubNote: "Opens when all three files are closed.",
     hubTitle: "Where does doubt begin?",
     lab1: "A possibility in the past.",
     lab2: "A strong negative deduction.",
@@ -2930,7 +3312,8 @@ const UI_I18N = {
     lab4: "An unreal past condition.",
     lab5: "Report what someone said.",
     lab6: "Propose, or set a condition.",
-    labEyebrow: "Before the first vote · your toolkit",
+    labEyebrow1: "Before the first vote · your toolkit · 1 of 2",
+    labEyebrow2: "Before the first vote · your toolkit · 2 of 2",
     labTitle: "The language of doubt.",
     ledClues: "Files",
     ledDp: "Points",
@@ -2945,12 +3328,18 @@ const UI_I18N = {
     resStrong: "Strong work. Most of your arguments held.",
     routeCalm: "Interrupt the confrontation",
     routeListen: "Invite the quieter juror to speak",
+    sayDoubt: "What is the difference between “not proven guilty” and “proven innocent”?",
+    sayHaste: "Complete: “We should not have … because …”. Then revisit your vote.",
+    sayOpen: "What would you need to reconsider your position? Use “I would reconsider if …”.",
+    sayPhoto: "Say it aloud, in your own words, without diagnosing him. Begin: “Take your time. We can …”",
+    sayQ04: "Say one reason a confident person might still be wrong.",
+    sayQ10: "Make another “Even if …” argument about the case.",
+    sayShift: "Say it aloud: a 30-second summary of the three files, with MIGHT HAVE, EVEN IF and ALTHOUGH.",
     scoreLabel: 'Score',
     shiftEyebrow: "Act III · doubt is spreading",
-    shiftTitle: "The room begins to shift.",
+    shiftTitle: "The room shifts.",
     slideOf: (a,b)=>`${a} / ${b}`,
     verdictEyebrow: "The verdict",
-    verdictNote: "A room that has lost its patience will not follow you to not guilty.",
     verdictTitle: "Your final vote.",
     voteDoubt: "Not guilty",
     voteDoubtBody: "The evidence leaves reasonable doubt.",
@@ -3049,7 +3438,6 @@ const UI_I18N = {
     howTimeBody: "Der Raum beginnt mit fünf. Eine unbedachte Antwort kostet eine. Bei null folgt niemand deiner Stimme.",
     howTitle: "Jedes Wort hat seinen Preis.",
     hubEyebrow: "Akt II · der Beweistisch",
-    hubNote: "Öffnet sich, wenn alle drei Akten geschlossen sind.",
     hubTitle: "Wo beginnt der Zweifel?",
     lab1: "Eine Möglichkeit in der Vergangenheit.",
     lab2: "Eine starke negative Schlussfolgerung.",
@@ -3057,7 +3445,8 @@ const UI_I18N = {
     lab4: "Eine irreale Bedingung in der Vergangenheit.",
     lab5: "Wiedergeben, was jemand gesagt hat.",
     lab6: "Etwas vorschlagen oder eine Bedingung stellen.",
-    labEyebrow: "Vor der ersten Abstimmung · dein Werkzeug",
+    labEyebrow1: "Vor der ersten Abstimmung · dein Werkzeug · 1 von 2",
+    labEyebrow2: "Vor der ersten Abstimmung · dein Werkzeug · 2 von 2",
     labTitle: "Die Sprache des Zweifels.",
     ledClues: "Akten",
     ledDp: "Punkte",
@@ -3072,12 +3461,18 @@ const UI_I18N = {
     resStrong: "Starke Arbeit. Die meisten deiner Argumente hielten.",
     routeCalm: "Den Streit unterbrechen",
     routeListen: "Den stilleren Geschworenen zu Wort bitten",
+    sayDoubt: "Was unterscheidet „Schuld nicht bewiesen“ von „Unschuld bewiesen“?",
+    sayHaste: "Ergänze: „We should not have … because …“. Überdenke dann deine Stimme.",
+    sayOpen: "Was müsste geschehen, damit du umdenkst? Verwende „I would reconsider if …“.",
+    sayPhoto: "Sag es laut, mit eigenen Worten, ohne ihn zu diagnostizieren. Beginne: „Take your time. We can …“",
+    sayQ04: "Nenne einen Grund, warum sich jemand trotz großer Sicherheit irren könnte.",
+    sayQ10: "Formuliere ein weiteres Argument zum Fall mit „Even if …“.",
+    sayShift: "Sag es laut: eine Zusammenfassung der drei Akten in 30 Sekunden, mit MIGHT HAVE, EVEN IF und ALTHOUGH.",
     scoreLabel: 'Punkte',
     shiftEyebrow: "Akt III · der Zweifel breitet sich aus",
-    shiftTitle: "Der Raum gerät in Bewegung.",
+    shiftTitle: "Der Raum kippt.",
     slideOf: (a,b)=>`${a} / ${b}`,
     verdictEyebrow: "Das Urteil",
-    verdictNote: "Ein Raum ohne Geduld folgt dir nicht zu „nicht schuldig“.",
     verdictTitle: "Deine letzte Stimme.",
     voteDoubt: "Nicht schuldig",
     voteDoubtBody: "Die Beweise lassen begründete Zweifel.",
@@ -3176,7 +3571,6 @@ const UI_I18N = {
     howTimeBody: "La sala empieza con cinco. Una respuesta descuidada cuesta una. A cero, nadie seguirá tu voto.",
     howTitle: "Cada palabra tiene un precio.",
     hubEyebrow: "Acto II · la mesa de pruebas",
-    hubNote: "Se abre cuando los tres expedientes están cerrados.",
     hubTitle: "¿Dónde empieza la duda?",
     lab1: "Una posibilidad en el pasado.",
     lab2: "Una deducción negativa firme.",
@@ -3184,7 +3578,8 @@ const UI_I18N = {
     lab4: "Una condición irreal en el pasado.",
     lab5: "Transmitir lo que alguien dijo.",
     lab6: "Proponer algo o poner una condición.",
-    labEyebrow: "Antes de la primera votación · tus herramientas",
+    labEyebrow1: "Antes de la primera votación · tus herramientas · 1 de 2",
+    labEyebrow2: "Antes de la primera votación · tus herramientas · 2 de 2",
     labTitle: "El lenguaje de la duda.",
     ledClues: "Expedientes",
     ledDp: "Puntos",
@@ -3199,12 +3594,18 @@ const UI_I18N = {
     resStrong: "Buen trabajo. La mayoría de tus argumentos se sostuvo.",
     routeCalm: "Interrumpir la confrontación",
     routeListen: "Invitar a hablar al jurado más callado",
+    sayDoubt: "¿Qué diferencia hay entre «no se ha demostrado su culpabilidad» y «se ha demostrado su inocencia»?",
+    sayHaste: "Completa: «We should not have… because…». Después reconsidera tu voto.",
+    sayOpen: "¿Qué necesitarías para reconsiderar tu postura? Usa «I would reconsider if…».",
+    sayPhoto: "Dilo en voz alta, con tus palabras y sin diagnosticarlo. Empieza: «Take your time. We can…».",
+    sayQ04: "Di una razón por la que una persona segura de sí misma podría estar equivocada.",
+    sayQ10: "Formula otro argumento con «Even if…» sobre el caso.",
+    sayShift: "Dilo en voz alta: un resumen de 30 segundos de los tres expedientes, con MIGHT HAVE, EVEN IF y ALTHOUGH.",
     scoreLabel: 'Puntuación',
     shiftEyebrow: "Acto III · la duda se extiende",
-    shiftTitle: "La sala empieza a cambiar.",
+    shiftTitle: "La sala cambia.",
     slideOf: (a,b)=>`${a} / ${b}`,
     verdictEyebrow: "El veredicto",
-    verdictNote: "Una sala que ha perdido la paciencia no te seguirá hasta «no culpable».",
     verdictTitle: "Tu voto final.",
     voteDoubt: "No culpable",
     voteDoubtBody: "Las pruebas dejan una duda razonable.",
@@ -4655,6 +5056,14 @@ else ready();
     el.addEventListener('click', done);
   });
 })();
+</script>
+<script>
+/* Reasonable Doubt: the strip beside a right-pinned plate wears that plate's
+   own wall colour (--wall on the slide), and its letterbox band (--band) is
+   faded out; both are set with the plate on every change. */
+slideHooks.push(i => ['--wall', '--band'].forEach(k =>
+  stage.style.setProperty(k, slides[i].style.getPropertyValue(k))));
+slideHooks[slideHooks.length - 1](0);
 </script>
 </body>
 </html>
