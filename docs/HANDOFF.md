@@ -50,12 +50,8 @@ in `ReasonableDoubt/` (the export's own, 3:2, via prep-artwork; light palette).
   EN/DE/ES: every slide clears the deck bar (the first cut did not: Continue
   now sits beside the feedback). Three scripted routes: 27/27 gold; 25/27;
   5 wrong → patience 0, not guilty locked.
-- **NOT DONE — the catalogue row.** The Supabase insert was refused (unasked
-  write). Until Innes runs it, the page is live at its URL but has no SEO
-  block, no library card, no hub/RPG-hub card and no Pro gate. After it:
-  `py tools/build_hubs.py`, `py tools/seo.py`, commit the indexes and the page.
-  The library tags/LESSON_IMAGES, `topics.py` OVERRIDES and the RPG hub
-  `GAMES` entry are already in.
+- **Catalogue row inserted** (Innes asked; B2-C1, pro, deck), hubs and SEO
+  rebuilt the same day: library, RPG hub, Modal Verbs and Conditionals carry it.
 
 ## 2026-10-19 — A language menu in every page's top row; pricing in ten languages
 
