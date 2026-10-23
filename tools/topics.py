@@ -277,6 +277,7 @@ OVERRIDES = {
     'forbes-english-venezuela.html': ['used-to'],
     'taekwondo-regrets.html': ['modal-verbs'],
     'thornwick-deduction.html': ['modal-verbs'],
+    'reasonable-doubt-rpg.html': ['modal-verbs', 'conditionals'],
     'minecraft-lesson.html': ['modal-verbs'],
     'blockcamp-passive-trial.html': ['passive-voice'],
     'sherpa-tensing-cloud-causative.html': ['passive-voice'],

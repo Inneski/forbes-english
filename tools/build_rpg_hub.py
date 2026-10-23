@@ -92,6 +92,12 @@ GAMES = {
         'past modal or a line of reported speech; you start with three lives, earn '
         'Deduction Points, and need four clue cards for the best ending.',
         ('Past Modals', 'Reported Speech')),
+    'reasonable-doubt-rpg.html': (
+        'Reasonable Doubt',
+        'New York, 1957: eleven jurors are ready to convict, and you are Juror 8. Three evidence '
+        'files in any order, a room whose patience runs out, and every reply a past modal, a '
+        'concession or a line of reported speech. Three endings; the best one has to be earned.',
+        ('Past Modals', 'Concession', 'Reported Speech')),
     'thornwick-deduction.html': (
         'The Thornwick Deduction',
         'A murder in a locked study in Hampstead and forty-seven chances to say exactly '

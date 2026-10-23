@@ -10,6 +10,36 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
+## 2026-10-23 — Reasonable Doubt (B2–C1): the "12 Angry Men" export rebuilt as a branching deck
+
+Innes dropped `incoming/Forbes_English_12_Angry_Men_RPG_V1.html` (ChatGPT
+export: one scrolling page, 41 inlined WebP plates, EN/ES/DE) with "rename
+this and fix it up forbes style". Renamed after the export's own subtitle;
+the film's title and every "the film" are gone. Built like the Scarlet Star
+(adult story RPG = branch deck): `lesson-template/build/build_reasonable_doubt.py`
++ `i18n_reasonable_doubt{,_de,_es}.py` → `reasonable-doubt-rpg.html`, plates
+in `ReasonableDoubt/` (the export's own, 3:2, via prep-artwork; light palette).
+
+- **Shape:** 43 slides. Trunk → an evidence hub (files A/B/C in any order;
+  each checkpoint's options carry `data-clue`, "Reconvene" needs
+  `clues>=3`) → a two-arm fork → verdict. 27 MC on every route. Patience 5;
+  the not-guilty ending needs `time>=1`. First use of a hub-and-return
+  inside a branch deck: it needs nothing new from the engine.
+- **Fixed from the export:** 10 keys were the only longest option
+  (distractors lengthened); every explanation rewritten with CAPS tokens;
+  stems/options no longer translated (§8); teacher casebook, scene selector
+  and answer key dropped; cast became a slide; toolkit 4 → 6 forms.
+- **Measured:** Playwright with real clicks, gloss open, right and wrong,
+  EN/DE/ES: every slide clears the deck bar (the first cut did not: Continue
+  now sits beside the feedback). Three scripted routes: 27/27 gold; 25/27;
+  5 wrong → patience 0, not guilty locked.
+- **NOT DONE — the catalogue row.** The Supabase insert was refused (unasked
+  write). Until Innes runs it, the page is live at its URL but has no SEO
+  block, no library card, no hub/RPG-hub card and no Pro gate. After it:
+  `py tools/build_hubs.py`, `py tools/seo.py`, commit the indexes and the page.
+  The library tags/LESSON_IMAGES, `topics.py` OVERRIDES and the RPG hub
+  `GAMES` entry are already in.
+
 ## 2026-10-19 — A language menu in every page's top row; pricing in ten languages
 
 Innes: *"https://forbesenglish.com/pricing should have translation button
