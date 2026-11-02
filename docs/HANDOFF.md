@@ -11736,7 +11736,48 @@ none of this applies.
 
 ---
 
-## Managing Risk (C1/C2) — built, checked, SEO done, awaiting upload
+## The web uploader: what actually goes wrong, and the ordering that fixes it
+
+CLAUDE.md already warns that clicking the commit summary by element `ref` does
+nothing and that the first click after a `file_upload` is swallowed. Both are
+true. What it does not say is **what the swallowed click then does**, and that
+is the part that cost a full re-upload on 2026-08-31.
+
+The click lands nowhere, so focus stays on the document. The summary text you
+type next is therefore delivered to the page as **GitHub keyboard shortcuts** —
+`g`, `a`, `c` and friends — which navigated the tab to `/agents` and discarded
+twenty-two staged files. The tool reported the click and the typing as
+successful. Nothing was committed and nothing errored.
+
+**The fix is ordering, not technique. Set the commit message BEFORE uploading
+any files**, with `form_input` against the textbox ref rather than a click plus
+typing:
+
+1. open `/upload/main/<dir>`
+2. `find` the file input and the summary textbox
+3. `form_input` the summary — the field is empty and focusable, nothing has
+   been swallowed yet, and `form_input` sets the value directly
+4. `file_upload` in batches
+5. scroll, screenshot, confirm the summary text is still in the field
+6. click **Commit changes** by coordinate, as its own tool call
+
+Two smaller corrections to the existing note:
+
+* **Batch size.** The doc says five files at ~500 KB. Batches of four
+  380 KB pages (~1.5 MB) went through eight times without incident. What does
+  hurt is the total: after ~6.5 MB staged in one form, `Page.captureScreenshot`
+  timed out after 30 s. That was the renderer being busy, **not** the wedge the
+  doc describes — an 8-second wait and a retry recovered it, and the form was
+  intact. Wait and retry once before concluding the tab is dead.
+* **`file_upload` paths.** Files must be under `/mnt/user-data/outputs/`.
+  A repo path like `/home/claude/repo/x.html` is rejected, so stage a copy
+  first — and if you stage with a glob, diff the staged list against
+  `git diff --name-only` before uploading. `blockcamp-*.html` swept in two
+  unmodified files that had no business being in the commit.
+
+---
+
+## Managing Risk (C1/C2) — built, checked, SEO done, PUBLISHED
 
 `forbes-risk-management-c1-c2.html`, 24 slides, 38 scored points, English +
 German + Spanish all complete (the other seven stay `{}` and are not offered).
@@ -11775,10 +11816,14 @@ the entry, so the card goes straight to live the moment the files land
 together. That window is the cost of creating the row before uploading, and it
 was accepted deliberately rather than overlooked.
 
-The upload itself could not be done from this session: `git push` returns the
-proxy 403, and there were no Chrome tools and no linked device, so GitHub's
-web uploader was unreachable too. Every changed file went out by
-`SendUserFile`.
+Uploaded through GitHub's web uploader in five commits, `d58b3ce` through
+`8174be3`, and all 37 files verified byte-for-byte against `origin/main`
+afterwards. `git push` still returns the proxy 403; the Chrome tools appeared
+partway through the session and were the route that worked.
+
+**`deck` is still false.** Nobody has yet confirmed the served page carries
+`data-type="activate"`, and the Chrome tools disconnected before that check
+could run. Do it, then flip the flag.
 
 Everything is committed on the local branch `risk-management-c1-c2` and was
 delivered by `SendUserFile`, because `git push` returned the usual proxy 403.
