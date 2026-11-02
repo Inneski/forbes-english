@@ -675,7 +675,9 @@ function personaliseGate(html, m, url, lesson = null, notYet = null, access = NO
   const title = escapeHtml(m.title || "");
   const desc = escapeHtml(m.description || "");
   const level = escapeHtml(m.level || "");
-  const canonical = `${url.origin}${url.pathname}`;
+  // The clean URL whichever form was asked for, as tools/seo.py writes it:
+  // a gated lesson answers /x.html and /x alike, and must not name both.
+  const canonical = `${url.origin}${url.pathname.replace(/\.html$/i, "").replace(/\/index$/, "/")}`;
   const image = m.image ? `${url.origin}${m.image}` : "";
 
   const ld = {

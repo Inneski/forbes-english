@@ -377,7 +377,7 @@ def seo_block(url, title, desc, image, row=None, noindex=False):
             'provider': {'@type': 'Organization', 'name': BRAND,
                          'url': SITE + '/'},
             'isPartOf': {'@type': 'Course', 'name': '%s lesson library' % BRAND,
-                         'url': '%s/library.html' % SITE},
+                         'url': page_url('library.html')},
         }
         if row.get('level'):
             ld['educationalLevel'] = row['level']
@@ -537,7 +537,7 @@ def sitemap(rows, images):
         prio = meta[2]; img = meta[3] if len(meta) > 3 else None
         p = os.path.join(ROOT, f)
         if os.path.exists(p):
-            out += url('%s/%s' % (SITE, f),
+            out += url(page_url(f),
                        time.strftime('%Y-%m-%d', time.gmtime(os.path.getmtime(p))),
                        prio, img)
     for r in rows:
@@ -545,7 +545,7 @@ def sitemap(rows, images):
         if not os.path.exists(p) or coming_soon(r, images):
             continue
         img = images.get(r['file'])
-        out += url('%s/%s' % (SITE, quote(r['file'])),
+        out += url(page_url(r['file']),
                    (r.get('created_at') or '')[:10] or
                    time.strftime('%Y-%m-%d', time.gmtime(os.path.getmtime(p))),
                    0.8 if r['access'] != 'pro' else 0.6,
@@ -556,6 +556,18 @@ def sitemap(rows, images):
 
 def quote(p):
     return urllib.parse.quote(p)
+
+
+def page_url(f):
+    """The address a page is actually served at. Cloudflare's asset layer
+    answers `/foo.html` with a 307 to `/foo` (and `/x/index.html` to `/x/`),
+    so a canonical, og:url or sitemap entry naming the .html file pointed
+    Google at a URL that redirects away, temporarily. Until 2026-11-02
+    every one of them did. The Worker's gate page uses the same rule."""
+    q = quote(f)
+    if q == 'index.html' or q.endswith('/index.html'):
+        return '%s/%s' % (SITE, q[:-len('index.html')])
+    return '%s/%s' % (SITE, q[:-5] if q.endswith('.html') else q)
 
 
 def llms_txt(rows, index, images):
@@ -592,8 +604,8 @@ def llms_txt(rows, index, images):
             meta = index.get(r['file'], {})
             desc = meta.get('description', '')
             lvl = r.get('level')
-            out.append('- [%s](%s/%s)%s: %s' % (
-                clean(r['title']), SITE, quote(r['file']),
+            out.append('- [%s](%s)%s: %s' % (
+                clean(r['title']), page_url(r['file']),
                 ' — %s' % lvl if lvl else '', trim(desc, 140)))
         out.append('')
 
@@ -605,13 +617,13 @@ def llms_txt(rows, index, images):
     for t in topics.TOPICS:
         if t.get('page') or not t['desc']:
             continue
-        out.append('- [%s](%s/%s): %s' % (
-            t['name'], SITE, topics.hub_url(t['slug']),
+        out.append('- [%s](%s): %s' % (
+            t['name'], page_url(topics.hub_url(t['slug'])),
             trim(html.unescape(re.sub('<[^>]+>', '', t['desc'])), 160)))
-    out.append('- [IELTS Academic](%s/ielts.html): the exam route — Writing, '
+    out.append('- [IELTS Academic](%s/ielts): the exam route — Writing, '
                'Speaking, Listening, Reading and Vocabulary, each in teaching '
                'order, with the first lesson on every route free.' % SITE)
-    out.append('- [Role-playing games](%s/rpg.html): every branching adventure on '
+    out.append('- [Role-playing games](%s/rpg): every branching adventure on '
                'the site by level — Block Camp quests and story games from Sherlock '
                'Holmes to a Paris boardroom — where each choice is a grammar '
                'question and the answer decides the ending.' % SITE)
@@ -619,11 +631,11 @@ def llms_txt(rows, index, images):
     section('Free lessons', free)
     section('Paid lessons', pro)
     out += ['## Site', '',
-            '- [Lesson library](%s/library.html): every lesson, filterable by '
+            '- [Lesson library](%s/library): every lesson, filterable by '
             'level and topic.' % SITE,
-            '- [Plans](%s/pricing.html): Forbes English Pro, Block Camp Term 1 '
+            '- [Plans](%s/pricing): Forbes English Pro, Block Camp Term 1 '
             'and IELTS, and what stays free.' % SITE,
-            '- [Level Checker](%s/level-checker.html): a free adaptive '
+            '- [Level Checker](%s/level-checker): a free adaptive '
             'placement test for the tenses, A1 to C1, that names the lesson '
             'to start on.' % SITE, '']
     return '\n'.join(out)
@@ -701,7 +713,7 @@ def main(check=False):
         img = images.get(r['file'])
         soon = coming_soon(r, images)
         img = '/' + quote(img) if img else DEFAULT_IMAGE
-        url = '%s/%s' % (SITE, quote(r['file']))
+        url = page_url(r['file'])
         new = inject(src, seo_block(url, title, desc, img, r, noindex=soon),
                      esc(title))
         if new is None:
@@ -749,7 +761,7 @@ def main(check=False):
             continue
         src = open(p, encoding='utf-8').read()
         title = '%s | %s' % (t, BRAND)
-        new = inject(src, seo_block('%s/%s' % (SITE, f), title, d,
+        new = inject(src, seo_block(page_url(f), title, d,
                                     page_img), esc(title))
         if new is None:
             unfenced.append(f)
