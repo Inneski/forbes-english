@@ -16160,3 +16160,18 @@ Worth knowing for the next deck built from white-ground clip art:
 
 The catalogue insert from the session was refused; Innes ran it (2026-10-06 15:31 UTC).
 Made free the same day at Innes's request (`access = 'free'`; the session's update went through, as an explicitly asked-for write did on 09-26). Hubs and seo.py regenerated.
+
+## 2026-11-02 — http:// redirects to https
+
+Until now `http://forbesenglish.com` was served as plain http (200), sign-in
+and checkout included, and `http://www` went to `http://` apex. The www block
+at the top of `route()` in `src/index.js` now sends any live-host request that
+is not https apex to `https://forbesenglish.com` in one hop: 301 for GET/HEAD,
+308 otherwise (keeps a POST body). localhost is left alone. A push deploys the
+Worker: live about 2 minutes after `git push`. Check with
+`curl -sI http://www.forbesenglish.com/library` → 301 to the https apex.
+
+Found, not fixed (needs a decision): every canonical tag `seo.py` writes is
+the `.html` URL, which the asset layer 307s to the clean URL. Google is told
+to prefer a URL that redirects away, temporarily. Fix is in `seo.py`
+(canonical → clean URL), a whole-site regeneration.
