@@ -85,11 +85,19 @@ export default {
 async function route(request, env, ctx) {
     const url = new URL(request.url);
 
-    // www is the apex. One host for Google, one for cookies, one for the
-    // Stripe return URLs (SITE_URL is the apex).
-    if (url.hostname === "www.forbesenglish.com") {
+    // www is the apex, and the site is https only. One host for Google, one
+    // for cookies, one for the Stripe return URLs (SITE_URL is the apex).
+    // Until 2026-11-02 http:// was served as-is, sign-in and checkout
+    // included. One hop either way: http://www goes straight to https apex.
+    // Only the live hosts: `wrangler dev` on localhost stays http.
+    const live = url.hostname === "forbesenglish.com" || url.hostname === "www.forbesenglish.com";
+    if (live && (url.hostname !== "forbesenglish.com" || url.protocol !== "https:")) {
       url.hostname = "forbesenglish.com";
-      return Response.redirect(url.toString(), 301);
+      url.protocol = "https:";
+      url.port = "";
+      // 308 keeps a POST a POST; a GET gets the 301 every crawler knows.
+      const code = request.method === "GET" || request.method === "HEAD" ? 301 : 308;
+      return Response.redirect(url.toString(), code);
     }
 
     if (request.method === "POST" && url.pathname === "/api/create-checkout-session") {
