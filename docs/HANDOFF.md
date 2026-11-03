@@ -16324,9 +16324,11 @@ them all through `page_url()` (`foo.html` → `/foo`, `x/index.html` → `/x/`),
 and the Worker's gate page names the clean URL whichever form was requested
 (live-checked on `block-camp/last-bounty-rpg`, both forms). Sitemap is clean.
 
-**Half shipped, waiting on another session:** 192 pages, `library.html`,
-`grammar.html` and the topic hubs among them, hold uncommitted edits from the
-2026-10-29 mobile tap-target work ("a finger needs 44px"). They were left out
-of `08b3187d`. `seo.py` has already rewritten their canonicals in the tree,
-so they go live with whoever commits that work. Until then they still say
-`.html` on the live site.
+**Finished 2026-11-03.** The 192 pages held by the mobile tap-target work went
+out with that session's `997e1a70`. The hand-written canonicals seo.py does
+not own (Block Camp hub/flags/quest/village templates, `build_ielts_bank.py`,
+five old duplicate pages) were fixed at the source in `4cda8f7c`. Live-checked.
+Only `lesson-template/build/sherpa/legacy/chassis-camp-seven.html` still names
+.html, an archived template nothing serves. A new hand-written canonical must
+use the clean URL: `git grep 'canonical" href="[^"]*\.html"'` should find
+nothing outside `legacy/`.
