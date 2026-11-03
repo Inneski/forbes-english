@@ -84,12 +84,12 @@ page=f'''<!DOCTYPE html>
 <title>IELTS Task 2 Question Bank | Forbes English</title>
 <!-- SEO:start -->
 <meta name="description" content="{TOTAL} IELTS Writing Task 2 questions sorted by topic and by essay type, each topic with arguments for both sides.">
-<link rel="canonical" href="https://forbesenglish.com/ielts-question-bank.html">
+<link rel="canonical" href="https://forbesenglish.com/ielts-question-bank">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Forbes English">
 <meta property="og:title" content="IELTS Task 2 Question Bank | Forbes English">
 <meta property="og:description" content="{TOTAL} Task 2 questions by topic and essay type, each topic with arguments for both sides.">
-<meta property="og:url" content="https://forbesenglish.com/ielts-question-bank.html">
+<meta property="og:url" content="https://forbesenglish.com/ielts-question-bank">
 <meta property="og:image" content="https://forbesenglish.com/ielts-question-bank/hero.jpg">
 <meta property="og:locale" content="en_GB">
 <meta name="twitter:card" content="summary_large_image">
