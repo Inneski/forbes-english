@@ -10,6 +10,26 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
+## 2026-11-03 — Within Spec, Below Standard (B2–C1 supplier quality meeting): SHIPPED
+
+`supplier-quality-meeting-b2-c1.html`, 24 slides, EN/DE/ES, Pro. It arrived
+as a finished template deck in Downloads (`…-preview (1).html`, the newer of
+two copies) with all seven pictures inlined: the cover as a data URI in
+`--hero`, the six backgrounds as a `var M={"img0": "data:…"}` script that
+swapped `data-bg="img0"` for the data URI at load. **There is no builder.**
+The page in the root is the source: edit it directly. The pictures were
+pulled out to `SupplierQuality/` (hero + six `bg-*.jpg`, via prep-artwork,
+no repo duplicates) and the page points at them. The palette in the file was
+already exactly what `extract-palette.py --light` gives for the hero.
+
+A 2026-11-02 session stopped on this deck, reading the `img0`…`img5` slot
+names as missing files. They were keys into that inline map. check-lesson's
+HEAD check reports them as missing backgrounds, so look for an inline map
+before concluding a dropped deck has no art.
+
+Artwork is 2400×1023 (2.35:1), so it crops at the sides on 16:9. Not
+re-rendered; it is how the deck was authored.
+
 ## 2026-11-03 — the whole site, on a phone
 
 Innes, 2026-10-29: *"I tried to open Kraken on a mobile and it didnt even
