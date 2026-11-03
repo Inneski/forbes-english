@@ -119,46 +119,46 @@ COMP = [
     # paragraph 1 actually establishes.
     dict(stem='What does paragraph 1 tell you about Santiago before the '
               'dream?',
-         options=['He was satisfied with the life he already had',
-                  'He was restless and looking for a way out',
+         options=['He was restless and looking for a way out',
+                  'He was satisfied with the life he already had',
                   'He was poor and could not afford to travel',
                   'He was searching for treasure near the pyramids'],
-         correct=0,
+         correct=1,
          why='<em>Content with a simple life</em>. This matters: the story is '
              'not about escaping something bad. He gives up something he '
              'liked, which is what makes the choice cost anything.'),
     dict(stem='What persuades Santiago to leave?',
-         options=['A repeated dream, and an old man who calls it his purpose',
-                  'A business offer made to him by the crystal merchant in Tangier',
+         options=['A business offer made to him by the crystal merchant in Tangier',
                   'His parents, who had wanted a different life for him',
-                  'A letter that arrived from a stranger living in Cairo'],
-         correct=0,
+                  'A letter that arrived from a stranger living in Cairo',
+                  'A repeated dream, and an old man who calls it his purpose'],
+         correct=3,
          why='Two things together, and the item is testing whether you '
              'noticed both. The dream alone had already repeated without '
              'moving him; it takes the old man naming it a Personal Legend.'),
     dict(stem='What happens to Santiago within a day of reaching Africa?',
-         options=['He is robbed of everything he has',
-                  'He meets the alchemist at the oasis',
+         options=['He meets the alchemist at the oasis',
                   'He is offered work by an Englishman',
+                  'He is robbed of everything he has',
                   'He decides to go straight back home'],
-         correct=0,
+         correct=2,
          why='Robbed, immediately. The crystal merchant comes after that, and '
              'the alchemist much later, at the oasis.'),
     dict(stem='How does the novel actually end?',
-         options=['He finds the treasure buried back where he started',
-                  'He finds the treasure buried near the pyramids',
+         options=['He finds the treasure buried near the pyramids',
                   'He never finds it, and the ending is left open',
-                  'The alchemist gives him the treasure as a reward'],
-         correct=0,
+                  'The alchemist gives him the treasure as a reward',
+                  'He finds the treasure buried back where he started'],
+         correct=3,
          why='Under the tree at the ruined church in Spain. He had to go to '
              'Egypt to be told where it was — that is the joke the whole book '
              'is built on, and it only works if you know he does find it.'),
     dict(stem='So what does the treasure represent?',
-         options=['Both the gold and what the journey taught him',
-                  'Only the wisdom he gained along the journey',
+         options=['Only the wisdom he gained along the journey',
                   'Only the gold that he digs up at the end',
+                  'Both the gold and what the journey taught him',
                   'Nothing &mdash; it is a symbol with no referent'],
-         correct=0,
+         correct=2,
          why='Careful with this one. It is tempting to say <em>only the '
              'wisdom</em>, because that sounds like the moral — but he really '
              'does dig up real gold. The book insists on both, and a reading '
@@ -242,9 +242,9 @@ GRAM = [
              'perfect earns its place: <strong>had decided</strong>.'),
     dict(stem='By the time he reached the oasis, he ______ everything he '
               'owned.',
-         options=['had already lost', 'already lost', 'was already losing',
+         options=['already lost', 'was already losing', 'had already lost',
                   'has already lost'],
-         correct=0,
+         correct=2,
          why='<em>By the time</em> is a strong signal: the earlier event takes '
              '<strong>had</strong>. Note where <em>already</em> sits — between '
              '<em>had</em> and the participle, never before <em>had</em>.'),
@@ -252,7 +252,7 @@ GRAM = [
     # perfect, so a learner could never practise deciding.
     dict(stem='The Englishman ______ many books about alchemy before he met '
               'Santiago.',
-         options=['read', 'had been reading', 'has read', 'reads'], correct=0,
+         options=['had been reading', 'has read', 'reads', 'read'], correct=3,
          why='<strong>Read</strong> — past simple. <em>Before</em> has '
              'already put the events in order, so the past perfect is optional '
              'already put the events in order, so the past perfect is optional '
@@ -265,13 +265,30 @@ GRAM = [
              'simple), and what he realised was true before it (past perfect). '
              '<strong>Had had</strong> looks strange and is correct — the '
              'auxiliary and the participle of the same verb.'),
-    # Also past simple: two events in the order they happened.
-    dict(stem='He ______ the sheep, ______ to Africa, and ______ robbed.',
-         options=['sold &middot; travelled &middot; was',
-                  'had sold &middot; had travelled &middot; had been',
-                  'has sold &middot; has travelled &middot; has been',
-                  'was selling &middot; was travelling &middot; was being'],
-         correct=0,
+    # Also past simple: three events in the order they happened.
+    #
+    # Not the sentence the teach card uses. Until 2026-11-03 this asked about
+    # "He sold the sheep, travelled to Africa and was robbed" -- word for word
+    # the example printed on g2bh two slides earlier, so a learner could key it
+    # from memory without applying anything.
+    #
+    # The verbs are long on purpose, and that is the second thing fixed here.
+    # check-lesson's ANSWERS gate flagged the old item at 1.59x: the key was
+    # 22 characters against a 35-character shortest distractor, because a bare
+    # past simple chain can never be as long as the same chain carrying three
+    # auxiliaries -- "had " three times is twelve characters the key cannot
+    # have. Tightening the distractors, which is the gate's usual advice,
+    # cannot work here; the key has to carry the length itself. The gate wants
+    # the shortest distractor within 1.5x of the key, and the +12 makes that
+    # key >= 24 characters. These three are 34 against 46, which clears it
+    # with room rather than landing on the boundary.
+    dict(stem='He ______ his old life, ______ to Africa, and ______ how little '
+              'he knew.',
+         options=['had abandoned &middot; had travelled &middot; had discovered',
+                  'abandoned &middot; travelled &middot; discovered',
+                  'has abandoned &middot; has travelled &middot; has discovered',
+                  'was abandoning &middot; was travelling &middot; was discovering'],
+         correct=1,
          why='Three events told <em>in the order they happened</em> — so plain '
              'past simple, three times. Stacking past perfects here would say '
              'that all of it happened before some other past moment, and there '
