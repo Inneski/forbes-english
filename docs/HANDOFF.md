@@ -10,6 +10,146 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
+## 2026-11-03 — the whole site, on a phone
+
+Innes, 2026-10-29: *"I tried to open Kraken on a mobile and it didnt even
+have a next button. I want you to work hard on optimising the website for
+mobile use."* He was right, and the Kraken was the smaller half of it.
+
+Everything below was measured at **360x560** — a 360px Android with Chrome's
+own bars counted, not the 360x800 the spec sheet claims. Use that size, not
+the pane's "mobile" preset, or you will not see any of these.
+
+### 1. The Kraken, and every RPG
+
+Answer question 1 and the panel wants 674px of a sheet that has 398. NEXT sat
+at **y=767 on a 560px screen**, 276px below a fold with no scrollbar — a
+translucent sheet over a painting shows no scroll affordance at all.
+`displayAnswer()` did try to scroll to it, one `requestAnimationFrame` after
+writing the feedback, which measured the panel at its pre-feedback height and
+moved nothing: `scrollTop` was still 0.
+
+In `lesson-template/build/rpg/rpg.py`:
+
+- **The sheet's last action is pinned** (`:last-child`, phones only): a
+  full-width 44px bar at the bottom of the panel, backed by `var(--panel)`
+  over the sheet's own `var(--panel)` (.88 over .88 = .986, so the story
+  cannot be read through it). The button keeps its own accent fill — the
+  first attempt painted the strip onto the button and the gold CONTINUE came
+  out dark-on-dark, looking disabled.
+- **`scrollToAction()`** replaces the rAF. It runs once immediately (after a
+  `scrollHeight` read to flush the write) and again after two frames, and it
+  sets `scrollTop` directly: `scrollTo({behavior:'smooth'})` does not run in a
+  backgrounded tab and was silently doing nothing.
+- **`markScroll()`** adds `.can-scroll` / `.at-end`, which draw a fade on the
+  sheet's bottom edge when there is more under it.
+- **The HUD was 136px of a 560px screen** — four badges stacked and the
+  utilities three rows deep. Badges now show their counters with the word
+  hidden (visually, not from the accessibility tree): `★ 10/70  ◆◆◇◇  ♥♥♥
+  ? 2/14`. The volume slider goes (hardware keys, and the music button still
+  mutes). 73px upright, 44px sideways; the sheet starts 64px higher.
+
+13 RPGs rebuilt. **Blocula** (`build_blocula.py`) has its own older copy of
+the chrome and had the identical defect — 180px clipped, NEXT at y=672 — and
+got the same two fixes ported. `block-camp-descent-map.html` matches the RPG
+greps but is a route map with no sheet; nothing to do there.
+
+### 2. The 163 standard decks were worse
+
+`fitStage()` draws the fixed 1280x720 stage at whatever scale fits. On a phone
+that is **0.28**: a 360x203 letterbox in the middle of a black screen, body
+text at **5.3px**, chips at 3.2px, the Start button **41x15**. No scale saves
+a 16:9 canvas on a 9:19.5 screen.
+
+So below the same 0.62 that already decided `.is-phone`, the deck stops being
+a stage and becomes a page — **flow mode**, the block between
+`FLOW-MODE-BEGIN` and `FLOW-MODE-END` in `lesson-template.html`. No transform,
+the slide laid out in the viewport's own width at its own sizes, scrolling if
+it is taller than the screen, the bar fixed at the bottom. The authored body
+sizes (15–19px) were already phone sizes; only the display type, the grids and
+the chrome needed saying again. The print rules do the same thing for paper
+and are the precedent that slides reflow out of `position:absolute`.
+
+Things that only showed up by walking every slide:
+
+- **`.slide` must stay `position: relative`.** Set `static`, its `z-index: 1`
+  stops applying and the `.bg-layer` paints *over* the content: the boy in The
+  Alchemist's hero stood in front of options A, B and C.
+- **Inline column counts need `!important`.** Builders write
+  `style="grid-template-columns:1fr 1fr 1fr"` (588 times across the decks),
+  and the JS writes more at runtime: `.sort-bins`, `.find-grid`. Three cards
+  across laid themselves out 559px wide inside a 360px phone.
+- **The lock** put its keypad beside its display: 248px of keys starting at
+  x=228. Stacked upright, the five columns fit as they are.
+- **A story deck's `--col-w`** is a per-slide width measured against the
+  1280px stage (`build_reasonable_doubt.py` pins text into each plate's empty
+  wall). Reasonable Doubt's cover asked for 636px of column on a 360px phone.
+
+### 3. The bar was hiding NEXT on the branch decks too
+
+Found late, and it is the same bug as the Kraken's in a family I had not
+looked at: the branch decks put a ledger (POINTS, PATIENCE, FILE) in the deck
+bar, it wanted 284px of a 360px phone, and **NEXT ended up at x=531**. The
+counter did not help — Reasonable Doubt's reads 112px, not "3 / 72".
+
+The arrows are now `flex: 0 0 44px` and ordered to the ends; the ledger takes
+what is left (`flex: 1 1 0`) and scrolls inside itself; the counter ellipsises.
+Verified on 8 decks x 4 slides: every control on screen and hit-tested.
+
+### 4. The site chrome
+
+Nav words were **52x15** targets, the language menu 22px, library's 57 filter
+chips 32px. The band's words now take their height as padding cancelled by an
+equal negative margin, so nothing moved visually; the controls grew.
+`index.html`, `library.html`, `ielts.html` (→ `build_hubs.py` → 30 pages) and
+`fe-lang.js` (every page that has the menu).
+
+### Two new tools
+
+**`tools/mobile.py`** — run it after a build, before `seo.py`. It copies the
+flow block and `fitStage()` from `lesson-template.html` into every built deck,
+the way `seo.py` rewrites metadata. It exists because `assemble()` only picks
+the chrome up when a builder runs, and running 163 builders to deliver a
+stylesheet is a day of risk for a change that touches no content. It is
+idempotent and `--check` reports without writing.
+
+*It also turned up why this was never noticed:* of 165 built pages carrying
+`fitStage()`, **155 still had the version from before `.is-phone` existed**.
+The phone arrows Innes asked for on 2026-10-13 had only ever reached nine
+decks in ten. A chrome fix does not reach a deck until its builder runs, and
+most builders had not.
+
+**`tools/check_mobile.py`** — the gate. Static, so it runs in a cloud session:
+every page has one viewport meta; every deck sets `is-flow`, carries the
+stylesheet, clears the transform and listens for `orientationchange`; every
+RPG pins its last action and is not using the single-rAF scroll. Proved
+failing against five deliberately broken copies before being trusted. 472
+pages, 164 decks, 15 RPGs, all passing.
+
+### Found, not fixed
+
+- **`alchemist_b2_lesson.html` fails `check-lesson` on ANSWERS**: slide 27's
+  correct option is the shortest, 22 chars against 35, so a learner can score
+  by picking the short one. It fails on `HEAD` too — it predates this work and
+  is a distractor-writing fix in `build_alchemist.py`, not a mobile one.
+- **FireShield's own chrome** has 10.5–11px labels on a phone. It is the one
+  deck with a bespoke stage; flow mode carries it, but its internal type is
+  its own.
+- **Gap inputs are 31px tall** on a phone. Left alone deliberately: they sit
+  inline in a sentence, and 44px would blow up the line they are in.
+
+### What to run
+
+```bash
+py lesson-template/build/build_<name>.py
+py tools/mobile.py            # flow mode into the built decks
+node lesson-template/check-lesson.js <lesson>.html
+py tools/check_mobile.py      # the phone gate
+py tools/build_hubs.py
+py tools/seo.py               # ALWAYS last
+```
+
+---
 ## 2026-10-23 — Reasonable Doubt (B2–C1): the "12 Angry Men" export rebuilt as a branching deck
 
 Innes dropped `incoming/Forbes_English_12_Angry_Men_RPG_V1.html` (ChatGPT

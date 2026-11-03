@@ -199,7 +199,23 @@ button{font:inherit}.game{position:fixed;inset:0;background:#050306}.frame{posit
 @media(pointer:coarse){.lang-btn,.utility{min-height:44px;min-width:44px;display:inline-flex;align-items:center;justify-content:center}.lang-item{min-height:44px}.option,.route{min-height:44px}.continue,.start,.restart{min-height:44px}.hide-btn{min-height:44px;min-width:44px}}
 .utility.home{text-decoration:none;display:inline-flex;align-items:center;gap:.35cqw}
 @media(max-width:700px),(max-height:500px) and (min-width:701px) and (pointer:coarse){.badge,.lang-btn,.utility{font-size:12px;padding:5px 9px}.lang-btn .lw,#fsLabel,#homeLabel{display:none}.corner-help{display:none}.hot{min-width:44px;min-height:44px}.hot i,.hot::before{inset:-4px}.hot i{box-shadow:0 0 0 2px color-mix(in srgb,var(--glow) 90%,transparent),0 0 14px 3px color-mix(in srgb,var(--glow) 55%,transparent)}.hot::before{border-width:2px}.hot-label{font-size:13px}.lang-menu{min-width:220px;padding:6px;gap:3px;max-height:calc(100vh - 70px);overflow:auto}.lang-item{font-size:13px;padding:5px 8px;grid-template-columns:32px 1fr}.lang-item b,.lang-item span{font-size:12px}.lang-btn{gap:4px}.content,.center .content,.tr-on .content{max-height:100%;overflow:auto;gap:9px}.kicker{font-size:12px}.translation,.tr-on .translation,.title .translation,.kicker .translation,.option .translation,.route .translation,.rule-card .translation,.tr-on .rule-card .translation{font-size:12px}.clue,.route{font-size:13px;padding:8px 10px}.rule-card,.rule-note,.tr-on .rule-card,.tr-on .rule-note{font-size:13px;padding:2px 9px}.rule-card b,.route b{font-size:13px}.final-score{font-size:18px}.small{font-size:12px}.hide-btn{font-size:12px}.continue,.start,.restart{font-size:13px;padding:10px 18px}.option{grid-template-columns:24px 1fr;gap:8px}.option .key{width:22px;height:22px}}
-@media(max-width:700px){.hud{top:8px;left:8px;right:8px}.zone{top:96px;bottom:10px;left:3%;right:3%;align-items:flex-end!important;justify-content:center!important}.content,.center .content,.tr-on .content{--u:11px;width:100%!important;margin:0!important;text-align:left!important;padding:14px;border-radius:12px}.lang-menu{grid-template-columns:1fr}.title,.tr-on .title{font-size:26px}.title.cover-title{font-size:19px}.story,.prompt,.tr-on .story{font-size:15px}.option,.feedback{font-size:14px;padding:8px 10px}.rules-intro{grid-template-columns:1fr}.rule-card:last-child{grid-column:auto}.center .rule-card,.center .rule-note,.right .rule-card,.right .rule-note{border-left:3px solid var(--hair-lit);border-right:0;padding:2px 9px}.right .rule-note,.center .rule-note{border-left-color:var(--blood)}.center .feedback,.right .feedback{border:0;border-left:3px solid var(--hair-lit);padding:8px 10px}.right .clue,.center .clue{border-right:0;border-left:3px solid var(--blood)}.route-options{grid-template-columns:1fr}.right .hide-btn{align-self:flex-end}.right .continue,.right .start,.right .restart,.center .continue,.center .start,.center .restart{align-self:flex-start}}
+@media(max-width:700px){.hud{top:8px;left:8px;right:8px}.zone{top:96px;bottom:10px;left:3%;right:3%;align-items:flex-end!important;justify-content:center!important}.content,.center .content,.tr-on .content{--u:11px;--sheet-pad:14px;width:100%!important;margin:0!important;text-align:left!important;padding:var(--sheet-pad);border-radius:12px}.lang-menu{grid-template-columns:1fr}.title,.tr-on .title{font-size:26px}.title.cover-title{font-size:19px}.story,.prompt,.tr-on .story{font-size:15px}.option,.feedback{font-size:14px;padding:8px 10px}.rules-intro{grid-template-columns:1fr}.rule-card:last-child{grid-column:auto}.center .rule-card,.center .rule-note,.right .rule-card,.right .rule-note{border-left:3px solid var(--hair-lit);border-right:0;padding:2px 9px}.right .rule-note,.center .rule-note{border-left-color:var(--blood)}.center .feedback,.right .feedback{border:0;border-left:3px solid var(--hair-lit);padding:8px 10px}.right .clue,.center .clue{border-right:0;border-left:3px solid var(--blood)}.route-options{grid-template-columns:1fr}.right .hide-btn{align-self:flex-end}.right .continue,.right .start,.right .restart,.center .continue,.center .start,.center .restart{align-self:flex-start}}
+/* ── the way on is pinned (2026-10-29, "I tried to open Kraken on a mobile and
+   it didnt even have a next button") ──
+   Blocula is older than rpg.py and has its own copy of the chrome, so it had
+   the same defect and needed the same answer. Measured here at 360x560,
+   after answering the first question on the train: 180px of panel below the
+   fold, scrollTop 0, and CONTINUE at y=672 on a 560px screen. fitPanel()
+   used to shrink the type until it fitted, but it stands down on a phone
+   (PHONE() returns early) because shrinking is what made it unreadable — so
+   on a phone nothing was keeping the button on screen at all.
+   The panel's last action sticks to the bottom of the sheet instead. The
+   strip behind it is var(--panel) over the sheet's own var(--panel). */
+@media(max-width:700px),(max-height:500px) and (min-width:701px) and (pointer:coarse){
+.content>.continue:last-child,.content>.start:last-child,.content>.restart:last-child,.content>a.start:last-child,.content>a.restart:last-child{position:sticky;bottom:calc(-1 * var(--sheet-pad));z-index:4;margin:calc(.4 * var(--sheet-pad)) calc(-1 * var(--sheet-pad)) calc(-1 * var(--sheet-pad));align-self:stretch!important;width:auto;text-align:center;justify-content:center;border-radius:0;border-left:0;border-right:0;border-bottom:0;padding:13px 16px calc(13px + env(safe-area-inset-bottom,0px));box-shadow:0 0 0 var(--sheet-pad) var(--panel),0 0 0 var(--sheet-pad) var(--panel),0 calc(-.6 * var(--sheet-pad)) calc(.8 * var(--sheet-pad)) var(--sheet-pad) var(--panel)}
+.content::before{content:'';position:sticky;z-index:3;top:100%;display:block;height:calc(2.2 * var(--sheet-pad));margin:0 calc(-1 * var(--sheet-pad)) calc(-2.2 * var(--sheet-pad));background:linear-gradient(to top,var(--panel),transparent);transition:opacity .18s ease;pointer-events:none}
+.content.at-end::before,.content:not(.can-scroll)::before{opacity:0}
+}
 @media(max-height:500px) and (min-width:701px) and (pointer:coarse){.hud{top:6px;left:max(10px,env(safe-area-inset-left));right:max(10px,env(safe-area-inset-right))}.zone{top:60px;bottom:6px;left:max(10px,env(safe-area-inset-left));right:max(10px,env(safe-area-inset-right))}.content,.tr-on .content{--u:10px;padding:10px 14px}.left .content,.right .content{width:56%!important}.center .content{width:80%!important}.lang-menu{grid-template-columns:1fr 1fr}.title,.tr-on .title{font-size:22px}.title.cover-title{font-size:15px}.story,.prompt,.tr-on .story{font-size:14px}.option,.feedback{font-size:13px;padding:6px 10px}}"""
 
 
@@ -280,6 +296,18 @@ def build():
     # fits. --u drives every size inside .content, so one number scales the
     # lot without the glosses compounding (they are nested inside .story and
     # .option, which is why this is a custom property and not `em`).
+    # showRest(): what fitPanel cannot do on a phone. It scrolls the verdict
+    # into view and marks the sheet so the CSS can draw (or drop) the fade on
+    # its bottom edge. scrollTop, not scrollTo({behavior:"smooth"}) -- a
+    # smooth scroll does not run in a backgrounded tab and silently did
+    # nothing when it was tried in rpg.py.
+    rest = ("function showRest(){const fb=document.getElementById('feedback');"
+            "const more=content.scrollHeight>content.clientHeight+1;"
+            "if(more&&fb&&fb.classList.contains('show'))"
+            "content.scrollTop=Math.max(0,fb.offsetTop-content.offsetTop-8);"
+            "content.classList.toggle('can-scroll',more);"
+            "content.classList.toggle('at-end',!more||content.scrollTop+content.clientHeight>=content.scrollHeight-2)}\n"
+            "content.addEventListener('scroll',showRest,{passive:true});addEventListener('resize',showRest);\n")
     fit = ("function fitPanel(){content.style.setProperty('--fit',1);"
            "if(!frame.classList.contains('open'))return;"
            "let f=1;let guard=0;"
@@ -288,8 +316,12 @@ def build():
     # These are insertions rather than region rewrites, so they are guarded:
     # without this a re-run appends a second copy of fitPanel and a second
     # fitPanel() call, and the build stops being idempotent.
+    if 'function showRest(' not in page and 'function fitPanel(' in page:
+        # an older build already wired fitPanel; showRest is the 2026-10-29
+        # addition and goes in beside it
+        page = page.replace('\nfunction fitPanel(){', '\n' + rest + 'function fitPanel(){', 1)
     if 'function fitPanel(' not in page:
-        page = page.replace('\nfunction render(){', '\n' + fit + 'function render(){', 1)
+        page = page.replace('\nfunction render(){', '\n' + fit + rest + 'function render(){', 1)
         # every path that changes what is in the panel ends by re-fitting
         page = page.replace("content.innerHTML=html;updateHUD();",
                             "content.innerHTML=html;updateHUD();fitPanel();", 1)
@@ -328,7 +360,7 @@ def build():
     # already in the file rather than only the original one.
     anchor = "fb.className=`feedback show ${ok?'good':'bad'}`;"
     tail = (anchor + "document.getElementById('continue').hidden=false;updateHUD();"
-            "requestAnimationFrame(fitPanel)}"
+            "fitPanel();showRest();requestAnimationFrame(()=>{fitPanel();showRest()})}"
             "\nfunction answer")
     page, n = re.subn(re.escape(anchor) + r".*?\}\nfunction answer",
                       lambda m: tail, page, count=1, flags=re.S)

@@ -53,7 +53,12 @@
     '.fe-lang select { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; padding: 0; border: 0;' +
     ' opacity: 0; cursor: pointer; font-size: 16px; -webkit-appearance: none; appearance: none; }' +   /* 16px: iOS zooms to smaller */
     '.fe-lang option { color: #111; background: #fff; }' +
-    '@media (min-width: 1101px) { .fe-lang { font-size: clamp(13px, 1vw, 15px); padding: 7px 10px 7px 12px; } }';
+    '@media (min-width: 1101px) { .fe-lang { font-size: clamp(13px, 1vw, 15px); padding: 7px 10px 7px 12px; } }' +
+    /* a finger needs 44px, and this pill was 22 (Innes, 2026-10-29,
+       "optimising the website for mobile use"). The padding grows rather
+       than the type, so the menu still reads as the small control it is;
+       the select is inset:0 over the pill, so it follows on its own. */
+    '@media (pointer: coarse) { .fe-lang { padding: 13px 12px 13px 14px; } }';
   document.head.appendChild(css);
   // the menu shows the language's own name, or its code where the row is
   // tight; the list itself always gives the names
