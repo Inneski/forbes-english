@@ -16175,3 +16175,18 @@ Found, not fixed (needs a decision): every canonical tag `seo.py` writes is
 the `.html` URL, which the asset layer 307s to the clean URL. Google is told
 to prefer a URL that redirects away, temporarily. Fix is in `seo.py`
 (canonical → clean URL), a whole-site regeneration.
+
+## 2026-11-03 — canonicals name the clean URL
+
+Every canonical, og:url, JSON-LD url, sitemap `<loc>` and llms.txt link
+named `foo.html`, which Cloudflare 307s to `/foo`. `tools/seo.py` now builds
+them all through `page_url()` (`foo.html` → `/foo`, `x/index.html` → `/x/`),
+and the Worker's gate page names the clean URL whichever form was requested
+(live-checked on `block-camp/last-bounty-rpg`, both forms). Sitemap is clean.
+
+**Half shipped, waiting on another session:** 192 pages, `library.html`,
+`grammar.html` and the topic hubs among them, hold uncommitted edits from the
+2026-10-29 mobile tap-target work ("a finger needs 44px"). They were left out
+of `08b3187d`. `seo.py` has already rewritten their canonicals in the tree,
+so they go live with whoever commits that work. Until then they still say
+`.html` on the live site.
