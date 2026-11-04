@@ -246,6 +246,7 @@ TOPICS = [
 # Titles that say nothing about their grammar, mapped by file to the topic
 # slugs they belong under. Regexes above still run; this adds to them.
 OVERRIDES = {
+    'be-aware-of-this-cleaner.html': ['present-perfect', 'passive-voice'],
     'champions_league_english.html': [],                # football vocabulary; no grammar hub
     'top-gear-skiing-lesson.html': ['past-simple'],
     'forbes-english-golf-lesson.html': ['past-simple', 'present-perfect'],
