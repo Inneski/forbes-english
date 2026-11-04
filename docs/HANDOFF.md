@@ -10,6 +10,53 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
+## 2026-11-04 — Decks open in the language chosen on the site
+
+Innes asked whether the site needed a welcome page that asks for a language
+first. No: the front page already has the ten-language menu and walks through
+the six areas, and most visitors land on a lesson straight from search, so they
+would never see a welcome page. The real gap was that **no deck read that
+choice**. Pick Deutsch on the front page, open a lesson, and it started in
+English (`let currentLang = 'en'`, hard-coded in the template).
+
+- **Every page with a language menu now opens in the stored choice**
+  (localStorage `fe-lang`, the front page's and `fe-lang.js`'s key;
+  `?lang=xx` wins over it), but only if that page offers the language. If it
+  doesn't, the page opens in English as before. A change in a deck's own menu
+  writes `fe-lang`, so the next page follows it.
+- **Deck engine** (`lesson-template.html`, `initLang`): template,
+  `build/comment-south-africa/part1.src.html` and all 153 shipped copies,
+  which were byte-identical in that function. A deck built from now on
+  inherits it.
+- **Legacy single-file lessons** (`initLangSwitch` / `setLang`, 10 decks: the
+  dartboard, skiing, tennis, Eintracht…): a start-up block after
+  `initLangSwitch();`. It only applies a language whose `UI_I18N` is as long
+  as English's, the deck engine's rule for "complete".
+- **One-off engines**, each edited where its code lives: the three hand IELTS
+  decks (bar charts, maps & data, writing studio part 3), feedback-that-lands,
+  the brutalism C2 deck, top-gear-skiing, beyond-the-handlebars, stranger-gears
+  (shipped HTML), fireshield (`build_fireshield.py` + page),
+  present-simple-vs-continuous (`build_pt.py` + page), Sherpa climb and descent
+  (`build/sherpa-climb/template.js` + pages), Sherpa route map (page).
+  Pages that kept their own key (Sherpa's `sherpa.lang.v1`, `bth-lang`,
+  `strangerGearsLanguage`) now read `fe-lang` first, then their own key. The
+  first one the page offers wins, and a change writes both, the way Block Camp
+  already did.
+- **Brutalism deck, fixed in passing**: it draws each step fresh and never
+  re-applied the language, so translations disappeared after the first step
+  even on a manual switch. `renderStep()` now calls `applyLanguage(currentLang)`.
+- **`checker/overflow-langs.js`** reloads the page once per language. With
+  the stored choice, a plain reload would open in the previous pass's
+  language, which is the two-language layout it was written to avoid. It now
+  opens `?lang=L`. The other checker helpers open a fresh profile per
+  language or never reload, so they are unaffected.
+- **A new one-off engine needs the same few lines**: read `?lang`, then
+  `fe-lang`; apply the language if the menu offers it; write `fe-lang` on
+  change. Copy from any of the pages above.
+- Seen, not touched: `Sherlock/sherlock-scarlet-star_3.html` is an unlinked
+  copy whose pictures 404 (it asks for `Sherlock/Sherlock/…`). The live deck
+  is the root `sherlock-scarlet-star.html`.
+
 ## 2026-11-03 — Within Spec, Below Standard (B2–C1 supplier quality meeting): SHIPPED
 
 `supplier-quality-meeting-b2-c1.html`, 24 slides, EN/DE/ES, Pro. It arrived

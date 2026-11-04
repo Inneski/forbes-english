@@ -458,10 +458,18 @@ init();
     } catch (e) {}
   }
 
-  var saved = null;
-  try { saved = localStorage.getItem(KEY); } catch (e) {}
+  /* ?lang=xx, then the site's own choice ('fe-lang', the front page's and
+     every top row's), then this deck's own: the first it offers wins. A
+     change here is remembered in both. */
+  var saved = null, offered = [].map.call(sel.options, function (o) { return o.value; });
+  var c = [new URLSearchParams(location.search).get('lang')];
+  try { c.push(localStorage.getItem('fe-lang'), localStorage.getItem(KEY)); } catch (e) {}
+  for (var i = 0; i < c.length && !saved; i++) if (offered.indexOf(c[i]) >= 0) saved = c[i];
   if (saved && saved !== 'en') { sel.value = saved; apply(saved); }
-  sel.addEventListener('change', function () { apply(sel.value); });
+  sel.addEventListener('change', function () {
+    apply(sel.value);
+    try { localStorage.setItem('fe-lang', sel.value); } catch (e) {}
+  });
 })();
 </script>
 </body></html>

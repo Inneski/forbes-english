@@ -880,6 +880,16 @@ function renderActivation(){
   progressFill.style.width = "100%";
 }
 
+/* Open with the support language chosen on the site (localStorage 'fe-lang',
+   the front page's key; ?lang=xx wins), when this lesson offers it. A change
+   here is remembered the same way. */
+(function(){
+  if(!langSelect) return;
+  var want = new URLSearchParams(location.search).get("lang");
+  if(!want){ try{ want = localStorage.getItem("fe-lang"); }catch(e){} }
+  if(want && [].some.call(langSelect.options, function(o){ return o.value === want; })){ langSelect.value = want; currentLang = want; }
+  langSelect.addEventListener("change", function(){ try{ localStorage.setItem("fe-lang", langSelect.value); }catch(e){} });
+})();
 render();
 })();
 </script>

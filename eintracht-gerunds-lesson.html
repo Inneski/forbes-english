@@ -1495,6 +1495,19 @@ input, textarea, select, button, option { text-shadow: none; }
   // BOOT
   // ═══════════════════════════════════════════════════════
   initLangSwitch();
+  /* Open in the language chosen on the site (localStorage 'fe-lang', the
+     front page's key; ?lang=xx wins), when this lesson is fully translated
+     into it; a change here is remembered the same way. */
+  (function () {
+    var sel = document.getElementById('langSelect');
+    var want = new URLSearchParams(location.search).get('lang');
+    if (!want) { try { want = localStorage.getItem('fe-lang'); } catch (e) {} }
+    if (want && want !== 'en' && UI_I18N[want] &&
+        Object.keys(UI_I18N[want]).length >= Object.keys(UI_I18N.en).length) setLang(want);
+    if (sel) sel.addEventListener('change', function () {
+      try { localStorage.setItem('fe-lang', sel.value); } catch (e) {}
+    });
+  })();
 </script>
 <script>
 /* Draws the eye to the language switch until it is used once. See .bw-notice

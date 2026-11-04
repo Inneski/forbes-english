@@ -44,7 +44,13 @@ const path = require('path');
     // and a fresh-page sweep at 0/100/300/800/1500/3000ms measures 0), gloss
     // duplication (identical innerHTML), and self-pollution from walking the
     // slides. Do not trust that one number until someone explains it.
-    await page.goto('file://' + path.resolve(file));
+    //
+    // Opened with ?lang=L. Since 2026-11-04 a deck remembers the last language
+    // chosen (localStorage 'fe-lang', which the switch below writes), so a
+    // plain reload here would open in the PREVIOUS pass's language and then
+    // switch: exactly the two-language layout this loop exists to avoid.
+    // ?lang= wins over the stored choice, so every pass opens in its own.
+    await page.goto('file://' + path.resolve(file) + '?lang=' + L);
     await page.waitForTimeout(1500);
     await page.evaluate(() => document.fonts.ready);
     report[L] = await page.evaluate((L) => {

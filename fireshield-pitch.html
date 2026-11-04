@@ -1603,13 +1603,23 @@ function applyI18n(){
     o.value = l; o.textContent = LANG_NAMES[l] || l;
     sel.appendChild(o);
   });
+  // Open in the language chosen on the site (localStorage 'fe-lang', the
+  // front page's key; ?lang=xx wins), when this page offers it; applied just
+  // before the first show(). A change here is remembered the same way.
+  let want = new URLSearchParams(location.search).get("lang");
+  if (!want) { try { want = localStorage.getItem("fe-lang"); } catch (e) {} }
+  if (want && langs.includes(want)) LANG = want;
   sel.value = LANG;
-  sel.addEventListener("change", () => { LANG = sel.value; applyI18n(); });
+  sel.addEventListener("change", () => {
+    LANG = sel.value; applyI18n();
+    try { localStorage.setItem("fe-lang", LANG); } catch (e) {}
+  });
 })();
 
 document.getElementById("coverBtn").addEventListener("click", () => show(1));
 document.getElementById("startBtn").addEventListener("click", startGame);
 bgLayer.style.setProperty("--act-bg", `url('${BG.cover}')`);
+if (LANG !== "en") applyI18n();   // the site's language, picked up in initLang
 show(0);
 </script>
 
