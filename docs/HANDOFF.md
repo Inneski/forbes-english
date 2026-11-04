@@ -10,6 +10,43 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
+## 2026-11-04 — Front page on a phone: legibility, one-line header, centred ring titles
+
+From Innes's iPhone screenshots of the six stops of `index.html`.
+
+- **"Go Pro" in every language** (Innes's call). Changed in `index.html`
+  (I18N), `fe-lang.js` (NAV), `hub_i18n.py` and, in place,
+  `block-camp.html`. **Do not re-run `block-camp-hub/build.py` to pick it
+  up:** the built page carries `<style id="fe-row">` and
+  `<style id="fe-topline">`, which were injected after the build, and a
+  rebuild deletes both. The builder is out of step with its page; fold
+  those blocks into `template.html` before it is next rebuilt.
+- **German header wrapped onto two lines.** `.links` wrapped, and `fitRow()`
+  only checked the right edge, so a wrapped row passed. Now the row is
+  `nowrap` on ≤760px and `fitRow()` also fails a row that runs back over the
+  logo or wraps. The language menu is held at 84px on a phone, which is
+  what keeps "Library" visible. Measured at 360/390/414px in all ten
+  languages: one line each time. Russian drops "Библиотека" at every phone
+  width, French at 360px, and Japanese at 360px.
+- **Lead and free-lessons line unreadable over pale skies.** On a phone
+  the shade now reaches 66vh, not 52vh, and those two lines get a tight
+  shadow, weight 400 and denser ink. The `.plans` line also overlapped the
+  button by 6px (`margin: -6px`) in the stacked phone layout, so it now has
+  `margin-top: 12px`. The eyebrow number takes `--lead-ink` (it was
+  invisible on Sherpa's snow). The CTA backing is `--night` at 58%, not a
+  fixed rgba.
+- **Ring titles off-centre and clipped on a phone.** The camera's x is
+  pointer parallax plus a slow drift, and on touch `pointermove` recorded
+  where the swipe ended. The front title fills ~92% of a phone's width, so
+  any sway pushed it off one edge. Now touch never moves the camera, drift
+  in portrait is 0.03 (was 0.25), and titles fit to 88% of the width. Measured
+  after settling: all six front titles centre at 205–206px of 414. (In
+  headless SwiftShader the spin takes >5s to settle, so wait on
+  `|spin.angle - spin.target|` rather than a fixed sleep, or the
+  measurement lies.)
+- Not fixed: the cut-out's jagged white rim (`tools/make_home_cutout.py`).
+
+---
 ## 2026-11-04 — Decks open in the language chosen on the site
 
 Innes asked whether the site needed a welcome page that asks for a language
