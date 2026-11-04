@@ -484,6 +484,16 @@
   document.getElementById('langSelect').addEventListener('change', function(e) {
     applyLanguage(e.target.value);
   });
+  /* Open with the support language chosen on the site (localStorage
+     'fe-lang', the front page's key; ?lang=xx wins), when this lesson offers
+     it. A change here is remembered the same way. */
+  (function () {
+    var sel = document.getElementById('langSelect');
+    var want = new URLSearchParams(location.search).get('lang');
+    if (!want) { try { want = localStorage.getItem('fe-lang'); } catch (e) {} }
+    if (want && [].some.call(sel.options, function (o) { return o.value === want; })) { sel.value = want; applyLanguage(want); }
+    sel.addEventListener('change', function () { try { localStorage.setItem('fe-lang', sel.value); } catch (e) {} });
+  })();
 
   // ---------- Fisher-Yates shuffle ----------
   function shuffle(arr) {
@@ -1005,6 +1015,8 @@
     else if (step.type === 'info') renderInfoStep(step);
     else if (step.type === 'question') renderQuestionStep(step);
     else if (step.type === 'results') renderResults();
+    // each step is drawn fresh, so its translations need the language again
+    applyLanguage(currentLang);
     if (window.innerWidth <= 900) window.scrollTo({ top: 0, behavior: 'smooth' });
     else { const cc = document.querySelector('.content-col'); if (cc) cc.scrollTo({ top: 0, behavior: 'smooth' }); }
   }

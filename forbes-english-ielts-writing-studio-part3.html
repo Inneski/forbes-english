@@ -1959,6 +1959,16 @@ function renderAll(){
 document.getElementById('t1-date').value = todayStr();
 document.getElementById('t2-date').value = todayStr();
 initLang();
+/* Open in the language chosen on the site (localStorage 'fe-lang', the front
+   page's key; ?lang=xx wins), when this deck offers it. A change here is
+   remembered the same way. */
+(function () {
+  const sel = document.getElementById('langSelect');
+  let want = new URLSearchParams(location.search).get('lang');
+  if (!want) { try { want = localStorage.getItem('fe-lang'); } catch (e) {} }
+  if (want && want !== LANG && [...sel.options].some(o => o.value === want)) setLang(want);
+  sel.addEventListener('change', () => { try { localStorage.setItem('fe-lang', sel.value); } catch (e) {} });
+})();
 renderAll();
 </script>
 </body>

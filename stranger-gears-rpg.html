@@ -662,7 +662,11 @@ var RTL_LANGS=['ar'];
 var UI_EN={needle:'Needle',condition:'Condition',fuel:'Fuel',nerve:'Nerve',bloom:'Spores',
   holding:'Holding',fraying:'Fraying',split:'Split',correct:'Correct',notquite:'Not quite',empty:'Empty'};
 var savedLanguage='en';
-try{savedLanguage=localStorage.getItem('strangerGearsLanguage')||'en'}catch(e){}
+/* ?lang=xx, then the site's own choice ('fe-lang', the front page's and every
+   top row's), then this game's own: the first it offers wins. */
+(function(){var c=[new URLSearchParams(location.search).get('lang')];
+try{c.push(localStorage.getItem('fe-lang'),localStorage.getItem('strangerGearsLanguage'))}catch(e){}
+for(var i=0;i<c.length;i++)if(c[i]&&(c[i]==='en'||LANGS[c[i]])){savedLanguage=c[i];break}})();
 if(!LANGS[savedLanguage])savedLanguage='en';
 var lang='en';
 function ft(source,vars){
@@ -966,7 +970,7 @@ function applyFullLanguage(){
 }
 sel.onchange=function(){
   lang=sel.value;
-  try{localStorage.setItem('strangerGearsLanguage',lang)}catch(e){}
+  try{localStorage.setItem('strangerGearsLanguage',lang);localStorage.setItem('fe-lang',lang)}catch(e){}
   applyFullLanguage();
 };
 captureTranslationSources();

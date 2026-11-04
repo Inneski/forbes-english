@@ -572,7 +572,17 @@ $('btn-rule').addEventListener('click', () => {
   live = false; cancelAnimationFrame(raf); cardEl.style.display = 'none';
   $('intro').classList.add('show');
 });
-$('lang').addEventListener('change', e => { lang = e.target.value; paint(); });
+$('lang').addEventListener('change', e => {
+  lang = e.target.value; paint();
+  try { localStorage.setItem('fe-lang', lang); } catch (err) {}
+});
+/* Open in the language chosen on the site (localStorage 'fe-lang', the front
+   page's key; ?lang=xx wins), when this page offers it. */
+{
+  let want = new URLSearchParams(location.search).get('lang');
+  if (!want) { try { want = localStorage.getItem('fe-lang'); } catch (err) {} }
+  if (want && [...$('lang').options].some(o => o.value === want)) { lang = want; $('lang').value = want; }
+}
 
 paint();
 </script>

@@ -1656,6 +1656,19 @@ buildChips(2);
 showPage(1);
 </script>
 <script>
+/* Open with the support language chosen on the site (localStorage 'fe-lang',
+   the front page's key; ?lang=xx wins), when this lesson offers it. A change
+   here is remembered the same way ("English only" is stored as en). */
+(function () {
+  var sel = document.getElementById('langSelect');
+  if (!sel) return;
+  var want = new URLSearchParams(location.search).get('lang');
+  if (!want) { try { want = localStorage.getItem('fe-lang'); } catch (e) {} }
+  if (want && want !== 'en' && [].some.call(sel.options, function (o) { return o.value === want; })) { sel.value = want; applyLanguage(want); }
+  sel.addEventListener('change', function () { try { localStorage.setItem('fe-lang', sel.value || 'en'); } catch (e) {} });
+})();
+</script>
+<script>
 /* Draws the eye to the language switch until it is used once. See .bw-notice
    in the stylesheet for why. Storage is wrapped: a browser with site data
    blocked throws on both read and write, and that must not cost the deck its

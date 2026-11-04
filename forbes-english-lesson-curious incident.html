@@ -1696,9 +1696,19 @@ function initLang() {
   LANGS.filter(l => l.code === 'en' ||
                     Object.keys(UI_I18N[l.code] || {}).length >= enKeys)
        .forEach(l => sel.add(new Option(l.label, l.code)));
+  // Open in the language the visitor chose on the site: the front page's
+  // menu and every page's top row keep it in localStorage 'fe-lang', and
+  // ?lang=xx wins. Only a language this deck offers; anything else leaves
+  // it in English, as before. A change here is remembered the same way.
+  let want = new URLSearchParams(location.search).get('lang');
+  if (!want) { try { want = localStorage.getItem('fe-lang'); } catch (e) {} }
+  if (want && [...sel.options].some(o => o.value === want)) currentLang = want;
   sel.value = currentLang;
   sel.hidden = sel.options.length < 2;
-  sel.addEventListener('change', () => { currentLang = sel.value; applyLang(); });
+  sel.addEventListener('change', () => {
+    currentLang = sel.value; applyLang();
+    try { localStorage.setItem('fe-lang', currentLang); } catch (e) {}
+  });
 }
 
 /* Per-slide background art: set the variable on the element as well, because

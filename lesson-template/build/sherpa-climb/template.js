@@ -856,7 +856,14 @@
   }
 
   // ── language ─────────────────────────────────────────────────────────────────
-  function stored() { try { return localStorage.getItem(LKEY); } catch (e) { return null; } }
+  // the site's own choice ('fe-lang', the front page's and every top row's)
+  // first, then Sherpa's own: the first this page offers wins
+  function stored() {
+    var c = [];
+    try { c = [localStorage.getItem('fe-lang'), localStorage.getItem(LKEY)]; } catch (e) {}
+    for (var i = 0; i < c.length; i++) if (c[i] === 'en' || I.langs.indexOf(c[i]) >= 0) return c[i];
+    return null;
+  }
   function initialLang() {
     var q = (location.search.match(/[?&]lang=([a-z]{2})\b/) || [])[1];
     if (q && I.langs.indexOf(q) >= 0) return q;
@@ -929,7 +936,7 @@
   $('#snd').addEventListener('click', function () { setSound(!sound); beep(true); });
   $('#theme').addEventListener('click', function () { setTheme(document.documentElement.getAttribute('data-theme') !== 'dark'); });
   $('#lang').addEventListener('change', function () {
-    try { localStorage.setItem(LKEY, this.value); } catch (e) {}
+    try { localStorage.setItem(LKEY, this.value); localStorage.setItem('fe-lang', this.value); } catch (e) {}
     applyLang(this.value);
   });
   (function () {
