@@ -10,7 +10,7 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
-## 2026-11-05 — Who Was First in Space? (C1): BUILT, waiting on the catalogue row and four plates
+## 2026-11-05 — Who Was First in Space? (C1): BUILT, waiting on the catalogue row
 
 `first-in-space-c1.html`, 25 slides, EN/DE/ES, light theme, Pro. From a
 pasted magazine feature (Vladimir Brljak, 6 March 2026) arguing that the
@@ -31,11 +31,13 @@ except HEAD; answered-overflow fits in en/de/es.
   track, deck, video) values ('first-in-space-c1.html', 'Who Was First in
   Space? Reading, Argument & Inversion (C1)', 'C1', 'pro', 'general', true,
   false);`
-- **§5c: one picture for five sections.** Only the hero arrived (Desktop
-  `FE files/yuri 2.png`; `yuri.webp` beside it is the article's own agency
-  photo and was not used). The builder takes `FirstInSpace/bg-sky`,
-  `bg-records`, `bg-only`, `bg-case`, `bg-act` `.jpg` when they exist and
-  shows the hero until then. Drop folder `incoming/first-in-space/` exists.
+- **Plates: in, same day.** Five Midjourney plates from Desktop `FE files/`
+  (`blackisler_…`), through prep-artwork as `FirstInSpace/bg-sky` (helmet
+  porthole), `bg-records` (rocket plane, letterbox bars trimmed first),
+  `bg-only` (balloonist under stars), `bg-case` (launch field), `bg-act`
+  (second porthole: the parachutist prompt was not rendered, so the spare
+  porthole variant stands in). Swap `bg-act.jpg` if a jump plate comes.
+  `yuri.webp` is the article's agency photo and was not used.
 - No topic hub for inversion, so it lands on the vocabulary hub; library
   pills Vocabulary + Grammar activity.
 
