@@ -10,7 +10,7 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
-## 2026-11-05 — Who Was First in Space? (C1): BUILT, waiting on the catalogue row
+## 2026-11-05 — Who Was First in Space? (C1): SHIPPED
 
 `first-in-space-c1.html`, 25 slides, EN/DE/ES, light theme, Pro. From a
 pasted magazine feature (Vladimir Brljak, 6 March 2026) arguing that the
@@ -23,14 +23,9 @@ ONLY + time/place + inversion (teach, 2 gap slides, 1 build), and the moves
 of the argument (concede, build the case, verdict; 2 MC). check-lesson clean
 except HEAD; answered-overflow fits in en/de/es.
 
-- **No catalogue row yet.** The Supabase insert was refused (auto mode,
-  unasked shared write). Until the row exists, seo.py skips the page, so
-  HEAD fails and the card does not show. Once Innes has run the SQL:
-  `py tools/seo.py`, check-lesson, commit the page with the regenerated
-  indexes. SQL: `insert into public.lessons (file, title, level, access,
-  track, deck, video) values ('first-in-space-c1.html', 'Who Was First in
-  Space? Reading, Argument & Inversion (C1)', 'C1', 'pro', 'general', true,
-  false);`
+- **Catalogue row** inserted by this session on Innes's explicit "add the
+  row yourself" (2026-11-05), after an unasked insert had been refused. Then
+  hubs, seo.py, check-lesson clean.
 - **Plates: in, same day.** Five Midjourney plates from Desktop `FE files/`
   (`blackisler_…`), through prep-artwork as `FirstInSpace/bg-sky` (helmet
   porthole), `bg-records` (rocket plane, letterbox bars trimmed first),
