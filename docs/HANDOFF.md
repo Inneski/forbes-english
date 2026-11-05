@@ -10,6 +10,35 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
+## 2026-11-05 — Who Was First in Space? (C1): BUILT, waiting on the catalogue row and four plates
+
+`first-in-space-c1.html`, 25 slides, EN/DE/ES, light theme, Pro. From a
+pasted magazine feature (Vladimir Brljak, 6 March 2026) arguing that the
+1950s balloonists who first saw the sky turn black have as good a claim as
+Gagarin. Builder `lesson-template/build/build_firstinspace.py`, strings in
+`i18n_firstinspace.py` (the builder reads its English from `T['en']`, one
+copy of each string). The article is retold, not reproduced. Teaches: the
+reading (4 slides, 6 MC), limits/records vocabulary (teach, match, 2 MC),
+ONLY + time/place + inversion (teach, 2 gap slides, 1 build), and the moves
+of the argument (concede, build the case, verdict; 2 MC). check-lesson clean
+except HEAD; answered-overflow fits in en/de/es.
+
+- **No catalogue row yet.** The Supabase insert was refused (auto mode,
+  unasked shared write). Until the row exists, seo.py skips the page, so
+  HEAD fails and the card does not show. Once Innes has run the SQL:
+  `py tools/seo.py`, check-lesson, commit the page with the regenerated
+  indexes. SQL: `insert into public.lessons (file, title, level, access,
+  track, deck, video) values ('first-in-space-c1.html', 'Who Was First in
+  Space? Reading, Argument & Inversion (C1)', 'C1', 'pro', 'general', true,
+  false);`
+- **§5c: one picture for five sections.** Only the hero arrived (Desktop
+  `FE files/yuri 2.png`; `yuri.webp` beside it is the article's own agency
+  photo and was not used). The builder takes `FirstInSpace/bg-sky`,
+  `bg-records`, `bg-only`, `bg-case`, `bg-act` `.jpg` when they exist and
+  shows the hero until then. Drop folder `incoming/first-in-space/` exists.
+- No topic hub for inversion, so it lands on the vocabulary hub; library
+  pills Vocabulary + Grammar activity.
+
 ## 2026-11-04 — Decks open in the language chosen on the site
 
 Innes asked whether the site needed a welcome page that asks for a language
