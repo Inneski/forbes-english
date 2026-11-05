@@ -87,7 +87,7 @@ UI['de'] = dict(
     moreH='Mehr Minecraft-Lektionen', moreNote='einzelne Grammatiklektionen, A2&ndash;C1',
     noteH='Alles durchstöbern', noteP='Alle {total} Block-Camp-Einheiten, die {adv} Abenteuer und alle Übersichten &mdash; zusammen mit dem Rest der Bibliothek.',
     allLessons='Alle Lektionen &rarr;',
-    navLessons='Lektionen', navGoPro='Pro werden', navWork='Kontakt',
+    navLessons='Lektionen', navGoPro='Go Pro', navWork='Kontakt',
 )
 LK['de'] = dict(
     next='Als Nächstes: {t}', closest='Am nächsten an Gold: {t}', golden='Der goldene Aussichtsturm',
@@ -165,7 +165,7 @@ UI['es'] = dict(
     moreH='Más lecciones de Minecraft', moreNote='lecciones de gramática sueltas, A2&ndash;C1',
     noteH='Explóralo todo', noteP='Las {total} unidades de Block Camp, las {adv} aventuras y todas las guías, junto con el resto de la biblioteca.',
     allLessons='Todas las lecciones &rarr;',
-    navLessons='Lecciones', navGoPro='Hazte Pro', navWork='Contacto',
+    navLessons='Lecciones', navGoPro='Go Pro', navWork='Contacto',
 )
 LK['es'] = dict(
     next='Siguiente: {t}', closest='Más cerca del oro: {t}', golden='La atalaya de oro',
@@ -243,7 +243,7 @@ UI['fr'] = dict(
     moreH='Plus de leçons Minecraft', moreNote='leçons de grammaire indépendantes, A2&ndash;C1',
     noteH='Tout parcourir', noteP='Les {total} unités de Block Camp, les {adv} aventures et toutes les fiches, avec le reste de la bibliothèque.',
     allLessons='Toutes les leçons &rarr;',
-    navLessons='Leçons', navGoPro='Passe à Pro', navWork='Contact',
+    navLessons='Leçons', navGoPro='Go Pro', navWork='Contact',
 )
 LK['fr'] = dict(
     next='Ensuite : {t}', closest='Le plus proche de l’or : {t}', golden='La tour de guet en or',
@@ -321,7 +321,7 @@ UI['it'] = dict(
     moreH='Altre lezioni di Minecraft', moreNote='lezioni di grammatica singole, A2&ndash;C1',
     noteH='Esplora tutto', noteP='Tutte le {total} unità di Block Camp, le {adv} avventure e tutte le schede, insieme al resto della biblioteca.',
     allLessons='Tutte le lezioni &rarr;',
-    navLessons='Lezioni', navGoPro='Passa a Pro', navWork='Contatti',
+    navLessons='Lezioni', navGoPro='Go Pro', navWork='Contatti',
 )
 LK['it'] = dict(
     next='Prossimo: {t}', closest='Più vicino all’oro: {t}', golden='La torre di vedetta d’oro',
@@ -399,7 +399,7 @@ UI['pt'] = dict(
     moreH='Mais aulas de Minecraft', moreNote='aulas de gramática avulsas, A2&ndash;C1',
     noteH='Explore tudo', noteP='Todas as {total} unidades do Block Camp, as {adv} aventuras e todos os guias, junto com o resto da biblioteca.',
     allLessons='Todas as aulas &rarr;',
-    navLessons='Aulas', navGoPro='Seja Pro', navWork='Contato',
+    navLessons='Aulas', navGoPro='Go Pro', navWork='Contato',
 )
 LK['pt'] = dict(
     next='A seguir: {t}', closest='Mais perto do ouro: {t}', golden='A torre de vigia de ouro',
@@ -477,7 +477,7 @@ UI['ru'] = dict(
     moreH='Ещё уроки по Minecraft', moreNote='отдельные уроки грамматики, A2&ndash;C1',
     noteH='Посмотреть всё', noteP='Все {total|урок|урока|уроков} Block Camp, все {adv|приключение|приключения|приключений} и все справочники &mdash; вместе с остальной библиотекой.',
     allLessons='Все уроки &rarr;',
-    navLessons='Уроки', navGoPro='Стать Pro', navWork='Связаться',
+    navLessons='Уроки', navGoPro='Go Pro', navWork='Связаться',
 )
 LK['ru'] = dict(
     next='Дальше: {t}', closest='Ближе всего к золоту: {t}', golden='Золотая башня',
@@ -557,7 +557,7 @@ UI['ar'] = dict(
     moreH='المزيد من دروس Minecraft', moreNote='دروس قواعد مستقلة، A2&ndash;C1',
     noteH='تصفّح كل شيء', noteP='كل وحدات Block Camp الـ{total}، والمغامرات الـ{adv}، وكل المراجع، مع بقية المكتبة.',
     allLessons='كل الدروس &larr;',
-    navLessons='الدروس', navGoPro='اشترك في Pro', navWork='تواصل معي',
+    navLessons='الدروس', navGoPro='Go Pro', navWork='تواصل معي',
 )
 LK['ar'] = dict(
     next='التالي: {t}', closest='الأقرب إلى الذهب: {t}', golden='برج المراقبة الذهبي',
@@ -635,7 +635,7 @@ UI['zh'] = dict(
     moreH='更多 Minecraft 课程', moreNote='独立的语法课，A2&ndash;C1',
     noteH='浏览全部内容', noteP='Block Camp 的全部 {total} 个单元、{adv} 个冒险故事和所有语法参考，连同资料库里的其他课程。',
     allLessons='全部课程 &rarr;',
-    navLessons='课程', navGoPro='升级 Pro', navWork='联系我',
+    navLessons='课程', navGoPro='Go Pro', navWork='联系我',
 )
 LK['zh'] = dict(
     next='下一个：{t}', closest='最接近金色：{t}', golden='金色瞭望塔',
@@ -713,7 +713,7 @@ UI['ja'] = dict(
     moreH='Minecraftのレッスンをもっと', moreNote='単独の文法レッスン、A2&ndash;C1',
     noteH='すべて見る', noteP='Block Campの全{total}ユニット、{adv}作のアドベンチャー、すべてのリファレンスを、ほかのレッスンといっしょに見られます。',
     allLessons='レッスン一覧 &rarr;',
-    navLessons='レッスン', navGoPro='Proに登録', navWork='お問い合わせ',
+    navLessons='レッスン', navGoPro='Go Pro', navWork='お問い合わせ',
 )
 LK['ja'] = dict(
     next='次：{t}', closest='金にいちばん近い：{t}', golden='金の見張り塔',
