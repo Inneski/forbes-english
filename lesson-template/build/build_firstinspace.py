@@ -22,8 +22,9 @@ Decisions:
    the figures and a handful of short quotes from the pilots. Every point the
    questions test is in the retelling.
 
-2. **Light theme.** The hero is a flat coral field, bright and airy, which is
-   the §4a case; the palette is extract-palette.py --light, unedited.
+2. **Light theme, blue accent.** The hero is a flat coral field, bright and
+   airy, which is the §4a case; the palette is extract-palette.py --light
+   --accent-hue 200, unedited (Innes wanted blue, not the default coral-red).
 
 3. **Artwork: one picture, five sections.** §5c wants a background per
    section. Only the hero arrived, so every section slot falls back to the
@@ -55,21 +56,23 @@ def bg(slot):
 
 SKY, REC, ONLY, CASE, ACT = (bg(s) for s in SLOTS)
 
-# py lesson-template/extract-palette.py FirstInSpace/hero.jpg --light
-# (2026-11-05, every row PASS)
+# py lesson-template/extract-palette.py FirstInSpace/hero.jpg --light --accent-hue 200
+# (2026-11-05, every row PASS). Innes asked for blue instead of the coral-red
+# the tool picks by default; 200deg is the plates' slate-blue (median ~185)
+# pushed a little toward blue so it reads as blue, not teal.
 PALETTE = '''  --hero: url('%s/hero.jpg');
 
   --void          : #d8b5ac;
   --surface       : #e1cac4;
   --surface2      : #dcbeb8;
-  --border        : #96584a;
-  --text          : #2a1611;
-  --text-dim      : #5e372e;
-  --accent        : #9d1d00;
-  --accent-bright : #831900;
-  --accent-dim    : #ef4d28;
-  --secondary     : #162d2b;
-  --contrast      : #07553e;''' % F
+  --border        : #4a7d96;
+  --text          : #11212a;
+  --text-dim      : #2e4e5e;
+  --accent        : #005d8b;
+  --accent-bright : #004c71;
+  --accent-dim    : #18a6ee;
+  --secondary     : #f29681;
+  --contrast      : #9c0d22;''' % F
 
 # The reading: a retelling, in English in every build.
 R1A = ('Two numbers are usually quoted. The FAI puts the edge of space at '
