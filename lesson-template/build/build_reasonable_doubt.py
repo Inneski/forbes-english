@@ -61,6 +61,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import deck as D
 import i18n_reasonable_doubt as I
+import i18n_reasonable_doubt_q as QT
 from chrome_i18n import CHROME
 
 TPL = 'lesson-template/lesson-template.html'
@@ -239,8 +240,22 @@ PLACE_JS = '''<script>
 slideHooks.push(i => ['--wall', '--band'].forEach(k =>
   stage.style.setProperty(k, slides[i].style.getPropertyValue(k))));
 slideHooks[slideHooks.length - 1](0);
+/* The deck bar's act label is written from data-act, which is English; it
+   reads its own language key (act + the label's letters) instead, and again
+   when the language changes. */
+function actLabel() {
+  const a = slides[idx].dataset.act || '';
+  const k = 'act' + a.replace(/[^A-Za-z]/g, '');
+  if (!a || UI_I18N.en[k] == null) return;
+  ['deckCount', 'phoneCount'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = t(k); });
+}
+slideHooks.push(actLabel);
+document.addEventListener('change', e => { if (e.target.matches('select')) setTimeout(actLabel, 0); });
 </script>
 '''
+for _code, _labels in QT.ACTS.items():
+    if _code in I.T:
+        I.T[_code].update(('act' + re.sub('[^A-Za-z]', '', k), v) for k, v in _labels.items())
 
 # ── the narrative, glossed. key -> English; DE/ES in i18n_reasonable_doubt_<code>.N ──
 N = {
@@ -588,14 +603,26 @@ def mc(q):
         else:
             buttons.append('<button class="opt" data-time="-1"%s data-goto="%s">%s</button>' % (clue, nxt, o))
     N['q-' + node] = story
-    count = ' · %d of %d' % (n, len(sec)) if len(sec) > 1 else ''
+    # Eyebrow, title, an instruction stem and the explanation are chrome:
+    # they translate (QT). A gap stem is the English being taught: it does not.
+    gap = '___' in stem
+    for code, d in I.T.items():
+        e, t, s, w = (eyebrow, title, None if gap else stem, why) if code == 'en' else QT.QT[code][node]
+        d['qe' + node] = e + (' · ' + QT.OF[code] % (n, len(sec)) if len(sec) > 1 else '')
+        d['qt' + node], d['qw' + node] = t, w
+        if s:
+            d['qs' + node] = s
+    E.update((k, I.T['en'][k]) for k in ('qe' + node, 'qt' + node, 'qw' + node))
+    ek, tk = 'qe' + node, 'qt' + node
     act = eyebrow.split(' · ')[0]
-    scene = teach(node, act, eyebrow + count, title,
+    scene = teach(node, act, E[ek], title,
                   '<div class="card">%s%s</div>' % (gl('q-' + node), say(speak) if speak else ''),
-                  node + 'q', pic)
-    body = (head(eyebrow + count, title) +
-            '      <div class="slide-body">\n'
-            '        <p class="q-stem">%s</p>\n' % stem +
+                  node + 'q', pic, ek=ek, tk=tk)
+    stem_html = ('        <p class="q-stem">%s</p>\n' % stem if gap else
+                 '        <p class="q-stem" data-i18n="qs%s">%s</p>\n' % (node, stem))
+    why = 'qw' + node   # a UI_I18N key: the engine's explainOf() looks it up per language
+    body = (head(E[ek], title, ek, tk) +
+            '      <div class="slide-body">\n' + stem_html +
             '        <div class="opts">\n          %s\n        </div>\n' % '\n          '.join(buttons) +
             # Continue sits beside the feedback, not under it: a button
             # underneath a three-line explanation met the deck bar.

@@ -1211,6 +1211,226 @@ html.is-phone .deck-bar .nav-btn { visibility: hidden; }
 .prompt.aside { font-size: 16.5px; color: var(--text-dim); font-style: italic; }
 .prompt.aside::before { content: '·'; }
 
+/* FLOW-MODE-BEGIN — tools/mobile.py copies everything between this marker and
+   FLOW-MODE-END into every deck already built. Do not move the markers and do
+   not put anything between them that a built deck should not have. */
+/* ══════════════════════════════════════════════════════════════════
+   FLOW MODE — the deck as a page, for a screen too small to be a stage
+   Innes, 2026-10-29: "I tried to open Kraken on a mobile and it didnt even
+   have a next button. I want you to work hard on optimising the website for
+   mobile use."
+
+   fitStage() draws a fixed 1280x720 stage at whatever scale fits. On a
+   laptop that is 0.75-1.0 and the authored sizes are the sizes you read. On
+   a phone it is 0.28: measured on this deck at 360x560, a real Android
+   viewport once Chrome's own bars are counted, the stage came out 360x203 in
+   the middle of a black screen, the body text rendered at 5.3px, the chips at
+   3.2px and the START button at 41x15. The deck was legible only to someone
+   who already knew what it said.
+
+   No scale saves a 16:9 canvas on a 9:19.5 screen — the aspect ratios are two
+   thirds of a turn apart, and fitting the width throws away three quarters of
+   the type. So below the same 0.62 that already decides .is-phone, the deck
+   stops being a stage and becomes a page: no transform, every px its own
+   size, the slide laid out in the viewport's width and scrolled if it is
+   taller than the screen. The authored body sizes (15-19px) are already phone
+   sizes; only the display type, the two-column grids and the chrome need
+   saying again. The print rules below do the same thing for a sheet of paper
+   and have done since the deck was built, which is the evidence that the
+   slides reflow when they are let out of position:absolute.
+
+   One slide is still one screenful wherever it fits: .is-active carries a
+   min-height of the viewport less the bar, so a short slide does not float
+   in a tall page and a long one scrolls rather than shrinking its type. */
+html.is-flow, html.is-flow body { height: auto; min-height: 100%; overflow: visible; }
+html.is-flow { --pad: 18px; --flow-bar: 56px; }
+html.is-flow .stage-wrap { position: static; display: block; overflow: visible; }
+html.is-flow .stage {
+  position: relative;               /* the bg-layer and the picture bands still hang off it */
+  left: auto; top: auto;
+  transform: none !important;       /* fitStage() stops writing one; this catches a stale inline style */
+  width: auto; height: auto;
+  min-height: 100vh;               /* svh is Safari 15.4; an older iPad gets vh */
+  min-height: 100svh;
+  overflow: visible;
+  box-shadow: none;
+  padding-bottom: calc(var(--flow-bar) + env(safe-area-inset-bottom));
+}
+/* relative, not static. `.slide` carries z-index:1 to sit over the .bg-layer
+   that paints the hero behind every slide, and z-index does nothing to a
+   static element — a positioned element paints over a non-positioned one
+   whatever the numbers say. Set static, the artwork came out ON TOP of the
+   answers: the boy in The Alchemist's hero stood in front of options A, B
+   and C, which still worked and could not be read. */
+html.is-flow .slide { position: relative; inset: auto; }
+html.is-flow .slide.is-active {
+  min-height: calc(100vh - var(--flow-bar) - env(safe-area-inset-bottom));
+  min-height: calc(100svh - var(--flow-bar) - env(safe-area-inset-bottom));
+}
+/* `safe center` is right on a canvas of a known height. In a page the body
+   starts under its heading and runs down. */
+html.is-flow .slide-body { flex: 0 1 auto; justify-content: flex-start; }
+html.is-flow .cover-inner { height: auto; min-height: calc(100vh - 150px); min-height: calc(100svh - 150px); }
+
+/* ── the bar is the phone's whole navigation ──
+   The two floating circles (.phone-btn, added 2026-10-14) were the answer
+   while the stage was a letterbox with nothing around it; here the bar is at
+   the bottom of the screen already, so they would only sit on top of it. The
+   arrows it has go back to full size instead — 44px, the same target the
+   circles were drawn at. */
+html.is-flow .deck-bar,
+html.is-flow .stage.on-cover .deck-bar {
+  position: fixed; left: 0; right: 0; bottom: 0;
+  height: calc(var(--flow-bar) + env(safe-area-inset-bottom));
+  padding: 0 8px env(safe-area-inset-bottom);
+  gap: 6px;
+  background: var(--void);
+  border-top: 1px solid var(--border);
+}
+html.is-flow .phone-nav { display: none; }
+html.is-flow .deck-bar .nav-btn { visibility: visible; width: 44px; height: 44px; font-size: 20px; }
+/* The bar is now the only way through the deck, so nothing in it may push an
+   arrow off the end. On Reasonable Doubt it did: the branch decks put a
+   ledger (POINTS, PATIENCE, FILE) in the bar, it asked for 284px of a 360px
+   phone, and NEXT ended up at x=531 — the same "there is no next button"
+   this whole pass is about, in a family I had not looked at.
+   The arrows and the counter are fixed and pinned to the ends; the ledger
+   takes whatever is left over (flex-basis 0) and scrolls inside itself, so
+   it can shrink to nothing without ever moving them. */
+html.is-flow .deck-bar .nav-btn { flex: 0 0 44px; }
+html.is-flow .deck-bar .nav-btn[data-action="prev"] { order: -1; }
+html.is-flow .deck-bar .nav-btn[data-action="next"] { order: 9; }
+/* the counter shrinks too. Reasonable Doubt's reads 112px wide, not the
+   "3 / 72" a plain deck shows, and fixed at that it was the last 37px that
+   kept NEXT off the screen. */
+html.is-flow .deck-bar .deck-count {
+  order: 8; flex: 0 1 auto; min-width: 0;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+html.is-flow .deck-bar .progress { flex: 0 0 26px; }
+html.is-flow .deck-bar .deck-score { flex: 0 1 auto; min-width: 0; overflow: hidden; white-space: nowrap; }
+html.is-flow .deck-bar .lang-select { flex: 0 0 auto; max-width: 92px; }
+html.is-flow .deck-bar .ledger {
+  flex: 1 1 0; min-width: 0; gap: 9px; font-size: 11px;
+  overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none;
+}
+html.is-flow .deck-bar .ledger::-webkit-scrollbar { display: none; }
+html.is-flow .deck-bar .led { flex: 0 0 auto; }
+html.is-flow .deck-bar .fs-btn { display: none; }     /* a phone has no window to fill */
+html.is-flow .lang-select { min-height: 38px; }
+html.is-flow .deck-count { font-size: 12px; }
+
+/* the rail is a row of stops pinned above the bar on the canvas; in a page it
+   is the last line of the slide */
+html.is-flow .deck-rail { position: static; flex-wrap: wrap; margin-top: 16px; }
+html.is-flow .stage.has-rail .slide { padding-bottom: var(--pad); }
+html.is-flow .stage.has-rail .divider-cap { padding-bottom: 14px; }
+
+/* ── pictures ──
+   A divider is a full-bleed photograph with its caption burnt into the
+   bottom; a panel is a picture column beside a text column. Upright, both
+   become a band with the words under it. */
+html.is-flow .slide[data-type="divider"].is-active { display: flex; flex-direction: column; padding: 0; }
+html.is-flow .divider-pic { position: relative; inset: auto; flex: 0 0 auto; height: 38vh; height: 38svh; min-height: 180px; }
+html.is-flow .divider-cap {
+  position: static; flex: 1 1 auto;
+  padding: 18px var(--pad) 22px;
+  background: var(--void);
+  display: flex; flex-direction: column; justify-content: center;
+}
+html.is-flow .slide[data-layout="panel"],
+html.is-flow .slide[data-layout="panel"][data-side="right"] { flex-direction: column; }
+html.is-flow .panel-pic { flex: 0 0 auto; height: 34vh; height: 34svh; min-height: 160px; }
+/* the seam is a rule down the picture's inner edge; the inner edge is now the
+   bottom one */
+html.is-flow .panel-pic::after {
+  top: auto; right: 0; left: 0; bottom: 0; width: auto; height: 3px;
+  background: linear-gradient(90deg, transparent,
+    color-mix(in srgb, var(--accent) 70%, transparent) 22%,
+    color-mix(in srgb, var(--accent) 70%, transparent) 78%, transparent);
+}
+html.is-flow .panel-body { padding: var(--pad); justify-content: flex-start; }
+/* editorial's art is placed against the 16:9 canvas by hand, slide by slide;
+   there is no upright position for it, so upright it is not drawn */
+html.is-flow[data-style="editorial"] .editorial-art { display: none; }
+
+/* ── two columns is one column ──
+   !important, which nothing else here needs: a builder that wants three
+   cards across writes `style="grid-template-columns:1fr 1fr 1fr"` on the
+   .cols itself (build_boltzmann does, on eight of its thirty-five slides),
+   and an inline declaration outranks any selector. Left alone, those three
+   cards laid themselves out 559px wide inside a 360px phone and took the
+   whole page sideways with them. */
+html.is-flow .cols, html.is-flow .cols-3, html.is-flow .opts.two-up,
+html.is-flow .rules-intro,
+html.is-flow .match-grid { grid-template-columns: 1fr !important; }
+html.is-flow .lock-pad { grid-template-columns: repeat(5, 1fr) !important; }
+/* the sorting board writes its own column count inline too -- four bins
+   across a 372px phone came out 75px wide and 11px off each edge. auto-fit
+   rather than one column, because four bins stacked at their full height is
+   570px of board on a 560px screen and the pool you drag from scrolls off
+   the top of it. Two across, shorter, keeps the whole task in one view. */
+html.is-flow .sort-bins { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)) !important; }
+html.is-flow .sort-bin { min-height: 96px; padding: 9px 8px; }
+html.is-flow .sort-bin-label { font-size: 12px; }
+/* the picture search writes its column count from JS, one column per thing to
+   find (grid.style.gridTemplateColumns = `repeat(${items.length}, 1fr)`), so
+   it is inline too: six objects across a 324px row on Escape from Alcatraz
+   ran 18px off the right of the phone. Three across, wrapping. */
+html.is-flow .find-grid { grid-template-columns: repeat(auto-fit, minmax(84px, 1fr)) !important; }
+/* the lock puts its display beside its keypad with 34px between them: 248px
+   of keypad starting at x=228 on a phone, so the right-hand two columns of
+   keys were off the screen. Upright the keypad goes under the display.
+   Its five columns are left as they are: 5 x 44px keys and four 7px gaps is
+   248px, which fits a phone once the keypad is not starting a third of the
+   way across it. (auto-fit was the first try and collapsed to a single
+   column of eleven keys -- .lock-keys is centred, so it is content-width,
+   and auto-fit has no definite width to fit anything into.) */
+html.is-flow .lock { flex-direction: column; gap: 16px; }
+/* a story deck pins its words into the empty wall of each plate, at a width
+   measured per slide against the 1280px stage and written onto the slide as
+   --col-w (build_reasonable_doubt.py). Reasonable Doubt's cover asked for
+   636px of column on a 360px phone. Upright the plate is the background and
+   the words have the whole page, so the measured column goes. */
+html.is-flow .slide[data-side] .slide-body,
+html.is-flow .slide[data-side] .slide-head,
+html.is-flow .slide[data-side] .cover-inner { width: auto !important; }
+/* a gap box is sized from the longest answer on the slide (deck.gap()); on a
+   phone the longest answer can be wider than the phone */
+html.is-flow .gap { max-width: 100%; }
+/* a grid told to be one column still overflows if a cell cannot be narrower
+   than its longest unbroken word */
+html.is-flow .cols > *, html.is-flow .opts > *, html.is-flow .match-grid > * { min-width: 0; }
+
+/* ── display type ──
+   The body sizes are left alone: 15-19px was already a phone's reading size,
+   which is why the deck only ever failed on a phone by being scaled, not by
+   being written wrong. */
+html.is-flow .cover-title { font-size: clamp(30px, 8.6vw, 40px); margin-top: 14px; }
+html.is-flow .cover-sub { font-size: 16px; }
+html.is-flow .slide-title { font-size: clamp(23px, 6.6vw, 30px); }
+html.is-flow[data-style="editorial"] .slide-title { font-size: clamp(26px, 7.4vw, 34px); }
+html.is-flow .divider-cap h2 { font-size: clamp(24px, 6.8vw, 32px); }
+html.is-flow .fe-logo { width: 116px; }
+html.is-flow .slide[data-type="cover"] .fe-logo { width: 150px; }
+html.is-flow .score-big { font-size: 40px; }
+html.is-flow .slide[data-type="results"].has-review .score-big { font-size: 36px; }
+
+/* the activation stage offers its two words side by side, 30px display type
+   in a 30px-padded pill with 26px between them: 424px of choice for 360px of
+   phone. Upright they are a short list. */
+html.is-flow .act-choose { flex-direction: column; align-items: stretch; gap: 10px; }
+html.is-flow .act-word { font-size: 20px; padding: 11px 18px; justify-content: center; }
+html.is-flow .act-word-icon { font-size: 18px; }
+
+/* ── a finger needs 44px ── */
+@media (pointer: coarse) {
+  html.is-flow .opt, html.is-flow .btn, html.is-flow .rail-stop,
+  html.is-flow .chip-btn { min-height: 44px; }
+  html.is-flow .btn { padding-left: 18px; padding-right: 18px; }
+}
+/* FLOW-MODE-END */
+
 /* ══════════════════════════════════════════════════════════════════
    PRINT / PDF EXPORT
    Ctrl-P → Save as PDF → Landscape, margins None, Background graphics ON.
@@ -1805,6 +2025,301 @@ html[data-style="editorial"] .stamp {
   font-family: var(--font-ui); font-size: 15px; font-weight: 800; line-height: 1.2;
   padding: 10px; transform: rotate(10deg);
 }
+
+/* ══ HOUSE STYLE 2 ═══════════════════════════════════════════════════
+   THE MAIN STYLE since 2026-11-06 (Innes: "make house style 2 the new
+   main style"). Set with data-style="hs2" on <html>; a builder passes
+   style='hs2' to assemble(). HOUSE-STYLE.md §0 and §15 are the rules;
+   this block is the look.
+
+   Benchmarked on two ENGHUB decks Innes supplied ("How to Break Habits",
+   B1-B2, and "Reinventing Yourself After a Break", C1), measured page by
+   page. What they do, and what this block does:
+
+     1. PAPER. Every interior page is a white field. Text never sits on a
+        picture, so nothing is washed and nothing is plated.
+     2. THE PICTURE OWNS A ZONE. A figure stands on the paper beside the
+        text (about a third of the width), or a plate bleeds a column, or a
+        divider shows it whole. It is never behind a sentence.
+     3. ONE TINT for every container — speech bubbles, cards, pills,
+        answer bars — with no border and no shadow, soft round corners.
+        (--surface from extract-palette.py --paper: the benchmark greige.)
+     4. ONE ACCENT, for the language being taught: the highlighted word in
+        a question, the example in a rule. Not for decoration.
+     5. A HEAVY CONDENSED CAPS TITLE on every page, big, centred, one or
+        two lines. Barlow Condensed, the face the library and every hub
+        page already set their headings in — the benchmark's Bebas, in
+        the site's own family. No new font enters the site.
+     6. SHAPES THAT SAY WHAT THE TASK IS: discussion is a field of speech
+        bubbles, a rule is a card with a pill tab, a survey is a question
+        card over ranked answer cards. See .bubbles, .tab-card, .survey.
+
+   Everything else is untouched: §6's budget, scoring, the activation
+   stage, the language switcher, print, check-lesson.js. */
+html[data-style="hs2"] {
+  --plate: 1;                  /* containers are solid tint, never glass */
+  --bg-opacity: 1;
+  --wash-mid: transparent;
+  --wash-edge: transparent;
+  --r: 22px;
+  --act-panel-h: 304px;
+  --art-w: 448px;              /* the picture's width: 35% of the 1280 stage */
+  --font-head: 'Barlow Condensed', 'Arial Narrow', 'DM Sans', sans-serif;
+}
+
+/* ── 1. paper ── */
+html[data-style="hs2"] .stage { background: var(--void); box-shadow: 0 24px 80px rgba(0,0,0,0.35); }
+html[data-style="hs2"] .stage:not(.on-cover) .bg-layer::before,
+html[data-style="hs2"] .stage:not(.on-cover) .bg-layer::after { content: none; }
+html[data-style="hs2"] :where(.eyebrow, .slide-title, .q-stem, .q-ctx,
+  .order-hint, .slide-body > .prose, .cover-title, .cover-sub,
+  .act-target-label, .feedback.show, .score-big, .sort-bin-label) {
+  background: none; box-shadow: none; text-shadow: none;
+}
+html[data-style="hs2"] .deck-bar { background: none; }
+html[data-style="hs2"] :where(.nav-btn, .lang-select) { background: var(--surface); }
+
+/* ── 2. the picture owns a zone ──
+   data-bg keeps its meaning, "this slide's picture", and the same markup
+   builds every look. Four shapes, picked per slide with data-art:
+     (none)    a plate, cropped into a tall rounded card right of the text
+     cutout    a transparent PNG figure standing on the paper — the
+               benchmark's own idiom, and what every stand-in is
+     circle    a portrait or photo in a circle (benchmark p.20-21)
+     bleed     a full-height column off the right edge, house style 2's
+               original panel, for a plate whose subject needs the height
+   data-art-side="left" mirrors any of them. data-art-pos sets the crop
+   (show() copies it to --art-pos). The heading spans the full width;
+   only the BODY yields the column, which is how the benchmark sets it. */
+html[data-style="hs2"] .editorial-art {
+  display: block; position: absolute; z-index: 0; pointer-events: none;
+  right: 56px; top: 150px; bottom: 74px; width: var(--art-w);
+  background: var(--hero) var(--art-pos, center) / cover no-repeat;
+  border-radius: 28px;
+}
+html[data-style="hs2"] .stage:has(.slide.is-active[data-art="cutout"]) .editorial-art {
+  top: 126px; bottom: 58px; right: 40px; border-radius: 0;
+  background-size: contain; background-position: var(--art-pos, center bottom);
+}
+html[data-style="hs2"] .stage:has(.slide.is-active[data-art="circle"]) .editorial-art {
+  top: 50%; bottom: auto; width: 360px; height: 360px; right: 92px;
+  transform: translateY(-38%); border-radius: 50%;
+}
+html[data-style="hs2"] .stage:has(.slide.is-active[data-art="bleed"]) .editorial-art {
+  top: 0; bottom: 0; right: 0; border-radius: 0; width: 36%;
+}
+html[data-style="hs2"] .stage:has(.slide.is-active[data-art-side="left"]) .editorial-art {
+  right: auto; left: 56px;
+}
+html[data-style="hs2"] .stage:has(.slide.is-active[data-art-side="left"][data-art="cutout"]) .editorial-art { left: 40px; }
+html[data-style="hs2"] .stage:has(.slide.is-active[data-art-side="left"][data-art="circle"]) .editorial-art { left: 92px; }
+html[data-style="hs2"] .stage:has(.slide.is-active[data-art-side="left"][data-art="bleed"]) .editorial-art { left: 0; }
+html[data-style="hs2"] .stage:not(:has(.slide.is-active[data-bg])) .editorial-art,
+html[data-style="hs2"] .stage.on-cover .editorial-art { display: none; }
+
+/* Pixel arithmetic, not percentages: the body is measured inside the 64px
+   padding (1152 wide) and the picture against the whole 1280 stage, so a
+   percentage of one is not the same length as a percentage of the other,
+   and wide content ran ~9px under the picture. The picture's inner edge is
+   1280 - 56 - W; the body stops 28px before it, from x = 64. */
+html[data-style="hs2"] .stage:has(.slide.is-active[data-bg]) .slide.is-active .slide-body {
+  max-width: calc(1132px - var(--art-w));
+}
+html[data-style="hs2"] .stage:has(.slide.is-active[data-art-side="left"]) .slide.is-active .slide-body {
+  margin-left: calc(var(--art-w) + 20px);
+}
+/* A bleed column runs the full height, so there the heading yields too. */
+html[data-style="hs2"] .stage:has(.slide.is-active[data-art="bleed"]) .slide.is-active .slide-head {
+  max-width: calc(100% - 36% + 64px - 40px);
+}
+html[data-style="hs2"] .stage:has(.slide.is-active[data-art="bleed"][data-art-side="left"]) .slide.is-active .slide-head {
+  margin-left: calc(36% - 64px + 40px);
+}
+
+/* ── 3. the title ── */
+html[data-style="hs2"] .slide-head {
+  justify-content: center; text-align: center; margin-bottom: 18px;
+}
+html[data-style="hs2"] .slide-head > div { width: 100%; }
+/* The base sheet shrink-wraps the eyebrow and title (width: fit-content,
+   for the plate), so centring the head centres nothing until they take
+   auto margins too. */
+html[data-style="hs2"] .slide-head .eyebrow,
+html[data-style="hs2"] .slide-head .slide-title { margin-inline: auto; }
+html[data-style="hs2"] .slide-title {
+  font-family: var(--font-head); font-weight: 800; text-transform: uppercase;
+  font-size: 56px; line-height: 0.98; letter-spacing: 0.004em;
+  color: var(--text); margin-top: 4px;
+}
+html[data-style="hs2"] .slide-title em { font-style: normal; color: var(--accent-bright); }
+html[data-style="hs2"] .eyebrow {
+  font-size: 12.5px; letter-spacing: 0.18em; color: var(--accent-bright);
+}
+/* Panels keep their column: the title sits left in the text column there,
+   because the picture already owns the other side top to bottom. */
+html[data-style="hs2"] .slide[data-layout="panel"] .slide-head { justify-content: flex-start; text-align: left; }
+html[data-style="hs2"] .slide[data-layout="panel"] .slide-head .eyebrow,
+html[data-style="hs2"] .slide[data-layout="panel"] .slide-head .slide-title { margin-inline: 0; }
+html[data-style="hs2"] .slide[data-layout="panel"] .panel-pic { background: var(--surface); }
+html[data-style="hs2"] .slide[data-layout="panel"] .panel-pic::after { content: none; }
+
+/* ── 4. one tint, no borders ── */
+html[data-style="hs2"] .card {
+  background: var(--surface); border: 0; box-shadow: none;
+  backdrop-filter: none; border-radius: 24px; padding: 22px 28px;
+}
+html[data-style="hs2"] .card .prose strong { color: var(--text); }
+html[data-style="hs2"] .prose strong,
+html[data-style="hs2"] .q-stem strong,
+html[data-style="hs2"] .tl { color: var(--accent-bright); font-weight: 700; }
+html[data-style="hs2"] .ex { font-style: italic; color: var(--accent-bright); }
+html[data-style="hs2"] .q-stem { font-size: 26px; line-height: 1.42; }
+html[data-style="hs2"] .opts { gap: 10px; }
+html[data-style="hs2"] .opt {
+  background: var(--surface); border: 2px solid transparent;
+  border-radius: 18px; padding: 13px 22px 13px 14px; font-size: 20px;
+}
+html[data-style="hs2"] .opt:hover:not(:disabled) { border-color: var(--accent); }
+html[data-style="hs2"] .opt-key {
+  background: var(--void); border: 0;
+  font-family: var(--font-head); font-size: 17px; font-weight: 800;
+}
+html[data-style="hs2"] .opt.correct { border-color: var(--ok); background: color-mix(in srgb, var(--ok) 20%, var(--surface)); }
+html[data-style="hs2"] .opt.wrong   { border-color: var(--no); background: color-mix(in srgb, var(--no) 16%, var(--surface)); }
+html[data-style="hs2"] :where(.match-item, .chunk, .sort-item, .sort-bin) {
+  background: var(--surface); border-color: transparent; border-radius: 16px;
+}
+html[data-style="hs2"] .sort-bin { background: var(--surface2); border: 2px dashed var(--border); }
+html[data-style="hs2"] .match-item.picked,
+html[data-style="hs2"] .sort-item.picked { border-color: var(--accent); background: var(--accent-dim); }
+html[data-style="hs2"] .match-item.done,
+html[data-style="hs2"] .sort-item.placed { border-color: var(--ok); }
+html[data-style="hs2"] .match-item.miss,
+html[data-style="hs2"] .sort-item.miss { border-color: var(--no); }
+html[data-style="hs2"] .gap { background: var(--void); border-radius: 8px 8px 0 0; }
+html[data-style="hs2"] .gap-row.card { padding: 12px 20px; border-radius: 18px; }
+html[data-style="hs2"] :where(.bank-chip, .chip) {
+  background: var(--surface); border: 0; border-radius: 999px; color: var(--text);
+}
+html[data-style="hs2"] .act-panel { background: var(--surface); border: 0; box-shadow: none; }
+/* The two activation words take the title face: same voice as every
+   heading in the deck, and 20px shorter than the display serif, which is
+   what pays for the writing panel beside a picture (--act-panel-h). */
+html[data-style="hs2"] .act-word {
+  background: var(--surface); border-color: transparent;
+  font-family: var(--font-head); font-weight: 800; text-transform: uppercase;
+  font-size: 26px; letter-spacing: .02em; padding: 8px 26px;
+}
+html[data-style="hs2"] .act-input { background: var(--void); }
+/* The gloss control sits in a flex column and stretched to a full-width
+   bar; it is a small pill under the line it translates. */
+html[data-style="hs2"] .gloss-btn {
+  align-self: flex-start; background: var(--surface); border-color: transparent;
+  margin: 2px 0 10px;
+}
+html[data-style="hs2"] .score-big { font-family: var(--font-head); font-weight: 800; font-size: 120px; }
+
+/* ── 5. cover and divider ──
+   The benchmark cover: a giant stacked title on the left half of white
+   paper, the figure on the right half, a pill under the title. */
+html[data-style="hs2"] .stage.on-cover { background: var(--void); }
+html[data-style="hs2"] .stage.on-cover .bg-layer::before {
+  left: 46%; opacity: 1; filter: none;
+  background: var(--hero) var(--cover-pos, center) / cover no-repeat;
+}
+html[data-style="hs2"] .stage.on-cover:has(.slide[data-type="cover"][data-art="cutout"]) .bg-layer::before {
+  top: 40px; bottom: 30px; right: 30px;
+  background-size: contain; background-position: center bottom;
+}
+html[data-style="hs2"] .stage.on-cover .bg-layer::after { content: none; }
+html[data-style="hs2"] .cover-inner {
+  max-width: 46%; align-items: flex-start; text-align: left; gap: 0;
+}
+html[data-style="hs2"] .cover-title {
+  font-family: var(--font-head); font-weight: 800; text-transform: uppercase;
+  font-size: 88px; line-height: 0.9; letter-spacing: 0; margin-top: 30px;
+}
+html[data-style="hs2"] .cover-title em { color: var(--accent-bright); }
+html[data-style="hs2"] .cover-sub { font-size: 19px; line-height: 1.45; letter-spacing: 0; margin-top: 18px; }
+html[data-style="hs2"] .cover-meta { justify-content: flex-start; margin-top: 20px; }
+html[data-style="hs2"] .slide[data-type="cover"] .fe-logo { width: 196px; }
+html[data-style="hs2"] .divider-cap h2 {
+  font-family: var(--font-head); font-weight: 800; text-transform: uppercase;
+  font-size: 64px; line-height: 0.95;
+}
+
+/* ── 6. the benchmark's shapes ── */
+
+/* Speech bubbles: the "Let's talk!" field. A circle-ish blob with a tail,
+   text centred, one question per bubble. deck.bubbles() places up to
+   eight; a picture, if the slide has one, takes the last cell's place. */
+/* Capped at 260px: a bubble keeps its shape (aspect-ratio), so a wide
+   column made a tall bubble, and six bubbles three across at full width
+   ran 119px off the canvas. */
+html[data-style="hs2"] .bubbles {
+  display: grid; grid-template-columns: repeat(var(--bub-cols, 4), minmax(0, 260px));
+  justify-content: center; gap: 14px 18px; align-items: center;
+}
+.bubble {
+  position: relative; display: grid; place-items: center; text-align: center;
+  background: var(--surface); color: var(--text);
+  border-radius: 50% / 46%; aspect-ratio: 1.24;
+  padding: 10% 13%; font-size: 17.5px; line-height: 1.32;
+}
+.bubble::after {
+  content: ''; position: absolute; left: 12%; bottom: -5%;
+  width: 18%; height: 22%; background: inherit;
+  border-radius: 0 0 0 100%; transform: skewX(-22deg);
+  z-index: -1;
+}
+.bubble:nth-child(even)::after { left: auto; right: 12%; border-radius: 0 0 100% 0; transform: skewX(22deg); }
+.bubble { isolation: isolate; }
+.bubble strong, .bubble .tl { color: var(--accent-bright); font-weight: 600; }
+.bubble-lg { font-size: 26px; aspect-ratio: 1.25; padding: 12% 15%; }
+
+/* A rule card: tinted, with a pill tab sitting on its top edge naming
+   what the card is about (benchmark p.18, "Used to do sth"). */
+.tab-card { position: relative; margin-top: 18px !important; padding-top: 30px !important; }
+.tab-card .tab-pill {
+  position: absolute; top: -17px; left: 50%; transform: translateX(-50%);
+  background: color-mix(in srgb, var(--accent) 18%, var(--surface));
+  color: var(--text); border-radius: 999px; padding: 6px 22px;
+  font: 700 16px/1.25 var(--font-ui); white-space: nowrap;
+}
+.tab-card ul { padding-left: 1.1em; }
+.tab-card li { font-size: 18px; line-height: 1.5; }
+.tab-card li + li { margin-top: 6px; }
+.tab-card .ex { display: block; }
+
+/* The survey ("Top-5 quiz", benchmark p.3-12): one question card, then
+   the answers as cards with their score in big condensed figures, hidden
+   until clicked. Unscored: it is a warmer, and guessing is the point. */
+.survey { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.survey-q {
+  grid-column: 1 / -1; background: var(--surface); border-radius: 22px;
+  padding: 18px 26px; text-align: center; font-size: 21px; line-height: 1.4;
+}
+.survey-a {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  min-height: 64px; padding: 10px 22px; border-radius: 18px;
+  background: var(--surface); border: 2px solid transparent;
+  font: 500 18px/1.3 var(--font-ui); color: var(--text); cursor: pointer; text-align: left;
+}
+.survey-a:last-child:nth-child(even) { grid-column: 1 / -1; justify-self: center; min-width: 50%; }
+.survey-a .sa-text { visibility: hidden; }
+.survey-a .sa-n { font: 800 34px/1 var(--font-head, 'DM Sans'); color: var(--text-dim); }
+.survey-a:not(.shown) .sa-n b { display: none; }
+.survey-a:not(.shown) .sa-n::before { content: '?'; color: var(--accent); }
+.survey-a.shown .sa-text { visibility: visible; }
+.survey-a.shown .sa-n { color: var(--text); }
+.survey-a:hover:not(.shown) { border-color: var(--accent); }
+@media print { .survey-a .sa-text { visibility: visible; } .survey-a .sa-n b { display: inline !important; } .survey-a .sa-n::before { content: none !important; } }
+
+/* A handwritten-style aside ("Optional task" in the benchmark), set in the
+   body face at an angle rather than in a script font: no new font. */
+.aside-note {
+  font-style: italic; color: var(--text-dim); font-size: 16px;
+}
 </style>
 <style>
 /* ── Reasonable Doubt: content-aware placement (build_reasonable_doubt.py) ──
@@ -1854,227 +2369,6 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
     background: var(--hero) right center / auto 100% no-repeat, var(--wall, var(--void));
   }
 }
-</style>
-<style data-flow>
-/* FLOW-MODE-BEGIN — tools/mobile.py copies everything between this marker and
-   FLOW-MODE-END into every deck already built. Do not move the markers and do
-   not put anything between them that a built deck should not have. */
-/* ══════════════════════════════════════════════════════════════════
-   FLOW MODE — the deck as a page, for a screen too small to be a stage
-   Innes, 2026-10-29: "I tried to open Kraken on a mobile and it didnt even
-   have a next button. I want you to work hard on optimising the website for
-   mobile use."
-
-   fitStage() draws a fixed 1280x720 stage at whatever scale fits. On a
-   laptop that is 0.75-1.0 and the authored sizes are the sizes you read. On
-   a phone it is 0.28: measured on this deck at 360x560, a real Android
-   viewport once Chrome's own bars are counted, the stage came out 360x203 in
-   the middle of a black screen, the body text rendered at 5.3px, the chips at
-   3.2px and the START button at 41x15. The deck was legible only to someone
-   who already knew what it said.
-
-   No scale saves a 16:9 canvas on a 9:19.5 screen — the aspect ratios are two
-   thirds of a turn apart, and fitting the width throws away three quarters of
-   the type. So below the same 0.62 that already decides .is-phone, the deck
-   stops being a stage and becomes a page: no transform, every px its own
-   size, the slide laid out in the viewport's width and scrolled if it is
-   taller than the screen. The authored body sizes (15-19px) are already phone
-   sizes; only the display type, the two-column grids and the chrome need
-   saying again. The print rules below do the same thing for a sheet of paper
-   and have done since the deck was built, which is the evidence that the
-   slides reflow when they are let out of position:absolute.
-
-   One slide is still one screenful wherever it fits: .is-active carries a
-   min-height of the viewport less the bar, so a short slide does not float
-   in a tall page and a long one scrolls rather than shrinking its type. */
-html.is-flow, html.is-flow body { height: auto; min-height: 100%; overflow: visible; }
-html.is-flow { --pad: 18px; --flow-bar: 56px; }
-html.is-flow .stage-wrap { position: static; display: block; overflow: visible; }
-html.is-flow .stage {
-  position: relative;               /* the bg-layer and the picture bands still hang off it */
-  left: auto; top: auto;
-  transform: none !important;       /* fitStage() stops writing one; this catches a stale inline style */
-  width: auto; height: auto;
-  min-height: 100vh;               /* svh is Safari 15.4; an older iPad gets vh */
-  min-height: 100svh;
-  overflow: visible;
-  box-shadow: none;
-  padding-bottom: calc(var(--flow-bar) + env(safe-area-inset-bottom));
-}
-/* relative, not static. `.slide` carries z-index:1 to sit over the .bg-layer
-   that paints the hero behind every slide, and z-index does nothing to a
-   static element — a positioned element paints over a non-positioned one
-   whatever the numbers say. Set static, the artwork came out ON TOP of the
-   answers: the boy in The Alchemist's hero stood in front of options A, B
-   and C, which still worked and could not be read. */
-html.is-flow .slide { position: relative; inset: auto; }
-html.is-flow .slide.is-active {
-  min-height: calc(100vh - var(--flow-bar) - env(safe-area-inset-bottom));
-  min-height: calc(100svh - var(--flow-bar) - env(safe-area-inset-bottom));
-}
-/* `safe center` is right on a canvas of a known height. In a page the body
-   starts under its heading and runs down. */
-html.is-flow .slide-body { flex: 0 1 auto; justify-content: flex-start; }
-html.is-flow .cover-inner { height: auto; min-height: calc(100vh - 150px); min-height: calc(100svh - 150px); }
-
-/* ── the bar is the phone's whole navigation ──
-   The two floating circles (.phone-btn, added 2026-10-14) were the answer
-   while the stage was a letterbox with nothing around it; here the bar is at
-   the bottom of the screen already, so they would only sit on top of it. The
-   arrows it has go back to full size instead — 44px, the same target the
-   circles were drawn at. */
-html.is-flow .deck-bar,
-html.is-flow .stage.on-cover .deck-bar {
-  position: fixed; left: 0; right: 0; bottom: 0;
-  height: calc(var(--flow-bar) + env(safe-area-inset-bottom));
-  padding: 0 8px env(safe-area-inset-bottom);
-  gap: 6px;
-  background: var(--void);
-  border-top: 1px solid var(--border);
-}
-html.is-flow .phone-nav { display: none; }
-html.is-flow .deck-bar .nav-btn { visibility: visible; width: 44px; height: 44px; font-size: 20px; }
-/* The bar is now the only way through the deck, so nothing in it may push an
-   arrow off the end. On Reasonable Doubt it did: the branch decks put a
-   ledger (POINTS, PATIENCE, FILE) in the bar, it asked for 284px of a 360px
-   phone, and NEXT ended up at x=531 — the same "there is no next button"
-   this whole pass is about, in a family I had not looked at.
-   The arrows and the counter are fixed and pinned to the ends; the ledger
-   takes whatever is left over (flex-basis 0) and scrolls inside itself, so
-   it can shrink to nothing without ever moving them. */
-html.is-flow .deck-bar .nav-btn { flex: 0 0 44px; }
-html.is-flow .deck-bar .nav-btn[data-action="prev"] { order: -1; }
-html.is-flow .deck-bar .nav-btn[data-action="next"] { order: 9; }
-/* the counter shrinks too. Reasonable Doubt's reads 112px wide, not the
-   "3 / 72" a plain deck shows, and fixed at that it was the last 37px that
-   kept NEXT off the screen. */
-html.is-flow .deck-bar .deck-count {
-  order: 8; flex: 0 1 auto; min-width: 0;
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-}
-html.is-flow .deck-bar .progress { flex: 0 0 26px; }
-html.is-flow .deck-bar .deck-score { flex: 0 1 auto; min-width: 0; overflow: hidden; white-space: nowrap; }
-html.is-flow .deck-bar .lang-select { flex: 0 0 auto; max-width: 92px; }
-html.is-flow .deck-bar .ledger {
-  flex: 1 1 0; min-width: 0; gap: 9px; font-size: 11px;
-  overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none;
-}
-html.is-flow .deck-bar .ledger::-webkit-scrollbar { display: none; }
-html.is-flow .deck-bar .led { flex: 0 0 auto; }
-html.is-flow .deck-bar .fs-btn { display: none; }     /* a phone has no window to fill */
-html.is-flow .lang-select { min-height: 38px; }
-html.is-flow .deck-count { font-size: 12px; }
-
-/* the rail is a row of stops pinned above the bar on the canvas; in a page it
-   is the last line of the slide */
-html.is-flow .deck-rail { position: static; flex-wrap: wrap; margin-top: 16px; }
-html.is-flow .stage.has-rail .slide { padding-bottom: var(--pad); }
-html.is-flow .stage.has-rail .divider-cap { padding-bottom: 14px; }
-
-/* ── pictures ──
-   A divider is a full-bleed photograph with its caption burnt into the
-   bottom; a panel is a picture column beside a text column. Upright, both
-   become a band with the words under it. */
-html.is-flow .slide[data-type="divider"].is-active { display: flex; flex-direction: column; padding: 0; }
-html.is-flow .divider-pic { position: relative; inset: auto; flex: 0 0 auto; height: 38vh; height: 38svh; min-height: 180px; }
-html.is-flow .divider-cap {
-  position: static; flex: 1 1 auto;
-  padding: 18px var(--pad) 22px;
-  background: var(--void);
-  display: flex; flex-direction: column; justify-content: center;
-}
-html.is-flow .slide[data-layout="panel"],
-html.is-flow .slide[data-layout="panel"][data-side="right"] { flex-direction: column; }
-html.is-flow .panel-pic { flex: 0 0 auto; height: 34vh; height: 34svh; min-height: 160px; }
-/* the seam is a rule down the picture's inner edge; the inner edge is now the
-   bottom one */
-html.is-flow .panel-pic::after {
-  top: auto; right: 0; left: 0; bottom: 0; width: auto; height: 3px;
-  background: linear-gradient(90deg, transparent,
-    color-mix(in srgb, var(--accent) 70%, transparent) 22%,
-    color-mix(in srgb, var(--accent) 70%, transparent) 78%, transparent);
-}
-html.is-flow .panel-body { padding: var(--pad); justify-content: flex-start; }
-/* editorial's art is placed against the 16:9 canvas by hand, slide by slide;
-   there is no upright position for it, so upright it is not drawn */
-html.is-flow[data-style="editorial"] .editorial-art { display: none; }
-
-/* ── two columns is one column ──
-   !important, which nothing else here needs: a builder that wants three
-   cards across writes `style="grid-template-columns:1fr 1fr 1fr"` on the
-   .cols itself (build_boltzmann does, on eight of its thirty-five slides),
-   and an inline declaration outranks any selector. Left alone, those three
-   cards laid themselves out 559px wide inside a 360px phone and took the
-   whole page sideways with them. */
-html.is-flow .cols, html.is-flow .cols-3, html.is-flow .opts.two-up,
-html.is-flow .rules-intro,
-html.is-flow .match-grid { grid-template-columns: 1fr !important; }
-html.is-flow .lock-pad { grid-template-columns: repeat(5, 1fr) !important; }
-/* the sorting board writes its own column count inline too -- four bins
-   across a 372px phone came out 75px wide and 11px off each edge. auto-fit
-   rather than one column, because four bins stacked at their full height is
-   570px of board on a 560px screen and the pool you drag from scrolls off
-   the top of it. Two across, shorter, keeps the whole task in one view. */
-html.is-flow .sort-bins { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)) !important; }
-html.is-flow .sort-bin { min-height: 96px; padding: 9px 8px; }
-html.is-flow .sort-bin-label { font-size: 12px; }
-/* the picture search writes its column count from JS, one column per thing to
-   find (grid.style.gridTemplateColumns = `repeat(${items.length}, 1fr)`), so
-   it is inline too: six objects across a 324px row on Escape from Alcatraz
-   ran 18px off the right of the phone. Three across, wrapping. */
-html.is-flow .find-grid { grid-template-columns: repeat(auto-fit, minmax(84px, 1fr)) !important; }
-/* the lock puts its display beside its keypad with 34px between them: 248px
-   of keypad starting at x=228 on a phone, so the right-hand two columns of
-   keys were off the screen. Upright the keypad goes under the display.
-   Its five columns are left as they are: 5 x 44px keys and four 7px gaps is
-   248px, which fits a phone once the keypad is not starting a third of the
-   way across it. (auto-fit was the first try and collapsed to a single
-   column of eleven keys -- .lock-keys is centred, so it is content-width,
-   and auto-fit has no definite width to fit anything into.) */
-html.is-flow .lock { flex-direction: column; gap: 16px; }
-/* a story deck pins its words into the empty wall of each plate, at a width
-   measured per slide against the 1280px stage and written onto the slide as
-   --col-w (build_reasonable_doubt.py). Reasonable Doubt's cover asked for
-   636px of column on a 360px phone. Upright the plate is the background and
-   the words have the whole page, so the measured column goes. */
-html.is-flow .slide[data-side] .slide-body,
-html.is-flow .slide[data-side] .slide-head,
-html.is-flow .slide[data-side] .cover-inner { width: auto !important; }
-/* a gap box is sized from the longest answer on the slide (deck.gap()); on a
-   phone the longest answer can be wider than the phone */
-html.is-flow .gap { max-width: 100%; }
-/* a grid told to be one column still overflows if a cell cannot be narrower
-   than its longest unbroken word */
-html.is-flow .cols > *, html.is-flow .opts > *, html.is-flow .match-grid > * { min-width: 0; }
-
-/* ── display type ──
-   The body sizes are left alone: 15-19px was already a phone's reading size,
-   which is why the deck only ever failed on a phone by being scaled, not by
-   being written wrong. */
-html.is-flow .cover-title { font-size: clamp(30px, 8.6vw, 40px); margin-top: 14px; }
-html.is-flow .cover-sub { font-size: 16px; }
-html.is-flow .slide-title { font-size: clamp(23px, 6.6vw, 30px); }
-html.is-flow[data-style="editorial"] .slide-title { font-size: clamp(26px, 7.4vw, 34px); }
-html.is-flow .divider-cap h2 { font-size: clamp(24px, 6.8vw, 32px); }
-html.is-flow .fe-logo { width: 116px; }
-html.is-flow .slide[data-type="cover"] .fe-logo { width: 150px; }
-html.is-flow .score-big { font-size: 40px; }
-html.is-flow .slide[data-type="results"].has-review .score-big { font-size: 36px; }
-
-/* the activation stage offers its two words side by side, 30px display type
-   in a 30px-padded pill with 26px between them: 424px of choice for 360px of
-   phone. Upright they are a short list. */
-html.is-flow .act-choose { flex-direction: column; align-items: stretch; gap: 10px; }
-html.is-flow .act-word { font-size: 20px; padding: 11px 18px; justify-content: center; }
-html.is-flow .act-word-icon { font-size: 18px; }
-
-/* ── a finger needs 44px ── */
-@media (pointer: coarse) {
-  html.is-flow .opt, html.is-flow .btn, html.is-flow .rail-stop,
-  html.is-flow .chip-btn { min-height: 44px; }
-  html.is-flow .btn { padding-left: 18px; padding-right: 18px; }
-}
-/* FLOW-MODE-END */
 </style>
 </head>
 <body data-flow="branch" data-start="cover" data-time="5">
@@ -2207,8 +2501,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="teach" data-node="q04" data-act="Act I" data-bg="ReasonableDoubt/hands.jpg" data-side="left" style="--col-w:506px;--wall:linear-gradient(180deg,#e7d9be 10%,#e6d8bc 30%,#e6d8bc 50%,#e4d6bb 70%,#e5d8bd 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">Act I · the first vote · 1 of 2</div>
-        <h2 class="slide-title">Eleven hands rise.</h2>
+        <div class="eyebrow" data-i18n="qeq04">Act I · the first vote · 1 of 2</div>
+        <h2 class="slide-title" data-i18n="qtq04">Eleven hands rise.</h2>
       </div></div>
       <div class="slide-body" style="position:relative">
         <div class="card"><p class="prose gloss" data-tr="q-q04">Eleven votes for guilty. Your hand stays down. Juror 3 leans in: “Are you saying you know he is innocent?”</p><p class="prose dim" style="margin-top:12px" data-i18n="sayQ04">Say one reason a confident person might still be wrong.</p></div>
@@ -2220,18 +2514,18 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="mc" data-node="q04q" data-act="Act I" data-bg="ReasonableDoubt/hands.jpg" data-side="left" style="--col-w:506px;--wall:linear-gradient(180deg,#e7d9be 10%,#e6d8bc 30%,#e6d8bc 50%,#e4d6bb 70%,#e5d8bd 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">Act I · the first vote · 1 of 2</div>
-        <h2 class="slide-title">Eleven hands rise.</h2>
+        <div class="eyebrow" data-i18n="qeq04">Act I · the first vote · 1 of 2</div>
+        <h2 class="slide-title" data-i18n="qtq04">Eleven hands rise.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">Which reply expresses uncertainty accurately?</p>
+        <p class="q-stem" data-i18n="qsq04">Which reply expresses uncertainty accurately?</p>
         <div class="opts">
           <button class="opt" data-time="-1" data-goto="q05">He must be innocent. I can feel it, so we don’t need evidence.</button>
           <button class="opt" data-correct data-dp="1" data-goto="q05">I don’t know. I think we should examine the evidence.</button>
           <button class="opt" data-time="-1" data-goto="q05">He can’t be guilty, because he looks far too nervous.</button>
         </div>
         <div style="display:flex;gap:16px;align-items:flex-start">
-          <p class="feedback" style="flex:1" data-explain="I DON’T KNOW admits uncertainty; SHOULD proposes a next step. MUST and CAN’T claim a certainty that a feeling can’t give."></p>
+          <p class="feedback" style="flex:1" data-explain="qwq04"></p>
           <button class="btn btn-solid" style="flex:none;margin-top:10px" data-action="branch-continue" data-i18n="btnContinue" hidden>Continue →</button>
         </div>
       </div>
@@ -2239,8 +2533,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="teach" data-node="q05" data-act="Act I" data-bg="ReasonableDoubt/ground.jpg" data-side="left" style="--col-w:528px;--wall:linear-gradient(180deg,#e6d8ba 10%,#e4d4b5 30%,#e4d4b5 50%,#dfcba9 70%,#e2d0ae 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">Act I · disagreeing politely · 2 of 2</div>
-        <h2 class="slide-title">Hold your ground.</h2>
+        <div class="eyebrow" data-i18n="qeq05">Act I · disagreeing politely · 2 of 2</div>
+        <h2 class="slide-title" data-i18n="qtq05">Hold your ground.</h2>
       </div></div>
       <div class="slide-body" style="position:relative">
         <div class="card"><p class="prose gloss" data-tr="q-q05">Juror 3 calls the case obvious. The room waits for your reply. You need a question that keeps the discussion open.</p></div>
@@ -2252,18 +2546,18 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="mc" data-node="q05q" data-act="Act I" data-bg="ReasonableDoubt/ground.jpg" data-side="left" style="--col-w:528px;--wall:linear-gradient(180deg,#e6d8ba 10%,#e4d4b5 30%,#e4d4b5 50%,#dfcba9 70%,#e2d0ae 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">Act I · disagreeing politely · 2 of 2</div>
-        <h2 class="slide-title">Hold your ground.</h2>
+        <div class="eyebrow" data-i18n="qeq05">Act I · disagreeing politely · 2 of 2</div>
+        <h2 class="slide-title" data-i18n="qtq05">Hold your ground.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">Which reply challenges the claim respectfully?</p>
+        <p class="q-stem" data-i18n="qsq05">Which reply challenges the claim respectfully?</p>
         <div class="opts">
           <button class="opt" data-time="-1" data-goto="evidence">You clearly haven’t thought about any of this.</button>
           <button class="opt" data-time="-1" data-goto="evidence">I agree, so there’s nothing left to discuss.</button>
           <button class="opt" data-correct data-dp="1" data-goto="evidence">I see your point, but how can we be sure?</button>
         </div>
         <div style="display:flex;gap:16px;align-items:flex-start">
-          <p class="feedback" style="flex:1" data-explain="I SEE YOUR POINT, BUT … grants the point before the challenge, so you disagree without attacking. A question keeps the discussion open."></p>
+          <p class="feedback" style="flex:1" data-explain="qwq05"></p>
           <button class="btn btn-solid" style="flex:none;margin-top:10px" data-action="branch-continue" data-i18n="btnContinue" hidden>Continue →</button>
         </div>
       </div>
@@ -2299,8 +2593,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="teach" data-node="q07" data-act="File A" data-bg="ReasonableDoubt/knife.jpg" data-side="left" style="--col-w:636px;--wall:linear-gradient(180deg,#e8d7b7 10%,#e8d6b7 30%,#e5caa2 50%,#dbc29e 70%,#ada28a 90%);--band:0px">
       <div class="slide-head"><div>
-        <div class="eyebrow">File A · the knife · 1 of 5</div>
-        <h2 class="slide-title">An unusual object.</h2>
+        <div class="eyebrow" data-i18n="qeq07">File A · the knife · 1 of 5</div>
+        <h2 class="slide-title" data-i18n="qtq07">An unusual object.</h2>
       </div></div>
       <div class="slide-body" style="position:relative">
         <div class="card"><p class="prose gloss" data-tr="q-q07">The prosecution links an unusual knife to the defendant. But a link is not the same as proof that he used it.</p></div>
@@ -2312,8 +2606,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="mc" data-node="q07q" data-act="File A" data-bg="ReasonableDoubt/knife.jpg" data-side="left" style="--col-w:636px;--wall:linear-gradient(180deg,#e8d7b7 10%,#e8d6b7 30%,#e5caa2 50%,#dbc29e 70%,#ada28a 90%);--band:0px">
       <div class="slide-head"><div>
-        <div class="eyebrow">File A · the knife · 1 of 5</div>
-        <h2 class="slide-title">An unusual object.</h2>
+        <div class="eyebrow" data-i18n="qeq07">File A · the knife · 1 of 5</div>
+        <h2 class="slide-title" data-i18n="qtq07">An unusual object.</h2>
       </div></div>
       <div class="slide-body">
         <p class="q-stem">The knife ___ to him, but we cannot be certain.</p>
@@ -2323,7 +2617,7 @@ html.is-flow .act-word-icon { font-size: 18px; }
           <button class="opt" data-time="-1" data-goto="q08">might belonged</button>
         </div>
         <div style="display:flex;gap:16px;align-items:flex-start">
-          <p class="feedback" style="flex:1" data-explain="A possibility in the past: MIGHT HAVE + past participle, “might have belonged”. MUST HAVE claims certainty, and after HAVE the verb is always the past participle."></p>
+          <p class="feedback" style="flex:1" data-explain="qwq07"></p>
           <button class="btn btn-solid" style="flex:none;margin-top:10px" data-action="branch-continue" data-i18n="btnContinue" hidden>Continue →</button>
         </div>
       </div>
@@ -2331,8 +2625,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="teach" data-node="q08" data-act="File A" data-bg="ReasonableDoubt/twoknives.jpg" data-side="left" style="--col-w:528px;--wall:linear-gradient(180deg,#e4d4ba 10%,#e4d4ba 30%,#e6d6bb 50%,#ecdec4 70%,#e9dbc1 90%);--band:0px">
       <div class="slide-head"><div>
-        <div class="eyebrow">File A · testing a claim · 2 of 5</div>
-        <h2 class="slide-title">A second knife.</h2>
+        <div class="eyebrow" data-i18n="qeq08">File A · testing a claim · 2 of 5</div>
+        <h2 class="slide-title" data-i18n="qtq08">A second knife.</h2>
       </div></div>
       <div class="slide-body" style="position:relative">
         <div class="card"><p class="prose gloss" data-tr="q-q08">You place a second knife on the table. It is the same model. The claim that this design is unique can no longer stand.</p></div>
@@ -2344,18 +2638,18 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="mc" data-node="q08q" data-act="File A" data-bg="ReasonableDoubt/twoknives.jpg" data-side="left" style="--col-w:528px;--wall:linear-gradient(180deg,#e4d4ba 10%,#e4d4ba 30%,#e6d6bb 50%,#ecdec4 70%,#e9dbc1 90%);--band:0px">
       <div class="slide-head"><div>
-        <div class="eyebrow">File A · testing a claim · 2 of 5</div>
-        <h2 class="slide-title">A second knife.</h2>
+        <div class="eyebrow" data-i18n="qeq08">File A · testing a claim · 2 of 5</div>
+        <h2 class="slide-title" data-i18n="qtq08">A second knife.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">Which sentence draws a strong negative deduction about the past?</p>
+        <p class="q-stem" data-i18n="qsq08">Which sentence draws a strong negative deduction about the past?</p>
         <div class="opts">
           <button class="opt" data-time="-1" data-goto="q09">The design might have unique.</button>
           <button class="opt" data-time="-1" data-goto="q09">The design can’t has been unique.</button>
           <button class="opt" data-correct data-dp="1" data-goto="q09">The design can’t have been unique.</button>
         </div>
         <div style="display:flex;gap:16px;align-items:flex-start">
-          <p class="feedback" style="flex:1" data-explain="A strong negative deduction about the past: CAN’T HAVE BEEN. After a modal, HAVE never becomes HAS. A second knife disproves “unique”, not the whole accusation."></p>
+          <p class="feedback" style="flex:1" data-explain="qwq08"></p>
           <button class="btn btn-solid" style="flex:none;margin-top:10px" data-action="branch-continue" data-i18n="btnContinue" hidden>Continue →</button>
         </div>
       </div>
@@ -2363,8 +2657,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="teach" data-node="q09" data-act="File A" data-bg="ReasonableDoubt/juror4.jpg" data-side="left" style="--col-w:506px;--wall:linear-gradient(180deg,#e6d8bc 10%,#e4d5b8 30%,#e4d5b8 50%,#e4d5b8 70%,#e6d8bc 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">File A · limiting your claim · 3 of 5</div>
-        <h2 class="slide-title">What does that prove?</h2>
+        <div class="eyebrow" data-i18n="qeq09">File A · limiting your claim · 3 of 5</div>
+        <h2 class="slide-title" data-i18n="qtq09">What does that prove?</h2>
       </div></div>
       <div class="slide-body" style="position:relative">
         <div class="card"><p class="prose gloss" data-tr="q-q09">Juror 4 examines both knives. “So another person could have owned one. What follows from that?”</p></div>
@@ -2376,18 +2670,18 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="mc" data-node="q09q" data-act="File A" data-bg="ReasonableDoubt/juror4.jpg" data-side="left" style="--col-w:506px;--wall:linear-gradient(180deg,#e6d8bc 10%,#e4d5b8 30%,#e4d5b8 50%,#e4d5b8 70%,#e6d8bc 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">File A · limiting your claim · 3 of 5</div>
-        <h2 class="slide-title">What does that prove?</h2>
+        <div class="eyebrow" data-i18n="qeq09">File A · limiting your claim · 3 of 5</div>
+        <h2 class="slide-title" data-i18n="qtq09">What does that prove?</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">Choose the most careful conclusion.</p>
+        <p class="q-stem" data-i18n="qsq09">Choose the most careful conclusion.</p>
         <div class="opts">
           <button class="opt" data-correct data-dp="1" data-goto="q10">It weakens one claim; it doesn’t identify the killer.</button>
           <button class="opt" data-time="-1" data-goto="q10">This proves that somebody else committed the crime.</button>
           <button class="opt" data-time="-1" data-goto="q10">Every part of the prosecution’s case is false now.</button>
         </div>
         <div style="display:flex;gap:16px;align-items:flex-start">
-          <p class="feedback" style="flex:1" data-explain="WEAKENS keeps the conclusion inside what the evidence supports. PROVES and EVERY PART turn one doubt into a claim that everything is false."></p>
+          <p class="feedback" style="flex:1" data-explain="qwq09"></p>
           <button class="btn btn-solid" style="flex:none;margin-top:10px" data-action="branch-continue" data-i18n="btnContinue" hidden>Continue →</button>
         </div>
       </div>
@@ -2395,8 +2689,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="teach" data-node="q10" data-act="File A" data-bg="ReasonableDoubt/concede.jpg" data-side="left" style="--col-w:495px;--wall:linear-gradient(180deg,#e9dabc 10%,#e8d8b8 30%,#e8d8b8 50%,#e8d7b6 70%,#e7d6b6 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">File A · even if · 4 of 5</div>
-        <h2 class="slide-title">Concede. Then challenge.</h2>
+        <div class="eyebrow" data-i18n="qeq10">File A · even if · 4 of 5</div>
+        <h2 class="slide-title" data-i18n="qtq10">Concede. Then challenge.</h2>
       </div></div>
       <div class="slide-body" style="position:relative">
         <div class="card"><p class="prose gloss" data-tr="q-q10">Juror 3 insists that the defendant bought a similar knife. Accept that point for the sake of argument, then question the conclusion.</p><p class="prose dim" style="margin-top:12px" data-i18n="sayQ10">Make another “Even if …” argument about the case.</p></div>
@@ -2408,8 +2702,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="mc" data-node="q10q" data-act="File A" data-bg="ReasonableDoubt/concede.jpg" data-side="left" style="--col-w:495px;--wall:linear-gradient(180deg,#e9dabc 10%,#e8d8b8 30%,#e8d8b8 50%,#e8d7b6 70%,#e7d6b6 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">File A · even if · 4 of 5</div>
-        <h2 class="slide-title">Concede. Then challenge.</h2>
+        <div class="eyebrow" data-i18n="qeq10">File A · even if · 4 of 5</div>
+        <h2 class="slide-title" data-i18n="qtq10">Concede. Then challenge.</h2>
       </div></div>
       <div class="slide-body">
         <p class="q-stem">___ he owned one, that does not prove he used it.</p>
@@ -2419,7 +2713,7 @@ html.is-flow .act-word-icon { font-size: 18px; }
           <button class="opt" data-time="-1" data-goto="q11">In spite</button>
         </div>
         <div style="display:flex;gap:16px;align-items:flex-start">
-          <p class="feedback" style="flex:1" data-explain="EVEN IF + clause accepts the point, not the conclusion. DESPITE never takes “of”; IN SPITE needs OF."></p>
+          <p class="feedback" style="flex:1" data-explain="qwq10"></p>
           <button class="btn btn-solid" style="flex:none;margin-top:10px" data-action="branch-continue" data-i18n="btnContinue" hidden>Continue →</button>
         </div>
       </div>
@@ -2427,8 +2721,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="teach" data-node="q11" data-act="File A" data-bg="ReasonableDoubt/filea.jpg" data-side="left" style="--col-w:690px;--wall:linear-gradient(180deg,#ebddc0 10%,#edddbf 30%,#ecdcbe 50%,#eddcbe 70%,#ebdcc0 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">File A · evidence checkpoint · 5 of 5</div>
-        <h2 class="slide-title">File the first doubt.</h2>
+        <div class="eyebrow" data-i18n="qeq11">File A · evidence checkpoint · 5 of 5</div>
+        <h2 class="slide-title" data-i18n="qtq11">File the first doubt.</h2>
       </div></div>
       <div class="slide-body" style="position:relative">
         <div class="card"><p class="prose gloss" data-tr="q-q11">Write one sentence for the jury’s evidence file. It must tell a reasonable doubt apart from a claim of innocence.</p></div>
@@ -2440,18 +2734,18 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="mc" data-node="q11q" data-act="File A" data-bg="ReasonableDoubt/filea.jpg" data-side="left" style="--col-w:690px;--wall:linear-gradient(180deg,#ebddc0 10%,#edddbf 30%,#ecdcbe 50%,#eddcbe 70%,#ebdcc0 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">File A · evidence checkpoint · 5 of 5</div>
-        <h2 class="slide-title">File the first doubt.</h2>
+        <div class="eyebrow" data-i18n="qeq11">File A · evidence checkpoint · 5 of 5</div>
+        <h2 class="slide-title" data-i18n="qtq11">File the first doubt.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">Which note belongs in the file?</p>
+        <p class="q-stem" data-i18n="qsq11">Which note belongs in the file?</p>
         <div class="opts">
           <button class="opt" data-correct data-dp="1" data-clue="fileA" data-goto="evidence">The knife’s design does not uniquely link it to the defendant.</button>
           <button class="opt" data-time="-1" data-clue="fileA" data-goto="evidence">A second knife proves that the defendant was somewhere else that night.</button>
           <button class="opt" data-time="-1" data-clue="fileA" data-goto="evidence">Anyone who owns a knife like this one must be guilty of the crime.</button>
         </div>
         <div style="display:flex;gap:16px;align-items:flex-start">
-          <p class="feedback" style="flex:1" data-explain="File A is complete. The note challenges one claim, that the knife was unique, and stays inside the evidence. PROVES and MUST claim far more."></p>
+          <p class="feedback" style="flex:1" data-explain="qwq11"></p>
           <button class="btn btn-solid" style="flex:none;margin-top:10px" data-action="branch-continue" data-i18n="btnContinue" hidden>Continue →</button>
         </div>
       </div>
@@ -2459,8 +2753,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="teach" data-node="q12" data-act="File B" data-bg="ReasonableDoubt/train.jpg" data-side="left" style="--col-w:506px;--wall:linear-gradient(180deg,#eadfc2 10%,#e9dec1 30%,#e8ddc1 50%,#e8ddc0 70%,#e2d2b4 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">File B · what could he hear? · 1 of 5</div>
-        <h2 class="slide-title">A voice beneath a train.</h2>
+        <div class="eyebrow" data-i18n="qeq12">File B · what could he hear? · 1 of 5</div>
+        <h2 class="slide-title" data-i18n="qtq12">A voice beneath a train.</h2>
       </div></div>
       <div class="slide-body" style="position:relative">
         <div class="card"><p class="prose gloss" data-tr="q-q12">The downstairs witness says he heard a threat. An elevated train was passing at the time. Its noise matters, but you have not measured it.</p></div>
@@ -2472,18 +2766,18 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="mc" data-node="q12q" data-act="File B" data-bg="ReasonableDoubt/train.jpg" data-side="left" style="--col-w:506px;--wall:linear-gradient(180deg,#eadfc2 10%,#e9dec1 30%,#e8ddc1 50%,#e8ddc0 70%,#e2d2b4 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">File B · what could he hear? · 1 of 5</div>
-        <h2 class="slide-title">A voice beneath a train.</h2>
+        <div class="eyebrow" data-i18n="qeq12">File B · what could he hear? · 1 of 5</div>
+        <h2 class="slide-title" data-i18n="qtq12">A voice beneath a train.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">Which sentence questions the testimony without overstating certainty?</p>
+        <p class="q-stem" data-i18n="qsq12">Which sentence questions the testimony without overstating certainty?</p>
         <div class="opts">
           <button class="opt" data-time="-1" data-goto="q13">He definitely heard nothing at all, not a single word.</button>
           <button class="opt" data-correct data-dp="1" data-goto="q13">The noise might have made the words difficult to hear.</button>
           <button class="opt" data-time="-1" data-goto="q13">The train proves that he invented the whole story.</button>
         </div>
         <div style="display:flex;gap:16px;align-items:flex-start">
-          <p class="feedback" style="flex:1" data-explain="MIGHT HAVE MADE offers a possible obstacle. It doesn’t call the witness a liar, and it doesn’t claim the words were impossible to hear."></p>
+          <p class="feedback" style="flex:1" data-explain="qwq12"></p>
           <button class="btn btn-solid" style="flex:none;margin-top:10px" data-action="branch-continue" data-i18n="btnContinue" hidden>Continue →</button>
         </div>
       </div>
@@ -2491,8 +2785,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="teach" data-node="q13" data-act="File B" data-bg="ReasonableDoubt/oldman.jpg" data-side="left" style="--col-w:657px;--wall:linear-gradient(180deg,#e5d6b6 10%,#e4d3b2 30%,#e3d2b2 50%,#deceaf 70%,#d8cbae 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">File B · reported speech · 2 of 5</div>
-        <h2 class="slide-title">What the witness said.</h2>
+        <div class="eyebrow" data-i18n="qeq13">File B · reported speech · 2 of 5</div>
+        <h2 class="slide-title" data-i18n="qtq13">What the witness said.</h2>
       </div></div>
       <div class="slide-body" style="position:relative">
         <div class="card"><p class="prose gloss" data-tr="q-q13">In court, the witness said: “I heard the argument.” Now you report his statement to the jury, with the usual backshift.</p></div>
@@ -2504,18 +2798,18 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="mc" data-node="q13q" data-act="File B" data-bg="ReasonableDoubt/oldman.jpg" data-side="left" style="--col-w:657px;--wall:linear-gradient(180deg,#e5d6b6 10%,#e4d3b2 30%,#e3d2b2 50%,#deceaf 70%,#d8cbae 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">File B · reported speech · 2 of 5</div>
-        <h2 class="slide-title">What the witness said.</h2>
+        <div class="eyebrow" data-i18n="qeq13">File B · reported speech · 2 of 5</div>
+        <h2 class="slide-title" data-i18n="qtq13">What the witness said.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">Choose the correctly backshifted report.</p>
+        <p class="q-stem" data-i18n="qsq13">Choose the correctly backshifted report.</p>
         <div class="opts">
           <button class="opt" data-time="-1" data-goto="q14">He told that he had heard the argument.</button>
           <button class="opt" data-time="-1" data-goto="q14">He said us he has heard the argument.</button>
           <button class="opt" data-correct data-dp="1" data-goto="q14">He said that he had heard the argument.</button>
         </div>
         <div style="display:flex;gap:16px;align-items:flex-start">
-          <p class="feedback" style="flex:1" data-explain="Backshift: HEARD becomes HAD HEARD. SAY something, but TELL someone something: “He told us that he had heard …” also works."></p>
+          <p class="feedback" style="flex:1" data-explain="qwq13"></p>
           <button class="btn btn-solid" style="flex:none;margin-top:10px" data-action="branch-continue" data-i18n="btnContinue" hidden>Continue →</button>
         </div>
       </div>
@@ -2523,8 +2817,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="teach" data-node="q14" data-act="File B" data-bg="ReasonableDoubt/hallway.jpg" data-side="left" style="--col-w:744px;--wall:linear-gradient(180deg,#e6d8bd 10%,#e6d8bd 30%,#e7d9be 50%,#e7d9be 70%,#e6d8be 90%);--band:0px">
       <div class="slide-head"><div>
-        <div class="eyebrow">File B · putting events in order · 3 of 5</div>
-        <h2 class="slide-title">The length of a hallway.</h2>
+        <div class="eyebrow" data-i18n="qeq14">File B · putting events in order · 3 of 5</div>
+        <h2 class="slide-title" data-i18n="qtq14">The length of a hallway.</h2>
       </div></div>
       <div class="slide-body" style="position:relative">
         <div class="card"><p class="prose gloss" data-tr="q-q14">The witness walked slowly with a limp. First the person on the stairs disappeared; then the witness reached his doorway.</p></div>
@@ -2536,8 +2830,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="mc" data-node="q14q" data-act="File B" data-bg="ReasonableDoubt/hallway.jpg" data-side="left" style="--col-w:744px;--wall:linear-gradient(180deg,#e6d8bd 10%,#e6d8bd 30%,#e7d9be 50%,#e7d9be 70%,#e6d8be 90%);--band:0px">
       <div class="slide-head"><div>
-        <div class="eyebrow">File B · putting events in order · 3 of 5</div>
-        <h2 class="slide-title">The length of a hallway.</h2>
+        <div class="eyebrow" data-i18n="qeq14">File B · putting events in order · 3 of 5</div>
+        <h2 class="slide-title" data-i18n="qtq14">The length of a hallway.</h2>
       </div></div>
       <div class="slide-body">
         <p class="q-stem">By the time he reached the door, the person ___.</p>
@@ -2547,7 +2841,7 @@ html.is-flow .act-word-icon { font-size: 18px; }
           <button class="opt" data-time="-1" data-goto="q15">had already disappear</button>
         </div>
         <div style="display:flex;gap:16px;align-items:flex-start">
-          <p class="feedback" style="flex:1" data-explain="The earlier of two past events takes the past perfect, HAD + past participle: “had disappeared”. The later one, “reached”, is past simple."></p>
+          <p class="feedback" style="flex:1" data-explain="qwq14"></p>
           <button class="btn btn-solid" style="flex:none;margin-top:10px" data-action="branch-continue" data-i18n="btnContinue" hidden>Continue →</button>
         </div>
       </div>
@@ -2555,8 +2849,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="teach" data-node="q15" data-act="File B" data-bg="ReasonableDoubt/stopwatch.jpg" data-side="left" style="--col-w:690px;--wall:linear-gradient(180deg,#e9dabb 10%,#e8d8b8 30%,#e8d7b7 50%,#e8d8b7 70%,#e8dabc 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">File B · the unreal past · 4 of 5</div>
-        <h2 class="slide-title">Test the timing.</h2>
+        <div class="eyebrow" data-i18n="qeq15">File B · the unreal past · 4 of 5</div>
+        <h2 class="slide-title" data-i18n="qtq15">Test the timing.</h2>
       </div></div>
       <div class="slide-body" style="position:relative">
         <div class="card"><p class="prose gloss" data-tr="q-q15">In your reconstruction, the walk takes longer than the witness’s estimate. It is a reconstruction, not an exact measurement.</p></div>
@@ -2568,8 +2862,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="mc" data-node="q15q" data-act="File B" data-bg="ReasonableDoubt/stopwatch.jpg" data-side="left" style="--col-w:690px;--wall:linear-gradient(180deg,#e9dabb 10%,#e8d8b8 30%,#e8d7b7 50%,#e8d8b7 70%,#e8dabc 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">File B · the unreal past · 4 of 5</div>
-        <h2 class="slide-title">Test the timing.</h2>
+        <div class="eyebrow" data-i18n="qeq15">File B · the unreal past · 4 of 5</div>
+        <h2 class="slide-title" data-i18n="qtq15">Test the timing.</h2>
       </div></div>
       <div class="slide-body">
         <p class="q-stem">If he had moved that slowly, he ___ the door in time.</p>
@@ -2579,7 +2873,7 @@ html.is-flow .act-word-icon { font-size: 18px; }
           <button class="opt" data-correct data-dp="1" data-goto="q16">couldn’t have reached</button>
         </div>
         <div style="display:flex;gap:16px;align-items:flex-start">
-          <p class="feedback" style="flex:1" data-explain="IF + HAD + past participle pairs with COULDN’T HAVE + past participle for an unreal past. After HAVE, always the past participle: “reached”."></p>
+          <p class="feedback" style="flex:1" data-explain="qwq15"></p>
           <button class="btn btn-solid" style="flex:none;margin-top:10px" data-action="branch-continue" data-i18n="btnContinue" hidden>Continue →</button>
         </div>
       </div>
@@ -2587,8 +2881,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="teach" data-node="q16" data-act="File B" data-bg="ReasonableDoubt/juror9.jpg" data-side="left" style="--col-w:506px;--wall:linear-gradient(180deg,#ebdec3 10%,#ece0c5 30%,#ece0c5 50%,#ecdfc4 70%,#ebdec3 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">File B · evidence checkpoint · 5 of 5</div>
-        <h2 class="slide-title">Mistaken is not dishonest.</h2>
+        <div class="eyebrow" data-i18n="qeq16">File B · evidence checkpoint · 5 of 5</div>
+        <h2 class="slide-title" data-i18n="qtq16">Mistaken is not dishonest.</h2>
       </div></div>
       <div class="slide-body" style="position:relative">
         <div class="card"><p class="prose gloss" data-tr="q-q16">Juror 9 reminds the room that wanting to be helpful does not make someone’s memory perfect. Record the strongest doubt you can defend.</p></div>
@@ -2600,18 +2894,18 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="mc" data-node="q16q" data-act="File B" data-bg="ReasonableDoubt/juror9.jpg" data-side="left" style="--col-w:506px;--wall:linear-gradient(180deg,#ebdec3 10%,#ece0c5 30%,#ece0c5 50%,#ecdfc4 70%,#ebdec3 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">File B · evidence checkpoint · 5 of 5</div>
-        <h2 class="slide-title">Mistaken is not dishonest.</h2>
+        <div class="eyebrow" data-i18n="qeq16">File B · evidence checkpoint · 5 of 5</div>
+        <h2 class="slide-title" data-i18n="qtq16">Mistaken is not dishonest.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">Choose a careful statement about the witness.</p>
+        <p class="q-stem" data-i18n="qsq16">Choose a careful statement about the witness.</p>
         <div class="opts">
           <button class="opt" data-correct data-dp="1" data-clue="fileB" data-goto="evidence">He may have misjudged the timing without intending to deceive us.</button>
           <button class="opt" data-time="-1" data-clue="fileB" data-goto="evidence">An elderly witness like him is always unreliable, whatever he says.</button>
           <button class="opt" data-time="-1" data-clue="fileB" data-goto="evidence">He must have lied to the court, because our timing was so different.</button>
         </div>
         <div style="display:flex;gap:16px;align-items:flex-start">
-          <p class="feedback" style="flex:1" data-explain="File B is complete. MAY HAVE MISJUDGED allows an honest mistake; MUST HAVE LIED claims a deliberate one."></p>
+          <p class="feedback" style="flex:1" data-explain="qwq16"></p>
           <button class="btn btn-solid" style="flex:none;margin-top:10px" data-action="branch-continue" data-i18n="btnContinue" hidden>Continue →</button>
         </div>
       </div>
@@ -2619,8 +2913,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="teach" data-node="q17" data-act="File C" data-bg="ReasonableDoubt/tracks.jpg" data-side="left" style="--col-w:636px;--wall:linear-gradient(180deg,#e8dabd 10%,#e6d7b9 30%,#e1d1b2 50%,#c7ba9f 70%,#c8bda5 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">File C · a claim of sight · 1 of 5</div>
-        <h2 class="slide-title">Across the tracks.</h2>
+        <div class="eyebrow" data-i18n="qeq17">File C · a claim of sight · 1 of 5</div>
+        <h2 class="slide-title" data-i18n="qtq17">Across the tracks.</h2>
       </div></div>
       <div class="slide-body" style="position:relative">
         <div class="card"><p class="prose gloss" data-tr="q-q17">A woman says she saw the attack from her apartment across the railway tracks. Report her claim without presenting it as a fact.</p></div>
@@ -2632,8 +2926,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="mc" data-node="q17q" data-act="File C" data-bg="ReasonableDoubt/tracks.jpg" data-side="left" style="--col-w:636px;--wall:linear-gradient(180deg,#e8dabd 10%,#e6d7b9 30%,#e1d1b2 50%,#c7ba9f 70%,#c8bda5 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">File C · a claim of sight · 1 of 5</div>
-        <h2 class="slide-title">Across the tracks.</h2>
+        <div class="eyebrow" data-i18n="qeq17">File C · a claim of sight · 1 of 5</div>
+        <h2 class="slide-title" data-i18n="qtq17">Across the tracks.</h2>
       </div></div>
       <div class="slide-body">
         <p class="q-stem">She claims ___ the attack.</p>
@@ -2643,7 +2937,7 @@ html.is-flow .act-word-icon { font-size: 18px; }
           <button class="opt" data-correct data-dp="1" data-goto="q18">to have seen</button>
         </div>
         <div style="display:flex;gap:16px;align-items:flex-start">
-          <p class="feedback" style="flex:1" data-explain="CLAIM + TO HAVE + past participle reports a claim about an earlier event. The past participle of “see” is “seen”, not “saw”."></p>
+          <p class="feedback" style="flex:1" data-explain="qwq17"></p>
           <button class="btn btn-solid" style="flex:none;margin-top:10px" data-action="branch-continue" data-i18n="btnContinue" hidden>Continue →</button>
         </div>
       </div>
@@ -2651,8 +2945,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="teach" data-node="q18" data-act="File C" data-bg="ReasonableDoubt/sightline.jpg" data-side="left" style="--col-w:528px;--wall:linear-gradient(180deg,#e7d8bb 10%,#e7d8ba 30%,#e7d8ba 50%,#cdc3a9 70%,#aba996 90%);--band:0px">
       <div class="slide-head"><div>
-        <div class="eyebrow">File C · possibility, not proof · 2 of 5</div>
-        <h2 class="slide-title">A moving obstruction.</h2>
+        <div class="eyebrow" data-i18n="qeq18">File C · possibility, not proof · 2 of 5</div>
+        <h2 class="slide-title" data-i18n="qtq18">A moving obstruction.</h2>
       </div></div>
       <div class="slide-body" style="position:relative">
         <div class="card"><p class="prose gloss" data-tr="q-q18">A passing train lay between the two buildings. You can question the view without claiming that every glimpse was impossible.</p></div>
@@ -2664,18 +2958,18 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="mc" data-node="q18q" data-act="File C" data-bg="ReasonableDoubt/sightline.jpg" data-side="left" style="--col-w:528px;--wall:linear-gradient(180deg,#e7d8bb 10%,#e7d8ba 30%,#e7d8ba 50%,#cdc3a9 70%,#aba996 90%);--band:0px">
       <div class="slide-head"><div>
-        <div class="eyebrow">File C · possibility, not proof · 2 of 5</div>
-        <h2 class="slide-title">A moving obstruction.</h2>
+        <div class="eyebrow" data-i18n="qeq18">File C · possibility, not proof · 2 of 5</div>
+        <h2 class="slide-title" data-i18n="qtq18">A moving obstruction.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">Choose the accurate past-possibility form.</p>
+        <p class="q-stem" data-i18n="qsq18">Choose the accurate past-possibility form.</p>
         <div class="opts">
           <button class="opt" data-correct data-dp="1" data-goto="q19">The train could have blocked her view.</button>
           <button class="opt" data-time="-1" data-goto="q19">The train could has blocked her view.</button>
           <button class="opt" data-time="-1" data-goto="q19">The train could have block her view.</button>
         </div>
         <div style="display:flex;gap:16px;align-items:flex-start">
-          <p class="feedback" style="flex:1" data-explain="COULD HAVE + past participle: a past possibility. After a modal, HAVE never becomes HAS, and the verb is the past participle, “blocked”."></p>
+          <p class="feedback" style="flex:1" data-explain="qwq18"></p>
           <button class="btn btn-solid" style="flex:none;margin-top:10px" data-action="branch-continue" data-i18n="btnContinue" hidden>Continue →</button>
         </div>
       </div>
@@ -2683,8 +2977,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="teach" data-node="q19" data-act="File C" data-bg="ReasonableDoubt/spectacles.jpg" data-side="left" style="--col-w:636px;--wall:linear-gradient(180deg,#e9dcc1 10%,#e8dabd 30%,#e8dabd 50%,#e8dabc 70%,#e8dbbe 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">File C · a small observation · 3 of 5</div>
-        <h2 class="slide-title">The marks of spectacles.</h2>
+        <div class="eyebrow" data-i18n="qeq19">File C · a small observation · 3 of 5</div>
+        <h2 class="slide-title" data-i18n="qtq19">The marks of spectacles.</h2>
       </div></div>
       <div class="slide-body" style="position:relative">
         <div class="card"><p class="prose gloss" data-tr="q-q19">Juror 9 remembers marks on the woman’s nose, like those left by spectacles. Nobody knows whether she wore glasses when she looked out of bed.</p></div>
@@ -2696,18 +2990,18 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="mc" data-node="q19q" data-act="File C" data-bg="ReasonableDoubt/spectacles.jpg" data-side="left" style="--col-w:636px;--wall:linear-gradient(180deg,#e9dcc1 10%,#e8dabd 30%,#e8dabd 50%,#e8dabc 70%,#e8dbbe 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">File C · a small observation · 3 of 5</div>
-        <h2 class="slide-title">The marks of spectacles.</h2>
+        <div class="eyebrow" data-i18n="qeq19">File C · a small observation · 3 of 5</div>
+        <h2 class="slide-title" data-i18n="qtq19">The marks of spectacles.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">Which sentence avoids turning an inference into certainty?</p>
+        <p class="q-stem" data-i18n="qsq19">Which sentence avoids turning an inference into certainty?</p>
         <div class="opts">
           <button class="opt" data-time="-1" data-goto="q20">Those marks on her nose prove that she could never see anything.</button>
           <button class="opt" data-correct data-dp="1" data-goto="q20">She may not have been wearing her glasses at the time.</button>
           <button class="opt" data-time="-1" data-goto="q20">She was definitely wearing her glasses in bed.</button>
         </div>
         <div style="display:flex;gap:16px;align-items:flex-start">
-          <p class="feedback" style="flex:1" data-explain="MAY NOT HAVE BEEN + -ING: a possible ongoing state in the past. The marks raise a question without answering it, so PROVE and DEFINITELY go too far."></p>
+          <p class="feedback" style="flex:1" data-explain="qwq19"></p>
           <button class="btn btn-solid" style="flex:none;margin-top:10px" data-action="branch-continue" data-i18n="btnContinue" hidden>Continue →</button>
         </div>
       </div>
@@ -2715,8 +3009,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="teach" data-node="q20" data-act="File C" data-bg="ReasonableDoubt/window.jpg" data-side="left" style="--col-w:657px;--wall:linear-gradient(180deg,#eadcbd 10%,#eadbb8 30%,#eadbb9 50%,#dcceac 70%,#e1d0ae 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">File C · although · 4 of 5</div>
-        <h2 class="slide-title">Confidence and accuracy.</h2>
+        <div class="eyebrow" data-i18n="qeq20">File C · although · 4 of 5</div>
+        <h2 class="slide-title" data-i18n="qtq20">Confidence and accuracy.</h2>
       </div></div>
       <div class="slide-body" style="position:relative">
         <div class="card"><p class="prose gloss" data-tr="q-q20">The witness sounded certain. Acknowledge her confidence, and question whether confidence guarantees accuracy.</p></div>
@@ -2728,8 +3022,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="mc" data-node="q20q" data-act="File C" data-bg="ReasonableDoubt/window.jpg" data-side="left" style="--col-w:657px;--wall:linear-gradient(180deg,#eadcbd 10%,#eadbb8 30%,#eadbb9 50%,#dcceac 70%,#e1d0ae 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">File C · although · 4 of 5</div>
-        <h2 class="slide-title">Confidence and accuracy.</h2>
+        <div class="eyebrow" data-i18n="qeq20">File C · although · 4 of 5</div>
+        <h2 class="slide-title" data-i18n="qtq20">Confidence and accuracy.</h2>
       </div></div>
       <div class="slide-body">
         <p class="q-stem">___ she sounded certain, she could still have been mistaken.</p>
@@ -2739,7 +3033,7 @@ html.is-flow .act-word-icon { font-size: 18px; }
           <button class="opt" data-time="-1" data-goto="q21">Despite of</button>
         </div>
         <div style="display:flex;gap:16px;align-items:flex-start">
-          <p class="feedback" style="flex:1" data-explain="ALTHOUGH takes a clause, “she sounded certain”. DESPITE takes a noun or -ING, “despite sounding certain”, and never takes OF."></p>
+          <p class="feedback" style="flex:1" data-explain="qwq20"></p>
           <button class="btn btn-solid" style="flex:none;margin-top:10px" data-action="branch-continue" data-i18n="btnContinue" hidden>Continue →</button>
         </div>
       </div>
@@ -2747,8 +3041,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="teach" data-node="q21" data-act="File C" data-bg="ReasonableDoubt/filec.jpg" data-side="left" style="--col-w:549px;--wall:linear-gradient(180deg,#ebdcbe 10%,#ead9b9 30%,#e9d8b8 50%,#e0cca9 70%,#dec9a5 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">File C · evidence checkpoint · 5 of 5</div>
-        <h2 class="slide-title">File the final doubt.</h2>
+        <div class="eyebrow" data-i18n="qeq21">File C · evidence checkpoint · 5 of 5</div>
+        <h2 class="slide-title" data-i18n="qtq21">File the final doubt.</h2>
       </div></div>
       <div class="slide-body" style="position:relative">
         <div class="card"><p class="prose gloss" data-tr="q-q21">The distance, the passing train and the missing glasses all deserve consideration. Make a conditional statement, not an accusation.</p></div>
@@ -2760,8 +3054,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="mc" data-node="q21q" data-act="File C" data-bg="ReasonableDoubt/filec.jpg" data-side="left" style="--col-w:549px;--wall:linear-gradient(180deg,#ebdcbe 10%,#ead9b9 30%,#e9d8b8 50%,#e0cca9 70%,#dec9a5 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">File C · evidence checkpoint · 5 of 5</div>
-        <h2 class="slide-title">File the final doubt.</h2>
+        <div class="eyebrow" data-i18n="qeq21">File C · evidence checkpoint · 5 of 5</div>
+        <h2 class="slide-title" data-i18n="qtq21">File the final doubt.</h2>
       </div></div>
       <div class="slide-body">
         <p class="q-stem">If she hadn’t been wearing her glasses, she ___ him clearly.</p>
@@ -2771,7 +3065,7 @@ html.is-flow .act-word-icon { font-size: 18px; }
           <button class="opt" data-time="-1" data-clue="fileC" data-goto="evidence">might not has seen</button>
         </div>
         <div style="display:flex;gap:16px;align-items:flex-start">
-          <p class="feedback" style="flex:1" data-explain="File C is complete. MIGHT NOT HAVE + past participle: a possible result of an unreal past condition. You don’t claim to know what she saw."></p>
+          <p class="feedback" style="flex:1" data-explain="qwq21"></p>
           <button class="btn btn-solid" style="flex:none;margin-top:10px" data-action="branch-continue" data-i18n="btnContinue" hidden>Continue →</button>
         </div>
       </div>
@@ -2792,8 +3086,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="teach" data-node="q23" data-act="Act III" data-bg="ReasonableDoubt/ballots.jpg" data-side="left" style="--col-w:484px;--wall:linear-gradient(180deg,#eadabc 10%,#eadaba 30%,#ead8b6 50%,#ead8b7 70%,#eadabb 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">Act III · making a proposal · 1 of 4</div>
-        <h2 class="slide-title">A private change of mind.</h2>
+        <div class="eyebrow" data-i18n="qeq23">Act III · making a proposal · 1 of 4</div>
+        <h2 class="slide-title" data-i18n="qtq23">A private change of mind.</h2>
       </div></div>
       <div class="slide-body" style="position:relative">
         <div class="card"><p class="prose gloss" data-tr="q-q23">Some jurors worry about looking weak if they change their vote. You propose a secret ballot to reduce the pressure.</p></div>
@@ -2805,8 +3099,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="mc" data-node="q23q" data-act="Act III" data-bg="ReasonableDoubt/ballots.jpg" data-side="left" style="--col-w:484px;--wall:linear-gradient(180deg,#eadabc 10%,#eadaba 30%,#ead8b6 50%,#ead8b7 70%,#eadabb 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">Act III · making a proposal · 1 of 4</div>
-        <h2 class="slide-title">A private change of mind.</h2>
+        <div class="eyebrow" data-i18n="qeq23">Act III · making a proposal · 1 of 4</div>
+        <h2 class="slide-title" data-i18n="qtq23">A private change of mind.</h2>
       </div></div>
       <div class="slide-body">
         <p class="q-stem">I’d rather we ___ in secret this time.</p>
@@ -2816,7 +3110,7 @@ html.is-flow .act-word-icon { font-size: 18px; }
           <button class="opt" data-correct data-dp="1" data-goto="q24">voted</button>
         </div>
         <div style="display:flex;gap:16px;align-items:flex-start">
-          <p class="feedback" style="flex:1" data-explain="WOULD RATHER + a new subject + past simple, for a present or future preference: “I’d rather we voted”. The past form doesn’t mean past time here."></p>
+          <p class="feedback" style="flex:1" data-explain="qwq23"></p>
           <button class="btn btn-solid" style="flex:none;margin-top:10px" data-action="branch-continue" data-i18n="btnContinue" hidden>Continue →</button>
         </div>
       </div>
@@ -2824,8 +3118,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="teach" data-node="q24" data-act="Act III" data-bg="ReasonableDoubt/ally.jpg" data-side="left" style="--col-w:560px;--wall:linear-gradient(180deg,#e7d7b9 10%,#e7d6b4 30%,#e6d5b4 50%,#e0cdac 70%,#dacaad 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">Act III · listening for meaning · 2 of 4</div>
-        <h2 class="slide-title">The first ally.</h2>
+        <div class="eyebrow" data-i18n="qeq24">Act III · listening for meaning · 2 of 4</div>
+        <h2 class="slide-title" data-i18n="qtq24">The first ally.</h2>
       </div></div>
       <div class="slide-body" style="position:relative">
         <div class="card"><p class="prose gloss" data-tr="q-q24">Juror 9 supports continuing the discussion. He does not claim the defendant is innocent; he respects the courage it takes to stand alone.</p></div>
@@ -2837,18 +3131,18 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="mc" data-node="q24q" data-act="Act III" data-bg="ReasonableDoubt/ally.jpg" data-side="left" style="--col-w:560px;--wall:linear-gradient(180deg,#e7d7b9 10%,#e7d6b4 30%,#e6d5b4 50%,#e0cdac 70%,#dacaad 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">Act III · listening for meaning · 2 of 4</div>
-        <h2 class="slide-title">The first ally.</h2>
+        <div class="eyebrow" data-i18n="qeq24">Act III · listening for meaning · 2 of 4</div>
+        <h2 class="slide-title" data-i18n="qtq24">The first ally.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">Which sentence paraphrases his position accurately?</p>
+        <p class="q-stem" data-i18n="qsq24">Which sentence paraphrases his position accurately?</p>
         <div class="opts">
           <button class="opt" data-time="-1" data-goto="q25">He knows the defendant did nothing wrong.</button>
           <button class="opt" data-correct data-dp="1" data-goto="q25">He believes the doubts deserve a fair hearing.</button>
           <button class="opt" data-time="-1" data-goto="q25">He agrees because all the other jurors agree.</button>
         </div>
         <div style="display:flex;gap:16px;align-items:flex-start">
-          <p class="feedback" style="flex:1" data-explain="DESERVE A FAIR HEARING means the doubts should be listened to seriously. It doesn’t mean he knows the young man is innocent."></p>
+          <p class="feedback" style="flex:1" data-explain="qwq24"></p>
           <button class="btn btn-solid" style="flex:none;margin-top:10px" data-action="branch-continue" data-i18n="btnContinue" hidden>Continue →</button>
         </div>
       </div>
@@ -2856,8 +3150,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="teach" data-node="q25" data-act="Act III" data-bg="ReasonableDoubt/ticket.jpg" data-side="left" style="--col-w:528px;--wall:linear-gradient(180deg,#e7d9bd 10%,#e4d6b9 30%,#e4d6b9 50%,#ddcfb1 70%,#e3d1b2 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">Act III · challenging a motive · 3 of 4</div>
-        <h2 class="slide-title">A ticket is not an argument.</h2>
+        <div class="eyebrow" data-i18n="qeq25">Act III · challenging a motive · 3 of 4</div>
+        <h2 class="slide-title" data-i18n="qtq25">A ticket is not an argument.</h2>
       </div></div>
       <div class="slide-body" style="position:relative">
         <div class="card"><p class="prose gloss" data-tr="q-q25">Juror 7 checks his watch. He will vote either way if it gets him out of the room. Challenge the reason, not his intelligence.</p></div>
@@ -2869,18 +3163,18 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="mc" data-node="q25q" data-act="Act III" data-bg="ReasonableDoubt/ticket.jpg" data-side="left" style="--col-w:528px;--wall:linear-gradient(180deg,#e7d9bd 10%,#e4d6b9 30%,#e4d6b9 50%,#ddcfb1 70%,#e3d1b2 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">Act III · challenging a motive · 3 of 4</div>
-        <h2 class="slide-title">A ticket is not an argument.</h2>
+        <div class="eyebrow" data-i18n="qeq25">Act III · challenging a motive · 3 of 4</div>
+        <h2 class="slide-title" data-i18n="qtq25">A ticket is not an argument.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">Which reply keeps the verdict connected to the evidence?</p>
+        <p class="q-stem" data-i18n="qsq25">Which reply keeps the verdict connected to the evidence?</p>
         <div class="opts">
           <button class="opt" data-time="-1" data-goto="q26">Any quick decision is better than another hour of this discussion.</button>
           <button class="opt" data-time="-1" data-goto="q26">You must agree with me, because I have stayed in this room longer.</button>
           <button class="opt" data-correct data-dp="1" data-goto="q26">Your vote should depend on the evidence, not your evening plans.</button>
         </div>
         <div style="display:flex;gap:16px;align-items:flex-start">
-          <p class="feedback" style="flex:1" data-explain="DEPEND ON names the right basis for a vote. You challenge his reason, not his intelligence."></p>
+          <p class="feedback" style="flex:1" data-explain="qwq25"></p>
           <button class="btn btn-solid" style="flex:none;margin-top:10px" data-action="branch-continue" data-i18n="btnContinue" hidden>Continue →</button>
         </div>
       </div>
@@ -2888,8 +3182,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="teach" data-node="q26" data-act="Act III" data-bg="ReasonableDoubt/prejudice.jpg" data-side="left" style="--col-w:549px;--wall:linear-gradient(180deg,#e6d8b9 10%,#e5d4b3 30%,#e4d4b3 50%,#dfcba5 70%,#d8cdb0 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">Act III · challenging a generalisation · 4 of 4</div>
-        <h2 class="slide-title">When prejudice speaks.</h2>
+        <div class="eyebrow" data-i18n="qeq26">Act III · challenging a generalisation · 4 of 4</div>
+        <h2 class="slide-title" data-i18n="qtq26">When prejudice speaks.</h2>
       </div></div>
       <div class="slide-body" style="position:relative">
         <div class="card"><p class="prose gloss" data-tr="q-q26">Juror 10 makes a sweeping claim about people from the defendant’s neighbourhood. The room goes still. Bring the discussion back to this person and this case.</p></div>
@@ -2901,18 +3195,18 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="mc" data-node="q26q" data-act="Act III" data-bg="ReasonableDoubt/prejudice.jpg" data-side="left" style="--col-w:549px;--wall:linear-gradient(180deg,#e6d8b9 10%,#e5d4b3 30%,#e4d4b3 50%,#dfcba5 70%,#d8cdb0 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">Act III · challenging a generalisation · 4 of 4</div>
-        <h2 class="slide-title">When prejudice speaks.</h2>
+        <div class="eyebrow" data-i18n="qeq26">Act III · challenging a generalisation · 4 of 4</div>
+        <h2 class="slide-title" data-i18n="qtq26">When prejudice speaks.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">Which reply challenges the faulty reasoning directly?</p>
+        <p class="q-stem" data-i18n="qsq26">Which reply challenges the faulty reasoning directly?</p>
         <div class="opts">
           <button class="opt" data-correct data-dp="1" data-goto="quiet">That’s a generalisation, not evidence about this defendant.</button>
           <button class="opt" data-time="-1" data-goto="quiet">We should vote against him because you sound so certain.</button>
           <button class="opt" data-time="-1" data-goto="quiet">Everyone from your neighbourhood is wrong about everything too.</button>
         </div>
         <div style="display:flex;gap:16px;align-items:flex-start">
-          <p class="feedback" style="flex:1" data-explain="Name the reasoning error, then return to the evidence. Answering one stereotype with another repeats the same mistake."></p>
+          <p class="feedback" style="flex:1" data-explain="qwq26"></p>
           <button class="btn btn-solid" style="flex:none;margin-top:10px" data-action="branch-continue" data-i18n="btnContinue" hidden>Continue →</button>
         </div>
       </div>
@@ -2942,8 +3236,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="teach" data-node="q28" data-act="Act IV" data-bg="ReasonableDoubt/listen.jpg" data-side="left" style="--col-w:549px;--wall:linear-gradient(180deg,#e6d7bb 10%,#e3d3b6 30%,#e3d3b6 50%,#e2d0b3 70%,#ddc9ac 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">Act IV · the listening route</div>
-        <h2 class="slide-title">Make room for a voice.</h2>
+        <div class="eyebrow" data-i18n="qeq28">Act IV · the listening route</div>
+        <h2 class="slide-title" data-i18n="qtq28">Make room for a voice.</h2>
       </div></div>
       <div class="slide-body" style="position:relative">
         <div class="card"><p class="prose gloss" data-tr="q-q28">You turn towards the quieter juror. He begins, but Juror 3 cuts across him. Ask the room to listen before judging.</p></div>
@@ -2955,8 +3249,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="mc" data-node="q28q" data-act="Act IV" data-bg="ReasonableDoubt/listen.jpg" data-side="left" style="--col-w:549px;--wall:linear-gradient(180deg,#e6d7bb 10%,#e3d3b6 30%,#e3d3b6 50%,#e2d0b3 70%,#ddc9ac 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">Act IV · the listening route</div>
-        <h2 class="slide-title">Make room for a voice.</h2>
+        <div class="eyebrow" data-i18n="qeq28">Act IV · the listening route</div>
+        <h2 class="slide-title" data-i18n="qtq28">Make room for a voice.</h2>
       </div></div>
       <div class="slide-body">
         <p class="q-stem">Could we ___ before responding?</p>
@@ -2966,7 +3260,7 @@ html.is-flow .act-word-icon { font-size: 18px; }
           <button class="opt" data-correct data-dp="1" data-goto="q30">hear him out</button>
         </div>
         <div style="display:flex;gap:16px;align-items:flex-start">
-          <p class="feedback" style="flex:1" data-explain="HEAR SOMEONE OUT: listen until they finish. A pronoun goes between the two words: “hear him out”, never “hear out him”."></p>
+          <p class="feedback" style="flex:1" data-explain="qwq28"></p>
           <button class="btn btn-solid" style="flex:none;margin-top:10px" data-action="branch-continue" data-i18n="btnContinue" hidden>Continue →</button>
         </div>
       </div>
@@ -2974,8 +3268,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="teach" data-node="q29" data-act="Act IV" data-bg="ReasonableDoubt/calm.jpg" data-side="left" style="--col-w:441px;--wall:linear-gradient(180deg,#e7d8ba 10%,#e5d5b4 30%,#e5d4b4 50%,#e4d4b3 70%,#e1cfae 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">Act IV · the direct route</div>
-        <h2 class="slide-title">Lower the temperature.</h2>
+        <div class="eyebrow" data-i18n="qeq29">Act IV · the direct route</div>
+        <h2 class="slide-title" data-i18n="qtq29">Lower the temperature.</h2>
       </div></div>
       <div class="slide-body" style="position:relative">
         <div class="card"><p class="prose gloss" data-tr="q-q29">Your interruption stops the argument, but the room is tense. Make calm a condition for making progress.</p></div>
@@ -2987,8 +3281,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="mc" data-node="q29q" data-act="Act IV" data-bg="ReasonableDoubt/calm.jpg" data-side="left" style="--col-w:441px;--wall:linear-gradient(180deg,#e7d8ba 10%,#e5d5b4 30%,#e5d4b4 50%,#e4d4b3 70%,#e1cfae 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">Act IV · the direct route</div>
-        <h2 class="slide-title">Lower the temperature.</h2>
+        <div class="eyebrow" data-i18n="qeq29">Act IV · the direct route</div>
+        <h2 class="slide-title" data-i18n="qtq29">Lower the temperature.</h2>
       </div></div>
       <div class="slide-body">
         <p class="q-stem">We won’t make progress ___ we let each other finish.</p>
@@ -2998,7 +3292,7 @@ html.is-flow .act-word-icon { font-size: 18px; }
           <button class="opt" data-time="-1" data-goto="q30">even</button>
         </div>
         <div style="display:flex;gap:16px;align-items:flex-start">
-          <p class="feedback" style="flex:1" data-explain="UNLESS means IF … NOT: we won’t make progress if we don’t let each other finish. It states the condition."></p>
+          <p class="feedback" style="flex:1" data-explain="qwq29"></p>
           <button class="btn btn-solid" style="flex:none;margin-top:10px" data-action="branch-continue" data-i18n="btnContinue" hidden>Continue →</button>
         </div>
       </div>
@@ -3006,8 +3300,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="teach" data-node="q30" data-act="Act IV" data-bg="ReasonableDoubt/fan.jpg" data-side="left" style="--col-w:528px;--wall:linear-gradient(180deg,#e7d7b9 10%,#e6d6b6 30%,#e6d5b6 50%,#e1d1b3 70%,#d2c4a8 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">Act IV · despite + noun · 1 of 4</div>
-        <h2 class="slide-title">Rain against the window.</h2>
+        <div class="eyebrow" data-i18n="qeq30">Act IV · despite + noun · 1 of 4</div>
+        <h2 class="slide-title" data-i18n="qtq30">Rain against the window.</h2>
       </div></div>
       <div class="slide-body" style="position:relative">
         <div class="card"><p class="prose gloss" data-tr="q-q30">Rain cools the city, but the discussion stays heated. The foreman turns on the fan and asks everyone to continue.</p></div>
@@ -3019,8 +3313,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="mc" data-node="q30q" data-act="Act IV" data-bg="ReasonableDoubt/fan.jpg" data-side="left" style="--col-w:528px;--wall:linear-gradient(180deg,#e7d7b9 10%,#e6d6b6 30%,#e6d5b6 50%,#e1d1b3 70%,#d2c4a8 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">Act IV · despite + noun · 1 of 4</div>
-        <h2 class="slide-title">Rain against the window.</h2>
+        <div class="eyebrow" data-i18n="qeq30">Act IV · despite + noun · 1 of 4</div>
+        <h2 class="slide-title" data-i18n="qtq30">Rain against the window.</h2>
       </div></div>
       <div class="slide-body">
         <p class="q-stem">___ the tension, the jury kept discussing the evidence.</p>
@@ -3030,7 +3324,7 @@ html.is-flow .act-word-icon { font-size: 18px; }
           <button class="opt" data-time="-1" data-goto="q31">Even though</button>
         </div>
         <div style="display:flex;gap:16px;align-items:flex-start">
-          <p class="feedback" style="flex:1" data-explain="DESPITE + noun: “despite the tension”. ALTHOUGH and EVEN THOUGH need a clause: “although the room was tense”."></p>
+          <p class="feedback" style="flex:1" data-explain="qwq30"></p>
           <button class="btn btn-solid" style="flex:none;margin-top:10px" data-action="branch-continue" data-i18n="btnContinue" hidden>Continue →</button>
         </div>
       </div>
@@ -3038,8 +3332,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="teach" data-node="q31" data-act="Act IV" data-bg="ReasonableDoubt/cinema.jpg" data-side="left" style="--col-w:625px;--wall:linear-gradient(180deg,#e9dec3 10%,#e8dfc2 30%,#e9dfc3 50%,#e8dec2 70%,#e8dec2 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">Act IV · explaining an alternative · 2 of 4</div>
-        <h2 class="slide-title">A memory under pressure.</h2>
+        <div class="eyebrow" data-i18n="qeq31">Act IV · explaining an alternative · 2 of 4</div>
+        <h2 class="slide-title" data-i18n="qtq31">A memory under pressure.</h2>
       </div></div>
       <div class="slide-body" style="position:relative">
         <div class="card"><p class="prose gloss" data-tr="q-q31">The defendant struggled to recall details of his evening at the cinema. Juror 4 treats that as suspicious. Offer another explanation.</p></div>
@@ -3051,18 +3345,18 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="mc" data-node="q31q" data-act="Act IV" data-bg="ReasonableDoubt/cinema.jpg" data-side="left" style="--col-w:625px;--wall:linear-gradient(180deg,#e9dec3 10%,#e8dfc2 30%,#e9dfc3 50%,#e8dec2 70%,#e8dec2 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">Act IV · explaining an alternative · 2 of 4</div>
-        <h2 class="slide-title">A memory under pressure.</h2>
+        <div class="eyebrow" data-i18n="qeq31">Act IV · explaining an alternative · 2 of 4</div>
+        <h2 class="slide-title" data-i18n="qtq31">A memory under pressure.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">Which explanation is cautious and relevant?</p>
+        <p class="q-stem" data-i18n="qsq31">Which explanation is cautious and relevant?</p>
         <div class="opts">
           <button class="opt" data-correct data-dp="1" data-goto="q32">Stress may have affected his ability to remember details.</button>
           <button class="opt" data-time="-1" data-goto="q32">Only guilty people forget the details of an evening like that.</button>
           <button class="opt" data-time="-1" data-goto="q32">Forgetting a title proves his entire story was true.</button>
         </div>
         <div style="display:flex;gap:16px;align-items:flex-start">
-          <p class="feedback" style="flex:1" data-explain="A memory gap has more than one explanation. MAY HAVE AFFECTED offers one without claiming it is proved."></p>
+          <p class="feedback" style="flex:1" data-explain="qwq31"></p>
           <button class="btn btn-solid" style="flex:none;margin-top:10px" data-action="branch-continue" data-i18n="btnContinue" hidden>Continue →</button>
         </div>
       </div>
@@ -3070,8 +3364,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="teach" data-node="q32" data-act="Act IV" data-bg="ReasonableDoubt/ballot.jpg" data-side="left" style="--col-w:474px;--wall:linear-gradient(180deg,#ebdcbf 10%,#eadbbc 30%,#e9daba 50%,#ecdcbc 70%,#ebddbf 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">Act IV · reporting a decision · 3 of 4</div>
-        <h2 class="slide-title">Changing a vote.</h2>
+        <div class="eyebrow" data-i18n="qeq32">Act IV · reporting a decision · 3 of 4</div>
+        <h2 class="slide-title" data-i18n="qtq32">Changing a vote.</h2>
       </div></div>
       <div class="slide-body" style="position:relative">
         <div class="card"><p class="prose gloss" data-tr="q-q32">One juror says: “I will reconsider my vote.” Later, you report this promise to the foreman, with the usual backshift.</p></div>
@@ -3083,18 +3377,18 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="mc" data-node="q32q" data-act="Act IV" data-bg="ReasonableDoubt/ballot.jpg" data-side="left" style="--col-w:474px;--wall:linear-gradient(180deg,#ebdcbf 10%,#eadbbc 30%,#e9daba 50%,#ecdcbc 70%,#ebddbf 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">Act IV · reporting a decision · 3 of 4</div>
-        <h2 class="slide-title">Changing a vote.</h2>
+        <div class="eyebrow" data-i18n="qeq32">Act IV · reporting a decision · 3 of 4</div>
+        <h2 class="slide-title" data-i18n="qtq32">Changing a vote.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">Choose the correct report.</p>
+        <p class="q-stem" data-i18n="qsq32">Choose the correct report.</p>
         <div class="opts">
           <button class="opt" data-time="-1" data-goto="q33">He said he will reconsider my vote.</button>
           <button class="opt" data-correct data-dp="1" data-goto="q33">He said he would reconsider his vote.</button>
           <button class="opt" data-time="-1" data-goto="q33">He told he would reconsider his vote.</button>
         </div>
         <div style="display:flex;gap:16px;align-items:flex-start">
-          <p class="feedback" style="flex:1" data-explain="Backshift: WILL becomes WOULD, and MY becomes HIS, because you report another person’s words. TELL needs a person: “He told us …”."></p>
+          <p class="feedback" style="flex:1" data-explain="qwq32"></p>
           <button class="btn btn-solid" style="flex:none;margin-top:10px" data-action="branch-continue" data-i18n="btnContinue" hidden>Continue →</button>
         </div>
       </div>
@@ -3102,8 +3396,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="teach" data-node="q33" data-act="Act V" data-bg="ReasonableDoubt/isolated.jpg" data-side="left" style="--col-w:808px;--wall:linear-gradient(180deg,#e6d8b9 10%,#e4d4b3 30%,#d5c9ab 50%,#c2b195 70%,#e0cca9 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">Act V · evidence and emotion · 4 of 4</div>
-        <h2 class="slide-title">The last resistance.</h2>
+        <div class="eyebrow" data-i18n="qeq33">Act V · evidence and emotion · 4 of 4</div>
+        <h2 class="slide-title" data-i18n="qtq33">The last resistance.</h2>
       </div></div>
       <div class="slide-body" style="position:relative">
         <div class="card"><p class="prose gloss" data-tr="q-q33">Juror 3 is increasingly isolated. He speaks about ungrateful sons, then falls silent. His anger may come from somewhere beyond this case.</p></div>
@@ -3115,18 +3409,18 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="mc" data-node="q33q" data-act="Act V" data-bg="ReasonableDoubt/isolated.jpg" data-side="left" style="--col-w:808px;--wall:linear-gradient(180deg,#e6d8b9 10%,#e4d4b3 30%,#d5c9ab 50%,#c2b195 70%,#e0cca9 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">Act V · evidence and emotion · 4 of 4</div>
-        <h2 class="slide-title">The last resistance.</h2>
+        <div class="eyebrow" data-i18n="qeq33">Act V · evidence and emotion · 4 of 4</div>
+        <h2 class="slide-title" data-i18n="qtq33">The last resistance.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">Which question combines empathy with a return to the evidence?</p>
+        <p class="q-stem" data-i18n="qsq33">Which question combines empathy with a return to the evidence?</p>
         <div class="opts">
           <button class="opt" data-time="-1" data-goto="photograph">Why are you always so unreasonable with everyone in this room?</button>
           <button class="opt" data-time="-1" data-goto="photograph">If you are this upset, then everything you say must be false.</button>
           <button class="opt" data-correct data-dp="1" data-goto="photograph">Could your own experience be influencing how you see this case?</button>
         </div>
         <div style="display:flex;gap:16px;align-items:flex-start">
-          <p class="feedback" style="flex:1" data-explain="COULD … BE INFLUENCING raises a possibility instead of making an accusation. Strong feeling doesn’t make a claim false."></p>
+          <p class="feedback" style="flex:1" data-explain="qwq33"></p>
           <button class="btn btn-solid" style="flex:none;margin-top:10px" data-action="branch-continue" data-i18n="btnContinue" hidden>Continue →</button>
         </div>
       </div>
@@ -3147,8 +3441,8 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="teach" data-node="q35" data-act="Act V" data-bg="ReasonableDoubt/summary.jpg" data-side="left" style="--col-w:528px;--wall:linear-gradient(180deg,#e6d9bd 10%,#e3d5b8 30%,#e2d4b8 50%,#deceb1 70%,#dfcfb2 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">Act V · claim, reason, limit</div>
-        <h2 class="slide-title">Make the final argument.</h2>
+        <div class="eyebrow" data-i18n="qeq35">Act V · claim, reason, limit</div>
+        <h2 class="slide-title" data-i18n="qtq35">Make the final argument.</h2>
       </div></div>
       <div class="slide-body" style="position:relative">
         <div class="card"><p class="prose gloss" data-tr="q-q35">The foreman asks you to summarise. Connect the evidence to your conclusion, and make clear what you still do not know.</p></div>
@@ -3160,18 +3454,18 @@ html.is-flow .act-word-icon { font-size: 18px; }
 
     <section class="slide" data-type="mc" data-node="q35q" data-act="Act V" data-bg="ReasonableDoubt/summary.jpg" data-side="left" style="--col-w:528px;--wall:linear-gradient(180deg,#e6d9bd 10%,#e3d5b8 30%,#e2d4b8 50%,#deceb1 70%,#dfcfb2 90%);--band:56px">
       <div class="slide-head"><div>
-        <div class="eyebrow">Act V · claim, reason, limit</div>
-        <h2 class="slide-title">Make the final argument.</h2>
+        <div class="eyebrow" data-i18n="qeq35">Act V · claim, reason, limit</div>
+        <h2 class="slide-title" data-i18n="qtq35">Make the final argument.</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">Which summary is the most defensible?</p>
+        <p class="q-stem" data-i18n="qsq35">Which summary is the most defensible?</p>
         <div class="opts">
           <button class="opt" data-time="-1" data-goto="verdict">He looks innocent to me, and by now most of you in this room agree with me.</button>
           <button class="opt" data-correct data-dp="1" data-goto="verdict">These weaknesses leave reasonable doubt; they don’t prove what happened.</button>
           <button class="opt" data-time="-1" data-goto="verdict">Every single witness lied to the court, so now I know exactly what happened.</button>
         </div>
         <div style="display:flex;gap:16px;align-items:flex-start">
-          <p class="feedback" style="flex:1" data-explain="A strong argument states its limit. The jury decides whether guilt has been proved, not what really happened."></p>
+          <p class="feedback" style="flex:1" data-explain="qwq35"></p>
           <button class="btn btn-solid" style="flex:none;margin-top:10px" data-action="branch-continue" data-i18n="btnContinue" hidden>Continue →</button>
         </div>
       </div>
@@ -3454,8 +3748,19 @@ const NARRATIVE_TR = {
 };
 const UI_I18N = {
   en: {
+    actActI: "Act I",
+    actActII: "Act II",
+    actActIII: "Act III",
+    actActIV: "Act IV",
+    actActV: "Act V",
+    actActivation: "Activation",
     actBefore: "Before you begin",
+    actBeforeyoubegin: "Before you begin",
+    actEnding: "Ending",
     actEyebrow: 'Activation',
+    actFileA: "File A",
+    actFileB: "File B",
+    actFileC: "File C",
     actPlaceholder: "Your Honour, …",
     actSpeak1: "Change roles: one of you defends the reliability of a witness, the other questions it. Ninety seconds each, then swap.",
     actSpeak2: "Give a 60-second closing statement to the jury: two pieces of evidence, one concession, and what you still do not know.",
@@ -3465,6 +3770,7 @@ const UI_I18N = {
     actSpeakWord: 'Discussion',
     actTitle: "Now argue it yourself.",
     actUse: "Use at least three of these",
+    actVerdict: "Verdict",
     actWriteBrief: "Write the foreman’s note to the judge explaining the verdict. Concede one point against the defendant, explain two doubts, and say what the jury still does not know.",
     actWriteKind: "Writing · 150–250 words",
     actWriteWord: 'Writing',
@@ -3557,6 +3863,107 @@ const UI_I18N = {
     ledTime: "Patience",
     photoEyebrow: "Act V · a moment to listen",
     photoTitle: "A photograph on the table.",
+    qeq04: "Act I · the first vote · 1 of 2",
+    qeq05: "Act I · disagreeing politely · 2 of 2",
+    qeq07: "File A · the knife · 1 of 5",
+    qeq08: "File A · testing a claim · 2 of 5",
+    qeq09: "File A · limiting your claim · 3 of 5",
+    qeq10: "File A · even if · 4 of 5",
+    qeq11: "File A · evidence checkpoint · 5 of 5",
+    qeq12: "File B · what could he hear? · 1 of 5",
+    qeq13: "File B · reported speech · 2 of 5",
+    qeq14: "File B · putting events in order · 3 of 5",
+    qeq15: "File B · the unreal past · 4 of 5",
+    qeq16: "File B · evidence checkpoint · 5 of 5",
+    qeq17: "File C · a claim of sight · 1 of 5",
+    qeq18: "File C · possibility, not proof · 2 of 5",
+    qeq19: "File C · a small observation · 3 of 5",
+    qeq20: "File C · although · 4 of 5",
+    qeq21: "File C · evidence checkpoint · 5 of 5",
+    qeq23: "Act III · making a proposal · 1 of 4",
+    qeq24: "Act III · listening for meaning · 2 of 4",
+    qeq25: "Act III · challenging a motive · 3 of 4",
+    qeq26: "Act III · challenging a generalisation · 4 of 4",
+    qeq28: "Act IV · the listening route",
+    qeq29: "Act IV · the direct route",
+    qeq30: "Act IV · despite + noun · 1 of 4",
+    qeq31: "Act IV · explaining an alternative · 2 of 4",
+    qeq32: "Act IV · reporting a decision · 3 of 4",
+    qeq33: "Act V · evidence and emotion · 4 of 4",
+    qeq35: "Act V · claim, reason, limit",
+    qsq04: "Which reply expresses uncertainty accurately?",
+    qsq05: "Which reply challenges the claim respectfully?",
+    qsq08: "Which sentence draws a strong negative deduction about the past?",
+    qsq09: "Choose the most careful conclusion.",
+    qsq11: "Which note belongs in the file?",
+    qsq12: "Which sentence questions the testimony without overstating certainty?",
+    qsq13: "Choose the correctly backshifted report.",
+    qsq16: "Choose a careful statement about the witness.",
+    qsq18: "Choose the accurate past-possibility form.",
+    qsq19: "Which sentence avoids turning an inference into certainty?",
+    qsq24: "Which sentence paraphrases his position accurately?",
+    qsq25: "Which reply keeps the verdict connected to the evidence?",
+    qsq26: "Which reply challenges the faulty reasoning directly?",
+    qsq31: "Which explanation is cautious and relevant?",
+    qsq32: "Choose the correct report.",
+    qsq33: "Which question combines empathy with a return to the evidence?",
+    qsq35: "Which summary is the most defensible?",
+    qtq04: "Eleven hands rise.",
+    qtq05: "Hold your ground.",
+    qtq07: "An unusual object.",
+    qtq08: "A second knife.",
+    qtq09: "What does that prove?",
+    qtq10: "Concede. Then challenge.",
+    qtq11: "File the first doubt.",
+    qtq12: "A voice beneath a train.",
+    qtq13: "What the witness said.",
+    qtq14: "The length of a hallway.",
+    qtq15: "Test the timing.",
+    qtq16: "Mistaken is not dishonest.",
+    qtq17: "Across the tracks.",
+    qtq18: "A moving obstruction.",
+    qtq19: "The marks of spectacles.",
+    qtq20: "Confidence and accuracy.",
+    qtq21: "File the final doubt.",
+    qtq23: "A private change of mind.",
+    qtq24: "The first ally.",
+    qtq25: "A ticket is not an argument.",
+    qtq26: "When prejudice speaks.",
+    qtq28: "Make room for a voice.",
+    qtq29: "Lower the temperature.",
+    qtq30: "Rain against the window.",
+    qtq31: "A memory under pressure.",
+    qtq32: "Changing a vote.",
+    qtq33: "The last resistance.",
+    qtq35: "Make the final argument.",
+    qwq04: "I DON’T KNOW admits uncertainty; SHOULD proposes a next step. MUST and CAN’T claim a certainty that a feeling can’t give.",
+    qwq05: "I SEE YOUR POINT, BUT … grants the point before the challenge, so you disagree without attacking. A question keeps the discussion open.",
+    qwq07: "A possibility in the past: MIGHT HAVE + past participle, “might have belonged”. MUST HAVE claims certainty, and after HAVE the verb is always the past participle.",
+    qwq08: "A strong negative deduction about the past: CAN’T HAVE BEEN. After a modal, HAVE never becomes HAS. A second knife disproves “unique”, not the whole accusation.",
+    qwq09: "WEAKENS keeps the conclusion inside what the evidence supports. PROVES and EVERY PART turn one doubt into a claim that everything is false.",
+    qwq10: "EVEN IF + clause accepts the point, not the conclusion. DESPITE never takes “of”; IN SPITE needs OF.",
+    qwq11: "File A is complete. The note challenges one claim, that the knife was unique, and stays inside the evidence. PROVES and MUST claim far more.",
+    qwq12: "MIGHT HAVE MADE offers a possible obstacle. It doesn’t call the witness a liar, and it doesn’t claim the words were impossible to hear.",
+    qwq13: "Backshift: HEARD becomes HAD HEARD. SAY something, but TELL someone something: “He told us that he had heard …” also works.",
+    qwq14: "The earlier of two past events takes the past perfect, HAD + past participle: “had disappeared”. The later one, “reached”, is past simple.",
+    qwq15: "IF + HAD + past participle pairs with COULDN’T HAVE + past participle for an unreal past. After HAVE, always the past participle: “reached”.",
+    qwq16: "File B is complete. MAY HAVE MISJUDGED allows an honest mistake; MUST HAVE LIED claims a deliberate one.",
+    qwq17: "CLAIM + TO HAVE + past participle reports a claim about an earlier event. The past participle of “see” is “seen”, not “saw”.",
+    qwq18: "COULD HAVE + past participle: a past possibility. After a modal, HAVE never becomes HAS, and the verb is the past participle, “blocked”.",
+    qwq19: "MAY NOT HAVE BEEN + -ING: a possible ongoing state in the past. The marks raise a question without answering it, so PROVE and DEFINITELY go too far.",
+    qwq20: "ALTHOUGH takes a clause, “she sounded certain”. DESPITE takes a noun or -ING, “despite sounding certain”, and never takes OF.",
+    qwq21: "File C is complete. MIGHT NOT HAVE + past participle: a possible result of an unreal past condition. You don’t claim to know what she saw.",
+    qwq23: "WOULD RATHER + a new subject + past simple, for a present or future preference: “I’d rather we voted”. The past form doesn’t mean past time here.",
+    qwq24: "DESERVE A FAIR HEARING means the doubts should be listened to seriously. It doesn’t mean he knows the young man is innocent.",
+    qwq25: "DEPEND ON names the right basis for a vote. You challenge his reason, not his intelligence.",
+    qwq26: "Name the reasoning error, then return to the evidence. Answering one stereotype with another repeats the same mistake.",
+    qwq28: "HEAR SOMEONE OUT: listen until they finish. A pronoun goes between the two words: “hear him out”, never “hear out him”.",
+    qwq29: "UNLESS means IF … NOT: we won’t make progress if we don’t let each other finish. It states the condition.",
+    qwq30: "DESPITE + noun: “despite the tension”. ALTHOUGH and EVEN THOUGH need a clause: “although the room was tense”.",
+    qwq31: "A memory gap has more than one explanation. MAY HAVE AFFECTED offers one without claiming it is proved.",
+    qwq32: "Backshift: WILL becomes WOULD, and MY becomes HIS, because you report another person’s words. TELL needs a person: “He told us …”.",
+    qwq33: "COULD … BE INFLUENCING raises a possibility instead of making an accusation. Strong feeling doesn’t make a claim false.",
+    qwq35: "A strong argument states its limit. The jury decides whether guilt has been proved, not what really happened.",
     resLow: "The doubt was right. The wording was not.",
     resMid: "A fair case, with gaps the room noticed.",
     resNext: 'Recognising the language is half of it. Now produce it →',
@@ -3587,8 +3994,19 @@ const UI_I18N = {
     wordCount: (n)=>`${n} ${n===1?'word':'words'}`
   },
   de: {
+    actActI: "Akt I",
+    actActII: "Akt II",
+    actActIII: "Akt III",
+    actActIV: "Akt IV",
+    actActV: "Akt V",
+    actActivation: "Anwenden",
     actBefore: "Bevor du beginnst",
+    actBeforeyoubegin: "Bevor du beginnst",
+    actEnding: "Ende",
     actEyebrow: 'Anwendung',
+    actFileA: "Akte A",
+    actFileB: "Akte B",
+    actFileC: "Akte C",
     actPlaceholder: "Euer Ehren, …",
     actSpeak1: "Rollentausch: Eine Person verteidigt die Zuverlässigkeit eines Zeugen, die andere hinterfragt sie. Jeweils neunzig Sekunden, dann tauschen.",
     actSpeak2: "Halte ein 60-Sekunden-Schlussplädoyer vor der Jury: zwei Beweisstücke, ein Zugeständnis und das, was du weiterhin nicht weißt.",
@@ -3598,6 +4016,7 @@ const UI_I18N = {
     actSpeakWord: 'Diskussion',
     actTitle: "Jetzt argumentierst du selbst.",
     actUse: "Verwende mindestens drei davon",
+    actVerdict: "Urteil",
     actWriteBrief: "Schreib die Notiz des Obmanns an den Richter, die das Urteil erklärt. Gestehe einen Punkt gegen den Angeklagten zu, erkläre zwei Zweifel und sag, was die Jury weiterhin nicht weiß.",
     actWriteKind: "Schreiben · 150–250 Wörter",
     actWriteWord: 'Schreiben',
@@ -3690,6 +4109,107 @@ const UI_I18N = {
     ledTime: "Geduld",
     photoEyebrow: "Akt V · ein Moment zum Zuhören",
     photoTitle: "Ein Foto auf dem Tisch.",
+    qeq04: "Akt I · die erste Abstimmung · 1 von 2",
+    qeq05: "Akt I · höflich widersprechen · 2 von 2",
+    qeq07: "Akte A · das Messer · 1 von 5",
+    qeq08: "Akte A · eine Behauptung prüfen · 2 von 5",
+    qeq09: "Akte A · die Behauptung begrenzen · 3 von 5",
+    qeq10: "Akte A · even if · 4 von 5",
+    qeq11: "Akte A · Beweis-Kontrolle · 5 von 5",
+    qeq12: "Akte B · was konnte er hören? · 1 von 5",
+    qeq13: "Akte B · indirekte Rede · 2 von 5",
+    qeq14: "Akte B · Ereignisse ordnen · 3 von 5",
+    qeq15: "Akte B · die irreale Vergangenheit · 4 von 5",
+    qeq16: "Akte B · Beweis-Kontrolle · 5 von 5",
+    qeq17: "Akte C · eine Behauptung, etwas gesehen zu haben · 1 von 5",
+    qeq18: "Akte C · Möglichkeit, kein Beweis · 2 von 5",
+    qeq19: "Akte C · eine kleine Beobachtung · 3 von 5",
+    qeq20: "Akte C · although · 4 von 5",
+    qeq21: "Akte C · Beweis-Kontrolle · 5 von 5",
+    qeq23: "Akt III · einen Vorschlag machen · 1 von 4",
+    qeq24: "Akt III · auf die Bedeutung hören · 2 von 4",
+    qeq25: "Akt III · ein Motiv infrage stellen · 3 von 4",
+    qeq26: "Akt III · eine Verallgemeinerung infrage stellen · 4 von 4",
+    qeq28: "Akt IV · der Weg des Zuhörens",
+    qeq29: "Akt IV · der direkte Weg",
+    qeq30: "Akt IV · despite + Nomen · 1 von 4",
+    qeq31: "Akt IV · eine andere Erklärung · 2 von 4",
+    qeq32: "Akt IV · eine Entscheidung wiedergeben · 3 von 4",
+    qeq33: "Akt V · Beweise und Gefühl · 4 von 4",
+    qeq35: "Akt V · Behauptung, Grund, Grenze",
+    qsq04: "Welche Antwort drückt Unsicherheit treffend aus?",
+    qsq05: "Welche Antwort stellt die Behauptung respektvoll infrage?",
+    qsq08: "Welcher Satz zieht einen starken negativen Schluss über die Vergangenheit?",
+    qsq09: "Wähle die vorsichtigste Schlussfolgerung.",
+    qsq11: "Welche Notiz gehört in die Akte?",
+    qsq12: "Welcher Satz stellt die Aussage infrage, ohne zu viel Gewissheit zu behaupten?",
+    qsq13: "Wähle die richtig zurückverschobene Wiedergabe.",
+    qsq16: "Wähle eine vorsichtige Aussage über den Zeugen.",
+    qsq18: "Wähle die richtige Form für eine Möglichkeit in der Vergangenheit.",
+    qsq19: "Welcher Satz macht aus einer Vermutung keine Gewissheit?",
+    qsq24: "Welcher Satz gibt seine Haltung treffend wieder?",
+    qsq25: "Welche Antwort lenkt die Stimme zurück auf die Beweise?",
+    qsq26: "Welche Antwort stellt den fehlerhaften Schluss direkt infrage?",
+    qsq31: "Welche Erklärung ist vorsichtig und passend?",
+    qsq32: "Wähle die richtige Wiedergabe.",
+    qsq33: "Welche Frage verbindet Mitgefühl mit der Rückkehr zu den Beweisen?",
+    qsq35: "Welche Zusammenfassung lässt sich am besten verteidigen?",
+    qtq04: "Elf Hände gehen hoch.",
+    qtq05: "Bleib standhaft.",
+    qtq07: "Ein ungewöhnlicher Gegenstand.",
+    qtq08: "Ein zweites Messer.",
+    qtq09: "Was beweist das?",
+    qtq10: "Zugestehen. Dann widersprechen.",
+    qtq11: "Der erste Zweifel kommt in die Akte.",
+    qtq12: "Eine Stimme unter dem Zug.",
+    qtq13: "Was der Zeuge sagte.",
+    qtq14: "Die Länge eines Flurs.",
+    qtq15: "Die Zeit nachprüfen.",
+    qtq16: "Ein Irrtum ist keine Lüge.",
+    qtq17: "Jenseits der Gleise.",
+    qtq18: "Ein Hindernis in Bewegung.",
+    qtq19: "Die Spuren einer Brille.",
+    qtq20: "Sicherheit und Genauigkeit.",
+    qtq21: "Der letzte Zweifel kommt in die Akte.",
+    qtq23: "Ein heimlicher Sinneswandel.",
+    qtq24: "Der erste Verbündete.",
+    qtq25: "Kein Argument.",
+    qtq26: "Wenn das Vorurteil spricht.",
+    qtq28: "Raum für eine Stimme.",
+    qtq29: "Die Temperatur senken.",
+    qtq30: "Regen am Fenster.",
+    qtq31: "Ein Gedächtnis unter Druck.",
+    qtq32: "Eine Stimme ändert sich.",
+    qtq33: "Der letzte Widerstand.",
+    qtq35: "Das letzte Argument.",
+    qwq04: "I DON’T KNOW räumt Unsicherheit ein; SHOULD schlägt einen nächsten Schritt vor. MUST und CAN’T behaupten eine Gewissheit, die ein Gefühl nicht geben kann.",
+    qwq05: "I SEE YOUR POINT, BUT … gesteht den Punkt zu, bevor du widersprichst – so widersprichst du, ohne anzugreifen. Eine Frage hält das Gespräch offen.",
+    qwq07: "Eine Möglichkeit in der Vergangenheit: MIGHT HAVE + Partizip Perfekt, „might have belonged“. MUST HAVE behauptet Gewissheit, und nach HAVE steht immer das Partizip Perfekt.",
+    qwq08: "Ein starker negativer Schluss über die Vergangenheit: CAN’T HAVE BEEN. Nach einem Modalverb wird HAVE nie zu HAS. Ein zweites Messer widerlegt „unique“, nicht die ganze Anklage.",
+    qwq09: "WEAKENS hält die Schlussfolgerung innerhalb dessen, was die Beweise tragen. PROVES und EVERY PART machen aus einem Zweifel die Behauptung, alles sei falsch.",
+    qwq10: "EVEN IF + Nebensatz akzeptiert den Punkt, nicht die Schlussfolgerung. DESPITE steht nie mit „of“; IN SPITE braucht OF.",
+    qwq11: "Akte A ist abgeschlossen. Die Notiz stellt eine Behauptung infrage – dass das Messer einzigartig war – und bleibt bei den Beweisen. PROVES und MUST behaupten viel mehr.",
+    qwq12: "MIGHT HAVE MADE nennt ein mögliches Hindernis. Es nennt den Zeugen keinen Lügner und behauptet nicht, die Worte seien unmöglich zu hören gewesen.",
+    qwq13: "Zeitverschiebung: HEARD wird zu HAD HEARD. Man sagt SAY something, aber TELL someone something: „He told us that he had heard …“ geht auch.",
+    qwq14: "Das frühere von zwei vergangenen Ereignissen steht im Past Perfect, HAD + Partizip Perfekt: „had disappeared“. Das spätere, „reached“, steht im Past Simple.",
+    qwq15: "IF + HAD + Partizip Perfekt gehört zu COULDN’T HAVE + Partizip Perfekt, für eine irreale Vergangenheit. Nach HAVE steht immer das Partizip Perfekt: „reached“.",
+    qwq16: "Akte B ist abgeschlossen. MAY HAVE MISJUDGED lässt einen ehrlichen Irrtum zu; MUST HAVE LIED behauptet eine absichtliche Lüge.",
+    qwq17: "CLAIM + TO HAVE + Partizip Perfekt gibt eine Behauptung über ein früheres Ereignis wieder. Das Partizip Perfekt von „see“ ist „seen“, nicht „saw“.",
+    qwq18: "COULD HAVE + Partizip Perfekt: eine Möglichkeit in der Vergangenheit. Nach einem Modalverb wird HAVE nie zu HAS, und das Verb steht im Partizip Perfekt: „blocked“.",
+    qwq19: "MAY NOT HAVE BEEN + -ING: ein möglicher andauernder Zustand in der Vergangenheit. Die Spuren werfen eine Frage auf, ohne sie zu beantworten – PROVE und DEFINITELY gehen zu weit.",
+    qwq20: "ALTHOUGH steht mit einem Nebensatz: „she sounded certain“. DESPITE steht mit einem Nomen oder -ING, „despite sounding certain“, und nie mit OF.",
+    qwq21: "Akte C ist abgeschlossen. MIGHT NOT HAVE + Partizip Perfekt: eine mögliche Folge einer irrealen Bedingung in der Vergangenheit. Du behauptest nicht zu wissen, was sie sah.",
+    qwq23: "WOULD RATHER + ein neues Subjekt + Past Simple drückt einen Wunsch für jetzt oder später aus: „I’d rather we voted“. Die Vergangenheitsform bedeutet hier keine vergangene Zeit.",
+    qwq24: "DESERVE A FAIR HEARING heißt, dass man die Zweifel ernsthaft anhören soll. Es heißt nicht, dass er weiß, dass der junge Mann unschuldig ist.",
+    qwq25: "DEPEND ON nennt die richtige Grundlage für eine Stimme. Du stellst seinen Grund infrage, nicht seine Intelligenz.",
+    qwq26: "Benenne den Denkfehler und kehre dann zu den Beweisen zurück. Wer auf ein Klischee mit einem anderen antwortet, wiederholt denselben Fehler.",
+    qwq28: "HEAR SOMEONE OUT: zuhören, bis jemand fertig ist. Ein Pronomen steht zwischen den beiden Wörtern: „hear him out“, nie „hear out him“.",
+    qwq29: "UNLESS bedeutet IF … NOT: Wir kommen nicht weiter, wenn wir einander nicht ausreden lassen. Es nennt die Bedingung.",
+    qwq30: "DESPITE + Nomen: „despite the tension“. ALTHOUGH und EVEN THOUGH brauchen einen Nebensatz: „although the room was tense“.",
+    qwq31: "Eine Gedächtnislücke hat mehr als eine Erklärung. MAY HAVE AFFECTED bietet eine an, ohne zu behaupten, sie sei bewiesen.",
+    qwq32: "Zeitverschiebung: WILL wird zu WOULD und MY zu HIS, weil du die Worte eines anderen wiedergibst. TELL braucht eine Person: „He told us …“.",
+    qwq33: "COULD … BE INFLUENCING wirft eine Möglichkeit auf, statt einen Vorwurf zu machen. Ein starkes Gefühl macht eine Behauptung nicht falsch.",
+    qwq35: "Ein starkes Argument nennt seine Grenze. Die Jury entscheidet, ob die Schuld bewiesen ist, nicht, was wirklich geschah.",
     resLow: "Der Zweifel war berechtigt. Die Formulierung nicht.",
     resMid: "Ein ordentlicher Fall, mit Lücken, die der Raum bemerkt hat.",
     resNext: 'Die Sprache zu erkennen ist die halbe Miete. Jetzt anwenden →',
@@ -3720,8 +4240,19 @@ const UI_I18N = {
     wordCount: (n)=>`${n} ${n===1?'Wort':'Wörter'}`
   },
   es: {
+    actActI: "Acto I",
+    actActII: "Acto II",
+    actActIII: "Acto III",
+    actActIV: "Acto IV",
+    actActV: "Acto V",
+    actActivation: "Práctica",
     actBefore: "Antes de empezar",
+    actBeforeyoubegin: "Antes de empezar",
+    actEnding: "Final",
     actEyebrow: 'Activación',
+    actFileA: "Expediente A",
+    actFileB: "Expediente B",
+    actFileC: "Expediente C",
     actPlaceholder: "Señoría: …",
     actSpeak1: "Cambio de papeles: una persona defiende la fiabilidad de un testigo y la otra la cuestiona. Noventa segundos cada una y luego cambiad.",
     actSpeak2: "Haz un alegato final de 60 segundos ante el jurado: dos pruebas, una concesión y lo que sigues sin saber.",
@@ -3731,6 +4262,7 @@ const UI_I18N = {
     actSpeakWord: 'Debate',
     actTitle: "Ahora argumenta tú.",
     actUse: "Usa al menos tres de estas",
+    actVerdict: "Veredicto",
     actWriteBrief: "Escribe la nota del presidente del jurado al juez explicando el veredicto. Concede un punto en contra del acusado, explica dos dudas y di lo que el jurado sigue sin saber.",
     actWriteKind: "Escritura · 150–250 palabras",
     actWriteWord: 'Escritura',
@@ -3823,6 +4355,107 @@ const UI_I18N = {
     ledTime: "Paciencia",
     photoEyebrow: "Acto V · un momento para escuchar",
     photoTitle: "Una foto sobre la mesa.",
+    qeq04: "Acto I · la primera votación · 1 de 2",
+    qeq05: "Acto I · discrepar con educación · 2 de 2",
+    qeq07: "Expediente A · la navaja · 1 de 5",
+    qeq08: "Expediente A · poner a prueba una afirmación · 2 de 5",
+    qeq09: "Expediente A · limitar la afirmación · 3 de 5",
+    qeq10: "Expediente A · even if · 4 de 5",
+    qeq11: "Expediente A · control de pruebas · 5 de 5",
+    qeq12: "Expediente B · ¿qué podía oír? · 1 de 5",
+    qeq13: "Expediente B · estilo indirecto · 2 de 5",
+    qeq14: "Expediente B · ordenar los hechos · 3 de 5",
+    qeq15: "Expediente B · el pasado irreal · 4 de 5",
+    qeq16: "Expediente B · control de pruebas · 5 de 5",
+    qeq17: "Expediente C · haber visto algo · 1 de 5",
+    qeq18: "Expediente C · posibilidad, no prueba · 2 de 5",
+    qeq19: "Expediente C · una pequeña observación · 3 de 5",
+    qeq20: "Expediente C · although · 4 de 5",
+    qeq21: "Expediente C · control de pruebas · 5 de 5",
+    qeq23: "Acto III · hacer una propuesta · 1 de 4",
+    qeq24: "Acto III · escuchar el sentido · 2 de 4",
+    qeq25: "Acto III · cuestionar un motivo · 3 de 4",
+    qeq26: "Acto III · cuestionar una generalización · 4 de 4",
+    qeq28: "Acto IV · la ruta de escuchar",
+    qeq29: "Acto IV · la ruta directa",
+    qeq30: "Acto IV · despite + sustantivo · 1 de 4",
+    qeq31: "Acto IV · otra explicación · 2 de 4",
+    qeq32: "Acto IV · transmitir una decisión · 3 de 4",
+    qeq33: "Acto V · pruebas y emoción · 4 de 4",
+    qeq35: "Acto V · afirmación, razón, límite",
+    qsq04: "¿Qué respuesta expresa la incertidumbre con precisión?",
+    qsq05: "¿Qué respuesta cuestiona la afirmación con respeto?",
+    qsq08: "¿Qué frase saca una deducción negativa firme sobre el pasado?",
+    qsq09: "Elige la conclusión más prudente.",
+    qsq11: "¿Qué nota va en el expediente?",
+    qsq12: "¿Qué frase cuestiona el testimonio sin exagerar la certeza?",
+    qsq13: "Elige la versión en estilo indirecto con el cambio de tiempo correcto.",
+    qsq16: "Elige una afirmación prudente sobre el testigo.",
+    qsq18: "Elige la forma correcta de posibilidad en el pasado.",
+    qsq19: "¿Qué frase evita convertir una inferencia en certeza?",
+    qsq24: "¿Qué frase resume bien su postura?",
+    qsq25: "¿Qué respuesta devuelve el voto a las pruebas?",
+    qsq26: "¿Qué respuesta cuestiona directamente el razonamiento erróneo?",
+    qsq31: "¿Qué explicación es prudente y pertinente?",
+    qsq32: "Elige la versión correcta en estilo indirecto.",
+    qsq33: "¿Qué pregunta une la empatía con la vuelta a las pruebas?",
+    qsq35: "¿Qué resumen se puede defender mejor?",
+    qtq04: "Once manos se alzan.",
+    qtq05: "Mantente firme.",
+    qtq07: "Un objeto poco común.",
+    qtq08: "Una segunda navaja.",
+    qtq09: "¿Qué demuestra eso?",
+    qtq10: "Concede. Después, cuestiona.",
+    qtq11: "Archiva la primera duda.",
+    qtq12: "Una voz bajo un tren.",
+    qtq13: "Lo que dijo el testigo.",
+    qtq14: "La longitud de un pasillo.",
+    qtq15: "Comprueba el tiempo.",
+    qtq16: "Equivocarse no es mentir.",
+    qtq17: "Al otro lado de las vías.",
+    qtq18: "Un obstáculo en movimiento.",
+    qtq19: "Las marcas de unas gafas.",
+    qtq20: "Seguridad y exactitud.",
+    qtq21: "Archiva la última duda.",
+    qtq23: "Un cambio de opinión en privado.",
+    qtq24: "El primer aliado.",
+    qtq25: "No es un argumento.",
+    qtq26: "Cuando habla el prejuicio.",
+    qtq28: "Espacio para una voz.",
+    qtq29: "Bajar la tensión.",
+    qtq30: "Lluvia en la ventana.",
+    qtq31: "Una memoria bajo presión.",
+    qtq32: "Un voto que cambia.",
+    qtq33: "La última resistencia.",
+    qtq35: "El argumento final.",
+    qwq04: "I DON’T KNOW admite la incertidumbre; SHOULD propone un siguiente paso. MUST y CAN’T afirman una certeza que una sensación no puede dar.",
+    qwq05: "I SEE YOUR POINT, BUT … concede el punto antes de cuestionarlo, así que discrepas sin atacar. Una pregunta mantiene abierto el debate.",
+    qwq07: "Una posibilidad en el pasado: MIGHT HAVE + participio, «might have belonged». MUST HAVE afirma certeza, y después de HAVE el verbo siempre va en participio.",
+    qwq08: "Una deducción negativa firme sobre el pasado: CAN’T HAVE BEEN. Después de un modal, HAVE nunca pasa a HAS. Una segunda navaja desmiente «unique», no toda la acusación.",
+    qwq09: "WEAKENS mantiene la conclusión dentro de lo que sostienen las pruebas. PROVES y EVERY PART convierten una duda en la afirmación de que todo es falso.",
+    qwq10: "EVEN IF + oración acepta el punto, no la conclusión. DESPITE nunca lleva «of»; IN SPITE necesita OF.",
+    qwq11: "Expediente A completo. La nota cuestiona una afirmación, que la navaja era única, y no va más allá de las pruebas. PROVES y MUST afirman mucho más.",
+    qwq12: "MIGHT HAVE MADE plantea un obstáculo posible. No llama mentiroso al testigo ni afirma que fuera imposible oír las palabras.",
+    qwq13: "Cambio de tiempo: HEARD pasa a HAD HEARD. Se dice SAY something, pero TELL someone something: «He told us that he had heard…» también vale.",
+    qwq14: "El primero de dos hechos pasados va en past perfect, HAD + participio: «had disappeared». El posterior, «reached», va en past simple.",
+    qwq15: "IF + HAD + participio va con COULDN’T HAVE + participio para un pasado irreal. Después de HAVE, siempre el participio: «reached».",
+    qwq16: "Expediente B completo. MAY HAVE MISJUDGED admite un error honesto; MUST HAVE LIED afirma una mentira deliberada.",
+    qwq17: "CLAIM + TO HAVE + participio transmite una afirmación sobre un hecho anterior. El participio de «see» es «seen», no «saw».",
+    qwq18: "COULD HAVE + participio: una posibilidad en el pasado. Después de un modal, HAVE nunca pasa a HAS, y el verbo va en participio: «blocked».",
+    qwq19: "MAY NOT HAVE BEEN + -ING: un posible estado continuo en el pasado. Las marcas plantean una pregunta sin responderla, así que PROVE y DEFINITELY van demasiado lejos.",
+    qwq20: "ALTHOUGH va con una oración: «she sounded certain». DESPITE va con un sustantivo o -ING, «despite sounding certain», y nunca con OF.",
+    qwq21: "Expediente C completo. MIGHT NOT HAVE + participio: una posible consecuencia de una condición irreal en el pasado. No afirmas saber qué vio.",
+    qwq23: "WOULD RATHER + un sujeto nuevo + past simple expresa una preferencia presente o futura: «I’d rather we voted». Aquí la forma pasada no indica tiempo pasado.",
+    qwq24: "DESERVE A FAIR HEARING significa que hay que escuchar las dudas en serio. No significa que él sepa que el joven es inocente.",
+    qwq25: "DEPEND ON nombra la base correcta de un voto. Cuestionas su motivo, no su inteligencia.",
+    qwq26: "Nombra el error de razonamiento y vuelve a las pruebas. Responder a un estereotipo con otro repite el mismo error.",
+    qwq28: "HEAR SOMEONE OUT: escuchar hasta que alguien termine. El pronombre va entre las dos palabras: «hear him out», nunca «hear out him».",
+    qwq29: "UNLESS significa IF … NOT: no avanzaremos si no nos dejamos terminar. Expresa la condición.",
+    qwq30: "DESPITE + sustantivo: «despite the tension». ALTHOUGH y EVEN THOUGH necesitan una oración: «although the room was tense».",
+    qwq31: "Un fallo de memoria tiene más de una explicación. MAY HAVE AFFECTED ofrece una sin afirmar que esté demostrada.",
+    qwq32: "Cambio de tiempo: WILL pasa a WOULD y MY a HIS, porque transmites las palabras de otra persona. TELL necesita una persona: «He told us…».",
+    qwq33: "COULD … BE INFLUENCING plantea una posibilidad en lugar de acusar. Una emoción fuerte no hace falsa una afirmación.",
+    qwq35: "Un argumento sólido señala su límite. El jurado decide si se ha probado la culpabilidad, no qué pasó de verdad.",
     resLow: "La duda era justa. La forma de expresarla, no.",
     resMid: "Un caso razonable, con huecos que la sala notó.",
     resNext: 'Reconocer el lenguaje es solo la mitad. Ahora prodúcelo →',
@@ -3890,6 +4523,13 @@ let idx = 0, score = 0;
 // Called with the new index after every slide change, for behaviour that
 // belongs to a range of slides rather than to one (the docked recording).
 const slideHooks = [];
+
+/* House style 2's survey ("top five"): an answer card shows itself when it
+   is clicked. Unscored, so it needs nothing from the scoring engine. */
+document.addEventListener('click', e => {
+  const a = e.target.closest && e.target.closest('.survey-a');
+  if (a) a.classList.add('shown');
+});
 const answered = new WeakSet();
 
 /* ── Branch mode ────────────────────────────────────────────────────────
@@ -3973,7 +4613,11 @@ function goNode(id, record) {
 if (BRANCH) ledgerInit();
 setTimeout(wireGlosses, 0);
 
-const PHONE_BAR = 0;   // the arrows float; nothing is reserved
+/* tools/mobile.py lifts this function, and nothing else, into the 164 decks
+   that were built before flow mode existed. So it closes over `stage` and
+   nothing else: the PHONE_BAR it used to subtract was 0 ("the arrows float;
+   nothing is reserved") and the older decks do not declare it, which would
+   have been a ReferenceError on every resize in nine decks out of ten. */
 function fitStage() {
   const s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
   const phone = s < 0.62;
@@ -3994,6 +4638,11 @@ function fitStage() {
   stage.style.transform = `translate(${x}px, ${y}px) scale(${s})`;
 }
 addEventListener('resize', fitStage);
+/* A turned phone used to change only the scale, and a wrong scale for one
+   frame is nothing. It now changes which layout the deck is in, so the one
+   event is worth doubling up on: iOS has historically fired orientationchange
+   before the viewport settles, and resize after. Both call the same
+   idempotent function. */
 addEventListener('orientationchange', () => setTimeout(fitStage, 0));
 
 /* ── Full screen ──
@@ -4036,6 +4685,9 @@ function show(n) {
   // under the wash — so extra artwork never becomes a pasted-in box.
   stage.style.setProperty('--hero', slides[idx].dataset.bg
     ? `url('${slides[idx].dataset.bg}')` : '');
+  // House style 2 crops each slide's picture where the builder says
+  // (data-art-pos); inert in every other look, which never reads it.
+  stage.style.setProperty('--art-pos', slides[idx].dataset.artPos || '');
   // In branch mode idx/length is meaningless — a learner sees roughly half the
   // nodes — so progress and the counter come from the node itself.
   const cur = slides[idx];
@@ -5319,6 +5971,17 @@ else ready();
 slideHooks.push(i => ['--wall', '--band'].forEach(k =>
   stage.style.setProperty(k, slides[i].style.getPropertyValue(k))));
 slideHooks[slideHooks.length - 1](0);
+/* The deck bar's act label is written from data-act, which is English; it
+   reads its own language key (act + the label's letters) instead, and again
+   when the language changes. */
+function actLabel() {
+  const a = slides[idx].dataset.act || '';
+  const k = 'act' + a.replace(/[^A-Za-z]/g, '');
+  if (!a || UI_I18N.en[k] == null) return;
+  ['deckCount', 'phoneCount'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = t(k); });
+}
+slideHooks.push(actLabel);
+document.addEventListener('change', e => { if (e.target.matches('select')) setTimeout(actLabel, 0); });
 </script>
 </body>
 </html>

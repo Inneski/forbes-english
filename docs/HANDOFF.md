@@ -446,6 +446,13 @@ in `ReasonableDoubt/` (the export's own, 3:2, via prep-artwork; light palette).
   EN/DE/ES: every slide clears the deck bar (the first cut did not: Continue
   now sits beside the feedback). Three scripted routes: 27/27 gold; 25/27;
   5 wrong → patience 0, not guilty locked.
+- **Translated properly (2026-11-06).** Innes: *"Has not been translated at all
+  barely"*. Only stories and menus translated; every question slide's eyebrow,
+  title, instruction and explanation was English. Now language keys from
+  `i18n_reasonable_doubt_q.py` (QT), explanations as UI_I18N keys (explainOf
+  resolves them), the deck bar's act label too. Gap sentences, options and
+  toolkit examples stay English (§8). Keys must be identifiers: render() writes
+  them unquoted, so a hyphenated key killed the whole script.
 - **Catalogue row inserted** (Innes asked; B2-C1, pro, deck), hubs and SEO
   rebuilt the same day: library, RPG hub, Modal Verbs and Conditionals carry it.
 
