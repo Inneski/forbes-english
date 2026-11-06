@@ -73,9 +73,17 @@ def _deal(it, n):
     return dict(it, options=o, correct=t)
 
 
+# The label in front of a gap slide's word bank. Supplied here so a lesson
+# that uses a bank cannot ship without it (check-lesson's I18N gate).
+BANK_UI = {'en': 'Word bank:', 'de': 'Wortliste:', 'es': 'Banco de palabras:',
+           'it': 'Parole:', 'ja': '語群：', 'fr': 'Banque de mots :', 'pt': 'Banco de palavras:'}
+
+
 class _I18n:
     def __init__(self, T, langs, gloss):
         self.T = {c: dict(T[c], **(GLOSS_UI[c] if gloss else {})) for c in langs}
+        for c in langs:
+            self.T[c].setdefault('bankLabel', BANK_UI[c])
 
     def render(self, code):
         d = dict(self.T[code])

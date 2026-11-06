@@ -11,7 +11,7 @@ the real `<slot>.jpg` over `standin-<slot>.png` automatically, and this list
 drops the slot on its next run. Re-derive the palette from the real hero
 (`extract-palette.py <folder>/hero.jpg --paper`) when the hero is replaced.
 
-**136 pictures on 24 decks.**
+**139 pictures on 25 decks.**
 
 ## `Forbes_English_A0_Question_Words.html`
 
@@ -131,6 +131,14 @@ drops the slot on its next run. Re-derive the palette from the real hero
 | `LinkingCars/` | `b` | a motorway junction seen from above as flat coloured lanes | `a motorway junction seen from above as flat coloured lanes, flat vector illustration, cel-shaded, solid flat colour, minimalist, Noma Bar style, one idea in negative space, wide landscape, cornflower blue, coral and sunflower yellow on pale blue, bright and airy, plain pale background, no text, no letters, no logos, no signage, no faces, subject contained in the centre third of the frame with empty flat ground either side --ar 16:9 --style raw --no photorealistic, gradient, texture, grain, depth of field, perspective` |
 | `LinkingCars/` | `hero` | a classic car on an open road between flat hills | `a classic car on an open road between flat hills, flat vector illustration, cel-shaded, solid flat colour, minimalist, Noma Bar style, one idea in negative space, wide landscape, cornflower blue, coral and sunflower yellow on pale blue, bright and airy, plain pale background, no text, no letters, no logos, no signage, no faces, subject contained in the centre third of the frame with empty flat ground either side --ar 16:9 --style raw --no photorealistic, gradient, texture, grain, depth of field, perspective` |
 | `LinkingCars/` | `talk` | two speech bubbles above a steering wheel | `two speech bubbles above a steering wheel, flat vector illustration, cel-shaded, solid flat colour, minimalist, Noma Bar style, one idea in negative space, wide landscape, cornflower blue, coral and sunflower yellow on pale blue, bright and airy, plain pale background, no text, no letters, no logos, no signage, no faces, subject contained in the centre third of the frame with empty flat ground either side --ar 16:9 --style raw --no photorealistic, gradient, texture, grain, depth of field, perspective` |
+
+## `forbes-tennis-a2.html`
+
+| folder | slot | brief | Midjourney prompt |
+|---|---|---|---|
+| `Tennis/` | `act` | a reception desk with one chair on each side | `a reception desk with one chair on each side, flat vector illustration, cel-shaded, solid flat colour, minimalist, Noma Bar style, one idea in negative space, wide landscape, sage green, ochre and rust on pale mint, bright and airy, plain pale background, no text, no letters, no logos, no signage, no faces, subject contained in the centre third of the frame with empty flat ground either side --ar 16:9 --style raw --no photorealistic, gradient, texture, grain, depth of field, perspective` |
+| `Tennis/` | `hero` | a tennis racket and ball on an indoor court, a reception desk behind | `a tennis racket and ball on an indoor court, a reception desk behind, flat vector illustration, cel-shaded, solid flat colour, minimalist, Noma Bar style, one idea in negative space, wide landscape, sage green, ochre and rust on pale mint, bright and airy, plain pale background, no text, no letters, no logos, no signage, no faces, subject contained in the centre third of the frame with empty flat ground either side --ar 16:9 --style raw --no photorealistic, gradient, texture, grain, depth of field, perspective` |
+| `Tennis/` | `talk` | two speech bubbles above a reception counter with a bell | `two speech bubbles above a reception counter with a bell, flat vector illustration, cel-shaded, solid flat colour, minimalist, Noma Bar style, one idea in negative space, wide landscape, sage green, ochre and rust on pale mint, bright and airy, plain pale background, no text, no letters, no logos, no signage, no faces, subject contained in the centre third of the frame with empty flat ground either side --ar 16:9 --style raw --no photorealistic, gradient, texture, grain, depth of field, perspective` |
 
 ## `friedrich_prepositions_c1.html`
 
