@@ -13,6 +13,7 @@ SPEC
   art   {slot: (motif, brief)}    every picture the deck needs; real plates
                                   in <folder>/<slot>.jpg win over stand-ins
   hero  'hero'                    which slot is the cover (default 'hero')
+  cover_pos  '30% 50%'            optional crop of the cover picture
   flow  [step, ...]               the slides between cover and results:
      ('talk', eyebrow_key, title_key, [prompt_html, ...], slot|None, cols)
      ('rules', eyebrow_key, title_key, [(pill, [bullet_key, ...] | [(None, html)], example_html|None)], slot|None)
@@ -21,7 +22,7 @@ SPEC
      ('gap', eyebrow_key, title_key, hint_key, [(sentence, [answers], why_key), ...], [bank]?)
      ('order', eyebrow_key, title_key, hint_key, [(pieces, decoys, why_key), ...], slot|None, side)
      ('survey', eyebrow_key, title_key, hint_key, question_html, [(text, n), ...], slot|None, side)
-     ('raw', html)
+     ('raw', html[, slot|None[, side]])
   chips [str]                     the activation's target-language strip
   act   slot                      the activation's picture (default 'act')
   langs                           default ('en', 'de', 'es')
@@ -190,7 +191,10 @@ def build(SPEC, T, GLOSS=None):
             _, ek, tk, hk, q, answers, slot, side = step
             s.append(put(D.survey(ek, E[ek], tk, E[tk], None, q, answers, hint=(hk, E[hk])), slot, side))
         elif kind == 'raw':
-            s.append(step[1])
+            # ('raw', html[, slot[, side]]): a hand-built slide, optionally
+            # given its picture zone like every other step.
+            s.append(put(step[1], step[2] if len(step) > 2 else None,
+                         step[3] if len(step) > 3 else None))
         else:
             raise AssertionError('unknown step %r' % kind)
 
@@ -205,6 +209,10 @@ def build(SPEC, T, GLOSS=None):
             c, T[c]['chipCount'], n)
 
     pal = "  --hero: url('%s');\n%s" % (hero_ref, _palette(_hero_card(F, hero)))
+    # cover_pos: where the cover crops the hero (background-position), for a
+    # plate whose subject is off-centre.
+    if SPEC.get('cover_pos'):
+        pal += "\n  --cover-pos: %s;" % SPEC['cover_pos']
     mod = _I18n(T, langs, bool(GLOSS))
     out = D.assemble(TPL, SPEC['out'], body, pal, SPEC['title'], mod, langs=langs, style='hs2')
     if GLOSS:

@@ -10,6 +10,37 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
+## 2026-11-06 — The Comeback Ride (B2–C1): new HS2 deck, ChatGPT art; catalogue row pending
+
+`the-comeback-ride.html`, 30 slides, EN/DE/ES, Pro. From a 60-minute
+scrolling page Innes supplied (not previously on the site): two dashboards,
+an original reading inspired by Charlie Thomas's 2023 GQ piece, GROW ON /
+WIN OVER / HARK BACK TO / COME AT A PRICE, hedging a sales claim (IS
+CONSISTENT WITH, MAY PARTLY EXPLAIN), a prototype role-play. Builder
+`build_comeback_ride.py` on hs2quiz; defects fixed are in its docstring
+(a plural subject keyed HARKS; a 2022 sales claim that the figures only
+support for January–July, by six bikes; a drop-down quiz whose last answer
+was free). Six real plates from ChatGPT in `ComebackRide/` (brief:
+`docs/CHATGPT-COMEBACK-ART-BRIEF.md`, square 1024 plates need
+`prep-artwork.py --min-width 1000`); library card `LibraryCards/the-comeback-ride.jpg`.
+check-lesson clean bar HEAD; answered-overflow and overflow-langs fit en/de/es.
+
+- **hs2quiz:** `('raw', html, slot, side)` now takes a picture zone like
+  every other step. The same commit carries another session's uncommitted
+  `cover_pos` addition to hs2quiz (complete, additive).
+- **BANK gate reads the activation strip too** (both are `.bank-chip`), so
+  the activation chips must not list gap answers in gap order either.
+- **Needs Innes (catalogue):** the insert was refused ("Modify Shared Resources").
+  ```sql
+  insert into public.lessons (file, title, level, access, track, deck, video)
+  select 'the-comeback-ride.html', 'The Comeback Ride: Retro Design, Changing Your Mind & Careful Claims (B2-C1)', 'B2-C1', 'pro', 'general', true, false
+  where not exists (select 1 from public.lessons where file = 'the-comeback-ride.html');
+  ```
+  Then `py tools/build_hubs.py && py tools/seo.py` and commit what they
+  rewrite. Until then the page is live at its URL, ungated (the Worker fails
+  open for a file not in the catalogue), with no SEO block and no library row.
+
+---
 ## 2026-11-06 — House style 2 is the main style; benchmarked on ENGHUB; stand-ins + shopping list
 
 Innes: *"find other on forbes that are not house style and make them house
