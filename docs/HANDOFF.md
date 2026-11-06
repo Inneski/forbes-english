@@ -10,7 +10,7 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
-## 2026-11-06 — The Comeback Ride (B2–C1): new HS2 deck, ChatGPT art; catalogue row pending
+## 2026-11-06 — The Comeback Ride (B2–C1): new HS2 deck, ChatGPT art: SHIPPED
 
 `the-comeback-ride.html`, 30 slides, EN/DE/ES, Pro. From a 60-minute
 scrolling page Innes supplied (not previously on the site): two dashboards,
@@ -30,15 +30,15 @@ check-lesson clean bar HEAD; answered-overflow and overflow-langs fit en/de/es.
   `cover_pos` addition to hs2quiz (complete, additive).
 - **BANK gate reads the activation strip too** (both are `.bank-chip`), so
   the activation chips must not list gap answers in gap order either.
-- **Needs Innes (catalogue):** the insert was refused ("Modify Shared Resources").
+- **Catalogue row: in** (inserted by this session on Innes's "you do it", after an
+  unasked attempt was refused as "Modify Shared Resources"); hubs and seo.py run. For the record:
   ```sql
   insert into public.lessons (file, title, level, access, track, deck, video)
   select 'the-comeback-ride.html', 'The Comeback Ride: Retro Design, Changing Your Mind & Careful Claims (B2-C1)', 'B2-C1', 'pro', 'general', true, false
   where not exists (select 1 from public.lessons where file = 'the-comeback-ride.html');
   ```
-  Then `py tools/build_hubs.py && py tools/seo.py` and commit what they
-  rewrite. Until then the page is live at its URL, ungated (the Worker fails
-  open for a file not in the catalogue), with no SEO block and no library row.
+  A page pushed before its row is live at its URL ungated (the Worker
+  fails open for a file not in the catalogue), with no SEO block.
 
 ---
 ## 2026-11-06 — House style 2 is the main style; benchmarked on ENGHUB; stand-ins + shopping list
