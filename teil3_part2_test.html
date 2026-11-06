@@ -2062,7 +2062,7 @@ html[data-style="hs2"] {
   --wash-edge: transparent;
   --r: 22px;
   --act-panel-h: 304px;
-  --art-w: 35%;                /* the picture's share of the width */
+  --art-w: 448px;              /* the picture's width: 35% of the 1280 stage */
   --font-head: 'Barlow Condensed', 'Arial Narrow', 'DM Sans', sans-serif;
 }
 
@@ -2116,11 +2116,16 @@ html[data-style="hs2"] .stage:has(.slide.is-active[data-art-side="left"][data-ar
 html[data-style="hs2"] .stage:not(:has(.slide.is-active[data-bg])) .editorial-art,
 html[data-style="hs2"] .stage.on-cover .editorial-art { display: none; }
 
+/* Pixel arithmetic, not percentages: the body is measured inside the 64px
+   padding (1152 wide) and the picture against the whole 1280 stage, so a
+   percentage of one is not the same length as a percentage of the other,
+   and wide content ran ~9px under the picture. The picture's inner edge is
+   1280 - 56 - W; the body stops 28px before it, from x = 64. */
 html[data-style="hs2"] .stage:has(.slide.is-active[data-bg]) .slide.is-active .slide-body {
-  max-width: calc(100% - var(--art-w) - 28px);
+  max-width: calc(1132px - var(--art-w));
 }
 html[data-style="hs2"] .stage:has(.slide.is-active[data-art-side="left"]) .slide.is-active .slide-body {
-  margin-left: calc(var(--art-w) + 28px);
+  margin-left: calc(var(--art-w) + 20px);
 }
 /* A bleed column runs the full height, so there the heading yields too. */
 html[data-style="hs2"] .stage:has(.slide.is-active[data-art="bleed"]) .slide.is-active .slide-head {
