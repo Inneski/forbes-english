@@ -2199,6 +2199,12 @@ html[data-style="hs2"] .act-word {
   font-size: 26px; letter-spacing: .02em; padding: 8px 26px;
 }
 html[data-style="hs2"] .act-input { background: var(--void); }
+/* The gloss control sits in a flex column and stretched to a full-width
+   bar; it is a small pill under the line it translates. */
+html[data-style="hs2"] .gloss-btn {
+  align-self: flex-start; background: var(--surface); border-color: transparent;
+  margin: 2px 0 10px;
+}
 html[data-style="hs2"] .score-big { font-family: var(--font-head); font-weight: 800; font-size: 120px; }
 
 /* ── 5. cover and divider ──
@@ -2235,9 +2241,12 @@ html[data-style="hs2"] .divider-cap h2 {
 /* Speech bubbles: the "Let's talk!" field. A circle-ish blob with a tail,
    text centred, one question per bubble. deck.bubbles() places up to
    eight; a picture, if the slide has one, takes the last cell's place. */
+/* Capped at 260px: a bubble keeps its shape (aspect-ratio), so a wide
+   column made a tall bubble, and six bubbles three across at full width
+   ran 119px off the canvas. */
 html[data-style="hs2"] .bubbles {
-  display: grid; grid-template-columns: repeat(var(--bub-cols, 4), 1fr);
-  gap: 14px 18px; align-items: center;
+  display: grid; grid-template-columns: repeat(var(--bub-cols, 4), minmax(0, 260px));
+  justify-content: center; gap: 14px 18px; align-items: center;
 }
 .bubble {
   position: relative; display: grid; place-items: center; text-align: center;
