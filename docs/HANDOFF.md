@@ -78,6 +78,14 @@ to be replaced in shopping list"*.
   and `taekwondo-english-kids.html` (13), both on the Taekwondo/ plates.
   Catalogue: `update public.lessons set deck = true where file in ('ecommerce-vocabulary-b1.html','interior-design-vocabulary.html','lesson1_gerunds_football.html','forbes-english-golf-lesson.html','taekwondo-exercises.html','taekwondo-english-kids.html');`
   The catalogue has taekwondo-exercises at B2; its content is A2–B1.
+- **Also converted (2026-11-06):** `grammar-dojo.html` (17, EN/DE/ES/JA),
+  `forbes-english-swiss-mistakes-a2.html` (31) and `-part2.html` (27).
+  hs2quiz's gap step takes an optional word bank. Catalogue:
+  `update public.lessons set deck = true where file in ('grammar-dojo.html','forbes-english-swiss-mistakes-a2.html','forbes-english-swiss-mistakes-a2-part2.html');`
+  **21 lessons converted in this pass**; stopped at the usage limit. Next in
+  the queue: harry-quebert-b2, friedrich_prepositions_c1,
+  forbes-linking-devices-cars, forbes-gaming-youtube-b2, the skiing, tennis
+  and MTB pages, then the business decks.
 - **Template fix, 2026-11-06:** the HS2 text column beside a picture is
   pixel arithmetic (`max-width: calc(1132px - var(--art-w))`, `--art-w:
   448px`). As percentages it ran ~9px under the picture. All HS2 decks were

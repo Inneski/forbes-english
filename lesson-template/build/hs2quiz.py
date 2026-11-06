@@ -18,7 +18,7 @@ SPEC
      ('rules', eyebrow_key, title_key, [(pill, [bullet_key, ...] | [(None, html)], example_html|None)], slot|None)
      ('mc', eyebrow_key, title_key, [item, ...], slot|None, side)
           item: dict(stem, options, correct, why=<key>, ctx=<key>?, gl=<gloss key>?)
-     ('gap', eyebrow_key, title_key, hint_key, [(sentence, [answers], why_key), ...])
+     ('gap', eyebrow_key, title_key, hint_key, [(sentence, [answers], why_key), ...], [bank]?)
      ('order', eyebrow_key, title_key, hint_key, [(pieces, decoys, why_key), ...], slot|None, side)
      ('survey', eyebrow_key, title_key, hint_key, question_html, [(text, n), ...], slot|None, side)
      ('raw', html)
@@ -166,8 +166,13 @@ def build(SPEC, T, GLOSS=None):
                          or max(len(re.sub(r'<[^>]+>', '', o)) for o in it['options']) > 58)
                 s.append(sl if long_ or it.get('wide') else put(sl, slot, side))
         elif kind == 'gap':
-            _, ek, tk, hk, rows = step
-            s.append(D.gap(1, 1, rows, None, ek, E[ek], tk, E[tk], hint=E[hk], hint_key=hk, size=21))
+            # An optional sixth element is a word bank; deck.gap() refuses
+            # one that lists the answers in gap order.
+            _, ek, tk, hk, rows = step[:5]
+            bank = step[5] if len(step) > 5 else None
+            if bank:
+                D.assert_bank_is_not_a_key(bank, [a for _, ans, _ in rows for a in ans])
+            s.append(D.gap(1, 1, rows, bank, ek, E[ek], tk, E[tk], hint=E[hk], hint_key=hk, size=21))
         elif kind == 'order':
             _, ek, tk, hk, rows, slot, side = step
             for pieces, decoys, why in rows:
