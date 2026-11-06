@@ -15,7 +15,15 @@
   var THRESHOLD = 0.62;
   var typing = false;
 
-  function wantPhone() { return Math.min(innerWidth / 1280, innerHeight / 720) < THRESHOLD; }
+  // Same rule as fitStage() in lesson-template.html: scale alone is not a
+  // phone. A short laptop window (Windows scaling + browser bars, ~910x400)
+  // fits below 0.62 too, and showed the phone layout until full screen
+  // (Innes, 2026-11-06). Touch screen or narrow window, or too short to read.
+  function wantPhone() {
+    var s = Math.min(innerWidth / 1280, innerHeight / 720);
+    var touch = !!(window.matchMedia && matchMedia('(pointer: coarse)').matches);
+    return s < THRESHOLD && (touch || innerWidth < 700 || s < 0.4);
+  }
   function landscape() { return innerWidth > innerHeight * 1.15; }
   function setClasses() {
     var on = wantPhone();

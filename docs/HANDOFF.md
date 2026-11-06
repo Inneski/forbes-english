@@ -10,6 +10,25 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
+## 2026-11-06 — Laptops no longer get the phone layout: SHIPPED
+
+Innes: Block Camp past simple "showed me some kind of mobile phone interface
+on the laptop. Until I pressed full screen." Cause: phone/flow mode was
+decided by scale alone (`min(w/1280, h/720) < 0.62`). A short laptop window
+(Windows display scaling plus the browser's bars, e.g. 1366x768 at 150% =
+~910x400) is below 0.62; full screen gave the height back.
+
+Rule now, in `fitStage()` (lesson-template.html) and `wantPhone()`
+(block-camp/camp-phone.js), identically: phone = scale < 0.62 AND (primary
+pointer coarse OR innerWidth < 700 OR scale < 0.4). A mouse-driven window
+keeps the scaled stage. `tools/mobile.py` pushed it into all 195 decks
+(supplier-quality-meeting-b2-c1 also picked up the flow CSS it had missed).
+Measured with Playwright: 910x400 and 1366x620 mouse = stage; 390x844 touch,
+844x390 touch and 390x844 mouse = flow, on a Block Camp and a regular deck.
+Peer-modified decks (first-in-space-c1, skiing-B1, money-affirmations) got
+the same 10-line fitStage change in the working tree but were left out of
+the commit; their builders reproduce it from the template.
+
 ## 2026-11-06 — The Comeback Ride (B2–C1): new HS2 deck, ChatGPT art: SHIPPED
 
 `the-comeback-ride.html`, 30 slides, EN/DE/ES, Pro. From a 60-minute

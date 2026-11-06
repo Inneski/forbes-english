@@ -2257,7 +2257,15 @@ setTimeout(wireGlosses, 0);
 
 function fitStage() {
   const s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
-  const phone = s < 0.62;
+  // Scale alone is not "a phone". Innes, 2026-11-06: a laptop opened the
+  // deck in the phone layout until he pressed full screen -- a short laptop
+  // window with Windows display scaling and the browser's bars counted
+  // (1366x768 at 150% is ~910x400) fits below 0.62, and full screen gave the
+  // height back. So the page layout needs a touch screen or a narrow window;
+  // a mouse-driven window keeps the stage, scaled, unless it is so short
+  // that even the stage is unreadable.
+  const touch = !!(window.matchMedia && matchMedia('(pointer: coarse)').matches);
+  const phone = s < 0.62 && (touch || window.innerWidth < 700 || s < 0.4);
   document.documentElement.classList.toggle('is-phone', phone);
   // Below 0.62 the stage is not worth drawing: at 360x560 it comes out
   // 360x203 and the body text at 5.3px. Flow mode (the CSS) lays the slide
