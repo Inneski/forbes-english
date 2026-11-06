@@ -162,7 +162,7 @@ M['star'] = '''
 M['idea'] = '''
 <path d="M500 180 a210 210 0 0 1 130 375 c-20 16 -30 40 -30 70 v40 h-200 v-40 c0 -30 -10 -54 -30 -70 a210 210 0 0 1 130 -375 z" fill="{b}"/>
 <rect x="400" y="680" width="200" height="40" rx="14" fill="{ink}"/><rect x="415" y="732" width="170" height="40" rx="14" fill="{ink}"/><rect x="450" y="784" width="100" height="40" rx="18" fill="{ink}"/>
-<path d="M455 600 v-90 c0 -40 30 -40 30 0 c0 -40 30 -40 30 0 c0 -40 30 -40 30 0 v90" fill="none" stroke="{d}" stroke-width="16" stroke-linecap="round"/>
+<path d="M455 640 v-110 M545 640 v-110" stroke="{d}" stroke-width="16" stroke-linecap="round"/><g fill="none" stroke="{d}" stroke-width="12"><circle cx="473" cy="515" r="16"/><circle cx="500" cy="515" r="16"/><circle cx="527" cy="515" r="16"/></g>
 <g stroke="{a}" stroke-width="30" stroke-linecap="round"><path d="M500 60 v50"/><path d="M220 180 l40 36"/><path d="M780 180 l-40 36"/><path d="M130 420 h56"/><path d="M870 420 h-56"/></g>
 '''
 

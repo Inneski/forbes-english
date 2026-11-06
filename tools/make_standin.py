@@ -10,8 +10,9 @@ tools/standins.py reads to produce the shopping list.
 
 A stand-in is <folder>/standin-<slot>.png: a transparent 1200x1200 cut-out,
 which house style 2 stands on the paper beside the text (data-art="cutout").
-The hero slot also gets standin-hero.jpg, a 2400x1350 card for the library
-and for extract-palette.py --paper.
+A hero slot ('hero', or '<anything>-hero' when one folder serves several
+decks) also gets standin-<slot>.jpg, a 2400x1350 card for the library and
+for extract-palette.py --paper.
 
 Replacing one: drop the real plate in as <folder>/<slot>.jpg (or a cut-out
 <slot>.png) and re-run the builder. deck.plate() prefers it, the stand-in
@@ -66,13 +67,13 @@ def _job_png(folder, slot, motif, scheme, blob):
                 html=SM.svg(motif, scheme, blob, size=1200))
 
 
-def _job_card(folder, motif, scheme):
+def _job_card(folder, slot, motif, scheme):
     paper = SM.SCHEMES[scheme]['paper']
     fig = SM.svg(motif, scheme, 0, size=1250)
     html = ('<div style="width:2400px;height:1350px;position:relative;background:%s">'
             '<div style="position:absolute;left:1060px;top:50px">%s</div></div>' % (paper, fig))
     return dict(w=2400, h=1350, bg=paper,
-                out=os.path.abspath(os.path.join(folder, 'standin-hero.jpg')), html=html)
+                out=os.path.abspath(os.path.join(folder, 'standin-%s.jpg' % slot)), html=html)
 
 
 def ensure(folder, slots, scheme='warm', deck=None, force=False):
@@ -91,8 +92,8 @@ def ensure(folder, slots, scheme='warm', deck=None, force=False):
         old = rec.get(slot, {})
         if force or not os.path.exists(png) or old.get('motif') != motif or old.get('scheme') != scheme:
             jobs.append(_job_png(folder, slot, motif, scheme, n))
-            if slot == 'hero':
-                jobs.append(_job_card(folder, motif, scheme))
+            if slot == 'hero' or slot.endswith('-hero'):
+                jobs.append(_job_card(folder, slot, motif, scheme))
         rec[slot] = {'motif': motif, 'scheme': scheme, 'brief': brief,
                      'deck': deck or old.get('deck')}
     _render(jobs)

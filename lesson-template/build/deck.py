@@ -861,9 +861,12 @@ def rules(eyebrow_key, eyebrow, title_key, title, cards, intro=None):
         pill, bullets, ex = c
         lis = "".join('<li%s>%s</li>' % (' data-i18n="%s"' % k if k else '', b)
                       for k, b in bullets)
-        return ('<div class="card tab-card"><span class="tab-pill">%s</span>'
+        # A pill is English (a form: "I used to + verb") or, given as
+        # (key, text), a label that translates ("Verbs + prepositions").
+        pk, pill = pill if isinstance(pill, tuple) else (None, pill)
+        return ('<div class="card tab-card"><span class="tab-pill"%s>%s</span>'
                 '<ul>%s</ul>%s</div>'
-                % (pill, lis, '<p class="ex" style="margin-top:10px;font-size:18px">%s</p>' % ex
+                % (' data-i18n="%s"' % pk if pk else '', pill, lis, '<p class="ex" style="margin-top:10px;font-size:18px">%s</p>' % ex
                    if ex else ''))
     return '''
     <section class="slide" data-type="teach">

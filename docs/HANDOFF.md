@@ -44,6 +44,15 @@ to be replaced in shopping list"*.
   hacienda card until a real hero lands.
 - **Needs Innes (catalogue):**
   `update public.lessons set deck = true where file = 'forbes-english-venezuela.html';`
+- **Common Mistakes Review 1-3** (B1, Spanish speakers): three scrolling
+  quizzes → three 19-slide HS2 decks from one builder,
+  `build_mistakes_review.py` + `i18n_mistakes_review.py`, EN/DE/ES, all gates
+  pass, answered fits en/de/es. Hints no longer give the answer (Parts 1-2
+  did), two stems printed their own answer, seven items had a second correct
+  answer; all in the docstring. 15 stand-ins in `MistakesReview/`; the pages
+  had no thumbnail ("Coming soon") and now show their stand-in heroes.
+  `deck.rules()` pills can now translate (`(key, text)`). Catalogue:
+  `update public.lessons set deck = true where file like 'forbes-english-common-mistakes-review%';`
 
 ---
 ## 2026-11-05 — Who Was First in Space? (C1): SHIPPED
