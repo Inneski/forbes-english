@@ -121,7 +121,12 @@ def build(SPEC, T, GLOSS=None):
     hero = SPEC.get('hero', 'hero')
     act = SPEC.get('act', 'act')
     E = T['en']
-    make_standin.ensure(F, SPEC['art'], scheme=SPEC.get('scheme', 'warm'), deck=SPEC['out'])
+    # Stand-ins only for slots with no real plate on disk; a real plate needs
+    # no brief and no placeholder beside it.
+    missing = {k: v for k, v in SPEC['art'].items()
+               if not any(os.path.exists(os.path.join(F, k + e)) for e in ('.jpg', '.jpeg', '.png', '.webp'))}
+    if missing:
+        make_standin.ensure(F, missing, scheme=SPEC.get('scheme', 'warm'), deck=SPEC['out'])
 
     cover, hero_ref = D.hs2_cover(D.logo_from(TPL), E['coverTitle'], E['coverSub'],
                                   [('Level', E['chipLevel']), ('Focus', E['chipFocus']),
@@ -157,7 +162,8 @@ def build(SPEC, T, GLOSS=None):
                     sl = sl.replace('<p class="q-stem"', '<p class="q-stem gloss" data-tr="%s"' % it['gl'], 1)
                 # A long stem takes the full width: beside a picture it wraps
                 # and the answered explanation runs off the canvas.
-                long_ = len(re.sub(r'<[^>]+>', '', it['stem'])) > 92
+                long_ = (len(re.sub(r'<[^>]+>', '', it['stem'])) > 92
+                         or max(len(re.sub(r'<[^>]+>', '', o)) for o in it['options']) > 58)
                 s.append(sl if long_ or it.get('wide') else put(sl, slot, side))
         elif kind == 'gap':
             _, ek, tk, hk, rows = step
