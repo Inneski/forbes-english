@@ -11,7 +11,7 @@ the real `<slot>.jpg` over `standin-<slot>.png` automatically, and this list
 drops the slot on its next run. Re-derive the palette from the real hero
 (`extract-palette.py <folder>/hero.jpg --paper`) when the hero is replaced.
 
-**122 pictures on 21 decks.**
+**125 pictures on 22 decks.**
 
 ## `Forbes_English_A0_Question_Words.html`
 
@@ -111,6 +111,14 @@ drops the slot on its next run. Re-derive the palette from the real hero
 | `Venezuela/` | `talk` | two figures in silhouette on a plaza bench under a mango tree, a speech bubble between them | `two figures in silhouette on a plaza bench under a mango tree, a speech bubble between them, flat vector illustration, cel-shaded, solid flat colour, minimalist, Noma Bar style, one idea in negative space, wide landscape, mustard yellow, terracotta, teal and navy on warm greige, bright and airy, plain pale background, no text, no letters, no logos, no signage, no faces, subject contained in the centre third of the frame with empty flat ground either side --ar 16:9 --style raw --no photorealistic, gradient, texture, grain, depth of field, perspective` |
 | `Venezuela/` | `used` | an old valve radio on a windowsill with a harp leaning beside it, the joropo era | `an old valve radio on a windowsill with a harp leaning beside it, the joropo era, flat vector illustration, cel-shaded, solid flat colour, minimalist, Noma Bar style, one idea in negative space, wide landscape, mustard yellow, terracotta, teal and navy on warm greige, bright and airy, plain pale background, no text, no letters, no logos, no signage, no faces, subject contained in the centre third of the frame with empty flat ground either side --ar 16:9 --style raw --no photorealistic, gradient, texture, grain, depth of field, perspective` |
 | `Venezuela/` | `warm` | a rotary telephone, a folded paper map and a stack of letters on a shelf: things people used to use | `a rotary telephone, a folded paper map and a stack of letters on a shelf: things people used to use, flat vector illustration, cel-shaded, solid flat colour, minimalist, Noma Bar style, one idea in negative space, wide landscape, mustard yellow, terracotta, teal and navy on warm greige, bright and airy, plain pale background, no text, no letters, no logos, no signage, no faces, subject contained in the centre third of the frame with empty flat ground either side --ar 16:9 --style raw --no photorealistic, gradient, texture, grain, depth of field, perspective` |
+
+## `friedrich_prepositions_c1.html`
+
+| folder | slot | brief | Midjourney prompt |
+|---|---|---|---|
+| `Friedrich/` | `act` | two Baroque chairs facing each other in an empty hall | `two Baroque chairs facing each other in an empty hall, flat vector illustration, cel-shaded, solid flat colour, minimalist, Noma Bar style, one idea in negative space, wide landscape, slate blue, warm salmon and sand on pale grey, bright and airy, plain pale background, no text, no letters, no logos, no signage, no faces, subject contained in the centre third of the frame with empty flat ground either side --ar 16:9 --style raw --no photorealistic, gradient, texture, grain, depth of field, perspective` |
+| `Friedrich/` | `b` | a treaty document with a wax seal beside a quill | `a treaty document with a wax seal beside a quill, flat vector illustration, cel-shaded, solid flat colour, minimalist, Noma Bar style, one idea in negative space, wide landscape, slate blue, warm salmon and sand on pale grey, bright and airy, plain pale background, no text, no letters, no logos, no signage, no faces, subject contained in the centre third of the frame with empty flat ground either side --ar 16:9 --style raw --no photorealistic, gradient, texture, grain, depth of field, perspective` |
+| `Friedrich/` | `talk` | two speech bubbles above a gilded crown on a cushion | `two speech bubbles above a gilded crown on a cushion, flat vector illustration, cel-shaded, solid flat colour, minimalist, Noma Bar style, one idea in negative space, wide landscape, slate blue, warm salmon and sand on pale grey, bright and airy, plain pale background, no text, no letters, no logos, no signage, no faces, subject contained in the centre third of the frame with empty flat ground either side --ar 16:9 --style raw --no photorealistic, gradient, texture, grain, depth of field, perspective` |
 
 ## `grammar-dojo.html`
 
