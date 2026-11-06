@@ -7,12 +7,13 @@ Derives a lesson's colour theme FROM its hero/cover image, so every lesson is
 non-vibes way.
 
 Usage:
-    python3 lesson-template/extract-palette.py <path-to-hero-image> [--light]
+    python3 lesson-template/extract-palette.py <path-to-hero-image> [--light | --paper]
                                                [--accent-hue <degrees>] [--accent-sat <0-1>]
 
 Outputs a ready-to-paste CSS :root block plus a WCAG contrast report.
 Default is a dark theme (dark canvas, light text). Pass --light for a
-paper/light theme.
+light theme (a mid-tone canvas for a WASHED hero), or --paper for house
+style 2: a white page, one tint for every container, one accent.
 
 --accent-hue rotates the accent family to a given hue (0-360) while leaving
 the canvas, surfaces, text and every contrast loop exactly as derived. Use it
@@ -88,7 +89,7 @@ def dominant_colours(path, k=14):
     return [(rgb, n / total) for n, rgb in colours]
 
 
-def build_palette(path, dark=True, accent_hue=None, accent_sat=None):
+def build_palette(path, dark=True, accent_hue=None, accent_sat=None, paper=False):
     pals = dominant_colours(path)
 
     # Accent = the most colourful thing with enough presence to read as "the"
@@ -137,7 +138,52 @@ def build_palette(path, dark=True, accent_hue=None, accent_sat=None):
     darkest = min(pals, key=lambda i: rel_luminance(i[0]))[0]
     lightest = max(pals, key=lambda i: rel_luminance(i[0]))[0]
 
-    if dark:
+    if paper:
+        # ── PAPER (house style 2, 2026-11-06) ────────────────────────
+        # The benchmark (ENGHUB's "How to Break Habits" and "Reinventing
+        # Yourself", studied 2026-11-06) is three colours and no more: a
+        # white page, ONE pale tint that fills every container — speech
+        # bubbles, cards, pills, answer bars — and ONE accent for the
+        # language being taught. Text never sits on a picture, so the page
+        # can be paper: the light theme's 0.76 mid-tone exists to keep a
+        # WASHED hero visible, and house style 2 washes nothing.
+        #
+        # Derived, not picked: the page and the tint take the hue of the
+        # hero's lightest colour (the benchmark's greige came from its
+        # figures' skin and cushions; its pale blue from a blue jacket), the
+        # accent is the hero's most colourful colour, deepened until it
+        # carries text on the tint — the benchmark's orange did NOT (about
+        # 2.4:1 on its greige), which is the one thing not copied from it.
+        lh, _, ls_ = to_hls(lightest)
+        tint_s = min(0.34, max(0.16, ls_ * 0.7))
+        void = from_hls(lh, 0.982, min(0.40, tint_s + 0.06))     # the page
+        surface = from_hls(lh, 0.925, tint_s)                     # the one tint
+        surface2 = from_hls(lh, 0.955, tint_s)                    # between
+        text = from_hls(ah, 0.105, 0.30)
+        if contrast_ratio(text, surface) < 12:
+            text = (20, 22, 26)
+        text_dim = from_hls(ah, 0.30, 0.16)
+        guard = 0
+        while contrast_ratio(text_dim, surface) < 6.0 and guard < 12:
+            hx, lx, sx = to_hls(text_dim)
+            text_dim = from_hls(hx, lx - 0.025, sx)
+            guard += 1
+        guard = 0
+        while contrast_ratio(accent, surface) < 4.5 and guard < 30:
+            hx, lx, sx = to_hls(accent)
+            accent = from_hls(hx, lx - 0.03, min(1.0, sx + 0.02))
+            guard += 1
+        accent_bright = shift(accent, dl=-0.08, ds=+0.06)
+        guard = 0
+        while contrast_ratio(accent_bright, surface) < 5.5 and guard < 14:
+            hx, lx, sx = to_hls(accent_bright)
+            accent_bright = from_hls(hx, lx - 0.03, sx)
+            guard += 1
+        accent_dim = from_hls(ah, 0.80, min(0.70, asat))   # pale fills, hover
+        # Inputs and the odd hairline. The benchmark draws no borders at
+        # all; a gap box still needs one or it is not visibly a box.
+        border = from_hls(lh, 0.70, tint_s + 0.05)
+    elif dark:
         # Never a pure black canvas: keep a whisper of the image's own hue so
         # the page reads as "this picture, darkened" rather than generic dark mode.
         dh, _, ds_ = to_hls(darkest)
@@ -264,7 +310,8 @@ def main():
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     if not args:
         sys.exit(__doc__)
-    dark = "--light" not in sys.argv
+    paper = "--paper" in sys.argv
+    dark = "--light" not in sys.argv and not paper
     accent_hue = None
     accent_sat = None
     for a in sys.argv[1:]:
@@ -275,14 +322,16 @@ def main():
             accent_sat = float(a.split("=", 1)[1]) if "=" in a else \
                 float(sys.argv[sys.argv.index(a) + 1])
     path = args[0]
-    p = build_palette(path, dark=dark, accent_hue=accent_hue, accent_sat=accent_sat)
+    p = build_palette(path, dark=dark, accent_hue=accent_hue, accent_sat=accent_sat,
+                      paper=paper)
 
     hue_note = ""
     if accent_hue is not None:
         hue_note = f", accent rotated to hue {accent_hue:g}deg"
     if accent_sat is not None:
         hue_note += f", saturation {accent_sat:g}"
-    print(f"/* Palette derived from {path} ({'dark' if dark else 'light'} theme{hue_note}) */")
+    theme = 'paper (house style 2)' if paper else ('dark' if dark else 'light')
+    print(f"/* Palette derived from {path} ({theme} theme{hue_note}) */")
     print(":root {")
     order = ["void", "surface", "surface2", "border", "text", "text-dim",
              "accent", "accent-bright", "accent-dim", "secondary", "contrast"]

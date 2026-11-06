@@ -2018,6 +2018,287 @@ html[data-style="editorial"] .stamp {
   font-family: var(--font-ui); font-size: 15px; font-weight: 800; line-height: 1.2;
   padding: 10px; transform: rotate(10deg);
 }
+
+/* ══ HOUSE STYLE 2 ═══════════════════════════════════════════════════
+   THE MAIN STYLE since 2026-11-06 (Innes: "make house style 2 the new
+   main style"). Set with data-style="hs2" on <html>; a builder passes
+   style='hs2' to assemble(). HOUSE-STYLE.md §0 and §15 are the rules;
+   this block is the look.
+
+   Benchmarked on two ENGHUB decks Innes supplied ("How to Break Habits",
+   B1-B2, and "Reinventing Yourself After a Break", C1), measured page by
+   page. What they do, and what this block does:
+
+     1. PAPER. Every interior page is a white field. Text never sits on a
+        picture, so nothing is washed and nothing is plated.
+     2. THE PICTURE OWNS A ZONE. A figure stands on the paper beside the
+        text (about a third of the width), or a plate bleeds a column, or a
+        divider shows it whole. It is never behind a sentence.
+     3. ONE TINT for every container — speech bubbles, cards, pills,
+        answer bars — with no border and no shadow, soft round corners.
+        (--surface from extract-palette.py --paper: the benchmark greige.)
+     4. ONE ACCENT, for the language being taught: the highlighted word in
+        a question, the example in a rule. Not for decoration.
+     5. A HEAVY CONDENSED CAPS TITLE on every page, big, centred, one or
+        two lines. Barlow Condensed, the face the library and every hub
+        page already set their headings in — the benchmark's Bebas, in
+        the site's own family. No new font enters the site.
+     6. SHAPES THAT SAY WHAT THE TASK IS: discussion is a field of speech
+        bubbles, a rule is a card with a pill tab, a survey is a question
+        card over ranked answer cards. See .bubbles, .tab-card, .survey.
+
+   Everything else is untouched: §6's budget, scoring, the activation
+   stage, the language switcher, print, check-lesson.js. */
+html[data-style="hs2"] {
+  --plate: 1;                  /* containers are solid tint, never glass */
+  --bg-opacity: 1;
+  --wash-mid: transparent;
+  --wash-edge: transparent;
+  --r: 22px;
+  --act-panel-h: 304px;
+  --art-w: 35%;                /* the picture's share of the width */
+  --font-head: 'Barlow Condensed', 'Arial Narrow', 'DM Sans', sans-serif;
+}
+
+/* ── 1. paper ── */
+html[data-style="hs2"] .stage { background: var(--void); box-shadow: 0 24px 80px rgba(0,0,0,0.35); }
+html[data-style="hs2"] .stage:not(.on-cover) .bg-layer::before,
+html[data-style="hs2"] .stage:not(.on-cover) .bg-layer::after { content: none; }
+html[data-style="hs2"] :where(.eyebrow, .slide-title, .q-stem, .q-ctx,
+  .order-hint, .slide-body > .prose, .cover-title, .cover-sub,
+  .act-target-label, .feedback.show, .score-big, .sort-bin-label) {
+  background: none; box-shadow: none; text-shadow: none;
+}
+html[data-style="hs2"] .deck-bar { background: none; }
+html[data-style="hs2"] :where(.nav-btn, .lang-select) { background: var(--surface); }
+
+/* ── 2. the picture owns a zone ──
+   data-bg keeps its meaning, "this slide's picture", and the same markup
+   builds every look. Four shapes, picked per slide with data-art:
+     (none)    a plate, cropped into a tall rounded card right of the text
+     cutout    a transparent PNG figure standing on the paper — the
+               benchmark's own idiom, and what every stand-in is
+     circle    a portrait or photo in a circle (benchmark p.20-21)
+     bleed     a full-height column off the right edge, house style 2's
+               original panel, for a plate whose subject needs the height
+   data-art-side="left" mirrors any of them. data-art-pos sets the crop
+   (show() copies it to --art-pos). The heading spans the full width;
+   only the BODY yields the column, which is how the benchmark sets it. */
+html[data-style="hs2"] .editorial-art {
+  display: block; position: absolute; z-index: 0; pointer-events: none;
+  right: 56px; top: 150px; bottom: 74px; width: var(--art-w);
+  background: var(--hero) var(--art-pos, center) / cover no-repeat;
+  border-radius: 28px;
+}
+html[data-style="hs2"] .stage:has(.slide.is-active[data-art="cutout"]) .editorial-art {
+  top: 126px; bottom: 58px; right: 40px; border-radius: 0;
+  background-size: contain; background-position: var(--art-pos, center bottom);
+}
+html[data-style="hs2"] .stage:has(.slide.is-active[data-art="circle"]) .editorial-art {
+  top: 50%; bottom: auto; width: 360px; height: 360px; right: 92px;
+  transform: translateY(-38%); border-radius: 50%;
+}
+html[data-style="hs2"] .stage:has(.slide.is-active[data-art="bleed"]) .editorial-art {
+  top: 0; bottom: 0; right: 0; border-radius: 0; width: 36%;
+}
+html[data-style="hs2"] .stage:has(.slide.is-active[data-art-side="left"]) .editorial-art {
+  right: auto; left: 56px;
+}
+html[data-style="hs2"] .stage:has(.slide.is-active[data-art-side="left"][data-art="cutout"]) .editorial-art { left: 40px; }
+html[data-style="hs2"] .stage:has(.slide.is-active[data-art-side="left"][data-art="circle"]) .editorial-art { left: 92px; }
+html[data-style="hs2"] .stage:has(.slide.is-active[data-art-side="left"][data-art="bleed"]) .editorial-art { left: 0; }
+html[data-style="hs2"] .stage:not(:has(.slide.is-active[data-bg])) .editorial-art,
+html[data-style="hs2"] .stage.on-cover .editorial-art { display: none; }
+
+html[data-style="hs2"] .stage:has(.slide.is-active[data-bg]) .slide.is-active .slide-body {
+  max-width: calc(100% - var(--art-w) - 28px);
+}
+html[data-style="hs2"] .stage:has(.slide.is-active[data-art-side="left"]) .slide.is-active .slide-body {
+  margin-left: calc(var(--art-w) + 28px);
+}
+/* A bleed column runs the full height, so there the heading yields too. */
+html[data-style="hs2"] .stage:has(.slide.is-active[data-art="bleed"]) .slide.is-active .slide-head {
+  max-width: calc(100% - 36% + 64px - 40px);
+}
+html[data-style="hs2"] .stage:has(.slide.is-active[data-art="bleed"][data-art-side="left"]) .slide.is-active .slide-head {
+  margin-left: calc(36% - 64px + 40px);
+}
+
+/* ── 3. the title ── */
+html[data-style="hs2"] .slide-head {
+  justify-content: center; text-align: center; margin-bottom: 18px;
+}
+html[data-style="hs2"] .slide-head > div { width: 100%; }
+/* The base sheet shrink-wraps the eyebrow and title (width: fit-content,
+   for the plate), so centring the head centres nothing until they take
+   auto margins too. */
+html[data-style="hs2"] .slide-head .eyebrow,
+html[data-style="hs2"] .slide-head .slide-title { margin-inline: auto; }
+html[data-style="hs2"] .slide-title {
+  font-family: var(--font-head); font-weight: 800; text-transform: uppercase;
+  font-size: 56px; line-height: 0.98; letter-spacing: 0.004em;
+  color: var(--text); margin-top: 4px;
+}
+html[data-style="hs2"] .slide-title em { font-style: normal; color: var(--accent-bright); }
+html[data-style="hs2"] .eyebrow {
+  font-size: 12.5px; letter-spacing: 0.18em; color: var(--accent-bright);
+}
+/* Panels keep their column: the title sits left in the text column there,
+   because the picture already owns the other side top to bottom. */
+html[data-style="hs2"] .slide[data-layout="panel"] .slide-head { justify-content: flex-start; text-align: left; }
+html[data-style="hs2"] .slide[data-layout="panel"] .slide-head .eyebrow,
+html[data-style="hs2"] .slide[data-layout="panel"] .slide-head .slide-title { margin-inline: 0; }
+html[data-style="hs2"] .slide[data-layout="panel"] .panel-pic { background: var(--surface); }
+html[data-style="hs2"] .slide[data-layout="panel"] .panel-pic::after { content: none; }
+
+/* ── 4. one tint, no borders ── */
+html[data-style="hs2"] .card {
+  background: var(--surface); border: 0; box-shadow: none;
+  backdrop-filter: none; border-radius: 24px; padding: 22px 28px;
+}
+html[data-style="hs2"] .card .prose strong { color: var(--text); }
+html[data-style="hs2"] .prose strong,
+html[data-style="hs2"] .q-stem strong,
+html[data-style="hs2"] .tl { color: var(--accent-bright); font-weight: 700; }
+html[data-style="hs2"] .ex { font-style: italic; color: var(--accent-bright); }
+html[data-style="hs2"] .q-stem { font-size: 26px; line-height: 1.42; }
+html[data-style="hs2"] .opts { gap: 10px; }
+html[data-style="hs2"] .opt {
+  background: var(--surface); border: 2px solid transparent;
+  border-radius: 18px; padding: 13px 22px 13px 14px; font-size: 20px;
+}
+html[data-style="hs2"] .opt:hover:not(:disabled) { border-color: var(--accent); }
+html[data-style="hs2"] .opt-key {
+  background: var(--void); border: 0;
+  font-family: var(--font-head); font-size: 17px; font-weight: 800;
+}
+html[data-style="hs2"] .opt.correct { border-color: var(--ok); background: color-mix(in srgb, var(--ok) 20%, var(--surface)); }
+html[data-style="hs2"] .opt.wrong   { border-color: var(--no); background: color-mix(in srgb, var(--no) 16%, var(--surface)); }
+html[data-style="hs2"] :where(.match-item, .chunk, .sort-item, .sort-bin) {
+  background: var(--surface); border-color: transparent; border-radius: 16px;
+}
+html[data-style="hs2"] .sort-bin { background: var(--surface2); border: 2px dashed var(--border); }
+html[data-style="hs2"] .match-item.picked,
+html[data-style="hs2"] .sort-item.picked { border-color: var(--accent); background: var(--accent-dim); }
+html[data-style="hs2"] .match-item.done,
+html[data-style="hs2"] .sort-item.placed { border-color: var(--ok); }
+html[data-style="hs2"] .match-item.miss,
+html[data-style="hs2"] .sort-item.miss { border-color: var(--no); }
+html[data-style="hs2"] .gap { background: var(--void); border-radius: 8px 8px 0 0; }
+html[data-style="hs2"] .gap-row.card { padding: 12px 20px; border-radius: 18px; }
+html[data-style="hs2"] :where(.bank-chip, .chip) {
+  background: var(--surface); border: 0; border-radius: 999px; color: var(--text);
+}
+html[data-style="hs2"] .act-panel { background: var(--surface); border: 0; box-shadow: none; }
+/* The two activation words take the title face: same voice as every
+   heading in the deck, and 20px shorter than the display serif, which is
+   what pays for the writing panel beside a picture (--act-panel-h). */
+html[data-style="hs2"] .act-word {
+  background: var(--surface); border-color: transparent;
+  font-family: var(--font-head); font-weight: 800; text-transform: uppercase;
+  font-size: 26px; letter-spacing: .02em; padding: 8px 26px;
+}
+html[data-style="hs2"] .act-input { background: var(--void); }
+html[data-style="hs2"] .score-big { font-family: var(--font-head); font-weight: 800; font-size: 120px; }
+
+/* ── 5. cover and divider ──
+   The benchmark cover: a giant stacked title on the left half of white
+   paper, the figure on the right half, a pill under the title. */
+html[data-style="hs2"] .stage.on-cover { background: var(--void); }
+html[data-style="hs2"] .stage.on-cover .bg-layer::before {
+  left: 46%; opacity: 1; filter: none;
+  background: var(--hero) var(--cover-pos, center) / cover no-repeat;
+}
+html[data-style="hs2"] .stage.on-cover:has(.slide[data-type="cover"][data-art="cutout"]) .bg-layer::before {
+  top: 40px; bottom: 30px; right: 30px;
+  background-size: contain; background-position: center bottom;
+}
+html[data-style="hs2"] .stage.on-cover .bg-layer::after { content: none; }
+html[data-style="hs2"] .cover-inner {
+  max-width: 46%; align-items: flex-start; text-align: left; gap: 0;
+}
+html[data-style="hs2"] .cover-title {
+  font-family: var(--font-head); font-weight: 800; text-transform: uppercase;
+  font-size: 88px; line-height: 0.9; letter-spacing: 0; margin-top: 30px;
+}
+html[data-style="hs2"] .cover-title em { color: var(--accent-bright); }
+html[data-style="hs2"] .cover-sub { font-size: 19px; line-height: 1.45; letter-spacing: 0; margin-top: 18px; }
+html[data-style="hs2"] .cover-meta { justify-content: flex-start; margin-top: 20px; }
+html[data-style="hs2"] .slide[data-type="cover"] .fe-logo { width: 196px; }
+html[data-style="hs2"] .divider-cap h2 {
+  font-family: var(--font-head); font-weight: 800; text-transform: uppercase;
+  font-size: 64px; line-height: 0.95;
+}
+
+/* ── 6. the benchmark's shapes ── */
+
+/* Speech bubbles: the "Let's talk!" field. A circle-ish blob with a tail,
+   text centred, one question per bubble. deck.bubbles() places up to
+   eight; a picture, if the slide has one, takes the last cell's place. */
+html[data-style="hs2"] .bubbles {
+  display: grid; grid-template-columns: repeat(var(--bub-cols, 4), 1fr);
+  gap: 14px 18px; align-items: center;
+}
+.bubble {
+  position: relative; display: grid; place-items: center; text-align: center;
+  background: var(--surface); color: var(--text);
+  border-radius: 50% / 46%; aspect-ratio: 1.24;
+  padding: 10% 13%; font-size: 17.5px; line-height: 1.32;
+}
+.bubble::after {
+  content: ''; position: absolute; left: 12%; bottom: -5%;
+  width: 18%; height: 22%; background: inherit;
+  border-radius: 0 0 0 100%; transform: skewX(-22deg);
+  z-index: -1;
+}
+.bubble:nth-child(even)::after { left: auto; right: 12%; border-radius: 0 0 100% 0; transform: skewX(22deg); }
+.bubble { isolation: isolate; }
+.bubble strong, .bubble .tl { color: var(--accent-bright); font-weight: 600; }
+.bubble-lg { font-size: 26px; aspect-ratio: 1.25; padding: 12% 15%; }
+
+/* A rule card: tinted, with a pill tab sitting on its top edge naming
+   what the card is about (benchmark p.18, "Used to do sth"). */
+.tab-card { position: relative; margin-top: 18px !important; padding-top: 30px !important; }
+.tab-card .tab-pill {
+  position: absolute; top: -17px; left: 50%; transform: translateX(-50%);
+  background: color-mix(in srgb, var(--accent) 18%, var(--surface));
+  color: var(--text); border-radius: 999px; padding: 6px 22px;
+  font: 700 16px/1.25 var(--font-ui); white-space: nowrap;
+}
+.tab-card ul { padding-left: 1.1em; }
+.tab-card li { font-size: 18px; line-height: 1.5; }
+.tab-card li + li { margin-top: 6px; }
+.tab-card .ex { display: block; }
+
+/* The survey ("Top-5 quiz", benchmark p.3-12): one question card, then
+   the answers as cards with their score in big condensed figures, hidden
+   until clicked. Unscored: it is a warmer, and guessing is the point. */
+.survey { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.survey-q {
+  grid-column: 1 / -1; background: var(--surface); border-radius: 22px;
+  padding: 18px 26px; text-align: center; font-size: 21px; line-height: 1.4;
+}
+.survey-a {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  min-height: 64px; padding: 10px 22px; border-radius: 18px;
+  background: var(--surface); border: 2px solid transparent;
+  font: 500 18px/1.3 var(--font-ui); color: var(--text); cursor: pointer; text-align: left;
+}
+.survey-a:last-child:nth-child(even) { grid-column: 1 / -1; justify-self: center; min-width: 50%; }
+.survey-a .sa-text { visibility: hidden; }
+.survey-a .sa-n { font: 800 34px/1 var(--font-head, 'DM Sans'); color: var(--text-dim); }
+.survey-a:not(.shown) .sa-n b { display: none; }
+.survey-a:not(.shown) .sa-n::before { content: '?'; color: var(--accent); }
+.survey-a.shown .sa-text { visibility: visible; }
+.survey-a.shown .sa-n { color: var(--text); }
+.survey-a:hover:not(.shown) { border-color: var(--accent); }
+@media print { .survey-a .sa-text { visibility: visible; } .survey-a .sa-n b { display: inline !important; } .survey-a .sa-n::before { content: none !important; } }
+
+/* A handwritten-style aside ("Optional task" in the benchmark), set in the
+   body face at an angle rather than in a script font: no new font. */
+.aside-note {
+  font-style: italic; color: var(--text-dim); font-size: 16px;
+}
 </style>
 </head>
 <body>
@@ -2383,6 +2664,13 @@ let idx = 0, score = 0;
 // Called with the new index after every slide change, for behaviour that
 // belongs to a range of slides rather than to one (the docked recording).
 const slideHooks = [];
+
+/* House style 2's survey ("top five"): an answer card shows itself when it
+   is clicked. Unscored, so it needs nothing from the scoring engine. */
+document.addEventListener('click', e => {
+  const a = e.target.closest && e.target.closest('.survey-a');
+  if (a) a.classList.add('shown');
+});
 const answered = new WeakSet();
 
 /* ── Branch mode ────────────────────────────────────────────────────────
@@ -2538,6 +2826,9 @@ function show(n) {
   // under the wash — so extra artwork never becomes a pasted-in box.
   stage.style.setProperty('--hero', slides[idx].dataset.bg
     ? `url('${slides[idx].dataset.bg}')` : '');
+  // House style 2 crops each slide's picture where the builder says
+  // (data-art-pos); inert in every other look, which never reads it.
+  stage.style.setProperty('--art-pos', slides[idx].dataset.artPos || '');
   // In branch mode idx/length is meaningless — a learner sees roughly half the
   // nodes — so progress and the counter come from the node itself.
   const cur = slides[idx];

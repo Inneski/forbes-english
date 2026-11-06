@@ -10,6 +10,42 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
+## 2026-11-06 — House style 2 is the main style; benchmarked on ENGHUB; stand-ins + shopping list
+
+Innes: *"find other on forbes that are not house style and make them house
+style 2 and make house style 2 the new main style. Also study the graphic
+composition of these as a benchmark"* (two ENGHUB PDFs: "How to Break Habits"
+B1-B2, "Reinventing Yourself After a Break" C1), then *"use stand in graphics
+to be replaced in shopping list"*.
+
+- **The standard.** `HOUSE-STYLE.md` §00 (HS2 is the default for every new
+  deck and rebuild; the washed hero is now "house style 1 (classic)") and §16
+  (the benchmark, measured: paper field, picture zone beside the text, one
+  tint for every container, one accent for the target language, condensed
+  caps titles, bubbles / pill-tab rules / survey). §5c and §14's "stop until
+  art is commissioned" are superseded by stand-ins.
+- **The engine.** `style='hs2'` in `deck.assemble()` → `data-style="hs2"`,
+  a `HOUSE STYLE 2` CSS block in `lesson-template.html` (inert in every other
+  deck), Barlow Condensed loaded only for hs2. New builders: `D.art()` (picture
+  zone: plate / cutout / circle / bleed, sides, crop), `D.plate()` (real plate
+  if on disk, else stand-in), `D.hs2_cover()`, `D.bubbles()`, `D.rules()`,
+  `D.survey()`. `extract-palette.py --paper` derives page + tint + accent.
+  `show()` copies `data-art-pos` to `--art-pos`; a click handler reveals
+  survey cards. New classes are `.bubble*`, `.survey*`, `.tab-card`/`.tab-pill`
+  (NOT `.rule-card`/`.pill`: Blocula, PP2 and Sailing already use those).
+- **Stand-ins.** `tools/make_standin.py` (+ `standin_motifs.py`, 33 flat
+  motifs, five schemes) writes `<folder>/standin-<slot>.png` and
+  `standins.json`; `tools/standins.py` regenerates
+  `docs/ARTWORK-standins.md` from the live pages, with briefs and prompts.
+- **First conversion: `forbes-english-venezuela.html`** — scrolling page →
+  28-slide HS2 deck, EN/DE/ES, all gates pass, answered-overflow fits en/de/es.
+  `build_venezuela.py` + `i18n_venezuela.py`. Five content defects fixed (see
+  the docstring). Seven stand-ins on the list. The library thumbnail stays the
+  hacienda card until a real hero lands.
+- **Needs Innes (catalogue):**
+  `update public.lessons set deck = true where file = 'forbes-english-venezuela.html';`
+
+---
 ## 2026-11-05 — Who Was First in Space? (C1): SHIPPED
 
 `first-in-space-c1.html`, 25 slides, EN/DE/ES, light theme, Pro. From a

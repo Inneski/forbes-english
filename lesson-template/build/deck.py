@@ -727,7 +727,13 @@ def assemble(tpl_path, out_path, slides, palette, title, i18n_module, langs=('en
     # Written with a regex on the opening tag rather than a fixed replace
     # because data-theme may or may not already be on it by this point.
     if style:
-        assert style == 'editorial', 'unknown style %r' % style
+        assert style in ('editorial', 'hs2'), 'unknown style %r' % style
+        # House style 2 sets its titles in Barlow Condensed, the library's
+        # own heading face. Only an hs2 deck asks the font service for it.
+        if style == 'hs2':
+            s = s.replace('family=DM+Mono:wght@400;500&display=swap',
+                          'family=DM+Mono:wght@400;500&family=Barlow+Condensed:wght@700;800'
+                          '&display=swap', 1)
         s = re.sub(r'<html lang="en"([^>]*)>',
                    r'<html lang="en"\1 data-style="%s">' % style, s, count=1)
 
@@ -740,6 +746,170 @@ def assemble(tpl_path, out_path, slides, palette, title, i18n_module, langs=('en
     # happened to rewrite the file afterwards.
     open(out_path, 'w', encoding='utf-8', newline='').write(s)
     return s
+
+
+# ── house style 2 (the main style since 2026-11-06) ────────────────────
+# HOUSE-STYLE.md §0/§15 are the rules; the template's HOUSE STYLE 2 block is
+# the look. What lives here: the picture resolver that lets a deck ship on
+# stand-ins and pick up the real plates the day they land, and the three
+# shapes the ENGHUB benchmark is built from — speech bubbles, rule cards with
+# a pill tab, and the survey.
+
+import os as _os
+
+
+def plate(folder, slot):
+    """(filename, is_cutout) for a picture slot: the real plate if one is on
+    disk, else the stand-in.
+
+    A real plate is <folder>/<slot>.jpg|.png|.webp. A stand-in is
+    <folder>/standin-<slot>.png, made by tools/make_standin.py and listed by
+    tools/standins.py on the shopping list until the real one replaces it.
+    Dropping the real file in is the whole replacement: re-run the builder.
+    A PNG with an alpha channel is a cut-out (a figure on the paper);
+    anything else is a plate (cropped into the picture zone)."""
+    for ext in ('.png', '.webp', '.jpg', '.jpeg'):
+        p = _os.path.join(folder, slot + ext)
+        if _os.path.exists(p):
+            return slot + ext, ext == '.png' and _has_alpha(p)
+    p = _os.path.join(folder, 'standin-%s.png' % slot)
+    if not _os.path.exists(p):
+        raise AssertionError(
+            'no picture for slot %r in %s/ — drop the plate in, or make a '
+            'stand-in: py tools/make_standin.py %s %s <motif> "<brief>"'
+            % (slot, folder, folder, slot))
+    return 'standin-%s.png' % slot, True
+
+
+def _has_alpha(path):
+    try:
+        from PIL import Image
+        im = Image.open(path)
+        return im.mode in ('RGBA', 'LA') or 'transparency' in im.info
+    except Exception:
+        return False
+
+
+def art(slide_html, folder, slot, side=None, pos=None, shape=None):
+    """Give a slide its picture under house style 2.
+
+    Sets data-bg to the resolved plate (real, else stand-in) and data-art to
+    its shape: 'cutout' for a transparent figure, otherwise whatever `shape`
+    says ('circle', 'bleed') or the default rounded crop. side='left' puts
+    the picture left of the text. Any data-bg the slide builder already
+    wrote is replaced, so every builder in this module can be wrapped."""
+    f, cut = plate(folder, slot)
+    shape = 'cutout' if cut and shape in (None, 'cutout') else shape
+    attrs = ' data-bg="%s/%s"' % (folder, f)
+    if shape:
+        attrs += ' data-art="%s"' % shape
+    if side == 'left':
+        attrs += ' data-art-side="left"'
+    if pos:
+        attrs += ' data-art-pos="%s"' % pos
+    s = re.sub(r' data-bg="[^"]*"', '', slide_html, count=1)
+    return re.sub(r'<section class="slide( is-active)?"',
+                  lambda m: m.group(0) + attrs, s, count=1)
+
+
+def hs2_cover(logo, title, sub, chips, folder, slot='hero', pos=None):
+    """The cover, house style 2: stacked title left, the hero right."""
+    s = cover(logo, title, sub, chips)
+    f, cut = plate(folder, slot)
+    extra = ' data-art="cutout"' if cut else ''
+    s = s.replace('data-type="cover">', 'data-type="cover"%s>' % extra, 1)
+    return s, '%s/%s' % (folder, f)
+
+
+def bubbles(eyebrow_key, eyebrow, title_key, title, prompts, cols=4, big=False):
+    """A discussion field: one speech bubble per prompt (benchmark "Let's
+    talk!"). prompts: list of (key, html). Unscored — a talking task.
+
+    Up to eight on a slide with no picture, six beside one. A slide that
+    wants more is two slides. `big` sets one or two prompts large, the
+    benchmark's single-question bubble."""
+    assert 1 <= len(prompts) <= 8, 'bubbles: %d prompts — split the slide' % len(prompts)
+    cells = "\n          ".join(
+        # The text sits in a span: .bubble is a grid (to centre it), and a
+        # grid makes every child of its own, so a bare <strong> inside the
+        # question became a cell and broke the sentence onto three lines.
+        '<div class="bubble%s"><span%s>%s</span></div>'
+        % (' bubble-lg' if big else '', ' data-i18n="%s"' % k if k else '', h)
+        for k, h in prompts)
+    return '''
+    <section class="slide" data-type="discuss">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="%s">%s</div>
+        <h2 class="slide-title" data-i18n="%s">%s</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="bubbles" style="--bub-cols:%d">
+          %s
+        </div>
+      </div>
+    </section>
+''' % (eyebrow_key, eyebrow, title_key, title, cols, cells)
+
+
+def rules(eyebrow_key, eyebrow, title_key, title, cards, intro=None):
+    """Rule cards with a pill tab (benchmark p.18). cards: list of
+    (pill, [(bullet_key, bullet_html), ...], example_html). The pill and the
+    examples are the English being taught and stay English; the bullets are
+    the explanation and translate (the six-item rule, HOUSE-STYLE §8).
+    intro: optional (key, html) line above the cards."""
+    def card(c):
+        pill, bullets, ex = c
+        lis = "".join('<li%s>%s</li>' % (' data-i18n="%s"' % k if k else '', b)
+                      for k, b in bullets)
+        return ('<div class="card tab-card"><span class="tab-pill">%s</span>'
+                '<ul>%s</ul>%s</div>'
+                % (pill, lis, '<p class="ex" style="margin-top:10px;font-size:18px">%s</p>' % ex
+                   if ex else ''))
+    return '''
+    <section class="slide" data-type="teach">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="%s">%s</div>
+        <h2 class="slide-title" data-i18n="%s">%s</h2>
+      </div></div>
+      <div class="slide-body">%s
+        <div class="cols" style="grid-template-columns:%s;gap:22px">
+          %s
+        </div>
+      </div>
+    </section>
+''' % (eyebrow_key, eyebrow, title_key, title,
+       ('\n        <p class="prose" style="text-align:center;margin-bottom:16px"%s>%s</p>'
+        % (' data-i18n="%s"' % intro[0] if intro[0] else '', intro[1])) if intro else '',
+       ' '.join(['1fr'] * len(cards)), "\n          ".join(card(c) for c in cards))
+
+
+def survey(eyebrow_key, eyebrow, title_key, title, q_key, question, answers, hint=None):
+    """The "top five" survey (benchmark p.3-12): a question card, then the
+    answers as cards that show themselves when clicked, each with its score.
+    answers: list of (text, points), most popular first. Unscored warmer —
+    the class guesses before anyone clicks."""
+    assert 3 <= len(answers) <= 6, 'survey: 3-6 answers'
+    cards = "\n          ".join(
+        '<button class="survey-a" type="button"><span class="sa-text">%s</span>'
+        '<span class="sa-n"><b>%s</b></span></button>' % (t, '' if p is None else p)
+        for t, p in answers)
+    return '''
+    <section class="slide" data-type="discuss">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="%s">%s</div>
+        <h2 class="slide-title" data-i18n="%s">%s</h2>
+      </div></div>
+      <div class="slide-body">%s
+        <div class="survey">
+          <div class="survey-q"%s>%s</div>
+          %s
+        </div>
+      </div>
+    </section>
+''' % (eyebrow_key, eyebrow, title_key, title,
+       ('\n        <p class="order-hint" style="text-align:center;margin-bottom:12px" '
+        'data-i18n="%s">%s</p>' % hint) if hint else '',
+       ' data-i18n="%s"' % q_key if q_key else '', question, cards)
 
 
 def logo_from(tpl_path):
