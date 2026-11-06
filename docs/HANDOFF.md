@@ -53,6 +53,29 @@ to be replaced in shopping list"*.
   had no thumbnail ("Coming soon") and now show their stand-in heroes.
   `deck.rules()` pills can now translate (`(key, text)`). Catalogue:
   `update public.lessons set deck = true where file like 'forbes-english-common-mistakes-review%';`
+- **`hs2quiz.py`** — `build(SPEC, T, GLOSS)` builds a whole HS2 deck from a
+  content spec (talk / rules / mc / gap / order / survey / raw steps), deals
+  key positions (the KEYS gate reads the source), attaches click-to-reveal
+  glosses for L1-support pages (`NARRATIVE_TR`), derives the `--paper`
+  palette at build time from the hero on disk (fails on any contrast row),
+  makes stand-ins only for slots with no real plate, and asserts the
+  chipCount. Long stems or options (>92 / >58 chars) take the full width.
+  Every lesson below after Mistakes Review is built on it; copy any of them.
+- **Converted on hs2quiz (2026-11-06), each EN/DE/ES, all gates + answered
+  fit en/de/es, defects in each builder's docstring:**
+  `might_vs_going_to_test.html` (23), `present_perfect_test.html` (28),
+  `teil3_part2_test.html` (25), `present_simple_continuous_de.html` (18),
+  `Forbes_English_A0_Question_Words.html` (27), `phrasal_verbs_test.html`
+  (23), `active_passive_refinery_quiz_part2.html` (16, on Part 1's real
+  plates, no stand-ins). Library rows added where the page had none.
+- **Needs Innes (catalogue deck flags):**
+  `update public.lessons set deck = true where file in ('might_vs_going_to_test.html','present_perfect_test.html','teil3_part2_test.html','present_simple_continuous_de.html','Forbes_English_A0_Question_Words.html','phrasal_verbs_test.html','active_passive_refinery_quiz_part2.html');`
+- **Queue (what is left):** regenerate with the snippet in
+  `docs/ARTWORK-revamp-shopping-list.md` §Method — 111 catalogued scrolling
+  pages after this pass, plus the 59 decks short of DE+ES/art in its §14.
+  Reference sheets (`cheat_sheet*`, `grammar_formulas*`) need items written,
+  not just ported; transcript lessons (`impostor_syndrome_lesson.html`)
+  need the reading retold, not reproduced.
 
 ---
 ## 2026-11-05 — Who Was First in Space? (C1): SHIPPED
