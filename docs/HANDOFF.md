@@ -70,6 +70,24 @@ to be replaced in shopping list"*.
   plates, no stand-ins). Library rows added where the page had none.
 - **Needs Innes (catalogue deck flags):**
   `update public.lessons set deck = true where file in ('might_vs_going_to_test.html','present_perfect_test.html','teil3_part2_test.html','present_simple_continuous_de.html','Forbes_English_A0_Question_Words.html','phrasal_verbs_test.html','active_passive_refinery_quiz_part2.html');`
+- **More on hs2quiz:** `ecommerce-vocabulary-b1.html` (25, EN/DE/ES/IT — the
+  page was written with Italian feedback), `interior-design-vocabulary.html`
+  (31, own hero), `lesson1_gerunds_football.html` (17, own hero),
+  `forbes-english-golf-lesson.html` (24; two gap items had two blanks and one
+  answer, so could never be marked right), `taekwondo-exercises.html` (19)
+  and `taekwondo-english-kids.html` (13), both on the Taekwondo/ plates.
+  Catalogue: `update public.lessons set deck = true where file in ('ecommerce-vocabulary-b1.html','interior-design-vocabulary.html','lesson1_gerunds_football.html','forbes-english-golf-lesson.html','taekwondo-exercises.html','taekwondo-english-kids.html');`
+  The catalogue has taekwondo-exercises at B2; its content is A2–B1.
+- **Template fix, 2026-11-06:** the HS2 text column beside a picture is
+  pixel arithmetic (`max-width: calc(1132px - var(--art-w))`, `--art-w:
+  448px`). As percentages it ran ~9px under the picture. All HS2 decks were
+  rebuilt and re-measured after it.
+- **Left for Innes, not converted:** `taekwondo-regrets.html` teaches GERMAN
+  (the Konjunktiv II formula, "write sentences using hätte … sollen"), like
+  `german_firefighter_happy.html`: an English site deciding whether it hosts
+  German lessons is his call. `forbes-english-c2-barbi-phrase-test.html` is a
+  reveal-and-self-check companion to `forbes-english-c2-barbi-executive-roleplays.html`;
+  convert the pair together (it needs a reveal slide, not MC).
 - **Queue (what is left):** regenerate with the snippet in
   `docs/ARTWORK-revamp-shopping-list.md` §Method — 111 catalogued scrolling
   pages after this pass, plus the 59 decks short of DE+ES/art in its §14.
