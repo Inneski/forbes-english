@@ -107,12 +107,15 @@ ART_RESULTS = ('hero', None, '100%', 'arch', None)
 # the ART entry above, so the deck builds either way.
 NEW = {
     0: 'talk-attic',
-    4: ['q-1946', 'q-engine', 'q-open-road', 'q-dealer', 'q-first-ride'],
+    # (slot, pos) where the subject is off-centre: the open-road rider sits
+    # at .55-.75 of the plate, the dealer's group at .30-.80, the glare screen at
+    # .55-.85 (narrow window .525 wide; default .65).
+    4: ['q-1946', 'q-engine', ('q-open-road', '80%'), ('q-dealer', '60%'), 'q-first-ride'],
     5: 'grew-on',
     6: 'old-photo',
-    7: ['f-seat', 'f-test-ride', 'f-headlamp', 'f-glare'],
+    7: ['f-seat', 'f-test-ride', 'f-headlamp', ('f-glare', '85%')],
     10: 'talk-cafe',
-    12: ['c-lot', 'c-neck-and-neck', 'c-price'],
+    12: ['c-lot', ('c-neck-and-neck', '95%'), 'c-price'],   # podium bike .55-.92
     14: ['h-magnifier', 'h-scales'],
 }
 NEW_RESULTS = 'ride-away'
@@ -122,12 +125,15 @@ def pick(a, slot, i=0):
     """The ART entry with its plate swapped for a new one, if it has landed.
     Question items alternate the frame's side, as Beyond the Handlebars does,
     except in the narrow frame (its body has no room on the left)."""
+    pos = 'center'
+    if isinstance(slot, tuple):
+        slot, pos = slot
     if not a or not slot or not os.path.exists(os.path.join(F, slot + '.jpg')):
         return a
     pl, side, pos, shape, size = a
     if size != 'narrow' and i:
         side = 'left' if i % 2 else None
-    return (slot, side, 'center', shape, size)
+    return (slot, side, pos, shape, size)
 ART_ACT = None    # the activation's two panels need the full width
 
 
