@@ -10,25 +10,36 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
-## 2026-11-08 — Grammar page opens with "Sailing the seas of grammar": SHIPPED
+## 2026-11-08 — Grammar page: "Sailing the seas of grammar" section under the hero: SHIPPED
 
-Innes: the grammar area should open with a "sailing the seas of grammar"
-section, and more geographical grammar charts will follow. `grammar.html`
-now opens (above the 3D hero) with a band of **grammar maps**: Sailing the
-Seas of Grammar as the large card, the Sherpa Tensing route map beside it
-as a smaller one (it is the same kind of thing: tenses drawn as a place).
-The old one-line "The chart is Sailing the Seas…" link under the hero
-buttons is gone; the band replaces it.
+Innes: the grammar area should have a "sailing the seas of grammar"
+section at the top, and more geographical grammar charts will follow.
+**The hero stays first and unchanged** (the 3D chart, its copy, the
+"The chart is…" line). The first attempt put the section *above* the hero
+and Innes rejected it: *"keep the original hero we had before ... push
+that section up"*. The section is now the first thing after the hero,
+before the tense code: Sailing the Seas of Grammar as the large card, the
+Sherpa Tensing route map under it (same kind of thing: tenses drawn as a
+place).
+
+The first attempt's card also broke at 1920px: `aspect-ratio` on a
+stretched grid item let the picture widen past its column and slide under
+the heading. It was measured only at 1280, where the heights happened to
+match. Now the picture is absolutely placed and cropped, and a `::before`
+padding sets only its minimum height. Measured with no overlap at 1920,
+1440, 1280, 1024, 820, 640 and 375. **Measure at 1920×1080: that is
+Innes's screen.**
 
 **To add the next chart: one dict in `tools/grammar_maps.py`** (`href`,
-`title`, `image`, `alt`, `blurb`, optional `go`), then `py tools/build_hubs.py`
-and `py tools/seo.py`. No markup changes. First entry = the big card; the
-rest sit picture-beside-words, as many to a row as fit (one fills the row).
-Level and Free are read off the catalogue row, not typed; a missing `href`
-stops the build. Web copies land in `grammar-hub/map-<slug>-<hash>.jpg`
-and are pruned like the topic thumbnails. Styles are `gm-` prefixed in
-`build_grammar_hub.py`'s CSS. Put a non-breaking hyphen (`‑`) in a
-blurb's `-ING`, or it splits at 375px.
+`title`, `heading`, `image`, `alt`, `blurb`, optional `go`), then
+`py tools/build_hubs.py` and `py tools/seo.py`. No markup changes. First
+entry = the big card; the rest sit picture-beside-words, as many to a row
+as fit (one fills the row). Level and Free are read off the catalogue row,
+not typed; a missing `href` stops the build. Web copies land in
+`grammar-hub/map-<slug>-<hash>.jpg` and are pruned like the topic
+thumbnails. Styles are `gm-` prefixed in `build_grammar_hub.py`'s CSS.
+Write a blurb's -ING with a non-breaking hyphen (U+2011), or it splits on
+a phone.
 
 ## 2026-11-06 — Laptops no longer get the phone layout: SHIPPED
 

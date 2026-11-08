@@ -490,16 +490,21 @@ body.gh {
 }
 .gh-pill-free { background: var(--gh-accent); color: var(--gh-ink-text); }
 
-/* ── grammar maps: the opening band. gm- prefixed; the charts come from
-   tools/grammar_maps.py, the first one large. ── */
-.gm { padding: clamp(28px, 4.5vw, 56px) 0 clamp(36px, 5.5vw, 64px); background: var(--gh-paper); }
-.gm-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 6px 32px; margin: 0 0 clamp(18px, 2.6vw, 28px); }
-.gm-head .gh-h2 { margin: 0; }
-.gm-head > p { margin: 0; max-width: 46ch; font-size: 1.02rem; line-height: 1.55; color: var(--gh-text-dim); }
-.gm-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%%, 480px), 1fr)); }
-.gm-list + .gm-list { margin-top: 16px; }
+/* ── grammar maps: the section straight under the hero. gm- prefixed; the
+   charts come from tools/grammar_maps.py, the first one large.
+   THE PICTURE NEVER SIZES THE CARD. It is absolutely placed in .gm-pic and
+   cropped (object-fit: cover); .gm-pic's ::before only sets a minimum
+   height (padding-top is a share of its own width), so when the words are
+   taller than the picture the picture grows in height and crops, and never
+   runs wider than its column. The first version put aspect-ratio on a
+   stretched grid item: at 1920px the text column was taller, the picture
+   widened to keep 3:2 and slid under the heading. ── */
+.gm { padding: clamp(56px, 8vw, 104px) 0 clamp(8px, 2vw, 24px); }
+.gm-feature { margin: clamp(26px, 4vw, 40px) 0 0; }
+.gm-list { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%%, 520px), 1fr)); }
 .gm-card {
-  display: flex; flex-direction: column; height: 100%%; overflow: hidden;
+  display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  overflow: hidden; height: 100%%;
   border-radius: 16px; text-decoration: none; color: var(--gh-text);
   background: var(--gh-card); border: 1px solid var(--gh-line);
   box-shadow: 0 14px 34px var(--gh-shadow);
@@ -507,29 +512,26 @@ body.gh {
 }
 .gm-card:hover { transform: translateY(-3px); box-shadow: 0 22px 46px var(--gh-shadow); }
 .gm-card:focus-visible { outline: 3px solid var(--gh-accent); outline-offset: 3px; }
-.gm-pic { display: block; overflow: hidden; aspect-ratio: 16 / 9; background: var(--gh-sky); }
-.gm-pic img { display: block; width: 100%%; height: 100%%; object-fit: cover; transition: transform 1.4s cubic-bezier(.2,.7,.2,1); }
+.gm-pic { position: relative; display: block; overflow: hidden; background: var(--gh-sky); }
+.gm-pic::before { content: ''; display: block; padding-top: 56.25%%; }
+.gm-pic img { position: absolute; inset: 0; width: 100%%; height: 100%%; object-fit: cover; transition: transform 1.4s cubic-bezier(.2,.7,.2,1); }
 .gm-card:hover .gm-pic img { transform: scale(1.03); }
-.gm-body { display: flex; flex-direction: column; gap: 8px; padding: clamp(16px, 2.2vw, 24px); flex: 1; }
+.gm-body { display: flex; flex-direction: column; justify-content: center; gap: 10px; padding: clamp(18px, 2.4vw, 30px); min-width: 0; }
 .gm-body .gh-kicker { margin: 0; }
-.gm-body h3 { font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(1.4rem, 2.4vw, 1.8rem); line-height: 1.04; margin: 0; }
-.gm-body p { margin: 0; font-size: 1rem; line-height: 1.55; color: var(--gh-text-dim); max-width: 52ch; }
-.gm-go { margin-top: auto; padding-top: 6px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; font-size: .9rem; color: var(--gh-accent); }
-/* the charts after the first: picture beside the words, as many to a row as fit */
-.gm-list .gm-card { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); }
-.gm-list .gm-pic { aspect-ratio: auto; min-height: 100%%; }
-.gm-feature .gm-card { grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); }
-.gm-feature .gm-pic { aspect-ratio: 3 / 2; }
-.gm-feature .gm-body { justify-content: center; padding: clamp(20px, 3vw, 40px); }
-.gm-feature h3 { font-size: clamp(1.9rem, 3.6vw, 3rem); }
-.gm-feature .gm-body p { font-size: 1.08rem; }
-.gm-feature .gm-go { margin-top: 10px; }
-@media (max-width: 820px) {
-  .gm-feature .gm-card { display: flex; }
+.gm-body h3 { font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(1.35rem, 2vw, 1.7rem); line-height: 1.08; margin: 0; color: var(--gh-text); text-wrap: balance; }
+.gm-body p { margin: 0; font-size: 1rem; line-height: 1.55; color: var(--gh-text-dim); max-width: 50ch; }
+.gm-go { margin-top: 6px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; font-size: .9rem; color: var(--gh-accent); }
+/* the first chart: the picture takes three fifths, at least 3:2 */
+.gm-feature .gm-card { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); }
+.gm-feature .gm-pic::before { padding-top: 66.67%%; }
+.gm-feature .gm-body { padding: clamp(24px, 3.2vw, 48px); gap: 14px; }
+.gm-feature h3 { font-size: clamp(1.8rem, 2.8vw, 2.6rem); line-height: 1.04; }
+.gm-feature .gm-body p { font-size: 1.08rem; line-height: 1.6; }
+@media (max-width: 860px) {
+  .gm-feature .gm-card { grid-template-columns: 1fr; }
 }
-@media (max-width: 560px) {
-  .gm-list .gm-card { display: flex; }
-  .gm-list .gm-pic { aspect-ratio: 16 / 9; min-height: 0; }
+@media (max-width: 600px) {
+  .gm-card { grid-template-columns: 1fr; }
 }
 
 /* ── hero: the chart as a real 3D relief map: the coasts raised from the
@@ -558,7 +560,7 @@ body.gh {
     transparent 58%%);
 }
 @media (min-width: 881px) {
-  .gh-hero-copy .gh-kicker, .gh-hero-copy .gh-h1, .gh-hero-copy .gh-lede, .gh-hero-copy .gh-stats, .gh-hero-copy .gh-plans {
+  .gh-hero-copy .gh-kicker, .gh-hero-copy .gh-h1, .gh-hero-copy .gh-lede, .gh-hero-copy .gh-stats, .gh-hero-copy .gh-sail, .gh-hero-copy .gh-plans {
     text-shadow: 0 0 6px rgba(255, 252, 244, 0.9), 0 0 18px rgba(255, 252, 244, 0.65);
   }
 }
@@ -585,9 +587,10 @@ body.gh {
 .gh-stats span { font-size: .95rem; line-height: 1.3; max-width: 16em; text-wrap: balance; }
 .gh-stats .gh-stat-free b { color: var(--gh-accent-bright); }
 .gh-ctas { display: flex; flex-wrap: wrap; gap: 12px; }
-/* under the buttons: what Pro costs */
-.gh-plans { margin: 18px 0 0; font-size: .98rem; line-height: 1.5; max-width: 34em; }
-.gh-plans a { color: var(--gh-accent-bright); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+/* under the buttons: the chart's own lesson, and what Pro costs */
+.gh-sail, .gh-plans { margin: 18px 0 0; font-size: .98rem; line-height: 1.5; max-width: 34em; }
+.gh-plans { margin-top: 6px; }
+.gh-sail a, .gh-plans a { color: var(--gh-accent-bright); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
 @media (max-width: 880px) {
   .gh-hero { display: block; min-height: 0; background: var(--gh-paper); }
   .gh-hero-art { position: relative; inset: auto; z-index: auto; aspect-ratio: 16 / 11;
@@ -835,7 +838,7 @@ def _card(t, rows, images, colour=None):
 
 
 def maps_band(rows):
-    """The band that opens the page: the charts in tools/grammar_maps.py,
+    """The section under the hero: the charts in tools/grammar_maps.py,
     the first one large. Level and Free come from the catalogue row."""
     by_file = {r['file']: r for r in rows}
     items = []
@@ -843,7 +846,7 @@ def maps_band(rows):
         if not os.path.exists(os.path.join(ROOT, m['href'])):
             sys.exit('! grammar_maps.py: %s does not exist' % m['href'])
         r = by_file.get(m['href'])
-        kick = ['Grammar map']
+        kick = [esc(m['title'])]
         if r:
             kick.append(span([r]))
             if r.get('access') != 'pro':
@@ -854,26 +857,24 @@ def maps_band(rows):
         pic = web_copy(m['image'], stem, width=1280 if i == 0 else 720)
         from PIL import Image
         w, h = Image.open(os.path.join(ROOT, pic)).size
-        items.append(
-            '    <li%s><a class="gm-card" href="%s">'
-            '<span class="gm-pic"><img src="%s" alt="%s" width="%d" height="%d"%s></span>'
-            '<span class="gm-body"><span class="gh-kicker">%s</span><h3>%s</h3><p>%s</p>'
-            '<span class="gm-go">%s <span aria-hidden="true">&rarr;</span></span></span></a></li>'
-            % (' class="gm-feature"' if i == 0 else '', seo.quote(m['href']), esc(pic), esc(m['alt']),
-               w, h, ' fetchpriority="high"' if i == 0 else ' loading="lazy"',
-               ' &middot; '.join(kick), esc(m['title']), esc(m['blurb']), esc(m.get('go', 'Open the map'))))
+        card = ('<a class="gm-card" href="%s">'
+                '<span class="gm-pic"><img src="%s" alt="%s" width="%d" height="%d" loading="lazy"></span>'
+                '<span class="gm-body"><span class="gh-kicker">%s</span><h3>%s</h3><p>%s</p>'
+                '<span class="gm-go">%s <span aria-hidden="true">&rarr;</span></span></span></a>'
+                % (seo.quote(m['href']), esc(pic), esc(m['alt']), w, h, ' &middot; '.join(kick),
+                   esc(m.get('heading', m['title'])), esc(m['blurb']), esc(m.get('go', 'Open the map'))))
+        items.append(card)
+    rest = ''.join('\n      <li>%s</li>' % c for c in items[1:])
     return '''<section class="gm" id="maps" aria-labelledby="gm-h">
   <div class="gh-wrap">
-    <div class="gm-head">
-      <div><p class="gh-kicker">Grammar maps</p>
-      <h2 class="gh-h2" id="gm-h">Sailing the seas <em>of grammar</em></h2></div>
+    <div class="gh-sechead">
+      <p class="gh-kicker">Grammar maps</p>
+      <h2 class="gh-h2" id="gm-h">Sailing the seas <em>of grammar</em></h2>
       <p>Grammar drawn as a place: a coast for each pattern, a camp for each tense. Find the rule on the map, then sail or climb to the practice.</p>
     </div>
-    <ul class="gm-list">
-%s
-    </ul>%s
+    <div class="gm-feature">%s</div>%s
   </div>
-</section>''' % (items[0], '\n    <ul class="gm-list">\n%s\n    </ul>' % '\n'.join(items[1:]) if items[1:] else '')
+</section>''' % (items[0], '\n    <ul class="gm-list">%s\n    </ul>' % rest if rest else '')
 
 
 def render(rows, images, allm):
@@ -891,9 +892,10 @@ def render(rows, images, allm):
     blockcamp = family(rows, 'blockcamp-', 'block-camp/')
     tense_lessons = {r['file'] for t in tense_topics for r in allm[t['slug']]}
 
-    b = ['<main>', maps_band(rows)]
+    b = []
     # ── hero ──
-    b.append('''<header class="gh-hero" aria-labelledby="gh-h1">
+    b.append('''<main>
+<header class="gh-hero" aria-labelledby="gh-h1">
   <script>
     /* open on the hero's sky, not the flat chart: the flat picture shows only
        if the 3D map has not arrived within five seconds (no WebGL, no module) */
@@ -918,6 +920,7 @@ def render(rows, images, allm):
         <a class="gh-btn" href="#tenses">The tenses, in colour <span aria-hidden="true">&darr;</span></a>
         <a class="gh-btn gh-btn-quiet" href="level-checker.html">Find your level</a>
       </div>
+      <p class="gh-sail">The chart is <a href="sailing-the-seas-of-grammar.html">Sailing the Seas of Grammar</a>: gerunds or infinitives, coast by coast &rarr;</p>
       <p class="gh-plans">Plenty of lessons are free, no sign-in. Pro opens every one &mdash; <a href="pricing.html">plans and prices</a>.</p>
     </div>
   </div>
@@ -925,6 +928,9 @@ def render(rows, images, allm):
                 len(files), len(listed), len(free_files)))
 
     b.append(CHART_3D)
+
+    # ── grammar maps: straight under the hero (tools/grammar_maps.py) ──
+    b.append(maps_band(rows))
 
     # ── the tense code ──
     b.append('''<section class="gh-tenses" id="tenses" aria-labelledby="gh-tenses-h">
