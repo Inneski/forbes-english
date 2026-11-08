@@ -643,6 +643,10 @@ CHART_CSS = _reg[_a:_b]
 assert '.chart-toggle-wrap' in CHART_CSS and '#order .diagram-card' in CHART_CSS, 'chart CSS moved in build_regularia.py'
 
 ROOM_CSS = '''
+  /* the hero chart carries width/height (no layout jump while it loads); the
+     shell sets only its width, so without this the height attribute held it
+     at 1024px and squashed the chart into a strip (Innes, 2026-11-08) */
+  .hero-diagram{height:auto;}
   /* ── the ship's rooms: Innes's paintings, the words pinned on ── */
   /* one room to a row: side by side, in a 740px column, each painting was
      370px wide and its tags ran into each other */
