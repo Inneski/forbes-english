@@ -249,6 +249,7 @@ OVERRIDES = {
     'be-aware-of-this-cleaner.html': ['present-perfect', 'passive-voice'],
     'champions_league_english.html': [],                # football vocabulary; no grammar hub
     'top-gear-skiing-lesson.html': ['past-simple'],
+    'sailing-the-seas-regularia.html': ['past-simple'],  # regular / irregular past forms, as a sea chart
     'forbes-english-golf-lesson.html': ['past-simple', 'present-perfect'],
     'mtb-perfect-vs-simple.html': ['past-simple', 'present-perfect'],
     'forbes-english-lesson (2).html': ['conditionals', 'business-english'],

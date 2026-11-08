@@ -659,6 +659,11 @@ body::after{left:50%;right:0;
     .diagram-stage .chart-toggle-wrap{width:720px;max-width:none;}
     .chart-scroll-hint{display:block;}
   }
+  /* on a phone the trail's 66px gutter and the card's padding left the chart
+     a 205px window; the chart card reaches into the gutter instead */
+  @media (max-width:600px){
+    #order .diagram-card{margin-left:-56px;padding:16px 12px;}
+  }
 '''
 
 REPLACEMENTS = [

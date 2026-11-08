@@ -10,6 +10,62 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
+## 2026-11-08 — Regularia & Irregularia (A2–B1): the second sea chart, BUILT; catalogue row NOT YET IN
+
+`sailing-the-seas-regularia.html` covers regular and irregular past forms as a
+sea chart, the second chart in Sailing the Seas of Grammar. It is a scrolling
+page on the first chart's machinery, not a deck: `build_regularia.py` copies
+`build_sailing.py`'s use of the Sherpa camp shell.
+- **Art.** The labelled Codex repaint is the hero. The clean copy is the
+  clickable chart. Both went through `prep-artwork.py` into
+  `sailing-the-seas-regularia/`; the sources are in `incoming/sea-charts/`.
+- **The label layer:** `regularia_map.py`.
+  - The harbour coordinates are the painted dots, blob-detected by
+    `regularia_measure.py`. It writes the landmass outlines and paint colours
+    to `regularia_chart.json`; the outlines become the click targets.
+  - Think Tarn's dot sits on a lake shore and fails the ring test, so it was
+    measured with the test relaxed. Two detections were not harbours: a rock,
+    and a cliff edge on -T Island.
+  - Label inks are each landmass's paint darkened to 7:1.
+- **The chart reads three ways:** place names, bare verbs, past forms.
+  - Two-form pasts (*sang · sung*) drop to 15px to fit.
+  - The Lone Stacks show past and participle on two lines.
+  - Zero label overlaps in all three modes, measured with getBBox.
+- **Page sections:**
+  - the continent: six spelling cards, plus the three sounds of -ed as the three provinces;
+  - the archipelago: six family cards, the three forms per island, the Lone Stacks;
+  - the chart;
+  - "When *did* carries the past" (*didn't went*, and *have* + third form);
+  - Forked Isle (lie/lay, hanged/hung, shone/shined, plus lay → laid);
+  - the Shallows (learnt/learned, and the drift east: dove, snuck);
+  - the signals;
+  - 14 quiz questions.
+  14 examples carry nine-language translations (`ex_tr_regularia.py`,
+  written in-session, no native check).
+- **Palette:** `extract-palette.py --light` on the hero, all PASS. The
+  accent is its sea teal, matching the first chart; the tints are mixed
+  and measured in the builder.
+- **Checked:**
+  - In the browser at 1920 and 375: all 14 quiz questions answer correctly;
+    the hit tests on every landmass light the right panel and row; DE reveals.
+  - `check-lesson.js` fails the same five deck-only checks it fails on the
+    first chart. This page type is not a deck.
+- **Fixed on the way:**
+  - The result message printed `&#39;` literally: it is set as text, so it
+    now uses a real apostrophe.
+  - On a phone the chart had a 205px window, because of the trail's 66px
+    gutter and the card padding. The chart card now reaches into the gutter
+    (289px). The first chart had the same defect and got the same CSS in
+    `build_sailing.py`.
+- **Catalogue row: NOT inserted.** The Supabase write was refused (auto
+  mode). Until it is in, the library and the Past Simple hub do not list the
+  page, and its grammar-map card has no level. Insert it, then run
+  `py tools/build_hubs.py` and `py tools/seo.py`:
+  `insert into public.lessons (file, title, level, access, track, deck, video) values ('sailing-the-seas-regularia.html', 'Sailing the Seas of Grammar — Regular and Irregular Verbs', 'A2-B1', 'free', 'general', false, false);`
+  `access` is `free` to match the first chart; that is Innes's call.
+  `topics.py` OVERRIDES already sends it to the Past Simple hub, and
+  `library.html` already has its thumbnail.
+
 ## 2026-11-08 — Grammar maps: the series plan, and the sea-chart art was found
 
 **The painted sea charts and ship's rooms exist. They are not in

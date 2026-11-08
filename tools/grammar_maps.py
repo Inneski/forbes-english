@@ -52,6 +52,16 @@ MAPS = [
                 'takes both, with a change of meaning. Learn the coastline and you '
                 'know which form follows the verb.'),
          go='Set sail'),
+    dict(href='sailing-the-seas-regularia.html',
+         title='Regularia & Irregularia',
+         heading='Regular and irregular verbs, island by island',
+         image='sailing-the-seas-regularia/hero.jpg',
+         alt=('A hand-painted sea chart: the green continent of Regularia on the west, '
+              'and an archipelago of irregular-verb islands on the east'),
+         blurb=('Almost every verb lives on one tidy continent and takes ‑ed, in one of '
+                'three sounds. The rest live on islands, one family to an island, named '
+                'after the sound they share: ring rang rung, keep kept, speak spoke spoken.'),
+         go='Set sail'),
     dict(href='sherpa-tensing-route-map.html',
          title='Sherpa Tensing route map',
          heading='Every tense, camp by camp',
