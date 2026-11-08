@@ -98,6 +98,36 @@ ART = [
     ('bg-act', 'left', '91%', None, None),       # final talk
 ]
 ART_RESULTS = ('hero', None, '100%', 'arch', None)
+
+# The second set of plates (Innes, 2026-11-08: "a bit sparse on illustrations
+# and big on repetition"): one picture per slide wherever the slide has room,
+# so no plate repeats inside a stage. Keyed by flow step; a question step takes
+# a list, one per item. Each is drawn with its subject centred (the prompts ask
+# for it), so it takes the centre crop. A plate not on disk yet falls back to
+# the ART entry above, so the deck builds either way.
+NEW = {
+    0: 'talk-attic',
+    4: ['q-1946', 'q-engine', 'q-open-road', 'q-dealer', 'q-first-ride'],
+    5: 'grew-on',
+    6: 'old-photo',
+    7: ['f-seat', 'f-test-ride', 'f-headlamp', 'f-glare'],
+    10: 'talk-cafe',
+    12: ['c-lot', 'c-neck-and-neck', 'c-price'],
+    14: ['h-magnifier', 'h-scales'],
+}
+NEW_RESULTS = 'ride-away'
+
+
+def pick(a, slot, i=0):
+    """The ART entry with its plate swapped for a new one, if it has landed.
+    Question items alternate the frame's side, as Beyond the Handlebars does,
+    except in the narrow frame (its body has no room on the left)."""
+    if not a or not slot or not os.path.exists(os.path.join(F, slot + '.jpg')):
+        return a
+    pl, side, pos, shape, size = a
+    if size != 'narrow' and i:
+        side = 'left' if i % 2 else None
+    return (slot, side, 'center', shape, size)
 ART_ACT = None    # the activation's two panels need the full width
 
 
@@ -265,7 +295,7 @@ SPEC['flow'] = [
     ('raw', DASH_SLIDE),
     ('raw', reading('eR1', [P1], 'rPredict'), 'a'),
     ('raw', reading('eR2', [P2, P3], 'rNote')),
-    ('mc', 'e1', 'mcT', READ, 'a', 'left'),
+    ('mc', 'e1', 'mcT1', READ, 'a', 'left'),
     ('rules', 'eP', 'pT1', [
         ('grow on someone', ['pg1', 'pg2'], 'The square headlight <strong>grew on me</strong> after a couple of weeks.'),
         ('win someone over', ['pw1', 'pw2'], 'Then I heard the engine. That sound <strong>won me over</strong>.'),
@@ -274,7 +304,7 @@ SPEC['flow'] = [
         ('hark back to something', ['ph1', 'ph2'], 'The cream paint <strong>harks back to</strong> the scooters of the sixties.'),
         ('come at a price', ['pc1', 'pc2'], 'That clean display <strong>comes at a price</strong>: the mileage is hidden in a menu.'),
     ], None),
-    ('mc', 'e2', 'mcT', FORM, 'b', None),
+    ('mc', 'e2', 'mcT2', FORM, 'b', None),
     ('gap', 'e2', 'gT', 'gHint', [
         ('With its cream paint and curved lettering, the scooter ______ the ones in my grandfather’s photos.',
          ['harks back to'], 'gw1'),
@@ -298,13 +328,13 @@ SPEC['flow'] = [
         'Dial or screen: which would <strong>win</strong> your parents <strong>over</strong>?',
     ], None, 3),
     ('raw', CLAIM_SLIDE, 'c'),
-    ('mc', 'eC', 'mcT', CLAIM, 'c', 'left'),
+    ('mc', 'eC', 'mcT3', CLAIM, 'c', 'left'),
     ('rules', 'eH', 'hT', [
         ('is consistent with', ['hc1', 'hc2'], 'The ranking <strong>is consistent with</strong> a preference for simpler bikes.'),
         ('may partly explain', ['hp1', 'hp2'], 'A low price <strong>may partly explain</strong> the ranking too.'),
         ('proves', ['hx1', 'hx2'], 'That <strong>proves</strong> riders are tired of complicated bikes. ✗'),
     ], None),
-    ('mc', 'eH', 'mcT', HEDGE, None, None),
+    ('mc', 'eH', 'mcT4', HEDGE, None, None),
     ('gap', 'eH', 'g2T', 'g2Hint', [
         ('The figures are consistent ______ a preference for simpler bikes.', ['with'], 'hw1'),
         ('A lower price ______ partly explain the ranking.', ['may|might|could'], 'hw2'),
@@ -424,7 +454,7 @@ T = {
         eR1='Read for attitude', eR2='Read on', rT='Who gets to call it cool?',
         rPredict='Before you read on: what do you think the writer will praise about bikes like these? Tell your partner, then check on the next slide.',
         rNote='An original text written for this lesson, inspired by Charlie Thomas’s 2023 feature for British GQ. ' + GQ % 'Read the original',
-        e1='Reading', mcT='Choose the best answer',
+        e1='Reading', mcT1='Read between the lines', mcT2='Say it right', mcT3='What do the figures show?', mcT4='How sure can we be?',
         eP='Language in use', pT1='Changing your mind', pT2='Looking back, paying for it',
         pg1='You did not like it at first; slowly, you start to like it.',
         pg2='The THING is the subject: IT GREW ON ME. Never “I grew on it”.',
@@ -436,7 +466,7 @@ T = {
         pc2='The good thing is the subject: SIMPLICITY COMES AT A PRICE.',
         e2='Using the phrases', gT='Complete the reviews',
         gHint='Type the phrase in the right form. Use each one once.',
-        eM='Make it yours', tk2T='Let’s talk!',
+        eM='Make it yours', tk2T='Your turn: use the phrases',
         eC='Test a claim', cT='Can sales tell us why?', cF='The figures', cM='The showroom manager',
         cTask='What can the figures really tell us? Think of two other explanations for the ranking, then make the manager’s claim more careful.',
         cSrc='Figures: UK registrations, as reported by ' + BB + ', August 2022.',
@@ -448,7 +478,7 @@ T = {
         hx1='Only for something the data settles completely.',
         hx2='Sales figures almost never prove a reason.',
         g2T='Make it careful', g2Hint='One word in each gap.',
-        eT='What deserves a comeback?', tk3T='Let’s talk!',
+        eT='What deserves a comeback?', tk3T='Bring something back',
         actTitle='You get one prototype', actUse='Use at least four:',
         actSpeakBrief='In pairs: a small manufacturer can build one city bike for first-time riders. Choose a dashboard and agree on one extra feature.',
         actSpeak1='Design lead: bring one detail from an older machine into the design, and say what it does for the rider.',
@@ -470,7 +500,7 @@ T = {
         eR1='Lesen: die Haltung', eR2='Weiterlesen', rT='Wer darf sagen, was cool ist?',
         rPredict='Bevor du weiterliest: Was wird der Autor an solchen Motorrädern loben? Sag es deinem Partner und prüfe es auf der nächsten Folie.',
         rNote='Ein eigener Text für diese Lektion, angeregt durch Charlie Thomas’ Artikel von 2023 in der britischen GQ. ' + GQ % 'Zum Original',
-        e1='Lesen', mcT='Wähle die beste Antwort',
+        e1='Lesen', mcT1='Zwischen den Zeilen lesen', mcT2='Richtig gesagt', mcT3='Was zeigen die Zahlen?', mcT4='Wie sicher können wir sein?',
         eP='Sprache im Einsatz', pT1='Seine Meinung ändern', pT2='Zurückblicken, dafür bezahlen',
         pg1='Zuerst mochtest du es nicht; nach und nach gefällt es dir.',
         pg2='Die SACHE ist das Subjekt: IT GREW ON ME. Nie „I grew on it“.',
@@ -482,7 +512,7 @@ T = {
         pc2='Das Gute ist das Subjekt: SIMPLICITY COMES AT A PRICE.',
         e2='Die Wendungen anwenden', gT='Vervollständige die Bewertungen',
         gHint='Schreib die Wendung in der richtigen Form. Jede nur einmal.',
-        eM='Mach es zu deinem', tk2T='Sprechen wir!',
+        eM='Mach es zu deinem', tk2T='Jetzt du: nutze die Wendungen',
         eC='Eine Behauptung prüfen', cT='Verraten Verkaufszahlen das Warum?', cF='Die Zahlen', cM='Der Filialleiter',
         cTask='Was sagen die Zahlen wirklich? Findet zwei andere Erklärungen für die Rangliste und formuliert die Aussage des Filialleiters vorsichtiger.',
         cSrc='Zahlen: Neuzulassungen in Großbritannien, laut ' + BB + ', August 2022.',
@@ -494,7 +524,7 @@ T = {
         hx1='Nur für etwas, das die Daten vollständig klären.',
         hx2='Verkaufszahlen beweisen fast nie einen Grund.',
         g2T='Mach es vorsichtig', g2Hint='Ein Wort pro Lücke.',
-        eT='Was verdient ein Comeback?', tk3T='Sprechen wir!',
+        eT='Was verdient ein Comeback?', tk3T='Hol etwas zurück',
         actTitle='Ihr bekommt einen Prototyp', actUse='Verwende mindestens vier:',
         actSpeakBrief='Zu zweit: Ein kleiner Hersteller kann ein Stadtmotorrad für Fahranfänger bauen. Wählt ein Cockpit und einigt euch auf ein zusätzliches Extra.',
         actSpeak1='Designchef: Übernimm ein Detail von einer älteren Maschine und sag, was es für den Fahrer leistet.',
@@ -516,7 +546,7 @@ T = {
         eR1='Leer la actitud', eR2='Sigue leyendo', rT='¿Quién decide qué es cool?',
         rPredict='Antes de seguir: ¿qué crees que va a elogiar el autor de motos como estas? Díselo a tu compañero y compruébalo en la siguiente diapositiva.',
         rNote='Un texto original escrito para esta lección, inspirado en el artículo de Charlie Thomas de 2023 para la GQ británica. ' + GQ % 'Leer el original',
-        e1='Lectura', mcT='Elige la mejor respuesta',
+        e1='Lectura', mcT1='Leer entre líneas', mcT2='Dilo bien', mcT3='¿Qué muestran las cifras?', mcT4='¿Qué tan seguros podemos estar?',
         eP='La lengua en uso', pT1='Cambiar de opinión', pT2='Mirar atrás, pagar el precio',
         pg1='Al principio no te gustaba; poco a poco empieza a gustarte.',
         pg2='La COSA es el sujeto: IT GREW ON ME. Nunca «I grew on it».',
@@ -528,7 +558,7 @@ T = {
         pc2='Lo bueno es el sujeto: SIMPLICITY COMES AT A PRICE.',
         e2='Usar las expresiones', gT='Completa las reseñas',
         gHint='Escribe la expresión en la forma correcta. Usa cada una una vez.',
-        eM='Hazlo tuyo', tk2T='¡A conversar!',
+        eM='Hazlo tuyo', tk2T='Te toca: usa las expresiones',
         eC='Poner a prueba una afirmación', cT='¿Nos dicen las ventas por qué?', cF='Las cifras', cM='El gerente del concesionario',
         cTask='¿Qué nos dicen de verdad las cifras? Piensen en otras dos explicaciones para la clasificación y luego hagan más prudente la afirmación del gerente.',
         cSrc='Cifras: matriculaciones en el Reino Unido, según ' + BB + ', agosto de 2022.',
@@ -540,7 +570,7 @@ T = {
         hx1='Solo para algo que los datos resuelven por completo.',
         hx2='Las cifras de ventas casi nunca demuestran un motivo.',
         g2T='Hazlo prudente', g2Hint='Una palabra en cada hueco.',
-        eT='¿Qué merece volver?', tk3T='¡A conversar!',
+        eT='¿Qué merece volver?', tk3T='Recupera algo',
         actTitle='Tienen un solo prototipo', actUse='Usa al menos cuatro:',
         actSpeakBrief='En parejas: un pequeño fabricante puede construir una moto urbana para principiantes. Elijan un tablero y acuerden un extra.',
         actSpeak1='Jefe de diseño: trae un detalle de una máquina antigua al diseño y explica qué aporta al conductor.',
@@ -657,8 +687,11 @@ def build():
     s = [D.cover(D.logo_from(TPL), E['coverTitle'], E['coverSub'],
                  [('Level', E['chipLevel']), ('Count', E['chipCount']), ('Focus', E['chipFocus'])])]
     dealt = 0
-    for step, a in zip(SPEC['flow'], ART):
+    for n_step, (step, a) in enumerate(zip(SPEC['flow'], ART)):
         kind = step[0]
+        new = NEW.get(n_step)
+        if kind != 'mc':
+            a = pick(a, new)
         if kind == 'talk':
             s.append(frame(talk(step[1], step[2], step[3], 2 if a else 3), a))
         elif kind == 'raw':
@@ -674,7 +707,8 @@ def build():
             dealt += len(items)
             D.assert_no_key_is_longest(items, SPEC['out'])
             for i, it in enumerate(items, 1):
-                s.append(frame(D.mc(i, len(items), it, ek, E[ek], tk, E[tk]), a))
+                ai = pick(a, new[i - 1], i) if new else a
+                s.append(frame(D.mc(i, len(items), it, ek, E[ek], tk, E[tk]), ai))
         elif kind == 'gap':
             _, ek, tk, hk, rows = step[:5]
             bank = step[5] if len(step) > 5 else None
@@ -684,7 +718,7 @@ def build():
                                  hint=E[hk], hint_key=hk, size=21), a))
         else:
             raise AssertionError(kind)
-    s.append(frame(D.results(), ART_RESULTS))
+    s.append(frame(D.results(), pick(ART_RESULTS, NEW_RESULTS)))
     s.append(frame(D.activate(E['actTitle'], E['actUse'], SPEC['chips'], 'Speaking', E['actSpeakBrief'],
                               [E['actSpeak1'], E['actSpeak2'], E['actSpeak3']],
                               E['actWriteKind'], E['actWriteBrief'], E['actPlaceholder']), ART_ACT))

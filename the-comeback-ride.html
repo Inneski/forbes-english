@@ -2345,6 +2345,71 @@ html[data-style="hs2"] .bubbles {
 .aside-note {
   font-style: italic; color: var(--text-dim); font-size: 16px;
 }
+
+/* ══ TONES (house style 2, opt-in: deck.assemble(..., tones=True)) ═════
+   Innes, 2026-11-08, on Money Affirmations: "be a bit more creative with
+   colored panels". One greige tint on every container read as flat. With
+   data-tones="on" the containers rotate through four tones, and the
+   picture stands on a coloured panel instead of bare paper.
+
+   Rule 4 holds: every tone is a mix of the deck's own palette tokens
+   (secondary, accent-dim, contrast, accent) into --void, so a deck's
+   tones change with its hero like everything else. Text stays --text;
+   the mixes are light enough that body copy and the accent example keep
+   their contrast (measured on the first deck: copy and accent on the
+   light tones 5.9:1 or better; the deep tones carry only --text, 9.5:1+). */
+html[data-tones="on"] {
+  --tone-1: color-mix(in srgb, var(--secondary) 48%, var(--void));
+  --tone-2: color-mix(in srgb, var(--accent-dim) 62%, var(--void));
+  --tone-3: color-mix(in srgb, var(--contrast) 17%, var(--void));
+  --tone-4: color-mix(in srgb, var(--accent) 17%, var(--void));
+  --tone-1-deep: color-mix(in srgb, var(--secondary) 88%, var(--void));
+  --tone-2-deep: var(--accent-dim);
+  --tone-3-deep: color-mix(in srgb, var(--contrast) 34%, var(--void));
+  --tone-4-deep: color-mix(in srgb, var(--accent) 34%, var(--void));
+}
+/* rule and vocabulary cards: the card takes a tone, its pill the deep one */
+html[data-tones="on"] .tab-card:nth-child(4n+1) { background: var(--tone-1); }
+html[data-tones="on"] .tab-card:nth-child(4n+2) { background: var(--tone-2); }
+html[data-tones="on"] .tab-card:nth-child(4n+3) { background: var(--tone-3); }
+html[data-tones="on"] .tab-card:nth-child(4n+4) { background: var(--tone-4); }
+html[data-tones="on"] .tab-card:nth-child(4n+1) .tab-pill { background: var(--tone-1-deep); }
+html[data-tones="on"] .tab-card:nth-child(4n+2) .tab-pill { background: var(--tone-2-deep); }
+html[data-tones="on"] .tab-card:nth-child(4n+3) .tab-pill { background: var(--tone-3-deep); }
+html[data-tones="on"] .tab-card:nth-child(4n+4) .tab-pill { background: var(--tone-4-deep); }
+/* speech bubbles, survey answers and gap rows rotate the same set */
+html[data-tones="on"] :is(.bubble, .survey-a, .gap-row.card):nth-child(4n+1) { background: var(--tone-1); }
+html[data-tones="on"] :is(.bubble, .survey-a, .gap-row.card):nth-child(4n+2) { background: var(--tone-2); }
+html[data-tones="on"] :is(.bubble, .survey-a, .gap-row.card):nth-child(4n+3) { background: var(--tone-3); }
+html[data-tones="on"] :is(.bubble, .survey-a, .gap-row.card):nth-child(4n+4) { background: var(--tone-4); }
+html[data-tones="on"] .survey-q { background: var(--tone-3-deep); }
+/* answer options stay one quiet tint (colour must not hint at the key);
+   only the letter badge takes a tone, by position, not by answer */
+html[data-tones="on"] .opt:nth-child(4n+1) .opt-key { background: var(--tone-1-deep); }
+html[data-tones="on"] .opt:nth-child(4n+2) .opt-key { background: var(--tone-2-deep); }
+html[data-tones="on"] .opt:nth-child(4n+3) .opt-key { background: var(--tone-3-deep); }
+html[data-tones="on"] .opt:nth-child(4n+4) .opt-key { background: var(--tone-4-deep); }
+/* sort bins: each box its own colour, so "which box" is a colour too */
+html[data-tones="on"] .sort-bin { border-style: solid; border-color: transparent; }
+html[data-tones="on"] .sort-bin:nth-child(1) { background: var(--tone-2); }
+html[data-tones="on"] .sort-bin:nth-child(2) { background: var(--tone-1); }
+html[data-tones="on"] .sort-bin:nth-child(3) { background: var(--tone-3); }
+html[data-tones="on"] .act-panel { background: var(--tone-3); }
+/* the coloured panel behind a cut-out figure: one colour per kind of
+   slide, so the deck changes colour as the task changes */
+html[data-tones="on"] .stage:has(.slide.is-active[data-art="cutout"]) .editorial-art {
+  top: 150px; bottom: 74px; right: 56px; border-radius: 28px;
+  background-color: var(--tone-1);
+  background-size: 78% auto; background-position: var(--art-pos, center 62%);
+}
+html[data-tones="on"] .stage:has(.slide.is-active[data-art-side="left"][data-art="cutout"]) .editorial-art { left: 56px; right: auto; }
+html[data-tones="on"] .stage:has(.slide.is-active[data-type="mc"][data-art="cutout"]) .editorial-art { background-color: var(--tone-3); }
+html[data-tones="on"] .stage:has(.slide.is-active[data-type="discuss"][data-art="cutout"]) .editorial-art { background-color: var(--tone-2); }
+html[data-tones="on"] .stage:has(.slide.is-active[data-type="activate"][data-art="cutout"]) .editorial-art { background-color: var(--tone-4); }
+html[data-tones="on"] .stage.on-cover:has(.slide[data-type="cover"][data-art="cutout"]) .bg-layer::before {
+  top: 56px; bottom: 56px; right: 56px; border-radius: 36px;
+  background-color: var(--tone-1); background-size: 74% auto; background-position: center 64%;
+}
 /* The Comeback Ride: keep the cover type off the café racer (see builder). */
 html[data-style="editorial"]:not(.is-flow) .cover-inner { max-width: 30.5%; }
 html[data-style="editorial"]:not(.is-flow) .cover-title { font-size: 72px; }
@@ -2502,7 +2567,7 @@ html.is-flow[data-style="editorial"] .slide[data-type="cover"] .cover-inner {
     <section class="slide" data-bg="ComebackRide/bg-read.jpg" data-art-pos="63%" data-art-size="narrow" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e1">Reading</span> &middot; 1 / 5</div>
-        <h2 class="slide-title" data-i18n="mcT">Choose the best answer</h2>
+        <h2 class="slide-title" data-i18n="mcT1">Read between the lines</h2>
       </div></div>
       <div class="slide-body">
         <p class="q-stem">Paragraph one: what changed about the Vespa between 1946 and today?</p>
@@ -2519,7 +2584,7 @@ html.is-flow[data-style="editorial"] .slide[data-type="cover"] .cover-inner {
     <section class="slide" data-bg="ComebackRide/bg-read.jpg" data-art-pos="63%" data-art-size="narrow" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e1">Reading</span> &middot; 2 / 5</div>
-        <h2 class="slide-title" data-i18n="mcT">Choose the best answer</h2>
+        <h2 class="slide-title" data-i18n="mcT1">Read between the lines</h2>
       </div></div>
       <div class="slide-body">
         <p class="q-stem">Which detail in paragraph two is something you could hear or feel?</p>
@@ -2536,7 +2601,7 @@ html.is-flow[data-style="editorial"] .slide[data-type="cover"] .cover-inner {
     <section class="slide" data-bg="ComebackRide/bg-read.jpg" data-art-pos="63%" data-art-size="narrow" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e1">Reading</span> &middot; 3 / 5</div>
-        <h2 class="slide-title" data-i18n="mcT">Choose the best answer</h2>
+        <h2 class="slide-title" data-i18n="mcT1">Read between the lines</h2>
       </div></div>
       <div class="slide-body">
         <p class="q-stem">Why might a list of specifications have less effect on a reader than that detail?</p>
@@ -2553,7 +2618,7 @@ html.is-flow[data-style="editorial"] .slide[data-type="cover"] .cover-inner {
     <section class="slide" data-bg="ComebackRide/bg-read.jpg" data-art-pos="63%" data-art-size="narrow" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e1">Reading</span> &middot; 4 / 5</div>
-        <h2 class="slide-title" data-i18n="mcT">Choose the best answer</h2>
+        <h2 class="slide-title" data-i18n="mcT1">Read between the lines</h2>
       </div></div>
       <div class="slide-body">
         <p class="q-stem">What does the dealer assume about the two customers?</p>
@@ -2570,7 +2635,7 @@ html.is-flow[data-style="editorial"] .slide[data-type="cover"] .cover-inner {
     <section class="slide" data-bg="ComebackRide/bg-read.jpg" data-art-pos="63%" data-art-size="narrow" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e1">Reading</span> &middot; 5 / 5</div>
-        <h2 class="slide-title" data-i18n="mcT">Choose the best answer</h2>
+        <h2 class="slide-title" data-i18n="mcT1">Read between the lines</h2>
       </div></div>
       <div class="slide-body">
         <p class="q-stem">Why should the dealer ask the second customer first?</p>
@@ -2613,7 +2678,7 @@ html.is-flow[data-style="editorial"] .slide[data-type="cover"] .cover-inner {
     <section class="slide" data-bg="ComebackRide/bg-show.jpg" data-art-side="left" data-art-pos="49%" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e2">Using the phrases</span> &middot; 1 / 4</div>
-        <h2 class="slide-title" data-i18n="mcT">Choose the best answer</h2>
+        <h2 class="slide-title" data-i18n="mcT2">Say it right</h2>
       </div></div>
       <div class="slide-body">
         <p class="q-stem">Which sentence is correct?</p>
@@ -2630,7 +2695,7 @@ html.is-flow[data-style="editorial"] .slide[data-type="cover"] .cover-inner {
     <section class="slide" data-bg="ComebackRide/bg-show.jpg" data-art-side="left" data-art-pos="49%" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e2">Using the phrases</span> &middot; 2 / 4</div>
-        <h2 class="slide-title" data-i18n="mcT">Choose the best answer</h2>
+        <h2 class="slide-title" data-i18n="mcT2">Say it right</h2>
       </div></div>
       <div class="slide-body">
         <p class="q-stem">I was sure I wanted the screen, but the test ride ____.</p>
@@ -2647,7 +2712,7 @@ html.is-flow[data-style="editorial"] .slide[data-type="cover"] .cover-inner {
     <section class="slide" data-bg="ComebackRide/bg-show.jpg" data-art-side="left" data-art-pos="49%" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e2">Using the phrases</span> &middot; 3 / 4</div>
-        <h2 class="slide-title" data-i18n="mcT">Choose the best answer</h2>
+        <h2 class="slide-title" data-i18n="mcT2">Say it right</h2>
       </div></div>
       <div class="slide-body">
         <p class="q-stem">The round headlamp harks back ____ the bikes of the 1950s.</p>
@@ -2664,7 +2729,7 @@ html.is-flow[data-style="editorial"] .slide[data-type="cover"] .cover-inner {
     <section class="slide" data-bg="ComebackRide/bg-show.jpg" data-art-side="left" data-art-pos="49%" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e2">Using the phrases</span> &middot; 4 / 4</div>
-        <h2 class="slide-title" data-i18n="mcT">Choose the best answer</h2>
+        <h2 class="slide-title" data-i18n="mcT2">Say it right</h2>
       </div></div>
       <div class="slide-body">
         <p class="q-stem">Built-in navigation is useful, but it comes at a price: ____</p>
@@ -2731,7 +2796,7 @@ html.is-flow[data-style="editorial"] .slide[data-type="cover"] .cover-inner {
     <section class="slide" data-bg="ComebackRide/bg-act.jpg" data-art-pos="91%" data-type="discuss">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="eM">Make it yours</div>
-        <h2 class="slide-title" data-i18n="tk2T">Let’s talk!</h2>
+        <h2 class="slide-title" data-i18n="tk2T">Your turn: use the phrases</h2>
       </div></div>
       <div class="slide-body">
         <div class="cols" style="grid-template-columns:1fr 1fr;gap:14px">
@@ -2767,7 +2832,7 @@ html.is-flow[data-style="editorial"] .slide[data-type="cover"] .cover-inner {
     <section class="slide" data-bg="ComebackRide/bg-claim.jpg" data-art-pos="63%" data-art-size="narrow" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="eC">Test a claim</span> &middot; 1 / 3</div>
-        <h2 class="slide-title" data-i18n="mcT">Choose the best answer</h2>
+        <h2 class="slide-title" data-i18n="mcT3">What do the figures show?</h2>
       </div></div>
       <div class="slide-body">
         <p class="q-stem">What can the sales figures on their own actually show?</p>
@@ -2784,7 +2849,7 @@ html.is-flow[data-style="editorial"] .slide[data-type="cover"] .cover-inner {
     <section class="slide" data-bg="ComebackRide/bg-claim.jpg" data-art-pos="63%" data-art-size="narrow" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="eC">Test a claim</span> &middot; 2 / 3</div>
-        <h2 class="slide-title" data-i18n="mcT">Choose the best answer</h2>
+        <h2 class="slide-title" data-i18n="mcT3">What do the figures show?</h2>
       </div></div>
       <div class="slide-body">
         <p class="q-stem">The Meteor was six bikes ahead after seven months. Why is that a reason to be careful?</p>
@@ -2801,7 +2866,7 @@ html.is-flow[data-style="editorial"] .slide[data-type="cover"] .cover-inner {
     <section class="slide" data-bg="ComebackRide/bg-claim.jpg" data-art-pos="63%" data-art-size="narrow" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="eC">Test a claim</span> &middot; 3 / 3</div>
-        <h2 class="slide-title" data-i18n="mcT">Choose the best answer</h2>
+        <h2 class="slide-title" data-i18n="mcT3">What do the figures show?</h2>
       </div></div>
       <div class="slide-body">
         <p class="q-stem">Which fact, if true, would weaken the manager’s explanation most?</p>
@@ -2832,7 +2897,7 @@ html.is-flow[data-style="editorial"] .slide[data-type="cover"] .cover-inner {
     <section class="slide" data-bg="ComebackRide/bg-dash.jpg" data-art-pos="74%" data-art-size="narrow" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="eH">Careful claims</span> &middot; 1 / 2</div>
-        <h2 class="slide-title" data-i18n="mcT">Choose the best answer</h2>
+        <h2 class="slide-title" data-i18n="mcT4">How sure can we be?</h2>
       </div></div>
       <div class="slide-body">
         <p class="q-stem">Which sentence says what the figures support — no more, no less?</p>
@@ -2849,7 +2914,7 @@ html.is-flow[data-style="editorial"] .slide[data-type="cover"] .cover-inner {
     <section class="slide" data-bg="ComebackRide/bg-dash.jpg" data-art-pos="74%" data-art-size="narrow" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="eH">Careful claims</span> &middot; 2 / 2</div>
-        <h2 class="slide-title" data-i18n="mcT">Choose the best answer</h2>
+        <h2 class="slide-title" data-i18n="mcT4">How sure can we be?</h2>
       </div></div>
       <div class="slide-body">
         <p class="q-stem">A lower price ____ the ranking too.</p>
@@ -2891,7 +2956,7 @@ html.is-flow[data-style="editorial"] .slide[data-type="cover"] .cover-inner {
     <section class="slide" data-bg="ComebackRide/bg-act.jpg" data-art-side="left" data-art-pos="91%" data-type="discuss">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="eT">What deserves a comeback?</div>
-        <h2 class="slide-title" data-i18n="tk3T">Let’s talk!</h2>
+        <h2 class="slide-title" data-i18n="tk3T">Bring something back</h2>
       </div></div>
       <div class="slide-body">
         <div class="cols" style="grid-template-columns:1fr 1fr;gap:14px">
@@ -3099,7 +3164,10 @@ const UI_I18N = {
     lBd: "Your speed, the next turn and the riding mode on one display.",
     lT: "Which dashboard?",
     lTask: "<strong>In pairs.</strong> You have one second to glance down at a red light. Choose one dashboard for a visitor in an unfamiliar city and one for yourself. Point to the detail that decides it. What would you miss if it disappeared?",
-    mcT: "Choose the best answer",
+    mcT1: "Read between the lines",
+    mcT2: "Say it right",
+    mcT3: "What do the figures show?",
+    mcT4: "How sure can we be?",
     pT1: "Changing your mind",
     pT2: "Looking back, paying for it",
     pc1: "Something good brings a disadvantage with it.",
@@ -3117,8 +3185,8 @@ const UI_I18N = {
     scoreLabel: 'Score',
     slideOf: (a,b)=>`${a} / ${b}`,
     tk1T: "Let’s talk!",
-    tk2T: "Let’s talk!",
-    tk3T: "Let’s talk!",
+    tk2T: "Your turn: use the phrases",
+    tk3T: "Bring something back",
     w1: "The shape hardly changed; the MEANING did: from a practical way to get moving to a carefully chosen accessory.",
     w10: "A sales table counts bikes. It cannot tell you WHY anyone bought one.",
     w11: "Six bikes in seven months is a tiny margin: a few sales either way would change the ranking.",
@@ -3211,7 +3279,10 @@ const UI_I18N = {
     lBd: "Geschwindigkeit, nächste Abbiegung und Fahrmodus auf einem Bildschirm.",
     lT: "Welches Cockpit?",
     lTask: "<strong>Zu zweit.</strong> An der roten Ampel hast du eine Sekunde für einen Blick nach unten. Wählt ein Cockpit für jemanden, der eine fremde Stadt besucht, und eines für euch selbst. Zeigt auf das Detail, das entscheidet. Was würdet ihr vermissen, wenn es fehlte?",
-    mcT: "Wähle die beste Antwort",
+    mcT1: "Zwischen den Zeilen lesen",
+    mcT2: "Richtig gesagt",
+    mcT3: "Was zeigen die Zahlen?",
+    mcT4: "Wie sicher können wir sein?",
     pT1: "Seine Meinung ändern",
     pT2: "Zurückblicken, dafür bezahlen",
     pc1: "Etwas Gutes bringt einen Nachteil mit sich.",
@@ -3229,8 +3300,8 @@ const UI_I18N = {
     scoreLabel: 'Punkte',
     slideOf: (a,b)=>`${a} / ${b}`,
     tk1T: "Sprechen wir!",
-    tk2T: "Sprechen wir!",
-    tk3T: "Sprechen wir!",
+    tk2T: "Jetzt du: nutze die Wendungen",
+    tk3T: "Hol etwas zurück",
     w1: "Die Form hat sich kaum geändert, die BEDEUTUNG schon: vom praktischen Fortbewegungsmittel zum sorgfältig gewählten Accessoire.",
     w10: "Eine Verkaufstabelle zählt Motorräder. Sie kann nicht sagen, WARUM jemand eines gekauft hat.",
     w11: "Sechs Motorräder in sieben Monaten sind ein winziger Vorsprung: Ein paar Verkäufe mehr oder weniger, und die Rangliste ist anders.",
@@ -3323,7 +3394,10 @@ const UI_I18N = {
     lBd: "Tu velocidad, el próximo giro y el modo de conducción en una sola pantalla.",
     lT: "¿Qué tablero?",
     lTask: "<strong>En parejas.</strong> En un semáforo en rojo tienes un segundo para mirar hacia abajo. Elijan un tablero para alguien que visita una ciudad desconocida y otro para ustedes. Señalen el detalle que lo decide. ¿Qué echarían de menos si desapareciera?",
-    mcT: "Elige la mejor respuesta",
+    mcT1: "Leer entre líneas",
+    mcT2: "Dilo bien",
+    mcT3: "¿Qué muestran las cifras?",
+    mcT4: "¿Qué tan seguros podemos estar?",
     pT1: "Cambiar de opinión",
     pT2: "Mirar atrás, pagar el precio",
     pc1: "Algo bueno trae consigo una desventaja.",
@@ -3341,8 +3415,8 @@ const UI_I18N = {
     scoreLabel: 'Puntuación',
     slideOf: (a,b)=>`${a} / ${b}`,
     tk1T: "¡A conversar!",
-    tk2T: "¡A conversar!",
-    tk3T: "¡A conversar!",
+    tk2T: "Te toca: usa las expresiones",
+    tk3T: "Recupera algo",
     w1: "La forma apenas cambió; el SIGNIFICADO sí: de un medio práctico para moverse a un accesorio elegido con cuidado.",
     w10: "Una tabla de ventas cuenta motos. No puede decir POR QUÉ alguien compró una.",
     w11: "Seis motos en siete meses es un margen mínimo: unas pocas ventas más o menos cambiarían la clasificación.",
