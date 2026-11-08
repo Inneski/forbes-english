@@ -610,12 +610,15 @@ os.makedirs(os.path.join('incoming', 'comeback-ride-mj'), exist_ok=True)
 
 # Plates whose subject rises out of the frame (Innes, 2026-11-08: "objects
 # should pop out including the scales and bikes where possible or looks
-# good"). Value: the subject's centre as a fraction of the plate's width, or
-# None for rembg's bounding box. Left out: the attic still life (its cut-out
+# good"). Value: (span, mode): span keeps only the cut-out pieces centred
+# between two fractions of the width (None: all); mode is square, blob or free
+# (tools/pop_plate.py). Left out: the attic still life (its cut-out
 # is ragged), the handlebars (the dial sits too low to rise), the podium (what
-# rose was the ceiling lamp, not a bike) and scenes rather than objects.
-POP = {'h-scales': None, 'grew-on': 0.78, 'f-headlamp': None,
-       'c-price': 0.55, 'q-first-ride': None, 'ride-away': None}
+# rose was the ceiling lamp, not a bike; now a free cut-out), the engine (its
+# cut-out loses the bars) and scenes rather than objects.
+POP = {'grew-on': ((0.5, 1.0), 'square'), 'ride-away': (None, 'square'),
+       'f-headlamp': (None, 'blob'), 'h-scales': (None, 'blob', (0.13, 0.05, 0.89, 0.88), 'wide'),
+       'q-first-ride': (None, 'free'), 'c-price': (None, 'free'), 'c-neck-and-neck': ((0.3, 1.0), 'free')}
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'tools'))
 import pop_plate  # noqa: E402
 
@@ -632,10 +635,15 @@ def frame(html, a):
     if pl in POP:
         # the subject breaks out over the top of the frame (tools/pop_plate.py);
         # always on the right, where nothing sits above the frame
+        # a 4th POP value 'wide' gives the full frame to an item whose options
+        # are short (the scales: four words each), so the object can be big
+        wide = len(POP[pl]) > 3 and POP[pl][3] == 'wide'
+        if wide:
+            size = None
         narrow = size == 'narrow'
         pop = os.path.join(F, 'pop-%s%s.webp' % (pl, '-n' if narrow else ''))
         if not os.path.exists(pop):
-            print('  pop', pop, pop_plate.build(os.path.join(F, pl + '.jpg'), pop, narrow, POP[pl]))
+            print('  pop', pop, pop_plate.build(os.path.join(F, pl + '.jpg'), pop, narrow, *POP[pl][:3]))
         attrs = ' data-bg="%s"' % pop.replace(os.sep, '/')
         side, pos, shape = None, None, 'pop'
     if side == 'left':
@@ -681,8 +689,11 @@ EXTRA_CSS = '''
 /* The field is not bare cream (Innes, 2026-11-08: "faint monochrome variations
    or closeups instead of completely white backgrounds?"). Each slide's own
    picture, enlarged to a close-up, grayscale, multiplied in at 6%: a
-   texture you notice, never a picture behind the words. Off on the cover. */
-html[data-style="editorial"] .stage:not(.on-cover) .bg-layer::before {
+   texture you notice, never a picture behind the words. Off on the cover,
+   and only where a slide has no picture of its own (Innes: "the background
+   textures were for absence of illustrations on a page, not necessary for
+   all"); --hero is then the lesson's cover. */
+html[data-style="editorial"] .stage:not(.on-cover):not(:has(.slide.is-active[data-bg])) .bg-layer::before {
   content: ''; position: absolute; inset: 0;
   background: var(--hero) var(--art-pos, center) 45% / 260% auto no-repeat;
   filter: grayscale(1) contrast(1.15); opacity: .06; mix-blend-mode: multiply;

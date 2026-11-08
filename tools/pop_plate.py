@@ -53,56 +53,117 @@ def mask_for(plate, cache):
     return m
 
 
-def build(plate, out, narrow=False, cx=None):
+def subject(m, span=None, keep=0.15):
+    """The subject's mask: the biggest connected piece and any piece at least
+    `keep` of its size (a rider and his bike, two men and a bike); `span`
+    (x0, x1 as fractions of the width) keeps only pieces centred inside it."""
+    import cv2
+    a = (np.asarray(m) > 128).astype(np.uint8)
+    n, lab, st, cen = cv2.connectedComponentsWithStats(a, 8)
+    w = a.shape[1]
+    ok = [k for k in range(1, n) if span is None or span[0] * w <= cen[k][0] <= span[1] * w]
+    if not ok:
+        return a.astype(bool)
+    big = max(st[k][4] for k in ok)
+    return np.isin(lab, [k for k in ok if st[k][4] >= keep * big])
+
+
+def blob(box, seed, n=240):
+    """An organic blob filling `box` (x0, y0, x1, y1): an ellipse whose radius
+    wobbles on three slow waves, the soft shape ENGHUB stands its figures on."""
+    import math
+    import random
+    r = random.Random(seed)
+    x0, y0, x1, y1 = box
+    cx, cy, rx, ry = (x0 + x1) / 2, (y0 + y1) / 2, (x1 - x0) / 2, (y1 - y0) / 2
+    waves = [(k, r.uniform(0.03, 0.07), r.uniform(0, 6.28)) for k in (2, 3, 5)]
+    rot = r.uniform(-0.25, 0.25)
+    pts = []
+    for i in range(n):
+        t = 2 * math.pi * i / n
+        f = 1 + sum(a * math.sin(k * t + ph) for k, a, ph in waves)
+        x, y = rx * f * math.cos(t), ry * f * math.sin(t)
+        pts.append((cx + x * math.cos(rot) - y * math.sin(rot), cy + x * math.sin(rot) + y * math.cos(rot)))
+    return pts
+
+
+def build(plate, out, narrow=False, span=None, mode='square', box=None):
+    """The subject is the star, the frame only a backdrop (Innes, 2026-11-08,
+    after a 64px peek over the frame's top: "nothing pops out"; then
+    "sometimes its cool to cut out the characters from the image and
+    sometimes extend bits beyond the frame", with two ENGHUB pages).
+
+    mode 'square': the subject spills over a smaller rounded square of its
+                   own scene;
+         'blob':   the same over an organic blob of its scene;
+         'free':   the subject cut out whole, on a pale blob of colour taken
+                   from the plate (its background, lifted towards cream).
+    Everything stays inside the picture zone (frame width x frame height +
+    POP_UP), so nothing can reach the text."""
     im = Image.open(plate).convert('RGB')
     pw, ph = im.size
     # the cache lives in incoming/ (gitignored): a mask is a working file,
     # not something the site serves
-    cache = os.path.join('incoming', 'pop-masks', os.path.basename(os.path.splitext(out)[0]) + '.mask.png')
+    cache = os.path.join('incoming', 'pop-masks', os.path.basename(plate).rsplit('.', 1)[0] + '.mask.png')
     os.makedirs(os.path.dirname(cache), exist_ok=True)
     m = mask_for(plate, cache)
-    a = np.asarray(m) > 128
+    a = subject(m, span)
     rows, cols = np.where(a.any(1))[0], np.where(a.any(0))[0]
-    top = rows[0] if len(rows) else 0
-    sx0, sx1 = (cols[0], cols[-1]) if len(cols) else (0, pw)
-    fw, fh = frame_w(narrow), FRAME_H
-    # zoom so the subject's top sits POP_UP above the frame, plate bottom on
-    # the frame's bottom; never smaller than 'cover'
-    cfrac = cx if cx is not None else (sx0 + sx1) / 2 / pw
-    s = max(fh / ph, fw / pw, (fh + POP_UP) / max(ph - top, 1))
-    for _ in range(3):
-        W, H = pw * s, ph * s
-        # centre the subject (or a given centre, as a fraction of plate width)
-        ox = min(0, max(fw - W, fw / 2 - cfrac * W))
-        # the top that matters is the subject's top INSIDE the frame's columns:
-        # a figure cropped out at the side cannot rise above the frame
-        c0, c1 = int(max(0, -ox / s)), int(min(pw, (fw - ox) / s))
-        r = np.where(a[:, c0:c1].any(1))[0]
-        top = r[0] if len(r) else top
-        s = max(fh / ph, fw / pw, min((fh + POP_UP) / max(ph - top, 1), 1.6 * max(fh / ph, fw / pw)))
-    W, H = pw * s, ph * s
-    ox = min(0, max(fw - W, fw / 2 - cfrac * W))
-    oy = fh - H                      # plate bottom on frame bottom (frame coords)
-    # output canvas: frame width x (POP_UP + frame height), frame at y=POP_UP
-    cw, ch = int(round(fw * SCALE)), int(round((fh + POP_UP) * SCALE))
-    big = im.resize((int(round(W * SCALE)), int(round(H * SCALE))), Image.LANCZOS)
-    bm = m.resize(big.size, Image.LANCZOS)
-    canvas = Image.new('RGBA', (cw, ch), (0, 0, 0, 0))
-    px, py = int(round(ox * SCALE)), int(round((oy + POP_UP) * SCALE))
-    layer = big.convert('RGBA')
-    layer.putalpha(bm)
-    # 1. subject everywhere (only the part above the frame will survive step 2's
-    #    mask choice); 2. full plate inside the rounded frame
-    sub = Image.new('RGBA', (cw, ch), (0, 0, 0, 0))
-    sub.paste(layer, (px, py))
+    sy0, sy1, sx0, sx1 = rows[0], rows[-1], cols[0], cols[-1]
+    if box:
+        # the object's real extent, where the cut-out misses thin parts (the
+        # scales' chains and pans): lay out on this, and the blob of scene
+        # behind shows what the cut-out lost
+        sx0, sy0, sx1, sy1 = box[0] * pw, box[1] * ph, box[2] * pw, box[3] * ph
+    zw, zh = frame_w(narrow), FRAME_H + POP_UP
+    # the subject fills the zone: as wide as it, or as tall, whichever binds
+    s = min(zw * 0.98 / (sx1 - sx0 + 1), zh * 0.97 / (sy1 - sy0 + 1))
+    ox = zw / 2 - (sx0 + sx1) / 2 * s
+    oy = (zh - 4) - sy1 * s                  # subject's base 4px off the bottom
+    if (sy1 - sy0) * s < zh * 0.75:          # a wide, low subject: centre it
+        oy = zh * 0.56 - (sy0 + sy1) / 2 * s
+    # the backdrop square: inset, its foot above the subject's base
+    q0x, q1x = zw * 0.13, zw * 0.87
+    q0y, q1y = POP_UP + FRAME_H * 0.10, zh - 22
+    # never past the plate's own edges
+    q0x, q1x = max(q0x, ox), min(q1x, ox + pw * s)
+    q0y, q1y = max(q0y, oy), min(q1y, oy + ph * s)
+    S = SCALE
+    cw, ch = int(round(zw * S)), int(round(zh * S))
+    big = im.resize((int(round(pw * s * S)), int(round(ph * s * S))), Image.LANCZOS)
+    am = Image.fromarray((a * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(1.2)).resize(big.size, Image.LANCZOS)
+    at = (int(round(ox * S)), int(round(oy * S)))
     full = Image.new('RGBA', (cw, ch), (0, 0, 0, 0))
-    full.paste(big.convert('RGBA'), (px, py))
-    fr = Image.new('L', (cw, ch), 0)
-    ImageDraw.Draw(fr).rounded_rectangle([0, POP_UP * SCALE, cw - 1, ch - 1], RADIUS * SCALE, fill=255)
-    canvas = Image.composite(full, sub, fr)
+    full.paste(big.convert('RGBA'), at)
+    sq = Image.new('L', (cw, ch), 0)
+    seed = os.path.basename(plate)
+    canvas = Image.new('RGBA', (cw, ch), (0, 0, 0, 0))
+    if mode == 'square':
+        ImageDraw.Draw(sq).rounded_rectangle([q0x * S, q0y * S, q1x * S, q1y * S], RADIUS * S, fill=255)
+        canvas.paste(full, (0, 0), sq)
+    else:
+        # the blob sits behind the subject's own box, a little larger
+        bx0, bx1 = ox + sx0 * s, ox + sx1 * s
+        by0, by1 = oy + sy0 * s, oy + sy1 * s
+        padx, pady = (bx1 - bx0) * 0.06, (by1 - by0) * 0.10
+        box = (max(4, bx0 - padx), max(4, by0 + (by1 - by0) * 0.12 - pady),
+               min(zw - 4, bx1 + padx), min(zh - 4, by1 + pady * 0.4))
+        ImageDraw.Draw(sq).polygon([(x * S, y * S) for x, y in blob(box, seed)], fill=255)
+        sq = sq.filter(ImageFilter.GaussianBlur(0.8 * S))
+        if mode == 'blob':
+            canvas.paste(full, (0, 0), sq)
+        else:
+            px = np.asarray(im)[~a]
+            bg = px.mean(0) if len(px) else np.array([200, 200, 200])
+            tint = tuple(int(round(0.35 * c + 0.65 * v)) for c, v in zip(bg, (255, 249, 237)))
+            canvas.paste(Image.new('RGBA', (cw, ch), tint + (255,)), (0, 0), sq)
+    sub = big.convert('RGBA')
+    sub.putalpha(am)
+    layer = Image.new('RGBA', (cw, ch), (0, 0, 0, 0))
+    layer.paste(sub, at)
+    canvas = Image.alpha_composite(canvas, layer)
     canvas.save(out, 'WEBP', quality=88, method=6)
-    risen = np.asarray(sub.split()[3])[:POP_UP * SCALE].max(1) > 128
-    return {'zoom': round(s / max(fh / ph, fw / pw), 3), 'risen_px': int(risen.sum() / SCALE),
+    return {'scale': round(s, 3), 'square': [round(q0x), round(q0y), round(q1x), round(q1y)],
             'bytes': os.path.getsize(out)}
 
 
@@ -111,6 +172,7 @@ if __name__ == '__main__':
     ap.add_argument('plate')
     ap.add_argument('out')
     ap.add_argument('--narrow', action='store_true')
-    ap.add_argument('--cx', type=float)
+    ap.add_argument('--span', type=float, nargs=2)
+    ap.add_argument('--mode', default='square', choices=('square', 'blob', 'free'))
     a = ap.parse_args()
-    print(build(a.plate, a.out, a.narrow, a.cx))
+    print(build(a.plate, a.out, a.narrow, a.span, a.mode))

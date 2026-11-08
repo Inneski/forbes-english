@@ -278,6 +278,19 @@ completely white backgrounds?"*. Both are on The Comeback Ride.
   grows the frame box 64px upward and uses a drop-shadow that follows the
   outline. Pops rise **only upward**, because text sits beside the frame and
   the title above-left of it. Masks are cached in `incoming/pop-masks/`.
+- **Redone the same day.** The first pass was a 64px peek over the frame top.
+  Innes said *"nothing pops out - do you understand what I actually mean?"*,
+  then *"sometimes its cool to cut out the characters from the image and
+  sometimes extend bits beyond the frame"* and sent two ENGHUB pages. The
+  subject now fills the zone and the frame is only a backdrop. There are three
+  modes: `square` and `blob`, where the subject spills over a shape of its own
+  scene, and `free`, a whole cut-out on a pale blob tinted from the plate. A
+  `box` gives the object's true extent where rembg loses thin parts: it lost
+  the scales' pans, so the scales never showed whole until the layout used
+  the box.
+- The texture field shows **only on slides with no picture** (*"the
+  background textures were for absence of illustrations on a page, not
+  necessary for all"*).
 - What pops is set by `POP` in `build_comeback_ride.py`. Six pictures pop:
   helmet, headlamp, the buyer's mirror, the scales' finial, the moon and the
   garage mirror. Left out: the attic still life (ragged cut-out), the
