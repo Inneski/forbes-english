@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """The Comeback Ride (B2–C1): phrases for changing your mind about a design,
-and how to make a careful claim from sales figures. House style 2, 30 slides.
+and how to make a careful claim from sales figures. Classic Forbes deck, 30 slides.
 
 Built 2026-11-06 from `the-comeback-ride.html`, a 60-minute scrolling page
 Innes supplied (not yet on the site): two dashboards to compare, a short
@@ -32,6 +32,17 @@ Added: rule cards for the four phrases and for careful claims, form items
 (IT GREW ON ME, not "I grew on it"; WON ME OVER, not "won over me"), a
 second gap, three speaking fields and the activation.
 
+Look and art (2026-11-08): first shipped 2026-11-06 in house style 2 on six
+flat ChatGPT plates, which Innes rejected ("looks like uter dogshit"; the
+layout "terrible"). Cutting the plates out and rotating the accent to green
+were tried and rejected too ("your ideas for upgrading were worse"). Rebuilt
+as a classic Forbes deck on six Midjourney renders (prompts in the session,
+`--sref` the old cover): hero = the café racer at sunset; bg-dash = the
+handlebars at a red light; bg-read = the scooter outside the café; bg-show =
+an older and a younger rider at the same classic bike (the reading's showroom);
+bg-claim = the clipboard with two near-level bars; bg-act = the workshop.
+Palette: extract-palette.py --light on the hero, every row PASS, unedited.
+
 Run from the repo root:  py lesson-template/build/build_comeback_ride.py
 """
 import os
@@ -45,16 +56,18 @@ SPEC = dict(
     out='the-comeback-ride.html',
     title='The Comeback Ride (B2–C1)',
     folder='ComebackRide',
-    scheme='warm',
-    art={
-        'hero': ('time', 'a classic motorbike in side view, round headlamp and cream tank; its shadow on the floor is a modern sports bike'),
-        'talk': ('talk', 'an open-face helmet with goggles, two speech bubbles above it'),
-        'a': ('read', 'a rounded 1950s-style scooter parked beside a small café table with one cup'),
-        'b': ('music', 'a single-cylinder motorbike engine as flat shapes, three curved sound lines from the exhaust'),
-        'c': ('work', 'five plain bars, the two tallest almost level, a tiny motorbike on top of the tallest'),
-        'act': ('pair', 'two stools at a workbench; on it a dashboard with one round dial and one small screen'),
-    },
 )
+
+# Classic Forbes deck (Innes, 2026-11-06: "Classic Forbes deck", after the
+# house style 2 build on ChatGPT plates was "terrible"). The cover is
+# hero.jpg; each section washes its own Midjourney plate behind its slides
+# (HOUSE-STYLE §5c). A plate not on disk yet falls back to the hero, which
+# is what the engine does when data-bg is absent.
+SECTION_BG = {'dash': 'bg-dash', 'read': 'bg-read', 'show': 'bg-show',
+              'claim': 'bg-claim', 'act': 'bg-act'}
+# The section each step of the flow belongs to, in flow order.
+SECTIONS = ['dash', 'dash', 'read', 'read', 'read', 'show', 'show', 'show', 'show', 'show', 'show',
+            'claim', 'claim', 'claim', 'claim', 'claim', 'act']
 
 
 def q(stem, options, n):
@@ -363,9 +376,9 @@ GW = {
 }
 
 GQ = ('<a href="https://www.gq-magazine.co.uk/cars/article/how-motorbikes-found-their-cool-again-2023" '
-      'target="_blank" rel="noopener">%s ↗</a>')
+      'target="_blank" rel="noopener" style="color:var(--accent-bright);text-decoration:underline;text-underline-offset:2px">%s ↗</a>')
 BB = ('<a href="https://www.bennetts.co.uk/bikesocial/news-and-views/news/2022/august/best-selling-bikes-2022" '
-      'target="_blank" rel="noopener">Bennetts BikeSocial</a>')
+      'target="_blank" rel="noopener" style="color:var(--accent-bright);text-decoration:underline;text-underline-offset:2px">Bennetts BikeSocial</a>')
 
 T = {
     'en': dict(
@@ -518,5 +531,118 @@ H.check_keys(T)
 _fill = lambda h: re.sub(r'data-i18n="(\w+)">[^<]*<', lambda m: 'data-i18n="%s">%s<' % (m.group(1), T['en'][m.group(1)]), h)
 SPEC['flow'] = [(st[0], _fill(st[1])) + tuple(st[2:]) if st[0] == 'raw' else st for st in SPEC['flow']]
 
+import importlib.util  # noqa: E402
+
+import deck as D  # noqa: E402
+
+TPL = 'lesson-template/lesson-template.html'
+F = SPEC['folder']
+LANGS = ('en', 'de', 'es')
+os.makedirs(os.path.join('incoming', 'comeback-ride-mj'), exist_ok=True)
+
+
+def plate(section):
+    f = SECTION_BG[section] + '.jpg'
+    return f if os.path.exists(os.path.join(F, f)) else None
+
+
+def with_bg(html, f):
+    if not f:
+        return html
+    return html.replace('<section class="slide"', '<section class="slide" data-bg="%s/%s"' % (F, f), 1)
+
+
+def talk(ek, tk, prompts):
+    """Speaking prompts as a grid of plated cards: the classic deck's
+    discussion slide (the HS2 speech bubbles are scoped to data-style=hs2)."""
+    E = T['en']
+    cells = '\n          '.join('<div class="card" style="padding:18px 20px;display:flex;align-items:center">'
+                               '<p class="prose" style="font-size:19px;line-height:1.45">%s</p></div>' % p
+                               for p in prompts)
+    return '''
+    <section class="slide" data-type="discuss">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="%s">%s</div>
+        <h2 class="slide-title" data-i18n="%s">%s</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr;gap:16px">
+          %s
+        </div>
+      </div>
+    </section>
+''' % (ek, E[ek], tk, E[tk], cells)
+
+
+def palette(hero):
+    """extract-palette.py --light on the cover, in-process; fails the build on
+    any contrast row that does not pass (HOUSE-STYLE §4)."""
+    spec = importlib.util.spec_from_file_location(
+        'xpal', os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'extract-palette.py'))
+    X = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(X)
+    p = X.build_palette(hero, dark=False)
+    rows = [('text', 'surface', 4.5), ('text', 'void', 4.5), ('text-dim', 'surface', 4.5),
+            ('accent', 'surface', 4.5), ('accent-bright', 'surface', 4.5),
+            ('contrast', 'surface', 4.5), ('border', 'surface', 1.25), ('accent-bright', 'text', 1.45)]
+    bad = ['%s on %s %.2f' % (a, b, X.contrast_ratio(p[a], p[b])) for a, b, m in rows
+           if X.contrast_ratio(p[a], p[b]) < m]
+    assert not bad, 'palette from %s fails: %s' % (hero, '; '.join(bad))
+    order = ['void', 'surface', 'surface2', 'border', 'text', 'text-dim', 'accent',
+             'accent-bright', 'accent-dim', 'secondary', 'contrast']
+    return "  --hero: url('%s/hero.jpg');\n" % F + '\n'.join(
+        '  --%-14s: %s;' % (k, X.hex_of(p[k])) for k in order)
+
+
+def build():
+    E = T['en']
+    assert len(SECTIONS) == len(SPEC['flow'])
+    s = [D.cover(D.logo_from(TPL), E['coverTitle'], E['coverSub'],
+                 [('Level', E['chipLevel']), ('Focus', E['chipFocus']), ('Count', E['chipCount'])])]
+    dealt = 0
+    for step, sec in zip(SPEC['flow'], SECTIONS):
+        f = plate(sec)
+        kind = step[0]
+        if kind == 'talk':
+            s.append(with_bg(talk(step[1], step[2], step[3]), f))
+        elif kind == 'raw':
+            s.append(with_bg(step[1], f))
+        elif kind == 'rules':
+            _, ek, tk, cards, _slot = step
+            built = [((pill, E[pill]) if pill in E else pill, [(b, E[b]) for b in bl], ex)
+                     for pill, bl, ex in cards]
+            s.append(with_bg(D.rules(ek, E[ek], tk, E[tk], built), f))
+        elif kind == 'mc':
+            _, ek, tk, items, _slot, _side = step
+            items = [H._deal(it, dealt + i) for i, it in enumerate(items)]
+            dealt += len(items)
+            D.assert_no_key_is_longest(items, SPEC['out'])
+            for i, it in enumerate(items, 1):
+                s.append(D.mc(i, len(items), it, ek, E[ek], tk, E[tk], folder=F, bg=f))
+        elif kind == 'gap':
+            _, ek, tk, hk, rows = step[:5]
+            bank = step[5] if len(step) > 5 else None
+            if bank:
+                D.assert_bank_is_not_a_key(bank, [a for _, ans, _ in rows for a in ans])
+            s.append(D.gap(1, 1, rows, bank, ek, E[ek], tk, E[tk], folder=F, bg=f,
+                           hint=E[hk], hint_key=hk, size=21))
+        else:
+            raise AssertionError(kind)
+    act = plate('act')
+    s.append(D.results(folder=F, bg=act))
+    s.append(D.activate(E['actTitle'], E['actUse'], SPEC['chips'], 'Speaking', E['actSpeakBrief'],
+                        [E['actSpeak1'], E['actSpeak2'], E['actSpeak3']],
+                        E['actWriteKind'], E['actWriteBrief'], E['actPlaceholder'], folder=F, bg=act))
+    body = ''.join(s)
+    n = body.count('<section class="slide')
+    for c in LANGS:
+        assert str(n) in T[c]['chipCount'], '%s chipCount %r, deck has %d' % (c, T[c]['chipCount'], n)
+    out = D.assemble(TPL, SPEC['out'], body, palette(os.path.join(F, 'hero.jpg')), SPEC['title'],
+                     H._I18n(T, LANGS, False), langs=LANGS)
+    missing = [v for k, v in SECTION_BG.items() if not plate(k)]
+    print('wrote %s — %d slides, %d bytes' % (SPEC['out'], n, len(out)))
+    print('plates missing (hero shown instead): %s' % (', '.join(missing) or 'none'))
+
+
 if __name__ == '__main__':
-    H.build(SPEC, T)
+    build()

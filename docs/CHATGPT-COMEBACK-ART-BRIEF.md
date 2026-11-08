@@ -1,5 +1,7 @@
 # Brief for ChatGPT: the pictures for The Comeback Ride (B2–C1)
 
+**Superseded 2026-11-08.** These six plates were replaced by Midjourney renders when the deck was rebuilt as a classic Forbes deck (see `docs/HANDOFF.md`). Kept as a record.
+
 **How to use this file.** Start a new ChatGPT chat, paste everything between
 the two rules, then type **next** after each picture. Six pictures.
 
