@@ -162,7 +162,7 @@ TOPICS = [
              'At C1 the pairs get fine: <em>in time</em> against <em>on time</em>, <em>made of</em> against <em>made from</em>, <em>compared to</em> against <em>compared with</em>. The lessons below put those choices inside stories &mdash; a crime file, a presidency, a small town with a lot of secrets &mdash; so the chunk is remembered with its context.',
          ]),
     dict(slug='gerunds-and-infinitives', name='Gerunds and Infinitives', short='Gerunds &amp; Infinitives',
-         pattern=r'gerund|infinitive|sailing the seas',
+         pattern=r'gerund|infinitive|sailing-the-seas-of-grammar',   # the first chart only; the series' other charts are other grammar
          exclude=r'going to|going-to',
          group='Grammar', order=13,
          h1='Gerunds and <em>Infinitives</em>',
