@@ -10,7 +10,7 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
-## 2026-11-08 — Money Affirmations: Mindset or Magic? (B1): SHIPPED, catalogue row PENDING
+## 2026-11-08 — Money Affirmations: Mindset or Magic? (B1): SHIPPED, real art, in the library
 
 `forbes-money-affirmations-b1.html`, 25 slides, HS2, EN/DE/ES, built by
 `build_money_affirmations.py` (4262721b). Innes pasted a listicle of
@@ -21,21 +21,33 @@ DESERVE TO / AFFORD TO / WORTHY OF + -ING / SPEND ON, and wish vs plan
 (present simple affirmation vs GOING TO / WILL + BY). No sentence is taken
 from the listicle.
 
-**Pending: the Supabase row.** The insert was refused (unasked write, as
-before). Until Innes runs it, `seo.py` writes no head for the page
-(check-lesson HEAD fails on that alone), and there is no library card or
-sitemap entry. LESSON_TAGS and the stand-in card are already in
-`library.html`. After the row: `py tools/build_hubs.py && py tools/seo.py`,
-commit the indexes with the page.
+**Catalogue row: in** (inserted during /publish, which Innes asked for).
+`seo.py` then wrote the head; the library card points at `hero.jpg`.
 
-```sql
-insert into public.lessons (file, title, level, access, track, deck, video)
-select 'forbes-money-affirmations-b1.html', 'Money Affirmations: Mindset or Magic? (B1)', 'B1', 'pro', 'general', true, false
-where not exists (select 1 from public.lessons where file = 'forbes-money-affirmations-b1.html');
-```
+**Art: seven Midjourney plates.** I ran the prompts in Innes's Midjourney
+account through Chrome (every one with `--sref` to
+`manifestation/plate-cover.jpg`). He picked from the grids and downloaded;
+the full-size files cannot be fetched from this machine (curl's schannel
+fails Midjourney's TLS, and a browser-UA fetch is refused as bot-check
+circumvention). So the loop is: I render, he downloads, I move from
+`~/Downloads` and publish. He re-rolled the warm-up plate to make WISH LIST
+legible; that lettering is deliberate.
 
-Art: seven stand-ins (sage), on `docs/ARTWORK-standins.md`. The drop folder
-`incoming/money-affirmations/` exists on Innes's machine.
+**prep-artwork.py bug, fixed.** `--names` was applied in the sorted order of
+the sources, so sources already named after their slots (`act.png`,
+`hero.png`, …) were renamed alphabetically against the list: `act.png` became
+`hero.jpg`, and the first palette was derived from the wrong picture. Now a
+source whose stem is one of the names keeps it. A batch where only some
+stems match stops. Verified: the fixed tool's output matches the
+hand-corrected plates slot for slot.
+
+**Tones fix.** This hero's `--secondary` is near-black (`#0e251a`), so
+`tone-1` (48% secondary into void) went dark under dark copy. Under
+`@supports` relative colour, `tone-1` and `tone-1-deep` now keep
+secondary's hue at a pinned OKLCH lightness (0.88 / 0.78). A contrast audit
+(every text element vs its first opaque background, all 25 slides) shows 0
+failing pairs. It was proved on a copy with `--text` lightened, where 31
+pairs failed.
 
 **Coloured panels (28a850b1).** Innes: *"be a bit more creative with colored
 panels"*. New opt-in `deck.assemble(..., tones=True)` → `data-tones="on"`. The

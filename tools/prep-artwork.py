@@ -223,6 +223,22 @@ def main():
     names = [n.strip() for n in a.names.split(',')] if a.names else None
     if names and len(names) != len(src):
         sys.exit(f"--names has {len(names)} entries for {len(src)} images.")
+    # --names is applied in source order, and sources are sorted by filename.
+    # So sources already named after their slots (hero.png, warm.png, ...)
+    # were renamed alphabetically-against-listed: on 2026-11-08 Money
+    # Affirmations' act.png became hero.jpg, hero.png became warm.jpg, and
+    # the palette was derived from the wrong picture. When a source's stem
+    # IS one of the names, that is its name. A batch where only some stems
+    # match is ambiguous, so it stops rather than guess.
+    if names:
+        stem = lambda p: os.path.splitext(os.path.basename(p))[0].lower()
+        hits = [p for p in src if stem(p) in names]
+        if hits and len(hits) != len(src):
+            sys.exit("Some sources are named after a slot and some are not "
+                     f"({', '.join(stem(p) for p in hits)}). Rename the rest "
+                     "to their slots, or give sources with neutral names.")
+        if hits:
+            src = sorted(src, key=lambda p: names.index(stem(p)))
 
     print(f"== {len(src)} source image(s) -> {a.into}/ "
           f"at {a.width}px q{a.quality} ==\n")

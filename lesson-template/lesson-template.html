@@ -2372,6 +2372,18 @@ html[data-tones="on"] {
   --tone-3-deep: color-mix(in srgb, var(--contrast) 34%, var(--void));
   --tone-4-deep: color-mix(in srgb, var(--accent) 34%, var(--void));
 }
+/* --secondary is the one token whose lightness the extractor does not fix:
+   pale sage (#a8cdb1) on the stand-in, near-black (#0e251a) on Money
+   Affirmations' real hero, which turned the 48% mix into a dark panel under
+   dark copy. So tone-1 keeps secondary's HUE and pins the lightness. The
+   chroma floor stops a near-black secondary going plain grey. Browsers
+   without relative colour keep the mix above. */
+@supports (color: oklch(from red l c h)) {
+  html[data-tones="on"] {
+    --tone-1: oklch(from var(--secondary) 0.88 clamp(0.035, c, 0.07) h);
+    --tone-1-deep: oklch(from var(--secondary) 0.78 clamp(0.045, c, 0.09) h);
+  }
+}
 /* rule and vocabulary cards: the card takes a tone, its pill the deep one */
 html[data-tones="on"] .tab-card:nth-child(4n+1) { background: var(--tone-1); }
 html[data-tones="on"] .tab-card:nth-child(4n+2) { background: var(--tone-2); }

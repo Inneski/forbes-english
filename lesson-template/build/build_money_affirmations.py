@@ -35,10 +35,13 @@ Keys checked by hand while writing:
   * Order 1's decoy "until July." is wrong in every position (PAY OFF is a
     finished action); order 2's "taking" can only build "deserve taking".
 
-Art: no picture came with the request, so every slot is a stand-in
-(tools/make_standin.py) on the shopping list (tools/standins.py). Drop the
-real plates in MoneyAffirmations/ under the slot names and re-run; re-derive
-the palette when hero lands.
+Art: seven Midjourney plates (2026-11-08), one per slot, every prompt with
+--sref to the manifestation deck's cover so the two lessons read as a set;
+Innes picked each from its grid. They replace the stand-ins by name
+(deck.plate() prefers <slot>.jpg) and the palette was re-derived from
+hero.jpg. The warm-up plate carries the words WISH LIST on purpose: Innes
+re-rolled it to make them clearer, since the slide asks what is on the
+students' own wish lists.
 
 Run from the repo root:  py lesson-template/build/build_money_affirmations.py
 """
@@ -58,30 +61,30 @@ TITLE = 'Money Affirmations: Mindset or Magic? (B1)'
 E = I.T['en']
 
 ART = {
-    'hero':  ('money', 'a single green seedling growing out of a short stack of coins on a sunny windowsill'),
+    'hero':  ('money', 'a small green seedling growing out of the coin slot of a piggy bank'),
     'warm':  ('quiz', 'an open wallet with a folded wish list sticking out of it instead of banknotes'),
     'talk':  ('talk', 'two coffee cups on a cafe table, the steam from one curling into a coin, from the other into a question mark'),
     'words': ('money', 'a piggy bank with three thin streams of coins flowing into it from different directions'),
-    'verbs': ('words', 'a large horseshoe magnet pulling a trail of words and coins towards it'),
-    'plan':  ('write', 'a wall calendar with one date circled and a small coin pinned to it'),
+    'verbs': ('words', 'a large horseshoe magnet pulling a trail of coins towards it'),
+    'plan':  ('write', 'a wall calendar with one date circled and a single coin pinned beside it'),
     'act':   ('pair', 'two chairs facing each other across a small round table, a glass jar of coins and an open notebook between them'),
 }
 make_standin.ensure(F, ART, scheme='sage', deck=OUT)
 
-# py lesson-template/extract-palette.py MoneyAffirmations/standin-hero.jpg --paper
-# (2026-11-06; every row PASS). Re-derive from hero.jpg when it lands.
+# py lesson-template/extract-palette.py MoneyAffirmations/hero.jpg --paper
+# (2026-11-08, from the Midjourney hero; every row PASS).
 PALETTE_BODY = """
-  --void          : #fbfbf9;
-  --surface       : #efefe9;
-  --surface2      : #f6f6f2;
-  --border        : #c4c4a1;
-  --text          : #231c13;
-  --text-dim      : #594e40;
-  --accent        : #9c5b08;
-  --accent-bright : #794502;
-  --accent-dim    : #f0d0a8;
-  --secondary     : #a8cdb1;
-  --contrast      : #09656d;"""
+  --void          : #fcfcf9;
+  --surface       : #f2f0e5;
+  --surface2      : #f7f6f0;
+  --border        : #d0c895;
+  --text          : #231613;
+  --text-dim      : #594540;
+  --accent        : #d02900;
+  --accent-bright : #a82100;
+  --accent-dim    : #f0b6a8;
+  --secondary     : #0e251a;
+  --contrast      : #096d50;"""
 
 
 def palette(hero_ref):
@@ -279,7 +282,7 @@ def slides():
 def build():
     if PALETTE_BODY is None:
         sys.exit('derive the palette first:\n  py lesson-template/extract-palette.py '
-                 '%s/standin-hero.jpg --paper' % F)
+                 '%s/hero.jpg --paper' % F)
     s, hero_ref = slides()
     D.assemble(TPL, OUT, s, palette(hero_ref), TITLE, I, langs=('en', 'de', 'es'), style='hs2', tones=True)
     n = s.count('<section class="slide')
