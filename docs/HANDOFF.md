@@ -37,6 +37,16 @@ where not exists (select 1 from public.lessons where file = 'forbes-money-affirm
 Art: seven stand-ins (sage), on `docs/ARTWORK-standins.md`. The drop folder
 `incoming/money-affirmations/` exists on Innes's machine.
 
+**Coloured panels (28a850b1).** Innes: *"be a bit more creative with colored
+panels"*. New opt-in `deck.assemble(..., tones=True)` → `data-tones="on"`. The
+template's TONES block rotates four tones, mixed from the palette tokens
+(secondary, accent-dim, contrast, accent) into `--void`, across cards,
+bubbles, survey, gap rows, option badges (by position), sort bins and
+activation. A cut-out figure stands on a coloured panel, its tone set by the
+slide type. Inert for every deck that doesn't pass it. Midjourney prompts for
+the seven real plates went to Innes in chat (`--sref` the manifestation
+dandelion plate).
+
 Screenshot gotcha: a scripted ArrowRight walk through a deck stops at the
 first gap slide, because the gap input keeps focus and swallows the key.
 Blur `document.activeElement` before each press.
