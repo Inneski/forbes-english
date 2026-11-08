@@ -56,6 +56,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import seo                                   # noqa: E402
 import topics                                # noqa: E402
+import grammar_maps                          # noqa: E402
 
 ROOT = seo.ROOT
 SITE = seo.SITE
@@ -489,6 +490,48 @@ body.gh {
 }
 .gh-pill-free { background: var(--gh-accent); color: var(--gh-ink-text); }
 
+/* ── grammar maps: the opening band. gm- prefixed; the charts come from
+   tools/grammar_maps.py, the first one large. ── */
+.gm { padding: clamp(28px, 4.5vw, 56px) 0 clamp(36px, 5.5vw, 64px); background: var(--gh-paper); }
+.gm-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 6px 32px; margin: 0 0 clamp(18px, 2.6vw, 28px); }
+.gm-head .gh-h2 { margin: 0; }
+.gm-head > p { margin: 0; max-width: 46ch; font-size: 1.02rem; line-height: 1.55; color: var(--gh-text-dim); }
+.gm-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%%, 480px), 1fr)); }
+.gm-list + .gm-list { margin-top: 16px; }
+.gm-card {
+  display: flex; flex-direction: column; height: 100%%; overflow: hidden;
+  border-radius: 16px; text-decoration: none; color: var(--gh-text);
+  background: var(--gh-card); border: 1px solid var(--gh-line);
+  box-shadow: 0 14px 34px var(--gh-shadow);
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.gm-card:hover { transform: translateY(-3px); box-shadow: 0 22px 46px var(--gh-shadow); }
+.gm-card:focus-visible { outline: 3px solid var(--gh-accent); outline-offset: 3px; }
+.gm-pic { display: block; overflow: hidden; aspect-ratio: 16 / 9; background: var(--gh-sky); }
+.gm-pic img { display: block; width: 100%%; height: 100%%; object-fit: cover; transition: transform 1.4s cubic-bezier(.2,.7,.2,1); }
+.gm-card:hover .gm-pic img { transform: scale(1.03); }
+.gm-body { display: flex; flex-direction: column; gap: 8px; padding: clamp(16px, 2.2vw, 24px); flex: 1; }
+.gm-body .gh-kicker { margin: 0; }
+.gm-body h3 { font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(1.4rem, 2.4vw, 1.8rem); line-height: 1.04; margin: 0; }
+.gm-body p { margin: 0; font-size: 1rem; line-height: 1.55; color: var(--gh-text-dim); max-width: 52ch; }
+.gm-go { margin-top: auto; padding-top: 6px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; font-size: .9rem; color: var(--gh-accent); }
+/* the charts after the first: picture beside the words, as many to a row as fit */
+.gm-list .gm-card { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); }
+.gm-list .gm-pic { aspect-ratio: auto; min-height: 100%%; }
+.gm-feature .gm-card { grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); }
+.gm-feature .gm-pic { aspect-ratio: 3 / 2; }
+.gm-feature .gm-body { justify-content: center; padding: clamp(20px, 3vw, 40px); }
+.gm-feature h3 { font-size: clamp(1.9rem, 3.6vw, 3rem); }
+.gm-feature .gm-body p { font-size: 1.08rem; }
+.gm-feature .gm-go { margin-top: 10px; }
+@media (max-width: 820px) {
+  .gm-feature .gm-card { display: flex; }
+}
+@media (max-width: 560px) {
+  .gm-list .gm-card { display: flex; }
+  .gm-list .gm-pic { aspect-ratio: 16 / 9; min-height: 0; }
+}
+
 /* ── hero: the chart as a real 3D relief map: the coasts raised from the
    chart's own colours, the sea flat, the camera looking across it into a
    pale haze. Copy over the near sea. The flat chart under the canvas is the
@@ -515,7 +558,7 @@ body.gh {
     transparent 58%%);
 }
 @media (min-width: 881px) {
-  .gh-hero-copy .gh-kicker, .gh-hero-copy .gh-h1, .gh-hero-copy .gh-lede, .gh-hero-copy .gh-stats, .gh-hero-copy .gh-sail, .gh-hero-copy .gh-plans {
+  .gh-hero-copy .gh-kicker, .gh-hero-copy .gh-h1, .gh-hero-copy .gh-lede, .gh-hero-copy .gh-stats, .gh-hero-copy .gh-plans {
     text-shadow: 0 0 6px rgba(255, 252, 244, 0.9), 0 0 18px rgba(255, 252, 244, 0.65);
   }
 }
@@ -542,10 +585,9 @@ body.gh {
 .gh-stats span { font-size: .95rem; line-height: 1.3; max-width: 16em; text-wrap: balance; }
 .gh-stats .gh-stat-free b { color: var(--gh-accent-bright); }
 .gh-ctas { display: flex; flex-wrap: wrap; gap: 12px; }
-/* under the buttons: the chart's own lesson, and what Pro costs */
-.gh-sail, .gh-plans { margin: 18px 0 0; font-size: .98rem; line-height: 1.5; max-width: 34em; }
-.gh-plans { margin-top: 6px; }
-.gh-sail a, .gh-plans a { color: var(--gh-accent-bright); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+/* under the buttons: what Pro costs */
+.gh-plans { margin: 18px 0 0; font-size: .98rem; line-height: 1.5; max-width: 34em; }
+.gh-plans a { color: var(--gh-accent-bright); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
 @media (max-width: 880px) {
   .gh-hero { display: block; min-height: 0; background: var(--gh-paper); }
   .gh-hero-art { position: relative; inset: auto; z-index: auto; aspect-ratio: 16 / 11;
@@ -792,6 +834,48 @@ def _card(t, rows, images, colour=None):
                esc(seo.trim(desc, 150)), ''.join(pills)))
 
 
+def maps_band(rows):
+    """The band that opens the page: the charts in tools/grammar_maps.py,
+    the first one large. Level and Free come from the catalogue row."""
+    by_file = {r['file']: r for r in rows}
+    items = []
+    for i, m in enumerate(grammar_maps.MAPS):
+        if not os.path.exists(os.path.join(ROOT, m['href'])):
+            sys.exit('! grammar_maps.py: %s does not exist' % m['href'])
+        r = by_file.get(m['href'])
+        kick = ['Grammar map']
+        if r:
+            kick.append(span([r]))
+            if r.get('access') != 'pro':
+                kick.append('Free')
+        else:
+            print('  ! grammar map %s has no catalogue row: no level shown' % m['href'])
+        stem = 'map-' + os.path.splitext(m['href'])[0]
+        pic = web_copy(m['image'], stem, width=1280 if i == 0 else 720)
+        from PIL import Image
+        w, h = Image.open(os.path.join(ROOT, pic)).size
+        items.append(
+            '    <li%s><a class="gm-card" href="%s">'
+            '<span class="gm-pic"><img src="%s" alt="%s" width="%d" height="%d"%s></span>'
+            '<span class="gm-body"><span class="gh-kicker">%s</span><h3>%s</h3><p>%s</p>'
+            '<span class="gm-go">%s <span aria-hidden="true">&rarr;</span></span></span></a></li>'
+            % (' class="gm-feature"' if i == 0 else '', seo.quote(m['href']), esc(pic), esc(m['alt']),
+               w, h, ' fetchpriority="high"' if i == 0 else ' loading="lazy"',
+               ' &middot; '.join(kick), esc(m['title']), esc(m['blurb']), esc(m.get('go', 'Open the map'))))
+    return '''<section class="gm" id="maps" aria-labelledby="gm-h">
+  <div class="gh-wrap">
+    <div class="gm-head">
+      <div><p class="gh-kicker">Grammar maps</p>
+      <h2 class="gh-h2" id="gm-h">Sailing the seas <em>of grammar</em></h2></div>
+      <p>Grammar drawn as a place: a coast for each pattern, a camp for each tense. Find the rule on the map, then sail or climb to the practice.</p>
+    </div>
+    <ul class="gm-list">
+%s
+    </ul>%s
+  </div>
+</section>''' % (items[0], '\n    <ul class="gm-list">\n%s\n    </ul>' % '\n'.join(items[1:]) if items[1:] else '')
+
+
 def render(rows, images, allm):
     """(css, body, json-ld) for grammar.html. `rows` are the finished
     lessons, `allm` topics.members() of them."""
@@ -807,10 +891,9 @@ def render(rows, images, allm):
     blockcamp = family(rows, 'blockcamp-', 'block-camp/')
     tense_lessons = {r['file'] for t in tense_topics for r in allm[t['slug']]}
 
-    b = []
+    b = ['<main>', maps_band(rows)]
     # ── hero ──
-    b.append('''<main>
-<header class="gh-hero" aria-labelledby="gh-h1">
+    b.append('''<header class="gh-hero" aria-labelledby="gh-h1">
   <script>
     /* open on the hero's sky, not the flat chart: the flat picture shows only
        if the 3D map has not arrived within five seconds (no WebGL, no module) */
@@ -835,7 +918,6 @@ def render(rows, images, allm):
         <a class="gh-btn" href="#tenses">The tenses, in colour <span aria-hidden="true">&darr;</span></a>
         <a class="gh-btn gh-btn-quiet" href="level-checker.html">Find your level</a>
       </div>
-      <p class="gh-sail">The chart is <a href="sailing-the-seas-of-grammar.html">Sailing the Seas of Grammar</a>: gerunds or infinitives, coast by coast &rarr;</p>
       <p class="gh-plans">Plenty of lessons are free, no sign-in. Pro opens every one &mdash; <a href="pricing.html">plans and prices</a>.</p>
     </div>
   </div>

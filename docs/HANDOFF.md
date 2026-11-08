@@ -10,6 +10,26 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
+## 2026-11-08 — Grammar page opens with "Sailing the seas of grammar": SHIPPED
+
+Innes: the grammar area should open with a "sailing the seas of grammar"
+section, and more geographical grammar charts will follow. `grammar.html`
+now opens (above the 3D hero) with a band of **grammar maps**: Sailing the
+Seas of Grammar as the large card, the Sherpa Tensing route map beside it
+as a smaller one (it is the same kind of thing: tenses drawn as a place).
+The old one-line "The chart is Sailing the Seas…" link under the hero
+buttons is gone; the band replaces it.
+
+**To add the next chart: one dict in `tools/grammar_maps.py`** (`href`,
+`title`, `image`, `alt`, `blurb`, optional `go`), then `py tools/build_hubs.py`
+and `py tools/seo.py`. No markup changes. First entry = the big card; the
+rest sit picture-beside-words, as many to a row as fit (one fills the row).
+Level and Free are read off the catalogue row, not typed; a missing `href`
+stops the build. Web copies land in `grammar-hub/map-<slug>-<hash>.jpg`
+and are pruned like the topic thumbnails. Styles are `gm-` prefixed in
+`build_grammar_hub.py`'s CSS. Put a non-breaking hyphen (`‑`) in a
+blurb's `-ING`, or it splits at 375px.
+
 ## 2026-11-06 — Laptops no longer get the phone layout: SHIPPED
 
 Innes: Block Camp past simple "showed me some kind of mobile phone interface
@@ -29,6 +49,30 @@ Peer-modified decks (first-in-space-c1, skiing-B1, money-affirmations) got
 the same 10-line fitStage change in the working tree but were left out of
 the commit; their builders reproduce it from the template.
 
+## 2026-11-08 — The Comeback Ride rebuilt as a classic Forbes deck on Midjourney art
+
+Innes on the HS2 version below: *"looks like uter dogshit"*, then, after I
+cut the ChatGPT plates out of their paper and rotated the accent to green,
+*"your layout was terrible though and also your ideas for upgrading were
+worse"*; he chose **"Classic Forbes deck"** and supplied six Midjourney
+renders. `build_comeback_ride.py` no longer uses hs2quiz's build: the same
+content and flow render through the classic `deck.py` shapes, one washed
+Midjourney plate per section (`ComebackRide/bg-dash|read|show|claim|act.jpg`,
+picks in the docstring), palette `extract-palette.py --light` on the hero.
+The six ChatGPT square plates are deleted; the library card is re-cut from
+the new hero. check-lesson clean; answered-overflow and overflow-langs fit
+en/de/es; phone layout checked.
+
+- **Lesson for HS2 on opaque art:** HS2's picture zone is built for
+  transparent cut-outs. Opaque square renders land as boxed stickers on the
+  white page, and on a phone they cover the text. Do not ship HS2 on opaque
+  plates; for painted/screen-print art the classic deck is the right shell.
+- **Verify at full size before reporting.** I signed the HS2 build off from
+  a thumbnail sheet; Innes found it ugly on first look.
+- Midjourney renders landed in `incoming/` itself, not the named subfolder:
+  look in both.
+
+---
 ## 2026-11-06 — The Comeback Ride (B2–C1): new HS2 deck, ChatGPT art: SHIPPED
 
 `the-comeback-ride.html`, 30 slides, EN/DE/ES, Pro. From a 60-minute
