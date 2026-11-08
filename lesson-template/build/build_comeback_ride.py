@@ -657,6 +657,15 @@ def talk(ek, tk, prompts, cols):
 # the type sits on the empty sky and sea only. The subtitle is one short line,
 # as on Beyond the Handlebars, which is what lets the column be this narrow.
 EXTRA_CSS = '''
+/* The field is not bare cream (Innes, 2026-11-08: "faint monochrome variations
+   or closeups instead of completely white backgrounds?"). Each slide's own
+   picture, enlarged to a close-up, grayscale, multiplied in at 6%: a
+   texture you notice, never a picture behind the words. Off on the cover. */
+html[data-style="editorial"] .stage:not(.on-cover) .bg-layer::before {
+  content: ''; position: absolute; inset: 0;
+  background: var(--hero) var(--art-pos, center) 45% / 260% auto no-repeat;
+  filter: grayscale(1) contrast(1.15); opacity: .06; mix-blend-mode: multiply;
+}
 /* The Comeback Ride: keep the cover type off the café racer (see builder). */
 html[data-style="editorial"]:not(.is-flow) .cover-inner { max-width: 30.5%; }
 html[data-style="editorial"]:not(.is-flow) .cover-title { font-size: 72px; }
