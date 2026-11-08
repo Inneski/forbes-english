@@ -684,6 +684,7 @@ in `ReasonableDoubt/` (the export's own, 3:2, via prep-artwork; light palette).
   resolves them), the deck bar's act label too. Gap sentences, options and
   toolkit examples stay English (§8). Keys must be identifiers: render() writes
   them unquoted, so a hyphenated key killed the whole script.
+- **Continuity fix (2026-11-08).** The listen plate (export scene 28) had the quieter juror in Juror 8's ivory suit and teal tie. ChatGPT re-rendered it in a blue suit (`~/Downloads` export, only that image changed); `ReasonableDoubt/listen.jpg` replaced via prep-artwork, same composition, so `SUBJECT` is unchanged.
 - **Catalogue row inserted** (Innes asked; B2-C1, pro, deck), hubs and SEO
   rebuilt the same day: library, RPG hub, Modal Verbs and Conditionals carry it.
 
