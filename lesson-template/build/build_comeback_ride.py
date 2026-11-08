@@ -608,6 +608,18 @@ LANGS = ('en', 'de', 'es')
 os.makedirs(os.path.join('incoming', 'comeback-ride-mj'), exist_ok=True)
 
 
+# Plates whose subject rises out of the frame (Innes, 2026-11-08: "objects
+# should pop out including the scales and bikes where possible or looks
+# good"). Value: the subject's centre as a fraction of the plate's width, or
+# None for rembg's bounding box. Left out: the attic still life (its cut-out
+# is ragged), the handlebars (the dial sits too low to rise), the podium (what
+# rose was the ceiling lamp, not a bike) and scenes rather than objects.
+POP = {'h-scales': None, 'grew-on': 0.78, 'f-headlamp': None,
+       'c-price': 0.55, 'q-first-ride': None, 'ride-away': None}
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'tools'))
+import pop_plate  # noqa: E402
+
+
 def frame(html, a):
     """Give a slide its framed picture (§15), or none. a = (plate, side, pos,
     shape, size) from ART. Any data-bg the slide builder wrote is replaced."""
@@ -617,6 +629,15 @@ def frame(html, a):
     pl, side, pos, shape, size = a
     assert os.path.exists(os.path.join(F, pl + '.jpg')), pl
     attrs = ' data-bg="%s/%s.jpg"' % (F, pl)
+    if pl in POP:
+        # the subject breaks out over the top of the frame (tools/pop_plate.py);
+        # always on the right, where nothing sits above the frame
+        narrow = size == 'narrow'
+        pop = os.path.join(F, 'pop-%s%s.webp' % (pl, '-n' if narrow else ''))
+        if not os.path.exists(pop):
+            print('  pop', pop, pop_plate.build(os.path.join(F, pl + '.jpg'), pop, narrow, POP[pl]))
+        attrs = ' data-bg="%s"' % pop.replace(os.sep, '/')
+        side, pos, shape = None, None, 'pop'
     if side == 'left':
         attrs += ' data-art-side="left"'
     if pos:

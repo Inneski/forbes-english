@@ -265,6 +265,29 @@ Peer-modified decks (first-in-space-c1, skiing-B1, money-affirmations) got
 the same 10-line fitStage change in the working tree but were left out of
 the commit; their builders reproduce it from the template.
 
+## 2026-11-08 — Pop-out pictures and a faint close-up field (The Comeback Ride)
+
+Innes: *"objects should pop out including the scales and bikes where possible
+or looks good"* and *"faint monochrome variations or closeups instead of
+completely white backgrounds?"*. Both are on The Comeback Ride.
+
+- **`tools/pop_plate.py`** cuts the subject out with `rembg`
+  (`isnet-general-use`, installed with pip on this machine; the model is in
+  `~/.u2net`). It writes one transparent WebP: the editorial frame, plus 64px
+  above it where only the subject is drawn. The template's `data-art="pop"`
+  grows the frame box 64px upward and uses a drop-shadow that follows the
+  outline. Pops rise **only upward**, because text sits beside the frame and
+  the title above-left of it. Masks are cached in `incoming/pop-masks/`.
+- What pops is set by `POP` in `build_comeback_ride.py`. Six pictures pop:
+  helmet, headlamp, the buyer's mirror, the scales' finial, the moon and the
+  garage mirror. Left out: the attic still life (ragged cut-out), the
+  handlebars (the dial sits too low to rise), and the podium (the part that
+  rose was a ceiling lamp). **Look at what actually rises before keeping a
+  pop.**
+- The field is each slide's own plate at 260%, grayscale, multiplied in at
+  6% (EXTRA_CSS, deck-only), and is off on the cover. Contrast is unchanged
+  and the gates pass.
+
 ## 2026-11-08 — The Comeback Ride is an EDITORIAL deck: what Innes means by "the new snappy house style"
 
 Innes on the classic rebuild below: *"This is the old house style. What

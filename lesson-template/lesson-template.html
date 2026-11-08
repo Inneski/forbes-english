@@ -1833,6 +1833,17 @@ html[data-style="editorial"] .stage:has(.slide.is-active[data-art="arch"]) .edit
 html[data-style="editorial"] .stage:has(.slide.is-active[data-art-size="narrow"]) .editorial-art {
   width: 30%;
 }
+/* data-art="pop": the subject breaks out over the top of its frame. The
+   picture is one transparent image from tools/pop_plate.py, the frame plus
+   64px above it, already rounded, so the box grows upward by those 64px
+   and the shadow follows the outline (filter, not box-shadow). Pops rise
+   only upward: beside the frame is text, above-left of it the title. */
+html[data-style="editorial"] .stage:has(.slide.is-active[data-art="pop"]) .editorial-art {
+  top: 108px; height: calc(57% + 64px);
+  background-size: 100% 100%; background-position: 0 0;
+  border-radius: 0; box-shadow: none;
+  filter: drop-shadow(0 10px 22px color-mix(in srgb, var(--text) 18%, transparent));
+}
 /* ...and it can sit on the left instead, which the source alternated. */
 html[data-style="editorial"] .stage:has(.slide.is-active[data-art-side="left"]) .editorial-art {
   right: auto; left: 58px;
