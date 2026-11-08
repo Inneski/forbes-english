@@ -173,16 +173,16 @@ DIAGRAM = '''<div class="camp" id="order">
       ''' + MARK_PANES + '''
       <div class="camp-label">Interactive</div>
       <h2>Read the chart</h2>
-      <div class="diagram-card">
+      <div class="diagram-card" data-map-zoom data-mz-target=".chart-toggle-wrap" data-mz-btn=".name-bar" data-mz-ratio="1.5" data-mz-min="1000">
         <p class="diagram-intro">Click a landmass. The strait is narrow and the two shores look alike from a distance, which is exactly the problem &mdash; nothing about the <em>meaning</em> of <em>avoid</em> and <em>refuse</em> tells you they belong to different coasts. The island between them is where the same verb serves both, and changes what it means depending on which channel you took to reach it. When the place names have done their job, switch the chart to <em>just the verbs</em> and it becomes the list you actually have to know.</p>
         <div class="name-bar" id="name-bar">
           <span class="name-label">Read the chart as</span>
           <button type="button" data-mode="place" class="on">Place names</button>
           <button type="button" data-mode="verb">Just the verbs</button>
         </div>
-        <div class="diagram-stage">
+        <div class="diagram-stage" data-mz-scroll>
           <div class="chart-toggle-wrap">
-            <img class="chart-photo" src="sailing-the-seas-of-grammar/chart-clean.jpg" alt="" loading="lazy">
+            <img class="chart-photo" src="sailing-the-seas-of-grammar/chart-clean.jpg" alt="" width="1536" height="1024" loading="lazy">
             ''' + M.chart_overlay('sailb') + '''
           </div>
         </div>
@@ -743,7 +743,8 @@ s = s.replace('</head>', sherpa_sky.block(_sizes) + '</head>', 1)
 s, n = re.subn(r'(<body\b[^>]*>\n?)', lambda m: m.group(1) + SKY_EL, s, count=1)
 assert n == 1, 'no <body> to hang the sky on'
 assert s.count('</body>') == 1
-s = s.replace('</body>', MUSIC_TAG + '</body>', 1)
+# every map can be enlarged (Innes, 2026-11-08: "maps need to be expandable always")
+s = s.replace('</body>', MUSIC_TAG + '<script src="map-zoom.js" defer></script>\n</body>', 1)
 
 open(OUT, 'w', encoding='utf-8', newline='').write(s)
 print('wrote %s — %d examples, %d questions, %d bytes' % (OUT, len(EX), len(QUIZ), len(s)))

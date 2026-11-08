@@ -209,7 +209,7 @@ DIAGRAM = '''<div class="camp" id="order">
       ''' + MARK_PANES + '''
       <div class="camp-label">Interactive</div>
       <h2>Read the chart</h2>
-      <div class="diagram-card">
+      <div class="diagram-card" data-map-zoom data-mz-target=".chart-toggle-wrap" data-mz-btn=".name-bar" data-mz-ratio="1.5" data-mz-min="1100">
         <p class="diagram-intro">Click a landmass and its list lights up below. Every harbour is named after a verb. Switch the chart to <em>just the verbs</em> to see them bare, then to <em>the past forms</em> to see what each one becomes. Notice that on Regularia the past forms all look alike, while each island has its own pattern.</p>
         <div class="name-bar" id="name-bar">
           <span class="name-label">Read the chart as</span>
@@ -217,7 +217,7 @@ DIAGRAM = '''<div class="camp" id="order">
           <button type="button" data-mode="verb" aria-pressed="false">Just the verbs</button>
           <button type="button" data-mode="past" aria-pressed="false">The past forms</button>
         </div>
-        <div class="diagram-stage">
+        <div class="diagram-stage" data-mz-scroll>
           <div class="chart-toggle-wrap">
             <img class="chart-photo" src="''' + ART + '''/chart-clean.jpg" alt="" width="1536" height="1024" loading="lazy">
             ''' + M.chart_overlay('reg') + '''
@@ -723,7 +723,8 @@ s = s.replace('</head>', sherpa_sky.block(_sizes) + '</head>', 1)
 s, n = re.subn(r'(<body\b[^>]*>\n?)', lambda m: m.group(1) + SKY_EL, s, count=1)
 assert n == 1, 'no <body> to hang the sky on'
 assert s.count('</body>') == 1
-s = s.replace('</body>', MUSIC_TAG + '</body>', 1)
+# every map can be enlarged (Innes, 2026-11-08: "maps need to be expandable always")
+s = s.replace('</body>', MUSIC_TAG + '<script src="map-zoom.js" defer></script>\n</body>', 1)
 
 # the shell's SEO block describes the camp it was cloned from; tools/seo.py
 # writes this page's own from the catalogue row, so leave the block empty
