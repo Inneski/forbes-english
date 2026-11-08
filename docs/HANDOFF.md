@@ -10,7 +10,7 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
-## 2026-11-08 — Regularia & Irregularia (A2–B1): the second sea chart, BUILT; catalogue row NOT YET IN
+## 2026-11-08 — Regularia & Irregularia (A2–B1): the second sea chart: SHIPPED
 
 `sailing-the-seas-regularia.html` covers regular and irregular past forms as a
 sea chart, the second chart in Sailing the Seas of Grammar. It is a scrolling
@@ -57,7 +57,8 @@ page on the first chart's machinery, not a deck: `build_regularia.py` copies
     gutter and the card padding. The chart card now reaches into the gutter
     (289px). The first chart had the same defect and got the same CSS in
     `build_sailing.py`.
-- **Catalogue row: NOT inserted.** The Supabase write was refused (auto
+- **Catalogue row: inserted later the same day** (Innes said yes; `511683c7`). The gerunds hub's pattern matched any "Sailing the Seas" title and was narrowed to the first chart's filename, so later charts go where OVERRIDES sends them. The note below is kept for the record.
+- **Earlier: NOT inserted.** The Supabase write was refused (auto
   mode). Until it is in, the library and the Past Simple hub do not list the
   page, and its grammar-map card has no level. Insert it, then run
   `py tools/build_hubs.py` and `py tools/seo.py`:
