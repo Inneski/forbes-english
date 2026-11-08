@@ -41,6 +41,15 @@ thumbnails. Styles are `gm-` prefixed in `build_grammar_hub.py`'s CSS.
 Write a blurb's -ING with a non-breaking hyphen (U+2011), or it splits on
 a phone.
 
+**Topic rows always fill now.** Innes: *"why is there a space here"*. That
+was the Grammar group, 7 cards in a 4-across `auto-fill` grid; the Tenses
+group was worse, 9 = 4+4+1. Both `gh-cards` groups are now a 12-track grid.
+`row_spans()` splits n cards into as few rows as the width allows, evenly,
+longer rows first (7 → 4+3, 9 → 3+3+3). A container query picks the 2-,
+3- or 4-across spans, and a card alone in its row lies on its side.
+Measured full rows at 1920, 1440, 1024, 900, 700 and 375. Adding a topic
+needs nothing extra.
+
 ## 2026-11-06 — Laptops no longer get the phone layout: SHIPPED
 
 Innes: Block Camp past simple "showed me some kind of mobile phone interface

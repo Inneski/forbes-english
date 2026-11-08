@@ -685,7 +685,33 @@ body.gh {
 }
 .gh-group-h h3 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: clamp(1.4rem, 2.6vw, 1.8rem); margin: 0; }
 .gh-group-h span { font-size: .95rem; color: var(--gh-text-dim); }
-.gh-cards { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+/* EVERY ROW FILLS. Innes, 2026-11-08, of a 4-across grid holding seven
+   topics: "why is there a space here". auto-fill left 4+3 (one hole) and,
+   for nine tenses, 4+4+1 (three holes). Now a 12-track grid: the builder
+   splits a group into as few rows as the width allows, as evenly as
+   possible, longer rows first, and gives each card its span for 2, 3 and 4
+   across (--s2/--s3/--s4, see row_spans()). The container query picks one
+   at the same widths auto-fill used (cards of at least 240px). A card alone
+   in its row (gh-solo2/3/4) lies on its side, picture beside words, rather
+   than blowing its picture up to the full width. */
+.gh-group:has(> .gh-cards) { container: gh-group / inline-size; }
+.gh-cards { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; grid-template-columns: repeat(12, minmax(0, 1fr)); }
+.gh-cards > li { grid-column: span 12; }
+@container gh-group (min-width: 496px) { .gh-cards > li { grid-column: span var(--s2, 6); } }
+@container gh-group (min-width: 752px) { .gh-cards > li { grid-column: span var(--s3, 4); } }
+@container gh-group (min-width: 1008px) { .gh-cards > li { grid-column: span var(--s4, 3); } }
+@container gh-group (min-width: 496px) and (max-width: 751.98px) {
+  .gh-solo2 > .gh-card { flex-direction: row; }
+  .gh-solo2 .gh-thumb { width: 38%%; aspect-ratio: auto; flex: none; }
+}
+@container gh-group (min-width: 752px) and (max-width: 1007.98px) {
+  .gh-solo3 > .gh-card { flex-direction: row; }
+  .gh-solo3 .gh-thumb { width: 38%%; aspect-ratio: auto; flex: none; }
+}
+@container gh-group (min-width: 1008px) {
+  .gh-solo4 > .gh-card { flex-direction: row; }
+  .gh-solo4 .gh-thumb { width: 38%%; aspect-ratio: auto; flex: none; }
+}
 .gh-card {
   --c: var(--gh-accent);
   position: relative; display: flex; flex-direction: column; height: 100%%;
@@ -817,7 +843,23 @@ def _cell(cell, rows, tc, i):
                esc(cell['name']), esc(cell['form']), meta))
 
 
-def _card(t, rows, images, colour=None):
+def row_spans(n, cols):
+    """Spans in a 12-track grid that leave no hole: `n` cards in as few
+    rows as `cols` across allows, as even as possible, longer rows first.
+    7 at 4 across -> 4+3; 9 at 4 across -> 3+3+3. 12 // k is exact for a
+    row of 1 to 4."""
+    if not n:
+        return []
+    rows = -(-n // cols)
+    base, extra = divmod(n, rows)
+    out = []
+    for r in range(rows):
+        k = base + (1 if r < extra else 0)
+        out += [12 // k] * k
+    return out
+
+
+def _card(t, rows, images, colour=None, li=''):
     n, free = len(rows), free_of(rows)
     hero = topics.hero(rows, images)
     thumb = ('<span class="gh-thumb"><img src="%s" alt="" loading="lazy" width="640" height="360"></span>'
@@ -831,9 +873,9 @@ def _card(t, rows, images, colour=None):
              '<span class="gh-pill">%s</span>' % plural(n, 'lesson')]
     if free:
         pills.append('<span class="gh-pill gh-pill-free">%d free</span>' % free)
-    return ('<li><a class="gh-card" href="%s"%s>%s<span class="gh-card-body">'
+    return ('<li%s><a class="gh-card" href="%s"%s>%s<span class="gh-card-body">'
             '<h4>%s%s</h4><p>%s</p><span class="gh-card-meta">%s</span></span></a></li>'
-            % (topics.hub_url(t['slug']), style, thumb, swatch, esc(t['name']),
+            % (li, topics.hub_url(t['slug']), style, thumb, swatch, esc(t['name']),
                esc(seo.trim(desc, 150)), ''.join(pills)))
 
 
@@ -979,9 +1021,16 @@ def render(rows, images, allm):
         gfiles = {r['file'] for t in group for r in allm[t['slug']]}
         b.append('    <div class="gh-group">\n      <div class="gh-group-h"><h3>%s</h3><span>%s &middot; %s</span></div>\n      <ul class="%s">'
                  % (title, plural(len(gfiles), 'lesson'), note, cls))
-        for t in sorted(group, key=lambda x: x['order']):
+        ordered = sorted(group, key=lambda x: x['order'])
+        spans = {c: row_spans(len(ordered), c) for c in (2, 3, 4)}
+        for i, t in enumerate(ordered):
             colour = tc.get(TOPIC_COLOUR.get(t['slug'], ''))
-            b.append('        ' + _card(t, allm[t['slug']], images, colour))
+            li = ''
+            if cls == 'gh-cards':      # every row fills: see the .gh-cards CSS
+                solo = ' '.join('gh-solo%d' % c for c in (2, 3, 4) if spans[c][i] == 12)
+                li = ' style="--s2:%d;--s3:%d;--s4:%d"%s' % (
+                    spans[2][i], spans[3][i], spans[4][i], ' class="%s"' % solo if solo else '')
+            b.append('        ' + _card(t, allm[t['slug']], images, colour, li))
         b.append('      </ul>\n    </div>')
     b.append('  </div>\n</section>')
 
