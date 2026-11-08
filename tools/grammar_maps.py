@@ -26,6 +26,17 @@ the row). Fields:
     alt      what the picture shows
     blurb    one or two sentences, learner-facing
     go       the link's call to action (optional)
+    full     the picture the zoom view opens (optional; defaults to image).
+             Every chart picture on the page opens full size on a click:
+             Innes, 2026-11-08, "all the charts should be expandable here".
+
+SOON is the same shape, for a chart whose art is painted but whose lesson
+is not built: no href, a `level` typed by hand, and a `note` saying what is
+still missing. Its card has no link, only the picture to open. When the
+lesson ships, move the entry up into MAPS (with its href) and delete it here.
+
+PLANNED is the chart table: charts from docs/GRAMMAR-MAPS-PLAN.md with no
+art yet, one line each. Delete a line when its chart moves to SOON or MAPS.
 
 Level and "Free" are NOT typed here: tools/build_grammar_hub.py reads them
 off the catalogue row for `href`, like every other claim on the page.
@@ -71,4 +82,33 @@ MAPS = [
          blurb=('Each tense is a camp on the mountain, in its own colour: the active '
                 'voice on the way up, the passive on the way down.'),
          go='Open the map'),
+]
+
+SOON = [
+    dict(title='Countania & Uncountania',
+         heading='Countable and uncountable nouns, shore by shore',
+         level='A2–B1',
+         image='sailing-the-seas-countania/hero.jpg',
+         alt=('A hand-painted sea chart: the orange coast of Countania on the west, '
+              'the gold coast of Uncountania on the east, Double Isle and the Shallows '
+              'in the strait between them'),
+         blurb=('A chair, two chairs, many chairs live on the west coast; furniture, '
+                'much furniture, a piece of furniture live on the east. Double Isle '
+                'takes both, with a change of meaning: a coffee, and coffee.'),
+         note='The chart is drawn. The lesson is being built.'),
+]
+
+PLANNED = [
+    ('The Atlas of THE', 'articles with place names', 'B1–B2'),
+    ('Finished Time & Open Time', 'present perfect or past simple', 'A2–B2'),
+    ('The Conditional Quadrants', 'real and unreal, now and past', 'B1–C1'),
+    ('The Harbour of Scale', 'in, on and at', 'A2–B1'),
+    ('The Voyage', 'prepositions of movement', 'A2–B1'),
+    ('The ‑ER Coast & the MORE Coast', 'comparatives', 'A2–B1'),
+    ('Statia & Actia', 'state and action verbs', 'B1–B2'),
+    ('Makeland & Doland', 'make or do', 'A2–B2'),
+    ('Soundings of Certainty', 'must, might, can’t', 'B2–C1'),
+    ('The Passive Ferry', 'the passive', 'B1–B2'),
+    ('The Backshift Current', 'reported speech', 'B1–B2'),
+    ('The Bridges', 'linking words', 'B2–C1'),
 ]

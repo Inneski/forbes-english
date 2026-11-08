@@ -333,38 +333,93 @@ body.gh {
    widened to keep 3:2 and slid under the heading. ── */
 .gm { padding: clamp(56px, 8vw, 104px) 0 clamp(8px, 2vw, 24px); }
 .gm-feature { margin: clamp(26px, 4vw, 40px) 0 0; }
-.gm-list { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 520px), 1fr)); }
+.gm-list { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 16px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+/* under the feature the charts stand picture-on-top, the whole chart at 3:2
+   (a side-by-side card cropped a landscape chart to a portrait sliver).
+   Three to a row; at two to a row an odd last card takes the row, lying on
+   its side, so no row ends in a hole. */
+.gm-list .gm-card { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+.gm-list .gm-pic::before { padding-top: 66.67%; }
+.gm-list .gm-body { justify-content: flex-start; }
+@media (max-width: 980px) {
+  .gm-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .gm-list li:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .gm-list li:last-child:nth-child(odd) .gm-card { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: none; }
+  .gm-list li:last-child:nth-child(odd) .gm-body { justify-content: center; }
+}
 .gm-card {
+  position: relative;
   display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
   overflow: hidden; height: 100%;
-  border-radius: 16px; text-decoration: none; color: var(--gh-text);
+  border-radius: 16px; color: var(--gh-text);
   background: var(--gh-card); border: 1px solid var(--gh-line);
   box-shadow: 0 14px 34px var(--gh-shadow);
   transition: transform .18s ease, box-shadow .18s ease;
 }
-.gm-card:hover { transform: translateY(-3px); box-shadow: 0 22px 46px var(--gh-shadow); }
-.gm-card:focus-visible { outline: 3px solid var(--gh-accent); outline-offset: 3px; }
-.gm-pic { position: relative; display: block; overflow: hidden; background: var(--gh-sky); }
+.gm-card:not(.gm-soon):hover { transform: translateY(-3px); box-shadow: 0 22px 46px var(--gh-shadow); }
+/* the picture is a button (it opens the zoom view); the heading's link is
+   stretched over the words only, so the two never overlap or nest */
+.gm-pic { position: relative; display: block; overflow: hidden; background: var(--gh-sky); border: 0; padding: 0; margin: 0; cursor: zoom-in; font: inherit; color: inherit; }
+.gm-pic:focus-visible { outline: 3px solid var(--gh-accent); outline-offset: -3px; }
 .gm-pic::before { content: ''; display: block; padding-top: 56.25%; }
 .gm-pic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 1.4s cubic-bezier(.2,.7,.2,1); }
-.gm-card:hover .gm-pic img { transform: scale(1.03); }
-.gm-body { display: flex; flex-direction: column; justify-content: center; gap: 10px; padding: clamp(18px, 2.4vw, 30px); min-width: 0; }
+.gm-pic:hover img { transform: scale(1.03); }
+.gm-zoom {
+  position: absolute; right: 12px; bottom: 12px; display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 12px 7px 10px; border-radius: 999px;
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: .85rem;
+  background: var(--gh-card); color: var(--gh-text); box-shadow: 0 4px 14px var(--gh-shadow);
+  transition: background .15s ease, color .15s ease;
+}
+.gm-pic:hover .gm-zoom, .gm-pic:focus-visible .gm-zoom { background: var(--gh-accent); color: var(--gh-ink-text); }
+.gm-body { position: relative; display: flex; flex-direction: column; justify-content: center; gap: 10px; padding: clamp(18px, 2.4vw, 30px); min-width: 0; }
 .gm-body .gh-kicker { margin: 0; }
 .gm-body h3 { font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(1.35rem, 2vw, 1.7rem); line-height: 1.08; margin: 0; color: var(--gh-text); text-wrap: balance; }
+.gm-link { color: inherit; text-decoration: none; }
+.gm-link::after { content: ''; position: absolute; inset: 0; }
+.gm-link:focus-visible { outline: none; }
+.gm-link:focus-visible::after { outline: 3px solid var(--gh-accent); outline-offset: -3px; border-radius: 0 16px 16px 0; }
 .gm-body p { margin: 0; font-size: 1rem; line-height: 1.55; color: var(--gh-text-dim); max-width: 50ch; }
 .gm-go { margin-top: 6px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; font-size: .9rem; color: var(--gh-accent); }
+.gm-note { margin-top: 6px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; font-size: .9rem; color: var(--gh-text-dim); }
+.gm-soon { border-style: dashed; box-shadow: none; }
 /* the first chart: the picture takes three fifths, at least 3:2 */
 .gm-feature .gm-card { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); }
 .gm-feature .gm-pic::before { padding-top: 66.67%; }
 .gm-feature .gm-body { padding: clamp(24px, 3.2vw, 48px); gap: 14px; }
 .gm-feature h3 { font-size: clamp(1.8rem, 2.8vw, 2.6rem); line-height: 1.04; }
 .gm-feature .gm-body p { font-size: 1.08rem; line-height: 1.6; }
+/* the chart table: planned charts, one line each */
+.gm-table { margin: clamp(28px, 4vw, 44px) 0 0; }
+.gm-table ul { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); }
+.gm-table li { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; align-items: baseline; padding: 12px 16px; border-radius: 12px; border: 1px dashed var(--gh-line); background: color-mix(in srgb, var(--gh-card) 60%, transparent); }
+.gm-table b { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.05rem; line-height: 1.2; color: var(--gh-text); }
+.gm-table small { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .06em; font-size: .85rem; color: var(--gh-text-dim); white-space: nowrap; }
+.gm-table li span { grid-column: 1 / -1; font-size: .95rem; color: var(--gh-text-dim); }
 @media (max-width: 860px) {
   .gm-feature .gm-card { grid-template-columns: 1fr; }
 }
 @media (max-width: 600px) {
-  .gm-card { grid-template-columns: 1fr; }
+  .gm-list { grid-template-columns: 1fr; }
+  .gm-card, .gm-list li:last-child:nth-child(odd) .gm-card { grid-template-columns: 1fr; }
+  .gm-link:focus-visible::after { border-radius: 0 0 16px 16px; }
 }
+/* the zoom view */
+.gm-box { padding: 0; border: 0; margin: auto; width: min(96vw, 1600px); max-height: 94vh; border-radius: 14px; overflow: hidden; background: var(--gh-card); color: var(--gh-text); box-shadow: 0 30px 80px var(--gh-shadow); }
+.gm-box::backdrop { background: color-mix(in srgb, var(--gh-text) 72%, transparent); }
+.gm-box[open] { display: flex; flex-direction: column; }
+.gm-box-bar { display: flex; align-items: center; gap: 10px; padding: 8px 8px 8px 16px; border-bottom: 1px solid var(--gh-line); }
+.gm-box-title { margin: 0; flex: 1; min-width: 0; font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.05rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gm-box-bar button { border: 1px solid var(--gh-line); background: var(--gh-card); color: var(--gh-text); border-radius: 999px; cursor: pointer; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: .85rem; padding: 7px 14px; }
+.gm-box-bar .gm-box-x { font-size: 1.5rem; line-height: 1; padding: 2px 12px 5px; }
+.gm-box-bar button:hover { background: var(--gh-accent); color: var(--gh-ink-text); border-color: var(--gh-accent); }
+.gm-box-pane { overflow: auto; flex: 1; min-height: 0; display: grid; place-items: center; background: var(--gh-sky); }
+.gm-box-pane img { display: block; max-width: 100%; max-height: calc(94vh - 56px); width: auto; height: auto; cursor: zoom-in; }
+.gm-box.is-actual { height: 94vh; }
+/* start, not centre: a centred box wider than its scroller overflows to the
+   left as well, and that half can never be scrolled to */
+.gm-box.is-actual .gm-box-pane { display: block; place-items: normal; justify-items: normal; }
+.gm-box.is-actual .gm-box-pane img { max-width: none; max-height: none; cursor: zoom-out; }
 
 /* ── hero: the chart as a real 3D relief map: the coasts raised from the
    chart's own colours, the sea flat, the camera looking across it into a
@@ -874,15 +929,78 @@ if (cv && img) new THREE.TextureLoader().load(img.currentSrc || img.src, go);
     <div class="gh-sechead">
       <p class="gh-kicker">Grammar maps</p>
       <h2 class="gh-h2" id="gm-h">Sailing the seas <em>of grammar</em></h2>
-      <p>Grammar drawn as a place: a coast for each pattern, a camp for each tense. Find the rule on the map, then sail or climb to the practice.</p>
+      <p>Grammar drawn as a place: a coast for each pattern, a camp for each tense. Find the rule on the map, then sail or climb to the practice. Tap a chart to open it full size.</p>
     </div>
-    <div class="gm-feature"><a class="gm-card" href="sailing-the-seas-of-grammar.html"><span class="gm-pic"><img src="grammar-hub/map-sailing-the-seas-of-grammar-cc5a8506.jpg" alt="A hand-drawn sea chart: the orange coast of Gerundia, the green coast of Infinitivia, and Twofold Isle in the channel between them" width="1280" height="853" loading="lazy"></span><span class="gm-body"><span class="gh-kicker">Sailing the Seas of Grammar &middot; B1 &middot; Free</span><h3>Gerunds or infinitives, coast by coast</h3><p>Every harbour on the west coast takes ‑ING, every harbour on the east takes TO + verb, and the island in the middle takes both, with a change of meaning. Learn the coastline and you know which form follows the verb.</p><span class="gm-go">Set sail <span aria-hidden="true">&rarr;</span></span></span></a></div>
+    <div class="gm-feature"><div class="gm-card"><button type="button" class="gm-pic" data-full="sailing-the-seas-of-grammar/hero.jpg" data-w="1536" data-h="1024" data-title="Sailing the Seas of Grammar" aria-label="Enlarge the chart: Sailing the Seas of Grammar"><img src="grammar-hub/map-sailing-the-seas-of-grammar-cc5a8506.jpg" alt="A hand-drawn sea chart: the orange coast of Gerundia, the green coast of Infinitivia, and Twofold Isle in the channel between them" width="1280" height="853" loading="lazy"><span class="gm-zoom" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Enlarge</span></button><div class="gm-body"><p class="gh-kicker">Sailing the Seas of Grammar &middot; B1 &middot; Free</p><h3><a class="gm-link" href="sailing-the-seas-of-grammar.html">Gerunds or infinitives, coast by coast</a></h3><p>Every harbour on the west coast takes ‑ING, every harbour on the east takes TO + verb, and the island in the middle takes both, with a change of meaning. Learn the coastline and you know which form follows the verb.</p><span class="gm-go">Set sail <span aria-hidden="true">&rarr;</span></span></div></div></div>
     <ul class="gm-list">
-      <li><a class="gm-card" href="sailing-the-seas-regularia.html"><span class="gm-pic"><img src="grammar-hub/map-sailing-the-seas-regularia-4f1df351.jpg" alt="A hand-painted sea chart: the green continent of Regularia on the west, and an archipelago of irregular-verb islands on the east" width="720" height="480" loading="lazy"></span><span class="gm-body"><span class="gh-kicker">Regularia &amp; Irregularia &middot; A2&ndash;B1 &middot; Free</span><h3>Regular and irregular verbs, island by island</h3><p>Almost every verb lives on one tidy continent and takes ‑ed, in one of three sounds. The rest live on islands, one family to an island, named after the sound they share: ring rang rung, keep kept, speak spoke spoken.</p><span class="gm-go">Set sail <span aria-hidden="true">&rarr;</span></span></span></a></li>
-      <li><a class="gm-card" href="sherpa-tensing-route-map.html"><span class="gm-pic"><img src="grammar-hub/map-sherpa-tensing-route-map-b9719849.jpg" alt="A mountain with a camp for each tense, from the present simple at the foot to the future perfect at the top" width="720" height="404" loading="lazy"></span><span class="gm-body"><span class="gh-kicker">Sherpa Tensing route map &middot; A2&ndash;C1 &middot; Free</span><h3>Every tense, camp by camp</h3><p>Each tense is a camp on the mountain, in its own colour: the active voice on the way up, the passive on the way down.</p><span class="gm-go">Open the map <span aria-hidden="true">&rarr;</span></span></span></a></li>
+      <li><div class="gm-card"><button type="button" class="gm-pic" data-full="sailing-the-seas-regularia/hero.jpg" data-w="1536" data-h="1024" data-title="Regularia &amp; Irregularia" aria-label="Enlarge the chart: Regularia &amp; Irregularia"><img src="grammar-hub/map-sailing-the-seas-regularia-4f1df351.jpg" alt="A hand-painted sea chart: the green continent of Regularia on the west, and an archipelago of irregular-verb islands on the east" width="720" height="480" loading="lazy"><span class="gm-zoom" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Enlarge</span></button><div class="gm-body"><p class="gh-kicker">Regularia &amp; Irregularia &middot; A2&ndash;B1 &middot; Free</p><h3><a class="gm-link" href="sailing-the-seas-regularia.html">Regular and irregular verbs, island by island</a></h3><p>Almost every verb lives on one tidy continent and takes ‑ed, in one of three sounds. The rest live on islands, one family to an island, named after the sound they share: ring rang rung, keep kept, speak spoke spoken.</p><span class="gm-go">Set sail <span aria-hidden="true">&rarr;</span></span></div></div></li>
+      <li><div class="gm-card"><button type="button" class="gm-pic" data-full="Sherpa%20Tensing/thumb-route-map.png" data-w="960" data-h="538" data-title="Sherpa Tensing route map" aria-label="Enlarge the chart: Sherpa Tensing route map"><img src="grammar-hub/map-sherpa-tensing-route-map-b9719849.jpg" alt="A mountain with a camp for each tense, from the present simple at the foot to the future perfect at the top" width="720" height="404" loading="lazy"><span class="gm-zoom" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Enlarge</span></button><div class="gm-body"><p class="gh-kicker">Sherpa Tensing route map &middot; A2&ndash;C1 &middot; Free</p><h3><a class="gm-link" href="sherpa-tensing-route-map.html">Every tense, camp by camp</a></h3><p>Each tense is a camp on the mountain, in its own colour: the active voice on the way up, the passive on the way down.</p><span class="gm-go">Open the map <span aria-hidden="true">&rarr;</span></span></div></div></li>
+      <li><div class="gm-card gm-soon"><button type="button" class="gm-pic" data-full="sailing-the-seas-countania/hero.jpg" data-w="1536" data-h="1024" data-title="Countania &amp; Uncountania" aria-label="Enlarge the chart: Countania &amp; Uncountania"><img src="grammar-hub/map-soon-countania-uncountania-00c84c8d.jpg" alt="A hand-painted sea chart: the orange coast of Countania on the west, the gold coast of Uncountania on the east, Double Isle and the Shallows in the strait between them" width="720" height="480" loading="lazy"><span class="gm-zoom" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Enlarge</span></button><div class="gm-body"><p class="gh-kicker">Countania &amp; Uncountania &middot; A2–B1 &middot; Coming next</p><h3>Countable and uncountable nouns, shore by shore</h3><p>A chair, two chairs, many chairs live on the west coast; furniture, much furniture, a piece of furniture live on the east. Double Isle takes both, with a change of meaning: a coffee, and coffee.</p><span class="gm-note">The chart is drawn. The lesson is being built.</span></div></div></li>
     </ul>
+    <div class="gm-table">
+      <div class="gh-group-h"><h3>On the chart table</h3><span>12 more charts being drawn</span></div>
+      <ul>
+        <li><b>The Atlas of THE</b><span>articles with place names</span><small>B1–B2</small></li>
+        <li><b>Finished Time &amp; Open Time</b><span>present perfect or past simple</span><small>A2–B2</small></li>
+        <li><b>The Conditional Quadrants</b><span>real and unreal, now and past</span><small>B1–C1</small></li>
+        <li><b>The Harbour of Scale</b><span>in, on and at</span><small>A2–B1</small></li>
+        <li><b>The Voyage</b><span>prepositions of movement</span><small>A2–B1</small></li>
+        <li><b>The ‑ER Coast &amp; the MORE Coast</b><span>comparatives</span><small>A2–B1</small></li>
+        <li><b>Statia &amp; Actia</b><span>state and action verbs</span><small>B1–B2</small></li>
+        <li><b>Makeland &amp; Doland</b><span>make or do</span><small>A2–B2</small></li>
+        <li><b>Soundings of Certainty</b><span>must, might, can’t</span><small>B2–C1</small></li>
+        <li><b>The Passive Ferry</b><span>the passive</span><small>B1–B2</small></li>
+        <li><b>The Backshift Current</b><span>reported speech</span><small>B1–B2</small></li>
+        <li><b>The Bridges</b><span>linking words</span><small>B2–C1</small></li>
+      </ul>
+    </div>
   </div>
 </section>
+<dialog class="gm-box" id="gm-box" aria-label="Chart">
+  <div class="gm-box-bar"><p class="gm-box-title"></p>
+    <button type="button" class="gm-box-fit" aria-pressed="false">Actual size</button>
+    <button type="button" class="gm-box-x" aria-label="Close">&times;</button></div>
+  <div class="gm-box-pane"><img alt=""></div>
+</dialog>
+<script>
+(function () {
+  var box = document.getElementById('gm-box');
+  if (!box || !box.showModal) return;
+  var img = box.querySelector('img'), title = box.querySelector('.gm-box-title'),
+      fit = box.querySelector('.gm-box-fit'), pane = box.querySelector('.gm-box-pane'), from = null;
+  function zoom(on) {
+    box.classList.toggle('is-actual', on);
+    fit.setAttribute('aria-pressed', on ? 'true' : 'false');
+    fit.textContent = on ? 'Fit to screen' : 'Actual size';
+  }
+  document.querySelectorAll('.gm-pic').forEach(function (b) {
+    b.addEventListener('click', function () {
+      from = b;
+      var i = b.querySelector('img');
+      img.src = b.dataset.full; img.alt = i.alt;
+      img.width = +b.dataset.w; img.height = +b.dataset.h;
+      title.textContent = b.dataset.title;
+      zoom(false);
+      box.showModal();
+      pane.scrollLeft = pane.scrollTop = 0;
+    });
+  });
+  fit.addEventListener('click', function () {
+    var on = !box.classList.contains('is-actual');
+    zoom(on);
+    if (on) { pane.scrollLeft = (pane.scrollWidth - pane.clientWidth) / 2; pane.scrollTop = (pane.scrollHeight - pane.clientHeight) / 2; }
+  });
+  img.addEventListener('click', function (e) {
+    var on = !box.classList.contains('is-actual');
+    var r = img.getBoundingClientRect(), fx = (e.clientX - r.left) / r.width, fy = (e.clientY - r.top) / r.height;
+    zoom(on);
+    if (on) { pane.scrollLeft = fx * pane.scrollWidth - pane.clientWidth / 2; pane.scrollTop = fy * pane.scrollHeight - pane.clientHeight / 2; }
+  });
+  box.querySelector('.gm-box-x').addEventListener('click', function () { box.close(); });
+  box.addEventListener('click', function (e) { if (e.target === box || e.target === pane) box.close(); });
+  box.addEventListener('close', function () { img.removeAttribute('src'); if (from) from.focus(); });
+})();
+</script>
 <section class="gh-tenses" id="tenses" aria-labelledby="gh-tenses-h">
   <div class="gh-wrap">
     <div class="gh-sechead">

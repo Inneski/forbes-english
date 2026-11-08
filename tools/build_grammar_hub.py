@@ -501,38 +501,93 @@ body.gh {
    widened to keep 3:2 and slid under the heading. ── */
 .gm { padding: clamp(56px, 8vw, 104px) 0 clamp(8px, 2vw, 24px); }
 .gm-feature { margin: clamp(26px, 4vw, 40px) 0 0; }
-.gm-list { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%%, 520px), 1fr)); }
+.gm-list { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 16px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+/* under the feature the charts stand picture-on-top, the whole chart at 3:2
+   (a side-by-side card cropped a landscape chart to a portrait sliver).
+   Three to a row; at two to a row an odd last card takes the row, lying on
+   its side, so no row ends in a hole. */
+.gm-list .gm-card { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+.gm-list .gm-pic::before { padding-top: 66.67%%; }
+.gm-list .gm-body { justify-content: flex-start; }
+@media (max-width: 980px) {
+  .gm-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .gm-list li:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .gm-list li:last-child:nth-child(odd) .gm-card { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: none; }
+  .gm-list li:last-child:nth-child(odd) .gm-body { justify-content: center; }
+}
 .gm-card {
+  position: relative;
   display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
   overflow: hidden; height: 100%%;
-  border-radius: 16px; text-decoration: none; color: var(--gh-text);
+  border-radius: 16px; color: var(--gh-text);
   background: var(--gh-card); border: 1px solid var(--gh-line);
   box-shadow: 0 14px 34px var(--gh-shadow);
   transition: transform .18s ease, box-shadow .18s ease;
 }
-.gm-card:hover { transform: translateY(-3px); box-shadow: 0 22px 46px var(--gh-shadow); }
-.gm-card:focus-visible { outline: 3px solid var(--gh-accent); outline-offset: 3px; }
-.gm-pic { position: relative; display: block; overflow: hidden; background: var(--gh-sky); }
+.gm-card:not(.gm-soon):hover { transform: translateY(-3px); box-shadow: 0 22px 46px var(--gh-shadow); }
+/* the picture is a button (it opens the zoom view); the heading's link is
+   stretched over the words only, so the two never overlap or nest */
+.gm-pic { position: relative; display: block; overflow: hidden; background: var(--gh-sky); border: 0; padding: 0; margin: 0; cursor: zoom-in; font: inherit; color: inherit; }
+.gm-pic:focus-visible { outline: 3px solid var(--gh-accent); outline-offset: -3px; }
 .gm-pic::before { content: ''; display: block; padding-top: 56.25%%; }
 .gm-pic img { position: absolute; inset: 0; width: 100%%; height: 100%%; object-fit: cover; transition: transform 1.4s cubic-bezier(.2,.7,.2,1); }
-.gm-card:hover .gm-pic img { transform: scale(1.03); }
-.gm-body { display: flex; flex-direction: column; justify-content: center; gap: 10px; padding: clamp(18px, 2.4vw, 30px); min-width: 0; }
+.gm-pic:hover img { transform: scale(1.03); }
+.gm-zoom {
+  position: absolute; right: 12px; bottom: 12px; display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 12px 7px 10px; border-radius: 999px;
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: .85rem;
+  background: var(--gh-card); color: var(--gh-text); box-shadow: 0 4px 14px var(--gh-shadow);
+  transition: background .15s ease, color .15s ease;
+}
+.gm-pic:hover .gm-zoom, .gm-pic:focus-visible .gm-zoom { background: var(--gh-accent); color: var(--gh-ink-text); }
+.gm-body { position: relative; display: flex; flex-direction: column; justify-content: center; gap: 10px; padding: clamp(18px, 2.4vw, 30px); min-width: 0; }
 .gm-body .gh-kicker { margin: 0; }
 .gm-body h3 { font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(1.35rem, 2vw, 1.7rem); line-height: 1.08; margin: 0; color: var(--gh-text); text-wrap: balance; }
+.gm-link { color: inherit; text-decoration: none; }
+.gm-link::after { content: ''; position: absolute; inset: 0; }
+.gm-link:focus-visible { outline: none; }
+.gm-link:focus-visible::after { outline: 3px solid var(--gh-accent); outline-offset: -3px; border-radius: 0 16px 16px 0; }
 .gm-body p { margin: 0; font-size: 1rem; line-height: 1.55; color: var(--gh-text-dim); max-width: 50ch; }
 .gm-go { margin-top: 6px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; font-size: .9rem; color: var(--gh-accent); }
+.gm-note { margin-top: 6px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; font-size: .9rem; color: var(--gh-text-dim); }
+.gm-soon { border-style: dashed; box-shadow: none; }
 /* the first chart: the picture takes three fifths, at least 3:2 */
 .gm-feature .gm-card { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); }
 .gm-feature .gm-pic::before { padding-top: 66.67%%; }
 .gm-feature .gm-body { padding: clamp(24px, 3.2vw, 48px); gap: 14px; }
 .gm-feature h3 { font-size: clamp(1.8rem, 2.8vw, 2.6rem); line-height: 1.04; }
 .gm-feature .gm-body p { font-size: 1.08rem; line-height: 1.6; }
+/* the chart table: planned charts, one line each */
+.gm-table { margin: clamp(28px, 4vw, 44px) 0 0; }
+.gm-table ul { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(min(100%%, 280px), 1fr)); }
+.gm-table li { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; align-items: baseline; padding: 12px 16px; border-radius: 12px; border: 1px dashed var(--gh-line); background: color-mix(in srgb, var(--gh-card) 60%%, transparent); }
+.gm-table b { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.05rem; line-height: 1.2; color: var(--gh-text); }
+.gm-table small { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .06em; font-size: .85rem; color: var(--gh-text-dim); white-space: nowrap; }
+.gm-table li span { grid-column: 1 / -1; font-size: .95rem; color: var(--gh-text-dim); }
 @media (max-width: 860px) {
   .gm-feature .gm-card { grid-template-columns: 1fr; }
 }
 @media (max-width: 600px) {
-  .gm-card { grid-template-columns: 1fr; }
+  .gm-list { grid-template-columns: 1fr; }
+  .gm-card, .gm-list li:last-child:nth-child(odd) .gm-card { grid-template-columns: 1fr; }
+  .gm-link:focus-visible::after { border-radius: 0 0 16px 16px; }
 }
+/* the zoom view */
+.gm-box { padding: 0; border: 0; margin: auto; width: min(96vw, 1600px); max-height: 94vh; border-radius: 14px; overflow: hidden; background: var(--gh-card); color: var(--gh-text); box-shadow: 0 30px 80px var(--gh-shadow); }
+.gm-box::backdrop { background: color-mix(in srgb, var(--gh-text) 72%%, transparent); }
+.gm-box[open] { display: flex; flex-direction: column; }
+.gm-box-bar { display: flex; align-items: center; gap: 10px; padding: 8px 8px 8px 16px; border-bottom: 1px solid var(--gh-line); }
+.gm-box-title { margin: 0; flex: 1; min-width: 0; font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.05rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gm-box-bar button { border: 1px solid var(--gh-line); background: var(--gh-card); color: var(--gh-text); border-radius: 999px; cursor: pointer; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: .85rem; padding: 7px 14px; }
+.gm-box-bar .gm-box-x { font-size: 1.5rem; line-height: 1; padding: 2px 12px 5px; }
+.gm-box-bar button:hover { background: var(--gh-accent); color: var(--gh-ink-text); border-color: var(--gh-accent); }
+.gm-box-pane { overflow: auto; flex: 1; min-height: 0; display: grid; place-items: center; background: var(--gh-sky); }
+.gm-box-pane img { display: block; max-width: 100%%; max-height: calc(94vh - 56px); width: auto; height: auto; cursor: zoom-in; }
+.gm-box.is-actual { height: 94vh; }
+/* start, not centre: a centred box wider than its scroller overflows to the
+   left as well, and that half can never be scrolled to */
+.gm-box.is-actual .gm-box-pane { display: block; place-items: normal; justify-items: normal; }
+.gm-box.is-actual .gm-box-pane img { max-width: none; max-height: none; cursor: zoom-out; }
 
 /* ── hero: the chart as a real 3D relief map: the coasts raised from the
    chart's own colours, the sea flat, the camera looking across it into a
@@ -879,9 +934,81 @@ def _card(t, rows, images, colour=None, li=''):
                esc(seo.trim(desc, 150)), ''.join(pills)))
 
 
+def _map_card(m, kick, pic, href=None, note=None):
+    """One chart card. The picture is a button that opens the chart full size
+    (the zoom view, GM_BOX); the words carry the link, stretched over the
+    body, so the two never nest. A card without href (SOON) has no link."""
+    from PIL import Image
+    w, h = Image.open(os.path.join(ROOT, pic)).size
+    full = m.get('full', m['image'])
+    fw, fh = Image.open(os.path.join(ROOT, full)).size
+    title = esc(m.get('heading', m['title']))
+    head = ('<a class="gm-link" href="%s">%s</a>' % (seo.quote(href), title)) if href else title
+    tail = ('<span class="gm-go">%s <span aria-hidden="true">&rarr;</span></span>' % esc(m.get('go', 'Open the map'))
+            if href else '<span class="gm-note">%s</span>' % esc(note or ''))
+    return ('<div class="gm-card%s">'
+            '<button type="button" class="gm-pic" data-full="%s" data-w="%d" data-h="%d" data-title="%s" aria-label="%s">'
+            '<img src="%s" alt="%s" width="%d" height="%d" loading="lazy">'
+            '<span class="gm-zoom" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Enlarge</span>'
+            '</button>'
+            '<div class="gm-body"><p class="gh-kicker">%s</p><h3>%s</h3><p>%s</p>%s</div></div>'
+            % ('' if href else ' gm-soon', esc(seo.quote(full)), fw, fh, esc(m['title']),
+               esc('Enlarge the chart: ' + m['title']), esc(pic), esc(m['alt']), w, h,
+               ' &middot; '.join(kick), head, esc(m['blurb']), tail))
+
+
+GM_BOX = """<dialog class="gm-box" id="gm-box" aria-label="Chart">
+  <div class="gm-box-bar"><p class="gm-box-title"></p>
+    <button type="button" class="gm-box-fit" aria-pressed="false">Actual size</button>
+    <button type="button" class="gm-box-x" aria-label="Close">&times;</button></div>
+  <div class="gm-box-pane"><img alt=""></div>
+</dialog>
+<script>
+(function () {
+  var box = document.getElementById('gm-box');
+  if (!box || !box.showModal) return;
+  var img = box.querySelector('img'), title = box.querySelector('.gm-box-title'),
+      fit = box.querySelector('.gm-box-fit'), pane = box.querySelector('.gm-box-pane'), from = null;
+  function zoom(on) {
+    box.classList.toggle('is-actual', on);
+    fit.setAttribute('aria-pressed', on ? 'true' : 'false');
+    fit.textContent = on ? 'Fit to screen' : 'Actual size';
+  }
+  document.querySelectorAll('.gm-pic').forEach(function (b) {
+    b.addEventListener('click', function () {
+      from = b;
+      var i = b.querySelector('img');
+      img.src = b.dataset.full; img.alt = i.alt;
+      img.width = +b.dataset.w; img.height = +b.dataset.h;
+      title.textContent = b.dataset.title;
+      zoom(false);
+      box.showModal();
+      pane.scrollLeft = pane.scrollTop = 0;
+    });
+  });
+  fit.addEventListener('click', function () {
+    var on = !box.classList.contains('is-actual');
+    zoom(on);
+    if (on) { pane.scrollLeft = (pane.scrollWidth - pane.clientWidth) / 2; pane.scrollTop = (pane.scrollHeight - pane.clientHeight) / 2; }
+  });
+  img.addEventListener('click', function (e) {
+    var on = !box.classList.contains('is-actual');
+    var r = img.getBoundingClientRect(), fx = (e.clientX - r.left) / r.width, fy = (e.clientY - r.top) / r.height;
+    zoom(on);
+    if (on) { pane.scrollLeft = fx * pane.scrollWidth - pane.clientWidth / 2; pane.scrollTop = fy * pane.scrollHeight - pane.clientHeight / 2; }
+  });
+  box.querySelector('.gm-box-x').addEventListener('click', function () { box.close(); });
+  box.addEventListener('click', function (e) { if (e.target === box || e.target === pane) box.close(); });
+  box.addEventListener('close', function () { img.removeAttribute('src'); if (from) from.focus(); });
+})();
+</script>"""
+
+
 def maps_band(rows):
     """The section under the hero: the charts in tools/grammar_maps.py,
-    the first one large. Level and Free come from the catalogue row."""
+    the first one large, then the SOON charts (art, no lesson yet), then
+    the chart table (PLANNED). Level and Free come from the catalogue row.
+    Every picture opens full size in GM_BOX."""
     by_file = {r['file']: r for r in rows}
     items = []
     for i, m in enumerate(grammar_maps.MAPS):
@@ -897,26 +1024,30 @@ def maps_band(rows):
             print('  ! grammar map %s has no catalogue row: no level shown' % m['href'])
         stem = 'map-' + os.path.splitext(m['href'])[0]
         pic = web_copy(m['image'], stem, width=1280 if i == 0 else 720)
-        from PIL import Image
-        w, h = Image.open(os.path.join(ROOT, pic)).size
-        card = ('<a class="gm-card" href="%s">'
-                '<span class="gm-pic"><img src="%s" alt="%s" width="%d" height="%d" loading="lazy"></span>'
-                '<span class="gm-body"><span class="gh-kicker">%s</span><h3>%s</h3><p>%s</p>'
-                '<span class="gm-go">%s <span aria-hidden="true">&rarr;</span></span></span></a>'
-                % (seo.quote(m['href']), esc(pic), esc(m['alt']), w, h, ' &middot; '.join(kick),
-                   esc(m.get('heading', m['title'])), esc(m['blurb']), esc(m.get('go', 'Open the map'))))
-        items.append(card)
+        items.append(_map_card(m, kick, pic, href=m['href']))
+    for m in grammar_maps.SOON:
+        stem = 'map-soon-' + re.sub(r'[^a-z]+', '-', m['title'].lower()).strip('-')
+        pic = web_copy(m['image'], stem, width=720)
+        items.append(_map_card(m, [esc(m['title']), esc(m['level']), 'Coming next'], pic, note=m['note']))
     rest = ''.join('\n      <li>%s</li>' % c for c in items[1:])
-    return '''<section class="gm" id="maps" aria-labelledby="gm-h">
+    table = ''
+    if grammar_maps.PLANNED:
+        table = ('\n    <div class="gm-table">\n      <div class="gh-group-h"><h3>On the chart table</h3>'
+                 '<span>%d more charts being drawn</span></div>\n      <ul>%s\n      </ul>\n    </div>'
+                 % (len(grammar_maps.PLANNED), ''.join(
+                     '\n        <li><b>%s</b><span>%s</span><small>%s</small></li>' % (esc(t), esc(w), esc(lv))
+                     for t, w, lv in grammar_maps.PLANNED)))
+    return """<section class="gm" id="maps" aria-labelledby="gm-h">
   <div class="gh-wrap">
     <div class="gh-sechead">
       <p class="gh-kicker">Grammar maps</p>
       <h2 class="gh-h2" id="gm-h">Sailing the seas <em>of grammar</em></h2>
-      <p>Grammar drawn as a place: a coast for each pattern, a camp for each tense. Find the rule on the map, then sail or climb to the practice.</p>
+      <p>Grammar drawn as a place: a coast for each pattern, a camp for each tense. Find the rule on the map, then sail or climb to the practice. Tap a chart to open it full size.</p>
     </div>
-    <div class="gm-feature">%s</div>%s
+    <div class="gm-feature">%s</div>%s%s
   </div>
-</section>''' % (items[0], '\n    <ul class="gm-list">%s\n    </ul>' % rest if rest else '')
+</section>
+%s""" % (items[0], '\n    <ul class="gm-list">%s\n    </ul>' % rest if rest else '', table, GM_BOX)
 
 
 def render(rows, images, allm):

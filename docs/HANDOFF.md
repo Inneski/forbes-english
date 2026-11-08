@@ -51,6 +51,34 @@ Screenshot gotcha: a scripted ArrowRight walk through a deck stops at the
 first gap slide, because the gap input keeps focus and swallows the key.
 Blur `document.activeElement` before each press.
 
+## 2026-11-08 — Grammar maps: every chart opens full size; Countania and the chart table on the page
+
+Innes: *"all the charts should be expandable here. What happened to
+countable, uncountable? And your list of other ideas along the same vein."*
+- **Zoom view:** every chart picture in the grammar-maps section is now a
+  button. It opens a `<dialog>` (`GM_BOX` in `tools/build_grammar_hub.py`)
+  with the full-size picture fitted to the screen. "Actual size" (or a
+  click on the chart) shows it at 1:1, scrollable and centred on the click.
+  The words carry the link, stretched over the card's body, so the button
+  and the link never nest. `full` in `tools/grammar_maps.py` names a larger
+  picture than `image` when one exists.
+- **Countania is on the page as "Coming next"** (`SOON` in
+  `grammar_maps.py`), with no link. Its painted chart is now in the repo at
+  `sailing-the-seas-countania/hero.jpg`. **The lesson is still not built**;
+  the galley room is still missing. When it ships, move the entry from
+  SOON into MAPS with its href.
+- **"On the chart table"** (`PLANNED`) lists 12 charts from Waves 1 and 2
+  of `docs/GRAMMAR-MAPS-PLAN.md`, one line each. Delete a line when its
+  chart is built.
+- The cards under the feature now stand picture-on-top at 3:2, three to a
+  row. Side by side they had cropped each landscape chart to a portrait
+  sliver. At two to a row (below 980px) an odd last card takes the whole
+  row. Measured at 1920/1280/1000/900/700/375: no holes, no overlaps, no
+  sideways scroll.
+- Trap: a `place-items: center` scroller centres an over-wide child and
+  half of it can never be scrolled to. In actual-size mode the pane is set
+  back to `place-items: normal`.
+
 ## 2026-11-08 — Regularia & Irregularia (A2–B1): the second sea chart: SHIPPED
 
 `sailing-the-seas-regularia.html` covers regular and irregular past forms as a
