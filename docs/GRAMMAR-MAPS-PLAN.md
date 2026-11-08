@@ -56,7 +56,7 @@ may set two tenses against each other, as in §3.2.
 | Chart | Art | State |
 |---|---|---|
 | **Regularia & Irregularia** (regular / irregular past), A2–B1 | Painted repaint + clean copy, by Codex on 2026-10-04 | **Built 2026-11-08**: `sailing-the-seas-regularia.html`, builder `build_regularia.py`. Its catalogue row was still to be inserted (see HANDOFF). |
-| **Countania & Uncountania** (countable / uncountable), A2–B1 | Painted repaint + clean copy, plus two ship's rooms (store cabin, cargo hold) | **The galley is missing:** the room *between* the two, where a coffee sits beside coffee. Brief: `docs/CHATGPT-SEA-CHARTS-BRIEF.md` part 1. The clean copy still has two stray dots where the titles were, at (145,956) and (1378,956) on the 1536×1024 canvas. Paint them out in code, not by re-asking ChatGPT. |
+| **Countania & Uncountania** (countable / uncountable), A2–B1 | Painted repaint + clean copy, plus two ship's rooms (store cabin, cargo hold) | **Built 2026-11-08**: `sailing-the-seas-countania.html`, builder `build_countania.py`; the stray dots are painted out by `countania_clean.py`. The galley is a written card until its picture exists (`GALLEY_IMG`). Was: **The galley is missing:** the room *between* the two, where a coffee sits beside coffee. Brief: `docs/CHATGPT-SEA-CHARTS-BRIEF.md` part 1. The clean copy still has two stray dots where the titles were, at (145,956) and (1378,956) on the 1536×1024 canvas. Paint them out in code, not by re-asking ChatGPT. |
 
 **Where the art is:** `C:\Users\black\Documents\Codex\2026-10-04\files-mentioned-by-the-user-artwork\outputs\`.
 That folder is outside the repo and is not in `incoming/sea-charts/`
@@ -225,7 +225,7 @@ The commonest IELTS Writing error, drawn as a map.
 ## 4. Recommended order
 
 1. ~~**Regularia lesson**~~: built 2026-11-08. Copy `build_regularia.py` + `regularia_map.py` + `regularia_measure.py` for the next chart: measure the clean chart, map dots to names, write the content.
-2. **Countania lesson** (art in hand except the galley; build with a placeholder and drop the galley in when it arrives).
+2. ~~**Countania lesson**~~: built 2026-11-08, with the galley as a written card until it is painted.
 3. **3.1 Atlas of THE** and **3.2 Present Perfect vs Past Simple**: the two biggest gaps with the best fit.
 4. **3.3 Conditional Quadrants**, which proves the quadrant form.
 5. **3.4 In/On/At** and **3.5 The Voyage** as a pair for the Prepositions hub.

@@ -1,0 +1,1321 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- SEO:start -->
+<!-- SEO:end -->
+<title>Countania &amp; Uncountania &mdash; Countable and Uncountable Nouns</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#2a1e11;
+    --ink-soft:#5e472e;
+    --paper:#EFF5F7;
+    --card:#FFFFFF;
+    --accent:#075355;
+    --accent-dark:#053A3C;
+    --accent-light:#B5CBCC;
+    --accent-lighter:#E6EEEE;
+    --on-accent:#FFFFFF;
+    --good:#1E7A4C;
+    --good-bg:#E5F5EC;
+    --bad:#B23A3A;
+    --bad-bg:#FBEAEA;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;}
+  h1,h2,h3{font-family:'Fraunces',serif;font-weight:600;margin:0 0 .4em;color:var(--ink);}
+  .wordmark{display:flex;align-items:center;justify-content:space-between;max-width:1000px;margin:0 auto;padding:28px 24px 0;}
+  .wordmark .brand{font-family:'Fraunces',serif;font-weight:700;font-size:20px;letter-spacing:.02em;}
+  .wordmark .brand span{color:var(--accent);}
+  .wordmark .sub{font-size:13px;color:var(--ink-soft);}
+
+  .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:18px;}
+  .chart-wrap{margin-top:24px;background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:18px 20px;overflow-x:auto;}
+  .chart-wrap h3{font-size:15px;margin-bottom:4px;}
+  .chart-wrap + .chart-wrap{margin-top:16px;}
+  .chart-note{font-size:13px;color:var(--ink-soft);margin-bottom:14px;}
+  table.conj{width:100%;border-collapse:collapse;font-size:14px;min-width:520px;}
+  table.conj th, table.conj td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--accent-light);}
+  table.conj th{font-family:'Fraunces',serif;font-weight:600;color:var(--accent-dark);font-size:13px;text-transform:uppercase;letter-spacing:.03em;}
+  table.conj td.subj{font-weight:600;}
+  table.conj tr:last-child td{border-bottom:none;}
+  main{max-width:1000px;margin:0 auto;padding:0 24px 80px;}
+  .hero{display:grid;grid-template-columns:1.1fr 1fr;gap:32px;align-items:center;padding:40px 0 56px;}
+  .hero .eyebrow{
+    display:inline-block;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--accent-dark);background:var(--accent-lighter);padding:6px 12px;border-radius:999px;margin-bottom:14px;
+  }
+  .hero h1{font-size:38px;line-height:1.12;}
+  .hero p{color:var(--ink-soft);font-size:16px;max-width:46ch;}
+  .hero-diagram{width:100%;display:block;}
+  @media (max-width:720px){.hero{grid-template-columns:1fr;}}
+
+  .trail-wrap{position:relative;padding-left:66px;}
+  .trail-wrap::before{
+    content:'';position:absolute;left:23px;top:8px;bottom:8px;width:2px;
+    background:repeating-linear-gradient(to bottom, var(--accent) 0 8px, transparent 8px 18px);
+  }
+  .camp{position:relative;margin-bottom:64px;}
+  .camp .marker{position:absolute;left:-66px;top:0;width:46px;height:46px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;}
+  .camp .marker svg{width:18px;height:18px;}
+  .camp .camp-label{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-dark);margin-bottom:6px;}
+
+  .rule-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:18px;}
+  .rule-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:18px 20px;}
+  .rule-card h3{font-size:16px;margin-bottom:8px;}
+  .rule-card p{margin:0 0 8px;font-size:14px;color:var(--ink-soft);}
+  .rule-card .ex{font-size:14px;font-style:italic;color:var(--accent-dark);border-left:2px solid var(--accent);padding-left:10px;}
+
+  .signal-groups{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px;}
+  .signal-box{background:var(--accent-lighter);border-radius:var(--radius);padding:18px 20px;}
+  .signal-box h3{font-size:15px;}
+  .signal-box ul{margin:8px 0 0;padding-left:18px;font-size:14px;color:var(--ink);}
+  .signal-box li{margin-bottom:4px;}
+  @media (max-width:600px){.signal-groups{grid-template-columns:1fr;}}
+
+  /* ── THE SEA CHART ── */
+  .diagram-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:26px 26px 22px;}
+  .diagram-intro{font-size:14px;color:var(--ink-soft);margin-bottom:18px;max-width:60ch;}
+  .diagram-stage{width:100%;background:var(--paper);border:1px solid var(--accent-light);border-radius:var(--radius);padding:12px;}
+  .diagram-stage svg{width:100%;height:auto;display:block;}
+  .dg-reveal{opacity:0;transition:opacity .2s ease;}
+  .dg-reveal.is-shown{opacity:1;}
+  .diagram-shape{cursor:pointer;transition:opacity .15s ease;}
+  .diagram-shape:hover{opacity:.86;}
+  .diagram-shape:focus{outline:none;}
+  .diagram-shape:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px;}
+  .diagram-caption{font-family:'Inter',sans-serif;font-weight:700;font-size:15px;letter-spacing:.04em;}
+  .diagram-panels{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px;}
+  .diagram-panel{border-radius:12px;padding:16px 18px;border:1px solid var(--accent-light);background:var(--accent-lighter);}
+  .diagram-panel.is-now{background:#EAF1F6;border-color:#C9DCE6;}
+  .diagram-panel h4{margin:0 0 8px;font-family:'Fraunces',serif;font-size:14px;letter-spacing:.03em;text-transform:uppercase;color:var(--accent-dark);}
+  .diagram-panel.is-now h4{color:#3E6A85;}
+  .diagram-panel ul{margin:0;padding-left:18px;font-size:14px;}
+  .diagram-panel li{margin-bottom:5px;}
+  .diagram-panel li em{font-style:normal;font-weight:600;}
+  @media (max-width:600px){.diagram-panels{grid-template-columns:1fr;}}
+
+  .route-link{display:inline-flex;align-items:center;gap:7px;text-decoration:none;font-weight:600;font-size:14px;
+    padding:9px 18px;border-radius:999px;border:1px solid var(--accent);color:var(--accent-dark);}
+  .route-link:hover{background:var(--accent-lighter);}
+  .quiz-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:24px 24px 20px;}
+  .progress-row{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--ink-soft);margin-bottom:10px;}
+  .progress-track{height:6px;background:var(--accent-lighter);border-radius:999px;overflow:hidden;margin-bottom:20px;}
+  .progress-fill{height:100%;background:var(--accent);border-radius:999px;width:0%;transition:width .3s ease;}
+  .q-prompt{font-size:17px;margin-bottom:4px;}
+  .q-hint{font-size:13px;color:var(--ink-soft);margin-bottom:16px;font-style:italic;}
+  .options{display:grid;gap:10px;}
+  .opt-btn{text-align:left;padding:12px 16px;border-radius:10px;border:1px solid var(--accent-light);background:#fff;font-family:'Inter',sans-serif;font-size:15px;color:var(--ink);cursor:pointer;}
+  .opt-btn:hover{border-color:var(--accent);}
+  .opt-btn.correct{background:var(--good-bg);border-color:var(--good);color:var(--good);font-weight:600;}
+  .opt-btn.wrong{background:var(--bad-bg);border-color:var(--bad);color:var(--bad);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:16px;padding:14px 16px;border-radius:10px;background:var(--accent-lighter);font-size:14px;display:none;}
+  .feedback.show{display:block;}
+  .quiz-footer{display:flex;justify-content:flex-end;margin-top:20px;}
+  .next-btn{background:var(--accent);color:var(--on-accent);border:none;padding:11px 22px;border-radius:999px;font-family:'Inter',sans-serif;font-weight:600;font-size:14px;cursor:pointer;}
+  .next-btn:disabled{background:var(--accent-light);cursor:not-allowed;}
+
+  #results{display:none;text-align:center;padding:12px 0 8px;}
+  #results .score{font-family:'Fraunces',serif;font-size:52px;color:var(--accent);margin:8px 0;}
+  #results p{color:var(--ink-soft);}
+  .retry-btn{margin-top:12px;background:transparent;border:1px solid var(--accent);color:var(--accent-dark);padding:10px 20px;border-radius:999px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;}
+  .route-nav{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:22px;padding-top:18px;border-top:1px solid var(--accent-light);}
+  .route-nav a{display:inline-flex;align-items:center;gap:7px;text-decoration:none;font-family:'Inter',sans-serif;font-weight:600;font-size:14px;padding:10px 20px;border-radius:999px;}
+  .route-nav a.next-camp{background:var(--accent);color:var(--on-accent);}
+  .route-nav a.base-camp{background:transparent;border:1px solid var(--ink-soft);color:var(--ink-soft);}
+  .route-nav a:hover{opacity:0.88;}
+
+    /* ── Persistent way back. Pinned, so it is reachable from anywhere on
+       the page rather than only after scrolling to the bottom. ── */
+    /* Clear a band at the top of the page for the pinned link so it never
+       lands on the wordmark. */
+    body{ padding-top:46px; }
+    .up-link{
+      position:fixed; top:16px; left:16px; z-index:60;
+      display:inline-flex; align-items:center; gap:8px;
+      padding:9px 16px 9px 13px; border-radius:999px;
+      background:var(--card,#fff); color:var(--accent-dark,#333);
+      border:1.5px solid var(--accent-light,rgba(0,0,0,.18));
+      font:600 14px/1 'Inter',system-ui,sans-serif; letter-spacing:.01em;
+      text-decoration:none; box-shadow:0 2px 10px rgba(0,0,0,.10);
+      transition:background .18s ease, color .18s ease, transform .18s ease;
+    }
+    .up-link:hover{ background:var(--accent,#333); color:#fff; transform:translateX(-2px); }
+    .up-link .arw{ font-size:15px; line-height:1; }
+    @media print{ .up-link{ display:none; } }
+    @media (max-width:640px){
+      .up-link{ top:10px; left:10px; padding:7px 13px 7px 10px; font-size:13px; }
+    }
+  /* ── example translations ── */
+  .ex[data-tr]{cursor:pointer;}
+  .ex[data-tr]:hover{filter:brightness(1.06);}
+  .ex-tr{display:block;margin-top:8px;padding-top:7px;border-top:1px dashed var(--accent-light);
+         font-style:normal;font-size:.95em;opacity:.92;}
+  .ex-tr[dir="rtl"]{text-align:right;}
+  .tr-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 26px;
+          font-family:'Inter',sans-serif;font-size:12.5px;color:var(--ink-soft);}
+  .tr-bar .tr-label{letter-spacing:.06em;text-transform:uppercase;font-weight:700;font-size:11px;}
+  .tr-bar button{font:inherit;font-weight:600;border:1px solid var(--accent-light);
+                 background:var(--card);color:var(--ink-soft);padding:5px 11px;border-radius:999px;
+                 cursor:pointer;transition:background .12s ease,color .12s ease;}
+  .tr-bar button:hover{color:var(--ink);}
+  .tr-bar button.on{background:var(--accent);color:var(--on-accent);border-color:var(--accent);}
+  /* ── the hero map, click to expand ── */
+  .hero-diagram-btn{all:unset;display:block;width:100%;cursor:zoom-in;position:relative;
+                     border-radius:14px;overflow:hidden;}
+  .hero-diagram-btn:hover .hero-diagram{filter:brightness(1.03);}
+  .hero-diagram-btn:focus-visible{outline:3px solid var(--accent);outline-offset:3px;}
+  .hero-diagram-btn::after{content:"Click to expand";position:absolute;right:12px;bottom:12px;
+                            background:var(--accent);color:var(--on-accent);font-family:'Inter',sans-serif;
+                            font-size:11.5px;font-weight:600;padding:5px 11px;border-radius:999px;
+                            opacity:0;transition:opacity .15s ease;pointer-events:none;}
+  .hero-diagram-btn:hover::after,.hero-diagram-btn:focus-visible::after{opacity:.92;}
+  .img-lightbox{--scrim:color-mix(in srgb,var(--ink) 90%,transparent);
+                display:none;position:fixed;inset:0;background:var(--scrim);
+                align-items:center;justify-content:center;padding:28px;z-index:80;}
+  .img-lightbox.is-open{display:flex;}
+  .img-lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;}
+  .lightbox-close{position:absolute;top:18px;right:22px;background:transparent;
+                   color:var(--card);border:1px solid var(--card);width:40px;height:40px;
+                   border-radius:50%;font-size:24px;line-height:1;cursor:pointer;
+                   display:flex;align-items:center;justify-content:center;}
+  .lightbox-close:hover{background:var(--accent);}
+  /* ── the header, in the sea-chart's own display face (the first chart's font file) ── */
+  @font-face{font-family:'Faktum';src:url('sailing-the-seas-of-grammar/fonts/Faktum-Bold.woff2') format('woff2');
+             font-weight:700;font-style:normal;font-display:swap;}
+  .wordmark .brand,.hero h1{font-family:'Faktum','Fraunces',serif;font-weight:700;}
+  .q-hint em,.rule-card .ex em{font-style:normal;font-weight:600;}
+/* Waterlining: each side of the page is a coast; waterlines run out from
+   it across the page, each smoother, wider-spaced and fainter than the last,
+   over a faint shallow-water tint by the shore. Each coast owns half the page,
+   so the two sets never cross; behind the reading column the lines carry on
+   at 70% strength. Cards and the hero image are opaque and sit above;
+   the sky (clouds and gulls, z-index -1) passes over the water. */
+@supports ((mask-image:none) or (-webkit-mask-image:none)) and (color:color-mix(in srgb,red 50%,transparent)){
+body{position:relative;}
+body::before,body::after{
+  content:"";position:absolute;top:0;bottom:0;
+  z-index:-2;pointer-events:none;
+  background:linear-gradient(var(--accent) calc(100% - 2px),transparent 0);opacity:.22;
+  -webkit-mask-repeat:no-repeat,repeat-y;mask-repeat:no-repeat,repeat-y;
+  -webkit-mask-size:100% 100%,980px 1200px;mask-size:100% 100%,980px 1200px;
+  -webkit-mask-composite:source-in;mask-composite:intersect;
+}
+body::before{left:0;right:50%;
+  -webkit-mask-image:linear-gradient(to right,var(--ink) max(8px,calc(100% - 574px)),color-mix(in srgb,var(--ink) 70%,transparent) max(24px,calc(100% - 504px))),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='980' height='1200' fill='none' stroke='currentColor' stroke-width='1.05'%3E%3Cdefs%3E%3Cpath id='v' d='M49,-24c0,8,0,16-1,24s-2,16-2,24s1,16,1,24s-3,16-4,24s1,16,2,24s3,16,4,24s-3,16-3,24s0,16,1,24s4,16,6,24s5,16,6,24s-1,16-2,24s-3,16-5,24s-4,16-7,24s-6,16-7,24s3,16,4,24s-1,16,0,24s0,16,1,24s4,16,6,24s4,16,4,24s-1,16-2,24s-5,16-7,24s0,16-1,24s-1,16,0,24s5,16,6,24s4,16,4,24s-3,16-3,24s0,16,1,24s1,16,1,24s-1,16-2,24s-4,16-6,24s-1,16-2,24s-1,16-3,24s-5,16-6,24s-2,16-4,24s-7,16-9,24s-3,16-2,24s6,16,8,24s5,16,7,24s3,16,4,24s1,16,2,24s2,16,2,24s-2,16-3,24s0,16,0,24s1,16,1,24s-1,16,2,24s8,16,11,24s4,16,4,24s0,16-1,24s-4,16-5,24s0,16-1,24s0,16-1,24s-2,16-2,24'/%3E%3Cpath id='w' d='M60,-24c0,8,0,16-1,24s-2,16-2,24s1,16,1,24s-3,16-3,24s1,16,2,24s2,16,2,24s-2,16-2,24s0,16,1,24s5,16,7,24s4,16,5,24s-1,16-2,24s-3,16-5,24s-4,16-6,24s-7,16-8,24s3,16,4,24s-1,16,0,24s0,16,2,24s4,16,5,24s4,16,4,24s-1,16-2,24s-5,16-6,24s-1,16-2,24s-1,16,0,24s5,16,7,24s3,16,3,24s-3,16-3,24s0,16,1,24s1,16,1,24s-1,16-2,24s-4,16-5,24s-2,16-3,24s-1,16-3,24s-4,16-6,24s-1,16-3,24s-7,16-9,24s-3,16-2,24s6,16,8,24s5,16,6,24s3,16,4,24s1,16,2,24s2,16,2,24s-2,16-3,24s0,16,0,24s0,16,1,24s0,16,3,24s8,16,10,24s4,16,4,24s0,16-1,24s-4,16-4,24s-1,16-2,24s0,16-1,24s-2,16-2,24'/%3E%3Cpath id='x' d='M72,-30c0,10,0,20-1,30s-1,20-2,30s0,20,0,30s-2,20-1,30s3,20,3,30s-2,20-2,30s3,20,5,30s6,20,7,30s0,20-1,30s-3,20-6,30s-7,20-9,30s-1,20-1,30s0,20,1,30s2,20,3,30s5,20,7,30s1,20,0,30s-5,20-7,30s-2,20-2,30s2,20,4,30s5,20,6,30s-2,20-3,30s1,20,1,30s1,20,0,30s-3,20-5,30s-3,20-4,30s-2,20-4,30s-4,20-7,30s-4,20-6,30s-6,20-6,30s8,20,10,30s5,20,7,30s1,20,2,30s3,20,3,30s-3,20-3,30s1,20,1,30s-1,20,2,30s9,20,12,30s3,20,3,30s-2,20-3,30s-3,20-4,30s0,20-1,30s-1,20-2,30'/%3E%3C/defs%3E%3Cuse href='%23v' stroke-width='20' stroke-opacity='.1'/%3E%3Cuse href='%23w' stroke-width='40' stroke-opacity='.09'/%3E%3Cuse href='%23x' stroke-width='62' stroke-opacity='.07'/%3E%3Cpath d='M39.5,-15c-.1,5-.6,10-1.2,15s-1.7,10-2,15s-.2,10-.1,15s1.1,10,1,15s-.9,10-1.6,15s-2.4,10-2.7,15s.1,10,.8,15s2.6,10,3.4,15s1.5,10,1.5,15s-1.2,10-1.7,15s-1.1,10-1.2,15s.4,10,1,15s1.5,10,2.7,15s2.8,10,4.2,15s3.3,10,4.2,15s1.3,10,1.1,15s-1.7,10-2.6,15s-2.1,10-3,15s-1.5,10-2.8,15s-3,10-4.8,15s-4.5,10-5.8,15s-2,10-1.9,15s1.7,10,2.4,15s1.7,10,1.9,15s-.6,10-.7,15s-.4,10,.1,15s1.6,10,2.7,15s2.6,10,3.7,15s2.3,10,3.2,15s1.7,10,1.7,15s-.3,10-1.2,15s-2.9,10-4.2,15s-2.7,10-3.4,15s-.6,10-.7,15s-.1,10-.3,15s-.9,10-.6,15s.8,10,2,15s3.9,10,5.3,15s3.1,10,3.4,15s-.7,10-1.3,15s-2,10-2.3,15s-.1,10,.1,15s1.1,10,1.4,15s.4,10,.4,15s-.2,10-.6,15s-1.1,10-2,15s-2.5,10-3.6,15s-2.4,10-3,15s-.4,10-.7,15s-.3,10-1,15s-2.4,10-3.7,15s-2.8,10-3.8,15s-1.1,10-1.9,15s-1.5,10-3.1,15s-4.3,10-6.2,15s-4.3,10-5,15s-.2,10,.7,15s3.3,10,5,15s3.6,10,5.2,15s3,10,4.2,15s2.4,10,3.2,15s1.2,10,1.6,15s.4,10,.9,15s1.4,10,1.9,15s1.4,10,1.4,15s-.8,10-1.4,15s-1.9,10-2.2,15s.2,10,.5,15s1.2,10,1.3,15s-.5,10-.6,15s-.8,10,0,15s2.7,10,4.8,15s5.3,10,7.4,15s3.8,10,4.7,15s.8,10,.7,15s-.8,10-1.5,15s-1.6,10-2.5,15s-2,10-2.5,15s-.7,10-.7,15s.5,10,.4,15s-.6,10-1.2,15s-1.7,10-2,15' stroke-width='1.25'/%3E%3Cuse href='%23v' stroke-width='1.1' stroke-opacity='.86'/%3E%3Cuse href='%23w' stroke-width='1.1' stroke-opacity='.78'/%3E%3Cuse href='%23x' stroke-width='1.1' stroke-opacity='.71'/%3E%3Cpath d='M88,-48c-2,16-2,32-3,48s-1,32-2,48s-1,32-1,48s0,32,1,48s6,32,8,48s4,32,2,48s-7,32-9,48s-6,32-6,48s1,32,3,48s8,32,8,48s-5,32-7,48s-2,32-1,48s7,32,8,48s-1,32-2,48s1,32-1,48s-5,32-8,48s-4,32-7,48s-10,32-11,48s2,32,4,48s7,32,9,48s4,32,4,48s-3,32-2,48s3,32,6,48s10,32,12,48s-4,32-5,48s-2,32-3,48s-1,32-2,48' stroke-opacity='.65'/%3E%3Cpath d='M103,-48c-1,16-2,32-3,48s-2,32-2,48s0,32,0,48s-1,32,0,48s7,32,8,48s4,32,2,48s-6,32-9,48s-6,32-6,48s2,32,3,48s8,32,8,48s-5,32-6,48s-2,32-1,48s6,32,7,48s-1,32-2,48s1,32-1,48s-5,32-7,48s-5,32-8,48s-9,32-10,48s2,32,4,48s6,32,8,48s4,32,4,48s-3,32-2,48s4,32,7,48s9,32,10,48s-3,32-4,48s-2,32-3,48s-2,32-2,48' stroke-opacity='.59'/%3E%3Cpath d='M122,-60c-1,20-4,40-5,60s-3,40-3,60s1,40,2,60s3,40,5,60s6,40,4,60s-9,40-11,60s-4,40-3,60s8,40,9,60s-4,40-5,60s1,40,2,60s2,40,3,60s1,40-1,60s-5,40-8,60s-7,40-10,60s-9,40-8,60s8,40,11,60s4,40,5,60s-3,40-1,60s11,40,14,60s0,40,0,60s-4,40-5,60s-3,40-3,60' stroke-opacity='.54'/%3E%3Cpath d='M141,-60c-1,20-4,40-5,60s-2,40-2,60s0,40,1,60s4,40,5,60s5,40,4,60s-8,40-11,60s-3,40-2,60s7,40,8,60s-4,40-4,60s1,40,1,60s3,40,3,60s0,40-1,60s-5,40-8,60s-7,40-9,60s-8,40-7,60s7,40,9,60s4,40,5,60s-2,40,0,60s10,40,13,60s0,40,0,60s-4,40-5,60s-2,40-2,60' stroke-opacity='.5'/%3E%3Cpath d='M162,-60c0,20-3,40-5,60s-1,40-2,60s0,40,1,60s5,40,6,60s5,40,3,60s-7,40-9,60s-4,40-3,60s6,40,7,60s-3,40-3,60s0,40,1,60s3,40,3,60s0,40-2,60s-4,40-7,60s-7,40-9,60s-7,40-6,60s6,40,8,60s3,40,4,60s-1,40,2,60s9,40,11,60s1,40,0,60s-3,40-5,60s-1,40-2,60' stroke-opacity='.5'/%3E%3Cpath d='M186,-60c0,20-3,40-4,60s-2,40-2,60s0,40,1,60s4,40,6,60s3,40,2,60s-6,40-8,60s-4,40-3,60s5,40,6,60s-2,40-2,60s0,40,0,60s3,40,3,60s-1,40-2,60s-4,40-6,60s-8,40-10,60s-5,40-5,60s5,40,7,60s2,40,4,60s1,40,3,60s8,40,10,60s1,40,0,60s-3,40-4,60s-2,40-2,60' stroke-opacity='.5'/%3E%3Cpath d='M212,-60c0,20-3,40-4,60s-2,40-2,60s0,40,1,60s5,40,6,60s3,40,2,60s-6,40-8,60s-3,40-2,60s4,40,4,60s0,40-1,60s0,40,1,60s2,40,2,60s-1,40-2,60s-4,40-6,60s-8,40-10,60s-4,40-4,60s4,40,6,60s2,40,3,60s3,40,5,60s7,40,8,60s2,40,1,60s-3,40-4,60s-2,40-2,60' stroke-opacity='.5'/%3E%3Cpath d='M240,-60c0,20-3,40-4,60s-1,40-2,60s1,40,2,60s4,40,5,60s2,40,1,60s-4,40-6,60s-2,40-2,60s2,40,3,60s0,40,0,60s0,40,0,60s2,40,2,60s-1,40-2,60s-4,40-6,60s-7,40-9,60s-3,40-3,60s2,40,4,60s2,40,4,60s3,40,5,60s6,40,7,60s2,40,1,60s-3,40-4,60s-1,40-2,60' stroke-opacity='.5'/%3E%3Cpath d='M270,-60c0,20-2,40-3,60s-2,40-2,60s1,40,2,60s3,40,4,60s2,40,1,60s-4,40-5,60s-2,40-2,60s1,40,1,60s1,40,2,60s-1,40,0,60s1,40,1,60s-1,40-3,60s-3,40-5,60s-6,40-8,60s-3,40-3,60s1,40,3,60s2,40,4,60s4,40,6,60s5,40,6,60s1,40,1,60s-2,40-3,60s-2,40-2,60' stroke-opacity='.5'/%3E%3Cpath d='M302,-60c-1,20-2,40-3,60s-2,40-2,60s1,40,2,60s3,40,4,60s1,40,0,60s-2,40-3,60s-2,40-2,60s0,40,0,60s2,40,2,60s0,40,0,60s1,40,0,60s0,40-2,60s-3,40-5,60s-5,40-7,60s-3,40-3,60s1,40,2,60s3,40,5,60s4,40,6,60s3,40,4,60s2,40,2,60s-2,40-3,60s-2,40-2,60' stroke-opacity='.5'/%3E%3Cpath d='M335,-60c0,20-1,40-2,60s-1,40-1,60s1,40,2,60s2,40,3,60s0,40,0,60s-2,40-2,60s-2,40-2,60s-1,40-1,60s2,40,2,60s0,40,0,60s0,40,0,60s-1,40-2,60s-3,40-5,60s-5,40-6,60s-2,40-3,60s0,40,1,60s3,40,5,60s5,40,6,60s3,40,4,60s2,40,1,60s-1,40-2,60s-1,40-1,60' stroke-opacity='.5'/%3E%3Cpath d='M371,-60c0,20-1,40-1,60s-2,40-1,60s1,40,1,60s2,40,3,60s-1,40-1,60s0,40-1,60s-1,40-1,60s-2,40-2,60s2,40,2,60s1,40,1,60s-1,40-1,60s-1,40-2,60s-4,40-5,60s-4,40-5,60s-2,40-2,60s-1,40,0,60s3,40,5,60s4,40,5,60s3,40,4,60s1,40,1,60s-1,40-1,60s-2,40-1,60' stroke-opacity='.5'/%3E%3Cpath d='M409,-60c0,20-1,40-1,60s-1,40-1,60s1,40,2,60s1,40,1,60s0,40,0,60s0,40,0,60s-1,40-1,60s-2,40-2,60s1,40,1,60s1,40,1,60s-1,40-1,60s-1,40-2,60s-4,40-5,60s-3,40-4,60s-2,40-2,60s-1,40,0,60s3,40,4,60s4,40,6,60s2,40,2,60s2,40,2,60s-1,40-1,60s-1,40-1,60' stroke-opacity='.5'/%3E%3Cpath d='M448,-60c1,20,0,40,0,60s0,40,0,60s1,40,1,60s1,40,1,60s0,40,0,60s0,40,0,60s0,40-1,60s-1,40-1,60s0,40,0,60s1,40,1,60s-1,40-1,60s-2,40-3,60s-3,40-4,60s-2,40-3,60s-2,40-2,60s-1,40,0,60s2,40,4,60s3,40,5,60s1,40,2,60s1,40,1,60s0,40,0,60s0,40,0,60' stroke-opacity='.5'/%3E%3Cpath d='M488,-60c0,20,0,40,1,60s0,40,0,60s0,40,0,60s1,40,1,60s0,40,0,60s1,40,1,60s-1,40-2,60s0,40-1,60s0,40,0,60s1,40,1,60s-1,40-1,60s-2,40-3,60s-3,40-4,60s-2,40-2,60s-2,40-2,60s-1,40,0,60s2,40,3,60s3,40,4,60s2,40,3,60s1,40,1,60s0,40,1,60s0,40,0,60' stroke-opacity='.5'/%3E%3Cpath d='M528,-60c0,20,1,40,1,60s0,40,1,60s0,40,0,60s-1,40-1,60s1,40,1,60s1,40,1,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s1,40,1,60s-1,40-2,60s-1,40-2,60s-3,40-3,60s-2,40-3,60s-1,40-1,60s0,40,0,60s2,40,3,60s2,40,3,60s2,40,2,60s1,40,2,60s1,40,1,60s0,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M567,-60c1,20,2,40,2,60s1,40,1,60s0,40,0,60s-1,40-1,60s1,40,1,60s1,40,1,60s-1,40-1,60s0,40-1,60s0,40-1,60s1,40,0,60s0,40-1,60s-2,40-3,60s-1,40-2,60s-2,40-2,60s-1,40-1,60s0,40,0,60s1,40,2,60s2,40,3,60s2,40,2,60s1,40,1,60s2,40,2,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M607,-60c1,20,2,40,2,60s1,40,1,60s0,40,0,60s0,40-1,60s1,40,1,60s0,40,1,60s0,40-1,60s0,40,0,60s-1,40-1,60s-1,40-1,60s0,40-1,60s-2,40-3,60s-1,40-2,60s-1,40-2,60s0,40,0,60s0,40,0,60s1,40,2,60s1,40,2,60s1,40,2,60s1,40,1,60s2,40,2,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M647,-60c1,20,2,40,3,60s1,40,1,60s0,40-1,60s0,40,0,60s0,40,0,60s0,40,0,60s1,40,1,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s-2,40-3,60s-1,40-2,60s-1,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s1,40,2,60s1,40,1,60s2,40,2,60s2,40,3,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M687,-60c1,20,2,40,3,60s1,40,1,60s0,40,0,60s-1,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s0,40-1,60s0,40-1,60s-1,40-1,60s-1,40-2,60s-1,40-2,60s-1,40-2,60s0,40-1,60s0,40,0,60s1,40,1,60s0,40,1,60s0,40,1,60s1,40,1,60s2,40,2,60s2,40,3,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M727,-60c1,20,2,40,3,60s1,40,1,60s0,40,0,60s-1,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s0,40-1,60s0,40-1,60s-1,40-1,60s-1,40-2,60s-1,40-2,60s-1,40-1,60s-1,40-1,60s0,40,0,60s1,40,1,60s0,40,0,60s0,40,1,60s0,40,1,60s2,40,2,60s2,40,3,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M768,-60c0,20,1,40,2,60s1,40,1,60s0,40,0,60s-1,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s0,40,0,60s-1,40-1,60s-2,40-2,60s-2,40-2,60s-1,40-2,60s-1,40-1,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,1,60s-1,40,0,60s0,40,1,60s2,40,3,60s1,40,2,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M808,-60c0,20,1,40,2,60s1,40,1,60s0,40,0,60s0,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s0,40,0,60s-1,40-1,60s-2,40-2,60s-2,40-2,60s-1,40-2,60s-1,40-1,60s0,40,0,60s0,40,1,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,1,60s2,40,3,60s1,40,2,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M848,-60c0,20,1,40,2,60s1,40,1,60s0,40,0,60s0,40,0,60s-1,40-1,60s0,40,0,60s1,40,1,60s0,40,0,60s-1,40-1,60s-2,40-2,60s-2,40-2,60s-1,40-2,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,0,60s1,40,1,60s2,40,3,60s1,40,2,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M888,-60c0,20,1,40,2,60s1,40,1,60s0,40,0,60s0,40,0,60s-1,40-1,60s0,40,0,60s1,40,1,60s0,40,0,60s-1,40-1,60s-2,40-2,60s-2,40-2,60s-1,40-2,60s0,40,0,60s0,40,0,60s1,40,1,60s0,40,0,60s0,40-1,60s0,40,0,60s1,40,1,60s2,40,3,60s1,40,2,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M927,-60c1,20,2,40,3,60s0,40,1,60s0,40,0,60s0,40,0,60s0,40-1,60s0,40,0,60s0,40,1,60s0,40,0,60s-1,40-1,60s-2,40-2,60s-2,40-2,60s-1,40-1,60s-1,40-1,60s1,40,1,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,1,60s1,40,1,60s2,40,3,60s0,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M968,-60c0,20,1,40,1,60s1,40,1,60s1,40,1,60s0,40,0,60s0,40,0,60s-1,40-1,60s0,40,0,60s1,40,1,60s-1,40-1,60s-2,40-2,60s-2,40-2,60s-1,40-1,60s0,40,0,60s0,40,0,60s0,40,0,60s1,40,0,60s0,40,0,60s0,40,0,60s1,40,1,60s1,40,2,60s1,40,1,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M1008,-60c0,20,1,40,1,60s1,40,1,60s1,40,1,60s0,40,0,60s0,40,0,60s0,40-1,60s0,40,0,60s1,40,0,60s0,40-1,60s-1,40-1,60s-2,40-2,60s-1,40-1,60s0,40,0,60s0,40,1,60s0,40,0,60s0,40,0,60s-1,40-1,60s0,40,1,60s0,40,0,60s1,40,2,60s1,40,1,60s1,40,1,60' stroke-opacity='.5'/%3E%3C/svg%3E");
+  mask-image:linear-gradient(to right,var(--ink) max(8px,calc(100% - 574px)),color-mix(in srgb,var(--ink) 70%,transparent) max(24px,calc(100% - 504px))),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='980' height='1200' fill='none' stroke='currentColor' stroke-width='1.05'%3E%3Cdefs%3E%3Cpath id='v' d='M49,-24c0,8,0,16-1,24s-2,16-2,24s1,16,1,24s-3,16-4,24s1,16,2,24s3,16,4,24s-3,16-3,24s0,16,1,24s4,16,6,24s5,16,6,24s-1,16-2,24s-3,16-5,24s-4,16-7,24s-6,16-7,24s3,16,4,24s-1,16,0,24s0,16,1,24s4,16,6,24s4,16,4,24s-1,16-2,24s-5,16-7,24s0,16-1,24s-1,16,0,24s5,16,6,24s4,16,4,24s-3,16-3,24s0,16,1,24s1,16,1,24s-1,16-2,24s-4,16-6,24s-1,16-2,24s-1,16-3,24s-5,16-6,24s-2,16-4,24s-7,16-9,24s-3,16-2,24s6,16,8,24s5,16,7,24s3,16,4,24s1,16,2,24s2,16,2,24s-2,16-3,24s0,16,0,24s1,16,1,24s-1,16,2,24s8,16,11,24s4,16,4,24s0,16-1,24s-4,16-5,24s0,16-1,24s0,16-1,24s-2,16-2,24'/%3E%3Cpath id='w' d='M60,-24c0,8,0,16-1,24s-2,16-2,24s1,16,1,24s-3,16-3,24s1,16,2,24s2,16,2,24s-2,16-2,24s0,16,1,24s5,16,7,24s4,16,5,24s-1,16-2,24s-3,16-5,24s-4,16-6,24s-7,16-8,24s3,16,4,24s-1,16,0,24s0,16,2,24s4,16,5,24s4,16,4,24s-1,16-2,24s-5,16-6,24s-1,16-2,24s-1,16,0,24s5,16,7,24s3,16,3,24s-3,16-3,24s0,16,1,24s1,16,1,24s-1,16-2,24s-4,16-5,24s-2,16-3,24s-1,16-3,24s-4,16-6,24s-1,16-3,24s-7,16-9,24s-3,16-2,24s6,16,8,24s5,16,6,24s3,16,4,24s1,16,2,24s2,16,2,24s-2,16-3,24s0,16,0,24s0,16,1,24s0,16,3,24s8,16,10,24s4,16,4,24s0,16-1,24s-4,16-4,24s-1,16-2,24s0,16-1,24s-2,16-2,24'/%3E%3Cpath id='x' d='M72,-30c0,10,0,20-1,30s-1,20-2,30s0,20,0,30s-2,20-1,30s3,20,3,30s-2,20-2,30s3,20,5,30s6,20,7,30s0,20-1,30s-3,20-6,30s-7,20-9,30s-1,20-1,30s0,20,1,30s2,20,3,30s5,20,7,30s1,20,0,30s-5,20-7,30s-2,20-2,30s2,20,4,30s5,20,6,30s-2,20-3,30s1,20,1,30s1,20,0,30s-3,20-5,30s-3,20-4,30s-2,20-4,30s-4,20-7,30s-4,20-6,30s-6,20-6,30s8,20,10,30s5,20,7,30s1,20,2,30s3,20,3,30s-3,20-3,30s1,20,1,30s-1,20,2,30s9,20,12,30s3,20,3,30s-2,20-3,30s-3,20-4,30s0,20-1,30s-1,20-2,30'/%3E%3C/defs%3E%3Cuse href='%23v' stroke-width='20' stroke-opacity='.1'/%3E%3Cuse href='%23w' stroke-width='40' stroke-opacity='.09'/%3E%3Cuse href='%23x' stroke-width='62' stroke-opacity='.07'/%3E%3Cpath d='M39.5,-15c-.1,5-.6,10-1.2,15s-1.7,10-2,15s-.2,10-.1,15s1.1,10,1,15s-.9,10-1.6,15s-2.4,10-2.7,15s.1,10,.8,15s2.6,10,3.4,15s1.5,10,1.5,15s-1.2,10-1.7,15s-1.1,10-1.2,15s.4,10,1,15s1.5,10,2.7,15s2.8,10,4.2,15s3.3,10,4.2,15s1.3,10,1.1,15s-1.7,10-2.6,15s-2.1,10-3,15s-1.5,10-2.8,15s-3,10-4.8,15s-4.5,10-5.8,15s-2,10-1.9,15s1.7,10,2.4,15s1.7,10,1.9,15s-.6,10-.7,15s-.4,10,.1,15s1.6,10,2.7,15s2.6,10,3.7,15s2.3,10,3.2,15s1.7,10,1.7,15s-.3,10-1.2,15s-2.9,10-4.2,15s-2.7,10-3.4,15s-.6,10-.7,15s-.1,10-.3,15s-.9,10-.6,15s.8,10,2,15s3.9,10,5.3,15s3.1,10,3.4,15s-.7,10-1.3,15s-2,10-2.3,15s-.1,10,.1,15s1.1,10,1.4,15s.4,10,.4,15s-.2,10-.6,15s-1.1,10-2,15s-2.5,10-3.6,15s-2.4,10-3,15s-.4,10-.7,15s-.3,10-1,15s-2.4,10-3.7,15s-2.8,10-3.8,15s-1.1,10-1.9,15s-1.5,10-3.1,15s-4.3,10-6.2,15s-4.3,10-5,15s-.2,10,.7,15s3.3,10,5,15s3.6,10,5.2,15s3,10,4.2,15s2.4,10,3.2,15s1.2,10,1.6,15s.4,10,.9,15s1.4,10,1.9,15s1.4,10,1.4,15s-.8,10-1.4,15s-1.9,10-2.2,15s.2,10,.5,15s1.2,10,1.3,15s-.5,10-.6,15s-.8,10,0,15s2.7,10,4.8,15s5.3,10,7.4,15s3.8,10,4.7,15s.8,10,.7,15s-.8,10-1.5,15s-1.6,10-2.5,15s-2,10-2.5,15s-.7,10-.7,15s.5,10,.4,15s-.6,10-1.2,15s-1.7,10-2,15' stroke-width='1.25'/%3E%3Cuse href='%23v' stroke-width='1.1' stroke-opacity='.86'/%3E%3Cuse href='%23w' stroke-width='1.1' stroke-opacity='.78'/%3E%3Cuse href='%23x' stroke-width='1.1' stroke-opacity='.71'/%3E%3Cpath d='M88,-48c-2,16-2,32-3,48s-1,32-2,48s-1,32-1,48s0,32,1,48s6,32,8,48s4,32,2,48s-7,32-9,48s-6,32-6,48s1,32,3,48s8,32,8,48s-5,32-7,48s-2,32-1,48s7,32,8,48s-1,32-2,48s1,32-1,48s-5,32-8,48s-4,32-7,48s-10,32-11,48s2,32,4,48s7,32,9,48s4,32,4,48s-3,32-2,48s3,32,6,48s10,32,12,48s-4,32-5,48s-2,32-3,48s-1,32-2,48' stroke-opacity='.65'/%3E%3Cpath d='M103,-48c-1,16-2,32-3,48s-2,32-2,48s0,32,0,48s-1,32,0,48s7,32,8,48s4,32,2,48s-6,32-9,48s-6,32-6,48s2,32,3,48s8,32,8,48s-5,32-6,48s-2,32-1,48s6,32,7,48s-1,32-2,48s1,32-1,48s-5,32-7,48s-5,32-8,48s-9,32-10,48s2,32,4,48s6,32,8,48s4,32,4,48s-3,32-2,48s4,32,7,48s9,32,10,48s-3,32-4,48s-2,32-3,48s-2,32-2,48' stroke-opacity='.59'/%3E%3Cpath d='M122,-60c-1,20-4,40-5,60s-3,40-3,60s1,40,2,60s3,40,5,60s6,40,4,60s-9,40-11,60s-4,40-3,60s8,40,9,60s-4,40-5,60s1,40,2,60s2,40,3,60s1,40-1,60s-5,40-8,60s-7,40-10,60s-9,40-8,60s8,40,11,60s4,40,5,60s-3,40-1,60s11,40,14,60s0,40,0,60s-4,40-5,60s-3,40-3,60' stroke-opacity='.54'/%3E%3Cpath d='M141,-60c-1,20-4,40-5,60s-2,40-2,60s0,40,1,60s4,40,5,60s5,40,4,60s-8,40-11,60s-3,40-2,60s7,40,8,60s-4,40-4,60s1,40,1,60s3,40,3,60s0,40-1,60s-5,40-8,60s-7,40-9,60s-8,40-7,60s7,40,9,60s4,40,5,60s-2,40,0,60s10,40,13,60s0,40,0,60s-4,40-5,60s-2,40-2,60' stroke-opacity='.5'/%3E%3Cpath d='M162,-60c0,20-3,40-5,60s-1,40-2,60s0,40,1,60s5,40,6,60s5,40,3,60s-7,40-9,60s-4,40-3,60s6,40,7,60s-3,40-3,60s0,40,1,60s3,40,3,60s0,40-2,60s-4,40-7,60s-7,40-9,60s-7,40-6,60s6,40,8,60s3,40,4,60s-1,40,2,60s9,40,11,60s1,40,0,60s-3,40-5,60s-1,40-2,60' stroke-opacity='.5'/%3E%3Cpath d='M186,-60c0,20-3,40-4,60s-2,40-2,60s0,40,1,60s4,40,6,60s3,40,2,60s-6,40-8,60s-4,40-3,60s5,40,6,60s-2,40-2,60s0,40,0,60s3,40,3,60s-1,40-2,60s-4,40-6,60s-8,40-10,60s-5,40-5,60s5,40,7,60s2,40,4,60s1,40,3,60s8,40,10,60s1,40,0,60s-3,40-4,60s-2,40-2,60' stroke-opacity='.5'/%3E%3Cpath d='M212,-60c0,20-3,40-4,60s-2,40-2,60s0,40,1,60s5,40,6,60s3,40,2,60s-6,40-8,60s-3,40-2,60s4,40,4,60s0,40-1,60s0,40,1,60s2,40,2,60s-1,40-2,60s-4,40-6,60s-8,40-10,60s-4,40-4,60s4,40,6,60s2,40,3,60s3,40,5,60s7,40,8,60s2,40,1,60s-3,40-4,60s-2,40-2,60' stroke-opacity='.5'/%3E%3Cpath d='M240,-60c0,20-3,40-4,60s-1,40-2,60s1,40,2,60s4,40,5,60s2,40,1,60s-4,40-6,60s-2,40-2,60s2,40,3,60s0,40,0,60s0,40,0,60s2,40,2,60s-1,40-2,60s-4,40-6,60s-7,40-9,60s-3,40-3,60s2,40,4,60s2,40,4,60s3,40,5,60s6,40,7,60s2,40,1,60s-3,40-4,60s-1,40-2,60' stroke-opacity='.5'/%3E%3Cpath d='M270,-60c0,20-2,40-3,60s-2,40-2,60s1,40,2,60s3,40,4,60s2,40,1,60s-4,40-5,60s-2,40-2,60s1,40,1,60s1,40,2,60s-1,40,0,60s1,40,1,60s-1,40-3,60s-3,40-5,60s-6,40-8,60s-3,40-3,60s1,40,3,60s2,40,4,60s4,40,6,60s5,40,6,60s1,40,1,60s-2,40-3,60s-2,40-2,60' stroke-opacity='.5'/%3E%3Cpath d='M302,-60c-1,20-2,40-3,60s-2,40-2,60s1,40,2,60s3,40,4,60s1,40,0,60s-2,40-3,60s-2,40-2,60s0,40,0,60s2,40,2,60s0,40,0,60s1,40,0,60s0,40-2,60s-3,40-5,60s-5,40-7,60s-3,40-3,60s1,40,2,60s3,40,5,60s4,40,6,60s3,40,4,60s2,40,2,60s-2,40-3,60s-2,40-2,60' stroke-opacity='.5'/%3E%3Cpath d='M335,-60c0,20-1,40-2,60s-1,40-1,60s1,40,2,60s2,40,3,60s0,40,0,60s-2,40-2,60s-2,40-2,60s-1,40-1,60s2,40,2,60s0,40,0,60s0,40,0,60s-1,40-2,60s-3,40-5,60s-5,40-6,60s-2,40-3,60s0,40,1,60s3,40,5,60s5,40,6,60s3,40,4,60s2,40,1,60s-1,40-2,60s-1,40-1,60' stroke-opacity='.5'/%3E%3Cpath d='M371,-60c0,20-1,40-1,60s-2,40-1,60s1,40,1,60s2,40,3,60s-1,40-1,60s0,40-1,60s-1,40-1,60s-2,40-2,60s2,40,2,60s1,40,1,60s-1,40-1,60s-1,40-2,60s-4,40-5,60s-4,40-5,60s-2,40-2,60s-1,40,0,60s3,40,5,60s4,40,5,60s3,40,4,60s1,40,1,60s-1,40-1,60s-2,40-1,60' stroke-opacity='.5'/%3E%3Cpath d='M409,-60c0,20-1,40-1,60s-1,40-1,60s1,40,2,60s1,40,1,60s0,40,0,60s0,40,0,60s-1,40-1,60s-2,40-2,60s1,40,1,60s1,40,1,60s-1,40-1,60s-1,40-2,60s-4,40-5,60s-3,40-4,60s-2,40-2,60s-1,40,0,60s3,40,4,60s4,40,6,60s2,40,2,60s2,40,2,60s-1,40-1,60s-1,40-1,60' stroke-opacity='.5'/%3E%3Cpath d='M448,-60c1,20,0,40,0,60s0,40,0,60s1,40,1,60s1,40,1,60s0,40,0,60s0,40,0,60s0,40-1,60s-1,40-1,60s0,40,0,60s1,40,1,60s-1,40-1,60s-2,40-3,60s-3,40-4,60s-2,40-3,60s-2,40-2,60s-1,40,0,60s2,40,4,60s3,40,5,60s1,40,2,60s1,40,1,60s0,40,0,60s0,40,0,60' stroke-opacity='.5'/%3E%3Cpath d='M488,-60c0,20,0,40,1,60s0,40,0,60s0,40,0,60s1,40,1,60s0,40,0,60s1,40,1,60s-1,40-2,60s0,40-1,60s0,40,0,60s1,40,1,60s-1,40-1,60s-2,40-3,60s-3,40-4,60s-2,40-2,60s-2,40-2,60s-1,40,0,60s2,40,3,60s3,40,4,60s2,40,3,60s1,40,1,60s0,40,1,60s0,40,0,60' stroke-opacity='.5'/%3E%3Cpath d='M528,-60c0,20,1,40,1,60s0,40,1,60s0,40,0,60s-1,40-1,60s1,40,1,60s1,40,1,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s1,40,1,60s-1,40-2,60s-1,40-2,60s-3,40-3,60s-2,40-3,60s-1,40-1,60s0,40,0,60s2,40,3,60s2,40,3,60s2,40,2,60s1,40,2,60s1,40,1,60s0,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M567,-60c1,20,2,40,2,60s1,40,1,60s0,40,0,60s-1,40-1,60s1,40,1,60s1,40,1,60s-1,40-1,60s0,40-1,60s0,40-1,60s1,40,0,60s0,40-1,60s-2,40-3,60s-1,40-2,60s-2,40-2,60s-1,40-1,60s0,40,0,60s1,40,2,60s2,40,3,60s2,40,2,60s1,40,1,60s2,40,2,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M607,-60c1,20,2,40,2,60s1,40,1,60s0,40,0,60s0,40-1,60s1,40,1,60s0,40,1,60s0,40-1,60s0,40,0,60s-1,40-1,60s-1,40-1,60s0,40-1,60s-2,40-3,60s-1,40-2,60s-1,40-2,60s0,40,0,60s0,40,0,60s1,40,2,60s1,40,2,60s1,40,2,60s1,40,1,60s2,40,2,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M647,-60c1,20,2,40,3,60s1,40,1,60s0,40-1,60s0,40,0,60s0,40,0,60s0,40,0,60s1,40,1,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s-2,40-3,60s-1,40-2,60s-1,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s1,40,2,60s1,40,1,60s2,40,2,60s2,40,3,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M687,-60c1,20,2,40,3,60s1,40,1,60s0,40,0,60s-1,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s0,40-1,60s0,40-1,60s-1,40-1,60s-1,40-2,60s-1,40-2,60s-1,40-2,60s0,40-1,60s0,40,0,60s1,40,1,60s0,40,1,60s0,40,1,60s1,40,1,60s2,40,2,60s2,40,3,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M727,-60c1,20,2,40,3,60s1,40,1,60s0,40,0,60s-1,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s0,40-1,60s0,40-1,60s-1,40-1,60s-1,40-2,60s-1,40-2,60s-1,40-1,60s-1,40-1,60s0,40,0,60s1,40,1,60s0,40,0,60s0,40,1,60s0,40,1,60s2,40,2,60s2,40,3,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M768,-60c0,20,1,40,2,60s1,40,1,60s0,40,0,60s-1,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s0,40,0,60s-1,40-1,60s-2,40-2,60s-2,40-2,60s-1,40-2,60s-1,40-1,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,1,60s-1,40,0,60s0,40,1,60s2,40,3,60s1,40,2,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M808,-60c0,20,1,40,2,60s1,40,1,60s0,40,0,60s0,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s0,40,0,60s-1,40-1,60s-2,40-2,60s-2,40-2,60s-1,40-2,60s-1,40-1,60s0,40,0,60s0,40,1,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,1,60s2,40,3,60s1,40,2,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M848,-60c0,20,1,40,2,60s1,40,1,60s0,40,0,60s0,40,0,60s-1,40-1,60s0,40,0,60s1,40,1,60s0,40,0,60s-1,40-1,60s-2,40-2,60s-2,40-2,60s-1,40-2,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,0,60s1,40,1,60s2,40,3,60s1,40,2,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M888,-60c0,20,1,40,2,60s1,40,1,60s0,40,0,60s0,40,0,60s-1,40-1,60s0,40,0,60s1,40,1,60s0,40,0,60s-1,40-1,60s-2,40-2,60s-2,40-2,60s-1,40-2,60s0,40,0,60s0,40,0,60s1,40,1,60s0,40,0,60s0,40-1,60s0,40,0,60s1,40,1,60s2,40,3,60s1,40,2,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M927,-60c1,20,2,40,3,60s0,40,1,60s0,40,0,60s0,40,0,60s0,40-1,60s0,40,0,60s0,40,1,60s0,40,0,60s-1,40-1,60s-2,40-2,60s-2,40-2,60s-1,40-1,60s-1,40-1,60s1,40,1,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,1,60s1,40,1,60s2,40,3,60s0,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M968,-60c0,20,1,40,1,60s1,40,1,60s1,40,1,60s0,40,0,60s0,40,0,60s-1,40-1,60s0,40,0,60s1,40,1,60s-1,40-1,60s-2,40-2,60s-2,40-2,60s-1,40-1,60s0,40,0,60s0,40,0,60s0,40,0,60s1,40,0,60s0,40,0,60s0,40,0,60s1,40,1,60s1,40,2,60s1,40,1,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M1008,-60c0,20,1,40,1,60s1,40,1,60s1,40,1,60s0,40,0,60s0,40,0,60s0,40-1,60s0,40,0,60s1,40,0,60s0,40-1,60s-1,40-1,60s-2,40-2,60s-1,40-1,60s0,40,0,60s0,40,1,60s0,40,0,60s0,40,0,60s-1,40-1,60s0,40,1,60s0,40,0,60s1,40,2,60s1,40,1,60s1,40,1,60' stroke-opacity='.5'/%3E%3C/svg%3E");
+  -webkit-mask-position:0 0,0 0;mask-position:0 0,0 0;}
+body::after{left:50%;right:0;
+  -webkit-mask-image:linear-gradient(to left,var(--ink) max(8px,calc(100% - 574px)),color-mix(in srgb,var(--ink) 70%,transparent) max(24px,calc(100% - 504px))),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='980' height='1200' fill='none' stroke='currentColor' stroke-width='1.05'%3E%3Cdefs%3E%3Cpath id='v' d='M934,-24c0,8-2,16-2,24s-1,16-1,24s0,16-1,24s-4,16-5,24s-2,16-1,24s2,16,4,24s9,16,11,24s2,16,2,24s1,16,1,24s0,16,0,24s-3,16-3,24s2,16,2,24s1,16,2,24s2,16,4,24s4,16,7,24s7,16,8,24s0,16-2,24s-7,16-9,24s-2,16-4,24s-5,16-6,24s-2,16-3,24s-1,16-2,24s-4,16-6,24s-1,16-2,24s1,16,1,24s2,16,1,24s-3,16-3,24s2,16,4,24s5,16,6,24s0,16,0,24s0,16-1,24s-5,16-7,24s-2,16-2,24s2,16,4,24s4,16,6,24s1,16,1,24s0,16,0,24s5,16,4,24s-5,16-7,24s-5,16-7,24s-3,16-5,24s-2,16-2,24s4,16,6,24s5,16,6,24s1,16,1,24s-3,16-3,24s3,16,4,24s2,16,2,24s-4,16-4,24s1,16,1,24s-2,16-2,24s-1,16-1,24'/%3E%3Cpath id='w' d='M923,-24c0,8-2,16-2,24s-1,16-1,24s-1,16-2,24s-3,16-4,24s-2,16-1,24s1,16,4,24s8,16,10,24s3,16,3,24s0,16,1,24s0,16,0,24s-3,16-3,24s2,16,2,24s1,16,2,24s2,16,4,24s4,16,6,24s7,16,8,24s-1,16-2,24s-7,16-9,24s-2,16-3,24s-5,16-6,24s-2,16-3,24s-1,16-3,24s-4,16-5,24s-1,16-2,24s1,16,1,24s2,16,1,24s-3,16-3,24s1,16,3,24s6,16,7,24s0,16,0,24s0,16-2,24s-5,16-6,24s-2,16-2,24s2,16,4,24s4,16,5,24s2,16,2,24s0,16,0,24s4,16,4,24s-6,16-8,24s-4,16-6,24s-4,16-5,24s-2,16-2,24s4,16,5,24s5,16,7,24s1,16,1,24s-3,16-2,24s2,16,2,24s3,16,2,24s-3,16-3,24s1,16,1,24s-2,16-2,24s-1,16-1,24'/%3E%3Cpath id='x' d='M911,-30c-1,10-2,20-2,30s-1,20-1,30s-3,20-4,30s-3,20-3,30s1,20,3,30s10,20,12,30s1,20,2,30s1,20,1,30s-3,20-3,30s2,20,3,30s1,20,2,30s4,20,7,30s9,20,10,30s-4,20-6,30s-4,20-6,30s-5,20-7,30s-2,20-4,30s-3,20-4,30s-4,20-5,30s0,20,0,30s1,20,1,30s-4,20-3,30s5,20,6,30s4,20,4,30s-1,20-2,30s-6,20-7,30s-1,20,0,30s5,20,7,30s2,20,3,30s1,20,1,30s0,20-1,30s-7,20-9,30s-5,20-6,30s-2,20-1,30s5,20,7,30s5,20,5,30s-3,20-2,30s3,20,3,30s-1,20-1,30s0,20,0,30s-2,20-2,30s-1,20-1,30'/%3E%3C/defs%3E%3Cuse href='%23v' stroke-width='20' stroke-opacity='.1'/%3E%3Cuse href='%23w' stroke-width='40' stroke-opacity='.09'/%3E%3Cuse href='%23x' stroke-width='62' stroke-opacity='.07'/%3E%3Cpath d='M943.7,-15c-.3,5-1.5,10-2,15s-1.1,10-1.2,15s.5,10,.4,15s-.1,10-.7,15s-1.7,10-2.5,15s-1.9,10-2.5,15s-1.3,10-1.5,15s-.2,10,.7,15s2.7,10,4.7,15s5.4,10,7.4,15s4,10,4.8,15s.1,10,0,15s-.7,10-.6,15s1,10,1.3,15s.7,10,.5,15s-1.6,10-2.2,15s-1.4,10-1.4,15s.8,10,1.4,15s1.4,10,1.9,15s.5,10,.9,15s.8,10,1.6,15s1.9,10,3.2,15s2.7,10,4.2,15s3.5,10,5.2,15s4,10,5,15s1.4,10,.7,15s-3.2,10-5,15s-4.7,10-6.2,15s-2.2,10-3.1,15s-.9,10-1.9,15s-2.6,10-3.8,15s-2.9,10-3.7,15s-.7,10-1,15s-.1,10-.7,15s-1.8,10-3,15s-2.7,10-3.6,15s-1.6,10-2,15s-.6,10-.6,15s.1,10,.4,15s1.1,10,1.4,15s.5,10,.1,15s-1.7,10-2.3,15s-1.7,10-1.3,15s1.9,10,3.4,15s4,10,5.3,15s1.8,10,2,15s-.5,10-.6,15s-.1,10-.3,15s0,10-.7,15s-2.2,10-3.4,15s-3.3,10-4.2,15s-1.3,10-1.2,15s.9,10,1.7,15s2,10,3.2,15s2.6,10,3.7,15s2.3,10,2.7,15s.2,10,.1,15s-.9,10-.7,15s1.1,10,1.9,15s2.3,10,2.4,15s-.6,10-1.9,15s-4.1,10-5.8,15s-3.6,10-4.8,15s-1.8,10-2.8,15s-2.1,10-3,15s-2.3,10-2.6,15s.2,10,1.1,15s2.8,10,4.2,15s3.1,10,4.2,15s2.1,10,2.7,15s1,10,1,15s-.8,10-1.2,15s-1.6,10-1.7,15s.6,10,1.5,15s2.7,10,3.4,15s1.1,10,.8,15s-2,10-2.7,15s-1.4,10-1.6,15s.8,10,1,15s.3,10-.1,15s-1.5,10-2,15s-1.1,10-1.2,15' stroke-width='1.25'/%3E%3Cuse href='%23v' stroke-width='1.1' stroke-opacity='.86'/%3E%3Cuse href='%23w' stroke-width='1.1' stroke-opacity='.78'/%3E%3Cuse href='%23x' stroke-width='1.1' stroke-opacity='.71'/%3E%3Cpath d='M897,-48c-1,16-1,32-2,48s-1,32-3,48s-6,32-5,48s9,32,12,48s5,32,6,48s-3,32-2,48s2,32,4,48s6,32,9,48s5,32,4,48s-8,32-11,48s-5,32-7,48s-7,32-8,48s-1,32-1,48s-3,32-2,48s7,32,8,48s0,32-1,48s-7,32-7,48s6,32,8,48s3,32,3,48s-3,32-6,48s-8,32-9,48s0,32,2,48s7,32,8,48s1,32,1,48s-1,32-1,48s-1,32-2,48s-1,32-3,48' stroke-opacity='.65'/%3E%3Cpath d='M882,-48c0,16-1,32-2,48s-2,32-3,48s-5,32-4,48s7,32,10,48s6,32,7,48s-2,32-2,48s2,32,4,48s6,32,8,48s5,32,4,48s-7,32-10,48s-5,32-8,48s-6,32-7,48s-1,32-1,48s-3,32-2,48s6,32,7,48s0,32-1,48s-6,32-6,48s6,32,8,48s4,32,3,48s-3,32-6,48s-8,32-9,48s0,32,2,48s6,32,8,48s0,32,0,48s0,32,0,48s-1,32-2,48s-2,32-3,48' stroke-opacity='.59'/%3E%3Cpath d='M866,-60c0,20-2,40-3,60s-4,40-5,60s-2,40,0,60s12,40,14,60s-1,40-1,60s2,40,5,60s11,40,11,60s-5,40-8,60s-7,40-10,60s-7,40-8,60s-1,40-1,60s2,40,3,60s2,40,2,60s-6,40-5,60s8,40,9,60s0,40-3,60s-10,40-11,60s3,40,4,60s4,40,5,60s2,40,2,60s-2,40-3,60s-4,40-5,60' stroke-opacity='.54'/%3E%3Cpath d='M846,-60c0,20-1,40-2,60s-4,40-5,60s-2,40,0,60s11,40,13,60s0,40,0,60s3,40,5,60s9,40,9,60s-4,40-7,60s-7,40-9,60s-7,40-8,60s-1,40-1,60s2,40,3,60s1,40,1,60s-4,40-4,60s7,40,8,60s0,40-2,60s-10,40-11,60s2,40,4,60s4,40,5,60s2,40,1,60s-1,40-2,60s-4,40-5,60' stroke-opacity='.5'/%3E%3Cpath d='M825,-60c-1,20-1,40-2,60s-5,40-5,60s-2,40,0,60s9,40,11,60s1,40,2,60s2,40,4,60s8,40,8,60s-3,40-6,60s-7,40-9,60s-6,40-7,60s-2,40-2,60s2,40,3,60s1,40,1,60s-4,40-3,60s7,40,7,60s-1,40-3,60s-8,40-9,60s1,40,3,60s5,40,6,60s1,40,1,60s-1,40-2,60s-5,40-5,60' stroke-opacity='.5'/%3E%3Cpath d='M800,-60c0,20-1,40-2,60s-4,40-4,60s-1,40,0,60s8,40,10,60s2,40,3,60s3,40,4,60s7,40,7,60s-2,40-5,60s-7,40-10,60s-5,40-6,60s-2,40-2,60s2,40,3,60s1,40,0,60s-2,40-2,60s6,40,6,60s-1,40-3,60s-7,40-8,60s1,40,2,60s5,40,6,60s1,40,1,60s-1,40-2,60s-4,40-4,60' stroke-opacity='.5'/%3E%3Cpath d='M774,-60c0,20-1,40-2,60s-4,40-4,60s-1,40,1,60s6,40,8,60s3,40,5,60s2,40,3,60s5,40,6,60s-2,40-4,60s-7,40-10,60s-4,40-6,60s-2,40-2,60s2,40,2,60s1,40,1,60s-2,40-1,60s4,40,4,60s-1,40-2,60s-7,40-8,60s1,40,2,60s5,40,6,60s1,40,1,60s-1,40-2,60s-4,40-4,60' stroke-opacity='.5'/%3E%3Cpath d='M746,-60c-1,20-1,40-2,60s-4,40-4,60s0,40,1,60s5,40,7,60s4,40,5,60s3,40,4,60s4,40,4,60s-1,40-3,60s-7,40-9,60s-4,40-6,60s-2,40-2,60s1,40,2,60s0,40,0,60s0,40,0,60s3,40,3,60s-1,40-2,60s-6,40-6,60s0,40,1,60s4,40,5,60s2,40,2,60s-1,40-2,60s-4,40-4,60' stroke-opacity='.5'/%3E%3Cpath d='M715,-60c0,20-1,40-2,60s-3,40-3,60s0,40,1,60s4,40,6,60s4,40,6,60s3,40,4,60s3,40,3,60s-1,40-3,60s-6,40-8,60s-4,40-5,60s-2,40-3,60s1,40,1,60s0,40,0,60s1,40,2,60s1,40,1,60s-1,40-2,60s-4,40-5,60s0,40,1,60s3,40,4,60s2,40,2,60s-1,40-2,60s-3,40-3,60' stroke-opacity='.5'/%3E%3Cpath d='M683,-60c0,20-1,40-2,60s-2,40-3,60s1,40,2,60s2,40,4,60s4,40,6,60s4,40,5,60s2,40,2,60s-1,40-3,60s-5,40-7,60s-4,40-5,60s-2,40-2,60s0,40,0,60s0,40,0,60s2,40,2,60s0,40,0,60s-1,40-2,60s-3,40-3,60s-1,40,0,60s3,40,4,60s2,40,2,60s-1,40-2,60s-2,40-3,60' stroke-opacity='.5'/%3E%3Cpath d='M648,-60c0,20-1,40-1,60s-2,40-2,60s0,40,1,60s2,40,4,60s4,40,6,60s4,40,5,60s1,40,1,60s-2,40-3,60s-4,40-6,60s-4,40-5,60s-2,40-2,60s0,40,0,60s-1,40,0,60s2,40,2,60s0,40-1,60s-1,40-2,60s-1,40-2,60s0,40,0,60s2,40,3,60s2,40,2,60s-1,40-1,60s-2,40-2,60' stroke-opacity='.5'/%3E%3Cpath d='M611,-60c1,20,0,40-1,60s-1,40-1,60s1,40,1,60s2,40,4,60s3,40,5,60s4,40,5,60s1,40,0,60s-1,40-2,60s-3,40-5,60s-4,40-5,60s-2,40-2,60s-1,40-1,60s0,40,1,60s2,40,2,60s-1,40-2,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s2,40,3,60s1,40,1,60s0,40-1,60s-1,40-1,60' stroke-opacity='.5'/%3E%3Cpath d='M573,-60c0,20-1,40-1,60s-1,40-1,60s1,40,2,60s1,40,2,60s4,40,6,60s3,40,4,60s1,40,0,60s-1,40-2,60s-2,40-4,60s-4,40-5,60s-1,40-2,60s-1,40-1,60s0,40,1,60s1,40,1,60s-1,40-2,60s-1,40-1,60s0,40,0,60s-1,40,0,60s1,40,1,60s1,40,2,60s-1,40-1,60s-1,40-1,60' stroke-opacity='.5'/%3E%3Cpath d='M532,-60c0,20,0,40,0,60s-1,40,0,60s0,40,1,60s1,40,2,60s4,40,5,60s3,40,4,60s1,40,0,60s-1,40-2,60s-2,40-3,60s-3,40-4,60s-2,40-3,60s-1,40-1,60s1,40,1,60s1,40,0,60s-1,40-1,60s-1,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s1,40,1,60s0,40,0,60s-1,40,0,60' stroke-opacity='.5'/%3E%3Cpath d='M491,-60c0,20,0,40,0,60s1,40,1,60s1,40,1,60s1,40,3,60s3,40,4,60s2,40,3,60s1,40,0,60s-1,40-2,60s-1,40-2,60s-3,40-4,60s-2,40-3,60s-1,40-1,60s1,40,1,60s0,40,0,60s-1,40-1,60s-1,40-2,60s1,40,1,60s0,40,0,60s0,40,1,60s0,40,0,60s0,40,0,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M450,-60c1,20,1,40,1,60s1,40,1,60s1,40,2,60s1,40,2,60s2,40,3,60s2,40,3,60s0,40,0,60s0,40-1,60s-2,40-3,60s-2,40-3,60s-2,40-2,60s-2,40-2,60s1,40,1,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s1,40,1,60s1,40,1,60s-1,40-1,60s0,40,0,60s1,40,1,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M410,-60c0,20,0,40,1,60s1,40,2,60s0,40,1,60s1,40,2,60s2,40,3,60s1,40,2,60s0,40,0,60s0,40-1,60s-1,40-2,60s-1,40-2,60s-3,40-3,60s-1,40-1,60s0,40,0,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s1,40,1,60s1,40,1,60s-1,40-1,60s0,40,0,60s0,40,1,60s1,40,2,60' stroke-opacity='.5'/%3E%3Cpath d='M370,-60c0,20,0,40,1,60s1,40,2,60s1,40,1,60s2,40,2,60s2,40,2,60s1,40,2,60s0,40,0,60s0,40,0,60s-1,40-2,60s-1,40-2,60s-2,40-3,60s-1,40-1,60s0,40-1,60s0,40-1,60s0,40,0,60s-1,40-1,60s1,40,1,60s1,40,1,60s-1,40-1,60s-1,40,0,60s0,40,1,60s1,40,2,60' stroke-opacity='.5'/%3E%3Cpath d='M329,-60c0,20,1,40,1,60s2,40,3,60s1,40,2,60s1,40,1,60s1,40,2,60s1,40,1,60s0,40,0,60s0,40,0,60s-1,40-1,60s-1,40-2,60s-2,40-3,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s0,40,1,60s0,40,0,60s0,40,0,60s0,40,0,60s-1,40-1,60s1,40,1,60s2,40,3,60' stroke-opacity='.5'/%3E%3Cpath d='M289,-60c0,20,1,40,1,60s2,40,3,60s1,40,2,60s1,40,1,60s1,40,1,60s1,40,1,60s0,40,1,60s0,40,0,60s-1,40-1,60s-1,40-2,60s-2,40-2,60s-1,40-2,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s0,40,1,60s0,40,0,60s0,40,0,60s0,40-1,60s0,40,0,60s1,40,1,60s2,40,3,60' stroke-opacity='.5'/%3E%3Cpath d='M249,-60c0,20,1,40,1,60s2,40,3,60s1,40,2,60s1,40,1,60s1,40,1,60s0,40,0,60s1,40,1,60s0,40,0,60s0,40-1,60s-1,40-1,60s-1,40-2,60s-1,40-2,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s1,40,1,60s0,40,0,60s0,40,0,60s0,40-1,60s0,40,0,60s1,40,1,60s2,40,3,60' stroke-opacity='.5'/%3E%3Cpath d='M209,-60c0,20,1,40,1,60s2,40,2,60s2,40,3,60s1,40,1,60s0,40,0,60s1,40,1,60s0,40,0,60s0,40,0,60s0,40,0,60s-1,40-1,60s-1,40-2,60s-1,40-2,60s-1,40-2,60s0,40-1,60s0,40,0,60s1,40,1,60s0,40,0,60s0,40,0,60s-1,40-1,60s0,40,0,60s1,40,1,60s2,40,2,60' stroke-opacity='.5'/%3E%3Cpath d='M169,-60c0,20,1,40,1,60s2,40,2,60s2,40,3,60s1,40,1,60s0,40,0,60s0,40,0,60s0,40,0,60s1,40,1,60s0,40,0,60s-1,40-1,60s-1,40-2,60s-1,40-2,60s-1,40-2,60s0,40-1,60s0,40,0,60s1,40,1,60s0,40,0,60s0,40,0,60s-1,40-1,60s0,40,0,60s1,40,1,60s2,40,2,60' stroke-opacity='.5'/%3E%3Cpath d='M129,-60c0,20,1,40,1,60s2,40,2,60s2,40,3,60s1,40,1,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,0,60s-1,40-2,60s-1,40-2,60s-1,40-2,60s-1,40-1,60s0,40,0,60s1,40,1,60s0,40,0,60s-1,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s2,40,2,60' stroke-opacity='.5'/%3E%3Cpath d='M89,-60c0,20,1,40,1,60s2,40,2,60s2,40,3,60s0,40,1,60s0,40,0,60s-1,40-1,60s0,40,0,60s1,40,1,60s0,40,0,60s0,40,0,60s-1,40-2,60s-1,40-2,60s-1,40-2,60s-1,40-1,60s0,40,0,60s1,40,1,60s0,40,0,60s-1,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s2,40,2,60' stroke-opacity='.5'/%3E%3Cpath d='M49,-60c1,20,1,40,1,60s2,40,3,60s1,40,1,60s1,40,1,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,0,60s1,40,1,60s0,40-1,60s0,40-1,60s-1,40-2,60s-1,40-2,60s0,40-1,60s0,40,0,60s1,40,1,60s0,40,0,60s-1,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s2,40,3,60' stroke-opacity='.5'/%3E%3Cpath d='M10,-60c0,20,0,40,1,60s1,40,1,60s2,40,2,60s1,40,1,60s0,40,0,60s0,40,0,60s-1,40,0,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40-1,60s-1,40-2,60s-1,40-2,60s0,40-1,60s1,40,1,60s0,40,0,60s-1,40-1,60s0,40,0,60s0,40,0,60s0,40,1,60s0,40,1,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M-30,-60c0,20,0,40,1,60s1,40,1,60s1,40,2,60s0,40,0,60s1,40,1,60s-1,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s0,40,0,60s0,40-1,60s-1,40-2,60s-1,40-1,60s-1,40-1,60s0,40,0,60s0,40,0,60s-1,40-1,60s0,40,0,60s0,40,0,60s0,40,1,60s0,40,1,60s1,40,1,60' stroke-opacity='.5'/%3E%3C/svg%3E");
+  mask-image:linear-gradient(to left,var(--ink) max(8px,calc(100% - 574px)),color-mix(in srgb,var(--ink) 70%,transparent) max(24px,calc(100% - 504px))),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='980' height='1200' fill='none' stroke='currentColor' stroke-width='1.05'%3E%3Cdefs%3E%3Cpath id='v' d='M934,-24c0,8-2,16-2,24s-1,16-1,24s0,16-1,24s-4,16-5,24s-2,16-1,24s2,16,4,24s9,16,11,24s2,16,2,24s1,16,1,24s0,16,0,24s-3,16-3,24s2,16,2,24s1,16,2,24s2,16,4,24s4,16,7,24s7,16,8,24s0,16-2,24s-7,16-9,24s-2,16-4,24s-5,16-6,24s-2,16-3,24s-1,16-2,24s-4,16-6,24s-1,16-2,24s1,16,1,24s2,16,1,24s-3,16-3,24s2,16,4,24s5,16,6,24s0,16,0,24s0,16-1,24s-5,16-7,24s-2,16-2,24s2,16,4,24s4,16,6,24s1,16,1,24s0,16,0,24s5,16,4,24s-5,16-7,24s-5,16-7,24s-3,16-5,24s-2,16-2,24s4,16,6,24s5,16,6,24s1,16,1,24s-3,16-3,24s3,16,4,24s2,16,2,24s-4,16-4,24s1,16,1,24s-2,16-2,24s-1,16-1,24'/%3E%3Cpath id='w' d='M923,-24c0,8-2,16-2,24s-1,16-1,24s-1,16-2,24s-3,16-4,24s-2,16-1,24s1,16,4,24s8,16,10,24s3,16,3,24s0,16,1,24s0,16,0,24s-3,16-3,24s2,16,2,24s1,16,2,24s2,16,4,24s4,16,6,24s7,16,8,24s-1,16-2,24s-7,16-9,24s-2,16-3,24s-5,16-6,24s-2,16-3,24s-1,16-3,24s-4,16-5,24s-1,16-2,24s1,16,1,24s2,16,1,24s-3,16-3,24s1,16,3,24s6,16,7,24s0,16,0,24s0,16-2,24s-5,16-6,24s-2,16-2,24s2,16,4,24s4,16,5,24s2,16,2,24s0,16,0,24s4,16,4,24s-6,16-8,24s-4,16-6,24s-4,16-5,24s-2,16-2,24s4,16,5,24s5,16,7,24s1,16,1,24s-3,16-2,24s2,16,2,24s3,16,2,24s-3,16-3,24s1,16,1,24s-2,16-2,24s-1,16-1,24'/%3E%3Cpath id='x' d='M911,-30c-1,10-2,20-2,30s-1,20-1,30s-3,20-4,30s-3,20-3,30s1,20,3,30s10,20,12,30s1,20,2,30s1,20,1,30s-3,20-3,30s2,20,3,30s1,20,2,30s4,20,7,30s9,20,10,30s-4,20-6,30s-4,20-6,30s-5,20-7,30s-2,20-4,30s-3,20-4,30s-4,20-5,30s0,20,0,30s1,20,1,30s-4,20-3,30s5,20,6,30s4,20,4,30s-1,20-2,30s-6,20-7,30s-1,20,0,30s5,20,7,30s2,20,3,30s1,20,1,30s0,20-1,30s-7,20-9,30s-5,20-6,30s-2,20-1,30s5,20,7,30s5,20,5,30s-3,20-2,30s3,20,3,30s-1,20-1,30s0,20,0,30s-2,20-2,30s-1,20-1,30'/%3E%3C/defs%3E%3Cuse href='%23v' stroke-width='20' stroke-opacity='.1'/%3E%3Cuse href='%23w' stroke-width='40' stroke-opacity='.09'/%3E%3Cuse href='%23x' stroke-width='62' stroke-opacity='.07'/%3E%3Cpath d='M943.7,-15c-.3,5-1.5,10-2,15s-1.1,10-1.2,15s.5,10,.4,15s-.1,10-.7,15s-1.7,10-2.5,15s-1.9,10-2.5,15s-1.3,10-1.5,15s-.2,10,.7,15s2.7,10,4.7,15s5.4,10,7.4,15s4,10,4.8,15s.1,10,0,15s-.7,10-.6,15s1,10,1.3,15s.7,10,.5,15s-1.6,10-2.2,15s-1.4,10-1.4,15s.8,10,1.4,15s1.4,10,1.9,15s.5,10,.9,15s.8,10,1.6,15s1.9,10,3.2,15s2.7,10,4.2,15s3.5,10,5.2,15s4,10,5,15s1.4,10,.7,15s-3.2,10-5,15s-4.7,10-6.2,15s-2.2,10-3.1,15s-.9,10-1.9,15s-2.6,10-3.8,15s-2.9,10-3.7,15s-.7,10-1,15s-.1,10-.7,15s-1.8,10-3,15s-2.7,10-3.6,15s-1.6,10-2,15s-.6,10-.6,15s.1,10,.4,15s1.1,10,1.4,15s.5,10,.1,15s-1.7,10-2.3,15s-1.7,10-1.3,15s1.9,10,3.4,15s4,10,5.3,15s1.8,10,2,15s-.5,10-.6,15s-.1,10-.3,15s0,10-.7,15s-2.2,10-3.4,15s-3.3,10-4.2,15s-1.3,10-1.2,15s.9,10,1.7,15s2,10,3.2,15s2.6,10,3.7,15s2.3,10,2.7,15s.2,10,.1,15s-.9,10-.7,15s1.1,10,1.9,15s2.3,10,2.4,15s-.6,10-1.9,15s-4.1,10-5.8,15s-3.6,10-4.8,15s-1.8,10-2.8,15s-2.1,10-3,15s-2.3,10-2.6,15s.2,10,1.1,15s2.8,10,4.2,15s3.1,10,4.2,15s2.1,10,2.7,15s1,10,1,15s-.8,10-1.2,15s-1.6,10-1.7,15s.6,10,1.5,15s2.7,10,3.4,15s1.1,10,.8,15s-2,10-2.7,15s-1.4,10-1.6,15s.8,10,1,15s.3,10-.1,15s-1.5,10-2,15s-1.1,10-1.2,15' stroke-width='1.25'/%3E%3Cuse href='%23v' stroke-width='1.1' stroke-opacity='.86'/%3E%3Cuse href='%23w' stroke-width='1.1' stroke-opacity='.78'/%3E%3Cuse href='%23x' stroke-width='1.1' stroke-opacity='.71'/%3E%3Cpath d='M897,-48c-1,16-1,32-2,48s-1,32-3,48s-6,32-5,48s9,32,12,48s5,32,6,48s-3,32-2,48s2,32,4,48s6,32,9,48s5,32,4,48s-8,32-11,48s-5,32-7,48s-7,32-8,48s-1,32-1,48s-3,32-2,48s7,32,8,48s0,32-1,48s-7,32-7,48s6,32,8,48s3,32,3,48s-3,32-6,48s-8,32-9,48s0,32,2,48s7,32,8,48s1,32,1,48s-1,32-1,48s-1,32-2,48s-1,32-3,48' stroke-opacity='.65'/%3E%3Cpath d='M882,-48c0,16-1,32-2,48s-2,32-3,48s-5,32-4,48s7,32,10,48s6,32,7,48s-2,32-2,48s2,32,4,48s6,32,8,48s5,32,4,48s-7,32-10,48s-5,32-8,48s-6,32-7,48s-1,32-1,48s-3,32-2,48s6,32,7,48s0,32-1,48s-6,32-6,48s6,32,8,48s4,32,3,48s-3,32-6,48s-8,32-9,48s0,32,2,48s6,32,8,48s0,32,0,48s0,32,0,48s-1,32-2,48s-2,32-3,48' stroke-opacity='.59'/%3E%3Cpath d='M866,-60c0,20-2,40-3,60s-4,40-5,60s-2,40,0,60s12,40,14,60s-1,40-1,60s2,40,5,60s11,40,11,60s-5,40-8,60s-7,40-10,60s-7,40-8,60s-1,40-1,60s2,40,3,60s2,40,2,60s-6,40-5,60s8,40,9,60s0,40-3,60s-10,40-11,60s3,40,4,60s4,40,5,60s2,40,2,60s-2,40-3,60s-4,40-5,60' stroke-opacity='.54'/%3E%3Cpath d='M846,-60c0,20-1,40-2,60s-4,40-5,60s-2,40,0,60s11,40,13,60s0,40,0,60s3,40,5,60s9,40,9,60s-4,40-7,60s-7,40-9,60s-7,40-8,60s-1,40-1,60s2,40,3,60s1,40,1,60s-4,40-4,60s7,40,8,60s0,40-2,60s-10,40-11,60s2,40,4,60s4,40,5,60s2,40,1,60s-1,40-2,60s-4,40-5,60' stroke-opacity='.5'/%3E%3Cpath d='M825,-60c-1,20-1,40-2,60s-5,40-5,60s-2,40,0,60s9,40,11,60s1,40,2,60s2,40,4,60s8,40,8,60s-3,40-6,60s-7,40-9,60s-6,40-7,60s-2,40-2,60s2,40,3,60s1,40,1,60s-4,40-3,60s7,40,7,60s-1,40-3,60s-8,40-9,60s1,40,3,60s5,40,6,60s1,40,1,60s-1,40-2,60s-5,40-5,60' stroke-opacity='.5'/%3E%3Cpath d='M800,-60c0,20-1,40-2,60s-4,40-4,60s-1,40,0,60s8,40,10,60s2,40,3,60s3,40,4,60s7,40,7,60s-2,40-5,60s-7,40-10,60s-5,40-6,60s-2,40-2,60s2,40,3,60s1,40,0,60s-2,40-2,60s6,40,6,60s-1,40-3,60s-7,40-8,60s1,40,2,60s5,40,6,60s1,40,1,60s-1,40-2,60s-4,40-4,60' stroke-opacity='.5'/%3E%3Cpath d='M774,-60c0,20-1,40-2,60s-4,40-4,60s-1,40,1,60s6,40,8,60s3,40,5,60s2,40,3,60s5,40,6,60s-2,40-4,60s-7,40-10,60s-4,40-6,60s-2,40-2,60s2,40,2,60s1,40,1,60s-2,40-1,60s4,40,4,60s-1,40-2,60s-7,40-8,60s1,40,2,60s5,40,6,60s1,40,1,60s-1,40-2,60s-4,40-4,60' stroke-opacity='.5'/%3E%3Cpath d='M746,-60c-1,20-1,40-2,60s-4,40-4,60s0,40,1,60s5,40,7,60s4,40,5,60s3,40,4,60s4,40,4,60s-1,40-3,60s-7,40-9,60s-4,40-6,60s-2,40-2,60s1,40,2,60s0,40,0,60s0,40,0,60s3,40,3,60s-1,40-2,60s-6,40-6,60s0,40,1,60s4,40,5,60s2,40,2,60s-1,40-2,60s-4,40-4,60' stroke-opacity='.5'/%3E%3Cpath d='M715,-60c0,20-1,40-2,60s-3,40-3,60s0,40,1,60s4,40,6,60s4,40,6,60s3,40,4,60s3,40,3,60s-1,40-3,60s-6,40-8,60s-4,40-5,60s-2,40-3,60s1,40,1,60s0,40,0,60s1,40,2,60s1,40,1,60s-1,40-2,60s-4,40-5,60s0,40,1,60s3,40,4,60s2,40,2,60s-1,40-2,60s-3,40-3,60' stroke-opacity='.5'/%3E%3Cpath d='M683,-60c0,20-1,40-2,60s-2,40-3,60s1,40,2,60s2,40,4,60s4,40,6,60s4,40,5,60s2,40,2,60s-1,40-3,60s-5,40-7,60s-4,40-5,60s-2,40-2,60s0,40,0,60s0,40,0,60s2,40,2,60s0,40,0,60s-1,40-2,60s-3,40-3,60s-1,40,0,60s3,40,4,60s2,40,2,60s-1,40-2,60s-2,40-3,60' stroke-opacity='.5'/%3E%3Cpath d='M648,-60c0,20-1,40-1,60s-2,40-2,60s0,40,1,60s2,40,4,60s4,40,6,60s4,40,5,60s1,40,1,60s-2,40-3,60s-4,40-6,60s-4,40-5,60s-2,40-2,60s0,40,0,60s-1,40,0,60s2,40,2,60s0,40-1,60s-1,40-2,60s-1,40-2,60s0,40,0,60s2,40,3,60s2,40,2,60s-1,40-1,60s-2,40-2,60' stroke-opacity='.5'/%3E%3Cpath d='M611,-60c1,20,0,40-1,60s-1,40-1,60s1,40,1,60s2,40,4,60s3,40,5,60s4,40,5,60s1,40,0,60s-1,40-2,60s-3,40-5,60s-4,40-5,60s-2,40-2,60s-1,40-1,60s0,40,1,60s2,40,2,60s-1,40-2,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s2,40,3,60s1,40,1,60s0,40-1,60s-1,40-1,60' stroke-opacity='.5'/%3E%3Cpath d='M573,-60c0,20-1,40-1,60s-1,40-1,60s1,40,2,60s1,40,2,60s4,40,6,60s3,40,4,60s1,40,0,60s-1,40-2,60s-2,40-4,60s-4,40-5,60s-1,40-2,60s-1,40-1,60s0,40,1,60s1,40,1,60s-1,40-2,60s-1,40-1,60s0,40,0,60s-1,40,0,60s1,40,1,60s1,40,2,60s-1,40-1,60s-1,40-1,60' stroke-opacity='.5'/%3E%3Cpath d='M532,-60c0,20,0,40,0,60s-1,40,0,60s0,40,1,60s1,40,2,60s4,40,5,60s3,40,4,60s1,40,0,60s-1,40-2,60s-2,40-3,60s-3,40-4,60s-2,40-3,60s-1,40-1,60s1,40,1,60s1,40,0,60s-1,40-1,60s-1,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s1,40,1,60s0,40,0,60s-1,40,0,60' stroke-opacity='.5'/%3E%3Cpath d='M491,-60c0,20,0,40,0,60s1,40,1,60s1,40,1,60s1,40,3,60s3,40,4,60s2,40,3,60s1,40,0,60s-1,40-2,60s-1,40-2,60s-3,40-4,60s-2,40-3,60s-1,40-1,60s1,40,1,60s0,40,0,60s-1,40-1,60s-1,40-2,60s1,40,1,60s0,40,0,60s0,40,1,60s0,40,0,60s0,40,0,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M450,-60c1,20,1,40,1,60s1,40,1,60s1,40,2,60s1,40,2,60s2,40,3,60s2,40,3,60s0,40,0,60s0,40-1,60s-2,40-3,60s-2,40-3,60s-2,40-2,60s-2,40-2,60s1,40,1,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s1,40,1,60s1,40,1,60s-1,40-1,60s0,40,0,60s1,40,1,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M410,-60c0,20,0,40,1,60s1,40,2,60s0,40,1,60s1,40,2,60s2,40,3,60s1,40,2,60s0,40,0,60s0,40-1,60s-1,40-2,60s-1,40-2,60s-3,40-3,60s-1,40-1,60s0,40,0,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s1,40,1,60s1,40,1,60s-1,40-1,60s0,40,0,60s0,40,1,60s1,40,2,60' stroke-opacity='.5'/%3E%3Cpath d='M370,-60c0,20,0,40,1,60s1,40,2,60s1,40,1,60s2,40,2,60s2,40,2,60s1,40,2,60s0,40,0,60s0,40,0,60s-1,40-2,60s-1,40-2,60s-2,40-3,60s-1,40-1,60s0,40-1,60s0,40-1,60s0,40,0,60s-1,40-1,60s1,40,1,60s1,40,1,60s-1,40-1,60s-1,40,0,60s0,40,1,60s1,40,2,60' stroke-opacity='.5'/%3E%3Cpath d='M329,-60c0,20,1,40,1,60s2,40,3,60s1,40,2,60s1,40,1,60s1,40,2,60s1,40,1,60s0,40,0,60s0,40,0,60s-1,40-1,60s-1,40-2,60s-2,40-3,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s0,40,1,60s0,40,0,60s0,40,0,60s0,40,0,60s-1,40-1,60s1,40,1,60s2,40,3,60' stroke-opacity='.5'/%3E%3Cpath d='M289,-60c0,20,1,40,1,60s2,40,3,60s1,40,2,60s1,40,1,60s1,40,1,60s1,40,1,60s0,40,1,60s0,40,0,60s-1,40-1,60s-1,40-2,60s-2,40-2,60s-1,40-2,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s0,40,1,60s0,40,0,60s0,40,0,60s0,40-1,60s0,40,0,60s1,40,1,60s2,40,3,60' stroke-opacity='.5'/%3E%3Cpath d='M249,-60c0,20,1,40,1,60s2,40,3,60s1,40,2,60s1,40,1,60s1,40,1,60s0,40,0,60s1,40,1,60s0,40,0,60s0,40-1,60s-1,40-1,60s-1,40-2,60s-1,40-2,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s1,40,1,60s0,40,0,60s0,40,0,60s0,40-1,60s0,40,0,60s1,40,1,60s2,40,3,60' stroke-opacity='.5'/%3E%3Cpath d='M209,-60c0,20,1,40,1,60s2,40,2,60s2,40,3,60s1,40,1,60s0,40,0,60s1,40,1,60s0,40,0,60s0,40,0,60s0,40,0,60s-1,40-1,60s-1,40-2,60s-1,40-2,60s-1,40-2,60s0,40-1,60s0,40,0,60s1,40,1,60s0,40,0,60s0,40,0,60s-1,40-1,60s0,40,0,60s1,40,1,60s2,40,2,60' stroke-opacity='.5'/%3E%3Cpath d='M169,-60c0,20,1,40,1,60s2,40,2,60s2,40,3,60s1,40,1,60s0,40,0,60s0,40,0,60s0,40,0,60s1,40,1,60s0,40,0,60s-1,40-1,60s-1,40-2,60s-1,40-2,60s-1,40-2,60s0,40-1,60s0,40,0,60s1,40,1,60s0,40,0,60s0,40,0,60s-1,40-1,60s0,40,0,60s1,40,1,60s2,40,2,60' stroke-opacity='.5'/%3E%3Cpath d='M129,-60c0,20,1,40,1,60s2,40,2,60s2,40,3,60s1,40,1,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,0,60s-1,40-2,60s-1,40-2,60s-1,40-2,60s-1,40-1,60s0,40,0,60s1,40,1,60s0,40,0,60s-1,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s2,40,2,60' stroke-opacity='.5'/%3E%3Cpath d='M89,-60c0,20,1,40,1,60s2,40,2,60s2,40,3,60s0,40,1,60s0,40,0,60s-1,40-1,60s0,40,0,60s1,40,1,60s0,40,0,60s0,40,0,60s-1,40-2,60s-1,40-2,60s-1,40-2,60s-1,40-1,60s0,40,0,60s1,40,1,60s0,40,0,60s-1,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s2,40,2,60' stroke-opacity='.5'/%3E%3Cpath d='M49,-60c1,20,1,40,1,60s2,40,3,60s1,40,1,60s1,40,1,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,0,60s1,40,1,60s0,40-1,60s0,40-1,60s-1,40-2,60s-1,40-2,60s0,40-1,60s0,40,0,60s1,40,1,60s0,40,0,60s-1,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s2,40,3,60' stroke-opacity='.5'/%3E%3Cpath d='M10,-60c0,20,0,40,1,60s1,40,1,60s2,40,2,60s1,40,1,60s0,40,0,60s0,40,0,60s-1,40,0,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40-1,60s-1,40-2,60s-1,40-2,60s0,40-1,60s1,40,1,60s0,40,0,60s-1,40-1,60s0,40,0,60s0,40,0,60s0,40,1,60s0,40,1,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M-30,-60c0,20,0,40,1,60s1,40,1,60s1,40,2,60s0,40,0,60s1,40,1,60s-1,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s0,40,0,60s0,40-1,60s-1,40-2,60s-1,40-1,60s-1,40-1,60s0,40,0,60s0,40,0,60s-1,40-1,60s0,40,0,60s0,40,0,60s0,40,1,60s0,40,1,60s1,40,1,60' stroke-opacity='.5'/%3E%3C/svg%3E");
+  -webkit-mask-position:0 0,100% 0;mask-position:0 0,100% 0;}
+@media (max-width:1060px){
+  body::before,body::after{opacity:.13;}
+}
+@media print{body::before,body::after{display:none;}}
+}
+
+  /* ── the sea chart ── */
+  .diagram-panels.three{grid-template-columns:repeat(3,1fr);}
+  @media (max-width:820px){.diagram-panels.three{grid-template-columns:1fr;}}
+  .diagram-panel.is-west{background:#F5EAE2;border-color:#DCB59D;}
+  .diagram-panel.is-west h4{color:#4E4B48;}
+  .diagram-panel.is-isle{background:#F3EEF1;border-color:#D7C4CF;}
+  .diagram-panel.is-isle h4{color:#4E4C4D;}
+  .diagram-panel.is-east{background:#F6F1E6;border-color:#E0CEA9;}
+  .diagram-panel.is-east h4{color:#4F4D4A;}
+  .diagram-panel li{padding:3px 6px;margin:0 -6px;border-radius:6px;transition:background .15s ease;}
+  .diagram-panel li.is-lit{background:var(--accent-lighter);}
+  .diagram-panel li b{font-weight:700;margin-right:.3em;}
+  .sail-chart-overlay{--hotspot-wash:color-mix(in srgb,var(--card) 24%,transparent);}
+  .sail-chart-overlay .land{transition:fill .15s ease;}
+  .sail-chart-overlay .land:hover{fill:var(--hotspot-wash);}
+  .sail-chart-overlay .land:focus-visible{fill:var(--hotspot-wash);outline:3px solid var(--accent);outline-offset:2px;}
+  .sail-chart-overlay text{pointer-events:none;}
+  .chart-scroll-hint{display:none;font-size:12.5px;color:var(--ink-soft);margin:9px 2px 0;font-style:italic;}
+  .name-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 14px;
+            font-family:'Inter',sans-serif;font-size:12.5px;color:var(--ink-soft);}
+  .name-bar .name-label{letter-spacing:.06em;text-transform:uppercase;font-weight:700;font-size:11px;}
+  .name-bar button{font:inherit;font-weight:600;border:1px solid var(--accent-light);
+                   background:var(--card);color:var(--ink-soft);padding:5px 12px;border-radius:999px;
+                   cursor:pointer;transition:background .12s ease,color .12s ease;}
+  .name-bar button:hover{color:var(--ink);}
+  .name-bar button.on{background:var(--accent);color:var(--on-accent);border-color:var(--accent);}
+  .chart-toggle-wrap{position:relative;}
+  .chart-toggle-wrap .chart-photo{display:block;width:100%;height:auto;border-radius:14px;}
+  .chart-toggle-wrap .sail-chart{position:absolute;top:0;left:0;width:100%;height:100%;}
+  .hero-cta{display:inline-flex;align-items:center;gap:6px;margin-top:18px;background:var(--accent);
+            color:var(--on-accent);font-family:'Inter',sans-serif;font-weight:600;font-size:14px;
+            padding:11px 20px;border-radius:999px;text-decoration:none;transition:opacity .12s ease;}
+  .hero-cta:hover{opacity:.88;}
+  /* a chart this dense is unreadable shrunk to a phone: it scrolls at a
+     width where the harbour names are still about 12px */
+  @media (max-width:760px){
+    .diagram-stage{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+    .diagram-stage .chart-toggle-wrap{width:980px;max-width:none;}
+    .chart-scroll-hint{display:block;}
+  }
+  /* on a phone the trail's 66px gutter and the card's padding left the chart
+     a 205px window; the chart card reaches into the gutter instead */
+  @media (max-width:600px){
+    #order .diagram-card{margin-left:-56px;padding:16px 12px;}
+  }
+
+  /* ── the ship's rooms: Innes's paintings, the words pinned on ── */
+  /* one room to a row: side by side, in a 740px column, each painting was
+     370px wide and its tags ran into each other */
+  .rooms{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;margin:0 0 6px;}
+  .room{min-width:0;}   /* or the phone's 720px painting widens the track and the page */
+  .room{margin:0;background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:14px;}
+  .room figcaption{font-family:'Inter',sans-serif;font-size:13px;color:var(--ink-soft);margin:0 112px 10px 0;line-height:1.35;}
+  .room figcaption b{color:var(--ink);font-size:15px;margin-right:4px;}
+  .room-ask{display:inline-block;font-weight:700;font-size:11px;letter-spacing:.08em;padding:3px 8px;border-radius:999px;
+            border:1px solid;margin-right:6px;vertical-align:1px;}
+  .room-wrap{position:relative;}
+  .room-wrap img{display:block;width:100%;height:auto;border-radius:10px;}
+  .room-tag{position:absolute;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;
+            font-family:'Inter',sans-serif;font-weight:700;font-size:12.5px;line-height:1;
+            padding:5px 9px;border-radius:999px;border:1px solid;
+            box-shadow:0 2px 6px color-mix(in srgb,var(--ink) 30%,transparent);}
+  .mz-max .room-tag{font-size:15px;}
+  /* a painting this busy shrunk to a phone hides its tags: it scrolls at a
+     width where they still sit beside their things */
+  @media (max-width:760px){
+    .room-stage{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+    .room-stage .room-wrap{width:720px;max-width:none;}
+    .room-tag{font-size:11px;}
+  }
+  @media (max-width:600px){ #ship .rooms{margin-left:-56px;} #ship .room{padding:10px;} }
+  .galley{margin-top:20px;background:var(--card);border:1px dashed var(--accent);border-radius:var(--radius);padding:20px 22px;}
+  .galley-h{font-family:'Inter',sans-serif;font-size:13px;color:var(--ink-soft);margin:0 0 8px;}
+  .galley-h b{color:var(--ink);font-size:15px;margin-right:4px;}
+  .galley ul{list-style:none;padding:0;margin:14px 0;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;}
+  .galley li{padding:9px 12px;border-radius:10px;background:var(--accent-lighter);font-size:15px;}
+  .galley li span{color:var(--ink-soft);font-size:13px;margin:0 4px;}
+  .galley li i{font-style:normal;font-weight:600;}
+  .galley-foot{font-size:14px;color:var(--ink-soft);margin:0;}
+  .room-tag.is-count{background:#EDD9CD;color:#47413D;border-color:#905B39;}
+  .room-tag.is-bulk{background:#EFE6D3;color:#4C4A44;border-color:#957C4A;}
+  .room-tag.is-both{background:#EBE1E7;color:#4B484A;border-color:#896F7E;}
+  /* ── the sky: clouds and gulls (see build_sailing.py) ── */
+  .gull-sky{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;}
+  @media print{.gull-sky{display:none;}}
+  .wordmark,h1,h1 ~ p,.camp > .camp-label,.camp > h2,.camp > p.example,.camp > p.chart-note,.btnrow > a.route-link,.tr-bar > .tr-label,.voice-bar a.ghost{text-shadow:0 0 2px var(--paper),0 0 4px var(--paper),0 0 6px var(--paper),0 0 8px var(--paper);}
+</style>
+<!-- SHERPA-SKY:start -->
+<style id="sherpa-sky">
+/* clouds drifting across the screen, seen from above (tools/sherpa_sky.py): nine clouds,
+   each on its own loop, in a fixed screen-sized layer, by transform only */
+.sherpa-sky{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;}
+.sherpa-sky i{position:absolute;left:0;background:0 0/100% 100% no-repeat;will-change:transform;animation:sherpa-sky-drift linear infinite;}
+@keyframes sherpa-sky-drift{from{transform:translateX(-100%)}to{transform:translateX(100vw)}}
+.sherpa-sky i:nth-child(1){top:8%;width:560px;height:311px;background-image:url("Sherpa%20Tensing/cloud-1.webp");animation-duration:95s;animation-delay:-10s;opacity:0.95;}
+.sherpa-sky i:nth-child(2){top:38%;width:480px;height:260px;background-image:url("Sherpa%20Tensing/cloud-2.webp");animation-duration:110s;animation-delay:-61s;opacity:0.95;}
+.sherpa-sky i:nth-child(3){top:64%;width:620px;height:339px;background-image:url("Sherpa%20Tensing/cloud-3.webp");animation-duration:85s;animation-delay:-26s;opacity:0.95;}
+.sherpa-sky i:nth-child(4){top:84%;width:430px;height:230px;background-image:url("Sherpa%20Tensing/cloud-4.webp");animation-duration:120s;animation-delay:-96s;opacity:0.9;}
+.sherpa-sky i:nth-child(5){top:20%;width:300px;height:162px;background-image:url("Sherpa%20Tensing/cloud-5.webp");animation-duration:170s;animation-delay:-34s;opacity:0.6;}
+.sherpa-sky i:nth-child(6){top:50%;width:260px;height:149px;background-image:url("Sherpa%20Tensing/cloud-6.webp");animation-duration:190s;animation-delay:-124s;opacity:0.55;}
+.sherpa-sky i:nth-child(7){top:74%;width:280px;height:156px;background-image:url("Sherpa%20Tensing/cloud-1.webp");animation-duration:180s;animation-delay:-81s;opacity:0.6;}
+.sherpa-sky i:nth-child(8){top:2%;width:240px;height:130px;background-image:url("Sherpa%20Tensing/cloud-2.webp");animation-duration:200s;animation-delay:-180s;opacity:0.5;}
+.sherpa-sky i:nth-child(9){top:92%;width:270px;height:147px;background-image:url("Sherpa%20Tensing/cloud-3.webp");animation-duration:175s;animation-delay:-9s;opacity:0.55;}
+/* the smallest phones: the far clouds only would crowd, so the near ones shrink */
+@media (max-width:560px){.sherpa-sky i{transform-origin:0 0;}.sherpa-sky i:nth-child(-n+4){scale:.7;}}
+@media (prefers-reduced-motion:reduce){.sherpa-sky i{animation-play-state:paused;}}
+@media print{.sherpa-sky{display:none;}}
+</style>
+<!-- SHERPA-SKY:end -->
+</head>
+<body>
+<div class="gull-sky" id="gull-sky" aria-hidden="true"></div>
+<!-- SHERPA-SKY-EL:start -->
+<div class="sherpa-sky" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+<!-- SHERPA-SKY-EL:end -->
+<a class="up-link" href="grammar.html#maps"><span class="arw" aria-hidden="true">&larr;</span>Grammar maps</a>
+
+
+<div class="wordmark">
+  <div class="brand">Sailing the <span>Seas of Grammar</span></div>
+  <div class="sub">Forbes English &middot; countable and uncountable nouns</div>
+</div>
+
+<main>
+
+  <section class="hero" id="hero">
+    <div>
+      <span class="eyebrow">Sailing the Seas of Grammar &middot; nouns</span>
+      <h1>Countania &amp; Uncountania</h1>
+      <p>Two shores face each other across a strait. On the west live the things you count: a chair, three chairs, many chairs. On the east lives the stuff you measure: furniture, much furniture, and never an <em>-s</em>. Every harbour on the east shore has a partner directly across the water, so when a word catches you out, the way back is straight ahead. Start below deck, in the ship.</p>
+      <a class="hero-cta" href="#ship">Go below deck <span aria-hidden="true">&rarr;</span></a>
+    </div>
+    <button type="button" class="hero-diagram-btn" id="hero-map-btn" aria-label="Expand the map"><img class="hero-diagram" src="sailing-the-seas-countania/hero.jpg" alt="An illustrated sea chart. On the west, an orange land called Countania, with harbours named after countable nouns: Job Harbour, Fact Point, Tip Head, Suitcase Sands, Chair Crag and others. On the east, a golden land called Uncountania, whose harbours face them at the same latitude: Work Harbour, Information Point, Advice Head, Luggage Sands, Furniture Crag. In the strait lies a lilac island, Double Isle (both shores, two meanings: Coffee Cove, Chicken Crag, Paper Point). A ferry runs west, labelled a piece of advice, a bottle of water, a slice of bread. A spur of Uncountania flies an -S flag: the False Cape, the news is, maths is. A sandbank in the south, the Shallows, holds some, any, a lot of, plenty of." width="1536" height="1024" loading="eager"></button><div class="img-lightbox" id="hero-lightbox"><button type="button" class="lightbox-close" aria-label="Close">&times;</button><img src="sailing-the-seas-countania/hero.jpg" alt="An illustrated sea chart. On the west, an orange land called Countania, with harbours named after countable nouns: Job Harbour, Fact Point, Tip Head, Suitcase Sands, Chair Crag and others. On the east, a golden land called Uncountania, whose harbours face them at the same latitude: Work Harbour, Information Point, Advice Head, Luggage Sands, Furniture Crag. In the strait lies a lilac island, Double Isle (both shores, two meanings: Coffee Cove, Chicken Crag, Paper Point). A ferry runs west, labelled a piece of advice, a bottle of water, a slice of bread. A spur of Uncountania flies an -S flag: the False Cape, the news is, maths is. A sandbank in the south, the Shallows, holds some, any, a lot of, plenty of."></div>
+  </section>
+
+    <div class="tr-bar" id="tr-bar"><span class="tr-label">Examples in</span><button type="button" data-lang="" class="on">Off</button><button type="button" data-lang="de">DE</button><button type="button" data-lang="es">ES</button><button type="button" data-lang="fr">FR</button><button type="button" data-lang="it">IT</button><button type="button" data-lang="pt">PT</button><button type="button" data-lang="ru">RU</button><button type="button" data-lang="ar">AR</button><button type="button" data-lang="zh">ZH</button><button type="button" data-lang="ja">JA</button></div>
+
+      <div class="trail-wrap">
+
+    <div class="camp" id="ship">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="4" width="8" height="16"/><rect x="13" y="4" width="8" height="16"/></svg></div>
+      <div class="camp-label">Below deck</div>
+      <h2>Two rooms in one ship</h2>
+      <p class="chart-note" style="margin:-6px 0 18px">Before the chart, the cargo. In the store cabin everything stands apart, and you can count it. In the hold everything is poured, piled or spilled, and you can only measure it. Look at what the two rooms share: chairs in one are furniture in the other, suitcases are luggage, coins are money, letters are mail. <strong>The same cargo, a different word.</strong></p>
+      <div class="rooms">
+        <figure class="room" data-map-zoom data-mz-target=".room-wrap" data-mz-ratio="1.5" data-mz-min="1000">
+          <figcaption><span class="room-ask is-count">HOW MANY?</span> <b>The store cabin</b> everything apart</figcaption>
+          <div class="room-stage" data-mz-scroll>
+            <div class="room-wrap">
+              <img src="sailing-the-seas-countania/room-count.jpg" alt="The ship&#39;s store cabin: three wooden chairs, three loaves on a shelf, tools on hooks, books, bottles, three letters on a desk, three suitcases, nine coins in a row on a table and a crate of apples." width="1536" height="1024" loading="lazy">
+              <span class="room-tag is-count" style="left:19.53%;top:28.32%">three chairs</span><span class="room-tag is-count" style="left:46.55%;top:17.77%">three loaves</span><span class="room-tag is-count" style="left:70.96%;top:11.91%">four tools</span><span class="room-tag is-count" style="left:88.22%;top:6.64%">six books</span><span class="room-tag is-count" style="left:88.22%;top:25.59%">four bottles</span><span class="room-tag is-count" style="left:83.98%;top:51.56%">three letters</span><span class="room-tag is-count" style="left:36.46%;top:75.98%">three suitcases</span><span class="room-tag is-count" style="left:50.13%;top:82.23%">nine coins</span><span class="room-tag is-count" style="left:90.49%;top:56.84%">six apples</span>
+            </div>
+          </div>
+        </figure>
+        <figure class="room" data-map-zoom data-mz-target=".room-wrap" data-mz-ratio="1.5" data-mz-min="1000">
+          <figcaption><span class="room-ask is-bulk">HOW MUCH?</span> <b>The cargo hold</b> everything heaped</figcaption>
+          <div class="room-stage" data-mz-scroll>
+            <div class="room-wrap">
+              <img src="sailing-the-seas-countania/room-bulk.jpg" alt="The ship&#39;s cargo hold: grain pouring from a chute, heaps of sand, coffee beans and rice, water across the floor, chairs and tables piled up, a stack of trunks, coins heaped on a chest and a sack spilling letters." width="1536" height="1024" loading="lazy">
+              <span class="room-tag is-bulk" style="left:21.48%;top:42.19%">grain</span><span class="room-tag is-bulk" style="left:12.37%;top:62.50%">sand</span><span class="room-tag is-bulk" style="left:53.39%;top:50.78%">coffee</span><span class="room-tag is-bulk" style="left:82.16%;top:68.36%">rice</span><span class="room-tag is-bulk" style="left:45.57%;top:69.82%">water</span><span class="room-tag is-bulk" style="left:39.71%;top:16.11%">furniture</span><span class="room-tag is-bulk" style="left:62.50%;top:22.66%">luggage</span><span class="room-tag is-bulk" style="left:74.22%;top:38.28%">money</span><span class="room-tag is-bulk" style="left:86.59%;top:32.23%">mail</span>
+            </div>
+          </div>
+        </figure>
+      </div>
+            <div class="chart-wrap">
+        <h3>The same cargo, a different word</h3>
+        <p class="chart-note">The cabin&#39;s word is the thing; the hold&#39;s word is the whole lot of it. Only the left-hand word takes <em>a</em> and <em>-s</em>.</p>
+        <table class="conj">
+          <thead><tr><th>In the cabin: count it</th><th>In the hold: measure it</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">three chairs</td><td>furniture</td></tr>
+            <tr><td class="subj">three suitcases</td><td>luggage</td></tr>
+            <tr><td class="subj">nine coins</td><td>money</td></tr>
+            <tr><td class="subj">three letters</td><td>mail</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="ex" data-tr="0" style="margin:14px 0 0">There are three <em>chairs</em> in the cabin, and a lot of <em>furniture</em> in the hold.</p>
+      <div class="galley">
+          <p class="galley-h"><span class="room-ask is-both">BOTH</span> <b>The galley</b> where the two meet</p>
+          <p>Between the cabin and the hold is the galley, and here every word has two lives. On the table stands one thing; beside it, the stuff it is made of.</p>
+          <ul><li><b>a coffee</b> <span>beside</span> <i>coffee</i></li><li><b>a chicken</b> <span>beside</span> <i>chicken</i></li><li><b>a paper</b> <span>beside</span> <i>paper</i></li><li><b>a glass</b> <span>beside</span> <i>glass</i></li><li><b>a cake</b> <span>beside</span> <i>cake</i></li><li><b>a light</b> <span>beside</span> <i>light</i></li></ul>
+          <p class="galley-foot">The single thing counts; the stuff does not. These are the words of Double Isle, on the chart below.</p>
+        </div>
+    </div>
+
+    <div class="camp" id="rules">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 3v18M5 4h11l-3 4 3 4H5"/></svg></div>
+      <div class="camp-label">The west shore</div>
+      <h2>Countania: count it</h2>
+      <p class="chart-note" style="margin:-6px 0 18px">A countable noun names a thing with edges: you can point at one, and put a number in front of it. That gives it four habits, and once you know them you can spot a Countania word anywhere.</p>
+      <div class="rule-grid">
+        <div class="rule-card">
+          <h3><em>A</em> or <em>an</em> for one</h3>
+          <p>One of anything here takes <em>a</em> or <em>an</em>: <em>a chair, a job, an apple, an idea</em>.</p>
+          <div class="ex" data-tr="1">We found <em>a coin</em> under <em>a chair</em>.</div>
+        </div>
+        <div class="rule-card">
+          <h3>One alone is never bare</h3>
+          <p>A singular countable noun needs a word in front: <em>a, the, my, this, every</em>. <em>I need chair</em> is not English; <em>I need a chair</em> is.</p>
+          <div class="ex" data-tr="2">Is there <em>a chair</em> for me? <em>The chair</em> by the window is free.</div>
+        </div>
+        <div class="rule-card">
+          <h3>Add <em>-s</em> for more than one</h3>
+          <p>Most nouns add <em>-s</em> or <em>-es</em>: <em>chairs, boxes</em>. A few change inside: <em>man &rarr; men, child &rarr; children, foot &rarr; feet, person &rarr; people</em>.</p>
+          <div class="ex" data-tr="3">Three <em>suitcases</em> and two <em>boxes</em> came aboard.</div>
+        </div>
+        <div class="rule-card">
+          <h3>Numbers go straight in</h3>
+          <p><em>two trips, ten tools, a hundred steps</em>. Nothing in between: never <em>two pieces of trip</em>.</p>
+          <div class="ex" data-tr="4">It took us <em>three trips</em> to load the ship.</div>
+        </div>
+        <div class="rule-card">
+          <h3><em>Many</em>, <em>a few</em>, <em>few</em></h3>
+          <p><em>How many?</em> asks for a number. <em>A few</em> means some; <em>few</em> means not enough.</p>
+          <div class="ex" data-tr="5">How <em>many</em> coins are left? Only <em>a few</em>.</div>
+        </div>
+        <div class="rule-card">
+          <h3><em>Fewer</em>, not <em>less</em></h3>
+          <p>For fewer things, careful English says <em>fewer</em>: <em>fewer storms, fewer mistakes</em>. <em>Less</em> is common in speech, but exams mark it down.</p>
+          <div class="ex" data-tr="6">There were <em>fewer storms</em> this year than last.</div>
+        </div>
+      </div>      <div class="chart-wrap">
+        <h3>Twelve pairs, straight across the water</h3>
+        <p class="chart-note">On the chart every harbour on the east shore faces its partner on the west, with the same surname. When a word from the right-hand column will not take <em>a</em> or <em>-s</em>, its partner on the left will.</p>
+        <table class="conj">
+          <thead><tr><th>Countania: count it</th><th>Uncountania: measure it</th><th>The mistake</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">a job &middot; two jobs</td><td>work</td><td>a work, works (but <em>a work of art</em> is a painting)</td></tr>
+            <tr><td class="subj">a fact &middot; facts</td><td>information</td><td>an information, informations</td></tr>
+            <tr><td class="subj">a tip &middot; tips</td><td>advice</td><td>an advice, advices</td></tr>
+            <tr><td class="subj">a suitcase &middot; suitcases</td><td>luggage</td><td>a luggage, luggages</td></tr>
+            <tr><td class="subj">a chair &middot; chairs</td><td>furniture</td><td>a furniture, furnitures</td></tr>
+            <tr><td class="subj">a trip &middot; trips</td><td>travel</td><td>a travel (but <em>his travels</em>, his journeys)</td></tr>
+            <tr><td class="subj">a coin &middot; coins</td><td>money</td><td>a money, moneys</td></tr>
+            <tr><td class="subj">a song &middot; songs</td><td>music</td><td>a music, musics</td></tr>
+            <tr><td class="subj">a tool &middot; tools</td><td>equipment</td><td>an equipment, equipments</td></tr>
+            <tr><td class="subj">a storm &middot; storms</td><td>weather</td><td>a weather, a bad weather</td></tr>
+            <tr><td class="subj">a task &middot; tasks</td><td>homework</td><td>a homework, homeworks</td></tr>
+            <tr><td class="subj">a step &middot; steps</td><td>progress</td><td>a progress, progresses</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <div class="camp" id="form">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg></div>
+      <div class="camp-label">The east shore</div>
+      <h2>Uncountania: measure it</h2>
+      <p class="chart-note" style="margin:-6px 0 18px">An uncountable noun names stuff with no edges: a liquid, a material, an idea, or a whole category of things under one name. You cannot put a number in front of it, so it has none of Countania&#39;s habits, and four of its own.</p>
+      <div class="rule-grid">
+        <div class="rule-card">
+          <h3>No <em>a</em>, no <em>an</em></h3>
+          <p>Never <em>an advice</em>, never <em>a furniture</em>. Use it bare, or with <em>some</em>, <em>the</em>, <em>my</em>.</p>
+          <div class="ex" data-tr="7">She gave me <em>some advice</em>, and it was <em>good advice</em>.</div>
+        </div>
+        <div class="rule-card">
+          <h3>No <em>-s</em>, ever</h3>
+          <p><em>Informations, advices, luggages, furnitures, equipments</em> are some of the commonest mistakes in English. In many languages these words do have a plural; in English they do not.</p>
+          <div class="ex" data-tr="8">We need <em>more information</em> about the tides.</div>
+        </div>
+        <div class="rule-card">
+          <h3>The verb is singular</h3>
+          <p>The noun is one mass, so the verb is <em>is</em>, <em>was</em>, <em>has</em>: <em>the luggage is</em>, <em>the money was</em>.</p>
+          <div class="ex" data-tr="9"><em>The furniture is</em> old, but <em>the equipment is</em> new.</div>
+        </div>
+        <div class="rule-card">
+          <h3><em>Much</em>, <em>a little</em>, <em>little</em></h3>
+          <p><em>How much?</em> asks for an amount. <em>Much</em> belongs in questions and negatives; in a plain statement say <em>a lot of</em>: <em>a lot of money</em>, not <em>much money</em>.</p>
+          <div class="ex" data-tr="10">How <em>much</em> money is left? Only <em>a little</em>.</div>
+        </div>
+        <div class="rule-card">
+          <h3>What lives here: stuff, not things</h3>
+          <p>Liquids and gases (<em>water, air</em>), materials (<em>wood, glass, sand</em>), grains (<em>rice, flour</em>), ideas (<em>advice, fun, luck</em>), activities (<em>work, travel, research</em>) and whole categories (<em>furniture, luggage, money</em>).</p>
+          <div class="ex" data-tr="11"><em>Rice</em>, <em>sand</em> and <em>water</em> filled the hold.</div>
+        </div>
+        <div class="rule-card">
+          <h3>Take the ferry to count it</h3>
+          <p>To count stuff, count a container or a unit of it: <em>a piece of advice, two pieces of furniture, a bottle of water, a slice of bread</em>. The unit takes the <em>-s</em>; the stuff never does.</p>
+          <div class="ex" data-tr="12">Can I give you <em>a piece of advice</em>? Pack <em>two bottles of water</em>.</div>
+        </div>
+      </div>      <div class="chart-wrap">
+        <h3>The piece-of ferry: one crossing, west only</h3>
+        <p class="chart-note">The ferry carries a word from Uncountania into Countania by putting a countable unit in front of it. <em>A piece of</em> is the all-purpose ticket; the others fit their cargo.</p>
+        <table class="conj">
+          <thead><tr><th>The unit</th><th>The stuff it carries</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">a piece of</td><td>advice, information, news, furniture, luggage, equipment, music, work</td></tr>
+            <tr><td class="subj">a bottle of &middot; a glass of</td><td>water, milk, wine, juice</td></tr>
+            <tr><td class="subj">a cup of &middot; a mug of</td><td>coffee, tea, hot chocolate</td></tr>
+            <tr><td class="subj">a slice of &middot; a loaf of</td><td>bread, cake, cheese, ham</td></tr>
+            <tr><td class="subj">a bar of</td><td>chocolate, soap, gold</td></tr>
+            <tr><td class="subj">a bag of &middot; a sack of</td><td>rice, flour, sand, coal</td></tr>
+            <tr><td class="subj">a grain of</td><td>rice, sand, salt, truth</td></tr>
+            <tr><td class="subj">a bit of</td><td>luck, help, time, fun: the informal ticket</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <div class="camp" id="order">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="4" width="8" height="16"/><rect x="13" y="4" width="8" height="16"/></svg></div>
+      <div class="camp-label">Interactive</div>
+      <h2>Read the chart</h2>
+      <div class="diagram-card" data-map-zoom data-mz-target=".chart-toggle-wrap" data-mz-btn=".name-bar" data-mz-ratio="1.5" data-mz-min="1100">
+        <p class="diagram-intro">Click a land and its list lights up below. Every harbour is named after a noun. Switch the chart to <em>just the nouns</em> to see them bare, then to <em>counted</em> to see how each shore counts: a number on the west, the ferry&#39;s <em>piece of</em> on the east. Read straight across: each pair shares a surname.</p>
+        <div class="name-bar" id="name-bar">
+          <span class="name-label">Read the chart as</span>
+          <button type="button" data-mode="place" class="on" aria-pressed="true">Place names</button>
+          <button type="button" data-mode="verb" aria-pressed="false">Just the nouns</button>
+          <button type="button" data-mode="past" aria-pressed="false">Counted</button>
+        </div>
+        <div class="diagram-stage" data-mz-scroll>
+          <div class="chart-toggle-wrap">
+            <img class="chart-photo" src="sailing-the-seas-countania/chart-clean.jpg" alt="" width="1536" height="1024" loading="lazy">
+            <svg class="sail-chart sail-chart-overlay" viewBox="0 0 1536 1024">
+        <path id="cnt-countania" class="land" tabindex="0" role="button" aria-label="Countania, the land of countable nouns: a, an, many, a few, plural -s" style="cursor:pointer" d="M 22 22 L 22 1001 L 276 1001 L 290 998 L 306 983 L 339 986 L 348 979 L 340 971 L 331 973 L 327 969 L 350 955 L 356 946 L 371 943 L 351 925 L 354 912 L 371 905 L 374 896 L 391 903 L 404 895 L 397 886 L 402 877 L 385 864 L 387 854 L 383 846 L 389 836 L 400 832 L 397 825 L 401 821 L 409 828 L 423 823 L 414 816 L 405 817 L 400 811 L 412 801 L 410 791 L 445 761 L 469 763 L 486 777 L 515 777 L 536 764 L 547 772 L 557 772 L 564 768 L 546 758 L 559 747 L 591 738 L 596 729 L 565 685 L 543 685 L 533 668 L 521 672 L 503 661 L 492 674 L 482 673 L 471 663 L 460 661 L 444 646 L 439 634 L 414 624 L 401 632 L 391 632 L 382 626 L 387 615 L 414 599 L 407 591 L 395 591 L 389 585 L 398 571 L 385 561 L 385 551 L 399 547 L 404 560 L 415 561 L 423 556 L 405 539 L 416 533 L 408 525 L 406 515 L 410 511 L 427 521 L 467 517 L 451 506 L 448 496 L 433 492 L 426 485 L 449 470 L 443 450 L 451 442 L 464 440 L 467 432 L 483 430 L 492 410 L 504 412 L 510 403 L 499 388 L 489 386 L 479 373 L 466 372 L 436 348 L 442 336 L 433 322 L 441 315 L 447 318 L 463 312 L 435 285 L 435 268 L 410 256 L 420 247 L 406 231 L 385 230 L 379 218 L 362 208 L 373 194 L 386 189 L 383 184 L 387 180 L 412 181 L 401 169 L 407 163 L 416 173 L 432 170 L 427 159 L 410 146 L 411 137 L 403 129 L 371 119 L 365 111 L 382 103 L 372 92 L 360 92 L 352 100 L 338 98 L 323 76 L 305 77 L 283 59 L 267 61 L 259 55 L 255 42 L 238 36 L 208 43 L 181 38 L 170 27 L 156 35 L 141 22 L 128 22 L 116 28 L 108 22 Z" fill="transparent" stroke="transparent" stroke-width="14"/>
+        <path id="cnt-uncountania" class="land" tabindex="0" role="button" aria-label="Uncountania, the land of uncountable nouns: much, a little, no a or an, no -s" style="cursor:pointer" d="M 1513 22 L 1462 22 L 1445 32 L 1430 30 L 1426 35 L 1416 22 L 1400 24 L 1393 36 L 1389 31 L 1372 33 L 1368 27 L 1364 31 L 1359 29 L 1351 41 L 1331 42 L 1325 49 L 1306 39 L 1277 48 L 1265 65 L 1247 64 L 1231 80 L 1206 82 L 1197 104 L 1187 110 L 1172 111 L 1158 128 L 1131 133 L 1119 144 L 1110 143 L 1100 151 L 1130 173 L 1126 177 L 1115 174 L 1104 164 L 1090 174 L 1101 182 L 1117 179 L 1122 184 L 1119 191 L 1137 202 L 1128 218 L 1144 219 L 1147 228 L 1156 232 L 1159 229 L 1181 242 L 1172 258 L 1153 270 L 1144 282 L 1115 292 L 1106 304 L 1106 321 L 1092 335 L 1079 337 L 1073 347 L 1082 353 L 1102 345 L 1107 351 L 1095 367 L 1085 357 L 1067 365 L 1083 374 L 1083 384 L 1073 393 L 1075 400 L 1060 411 L 1066 417 L 1078 412 L 1085 417 L 1094 413 L 1097 421 L 1111 430 L 1095 449 L 1134 462 L 1140 468 L 1135 478 L 1161 495 L 1149 509 L 1129 521 L 1126 532 L 1108 547 L 1114 552 L 1139 553 L 1144 558 L 1140 563 L 1154 569 L 1140 579 L 1172 590 L 1178 607 L 1146 621 L 1132 613 L 1125 622 L 1114 625 L 1108 640 L 1100 641 L 1094 648 L 1087 646 L 1076 652 L 1053 644 L 1040 652 L 1023 647 L 1016 654 L 974 667 L 970 663 L 970 643 L 1018 623 L 977 609 L 969 595 L 964 604 L 966 667 L 942 678 L 922 680 L 923 688 L 912 703 L 925 710 L 903 725 L 907 731 L 920 730 L 928 740 L 949 736 L 958 760 L 971 756 L 980 765 L 1004 763 L 1037 785 L 1053 785 L 1059 777 L 1067 784 L 1089 778 L 1094 783 L 1075 795 L 1084 800 L 1092 797 L 1109 808 L 1136 801 L 1124 787 L 1112 781 L 1122 770 L 1148 770 L 1152 774 L 1147 779 L 1154 788 L 1148 803 L 1132 815 L 1135 827 L 1130 831 L 1125 826 L 1112 836 L 1108 852 L 1095 863 L 1112 866 L 1121 856 L 1127 856 L 1143 867 L 1138 875 L 1128 870 L 1105 886 L 1123 903 L 1108 918 L 1139 936 L 1134 946 L 1149 955 L 1141 961 L 1144 967 L 1163 964 L 1171 968 L 1175 977 L 1190 987 L 1187 993 L 1194 998 L 1513 1001 L 1513 831 L 1506 827 L 1513 825 Z" fill="transparent" stroke="transparent" stroke-width="14"/>
+        <path id="cnt-double" class="land" tabindex="0" role="button" aria-label="Double Isle: nouns that are both, with two meanings" style="cursor:pointer" d="M 975 466 L 955 453 L 939 432 L 925 425 L 925 408 L 909 397 L 908 370 L 904 368 L 899 377 L 899 392 L 888 399 L 878 393 L 869 399 L 862 395 L 846 398 L 830 387 L 813 388 L 798 378 L 781 383 L 765 377 L 719 390 L 710 386 L 695 391 L 677 387 L 655 401 L 636 399 L 620 417 L 596 423 L 607 432 L 601 440 L 596 437 L 590 448 L 581 449 L 569 462 L 578 469 L 574 475 L 590 484 L 576 508 L 593 521 L 573 555 L 577 562 L 585 563 L 602 576 L 595 588 L 578 597 L 591 603 L 588 610 L 608 619 L 608 628 L 632 628 L 645 636 L 653 652 L 686 651 L 694 665 L 710 666 L 720 677 L 740 677 L 754 690 L 780 687 L 795 679 L 811 683 L 831 675 L 841 659 L 863 659 L 868 651 L 880 656 L 889 654 L 885 646 L 898 641 L 893 633 L 907 628 L 902 623 L 907 615 L 917 609 L 922 616 L 943 609 L 929 598 L 930 591 L 941 582 L 937 566 L 948 558 L 963 563 L 967 558 L 966 552 L 947 536 L 951 527 L 947 521 L 951 517 L 961 519 L 965 511 L 979 508 L 971 499 L 960 497 L 956 501 L 951 493 Z" fill="transparent" stroke="transparent" stroke-width="14"/>
+        <path id="cnt-shallows" class="land" tabindex="0" role="button" aria-label="The Shallows: words that work with either kind of noun" style="cursor:pointer" d="M 991 831 L 989 823 L 977 816 L 929 807 L 922 796 L 907 794 L 895 781 L 866 776 L 847 758 L 810 760 L 791 748 L 779 746 L 734 755 L 703 749 L 670 764 L 650 762 L 641 772 L 634 773 L 625 787 L 593 792 L 567 811 L 557 809 L 538 816 L 528 813 L 525 818 L 544 823 L 541 827 L 555 839 L 560 854 L 598 868 L 604 875 L 598 884 L 600 890 L 620 898 L 648 900 L 672 914 L 697 917 L 707 927 L 723 932 L 740 931 L 765 919 L 784 923 L 793 932 L 806 930 L 815 920 L 835 930 L 859 928 L 870 917 L 882 922 L 892 916 L 889 908 L 895 902 L 925 902 L 954 894 L 945 878 L 956 868 L 986 857 L 975 847 Z" fill="transparent" stroke="transparent" stroke-width="14"/>
+        <path id="cnt-cape" class="land" tabindex="0" role="button" aria-label="The False Cape: news and maths look plural but are uncountable" style="cursor:pointer" d="M 918 650 L 1178 650 L 1178 772 L 918 772 Z" fill="transparent" stroke="transparent" stroke-width="14"/>
+        <path id="cnt-ferry" class="land" tabindex="0" role="button" aria-label="The piece-of ferry: how to count an uncountable noun" style="cursor:pointer" d="M 520 205 L 1010 205 L 1010 310 L 520 310 Z" fill="transparent" stroke="transparent" stroke-width="14"/>
+        <g class="chart-captions">
+        <text x="738" y="64" text-anchor="end" font-family="Inter,sans-serif" font-size="17" font-weight="700" letter-spacing=".08em" fill="#232C2E">&#9664; HOW MANY?</text>
+        <text x="798" y="64" text-anchor="start" font-family="Inter,sans-serif" font-size="17" font-weight="700" letter-spacing=".08em" fill="#232C2E">HOW MUCH? &#9654;</text>
+        <text x="770" y="228" text-anchor="middle" font-family="Inter,sans-serif" font-size="18" font-weight="700" letter-spacing=".1em" fill="#232C2E">THE PIECE-OF FERRY RUNS WEST</text>
+        <text x="770" y="296" text-anchor="middle" font-family="Fraunces,Georgia,serif" font-size="16" font-weight="600" letter-spacing="0" fill="#232C2E" font-style="italic">a piece of advice &#183; a bottle of water &#183; a slice of bread</text>
+        <text x="770" y="338" text-anchor="middle" font-family="Fraunces,Georgia,serif" font-size="24" font-weight="700" letter-spacing=".06em" fill="#120F11">DOUBLE ISLE</text>
+        <text x="770" y="361" text-anchor="middle" font-family="Inter,sans-serif" font-size="14.5" font-weight="600" letter-spacing="0" fill="#232C2E">both shores &#183; two meanings</text>
+        <text x="1066" y="703" text-anchor="middle" font-family="Fraunces,Georgia,serif" font-size="18" font-weight="700" letter-spacing=".06em" fill="#241E12">THE FALSE CAPE</text>
+        <text x="1066" y="725" text-anchor="middle" font-family="Inter,sans-serif" font-size="14.5" font-weight="600" letter-spacing="0" fill="#241E12">the news is &#183; maths is</text>
+        <text x="775" y="817" text-anchor="middle" font-family="Fraunces,Georgia,serif" font-size="20" font-weight="700" letter-spacing=".06em" fill="#50493D">THE SHALLOWS</text>
+        <text x="775" y="840" text-anchor="middle" font-family="Inter,sans-serif" font-size="14.5" font-weight="600" letter-spacing="0" fill="#50493D">either shore, same word</text>
+        <text x="775" y="863" text-anchor="middle" font-family="Inter,sans-serif" font-size="14" font-weight="500" letter-spacing="0" fill="#50493D">some &#183; any &#183; a lot of &#183; plenty of</text>
+        <text x="775" y="884" text-anchor="middle" font-family="Inter,sans-serif" font-size="14" font-weight="500" letter-spacing="0" fill="#50493D">no &#183; enough &#183; more &#183; most</text>
+        <text x="40" y="935" text-anchor="start" font-family="Fraunces,Georgia,serif" font-size="40" font-weight="700" letter-spacing=".04em" fill="#000000">COUNTANIA</text>
+        <text x="42" y="965" text-anchor="start" font-family="Fraunces,Georgia,serif" font-size="19" font-weight="600" letter-spacing="0" fill="#000000" font-style="italic">a / an &#183; many &#183; a few &#183; -s</text>
+        <text x="1498" y="935" text-anchor="end" font-family="Fraunces,Georgia,serif" font-size="40" font-weight="700" letter-spacing=".04em" fill="#241E12">UNCOUNTANIA</text>
+        <text x="1496" y="965" text-anchor="end" font-family="Fraunces,Georgia,serif" font-size="19" font-weight="600" letter-spacing="0" fill="#241E12" font-style="italic">much &#183; a little &#183; no a / an &#183; no -s</text>
+      </g>
+        <g class="place-layer">
+        <text class="place-name" x="143" y="101" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#000000" stroke="#D3A182" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="Job Harbour" data-verb="job" data-past="three jobs">Job Harbour</text>
+        <text class="place-name" x="290" y="158" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#000000" stroke="#D3A182" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="Fact Point" data-verb="fact" data-past="two facts">Fact Point</text>
+        <text class="place-name" x="146" y="226" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#000000" stroke="#D3A182" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="Tip Head" data-verb="tip" data-past="a few tips">Tip Head</text>
+        <text class="place-name" x="288" y="295" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#000000" stroke="#D3A182" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="Suitcase Sands" data-verb="suitcase" data-past="two suitcases">Suitcase Sands</text>
+        <text class="place-name" x="145" y="356" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#000000" stroke="#D3A182" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="Chair Crag" data-verb="chair" data-past="six chairs">Chair Crag</text>
+        <text class="place-name" x="299" y="434" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#000000" stroke="#D3A182" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="Trip Tarn" data-verb="trip" data-past="many trips">Trip Tarn</text>
+        <text class="place-name" x="134" y="484" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#000000" stroke="#D3A182" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="Coin Cove" data-verb="coin" data-past="nine coins">Coin Cove</text>
+        <text class="place-name" x="287" y="551" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#000000" stroke="#D3A182" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="Song Sound" data-verb="song" data-past="a few songs">Song Sound</text>
+        <text class="place-name" x="134" y="593" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#000000" stroke="#D3A182" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="Tool Ness" data-verb="tool" data-past="four tools">Tool Ness</text>
+        <text class="place-name" x="302" y="667" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#000000" stroke="#D3A182" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="Storm Rock" data-verb="storm" data-past="two storms">Storm Rock</text>
+        <text class="place-name" x="146" y="723" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#000000" stroke="#D3A182" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="Task Fell" data-verb="task" data-past="three tasks">Task Fell</text>
+        <text class="place-name" x="298" y="798" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#000000" stroke="#D3A182" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="Step Ridge" data-verb="step" data-past="a few steps">Step Ridge</text>
+        <text class="place-name" x="1379" y="98" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#241E12" stroke="#D8C092" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="Work Harbour" data-verb="work" data-past="a piece of work">Work Harbour</text>
+        <text class="place-name" x="1248" y="164" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#241E12" stroke="#D8C092" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="Information Point" data-verb="information" data-past="a piece of information">Information Point</text>
+        <text class="place-name" x="1379" y="226" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#241E12" stroke="#D8C092" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="Advice Head" data-verb="advice" data-past="a piece of advice">Advice Head</text>
+        <text class="place-name" x="1263" y="290" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#241E12" stroke="#D8C092" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="Luggage Sands" data-verb="luggage" data-past="a piece of luggage">Luggage Sands</text>
+        <text class="place-name" x="1410" y="351" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#241E12" stroke="#D8C092" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="Furniture Crag" data-verb="furniture" data-past="a piece of furniture">Furniture Crag</text>
+        <text class="place-name" x="1276" y="417" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#241E12" stroke="#D8C092" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="Travel Tarn" data-verb="travel" data-past="a lot of travel">Travel Tarn</text>
+        <text class="place-name" x="1413" y="481" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#241E12" stroke="#D8C092" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="Money Cove" data-verb="money" data-past="a sum of money">Money Cove</text>
+        <text class="place-name" x="1274" y="542" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#241E12" stroke="#D8C092" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="Music Sound" data-verb="music" data-past="a piece of music">Music Sound</text>
+        <text class="place-name" x="1408" y="596" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#241E12" stroke="#D8C092" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="Equipment Ness" data-verb="equipment" data-past="a piece of equipment">Equipment Ness</text>
+        <text class="place-name" x="1263" y="675" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#241E12" stroke="#D8C092" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="Weather Rock" data-verb="weather" data-past="bad weather">Weather Rock</text>
+        <text class="place-name" x="1412" y="725" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#241E12" stroke="#D8C092" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="Homework Fell" data-verb="homework" data-past="a piece of homework">Homework Fell</text>
+        <text class="place-name" x="1291" y="807" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#241E12" stroke="#D8C092" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="Progress Ridge" data-verb="progress" data-past="a bit of progress">Progress Ridge</text>
+        <text class="place-name" x="772" y="417" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#120F11" stroke="#CDB4C2" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="Coffee Cove" data-verb="coffee" data-past="a coffee &#183; coffee">Coffee Cove</text>
+        <text class="place-name" x="672" y="476" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#120F11" stroke="#CDB4C2" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="Chicken Crag" data-verb="chicken" data-past="a chicken &#183; chicken">Chicken Crag</text>
+        <text class="place-name" x="876" y="476" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#120F11" stroke="#CDB4C2" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="Paper Point" data-verb="paper" data-past="a paper &#183; paper">Paper Point</text>
+        <text class="place-name" x="779" y="527" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#120F11" stroke="#CDB4C2" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="Room Reach" data-verb="room" data-past="a room &#183; room">Room Reach</text>
+        <text class="place-name" x="672" y="571" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#120F11" stroke="#CDB4C2" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="Glass Gill" data-verb="glass" data-past="a glass &#183; glass">Glass Gill</text>
+        <text class="place-name" x="863" y="572" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#120F11" stroke="#CDB4C2" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="Hair Head" data-verb="hair" data-past="a hair &#183; hair">Hair Head</text>
+        <text class="place-name" x="769" y="626" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#120F11" stroke="#CDB4C2" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="Time Tarn" data-verb="time" data-past="a time &#183; time">Time Tarn</text>
+        </g>
+      </svg>
+          </div>
+        </div>
+        <p class="chart-scroll-hint">Drag the chart sideways to reach the east shore.</p>
+        <div class="diagram-panels three">
+          <div class="diagram-panel is-west" id="panel-west">
+            <h4>Countania &middot; count it</h4>
+            <ul id="panel-west-list"></ul>
+          </div>
+          <div class="diagram-panel is-isle" id="panel-strait">
+            <h4>The strait &middot; both, or neither</h4>
+            <ul id="panel-strait-list"></ul>
+          </div>
+          <div class="diagram-panel is-east" id="panel-east">
+            <h4>Uncountania &middot; measure it</h4>
+            <ul id="panel-east-list"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="camp" id="vs-simple">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3v18"/><path d="M7 8l-4 4 4 4M17 8l4 4-4 4"/></svg></div>
+      <div class="camp-label">The island</div>
+      <h2>Double Isle: both shores, two meanings</h2>
+      <div class="chart-wrap" style="margin-top:18px">
+        <p class="chart-note" style="margin-bottom:16px">The lilac island in the strait belongs to both shores. Its nouns are countable with one meaning and uncountable with another, and the <em>a</em> or the <em>-s</em> tells the listener which one you mean.</p>
+        <table class="conj">
+          <thead><tr><th>Noun</th><th>Countable: a thing</th><th>Uncountable: the stuff</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">coffee</td><td><em>a coffee</em>: a cup of it<br><em>Two coffees, please.</em></td><td><em>coffee</em>: the drink, the beans<br><em>Coffee keeps me awake.</em></td></tr>
+            <tr><td class="subj">chicken</td><td><em>a chicken</em>: the living bird<br><em>We keep six chickens.</em></td><td><em>chicken</em>: the meat<br><em>We had chicken for dinner.</em></td></tr>
+            <tr><td class="subj">paper</td><td><em>a paper</em>: a newspaper, or an essay<br><em>She reads a paper every day.</em></td><td><em>paper</em>: the material<br><em>Wrap it in paper.</em></td></tr>
+            <tr><td class="subj">room</td><td><em>a room</em>: a space with walls<br><em>The ship has ten rooms.</em></td><td><em>room</em>: space<br><em>Is there room for one more?</em></td></tr>
+            <tr><td class="subj">glass</td><td><em>a glass</em>: you drink from it<br><em>Two glasses of water.</em></td><td><em>glass</em>: the material<br><em>The porthole is made of glass.</em></td></tr>
+            <tr><td class="subj">hair</td><td><em>a hair</em>: one single strand<br><em>There&#39;s a hair in my soup.</em></td><td><em>hair</em>: all of it on your head<br><em>She has long hair.</em></td></tr>
+            <tr><td class="subj">time</td><td><em>a time</em>: an occasion<br><em>I&#39;ve been there three times.</em></td><td><em>time</em>: minutes and hours<br><em>We don&#39;t have much time.</em></td></tr>
+          </tbody>
+        </table>
+        <p class="example" style="margin-top:14px">The test is the same everywhere on the island: if you could put a number in front of it in this sentence, it is countable here. <em>Three coffees</em> works in a café; <em>three coffees</em> does not work for the beans in the hold.</p>
+      </div>
+      <div class="btnrow" style="margin-top:16px">
+        <a class="route-link" href="sailing-the-seas-countania.html#quiz">Straight to the test &rarr;</a>
+        <a class="route-link" href="sailing-the-seas-regularia.html">Regularia: regular and irregular verbs</a>
+      </div>
+    </div>
+
+    <div class="camp" id="shallows">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3v18"/><path d="M7 8l-4 4 4 4M17 8l4 4-4 4"/></svg></div>
+      <div class="camp-label">The Shallows</div>
+      <h2>Words that work on either shore</h2>
+      <p class="chart-note" style="margin:-6px 0 18px">South of Double Isle the water shoals. The words in the Shallows sail both ways: <em>some chairs</em> and <em>some furniture</em>, <em>a lot of coins</em> and <em>a lot of money</em>. Learn these first, and you have a safe word for every noun. The words on the two shores are the ones that only fit one kind.</p>
+            <div class="chart-wrap">
+        <h3>Quantity words, shore by shore</h3>
+        <p class="chart-note">The middle column is the Shallows. The outer columns only fit their own shore.</p>
+        <table class="conj">
+          <thead><tr><th>Countania only</th><th>Either shore</th><th>Uncountania only</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">many</td><td>a lot of &middot; lots of</td><td>much</td></tr>
+            <tr><td class="subj">a few</td><td>some</td><td>a little</td></tr>
+            <tr><td class="subj">few</td><td>any</td><td>little</td></tr>
+            <tr><td class="subj">fewer</td><td>more &middot; most</td><td>less</td></tr>
+            <tr><td class="subj">several</td><td>enough</td><td>a great deal of</td></tr>
+            <tr><td class="subj">a number of</td><td>plenty of &middot; no</td><td>an amount of</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="ex" data-tr="13" style="margin:14px 0 0"><em>Some</em> chairs, <em>some</em> furniture; <em>a lot of</em> coins, <em>a lot of</em> money.</p>
+      <p class="chart-note" style="margin-top:22px"><strong>The False Cape.</strong> A spur of the east shore flies an <em>-S</em> flag it has no right to. These words end in <em>-s</em> and look plural, but they are uncountable and take a singular verb. Across the water stand a few words that do the opposite.</p>
+            <div class="chart-wrap">
+        <h3>Looks plural, is not (and the other way round)</h3>
+        <p class="chart-note">The flag is a trick: read the verb, not the last letter.</p>
+        <table class="conj">
+          <thead><tr><th>Word</th><th>Is</th><th>Say</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">news</td><td>uncountable, singular</td><td>The news <em>is</em> good. Never <em>a news</em>: <em>a piece of news</em>.</td></tr>
+            <tr><td class="subj">maths &middot; physics &middot; economics</td><td>singular subjects</td><td>Maths <em>is</em> my best subject.</td></tr>
+            <tr><td class="subj">athletics &middot; gymnastics</td><td>singular sports</td><td>Athletics <em>is</em> on tonight.</td></tr>
+            <tr><td class="subj">people &middot; police &middot; cattle</td><td>plural, with no <em>-s</em></td><td>The police <em>are</em> here. People <em>are</em> kind.</td></tr>
+            <tr><td class="subj">clothes &middot; scissors &middot; trousers</td><td>plural only</td><td>My clothes <em>are</em> wet. <em>A pair of</em> scissors.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="ex" data-tr="14" style="margin:14px 0 0">The news <em>is</em> good: the police <em>are</em> on their way.</p>
+    </div>
+
+    <div class="camp" id="signals">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg></div>
+      <div class="camp-label">Tide tables</div>
+      <h2>Signal words</h2>
+      <div class="signal-groups">
+        <div class="signal-box">
+          <h3>Count it &mdash; sail west</h3>
+          <ul>
+            <li>single objects with a shape: <em>a chair, a coin, a bottle</em></li>
+            <li>people and animals: <em>a sailor, a gull</em></li>
+            <li>events: <em>a trip, a storm, a meeting</em></li>
+            <li>units and containers: <em>a slice, a piece, a cup</em></li>
+            <li>jobs you can number: <em>a task, a job, a step</em></li>
+            <li>the members of a category: <em>a chair</em> of furniture, <em>a suitcase</em> of luggage</li>
+          </ul>
+        </div>
+        <div class="signal-box">
+          <h3>Measure it &mdash; sail east</h3>
+          <ul>
+            <li>liquids and gases: <em>water, milk, air</em></li>
+            <li>materials: <em>wood, glass, paper</em></li>
+            <li>grains and powders: <em>rice, sand, flour</em></li>
+            <li>ideas and feelings: <em>advice, fun, luck, love</em></li>
+            <li>activities: <em>work, travel, research, homework</em></li>
+            <li>whole categories: <em>furniture, luggage, money, equipment</em></li>
+          </ul>
+        </div>
+      </div>
+      <p class="example" style="margin-top:14px">The one test to keep: can you put a number in front? <em>Three chairs</em>, yes, so sail west. <em>Three furnitures</em>, no, so it lives in Uncountania, and the ferry is how you count it: <em>three pieces of furniture</em>.</p>
+    </div>
+
+    <div class="camp" id="quiz">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3l3 7-3 3-3-3 3-7z"/><path d="M12 13v8"/></svg></div>
+      <div class="camp-label">The crossing</div>
+      <h2>Practice</h2>
+      <div class="quiz-card">
+        <div class="progress-row">
+          <span id="progress-text">Checkpoint 1 of 14</span>
+          <span id="score-text">Score: 0</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+        <div class="q-prompt" id="q-prompt"></div>
+        <div class="q-hint" id="q-hint"></div>
+        <div class="options" id="options"></div>
+        <div class="feedback" id="feedback"></div>
+        <div class="quiz-footer">
+          <button class="next-btn" id="next-btn" disabled>Next checkpoint</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="camp" id="results-camp">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 20l5-14 5 14M8 14h4"/></svg></div>
+      <div class="camp-label">Ship&#39;s log</div>
+      <div id="results">
+        <div class="score" id="final-score"></div>
+        <p id="final-message"></p>
+        <button class="retry-btn" id="retry-btn">Sail it again</button>
+        <div class="route-nav">
+          <a class="base-camp" href="grammar.html#maps">&larr; Back to the grammar maps</a>
+          <a class="next-camp" href="sailing-the-seas-regularia.html">Next chart: regular and irregular verbs &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+
+
+
+
+// ── example translations: nine languages, click to reveal ──
+var EX_TR = {"0": ["In der Kabine stehen drei Stühle, und im Laderaum liegen jede Menge Möbel.", "Hay tres sillas en el camarote y muchos muebles en la bodega.", "Il y a trois chaises dans la cabine, et beaucoup de meubles dans la cale.", "Ci sono tre sedie nella cabina e un sacco di mobili nella stiva.", "Há três cadeiras no camarote e muita mobília no porão.", "В каюте три стула, а в трюме полно мебели.", "في المقصورة ثلاثة كراسٍ، وفي العنبر الكثير من الأثاث.", "船舱里有三把椅子，货舱里有很多家具。", "船室には椅子が三脚あり、船倉には家具がたくさんあります。"], "1": ["Wir fanden eine Münze unter einem Stuhl.", "Encontramos una moneda debajo de una silla.", "Nous avons trouvé une pièce sous une chaise.", "Abbiamo trovato una moneta sotto una sedia.", "Encontrámos uma moeda debaixo de uma cadeira.", "Мы нашли монету под стулом.", "وجدنا قطعة نقدية تحت كرسي.", "我们在一把椅子下面找到了一枚硬币。", "椅子の下で硬貨を一枚見つけました。"], "2": ["Gibt es einen Stuhl für mich? Der Stuhl am Fenster ist frei.", "¿Hay una silla para mí? La silla junto a la ventana está libre.", "Y a-t-il une chaise pour moi ? La chaise près de la fenêtre est libre.", "C'è una sedia per me? La sedia vicino alla finestra è libera.", "Há uma cadeira para mim? A cadeira junto à janela está livre.", "Для меня есть стул? Стул у окна свободен.", "هل يوجد كرسي لي؟ الكرسي الذي بجانب النافذة شاغر.", "有我的椅子吗？窗边那把椅子空着。", "私の椅子はありますか。窓際の椅子が空いています。"], "3": ["Drei Koffer und zwei Kisten kamen an Bord.", "Subieron a bordo tres maletas y dos cajas.", "Trois valises et deux caisses sont montées à bord.", "Sono saliti a bordo tre valigie e due scatole.", "Subiram a bordo três malas e duas caixas.", "На борт подняли три чемодана и два ящика.", "صعدت إلى السفينة ثلاث حقائب وصندوقان.", "三个手提箱和两个箱子被搬上了船。", "スーツケース三つと箱二つが船に積み込まれました。"], "4": ["Wir brauchten drei Fahrten, um das Schiff zu beladen.", "Necesitamos tres viajes para cargar el barco.", "Il nous a fallu trois allers-retours pour charger le navire.", "Ci sono voluti tre viaggi per caricare la nave.", "Precisámos de três viagens para carregar o navio.", "Чтобы загрузить корабль, нам понадобилось три ходки.", "احتجنا إلى ثلاث رحلات لتحميل السفينة.", "我们跑了三趟才把船装好。", "船に荷を積むのに三往復かかりました。"], "5": ["Wie viele Münzen sind noch übrig? Nur ein paar.", "¿Cuántas monedas quedan? Solo unas pocas.", "Combien de pièces reste-t-il ? Seulement quelques-unes.", "Quante monete sono rimaste? Solo alcune.", "Quantas moedas restam? Só algumas.", "Сколько монет осталось? Всего несколько.", "كم قطعة نقدية بقيت؟ بضع قطع فقط.", "还剩多少枚硬币？只剩几枚了。", "硬貨は何枚残っていますか。ほんの数枚です。"], "6": ["Dieses Jahr gab es weniger Stürme als letztes Jahr.", "Este año hubo menos tormentas que el año pasado.", "Il y a eu moins de tempêtes cette année que l'an dernier.", "Quest'anno ci sono state meno tempeste dell'anno scorso.", "Este ano houve menos tempestades do que no ano passado.", "В этом году штормов было меньше, чем в прошлом.", "كانت العواصف هذا العام أقل من العام الماضي.", "今年的暴风雨比去年少。", "今年は去年より嵐が少なかった。"], "7": ["Sie gab mir einen Rat, und es war ein guter Rat.", "Me dio un consejo, y era un buen consejo.", "Elle m'a donné des conseils, et c'étaient de bons conseils.", "Mi ha dato dei consigli, ed erano buoni consigli.", "Ela deu-me alguns conselhos, e eram bons conselhos.", "Она дала мне совет, и это был хороший совет.", "قدّمت لي نصيحة، وكانت نصيحة جيدة.", "她给了我一些建议，而且是很好的建议。", "彼女は私に助言をくれました。それは良い助言でした。"], "8": ["Wir brauchen mehr Informationen über die Gezeiten.", "Necesitamos más información sobre las mareas.", "Il nous faut plus d'informations sur les marées.", "Ci servono più informazioni sulle maree.", "Precisamos de mais informação sobre as marés.", "Нам нужно больше информации о приливах.", "نحتاج إلى مزيد من المعلومات عن المدّ والجزر.", "我们需要更多关于潮汐的信息。", "潮の満ち引きについて、もっと情報が必要です。"], "9": ["Die Möbel sind alt, aber die Ausrüstung ist neu.", "Los muebles son viejos, pero el equipo es nuevo.", "Les meubles sont vieux, mais l'équipement est neuf.", "I mobili sono vecchi, ma l'attrezzatura è nuova.", "A mobília é velha, mas o equipamento é novo.", "Мебель старая, а оборудование новое.", "الأثاث قديم، لكن المعدات جديدة.", "家具是旧的，但设备是新的。", "家具は古いですが、装備は新しいです。"], "10": ["Wie viel Geld ist noch übrig? Nur ein bisschen.", "¿Cuánto dinero queda? Solo un poco.", "Combien d'argent reste-t-il ? Seulement un peu.", "Quanti soldi sono rimasti? Solo un po'.", "Quanto dinheiro resta? Só um pouco.", "Сколько денег осталось? Совсем немного.", "كم بقي من المال؟ القليل فقط.", "还剩多少钱？只剩一点了。", "お金はいくら残っていますか。ほんの少しです。"], "11": ["Reis, Sand und Wasser füllten den Laderaum.", "Arroz, arena y agua llenaban la bodega.", "Du riz, du sable et de l'eau remplissaient la cale.", "Riso, sabbia e acqua riempivano la stiva.", "Arroz, areia e água enchiam o porão.", "Рис, песок и вода заполняли трюм.", "ملأ الأرز والرمل والماء العنبر.", "大米、沙子和水装满了货舱。", "米と砂と水が船倉を満たしていました。"], "12": ["Darf ich dir einen Rat geben? Pack zwei Flaschen Wasser ein.", "¿Puedo darte un consejo? Lleva dos botellas de agua.", "Je peux te donner un conseil ? Prends deux bouteilles d'eau.", "Posso darti un consiglio? Porta due bottiglie d'acqua.", "Posso dar-te um conselho? Leva duas garrafas de água.", "Можно дать тебе совет? Возьми две бутылки воды.", "هل لي أن أقدّم لك نصيحة؟ خذ معك زجاجتين من الماء.", "我能给你一个建议吗？带上两瓶水。", "一つ助言してもいいですか。水を二本持っていきなさい。"], "13": ["Einige Stühle, einige Möbel; viele Münzen, viel Geld.", "Algunas sillas, algunos muebles; muchas monedas, mucho dinero.", "Quelques chaises, quelques meubles ; beaucoup de pièces, beaucoup d'argent.", "Alcune sedie, qualche mobile; un sacco di monete, un sacco di soldi.", "Algumas cadeiras, alguma mobília; muitas moedas, muito dinheiro.", "Несколько стульев, немного мебели; много монет, много денег.", "بعض الكراسي، وبعض الأثاث؛ الكثير من القطع النقدية، والكثير من المال.", "一些椅子，一些家具；很多硬币，很多钱。", "椅子が何脚か、家具がいくらか。硬貨がたくさん、お金がたくさん。"], "14": ["Die Nachrichten sind gut: Die Polizei ist unterwegs.", "Las noticias son buenas: la policía está en camino.", "Les nouvelles sont bonnes : la police est en route.", "Le notizie sono buone: la polizia sta arrivando.", "As notícias são boas: a polícia está a caminho.", "Новости хорошие: полиция уже едет.", "الأخبار جيدة: الشرطة في طريقها إلينا.", "好消息：警察正在赶来。", "良い知らせです。警察が向かっています。"]};
+var TR_ORDER = ["de", "es", "fr", "it", "pt", "ru", "ar", "zh", "ja"];
+var trLang = "";
+
+function trIndex(el){ return el.getAttribute("data-tr"); }
+
+function showTr(el){
+  var row = EX_TR[trIndex(el)];
+  if (!row || !trLang) return;
+  var i = TR_ORDER.indexOf(trLang);
+  if (i < 0 || !row[i]) return;
+  var line = el.querySelector(":scope > .ex-tr");
+  if (!line){
+    line = document.createElement("span");
+    line.className = "ex-tr";
+    el.appendChild(line);
+  }
+  line.textContent = row[i];
+  if (trLang === "ar") line.setAttribute("dir", "rtl"); else line.removeAttribute("dir");
+}
+
+function hideTr(el){
+  var line = el.querySelector(":scope > .ex-tr");
+  if (line) line.remove();
+}
+
+function applyTr(){
+  document.querySelectorAll(".ex[data-tr]").forEach(function(el){
+    if (trLang) showTr(el); else hideTr(el);
+  });
+}
+
+document.querySelectorAll("#tr-bar button").forEach(function(btn){
+  btn.addEventListener("click", function(){
+    trLang = btn.getAttribute("data-lang");
+    document.querySelectorAll("#tr-bar button").forEach(function(b){ b.classList.remove("on"); });
+    btn.classList.add("on");
+    applyTr();
+  });
+});
+
+document.querySelectorAll(".ex[data-tr]").forEach(function(el){
+  el.addEventListener("click", function(){
+    if (!trLang) return;
+    if (el.querySelector(":scope > .ex-tr")) hideTr(el); else showTr(el);
+  });
+});
+
+// ── the chart, made clickable ──
+var panelWest = [
+  "<b>a / an</b> a job &middot; a fact &middot; a tip &middot; an apple",
+  "<b>-s</b> jobs &middot; facts &middot; tips &middot; suitcases &middot; chairs &middot; trips",
+  "<b>many &middot; a few &middot; few &middot; fewer</b>",
+  "A number goes straight in: <em>three tools, two storms</em>."
+];
+var panelStrait = [
+  ["double", "<b>Double Isle</b> a coffee &middot; coffee &middot; a chicken &middot; chicken &middot; a paper &middot; paper"],
+  ["double", "a room &middot; room &middot; a glass &middot; glass &middot; a hair &middot; hair &middot; a time &middot; time"],
+  ["shallows", "<b>The Shallows</b> some &middot; any &middot; a lot of &middot; plenty of &middot; no &middot; enough &middot; more &middot; most"],
+  ["cape", "<b>The False Cape</b> the news is &middot; maths is &middot; physics is"],
+  ["ferry", "<b>The ferry</b> a piece of advice &middot; a bottle of water &middot; a slice of bread"]
+];
+var panelEast = [
+  "<b>no a, no -s</b> work &middot; information &middot; advice &middot; luggage &middot; furniture",
+  "travel &middot; money &middot; music &middot; equipment &middot; weather &middot; homework &middot; progress",
+  "<b>much &middot; a little &middot; little &middot; less</b>",
+  "A singular verb: <em>the luggage is</em>. To count it, take the ferry."
+];
+
+function renderList(id, items){
+  var ul = document.getElementById(id);
+  if (!ul) return;
+  ul.innerHTML = "";
+  items.forEach(function(it){
+    var li = document.createElement("li");
+    if (typeof it === "string"){ li.innerHTML = it; }
+    else { li.innerHTML = it[1]; li.setAttribute("data-key", it[0]); }
+    ul.appendChild(li);
+  });
+}
+renderList("panel-west-list", panelWest);
+renderList("panel-strait-list", panelStrait);
+renderList("panel-east-list", panelEast);
+
+function pulseShape(el){
+  el.animate([{ opacity: 1 }, { opacity: 0.55 }, { opacity: 1 }], { duration: 380, easing: "ease-out" });
+}
+
+// the chart reads three ways: place names, the bare noun, or the noun
+// counted (three jobs / a piece of work). All three live on the same text
+// node and swap content. A long counted form, or Double Isle's two forms
+// ("a coffee · coffee"), is set a size smaller.
+var NAME_ATTR = { place: "data-place", verb: "data-verb", past: "data-past" };
+function cntNames(mode){
+  document.querySelectorAll(".sail-chart text.place-name").forEach(function(t){
+    var v = t.getAttribute(NAME_ATTR[mode]);
+    t.textContent = v;
+    t.setAttribute("font-size", (v.indexOf("·") >= 0 || v.length > 13) ? 15 : t.getAttribute("data-size"));
+    t.style.fontStyle = mode === "place" ? "normal" : "italic";
+  });
+  document.querySelectorAll("#name-bar button").forEach(function(b){
+    var on = b.getAttribute("data-mode") === mode;
+    b.classList.toggle("on", on);
+    b.setAttribute("aria-pressed", on ? "true" : "false");
+  });
+}
+document.querySelectorAll("#name-bar button[data-mode]").forEach(function(b){
+  b.addEventListener("click", function(){ cntNames(b.getAttribute("data-mode")); });
+});
+
+// clicking a land lights its panel, and the feature's own line in it
+var TARGETS = {"countania": ["panel-west", "", "#000000"], "uncountania": ["panel-east", "", "#241E12"], "double": ["panel-strait", "double", "#120F11"], "shallows": ["panel-strait", "shallows", "#50493D"], "cape": ["panel-strait", "cape", "#241E12"], "ferry": ["panel-strait", "ferry", "#232C2E"]};
+Object.keys(TARGETS).forEach(function(key){
+  var el = document.getElementById("cnt-" + key);
+  if (!el) return;
+  var t = TARGETS[key];
+  var activate = function(){
+    pulseShape(el);
+    document.querySelectorAll(".diagram-panel").forEach(function(p){ p.style.outline = "none"; });
+    document.querySelectorAll(".diagram-panel li.is-lit").forEach(function(li){ li.classList.remove("is-lit"); });
+    var panel = document.getElementById(t[0]);
+    if (!panel) return;
+    panel.style.outline = "2px solid " + t[2];
+    if (t[1]){
+      panel.querySelectorAll('li[data-key="' + t[1] + '"]').forEach(function(li){ li.classList.add("is-lit"); });
+    }
+    panel.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  };
+  el.addEventListener("click", activate);
+  el.addEventListener("keydown", function(e){
+    if (e.key === "Enter" || e.key === " "){ e.preventDefault(); activate(); }
+  });
+});
+
+(function(){
+  var btn = document.getElementById("hero-map-btn");
+  var box = document.getElementById("hero-lightbox");
+  if (!btn || !box) return;
+  var closeBtn = box.querySelector(".lightbox-close");
+  function openBox(){ box.classList.add("is-open"); document.body.style.overflow = "hidden"; closeBtn.focus(); }
+  function closeBox(){ box.classList.remove("is-open"); document.body.style.overflow = ""; btn.focus(); }
+  btn.addEventListener("click", openBox);
+  closeBtn.addEventListener("click", closeBox);
+  box.addEventListener("click", function(e){ if (e.target === box) closeBox(); });
+  document.addEventListener("keydown", function(e){
+    if (e.key === "Escape" && box.classList.contains("is-open")) closeBox();
+  });
+})();
+/* Gulls seen from above, flying across a picture.
+ *
+ * The idea is English Heritage's Myths Map (mythsmap.english-heritage.org.uk):
+ * cut-out birds (a body and two wings), wings that beat and then glide, and
+ * small flocks that cross the whole picture, leave, and come round again.
+ * They drew theirs as PNGs and animated them in After Effects (Lottie); these
+ * are drawn in SVG and moved with CSS and the Web Animations API, so there is
+ * no library and nothing to download. Seen from directly above, a beating wing
+ * does not swing, it foreshortens: raised or lowered, it looks shorter. So the
+ * beat is a scaleY about the shoulder, with a little sweep back on the upstroke.
+ * A soft shadow a little way below each bird is what reads as height.
+ *
+ * Shared: the Sailing the Seas hero (build_sailing.py inlines this file) and
+ * the illustrated map on folkloreexplorer.com. Keep it dependency-free.
+ *
+ *   flyGulls(container, {
+ *     aspect: 1.5,              // container width / height (the picture's)
+ *     size: 4.6,                // bird wingspan, % of container width
+ *     seed: 7,                  // for the small per-bird variations
+ *     flocks: [{
+ *       from: [70, 115], to: [62.5, -15],   // % of the container
+ *       flight: 13, cycle: 40,  // seconds crossing; seconds per round
+ *       at: 1,                  // where in its cycle the flock is on load (s)
+ *       birds: [[0, 0, 1.05], [-1.6, 1.3, .95]]  // [ahead, across, scale],
+ *     }],                       //   offsets in wingspans
+ *   })
+ *
+ * For a sky the size of the screen use skyGulls(container, opts) with
+ * px: 34 (a wingspan in CSS px, or a function of the screen's width): it
+ * rebuilds the flocks when the screen's width changes.
+ *
+ * from/to are where the LEADER crosses in and out; the route is lengthened
+ * so the whole flock, shadows included, is out of the picture at both ends
+ * (at the same speed), and a flock waiting for its turn is never seen.
+ *
+ * The container must be positioned and exactly cover the picture; the birds
+ * go in a new child layer, made of spans (a picture inside a <button> may
+ * hold only phrasing content), and are clipped to it. Colours come from
+ * --gl-paper / --gl-ink if the page sets them, else --paper / --ink.
+ * Nothing is drawn for prefers-reduced-motion, or without color-mix().
+ */
+(function (root) {
+  'use strict';
+
+  // One bird, heading +x (right), in a 40 x 40 box centred on 0,0. A gull
+  // from above is mostly wing: span about two and a half times its length,
+  // an arm that reaches slightly forward to the wrist, then a long narrow hand
+  // swept back to a black tip (the M a child draws). A short body, a round
+  // head, a small square tail.
+  var BODY = 'M6.2,0C6.2,-.9 5.5,-1.3 4.6,-1.3C3.8,-1.3 3.2,-1.1 2.6,-1.5C1.4,-2.2 -1.2,-2.2 -3,-1.6' +
+             'L-4.6,-1.2C-5.6,-1.5 -6.8,-1.9 -7.6,-1.7C-7.9,-.6 -7.9,.6 -7.6,1.7C-6.8,1.9 -5.6,1.5 -4.6,1.2' +
+             'L-3,1.6C-1.2,2.2 1.4,2.2 2.6,1.5C3.2,1.1 3.8,1.3 4.6,1.3C5.5,1.3 6.2,.9 6.2,0Z';
+  var BILL = 'M6.1,-.35L7.9,0L6.1,.35Z';
+  // the right wing (+y); the left is the same group mirrored, so one set of
+  // keyframes beats both symmetrically. The tip is the outer half of the hand.
+  var WING = 'M2.3,1C3.3,3.6 3.9,6.2 3.6,8.4C2.9,12.6 -1,16.6 -4.8,19.8' +
+             'C-3.7,16.8 -2.3,13.6 -1.4,11C-1.9,7.8 -2.8,4.4 -2.6,1Z';
+  var TIP = 'M.56,14.48C-.98,16.4 -2.9,18.2 -4.8,19.8C-4.25,18.3 -3.63,16.75 -3.03,15.25Z';
+
+  function birdSVG(cls) {
+    var wing = '<g class="gw"><path class="w" d="' + WING + '"/><path class="t" d="' + TIP + '"/></g>';
+    return '<svg class="' + cls + '" viewBox="-20 -20 40 40" focusable="false">' +
+      wing + '<g transform="scale(1,-1)">' + wing + '</g>' +
+      '<path class="b" d="' + BODY + '"/><path class="t" d="' + BILL + '"/></svg>';
+  }
+
+  var CSS = [
+    '.gulls{position:absolute;inset:0;overflow:hidden;pointer-events:none;border-radius:inherit;',
+    '  --gl-p:var(--gl-paper,var(--paper));--gl-i:var(--gl-ink,var(--ink));}',
+    '.gl-flock{position:absolute;inset:0;will-change:transform;}',
+    '.gl-bird{position:absolute;aspect-ratio:1;',
+    '  animation:gl-wander var(--wd,8s) ease-in-out var(--wdl,0s) infinite alternate;}',
+    '.gl-bird svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;}',
+    '.gl-bird .bd{transform:rotate(var(--hd));}',
+    /* the sun is up and to the left, as on the chart: the shadow falls down-right */
+    '.gl-bird .sh{transform:translate(30%,38%) rotate(var(--hd));opacity:.22;filter:blur(.7px);}',
+    '.gl-bird .b{fill:var(--gl-p);}',
+    '.gl-bird .w{fill:color-mix(in srgb,var(--gl-i) 24%,var(--gl-p));}',
+    '.gl-bird .t{fill:var(--gl-i);}',
+    '.gl-bird .b,.gl-bird .w{stroke:color-mix(in srgb,var(--gl-i) 62%,transparent);stroke-width:.8;stroke-linejoin:round;}',
+    '.gl-bird .sh path{fill:var(--gl-i);stroke:none;}',
+    '.gl-bird .gw{transform-box:fill-box;transform-origin:50% 0;',
+    '  animation:gl-beat var(--fd,3.2s) ease-in-out var(--fdl,0s) infinite;}',
+    /* four beats, then a glide: raised (short, swept back), level, lowered, level */
+    '@keyframes gl-beat{0%,15%,30%,45%,60%,100%{transform:none}',
+    '  5%,20%,35%,50%{transform:rotate(7deg) scaleY(.46)}',
+    '  10%,25%,40%,55%{transform:rotate(-3deg) scaleY(.8)}}',
+    '@keyframes gl-wander{to{transform:translate(var(--wx,0),var(--wy,0))}}',
+    '@media (prefers-reduced-motion:reduce){.gulls{display:none}}',
+    '@media print{.gulls{display:none}}',
+    '@supports not (color:color-mix(in srgb,red 50%,blue)){.gulls{display:none}}'
+  ].join('\n');
+
+  function rng(seed) {                  // small deterministic generator
+    var s = (seed >>> 0) || 1;
+    return function () { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; };
+  }
+  function pct(v) { return (Math.round(v * 1000) / 1000) + '%'; }
+
+  function flyGulls(container, opts) {
+    opts = opts || {};
+    if (!container || !opts.flocks) return null;
+    if (root.matchMedia && root.matchMedia('(prefers-reduced-motion: reduce)').matches) return null;
+    var doc = container.ownerDocument;
+    if (!doc.getElementById('gulls-css')) {
+      var st = doc.createElement('style');
+      st.id = 'gulls-css';
+      st.textContent = CSS;
+      doc.head.appendChild(st);
+    }
+    var aspect = opts.aspect || (container.clientWidth / Math.max(1, container.clientHeight)) || 1.5;
+    // px: a wingspan in CSS pixels (or a function of the container's width)
+    // instead of a share of the container, for a screen-sized sky
+    var px = typeof opts.px === 'function' ? opts.px(container.clientWidth) : opts.px;
+    var size = px ? px / Math.max(1, container.clientWidth) * 100 : (opts.size || 4.6);
+    var rand = rng(opts.seed || 7);
+    var bw = size / 100 * aspect;       // wingspan in units where the height is 1
+
+    var layer = doc.createElement('span');
+    layer.className = 'gulls';
+    layer.setAttribute('aria-hidden', 'true');
+
+    opts.flocks.forEach(function (f) {
+      var birds = f.birds || [[0, 0, 1]];
+      var dx = (f.to[0] - f.from[0]) / 100 * aspect, dy = (f.to[1] - f.from[1]) / 100;
+      var hd = Math.atan2(dy, dx);
+      var ux = Math.cos(hd), uy = Math.sin(hd), nx = -uy, ny = ux;
+      // A flock is longer than one bird: while it waits for its next crossing
+      // no straggler may be left inside the picture. So the route starts far
+      // enough back that the leader is out, and ends far enough on that the
+      // last bird is out, with a wingspan to spare for size, shadow and
+      // wander. The flight time stretches with it, so the speed is as given.
+      var ahead = 0, behind = 0;
+      birds.forEach(function (b) { ahead = Math.max(ahead, b[0]); behind = Math.max(behind, -b[0]); });
+      var len = Math.sqrt(dx * dx + dy * dy);
+      var pre = (ahead + 1) * bw, post = (behind + 1) * bw;
+      var from = [f.from[0] - pre * ux / aspect * 100, f.from[1] - pre * uy * 100];
+      var to = [f.to[0] + post * ux / aspect * 100, f.to[1] + post * uy * 100];
+      var flight = f.flight * (len + pre + post) / len;
+      var flock = doc.createElement('span');
+      flock.className = 'gl-flock';
+      flock.style.setProperty('--hd', (hd * 180 / Math.PI).toFixed(2) + 'deg');
+      birds.forEach(function (b) {
+        var sc = b[2] || 1;
+        var ox = (b[0] * ux + b[1] * nx) * bw, oy = (b[0] * uy + b[1] * ny) * bw;
+        var w = size * sc;                               // % of the width
+        var el = doc.createElement('span');
+        el.className = 'gl-bird';
+        el.style.width = pct(w);
+        el.style.left = pct(ox / aspect * 100 - w / 2);
+        el.style.top = pct(oy * 100 - w * aspect / 2);  // square: its height is w% of the width
+        el.style.setProperty('--fd', (2.7 + rand() * 0.9).toFixed(2) + 's');
+        el.style.setProperty('--fdl', (-rand() * 3).toFixed(2) + 's');
+        el.style.setProperty('--wd', (6 + rand() * 4).toFixed(2) + 's');
+        el.style.setProperty('--wdl', (-rand() * 8).toFixed(2) + 's');
+        el.style.setProperty('--wx', ((rand() - 0.5) * 70).toFixed(0) + '%');
+        el.style.setProperty('--wy', ((rand() - 0.5) * 70).toFixed(0) + '%');
+        el.innerHTML = birdSVG('sh') + birdSVG('bd');
+        flock.appendChild(el);
+      });
+      layer.appendChild(flock);
+      var a = 'translate(' + pct(from[0]) + ',' + pct(from[1]) + ')';
+      var z = 'translate(' + pct(to[0]) + ',' + pct(to[1]) + ')';
+      var cycle = Math.max(f.cycle || 0, flight * 1.25) * 1000;
+      if (flock.animate) {
+        flock.animate([{ transform: a, offset: 0 }, { transform: z, offset: flight * 1000 / cycle },
+                       { transform: z, offset: 1 }],
+                      { duration: cycle, delay: -(f.at || 0) * 1000, iterations: Infinity, easing: 'linear' });
+      } else {
+        flock.style.display = 'none';
+      }
+    });
+    container.appendChild(layer);
+    return { layer: layer, stop: function () { layer.remove(); } };
+  }
+
+  // For a layer the size of the screen: the same flocks, rebuilt when the
+  // screen's width changes (headings depend on its shape), each flock picking
+  // up where it was. A change of height alone (a phone's address bar coming
+  // and going) is ignored, or the birds would jump on every scroll.
+  function skyGulls(container, opts) {
+    var now = function () { return root.performance ? root.performance.now() : Date.now(); };
+    var t0 = now(), cur = null, width = -1, timer = null;
+    function build() {
+      if (container.clientWidth === width) return;
+      width = container.clientWidth;
+      var el = (now() - t0) / 1000;
+      var o = {};
+      for (var k in opts) o[k] = opts[k];
+      o.aspect = container.clientWidth / Math.max(1, container.clientHeight);
+      o.flocks = opts.flocks.map(function (f) {
+        var g = {};
+        for (var k in f) g[k] = f[k];
+        g.at = (f.at || 0) + el;
+        return g;
+      });
+      if (cur) cur.stop();
+      cur = flyGulls(container, o);
+    }
+    build();
+    root.addEventListener('resize', function () { clearTimeout(timer); timer = setTimeout(build, 250); });
+    return { stop: function () { if (cur) cur.stop(); } };
+  }
+
+  root.flyGulls = flyGulls;
+  root.skyGulls = skyGulls;
+  if (typeof module !== 'undefined' && module.exports) module.exports = { flyGulls: flyGulls, skyGulls: skyGulls };
+})(typeof window !== 'undefined' ? window : this);
+
+skyGulls(document.getElementById("gull-sky"), {
+  px: function (w) { return w < 560 ? 26 : 34; }, seed: 13,
+  flocks: [
+    {from: [108, 64], to: [-8, 24], flight: 17, cycle: 46, at: 5,
+     birds: [[0, 0, 1], [-1.5, 1.1, .95], [-1.1, -1.3, 1.05]]},
+    {from: [-8, 18], to: [108, 50], flight: 15, cycle: 46, at: 28,
+     birds: [[0, 0, 1], [-1.4, -1, .92]]}
+  ]
+});
+// ── QUIZ ──
+var questions = [
+  {
+    prompt: "Can you give me some ___ about the crossing?",
+    hint: "Uncountania: no <em>a</em>, no <em>-s</em>.",
+    correct: "advice",
+    options: ["advice", "advices", "an advice", "advise"],
+    explain: "Advice is uncountable: some advice, a piece of advice, never advices. Advise is the verb."
+  },
+  {
+    prompt: "We carried six ___ up the gangway.",
+    hint: "A number in front: which shore?",
+    correct: "suitcases",
+    options: ["suitcases", "luggages", "luggage", "suitcase"],
+    explain: "Six needs a countable noun with -s: six suitcases. Luggage is its partner across the water, and has no plural."
+  },
+  {
+    prompt: "How ___ money did the voyage cost?",
+    hint: "Money lives in Uncountania.",
+    correct: "much",
+    options: ["much", "many", "few", "a few"],
+    explain: "Money is uncountable, so the question is how much. How many is for things you count: how many coins."
+  },
+  {
+    prompt: "There were only ___ chairs left on deck.",
+    hint: "Countania, and a small number.",
+    correct: "a few",
+    options: ["a few", "a little", "much", "little"],
+    explain: "Chairs are countable, so a few. A little and little go with uncountable nouns: a little furniture."
+  },
+  {
+    prompt: "The news ___ good this morning.",
+    hint: "The False Cape flies a false flag.",
+    correct: "is",
+    options: ["is", "are", "were", "have been"],
+    explain: "News ends in -s but is uncountable, so its verb is singular: the news is good."
+  },
+  {
+    prompt: "Two ___, please: one with milk, one without.",
+    hint: "Double Isle: a cup, or the drink?",
+    correct: "coffees",
+    options: ["coffees", "coffee", "coffee cup", "much coffee"],
+    explain: "In a café, a coffee is a cup of coffee, so it counts: two coffees. Coffee as the drink or the beans has no plural."
+  },
+  {
+    prompt: "She has long dark ___.",
+    hint: "Double Isle: one strand, or all of it?",
+    correct: "hair",
+    options: ["hair", "hairs", "a hair", "the hairs"],
+    explain: "All the hair on your head is uncountable: long hair. A hair is one single strand, as in a hair in the soup."
+  },
+  {
+    prompt: "We need two ___ of bread for the voyage.",
+    hint: "Take the ferry: which unit?",
+    correct: "loaves",
+    options: ["loaves", "breads", "loafs", "bread"],
+    explain: "Bread is uncountable, so we count a unit of it: a loaf, two loaves (f becomes v). Breads is wrong in everyday English."
+  },
+  {
+    prompt: "Which sentence is correct?",
+    hint: "Equipment lives in Uncountania.",
+    correct: "The equipment is in the hold.",
+    options: ["The equipment is in the hold.", "The equipments are in the hold.", "An equipment is in the hold.", "The equipment are in the hold."],
+    explain: "Equipment is uncountable: no a, no -s, and a singular verb. One item is a piece of equipment."
+  },
+  {
+    prompt: "Is there ___ for one more person in the cabin?",
+    hint: "Double Isle: space, or a space with walls?",
+    correct: "room",
+    options: ["room", "a room", "rooms", "many room"],
+    explain: "Room meaning space is uncountable: is there room for one more? A room is a space with walls."
+  },
+  {
+    prompt: "There&#39;s ___ milk in the hold, but not much.",
+    hint: "Uncountania, a small amount.",
+    correct: "a little",
+    options: ["a little", "a few", "few", "many"],
+    explain: "Milk is uncountable, so a little. A few and few are for countable nouns: a few bottles of milk."
+  },
+  {
+    prompt: "I don&#39;t have ___ homework tonight.",
+    hint: "A word from the Shallows, in a negative.",
+    correct: "any",
+    options: ["any", "a", "many", "few"],
+    explain: "Any sails both ways and fits negatives: any homework, any tasks. Homework is uncountable, so never a homework or many homework."
+  },
+  {
+    prompt: "We had ___ storms this winter than last.",
+    hint: "Storms are counted.",
+    correct: "fewer",
+    options: ["fewer", "less", "little", "much"],
+    explain: "Storms are countable, so careful English says fewer storms. Less is for uncountable nouns: less rain."
+  },
+  {
+    prompt: "Which of these is NOT correct?",
+    hint: "One phrase has sailed to the wrong shore.",
+    correct: "three informations",
+    options: ["three informations", "three facts", "some information", "a piece of information"],
+    explain: "Information is uncountable and never takes -s or a number. Three facts, or three pieces of information."
+  }
+];
+
+
+var current = 0;
+var score = 0;
+var answered = false;
+var order = [];
+
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a;
+}
+
+function renderQuestion(){
+  answered = false;
+  var q = questions[current];
+  document.getElementById("progress-text").textContent = "Checkpoint " + (current + 1) + " of " + questions.length;
+  document.getElementById("progress-fill").style.width = ((current / questions.length) * 100) + "%";
+  document.getElementById("q-prompt").innerHTML = q.prompt;
+  document.getElementById("q-hint").innerHTML = q.hint;
+  var feedback = document.getElementById("feedback");
+  feedback.className = "feedback";
+  feedback.textContent = "";
+  var optionsWrap = document.getElementById("options");
+  optionsWrap.innerHTML = "";
+  order = shuffle(q.options);
+  order.forEach(function(opt){
+    var btn = document.createElement("button");
+    btn.className = "opt-btn";
+    btn.type = "button";
+    btn.innerHTML = opt;
+    btn.dataset.opt = opt;
+    btn.addEventListener("click", function(){ selectOption(opt, btn); });
+    optionsWrap.appendChild(btn);
+  });
+  document.getElementById("next-btn").disabled = true;
+  document.getElementById("next-btn").textContent = (current === questions.length - 1) ? "Make landfall" : "Next checkpoint";
+}
+
+function selectOption(opt, btn){
+  if (answered) return;
+  answered = true;
+  var q = questions[current];
+  var allBtns = document.querySelectorAll("#options .opt-btn");
+  allBtns.forEach(function(b){
+    b.disabled = true;
+    if (b.dataset.opt === q.correct) b.classList.add("correct");
+  });
+  if (opt !== q.correct) btn.classList.add("wrong");
+  if (opt === q.correct) score++;
+  document.getElementById("score-text").textContent = "Score: " + score;
+  var feedback = document.getElementById("feedback");
+  feedback.innerHTML = q.explain;
+  feedback.classList.add("show");
+  document.getElementById("next-btn").disabled = false;
+}
+
+document.getElementById("next-btn").addEventListener("click", function(){
+  if (current < questions.length - 1){
+    current++;
+    renderQuestion();
+  } else {
+    document.getElementById("progress-fill").style.width = "100%";
+    document.getElementById("quiz").style.display = "none";
+    document.getElementById("results").style.display = "block";
+    document.getElementById("final-score").textContent = score + " / " + questions.length;
+    var msg = "";
+    if (score === questions.length) msg = "Clean run. You can tell a chair from furniture on any shore.";
+    else if (score >= questions.length - 2) msg = "Solid progress. Read the twelve pairs straight across, then sail it again.";
+    else msg = "Good first attempt. Go back below deck: count the cabin, measure the hold.";
+    document.getElementById("final-message").textContent = msg;
+  }
+});
+
+document.getElementById("retry-btn").addEventListener("click", function(){
+  current = 0;
+  score = 0;
+  document.getElementById("score-text").textContent = "Score: 0";
+  document.getElementById("quiz").style.display = "block";
+  document.getElementById("results").style.display = "none";
+  renderQuestion();
+});
+
+renderQuestion();
+</script>
+
+<script src="block-camp/camp-music.js" data-track="sailing-the-seas-of-grammar/music.m4a" data-loop="0.5 48.5" defer></script>
+<script src="map-zoom.js" defer></script>
+</body>
+</html>

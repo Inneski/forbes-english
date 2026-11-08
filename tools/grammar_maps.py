@@ -73,6 +73,17 @@ MAPS = [
                 'three sounds. The rest live on islands, one family to an island, named '
                 'after the sound they share: ring rang rung, keep kept, speak spoke spoken.'),
          go='Set sail'),
+    dict(href='sailing-the-seas-countania.html',
+         title='Countania & Uncountania',
+         heading='Countable and uncountable nouns, shore by shore',
+         image='sailing-the-seas-countania/hero.jpg',
+         alt=('A hand-painted sea chart: the orange coast of Countania on the west, '
+              'the gold coast of Uncountania on the east, Double Isle and the Shallows '
+              'in the strait between them'),
+         blurb=('A chair, two chairs, many chairs live on the west coast; furniture, '
+                'much furniture, a piece of furniture live on the east. Below deck, the '
+                'ship’s store cabin and cargo hold show the same cargo with two different words.'),
+         go='Set sail'),
     dict(href='sherpa-tensing-route-map.html',
          title='Sherpa Tensing route map',
          heading='Every tense, camp by camp',
@@ -84,19 +95,7 @@ MAPS = [
          go='Open the map'),
 ]
 
-SOON = [
-    dict(title='Countania & Uncountania',
-         heading='Countable and uncountable nouns, shore by shore',
-         level='A2–B1',
-         image='sailing-the-seas-countania/hero.jpg',
-         alt=('A hand-painted sea chart: the orange coast of Countania on the west, '
-              'the gold coast of Uncountania on the east, Double Isle and the Shallows '
-              'in the strait between them'),
-         blurb=('A chair, two chairs, many chairs live on the west coast; furniture, '
-                'much furniture, a piece of furniture live on the east. Double Isle '
-                'takes both, with a change of meaning: a coffee, and coffee.'),
-         note='The chart is drawn. The lesson is being built.'),
-]
+SOON = []
 
 PLANNED = [
     ('The Atlas of THE', 'articles with place names', 'B1–B2'),

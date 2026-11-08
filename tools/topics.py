@@ -250,6 +250,7 @@ OVERRIDES = {
     'champions_league_english.html': [],                # football vocabulary; no grammar hub
     'top-gear-skiing-lesson.html': ['past-simple'],
     'sailing-the-seas-regularia.html': ['past-simple'],  # regular / irregular past forms, as a sea chart
+    'sailing-the-seas-countania.html': ['english-vocabulary'],  # countable / uncountable nouns, as a sea chart; no nouns hub yet
     'forbes-english-golf-lesson.html': ['past-simple', 'present-perfect'],
     'mtb-perfect-vs-simple.html': ['past-simple', 'present-perfect'],
     'forbes-english-lesson (2).html': ['conditionals', 'business-english'],

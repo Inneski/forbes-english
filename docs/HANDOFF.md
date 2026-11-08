@@ -51,6 +51,54 @@ Screenshot gotcha: a scripted ArrowRight walk through a deck stops at the
 first gap slide, because the gap input keeps focus and swallows the key.
 Blur `document.activeElement` before each press.
 
+## 2026-11-08 — Countania & Uncountania (A2–B1): the third sea chart: BUILT, catalogue row pending
+
+Innes said "build at 21.20" in answer to "Build the Countania lesson now?".
+The page is `sailing-the-seas-countania.html` and the builder is
+`lesson-template/build/build_countania.py`. It is a copy of the Regularia
+machinery, and the builder docstring has the teaching idea.
+
+- **Art.**
+  - The labelled chart is `hero.jpg`.
+  - The clean chart is `chart-clean.jpg`, made by `countania_clean.py`, which paints out the two stray title dots with cv2.inpaint.
+  - The dots are measured by `countania_measure.py` (written to `countania_chart.json`).
+  - The label layer is `countania_map.py`. It has three modes: place names, just the nouns, and counted ("three jobs" against "a piece of work").
+  - Asserts check that the 12 pairs keep a shared surname and sit within 20px of each other's latitude. The painter moved Trip Tarn 17px.
+  - The names carry a halo of their own land's paint, because Countania's brick only reaches 6.1:1 even with black text.
+- **The ship.** Innes's two room paintings come first, with words pinned beside each object: the store cabin ("HOW MANY?") and the cargo hold ("HOW MUCH?").
+  - The rooms are one to a row. Side by side, at 370px each, the tags collided.
+  - **The galley was never painted.** It is a written card ("a coffee beside coffee"). To add it, set `GALLEY_IMG` once `room-galley` exists; the brief is `docs/CHATGPT-SEA-CHARTS-BRIEF.md`, part 1.
+- **Checked at 1920 / 1280 / 700 / 375:**
+  - no label overlaps in any of the three modes;
+  - every name and land caption sits on its own land (`isPointInFill` against the hotspot polygons);
+  - every hotspot responds to a real hit (`elementFromPoint`);
+  - the quiz scores 14/14;
+  - the DE and ES example reveals work;
+  - there is no sideways page scroll;
+  - all three zoomable blocks (two rooms, one chart) pass the hit and close tests.
+- The compass banner is split either side of the needle (tip at 768,60), which a single centred line crossed.
+- **Hub:** there is no nouns hub, so `topics.py` OVERRIDES sends it to `english-vocabulary`. The Atlas of THE could found a "Nouns and Articles" hub that both join.
+- `library.html` has its thumbnail and a LESSON_TAGS line. Regularia was missing its LESSON_TAGS line (check-library failed it), and that is fixed too.
+- **Catalogue row: NOT inserted** (it needs Innes's yes). Until it is in, the library, the hub, the sitemap and seo.py all skip the page, and its grammar-map card shows no level. Insert it, then run `py tools/build_hubs.py` and `py tools/seo.py`:
+  `insert into public.lessons (file, title, level, access, track, deck, video) values ('sailing-the-seas-countania.html', 'Sailing the Seas of Grammar — Countable and Uncountable Nouns', 'A2-B1', 'free', 'general', false, false);`
+
+## 2026-11-08 — Maps are expandable, always (map-zoom.js)
+
+Innes: *"maps need to be expandable always"*. `map-zoom.js` (repo root) is
+shared and dependency-free.
+- **How a page uses it:** it loads the script and marks the block `data-map-zoom` (with `data-mz-target`, `data-mz-ratio` and `data-mz-min`, plus `data-mz-btn` to put the button in a toolbar). The header comment has the full contract.
+- **What it does:** it adds an Enlarge button and pins the same DOM over the page, so a clickable map stays clickable. The map fills the screen; on a phone it opens at its `data-mz-min` width and scrolls.
+- **Pages:**
+  - both earlier sea charts and Countania (the chart and both rooms);
+  - the Sherpa route map (hand-kept: both mountains);
+  - the climb and the descent (`sherpa-climb/template.html`).
+- The Block Camp maps already fill the screen.
+- **Traps:**
+  - A block taller than the screen hides a corner button, so the chart pages put it in the name bar.
+  - An enlarged grid item with `justify-self:center` shrinks to fit its content (the climb page on a phone came out 934px wide), so the script resets the alignment.
+- Verified at 1920 and 375 on all six pages.
+- **Rule for new map pages:** load `map-zoom.js` and mark the map.
+
 ## 2026-11-08 — Grammar maps: every chart opens full size; Countania and the chart table on the page
 
 Innes: *"all the charts should be expandable here. What happened to

@@ -21,6 +21,11 @@
    The map fills the screen height (or width), never smaller than
    data-mz-min. Escape or the close button puts it back.
 
+   The enlarged block is pinned to the four edges. A block that is a grid
+   item with justify-self:center (the climb page's map on a phone) would
+   shrink to fit its content instead of stretching, so the alignment is
+   reset too.
+
    Colours come from the page's own tokens (--card, --ink, --accent,
    --on-accent), with system colours as the fallback. */
 (function () {
@@ -34,7 +39,7 @@
     '.mz-btn.mz-inline{position:static;margin-left:auto;}' +
     '[data-map-zoom]{position:relative;}' +
     '.mz-max{position:fixed!important;inset:0!important;z-index:2147483000!important;margin:0!important;max-width:none!important;' +
-    'width:auto!important;border-radius:0!important;overflow:auto!important;overscroll-behavior:contain;' +
+    'width:auto!important;justify-self:normal!important;align-self:normal!important;border-radius:0!important;overflow:auto!important;overscroll-behavior:contain;' +
     'padding:56px 16px 24px!important;background:var(--card,Canvas)!important;}' +
     '.mz-max .mz-btn,.mz-max .mz-btn.mz-inline{position:fixed;top:10px;right:14px;margin:0;}' +
     '.mz-max [data-mz-scroll]{overflow:visible!important;}' +
