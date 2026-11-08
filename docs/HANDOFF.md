@@ -10,6 +10,28 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
+## 2026-11-08 — Grammar maps: the series plan, and the sea-chart art was found
+
+**The painted sea charts and ship's rooms exist. They are not in
+`incoming/`.** Codex made them on 2026-10-04 in
+`C:\Users\black\Documents\Codex\2026-10-04\files-mentioned-by-the-user-artwork\outputs\`:
+- `countable-chart.png` and `verbs-chart.png`, labelled, in the Gerundia style;
+- `-clean-draft` copies of both;
+- `room-count.png` (store cabin) and `room-bulk.png` (cargo hold);
+- the prompts Codex used.
+
+The 09-30 → 10-04 entry below said "the rooms never came back". They did;
+they went to Codex's folder. Checked 2026-11-08:
+- Every place name and caption on both charts is spelled right.
+- **The galley (third room) was never made.**
+- The countable clean copy still has the two stray title dots at (145,956) and (1378,956); paint them out in code.
+- The repaints moved the harbours, so re-measure the hotspots on the repaint.
+
+**The plan for the series** is `docs/GRAMMAR-MAPS-PLAN.md`:
+- the chart language every map reuses, plus nine new map forms;
+- about 25 candidate charts, ranked;
+- the build order: Regularia lesson, Countania lesson, then the Atlas of THE (articles with place names), Present Perfect vs Past Simple, and the Conditional Quadrants.
+
 ## 2026-11-08 — Grammar page: "Sailing the seas of grammar" section under the hero: SHIPPED
 
 Innes: the grammar area should have a "sailing the seas of grammar"
