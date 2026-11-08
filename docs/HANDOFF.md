@@ -51,6 +51,16 @@ Screenshot gotcha: a scripted ArrowRight walk through a deck stops at the
 first gap slide, because the gap input keeps focus and swallows the key.
 Blur `document.activeElement` before each press.
 
+## 2026-11-08 — Next three sea charts: layouts drawn, ChatGPT brief given
+
+Innes asked whether my own high-end art is still "shoddy". Answer: the
+coded charts are layouts, not paintings. ChatGPT paints, with Gerundia as
+the style, and I measure and label.
+- **Layouts:** `lesson-template/build/sea_layouts_2.py` draws three edit targets in `docs/sea-charts/` (1536×1024, every word and harbour dot fixed): `adjective-canal.png`, `prefix-archipelago.png` and `frequency-soundings.png`.
+- **The brief** was given in chat, in the prompt format of `incoming/sea-charts/generation-prompts.txt`: one repaint prompt and one clean-copy prompt per chart.
+- **Returns** go in `incoming/sea-charts/` as `<name>.png` (labelled) and `<name>-clean.png`.
+- **Next:** for each chart, a `*_measure.py` / `*_map.py` / `build_*.py` triple, copied from Countania. The soundings need no clean copy if their numbers stay painted, but take one anyway.
+
 ## 2026-11-08 — Countania & Uncountania (A2–B1): the third sea chart: BUILT, catalogue row pending
 
 Innes said "build at 21.20" in answer to "Build the Countania lesson now?".
