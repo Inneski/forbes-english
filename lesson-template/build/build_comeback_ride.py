@@ -58,16 +58,47 @@ SPEC = dict(
     folder='ComebackRide',
 )
 
-# Classic Forbes deck (Innes, 2026-11-06: "Classic Forbes deck", after the
-# house style 2 build on ChatGPT plates was "terrible"). The cover is
-# hero.jpg; each section washes its own Midjourney plate behind its slides
-# (HOUSE-STYLE §5c). A plate not on disk yet falls back to the hero, which
-# is what the engine does when data-bg is absent.
-SECTION_BG = {'dash': 'bg-dash', 'read': 'bg-read', 'show': 'bg-show',
-              'claim': 'bg-claim', 'act': 'bg-act'}
-# The section each step of the flow belongs to, in flow order.
-SECTIONS = ['dash', 'dash', 'read', 'read', 'read', 'show', 'show', 'show', 'show', 'show', 'show',
-            'claim', 'claim', 'claim', 'claim', 'claim', 'act']
+# Editorial style, HOUSE-STYLE §15 (Innes, 2026-11-08: the classic washed
+# deck is "the old house style"; Beyond the Handlebars "was closest to" the
+# one he wants). Every picture is framed in its own column, never behind a
+# sentence, and its crop is set so the frame holds the plate's subject.
+#
+# ART: one entry per flow step: (plate, side, pos, shape, size) or None for
+# a full-width slide with no picture. pos is background-position x for the
+# default frame (37% x 57% of the stage, so it shows 65% of a 16:9 plate's
+# width: pos = left edge of the window / 0.35) or, with size 'narrow' (30%,
+# 52% of the width shown), left edge / 0.475. Subject spans, as fractions of
+# each plate's width, measured on a 10% grid:
+#   hero      the café racer .41-.94          -> 100%
+#   narrow:   bg-read 63% (scooter), bg-claim 63% (clipboard and bikes),
+#             bg-dash 74% (the speedometer)
+#   bg-dash   the speedometer .52-.70         -> 71%  (window .25-.90)
+#   bg-read   table .17, scooter .31-.80      -> 46%  (window .16-.81)
+#   bg-show   the two riders .17-.43, bike .60-1.0; narrow: riders + the row
+#             of bikes behind them            -> 32% narrow (window .15-.67)
+#   bg-claim  clipboard .34-.55, bikes .61-.87 -> 77% (window .27-.92)
+#   bg-act    stools .31-.50, bike .52-.96    -> 91%  (window .32-.97)
+ART = [
+    ('hero', None, '100%', None, None),          # talk: warm-up
+    ('bg-dash', 'left', '71%', None, None),      # dial or screen
+    ('bg-read', None, '46%', 'arch', None),      # reading 1: the scooter
+    ('bg-show', 'left', '32%', None, 'narrow'),  # reading 2: the showroom
+    ('bg-read', None, '63%', None, 'narrow'),    # reading questions (long options)
+    ('bg-show', 'left', '49%', None, None),      # phrases 1
+    ('hero', None, '100%', None, None),          # phrases 2
+    ('bg-show', 'left', '49%', None, None),      # form questions
+    None,                                        # gap 1: full width
+    None,                                        # gap 2: full width
+    ('bg-act', None, '91%', None, None),         # talk with the phrases
+    ('bg-claim', 'left', '77%', 'arch', None),   # the claim
+    ('bg-claim', None, '63%', None, 'narrow'),   # claim questions (long options)
+    None,                                        # three hedging cards
+    ('bg-dash', None, '74%', None, 'narrow'),    # hedging questions (long options)
+    None,                                        # gap 3: full width
+    ('bg-act', 'left', '91%', None, None),       # final talk
+]
+ART_RESULTS = ('hero', None, '100%', 'arch', None)
+ART_ACT = None    # the activation's two panels need the full width
 
 
 def q(stem, options, n):
@@ -383,7 +414,7 @@ BB = ('<a href="https://www.bennetts.co.uk/bikesocial/news-and-views/news/2022/a
 T = {
     'en': dict(
         coverTitle='The <br><em>comeback ride</em>',
-        coverSub='When does something old-fashioned start looking good again? Dials and screens, a short read on motorbikes and style, four phrases for changing your mind, and how to make a careful claim from sales figures.',
+        coverSub='Old shapes, new riders, and the words for changing your mind.',
         chipLevel='B2–C1', chipFocus='phrases for taste · careful claims', chipCount='30 slides',
         eW='Warm-up', tk1T='Let’s talk!',
         eL='Look closer', lT='Which dashboard?',
@@ -429,7 +460,7 @@ T = {
     ),
     'de': dict(
         coverTitle='The <br><em>comeback ride</em>',
-        coverSub='Wann sieht etwas Altmodisches plötzlich wieder gut aus? Tacho und Display, ein kurzer Text über Motorräder und Stil, vier Wendungen dafür, wie man seine Meinung ändert, und wie man aus Verkaufszahlen vorsichtige Schlüsse zieht.',
+        coverSub='Alte Formen, neue Fahrer – und wie man seine Meinung ändert.',
         chipLevel='B2–C1', chipFocus='Geschmack · vorsichtige Aussagen', chipCount='30 Folien',
         eW='Zum Einstieg', tk1T='Sprechen wir!',
         eL='Genau hinsehen', lT='Welches Cockpit?',
@@ -475,7 +506,7 @@ T = {
     ),
     'es': dict(
         coverTitle='The <br><em>comeback ride</em>',
-        coverSub='¿Cuándo empieza algo pasado de moda a parecer bonito otra vez? Esferas y pantallas, una lectura breve sobre motos y estilo, cuatro expresiones para cambiar de opinión y cómo hacer una afirmación prudente a partir de cifras de ventas.',
+        coverSub='Formas clásicas, moteros nuevos y cambios de opinión.',
         chipLevel='B2–C1', chipFocus='gustos · afirmaciones prudentes', chipCount='30 diapositivas',
         eW='Para empezar', tk1T='¡A conversar!',
         eL='Mira con atención', lT='¿Qué tablero?',
@@ -541,23 +572,31 @@ LANGS = ('en', 'de', 'es')
 os.makedirs(os.path.join('incoming', 'comeback-ride-mj'), exist_ok=True)
 
 
-def plate(section):
-    f = SECTION_BG[section] + '.jpg'
-    return f if os.path.exists(os.path.join(F, f)) else None
-
-
-def with_bg(html, f):
-    if not f:
+def frame(html, a):
+    """Give a slide its framed picture (§15), or none. a = (plate, side, pos,
+    shape, size) from ART. Any data-bg the slide builder wrote is replaced."""
+    html = re.sub(r' data-bg="[^"]*"', '', html, count=1)
+    if not a:
         return html
-    return html.replace('<section class="slide"', '<section class="slide" data-bg="%s/%s"' % (F, f), 1)
+    pl, side, pos, shape, size = a
+    assert os.path.exists(os.path.join(F, pl + '.jpg')), pl
+    attrs = ' data-bg="%s/%s.jpg"' % (F, pl)
+    if side == 'left':
+        attrs += ' data-art-side="left"'
+    if pos:
+        attrs += ' data-art-pos="%s"' % pos
+    if shape:
+        attrs += ' data-art="%s"' % shape
+    if size:
+        attrs += ' data-art-size="%s"' % size
+    return re.sub(r'<section class="slide( is-active)?"', lambda m: m.group(0) + attrs, html, count=1)
 
 
-def talk(ek, tk, prompts):
-    """Speaking prompts as a grid of plated cards: the classic deck's
-    discussion slide (the HS2 speech bubbles are scoped to data-style=hs2)."""
+def talk(ek, tk, prompts, cols):
+    """Speaking prompts as cards: two columns beside a picture, three without."""
     E = T['en']
-    cells = '\n          '.join('<div class="card" style="padding:18px 20px;display:flex;align-items:center">'
-                               '<p class="prose" style="font-size:19px;line-height:1.45">%s</p></div>' % p
+    cells = '\n          '.join('<div class="card" style="padding:16px 20px;display:flex;align-items:center">'
+                               '<p class="prose" style="font-size:19px;line-height:1.42">%s</p></div>' % p
                                for p in prompts)
     return '''
     <section class="slide" data-type="discuss">
@@ -566,82 +605,99 @@ def talk(ek, tk, prompts):
         <h2 class="slide-title" data-i18n="%s">%s</h2>
       </div></div>
       <div class="slide-body">
-        <div class="cols" style="grid-template-columns:1fr 1fr 1fr;gap:16px">
+        <div class="cols" style="grid-template-columns:%s;gap:14px">
           %s
         </div>
       </div>
     </section>
-''' % (ek, E[ek], tk, E[tk], cells)
+''' % (ek, E[ek], tk, E[tk], ' '.join(['1fr'] * cols), cells)
 
 
-def palette(hero):
-    """extract-palette.py --light on the cover, in-process; fails the build on
-    any contrast row that does not pass (HOUSE-STYLE §4)."""
-    spec = importlib.util.spec_from_file_location(
-        'xpal', os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'extract-palette.py'))
-    X = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(X)
-    p = X.build_palette(hero, dark=False)
-    rows = [('text', 'surface', 4.5), ('text', 'void', 4.5), ('text-dim', 'surface', 4.5),
-            ('accent', 'surface', 4.5), ('accent-bright', 'surface', 4.5),
-            ('contrast', 'surface', 4.5), ('border', 'surface', 1.25), ('accent-bright', 'text', 1.45)]
-    bad = ['%s on %s %.2f' % (a, b, X.contrast_ratio(p[a], p[b])) for a, b, m in rows
-           if X.contrast_ratio(p[a], p[b]) < m]
-    assert not bad, 'palette from %s fails: %s' % (hero, '; '.join(bad))
-    order = ['void', 'surface', 'surface2', 'border', 'text', 'text-dim', 'accent',
-             'accent-bright', 'accent-dim', 'secondary', 'contrast']
-    return "  --hero: url('%s/hero.jpg');\n" % F + '\n'.join(
-        '  --%-14s: %s;' % (k, X.hex_of(p[k])) for k in order)
+# The cover. The café racer stands across .41-.94 of the hero's width, so the
+# editorial default (a text column capped at 58% under a scrim that is opaque
+# to 38% and clears at 68%) put the subtitle on the back wheel and fogged the
+# rear half of the bike. Here the column stops at 30.5% (right edge 454px; the
+# café chair starts at 470px, the bike at 525px) and the scrim clears by 41%:
+# the type sits on the empty sky and sea only. The subtitle is one short line,
+# as on Beyond the Handlebars, which is what lets the column be this narrow.
+EXTRA_CSS = '''
+/* The Comeback Ride: keep the cover type off the café racer (see builder). */
+html[data-style="editorial"]:not(.is-flow) .cover-inner { max-width: 30.5%; }
+html[data-style="editorial"]:not(.is-flow) .cover-title { font-size: 72px; }
+html[data-style="editorial"]:not(.is-flow) .cover-sub { font-size: 21px; line-height: 1.35; }
+/* Level and count share a row; the long focus chip takes the second. */
+/* Answered, a four-option question grows its explanation: the editorial
+   bars at 16px padding ran 16-72px off the canvas beside a picture. */
+html[data-style="editorial"] .opts { gap: 8px; }
+html[data-style="editorial"] .opt { padding-top: 10px; padding-bottom: 10px; }
+html[data-style="editorial"]:not(.is-flow) .stage.on-cover .bg-layer::after {
+  background: linear-gradient(90deg,
+    color-mix(in srgb, var(--void) 94%, transparent) 0%,
+    color-mix(in srgb, var(--void) 90%, transparent) 37%,
+    transparent 41%);
+}
+/* Upright (a phone) the cover is a page: the type on the cream at the top,
+   the café racer as a band along the bottom, above the deck bar, cropped to
+   the bike (.27-.95 of the plate's width on a 390px phone). No scrim. */
+html.is-flow[data-style="editorial"] .stage.on-cover .bg-layer::before {
+  background: var(--hero) right 15% bottom 56px / auto 34svh no-repeat;
+}
+html.is-flow[data-style="editorial"] .stage.on-cover .bg-layer::after { content: none; }
+/* the band's height is kept clear under the type, so on a short phone the
+   cover scrolls rather than putting words on the bike */
+html.is-flow[data-style="editorial"] .slide[data-type="cover"] .cover-inner {
+  padding-bottom: calc(34svh + 16px);
+}
+'''
 
 
 def build():
     E = T['en']
-    assert len(SECTIONS) == len(SPEC['flow'])
+    assert len(ART) == len(SPEC['flow'])
     s = [D.cover(D.logo_from(TPL), E['coverTitle'], E['coverSub'],
-                 [('Level', E['chipLevel']), ('Focus', E['chipFocus']), ('Count', E['chipCount'])])]
+                 [('Level', E['chipLevel']), ('Count', E['chipCount']), ('Focus', E['chipFocus'])])]
     dealt = 0
-    for step, sec in zip(SPEC['flow'], SECTIONS):
-        f = plate(sec)
+    for step, a in zip(SPEC['flow'], ART):
         kind = step[0]
         if kind == 'talk':
-            s.append(with_bg(talk(step[1], step[2], step[3]), f))
+            s.append(frame(talk(step[1], step[2], step[3], 2 if a else 3), a))
         elif kind == 'raw':
-            s.append(with_bg(step[1], f))
+            s.append(frame(step[1], a))
         elif kind == 'rules':
             _, ek, tk, cards, _slot = step
             built = [((pill, E[pill]) if pill in E else pill, [(b, E[b]) for b in bl], ex)
                      for pill, bl, ex in cards]
-            s.append(with_bg(D.rules(ek, E[ek], tk, E[tk], built), f))
+            s.append(frame(D.rules(ek, E[ek], tk, E[tk], built), a))
         elif kind == 'mc':
             _, ek, tk, items, _slot, _side = step
             items = [H._deal(it, dealt + i) for i, it in enumerate(items)]
             dealt += len(items)
             D.assert_no_key_is_longest(items, SPEC['out'])
             for i, it in enumerate(items, 1):
-                s.append(D.mc(i, len(items), it, ek, E[ek], tk, E[tk], folder=F, bg=f))
+                s.append(frame(D.mc(i, len(items), it, ek, E[ek], tk, E[tk]), a))
         elif kind == 'gap':
             _, ek, tk, hk, rows = step[:5]
             bank = step[5] if len(step) > 5 else None
             if bank:
                 D.assert_bank_is_not_a_key(bank, [a for _, ans, _ in rows for a in ans])
-            s.append(D.gap(1, 1, rows, bank, ek, E[ek], tk, E[tk], folder=F, bg=f,
-                           hint=E[hk], hint_key=hk, size=21))
+            s.append(frame(D.gap(1, 1, rows, bank, ek, E[ek], tk, E[tk],
+                                 hint=E[hk], hint_key=hk, size=21), a))
         else:
             raise AssertionError(kind)
-    act = plate('act')
-    s.append(D.results(folder=F, bg=act))
-    s.append(D.activate(E['actTitle'], E['actUse'], SPEC['chips'], 'Speaking', E['actSpeakBrief'],
-                        [E['actSpeak1'], E['actSpeak2'], E['actSpeak3']],
-                        E['actWriteKind'], E['actWriteBrief'], E['actPlaceholder'], folder=F, bg=act))
+    s.append(frame(D.results(), ART_RESULTS))
+    s.append(frame(D.activate(E['actTitle'], E['actUse'], SPEC['chips'], 'Speaking', E['actSpeakBrief'],
+                              [E['actSpeak1'], E['actSpeak2'], E['actSpeak3']],
+                              E['actWriteKind'], E['actWriteBrief'], E['actPlaceholder']), ART_ACT))
     body = ''.join(s)
     n = body.count('<section class="slide')
     for c in LANGS:
         assert str(n) in T[c]['chipCount'], '%s chipCount %r, deck has %d' % (c, T[c]['chipCount'], n)
-    out = D.assemble(TPL, SPEC['out'], body, palette(os.path.join(F, 'hero.jpg')), SPEC['title'],
-                     H._I18n(T, LANGS, False), langs=LANGS)
-    missing = [v for k, v in SECTION_BG.items() if not plate(k)]
+    out = D.assemble(TPL, SPEC['out'], body, D.editorial_palette('%s/hero.jpg' % F), SPEC['title'],
+                     H._I18n(T, LANGS, False), langs=LANGS, style='editorial')
+    assert out.count('\n</style>') >= 1
+    out = out.replace('\n</style>', EXTRA_CSS + '</style>', 1)
+    open(SPEC['out'], 'w', encoding='utf-8', newline='').write(out)
     print('wrote %s — %d slides, %d bytes' % (SPEC['out'], n, len(out)))
-    print('plates missing (hero shown instead): %s' % (', '.join(missing) or 'none'))
 
 
 if __name__ == '__main__':

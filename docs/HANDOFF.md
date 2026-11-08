@@ -147,6 +147,44 @@ Peer-modified decks (first-in-space-c1, skiing-B1, money-affirmations) got
 the same 10-line fitStage change in the working tree but were left out of
 the commit; their builders reproduce it from the template.
 
+## 2026-11-08 — The Comeback Ride is an EDITORIAL deck: what Innes means by "the new snappy house style"
+
+Innes on the classic rebuild below: *"This is the old house style. What
+happened to the new snappy one, which I asked you to study? Also, why do you
+keep overlapping the main objects in pictures with text?"*, then *"we did one
+on bikes was closest to it"*. The bikes deck is **Beyond the Handlebars** (his
+own design, live), and the house version of that look is the **editorial
+style, HOUSE-STYLE §15**: cream field, every picture framed beside the text
+with sides alternating, heavy sans titles, fixed palette. Read "new house
+style" from Innes as that, not as the washed classic look. "House style 2"
+has meant three things in this file (panels, editorial, the ENGHUB paper
+look), so ask with a rendered example rather than a label. My
+"Classic Forbes deck" button earlier was the wrong offer.
+
+`build_comeback_ride.py` now builds with `style='editorial'`. `ART` sets
+each step's plate, side, crop and shape. Each crop is computed from where the
+plate's subject sits (spans in the builder), so no picture ever sits under
+text. On the cover the type column stops at 454px, while the café chair
+starts at 470px and the bike at 525px. On a phone the cover is the type on
+cream with the bike as a band below it, and space for the band is reserved
+under the type. All gates pass, answered state included, en/de/es.
+
+**Template fixes, all editorial or cover-wide, inert until a deck is rebuilt:**
+- The editorial `.editorial-art` honours `data-art-pos` (it ignored it).
+- Editorial `.opt` answer bars are sized to the answer, not stretched full
+  width. The OPTS gate failed 20 boxes.
+- The cover `.fe-logo` gets `flex-shrink: 0`. An over-full cover squashed the
+  logo to 15px tall, and that hid the overflow from the LAYOUT gate. **Rebuilt
+  decks with a tight cover may now show a real overflow, so split or trim.**
+- Phones (`is-flow`), true of every editorial deck:
+  - the body kept its 58% max-width and 42% left margin after the picture was
+    hidden, so text ran two words a line, pushed right;
+  - the cover title stayed at 88px and ran off a 390px screen;
+  - the cover column stayed capped at 58%.
+
+  All three are fixed. Watts, Credit Where It's Due, Holding the Line and
+  Mixed B1 pick the fixes up on their next rebuild.
+
 ## 2026-11-08 — The Comeback Ride rebuilt as a classic Forbes deck on Midjourney art
 
 Innes on the HS2 version below: *"looks like uter dogshit"*, then, after I

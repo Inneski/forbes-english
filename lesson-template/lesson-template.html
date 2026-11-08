@@ -328,7 +328,10 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
 .fe-logo-mark { color: var(--logo-mark, var(--accent)); }
 .fe-logo-word { fill: var(--logo-word, var(--text)); opacity: 0; transition: opacity .25s ease; }
 .fonts-ready .fe-logo-word { opacity: 1; }   /* never flash a fallback face */
-.slide[data-type="cover"] .fe-logo { width: 232px; }
+/* flex-shrink 0: in the cover's flex column an over-full cover squashed the
+   logo (to 15px tall on The Comeback Ride, 2026-11-08) and so hid its own
+   overflow from check-lesson's LAYOUT gate. Now the overflow shows. */
+.slide[data-type="cover"] .fe-logo { width: 232px; flex-shrink: 0; }
 
 /* ── COVER ── */
 .cover-inner {
@@ -1346,6 +1349,15 @@ html.is-flow .panel-body { padding: var(--pad); justify-content: flex-start; }
 /* editorial's art is placed against the 16:9 canvas by hand, slide by slide;
    there is no upright position for it, so upright it is not drawn */
 html.is-flow[data-style="editorial"] .editorial-art { display: none; }
+/* ...and so the column the body gave up for it comes back. The 58% / 65%
+   max-width and the 42% left margin (picture on the left) are keyed to the
+   picture, and upright they kept the text in half a phone, two words a line,
+   pushed right on every left-picture slide (measured on The Comeback Ride,
+   2026-11-08; true of every editorial deck). !important because the rules it
+   undoes are (0,8,1) and later in the file. */
+html.is-flow[data-style="editorial"] .stage .slide.is-active .slide-body {
+  max-width: none !important; margin-left: 0 !important;
+}
 
 /* ── two columns is one column ──
    !important, which nothing else here needs: a builder that wants three
@@ -1403,6 +1415,14 @@ html.is-flow .cover-title { font-size: clamp(30px, 8.6vw, 40px); margin-top: 14p
 html.is-flow .cover-sub { font-size: 16px; }
 html.is-flow .slide-title { font-size: clamp(23px, 6.6vw, 30px); }
 html.is-flow[data-style="editorial"] .slide-title { font-size: clamp(26px, 7.4vw, 34px); }
+/* The editorial cover's 88px / 24px are (0,2,1) and later in the file, so
+   they beat the two flow rules above: on a 390px phone "comeback" ran 60px
+   off the screen (The Comeback Ride, 2026-11-08). */
+html.is-flow[data-style="editorial"] .cover-title { font-size: clamp(34px, 10.5vw, 46px); }
+html.is-flow[data-style="editorial"] .cover-sub { font-size: 17px; }
+/* ...and its 58% cap, which is the scrim's width on a 16:9 canvas, left the
+   cover type in 226px of a 390px phone. */
+html.is-flow[data-style="editorial"] .cover-inner { max-width: none; }
 html.is-flow .divider-cap h2 { font-size: clamp(24px, 6.8vw, 32px); }
 html.is-flow .fe-logo { width: 116px; }
 html.is-flow .slide[data-type="cover"] .fe-logo { width: 150px; }
@@ -1795,7 +1815,9 @@ html[data-style="editorial"] .editorial-art {
   display: block;
   position: absolute; z-index: 0; pointer-events: none;
   right: 58px; top: 172px; width: 37%; height: 57%;
-  background: var(--hero) center / cover no-repeat;
+  /* --art-pos is the slide's data-art-pos (show() copies it): the crop that
+     keeps a plate's subject inside the frame. Unset, it is centre. */
+  background: var(--hero) var(--art-pos, center) / cover no-repeat;
   border-radius: 22px;                     /* the source deck's default */
   box-shadow: 0 10px 40px rgba(18, 58, 62, 0.14);
 }
@@ -1951,9 +1973,12 @@ html[data-style="editorial"] .card {
              font-size:26px;font-weight:500;gap:22px}
      .letter{font-size:24px;padding:10px 15px;border-radius:9px;
              background:cream;font-weight:800}  */
-html[data-style="editorial"] .opts { justify-items: stretch; gap: 12px; }
+/* Sized to the answer, not the column (2026-11-08): the source's bars ran
+   full width, and a four-word option in a 668px bar failed check-lesson's
+   OPTS gate and the house rule that answer boxes fit their answers. */
+html[data-style="editorial"] .opts { justify-items: start; gap: 12px; }
 html[data-style="editorial"] .opt {
-  width: 100%; text-align: left; gap: 18px;
+  width: fit-content; max-width: 100%; text-align: left; gap: 18px;
   background: var(--surface); border: 2px solid #bed0cb;
   border-radius: 11px; padding: 16px 19px;
   font-size: 21px; font-weight: 500; line-height: 1.3;
