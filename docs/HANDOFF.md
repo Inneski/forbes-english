@@ -10,6 +10,37 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
+## 2026-11-08 — Money Affirmations: Mindset or Magic? (B1): SHIPPED, catalogue row PENDING
+
+`forbes-money-affirmations-b1.html`, 25 slides, HS2, EN/DE/ES, built by
+`build_money_affirmations.py` (4262721b). Innes pasted a listicle of
+money affirmations and asked for "a class on it". It is the money-side
+sister of `forbes-manifestation-b2.html` and does not repeat that deck's
+grammar (reporting and hedging). Its own language: money collocations,
+DESERVE TO / AFFORD TO / WORTHY OF + -ING / SPEND ON, and wish vs plan
+(present simple affirmation vs GOING TO / WILL + BY). No sentence is taken
+from the listicle.
+
+**Pending: the Supabase row.** The insert was refused (unasked write, as
+before). Until Innes runs it, `seo.py` writes no head for the page
+(check-lesson HEAD fails on that alone), and there is no library card or
+sitemap entry. LESSON_TAGS and the stand-in card are already in
+`library.html`. After the row: `py tools/build_hubs.py && py tools/seo.py`,
+commit the indexes with the page.
+
+```sql
+insert into public.lessons (file, title, level, access, track, deck, video)
+select 'forbes-money-affirmations-b1.html', 'Money Affirmations: Mindset or Magic? (B1)', 'B1', 'pro', 'general', true, false
+where not exists (select 1 from public.lessons where file = 'forbes-money-affirmations-b1.html');
+```
+
+Art: seven stand-ins (sage), on `docs/ARTWORK-standins.md`. The drop folder
+`incoming/money-affirmations/` exists on Innes's machine.
+
+Screenshot gotcha: a scripted ArrowRight walk through a deck stops at the
+first gap slide, because the gap input keeps focus and swallows the key.
+Blur `document.activeElement` before each press.
+
 ## 2026-11-08 — Regularia & Irregularia (A2–B1): the second sea chart: SHIPPED
 
 `sailing-the-seas-regularia.html` covers regular and irregular past forms as a
