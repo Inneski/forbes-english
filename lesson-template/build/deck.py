@@ -682,7 +682,7 @@ def editorial_palette(hero):
 
 def assemble(tpl_path, out_path, slides, palette, title, i18n_module, langs=('en', 'de'),
              all_langs=('en', 'de', 'es', 'fr', 'it', 'pt', 'ru', 'ar', 'zh', 'ja',
-                        'hr'), style=None):
+                        'hr'), style=None, tones=False):
     s = open(tpl_path, encoding='utf-8').read()
     a = s.index('    <!-- ── COVER ')
     b = s.index('    <!-- ── DECK CHROME ')
@@ -736,6 +736,15 @@ def assemble(tpl_path, out_path, slides, palette, title, i18n_module, langs=('en
                           '&display=swap', 1)
         s = re.sub(r'<html lang="en"([^>]*)>',
                    r'<html lang="en"\1 data-style="%s">' % style, s, count=1)
+
+    # tones=True: house style 2's containers take a rotating set of colours
+    # (the template's TONES block) instead of the one greige tint. Innes,
+    # 2026-11-08, on Money Affirmations: "be a bit more creative with
+    # colored panels". Every tone is mixed from the deck's own palette
+    # tokens, so rule 4 holds. Opt-in; a deck that does not ask is unchanged.
+    if tones:
+        assert style == 'hs2', 'tones are a house style 2 option'
+        s = re.sub(r'<html lang="en"([^>]*)>', r'<html lang="en"\1 data-tones="on">', s, count=1)
 
     # newline='' — NOT the default. Python's text mode translates '\n' to the
     # platform separator, so on Innes's Windows machine every build rewrote

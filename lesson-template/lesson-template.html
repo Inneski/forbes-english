@@ -2338,6 +2338,71 @@ html[data-style="hs2"] .bubbles {
 .aside-note {
   font-style: italic; color: var(--text-dim); font-size: 16px;
 }
+
+/* ══ TONES (house style 2, opt-in: deck.assemble(..., tones=True)) ═════
+   Innes, 2026-11-08, on Money Affirmations: "be a bit more creative with
+   colored panels". One greige tint on every container read as flat. With
+   data-tones="on" the containers rotate through four tones, and the
+   picture stands on a coloured panel instead of bare paper.
+
+   Rule 4 holds: every tone is a mix of the deck's own palette tokens
+   (secondary, accent-dim, contrast, accent) into --void, so a deck's
+   tones change with its hero like everything else. Text stays --text;
+   the mixes are light enough that body copy and the accent example keep
+   their contrast (measured on the first deck: copy and accent on the
+   light tones 5.9:1 or better; the deep tones carry only --text, 9.5:1+). */
+html[data-tones="on"] {
+  --tone-1: color-mix(in srgb, var(--secondary) 48%, var(--void));
+  --tone-2: color-mix(in srgb, var(--accent-dim) 62%, var(--void));
+  --tone-3: color-mix(in srgb, var(--contrast) 17%, var(--void));
+  --tone-4: color-mix(in srgb, var(--accent) 17%, var(--void));
+  --tone-1-deep: color-mix(in srgb, var(--secondary) 88%, var(--void));
+  --tone-2-deep: var(--accent-dim);
+  --tone-3-deep: color-mix(in srgb, var(--contrast) 34%, var(--void));
+  --tone-4-deep: color-mix(in srgb, var(--accent) 34%, var(--void));
+}
+/* rule and vocabulary cards: the card takes a tone, its pill the deep one */
+html[data-tones="on"] .tab-card:nth-child(4n+1) { background: var(--tone-1); }
+html[data-tones="on"] .tab-card:nth-child(4n+2) { background: var(--tone-2); }
+html[data-tones="on"] .tab-card:nth-child(4n+3) { background: var(--tone-3); }
+html[data-tones="on"] .tab-card:nth-child(4n+4) { background: var(--tone-4); }
+html[data-tones="on"] .tab-card:nth-child(4n+1) .tab-pill { background: var(--tone-1-deep); }
+html[data-tones="on"] .tab-card:nth-child(4n+2) .tab-pill { background: var(--tone-2-deep); }
+html[data-tones="on"] .tab-card:nth-child(4n+3) .tab-pill { background: var(--tone-3-deep); }
+html[data-tones="on"] .tab-card:nth-child(4n+4) .tab-pill { background: var(--tone-4-deep); }
+/* speech bubbles, survey answers and gap rows rotate the same set */
+html[data-tones="on"] :is(.bubble, .survey-a, .gap-row.card):nth-child(4n+1) { background: var(--tone-1); }
+html[data-tones="on"] :is(.bubble, .survey-a, .gap-row.card):nth-child(4n+2) { background: var(--tone-2); }
+html[data-tones="on"] :is(.bubble, .survey-a, .gap-row.card):nth-child(4n+3) { background: var(--tone-3); }
+html[data-tones="on"] :is(.bubble, .survey-a, .gap-row.card):nth-child(4n+4) { background: var(--tone-4); }
+html[data-tones="on"] .survey-q { background: var(--tone-3-deep); }
+/* answer options stay one quiet tint (colour must not hint at the key);
+   only the letter badge takes a tone, by position, not by answer */
+html[data-tones="on"] .opt:nth-child(4n+1) .opt-key { background: var(--tone-1-deep); }
+html[data-tones="on"] .opt:nth-child(4n+2) .opt-key { background: var(--tone-2-deep); }
+html[data-tones="on"] .opt:nth-child(4n+3) .opt-key { background: var(--tone-3-deep); }
+html[data-tones="on"] .opt:nth-child(4n+4) .opt-key { background: var(--tone-4-deep); }
+/* sort bins: each box its own colour, so "which box" is a colour too */
+html[data-tones="on"] .sort-bin { border-style: solid; border-color: transparent; }
+html[data-tones="on"] .sort-bin:nth-child(1) { background: var(--tone-2); }
+html[data-tones="on"] .sort-bin:nth-child(2) { background: var(--tone-1); }
+html[data-tones="on"] .sort-bin:nth-child(3) { background: var(--tone-3); }
+html[data-tones="on"] .act-panel { background: var(--tone-3); }
+/* the coloured panel behind a cut-out figure: one colour per kind of
+   slide, so the deck changes colour as the task changes */
+html[data-tones="on"] .stage:has(.slide.is-active[data-art="cutout"]) .editorial-art {
+  top: 150px; bottom: 74px; right: 56px; border-radius: 28px;
+  background-color: var(--tone-1);
+  background-size: 78% auto; background-position: var(--art-pos, center 62%);
+}
+html[data-tones="on"] .stage:has(.slide.is-active[data-art-side="left"][data-art="cutout"]) .editorial-art { left: 56px; right: auto; }
+html[data-tones="on"] .stage:has(.slide.is-active[data-type="mc"][data-art="cutout"]) .editorial-art { background-color: var(--tone-3); }
+html[data-tones="on"] .stage:has(.slide.is-active[data-type="discuss"][data-art="cutout"]) .editorial-art { background-color: var(--tone-2); }
+html[data-tones="on"] .stage:has(.slide.is-active[data-type="activate"][data-art="cutout"]) .editorial-art { background-color: var(--tone-4); }
+html[data-tones="on"] .stage.on-cover:has(.slide[data-type="cover"][data-art="cutout"]) .bg-layer::before {
+  top: 56px; bottom: 56px; right: 56px; border-radius: 36px;
+  background-color: var(--tone-1); background-size: 74% auto; background-position: center 64%;
+}
 </style>
 </head>
 <body>

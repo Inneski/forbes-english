@@ -60,11 +60,11 @@ E = I.T['en']
 ART = {
     'hero':  ('money', 'a single green seedling growing out of a short stack of coins on a sunny windowsill'),
     'warm':  ('quiz', 'an open wallet with a folded wish list sticking out of it instead of banknotes'),
-    'talk':  ('talk', 'two figures on a park bench, one speech bubble holding a coin, the other a question mark'),
+    'talk':  ('talk', 'two coffee cups on a cafe table, the steam from one curling into a coin, from the other into a question mark'),
     'words': ('money', 'a piggy bank with three thin streams of coins flowing into it from different directions'),
     'verbs': ('words', 'a large horseshoe magnet pulling a trail of words and coins towards it'),
     'plan':  ('write', 'a wall calendar with one date circled and a small coin pinned to it'),
-    'act':   ('pair', 'a vision board and a to-do list hanging side by side on a cork wall'),
+    'act':   ('pair', 'two chairs facing each other across a small round table, a glass jar of coins and an open notebook between them'),
 }
 make_standin.ensure(F, ART, scheme='sage', deck=OUT)
 
@@ -281,7 +281,7 @@ def build():
         sys.exit('derive the palette first:\n  py lesson-template/extract-palette.py '
                  '%s/standin-hero.jpg --paper' % F)
     s, hero_ref = slides()
-    D.assemble(TPL, OUT, s, palette(hero_ref), TITLE, I, langs=('en', 'de', 'es'), style='hs2')
+    D.assemble(TPL, OUT, s, palette(hero_ref), TITLE, I, langs=('en', 'de', 'es'), style='hs2', tones=True)
     n = s.count('<section class="slide')
     print('wrote %s — %d slides' % (OUT, n))
 
