@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """Common Mistakes Review, Parts 1-3 (B1, for Spanish speakers). House
-style 2, three decks from one builder.
+style 1, three decks from one builder.
 
 Rebuilt 2026-11-06 from three one-question-at-a-time scrolling pages (14
 multiple-choice items each, with a Spanish hint line), under Innes's "make
@@ -43,7 +43,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'tools'))
 import deck as D
 import i18n_mistakes_review as I
-import make_standin
+import hs1
 
 TPL = 'lesson-template/lesson-template.html'
 F = 'MistakesReview'
@@ -271,52 +271,110 @@ def deal(it, i):
     return dict(it, options=o, correct=t)
 
 
-def palette(n, hero_ref):
-    return "  --hero: url('%s');\n%s" % (hero_ref, PALETTES[n])
+
+# House style 1 (HOUSE-STYLE §000, 2026-11-09): one Midjourney plate per
+# slide, his style images at --stylize 200. <part>-<slot>.jpg in
+# MistakesReview/; the stand-ins are house style 2 only and are no longer used.
+PLATES = {
+    1: {
+        'hero': 'a young woman at a café table puzzling over an English notebook, a phone beside her',
+        'talk': 'two coffee cups on a small café table by a window',
+        'q1': 'a woman explaining a drawing to a friend across a kitchen table',
+        'q2': 'a customer raising a hand to ask a waiter something in a busy café',
+        'q3': 'a hand holding a phone with a big glowing activation button',
+        'q4': 'a dead houseplant with drooping brown leaves beside a watering can',
+        'q5': 'a woman holding up a stack of novels by the same author',
+        'q6': 'a green landscape of hills and trees, nature seen through a window',
+        'q7': 'a man whispering a secret into a friend’s ear',
+        'q8': 'a man glancing at a clock on the wall now and then while working',
+        'q10': 'a woman arriving at a meeting room door exactly as the clock strikes nine',
+        'q11': 'a person standing at a crossroads looking at two signposts',
+        'q12': 'a man in an odd hat and mismatched clothes standing in a crowd',
+        'q13': 'a cosy house with a garden and a tree that has grown tall over the years',
+        'q14': 'a train crossing the Spanish plains towards Madrid',
+        'results': 'an open notebook with corrections and a pencil on a café table',
+    },
+    2: {
+        'hero': 'two people looking at each other’s reflections in a pair of mirrors, one surprised',
+        'talk': 'two friends on a park bench talking',
+        'q1': 'a woman politely shaking her head at an invitation on her phone in the evening',
+        'q2': 'a man blushing red in front of a group of people at a party',
+        'q3': 'a woman walking into a conference room with a coffee in the morning',
+        'q4': 'a startled woman looking at her phone showing a late hour, dark outside',
+        'q5': 'a wedding couple, the groom in a doctor’s white coat',
+        'q6': 'a student absorbed in a big history book with ancient ruins drawn in it',
+        'q7': 'a boy solving a maths problem on a blackboard with ease',
+        'q9': 'a small island with one palm tree in a calm sea',
+        'q10': 'one friend handing banknotes to another',
+        'q12': 'a calm woman thinking carefully, a chess board in front of her',
+        'q13': 'a woman checking the time on a big modern station clock',
+        'q14': 'a person opening a letter by a window with a smile',
+        'results': 'a pair of reading glasses on top of an open English dictionary',
+    },
+    3: {
+        'hero': 'a thoughtful young man choosing between two doors in a bright corridor',
+        'talk': 'a man cooking in a kitchen with a radio playing music',
+        'q1': 'a birthday cake with candles on a table',
+        'q2': 'travellers with suitcases arriving at an airport terminal',
+        'q3': 'two restaurant fronts side by side, one fancy and one simple',
+        'q4': 'colleagues discussing a plan around a table covered with papers',
+        'q5': 'an older woman giving advice to a younger friend on a park bench',
+        'q6': 'a crowded house party with people dancing',
+        'q7': 'two hikers with empty stomachs looking at a restaurant sign',
+        'q8': 'a concert hall with many empty seats',
+        'q9': 'a framed photo of a dog on a shelf',
+        'q10': 'a woman listening to music on headphones while cooking',
+        'q11': 'a man waiting outside a cinema checking his watch',
+        'q12': 'a big comfortable armchair in a sunny room',
+        'q13': 'a man asleep on the sofa in front of a documentary on television',
+        'q14': 'a person reading bad news in a newspaper at breakfast',
+        'results': 'a pencil and an eraser on a corrected test paper',
+    },
+}
+POP = {1: {'hero': (None, 'square'), 'q4': (None, 'free')},
+       2: {'hero': (None, 'square'), 'q10': (None, 'blob')},
+       3: {'hero': (None, 'square'), 'q12': (None, 'free')}}
 
 
 def slides(n, spec, E):
     p = 'p%d-' % n
-    cover, hero_ref = D.hs2_cover(D.logo_from(TPL), E['coverTitle'], E['coverSub'],
-                                  [('Level', E['chipLevel']), ('Focus', E['chipFocus']),
-                                   ('Count', E['chipCount'])], F, slot=p + 'hero')
-    s = [cover,
-         D.art(D.bubbles('eW', E['eW'], 'tkT', E['tkT'], [(None, t) for t in spec['talk']], cols=3),
-               F, p + 'talk')]
+    K = hs1.Deck(F, pop={p + k: v for k, v in POP[n].items()}, hero=p + 'hero',
+                 cover_name='pop-cover-p%d' % n, title_px=52, cover_w=44)
+    s = [K.cover(E, [('Level', E['chipLevel']), ('Focus', E['chipFocus']), ('Count', E['chipCount'])]),
+         K.frame(K.talk('eW', 'tkT', spec['talk'], E), p + 'talk')]
+    K.stage()
     items = [deal(it, i) for i, it in enumerate(spec['items'])]
     D.assert_no_key_is_longest(items, 'part %d' % n)
     for i, it in enumerate(items, 1):
         it = dict(it, why='w%d' % i)
-        slot, side = (p + 'a', None) if i <= 7 else (p + 'b', 'left')
+        slot = p + 'q%d' % i if 'q%d' % i in PLATES[n] else None
         sl = D.mc(i, len(items), it, 'eQ', E['eQ'], 'mcT', E['mcT'],
                   ctx=E['h%d' % i], ctx_key='h%d' % i)
-        # A long stem takes the full width: beside a picture P1 Q9 (three
-        # numbered sentences) ran 66px off the canvas once answered.
-        s.append(sl if len(it['stem']) > 90 else D.art(sl, F, slot, side=side))
+        s.append(K.frame(sl, slot, text=(it['stem'] + ' ' + E['h%d' % i], it['options'])))
+    # three recap cards: no room for a picture (texture field)
     s.append(D.rules('eR', E['eR'], 'recT', E['recT'],
                      [((k, E[k]), [(None, b) for b in bullets], None) for k, bullets in spec['recap']]))
-    s.append(D.results())
-    s.append(D.art(D.activate(E['actTitle'], E['actUse'], spec['chips'], 'Speaking', E['actSpeakBrief'],
-                              [E['actSpeak1'], E['actSpeak2'], E['actSpeak3']],
-                              E['actWriteKind'], E['actWriteBrief'], E['actPlaceholder']),
-                   F, p + 'act'))
-    return "".join(s), hero_ref
+    K.stage()
+    s.append(K.frame(D.results(), p + 'results'))
+    s.append(D.activate(E['actTitle'], E['actUse'], spec['chips'], 'Speaking', E['actSpeakBrief'],
+                        [E['actSpeak1'], E['actSpeak2'], E['actSpeak3']],
+                        E['actWriteKind'], E['actWriteBrief'], E['actPlaceholder']))
+    return "".join(s), K
 
 
 def build(only=None):
     for n, spec in PARTS.items():
         if only and n not in only:
             continue
-        make_standin.ensure(F, spec['art'], scheme=spec['scheme'], deck=spec['out'])
-        if PALETTES[n] is None:
-            print('part %d: derive the palette first — py lesson-template/extract-palette.py '
-                  '%s/standin-p%d-hero.jpg --paper' % (n, F, n))
+        if not os.path.exists(os.path.join(F, 'p%d-hero.jpg' % n)):
+            # its house style 1 art has not landed: leave the live page alone
+            print('part %d: no p%d-hero.jpg yet, skipped' % (n, n))
             continue
         mod = I.module(n)
-        body, hero_ref = slides(n, spec, mod.T['en'])
-        D.assemble(TPL, spec['out'], body, palette(n, hero_ref), spec['title'], mod,
-                   langs=('en', 'de', 'es'), style='hs2')
-        print('wrote %s — %d slides' % (spec['out'], body.count('<section class="slide')))
+        body, K = slides(n, spec, mod.T['en'])
+        K.assemble(spec['out'], body, spec['title'], mod, ('en', 'de', 'es'),
+                   extra_css='html[data-style="editorial"] .slide:has(.q-ctx) .opt '
+                             '{ padding-top: 7px; padding-bottom: 7px; }')
 
 
 if __name__ == '__main__':

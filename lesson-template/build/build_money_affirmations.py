@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Money Affirmations: Mindset or Magic? (B1). House style 2.
+"""Money Affirmations: Mindset or Magic? (B1). House style 1.
 
 Innes, 2026-11-06: after a chat about financial manifestation, he pasted a
 listicle of ninety-nine money affirmations ("I am worthy of …", "Money
@@ -52,7 +52,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'tools'))
 import deck as D
 import i18n_money_affirmations as I
-import make_standin
+import hs1
 
 TPL = 'lesson-template/lesson-template.html'
 F = 'MoneyAffirmations'
@@ -69,7 +69,22 @@ ART = {
     'plan':  ('write', 'a wall calendar with one date circled and a single coin pinned beside it'),
     'act':   ('pair', 'two chairs facing each other across a small round table, a glass jar of coins and an open notebook between them'),
 }
-make_standin.ensure(F, ART, scheme='sage', deck=OUT)
+# House style 1 (HOUSE-STYLE §000, 2026-11-09): the seven plates above stay,
+# and these nine Midjourney renders (his style images, --stylize 200) give
+# every slide its own plate, none twice in a stage.
+NEW = {
+    'm-a2': 'a young man stuffing a letter about his student loan into a drawer, car keys on the desk',
+    'm-a3': 'a worried woman counting coins at a kitchen table, bills paid and pinned on the wall',
+    'm-b2': 'a woman in an office receiving a bigger pay envelope from her boss',
+    'm-b3': 'a man at a laptop buying an online course, a pile of course boxes beside him',
+    'm-c2': 'a calendar page for December with a debt paid stamp across it',
+    'm-c3': 'a person sitting cross-legged repeating a phrase with eyes closed, coins floating around',
+    'o1': 'a hand cutting up a credit card with scissors beside a calendar showing July',
+    'o2': 'a tired office worker leaving the office for a holiday with a suitcase',
+    'talk2': 'two friends talking about money over coffee, a notebook of figures between them',
+}
+POP = {'hero': (None, 'square'), 'm-b2': (None, 'free'), 'talk2': (None, 'blob')}
+K = hs1.Deck(F, pop=POP, title_px=60, cover_w=44)
 
 # py lesson-template/extract-palette.py MoneyAffirmations/hero.jpg --paper
 # (2026-11-08, from the Midjourney hero; every row PASS).
@@ -200,12 +215,12 @@ TALK_2 = [
 
 
 # ── slide helpers ──────────────────────────────────────────────────────
-def mcs(qs, start, total, ek, slot, side=None, stem_keys=None):
+def mcs(qs, start, total, ek, slots, stem_keys=None):
     out = []
-    for n, q in enumerate(qs):
+    for n, (q, slot) in enumerate(zip(qs, slots)):
         sk = (stem_keys or {}).get(n)
-        out.append(D.art(D.mc(start + n, total, q, ek, E[ek], 'mcT', E['mcT'], stem_key=sk),
-                         F, slot, side=side))
+        out.append(K.frame(D.mc(start + n, total, q, ek, E[ek], 'mcT', E['mcT'], stem_key=sk),
+                           slot, text=(q['stem'], q['options'])))
     return out
 
 
@@ -221,23 +236,22 @@ def b(keys):
 
 
 def slides():
-    cover, hero_ref = D.hs2_cover(D.logo_from(TPL), E['coverTitle'], E['coverSub'],
-                                  [('Level', E['chipLevel']), ('Focus', E['chipFocus']),
-                                   ('Count', E['chipCount'])], F)
-    s = [cover]
+    s = [K.cover(E, [('Level', E['chipLevel']), ('Focus', E['chipFocus']), ('Count', E['chipCount'])])]
 
     # ── warm-up ────────────────────────────────────────────────────────
-    s.append(D.art(D.survey('eW', E['eW'], 'svT', E['svT'], 'svQ', E['svQ'], SURVEY,
-                            hint=('svHint', E['svHint'])), F, 'warm', side='left'))
-    s.append(D.art(D.bubbles('eT', E['eT'], 'tk1T', E['tk1T'], [(None, p) for p in TALK_1], cols=3),
-                   F, 'talk'))
+    s.append(K.frame(D.survey('eW', E['eW'], 'svT', E['svT'], 'svQ', E['svQ'], SURVEY,
+                              hint=('svHint', E['svHint'])), 'warm'))
+    s.append(K.frame(K.talk('eT', 'tk1T', TALK_1, E, cols=1), 'talk'))
+    K.stage()
 
     # ── stage 1 · money words ──────────────────────────────────────────
     s.append(D.rules('eV', E['eV'], 'vAt', E['vAt'], VOCAB_A))
     s.append(D.rules('eV', E['eV'], 'vBt', E['vBt'], VOCAB_B))
-    s.append(D.art(D.match(MATCH, 'e1', E['e1'], 'matchT', E['matchT'], 'matchHint',
-                           E['matchHint'], 'matchW'), F, 'words'))
-    s += mcs(MC_A, 1, 3, 'e1', 'words', side='left')
+    # the match's two columns take the full width
+    s.append(D.match(MATCH, 'e1', E['e1'], 'matchT', E['matchT'], 'matchHint',
+                     E['matchHint'], 'matchW'))
+    s += mcs(MC_A, 1, 3, 'e1', ['words', 'm-a2', 'm-a3'])
+    K.stage()
 
     # ── stage 2 · verb patterns ────────────────────────────────────────
     s.append(D.rules('eR', E['eR'], 'rBt', E['rBt'], [
@@ -248,45 +262,42 @@ def slides():
         ('attract + noun · spend on', b(['rB5', 'rB6']),
          'Hard work <strong>attracts</strong> clients. Don’t <strong>spend</strong> it all <strong>on</strong> shoes.'),
     ]))
-    s += mcs(MC_B, 1, 3, 'e2', 'verbs')
+    s += mcs(MC_B, 1, 3, 'e2', ['verbs', 'm-b2', 'm-b3'])
+    K.stage()
     s.append(gap(GAP_B, 'e2', 'gHintB'))
 
     # ── stage 3 · wish or plan ─────────────────────────────────────────
-    s.append(D.rules('eR', E['eR'], 'rCt', E['rCt'], [
+    s.append(K.frame(D.rules('eR', E['eR'], 'rCt', E['rCt'], [
         ('Affirmation: present simple / continuous', b(['rC1', 'rC2', 'rC3']),
          'Money <strong>flows</strong> to me. Money <strong>is pouring</strong> into my life.'),
         ('Plan: going to / will + by', b(['rC4', 'rC5', 'rC6']),
          'I<strong>’m going to save</strong> £600 <strong>by</strong> June. I<strong>’ll check</strong> my account every Friday.'),
-    ]))
+    ]), None))
     s.append(D.sort_slide([E['binA'], E['binP']], SORT, 'e3', E['e3'], 'sortT', E['sortT'],
                           'sortHint', E['sortHint'], 'sortW', bin_keys=['binA', 'binP']))
-    s += mcs(MC_C, 1, 3, 'e3', 'plan', stem_keys={2: 's9'})
+    s += mcs(MC_C, 1, 3, 'e3', ['plan', 'm-c2', 'm-c3'], stem_keys={2: 's9'})
     for n, (items, dec, why) in enumerate(ORDERS):
-        s.append(D.art(D.order(items, 'e3', E['e3'], 'orderT', E['orderT'], 'orderHint',
-                               E['orderHint'], why, decoys=dec), F, 'plan',
-                       side='left' if n == 0 else None))
+        s.append(K.frame(D.order(items, 'e3', E['e3'], 'orderT', E['orderT'], 'orderHint',
+                                 E['orderHint'], why, decoys=dec), ['o1', 'o2'][n]))
     s.append(gap(GAP_C, 'e3', 'gHintC'))
 
     # ── speaking, results, activation ──────────────────────────────────
-    s.append(D.bubbles('eT', E['eT'], 'tk2T', E['tk2T'], [(None, p) for p in TALK_2], cols=4))
-    s.append(D.results())
+    K.stage()
+    s.append(K.frame(K.talk('eT', 'tk2T', TALK_2, E), 'talk2'))
+    s.append(K.frame(D.results(), 'act'))
     chips = ['deserve to', 'can’t afford to', 'worthy of', 'save for', 'spend on',
              'I’m going to', 'I’ll', 'by + date', 'an income stream', 'pay off']
-    s.append(D.art(D.activate(E['actTitle'], E['actUse'], chips, 'Speaking', E['actSpeakBrief'],
-                              [E['actSpeak1'], E['actSpeak2'], E['actSpeak3']],
-                              E['actWriteKind'], E['actWriteBrief'], E['actPlaceholder']),
-                   F, 'act'))
-    return "".join(s), hero_ref
+    s.append(D.activate(E['actTitle'], E['actUse'], chips, 'Speaking', E['actSpeakBrief'],
+                        [E['actSpeak1'], E['actSpeak2'], E['actSpeak3']],
+                        E['actWriteKind'], E['actWriteBrief'], E['actPlaceholder']))
+    return "".join(s)
 
 
 def build():
     if PALETTE_BODY is None:
         sys.exit('derive the palette first:\n  py lesson-template/extract-palette.py '
                  '%s/hero.jpg --paper' % F)
-    s, hero_ref = slides()
-    D.assemble(TPL, OUT, s, palette(hero_ref), TITLE, I, langs=('en', 'de', 'es'), style='hs2', tones=True)
-    n = s.count('<section class="slide')
-    print('wrote %s — %d slides' % (OUT, n))
+    K.assemble(OUT, slides(), TITLE, I, ('en', 'de', 'es'))
 
 
 if __name__ == '__main__':

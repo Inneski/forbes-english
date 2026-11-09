@@ -90,6 +90,9 @@ owed, so a deck ships while its art is still being made. A three-card rule
 slide takes no picture (it has no room). `cover_slot=` pops a different plate
 when the hero is a scene with no single object. `build_venezuela.py` is the
 first deck on it. The Comeback Ride keeps its own copy of the tables.
+A quiz deck on `hs2quiz.py` gets the same through `SPEC['style'] = 'hs1'`
+plus a `plates` table (slot → Midjourney brief); every deck that was house
+style 2 was moved this way on 2026-11-09 (HANDOFF).
 
 ---
 

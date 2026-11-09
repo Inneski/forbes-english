@@ -361,39 +361,51 @@ Peer-modified decks (first-in-space-c1, skiing-B1, money-affirmations) got
 the same 10-line fitStage change in the working tree but were left out of
 the commit; their builders reproduce it from the template.
 
-## 2026-11-09 — HS2 → HS1 conversion: hs2quiz's hs1 path; Tennis, Golf, Skiing done
+## 2026-11-09 — HS2 → HS1 conversion: every house style 2 deck is now house style 1
 
-Innes: *"Yes, start converting"* (the 26 decks left in house style 2).
+Innes: *"Yes, start converting"* (the decks left in house style 2). All 26
+are converted, about 530 Midjourney plates, his style images at `--stylize
+200`; every deck passes check-lesson, answered-overflow and overflow-langs in
+each language it ships.
 
 - **`hs2quiz.build(SPEC)` with `style='hs1'`** builds through `hs1.py`. A
   converted builder keeps its content and changes only its SPEC: `plates`
-  ({slot: Midjourney brief}), `pop`, `cover_slot`, `results`, optional `css`
-  / `gap_size` for fitting, a LIST of slots on mc/order steps (one per
-  slide), and `('stage',)` steps. Stand-ins are not used under HS1: a slot
-  with no `<folder>/<slot>.jpg` shows the texture field and prints as owed.
-- **Done:** `forbes-tennis-a2.html` (8 plates; the racket plate is the
-  cover), `forbes-english-golf-lesson.html` (19; new hero, the old card was
-  1200px), `forbes-english-skiing-B1.html` (17; the birch hero is a scene,
-  so the cover pops the ski-jacket plate). All gates clean en/de/es.
-- **Left (19 builders on hs2quiz):** ecommerce_vocab, friedrich_prepositions,
-  gaming_youtube, gerunds_football, grammar_dojo, harry_quebert,
-  interior_vocab, linking_cars, might_going_to, phrasal_make_do_take_put,
-  present_perfect_test, ps_pc_supereasy, question_words_a0, refinery_quiz2
-  (three decks), swiss_mistakes_a2 (+ _p2), taekwondo_exercises,
-  taekwondo_kids, teil3_test. Plus Money Affirmations (own builder).
-- **Faster Midjourney loop than Venezuela's:**
-  - queue prompts in page: `window.__Q = [...]`, `__next()` sets the next
-    one; a batch is just `__next()` / click send / wait 2 s, repeated;
-  - the feed scrolls inside its own panel (the element with the biggest
-    scrollHeight), virtualised: scroll it in 450px steps and pair each
-    prompt node with the nearest `cdn.midjourney.com/<job>/0_` image;
-  - `/api/imagine` answers 401 to a plain fetch; don't bother;
-  - **contact sheets in page:** fetch `0_<n>_384_N.webp`, draw on a canvas
-    (fetched blobs don't taint it), download one JPEG per deck; pick from
-    that, then fetch only the picks' `0_<n>.png`;
-  - the screenshot tool timed out while JS kept working: drive by JS.
-- **Look at every cover pop.** A scene hero (Skiing's birches) cuts to a
-  fragment; set `cover_slot` to a plate with one subject.
+  ({slot: Midjourney brief}), `pop`, `cover_slot`, `cover_name`, `results`,
+  optional `css` / `gap_size`, a LIST of slots on mc/order steps (one per
+  slide, None for full width) and `('stage',)` steps. Stand-ins are house
+  style 2 only: a slot with no `<folder>/<slot>.jpg` shows the texture field.
+  It asserts every plate on disk is shown, so a dropped frame needs its plate
+  removed from `plates` too.
+- **Own builders converted the same way:** `build_mistakes_review.py` (three
+  decks, `PLATES`/`POP` per part, `p<n>-` slots, `pop-cover-p<n>.webp`) and
+  `build_money_affirmations.py` (its seven plates kept, nine added).
+- **`hs1.Deck(cover_name=)`**: two decks in one folder (Swiss Mistakes 1/2,
+  Mistakes Review 1-3) each need their own cover cut, or the second build
+  overwrites the first's and both covers show the same picture.
+- **Look at every pop.** Scene heroes (birch forest, refinery skyline, party
+  crowd, a face close-up) cut to fragments: set `cover_slot` to a plate with
+  one subject. Ragged free/blob pops were dropped on sight (about eight).
+- **Fitting fixes, all content-side:** a `q-ctx` hint line costs a row, so
+  decks with hints tighten `.opt` padding via `css`; an item too long for any
+  frame takes `None`; two writing briefs (ES phrasal verbs, JA Grammar Dojo)
+  and one ES gap explanation (Swiss 2) were shortened.
+- **Midjourney loop, what works:**
+  - in page: `window.__Q = [...]`; `__run(k)` sets each prompt by the native
+    setter and clicks the Submit button found next to `#desktop_input_bar`
+    (no coordinates); **one call at a time** (parallel calls interleave and
+    drop prompts) and at most ~15 per call (45 s limit);
+  - **lock the style images** (padlock right of Image Prompts goes red)
+    before a batch: unlocked, they drop off after the FIRST submit and the
+    rest render in Midjourney's house look. Check one finished job shows the
+    four thumbnails;
+  - the feed scrolls in its own panel (largest scrollHeight), virtualised:
+    scroll in 450px steps and pair each prompt node with the nearest
+    `cdn.midjourney.com/<job>/0_` image; `/api/imagine` answers 401;
+  - contact sheets in page from `0_<n>_384_N.webp` on a canvas, one JPEG
+    per deck; then fetch only the picks' `0_<n>.png`;
+  - a tab whose renderer freezes: open a new tab in the group, close the old.
+- Picks and sheets are in `incoming/hs1-batch1..6/` (gitignored).
+- `tools/mj_queue.py` (an uncommitted `--sref` queue) was deleted: off-standard.
 
 ## 2026-11-09 — Venezuela is house style 1; hs1.py; the pop mask cache bug
 
