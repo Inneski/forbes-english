@@ -87,7 +87,7 @@ def blob(box, seed, n=240):
     return pts
 
 
-def build(plate, out, narrow=False, span=None, mode='square', box=None):
+def build(plate, out, narrow=False, span=None, mode='square', box=None, zone=None):
     """The subject is the star, the frame only a backdrop (Innes, 2026-11-08,
     after a 64px peek over the frame's top: "nothing pops out"; then
     "sometimes its cool to cut out the characters from the image and
@@ -115,7 +115,7 @@ def build(plate, out, narrow=False, span=None, mode='square', box=None):
         # scales' chains and pans): lay out on this, and the blob of scene
         # behind shows what the cut-out lost
         sx0, sy0, sx1, sy1 = box[0] * pw, box[1] * ph, box[2] * pw, box[3] * ph
-    zw, zh = frame_w(narrow), FRAME_H + POP_UP
+    zw, zh = zone or (frame_w(narrow), FRAME_H + POP_UP)
     # the subject fills the zone: as wide as it, or as tall, whichever binds
     s = min(zw * 0.98 / (sx1 - sx0 + 1), zh * 0.97 / (sy1 - sy0 + 1))
     ox = zw / 2 - (sx0 + sx1) / 2 * s

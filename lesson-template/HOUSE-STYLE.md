@@ -15,18 +15,86 @@ bring up to this standard.
 Working template: **`lesson-template/lesson-template.html`**
 Palette tool: **`lesson-template/extract-palette.py`** (`--paper` for house style 2)
 Pre-ship checker: **`lesson-template/check-lesson.js`** — must exit clean.
-Reference deck: **`lesson-template/build/build_venezuela.py`** → `forbes-english-venezuela.html`
+Reference deck (house style 1, the default): **`lesson-template/build/build_comeback_ride.py`** → `the-comeback-ride.html`
+Reference deck (house style 2, opt-in): `lesson-template/build/build_venezuela.py` → `forbes-english-venezuela.html`
 
 ---
 
-## 00. House style 2 is the main style (Innes, 2026-11-06)
+## 000. HOUSE STYLE 1 is the main style (Innes, 2026-11-09)
+
+*"make this style with the stickout bits and isolated characters etc the new
+house style 1"*, said of The Comeback Ride. **Every new deck and every rebuild
+is house style 1.** The reference builder is
+`lesson-template/build/build_comeback_ride.py` and the reference page is
+`the-comeback-ride.html`. Read both before building. The names have moved
+twice, so to be clear:
+
+| name now | what it is | status |
+|---|---|---|
+| **house style 1** | editorial (§15) + pop-outs + free cut-outs + ghosts + texture, below | **the default** |
+| house style 2 | the ENGHUB paper look (§00, §16), `style='hs2'` | opt-in |
+| classic | the washed hero behind text plates (§3–§5) | old decks only; Innes calls it "the old house style" |
+
+Innes's benchmarks for it are **Beyond the Handlebars** (his own design, live)
+and the ENGHUB pages, where figures stand free on a soft blob or break out of
+their frame.
+
+**What house style 1 is, rule by rule:**
+
+1. **Editorial base (§15).** `assemble(..., style='editorial')`,
+   `D.editorial_palette()`, cream field, heavy sans titles, and every picture
+   framed beside the text, never behind it, with sides alternating.
+2. **A picture on nearly every slide, and no picture twice in a stage.** One
+   Midjourney plate per question or talk slide (The Comeback Ride uses 25 for
+   30 slides). Prompts go in through Innes's own Midjourney setup: his style
+   images plus `--stylize 200` (Innes, 2026-11-08). Load a previous job with
+   "Use", and set the text by script, because typing it key by key freezes
+   the tab.
+3. **Crop to the subject.** Measure where each plate's subject sits and set
+   `data-art-pos`; check every crop by eye.
+4. **Objects pop out.** `tools/pop_plate.py` cuts the subject out (rembg) and
+   draws it filling the picture zone. There are three treatments; use a mix:
+   - `square`: the subject bursts out of a rounded square of its own scene
+     (the cover, the garage bike, the moon);
+   - `blob`: the same, out of an organic blob (the headlamp, the scales);
+   - `free`: the character cut out whole, on a pale blob tinted from the plate
+     (the rider, the buyers, the podium).
+
+   The template's `data-art="pop"` draws it, with a shadow that follows the
+   outline. **A pop stays inside its picture zone, so it never lands on text.**
+   Measure that in every language. **Look at every cut-out before keeping it**:
+   rembg loses thin parts (it dropped the scales' pans), so give `box=` for the
+   object's true extent, and drop ragged ones.
+5. **The cover is a pop-out too.** The hero is cut out and bursts out of a
+   square at the right; the title stands on clean cream at the left. On a
+   phone, the hero becomes a band under the type.
+6. **Scenes carry on past the frame.** Where a plate's scene runs on (a row of
+   bikes), the rest of the plate shows outside the frame as a faint grayscale
+   ghost, lined up with the frame and fading out (`GHOST` in the reference
+   builder).
+7. **Texture only where there is no picture.** A slide with no picture (gap
+   fills, three-card rules, the writing task) gets a faint grayscale close-up
+   of the cover at 6%. *"the background textures were for absence of
+   illustrations on a page, not necessary for all."*
+8. **Answer boxes fit their answers.** The editorial `.opt` is
+   `fit-content`.
+
+The reusable pieces are `tools/pop_plate.py` and the template's `pop` frame.
+The per-deck tables (`ART`, `NEW`, `POP`, `GHOST`, the cover CSS) still live
+in the reference builder: **copy them from there** until they are lifted into
+`deck.py`.
+
+---
+
+## 00. House style 2 (Innes, 2026-11-06; the main style until 2026-11-09)
 
 *"Find other on forbes that are not house style and make them house style 2
 and make house style 2 the new main style. Also study the graphic composition
 of these as a benchmark"* — with two ENGHUB decks attached ("How to Break
 Habits", B1–B2, 29 pages; "Reinventing Yourself After a Break", C1, 17 pages).
 
-**Every new deck and every rebuild is house style 2.** A builder passes
+**Superseded 2026-11-09 by house style 1 (§000).** What follows describes
+house style 2, now opt-in. A builder passes
 `style='hs2'` to `deck.assemble()` and derives its palette with
 `extract-palette.py <hero> --paper`. §16 is the look, measured from the
 benchmark; read it before building. The washed-hero look described in §3–§5

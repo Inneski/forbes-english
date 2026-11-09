@@ -287,6 +287,30 @@ Peer-modified decks (first-in-space-c1, skiing-B1, money-affirmations) got
 the same 10-line fitStage change in the working tree but were left out of
 the commit; their builders reproduce it from the template.
 
+## 2026-11-09 — HOUSE STYLE 1 is now the editorial + pop-out look (The Comeback Ride)
+
+Innes: *"make this style with the stickout bits and isolated characters etc
+the new house style 1"*. **HOUSE-STYLE.md §000 is the new default.** The
+reference is `build_comeback_ride.py` / `the-comeback-ride.html`. House style 2
+(ENGHUB paper) is now opt-in, and the washed classic is for old decks only. The
+per-deck tables (`ART`, `NEW`, `POP`, `GHOST`, the cover CSS) still live in that
+builder; lifting them into `deck.py` is the obvious next refactor.
+
+- New cover (*"young woman one"*), from his Midjourney with his style images
+  at `--stylize 200`. The rider is cut out and bursts out of a square at the
+  right; the title stands on cream at the left. On a phone she is a band
+  under the type. The old café-racer hero is deleted, and the library card is
+  re-cut from the new one.
+- The row of bikes (`c-lot`) carries on past its frame as a faint grayscale
+  ghost (*"show rest of bikes as faint monochrome"*).
+- Midjourney from Chrome: **typing a prompt key by key froze the tab twice.**
+  Load a job with "Use", then set the textarea by script (native value setter
+  plus an `input` event) and press Return. Lock the style images while
+  submitting a batch, and unlock them afterwards, because other sessions use
+  the same account.
+- The rembg mask cache is keyed by plate name (`incoming/pop-masks/`). Replacing
+  a plate under the same name (`hero.jpg`) reuses the OLD mask: delete it first.
+
 ## 2026-11-08 — Pop-out pictures and a faint close-up field (The Comeback Ride)
 
 Innes: *"objects should pop out including the scales and bikes where possible

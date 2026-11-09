@@ -2379,6 +2379,18 @@ html[data-tones="on"] {
   --tone-3-deep: color-mix(in srgb, var(--contrast) 34%, var(--void));
   --tone-4-deep: color-mix(in srgb, var(--accent) 34%, var(--void));
 }
+/* --secondary is the one token whose lightness the extractor does not fix:
+   pale sage (#a8cdb1) on the stand-in, near-black (#0e251a) on Money
+   Affirmations' real hero, which turned the 48% mix into a dark panel under
+   dark copy. So tone-1 keeps secondary's HUE and pins the lightness. The
+   chroma floor stops a near-black secondary going plain grey. Browsers
+   without relative colour keep the mix above. */
+@supports (color: oklch(from red l c h)) {
+  html[data-tones="on"] {
+    --tone-1: oklch(from var(--secondary) 0.88 clamp(0.035, c, 0.07) h);
+    --tone-1-deep: oklch(from var(--secondary) 0.78 clamp(0.045, c, 0.09) h);
+  }
+}
 /* rule and vocabulary cards: the card takes a tone, its pill the deep one */
 html[data-tones="on"] .tab-card:nth-child(4n+1) { background: var(--tone-1); }
 html[data-tones="on"] .tab-card:nth-child(4n+2) { background: var(--tone-2); }
@@ -2433,21 +2445,23 @@ html[data-style="editorial"] .stage:not(.on-cover):not(:has(.slide.is-active[dat
   background: var(--hero) var(--art-pos, center) 45% / 260% auto no-repeat;
   filter: grayscale(1) contrast(1.15); opacity: .06; mix-blend-mode: multiply;
 }
-/* The Comeback Ride: keep the cover type off the café racer (see builder). */
-html[data-style="editorial"]:not(.is-flow) .cover-inner { max-width: 30.5%; }
+/* The cover (Innes, 2026-11-08: "and change cover"): no full-bleed photo
+   under a scrim any more. The café racer is cut out and bursts out of a
+   rounded square of its own café scene, on the cream, in a 640x600 zone at
+   x 600-1240; the title stands on clean cream to its left, its column
+   stopping at 576px, before the spilled café chair. */
+html[data-style="editorial"]:not(.is-flow) .cover-inner { max-width: 40%; }
 html[data-style="editorial"]:not(.is-flow) .cover-title { font-size: 72px; }
-html[data-style="editorial"]:not(.is-flow) .cover-sub { font-size: 21px; line-height: 1.35; }
+html[data-style="editorial"]:not(.is-flow) .stage.on-cover .bg-layer::before {
+  background: url('ComebackRide/pop-cover.webp') 600px 64px / 640px 600px no-repeat;
+  filter: drop-shadow(0 14px 26px color-mix(in srgb, var(--text) 18%, transparent));
+}
 /* Level and count share a row; the long focus chip takes the second. */
 /* Answered, a four-option question grows its explanation: the editorial
    bars at 16px padding ran 16-72px off the canvas beside a picture. */
 html[data-style="editorial"] .opts { gap: 8px; }
 html[data-style="editorial"] .opt { padding-top: 10px; padding-bottom: 10px; }
-html[data-style="editorial"]:not(.is-flow) .stage.on-cover .bg-layer::after {
-  background: linear-gradient(90deg,
-    color-mix(in srgb, var(--void) 94%, transparent) 0%,
-    color-mix(in srgb, var(--void) 90%, transparent) 37%,
-    transparent 41%);
-}
+html[data-style="editorial"]:not(.is-flow) .stage.on-cover .bg-layer::after { content: none; }
 /* Upright (a phone) the cover is a page: the type on the cream at the top,
    the café racer as a band along the bottom, above the deck bar, cropped to
    the bike (.27-.95 of the plate's width on a 390px phone). No scrim. */
@@ -2459,6 +2473,12 @@ html.is-flow[data-style="editorial"] .stage.on-cover .bg-layer::after { content:
    cover scrolls rather than putting words on the bike */
 html.is-flow[data-style="editorial"] .slide[data-type="cover"] .cover-inner {
   padding-bottom: calc(34svh + 16px);
+}
+html[data-style="editorial"] .stage:has(.slide.is-active[data-ghost="c-lot-narrow-right"]) .bg-layer::before {
+  content: ''; position: absolute; inset: 0; opacity: .2; filter: grayscale(1);
+  background: url('ComebackRide/c-lot.jpg') 618.2px 172px / 732.9px 410.4px no-repeat;
+  -webkit-mask-image: linear-gradient(90deg, transparent 638px, #000 808px, #000 1252px, transparent 1331px);
+  mask-image: linear-gradient(90deg, transparent 638px, #000 808px, #000 1252px, transparent 1331px);
 }
 </style>
 </head>
@@ -2852,7 +2872,7 @@ html.is-flow[data-style="editorial"] .slide[data-type="cover"] .cover-inner {
       </div>
     </section>
 
-    <section class="slide" data-bg="ComebackRide/c-lot.jpg" data-art-pos="63%" data-art-size="narrow" data-type="mc">
+    <section class="slide" data-bg="ComebackRide/c-lot.jpg" data-ghost="c-lot-narrow-right" data-art-pos="63%" data-art-size="narrow" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="eC">Test a claim</span> &middot; 1 / 3</div>
         <h2 class="slide-title" data-i18n="mcT3">What do the figures show?</h2>

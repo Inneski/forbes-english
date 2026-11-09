@@ -623,6 +623,33 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'
 import pop_plate  # noqa: E402
 
 
+# Plates whose scene carries on past the frame as a faint monochrome ghost
+# (Innes, 2026-11-08, on the row of bikes: "show rest of bikes as faint
+# monochrome"). The ghost is the same plate at the frame's own scale and
+# position, so the row runs straight through the frame's edges; grayscale,
+# 20%, fading out towards the plate's ends.
+GHOST = {'c-lot'}
+GHOST_CSS = []
+
+
+def ghost(pl, side, pos, size):
+    fw = (0.30 if size == 'narrow' else 0.37) * 1280
+    fh = 0.57 * 720
+    fl = 58 if side == 'left' else 1280 - 58 - fw
+    w = max(fh * 2000 / 1120, fw)
+    p = 0.5 if not pos or pos == 'center' else float(pos.rstrip('%')) / 100
+    x = fl + (fw - w) * p
+    gid = '%s-%s-%s' % (pl, size or 'std', side or 'right')
+    grad = 'linear-gradient(90deg, transparent %.0fpx, #000 %.0fpx, #000 %.0fpx, transparent %.0fpx)' % (
+        x + 20, fl - 30, fl + fw + 30, x + w - 20)
+    GHOST_CSS.append(
+        'html[data-style="editorial"] .stage:has(.slide.is-active[data-ghost="%s"]) .bg-layer::before {\n'
+        "  content: ''; position: absolute; inset: 0; opacity: .2; filter: grayscale(1);\n"
+        "  background: url('%s/%s.jpg') %.1fpx 172px / %.1fpx %.1fpx no-repeat;\n"
+        '  -webkit-mask-image: %s;\n  mask-image: %s;\n}' % (gid, F, pl, x, w, fh, grad, grad))
+    return ' data-ghost="%s"' % gid
+
+
 def frame(html, a):
     """Give a slide its framed picture (§15), or none. a = (plate, side, pos,
     shape, size) from ART. Any data-bg the slide builder wrote is replaced."""
@@ -646,6 +673,8 @@ def frame(html, a):
             print('  pop', pop, pop_plate.build(os.path.join(F, pl + '.jpg'), pop, narrow, *POP[pl][:3]))
         attrs = ' data-bg="%s"' % pop.replace(os.sep, '/')
         side, pos, shape = None, None, 'pop'
+    if pl in GHOST and shape != 'pop':
+        attrs += ghost(pl, side, pos, size)
     if side == 'left':
         attrs += ' data-art-side="left"'
     if pos:
@@ -698,21 +727,23 @@ html[data-style="editorial"] .stage:not(.on-cover):not(:has(.slide.is-active[dat
   background: var(--hero) var(--art-pos, center) 45% / 260% auto no-repeat;
   filter: grayscale(1) contrast(1.15); opacity: .06; mix-blend-mode: multiply;
 }
-/* The Comeback Ride: keep the cover type off the café racer (see builder). */
-html[data-style="editorial"]:not(.is-flow) .cover-inner { max-width: 30.5%; }
+/* The cover (Innes, 2026-11-09: a new picture, "young woman one", in the
+   new house style): the rider is cut out and bursts out of a rounded square
+   of her own sky, on the cream, in a 640x600 zone at x 600-1240 (her front
+   wheel reaches x 600); the title stands on clean cream to its left, its
+   text ending at 519px. */
+html[data-style="editorial"]:not(.is-flow) .cover-inner { max-width: 40%; }
 html[data-style="editorial"]:not(.is-flow) .cover-title { font-size: 72px; }
-html[data-style="editorial"]:not(.is-flow) .cover-sub { font-size: 21px; line-height: 1.35; }
+html[data-style="editorial"]:not(.is-flow) .stage.on-cover .bg-layer::before {
+  background: url('ComebackRide/pop-cover.webp') 600px 64px / 640px 600px no-repeat;
+  filter: drop-shadow(0 14px 26px color-mix(in srgb, var(--text) 18%, transparent));
+}
 /* Level and count share a row; the long focus chip takes the second. */
 /* Answered, a four-option question grows its explanation: the editorial
    bars at 16px padding ran 16-72px off the canvas beside a picture. */
 html[data-style="editorial"] .opts { gap: 8px; }
 html[data-style="editorial"] .opt { padding-top: 10px; padding-bottom: 10px; }
-html[data-style="editorial"]:not(.is-flow) .stage.on-cover .bg-layer::after {
-  background: linear-gradient(90deg,
-    color-mix(in srgb, var(--void) 94%, transparent) 0%,
-    color-mix(in srgb, var(--void) 90%, transparent) 37%,
-    transparent 41%);
-}
+html[data-style="editorial"]:not(.is-flow) .stage.on-cover .bg-layer::after { content: none; }
 /* Upright (a phone) the cover is a page: the type on the cream at the top,
    the café racer as a band along the bottom, above the deck bar, cropped to
    the bike (.27-.95 of the plate's width on a 390px phone). No scrim. */
@@ -730,6 +761,10 @@ html.is-flow[data-style="editorial"] .slide[data-type="cover"] .cover-inner {
 
 def build():
     E = T['en']
+    cover = os.path.join(F, 'pop-cover.webp')
+    if not os.path.exists(cover):
+        print('  pop', cover, pop_plate.build(os.path.join(F, 'hero.jpg'), cover, span=None,
+                                              mode='square', zone=(640, 600)))
     assert len(ART) == len(SPEC['flow'])
     s = [D.cover(D.logo_from(TPL), E['coverTitle'], E['coverSub'],
                  [('Level', E['chipLevel']), ('Count', E['chipCount']), ('Focus', E['chipFocus'])])]
@@ -776,7 +811,7 @@ def build():
     out = D.assemble(TPL, SPEC['out'], body, D.editorial_palette('%s/hero.jpg' % F), SPEC['title'],
                      H._I18n(T, LANGS, False), langs=LANGS, style='editorial')
     assert out.count('\n</style>') >= 1
-    out = out.replace('\n</style>', EXTRA_CSS + '</style>', 1)
+    out = out.replace('\n</style>', EXTRA_CSS + '\n'.join(dict.fromkeys(GHOST_CSS)) + '\n</style>', 1)
     open(SPEC['out'], 'w', encoding='utf-8', newline='').write(out)
     print('wrote %s — %d slides, %d bytes' % (SPEC['out'], n, len(out)))
 
