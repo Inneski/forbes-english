@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Skiing at the Resort (B1). House style 2, 23 slides, on the Skiing/
+"""Skiing at the Resort (B1). House style 1, 23 slides, on the Skiing/
 plates.
 
 Rebuilt 2026-11-06 from `forbes-english-skiing-B1.html` (EN + DE): five
@@ -30,12 +30,37 @@ SPEC = dict(
     hero='birch-forest-cross-country',
     cover_pos='18% 50%',
     scheme='cool',
-    act='b1-act',
-    art={
-        'b1-talk': ('talk', 'two speech bubbles above a pair of crossed skis in the snow'),
-        'b1-a': ('mountain', 'a chairlift climbing a snowy mountain, flat shapes'),
-        'b1-act': ('pair', 'two chairs on a mountain hut terrace with two hot drinks'),
+    style='hs1',
+    # House style 1 (HOUSE-STYLE §000, 2026-11-09): the two live plates
+    # (the birch-forest skier is the cover, the cliff jump a true-or-false
+    # item) and one Midjourney plate per slide besides, his style images at
+    # --stylize 200, briefs here.
+    plates={
+        'birch-forest-cross-country': 'a cross-country skier in a birch forest',
+        'downhill-cliff-jump': 'a skier jumping off a snowy cliff',
+        'talk': 'a pair of skis and poles standing upright in the snow outside a mountain hut',
+        'q1': 'a red gondola cabin climbing over snowy pine trees to a mountain top',
+        'q2': 'a skier in a bright ski jacket and salopettes, goggles on the helmet',
+        'q3': 'a gentle wide beginner slope with small skiers and a blue piste marker pole',
+        'q4': 'friends laughing over hot drinks on the terrace of a mountain bar at sunset',
+        'q5': 'a ski patrol rescuer in a red jacket kneeling beside a skier on the snow',
+        't1': 'a ski helmet and goggles resting on fresh snow',
+        't3': 'a ski boot clicking into the binding of a ski',
+        't4': 'a ski resort with brown grass and no snow, the lifts standing still',
+        't5': 'a skier holding a lift pass up to the turnstile of a chairlift',
+        'o1': 'a skier in heavy ski boots walking carefully towards a chairlift',
+        'o2': 'small children in a line behind a ski instructor on a nursery slope',
+        'o3': 'a family arriving in a snowy alpine village for the first time, suitcases in hand',
+        'o4': 'a skier checking the weather on a phone under a darkening mountain sky',
+        'o5': 'long queues at a busy chairlift the morning after a heavy snowfall',
+        'talk2': 'a ski instructor and a beginner talking at the bottom of a slope',
+        'results': 'a pair of skis crossed in the snow at sunset, mountains behind',
     },
+    # the birch forest is a scene with no one object (rembg cut a fragment of
+    # trunks), so the cover pops the skier in the ski jacket
+    cover_slot='q2',
+    pop={'t1': (None, 'free'), 'q2': (None, 'free')},
+    results='results',
 )
 
 
@@ -76,9 +101,10 @@ SPEC['flow'] = [
         'Is skiing popular in your country?',
         'Would you try a ski lesson? Why, or why not?',
         'What is the coldest place you have been to?',
-    ], 'b1-talk', 3),
-    ('mc', 'e1', 'mcT', MC, 'b1-a', None),
-    ('mc', 'e2', 'mcT2', TF, 'downhill-cliff-jump', 'left'),
+    ], 'talk', 3),
+    ('stage',),
+    ('mc', 'e1', 'mcT', MC, ['q1', 'q2', 'q3', 'q4', 'q5'], None),
+    ('mc', 'e2', 'mcT2', TF, ['t1', 'downhill-cliff-jump', 't3', 't4', 't5'], None),
     ('gap', 'e3', 'gapT', 'gHint', [
         ('Before you can ski down the mountain, you need to buy a lift ______ at the ticket office.', ['pass'], 'w11'),
         ('The snow was very icy, so the skier lost her ______ and fell before she reached the bottom.', ['balance'], 'w12'),
@@ -88,13 +114,14 @@ SPEC['flow'] = [
         ('The afternoon was warm and the ______ started to melt, making the slope wet and heavy.', ['snow'], 'w14'),
         ('My sister signed up for a group ______ with an instructor because she had never skied before.', ['lesson'], 'w15'),
     ], ['lesson', 'resort', 'snow', 'helmet']),
+    ('stage',),
     ('order', 'e4', 'orderT', 'orderHint', [
         (['She put on', 'her ski boots', 'and walked carefully', 'to the chairlift.'], None, 'w16'),
         (['The children', 'are having', 'a ski lesson', 'with their instructor', 'on the nursery slope.'], None, 'w17'),
         (['We have', 'never been', 'to a ski resort', 'before this holiday.'], None, 'w18'),
         (['You should', 'always check', 'the weather forecast', 'before going skiing', 'in the mountains.'], None, 'w19'),
         (['The resort', 'was very busy', 'because it had snowed', 'heavily the night before.'], None, 'w20'),
-    ], 'b1-a', 'left'),
+    ], ['o1', 'o2', 'o3', 'o4', 'o5'], None),
     ('rules', 'eR', 'recT', [
         ('pUp', [(None, 'a chairlift · a gondola'), (None, 'a lift pass / ski pass'), (None, 'a green / blue / red / black run')], None),
         ('pGear', [(None, 'a ski jacket · salopettes'), (None, 'thermal layers · a helmet'), (None, 'skis · poles · boots · bindings')], None),
@@ -107,7 +134,7 @@ SPEC['flow'] = [
         'Have you ever lost your <strong>balance</strong> and fallen?',
         'Which <strong>equipment</strong> would you rent, and which would you buy?',
         'What <strong>should</strong> every beginner know before skiing?',
-    ], None, 3),
+    ], 'talk2', 3),
 ]
 SPEC['chips'] = ['lift pass', 'ski patrol', 'equipment', 'après-ski', 'nursery slope', 'chairlift', 'instructor']
 

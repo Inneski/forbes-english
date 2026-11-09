@@ -124,7 +124,123 @@ def _hero_card(folder, slot):
     return os.path.join(folder, 'standin-%s.jpg' % slot)
 
 
+def _slots(slot, n):
+    """A step's picture slot(s): one name, a list with one name per slide, or
+    None. A single name on a step of several slides goes on the first slide
+    only, because house style 1 never shows a plate twice in a stage."""
+    if isinstance(slot, (list, tuple)):
+        assert len(slot) == n, 'a list of %d slots for %d slides' % (len(slot), n)
+        return list(slot)
+    return [slot] + [None] * (n - 1)
+
+
+def _build_hs1(SPEC, T, GLOSS):
+    """House style 1 (HOUSE-STYLE §000), through hs1.py. The same SPEC as
+    house style 2, plus:
+
+      style   'hs1'
+      plates  {slot: brief}   every plate the deck takes, a Midjourney brief
+                              beside each (his style images, --stylize 200);
+                              <folder>/<slot>.jpg, a whole 16:9 render
+      pop     {slot: (span, mode[, box[, 'wide']])}   which subjects break out
+      cover_slot              the plate the cover pops out (default: hero)
+      css, gap_size           deck-level CSS appended to the page; the gap
+                              slides' type size (default 21), for fitting
+      results slot            the results slide's picture (optional)
+      flow    as for house style 2; a slot may also be a LIST, one per slide
+              of the step (mc items, order rows); ('stage',) starts the next
+              stage, inside which no plate may repeat
+
+    A slot with no plate on disk gets the texture field and is printed as
+    owed: stand-ins are house style 2 only. Talk slides are cards (two
+    columns beside a picture, three without); the activation is full width.
+    """
+    import hs1
+    F = SPEC['folder']
+    langs = SPEC.get('langs', ('en', 'de', 'es'))
+    E = T['en']
+    K = hs1.Deck(F, pop=SPEC.get('pop'), ghost=SPEC.get('ghost', ()), hero=SPEC.get('hero', 'hero'),
+                 cover_slot=SPEC.get('cover_slot'), title_px=SPEC.get('title_px', 64),
+                 cover_w=SPEC.get('cover_w', 44), cover_mode=SPEC.get('cover_mode', 'square'),
+                 cover_span=SPEC.get('cover_span'), cover_box=SPEC.get('cover_box'))
+    for slot in SPEC.get('plates', {}):
+        assert re.match(r'^[a-z0-9-]+$', slot), slot
+    s = [K.cover(E, [('Level', E['chipLevel']), ('Focus', E['chipFocus']), ('Count', E['chipCount'])])]
+    dealt = 0
+    for step in SPEC['flow']:
+        kind = step[0]
+        if kind == 'stage':
+            K.stage()
+        elif kind == 'talk':
+            _, ek, tk, prompts, slot, cols = step
+            has = K.has(slot)
+            s.append(K.frame(K.talk(ek, tk, prompts, E, cols=2 if has else 3), slot))
+        elif kind == 'rules':
+            _, ek, tk, cards, slot = step
+            built = []
+            for pill, bullets, ex in cards:
+                bl = [b if isinstance(b, tuple) else (b, E[b]) for b in bullets]
+                pl = (pill, E[pill]) if isinstance(pill, str) and pill in E else pill
+                built.append((pl, bl, ex))
+            # three cards or more have no room beside a picture (texture field)
+            s.append(K.frame(D.rules(ek, E[ek], tk, E[tk], built), slot if len(cards) < 3 else None))
+        elif kind == 'mc':
+            _, ek, tk, items, slot, side = step
+            items = [_deal(it, dealt + i) for i, it in enumerate(items)]
+            dealt += len(items)
+            D.assert_no_key_is_longest(items, SPEC['out'])
+            for i, (it, sl_) in enumerate(zip(items, _slots(slot, len(items))), 1):
+                sl = D.mc(i, len(items), it, ek, E[ek], tk, E[tk],
+                          ctx=E[it['ctx']] if it.get('ctx') else None, ctx_key=it.get('ctx'))
+                if it.get('gl'):
+                    sl = sl.replace('<p class="q-stem"', '<p class="q-stem gloss" data-tr="%s"' % it['gl'], 1)
+                stem = it['stem'] + (' ' + re.sub(r'<[^>]+>', '', E[it['ctx']]) if it.get('ctx') else '')
+                s.append(K.frame(sl, None if it.get('wide') else sl_, text=(stem, it['options'])))
+        elif kind == 'gap':
+            _, ek, tk, hk, rows = step[:5]
+            bank = step[5] if len(step) > 5 else None
+            if bank:
+                D.assert_bank_is_not_a_key(bank, [a for _, ans, _ in rows for a in ans])
+            s.append(D.gap(1, 1, rows, bank, ek, E[ek], tk, E[tk], hint=E[hk], hint_key=hk, size=SPEC.get('gap_size', 21)))
+        elif kind == 'order':
+            _, ek, tk, hk, rows, slot, side = step
+            for (pieces, decoys, why), sl_ in zip(rows, _slots(slot, len(rows))):
+                s.append(K.frame(D.order(pieces, ek, E[ek], tk, E[tk], hk, E[hk], why, decoys=decoys), sl_))
+        elif kind == 'survey':
+            _, ek, tk, hk, q, answers, slot, side = step
+            s.append(K.frame(D.survey(ek, E[ek], tk, E[tk], None, q, answers, hint=(hk, E[hk])), slot))
+        elif kind == 'raw':
+            s.append(K.frame(step[1], step[2] if len(step) > 2 else None))
+        else:
+            raise AssertionError('unknown step %r' % kind)
+
+    K.stage()
+    s.append(K.frame(D.results(), SPEC.get('results')))
+    s.append(D.activate(E['actTitle'], E['actUse'], SPEC['chips'], 'Speaking', E['actSpeakBrief'],
+                        [E['actSpeak1'], E['actSpeak2'], E['actSpeak3']],
+                        E['actWriteKind'], E['actWriteBrief'], E['actPlaceholder']))
+    body = ''.join(s)
+    n = body.count('<section class="slide')
+    for c in langs:
+        assert str(n) in T[c]['chipCount'], '%s chipCount says %r; the deck has %d slides' % (
+            c, T[c]['chipCount'], n)
+    out = K.assemble(SPEC['out'], body, SPEC['title'], _I18n(T, langs, bool(GLOSS)), langs,
+                     extra_css=SPEC.get('css', ''))
+    if GLOSS:
+        tr = 'const NARRATIVE_TR = ' + json.dumps({c: GLOSS[c] for c in langs if c in GLOSS},
+                                                  ensure_ascii=False, indent=1) + ';\n'
+        out = out.replace('const UI_I18N = {', tr + 'const UI_I18N = {', 1)
+        open(SPEC['out'], 'w', encoding='utf-8', newline='').write(out)
+    shown = body + ''.join(K.css)
+    unused = [p for p in SPEC.get('plates', {}) if p not in shown and K.has(p)
+              and p not in (K.hero, K.cover_slot)]
+    assert not unused, 'plates on disk that no slide shows: %s' % unused
+    return out
+
+
 def build(SPEC, T, GLOSS=None):
+    if SPEC.get('style') == 'hs1':
+        return _build_hs1(SPEC, T, GLOSS)
     F = SPEC['folder']
     langs = SPEC.get('langs', ('en', 'de', 'es'))
     hero = SPEC.get('hero', 'hero')

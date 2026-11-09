@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """At the Tennis Club: Giving Instructions (A2, workplace English for
-reception and facility staff). House style 2, 14 slides.
+reception and facility staff). House style 1, 14 slides.
 
 Rebuilt 2026-11-06 from `forbes-tennis-a2.html`: Julie on reception and
 Raymond on the courts at a Vienna racket-sports hall, five "what does she
@@ -32,11 +32,23 @@ SPEC = dict(
     title='At the Tennis Club: Giving Instructions (A2)',
     folder='Tennis',
     scheme='sage',
-    art={
-        'hero': ('sport', 'a tennis racket and ball on an indoor court, a reception desk behind'),
-        'talk': ('talk', 'two speech bubbles above a reception counter with a bell'),
-        'act': ('pair', 'a reception desk with one chair on each side'),
+    style='hs1',
+    # House style 1 (HOUSE-STYLE §000, 2026-11-09). hero = the racket plate
+    # that was the first block's picture; the rest are Midjourney renders,
+    # his style images at --stylize 200, one per slide, briefs here.
+    plates={
+        'hero': 'a tennis racket and ball lying on a clay court by the net',
+        'talk': 'a sports club reception counter with a bell, racket bags and an indoor tennis hall behind',
+        'q-checkin': 'a receptionist at a tennis club desk calling over a guest who walks past with a racket bag',
+        'q-shoes': 'a pair of muddy street shoes standing on a clean blue indoor tennis court',
+        'q-booking': 'a court booking board at a tennis club, every slot full, a guest with a racket looking at it',
+        'q-agreed': 'a hand holding a phone with an online booking confirmation, a tennis court behind',
+        'q-surface': 'a close-up of a hard tennis court surface scuffed by a black shoe sole',
+        'talk2': 'a coach and a guest talking at the net of an indoor tennis court',
+        'results': 'a tennis ball resting on the white baseline of a court in evening light',
     },
+    pop={'hero': (None, 'square'), 'q-shoes': (None, 'free'), 'talk2': (None, 'blob')},
+    results='results',
 )
 
 
@@ -76,13 +88,14 @@ SPEC['flow'] = [
         'What do you say when a customer is annoyed?',
         'Do you speak English at work? When?',
     ], 'talk', 3),
+    ('stage',),
     ('rules', 'eR', 'rT', [
         ('Could you please …?', ['rP1'], '<strong>Could you please</strong> check in first?'),
         ('You need to / have to …', ['rN1'], 'You <strong>need to</strong> book a court in advance.'),
         ('You must … / … is required', ['rM1'], 'Tennis shoes <strong>are required</strong> on all courts.'),
         ('… is not allowed', ['rA1'], 'Street shoes <strong>are not allowed</strong> on the court.'),
     ], None),
-    ('mc', 'e1', 'mcT', MC, 'racket-court-net', None),
+    ('mc', 'e1', 'mcT', MC, ['q-checkin', 'q-shoes', 'q-booking', 'q-agreed', 'q-surface'], None),
     ('gap', 'e2', 'gapT', 'gHint', [
         ('You ______ to check in at reception before using the court.', ['need|have'], 'g1'),
         ('Street shoes are not ______ on the court at Tennis Punks Vienna.', ['allowed'], 'g2'),
@@ -100,7 +113,7 @@ SPEC['flow'] = [
         'What is <strong>required</strong> for your job?',
         'Explain why a rule exists: <strong>… can damage …</strong>',
         'How do you remind someone politely that they <strong>agreed</strong> to something?',
-    ], None, 3),
+    ], 'talk2', 3),
 ]
 SPEC['chips'] = ['Could you please', 'you need to', 'not allowed', 'you have to', 'required', 'you agreed']
 
@@ -177,7 +190,7 @@ T = {
     ),
     'es': dict(
         coverTitle='At the <br><em>Tennis Club</em>',
-        coverSub='Inglés profesional para recepción y personal de instalaciones: dar instrucciones claras y educadas a los clientes, entre la línea de fondo y el mostrador.',
+        coverSub='Inglés profesional para recepción y personal de instalaciones: dar instrucciones claras y educadas a los clientes, de la pista al mostrador.',
         chipLevel='A2', chipFocus='instrucciones · normas · peticiones educadas', chipCount='14 diapositivas',
         eW='Para empezar', eT='¡A conversar!', eR='La regla', e1='¿Qué dice Julie?', e2='Completa la norma', e3='Situaciones',
         tk1T='¡A conversar!', tk2T='¡A conversar!', mcT='Elige la mejor respuesta',

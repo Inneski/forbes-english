@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Past Simple vs Present Perfect — Golf Edition (B1). House style 2, 24 slides.
+"""Past Simple vs Present Perfect — Golf Edition (B1). House style 1, 24 slides.
 
 Rebuilt 2026-11-06 from `forbes-english-golf-lesson.html` (free), a tabbed
 page: theory (the difference, time signals, side-by-side pairs), eight
@@ -39,13 +39,37 @@ SPEC = dict(
     title='Past Simple vs Present Perfect — Golf Edition (B1)',
     folder='Golf',
     scheme='sage',
-    art={
-        'hero': ('sport', 'a golf flag on a green at dusk, one ball near the hole'),
-        'talk': ('talk', 'two speech bubbles above a golf buggy'),
-        'a': ('trophy', 'a trophy on a shelf beside a framed scorecard'),
-        'b': ('time', 'a clubhouse clock above a row of golf bags'),
-        'act': ('pair', 'two chairs on a clubhouse terrace with two cups'),
+    style='hs1',
+    # House style 1 (HOUSE-STYLE §000, 2026-11-09): hero = the fairway plate
+    # that was the library card; one Midjourney plate per slide besides,
+    # his style images at --stylize 200, briefs here.
+    plates={
+        'hero': 'a golf fairway at dusk',
+        'talk': 'a golf buggy parked beside a green, two bags on the back',
+        'r-trophy': 'a golfer lifting a silver trophy on the eighteenth green',
+        'q1': 'a golfer punching the air as her putt drops into the hole',
+        'q2': 'a young woman golfer standing in front of a shelf with three trophies',
+        'q3': 'a twelve-year-old girl swinging a golf club on a driving range',
+        'q4': 'an old stone golf clubhouse with flags flying and a white marquee',
+        'q5': 'a golf bag left alone in the open boot of a car in a car park',
+        'q6': 'a caddie handing a golfer a club from the bag on a fairway',
+        'q7': 'a golf ball rolling into the hole on a green, the tee far away',
+        'q8': 'a woman golfer walking up the final fairway as a crowd applauds',
+        'e1': 'a green blazer on a hanger in a wooden locker room',
+        'e2': 'pink azaleas in bloom beside a golf hole with a small white stone bridge',
+        'e3': 'three golf balls lying under the water of a pond, a golfer peering in',
+        'e4': 'an older grey-haired woman golfer in mid-swing on a fairway',
+        'e5': 'club committee members around a table studying a golf course map',
+        'e6': 'a worn leather golf glove and an old battered golf club on a bench',
+        'talk2': 'two friends talking over coffee on a golf clubhouse terrace',
+        'results': 'a golf flag on the last green at sunset, one ball beside the hole',
     },
+    pop={'hero': (None, 'square'), 'q5': (None, 'free'), 'e6': (None, 'blob'), 'talk2': (None, 'free')},
+    results='results',
+    # the hint line under each stem (ctx) costs a row: tighter options and
+    # gap rows keep the answered state inside the slide (answered-overflow)
+    css='html[data-style="editorial"] .slide:has(.q-ctx) .opt { padding-top: 7px; padding-bottom: 7px; }',
+    gap_size=20,
 )
 
 
@@ -92,10 +116,11 @@ SPEC['flow'] = [
         'Where did you go last weekend?',
         'What have you done this week that you are proud of?',
     ], 'talk', 3),
+    ('stage',),
     ('rules', 'eR', 'rDT', [
         ('Past simple', ['rP1', 'rP2'], 'Tiger Woods <strong>won</strong> the Masters in 2005. She <strong>played</strong> her best round yesterday.'),
         ('Present perfect', ['rQ1', 'rQ2'], 'She <strong>has won</strong> three majors. She <strong>has lost</strong> her 7-iron — she can’t find it!'),
-    ], 'hero'),
+    ], 'r-trophy'),
     ('rules', 'eR', 'rST', [
         ('Past simple', [(None, 'yesterday · last week · in 1997'), (None, 'two years ago · when I was …'),
                          (None, 'in the 2000s · at the Open')], None),
@@ -108,7 +133,7 @@ SPEC['flow'] = [
         ('pPair', [(None, 'The caddie <strong>gave</strong> her the wrong club on the 18th.')], 'The caddie <strong>has given</strong> her the wrong club — she’s furious!'),
         ('pPair', [(None, 'The club <strong>hosted</strong> the Open last summer.')], 'The club <strong>has hosted</strong> the Open three times.'),
     ], None),
-    ('mc', 'e1', 'mcT', MC, 'a', None),
+    ('mc', 'e1', 'mcT', MC, ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8'], None),
     ('gap', 'e2', 'gapT', 'gHint', [
         ('The ball ______ (fall) into the water on hole 12. We never found it.', ['fell'], 'w9'),
         ('She ______ (not / play) this course before. It’s her first time here.',
@@ -121,7 +146,8 @@ SPEC['flow'] = [
         ('She ______ (practise) for six hours, and now she is exhausted.',
          [APOS('has practised', 'has practiced', 'has been practising', 'has been practicing', '’s practised', '’s been practising')], 'w14'),
     ]),
-    ('mc', 'e3', 'mcT', ERR, 'b', 'left'),
+    ('stage',),
+    ('mc', 'e3', 'mcT', ERR, ['e1', 'e2', 'e3', 'e4', 'e5', 'e6'], None),
     ('talk', 'eT', 'tk2T', [
         'What sport <strong>have you</strong> never <strong>tried</strong>?',
         'When <strong>did you</strong> last <strong>play</strong> a sport?',
@@ -129,7 +155,7 @@ SPEC['flow'] = [
         'Which famous match <strong>did you watch</strong> as a child?',
         'How long <strong>have you known</strong> your best friend?',
         'What <strong>has changed</strong> in your town since 2020?',
-    ], None, 3),
+    ], 'talk2', 3),
 ]
 SPEC['chips'] = ['won', 'have you ever', 'last season', 'has already', 'since', 'yesterday', 'has played']
 
