@@ -52,7 +52,7 @@ SPEC = dict(
         'talk2': 'two children chatting on a bench in the playground',
         'results': 'a school desk with an open exercise book and coloured pencils',
     },
-    pop={'hero': (None, 'square'), 't4': (None, 'free'), 'talk2': (None, 'blob')},
+    pop={'hero': (None, 'square'), 't4': (None, 'free')},
     results='results',
 )
 

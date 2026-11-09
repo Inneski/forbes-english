@@ -48,7 +48,7 @@ SPEC = dict(
         'talk2': 'two colleagues chatting over drinks after work, a football match on the bar television',
         'results': 'a football resting on a desk beside an open laptop and a coffee cup',
     },
-    pop={'retro-runner': (None, 'square'), 'talk2': (None, 'blob')},
+    pop={'retro-runner': (None, 'square')},
     results='results',
 )
 

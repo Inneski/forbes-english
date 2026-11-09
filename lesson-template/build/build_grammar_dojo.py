@@ -50,7 +50,7 @@ SPEC = dict(
         'talk2': 'two developers chatting in an office kitchen with mugs of tea',
         'results': 'a laptop on a tidy desk with a black belt folded beside it',
     },
-    pop={'hero': (None, 'square'), 'b4': (None, 'free'), 'talk2': (None, 'blob')},
+    pop={'hero': (None, 'square'), 'talk2': (None, 'blob')},
     results='results',
     # the hint line under each stem (ctx) costs a row: tighter options keep
     # the answered state inside the slide (answered-overflow, en/de/es)

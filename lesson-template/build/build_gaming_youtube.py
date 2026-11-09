@@ -54,7 +54,7 @@ SPEC = dict(
         'talk2': 'two friends playing a video game together on a sofa',
         'results': 'a games controller resting on a beanbag',
     },
-    pop={'hero': (None, 'square'), 'b3': (None, 'free'), 'talk2': (None, 'blob')},
+    pop={'hero': (None, 'square'), 'talk2': (None, 'blob')},
     results='results',
 )
 

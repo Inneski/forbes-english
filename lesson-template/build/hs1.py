@@ -217,7 +217,42 @@ class Deck:
 ''' % (ek, E[ek], tk, E[tk], ' '.join(['1fr'] * cols), cells)
 
     # ── the page ───────────────────────────────────────────────────────
+    def _wash(self, body):
+        """Innes, 2026-11-09, of the tennis net and the money seedling behind
+        text-only slides: "we can have some full color full page backgrounds
+        from time to time ... but compositionally should be flipped". A match or
+        activation slide (no picture of its own) gets the hero
+        in FULL colour, mirrored and pushed right so its subject sits on the
+        side away from the text, fading out to the cream under the text
+        column. The rest keep the faint texture field (rule 7)."""
+        from PIL import Image, ImageOps
+        src = os.path.join(self.F, self.hero + '.jpg')
+        flip = os.path.join(self.F, self.hero + '-flip.jpg')
+        if not os.path.exists(flip) or os.path.getmtime(flip) < os.path.getmtime(src):
+            ImageOps.mirror(Image.open(src).convert('RGB')).save(flip, quality=86)
+        def tag(m):
+            t = m.group(0)
+            # only where the content keeps to the left column: under full-width
+            # cards (gap rows, three rule cards, the sort) it was clutter
+            if 'data-bg=' in t or not re.search(r'data-type="(match|activate)"', t):
+                return t
+            return t[:-1] + ' data-wash>'
+        body = re.sub(r'<section class="slide[^>]*>', tag, body)
+        # fades out to the left (text) and above the deck bar
+        grad = ('linear-gradient(90deg, transparent 34%, rgba(0,0,0,.55) 52%, #000 70%), '
+                'linear-gradient(180deg, #000 78%, transparent 90%)')
+        self.css.append(
+            'html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide.is-active[data-bg]))'
+            ':has(.slide.is-active[data-wash]) .bg-layer::before {\n'
+            "  content: ''; position: absolute; inset: 0; opacity: 1; filter: none; mix-blend-mode: normal;\n"
+            "  background: url('%s') 330px center / auto 112%% no-repeat;\n"
+            '  -webkit-mask-image: %s;\n  mask-image: %s;\n'
+            '  -webkit-mask-composite: source-in; mask-composite: intersect;\n}'
+            % (flip.replace(os.sep, '/'), grad, grad))
+        return body
+
     def assemble(self, out_path, body, title, i18n, langs, extra_css=''):
+        body = self._wash(body)
         out = D.assemble(TPL, out_path, body, D.editorial_palette('%s/%s.jpg' % (self.F, self.hero)),
                          title, i18n, langs=langs, style='editorial')
         assert '\n</style>' in out

@@ -56,7 +56,7 @@ SPEC = dict(
         'x-talk2': 'a coach and a student talking on the dojo bench after a match',
         'x-results': 'a pair of sparring gloves and a headguard on a dojo mat',
     },
-    pop={'hero': (None, 'square'), 'x-harder': (None, 'free'), 'x-talk2': (None, 'free')},
+    pop={'hero': (None, 'square')},
     results='x-results',
 )
 

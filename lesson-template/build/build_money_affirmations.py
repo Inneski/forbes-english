@@ -83,7 +83,7 @@ NEW = {
     'o2': 'a tired office worker leaving the office for a holiday with a suitcase',
     'talk2': 'two friends talking about money over coffee, a notebook of figures between them',
 }
-POP = {'hero': (None, 'square'), 'm-b2': (None, 'free'), 'talk2': (None, 'blob')}
+POP = {'hero': (None, 'square'), 'talk2': (None, 'blob')}
 K = hs1.Deck(F, pop=POP, title_px=50, cover_w=46)
 
 # py lesson-template/extract-palette.py MoneyAffirmations/hero.jpg --paper

@@ -69,7 +69,7 @@ SPEC = dict(
     },
     cover_name='pop-cover-p2',
     cover_slot='p2-s1',
-    pop={ 'p2-s3': (None, 'free'), 'p2-talk2': (None, 'blob')},
+    pop={'p2-talk2': (None, 'blob')},
     results='p2-results',
 )
 

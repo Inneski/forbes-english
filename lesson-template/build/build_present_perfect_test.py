@@ -62,7 +62,7 @@ SPEC = dict(
         'o2': 'an office worker with an unfinished report late at night',
         'results': 'a pile of postcards and a camera on a wooden table',
     },
-    pop={'hero': (None, 'square'), 'r-travel': (None, 'blob')},
+    pop={'hero': (None, 'square')},
     results='results',
 )
 

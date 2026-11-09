@@ -61,7 +61,7 @@ SPEC = dict(
         'talk2': 'two friends talking about their plans on a park bench',
         'results': 'a packed suitcase by the front door, ready for a trip',
     },
-    pop={'hero': (None, 'square'), 'n7': (None, 'free'), 'results': (None, 'free')},
+    pop={'hero': (None, 'square'), 'results': (None, 'free')},
     results='results',
 )
 
