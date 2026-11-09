@@ -91,7 +91,7 @@ Each has a 12-question quiz and nine-language example reveals.
   - no sideways scroll at 375;
   - zoom fills the phone screen.
 - **Hubs:** the canal and the prefixes go to `english-vocabulary` (no adjectives hub); the soundings go to `present-simple`. Their LESSON_TAGS lines and thumbnails are in `library.html`.
-- **Catalogue rows: NOT inserted** (they need Innes's yes). Countania's is still pending too. Then run `py tools/build_hubs.py` and `py tools/seo.py`:
+- **Catalogue rows: in** (inserted 2026-11-09 on Innes's "Yes, insert all four", with Countania's); hubs and seo.py run. For the record:
   `insert into public.lessons (file, title, level, access, track, deck, video) values ('sailing-the-seas-adjective-canal.html', 'Sailing the Seas of Grammar — Adjective Order', 'A2-B1', 'free', 'general', false, false), ('sailing-the-seas-prefixes.html', 'Sailing the Seas of Grammar — Negative Prefixes', 'B1-B2', 'free', 'general', false, false), ('sailing-the-seas-soundings.html', 'Sailing the Seas of Grammar — Adverbs of Frequency', 'A2', 'free', 'general', false, false);`
 
 ## 2026-11-08 — Next three sea charts: layouts drawn, ChatGPT brief given
@@ -137,7 +137,7 @@ machinery, and the builder docstring has the teaching idea.
 - The compass banner is split either side of the needle (tip at 768,60), which a single centred line crossed.
 - **Hub:** there is no nouns hub, so `topics.py` OVERRIDES sends it to `english-vocabulary`. The Atlas of THE could found a "Nouns and Articles" hub that both join.
 - `library.html` has its thumbnail and a LESSON_TAGS line. Regularia was missing its LESSON_TAGS line (check-library failed it), and that is fixed too.
-- **Catalogue row: NOT inserted** (it needs Innes's yes). Until it is in, the library, the hub, the sitemap and seo.py all skip the page, and its grammar-map card shows no level. Insert it, then run `py tools/build_hubs.py` and `py tools/seo.py`:
+- **Catalogue row: in** (inserted 2026-11-09 with the canal, prefixes and soundings rows). For the record:
   `insert into public.lessons (file, title, level, access, track, deck, video) values ('sailing-the-seas-countania.html', 'Sailing the Seas of Grammar — Countable and Uncountable Nouns', 'A2-B1', 'free', 'general', false, false);`
 
 ## 2026-11-08 — Maps are expandable, always (map-zoom.js)
