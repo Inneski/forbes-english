@@ -363,20 +363,15 @@ the commit; their builders reproduce it from the template.
 
 ## 2026-11-09 — HS2 → HS1 conversion: every house style 2 deck is now house style 1
 
-Innes: *"Yes, start converting"* (the decks left in house style 2). 23 decks
-are live in house style 1, about 490 Midjourney plates, his style images at
+Innes: *"Yes, start converting"* (the decks left in house style 2). **All
+26 are now house style 1**, about 530 Midjourney plates, his style images at
 `--stylize 200`; every one passes check-lesson, answered-overflow and
-overflow-langs in each language it ships.
-
-**Still owed (Midjourney Fast hours ran out, refresh 14 Nov 2026):**
-- Mistakes Review parts 2 and 3: builders converted, 31 plates owed
-  (`PLATES[2]`, `PLATES[3]` in `build_mistakes_review.py`); the build skips a
-  part until its `p<n>-hero.jpg` lands, so both pages stay HS2 till then.
-- Money Affirmations: builder converted, 9 plates owed (`NEW` in the
-  builder); its page is held at the HS2 build (`git checkout` of the HTML)
-  because building now would leave nine slides without pictures. Run the
-  builder once the plates are in.
-Re-run those 41 prompts with the style images LOCKED.
+overflow-langs in each language it ships. The last 41 (Mistakes Review 2-3,
+Money Affirmations) were rendered in Relax after Fast hours ran out
+(Innes: *"Use Relax mode now"*).
+- **Relax queues at most about 10 jobs**; more are refused with "Too many
+  queued prompts". Submit in tens and wait for each ten to finish. A job
+  still rendering answers 403 on its CDN images.
 - **Relax mode without touching the account:** add `--relax` to the prompt;
   the job runs in Relax and the account's speed setting is left alone. The
   lightning icon in the top bar is DRAFT mode, not speed: don't click it.
