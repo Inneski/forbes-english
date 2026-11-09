@@ -321,7 +321,6 @@ PLATES = {
         'q5': 'an older woman giving advice to a younger friend on a park bench',
         'q6': 'a crowded house party with people dancing',
         'q7': 'two hikers with empty stomachs looking at a restaurant sign',
-        'q8': 'a concert hall with many empty seats',
         'q9': 'a framed photo of a dog on a shelf',
         'q10': 'a woman listening to music on headphones while cooking',
         'q11': 'a man waiting outside a cinema checking his watch',

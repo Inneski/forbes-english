@@ -377,6 +377,11 @@ overflow-langs in each language it ships.
   because building now would leave nine slides without pictures. Run the
   builder once the plates are in.
 Re-run those 41 prompts with the style images LOCKED.
+- **Relax mode without touching the account:** add `--relax` to the prompt;
+  the job runs in Relax and the account's speed setting is left alone. The
+  lightning icon in the top bar is DRAFT mode, not speed: don't click it.
+- **"Chrome is not connected" after the Midjourney tab froze:**
+  `list_connected_browsers` came back empty until Innes reopened Chrome.
 
 - **`hs2quiz.build(SPEC)` with `style='hs1'`** builds through `hs1.py`. A
   converted builder keeps its content and changes only its SPEC: `plates`

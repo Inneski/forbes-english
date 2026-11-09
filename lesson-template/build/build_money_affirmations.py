@@ -84,7 +84,7 @@ NEW = {
     'talk2': 'two friends talking about money over coffee, a notebook of figures between them',
 }
 POP = {'hero': (None, 'square'), 'm-b2': (None, 'free'), 'talk2': (None, 'blob')}
-K = hs1.Deck(F, pop=POP, title_px=60, cover_w=44)
+K = hs1.Deck(F, pop=POP, title_px=50, cover_w=46)
 
 # py lesson-template/extract-palette.py MoneyAffirmations/hero.jpg --paper
 # (2026-11-08, from the Midjourney hero; every row PASS).
@@ -283,8 +283,9 @@ def slides():
 
     # ── speaking, results, activation ──────────────────────────────────
     K.stage()
-    s.append(K.frame(K.talk('eT', 'tk2T', TALK_2, E), 'talk2'))
-    s.append(K.frame(D.results(), 'act'))
+    # eight prompts need three columns: the talk plate goes to the results
+    s.append(K.talk('eT', 'tk2T', TALK_2, E))
+    s.append(K.frame(D.results(), 'talk2'))
     chips = ['deserve to', 'can’t afford to', 'worthy of', 'save for', 'spend on',
              'I’m going to', 'I’ll', 'by + date', 'an income stream', 'pay off']
     s.append(D.activate(E['actTitle'], E['actUse'], chips, 'Speaking', E['actSpeakBrief'],

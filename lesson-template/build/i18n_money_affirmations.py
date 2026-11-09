@@ -201,7 +201,7 @@ T['de'] = dict(
 # ══════════════════════════════════════════════════════════════════════
 T['es'] = dict(
     coverTitle='Money <em>Affirmations</em>',
-    coverSub='¿Mentalidad o magia? Las palabras que usamos para hablar de dinero, los patrones verbales de las afirmaciones (DESERVE TO, AFFORD TO, WORTHY OF) y cómo convertir un deseo en un plan con GOING TO, WILL y BY.',
+    coverSub='¿Mentalidad o magia? Palabras sobre el dinero, los patrones verbales de las afirmaciones (DESERVE TO, AFFORD TO, WORTHY OF) y cómo convertir un deseo en un plan con GOING TO, WILL y BY.',
     chipLevel='B1', chipFocus='palabras de dinero · patrones verbales · deseo o plan', chipCount='25 diapositivas',
 
     eW='Para empezar', eT='¡Hablemos!', eR='La regla', eV='Vocabulario',
