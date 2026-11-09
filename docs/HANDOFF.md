@@ -72,6 +72,11 @@ the style, and I measure and label.
 - **The brief** was given in chat, in the prompt format of `incoming/sea-charts/generation-prompts.txt`: one repaint prompt and one clean-copy prompt per chart.
 - **Returns** go in `incoming/sea-charts/` as `<name>.png` (labelled) and `<name>-clean.png`.
 - **Next:** for each chart, a `*_measure.py` / `*_map.py` / `build_*.py` triple, copied from Countania. The soundings need no clean copy if their numbers stay painted, but take one anyway.
+- **2026-11-09: the paintings came back.** Codex wrote them to `C:\Users\black\Documents\Codex\2026-11-09\use-case-scientific-educational-style-transfer\outputs`; they are copied to `incoming/sea-charts/`. The spelling checks out.
+  - Dot counts (`countania_measure.dots()`): the canal has 9 out of 9.
+  - The archipelago's clean copy shows 26 against 21 wanted; find the 5 extra.
+  - The soundings show 6 of 8, because the ring test fails on the dark bands. Relax it for that chart.
+- **Six more layouts, the rest of Innes's list** (`sea_layouts_3.py`, run with `PYTHONPATH=lesson-template/build`): `heights-of-register`, `inversion-maelstrom`, `the-atlantic`, `return-voyage`, `grammar-forecast`, `particle-ferries`. Their ChatGPT prompts were given in chat on 2026-11-09.
 
 ## 2026-11-08 — Countania & Uncountania (A2–B1): the third sea chart: BUILT, catalogue row pending
 
