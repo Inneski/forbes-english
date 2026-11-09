@@ -84,6 +84,33 @@ MAPS = [
                 'much furniture, a piece of furniture live on the east. Below deck, the '
                 'ship’s store cabin and cargo hold show the same cargo with two different words.'),
          go='Set sail'),
+    dict(href='sailing-the-seas-adjective-canal.html',
+         title='The Adjective Canal',
+         heading='Adjective order, lock by lock',
+         image='sailing-the-seas-adjective-canal/hero.jpg',
+         alt=('A painted chart of a canal through green meadows, with eight lock gates labelled opinion, '
+              'size, age, shape, colour, origin, material and purpose, ending in Noun Harbour'),
+         blurb=('A noun travels with its adjectives like a barge down a canal: through eight locks, '
+                'in one order, never backwards. Opinion first; purpose right next to the noun.'),
+         go='Set sail'),
+    dict(href='sailing-the-seas-prefixes.html',
+         title='The Prefix Archipelago',
+         heading='Negative prefixes, island by island',
+         image='sailing-the-seas-prefixes/hero.jpg',
+         alt=('A painted sea chart: an orange mainland marked UN- and six islands, IM-, IL-, IR-, IN-, '
+              'DIS- and MIS-, each with its own landmark'),
+         blurb=('Most words sail to the mainland and take un-. The rest live on islands with their own '
+                'rules: im- before p and m, il- before l, ir- before r, dis- for the opposite, mis- for wrongly.'),
+         go='Set sail'),
+    dict(href='sailing-the-seas-soundings.html',
+         title='Soundings of Frequency',
+         heading='Adverbs of frequency, by the depth of the sea',
+         image='sailing-the-seas-soundings/hero.jpg',
+         alt=('A painted depth chart: a sandy shore at Never Point, then the sea deepening in bands from '
+              'hardly ever to always, with a red anchor buoy'),
+         blurb=('How often is how deep: never on the shore, always in the deepest water. The red buoy '
+                'shows where the word drops anchor in a sentence.'),
+         go='Set sail'),
     dict(href='sherpa-tensing-route-map.html',
          title='Sherpa Tensing route map',
          heading='Every tense, camp by camp',

@@ -251,6 +251,9 @@ OVERRIDES = {
     'top-gear-skiing-lesson.html': ['past-simple'],
     'sailing-the-seas-regularia.html': ['past-simple'],  # regular / irregular past forms, as a sea chart
     'sailing-the-seas-countania.html': ['english-vocabulary'],  # countable / uncountable nouns, as a sea chart; no nouns hub yet
+    'sailing-the-seas-adjective-canal.html': ['english-vocabulary'],  # adjective order, as a canal; no adjectives hub yet
+    'sailing-the-seas-prefixes.html': ['english-vocabulary'],         # negative prefixes: word formation
+    'sailing-the-seas-soundings.html': ['present-simple'],            # adverbs of frequency, the present simple's companions
     'forbes-english-golf-lesson.html': ['past-simple', 'present-perfect'],
     'mtb-perfect-vs-simple.html': ['past-simple', 'present-perfect'],
     'forbes-english-lesson (2).html': ['conditionals', 'business-english'],

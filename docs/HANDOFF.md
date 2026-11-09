@@ -63,6 +63,37 @@ Screenshot gotcha: a scripted ArrowRight walk through a deck stops at the
 first gap slide, because the gap input keeps focus and swallows the key.
 Blur `document.activeElement` before each press.
 
+## 2026-11-09 — Sea charts 4-6: Adjective Canal, Prefix Archipelago, Soundings of Frequency: BUILT, catalogue rows pending
+
+Innes said "Build all three". The pages are:
+- `sailing-the-seas-adjective-canal.html` (adjective order)
+- `sailing-the-seas-prefixes.html` (negative prefixes)
+- `sailing-the-seas-soundings.html` (adverbs of frequency)
+
+Each has a 12-question quiz and nine-language example reveals.
+
+- **New shared machinery: use it for every chart from here on.**
+  - `lesson-template/build/sea_lesson.py` holds the page build: shell, palette, the three reading modes, panels, translations, sky, music and map-zoom. A builder writes its content and calls `L.build()`.
+  - `sea_overlay.py` holds the label-layer helpers.
+  - `sea_measure.py <clean> <out.json> [--dark]` finds the dots and the land.
+  - Builders: `build_canal.py`, `build_prefixes.py`, `build_soundings.py` (about 250 lines each, against Countania's 700).
+- **Dots.**
+  - Canal: 9 of 9.
+  - Archipelago: 24 measured, 3 not harbours (two cliffs, the lighthouse). They are listed in `NOT_HARBOURS`, and an assert accounts for every measured dot.
+  - Soundings: 8 of 8, with `--dark`, because the usual ring test fails on deep water.
+- **Checked at 1920 and 375:**
+  - no text collisions in any mode;
+  - all labels inside the border (two titles were lowered off it);
+  - every hotspot responds to a real hit (`elementFromPoint`) and lights its panel line;
+  - each quiz scores 12/12;
+  - the DE and ES reveals work;
+  - pictures are a true 3:2;
+  - no sideways scroll at 375;
+  - zoom fills the phone screen.
+- **Hubs:** the canal and the prefixes go to `english-vocabulary` (no adjectives hub); the soundings go to `present-simple`. Their LESSON_TAGS lines and thumbnails are in `library.html`.
+- **Catalogue rows: NOT inserted** (they need Innes's yes). Countania's is still pending too. Then run `py tools/build_hubs.py` and `py tools/seo.py`:
+  `insert into public.lessons (file, title, level, access, track, deck, video) values ('sailing-the-seas-adjective-canal.html', 'Sailing the Seas of Grammar — Adjective Order', 'A2-B1', 'free', 'general', false, false), ('sailing-the-seas-prefixes.html', 'Sailing the Seas of Grammar — Negative Prefixes', 'B1-B2', 'free', 'general', false, false), ('sailing-the-seas-soundings.html', 'Sailing the Seas of Grammar — Adverbs of Frequency', 'A2', 'free', 'general', false, false);`
+
 ## 2026-11-08 — Next three sea charts: layouts drawn, ChatGPT brief given
 
 Innes asked whether my own high-end art is still "shoddy". Answer: the
