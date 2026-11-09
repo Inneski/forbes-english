@@ -64,7 +64,10 @@ their frame.
    outline. **A pop stays inside its picture zone, so it never lands on text.**
    Measure that in every language. **Look at every cut-out before keeping it**:
    rembg loses thin parts (it dropped the scales' pans), so give `box=` for the
-   object's true extent, and drop ragged ones.
+   object's true extent, and drop ragged ones. On these screen-print plates `free`
+   cut-outs of people fail more often than not (torn limbs, missing halves;
+   Innes: *"dodgy"*): put every pop on one contact sheet and look, and prefer
+   `blob`/`square` or a plain frame.
 5. **The cover is a pop-out too.** The hero is cut out and bursts out of a
    square at the right; the title stands on clean cream at the left. On a
    phone, the hero becomes a band under the type.
@@ -76,6 +79,12 @@ their frame.
    fills, three-card rules, the writing task) gets a faint grayscale close-up
    of the cover at 6%. *"the background textures were for absence of
    illustrations on a page, not necessary for all."*
+   **From time to time it is a full-colour page instead** (Innes,
+   2026-11-09: *"full color full page backgrounds from time to time like
+   this tennis net one and this leaf but compositionally should be
+   flipped"*): match and activation slides get the hero in full colour,
+   mirrored and pushed right, fading out under the text column and above the
+   deck bar. `hs1.Deck` does it in `assemble()`; not under full-width cards.
 8. **Answer boxes fit their answers.** The editorial `.opt` is
    `fit-content`.
 

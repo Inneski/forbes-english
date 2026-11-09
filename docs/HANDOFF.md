@@ -359,6 +359,18 @@ Peer-modified decks (first-in-space-c1, skiing-B1, money-affirmations) got
 the same 10-line fitStage change in the working tree but were left out of
 the commit; their builders reproduce it from the template.
 
+## 2026-11-09 — HS1 follow-up: ragged cut-outs dropped; colour wash on match/activation
+
+Innes, on screenshots of Taekwondo and Tennis/Money: *"some dodgy work from
+you here, also we can have some full color full page backgrounds from time
+to time like this tennis net one and this leaf but compositionally should be
+flipped"*. A contact sheet of all 46 slide pops (PIL, on cream) showed eleven
+ragged `free` cut-outs; they are plain frames now. `hs1.Deck._wash()` puts
+the hero in full colour, mirrored (`<hero>-flip.jpg`, made on build) and
+pushed right, behind match and activation slides only (tried every other
+texture slide: under full-width gap rows and three-card rules it was
+clutter). HOUSE-STYLE §000 rules 4 and 7 updated. af56899d.
+
 ## 2026-11-09 — HS2 → HS1 conversion: every house style 2 deck is now house style 1
 
 Innes: *"Yes, start converting"* (the decks left in house style 2). **All
