@@ -94,7 +94,7 @@ T['en'] = dict(
     q10w='A question about NOW: ARE + subject + USED TO + -ING. "Do … use to" is not English.',
     q11w='USED TO SWIM = a childhood habit that stopped. IS USED TO LIVING = it feels normal to her now.',
     q12w='TODAY: ARE USED TO + -ING, it is normal for them. In the 1960s, a past state that has changed: DIDN’T USE TO HAVE.',
-    q13w='AREN’T USED TO + a noun (SUCH HUMIDITY): it does not feel normal. USED TO COME = a past pattern that has changed, because now they come all year.',
+    q13w='AREN’T USED TO + noun = it isn’t normal for them. USED TO COME = a past habit that has changed.',
 
     g1w='A past habit or state that has stopped: USED TO + base verb.',
     g2w='Negative: DIDN’T USE TO + base verb. No D on USE after DIDN’T.',
@@ -186,7 +186,7 @@ T['de'] = dict(
     q10w='Eine Frage über JETZT: ARE + Subjekt + USED TO + -ING. "Do … use to" ist kein Englisch.',
     q11w='USED TO SWIM = eine Gewohnheit aus der Kindheit, die aufgehört hat. IS USED TO LIVING = es fühlt sich jetzt für sie normal an.',
     q12w='TODAY: ARE USED TO + -ING, es ist für sie normal. In den 1960ern ein früherer Zustand, der sich verändert hat: DIDN’T USE TO HAVE.',
-    q13w='AREN’T USED TO + Nomen (SUCH HUMIDITY): Es fühlt sich nicht normal an. USED TO COME = ein früheres Muster, das sich verändert hat, denn jetzt kommen sie das ganze Jahr.',
+    q13w='AREN’T USED TO + Nomen = für sie nicht normal. USED TO COME = eine frühere Gewohnheit, die sich geändert hat.',
 
     g1w='Eine frühere Gewohnheit oder ein Zustand, der aufgehört hat: USED TO + Grundform.',
     g2w='Verneinung: DIDN’T USE TO + Grundform. Nach DIDN’T kein D bei USE.',
@@ -278,7 +278,7 @@ T['es'] = dict(
     q10w='Una pregunta sobre AHORA: ARE + sujeto + USED TO + -ING. "Do … use to" no es inglés.',
     q11w='USED TO SWIM = un hábito de la infancia que terminó. IS USED TO LIVING = ahora le resulta normal.',
     q12w='TODAY: ARE USED TO + -ING, para ellos es normal. En los años 60, un estado del pasado que ha cambiado: DIDN’T USE TO HAVE.',
-    q13w='AREN’T USED TO + sustantivo (SUCH HUMIDITY): no les resulta normal. USED TO COME = un patrón del pasado que ha cambiado, porque ahora vienen todo el año.',
+    q13w='AREN’T USED TO + sustantivo = no les resulta normal. USED TO COME = un hábito pasado que ha cambiado.',
 
     g1w='Un hábito o estado del pasado que terminó: USED TO + verbo base.',
     g2w='Negación: DIDN’T USE TO + verbo base. Después de DIDN’T, USE va sin D.',

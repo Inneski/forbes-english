@@ -132,7 +132,7 @@ MC_C = [
     dict(stem='Farmers in the Llanos ___ getting up before dawn today — but in the 1960s many of them ___ have electricity.',
          options=['are used to / didn’t use to', 'used to / weren’t used to', 'get used to / used to not',
                   'were used to / didn’t use to'], correct=0, why='q12w'),
-    dict(stem='Tourists from cold countries ___ such intense humidity, and many of them ___ come only in December — now they come all year.',
+    dict(stem='Tourists from cold countries ___ such humidity, and many ___ come only in December. Now they come all year.',
          options=['aren’t used to / used to', 'didn’t use to feel / are used to', 'aren’t used to / are used to',
                   'used to / are used to'], correct=0, why='q13w'),
 ]

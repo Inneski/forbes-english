@@ -314,12 +314,31 @@ first one moved; the other 26 follow on the same module.
   only, so Venezuela's `hero.jpg` was cut with The Comeback Ride's hero
   mask (a fragment of arches). Now the key is folder + name + byte size;
   a replaced plate also gets a fresh mask. Old masks are simply recomputed.
-- **Midjourney blocked from here:** the Chrome window on Innes's machine was
-  minimised (viewport 0x0), so the prompt bar does not render and
-  screenshots time out; resizing did not restore it. The owed plates need
-  the window up. In-page `fetch()` of `cdn.midjourney.com/<job>/0_<n>.png`
-  plus an anchor download DOES work and lands the full PNGs in ~/Downloads
-  with no manual step (tested on the Venezuela batch, 28 files).
+- **The 14 question plates landed (same day).** All 28 slides now carry
+  real art; nothing is owed. Picks are in `incoming/venezuela/mjven-<slot>-<n>.png`,
+  saved as 1600x896 JPEGs. To fit the humidity question beside its narrow frame
+  when answered, its stem and explanation (en/de/es) were tightened.
+- **Driving Midjourney from here, what works:**
+  - **A 0x0 tab is fixed by a NEW tab, not by resizing.** The old tab reported
+    innerWidth 0 even with the window restored. `tabs_create` plus navigating
+    to /imagine rendered at once.
+  - **His style images:** hover a Comeback Ride job, click **Use** (it loads the
+    prompt and the four style refs). Then click the padlock beside Image
+    Prompts to lock them for the batch, and click it again after.
+  - **Prompts:** set by native setter plus `input` event, then click the send
+    arrow at about (1245,35). 14 went in one `browser_batch` with a 2 s gap
+    between them.
+  - **Mapping jobs to slots:** scroll the feed and read each image's ancestor
+    text. Images above the feed are Explore promos (the V8 banner), not his
+    jobs. Search the text for a phrase in the prompt.
+  - **Downloads:** in-page `fetch()` of
+    `cdn.midjourney.com/<job>/0_<n>.png` plus an anchor download lands them
+    in ~/Downloads.
+  - **JS calls time out at 45 s**, so wait with `computer wait`, not a long
+    in-page sleep.
+- **answered-overflow numbers slides from 1 over `.slide` elements.** Splitting
+  the HTML on `<section class="slide` gives a different count, which sent me
+  to the wrong question twice.
 - `tools/cut_subject.py` (rembg cut-out to a transparent PNG) was written for
   house style 2 zones and is not used by house style 1, which cuts through
   pop_plate.
