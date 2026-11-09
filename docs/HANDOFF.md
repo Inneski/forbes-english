@@ -287,6 +287,38 @@ Peer-modified decks (first-in-space-c1, skiing-B1, money-affirmations) got
 the same 10-line fitStage change in the working tree but were left out of
 the commit; their builders reproduce it from the template.
 
+## 2026-11-09 — Venezuela is house style 1; hs1.py; the pop mask cache bug
+
+Innes: *"comeback ride is the new house style 1 - adhere to its rules"*,
+then *"cut out can still be part of this"*. The 27 decks converted to house
+style 2 since 2026-11-06 are therefore all off-standard. Venezuela is the
+first one moved; the other 26 follow on the same module.
+
+- **`lesson-template/build/hs1.py`**: the Comeback Ride builder's machinery
+  as a `Deck` class (frame, POP, GHOST, texture CSS, pop-out cover, talk
+  cards, assemble). HOUSE-STYLE §000 documents it. A slot without its
+  `<slot>.jpg` gets the texture field and is printed as owed.
+- **Venezuela** (`build_venezuela.py`): seven Midjourney renders as plates
+  (full JPEGs; pop_plate does the cutting). Pops: the cover (radio and cuatro,
+  because the hacienda hero is a scene with no single object), talk and
+  boots `free`, the Mérida cable car `square`. 14 per-question plates owed,
+  briefs in the builder (`QA`, `QB`, `QC`, `O`). check-lesson,
+  answered-overflow and overflow-langs clean en/de/es; the phone cover is the
+  hero band.
+- **Bug fixed in `tools/pop_plate.py`:** masks were cached by plate NAME
+  only, so Venezuela's `hero.jpg` was cut with The Comeback Ride's hero
+  mask (a fragment of arches). Now the key is folder + name + byte size;
+  a replaced plate also gets a fresh mask. Old masks are simply recomputed.
+- **Midjourney blocked from here:** the Chrome window on Innes's machine was
+  minimised (viewport 0x0), so the prompt bar does not render and
+  screenshots time out; resizing did not restore it. The owed plates need
+  the window up. In-page `fetch()` of `cdn.midjourney.com/<job>/0_<n>.png`
+  plus an anchor download DOES work and lands the full PNGs in ~/Downloads
+  with no manual step (tested on the Venezuela batch, 28 files).
+- `tools/cut_subject.py` (rembg cut-out to a transparent PNG) was written for
+  house style 2 zones and is not used by house style 1, which cuts through
+  pop_plate.
+
 ## 2026-11-09 — HOUSE STYLE 1 is now the editorial + pop-out look (The Comeback Ride)
 
 Innes: *"make this style with the stickout bits and isolated characters etc

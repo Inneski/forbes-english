@@ -104,7 +104,12 @@ def build(plate, out, narrow=False, span=None, mode='square', box=None, zone=Non
     pw, ph = im.size
     # the cache lives in incoming/ (gitignored): a mask is a working file,
     # not something the site serves
-    cache = os.path.join('incoming', 'pop-masks', os.path.basename(plate).rsplit('.', 1)[0] + '.mask.png')
+    # Keyed by folder, name and byte size: keyed by name alone, Venezuela's
+    # hero.jpg was cut with The Comeback Ride's hero mask (2026-11-09), and a
+    # plate replaced under the same name reused its old mask.
+    stem = os.path.basename(plate).rsplit('.', 1)[0]
+    folder = os.path.basename(os.path.dirname(os.path.abspath(plate)))
+    cache = os.path.join('incoming', 'pop-masks', '%s__%s__%d.mask.png' % (folder, stem, os.path.getsize(plate)))
     os.makedirs(os.path.dirname(cache), exist_ok=True)
     m = mask_for(plate, cache)
     a = subject(m, span)

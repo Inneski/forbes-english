@@ -37,11 +37,17 @@ Fixed in the content, found in the audit (the old page shipped them):
   * Q7's explanation said DIDN'T USE TO "would need a base verb, not -ing";
     there is no -ing in that sentence, it is a noun (THE NOISE).
 
-Art: the only picture on disk is a 1200x671 library card, below the 1400px
-floor, so every slot is a stand-in (tools/make_standin.py) with its brief
-recorded for the shopping list (tools/standins.py). Drop the real plates in
-Venezuela/ under the slot names and re-run; deck.plate() takes them over the
-stand-ins without a code change. Re-derive the palette when the hero lands.
+House style 1 (2026-11-09, Innes: "comeback ride is the new house style
+1 - adhere to its rules"; HOUSE-STYLE §000), through hs1.py, the reference
+builder's machinery lifted into a module. Art: seven Midjourney renders from
+2026-11-09 (picks in PLATES below), the hero cut out for the cover. One plate
+per question is owed (QA/QB/QC/O below, briefs beside each): until a plate
+lands its slide shows the texture field, and the build prints what is owed.
+
+Run from the repo root:  py lesson-template/build/build_venezuela.py
+"""
+r"""(The house style 2 notes, kept for the record: the first rebuild was the
+HS2 benchmark deck, on stand-ins.)
 
 Run from the repo root:  py lesson-template/build/build_venezuela.py
 """
@@ -52,8 +58,8 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'tools'))
 import deck as D
+import hs1
 import i18n_venezuela as I
-import make_standin
 
 TPL = 'lesson-template/lesson-template.html'
 F = 'Venezuela'
@@ -61,38 +67,37 @@ OUT = 'forbes-english-venezuela.html'
 TITLE = 'Used To & Be Used To — Venezuela Edition (B1)'
 E = I.T['en']
 
-# Every picture the deck needs: cover, one per section, the two speaking
-# fields, the activation. The brief is the shopping-list line for the real
-# plate — an idea, not a scene (the Noma Bar rule in the revamp list).
-ART = {
-    'hero':   ('time', 'a hammock strung on a hacienda porch, the flat llanos beyond, one palm'),
-    'warm':   ('quiz', 'a rotary telephone, a folded paper map and a stack of letters on a shelf: things people used to use'),
-    'used':   ('music', 'an old valve radio on a windowsill with a harp leaning beside it, the joropo era'),
-    'beused': ('mountain', 'a cable car climbing to a high Andean town, thin air, small houses on the slope'),
-    'both':   ('build', 'a pair of worn rubber work boots beside a pair of new city shoes'),
-    'talk':   ('talk', 'two figures in silhouette on a plaza bench under a mango tree, a speech bubble between them'),
-    'act':    ('pair', 'two stools at a café counter with two small cups of cafecito'),
+# House style 1 plates: <slot>.jpg in Venezuela/, whole renders with the
+# subject centred. Picks from the 2026-11-09 grids: hero 0, warm 0, used 3
+# (the small guitar reads as a cuatro), beused 3, both 2, talk 0, act 3.
+# POP: which subjects break out of their frame (tools/pop_plate.py), checked
+# by eye on the built slides.
+POP = {
+    'beused': (None, 'square'),
+    'both': (None, 'free'),
+    'talk': (None, 'free'),
 }
-make_standin.ensure(F, ART, scheme='warm', deck=OUT)
+# The hacienda hero is a scene with no one object in it, so the cover pops
+# out the radio and cuatro instead (the joropo era: what people used to do).
+K = hs1.Deck(F, pop=POP, cover_slot='used', title_px=64, cover_w=44)   # DE/ES subtitles run three lines
 
-# py lesson-template/extract-palette.py Venezuela/standin-hero.jpg --paper
-# (2026-11-06; every row PASS). Re-derive from hero.jpg when it lands.
-PALETTE_BODY = """
-  --void          : #fcfbf9;
-  --surface       : #f2eee5;
-  --surface2      : #f7f5f0;
-  --border        : #d0bc95;
-  --text          : #231d13;
-  --text-dim      : #595140;
-  --accent        : #8f6003;
-  --accent-bright : #694600;
-  --accent-dim    : #e6d4b2;
-  --secondary     : #3c9d92;
-  --contrast      : #12697d;"""
-
-
-def palette(hero_ref):
-    return "  --hero: url('%s');\n%s" % (hero_ref, PALETTE_BODY)
+# One plate per question, owed. Briefs for Midjourney (his style images,
+# --stylize 200; HOUSE-STYLE §000 rule 2), one per slot, subject centred:
+QA = [('qa-falls', 'Angel Falls dropping off a flat-topped tepui into the jungle'),
+      ('qa-fire', 'a clay pot on a wood fire in a village kitchen, a gas cooker in the corner'),
+      ('qa-oil', 'oil derricks on Lake Maracaibo in the 1970s boom, workers in hard hats'),
+      ('qa-river', 'the wide Orinoco river winding through rainforest, one canoe'),
+      ('qa-football', 'a football team in burgundy shirts celebrating a goal')]
+QB = [('beused', 'the Merida cable car: in hand'),
+      ('qb-night', 'a man lying awake in a city flat at night, car lights through the blinds'),
+      ('qb-rig', 'an offshore oil platform at dusk, a worker on the deck'),
+      ('qb-heat', 'a journalist with a notebook fanning herself in hot afternoon sun'),
+      ('qb-class', 'a language classroom, students with headphones, a teacher at the board')]
+QC = [('qc-lake', 'a girl swimming in a lake at sunset, stilt houses behind'),
+      ('qc-dawn', 'a farmer leading cattle across the flat llanos at dawn, an oil lamp'),
+      ('qc-humid', 'two tourists in sun hats wilting in tropical humidity under palms')]
+O = [('o-school', 'a child with a satchel walking to school along a dusty road'),
+     ('o-road', 'a small car on a winding mountain road with hairpin bends')]
 
 
 # ── content ────────────────────────────────────────────────────────────
@@ -218,10 +223,11 @@ def examples(title_key, eyebrow_key, rows):
 ''' % (eyebrow_key, E[eyebrow_key], title_key, E[title_key], cards)
 
 
-def mcs(qs, start, total, ek, slot, side=None):
+def mcs(qs, start, total, ek, slots):
     # q['why'] is a UI_I18N key, so the explanation translates (RESOLVE gate).
-    return [D.art(D.mc(start + n, total, q, ek, E[ek], 'mcT', E['mcT']), F, slot, side=side)
-            for n, q in enumerate(qs)]
+    return [K.frame(D.mc(start + n, total, q, ek, E[ek], 'mcT', E['mcT']), slot,
+                    text=(q['stem'], q['options']))
+            for n, (q, (slot, _brief)) in enumerate(zip(qs, slots))]
 
 
 def gap(rows, ek, hint_key):
@@ -237,19 +243,16 @@ def b(key):
 
 
 def slides():
-    cover, hero_ref = D.hs2_cover(D.logo_from(TPL), E['coverTitle'], E['coverSub'],
-                                  [('Level', E['chipLevel']), ('Focus', E['chipFocus']),
-                                   ('Count', E['chipCount'])], F)
-    s = [cover]
+    s = [K.cover(E)]
 
     # ── warm-up: the benchmark's opening pair ──────────────────────────
-    s.append(D.art(D.survey('eW', E['eW'], 'svT', E['svT'], None,
-                            'Name something people <strong>used to</strong> do every week that most people don’t do any more.',
-                            SURVEY, hint=('svHint', E['svHint'])), F, 'warm', side='left'))
-    s.append(D.art(D.bubbles('eT', E['eT'], 'tk1T', E['tk1T'], [(None, p) for p in TALK_1], cols=3),
-                   F, 'talk'))
+    s.append(K.frame(D.survey('eW', E['eW'], 'svT', E['svT'], None,
+                              'Name something people <strong>used to</strong> do every week that most people don’t do any more.',
+                              SURVEY, hint=('svHint', E['svHint'])), 'warm'))
+    s.append(K.frame(K.talk('eT', 'tk1T', TALK_1, E), 'talk'))
 
     # ── stage 1 · used to ──────────────────────────────────────────────
+    K.stage()
     s.append(D.rules('eR', E['eR'], 'rAt', E['rAt'], [
         ('I used to + verb', b(['rA1', 'rA2', 'rA3']),
          'Venezuela <strong>used to export</strong> more oil than almost any other country.'),
@@ -257,12 +260,13 @@ def slides():
          'Children <strong>didn’t use to watch</strong> so much television.'),
         ('Did you use to + verb?', b(['rA5']),
          '<strong>Did</strong> your family <strong>use to make</strong> arepas on Sundays?'),
-    ]))
+    ]))     # three rule cards: no room for a picture (texture field)
     s.append(examples('xAt', 'eX', EX_A))
-    s += mcs(MC_A, 1, 5, 'e1', 'used')
+    s += mcs(MC_A, 1, 5, 'e1', QA)
     s.append(gap(GAP_A, 'e1', 'gHintA'))
 
     # ── stage 2 · be used to ───────────────────────────────────────────
+    K.stage()
     s.append(D.rules('eR', E['eR'], 'rBt', E['rBt'], [
         ('be used to + -ing', b(['rB1', 'rB2', 'rB3']),
          'People from Mérida <strong>are used to living</strong> at high altitude.'),
@@ -270,40 +274,43 @@ def slides():
          'He <strong>wasn’t used to</strong> the noise of the city.'),
         ('get used to', b(['rB5']),
          'After a month, she <strong>got used to</strong> the heat.'),
-    ]))
+    ]))     # three rule cards: no room for a picture
     s.append(examples('xBt', 'eX', EX_B))
-    s += mcs(MC_B, 1, 5, 'e2', 'beused', side='left')
+    s += mcs(MC_B, 1, 5, 'e2', QB)
     s.append(gap(GAP_B, 'e2', 'gHintB'))
 
     # ── stage 3 · side by side ─────────────────────────────────────────
-    s.append(D.rules('eR', E['eR'], 'rCt', E['rCt'], [
+    K.stage()
+    s.append(K.frame(D.rules('eR', E['eR'], 'rCt', E['rCt'], [
         ('used to + base verb', b(['rC1', 'rC2', 'rC3']),
          'She <strong>used to wake up</strong> at 5 a.m. to catch the bus to Caracas.'),
         ('be used to + -ing', b(['rC4', 'rC5', 'rC6']),
          'She <strong>is used to waking up</strong> early — she has always lived in the countryside.'),
-    ]))
-    s += mcs(MC_C, 1, 3, 'e3', 'both')
-    for items, dec, why in ORDERS:
-        s.append(D.art(D.order(items, 'e3', E['e3'], 'orderT', E['orderT'], 'orderHint',
-                               E['orderHint'], why, decoys=dec), F, 'both', side='left'))
+    ]), 'both'))
+    s += mcs(MC_C, 1, 3, 'e3', QC)
+    for (items, dec, why), (slot, _brief) in zip(ORDERS, O):
+        s.append(K.frame(D.order(items, 'e3', E['e3'], 'orderT', E['orderT'], 'orderHint',
+                                 E['orderHint'], why, decoys=dec), slot))
 
     # ── speaking, results, activation ──────────────────────────────────
-    s.append(D.bubbles('eT', E['eT'], 'tk2T', E['tk2T'], [(None, p) for p in TALK_2], cols=4))
-    s.append(D.results())
+    K.stage()
+    s.append(K.frame(K.talk('eT', 'tk2T', TALK_2, E), 'act'))
+    s.append(K.frame(D.results(), 'hero'))
     chips = ['got used to', 'didn’t use to', 'used to', 'Did … use to',
              'getting used to', 'is used to']
-    s.append(D.art(D.activate(E['actTitle'], E['actUse'], chips, 'Speaking', E['actSpeakBrief'],
-                              [E['actSpeak1'], E['actSpeak2'], E['actSpeak3']],
-                              E['actWriteKind'], E['actWriteBrief'], E['actPlaceholder']),
-                   F, 'act'))
-    return "".join(s), hero_ref
+    # the activation's two panels need the full width
+    s.append(D.activate(E['actTitle'], E['actUse'], chips, 'Speaking', E['actSpeakBrief'],
+                        [E['actSpeak1'], E['actSpeak2'], E['actSpeak3']],
+                        E['actWriteKind'], E['actWriteBrief'], E['actPlaceholder']))
+    return "".join(s)
 
 
 def build():
-    s, hero_ref = slides()
-    D.assemble(TPL, OUT, s, palette(hero_ref), TITLE, I, langs=('en', 'de', 'es'), style='hs2')
-    n = s.count('<section class="slide')
-    print('wrote %s — %d slides' % (OUT, n))
+    body = slides()
+    n = body.count('<section class="slide')
+    for c in ('en', 'de', 'es'):
+        assert str(n) in I.T[c]['chipCount'], '%s chipCount %r, deck has %d' % (c, I.T[c]['chipCount'], n)
+    K.assemble(OUT, body, TITLE, I, ('en', 'de', 'es'))
 
 
 if __name__ == '__main__':

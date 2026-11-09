@@ -79,10 +79,17 @@ their frame.
 8. **Answer boxes fit their answers.** The editorial `.opt` is
    `fit-content`.
 
-The reusable pieces are `tools/pop_plate.py` and the template's `pop` frame.
-The per-deck tables (`ART`, `NEW`, `POP`, `GHOST`, the cover CSS) still live
-in the reference builder: **copy them from there** until they are lifted into
-`deck.py`.
+The reusable pieces are `tools/pop_plate.py`, the template's `pop` frame and
+**`lesson-template/build/hs1.py`** (2026-11-09): the reference builder's
+`frame()`, `POP`, `GHOST`, texture field and pop-out cover as a `Deck` class.
+A new house style 1 builder uses it rather than copying tables:
+`K = hs1.Deck(folder, pop=POP)`, `K.cover(E)`, `K.frame(slide, slot,
+text=(stem, options))`, `K.stage()` between stages, `K.assemble(...)`. A slot
+whose `<slot>.jpg` has not landed gets the texture field and is listed as
+owed, so a deck ships while its art is still being made. A three-card rule
+slide takes no picture (it has no room). `cover_slot=` pops a different plate
+when the hero is a scene with no single object. `build_venezuela.py` is the
+first deck on it. The Comeback Ride keeps its own copy of the tables.
 
 ---
 
