@@ -63,7 +63,7 @@ Screenshot gotcha: a scripted ArrowRight walk through a deck stops at the
 first gap slide, because the gap input keeps focus and swallows the key.
 Blur `document.activeElement` before each press.
 
-## 2026-11-09 — Sea charts 7-12: Register, Inversion, the Atlantic, Question Tags, the Forecast, Phrasal Verbs: BUILT, catalogue rows pending
+## 2026-11-09 — Sea charts 7-12: Register, Inversion, the Atlantic, Question Tags, the Forecast, Phrasal Verbs: SHIPPED
 
 Innes brought back ChatGPT's six paintings (`six-charts.zip`, unpacked to the
 gitignored `incoming/sea-charts/six/`; painted + clean copy each, 1536×1024,
@@ -96,9 +96,7 @@ in nine languages:
   strings and is fine.
 - On the grammar page (`grammar_maps.py` MAPS), in `library.html`
   (thumbnails + LESSON_TAGS) and in `topics.py` OVERRIDES.
-- **Catalogue rows: NOT inserted** (they need Innes's yes). Until then the
-  library, hubs and sitemap skip the pages and the grammar-map cards show no
-  level. Then `py tools/build_hubs.py` and `py tools/seo.py`:
+- **Catalogue rows: in** (inserted 2026-11-09 on Innes's "Yes, insert all six"); hubs and seo.py run. For the record:
   `insert into public.lessons (file, title, level, access, track, deck, video) values ('sailing-the-seas-register.html', 'Sailing the Seas of Grammar — Formal and Everyday Words', 'B2', 'free', 'general', false, false), ('sailing-the-seas-inversion.html', 'Sailing the Seas of Grammar — Negative Inversion', 'C1', 'free', 'general', false, false), ('sailing-the-seas-atlantic.html', 'Sailing the Seas of Grammar — British and American English', 'B1-B2', 'free', 'general', false, false), ('sailing-the-seas-question-tags.html', 'Sailing the Seas of Grammar — Question Tags', 'B1', 'free', 'general', false, false), ('sailing-the-seas-forecast.html', 'Sailing the Seas of Grammar — Probability and Prediction', 'B1-B2', 'free', 'general', false, false), ('sailing-the-seas-phrasal-verbs.html', 'Sailing the Seas of Grammar — Phrasal Verbs', 'B1-B2', 'free', 'general', false, false);`
 
 ## 2026-11-09 — Sea charts 4-6: Adjective Canal, Prefix Archipelago, Soundings of Frequency: BUILT, catalogue rows pending
