@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light" data-style="hs2">
+<html lang="en" data-theme="light" data-style="editorial">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,7 +23,7 @@
 <title>Active &amp; Passive Voice — Quiz Part 2 — Business English (B2)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Barlow+Condensed:wght@700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 /* ══════════════════════════════════════════════════════════════════
    FORBES ENGLISH — 16:9 SLIDE LESSON TEMPLATE
@@ -39,17 +39,18 @@
       and paste its output over the colour block. Never hand-pick colours. */
 :root {
   --hero: url('refinery/hero.jpg');
-  --void          : #fcfbf9;
-  --surface       : #f2eee5;
-  --surface2      : #f7f5f0;
-  --border        : #d0bb95;
-  --text          : #231d13;
-  --text-dim      : #595040;
-  --accent        : #8d5b00;
-  --accent-bright : #644100;
-  --accent-dim    : #f0d7a8;
-  --secondary     : #121b1d;
-  --contrast      : #095c6d;
+
+  --void          : #fff9ed;
+  --surface       : #ffffff;
+  --surface2      : #f3ede0;
+  --border        : #d8dfd8;
+  --text          : #123a3e;
+  --text-dim      : #4a6265;
+  --accent        : #1c5789;
+  --accent-bright : #16456b;
+  --accent-dim    : #4a8cc4;
+  --secondary     : #f8dcd1;
+  --contrast      : #a33b12;
 }
 
 /* ── audio (Listening) ───────────────────────────────────────────────
@@ -334,7 +335,10 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
 .fe-logo-mark { color: var(--logo-mark, var(--accent)); }
 .fe-logo-word { fill: var(--logo-word, var(--text)); opacity: 0; transition: opacity .25s ease; }
 .fonts-ready .fe-logo-word { opacity: 1; }   /* never flash a fallback face */
-.slide[data-type="cover"] .fe-logo { width: 232px; }
+/* flex-shrink 0: in the cover's flex column an over-full cover squashed the
+   logo (to 15px tall on The Comeback Ride, 2026-11-08) and so hid its own
+   overflow from check-lesson's LAYOUT gate. Now the overflow shows. */
+.slide[data-type="cover"] .fe-logo { width: 232px; flex-shrink: 0; }
 
 /* ── COVER ── */
 .cover-inner {
@@ -1352,6 +1356,15 @@ html.is-flow .panel-body { padding: var(--pad); justify-content: flex-start; }
 /* editorial's art is placed against the 16:9 canvas by hand, slide by slide;
    there is no upright position for it, so upright it is not drawn */
 html.is-flow[data-style="editorial"] .editorial-art { display: none; }
+/* ...and so the column the body gave up for it comes back. The 58% / 65%
+   max-width and the 42% left margin (picture on the left) are keyed to the
+   picture, and upright they kept the text in half a phone, two words a line,
+   pushed right on every left-picture slide (measured on The Comeback Ride,
+   2026-11-08; true of every editorial deck). !important because the rules it
+   undoes are (0,8,1) and later in the file. */
+html.is-flow[data-style="editorial"] .stage .slide.is-active .slide-body {
+  max-width: none !important; margin-left: 0 !important;
+}
 
 /* ── two columns is one column ──
    !important, which nothing else here needs: a builder that wants three
@@ -1409,6 +1422,14 @@ html.is-flow .cover-title { font-size: clamp(30px, 8.6vw, 40px); margin-top: 14p
 html.is-flow .cover-sub { font-size: 16px; }
 html.is-flow .slide-title { font-size: clamp(23px, 6.6vw, 30px); }
 html.is-flow[data-style="editorial"] .slide-title { font-size: clamp(26px, 7.4vw, 34px); }
+/* The editorial cover's 88px / 24px are (0,2,1) and later in the file, so
+   they beat the two flow rules above: on a 390px phone "comeback" ran 60px
+   off the screen (The Comeback Ride, 2026-11-08). */
+html.is-flow[data-style="editorial"] .cover-title { font-size: clamp(34px, 10.5vw, 46px); }
+html.is-flow[data-style="editorial"] .cover-sub { font-size: 17px; }
+/* ...and its 58% cap, which is the scrim's width on a 16:9 canvas, left the
+   cover type in 226px of a 390px phone. */
+html.is-flow[data-style="editorial"] .cover-inner { max-width: none; }
 html.is-flow .divider-cap h2 { font-size: clamp(24px, 6.8vw, 32px); }
 html.is-flow .fe-logo { width: 116px; }
 html.is-flow .slide[data-type="cover"] .fe-logo { width: 150px; }
@@ -1801,7 +1822,9 @@ html[data-style="editorial"] .editorial-art {
   display: block;
   position: absolute; z-index: 0; pointer-events: none;
   right: 58px; top: 172px; width: 37%; height: 57%;
-  background: var(--hero) center / cover no-repeat;
+  /* --art-pos is the slide's data-art-pos (show() copies it): the crop that
+     keeps a plate's subject inside the frame. Unset, it is centre. */
+  background: var(--hero) var(--art-pos, center) / cover no-repeat;
   border-radius: 22px;                     /* the source deck's default */
   box-shadow: 0 10px 40px rgba(18, 58, 62, 0.14);
 }
@@ -1816,6 +1839,17 @@ html[data-style="editorial"] .stage:has(.slide.is-active[data-art="arch"]) .edit
    or re-plan, never shrink, and the passage is one the source fitted too. */
 html[data-style="editorial"] .stage:has(.slide.is-active[data-art-size="narrow"]) .editorial-art {
   width: 30%;
+}
+/* data-art="pop": the subject breaks out over the top of its frame. The
+   picture is one transparent image from tools/pop_plate.py, the frame plus
+   64px above it, already rounded, so the box grows upward by those 64px
+   and the shadow follows the outline (filter, not box-shadow). Pops rise
+   only upward: beside the frame is text, above-left of it the title. */
+html[data-style="editorial"] .stage:has(.slide.is-active[data-art="pop"]) .editorial-art {
+  top: 108px; height: calc(57% + 64px);
+  background-size: 100% 100%; background-position: 0 0;
+  border-radius: 0; box-shadow: none;
+  filter: drop-shadow(0 10px 22px color-mix(in srgb, var(--text) 18%, transparent));
 }
 /* ...and it can sit on the left instead, which the source alternated. */
 html[data-style="editorial"] .stage:has(.slide.is-active[data-art-side="left"]) .editorial-art {
@@ -1957,9 +1991,12 @@ html[data-style="editorial"] .card {
              font-size:26px;font-weight:500;gap:22px}
      .letter{font-size:24px;padding:10px 15px;border-radius:9px;
              background:cream;font-weight:800}  */
-html[data-style="editorial"] .opts { justify-items: stretch; gap: 12px; }
+/* Sized to the answer, not the column (2026-11-08): the source's bars ran
+   full width, and a four-word option in a 668px bar failed check-lesson's
+   OPTS gate and the house rule that answer boxes fit their answers. */
+html[data-style="editorial"] .opts { justify-items: start; gap: 12px; }
 html[data-style="editorial"] .opt {
-  width: 100%; text-align: left; gap: 18px;
+  width: fit-content; max-width: 100%; text-align: left; gap: 18px;
   background: var(--surface); border: 2px solid #bed0cb;
   border-radius: 11px; padding: 16px 19px;
   font-size: 21px; font-weight: 500; line-height: 1.3;
@@ -2319,6 +2356,113 @@ html[data-style="hs2"] .bubbles {
 .aside-note {
   font-style: italic; color: var(--text-dim); font-size: 16px;
 }
+
+/* ══ TONES (house style 2, opt-in: deck.assemble(..., tones=True)) ═════
+   Innes, 2026-11-08, on Money Affirmations: "be a bit more creative with
+   colored panels". One greige tint on every container read as flat. With
+   data-tones="on" the containers rotate through four tones, and the
+   picture stands on a coloured panel instead of bare paper.
+
+   Rule 4 holds: every tone is a mix of the deck's own palette tokens
+   (secondary, accent-dim, contrast, accent) into --void, so a deck's
+   tones change with its hero like everything else. Text stays --text;
+   the mixes are light enough that body copy and the accent example keep
+   their contrast (measured on the first deck: copy and accent on the
+   light tones 5.9:1 or better; the deep tones carry only --text, 9.5:1+). */
+html[data-tones="on"] {
+  --tone-1: color-mix(in srgb, var(--secondary) 48%, var(--void));
+  --tone-2: color-mix(in srgb, var(--accent-dim) 62%, var(--void));
+  --tone-3: color-mix(in srgb, var(--contrast) 17%, var(--void));
+  --tone-4: color-mix(in srgb, var(--accent) 17%, var(--void));
+  --tone-1-deep: color-mix(in srgb, var(--secondary) 88%, var(--void));
+  --tone-2-deep: var(--accent-dim);
+  --tone-3-deep: color-mix(in srgb, var(--contrast) 34%, var(--void));
+  --tone-4-deep: color-mix(in srgb, var(--accent) 34%, var(--void));
+}
+/* --secondary is the one token whose lightness the extractor does not fix:
+   pale sage (#a8cdb1) on the stand-in, near-black (#0e251a) on Money
+   Affirmations' real hero, which turned the 48% mix into a dark panel under
+   dark copy. So tone-1 keeps secondary's HUE and pins the lightness. The
+   chroma floor stops a near-black secondary going plain grey. Browsers
+   without relative colour keep the mix above. */
+@supports (color: oklch(from red l c h)) {
+  html[data-tones="on"] {
+    --tone-1: oklch(from var(--secondary) 0.88 clamp(0.035, c, 0.07) h);
+    --tone-1-deep: oklch(from var(--secondary) 0.78 clamp(0.045, c, 0.09) h);
+  }
+}
+/* rule and vocabulary cards: the card takes a tone, its pill the deep one */
+html[data-tones="on"] .tab-card:nth-child(4n+1) { background: var(--tone-1); }
+html[data-tones="on"] .tab-card:nth-child(4n+2) { background: var(--tone-2); }
+html[data-tones="on"] .tab-card:nth-child(4n+3) { background: var(--tone-3); }
+html[data-tones="on"] .tab-card:nth-child(4n+4) { background: var(--tone-4); }
+html[data-tones="on"] .tab-card:nth-child(4n+1) .tab-pill { background: var(--tone-1-deep); }
+html[data-tones="on"] .tab-card:nth-child(4n+2) .tab-pill { background: var(--tone-2-deep); }
+html[data-tones="on"] .tab-card:nth-child(4n+3) .tab-pill { background: var(--tone-3-deep); }
+html[data-tones="on"] .tab-card:nth-child(4n+4) .tab-pill { background: var(--tone-4-deep); }
+/* speech bubbles, survey answers and gap rows rotate the same set */
+html[data-tones="on"] :is(.bubble, .survey-a, .gap-row.card):nth-child(4n+1) { background: var(--tone-1); }
+html[data-tones="on"] :is(.bubble, .survey-a, .gap-row.card):nth-child(4n+2) { background: var(--tone-2); }
+html[data-tones="on"] :is(.bubble, .survey-a, .gap-row.card):nth-child(4n+3) { background: var(--tone-3); }
+html[data-tones="on"] :is(.bubble, .survey-a, .gap-row.card):nth-child(4n+4) { background: var(--tone-4); }
+html[data-tones="on"] .survey-q { background: var(--tone-3-deep); }
+/* answer options stay one quiet tint (colour must not hint at the key);
+   only the letter badge takes a tone, by position, not by answer */
+html[data-tones="on"] .opt:nth-child(4n+1) .opt-key { background: var(--tone-1-deep); }
+html[data-tones="on"] .opt:nth-child(4n+2) .opt-key { background: var(--tone-2-deep); }
+html[data-tones="on"] .opt:nth-child(4n+3) .opt-key { background: var(--tone-3-deep); }
+html[data-tones="on"] .opt:nth-child(4n+4) .opt-key { background: var(--tone-4-deep); }
+/* sort bins: each box its own colour, so "which box" is a colour too */
+html[data-tones="on"] .sort-bin { border-style: solid; border-color: transparent; }
+html[data-tones="on"] .sort-bin:nth-child(1) { background: var(--tone-2); }
+html[data-tones="on"] .sort-bin:nth-child(2) { background: var(--tone-1); }
+html[data-tones="on"] .sort-bin:nth-child(3) { background: var(--tone-3); }
+html[data-tones="on"] .act-panel { background: var(--tone-3); }
+/* the coloured panel behind a cut-out figure: one colour per kind of
+   slide, so the deck changes colour as the task changes */
+html[data-tones="on"] .stage:has(.slide.is-active[data-art="cutout"]) .editorial-art {
+  top: 150px; bottom: 74px; right: 56px; border-radius: 28px;
+  background-color: var(--tone-1);
+  background-size: 78% auto; background-position: var(--art-pos, center 62%);
+}
+html[data-tones="on"] .stage:has(.slide.is-active[data-art-side="left"][data-art="cutout"]) .editorial-art { left: 56px; right: auto; }
+html[data-tones="on"] .stage:has(.slide.is-active[data-type="mc"][data-art="cutout"]) .editorial-art { background-color: var(--tone-3); }
+html[data-tones="on"] .stage:has(.slide.is-active[data-type="discuss"][data-art="cutout"]) .editorial-art { background-color: var(--tone-2); }
+html[data-tones="on"] .stage:has(.slide.is-active[data-type="activate"][data-art="cutout"]) .editorial-art { background-color: var(--tone-4); }
+html[data-tones="on"] .stage.on-cover:has(.slide[data-type="cover"][data-art="cutout"]) .bg-layer::before {
+  top: 56px; bottom: 56px; right: 56px; border-radius: 36px;
+  background-color: var(--tone-1); background-size: 74% auto; background-position: center 64%;
+}
+/* House style 1, rule 7: a slide with no picture of its own gets a faint
+   grayscale close-up of the cover, multiplied in at 6%. Off on the cover. */
+html[data-style="editorial"] .stage:not(.on-cover):not(:has(.slide.is-active[data-bg])) .bg-layer::before {
+  content: ''; position: absolute; inset: 0;
+  background: var(--hero) var(--art-pos, center) 45% / 260% auto no-repeat;
+  filter: grayscale(1) contrast(1.15); opacity: .06; mix-blend-mode: multiply;
+}
+html[data-style="editorial"] .opts { gap: 8px; }
+html[data-style="editorial"] .opt { padding-top: 10px; padding-bottom: 10px; }
+
+/* House style 1, rule 5: the hero is cut out and bursts out of a rounded
+   square of its own scene at the right, in a 640x600 zone at x 600-1240;
+   the title stands on clean cream at the left. */
+html[data-style="editorial"]:not(.is-flow) .cover-inner { max-width: 44%; }   /* 44% ends at 563px, clear of the zone */
+html[data-style="editorial"]:not(.is-flow) .cover-title { font-size: 64px; }
+html[data-style="editorial"]:not(.is-flow) .stage.on-cover .bg-layer::before {
+  background: url('refinery/pop-cover.webp') 600px 64px / 640px 600px no-repeat;
+  filter: drop-shadow(0 14px 26px color-mix(in srgb, var(--text) 18%, transparent));
+}
+html[data-style="editorial"]:not(.is-flow) .stage.on-cover .bg-layer::after { content: none; }
+/* On a phone the cover is a page: the type on the cream, the hero a band
+   along the bottom, above the deck bar. */
+html.is-flow[data-style="editorial"] .stage.on-cover .bg-layer::before {
+  background: var(--hero) center bottom 56px / auto 34svh no-repeat;
+}
+html.is-flow[data-style="editorial"] .stage.on-cover .bg-layer::after { content: none; }
+html.is-flow[data-style="editorial"] .slide[data-type="cover"] .cover-inner {
+  padding-bottom: calc(34svh + 16px);
+}
+
 </style>
 </head>
 <body>
@@ -2372,13 +2516,13 @@ html[data-style="hs2"] .bubbles {
         <h2 class="slide-title" data-i18n="tk1T">Let’s talk!</h2>
       </div></div>
       <div class="slide-body">
-        <div class="bubbles" style="--bub-cols:3">
-          <div class="bubble"><span>When do you use the radio at work, and what do you say?</span></div>
-          <div class="bubble"><span>What goes into a good shift handover?</span></div>
-          <div class="bubble"><span>Who reads your incident reports?</span></div>
-          <div class="bubble"><span>Is it better to say “I did it” or “It was done”? When?</span></div>
-          <div class="bubble"><span>What must be checked before a unit restarts?</span></div>
-          <div class="bubble"><span>What makes a message clear under pressure?</span></div>
+        <div class="cols" style="grid-template-columns:1fr 1fr;gap:14px">
+          <div class="card" style="padding:16px 20px;display:flex;align-items:center"><p class="prose" style="font-size:19px;line-height:1.42">When do you use the radio at work, and what do you say?</p></div>
+          <div class="card" style="padding:16px 20px;display:flex;align-items:center"><p class="prose" style="font-size:19px;line-height:1.42">What goes into a good shift handover?</p></div>
+          <div class="card" style="padding:16px 20px;display:flex;align-items:center"><p class="prose" style="font-size:19px;line-height:1.42">Who reads your incident reports?</p></div>
+          <div class="card" style="padding:16px 20px;display:flex;align-items:center"><p class="prose" style="font-size:19px;line-height:1.42">Is it better to say “I did it” or “It was done”? When?</p></div>
+          <div class="card" style="padding:16px 20px;display:flex;align-items:center"><p class="prose" style="font-size:19px;line-height:1.42">What must be checked before a unit restarts?</p></div>
+          <div class="card" style="padding:16px 20px;display:flex;align-items:center"><p class="prose" style="font-size:19px;line-height:1.42">What makes a message clear under pressure?</p></div>
         </div>
       </div>
     </section>
@@ -2484,7 +2628,7 @@ html[data-style="hs2"] .bubbles {
       </div>
     </section>
 
-    <section class="slide" data-bg="refinery/refinery-scene-1.jpg" data-art-side="left" data-type="mc">
+    <section class="slide" data-bg="refinery/r-bund.jpg" data-art-side="left" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e2">The forms</span> &middot; 1 / 2</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the best answer</h2>
@@ -2501,7 +2645,7 @@ html[data-style="hs2"] .bubbles {
       </div>
     </section>
 
-    <section class="slide" data-type="mc">
+    <section class="slide" data-bg="refinery/pop-r-arrive-n.webp" data-art="pop" data-art-size="narrow" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e2">The forms</span> &middot; 2 / 2</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the best answer</h2>
@@ -2539,7 +2683,7 @@ html[data-style="hs2"] .bubbles {
       </div>
     </section>
 
-    <section class="slide" data-bg="refinery/refinery-scene-3.jpg" data-type="order">
+    <section class="slide" data-bg="refinery/refinery-scene-3.jpg" data-art-side="left" data-type="order">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="e2">The forms</div>
         <h2 class="slide-title" data-i18n="orderT">Build the sentence</h2>
@@ -2554,7 +2698,7 @@ html[data-style="hs2"] .bubbles {
       </div>
     </section>
 
-    <section class="slide" data-bg="refinery/refinery-scene-3.jpg" data-type="order">
+    <section class="slide" data-bg="refinery/r-brief.jpg" data-type="order">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="e2">The forms</div>
         <h2 class="slide-title" data-i18n="orderT">Build the sentence</h2>
@@ -2569,24 +2713,24 @@ html[data-style="hs2"] .bubbles {
       </div>
     </section>
 
-    <section class="slide" data-type="discuss">
+    <section class="slide" data-bg="refinery/talk2.jpg" data-art-side="left" data-type="discuss">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="eT">Let’s talk</div>
         <h2 class="slide-title" data-i18n="tk2T">Let’s talk!</h2>
       </div></div>
       <div class="slide-body">
-        <div class="bubbles" style="--bub-cols:3">
-          <div class="bubble"><span>Give a radio command to your team in <strong>active</strong> voice.</span></div>
-          <div class="bubble"><span>Report a leak in two sentences, <strong>passive</strong>: what <strong>was found</strong>, what <strong>was done</strong>?</span></div>
-          <div class="bubble"><span>What <strong>has been repaired</strong> or <strong>replaced</strong> at your site this month?</span></div>
-          <div class="bubble"><span>What <strong>must be checked</strong> at the start of every shift?</span></div>
-          <div class="bubble"><span>Hand over to the next shift: what <strong>did you</strong> do, what <strong>will be done</strong> next?</span></div>
-          <div class="bubble"><span>When is it wrong to hide who did something?</span></div>
+        <div class="cols" style="grid-template-columns:1fr 1fr;gap:14px">
+          <div class="card" style="padding:16px 20px;display:flex;align-items:center"><p class="prose" style="font-size:19px;line-height:1.42">Give a radio command to your team in <strong>active</strong> voice.</p></div>
+          <div class="card" style="padding:16px 20px;display:flex;align-items:center"><p class="prose" style="font-size:19px;line-height:1.42">Report a leak in two sentences, <strong>passive</strong>: what <strong>was found</strong>, what <strong>was done</strong>?</p></div>
+          <div class="card" style="padding:16px 20px;display:flex;align-items:center"><p class="prose" style="font-size:19px;line-height:1.42">What <strong>has been repaired</strong> or <strong>replaced</strong> at your site this month?</p></div>
+          <div class="card" style="padding:16px 20px;display:flex;align-items:center"><p class="prose" style="font-size:19px;line-height:1.42">What <strong>must be checked</strong> at the start of every shift?</p></div>
+          <div class="card" style="padding:16px 20px;display:flex;align-items:center"><p class="prose" style="font-size:19px;line-height:1.42">Hand over to the next shift: what <strong>did you</strong> do, what <strong>will be done</strong> next?</p></div>
+          <div class="card" style="padding:16px 20px;display:flex;align-items:center"><p class="prose" style="font-size:19px;line-height:1.42">When is it wrong to hide who did something?</p></div>
         </div>
       </div>
     </section>
 
-    <section class="slide" data-type="results">
+    <section class="slide" data-bg="refinery/results.jpg" data-type="results">
       <div class="slide-body" style="align-items:center;text-align:center">
         <div class="score-big"><span id="scoreVal">0</span><span class="dim" style="font-size:34px">/<span id="scoreMax">0</span></span></div>
         <p class="prose" style="margin-top:18px" id="scoreMsg"></p>
@@ -2598,7 +2742,7 @@ html[data-style="hs2"] .bubbles {
       </div>
     </section>
 
-    <section class="slide" data-bg="refinery/refinery-scene-1.jpg" data-type="activate">
+    <section class="slide" data-type="activate">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="actEyebrow">Activation</div>
         <h2 class="slide-title" data-i18n="actTitle">The handover</h2>
@@ -2724,6 +2868,7 @@ const UI_I18N = {
     actWriteBrief: "Write a short incident report (120–150 words) on a small leak: what WAS FOUND, what WAS DONE, what WILL BE CHECKED, all passive. End with one active sentence naming who owns the follow-up.",
     actWriteKind: "Writing",
     actWriteWord: 'Writing',
+    bankLabel: "Word bank:",
     btnCheck: 'Check',
     btnCopied: 'Copied',
     btnCopy: 'Copy',
@@ -2804,6 +2949,7 @@ const UI_I18N = {
     actWriteBrief: "Schreib einen kurzen Störfallbericht (120–150 Wörter) über ein kleines Leck: WAS FOUND, WAS DONE, WILL BE CHECKED, alles im Passiv. Schließe mit einem Aktivsatz: Wer kümmert sich um die Nachverfolgung?",
     actWriteKind: "Schreiben",
     actWriteWord: 'Schreiben',
+    bankLabel: "Wortliste:",
     btnCheck: 'Prüfen',
     btnCopied: 'Kopiert',
     btnCopy: 'Kopieren',
@@ -2884,6 +3030,7 @@ const UI_I18N = {
     actWriteBrief: "Escribe un informe de incidentes corto (120–150 palabras) sobre una pequeña fuga: WAS FOUND, WAS DONE, WILL BE CHECKED, todo en pasiva. Termina con una oración activa: ¿quién se encarga del seguimiento?",
     actWriteKind: "Escritura",
     actWriteWord: 'Escritura',
+    bankLabel: "Banco de palabras:",
     btnCheck: 'Comprobar',
     btnCopied: 'Copiado',
     btnCopy: 'Copiar',

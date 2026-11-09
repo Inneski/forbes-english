@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Gaming YouTubers (B2). House style 2, 22 slides.
+"""Gaming YouTubers (B2). House style 1, 22 slides.
 
 Rebuilt 2026-11-06 from `forbes-gaming-youtube-b2.html`: five multiple
 choice on gaming-channel know-how, six vocabulary gaps (walkthrough,
@@ -33,14 +33,29 @@ SPEC = dict(
     title='Gaming YouTubers (B2)',
     folder='GamingYouTube',
     scheme='cool',
-    art={
-        'hero': ('game', 'a game controller in front of a glowing screen, a ring light behind'),
-        'talk': ('talk', 'two speech bubbles above a gaming headset'),
-        'a': ('tech', 'a laptop with a video editing timeline drawn as coloured bars'),
-        'b': ('game', 'a game controller beside a stack of flat game boxes, no titles'),
-        'c': ('film', 'a camera on a tripod pointed at a gaming chair'),
-        'act': ('pair', 'two gaming chairs side by side, two headsets'),
+    style='hs1',
+    # House style 1 (HOUSE-STYLE §000, 2026-11-09): Midjourney plates, his style
+    # images at --stylize 200, one per slide, briefs here.
+    # The five scenario items are too long for any frame (texture field).
+    plates={
+        'hero': 'a teenager streaming a video game in a bedroom lit by screens, headset on',
+        'talk': 'a games controller and a headset on a desk beside a microphone',
+        'b1': 'a gamer pointing at a map of a game level on a big screen',
+        'b2': 'a gamer racing through a level, a stopwatch beside the screen',
+        'b3': 'a streamer laughing into a microphone in front of a game',
+        'b4': 'a table of game character cards and equipment laid out like a strategy board',
+        'b5': 'a game developer fixing glitchy pixel blocks on a monitor',
+        'b6': 'a tired gamer playing the same mission again late at night',
+        'o1': 'a creator editing gameplay footage on a laptop',
+        'o2': 'a gamer reacting with surprise to a new game trailer',
+        'c1': 'a young creator planning a channel with sketches pinned on a wall',
+        'c2': 'a streamer going live, a chat window glowing beside the game',
+        'c3': 'a creator frowning at a comment on a phone',
+        'talk2': 'two friends playing a video game together on a sofa',
+        'results': 'a games controller resting on a beanbag',
     },
+    pop={'hero': (None, 'square'), 'b3': (None, 'free'), 'talk2': (None, 'blob')},
+    results='results',
 )
 
 
@@ -110,15 +125,19 @@ SPEC['flow'] = [
         'Which game would you make videos about?',
         'Should children be YouTubers?',
     ], 'talk', 3),
+    ('stage',),
     ('mc', 'e1', 'mcT', MC, None, None),
-    ('mc', 'e2', 'mcT', VOCAB, 'b', 'left'),
+    ('stage',),
+    ('mc', 'e2', 'mcT', VOCAB, ['b1', 'b2', 'b3', 'b4', 'b5', 'b6'], None),
+    ('stage',),
     ('order', 'e3', 'orderT', 'orderHint', [
         (['Choose a game and a level,', 'play it through first,', 'record it with commentary,', 'edit out the mistakes,',
           'and upload it with a good title.'], None, 'w12'),
         (['Watch the news for big releases,', 'prepare your talking points,', 'record your first reaction,',
           'edit in the best moments,', 'and publish as soon as the game is out.'], None, 'w13'),
-    ], 'c', None),
-    ('mc', 'e4', 'mcT', STEPS, 'a', 'left'),
+    ], ['o1', 'o2'], None),
+    ('stage',),
+    ('mc', 'e4', 'mcT', STEPS, ['c1', 'c2', 'c3'], None),
     ('rules', 'eR', 'recT', [
         ('pVideos', [(None, 'a walkthrough · a let’s play'), (None, 'a speedrun · a livestream'), (None, 'evergreen content')], None),
         ('pGame', [(None, 'the meta · a patch'), (None, 'to grind · loot · to respawn'), (None, 'to rage-quit')], None),
@@ -131,7 +150,7 @@ SPEC['flow'] = [
         'Which kind of video is the most <strong>evergreen</strong>?',
         'How should a creator answer <strong>toxic</strong> comments?',
         'Would you rather make a <strong>walkthrough</strong> or a <strong>let’s play</strong>?',
-    ], None, 3),
+    ], 'talk2', 3),
 ]
 SPEC['chips'] = ['walkthrough', 'commentary', 'evergreen', 'the meta', 'a patch', 'royalty-free', 'niche']
 

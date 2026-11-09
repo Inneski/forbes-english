@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Adverbs, Will & So / Neither (B1, German support). House style 2, 25 slides.
+"""Adverbs, Will & So / Neither (B1, German support). House style 1, 25 slides.
 
 Rebuilt 2026-11-06 from `teil3_part2_test.html` (Übungsheft Teil 3, Part 2):
 three German rule panels and a fifteen-item test, five per topic. The rules
@@ -32,14 +32,35 @@ SPEC = dict(
     title='Adverbs, Will & So / Neither (B1)',
     folder='Teil3Test',
     scheme='rose',
-    art={
-        'hero': ('star', 'a shooting star over the roof of a small house at night'),
-        'talk': ('talk', 'two speech bubbles above two people seen from behind, on a sofa'),
-        'a': ('sport', 'a running track with one runner far ahead of the others, flat shapes'),
-        'b': ('idea', 'a glass ball on a small round table, glowing softly'),
-        'c': ('people', 'two figures side by side, each with an identical speech bubble'),
-        'act': ('pair', 'two chairs and two cups at a small round table'),
+    style='hs1',
+    # House style 1 (HOUSE-STYLE §000, 2026-11-09): Midjourney plates, his style
+    # images at --stylize 200, one per slide, briefs here.
+    plates={
+        'hero': 'a group of teenagers at a Saturday evening party in a living room',
+        'talk': 'friends on a sofa planning their Saturday evening',
+        'a1': 'a girl smiling happily in a sunny park',
+        'a2': 'a boy doing his homework carefully at a desk',
+        'a3': 'a young man chatting to a waiter at a café in Rome',
+        'a4': 'a boy running fast across the finish line of a race',
+        'a5': 'a quiet ordinary Monday morning at a bus stop',
+        'b1': 'a cheerful boy with lots of ideas, brainstorming with friends at a table',
+        'b2': 'two girls turning away from each other after an argument',
+        'b3': 'a boy dreaming of playing football in a big stadium',
+        'b4': 'a shy teenager arriving alone at a party full of strangers',
+        'b5': 'a teenager at home doing homework while friends go out',
+        'o1': 'a teenager running to catch the school bus in the morning',
+        'c1': 'two friends listening to rap music on one pair of headphones',
+        'c2': 'two friends looking sad outside a party they can’t go to',
+        'c3': 'two tired teenagers yawning at breakfast',
+        'c4': 'two friends showing each other their empty wallets',
+        'c5': 'two friends putting down a boring book',
+        'talk2': 'teenagers chatting on the school steps',
+        'results': 'a pair of headphones and a school notebook on a desk',
     },
+    # the party hero is a crowd: the cover pops the boy with the football
+    cover_slot='b3',
+    pop={ 'a4': (None, 'free'), 'talk2': (None, 'blob')},
+    results='results',
 )
 
 
@@ -82,32 +103,35 @@ SPEC['flow'] = [
         'What can’t you do that you would like to do?',
         'Who in your family speaks English well?',
     ], 'talk', 3),
+    ('stage',),
     ('rules', 'eR', 'rAt', [
         ('adjective + -ly', ['rA1', 'rA2'], 'quick → <strong>quickly</strong> · happy → <strong>happily</strong> · terrible → <strong>terribly</strong>'),
         ('pExc', ['rA3'], 'good → <strong>well</strong> · fast → <strong>fast</strong>'),
         ('pJob', ['rA4'], 'a <strong>careful</strong> driver · she drives <strong>carefully</strong>'),
     ], None),
-    ('mc', 'e1', 'mcT', ADV, 'a', None),
+    ('mc', 'e1', 'mcT', ADV, ['a1', 'a2', 'a3', 'a4', 'a5'], None),
     ('gap', 'e1', 'gapT', 'gHint', [
         ('She sings ______ (beautiful).', ['beautifully'], 'gw1'),
         ('He drives very ______ (careful).', ['carefully'], 'gw2'),
         ('They speak English really ______ (good).', ['well'], 'gw3'),
     ]),
+    ('stage',),
     ('rules', 'eR', 'rWt', [
         ('will / ’ll + verb', ['rW1'], 'I<strong>’ll go</strong>. She<strong>’ll win</strong>.'),
         ('won’t + verb', ['rW2'], 'I <strong>won’t know</strong> anyone. It <strong>won’t be</strong> fun.'),
         ('pSame', ['rW3'], 'he <strong>will go</strong> — never “he wills go”, “he will goes”'),
     ], None),
-    ('mc', 'e2', 'mcT', WILL, 'b', 'left'),
+    ('mc', 'e2', 'mcT', WILL, ['b1', 'b2', 'b3', 'b4', 'b5'], None),
     ('order', 'e2', 'orderT', 'orderHint', [
         (['I', 'won’t', 'be', 'late', 'tomorrow.'], ['not'], 'o1w'),
-    ], 'b', 'left'),
+    ], ['o1'], None),
+    ('stage',),
     ('rules', 'eR', 'rSt', [
         ('So + verb + I', ['rS1'], 'I like rap. — <strong>So do I.</strong>'),
         ('Neither + verb + I', ['rS2'], 'I can’t swim. — <strong>Neither can I.</strong>'),
         ('pMirror', ['rS3'], 'I <strong>went</strong> → So <strong>did</strong> I · I <strong>haven’t</strong> → Neither <strong>have</strong> I'),
     ], None),
-    ('mc', 'e3', 'mcT', SO, 'c', None),
+    ('mc', 'e3', 'mcT', SO, ['c1', 'c2', 'c3', 'c4', 'c5'], None),
     ('talk', 'eT', 'tk2T', [
         'Tell your partner something you <strong>can’t</strong> do. Do they say “<strong>Neither can I</strong>”?',
         'What <strong>will</strong> you do tonight?',
@@ -115,7 +139,7 @@ SPEC['flow'] = [
         'What do you do <strong>well</strong>? What do you do <strong>badly</strong>?',
         'Do you drive <strong>carefully</strong>, or <strong>fast</strong>?',
         'Where <strong>will</strong> you be in five years?',
-    ], None, 3),
+    ], 'talk2', 3),
 ]
 SPEC['chips'] = ['well', 'won’t', 'So do I', 'carefully', 'Neither can I', 'will', 'fast']
 

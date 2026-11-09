@@ -162,7 +162,8 @@ def _build_hs1(SPEC, T, GLOSS):
     K = hs1.Deck(F, pop=SPEC.get('pop'), ghost=SPEC.get('ghost', ()), hero=SPEC.get('hero', 'hero'),
                  cover_slot=SPEC.get('cover_slot'), title_px=SPEC.get('title_px', 64),
                  cover_w=SPEC.get('cover_w', 44), cover_mode=SPEC.get('cover_mode', 'square'),
-                 cover_span=SPEC.get('cover_span'), cover_box=SPEC.get('cover_box'))
+                 cover_span=SPEC.get('cover_span'), cover_box=SPEC.get('cover_box'),
+                 cover_name=SPEC.get('cover_name', 'pop-cover'))
     for slot in SPEC.get('plates', {}):
         assert re.match(r'^[a-z0-9_-]+$', slot), slot
     s = [K.cover(E, [('Level', E['chipLevel']), ('Focus', E['chipFocus']), ('Count', E['chipCount'])])]

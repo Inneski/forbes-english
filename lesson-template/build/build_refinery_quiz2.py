@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Active & Passive Voice — Refinery Quiz Part 2 (B2). House style 2, 16 slides.
+"""Active & Passive Voice — Refinery Quiz Part 2 (B2). House style 1, 16 slides.
 
 Rebuilt 2026-11-06 from `active_passive_refinery_quiz_part2.html`, a
 ten-question scrolling quiz for a refinery fire-team deputy lead (FRTU
@@ -36,8 +36,25 @@ SPEC = dict(
     title='Active & Passive Voice — Refinery Quiz Part 2 (B2)',
     folder='refinery',
     scheme='slate',
-    art={},              # every slot is one of Part 1's plates
-    act='refinery-scene-1',
+    style='hs1',
+    # House style 1 (HOUSE-STYLE §000, 2026-11-09): Midjourney plates, his style
+    # images at --stylize 200, one per slide, briefs here.
+    # Part 1's three refinery scenes and its hero are kept; four new plates.
+    plates={
+        'hero': 'an oil refinery',
+        'refinery-scene-0': 'a refinery scene',
+            'refinery-scene-3': 'a refinery scene',
+        'r-bund': 'workers repairing a concrete bund wall around a storage tank at a refinery',
+        'r-arrive': 'a fire incident commander in a white helmet arriving at a refinery fire scene',
+        'r-brief': 'a refinery fire team in helmets being briefed before an operation',
+        'talk2': 'a fire crew leader speaking into a radio beside a fire engine at a refinery',
+        'results': 'a refinery at dusk, a flare stack burning against the sky',
+    },
+    # the refinery hero is a skyline: the cover pops the crew leader instead
+    # the four voice items are too long for any frame (answered-overflow)
+    cover_slot='talk2',
+    pop={'r-arrive': (None, 'free')},
+    results='results',
 )
 
 
@@ -90,6 +107,7 @@ SPEC['flow'] = [
         'What must be checked before a unit restarts?',
         'What makes a message clear under pressure?',
     ], 'refinery-scene-0', 3),
+    ('stage',),
     ('rules', 'eR', 'rFormT', [
         ('is / are + participle', ['rF1'], 'The pump <strong>is serviced</strong> twice a year.'),
         ('was / were + participle', ['rF2'], 'All equipment <strong>was checked</strong>.'),
@@ -101,8 +119,9 @@ SPEC['flow'] = [
         ('pPassive', ['rU3', 'rU4'], 'A gas leak <strong>was discovered</strong> at 07:15.'),
         ('pMix', ['rU5'], 'The scaffold <strong>has been erected</strong>. <strong>We will start</strong> at 06:00.'),
     ], None),
-    ('mc', 'e1', 'mcT', VOICE, 'refinery-scene-0', None),
-    ('mc', 'e2', 'mcT', FORM, 'refinery-scene-1', 'left'),
+    ('mc', 'e1', 'mcT', VOICE, None, None),
+    ('stage',),
+    ('mc', 'e2', 'mcT', FORM, ['r-bund', 'r-arrive'], None),
     ('gap', 'e2', 'gapT', 'gHint', [
         ('The firewater pump ______ (service) twice a year under the maintenance schedule.',
          ['is serviced|gets serviced'], 'w3'),
@@ -111,7 +130,7 @@ SPEC['flow'] = [
     ('order', 'e2', 'orderT', 'orderHint', [
         (['All equipment', 'was', 'checked', 'before the operation.'], ['were'], 'w5'),
         (['All personnel', 'will', 'be', 'briefed', 'before the operation.'], ['been'], 'w9'),
-    ], 'refinery-scene-3', None),
+    ], ['refinery-scene-3', 'r-brief'], None),
     ('talk', 'eT', 'tk2T', [
         'Give a radio command to your team in <strong>active</strong> voice.',
         'Report a leak in two sentences, <strong>passive</strong>: what <strong>was found</strong>, what <strong>was done</strong>?',
@@ -119,7 +138,7 @@ SPEC['flow'] = [
         'What <strong>must be checked</strong> at the start of every shift?',
         'Hand over to the next shift: what <strong>did you</strong> do, what <strong>will be done</strong> next?',
         'When is it wrong to hide who did something?',
-    ], None, 3),
+    ], 'talk2', 3),
 ]
 SPEC['chips'] = ['must be checked', 'was found', 'I suspended', 'will be briefed', 'has been repaired']
 

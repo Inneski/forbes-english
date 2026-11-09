@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """Swiss Precision Part 2: Sounds, Stress and Sounding Natural (A2).
-House style 2, 27 slides.
+House style 1, 27 slides.
 
 Rebuilt 2026-11-06 from `forbes-english-swiss-mistakes-a2-part2.html`: five
 activities — a sound-group sort (13 words), word stress (8), a hotel-review
@@ -41,13 +41,36 @@ SPEC = dict(
     folder='SwissMistakes',
     hero='p2-hero',
     scheme='rose',
-    art={
-        'p2-hero': ('music', 'a cathedral tower with musical notes rising like bells'),
-        'p2-talk': ('talk', 'two speech bubbles above a hotel reception bell'),
-        'p2-a': ('city', 'an old town street with a cathedral at the end'),
-        'p2-act': ('pair', 'two chairs at a café table with two cups and a pastry'),
+    style='hs1',
+    # House style 1 (HOUSE-STYLE §000, 2026-11-09): Midjourney plates, his style
+    # images at --stylize 200, one per slide, briefs here.
+    # Shares SwissMistakes/ with Part 1, so every slot is prefixed p2-.
+    plates={
+        'p2-hero': 'a grand hotel by a Swiss lake, a cathedral spire behind',
+        'p2-talk': 'a woman practising pronunciation in front of a mirror',
+        'p2-s1': 'an employer shaking hands with a new employee on her first day',
+        'p2-s2': 'a small office building beside a huge company headquarters',
+        'p2-s3': 'an expert examining a watch mechanism with a magnifier',
+        'p2-s4': 'runners racing side by side on a track',
+        'p2-s5': 'a growing stack of coins beside a rising arrow of bricks',
+        'p2-s6': 'friends enjoying a long lunch on a sunny terrace',
+        'p2-s7': 'a mug with a hand-painted name design on a desk',
+        'p2-s8': 'a gothic cathedral in an old Swiss town',
+        'p2-n1': 'locals eating at a busy little restaurant in an old town',
+        'p2-n2': 'a woman eating in a cosy café with a nice atmosphere',
+        'p2-n3': 'a tasty plate of food in a hotel restaurant',
+        'p2-n4': 'a small restaurant full of local people at lunchtime',
+        'p2-n5': 'old castles on the hills of a green valley',
+        'p2-n6': 'a business woman pleased with a rising bar chart',
+        'p2-n7': 'a sunny town square near a cathedral',
+        'p2-n8': 'a hotel room with many features: a balcony, a desk, a bath and a view',
+        'p2-talk2': 'two friends chatting in a hotel lounge',
+        'p2-results': 'a hotel room key and a map on a café table',
     },
-    act='p2-act',
+    cover_name='pop-cover-p2',
+    cover_slot='p2-s1',
+    pop={ 'p2-s3': (None, 'free'), 'p2-talk2': (None, 'blob')},
+    results='p2-results',
 )
 
 
@@ -115,6 +138,7 @@ SPEC['flow'] = [
         'Which café would you recommend to a visitor?',
         'What is your favourite pastry or cake?',
     ], 'p2-talk', 3),
+    ('stage',),
     ('raw', None),  # the sort, filled in below
     ('rules', 'eR', 'recT', [
         ('pSilent', [(None, 'salmon · half — no L'), (None, 'castle — no T · knife — no K'), (None, 'whole — no W')], None),
@@ -122,7 +146,7 @@ SPEC['flow'] = [
                  (None, 'pleased · arrived')], None),
         ('pZ', [(None, 'countries — /z/'), (None, 'produces · services — /ɪz/'), (None, 'never an extra vowel at the end')], None),
     ], None),
-    ('mc', 'e2', 'mcT', STRESS, 'p2-a', None),
+    ('mc', 'e2', 'mcT', STRESS, ['p2-s1', 'p2-s2', 'p2-s3', 'p2-s4', 'p2-s5', 'p2-s6', 'p2-s7', 'p2-s8'], None),
     ('gap', 'e3', 'gapT', 'gHint', [
         ('The hotel was excellent from the moment of our ______.', ['arrival'], 'g1'),
         ('It had easy ______ to the city centre, and there were many restaurants ______.', ['access', 'nearby'], 'g2'),
@@ -132,7 +156,8 @@ SPEC['flow'] = [
         ('The rooms were ______, the breakfast was ______, and the whole stay was very ______.', ['clean', 'tasty', 'enjoyable'], 'g4'),
         ('One of the best ______ was the view of the old ______.', ['features', 'cathedral'], 'g5'),
     ], ['cathedral', 'clean', 'enjoyable', 'features', 'tasty']),
-    ('mc', 'e4', 'mcT', NAT, None, None),
+    ('stage',),
+    ('mc', 'e4', 'mcT', NAT, ['p2-n1', 'p2-n2', 'p2-n3', 'p2-n4', 'p2-n5', 'p2-n6', 'p2-n7', 'p2-n8'], None),
     ('raw', None),  # the match, filled in below
     ('talk', 'eT', 'tk2T', [
         'Describe a hotel stay that was <strong>enjoyable</strong>.',
@@ -141,7 +166,7 @@ SPEC['flow'] = [
         'What is one of the best <strong>features</strong> of your city?',
         'Is there a <strong>cathedral</strong> or a castle near you?',
         'How do you like your coffee <strong>brewed</strong>?',
-    ], None, 3),
+    ], 'p2-talk2', 3),
 ]
 SPEC['chips'] = ['nearby', 'a variety of', 'enjoyable', 'a lot of', 'one of the best', 'arrival']
 
@@ -212,7 +237,7 @@ G = {
            'A VARIETY OF + Plural; PERSONALISED = persönlich auf dich zugeschnitten.',
            'CLEAN rooms (nicht cleaned), TASTY food, ein ENJOYABLE Aufenthalt.',
            'One of the best FEATURES (Besonderheiten); die alte CATHEDRAL (Kathedrale).'],
-    'es': ['The moment of our ARRIVAL: un sustantivo después de OUR. («The moment we arrived» también vale: un verbo después de WE.)',
+    'es': ['Our ARRIVAL: sustantivo después de OUR (con WE iría un verbo: we arrived).',
            'Easy ACCESS = fácil acceso; restaurants NEARBY = cerca. No NEARLY, que significa casi.',
            'A VARIETY OF + plural; PERSONALISED = hecho para ti.',
            'CLEAN rooms (no cleaned), TASTY food, una estancia ENJOYABLE.',

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """Swiss Precision: Goodbye, Denglisch! — Common Mistakes for German
-Speakers (A2). House style 2, 31 slides.
+Speakers (A2). House style 1, 31 slides.
 
 Rebuilt 2026-11-06 from `forbes-english-swiss-mistakes-a2.html`: four
 activities — do / make / take (8), fix the mistake (8), prepositions (8),
@@ -30,13 +30,41 @@ SPEC = dict(
     title='Swiss Precision: Common Mistakes for German Speakers (A2)',
     folder='SwissMistakes',
     scheme='rose',
-    art={
-        'hero': ('mountain', 'a red Swiss flag on a mountain peak, a train crossing a viaduct below'),
-        'talk': ('talk', 'two speech bubbles above a café table with a croissant'),
-        'a': ('work', 'a briefcase on an office desk with a train ticket'),
-        'b': ('travel', 'a suitcase beside a railway sign drawn as plain blocks'),
-        'act': ('pair', 'two chairs at a table with two cups of coffee'),
+    style='hs1',
+    # House style 1 (HOUSE-STYLE §000, 2026-11-09): Midjourney plates, his style
+    # images at --stylize 200, one per slide, briefs here.
+    plates={
+        'hero': 'a business traveller with a briefcase on a Swiss train beside a lake and mountains',
+        'talk': 'colleagues talking at a coffee machine in a bright Zurich office',
+        'a1': 'a woman at an English lesson with her teacher',
+        'a2': 'a businessman with a small suitcase hurrying through an airport',
+        'a3': 'an office worker at her desk in a modern office building in Zurich',
+        'a4': 'two business people shaking hands across a desk',
+        'a5': 'a young man signing up for a marketing course at a college desk',
+        'a6': 'a woman walking in a park on her way to work',
+        'a7': 'consultants presenting to international clients in a meeting room',
+        'a8': 'a car factory production line with robot arms',
+        'n1': 'a small evening English class around a table',
+        'n2': 'an office building in Basel beside the river Rhine',
+        'n3': 'people travelling by horse and cart on a country road long ago',
+        'n4': 'an elegant expensive hotel lobby with a chandelier',
+        'n5': 'a plate of good food on a restaurant table',
+        'n6': 'a red Swiss train arriving at a station in Zurich',
+        'n7': 'two friends fishing from a small boat on a Swiss lake',
+        'n8': 'a sunny Swiss mountain village in summer',
+        'b1': 'workers assembling medical equipment in a clean factory',
+        'b2': 'a busy woman at her desk covered in papers on a Friday afternoon',
+        'b3': 'a horse pulling a carriage along an old road',
+        'b4': 'a shop assistant helping very different customers',
+        'b5': 'a frustrated traveller at an airline desk after a cancelled flight',
+        'b6': 'a modern office building in a German city',
+        'b7': 'two hikers walking along a mountain path',
+        'b8': 'delivery vans driving along motorways across Europe',
+        'talk2': 'two colleagues talking on a terrace overlooking a Swiss lake',
+        'results': 'a briefcase and a coffee on a train table, mountains outside the window',
     },
+    pop={'hero': (None, 'square'), 'a2': (None, 'free')},
+    results='results',
 )
 
 
@@ -114,9 +142,12 @@ SPEC['flow'] = [
         'What did you do last weekend?',
         'Which English word do you always confuse?',
     ], 'talk', 3),
-    ('mc', 'e1', 'mcT', A1, 'a', None),
-    ('mc', 'e2', 'mcT2', A2, None, None),
-    ('mc', 'e3', 'mcT', A3, 'b', 'left'),
+    ('stage',),
+    ('mc', 'e1', 'mcT', A1, ['a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8'], None),
+    ('stage',),
+    ('mc', 'e2', 'mcT2', A2, ['n1', 'n2', 'n3', 'n4', 'n5', 'n6', 'n7', 'n8'], None),
+    ('stage',),
+    ('mc', 'e3', 'mcT', A3, ['b1', 'b2', 'b3', 'b4', 'b5', 'b6', 'b7', 'b8'], None),
     ('raw', None),
     ('talk', 'eT', 'tk2T', [
         'What sport <strong>do you do</strong>, or would you like to do?',
@@ -125,7 +156,7 @@ SPEC['flow'] = [
         'What did you do <strong>a long time ago</strong> that you don’t do now?',
         'Do you go <strong>on foot</strong>, <strong>by bike</strong> or <strong>by car</strong>?',
         'Where did you <strong>go</strong> skiing or hiking last?',
-    ], None, 3),
+    ], 'talk2', 3),
 ]
 SPEC['chips'] = ['take lessons', 'work for', 'a long time ago', 'do business', 'on foot', 'a lot of', 'depends on']
 

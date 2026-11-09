@@ -87,12 +87,15 @@ def _vis(s):
 
 class Deck:
     def __init__(self, folder, pop=None, ghost=(), hero='hero', cover_mode='square',
-                 cover_span=None, cover_box=None, title_px=72, band_pos='center', cover_slot=None, cover_w=40):
+                 cover_span=None, cover_box=None, title_px=72, band_pos='center', cover_slot=None, cover_w=40,
+                 cover_name='pop-cover'):
         """cover_slot: the plate the cover pops out, when the hero is a scene
         with no one object in it (rembg then cuts a fragment). The hero still
         gives the texture field and the phone band."""
         self.F = folder
         self.cover_slot = cover_slot or hero
+        # two decks sharing a folder each need their own cut (Swiss Mistakes 1 and 2)
+        self.cover_name = cover_name
         self.pop = dict(pop or {})
         self.ghosts = set(ghost)
         self.hero = hero
@@ -183,7 +186,7 @@ class Deck:
     def cover(self, E, chips=None):
         assert os.path.exists(os.path.join(self.F, self.hero + '.jpg')), 'house style 1 needs %s/%s.jpg' % (self.F, self.hero)
         hero = os.path.join(self.F, self.cover_slot + '.jpg')
-        out = os.path.join(self.F, 'pop-cover.webp')
+        out = os.path.join(self.F, self.cover_name + '.webp')
         if not os.path.exists(out):
             print('  pop', out, pop_plate.build(hero, out, span=self.cover_span, mode=self.cover_mode,
                                                 box=self.cover_box, zone=(640, 600)))
