@@ -361,6 +361,40 @@ Peer-modified decks (first-in-space-c1, skiing-B1, money-affirmations) got
 the same 10-line fitStage change in the working tree but were left out of
 the commit; their builders reproduce it from the template.
 
+## 2026-11-09 — HS2 → HS1 conversion: hs2quiz's hs1 path; Tennis, Golf, Skiing done
+
+Innes: *"Yes, start converting"* (the 26 decks left in house style 2).
+
+- **`hs2quiz.build(SPEC)` with `style='hs1'`** builds through `hs1.py`. A
+  converted builder keeps its content and changes only its SPEC: `plates`
+  ({slot: Midjourney brief}), `pop`, `cover_slot`, `results`, optional `css`
+  / `gap_size` for fitting, a LIST of slots on mc/order steps (one per
+  slide), and `('stage',)` steps. Stand-ins are not used under HS1: a slot
+  with no `<folder>/<slot>.jpg` shows the texture field and prints as owed.
+- **Done:** `forbes-tennis-a2.html` (8 plates; the racket plate is the
+  cover), `forbes-english-golf-lesson.html` (19; new hero, the old card was
+  1200px), `forbes-english-skiing-B1.html` (17; the birch hero is a scene,
+  so the cover pops the ski-jacket plate). All gates clean en/de/es.
+- **Left (19 builders on hs2quiz):** ecommerce_vocab, friedrich_prepositions,
+  gaming_youtube, gerunds_football, grammar_dojo, harry_quebert,
+  interior_vocab, linking_cars, might_going_to, phrasal_make_do_take_put,
+  present_perfect_test, ps_pc_supereasy, question_words_a0, refinery_quiz2
+  (three decks), swiss_mistakes_a2 (+ _p2), taekwondo_exercises,
+  taekwondo_kids, teil3_test. Plus Money Affirmations (own builder).
+- **Faster Midjourney loop than Venezuela's:**
+  - queue prompts in page: `window.__Q = [...]`, `__next()` sets the next
+    one; a batch is just `__next()` / click send / wait 2 s, repeated;
+  - the feed scrolls inside its own panel (the element with the biggest
+    scrollHeight), virtualised: scroll it in 450px steps and pair each
+    prompt node with the nearest `cdn.midjourney.com/<job>/0_` image;
+  - `/api/imagine` answers 401 to a plain fetch; don't bother;
+  - **contact sheets in page:** fetch `0_<n>_384_N.webp`, draw on a canvas
+    (fetched blobs don't taint it), download one JPEG per deck; pick from
+    that, then fetch only the picks' `0_<n>.png`;
+  - the screenshot tool timed out while JS kept working: drive by JS.
+- **Look at every cover pop.** A scene hero (Skiing's birches) cuts to a
+  fragment; set `cover_slot` to a plate with one subject.
+
 ## 2026-11-09 — Venezuela is house style 1; hs1.py; the pop mask cache bug
 
 Innes: *"comeback ride is the new house style 1 - adhere to its rules"*,
