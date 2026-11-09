@@ -2306,11 +2306,15 @@ const ease = x => 1 - Math.pow(1 - x, 3);
 // the loader fades, so it stays on her as the camera settles.
 const outlineSvg = document.getElementById('outline-svg');
 const OLa = new THREE.Vector3(), OLb = new THREE.Vector3();
-let outlineTrack = null;
+let outlineTrack = null, landed = false, landWait = 0;
 function trackOutline(now) {
   const k = (now - outlineTrack.t0) / 1000;
   if (k > 3) { outlineTrack = null; return; }
   const zf = DEPTH / 2 + 0.11;
+  // this frame's pose, not the last render's: before the first render the
+  // matrices are still identity, and the outline landed low and small
+  camera.updateMatrixWorld();
+  stone.updateWorldMatrix(true, false);
   stone.localToWorld(OLa.set(-W / 2, 0, zf)).project(camera);
   stone.localToWorld(OLb.set(W / 2, H, zf)).project(camera);
   const l = (OLa.x + 1) / 2 * innerWidth, r = (OLb.x + 1) / 2 * innerWidth;
@@ -2322,7 +2326,8 @@ function trackOutline(now) {
 function frame(now) {
   requestAnimationFrame(frame);
   if (document.hidden) return;
-  const dt = Math.min((now - last) / 1000, 0.05); last = now;
+  const gap = now - last;
+  const dt = Math.min(gap / 1000, 0.05); last = now;
   if (!loaded) return;
   if (start === null) {
     start = now;
@@ -2330,6 +2335,13 @@ function frame(now) {
     clearTimeout(window.__worldFallback);
     // a slow load may have tripped the no-3D fallback first: the scene is here now
     root.classList.remove('no-gl');
+  } else if (!landed && (gap < 100 || ++landWait > 2)) {
+    // The first frame compiles every world's shaders and holds the page for
+    // about two seconds (measured 2026-11-09). Landing in that frame spent
+    // the whole draw frozen, in the wrong place; so the outline lands, and
+    // the camera's arrival starts, on the first smooth frame after it.
+    landed = true;
+    start = now;
     // the outline goes straight onto her and draws itself round her; then
     // the loader fades and she is inside it
     outlineSvg.setAttribute('preserveAspectRatio', 'none');
