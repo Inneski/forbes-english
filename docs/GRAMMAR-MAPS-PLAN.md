@@ -226,6 +226,7 @@ The commonest IELTS Writing error, drawn as a map.
 
 1. ~~**Regularia lesson**~~: built 2026-11-08. Copy `build_regularia.py` + `regularia_map.py` + `regularia_measure.py` for the next chart: measure the clean chart, map dots to names, write the content.
 2. ~~**Countania lesson**~~: built 2026-11-08, with the galley as a written card until it is painted.
+   - ~~Charts 4-12~~ (adjective canal, prefixes, soundings; register, inversion, the Atlantic, question tags, the forecast, phrasal verbs): built 2026-11-09 on `sea_lesson.py`. See HANDOFF.
 3. **3.1 Atlas of THE** and **3.2 Present Perfect vs Past Simple**: the two biggest gaps with the best fit.
 4. **3.3 Conditional Quadrants**, which proves the quadrant form.
 5. **3.4 In/On/At** and **3.5 The Voyage** as a pair for the Prepositions hub.

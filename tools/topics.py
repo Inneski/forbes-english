@@ -254,6 +254,12 @@ OVERRIDES = {
     'sailing-the-seas-adjective-canal.html': ['english-vocabulary'],  # adjective order, as a canal; no adjectives hub yet
     'sailing-the-seas-prefixes.html': ['english-vocabulary'],         # negative prefixes: word formation
     'sailing-the-seas-soundings.html': ['present-simple'],            # adverbs of frequency, the present simple's companions
+    'sailing-the-seas-register.html': ['english-vocabulary'],         # formal and everyday words
+    'sailing-the-seas-inversion.html': ['tense-review'],              # negative inversion: advanced grammar, no hub of its own
+    'sailing-the-seas-atlantic.html': ['english-vocabulary'],         # British and American English
+    'sailing-the-seas-question-tags.html': ['tense-review'],          # question tags: the auxiliary of every tense
+    'sailing-the-seas-forecast.html': ['future-tenses', 'modal-verbs'],  # probability: will, likely, might
+    'sailing-the-seas-phrasal-verbs.html': ['phrasal-verbs'],
     'forbes-english-golf-lesson.html': ['past-simple', 'present-perfect'],
     'mtb-perfect-vs-simple.html': ['past-simple', 'present-perfect'],
     'forbes-english-lesson (2).html': ['conditionals', 'business-english'],

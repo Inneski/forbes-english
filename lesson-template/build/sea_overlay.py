@@ -43,10 +43,14 @@ def name(x, y, readings, ink, paint, size=19, anchor='middle', dx=0, dy=-14, fit
                size, ' data-fit="1"' if fit else '', a, b, c, a))
 
 
-def cap(x, y, text, ink, size=16, anchor='middle', face='Inter,sans-serif', weight=700, spacing='.08em', style=''):
+def cap(x, y, text, ink, size=16, anchor='middle', face='Inter,sans-serif', weight=700, spacing='.08em', style='',
+        halo=None):
+    """A fixed caption. halo: a colour to outline it with, for a caption
+    that sits on busy paint (the register summit)."""
+    ring = (' stroke="%s" stroke-width="4" stroke-linejoin="round" paint-order="stroke"' % halo) if halo else ''
     return ('<text x="%d" y="%d" text-anchor="%s" font-family="%s" font-size="%s" font-weight="%s" '
-            'letter-spacing="%s" fill="%s"%s>%s</text>'
-            % (x, y, anchor, face, size, weight, spacing, ink, (' font-style="%s"' % style) if style else '', text))
+            'letter-spacing="%s" fill="%s"%s%s>%s</text>'
+            % (x, y, anchor, face, size, weight, spacing, ink, (' font-style="%s"' % style) if style else '', ring, text))
 
 
 def hotspot(uid, key, d, aria):

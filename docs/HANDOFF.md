@@ -63,6 +63,44 @@ Screenshot gotcha: a scripted ArrowRight walk through a deck stops at the
 first gap slide, because the gap input keeps focus and swallows the key.
 Blur `document.activeElement` before each press.
 
+## 2026-11-09 — Sea charts 7-12: Register, Inversion, the Atlantic, Question Tags, the Forecast, Phrasal Verbs: BUILT, catalogue rows pending
+
+Innes brought back ChatGPT's six paintings (`six-charts.zip`, unpacked to the
+gitignored `incoming/sea-charts/six/`; painted + clean copy each, 1536×1024,
+plus `prompts-and-notes.txt`). Six lessons on `sea_lesson.py` /
+`sea_overlay.py` / `sea_measure.py`, each with 12 questions and 8 examples
+in nine languages:
+
+| Page | Builder | Teaches | Hub (topics.py) |
+|---|---|---|---|
+| `sailing-the-seas-register.html` | `build_register.py` | formal vs everyday words | english-vocabulary |
+| `sailing-the-seas-inversion.html` | `build_inversion.py` | negative inversion | tense-review |
+| `sailing-the-seas-atlantic.html` | `build_atlantic.py` | British vs American English | english-vocabulary |
+| `sailing-the-seas-question-tags.html` | `build_question_tags.py` | question tags | tense-review |
+| `sailing-the-seas-forecast.html` | `build_forecast.py` | probability (bound to … won't) | future-tenses, modal-verbs |
+| `sailing-the-seas-phrasal-verbs.html` | `build_phrasal_verbs.py` | phrasal verbs, separable or not | phrasal-verbs |
+
+- **Art defects handled in code.** Register's clean copy had one extra dot on
+  the SW cliffs (346, 872): inpainted out of `chart-clean.jpg`, dropped from
+  the JSON. The Particle Ferries' stops are WHITE quay markers, which
+  `sea_measure.py` cannot see; they were measured as white discs and stored
+  as `markers` in `phrasal-verbs_chart.json`.
+- **`sea_overlay.cap()` gained `halo=`** (a stroke colour) for captions on busy
+  paint. Default off, so the earlier charts are unchanged.
+- **Verified** at 1920 and 375: no label overlap or off-chart text in any
+  of the three modes; every hotspot hit by `elementFromPoint` and lighting
+  its panel line; 12/12 on every quiz; DE/ES reveals; images at 1.50; no
+  sideways scroll; zoom fills the phone and closes on Escape.
+- **Quiz-test note:** the browser harness must decode `&#39;` in prompts
+  before matching (`innerHTML` returns `'`); the quiz itself compares the raw
+  strings and is fine.
+- On the grammar page (`grammar_maps.py` MAPS), in `library.html`
+  (thumbnails + LESSON_TAGS) and in `topics.py` OVERRIDES.
+- **Catalogue rows: NOT inserted** (they need Innes's yes). Until then the
+  library, hubs and sitemap skip the pages and the grammar-map cards show no
+  level. Then `py tools/build_hubs.py` and `py tools/seo.py`:
+  `insert into public.lessons (file, title, level, access, track, deck, video) values ('sailing-the-seas-register.html', 'Sailing the Seas of Grammar — Formal and Everyday Words', 'B2', 'free', 'general', false, false), ('sailing-the-seas-inversion.html', 'Sailing the Seas of Grammar — Negative Inversion', 'C1', 'free', 'general', false, false), ('sailing-the-seas-atlantic.html', 'Sailing the Seas of Grammar — British and American English', 'B1-B2', 'free', 'general', false, false), ('sailing-the-seas-question-tags.html', 'Sailing the Seas of Grammar — Question Tags', 'B1', 'free', 'general', false, false), ('sailing-the-seas-forecast.html', 'Sailing the Seas of Grammar — Probability and Prediction', 'B1-B2', 'free', 'general', false, false), ('sailing-the-seas-phrasal-verbs.html', 'Sailing the Seas of Grammar — Phrasal Verbs', 'B1-B2', 'free', 'general', false, false);`
+
 ## 2026-11-09 — Sea charts 4-6: Adjective Canal, Prefix Archipelago, Soundings of Frequency: BUILT, catalogue rows pending
 
 Innes said "Build all three". The pages are:

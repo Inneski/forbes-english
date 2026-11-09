@@ -111,6 +111,60 @@ MAPS = [
          blurb=('How often is how deep: never on the shore, always in the deepest water. The red buoy '
                 'shows where the word drops anchor in a sentence.'),
          go='Set sail'),
+    dict(href='sailing-the-seas-register.html',
+         title='The Heights of Register',
+         heading='Formal and everyday words, by height',
+         image='sailing-the-seas-register/hero.jpg',
+         alt=('A painted chart of a round mountain island: villages on the shore, moorland on the slopes, '
+              'a snowy summit, and eight footpaths from an everyday word to its formal twin'),
+         blurb=('Get on the shore, obtain near the summit: one meaning, two heights. The higher you climb, '
+                'the more formal the writing, from chat and texts to reports and official letters.'),
+         go='Set sail'),
+    dict(href='sailing-the-seas-inversion.html',
+         title='The Inversion Maelstrom',
+         heading='Negative inversion, rock by rock',
+         image='sailing-the-seas-inversion/hero.jpg',
+         alt=('A painted chart of a great whirlpool ringed by nine rocky islets: Never, Rarely, Seldom, '
+              'Hardly, No sooner, Little, Not only, Only then and Under no circumstances'),
+         blurb=('Sail past Never or Not only at the start of a sentence and the auxiliary spins in front of '
+                'the subject: Never have I seen. No auxiliary? Do appears: Rarely do we sail at night.'),
+         go='Set sail'),
+    dict(href='sailing-the-seas-atlantic.html',
+         title='The Atlantic',
+         heading='British and American English, shore to shore',
+         image='sailing-the-seas-atlantic/hero.jpg',
+         alt=('A painted chart of the Atlantic: eight American harbours facing eight British ones across the '
+              'water, Elevator Harbour opposite Lift Harbour, with the Shallows and the False Cape between'),
+         blurb=('Elevator Harbour looks straight across at Lift Harbour. Eight word pairs, the grammar that '
+                'differs, the words both shores share, and the ones that change meaning at sea.'),
+         go='Set sail'),
+    dict(href='sailing-the-seas-question-tags.html',
+         title='The Return Voyage',
+         heading='Question tags, there and back',
+         image='sailing-the-seas-question-tags/hero.jpg',
+         alt=('A painted chart split by a rocky reef, positive water to the north and negative to the south, '
+              'with five ships crossing it and four lone sea stacks in the south-east'),
+         blurb=('Out on a positive, home on a negative: It’s cold, isn’t it? Every tag crosses the reef in '
+                'the same boat it set out in. Four lone stacks keep their own rules: I am late, aren’t I?'),
+         go='Set sail'),
+    dict(href='sailing-the-seas-forecast.html',
+         title='The Grammar Forecast',
+         heading='Probability, by the weather',
+         image='sailing-the-seas-forecast/hero.jpg',
+         alt=('A painted weather chart of six sea areas, from BOUND under heavy rain through WILL, LIKELY, '
+              'MAYBE and UNLIKELY to WON’T under a clear sky'),
+         blurb=('How sure are you? Bound to under the storm clouds, might in sun and cloud, won’t under a '
+                'clear sky. Read the sky, then pick the words, and get will probably and probably won’t the right way round.'),
+         go='Set sail'),
+    dict(href='sailing-the-seas-phrasal-verbs.html',
+         title='The Particle Ferries',
+         heading='Phrasal verbs, line by line',
+         image='sailing-the-seas-phrasal-verbs/hero.jpg',
+         alt=('A painted chart of a bay crossed by five coloured ferry lines, UP, OUT, OFF, ON and DOWN, and '
+              'four grey lines, GET, TAKE, PUT and TURN, with a harbour at every crossing'),
+         blurb=('Each little word is a ferry line, each big verb a line that crosses it. Twenty stops, from '
+                'get up to turn down: the same verb on a new line is a new meaning.'),
+         go='Set sail'),
     dict(href='sherpa-tensing-route-map.html',
          title='Sherpa Tensing route map',
          heading='Every tense, camp by camp',
