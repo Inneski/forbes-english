@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """The Truth About the Harry Quebert Affair (B2): narrative tenses and
-thriller vocabulary. House style 2, 24 slides.
+thriller vocabulary. House style 1, 24 slides.
 
 Rebuilt 2026-11-06 from `harry-quebert-b2.html`: an original case-file
 synopsis (written for the lesson, not an excerpt), the three narrative
@@ -34,14 +34,34 @@ SPEC = dict(
     title='The Truth About the Harry Quebert Affair (B2)',
     folder='HarryQuebert',
     scheme='slate',
-    art={
-        'hero': ('home', 'a white clapboard house by the sea at dusk, one window lit'),
-        'talk': ('talk', 'two speech bubbles above a stack of old letters'),
-        'a': ('read', 'an open case file with a magnifying glass on it'),
-        'b': ('time', 'an old wall clock above a typewriter'),
-        'c': ('law', 'a police evidence box and a set of scales'),
-        'act': ('pair', 'two chairs at a desk covered in notes and photographs'),
+    style='hs1',
+    # House style 1 (HOUSE-STYLE §000, 2026-11-09): Midjourney plates, his style
+    # images at --stylize 200, one per slide, briefs here.
+    plates={
+        'hero': 'a writer standing before a white clapboard house by the sea in a small New England town',
+        'talk': 'a stack of crime novels and a magnifying glass on a café table',
+        'case': 'police tape around a seaside garden, investigators digging under a white tent',
+        'c1': 'an old writer on the porch of a white seaside house',
+        'c2': 'a young writer staring at a blank typewriter page in a New York apartment',
+        'c3': 'police officers digging in the garden of a seaside house',
+        'c4': 'a young man driving along a coastal road towards a small town',
+        'a1': 'two detectives opening a dusty box of old case files',
+        'a2': 'forensic investigators kneeling over a dig in a garden',
+        'a3': 'a detective in front of a wall of photographs linked by red string',
+        'a4': 'a nervous man showing a cinema ticket to a detective',
+        'a5': 'worried locals whispering over coffee in a small-town diner',
+        'a6': 'a journalist going through archive boxes late at night by lamplight',
+        'b1': 'an old man at the window of a white seaside house he has lived in for decades',
+        'b2': 'a man reading a bundle of old letters by lamplight',
+        'b3': 'an empty forest road at dusk in summer, a bicycle lying in the grass',
+        'b4': 'workers arriving at a garden where a hole has already been dug',
+        'b5': 'the peaceful main street of a small seaside town on a summer evening',
+        'b6': 'a determined young man getting out of a car in a small seaside town',
+        'talk2': 'two friends discussing a novel in a bookshop café',
+        'results': 'a pile of handwritten manuscript pages on a desk by a window to the sea',
     },
+    pop={'hero': (None, 'square'), 'talk2': (None, 'blob')},
+    results='results',
 )
 
 
@@ -111,15 +131,18 @@ SPEC['flow'] = [
         'Would you like to be a detective? Why, or why not?',
         'What was the last story you couldn’t stop reading?',
     ], 'talk', 3),
-    ('raw', CASE_SLIDE),
-    ('mc', 'e3', 'mcT', READ, 'c', None),
-    ('mc', 'e1', 'mcT', VOCAB, 'a', None),
+    ('stage',),
+    ('raw', CASE_SLIDE, 'case'),
+    ('mc', 'e3', 'mcT', READ, ['c1', 'c2', 'c3', 'c4'], None),
+    ('stage',),
+    ('mc', 'e1', 'mcT', VOCAB, ['a1', 'a2', 'a3', 'a4', 'a5', 'a6'], None),
     ('rules', 'eR', 'rT', [
         ('Past simple', ['rS1'], 'Nola <strong>disappeared</strong> in 1975. Marcus <strong>travelled</strong> to Aurora.'),
         ('Past continuous', ['rC1'], 'Marcus <strong>was struggling</strong> with writer’s block when the scandal <strong>broke</strong>.'),
         ('Past perfect', ['rP1'], 'Harry <strong>had lived</strong> there for thirty years before Marcus <strong>arrived</strong>.'),
     ], None),
-    ('mc', 'e2', 'mcT', TENSE, 'b', 'left'),
+    ('stage',),
+    ('mc', 'e2', 'mcT', TENSE, ['b1', 'b2', 'b3', 'b4', 'b5', 'b6'], None),
     ('gap', 'e2', 'gapT', 'gHint', [
         ('When the police ______ (arrive), the journalists were already waiting outside.', ['arrived'], 'gw1'),
         ('Marcus ______ (write) his second novel when he heard the news.', ['was writing'], 'gw2'),
@@ -132,7 +155,7 @@ SPEC['flow'] = [
         'Which news story would you like to <strong>dig deeper</strong> into?',
         'When should the police <strong>reopen</strong> an old case?',
         'Can <strong>allegations</strong> ruin an innocent person’s life?',
-    ], None, 3),
+    ], 'talk2', 3),
 ]
 SPEC['chips'] = ['had already', 'was struggling', 'dig deeper', 'alibi', 'a web of lies', 'reopened']
 

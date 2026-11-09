@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Question Words (A0, German support). House style 2, 27 slides.
+"""Question Words (A0, German support). House style 1, 27 slides.
 
 Rebuilt 2026-11-06 from `Forbes_English_A0_Question_Words.html`, an intro
 with the six question words and their German meanings, then eighteen
@@ -31,14 +31,37 @@ SPEC = dict(
     title='Question Words (A0)',
     folder='QuestionWordsA0',
     scheme='cool',
-    art={
-        'hero': ('quiz', 'a big question mark made of six coloured pieces, one for each question word'),
-        'talk': ('people', 'two figures meeting for the first time, one speech bubble with a question mark'),
-        'a': ('idea', 'a lamp switching on above an open notebook'),
-        'b': ('words', 'a stack of index cards with a magnifying glass'),
-        'c': ('talk', 'a speech bubble with a question mark answered by a second bubble'),
-        'act': ('pair', 'two chairs facing each other with name badges on the table'),
+    style='hs1',
+    # House style 1 (HOUSE-STYLE §000, 2026-11-09): Midjourney plates, his style
+    # images at --stylize 200, one per slide, briefs here.
+    plates={
+        'hero': 'a curious child looking up at a big sky full of birds',
+        'talk': 'two children meeting for the first time in a playground',
+        'w1': 'a girl pointing at one person in a crowd',
+        'w2': 'a boy holding up a mysterious wrapped parcel',
+        'w3': 'a traveller with a map at a crossroads',
+        'w4': 'a big clock in a railway station',
+        'w5': 'a child shrugging with open palms',
+        'w6': 'a woman smiling with a hand on her heart',
+        'v1': 'two friends greeting each other in the street',
+        'v2': 'a small house on a quiet city street',
+        'v3': 'two children shaking hands and introducing themselves',
+        'v4': 'a birthday cake with candles',
+        'v5': 'an adult student opening an English book',
+        'v6': 'a teacher standing at a whiteboard',
+        'u1': 'a girl introducing herself with a wave',
+        'u2': 'Munich rooftops and church towers',
+        'u3': 'a hand holding up a mobile phone',
+        'u4': 'a smiling man giving a thumbs up',
+        'u5': 'a classroom clock above a door',
+        'u6': 'an adult student arriving at a language school',
+        'o1': 'a postman at a front door',
+        'o2': 'children with name badges on the first day of school',
+        'talk2': 'two friends chatting on a bench',
+        'results': 'a school bag and books on a desk',
     },
+    pop={'hero': (None, 'square'), 'w2': (None, 'free'), 'u3': (None, 'free')},
+    results='results',
 )
 
 
@@ -80,6 +103,7 @@ SPEC['flow'] = [
         'What is your name?', 'Where are you from?', 'How are you today?',
         'When is your birthday?', 'Who is your best friend?', 'Why are you here?',
     ], 'talk', 3),
+    ('stage',),
     ('rules', 'eR', 'rT1', [
         ('Who', ['rWho'], '<strong>Who</strong> is she? — My sister.'),
         ('What', ['rWhat'], '<strong>What</strong> is this? — A phone.'),
@@ -90,18 +114,20 @@ SPEC['flow'] = [
         ('Why', ['rWhy'], '<strong>Why</strong> are you happy? — Because it’s Friday!'),
         ('How', ['rHow'], '<strong>How</strong> are you? — I’m fine, thanks.'),
     ], None),
-    ('mc', 'e1', 'mcT', MEAN, 'a', None),
-    ('mc', 'e2', 'mcT', GAP, 'b', 'left'),
-    ('mc', 'e3', 'mcT3', MATCH, 'c', None),
+    ('mc', 'e1', 'mcT', MEAN, ['w1', 'w2', 'w3', 'w4', 'w5', 'w6'], None),
+    ('stage',),
+    ('mc', 'e2', 'mcT', GAP, ['v1', 'v2', 'v3', 'v4', 'v5', 'v6'], None),
+    ('stage',),
+    ('mc', 'e3', 'mcT3', MATCH, ['u1', 'u2', 'u3', 'u4', 'u5', 'u6'], None),
     ('order', 'e4', 'orderT', 'orderHint', [
         (['Where', 'do', 'you', 'live?'], ['are'], 'o1w'),
         (['What', 'is', 'your', 'name?'], ['do'], 'o2w'),
-    ], 'c', 'left'),
+    ], ['o1', 'o2'], None),
     ('talk', 'eT', 'tk2T', [
         '<strong>Who</strong> do you live with?', '<strong>What</strong> is your favourite food?',
         '<strong>Where</strong> do you work or study?', '<strong>When</strong> do you get up?',
         '<strong>Why</strong> do you like your city?', '<strong>How</strong> do you go to work?',
-    ], None, 3),
+    ], 'talk2', 3),
 ]
 SPEC['chips'] = ['How', 'Who', 'When', 'What', 'Why', 'Where']
 

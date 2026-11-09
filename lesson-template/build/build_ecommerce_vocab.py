@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""E-commerce Vocabulary (B1). House style 2, 25 slides, EN / DE / ES / IT.
+"""E-commerce Vocabulary (B1). House style 1, 25 slides, EN / DE / ES / IT.
 
 Rebuilt 2026-11-06 from `ecommerce-vocabulary-b1.html`, an eighteen-item
 one-at-a-time vocabulary check whose feedback gave each word in Italian.
@@ -26,13 +26,35 @@ SPEC = dict(
     folder='EcommerceVocab',
     scheme='cool',
     langs=('en', 'de', 'es', 'it'),
-    art={
-        'hero': ('shop', 'a shopping bag on a doorstep beside a delivered parcel'),
-        'talk': ('tech', 'a laptop showing a product grid as flat blocks, a coffee cup beside it'),
-        'a': ('mail', 'a parcel with a tracking label drawn as plain bars, a phone beside it'),
-        'b': ('money', 'a bank card, a few coins and a returned parcel'),
-        'act': ('pair', 'two chairs at a table with a laptop and two cups'),
+    style='hs1',
+    # House style 1 (HOUSE-STYLE §000, 2026-11-09): Midjourney plates, his style
+    # images at --stylize 200, one per slide, briefs here.
+    plates={
+        'hero': 'a young woman shopping on a laptop on a sofa, cardboard parcels around her',
+        'talk': 'cardboard parcels stacked on a front doorstep',
+        'a1': 'a laptop screen showing a shopping basket with a pair of shoes and a jacket',
+        'a2': 'hands holding a bank card beside a laptop at the payment step',
+        'a3': 'a delivery van driving along a dotted route on a map to a house',
+        'a4': 'a woman packing a jumper back into a cardboard box',
+        'a5': 'a shopper reading star ratings on her phone in a shop',
+        'a6': 'a smiling woman typing on a laptop, a price tag cut in half beside her',
+        'a7': 'a man paying with his phone held up to a laptop',
+        'a8': 'a phone showing a new email next to a newly ordered book',
+        'a9': 'an empty space on a shoe shop shelf among rows of trainers',
+        'b1': 'a shopper on a laptop walking past a long sign-up form',
+        'b2': 'a delivery driver handing over a parcel at a front door',
+        'b3': 'a bank card inside a glass box with a padlock',
+        'b4': 'a sofa facing a television showing a grid of films, popcorn on the table',
+        'b5': 'a dress on a mannequin with a small heart pinned to it',
+        'b6': 'a loyalty card and a small wrapped gift box on a shop counter',
+        'b7': 'many little market stalls inside a giant open laptop',
+        'b8': 'coins flowing back into a wallet from a broken parcel',
+        'b9': 'a long paper receipt beside an expenses folder on an office desk',
+        'talk2': 'two friends comparing their shopping on their phones on a park bench',
+        'results': 'a neat pile of delivered parcels tied with string',
     },
+    pop={'hero': (None, 'square'), 'talk2': (None, 'blob')},
+    results='results',
 )
 
 WORDS = ['basket', 'checkout', 'tracking', 'return', 'reviews', 'discount', 'payment', 'confirmation',
@@ -76,8 +98,10 @@ SPEC['flow'] = [
         'Do you prefer to shop online or in a real shop?',
         'Have you ever had a problem with a delivery?',
     ], 'talk', 3),
-    ('mc', 'e1', 'mcT', A, 'a', None),
-    ('mc', 'e2', 'mcT', B, 'b', 'left'),
+    ('stage',),
+    ('mc', 'e1', 'mcT', A, ['a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8', 'a9'], None),
+    ('stage',),
+    ('mc', 'e2', 'mcT', B, ['b1', 'b2', 'b3', 'b4', 'b5', 'b6', 'b7', 'b8', 'b9'], None),
     ('rules', 'eR', 'recT', [
         ('pBuy', ['r1', 'r2', 'r7', 'r12', 'r10', 'r8'], None),
         ('pAfter', ['r3', 'r4', 'r17', 'r18', 'r9', 'r11'], None),
@@ -95,7 +119,7 @@ SPEC['flow'] = [
         'Which <strong>subscriptions</strong> do you pay for every month?',
         'Have you ever waited a long time for a <strong>refund</strong>?',
         'How do you know a website is <strong>secure</strong>?',
-    ], None, 3),
+    ], 'talk2', 3),
 ]
 SPEC['chips'] = ['refund', 'tracking number', 'out of stock', 'discount code', 'return policy', 'checkout', 'reviews']
 

@@ -35,11 +35,32 @@ SPEC = dict(
     folder='Friedrich',
     hero='friedrich-closeup',
     scheme='slate',
-    art={
-        'talk': ('talk', 'two speech bubbles above a gilded crown on a cushion'),
-        'b': ('law', 'a treaty document with a wax seal beside a quill'),
-        'act': ('pair', 'two Baroque chairs facing each other in an empty hall'),
+    style='hs1',
+    # House style 1 (HOUSE-STYLE §000, 2026-11-09): the two live portraits
+    # (the close-up is the cover) and Midjourney renders besides (his style
+    # images, --stylize 200), the portraits' brown / grey / cream named in
+    # the prompt.
+    plates={
+        'friedrich-closeup': 'Friedrich I, close-up portrait in a long wig',
+        'friedrich-profile': 'Friedrich I in profile',
+        'talk': 'a baroque throne room with an empty gilded chair and tall windows',
+        'f1': 'a king in a long curled wig and ermine robe placing a crown on his own head',
+        'f2': 'a baroque coronation procession in a snowy northern castle courtyard',
+        'f3': 'an emperor receiving a bowing envoy in a grand Viennese hall',
+        'f4': 'a lavish baroque palace hall with musicians and courtiers dancing',
+        'b1': 'a baroque palace being built, scaffolding and cranes, workers on the walls',
+        'b2': 'a long family tree scroll unrolled on a table under candlelight',
+        'b3': 'scholars in wigs with a telescope and globes at an academy of sciences',
+        'b4': 'diplomats in wigs signing a treaty at a long table',
+        'b5': 'an empty treasury, open chests and a worried official counting the last coins',
+        'talk2': 'two people talking in front of a royal portrait in a museum gallery',
+        'results': 'a golden crown on a velvet cushion',
     },
+    # the close-up portrait cuts to a mask of a face; the cover pops the
+    # self-crowning king instead
+    cover_slot='f1',
+    pop={'results': (None, 'free')},
+    results='results',
 )
 
 
@@ -80,8 +101,10 @@ SPEC['flow'] = [
         'Can a title change how people see you?',
         'What would you build if you were a king or queen?',
     ], 'talk', 3),
-    ('mc', 'e1', 'mcT', MC, 'friedrich-profile', None),
-    ('mc', 'e2', 'mcT', FITB, 'b', 'left'),
+    ('stage',),
+    ('mc', 'e1', 'mcT', MC, ['f1', 'f2', 'f3', 'f4', 'friedrich-profile'], None),
+    ('stage',),
+    ('mc', 'e2', 'mcT', FITB, ['b1', 'b2', 'b3', 'b4', 'b5'], None),
     ('gap', 'e3', 'gapT', 'gHint', [
         ('Born ______ the Hohenzollern dynasty, he inherited the Electorate of Brandenburg — a Protestant state of modest means.',
          ['into'], 'w11'),
@@ -106,7 +129,7 @@ SPEC['flow'] = [
         'When is spending <strong>out of proportion to</strong> its results?',
         'What would you <strong>insist on</strong> if you ran a country?',
         'Which tradition is <strong>in keeping with</strong> your country’s values?',
-    ], None, 3),
+    ], 'talk2', 3),
 ]
 SPEC['chips'] = ['in keeping with', 'beyond dispute', 'renowned for', 'insist on', 'contingent on', 'with a view to', 'out of proportion to']
 

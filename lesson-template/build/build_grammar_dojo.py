@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """文法道場 Grammar Dojo — Must, Have To, Mustn't, Don't Have To (A2, coding
-edition, Japanese support). House style 2, 17 slides, EN / DE / ES / JA.
+edition, Japanese support). House style 1, 17 slides, EN / DE / ES / JA.
 
 Rebuilt 2026-11-06 from `grammar-dojo.html`, a reference chart and ten
 one-at-a-time items for software developers, each with a Japanese line
@@ -33,13 +33,28 @@ SPEC = dict(
     folder='GrammarDojo',
     scheme='slate',
     langs=('en', 'de', 'es', 'ja'),
-    art={
-        'hero': ('tech', 'a laptop with a code editor drawn as coloured bars, a cup of green tea beside it'),
-        'talk': ('talk', 'two speech bubbles above two laptops facing each other'),
-        'a': ('law', 'a rule book lying open beside a laptop'),
-        'b': ('idea', 'a warning lamp glowing above a server rack'),
-        'act': ('pair', 'two chairs at a desk with one laptop between them'),
+    style='hs1',
+    # Four items (A1, A3, B2, B3) are too long to sit beside any frame,
+    # so they take the full width and the texture field (hs1.frame).
+    # House style 1 (HOUSE-STYLE §000, 2026-11-09): Midjourney plates, his style
+    # images at --stylize 200, one per slide, briefs here.
+    plates={
+        'hero': 'a young developer with a laptop sitting cross-legged in a calm martial-arts dojo',
+        'talk': 'a software team standing around a whiteboard covered in boxes and arrows',
+        'a2': 'a developer hiding a golden key behind her back, a laptop open on the desk',
+        'a4': 'a senior developer drawing branching lines on a whiteboard for a junior colleague',
+        'b1': 'a server room, one data cabinet locked with a big padlock',
+        'b4': 'a developer about to press a big red button, a colleague grabbing her arm',
+        'o1': 'a developer reaching for a giant lever marked with a warning stripe',
+        'o2': 'a circle of colleagues at a morning stand-up meeting, one chair empty',
+        'talk2': 'two developers chatting in an office kitchen with mugs of tea',
+        'results': 'a laptop on a tidy desk with a black belt folded beside it',
     },
+    pop={'hero': (None, 'square'), 'b4': (None, 'free'), 'talk2': (None, 'blob')},
+    results='results',
+    # the hint line under each stem (ctx) costs a row: tighter options keep
+    # the answered state inside the slide (answered-overflow, en/de/es)
+    css='html[data-style="editorial"] .slide:has(.q-ctx) .opt { padding-top: 7px; padding-bottom: 7px; }',
 )
 
 
@@ -78,13 +93,14 @@ SPEC['flow'] = [
         'Which meetings don’t you have to join?',
         'What did you have to fix last week?',
     ], 'talk', 3),
+    ('stage',),
     ('rules', 'eR', 'rT', [
         ('must', ['rM1', 'rM2'], '// You <strong>must</strong> read the docs carefully.'),
         ('have to', ['rH1', 'rH2'], '// You <strong>have to</strong> push to a feature branch.'),
         ('mustn’t', ['rN1'], '// You <strong>mustn’t</strong> push to main directly.'),
         ('don’t have to', ['rD1'], '// You <strong>don’t have to</strong> use TypeScript.'),
     ], None),
-    ('mc', 'e1', 'mcT', A, 'a', None),
+    ('mc', 'e1', 'mcT', A, [None, 'a2', None, 'a4'], None),
     ('gap', 'e2', 'gapT', 'gHint', [
         ('The server was down, so we ______ deploy the hotfix by hand last night.', ['had to'], 'w5'),
         ('We ______ migrate the database before we can deploy v2.0 tomorrow.',
@@ -92,11 +108,12 @@ SPEC['flow'] = [
         ('You ______ (not / have to) reply — this email is just for your information.',
          [APOS('don’t have to', 'do not have to')], 'gw1'),
     ]),
-    ('mc', 'e3', 'mcT', B, 'b', 'left'),
+    ('stage',),
+    ('mc', 'e3', 'mcT', B, ['b1', None, None, 'b4'], None),
     ('order', 'e3', 'orderT', 'orderHint', [
         (['You', 'mustn’t', 'push', 'to main', 'directly.'], ['don’t'], 'o1w'),
         (['She', 'didn’t', 'have to', 'attend', 'the stand-up.'], ['hasn’t'], 'o2w'),
-    ], 'b', 'left'),
+    ], ['o1', 'o2'], None),
     ('talk', 'eT', 'tk2T', [
         'What <strong>mustn’t</strong> a new developer do on day one?',
         'What <strong>don’t</strong> you <strong>have to</strong> do on a Friday?',
@@ -104,7 +121,7 @@ SPEC['flow'] = [
         'What <strong>will</strong> your team <strong>have to</strong> change next year?',
         'Which rule <strong>must</strong> every team have, in your opinion?',
         'What <strong>has</strong> your manager <strong>got to</strong> decide this week?',
-    ], None, 3),
+    ], 'talk2', 3),
 ]
 SPEC['chips'] = ['mustn’t', 'had to', 'don’t have to', 'has to', 'will have to', 'must']
 
@@ -271,7 +288,7 @@ T = {
         actSpeak2='新人：最初の週にしなくてもいいこと（DON’T HAVE TO）を聞きましょう。',
         actSpeak3='役割を交代。以前急いで直さなければならなかったこと（HAD TO）について話しましょう。',
         actWriteKind='ライティング',
-        actWriteBrief='README の短いセクション「Rules for this repo」を書こう（80〜100語）：全員がしなければならないこと（HAS TO）、してはいけないこと（MUSTN’T）、しなくてもいいこと（DON’T HAVE TO）。',
+        actWriteBrief='README に「Rules for this repo」を書こう（80〜100語）：すること（HAS TO）、禁止（MUSTN’T）、しなくていいこと（DON’T HAVE TO）。',
         actPlaceholder='Everyone has to …',
     ),
 }

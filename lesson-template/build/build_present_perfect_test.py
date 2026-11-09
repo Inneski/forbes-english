@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """Present Perfect: already, yet, just, ever, never (B1, German support).
-House style 2, 28 slides.
+House style 1, 28 slides.
 
 Rebuilt 2026-11-06 from `present_perfect_test.html` (Übungsheft Teil 3), a
 German-language explanation page followed by a fifteen-question test. The
@@ -35,14 +35,35 @@ SPEC = dict(
     title='Present Perfect: already, yet, just, ever, never (B1)',
     folder='PresentPerfectTest',
     scheme='sage',
-    art={
-        'hero': ('travel', 'a suitcase covered in round flat travel stickers, no lettering, on an empty floor'),
-        'talk': ('talk', 'two speech bubbles over a small table with two cups'),
-        'a': ('build', 'three stacked blocks with a fourth being placed on top: something done, the result now'),
-        'b': ('time', 'a clock whose minute hand has only just passed the hour'),
-        'c': ('mountain', 'a mountain peak with a small flag planted on top and a path winding up to it'),
-        'act': ('pair', 'two chairs facing each other under a world map pinned to the wall'),
+    style='hs1',
+    # House style 1 (HOUSE-STYLE §000, 2026-11-09): Midjourney plates, his style
+    # images at --stylize 200, one per slide, briefs here.
+    plates={
+        'hero': 'a young traveller with a backpack in front of a big world map',
+        'talk': 'a passport, a camera and postcards on a table',
+        'r-travel': 'a suitcase covered in travel stickers by an airport window',
+        'a1': 'a father waving goodbye with a suitcase at an airport',
+        'a2': 'a girl hiding a piece of paper from her friend',
+        'a3': 'a teenager with headphones listening to a new song',
+        'a4': 'a family eating Indian food at a restaurant',
+        'a5': 'a singer recording in a music studio',
+        'b1': 'a taxi waiting outside a house',
+        'b2': 'a couple at a closed ticket office window',
+        'b3': 'a front door just closing, a scarf left swinging on the hook',
+        'b4': 'a boy looking at his brand-new computer with a cracked screen',
+        'b5': 'a smiling girl closing her finished homework book',
+        'r-ever': 'a hot-air balloon over a mountain valley',
+        'c1': 'palm trees and film studios in Los Angeles',
+        'c2': 'a skateboarder landing a jump safely',
+        'c3': 'a crowd behind a rope at a film premiere',
+        'c4': 'a girl holding up a trophy at a competition',
+        'c5': 'an aunt with suitcases in front of a departures board',
+        'o1': 'the Colosseum in Rome at sunset',
+        'o2': 'an office worker with an unfinished report late at night',
+        'results': 'a pile of postcards and a camera on a wooden table',
     },
+    pop={'hero': (None, 'square'), 'r-travel': (None, 'blob')},
+    results='results',
 )
 
 
@@ -91,9 +112,10 @@ SPEC['flow'] = [
         'What have you never done, but would like to do?',
         'Which country would you most like to visit?',
     ], 'talk', 3),
+    ('stage',),
     ('rules', 'eR', 'rWhenT', [
         ('pWhen', ['rW1', 'rW2'], 'I lost my keys <strong>yesterday</strong>. → I<strong>’ve lost</strong> my keys. (I don’t have them now!)'),
-    ], 'hero'),
+    ], 'r-travel'),
     ('rules', 'eR', 'rFormT', [
         ('+ have / has + participle', ['rF1'], 'I<strong>’ve bought</strong> a new book.'),
         ('– haven’t / hasn’t + participle', ['rF2'], 'She <strong>hasn’t called</strong> me.'),
@@ -106,18 +128,20 @@ SPEC['flow'] = [
                   (None, 'buy – bought – <strong>bought</strong>'), (None, 'eat – ate – <strong>eaten</strong>'),
                   'rP2'], None),
     ], None),
-    ('mc', 'e1', 'mcT', A, 'a', None),
+    ('mc', 'e1', 'mcT', A, ['a1', 'a2', 'a3', 'a4', 'a5'], None),
+    ('stage',),
     ('rules', 'eR', 'rAYJT', [
         ('already', ['rAl1', 'rAl2'], 'I’ve <strong>already</strong> washed the car.'),
         ('yet', ['rYe1', 'rYe2'], 'I haven’t done my homework <strong>yet</strong>. Have you eaten <strong>yet</strong>?'),
         ('just', ['rJu1', 'rJu2'], 'She’s <strong>just</strong> called me.'),
     ], None),
-    ('mc', 'e2', 'mcT', B, 'b', 'left'),
+    ('mc', 'e2', 'mcT', B, ['b1', 'b2', 'b3', 'b4', 'b5'], None),
+    ('stage',),
     ('rules', 'eR', 'rENT', [
         ('ever', ['rEv1', 'rEv2'], 'Have you <strong>ever</strong> been to London?'),
         ('never', ['rNe1', 'rNe2'], 'I’ve <strong>never</strong> eaten sushi. Not: <s>I haven’t never</s> …'),
-    ], 'c'),
-    ('mc', 'e3', 'mcT', C, 'c', None),
+    ], 'r-ever'),
+    ('mc', 'e3', 'mcT', C, ['c1', 'c2', 'c3', 'c4', 'c5'], None),
     ('gap', 'e4', 'gapT', 'gHint', [
         ('I ______ (see) that film twice.', [APOS('have seen', '’ve seen')], 'gw1'),
         ('She ______ (not / finish) her report yet.', [APOS('hasn’t finished', 'has not finished')], 'gw2'),
@@ -126,7 +150,7 @@ SPEC['flow'] = [
     ('order', 'e4', 'orderT', 'orderHint', [
         (['Have', 'you', 'ever', 'been', 'to Rome?'], ['went'], 'o1w'),
         (['I', 'haven’t', 'finished', 'my report', 'yet.'], ['never'], 'o2w'),
-    ], 'act', 'left'),
+    ], ['o1', 'o2'], None),
     ('talk', 'eT', 'tk2T', [
         'Have you <strong>ever</strong> met a famous person?',
         'What <strong>have</strong> you <strong>already</strong> done today?',

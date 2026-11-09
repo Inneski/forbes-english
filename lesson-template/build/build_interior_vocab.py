@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Interior Design Vocabulary (C1). House style 2, 31 slides.
+"""Interior Design Vocabulary (C1). House style 1, 31 slides.
 
 Rebuilt 2026-11-06 from `interior-design-vocabulary.html`, a 24-question
 one-at-a-time test (audited clean on 2026-09-16). All 24 items are kept in
@@ -26,14 +26,41 @@ SPEC = dict(
     title='Interior Design Vocabulary (C1)',
     folder='InteriorDesignVocab',
     scheme='warm',
-    art={
-        'talk': ('talk', 'two speech bubbles over a sample board of fabric and tile squares'),
-        'a': ('home', 'a converted factory loft: one old steel beam across a bright new room'),
-        'b': ('words', 'a stack of material sample cards with a magnifying glass'),
-        'c': ('city', 'a hotel lobby with one bright brass staircase as the only colour'),
-        'd': ('build', 'four sample blocks, three alike and one clearly different'),
-        'act': ('pair', 'two chairs at a design table with a floor plan between them'),
+    style='hs1',
+    # House style 1 (HOUSE-STYLE §000, 2026-11-09): Midjourney plates, his style
+    # images at --stylize 200, one per slide, briefs here.
+    plates={
+        'hero': 'an interior design scene',
+        'talk': 'a sunlit living room with a reading chair, plants and a big window',
+        'c1': 'a designer moving furniture around on a large touch screen',
+        'c2': 'a loft apartment in an old factory, original steel beams across the ceiling',
+        'c3': 'a hotel lobby with loud clashing patterns around a small painting',
+        'c4': 'a gleaming brass spiral staircase in a hotel entrance',
+        'c5': 'an apartment where one colour and soft light run through every room',
+        'c6': 'a designer and a client comparing lamps in a lighting showroom',
+        'c7': 'restorers carefully cleaning old patterned floor tiles',
+        'c8': 'a rusty corroded metal handrail on a seafront promenade',
+        'c9': 'a room mixing vintage chairs, modern lamps and handmade textiles',
+        'c10': 'a designer walking from her studio to a client’s apartment across a small square',
+        'd1': 'balanced brass scales on a wooden table',
+        'd2': 'a designer squashing a complicated model building into one plain cube',
+        'd3': 'a doorway between a dark corridor and a bright room',
+        'd4': 'a lecturer pointing to an open book on a lectern',
+        'd5': 'a conductor leading an orchestra',
+        's1': 'a bright warm modern living room with soft textiles',
+        's2': 'a quiet hallway between a busy street and a calm spa',
+        's3': 'a young designer admiring a modernist concrete staircase',
+        's4': 'a discreet ventilation grille in an elegant panelled wall',
+        's5': 'a builder shrugging at a small crack in a wall',
+        'x1': 'a man shrugging his shoulders',
+        'x2': 'a row of armchairs in a showroom, one in a different colour',
+        'x3': 'a rusty iron garden gate',
+        'x4': 'light falling across a stone doorstep at the threshold of a house',
+        'talk2': 'two designers talking over fabric samples at a big table',
+        'results': 'an armchair and a floor lamp in an empty sunlit room',
     },
+    pop={'hero': (None, 'square'), 'c4': (None, 'free'), 'results': (None, 'free')},
+    results='results',
 )
 
 
@@ -94,10 +121,14 @@ SPEC['flow'] = [
         'Which designer or architect do you admire?',
         'What do you notice first when you walk into a room?',
     ], 'talk', 3),
-    ('mc', 'e1', 'mcT', CTX, 'a', None),
-    ('mc', 'e2', 'mcT', DEFN, 'b', 'left'),
-    ('mc', 'e3', 'mcT', SIT, 'c', None),
-    ('mc', 'e4', 'mcT', ODD, 'd', 'left'),
+    ('stage',),
+    ('mc', 'e1', 'mcT', CTX, ['c1', 'c2', 'c3', 'c4', 'c5', 'c6', 'c7', 'c8', 'c9', 'c10'], None),
+    ('stage',),
+    ('mc', 'e2', 'mcT', DEFN, ['d1', 'd2', 'd3', 'd4', 'd5'], None),
+    ('stage',),
+    ('mc', 'e3', 'mcT', SIT, ['s1', 's2', 's3', 's4', 's5'], None),
+    ('stage',),
+    ('mc', 'e4', 'mcT', ODD, ['x1', 'x2', 'x3', 'x4'], None),
     ('rules', 'eR', 'recT', [
         ('pSeen', [(None, 'conspicuous · eye-catching · noticeable'), (None, 'obtrusive (too much)'),
                    (None, 'unobtrusive (quietly not there)')], None),
@@ -118,7 +149,7 @@ SPEC['flow'] = [
         'What would you <strong>conserve</strong> in an old house, and what would you replace?',
         'Which designer do you <strong>venerate</strong>, and why?',
         'When is it good for design to be <strong>unobtrusive</strong>?',
-    ], None, 3),
+    ], 'talk2', 3),
 ]
 SPEC['chips'] = ['vestigial', 'unobtrusive', 'overarching', 'wiggle room', 'conserve', 'conspicuous', 'liminal']
 

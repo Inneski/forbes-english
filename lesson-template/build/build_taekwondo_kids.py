@@ -29,8 +29,24 @@ SPEC = dict(
     title='Grammar Dojo: Should Have, Must & Have To (A2)',
     folder='Taekwondo',
     scheme='rose',
-    act='handshake',
-    art={'talk': ('talk', 'two speech bubbles above a folded white dobok and a black belt')},
+    style='hs1',
+    # House style 1 (HOUSE-STYLE §000, 2026-11-09). The five live Taekwondo
+    # plates plus Midjourney renders (his style images, --stylize 200, the
+    # live plates' slate blue / coral / cream named in the prompt).
+    plates={
+        'hero': 'a black belt in a fighting stance, a red sun behind',
+        'solo_kick': 'a student kicking high in an empty dojo',
+        'pads_drill': 'a coach holding pads for a student’s kick',
+        'handshake': 'two students shaking hands across a dojo',
+        'talk': 'a folded white dobok with a black belt on a wooden bench in a dojo',
+        'k-homework': 'a boy in a white dobok remembering his homework, an open schoolbag at the dojo door',
+        'k-bow': 'children in white doboks bowing at the door of a dojo',
+        'k-belt': 'a determined girl in a white dobok tying her belt, a black belt hanging on the wall behind',
+        'talk2': 'two children in doboks sitting on the dojo floor talking after class',
+        'results': 'a row of coloured belts hanging on hooks in a dojo',
+    },
+    pop={'hero': (None, 'square'), 'k-belt': (None, 'free'), 'talk2': (None, 'blob')},
+    results='results',
 )
 
 SH = [('lDef', 'I <strong>should have kept</strong> my guard up!', 'k1'),
@@ -186,17 +202,19 @@ SPEC['flow'] = [
         'Who is your coach or your favourite teacher?',
         'What do you have to wear for your sport?',
     ], 'talk', 3),
+    ('stage',),
     ('rules', 'eR', 'rT', [
         ('should have + verb', ['rS1', 'rS2'], 'I <strong>should have kicked</strong> earlier!'),
         ('must + verb', ['rM1', 'rM2'], 'I <strong>must train</strong> harder!'),
         ('have to / has to + verb', ['rH1', 'rH2'], 'We <strong>have to bow</strong>.'),
     ], None),
     ('raw', None), ('raw', None), ('raw', None), ('raw', SORT),
+    ('stage',),
     ('mc', 'eS', 'mcT', [
         dict(stem='Oops! I ____ my homework yesterday.', options=['should have done', 'should have do', 'should has done', 'should had done'], correct=0, why='kw1'),
         dict(stem='“We ____ bow when we enter the dojo.” — It’s a rule.', options=['have to', 'has to', 'should have', 'had'], correct=0, why='kw2'),
         dict(stem='“I ____ train harder — I really want my black belt!”', options=['must', 'must to', 'has to', 'musts'], correct=0, why='kw3'),
-    ], 'pads_drill', None),
+    ], ['k-homework', 'k-bow', 'k-belt'], None),
     ('talk', 'eT', 'tk2T', [
         'What <strong>should</strong> you <strong>have done</strong> better this week?',
         'What <strong>must</strong> you do this weekend?',
@@ -204,11 +222,12 @@ SPEC['flow'] = [
         'What did you <strong>have to</strong> do yesterday?',
         'What <strong>don’t</strong> you <strong>have to</strong> do in the holidays?',
         'What <strong>mustn’t</strong> you forget for training?',
-    ], None, 3),
+    ], 'talk2', 3),
 ]
-SPEC['flow'][2] = ('raw', D.art(cards('eX', 'xSH', SH, E), 'Taekwondo', 'solo_kick', side='left'))
-SPEC['flow'][3] = ('raw', D.art(cards('eX', 'xMU', MU, E, cols=2), 'Taekwondo', 'pads_drill'))
-SPEC['flow'][4] = ('raw', D.art(cards('eX', 'xHT', HT, E, cols=2), 'Taekwondo', 'handshake', side='left'))
+# the three example slides: two card columns beside their frame
+SPEC['flow'][3] = ('raw', cards('eX', 'xSH', SH, E, cols=2), 'solo_kick')
+SPEC['flow'][4] = ('raw', cards('eX', 'xMU', MU, E, cols=2), 'pads_drill')
+SPEC['flow'][5] = ('raw', cards('eX', 'xHT', HT, E, cols=2), 'handshake')
 SPEC['chips'] = ['should have', 'must', 'have to', 'had to', 'don’t have to', 'mustn’t']
 
 GLOSS = {

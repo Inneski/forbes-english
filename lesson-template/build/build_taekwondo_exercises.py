@@ -35,8 +35,29 @@ SPEC = dict(
     title='Grammar Dojo — Should Have, Must & Have To (A2–B1)',
     folder='Taekwondo',
     scheme='rose',
-    act='handshake',
-    art={'talk': ('talk', 'two speech bubbles above a folded white dobok and a black belt')},
+    style='hs1',
+    # House style 1 (HOUSE-STYLE §000, 2026-11-09). Two live Taekwondo
+    # plates plus Midjourney renders (his style images, --stylize 200, the
+    # live plates' slate blue / coral / cream named in the prompt).
+    plates={
+        'hero': 'a black belt in a fighting stance, a red sun behind',
+        'pads_drill': 'a coach holding pads for a student’s kick',
+        'x-talk': 'two taekwondo students stretching on mats before training, talking',
+        'x-guard': 'a sparring fighter dropping his guard as a kick comes at his head',
+        'x-late': 'a fighter kicking a moment too late as the opponent steps away',
+        'x-sparring': 'two students in headguards sparring in a dojo, a coach watching',
+        'x-feet': 'a fighter caught flat-footed, the opponent darting round him',
+        'o-bow': 'students bowing as they step into a dojo',
+        'o-dobok': 'a white dobok and a belt laid out neatly on a changing-room bench',
+        'o-pushups': 'a tired student doing push-ups on the dojo mat after training',
+        'x-patterns': 'a row of students practising a pattern together in a calm dojo',
+        'x-regret': 'a student sitting alone on the dojo floor, head in hands, after losing',
+        'x-harder': 'a determined student kicking a heavy bag late at night',
+        'x-talk2': 'a coach and a student talking on the dojo bench after a match',
+        'x-results': 'a pair of sparring gloves and a headguard on a dojo mat',
+    },
+    pop={'hero': (None, 'square'), 'x-harder': (None, 'free'), 'x-talk2': (None, 'free')},
+    results='x-results',
 )
 
 
@@ -66,24 +87,26 @@ SPEC['flow'] = [
         'What must you do better this year?',
         'What should you have done differently last week?',
         'Who is the strictest coach or teacher you have had?',
-    ], 'talk', 3),
+    ], 'x-talk', 3),
+    ('stage',),
     ('rules', 'eR', 'rT', [
         ('should have + participle', ['rS1'], 'I <strong>should have kept</strong> my guard up! · I <strong>shouldn’t have jumped</strong>.'),
         ('must + verb', ['rM1', 'rM2'], 'I <strong>must train</strong> harder. · We <strong>mustn’t give up</strong>!'),
         ('have to / has to + verb', ['rH1', 'rH2'], 'We <strong>have to bow</strong>. · I <strong>had to do</strong> 50 push-ups.'),
-    ], 'hero'),
-    ('mc', 'e1', 'mcT', REGRET, 'solo_kick', None),
+    ], None),
+    ('mc', 'e1', 'mcT', REGRET, ['x-guard', 'x-late', 'x-sparring', 'x-feet'], None),
     ('gap', 'e2', 'gapT', 'gHint', [
         ('I ______ (must / train) harder every day!', ['must train'], 'w5'),
         ('She ______ (must / practise) her roundhouse kick.', ['must practise|must practice'], 'w6'),
         ('We ______ (must not / give up) — keep fighting!', [APOS('must not give up', 'mustn’t give up')], 'w7'),
     ]),
+    ('stage',),
     ('order', 'e3', 'orderT', 'orderHint', [
         (['We', 'have to', 'bow', 'when we enter', 'the dojo.'], ['has to'], 'w8'),
         (['He', 'has to', 'wear', 'a white', 'dobok.'], ['have to'], 'w9'),
         (['I', 'had to do', '50 push-ups', 'after training.'], None, 'w10'),
-    ], 'handshake', 'left'),
-    ('mc', 'e4', 'mcT', MIXED, 'pads_drill', None),
+    ], ['o-bow', 'o-dobok', 'o-pushups'], None),
+    ('mc', 'e4', 'mcT', MIXED, ['x-harder', 'pads_drill', 'x-patterns', 'x-regret'], None),
     ('gap', 'e1', 'gapT', 'gHint2', [
         ('I ______ (not / be) so nervous!', [APOS('shouldn’t have been', 'should not have been')], 'w14'),
         ('You ______ (listen) to the coach!', ['should have listened'], 'gw1'),
@@ -96,7 +119,7 @@ SPEC['flow'] = [
         'What did you <strong>have to</strong> do as a child that you hated?',
         'What <strong>don’t</strong> you <strong>have to</strong> do at the weekend?',
         'What <strong>shouldn’t</strong> you <strong>have said</strong> once?',
-    ], None, 3),
+    ], 'x-talk2', 3),
 ]
 SPEC['chips'] = ['must', 'should have', 'don’t have to', 'had to', 'shouldn’t have', 'has to']
 

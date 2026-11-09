@@ -28,11 +28,28 @@ SPEC = dict(
     folder='FootballGerunds',
     hero='retro-runner',
     scheme='sage',
-    art={
-        'talk': ('talk', 'two speech bubbles above a designer’s desk with a football on it'),
-        'a': ('sport', 'a football, a corner flag and a sketchbook on the grass'),
-        'act': ('pair', 'two chairs at a design studio table with two cups'),
+    style='hs1',
+    # House style 1 (HOUSE-STYLE §000, 2026-11-09): the live runner plate is
+    # the cover; Midjourney renders besides (his style images, --stylize
+    # 200), the runner's navy / cream / orange named in the prompt.
+    plates={
+        'retro-runner': 'a footballer running after the ball past floodlights',
+        'talk': 'a design studio with two desks, big monitors and a football on the floor',
+        'r-studio': 'a designer at a desk, a football poster pinned on the wall behind',
+        'g1': 'a designer trying out different page layouts on a big screen',
+        'g2': 'a designer comparing font sample cards beside a football kit on a hanger',
+        'g3': 'a video editor cutting football highlights across two monitors',
+        'g4': 'a client on the phone pacing beside a wall of trophy logo drafts',
+        'g5': 'a motion designer animating a bouncing football on a drawing tablet',
+        'g6': 'a calm designer planning ahead at a wall covered in sticky notes',
+        'g7': 'a designer sketching a new football crest from scratch at a drawing board',
+        'o1': 'a young man looking at laptops in a shop window',
+        'o2': 'two designers pinning a finished football poster to the studio wall',
+        'talk2': 'two colleagues chatting over drinks after work, a football match on the bar television',
+        'results': 'a football resting on a desk beside an open laptop and a coffee cup',
     },
+    pop={'retro-runner': (None, 'square'), 'talk2': (None, 'blob')},
+    results='results',
 )
 
 
@@ -59,18 +76,19 @@ SPEC['flow'] = [
         'What would you recommend to a new designer?',
         'Do you mind working late before a deadline?',
     ], 'talk', 3),
+    ('stage',),
     ('rules', 'eR', 'rT', [
         ('verb + -ing', ['rL1', (None, 'enjoy · avoid · consider · finish · keep · miss'),
                          (None, 'practise · recommend · suggest · mind · imagine · risk'),
                          (None, 'can’t stand · spend time')], None),
         ('pStop', ['rL2', 'rL3'], 'I’ve <strong>stopped drinking</strong> coffee. · We <strong>stopped to have</strong> a coffee.'),
-    ], 'retro-runner'),
+    ], 'r-studio'),
     ('rules', 'eR', 'rMT', [
         ('pCard', [(None, '<s>Once you finish to do 120 clips …</s>')], 'Once you finish <strong>doing</strong> 120 clips …'),
         ('pCard', [(None, '<s>I’m thinking about to buy a Mercedes.</s>')], 'I’m thinking about <strong>buying</strong> a Mercedes.'),
         ('pCard', [(None, '<s>I spend a lot of time experiment with modules.</s>')], 'I spend a lot of time <strong>experimenting</strong> with modules.'),
     ], None),
-    ('mc', 'e1', 'mcT', ITEMS, 'a', None),
+    ('mc', 'e1', 'mcT', ITEMS, ['g1', 'g2', 'g3', 'g4', 'g5', 'g6', 'g7'], None),
     ('gap', 'e2', 'gapT', 'gHint', [
         ('Would you mind ______ (send) me the files tonight?', ['sending'], 'gw1'),
         ('She suggested ______ (start) with the logo.', ['starting'], 'gw2'),
@@ -79,7 +97,7 @@ SPEC['flow'] = [
     ('order', 'e2', 'orderT', 'orderHint', [
         (['I’m thinking about', 'buying', 'a new', 'laptop.'], ['to buy'], 'o1w'),
         (['We finished', 'designing', 'the poster', 'on Friday.'], ['to design'], 'o2w'),
-    ], 'a', 'left'),
+    ], ['o1', 'o2'], None),
     ('talk', 'eT', 'tk2T', [
         'What do you <strong>enjoy doing</strong> after work?',
         'What do you <strong>miss doing</strong> from your first job?',
@@ -87,7 +105,7 @@ SPEC['flow'] = [
         'What are you <strong>thinking about learning</strong> next?',
         'What do you <strong>avoid saying</strong> to a client?',
         'Can you <strong>imagine working</strong> in another country?',
-    ], None, 3),
+    ], 'talk2', 3),
 ]
 SPEC['chips'] = ['enjoy designing', 'avoid missing', 'keep asking', 'finish editing', 'spend time', 'recommend using']
 

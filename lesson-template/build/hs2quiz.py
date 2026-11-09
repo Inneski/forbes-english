@@ -164,7 +164,7 @@ def _build_hs1(SPEC, T, GLOSS):
                  cover_w=SPEC.get('cover_w', 44), cover_mode=SPEC.get('cover_mode', 'square'),
                  cover_span=SPEC.get('cover_span'), cover_box=SPEC.get('cover_box'))
     for slot in SPEC.get('plates', {}):
-        assert re.match(r'^[a-z0-9-]+$', slot), slot
+        assert re.match(r'^[a-z0-9_-]+$', slot), slot
     s = [K.cover(E, [('Level', E['chipLevel']), ('Focus', E['chipFocus']), ('Count', E['chipCount'])])]
     dealt = 0
     for step in SPEC['flow']:

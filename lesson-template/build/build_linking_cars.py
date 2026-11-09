@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Linking Devices: The World of Cars (B2). House style 2, 21 slides.
+"""Linking Devices: The World of Cars (B2). House style 1, 21 slides.
 
 Rebuilt 2026-11-06 from `forbes-linking-devices-cars.html`: five multiple
 choice, five drag-into-the-gap items and five sentence builds. All fifteen
@@ -29,13 +29,32 @@ SPEC = dict(
     title='Linking Devices: The World of Cars (B2)',
     folder='LinkingCars',
     scheme='cool',
-    art={
-        'hero': ('travel', 'a classic car on an open road between flat hills'),
-        'talk': ('talk', 'two speech bubbles above a steering wheel'),
-        'a': ('tech', 'an electric car charging point with a cable plugged in'),
-        'b': ('city', 'a motorway junction seen from above as flat coloured lanes'),
-        'act': ('pair', 'two seats in a car showroom with two cups'),
+    style='hs1',
+    # MC 1 runs 23px deep beside a frame once answered in DE/ES, and MC 5 is
+    # too long for any frame: both take the full width.
+    # House style 1 (HOUSE-STYLE §000, 2026-11-09): Midjourney plates, his style
+    # images at --stylize 200, one per slide, briefs here.
+    plates={
+        'hero': 'a vintage sports car on a winding coastal road',
+        'talk': 'an electric car charging outside a modern house',
+            'la2': 'a red sports car racing past a petrol pump',
+        'la3': 'engineers fitting a battery pack into a car chassis in a factory',
+        'la4': 'a self-driving car stopping as a cyclist and pedestrians cross in the rain',
+        'lb1': 'commuters cycling past a long traffic jam',
+        'lb2': 'a car reviewer frowning at the inside of a shiny new car',
+        'lb3': 'a powerful car cruising calmly along an empty motorway',
+        'lb4': 'a small city car parked in a narrow old street',
+        'lb5': 'two cars side by side in a showroom, one silver, one red',
+        'lo1': 'a family plugging in their electric car at home at night',
+        'lo2': 'a large SUV squeezing down a crowded city street',
+        'lo3': 'a row of new charging stations along a motorway',
+        'lo4': 'an engineering team celebrating beside a race car in the pits',
+        'lo5': 'a driver filling up a big car at a petrol station',
+        'talk2': 'two friends talking beside a car in a garage',
+        'results': 'a classic car parked at sunset on an empty road',
     },
+    pop={'hero': (None, 'square'), 'la2': (None, 'free'), 'talk2': (None, 'blob')},
+    results='results',
 )
 
 
@@ -84,15 +103,18 @@ SPEC['flow'] = [
         'Will self-driving cars ever be safe?',
         'Do you prefer old cars or new ones?',
     ], 'talk', 3),
+    ('stage',),
     ('rules', 'eR', 'rT', [
         ('pContrast', [(None, 'however · nevertheless · nonetheless'), (None, 'even so · despite this · by contrast')], 'Electric cars are popular. <strong>Nevertheless</strong>, …'),
         ('pResult', [(None, 'as a result · therefore · consequently'), (None, 'for this reason')], 'Prices rose. <strong>As a result</strong>, …'),
         ('pAdd', [(None, 'in addition · furthermore · similarly · likewise')], 'They must see signs. <strong>In addition</strong>, …'),
         ('pClause', [(None, 'although · even though + clause'), (None, 'despite + noun · provided that + clause')], '<strong>Although</strong> they cost more, …'),
     ], None),
-    ('mc', 'e1', 'mcT', MC, 'a', None),
-    ('mc', 'e2', 'mcT', GAP, None, None),
-    ('order', 'e3', 'orderT', 'orderHint', ORDERS, 'b', 'left'),
+    ('mc', 'e1', 'mcT', MC, [None, 'la2', 'la3', 'la4', None], None),
+    ('stage',),
+    ('mc', 'e2', 'mcT', GAP, ['lb1', 'lb2', 'lb3', 'lb4', 'lb5'], None),
+    ('stage',),
+    ('order', 'e3', 'orderT', 'orderHint', ORDERS, ['lo1', 'lo2', 'lo3', 'lo4', 'lo5'], None),
     ('talk', 'eT', 'tk2T', [
         'Electric cars are cheap to run. <strong>However</strong>, … — finish the sentence.',
         'What happens to traffic when petrol prices rise? <strong>As a result</strong>, …',
@@ -100,7 +122,7 @@ SPEC['flow'] = [
         'Should cities ban old diesel cars? Give a reason with <strong>for this reason</strong>.',
         '<strong>Provided that</strong> … , I would buy an electric car.',
         'Compare two car brands with <strong>by contrast</strong> or <strong>similarly</strong>.',
-    ], None, 3),
+    ], 'talk2', 3),
 ]
 SPEC['chips'] = ['however', 'as a result', 'in addition', 'although', 'nevertheless', 'provided that', 'despite']
 

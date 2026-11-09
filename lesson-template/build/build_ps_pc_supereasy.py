@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """Present Simple vs Present Continuous — Supereasy (A1, German support).
-House style 2, 18 slides.
+House style 1, 18 slides.
 
 Rebuilt 2026-11-06 from `present_simple_continuous_de.html`, a ten-item
 two-button test (simple or continuous) with a German translation and a
@@ -32,13 +32,28 @@ SPEC = dict(
     title='Present Simple vs Present Continuous — Supereasy (A1)',
     folder='PSPCSupereasy',
     scheme='warm',
-    art={
-        'hero': ('time', 'an alarm clock beside a steaming coffee cup: every morning'),
-        'talk': ('talk', 'two speech bubbles over a kitchen table'),
-        'a': ('home', 'a house with one lit window: someone inside doing something right now'),
-        'b': ('food', 'a breakfast plate and a cup, the same every day'),
-        'act': ('pair', 'two chairs at a table with two cups'),
+    style='hs1',
+    # House style 1 (HOUSE-STYLE §000, 2026-11-09): Midjourney plates, his style
+    # images at --stylize 200, one per slide, briefs here.
+    plates={
+        'hero': 'a girl writing a letter at a sunny window',
+        'talk': 'a busy family breakfast table in the morning',
+        'r-daily': 'a big kitchen clock above a mug of coffee in the morning sun',
+        's1': 'a girl writing a letter at her desk',
+        's2': 'a man drinking coffee by a window in the morning',
+        's3': 'a mother cooking dinner in a warm kitchen',
+        's4': 'a baby crying in a cot',
+        's5': 'students studying English in a classroom',
+        't1': 'a boy playing football in a park',
+        't2': 'a family watching a film together on the sofa',
+        't3': 'a girl happily eating a bar of chocolate',
+        't4': 'a dog running in a garden',
+        't5': 'a child with a school bag walking to school',
+        'talk2': 'two children chatting on a bench in the playground',
+        'results': 'a school desk with an open exercise book and coloured pencils',
     },
+    pop={'hero': (None, 'square'), 't4': (None, 'free'), 'talk2': (None, 'blob')},
+    results='results',
 )
 
 
@@ -70,12 +85,14 @@ SPEC['flow'] = [
         'What do you do on Saturdays?',
         'What is your family doing at the moment?',
     ], 'talk', 3),
+    ('stage',),
     ('rules', 'eR', 'rT', [
         ('Present simple', ['rS1', 'rS2'], 'I <strong>drink</strong> coffee every morning. She <strong>cooks</strong> every day.'),
         ('Present continuous', ['rC1', 'rC2'], 'Look! She <strong>is writing</strong> a letter. We <strong>are studying</strong> now.'),
-    ], 'hero'),
-    ('mc', 'e1', 'mcT', A, 'a', None),
-    ('mc', 'e2', 'mcT', B, 'b', 'left'),
+    ], 'r-daily'),
+    ('mc', 'e1', 'mcT', A, ['s1', 's2', 's3', 's4', 's5'], None),
+    ('stage',),
+    ('mc', 'e2', 'mcT', B, ['t1', 't2', 't3', 't4', 't5'], None),
     ('raw', None),  # the sort, filled in below once T exists
     ('gap', 'e3', 'gapT', 'gHint', [
         ('Shh! The children ______ (sleep).', ['are sleeping|’re sleeping|\'re sleeping'], 'gw1'),
@@ -89,7 +106,7 @@ SPEC['flow'] = [
         'How <strong>do</strong> you usually <strong>go</strong> to work or school?',
         'What music <strong>do</strong> you <strong>like</strong>?',
         'What <strong>are</strong> you <strong>learning</strong> at the moment?',
-    ], None, 3),
+    ], 'talk2', 3),
 ]
 SPEC['chips'] = ['right now', 'usually', 'is', 'every day', 'are', 'at the moment', 'always']
 

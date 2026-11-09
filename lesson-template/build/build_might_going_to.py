@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Might vs Going To (A2, German support). House style 2, 23 slides.
+"""Might vs Going To (A2, German support). House style 1, 23 slides.
 
 Rebuilt 2026-11-06 from `might_vs_going_to_test.html`, a one-question-at-a-
 time scrolling test with a German line under every item ("make them house
@@ -35,13 +35,34 @@ SPEC = dict(
     title='Might vs Going To (A2)',
     folder='MightGoingTo',
     scheme='cool',
-    art={
-        'hero': ('travel', 'an open suitcase under a sky split between sun and a rain cloud'),
-        'talk': ('talk', 'two speech bubbles, one holding a small sun and one a small cloud'),
-        'a': ('nature', 'a small house under a sky that is half sunshine and half dark rain cloud'),
-        'b': ('time', 'a wall calendar with one day ringed and the next day left blank'),
-        'act': ('pair', 'two chairs at a small table with a calendar lying between two cups'),
+    style='hs1',
+    # House style 1 (HOUSE-STYLE §000, 2026-11-09): Midjourney plates, his style
+    # images at --stylize 200, one per slide, briefs here.
+    plates={
+        'hero': 'a young woman with a suitcase at a crossroads under a big sky of sun and clouds',
+        'talk': 'a couple planning their weekend at a kitchen table, tickets in hand',
+        'm1': 'a couple in evening clothes arriving at an opera house',
+        'm2': 'a garden party table as grey clouds gather overhead',
+        'm3': 'a woman looking thoughtfully at a ringing phone',
+        'm4': 'a student with a pile of books at a desk in the evening',
+        'm5': 'a man cooking vegetables for a friend in a small kitchen',
+        'm6': 'a son nervously playing a punk record to his mother',
+        'm7': 'black storm clouds rolling over a small town',
+        'm8': 'a person looking into an open fridge, a pizza box on the counter',
+        'n1': 'a man walking away as a friend struggles with heavy boxes',
+        'n2': 'a nervous student staring at an exam paper',
+        'n3': 'a man in a suit checking his watch on a city pavement',
+        'n4': 'friends queuing outside a cinema at night',
+        'n5': 'two friends with tennis rackets on a court',
+        'n6': 'a family on a sunny beach holiday',
+        'n7': 'a woman holding up a blue dress and a red dress in front of a mirror',
+        'o1': 'a woman keeping a secret, a finger to her lips',
+        'o2': 'an empty chair at a dinner table set for friends',
+        'talk2': 'two friends talking about their plans on a park bench',
+        'results': 'a packed suitcase by the front door, ready for a trip',
     },
+    pop={'hero': (None, 'square'), 'n7': (None, 'free'), 'results': (None, 'free')},
+    results='results',
 )
 
 
@@ -102,17 +123,19 @@ SPEC['flow'] = [
         'What is something you are sure will happen this year?',
         'What is something that might happen, but you’re not sure?',
     ], 'talk', 3),
+    ('stage',),
     ('rules', 'eR', 'rT', [
         ('might + verb', ['rM1', 'rM2'], 'It <strong>might rain</strong> later. It <strong>might not</strong> be cold.'),
         ('be going to + verb', ['rG1', 'rG2'], 'Look at those clouds — it’s <strong>going to rain</strong>.'),
         ('pT', ['rT1'], 'might <strong>go</strong> · going to <strong>go</strong>'),
     ], None),
-    ('mc', 'e1', 'mcT', ITEMS_A, 'a', None),
-    ('mc', 'e2', 'mcT', ITEMS_B, 'b', 'left'),
+    ('mc', 'e1', 'mcT', ITEMS_A, ['m1', 'm2', 'm3', 'm4', 'm5', 'm6', 'm7', 'm8'], None),
+    ('stage',),
+    ('mc', 'e2', 'mcT', ITEMS_B, ['n1', 'n2', 'n3', 'n4', 'n5', 'n6', 'n7'], None),
     ('order', 'e2', 'orderT', 'orderHint', [
         (['I’m', 'not', 'going to', 'tell', 'him.'], ['don’t'], 'o1w'),
         (['She', 'might', 'not', 'come', 'tonight.'], ['to'], 'o2w'),
-    ], 'b', 'left'),
+    ], ['o1', 'o2'], None),
     ('talk', 'eT', 'tk2T', [
         'What <strong>are you going to</strong> cook this week?',
         'Where <strong>might</strong> you go on holiday next year?',
@@ -120,7 +143,7 @@ SPEC['flow'] = [
         'Look out of the window. <strong>Is it going to</strong> rain?',
         'Who <strong>might</strong> you call tonight?',
         'What job <strong>might</strong> you do in ten years?',
-    ], None, 3),
+    ], 'talk2', 3),
 ]
 SPEC['chips'] = ['might', '’m going to', 'might not', 'isn’t going to', 'are going to', 'might go']
 

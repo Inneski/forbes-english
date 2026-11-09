@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Phrasal Verbs: make, do, take, put (B1-B2). House style 2, 23 slides.
+"""Phrasal Verbs: make, do, take, put (B1-B2). House style 1, 23 slides.
 
 Rebuilt 2026-11-06 from `phrasal_verbs_test.html`, a sixteen-item
 vocabulary check with no teaching. All sixteen items are kept. The
@@ -28,13 +28,33 @@ SPEC = dict(
     title='Phrasal Verbs: make, do, take, put (B1–B2)',
     folder='PhrasalMakeDoTakePut',
     scheme='slate',
-    art={
-        'hero': ('build', 'four building blocks stacked into a small tower, one block being lifted on'),
-        'talk': ('talk', 'two speech bubbles over a small table'),
-        'a': ('home', 'a run-down cottage with a ladder against the wall and a paint pot'),
-        'b': ('work', 'a desk with a new staff badge, a laptop and a cup of coffee'),
-        'act': ('pair', 'two chairs at a café table'),
+    style='hs1',
+    # House style 1 (HOUSE-STYLE §000, 2026-11-09): Midjourney plates, his style
+    # images at --stylize 200, one per slide, briefs here.
+    plates={
+        'hero': 'a run-down country cottage being renovated, a ladder against the wall',
+        'talk': 'a couple painting the walls of an empty flat',
+        'p1': 'burglars climbing out of a window carrying paintings at night',
+        'p2': 'a man giving flowers to an upset woman',
+        'p3': 'a woman frowning, puzzled, as a man behaves strangely in a café',
+        'p4': 'a boy telling a wild story, his friends unconvinced',
+        'p5': 'a new head teacher facing students in old-fashioned uniforms',
+        'p6': 'an empty delivery van parked outside a closed office during a strike',
+        'p7': 'a tired hiker with muddy boots opening the door to a steaming shower',
+        'p8': 'a couple renovating a run-down cottage, sanding the floor',
+        'q1': 'a manager welcoming new staff in a busy shop',
+        'q2': 'a confused student in a big lecture hall',
+        'q3': 'a daughter taking her father’s seat at the family company desk',
+        'q4': 'a man apologising to a colleague who has her arms folded',
+        'q5': 'a host putting a record on a turntable before a party',
+        'q6': 'a man recoiling from a bad smell in a restaurant kitchen',
+        'q7': 'a child putting toys into a box',
+        'q8': 'firefighters putting out flames on a house',
+        'talk2': 'two neighbours chatting over a garden fence',
+        'results': 'a freshly renovated sunny kitchen',
     },
+    pop={'hero': (None, 'square'), 'q7': (None, 'free'), 'talk2': (None, 'blob')},
+    results='results',
 )
 
 
@@ -75,8 +95,10 @@ SPEC['flow'] = [
         'Who would you like to work with in five years?',
         'What do you do when you can’t understand a lecture?',
     ], 'talk', 3),
-    ('mc', 'e1', 'mcT', MD, 'a', None),
-    ('mc', 'e2', 'mcT', TP, 'b', 'left'),
+    ('stage',),
+    ('mc', 'e1', 'mcT', MD, ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8'], None),
+    ('stage',),
+    ('mc', 'e2', 'mcT', TP, ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8'], None),
     ('rules', 'eR', 'recT', [
         ('make', ['m1', 'm2', 'm3', 'm4'], None),
         ('do', ['d1', 'd2', 'd3', 'd4'], None),
@@ -95,7 +117,7 @@ SPEC['flow'] = [
         'What do you <strong>put off</strong> doing for as long as possible?',
         'What could you <strong>do with</strong> right now?',
         'Would you like to <strong>take over</strong> a business one day?',
-    ], None, 3),
+    ], 'talk2', 3),
 ]
 SPEC['chips'] = ['take on', 'put off', 'do with', 'make up for', 'take back', 'do away with', 'put away']
 
@@ -201,7 +223,7 @@ T = {
         actSpeak2='¿Qué norma del trabajo o de la escuela eliminarías (DO AWAY WITH)? ¿Qué aplazarías (PUT OFF) si pudieras?',
         actSpeak3='Cuenta una vez en que alguien se inventó algo (MADE UP) o tuvo que compensar un error (MAKE UP FOR).',
         actWriteKind='Escritura',
-        actWriteBrief='Escribe un correo corto a una compañera (120–150 palabras) sobre cambios en el trabajo: a quién está contratando la empresa (TAKING ON), qué está eliminando (DOING AWAY WITH) y qué le vendría bien a todo el mundo (COULD DO WITH). Usa cinco phrasal verbs de esta lección.',
+        actWriteBrief='Escribe un correo corto a una compañera (120–150 palabras) sobre cambios en el trabajo: a quién contrata la empresa (TAKING ON), qué elimina (DOING AWAY WITH) y qué le vendría bien a todos (COULD DO WITH). Usa cinco phrasal verbs.',
         actPlaceholder='Hi Chris, …',
     ),
 }
