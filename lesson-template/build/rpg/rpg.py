@@ -100,6 +100,43 @@ TEXT_KEYS = ('k', 'title', 'story', 'clue', 'prompt', 'fb', 'fbRight', 'fbWrong'
 NINE = ['es', 'de', 'fr', 'it', 'pt', 'ru', 'ar', 'zh', 'ja']   # HOUSE-STYLE §8's full set
 
 
+# A gloss is the WHOLE sentence, with the answer already in it. Innes,
+# 2026-11-10: "The Block Camp translations should not have a gap in them to be
+# filled. The translation should be of the entire complete sentence once the
+# word goes into it. You don't need to match the gap to a gap in the
+# translation." The English keeps its ___ (that is the question); the line
+# under it tells the learner what the finished sentence means.
+#
+# whole-sentences/<lang>.json maps the gapped ENGLISH string to that whole
+# gloss. It is applied inside assemble(), after everything else, so it wins
+# over an export's inline es/de, over translations/<lang>.json and over a
+# folded text layer; _check_langs() then refuses any gloss still carrying a
+# gap. A new gapped question therefore needs an entry here in every language
+# the page ships, written with the correct option in place.
+WHOLE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'whole-sentences')
+GAP = re.compile(r'_{2,}')
+
+
+def whole_sentences(spec):
+    table = {os.path.splitext(f)[0]: json.load(open(os.path.join(WHOLE, f), encoding='utf-8'))
+             for f in sorted(os.listdir(WHOLE)) if f.endswith('.json')}
+    def walk(o):
+        if isinstance(o, dict):
+            if isinstance(o.get('en'), str):
+                if GAP.search(o['en']):
+                    for lang in spec['langs']:
+                        if o['en'] in table.get(lang, {}):
+                            o[lang] = table[lang][o['en']]
+            else:
+                for v in o.values():
+                    walk(v)
+        elif isinstance(o, list):
+            for v in o:
+                walk(v)
+    walk(spec['scenes'])
+    return spec
+
+
 def apply_translations(spec, path):
     """Fill every learner-facing string from a translations file.
 
@@ -819,6 +856,10 @@ def _check_langs(obj, langs, path):
         missing = [l for l in langs if not obj.get(l)]
         if missing:
             _MISSING.append('%s: missing %s for %r' % (path, ','.join(missing), obj['en'][:70]))
+        gapped = [l for l in langs if isinstance(obj.get(l), str) and GAP.search(obj[l])]
+        if gapped:
+            _MISSING.append('%s: %s gloss still has a gap — write the whole sentence in '
+                            'rpg/whole-sentences/ for %r' % (path, ','.join(gapped), obj['en'][:70]))
         return
     if isinstance(obj, dict):
         for k, v in obj.items():
@@ -982,6 +1023,7 @@ def validate(spec):
 
 def assemble(spec, out=None):
     """spec keys — see README.md. Writes the page and returns its path."""
+    whole_sentences(spec)
     labels = validate(spec)
     langs = spec['langs']
     game = {

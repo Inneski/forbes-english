@@ -42,7 +42,7 @@ def main():
             g = t[s]
             if not isinstance(g, str) or not g.strip():
                 bad.append('%s: EMPTY    %r' % (lang, s[:70])); continue
-            if ('___' in s) != ('___' in g):
+            if '___' in g:   # a gloss is the whole sentence (rpg.py, WHOLE)
                 bad.append('%s: BLANK    %r -> %r' % (lang, s[:50], g[:50]))
             # a VOCAB explanation's CAPS target words are the English being
             # taught and travel into the gloss unchanged

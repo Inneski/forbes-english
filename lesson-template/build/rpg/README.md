@@ -72,6 +72,17 @@ Camp with Monocraft."*
   the system face for their glyphs, which is fine at gloss size. Options
   are glossed when the export glossed them (Oz); when it did not
   (Wonderland) they stay English — they are the language being taught.
+- **A gloss never has a gap in it.** Innes, 2026-11-10: *"The translation
+  should be of the entire complete sentence once the word goes into it. You
+  don't need to match the gap to a gap in the translation."* The English
+  prompt keeps its `___`; the line under it is the finished sentence, answer
+  included, in the learner's language. Those wholes live in
+  `rpg/whole-sentences/<lang>.json`, keyed by the gapped English string, and
+  `assemble()` applies them last (over an export's inline es/de, over
+  `translations/`, over a folded text layer) and then refuses to build while
+  any gloss still carries a gap. A new gapped question needs an entry there in
+  all nine languages. The two hand-built pages (`last-train-home-rpg`,
+  `long-way-home-rpg`) carry theirs in the HTML.
 - **A rules briefing before the first question** (kind `rules`: up to five
   form cards and a note), and **one explanation line under every answer**
   (`fb`), right or wrong. The exports have neither; both are the difference
@@ -142,7 +153,7 @@ misread — two ending hotspots were wrong in the table and obvious in the
 thumbnail.
 
 `check_translations.py` audits a `<slug>/translations` directory before a
-page exists — script leaks, coverage, a lost `___` — which is the one thing
+page exists — script leaks, coverage, a gloss left with a `___` — which is the one thing
 `check-glosses.js` cannot do, since it needs a built Blocula-style page.
 
 **If you change `rpg.py`, re-run every RPG builder in the same commit.** On

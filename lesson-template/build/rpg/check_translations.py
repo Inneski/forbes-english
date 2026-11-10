@@ -14,8 +14,10 @@ translation pass is checkable the moment it is written, plus three rules that
 belong to this stage:
 
   * every language file holds exactly the same set of English keys;
-  * a prompt whose English has a ___ keeps the ___ in every gloss (that blank
-    is the question — a gloss that silently fills it in gives the answer away);
+  * NO gloss carries a ___ (Innes, 2026-11-10): the gloss is the whole
+    sentence with the answer in it. The wholes live in whole-sentences/ and
+    rpg.assemble() refuses a page whose gloss still has a gap; here it is a
+    warning, because a translations file may hold a stale line no page uses;
   * pass the BUILT `<slug>.html` (or, less exactly, `data.json`) and it also
     reports which learner-facing strings have no entry at all, which is what
     `validate()` would refuse on. Prefer the page: `data.json` still holds the
@@ -137,10 +139,8 @@ def main(d, data_json=None):
                     and s.strip() != en.strip()
                     and re.sub(r'[\s\d\W_]', '', s, flags=re.U)):
                 errs.append(('WRONG SCRIPT', l, en, 'no %s characters at all' % l))
-            if '___' in en and '___' not in s:
-                errs.append(('BLANK LOST', l, en, s))
-            if '___' not in en and '___' in s:
-                errs.append(('BLANK ADDED', l, en, s))
+            if '___' in s:
+                warn.append(('GAP IN GLOSS', l, en, 'write the whole sentence (rpg/whole-sentences/)'))
 
     if data_json:
         found = lesson_strings(data_json)
