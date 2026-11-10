@@ -2441,6 +2441,15 @@ html[data-style="editorial"] .stage:not(.on-cover):not(:has(.slide.is-active[dat
   filter: grayscale(1) contrast(1.15); opacity: .06; mix-blend-mode: multiply;
 }
 html[data-style="editorial"] .opts { gap: 8px; }
+/* data-art-fit="land": a plate whose subject is wider than the frame's crop
+   window keeps its own 16:9 shape (same width, shorter, centred in the
+   picture zone) instead of losing its edges. hs1.Deck.fit() decides. */
+html[data-style="editorial"] .stage:has(.slide.is-active[data-art-fit="land"]) .editorial-art {
+  top: 244px; height: 266px;
+}
+html[data-style="editorial"] .stage:has(.slide.is-active[data-art-fit="land"][data-art-size="narrow"]) .editorial-art {
+  top: 269px; height: 216px;
+}
 html[data-style="editorial"] .opt { padding-top: 10px; padding-bottom: 10px; }
 
 /* House style 1, rule 5: the hero is cut out and bursts out of a rounded
@@ -2465,11 +2474,12 @@ html.is-flow[data-style="editorial"] .slide[data-type="cover"] .cover-inner {
 
 html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide.is-active[data-bg])):has(.slide.is-active[data-wash]) .bg-layer::before {
   content: ''; position: absolute; inset: 0; opacity: 1; filter: none; mix-blend-mode: normal;
-  background: url('refinery/hero-flip.jpg') 330px center / auto 112% no-repeat;
+  background: url('refinery/hero-flip.jpg') right center / auto 100% no-repeat;
   -webkit-mask-image: linear-gradient(90deg, transparent 34%, rgba(0,0,0,.55) 52%, #000 70%), linear-gradient(180deg, #000 78%, transparent 90%);
   mask-image: linear-gradient(90deg, transparent 34%, rgba(0,0,0,.55) 52%, #000 70%), linear-gradient(180deg, #000 78%, transparent 90%);
   -webkit-mask-composite: source-in; mask-composite: intersect;
 }
+html[data-style="editorial"] .slide[data-wash] .act-word, html[data-style="editorial"] .slide[data-wash] .act-panel { background: var(--void); }
 </style>
 </head>
 <body>
@@ -2517,7 +2527,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="refinery/refinery-scene-0.jpg" data-type="discuss">
+    <section class="slide" data-bg="refinery/refinery-scene-0.jpg" data-art-pos="37%" data-type="discuss">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="eW">Warm-up</div>
         <h2 class="slide-title" data-i18n="tk1T">Let’s talk!</h2>
@@ -2534,7 +2544,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-type="teach">
+    <section class="slide" data-type="teach" data-wash>
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="eR">The rule</div>
         <h2 class="slide-title" data-i18n="rFormT">The passive in every tense</h2>
@@ -2549,7 +2559,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-type="teach">
+    <section class="slide" data-type="teach" data-wash>
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="eR">The rule</div>
         <h2 class="slide-title" data-i18n="rUseT">Active or passive?</h2>
@@ -2563,7 +2573,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-type="mc">
+    <section class="slide" data-type="mc" data-wash>
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e1">Which voice?</span> &middot; 1 / 4</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the best answer</h2>
@@ -2581,7 +2591,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-type="mc">
+    <section class="slide" data-type="mc" data-wash>
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e1">Which voice?</span> &middot; 2 / 4</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the best answer</h2>
@@ -2599,7 +2609,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-type="mc">
+    <section class="slide" data-type="mc" data-wash>
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e1">Which voice?</span> &middot; 3 / 4</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the best answer</h2>
@@ -2617,7 +2627,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-type="mc">
+    <section class="slide" data-type="mc" data-wash>
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e1">Which voice?</span> &middot; 4 / 4</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the best answer</h2>
@@ -2635,7 +2645,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="refinery/r-bund.jpg" data-art-side="left" data-type="mc">
+    <section class="slide" data-bg="refinery/r-bund.jpg" data-art-side="left" data-art-fit="land" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e2">The forms</span> &middot; 1 / 2</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the best answer</h2>
@@ -2669,7 +2679,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-type="gap">
+    <section class="slide" data-type="gap" data-wash>
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e2">The forms</span> &middot; 1 / 1</div>
         <h2 class="slide-title" data-i18n="gapT">Write the passive</h2>
@@ -2690,7 +2700,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="refinery/refinery-scene-3.jpg" data-art-side="left" data-type="order">
+    <section class="slide" data-bg="refinery/refinery-scene-3.jpg" data-art-side="left" data-art-pos="0%" data-type="order">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="e2">The forms</div>
         <h2 class="slide-title" data-i18n="orderT">Build the sentence</h2>
@@ -2705,7 +2715,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="refinery/r-brief.jpg" data-type="order">
+    <section class="slide" data-bg="refinery/r-brief.jpg" data-art-fit="land" data-type="order">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="e2">The forms</div>
         <h2 class="slide-title" data-i18n="orderT">Build the sentence</h2>
@@ -2720,7 +2730,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="refinery/talk2.jpg" data-art-side="left" data-type="discuss">
+    <section class="slide" data-bg="refinery/talk2.jpg" data-art-side="left" data-art-pos="13%" data-type="discuss">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="eT">Let’s talk</div>
         <h2 class="slide-title" data-i18n="tk2T">Let’s talk!</h2>
@@ -2737,7 +2747,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="refinery/results.jpg" data-type="results">
+    <section class="slide" data-bg="refinery/results.jpg" data-art-fit="land" data-type="results">
       <div class="slide-body" style="align-items:center;text-align:center">
         <div class="score-big"><span id="scoreVal">0</span><span class="dim" style="font-size:34px">/<span id="scoreMax">0</span></span></div>
         <p class="prose" style="margin-top:18px" id="scoreMsg"></p>

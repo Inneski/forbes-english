@@ -805,13 +805,19 @@ def build():
                               [E['actSpeak1'], E['actSpeak2'], E['actSpeak3']],
                               E['actWriteKind'], E['actWriteBrief'], E['actPlaceholder']), ART_ACT))
     body = ''.join(s)
+    # Innes, 2026-11-09: "dont have pages without a coloured illustration of
+    # some sort" -- the slides with no plate get the hero in full colour,
+    # flipped and pushed right (hs1.Deck._wash, as every other HS1 deck).
+    import hs1
+    W = hs1.Deck(F)
+    body = W._wash(body)
     n = body.count('<section class="slide')
     for c in LANGS:
         assert str(n) in T[c]['chipCount'], '%s chipCount %r, deck has %d' % (c, T[c]['chipCount'], n)
     out = D.assemble(TPL, SPEC['out'], body, D.editorial_palette('%s/hero.jpg' % F), SPEC['title'],
                      H._I18n(T, LANGS, False), langs=LANGS, style='editorial')
     assert out.count('\n</style>') >= 1
-    out = out.replace('\n</style>', EXTRA_CSS + '\n'.join(dict.fromkeys(GHOST_CSS)) + '\n</style>', 1)
+    out = out.replace('\n</style>', EXTRA_CSS + '\n'.join(dict.fromkeys(GHOST_CSS + W.css)) + '\n</style>', 1)
     open(SPEC['out'], 'w', encoding='utf-8', newline='').write(out)
     print('wrote %s — %d slides, %d bytes' % (SPEC['out'], n, len(out)))
 

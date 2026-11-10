@@ -217,9 +217,9 @@ def _build_hs1(SPEC, T, GLOSS):
 
     K.stage()
     s.append(K.frame(D.results(), SPEC.get('results')))
-    s.append(D.activate(E['actTitle'], E['actUse'], SPEC['chips'], 'Speaking', E['actSpeakBrief'],
+    s.append(K.activation(D.activate(E['actTitle'], E['actUse'], SPEC['chips'], 'Speaking', E['actSpeakBrief'],
                         [E['actSpeak1'], E['actSpeak2'], E['actSpeak3']],
-                        E['actWriteKind'], E['actWriteBrief'], E['actPlaceholder']))
+                        E['actWriteKind'], E['actWriteBrief'], E['actPlaceholder'])))
     body = ''.join(s)
     n = body.count('<section class="slide')
     for c in langs:

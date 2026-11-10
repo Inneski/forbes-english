@@ -2441,6 +2441,15 @@ html[data-style="editorial"] .stage:not(.on-cover):not(:has(.slide.is-active[dat
   filter: grayscale(1) contrast(1.15); opacity: .06; mix-blend-mode: multiply;
 }
 html[data-style="editorial"] .opts { gap: 8px; }
+/* data-art-fit="land": a plate whose subject is wider than the frame's crop
+   window keeps its own 16:9 shape (same width, shorter, centred in the
+   picture zone) instead of losing its edges. hs1.Deck.fit() decides. */
+html[data-style="editorial"] .stage:has(.slide.is-active[data-art-fit="land"]) .editorial-art {
+  top: 244px; height: 266px;
+}
+html[data-style="editorial"] .stage:has(.slide.is-active[data-art-fit="land"][data-art-size="narrow"]) .editorial-art {
+  top: 269px; height: 216px;
+}
 html[data-style="editorial"] .opt { padding-top: 10px; padding-bottom: 10px; }
 
 /* House style 1, rule 5: the hero is cut out and bursts out of a rounded
@@ -2465,11 +2474,12 @@ html.is-flow[data-style="editorial"] .slide[data-type="cover"] .cover-inner {
 
 html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide.is-active[data-bg])):has(.slide.is-active[data-wash]) .bg-layer::before {
   content: ''; position: absolute; inset: 0; opacity: 1; filter: none; mix-blend-mode: normal;
-  background: url('InteriorDesignVocab/hero-flip.jpg') 330px center / auto 112% no-repeat;
+  background: url('InteriorDesignVocab/hero-flip.jpg') right center / auto 100% no-repeat;
   -webkit-mask-image: linear-gradient(90deg, transparent 34%, rgba(0,0,0,.55) 52%, #000 70%), linear-gradient(180deg, #000 78%, transparent 90%);
   mask-image: linear-gradient(90deg, transparent 34%, rgba(0,0,0,.55) 52%, #000 70%), linear-gradient(180deg, #000 78%, transparent 90%);
   -webkit-mask-composite: source-in; mask-composite: intersect;
 }
+html[data-style="editorial"] .slide[data-wash] .act-word, html[data-style="editorial"] .slide[data-wash] .act-panel { background: var(--void); }
 </style>
 </head>
 <body>
@@ -2517,7 +2527,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="InteriorDesignVocab/talk.jpg" data-type="discuss">
+    <section class="slide" data-bg="InteriorDesignVocab/talk.jpg" data-art-pos="12%" data-type="discuss">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="eW">Warm-up</div>
         <h2 class="slide-title" data-i18n="tk1T">Let’s talk!</h2>
@@ -2534,7 +2544,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="InteriorDesignVocab/c1.jpg" data-art-side="left" data-art-size="narrow" data-type="mc">
+    <section class="slide" data-bg="InteriorDesignVocab/c1.jpg" data-art-side="left" data-art-size="narrow" data-art-fit="land" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e1">In context</span> &middot; 1 / 10</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the best word</h2>
@@ -2551,7 +2561,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="InteriorDesignVocab/c2.jpg" data-art-size="narrow" data-type="mc">
+    <section class="slide" data-bg="InteriorDesignVocab/c2.jpg" data-art-pos="49%" data-art-size="narrow" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e1">In context</span> &middot; 2 / 10</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the best word</h2>
@@ -2568,7 +2578,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="InteriorDesignVocab/c3.jpg" data-art-side="left" data-type="mc">
+    <section class="slide" data-bg="InteriorDesignVocab/c3.jpg" data-art-side="left" data-art-fit="land" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e1">In context</span> &middot; 3 / 10</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the best word</h2>
@@ -2602,7 +2612,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="InteriorDesignVocab/c5.jpg" data-art-side="left" data-art-size="narrow" data-type="mc">
+    <section class="slide" data-bg="InteriorDesignVocab/c5.jpg" data-art-side="left" data-art-size="narrow" data-art-fit="land" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e1">In context</span> &middot; 5 / 10</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the best word</h2>
@@ -2619,7 +2629,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="InteriorDesignVocab/c6.jpg" data-type="mc">
+    <section class="slide" data-bg="InteriorDesignVocab/c6.jpg" data-art-pos="48%" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e1">In context</span> &middot; 6 / 10</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the best word</h2>
@@ -2636,7 +2646,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="InteriorDesignVocab/c7.jpg" data-art-side="left" data-type="mc">
+    <section class="slide" data-bg="InteriorDesignVocab/c7.jpg" data-art-side="left" data-art-pos="12%" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e1">In context</span> &middot; 7 / 10</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the best word</h2>
@@ -2653,7 +2663,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="InteriorDesignVocab/c8.jpg" data-type="mc">
+    <section class="slide" data-bg="InteriorDesignVocab/c8.jpg" data-art-pos="100%" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e1">In context</span> &middot; 8 / 10</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the best word</h2>
@@ -2670,7 +2680,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="InteriorDesignVocab/c9.jpg" data-art-side="left" data-type="mc">
+    <section class="slide" data-bg="InteriorDesignVocab/c9.jpg" data-art-side="left" data-art-fit="land" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e1">In context</span> &middot; 9 / 10</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the best word</h2>
@@ -2687,7 +2697,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="InteriorDesignVocab/c10.jpg" data-type="mc">
+    <section class="slide" data-bg="InteriorDesignVocab/c10.jpg" data-art-pos="38%" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e1">In context</span> &middot; 10 / 10</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the best word</h2>
@@ -2704,7 +2714,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="InteriorDesignVocab/d1.jpg" data-art-side="left" data-type="mc">
+    <section class="slide" data-bg="InteriorDesignVocab/d1.jpg" data-art-side="left" data-art-fit="land" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e2">Definitions</span> &middot; 1 / 5</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the best word</h2>
@@ -2721,7 +2731,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="InteriorDesignVocab/d2.jpg" data-type="mc">
+    <section class="slide" data-bg="InteriorDesignVocab/d2.jpg" data-art-fit="land" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e2">Definitions</span> &middot; 2 / 5</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the best word</h2>
@@ -2738,7 +2748,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="InteriorDesignVocab/d3.jpg" data-art-side="left" data-type="mc">
+    <section class="slide" data-bg="InteriorDesignVocab/d3.jpg" data-art-side="left" data-art-pos="52%" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e2">Definitions</span> &middot; 3 / 5</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the best word</h2>
@@ -2755,7 +2765,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="InteriorDesignVocab/d4.jpg" data-type="mc">
+    <section class="slide" data-bg="InteriorDesignVocab/d4.jpg" data-art-fit="land" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e2">Definitions</span> &middot; 4 / 5</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the best word</h2>
@@ -2772,7 +2782,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="InteriorDesignVocab/d5.jpg" data-art-side="left" data-type="mc">
+    <section class="slide" data-bg="InteriorDesignVocab/d5.jpg" data-art-side="left" data-art-pos="36%" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e2">Definitions</span> &middot; 5 / 5</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the best word</h2>
@@ -2789,7 +2799,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="InteriorDesignVocab/s1.jpg" data-art-size="narrow" data-type="mc">
+    <section class="slide" data-bg="InteriorDesignVocab/s1.jpg" data-art-size="narrow" data-art-fit="land" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e3">Situations</span> &middot; 1 / 5</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the best word</h2>
@@ -2806,7 +2816,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="InteriorDesignVocab/s2.jpg" data-art-side="left" data-type="mc">
+    <section class="slide" data-bg="InteriorDesignVocab/s2.jpg" data-art-side="left" data-art-fit="land" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e3">Situations</span> &middot; 2 / 5</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the best word</h2>
@@ -2823,7 +2833,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="InteriorDesignVocab/s3.jpg" data-type="mc">
+    <section class="slide" data-bg="InteriorDesignVocab/s3.jpg" data-art-pos="0%" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e3">Situations</span> &middot; 3 / 5</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the best word</h2>
@@ -2840,7 +2850,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="InteriorDesignVocab/s4.jpg" data-art-side="left" data-type="mc">
+    <section class="slide" data-bg="InteriorDesignVocab/s4.jpg" data-art-side="left" data-art-pos="21%" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e3">Situations</span> &middot; 4 / 5</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the best word</h2>
@@ -2857,7 +2867,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="InteriorDesignVocab/s5.jpg" data-type="mc">
+    <section class="slide" data-bg="InteriorDesignVocab/s5.jpg" data-art-fit="land" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e3">Situations</span> &middot; 5 / 5</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the best word</h2>
@@ -2874,7 +2884,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="InteriorDesignVocab/x1.jpg" data-art-side="left" data-type="mc">
+    <section class="slide" data-bg="InteriorDesignVocab/x1.jpg" data-art-side="left" data-art-pos="0%" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e4">Odd one out</span> &middot; 1 / 4</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the best word</h2>
@@ -2891,7 +2901,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="InteriorDesignVocab/x2.jpg" data-type="mc">
+    <section class="slide" data-bg="InteriorDesignVocab/x2.jpg" data-art-fit="land" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e4">Odd one out</span> &middot; 2 / 4</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the best word</h2>
@@ -2908,7 +2918,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="InteriorDesignVocab/x3.jpg" data-art-side="left" data-type="mc">
+    <section class="slide" data-bg="InteriorDesignVocab/x3.jpg" data-art-side="left" data-art-pos="45%" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e4">Odd one out</span> &middot; 3 / 4</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the best word</h2>
@@ -2925,7 +2935,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="InteriorDesignVocab/x4.jpg" data-type="mc">
+    <section class="slide" data-bg="InteriorDesignVocab/x4.jpg" data-art-fit="land" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e4">Odd one out</span> &middot; 4 / 4</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the best word</h2>
@@ -2942,7 +2952,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-type="teach">
+    <section class="slide" data-type="teach" data-wash>
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="eR">Review</div>
         <h2 class="slide-title" data-i18n="recT">The words, by family</h2>
@@ -2956,7 +2966,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-type="gap">
+    <section class="slide" data-type="gap" data-wash>
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e5">Your turn</span> &middot; 1 / 1</div>
         <h2 class="slide-title" data-i18n="gapT">Write the missing word</h2>
@@ -2981,7 +2991,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="InteriorDesignVocab/talk2.jpg" data-art-side="left" data-type="discuss">
+    <section class="slide" data-bg="InteriorDesignVocab/talk2.jpg" data-art-side="left" data-art-fit="land" data-type="discuss">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="eT">Let’s talk</div>
         <h2 class="slide-title" data-i18n="tk2T">Let’s talk!</h2>

@@ -51,7 +51,17 @@ their frame.
    "Use", and set the text by script, because typing it key by key freezes
    the tab.
 3. **Crop to the subject.** Measure where each plate's subject sits and set
-   `data-art-pos`; check every crop by eye.
+   `data-art-pos`; check every crop by eye. `hs1.Deck.fit()` measures it (rembg mask): a
+   subject that fits the frame's window (~65% of a 16:9 plate, ~52% narrow)
+   gets a crop centred on it; a wider one gets `data-art-fit="land"`, a frame
+   in the plate's own 16:9 shape, same width, shorter. Innes, 2026-11-09:
+   *"some images dont suit square crops (cropping half a cats face) they dont
+   all have to be square"*.
+   **Cut and wash from the full-size original.** Pops zoom into the subject;
+   cut from the 1600px served plate they were soft (*"zoomed in looks shit low
+   res"*). `Deck.src()` reads `incoming/hd/<folder>/<slot>.png|jpg` (the
+   2944px Midjourney render, gitignored) when it is there; keep every pick's
+   original there.
 4. **Objects pop out.** `tools/pop_plate.py` cuts the subject out (rembg) and
    draws it filling the picture zone. There are three treatments; use a mix:
    - `square`: the subject bursts out of a rounded square of its own scene

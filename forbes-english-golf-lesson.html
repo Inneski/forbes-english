@@ -2441,6 +2441,15 @@ html[data-style="editorial"] .stage:not(.on-cover):not(:has(.slide.is-active[dat
   filter: grayscale(1) contrast(1.15); opacity: .06; mix-blend-mode: multiply;
 }
 html[data-style="editorial"] .opts { gap: 8px; }
+/* data-art-fit="land": a plate whose subject is wider than the frame's crop
+   window keeps its own 16:9 shape (same width, shorter, centred in the
+   picture zone) instead of losing its edges. hs1.Deck.fit() decides. */
+html[data-style="editorial"] .stage:has(.slide.is-active[data-art-fit="land"]) .editorial-art {
+  top: 244px; height: 266px;
+}
+html[data-style="editorial"] .stage:has(.slide.is-active[data-art-fit="land"][data-art-size="narrow"]) .editorial-art {
+  top: 269px; height: 216px;
+}
 html[data-style="editorial"] .opt { padding-top: 10px; padding-bottom: 10px; }
 
 /* House style 1, rule 5: the hero is cut out and bursts out of a rounded
@@ -2465,11 +2474,12 @@ html.is-flow[data-style="editorial"] .slide[data-type="cover"] .cover-inner {
 
 html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide.is-active[data-bg])):has(.slide.is-active[data-wash]) .bg-layer::before {
   content: ''; position: absolute; inset: 0; opacity: 1; filter: none; mix-blend-mode: normal;
-  background: url('Golf/hero-flip.jpg') 330px center / auto 112% no-repeat;
+  background: url('Golf/hero-flip.jpg') right center / auto 100% no-repeat;
   -webkit-mask-image: linear-gradient(90deg, transparent 34%, rgba(0,0,0,.55) 52%, #000 70%), linear-gradient(180deg, #000 78%, transparent 90%);
   mask-image: linear-gradient(90deg, transparent 34%, rgba(0,0,0,.55) 52%, #000 70%), linear-gradient(180deg, #000 78%, transparent 90%);
   -webkit-mask-composite: source-in; mask-composite: intersect;
-}html[data-style="editorial"] .slide:has(.q-ctx) .opt { padding-top: 7px; padding-bottom: 7px; }
+}
+html[data-style="editorial"] .slide[data-wash] .act-word, html[data-style="editorial"] .slide[data-wash] .act-panel { background: var(--void); }html[data-style="editorial"] .slide:has(.q-ctx) .opt { padding-top: 7px; padding-bottom: 7px; }
 </style>
 </head>
 <body>
@@ -2517,7 +2527,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="Golf/talk.jpg" data-type="discuss">
+    <section class="slide" data-bg="Golf/talk.jpg" data-art-pos="91%" data-type="discuss">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="eW">Warm-up</div>
         <h2 class="slide-title" data-i18n="tk1T">Let’s talk!</h2>
@@ -2534,7 +2544,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="Golf/r-trophy.jpg" data-art-side="left" data-type="teach">
+    <section class="slide" data-bg="Golf/r-trophy.jpg" data-art-side="left" data-art-pos="32%" data-type="teach">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="eR">The rule</div>
         <h2 class="slide-title" data-i18n="rDT">The key difference</h2>
@@ -2547,7 +2557,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-type="teach">
+    <section class="slide" data-type="teach" data-wash>
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="eR">The rule</div>
         <h2 class="slide-title" data-i18n="rST">Signal words</h2>
@@ -2561,7 +2571,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-type="teach">
+    <section class="slide" data-type="teach" data-wash>
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="eR">The rule</div>
         <h2 class="slide-title" data-i18n="rPT">Side by side</h2>
@@ -2575,7 +2585,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="Golf/q1.jpg" data-type="mc">
+    <section class="slide" data-bg="Golf/q1.jpg" data-art-pos="16%" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e1">Which tense?</span> &middot; 1 / 8</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the right form</h2>
@@ -2593,7 +2603,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="Golf/q2.jpg" data-art-side="left" data-art-size="narrow" data-type="mc">
+    <section class="slide" data-bg="Golf/q2.jpg" data-art-side="left" data-art-pos="47%" data-art-size="narrow" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e1">Which tense?</span> &middot; 2 / 8</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the right form</h2>
@@ -2611,7 +2621,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="Golf/q3.jpg" data-art-size="narrow" data-type="mc">
+    <section class="slide" data-bg="Golf/q3.jpg" data-art-pos="59%" data-art-size="narrow" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e1">Which tense?</span> &middot; 3 / 8</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the right form</h2>
@@ -2629,7 +2639,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="Golf/q4.jpg" data-art-side="left" data-type="mc">
+    <section class="slide" data-bg="Golf/q4.jpg" data-art-side="left" data-art-pos="100%" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e1">Which tense?</span> &middot; 4 / 8</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the right form</h2>
@@ -2665,7 +2675,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="Golf/q6.jpg" data-art-side="left" data-art-size="narrow" data-type="mc">
+    <section class="slide" data-bg="Golf/q6.jpg" data-art-side="left" data-art-size="narrow" data-art-fit="land" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e1">Which tense?</span> &middot; 6 / 8</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the right form</h2>
@@ -2683,7 +2693,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="Golf/q7.jpg" data-type="mc">
+    <section class="slide" data-bg="Golf/q7.jpg" data-art-pos="95%" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e1">Which tense?</span> &middot; 7 / 8</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the right form</h2>
@@ -2701,7 +2711,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="Golf/q8.jpg" data-art-side="left" data-type="mc">
+    <section class="slide" data-bg="Golf/q8.jpg" data-art-side="left" data-art-pos="63%" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e1">Which tense?</span> &middot; 8 / 8</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the right form</h2>
@@ -2719,7 +2729,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-type="gap">
+    <section class="slide" data-type="gap" data-wash>
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e2">Write the verb</span> &middot; 1 / 1</div>
         <h2 class="slide-title" data-i18n="gapT">Write the verb</h2>
@@ -2744,7 +2754,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-type="gap">
+    <section class="slide" data-type="gap" data-wash>
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e2">Write the verb</span> &middot; 1 / 1</div>
         <h2 class="slide-title" data-i18n="gapT">Write the verb</h2>
@@ -2769,7 +2779,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="Golf/e1.jpg" data-type="mc">
+    <section class="slide" data-bg="Golf/e1.jpg" data-art-pos="50%" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e3">Correct the error</span> &middot; 1 / 6</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the right form</h2>
@@ -2786,7 +2796,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="Golf/e2.jpg" data-art-side="left" data-type="mc">
+    <section class="slide" data-bg="Golf/e2.jpg" data-art-side="left" data-art-fit="land" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e3">Correct the error</span> &middot; 2 / 6</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the right form</h2>
@@ -2803,7 +2813,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="Golf/e3.jpg" data-type="mc">
+    <section class="slide" data-bg="Golf/e3.jpg" data-art-pos="100%" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e3">Correct the error</span> &middot; 3 / 6</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the right form</h2>
@@ -2820,7 +2830,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="Golf/e4.jpg" data-art-side="left" data-art-size="narrow" data-type="mc">
+    <section class="slide" data-bg="Golf/e4.jpg" data-art-side="left" data-art-pos="100%" data-art-size="narrow" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e3">Correct the error</span> &middot; 4 / 6</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the right form</h2>
@@ -2837,7 +2847,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="Golf/e5.jpg" data-art-size="narrow" data-type="mc">
+    <section class="slide" data-bg="Golf/e5.jpg" data-art-size="narrow" data-art-fit="land" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e3">Correct the error</span> &middot; 5 / 6</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the right form</h2>
@@ -2871,7 +2881,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="Golf/talk2.jpg" data-type="discuss">
+    <section class="slide" data-bg="Golf/talk2.jpg" data-art-fit="land" data-type="discuss">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="eT">Let’s talk</div>
         <h2 class="slide-title" data-i18n="tk2T">Let’s talk!</h2>
@@ -2888,7 +2898,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="Golf/results.jpg" data-art-side="left" data-type="results">
+    <section class="slide" data-bg="Golf/results.jpg" data-art-side="left" data-art-pos="65%" data-type="results">
       <div class="slide-body" style="align-items:center;text-align:center">
         <div class="score-big"><span id="scoreVal">0</span><span class="dim" style="font-size:34px">/<span id="scoreMax">0</span></span></div>
         <p class="prose" style="margin-top:18px" id="scoreMsg"></p>

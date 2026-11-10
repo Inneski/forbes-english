@@ -299,9 +299,9 @@ def slides():
     chips = ['got used to', 'didn’t use to', 'used to', 'Did … use to',
              'getting used to', 'is used to']
     # the activation's two panels need the full width
-    s.append(D.activate(E['actTitle'], E['actUse'], chips, 'Speaking', E['actSpeakBrief'],
+    s.append(K.activation(D.activate(E['actTitle'], E['actUse'], chips, 'Speaking', E['actSpeakBrief'],
                         [E['actSpeak1'], E['actSpeak2'], E['actSpeak3']],
-                        E['actWriteKind'], E['actWriteBrief'], E['actPlaceholder']))
+                        E['actWriteKind'], E['actWriteBrief'], E['actPlaceholder'])))
     return "".join(s)
 
 

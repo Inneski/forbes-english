@@ -288,9 +288,9 @@ def slides():
     s.append(K.frame(D.results(), 'talk2'))
     chips = ['deserve to', 'can’t afford to', 'worthy of', 'save for', 'spend on',
              'I’m going to', 'I’ll', 'by + date', 'an income stream', 'pay off']
-    s.append(D.activate(E['actTitle'], E['actUse'], chips, 'Speaking', E['actSpeakBrief'],
+    s.append(K.activation(D.activate(E['actTitle'], E['actUse'], chips, 'Speaking', E['actSpeakBrief'],
                         [E['actSpeak1'], E['actSpeak2'], E['actSpeak3']],
-                        E['actWriteKind'], E['actWriteBrief'], E['actPlaceholder']))
+                        E['actWriteKind'], E['actWriteBrief'], E['actPlaceholder'])))
     return "".join(s)
 
 

@@ -2441,6 +2441,15 @@ html[data-style="editorial"] .stage:not(.on-cover):not(:has(.slide.is-active[dat
   filter: grayscale(1) contrast(1.15); opacity: .06; mix-blend-mode: multiply;
 }
 html[data-style="editorial"] .opts { gap: 8px; }
+/* data-art-fit="land": a plate whose subject is wider than the frame's crop
+   window keeps its own 16:9 shape (same width, shorter, centred in the
+   picture zone) instead of losing its edges. hs1.Deck.fit() decides. */
+html[data-style="editorial"] .stage:has(.slide.is-active[data-art-fit="land"]) .editorial-art {
+  top: 244px; height: 266px;
+}
+html[data-style="editorial"] .stage:has(.slide.is-active[data-art-fit="land"][data-art-size="narrow"]) .editorial-art {
+  top: 269px; height: 216px;
+}
 html[data-style="editorial"] .opt { padding-top: 10px; padding-bottom: 10px; }
 
 /* House style 1, rule 5: the hero is cut out and bursts out of a rounded
@@ -2465,11 +2474,12 @@ html.is-flow[data-style="editorial"] .slide[data-type="cover"] .cover-inner {
 
 html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide.is-active[data-bg])):has(.slide.is-active[data-wash]) .bg-layer::before {
   content: ''; position: absolute; inset: 0; opacity: 1; filter: none; mix-blend-mode: normal;
-  background: url('Skiing/birch-forest-cross-country-flip.jpg') 330px center / auto 112% no-repeat;
+  background: url('Skiing/birch-forest-cross-country-flip.jpg') right center / auto 100% no-repeat;
   -webkit-mask-image: linear-gradient(90deg, transparent 34%, rgba(0,0,0,.55) 52%, #000 70%), linear-gradient(180deg, #000 78%, transparent 90%);
   mask-image: linear-gradient(90deg, transparent 34%, rgba(0,0,0,.55) 52%, #000 70%), linear-gradient(180deg, #000 78%, transparent 90%);
   -webkit-mask-composite: source-in; mask-composite: intersect;
 }
+html[data-style="editorial"] .slide[data-wash] .act-word, html[data-style="editorial"] .slide[data-wash] .act-panel { background: var(--void); }
 </style>
 </head>
 <body>
@@ -2517,7 +2527,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="Skiing/talk.jpg" data-type="discuss">
+    <section class="slide" data-bg="Skiing/talk.jpg" data-art-pos="33%" data-type="discuss">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="eW">Warm-up</div>
         <h2 class="slide-title" data-i18n="tk1T">Let’s talk!</h2>
@@ -2534,7 +2544,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="Skiing/q1.jpg" data-art-side="left" data-art-size="narrow" data-type="mc">
+    <section class="slide" data-bg="Skiing/q1.jpg" data-art-side="left" data-art-pos="2%" data-art-size="narrow" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e1">Resort vocabulary</span> &middot; 1 / 5</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the best answer</h2>
@@ -2568,7 +2578,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="Skiing/q3.jpg" data-art-side="left" data-art-size="narrow" data-type="mc">
+    <section class="slide" data-bg="Skiing/q3.jpg" data-art-side="left" data-art-size="narrow" data-art-fit="land" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e1">Resort vocabulary</span> &middot; 3 / 5</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the best answer</h2>
@@ -2585,7 +2595,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="Skiing/q4.jpg" data-art-size="narrow" data-type="mc">
+    <section class="slide" data-bg="Skiing/q4.jpg" data-art-size="narrow" data-art-fit="land" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e1">Resort vocabulary</span> &middot; 4 / 5</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the best answer</h2>
@@ -2602,7 +2612,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="Skiing/q5.jpg" data-art-side="left" data-art-size="narrow" data-type="mc">
+    <section class="slide" data-bg="Skiing/q5.jpg" data-art-side="left" data-art-size="narrow" data-art-fit="land" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e1">Resort vocabulary</span> &middot; 5 / 5</div>
         <h2 class="slide-title" data-i18n="mcT">Choose the best answer</h2>
@@ -2634,7 +2644,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="Skiing/downhill-cliff-jump.jpg" data-art-side="left" data-type="mc">
+    <section class="slide" data-bg="Skiing/downhill-cliff-jump.jpg" data-art-side="left" data-art-fit="land" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e2">True or false?</span> &middot; 2 / 5</div>
         <h2 class="slide-title" data-i18n="mcT2">Is it true or false?</h2>
@@ -2649,7 +2659,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="Skiing/t3.jpg" data-type="mc">
+    <section class="slide" data-bg="Skiing/t3.jpg" data-art-fit="land" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e2">True or false?</span> &middot; 3 / 5</div>
         <h2 class="slide-title" data-i18n="mcT2">Is it true or false?</h2>
@@ -2664,7 +2674,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="Skiing/t4.jpg" data-art-side="left" data-type="mc">
+    <section class="slide" data-bg="Skiing/t4.jpg" data-art-side="left" data-art-fit="land" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e2">True or false?</span> &middot; 4 / 5</div>
         <h2 class="slide-title" data-i18n="mcT2">Is it true or false?</h2>
@@ -2679,7 +2689,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="Skiing/t5.jpg" data-type="mc">
+    <section class="slide" data-bg="Skiing/t5.jpg" data-art-fit="land" data-type="mc">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e2">True or false?</span> &middot; 5 / 5</div>
         <h2 class="slide-title" data-i18n="mcT2">Is it true or false?</h2>
@@ -2694,7 +2704,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-type="gap">
+    <section class="slide" data-type="gap" data-wash>
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e3">Complete the sentences</span> &middot; 1 / 1</div>
         <h2 class="slide-title" data-i18n="gapT">Complete the sentence</h2>
@@ -2723,7 +2733,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-type="gap">
+    <section class="slide" data-type="gap" data-wash>
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="e3">Complete the sentences</span> &middot; 1 / 1</div>
         <h2 class="slide-title" data-i18n="gapT">Complete the sentence</h2>
@@ -2748,7 +2758,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="Skiing/o1.jpg" data-art-side="left" data-type="order">
+    <section class="slide" data-bg="Skiing/o1.jpg" data-art-side="left" data-art-pos="99%" data-type="order">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="e4">Build the sentences</div>
         <h2 class="slide-title" data-i18n="orderT">Build the sentence</h2>
@@ -2763,7 +2773,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="Skiing/o2.jpg" data-type="order">
+    <section class="slide" data-bg="Skiing/o2.jpg" data-art-fit="land" data-type="order">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="e4">Build the sentences</div>
         <h2 class="slide-title" data-i18n="orderT">Build the sentence</h2>
@@ -2778,7 +2788,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="Skiing/o3.jpg" data-art-side="left" data-type="order">
+    <section class="slide" data-bg="Skiing/o3.jpg" data-art-side="left" data-art-pos="100%" data-type="order">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="e4">Build the sentences</div>
         <h2 class="slide-title" data-i18n="orderT">Build the sentence</h2>
@@ -2793,7 +2803,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="Skiing/o4.jpg" data-type="order">
+    <section class="slide" data-bg="Skiing/o4.jpg" data-art-pos="46%" data-type="order">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="e4">Build the sentences</div>
         <h2 class="slide-title" data-i18n="orderT">Build the sentence</h2>
@@ -2808,7 +2818,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="Skiing/o5.jpg" data-art-side="left" data-type="order">
+    <section class="slide" data-bg="Skiing/o5.jpg" data-art-side="left" data-art-fit="land" data-type="order">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="e4">Build the sentences</div>
         <h2 class="slide-title" data-i18n="orderT">Build the sentence</h2>
@@ -2823,7 +2833,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-type="teach">
+    <section class="slide" data-type="teach" data-wash>
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="eR">Review</div>
         <h2 class="slide-title" data-i18n="recT">The resort words</h2>
@@ -2837,7 +2847,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="Skiing/talk2.jpg" data-type="discuss">
+    <section class="slide" data-bg="Skiing/talk2.jpg" data-art-fit="land" data-type="discuss">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="eT">Let’s talk</div>
         <h2 class="slide-title" data-i18n="tk2T">Let’s talk!</h2>
@@ -2854,7 +2864,7 @@ html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide
       </div>
     </section>
 
-    <section class="slide" data-bg="Skiing/results.jpg" data-art-side="left" data-type="results">
+    <section class="slide" data-bg="Skiing/results.jpg" data-art-side="left" data-art-pos="11%" data-type="results">
       <div class="slide-body" style="align-items:center;text-align:center">
         <div class="score-big"><span id="scoreVal">0</span><span class="dim" style="font-size:34px">/<span id="scoreMax">0</span></span></div>
         <p class="prose" style="margin-top:18px" id="scoreMsg"></p>

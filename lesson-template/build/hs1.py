@@ -44,6 +44,8 @@ TPL = 'lesson-template/lesson-template.html'
 # frame (37%), beside the narrow one (30%), or beside any picture. From The
 # Comeback Ride, where the reading options (60-75 characters) went narrow.
 OPT_DEFAULT, OPT_NARROW = 44, 76
+FRAME_W = {None: 0.37 * 1280, 'narrow': 0.30 * 1280}
+FRAME_H = 0.57 * 720
 STEM_DEFAULT, STEM_NARROW = 92, 130
 
 TEXTURE_CSS = '''
@@ -55,6 +57,15 @@ html[data-style="editorial"] .stage:not(.on-cover):not(:has(.slide.is-active[dat
   filter: grayscale(1) contrast(1.15); opacity: .06; mix-blend-mode: multiply;
 }
 html[data-style="editorial"] .opts { gap: 8px; }
+/* data-art-fit="land": a plate whose subject is wider than the frame's crop
+   window keeps its own 16:9 shape (same width, shorter, centred in the
+   picture zone) instead of losing its edges. hs1.Deck.fit() decides. */
+html[data-style="editorial"] .stage:has(.slide.is-active[data-art-fit="land"]) .editorial-art {
+  top: 244px; height: 266px;
+}
+html[data-style="editorial"] .stage:has(.slide.is-active[data-art-fit="land"][data-art-size="narrow"]) .editorial-art {
+  top: 269px; height: 216px;
+}
 html[data-style="editorial"] .opt { padding-top: 10px; padding-bottom: 10px; }
 '''
 
@@ -110,6 +121,56 @@ class Deck:
     def has(self, slot):
         return bool(slot) and os.path.exists(os.path.join(self.F, slot + '.jpg'))
 
+    def src(self, slot):
+        """The full-size original of a plate, for cutting and for the
+        full-page wash. The served plates are 1600px; a pop zooms into its
+        subject, and from 1600px that came out soft (Innes, 2026-11-09:
+        "zoomed in looks shit low res"). The originals are Midjourney's 2944px
+        renders, kept in incoming/hd/<folder>/<slot>.png|jpg (gitignored);
+        without one the served plate is used."""
+        for ext in ('.png', '.jpg'):
+            hd = os.path.join('incoming', 'hd', self.F, slot + ext)
+            if os.path.exists(hd):
+                return hd
+        return os.path.join(self.F, slot + '.jpg')
+
+    def fit(self, slot, size):
+        """Rule 3, measured: where the plate's subject sits (rembg mask,
+        the same subject() pop_plate uses). The frame shows only ~65% of a
+        16:9 plate's width (~52% narrow). A subject that fits that window
+        gets a crop centred on it; one wider than the window gets a frame in
+        the plate's own 16:9 shape, same width, shorter, so nothing is cut
+        (Innes: "some images dont suit square crops (cropping half a cats
+        face) they dont all have to be square"). Returns (pos, fit)."""
+        import numpy as np
+        from PIL import Image
+        plate = os.path.join(self.F, slot + '.jpg')
+        w, h = Image.open(plate).size
+        wf = (FRAME_W[size] / (FRAME_H * w / h))
+        if wf >= 0.98:
+            return None, None
+        m = pop_plate.mask_for(plate, pop_plate.cache_path(plate))
+        a = pop_plate.subject(m)
+        cols = np.where(a.any(0))[0]
+        if not len(cols) or a.mean() < 0.01:
+            return None, 'land'            # nothing clear to centre on: show it all
+        x0, x1 = cols[0] / a.shape[1], cols[-1] / a.shape[1]
+        if x1 - x0 > wf:
+            return None, 'land'
+        left = min(max((x0 + x1) / 2 - wf / 2, 0.0), 1 - wf)
+        return '%.0f%%' % (100 * left / (1 - wf)), None
+
+    def activation(self, html):
+        """The activation's chips and buttons are centred across the full
+        width, so a full-page picture always ends up under a button (Innes,
+        of Venezuela's: "this page looks awful"). It takes a framed plate
+        instead, and its content the text column: the hero, or the cover's
+        plate when the hero is already shown in this stage."""
+        # Tried 2026-11-10: framed, the activation's buttons and open panel
+        # ignore the text column and run over the picture. It keeps the
+        # full-page wash instead (the whole picture, solid buttons and panel).
+        return html
+
     def stage(self):
         """Start the next stage: plates may repeat across stages, not inside one."""
         self._stage = set()
@@ -148,9 +209,12 @@ class Deck:
             narrow = size == 'narrow'
             out = os.path.join(self.F, 'pop-%s%s.webp' % (slot, '-n' if narrow else ''))
             if not os.path.exists(out):
-                print('  pop', out, pop_plate.build(os.path.join(self.F, slot + '.jpg'), out, narrow, *p[:3]))
+                print('  pop', out, pop_plate.build(self.src(slot), out, narrow, *p[:3]))
             attrs = ' data-bg="%s"' % out.replace(os.sep, '/')
             side, pos, shape = None, None, 'pop'
+        fit = None
+        if shape is None and pos is None:
+            pos, fit = self.fit(slot, size)
         if slot in self.ghosts and shape != 'pop':
             attrs += self._ghost(slot, side, pos, size)
         if side == 'left':
@@ -161,6 +225,8 @@ class Deck:
             attrs += ' data-art="%s"' % shape
         if size:
             attrs += ' data-art-size="%s"' % size
+        if fit:
+            attrs += ' data-art-fit="%s"' % fit
         return re.sub(r'<section class="slide( is-active)?"', lambda m: m.group(0) + attrs, html, count=1)
 
     def _ghost(self, pl, side, pos, size):
@@ -185,7 +251,7 @@ class Deck:
     # ── slides ─────────────────────────────────────────────────────────
     def cover(self, E, chips=None):
         assert os.path.exists(os.path.join(self.F, self.hero + '.jpg')), 'house style 1 needs %s/%s.jpg' % (self.F, self.hero)
-        hero = os.path.join(self.F, self.cover_slot + '.jpg')
+        hero = self.src(self.cover_slot)
         out = os.path.join(self.F, self.cover_name + '.webp')
         if not os.path.exists(out):
             print('  pop', out, pop_plate.build(hero, out, span=self.cover_span, mode=self.cover_mode,
@@ -224,17 +290,21 @@ class Deck:
         activation slide (no picture of its own) gets the hero
         in FULL colour, mirrored and pushed right so its subject sits on the
         side away from the text, fading out to the cream under the text
-        column. The rest keep the faint texture field (rule 7)."""
+        column. Then, of the faint grey net behind a Tennis gap slide: "show
+        the color of the net and sky" -- so EVERY slide with no picture of its
+        own (gaps, rules, sorts, matches, the activation) gets it; the faint
+        grey texture field is only the phone fallback now."""
         from PIL import Image, ImageOps
-        src = os.path.join(self.F, self.hero + '.jpg')
+        src = self.src(self.hero)
         flip = os.path.join(self.F, self.hero + '-flip.jpg')
         if not os.path.exists(flip) or os.path.getmtime(flip) < os.path.getmtime(src):
-            ImageOps.mirror(Image.open(src).convert('RGB')).save(flip, quality=86)
+            im = ImageOps.mirror(Image.open(src).convert('RGB'))
+            if im.width > 2400:   # it fills 112% of the stage height: 2400px stays sharp at 1920
+                im = im.resize((2400, round(2400 * im.height / im.width)), Image.LANCZOS)
+            im.save(flip, quality=82)
         def tag(m):
             t = m.group(0)
-            # only where the content keeps to the left column: under full-width
-            # cards (gap rows, three rule cards, the sort) it was clutter
-            if 'data-bg=' in t or not re.search(r'data-type="(match|activate)"', t):
+            if 'data-bg=' in t or 'data-type="cover"' in t:
                 return t
             return t[:-1] + ' data-wash>'
         body = re.sub(r'<section class="slide[^>]*>', tag, body)
@@ -245,10 +315,15 @@ class Deck:
             'html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide.is-active[data-bg]))'
             ':has(.slide.is-active[data-wash]) .bg-layer::before {\n'
             "  content: ''; position: absolute; inset: 0; opacity: 1; filter: none; mix-blend-mode: normal;\n"
-            "  background: url('%s') 330px center / auto 112%% no-repeat;\n"
+            "  background: url('%s') right center / auto 100%% no-repeat;\n"
             '  -webkit-mask-image: %s;\n  mask-image: %s;\n'
             '  -webkit-mask-composite: source-in; mask-composite: intersect;\n}'
             % (flip.replace(os.sep, '/'), grad, grad))
+        # the activation's glassy buttons sit centred, over the picture:
+        # solid cream so "Writing" never reads over a motorbike
+        self.css.append(
+            'html[data-style="editorial"] .slide[data-wash] .act-word, '
+            'html[data-style="editorial"] .slide[data-wash] .act-panel { background: var(--void); }')
         return body
 
     def assemble(self, out_path, body, title, i18n, langs, extra_css=''):

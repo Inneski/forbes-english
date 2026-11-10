@@ -355,9 +355,9 @@ def slides(n, spec, E):
                      [((k, E[k]), [(None, b) for b in bullets], None) for k, bullets in spec['recap']]))
     K.stage()
     s.append(K.frame(D.results(), p + 'results'))
-    s.append(D.activate(E['actTitle'], E['actUse'], spec['chips'], 'Speaking', E['actSpeakBrief'],
+    s.append(K.activation(D.activate(E['actTitle'], E['actUse'], spec['chips'], 'Speaking', E['actSpeakBrief'],
                         [E['actSpeak1'], E['actSpeak2'], E['actSpeak3']],
-                        E['actWriteKind'], E['actWriteBrief'], E['actPlaceholder']))
+                        E['actWriteKind'], E['actWriteBrief'], E['actPlaceholder'])))
     return "".join(s), K
 
 

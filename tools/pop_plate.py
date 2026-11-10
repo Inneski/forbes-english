@@ -53,6 +53,18 @@ def mask_for(plate, cache):
     return m
 
 
+def cache_path(plate):
+    """Masks are keyed by folder, name and byte size: keyed by name alone,
+    Venezuela's hero.jpg was cut with The Comeback Ride's hero mask
+    (2026-11-09), and a plate replaced under the same name reused its old
+    mask. Run from the repo root; the cache is in incoming/ (gitignored)."""
+    stem = os.path.basename(plate).rsplit('.', 1)[0]
+    folder = os.path.basename(os.path.dirname(os.path.abspath(plate)))
+    cache = os.path.join('incoming', 'pop-masks', '%s__%s__%d.mask.png' % (folder, stem, os.path.getsize(plate)))
+    os.makedirs(os.path.dirname(cache), exist_ok=True)
+    return cache
+
+
 def subject(m, span=None, keep=0.15):
     """The subject's mask: the biggest connected piece and any piece at least
     `keep` of its size (a rider and his bike, two men and a bike); `span`
@@ -107,11 +119,7 @@ def build(plate, out, narrow=False, span=None, mode='square', box=None, zone=Non
     # Keyed by folder, name and byte size: keyed by name alone, Venezuela's
     # hero.jpg was cut with The Comeback Ride's hero mask (2026-11-09), and a
     # plate replaced under the same name reused its old mask.
-    stem = os.path.basename(plate).rsplit('.', 1)[0]
-    folder = os.path.basename(os.path.dirname(os.path.abspath(plate)))
-    cache = os.path.join('incoming', 'pop-masks', '%s__%s__%d.mask.png' % (folder, stem, os.path.getsize(plate)))
-    os.makedirs(os.path.dirname(cache), exist_ok=True)
-    m = mask_for(plate, cache)
+    m = mask_for(plate, cache_path(plate))
     a = subject(m, span)
     rows, cols = np.where(a.any(1))[0], np.where(a.any(0))[0]
     sy0, sy1, sx0, sx1 = rows[0], rows[-1], cols[0], cols[-1]
