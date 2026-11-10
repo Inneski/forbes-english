@@ -99,7 +99,7 @@ def _vis(s):
 class Deck:
     def __init__(self, folder, pop=None, ghost=(), hero='hero', cover_mode='square',
                  cover_span=None, cover_box=None, title_px=72, band_pos='center', cover_slot=None, cover_w=40,
-                 cover_name='pop-cover'):
+                 cover_name='pop-cover', land=()):
         """cover_slot: the plate the cover pops out, when the hero is a scene
         with no one object in it (rembg then cuts a fragment). The hero still
         gives the texture field and the phone band."""
@@ -109,6 +109,12 @@ class Deck:
         self.cover_name = cover_name
         self.pop = dict(pop or {})
         self.ghosts = set(ghost)
+        # plates shown whole in their 16:9 shape, never cropped: scenes whose
+        # subject is several things across the plate (a face and an alarm
+        # clock, a bride and a doctor), where fit() centres on one of them
+        # and cuts through the rest (Innes, 2026-11-10: "all the bad crop
+        # jobs you did")
+        self.land = set(land)
         self.hero = hero
         self.cover_mode, self.cover_span, self.cover_box = cover_mode, cover_span, cover_box
         self.title_px, self.band_pos, self.cover_w = title_px, band_pos, cover_w
@@ -214,7 +220,7 @@ class Deck:
             side, pos, shape = None, None, 'pop'
         fit = None
         if shape is None and pos is None:
-            pos, fit = self.fit(slot, size)
+            pos, fit = (None, 'land') if slot in self.land else self.fit(slot, size)
         if slot in self.ghosts and shape != 'pop':
             attrs += self._ghost(slot, side, pos, size)
         if side == 'left':

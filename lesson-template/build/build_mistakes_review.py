@@ -333,12 +333,17 @@ PLATES = {
 POP = {1: {'hero': (None, 'square'), 'q4': (None, 'free')},
        2: {'hero': (None, 'square'), 'q10': (None, 'blob')},
        3: {'hero': (None, 'square'), 'q12': (None, 'free')}}
+# shown whole: a crop centred on one part of the scene cut through the rest
+# (q4 halved her face to keep the eye; q5 lost the father and the bouquet;
+# q1 the phone; results the eraser)
+LAND = {2: ('q1', 'q4', 'q5'), 3: ('results',)}
 
 
 def slides(n, spec, E):
     p = 'p%d-' % n
     K = hs1.Deck(F, pop={p + k: v for k, v in POP[n].items()}, hero=p + 'hero',
-                 cover_name='pop-cover-p%d' % n, title_px=52, cover_w=44)
+                 cover_name='pop-cover-p%d' % n, title_px=52, cover_w=44,
+                 land=[p + k for k in LAND.get(n, ())])
     s = [K.cover(E, [('Level', E['chipLevel']), ('Focus', E['chipFocus']), ('Count', E['chipCount'])]),
          K.frame(K.talk('eW', 'tkT', spec['talk'], E), p + 'talk')]
     K.stage()

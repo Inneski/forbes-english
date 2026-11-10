@@ -10,6 +10,32 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
+## 2026-11-10 — Mistakes Review 1-3: cut-outs repaired, scene plates shown whole: SHIPPED
+
+Innes: "fix the front of this character's face and all the bad crop jobs".
+Audited every pop and every framed crop in the three decks on PIL sheets.
+
+- **Masks are now patchable, in git.** `tools/pop_plate.py` `PATCHES` holds
+  hand repairs keyed `<folder>/<plate>` (fractions of the plate, so the hd
+  original and the served plate share them): `cut` / `add` polygons, and an
+  `add` that only takes pixels below a green value (skin against a pale
+  wall). Applied on top of the cached mask, so a wiped cache cuts the same.
+- Repairs: Part 3 cover, his hand and cheek (isnet read them as the sunlit
+  window); Part 1 cover, a book stack that stuck out left of the square;
+  Part 2 cover, the mirror frame and door panel rose as slabs (people only
+  now); Part 2 Q10, ragged tree/branches/post fragments; Part 3 Q12, a palm
+  sliced by the plate's own edge (chair and table pop alone).
+- `blob()` now fits its wobble back inside its box: blob backdrops were
+  being sliced flat at the picture zone's edge.
+- `hs1.Deck(land=...)` shows named plates whole (16:9) instead of `fit()`'s
+  crop, for scenes with several subjects: Part 2 Q1, Q4 (face halved), Q5
+  (father and bouquet lost); Part 3 results (eraser lost).
+- The three `pop-p*-hero.webp` were orphans (no page referenced them):
+  deleted.
+- **Not audited:** pops and crops in other HS1 decks. The crop-sheet method
+  (simulate `background-size: cover` + `data-art-pos` per slide in PIL) is
+  quick; worth running deck by deck.
+
 ## 2026-11-10 — Block Camp: a translation is the whole sentence, never a gap
 
 Innes: *"The Block Camp translations should not have a gap in them to be

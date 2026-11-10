@@ -42,15 +42,87 @@ def frame_w(narrow):
     return (0.30 if narrow else 0.37) * 1280
 
 
+# Hand repairs to rembg's mask, keyed '<folder>/<plate stem>' (the same key
+# for the 1600px plate and its hd original: points are fractions of the
+# plate). Committed here, not painted into the cache, so a fresh machine or
+# a deleted cache cuts the same way.
+#   ('cut', polygon)              drop from the subject
+#   ('add', polygon)              add to it
+#   ('add', polygon, max_green)   add only pixels whose green is below
+#                                 max_green (skin against a pale wall)
+# Innes, 2026-11-10, of Mistakes Review 3: "fix the front of this
+# character's face" -- his hand and cheek match the sunlit window, and
+# isnet cut them off.
+PATCHES = {
+    'MistakesReview/p3-hero': [
+        ('add', [(.522, .318), (.527, .318), (.534, .334), (.536, .370), (.533, .378), (.522, .378)], 165),
+    ],
+    # a book stack fused to her elbow stuck out of the square's left side
+    'MistakesReview/p1-hero': [
+        ('cut', [(.20, .48), (.345, .48), (.345, .68), (.20, .68)]),
+    ],
+    # the mirror's frame and the door panel rose out of the square as slabs:
+    # only the people pop, the frames stay in the scene behind them
+    'MistakesReview/p2-hero': [
+        ('cut', [(0, 0), (.105, 0), (.105, 1), (0, 1)]),
+        ('cut', [(.105, 0), (.475, 0), (.475, .088), (.105, .088)]),
+        ('cut', [(.451, .088), (.475, .088), (.475, .95), (.451, .95)]),
+        ('cut', [(.485, 0), (.548, 0), (.548, .95), (.485, .95)]),
+        # the floor line under the mirror ran out past the square's left side
+        ('cut', [(.105, .885), (.165, .885), (.165, 1), (.105, 1)]),
+        ('cut', [(.285, .885), (.69, .885), (.69, 1), (.285, 1)]),
+    ],
+    # the palm is cut by the plate's own left edge, so its leaves ended in a
+    # straight line in mid-air; the floor lamp stands inside it. The armchair
+    # and the side table pop alone
+    'MistakesReview/p3-q12': [
+        ('cut', [(0, 0), (.285, 0), (.285, 1), (0, 1)]),
+        ('cut', [(.285, 0), (.37, 0), (.37, .22), (.285, .22)]),
+    ],
+    # the speckled tree, the bare branches and the fence post came out as
+    # ragged fragments: the men, the dog and the cat pop, the rest is scene
+    'MistakesReview/p2-q10': [
+        ('cut', [(0, 0), (.335, 0), (.335, .63), (0, .63)]),
+        ('cut', [(0, .63), (.105, .63), (.105, 1), (0, 1)]),
+        ('cut', [(.845, 0), (1, 0), (1, 1), (.88, 1), (.88, .66), (.845, .66)]),
+    ],
+}
+
+
+def _patch(m, plate):
+    stem = os.path.basename(plate).rsplit('.', 1)[0]
+    folder = os.path.basename(os.path.dirname(os.path.abspath(plate)))
+    # an hd original lives in incoming/hd/<folder>/, so its folder name is the same
+    ops = PATCHES.get('%s/%s' % (folder, stem))
+    if not ops:
+        return m
+    w, h = m.size
+    a = np.asarray(m).copy()
+    px = None
+    for op in ops:
+        pm = Image.new('L', (w, h), 0)
+        ImageDraw.Draw(pm).polygon([(x * w, y * h) for x, y in op[1]], fill=255)
+        sel = np.asarray(pm) > 0
+        if op[0] == 'cut':
+            a[sel] = 0
+        else:
+            if len(op) > 2:
+                if px is None:
+                    px = np.asarray(Image.open(plate).convert('RGB').resize((w, h)))
+                sel &= px[..., 1] < op[2]
+            a[sel] = 255
+    return Image.fromarray(a).filter(ImageFilter.MaxFilter(3)).filter(ImageFilter.MinFilter(3))
+
+
 def mask_for(plate, cache):
     if os.path.exists(cache):
-        return Image.open(cache).convert('L')
+        return _patch(Image.open(cache).convert('L'), plate)
     from rembg import new_session, remove
     m = remove(Image.open(plate).convert('RGB'), session=new_session('isnet-general-use'), only_mask=True)
     # close small holes (chains, spokes) so the risen part is not lace
     m = m.filter(ImageFilter.MaxFilter(5)).filter(ImageFilter.MinFilter(5))
     m.save(cache)
-    return m
+    return _patch(m, plate)
 
 
 def cache_path(plate):
@@ -96,7 +168,13 @@ def blob(box, seed, n=240):
         f = 1 + sum(a * math.sin(k * t + ph) for k, a, ph in waves)
         x, y = rx * f * math.cos(t), ry * f * math.sin(t)
         pts.append((cx + x * math.cos(rot) - y * math.sin(rot), cy + x * math.sin(rot) + y * math.cos(rot)))
-    return pts
+    # the waves push the outline past `box`, and past the picture zone the
+    # blob was sliced flat (Mistakes Review 2 Q10, 2026-11-10): fit it back
+    xs, ys = [p[0] for p in pts], [p[1] for p in pts]
+    fx = (x1 - x0) / (max(xs) - min(xs))
+    fy = (y1 - y0) / (max(ys) - min(ys))
+    mx, my = (max(xs) + min(xs)) / 2, (max(ys) + min(ys)) / 2
+    return [(cx + (px - mx) * fx, cy + (py - my) * fy) for px, py in pts]
 
 
 def build(plate, out, narrow=False, span=None, mode='square', box=None, zone=None):
