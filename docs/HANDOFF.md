@@ -359,6 +359,38 @@ Peer-modified decks (first-in-space-c1, skiing-B1, money-affirmations) got
 the same 10-line fitStage change in the working tree but were left out of
 the commit; their builders reproduce it from the template.
 
+## 2026-11-10 — HS1: colour on every page, full-size sources, fitted frames (43e40d42)
+
+Innes, over one evening of screenshots: *"show the color of the net and
+sky"*, *"dont have pages without a coloured illustration of some sort"*,
+*"zoomed in looks shit low res"*, *"some images dont suit square crops
+(cropping half a cats face) they dont all have to be square"*, *"this guy has
+an extra hand near his face"*, *"this page looks awful"* (Venezuela's
+activation: hero zoomed to 112% and cropped, a glassy button over it).
+
+- **No plain pages.** `hs1.Deck._wash()` gives EVERY slide with no plate the
+  hero whole (`right center / auto 100%`, never zoomed), full colour,
+  mirrored, fading under the text and above the bar. Activation buttons and
+  panel are solid cream on it. The faint grey texture is the phone fallback
+  only. The Comeback Ride calls `_wash` too.
+- **Tried and dropped:** a framed plate on the activation. Its buttons and
+  open panel ignore the text column and run over the frame.
+- **`incoming/hd/<Folder>/<slot>.png`** holds every pick's 2944px original
+  (gitignored, this machine only). `Deck.src()` cuts pops and flips from it;
+  without it the 1600px plate is used and pops go soft. Put new picks there.
+- **`Deck.fit()`** measures the subject (rembg) per framed plate: a centred
+  `data-art-pos`, or `data-art-fit="land"` (16:9 frame) when the subject is
+  wider than the crop window. First build of a deck is slow (one mask per
+  plate, cached in incoming/pop-masks).
+- Mistakes Review 3 hero replaced (render 2 of the same job). 14 library
+  cards repointed from HS2 stand-ins to the real heroes.
+- **Heredocs eat backslashes** (again): a `
+` inside a py heredoc broke
+  hs1.py twice. Use Edit for anything with escapes.
+- Review tools from this session worth rebuilding if needed: a PIL sheet of
+  all `pop-*.webp` on cream, and a crop simulator that reads each slide's
+  data-art-* and draws what its frame shows.
+
 ## 2026-11-09 — HS1 follow-up: ragged cut-outs dropped; colour wash on match/activation
 
 Innes, on screenshots of Taekwondo and Tennis/Money: *"some dodgy work from
