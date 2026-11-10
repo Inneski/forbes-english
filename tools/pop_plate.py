@@ -54,8 +54,14 @@ def frame_w(narrow):
 # character's face" -- his hand and cheek match the sunlit window, and
 # isnet cut them off.
 PATCHES = {
+    # the doors replacement hero (2026-11-10): isnet took the orange door and
+    # shards of both frames with him; only the man pops, the doors are scene
     'MistakesReview/p3-hero': [
-        ('add', [(.522, .318), (.527, .318), (.534, .334), (.536, .370), (.533, .378), (.522, .378)], 165),
+        ('cut', [(0, 0), (.435, 0), (.435, 1), (0, 1)]),
+        ('cut', [(.56, 0), (1, 0), (1, 1), (.56, 1)]),
+        # his hand at his chin is the window's peach: isnet ate it, as it
+        # did the first hero's (Innes: "fix the front of this character's face")
+        ('add', [(.508, .355), (.518, .355), (.523, .368), (.5255, .393), (.508, .393)], 175),
     ],
     # a book stack fused to her elbow stuck out of the square's left side
     'MistakesReview/p1-hero': [

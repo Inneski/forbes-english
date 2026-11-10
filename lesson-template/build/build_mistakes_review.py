@@ -335,8 +335,8 @@ POP = {1: {'hero': (None, 'square'), 'q4': (None, 'free')},
        3: {'hero': (None, 'square'), 'q12': (None, 'free')}}
 # shown whole: a crop centred on one part of the scene cut through the rest
 # (q4 halved her face to keep the eye; q5 lost the father and the bouquet;
-# q1 the phone; results the eraser)
-LAND = {2: ('q1', 'q4', 'q5'), 3: ('results',)}
+# q1 the phone; results the eraser; 3 q13 the television)
+LAND = {2: ('q1', 'q4', 'q5'), 3: ('q13', 'results')}
 
 
 def slides(n, spec, E):
