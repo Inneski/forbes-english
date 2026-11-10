@@ -491,72 +491,138 @@ body.gh {
 .gh-pill-free { background: var(--gh-accent); color: var(--gh-ink-text); }
 
 /* ── grammar maps: the section straight under the hero. gm- prefixed; the
-   charts come from tools/grammar_maps.py, the first one large.
-   THE PICTURE NEVER SIZES THE CARD. It is absolutely placed in .gm-pic and
-   cropped (object-fit: cover); .gm-pic's ::before only sets a minimum
-   height (padding-top is a share of its own width), so when the words are
-   taller than the picture the picture grows in height and crops, and never
-   runs wider than its column. The first version put aspect-ratio on a
-   stretched grid item: at 1920px the text column was taller, the picture
-   widened to keep 3:2 and slid under the heading. ── */
+   charts come from tools/grammar_maps.py.
+   THE CHART RACK (Innes, 2026-11-10: "instead of a landing page with a grid
+   of maps why not have them in rolls that are simulated to be selected and
+   rolled out when hovered over?"). Every chart lies rolled up on a rack: a
+   rod painted with the chart itself, shaded round like a cylinder, its name
+   on a tag. Point at one and it lifts off the rack, then unrolls downward
+   over the rolls below (a clip-path reveal with a second rod riding down its
+   bottom edge), showing the chart, the words and the way in. Move away and it
+   rolls back up. No hover on a phone: a tap on the rod unrolls it (and rolls
+   up any other); keyboard focus unrolls it too (the script sets .is-open, one roll at a time). The sheet is see-through
+   card colour over the page, never solid white (Innes, 2026-11-10).
+   THE PICTURE NEVER SIZES THE SHEET'S WIDTH: it is absolutely placed in
+   .gm-pic and cropped (object-fit: cover) inside a 3:2 box. ── */
 .gm { padding: clamp(56px, 8vw, 104px) 0 clamp(8px, 2vw, 24px); }
-.gm-feature { margin: clamp(26px, 4vw, 40px) 0 0; }
-.gm-list { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 16px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
-/* under the feature the charts stand picture-on-top, the whole chart at 3:2
-   (a side-by-side card cropped a landscape chart to a portrait sliver).
-   Three to a row; at two to a row an odd last card takes the row, lying on
-   its side, so no row ends in a hole. */
-.gm-list .gm-card { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
-.gm-list .gm-pic::before { padding-top: 66.67%%; }
-.gm-list .gm-body { justify-content: flex-start; }
-@media (max-width: 980px) {
-  .gm-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .gm-list li:last-child:nth-child(odd) { grid-column: 1 / -1; }
-  .gm-list li:last-child:nth-child(odd) .gm-card { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: none; }
-  .gm-list li:last-child:nth-child(odd) .gm-body { justify-content: center; }
+.gm-rack {
+  --gm-rod: 62px;
+  --gm-wood: color-mix(in srgb, var(--gh-ink) 62%%, var(--gh-accent));
+  list-style: none; margin: clamp(26px, 4vw, 40px) 0 0; padding: 0 14px;
+  display: grid; gap: 30px 44px; grid-template-columns: repeat(3, minmax(0, 1fr));
 }
-.gm-card {
-  position: relative;
-  display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
-  overflow: hidden; height: 100%%;
-  border-radius: 16px; color: var(--gh-text);
-  background: var(--gh-card); border: 1px solid var(--gh-line);
-  box-shadow: 0 14px 34px var(--gh-shadow);
-  transition: transform .18s ease, box-shadow .18s ease;
+@media (max-width: 980px) { .gm-rack { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .gm-rack { grid-template-columns: minmax(0, 1fr); gap: 18px; } }
+.gm-roll { position: relative; height: var(--gm-rod); }
+.gm-roll.is-open { z-index: 6; }
+@media (hover: hover) { .gm-roll:hover { z-index: 6; } }
+/* the rod: the chart itself, rolled */
+.gm-rod {
+  position: relative; display: block; width: 100%%; height: var(--gm-rod);
+  border: 0; padding: 0; margin: 0; cursor: pointer; font: inherit; color: inherit;
+  border-radius: 10px / 50%%;
+  background-size: cover; background-position: center;
+  box-shadow: 0 10px 18px -8px var(--gh-shadow);
+  transition: transform .32s cubic-bezier(.2,.8,.2,1), box-shadow .32s ease;
 }
-.gm-card:not(.gm-soon):hover { transform: translateY(-3px); box-shadow: 0 22px 46px var(--gh-shadow); }
+.gm-rod::before {   /* round it: dark edges, a highlight just above the middle */
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: linear-gradient(to bottom,
+    color-mix(in srgb, var(--gh-ink) 62%%, transparent) 0%%,
+    color-mix(in srgb, var(--gh-ink) 8%%, transparent) 26%%,
+    color-mix(in srgb, var(--gh-ink-text) 34%%, transparent) 40%%,
+    color-mix(in srgb, var(--gh-ink) 0%%, transparent) 58%%,
+    color-mix(in srgb, var(--gh-ink) 70%%, transparent) 100%%);
+}
+.gm-rod::after {    /* the wooden ends of the rod */
+  content: ''; position: absolute; top: 18%%; bottom: 18%%; left: -12px; right: -12px; z-index: -1;
+  border-radius: 5px;
+  background: linear-gradient(to bottom, var(--gm-wood), color-mix(in srgb, var(--gm-wood) 55%%, var(--gh-ink-text)) 42%%, var(--gm-wood));
+}
+.gm-tag {
+  position: absolute; left: 50%%; top: 50%%; transform: translate(-50%%, -50%%) rotate(-1.2deg);
+  max-width: calc(100%% - 40px); padding: 6px 14px 7px; border-radius: 6px;
+  background: color-mix(in srgb, var(--gh-card) 84%%, transparent);
+  -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+  box-shadow: 0 3px 10px var(--gh-shadow);
+  display: flex; align-items: baseline; gap: 10px; white-space: nowrap;
+}
+.gm-tag b { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.05rem; color: var(--gh-text); overflow: hidden; text-overflow: ellipsis; }
+.gm-tag small { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: .78rem; color: var(--gh-text-dim); }
+.gm-rod:focus-visible { outline: 3px solid var(--gh-accent); outline-offset: 4px; }
+/* selected: it lifts off the rack */
+.gm-roll.is-open .gm-rod { transform: translateY(-6px); box-shadow: 0 18px 26px -10px var(--gh-shadow); }
+@media (hover: hover) { .gm-roll:hover .gm-rod { transform: translateY(-6px); box-shadow: 0 18px 26px -10px var(--gh-shadow); } }
+/* the sheet: unrolls downward from the rod, over the rolls below */
+.gm-sheet {
+  position: absolute; left: 0; right: 0; top: calc(var(--gm-rod) - 14px);
+  visibility: hidden; pointer-events: none;
+  clip-path: inset(0 0 100%% 0 round 0 0 12px 12px);
+  transition: clip-path .62s cubic-bezier(.3,.7,.2,1), visibility 0s linear .62s;
+}
+.gm-sheet-in {
+  border-radius: 0 0 12px 12px; overflow: hidden;
+  background: color-mix(in srgb, var(--gh-card) 90%%, transparent);
+  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  box-shadow: 0 26px 50px var(--gh-shadow);
+  padding-bottom: 26px;
+}
+.gm-roller {        /* the bottom rod, riding down as the sheet unrolls */
+  position: absolute; left: -6px; right: -6px; top: 0; height: 26px; border-radius: 8px / 50%%;
+  background-size: cover; background-position: center;
+  transition: top .62s cubic-bezier(.3,.7,.2,1);
+}
+.gm-roller::before { content: ''; position: absolute; inset: 0; border-radius: inherit;
+  background: linear-gradient(to bottom, color-mix(in srgb, var(--gh-ink) 55%%, transparent), color-mix(in srgb, var(--gh-ink-text) 30%%, transparent) 42%%, color-mix(in srgb, var(--gh-ink) 70%%, transparent)); }
+.gm-roll.is-open .gm-sheet {
+  visibility: visible; pointer-events: auto; clip-path: inset(0 0 0 0 round 0 0 12px 12px);
+  transition: clip-path .62s cubic-bezier(.3,.7,.2,1) .12s, visibility 0s;
+}
+.gm-roll.is-open .gm-roller { top: calc(100%% - 26px); transition-delay: .12s; }
+@media (hover: hover) {
+  .gm-roll:hover .gm-sheet { visibility: visible; pointer-events: auto; clip-path: inset(0 0 0 0 round 0 0 12px 12px);
+    transition: clip-path .62s cubic-bezier(.3,.7,.2,1) .12s, visibility 0s; }
+  .gm-roll:hover .gm-roller { top: calc(100%% - 26px); transition-delay: .12s; }
+}
+/* one column (a phone): the sheet unrolls in place and pushes the rolls
+   below it down, rather than lying over them; the height opens with the
+   0fr to 1fr grid-row trick, and the roller still rides its bottom edge */
+@media (max-width: 600px) {
+  .gm-roll { height: auto; }
+  .gm-sheet { position: relative; top: auto; margin-top: -14px; display: grid; grid-template-rows: 0fr;
+    clip-path: none; transition: grid-template-rows .55s cubic-bezier(.3,.7,.2,1), visibility 0s linear .55s; }
+  .gm-sheet-in { min-height: 0; padding-bottom: 0; }   /* padding would hold a closed sheet open */
+  .gm-sheet-in .gm-body { padding-bottom: 36px; }
+  .gm-roll.is-open .gm-sheet { grid-template-rows: 1fr; clip-path: none;
+    transition: grid-template-rows .55s cubic-bezier(.3,.7,.2,1), visibility 0s; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gm-rod, .gm-sheet, .gm-roller, .gm-roll .gm-sheet, .gm-roll .gm-roller { transition: none !important; }
+}
 /* the picture is a button (it opens the zoom view); the heading's link is
    stretched over the words only, so the two never overlap or nest */
-.gm-pic { position: relative; display: block; overflow: hidden; background: var(--gh-sky); border: 0; padding: 0; margin: 0; cursor: zoom-in; font: inherit; color: inherit; }
+.gm-pic { position: relative; display: block; width: 100%%; overflow: hidden; background: var(--gh-sky); border: 0; padding: 0; margin: 0; cursor: zoom-in; font: inherit; color: inherit; }
 .gm-pic:focus-visible { outline: 3px solid var(--gh-accent); outline-offset: -3px; }
-.gm-pic::before { content: ''; display: block; padding-top: 56.25%%; }
-.gm-pic img { position: absolute; inset: 0; width: 100%%; height: 100%%; object-fit: cover; transition: transform 1.4s cubic-bezier(.2,.7,.2,1); }
-.gm-pic:hover img { transform: scale(1.03); }
+.gm-pic::before { content: ''; display: block; padding-top: 66.67%%; }
+.gm-pic img { position: absolute; inset: 0; width: 100%%; height: 100%%; object-fit: cover; }
 .gm-zoom {
   position: absolute; right: 12px; bottom: 12px; display: inline-flex; align-items: center; gap: 6px;
   padding: 7px 12px 7px 10px; border-radius: 999px;
   font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: .85rem;
-  background: var(--gh-card); color: var(--gh-text); box-shadow: 0 4px 14px var(--gh-shadow);
+  background: color-mix(in srgb, var(--gh-card) 84%%, transparent); color: var(--gh-text); box-shadow: 0 4px 14px var(--gh-shadow);
   transition: background .15s ease, color .15s ease;
 }
 .gm-pic:hover .gm-zoom, .gm-pic:focus-visible .gm-zoom { background: var(--gh-accent); color: var(--gh-ink-text); }
-.gm-body { position: relative; display: flex; flex-direction: column; justify-content: center; gap: 10px; padding: clamp(18px, 2.4vw, 30px); min-width: 0; }
+.gm-body { position: relative; display: flex; flex-direction: column; gap: 9px; padding: 18px 22px 8px; min-width: 0; }
 .gm-body .gh-kicker { margin: 0; }
-.gm-body h3 { font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(1.35rem, 2vw, 1.7rem); line-height: 1.08; margin: 0; color: var(--gh-text); text-wrap: balance; }
+.gm-body h3 { font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(1.3rem, 1.8vw, 1.6rem); line-height: 1.08; margin: 0; color: var(--gh-text); text-wrap: balance; }
 .gm-link { color: inherit; text-decoration: none; }
 .gm-link::after { content: ''; position: absolute; inset: 0; }
 .gm-link:focus-visible { outline: none; }
-.gm-link:focus-visible::after { outline: 3px solid var(--gh-accent); outline-offset: -3px; border-radius: 0 16px 16px 0; }
-.gm-body p { margin: 0; font-size: 1rem; line-height: 1.55; color: var(--gh-text-dim); max-width: 50ch; }
-.gm-go { margin-top: 6px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; font-size: .9rem; color: var(--gh-accent); }
-.gm-note { margin-top: 6px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; font-size: .9rem; color: var(--gh-text-dim); }
-.gm-soon { border-style: dashed; box-shadow: none; }
-/* the first chart: the picture takes three fifths, at least 3:2 */
-.gm-feature .gm-card { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); }
-.gm-feature .gm-pic::before { padding-top: 66.67%%; }
-.gm-feature .gm-body { padding: clamp(24px, 3.2vw, 48px); gap: 14px; }
-.gm-feature h3 { font-size: clamp(1.8rem, 2.8vw, 2.6rem); line-height: 1.04; }
-.gm-feature .gm-body p { font-size: 1.08rem; line-height: 1.6; }
+.gm-link:focus-visible::after { outline: 3px solid var(--gh-accent); outline-offset: -3px; }
+.gm-body p { margin: 0; font-size: .98rem; line-height: 1.55; color: var(--gh-text-dim); }
+.gm-go { margin-top: 4px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; font-size: .9rem; color: var(--gh-accent); }
+.gm-note { margin-top: 4px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; font-size: .9rem; color: var(--gh-text-dim); }
 /* the chart table: planned charts, one line each */
 .gm-table { margin: clamp(28px, 4vw, 44px) 0 0; }
 .gm-table ul { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(min(100%%, 280px), 1fr)); }
@@ -564,14 +630,6 @@ body.gh {
 .gm-table b { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.05rem; line-height: 1.2; color: var(--gh-text); }
 .gm-table small { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .06em; font-size: .85rem; color: var(--gh-text-dim); white-space: nowrap; }
 .gm-table li span { grid-column: 1 / -1; font-size: .95rem; color: var(--gh-text-dim); }
-@media (max-width: 860px) {
-  .gm-feature .gm-card { grid-template-columns: 1fr; }
-}
-@media (max-width: 600px) {
-  .gm-list { grid-template-columns: 1fr; }
-  .gm-card, .gm-list li:last-child:nth-child(odd) .gm-card { grid-template-columns: 1fr; }
-  .gm-link:focus-visible::after { border-radius: 0 0 16px 16px; }
-}
 /* the zoom view */
 .gm-box { padding: 0; border: 0; margin: auto; width: min(96vw, 1600px); max-height: 94vh; border-radius: 14px; overflow: hidden; background: var(--gh-card); color: var(--gh-text); box-shadow: 0 30px 80px var(--gh-shadow); }
 .gm-box::backdrop { background: color-mix(in srgb, var(--gh-text) 72%%, transparent); }
@@ -934,27 +992,69 @@ def _card(t, rows, images, colour=None, li=''):
                esc(seo.trim(desc, 150)), ''.join(pills)))
 
 
-def _map_card(m, kick, pic, href=None, note=None):
-    """One chart card. The picture is a button that opens the chart full size
-    (the zoom view, GM_BOX); the words carry the link, stretched over the
-    body, so the two never nest. A card without href (SOON) has no link."""
+def _map_roll(m, kick, tag, pic, href=None, note=None):
+    """One chart on the rack (see the CSS above .gm-rack). The rod is a
+    button that unrolls the sheet (on a phone; on a desktop the pointer does
+    that, and a click on the rod goes straight to the lesson). The sheet holds
+    the picture, a button that opens it full size (the zoom view, GM_BOX), and
+    the words, which carry the link, stretched over the body, so the two
+    never nest. A chart without href (SOON) has no link."""
     from PIL import Image
     w, h = Image.open(os.path.join(ROOT, pic)).size
     full = m.get('full', m['image'])
     fw, fh = Image.open(os.path.join(ROOT, full)).size
     title = esc(m.get('heading', m['title']))
+    sid = 'gm-' + re.sub(r'[^a-z0-9]+', '-', m['title'].lower()).strip('-')
     head = ('<a class="gm-link" href="%s">%s</a>' % (seo.quote(href), title)) if href else title
     tail = ('<span class="gm-go">%s <span aria-hidden="true">&rarr;</span></span>' % esc(m.get('go', 'Open the map'))
             if href else '<span class="gm-note">%s</span>' % esc(note or ''))
-    return ('<div class="gm-card%s">'
+    bg = ' style="background-image:url(&quot;%s&quot;)"' % esc(seo.quote(pic))
+    return ('<li class="gm-roll"%s>'
+            '<button type="button" class="gm-rod"%s aria-expanded="false" aria-controls="%s">'
+            '<span class="gm-tag"><b>%s</b><small>%s</small></span></button>'
+            '<div class="gm-sheet" id="%s"><div class="gm-sheet-in">'
             '<button type="button" class="gm-pic" data-full="%s" data-w="%d" data-h="%d" data-title="%s" aria-label="%s">'
             '<img src="%s" alt="%s" width="%d" height="%d" loading="lazy">'
             '<span class="gm-zoom" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Enlarge</span>'
             '</button>'
-            '<div class="gm-body"><p class="gh-kicker">%s</p><h3>%s</h3><p>%s</p>%s</div></div>'
-            % ('' if href else ' gm-soon', esc(seo.quote(full)), fw, fh, esc(m['title']),
-               esc('Enlarge the chart: ' + m['title']), esc(pic), esc(m['alt']), w, h,
-               ' &middot; '.join(kick), head, esc(m['blurb']), tail))
+            '<div class="gm-body"><p class="gh-kicker">%s</p><h3>%s</h3><p>%s</p>%s</div>'
+            '</div><span class="gm-roller"%s aria-hidden="true"></span></div></li>'
+            % ((' data-href="%s"' % esc(seo.quote(href))) if href else '', bg, sid, esc(m['title']), tag, sid,
+               esc(seo.quote(full)), fw, fh, esc(m['title']), esc('Enlarge the chart: ' + m['title']),
+               esc(pic), esc(m['alt']), w, h, ' &middot; '.join(kick), head, esc(m['blurb']), tail, bg))
+
+
+GM_RACK_JS = """<script>
+// the chart rack: one roll open at a time. Mouse: hover unrolls (CSS), a click
+// on the rod opens the lesson. Touch: a tap on the rod unrolls it, a tap
+// elsewhere rolls it up. Keyboard: focus unrolls it, Escape rolls it up.
+(function () {
+  var rolls = [].slice.call(document.querySelectorAll('.gm-roll')), touch = false, hold = false;
+  function set(r, on) {
+    r.classList.toggle('is-open', on);
+    r.querySelector('.gm-rod').setAttribute('aria-expanded', on ? 'true' : 'false');
+  }
+  function only(r) { rolls.forEach(function (o) { set(o, o === r); }); }
+  document.addEventListener('pointerdown', function (e) {
+    touch = e.pointerType !== 'mouse';
+    if (!e.target.closest('.gm-roll')) rolls.forEach(function (o) { set(o, false); });
+  }, true);
+  rolls.forEach(function (r) {
+    var rod = r.querySelector('.gm-rod');
+    rod.addEventListener('click', function () {
+      if (!touch && r.dataset.href) { location.href = r.dataset.href; return; }
+      var on = !r.classList.contains('is-open');
+      if (on) only(r); else set(r, false);
+    });
+    r.addEventListener('mouseenter', function () { rolls.forEach(function (o) { if (o !== r) set(o, false); }); });
+    r.addEventListener('focusin', function () { if (!touch && !hold) only(r); });
+    r.addEventListener('focusout', function (e) { if (!r.contains(e.relatedTarget)) set(r, false); });
+    // Escape rolls it up and leaves focus on the rod, without the focus
+    // unrolling it again
+    r.addEventListener('keydown', function (e) { if (e.key === 'Escape') { set(r, false); hold = true; rod.focus(); hold = false; } });
+  });
+})();
+</script>"""
 
 
 GM_BOX = """<dialog class="gm-box" id="gm-box" aria-label="Chart">
@@ -1005,31 +1105,31 @@ GM_BOX = """<dialog class="gm-box" id="gm-box" aria-label="Chart">
 
 
 def maps_band(rows):
-    """The section under the hero: the charts in tools/grammar_maps.py,
-    the first one large, then the SOON charts (art, no lesson yet), then
-    the chart table (PLANNED). Level and Free come from the catalogue row.
-    Every picture opens full size in GM_BOX."""
+    """The section under the hero: the charts in tools/grammar_maps.py as a
+    rack of rolls (see the CSS above .gm-rack), the SOON charts rolled among
+    them, then the chart table (PLANNED). Level and Free come from the
+    catalogue row. Every picture opens full size in GM_BOX."""
     by_file = {r['file']: r for r in rows}
     items = []
-    for i, m in enumerate(grammar_maps.MAPS):
+    for m in grammar_maps.MAPS:
         if not os.path.exists(os.path.join(ROOT, m['href'])):
             sys.exit('! grammar_maps.py: %s does not exist' % m['href'])
         r = by_file.get(m['href'])
-        kick = [esc(m['title'])]
+        kick, tag = [esc(m['title'])], ''
         if r:
-            kick.append(span([r]))
+            tag = span([r])
+            kick.append(tag)
             if r.get('access') != 'pro':
                 kick.append('Free')
         else:
             print('  ! grammar map %s has no catalogue row: no level shown' % m['href'])
         stem = 'map-' + os.path.splitext(m['href'])[0]
-        pic = web_copy(m['image'], stem, width=1280 if i == 0 else 720)
-        items.append(_map_card(m, kick, pic, href=m['href']))
+        pic = web_copy(m['image'], stem, width=720)
+        items.append(_map_roll(m, kick, tag, pic, href=m['href']))
     for m in grammar_maps.SOON:
         stem = 'map-soon-' + re.sub(r'[^a-z]+', '-', m['title'].lower()).strip('-')
         pic = web_copy(m['image'], stem, width=720)
-        items.append(_map_card(m, [esc(m['title']), esc(m['level']), 'Coming next'], pic, note=m['note']))
-    rest = ''.join('\n      <li>%s</li>' % c for c in items[1:])
+        items.append(_map_roll(m, [esc(m['title']), esc(m['level']), 'Coming next'], 'Coming next', pic, note=m['note']))
     table = ''
     if grammar_maps.PLANNED:
         table = ('\n    <div class="gm-table">\n      <div class="gh-group-h"><h3>On the chart table</h3>'
@@ -1042,12 +1142,14 @@ def maps_band(rows):
     <div class="gh-sechead">
       <p class="gh-kicker">Grammar maps</p>
       <h2 class="gh-h2" id="gm-h">Sailing the seas <em>of grammar</em></h2>
-      <p>Grammar drawn as a place: a coast for each pattern, a camp for each tense. Find the rule on the map, then sail or climb to the practice. Tap a chart to open it full size.</p>
+      <p>Grammar drawn as a place: a coast for each pattern, a camp for each tense. Every chart lies rolled on the rack: point at one to unroll it (tap on a phone), then sail or climb to the practice.</p>
     </div>
-    <div class="gm-feature">%s</div>%s%s
+    <ul class="gm-rack">%s
+    </ul>%s
   </div>
 </section>
-%s""" % (items[0], '\n    <ul class="gm-list">%s\n    </ul>' % rest if rest else '', table, GM_BOX)
+%s
+%s""" % (''.join('\n      %s' % c for c in items), table, GM_BOX, GM_RACK_JS)
 
 
 def render(rows, images, allm):

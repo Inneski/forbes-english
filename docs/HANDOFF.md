@@ -151,9 +151,14 @@ Blur `document.activeElement` before each press.
   follow. It is done per page because the palette is shared with the Sherpa
   camps. `build_sailing.py`, `build_regularia.py`, `build_countania.py` and
   `sea_lesson.build()` all call `sea_chrome.add()`.
-- **Next, asked for 2026-11-10:** the grammar page's map grid becomes a rack of
-  rolled charts that unroll on hover (tap on a phone, focus by keyboard). That
-  also replaces the grammar page's solid white map cards.
+- **The grammar page's maps are now a rack of rolled charts** (Innes: "why not
+  have them in rolls that are simulated to be selected and rolled out when
+  hovered over?"). In `tools/build_grammar_hub.py` (`_map_roll`, `GM_RACK_JS`,
+  CSS above `.gm-rack`): each rod is painted with its own chart. On hover it
+  lifts and unrolls over the rolls below. A click on the rod goes to the lesson.
+  On touch a tap unrolls it, and on a phone the sheet unrolls in place. Focus
+  unrolls it, Escape rolls it up. The sheet is 90% card colour with a blur.
+  Tested with a real mouse, a touchscreen (Pixel 7) and the keyboard.
 
 ## 2026-11-09 — Sea charts 7-12: Register, Inversion, the Atlantic, Question Tags, the Forecast, Phrasal Verbs: SHIPPED
 
