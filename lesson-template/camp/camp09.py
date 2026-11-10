@@ -278,8 +278,8 @@ S.append(mc(1, 6, 30, 'right', 'top', 'qTitleFirst', 'Which happened first?',
 
 S.append(mc(2, 6, 14, 'right', 'top', 'qTitleForm', 'Choose the right form',
     'Dale ______ the beacon before the storm came.',
-    'Dale ______ el faro antes de que llegara la tormenta.',
-    'Dale ______ das Leuchtfeuer, bevor der Sturm kam.',
+    'Dale había reparado el faro antes de que llegara la tormenta.',
+    'Dale hatte das Leuchtfeuer repariert, bevor der Sturm kam.',
     [('has repaired', ex('&lsquo;has&rsquo; belongs to now. The storm came, so this is all in the past.',
                          '&rsquo;has&rsquo; es de ahora. Todo esto es pasado.',
                          '&rsquo;has&rsquo; geh&ouml;rt zum Jetzt. Das hier ist alles vorbei.')),
@@ -297,8 +297,8 @@ S.append(mc(2, 6, 14, 'right', 'top', 'qTitleForm', 'Choose the right form',
 
 S.append(mc(3, 6, 12, 'left', 'top', 'qTitleThird', '&lsquo;went&rsquo; or &lsquo;gone&rsquo;?',
     'When Audrey arrived, the others had already ______.',
-    'Cuando Audrey lleg&oacute;, los dem&aacute;s ya se hab&iacute;an ______.',
-    'Als Audrey ankam, waren die anderen schon ______.',
+    'Cuando Audrey llegó, los demás ya se habían ido.',
+    'Als Audrey ankam, waren die anderen schon gegangen.',
     [('went', ex('&lsquo;went&rsquo; is the second form. After &lsquo;had&rsquo; you need the third.',
                  '&rsquo;went&rsquo; es la segunda forma. Tras &rsquo;had&rsquo; va la tercera.',
                  '&rsquo;went&rsquo; ist die zweite Form. Nach &rsquo;had&rsquo; braucht es die dritte.')),
@@ -316,8 +316,8 @@ S.append(mc(3, 6, 12, 'left', 'top', 'qTitleThird', '&lsquo;went&rsquo; or &lsqu
 
 S.append(mc(4, 6, 26, 'right', 'top', 'qTitleAsk', 'Asking and saying no',
     '______ the water reached the hall before you closed the door?',
-    '&iquest;______ el agua al vest&iacute;bulo antes de que cerraras la puerta?',
-    '______ das Wasser die Halle erreicht, bevor du die T&uuml;r geschlossen hast?',
+    '¿Había llegado el agua al vestíbulo antes de que cerraras la puerta?',
+    'Hatte das Wasser die Halle erreicht, bevor du die Tür geschlossen hast?',
     [('Did', ex('After &lsquo;Did&rsquo; the verb would be plain &lsquo;reach&rsquo;. This one is &lsquo;reached&rsquo;.',
                 'Tras &rsquo;Did&rsquo; el verbo ser&iacute;a &rsquo;reach&rsquo;. Aqu&iacute; es &rsquo;reached&rsquo;.',
                 'Nach &rsquo;Did&rsquo; hie&szlig;e das Verb &rsquo;reach&rsquo;. Hier steht &rsquo;reached&rsquo;.')),
@@ -335,8 +335,8 @@ S.append(mc(4, 6, 26, 'right', 'top', 'qTitleAsk', 'Asking and saying no',
 
 S.append(mc(5, 6, 17, 'left', 'top', 'qTitleForm', 'Choose the right form',
     'They ______ the map, so they got lost.',
-    'No ______ el mapa, as&iacute; que se perdieron.',
-    'Sie ______ die Karte nicht gelesen, also verliefen sie sich.',
+    'No habían leído el mapa, así que se perdieron.',
+    'Sie hatten die Karte nicht gelesen, also verliefen sie sich.',
     [('hadn&rsquo;t readed', ex('&lsquo;read&rsquo; is irregular. Its third form is &lsquo;read&rsquo;.',
                                 '&rsquo;read&rsquo; es irregular: su tercera forma es &rsquo;read&rsquo;.',
                                 '&rsquo;read&rsquo; ist unregelm&auml;&szlig;ig: die dritte Form ist &rsquo;read&rsquo;.')),
@@ -419,16 +419,16 @@ S.append(sec('gap', 33, 'left', 'top',
     '        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="gap1Hint">Type the verb in brackets in its third form.</p>\n'
     + gaprow('Audrey had ', 'repaired', ' the beacon before dark. <span class="dim">(repair)</span>',
              ex('Regular, so it is the same as the past simple: -ed.', 'regular: -ed, igual que el pasado simple', 'regelm&auml;&szlig;ig: -ed, wie im Past Simple'),
-             'Audrey hab&iacute;a ______ el faro antes del anochecer. (reparar)',
-             'Audrey hatte das Leuchtfeuer vor Einbruch der Dunkelheit ______. (reparieren)') + '\n'
+             'Audrey había reparado el faro antes del anochecer. (reparar)',
+             'Audrey hatte das Leuchtfeuer vor Einbruch der Dunkelheit repariert. (reparieren)') + '\n'
     + gaprow('The bridge had ', 'fallen', ' by the time we came. <span class="dim">(fall)</span>',
              ex('fall &rarr; fell &rarr; <strong>fallen</strong>. The third form, not &lsquo;fell&rsquo;.', 'fall &rarr; fell &rarr; fallen', 'fall &rarr; fell &rarr; fallen'),
-             'El puente se hab&iacute;a ______ para cuando llegamos. (caer)',
-             'Die Br&uuml;cke war ______, als wir kamen. (einst&uuml;rzen)') + '\n'
+             'El puente se había caído para cuando llegamos. (caer)',
+             'Die Brücke war eingestürzt, als wir kamen. (einstürzen)') + '\n'
     + gaprow('We had ', 'seen', ' the vault twice before. <span class="dim">(see)</span>',
              ex('see &rarr; saw &rarr; <strong>seen</strong>. &lsquo;had saw&rsquo; does not exist.', 'see &rarr; saw &rarr; seen', 'see &rarr; saw &rarr; seen'),
-             'Ya hab&iacute;amos ______ la c&aacute;mara dos veces. (ver)',
-             'Wir hatten die Kammer schon zweimal ______. (sehen)') + '\n'
+             'Ya habíamos visto la cámara dos veces. (ver)',
+             'Wir hatten die Kammer schon zweimal gesehen. (sehen)') + '\n'
     '        <div style="margin-top:10px">\n'
     '          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>\n'
     '        </div>\n'
@@ -451,16 +451,16 @@ S.append(sec('gap', 36, 'right', 'top',
     '        </div>\n'
     + gaprow2('The guards had ', 'already', ' locked it. <span class="dim">(done first)</span>',
              ex('<strong>already</strong> = done before the other thing.', 'ya: hecho antes', 'schon: vorher erledigt'),
-             'Los guardias ______ lo hab&iacute;an cerrado. (hecho antes)',
-             'Die Wachen hatten es ______ verschlossen. (vorher erledigt)') + '\n'
+             'Los guardias ya lo habían cerrado. (hecho antes)',
+             'Die Wachen hatten es schon verschlossen. (vorher erledigt)') + '\n'
     + gaprow2('She had not found it ', 'yet', '. <span class="dim">(still not done)</span>',
              ex('<strong>yet</strong> = still not done, up to then.', 'a&uacute;n no, hasta entonces', 'bis dahin noch nicht'),
-             'Ella ______ no lo hab&iacute;a encontrado. (hasta entonces, no)',
-             'Sie hatte es ______ nicht gefunden. (bis dahin nicht)') + '\n'
+             'Ella todavía no lo había encontrado. (hasta entonces, no)',
+             'Sie hatte es noch nicht gefunden. (bis dahin nicht)') + '\n'
     + gaprow2('It had cracked ', 'before', ' we looked. <span class="dim">(order word)</span>',
              ex('<strong>before</strong> joins the two. &lsquo;Yesterday&rsquo; is past simple.', '&rsquo;yesterday&rsquo; es pasado simple', '&rsquo;yesterday&rsquo; ist Past Simple'),
-             'Se hab&iacute;a agrietado ______ de que mir&aacute;ramos. (palabra de orden)',
-             'Es war gerissen, ______ wir hinsahen. (Ordnungswort)') + '\n'
+             'Se había agrietado antes de que miráramos. (palabra de orden)',
+             'Es war gerissen, bevor wir hinsahen. (Ordnungswort)') + '\n'
     '        <div style="margin-top:4px">\n'
     '          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>\n'
     '        </div>\n'
@@ -713,25 +713,25 @@ TR_PAIRS = [
  ('both at the same moment', 'ambas en el mismo momento', 'beide im selben Moment'),
  ('the sentence does not say', 'la frase no lo dice', 'der Satz sagt es nicht'),
  # mc 2
- ('Dale ______ the beacon before the storm came.', 'Dale ______ el faro antes de que llegara la tormenta.', 'Dale ______ das Leuchtfeuer, bevor der Sturm kam.'),
+ ('Dale ______ the beacon before the storm came.', 'Dale había reparado el faro antes de que llegara la tormenta.', 'Dale hatte das Leuchtfeuer repariert, bevor der Sturm kam.'),
  ('has repaired', 'ha reparado (presente)', 'hat repariert (Gegenwart)'),
  ('had repaired', 'había reparado', 'hatte repariert'),
  ('had repair', '(forma base: no existe)', '(Grundform: gibt es nicht)'),
  ('had repairing', '(con -ing: no existe)', '(mit -ing: gibt es nicht)'),
  # mc 3
- ('When Audrey arrived, the others had already ______.', 'Cuando Audrey llegó, los demás ya se habían ______.', 'Als Audrey ankam, waren die anderen schon ______.'),
+ ('When Audrey arrived, the others had already ______.', 'Cuando Audrey llegó, los demás ya se habían ido.', 'Als Audrey ankam, waren die anderen schon gegangen.'),
  ('went', 'fue, fueron (segunda forma)', 'ging, gingen (zweite Form)'),
  ('go', 'ir (forma base)', 'gehen (Grundform)'),
  ('gone', 'ido (tercera forma)', 'gegangen (dritte Form)'),
  ('going', 'yendo (-ing)', 'gehend (-ing)'),
  # mc 4
- ('______ the water reached the hall before you closed the door?', '¿______ el agua al vestíbulo antes de que cerraras la puerta?', '______ das Wasser die Halle erreicht, bevor du die Tür geschlossen hast?'),
+ ('______ the water reached the hall before you closed the door?', '¿Había llegado el agua al vestíbulo antes de que cerraras la puerta?', 'Hatte das Wasser die Halle erreicht, bevor du die Tür geschlossen hast?'),
  ('Did', '(pasado simple)', '(Past Simple)'),
  ('Has', '(presente perfecto)', '(Present Perfect)'),
  ('Was', '(pasado de ‘be’)', '(Vergangenheit von ‘be’)'),
  ('Had', '(past perfect)', '(Past Perfect)'),
  # mc 5
- ('They ______ the map, so they got lost.', 'No ______ el mapa, así que se perdieron.', 'Sie ______ die Karte nicht gelesen, also verliefen sie sich.'),
+ ('They ______ the map, so they got lost.', 'No habían leído el mapa, así que se perdieron.', 'Sie hatten die Karte nicht gelesen, also verliefen sie sich.'),
  (u"hadn’t readed", '(no existe)', '(gibt es nicht)'),
  (u"didn’t had read", '(no existe)', '(gibt es nicht)'),
  (u"hadn’t reading", '(no existe)', '(gibt es nicht)'),
@@ -751,19 +751,19 @@ TR_PAIRS = [
  ('see', 'ver', 'sehen'), ('be', 'ser, estar', 'sein'), ('take', 'coger', 'nehmen'),
  ('fall', 'caer', 'fallen'), ('find', 'encontrar', 'finden'), ('fallen', 'caído', 'gefallen'),
  # gap 1 (the engine strips the input, leaving before + after)
- ('Audrey had the beacon before dark. (repair)', 'Audrey había ______ el faro antes del anochecer. (reparar)', 'Audrey hatte das Leuchtfeuer vor Einbruch der Dunkelheit ______. (reparieren)'),
+ ('Audrey had the beacon before dark. (repair)', 'Audrey había reparado el faro antes del anochecer. (reparar)', 'Audrey hatte das Leuchtfeuer vor Einbruch der Dunkelheit repariert. (reparieren)'),
  ('(repair)', '(reparar)', '(reparieren)'),
- ('The bridge had by the time we came. (fall)', 'El puente se había ______ para cuando llegamos. (caer)', 'Die Brücke war ______, als wir kamen. (einstürzen)'),
+ ('The bridge had by the time we came. (fall)', 'El puente se había caído para cuando llegamos. (caer)', 'Die Brücke war eingestürzt, als wir kamen. (einstürzen)'),
  ('(fall)', '(caer)', '(einstürzen)'),
- ('We had the vault twice before. (see)', 'Ya habíamos ______ la cámara dos veces. (ver)', 'Wir hatten die Kammer schon zweimal ______. (sehen)'),
+ ('We had the vault twice before. (see)', 'Ya habíamos visto la cámara dos veces. (ver)', 'Wir hatten die Kammer schon zweimal gesehen. (sehen)'),
  ('(see)', '(ver)', '(sehen)'),
  # gap 2
  ('already', 'ya', 'schon'), ('yesterday', 'ayer', 'gestern'), ('yet', 'todavía, aún', 'noch (nicht)'), ('before', 'antes', 'bevor, vorher'),
- ('The guards had locked it. (done first)', 'Los guardias ______ lo habían cerrado. (hecho antes)', 'Die Wachen hatten es ______ verschlossen. (vorher erledigt)'),
+ ('The guards had locked it. (done first)', 'Los guardias ya lo habían cerrado. (hecho antes)', 'Die Wachen hatten es schon verschlossen. (vorher erledigt)'),
  ('(done first)', '(hecho antes)', '(vorher erledigt)'),
- ('She had not found it . (still not done)', 'Ella ______ no lo había encontrado. (hasta entonces, no)', 'Sie hatte es ______ nicht gefunden. (bis dahin nicht)'),
+ ('She had not found it . (still not done)', 'Ella todavía no lo había encontrado. (hasta entonces, no)', 'Sie hatte es noch nicht gefunden. (bis dahin nicht)'),
  ('(still not done)', '(hasta entonces, no)', '(bis dahin nicht)'),
- ('It had cracked we looked. (order word)', 'Se había agrietado ______ de que miráramos. (palabra de orden)', 'Es war gerissen, ______ wir hinsahen. (Ordnungswort)'),
+ ('It had cracked we looked. (order word)', 'Se había agrietado antes de que miráramos. (palabra de orden)', 'Es war gerissen, bevor wir hinsahen. (Ordnungswort)'),
  ('(order word)', '(palabra de orden)', '(Ordnungswort)'),
  # order
  ('the bridge', 'el puente', 'die Brücke'), ('had fallen', 'se había caído', 'war eingestürzt'),

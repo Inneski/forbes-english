@@ -10,6 +10,42 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
+## 2026-11-10 — Block Camp: a translation is the whole sentence, never a gap
+
+Innes: *"The Block Camp translations should not have a gap in them to be
+filled. The translation should be of the entire complete sentence once the
+word goes into it. You don't need to match the gap to a gap in the
+translation."* Applied to everything in the camp. The English keeps its
+`___` (that is the question); the gloss under it is the finished sentence
+with the correct answer in it.
+
+- **RPGs (13 adventures, 224 questions, nine languages)**: 3340cb10. The
+  wholes live in `lesson-template/build/rpg/whole-sentences/<lang>.json`,
+  keyed by the gapped English string. `rpg.assemble()` applies them last
+  and **refuses to build while any gloss carries a gap**, so a new gapped
+  question needs an entry there in all nine languages. Each lesson's
+  `translations/<lang>.json` was updated to match. `check_translations.py`
+  used to demand the gap; it now warns about one. `last-train-home-rpg` and
+  `long-way-home-rpg` are hand-built and were edited in the HTML.
+- **Tense decks (24 of 26; Present Simple 1 and 2 already did this)**:
+  e25e4a4f and the commit after it. ES and DE, inline `sup` spans and
+  `BW_TR`. The passive decks and `blockcamp-past-perfect.html` were patched
+  in the published HTML **and** in their specs (`descent/station09-17.py`,
+  `camp/camp09.py`) by the same strings.
+- **Do not rebuild a passive deck or camp 9 to "check".** Measured today:
+  `build_descent.py N` and `build_camp.py 9` no longer reproduce the
+  published pages (700-1100 changed lines each, and the SEO block goes) —
+  the published decks have been patched in place since they were generated.
+  The published HTML is the source of truth for all 26; the specs are kept
+  in step for whoever repairs the builders.
+- Not checked in a browser: the change is text inside existing gloss
+  elements, measured by a sweep (0 gapped glosses left on any camp page) and
+  `check-lesson.js` on six decks. A whole sentence is a few characters
+  longer than a gapped one; `check-rpg-panels.js` was not re-run.
+- Left alone: the stale gapped lines in `translations/` that no page uses
+  (Frankenstein x2, Wonderland's harder wording x12, the unbuilt Loch Ness
+  x1). The build gate will name them if they ever reach a page.
+---
 ## 2026-11-08 — Money Affirmations: Mindset or Magic? (B1): SHIPPED, real art, in the library
 
 `forbes-money-affirmations-b1.html`, 25 slides, HS2, EN/DE/ES, built by
