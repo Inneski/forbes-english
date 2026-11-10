@@ -6,10 +6,19 @@ ferry network. The twelfth chart.
     py tools/build_hubs.py && py tools/seo.py
 
 THE TEACHING IDEA. Five coloured ferry lines cross the bay, one per particle
-(UP, OUT, OFF, ON, DOWN), each with its rough sense; four grey lines cross
-them, one per big verb (GET, TAKE, PUT, TURN). Every crossing is a phrasal
-verb, and the same verb on a new line is a new meaning: take off, take on,
-take down. Twenty stops, read three ways: the verb, its meaning, a sentence.
+(UP, OUT, OFF, ON, DOWN). Every line runs the same way, west to east, from
+the stop where the little word means exactly what it says to the stop where
+it no longer helps: THE DIRECTION (stand up), THE IDEA (speed up: faster),
+STRETCHED (fill up: to the top), LEARN IT WHOLE (give up). So the chart is a
+guide to how far to trust the particle. Each line's label lists its three
+senses in the order of its first three stops.
+
+The first build (2026-11-09) crossed the particle lines with four verb lines
+(GET, TAKE, PUT, TURN) and labelled each line with a sense its own stops did
+not keep (put off on the "away, stop" line, turn out on "to the end").
+Innes: "confusing af and doesn't act as a guide in any useful way". The verb
+lines carried no meaning, so the columns are now the four zones and the grey
+lines are the zone boundaries; the painting did not have to change.
 
 THE ART. Layout by sea_layouts_3.py (docs/sea-charts/particle-ferries.png),
 painted by ChatGPT on 2026-11-09 with Gerundia as the style. The stops are
@@ -17,6 +26,10 @@ WHITE quay markers, not black dots, so sea_measure.py finds none; they were
 measured as white discs (a 4 x 5 grid at x 476 744 1020 1294, y 284 400 518
 636 754) and stored as 'markers' in phrasal-verbs_chart.json. The painter
 moved the compass to the top centre.
+
+The painted hero carried the first build's words (GET, TAKE, PUT, TURN), so
+hero.jpg is now the clean chart with this overlay rendered on it (The stops
+mode) by tools/render_chart_hero.js. Re-run it after changing the overlay.
 """
 import sys
 sys.path.insert(0, 'lesson-template/build')
@@ -37,82 +50,91 @@ XS = sorted({p[0] for p in MARKS})
 YS = sorted({p[1] for p in MARKS})
 assert len(MARKS) == 20 and len(XS) == 4 and len(YS) == 5, MARKS
 
-VERBS = ['get', 'take', 'put', 'turn']
-# (particle, its rough sense, line colour, and per verb: (meaning, sentence))
+ZONES = [('THE DIRECTION', 'it says what it means'), ('THE IDEA', 'the same sense, not a place'),
+         ('STRETCHED', 'the sense, pulled further'), ('LEARN IT WHOLE', 'the little word no longer helps')]
+# (particle, its three senses in zone order, line colour, four stops: (verb, meaning, sentence))
 LINES = [
-    ('up', 'finish, or more', '#D85A30', [('leave your bed', 'I get up at six.'), ('start a hobby', 'She took up sailing.'),
-                                         ('raise', 'Put up the sail.'), ('arrive', 'He turned up late.')]),
-    ('out', 'to the end, or outside', '#1D9E75', [('leave', 'Get out of the water!'), ('remove', 'Take out the oars.'),
-                                                 ('stop a fire', 'Put out the fire.'), ('end up', 'It turned out fine.')]),
-    ('off', 'away, or stop', '#534AB7', [('leave a boat or bus', 'Get off at the pier.'), ('leave the ground', 'The plane took off.'),
-                                        ('postpone', 'We put off the trip.'), ('stop a machine', 'Turn off the engine.')]),
-    ('on', 'continue, or connect', '#BA7517', [('board', 'Get on the ferry.'), ('accept', 'We took on a new crew.'),
-                                              ('dress in', 'Put on a life jacket.'), ('start a machine', 'Turn on the lights.')]),
-    ('down', 'less, or on paper', '#185FA5', [('descend', 'Get down from the mast.'), ('write', 'Take down the number.'),
-                                             ('place', 'Put down your bags.'), ('refuse', 'He turned it down.')]),
+    ('up', 'up &#183; faster &#183; full', '#D85A30',
+     [('stand up', 'rise to your feet', 'Everyone stood up.'), ('speed up', 'go faster', 'The ferry sped up.'),
+      ('fill up', 'fill to the top', 'Fill up the water tank.'), ('give up', 'stop trying', 'Don&#8217;t give up now!')]),
+    ('out', 'out &#183; gone &#183; into view', '#1D9E75',
+     [('go out', 'leave, go outside', 'Let&#8217;s go out on deck.'), ('run out', 'have none left', 'We ran out of fuel.'),
+      ('find out', 'discover', 'Find out when it leaves.'), ('turn out', 'end up, prove to be', 'It turned out fine.')]),
+    ('off', 'off &#183; away &#183; disconnected', '#534AB7',
+     [('get off', 'leave a boat or bus', 'Get off at the pier.'), ('set off', 'start a journey', 'We set off at dawn.'),
+      ('switch off', 'stop a machine', 'Switch off the engine.'), ('put off', 'postpone', 'We put off the trip.')]),
+    ('on', 'on &#183; on you &#183; keep going', '#BA7517',
+     [('get on', 'board', 'Get on the ferry.'), ('put on', 'dress in', 'Put on a life jacket.'),
+      ('carry on', 'continue', 'Carry on rowing!'), ('take on', 'accept work or staff', 'We took on a new crew.')]),
+    ('down', 'down &#183; slower &#183; on paper', '#185FA5',
+     [('sit down', 'take a seat', 'Please sit down.'), ('slow down', 'go slower', 'Slow down near the harbour.'),
+      ('write down', 'put on paper', 'Write down the number.'), ('turn down', 'refuse', 'He turned it down.')]),
 ]
 INK, SEA = '#14262C', '#C0D8DE'
 
 
-def key(v, p):
-    return '%s-%s' % (v, p)
+def key(verb):
+    return verb.replace(' ', '-')
 
 
 def overlay():
     spots, names = [], []
     for (p, sense, col, stops), y in zip(LINES, YS):
-        for v, x, (meaning, sent) in zip(VERBS, XS, stops):
-            assert (x, y) in MARKS
-            names.append(O.name(x, y, ('%s %s' % (v, p), meaning, sent), INK, SEA, size=17, anchor='start', dx=20,
+        for x, (verb, meaning, sent) in zip(XS, stops):
+            assert (x, y) in MARKS and verb.endswith(' ' + p), verb
+            names.append(O.name(x, y, (verb, meaning, sent), INK, SEA, size=17, anchor='start', dx=20,
                                 dy=-36, fit=False, halo=.45))
-            spots.append(O.hotspot(UID, key(v, p), O.circle_path(x, y, 30), '%s %s: %s' % (v, p, meaning)))
-        dark = O.mix(col, '#000000', .3)
+            spots.append(O.hotspot(UID, key(verb), O.circle_path(x, y, 30), '%s: %s' % (verb, meaning)))
         spots.append(O.hotspot(UID, 'line-' + p, O.rect_path(40, y - 44, 330, y + 28), 'The %s line: %s' % (p.upper(), sense)))
     caps = [O.cap(768, 58, 'THE PARTICLE FERRIES', '#2A1E0C', 36, face=O.SERIF, spacing='.04em', halo='#F0E3CE'),
-            O.cap(768, 84, 'one line for each particle &#183; change at the big verbs', '#2A1E0C', 17, face=O.SERIF,
-                  weight=600, spacing='0', style='italic', halo='#F0E3CE')]
-    for v, x in zip(VERBS, XS):
-        caps.append(O.cap(x, 200, v.upper(), INK, 25, face=O.SERIF, spacing='.04em', halo=O.mix(SEA, '#FFFFFF', .4)))
+            O.cap(768, 84, 'one line for each little word &#183; the further east, the less it tells you', '#2A1E0C', 17,
+                  face=O.SERIF, weight=600, spacing='0', style='italic', halo='#F0E3CE')]
+    for (zone, sub), x in zip(ZONES, XS):
+        caps.append(O.cap(x, 192, zone, INK, 18, face=O.SERIF, spacing='.04em', halo=O.mix(SEA, '#FFFFFF', .4)))
+        caps.append(O.cap(x, 212, sub, INK, 13, weight=600, spacing='0', style='italic', halo=O.mix(SEA, '#FFFFFF', .4)))
     for (p, sense, col, stops), y in zip(LINES, YS):
         dark = O.mix(col, '#000000', .3)
+        assert O.ratio(dark, SEA) >= 3, 'the %s line label is too faint' % p
         caps.append(O.cap(56, y - 12, p.upper(), dark, 25, 'start', face=O.SERIF, spacing='.03em',
                           halo=O.mix(SEA, '#FFFFFF', .5)))
-        caps.append(O.cap(56, y + 12, sense, INK, 14, 'start', weight=600, spacing='0', style='italic',
+        caps.append(O.cap(56, y + 12, sense, INK, 13, 'start', weight=600, spacing='0', style='italic',
                           halo=O.mix(SEA, '#FFFFFF', .5)))
-    caps.append(O.cap(768, 974, 'the same verb on a new line is a new meaning: take off &#183; take on &#183; take down',
+    caps.append(O.cap(768, 974, 'west: trust the little word &#183; east: learn the verb as one word',
                       '#2A1E0C', 17, face=O.SERIF, weight=600, spacing='0', style='italic', halo='#FAD9AA'))
-    for (p, sense, col, stops), y in zip(LINES, YS):
-        assert O.ratio(O.mix(col, '#000000', .3), SEA) >= 3, 'the %s line label is too faint' % p
     return O.svg(1536, 1024, spots, caps, names)
 
 
 HERO_ALT = ('An illustrated chart of a busy bay with harbour towns on the north and south shores. Five coloured '
-            'dashed ferry lines cross it west to east: UP, finish or more, in red; OUT, to the end or outside, in '
-            'green; OFF, away or stop, in purple; ON, continue or connect, in ochre; DOWN, less or on paper, in blue. '
-            'Four grey lines cross them north to south: GET, TAKE, PUT and TURN. At each of the twenty crossings a '
-            'small island harbour is named: get up, take up, put up, turn up, and so on down to turn down.')
+            'dashed ferry lines cross it west to east, one per little word: UP in red, OUT in green, OFF in purple, '
+            'ON in ochre, DOWN in blue. Four zones run from west to east: the direction, the idea, stretched, and '
+            'learn it whole. The UP line stops at stand up, speed up, fill up and give up; the OFF line at get off, '
+            'set off, switch off and put off; the DOWN line at sit down, slow down, write down and turn down.')
 
 HERO = L.hero_block(
     ART, 'Sailing the Seas of Grammar &middot; phrasal verbs', 'The Particle Ferries',
-    'A phrasal verb is a big verb and a little word: <em>get</em> + <em>up</em>, <em>take</em> + <em>off</em>. On this '
-    'chart each little word is a ferry line with its own colour and its own rough direction, and each big verb is '
-    'a line that crosses them. Change lines and the meaning changes. Pick a verb, then ride every line.',
+    'A phrasal verb is a verb and a little word: <em>stand</em> + <em>up</em>, <em>switch</em> + <em>off</em>. Each '
+    'little word is a ferry line here, and every line sails the same way. In the west the little word means exactly '
+    'what it says; further east it keeps the idea but not the place; at the end of the line it no longer helps, and '
+    'you learn the verb as one word. Find the line, then see how far east you are.',
     HERO_ALT)
 
 RULES = '''<div class="camp" id="rules">
       ''' + MARK_FLAG + '''
       <div class="camp-label">Reading the network</div>
-      <h2>Big verbs, little words</h2>
-      <p class="chart-note" style="margin:-6px 0 18px">The little word, the <em>particle</em>, often keeps a rough direction (UP is more, DOWN is less, OFF is away). Often, not always: some stops have to be learned as they are.</p>
+      <h2>How far can you trust the little word?</h2>
+      <p class="chart-note" style="margin:-6px 0 18px">The little word, the <em>particle</em>, is the clue. Near the start of its line it tells you everything; by the end of the line it tells you nothing. Every line has the same four zones.</p>
       ''' + rule_grid([
-    ('Same verb, new line, new meaning',
-     '<em>Take off</em>, <em>take on</em> and <em>take down</em> are three different verbs. Learn each stop on its own.',
-     ex('The plane <em>took off</em> at six.')),
-    ('Same line, a family of meanings',
-     'OFF often means <em>stop</em> or <em>away</em>: <em>turn off</em> the engine, <em>get off</em> the boat, <em>put off</em> the trip.',
-     ex('<em>Turn off</em> the engine before you land.')),
-    ('Many have a one-word twin',
-     'The one-word verb is more formal: <em>put off</em> / <em>postpone</em>, <em>find out</em> / <em>discover</em>.',
+    ('Zone 1, the direction: it says what it means',
+     'UP is up, OUT is out, DOWN is down. You can guess these the first time you hear them.',
+     ex('Everyone <em>stood up</em> when the captain came in.')),
+    ('Zone 2, the idea: the same sense, not a place',
+     'UP becomes <em>more</em> or <em>faster</em>, OUT becomes <em>until none is left</em>, DOWN becomes <em>less</em>. Still guessable.',
+     ex('We <em>ran out</em> of fuel two miles from shore.')),
+    ('Zone 3, stretched: the sense pulled further',
+     'OFF is <em>disconnected</em>, DOWN is <em>on paper</em>, UP is <em>to the top</em>. Guessable once you know the line.',
+     ex('<em>Switch off</em> the engine before you land.')),
+    ('Zone 4, learn it whole',
+     'The little word no longer helps: <em>put off</em> is postpone, <em>give up</em> is stop trying. Learn these as single words.',
      ex('We <em>put off</em> the trip until spring.')),
     ('Some can split around their object',
      'With a noun, either order works: <em>put on a jacket</em>, <em>put a jacket on</em>.',
@@ -120,18 +142,11 @@ RULES = '''<div class="camp" id="rules">
     ('A pronoun always splits them',
      'With <em>it</em>, <em>them</em>, <em>her</em>, the pronoun goes in the middle: <em>put it on</em>, never <em>put on it</em>.',
      ex('It&#39;s cold: <em>put it on</em>.')),
-    ('Some never split',
-     '<em>Get on</em> the ferry, <em>get off</em> the bus, <em>get over</em> a cold: the object always comes after.',
-     ex('We <em>got on</em> the ferry just in time.')),
 ]) + chart(
     'The twenty stops',
-    'Read across a line to see one particle on four verbs; read down a column to see one verb on five lines.',
-    ['', 'get', 'take', 'put', 'turn'],
-    [['UP', 'leave your bed', 'start a hobby', 'raise', 'arrive'],
-     ['OUT', 'leave', 'remove', 'stop a fire', 'end up'],
-     ['OFF', 'leave a boat or bus', 'leave the ground', 'postpone', 'stop a machine'],
-     ['ON', 'board', 'accept', 'dress in', 'start a machine'],
-     ['DOWN', 'descend', 'write', 'place', 'refuse']]) + '''
+    'Read across a line: the meaning drifts further from the little word with every stop. Read down a column: every line drifts the same way.',
+    ['', '1 &middot; the direction', '2 &middot; the idea', '3 &middot; stretched', '4 &middot; learn it whole'],
+    [[p.upper()] + ['<b>%s</b> %s' % (v, m) for v, m, _s in stops] for p, _sense, _c, stops in LINES]) + '''
     </div>
 
     '''
@@ -162,12 +177,12 @@ SPLIT = '''<div class="camp" id="form">
 
 DIAGRAM = L.diagram(
     ART, UID, overlay(),
-    'Click a stop and its line lights up below; click a coloured line&#39;s name for its sense. Switch the chart to '
-    'see what each stop means, then a sentence: the verb stays on its grey line, and the coloured line changes '
-    'the meaning.',
+    'Click a stop and its line lights up below; click a coloured line&#39;s name for its senses. Switch the chart to '
+    'see what each stop means, then a sentence. Read each line west to east: the meaning moves further from the '
+    'little word at every stop.',
     ('The stops', 'The meaning', 'In a sentence'),
-    [('GET and TAKE', 'is-west'), ('PUT and TURN', 'is-isle'), ('The five lines', 'is-east')],
-    'Drag the chart sideways to reach the TURN line.', min_zoom=1000)
+    [('The direction and the idea', 'is-west'), ('Stretched, or learn it whole', 'is-isle'), ('The five lines', 'is-east')],
+    'Drag the chart sideways to reach the last zone.', min_zoom=1000)
 
 TRAPS = fork(
     'Wrong platform',
@@ -177,8 +192,8 @@ TRAPS = fork(
      ['Turn off them.', 'Turn them off.', 'a pronoun splits the verb'],
      ['Get the ferry on.', 'Get on the ferry.', '<em>get on</em> never splits'],
      ['The meeting was put down until Monday.', 'The meeting was put off until Monday.', '<em>put off</em> is postpone'],
-     ['Turn on the music, it&#39;s too loud!', 'Turn down the music, it&#39;s too loud!', 'DOWN is less'],
-     ['He turned at the party late.', 'He turned up at the party late.', '<em>turn up</em> is arrive']],
+     ['Speed down near the harbour.', 'Slow down near the harbour.', 'DOWN is less, but the verb is <em>slow</em>'],
+     ['We ran off fuel.', 'We ran out of fuel.', 'OUT is until none is left']],
     'A good dictionary shows which kind a verb is: <em>turn sth off</em> splits; <em>get on sth</em> does not.',
     [('%s#quiz' % OUT, 'Straight to the test &rarr;'),
      ('sailing-the-seas-register.html', 'The heights of register')])
@@ -193,53 +208,52 @@ SIGNALS = signals(
     'One test: can a machine or a piece of clothing go in the middle? <em>Turn the engine off</em>: yes. Then it splits.')
 
 QUIZ = [
-    ('I usually ___ at six, before the ferry leaves.', 'Leave your bed.', 'get up',
-     ['get up', 'get off', 'get on', 'get down'], 'Get up: leave your bed.'),
-    ('The plane ___ at 9.15.', 'Leave the ground.', 'took off',
-     ['took off', 'took on', 'took up', 'took out'], 'Take off: a plane leaves the ground.'),
-    ('We ___ the trip until the storm passed.', 'Postpone.', 'put off',
-     ['put off', 'put down', 'put out', 'put on'], 'Put off: postpone.'),
-    ('Please ___ the engine before you go ashore.', 'Stop a machine.', 'turn off',
-     ['turn off', 'turn up', 'turn out', 'turn down'], 'Turn off: stop a machine.'),
+    ('Everyone ___ when the captain walked in.', 'Zone 1: the direction.', 'stood up',
+     ['stood up', 'sat down', 'got off', 'stood on'], 'Stand up: UP means exactly what it says.'),
+    ('The wind dropped, so the ferry ___.', 'Went slower: DOWN is less.', 'slowed down',
+     ['slowed down', 'sped up', 'set off', 'carried on'], 'Slow down: DOWN as less.'),
+    ('We ___ fuel two miles from shore.', 'Until none was left.', 'ran out of',
+     ['ran out of', 'ran off', 'ran on', 'ran down of'], 'Run out of: OUT as until gone.'),
+    ('Please ___ the engine before you land.', 'Disconnect it.', 'switch off',
+     ['switch off', 'switch on', 'switch up', 'switch out'], 'Switch off: OFF as disconnected.'),
+    ('We ___ at dawn and reached the island by noon.', 'Start a journey: OFF is away.', 'set off',
+     ['set off', 'set on', 'set down', 'set in'], 'Set off: OFF as away, starting a journey.'),
+    ('___ rowing! We&#39;re nearly there.', 'Keep going.', 'Carry on',
+     ['Carry on', 'Carry off', 'Carry out', 'Carry up'], 'Carry on: ON as keep going.'),
+    ('___ the number before you forget it.', 'On paper.', 'Write down',
+     ['Write down', 'Write on', 'Write off', 'Put off'], 'Write down: DOWN as on paper.'),
+    ('Fill ___ the water tank before we leave.', 'To the top.', 'up',
+     ['up', 'out', 'off', 'on'], 'Fill up: UP as to the top.'),
+    ('Which stop must you learn whole?', 'The little word does not help.', 'put off (postpone)',
+     ['put off (postpone)', 'get off (leave a boat)', 'set off (start a journey)', 'switch off (stop a machine)'],
+     'Postpone has nothing to do with away or disconnected: learn put off as one word.'),
     ('It&#39;s cold. Put your jacket on: put ___.', 'A pronoun splits the verb.', 'it on',
      ['it on', 'on it', 'it', 'on'], 'Put it on: the pronoun goes in the middle.'),
-    ('We ___ the ferry just in time.', 'Board.', 'got on',
-     ['got on', 'got the ferry on', 'got up', 'got in'], 'Get on a ferry, bus or train. It never splits.'),
     ('She was offered the job, but she ___.', 'Refuse.', 'turned it down',
      ['turned it down', 'turned down it', 'turned it off', 'turned it out'], 'Turn down: refuse. With it: turned it down.'),
-    ('The firefighters ___ the fire.', 'Stop a fire.', 'put out',
-     ['put out', 'put off', 'put down', 'turned out'], 'Put out a fire.'),
-    ('He ___ two hours late.', 'Arrive.', 'turned up',
-     ['turned up', 'turned on', 'got off', 'took up'], 'Turn up: arrive, often late or unexpectedly.'),
-    ('The weather was terrible, but the trip ___ fine.', 'End up.', 'turned out',
-     ['turned out', 'took out', 'got out', 'put out'], 'Turn out: end up, be in the end.'),
-    ('My grandfather ___ sailing when he retired.', 'Start a hobby.', 'took up',
-     ['took up', 'took on', 'got up', 'turned up'], 'Take up a hobby.'),
-    ('Which sentence is NOT correct?', 'One pronoun is on the wrong side.', 'Turn off it, please.',
-     ['Turn off it, please.', 'Turn it off, please.', 'Turn the light off, please.', 'Turn off the light, please.'],
-     'With a pronoun: turn it off.'),
+    ('Which sentence is NOT correct?', 'One pronoun is on the wrong side.', 'Switch off it, please.',
+     ['Switch off it, please.', 'Switch it off, please.', 'Switch the light off, please.', 'Switch off the light, please.'],
+     'With a pronoun: switch it off.'),
 ]
 
 PANELS = [
-    [(key(v, p), '<b>%s %s</b> %s &middot; %s' % (v, p, st[i][0], st[i][1]))
-     for v, i in (('get', 0), ('take', 1)) for p, s, c, st in LINES],
-    [(key(v, p), '<b>%s %s</b> %s &middot; %s' % (v, p, st[i][0], st[i][1]))
-     for v, i in (('put', 2), ('turn', 3)) for p, s, c, st in LINES],
-    [('line-' + p, '<b>%s</b> %s' % (p.upper(), s)) for p, s, c, st in LINES],
+    [(key(st[i][0]), '<b>%s</b> %s &middot; %s' % st[i]) for i in (0, 1) for p, s_, c, st in LINES],
+    [(key(st[i][0]), '<b>%s</b> %s &middot; %s' % st[i]) for i in (2, 3) for p, s_, c, st in LINES],
+    [('line-' + p, '<b>%s</b> %s' % (p.upper(), s_)) for p, s_, c, st in LINES],
 ]
 TARGETS = {}
-for p, s, c, st in LINES:
-    for i, v in enumerate(VERBS):
-        TARGETS[key(v, p)] = (0 if i < 2 else 1, key(v, p), c)
+for p, s_, c, st in LINES:
+    for i, stop in enumerate(st):
+        TARGETS[key(stop[0])] = (0 if i < 2 else 1, key(stop[0]), c)
     TARGETS['line-' + p] = (2, 'line-' + p, c)
 
 import ex_tr_phrasal_verbs as T
 L.build(OUT, ART, 'The Particle Ferries &mdash; Phrasal Verbs', 'phrasal verbs', EXTRACTED,
-        HERO, 'Pick a verb, then ride every line.', ('order', 'Read the chart'),
+        HERO, 'Find the line, then see how far east you are.', ('order', 'Read the chart'),
         RULES + SPLIT + DIAGRAM + TRAPS + SIGNALS, QUIZ, UID, PANELS, TARGETS,
         ['#C9C6C0', '#BFD7DE', '#E3CF9E'], T.T,
-        ['Clean run. You can ride every line and get off at the right stop.',
-         'Solid progress. Watch the pronoun: put it on, turn it off.',
-         'Good first attempt. Start with one verb, get, and ride all five lines.'],
+        ['Clean run. You know how far to trust the little word, and where to stop trusting it.',
+         'Solid progress. Watch the pronoun: put it on, switch it off.',
+         'Good first attempt. Ride one line, UP, from stand up to give up.'],
         ('sailing-the-seas-of-grammar.html', 'Back to the first chart: Gerundia and Infinitivia'), gull_seed=53,
         long_name=30)

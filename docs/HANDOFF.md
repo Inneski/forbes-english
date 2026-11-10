@@ -99,6 +99,36 @@ Screenshot gotcha: a scripted ArrowRight walk through a deck stops at the
 first gap slide, because the gap input keeps focus and swallows the key.
 Blur `document.activeElement` before each press.
 
+## 2026-11-10 — Sea charts: the Particle Ferries redesigned; logo and see-through panels on all twelve: SHIPPED
+
+- **The Particle Ferries was not a guide** (Innes: "confusing af and doesn't
+  act as a guide in any useful way"). Its four grey lines were verbs (GET,
+  TAKE, PUT, TURN) that carried no meaning, and each coloured line was
+  labelled with a sense its own stops broke (put off on "away, or stop").
+  Now every line runs west to east through four zones: THE DIRECTION (stand
+  up), THE IDEA (speed up), STRETCHED (fill up), LEARN IT WHOLE (give up).
+  Each line's label lists its three senses in stop order. Same painting; the
+  grey lines are now zone boundaries. Quiz, rules, table, traps and two
+  translations rewritten in `build_phrasal_verbs.py`.
+- **Its hero is rendered, not painted.** The painting's lettering was the old
+  design, so `hero.jpg` is the clean chart with the live labels, screenshotted
+  by **`tools/render_chart_hero.js <slug>`** (needs the "site" preview on
+  8099). Re-run it whenever that overlay changes. The painted original is in
+  the gitignored `incoming/sea-charts/six/`.
+- **Logo on every chart page** (Innes: "forbes english logo should be on all of
+  these"). **`lesson-template/build/sea_chrome.py`** puts the standard lesson
+  lockup (`fe_logo_lesson.svgfrag`, `check_logos.py` passes all 12) at the
+  head of the `.wordmark` header, linked home.
+- **No solid white panels** (Innes: "dont want white panels at 100% opacity
+  either ... on all grammar map stuff"). The same module sets `--card` to the
+  palette's card colour at 74% with a 3px backdrop blur, and the quiz options
+  follow. It is done per page because the palette is shared with the Sherpa
+  camps. `build_sailing.py`, `build_regularia.py`, `build_countania.py` and
+  `sea_lesson.build()` all call `sea_chrome.add()`.
+- **Next, asked for 2026-11-10:** the grammar page's map grid becomes a rack of
+  rolled charts that unroll on hover (tap on a phone, focus by keyboard). That
+  also replaces the grammar page's solid white map cards.
+
 ## 2026-11-09 — Sea charts 7-12: Register, Inversion, the Atlantic, Question Tags, the Forecast, Phrasal Verbs: SHIPPED
 
 Innes brought back ChatGPT's six paintings (`six-charts.zip`, unpacked to the

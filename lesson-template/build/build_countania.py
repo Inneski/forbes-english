@@ -785,5 +785,8 @@ assert n == 1, 'no <title> in the shell'
 for leak in ('Camp Seven', 'camp seven', 'will/going to', 'willExamples', 'Regularia &amp;', 'panel-reg', 'reg-'):
     assert leak not in s, 'a leak from the shell or the Regularia builder: %s' % leak
 
+import sea_chrome
+s = sea_chrome.add(s)  # the logo and see-through panels (sea_chrome.py)
+
 open(OUT, 'w', encoding='utf-8', newline='').write(s)
 print('wrote %s: %d examples, %d questions, %d bytes' % (OUT, len(EX), len(QUIZ), len(s)))

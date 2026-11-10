@@ -746,5 +746,8 @@ assert s.count('</body>') == 1
 # every map can be enlarged (Innes, 2026-11-08: "maps need to be expandable always")
 s = s.replace('</body>', MUSIC_TAG + '<script src="map-zoom.js" defer></script>\n</body>', 1)
 
+import sea_chrome
+s = sea_chrome.add(s)  # the logo and see-through panels (sea_chrome.py)
+
 open(OUT, 'w', encoding='utf-8', newline='').write(s)
 print('wrote %s — %d examples, %d questions, %d bytes' % (OUT, len(EX), len(QUIZ), len(s)))
