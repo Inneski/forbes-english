@@ -13,12 +13,15 @@ zoomed browser) it vanished. The order is now, on every page:
     RPGs · Level Check · Library · IELTS · Grammar · Block Camp ·
     Slide Decks · Work With Me · Sign In · (language) · Go Pro
 
-RPGs leads and never steps out. To keep the number of links shown at each
-width the same, the "wide only" class RPGs had moves to Level Check; a bar
-with no Level Check (ielts.html, which tools/build_hubs.py,
-build_ielts_routes.py and build_ielts_bank.py copy into the hub pages) gains
-one, wide only. index.html's bar was reordered by hand the same day (its
-classes and its fitRow squeeze list differ) and is checked here, not edited.
+RPGs leads and never steps out. The first pass moved RPGs' "wide only" class
+onto Level Check to keep the link count per width; Innes, 2026-11-11, with a
+zoomed Block Camp page: "why does level check drop here". So neither steps
+out now: the main links (RPGs to Sign In, bar Slide Decks and Work With Me)
+show at every desktop width, and only Slide Decks and Work With Me are wide
+only. index.html's bar was reordered by hand (its classes and its fitRow
+squeeze list differ) and is checked here, not edited. ielts.html's bar is
+the one tools/build_hubs.py copies into the hubs, the IELTS routes and
+rpg.html.
 """
 import os, re, sys
 
@@ -56,7 +59,16 @@ def order(s):
         if not h.endswith(('index.html', 'index.html#top'))]
 
 
+def unwide(s, href):
+    """Take the "wide only" class off the bar's link to href."""
+    m = re.search(A % href, s)
+    if m and any(c in WIDE for c in classes(m.group(0))):
+        s = s[:m.start()] + with_classes(m.group(0), [c for c in classes(m.group(0)) if c not in WIDE]) + s[m.end():]
+    return s
+
+
 def fix(s):
+    s = unwide(unwide(s, r'rpg\.html'), r'level-checker\.html')
     rpg = re.search(A % r'rpg\.html', s)
     lvl = re.search(A % r'level-checker\.html', s)
     lib = re.search(A % r'library\.html', s)
@@ -111,7 +123,8 @@ def main():
         o = order(s)
         ok = bool(o) and o[0] == 'rpg.html' and 'level-checker.html' in o[:2]
         rpg = re.search(A % r'rpg\.html', s)
-        ok = ok and not any(c in WIDE for c in classes(rpg.group(0)))
+        lvl = re.search(A % r'level-checker\.html', s)
+        ok = ok and not any(c in WIDE for c in classes(rpg.group(0)) + classes(lvl.group(0)))
         print('  %-4s %s: %s' % ('OK' if ok else 'FAIL', p, ' · '.join(h.split('.')[0] for h in (o or []))))
         bad += not ok
     sys.exit(1 if bad else 0)
