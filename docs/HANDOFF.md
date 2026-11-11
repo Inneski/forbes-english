@@ -125,6 +125,30 @@ Screenshot gotcha: a scripted ArrowRight walk through a deck stops at the
 first gap slide, because the gap input keeps focus and swallows the key.
 Blur `document.activeElement` before each press.
 
+## 2026-11-10 — One top menu bar on every page, RPGs first; a Workers Build that never ran
+
+- **The bar** (Innes: "RPG should be at top", "menu bar should be constant",
+  with a screenshot of the library's bar showing no RPGs). Every site page
+  keeps its own copy of the bar, and every copy gave RPGs a "wide only"
+  class, so it vanished under ~1350px or in a zoomed browser. Now, on every
+  page: RPGs · Level Check · Library · IELTS · Grammar · Block Camp · Slide
+  Decks · Work With Me · Sign In · language · Go Pro. RPGs never steps out;
+  its "wide only" class moved to Level Check, so each width shows the same
+  number of links as before. **`tools/site_nav_order.py`** applies the order to
+  the hand-kept bars (library, ielts, pricing, account, block-camp,
+  block-camp-map, block-camp/quest) and `--check` fails any page off it.
+  index.html was reordered by hand (its `fitRow` squeeze list now drops RPGs
+  second to last). The hubs, IELTS routes and rpg.html copy ielts.html's bar
+  through `build_hubs.py`, whose `RPG_LINK` is now the plain link.
+- **Deploy gotcha:** commit 615e671e reached GitHub, but the live site still
+  served the old bars hours later. GitHub's check runs for that commit
+  showed only "Cloudflare Pages: success", with **no "Workers Builds:
+  forbes-english" run at all**, and the site is served by the Worker. The
+  commit before had both. So when a push does not show up live, read
+  `https://api.github.com/repos/Inneski/forbes-english/commits/<sha>/check-runs`
+  before assuming a cache. A Pages success means nothing for the live site.
+  The fix was simply another push (this entry).
+
 ## 2026-11-10 — Sea charts: the Particle Ferries redesigned; logo and see-through panels on all twelve: SHIPPED
 
 - **The Particle Ferries was not a guide** (Innes: "confusing af and doesn't
