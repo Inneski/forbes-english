@@ -46,6 +46,11 @@ below, and each is a real piece of geography):
 | **Maelstrom** (whirlpool) | word order that flips | inversion |
 | **Land-locked lake** | forms that cannot make the crossing | intransitive verbs (no passive) |
 
+**Anything involving a tense uses the Sherpa colour for that tense** (Innes,
+2026-11-13). The colours come from `lesson-template/build/sea_tense.py`,
+which reads them off the route map: the land, lane or harbour that stands for
+a tense is painted in it, in the layout, the painting and the page.
+
 Do not overlap Sherpa Tensing. Sherpa teaches one tense per camp. A chart
 may set two tenses against each other, as in §3.2.
 

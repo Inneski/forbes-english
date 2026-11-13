@@ -190,6 +190,18 @@ present-continuous, vocabulary, modal-verbs, passive-voice, a new reported
 speech hub (or vocabulary), vocabulary. Every chart on the table is now
 laid out.
 
+**A tense is always painted in its Sherpa colour** (Innes, 2026-11-13:
+"Anything involving a tense must use colours in sherpa"). `sea_tense.py`
+reads the colours off the route map; nothing is typed. Four layouts were
+redrawn with it: Finished Time (past simple) & Open Time (present perfect),
+Statia (present simple) & Actia (present continuous), the Passive Ferry (a
+lane and a disc per tense) and the Backshift Current (a disc per harbour).
+The brief already says "keep each landmass its colour", so ChatGPT must be
+given THESE four drafts, not the earlier ones. The Conditional Quadrants name
+no tense and were left; say so if Innes wants them coloured too. When the
+paintings come back, check each tense's land against `sea_tense.T` before
+building, and use the same colours in the page's label layer and panels.
+
 ## 2026-11-10 — One top menu bar on every page, RPGs first; a Workers Build that never ran
 
 - **The bar** (Innes: "RPG should be at top", "menu bar should be constant",

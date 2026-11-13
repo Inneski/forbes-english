@@ -16,6 +16,7 @@ and Twofold Isle carries the verbs whose answer depends on the sentence.
 import os
 from PIL import ImageDraw
 from sea_layouts_2 import W, H, OUT, INK, SEA, SEA_INK, base, text, dot, compass
+from sea_tense import T          # a tense is always painted in its Sherpa colour
 
 LAND, SAND, GREEN, ROCK = (201, 176, 122), (217, 199, 154), (183, 207, 155), (150, 140, 125)
 WHITE, ISLE, FOG = (245, 245, 240), (214, 190, 140), (222, 226, 228)
@@ -52,7 +53,7 @@ ACTIA = ['run', 'cook', 'read', 'build', 'swim', 'write', 'sail', 'eat']
 
 def statia_actia():
     im, d = base()
-    two_shores(d, None, None, LAND, GREEN)
+    two_shores(d, None, None, T['present-simple'], T['present-continuous'])
     text(d, (270, 172), 'STATIA', 28, 'b')
     text(d, (270, 202), 'usually no -ING: I know the way.', 16, 'i')
     text(d, (1266, 172), 'ACTIA', 28, 'b')
@@ -137,6 +138,9 @@ def certainty():
 PAIRS = [('They build it.', 'It is built.', 'present'), ('They built it.', 'It was built.', 'past'),
          ('They have built it.', 'It has been built.', 'perfect'), ('They will build it.', 'It will be built.', 'future'),
          ('They are building it.', 'It is being built.', 'continuous'), ('They can build it.', 'It can be built.', 'modal')]
+# each ferry lane in its tense's Sherpa colour; a modal is not a tense and keeps the sea ink
+LANE = {'present': 'present-simple', 'past': 'past-simple', 'perfect': 'present-perfect',
+        'future': 'future-simple', 'continuous': 'present-continuous'}
 
 
 def passive_ferry():
@@ -148,10 +152,14 @@ def passive_ferry():
     text(d, (1266, 202), 'what it happens to comes first', 16, 'i')
     for i, (a, p, tense) in enumerate(PAIRS):
         y = 290 + i * 96
+        lane = T[LANE[tense]] if tense in LANE else SEA_INK
+        for x in range(300, 1236, 30):                                          # the ferry lane
+            d.line((x, y, x + 16, y), fill=lane, width=7 if tense in LANE else 2)
+        for x in (270, 1266):                                                   # and a disc of it under each harbour
+            if tense in LANE:
+                d.ellipse((x - 17, y - 17, x + 17, y + 17), fill=lane)
         harbour(d, 270, y, a, tense)
         harbour(d, 1266, y, p)
-        for x in range(300, 1236, 30):                                          # the ferry lane
-            d.line((x, y, x + 14, y), fill=SEA_INK, width=2)
     d.ellipse((700, 150, 836, 220), fill=SAND)                                  # the by-buoy
     text(d, (768, 178), 'BY-BUOY', 16, 'b')
     text(d, (768, 200), 'by … : only if it matters', 12, 'i')
@@ -174,6 +182,11 @@ def passive_ferry():
 SHIFTS = [('“I am tired.”', 'she was tired'), ('“I work here.”', 'he worked there'),
           ('“I’m leaving.”', 'she was leaving'), ('“I’ve finished.”', 'he had finished'),
           ('“I saw it.”', 'she had seen it'), ('“I’ll help.”', 'he would help'), ('“I can swim.”', 'she could swim')]
+# the tense each harbour is in, west then east, for its Sherpa-coloured disc;
+# would and could are not tenses and get none
+SHIFT_TENSE = [('present-simple', 'past-simple'), ('present-simple', 'past-simple'),
+               ('present-continuous', 'past-continuous'), ('present-perfect', 'past-perfect'),
+               ('past-simple', 'past-perfect'), ('future-simple', None), (None, None)]
 
 
 def backshift():
@@ -185,6 +198,9 @@ def backshift():
     text(d, (1266, 202), 'she said (that) …', 16, 'i')
     for i, (a, b) in enumerate(SHIFTS):
         y = 280 + i * 88
+        for x, key in zip((270, 1266), SHIFT_TENSE[i]):
+            if key:
+                d.ellipse((x - 17, y - 17, x + 17, y + 17), fill=T[key])
         harbour(d, 270, y, a)
         harbour(d, 1266, y, b)
         for x in range(300, 1220, 34):                                          # the current, west to east

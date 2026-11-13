@@ -17,6 +17,7 @@ clickable, so the brief pins them.
 import os
 from PIL import ImageDraw
 from sea_layouts_2 import W, H, OUT, INK, SEA, SEA_INK, base, text, dot, compass, font
+from sea_tense import T          # a tense is always painted in its Sherpa colour
 
 LAND, SAND, GREEN, ROCK = (201, 176, 122), (217, 199, 154), (183, 207, 155), (150, 140, 125)
 WHITE = (245, 245, 240)
@@ -75,8 +76,8 @@ OPEN = ['ever', 'never', 'yet', 'already', 'so far', 'since 2019', 'recently', '
 
 def finished_open():
     im, d = base()
-    d.polygon([(24, 140), (520, 140), (560, 420), (500, 700), (540, H - 24), (24, H - 24)], fill=LAND)
-    d.polygon([(W - 24, 140), (1016, 140), (976, 400), (1040, 680), (996, H - 24), (W - 24, H - 24)], fill=GREEN)
+    d.polygon([(24, 140), (520, 140), (560, 420), (500, 700), (540, H - 24), (24, H - 24)], fill=T['past-simple'])
+    d.polygon([(W - 24, 140), (1016, 140), (976, 400), (1040, 680), (996, H - 24), (W - 24, H - 24)], fill=T['present-perfect'])
     text(d, (270, 172), 'FINISHED TIME', 28, 'b')
     text(d, (270, 202), 'past simple: I saw her yesterday.', 16, 'i')
     text(d, (1266, 172), 'OPEN TIME', 28, 'b')
