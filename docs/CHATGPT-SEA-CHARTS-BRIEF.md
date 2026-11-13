@@ -123,3 +123,44 @@ Now the same picture with every word, letter and number removed: no names, no ti
 If a word comes back misspelt in the first picture, ask for that word to be
 fixed before you ask for the clean copy. The clean copy inherits whatever the
 first one got wrong.
+
+## Part 3: the twelve charts on the chart table (saved 2026-11-13)
+
+One chart per conversation. The drafts are in `FORBES\docs\sea-charts\`.
+Five of them carry the Sherpa tense colours and must be the drafts redrawn
+on 2026-11-13: `finished-open-time`, `conditional-quadrants`,
+`statia-actia`, `passive-ferry`, `backshift-current`.
+
+**Attach:** `FORBES\sailing-the-seas-of-grammar\hero.jpg` first, then the
+chart's draft. (Codex, which can read the repo, takes the two paths instead:
+`sailing-the-seas-of-grammar/hero.jpg` and `docs/sea-charts/<name>.png`.)
+
+**Save as:** the draft's own name, and `<name>-clean.png` for the second
+picture, into `FORBES\incoming\sea-charts\next-six\` (atlas-of-the,
+finished-open-time, conditional-quadrants, harbour-of-scale, the-voyage,
+er-more-coasts) or `FORBES\incoming\sea-charts\last-six\` (statia-actia,
+make-do, certainty, passive-ferry, backshift-current, the-bridges).
+
+---
+
+Image 1 is a finished illustrated sea chart. Image 2 is a coded draft of another chart in the same series. Repaint image 2 in exactly the style of image 1. That style is an antique hand-painted sea chart on parchment with a thin ruled border, watercolour terrain with fine ink hatching, cliffs along the coasts, forests, hills and lakes, a compass rose, a sailing ship, and small waves on a pale blue sea. Landscape, 3:2.
+
+Keep the layout of image 2 exactly. The coastlines, islands, sandbank, dashed currents, flag, compass and ships stay in the same places, and every harbour dot stays exactly where it is, as a solid black dot. Do not use white markers.
+
+The colours in image 2 are a code and must not change. Keep each landmass, each coloured line and each coloured disc in the colour drawn in image 2: the same hue, not a parchment version of it. Where a disc is split into two halves, keep both halves and any orange outline.
+
+Copy every word in image 2 exactly as it is spelled and in the same place. Use serif capitals for the titles and plain lettering for the place names, as in image 1. Add no other words. Use British spelling.
+
+---
+
+**Then, in the same conversation:**
+
+---
+
+Now the same picture with every word, letter and number removed: no names, no titles, no captions. Keep every harbour dot, every coloured line and every coloured disc exactly where it is. Change nothing else.
+
+---
+
+The second prompt only works after the first, in the same conversation: in
+a new one the model has no picture to clean and asks for it. Fix any misspelt
+word before asking for the clean copy.
