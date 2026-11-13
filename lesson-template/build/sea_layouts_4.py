@@ -120,14 +120,14 @@ def quadrants():
     # (Innes, 2026-11-13) it is the OUTLINE of a half-disc in WILL's orange:
     # empty for WOULD + verb (second), filled with the present perfect's colour
     # for WOULD HAVE + participle (third), and with the present simple's for
-    # WOULD BE (mixed). MIXED has no harbour; its disc sits under its lines.
+    # WOULD BE (mixed). MIXED has no harbour; its disc sits over its name.
     WOULD = 'would'
     for (x, y), (a, b) in (((300, 270), ('present-simple', 'present-simple')),
                            ((470, 380), ('present-simple', 'future-simple')),
                            ((1146, 300), ('past-simple', WOULD)),
                            ((390, 700), ('past-simple', 'past-simple')),
                            ((1146, 700), ('past-perfect', (WOULD, 'present-perfect'))),
-                           ((1380, 782), ('past-perfect', (WOULD, 'present-simple')))):
+                           ((1380, 244), ('past-perfect', (WOULD, 'present-simple')))):
         box = (x - 27, y - 27, x + 27, y + 27)
         d.pieslice(box, 90, 270, fill=T[a])
         if b == WOULD:
@@ -142,12 +142,14 @@ def quadrants():
     harbour(d, 390, 700, 'REAL PAST', 'If he said that, he was wrong.')
     harbour(d, 1146, 700, 'THIRD', 'If we’d left, we’d have caught it.')
     # the mixed current, between the two unreal seas
-    for y in range(400, 640, 26):
+    # It runs FROM the past TO now (Innes, 2026-11-13): a past that did not
+    # happen, a result that is not true today. So the arrow points north.
+    for y in range(400, 660, 26):
         d.line((1380, y, 1380, y + 14), fill=SEA_INK, width=3)
-    d.polygon([(1370, 640), (1390, 640), (1380, 660)], fill=SEA_INK)
-    text(d, (1380, 690), 'MIXED', 17, 'b', SEA_INK)
-    text(d, (1380, 714), 'If I’d studied,', 14, 'i', SEA_INK)
-    text(d, (1380, 734), 'I’d be a doctor now.', 14, 'i', SEA_INK)
+    d.polygon([(1370, 396), (1390, 396), (1380, 376)], fill=SEA_INK)
+    text(d, (1380, 300), 'MIXED', 17, 'b', SEA_INK)
+    text(d, (1380, 324), 'If I’d studied,', 14, 'i', SEA_INK)
+    text(d, (1380, 344), 'I’d be a doctor now.', 14, 'i', SEA_INK)
     # Regret Reef, off the third conditional
     d.ellipse((1010, 820, 1290, 900), fill=ROCK)
     text(d, (1150, 846), 'REGRET REEF', 17, 'b', WHITE)
