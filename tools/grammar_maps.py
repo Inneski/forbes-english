@@ -53,7 +53,7 @@ course; here it is a map.
 
 MAPS = [
     dict(href='sailing-the-seas-of-grammar.html',
-         title='Sailing the Seas of Grammar',
+         title='Gerundia & Infinitivia',     # Innes, 2026-11-13: the roll carries the chart's own name, like the others
          heading='Gerunds or infinitives, coast by coast',
          image='sailing-the-seas-of-grammar/hero.jpg',
          alt=('A hand-drawn sea chart: the orange coast of Gerundia, the green '
