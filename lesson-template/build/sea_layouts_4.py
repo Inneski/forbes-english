@@ -115,6 +115,17 @@ def quadrants():
     text(d, (1146, 172), 'UNREAL · NOW', 22, 'b', SEA_INK)
     text(d, (390, 598), 'REAL · PAST', 22, 'b', SEA_INK)
     text(d, (1146, 598), 'UNREAL · PAST', 22, 'b', SEA_INK)
+    # each conditional's tenses in their Sherpa colours, under its harbour: the
+    # if-clause on the left half, the result on the right. WOULD and WOULD HAVE
+    # are not tenses, so a clause built on them leaves the disc one colour.
+    for (x, y), (a, b) in (((300, 270), ('present-simple', 'present-simple')),
+                           ((470, 380), ('present-simple', 'future-simple')),
+                           ((1146, 300), ('past-simple', 'past-simple')),
+                           ((390, 700), ('past-simple', 'past-simple')),
+                           ((1146, 700), ('past-perfect', 'past-perfect'))):
+        box = (x - 27, y - 27, x + 27, y + 27)
+        d.pieslice(box, 90, 270, fill=T[a])
+        d.pieslice(box, 270, 90, fill=T[b])
     harbour(d, 300, 270, 'ZERO', 'If you heat ice, it melts.')
     harbour(d, 470, 380, 'FIRST', 'If it rains, we’ll stay in.')
     harbour(d, 1146, 300, 'SECOND', 'If I had a boat, I’d sail.')
