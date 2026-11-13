@@ -181,9 +181,14 @@ markers banned. The paintings come back to `incoming/sea-charts/next-six/`
 library tags, a catalogue row on Innes's yes. Hubs: the Atlas of THE and the
 -ER/MORE coasts have no hub of their own (vocabulary); Finished/Open Time goes
 to present-perfect and past-simple; the Quadrants to conditionals; the
-Harbour of Scale and the Voyage to prepositions. Still to lay out:
-Statia & Actia, Makeland & Doland, Soundings of Certainty, the Passive Ferry,
-the Backshift Current, the Bridges.
+Harbour of Scale and the Voyage to prepositions. Charts 19-24 were laid out the same
+day by `sea_layouts_5.py` (Innes: "Why is it only making 6?"; there was no
+reason): `statia-actia.png`, `make-do.png`, `certainty.png`,
+`passive-ferry.png`, `backshift-current.png`, `the-bridges.png`, with their
+own brief. They come back to `incoming/sea-charts/last-six/`. Hubs:
+present-continuous, vocabulary, modal-verbs, passive-voice, a new reported
+speech hub (or vocabulary), vocabulary. Every chart on the table is now
+laid out.
 
 ## 2026-11-10 — One top menu bar on every page, RPGs first; a Workers Build that never ran
 
