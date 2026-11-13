@@ -125,6 +125,40 @@ Screenshot gotcha: a scripted ArrowRight walk through a deck stops at the
 first gap slide, because the gap input keeps focus and swallows the key.
 Blur `document.activeElement` before each press.
 
+## 2026-11-13 — Grammar page: the chart rolls remade as a rack and a table: SHIPPED
+
+Innes: "Remake grammar rolls design". The 2026-11-10 rack (a picture wrapped
+round each rod, a narrow sheet unrolling over its neighbours) is replaced, in
+`tools/build_grammar_hub.py` (CSS under THE CHART ROOM, `_map_roll`,
+`GM_RACK_JS`):
+
+- **Rack and table, side by side (961px and wider).** Each chart is a roll of
+  cream chart paper with a band cut from its own chart, its name and level.
+  Rest the pointer on a roll and its chart unrolls large (672x448 at 1920)
+  on the table beside it, over the one before. Words and "Set sail" sit
+  under it. A click on a roll still opens the lesson. One chart is always
+  out; the first is out on load.
+- **One column (960px and under).** A tap unrolls the chart under its own
+  roll; a second tap rolls it up. The others shut at once and the script
+  holds the tapped roll under the finger (`swap()`), then scrolls the foot
+  of the sheet on screen.
+- **Pointer travel.** A pointer crossing the rack towards the open chart must
+  not flick through the rolls it passes: a roll is chosen only when the
+  pointer slows on it, and a pointer heading right has to stop first.
+- **Without the script** every chart is laid out open (`.is-live` rolls them up).
+- **Pictures.** A chart's picture is not fetched until its roll is pointed at
+  or opened (`.is-seen`). Sharp wide screens get `hero.jpg` through srcset.
+  New 180px band copies are `grammar-hub/roll-*.jpg`.
+- **Gotchas.** A hovered `transform` on the Set sail pill lifted it above the
+  stretched link, so the click landed on a span: the pill is
+  `pointer-events: none`. A chart cannot be clicked during the 0.7s it is
+  unrolling (the clip is still closed to hit-testing). The Enlarge label
+  moved top right, shown on hover (mouse) or as the mark alone (touch).
+- **Checked** with Playwright at 14 widths from 1920 to 320 (every roll
+  opened; names uncut; picture box 3:2; no sideways scroll; roll, chart and
+  link hit by `elementFromPoint`), plus mouse, keyboard, touch, reduced
+  motion and no-script runs.
+
 ## 2026-11-13 — Sea charts 13-18: layouts drawn, ChatGPT brief given
 
 The grammar page's chart table promises twelve more charts. The first six in
