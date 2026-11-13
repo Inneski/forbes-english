@@ -199,7 +199,10 @@ lane and a disc per tense) and the Backshift Current (a disc per harbour).
 The brief already says "keep each landmass its colour", so ChatGPT must be
 given THESE four drafts, not the earlier ones. The Conditional Quadrants
 followed on his "Colour them": a disc under each harbour, if-clause tense on
-the left half, result on the right (WOULD is not a tense, so it adds none). When the
+the left half, result on the right. WOULD has no Sherpa colour, so on his
+instruction it is the outline of a half-disc in future simple orange: empty
+for the second, filled present perfect for the third (would have), filled
+present simple for mixed (would be). When the
 paintings come back, check each tense's land against `sea_tense.T` before
 building, and use the same colours in the page's label layer and panels.
 
