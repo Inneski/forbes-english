@@ -125,6 +125,32 @@ Screenshot gotcha: a scripted ArrowRight walk through a deck stops at the
 first gap slide, because the gap input keeps focus and swallows the key.
 Blur `document.activeElement` before each press.
 
+## 2026-11-13 — Sea charts 13-18: layouts drawn, ChatGPT brief given
+
+The grammar page's chart table promises twelve more charts. The first six in
+GRAMMAR-MAPS-PLAN order are laid out by `lesson-template/build/sea_layouts_4.py`
+(run with `PYTHONPATH=lesson-template/build`) into `docs/sea-charts/`:
+
+- `atlas-of-the.png`
+- `finished-open-time.png`
+- `conditional-quadrants.png`
+- `harbour-of-scale.png`
+- `the-voyage.png`
+- `er-more-coasts.png`
+
+The one-paste brief was given to Innes in chat. It uses the same wording as
+the 7-12 brief, with each chart's dot coordinates pinned and white quay
+markers banned. The paintings come back to `incoming/sea-charts/next-six/`
+(created; gitignored). Then build them like charts 7-12: `sea_measure.py`, a
+`build_<name>.py` on `sea_lesson.py`, `ex_tr_<name>.py`, OVERRIDES in
+`topics.py`, MAPS in `grammar_maps.py` (delete the line from PLANNED),
+library tags, a catalogue row on Innes's yes. Hubs: the Atlas of THE and the
+-ER/MORE coasts have no hub of their own (vocabulary); Finished/Open Time goes
+to present-perfect and past-simple; the Quadrants to conditionals; the
+Harbour of Scale and the Voyage to prepositions. Still to lay out:
+Statia & Actia, Makeland & Doland, Soundings of Certainty, the Passive Ferry,
+the Backshift Current, the Bridges.
+
 ## 2026-11-10 — One top menu bar on every page, RPGs first; a Workers Build that never ran
 
 - **The bar** (Innes: "RPG should be at top", "menu bar should be constant",
