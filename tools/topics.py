@@ -317,6 +317,8 @@ OVERRIDES = {
     'forbes-english-construction-presentations.html': ['business-english'],
     'forbes-interior-design-c1.html': ['business-english'],
     'interior-design-vocabulary.html': ['business-english'],
+    'the-gargoyle-house-part-1.html': ['business-english', 'english-vocabulary'],
+    'the-gargoyle-house-part-2.html': ['business-english', 'english-vocabulary'],
     'forbes-architectural-vocabulary.html': ['business-english'],
     'forbes-architectural-vocabulary-part2.html': ['business-english'],
     'reading-the-elevation-c1.html': ['business-english'],

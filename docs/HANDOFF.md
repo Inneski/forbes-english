@@ -10,6 +10,43 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
+## 2026-11-14 — The Gargoyle House, Parts 1 and 2 (C1): interior design vocabulary 2
+
+Innes pasted 100 words and phrases (a student's list, dictionary first senses)
+and asked for "an interior design themed english class". One hundred items is
+two classes: `the-gargoyle-house-part-1.html` (The Brief, 31 slides) and
+`the-gargoyle-house-part-2.html` (The Build, 32 slides), 50 items each, one
+builder: `build_gargoyle_house.py [1|2]`, on `hs2quiz` with `style='hs1'`,
+EN/DE/ES. Folder `GargoyleHouse/`, slots `p<n>-…`, covers `pop-cover-p<n>.webp`.
+
+- **Shape per chapter (four per part):** a short scene with six words in bold
+  -> match those six -> 3-4 multiple choice -> a typed gap slide with a bank.
+  Every listed item is scored once. Explanations are English sentences, not
+  keys (the words are the lesson).
+- **Listed sense vs useful sense:** RUN DOWN, BLINKERED, REMIT, UPFRONT,
+  EXPLOIT, LOCK DOWN are taught in the sense a designer meets, with the
+  listed sense named in the explanation. OUTSTANDING is tested twice.
+- **Art: Innes chose the prompt mid-session** (a screenshot of his own job):
+  `<subject>, material and space, architectural design interiors, minimalist
+  vector illustration style, Laurent Durieux color palette --ar 16:9
+  --stylize 0 --hd`, with that job's six style images (Use -> Prompt on job
+  `9d909f00-0131-430c-9241-0f6d53055f69`, then the padlock). NOT the
+  Comeback Ride style images for this pair. 20 jobs in the earlier look
+  were already queued and are unused.
+- **Midjourney, new this session:** a page reload drops the style images
+  even when locked: Use + lock again. An in-page `setInterval` feeder that
+  submits the next prompt whenever "N queued jobs" is under 8 keeps Relax
+  full without babysitting. `--hd` in Relax ran at roughly a job every two
+  minutes. The feed scan must skip the V8 promo images (their ancestor text
+  swallowed a prompt). Picks: `incoming/hd/GargoyleHouse/<slot>.png`;
+  `incoming/gargoyle-house/import.py` moves `~/Downloads/mjgh-<slot>.png`
+  there and writes the 1600px plate.
+- **Catalogue rows: NOT in** (the insert was refused). SQL:
+  `insert into public.lessons (file, title, level, access, track, deck, video) values ('the-gargoyle-house-part-1.html', 'The Gargoyle House, Part 1: The Brief — Interior Design Vocabulary', 'C1', 'pro', 'general', true, false), ('the-gargoyle-house-part-2.html', 'The Gargoyle House, Part 2: The Build — Interior Design Vocabulary', 'C1', 'pro', 'general', true, false);`
+  Then `py tools/build_hubs.py; py tools/seo.py`. `topics.py` OVERRIDES and
+  `library.html` (LESSON_TAGS, LESSON_IMAGES) already carry both pages.
+
+---
 ## 2026-11-10 — Mistakes Review 1-3: cut-outs repaired, scene plates shown whole: SHIPPED
 
 Innes: "fix the front of this character's face and all the bad crop jobs".
