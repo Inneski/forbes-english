@@ -1,0 +1,1195 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- SEO:start -->
+<!-- SEO:end -->
+<title>Finished Time &amp; Open Time &mdash; Present Perfect or Past Simple</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#2a1e11;
+    --ink-soft:#5e472e;
+    --paper:#F0F6F8;
+    --card:#FFFFFF;
+    --accent:#175b5e;
+    --accent-dark:#104042;
+    --accent-light:#B9CECF;
+    --accent-lighter:#E8EFEF;
+    --on-accent:#FFFFFF;
+    --good:#1E7A4C;
+    --good-bg:#E5F5EC;
+    --bad:#B23A3A;
+    --bad-bg:#FBEAEA;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;}
+  h1,h2,h3{font-family:'Fraunces',serif;font-weight:600;margin:0 0 .4em;color:var(--ink);}
+  .wordmark{display:flex;align-items:center;justify-content:space-between;max-width:1000px;margin:0 auto;padding:28px 24px 0;}
+  .wordmark .brand{font-family:'Fraunces',serif;font-weight:700;font-size:20px;letter-spacing:.02em;}
+  .wordmark .brand span{color:var(--accent);}
+  .wordmark .sub{font-size:13px;color:var(--ink-soft);}
+
+  .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:18px;}
+  .chart-wrap{margin-top:24px;background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:18px 20px;overflow-x:auto;}
+  .chart-wrap h3{font-size:15px;margin-bottom:4px;}
+  .chart-wrap + .chart-wrap{margin-top:16px;}
+  .chart-note{font-size:13px;color:var(--ink-soft);margin-bottom:14px;}
+  table.conj{width:100%;border-collapse:collapse;font-size:14px;min-width:520px;}
+  table.conj th, table.conj td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--accent-light);}
+  table.conj th{font-family:'Fraunces',serif;font-weight:600;color:var(--accent-dark);font-size:13px;text-transform:uppercase;letter-spacing:.03em;}
+  table.conj td.subj{font-weight:600;}
+  table.conj tr:last-child td{border-bottom:none;}
+  main{max-width:1000px;margin:0 auto;padding:0 24px 80px;}
+  .hero{display:grid;grid-template-columns:1.1fr 1fr;gap:32px;align-items:center;padding:40px 0 56px;}
+  .hero .eyebrow{
+    display:inline-block;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--accent-dark);background:var(--accent-lighter);padding:6px 12px;border-radius:999px;margin-bottom:14px;
+  }
+  .hero h1{font-size:38px;line-height:1.12;}
+  .hero p{color:var(--ink-soft);font-size:16px;max-width:46ch;}
+  .hero-diagram{width:100%;display:block;}
+  @media (max-width:720px){.hero{grid-template-columns:1fr;}}
+
+  .trail-wrap{position:relative;padding-left:66px;}
+  .trail-wrap::before{
+    content:'';position:absolute;left:23px;top:8px;bottom:8px;width:2px;
+    background:repeating-linear-gradient(to bottom, var(--accent) 0 8px, transparent 8px 18px);
+  }
+  .camp{position:relative;margin-bottom:64px;}
+  .camp .marker{position:absolute;left:-66px;top:0;width:46px;height:46px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;}
+  .camp .marker svg{width:18px;height:18px;}
+  .camp .camp-label{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-dark);margin-bottom:6px;}
+
+  .rule-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:18px;}
+  .rule-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:18px 20px;}
+  .rule-card h3{font-size:16px;margin-bottom:8px;}
+  .rule-card p{margin:0 0 8px;font-size:14px;color:var(--ink-soft);}
+  .rule-card .ex{font-size:14px;font-style:italic;color:var(--accent-dark);border-left:2px solid var(--accent);padding-left:10px;}
+
+  .signal-groups{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px;}
+  .signal-box{background:var(--accent-lighter);border-radius:var(--radius);padding:18px 20px;}
+  .signal-box h3{font-size:15px;}
+  .signal-box ul{margin:8px 0 0;padding-left:18px;font-size:14px;color:var(--ink);}
+  .signal-box li{margin-bottom:4px;}
+  @media (max-width:600px){.signal-groups{grid-template-columns:1fr;}}
+
+  /* ── THE SEA CHART ── */
+  .diagram-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:26px 26px 22px;}
+  .diagram-intro{font-size:14px;color:var(--ink-soft);margin-bottom:18px;max-width:60ch;}
+  .diagram-stage{width:100%;background:var(--paper);border:1px solid var(--accent-light);border-radius:var(--radius);padding:12px;}
+  .diagram-stage svg{width:100%;height:auto;display:block;}
+  .dg-reveal{opacity:0;transition:opacity .2s ease;}
+  .dg-reveal.is-shown{opacity:1;}
+  .diagram-shape{cursor:pointer;transition:opacity .15s ease;}
+  .diagram-shape:hover{opacity:.86;}
+  .diagram-shape:focus{outline:none;}
+  .diagram-shape:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px;}
+  .diagram-caption{font-family:'Inter',sans-serif;font-weight:700;font-size:15px;letter-spacing:.04em;}
+  .diagram-panels{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px;}
+  .diagram-panel{border-radius:12px;padding:16px 18px;border:1px solid var(--accent-light);background:var(--accent-lighter);}
+  .diagram-panel.is-now{background:#EAF1F6;border-color:#C9DCE6;}
+  .diagram-panel h4{margin:0 0 8px;font-family:'Fraunces',serif;font-size:14px;letter-spacing:.03em;text-transform:uppercase;color:var(--accent-dark);}
+  .diagram-panel.is-now h4{color:#3E6A85;}
+  .diagram-panel ul{margin:0;padding-left:18px;font-size:14px;}
+  .diagram-panel li{margin-bottom:5px;}
+  .diagram-panel li em{font-style:normal;font-weight:600;}
+  @media (max-width:600px){.diagram-panels{grid-template-columns:1fr;}}
+
+  .route-link{display:inline-flex;align-items:center;gap:7px;text-decoration:none;font-weight:600;font-size:14px;
+    padding:9px 18px;border-radius:999px;border:1px solid var(--accent);color:var(--accent-dark);}
+  .route-link:hover{background:var(--accent-lighter);}
+  .quiz-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:24px 24px 20px;}
+  .progress-row{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--ink-soft);margin-bottom:10px;}
+  .progress-track{height:6px;background:var(--accent-lighter);border-radius:999px;overflow:hidden;margin-bottom:20px;}
+  .progress-fill{height:100%;background:var(--accent);border-radius:999px;width:0%;transition:width .3s ease;}
+  .q-prompt{font-size:17px;margin-bottom:4px;}
+  .q-hint{font-size:13px;color:var(--ink-soft);margin-bottom:16px;font-style:italic;}
+  .options{display:grid;gap:10px;}
+  .opt-btn{text-align:left;padding:12px 16px;border-radius:10px;border:1px solid var(--accent-light);background:#fff;font-family:'Inter',sans-serif;font-size:15px;color:var(--ink);cursor:pointer;}
+  .opt-btn:hover{border-color:var(--accent);}
+  .opt-btn.correct{background:var(--good-bg);border-color:var(--good);color:var(--good);font-weight:600;}
+  .opt-btn.wrong{background:var(--bad-bg);border-color:var(--bad);color:var(--bad);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:16px;padding:14px 16px;border-radius:10px;background:var(--accent-lighter);font-size:14px;display:none;}
+  .feedback.show{display:block;}
+  .quiz-footer{display:flex;justify-content:flex-end;margin-top:20px;}
+  .next-btn{background:var(--accent);color:var(--on-accent);border:none;padding:11px 22px;border-radius:999px;font-family:'Inter',sans-serif;font-weight:600;font-size:14px;cursor:pointer;}
+  .next-btn:disabled{background:var(--accent-light);cursor:not-allowed;}
+
+  #results{display:none;text-align:center;padding:12px 0 8px;}
+  #results .score{font-family:'Fraunces',serif;font-size:52px;color:var(--accent);margin:8px 0;}
+  #results p{color:var(--ink-soft);}
+  .retry-btn{margin-top:12px;background:transparent;border:1px solid var(--accent);color:var(--accent-dark);padding:10px 20px;border-radius:999px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;}
+  .route-nav{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:22px;padding-top:18px;border-top:1px solid var(--accent-light);}
+  .route-nav a{display:inline-flex;align-items:center;gap:7px;text-decoration:none;font-family:'Inter',sans-serif;font-weight:600;font-size:14px;padding:10px 20px;border-radius:999px;}
+  .route-nav a.next-camp{background:var(--accent);color:var(--on-accent);}
+  .route-nav a.base-camp{background:transparent;border:1px solid var(--ink-soft);color:var(--ink-soft);}
+  .route-nav a:hover{opacity:0.88;}
+
+    /* ── Persistent way back. Pinned, so it is reachable from anywhere on
+       the page rather than only after scrolling to the bottom. ── */
+    /* Clear a band at the top of the page for the pinned link so it never
+       lands on the wordmark. */
+    body{ padding-top:46px; }
+    .up-link{
+      position:fixed; top:16px; left:16px; z-index:60;
+      display:inline-flex; align-items:center; gap:8px;
+      padding:9px 16px 9px 13px; border-radius:999px;
+      background:var(--card,#fff); color:var(--accent-dark,#333);
+      border:1.5px solid var(--accent-light,rgba(0,0,0,.18));
+      font:600 14px/1 'Inter',system-ui,sans-serif; letter-spacing:.01em;
+      text-decoration:none; box-shadow:0 2px 10px rgba(0,0,0,.10);
+      transition:background .18s ease, color .18s ease, transform .18s ease;
+    }
+    .up-link:hover{ background:var(--accent,#333); color:#fff; transform:translateX(-2px); }
+    .up-link .arw{ font-size:15px; line-height:1; }
+    @media print{ .up-link{ display:none; } }
+    @media (max-width:640px){
+      .up-link{ top:10px; left:10px; padding:7px 13px 7px 10px; font-size:13px; }
+    }
+  /* ── example translations ── */
+  .ex[data-tr]{cursor:pointer;}
+  .ex[data-tr]:hover{filter:brightness(1.06);}
+  .ex-tr{display:block;margin-top:8px;padding-top:7px;border-top:1px dashed var(--accent-light);
+         font-style:normal;font-size:.95em;opacity:.92;}
+  .ex-tr[dir="rtl"]{text-align:right;}
+  .tr-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 26px;
+          font-family:'Inter',sans-serif;font-size:12.5px;color:var(--ink-soft);}
+  .tr-bar .tr-label{letter-spacing:.06em;text-transform:uppercase;font-weight:700;font-size:11px;}
+  .tr-bar button{font:inherit;font-weight:600;border:1px solid var(--accent-light);
+                 background:var(--card);color:var(--ink-soft);padding:5px 11px;border-radius:999px;
+                 cursor:pointer;transition:background .12s ease,color .12s ease;}
+  .tr-bar button:hover{color:var(--ink);}
+  .tr-bar button.on{background:var(--accent);color:var(--on-accent);border-color:var(--accent);}
+  /* ── the hero map, click to expand ── */
+  .hero-diagram-btn{all:unset;display:block;width:100%;cursor:zoom-in;position:relative;
+                     border-radius:14px;overflow:hidden;}
+  .hero-diagram-btn:hover .hero-diagram{filter:brightness(1.03);}
+  .hero-diagram-btn:focus-visible{outline:3px solid var(--accent);outline-offset:3px;}
+  .hero-diagram-btn::after{content:"Click to expand";position:absolute;right:12px;bottom:12px;
+                            background:var(--accent);color:var(--on-accent);font-family:'Inter',sans-serif;
+                            font-size:11.5px;font-weight:600;padding:5px 11px;border-radius:999px;
+                            opacity:0;transition:opacity .15s ease;pointer-events:none;}
+  .hero-diagram-btn:hover::after,.hero-diagram-btn:focus-visible::after{opacity:.92;}
+  .img-lightbox{--scrim:color-mix(in srgb,var(--ink) 90%,transparent);
+                display:none;position:fixed;inset:0;background:var(--scrim);
+                align-items:center;justify-content:center;padding:28px;z-index:80;}
+  .img-lightbox.is-open{display:flex;}
+  .img-lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;}
+  .lightbox-close{position:absolute;top:18px;right:22px;background:transparent;
+                   color:var(--card);border:1px solid var(--card);width:40px;height:40px;
+                   border-radius:50%;font-size:24px;line-height:1;cursor:pointer;
+                   display:flex;align-items:center;justify-content:center;}
+  .lightbox-close:hover{background:var(--accent);}
+  /* ── the header, in the sea-chart's own display face (the first chart's font file) ── */
+  @font-face{font-family:'Faktum';src:url('sailing-the-seas-of-grammar/fonts/Faktum-Bold.woff2') format('woff2');
+             font-weight:700;font-style:normal;font-display:swap;}
+  .wordmark .brand,.hero h1{font-family:'Faktum','Fraunces',serif;font-weight:700;}
+  .q-hint em,.rule-card .ex em{font-style:normal;font-weight:600;}
+/* Waterlining: each side of the page is a coast; waterlines run out from
+   it across the page, each smoother, wider-spaced and fainter than the last,
+   over a faint shallow-water tint by the shore. Each coast owns half the page,
+   so the two sets never cross; behind the reading column the lines carry on
+   at 70% strength. Cards and the hero image are opaque and sit above;
+   the sky (clouds and gulls, z-index -1) passes over the water. */
+@supports ((mask-image:none) or (-webkit-mask-image:none)) and (color:color-mix(in srgb,red 50%,transparent)){
+body{position:relative;}
+body::before,body::after{
+  content:"";position:absolute;top:0;bottom:0;
+  z-index:-2;pointer-events:none;
+  background:linear-gradient(var(--accent) calc(100% - 2px),transparent 0);opacity:.22;
+  -webkit-mask-repeat:no-repeat,repeat-y;mask-repeat:no-repeat,repeat-y;
+  -webkit-mask-size:100% 100%,980px 1200px;mask-size:100% 100%,980px 1200px;
+  -webkit-mask-composite:source-in;mask-composite:intersect;
+}
+body::before{left:0;right:50%;
+  -webkit-mask-image:linear-gradient(to right,var(--ink) max(8px,calc(100% - 574px)),color-mix(in srgb,var(--ink) 70%,transparent) max(24px,calc(100% - 504px))),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='980' height='1200' fill='none' stroke='currentColor' stroke-width='1.05'%3E%3Cdefs%3E%3Cpath id='v' d='M49,-24c0,8,0,16-1,24s-2,16-2,24s1,16,1,24s-3,16-4,24s1,16,2,24s3,16,4,24s-3,16-3,24s0,16,1,24s4,16,6,24s5,16,6,24s-1,16-2,24s-3,16-5,24s-4,16-7,24s-6,16-7,24s3,16,4,24s-1,16,0,24s0,16,1,24s4,16,6,24s4,16,4,24s-1,16-2,24s-5,16-7,24s0,16-1,24s-1,16,0,24s5,16,6,24s4,16,4,24s-3,16-3,24s0,16,1,24s1,16,1,24s-1,16-2,24s-4,16-6,24s-1,16-2,24s-1,16-3,24s-5,16-6,24s-2,16-4,24s-7,16-9,24s-3,16-2,24s6,16,8,24s5,16,7,24s3,16,4,24s1,16,2,24s2,16,2,24s-2,16-3,24s0,16,0,24s1,16,1,24s-1,16,2,24s8,16,11,24s4,16,4,24s0,16-1,24s-4,16-5,24s0,16-1,24s0,16-1,24s-2,16-2,24'/%3E%3Cpath id='w' d='M60,-24c0,8,0,16-1,24s-2,16-2,24s1,16,1,24s-3,16-3,24s1,16,2,24s2,16,2,24s-2,16-2,24s0,16,1,24s5,16,7,24s4,16,5,24s-1,16-2,24s-3,16-5,24s-4,16-6,24s-7,16-8,24s3,16,4,24s-1,16,0,24s0,16,2,24s4,16,5,24s4,16,4,24s-1,16-2,24s-5,16-6,24s-1,16-2,24s-1,16,0,24s5,16,7,24s3,16,3,24s-3,16-3,24s0,16,1,24s1,16,1,24s-1,16-2,24s-4,16-5,24s-2,16-3,24s-1,16-3,24s-4,16-6,24s-1,16-3,24s-7,16-9,24s-3,16-2,24s6,16,8,24s5,16,6,24s3,16,4,24s1,16,2,24s2,16,2,24s-2,16-3,24s0,16,0,24s0,16,1,24s0,16,3,24s8,16,10,24s4,16,4,24s0,16-1,24s-4,16-4,24s-1,16-2,24s0,16-1,24s-2,16-2,24'/%3E%3Cpath id='x' d='M72,-30c0,10,0,20-1,30s-1,20-2,30s0,20,0,30s-2,20-1,30s3,20,3,30s-2,20-2,30s3,20,5,30s6,20,7,30s0,20-1,30s-3,20-6,30s-7,20-9,30s-1,20-1,30s0,20,1,30s2,20,3,30s5,20,7,30s1,20,0,30s-5,20-7,30s-2,20-2,30s2,20,4,30s5,20,6,30s-2,20-3,30s1,20,1,30s1,20,0,30s-3,20-5,30s-3,20-4,30s-2,20-4,30s-4,20-7,30s-4,20-6,30s-6,20-6,30s8,20,10,30s5,20,7,30s1,20,2,30s3,20,3,30s-3,20-3,30s1,20,1,30s-1,20,2,30s9,20,12,30s3,20,3,30s-2,20-3,30s-3,20-4,30s0,20-1,30s-1,20-2,30'/%3E%3C/defs%3E%3Cuse href='%23v' stroke-width='20' stroke-opacity='.1'/%3E%3Cuse href='%23w' stroke-width='40' stroke-opacity='.09'/%3E%3Cuse href='%23x' stroke-width='62' stroke-opacity='.07'/%3E%3Cpath d='M39.5,-15c-.1,5-.6,10-1.2,15s-1.7,10-2,15s-.2,10-.1,15s1.1,10,1,15s-.9,10-1.6,15s-2.4,10-2.7,15s.1,10,.8,15s2.6,10,3.4,15s1.5,10,1.5,15s-1.2,10-1.7,15s-1.1,10-1.2,15s.4,10,1,15s1.5,10,2.7,15s2.8,10,4.2,15s3.3,10,4.2,15s1.3,10,1.1,15s-1.7,10-2.6,15s-2.1,10-3,15s-1.5,10-2.8,15s-3,10-4.8,15s-4.5,10-5.8,15s-2,10-1.9,15s1.7,10,2.4,15s1.7,10,1.9,15s-.6,10-.7,15s-.4,10,.1,15s1.6,10,2.7,15s2.6,10,3.7,15s2.3,10,3.2,15s1.7,10,1.7,15s-.3,10-1.2,15s-2.9,10-4.2,15s-2.7,10-3.4,15s-.6,10-.7,15s-.1,10-.3,15s-.9,10-.6,15s.8,10,2,15s3.9,10,5.3,15s3.1,10,3.4,15s-.7,10-1.3,15s-2,10-2.3,15s-.1,10,.1,15s1.1,10,1.4,15s.4,10,.4,15s-.2,10-.6,15s-1.1,10-2,15s-2.5,10-3.6,15s-2.4,10-3,15s-.4,10-.7,15s-.3,10-1,15s-2.4,10-3.7,15s-2.8,10-3.8,15s-1.1,10-1.9,15s-1.5,10-3.1,15s-4.3,10-6.2,15s-4.3,10-5,15s-.2,10,.7,15s3.3,10,5,15s3.6,10,5.2,15s3,10,4.2,15s2.4,10,3.2,15s1.2,10,1.6,15s.4,10,.9,15s1.4,10,1.9,15s1.4,10,1.4,15s-.8,10-1.4,15s-1.9,10-2.2,15s.2,10,.5,15s1.2,10,1.3,15s-.5,10-.6,15s-.8,10,0,15s2.7,10,4.8,15s5.3,10,7.4,15s3.8,10,4.7,15s.8,10,.7,15s-.8,10-1.5,15s-1.6,10-2.5,15s-2,10-2.5,15s-.7,10-.7,15s.5,10,.4,15s-.6,10-1.2,15s-1.7,10-2,15' stroke-width='1.25'/%3E%3Cuse href='%23v' stroke-width='1.1' stroke-opacity='.86'/%3E%3Cuse href='%23w' stroke-width='1.1' stroke-opacity='.78'/%3E%3Cuse href='%23x' stroke-width='1.1' stroke-opacity='.71'/%3E%3Cpath d='M88,-48c-2,16-2,32-3,48s-1,32-2,48s-1,32-1,48s0,32,1,48s6,32,8,48s4,32,2,48s-7,32-9,48s-6,32-6,48s1,32,3,48s8,32,8,48s-5,32-7,48s-2,32-1,48s7,32,8,48s-1,32-2,48s1,32-1,48s-5,32-8,48s-4,32-7,48s-10,32-11,48s2,32,4,48s7,32,9,48s4,32,4,48s-3,32-2,48s3,32,6,48s10,32,12,48s-4,32-5,48s-2,32-3,48s-1,32-2,48' stroke-opacity='.65'/%3E%3Cpath d='M103,-48c-1,16-2,32-3,48s-2,32-2,48s0,32,0,48s-1,32,0,48s7,32,8,48s4,32,2,48s-6,32-9,48s-6,32-6,48s2,32,3,48s8,32,8,48s-5,32-6,48s-2,32-1,48s6,32,7,48s-1,32-2,48s1,32-1,48s-5,32-7,48s-5,32-8,48s-9,32-10,48s2,32,4,48s6,32,8,48s4,32,4,48s-3,32-2,48s4,32,7,48s9,32,10,48s-3,32-4,48s-2,32-3,48s-2,32-2,48' stroke-opacity='.59'/%3E%3Cpath d='M122,-60c-1,20-4,40-5,60s-3,40-3,60s1,40,2,60s3,40,5,60s6,40,4,60s-9,40-11,60s-4,40-3,60s8,40,9,60s-4,40-5,60s1,40,2,60s2,40,3,60s1,40-1,60s-5,40-8,60s-7,40-10,60s-9,40-8,60s8,40,11,60s4,40,5,60s-3,40-1,60s11,40,14,60s0,40,0,60s-4,40-5,60s-3,40-3,60' stroke-opacity='.54'/%3E%3Cpath d='M141,-60c-1,20-4,40-5,60s-2,40-2,60s0,40,1,60s4,40,5,60s5,40,4,60s-8,40-11,60s-3,40-2,60s7,40,8,60s-4,40-4,60s1,40,1,60s3,40,3,60s0,40-1,60s-5,40-8,60s-7,40-9,60s-8,40-7,60s7,40,9,60s4,40,5,60s-2,40,0,60s10,40,13,60s0,40,0,60s-4,40-5,60s-2,40-2,60' stroke-opacity='.5'/%3E%3Cpath d='M162,-60c0,20-3,40-5,60s-1,40-2,60s0,40,1,60s5,40,6,60s5,40,3,60s-7,40-9,60s-4,40-3,60s6,40,7,60s-3,40-3,60s0,40,1,60s3,40,3,60s0,40-2,60s-4,40-7,60s-7,40-9,60s-7,40-6,60s6,40,8,60s3,40,4,60s-1,40,2,60s9,40,11,60s1,40,0,60s-3,40-5,60s-1,40-2,60' stroke-opacity='.5'/%3E%3Cpath d='M186,-60c0,20-3,40-4,60s-2,40-2,60s0,40,1,60s4,40,6,60s3,40,2,60s-6,40-8,60s-4,40-3,60s5,40,6,60s-2,40-2,60s0,40,0,60s3,40,3,60s-1,40-2,60s-4,40-6,60s-8,40-10,60s-5,40-5,60s5,40,7,60s2,40,4,60s1,40,3,60s8,40,10,60s1,40,0,60s-3,40-4,60s-2,40-2,60' stroke-opacity='.5'/%3E%3Cpath d='M212,-60c0,20-3,40-4,60s-2,40-2,60s0,40,1,60s5,40,6,60s3,40,2,60s-6,40-8,60s-3,40-2,60s4,40,4,60s0,40-1,60s0,40,1,60s2,40,2,60s-1,40-2,60s-4,40-6,60s-8,40-10,60s-4,40-4,60s4,40,6,60s2,40,3,60s3,40,5,60s7,40,8,60s2,40,1,60s-3,40-4,60s-2,40-2,60' stroke-opacity='.5'/%3E%3Cpath d='M240,-60c0,20-3,40-4,60s-1,40-2,60s1,40,2,60s4,40,5,60s2,40,1,60s-4,40-6,60s-2,40-2,60s2,40,3,60s0,40,0,60s0,40,0,60s2,40,2,60s-1,40-2,60s-4,40-6,60s-7,40-9,60s-3,40-3,60s2,40,4,60s2,40,4,60s3,40,5,60s6,40,7,60s2,40,1,60s-3,40-4,60s-1,40-2,60' stroke-opacity='.5'/%3E%3Cpath d='M270,-60c0,20-2,40-3,60s-2,40-2,60s1,40,2,60s3,40,4,60s2,40,1,60s-4,40-5,60s-2,40-2,60s1,40,1,60s1,40,2,60s-1,40,0,60s1,40,1,60s-1,40-3,60s-3,40-5,60s-6,40-8,60s-3,40-3,60s1,40,3,60s2,40,4,60s4,40,6,60s5,40,6,60s1,40,1,60s-2,40-3,60s-2,40-2,60' stroke-opacity='.5'/%3E%3Cpath d='M302,-60c-1,20-2,40-3,60s-2,40-2,60s1,40,2,60s3,40,4,60s1,40,0,60s-2,40-3,60s-2,40-2,60s0,40,0,60s2,40,2,60s0,40,0,60s1,40,0,60s0,40-2,60s-3,40-5,60s-5,40-7,60s-3,40-3,60s1,40,2,60s3,40,5,60s4,40,6,60s3,40,4,60s2,40,2,60s-2,40-3,60s-2,40-2,60' stroke-opacity='.5'/%3E%3Cpath d='M335,-60c0,20-1,40-2,60s-1,40-1,60s1,40,2,60s2,40,3,60s0,40,0,60s-2,40-2,60s-2,40-2,60s-1,40-1,60s2,40,2,60s0,40,0,60s0,40,0,60s-1,40-2,60s-3,40-5,60s-5,40-6,60s-2,40-3,60s0,40,1,60s3,40,5,60s5,40,6,60s3,40,4,60s2,40,1,60s-1,40-2,60s-1,40-1,60' stroke-opacity='.5'/%3E%3Cpath d='M371,-60c0,20-1,40-1,60s-2,40-1,60s1,40,1,60s2,40,3,60s-1,40-1,60s0,40-1,60s-1,40-1,60s-2,40-2,60s2,40,2,60s1,40,1,60s-1,40-1,60s-1,40-2,60s-4,40-5,60s-4,40-5,60s-2,40-2,60s-1,40,0,60s3,40,5,60s4,40,5,60s3,40,4,60s1,40,1,60s-1,40-1,60s-2,40-1,60' stroke-opacity='.5'/%3E%3Cpath d='M409,-60c0,20-1,40-1,60s-1,40-1,60s1,40,2,60s1,40,1,60s0,40,0,60s0,40,0,60s-1,40-1,60s-2,40-2,60s1,40,1,60s1,40,1,60s-1,40-1,60s-1,40-2,60s-4,40-5,60s-3,40-4,60s-2,40-2,60s-1,40,0,60s3,40,4,60s4,40,6,60s2,40,2,60s2,40,2,60s-1,40-1,60s-1,40-1,60' stroke-opacity='.5'/%3E%3Cpath d='M448,-60c1,20,0,40,0,60s0,40,0,60s1,40,1,60s1,40,1,60s0,40,0,60s0,40,0,60s0,40-1,60s-1,40-1,60s0,40,0,60s1,40,1,60s-1,40-1,60s-2,40-3,60s-3,40-4,60s-2,40-3,60s-2,40-2,60s-1,40,0,60s2,40,4,60s3,40,5,60s1,40,2,60s1,40,1,60s0,40,0,60s0,40,0,60' stroke-opacity='.5'/%3E%3Cpath d='M488,-60c0,20,0,40,1,60s0,40,0,60s0,40,0,60s1,40,1,60s0,40,0,60s1,40,1,60s-1,40-2,60s0,40-1,60s0,40,0,60s1,40,1,60s-1,40-1,60s-2,40-3,60s-3,40-4,60s-2,40-2,60s-2,40-2,60s-1,40,0,60s2,40,3,60s3,40,4,60s2,40,3,60s1,40,1,60s0,40,1,60s0,40,0,60' stroke-opacity='.5'/%3E%3Cpath d='M528,-60c0,20,1,40,1,60s0,40,1,60s0,40,0,60s-1,40-1,60s1,40,1,60s1,40,1,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s1,40,1,60s-1,40-2,60s-1,40-2,60s-3,40-3,60s-2,40-3,60s-1,40-1,60s0,40,0,60s2,40,3,60s2,40,3,60s2,40,2,60s1,40,2,60s1,40,1,60s0,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M567,-60c1,20,2,40,2,60s1,40,1,60s0,40,0,60s-1,40-1,60s1,40,1,60s1,40,1,60s-1,40-1,60s0,40-1,60s0,40-1,60s1,40,0,60s0,40-1,60s-2,40-3,60s-1,40-2,60s-2,40-2,60s-1,40-1,60s0,40,0,60s1,40,2,60s2,40,3,60s2,40,2,60s1,40,1,60s2,40,2,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M607,-60c1,20,2,40,2,60s1,40,1,60s0,40,0,60s0,40-1,60s1,40,1,60s0,40,1,60s0,40-1,60s0,40,0,60s-1,40-1,60s-1,40-1,60s0,40-1,60s-2,40-3,60s-1,40-2,60s-1,40-2,60s0,40,0,60s0,40,0,60s1,40,2,60s1,40,2,60s1,40,2,60s1,40,1,60s2,40,2,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M647,-60c1,20,2,40,3,60s1,40,1,60s0,40-1,60s0,40,0,60s0,40,0,60s0,40,0,60s1,40,1,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s-2,40-3,60s-1,40-2,60s-1,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s1,40,2,60s1,40,1,60s2,40,2,60s2,40,3,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M687,-60c1,20,2,40,3,60s1,40,1,60s0,40,0,60s-1,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s0,40-1,60s0,40-1,60s-1,40-1,60s-1,40-2,60s-1,40-2,60s-1,40-2,60s0,40-1,60s0,40,0,60s1,40,1,60s0,40,1,60s0,40,1,60s1,40,1,60s2,40,2,60s2,40,3,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M727,-60c1,20,2,40,3,60s1,40,1,60s0,40,0,60s-1,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s0,40-1,60s0,40-1,60s-1,40-1,60s-1,40-2,60s-1,40-2,60s-1,40-1,60s-1,40-1,60s0,40,0,60s1,40,1,60s0,40,0,60s0,40,1,60s0,40,1,60s2,40,2,60s2,40,3,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M768,-60c0,20,1,40,2,60s1,40,1,60s0,40,0,60s-1,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s0,40,0,60s-1,40-1,60s-2,40-2,60s-2,40-2,60s-1,40-2,60s-1,40-1,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,1,60s-1,40,0,60s0,40,1,60s2,40,3,60s1,40,2,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M808,-60c0,20,1,40,2,60s1,40,1,60s0,40,0,60s0,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s0,40,0,60s-1,40-1,60s-2,40-2,60s-2,40-2,60s-1,40-2,60s-1,40-1,60s0,40,0,60s0,40,1,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,1,60s2,40,3,60s1,40,2,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M848,-60c0,20,1,40,2,60s1,40,1,60s0,40,0,60s0,40,0,60s-1,40-1,60s0,40,0,60s1,40,1,60s0,40,0,60s-1,40-1,60s-2,40-2,60s-2,40-2,60s-1,40-2,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,0,60s1,40,1,60s2,40,3,60s1,40,2,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M888,-60c0,20,1,40,2,60s1,40,1,60s0,40,0,60s0,40,0,60s-1,40-1,60s0,40,0,60s1,40,1,60s0,40,0,60s-1,40-1,60s-2,40-2,60s-2,40-2,60s-1,40-2,60s0,40,0,60s0,40,0,60s1,40,1,60s0,40,0,60s0,40-1,60s0,40,0,60s1,40,1,60s2,40,3,60s1,40,2,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M927,-60c1,20,2,40,3,60s0,40,1,60s0,40,0,60s0,40,0,60s0,40-1,60s0,40,0,60s0,40,1,60s0,40,0,60s-1,40-1,60s-2,40-2,60s-2,40-2,60s-1,40-1,60s-1,40-1,60s1,40,1,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,1,60s1,40,1,60s2,40,3,60s0,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M968,-60c0,20,1,40,1,60s1,40,1,60s1,40,1,60s0,40,0,60s0,40,0,60s-1,40-1,60s0,40,0,60s1,40,1,60s-1,40-1,60s-2,40-2,60s-2,40-2,60s-1,40-1,60s0,40,0,60s0,40,0,60s0,40,0,60s1,40,0,60s0,40,0,60s0,40,0,60s1,40,1,60s1,40,2,60s1,40,1,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M1008,-60c0,20,1,40,1,60s1,40,1,60s1,40,1,60s0,40,0,60s0,40,0,60s0,40-1,60s0,40,0,60s1,40,0,60s0,40-1,60s-1,40-1,60s-2,40-2,60s-1,40-1,60s0,40,0,60s0,40,1,60s0,40,0,60s0,40,0,60s-1,40-1,60s0,40,1,60s0,40,0,60s1,40,2,60s1,40,1,60s1,40,1,60' stroke-opacity='.5'/%3E%3C/svg%3E");
+  mask-image:linear-gradient(to right,var(--ink) max(8px,calc(100% - 574px)),color-mix(in srgb,var(--ink) 70%,transparent) max(24px,calc(100% - 504px))),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='980' height='1200' fill='none' stroke='currentColor' stroke-width='1.05'%3E%3Cdefs%3E%3Cpath id='v' d='M49,-24c0,8,0,16-1,24s-2,16-2,24s1,16,1,24s-3,16-4,24s1,16,2,24s3,16,4,24s-3,16-3,24s0,16,1,24s4,16,6,24s5,16,6,24s-1,16-2,24s-3,16-5,24s-4,16-7,24s-6,16-7,24s3,16,4,24s-1,16,0,24s0,16,1,24s4,16,6,24s4,16,4,24s-1,16-2,24s-5,16-7,24s0,16-1,24s-1,16,0,24s5,16,6,24s4,16,4,24s-3,16-3,24s0,16,1,24s1,16,1,24s-1,16-2,24s-4,16-6,24s-1,16-2,24s-1,16-3,24s-5,16-6,24s-2,16-4,24s-7,16-9,24s-3,16-2,24s6,16,8,24s5,16,7,24s3,16,4,24s1,16,2,24s2,16,2,24s-2,16-3,24s0,16,0,24s1,16,1,24s-1,16,2,24s8,16,11,24s4,16,4,24s0,16-1,24s-4,16-5,24s0,16-1,24s0,16-1,24s-2,16-2,24'/%3E%3Cpath id='w' d='M60,-24c0,8,0,16-1,24s-2,16-2,24s1,16,1,24s-3,16-3,24s1,16,2,24s2,16,2,24s-2,16-2,24s0,16,1,24s5,16,7,24s4,16,5,24s-1,16-2,24s-3,16-5,24s-4,16-6,24s-7,16-8,24s3,16,4,24s-1,16,0,24s0,16,2,24s4,16,5,24s4,16,4,24s-1,16-2,24s-5,16-6,24s-1,16-2,24s-1,16,0,24s5,16,7,24s3,16,3,24s-3,16-3,24s0,16,1,24s1,16,1,24s-1,16-2,24s-4,16-5,24s-2,16-3,24s-1,16-3,24s-4,16-6,24s-1,16-3,24s-7,16-9,24s-3,16-2,24s6,16,8,24s5,16,6,24s3,16,4,24s1,16,2,24s2,16,2,24s-2,16-3,24s0,16,0,24s0,16,1,24s0,16,3,24s8,16,10,24s4,16,4,24s0,16-1,24s-4,16-4,24s-1,16-2,24s0,16-1,24s-2,16-2,24'/%3E%3Cpath id='x' d='M72,-30c0,10,0,20-1,30s-1,20-2,30s0,20,0,30s-2,20-1,30s3,20,3,30s-2,20-2,30s3,20,5,30s6,20,7,30s0,20-1,30s-3,20-6,30s-7,20-9,30s-1,20-1,30s0,20,1,30s2,20,3,30s5,20,7,30s1,20,0,30s-5,20-7,30s-2,20-2,30s2,20,4,30s5,20,6,30s-2,20-3,30s1,20,1,30s1,20,0,30s-3,20-5,30s-3,20-4,30s-2,20-4,30s-4,20-7,30s-4,20-6,30s-6,20-6,30s8,20,10,30s5,20,7,30s1,20,2,30s3,20,3,30s-3,20-3,30s1,20,1,30s-1,20,2,30s9,20,12,30s3,20,3,30s-2,20-3,30s-3,20-4,30s0,20-1,30s-1,20-2,30'/%3E%3C/defs%3E%3Cuse href='%23v' stroke-width='20' stroke-opacity='.1'/%3E%3Cuse href='%23w' stroke-width='40' stroke-opacity='.09'/%3E%3Cuse href='%23x' stroke-width='62' stroke-opacity='.07'/%3E%3Cpath d='M39.5,-15c-.1,5-.6,10-1.2,15s-1.7,10-2,15s-.2,10-.1,15s1.1,10,1,15s-.9,10-1.6,15s-2.4,10-2.7,15s.1,10,.8,15s2.6,10,3.4,15s1.5,10,1.5,15s-1.2,10-1.7,15s-1.1,10-1.2,15s.4,10,1,15s1.5,10,2.7,15s2.8,10,4.2,15s3.3,10,4.2,15s1.3,10,1.1,15s-1.7,10-2.6,15s-2.1,10-3,15s-1.5,10-2.8,15s-3,10-4.8,15s-4.5,10-5.8,15s-2,10-1.9,15s1.7,10,2.4,15s1.7,10,1.9,15s-.6,10-.7,15s-.4,10,.1,15s1.6,10,2.7,15s2.6,10,3.7,15s2.3,10,3.2,15s1.7,10,1.7,15s-.3,10-1.2,15s-2.9,10-4.2,15s-2.7,10-3.4,15s-.6,10-.7,15s-.1,10-.3,15s-.9,10-.6,15s.8,10,2,15s3.9,10,5.3,15s3.1,10,3.4,15s-.7,10-1.3,15s-2,10-2.3,15s-.1,10,.1,15s1.1,10,1.4,15s.4,10,.4,15s-.2,10-.6,15s-1.1,10-2,15s-2.5,10-3.6,15s-2.4,10-3,15s-.4,10-.7,15s-.3,10-1,15s-2.4,10-3.7,15s-2.8,10-3.8,15s-1.1,10-1.9,15s-1.5,10-3.1,15s-4.3,10-6.2,15s-4.3,10-5,15s-.2,10,.7,15s3.3,10,5,15s3.6,10,5.2,15s3,10,4.2,15s2.4,10,3.2,15s1.2,10,1.6,15s.4,10,.9,15s1.4,10,1.9,15s1.4,10,1.4,15s-.8,10-1.4,15s-1.9,10-2.2,15s.2,10,.5,15s1.2,10,1.3,15s-.5,10-.6,15s-.8,10,0,15s2.7,10,4.8,15s5.3,10,7.4,15s3.8,10,4.7,15s.8,10,.7,15s-.8,10-1.5,15s-1.6,10-2.5,15s-2,10-2.5,15s-.7,10-.7,15s.5,10,.4,15s-.6,10-1.2,15s-1.7,10-2,15' stroke-width='1.25'/%3E%3Cuse href='%23v' stroke-width='1.1' stroke-opacity='.86'/%3E%3Cuse href='%23w' stroke-width='1.1' stroke-opacity='.78'/%3E%3Cuse href='%23x' stroke-width='1.1' stroke-opacity='.71'/%3E%3Cpath d='M88,-48c-2,16-2,32-3,48s-1,32-2,48s-1,32-1,48s0,32,1,48s6,32,8,48s4,32,2,48s-7,32-9,48s-6,32-6,48s1,32,3,48s8,32,8,48s-5,32-7,48s-2,32-1,48s7,32,8,48s-1,32-2,48s1,32-1,48s-5,32-8,48s-4,32-7,48s-10,32-11,48s2,32,4,48s7,32,9,48s4,32,4,48s-3,32-2,48s3,32,6,48s10,32,12,48s-4,32-5,48s-2,32-3,48s-1,32-2,48' stroke-opacity='.65'/%3E%3Cpath d='M103,-48c-1,16-2,32-3,48s-2,32-2,48s0,32,0,48s-1,32,0,48s7,32,8,48s4,32,2,48s-6,32-9,48s-6,32-6,48s2,32,3,48s8,32,8,48s-5,32-6,48s-2,32-1,48s6,32,7,48s-1,32-2,48s1,32-1,48s-5,32-7,48s-5,32-8,48s-9,32-10,48s2,32,4,48s6,32,8,48s4,32,4,48s-3,32-2,48s4,32,7,48s9,32,10,48s-3,32-4,48s-2,32-3,48s-2,32-2,48' stroke-opacity='.59'/%3E%3Cpath d='M122,-60c-1,20-4,40-5,60s-3,40-3,60s1,40,2,60s3,40,5,60s6,40,4,60s-9,40-11,60s-4,40-3,60s8,40,9,60s-4,40-5,60s1,40,2,60s2,40,3,60s1,40-1,60s-5,40-8,60s-7,40-10,60s-9,40-8,60s8,40,11,60s4,40,5,60s-3,40-1,60s11,40,14,60s0,40,0,60s-4,40-5,60s-3,40-3,60' stroke-opacity='.54'/%3E%3Cpath d='M141,-60c-1,20-4,40-5,60s-2,40-2,60s0,40,1,60s4,40,5,60s5,40,4,60s-8,40-11,60s-3,40-2,60s7,40,8,60s-4,40-4,60s1,40,1,60s3,40,3,60s0,40-1,60s-5,40-8,60s-7,40-9,60s-8,40-7,60s7,40,9,60s4,40,5,60s-2,40,0,60s10,40,13,60s0,40,0,60s-4,40-5,60s-2,40-2,60' stroke-opacity='.5'/%3E%3Cpath d='M162,-60c0,20-3,40-5,60s-1,40-2,60s0,40,1,60s5,40,6,60s5,40,3,60s-7,40-9,60s-4,40-3,60s6,40,7,60s-3,40-3,60s0,40,1,60s3,40,3,60s0,40-2,60s-4,40-7,60s-7,40-9,60s-7,40-6,60s6,40,8,60s3,40,4,60s-1,40,2,60s9,40,11,60s1,40,0,60s-3,40-5,60s-1,40-2,60' stroke-opacity='.5'/%3E%3Cpath d='M186,-60c0,20-3,40-4,60s-2,40-2,60s0,40,1,60s4,40,6,60s3,40,2,60s-6,40-8,60s-4,40-3,60s5,40,6,60s-2,40-2,60s0,40,0,60s3,40,3,60s-1,40-2,60s-4,40-6,60s-8,40-10,60s-5,40-5,60s5,40,7,60s2,40,4,60s1,40,3,60s8,40,10,60s1,40,0,60s-3,40-4,60s-2,40-2,60' stroke-opacity='.5'/%3E%3Cpath d='M212,-60c0,20-3,40-4,60s-2,40-2,60s0,40,1,60s5,40,6,60s3,40,2,60s-6,40-8,60s-3,40-2,60s4,40,4,60s0,40-1,60s0,40,1,60s2,40,2,60s-1,40-2,60s-4,40-6,60s-8,40-10,60s-4,40-4,60s4,40,6,60s2,40,3,60s3,40,5,60s7,40,8,60s2,40,1,60s-3,40-4,60s-2,40-2,60' stroke-opacity='.5'/%3E%3Cpath d='M240,-60c0,20-3,40-4,60s-1,40-2,60s1,40,2,60s4,40,5,60s2,40,1,60s-4,40-6,60s-2,40-2,60s2,40,3,60s0,40,0,60s0,40,0,60s2,40,2,60s-1,40-2,60s-4,40-6,60s-7,40-9,60s-3,40-3,60s2,40,4,60s2,40,4,60s3,40,5,60s6,40,7,60s2,40,1,60s-3,40-4,60s-1,40-2,60' stroke-opacity='.5'/%3E%3Cpath d='M270,-60c0,20-2,40-3,60s-2,40-2,60s1,40,2,60s3,40,4,60s2,40,1,60s-4,40-5,60s-2,40-2,60s1,40,1,60s1,40,2,60s-1,40,0,60s1,40,1,60s-1,40-3,60s-3,40-5,60s-6,40-8,60s-3,40-3,60s1,40,3,60s2,40,4,60s4,40,6,60s5,40,6,60s1,40,1,60s-2,40-3,60s-2,40-2,60' stroke-opacity='.5'/%3E%3Cpath d='M302,-60c-1,20-2,40-3,60s-2,40-2,60s1,40,2,60s3,40,4,60s1,40,0,60s-2,40-3,60s-2,40-2,60s0,40,0,60s2,40,2,60s0,40,0,60s1,40,0,60s0,40-2,60s-3,40-5,60s-5,40-7,60s-3,40-3,60s1,40,2,60s3,40,5,60s4,40,6,60s3,40,4,60s2,40,2,60s-2,40-3,60s-2,40-2,60' stroke-opacity='.5'/%3E%3Cpath d='M335,-60c0,20-1,40-2,60s-1,40-1,60s1,40,2,60s2,40,3,60s0,40,0,60s-2,40-2,60s-2,40-2,60s-1,40-1,60s2,40,2,60s0,40,0,60s0,40,0,60s-1,40-2,60s-3,40-5,60s-5,40-6,60s-2,40-3,60s0,40,1,60s3,40,5,60s5,40,6,60s3,40,4,60s2,40,1,60s-1,40-2,60s-1,40-1,60' stroke-opacity='.5'/%3E%3Cpath d='M371,-60c0,20-1,40-1,60s-2,40-1,60s1,40,1,60s2,40,3,60s-1,40-1,60s0,40-1,60s-1,40-1,60s-2,40-2,60s2,40,2,60s1,40,1,60s-1,40-1,60s-1,40-2,60s-4,40-5,60s-4,40-5,60s-2,40-2,60s-1,40,0,60s3,40,5,60s4,40,5,60s3,40,4,60s1,40,1,60s-1,40-1,60s-2,40-1,60' stroke-opacity='.5'/%3E%3Cpath d='M409,-60c0,20-1,40-1,60s-1,40-1,60s1,40,2,60s1,40,1,60s0,40,0,60s0,40,0,60s-1,40-1,60s-2,40-2,60s1,40,1,60s1,40,1,60s-1,40-1,60s-1,40-2,60s-4,40-5,60s-3,40-4,60s-2,40-2,60s-1,40,0,60s3,40,4,60s4,40,6,60s2,40,2,60s2,40,2,60s-1,40-1,60s-1,40-1,60' stroke-opacity='.5'/%3E%3Cpath d='M448,-60c1,20,0,40,0,60s0,40,0,60s1,40,1,60s1,40,1,60s0,40,0,60s0,40,0,60s0,40-1,60s-1,40-1,60s0,40,0,60s1,40,1,60s-1,40-1,60s-2,40-3,60s-3,40-4,60s-2,40-3,60s-2,40-2,60s-1,40,0,60s2,40,4,60s3,40,5,60s1,40,2,60s1,40,1,60s0,40,0,60s0,40,0,60' stroke-opacity='.5'/%3E%3Cpath d='M488,-60c0,20,0,40,1,60s0,40,0,60s0,40,0,60s1,40,1,60s0,40,0,60s1,40,1,60s-1,40-2,60s0,40-1,60s0,40,0,60s1,40,1,60s-1,40-1,60s-2,40-3,60s-3,40-4,60s-2,40-2,60s-2,40-2,60s-1,40,0,60s2,40,3,60s3,40,4,60s2,40,3,60s1,40,1,60s0,40,1,60s0,40,0,60' stroke-opacity='.5'/%3E%3Cpath d='M528,-60c0,20,1,40,1,60s0,40,1,60s0,40,0,60s-1,40-1,60s1,40,1,60s1,40,1,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s1,40,1,60s-1,40-2,60s-1,40-2,60s-3,40-3,60s-2,40-3,60s-1,40-1,60s0,40,0,60s2,40,3,60s2,40,3,60s2,40,2,60s1,40,2,60s1,40,1,60s0,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M567,-60c1,20,2,40,2,60s1,40,1,60s0,40,0,60s-1,40-1,60s1,40,1,60s1,40,1,60s-1,40-1,60s0,40-1,60s0,40-1,60s1,40,0,60s0,40-1,60s-2,40-3,60s-1,40-2,60s-2,40-2,60s-1,40-1,60s0,40,0,60s1,40,2,60s2,40,3,60s2,40,2,60s1,40,1,60s2,40,2,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M607,-60c1,20,2,40,2,60s1,40,1,60s0,40,0,60s0,40-1,60s1,40,1,60s0,40,1,60s0,40-1,60s0,40,0,60s-1,40-1,60s-1,40-1,60s0,40-1,60s-2,40-3,60s-1,40-2,60s-1,40-2,60s0,40,0,60s0,40,0,60s1,40,2,60s1,40,2,60s1,40,2,60s1,40,1,60s2,40,2,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M647,-60c1,20,2,40,3,60s1,40,1,60s0,40-1,60s0,40,0,60s0,40,0,60s0,40,0,60s1,40,1,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s-2,40-3,60s-1,40-2,60s-1,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s1,40,2,60s1,40,1,60s2,40,2,60s2,40,3,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M687,-60c1,20,2,40,3,60s1,40,1,60s0,40,0,60s-1,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s0,40-1,60s0,40-1,60s-1,40-1,60s-1,40-2,60s-1,40-2,60s-1,40-2,60s0,40-1,60s0,40,0,60s1,40,1,60s0,40,1,60s0,40,1,60s1,40,1,60s2,40,2,60s2,40,3,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M727,-60c1,20,2,40,3,60s1,40,1,60s0,40,0,60s-1,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s0,40-1,60s0,40-1,60s-1,40-1,60s-1,40-2,60s-1,40-2,60s-1,40-1,60s-1,40-1,60s0,40,0,60s1,40,1,60s0,40,0,60s0,40,1,60s0,40,1,60s2,40,2,60s2,40,3,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M768,-60c0,20,1,40,2,60s1,40,1,60s0,40,0,60s-1,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s0,40,0,60s-1,40-1,60s-2,40-2,60s-2,40-2,60s-1,40-2,60s-1,40-1,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,1,60s-1,40,0,60s0,40,1,60s2,40,3,60s1,40,2,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M808,-60c0,20,1,40,2,60s1,40,1,60s0,40,0,60s0,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s0,40,0,60s-1,40-1,60s-2,40-2,60s-2,40-2,60s-1,40-2,60s-1,40-1,60s0,40,0,60s0,40,1,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,1,60s2,40,3,60s1,40,2,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M848,-60c0,20,1,40,2,60s1,40,1,60s0,40,0,60s0,40,0,60s-1,40-1,60s0,40,0,60s1,40,1,60s0,40,0,60s-1,40-1,60s-2,40-2,60s-2,40-2,60s-1,40-2,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,0,60s1,40,1,60s2,40,3,60s1,40,2,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M888,-60c0,20,1,40,2,60s1,40,1,60s0,40,0,60s0,40,0,60s-1,40-1,60s0,40,0,60s1,40,1,60s0,40,0,60s-1,40-1,60s-2,40-2,60s-2,40-2,60s-1,40-2,60s0,40,0,60s0,40,0,60s1,40,1,60s0,40,0,60s0,40-1,60s0,40,0,60s1,40,1,60s2,40,3,60s1,40,2,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M927,-60c1,20,2,40,3,60s0,40,1,60s0,40,0,60s0,40,0,60s0,40-1,60s0,40,0,60s0,40,1,60s0,40,0,60s-1,40-1,60s-2,40-2,60s-2,40-2,60s-1,40-1,60s-1,40-1,60s1,40,1,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,1,60s1,40,1,60s2,40,3,60s0,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M968,-60c0,20,1,40,1,60s1,40,1,60s1,40,1,60s0,40,0,60s0,40,0,60s-1,40-1,60s0,40,0,60s1,40,1,60s-1,40-1,60s-2,40-2,60s-2,40-2,60s-1,40-1,60s0,40,0,60s0,40,0,60s0,40,0,60s1,40,0,60s0,40,0,60s0,40,0,60s1,40,1,60s1,40,2,60s1,40,1,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M1008,-60c0,20,1,40,1,60s1,40,1,60s1,40,1,60s0,40,0,60s0,40,0,60s0,40-1,60s0,40,0,60s1,40,0,60s0,40-1,60s-1,40-1,60s-2,40-2,60s-1,40-1,60s0,40,0,60s0,40,1,60s0,40,0,60s0,40,0,60s-1,40-1,60s0,40,1,60s0,40,0,60s1,40,2,60s1,40,1,60s1,40,1,60' stroke-opacity='.5'/%3E%3C/svg%3E");
+  -webkit-mask-position:0 0,0 0;mask-position:0 0,0 0;}
+body::after{left:50%;right:0;
+  -webkit-mask-image:linear-gradient(to left,var(--ink) max(8px,calc(100% - 574px)),color-mix(in srgb,var(--ink) 70%,transparent) max(24px,calc(100% - 504px))),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='980' height='1200' fill='none' stroke='currentColor' stroke-width='1.05'%3E%3Cdefs%3E%3Cpath id='v' d='M934,-24c0,8-2,16-2,24s-1,16-1,24s0,16-1,24s-4,16-5,24s-2,16-1,24s2,16,4,24s9,16,11,24s2,16,2,24s1,16,1,24s0,16,0,24s-3,16-3,24s2,16,2,24s1,16,2,24s2,16,4,24s4,16,7,24s7,16,8,24s0,16-2,24s-7,16-9,24s-2,16-4,24s-5,16-6,24s-2,16-3,24s-1,16-2,24s-4,16-6,24s-1,16-2,24s1,16,1,24s2,16,1,24s-3,16-3,24s2,16,4,24s5,16,6,24s0,16,0,24s0,16-1,24s-5,16-7,24s-2,16-2,24s2,16,4,24s4,16,6,24s1,16,1,24s0,16,0,24s5,16,4,24s-5,16-7,24s-5,16-7,24s-3,16-5,24s-2,16-2,24s4,16,6,24s5,16,6,24s1,16,1,24s-3,16-3,24s3,16,4,24s2,16,2,24s-4,16-4,24s1,16,1,24s-2,16-2,24s-1,16-1,24'/%3E%3Cpath id='w' d='M923,-24c0,8-2,16-2,24s-1,16-1,24s-1,16-2,24s-3,16-4,24s-2,16-1,24s1,16,4,24s8,16,10,24s3,16,3,24s0,16,1,24s0,16,0,24s-3,16-3,24s2,16,2,24s1,16,2,24s2,16,4,24s4,16,6,24s7,16,8,24s-1,16-2,24s-7,16-9,24s-2,16-3,24s-5,16-6,24s-2,16-3,24s-1,16-3,24s-4,16-5,24s-1,16-2,24s1,16,1,24s2,16,1,24s-3,16-3,24s1,16,3,24s6,16,7,24s0,16,0,24s0,16-2,24s-5,16-6,24s-2,16-2,24s2,16,4,24s4,16,5,24s2,16,2,24s0,16,0,24s4,16,4,24s-6,16-8,24s-4,16-6,24s-4,16-5,24s-2,16-2,24s4,16,5,24s5,16,7,24s1,16,1,24s-3,16-2,24s2,16,2,24s3,16,2,24s-3,16-3,24s1,16,1,24s-2,16-2,24s-1,16-1,24'/%3E%3Cpath id='x' d='M911,-30c-1,10-2,20-2,30s-1,20-1,30s-3,20-4,30s-3,20-3,30s1,20,3,30s10,20,12,30s1,20,2,30s1,20,1,30s-3,20-3,30s2,20,3,30s1,20,2,30s4,20,7,30s9,20,10,30s-4,20-6,30s-4,20-6,30s-5,20-7,30s-2,20-4,30s-3,20-4,30s-4,20-5,30s0,20,0,30s1,20,1,30s-4,20-3,30s5,20,6,30s4,20,4,30s-1,20-2,30s-6,20-7,30s-1,20,0,30s5,20,7,30s2,20,3,30s1,20,1,30s0,20-1,30s-7,20-9,30s-5,20-6,30s-2,20-1,30s5,20,7,30s5,20,5,30s-3,20-2,30s3,20,3,30s-1,20-1,30s0,20,0,30s-2,20-2,30s-1,20-1,30'/%3E%3C/defs%3E%3Cuse href='%23v' stroke-width='20' stroke-opacity='.1'/%3E%3Cuse href='%23w' stroke-width='40' stroke-opacity='.09'/%3E%3Cuse href='%23x' stroke-width='62' stroke-opacity='.07'/%3E%3Cpath d='M943.7,-15c-.3,5-1.5,10-2,15s-1.1,10-1.2,15s.5,10,.4,15s-.1,10-.7,15s-1.7,10-2.5,15s-1.9,10-2.5,15s-1.3,10-1.5,15s-.2,10,.7,15s2.7,10,4.7,15s5.4,10,7.4,15s4,10,4.8,15s.1,10,0,15s-.7,10-.6,15s1,10,1.3,15s.7,10,.5,15s-1.6,10-2.2,15s-1.4,10-1.4,15s.8,10,1.4,15s1.4,10,1.9,15s.5,10,.9,15s.8,10,1.6,15s1.9,10,3.2,15s2.7,10,4.2,15s3.5,10,5.2,15s4,10,5,15s1.4,10,.7,15s-3.2,10-5,15s-4.7,10-6.2,15s-2.2,10-3.1,15s-.9,10-1.9,15s-2.6,10-3.8,15s-2.9,10-3.7,15s-.7,10-1,15s-.1,10-.7,15s-1.8,10-3,15s-2.7,10-3.6,15s-1.6,10-2,15s-.6,10-.6,15s.1,10,.4,15s1.1,10,1.4,15s.5,10,.1,15s-1.7,10-2.3,15s-1.7,10-1.3,15s1.9,10,3.4,15s4,10,5.3,15s1.8,10,2,15s-.5,10-.6,15s-.1,10-.3,15s0,10-.7,15s-2.2,10-3.4,15s-3.3,10-4.2,15s-1.3,10-1.2,15s.9,10,1.7,15s2,10,3.2,15s2.6,10,3.7,15s2.3,10,2.7,15s.2,10,.1,15s-.9,10-.7,15s1.1,10,1.9,15s2.3,10,2.4,15s-.6,10-1.9,15s-4.1,10-5.8,15s-3.6,10-4.8,15s-1.8,10-2.8,15s-2.1,10-3,15s-2.3,10-2.6,15s.2,10,1.1,15s2.8,10,4.2,15s3.1,10,4.2,15s2.1,10,2.7,15s1,10,1,15s-.8,10-1.2,15s-1.6,10-1.7,15s.6,10,1.5,15s2.7,10,3.4,15s1.1,10,.8,15s-2,10-2.7,15s-1.4,10-1.6,15s.8,10,1,15s.3,10-.1,15s-1.5,10-2,15s-1.1,10-1.2,15' stroke-width='1.25'/%3E%3Cuse href='%23v' stroke-width='1.1' stroke-opacity='.86'/%3E%3Cuse href='%23w' stroke-width='1.1' stroke-opacity='.78'/%3E%3Cuse href='%23x' stroke-width='1.1' stroke-opacity='.71'/%3E%3Cpath d='M897,-48c-1,16-1,32-2,48s-1,32-3,48s-6,32-5,48s9,32,12,48s5,32,6,48s-3,32-2,48s2,32,4,48s6,32,9,48s5,32,4,48s-8,32-11,48s-5,32-7,48s-7,32-8,48s-1,32-1,48s-3,32-2,48s7,32,8,48s0,32-1,48s-7,32-7,48s6,32,8,48s3,32,3,48s-3,32-6,48s-8,32-9,48s0,32,2,48s7,32,8,48s1,32,1,48s-1,32-1,48s-1,32-2,48s-1,32-3,48' stroke-opacity='.65'/%3E%3Cpath d='M882,-48c0,16-1,32-2,48s-2,32-3,48s-5,32-4,48s7,32,10,48s6,32,7,48s-2,32-2,48s2,32,4,48s6,32,8,48s5,32,4,48s-7,32-10,48s-5,32-8,48s-6,32-7,48s-1,32-1,48s-3,32-2,48s6,32,7,48s0,32-1,48s-6,32-6,48s6,32,8,48s4,32,3,48s-3,32-6,48s-8,32-9,48s0,32,2,48s6,32,8,48s0,32,0,48s0,32,0,48s-1,32-2,48s-2,32-3,48' stroke-opacity='.59'/%3E%3Cpath d='M866,-60c0,20-2,40-3,60s-4,40-5,60s-2,40,0,60s12,40,14,60s-1,40-1,60s2,40,5,60s11,40,11,60s-5,40-8,60s-7,40-10,60s-7,40-8,60s-1,40-1,60s2,40,3,60s2,40,2,60s-6,40-5,60s8,40,9,60s0,40-3,60s-10,40-11,60s3,40,4,60s4,40,5,60s2,40,2,60s-2,40-3,60s-4,40-5,60' stroke-opacity='.54'/%3E%3Cpath d='M846,-60c0,20-1,40-2,60s-4,40-5,60s-2,40,0,60s11,40,13,60s0,40,0,60s3,40,5,60s9,40,9,60s-4,40-7,60s-7,40-9,60s-7,40-8,60s-1,40-1,60s2,40,3,60s1,40,1,60s-4,40-4,60s7,40,8,60s0,40-2,60s-10,40-11,60s2,40,4,60s4,40,5,60s2,40,1,60s-1,40-2,60s-4,40-5,60' stroke-opacity='.5'/%3E%3Cpath d='M825,-60c-1,20-1,40-2,60s-5,40-5,60s-2,40,0,60s9,40,11,60s1,40,2,60s2,40,4,60s8,40,8,60s-3,40-6,60s-7,40-9,60s-6,40-7,60s-2,40-2,60s2,40,3,60s1,40,1,60s-4,40-3,60s7,40,7,60s-1,40-3,60s-8,40-9,60s1,40,3,60s5,40,6,60s1,40,1,60s-1,40-2,60s-5,40-5,60' stroke-opacity='.5'/%3E%3Cpath d='M800,-60c0,20-1,40-2,60s-4,40-4,60s-1,40,0,60s8,40,10,60s2,40,3,60s3,40,4,60s7,40,7,60s-2,40-5,60s-7,40-10,60s-5,40-6,60s-2,40-2,60s2,40,3,60s1,40,0,60s-2,40-2,60s6,40,6,60s-1,40-3,60s-7,40-8,60s1,40,2,60s5,40,6,60s1,40,1,60s-1,40-2,60s-4,40-4,60' stroke-opacity='.5'/%3E%3Cpath d='M774,-60c0,20-1,40-2,60s-4,40-4,60s-1,40,1,60s6,40,8,60s3,40,5,60s2,40,3,60s5,40,6,60s-2,40-4,60s-7,40-10,60s-4,40-6,60s-2,40-2,60s2,40,2,60s1,40,1,60s-2,40-1,60s4,40,4,60s-1,40-2,60s-7,40-8,60s1,40,2,60s5,40,6,60s1,40,1,60s-1,40-2,60s-4,40-4,60' stroke-opacity='.5'/%3E%3Cpath d='M746,-60c-1,20-1,40-2,60s-4,40-4,60s0,40,1,60s5,40,7,60s4,40,5,60s3,40,4,60s4,40,4,60s-1,40-3,60s-7,40-9,60s-4,40-6,60s-2,40-2,60s1,40,2,60s0,40,0,60s0,40,0,60s3,40,3,60s-1,40-2,60s-6,40-6,60s0,40,1,60s4,40,5,60s2,40,2,60s-1,40-2,60s-4,40-4,60' stroke-opacity='.5'/%3E%3Cpath d='M715,-60c0,20-1,40-2,60s-3,40-3,60s0,40,1,60s4,40,6,60s4,40,6,60s3,40,4,60s3,40,3,60s-1,40-3,60s-6,40-8,60s-4,40-5,60s-2,40-3,60s1,40,1,60s0,40,0,60s1,40,2,60s1,40,1,60s-1,40-2,60s-4,40-5,60s0,40,1,60s3,40,4,60s2,40,2,60s-1,40-2,60s-3,40-3,60' stroke-opacity='.5'/%3E%3Cpath d='M683,-60c0,20-1,40-2,60s-2,40-3,60s1,40,2,60s2,40,4,60s4,40,6,60s4,40,5,60s2,40,2,60s-1,40-3,60s-5,40-7,60s-4,40-5,60s-2,40-2,60s0,40,0,60s0,40,0,60s2,40,2,60s0,40,0,60s-1,40-2,60s-3,40-3,60s-1,40,0,60s3,40,4,60s2,40,2,60s-1,40-2,60s-2,40-3,60' stroke-opacity='.5'/%3E%3Cpath d='M648,-60c0,20-1,40-1,60s-2,40-2,60s0,40,1,60s2,40,4,60s4,40,6,60s4,40,5,60s1,40,1,60s-2,40-3,60s-4,40-6,60s-4,40-5,60s-2,40-2,60s0,40,0,60s-1,40,0,60s2,40,2,60s0,40-1,60s-1,40-2,60s-1,40-2,60s0,40,0,60s2,40,3,60s2,40,2,60s-1,40-1,60s-2,40-2,60' stroke-opacity='.5'/%3E%3Cpath d='M611,-60c1,20,0,40-1,60s-1,40-1,60s1,40,1,60s2,40,4,60s3,40,5,60s4,40,5,60s1,40,0,60s-1,40-2,60s-3,40-5,60s-4,40-5,60s-2,40-2,60s-1,40-1,60s0,40,1,60s2,40,2,60s-1,40-2,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s2,40,3,60s1,40,1,60s0,40-1,60s-1,40-1,60' stroke-opacity='.5'/%3E%3Cpath d='M573,-60c0,20-1,40-1,60s-1,40-1,60s1,40,2,60s1,40,2,60s4,40,6,60s3,40,4,60s1,40,0,60s-1,40-2,60s-2,40-4,60s-4,40-5,60s-1,40-2,60s-1,40-1,60s0,40,1,60s1,40,1,60s-1,40-2,60s-1,40-1,60s0,40,0,60s-1,40,0,60s1,40,1,60s1,40,2,60s-1,40-1,60s-1,40-1,60' stroke-opacity='.5'/%3E%3Cpath d='M532,-60c0,20,0,40,0,60s-1,40,0,60s0,40,1,60s1,40,2,60s4,40,5,60s3,40,4,60s1,40,0,60s-1,40-2,60s-2,40-3,60s-3,40-4,60s-2,40-3,60s-1,40-1,60s1,40,1,60s1,40,0,60s-1,40-1,60s-1,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s1,40,1,60s0,40,0,60s-1,40,0,60' stroke-opacity='.5'/%3E%3Cpath d='M491,-60c0,20,0,40,0,60s1,40,1,60s1,40,1,60s1,40,3,60s3,40,4,60s2,40,3,60s1,40,0,60s-1,40-2,60s-1,40-2,60s-3,40-4,60s-2,40-3,60s-1,40-1,60s1,40,1,60s0,40,0,60s-1,40-1,60s-1,40-2,60s1,40,1,60s0,40,0,60s0,40,1,60s0,40,0,60s0,40,0,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M450,-60c1,20,1,40,1,60s1,40,1,60s1,40,2,60s1,40,2,60s2,40,3,60s2,40,3,60s0,40,0,60s0,40-1,60s-2,40-3,60s-2,40-3,60s-2,40-2,60s-2,40-2,60s1,40,1,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s1,40,1,60s1,40,1,60s-1,40-1,60s0,40,0,60s1,40,1,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M410,-60c0,20,0,40,1,60s1,40,2,60s0,40,1,60s1,40,2,60s2,40,3,60s1,40,2,60s0,40,0,60s0,40-1,60s-1,40-2,60s-1,40-2,60s-3,40-3,60s-1,40-1,60s0,40,0,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s1,40,1,60s1,40,1,60s-1,40-1,60s0,40,0,60s0,40,1,60s1,40,2,60' stroke-opacity='.5'/%3E%3Cpath d='M370,-60c0,20,0,40,1,60s1,40,2,60s1,40,1,60s2,40,2,60s2,40,2,60s1,40,2,60s0,40,0,60s0,40,0,60s-1,40-2,60s-1,40-2,60s-2,40-3,60s-1,40-1,60s0,40-1,60s0,40-1,60s0,40,0,60s-1,40-1,60s1,40,1,60s1,40,1,60s-1,40-1,60s-1,40,0,60s0,40,1,60s1,40,2,60' stroke-opacity='.5'/%3E%3Cpath d='M329,-60c0,20,1,40,1,60s2,40,3,60s1,40,2,60s1,40,1,60s1,40,2,60s1,40,1,60s0,40,0,60s0,40,0,60s-1,40-1,60s-1,40-2,60s-2,40-3,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s0,40,1,60s0,40,0,60s0,40,0,60s0,40,0,60s-1,40-1,60s1,40,1,60s2,40,3,60' stroke-opacity='.5'/%3E%3Cpath d='M289,-60c0,20,1,40,1,60s2,40,3,60s1,40,2,60s1,40,1,60s1,40,1,60s1,40,1,60s0,40,1,60s0,40,0,60s-1,40-1,60s-1,40-2,60s-2,40-2,60s-1,40-2,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s0,40,1,60s0,40,0,60s0,40,0,60s0,40-1,60s0,40,0,60s1,40,1,60s2,40,3,60' stroke-opacity='.5'/%3E%3Cpath d='M249,-60c0,20,1,40,1,60s2,40,3,60s1,40,2,60s1,40,1,60s1,40,1,60s0,40,0,60s1,40,1,60s0,40,0,60s0,40-1,60s-1,40-1,60s-1,40-2,60s-1,40-2,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s1,40,1,60s0,40,0,60s0,40,0,60s0,40-1,60s0,40,0,60s1,40,1,60s2,40,3,60' stroke-opacity='.5'/%3E%3Cpath d='M209,-60c0,20,1,40,1,60s2,40,2,60s2,40,3,60s1,40,1,60s0,40,0,60s1,40,1,60s0,40,0,60s0,40,0,60s0,40,0,60s-1,40-1,60s-1,40-2,60s-1,40-2,60s-1,40-2,60s0,40-1,60s0,40,0,60s1,40,1,60s0,40,0,60s0,40,0,60s-1,40-1,60s0,40,0,60s1,40,1,60s2,40,2,60' stroke-opacity='.5'/%3E%3Cpath d='M169,-60c0,20,1,40,1,60s2,40,2,60s2,40,3,60s1,40,1,60s0,40,0,60s0,40,0,60s0,40,0,60s1,40,1,60s0,40,0,60s-1,40-1,60s-1,40-2,60s-1,40-2,60s-1,40-2,60s0,40-1,60s0,40,0,60s1,40,1,60s0,40,0,60s0,40,0,60s-1,40-1,60s0,40,0,60s1,40,1,60s2,40,2,60' stroke-opacity='.5'/%3E%3Cpath d='M129,-60c0,20,1,40,1,60s2,40,2,60s2,40,3,60s1,40,1,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,0,60s-1,40-2,60s-1,40-2,60s-1,40-2,60s-1,40-1,60s0,40,0,60s1,40,1,60s0,40,0,60s-1,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s2,40,2,60' stroke-opacity='.5'/%3E%3Cpath d='M89,-60c0,20,1,40,1,60s2,40,2,60s2,40,3,60s0,40,1,60s0,40,0,60s-1,40-1,60s0,40,0,60s1,40,1,60s0,40,0,60s0,40,0,60s-1,40-2,60s-1,40-2,60s-1,40-2,60s-1,40-1,60s0,40,0,60s1,40,1,60s0,40,0,60s-1,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s2,40,2,60' stroke-opacity='.5'/%3E%3Cpath d='M49,-60c1,20,1,40,1,60s2,40,3,60s1,40,1,60s1,40,1,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,0,60s1,40,1,60s0,40-1,60s0,40-1,60s-1,40-2,60s-1,40-2,60s0,40-1,60s0,40,0,60s1,40,1,60s0,40,0,60s-1,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s2,40,3,60' stroke-opacity='.5'/%3E%3Cpath d='M10,-60c0,20,0,40,1,60s1,40,1,60s2,40,2,60s1,40,1,60s0,40,0,60s0,40,0,60s-1,40,0,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40-1,60s-1,40-2,60s-1,40-2,60s0,40-1,60s1,40,1,60s0,40,0,60s-1,40-1,60s0,40,0,60s0,40,0,60s0,40,1,60s0,40,1,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M-30,-60c0,20,0,40,1,60s1,40,1,60s1,40,2,60s0,40,0,60s1,40,1,60s-1,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s0,40,0,60s0,40-1,60s-1,40-2,60s-1,40-1,60s-1,40-1,60s0,40,0,60s0,40,0,60s-1,40-1,60s0,40,0,60s0,40,0,60s0,40,1,60s0,40,1,60s1,40,1,60' stroke-opacity='.5'/%3E%3C/svg%3E");
+  mask-image:linear-gradient(to left,var(--ink) max(8px,calc(100% - 574px)),color-mix(in srgb,var(--ink) 70%,transparent) max(24px,calc(100% - 504px))),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='980' height='1200' fill='none' stroke='currentColor' stroke-width='1.05'%3E%3Cdefs%3E%3Cpath id='v' d='M934,-24c0,8-2,16-2,24s-1,16-1,24s0,16-1,24s-4,16-5,24s-2,16-1,24s2,16,4,24s9,16,11,24s2,16,2,24s1,16,1,24s0,16,0,24s-3,16-3,24s2,16,2,24s1,16,2,24s2,16,4,24s4,16,7,24s7,16,8,24s0,16-2,24s-7,16-9,24s-2,16-4,24s-5,16-6,24s-2,16-3,24s-1,16-2,24s-4,16-6,24s-1,16-2,24s1,16,1,24s2,16,1,24s-3,16-3,24s2,16,4,24s5,16,6,24s0,16,0,24s0,16-1,24s-5,16-7,24s-2,16-2,24s2,16,4,24s4,16,6,24s1,16,1,24s0,16,0,24s5,16,4,24s-5,16-7,24s-5,16-7,24s-3,16-5,24s-2,16-2,24s4,16,6,24s5,16,6,24s1,16,1,24s-3,16-3,24s3,16,4,24s2,16,2,24s-4,16-4,24s1,16,1,24s-2,16-2,24s-1,16-1,24'/%3E%3Cpath id='w' d='M923,-24c0,8-2,16-2,24s-1,16-1,24s-1,16-2,24s-3,16-4,24s-2,16-1,24s1,16,4,24s8,16,10,24s3,16,3,24s0,16,1,24s0,16,0,24s-3,16-3,24s2,16,2,24s1,16,2,24s2,16,4,24s4,16,6,24s7,16,8,24s-1,16-2,24s-7,16-9,24s-2,16-3,24s-5,16-6,24s-2,16-3,24s-1,16-3,24s-4,16-5,24s-1,16-2,24s1,16,1,24s2,16,1,24s-3,16-3,24s1,16,3,24s6,16,7,24s0,16,0,24s0,16-2,24s-5,16-6,24s-2,16-2,24s2,16,4,24s4,16,5,24s2,16,2,24s0,16,0,24s4,16,4,24s-6,16-8,24s-4,16-6,24s-4,16-5,24s-2,16-2,24s4,16,5,24s5,16,7,24s1,16,1,24s-3,16-2,24s2,16,2,24s3,16,2,24s-3,16-3,24s1,16,1,24s-2,16-2,24s-1,16-1,24'/%3E%3Cpath id='x' d='M911,-30c-1,10-2,20-2,30s-1,20-1,30s-3,20-4,30s-3,20-3,30s1,20,3,30s10,20,12,30s1,20,2,30s1,20,1,30s-3,20-3,30s2,20,3,30s1,20,2,30s4,20,7,30s9,20,10,30s-4,20-6,30s-4,20-6,30s-5,20-7,30s-2,20-4,30s-3,20-4,30s-4,20-5,30s0,20,0,30s1,20,1,30s-4,20-3,30s5,20,6,30s4,20,4,30s-1,20-2,30s-6,20-7,30s-1,20,0,30s5,20,7,30s2,20,3,30s1,20,1,30s0,20-1,30s-7,20-9,30s-5,20-6,30s-2,20-1,30s5,20,7,30s5,20,5,30s-3,20-2,30s3,20,3,30s-1,20-1,30s0,20,0,30s-2,20-2,30s-1,20-1,30'/%3E%3C/defs%3E%3Cuse href='%23v' stroke-width='20' stroke-opacity='.1'/%3E%3Cuse href='%23w' stroke-width='40' stroke-opacity='.09'/%3E%3Cuse href='%23x' stroke-width='62' stroke-opacity='.07'/%3E%3Cpath d='M943.7,-15c-.3,5-1.5,10-2,15s-1.1,10-1.2,15s.5,10,.4,15s-.1,10-.7,15s-1.7,10-2.5,15s-1.9,10-2.5,15s-1.3,10-1.5,15s-.2,10,.7,15s2.7,10,4.7,15s5.4,10,7.4,15s4,10,4.8,15s.1,10,0,15s-.7,10-.6,15s1,10,1.3,15s.7,10,.5,15s-1.6,10-2.2,15s-1.4,10-1.4,15s.8,10,1.4,15s1.4,10,1.9,15s.5,10,.9,15s.8,10,1.6,15s1.9,10,3.2,15s2.7,10,4.2,15s3.5,10,5.2,15s4,10,5,15s1.4,10,.7,15s-3.2,10-5,15s-4.7,10-6.2,15s-2.2,10-3.1,15s-.9,10-1.9,15s-2.6,10-3.8,15s-2.9,10-3.7,15s-.7,10-1,15s-.1,10-.7,15s-1.8,10-3,15s-2.7,10-3.6,15s-1.6,10-2,15s-.6,10-.6,15s.1,10,.4,15s1.1,10,1.4,15s.5,10,.1,15s-1.7,10-2.3,15s-1.7,10-1.3,15s1.9,10,3.4,15s4,10,5.3,15s1.8,10,2,15s-.5,10-.6,15s-.1,10-.3,15s0,10-.7,15s-2.2,10-3.4,15s-3.3,10-4.2,15s-1.3,10-1.2,15s.9,10,1.7,15s2,10,3.2,15s2.6,10,3.7,15s2.3,10,2.7,15s.2,10,.1,15s-.9,10-.7,15s1.1,10,1.9,15s2.3,10,2.4,15s-.6,10-1.9,15s-4.1,10-5.8,15s-3.6,10-4.8,15s-1.8,10-2.8,15s-2.1,10-3,15s-2.3,10-2.6,15s.2,10,1.1,15s2.8,10,4.2,15s3.1,10,4.2,15s2.1,10,2.7,15s1,10,1,15s-.8,10-1.2,15s-1.6,10-1.7,15s.6,10,1.5,15s2.7,10,3.4,15s1.1,10,.8,15s-2,10-2.7,15s-1.4,10-1.6,15s.8,10,1,15s.3,10-.1,15s-1.5,10-2,15s-1.1,10-1.2,15' stroke-width='1.25'/%3E%3Cuse href='%23v' stroke-width='1.1' stroke-opacity='.86'/%3E%3Cuse href='%23w' stroke-width='1.1' stroke-opacity='.78'/%3E%3Cuse href='%23x' stroke-width='1.1' stroke-opacity='.71'/%3E%3Cpath d='M897,-48c-1,16-1,32-2,48s-1,32-3,48s-6,32-5,48s9,32,12,48s5,32,6,48s-3,32-2,48s2,32,4,48s6,32,9,48s5,32,4,48s-8,32-11,48s-5,32-7,48s-7,32-8,48s-1,32-1,48s-3,32-2,48s7,32,8,48s0,32-1,48s-7,32-7,48s6,32,8,48s3,32,3,48s-3,32-6,48s-8,32-9,48s0,32,2,48s7,32,8,48s1,32,1,48s-1,32-1,48s-1,32-2,48s-1,32-3,48' stroke-opacity='.65'/%3E%3Cpath d='M882,-48c0,16-1,32-2,48s-2,32-3,48s-5,32-4,48s7,32,10,48s6,32,7,48s-2,32-2,48s2,32,4,48s6,32,8,48s5,32,4,48s-7,32-10,48s-5,32-8,48s-6,32-7,48s-1,32-1,48s-3,32-2,48s6,32,7,48s0,32-1,48s-6,32-6,48s6,32,8,48s4,32,3,48s-3,32-6,48s-8,32-9,48s0,32,2,48s6,32,8,48s0,32,0,48s0,32,0,48s-1,32-2,48s-2,32-3,48' stroke-opacity='.59'/%3E%3Cpath d='M866,-60c0,20-2,40-3,60s-4,40-5,60s-2,40,0,60s12,40,14,60s-1,40-1,60s2,40,5,60s11,40,11,60s-5,40-8,60s-7,40-10,60s-7,40-8,60s-1,40-1,60s2,40,3,60s2,40,2,60s-6,40-5,60s8,40,9,60s0,40-3,60s-10,40-11,60s3,40,4,60s4,40,5,60s2,40,2,60s-2,40-3,60s-4,40-5,60' stroke-opacity='.54'/%3E%3Cpath d='M846,-60c0,20-1,40-2,60s-4,40-5,60s-2,40,0,60s11,40,13,60s0,40,0,60s3,40,5,60s9,40,9,60s-4,40-7,60s-7,40-9,60s-7,40-8,60s-1,40-1,60s2,40,3,60s1,40,1,60s-4,40-4,60s7,40,8,60s0,40-2,60s-10,40-11,60s2,40,4,60s4,40,5,60s2,40,1,60s-1,40-2,60s-4,40-5,60' stroke-opacity='.5'/%3E%3Cpath d='M825,-60c-1,20-1,40-2,60s-5,40-5,60s-2,40,0,60s9,40,11,60s1,40,2,60s2,40,4,60s8,40,8,60s-3,40-6,60s-7,40-9,60s-6,40-7,60s-2,40-2,60s2,40,3,60s1,40,1,60s-4,40-3,60s7,40,7,60s-1,40-3,60s-8,40-9,60s1,40,3,60s5,40,6,60s1,40,1,60s-1,40-2,60s-5,40-5,60' stroke-opacity='.5'/%3E%3Cpath d='M800,-60c0,20-1,40-2,60s-4,40-4,60s-1,40,0,60s8,40,10,60s2,40,3,60s3,40,4,60s7,40,7,60s-2,40-5,60s-7,40-10,60s-5,40-6,60s-2,40-2,60s2,40,3,60s1,40,0,60s-2,40-2,60s6,40,6,60s-1,40-3,60s-7,40-8,60s1,40,2,60s5,40,6,60s1,40,1,60s-1,40-2,60s-4,40-4,60' stroke-opacity='.5'/%3E%3Cpath d='M774,-60c0,20-1,40-2,60s-4,40-4,60s-1,40,1,60s6,40,8,60s3,40,5,60s2,40,3,60s5,40,6,60s-2,40-4,60s-7,40-10,60s-4,40-6,60s-2,40-2,60s2,40,2,60s1,40,1,60s-2,40-1,60s4,40,4,60s-1,40-2,60s-7,40-8,60s1,40,2,60s5,40,6,60s1,40,1,60s-1,40-2,60s-4,40-4,60' stroke-opacity='.5'/%3E%3Cpath d='M746,-60c-1,20-1,40-2,60s-4,40-4,60s0,40,1,60s5,40,7,60s4,40,5,60s3,40,4,60s4,40,4,60s-1,40-3,60s-7,40-9,60s-4,40-6,60s-2,40-2,60s1,40,2,60s0,40,0,60s0,40,0,60s3,40,3,60s-1,40-2,60s-6,40-6,60s0,40,1,60s4,40,5,60s2,40,2,60s-1,40-2,60s-4,40-4,60' stroke-opacity='.5'/%3E%3Cpath d='M715,-60c0,20-1,40-2,60s-3,40-3,60s0,40,1,60s4,40,6,60s4,40,6,60s3,40,4,60s3,40,3,60s-1,40-3,60s-6,40-8,60s-4,40-5,60s-2,40-3,60s1,40,1,60s0,40,0,60s1,40,2,60s1,40,1,60s-1,40-2,60s-4,40-5,60s0,40,1,60s3,40,4,60s2,40,2,60s-1,40-2,60s-3,40-3,60' stroke-opacity='.5'/%3E%3Cpath d='M683,-60c0,20-1,40-2,60s-2,40-3,60s1,40,2,60s2,40,4,60s4,40,6,60s4,40,5,60s2,40,2,60s-1,40-3,60s-5,40-7,60s-4,40-5,60s-2,40-2,60s0,40,0,60s0,40,0,60s2,40,2,60s0,40,0,60s-1,40-2,60s-3,40-3,60s-1,40,0,60s3,40,4,60s2,40,2,60s-1,40-2,60s-2,40-3,60' stroke-opacity='.5'/%3E%3Cpath d='M648,-60c0,20-1,40-1,60s-2,40-2,60s0,40,1,60s2,40,4,60s4,40,6,60s4,40,5,60s1,40,1,60s-2,40-3,60s-4,40-6,60s-4,40-5,60s-2,40-2,60s0,40,0,60s-1,40,0,60s2,40,2,60s0,40-1,60s-1,40-2,60s-1,40-2,60s0,40,0,60s2,40,3,60s2,40,2,60s-1,40-1,60s-2,40-2,60' stroke-opacity='.5'/%3E%3Cpath d='M611,-60c1,20,0,40-1,60s-1,40-1,60s1,40,1,60s2,40,4,60s3,40,5,60s4,40,5,60s1,40,0,60s-1,40-2,60s-3,40-5,60s-4,40-5,60s-2,40-2,60s-1,40-1,60s0,40,1,60s2,40,2,60s-1,40-2,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s2,40,3,60s1,40,1,60s0,40-1,60s-1,40-1,60' stroke-opacity='.5'/%3E%3Cpath d='M573,-60c0,20-1,40-1,60s-1,40-1,60s1,40,2,60s1,40,2,60s4,40,6,60s3,40,4,60s1,40,0,60s-1,40-2,60s-2,40-4,60s-4,40-5,60s-1,40-2,60s-1,40-1,60s0,40,1,60s1,40,1,60s-1,40-2,60s-1,40-1,60s0,40,0,60s-1,40,0,60s1,40,1,60s1,40,2,60s-1,40-1,60s-1,40-1,60' stroke-opacity='.5'/%3E%3Cpath d='M532,-60c0,20,0,40,0,60s-1,40,0,60s0,40,1,60s1,40,2,60s4,40,5,60s3,40,4,60s1,40,0,60s-1,40-2,60s-2,40-3,60s-3,40-4,60s-2,40-3,60s-1,40-1,60s1,40,1,60s1,40,0,60s-1,40-1,60s-1,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s1,40,1,60s0,40,0,60s-1,40,0,60' stroke-opacity='.5'/%3E%3Cpath d='M491,-60c0,20,0,40,0,60s1,40,1,60s1,40,1,60s1,40,3,60s3,40,4,60s2,40,3,60s1,40,0,60s-1,40-2,60s-1,40-2,60s-3,40-4,60s-2,40-3,60s-1,40-1,60s1,40,1,60s0,40,0,60s-1,40-1,60s-1,40-2,60s1,40,1,60s0,40,0,60s0,40,1,60s0,40,0,60s0,40,0,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M450,-60c1,20,1,40,1,60s1,40,1,60s1,40,2,60s1,40,2,60s2,40,3,60s2,40,3,60s0,40,0,60s0,40-1,60s-2,40-3,60s-2,40-3,60s-2,40-2,60s-2,40-2,60s1,40,1,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s1,40,1,60s1,40,1,60s-1,40-1,60s0,40,0,60s1,40,1,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M410,-60c0,20,0,40,1,60s1,40,2,60s0,40,1,60s1,40,2,60s2,40,3,60s1,40,2,60s0,40,0,60s0,40-1,60s-1,40-2,60s-1,40-2,60s-3,40-3,60s-1,40-1,60s0,40,0,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s1,40,1,60s1,40,1,60s-1,40-1,60s0,40,0,60s0,40,1,60s1,40,2,60' stroke-opacity='.5'/%3E%3Cpath d='M370,-60c0,20,0,40,1,60s1,40,2,60s1,40,1,60s2,40,2,60s2,40,2,60s1,40,2,60s0,40,0,60s0,40,0,60s-1,40-2,60s-1,40-2,60s-2,40-3,60s-1,40-1,60s0,40-1,60s0,40-1,60s0,40,0,60s-1,40-1,60s1,40,1,60s1,40,1,60s-1,40-1,60s-1,40,0,60s0,40,1,60s1,40,2,60' stroke-opacity='.5'/%3E%3Cpath d='M329,-60c0,20,1,40,1,60s2,40,3,60s1,40,2,60s1,40,1,60s1,40,2,60s1,40,1,60s0,40,0,60s0,40,0,60s-1,40-1,60s-1,40-2,60s-2,40-3,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s0,40,1,60s0,40,0,60s0,40,0,60s0,40,0,60s-1,40-1,60s1,40,1,60s2,40,3,60' stroke-opacity='.5'/%3E%3Cpath d='M289,-60c0,20,1,40,1,60s2,40,3,60s1,40,2,60s1,40,1,60s1,40,1,60s1,40,1,60s0,40,1,60s0,40,0,60s-1,40-1,60s-1,40-2,60s-2,40-2,60s-1,40-2,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s0,40,1,60s0,40,0,60s0,40,0,60s0,40-1,60s0,40,0,60s1,40,1,60s2,40,3,60' stroke-opacity='.5'/%3E%3Cpath d='M249,-60c0,20,1,40,1,60s2,40,3,60s1,40,2,60s1,40,1,60s1,40,1,60s0,40,0,60s1,40,1,60s0,40,0,60s0,40-1,60s-1,40-1,60s-1,40-2,60s-1,40-2,60s-1,40-1,60s-1,40-1,60s-1,40-1,60s1,40,1,60s0,40,0,60s0,40,0,60s0,40-1,60s0,40,0,60s1,40,1,60s2,40,3,60' stroke-opacity='.5'/%3E%3Cpath d='M209,-60c0,20,1,40,1,60s2,40,2,60s2,40,3,60s1,40,1,60s0,40,0,60s1,40,1,60s0,40,0,60s0,40,0,60s0,40,0,60s-1,40-1,60s-1,40-2,60s-1,40-2,60s-1,40-2,60s0,40-1,60s0,40,0,60s1,40,1,60s0,40,0,60s0,40,0,60s-1,40-1,60s0,40,0,60s1,40,1,60s2,40,2,60' stroke-opacity='.5'/%3E%3Cpath d='M169,-60c0,20,1,40,1,60s2,40,2,60s2,40,3,60s1,40,1,60s0,40,0,60s0,40,0,60s0,40,0,60s1,40,1,60s0,40,0,60s-1,40-1,60s-1,40-2,60s-1,40-2,60s-1,40-2,60s0,40-1,60s0,40,0,60s1,40,1,60s0,40,0,60s0,40,0,60s-1,40-1,60s0,40,0,60s1,40,1,60s2,40,2,60' stroke-opacity='.5'/%3E%3Cpath d='M129,-60c0,20,1,40,1,60s2,40,2,60s2,40,3,60s1,40,1,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,0,60s-1,40-2,60s-1,40-2,60s-1,40-2,60s-1,40-1,60s0,40,0,60s1,40,1,60s0,40,0,60s-1,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s2,40,2,60' stroke-opacity='.5'/%3E%3Cpath d='M89,-60c0,20,1,40,1,60s2,40,2,60s2,40,3,60s0,40,1,60s0,40,0,60s-1,40-1,60s0,40,0,60s1,40,1,60s0,40,0,60s0,40,0,60s-1,40-2,60s-1,40-2,60s-1,40-2,60s-1,40-1,60s0,40,0,60s1,40,1,60s0,40,0,60s-1,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s2,40,2,60' stroke-opacity='.5'/%3E%3Cpath d='M49,-60c1,20,1,40,1,60s2,40,3,60s1,40,1,60s1,40,1,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40,0,60s1,40,1,60s0,40-1,60s0,40-1,60s-1,40-2,60s-1,40-2,60s0,40-1,60s0,40,0,60s1,40,1,60s0,40,0,60s-1,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s2,40,3,60' stroke-opacity='.5'/%3E%3Cpath d='M10,-60c0,20,0,40,1,60s1,40,1,60s2,40,2,60s1,40,1,60s0,40,0,60s0,40,0,60s-1,40,0,60s0,40,0,60s0,40,0,60s0,40,0,60s0,40-1,60s-1,40-2,60s-1,40-2,60s0,40-1,60s1,40,1,60s0,40,0,60s-1,40-1,60s0,40,0,60s0,40,0,60s0,40,1,60s0,40,1,60s1,40,1,60' stroke-opacity='.5'/%3E%3Cpath d='M-30,-60c0,20,0,40,1,60s1,40,1,60s1,40,2,60s0,40,0,60s1,40,1,60s-1,40-1,60s0,40,0,60s0,40,0,60s1,40,1,60s0,40,0,60s0,40-1,60s-1,40-2,60s-1,40-1,60s-1,40-1,60s0,40,0,60s0,40,0,60s-1,40-1,60s0,40,0,60s0,40,0,60s0,40,1,60s0,40,1,60s1,40,1,60' stroke-opacity='.5'/%3E%3C/svg%3E");
+  -webkit-mask-position:0 0,100% 0;mask-position:0 0,100% 0;}
+@media (max-width:1060px){
+  body::before,body::after{opacity:.13;}
+}
+@media print{body::before,body::after{display:none;}}
+}
+
+  /* ── the sea chart ── */
+  .hero-diagram{height:auto;}
+  .diagram-panels.three{grid-template-columns:repeat(3,1fr);}
+  @media (max-width:820px){.diagram-panels.three{grid-template-columns:1fr;}}
+  .diagram-panel.is-west{background:#F2ECE7;border-color:#D4BEAC;}
+  .diagram-panel.is-west h4{color:#4D4C4A;}
+  .diagram-panel.is-isle{background:#E7EEEE;border-color:#ACC4C6;}
+  .diagram-panel.is-isle h4{color:#4A4C4C;}
+  .diagram-panel.is-east{background:#FCF8EE;border-color:#F6E7C5;}
+  .diagram-panel.is-east h4{color:#565451;}
+  .diagram-panel li{padding:3px 6px;margin:0 -6px;border-radius:6px;transition:background .15s ease;}
+  .diagram-panel li.is-lit{background:var(--accent-lighter);}
+  .diagram-panel li b{font-weight:700;margin-right:.3em;}
+  .sail-chart-overlay{--hotspot-wash:color-mix(in srgb,var(--card) 24%,transparent);}
+  .sail-chart-overlay .land{transition:fill .15s ease;}
+  .sail-chart-overlay .land:hover{fill:var(--hotspot-wash);}
+  .sail-chart-overlay .land:focus-visible{fill:var(--hotspot-wash);outline:3px solid var(--accent);outline-offset:2px;}
+  .sail-chart-overlay text{pointer-events:none;}
+  .chart-scroll-hint{display:none;font-size:12.5px;color:var(--ink-soft);margin:9px 2px 0;font-style:italic;}
+  .name-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 14px;
+            font-family:'Inter',sans-serif;font-size:12.5px;color:var(--ink-soft);}
+  .name-bar .name-label{letter-spacing:.06em;text-transform:uppercase;font-weight:700;font-size:11px;}
+  .name-bar button{font:inherit;font-weight:600;border:1px solid var(--accent-light);
+                   background:var(--card);color:var(--ink-soft);padding:5px 12px;border-radius:999px;
+                   cursor:pointer;transition:background .12s ease,color .12s ease;}
+  .name-bar button:hover{color:var(--ink);}
+  .name-bar button.on{background:var(--accent);color:var(--on-accent);border-color:var(--accent);}
+  .chart-toggle-wrap{position:relative;}
+  .chart-toggle-wrap .chart-photo{display:block;width:100%;height:auto;border-radius:14px;}
+  .chart-toggle-wrap .sail-chart{position:absolute;top:0;left:0;width:100%;height:100%;}
+  .hero-cta{display:inline-flex;align-items:center;gap:6px;margin-top:18px;background:var(--accent);
+            color:var(--on-accent);font-family:'Inter',sans-serif;font-weight:600;font-size:14px;
+            padding:11px 20px;border-radius:999px;text-decoration:none;transition:opacity .12s ease;}
+  .hero-cta:hover{opacity:.88;}
+  /* a chart this dense is unreadable shrunk to a phone: it scrolls at a
+     width where the harbour names are still about 12px */
+  @media (max-width:760px){
+    .diagram-stage{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+    .diagram-stage .chart-toggle-wrap{width:980px;max-width:none;}
+    .chart-scroll-hint{display:block;}
+  }
+  /* on a phone the trail's 66px gutter and the card's padding left the chart
+     a 205px window; the chart card reaches into the gutter instead */
+  @media (max-width:600px){
+    #order .diagram-card{margin-left:-56px;padding:16px 12px;}
+  }
+  /* ── the sky: clouds and gulls (see build_sailing.py) ── */
+  .gull-sky{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;}
+  @media print{.gull-sky{display:none;}}
+  .wordmark,h1,h1 ~ p,.camp > .camp-label,.camp > h2,.camp > p.example,.camp > p.chart-note,.btnrow > a.route-link,.tr-bar > .tr-label,.voice-bar a.ghost{text-shadow:0 0 2px var(--paper),0 0 4px var(--paper),0 0 6px var(--paper),0 0 8px var(--paper);}
+</style>
+<!-- SHERPA-SKY:start -->
+<style id="sherpa-sky">
+/* clouds drifting across the screen, seen from above (tools/sherpa_sky.py): nine clouds,
+   each on its own loop, in a fixed screen-sized layer, by transform only */
+.sherpa-sky{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;}
+.sherpa-sky i{position:absolute;left:0;background:0 0/100% 100% no-repeat;will-change:transform;animation:sherpa-sky-drift linear infinite;}
+@keyframes sherpa-sky-drift{from{transform:translateX(-100%)}to{transform:translateX(100vw)}}
+.sherpa-sky i:nth-child(1){top:8%;width:560px;height:311px;background-image:url("Sherpa%20Tensing/cloud-1.webp");animation-duration:95s;animation-delay:-10s;opacity:0.95;}
+.sherpa-sky i:nth-child(2){top:38%;width:480px;height:260px;background-image:url("Sherpa%20Tensing/cloud-2.webp");animation-duration:110s;animation-delay:-61s;opacity:0.95;}
+.sherpa-sky i:nth-child(3){top:64%;width:620px;height:339px;background-image:url("Sherpa%20Tensing/cloud-3.webp");animation-duration:85s;animation-delay:-26s;opacity:0.95;}
+.sherpa-sky i:nth-child(4){top:84%;width:430px;height:230px;background-image:url("Sherpa%20Tensing/cloud-4.webp");animation-duration:120s;animation-delay:-96s;opacity:0.9;}
+.sherpa-sky i:nth-child(5){top:20%;width:300px;height:162px;background-image:url("Sherpa%20Tensing/cloud-5.webp");animation-duration:170s;animation-delay:-34s;opacity:0.6;}
+.sherpa-sky i:nth-child(6){top:50%;width:260px;height:149px;background-image:url("Sherpa%20Tensing/cloud-6.webp");animation-duration:190s;animation-delay:-124s;opacity:0.55;}
+.sherpa-sky i:nth-child(7){top:74%;width:280px;height:156px;background-image:url("Sherpa%20Tensing/cloud-1.webp");animation-duration:180s;animation-delay:-81s;opacity:0.6;}
+.sherpa-sky i:nth-child(8){top:2%;width:240px;height:130px;background-image:url("Sherpa%20Tensing/cloud-2.webp");animation-duration:200s;animation-delay:-180s;opacity:0.5;}
+.sherpa-sky i:nth-child(9){top:92%;width:270px;height:147px;background-image:url("Sherpa%20Tensing/cloud-3.webp");animation-duration:175s;animation-delay:-9s;opacity:0.55;}
+/* the smallest phones: the far clouds only would crowd, so the near ones shrink */
+@media (max-width:560px){.sherpa-sky i{transform-origin:0 0;}.sherpa-sky i:nth-child(-n+4){scale:.7;}}
+@media (prefers-reduced-motion:reduce){.sherpa-sky i{animation-play-state:paused;}}
+@media print{.sherpa-sky{display:none;}}
+  /* the Forbes English logo at the head of the header (sea_chrome.py) */
+  .wordmark{gap:18px;}
+  .wordmark .fe-home{display:block;flex:none;line-height:0;}
+  .wordmark .fe-home svg{height:40px;width:auto;display:block;}
+  .wordmark .brand{flex:1;}
+  @media (max-width:560px){.wordmark{flex-wrap:wrap;row-gap:6px;}.wordmark .fe-home svg{height:32px;}.wordmark .sub{flex-basis:100%;}}
+  /* see-through panels: the sky shows behind every card (sea_chrome.py) */
+  :root{--card:color-mix(in srgb, #FFFFFF 74%, transparent);}
+  .chart-wrap,.rule-card,.diagram-card,.quiz-card,.diagram-panel{-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);}
+  .opt-btn{background:var(--card);}
+</style>
+<!-- SHERPA-SKY:end -->
+</head>
+<body>
+<div class="gull-sky" id="gull-sky" aria-hidden="true"></div>
+<!-- SHERPA-SKY-EL:start -->
+<div class="sherpa-sky" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+<!-- SHERPA-SKY-EL:end -->
+<a class="up-link" href="grammar.html#maps"><span class="arw" aria-hidden="true">&larr;</span>Grammar maps</a>
+
+
+<div class="wordmark">
+  <a class="fe-home" href="index.html" aria-label="Forbes English home"><svg class="fe-std-logo" viewBox="680 355 1510 690" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Forbes English" ><g transform="translate(0,1504) scale(0.1,-0.1)" style="fill:var(--accent-dark)" stroke="none">
+      <path d="M14940 11379 c-58 -10 -226 -34 -375 -54 -148 -20 -305 -41 -348 -47
+      l-78 -10 3 -146 3 -146 76 -12 c42 -6 85 -17 97 -23 27 -15 66 -67 82 -111 21
+      -57 27 -487 25 -1635 -2 -832 -6 -1120 -18 -1295 -8 -124 -14 -226 -13 -227 9
+      -9 462 -54 473 -47 7 5 40 61 72 124 32 63 63 116 68 117 6 2 43 -24 84 -58
+      105 -89 177 -133 272 -167 125 -45 205 -57 372 -57 316 1 518 82 725 294 141
+      144 224 297 285 521 74 276 91 648 42 925 -32 176 -68 310 -113 418 -164 392
+      -526 609 -944 565 -204 -21 -372 -97 -522 -237 l-48 -44 0 656 0 655 -31 31
+      c-35 36 -40 36 -189 10z m788 -1611 c112 -42 190 -158 236 -353 43 -182 55
+      -299 51 -525 -6 -382 -71 -618 -205 -744 -76 -71 -126 -91 -235 -91 -57 0
+      -110 6 -145 17 -71 22 -169 81 -225 135 l-45 43 0 669 0 669 54 49 c84 77 226
+      144 331 156 51 6 127 -4 183 -25z"/>
+      <path d="M6896 11053 c-4 -71 -3 -141 2 -158 8 -28 13 -31 89 -46 44 -9 95
+      -21 112 -29 43 -17 88 -72 98 -117 11 -50 10 -2471 0 -2545 -5 -31 -18 -72
+      -30 -89 -26 -39 -95 -76 -157 -84 -25 -3 -62 -8 -82 -11 l-38 -6 0 -159 0
+      -159 755 0 755 0 -2 163 -3 162 -87 7 c-175 13 -250 55 -284 158 -16 49 -18
+      108 -22 558 l-3 502 236 0 c344 0 346 -1 410 -267 l18 -73 168 0 169 0 -2 553
+      -3 552 -167 3 c-167 2 -168 2 -172 -20 -2 -13 -9 -54 -16 -93 -21 -126 -70
+      -206 -139 -225 -20 -5 -141 -10 -268 -10 l-233 0 0 555 0 556 428 -3 c473 -3
+      469 -3 540 -71 46 -44 78 -108 132 -267 l46 -135 203 -3 203 -2 -6 67 c-3 38
+      -15 205 -26 373 -11 168 -22 347 -26 398 l-6 92 -1293 0 -1292 0 -7 -127z"/>
+      <path d="M10520 10306 c-503 -73 -861 -361 -1014 -817 -51 -153 -68 -261 -73
+      -477 -6 -224 4 -336 43 -502 62 -263 143 -419 296 -569 255 -249 547 -361 939
+      -361 298 0 517 60 724 198 282 187 439 437 517 823 20 100 23 142 23 339 -1
+      205 -3 236 -27 350 -76 353 -203 581 -425 759 -147 119 -353 211 -551 247
+      -120 22 -335 26 -452 10z m325 -436 c141 -69 239 -258 297 -571 20 -108 22
+      -158 23 -384 0 -288 -10 -379 -57 -540 -52 -176 -121 -278 -224 -330 -47 -24
+      -73 -30 -145 -33 -171 -8 -285 53 -372 199 -95 161 -150 473 -142 809 10 449
+      121 745 315 845 58 30 81 34 170 32 67 -2 96 -7 135 -27z"/>
+      <path d="M18255 10313 c-141 -16 -204 -29 -292 -58 -271 -90 -467 -237 -611
+      -458 -182 -280 -257 -619 -223 -1007 37 -415 159 -696 387 -893 253 -218 538
+      -317 914 -317 341 1 615 84 815 247 60 49 185 177 191 195 4 14 -19 57 -77
+      144 -45 69 -86 127 -91 130 -5 3 -43 -17 -86 -44 -164 -106 -284 -154 -430
+      -173 -168 -22 -350 5 -497 76 -134 64 -216 161 -275 323 -33 90 -77 320 -67
+      347 6 13 94 15 776 15 l769 0 7 113 c7 120 -6 307 -31 447 -62 340 -198 580
+      -413 723 -95 64 -242 133 -334 156 -127 33 -318 48 -432 34z m221 -427 c132
+      -62 228 -270 241 -528 l6 -118 -408 0 -408 0 7 68 c25 246 110 453 221 538 87
+      66 245 85 341 40z"/>
+      <path d="M20656 10309 c-301 -29 -581 -166 -723 -354 -56 -73 -116 -197 -140
+      -285 -13 -48 -17 -103 -17 -210 0 -129 3 -155 28 -235 35 -114 68 -174 134
+      -246 129 -140 318 -226 797 -364 192 -55 255 -84 317 -146 106 -107 103 -287
+      -8 -389 -84 -78 -192 -107 -357 -97 -209 13 -353 92 -403 223 -10 27 -32 101
+      -49 164 l-30 115 -219 3 -219 2 6 -256 c4 -142 7 -304 7 -360 0 -122 -15 -107
+      173 -170 263 -88 487 -124 781 -124 205 0 315 10 436 41 164 41 281 102 392
+      207 155 146 233 326 245 562 12 245 -69 470 -218 604 -123 111 -266 178 -599
+      281 -385 119 -458 152 -515 234 -28 40 -30 49 -29 124 1 125 43 190 154 241
+      111 51 254 56 389 14 121 -37 177 -121 236 -353 l20 -80 205 0 205 0 3 346 2
+      347 -112 40 c-318 112 -594 149 -892 121z"/>
+      <path d="M12620 10249 c-223 -32 -411 -61 -417 -64 -10 -3 -13 -42 -13 -149
+      l0 -144 58 -7 c111 -13 183 -65 199 -143 4 -20 8 -397 8 -837 0 -787 0 -801
+      -21 -840 -26 -52 -87 -83 -177 -92 l-67 -6 0 -41 c0 -23 -3 -94 -7 -158 l-6
+      -118 702 0 701 0 0 159 0 158 -83 6 c-146 12 -214 43 -253 119 -27 51 -37 294
+      -30 722 7 428 12 470 69 579 82 157 210 228 407 226 76 0 166 -18 278 -54 12
+      -4 22 -3 22 1 0 5 20 167 44 359 25 193 41 353 38 356 -14 14 -115 29 -188 29
+      -112 0 -217 -25 -319 -75 -170 -83 -273 -193 -362 -382 -26 -56 -51 -103 -55
+      -103 -5 0 -8 15 -8 33 0 18 -7 134 -15 258 -15 218 -16 225 -41 247 -14 12
+      -33 22 -42 21 -9 0 -199 -27 -422 -60z"/>
+      </g><text x="675" y="1034" textLength="1520" lengthAdjust="spacing" style="fill:var(--accent);font-family:DM Sans,Arial,sans-serif;font-size:209px;font-weight:600;letter-spacing:0">ENGLISH</text></svg></a>
+  <div class="brand">Sailing the <span>Seas of Grammar</span></div>
+  <div class="sub">Forbes English &middot; Present perfect or past simple</div>
+</div>
+
+<main>
+
+  <section class="hero" id="hero">
+    <div>
+      <span class="eyebrow">Sailing the Seas of Grammar &middot; Present perfect or past simple</span>
+      <h1>Finished Time &amp; Open Time</h1>
+      <p><em>I saw her yesterday</em>, but <em>I have seen her today</em>. The action is the same. What changes is the time: yesterday is over, and today is still open. Finished time takes the past simple; open time takes the present perfect. Read the time word, find its shore, and the tense is decided.</p>
+      <a class="hero-cta" href="#order">Read the chart <span aria-hidden="true">&rarr;</span></a>
+    </div>
+    <button type="button" class="hero-diagram-btn" id="hero-map-btn" aria-label="Expand the map"><img class="hero-diagram" src="sailing-the-seas-finished/hero.jpg" alt="An illustrated chart with two shores. On the brown west shore, Finished Time, eight harbours: yesterday, last week, in 2019, two days ago, when I was ten, on Monday, at six and the other day. On the teal east shore, Open Time, eight more: ever, never, yet, already, so far, since 2019, recently and just. In the channel, Twofold Isle holds for five years and this morning. Below it a sandbank, the Shallows, and a spit with a red flag, the False Cape: When always takes the past." width="1536" height="1024" loading="eager"></button><div class="img-lightbox" id="hero-lightbox"><button type="button" class="lightbox-close" aria-label="Close">&times;</button><img src="sailing-the-seas-finished/hero.jpg" alt="An illustrated chart with two shores. On the brown west shore, Finished Time, eight harbours: yesterday, last week, in 2019, two days ago, when I was ten, on Monday, at six and the other day. On the teal east shore, Open Time, eight more: ever, never, yet, already, so far, since 2019, recently and just. In the channel, Twofold Isle holds for five years and this morning. Below it a sandbank, the Shallows, and a spit with a red flag, the False Cape: When always takes the past."></div>
+  </section>
+
+    <div class="tr-bar" id="tr-bar"><span class="tr-label">Examples in</span><button type="button" data-lang="" class="on">Off</button><button type="button" data-lang="de">DE</button><button type="button" data-lang="es">ES</button><button type="button" data-lang="fr">FR</button><button type="button" data-lang="it">IT</button><button type="button" data-lang="pt">PT</button><button type="button" data-lang="ru">RU</button><button type="button" data-lang="ar">AR</button><button type="button" data-lang="zh">ZH</button><button type="button" data-lang="ja">JA</button></div>
+
+      <div class="trail-wrap">
+
+    <div class="camp" id="rules">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 3v18M5 4h11l-3 4 3 4H5"/></svg></div>
+      <div class="camp-label">Reading the two shores</div>
+      <h2>Is the time over?</h2>
+      <p class="chart-note" style="margin:-6px 0 18px">Do not ask how long ago it happened. Ask whether the time you are talking about has finished. If it has, you are on the west shore.</p>
+      <div class="rule-grid">
+        <div class="rule-card">
+          <h3>Finished: a named past time</h3>
+          <p><em>Yesterday</em>, <em>last week</em>, <em>in 2019</em>, <em>on Monday</em>, <em>at six</em>: the time is over.</p>
+          <div class="ex" data-tr="0">I <em>saw</em> her yesterday.</div>
+        </div>
+        <div class="rule-card">
+          <h3>Finished: ago</h3>
+          <p><em>Ago</em> counts back from now to a finished point.</p>
+          <div class="ex" data-tr="1">He <em>called</em> two days ago.</div>
+        </div>
+        <div class="rule-card">
+          <h3>Finished: when + a past time</h3>
+          <p>A <em>when</em> clause about the past closes the time.</p>
+          <div class="ex" data-tr="2">I <em>learned</em> to sail when I was ten.</div>
+        </div>
+        <div class="rule-card">
+          <h3>Open: your life so far</h3>
+          <p><em>Ever</em> and <em>never</em> mean at any time up to now.</p>
+          <div class="ex" data-tr="3"><em>Have</em> you ever <em>sailed</em>?</div>
+        </div>
+        <div class="rule-card">
+          <h3>Open: up to now</h3>
+          <p><em>Yet</em>, <em>already</em>, <em>so far</em>, <em>recently</em>, <em>just</em>: the time reaches this moment.</p>
+          <div class="ex" data-tr="4">We <em>have</em> already <em>eaten</em>.</div>
+        </div>
+        <div class="rule-card">
+          <h3>Open: since + a starting point</h3>
+          <p><em>Since</em> names where the time began; it runs to now.</p>
+          <div class="ex" data-tr="5">They <em>have lived</em> here since 2019.</div>
+        </div>
+      </div>      <div class="chart-wrap">
+        <h3>The sixteen harbours</h3>
+        <p class="chart-note">Read each row across the channel: a finished time on the left, an open time on the right.</p>
+        <table class="conj">
+          <thead><tr><th>Finished time</th><th>Past simple</th><th>Open time</th><th>Present perfect</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">yesterday</td><td>I saw her yesterday.</td><td>ever</td><td>Have you ever sailed?</td></tr>
+            <tr><td class="subj">last week</td><td>We met last week.</td><td>never</td><td>I have never been to Rome.</td></tr>
+            <tr><td class="subj">in 2019</td><td>They moved in 2019.</td><td>yet</td><td>She hasn&#39;t called yet.</td></tr>
+            <tr><td class="subj">two days ago</td><td>He called two days ago.</td><td>already</td><td>We have already eaten.</td></tr>
+            <tr><td class="subj">when I was ten</td><td>I learned to sail when I was ten.</td><td>so far</td><td>I have read two chapters so far.</td></tr>
+            <tr><td class="subj">on Monday</td><td>She arrived on Monday.</td><td>since 2019</td><td>They have lived here since 2019.</td></tr>
+            <tr><td class="subj">at six</td><td>The ferry left at six.</td><td>recently</td><td>I have seen him recently.</td></tr>
+            <tr><td class="subj">the other day</td><td>I saw him the other day.</td><td>just</td><td>He has just left.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <div class="camp" id="form">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg></div>
+      <div class="camp-label">Twofold Isle, the Shallows and the False Cape</div>
+      <h2>Where the situation decides</h2>
+      <p class="chart-note" style="margin:-6px 0 18px">Two time words can be finished or open. The answer is not in the word: it is in what is true now.</p>
+            <div class="chart-wrap">
+        <h3>Twofold Isle</h3>
+        <p class="chart-note">Read each row as a pair.</p>
+        <table class="conj">
+          <thead><tr><th>Time word</th><th>Finished</th><th>Open</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">for five years</td><td>I lived in Rome for five years. (I left)</td><td>I have lived in Rome for five years. (I still do)</td></tr>
+            <tr><td class="subj">this morning</td><td>I saw her this morning. (it is now afternoon)</td><td>I have seen her this morning. (it is still morning)</td></tr>
+            <tr><td class="subj">today</td><td>I called her today. (the working day is over)</td><td>I have called her today. (the day is still going)</td></tr>
+            <tr><td class="subj">this week</td><td>We met this week. (and will not again)</td><td>We have met twice this week. (so far)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="ex" data-tr="6" style="margin:14px 0 0">I <em>lived</em> in Rome for five years, and I <em>have lived</em> here for two.</p>      <div class="chart-wrap">
+        <h3>The Shallows and the False Cape</h3>
+        <p class="chart-note">Two places where the chart needs a note.</p>
+        <table class="conj">
+          <thead><tr><th>Where</th><th>What happens</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">The Shallows</td><td>American English often uses the past simple with <em>just</em>, <em>already</em>, <em>yet</em></td><td>Did you eat yet? (US) / Have you eaten yet? (UK)</td></tr>
+            <tr><td class="subj">The False Cape</td><td><em>When&#8230;?</em> asks for a finished time, so it takes the past simple</td><td>When did you arrive? (not: When have you arrived?)</td></tr>
+            <tr><td class="subj">The False Cape</td><td>the answer to it is finished too</td><td>I arrived at six.</td></tr>
+            <tr><td class="subj">The False Cape</td><td><em>How long&#8230;?</em> is open and takes the perfect</td><td>How long have you been here?</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="ex" data-tr="7" style="margin:14px 0 0"><em>When did</em> you <em>arrive</em>? I<em>&#39;ve been</em> here since six.</p>
+    </div>
+
+    <div class="camp" id="order">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="4" width="8" height="16"/><rect x="13" y="4" width="8" height="16"/></svg></div>
+      <div class="camp-label">Interactive</div>
+      <h2>Read the chart</h2>
+      <div class="diagram-card" data-map-zoom data-mz-target=".chart-toggle-wrap" data-mz-btn=".name-bar" data-mz-ratio="1.5" data-mz-min="1000">
+        <p class="diagram-intro">Click a harbour and its line lights up below: Finished Time on the left, Open Time in the middle. Switch the chart to see why each word is on its shore, then each one in a sentence.</p>
+        <div class="name-bar" id="name-bar">
+          <span class="name-label">Read the chart as</span>
+          <button type="button" data-mode="place" class="on" aria-pressed="true">The time words</button>
+          <button type="button" data-mode="verb" aria-pressed="false">Why this shore</button>
+          <button type="button" data-mode="past" aria-pressed="false">In a sentence</button>
+        </div>
+        <div class="diagram-stage" data-mz-scroll>
+          <div class="chart-toggle-wrap">
+            <img class="chart-photo" src="sailing-the-seas-finished/chart-clean.jpg" alt="" width="1536" height="1024" loading="lazy">
+            <svg class="sail-chart sail-chart-overlay" viewBox="0 0 1536 1024">
+        <path id="fin-f-yesterday" class="land" tabindex="0" role="button" aria-label="yesterday: finished time, past simple" style="cursor:pointer" d="M 244 274 a 30 30 0 1 0 60 0 a 30 30 0 1 0 -60 0 Z" fill="transparent" stroke="transparent" stroke-width="14"/>
+        <path id="fin-o-ever" class="land" tabindex="0" role="button" aria-label="ever: open time, present perfect" style="cursor:pointer" d="M 1230 275 a 30 30 0 1 0 60 0 a 30 30 0 1 0 -60 0 Z" fill="transparent" stroke="transparent" stroke-width="14"/>
+        <path id="fin-f-last-week" class="land" tabindex="0" role="button" aria-label="last week: finished time, past simple" style="cursor:pointer" d="M 244 360 a 30 30 0 1 0 60 0 a 30 30 0 1 0 -60 0 Z" fill="transparent" stroke="transparent" stroke-width="14"/>
+        <path id="fin-o-never" class="land" tabindex="0" role="button" aria-label="never: open time, present perfect" style="cursor:pointer" d="M 1230 360 a 30 30 0 1 0 60 0 a 30 30 0 1 0 -60 0 Z" fill="transparent" stroke="transparent" stroke-width="14"/>
+        <path id="fin-f-in-2019" class="land" tabindex="0" role="button" aria-label="in 2019: finished time, past simple" style="cursor:pointer" d="M 244 443 a 30 30 0 1 0 60 0 a 30 30 0 1 0 -60 0 Z" fill="transparent" stroke="transparent" stroke-width="14"/>
+        <path id="fin-o-yet" class="land" tabindex="0" role="button" aria-label="yet: open time, present perfect" style="cursor:pointer" d="M 1230 443 a 30 30 0 1 0 60 0 a 30 30 0 1 0 -60 0 Z" fill="transparent" stroke="transparent" stroke-width="14"/>
+        <path id="fin-f-two-days-ago" class="land" tabindex="0" role="button" aria-label="two days ago: finished time, past simple" style="cursor:pointer" d="M 244 524 a 30 30 0 1 0 60 0 a 30 30 0 1 0 -60 0 Z" fill="transparent" stroke="transparent" stroke-width="14"/>
+        <path id="fin-o-already" class="land" tabindex="0" role="button" aria-label="already: open time, present perfect" style="cursor:pointer" d="M 1230 525 a 30 30 0 1 0 60 0 a 30 30 0 1 0 -60 0 Z" fill="transparent" stroke="transparent" stroke-width="14"/>
+        <path id="fin-f-when-I-was-ten" class="land" tabindex="0" role="button" aria-label="when I was ten: finished time, past simple" style="cursor:pointer" d="M 244 608 a 30 30 0 1 0 60 0 a 30 30 0 1 0 -60 0 Z" fill="transparent" stroke="transparent" stroke-width="14"/>
+        <path id="fin-o-so-far" class="land" tabindex="0" role="button" aria-label="so far: open time, present perfect" style="cursor:pointer" d="M 1230 608 a 30 30 0 1 0 60 0 a 30 30 0 1 0 -60 0 Z" fill="transparent" stroke="transparent" stroke-width="14"/>
+        <path id="fin-f-on-Monday" class="land" tabindex="0" role="button" aria-label="on Monday: finished time, past simple" style="cursor:pointer" d="M 244 688 a 30 30 0 1 0 60 0 a 30 30 0 1 0 -60 0 Z" fill="transparent" stroke="transparent" stroke-width="14"/>
+        <path id="fin-o-since-2019" class="land" tabindex="0" role="button" aria-label="since 2019: open time, present perfect" style="cursor:pointer" d="M 1230 688 a 30 30 0 1 0 60 0 a 30 30 0 1 0 -60 0 Z" fill="transparent" stroke="transparent" stroke-width="14"/>
+        <path id="fin-f-at-six" class="land" tabindex="0" role="button" aria-label="at six: finished time, past simple" style="cursor:pointer" d="M 244 772 a 30 30 0 1 0 60 0 a 30 30 0 1 0 -60 0 Z" fill="transparent" stroke="transparent" stroke-width="14"/>
+        <path id="fin-o-recently" class="land" tabindex="0" role="button" aria-label="recently: open time, present perfect" style="cursor:pointer" d="M 1230 772 a 30 30 0 1 0 60 0 a 30 30 0 1 0 -60 0 Z" fill="transparent" stroke="transparent" stroke-width="14"/>
+        <path id="fin-f-the-other-day" class="land" tabindex="0" role="button" aria-label="the other day: finished time, past simple" style="cursor:pointer" d="M 244 854 a 30 30 0 1 0 60 0 a 30 30 0 1 0 -60 0 Z" fill="transparent" stroke="transparent" stroke-width="14"/>
+        <path id="fin-o-just" class="land" tabindex="0" role="button" aria-label="just: open time, present perfect" style="cursor:pointer" d="M 1230 854 a 30 30 0 1 0 60 0 a 30 30 0 1 0 -60 0 Z" fill="transparent" stroke="transparent" stroke-width="14"/>
+        <path id="fin-t-for-five-years" class="land" tabindex="0" role="button" aria-label="for five years: the situation decides" style="cursor:pointer" d="M 732 364 a 32 32 0 1 0 64 0 a 32 32 0 1 0 -64 0 Z" fill="transparent" stroke="transparent" stroke-width="14"/>
+        <path id="fin-t-this-morning" class="land" tabindex="0" role="button" aria-label="this morning: the situation decides" style="cursor:pointer" d="M 733 458 a 32 32 0 1 0 64 0 a 32 32 0 1 0 -64 0 Z" fill="transparent" stroke="transparent" stroke-width="14"/>
+        <path id="fin-shallows" class="land" tabindex="0" role="button" aria-label="The Shallows: just, already, yet" style="cursor:pointer" d="M 549 583 L 958 583 L 958 713 L 549 713 Z" fill="transparent" stroke="transparent" stroke-width="14"/>
+        <path id="fin-cape" class="land" tabindex="0" role="button" aria-label="The False Cape: when always takes the past" style="cursor:pointer" d="M 540 728 L 990 728 L 990 960 L 540 960 Z" fill="transparent" stroke="transparent" stroke-width="14"/>
+        <g class="chart-captions">
+        <text x="768" y="58" text-anchor="middle" font-family="Fraunces,Georgia,serif" font-size="38" font-weight="700" letter-spacing=".04em" fill="#0F2F3D">FINISHED TIME &amp; OPEN TIME</text>
+        <text x="768" y="94" text-anchor="middle" font-family="Fraunces,Georgia,serif" font-size="20" font-weight="600" letter-spacing="0" fill="#0F2F3D" font-style="italic">is the time over? read the shore</text>
+        <text x="274" y="168" text-anchor="middle" font-family="Fraunces,Georgia,serif" font-size="27" font-weight="700" letter-spacing=".02em" fill="#20180A" stroke="#C48351" stroke-width="4" stroke-linejoin="round" paint-order="stroke">FINISHED TIME</text>
+        <text x="274" y="198" text-anchor="middle" font-family="Inter,sans-serif" font-size="15" font-weight="600" letter-spacing="0" fill="#20180A" font-style="italic" stroke="#C48351" stroke-width="4" stroke-linejoin="round" paint-order="stroke">past simple: I saw her yesterday.</text>
+        <text x="1260" y="168" text-anchor="middle" font-family="Fraunces,Georgia,serif" font-size="27" font-weight="700" letter-spacing=".02em" fill="#FFFFFF" stroke="#2F5F5C" stroke-width="4" stroke-linejoin="round" paint-order="stroke">OPEN TIME</text>
+        <text x="1260" y="198" text-anchor="middle" font-family="Inter,sans-serif" font-size="15" font-weight="600" letter-spacing="0" fill="#FFFFFF" font-style="italic" stroke="#2F5F5C" stroke-width="4" stroke-linejoin="round" paint-order="stroke">present perfect: I have seen her.</text>
+        <text x="762" y="292" text-anchor="middle" font-family="Fraunces,Georgia,serif" font-size="21" font-weight="700" letter-spacing=".04em" fill="#20180A">TWOFOLD ISLE</text>
+        <text x="762" y="640" text-anchor="middle" font-family="Fraunces,Georgia,serif" font-size="20" font-weight="700" letter-spacing=".04em" fill="#20180A">THE SHALLOWS</text>
+        <text x="762" y="668" text-anchor="middle" font-family="Inter,sans-serif" font-size="15" font-weight="600" letter-spacing="0" fill="#20180A" font-style="italic">just &#183; already &#183; yet: US past simple</text>
+        <text x="762" y="908" text-anchor="middle" font-family="Fraunces,Georgia,serif" font-size="20" font-weight="700" letter-spacing=".04em" fill="#0F2F3D">THE FALSE CAPE</text>
+        <text x="762" y="938" text-anchor="middle" font-family="Inter,sans-serif" font-size="15" font-weight="600" letter-spacing="0" fill="#0F2F3D" font-style="italic">When&#8230;? always takes the past: When did you arrive?</text>
+        </g>
+        <g class="place-layer">
+        <text class="place-name" x="274" y="259" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#20180A" stroke="#D6A885" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="yesterday" data-verb="the time is over" data-past="I saw her yesterday.">yesterday</text>
+        <text class="place-name" x="1260" y="260" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#20180A" stroke="#9DC8C5" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="ever" data-verb="the time reaches now" data-past="Have you ever sailed?">ever</text>
+        <text class="place-name" x="274" y="345" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#20180A" stroke="#D6A885" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="last week" data-verb="the time is over" data-past="We met last week.">last week</text>
+        <text class="place-name" x="1260" y="345" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#20180A" stroke="#9DC8C5" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="never" data-verb="the time reaches now" data-past="I have never been to Rome.">never</text>
+        <text class="place-name" x="274" y="428" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#20180A" stroke="#D6A885" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="in 2019" data-verb="the time is over" data-past="They moved in 2019.">in 2019</text>
+        <text class="place-name" x="1260" y="428" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#20180A" stroke="#9DC8C5" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="yet" data-verb="the time reaches now" data-past="She hasn&#8217;t called yet.">yet</text>
+        <text class="place-name" x="274" y="509" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#20180A" stroke="#D6A885" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="two days ago" data-verb="the time is over" data-past="He called two days ago.">two days ago</text>
+        <text class="place-name" x="1260" y="510" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#20180A" stroke="#9DC8C5" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="already" data-verb="the time reaches now" data-past="We have already eaten.">already</text>
+        <text class="place-name" x="274" y="593" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#20180A" stroke="#D6A885" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="when I was ten" data-verb="the time is over" data-past="I learned to sail when I was ten.">when I was ten</text>
+        <text class="place-name" x="1260" y="593" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#20180A" stroke="#9DC8C5" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="so far" data-verb="the time reaches now" data-past="I have read two chapters so far.">so far</text>
+        <text class="place-name" x="274" y="673" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#20180A" stroke="#D6A885" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="on Monday" data-verb="the time is over" data-past="She arrived on Monday.">on Monday</text>
+        <text class="place-name" x="1260" y="673" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#20180A" stroke="#9DC8C5" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="since 2019" data-verb="the time reaches now" data-past="They have lived here since 2019.">since 2019</text>
+        <text class="place-name" x="274" y="757" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#20180A" stroke="#D6A885" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="at six" data-verb="the time is over" data-past="The ferry left at six.">at six</text>
+        <text class="place-name" x="1260" y="757" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#20180A" stroke="#9DC8C5" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="recently" data-verb="the time reaches now" data-past="I have seen him recently.">recently</text>
+        <text class="place-name" x="274" y="839" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#20180A" stroke="#D6A885" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="the other day" data-verb="the time is over" data-past="I saw him the other day.">the other day</text>
+        <text class="place-name" x="1260" y="839" text-anchor="middle" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#20180A" stroke="#9DC8C5" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="19" data-place="just" data-verb="the time reaches now" data-past="He has just left.">just</text>
+        <text class="place-name" x="764" y="349" text-anchor="middle" font-family="Inter,sans-serif" font-size="18" font-weight="600" fill="#20180A" stroke="#F1DCAA" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="18" data-place="for five years" data-verb="the situation decides" data-past="lived (and left) &#183; have lived (still do)">for five years</text>
+        <text class="place-name" x="765" y="443" text-anchor="middle" font-family="Inter,sans-serif" font-size="18" font-weight="600" fill="#20180A" stroke="#F1DCAA" stroke-width="4" stroke-linejoin="round" paint-order="stroke" data-size="18" data-place="this morning" data-verb="the situation decides" data-past="over? past &#183; still morning? perfect">this morning</text>
+        </g>
+      </svg>
+          </div>
+        </div>
+        <p class="chart-scroll-hint">Drag the chart sideways to reach Open Time.</p>
+        <div class="diagram-panels three">
+          <div class="diagram-panel is-west" id="fin-panel-0">
+            <h4>Finished Time: past simple</h4>
+            <ul id="fin-panel-0-list"></ul>
+          </div>
+          <div class="diagram-panel is-isle" id="fin-panel-1">
+            <h4>Open Time: present perfect</h4>
+            <ul id="fin-panel-1-list"></ul>
+          </div>
+          <div class="diagram-panel is-east" id="fin-panel-2">
+            <h4>Twofold Isle, the Shallows, the Cape</h4>
+            <ul id="fin-panel-2-list"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="camp" id="vs-simple">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3v18"/><path d="M7 8l-4 4 4 4M17 8l4 4-4 4"/></svg></div>
+      <div class="camp-label">The traps</div>
+      <h2>Wrong shore</h2>
+      <div class="chart-wrap" style="margin-top:18px">
+        <p class="chart-note" style="margin-bottom:16px">Each of these puts a tense with a time word from the other shore.</p>
+        <table class="conj">
+          <thead><tr><th>Not this</th><th>This</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">I have seen her yesterday.</td><td>I saw her yesterday.</td><td>yesterday is finished</td></tr>
+            <tr><td class="subj">We have met last week.</td><td>We met last week.</td><td>last week is finished</td></tr>
+            <tr><td class="subj">He has called two days ago.</td><td>He called two days ago.</td><td><em>ago</em> is finished</td></tr>
+            <tr><td class="subj">I never went to Rome. (in my life, so far)</td><td>I have never been to Rome.</td><td>your life is open</td></tr>
+            <tr><td class="subj">They live here since 2019.</td><td>They have lived here since 2019.</td><td><em>since</em> is open</td></tr>
+            <tr><td class="subj">When have you arrived?</td><td>When did you arrive?</td><td>the False Cape</td></tr>
+          </tbody>
+        </table>
+        <p class="example" style="margin-top:14px">If the sentence has no time word, ask what matters: the moment it happened (past simple) or the result now (present perfect).</p>
+      </div>
+      <div class="btnrow" style="margin-top:16px">
+        <a class="route-link" href="sailing-the-seas-finished.html#quiz">Straight to the test &rarr;</a>
+        <a class="route-link" href="sailing-the-seas-regularia.html">Regularia &amp; Irregularia: the third forms</a>
+      </div>
+    </div>
+
+    <div class="camp" id="signals">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg></div>
+      <div class="camp-label">Tide tables</div>
+      <h2>Signal words</h2>
+      <div class="signal-groups">
+        <div class="signal-box">
+          <h3>You are in Finished Time</h3>
+          <ul>
+            <li><em>yesterday</em>, <em>last week</em>, <em>last year</em></li>
+            <li><em>in 2019</em>, <em>on Monday</em>, <em>at six</em></li>
+            <li><em>two days ago</em></li>
+            <li><em>when I was ten</em></li>
+            <li><em>When&#8230;?</em></li>
+            <li>past simple</li>
+          </ul>
+        </div>
+        <div class="signal-box">
+          <h3>You are in Open Time</h3>
+          <ul>
+            <li><em>ever</em>, <em>never</em></li>
+            <li><em>yet</em>, <em>already</em>, <em>just</em></li>
+            <li><em>so far</em>, <em>recently</em></li>
+            <li><em>since 2019</em></li>
+            <li><em>How long&#8230;?</em></li>
+            <li>present perfect</li>
+          </ul>
+        </div>
+      </div>
+      <p class="example" style="margin-top:14px">One test: can you still add to it? You can still add to <em>this week</em>. You cannot add to <em>last week</em>.</p>
+    </div>
+
+    <div class="camp" id="quiz">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3l3 7-3 3-3-3 3-7z"/><path d="M12 13v8"/></svg></div>
+      <div class="camp-label">The crossing</div>
+      <h2>Practice</h2>
+      <div class="quiz-card">
+        <div class="progress-row">
+          <span id="progress-text">Checkpoint 1 of 14</span>
+          <span id="score-text">Score: 0</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+        <div class="q-prompt" id="q-prompt"></div>
+        <div class="q-hint" id="q-hint"></div>
+        <div class="options" id="options"></div>
+        <div class="feedback" id="feedback"></div>
+        <div class="quiz-footer">
+          <button class="next-btn" id="next-btn" disabled>Next checkpoint</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="camp" id="results-camp">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 20l5-14 5 14M8 14h4"/></svg></div>
+      <div class="camp-label">Ship&#39;s log</div>
+      <div id="results">
+        <div class="score" id="final-score"></div>
+        <p id="final-message"></p>
+        <button class="retry-btn" id="retry-btn">Sail it again</button>
+        <div class="route-nav">
+          <a class="base-camp" href="grammar.html#maps">&larr; Back to the grammar maps</a>
+          <a class="next-camp" href="sailing-the-seas-quadrants.html">Next chart: the Conditional Quadrants &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+
+
+
+
+// ── example translations: nine languages, click to reveal ──
+var EX_TR = {"0": ["Ich habe sie gestern gesehen.", "La vi ayer.", "Je l'ai vue hier.", "L'ho vista ieri.", "Vi-a ontem.", "Я видел её вчера.", "رأيتها أمس.", "我昨天见到了她。", "私は昨日彼女に会いました。"], "1": ["Er hat vor zwei Tagen angerufen.", "Llamó hace dos días.", "Il a appelé il y a deux jours.", "Ha chiamato due giorni fa.", "Ele ligou há dois dias.", "Он звонил два дня назад.", "اتصل قبل يومين.", "他两天前打过电话。", "彼は二日前に電話してきました。"], "2": ["Ich habe mit zehn Jahren segeln gelernt.", "Aprendí a navegar cuando tenía diez años.", "J'ai appris à naviguer quand j'avais dix ans.", "Ho imparato ad andare in barca a vela quando avevo dieci anni.", "Aprendi a velejar quando tinha dez anos.", "Я научился ходить под парусом, когда мне было десять лет.", "تعلمت الإبحار عندما كنت في العاشرة.", "我十岁时学会了航行。", "私は10歳のときにセーリングを覚えました。"], "3": ["Bist du schon einmal gesegelt?", "¿Has navegado alguna vez?", "As-tu déjà fait de la voile ?", "Sei mai andato in barca a vela?", "Já alguma vez velejaste?", "Ты когда-нибудь ходил под парусом?", "هل أبحرت من قبل؟", "你航行过吗？", "セーリングをしたことがありますか。"], "4": ["Wir haben schon gegessen.", "Ya hemos comido.", "Nous avons déjà mangé.", "Abbiamo già mangiato.", "Já comemos.", "Мы уже поели.", "لقد أكلنا بالفعل.", "我们已经吃过了。", "私たちはもう食べました。"], "5": ["Sie wohnen seit 2019 hier.", "Viven aquí desde 2019.", "Ils habitent ici depuis 2019.", "Vivono qui dal 2019.", "Eles vivem aqui desde 2019.", "Они живут здесь с 2019 года.", "يعيشون هنا منذ عام 2019.", "他们从2019年起就住在这里。", "彼らは2019年からここに住んでいます。"], "6": ["Ich habe fünf Jahre in Rom gelebt, und ich lebe seit zwei Jahren hier.", "Viví cinco años en Roma, y llevo dos años viviendo aquí.", "J'ai vécu cinq ans à Rome, et j'habite ici depuis deux ans.", "Ho vissuto a Roma per cinque anni, e vivo qui da due.", "Vivi cinco anos em Roma, e vivo aqui há dois.", "Я прожил в Риме пять лет, а здесь живу уже два года.", "عشت في روما خمس سنوات، وأعيش هنا منذ سنتين.", "我在罗马住过五年，在这里已经住了两年。", "私はローマに5年間住んでいました。ここには2年前から住んでいます。"], "7": ["Wann bist du angekommen? Ich bin seit sechs Uhr hier.", "¿Cuándo llegaste? Estoy aquí desde las seis.", "Quand es-tu arrivé ? Je suis ici depuis six heures.", "Quando sei arrivato? Sono qui dalle sei.", "Quando chegaste? Estou aqui desde as seis.", "Когда ты приехал? Я здесь с шести часов.", "متى وصلت؟ أنا هنا منذ الساعة السادسة.", "你什么时候到的？我从六点起就在这里了。", "いつ着きましたか。私は6時からここにいます。"]};
+var TR_ORDER = ["de", "es", "fr", "it", "pt", "ru", "ar", "zh", "ja"];
+var trLang = "";
+
+function trIndex(el){ return el.getAttribute("data-tr"); }
+
+function showTr(el){
+  var row = EX_TR[trIndex(el)];
+  if (!row || !trLang) return;
+  var i = TR_ORDER.indexOf(trLang);
+  if (i < 0 || !row[i]) return;
+  var line = el.querySelector(":scope > .ex-tr");
+  if (!line){
+    line = document.createElement("span");
+    line.className = "ex-tr";
+    el.appendChild(line);
+  }
+  line.textContent = row[i];
+  if (trLang === "ar") line.setAttribute("dir", "rtl"); else line.removeAttribute("dir");
+}
+
+function hideTr(el){
+  var line = el.querySelector(":scope > .ex-tr");
+  if (line) line.remove();
+}
+
+function applyTr(){
+  document.querySelectorAll(".ex[data-tr]").forEach(function(el){
+    if (trLang) showTr(el); else hideTr(el);
+  });
+}
+
+document.querySelectorAll("#tr-bar button").forEach(function(btn){
+  btn.addEventListener("click", function(){
+    trLang = btn.getAttribute("data-lang");
+    document.querySelectorAll("#tr-bar button").forEach(function(b){ b.classList.remove("on"); });
+    btn.classList.add("on");
+    applyTr();
+  });
+});
+
+document.querySelectorAll(".ex[data-tr]").forEach(function(el){
+  el.addEventListener("click", function(){
+    if (!trLang) return;
+    if (el.querySelector(":scope > .ex-tr")) hideTr(el); else showTr(el);
+  });
+});
+
+// ── the chart, made clickable ──
+
+function renderList(id, items){
+  var ul = document.getElementById(id);
+  if (!ul) return;
+  ul.innerHTML = "";
+  items.forEach(function(it){
+    var li = document.createElement("li");
+    li.innerHTML = it[1];
+    if (it[0]) li.setAttribute("data-key", it[0]);
+    ul.appendChild(li);
+  });
+}
+var PANELS = [[["f-yesterday", "<b>yesterday</b> I saw her yesterday."], ["f-last-week", "<b>last week</b> We met last week."], ["f-in-2019", "<b>in 2019</b> They moved in 2019."], ["f-two-days-ago", "<b>two days ago</b> He called two days ago."], ["f-when-I-was-ten", "<b>when I was ten</b> I learned to sail when I was ten."], ["f-on-Monday", "<b>on Monday</b> She arrived on Monday."], ["f-at-six", "<b>at six</b> The ferry left at six."], ["f-the-other-day", "<b>the other day</b> I saw him the other day."]], [["o-ever", "<b>ever</b> Have you ever sailed?"], ["o-never", "<b>never</b> I have never been to Rome."], ["o-yet", "<b>yet</b> She hasn&#8217;t called yet."], ["o-already", "<b>already</b> We have already eaten."], ["o-so-far", "<b>so far</b> I have read two chapters so far."], ["o-since-2019", "<b>since 2019</b> They have lived here since 2019."], ["o-recently", "<b>recently</b> I have seen him recently."], ["o-just", "<b>just</b> He has just left."]], [["t-for-five-years", "<b>for five years</b> lived (and left) &#183; have lived (still do)"], ["t-this-morning", "<b>this morning</b> over? past &#183; still morning? perfect"], ["shallows", "<b>The Shallows</b> <em>just</em>, <em>already</em>, <em>yet</em>: US past simple"], ["cape", "<b>The False Cape</b> <em>When did you arrive?</em>"]]];
+PANELS.forEach(function(items, i){ renderList("fin-panel-" + i + "-list", items); });
+function pulseShape(el){
+  el.animate([{ opacity: 1 }, { opacity: 0.55 }, { opacity: 1 }], { duration: 380, easing: "ease-out" });
+}
+// clicking a place lights its panel, and its own line in it
+var TARGETS = {"f-yesterday": [0, "f-yesterday", "#175b5e"], "f-last-week": [0, "f-last-week", "#175b5e"], "f-in-2019": [0, "f-in-2019", "#175b5e"], "f-two-days-ago": [0, "f-two-days-ago", "#175b5e"], "f-when-I-was-ten": [0, "f-when-I-was-ten", "#175b5e"], "f-on-Monday": [0, "f-on-Monday", "#175b5e"], "f-at-six": [0, "f-at-six", "#175b5e"], "f-the-other-day": [0, "f-the-other-day", "#175b5e"], "o-ever": [1, "o-ever", "#175b5e"], "o-never": [1, "o-never", "#175b5e"], "o-yet": [1, "o-yet", "#175b5e"], "o-already": [1, "o-already", "#175b5e"], "o-so-far": [1, "o-so-far", "#175b5e"], "o-since-2019": [1, "o-since-2019", "#175b5e"], "o-recently": [1, "o-recently", "#175b5e"], "o-just": [1, "o-just", "#175b5e"], "t-for-five-years": [2, "t-for-five-years", "#175b5e"], "t-this-morning": [2, "t-this-morning", "#175b5e"], "shallows": [2, "shallows", "#175b5e"], "cape": [2, "cape", "#B4441F"]};
+Object.keys(TARGETS).forEach(function(key){
+  var el = document.getElementById("fin-" + key);
+  if (!el) return;
+  var t = TARGETS[key];
+  var activate = function(){
+    pulseShape(el);
+    document.querySelectorAll(".diagram-panel").forEach(function(p){ p.style.outline = "none"; });
+    document.querySelectorAll(".diagram-panel li.is-lit").forEach(function(li){ li.classList.remove("is-lit"); });
+    var panel = document.getElementById("fin-panel-" + t[0]);
+    if (!panel) return;
+    panel.style.outline = "2px solid " + t[2];
+    if (t[1]) panel.querySelectorAll('li[data-key="' + t[1] + '"]').forEach(function(li){ li.classList.add("is-lit"); });
+    panel.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  };
+  el.addEventListener("click", activate);
+  el.addEventListener("keydown", function(e){
+    if (e.key === "Enter" || e.key === " "){ e.preventDefault(); activate(); }
+  });
+});
+
+// the chart reads three ways; all three readings live on each text node
+// and swap. A long reading (data-fit) is set a size smaller.
+var NAME_ATTR = { place: "data-place", verb: "data-verb", past: "data-past" };
+function seaNames(mode){
+  document.querySelectorAll(".sail-chart text.place-name").forEach(function(t){
+    var v = t.getAttribute(NAME_ATTR[mode]);
+    t.textContent = v;
+    var small = t.hasAttribute("data-fit") && (v.indexOf("·") >= 0 || v.length > 24);
+    t.setAttribute("font-size", small ? Math.min(15, +t.getAttribute("data-size")) : t.getAttribute("data-size"));
+    t.style.fontStyle = mode === "place" ? "normal" : "italic";
+  });
+  document.querySelectorAll("#name-bar button[data-mode]").forEach(function(b){
+    var on = b.getAttribute("data-mode") === mode;
+    b.classList.toggle("on", on);
+    b.setAttribute("aria-pressed", on ? "true" : "false");
+  });
+}
+document.querySelectorAll("#name-bar button[data-mode]").forEach(function(b){
+  b.addEventListener("click", function(){ seaNames(b.getAttribute("data-mode")); });
+});
+(function(){
+  var btn = document.getElementById("hero-map-btn");
+  var box = document.getElementById("hero-lightbox");
+  if (!btn || !box) return;
+  var closeBtn = box.querySelector(".lightbox-close");
+  function openBox(){ box.classList.add("is-open"); document.body.style.overflow = "hidden"; closeBtn.focus(); }
+  function closeBox(){ box.classList.remove("is-open"); document.body.style.overflow = ""; btn.focus(); }
+  btn.addEventListener("click", openBox);
+  closeBtn.addEventListener("click", closeBox);
+  box.addEventListener("click", function(e){ if (e.target === box) closeBox(); });
+  document.addEventListener("keydown", function(e){
+    if (e.key === "Escape" && box.classList.contains("is-open")) closeBox();
+  });
+})();
+/* Gulls seen from above, flying across a picture.
+ *
+ * The idea is English Heritage's Myths Map (mythsmap.english-heritage.org.uk):
+ * cut-out birds (a body and two wings), wings that beat and then glide, and
+ * small flocks that cross the whole picture, leave, and come round again.
+ * They drew theirs as PNGs and animated them in After Effects (Lottie); these
+ * are drawn in SVG and moved with CSS and the Web Animations API, so there is
+ * no library and nothing to download. Seen from directly above, a beating wing
+ * does not swing, it foreshortens: raised or lowered, it looks shorter. So the
+ * beat is a scaleY about the shoulder, with a little sweep back on the upstroke.
+ * A soft shadow a little way below each bird is what reads as height.
+ *
+ * Shared: the Sailing the Seas hero (build_sailing.py inlines this file) and
+ * the illustrated map on folkloreexplorer.com. Keep it dependency-free.
+ *
+ *   flyGulls(container, {
+ *     aspect: 1.5,              // container width / height (the picture's)
+ *     size: 4.6,                // bird wingspan, % of container width
+ *     seed: 7,                  // for the small per-bird variations
+ *     flocks: [{
+ *       from: [70, 115], to: [62.5, -15],   // % of the container
+ *       flight: 13, cycle: 40,  // seconds crossing; seconds per round
+ *       at: 1,                  // where in its cycle the flock is on load (s)
+ *       birds: [[0, 0, 1.05], [-1.6, 1.3, .95]]  // [ahead, across, scale],
+ *     }],                       //   offsets in wingspans
+ *   })
+ *
+ * For a sky the size of the screen use skyGulls(container, opts) with
+ * px: 34 (a wingspan in CSS px, or a function of the screen's width): it
+ * rebuilds the flocks when the screen's width changes.
+ *
+ * from/to are where the LEADER crosses in and out; the route is lengthened
+ * so the whole flock, shadows included, is out of the picture at both ends
+ * (at the same speed), and a flock waiting for its turn is never seen.
+ *
+ * The container must be positioned and exactly cover the picture; the birds
+ * go in a new child layer, made of spans (a picture inside a <button> may
+ * hold only phrasing content), and are clipped to it. Colours come from
+ * --gl-paper / --gl-ink if the page sets them, else --paper / --ink.
+ * Nothing is drawn for prefers-reduced-motion, or without color-mix().
+ */
+(function (root) {
+  'use strict';
+
+  // One bird, heading +x (right), in a 40 x 40 box centred on 0,0. A gull
+  // from above is mostly wing: span about two and a half times its length,
+  // an arm that reaches slightly forward to the wrist, then a long narrow hand
+  // swept back to a black tip (the M a child draws). A short body, a round
+  // head, a small square tail.
+  var BODY = 'M6.2,0C6.2,-.9 5.5,-1.3 4.6,-1.3C3.8,-1.3 3.2,-1.1 2.6,-1.5C1.4,-2.2 -1.2,-2.2 -3,-1.6' +
+             'L-4.6,-1.2C-5.6,-1.5 -6.8,-1.9 -7.6,-1.7C-7.9,-.6 -7.9,.6 -7.6,1.7C-6.8,1.9 -5.6,1.5 -4.6,1.2' +
+             'L-3,1.6C-1.2,2.2 1.4,2.2 2.6,1.5C3.2,1.1 3.8,1.3 4.6,1.3C5.5,1.3 6.2,.9 6.2,0Z';
+  var BILL = 'M6.1,-.35L7.9,0L6.1,.35Z';
+  // the right wing (+y); the left is the same group mirrored, so one set of
+  // keyframes beats both symmetrically. The tip is the outer half of the hand.
+  var WING = 'M2.3,1C3.3,3.6 3.9,6.2 3.6,8.4C2.9,12.6 -1,16.6 -4.8,19.8' +
+             'C-3.7,16.8 -2.3,13.6 -1.4,11C-1.9,7.8 -2.8,4.4 -2.6,1Z';
+  var TIP = 'M.56,14.48C-.98,16.4 -2.9,18.2 -4.8,19.8C-4.25,18.3 -3.63,16.75 -3.03,15.25Z';
+
+  function birdSVG(cls) {
+    var wing = '<g class="gw"><path class="w" d="' + WING + '"/><path class="t" d="' + TIP + '"/></g>';
+    return '<svg class="' + cls + '" viewBox="-20 -20 40 40" focusable="false">' +
+      wing + '<g transform="scale(1,-1)">' + wing + '</g>' +
+      '<path class="b" d="' + BODY + '"/><path class="t" d="' + BILL + '"/></svg>';
+  }
+
+  var CSS = [
+    '.gulls{position:absolute;inset:0;overflow:hidden;pointer-events:none;border-radius:inherit;',
+    '  --gl-p:var(--gl-paper,var(--paper));--gl-i:var(--gl-ink,var(--ink));}',
+    '.gl-flock{position:absolute;inset:0;will-change:transform;}',
+    '.gl-bird{position:absolute;aspect-ratio:1;',
+    '  animation:gl-wander var(--wd,8s) ease-in-out var(--wdl,0s) infinite alternate;}',
+    '.gl-bird svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;}',
+    '.gl-bird .bd{transform:rotate(var(--hd));}',
+    /* the sun is up and to the left, as on the chart: the shadow falls down-right */
+    '.gl-bird .sh{transform:translate(30%,38%) rotate(var(--hd));opacity:.22;filter:blur(.7px);}',
+    '.gl-bird .b{fill:var(--gl-p);}',
+    '.gl-bird .w{fill:color-mix(in srgb,var(--gl-i) 24%,var(--gl-p));}',
+    '.gl-bird .t{fill:var(--gl-i);}',
+    '.gl-bird .b,.gl-bird .w{stroke:color-mix(in srgb,var(--gl-i) 62%,transparent);stroke-width:.8;stroke-linejoin:round;}',
+    '.gl-bird .sh path{fill:var(--gl-i);stroke:none;}',
+    '.gl-bird .gw{transform-box:fill-box;transform-origin:50% 0;',
+    '  animation:gl-beat var(--fd,3.2s) ease-in-out var(--fdl,0s) infinite;}',
+    /* four beats, then a glide: raised (short, swept back), level, lowered, level */
+    '@keyframes gl-beat{0%,15%,30%,45%,60%,100%{transform:none}',
+    '  5%,20%,35%,50%{transform:rotate(7deg) scaleY(.46)}',
+    '  10%,25%,40%,55%{transform:rotate(-3deg) scaleY(.8)}}',
+    '@keyframes gl-wander{to{transform:translate(var(--wx,0),var(--wy,0))}}',
+    '@media (prefers-reduced-motion:reduce){.gulls{display:none}}',
+    '@media print{.gulls{display:none}}',
+    '@supports not (color:color-mix(in srgb,red 50%,blue)){.gulls{display:none}}'
+  ].join('\n');
+
+  function rng(seed) {                  // small deterministic generator
+    var s = (seed >>> 0) || 1;
+    return function () { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; };
+  }
+  function pct(v) { return (Math.round(v * 1000) / 1000) + '%'; }
+
+  function flyGulls(container, opts) {
+    opts = opts || {};
+    if (!container || !opts.flocks) return null;
+    if (root.matchMedia && root.matchMedia('(prefers-reduced-motion: reduce)').matches) return null;
+    var doc = container.ownerDocument;
+    if (!doc.getElementById('gulls-css')) {
+      var st = doc.createElement('style');
+      st.id = 'gulls-css';
+      st.textContent = CSS;
+      doc.head.appendChild(st);
+    }
+    var aspect = opts.aspect || (container.clientWidth / Math.max(1, container.clientHeight)) || 1.5;
+    // px: a wingspan in CSS pixels (or a function of the container's width)
+    // instead of a share of the container, for a screen-sized sky
+    var px = typeof opts.px === 'function' ? opts.px(container.clientWidth) : opts.px;
+    var size = px ? px / Math.max(1, container.clientWidth) * 100 : (opts.size || 4.6);
+    var rand = rng(opts.seed || 7);
+    var bw = size / 100 * aspect;       // wingspan in units where the height is 1
+
+    var layer = doc.createElement('span');
+    layer.className = 'gulls';
+    layer.setAttribute('aria-hidden', 'true');
+
+    opts.flocks.forEach(function (f) {
+      var birds = f.birds || [[0, 0, 1]];
+      var dx = (f.to[0] - f.from[0]) / 100 * aspect, dy = (f.to[1] - f.from[1]) / 100;
+      var hd = Math.atan2(dy, dx);
+      var ux = Math.cos(hd), uy = Math.sin(hd), nx = -uy, ny = ux;
+      // A flock is longer than one bird: while it waits for its next crossing
+      // no straggler may be left inside the picture. So the route starts far
+      // enough back that the leader is out, and ends far enough on that the
+      // last bird is out, with a wingspan to spare for size, shadow and
+      // wander. The flight time stretches with it, so the speed is as given.
+      var ahead = 0, behind = 0;
+      birds.forEach(function (b) { ahead = Math.max(ahead, b[0]); behind = Math.max(behind, -b[0]); });
+      var len = Math.sqrt(dx * dx + dy * dy);
+      var pre = (ahead + 1) * bw, post = (behind + 1) * bw;
+      var from = [f.from[0] - pre * ux / aspect * 100, f.from[1] - pre * uy * 100];
+      var to = [f.to[0] + post * ux / aspect * 100, f.to[1] + post * uy * 100];
+      var flight = f.flight * (len + pre + post) / len;
+      var flock = doc.createElement('span');
+      flock.className = 'gl-flock';
+      flock.style.setProperty('--hd', (hd * 180 / Math.PI).toFixed(2) + 'deg');
+      birds.forEach(function (b) {
+        var sc = b[2] || 1;
+        var ox = (b[0] * ux + b[1] * nx) * bw, oy = (b[0] * uy + b[1] * ny) * bw;
+        var w = size * sc;                               // % of the width
+        var el = doc.createElement('span');
+        el.className = 'gl-bird';
+        el.style.width = pct(w);
+        el.style.left = pct(ox / aspect * 100 - w / 2);
+        el.style.top = pct(oy * 100 - w * aspect / 2);  // square: its height is w% of the width
+        el.style.setProperty('--fd', (2.7 + rand() * 0.9).toFixed(2) + 's');
+        el.style.setProperty('--fdl', (-rand() * 3).toFixed(2) + 's');
+        el.style.setProperty('--wd', (6 + rand() * 4).toFixed(2) + 's');
+        el.style.setProperty('--wdl', (-rand() * 8).toFixed(2) + 's');
+        el.style.setProperty('--wx', ((rand() - 0.5) * 70).toFixed(0) + '%');
+        el.style.setProperty('--wy', ((rand() - 0.5) * 70).toFixed(0) + '%');
+        el.innerHTML = birdSVG('sh') + birdSVG('bd');
+        flock.appendChild(el);
+      });
+      layer.appendChild(flock);
+      var a = 'translate(' + pct(from[0]) + ',' + pct(from[1]) + ')';
+      var z = 'translate(' + pct(to[0]) + ',' + pct(to[1]) + ')';
+      var cycle = Math.max(f.cycle || 0, flight * 1.25) * 1000;
+      if (flock.animate) {
+        flock.animate([{ transform: a, offset: 0 }, { transform: z, offset: flight * 1000 / cycle },
+                       { transform: z, offset: 1 }],
+                      { duration: cycle, delay: -(f.at || 0) * 1000, iterations: Infinity, easing: 'linear' });
+      } else {
+        flock.style.display = 'none';
+      }
+    });
+    container.appendChild(layer);
+    return { layer: layer, stop: function () { layer.remove(); } };
+  }
+
+  // For a layer the size of the screen: the same flocks, rebuilt when the
+  // screen's width changes (headings depend on its shape), each flock picking
+  // up where it was. A change of height alone (a phone's address bar coming
+  // and going) is ignored, or the birds would jump on every scroll.
+  function skyGulls(container, opts) {
+    var now = function () { return root.performance ? root.performance.now() : Date.now(); };
+    var t0 = now(), cur = null, width = -1, timer = null;
+    function build() {
+      if (container.clientWidth === width) return;
+      width = container.clientWidth;
+      var el = (now() - t0) / 1000;
+      var o = {};
+      for (var k in opts) o[k] = opts[k];
+      o.aspect = container.clientWidth / Math.max(1, container.clientHeight);
+      o.flocks = opts.flocks.map(function (f) {
+        var g = {};
+        for (var k in f) g[k] = f[k];
+        g.at = (f.at || 0) + el;
+        return g;
+      });
+      if (cur) cur.stop();
+      cur = flyGulls(container, o);
+    }
+    build();
+    root.addEventListener('resize', function () { clearTimeout(timer); timer = setTimeout(build, 250); });
+    return { stop: function () { if (cur) cur.stop(); } };
+  }
+
+  root.flyGulls = flyGulls;
+  root.skyGulls = skyGulls;
+  if (typeof module !== 'undefined' && module.exports) module.exports = { flyGulls: flyGulls, skyGulls: skyGulls };
+})(typeof window !== 'undefined' ? window : this);
+
+skyGulls(document.getElementById("gull-sky"), {
+  px: function (w) { return w < 560 ? 26 : 34; }, seed: 83,
+  flocks: [
+    {from: [108, 64], to: [-8, 24], flight: 17, cycle: 46, at: 5,
+     birds: [[0, 0, 1], [-1.5, 1.1, .95], [-1.1, -1.3, 1.05]]},
+    {from: [-8, 18], to: [108, 50], flight: 15, cycle: 46, at: 28,
+     birds: [[0, 0, 1], [-1.4, -1, .92]]}
+  ]
+});
+// ── QUIZ ──
+var questions = [
+  {
+    prompt: "I ___ her yesterday.",
+    hint: "Yesterday is over.",
+    correct: "saw",
+    options: ["saw", "have seen", "see", "have saw"],
+    explain: "Finished time: past simple."
+  },
+  {
+    prompt: "___ you ever ___ to Scotland?",
+    hint: "Your life so far.",
+    correct: "Have / been",
+    options: ["Have / been", "Did / go", "Have / went", "Did / been"],
+    explain: "Ever is open: Have you ever been?"
+  },
+  {
+    prompt: "We ___ last week.",
+    hint: "Last week is over.",
+    correct: "met",
+    options: ["met", "have met", "meet", "have meet"],
+    explain: "Finished time: past simple."
+  },
+  {
+    prompt: "She ___ yet.",
+    hint: "Up to now.",
+    correct: "hasn&#39;t called",
+    options: ["hasn&#39;t called", "didn&#39;t called", "doesn&#39;t call", "hasn&#39;t call"],
+    explain: "Yet is open: hasn&#39;t called yet."
+  },
+  {
+    prompt: "He ___ two days ago.",
+    hint: "Ago is finished.",
+    correct: "called",
+    options: ["called", "has called", "calls", "has call"],
+    explain: "Ago: past simple."
+  },
+  {
+    prompt: "They ___ here since 2019.",
+    hint: "Since runs to now.",
+    correct: "have lived",
+    options: ["have lived", "lived", "live", "are living"],
+    explain: "Since is open: have lived."
+  },
+  {
+    prompt: "The ferry ___ at six.",
+    hint: "A named past time.",
+    correct: "left",
+    options: ["left", "has left", "leaves", "has leave"],
+    explain: "At six is finished: left."
+  },
+  {
+    prompt: "I ___ two chapters so far.",
+    hint: "So far reaches now.",
+    correct: "have read",
+    options: ["have read", "read yesterday", "did read", "am read"],
+    explain: "So far is open: have read."
+  },
+  {
+    prompt: "When ___ you ___?",
+    hint: "The False Cape.",
+    correct: "did / arrive",
+    options: ["did / arrive", "have / arrived", "did / arrived", "have / arrive"],
+    explain: "When takes the past simple."
+  },
+  {
+    prompt: "I ___ in Rome for five years, but I left in 2020.",
+    hint: "Twofold Isle: it is over.",
+    correct: "lived",
+    options: ["lived", "have lived", "live", "am living"],
+    explain: "You left: the time is finished."
+  },
+  {
+    prompt: "I ___ in this town for five years, and I love it.",
+    hint: "Twofold Isle: it continues.",
+    correct: "have lived",
+    options: ["have lived", "lived", "was living", "had live"],
+    explain: "You still live there: the time is open."
+  },
+  {
+    prompt: "Which sentence is right?",
+    hint: "Check each time word.",
+    correct: "I have never been to Rome, but I went to Milan last year.",
+    options: ["I have never been to Rome, but I went to Milan last year.", "I never went to Rome, but I have been to Milan last year.", "I have never been to Rome, but I have been to Milan last year.", "I did never go to Rome, but I went to Milan last year."],
+    explain: "Never (open): present perfect. Last year (finished): past simple."
+  }
+];
+
+
+var current = 0;
+var score = 0;
+var answered = false;
+var order = [];
+
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a;
+}
+
+function renderQuestion(){
+  answered = false;
+  var q = questions[current];
+  document.getElementById("progress-text").textContent = "Checkpoint " + (current + 1) + " of " + questions.length;
+  document.getElementById("progress-fill").style.width = ((current / questions.length) * 100) + "%";
+  document.getElementById("q-prompt").innerHTML = q.prompt;
+  document.getElementById("q-hint").innerHTML = q.hint;
+  var feedback = document.getElementById("feedback");
+  feedback.className = "feedback";
+  feedback.textContent = "";
+  var optionsWrap = document.getElementById("options");
+  optionsWrap.innerHTML = "";
+  order = shuffle(q.options);
+  order.forEach(function(opt){
+    var btn = document.createElement("button");
+    btn.className = "opt-btn";
+    btn.type = "button";
+    btn.innerHTML = opt;
+    btn.dataset.opt = opt;
+    btn.addEventListener("click", function(){ selectOption(opt, btn); });
+    optionsWrap.appendChild(btn);
+  });
+  document.getElementById("next-btn").disabled = true;
+  document.getElementById("next-btn").textContent = (current === questions.length - 1) ? "Make landfall" : "Next checkpoint";
+}
+
+function selectOption(opt, btn){
+  if (answered) return;
+  answered = true;
+  var q = questions[current];
+  var allBtns = document.querySelectorAll("#options .opt-btn");
+  allBtns.forEach(function(b){
+    b.disabled = true;
+    if (b.dataset.opt === q.correct) b.classList.add("correct");
+  });
+  if (opt !== q.correct) btn.classList.add("wrong");
+  if (opt === q.correct) score++;
+  document.getElementById("score-text").textContent = "Score: " + score;
+  var feedback = document.getElementById("feedback");
+  feedback.innerHTML = q.explain;
+  feedback.classList.add("show");
+  document.getElementById("next-btn").disabled = false;
+}
+
+document.getElementById("next-btn").addEventListener("click", function(){
+  if (current < questions.length - 1){
+    current++;
+    renderQuestion();
+  } else {
+    document.getElementById("progress-fill").style.width = "100%";
+    document.getElementById("quiz").style.display = "none";
+    document.getElementById("results").style.display = "block";
+    document.getElementById("final-score").textContent = score + " / " + questions.length;
+    var msg = "";
+    if (score === questions.length) msg = "Clean run. You read the time word and the tense follows.";
+    else if (score >= questions.length - 2) msg = "Solid progress. Go back to Twofold Isle: for five years, this morning.";
+    else msg = "Good first attempt. Start with two harbours: yesterday and ever.";
+    document.getElementById("final-message").textContent = msg;
+  }
+});
+
+document.getElementById("retry-btn").addEventListener("click", function(){
+  current = 0;
+  score = 0;
+  document.getElementById("score-text").textContent = "Score: 0";
+  document.getElementById("quiz").style.display = "block";
+  document.getElementById("results").style.display = "none";
+  renderQuestion();
+});
+
+renderQuestion();
+</script>
+
+<script src="block-camp/camp-music.js" data-track="sailing-the-seas-of-grammar/music.m4a" data-loop="0.5 48.5" defer></script>
+<script src="map-zoom.js" defer></script>
+</body>
+</html>
