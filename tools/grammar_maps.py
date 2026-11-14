@@ -165,6 +165,15 @@ MAPS = [
          blurb=('Each little word is a ferry line, each big verb a line that crosses it. Twenty stops, from '
                 'get up to turn down: the same verb on a new line is a new meaning.'),
          go='Set sail'),
+    dict(href='sailing-the-seas-atlas.html',
+         title='The Atlas of THE',
+         heading='Articles with place names, shore by shore',
+         image='sailing-the-seas-atlas/hero.jpg',
+         alt=('A painted chart with two shores: THE-LAND on the west, with the Atlantic, the Thames and the Alps, '
+              'and NO-THE-LAND on the east, with Europe, Paris and Mount Everest'),
+         blurb=('Why the Alps but Mount Everest? The kind of place decides. Oceans, rivers, ranges and plural '
+                'countries land on one shore; continents, cities, lakes and single mountains on the other.'),
+         go='Set sail'),
     dict(href='sherpa-tensing-route-map.html',
          title='Sherpa Tensing route map',
          heading='Every tense, camp by camp',
@@ -179,7 +188,6 @@ MAPS = [
 SOON = []
 
 PLANNED = [
-    ('The Atlas of THE', 'articles with place names', 'B1–B2'),
     ('Finished Time & Open Time', 'present perfect or past simple', 'A2–B2'),
     ('The Conditional Quadrants', 'real and unreal, now and past', 'B1–C1'),
     ('The Harbour of Scale', 'in, on and at', 'A2–B1'),

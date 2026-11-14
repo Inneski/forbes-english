@@ -257,6 +257,7 @@ OVERRIDES = {
     'sailing-the-seas-register.html': ['english-vocabulary'],         # formal and everyday words
     'sailing-the-seas-inversion.html': ['tense-review'],              # negative inversion: advanced grammar, no hub of its own
     'sailing-the-seas-atlantic.html': ['english-vocabulary'],         # British and American English
+    'sailing-the-seas-atlas.html': ['english-vocabulary'],            # articles with place names
     'sailing-the-seas-question-tags.html': ['tense-review'],          # question tags: the auxiliary of every tense
     'sailing-the-seas-forecast.html': ['future-tenses', 'modal-verbs'],  # probability: will, likely, might
     'sailing-the-seas-phrasal-verbs.html': ['phrasal-verbs'],

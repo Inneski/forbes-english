@@ -125,6 +125,27 @@ Screenshot gotcha: a scripted ArrowRight walk through a deck stops at the
 first gap slide, because the gap input keeps focus and swallows the key.
 Blur `document.activeElement` before each press.
 
+## 2026-11-14 — Sea chart 13, The Atlas of THE: BUILT, catalogue row pending; Codex handoff for the other eleven
+
+- `sailing-the-seas-atlas.html` (articles with place names), from
+  `build_atlas.py` + `ex_tr_atlas.py` on `sea_lesson.py`. Art painted by
+  Codex from `docs/sea-charts/atlas-of-the.png`; `sea_measure.py` found 16 of
+  16 dots (`atlas_chart.json`). 12 questions, 8 examples in nine languages.
+  Measured at 1920 and 375: no label overlap or off-chart text in any of the
+  three modes, pictures 3:2, no sideways scroll, no page errors. The quiz was
+  not clicked through.
+- On the grammar rack (`grammar_maps.py` MAPS, gone from PLANNED), in
+  `topics.py` OVERRIDES (english-vocabulary) and `library.html` (tag,
+  thumbnail). **No catalogue row yet**, so it has no SEO block, no level on
+  its roll and is not in the sitemap. On Innes's yes:
+  `insert into public.lessons (file, title, level, access, track, deck, video) values ('sailing-the-seas-atlas.html', 'Sailing the Seas of Grammar — Articles with Place Names', 'B1-B2', 'free', 'general', false, false);`
+  then `build_hubs.py` and `seo.py`.
+- **`docs/CODEX-SEA-CHARTS-HANDOFF.md`** is the one-paste brief for Codex to
+  paint the other eleven in one run (Innes: "I want the handoff for chat gpt
+  to do all the artwork"). Codex reads the repo, so it takes paths, not
+  attachments. Paintings land in `incoming/sea-charts/next-six/` and
+  `last-six/`. Check the five colour-coded charts against `sea_tense.T`.
+
 ## 2026-11-13 — Grammar page: the chart rolls remade as a rack and a table: SHIPPED
 
 Innes: "Remake grammar rolls design". The 2026-11-10 rack (a picture wrapped
