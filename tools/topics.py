@@ -258,6 +258,12 @@ OVERRIDES = {
     'sailing-the-seas-inversion.html': ['tense-review'],              # negative inversion: advanced grammar, no hub of its own
     'sailing-the-seas-atlantic.html': ['english-vocabulary'],         # British and American English
     'sailing-the-seas-atlas.html': ['english-vocabulary'],            # articles with place names
+    'sailing-the-seas-statia.html': ['present-continuous', 'present-simple'],  # state and action verbs
+    'sailing-the-seas-make-do.html': ['english-vocabulary'],          # make or do
+    'sailing-the-seas-certainty.html': ['modal-verbs'],               # must, might, can't
+    'sailing-the-seas-passive.html': ['passive-voice'],               # the passive
+    'sailing-the-seas-backshift.html': ['tense-review'],              # reported speech
+    'sailing-the-seas-bridges.html': ['english-vocabulary'],          # linking words
     'sailing-the-seas-question-tags.html': ['tense-review'],          # question tags: the auxiliary of every tense
     'sailing-the-seas-forecast.html': ['future-tenses', 'modal-verbs'],  # probability: will, likely, might
     'sailing-the-seas-phrasal-verbs.html': ['phrasal-verbs'],

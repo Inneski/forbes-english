@@ -161,6 +161,44 @@ Screenshot gotcha: a scripted ArrowRight walk through a deck stops at the
 first gap slide, because the gap input keeps focus and swallows the key.
 Blur `document.activeElement` before each press.
 
+## 2026-11-14 — Sea charts 14-19 BUILT (catalogue rows pending); five paintings still to come
+
+Codex painted the second six; they landed in `incoming/sea-charts/next-six/`
+(not last-six). Each is a page on `sea_lesson.py` with 12 questions and 8
+examples in nine languages:
+
+| Page | Builder | Teaches | Hub (topics.py) |
+|---|---|---|---|
+| `sailing-the-seas-statia.html` | `build_statia.py` | state and action verbs | present-continuous, present-simple |
+| `sailing-the-seas-make-do.html` | `build_makedo.py` | make or do | english-vocabulary |
+| `sailing-the-seas-certainty.html` | `build_certainty.py` | must, might, can't | modal-verbs |
+| `sailing-the-seas-passive.html` | `build_passive.py` | the passive | passive-voice |
+| `sailing-the-seas-backshift.html` | `build_backshift.py` | reported speech | tense-review |
+| `sailing-the-seas-bridges.html` | `build_bridges.py` | linking words | english-vocabulary |
+
+- **Dots.** `sea_measure.py` picks up dark specks in Codex's scenery (1 on
+  Statia, Make/Do and the Passive Ferry, 4 on the Bridges). Each builder
+  keeps only the dots on its known columns and asserts the count. Certainty
+  needs `--dark`.
+- **Tense colours** (`sea_tense.T`): Statia's panels are present simple and
+  present continuous; the Passive Ferry and Backshift panel rows carry a
+  disc in the row's tense colour. A panel line may not hold a double quote
+  (`sea_lesson.build` asserts it), so the disc is `<i style=color:#..>` with
+  the attribute unquoted. Result messages may not hold `&#39;`: use a real
+  right quote.
+- **Checked** at 1920 and 375 on every page: no label overlap or off-chart
+  text in any of the three modes, pictures 3:2, no sideways scroll, no page
+  errors. **Not checked:** the quizzes were not clicked through; the
+  translations have had no native-speaker check; Statia's painted shore is a
+  grey-blue, duller than Sherpa's present simple.
+- On the grammar rack (20 rolls now; MAPS, gone from PLANNED), in `topics.py`
+  and `library.html`. **No catalogue rows yet.** On Innes's yes:
+  `insert into public.lessons (file, title, level, access, track, deck, video) values ('sailing-the-seas-statia.html', 'Sailing the Seas of Grammar — State and Action Verbs', 'B1-B2', 'free', 'general', false, false), ('sailing-the-seas-make-do.html', 'Sailing the Seas of Grammar — Make or Do', 'A2-B2', 'free', 'general', false, false), ('sailing-the-seas-certainty.html', 'Sailing the Seas of Grammar — Must, Might, Can''t', 'B2-C1', 'free', 'general', false, false), ('sailing-the-seas-passive.html', 'Sailing the Seas of Grammar — The Passive', 'B1-B2', 'free', 'general', false, false), ('sailing-the-seas-backshift.html', 'Sailing the Seas of Grammar — Reported Speech', 'B1-B2', 'free', 'general', false, false), ('sailing-the-seas-bridges.html', 'Sailing the Seas of Grammar — Linking Words', 'B2-C1', 'free', 'general', false, false);`
+  then `build_hubs.py` and `seo.py`.
+- **Still to paint** (`docs/CODEX-SEA-CHARTS-HANDOFF.md`, rewritten for
+  these five): Finished Time & Open Time, the Conditional Quadrants, the
+  Harbour of Scale, the Voyage, the -ER Coast & the MORE Coast.
+
 ## 2026-11-14 — Sea chart 13, The Atlas of THE: BUILT, catalogue row pending; Codex handoff for the other eleven
 
 - `sailing-the-seas-atlas.html` (articles with place names), from
