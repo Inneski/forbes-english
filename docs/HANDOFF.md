@@ -41,10 +41,9 @@ EN/DE/ES. Folder `GargoyleHouse/`, slots `p<n>-…`, covers `pop-cover-p<n>.webp
   swallowed a prompt). Picks: `incoming/hd/GargoyleHouse/<slot>.png`;
   `incoming/gargoyle-house/import.py` moves `~/Downloads/mjgh-<slot>.png`
   there and writes the 1600px plate.
-- **Catalogue rows: NOT in** (the insert was refused). SQL:
-  `insert into public.lessons (file, title, level, access, track, deck, video) values ('the-gargoyle-house-part-1.html', 'The Gargoyle House, Part 1: The Brief — Interior Design Vocabulary', 'C1', 'pro', 'general', true, false), ('the-gargoyle-house-part-2.html', 'The Gargoyle House, Part 2: The Build — Interior Design Vocabulary', 'C1', 'pro', 'general', true, false);`
-  Then `py tools/build_hubs.py; py tools/seo.py`. `topics.py` OVERRIDES and
-  `library.html` (LESSON_TAGS, LESSON_IMAGES) already carry both pages.
+- **Catalogue rows: in, both FREE** (Innes: "Yes, insert rows", then "make
+  them free"). Hubs and SEO regenerated. `topics.py` OVERRIDES sends both to
+  business-english and english-vocabulary.
 
 ---
 ## 2026-11-10 — Mistakes Review 1-3: cut-outs repaired, scene plates shown whole: SHIPPED
