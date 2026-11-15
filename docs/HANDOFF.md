@@ -10,6 +10,34 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
+## 2026-11-15 — The Gargoyle House, Part 4: The Designer's Lexicon (C1): SHIPPED, FREE
+
+Innes sent a Gemini Canvas share ("The Designer's Lexicon", 100 definition ->
+word items in two parts of 50): his student could not open it, "upload it to
+forbes english and make the multiple choice answers less obvious". Same 100
+words as Parts 1 and 2. `the-gargoyle-house-part-4.html`, 105 slides, HS1,
+EN/DE/ES, `build_gargoyle_lexicon.py`; every MC slide on a Gargoyle plate
+(the 37 chapter plates dealt in order, none twice in a stage); cover pops
+`p2-hero` as `pop-cover-p4.webp`. Catalogue row 385 inserted, free.
+
+- **Distractors:** Gemini drew three random list words, so the word class
+  gave every answer away. Now three hand-written options of the same class
+  and form per item: look-alikes (decisive/DIVISIVE, oversee/OVERLOOK),
+  near meanings (executor/HEIR, maggot/CATERPILLAR) and family sets (put
+  your foot in it / PUT YOUR FOOT DOWN). Synonyms a teacher would have to
+  accept were left out on purpose (list in the docstring).
+- **Source fixes:** EXPLOIT and EXPLOITED had one definition (EXPLOITED now
+  tests the workers sense); STIMULANT/STIMULATOR near-identical (stimulator
+  = the device); AFFILIATION defined by AFFILIATE; TENURE's "office" made
+  TENANCY right. Regrouped by word class in eight stages.
+- **Gemini share, second time:** shrinking the page (`documentElement.style
+  .zoom=.44`) and pinning the iframe `position:fixed` at 1100x1150 fits a
+  whole item; a click at the option column then four clicks down the right
+  side (Next moves with stem length) never skipped an item.
+- Not done: a teacher's answer key; audio (Part 3 has it, a definition quiz
+  did not seem to need it).
+
+---
 ## 2026-11-15 — The Gargoyle House, Part 3: Say It Right (C1, pronunciation): SHIPPED, FREE
 
 Innes sent a Gemini Canvas share ("make this a forbes english free lesson"):
