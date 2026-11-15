@@ -428,6 +428,96 @@ T = {
 WASH_CSS = ('html[data-style="editorial"]:not(.is-flow) .slide[data-wash][data-type="mc"] .slide-body '
             '{ max-width: 520px; }')
 
+# ── audio ──────────────────────────────────────────────────────────────
+# Innes, 2026-11-15, "Yes, add audio". Each MC slide gets a button that says
+# the word, and the contrast its explanation teaches, in the browser's own
+# speech (en-GB voice where the device has one; no files to host). It stays
+# hidden until the question is answered: hearing "de-VEL-op-ment" before
+# choosing would be the answer key. '|' separates the phrases, spoken in turn.
+SAY = [
+    # 1 · two syllables
+    'urban|urbane', 'chillies|chilly', 'profiles', 'rustic|artistic', 'window', 'comments',
+    'layouts', 'to revamp|a revamp', 'Instagram bait',
+    # 2 · endings
+    'cultivation', 'utilitarian|utilitarianism', 'isolate|isolated', 'elevated', 'corrugated',
+    'illuminated', 'an associate|to associate', 'create|created', 'disjointed', 'determined',
+    'develop|development', 'rationale|rational', 'rational|rationale',
+    # 3 · by heart
+    'interpret|interpretation', 'interior designer', 'canopies', 'origins|original', 'palate|palatable',
+    'foreign|foreigner', 'trustworthy', 'commentary', 'vehicles', 'superfluous',
+    # 4 · vowels
+    'pitch|itch|peach', 'flood|blood|food', 'palette|palate|pallet', 'feudal|few|food', 'raw|law|cow',
+    'weave|leave', 'wove|woven|cove', 'tactile|tile', 'value|you', 'fibre',
+    # 5 · consonants
+    'looks|chairs', 'loose|lose', 'precedent', 'arches|church|chorus|chef', 'mosaic', 'lazy Susan',
+    'Pisces', 'beige|badge',
+]
+
+SAY_CSS = '''
+.say { display: none; align-self: flex-start; width: fit-content; align-items: center; gap: 10px; margin-top: 14px; padding: 8px 16px;
+  border: 1.5px solid var(--border); border-radius: 999px; background: var(--surface);
+  color: var(--text); font: inherit; font-size: 18px; cursor: pointer; }
+.say:hover, .say.is-speaking { border-color: var(--accent); }
+.say svg { width: 20px; height: 20px; flex: none; fill: currentColor; }
+.slide[data-type="mc"]:has(.opt.correct) .say { display: inline-flex; }
+html.no-tts .say { display: none !important; }'''
+
+SAY_JS = '''<script>
+(function () {
+  var S = window.speechSynthesis;
+  if (!S || !window.SpeechSynthesisUtterance) { document.documentElement.classList.add('no-tts'); return; }
+  var voice = null;
+  function pick() {
+    var vs = S.getVoices(), gb = vs.filter(function (v) { return /en[-_]GB/i.test(v.lang); });
+    voice = gb.filter(function (v) { return /natural|online|google|neural/i.test(v.name); })[0]
+      || gb[0] || vs.filter(function (v) { return /^en/i.test(v.lang); })[0] || null;
+  }
+  pick();
+  if (S.addEventListener) S.addEventListener('voiceschanged', pick); else S.onvoiceschanged = pick;
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('.say');
+    if (!b) return;
+    e.preventDefault(); e.stopPropagation();
+    S.cancel();
+    var parts = b.getAttribute('data-say').split('|');
+    b.classList.add('is-speaking');
+    parts.forEach(function (t, i) {
+      var u = new SpeechSynthesisUtterance(t);
+      if (voice) u.voice = voice;
+      u.lang = voice ? voice.lang : 'en-GB';
+      u.rate = 0.85;
+      if (i === parts.length - 1) u.onend = u.onerror = function () { b.classList.remove('is-speaking'); };
+      S.speak(u);
+    });
+  }, true);
+})();
+</script>
+'''
+
+SPEAKER = ('<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4.03v8.05'
+           'A4.5 4.5 0 0 0 16.5 12zM14 3.23v2.06a7 7 0 0 1 0 13.42v2.06a9 9 0 0 0 0-17.54z"/></svg>')
+
+
+def add_audio(path):
+    """One .say button per MC slide, in item order, just above its feedback."""
+    import re
+    html = open(path, encoding='utf-8').read()
+    assert 'class="say"' not in html
+    parts = re.split(r'(<section class="slide"[^>]*data-type="mc"[^>]*>)', html)
+    n = (len(parts) - 1) // 2
+    assert n == len(SAY) == 50, '%d MC slides, %d SAY entries' % (n, len(SAY))
+    for i, say in enumerate(SAY):
+        body = parts[2 * i + 2]
+        label = ' · '.join(say.split('|'))
+        btn = ('<button class="say" type="button" data-say="%s" aria-label="Listen: %s">%s<span>%s</span></button>\n        '
+               % (say, label, SPEAKER, label))
+        assert body.count('<p class="feedback"') == 1
+        parts[2 * i + 2] = body.replace('<p class="feedback"', btn + '<p class="feedback"', 1)
+    html = ''.join(parts)
+    assert html.count('</body>') == 1
+    html = html.replace('</body>', SAY_JS + '</body>')
+    open(path, 'w', encoding='utf-8', newline='').write(html)
+
 
 def build():
     count = 1 + 1 + sum(1 + len(st[3]) for st in STAGES) + 1 + 2
@@ -444,9 +534,10 @@ def build():
     flow += [('stage',), ('talk', 'eT', 'tk2T', TALK2, 'p2-talk2', 3)]
     SPEC = dict(out=OUT, title='The Gargoyle House, Part 3: Say It Right (C1)', folder=F, style='hs1',
                 hero='p1-results', cover_name='pop-cover-p3', plates=PLATES, flow=flow, chips=CHIPS,
-                results='p2-results', title_px=58, css=WASH_CSS)
+                results='p2-results', title_px=58, css=WASH_CSS + SAY_CSS)
     H.check_keys(Tn)
     H.build(SPEC, Tn)
+    add_audio(OUT)
     assert sum(len(st[3]) for st in STAGES) == 50
 
 

@@ -41,8 +41,17 @@ butterfly) as `pop-cover-p3.webp`.
 - Catalogue row inserted (free) through the Supabase connector; library
   card tags are Business + Speaking activity, because there is no
   "Pronunciation" filter pill and check-library refuses a tag without one.
-- Not done: no audio. A pronunciation deck would gain most from a "hear it"
-  button per word (speechSynthesis or recorded clips); the template has none.
+- **Audio (same day, Innes: "Yes, add audio"):** every MC slide has a
+  speaker button that says the word and the contrast its explanation teaches
+  (`SAY` in the builder, e.g. `palette|palate|pallet`), using the browser's
+  speechSynthesis, en-GB voice where the device has one: no files. Hidden
+  until the question is answered (`:has(.opt.correct)`), because hearing the
+  word first is the stress key. Injected after `H.build()` by `add_audio()`
+  (CSS through SPEC `css`, script before `</body>`); hidden where the
+  browser has no speech. Tested headless on all 50 slides at 1920x1080 and
+  390x844: hidden before, shown after, inside the canvas, hit-testable, and
+  speaks exactly its phrases (speak() stubbed). Not heard on a real device:
+  the voice is whatever the learner's OS provides.
 
 ---
 ## 2026-11-14 — The Gargoyle House, Parts 1 and 2 (C1): interior design vocabulary 2
