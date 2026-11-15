@@ -196,6 +196,36 @@ Screenshot gotcha: a scripted ArrowRight walk through a deck stops at the
 first gap slide, because the gap input keeps focus and swallows the key.
 Blur `document.activeElement` before each press.
 
+## 2026-11-15 — Sea charts 20-24 BUILT (catalogue rows pending); the chart table is empty
+
+The last five paintings came back to `incoming/sea-charts/next-six/`. Every
+chart on the old chart table is now a page; `PLANNED` in `grammar_maps.py`
+is empty, so the "On the chart table" block no longer renders.
+
+| Page | Builder | Teaches | Hub (topics.py) |
+|---|---|---|---|
+| `sailing-the-seas-finished.html` | `build_finished.py` | present perfect or past simple | present-perfect, past-simple |
+| `sailing-the-seas-quadrants.html` | `build_quadrants.py` | conditionals | conditionals |
+| `sailing-the-seas-scale.html` | `build_scale.py` | in, on and at | prepositions |
+| `sailing-the-seas-voyage.html` | `build_voyage.py` | prepositions of movement | prepositions |
+| `sailing-the-seas-er-more.html` | `build_ermore.py` | comparatives | english-vocabulary |
+
+- **Tense colours:** Finished Time's panels are past simple and present
+  perfect. The Quadrants' panel rows carry a disc per clause and a ring for
+  WOULD (empty for the second, ring + disc for third and mixed), as on the
+  chart.
+- **Label fixes:** on the Harbour of Scale the harbour mouth's words sit
+  under its dot (they hit the buoy's); on the -ER/MORE chart the Lone Stacks
+  show a short phrase in sentence mode (the stacks are 128px apart).
+- **Checked** at 1920 and 375 on all five: no overlap or off-chart text in
+  any mode, pictures 3:2, no sideways scroll, no page errors. Quizzes not
+  clicked through; translations unchecked.
+- `topics.py` and `library.html` for these five rode along in a peer's
+  commit (`919f2c7e`, the Gargoyle House); the content is right.
+- **No catalogue rows yet.** On Innes's yes:
+  `insert into public.lessons (file, title, level, access, track, deck, video) values ('sailing-the-seas-finished.html', 'Sailing the Seas of Grammar — Present Perfect or Past Simple', 'A2-B2', 'free', 'general', false, false), ('sailing-the-seas-quadrants.html', 'Sailing the Seas of Grammar — Conditionals', 'B1-C1', 'free', 'general', false, false), ('sailing-the-seas-scale.html', 'Sailing the Seas of Grammar — In, On and At', 'A2-B1', 'free', 'general', false, false), ('sailing-the-seas-voyage.html', 'Sailing the Seas of Grammar — Prepositions of Movement', 'A2-B1', 'free', 'general', false, false), ('sailing-the-seas-er-more.html', 'Sailing the Seas of Grammar — Comparatives', 'A2-B1', 'free', 'general', false, false);`
+  then `build_hubs.py` and `seo.py`.
+
 ## 2026-11-14 — Sea charts 14-19 BUILT (catalogue rows pending); five paintings still to come
 
 Codex painted the second six; they landed in `incoming/sea-charts/next-six/`
