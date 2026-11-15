@@ -264,6 +264,11 @@ OVERRIDES = {
     'sailing-the-seas-passive.html': ['passive-voice'],               # the passive
     'sailing-the-seas-backshift.html': ['tense-review'],              # reported speech
     'sailing-the-seas-bridges.html': ['english-vocabulary'],          # linking words
+    'sailing-the-seas-finished.html': ['present-perfect', 'past-simple'],  # present perfect or past simple
+    'sailing-the-seas-quadrants.html': ['conditionals'],              # conditionals
+    'sailing-the-seas-scale.html': ['prepositions'],                  # in, on and at
+    'sailing-the-seas-voyage.html': ['prepositions'],                 # prepositions of movement
+    'sailing-the-seas-er-more.html': ['english-vocabulary'],          # comparatives
     'sailing-the-seas-question-tags.html': ['tense-review'],          # question tags: the auxiliary of every tense
     'sailing-the-seas-forecast.html': ['future-tenses', 'modal-verbs'],  # probability: will, likely, might
     'sailing-the-seas-phrasal-verbs.html': ['phrasal-verbs'],
@@ -325,6 +330,7 @@ OVERRIDES = {
     'interior-design-vocabulary.html': ['business-english'],
     'the-gargoyle-house-part-1.html': ['business-english', 'english-vocabulary'],
     'the-gargoyle-house-part-2.html': ['business-english', 'english-vocabulary'],
+    'the-gargoyle-house-part-3.html': ['business-english', 'english-vocabulary'],
     'forbes-architectural-vocabulary.html': ['business-english'],
     'forbes-architectural-vocabulary-part2.html': ['business-english'],
     'reading-the-elevation-c1.html': ['business-english'],

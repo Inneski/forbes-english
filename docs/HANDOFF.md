@@ -10,6 +10,41 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
+## 2026-11-15 — The Gargoyle House, Part 3: Say It Right (C1, pronunciation): SHIPPED, FREE
+
+Innes sent a Gemini Canvas share ("make this a forbes english free lesson"):
+"STUDIO · Pronunciation Brief", 50 four-option items on an interior-design
+theme. `the-gargoyle-house-part-3.html`, 60 slides, HS1, EN/DE/ES, built by
+`build_gargoyle_say_it.py`. Set in the Gargoyle House story and built on its
+plates (each once, no new art owed); cover pops `p1-results` (gargoyle +
+butterfly) as `pop-cover-p3.webp`.
+
+- **Reading a Gemini Canvas share:** the app is a cross-origin iframe
+  (`*.usercontent.goog`), so page text, the a11y tree and the share HTML
+  are all empty, and replaying Gemini's `batchexecute` RPC was refused by the
+  auto-mode classifier. What worked: in the parent page, restyle the iframe
+  element itself (`position:fixed; width:2194px; height:1600px;
+  transform:scale(.5)`) so a whole item fits one screenshot, then click
+  through. The quiz auto-advances ~2 s after any answer; four rapid clicks
+  down the first-option column always hit exactly one option.
+- **Source defects fixed:** 21 stems printed the stress mark after the word
+  (the answer in the question); "the 's' in Susan" had two answers; TACTILE
+  "rhymes with smile" (only its second syllable does); the /ʒ/ item's
+  distractors had nothing to contrast (now BEIGE vs BADGE/BRIDGE/LEDGE);
+  "both equally / it is unstressed / neither" padding dropped; US spellings
+  in stems made British. No teaching in the source: five stages now open on a
+  rule slide, every item explains itself.
+- **HS1 wash under long stems:** 20 MC slides have no plate, so `hs1` puts
+  the mirrored hero behind them from 34% of the width, and full-width stems
+  ran over the gargoyle's face. The builder caps those slides' body at 520px
+  (`WASH_CSS`). Any hs1 quiz with plate-less MC slides will do the same.
+- Catalogue row inserted (free) through the Supabase connector; library
+  card tags are Business + Speaking activity, because there is no
+  "Pronunciation" filter pill and check-library refuses a tag without one.
+- Not done: no audio. A pronunciation deck would gain most from a "hear it"
+  button per word (speechSynthesis or recorded clips); the template has none.
+
+---
 ## 2026-11-14 — The Gargoyle House, Parts 1 and 2 (C1): interior design vocabulary 2
 
 Innes pasted 100 words and phrases (a student's list, dictionary first senses)
