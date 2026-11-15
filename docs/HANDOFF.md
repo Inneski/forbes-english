@@ -10,6 +10,25 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
+## 2026-11-15 — The Gargoyle House, Part 5: Words in Context (C1): SHIPPED, FREE
+
+Innes, after Part 4: "one that puts words in context and you have to choose
+the sentence with the right context for the chosen word", then "you dont need
+it to be illustrated". `the-gargoyle-house-part-5.html`, 105 slides, HS1,
+EN/DE/ES, `build_gargoyle_in_context.py`. Same 100 words and eight stages as
+Part 4 (OUTSTANDING has an item per sense). Each item names the word; four
+sentences in the Ashby Hall story, one right. Wrong ones: the look-alike's
+job, the wrong sense, or a grammar/collocation slip, each named in the
+explanation. Catalogue row 386, free.
+
+- **No plates:** hs1 washes the mirrored hero behind every picture-less
+  slide; `NO_WASH_CSS` switches it off on MC slides so four sentences get the
+  full width on plain paper. Cover pops `p2-c3-4` (`pop-cover-p5.webp`).
+- **Length tell:** 31 of the first-draft keys were the longest sentence (the
+  right sentence carries the context that makes it right). The builder now
+  refuses that before hs2quiz does; fixed by lengthening a distractor.
+
+---
 ## 2026-11-15 — The Gargoyle House, Part 4: The Designer's Lexicon (C1): SHIPPED, FREE
 
 Innes sent a Gemini Canvas share ("The Designer's Lexicon", 100 definition ->
