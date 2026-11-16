@@ -117,9 +117,7 @@ N = {
     'dawn': 'Morgen. Im Radio heißt es, die Armee räume die Stadt Straße für Straße. Bei Tageslicht sind die '
             'Gestalten draußen langsamer. Auf dem Parkplatz steht der Minibus der Bowlingliga Ü70, und Nan hat '
             'die Schlüssel. Natürlich hat sie die.',
-    'end-bus': 'Nan fährt den Ü70-Minibus mit fünfzehn Stundenkilometern mitten über die Hauptstraße. Niemand '
-               'rennt. Gaz’ Hand geht es gut. Colin beginnt ein neues Kapitel. Am Stadtrand winkt euch ein '
-               'Soldat durch.',
+    'end-bus': 'Mit einem Cricketschläger, zwei Bowlingkugeln und einem sehr dicken Buch kämpft ihr euch über den Parkplatz. Dann fährt Nan den Minibus mit fünfzehn Stundenkilometern mitten über die Hauptstraße. Gaz’ Hand geht es gut. Geoffrey hat eine Delle. Am Stadtrand winkt euch ein Soldat durch.',
     'end-wait': 'Ihr bleibt hinter dem Snackbar-Kühlschrank, bis am Donnerstag die Armee kommt. Alle überleben, '
                 'hauptsächlich von Chips. Nan sagt, sie habe schon schlimmere Weihnachten erlebt.',
     'end-solo': 'Du schleichst dich allein durch die Hintertür hinaus. Du bist schneller, ja. Aber der Schlüssel '
@@ -138,13 +136,12 @@ N = {
              'ihrem Haus gelten Regeln.',
     'q-q06': 'Nan geht nicht ohne ihre Herztabletten. Sie liegen im Badezimmer oben, und dort oben bewegt '
              'sich etwas.',
-    'q-q07': 'Du gehst hoch, um die Tabletten zu holen. Nan gibt dir Geoffrey und einen Rat zur Treppe.',
+    'q-q07': 'Du gehst hoch, um die Tabletten zu holen. Auf dem Treppenabsatz dreht sich etwas im Morgenmantel um und taumelt auf dich zu. Nan ist direkt hinter dir, mit Geoffrey, und holt schon aus.',
     'q-q08': 'Du kommst mit den Tabletten herunter. Nan hat eine Tasche gepackt: Kekse, eine Taschenlampe, '
              'Geoffrey. Sie fragt, ob sie ihren dicken Wintermantel braucht. Es ist Juni.',
     'q-q09': 'Die Rettungswache ist leer, bis auf einen Mann im Morgenmantel. Er hat Priya gesehen. Du und '
              'Priya wart drei Jahre zusammen.',
-    'q-q10': 'Auf dem Parkplatz stehen drei Rettungswagen. Nur bei einem ist die Hecktür offen, und das Blaulicht '
-             'blinkt noch.',
+    'q-q10': 'Auf dem Parkplatz steht ein Rettungswagen mit offenen Hecktüren. Etwas in grüner Uniform klettert heraus, die Arme voran. Du packst die Tür und drückst.',
     'q-q11': 'An der Tür zum Hinterzimmer klebt ein Zettel in Priyas Handschrift: HIER DRIN. KLOPF DREIMAL, '
              'WENN DU EIN MENSCH BIST.',
     'q-q12': 'Priya öffnet die Tür. Hinter ihr steht ein großer Mann mit Campinghut und einem Buch namens '
@@ -153,8 +150,7 @@ N = {
              'Schild: NUR BARZAHLUNG. BEISSEN VERBOTEN.',
     'q-q14': 'Du hast zehn Minuten und einen Korb. Gaz will Chips. Nan will Tee. Du willst die '
              'Taschenlampenbatterien, die Mr Bell hinter der Theke aufbewahrt.',
-    'q-q15': 'Du bittest Mr Bell mitzukommen. Er weigert sich. Vielleicht will jemand eine Zeitung, sagt er, '
-             'sogar heute.',
+    'q-q15': 'Ein Kunde an der Kasse stöhnt und stürzt sich über die Theke. Mr Bell haut ihn mit einer zusammengerollten Zeitung um und macht mit seinem Kreuzworträtsel weiter. Er geht nicht weg.',
     'q-q16': 'Mr Bell gibt dir einen Rat für den Weg: Bleib in der Mitte der Straße und renn nicht. Rennen '
              'fällt ihnen auf.',
     'q-q17': 'Colin schlägt sein Buch auf. „Regel eins: Sichere die Eingänge.“ Ausnahmsweise hat er recht. Nur '
@@ -164,18 +160,14 @@ N = {
     'q-q19': 'Priya kommt mit. Der Generator braucht einen Schlüssel, und der Schlüssel steckt in Colins Tasche. '
              'Colin schläft auf Bahn drei.',
     'q-q20': 'Du und Gaz schiebt den Snackbar-Kühlschrank vor die Glastüren. Nach einem Meter will Gaz eine Pause.',
-    'q-q21': 'Wieder drinnen zeigt dir Gaz seine Hand. Darauf ist ein kleiner Biss. „Das war eine Chipstüte“, '
-             'sagt er. „Wahrscheinlich.“',
-    'q-q22': 'Priya reinigt den Biss und verbindet ihn. Sie gibt Gaz drei Anweisungen und lässt ihn sie '
-             'wiederholen.',
+    'q-q21': 'Um 2 Uhr morgens bricht das Glas, und drei von ihnen drängen sich durch die Lücke. Gaz schnappt sich eine Bowlingkugel vom Ständer und sieht dich an: Welchen zuerst?',
+    'q-q22': 'Der Letzte geht auf Bahn eins zu Boden. Gaz zeigt dir einen kleinen Biss an seiner Hand. „Das war eine Chipstüte“, sagt er. „Wahrscheinlich.“ Priya reinigt ihn und gibt ihm drei Anweisungen.',
     'q-q23': 'Um 3 Uhr morgens fängt der Greifautomat an, sein kleines Lied zu spielen. In dem Glaskasten '
              'bewegt sich etwas, hinter den Plüschtieren.',
     'q-q24': 'Colin blättert in seinem Buch. Es gibt kein Kapitel über Greifautomaten. Zum ersten Mal fragt er '
              'dich, was zu tun ist.',
-    'q-q25': 'Im Greifautomaten sitzt Mr Bell: lebendig, mit einer Tasche voller Bargeld. „Laden ist zu“, sagt '
-             'er. „Ich brauchte einen ruhigen Ort.“',
-    'q-q26': 'Alle sehen dich an. Du hast die Schlüssel zum Gebäude, Nan hat die Schlüssel zum Bus. Die '
-             'Gestalten auf dem Parkplatz sind heute Morgen langsam.',
+    'q-q25': 'Der Greifautomat springt auf, und ein Zombie im Bowlinghemd fällt heraus, direkt dahinter Mr Bell. Er haut ihn mit seiner Geldtasche um. „Laden ist zu“, sagt er.',
+    'q-q26': 'Sechs von ihnen stehen zwischen den Türen und dem Minibus, langsam im Tageslicht. Nan hebt Geoffrey. Colin hebt sein Buch. Alle sehen dich an.',
 }
 
 QT = {
@@ -196,7 +188,7 @@ QT = {
     'q06': ('Station A · die Tabletten', 'Nans Tabletten.', None,
             'Zusatzinformation zwischen Kommas: WHICH für Dinge, und nach einem Komma nie THAT. WHO ist für '
             'Personen.'),
-    'q07': ('Station A · die Treppe', 'Die Treppe hinauf.', None,
+    'q07': ('Station A · die Treppe', 'Ducken!', None,
             'SHOULDN’T + Grundform: der Rat, etwas nicht zu tun. Die Verneinung ist SHOULDN’T, nie DON’T SHOULD, '
             'und es gibt kein TO.'),
     'q08': ('Station A · Kontrollpunkt', 'Nan kommt mit.', 'Wähle die Antwort, die bedeutet: Es ist NICHT nötig.',
@@ -205,9 +197,9 @@ QT = {
     'q09': ('Station B · die Rettungswache', 'Wo ist Priya?', None,
             'WHO für eine Person. WHICH ist für Dinge, WHOSE für Besitz. THAT geht hier auch, und ganz ohne '
             'Pronomen ebenfalls.'),
-    'q10': ('Station B · der Parkplatz', 'Blinkende Lichter.', None,
-            'Ein Rettungswagen ist ein Ding, also THAT oder WHICH. WHO ist für Personen, WHERE für Orte, an denen '
-            'etwas passiert.'),
+    'q10': ('Station B · der Parkplatz', 'Kein Sanitäter mehr.', None,
+            'WHOSE + Nomen zeigt Besitz: seine Arme, also „whose arms“. Nach WHO müsste ein Verb kommen („who is '
+            'reaching out“), und nie WHO + HIS.'),
     'q11': ('Station B · ein Zettel', 'Ein Zettel an der Tür.', None,
             'Ein Ort, an dem etwas passiert, bekommt WHERE: „the place where she is hiding“. WHICH allein braucht '
             'eine Präposition am Ende: „the place which she is hiding in“.'),
@@ -237,9 +229,9 @@ QT = {
             'ein Nomen: „the man whose key we need“.'),
     'q20': ('Akt IV · die Eingangstüren', 'Die Barrikade.', None,
             'HAVE TO: Die Situation macht es nötig. DON’T HAVE TO bedeutet das Gegenteil. SHOULD steht nie mit TO.'),
-    'q21': ('Akt IV · der Biss', 'Ein kleines Problem.', None,
-            'Eine Chipstüte ist ein Ding, also THAT oder WHICH. Gaz redet über sie wie über eine Person, die '
-            'Grammatik nicht: WHO ist nur für Personen.'),
+    'q21': ('Akt IV · 2 Uhr morgens', 'Das Glas gibt nach.', None,
+            'Der, der Nan am nächsten ist, ist das Subjekt von IS, also THAT (oder WHO). WHERE ist für Orte, und '
+            'nach WHOSE steht immer ein Nomen.'),
     'q22': ('Akt IV · Erste Hilfe', 'Priya übernimmt.', 'Welche Anweisung ist ein Rat und keine Regel?',
             'SHOULD gibt einen Rat: eine gute Idee. MUSTN’T und HAVE TO sind Regeln, ohne Wahl. Priya benutzt '
             'alle drei, und Gaz befolgt keine davon.'),

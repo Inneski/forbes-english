@@ -32,7 +32,16 @@ jokes. No film title, character, place or scene is borrowed.
   the stops, and the fork's arm is one of each (q19 relatives, q20 modals),
   so every route is 13/12 one way or the other (the build asserts it).
 
-**Art.** ChatGPT, in the Scarlet Star's flat negative-space look, each plate
+**Action.** Innes, 2026-11-16, on the first draft: "Why is there zero zombie
+fighting in this?" It had none: the group hid, barricaded and kept quiet.
+Six scenes are fights now (the stairs, the ambulance, the till, the glass
+giving way at 2 a.m., the claw machine, the car park at dawn): slapstick
+knockdowns with a cricket bat, bowling balls, a newspaper, never gore. The
+grammar items did not move, except q10 (WHOSE) and q21 (THAT), rewritten
+with their scenes. ACTION lists the six plates re-briefed for them.
+
+**Art.** ChatGPT/Codex, a detailed graphic-novel look (Innes chose it over
+the first brief's flat print), each plate
 painted with its subject on the RIGHT and the left half empty for the text
 (the Reasonable Doubt lesson: text must never land on a face). Briefed in
 docs/CHATGPT-DEAD-BY-TEATIME-ART-BRIEF.md; drop folder incoming/dead-by-teatime/;
@@ -97,9 +106,9 @@ N = {
     'dawn': 'Morning. The radio says the army is clearing the town street by street. The shapes outside are '
             'slower in daylight. In the car park stands the minibus of the Over-70s Bowling League, and Nan '
             'has the keys. Of course she does.',
-    'end-bus': 'Nan drives the Over-70s minibus down the middle of the high street at nine miles an hour. '
-               'Nobody runs. Gaz’s hand is fine. Colin starts a new chapter. At the edge of town, a soldier '
-               'waves you through.',
+    'end-bus': 'You fight your way across the car park with a cricket bat, two bowling balls and a very thick '
+               'book. Then Nan drives the minibus down the middle of the high street at nine miles an hour. '
+               'Gaz’s hand is fine. Geoffrey has a dent. At the edge of town, a soldier waves you through.',
     'end-wait': 'You stay behind the snack-bar fridge until the army arrives on Thursday. Everyone survives, '
                 'mostly on crisps. Nan says she has had worse Christmases.',
     'end-solo': 'You slip out of the back door alone. You are faster, yes. But the storeroom key is in your '
@@ -160,9 +169,10 @@ Q = [
      ['which', 'that', 'who'],
      'Extra information between commas: WHICH for things, and never THAT after a comma. WHO is for people.',
      'tablets', 'r'),
-    ('q07', 'Stop A · the stairs', 'Up the stairs.',
-     'You go up for the tablets. Nan gives you Geoffrey and one piece of advice about the stairs.',
-     '“You ___ step on the third stair. It creaks.”',
+    ('q07', 'Stop A · the stairs', 'Duck!',
+     'You go up for the tablets. On the landing, something in a dressing gown turns round and lurches at you. '
+     'Nan is right behind you with Geoffrey, already swinging.',
+     '“You ___ stand there, love. Duck!”',
      ['shouldn’t', 'don’t should', 'shouldn’t to'],
      'SHOULDN’T + base verb: advice not to do something. The negative is SHOULDN’T, never DON’T SHOULD, and '
      'there is no TO.',
@@ -185,13 +195,13 @@ Q = [
      'WHO for a person. WHICH is for things, and WHOSE is for possession. THAT also works here, and so does no '
      'pronoun at all.',
      'station', 'r'),
-    ('q10', 'Stop B · the car park', 'Flashing lights.',
-     'In the car park there are three ambulances. Only one has its back door open and its blue lights still '
-     'flashing.',
-     'Check the ambulance ___ has its lights on.',
-     ['that', 'where', 'who'],
-     'An ambulance is a thing, so THAT or WHICH. WHO is for people; WHERE is for places where something '
-     'happens.',
+    ('q10', 'Stop B · the car park', 'Not a paramedic any more.',
+     'In the car park, one ambulance has its back doors open. Something in a green uniform is climbing out, '
+     'arms first. You grab the door and push.',
+     'Slam it on the one ___ arms are reaching out!',
+     ['whose', 'who', 'who his'],
+     'WHOSE + noun shows possession: his arms, so “whose arms”. WHO would need a verb next (“who is reaching '
+     'out”), and never WHO + HIS.',
      'ambulance', 'r'),
     ('q11', 'Stop B · a note', 'A note on the door.',
      'On the door of the back room there is a note in Priya’s handwriting: IN HERE. KNOCK THREE TIMES IF YOU '
@@ -232,7 +242,8 @@ Q = [
      'object with THEM, and WHO is only for people.',
      'list', 'r'),
     ('q15', 'Stop C · the till', 'Mr Bell stays.',
-     'You ask Mr Bell to come with you. He refuses. Somebody might want a newspaper, he says, even today.',
+     'A customer at the till groans and lunges across the counter. Mr Bell flattens him with a rolled-up '
+     'newspaper and goes back to his crossword. He will not leave.',
      '“Somebody ___ look after the shop.”',
      ['has to', 'have to', 'must to'],
      'SOMEBODY is singular, like HE or SHE, so HAS TO: “somebody has to look after it”. MUST never takes TO.',
@@ -281,17 +292,17 @@ Q = [
      'barricade', 'm'),
 
     # Act IV · the long night
-    ('q21', 'Act IV · the bite', 'A small problem.',
-     'Back inside, Gaz shows you his hand. There is a small bite on it. “It was a crisp packet,” he says. '
-     '“Probably.”',
-     'Show me the crisp packet ___ bit you, Gaz.',
-     ['that', 'who', 'where'],
-     'A crisp packet is a thing, so THAT or WHICH. Gaz talks about it like a person, but the grammar doesn’t: '
-     'WHO is only for people.',
-     'bite', 'r'),
+    ('q21', 'Act IV · 2 a.m.', 'The glass gives way.',
+     'At 2 a.m. the glass cracks and three of them push through the gap. Gaz grabs a bowling ball from the '
+     'rack and looks at you: which one first?',
+     'Aim at the one ___ is closest to Nan!',
+     ['that', 'where', 'whose'],
+     'The one closest to Nan is the subject of IS, so THAT (or WHO). WHERE is for places, and WHOSE always '
+     'needs a noun after it.',
+     'bowling', 'r'),
     ('q22', 'Act IV · first aid', 'Priya takes charge.',
-     'Priya cleans the bite and wraps it. She gives Gaz three instructions and makes him repeat them back '
-     'to her.',
+     'The last one goes down on lane one. Gaz shows you a small bite on his hand. “It was a crisp packet,” he '
+     'says. “Probably.” Priya cleans it and gives him three instructions.',
      'Which instruction is advice, not a rule?',
      ['You should drink some water.', 'You mustn’t touch the bandage.', 'You have to keep your hand up.'],
      'SHOULD gives advice: a good idea. MUSTN’T and HAVE TO are rules, with no choice. Priya uses all three, '
@@ -314,8 +325,8 @@ Q = [
      'open it?” SHOULD never takes TO.',
      'manual', 'm'),
     ('q25', 'Act IV · the claw machine', 'It’s only Mr Bell.',
-     'Inside the claw machine is Mr Bell: alive, with a bag of cash. “Shop’s closed,” he says. “I needed '
-     'somewhere quiet.”',
+     'The claw machine bursts open and a zombie in a bowling shirt falls out, with Mr Bell right behind it. '
+     'He knocks it flat with his bag of cash. “Shop’s closed,” he says.',
      'Which sentence is correct?',
      ['Mr Bell, who we thought was at the shop, climbs out.',
       'Mr Bell, that we thought was at the shop, climbs out.',
@@ -326,8 +337,8 @@ Q = [
 
     # Act V · morning
     ('q26', 'Act V · the decision', 'Make the call.',
-     'Everyone looks at you. You have the keys to the building; Nan has the keys to the bus. The shapes in the '
-     'car park are slow this morning.',
+     'Six of them stand between the doors and the minibus, slow in the daylight. Nan raises Geoffrey. Colin '
+     'raises his book. Everyone looks at you.',
      'Which sentence gives the group clear advice?',
      ['We should leave now, while they are slow.', 'We should to leave now, while they are slow.',
       'We don’t should leave now, while it’s light.'],
@@ -385,16 +396,16 @@ PLATES = {
     'plan': ('study', 'A duvet pulled over a head; a hand holding car keys beside it'),
     'nan': ('celeste', 'A small grandmother in a hallway holding a cricket bat like a sword'),
     'tablets': ('body', 'A bathroom cabinet, half open, a box of tablets inside; a shadow on the tiles'),
-    'stairs': ('stairs', 'A narrow staircase seen from below, the third step lit'),
+    'stairs': ('stairs', 'A grandmother on a narrow staircase swinging her cricket bat at a slow zombie in a dressing gown on the landing; YOU ducking below the swing'),
     'coat': ('celeste-shadow', 'A grandmother with a packed bag and an enormous winter coat'),
     'streets': ('street', 'An empty high street, one shopping trolley rolling on its own'),
     'station': ('platform', 'An empty ambulance station; a man in a dressing gown in the doorway'),
-    'ambulance': ('carriage', 'Three ambulances; one with its back doors open and its blue lights on'),
+    'ambulance': ('carriage', 'A zombie in a green paramedic uniform climbing out of the back doors of an ambulance, arms first; YOU slamming one door on it, blue lights flashing'),
     'note': ('museum', 'A handwritten note taped to a closed door, a hand raised to knock'),
     'colin': ('holmes-celeste', 'A tall man in a camping hat holding a survival manual, a woman paramedic beside him'),
     'shop': ('bar', 'A tiny corner shop at night, the old owner behind the counter, a hand-written sign above him'),
     'list': ('table', 'A shopping basket: crisps, a box of tea, torch batteries'),
-    'till': ('moriarty', 'An old shopkeeper behind his till, arms folded, refusing to leave'),
+    'till': ('moriarty', 'An old shopkeeper flattening a lunging zombie customer with a rolled-up newspaper across his shop counter, completely unbothered'),
     'advice': ('rails', 'An empty street at dusk, a dotted line running down its middle'),
     'lanes': ('chase', 'A bowling alley at night: eight lanes, a neon sign, a glass front'),
     'storeroom': ('chase-steps', 'A storeroom door with one heavy bolt, lit by a torch'),
@@ -402,13 +413,13 @@ PLATES = {
     'noise': ('standoff', 'The bowling alley in darkness, shapes pressed against the glass doors'),
     'generator': ('chase-stairs', 'A generator in a back yard at night, lit by a torch'),
     'barricade': ('chase-alley', 'Two people pushing a drinks fridge across glass doors'),
-    'bite': ('celeste-face', 'A hand held up with a small bite mark; a crisp packet on the floor'),
+    'bowling': ('chase-fire', 'Inside a bowling alley at night: cracked glass doors, three zombies pushing through, the flatmate hurling a bowling ball down the lane at them, the grandmother with her bat, the paramedic with a fire extinguisher'),
     'firstaid': ('celeste-eyes', 'A paramedic bandaging a hand by torchlight'),
     'claw': ('pursued', 'A claw machine glowing in the dark, something moving behind the soft toys'),
     'manual': ('moriarty-face', 'A worried man flipping through a survival book'),
-    'bell': ('chase-alley', 'An old shopkeeper climbing out of a claw machine, a bag of cash in his hand'),
+    'bell': ('chase-alley', 'An old shopkeeper climbing out of a glowing claw machine behind a zombie in a bowling shirt, knocking it flat with a bag of cash'),
     'dawn': ('rails', 'Morning light across a car park and a white minibus'),
-    'minibus': ('carriage', 'A grandmother at the wheel of a white minibus, the group climbing aboard'),
+    'minibus': ('carriage', 'At dawn the whole group fights across a car park to a white minibus: the grandmother swinging her bat, the tall man swinging his thick book, slow zombies all round'),
     'decision': ('table', 'Six people round the end of a bowling lane, all looking at you'),
     'endbus': ('street', 'A white minibus driving slowly down the middle of a high street at sunrise'),
     'endwait': ('study', 'The group asleep among crisp packets behind a barricaded fridge'),
@@ -703,13 +714,15 @@ def narrative_tr(langs):
 
 BRIEF = 'docs/CHATGPT-DEAD-BY-TEATIME-ART-BRIEF.md'
 
-STYLE = ('Flat graphic poster illustration in the style of a mid-century screen print: bold silhouettes, '
-         'negative-space tricks where one shape hides another, a limited palette of four or five flat colours '
-         '(dusk blue, coral red, cream, near-black, one touch of bowling-alley neon pink), fine paper grain, '
-         'no gradients beyond a soft sky. Wry and funny, never gory: no blood, no wounds, the undead only ever '
-         'as slow dark silhouettes. 16:9 landscape. Put the subject in the RIGHT half of the picture and keep '
-         'the LEFT half calm, plain background (sky, wall, street), because slide text sits there. No words, '
-         'letters, numbers, logos or signatures anywhere in the image.')
+STYLE = ('Detailed graphic-novel illustration, cinematic lighting, dusk blues against bowling-alley neon pink '
+         'and warm lamp light, fine ink texture. ACTION COMEDY, never gory: the fights are slapstick knockdowns '
+         'with whatever is to hand (a cricket bat, bowling balls, a rolled-up newspaper, a fire extinguisher, a '
+         'thick book), with no blood and no wounds; the undead are shabby, grey-faced and slow, funny rather than '
+         'frightening. 16:9 landscape. Put the action in the RIGHT half of the picture and keep the LEFT half '
+         'calm and dark, because slide text sits there. No words, letters, numbers, logos or signatures anywhere '
+         'in the image. Invented faces only: no resemblance to any real actor or public figure.')
+
+ACTION = ('stairs', 'ambulance', 'till', 'bowling', 'bell', 'minibus')   # 2026-11-16: the fights, re-briefed
 
 CAST = ('The same people in every picture: YOU, late twenties, short dark hair, a red bowling-alley polo shirt; '
         'GAZ, your flatmate, messy fair hair, grey hoodie, always half asleep; NAN, a tiny grandmother with a '
@@ -733,6 +746,12 @@ def write_brief():
             '4. Run `/publish`, or tell Claude the pictures are in. The deck builds itself from them.', '',
             '## The style', '', STYLE, '', '## The people', '', CAST, '',
             '## The pictures (%d)' % len(PLATES), '']
+    rows[rows.index('## The style'):rows.index('## The style')] = [
+        '## Redo these six: the fights (2026-11-16)', '',
+        'The story now has zombie fighting. These six replace the fight-free pictures of the same name '
+        '(`bowling.png` is new and replaces `bite.png`, which is no longer used). Same style, same people; paste '
+        'each line as its own message.', ''] + [
+        '- **`%s.png`**: %s.' % (slot, PLATES[slot][1]) for slot in ACTION] + ['']
     for n, (slot, (_, subject)) in enumerate(PLATES.items(), 1):
         rows.append('%d. **`%s.png`**: %s.' % (n, slot, subject))
     rows += ['', 'The deck is playable now on stand-in pictures; each real one replaces its stand-in on the '

@@ -40,6 +40,20 @@ Scarlet machine and look: full-bleed plates, text over them.
   all clear the deck bar after Continue moved beside the feedback and the
   options tightened. Three clicked routes: 25/25 bus; 23/25 bus; 5 wrong →
   Nerve 0, bus locked. DE/ES written in-session, no native check.
+- **2026-11-16, action added.** Innes: *"Why is there zero zombie fighting
+  in this?"* None: my first brief said "never gory, undead only as
+  silhouettes" and the story only hid. Six scenes are slapstick fights now
+  (stairs, ambulance, till, 2 a.m. glass breaking, claw machine, car park);
+  q10 → WHOSE, q21 → THAT, rest of the grammar unchanged. Plate `bite` is
+  gone, `bowling` is new; `ACTION` in the builder lists the six to redo and
+  the brief has a "Redo these six" section.
+- **Art arrived (Codex, 40 PNGs, 1672×941, graphic-novel style)** in
+  `~/Documents/Codex/2026-11-15/mak/outputs/dead-by-teatime-artwork.zip`,
+  NOT imported. It shows Innes's dream cast as themselves (Emma Stone,
+  Richard Ayoade, Richard E. Grant, Sheila Hancock, Rob Auton): real
+  likenesses on a paid, public page. Innes is having the faces redone;
+  do not put these PNGs in the repo (it is public) or on the site. Use the
+  redone set + the six action plates, then prep-artwork → PALETTE_LIVE.
 
 ## 2026-11-15 — The Gargoyle House, Part 5: Words in Context (C1): SHIPPED, FREE
 

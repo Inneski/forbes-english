@@ -116,9 +116,7 @@ N = {
     'dawn': 'Por la mañana. La radio dice que el ejército está despejando el pueblo calle por calle. De día, '
             'las figuras de fuera son más lentas. En el aparcamiento está el minibús de la Liga de Bolos para '
             'Mayores de 70, y Nan tiene las llaves. Cómo no.',
-    'end-bus': 'Nan conduce el minibús de los mayores de 70 por el centro de la calle principal a quince '
-               'kilómetros por hora. Nadie corre. La mano de Gaz está bien. Colin empieza un capítulo nuevo. A '
-               'la salida del pueblo, un soldado os hace señas para que paséis.',
+    'end-bus': 'Os abrís paso por el aparcamiento con un bate de críquet, dos bolas de bolos y un libro muy gordo. Luego Nan conduce el minibús por el centro de la calle principal a quince kilómetros por hora. La mano de Gaz está bien. Geoffrey tiene una abolladura. A la salida del pueblo, un soldado os hace señas para que paséis.',
     'end-wait': 'Os quedáis detrás de la nevera de la cafetería hasta que llega el ejército, el jueves. Todos '
                 'sobreviven, sobre todo a base de patatas fritas. Nan dice que ha pasado Navidades peores.',
     'end-solo': 'Te escapas solo por la puerta de atrás. Eres más rápido, sí. Pero la llave del almacén está en '
@@ -136,13 +134,12 @@ N = {
              'en su casa hay normas.',
     'q-q06': 'Nan no se va sin sus pastillas para el corazón. Están en el baño de arriba, y allí arriba algo se '
              'mueve.',
-    'q-q07': 'Subes a por las pastillas. Nan te da a Geoffrey y un consejo sobre la escalera.',
+    'q-q07': 'Subes a por las pastillas. En el rellano, algo en bata se da la vuelta y se tambalea hacia ti. Nan está justo detrás de ti con Geoffrey, ya en pleno golpe.',
     'q-q08': 'Bajas con las pastillas. Nan ha hecho una bolsa: galletas, una linterna, Geoffrey. Te pregunta si '
              'necesita su abrigo grande de invierno. Estamos en junio.',
     'q-q09': 'La base de ambulancias está vacía, salvo por un hombre en bata. Ha visto a Priya. Priya y tú '
              'estuvisteis juntos tres años.',
-    'q-q10': 'En el aparcamiento hay tres ambulancias. Solo una tiene la puerta trasera abierta y las luces '
-             'azules todavía encendidas.',
+    'q-q10': 'En el aparcamiento, una ambulancia tiene las puertas traseras abiertas. Algo con uniforme verde está saliendo, con los brazos por delante. Agarras la puerta y empujas.',
     'q-q11': 'En la puerta del cuarto del fondo hay una nota con la letra de Priya: AQUÍ DENTRO. LLAMA TRES '
              'VECES SI ERES HUMANO.',
     'q-q12': 'Priya abre la puerta. Detrás de ella hay un hombre alto con sombrero de acampada y un libro que se '
@@ -151,8 +148,7 @@ N = {
              'un cartel nuevo: SOLO EFECTIVO. PROHIBIDO MORDER.',
     'q-q14': 'Tienes diez minutos y una cesta. Gaz quiere patatas fritas. Nan quiere té. Tú quieres las pilas '
              'de linterna que Mr Bell guarda detrás del mostrador.',
-    'q-q15': 'Le pides a Mr Bell que venga con vosotros. Se niega. Puede que alguien quiera un periódico, dice, '
-             'incluso hoy.',
+    'q-q15': 'Un cliente en la caja gruñe y se abalanza sobre el mostrador. Mr Bell lo tumba con un periódico enrollado y vuelve a su crucigrama. No piensa irse.',
     'q-q16': 'Mr Bell te da un consejo para el camino: quédate en el centro de la calle y no corras. Se fijan '
              'en quien corre.',
     'q-q17': 'Colin abre su libro. «Regla número uno: asegurar las entradas.» Por una vez, tiene razón. Solo una '
@@ -163,17 +159,14 @@ N = {
              'Colin está dormido en la pista tres.',
     'q-q20': 'Gaz y tú arrastráis la nevera de la cafetería hasta las puertas de cristal. Después de un metro, '
              'Gaz quiere un descanso.',
-    'q-q21': 'De vuelta dentro, Gaz te enseña la mano. Tiene un pequeño mordisco. «Fue una bolsa de patatas», '
-             'dice. «Probablemente.»',
-    'q-q22': 'Priya limpia el mordisco y lo venda. Le da a Gaz tres instrucciones y le hace repetirlas.',
+    'q-q21': 'A las dos de la mañana el cristal se rompe y tres de ellos se cuelan por el hueco. Gaz coge una bola de bolos del estante y te mira: ¿a cuál primero?',
+    'q-q22': 'El último cae en la pista uno. Gaz te enseña un pequeño mordisco en la mano. «Fue una bolsa de patatas», dice. «Probablemente.» Priya se lo limpia y le da tres instrucciones.',
     'q-q23': 'A las tres de la mañana, la máquina de gancho empieza a tocar su cancioncita. Algo se mueve dentro '
              'de la urna de cristal, detrás de los peluches.',
     'q-q24': 'Colin hojea su libro. No hay ningún capítulo sobre máquinas de gancho. Por primera vez, te pregunta '
              'qué hacer.',
-    'q-q25': 'Dentro de la máquina de gancho está Mr Bell: vivo, con una bolsa de dinero. «La tienda está '
-             'cerrada», dice. «Necesitaba un sitio tranquilo.»',
-    'q-q26': 'Todos te miran. Tú tienes las llaves del edificio; Nan tiene las llaves del autobús. Las figuras '
-             'del aparcamiento están lentas esta mañana.',
+    'q-q25': 'La máquina de gancho se abre de golpe y cae un zombi con camisa de bolos, con Mr Bell justo detrás. Lo tumba con su bolsa de dinero. «La tienda está cerrada», dice.',
+    'q-q26': 'Seis de ellos están entre las puertas y el minibús, lentos a la luz del día. Nan levanta a Geoffrey. Colin levanta su libro. Todos te miran.',
 }
 
 QT = {
@@ -194,7 +187,7 @@ QT = {
     'q06': ('Parada A · las pastillas', 'Las pastillas de Nan.', None,
             'Información extra entre comas: WHICH para cosas, y nunca THAT después de una coma. WHO es para '
             'personas.'),
-    'q07': ('Parada A · la escalera', 'Escaleras arriba.', None,
+    'q07': ('Parada A · la escalera', '¡Agáchate!', None,
             'SHOULDN’T + verbo en forma base: el consejo de no hacer algo. La negación es SHOULDN’T, nunca DON’T '
             'SHOULD, y no lleva TO.'),
     'q08': ('Parada A · control', 'Nan viene contigo.', 'Elige la respuesta que significa que NO es necesario.',
@@ -203,9 +196,9 @@ QT = {
     'q09': ('Parada B · la base de ambulancias', '¿Dónde está Priya?', None,
             'WHO para una persona. WHICH es para cosas, y WHOSE para la posesión. Aquí también vale THAT, y '
             'también sin pronombre.'),
-    'q10': ('Parada B · el aparcamiento', 'Luces encendidas.', None,
-            'Una ambulancia es una cosa, así que THAT o WHICH. WHO es para personas; WHERE es para lugares donde '
-            'pasa algo.'),
+    'q10': ('Parada B · el aparcamiento', 'Ya no es un técnico de ambulancias.', None,
+            'WHOSE + sustantivo indica posesión: sus brazos, así que «whose arms». Después de WHO haría falta un '
+            'verbo («who is reaching out»), y nunca WHO + HIS.'),
     'q11': ('Parada B · una nota', 'Una nota en la puerta.', None,
             'Un lugar donde pasa algo lleva WHERE: «the place where she is hiding». WHICH solo necesita una '
             'preposición al final: «the place which she is hiding in».'),
@@ -235,9 +228,9 @@ QT = {
             'sustantivo detrás: «the man whose key we need».'),
     'q20': ('Acto IV · las puertas de entrada', 'La barricada.', None,
             'HAVE TO: la situación lo hace necesario. DON’T HAVE TO significa lo contrario. SHOULD nunca lleva TO.'),
-    'q21': ('Acto IV · el mordisco', 'Un pequeño problema.', None,
-            'Una bolsa de patatas es una cosa, así que THAT o WHICH. Gaz habla de ella como si fuera una persona, '
-            'pero la gramática no: WHO es solo para personas.'),
+    'q21': ('Acto IV · las 2 de la mañana', 'El cristal cede.', None,
+            'El que está más cerca de Nan es el sujeto de IS, así que THAT (o WHO). WHERE es para lugares, y WHOSE '
+            'siempre necesita un sustantivo detrás.'),
     'q22': ('Acto IV · primeros auxilios', 'Priya toma el mando.', '¿Qué instrucción es un consejo y no una norma?',
             'SHOULD da un consejo: una buena idea. MUSTN’T y HAVE TO son normas, sin opción. Priya usa las tres, '
             'y Gaz no cumple ninguna.'),
