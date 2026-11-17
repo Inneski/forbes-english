@@ -141,7 +141,7 @@ MC2 = [  # stage 2: what they mean (ctx key, quote, options)
 MC2_SLOTS = ['p-grand', 'p-faff', 'p-tape', 'p-shelf', 'p-dear', 'p-switch']
 
 MC3 = [  # stage 3: the better question (ctx key, stem key, q)
-    ('c11', 's11', dict(options=['How do you get on with the tape?',
+    ('c11', 's11', dict(options=['How are you getting on with the tape?',
                                  'Don’t you find our tape much easier?',
                                  'You like the new tape, don’t you?',
                                  'Is it the best tape you’ve ever used?'], correct=0, why='q11w')),
