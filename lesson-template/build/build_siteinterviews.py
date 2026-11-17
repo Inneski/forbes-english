@@ -31,7 +31,10 @@ hero job's setup ("Use" on it: his two style references, --raw --profile
 b7nc7q5 --stylize 200 --hd), prompt = "<slot>: <PLATES line>". p-warm is the
 one re-run with "flat graphic illustration, simple shapes, screen-print
 texture, limited palette" added. Originals in incoming/hd/SiteInterviews/.
-Only horizon.jpg (results) is still borrowed.
+Only horizon.jpg (results) is still borrowed. p-words (behind the
+match, in place of the mirrored hero, whose roofer's face sat under the
+boxes) and p-better (MC3 q1, so the cover's p-ask is not shown twice) are
+Innes's own renders, 2026-11-17.
 
 Run from the repo root:  python3 lesson-template/build/build_siteinterviews.py
 """
@@ -83,9 +86,11 @@ PLATES = [
     ('p-kent', 'crew', 'a timber-frame house going up in the Kent countryside, an oast house in the distance, a site manager with a clipboard'),
     ('p-manchester', 'fair', 'a builders\' merchant yard among red-brick warehouses, a forklift carrying pallets of membrane rolls, a branch manager in a fleece'),
     ('p-report', 'suits', 'a man presenting from a laptop to a small team in a meeting room, mountains through the window'),
+    ('p-words', 'roll', 'an architect’s roof drawing on a site table under a roll of membrane and a tape measure (Innes’s own render, behind the match)'),
+    ('p-better', 'crew', 'a man in a hard hat explaining with an open hand, a roofer listening with arms folded (Innes’s own render)'),
 ]
 FALLBACK = {slot: fb for slot, fb, _ in PLATES}
-STEM = '{} --ar 16:9 --raw --profile b7nc7q5 --stylize 200 --hd'  # + his style references, loaded by "Use"
+STEM = '{} --ar 16:9 --raw --profile b7nc7q5 --stylize 100 --hd'  # + his style references, loaded by "Use"
 
 
 def P(slot):
@@ -154,7 +159,7 @@ MC3 = [  # stage 3: the better question (ctx key, stem key, q)
                                  'Would you choose our membrane if you could?',
                                  'Is it usually the architect who decides it?'], correct=0, why='q13w')),
 ]
-MC3_SLOTS = ['p-ask', 'p-probe', 'p-decide']
+MC3_SLOTS = ['p-better', 'p-probe', 'p-decide']
 
 # Keys are written first above, for readability; deal them across the
 # letters in the source (check-lesson KEYS), by a fixed rotation.
@@ -257,14 +262,14 @@ def slides():
         (('pCounter', E['pCounter']), b(['r1g', 'r1h', 'r1i']),
          'The <strong>trade</strong> ask for it, so it <strong>moves</strong>.'),
     ]))
-    s.append(D.match([
+    s.append(K.wash(D.match([
         ('breather membrane', 'lets water vapour out of the roof but keeps the rain out'),
         ('VCL', 'stops warm, moist air from inside reaching the insulation'),
         ('counter-batten', 'runs along the rafter, over the membrane, under the battens'),
         ('lap', 'the overlap where one sheet of membrane covers the next'),
         ('callback', 'going back to a finished job to put a problem right'),
         ('builders’ merchant', 'the shop where tradespeople buy their materials'),
-    ], 'e1', E['e1'], 'mT', E['mT'], 'mHint', E['mHint'], 'mWhy'))
+    ], 'e1', E['e1'], 'mT', E['mT'], 'mHint', E['mHint'], 'mWhy'), 'p-words'))
     for n, (q, slot) in enumerate(zip(MC1, map(P, MC1_SLOTS))):
         s.append(K.frame(D.mc(n + 1, len(MC1), q, 'e1', E['e1'], 'mc1T', E['mc1T']), slot,
                          text=(q['stem'], q['options'])))

@@ -325,12 +325,29 @@ class Deck:
             '  -webkit-mask-image: %s;\n  mask-image: %s;\n'
             '  -webkit-mask-composite: source-in; mask-composite: intersect;\n}'
             % (flip.replace(os.sep, '/'), grad, grad))
+        # a slide marked by wash() shows its own plate there instead of the
+        # hero (Innes, 2026-11-17: the mirrored hero put a roofer's face
+        # under the match boxes of Talk Me Through the Last Job)
+        for slot in dict.fromkeys(re.findall(r'data-wash-src="([^"]+)"', body)):
+            self.css.append(
+                'html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide.is-active[data-bg]))'
+                ':has(.slide.is-active[data-wash]):has(.slide.is-active[data-wash-src="%s"]) .bg-layer::before '
+                "{ background-image: url('%s/%s.jpg'); }" % (slot, self.F, slot))
         # the activation's glassy buttons sit centred, over the picture:
         # solid cream so "Writing" never reads over a motorbike
         self.css.append(
             'html[data-style="editorial"] .slide[data-wash] .act-word, '
             'html[data-style="editorial"] .slide[data-wash] .act-panel { background: var(--void); }')
         return body
+
+    def wash(self, html, slot):
+        """A slide with no frame of its own that shows `slot` full-colour
+        behind it, in place of the mirrored hero."""
+        if not self.has(slot):
+            if slot not in self.missing:
+                self.missing.append(slot)
+            return html
+        return re.sub(r'<section class="slide[^>]*', lambda m: m.group(0) + ' data-wash-src="%s"' % slot, html, count=1)
 
     def assemble(self, out_path, body, title, i18n, langs, extra_css=''):
         body = self._wash(body)
