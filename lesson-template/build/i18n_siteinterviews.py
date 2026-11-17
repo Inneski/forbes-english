@@ -100,7 +100,7 @@ T['en'] = dict(
     s11='Which question gets the most honest answer?',
     s12='What is the best next question?',
     s13='Which question tells you the most?',
-    q11w='HOW DO YOU GET ON WITH…? is open and neutral. The others put the answer in the customer’s mouth, and polite customers agree.',
+    q11w='HOW ARE YOU GETTING ON WITH…? is open and neutral, and the continuous fits a new product they are still trying. The others put the answer in the customer’s mouth, and polite customers agree.',
     q12w='A probe repeats THEIR word and asks what it means. The others change the subject or suggest the answer.',
     q13w='One real, recent job gives you a fact. ALWAYS, WOULD YOU and IS IT USUALLY invite a general, polite answer.',
 
@@ -225,7 +225,7 @@ T['de'] = dict(
     s11='Welche Frage bringt die ehrlichste Antwort?',
     s12='Was ist die beste nächste Frage?',
     s13='Welche Frage verrät dir am meisten?',
-    q11w='HOW DO YOU GET ON WITH…? ist offen und neutral. Die anderen legen dem Kunden die Antwort in den Mund, und höfliche Kunden stimmen zu.',
+    q11w='HOW ARE YOU GETTING ON WITH…? ist offen und neutral, und die Verlaufsform passt zu einem neuen Produkt, das noch getestet wird. Die anderen legen dem Kunden die Antwort in den Mund, und höfliche Kunden stimmen zu.',
     q12w='Beim Nachhaken wiederholt man IHR Wort und fragt, was es bedeutet. Die anderen wechseln das Thema oder schlagen die Antwort vor.',
     q13w='Ein echter, kürzlicher Auftrag liefert eine Tatsache. ALWAYS, WOULD YOU und IS IT USUALLY laden zu einer allgemeinen, höflichen Antwort ein.',
 
@@ -348,7 +348,7 @@ T['es'] = dict(
     s11='¿Qué pregunta consigue la respuesta más sincera?',
     s12='¿Cuál es la mejor siguiente pregunta?',
     s13='¿Qué pregunta te dice más?',
-    q11w='HOW DO YOU GET ON WITH…? es abierta y neutral. Las demás ponen la respuesta en boca del cliente, y los clientes educados dicen que sí.',
+    q11w='HOW ARE YOU GETTING ON WITH…? es abierta y neutral, y la forma continua encaja con un producto nuevo que aún están probando. Las demás ponen la respuesta en boca del cliente, y los clientes educados dicen que sí.',
     q12w='Indagar es repetir SU palabra y preguntar qué significa. Las demás cambian de tema o sugieren la respuesta.',
     q13w='Un trabajo real y reciente te da un hecho. ALWAYS, WOULD YOU e IS IT USUALLY invitan a una respuesta general y educada.',
 
