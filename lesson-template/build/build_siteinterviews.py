@@ -51,19 +51,46 @@ E = I.T['en']
 POP = {}
 K = hs1.Deck(F, pop=POP, cover_mode='square', title_px=60, cover_w=44)
 
-# Every slot is filled from the borrowed plates above. These are the plates
-# this deck should have of its own (Midjourney, his style images,
-# --stylize 200, subject centred); drop one in under its slot name and point
-# the slide at it. Not wired: an owed slot falls back to the full-colour
-# wash, and a long question stem then runs over the picture.
-OWED = {
-    'o-carpenter': 'a carpenter taping a vapour control layer around a window opening in a timber-frame house',
-    'o-callback': 'a roofer on a ladder looking up at a damp patch under the eaves, a van parked below',
-    'o-counter': 'a builders’ merchant trade counter, rolls of membrane stacked behind it, a tradesman in hi-vis',
-    'o-contractor': 'a site manager in a hard hat on the phone beside a half-built house',
-    'o-ask': 'two people sitting on a pallet on site with mugs of tea, one with a notebook',
-    'o-play': 'a man holding up a short length of membrane, explaining with his other hand',
-}
+# The deck's own plates. Each slide asks for its own slot and falls back to
+# a borrowed plate until that slot's picture lands in SiteInterviews/, so
+# the art can arrive one picture at a time with no code change. `--brief`
+# writes docs/ARTWORK-site-interviews.md from this table; edit it here.
+# (slot, borrowed fallback, what the picture shows). Subject centred, one
+# clear subject: hs1 crops to it and the cover cuts it out.
+PLATES = [
+    ('hero', None, 'two roofers kneeling on a pitched roof rolling out a breather membrane, one of them looking up mid-sentence at a man in a fleece with a notebook standing on the scaffold beside them'),
+    ('p-warm', 'crew', 'a man in a fleece with a notebook and a roofer in a hard hat chatting on scaffolding beside a half-finished roof'),
+    ('p-specced', 'roll', 'an architect\'s roof drawing unrolled on a site table, weighted with a roll of membrane and a tape measure'),
+    ('p-callback', 'roof', 'a roofer on a ladder looking up at a damp patch under the eaves of a house, his van parked below'),
+    ('p-trade', 'fair', 'a builders\' merchant trade counter, rolls of membrane stacked behind it, a tradesman in hi-vis being served'),
+    ('p-firstfix', 'crew', 'a carpenter stapling a vapour control layer across the timber studs of a house frame, no plasterboard yet'),
+    ('p-grand', 'hero', 'a roofer on a cottage roof in light Irish drizzle giving a so-so shrug, green hills behind'),
+    ('p-faff', 'crew', 'a carpenter wrestling with tangled tape around a window opening in a timber-frame wall'),
+    ('p-tape', 'roll', 'a roofer kneeling and pressing tape along the overlap of two membrane sheets with a small approving nod'),
+    ('p-shelf', 'fair', 'rolls of membrane gathering dust on a warehouse shelf, an empty gap beside them where another product sold out'),
+    ('p-dear', 'roof', 'a roofer frowning at a long receipt beside a stack of membrane rolls on a van\'s tailgate'),
+    ('p-switch', 'suits', 'a site manager in a hard hat on the phone beside a half-built house, weighing something up'),
+    ('p-tea', 'horizon', 'a roofer and a man in a fleece sitting on a stack of pallets on site with mugs of tea, talking'),
+    ('p-ask', 'roll', 'a roofer describing a roof with both hands while a man in a fleece listens, notebook closed'),
+    ('p-probe', 'hero', 'a gloved hand holding up a corner of membrane, another hand pointing at a crease in it'),
+    ('p-decide', 'factory', 'an architect, a builder and a roofer leaning over drawings spread on a car bonnet on site'),
+    ('p-playback', 'crew', 'a man holding up a short length of membrane and explaining, a roofer listening with arms folded'),
+    ('p-choose', 'roof', 'two rolls of membrane in different colours side by side on a roof, a gloved hand reaching between them'),
+    ('p-galway', 'hero', 'a crew of four roofers on a cottage roof in the west of Ireland, stone walls and the sea behind'),
+    ('p-kent', 'crew', 'a timber-frame house going up in the Kent countryside, an oast house in the distance, a site manager with a clipboard'),
+    ('p-manchester', 'fair', 'a builders\' merchant yard among red-brick warehouses, a forklift carrying pallets of membrane rolls, a branch manager in a fleece'),
+    ('p-report', 'suits', 'a man presenting from a laptop to a small team in a meeting room, mountains through the window'),
+]
+FALLBACK = {slot: fb for slot, fb, _ in PLATES}
+STEM = ('flat mid-century screen-print illustration, {}, muted slate blue, cream and dusty pink palette, '
+        'fine grain, hard silhouettes, one clear subject in the centre, calm open edges, no text '
+        '--ar 16:9 --stylize 200 --sref https://forbesenglish.com/SupplierQuality/bg-meeting.jpg '
+        '--no text, letters, numbers, logo, watermark')
+
+
+def P(slot):
+    """This slide's own plate once it has landed, else the borrowed one."""
+    return slot if K.has(slot) or not FALLBACK.get(slot) else FALLBACK[slot]
 
 
 # ── content ────────────────────────────────────────────────────────────
@@ -77,7 +104,7 @@ MC1 = [  # stage 1: the trade's words
     dict(stem='The carpenters fit the VCL at ____, before the plasterboard goes up.',
          options=['first fix', 'second fix', 'final fix', 'pre-fix'], correct=0, why='q4w'),
 ]
-MC1_SLOTS = ['roll', 'roof', 'fair', 'crew']
+MC1_SLOTS = ['p-specced', 'p-callback', 'p-trade', 'p-firstfix']
 
 MC2 = [  # stage 2: what they mean (ctx key, quote, options)
     ('c5', dict(stem='“Ah, it’s grand, yeah. Does the job.”',
@@ -111,7 +138,7 @@ MC2 = [  # stage 2: what they mean (ctx key, quote, options)
                           'They want you to call back later in the year.',
                           'They have already decided to switch to you.'], correct=0, why='q10w')),
 ]
-MC2_SLOTS = ['hero', 'crew', 'roll', 'fair', 'roof', 'suits']
+MC2_SLOTS = ['p-grand', 'p-faff', 'p-tape', 'p-shelf', 'p-dear', 'p-switch']
 
 MC3 = [  # stage 3: the better question (ctx key, stem key, q)
     ('c11', 's11', dict(options=['How do you get on with the tape?',
@@ -127,7 +154,7 @@ MC3 = [  # stage 3: the better question (ctx key, stem key, q)
                                  'Would you choose our membrane if you could?',
                                  'Is it usually the architect who decides it?'], correct=0, why='q13w')),
 ]
-MC3_SLOTS = ['roll', 'hero', 'factory']
+MC3_SLOTS = ['p-ask', 'p-probe', 'p-decide']
 
 # Keys are written first above, for readability; deal them across the
 # letters in the source (check-lesson KEYS), by a fixed rotation.
@@ -159,8 +186,8 @@ GAP_B = [
 ]
 
 ORDERS = [
-    (['So', 'if I’ve got this right,', 'it’s not the price,', 'it’s the time', 'on the roof?'], 'o1w', 'crew'),
-    (['What', 'would it take', 'for you', 'to switch', 'suppliers?'], 'o2w', 'roof'),
+    (['So', 'if I’ve got this right,', 'it’s not the price,', 'it’s the time', 'on the roof?'], 'o1w', 'p-playback'),
+    (['What', 'would it take', 'for you', 'to switch', 'suppliers?'], 'o2w', 'p-choose'),
 ]
 
 TALK_W = [
@@ -218,7 +245,7 @@ def role(n):
 
 def slides():
     s = [K.cover(E)]
-    s.append(K.frame(K.talk('eW', 'tkWT', TALK_W, E), 'crew'))
+    s.append(K.frame(K.talk('eW', 'tkWT', TALK_W, E), P('p-warm')))
 
     # ── stage 1 · the words on the roof ────────────────────────────────
     K.stage()
@@ -238,7 +265,7 @@ def slides():
         ('callback', 'going back to a finished job to put a problem right'),
         ('builders’ merchant', 'the shop where tradespeople buy their materials'),
     ], 'e1', E['e1'], 'mT', E['mT'], 'mHint', E['mHint'], 'mWhy'))
-    for n, (q, slot) in enumerate(zip(MC1, MC1_SLOTS)):
+    for n, (q, slot) in enumerate(zip(MC1, map(P, MC1_SLOTS))):
         s.append(K.frame(D.mc(n + 1, len(MC1), q, 'e1', E['e1'], 'mc1T', E['mc1T']), slot,
                          text=(q['stem'], q['options'])))
 
@@ -249,10 +276,10 @@ def slides():
         (('pGrand', E['pGrand']), b(['r2c', 'r2d']), 'Ah, it’s <strong>grand</strong>. Does the job.'),
         (('pSoft', E['pSoft']), b(['r2e', 'r2f']), 'The lads <strong>aren’t mad about</strong> the tape.'),
     ]))
-    for n, ((ck, q), slot) in enumerate(zip(MC2, MC2_SLOTS)):
+    for n, ((ck, q), slot) in enumerate(zip(MC2, map(P, MC2_SLOTS))):
         s.append(K.frame(D.mc(n + 1, len(MC2), q, 'e2', E['e2'], 'mc2T', E['mc2T'],
                               ctx=E[ck], ctx_key=ck), slot, text=(q['stem'], q['options'])))
-    s.append(K.frame(K.talk('e2', 'tk2T', TALK_2, E), 'horizon'))
+    s.append(K.frame(K.talk('e2', 'tk2T', TALK_2, E), P('p-tea')))
 
     # ── stage 3 · questions that get the truth ─────────────────────────
     K.stage()
@@ -261,7 +288,7 @@ def slides():
         (('pProbe', E['pProbe']), b(['r3c', 'r3d']), '<strong>When you say</strong> fiddly, <strong>what do you mean</strong>?'),
         (('pBack', E['pBack']), b(['r3e', 'r3f']), '<strong>So if I’ve got this right</strong>, it’s the time, not the price?'),
     ]))
-    for n, ((ck, sk, q), slot) in enumerate(zip(MC3, MC3_SLOTS)):
+    for n, ((ck, sk, q), slot) in enumerate(zip(MC3, map(P, MC3_SLOTS))):
         q = dict(q, stem=E[sk])
         s.append(K.frame(D.mc(n + 1, len(MC3), q, 'e3', E['e3'], 'mc3T', E['mc3T'],
                               ctx=E[ck], ctx_key=ck, stem_key=sk), slot, text=(q['stem'], q['options'])))
@@ -270,14 +297,14 @@ def slides():
                        hint=E['gHint'], hint_key='gHint', size=21))
     for items, why, slot in ORDERS:
         s.append(K.frame(D.order(items, 'e3', E['e3'], 'orderT', E['orderT'], 'orderHint',
-                                 E['orderHint'], why), slot))
+                                 E['orderHint'], why), P(slot)))
 
     # ── stage 4 · run the conversation ─────────────────────────────────
     K.stage()
-    s.append(K.frame(role(1), 'hero'))
-    s.append(K.frame(role(2), 'crew'))
-    s.append(K.frame(role(3), 'fair'))
-    s.append(K.frame(K.talk('e4', 'debT', DEBRIEF, E), 'suits'))
+    s.append(K.frame(role(1), P('p-galway')))
+    s.append(K.frame(role(2), P('p-kent')))
+    s.append(K.frame(role(3), P('p-manchester')))
+    s.append(K.frame(K.talk('e4', 'debT', DEBRIEF, E), P('p-report')))
     s.append(K.frame(D.results(), 'horizon'))
     chips = ['Talk me through …', 'When you say …, what do you mean?', 'Can you give me an example?',
              'So if I’ve understood you …', 'What would it take for you to …?', 'Who made the decision?']
@@ -295,5 +322,53 @@ def build():
     K.assemble(OUT, body, TITLE, I, ('en', 'de', 'es'))
 
 
+BRIEF = 'docs/ARTWORK-site-interviews.md'
+DROP = 'incoming/site-interviews'
+WIN = 'C:\\Users\\black\\Documents\\FORBES\\'
+
+
+def brief():
+    """The Midjourney brief, from PLATES. Makes the drop folder too
+    (CLAUDE.md: a brief that names a drop folder creates it)."""
+    os.makedirs(DROP, exist_ok=True)
+    have = [x for x, _, _ in PLATES if x != 'hero' and K.has(x)]
+    out = ['# Talk Me Through the Last Job: Midjourney brief', '',
+           'Generated by `py lesson-template/build/build_siteinterviews.py --brief`; edit PLATES in the builder, not this file.', '',
+           'The deck shipped on plates borrowed from Within Spec, Below Standard, Talking About Your Product and the '
+           'roofing lesson. These %d are its own. Each slide switches to its own picture the moment that picture is '
+           'in, one at a time, so there is no need to make them all at once.' % len(PLATES), '',
+           '## How to use it', '',
+           '1. Paste each prompt into Midjourney as it is. `--sref` points at the roofers plate already on the live '
+           'site, so the new set matches the borrowed one; add your own style images as usual.',
+           '2. Pick the best of the four, upscale it, and save it under the name shown (`hero.png`, `p-warm.png` …) in',
+           '   [%s%s](../%s)' % (WIN, DROP.replace('/', '\\'), DROP),
+           '3. Tell a local Claude session "site interviews art is in", or run `/publish`.', '',
+           'Keep the subject in the middle with calm space round it: the deck crops to the subject, and the cover '
+           'cuts the hero out and pops it out of a square.', '']
+    if have:
+        out += ['Already in: %s.' % ', '.join(have), '']
+    out += ['## The pictures (%d)' % len(PLATES), '']
+    for n, (slot, fb, idea) in enumerate(PLATES, 1):
+        where = 'the cover and the library card' if slot == 'hero' else 'until it lands: `%s.jpg`' % fb
+        out += ['### %d. `%s.png` (%s)' % (n, slot, where), '', '```', STEM.format(idea), '```', '']
+    out += ['## For the Claude session that puts them in', '',
+            '```bash',
+            'python3 tools/prep-artwork.py incoming/site-interviews/ --into SiteInterviews --keep-names --dry-run',
+            'python3 tools/prep-artwork.py incoming/site-interviews/ --into SiteInterviews --keep-names',
+            '```', '',
+            '- A new `hero`: it replaces the borrowed `SiteInterviews/hero.jpg` (`--force` past the duplicate check '
+            'if needed). Delete `SiteInterviews/pop-cover.webp` so the cover is cut again, and recut '
+            '`LibraryCards/customer-interviews-on-site-b2-c1.jpg` (1200x512) from it.',
+            '- Then `python3 lesson-template/build/build_siteinterviews.py`, look at every new crop and pop, '
+            '`node lesson-template/check-lesson.js customer-interviews-on-site-b2-c1.html`, '
+            '`python3 tools/seo.py` last, and re-run `--brief` so this file lists what is in.',
+            '- The borrowed plates stay in the folder while any slide still falls back to one.', '']
+    open(BRIEF, 'w', encoding='utf-8', newline='').write('\n'.join(out))
+    print('wrote %s (%d plates); drop folder %s exists' % (BRIEF, len(PLATES), DROP))
+
+
 if __name__ == '__main__':
-    build()
+    if '--brief' in sys.argv:
+        brief()
+    else:
+        build()
