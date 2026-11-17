@@ -42,10 +42,8 @@ for speaking only.
 - **Gates:** check-lesson all pass; answered-overflow fits en/de/es;
   overflow-langs fits (ES cover needed a shorter subtitle and focus chip);
   check-library `--vs-origin` PASS. DE/ES written in-session, no native check.
-- **Not live:** pushed to `claude/nice-einstein-pz4reu`, not `main` (the
-  cloud session's branch rule). The catalogue row is already live; until the
-  branch merges, live `library.html` has no LESSON_IMAGES entry for it, so
-  `comingSoon()` shows it as a disabled "Coming soon" card, not a dead link.
+- **Live:** fast-forwarded to `main` (64fca4a6) on Innes's "merge", same day.
+  Not yet opened on the live site: a cloud session cannot reach it.
 - **Pipeline note:** a fresh cloud container lacks `rembg` and `cv2`;
   `pip install rembg onnxruntime opencv-python-headless` and the isnet model
   downloads fine. `checker/shots.js` hard-codes a Chromium path that does not
