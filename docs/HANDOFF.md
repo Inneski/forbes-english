@@ -10,6 +10,47 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
+## 2026-11-17 — Talk Me Through the Last Job (B2–C1 customer interviews on site): BUILT, on branch
+
+`customer-interviews-on-site-b2-c1.html`, 30 slides, EN/DE/ES, house style 1,
+Pro. Builder `build_siteinterviews.py` + `i18n_siteinterviews.py`. Made for a
+new student (Christian): product manager at a Swiss maker of vapour barriers
+and roofing/cladding membranes, customers are carpenters, roofers and
+retailers, market research in England and Ireland, supplier talks. He asked
+for speaking only.
+
+- **Built in the gap, not on top.** Four lessons already cover his ground
+  (Product Strategy & Market Research Speaking C1, Talking About Your Product
+  B1, Within Spec Below Standard, Bringing a Membrane to Market). This one is
+  the site interview with a UK/Irish tradesperson: the trade's words (VCL,
+  breather membrane, laps, spec/swap out, first fix, the merchant, the trade,
+  "it moves"), understatement decoded ("it's grand", "not bad at all", "a bit
+  of a faff", "fierce dear"), open/probe/play-back, three role cards the
+  teacher plays (Galway roofer, Kent timber-frame site manager, Manchester
+  merchant), a 60-second report back to HQ. The writing track is his
+  interview guide, so it serves the speaking.
+- **Art is borrowed.** Byte copies of SupplierQuality's roofers/roof/rolls/
+  office, ProductSpeaking's trade fair and roofing's factory roof, in
+  `SiteInterviews/` (cover = the two kneeling roofers). The plates it should
+  have of its own are `OWED` in the builder. Not wired on purpose: an owed
+  slot falls back to the full-colour wash and a long MC stem then runs over
+  the picture (seen on the first build).
+- **Catalogue:** row inserted in `public.lessons` via the Supabase MCP and
+  mirrored to `tools/lessons.json`. `tools/topics.py` OVERRIDES routes it to
+  Business English (the title matches no hub pattern; it landed on
+  Vocabulary first). LESSON_IMAGES + LESSON_TAGS rows in `library.html`.
+- **Gates:** check-lesson all pass; answered-overflow fits en/de/es;
+  overflow-langs fits (ES cover needed a shorter subtitle and focus chip);
+  check-library `--vs-origin` PASS. DE/ES written in-session, no native check.
+- **Not live:** pushed to `claude/nice-einstein-pz4reu`, not `main` (the
+  cloud session's branch rule). The catalogue row is already live; until the
+  branch merges, live `library.html` has no LESSON_IMAGES entry for it, so
+  `comingSoon()` shows it as a disabled "Coming soon" card, not a dead link.
+- **Pipeline note:** a fresh cloud container lacks `rembg` and `cv2`;
+  `pip install rembg onnxruntime opencv-python-headless` and the isnet model
+  downloads fine. `checker/shots.js` hard-codes a Chromium path that does not
+  exist here; drop the `executablePath` to run it.
+
 ## 2026-11-15 — Dead by Teatime (B1): zombie-comedy branch deck, built on stand-ins, art briefed to ChatGPT
 
 Innes: *"Do a similar story to Shaun of the Dead RPG"*, grammar = present
