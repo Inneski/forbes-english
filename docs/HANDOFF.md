@@ -10,6 +10,27 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
+## 2026-11-17 — Talk Me Through the Last Job: its own 22 Midjourney plates are in
+
+Innes pasted the brief's subject lines ("add midjourney art to new class").
+He had already rendered the hero himself, so every plate copies THAT job's
+setup: "Use" on it (his two style references, `--raw --profile b7nc7q5
+--stylize 200 --hd`), prompt `<slot>: <line>`, Fast mode, ~10 s a job.
+He found them "a bit photorealistic", then said use them as they are.
+
+- **A slot label in the prompt gets PRINTED.** "P-ASK." and "P-EAR" came out
+  as lettering on p-ask and p-dear; both inpainted (cv2) in the hd originals.
+  Next time leave the slot name out of the prompt and map jobs another way.
+- `--raw` shows on every job even when left out of the prompt: it is on in
+  his settings panel. A test p-warm with "flat graphic illustration, simple
+  shapes, screen-print texture, limited palette" came out clearly
+  illustrated; that is the p-warm plate used.
+- The hero scene cut down to the interviewer alone, so the cover pops
+  **p-ask** (`cover_slot`); hero.jpg still drives texture, wash and the
+  library card (recut). Borrowed crew/fair/roll/roof/suits/factory removed;
+  only horizon.jpg (results) is still borrowed.
+- Originals: `incoming/hd/SiteInterviews/`. Style refs unlocked afterwards.
+
 ## 2026-11-17 — Talk Me Through the Last Job (B2–C1 customer interviews on site): BUILT, on branch
 
 `customer-interviews-on-site-b2-c1.html`, 30 slides, EN/DE/ES, house style 1,

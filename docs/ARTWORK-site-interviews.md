@@ -13,138 +13,140 @@ The deck shipped on plates borrowed from Within Spec, Below Standard, Talking Ab
 
 Keep the subject in the middle with calm space round it: the deck crops to the subject, and the cover cuts the hero out and pops it out of a square.
 
+Already in: p-warm, p-specced, p-callback, p-trade, p-firstfix, p-grand, p-faff, p-tape, p-shelf, p-dear, p-switch, p-tea, p-ask, p-probe, p-decide, p-playback, p-choose, p-galway, p-kent, p-manchester, p-report.
+
 ## The pictures (22)
 
 ### 1. `hero.png` (the cover and the library card)
 
 ```
-flat mid-century screen-print illustration, two roofers kneeling on a pitched roof rolling out a breather membrane, one of them looking up mid-sentence at a man in a fleece with a notebook standing on the scaffold beside them, muted slate blue, cream and dusty pink palette, fine grain, hard silhouettes, one clear subject in the centre, calm open edges, no text --ar 16:9 --stylize 200 --sref https://forbesenglish.com/SupplierQuality/bg-meeting.jpg --no text, letters, numbers, logo, watermark
+hero: two roofers kneeling on a pitched roof rolling out a breather membrane, one of them looking up mid-sentence at a man in a fleece with a notebook standing on the scaffold beside them --ar 16:9 --raw --profile b7nc7q5 --stylize 200 --hd
 ```
 
 ### 2. `p-warm.png` (until it lands: `crew.jpg`)
 
 ```
-flat mid-century screen-print illustration, a man in a fleece with a notebook and a roofer in a hard hat chatting on scaffolding beside a half-finished roof, muted slate blue, cream and dusty pink palette, fine grain, hard silhouettes, one clear subject in the centre, calm open edges, no text --ar 16:9 --stylize 200 --sref https://forbesenglish.com/SupplierQuality/bg-meeting.jpg --no text, letters, numbers, logo, watermark
+p-warm: a man in a fleece with a notebook and a roofer in a hard hat chatting on scaffolding beside a half-finished roof --ar 16:9 --raw --profile b7nc7q5 --stylize 200 --hd
 ```
 
 ### 3. `p-specced.png` (until it lands: `roll.jpg`)
 
 ```
-flat mid-century screen-print illustration, an architect's roof drawing unrolled on a site table, weighted with a roll of membrane and a tape measure, muted slate blue, cream and dusty pink palette, fine grain, hard silhouettes, one clear subject in the centre, calm open edges, no text --ar 16:9 --stylize 200 --sref https://forbesenglish.com/SupplierQuality/bg-meeting.jpg --no text, letters, numbers, logo, watermark
+p-specced: an architect's roof drawing unrolled on a site table, weighted with a roll of membrane and a tape measure --ar 16:9 --raw --profile b7nc7q5 --stylize 200 --hd
 ```
 
 ### 4. `p-callback.png` (until it lands: `roof.jpg`)
 
 ```
-flat mid-century screen-print illustration, a roofer on a ladder looking up at a damp patch under the eaves of a house, his van parked below, muted slate blue, cream and dusty pink palette, fine grain, hard silhouettes, one clear subject in the centre, calm open edges, no text --ar 16:9 --stylize 200 --sref https://forbesenglish.com/SupplierQuality/bg-meeting.jpg --no text, letters, numbers, logo, watermark
+p-callback: a roofer on a ladder looking up at a damp patch under the eaves of a house, his van parked below --ar 16:9 --raw --profile b7nc7q5 --stylize 200 --hd
 ```
 
 ### 5. `p-trade.png` (until it lands: `fair.jpg`)
 
 ```
-flat mid-century screen-print illustration, a builders' merchant trade counter, rolls of membrane stacked behind it, a tradesman in hi-vis being served, muted slate blue, cream and dusty pink palette, fine grain, hard silhouettes, one clear subject in the centre, calm open edges, no text --ar 16:9 --stylize 200 --sref https://forbesenglish.com/SupplierQuality/bg-meeting.jpg --no text, letters, numbers, logo, watermark
+p-trade: a builders' merchant trade counter, rolls of membrane stacked behind it, a tradesman in hi-vis being served --ar 16:9 --raw --profile b7nc7q5 --stylize 200 --hd
 ```
 
 ### 6. `p-firstfix.png` (until it lands: `crew.jpg`)
 
 ```
-flat mid-century screen-print illustration, a carpenter stapling a vapour control layer across the timber studs of a house frame, no plasterboard yet, muted slate blue, cream and dusty pink palette, fine grain, hard silhouettes, one clear subject in the centre, calm open edges, no text --ar 16:9 --stylize 200 --sref https://forbesenglish.com/SupplierQuality/bg-meeting.jpg --no text, letters, numbers, logo, watermark
+p-firstfix: a carpenter stapling a vapour control layer across the timber studs of a house frame, no plasterboard yet --ar 16:9 --raw --profile b7nc7q5 --stylize 200 --hd
 ```
 
 ### 7. `p-grand.png` (until it lands: `hero.jpg`)
 
 ```
-flat mid-century screen-print illustration, a roofer on a cottage roof in light Irish drizzle giving a so-so shrug, green hills behind, muted slate blue, cream and dusty pink palette, fine grain, hard silhouettes, one clear subject in the centre, calm open edges, no text --ar 16:9 --stylize 200 --sref https://forbesenglish.com/SupplierQuality/bg-meeting.jpg --no text, letters, numbers, logo, watermark
+p-grand: a roofer on a cottage roof in light Irish drizzle giving a so-so shrug, green hills behind --ar 16:9 --raw --profile b7nc7q5 --stylize 200 --hd
 ```
 
 ### 8. `p-faff.png` (until it lands: `crew.jpg`)
 
 ```
-flat mid-century screen-print illustration, a carpenter wrestling with tangled tape around a window opening in a timber-frame wall, muted slate blue, cream and dusty pink palette, fine grain, hard silhouettes, one clear subject in the centre, calm open edges, no text --ar 16:9 --stylize 200 --sref https://forbesenglish.com/SupplierQuality/bg-meeting.jpg --no text, letters, numbers, logo, watermark
+p-faff: a carpenter wrestling with tangled tape around a window opening in a timber-frame wall --ar 16:9 --raw --profile b7nc7q5 --stylize 200 --hd
 ```
 
 ### 9. `p-tape.png` (until it lands: `roll.jpg`)
 
 ```
-flat mid-century screen-print illustration, a roofer kneeling and pressing tape along the overlap of two membrane sheets with a small approving nod, muted slate blue, cream and dusty pink palette, fine grain, hard silhouettes, one clear subject in the centre, calm open edges, no text --ar 16:9 --stylize 200 --sref https://forbesenglish.com/SupplierQuality/bg-meeting.jpg --no text, letters, numbers, logo, watermark
+p-tape: a roofer kneeling and pressing tape along the overlap of two membrane sheets with a small approving nod --ar 16:9 --raw --profile b7nc7q5 --stylize 200 --hd
 ```
 
 ### 10. `p-shelf.png` (until it lands: `fair.jpg`)
 
 ```
-flat mid-century screen-print illustration, rolls of membrane gathering dust on a warehouse shelf, an empty gap beside them where another product sold out, muted slate blue, cream and dusty pink palette, fine grain, hard silhouettes, one clear subject in the centre, calm open edges, no text --ar 16:9 --stylize 200 --sref https://forbesenglish.com/SupplierQuality/bg-meeting.jpg --no text, letters, numbers, logo, watermark
+p-shelf: rolls of membrane gathering dust on a warehouse shelf, an empty gap beside them where another product sold out --ar 16:9 --raw --profile b7nc7q5 --stylize 200 --hd
 ```
 
 ### 11. `p-dear.png` (until it lands: `roof.jpg`)
 
 ```
-flat mid-century screen-print illustration, a roofer frowning at a long receipt beside a stack of membrane rolls on a van's tailgate, muted slate blue, cream and dusty pink palette, fine grain, hard silhouettes, one clear subject in the centre, calm open edges, no text --ar 16:9 --stylize 200 --sref https://forbesenglish.com/SupplierQuality/bg-meeting.jpg --no text, letters, numbers, logo, watermark
+p-dear: a roofer frowning at a long receipt beside a stack of membrane rolls on a van's tailgate --ar 16:9 --raw --profile b7nc7q5 --stylize 200 --hd
 ```
 
 ### 12. `p-switch.png` (until it lands: `suits.jpg`)
 
 ```
-flat mid-century screen-print illustration, a site manager in a hard hat on the phone beside a half-built house, weighing something up, muted slate blue, cream and dusty pink palette, fine grain, hard silhouettes, one clear subject in the centre, calm open edges, no text --ar 16:9 --stylize 200 --sref https://forbesenglish.com/SupplierQuality/bg-meeting.jpg --no text, letters, numbers, logo, watermark
+p-switch: a site manager in a hard hat on the phone beside a half-built house, weighing something up --ar 16:9 --raw --profile b7nc7q5 --stylize 200 --hd
 ```
 
 ### 13. `p-tea.png` (until it lands: `horizon.jpg`)
 
 ```
-flat mid-century screen-print illustration, a roofer and a man in a fleece sitting on a stack of pallets on site with mugs of tea, talking, muted slate blue, cream and dusty pink palette, fine grain, hard silhouettes, one clear subject in the centre, calm open edges, no text --ar 16:9 --stylize 200 --sref https://forbesenglish.com/SupplierQuality/bg-meeting.jpg --no text, letters, numbers, logo, watermark
+p-tea: a roofer and a man in a fleece sitting on a stack of pallets on site with mugs of tea, talking --ar 16:9 --raw --profile b7nc7q5 --stylize 200 --hd
 ```
 
 ### 14. `p-ask.png` (until it lands: `roll.jpg`)
 
 ```
-flat mid-century screen-print illustration, a roofer describing a roof with both hands while a man in a fleece listens, notebook closed, muted slate blue, cream and dusty pink palette, fine grain, hard silhouettes, one clear subject in the centre, calm open edges, no text --ar 16:9 --stylize 200 --sref https://forbesenglish.com/SupplierQuality/bg-meeting.jpg --no text, letters, numbers, logo, watermark
+p-ask: a roofer describing a roof with both hands while a man in a fleece listens, notebook closed --ar 16:9 --raw --profile b7nc7q5 --stylize 200 --hd
 ```
 
 ### 15. `p-probe.png` (until it lands: `hero.jpg`)
 
 ```
-flat mid-century screen-print illustration, a gloved hand holding up a corner of membrane, another hand pointing at a crease in it, muted slate blue, cream and dusty pink palette, fine grain, hard silhouettes, one clear subject in the centre, calm open edges, no text --ar 16:9 --stylize 200 --sref https://forbesenglish.com/SupplierQuality/bg-meeting.jpg --no text, letters, numbers, logo, watermark
+p-probe: a gloved hand holding up a corner of membrane, another hand pointing at a crease in it --ar 16:9 --raw --profile b7nc7q5 --stylize 200 --hd
 ```
 
 ### 16. `p-decide.png` (until it lands: `factory.jpg`)
 
 ```
-flat mid-century screen-print illustration, an architect, a builder and a roofer leaning over drawings spread on a car bonnet on site, muted slate blue, cream and dusty pink palette, fine grain, hard silhouettes, one clear subject in the centre, calm open edges, no text --ar 16:9 --stylize 200 --sref https://forbesenglish.com/SupplierQuality/bg-meeting.jpg --no text, letters, numbers, logo, watermark
+p-decide: an architect, a builder and a roofer leaning over drawings spread on a car bonnet on site --ar 16:9 --raw --profile b7nc7q5 --stylize 200 --hd
 ```
 
 ### 17. `p-playback.png` (until it lands: `crew.jpg`)
 
 ```
-flat mid-century screen-print illustration, a man holding up a short length of membrane and explaining, a roofer listening with arms folded, muted slate blue, cream and dusty pink palette, fine grain, hard silhouettes, one clear subject in the centre, calm open edges, no text --ar 16:9 --stylize 200 --sref https://forbesenglish.com/SupplierQuality/bg-meeting.jpg --no text, letters, numbers, logo, watermark
+p-playback: a man holding up a short length of membrane and explaining, a roofer listening with arms folded --ar 16:9 --raw --profile b7nc7q5 --stylize 200 --hd
 ```
 
 ### 18. `p-choose.png` (until it lands: `roof.jpg`)
 
 ```
-flat mid-century screen-print illustration, two rolls of membrane in different colours side by side on a roof, a gloved hand reaching between them, muted slate blue, cream and dusty pink palette, fine grain, hard silhouettes, one clear subject in the centre, calm open edges, no text --ar 16:9 --stylize 200 --sref https://forbesenglish.com/SupplierQuality/bg-meeting.jpg --no text, letters, numbers, logo, watermark
+p-choose: two rolls of membrane in different colours side by side on a roof, a gloved hand reaching between them --ar 16:9 --raw --profile b7nc7q5 --stylize 200 --hd
 ```
 
 ### 19. `p-galway.png` (until it lands: `hero.jpg`)
 
 ```
-flat mid-century screen-print illustration, a crew of four roofers on a cottage roof in the west of Ireland, stone walls and the sea behind, muted slate blue, cream and dusty pink palette, fine grain, hard silhouettes, one clear subject in the centre, calm open edges, no text --ar 16:9 --stylize 200 --sref https://forbesenglish.com/SupplierQuality/bg-meeting.jpg --no text, letters, numbers, logo, watermark
+p-galway: a crew of four roofers on a cottage roof in the west of Ireland, stone walls and the sea behind --ar 16:9 --raw --profile b7nc7q5 --stylize 200 --hd
 ```
 
 ### 20. `p-kent.png` (until it lands: `crew.jpg`)
 
 ```
-flat mid-century screen-print illustration, a timber-frame house going up in the Kent countryside, an oast house in the distance, a site manager with a clipboard, muted slate blue, cream and dusty pink palette, fine grain, hard silhouettes, one clear subject in the centre, calm open edges, no text --ar 16:9 --stylize 200 --sref https://forbesenglish.com/SupplierQuality/bg-meeting.jpg --no text, letters, numbers, logo, watermark
+p-kent: a timber-frame house going up in the Kent countryside, an oast house in the distance, a site manager with a clipboard --ar 16:9 --raw --profile b7nc7q5 --stylize 200 --hd
 ```
 
 ### 21. `p-manchester.png` (until it lands: `fair.jpg`)
 
 ```
-flat mid-century screen-print illustration, a builders' merchant yard among red-brick warehouses, a forklift carrying pallets of membrane rolls, a branch manager in a fleece, muted slate blue, cream and dusty pink palette, fine grain, hard silhouettes, one clear subject in the centre, calm open edges, no text --ar 16:9 --stylize 200 --sref https://forbesenglish.com/SupplierQuality/bg-meeting.jpg --no text, letters, numbers, logo, watermark
+p-manchester: a builders' merchant yard among red-brick warehouses, a forklift carrying pallets of membrane rolls, a branch manager in a fleece --ar 16:9 --raw --profile b7nc7q5 --stylize 200 --hd
 ```
 
 ### 22. `p-report.png` (until it lands: `suits.jpg`)
 
 ```
-flat mid-century screen-print illustration, a man presenting from a laptop to a small team in a meeting room, mountains through the window, muted slate blue, cream and dusty pink palette, fine grain, hard silhouettes, one clear subject in the centre, calm open edges, no text --ar 16:9 --stylize 200 --sref https://forbesenglish.com/SupplierQuality/bg-meeting.jpg --no text, letters, numbers, logo, watermark
+p-report: a man presenting from a laptop to a small team in a meeting room, mountains through the window --ar 16:9 --raw --profile b7nc7q5 --stylize 200 --hd
 ```
 
 ## For the Claude session that puts them in

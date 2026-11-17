@@ -26,11 +26,12 @@ Speaking-first, as he asked. The writing track that HOUSE-STYLE §10b
 requires is his interview guide for the next visit: writing in service of
 the conversation, not a writing task for its own sake.
 
-Art: no hero was supplied. The plates are copies of existing domain art
-(SupplierQuality's roofers, roof, rolls and office; ProductSpeaking's trade
-fair; roofing's factory roof), byte-identical so git stores them once. The
-owed slots below get the texture field until real plates land; their
-briefs are the shopping list.
+Art: 22 Midjourney plates, rendered 2026-11-17 in Innes's account with his
+hero job's setup ("Use" on it: his two style references, --raw --profile
+b7nc7q5 --stylize 200 --hd), prompt = "<slot>: <PLATES line>". p-warm is the
+one re-run with "flat graphic illustration, simple shapes, screen-print
+texture, limited palette" added. Originals in incoming/hd/SiteInterviews/.
+Only horizon.jpg (results) is still borrowed.
 
 Run from the repo root:  python3 lesson-template/build/build_siteinterviews.py
 """
@@ -49,7 +50,9 @@ TITLE = 'Talk Me Through the Last Job: Customer Interviews on Site (B2–C1)'
 E = I.T['en']
 
 POP = {}
-K = hs1.Deck(F, pop=POP, cover_mode='square', title_px=60, cover_w=44)
+# The hero is a scene (two roofers and an interviewer): rembg cut it down to
+# the interviewer alone, so the cover pops p-ask, two men talking, instead.
+K = hs1.Deck(F, pop=POP, cover_mode='square', title_px=60, cover_w=44, cover_slot='p-ask')
 
 # The deck's own plates. Each slide asks for its own slot and falls back to
 # a borrowed plate until that slot's picture lands in SiteInterviews/, so
@@ -82,10 +85,7 @@ PLATES = [
     ('p-report', 'suits', 'a man presenting from a laptop to a small team in a meeting room, mountains through the window'),
 ]
 FALLBACK = {slot: fb for slot, fb, _ in PLATES}
-STEM = ('flat mid-century screen-print illustration, {}, muted slate blue, cream and dusty pink palette, '
-        'fine grain, hard silhouettes, one clear subject in the centre, calm open edges, no text '
-        '--ar 16:9 --stylize 200 --sref https://forbesenglish.com/SupplierQuality/bg-meeting.jpg '
-        '--no text, letters, numbers, logo, watermark')
+STEM = '{} --ar 16:9 --raw --profile b7nc7q5 --stylize 200 --hd'  # + his style references, loaded by "Use"
 
 
 def P(slot):
@@ -350,7 +350,7 @@ def brief():
     out += ['## The pictures (%d)' % len(PLATES), '']
     for n, (slot, fb, idea) in enumerate(PLATES, 1):
         where = 'the cover and the library card' if slot == 'hero' else 'until it lands: `%s.jpg`' % fb
-        out += ['### %d. `%s.png` (%s)' % (n, slot, where), '', '```', STEM.format(idea), '```', '']
+        out += ['### %d. `%s.png` (%s)' % (n, slot, where), '', '```', STEM.format('%s: %s' % (slot, idea)), '```', '']
     out += ['## For the Claude session that puts them in', '',
             '```bash',
             'python3 tools/prep-artwork.py incoming/site-interviews/ --into SiteInterviews --keep-names --dry-run',
