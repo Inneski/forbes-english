@@ -144,7 +144,8 @@ MC2 = [  # stage 2: what they mean (ctx key, quote, options)
                           'They have already decided to switch to you.'], correct=0, why='q10w')),
 ]
 MC2_SLOTS = ['p-grand', 'p-faff', 'p-tape', 'p-shelf', 'p-dear', 'p-switch']
-FULL_BG = {'p-faff': (False, False), 'p-dear': (True, False), 'p-tape': (True, True)}  # (mirror, cream text square)  # shown full-colour behind the slide, not framed
+FULL_BG = {'p-faff': (False, False), 'p-dear': (True, False)}  # (mirror, cream text square)
+TEXT_PANEL = {'p-tape'}  # framed as usual, plus a bigger square behind the text (Innes, 2026-11-18)  # shown full-colour behind the slide, not framed
 
 MC3 = [  # stage 3: the better question (ctx key, stem key, q)
     ('c11', 's11', dict(options=['How are you getting on with the tape?',
@@ -288,7 +289,10 @@ def slides():
             # Innes, 2026-11-18: "make this image full screen in background"
             s.append(K.wash(K.frame(mc, None), MC2_SLOTS[n], flip=FULL_BG[MC2_SLOTS[n]][0], panel=FULL_BG[MC2_SLOTS[n]][1]))
         else:
-            s.append(K.frame(mc, slot, text=(q['stem'], q['options'])))
+            fr = K.frame(mc, slot, text=(q['stem'], q['options']))
+            if MC2_SLOTS[n] in TEXT_PANEL:
+                fr = fr.replace('<section class="slide"', '<section class="slide" data-text-panel', 1)
+            s.append(fr)
     s.append(K.frame(K.talk('e2', 'tk2T', TALK_2, E), P('p-tea')))
 
     # ── stage 3 · questions that get the truth ─────────────────────────
