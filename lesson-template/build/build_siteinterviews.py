@@ -144,6 +144,7 @@ MC2 = [  # stage 2: what they mean (ctx key, quote, options)
                           'They have already decided to switch to you.'], correct=0, why='q10w')),
 ]
 MC2_SLOTS = ['p-grand', 'p-faff', 'p-tape', 'p-shelf', 'p-dear', 'p-switch']
+FULL_BG = {'p-faff'}  # shown full-colour behind the slide, not framed
 
 MC3 = [  # stage 3: the better question (ctx key, stem key, q)
     ('c11', 's11', dict(options=['How are you getting on with the tape?',
@@ -282,8 +283,12 @@ def slides():
         (('pSoft', E['pSoft']), b(['r2e', 'r2f']), 'The lads <strong>aren’t mad about</strong> the tape.'),
     ]))
     for n, ((ck, q), slot) in enumerate(zip(MC2, map(P, MC2_SLOTS))):
-        s.append(K.frame(D.mc(n + 1, len(MC2), q, 'e2', E['e2'], 'mc2T', E['mc2T'],
-                              ctx=E[ck], ctx_key=ck), slot, text=(q['stem'], q['options'])))
+        mc = D.mc(n + 1, len(MC2), q, 'e2', E['e2'], 'mc2T', E['mc2T'], ctx=E[ck], ctx_key=ck)
+        if MC2_SLOTS[n] in FULL_BG:
+            # Innes, 2026-11-18: "make this image full screen in background"
+            s.append(K.wash(K.frame(mc, None), MC2_SLOTS[n]))
+        else:
+            s.append(K.frame(mc, slot, text=(q['stem'], q['options'])))
     s.append(K.frame(K.talk('e2', 'tk2T', TALK_2, E), P('p-tea')))
 
     # ── stage 3 · questions that get the truth ─────────────────────────
