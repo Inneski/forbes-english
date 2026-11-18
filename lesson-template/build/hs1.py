@@ -346,12 +346,14 @@ class Deck:
             'html[data-style="editorial"] .slide[data-wash-panel] > * { position: relative; z-index: 1; }')
         # data-text-panel (Innes, 2026-11-18: "the illustration exactly where
         # it was with a larger square/oblong behind it"): a bigger tinted
-        # oblong on the background layer, under the framed picture, which
+        # box on the background layer, under the framed picture and the text
+        # but not the eyebrow ("make that illustration slightly bigger and the
+        # box behind it should also sit behind the text"), the picture
         # stays put. Picture-left narrow land card at 1280x720: x 58-442,
         # y 270-486 (measured on Talk Me Through the Last Job slide 12).
         self.css.append(
             'html[data-style="editorial"]:not(.is-flow) .stage:has(.slide.is-active[data-text-panel]) .bg-layer::before '
-            '{ content: ""; position: absolute; left: 30px; top: 232px; width: 478px; height: 300px; '
+            '{ content: ""; position: absolute; left: 30px; top: 168px; right: 30px; bottom: 96px; '
             'border-radius: 32px; background: color-mix(in srgb, var(--void) 86%, var(--ink, #000)); '
             'opacity: 1; filter: none; -webkit-mask-image: none; mask-image: none; }')
         # the activation's glassy buttons sit centred, over the picture:

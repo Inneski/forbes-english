@@ -290,7 +290,8 @@ def slides():
             s.append(K.wash(K.frame(mc, None), MC2_SLOTS[n], flip=FULL_BG[MC2_SLOTS[n]][0], panel=FULL_BG[MC2_SLOTS[n]][1]))
         else:
             fr = K.frame(mc, slot, text=(q['stem'], q['options']),
-                         side='left' if MC2_SLOTS[n] in TEXT_PANEL else 'auto')
+                         side='left' if MC2_SLOTS[n] in TEXT_PANEL else 'auto',
+                         size=None if MC2_SLOTS[n] in TEXT_PANEL else 'auto')
             if MC2_SLOTS[n] in TEXT_PANEL:
                 fr = fr.replace('<section class="slide"', '<section class="slide" data-text-panel', 1)
             s.append(fr)
