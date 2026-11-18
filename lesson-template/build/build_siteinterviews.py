@@ -289,7 +289,8 @@ def slides():
             # Innes, 2026-11-18: "make this image full screen in background"
             s.append(K.wash(K.frame(mc, None), MC2_SLOTS[n], flip=FULL_BG[MC2_SLOTS[n]][0], panel=FULL_BG[MC2_SLOTS[n]][1]))
         else:
-            fr = K.frame(mc, slot, text=(q['stem'], q['options']))
+            fr = K.frame(mc, slot, text=(q['stem'], q['options']),
+                         side='left' if MC2_SLOTS[n] in TEXT_PANEL else 'auto')
             if MC2_SLOTS[n] in TEXT_PANEL:
                 fr = fr.replace('<section class="slide"', '<section class="slide" data-text-panel', 1)
             s.append(fr)
