@@ -348,12 +348,14 @@ class Deck:
         # before but add an extra square behind it defining text area"): a
         # framed slide, picture left, with a second, bigger square of tint
         # behind the text column. Measured on Talk Me Through the Last Job
-        # slide 12 at 1280x720: text x 548-1062, y 191-584; frame ends x 442.
+        # slide 12 at 1280x720: picture right (default), text x 64-575, y
+        # 160-554; picture left, text x 548-1062, y 191-584. Follows the side.
         self.css.append(
             'html[data-style="editorial"] .slide[data-text-panel] { position: relative; }\n'
             'html[data-style="editorial"] .slide[data-text-panel]::before { content: ""; position: absolute; '
-            'left: 512px; top: 155px; width: 590px; height: 466px; border-radius: 28px; '
+            'left: 32px; top: 132px; width: 576px; height: 452px; border-radius: 28px; '
             'background: color-mix(in srgb, var(--void) 88%, var(--ink, #000)); z-index: 0; }\n'
+            'html[data-style="editorial"] .slide[data-text-panel][data-art-side="left"]::before { left: 512px; top: 155px; width: 590px; height: 466px; }\n'
             'html[data-style="editorial"] .slide[data-text-panel] > * { position: relative; z-index: 1; }\n'
             '@media (max-width: 760px) { html[data-style="editorial"] .slide[data-text-panel]::before { display: none; } }')
         # the activation's glassy buttons sit centred, over the picture:
