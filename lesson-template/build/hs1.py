@@ -333,6 +333,17 @@ class Deck:
                 'html[data-style="editorial"]:not(.is-flow) .stage:not(.on-cover):not(:has(.slide.is-active[data-bg]))'
                 ':has(.slide.is-active[data-wash]):has(.slide.is-active[data-wash-src="%s"]) .bg-layer::before '
                 "{ background-image: url('%s/%s.jpg'); }" % (slot, self.F, slot))
+        # panel=True (Innes, 2026-11-18, "be more dynamic with comp ... extra
+        # square defining text area"): the plate fills the whole stage
+        # unfaded, and the text sits on its own cream square over it
+        self.css.append(
+            'html[data-style="editorial"]:not(.is-flow) .stage:has(.slide.is-active[data-wash-panel]) .bg-layer::before '
+            '{ -webkit-mask-image: none; mask-image: none; background-size: cover; background-position: center; }\n'
+            'html[data-style="editorial"] .slide[data-wash-panel] { position: relative; }\n'
+            'html[data-style="editorial"] .slide[data-wash-panel]::before { content: ""; position: absolute; '
+            'left: 48px; top: 48px; bottom: 112px; width: 62%; background: var(--void); border-radius: 28px; '
+            'box-shadow: 0 24px 60px -30px var(--ink, currentColor); z-index: 0; }\n'
+            'html[data-style="editorial"] .slide[data-wash-panel] > * { position: relative; z-index: 1; }')
         # the activation's glassy buttons sit centred, over the picture:
         # solid cream so "Writing" never reads over a motorbike
         self.css.append(
@@ -340,14 +351,21 @@ class Deck:
             'html[data-style="editorial"] .slide[data-wash] .act-panel { background: var(--void); }')
         return body
 
-    def wash(self, html, slot):
+    def wash(self, html, slot, flip=False, panel=False):
         """A slide with no frame of its own that shows `slot` full-colour
         behind it, in place of the mirrored hero."""
         if not self.has(slot):
             if slot not in self.missing:
                 self.missing.append(slot)
             return html
-        return re.sub(r'<section class="slide[^>]*', lambda m: m.group(0) + ' data-wash-src="%s"' % slot, html, count=1)
+        if flip:   # subject on the left: mirror it to the picture side
+            from PIL import Image, ImageOps
+            src, out = self.src(slot), os.path.join(self.F, slot + '-flip.jpg')
+            if not os.path.exists(out) or os.path.getmtime(out) < os.path.getmtime(src):
+                ImageOps.mirror(Image.open(src).convert('RGB')).save(out, quality=84)
+            slot += '-flip'
+        extra = ' data-wash-panel' if panel else ''
+        return re.sub(r'<section class="slide[^>]*', lambda m: m.group(0) + ' data-wash-src="%s"%s' % (slot, extra), html, count=1)
 
     def assemble(self, out_path, body, title, i18n, langs, extra_css=''):
         body = self._wash(body)
