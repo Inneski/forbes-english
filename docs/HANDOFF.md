@@ -17741,3 +17741,17 @@ Only `lesson-template/build/sherpa/legacy/chassis-camp-seven.html` still names
 .html, an archived template nothing serves. A new hand-written canonical must
 use the clean URL: `git grep 'canonical" href="[^"]*\.html"'` should find
 nothing outside `legacy/`.
+
+## 2026-11-19 — BlockCraft: Past Simple (free, imported React app)
+
+`blockcraft-past-simple.html` is Innes's own React/Tailwind quiz (50 questions,
+12 grammar recipes, 30-verb anvil; German-facing UI), not a deck. Source and
+builder: `lesson-template/build/blockcraft-past-simple/` — `App.tsx` is his file
+unchanged; `node build.mjs` (after `npm install`) bundles React with esbuild and
+compiles Tailwind into one self-contained page, keeping any SEO block `seo.py`
+wrote. Card/og image `blockcraft-past-simple/hero.jpg` is a 1200x675 render of
+the page's own header. LESSON_IMAGES entry is in `library.html`.
+**Catalogue row not yet in** (Supabase write refused); until it is, the page is
+live at its URL but absent from the library. SQL:
+`insert into public.lessons (file, title, level, access, track, deck, video) values ('blockcraft-past-simple.html', 'BlockCraft — Past Simple Quiz & Crafting Guide', 'A2-B1', 'free', 'general', false, false);`
+then `py tools/build_hubs.py && py tools/seo.py`.
