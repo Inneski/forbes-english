@@ -72,6 +72,18 @@ for speaking only.
 
 ## 2026-11-15 — Dead by Teatime (B1): zombie-comedy branch deck, built on stand-ins, art briefed to ChatGPT
 
+**2026-11-19: published (`3711b800`), 68 slides.** Codex remade the plates
+and the builder (49% text column, smaller MC type, extinguisher at q21);
+that column overflowed the deck bar on 13 DE/ES slides, so every question
+is now a scene slide (`qNN`, story card + gloss) and a question slide
+(`qNNq`) on the same plate. Measured all 68 in EN/DE/ES with gloss open and
+a wrong answer: max bottom 658 vs bar 662. Routes 0/2/5 wrong → bus / bus /
+locked. Innes is redoing faces one plate at a time (`plan.jpg` done; old
+copy in `incoming/dead-by-teatime/`): drop the new JPEG over the plate, no
+rebuild needed. **Catalogue row not in Supabase yet** (write refused), so
+until Innes runs the insert the page is ungated, has no SEO block and no
+library card; after it lands, re-run `tools/seo.py` and push.
+
 Innes: *"Do a similar story to Shaun of the Dead RPG"*, grammar = present
 modals of obligation/advice (MUST, MUSTN'T, HAVE TO, DON'T HAVE TO, SHOULD)
 + relative clauses, *"I'll get Chat GPT To make the artwork"*. First built in
