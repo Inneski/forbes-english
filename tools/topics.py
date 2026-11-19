@@ -265,6 +265,7 @@ OVERRIDES = {
     'sailing-the-seas-passive.html': ['passive-voice'],               # the passive
     'sailing-the-seas-backshift.html': ['tense-review'],              # reported speech
     'sailing-the-seas-bridges.html': ['english-vocabulary'],          # linking words
+    'miami-vibes-linking-words.html': ['english-vocabulary'],          # linking words
     'sailing-the-seas-finished.html': ['present-perfect', 'past-simple'],  # present perfect or past simple
     'sailing-the-seas-quadrants.html': ['conditionals'],              # conditionals
     'sailing-the-seas-scale.html': ['prepositions'],                  # in, on and at

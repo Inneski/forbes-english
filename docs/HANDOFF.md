@@ -17773,3 +17773,25 @@ re-translated, so no language ships misaligned. English hints are clues, not
 translations (a translation would give the answer away). fr/it/hr keep the
 "perfect trap" comparison (j'ai joué hier / ho giocato ieri / jučer sam igrao);
 the other languages state it generically.
+
+## 2026-11-19 — Miami Vibes: Linking Words Quiz (free, imported React app)
+
+`miami-vibes-linking-words.html` is Innes's Gemini Canvas quiz (50 items: 35
+gap-fills, 15 "choose the correct sentence"; B1; Spanish helper line), built the
+BlockCraft way. Source and builder: `lesson-template/build/miami-vibes-linking-words/`
+— `App.tsx` is his file unchanged; `node build.mjs` (after `npm install`) applies
+exact patches (each must match once or the build stops), bundles, compiles
+Tailwind, keeps the SEO block. Patches: the helper line and "¡Correcto!/Incorrecto"
+go through `t()` (Spanish is the key, 52 keys); the 4.5 s auto-advance is removed
+(it moved on before a B1 learner could read the explanation). Explanations stay
+English. **Helper language: all 11** via the 🌐 menu / `?lang=` / browser; Spanish
+is the source and the fallback; English hides the helper line (it would be the
+answer sentence). Same `{source, t}` index-aligned files and LEFT OUT rule as
+BlockCraft. Card image `miami-vibes-linking-words/hero.jpg` is a 1200x675 render
+of the page's first question. Topic: english-vocabulary (with
+sailing-the-seas-bridges). Content audited: no wrong keys found.
+**Catalogue row: the insert was refused (unasked write) — SQL given to Innes:**
+`insert into lessons (file,title,level,video,deck,access,track) values
+('miami-vibes-linking-words.html','Miami Vibes — Linking Words Quiz','B1',false,false,'free','general');`
+Until it is in, the page is live but has no SEO block and no library card; after
+it, run `build_hubs.py` then `seo.py` and commit the regenerated indexes.
