@@ -17751,7 +17751,14 @@ unchanged; `node build.mjs` (after `npm install`) bundles React with esbuild and
 compiles Tailwind into one self-contained page, keeping any SEO block `seo.py`
 wrote. Card/og image `blockcraft-past-simple/hero.jpg` is a 1200x675 render of
 the page's own header. LESSON_IMAGES entry is in `library.html`.
-**Catalogue row not yet in** (Supabase write refused); until it is, the page is
-live at its URL but absent from the library. SQL:
-`insert into public.lessons (file, title, level, access, track, deck, video) values ('blockcraft-past-simple.html', 'BlockCraft — Past Simple Quiz & Crafting Guide', 'A2-B1', 'free', 'general', false, false);`
-then `py tools/build_hubs.py && py tools/seo.py`.
+Catalogue row in (free, A2-B1, general). **Helper language: all 11 site
+languages** (de, en, es, fr, it, pt, hr, ru, ar, zh, ja), chosen by the 🌐 menu,
+`?lang=`, or the browser. `i18n-transform.mjs` wraps every German string of
+`App.tsx` in `t()` at build time (the German is the key; `i18n/_keys.json` is
+regenerated, gitignored); `i18n/<lang>.json` is `{source, t:[…]}`, index-aligned
+to the keys, and `source` is a hash of them — if Innes sends a new `App.tsx`,
+the build prints `LEFT OUT` for every language until its changed lines are
+re-translated, so no language ships misaligned. English hints are clues, not
+translations (a translation would give the answer away). fr/it/hr keep the
+"perfect trap" comparison (j'ai joué hier / ho giocato ieri / jučer sam igrao);
+the other languages state it generically.

@@ -2,7 +2,8 @@
 import DATA from './i18n-data.js';
 export const NAMES = { de: 'Deutsch', en: 'English', es: 'Español', fr: 'Français', it: 'Italiano',
   pt: 'Português', ru: 'Русский', ar: 'العربية', zh: '中文', ja: '日本語', hr: 'Hrvatski' };
-export const LANGS = ['de', ...Object.keys(DATA)];
+const ORDER = ['de', 'en', 'es', 'fr', 'it', 'pt', 'hr', 'ru', 'ar', 'zh', 'ja'];
+export const LANGS = ORDER.filter((l) => l === 'de' || DATA[l]);
 function pick() {
   const ok = (l) => l && LANGS.includes(l) ? l : null;
   let q = null, saved = null;
