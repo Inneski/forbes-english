@@ -159,7 +159,7 @@ N = {
              'Colin está dormido en la pista tres.',
     'q-q20': 'Gaz y tú arrastráis la nevera de la cafetería hasta las puertas de cristal. Después de un metro, '
              'Gaz quiere un descanso.',
-    'q-q21': 'A las dos de la mañana el cristal se rompe y tres de ellos se cuelan por el hueco. Gaz coge una bola de bolos del estante y te mira: ¿a cuál primero?',
+    'q-q21': 'A las dos de la mañana, tres de ellos se cuelan por el cristal roto. Priya rocía la entrada con el extintor para impedirles ver. Eso solo les da unos segundos. Gaz coge una bola de bolos y te mira: ¿a cuál primero?',
     'q-q22': 'El último cae en la pista uno. Gaz te enseña un pequeño mordisco en la mano. «Fue una bolsa de patatas», dice. «Probablemente.» Priya se lo limpia y le da tres instrucciones.',
     'q-q23': 'A las tres de la mañana, la máquina de gancho empieza a tocar su cancioncita. Algo se mueve dentro '
              'de la urna de cristal, detrás de los peluches.',

@@ -303,6 +303,7 @@ OVERRIDES = {
     'taekwondo-regrets.html': ['modal-verbs'],
     'thornwick-deduction.html': ['modal-verbs'],
     'reasonable-doubt-rpg.html': ['modal-verbs', 'conditionals'],
+    'dead-by-teatime-rpg.html': ['modal-verbs'],   # must / have to / should + relative clauses
     'minecraft-lesson.html': ['modal-verbs'],
     'blockcamp-passive-trial.html': ['passive-voice'],
     'sherpa-tensing-cloud-causative.html': ['passive-voice'],

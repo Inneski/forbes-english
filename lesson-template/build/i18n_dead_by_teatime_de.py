@@ -160,7 +160,7 @@ N = {
     'q-q19': 'Priya kommt mit. Der Generator braucht einen Schlüssel, und der Schlüssel steckt in Colins Tasche. '
              'Colin schläft auf Bahn drei.',
     'q-q20': 'Du und Gaz schiebt den Snackbar-Kühlschrank vor die Glastüren. Nach einem Meter will Gaz eine Pause.',
-    'q-q21': 'Um 2 Uhr morgens bricht das Glas, und drei von ihnen drängen sich durch die Lücke. Gaz schnappt sich eine Bowlingkugel vom Ständer und sieht dich an: Welchen zuerst?',
+    'q-q21': 'Um 2 Uhr morgens drängen sich drei von ihnen durch das zerbrochene Glas. Priya sprüht mit dem Feuerlöscher quer durch den Eingang, um ihnen die Sicht zu nehmen. Das verschafft nur wenige Sekunden. Gaz greift nach einer Bowlingkugel und sieht dich an: Welchen zuerst?',
     'q-q22': 'Der Letzte geht auf Bahn eins zu Boden. Gaz zeigt dir einen kleinen Biss an seiner Hand. „Das war eine Chipstüte“, sagt er. „Wahrscheinlich.“ Priya reinigt ihn und gibt ihm drei Anweisungen.',
     'q-q23': 'Um 3 Uhr morgens fängt der Greifautomat an, sein kleines Lied zu spielen. In dem Glaskasten '
              'bewegt sich etwas, hinter den Plüschtieren.',

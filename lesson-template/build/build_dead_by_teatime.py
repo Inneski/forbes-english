@@ -74,7 +74,7 @@ TITLE = 'Dead by Teatime (B1) | Forbes English'
 E = dict(CHROME['en'], **I.T['en'])
 NERVE = 5
 
-PALETTE_LIVE = None   # from: py lesson-template/extract-palette.py DeadByTeatime/hero.jpg
+PALETTE_LIVE = "  --hero: url('DeadByTeatime/hero.jpg');\n  --void          : #131412;\n  --surface       : #1e211c;\n  --surface2      : #282c26;\n  --border        : #5d514a;\n  --text          : #f5f3f2;\n  --text-dim      : #bfada3;\n  --accent        : #b97955;\n  --accent-bright : #d39f82;\n  --accent-dim    : #795038;\n  --secondary     : #3b4443;\n  --contrast      : #2cddc8;"
 
 PALETTE_PREVIEW = '''  --hero: url('Sherlock/hero.jpg');
 
@@ -293,8 +293,9 @@ Q = [
 
     # Act IV · the long night
     ('q21', 'Act IV · 2 a.m.', 'The glass gives way.',
-     'At 2 a.m. the glass cracks and three of them push through the gap. Gaz grabs a bowling ball from the '
-     'rack and looks at you: which one first?',
+     'At 2 a.m. three of them push through the cracked glass. Priya sprays the extinguisher across the '
+     'doorway to block their view. It only buys a few seconds. Gaz grabs a bowling ball and looks at you: '
+     'which one first?',
      'Aim at the one ___ is closest to Nan!',
      ['that', 'where', 'whose'],
      'The one closest to Nan is the subject of IS, so THAT (or WHO). WHERE is for places, and WHOSE always '
@@ -382,50 +383,7 @@ PATHS = [['q01', 'q02', 'q03', 'q04'] + sum(order, []) + ['q17', 'q18', arm, 'q2
 # The plates: slot -> (the Scarlet Star picture that stands in for it in the
 # preview, what ChatGPT is asked to paint). The full prompts are in
 # docs/CHATGPT-DEAD-BY-TEATIME-ART-BRIEF.md, generated from this table.
-PLATES = {
-    'hero': ('hero', 'Five friends and a grandmother with a cricket bat, silhouetted in front of a glowing '
-                     'bowling-alley sign at dusk'),
-    'brief': ('pov', 'A phone glowing on a bedside table at dawn: forty missed calls and an emergency alert'),
-    'how': ('compass', 'A bowling ball and a cricket bat crossed like a coat of arms'),
-    'cast': ('faces', 'Six heads in a row, in profile: a young man, a sleepy flatmate, a grandmother, a '
-                      'paramedic, a tall man in a camping hat, an old shopkeeper'),
-    'toolkit': ('case', 'A cork board with a pinned notice, a whistle and a torch hanging beside it'),
-    'alert': ('teatin', 'A man on a sofa with toast in his mouth, staring at his phone'),
-    'door': ('door', 'A front door with a shadowy shape behind its frosted glass; a hand on the handle'),
-    'news': ('window', 'A television in a dark living room: a calm newsreader and a red warning banner'),
-    'plan': ('study', 'A duvet pulled over a head; a hand holding car keys beside it'),
-    'nan': ('celeste', 'A small grandmother in a hallway holding a cricket bat like a sword'),
-    'tablets': ('body', 'A bathroom cabinet, half open, a box of tablets inside; a shadow on the tiles'),
-    'stairs': ('stairs', 'A grandmother on a narrow staircase swinging her cricket bat at a slow zombie in a dressing gown on the landing; YOU ducking below the swing'),
-    'coat': ('celeste-shadow', 'A grandmother with a packed bag and an enormous winter coat'),
-    'streets': ('street', 'An empty high street, one shopping trolley rolling on its own'),
-    'station': ('platform', 'An empty ambulance station; a man in a dressing gown in the doorway'),
-    'ambulance': ('carriage', 'A zombie in a green paramedic uniform climbing out of the back doors of an ambulance, arms first; YOU slamming one door on it, blue lights flashing'),
-    'note': ('museum', 'A handwritten note taped to a closed door, a hand raised to knock'),
-    'colin': ('holmes-celeste', 'A tall man in a camping hat holding a survival manual, a woman paramedic beside him'),
-    'shop': ('bar', 'A tiny corner shop at night, the old owner behind the counter, a hand-written sign above him'),
-    'list': ('table', 'A shopping basket: crisps, a box of tea, torch batteries'),
-    'till': ('moriarty', 'An old shopkeeper flattening a lunging zombie customer with a rolled-up newspaper across his shop counter, completely unbothered'),
-    'advice': ('rails', 'An empty street at dusk, a dotted line running down its middle'),
-    'lanes': ('chase', 'A bowling alley at night: eight lanes, a neon sign, a glass front'),
-    'storeroom': ('chase-steps', 'A storeroom door with one heavy bolt, lit by a torch'),
-    'scoreboard': ('chase-fire', 'A tall thin man in a camping hat writing on a glowing bowling scoreboard'),
-    'noise': ('standoff', 'The bowling alley in darkness, shapes pressed against the glass doors'),
-    'generator': ('chase-stairs', 'A generator in a back yard at night, lit by a torch'),
-    'barricade': ('chase-alley', 'Two people pushing a drinks fridge across glass doors'),
-    'bowling': ('chase-fire', 'Inside a bowling alley at night: cracked glass doors, three zombies pushing through, the flatmate hurling a bowling ball down the lane at them, the grandmother with her bat, the paramedic with a fire extinguisher'),
-    'firstaid': ('celeste-eyes', 'A paramedic bandaging a hand by torchlight'),
-    'claw': ('pursued', 'A claw machine glowing in the dark, something moving behind the soft toys'),
-    'manual': ('moriarty-face', 'A worried man flipping through a survival book'),
-    'bell': ('chase-alley', 'An old shopkeeper climbing out of a glowing claw machine behind a zombie in a bowling shirt, knocking it flat with a bag of cash'),
-    'dawn': ('rails', 'Morning light across a car park and a white minibus'),
-    'minibus': ('carriage', 'At dawn the whole group fights across a car park to a white minibus: the grandmother swinging her bat, the tall man swinging his thick book, slow zombies all round'),
-    'decision': ('table', 'Six people round the end of a bowling lane, all looking at you'),
-    'endbus': ('street', 'A white minibus driving slowly down the middle of a high street at sunrise'),
-    'endwait': ('study', 'The group asleep among crisp packets behind a barricaded fridge'),
-    'endsolo': ('pursued', 'One figure alone on an empty street at dawn'),
-    'act': ('compass', 'A notice taped to the inside of a glass door, the group behind it, morning light'),
-}
+PLATES = {'hero': ('hero', 'Outside the 1980s Lowfield Lanes bowling alley at dusk, six friends clustered near entrance, candid tense scene rather than posed poster. Priya speaks quietly to Rob, looking directly at his face, and he meets her eyes. Nan watches the distant street in profile. Gaz glances at Nan, Colin looks down at book, Bell scans the doorway. Distant zombies approach. Amber window light, faint pink bowling-pin neon symbol, rain and mist.'), 'brief': ('pov', 'Object-only bedside-table still life at dawn: glowing phone with abstract emergency-warning and missed-call icons, keys and mug, terraced rooftops through window. No person, no text or numbers.'), 'how': ('compass', 'Object-only symbolic worn wooden cricket bat and dark bowling ball arranged as an understated heraldic emblem on a dark scuffed wall. Fine scratched texture, no cartoon flourishes, no people.'), 'cast': ('faces', 'Six character heads in STRICT SIDE PROFILE, two staggered rows on right, each looking sideways toward adjacent character, never at viewer. Natural serious faces, subtle expressions, nuanced bone structure, no caricature. Plain dark background, no words.'), 'toolkit': ('case', 'Object-only cork noticeboard, blank pinned paper, whistle and torch hanging beside it in a bowling-alley service room. Amber beam, aged surfaces.'), 'alert': ('teatin', 'Gaz seated sideways on sofa with toast held in mouth, eyes angled DOWN at phone in hand. Candid private moment at dawn, no audience awareness, quiet fatigue.'), 'door': ('door', 'From side in flat hallway, Gaz approaches frosted front door, hand on handle, eyes fixed on distorted shadow beyond frosted glass. His face in strict profile. Unknown figure behind glass facing him, not camera.'), 'news': ('window', 'Old television in dark living room, on screen a female newsreader in SIDE PROFILE addressing an offscreen studio colleague, looking away from camera. Abstract red warning strip without lettering. No one else visible.'), 'plan': ('study', 'Bedroom dawn. Gaz under duvet, glasses and face peeking out, looking UP SIDEWAYS at Rob beside bed. Rob holds keys and speaks quietly, looking DOWN into Gaz’s eyes. Mutual natural eye contact between characters, side view.'), 'nan': ('celeste', 'Domestic hallway: Nan holding bat upright speaks sternly to Rob about wiping feet. Nan and Rob face EACH OTHER in three-quarter profiles, exchanging eye contact; Rob listens with restrained concern. No portrait posing.'), 'tablets': ('body', 'Object-only half-open bathroom cabinet in Nan’s house, unlettered medicine carton inside, ominous shadow across tiled wall; no visible face.'), 'stairs': ('stairs', 'Narrow domestic staircase, Nan swings bat into clothed torso of slow dressing-gown zombie on landing, Rob ducks below swing. Grounded defensive effort, restrained faces, real body weight, no motion lines or slapstick grin. Nan looks at zombie; Rob looks up toward bat; zombie looks at Nan. No blood or wounds.'), 'coat': ('celeste-shadow', 'Nan in oversized winter coat with packed bag in June, discussing it with Rob at front door. Both face each other, Nan looks into Rob’s eyes, Rob looks at Nan with understated disbelief. Side-view candid conversation, natural proportions.'), 'streets': ('street', 'Empty English high street in uneasy afternoon, solitary shopping trolley stranded on wet pavement. No foreground humans, distant silhouettes only, misty depth.'), 'station': ('platform', 'Ambulance station entrance, unnamed middle-aged man in dressing gown talking to Rob. Man looks at Rob and points sideways toward garage; Rob looks at man, listening. Two faces in profile, natural conversation, empty bays.'), 'ambulance': ('carriage', 'Rear ambulance doors: clothed grey-faced paramedic zombie clambers out arms-first; Rob braces and swings one rear door against its torso to push it back. Rob’s eyes fixed on zombie, zombie looking at Rob, both profiles. Flashing blue light, grounded struggle, no injury or blood.'), 'note': ('museum', 'Inside ambulance station clinical corridor, closed staff-room door with blank note taped to it. Rob seen from BACK raises hand to knock, eyes directed at note, face barely visible in profile. Unlettered paper.'), 'colin': ('holmes-celeste', 'Priya introduces Colin to Rob inside ambulance station. Priya turns her head toward Rob and meets his eyes while speaking; Rob looks back at her. Colin beside her watches Rob in profile, clutching book awkwardly. Natural conversational triangle, no one addressing viewer.'), 'shop': ('bar', 'Small corner shop at night, Bell behind counter speaks to Rob across it. Two men in opposing profiles, eyes meeting naturally, old shelves behind, blank hanging sign.'), 'list': ('table', 'Object-only shopping basket on counter: unbranded crisps packet, unlettered tea box, torch batteries in plain packaging. Moody warm shop light, no people.'), 'till': ('moriarty', 'Bell behind counter uses rolled newspaper to shove lunging zombie customer away across counter. Restrained concentration, grounded awkward defensive action, Bell looking at zombie, zombie looking at Bell. Newspaper without writing. No blood, no exaggerated comic impact.'), 'advice': ('rails', 'Empty high street at dusk, broken white road centre line leading into mist, lamps and terrace shopfronts. No visible people, no words.'), 'lanes': ('chase', 'Exterior establishing shot of old bowling alley at night, glass facade revealing eight receding lanes, faint pink bowling-pin symbol neon and amber snack-bar lamps. No people or faces, no lettering.'), 'storeroom': ('chase-steps', 'Object-only heavy storeroom door with ONE horizontal steel bolt, lit by offscreen torchbeam, cardboard snack boxes on shelves. Modern bowling-alley service corridor, no person.'), 'scoreboard': ('chase-fire', 'Colin writing abstract marks on glowing bowling scoreboard, viewed from side with eyes on board. Gaz asks a question from beside him, looking directly at Colin’s face. Colin turns head slightly toward Gaz to answer while keeping marker raised. No readable writing.'), 'noise': ('standoff', 'Inside unlit bowling alley looking obliquely at closed glass doors, indistinct clothed zombie silhouettes pressed against glass OUTSIDE. Their bodies face doors, heads angled along corridor, no gaze into camera. Empty dark foreground, moonlight and faint pink reflection.'), 'generator': ('chase-stairs', 'Back yard at midnight, Rob kneels beside inactive generator, eyes on keyhole; Priya beside him holds torch directed at engine, speaks toward him, gaze at Rob’s profile. Rob turns slightly toward her, natural collaboration. No fire extinguisher.'), 'barricade': ('chase-alley', 'Rob and Gaz dragging heavy snack-bar fridge across entrance doors. Gaz looks at Rob while asking for break; Rob meets his gaze with firm urgency. Bodies strain realistically, no slapstick expressions. Distant shadows beyond glass.'), 'bowling': ('chase-fire', 'Bowling alley at 2am, three clothed zombies entering cracked glass doorway. Gaz crouches with bowling ball ready to roll, looks SIDEWAYS toward Rob to ask which target; Rob looks at Gaz and points toward zombie nearest Nan. Nan watches that zombie, bat held defensively. Priya in background delivers a SHORT extinguisher spray across doorway to obscure zombies’ sight while friends retreat; zombies remain upright, not disabled. Extinguisher is only a temporary visual distraction. Grounded tension and realistic expressions, no comic motion lines, no blood.'), 'firstaid': ('celeste-eyes', 'Inside dark bowling snack bar by torchlight: Priya wraps clean bandage on Gaz’s hand, her eyes on bandage as she works; Gaz looks at Priya’s face while talking. She glances up toward HIS eyes, natural caring interaction. No visible wound or blood, medical bag on counter.'), 'claw': ('pursued', 'Object-only glowing claw machine at night, toy animals obscure a human silhouette inside, one hand faintly behind toys; no visible frontal face, no person outside. Atmospheric suspense.'), 'manual': ('moriarty-face', 'Colin holding open survival book asks Rob what to do. Both seen in side profiles, Colin looks directly at Rob, Rob looks back and listens. Book pages unlettered, claw-machine glow behind. Natural uncertain conversation.'), 'bell': ('chase-alley', 'Bell climbs out of glowing claw machine behind zombie in bowling shirt, swings heavy cash bag against zombie’s shoulder to push it aside. Bell watches zombie, zombie looks away toward floor as it loses balance. Grounded exhausted determination, no cartoon grin or motion marks, no blood.'), 'dawn': ('rails', 'Object-only empty bowling alley car park at dawn, parked white minibus, closed doors, sunrise reflecting on tarmac, no people visible.'), 'minibus': ('carriage', 'Whole group moving across car park toward white minibus at dawn. Nan defends group with bat, looking at approaching zombie; Colin braces thick book against reaching zombie, eyes on threat. Priya helps Gaz toward bus door, looks at him and speaks reassuringly; Gaz looks back at her. Rob holds bus door and watches approaching friends, Bell glances behind toward threats. Six distinct heroes, natural coordinated escape, no one faces viewer; tense realistic action, no blood.'), 'decision': ('table', 'Six friends in candid discussion at end of bowling lane. Rob visible from rear three-quarter and side face, addressing group. Priya and Nan meet Rob’s gaze; Gaz looks at Colin who is quietly replying to him; Bell looks at Rob. Natural conversational eyelines within group, not all staring same direction, no one toward viewer. Compact group right half, subdued dawn.'), 'endbus': ('street', 'White minibus driving slowly down middle of deserted high street at sunrise. Side-front oblique view of vehicle, Nan at wheel visible in STRICT SIDE PROFILE looking along road ahead, not through camera. Other passengers indistinct looking at each other or resting. Hopeful understated light.'), 'endwait': ('study', 'Six friends asleep in different natural poses on floor and chairs behind fridge barricade in bowling alley, unbranded crisp packets around them. All eyes CLOSED, nobody facing camera with open eyes. Exhausted quiet morning. Consistent cast, no duplicates.'), 'endsolo': ('pursued', 'Rob alone walking AWAY down empty high street at dawn, back view, red polo, keys in hand. Head pointed down street, no glance back at camera. Bittersweet mist and empty space.'), 'act': ('compass', 'Morning inside bowling alley: blank notice taped to glass door at right foreground; behind it the six friends quietly talking in small pairs, everyone looking at their conversation partner or task. Priya faces Rob, Nan faces Bell, Gaz and Colin talk sideways. No one looks through glass at camera. Relief in restrained expressions.')}
 
 
 def bg(pic, preview):
@@ -506,9 +464,13 @@ def mc(q, preview):
                  '        <p class="q-stem" data-i18n="qs%s">%s</p>\n' % (node, stem))
     # Short options sit two to a row, as on the Scarlet Star; sentences take a row each.
     two = ' two-up' if max(len(o) for o in opts) <= 30 else ''
+    scene = section(node, 'teach', act,
+                    head(E['qe' + node], title, 'qe' + node, 'qt' + node) +
+                    '      <div class="slide-body">\n'
+                    '        <div class="card">%s</div>\n' % gl('q-' + node) +
+                    cont(node + 'q') + '      </div>\n', pic, preview)
     body = (head(E['qe' + node], title, 'qe' + node, 'qt' + node) +
-            '      <div class="slide-body">\n'
-            '        <p class="q-ctx gloss" data-tr="q-%s" style="margin-bottom:16px">%s</p>\n' % (node, story) +
+            '      <div class="slide-body">\n' +
             stem_html +
             '        <div class="opts%s">\n          %s\n        </div>\n' % (two, '\n          '.join(buttons)) +
             # Continue sits beside the feedback, not under it: under a two-line
@@ -518,7 +480,7 @@ def mc(q, preview):
             '          <button class="btn btn-solid" style="flex:none;margin-top:8px" data-action="branch-continue" '
             'data-i18n="btnContinue" hidden>%s</button>\n'
             '        </div>\n      </div>\n' % E['btnContinue'])
-    return section(node, 'mc', act, body, pic, preview)
+    return scene + section(node + 'q', 'mc', act, body, pic, preview)
 
 
 def choices(rows):
@@ -534,6 +496,27 @@ def choices(rows):
 
 
 EXTRA = '''<style>
+/* Keep the reading column on the quiet left side of the new artwork. */
+html:not(.is-flow) .slide:not([data-type="cover"]):not([data-type="results"]):not([data-type="activate"]) .slide-head,
+html:not(.is-flow) .slide:not([data-type="cover"]):not([data-type="results"]):not([data-type="activate"]) .slide-body { max-width: 49%; }
+html:not(.is-flow) .slide[data-node="cast"] .cols-3 { grid-template-columns: repeat(2, 1fr); }
+html:not(.is-flow) .slide[data-node="how"] .cols-3 { grid-template-columns: 1fr; gap: 10px; }
+html:not(.is-flow) .slide[data-node="how"] .card { padding: 12px 18px; margin: 0; }
+html:not(.is-flow) .slide[data-type="teach"] .prose { font-size: 18px; line-height: 1.45; }
+html:not(.is-flow) .slide[data-type="teach"] .choice-row { padding: 9px 12px; }
+html:not(.is-flow) .slide[data-type="teach"] .choice-row .prose { font-size: 17px; }
+html:not(.is-flow) .cover-inner { max-width: 46%; align-items: flex-start; text-align: left; }
+html:not(.is-flow) .cover-title, html:not(.is-flow) .cover-sub { margin-inline: 0; }
+html:not(.is-flow) .cover-meta { justify-content: flex-start; }
+/* story cards with a speaking prompt run long in DE/ES with the gloss open */
+html:not(.is-flow) .slide[data-type="teach"] .card { padding: 16px 20px; }
+html:not(.is-flow) .slide[data-type="teach"] .card .prose.dim { margin-top: 8px !important; font-size: 16px; }
+/* the hub: story, its translation, three stops and the way out, in the left column */
+html:not(.is-flow) .slide[data-node="streets"] .choice-row { padding: 6px 12px; }
+html:not(.is-flow) .slide[data-node="streets"] .choice-row + .choice-row { margin-top: 6px; }
+html:not(.is-flow) .slide[data-node="streets"] .slide-body > div[style*="margin-top:16px"] { margin-top: 10px !important; }
+html:not(.is-flow) .slide[data-node="streets"] .slide-head { margin-bottom: 10px; }
+html:not(.is-flow) .slide[data-node="results"] .slide-body { margin-top: -14px; }
 /* Dead by Teatime: a choice is a row, what it is on the left, its button on the right. */
 .choice-row { display: flex; align-items: center; gap: 16px; padding: 12px 18px; }
 .choice-row + .choice-row { margin-top: 10px; }
@@ -543,7 +526,7 @@ EXTRA = '''<style>
    three options and the feedback: options a little tighter than a quiz's. */
 .slide[data-type="mc"] .opts { gap: 8px; }
 .slide[data-type="mc"] .opt { padding-top: 9px; padding-bottom: 9px; }
-.slide[data-type="mc"] .q-stem { margin-top: 18px; margin-bottom: 12px; }
+.slide[data-type="mc"] .q-stem { margin-top: 4px; margin-bottom: 14px; }
 </style>
 <script>
 /* The deck bar's act label is written from data-act, which is English; it
@@ -679,7 +662,7 @@ def gates(slides, preview):
         strands = [next(q[8] for q in Q if q[0] == n) for n in p]
         assert abs(strands.count('m') - strands.count('r')) <= 1, ('strand balance', strands.count('m'))
     for node, clue in STOPS.items():
-        sec = re.search(r'data-node="%s".*?</section>' % node, slides, re.S).group(0)
+        sec = re.search(r'data-node="%sq".*?</section>' % node, slides, re.S).group(0)
         assert sec.count('data-clue="%s"' % clue) == 3, node
     assert slides.count('data-clue=') == 9
     for q in Q:
@@ -693,7 +676,8 @@ def gates(slides, preview):
         pic = dict(re.findall(r'data-node="([^"]+)"[^>]*?data-bg="([^"]+)"', slides))
         for node, body in re.findall(r'data-node="([^"]+)"(.*?)</section>', slides, flags=re.S):
             for to in set(re.findall(r'data-goto="([^"]+)"', body)):
-                assert not (node in pic and to in pic and pic[node] == pic[to]), (node, to, pic[node])
+                # The two toolkit pages intentionally share one plate in the 40-image brief.
+                assert (node, to) == ('toolkit', 'toolkit2') or to == node + 'q' or not (node in pic and to in pic and pic[node] == pic[to]), (node, to, pic[node])
     for p in set(re.findall(r'data-bg="([^"]+)"', slides)):
         assert os.path.exists(p), 'missing plate %s' % p
     for k in N:
@@ -714,22 +698,11 @@ def narrative_tr(langs):
 
 BRIEF = 'docs/CHATGPT-DEAD-BY-TEATIME-ART-BRIEF.md'
 
-STYLE = ('Detailed graphic-novel illustration, cinematic lighting, dusk blues against bowling-alley neon pink '
-         'and warm lamp light, fine ink texture. ACTION COMEDY, never gory: the fights are slapstick knockdowns '
-         'with whatever is to hand (a cricket bat, bowling balls, a rolled-up newspaper, a fire extinguisher, a '
-         'thick book), with no blood and no wounds; the undead are shabby, grey-faced and slow, funny rather than '
-         'frightening. 16:9 landscape. Put the action in the RIGHT half of the picture and keep the LEFT half '
-         'calm and dark, because slide text sits there. No words, letters, numbers, logos or signatures anywhere '
-         'in the image. Invented faces only: no resemblance to any real actor or public figure.')
+STYLE = 'Mature cinematic graphic-novel illustration: dense etched ink, rough dry brush, natural human proportions, restrained expressions, atmospheric depth, dirty teal-grey shadows, bone and ember amber with faint bowling neon pink. No caricature, motion lines, blood or wounds. 16:9, action on right with calm dark space left for text. No readable lettering or logos. Nobody looks at the camera. Speakers look at listeners naturally; others attend to tasks or threats. The extinguisher only briefly obscures vision during retreat, never kills or incapacitates zombies.'
 
 ACTION = ('stairs', 'ambulance', 'till', 'bowling', 'bell', 'minibus')   # 2026-11-16: the fights, re-briefed
 
-CAST = ('The same people in every picture: YOU, late twenties, short dark hair, a red bowling-alley polo shirt; '
-        'GAZ, your flatmate, messy fair hair, grey hoodie, always half asleep; NAN, a tiny grandmother with a '
-        'white perm, a lilac cardigan and a cricket bat; PRIYA, a paramedic in a dark green uniform, black '
-        'ponytail; COLIN, very tall and thin, beige camping hat, khaki vest with many pockets, a thick book; '
-        'MR BELL, an old bald shopkeeper with round glasses and a brown shop coat. The town is LOWFIELD, a '
-        'small English commuter town: terraced houses, a high street, a 1980s bowling alley called Lowfield Lanes.')
+CAST = 'YOU: Rob Auton, long hair and beard, red polo. GAZ: Matthew Holness as Garth Marenghi, dark hair, square glasses, grey hoodie. NAN: Sheila Hancock, short white hair, lilac cardigan and bat. PRIYA: Emma Stone facial structure, black tied-back hair, deep brown Indian complexion, green paramedic uniform. COLIN: original Ayoade-inspired character with flatter broader nose and broader face, curls, glasses, camping hat and khaki vest. MR BELL: Richard E Grant, grey hair, brown shop coat. Lowfield and Lowfield Lanes.'
 
 
 def write_brief():
