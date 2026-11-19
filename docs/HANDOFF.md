@@ -80,9 +80,8 @@ is now a scene slide (`qNN`, story card + gloss) and a question slide
 a wrong answer: max bottom 658 vs bar 662. Routes 0/2/5 wrong → bus / bus /
 locked. Innes is redoing faces one plate at a time (`plan.jpg` done; old
 copy in `incoming/dead-by-teatime/`): drop the new JPEG over the plate, no
-rebuild needed. **Catalogue row not in Supabase yet** (write refused), so
-until Innes runs the insert the page is ungated, has no SEO block and no
-library card; after it lands, re-run `tools/seo.py` and push.
+rebuild needed. Catalogue row inserted 2026-11-19 at Innes's "You run it"
+(pro, B1); SEO, gate and library card live from `3ad282d2`.
 
 Innes: *"Do a similar story to Shaun of the Dead RPG"*, grammar = present
 modals of obligation/advice (MUST, MUSTN'T, HAVE TO, DON'T HAVE TO, SHOULD)
