@@ -17790,8 +17790,7 @@ answer sentence). Same `{source, t}` index-aligned files and LEFT OUT rule as
 BlockCraft. Card image `miami-vibes-linking-words/hero.jpg` is a 1200x675 render
 of the page's first question. Topic: english-vocabulary (with
 sailing-the-seas-bridges). Content audited: no wrong keys found.
-**Catalogue row: the insert was refused (unasked write) — SQL given to Innes:**
+**Catalogue row in (id 390, inserted on Innes's go-ahead); hubs + SEO regenerated.** Original SQL:
 `insert into lessons (file,title,level,video,deck,access,track) values
 ('miami-vibes-linking-words.html','Miami Vibes — Linking Words Quiz','B1',false,false,'free','general');`
-Until it is in, the page is live but has no SEO block and no library card; after
-it, run `build_hubs.py` then `seo.py` and commit the regenerated indexes.
+Live with SEO block and library card.
