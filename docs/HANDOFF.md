@@ -10,6 +10,30 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
+## 2026-11-20 — Site improvement schedule: ten jobs in order, on a private page
+
+Innes: *"create a schedule in order of importance to improve this website"*.
+The full schedule (evidence, owner, week and finish line for each job) is a
+private page, not a file here, because what is in `docs/` is public until
+job 1 is done: https://claude.ai/artifact/QaCioBJrYozj93QtDBfrLT. The order:
+
+1. Keep internal files out of the deploy (`.assetsignore`) and make the repo
+   private.
+2. Privacy notice and terms page, then `TERMS_URL` (GO-LIVE A.1).
+3. Email: Resend and Supabase SMTP.
+4. One real test purchase and refund; a self-serve cancel (Stripe portal);
+   the `/api/` rate-limiting rule.
+5. Ads and the home page point people at a page that sells.
+6. Links from teachers (SEO.md step 4).
+7. Quests for Term 1 Missions 4, 8 and 12; the Lookout's padlocks.
+8. Supabase project to its own organisation, the security advisor, VAT.
+9. The six free deck-viewer pages rebuilt; ten Pro deck defects.
+10. Heroes for the 27 "Coming soon" lessons; the 116 unread scrolling pages.
+
+Measured 20 Nov: `check-lesson.js` fails on 16 of 156 decks; 374 of 376
+sitemap URLs answer 200 (two with brackets in their names redirect); no
+broken internal links worth fixing.
+
 ## 2026-11-20 — Grammar page, phase 1: topic index and filter; a phone menu on every page
 
 Innes: "create a plan for improving this page" (the grammar page), then
