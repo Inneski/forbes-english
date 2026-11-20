@@ -16,7 +16,11 @@
    - remembers the choice in localStorage 'fe-lang', the front page's key,
      and takes ?lang=xx;
    - keeps the row on one line: the least-used links step out, in the
-     front page's order, until the row fits.
+     front page's order, until the row fits;
+   - when any link is out (every phone: the pages' own CSS keeps only
+     Library), turns Library into a menu of every link in the row, as the
+     front page does (Innes, 2026-11-20, phase 1 of docs/GRAMMAR-PAGE-PLAN.md:
+     on a phone only Library, the language and Go Pro could be reached).
    A page with its own menu in the row (Block Camp, #hubLang) keeps it;
    this script leaves that page alone.
    window.FE_LANG = { lang(), t(key, english), apply(el?) }, and a
@@ -27,10 +31,16 @@
                ['pt', 'Português'], ['ru', 'Русский'], ['ar', 'العربية'], ['zh', '中文'], ['ja', '日本語']];
   var NAV = {"de": {"level-checker.html": "Einstufung", "library.html": "Bibliothek", "ielts.html": "IELTS", "grammar.html": "Grammatik", "rpg.html": "Rollenspiele", "block-camp.html": "Block Camp", "library.html#cat=Slide+Decks": "Foliensätze", "mailto:info@forbesenglish.com": "Mit mir arbeiten", "account.html": "Anmelden", "pricing.html": "Go Pro"}, "es": {"level-checker.html": "Prueba de nivel", "library.html": "Biblioteca", "ielts.html": "IELTS", "grammar.html": "Gramática", "rpg.html": "Juegos de rol", "block-camp.html": "Block Camp", "library.html#cat=Slide+Decks": "Presentaciones", "mailto:info@forbesenglish.com": "Trabaja conmigo", "account.html": "Iniciar sesión", "pricing.html": "Go Pro"}, "fr": {"level-checker.html": "Test de niveau", "library.html": "Bibliothèque", "ielts.html": "IELTS", "grammar.html": "Grammaire", "rpg.html": "Jeux de rôle", "block-camp.html": "Block Camp", "library.html#cat=Slide+Decks": "Diaporamas", "mailto:info@forbesenglish.com": "Travailler avec moi", "account.html": "Connexion", "pricing.html": "Go Pro"}, "it": {"level-checker.html": "Test di livello", "library.html": "Biblioteca", "ielts.html": "IELTS", "grammar.html": "Grammatica", "rpg.html": "Giochi di ruolo", "block-camp.html": "Block Camp", "library.html#cat=Slide+Decks": "Presentazioni", "mailto:info@forbesenglish.com": "Lavora con me", "account.html": "Accedi", "pricing.html": "Go Pro"}, "pt": {"level-checker.html": "Teste de nível", "library.html": "Biblioteca", "ielts.html": "IELTS", "grammar.html": "Gramática", "rpg.html": "RPGs", "block-camp.html": "Block Camp", "library.html#cat=Slide+Decks": "Apresentações", "mailto:info@forbesenglish.com": "Trabalhe comigo", "account.html": "Entrar", "pricing.html": "Go Pro"}, "ru": {"level-checker.html": "Тест уровня", "library.html": "Библиотека", "ielts.html": "IELTS", "grammar.html": "Грамматика", "rpg.html": "Ролевые игры", "block-camp.html": "Block Camp", "library.html#cat=Slide+Decks": "Презентации", "mailto:info@forbesenglish.com": "Работать со мной", "account.html": "Войти", "pricing.html": "Go Pro"}, "ar": {"level-checker.html": "اختبار المستوى", "library.html": "المكتبة", "ielts.html": "IELTS", "grammar.html": "القواعد", "rpg.html": "ألعاب الأدوار", "block-camp.html": "Block Camp", "library.html#cat=Slide+Decks": "العروض التقديمية", "mailto:info@forbesenglish.com": "اعمل معي", "account.html": "تسجيل الدخول", "pricing.html": "Go Pro"}, "zh": {"level-checker.html": "水平测试", "library.html": "课程库", "ielts.html": "IELTS", "grammar.html": "语法", "rpg.html": "角色扮演", "block-camp.html": "Block Camp", "library.html#cat=Slide+Decks": "幻灯片课件", "mailto:info@forbesenglish.com": "与我合作", "account.html": "登录", "pricing.html": "Go Pro"}, "ja": {"level-checker.html": "レベルチェック", "library.html": "ライブラリー", "ielts.html": "IELTS", "grammar.html": "文法", "rpg.html": "RPG", "block-camp.html": "Block Camp", "library.html#cat=Slide+Decks": "スライド教材", "mailto:info@forbesenglish.com": "個別レッスン", "account.html": "ログイン", "pricing.html": "Go Pro"}};
   var KEY = 'fe-lang';
-  var SQUEEZE = ['library.html#cat=Slide+Decks', 'mailto:info@forbesenglish.com', 'rpg.html', 'account.html',
-                 'level-checker.html', 'block-camp.html', 'grammar.html'];
+  // the order links step out of a tight row: the front page's (index.html
+  // SQUEEZE). RPGs lead the row and go last but Library (Innes,
+  // 2026-11-10: "RPG should be at top"; tools/site_nav_order.py)
+  var SQUEEZE = ['library.html#cat=Slide+Decks', 'mailto:info@forbesenglish.com', 'account.html',
+                 'level-checker.html', 'block-camp.html', 'grammar.html', 'rpg.html'];
   var row = document.querySelector('.topband .tb-links, header .nav-links, .fe-row');
-  if (!row || document.getElementById('hubLang') || document.getElementById('lang')) return;
+  // the front page (#lang) has its own language menu and site menu
+  if (!row || document.getElementById('lang')) return;
+  // Block Camp (#hubLang) has its own language menu: it gets the site menu only
+  var own = !!document.getElementById('hubLang');
 
   var PAGE = {};
   try { var j = document.getElementById('fe-page-i18n'); if (j) PAGE = JSON.parse(j.textContent); } catch (e) {}
@@ -80,11 +90,73 @@
     if (p[0] === 'ar') o.dir = 'rtl';
     sel.appendChild(o);
   });
-  row.insertBefore(box, pro);
+  if (!own) row.insertBefore(box, pro);
+
+  // the site menu: the language pill's twin, shown only while links are out
+  // of the row. Its caption is the Library link's own word; its list is
+  // every link in the row, in the row's order, in the row's language.
+  var menu = document.createElement('label');
+  menu.className = 'fe-lang fe-menu';
+  menu.style.display = 'none';
+  var mcap = document.createElement('span');
+  menu.appendChild(mcap);
+  menu.insertAdjacentHTML('beforeend', '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>');
+  var msel = document.createElement('select');
+  msel.setAttribute('aria-label', 'Site menu');
+  menu.appendChild(msel);
+  // it stands where Library stands, so the row keeps its order at every width
+  var libA = links.filter(function (a) { return href(a) === 'library.html'; })[0];
+  row.insertBefore(menu, libA && libA.parentNode === row ? libA : (own ? pro : box));
+  var libLink = null;
+  function fillMenu() {
+    msel.innerHTML = '';
+    var lib = links.filter(function (a) { return href(a) === 'library.html'; })[0];
+    var head = document.createElement('option');
+    head.value = ''; head.selected = true;
+    head.textContent = lib ? lib.textContent.trim() : 'Menu';
+    msel.appendChild(head);
+    mcap.textContent = head.textContent;
+    links.forEach(function (a) {
+      if (a === pro) return;
+      var o = document.createElement('option');
+      o.value = a.href;
+      o.textContent = a.textContent.replace(/\s+/g, ' ').trim();
+      if (a.lang) o.lang = a.lang;
+      if (a.getAttribute('aria-current')) o.textContent += ' ✓';
+      msel.appendChild(o);
+    });
+  }
+  msel.addEventListener('change', function () { if (msel.value) location.href = msel.value; });
+  // back on a page from the browser's history: the list starts on its caption again
+  addEventListener('pageshow', function () { msel.selectedIndex = 0; });
+  function menuFit() {
+    if (libLink) { libLink.style.removeProperty('display'); libLink = null; }
+    menu.style.display = 'none';
+    var out = links.filter(function (a) { return a !== pro && !a.offsetParent; });
+    if (!out.length) return;
+    menu.style.removeProperty('display');
+    var lib = links.filter(function (a) { return href(a) === 'library.html' && a.offsetParent; })[0];
+    if (lib) { lib.style.display = 'none'; libLink = lib; }
+  }
+
   function ink() {
     var s = getComputedStyle(plain);
     box.style.color = s.color;
     box.style.textShadow = s.textShadow;
+    menu.style.color = s.color;
+    menu.style.textShadow = s.textShadow;
+  }
+
+  // Block Camp: the site menu only. Its own script translates the row, so
+  // the list is refilled whenever it is opened.
+  if (own) {
+    var ownFit = function () { fillMenu(); ink(); menuFit(); };
+    msel.addEventListener('focus', fillMenu);
+    msel.addEventListener('pointerdown', fillMenu);
+    addEventListener('resize', ownFit);
+    ownFit();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(ownFit);
+    return;
   }
 
   var english = links.map(function (a) { return a.innerHTML; });
@@ -116,6 +188,7 @@
       if (w) a.lang = cur; else a.removeAttribute('lang');
     });
     [].forEach.call(document.querySelectorAll('[data-fe]'), one);
+    fillMenu();
     sel.value = cur;
     caption();
     fit();
@@ -132,6 +205,8 @@
   var STEPS = SQUEEZE.concat(['short', 'library.html']);
   function fit() {
     links.forEach(function (a) { if (a.hasAttribute('data-fe-out')) { a.style.removeProperty('display'); a.removeAttribute('data-fe-out'); } });
+    if (libLink) { libLink.style.removeProperty('display'); libLink = null; }
+    menu.style.display = 'none';
     short = false; caption();
     ink();
     var limit = document.documentElement.clientWidth - 8;
@@ -150,9 +225,17 @@
       var a = links.filter(function (x) { return href(x) === STEPS[i] && x.offsetParent; })[0];
       if (a) { a.style.display = 'none'; a.setAttribute('data-fe-out', ''); }
     }
+    // links are out of the row: Library becomes the menu of all of them; if
+    // the menu then crowds the row, the language pill takes its short form
+    menuFit();
+    if (menu.style.display !== 'none' && !short) {
+      var kids = [].slice.call(row.children).filter(function (x) { return x.offsetParent; });
+      var edge = Math.max.apply(null, kids.map(function (x) { return x.getBoundingClientRect().right; }));
+      if (edge > limit) { short = true; caption(); }
+    }
   }
 
-  window.FE_LANG = { lang: function () { return cur; }, t: t, apply: apply };
+  window.FE_LANG ={ lang: function () { return cur; }, t: t, apply: apply };
   sel.addEventListener('change', function () { set(sel.value, true); });
   addEventListener('resize', fit);
   addEventListener('storage', function (e) { if (e.key === KEY && ok(e.newValue) && e.newValue !== cur) set(e.newValue, false); });

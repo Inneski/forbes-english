@@ -76,7 +76,42 @@ The page has no footer, and nor do index, library, ielts or block-camp.
 
 The phases are in order of value per hour. Each ends in something shippable.
 
-### Phase 1: lead with the promise (one session)
+### Phase 1: lead with the promise: DONE 2026-11-20
+
+What shipped, and where it differs from the plan below:
+
+- **The topic index** (`find_band()` in `tools/build_grammar_hub.py`) sits
+  under the hero: 19 chips in three rows. It starts 0.85 screens down at 1920
+  and is 582 px tall; on a phone it starts at 1.2 screens and is 1.4 screens
+  tall.
+- **The filter searches the charts too.** Matching charts appear as a fourth
+  row of chips inside the index, rather than narrowing the rack two sections
+  down, where the reader would not see it. Results: "passive" gives Passive
+  Voice, the Passive Ferry and the Sherpa route map; "in on at" gives
+  Prepositions and the Harbour of Scale. Enter opens the first match;
+  Escape clears. The words each topic answers to are `FIND_WORDS`.
+- **The section order** is hero, index, tense code, maps, shelves, routes,
+  close. The hero's first button is "Find your grammar point"; the close's
+  second is "Back to the topics".
+- **Tense review** is no longer doubled: the black "All of them at once" bar
+  under the tense code is gone, and its line under the squares links to Tense
+  Review instead.
+- **No two cards share a picture.** `card_picture()` picks the next lesson's
+  picture, and the build stops if none is left. The comparison is by the
+  file's bytes.
+- **The -ER & MORE roll** has `short` in `grammar_maps.py`. All 25 roll
+  names were measured uncut at 1920 and on a phone.
+- **The phone bar, site-wide.** On a phone every page but the front page
+  showed only Library, the language and Go Pro. `fe-lang.js` now turns
+  Library into a menu of every link in the row whenever any link is out of
+  it, as the front page does. It works on every page that loads the script:
+  the hubs, IELTS, the library, pricing, account, RPG, the Block Camp pages
+  and the grammar page. At 1280 the menu stands where Library stands, which
+  also makes Slide Decks and Work With Me reachable there. Block Camp keeps
+  its own language menu and gets only the site menu. Its RPGs-first squeeze
+  order now matches the front page's.
+
+### Phase 1: lead with the promise (the brief it was built from)
 
 1. **A topic index straight under the hero.**
    - It holds the 19 topics as compact chips in three rows (Tenses, Grammar,

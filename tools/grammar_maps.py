@@ -26,6 +26,8 @@ the row). Fields:
     alt      what the picture shows
     blurb    one or two sentences, learner-facing
     go       the link's call to action (optional)
+    short    the name on the roll, where the title is too long for it and
+             would be cut off with an ellipsis (optional; defaults to title)
     full     the picture the zoom view opens (optional; defaults to image).
              Every chart picture on the page opens full size on a click:
              Innes, 2026-11-08, "all the charts should be expandable here".
@@ -246,6 +248,7 @@ MAPS = [
          go='Set sail'),
     dict(href='sailing-the-seas-er-more.html',
          title='The -ER Coast & the MORE Coast',
+         short='The -ER & MORE Coasts',      # the full title is cut short on its roll
          heading='Comparatives, coast by coast',
          image='sailing-the-seas-er-more/hero.jpg',
          alt='A painted chart with two shores: the -ER Coast with colder and happier, and the MORE Coast with more expensive and more careful, and three sea stacks for better, worse and farther',

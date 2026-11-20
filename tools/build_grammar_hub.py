@@ -293,7 +293,7 @@ CONTRAST = [
     ('text', 'roll', 4.5, 'chart names on the rolls'),
     ('text-dim', 'roll', 4.5, 'levels on the rolls'),
     ('accent', 'roll', 4.5, 'the name on the roll that is out'),
-    ('ink-text', 'ink', 4.5, 'review bar, closing band'),
+    ('ink-text', 'ink', 4.5, 'closing band'),
     ('ink-text-dim', 'ink', 4.5, 'closing band secondary'),
     ('ink-accent', 'ink', 4.5, 'closing band kicker'),
     ('ink-text', 'rock', 4.5, 'route plate copy over the scrim'),
@@ -458,7 +458,7 @@ body.gh {
 :where(.gh) a { color: inherit; }
 .gh :where(main) a:focus-visible { outline: 3px solid var(--gh-accent); outline-offset: 3px; }
 .gh-hero a:focus-visible { outline-color: var(--gh-ink); }
-.gh-close a:focus-visible, .gh-review:focus-visible, .gh-route:focus-visible { outline-color: var(--gh-ink-accent); }
+.gh-close a:focus-visible, .gh-route:focus-visible { outline-color: var(--gh-ink-accent); }
 .gh-vh { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 .gh-wrap { max-width: var(--gh-max); margin: 0 auto; padding: 0 var(--gh-gut); }
 .gh-kicker {
@@ -847,6 +847,58 @@ body.gh {
   .gh-btn-quiet { color: var(--gh-text); border-color: var(--gh-text); }
 }
 
+/* ── the topic index (find_band): every topic straight under the hero, as
+   chips in three rows, with a filter box that also searches the charts.
+   The chips are the card colour at 72%%, never solid white. ── */
+.gh-find { padding: clamp(40px, 5.5vw, 72px) 0 clamp(36px, 5vw, 64px); border-bottom: 1px solid var(--gh-line); }
+.gh-find [hidden] { display: none !important; }
+.gh-find-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px 40px; flex-wrap: wrap; margin: 0 0 clamp(18px, 2.6vw, 28px); }
+.gh-find-head .gh-h2 { margin: 0; }
+.gh-find-box { position: relative; flex: 0 1 440px; min-width: min(100%%, 300px); display: none; }
+.gh-find.is-live .gh-find-box { display: block; }
+.gh-find-box svg { position: absolute; left: 17px; top: 15px; width: 20px; height: 20px; fill: none; stroke: var(--gh-text); stroke-width: 2.2; stroke-linecap: round; pointer-events: none; }
+.gh-find-box input {
+  width: 100%%; box-sizing: border-box; margin: 0; font: inherit; font-size: 1.05rem; line-height: 1.3;
+  padding: 13px 18px 13px 48px; border-radius: 999px; border: 2px solid var(--gh-text);
+  background: color-mix(in srgb, var(--gh-card) 80%%, transparent); color: var(--gh-text);
+}
+.gh-find-box input::placeholder { color: var(--gh-text-dim); opacity: 1; }
+/* the browser's own clear button, in the page's ink rather than its blue */
+.gh-find-box input::-webkit-search-cancel-button {
+  -webkit-appearance: none; appearance: none; width: 16px; height: 16px; cursor: pointer; background: var(--gh-text);
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M6 6l12 12M18 6 6 18' stroke='black' stroke-width='2.8' stroke-linecap='round'/></svg>") center / contain no-repeat;
+          mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M6 6l12 12M18 6 6 18' stroke='black' stroke-width='2.8' stroke-linecap='round'/></svg>") center / contain no-repeat;
+}
+.gh-find-box input:focus-visible { outline: 3px solid var(--gh-accent); outline-offset: 2px; }
+.gh-find-count { margin: 6px 0 0 20px; min-height: 1.3em; font-size: .85rem; color: var(--gh-text-dim); }
+.gh-find-rows { display: grid; gap: 14px; }
+.gh-find-row { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 8px 18px; align-items: start; }
+.gh-find-row h3 {
+  margin: 0; padding-top: 11px; font-family: 'Barlow Condensed', sans-serif; font-weight: 800;
+  letter-spacing: .14em; text-transform: uppercase; font-size: .8rem; color: var(--gh-text-dim);
+}
+.gh-find-row ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.gh-chip {
+  display: inline-flex; align-items: baseline; gap: 8px; padding: 9px 14px; border-radius: 10px;
+  text-decoration: none; color: var(--gh-text);
+  background: color-mix(in srgb, var(--gh-card) 72%%, transparent); border: 1px solid var(--gh-line);
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+.gh-chip:hover { transform: translateY(-2px); box-shadow: 0 10px 22px var(--gh-shadow); border-color: color-mix(in srgb, var(--gh-text) 40%%, transparent); }
+.gh-chip-sw { align-self: center; flex: none; width: .78em; height: .78em; border-radius: 3px; background: var(--c); }
+.gh-chip b { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.02rem; line-height: 1.2; }
+.gh-chip small { font-size: .8rem; color: var(--gh-text-dim); white-space: nowrap; }
+.gh-chip small em { font-style: normal; font-weight: 700; color: var(--gh-accent); }
+.gh-find-none { margin: 14px 0 0; color: var(--gh-text-dim); }
+.gh-find-none a { color: var(--gh-accent-bright); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 680px) {
+  .gh-find-row { grid-template-columns: 1fr; gap: 6px; }
+  .gh-find-row h3 { padding-top: 0; }
+  /* a long name pushes its count onto a line of its own, whole */
+  .gh-chip { padding: 8px 12px; flex-wrap: wrap; row-gap: 2px; }
+  .gh-find-box { flex-basis: 100%%; }
+}
+
 /* ── the tense code: time across, shape down ── */
 .gh-tenses { padding: clamp(64px, 9vw, 120px) 0 clamp(48px, 7vw, 88px); }
 .gh-grid {
@@ -894,19 +946,7 @@ body.gh {
 .gh-cell-where { display: block; font-size: .74rem; opacity: .8; }
 .gh-cell-off { --c: var(--gh-mist); --k: var(--gh-text); }
 .gh-key { font-size: .9rem; line-height: 1.5; color: var(--gh-text-dim); margin: 18px 0 0; max-width: 68ch; }
-.gh-review {
-  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 12px 22px;
-  margin: 26px 0 0; padding: 18px 24px; border-radius: 12px; text-decoration: none;
-  background: var(--gh-ink); color: var(--gh-ink-text);
-  transition: transform .18s ease, box-shadow .18s ease;
-}
-.gh-review:hover { transform: translateY(-2px); box-shadow: 0 16px 30px var(--gh-shadow); }
-.gh-review b { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.25rem; }
-.gh-review span { color: var(--gh-ink-text-dim); font-size: .98rem; line-height: 1.4; }
-.gh-review .gh-go {
-  font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .1em;
-  text-transform: uppercase; font-size: .84rem; color: var(--gh-ink-accent); white-space: nowrap;
-}
+.gh-key a { color: var(--gh-accent); font-weight: 700; text-underline-offset: 3px; }
 @media (max-width: 680px) {
   .gh-grid { grid-template-columns: 1fr; gap: 6px; }
   .gh-th, .gh-cell { grid-column: 1; grid-row: auto; }
@@ -917,7 +957,6 @@ body.gh {
   .gh-cell-name { grid-column: 1; margin: 0; padding: 0; font-size: 1.06rem; }
   .gh-cell-form { grid-column: 2; font-size: .95rem; text-align: right; }
   .gh-cell-meta { grid-column: 1 / -1; }
-  .gh-review { grid-template-columns: 1fr; }
 }
 
 /* ── every topic ── */
@@ -1103,9 +1142,42 @@ def row_spans(n, cols):
     return out
 
 
-def _card(t, rows, images, colour=None, li=''):
+def card_picture(rows, images, used):
+    """The card's picture: topics.hero()'s choice (the first free lesson's
+    hero, else the first lesson's) unless another card already shows that
+    picture, in which case the next lesson's, free ones first. On
+    2026-11-20 Future Tenses and Tense Review both showed one lesson's
+    hero, and Conditionals and Business English another, because a lesson
+    can sit on two shelves. `used` holds the pictures already placed, by
+    content, so two copies of one file count as the same picture."""
+    first = topics.hero(rows, images)
+    if first and picture_key(first) not in used:
+        return first
+    for want_free in (True, False):
+        for r in rows:
+            if want_free and r.get('access') == 'pro':
+                continue
+            p = images.get(r['file'])
+            if p and picture_key('/' + p) not in used:
+                return '/' + p
+    return first
+
+
+def picture_key(rel):
+    """A picture's identity: the hash of its bytes."""
+    import hashlib
+    return hashlib.sha1(open(os.path.join(ROOT, rel.lstrip('/')), 'rb').read()).hexdigest()
+
+
+def _card(t, rows, images, colour=None, li='', used=None):
     n, free = len(rows), free_of(rows)
-    hero = topics.hero(rows, images)
+    hero = card_picture(rows, images, used if used is not None else set())
+    if used is not None and hero:
+        key = picture_key(hero)
+        if key in used:
+            sys.exit('! grammar.html: %s would show the same picture as another card (%s); '
+                     'no lesson on it has a picture of its own' % (t['name'], hero))
+        used.add(key)
     thumb = ('<span class="gh-thumb"><img src="%s" alt="" loading="lazy" width="640" height="360"></span>'
              % esc(web_copy(hero, t['slug'])) if hero else '<span class="gh-thumb"></span>')
     desc = t['desc'] or ('The IELTS Academic route: Writing, Speaking, Listening, Reading '
@@ -1161,7 +1233,7 @@ def _map_roll(m, kick, tag, pic, band, n, href=None, note=None):
             '<div class="gm-body"><p class="gh-kicker">%s</p><h3>%s</h3><p>%s</p>%s</div>'
             '</div></div></li>'
             % (' is-open' if n == 1 else '', (' data-href="%s"' % esc(seo.quote(href))) if href else '', n,
-               'true' if n == 1 else 'false', sid, esc(seo.quote(band)), esc(m['title']),
+               'true' if n == 1 else 'false', sid, esc(seo.quote(band)), esc(m.get('short', m['title'])),
                ('<span class="gm-lv">%s</span>' % tag) if tag else '', sid,
                esc(seo.quote(full)), fw, fh, esc(m['title']), esc('Enlarge the chart: ' + m['title']),
                esc(pic), srcset, esc(m['alt']), w, h, ' &middot; '.join(kick), head, esc(m['blurb']), tail))
@@ -1348,6 +1420,155 @@ def maps_band(rows):
 %s""" % (len(items), ''.join('\n      %s' % c for c in items), table, GM_BOX, GM_RACK_JS)
 
 
+# ── the topic index: "Find your grammar point" ─────────────────────────
+# Innes, 2026-11-20, "create a plan for improving this page", then "Yes,
+# phase 1" (docs/GRAMMAR-PAGE-PLAN.md). The H1 says "English grammar, by
+# topic", and the topics started 3.9 screens down at 1920 and 6.4 on a phone,
+# under 25 chart names that are places, not grammar points. Now every topic
+# is a chip straight under the hero, with a filter box. The filter also
+# searches the charts: the matching ones appear as a fourth row of chips in
+# the index itself, where the reader is typing, rather than narrowing the
+# rack two sections further down.
+#
+# The words a reader might type for each topic, beyond its own name. A
+# token of one or two letters must match a whole word ("in on at"), a
+# longer one the start of a word ("phras" finds phrasal verbs).
+FIND_WORDS = {
+    'present-simple': 'do does third person s habits routines facts always usually never every day',
+    'present-continuous': 'progressive ing am is are now at the moment temporary arrangements',
+    'past-simple': 'ed irregular verbs did yesterday ago last week',
+    'past-continuous': 'progressive was were ing while when interrupted',
+    'present-perfect': 'have has been ever never yet already just since for experience',
+    'present-perfect-continuous': 'have been ing how long since for',
+    'past-perfect': 'had before after already by the time',
+    'future-tenses': 'will going to shall predictions plans arrangements future continuous future perfect',
+    'tense-review': 'test quiz exam all tenses mixed tenses time signals',
+    'passive-voice': 'be past participle by agent causative have something done',
+    'modal-verbs': 'must should can could might may have to obligation advice ability possibility deduction',
+    'prepositions': 'in on at time place movement dependent prepositions',
+    'gerunds-and-infinitives': 'ing to verb patterns infinitive gerund',
+    'conditionals': 'if zero first second third mixed unless wish if only',
+    'used-to': 'be used to get used to would past habits',
+    'phrasal-verbs': 'phrasal collocations take put make do get particles',
+    'business-english': 'work meetings negotiation presentations emails jobs',
+    'ielts': 'exam academic writing speaking listening reading band',
+    'english-vocabulary': 'words topics idioms vocabulary',
+}
+
+
+def chart_point(m):
+    """What a chart teaches, from its heading: "The passive, lane by lane"
+    gives "The passive"."""
+    h = m.get('heading', m['title'])
+    return h.rsplit(', ', 1)[0] if ', ' in h else h
+
+
+def find_band(listed, allm, tc):
+    """The topic index straight under the hero: every topic as a chip in
+    three rows, its tense colour where it has one, its lesson and free
+    counts, and a filter box that also searches the charts. Without the
+    script the chips are simply all there; the box and the chart row only
+    appear with it (.is-live)."""
+    def chip(href, name, words, sub, colour=None, cls='gh-chip'):
+        style = ' style="--c:%s"' % colour[0] if colour else ''
+        sw = '<span class="gh-chip-sw" aria-hidden="true"></span>' if colour else ''
+        return ('<li><a class="%s" href="%s" data-k="%s"%s>%s<b>%s</b><small>%s</small></a></li>'
+                % (cls, href, esc(words), style, sw, name, sub))
+
+    groups = [('Tenses', 'Tenses'), ('Grammar', 'Grammar'), ('Beyond grammar', 'Skills')]
+    rows_html = []
+    for title, group in groups:
+        items = sorted((t for t in listed if t['group'] == group), key=lambda x: x['order'])
+        chips = []
+        for t in items:
+            rs = allm[t['slug']]
+            n, free = len(rs), free_of(rs)
+            sub = plural(n, 'lesson') + (' &middot; <em>%d free</em>' % free if free else '')
+            colour = tc.get(TOPIC_COLOUR.get(t['slug'], ''))
+            chips.append(chip(topics.hub_url(t['slug']), esc(t['name']),
+                              '%s %s' % (t['name'], FIND_WORDS.get(t['slug'], '')),
+                              sub, colour))
+        rows_html.append('      <div class="gh-find-row">\n        <h3>%s</h3>\n        <ul>%s</ul>\n      </div>'
+                         % (title, ''.join(chips)))
+    charts = []
+    for m in grammar_maps.MAPS:
+        charts.append(chip(seo.quote(m['href']), esc(m['title']),
+                           '%s %s %s' % (m['title'], m.get('heading', ''), m.get('blurb', '')),
+                           esc(chart_point(m)), cls='gh-chip gh-chip-map'))
+    rows_html.append('      <div class="gh-find-row gh-find-charts" hidden>\n        <h3>Grammar maps</h3>\n        <ul>%s</ul>\n      </div>'
+                     % ''.join(charts))
+    return '''<section class="gh-find" id="find" aria-labelledby="gh-find-h">
+  <div class="gh-wrap">
+    <div class="gh-find-head">
+      <div>
+        <p class="gh-kicker">Every topic at a glance</p>
+        <h2 class="gh-h2" id="gh-find-h">Find your <em>grammar point</em></h2>
+      </div>
+      <div class="gh-find-box">
+        <label class="gh-vh" for="gh-find-q">Find a grammar point</label>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg>
+        <input id="gh-find-q" type="search" placeholder="Type one: passive, used to, in on at&hellip;" autocomplete="off" spellcheck="false" enterkeyhint="go">
+        <p class="gh-find-count" aria-live="polite"></p>
+      </div>
+    </div>
+    <div class="gh-find-rows">
+%s
+    </div>
+    <p class="gh-find-none" hidden>Nothing on this page matches &ldquo;<b></b>&rdquo;. <a href="library.html">Look through every lesson in the library &rarr;</a></p>
+  </div>
+</section>
+%s''' % ('\n'.join(rows_html), GH_FIND_JS)
+
+
+GH_FIND_JS = """<script>
+// The topic index's filter. Every word typed must match: a word of one or
+// two letters a whole word, a longer one the start of a word. The chart row
+// shows only while something is typed. Enter opens the first match; Escape
+// clears the box.
+(function () {
+  var box = document.getElementById('gh-find-q');
+  if (!box) return;
+  var band = box.closest('.gh-find');
+  band.classList.add('is-live');
+  var chips = [].slice.call(band.querySelectorAll('.gh-chip'));
+  var rows = [].slice.call(band.querySelectorAll('.gh-find-row'));
+  var none = band.querySelector('.gh-find-none'), said = none.querySelector('b');
+  var count = band.querySelector('.gh-find-count');
+  function norm(s) {
+    return s.toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g, '')
+            .replace(/[\\u2019']/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
+  }
+  chips.forEach(function (c) { c._w = ' ' + norm(c.getAttribute('data-k') + ' ' + c.querySelector('b').textContent) + ' '; });
+  function hit(c, toks) {
+    return toks.every(function (t) { return c._w.indexOf(' ' + t + (t.length < 3 ? ' ' : '')) >= 0; });
+  }
+  function run() {
+    var q = norm(box.value), toks = q ? q.split(' ') : [], topicsN = 0, chartsN = 0;
+    chips.forEach(function (c) {
+      var map = c.classList.contains('gh-chip-map');
+      var on = toks.length ? hit(c, toks) : !map;
+      c.parentNode.hidden = !on;
+      if (on) { if (map) chartsN++; else topicsN++; }
+    });
+    rows.forEach(function (r) { r.hidden = ![].some.call(r.querySelectorAll('li'), function (li) { return !li.hidden; }); });
+    none.hidden = !(toks.length && !topicsN && !chartsN);
+    said.textContent = box.value.trim();
+    count.textContent = !toks.length ? '' :
+      topicsN + (topicsN === 1 ? ' topic' : ' topics') + ' and ' + chartsN + (chartsN === 1 ? ' chart' : ' charts');
+  }
+  box.addEventListener('input', run);
+  box.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && box.value) { box.value = ''; run(); e.preventDefault(); }
+    if (e.key === 'Enter') {
+      var first = chips.filter(function (c) { return !c.parentNode.hidden; })[0];
+      if (first && box.value.trim()) location.href = first.href;
+    }
+  });
+  run();
+})();
+</script>"""
+
+
 def render(rows, images, allm):
     """(css, body, json-ld) for grammar.html. `rows` are the finished
     lessons, `allm` topics.members() of them."""
@@ -1358,7 +1579,6 @@ def render(rows, images, allm):
     tense_topics = [t for t in listed if t['group'] == 'Tenses']
     grammar_topics = [t for t in listed if t['group'] == 'Grammar']
     skill_topics = [t for t in listed if t['group'] == 'Skills']
-    review = allm['tense-review']
     sherpa = family(rows, 'sherpa-tensing-')
     blockcamp = family(rows, 'blockcamp-', 'block-camp/')
     tense_lessons = {r['file'] for t in tense_topics for r in allm[t['slug']]}
@@ -1388,7 +1608,7 @@ def render(rows, images, allm):
         <li class="gh-stat-free"><b>%d</b><span>free &mdash; no sign-in</span></li>
       </ul>
       <div class="gh-ctas">
-        <a class="gh-btn" href="#tenses">The tenses, in colour <span aria-hidden="true">&darr;</span></a>
+        <a class="gh-btn" href="#find">Find your grammar point <span aria-hidden="true">&darr;</span></a>
         <a class="gh-btn gh-btn-quiet" href="level-checker.html">Find your level</a>
       </div>
       <p class="gh-sail">The chart is <a href="sailing-the-seas-of-grammar.html">Sailing the Seas of Grammar</a>: gerunds or infinitives, coast by coast &rarr;</p>
@@ -1400,8 +1620,9 @@ def render(rows, images, allm):
 
     b.append(CHART_3D)
 
-    # ── grammar maps: straight under the hero (tools/grammar_maps.py) ──
-    b.append(maps_band(rows))
+    # ── every topic at a glance, with a filter: straight under the hero, so
+    # the page answers its own headline first (docs/GRAMMAR-PAGE-PLAN.md) ──
+    b.append(find_band(listed, allm, tc))
 
     # ── the tense code ──
     b.append('''<section class="gh-tenses" id="tenses" aria-labelledby="gh-tenses-h">
@@ -1426,16 +1647,16 @@ def render(rows, images, allm):
         cell_counts[cell['key']] = len(crow)
         b.append('      ' + _cell(cell, crow, tc, i))
     b.append('''    </nav>
-    <p class="gh-key">A square opens the topic page for its tense &mdash; the rule in plain sentences, then every lesson on it by level &mdash; or, where one lesson stands alone, that lesson. The same colours mark the camps on the <a href="sherpa-tensing-route-map.html">Sherpa Tensing route map</a> and the units in <a href="block-camp.html">Block Camp</a>.</p>
-    <a class="gh-review" href="tense-review.html">
-      <b>All of them at once</b>
-      <span>Tense review and scored grammar tests &mdash; every tense side by side, the time signals that choose between them, and tests that name the lesson to go back to. %s, %d free.</span>
-      <span class="gh-go">Open &rarr;</span>
-    </a>
+    <p class="gh-key">A square opens the topic page for its tense &mdash; the rule in plain sentences, then every lesson on it by level &mdash; or, where one lesson stands alone, that lesson. The same colours mark the camps on the <a href="sherpa-tensing-route-map.html">Sherpa Tensing route map</a> and the units in <a href="block-camp.html">Block Camp</a>. Every tense side by side, with scored tests, is <a href="tense-review.html">Tense Review</a>.</p>
   </div>
-</section>''' % (plural(len(review), 'lesson'), free_of(review)))
+</section>''')
+
+    # ── grammar maps (tools/grammar_maps.py): after the tense code, now that
+    # the topic index leads the page ──
+    b.append(maps_band(rows))
 
     # ── every topic ──
+    used_pictures = set()      # no two cards share a picture (card_picture)
     b.append('''<section class="gh-topics" id="topics" aria-labelledby="gh-topics-h">
   <div class="gh-wrap">
     <div class="gh-sechead">
@@ -1459,7 +1680,7 @@ def render(rows, images, allm):
                 solo = ' '.join('gh-solo%d' % c for c in (2, 3, 4) if spans[c][i] == 12)
                 li = ' style="--s2:%d;--s3:%d;--s4:%d"%s' % (
                     spans[2][i], spans[3][i], spans[4][i], ' class="%s"' % solo if solo else '')
-            b.append('        ' + _card(t, allm[t['slug']], images, colour, li))
+            b.append('        ' + _card(t, allm[t['slug']], images, colour, li, used_pictures))
         b.append('      </ul>\n    </div>')
     b.append('  </div>\n</section>')
 
@@ -1518,7 +1739,7 @@ def render(rows, images, allm):
     <p>The Level Checker is free and adaptive: it tests the tenses from A1 up, stops when it knows, and names the lesson to open first.</p>
     <div class="gh-ctas">
       <a class="gh-btn" href="level-checker.html">Take the Level Checker</a>
-      <a class="gh-btn gh-btn-quiet" href="#tenses">Back to the tenses</a>
+      <a class="gh-btn gh-btn-quiet" href="#find">Back to the topics</a>
     </div>
   </div>
 </section>

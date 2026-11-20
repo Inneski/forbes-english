@@ -284,7 +284,7 @@ body.gh {
 :where(.gh) a { color: inherit; }
 .gh :where(main) a:focus-visible { outline: 3px solid var(--gh-accent); outline-offset: 3px; }
 .gh-hero a:focus-visible { outline-color: var(--gh-ink); }
-.gh-close a:focus-visible, .gh-review:focus-visible, .gh-route:focus-visible { outline-color: var(--gh-ink-accent); }
+.gh-close a:focus-visible, .gh-route:focus-visible { outline-color: var(--gh-ink-accent); }
 .gh-vh { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 .gh-wrap { max-width: var(--gh-max); margin: 0 auto; padding: 0 var(--gh-gut); }
 .gh-kicker {
@@ -673,6 +673,58 @@ body.gh {
   .gh-btn-quiet { color: var(--gh-text); border-color: var(--gh-text); }
 }
 
+/* ── the topic index (find_band): every topic straight under the hero, as
+   chips in three rows, with a filter box that also searches the charts.
+   The chips are the card colour at 72%, never solid white. ── */
+.gh-find { padding: clamp(40px, 5.5vw, 72px) 0 clamp(36px, 5vw, 64px); border-bottom: 1px solid var(--gh-line); }
+.gh-find [hidden] { display: none !important; }
+.gh-find-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px 40px; flex-wrap: wrap; margin: 0 0 clamp(18px, 2.6vw, 28px); }
+.gh-find-head .gh-h2 { margin: 0; }
+.gh-find-box { position: relative; flex: 0 1 440px; min-width: min(100%, 300px); display: none; }
+.gh-find.is-live .gh-find-box { display: block; }
+.gh-find-box svg { position: absolute; left: 17px; top: 15px; width: 20px; height: 20px; fill: none; stroke: var(--gh-text); stroke-width: 2.2; stroke-linecap: round; pointer-events: none; }
+.gh-find-box input {
+  width: 100%; box-sizing: border-box; margin: 0; font: inherit; font-size: 1.05rem; line-height: 1.3;
+  padding: 13px 18px 13px 48px; border-radius: 999px; border: 2px solid var(--gh-text);
+  background: color-mix(in srgb, var(--gh-card) 80%, transparent); color: var(--gh-text);
+}
+.gh-find-box input::placeholder { color: var(--gh-text-dim); opacity: 1; }
+/* the browser's own clear button, in the page's ink rather than its blue */
+.gh-find-box input::-webkit-search-cancel-button {
+  -webkit-appearance: none; appearance: none; width: 16px; height: 16px; cursor: pointer; background: var(--gh-text);
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M6 6l12 12M18 6 6 18' stroke='black' stroke-width='2.8' stroke-linecap='round'/></svg>") center / contain no-repeat;
+          mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M6 6l12 12M18 6 6 18' stroke='black' stroke-width='2.8' stroke-linecap='round'/></svg>") center / contain no-repeat;
+}
+.gh-find-box input:focus-visible { outline: 3px solid var(--gh-accent); outline-offset: 2px; }
+.gh-find-count { margin: 6px 0 0 20px; min-height: 1.3em; font-size: .85rem; color: var(--gh-text-dim); }
+.gh-find-rows { display: grid; gap: 14px; }
+.gh-find-row { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 8px 18px; align-items: start; }
+.gh-find-row h3 {
+  margin: 0; padding-top: 11px; font-family: 'Barlow Condensed', sans-serif; font-weight: 800;
+  letter-spacing: .14em; text-transform: uppercase; font-size: .8rem; color: var(--gh-text-dim);
+}
+.gh-find-row ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.gh-chip {
+  display: inline-flex; align-items: baseline; gap: 8px; padding: 9px 14px; border-radius: 10px;
+  text-decoration: none; color: var(--gh-text);
+  background: color-mix(in srgb, var(--gh-card) 72%, transparent); border: 1px solid var(--gh-line);
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+.gh-chip:hover { transform: translateY(-2px); box-shadow: 0 10px 22px var(--gh-shadow); border-color: color-mix(in srgb, var(--gh-text) 40%, transparent); }
+.gh-chip-sw { align-self: center; flex: none; width: .78em; height: .78em; border-radius: 3px; background: var(--c); }
+.gh-chip b { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.02rem; line-height: 1.2; }
+.gh-chip small { font-size: .8rem; color: var(--gh-text-dim); white-space: nowrap; }
+.gh-chip small em { font-style: normal; font-weight: 700; color: var(--gh-accent); }
+.gh-find-none { margin: 14px 0 0; color: var(--gh-text-dim); }
+.gh-find-none a { color: var(--gh-accent-bright); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 680px) {
+  .gh-find-row { grid-template-columns: 1fr; gap: 6px; }
+  .gh-find-row h3 { padding-top: 0; }
+  /* a long name pushes its count onto a line of its own, whole */
+  .gh-chip { padding: 8px 12px; flex-wrap: wrap; row-gap: 2px; }
+  .gh-find-box { flex-basis: 100%; }
+}
+
 /* ── the tense code: time across, shape down ── */
 .gh-tenses { padding: clamp(64px, 9vw, 120px) 0 clamp(48px, 7vw, 88px); }
 .gh-grid {
@@ -720,19 +772,7 @@ body.gh {
 .gh-cell-where { display: block; font-size: .74rem; opacity: .8; }
 .gh-cell-off { --c: var(--gh-mist); --k: var(--gh-text); }
 .gh-key { font-size: .9rem; line-height: 1.5; color: var(--gh-text-dim); margin: 18px 0 0; max-width: 68ch; }
-.gh-review {
-  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 12px 22px;
-  margin: 26px 0 0; padding: 18px 24px; border-radius: 12px; text-decoration: none;
-  background: var(--gh-ink); color: var(--gh-ink-text);
-  transition: transform .18s ease, box-shadow .18s ease;
-}
-.gh-review:hover { transform: translateY(-2px); box-shadow: 0 16px 30px var(--gh-shadow); }
-.gh-review b { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.25rem; }
-.gh-review span { color: var(--gh-ink-text-dim); font-size: .98rem; line-height: 1.4; }
-.gh-review .gh-go {
-  font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .1em;
-  text-transform: uppercase; font-size: .84rem; color: var(--gh-ink-accent); white-space: nowrap;
-}
+.gh-key a { color: var(--gh-accent); font-weight: 700; text-underline-offset: 3px; }
 @media (max-width: 680px) {
   .gh-grid { grid-template-columns: 1fr; gap: 6px; }
   .gh-th, .gh-cell { grid-column: 1; grid-row: auto; }
@@ -743,7 +783,6 @@ body.gh {
   .gh-cell-name { grid-column: 1; margin: 0; padding: 0; font-size: 1.06rem; }
   .gh-cell-form { grid-column: 2; font-size: .95rem; text-align: right; }
   .gh-cell-meta { grid-column: 1 / -1; }
-  .gh-review { grid-template-columns: 1fr; }
 }
 
 /* ── every topic ── */
@@ -977,7 +1016,7 @@ body.gh {
         <li class="gh-stat-free"><b>90</b><span>free &mdash; no sign-in</span></li>
       </ul>
       <div class="gh-ctas">
-        <a class="gh-btn" href="#tenses">The tenses, in colour <span aria-hidden="true">&darr;</span></a>
+        <a class="gh-btn" href="#find">Find your grammar point <span aria-hidden="true">&darr;</span></a>
         <a class="gh-btn gh-btn-quiet" href="level-checker.html">Find your level</a>
       </div>
       <p class="gh-sail">The chart is <a href="sailing-the-seas-of-grammar.html">Sailing the Seas of Grammar</a>: gerunds or infinitives, coast by coast &rarr;</p>
@@ -1107,6 +1146,121 @@ function go(tex) {
 // GPUs an <img> handed straight to WebGL before it has decoded uploads black
 if (cv && img) new THREE.TextureLoader().load(img.currentSrc || img.src, go);
 </script>
+<section class="gh-find" id="find" aria-labelledby="gh-find-h">
+  <div class="gh-wrap">
+    <div class="gh-find-head">
+      <div>
+        <p class="gh-kicker">Every topic at a glance</p>
+        <h2 class="gh-h2" id="gh-find-h">Find your <em>grammar point</em></h2>
+      </div>
+      <div class="gh-find-box">
+        <label class="gh-vh" for="gh-find-q">Find a grammar point</label>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg>
+        <input id="gh-find-q" type="search" placeholder="Type one: passive, used to, in on at&hellip;" autocomplete="off" spellcheck="false" enterkeyhint="go">
+        <p class="gh-find-count" aria-live="polite"></p>
+      </div>
+    </div>
+    <div class="gh-find-rows">
+      <div class="gh-find-row">
+        <h3>Tenses</h3>
+        <ul><li><a class="gh-chip" href="present-simple.html" data-k="Present Simple do does third person s habits routines facts always usually never every day" style="--c:#7A93B5"><span class="gh-chip-sw" aria-hidden="true"></span><b>Present Simple</b><small>11 lessons &middot; <em>7 free</em></small></a></li><li><a class="gh-chip" href="present-continuous.html" data-k="Present Continuous progressive ing am is are now at the moment temporary arrangements" style="--c:#F2ADBF"><span class="gh-chip-sw" aria-hidden="true"></span><b>Present Continuous</b><small>9 lessons &middot; <em>5 free</em></small></a></li><li><a class="gh-chip" href="past-simple.html" data-k="Past Simple ed irregular verbs did yesterday ago last week" style="--c:#B08968"><span class="gh-chip-sw" aria-hidden="true"></span><b>Past Simple</b><small>14 lessons &middot; <em>6 free</em></small></a></li><li><a class="gh-chip" href="past-continuous.html" data-k="Past Continuous progressive was were ing while when interrupted" style="--c:#F1D779"><span class="gh-chip-sw" aria-hidden="true"></span><b>Past Continuous</b><small>7 lessons &middot; <em>1 free</em></small></a></li><li><a class="gh-chip" href="present-perfect.html" data-k="Present Perfect have has been ever never yet already just since for experience" style="--c:#689497"><span class="gh-chip-sw" aria-hidden="true"></span><b>Present Perfect</b><small>13 lessons &middot; <em>4 free</em></small></a></li><li><a class="gh-chip" href="present-perfect-continuous.html" data-k="Present Perfect Continuous have been ing how long since for" style="--c:#97D0E5"><span class="gh-chip-sw" aria-hidden="true"></span><b>Present Perfect Continuous</b><small>4 lessons &middot; <em>1 free</em></small></a></li><li><a class="gh-chip" href="past-perfect.html" data-k="Past Perfect had before after already by the time" style="--c:#8D5358"><span class="gh-chip-sw" aria-hidden="true"></span><b>Past Perfect</b><small>7 lessons &middot; <em>1 free</em></small></a></li><li><a class="gh-chip" href="future-tenses.html" data-k="Future Tenses will going to shall predictions plans arrangements future continuous future perfect" style="--c:#DB815F"><span class="gh-chip-sw" aria-hidden="true"></span><b>Future Tenses</b><small>17 lessons &middot; <em>3 free</em></small></a></li><li><a class="gh-chip" href="tense-review.html" data-k="Tense Review and Grammar Tests test quiz exam all tenses mixed tenses time signals"><b>Tense Review and Grammar Tests</b><small>32 lessons &middot; <em>16 free</em></small></a></li></ul>
+      </div>
+      <div class="gh-find-row">
+        <h3>Grammar</h3>
+        <ul><li><a class="gh-chip" href="passive-voice.html" data-k="Passive Voice be past participle by agent causative have something done"><b>Passive Voice</b><small>30 lessons &middot; <em>6 free</em></small></a></li><li><a class="gh-chip" href="modal-verbs.html" data-k="Modal Verbs must should can could might may have to obligation advice ability possibility deduction"><b>Modal Verbs</b><small>19 lessons &middot; <em>5 free</em></small></a></li><li><a class="gh-chip" href="prepositions.html" data-k="Prepositions in on at time place movement dependent prepositions"><b>Prepositions</b><small>14 lessons &middot; <em>5 free</em></small></a></li><li><a class="gh-chip" href="gerunds-and-infinitives.html" data-k="Gerunds and Infinitives ing to verb patterns infinitive gerund"><b>Gerunds and Infinitives</b><small>3 lessons &middot; <em>1 free</em></small></a></li><li><a class="gh-chip" href="conditionals.html" data-k="Conditionals if zero first second third mixed unless wish if only"><b>Conditionals</b><small>6 lessons &middot; <em>3 free</em></small></a></li><li><a class="gh-chip" href="used-to.html" data-k="Used To and Be Used To be used to get used to would past habits"><b>Used To and Be Used To</b><small>3 lessons &middot; <em>1 free</em></small></a></li><li><a class="gh-chip" href="phrasal-verbs.html" data-k="Phrasal Verbs and Collocations phrasal collocations take put make do get particles"><b>Phrasal Verbs and Collocations</b><small>6 lessons &middot; <em>3 free</em></small></a></li></ul>
+      </div>
+      <div class="gh-find-row">
+        <h3>Beyond grammar</h3>
+        <ul><li><a class="gh-chip" href="business-english.html" data-k="Business English work meetings negotiation presentations emails jobs"><b>Business English</b><small>66 lessons &middot; <em>17 free</em></small></a></li><li><a class="gh-chip" href="ielts.html" data-k="IELTS Academic exam academic writing speaking listening reading band"><b>IELTS Academic</b><small>28 lessons &middot; <em>5 free</em></small></a></li><li><a class="gh-chip" href="english-vocabulary.html" data-k="Vocabulary and Topic Lessons words topics idioms vocabulary"><b>Vocabulary and Topic Lessons</b><small>98 lessons &middot; <em>26 free</em></small></a></li></ul>
+      </div>
+      <div class="gh-find-row gh-find-charts" hidden>
+        <h3>Grammar maps</h3>
+        <ul><li><a class="gh-chip gh-chip-map" href="sailing-the-seas-of-grammar.html" data-k="Gerundia &amp; Infinitivia Gerunds or infinitives, coast by coast Every harbour on the west coast takes ‑ING, every harbour on the east takes TO + verb, and the island in the middle takes both, with a change of meaning. Learn the coastline and you know which form follows the verb."><b>Gerundia &amp; Infinitivia</b><small>Gerunds or infinitives</small></a></li><li><a class="gh-chip gh-chip-map" href="sailing-the-seas-regularia.html" data-k="Regularia &amp; Irregularia Regular and irregular verbs, island by island Almost every verb lives on one tidy continent and takes ‑ed, in one of three sounds. The rest live on islands, one family to an island, named after the sound they share: ring rang rung, keep kept, speak spoke spoken."><b>Regularia &amp; Irregularia</b><small>Regular and irregular verbs</small></a></li><li><a class="gh-chip gh-chip-map" href="sailing-the-seas-countania.html" data-k="Countania &amp; Uncountania Countable and uncountable nouns, shore by shore A chair, two chairs, many chairs live on the west coast; furniture, much furniture, a piece of furniture live on the east. Below deck, the ship’s store cabin and cargo hold show the same cargo with two different words."><b>Countania &amp; Uncountania</b><small>Countable and uncountable nouns</small></a></li><li><a class="gh-chip gh-chip-map" href="sailing-the-seas-adjective-canal.html" data-k="The Adjective Canal Adjective order, lock by lock A noun travels with its adjectives like a barge down a canal: through eight locks, in one order, never backwards. Opinion first; purpose right next to the noun."><b>The Adjective Canal</b><small>Adjective order</small></a></li><li><a class="gh-chip gh-chip-map" href="sailing-the-seas-prefixes.html" data-k="The Prefix Archipelago Negative prefixes, island by island Most words sail to the mainland and take un-. The rest live on islands with their own rules: im- before p and m, il- before l, ir- before r, dis- for the opposite, mis- for wrongly."><b>The Prefix Archipelago</b><small>Negative prefixes</small></a></li><li><a class="gh-chip gh-chip-map" href="sailing-the-seas-soundings.html" data-k="Soundings of Frequency Adverbs of frequency, by the depth of the sea How often is how deep: never on the shore, always in the deepest water. The red buoy shows where the word drops anchor in a sentence."><b>Soundings of Frequency</b><small>Adverbs of frequency</small></a></li><li><a class="gh-chip gh-chip-map" href="sailing-the-seas-register.html" data-k="The Heights of Register Formal and everyday words, by height Get on the shore, obtain near the summit: one meaning, two heights. The higher you climb, the more formal the writing, from chat and texts to reports and official letters."><b>The Heights of Register</b><small>Formal and everyday words</small></a></li><li><a class="gh-chip gh-chip-map" href="sailing-the-seas-inversion.html" data-k="The Inversion Maelstrom Negative inversion, rock by rock Sail past Never or Not only at the start of a sentence and the auxiliary spins in front of the subject: Never have I seen. No auxiliary? Do appears: Rarely do we sail at night."><b>The Inversion Maelstrom</b><small>Negative inversion</small></a></li><li><a class="gh-chip gh-chip-map" href="sailing-the-seas-atlantic.html" data-k="The Atlantic British and American English, shore to shore Elevator Harbour looks straight across at Lift Harbour. Eight word pairs, the grammar that differs, the words both shores share, and the ones that change meaning at sea."><b>The Atlantic</b><small>British and American English</small></a></li><li><a class="gh-chip gh-chip-map" href="sailing-the-seas-question-tags.html" data-k="The Return Voyage Question tags, there and back Out on a positive, home on a negative: It’s cold, isn’t it? Every tag crosses the reef in the same boat it set out in. Four lone stacks keep their own rules: I am late, aren’t I?"><b>The Return Voyage</b><small>Question tags</small></a></li><li><a class="gh-chip gh-chip-map" href="sailing-the-seas-forecast.html" data-k="The Grammar Forecast Probability, by the weather How sure are you? Bound to under the storm clouds, might in sun and cloud, won’t under a clear sky. Read the sky, then pick the words, and get will probably and probably won’t the right way round."><b>The Grammar Forecast</b><small>Probability</small></a></li><li><a class="gh-chip gh-chip-map" href="sailing-the-seas-phrasal-verbs.html" data-k="The Particle Ferries Phrasal verbs, line by line Each little word is a ferry line, each big verb a line that crosses it. Twenty stops, from get up to turn down: the same verb on a new line is a new meaning."><b>The Particle Ferries</b><small>Phrasal verbs</small></a></li><li><a class="gh-chip gh-chip-map" href="sailing-the-seas-atlas.html" data-k="The Atlas of THE Articles with place names, shore by shore Why the Alps but Mount Everest? The kind of place decides. Oceans, rivers, ranges and plural countries land on one shore; continents, cities, lakes and single mountains on the other."><b>The Atlas of THE</b><small>Articles with place names</small></a></li><li><a class="gh-chip gh-chip-map" href="sailing-the-seas-statia.html" data-k="Statia &amp; Actia State and action verbs, shore by shore Know, want and own stay in the present simple; run, cook and sail take -ING for now. On Twofold Isle, think, have, see and be do both, and the sentence decides."><b>Statia &amp; Actia</b><small>State and action verbs</small></a></li><li><a class="gh-chip gh-chip-map" href="sailing-the-seas-make-do.html" data-k="Makeland &amp; Doland Make or do, shore by shore You make what you create and do a task or an activity. Sixteen harbours, Take Island for take a photo, and the False Cape for the mistakes a translation makes."><b>Makeland &amp; Doland</b><small>Make or do</small></a></li><li><a class="gh-chip gh-chip-map" href="sailing-the-seas-certainty.html" data-k="Soundings of Certainty Must, might, can’t, by the depth of the sea How sure are you? Must is deep water, might is the fog, can’t is on the rocks. The same depths work for the past: must have, might have, can’t have."><b>Soundings of Certainty</b><small>Must, might, can’t</small></a></li><li><a class="gh-chip gh-chip-map" href="sailing-the-seas-passive.html" data-k="The Passive Ferry The passive, lane by lane They build it on one shore; it is built on the other. Six lanes, one per form: BE takes the tense and the main verb is always the past participle."><b>The Passive Ferry</b><small>The passive</small></a></li><li><a class="gh-chip gh-chip-map" href="sailing-the-seas-backshift.html" data-k="The Backshift Current Reported speech, tense by tense Report what someone said and the tense drifts one step back: am to was, saw to had seen, will to would. Drifting buoys move the time words; the still rocks never move."><b>The Backshift Current</b><small>Reported speech</small></a></li><li><a class="gh-chip gh-chip-map" href="sailing-the-seas-bridges.html" data-k="The Bridges Linking words, crossing by crossing Although, however and despite mean the same and behave differently. A bridge joins two clauses, a ferry starts a new sentence, a pier takes a noun."><b>The Bridges</b><small>Linking words</small></a></li><li><a class="gh-chip gh-chip-map" href="sailing-the-seas-finished.html" data-k="Finished Time &amp; Open Time Present perfect or past simple, by the time Yesterday is over; this week is still open. The time word decides the tense: past simple on one shore, present perfect on the other, and Twofold Isle where the situation decides."><b>Finished Time &amp; Open Time</b><small>Present perfect or past simple</small></a></li><li><a class="gh-chip gh-chip-map" href="sailing-the-seas-quadrants.html" data-k="The Conditional Quadrants Conditionals, sea by sea Real or unreal? Now or past? Two questions make four seas, and each conditional has its own, from zero to third, with the mixed current running from the past to now."><b>The Conditional Quadrants</b><small>Conditionals</small></a></li><li><a class="gh-chip gh-chip-map" href="sailing-the-seas-scale.html" data-k="The Harbour of Scale In, on and at, by the size of the place A point takes at, a line or a surface takes on, an area takes in. The tide boards do the same for time: at six, on Monday, in July."><b>The Harbour of Scale</b><small>In, on and at</small></a></li><li><a class="gh-chip gh-chip-map" href="sailing-the-seas-voyage.html" data-k="The Voyage Prepositions of movement, leg by leg Out of the harbour, past the lighthouse, round the cape, through the strait: twelve legs, twelve prepositions. Sail it once, then tell it back."><b>The Voyage</b><small>Prepositions of movement</small></a></li><li><a class="gh-chip gh-chip-map" href="sailing-the-seas-er-more.html" data-k="The -ER Coast &amp; the MORE Coast Comparatives, coast by coast Count the syllables: short words sail west and take -er, long words sail east and take more. Three sea stacks never follow the rule."><b>The -ER Coast &amp; the MORE Coast</b><small>Comparatives</small></a></li><li><a class="gh-chip gh-chip-map" href="sherpa-tensing-route-map.html" data-k="Sherpa Tensing route map Every tense, camp by camp Each tense is a camp on the mountain, in its own colour: the active voice on the way up, the passive on the way down."><b>Sherpa Tensing route map</b><small>Every tense</small></a></li></ul>
+      </div>
+    </div>
+    <p class="gh-find-none" hidden>Nothing on this page matches &ldquo;<b></b>&rdquo;. <a href="library.html">Look through every lesson in the library &rarr;</a></p>
+  </div>
+</section>
+<script>
+// The topic index's filter. Every word typed must match: a word of one or
+// two letters a whole word, a longer one the start of a word. The chart row
+// shows only while something is typed. Enter opens the first match; Escape
+// clears the box.
+(function () {
+  var box = document.getElementById('gh-find-q');
+  if (!box) return;
+  var band = box.closest('.gh-find');
+  band.classList.add('is-live');
+  var chips = [].slice.call(band.querySelectorAll('.gh-chip'));
+  var rows = [].slice.call(band.querySelectorAll('.gh-find-row'));
+  var none = band.querySelector('.gh-find-none'), said = none.querySelector('b');
+  var count = band.querySelector('.gh-find-count');
+  function norm(s) {
+    return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+            .replace(/[\u2019']/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
+  }
+  chips.forEach(function (c) { c._w = ' ' + norm(c.getAttribute('data-k') + ' ' + c.querySelector('b').textContent) + ' '; });
+  function hit(c, toks) {
+    return toks.every(function (t) { return c._w.indexOf(' ' + t + (t.length < 3 ? ' ' : '')) >= 0; });
+  }
+  function run() {
+    var q = norm(box.value), toks = q ? q.split(' ') : [], topicsN = 0, chartsN = 0;
+    chips.forEach(function (c) {
+      var map = c.classList.contains('gh-chip-map');
+      var on = toks.length ? hit(c, toks) : !map;
+      c.parentNode.hidden = !on;
+      if (on) { if (map) chartsN++; else topicsN++; }
+    });
+    rows.forEach(function (r) { r.hidden = ![].some.call(r.querySelectorAll('li'), function (li) { return !li.hidden; }); });
+    none.hidden = !(toks.length && !topicsN && !chartsN);
+    said.textContent = box.value.trim();
+    count.textContent = !toks.length ? '' :
+      topicsN + (topicsN === 1 ? ' topic' : ' topics') + ' and ' + chartsN + (chartsN === 1 ? ' chart' : ' charts');
+  }
+  box.addEventListener('input', run);
+  box.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && box.value) { box.value = ''; run(); e.preventDefault(); }
+    if (e.key === 'Enter') {
+      var first = chips.filter(function (c) { return !c.parentNode.hidden; })[0];
+      if (first && box.value.trim()) location.href = first.href;
+    }
+  });
+  run();
+})();
+</script>
+<section class="gh-tenses" id="tenses" aria-labelledby="gh-tenses-h">
+  <div class="gh-wrap">
+    <div class="gh-sechead">
+      <p class="gh-kicker">The tense code</p>
+      <h2 class="gh-h2" id="gh-tenses-h">Twelve tenses, <em>one colour each</em></h2>
+      <p>A tense is a time and a shape: three times across, four shapes down, and one square more for <em>going to</em>, which is not a tense but is taught as one. Each wears the colour it has on the Sherpa Tensing route map, so once you know the code a lesson&rsquo;s colour tells you its tense before you read its title.</p>
+    </div>
+    <nav class="gh-grid" aria-label="The tenses, by time and shape">
+      <p class="gh-th" style="--gc:2;--gr:1;--o:20" aria-hidden="true">Past<small>then</small></p>
+      <p class="gh-th gh-now" style="--gc:3;--gr:1;--o:30" aria-hidden="true">Present<small>now</small></p>
+      <p class="gh-th" style="--gc:4;--gr:1;--o:40" aria-hidden="true">Future<small>later</small></p>
+      <p class="gh-sh" style="--gc:1;--gr:2" aria-hidden="true">Simple</p>
+      <p class="gh-sh" style="--gc:1;--gr:3" aria-hidden="true">Continuous</p>
+      <p class="gh-sh" style="--gc:1;--gr:4" aria-hidden="true">Perfect</p>
+      <p class="gh-sh" style="--gc:1;--gr:5" aria-hidden="true">Perfect continuous</p>
+      <p class="gh-sh" style="--gc:1;--gr:6" aria-hidden="true">+ one more</p>
+      <a class="gh-cell" href="present-simple.html" style="--c:#7A93B5;--k:#0A131F;--gc:3;--gr:2;--o:32;--d:0.00s" aria-label="Present Simple: I build"><span class="gh-cell-name" aria-hidden="true">Present Simple</span><span class="gh-cell-form" aria-hidden="true">I BUILD</span><span class="gh-cell-meta"><b>11 lessons</b> &middot; A1&ndash;B2 &middot; 7 free</span></a>
+      <a class="gh-cell" href="present-continuous.html" style="--c:#F2ADBF;--k:#1A1206;--gc:3;--gr:3;--o:33;--d:0.05s" aria-label="Present Continuous: I am building"><span class="gh-cell-name" aria-hidden="true">Present Continuous</span><span class="gh-cell-form" aria-hidden="true">I AM BUILDING</span><span class="gh-cell-meta"><b>9 lessons</b> &middot; A1&ndash;B2 &middot; 5 free</span></a>
+      <a class="gh-cell" href="present-perfect.html" style="--c:#689497;--k:#1A1206;--gc:3;--gr:4;--o:34;--d:0.10s" aria-label="Present Perfect: I have built"><span class="gh-cell-name" aria-hidden="true">Present Perfect</span><span class="gh-cell-form" aria-hidden="true">I HAVE BUILT</span><span class="gh-cell-meta"><b>13 lessons</b> &middot; A1&ndash;B2 &middot; 4 free</span></a>
+      <a class="gh-cell" href="present-perfect-continuous.html" style="--c:#97D0E5;--k:#1A1206;--gc:3;--gr:5;--o:35;--d:0.15s" aria-label="Present Perfect Continuous: I have been building"><span class="gh-cell-name" aria-hidden="true">Present Perfect Continuous</span><span class="gh-cell-form" aria-hidden="true">I HAVE BEEN BUILDING</span><span class="gh-cell-meta"><b>4 lessons</b> &middot; A1&ndash;B1 &middot; 1 free</span></a>
+      <a class="gh-cell" href="past-simple.html" style="--c:#B08968;--k:#1A1206;--gc:2;--gr:2;--o:22;--d:0.20s" aria-label="Past Simple: I built"><span class="gh-cell-name" aria-hidden="true">Past Simple</span><span class="gh-cell-form" aria-hidden="true">I BUILT</span><span class="gh-cell-meta"><b>14 lessons</b> &middot; A1&ndash;B1 &middot; 6 free</span></a>
+      <a class="gh-cell" href="past-continuous.html" style="--c:#F1D779;--k:#1A1206;--gc:2;--gr:3;--o:23;--d:0.25s" aria-label="Past Continuous: I was building"><span class="gh-cell-name" aria-hidden="true">Past Continuous</span><span class="gh-cell-form" aria-hidden="true">I WAS BUILDING</span><span class="gh-cell-meta"><b>7 lessons</b> &middot; A1&ndash;B1 &middot; 1 free</span></a>
+      <a class="gh-cell" href="past-perfect.html" style="--c:#8D5358;--k:#FFFFFF;--gc:2;--gr:4;--o:24;--d:0.30s" aria-label="Past Perfect: I had built"><span class="gh-cell-name" aria-hidden="true">Past Perfect</span><span class="gh-cell-form" aria-hidden="true">I HAD BUILT</span><span class="gh-cell-meta"><b>6 lessons</b> &middot; B1&ndash;B2 &middot; 1 free</span></a>
+      <a class="gh-cell" href="sherpa-tensing-camp-eleven-past-perfect-continuous.html" style="--c:#705991;--k:#FFFFFF;--gc:2;--gr:5;--o:25;--d:0.35s" aria-label="Past Perfect Continuous: I had been building"><span class="gh-cell-name" aria-hidden="true">Past Perfect Continuous</span><span class="gh-cell-form" aria-hidden="true">I HAD BEEN BUILDING</span><span class="gh-cell-meta"><b>1 lesson</b> &middot; B2<span class="gh-cell-where">one lesson &middot; opens it</span></span></a>
+      <a class="gh-cell" href="future-tenses.html" style="--c:#DB815F;--k:#1A1206;--gc:4;--gr:2;--o:42;--d:0.40s" aria-label="Future Simple: I will build"><span class="gh-cell-name" aria-hidden="true">Future Simple</span><span class="gh-cell-form" aria-hidden="true">I WILL BUILD</span><span class="gh-cell-meta"><b>6 lessons</b> &middot; A1&ndash;B1 &middot; 1 free<span class="gh-cell-where">in Future Tenses</span></span></a>
+      <a class="gh-cell" href="sherpa-tensing-camp-nine-future-continuous.html" style="--c:#E1AB5A;--k:#1A1206;--gc:4;--gr:3;--o:43;--d:0.45s" aria-label="Future Continuous: I will be building"><span class="gh-cell-name" aria-hidden="true">Future Continuous</span><span class="gh-cell-form" aria-hidden="true">I WILL BE BUILDING</span><span class="gh-cell-meta"><b>1 lesson</b> &middot; B1<span class="gh-cell-where">one lesson &middot; opens it</span></span></a>
+      <a class="gh-cell" href="sherpa-tensing-camp-twelve-future-perfect.html" style="--c:#454545;--k:#FFFFFF;--gc:4;--gr:4;--o:44;--d:0.50s" aria-label="Future Perfect: I will have built"><span class="gh-cell-name" aria-hidden="true">Future Perfect</span><span class="gh-cell-form" aria-hidden="true">I WILL HAVE BUILT</span><span class="gh-cell-meta"><b>1 lesson</b> &middot; B2<span class="gh-cell-where">one lesson &middot; opens it</span></span></a>
+      <a class="gh-cell" href="sherpa-tensing-camp-thirteen-future-perfect-continuous.html" style="--c:#B0B0B0;--k:#1A1206;--gc:4;--gr:5;--o:45;--d:0.55s" aria-label="Future Perfect Continuous: I will have been building"><span class="gh-cell-name" aria-hidden="true">Future Perfect Continuous</span><span class="gh-cell-form" aria-hidden="true">I WILL HAVE BEEN BUILDING</span><span class="gh-cell-meta"><b>1 lesson</b> &middot; C1<span class="gh-cell-where">one lesson &middot; opens it</span></span></a>
+      <a class="gh-cell" href="future-tenses.html" style="--c:#99BA7D;--k:#1A1206;--gc:4;--gr:6;--o:46;--d:0.60s" aria-label="Going to: I am going to build"><span class="gh-cell-name" aria-hidden="true">Going to</span><span class="gh-cell-form" aria-hidden="true">I AM GOING TO BUILD</span><span class="gh-cell-meta"><b>8 lessons</b> &middot; A1&ndash;B1 &middot; 1 free<span class="gh-cell-where">in Future Tenses</span></span></a>
+    </nav>
+    <p class="gh-key">A square opens the topic page for its tense &mdash; the rule in plain sentences, then every lesson on it by level &mdash; or, where one lesson stands alone, that lesson. The same colours mark the camps on the <a href="sherpa-tensing-route-map.html">Sherpa Tensing route map</a> and the units in <a href="block-camp.html">Block Camp</a>. Every tense side by side, with scored tests, is <a href="tense-review.html">Tense Review</a>.</p>
+  </div>
+</section>
 <section class="gm" id="maps" aria-labelledby="gm-h">
   <div class="gh-wrap">
     <div class="gh-sechead">
@@ -1138,7 +1292,7 @@ if (cv && img) new THREE.TextureLoader().load(img.currentSrc || img.src, go);
       <li class="gm-roll" data-href="sailing-the-seas-quadrants.html" style="--gm-i:21"><button type="button" class="gm-rod" aria-expanded="false" aria-controls="gm-the-conditional-quadrants"><span class="gm-band" style="background-image:url(&quot;grammar-hub/roll-sailing-the-seas-quadrants-35b5c62d.jpg&quot;)" aria-hidden="true"></span><span class="gm-name">The Conditional Quadrants</span><span class="gm-lv">B1&ndash;C1</span></button><div class="gm-sheet" id="gm-the-conditional-quadrants"><div class="gm-sheet-in"><div class="gm-chart"><span class="gm-roller gm-roller-top" aria-hidden="true"></span><button type="button" class="gm-pic" data-full="sailing-the-seas-quadrants/hero.jpg" data-w="1536" data-h="1024" data-title="The Conditional Quadrants" aria-label="Enlarge the chart: The Conditional Quadrants"><img src="grammar-hub/map-sailing-the-seas-quadrants-80986921.jpg" srcset="grammar-hub/map-sailing-the-seas-quadrants-80986921.jpg 720w, sailing-the-seas-quadrants/hero.jpg 1536w" sizes="(min-width: 961px) min(57vw, 700px), (min-width: 600px) 92vw, 45vw" alt="A painted chart of four seas divided by a reef and a dashed line: real and unreal, now and past, with a two-colour disc at each conditional" width="720" height="480" loading="lazy" decoding="async"><span class="gm-zoom" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><b>Enlarge</b></span></button><span class="gm-roller gm-roller-end" aria-hidden="true"></span></div><div class="gm-body"><p class="gh-kicker">The Conditional Quadrants &middot; B1&ndash;C1 &middot; Free</p><h3><a class="gm-link" href="sailing-the-seas-quadrants.html">Conditionals, sea by sea</a></h3><p>Real or unreal? Now or past? Two questions make four seas, and each conditional has its own, from zero to third, with the mixed current running from the past to now.</p><span class="gm-go">Set sail <span aria-hidden="true">&rarr;</span></span></div></div></div></li>
       <li class="gm-roll" data-href="sailing-the-seas-scale.html" style="--gm-i:22"><button type="button" class="gm-rod" aria-expanded="false" aria-controls="gm-the-harbour-of-scale"><span class="gm-band" style="background-image:url(&quot;grammar-hub/roll-sailing-the-seas-scale-0e644246.jpg&quot;)" aria-hidden="true"></span><span class="gm-name">The Harbour of Scale</span><span class="gm-lv">A2&ndash;B1</span></button><div class="gm-sheet" id="gm-the-harbour-of-scale"><div class="gm-sheet-in"><div class="gm-chart"><span class="gm-roller gm-roller-top" aria-hidden="true"></span><button type="button" class="gm-pic" data-full="sailing-the-seas-scale/hero.jpg" data-w="1536" data-h="1024" data-title="The Harbour of Scale" aria-label="Enlarge the chart: The Harbour of Scale"><img src="grammar-hub/map-sailing-the-seas-scale-c2dcebcd.jpg" srcset="grammar-hub/map-sailing-the-seas-scale-c2dcebcd.jpg 720w, sailing-the-seas-scale/hero.jpg 1536w" sizes="(min-width: 961px) min(57vw, 700px), (min-width: 600px) 92vw, 45vw" alt="A painted chart of one bay with harbours marked at, on and in, and three tide boards for time" width="720" height="480" loading="lazy" decoding="async"><span class="gm-zoom" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><b>Enlarge</b></span></button><span class="gm-roller gm-roller-end" aria-hidden="true"></span></div><div class="gm-body"><p class="gh-kicker">The Harbour of Scale &middot; A2&ndash;B1 &middot; Free</p><h3><a class="gm-link" href="sailing-the-seas-scale.html">In, on and at, by the size of the place</a></h3><p>A point takes at, a line or a surface takes on, an area takes in. The tide boards do the same for time: at six, on Monday, in July.</p><span class="gm-go">Set sail <span aria-hidden="true">&rarr;</span></span></div></div></div></li>
       <li class="gm-roll" data-href="sailing-the-seas-voyage.html" style="--gm-i:23"><button type="button" class="gm-rod" aria-expanded="false" aria-controls="gm-the-voyage"><span class="gm-band" style="background-image:url(&quot;grammar-hub/roll-sailing-the-seas-voyage-a67057b4.jpg&quot;)" aria-hidden="true"></span><span class="gm-name">The Voyage</span><span class="gm-lv">A2&ndash;B1</span></button><div class="gm-sheet" id="gm-the-voyage"><div class="gm-sheet-in"><div class="gm-chart"><span class="gm-roller gm-roller-top" aria-hidden="true"></span><button type="button" class="gm-pic" data-full="sailing-the-seas-voyage/hero.jpg" data-w="1536" data-h="1024" data-title="The Voyage" aria-label="Enlarge the chart: The Voyage"><img src="grammar-hub/map-sailing-the-seas-voyage-2f6e7deb.jpg" srcset="grammar-hub/map-sailing-the-seas-voyage-2f6e7deb.jpg 720w, sailing-the-seas-voyage/hero.jpg 1536w" sizes="(min-width: 961px) min(57vw, 700px), (min-width: 600px) 92vw, 45vw" alt="A painted chart of a voyage in twelve numbered legs, from out of the harbour to onto the jetty" width="720" height="480" loading="lazy" decoding="async"><span class="gm-zoom" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><b>Enlarge</b></span></button><span class="gm-roller gm-roller-end" aria-hidden="true"></span></div><div class="gm-body"><p class="gh-kicker">The Voyage &middot; A2&ndash;B1 &middot; Free</p><h3><a class="gm-link" href="sailing-the-seas-voyage.html">Prepositions of movement, leg by leg</a></h3><p>Out of the harbour, past the lighthouse, round the cape, through the strait: twelve legs, twelve prepositions. Sail it once, then tell it back.</p><span class="gm-go">Set sail <span aria-hidden="true">&rarr;</span></span></div></div></div></li>
-      <li class="gm-roll" data-href="sailing-the-seas-er-more.html" style="--gm-i:24"><button type="button" class="gm-rod" aria-expanded="false" aria-controls="gm-the-er-coast-the-more-coast"><span class="gm-band" style="background-image:url(&quot;grammar-hub/roll-sailing-the-seas-er-more-c35b1619.jpg&quot;)" aria-hidden="true"></span><span class="gm-name">The -ER Coast &amp; the MORE Coast</span><span class="gm-lv">A2&ndash;B1</span></button><div class="gm-sheet" id="gm-the-er-coast-the-more-coast"><div class="gm-sheet-in"><div class="gm-chart"><span class="gm-roller gm-roller-top" aria-hidden="true"></span><button type="button" class="gm-pic" data-full="sailing-the-seas-er-more/hero.jpg" data-w="1536" data-h="1024" data-title="The -ER Coast &amp; the MORE Coast" aria-label="Enlarge the chart: The -ER Coast &amp; the MORE Coast"><img src="grammar-hub/map-sailing-the-seas-er-more-723caef9.jpg" srcset="grammar-hub/map-sailing-the-seas-er-more-723caef9.jpg 720w, sailing-the-seas-er-more/hero.jpg 1536w" sizes="(min-width: 961px) min(57vw, 700px), (min-width: 600px) 92vw, 45vw" alt="A painted chart with two shores: the -ER Coast with colder and happier, and the MORE Coast with more expensive and more careful, and three sea stacks for better, worse and farther" width="720" height="480" loading="lazy" decoding="async"><span class="gm-zoom" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><b>Enlarge</b></span></button><span class="gm-roller gm-roller-end" aria-hidden="true"></span></div><div class="gm-body"><p class="gh-kicker">The -ER Coast &amp; the MORE Coast &middot; A2&ndash;B1 &middot; Free</p><h3><a class="gm-link" href="sailing-the-seas-er-more.html">Comparatives, coast by coast</a></h3><p>Count the syllables: short words sail west and take -er, long words sail east and take more. Three sea stacks never follow the rule.</p><span class="gm-go">Set sail <span aria-hidden="true">&rarr;</span></span></div></div></div></li>
+      <li class="gm-roll" data-href="sailing-the-seas-er-more.html" style="--gm-i:24"><button type="button" class="gm-rod" aria-expanded="false" aria-controls="gm-the-er-coast-the-more-coast"><span class="gm-band" style="background-image:url(&quot;grammar-hub/roll-sailing-the-seas-er-more-c35b1619.jpg&quot;)" aria-hidden="true"></span><span class="gm-name">The -ER &amp; MORE Coasts</span><span class="gm-lv">A2&ndash;B1</span></button><div class="gm-sheet" id="gm-the-er-coast-the-more-coast"><div class="gm-sheet-in"><div class="gm-chart"><span class="gm-roller gm-roller-top" aria-hidden="true"></span><button type="button" class="gm-pic" data-full="sailing-the-seas-er-more/hero.jpg" data-w="1536" data-h="1024" data-title="The -ER Coast &amp; the MORE Coast" aria-label="Enlarge the chart: The -ER Coast &amp; the MORE Coast"><img src="grammar-hub/map-sailing-the-seas-er-more-723caef9.jpg" srcset="grammar-hub/map-sailing-the-seas-er-more-723caef9.jpg 720w, sailing-the-seas-er-more/hero.jpg 1536w" sizes="(min-width: 961px) min(57vw, 700px), (min-width: 600px) 92vw, 45vw" alt="A painted chart with two shores: the -ER Coast with colder and happier, and the MORE Coast with more expensive and more careful, and three sea stacks for better, worse and farther" width="720" height="480" loading="lazy" decoding="async"><span class="gm-zoom" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><b>Enlarge</b></span></button><span class="gm-roller gm-roller-end" aria-hidden="true"></span></div><div class="gm-body"><p class="gh-kicker">The -ER Coast &amp; the MORE Coast &middot; A2&ndash;B1 &middot; Free</p><h3><a class="gm-link" href="sailing-the-seas-er-more.html">Comparatives, coast by coast</a></h3><p>Count the syllables: short words sail west and take -er, long words sail east and take more. Three sea stacks never follow the rule.</p><span class="gm-go">Set sail <span aria-hidden="true">&rarr;</span></span></div></div></div></li>
       <li class="gm-roll" data-href="sherpa-tensing-route-map.html" style="--gm-i:25"><button type="button" class="gm-rod" aria-expanded="false" aria-controls="gm-sherpa-tensing-route-map"><span class="gm-band" style="background-image:url(&quot;grammar-hub/roll-sherpa-tensing-route-map-bd35d780.jpg&quot;)" aria-hidden="true"></span><span class="gm-name">Sherpa Tensing route map</span><span class="gm-lv">A2&ndash;C1</span></button><div class="gm-sheet" id="gm-sherpa-tensing-route-map"><div class="gm-sheet-in"><div class="gm-chart"><span class="gm-roller gm-roller-top" aria-hidden="true"></span><button type="button" class="gm-pic" data-full="Sherpa%20Tensing/thumb-route-map.png" data-w="960" data-h="538" data-title="Sherpa Tensing route map" aria-label="Enlarge the chart: Sherpa Tensing route map"><img src="grammar-hub/map-sherpa-tensing-route-map-b9719849.jpg" alt="A mountain with a camp for each tense, from the present simple at the foot to the future perfect at the top" width="720" height="404" loading="lazy" decoding="async"><span class="gm-zoom" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><b>Enlarge</b></span></button><span class="gm-roller gm-roller-end" aria-hidden="true"></span></div><div class="gm-body"><p class="gh-kicker">Sherpa Tensing route map &middot; A2&ndash;C1 &middot; Free</p><h3><a class="gm-link" href="sherpa-tensing-route-map.html">Every tense, camp by camp</a></h3><p>Each tense is a camp on the mountain, in its own colour: the active voice on the way up, the passive on the way down.</p><span class="gm-go">Open the map <span aria-hidden="true">&rarr;</span></span></div></div></div></li>
     </ul>
   </div>
@@ -1268,44 +1422,6 @@ if (cv && img) new THREE.TextureLoader().load(img.currentSrc || img.src, go);
   sync();
 })();
 </script>
-<section class="gh-tenses" id="tenses" aria-labelledby="gh-tenses-h">
-  <div class="gh-wrap">
-    <div class="gh-sechead">
-      <p class="gh-kicker">The tense code</p>
-      <h2 class="gh-h2" id="gh-tenses-h">Twelve tenses, <em>one colour each</em></h2>
-      <p>A tense is a time and a shape: three times across, four shapes down, and one square more for <em>going to</em>, which is not a tense but is taught as one. Each wears the colour it has on the Sherpa Tensing route map, so once you know the code a lesson&rsquo;s colour tells you its tense before you read its title.</p>
-    </div>
-    <nav class="gh-grid" aria-label="The tenses, by time and shape">
-      <p class="gh-th" style="--gc:2;--gr:1;--o:20" aria-hidden="true">Past<small>then</small></p>
-      <p class="gh-th gh-now" style="--gc:3;--gr:1;--o:30" aria-hidden="true">Present<small>now</small></p>
-      <p class="gh-th" style="--gc:4;--gr:1;--o:40" aria-hidden="true">Future<small>later</small></p>
-      <p class="gh-sh" style="--gc:1;--gr:2" aria-hidden="true">Simple</p>
-      <p class="gh-sh" style="--gc:1;--gr:3" aria-hidden="true">Continuous</p>
-      <p class="gh-sh" style="--gc:1;--gr:4" aria-hidden="true">Perfect</p>
-      <p class="gh-sh" style="--gc:1;--gr:5" aria-hidden="true">Perfect continuous</p>
-      <p class="gh-sh" style="--gc:1;--gr:6" aria-hidden="true">+ one more</p>
-      <a class="gh-cell" href="present-simple.html" style="--c:#7A93B5;--k:#0A131F;--gc:3;--gr:2;--o:32;--d:0.00s" aria-label="Present Simple: I build"><span class="gh-cell-name" aria-hidden="true">Present Simple</span><span class="gh-cell-form" aria-hidden="true">I BUILD</span><span class="gh-cell-meta"><b>11 lessons</b> &middot; A1&ndash;B2 &middot; 7 free</span></a>
-      <a class="gh-cell" href="present-continuous.html" style="--c:#F2ADBF;--k:#1A1206;--gc:3;--gr:3;--o:33;--d:0.05s" aria-label="Present Continuous: I am building"><span class="gh-cell-name" aria-hidden="true">Present Continuous</span><span class="gh-cell-form" aria-hidden="true">I AM BUILDING</span><span class="gh-cell-meta"><b>9 lessons</b> &middot; A1&ndash;B2 &middot; 5 free</span></a>
-      <a class="gh-cell" href="present-perfect.html" style="--c:#689497;--k:#1A1206;--gc:3;--gr:4;--o:34;--d:0.10s" aria-label="Present Perfect: I have built"><span class="gh-cell-name" aria-hidden="true">Present Perfect</span><span class="gh-cell-form" aria-hidden="true">I HAVE BUILT</span><span class="gh-cell-meta"><b>13 lessons</b> &middot; A1&ndash;B2 &middot; 4 free</span></a>
-      <a class="gh-cell" href="present-perfect-continuous.html" style="--c:#97D0E5;--k:#1A1206;--gc:3;--gr:5;--o:35;--d:0.15s" aria-label="Present Perfect Continuous: I have been building"><span class="gh-cell-name" aria-hidden="true">Present Perfect Continuous</span><span class="gh-cell-form" aria-hidden="true">I HAVE BEEN BUILDING</span><span class="gh-cell-meta"><b>4 lessons</b> &middot; A1&ndash;B1 &middot; 1 free</span></a>
-      <a class="gh-cell" href="past-simple.html" style="--c:#B08968;--k:#1A1206;--gc:2;--gr:2;--o:22;--d:0.20s" aria-label="Past Simple: I built"><span class="gh-cell-name" aria-hidden="true">Past Simple</span><span class="gh-cell-form" aria-hidden="true">I BUILT</span><span class="gh-cell-meta"><b>14 lessons</b> &middot; A1&ndash;B1 &middot; 6 free</span></a>
-      <a class="gh-cell" href="past-continuous.html" style="--c:#F1D779;--k:#1A1206;--gc:2;--gr:3;--o:23;--d:0.25s" aria-label="Past Continuous: I was building"><span class="gh-cell-name" aria-hidden="true">Past Continuous</span><span class="gh-cell-form" aria-hidden="true">I WAS BUILDING</span><span class="gh-cell-meta"><b>7 lessons</b> &middot; A1&ndash;B1 &middot; 1 free</span></a>
-      <a class="gh-cell" href="past-perfect.html" style="--c:#8D5358;--k:#FFFFFF;--gc:2;--gr:4;--o:24;--d:0.30s" aria-label="Past Perfect: I had built"><span class="gh-cell-name" aria-hidden="true">Past Perfect</span><span class="gh-cell-form" aria-hidden="true">I HAD BUILT</span><span class="gh-cell-meta"><b>6 lessons</b> &middot; B1&ndash;B2 &middot; 1 free</span></a>
-      <a class="gh-cell" href="sherpa-tensing-camp-eleven-past-perfect-continuous.html" style="--c:#705991;--k:#FFFFFF;--gc:2;--gr:5;--o:25;--d:0.35s" aria-label="Past Perfect Continuous: I had been building"><span class="gh-cell-name" aria-hidden="true">Past Perfect Continuous</span><span class="gh-cell-form" aria-hidden="true">I HAD BEEN BUILDING</span><span class="gh-cell-meta"><b>1 lesson</b> &middot; B2<span class="gh-cell-where">one lesson &middot; opens it</span></span></a>
-      <a class="gh-cell" href="future-tenses.html" style="--c:#DB815F;--k:#1A1206;--gc:4;--gr:2;--o:42;--d:0.40s" aria-label="Future Simple: I will build"><span class="gh-cell-name" aria-hidden="true">Future Simple</span><span class="gh-cell-form" aria-hidden="true">I WILL BUILD</span><span class="gh-cell-meta"><b>6 lessons</b> &middot; A1&ndash;B1 &middot; 1 free<span class="gh-cell-where">in Future Tenses</span></span></a>
-      <a class="gh-cell" href="sherpa-tensing-camp-nine-future-continuous.html" style="--c:#E1AB5A;--k:#1A1206;--gc:4;--gr:3;--o:43;--d:0.45s" aria-label="Future Continuous: I will be building"><span class="gh-cell-name" aria-hidden="true">Future Continuous</span><span class="gh-cell-form" aria-hidden="true">I WILL BE BUILDING</span><span class="gh-cell-meta"><b>1 lesson</b> &middot; B1<span class="gh-cell-where">one lesson &middot; opens it</span></span></a>
-      <a class="gh-cell" href="sherpa-tensing-camp-twelve-future-perfect.html" style="--c:#454545;--k:#FFFFFF;--gc:4;--gr:4;--o:44;--d:0.50s" aria-label="Future Perfect: I will have built"><span class="gh-cell-name" aria-hidden="true">Future Perfect</span><span class="gh-cell-form" aria-hidden="true">I WILL HAVE BUILT</span><span class="gh-cell-meta"><b>1 lesson</b> &middot; B2<span class="gh-cell-where">one lesson &middot; opens it</span></span></a>
-      <a class="gh-cell" href="sherpa-tensing-camp-thirteen-future-perfect-continuous.html" style="--c:#B0B0B0;--k:#1A1206;--gc:4;--gr:5;--o:45;--d:0.55s" aria-label="Future Perfect Continuous: I will have been building"><span class="gh-cell-name" aria-hidden="true">Future Perfect Continuous</span><span class="gh-cell-form" aria-hidden="true">I WILL HAVE BEEN BUILDING</span><span class="gh-cell-meta"><b>1 lesson</b> &middot; C1<span class="gh-cell-where">one lesson &middot; opens it</span></span></a>
-      <a class="gh-cell" href="future-tenses.html" style="--c:#99BA7D;--k:#1A1206;--gc:4;--gr:6;--o:46;--d:0.60s" aria-label="Going to: I am going to build"><span class="gh-cell-name" aria-hidden="true">Going to</span><span class="gh-cell-form" aria-hidden="true">I AM GOING TO BUILD</span><span class="gh-cell-meta"><b>8 lessons</b> &middot; A1&ndash;B1 &middot; 1 free<span class="gh-cell-where">in Future Tenses</span></span></a>
-    </nav>
-    <p class="gh-key">A square opens the topic page for its tense &mdash; the rule in plain sentences, then every lesson on it by level &mdash; or, where one lesson stands alone, that lesson. The same colours mark the camps on the <a href="sherpa-tensing-route-map.html">Sherpa Tensing route map</a> and the units in <a href="block-camp.html">Block Camp</a>.</p>
-    <a class="gh-review" href="tense-review.html">
-      <b>All of them at once</b>
-      <span>Tense review and scored grammar tests &mdash; every tense side by side, the time signals that choose between them, and tests that name the lesson to go back to. 32 lessons, 16 free.</span>
-      <span class="gh-go">Open &rarr;</span>
-    </a>
-  </div>
-</section>
 <section class="gh-topics" id="topics" aria-labelledby="gh-topics-h">
   <div class="gh-wrap">
     <div class="gh-sechead">
@@ -1324,7 +1440,7 @@ if (cv && img) new THREE.TextureLoader().load(img.currentSrc || img.src, go);
         <li style="--s2:6;--s3:4;--s4:4"><a class="gh-card" href="present-perfect-continuous.html" style="--c:#97D0E5"><span class="gh-thumb"><img src="grammar-hub/present-perfect-continuous-cc4685d9.jpg" alt="" loading="lazy" width="640" height="360"></span><span class="gh-card-body"><h4><span class="gh-swatch" aria-hidden="true"></span>Present Perfect Continuous</h4><p>have been doing, for how long, and activities whose effects you can still see, against the Present Perfect Simple.</p><span class="gh-card-meta"><span class="gh-pill">A1&ndash;B1</span><span class="gh-pill">4 lessons</span><span class="gh-pill gh-pill-free">1 free</span></span></span></a></li>
         <li style="--s2:6;--s3:4;--s4:4"><a class="gh-card" href="past-perfect.html" style="--c:#8D5358"><span class="gh-thumb"><img src="grammar-hub/past-perfect-8d201210.jpg" alt="" loading="lazy" width="640" height="360"></span><span class="gh-card-body"><h4><span class="gh-swatch" aria-hidden="true"></span>Past Perfect</h4><p>had done for the earlier of two past events, with by the time, before, after and already, plus the Past Perfect Continuous.</p><span class="gh-card-meta"><span class="gh-pill">B1&ndash;B2</span><span class="gh-pill">7 lessons</span><span class="gh-pill gh-pill-free">1 free</span></span></span></a></li>
         <li style="--s2:6;--s3:4;--s4:4"><a class="gh-card" href="future-tenses.html" style="--c:#DB815F"><span class="gh-thumb"><img src="grammar-hub/future-tenses-1b321f2e.jpg" alt="" loading="lazy" width="640" height="360"></span><span class="gh-card-body"><h4><span class="gh-swatch" aria-hidden="true"></span>Future Tenses</h4><p>will for decisions and predictions, going to for plans and evidence, the Present Continuous for arrangements, and the Future Continuous and Future…</p><span class="gh-card-meta"><span class="gh-pill">A1&ndash;C1</span><span class="gh-pill">17 lessons</span><span class="gh-pill gh-pill-free">3 free</span></span></span></a></li>
-        <li style="--s2:12;--s3:4;--s4:4" class="gh-solo2"><a class="gh-card" href="tense-review.html"><span class="gh-thumb"><img src="grammar-hub/tense-review-1b321f2e.jpg" alt="" loading="lazy" width="640" height="360"></span><span class="gh-card-body"><h4>Tense Review and Grammar Tests</h4><p>every tense side by side, the time signals that choose between them, and scored tests that show which lesson to go back to.</p><span class="gh-card-meta"><span class="gh-pill">A1&ndash;C1</span><span class="gh-pill">32 lessons</span><span class="gh-pill gh-pill-free">16 free</span></span></span></a></li>
+        <li style="--s2:12;--s3:4;--s4:4" class="gh-solo2"><a class="gh-card" href="tense-review.html"><span class="gh-thumb"><img src="grammar-hub/tense-review-27a7fd72.jpg" alt="" loading="lazy" width="640" height="360"></span><span class="gh-card-body"><h4>Tense Review and Grammar Tests</h4><p>every tense side by side, the time signals that choose between them, and scored tests that show which lesson to go back to.</p><span class="gh-card-meta"><span class="gh-pill">A1&ndash;C1</span><span class="gh-pill">32 lessons</span><span class="gh-pill gh-pill-free">16 free</span></span></span></a></li>
       </ul>
     </div>
     <div class="gh-group">
@@ -1342,9 +1458,9 @@ if (cv && img) new THREE.TextureLoader().load(img.currentSrc || img.src, go);
     <div class="gh-group">
       <div class="gh-group-h"><h3>Skills</h3><span>186 lessons &middot; built on all of it</span></div>
       <ul class="gh-plates">
-        <li><a class="gh-card" href="business-english.html"><span class="gh-thumb"><img src="grammar-hub/business-english-17f226f3.jpg" alt="" loading="lazy" width="640" height="360"></span><span class="gh-card-body"><h4>Business English</h4><p>meetings, negotiation, presentations, emails, feedback, client conversations and the vocabulary of construction, energy, architecture and design.</p><span class="gh-card-meta"><span class="gh-pill">A2&ndash;C2</span><span class="gh-pill">66 lessons</span><span class="gh-pill gh-pill-free">17 free</span></span></span></a></li>
+        <li><a class="gh-card" href="business-english.html"><span class="gh-thumb"><img src="grammar-hub/business-english-aee1885f.jpg" alt="" loading="lazy" width="640" height="360"></span><span class="gh-card-body"><h4>Business English</h4><p>meetings, negotiation, presentations, emails, feedback, client conversations and the vocabulary of construction, energy, architecture and design.</p><span class="gh-card-meta"><span class="gh-pill">A2&ndash;C2</span><span class="gh-pill">66 lessons</span><span class="gh-pill gh-pill-free">17 free</span></span></span></a></li>
         <li><a class="gh-card" href="ielts.html"><span class="gh-thumb"><img src="grammar-hub/ielts-85b6b751.jpg" alt="" loading="lazy" width="640" height="360"></span><span class="gh-card-body"><h4>IELTS Academic</h4><p>Writing, Speaking, Listening, Reading and the vocabulary that feeds them.</p><span class="gh-card-meta"><span class="gh-pill">B2&ndash;C1</span><span class="gh-pill">28 lessons</span><span class="gh-pill gh-pill-free">5 free</span></span></span></a></li>
-        <li><a class="gh-card" href="english-vocabulary.html"><span class="gh-thumb"><img src="grammar-hub/english-vocabulary-9f9fd2ff.jpg" alt="" loading="lazy" width="640" height="360"></span><span class="gh-card-body"><h4>Vocabulary and Topic Lessons</h4><p>English vocabulary lessons from A1 to C2 built around a subject — football, skiing, hiking, Minecraft, Lego, film, nature, food, architecture — with…</p><span class="gh-card-meta"><span class="gh-pill">A1&ndash;B2</span><span class="gh-pill">98 lessons</span><span class="gh-pill gh-pill-free">26 free</span></span></span></a></li>
+        <li><a class="gh-card" href="english-vocabulary.html"><span class="gh-thumb"><img src="grammar-hub/english-vocabulary-9f9fd2ff.jpg" alt="" loading="lazy" width="640" height="360"></span><span class="gh-card-body"><h4>Vocabulary and Topic Lessons</h4><p>English vocabulary lessons from A1 to C2 built around a subject — football, skiing, hiking, Minecraft, Lego, film, nature, food, architecture — with…</p><span class="gh-card-meta"><span class="gh-pill">A1&ndash;B1</span><span class="gh-pill">98 lessons</span><span class="gh-pill gh-pill-free">26 free</span></span></span></a></li>
       </ul>
     </div>
   </div>
@@ -1398,7 +1514,7 @@ if (cv && img) new THREE.TextureLoader().load(img.currentSrc || img.src, go);
     <p>The Level Checker is free and adaptive: it tests the tenses from A1 up, stops when it knows, and names the lesson to open first.</p>
     <div class="gh-ctas">
       <a class="gh-btn" href="level-checker.html">Take the Level Checker</a>
-      <a class="gh-btn gh-btn-quiet" href="#tenses">Back to the tenses</a>
+      <a class="gh-btn gh-btn-quiet" href="#find">Back to the topics</a>
     </div>
   </div>
 </section>

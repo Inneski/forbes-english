@@ -10,6 +10,36 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
+## 2026-11-20 — Grammar page, phase 1: topic index and filter; a phone menu on every page
+
+Innes: "create a plan for improving this page" (the grammar page), then
+"Yes, phase 1". The plan and what shipped are in `docs/GRAMMAR-PAGE-PLAN.md`
+(phase 1 is marked DONE there).
+
+- **The grammar page** now leads with "Find your grammar point": 19 topic
+  chips and a filter that also finds the charts. Then come the tense code, the
+  maps and the shelves. The doubled tense-review bar is gone, two duplicate
+  card pictures are replaced, and `card_picture()` stops a repeat. The -ER &
+  MORE roll has a short name. All of this is in `tools/build_grammar_hub.py`
+  and `tools/grammar_maps.py`.
+- **A phone menu on every page** (`fe-lang.js`). Before, only the front page
+  had one; everywhere else a phone showed only Library, the language and Go
+  Pro. It was tested on 10 page types at 412, 1280 and 1920, and in German.
+- **The Block Camp hub's builder is behind its page. Do not rerun
+  `lesson-template/build/block-camp-hub/build.py` as things stand.** The
+  published `block-camp.html` has hand edits its template and `nav.html` do
+  not:
+  - the `fe-row` and `fe-topline` style blocks, from 333fa743's one-off tool;
+  - the language picker inside the bar;
+  - the shared `fe-lang` storage key;
+  - the full RPGs-first bar (its `nav.html` still has the old four links);
+  - free-note wording;
+  - card content.
+
+  A rebuild today would drop all of these. The `fe-lang.js` script tag was
+  added to the published page by hand for that reason. Reconciling the
+  builder with the page is a task of its own.
+
 ## 2026-11-20 — Founder offer withdrawn: Block Camp Term 1 is €19 for everyone
 
 Innes: *"scrap founder offer"*. It never sold: `/api/founder-status` still
