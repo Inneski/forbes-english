@@ -39,11 +39,13 @@ That's the full path from where the repo sits now to a live, subscription-capabl
 
 ## The one-off products (pricing go-live, 2026-10-04)
 
-The four price IDs and the FOUNDER promotion code are not secret, so they
-live in `wrangler.toml` under `[vars]` beside the full-plan prices:
-`STRIPE_PRICE_ID_BLOCKCAMP`, `STRIPE_PRICE_ID_IELTS`,
-`STRIPE_PRICE_ID_IELTS_MARKING`, `STRIPE_PRICE_ID_MARKING`,
-`STRIPE_PROMO_FOUNDER`. What each purchase grants is read from the Stripe
+The four price IDs are not secret, so they live in `wrangler.toml` under
+`[vars]` beside the full-plan prices: `STRIPE_PRICE_ID_BLOCKCAMP`,
+`STRIPE_PRICE_ID_IELTS`, `STRIPE_PRICE_ID_IELTS_MARKING`,
+`STRIPE_PRICE_ID_MARKING`. No discount is applied at checkout: the founder
+offer (`STRIPE_PROMO_FOUNDER`, €7 off the first 50 Term 1 sales) was
+withdrawn unused on 2026-11-20, and the Worker no longer reads that
+variable. What each purchase grants is read from the Stripe
 **product** metadata (`product`, `term`, `marking_credits`), listed in
 `docs/HANDOFF.md`. Change a grant there, not in code.
 
@@ -125,7 +127,7 @@ the weekly email: see the next section. (Fallback without Resend: a
 Cloudflare `[[send_email]]` binding named `MARKING_MAIL` plus
 `MARKING_MAIL_FROM` under `[vars]`.)
 
-Tests: `node deploy/test-webhook.mjs` (checkout, founder count, webhook)
+Tests: `node deploy/test-webhook.mjs` (checkout and webhook)
 and `node deploy/test-paywall.mjs`.
 
 ## Email: the weekly "Mission N is open" and the marking inbox (step 9)

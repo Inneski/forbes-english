@@ -1,5 +1,10 @@
 # Pricing go-live — the checklist
 
+**Released 5 Oct 2026; kept as the record.** The founder offer it
+describes (FOUNDER, €12 Term 1 for the first 50 buyers, `/api/founder-status`,
+`hasFounderPromo`) was **withdrawn unused on 2026-11-20**: ignore those lines
+in sections A–C. Term 1 sells at €19.
+
 Everything for the new pricing (Innes's handoff of 3 Oct 2026, steps 1–9) is
 on branch **`pricing-go-live`** (worktree `../FORBES-pricing`). Nothing in it
 is live until it is merged into `main` and pushed. The database and Stripe

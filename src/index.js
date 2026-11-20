@@ -21,7 +21,8 @@
 //   STRIPE_PRICE_ID_IELTS           €25, IELTS
 //   STRIPE_PRICE_ID_IELTS_MARKING   €69, IELTS + two marked essays
 //   STRIPE_PRICE_ID_MARKING         €49, two marked essays on any account
-//   STRIPE_PROMO_FOUNDER            promo_… for FOUNDER (€7 off Term 1, 50 uses)
+// No discount is applied to any of them. The founder offer (FOUNDER, €7
+// off the first 50 Term 1 sales) was withdrawn unused on 2026-11-20.
 // Email (step 9): RESEND_API_KEY (a secret) and MAIL_FROM (an address on
 // a domain verified in Resend) send the weekly "Mission N is open" email
 // from the daily cron, and tell MARKING_MAIL_TO when essay credits are
@@ -52,7 +53,7 @@ const PLAN_ENV_KEYS = {
 // the session's metadata.supabase_user_id, which this checkout sets: an
 // anonymous Payment Link sale is charged but grants nothing (it is logged).
 const CHECKOUT_PRODUCTS = {
-  blockcamp:     { envKey: "STRIPE_PRICE_ID_BLOCKCAMP", managed: true, founder: true },
+  blockcamp:     { envKey: "STRIPE_PRICE_ID_BLOCKCAMP", managed: true },
   ielts:         { envKey: "STRIPE_PRICE_ID_IELTS", managed: true },
   ielts_marking: { envKey: "STRIPE_PRICE_ID_IELTS_MARKING", managed: true },
   marking:       { envKey: "STRIPE_PRICE_ID_MARKING", managed: true },
@@ -122,11 +123,6 @@ async function route(request, env, ctx) {
     // wired up, and how many lessons the gate can see.
     if (url.pathname === "/api/paywall-status") {
       return handlePaywallStatus(request, url, env, ctx);
-    }
-
-    // The founder offer's places left, for the pricing page's strip.
-    if (url.pathname === "/api/founder-status") {
-      return handleFounderStatus(env, ctx);
     }
 
     // ── RETIRED URLS ─────────────────────────────────────────────────
@@ -858,7 +854,6 @@ async function handlePaywallStatus(request, url, env, ctx) {
     hasIeltsPrice: Boolean(env.STRIPE_PRICE_ID_IELTS),
     hasIeltsMarkingPrice: Boolean(env.STRIPE_PRICE_ID_IELTS_MARKING),
     hasMarkingPrice: Boolean(env.STRIPE_PRICE_ID_MARKING),
-    hasFounderPromo: Boolean(env.STRIPE_PROMO_FOUNDER),
     hasMarkingMail: Boolean(env.MARKING_MAIL_TO &&
       ((env.RESEND_API_KEY && env.MAIL_FROM) || (env.MARKING_MAIL && env.MARKING_MAIL_FROM))),
     // The weekly "Mission N is open" email (the hourly cron) can send.
@@ -1022,7 +1017,7 @@ async function createPlanCheckout(env, userId, userEmail, plan) {
 /**
  * What the buyer already has that this checkout would sell again, as the
  * sentence to show them, or null. A second Term 1 or IELTS opens nothing
- * new (and a second Term 1 spends a founder place); a second Forbes English
+ * new; a second Forbes English
  * Pro is a second subscription billing beside the first, which the site
  * cannot see. Marking is bought as often as wanted: credits add up. A Pro
  * subscriber may still buy a one-off to keep. A read that fails lets the
@@ -1072,8 +1067,7 @@ async function alreadyHas(env, userId, { plan, product, exceptSession = null }) 
  * Stripe is the seller of record, charges the VAT inside the VAT-inclusive
  * price and remits it, and sends the receipt. Managed Payments forbids the
  * tax, payment-method, shipping and receipt-email parameters, so none are
- * sent. Block Camp gets the FOUNDER code applied for the buyer while places
- * remain; nobody has to type it.
+ * sent. No discount is applied: every product sells at its Stripe price.
  */
 async function createProductCheckout(env, userId, userEmail, product) {
   const def = CHECKOUT_PRODUCTS[product];
@@ -1100,30 +1094,7 @@ async function createProductCheckout(env, userId, userEmail, product) {
   });
   addConsent(params, env);
 
-  const founder = def.founder && env.STRIPE_PROMO_FOUNDER ? await getFounderStatus(env) : null;
-  if (founder && founder.remaining > 0) {
-    params.set("discounts[0][promotion_code]", env.STRIPE_PROMO_FOUNDER);
-  }
-
-  let stripeRes = await createCheckoutSession(env, params);
-  // The last founder place can go between the count and this call. Stripe
-  // then refuses the code (a 400 about the discount), and the buyer still
-  // gets a checkout, at €19, rather than an error. Any other failure (a 429,
-  // a 5xx) keeps the code and goes back as an error the page can retry:
-  // a founder must never be charged €19 because Stripe hiccuped.
-  if (!stripeRes.ok && params.has("discounts[0][promotion_code]")) {
-    const text = await stripeRes.text();
-    let err = {};
-    try { err = JSON.parse(text).error || {}; } catch { /* not JSON */ }
-    const aboutCode = stripeRes.status === 400 && (
-      /^discounts/.test(String(err.param || "")) ||
-      /promotion_code|coupon/.test(String(err.code || "")) ||
-      /promotion code|coupon/i.test(String(err.message || "")));
-    if (!aboutCode) return json({ error: "Stripe error", detail: text }, 502);
-    console.error(`FOUNDER refused, checkout at full price: ${err.message || text}`);
-    params.delete("discounts[0][promotion_code]");
-    stripeRes = await createCheckoutSession(env, params);
-  }
+  const stripeRes = await createCheckoutSession(env, params);
   if (!stripeRes.ok) {
     return json({ error: "Stripe error", detail: await stripeRes.text() }, 502);
   }
@@ -1153,62 +1124,6 @@ function createCheckoutSession(env, params) {
       "Content-Type": "application/x-www-form-urlencoded",
     },
     body: params,
-  });
-}
-
-// ─────────────────────────────────────────────────────────────────────────
-// GET /api/founder-status  — the founder offer's places left
-// ─────────────────────────────────────────────────────────────────────────
-
-/**
- * Reads the FOUNDER promotion code from Stripe: its limit and how often it
- * has been redeemed. Cached for a minute at the edge, so a busy pricing page
- * is not a Stripe request per visitor. Anything other than a clean read is
- * null, and the page then shows the plain €19: it must never advertise an
- * offer that may have run out.
- */
-async function getFounderStatus(env, ctx) {
-  if (!env.STRIPE_PROMO_FOUNDER || !env.STRIPE_SECRET_KEY) return null;
-  const cacheKey = new Request(`${env.SITE_URL}/__internal/founder-status-v2`);
-  const cache = typeof caches !== "undefined" ? caches.default : null;
-  if (cache) {
-    const hit = await cache.match(cacheKey);
-    if (hit) {
-      try {
-        const v = await hit.json();
-        return v && v.limit ? v : null;
-      } catch { /* re-read */ }
-    }
-  }
-  // A failed read is cached as {} for the same minute, so a failing Stripe
-  // is asked once a minute rather than once per visitor.
-  let status = {};
-  try {
-    const res = await fetch(
-      `https://api.stripe.com/v1/promotion_codes/${encodeURIComponent(env.STRIPE_PROMO_FOUNDER)}`,
-      { headers: { "Authorization": `Bearer ${env.STRIPE_SECRET_KEY}` } }
-    );
-    if (res.ok) {
-      const promo = await res.json();
-      const limit = Number(promo.max_redemptions);
-      const used = Number(promo.times_redeemed) || 0;
-      if (limit > 0) status = { limit, remaining: promo.active ? Math.max(0, limit - used) : 0 };
-    }
-  } catch { /* status stays {} */ }
-  if (cache) {
-    const put = cache.put(cacheKey, new Response(JSON.stringify(status), {
-      headers: { "Content-Type": "application/json", "Cache-Control": "max-age=60" },
-    }));
-    if (ctx && ctx.waitUntil) ctx.waitUntil(put); else await put;
-  }
-  return status.limit ? status : null;
-}
-
-async function handleFounderStatus(env, ctx) {
-  const status = await getFounderStatus(env, ctx);
-  if (!status) return json({ error: "Founder status unavailable" }, 503);
-  return new Response(JSON.stringify(status), {
-    headers: { "Content-Type": "application/json", "Cache-Control": "public, max-age=60" },
   });
 }
 

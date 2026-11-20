@@ -10,6 +10,34 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
+## 2026-11-20 — Founder offer withdrawn: Block Camp Term 1 is €19 for everyone
+
+Innes: *"scrap founder offer"*. It never sold: `/api/founder-status` still
+read 50 of 50 on 20 Nov, and `funnel_events` holds no Buy press at all since
+it started on 9 Oct (908 campaign landings, 71 pricing-page views, 0
+checkouts).
+
+- **Worker:** no discount at checkout (the FOUNDER auto-apply and its
+  retry-at-€19 path are gone), `/api/founder-status` removed,
+  `hasFounderPromo` dropped from `/api/paywall-status`. `STRIPE_PROMO_FOUNDER`
+  is out of `wrangler.toml`; the Worker no longer reads it.
+- **`pricing.html`:** the badge, the €12 swap script and its 45 translated
+  strings (five keys in nine languages) are removed. The card underneath
+  was always €19, so nothing else on the page changed.
+- **Tests:** `test-webhook.mjs` asserts no discount and no promotion-code
+  lookup even with the old variable still set (two checks fail on the old
+  Worker); `test-pricing.cjs` asserts €19, no founder text and no
+  founder-status request (fails on the old page). Also fixed in passing:
+  test-pricing's "Do I need an account?" check had been red since the
+  19 Oct translation attributes (`<p data-fe="a7">No.` never matched `<p>No.`).
+  webhook 122, paywall 60, weekly 21, pricing 8, account all pass.
+- **Optional, Innes:** the promotion code `FOUNDER`
+  (`promo_1UMrlb0R7wvAnqirXLEXdWdf`, coupon `nlxRQksc`) is still active in
+  Stripe. Nothing applies it and no checkout shows a code box, so it is
+  inert; archive it under Stripe → Product catalogue → Coupons to tidy up.
+- `docs/GO-LIVE-pricing.md` and `deploy/06-environment-variables.md` say the
+  offer is withdrawn; the GO-LIVE checklist's founder lines are history.
+
 ## 2026-11-17 — Talk Me Through the Last Job: its own 22 Midjourney plates are in
 
 Innes pasted the brief's subject lines ("add midjourney art to new class").

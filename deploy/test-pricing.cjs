@@ -25,13 +25,14 @@ const fake = (signedIn) => `(function(){
 async function scenario(b, { signedIn, answer, click }) {
   const page = await b.newPage({ viewport: { width: 390, height: 844 } });
   const posts = [];
+  const asked = [];
   await page.route('https://x.test/**', (route) => {
     const req = route.request();
     const u = new URL(req.url());
+    asked.push(u.pathname);
     if (u.pathname === '/pricing.html') return route.fulfill({ contentType: 'text/html', body: page0 });
     if (u.pathname.startsWith('/vendor/supabase-js')) return route.fulfill({ contentType: 'text/javascript', body: fake(signedIn) });
     if (u.pathname === '/sb-client.js') return route.fulfill({ contentType: 'text/javascript', body: sbClient });
-    if (u.pathname === '/api/founder-status') return route.fulfill({ contentType: 'application/json', body: '{"limit":50,"remaining":40}' });
     if (u.pathname === '/api/create-checkout-session') {
       posts.push({ body: req.postData(), auth: req.headers()['authorization'] || null });
       const a = typeof answer === 'function' ? answer(posts.length) : answer;
@@ -42,6 +43,11 @@ async function scenario(b, { signedIn, answer, click }) {
   });
   await page.goto('https://x.test/pricing.html');
   await page.waitForTimeout(900);
+  const before = await page.evaluate(() => ({
+    price: (document.getElementById('bc-price') || {}).textContent || '',
+    buy: (document.getElementById('bc-buy') || {}).textContent || '',
+    founder: /founder|€\s?12|12\s?€/i.test(document.body.innerText),
+  }));
   await page.click(click);
   await page.waitForTimeout(1200);
   const v = await page.evaluate(() => ({
@@ -50,7 +56,7 @@ async function scenario(b, { signedIn, answer, click }) {
     intent: (() => { try { return localStorage.getItem('fe_intended_plan'); } catch (e) { return 'x'; } })(),
   }));
   await page.close();
-  return { v, posts };
+  return { v, posts, before, asked };
 }
 
 (async () => {
@@ -63,6 +69,12 @@ async function scenario(b, { signedIn, answer, click }) {
   check(r.v.path === '/stripe-checkout' && r.posts.length === 1 && r.posts[0].auth === null &&
     r.posts[0].body === '{"product":"blockcamp"}' && !r.v.intent,
     'signed out, Buy Term 1: straight to checkout, no account page, no token, no stored intent', r);
+
+  // The founder offer was withdrawn on 2026-11-20: Term 1 is €19 for
+  // everyone, and the page no longer asks the Worker for places left.
+  check(/€\s?19/.test(r.before.price) && /€\s?19/.test(r.before.buy) && !r.before.founder &&
+    !r.asked.includes('/api/founder-status'),
+    'Term 1 shows €19, no founder price anywhere, no founder-status request', r);
 
   r = await scenario(b, { signedIn: false, answer: toStripe, click: '.plan-btn[data-plan="monthly"]' });
   check(r.v.path === '/stripe-checkout' && r.posts[0].body === '{"plan":"monthly"}' && r.posts[0].auth === null,
@@ -85,7 +97,7 @@ async function scenario(b, { signedIn, answer, click }) {
   check(r.v.path === '/stripe-checkout' && r.posts.length === 2 && r.posts[0].auth === 'Bearer tok-1' && r.posts[1].auth === null,
     'an expired sign-in: signed out locally, then straight to checkout as a guest', r);
 
-  check(/No account needed to buy/.test(page0) && /Do I need an account\?<\/summary>\s*<p>No\./.test(page0),
+  check(/No account needed to buy/.test(page0) && /Do I need an account\?<\/summary>\s*<p[^>]*>No\./.test(page0),
     'the page says no account is needed to buy');
   await b.close();
   process.exit(ok ? 0 : 1);

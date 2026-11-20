@@ -1,4 +1,4 @@
-// Forbes English — checkout, founder count and Stripe webhook tests.
+// Forbes English — checkout and Stripe webhook tests.
 //
 //   node deploy/test-webhook.mjs        (run from the repo root)
 //
@@ -36,6 +36,8 @@ const env = {
   STRIPE_PRICE_ID_IELTS: 'price_ielts',
   STRIPE_PRICE_ID_IELTS_MARKING: 'price_im',
   STRIPE_PRICE_ID_MARKING: 'price_mk',
+  // The founder offer was withdrawn on 2026-11-20. A leftover variable in
+  // a Worker's settings must change nothing: no lookup, no discount.
   STRIPE_PROMO_FOUNDER: 'promo_founder',
   MARKING_MAIL: { send: async (m) => { sent.push(m); } },
   MARKING_MAIL_FROM: 'noreply@forbesenglish.com',
@@ -44,7 +46,7 @@ const env = {
 };
 
 // ── stubs ────────────────────────────────────────────────────────────────
-let calls, promo, sessionFail, lineItems, insertFail, patchFails, lineItemsFail, inserted;
+let calls, sessionFail, lineItems, insertFail, patchFails, lineItemsFail, inserted;
 let subs, piSessions, logs, holdings, holdFail;
 // Guest checkout: the accounts Supabase knows (email -> auth user), the
 // Checkout Sessions Stripe would return by id, guest_checkouts rows, and
@@ -68,10 +70,10 @@ globalThis.fetch = async (url, opts = {}) => {
     return USERS[tok] ? new Response(JSON.stringify(USERS[tok]), { status: 200 }) : new Response('{"msg":"bad jwt"}', { status: 401 });
   }
   if (u.startsWith('https://api.stripe.com/v1/promotion_codes/')) {
-    return promo ? new Response(JSON.stringify(promo), { status: 200 }) : new Response('{}', { status: 500 });
+    return new Response(JSON.stringify({ active: true, max_redemptions: 50, times_redeemed: 0 }), { status: 200 });
   }
   if (u === 'https://api.stripe.com/v1/checkout/sessions' && method === 'POST') {
-    if (sessionFail && body['discounts[0][promotion_code]']) return sessionFail();
+    if (sessionFail) return sessionFail();
     return new Response(JSON.stringify({ url: 'https://checkout.stripe.test/s' }), { status: 200 });
   }
   const lm = u.match(/^https:\/\/api\.stripe\.com\/v1\/checkout\/sessions\/([^/?]+)\/line_items/);
@@ -200,7 +202,6 @@ console.error = (...a) => logs.push(a.join(' '));
 
 function reset() {
   calls = []; sent.length = 0; store.clear(); logs = [];
-  promo = { active: true, max_redemptions: 50, times_redeemed: 13 };
   sessionFail = null; lineItems = {}; insertFail = false; patchFails = false; lineItemsFail = false;
   inserted = new Map(); subs = {}; piSessions = {};
   holdings = { plans: [], profile: null }; holdFail = false;
@@ -256,22 +257,14 @@ const decodeSubject = (raw) => {
 let pass = 0, fail = 0;
 function check(ok, what) { ok ? pass++ : fail++; console.log(`${ok ? ' PASS' : ' FAIL'}  ${what}`); }
 
-// ── founder status ───────────────────────────────────────────────────────
+// ── the founder offer is gone (withdrawn 2026-11-20) ────────────────────
 reset();
 {
-  const get = () => mod.default.fetch(new Request('https://x.test/api/founder-status'), env, ctx);
-  const r = await get(); const s = await r.json();
-  check(r.status === 200 && s.limit === 50 && s.remaining === 37, `founder status: 13 used of 50 -> 37 left (${JSON.stringify(s)})`);
-  promo = { active: true, max_redemptions: 50, times_redeemed: 49 };
-  const again = await (await get()).json();
-  check(again.remaining === 37 && stripeCalls().length === 1, 'founder status is cached for a minute (one Stripe read)');
-  store.clear(); promo = { active: false, max_redemptions: 50, times_redeemed: 3 };
-  check((await (await get()).json()).remaining === 0, 'a deactivated code reports no places left');
-  store.clear(); promo = null; calls = [];
-  const down = await get();
-  const down2 = await get();
-  check(down.status === 503 && down2.status === 503 && stripeCalls().length === 1,
-    'Stripe unreadable -> 503 (page keeps €19), and the failure is cached too: one Stripe read');
+  let text = '';
+  try { text = await (await mod.default.fetch(new Request('https://x.test/api/founder-status'), env, ctx)).text(); }
+  catch (e) { text = String(e && e.message); }
+  check(!stripeCalls().length && !/"remaining"/.test(text),
+    'founder offer withdrawn: /api/founder-status reads nothing from Stripe and reports no places');
 }
 
 // ── checkout: who is buying ──────────────────────────────────────────────
@@ -310,9 +303,11 @@ reset();
   const { data } = await checkout({ product: 'blockcamp' });
   const s = sessionsPosted()[0];
   check(data.url && s.mode === 'payment' && s['managed_payments[enabled]'] === 'true' &&
-    s['line_items[0][price]'] === 'price_bc' && s['discounts[0][promotion_code]'] === 'promo_founder' &&
+    s['line_items[0][price]'] === 'price_bc' && !s['discounts[0][promotion_code]'] &&
+    !Object.keys(s).some((k) => /^discounts|allow_promotion_codes/.test(k)) &&
+    !stripeCalls().some((c) => c.url.includes('promotion_codes')) &&
     s['metadata[product]'] === 'blockcamp' && s['metadata[supabase_user_id]'] === 'user-1',
-    'Block Camp: one-off, Managed Payments on, FOUNDER applied, user and product in metadata');
+    'Block Camp: one-off at its own price, no discount and no promo lookup, Managed Payments on, user and product in metadata');
   check(s.cancel_url === 'https://x.test/pricing.html?checkout=cancelled', 'cancel returns to pricing.html');
   check(s.success_url === 'https://x.test/account.html?checkout=success&cs={CHECKOUT_SESSION_ID}',
     'success returns to the account page with the session id for Stripe to fill in');
@@ -322,7 +317,7 @@ reset();
     const t = sessionsPosted()[0];
     check(t['line_items[0][price]'] === price && !t['discounts[0][promotion_code]'] && t['managed_payments[enabled]'] === 'true' &&
       !stripeCalls().some((c) => c.url.includes('promotion_codes')),
-      `${product}: its own price, no founder code, no promo lookup`);
+      `${product}: its own price, no discount, no promo lookup`);
   }
   calls = [];
   for (const product of ['blockcamp', 'ielts', 'ielts_marking', 'marking']) await checkout({ product });
@@ -345,31 +340,12 @@ reset();
     'full plan: subscription, Managed Payments off, signed-in account, cancels back to pricing.html');
 }
 
-// ── checkout: the founder code under failure ─────────────────────────────
-reset();
-sessionFail = () => new Response('{"error":{"type":"invalid_request_error","param":"discounts[0][promotion_code]","message":"This promotion code cannot be redeemed because it has been used the maximum number of times."}}', { status: 400 });
-{
-  const { data } = await checkout({ product: 'blockcamp' });
-  const posts = sessionsPosted();
-  check(data.url && posts.length === 2 && !posts[1]['discounts[0][promotion_code]'] && logs.some((l) => /FOUNDER refused/.test(l)),
-    'last founder place gone mid-checkout -> retried at full price, and logged');
-}
-for (const [status, what] of [[429, 'rate limited'], [500, 'Stripe 5xx']]) {
+// ── checkout: Stripe refuses ─────────────────────────────────────────────
+for (const [status, what] of [[400, 'a 400'], [429, 'rate limited'], [500, 'Stripe 5xx']]) {
   reset();
   sessionFail = () => new Response('{"error":{"message":"try again"}}', { status });
   const { res } = await checkout({ product: 'blockcamp' });
-  check(res.status === 502 && sessionsPosted().length === 1, `${what} with the founder code -> 502, never retried at full price`);
-}
-reset();
-sessionFail = () => new Response('{"error":{"param":"customer_email","message":"Invalid email address"}}', { status: 400 });
-{
-  const { res } = await checkout({ product: 'blockcamp' });
-  check(res.status === 502 && sessionsPosted().length === 1, 'a 400 about something else -> 502, the code is kept');
-}
-reset(); promo = { active: true, max_redemptions: 50, times_redeemed: 50 };
-{
-  await checkout({ product: 'blockcamp' });
-  check(!sessionsPosted()[0]['discounts[0][promotion_code]'], 'founder places all used -> no discount sent');
+  check(res.status === 502 && sessionsPosted().length === 1, `${what} from Stripe -> 502 the page can retry, one attempt`);
 }
 
 // ── webhook: signature ───────────────────────────────────────────────────
@@ -570,7 +546,7 @@ reset();
   const bc = await checkout({ product: 'blockcamp' });
   check(bc.res.status === 409 && bc.data.owned === true && /already have Block Camp Term 1/.test(bc.data.error) &&
     sessionsPosted().length === 0 && !stripeCalls().some((c) => c.url.includes('promotion_codes')),
-    'Term 1 already bought -> 409 with a reason, no checkout, no founder place spent');
+    'Term 1 already bought -> 409 with a reason, no checkout');
   calls = [];
   const ie = await checkout({ product: 'ielts' });
   check(ie.data.url && sessionsPosted().length === 1, 'owning Block Camp does not stop buying IELTS');
