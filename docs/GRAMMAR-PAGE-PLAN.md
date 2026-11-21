@@ -218,6 +218,22 @@ decompressed bytes):
   browsers. `sizes` says 94vw under 880 px, so a 412 px phone at 2.625x
   takes the 1080 copy, not the 1536. `prune()` now clears stale `.webp` as
   well as `.jpg`.
+- **Live, 2026-11-21:**
+  - A phone's first screen is 691 KB.
+  - On a desktop, the second hero request costs 0 KB on the wire: it is the
+    browser's own copy.
+  - In 12 alternating fresh loads of the phase-2 page (served from git) and
+    today's, the median load event was 2.59 s before and 1.93 s after; the
+    best was 1.45 s before and 1.03 s after. A single earlier run's 1.44 s
+    was luck.
+  - The panel's blur costs nothing measurable: 1.79 s with it, 1.86 s
+    without.
+- **Found, not fixed (a later job):** about 1.4 s of long tasks on every
+  desktop load, in the phase-2 page and today's alike. Headless Chromium
+  paints in software, so this overstates the cost. It is still the page's
+  biggest cost: the style and paint work of the 25 rolls and sheets is the
+  likely source (every sheet has a `filter: drop-shadow`, every roll layered
+  gradients). Measure it with a performance trace before changing anything.
 - **Tried and dropped:** handing the decoded `<img>` straight to WebGL, to
   avoid the 3D loader's second request. It uploaded black (a grey relief with
   no chart on it), the failure the old comment warned about. The loader
