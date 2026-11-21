@@ -56,10 +56,13 @@ Innes: *"Yes, do job 1"* (the schedule entry below).
   employer; "Only the site ships": never load from the hidden folders, and a
   lesson copy at another address sits outside the paywall), and the cloud
   note now says a session cannot clone once the repo is private.
-- **Found by the crawl, not caused by it:** four Block Camp decks (Present
-  Simple 1a and Past Simple 1a, both free, plus Present and Past Continuous
-  1a) ask for opener videos in `BlockCamp/openers/` that do not exist; live,
-  that is a 404 and the cover shows without one. Three decks are public only
+- **Live after deploy (Workers Build success):** 17 private samples 404; both
+  old game addresses 301 to the gated pages; robots, llms, sitemap,
+  lesson-meta 200; 22 public pages show the same failed requests as before
+  (one: the opener video below).
+- **Known, not new:** four Block Camp Part 1 covers ask for opener videos in
+  `BlockCamp/openers/` that are not made yet (14 Oct entry, by design: the
+  still stays). Three decks are public only
   because they have no catalogue row: Be Aware of This Cleaner, Body Idioms
   C1, and The School Visit correction test (row pending since 2 Oct). Their
   access is Innes's call.
