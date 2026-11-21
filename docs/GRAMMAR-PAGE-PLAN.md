@@ -138,7 +138,37 @@ What shipped, and where it differs from the plan below:
    - the truncated tag.
    - Add a check to `build_grammar_hub.py` that refuses the same picture on two cards.
 
-### Phase 2: make the rack a guide (one session)
+### Phase 2: make the rack a guide: DONE 2026-11-21
+
+What shipped, and where it differs from the plan below:
+
+- **Shelves.** `SHELVES` at the foot of `tools/grammar_maps.py` puts the 25
+  charts on nine shelves, in teaching order, each under a heading: Tenses,
+  Verb forms, Modals and certainty, Phrasal verbs and collocations, Nouns and
+  articles, Adjectives and adverbs, Prepositions, Sentences, Words and
+  register. The build stops if a chart is on no shelf or on two. At 1920 a
+  heading takes its own row in the rack's column, on the page's paper, so the
+  uprights stop and start again: one rack a shelf. Regularia, the first chart
+  on the first shelf, is out when the page opens.
+- **Every roll names its grammar point** on a second line (`chart_point()`,
+  from the chart's heading): "The Bridges / Linking words". No name or point
+  is cut, measured at 1920 and on a phone.
+- **Under the open chart** (`more_for()`):
+  - A chart with a real topic shows "Practise it": three lessons on that
+    point, free first, then "All N lessons on <topic>".
+  - A chart filed only under a catch-all (`CATCH_ALL`: Vocabulary, Tense
+    Review, Business, IELTS) shows the other charts on its shelf instead.
+    For those, "lessons on the same topic" would be unrelated.
+
+  The sheet was already sticky; this fills the column beside the rack.
+- **Topic pages link their charts** (`map_links()` in `tools/build_hubs.py`):
+  an "On the grammar map" block under the facts, beside the intro. Up to
+  three charts appear as cards with the chart's picture (the copy
+  grammar.html already makes); more than three appear as one line pointing
+  to the rack (Vocabulary has 7, Tense Review 4). The chart sheets link their
+  topic page through "All N lessons on …".
+
+### Phase 2: make the rack a guide (the brief it was built from)
 
 6. **Group the rolls by grammar area,** with a small heading over each group:
    - Tenses and time: Regularia, Finished & Open Time, Statia & Actia, the Passive Ferry, the Backshift Current, the Conditional Quadrants, Sherpa Tensing.

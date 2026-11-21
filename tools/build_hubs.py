@@ -60,6 +60,17 @@ STYLE_EXTRA = """
 .topic-card:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(20,48,31,0.13); }
 .topic-card h3 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.15rem; margin: 0 0 6px; }
 .topic-card p { font-size: .93rem; line-height: 1.5; color: var(--muted); margin: 0 0 10px; }
+/* the grammar maps that teach this topic (map_links): see-through cards,
+   not solid white (Innes, 2026-11-10, on the grammar maps) */
+.maplinks { display: grid; gap: 8px; }
+.maplinks-h { margin: 0; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; font-size: .74rem; color: var(--gold-deep); }
+.maplink { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 12px; align-items: center; padding: 8px; border-radius: 10px; border: 1px solid rgba(20,48,31,0.10); background: color-mix(in srgb, #fff 70%, transparent); text-decoration: none; color: inherit; transition: transform .15s ease, box-shadow .15s ease; }
+.maplink:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(20,48,31,0.12); }
+.maplink img { display: block; width: 96px; height: 64px; object-fit: cover; border-radius: 6px; }
+.maplink b { display: block; font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.02rem; line-height: 1.2; }
+.maplink small { display: block; margin-top: 2px; font-size: .86rem; color: var(--muted); }
+.maplinks-more { margin: 0; font-size: .95rem; line-height: 1.45; }
+.maplinks-more a { color: var(--gold-deep); font-weight: 700; }
 """
 
 
@@ -168,6 +179,34 @@ def describe(r):
     return seo.describe(src, r)
 
 
+def map_links(rows):
+    """The grammar maps that teach a topic, at the head of its page, beside
+    the intro (Innes, 2026-11-21, phase 2 of docs/GRAMMAR-PAGE-PLAN.md: each
+    topic page links its charts, and each chart on grammar.html links its
+    topic page). A chart is listed when its lesson is one of the topic's;
+    up to three as cards with the chart's own picture (the copy grammar.html
+    already makes, so no new file), more than that as one line pointing to
+    the rack. Empty when the topic has no chart."""
+    import build_grammar_hub
+    import grammar_maps
+    files = {r['file'] for r in rows}
+    charts = [m for m in grammar_maps.MAPS if m['href'] in files]
+    if not charts:
+        return ''
+    out = ['      <div class="maplinks">', '        <p class="maplinks-h">On the grammar map</p>']
+    if len(charts) <= 3:
+        for m in charts:
+            pic = build_grammar_hub.web_copy(m['image'], 'map-' + os.path.splitext(m['href'])[0], width=720)
+            out.append('        <a class="maplink" href="%s"><img src="%s" alt="" loading="lazy" width="96" height="64">'
+                       '<span><b>%s</b><small>%s</small></span></a>'
+                       % (seo.quote(m['href']), esc(pic), esc(m['title']), esc(build_grammar_hub.chart_point(m))))
+    else:
+        out.append('        <p class="maplinks-more">%d of the charts teach points on this page. '
+                   '<a href="grammar.html#maps">See them on the grammar maps &rarr;</a></p>' % len(charts))
+    out.append('      </div>')
+    return '\n'.join(out)
+
+
 def swatch(slug, tc):
     """The tense colour a topic wears on grammar.html, as a swatch before
     its name, or nothing for a topic that has none."""
@@ -207,6 +246,7 @@ def topic_page(t, rows, images, allm, style, fonts, nav, tc):
                    else 'Every lesson here is part of Forbes English Pro'))
     body.append('        <li><b>Not sure of your level?</b><a href="level-checker.html">Take the free Level Checker</a> &mdash; six questions a level, and it names the lesson to start on.</li>')
     body.append('      </ul>')
+    body.append(map_links(rows))
     body.append('    </div>\n  </div>')
 
     body.append('  <section class="track">')

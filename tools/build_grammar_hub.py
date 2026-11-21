@@ -575,10 +575,23 @@ body.gh {
   background-size: cover; background-position: center;
   box-shadow: -1px 0 0 color-mix(in srgb, var(--gh-text) 36%%, transparent), 1px 0 0 color-mix(in srgb, var(--gh-text) 36%%, transparent);
 }
-.gm-name {
-  position: relative; z-index: 3; flex: 1; min-width: 0;
-  font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1rem; line-height: 1.2;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color .2s ease;
+.gm-name {             /* the chart's name, and under it the grammar point it teaches */
+  position: relative; z-index: 3; flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px;
+  font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1rem; line-height: 1.15; transition: color .2s ease;
+}
+.gm-name b, .gm-name small { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gm-name b { font-weight: inherit; }
+.gm-name small {
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: .78em; line-height: 1.1;
+  letter-spacing: .03em; color: var(--gh-text-dim);
+}
+/* a shelf's heading: the rack is cut into shelves by the area of grammar
+   the charts teach (grammar_maps.SHELVES) */
+.gm-shelf { grid-column: 1 / -1; margin: 10px 0 -6px; }
+.gm-shelf:first-child { margin-top: 0; }
+.gm-shelf h3 {
+  margin: 0; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; letter-spacing: .14em;
+  text-transform: uppercase; font-size: .82rem; color: var(--gh-accent);
 }
 .gm-lv {
   position: relative; z-index: 3; flex: none; white-space: nowrap;
@@ -649,7 +662,7 @@ body.gh {
 }
 .gm-body { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 9px; padding: 26px 6px 4px; min-width: 0; }
 .gm-body .gh-kicker { margin: 0; }
-.gm-body h3 { font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(1.4rem, 2.1vw, 1.85rem); line-height: 1.08; margin: 0; color: var(--gh-text); text-wrap: balance; }
+.gm-body h4 { font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(1.4rem, 2.1vw, 1.85rem); line-height: 1.08; margin: 0; color: var(--gh-text); text-wrap: balance; }
 .gm-link { color: inherit; text-decoration: none; }
 .gm-link::after { content: ''; position: absolute; inset: 0; }
 .gm-link:focus-visible { outline: none; }
@@ -663,6 +676,27 @@ body.gh {
 }
 .gm-body:hover .gm-go { background: var(--gh-accent-bright); transform: translateY(-1px); }
 .gm-note { margin-top: 4px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; font-size: .9rem; color: var(--gh-text-dim); }
+/* under the words (more_for): lessons to practise the point on, or the
+   charts beside it on its shelf. The card colour at 70%%, never solid white. */
+.gm-more {
+  margin: 22px 6px 0; padding: 16px 18px 14px; border-radius: 12px; border: 1px solid var(--gh-line);
+  background: color-mix(in srgb, var(--gh-card) 70%%, transparent);
+}
+.gm-more-h {
+  margin: 0 0 8px; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; letter-spacing: .14em;
+  text-transform: uppercase; font-size: .78rem; color: var(--gh-accent);
+}
+.gm-more ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; }
+.gm-more li { display: flex; align-items: baseline; justify-content: space-between; gap: 6px 14px; flex-wrap: wrap; }
+.gm-more li a { min-width: 0; font-weight: 700; line-height: 1.35; color: var(--gh-text); text-decoration: none; }
+.gm-more li a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.gm-more li small { flex: none; font-size: .84rem; color: var(--gh-text-dim); white-space: nowrap; }
+.gm-more li small em { font-style: normal; font-weight: 700; color: var(--gh-accent); }
+.gm-more-all {
+  display: inline-block; margin-top: 11px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; font-size: .88rem; color: var(--gh-accent-bright); text-decoration: none;
+}
+.gm-more-all:hover { text-decoration: underline; text-underline-offset: 3px; }
 /* ROLLED UP (the script is running). A chart's picture is not fetched
    until its roll is first pointed at or opened (.is-seen). */
 .gm-rack.is-live .gm-roll:not(.is-seen) .gm-pic img { display: none; }
@@ -713,6 +747,12 @@ body.gh {
   .gm-rack.is-live .gm-body > * { grid-column: 1; }
   .gm-rack.is-live .gm-body > .gm-go, .gm-rack.is-live .gm-body > .gm-note { grid-column: 2; grid-row: 1 / span 3; margin: 0; }
   .gm-rack.is-live .is-open .gm-body { opacity: 1; transform: none; transition: opacity .4s ease .36s, transform .5s var(--gm-ease) .36s; }
+  .gm-rack.is-live .gm-more { margin: 22px 18px 0; opacity: 0; transform: translateY(8px); transition: opacity .14s ease, transform 0s linear .16s; }
+  .gm-rack.is-live .is-open .gm-more { opacity: 1; transform: none; transition: opacity .4s ease .46s, transform .5s var(--gm-ease) .46s; }
+  /* a shelf's heading takes its own row in the rack's column, on the
+     page's paper, so the uprights stop and start again: one rack a shelf */
+  .gm-rack.is-live .gm-shelf { grid-column: 1; grid-row: var(--gm-i); position: relative; z-index: 3; margin: 0 -4px; padding: 18px 4px 4px; background: var(--gh-paper); }
+  .gm-rack.is-live .gm-shelf:first-child { padding-top: 0; }
 }
 @media (min-width: 961px) and (hover: hover) {
   .gm-rack.is-live .gm-roll:not(.is-open) > .gm-rod:hover { transform: translateX(5px); }
@@ -737,7 +777,10 @@ body.gh {
   .gm-rack.is-live .is-open > .gm-sheet { grid-template-rows: 1fr; visibility: visible; transition: grid-template-rows var(--gm-t) var(--gm-ease), visibility 0s; }
   .gm-rack.is-live .gm-pic { transition: clip-path .46s var(--gm-ease); }
   .gm-rack.is-live .gm-roller-end { transition: top .46s var(--gm-ease), height .46s var(--gm-ease); }
-  .gm-rack.is-live .gm-body { padding-bottom: 22px; }
+  .gm-rack.is-live .gm-body { padding-bottom: 6px; }
+  .gm-rack.is-live .gm-more { margin: 16px 6px 22px; }
+  .gm-rack.is-live .gm-sheet-in > .gm-body:last-child { padding-bottom: 22px; }
+  .gm-shelf { margin: 14px 0 -2px; }
   .gm-rod { padding: 0 26px 0 62px; }
   .gm-band { left: 14px; width: 38px; }
   .gm-name { font-size: min(1rem, 4vw); }
@@ -1195,18 +1238,21 @@ def _card(t, rows, images, colour=None, li='', used=None):
                esc(seo.trim(desc, 150)), ''.join(pills)))
 
 
-def _map_roll(m, kick, tag, pic, band, n, href=None, note=None):
+def _map_roll(m, kick, tag, pic, band, row, first, more='', href=None, note=None):
     """One chart (see THE CHART ROOM in the CSS). The roll is a button: the
     pointer, a tap or focus unrolls its sheet (GM_RACK_JS), and a mouse click
-    on it goes straight to the lesson. The sheet holds the chart on its
-    paper, which is a button that opens it full size (the zoom view,
-    GM_BOX), and the words, which carry the link, stretched over the body, so
-    the two never nest. A chart without href (SOON) has no link. `n` is its
-    place on the rack, from 1; the first is out when the page loads. `band`
-    is the small copy wrapped round the roll. The full-size picture is
-    offered to sharp screens through srcset, so no second copy is made;
-    `sizes` understates a phone's slot (45vw) on purpose, so that a 3x phone
-    still takes the 720px copy and not half a megabyte per chart."""
+    on it goes straight to the lesson. The roll carries the chart's name and,
+    under it, the grammar point it teaches (chart_point). The sheet holds the
+    chart on its paper, which is a button that opens it full size (the zoom
+    view, GM_BOX), and the words, which carry the link, stretched over the
+    body, so the two never nest; then `more`, the lessons to practise it on
+    or the charts beside it (more_for). A chart without href (SOON) has no
+    link. `row` is its row in the rack's grid, from 1, counting the shelf
+    headings; `first` is out when the page loads. `band` is the small copy
+    wrapped round the roll. The full-size picture is offered to sharp
+    screens through srcset, so no second copy is made; `sizes` understates a
+    phone's slot (45vw) on purpose, so that a 3x phone still takes the 720px
+    copy and not half a megabyte per chart."""
     from PIL import Image
     w, h = Image.open(os.path.join(ROOT, pic)).size
     full = m.get('full', m['image'])
@@ -1223,20 +1269,20 @@ def _map_roll(m, kick, tag, pic, band, n, href=None, note=None):
     return ('<li class="gm-roll%s"%s style="--gm-i:%d">'
             '<button type="button" class="gm-rod" aria-expanded="%s" aria-controls="%s">'
             '<span class="gm-band" style="background-image:url(&quot;%s&quot;)" aria-hidden="true"></span>'
-            '<span class="gm-name">%s</span>%s</button>'
+            '<span class="gm-name"><b>%s</b><small>%s</small></span>%s</button>'
             '<div class="gm-sheet" id="%s"><div class="gm-sheet-in">'
             '<div class="gm-chart"><span class="gm-roller gm-roller-top" aria-hidden="true"></span>'
             '<button type="button" class="gm-pic" data-full="%s" data-w="%d" data-h="%d" data-title="%s" aria-label="%s">'
             '<img src="%s"%s alt="%s" width="%d" height="%d" loading="lazy" decoding="async">'
             '<span class="gm-zoom" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><b>Enlarge</b></span>'
             '</button><span class="gm-roller gm-roller-end" aria-hidden="true"></span></div>'
-            '<div class="gm-body"><p class="gh-kicker">%s</p><h3>%s</h3><p>%s</p>%s</div>'
+            '<div class="gm-body"><p class="gh-kicker">%s</p><h4>%s</h4><p>%s</p>%s</div>%s'
             '</div></div></li>'
-            % (' is-open' if n == 1 else '', (' data-href="%s"' % esc(seo.quote(href))) if href else '', n,
-               'true' if n == 1 else 'false', sid, esc(seo.quote(band)), esc(m.get('short', m['title'])),
-               ('<span class="gm-lv">%s</span>' % tag) if tag else '', sid,
+            % (' is-open' if first else '', (' data-href="%s"' % esc(seo.quote(href))) if href else '', row,
+               'true' if first else 'false', sid, esc(seo.quote(band)), esc(m.get('short', m['title'])),
+               esc(chart_point(m)), ('<span class="gm-lv">%s</span>' % tag) if tag else '', sid,
                esc(seo.quote(full)), fw, fh, esc(m['title']), esc('Enlarge the chart: ' + m['title']),
-               esc(pic), srcset, esc(m['alt']), w, h, ' &middot; '.join(kick), head, esc(m['blurb']), tail))
+               esc(pic), srcset, esc(m['alt']), w, h, ' &middot; '.join(kick), head, esc(m['blurb']), tail, more))
 
 
 GM_RACK_JS = """<script>
@@ -1368,36 +1414,106 @@ GM_BOX = """<dialog class="gm-box" id="gm-box" aria-label="Chart">
 </script>"""
 
 
-def maps_band(rows):
-    """The section under the hero: the charts in tools/grammar_maps.py as a
-    rack of rolls beside the table one of them is unrolled on (THE CHART
-    ROOM in the CSS), the SOON charts rolled among them, then the chart
-    table (PLANNED). Level and Free come from the catalogue row. Every
-    picture opens full size in GM_BOX."""
+# Topics that hold a little of everything: a chart filed only under one of
+# these has no "lessons on the same point" to offer, so its sheet shows the
+# other charts on its shelf instead (more_for).
+CATCH_ALL = {'english-vocabulary', 'tense-review', 'business-english', 'ielts'}
+
+
+def chart_topic(m, allm):
+    """The topic a chart teaches, for its "Practise it" lessons: the first of
+    its topics (topics.OVERRIDES order, else the topics' own order) that is
+    not a catch-all. None if it has only catch-alls."""
+    order = list(getattr(topics, 'OVERRIDES', {}).get(m['href'], []))
+    order += [t['slug'] for t in topics.TOPICS if t['slug'] not in order]
+    for slug in order:
+        if slug in CATCH_ALL or slug not in allm:
+            continue
+        if any(r['file'] == m['href'] for r in allm[slug]):
+            return topics.BY_SLUG[slug]
+    return None
+
+
+def more_for(m, shelf, allm):
+    """What sits under a chart on the table (Innes, 2026-11-21, phase 2 of
+    docs/GRAMMAR-PAGE-PLAN.md): the empty column beside the rack at 1920.
+    For a chart with a real topic, up to three lessons on that point, free
+    ones first, and the way to all of them; for a chart filed only under a
+    catch-all, the other charts on its shelf."""
+    t = chart_topic(m, allm)
+    if t:
+        rs = [r for r in allm[t['slug']]
+              if not r['file'].startswith('sailing-the-seas-') and r['file'] != 'sherpa-tensing-route-map.html']
+        rs = sorted(rs, key=lambda r: r.get('access') == 'pro')[:3]       # stable: free first, then by level
+        if rs:
+            lis = ''.join(
+                '<li><a href="%s">%s</a><small>%s%s</small></li>'
+                % (esc(seo.quote(r['file'])), esc(seo.clean(r['title'])), esc(r.get('level') or ''),
+                   ' &middot; <em>Free</em>' if r.get('access') != 'pro' else '')
+                for r in rs)
+            n = len(allm[t['slug']])
+            return ('<div class="gm-more"><p class="gm-more-h">Practise it</p><ul>%s</ul>'
+                    '<a class="gm-more-all" href="%s">All %s on %s <span aria-hidden="true">&rarr;</span></a></div>'
+                    % (lis, topics.hub_url(t['slug']), plural(n, 'lesson'), esc(t['name'])))
+    title, hrefs = shelf
+    others = [o for o in grammar_maps.MAPS if o['href'] in hrefs and o['href'] != m['href']]
+    if not others:
+        return ''
+    lis = ''.join('<li><a href="%s">%s</a><small>%s</small></li>'
+                  % (esc(seo.quote(o['href'])), esc(o['title']), esc(chart_point(o))) for o in others)
+    return ('<div class="gm-more"><p class="gm-more-h">Also on this shelf: %s</p><ul>%s</ul></div>'
+            % (esc(title), lis))
+
+
+def maps_band(rows, allm):
+    """The section after the tense code: the charts in tools/grammar_maps.py
+    as a rack of rolls on shelves (SHELVES), each shelf under its heading,
+    beside the table one of them is unrolled on (THE CHART ROOM in the CSS);
+    any SOON charts on a last shelf; then the chart table (PLANNED). Level
+    and Free come from the catalogue row. Every picture opens full size in
+    GM_BOX."""
     by_file = {r['file']: r for r in rows}
-    items = []
-    for m in grammar_maps.MAPS:
-        if not os.path.exists(os.path.join(ROOT, m['href'])):
-            sys.exit('! grammar_maps.py: %s does not exist' % m['href'])
-        r = by_file.get(m['href'])
-        kick, tag = [esc(m['title'])], ''
-        if r:
-            tag = span([r])
-            kick.append(tag)
-            if r.get('access') != 'pro':
-                kick.append('Free')
-        else:
-            print('  ! grammar map %s has no catalogue row: no level shown' % m['href'])
-        stem = 'map-' + os.path.splitext(m['href'])[0]
-        pic = web_copy(m['image'], stem, width=720)
-        band = web_copy(m['image'], stem.replace('map-', 'roll-', 1), width=180, quality=78)
-        items.append(_map_roll(m, kick, tag, pic, band, len(items) + 1, href=m['href']))
+    by_href = {m['href']: m for m in grammar_maps.MAPS}
+    shelved = [h for _, hs in grammar_maps.SHELVES for h in hs]
+    missing = [h for h in by_href if h not in shelved]
+    twice = sorted({h for h in shelved if shelved.count(h) > 1})
+    stray = [h for h in shelved if h not in by_href]
+    if missing or twice or stray:
+        sys.exit('! grammar_maps.py SHELVES: on no shelf %s; on two %s; not in MAPS %s' % (missing, twice, stray))
+    items, row = [], 0
+    for shelf in grammar_maps.SHELVES:
+        title, hrefs = shelf
+        row += 1
+        items.append('<li class="gm-shelf" style="--gm-i:%d"><h3>%s</h3></li>' % (row, esc(title)))
+        for h in hrefs:
+            m = by_href[h]
+            if not os.path.exists(os.path.join(ROOT, m['href'])):
+                sys.exit('! grammar_maps.py: %s does not exist' % m['href'])
+            r = by_file.get(m['href'])
+            kick, tag = [esc(m['title'])], ''
+            if r:
+                tag = span([r])
+                kick.append(tag)
+                if r.get('access') != 'pro':
+                    kick.append('Free')
+            else:
+                print('  ! grammar map %s has no catalogue row: no level shown' % m['href'])
+            stem = 'map-' + os.path.splitext(m['href'])[0]
+            pic = web_copy(m['image'], stem, width=720)
+            band = web_copy(m['image'], stem.replace('map-', 'roll-', 1), width=180, quality=78)
+            row += 1
+            first = not any('gm-roll is-open' in x for x in items)
+            items.append(_map_roll(m, kick, tag, pic, band, row, first, more_for(m, shelf, allm), href=m['href']))
+    if grammar_maps.SOON:
+        row += 1
+        items.append('<li class="gm-shelf" style="--gm-i:%d"><h3>Coming next</h3></li>' % row)
     for m in grammar_maps.SOON:
         stem = 'map-soon-' + re.sub(r'[^a-z]+', '-', m['title'].lower()).strip('-')
         pic = web_copy(m['image'], stem, width=720)
         band = web_copy(m['image'], stem.replace('map-', 'roll-', 1), width=180, quality=78)
+        row += 1
         items.append(_map_roll(m, [esc(m['title']), esc(m['level']), 'Coming next'], 'Coming next', pic, band,
-                               len(items) + 1, note=m['note']))
+                               row, False, note=m['note']))
     table = ''
     if grammar_maps.PLANNED:
         table = ('\n    <div class="gm-table">\n      <div class="gh-group-h"><h3>On the chart table</h3>'
@@ -1417,7 +1533,7 @@ def maps_band(rows):
   </div>
 </section>
 %s
-%s""" % (len(items), ''.join('\n      %s' % c for c in items), table, GM_BOX, GM_RACK_JS)
+%s""" % (row, ''.join('\n      %s' % c for c in items), table, GM_BOX, GM_RACK_JS)
 
 
 # ── the topic index: "Find your grammar point" ─────────────────────────
@@ -1653,7 +1769,7 @@ def render(rows, images, allm):
 
     # ── grammar maps (tools/grammar_maps.py): after the tense code, now that
     # the topic index leads the page ──
-    b.append(maps_band(rows))
+    b.append(maps_band(rows, allm))
 
     # ── every topic ──
     used_pictures = set()      # no two cards share a picture (card_picture)

@@ -34,6 +34,25 @@ Measured 20 Nov: `check-lesson.js` fails on 16 of 156 decks; 374 of 376
 sitemap URLs answer 200 (two with brackets in their names redirect); no
 broken internal links worth fixing.
 
+## 2026-11-21 — Grammar page, phase 2: the chart rack on shelves; charts and topic pages linked both ways
+
+Innes: "Yes, phase 2". The details are in `docs/GRAMMAR-PAGE-PLAN.md`
+(phase 2 is marked DONE).
+
+- **The rack has nine shelves by grammar area** (`SHELVES` in
+  `tools/grammar_maps.py`). A new chart now needs a shelf as well as its
+  `MAPS` entry, or the build stops.
+- **Each roll shows the grammar point** it teaches under its name.
+- **Under the open chart:** three lessons to practise on (free first) and the
+  way to its topic page, or, for a catch-all chart, its shelf-mates.
+- **Every topic page with a chart** now has "On the grammar map"
+  (`map_links()` in `tools/build_hubs.py`).
+- Verified at 1920 and on a Pixel 7:
+  - no name cut and no heading overlapping a roll;
+  - every link in the new blocks hit by `elementFromPoint`;
+  - hover, tap and keyboard unchanged;
+  - no script errors.
+
 ## 2026-11-20 — Grammar page, phase 1: topic index and filter; a phone menu on every page
 
 Innes: "create a plan for improving this page" (the grammar page), then

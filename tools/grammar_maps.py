@@ -15,9 +15,9 @@ TO ADD A CHART, add one dict below and run
     py tools/build_hubs.py
     py tools/seo.py
 
-No markup changes. The first entry is the large featured card; the rest
-follow it, picture beside words, as many to a row as fit (one alone fills
-the row). Fields:
+and put its href on a shelf in SHELVES at the foot of this file (the build
+stops if a chart is on no shelf, or on two). No markup changes: each chart
+becomes a roll on the rack, under its shelf's heading. Fields:
 
     href     the chart's page, a root .html file (must exist, or the build stops)
     title    the lesson's name; it leads the card's kicker line
@@ -268,4 +268,29 @@ MAPS = [
 SOON = []
 
 PLANNED = [
+]
+
+# The rack's shelves (Innes, 2026-11-21: "Yes, phase 2" of
+# docs/GRAMMAR-PAGE-PLAN.md). Twenty-five charts in the order they were
+# built read as a list of place names; on shelves, by the area of grammar
+# they teach and in teaching order, each under a heading, a reader can find
+# the passive without knowing it is called the Passive Ferry. Every chart in
+# MAPS sits on exactly one shelf (tools/build_grammar_hub.py stops the build
+# otherwise). The first chart on the first shelf is out on the table when
+# the page opens.
+SHELVES = [
+    ('Tenses', ['sailing-the-seas-regularia.html', 'sailing-the-seas-finished.html',
+                'sailing-the-seas-statia.html', 'sherpa-tensing-route-map.html']),
+    ('Verb forms', ['sailing-the-seas-of-grammar.html', 'sailing-the-seas-passive.html',
+                    'sailing-the-seas-quadrants.html', 'sailing-the-seas-backshift.html']),
+    ('Modals and certainty', ['sailing-the-seas-forecast.html', 'sailing-the-seas-certainty.html']),
+    ('Phrasal verbs and collocations', ['sailing-the-seas-phrasal-verbs.html', 'sailing-the-seas-make-do.html']),
+    ('Nouns and articles', ['sailing-the-seas-countania.html', 'sailing-the-seas-atlas.html']),
+    ('Adjectives and adverbs', ['sailing-the-seas-adjective-canal.html', 'sailing-the-seas-er-more.html',
+                                'sailing-the-seas-soundings.html']),
+    ('Prepositions', ['sailing-the-seas-scale.html', 'sailing-the-seas-voyage.html']),
+    ('Sentences', ['sailing-the-seas-question-tags.html', 'sailing-the-seas-inversion.html',
+                   'sailing-the-seas-bridges.html']),
+    ('Words and register', ['sailing-the-seas-prefixes.html', 'sailing-the-seas-register.html',
+                            'sailing-the-seas-atlantic.html']),
 ]
