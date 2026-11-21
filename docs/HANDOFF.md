@@ -26,6 +26,8 @@ stale copy.
   `incoming/sea-charts/tense-four/`. When the art arrives, add each chart to
   `tools/grammar_maps.py` MAPS and SHELVES with its lesson. The card then
   picks it up through `topic_charts()`.
+- Topics with no tense colour (Tense Review, the Grammar shelf) take dark
+  grey (`--gh-ink-surface2`), not the rust accent, so only tenses carry colour.
 - The hero has drifting clouds and gulls over the chart (`SKY_CLOUDS`,
   `SKY_JS`). The panel is at 48%.
   The code is `plate_form()` / `PLATE_FORM` in `tools/build_grammar_hub.py`.

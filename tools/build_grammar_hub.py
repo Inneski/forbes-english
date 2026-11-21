@@ -315,7 +315,7 @@ CONTRAST = [
     ('text', 'roll', 4.5, 'chart names on the rolls'),
     ('text-dim', 'roll', 4.5, 'levels on the rolls'),
     ('accent', 'roll', 4.5, 'the name on the roll that is out'),
-    ('ink-text', 'accent', 3.0, 'the form on a topic plate with no tense (large)'),
+    ('ink-text', 'ink-surface2', 4.5, 'the form on a topic plate with no tense'),
     ('ink-text', 'ink', 4.5, 'closing band'),
     ('ink-text-dim', 'ink', 4.5, 'closing band secondary'),
     ('ink-accent', 'ink', 4.5, 'closing band kicker'),
@@ -1421,7 +1421,10 @@ def _card(t, rows, images, charts, colour=None, li='', used=None):
     desc = t['desc'] or ('The IELTS Academic route: Writing, Speaking, Listening, Reading '
                          'and the vocabulary that feeds them.')
     desc = desc.split(': ', 1)[-1] if ': ' in desc else desc
-    style = ' style="--c:%s"' % colour[0] if colour else ''
+    # a topic with no tense colour: dark grey from the palette, not the rust
+    # accent (Innes, 2026-11-21: "use a dark grey for these rusty non-colour
+    # coded ones"), so only the tenses carry colour on the shelves
+    style = ' style="--c:%s"' % (colour[0] if colour else 'var(--gh-ink-surface2)')
     swatch = '<span class="gh-swatch" aria-hidden="true"></span>' if colour else ''
     pills = ['<span class="gh-pill">%s</span>' % span(rows),
              '<span class="gh-pill">%s</span>' % plural(n, 'lesson')]
