@@ -73,6 +73,20 @@ Measured 20 Nov: `check-lesson.js` fails on 16 of 156 decks; 374 of 376
 sitemap URLs answer 200 (two with brackets in their names redirect); no
 broken internal links worth fixing.
 
+## 2026-11-21 — Grammar page, phase 3: the hero's copy on a panel; the 3D chart only on wide screens, after load; WebP
+
+Innes: "Yes, phase 3". The details and the before/after are in
+`docs/GRAMMAR-PAGE-PLAN.md` (phase 3 is marked DONE).
+
+- **Phones now load 690 KB** on the first screen instead of 2.84 MB: no
+  three.js, and the still chart as a 175 KB WebP.
+- **The 3D chart runs only at 881 px and wider**, without reduced motion or
+  Save-Data, and only after the load event.
+- **The hero copy sits on an 85% card-colour panel** with a blur; the map's
+  wash and the text halos are gone.
+- **Do not hand the `<img>` to WebGL directly.** It uploads black in headless
+  Chromium too: tested 2026-11-21, with `decode()` first.
+
 ## 2026-11-21 — Grammar page, phase 2: the chart rack on shelves; charts and topic pages linked both ways
 
 Innes: "Yes, phase 2". The details are in `docs/GRAMMAR-PAGE-PLAN.md`

@@ -674,24 +674,24 @@ body.gh {
 .gh-hero-art.is-3d .gh-hero-3d { opacity: 1; }
 .gh-hero-art.is-3d .gh-hero-img { opacity: 0; transition: opacity 1.4s ease; }
 .gh-wait .gh-hero-art:not(.is-3d) .gh-hero-img { opacity: 0; transition: opacity .6s ease; }   /* no flat chart before the 3D one */
-.gh-hero::after {
-  content: ''; position: absolute; inset: 0; z-index: -1;
-  /* a light wash only (Innes, 2026-10-19: the heavy one was overkill); the
-     words carry a soft pale halo instead */
-  background: linear-gradient(90deg,
-    color-mix(in srgb, var(--gh-sky) 36%, transparent) 0%,
-    color-mix(in srgb, var(--gh-sky) 22%, transparent) 38%,
-    transparent 58%);
-}
+/* THE COPY'S PANEL (Innes, 2026-11-21, phase 3 of docs/GRAMMAR-PAGE-PLAN.md).
+   Over the map the words sat on its lettering: "Try Tarn" and "Go-On Gill"
+   showed through the paragraph, under a wash across the left of the map and
+   a pale halo on every line. Now the words sit on parchment, the card colour
+   at 85% with a blur, as on the chart pages, and the map keeps its colour
+   everywhere else: no wash, no halo. */
 @media (min-width: 881px) {
-  .gh-hero-copy .gh-kicker, .gh-hero-copy .gh-h1, .gh-hero-copy .gh-lede, .gh-hero-copy .gh-stats, .gh-hero-copy .gh-sail, .gh-hero-copy .gh-plans {
-    text-shadow: 0 0 6px rgba(255, 252, 244, 0.9), 0 0 18px rgba(255, 252, 244, 0.65);
+  .gh-hero-copy {
+    padding: clamp(24px, 2.6vw, 38px) clamp(26px, 2.8vw, 42px); border-radius: 18px;
+    background: color-mix(in srgb, var(--gh-card) 85%, transparent);
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+    border: 1px solid var(--gh-line); box-shadow: 0 24px 60px var(--gh-shadow);
   }
 }
 .gh-hero-in {
   width: 100%; max-width: var(--gh-max); margin: 0 auto;
   padding: clamp(40px, 7vh, 80px) var(--gh-gut) 56px;
-  display: grid; grid-template-columns: minmax(0, 600px) 1fr;
+  display: grid; grid-template-columns: minmax(0, 640px) 1fr;   /* 640: the panel's padding comes out of it */
 }
 .gh-hero-copy { color: var(--gh-ink); }
 .gh-hero .gh-kicker { color: var(--gh-ink); }
@@ -719,7 +719,6 @@ body.gh {
   .gh-hero { display: block; min-height: 0; background: var(--gh-paper); }
   .gh-hero-art { position: relative; inset: auto; z-index: auto; aspect-ratio: 16 / 11;
     background: linear-gradient(180deg, var(--gh-cloud) 0%, var(--gh-sky) 100%); }
-  .gh-hero::after { display: none; }
   .gh-hero-in { grid-template-columns: 1fr; padding-top: 30px; padding-bottom: 44px; }
   .gh-hero-copy, .gh-hero .gh-kicker { color: var(--gh-text); }
   .gh-h1 { color: var(--gh-text); }
@@ -1050,13 +1049,22 @@ body.gh {
 <main>
 <header class="gh-hero" aria-labelledby="gh-h1">
   <script>
-    /* open on the hero's sky, not the flat chart: the flat picture shows only
-       if the 3D map has not arrived within five seconds (no WebGL, no module) */
-    document.documentElement.classList.add('gh-wait');
-    setTimeout(function () { if (!document.querySelector('.gh-hero-art.is-3d')) document.documentElement.classList.remove('gh-wait'); }, 5000);
+    /* The 3D chart runs only where it earns its weight: a wide screen, no
+       reduced-motion setting, no Save-Data (Innes, 2026-11-21, phase 3 of
+       docs/GRAMMAR-PAGE-PLAN.md). Everyone else gets the still chart at once.
+       Where it runs, the page opens on the hero's sky, not the flat chart:
+       the flat picture shows only if the 3D map has not arrived within five
+       seconds (no WebGL, no module, a slow line). */
+    window.GH_3D = matchMedia('(min-width: 881px)').matches
+      && !matchMedia('(prefers-reduced-motion: reduce)').matches
+      && !(navigator.connection && navigator.connection.saveData);
+    if (window.GH_3D) {
+      document.documentElement.classList.add('gh-wait');
+      setTimeout(function () { if (!document.querySelector('.gh-hero-art.is-3d')) document.documentElement.classList.remove('gh-wait'); }, 5000);
+    }
   </script>
   <div class="gh-hero-art" id="gh-hero-art">
-    <img class="gh-hero-img" src="sailing-the-seas-of-grammar/hero.jpg" width="1536" height="1024" alt="A hand-drawn sea chart: the orange coast of Gerundia, the green coast of Infinitivia, and Twofold Isle in the channel between them" fetchpriority="high">
+    <picture><source type="image/webp" srcset="grammar-hub/hero-chart-0dc9a6dc.webp 1536w, grammar-hub/hero-chart-ca9edb05.webp 1080w" sizes="(max-width: 880px) 94vw, 100vw"><img class="gh-hero-img" src="sailing-the-seas-of-grammar/hero.jpg" width="1536" height="1024" alt="A hand-drawn sea chart: the orange coast of Gerundia, the green coast of Infinitivia, and Twofold Isle in the channel between them" fetchpriority="high" crossorigin="anonymous"></picture>
     <canvas class="gh-hero-3d" aria-hidden="true"></canvas>
   </div>
   <div class="gh-hero-in">
@@ -1079,7 +1087,7 @@ body.gh {
   </div>
 </header>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
-<script type="module">
+<script type="text/x-gh-3d" id="gh-3d-src">
 import * as THREE from 'three';
 const box = document.getElementById('gh-hero-art');
 const cv = box && box.querySelector('canvas');
@@ -1196,9 +1204,29 @@ function go(tex) {
   }).observe(box);
   requestAnimationFrame(frame);
 }
-// the chart is loaded afresh rather than lifted from the <img>: on some
-// GPUs an <img> handed straight to WebGL before it has decoded uploads black
+// The chart is loaded afresh rather than lifted from the <img>: an <img>
+// handed straight to WebGL can upload black (tried again 2026-11-21 with
+// decode() first: still black, a grey relief with no chart on it). The <img>
+// is crossorigin="anonymous" like this loader, so where the server lets it
+// be cached (the live site) the browser hands over the copy it already has.
 if (cv && img) new THREE.TextureLoader().load(img.currentSrc || img.src, go);
+</script>
+<script>
+/* three.js (some 200 KB on the wire, 1.2 MB of script to read) is fetched
+   only where the hero's check (window.GH_3D) says the 3D chart runs, and
+   only once the page has loaded, so the words come first (Innes,
+   2026-11-21, phase 3 of docs/GRAMMAR-PAGE-PLAN.md). The module above is
+   inert text until then. */
+(function () {
+  if (!window.GH_3D) return;
+  function start() {
+    var s = document.createElement('script');
+    s.type = 'module';
+    s.textContent = document.getElementById('gh-3d-src').textContent;
+    document.body.appendChild(s);
+  }
+  if (document.readyState === 'complete') start(); else addEventListener('load', start, { once: true });
+})();
 </script>
 <section class="gh-find" id="find" aria-labelledby="gh-find-h">
   <div class="gh-wrap">
@@ -1302,7 +1330,7 @@ if (cv && img) new THREE.TextureLoader().load(img.currentSrc || img.src, go);
       <a class="gh-cell" href="present-continuous.html" style="--c:#F2ADBF;--k:#1A1206;--gc:3;--gr:3;--o:33;--d:0.05s" aria-label="Present Continuous: I am building"><span class="gh-cell-name" aria-hidden="true">Present Continuous</span><span class="gh-cell-form" aria-hidden="true">I AM BUILDING</span><span class="gh-cell-meta"><b>9 lessons</b> &middot; A1&ndash;B2 &middot; 5 free</span></a>
       <a class="gh-cell" href="present-perfect.html" style="--c:#689497;--k:#1A1206;--gc:3;--gr:4;--o:34;--d:0.10s" aria-label="Present Perfect: I have built"><span class="gh-cell-name" aria-hidden="true">Present Perfect</span><span class="gh-cell-form" aria-hidden="true">I HAVE BUILT</span><span class="gh-cell-meta"><b>13 lessons</b> &middot; A1&ndash;B2 &middot; 4 free</span></a>
       <a class="gh-cell" href="present-perfect-continuous.html" style="--c:#97D0E5;--k:#1A1206;--gc:3;--gr:5;--o:35;--d:0.15s" aria-label="Present Perfect Continuous: I have been building"><span class="gh-cell-name" aria-hidden="true">Present Perfect Continuous</span><span class="gh-cell-form" aria-hidden="true">I HAVE BEEN BUILDING</span><span class="gh-cell-meta"><b>4 lessons</b> &middot; A1&ndash;B1 &middot; 1 free</span></a>
-      <a class="gh-cell" href="past-simple.html" style="--c:#B08968;--k:#1A1206;--gc:2;--gr:2;--o:22;--d:0.20s" aria-label="Past Simple: I built"><span class="gh-cell-name" aria-hidden="true">Past Simple</span><span class="gh-cell-form" aria-hidden="true">I BUILT</span><span class="gh-cell-meta"><b>14 lessons</b> &middot; A1&ndash;B1 &middot; 6 free</span></a>
+      <a class="gh-cell" href="past-simple.html" style="--c:#B08968;--k:#1A1206;--gc:2;--gr:2;--o:22;--d:0.20s" aria-label="Past Simple: I built"><span class="gh-cell-name" aria-hidden="true">Past Simple</span><span class="gh-cell-form" aria-hidden="true">I BUILT</span><span class="gh-cell-meta"><b>14 lessons</b> &middot; A1&ndash;B2 &middot; 6 free</span></a>
       <a class="gh-cell" href="past-continuous.html" style="--c:#F1D779;--k:#1A1206;--gc:2;--gr:3;--o:23;--d:0.25s" aria-label="Past Continuous: I was building"><span class="gh-cell-name" aria-hidden="true">Past Continuous</span><span class="gh-cell-form" aria-hidden="true">I WAS BUILDING</span><span class="gh-cell-meta"><b>7 lessons</b> &middot; A1&ndash;B1 &middot; 1 free</span></a>
       <a class="gh-cell" href="past-perfect.html" style="--c:#8D5358;--k:#FFFFFF;--gc:2;--gr:4;--o:24;--d:0.30s" aria-label="Past Perfect: I had built"><span class="gh-cell-name" aria-hidden="true">Past Perfect</span><span class="gh-cell-form" aria-hidden="true">I HAD BUILT</span><span class="gh-cell-meta"><b>6 lessons</b> &middot; B1&ndash;B2 &middot; 1 free</span></a>
       <a class="gh-cell" href="sherpa-tensing-camp-eleven-past-perfect-continuous.html" style="--c:#705991;--k:#FFFFFF;--gc:2;--gr:5;--o:25;--d:0.35s" aria-label="Past Perfect Continuous: I had been building"><span class="gh-cell-name" aria-hidden="true">Past Perfect Continuous</span><span class="gh-cell-form" aria-hidden="true">I HAD BEEN BUILDING</span><span class="gh-cell-meta"><b>1 lesson</b> &middot; B2<span class="gh-cell-where">one lesson &middot; opens it</span></span></a>
@@ -1497,7 +1525,7 @@ if (cv && img) new THREE.TextureLoader().load(img.currentSrc || img.src, go);
       <ul class="gh-cards">
         <li style="--s2:6;--s3:4;--s4:4"><a class="gh-card" href="present-simple.html" style="--c:#7A93B5"><span class="gh-thumb"><img src="grammar-hub/present-simple-8d142759.jpg" alt="" loading="lazy" width="640" height="360"></span><span class="gh-card-body"><h4><span class="gh-swatch" aria-hidden="true"></span>Present Simple</h4><p>habits, facts, timetables and states, with the third-person -s, questions with do/does, and time signals like always, usually and never.</p><span class="gh-card-meta"><span class="gh-pill">A1&ndash;B2</span><span class="gh-pill">11 lessons</span><span class="gh-pill gh-pill-free">7 free</span></span></span></a></li>
         <li style="--s2:6;--s3:4;--s4:4"><a class="gh-card" href="present-continuous.html" style="--c:#F2ADBF"><span class="gh-thumb"><img src="grammar-hub/present-continuous-54605578.jpg" alt="" loading="lazy" width="640" height="360"></span><span class="gh-card-body"><h4><span class="gh-swatch" aria-hidden="true"></span>Present Continuous</h4><p>what is happening now, temporary situations, plans that are already arranged, and the difference from the Present Simple.</p><span class="gh-card-meta"><span class="gh-pill">A1&ndash;B2</span><span class="gh-pill">9 lessons</span><span class="gh-pill gh-pill-free">5 free</span></span></span></a></li>
-        <li style="--s2:6;--s3:4;--s4:4"><a class="gh-card" href="past-simple.html" style="--c:#B08968"><span class="gh-thumb"><img src="grammar-hub/past-simple-0e20afbe.jpg" alt="" loading="lazy" width="640" height="360"></span><span class="gh-card-body"><h4><span class="gh-swatch" aria-hidden="true"></span>Past Simple</h4><p>finished actions at a finished time, regular -ed and the irregular verbs, questions and negatives with did, and how it differs from the Present…</p><span class="gh-card-meta"><span class="gh-pill">A1&ndash;B1</span><span class="gh-pill">14 lessons</span><span class="gh-pill gh-pill-free">6 free</span></span></span></a></li>
+        <li style="--s2:6;--s3:4;--s4:4"><a class="gh-card" href="past-simple.html" style="--c:#B08968"><span class="gh-thumb"><img src="grammar-hub/past-simple-0e20afbe.jpg" alt="" loading="lazy" width="640" height="360"></span><span class="gh-card-body"><h4><span class="gh-swatch" aria-hidden="true"></span>Past Simple</h4><p>finished actions at a finished time, regular -ed and the irregular verbs, questions and negatives with did, and how it differs from the Present…</p><span class="gh-card-meta"><span class="gh-pill">A1&ndash;B2</span><span class="gh-pill">14 lessons</span><span class="gh-pill gh-pill-free">6 free</span></span></span></a></li>
         <li style="--s2:6;--s3:4;--s4:4"><a class="gh-card" href="past-continuous.html" style="--c:#F1D779"><span class="gh-thumb"><img src="grammar-hub/past-continuous-e70661fa.jpg" alt="" loading="lazy" width="640" height="360"></span><span class="gh-card-body"><h4><span class="gh-swatch" aria-hidden="true"></span>Past Continuous</h4><p>an action in progress in the past, interrupted by a Past Simple event, with while, when and as.</p><span class="gh-card-meta"><span class="gh-pill">A1&ndash;B1</span><span class="gh-pill">7 lessons</span><span class="gh-pill gh-pill-free">1 free</span></span></span></a></li>
         <li style="--s2:6;--s3:4;--s4:4"><a class="gh-card" href="present-perfect.html" style="--c:#689497"><span class="gh-thumb"><img src="grammar-hub/present-perfect-e13eba58.jpg" alt="" loading="lazy" width="640" height="360"></span><span class="gh-card-body"><h4><span class="gh-swatch" aria-hidden="true"></span>Present Perfect</h4><p>past actions with a present result, life experience with ever and never, unfinished time with since and for, and the difference from the Past Simple.</p><span class="gh-card-meta"><span class="gh-pill">A1&ndash;B2</span><span class="gh-pill">13 lessons</span><span class="gh-pill gh-pill-free">4 free</span></span></span></a></li>
         <li style="--s2:6;--s3:4;--s4:4"><a class="gh-card" href="present-perfect-continuous.html" style="--c:#97D0E5"><span class="gh-thumb"><img src="grammar-hub/present-perfect-continuous-cc4685d9.jpg" alt="" loading="lazy" width="640" height="360"></span><span class="gh-card-body"><h4><span class="gh-swatch" aria-hidden="true"></span>Present Perfect Continuous</h4><p>have been doing, for how long, and activities whose effects you can still see, against the Present Perfect Simple.</p><span class="gh-card-meta"><span class="gh-pill">A1&ndash;B1</span><span class="gh-pill">4 lessons</span><span class="gh-pill gh-pill-free">1 free</span></span></span></a></li>
@@ -1523,7 +1551,7 @@ if (cv && img) new THREE.TextureLoader().load(img.currentSrc || img.src, go);
       <ul class="gh-plates">
         <li><a class="gh-card" href="business-english.html"><span class="gh-thumb"><img src="grammar-hub/business-english-aee1885f.jpg" alt="" loading="lazy" width="640" height="360"></span><span class="gh-card-body"><h4>Business English</h4><p>meetings, negotiation, presentations, emails, feedback, client conversations and the vocabulary of construction, energy, architecture and design.</p><span class="gh-card-meta"><span class="gh-pill">A2&ndash;C2</span><span class="gh-pill">66 lessons</span><span class="gh-pill gh-pill-free">17 free</span></span></span></a></li>
         <li><a class="gh-card" href="ielts.html"><span class="gh-thumb"><img src="grammar-hub/ielts-85b6b751.jpg" alt="" loading="lazy" width="640" height="360"></span><span class="gh-card-body"><h4>IELTS Academic</h4><p>Writing, Speaking, Listening, Reading and the vocabulary that feeds them.</p><span class="gh-card-meta"><span class="gh-pill">B2&ndash;C1</span><span class="gh-pill">28 lessons</span><span class="gh-pill gh-pill-free">5 free</span></span></span></a></li>
-        <li><a class="gh-card" href="english-vocabulary.html"><span class="gh-thumb"><img src="grammar-hub/english-vocabulary-9f9fd2ff.jpg" alt="" loading="lazy" width="640" height="360"></span><span class="gh-card-body"><h4>Vocabulary and Topic Lessons</h4><p>English vocabulary lessons from A1 to C2 built around a subject — football, skiing, hiking, Minecraft, Lego, film, nature, food, architecture — with…</p><span class="gh-card-meta"><span class="gh-pill">A1&ndash;B1</span><span class="gh-pill">98 lessons</span><span class="gh-pill gh-pill-free">26 free</span></span></span></a></li>
+        <li><a class="gh-card" href="english-vocabulary.html"><span class="gh-thumb"><img src="grammar-hub/english-vocabulary-9f9fd2ff.jpg" alt="" loading="lazy" width="640" height="360"></span><span class="gh-card-body"><h4>Vocabulary and Topic Lessons</h4><p>English vocabulary lessons from A1 to C2 built around a subject — football, skiing, hiking, Minecraft, Lego, film, nature, food, architecture — with…</p><span class="gh-card-meta"><span class="gh-pill">A1&ndash;B2</span><span class="gh-pill">98 lessons</span><span class="gh-pill gh-pill-free">26 free</span></span></span></a></li>
       </ul>
     </div>
   </div>
@@ -1570,7 +1598,7 @@ if (cv && img) new THREE.TextureLoader().load(img.currentSrc || img.src, go);
   </div>
 </section>
 <section class="gh-close" aria-labelledby="gh-close-h">
-  <img class="gh-close-art" src="sailing-the-seas-of-grammar/hero.jpg" alt="" loading="lazy" width="1200" height="672">
+  <picture><source type="image/webp" srcset="grammar-hub/hero-chart-0dc9a6dc.webp 1536w, grammar-hub/hero-chart-ca9edb05.webp 1080w" sizes="(max-width: 880px) 94vw, 100vw"><img class="gh-close-art" src="sailing-the-seas-of-grammar/hero.jpg" width="1536" height="1024" alt="" loading="lazy" decoding="async"></picture>
   <div class="gh-close-in">
     <p class="gh-kicker">Not sure of your level?</p>
     <h2 class="gh-h2" id="gh-close-h">Six questions a level, <em>then a lesson</em></h2>

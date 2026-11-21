@@ -130,7 +130,7 @@ TOPIC_COLOUR = {
 # slopes. The sea stays flat; the far edge fades into the page's own sky
 # colour, so the picture fills the hero edge to edge.
 CHART_3D = r"""<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
-<script type="module">
+<script type="text/x-gh-3d" id="gh-3d-src">
 import * as THREE from 'three';
 const box = document.getElementById('gh-hero-art');
 const cv = box && box.querySelector('canvas');
@@ -247,9 +247,29 @@ function go(tex) {
   }).observe(box);
   requestAnimationFrame(frame);
 }
-// the chart is loaded afresh rather than lifted from the <img>: on some
-// GPUs an <img> handed straight to WebGL before it has decoded uploads black
+// The chart is loaded afresh rather than lifted from the <img>: an <img>
+// handed straight to WebGL can upload black (tried again 2026-11-21 with
+// decode() first: still black, a grey relief with no chart on it). The <img>
+// is crossorigin="anonymous" like this loader, so where the server lets it
+// be cached (the live site) the browser hands over the copy it already has.
 if (cv && img) new THREE.TextureLoader().load(img.currentSrc || img.src, go);
+</script>
+<script>
+/* three.js (some 200 KB on the wire, 1.2 MB of script to read) is fetched
+   only where the hero's check (window.GH_3D) says the 3D chart runs, and
+   only once the page has loaded, so the words come first (Innes,
+   2026-11-21, phase 3 of docs/GRAMMAR-PAGE-PLAN.md). The module above is
+   inert text until then. */
+(function () {
+  if (!window.GH_3D) return;
+  function start() {
+    var s = document.createElement('script');
+    s.type = 'module';
+    s.textContent = document.getElementById('gh-3d-src').textContent;
+    document.body.appendChild(s);
+  }
+  if (document.readyState === 'complete') start(); else addEventListener('load', start, { once: true });
+})();
 </script>"""
 
 
@@ -282,6 +302,8 @@ MIX = {'paper': ('surface', 'ink-text', 0.62), 'card': ('surface', 'ink-text', 0
 # squares are measured separately, one per tense, in tense_colours().
 CONTRAST = [
     ('ink', 'sky', 4.5, 'hero copy on the sky scrim'),
+    ('ink', 'card', 4.5, 'hero copy on its panel'),
+    ('accent-bright', 'card', 3.0, 'hero H1 emphasis on its panel (large)'),
     ('accent-bright', 'sky', 3.0, 'hero H1 emphasis (large)'),
     ('text', 'paper', 4.5, 'body copy'),
     ('text', 'card', 4.5, 'card titles'),
@@ -395,10 +417,50 @@ def web_copy(src_rel, stem, width=640, quality=82):
     return rel
 
 
+def web_webp(src_rel, stem, width, quality=80):
+    """A WebP copy of `src_rel` in grammar-hub/, `width` px wide at most,
+    named by its inputs like web_copy (and kept from prune the same way).
+    Returns (site-relative path, width, height)."""
+    from PIL import Image
+    src = os.path.join(ROOT, src_rel.lstrip('/'))
+    data = open(src, 'rb').read()
+    name = '%s-%s.webp' % (stem, _sha(data, width, quality, 'webp'))
+    rel = '%s/%s' % (ART, name)
+    STATE['keep'].add(name)
+    out = os.path.join(ROOT, ART, name)
+    im = Image.open(src).convert('RGB')
+    w, h = im.size
+    if w > width:
+        w, h = width, round(h * width / w)
+    if not os.path.exists(out):
+        os.makedirs(os.path.join(ROOT, ART), exist_ok=True)
+        if im.width > width:
+            im = im.resize((w, h), Image.LANCZOS)
+        im.save(out, 'WEBP', quality=quality, method=6)
+    return rel, w, h
+
+
+def hero_picture(cls, alt, extra=''):
+    """The hero chart as a <picture>: WebP at 1536 and 1080 wide for the
+    browsers that take it (all current ones), the JPEG for the rest
+    (Innes, 2026-11-21, phase 3 of docs/GRAMMAR-PAGE-PLAN.md: the 543 KB
+    JPEG went to every phone, twice). `extra` is more attributes for the
+    <img>."""
+    # quality 72: compared at double size against the JPEG on the chart's
+    # finest lettering (the Shallows), no difference to see; 1536 is 330 KB
+    big, bw, bh = web_webp(HERO, 'hero-chart', 1536, quality=72)
+    small, sw, sh = web_webp(HERO, 'hero-chart', 1080, quality=72)
+    # sizes: a phone 412 px wide at 2.625x wants 1,082 px, just over the
+    # 1080 copy, and would take the 1536; 94vw keeps it on the 1080
+    return ('<picture><source type="image/webp" srcset="%s %dw, %s %dw" sizes="(max-width: 880px) 94vw, 100vw">'
+            '<img class="%s" src="%s" width="1536" height="1024" alt="%s"%s></picture>'
+            % (esc(seo.quote(big)), bw, esc(seo.quote(small)), sw, cls, esc(seo.quote(HERO)), alt, extra))
+
+
 def prune():
-    """Delete grammar-hub/*.jpg that this build did not produce."""
+    """Delete grammar-hub/*.jpg and *.webp that this build did not produce."""
     gone = []
-    for p in glob.glob(os.path.join(ROOT, ART, '*.jpg')):
+    for p in glob.glob(os.path.join(ROOT, ART, '*.jpg')) + glob.glob(os.path.join(ROOT, ART, '*.webp')):
         if os.path.basename(p) not in STATE['keep']:
             os.remove(p)
             gone.append(os.path.basename(p))
@@ -837,24 +899,24 @@ body.gh {
 .gh-hero-art.is-3d .gh-hero-3d { opacity: 1; }
 .gh-hero-art.is-3d .gh-hero-img { opacity: 0; transition: opacity 1.4s ease; }
 .gh-wait .gh-hero-art:not(.is-3d) .gh-hero-img { opacity: 0; transition: opacity .6s ease; }   /* no flat chart before the 3D one */
-.gh-hero::after {
-  content: ''; position: absolute; inset: 0; z-index: -1;
-  /* a light wash only (Innes, 2026-10-19: the heavy one was overkill); the
-     words carry a soft pale halo instead */
-  background: linear-gradient(90deg,
-    color-mix(in srgb, var(--gh-sky) 36%%, transparent) 0%%,
-    color-mix(in srgb, var(--gh-sky) 22%%, transparent) 38%%,
-    transparent 58%%);
-}
+/* THE COPY'S PANEL (Innes, 2026-11-21, phase 3 of docs/GRAMMAR-PAGE-PLAN.md).
+   Over the map the words sat on its lettering: "Try Tarn" and "Go-On Gill"
+   showed through the paragraph, under a wash across the left of the map and
+   a pale halo on every line. Now the words sit on parchment, the card colour
+   at 85%% with a blur, as on the chart pages, and the map keeps its colour
+   everywhere else: no wash, no halo. */
 @media (min-width: 881px) {
-  .gh-hero-copy .gh-kicker, .gh-hero-copy .gh-h1, .gh-hero-copy .gh-lede, .gh-hero-copy .gh-stats, .gh-hero-copy .gh-sail, .gh-hero-copy .gh-plans {
-    text-shadow: 0 0 6px rgba(255, 252, 244, 0.9), 0 0 18px rgba(255, 252, 244, 0.65);
+  .gh-hero-copy {
+    padding: clamp(24px, 2.6vw, 38px) clamp(26px, 2.8vw, 42px); border-radius: 18px;
+    background: color-mix(in srgb, var(--gh-card) 85%%, transparent);
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+    border: 1px solid var(--gh-line); box-shadow: 0 24px 60px var(--gh-shadow);
   }
 }
 .gh-hero-in {
   width: 100%%; max-width: var(--gh-max); margin: 0 auto;
   padding: clamp(40px, 7vh, 80px) var(--gh-gut) 56px;
-  display: grid; grid-template-columns: minmax(0, 600px) 1fr;
+  display: grid; grid-template-columns: minmax(0, 640px) 1fr;   /* 640: the panel's padding comes out of it */
 }
 .gh-hero-copy { color: var(--gh-ink); }
 .gh-hero .gh-kicker { color: var(--gh-ink); }
@@ -882,7 +944,6 @@ body.gh {
   .gh-hero { display: block; min-height: 0; background: var(--gh-paper); }
   .gh-hero-art { position: relative; inset: auto; z-index: auto; aspect-ratio: 16 / 11;
     background: linear-gradient(180deg, var(--gh-cloud) 0%%, var(--gh-sky) 100%%); }
-  .gh-hero::after { display: none; }
   .gh-hero-in { grid-template-columns: 1fr; padding-top: 30px; padding-bottom: 44px; }
   .gh-hero-copy, .gh-hero .gh-kicker { color: var(--gh-text); }
   .gh-h1 { color: var(--gh-text); }
@@ -1704,13 +1765,22 @@ def render(rows, images, allm):
     b.append('''<main>
 <header class="gh-hero" aria-labelledby="gh-h1">
   <script>
-    /* open on the hero's sky, not the flat chart: the flat picture shows only
-       if the 3D map has not arrived within five seconds (no WebGL, no module) */
-    document.documentElement.classList.add('gh-wait');
-    setTimeout(function () { if (!document.querySelector('.gh-hero-art.is-3d')) document.documentElement.classList.remove('gh-wait'); }, 5000);
+    /* The 3D chart runs only where it earns its weight: a wide screen, no
+       reduced-motion setting, no Save-Data (Innes, 2026-11-21, phase 3 of
+       docs/GRAMMAR-PAGE-PLAN.md). Everyone else gets the still chart at once.
+       Where it runs, the page opens on the hero's sky, not the flat chart:
+       the flat picture shows only if the 3D map has not arrived within five
+       seconds (no WebGL, no module, a slow line). */
+    window.GH_3D = matchMedia('(min-width: 881px)').matches
+      && !matchMedia('(prefers-reduced-motion: reduce)').matches
+      && !(navigator.connection && navigator.connection.saveData);
+    if (window.GH_3D) {
+      document.documentElement.classList.add('gh-wait');
+      setTimeout(function () { if (!document.querySelector('.gh-hero-art.is-3d')) document.documentElement.classList.remove('gh-wait'); }, 5000);
+    }
   </script>
   <div class="gh-hero-art" id="gh-hero-art">
-    <img class="gh-hero-img" src="%s" width="1536" height="1024" alt="%s" fetchpriority="high">
+    %s
     <canvas class="gh-hero-3d" aria-hidden="true"></canvas>
   </div>
   <div class="gh-hero-in">
@@ -1731,8 +1801,8 @@ def render(rows, images, allm):
       <p class="gh-plans">Plenty of lessons are free, no sign-in. Pro opens every one &mdash; <a href="pricing.html">plans and prices</a>.</p>
     </div>
   </div>
-</header>''' % (esc(seo.quote(HERO)), esc(HERO_ALT), plural(len(listed), 'topic'),
-                len(files), len(listed), len(free_files)))
+</header>''' % (hero_picture('gh-hero-img', esc(HERO_ALT), ' fetchpriority="high" crossorigin="anonymous"'),
+                plural(len(listed), 'topic'), len(files), len(listed), len(free_files)))
 
     b.append(CHART_3D)
 
@@ -1848,7 +1918,7 @@ def render(rows, images, allm):
 
     # ── closing band ──
     b.append('''<section class="gh-close" aria-labelledby="gh-close-h">
-  <img class="gh-close-art" src="%s" alt="" loading="lazy" width="1200" height="672">
+  %s
   <div class="gh-close-in">
     <p class="gh-kicker">Not sure of your level?</p>
     <h2 class="gh-h2" id="gh-close-h">Six questions a level, <em>then a lesson</em></h2>
@@ -1859,7 +1929,7 @@ def render(rows, images, allm):
     </div>
   </div>
 </section>
-</main>''' % esc(seo.quote(HERO)))
+</main>''' % hero_picture('gh-close-art', '', ' loading="lazy" decoding="async"'))
 
     ld = {'@context': 'https://schema.org', '@graph': [
         {'@type': 'BreadcrumbList', 'itemListElement': [

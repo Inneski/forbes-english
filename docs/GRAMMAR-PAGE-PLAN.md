@@ -190,7 +190,41 @@ What shipped, and where it differs from the plan below:
 9. **Cross-link both ways:** each topic page links its chart or charts, and each
    chart's sheet links its topic page.
 
-### Phase 3: a lighter, more legible hero (half a session)
+### Phase 3: a lighter, more legible hero: DONE 2026-11-21
+
+What shipped (measured on a local build, first screen, no scrolling,
+decompressed bytes):
+
+| | before | after |
+|---|---|---|
+| Phone | 2.84 MB: three.js 1.2 MB, the 543 KB JPEG fetched twice | **690 KB**: the 175 KB WebP, no three.js, the still chart at once |
+| Desktop, 3D | 3.0 MB, load event 1.44 s | three.js after the load event; the 330 KB WebP; load event 0.95 s locally (the live figure is in HANDOFF) |
+| Reduced motion | 3D ran anyway | the still chart, no three.js |
+
+- **The panel.** At 881 px and up, the copy sits on parchment: the card
+  colour at 85% with a 6 px blur, as on the chart pages. The wash across the
+  left of the map and the pale halo on every line are gone, so the map keeps
+  its colour around the panel. Contrast is measured in `CONTRAST`: ink on
+  card 15.1:1.
+- **Who gets the 3D.** One check in the hero (`window.GH_3D`): at least 881 px
+  wide, no `prefers-reduced-motion`, no Save-Data. Only then is `gh-wait`
+  set (the page opening on the sky), and only then, after the load event,
+  does the module run. It sits in the page as inert text (`#gh-3d-src`) until
+  the loader turns it into a module script.
+- **WebP.** `web_webp()` and `hero_picture()` make 1536 px and 1080 px WebP
+  copies at quality 72. Compared at double size with the JPEG on the
+  Shallows lettering, there is no visible difference. They serve both the
+  hero and the closing band through `<picture>`, with the JPEG for older
+  browsers. `sizes` says 94vw under 880 px, so a 412 px phone at 2.625x
+  takes the 1080 copy, not the 1536. `prune()` now clears stale `.webp` as
+  well as `.jpg`.
+- **Tried and dropped:** handing the decoded `<img>` straight to WebGL, to
+  avoid the 3D loader's second request. It uploaded black (a grey relief with
+  no chart on it), the failure the old comment warned about. The loader
+  stays. The `<img>` is `crossorigin="anonymous"` like the loader, so where
+  caching is allowed the second request is served from the browser's copy.
+
+### Phase 3: a lighter, more legible hero (the brief it was built from)
 
 10. **Lay the copy on a parchment panel,** the card colour at about 85% with a
     blur, the same treatment as the chart pages. Do not lighten the whole map.
