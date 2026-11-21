@@ -613,12 +613,12 @@ body.gh {
   box-shadow: 0 10px 11px -8px color-mix(in srgb, var(--gh-ink) 50%%, transparent);
   transition: transform .34s cubic-bezier(.2,.8,.2,1), box-shadow .34s ease;
 }
-.gm-rod::before {   /* round it, and draw the sheet's outer edge along it */
+.gm-rod::before {   /* round it, and draw the sheet's outer edge along it, low (94%%), under the second line of the name (Innes, 2026-11-21: the lines were cutting through the text) */
   content: ''; position: absolute; inset: 0; z-index: 1; border-radius: inherit; pointer-events: none;
   background:
-    linear-gradient(to bottom, transparent calc(82%% - 1px),
-      color-mix(in srgb, var(--gh-text) 30%%, transparent) calc(82%% - 1px), color-mix(in srgb, var(--gh-text) 30%%, transparent) 82%%,
-      color-mix(in srgb, var(--gh-ink-text) 26%%, transparent) 82%%, transparent calc(82%% + 2px)),
+    linear-gradient(to bottom, transparent calc(94%% - 1px),
+      color-mix(in srgb, var(--gh-text) 30%%, transparent) calc(94%% - 1px), color-mix(in srgb, var(--gh-text) 30%%, transparent) 94%%,
+      color-mix(in srgb, var(--gh-ink-text) 26%%, transparent) 94%%, transparent calc(94%% + 2px)),
     var(--gm-round);
 }
 .gm-rod::after {    /* the end of the roll: the coil of paper, and the hollow in the middle */
@@ -908,8 +908,8 @@ body.gh {
 @media (min-width: 881px) {
   .gh-hero-copy {
     padding: clamp(24px, 2.6vw, 38px) clamp(26px, 2.8vw, 42px); border-radius: 18px;
-    background: color-mix(in srgb, var(--gh-card) 85%%, transparent);
-    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+    background: color-mix(in srgb, var(--gh-card) 68%%, transparent);
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
     border: 1px solid var(--gh-line); box-shadow: 0 24px 60px var(--gh-shadow);
   }
 }
@@ -1124,6 +1124,26 @@ body.gh {
   .gh-plates .gh-card { flex-direction: row; }
   .gh-plates .gh-thumb { width: 38%%; aspect-ratio: auto; flex: none; }
 }
+/* A PHONE: the shelves as compact rows (Innes, 2026-11-21, phase 4 of
+   docs/GRAMMAR-PAGE-PLAN.md). Full-width pictures made the shelves 9.7
+   screens long; a row is the topic's colour down its edge, its name, and
+   its counts. The topic page has the rest. */
+@media (max-width: 600px) {
+  .gh-cards { gap: 8px; }
+  .gh-cards > li { grid-column: span 12 !important; }
+  .gh-card, .gh-solo2 > .gh-card, .gh-solo3 > .gh-card, .gh-solo4 > .gh-card { flex-direction: row; border-radius: 10px; }
+  .gh-card::before { right: auto; bottom: 0; width: 5px; height: auto; }
+  .gh-card .gh-thumb { display: none; }
+  .gh-card-body { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 6px 10px; padding: 11px 14px 11px 19px; }
+  .gh-card-body h4 { font-size: 1.04rem; }
+  .gh-card-body p { display: none; }
+  .gh-card-meta { margin: 0 0 0 auto; padding: 0; }
+}
+/* beyond grammar: one line of links under the shelves */
+.gh-beyond { margin: clamp(30px, 4vw, 44px) 0 0; padding-top: 16px; border-top: 1px solid var(--gh-line); font-size: 1.02rem; line-height: 1.7; color: var(--gh-text-dim); }
+.gh-beyond b { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; font-size: .82rem; color: var(--gh-text); margin-right: 8px; }
+.gh-beyond a { color: var(--gh-accent-bright); font-weight: 700; text-underline-offset: 3px; }
+.gh-beyond small { color: var(--gh-text-dim); }
 
 /* ── two routes through the tenses ── */
 .gh-routes { padding: clamp(56px, 8vw, 104px) 0 clamp(24px, 4vw, 40px); }
@@ -1848,12 +1868,11 @@ def render(rows, images, allm):
     <div class="gh-sechead">
       <p class="gh-kicker">Every topic</p>
       <h2 class="gh-h2" id="gh-topics-h">Shelved by the <em>point it teaches</em></h2>
-      <p>The tenses first, in the order a learner meets them; then the passive, the modals, prepositions, conditionals and the rest, which sit alongside; then the skills built on all of it. Every lesson is a 16:9 deck that opens in the browser &mdash; the rule on the slide, then practice, then a speaking task, with a language switcher for the explanations.</p>
+      <p>The tenses first, in the order a learner meets them; then the passive, the modals, prepositions, conditionals and the rest, which sit alongside. Every lesson is a 16:9 deck that opens in the browser &mdash; the rule on the slide, then practice, then a speaking task, with a language switcher for the explanations.</p>
     </div>''')
     for title, group, note, cls in (
             ('Tenses', tense_topics, 'in teaching order &middot; the colour is the tense', 'gh-cards'),
-            ('Grammar', grammar_topics, 'the points that sit alongside the tenses', 'gh-cards'),
-            ('Skills', skill_topics, 'built on all of it', 'gh-plates')):
+            ('Grammar', grammar_topics, 'the points that sit alongside the tenses', 'gh-cards')):
         gfiles = {r['file'] for t in group for r in allm[t['slug']]}
         b.append('    <div class="gh-group">\n      <div class="gh-group-h"><h3>%s</h3><span>%s &middot; %s</span></div>\n      <ul class="%s">'
                  % (title, plural(len(gfiles), 'lesson'), note, cls))
@@ -1868,6 +1887,12 @@ def render(rows, images, allm):
                     spans[2][i], spans[3][i], spans[4][i], ' class="%s"' % solo if solo else '')
             b.append('        ' + _card(t, allm[t['slug']], images, colour, li, used_pictures))
         b.append('      </ul>\n    </div>')
+    # beyond grammar: one line of links, not a third shelf of cards (Innes,
+    # 2026-11-21, phase 4 of docs/GRAMMAR-PAGE-PLAN.md: Business English,
+    # IELTS and Vocabulary are not grammar, and their cards made the page longer)
+    b.append('    <p class="gh-beyond"><b>Beyond grammar</b>%s</p>' % ' &middot; '.join(
+        '<a href="%s">%s</a> <small>(%d)</small>' % (topics.hub_url(t['slug']), esc(t['name']), len(allm[t['slug']]))
+        for t in sorted(skill_topics, key=lambda x: x['order'])))
     b.append('  </div>\n</section>')
 
     # ── two routes ──

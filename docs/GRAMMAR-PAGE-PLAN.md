@@ -250,7 +250,24 @@ decompressed bytes):
     - `hero.jpg` is served as WebP at 1920 and 1080 widths.
     - Targets: under 1 MB first load on a phone, and the load event under 2 s on a desktop.
 
-### Phase 4: shelves that read as one set (needs Innes's call on pictures)
+### Phase 4: shelves that read as one set: rows and Skills DONE 2026-11-21; the picture style waits on Innes
+
+- **On a phone the shelves are compact rows:** the topic colour down the
+  edge, the name and the counts, with no picture and no description. The
+  shelves went from 9.7 screens to 2.1, and the whole page from 19.8 screens
+  to 12.8.
+- **Skills is one line under the shelves:** "Beyond grammar: Business English
+  (66) · IELTS Academic (28) · Vocabulary and Topic Lessons (98)". The index
+  still has its Beyond grammar row.
+- **Also fixed, from Innes the same day:**
+  - The hero panel is more see-through: the card colour at 68% (was 85%)
+    with an 8 px blur.
+  - The drawn paper edge on every roll was cutting through the second line
+    of the name. It now runs at 94% of the roll's height, under the text,
+    which ends at 86%.
+- **The desktop picture style** is the HOUSE-STYLE §14 question still open.
+  Options were rendered and put to Innes.
+
 
 12. **On phones, the shelves become compact rows:** swatch, name, counts and
     free. They drop from 9.7 screens to about 4. Desktop keeps the cards.
