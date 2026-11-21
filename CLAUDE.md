@@ -206,8 +206,8 @@ so find out rather than assuming:
   as a source when the task was created**. The sandbox has no GitHub
   credential of its own; the egress proxy injects one per request, and it
   only does so for repositories in the session's source list. A session
-  started without the repo can still *clone* (the repo is public) but every
-  push fails with a proxy 403, *"Inneski/forbes-english is not in this
+  started without the repo cannot clone it once the repo is private (job 1
+  of the 2026-11-20 site schedule), and every push fails with a proxy 403, *"Inneski/forbes-english is not in this
   session's authorized repository set … add the repository to the session's
   sources."* That list is fixed at startup and cannot be changed from inside
   the session — not by a token, not by a remote URL, not by retrying.
@@ -413,6 +413,19 @@ Self-test the guard after editing it: `node .claude/hooks/git-guard.js --test`.
   not up for discussion.
 - Never hardcode `rgba(0,0,0,…)` or `rgba(255,255,255,…)` in a lesson — use the
   theme primitives in the template.
+- **Students are named by first name only, with no employer or other
+  detail that identifies them**, in HANDOFF, builders, docstrings and commit
+  messages alike. Agreed 2026-11-21, after the notes were found readable on
+  the live site and in a public repo.
+- **Only the site ships.** `.assetsignore` keeps `docs/`, `tools/`,
+  `lesson-template/`, `.claude/`, `incoming/`, the source-material folders,
+  every `.md`, `.py` and `.zip`, and two student-named PDFs out of the deploy
+  (2026-11-21). So a page must never load a file from those folders: copy
+  what it needs next to it, or it 404s live. A new folder of source
+  material, or a second copy of a lesson, goes in `.assetsignore` too: a
+  copy at another address sits outside the paywall, which is how 65 old
+  lessons in `FORBES ENGLISH/` and root copies of two paid Block Camp games
+  were free until that date.
 
 ## Things that have bitten us
 

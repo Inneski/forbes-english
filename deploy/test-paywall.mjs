@@ -287,6 +287,21 @@ for (const [path, cookie, want, why] of cases) {
   console.log(`${link ? ' PASS' : ' FAIL'}  not-yet page links to the mission that is open now; its no-JS date says UTC`);
 }
 
+// Root copies of two paid games sat outside the paywall until 2026-11-21:
+// both addresses, with and without .html, now send the reader to the gated page.
+{
+  const cases = [['/last-train-home-rpg', '/block-camp/last-train-home-rpg.html'],
+    ['/last-train-home-rpg.html', '/block-camp/last-train-home-rpg.html'],
+    ['/dracula-castle-of-if', '/block-camp/dracula-castle-of-if.html'],
+    ['/dracula-castle-of-if.html', '/block-camp/dracula-castle-of-if.html']];
+  for (const [from, to] of cases) {
+    const res = await get(from, null);
+    const ok = res.status === 301 && new URL(res.headers.get('Location')).pathname === to;
+    ok ? pass++ : fail++;
+    console.log(`${ok ? ' PASS' : ' FAIL'}  ${from} -> 301 ${to} (got ${res.status} ${res.headers.get('Location')})`);
+  }
+}
+
 // The not-yet page says when, in a machine-readable time the page localises.
 {
   const res = await get('/blockcamp-m3.html', 'fe_at=bc-token');

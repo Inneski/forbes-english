@@ -136,6 +136,11 @@ async function route(request, env, ctx) {
         "/fireshield-pitch-part3.html":    "/fireshield-pitch.html",
         // live for one night under its first name; Innes renamed it 2026-10-06
         "/block-camp/sun-was-sinking-rpg.html": "/block-camp/welcome-to-the-jungle-rpg.html",
+        // Older root copies of two paid Block Camp games, served outside the
+        // paywall until 2026-11-21. The gated pages are the real ones; the
+        // copies are also kept out of the assets (.assetsignore).
+        "/last-train-home-rpg.html": "/block-camp/last-train-home-rpg.html",
+        "/dracula-castle-of-if.html": "/block-camp/dracula-castle-of-if.html",
       };
       const to = retired[url.pathname] || retired[url.pathname + ".html"];
       if (to) return Response.redirect(url.origin + to, 301);

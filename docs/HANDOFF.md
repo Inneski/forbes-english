@@ -10,6 +10,45 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
+## 2026-11-21 — Job 1: only the site ships; 65 old lessons and two paid games were outside the paywall
+
+Innes: *"Yes, do job 1"* (the schedule entry below).
+
+- **`.assetsignore`** now keeps out of the deploy: `docs/`, `tools/`,
+  `lesson-template/`, `.claude/`, `incoming/`, `FORBES ENGLISH/`,
+  `CGPT cleaned/`, `ESL brains/` (a paid publisher's PDFs), `HOUSE STYLE/`,
+  every `.md`, `.py` and `.zip`, and two student-named PDFs. 1,427 more
+  files hidden, 3,861 still served. Every new pattern has a leading slash:
+  unanchored, `last-train-home-rpg.html` would also hide the real game in
+  `block-camp/`.
+- **Paywall leaks closed.** The gate only knows catalogue paths, so a copy at
+  any other address was free: `FORBES ENGLISH/` held 65 old copies of
+  lessons, Pro ones included; `CGPT cleaned/` a copy of the Pro Filmmaking
+  lesson; the root held copies of two paid Block Camp games. Those two root
+  addresses now 301 to the gated pages (`retired` in `src/index.js`); four new
+  checks in `test-paywall.mjs` fail on the old Worker.
+- **Checked before shipping:** git's own ignore engine over all 5,316 tracked
+  files (every must-serve and must-hide sample right), then a crawl of all
+  428 served pages with the rules applied. No page asks for a hidden file,
+  except `front-page.html` and `index_1.html` (unlinked noindex drafts of the
+  old library page), which lose one picture from `HOUSE STYLE/`. No current
+  page loads anything from `lesson-template/` or `tools/`. A grep that seems
+  to show otherwise is reading an old worktree under `.claude/worktrees/`.
+  Test suites: webhook 122, paywall 64, weekly 21, ranges, all pass.
+- **Still Innes's:** make the GitHub repo private (repo → Settings → Change
+  visibility). Until then everything above is still readable on GitHub.
+- **CLAUDE.md:** two standing rules (students by first name only, no
+  employer; "Only the site ships": never load from the hidden folders, and a
+  lesson copy at another address sits outside the paywall), and the cloud
+  note now says a session cannot clone once the repo is private.
+- **Found by the crawl, not caused by it:** four Block Camp decks (Present
+  Simple 1a and Past Simple 1a, both free, plus Present and Past Continuous
+  1a) ask for opener videos in `BlockCamp/openers/` that do not exist; live,
+  that is a 404 and the cover shows without one. Three decks are public only
+  because they have no catalogue row: Be Aware of This Cleaner, Body Idioms
+  C1, and The School Visit correction test (row pending since 2 Oct). Their
+  access is Innes's call.
+
 ## 2026-11-20 — Site improvement schedule: ten jobs in order, on a private page
 
 Innes: *"create a schedule in order of importance to improve this website"*.
