@@ -17975,3 +17975,58 @@ sailing-the-seas-bridges). Content audited: no wrong keys found.
 `insert into lessons (file,title,level,video,deck,access,track) values
 ('miami-vibes-linking-words.html','Miami Vibes — Linking Words Quiz','B1',false,false,'free','general');`
 Live with SEO block and library card.
+
+## 2026-11-21 — Atelier Lexicon: Architectural Vocabulary Quiz (pro, imported HTML app)
+
+`atelier-lexicon-architectural-vocabulary.html` is Innes's own single-file quiz
+(30 architecture terms in five groups, an inline SVG drawing each; quiz mode,
+illustrated study deck, results with a review list), not a deck. Source and
+builder: `lesson-template/build/atelier-lexicon-architectural-vocabulary/` —
+`source.html` is his file unchanged (plain HTML + vanilla JS, no React);
+`node build.mjs` (after `npm install`) applies exact patches (each must match its
+stated count or the build stops), compiles Tailwind from the page's own config
+(the source ran Tailwind's CDN compiler in every visitor's browser), and keeps
+the SEO block and the title `seo.py` wrote, so a rebuild + `seo.py --check`
+changes nothing. Card/og image `atelier-lexicon-architectural-vocabulary/hero.jpg`
+is a 1200x675 render of the opening screen (`node render-card.cjs`, site served on
+8099). LESSON_IMAGES + LESSON_TAGS `['Vocabulary']` in `library.html`.
+**Catalogue row id 391** (C1, pro, general, deck false), inserted from the session
+after Innes's "upload to forbes". Topics: business-english + english-vocabulary
+(OVERRIDES, like the Gargoyle House; the business-english regex takes
+"architectural" on its own). Description comes from a `<noscript>` `p.lede`.
+
+**Helper language: en + 10** (de es fr it pt hr ru ar zh ja; pt is Brazilian) via a
+🌐 pill in the page's header (`?lang=`, saved, browser; default English). Shown
+only AFTER the answer: the term and the WHOLE example sentence, on the answered
+question, an opened study card and the results' review list. Never before — a
+translated sentence would hand over the term. English shows none. Switching
+re-renders in place, so a quiz in progress keeps its score.
+`i18n/<lang>.json` is `{source, t:[[term, example] × 30]}` (pairs, not a flat list);
+`source` hashes the English keys; LEFT OUT rule as BlockCraft/Miami.
+
+**Content fixed** (reasoning in the `build.mjs` header): 5 "An ___ kitchen
+triangle" (the article answered it) → "The"; 9 rewritten, "…joinery is bespoke:
+every shelf was made to measure for the room" (tactile/unadorned/monolithic all
+fitted the old sentence); 10, 25, 30 get `notWith` distractor bans (bespoke for
+monolithic, soften the acoustics for anchor a space, blur the boundary for strike
+a balance), read by `generateOptionsForItem`; 19 "brick and steel" → "brick with
+steel" (visual weight fitted); 26 term "Maximize natural ingress" (not a
+collocation) → "Maximize the ingress of natural light", meaning follows. Study
+deck: Reveal All / Quiz These filtered without the category match (search
+"lighting": 6 cards, "Quiz These (6)", a quiz of 1). Phones: library link is a
+footer line (floats only from 1280px; fixed, it sat over answer 3), 🌐 drops its
+code and Menu its word below 640px (the brand subtitle stays on 2 lines, as in the
+source), the picture's category label takes the short name and truncates (it ran
+under the IN CONTEXT badge in the source too).
+
+**Measured:** `node walk.cjs` in the builder folder — full 30-question quiz at 1920
+and 375, 300 option sets per item (no banned pair, always 4 distinct options with
+the key), every blank made, key never visible in its own prompt, gloss absent
+before the answer and present after, language switch mid-quiz keeps the score,
+Arabic RTL, and layout at 360/375/414/768/1024/1280/1440/1920 for home, quiz and
+study (no sideways scroll, subtitle ≤ 2 lines inside the header, library link
+hittable and never over the content column). PASS.
+
+**For Innes:** access is `pro` (the publish skill's default; BlockCraft and Miami
+went out free). To make it free: `update lessons set access = 'free' where file =
+'atelier-lexicon-architectural-vocabulary.html';` then `tools/seo.py`.

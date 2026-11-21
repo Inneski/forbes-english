@@ -336,6 +336,7 @@ OVERRIDES = {
     'the-gargoyle-house-part-3.html': ['business-english', 'english-vocabulary'],
     'the-gargoyle-house-part-4.html': ['business-english', 'english-vocabulary'],
     'the-gargoyle-house-part-5.html': ['business-english', 'english-vocabulary'],
+    'atelier-lexicon-architectural-vocabulary.html': ['business-english', 'english-vocabulary'],  # 30-term architecture quiz, both hubs like the Gargoyle House
     'forbes-architectural-vocabulary.html': ['business-english'],
     'forbes-architectural-vocabulary-part2.html': ['business-english'],
     'reading-the-elevation-c1.html': ['business-english'],
