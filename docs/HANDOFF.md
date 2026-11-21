@@ -19,7 +19,13 @@ stale copy.
   tense colour carrying the form (I HAVE BUILT). Plain colour plates came
   first, and Innes said "needs images". Four topics have no chart yet
   (Past Continuous, Present Perfect Continuous, Past Perfect, Used To), so
-  they show a lesson picture. Commission charts for them.
+  they show a lesson picture. Layouts for all four are done
+  (`lesson-template/build/sea_layouts_6.py` writes `docs/sea-charts/long-passage`,
+  `running-tide`, `earlier-shore` and `old-harbour`). The ChatGPT brief is Part 4
+  of `docs/CHATGPT-SEA-CHARTS-BRIEF.md`, and the drop folder is
+  `incoming/sea-charts/tense-four/`. When the art arrives, add each chart to
+  `tools/grammar_maps.py` MAPS and SHELVES with its lesson. The card then
+  picks it up through `topic_charts()`.
 - The hero has drifting clouds and gulls over the chart (`SKY_CLOUDS`,
   `SKY_JS`). The panel is at 48%.
   The code is `plate_form()` / `PLATE_FORM` in `tools/build_grammar_hub.py`.

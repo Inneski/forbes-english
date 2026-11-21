@@ -164,3 +164,48 @@ Now the same picture with every word, letter and number removed: no names, no ti
 The second prompt only works after the first, in the same conversation: in
 a new one the model has no picture to clean and asks for it. Fix any misspelt
 word before asking for the clean copy.
+
+## Part 4: four tense charts for the grammar page (2026-11-21)
+
+These four finish the topic cards on forbesenglish.com/grammar. Each card
+shows the chart that teaches its topic, and these four topics had none. One
+chart per conversation, the same two prompts as Part 3.
+
+| Topic | Draft (attach second) | Save as |
+|---|---|---|
+| Past Continuous | `FORBES\docs\sea-charts\long-passage.png` | `long-passage.png`, `long-passage-clean.png` |
+| Present Perfect Continuous | `FORBES\docs\sea-charts\running-tide.png` | `running-tide.png`, `running-tide-clean.png` |
+| Past Perfect | `FORBES\docs\sea-charts\earlier-shore.png` | `earlier-shore.png`, `earlier-shore-clean.png` |
+| Used To | `FORBES\docs\sea-charts\old-harbour.png` | `old-harbour.png`, `old-harbour-clean.png` |
+
+**Attach:** `FORBES\sailing-the-seas-of-grammar\hero.jpg` first, then the
+draft. **Save into:** `FORBES\incoming\sea-charts\tense-four\` (the folder
+exists).
+
+The shore colours are the Sherpa tense colours: yellow for the past
+continuous, brown for the past simple, plum for the past perfect, pale blue
+for the present perfect continuous, slate blue for the present simple. The
+Part 3 prompt already tells ChatGPT to keep them.
+
+---
+
+Image 1 is a finished illustrated sea chart. Image 2 is a coded draft of another chart in the same series. Repaint image 2 in exactly the style of image 1. That style is an antique hand-painted sea chart on parchment with a thin ruled border, watercolour terrain with fine ink hatching, cliffs along the coasts, forests, hills and lakes, a compass rose, a sailing ship, and small waves on a pale blue sea. Landscape, 3:2.
+
+Keep the layout of image 2 exactly. The coastlines, islands, sandbanks, reefs, rocks, buoys, dashed currents and coloured bars stay in the same places, and every harbour dot stays exactly where it is, as a solid black dot. Do not use white markers. Paint the coloured bars as long bands of coloured water, and the jagged shapes as small squalls of lightning striking them.
+
+The colours in image 2 are a code and must not change. Keep each landmass and each coloured bar in the colour drawn in image 2: the same hue, not a parchment version of it.
+
+Copy every word in image 2 exactly as it is spelled and in the same place. Use serif capitals for the titles and plain lettering for the place names, as in image 1. Add no other words. Use British spelling.
+
+---
+
+**Then, in the same conversation:**
+
+---
+
+Now the same picture with every word, letter and number removed: no names, no titles, no captions. Keep every harbour dot, every coloured bar and every coloured disc exactly where it is. Change nothing else.
+
+---
+
+Check the spelling in the first picture before you ask for the clean copy.
+Watch the apostrophes in "o'clock", "wasn't", "didn't", "I've" and "I'm".
