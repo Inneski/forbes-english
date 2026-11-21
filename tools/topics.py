@@ -407,9 +407,12 @@ BY_SLUG = {t['slug']: t for t in TOPICS}
 # its hub by level_key's 99 — which looks like nothing is wrong. 'B2-C1' was
 # the gap: the list already carried 'A1-A2', 'B1-B2' and 'C1-C2', so a span at
 # that one boundary had nowhere to sit. Added 2026-09-17 with Beyond the
-# Handlebars, the first lesson to use it.
-_LEVEL_ORDER = ['A1', 'A1-A2', 'A2', 'A2-C1', 'B1', 'B1-B2', 'B2', 'B2-C1',
-                'C1', 'C1-C2', 'C2']
+# Handlebars, the first lesson to use it. 'A2-B1' (8 lessons), 'A2-B2' (2) and
+# 'B1-C1' (1) were missing too and went in on 2026-11-21: they sorted to the
+# bottom of their hubs, and they decided level_span (below) by sorting last.
+_LEVEL_ORDER = ['A1', 'A1-A2', 'A2', 'A2-B1', 'A2-B2', 'A2-C1', 'B1', 'B1-B2',
+                'B1-C1', 'B2', 'B2-C1', 'C1', 'C1-C2', 'C2']
+_CEFR = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
 
 
 def topics_for(row):
@@ -451,13 +454,26 @@ def level_key(level):
 
 
 def level_span(rows):
-    """'A1 to B2' from a set of rows, for a hub's eyebrow and description."""
-    lv = sorted({r.get('level') for r in rows if r.get('level')}, key=level_key)
-    if not lv:
+    """'A1 to B2' from a set of rows, for a hub's eyebrow and description:
+    the lowest level any lesson starts at to the highest any reaches, read
+    off each level's own ends (as build_ielts_hub.level_span does).
+
+    It used to take the bottom of the first and the top of the last level
+    in level_key order. A span sorts by its bottom, so the top was wrong
+    whenever a low-starting span reached furthest; and a level missing from
+    _LEVEL_ORDER sorted last at 99, where a set's order (Python's hash seed)
+    picked between them. On 2026-11-21 past-simple.html flipped between
+    'A1 to B1' and 'A1 to B2' from one run to the next, and
+    english-vocabulary.html read 'A1 to B1' with 98 C1 lessons in it."""
+    lo = hi = None
+    for r in rows:
+        ix = [_CEFR.index(x) for x in re.findall(r'[ABC][12]', r.get('level') or '')]
+        if ix:
+            lo = min(ix) if lo is None else min(lo, min(ix))
+            hi = max(ix) if hi is None else max(hi, max(ix))
+    if lo is None:
         return ''
-    lo = lv[0].split('-')[0]
-    hi = lv[-1].split('-')[-1]
-    return lo if lo == hi else '%s to %s' % (lo, hi)
+    return _CEFR[lo] if lo == hi else '%s to %s' % (_CEFR[lo], _CEFR[hi])
 
 
 def members(rows, images, coming_soon):

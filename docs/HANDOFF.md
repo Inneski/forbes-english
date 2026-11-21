@@ -18027,6 +18027,21 @@ Arabic RTL, and layout at 360/375/414/768/1024/1280/1440/1920 for home, quiz and
 study (no sideways scroll, subtitle ≤ 2 lines inside the header, library link
 hittable and never over the content column). PASS.
 
-**For Innes:** access is `pro` (the publish skill's default; BlockCraft and Miami
-went out free). To make it free: `update lessons set access = 'free' where file =
-'atelier-lexicon-architectural-vocabulary.html';` then `tools/seo.py`.
+**Free since the same day**, on Innes's word ("Make it free"): row 391 `access =
+'free'` via `execute_sql`, then hubs + SEO. It shipped as pro first (the publish
+skill's default).
+
+**Hub level ranges fixed in passing** (`tools/topics.py`). `level_span` took the
+bottom of the first and the top of the last level in `level_key` order, and
+'A2-B1' (8 lessons), 'A2-B2' (2) and 'B1-C1' (1) were missing from
+`_LEVEL_ORDER`, so they sorted last at 99 and decided the top end, in an order
+that changed with Python's hash seed. Measured: `past-simple.html` gave 'A1 to
+B1' or 'A1 to B2' on alternate runs; live `english-vocabulary.html` read 'A1 to
+B1' with 98 C1 lessons in it. Now lowest start to highest end, read off each
+level's own ends (as `build_ielts_hub.level_span` already did), and the three
+levels are in `_LEVEL_ORDER`, so those lessons no longer sink to the bottom of
+their hubs. Ranges that changed: english-vocabulary A1–C2, conditionals B1–C2,
+prepositions A2–C1, past-simple A1–B2, rpg.html A1–C1. Five runs in separate
+processes, identical output. Seen, not touched: `build_hubs.py` warns that
+`dead-by-teatime-rpg.html` has no entry in `GAMES` in `tools/build_rpg_hub.py`,
+so its card on `rpg.html` carries the title only.
