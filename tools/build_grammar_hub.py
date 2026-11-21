@@ -315,6 +315,7 @@ CONTRAST = [
     ('text', 'roll', 4.5, 'chart names on the rolls'),
     ('text-dim', 'roll', 4.5, 'levels on the rolls'),
     ('accent', 'roll', 4.5, 'the name on the roll that is out'),
+    ('ink-text', 'accent', 3.0, 'the form on a topic plate with no tense (large)'),
     ('ink-text', 'ink', 4.5, 'closing band'),
     ('ink-text-dim', 'ink', 4.5, 'closing band secondary'),
     ('ink-accent', 'ink', 4.5, 'closing band kicker'),
@@ -1111,6 +1112,20 @@ body.gh {
 .gh-thumb { aspect-ratio: 16 / 9; overflow: hidden; background: var(--gh-sky-deep); }
 .gh-thumb img { width: 100%%; height: 100%%; object-fit: cover; display: block; transition: transform .6s ease; }
 .gh-card:hover .gh-thumb img { transform: scale(1.05); }
+/* THE PLATE (phase 4): the topic's tense colour, its form in large type, a
+   soft light from the top corner. --k is the tense's own ink from
+   tense_colours(); a topic with no tense keeps the accent and light ink. */
+.gh-plate {
+  --k: var(--gh-ink-text);
+  position: relative; display: flex; align-items: flex-end; padding: 16px 18px;
+  background: radial-gradient(120%% 90%% at 0%% 0%%, color-mix(in srgb, var(--gh-ink-text) 20%%, transparent), transparent 60%%), var(--c);
+  color: var(--k);
+}
+.gh-plate b {
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .05em;
+  font-size: clamp(1.3rem, 2vw, 1.9rem); line-height: 1.02; transition: transform .3s ease;
+}
+.gh-card:hover .gh-plate b { transform: translateY(-3px); }
 .gh-card-body { display: flex; flex-direction: column; gap: 6px; padding: 14px 16px 16px; flex: 1; }
 .gh-card-body h4 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.14rem; line-height: 1.25; margin: 0; }
 .gh-card-body p { font-size: .92rem; line-height: 1.5; color: var(--gh-text-dim); margin: 0; }
@@ -1266,44 +1281,37 @@ def row_spans(n, cols):
     return out
 
 
-def card_picture(rows, images, used):
-    """The card's picture: topics.hero()'s choice (the first free lesson's
-    hero, else the first lesson's) unless another card already shows that
-    picture, in which case the next lesson's, free ones first. On
-    2026-11-20 Future Tenses and Tense Review both showed one lesson's
-    hero, and Conditionals and Business English another, because a lesson
-    can sit on two shelves. `used` holds the pictures already placed, by
-    content, so two copies of one file count as the same picture."""
-    first = topics.hero(rows, images)
-    if first and picture_key(first) not in used:
-        return first
-    for want_free in (True, False):
-        for r in rows:
-            if want_free and r.get('access') == 'pro':
-                continue
-            p = images.get(r['file'])
-            if p and picture_key('/' + p) not in used:
-                return '/' + p
-    return first
+# THE PLATES (Innes, 2026-11-21, phase 4 of docs/GRAMMAR-PAGE-PLAN.md, after
+# both looks were rendered side by side: "Colour plates"). A topic card no
+# longer borrows a lesson's picture, which gave the shelves four styles at
+# once (voxel art, pixel posters, film stills, a diagram) and twice the same
+# picture on two cards. It shows a plate in the topic's tense colour, from the
+# tense code above it, with the form in large type: the shelves read as one
+# set with the grid. A topic with no tense colour takes the page's accent.
+PLATE_FORM = {
+    'tense-review': 'EVERY TENSE', 'passive-voice': 'IT IS BUILT', 'modal-verbs': 'I MUST BUILD',
+    'prepositions': 'IN · ON · AT', 'gerunds-and-infinitives': 'BUILDING · TO BUILD',
+    'conditionals': 'IF I BUILT', 'used-to': 'I USED TO BUILD', 'phrasal-verbs': 'BUILD UP',
+    'future-tenses': 'I WILL BUILD',
+}
 
 
-def picture_key(rel):
-    """A picture's identity: the hash of its bytes."""
-    import hashlib
-    return hashlib.sha1(open(os.path.join(ROOT, rel.lstrip('/')), 'rb').read()).hexdigest()
+def plate_form(t):
+    """The words on a topic's plate: its tense square's form, or PLATE_FORM."""
+    if t['slug'] in PLATE_FORM:
+        return PLATE_FORM[t['slug']]
+    key = TOPIC_COLOUR.get(t['slug'])
+    for cell in CELLS:
+        if cell['key'] == key:
+            return cell['form']
+    return t['name'].upper()
 
 
-def _card(t, rows, images, colour=None, li='', used=None):
+def _card(t, rows, colour=None, li=''):
     n, free = len(rows), free_of(rows)
-    hero = card_picture(rows, images, used if used is not None else set())
-    if used is not None and hero:
-        key = picture_key(hero)
-        if key in used:
-            sys.exit('! grammar.html: %s would show the same picture as another card (%s); '
-                     'no lesson on it has a picture of its own' % (t['name'], hero))
-        used.add(key)
-    thumb = ('<span class="gh-thumb"><img src="%s" alt="" loading="lazy" width="640" height="360"></span>'
-             % esc(web_copy(hero, t['slug'])) if hero else '<span class="gh-thumb"></span>')
+    ink = colour[1] if colour else None
+    thumb = ('<span class="gh-thumb gh-plate"%s aria-hidden="true"><b>%s</b></span>'
+             % (' style="--k:%s"' % ink if ink else '', esc(plate_form(t))))
     desc = t['desc'] or ('The IELTS Academic route: Writing, Speaking, Listening, Reading '
                          'and the vocabulary that feeds them.')
     desc = desc.split(': ', 1)[-1] if ': ' in desc else desc
@@ -1862,7 +1870,6 @@ def render(rows, images, allm):
     b.append(maps_band(rows, allm))
 
     # ── every topic ──
-    used_pictures = set()      # no two cards share a picture (card_picture)
     b.append('''<section class="gh-topics" id="topics" aria-labelledby="gh-topics-h">
   <div class="gh-wrap">
     <div class="gh-sechead">
@@ -1885,7 +1892,7 @@ def render(rows, images, allm):
                 solo = ' '.join('gh-solo%d' % c for c in (2, 3, 4) if spans[c][i] == 12)
                 li = ' style="--s2:%d;--s3:%d;--s4:%d"%s' % (
                     spans[2][i], spans[3][i], spans[4][i], ' class="%s"' % solo if solo else '')
-            b.append('        ' + _card(t, allm[t['slug']], images, colour, li, used_pictures))
+            b.append('        ' + _card(t, allm[t['slug']], colour, li))
         b.append('      </ul>\n    </div>')
     # beyond grammar: one line of links, not a third shelf of cards (Innes,
     # 2026-11-21, phase 4 of docs/GRAMMAR-PAGE-PLAN.md: Business English,

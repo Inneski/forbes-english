@@ -10,6 +10,21 @@ session can read it.
 deltas are listed at the bottom of this file. Follow the deltas over the
 stale copy.
 ---
+## 2026-11-21 — Grammar page, phase 4: phone rows, Skills as one line, colour plates on the cards
+
+- On a phone the topic shelves are compact rows: 2.1 screens instead of 9.7.
+- Business English, IELTS and Vocabulary are one "Beyond grammar" line, not a
+  third shelf.
+- On desktop each topic card shows a **colour plate**, not a lesson's
+  picture. The plate is the tense colour with the form in large type, and
+  non-tense topics take the accent. Innes chose this from rendered options.
+  The code is `plate_form()` / `PLATE_FORM` in `tools/build_grammar_hub.py`.
+  A new grammar topic needs a `PLATE_FORM` line, or its plate shows its name
+  in capitals.
+- The hero panel is now at 68%, and the edge line on the rolls is at 94% (it
+  had crossed the text).
+- Details: `docs/GRAMMAR-PAGE-PLAN.md`, phase 4.
+
 ## 2026-11-21 — Job 1: only the site ships; 65 old lessons and two paid games were outside the paywall
 
 Innes: *"Yes, do job 1"* (the schedule entry below).

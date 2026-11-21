@@ -250,7 +250,7 @@ decompressed bytes):
     - `hero.jpg` is served as WebP at 1920 and 1080 widths.
     - Targets: under 1 MB first load on a phone, and the load event under 2 s on a desktop.
 
-### Phase 4: shelves that read as one set: rows and Skills DONE 2026-11-21; the picture style waits on Innes
+### Phase 4: shelves that read as one set DONE 2026-11-21
 
 - **On a phone the shelves are compact rows:** the topic colour down the
   edge, the name and the counts, with no picture and no description. The
@@ -265,8 +265,16 @@ decompressed bytes):
   - The drawn paper edge on every roll was cutting through the second line
     of the name. It now runs at 94% of the roll's height, under the text,
     which ends at 86%.
-- **The desktop picture style** is the HOUSE-STYLE §14 question still open.
-  Options were rendered and put to Innes.
+- **The desktop picture style: colour plates** (Innes chose them from the
+  two rendered options). A card shows a plate in its topic's tense colour,
+  with the form in large type (I BUILD, I HAVE BEEN BUILDING, IF I BUILT);
+  the text is the tense's own ink from `tense_colours()`. A topic with no
+  tense colour takes the accent, with light ink (6.3:1, in `CONTRAST`). The
+  words are `plate_form()`: the tense square's form, or `PLATE_FORM`. No card
+  borrows a lesson's picture any more, so the four styles at once and the
+  repeated pictures are gone, and the 16 card JPEGs in `grammar-hub/` were
+  pruned. Measured at 1920: 16 plates, every card hit, no sideways scroll,
+  no card images loaded. On a phone the plates are hidden (the rows above).
 
 
 12. **On phones, the shelves become compact rows:** swatch, name, counts and
