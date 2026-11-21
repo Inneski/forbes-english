@@ -265,16 +265,22 @@ decompressed bytes):
   - The drawn paper edge on every roll was cutting through the second line
     of the name. It now runs at 94% of the roll's height, under the text,
     which ends at 86%.
-- **The desktop picture style: colour plates** (Innes chose them from the
-  two rendered options). A card shows a plate in its topic's tense colour,
-  with the form in large type (I BUILD, I HAVE BEEN BUILDING, IF I BUILT);
-  the text is the tense's own ink from `tense_colours()`. A topic with no
-  tense colour takes the accent, with light ink (6.3:1, in `CONTRAST`). The
-  words are `plate_form()`: the tense square's form, or `PLATE_FORM`. No card
-  borrows a lesson's picture any more, so the four styles at once and the
-  repeated pictures are gone, and the 16 card JPEGs in `grammar-hub/` were
-  pruned. Measured at 1920: 16 plates, every card hit, no sideways scroll,
-  no card images loaded. On a phone the plates are hidden (the rows above).
+- **The desktop picture style: colour plates, then pictures back.** Innes
+  first chose colour plates: the tense colour with the form in large type,
+  and no picture. Seen live: "this part sucks, needs images". Each card now
+  shows the topic's own chart from the rack (`topic_charts()`), and Tense
+  Review shows the Sherpa route map (`TOPIC_CHART`). The plate became a band
+  along the foot of the picture: the tense colour, the form (`plate_form()`
+  / `PLATE_FORM`), and the tense's own ink. Four topics have no chart yet
+  and fall back to a lesson's picture (`card_picture`): Past Continuous,
+  Present Perfect Continuous, Past Perfect, and Used To. **A chart for each
+  of those four would finish the set.**
+- **Also from Innes:**
+  - The hero panel is 30% more see-through: 48% with a 10 px blur.
+  - Clouds and gulls now cross the hero, as on the Sherpa and Sailing pages
+    (`SKY_CLOUDS`, `SKY_JS`). They use the Sherpa cloud images and an
+    inlined `gulls.js`. They take no pointer and move by transform only.
+  - With reduced motion, the clouds stand still and no gull is drawn.
 
 
 12. **On phones, the shelves become compact rows:** swatch, name, counts and

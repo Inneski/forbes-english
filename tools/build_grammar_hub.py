@@ -894,6 +894,15 @@ body.gh {
   background: linear-gradient(180deg, var(--gh-cloud) 0%%, var(--gh-sky) 100%%);
 }
 .gh-hero-art { position: absolute; inset: 0; z-index: -2; overflow: hidden; }
+/* the sky over the chart (SKY_CLOUDS): clouds cross the hero by transform
+   only; 100cqw is the hero's width, so each leaves fully before it loops */
+.gh-hero-art { --gl-paper: var(--gh-ink-text); --gl-ink: var(--gh-ink); }
+.gh-sky { position: absolute; inset: 0; overflow: hidden; pointer-events: none; container-type: inline-size; }
+.gh-sky i { position: absolute; left: 0; background: 0 0 / 100%% 100%% no-repeat; will-change: transform;
+  animation: gh-drift linear infinite; }
+@keyframes gh-drift { from { transform: translateX(-100%%); } to { transform: translateX(100cqw); } }
+@media (prefers-reduced-motion: reduce) { .gh-sky i { animation-play-state: paused; } }
+@media print { .gh-sky { display: none; } }
 .gh-hero-img, .gh-hero-3d { position: absolute; inset: 0; width: 100%%; height: 100%%; display: block; }
 .gh-hero-img { object-fit: cover; object-position: 50%% 45%%; opacity: .62; filter: saturate(.7) sepia(.12); }
 .gh-hero-3d { opacity: 0; transition: opacity 1.4s ease; touch-action: pan-y; }
@@ -904,13 +913,13 @@ body.gh {
    Over the map the words sat on its lettering: "Try Tarn" and "Go-On Gill"
    showed through the paragraph, under a wash across the left of the map and
    a pale halo on every line. Now the words sit on parchment, the card colour
-   at 85%% with a blur, as on the chart pages, and the map keeps its colour
+   at 48%% (Innes asked for it lighter twice) with a 10px blur, and the map keeps its colour
    everywhere else: no wash, no halo. */
 @media (min-width: 881px) {
   .gh-hero-copy {
     padding: clamp(24px, 2.6vw, 38px) clamp(26px, 2.8vw, 42px); border-radius: 18px;
-    background: color-mix(in srgb, var(--gh-card) 68%%, transparent);
-    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+    background: color-mix(in srgb, var(--gh-card) 48%%, transparent);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
     border: 1px solid var(--gh-line); box-shadow: 0 24px 60px var(--gh-shadow);
   }
 }
@@ -1112,20 +1121,22 @@ body.gh {
 .gh-thumb { aspect-ratio: 16 / 9; overflow: hidden; background: var(--gh-sky-deep); }
 .gh-thumb img { width: 100%%; height: 100%%; object-fit: cover; display: block; transition: transform .6s ease; }
 .gh-card:hover .gh-thumb img { transform: scale(1.05); }
-/* THE PLATE (phase 4): the topic's tense colour, its form in large type, a
-   soft light from the top corner. --k is the tense's own ink from
-   tense_colours(); a topic with no tense keeps the accent and light ink. */
-.gh-plate {
-  --k: var(--gh-ink-text);
-  position: relative; display: flex; align-items: flex-end; padding: 16px 18px;
-  background: radial-gradient(120%% 90%% at 0%% 0%%, color-mix(in srgb, var(--gh-ink-text) 20%%, transparent), transparent 60%%), var(--c);
-  color: var(--k);
-}
+/* THE PLATE (phase 4): the topic's chart, and along its foot a band in the
+   tense colour with the form in large type, in the tense's own ink (--k,
+   from tense_colours()); a topic with no tense keeps the accent and light
+   ink. A short fade above the band joins it to the picture; the words sit
+   on the solid colour only, so their contrast is the measured pair. */
+.gh-plate { --k: var(--gh-ink-text); position: relative; display: flex; align-items: flex-end; color: var(--k); }
+.gh-plate img { position: absolute; inset: 0; }
 .gh-plate b {
+  position: relative; width: 100%%; padding: 10px 16px 9px; background: var(--c);
   font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .05em;
-  font-size: clamp(1.3rem, 2vw, 1.9rem); line-height: 1.02; transition: transform .3s ease;
+  font-size: clamp(1.15rem, 1.6vw, 1.5rem); line-height: 1.05;
 }
-.gh-card:hover .gh-plate b { transform: translateY(-3px); }
+.gh-plate b::before {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 100%%; height: 28px;
+  background: linear-gradient(to top, var(--c), transparent); pointer-events: none;
+}
 .gh-card-body { display: flex; flex-direction: column; gap: 6px; padding: 14px 16px 16px; flex: 1; }
 .gh-card-body h4 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.14rem; line-height: 1.25; margin: 0; }
 .gh-card-body p { font-size: .92rem; line-height: 1.5; color: var(--gh-text-dim); margin: 0; }
@@ -1281,13 +1292,14 @@ def row_spans(n, cols):
     return out
 
 
-# THE PLATES (Innes, 2026-11-21, phase 4 of docs/GRAMMAR-PAGE-PLAN.md, after
-# both looks were rendered side by side: "Colour plates"). A topic card no
-# longer borrows a lesson's picture, which gave the shelves four styles at
-# once (voxel art, pixel posters, film stills, a diagram) and twice the same
-# picture on two cards. It shows a plate in the topic's tense colour, from the
-# tense code above it, with the form in large type: the shelves read as one
-# set with the grid. A topic with no tense colour takes the page's accent.
+# THE PLATES (Innes, 2026-11-21, phase 4 of docs/GRAMMAR-PAGE-PLAN.md). First
+# "Colour plates": the topic's tense colour with its form in large type, and
+# no picture. Seen live: "this part sucks, needs images". So the picture is
+# back, and it is the topic's own chart from the rack above (topic_charts()),
+# one art style for the shelves, the same set as the rack. Tense Review takes
+# the Sherpa route map. A topic no chart teaches yet falls back to a lesson's
+# picture (card_picture). The plate is now a band along the foot of the
+# picture: the tense colour, the form in large type, in the tense's own ink.
 PLATE_FORM = {
     'tense-review': 'EVERY TENSE', 'passive-voice': 'IT IS BUILT', 'modal-verbs': 'I MUST BUILD',
     'prepositions': 'IN · ON · AT', 'gerunds-and-infinitives': 'BUILDING · TO BUILD',
@@ -1307,11 +1319,105 @@ def plate_form(t):
     return t['name'].upper()
 
 
-def _card(t, rows, colour=None, li=''):
+def card_picture(rows, images, used):
+    """The card's picture: topics.hero()'s choice (the first free lesson's
+    hero, else the first lesson's) unless another card already shows that
+    picture, in which case the next lesson's, free ones first. On
+    2026-11-20 Future Tenses and Tense Review both showed one lesson's
+    hero, and Conditionals and Business English another, because a lesson
+    can sit on two shelves. `used` holds the pictures already placed, by
+    content, so two copies of one file count as the same picture."""
+    first = topics.hero(rows, images)
+    if first and picture_key(first) not in used:
+        return first
+    for want_free in (True, False):
+        for r in rows:
+            if want_free and r.get('access') == 'pro':
+                continue
+            p = images.get(r['file'])
+            if p and picture_key('/' + p) not in used:
+                return '/' + p
+    return first
+
+
+def picture_key(rel):
+    """A picture's identity: the hash of its bytes."""
+    import hashlib
+    return hashlib.sha1(open(os.path.join(ROOT, rel.lstrip('/')), 'rb').read()).hexdigest()
+
+
+# THE SKY OVER THE HERO (Innes, 2026-11-21: "add moving clouds and birds").
+# The hero is the chart seen from above, so the sky is seen from above too,
+# as on every Sherpa page and on Sailing the Seas, after English Heritage's
+# Myths Map: the Sherpa clouds (tools/sherpa_sky.py makes them, each with its
+# shadow on the ground below it) drift across the picture, and gulls
+# (lesson-template/build/gulls.js, inlined, since lesson-template/ never
+# ships) cross it in small flocks. Both sit over the chart and under the
+# panel, take no pointer, and move by transform only. Started faint, as
+# Innes's effects always are: "stronger" is the opacity in SKY_CLOUDS. For
+# prefers-reduced-motion the clouds stand still and no gull is drawn.
+# (cloud image, width in % of the hero, top %, seconds to cross, delay fraction, opacity)
+SKY_CLOUDS = [(1, 30, 4, 110, .15, .8), (3, 34, 50, 95, .6, .8), (2, 26, 26, 125, .85, .75),
+              (5, 18, 70, 170, .35, .5), (6, 16, 14, 185, .7, .45), (4, 20, 84, 160, .05, .5)]
+SKY_DIR = 'Sherpa Tensing'
+
+
+def sky_layer():
+    """The cloud layer's element; each cloud's size and loop are inline."""
+    from PIL import Image
+    out = []
+    for k, w, top, secs, delay, op in SKY_CLOUDS:
+        rel = '%s/cloud-%d.webp' % (SKY_DIR, k)
+        iw, ih = Image.open(os.path.join(ROOT, rel)).size
+        out.append('<i style="top:%d%%;width:%d%%;aspect-ratio:%d/%d;background-image:url(&quot;%s&quot;);'
+                   'animation-duration:%ds;animation-delay:-%ds;opacity:%s"></i>'
+                   % (top, w, iw, ih, rel.replace(' ', '%20'), secs, round(secs * delay), op))
+    return '<div class="gh-sky" aria-hidden="true">%s</div>' % ''.join(out)
+
+
+SKY_JS = open(os.path.join(ROOT, 'lesson-template', 'build', 'gulls.js'), encoding='utf-8').read() + '''
+skyGulls(document.getElementById("gh-hero-art"), {
+  px: function (w) { return w < 880 ? 22 : 30; }, seed: 9,
+  flocks: [
+    {from: [-6, 70], to: [106, 30], flight: 19, cycle: 48, at: 4,
+     birds: [[0, 0, 1], [-1.5, 1.1, .95], [-1.1, -1.3, 1.05]]},
+    {from: [106, 18], to: [-6, 52], flight: 17, cycle: 48, at: 28,
+     birds: [[0, 0, 1], [-1.4, -1, .92]]}
+  ]
+});
+'''
+
+
+def topic_charts(allm):
+    """{topic slug: chart image}: the first chart in MAPS that teaches the
+    topic (chart_topic), plus TOPIC_CHART."""
+    out = {}
+    for m in grammar_maps.MAPS:
+        t = chart_topic(m, allm)
+        if t and t['slug'] not in out:
+            out[t['slug']] = '/' + m['image'].lstrip('/')
+    for slug, href in TOPIC_CHART.items():
+        out[slug] = '/' + next(m['image'] for m in grammar_maps.MAPS if m['href'] == href).lstrip('/')
+    return out
+
+
+TOPIC_CHART = {'tense-review': 'sherpa-tensing-route-map.html'}    # every tense on one map
+
+
+def _card(t, rows, images, charts, colour=None, li='', used=None):
     n, free = len(rows), free_of(rows)
+    used = used if used is not None else set()
+    hero = charts.get(t['slug']) or card_picture(rows, images, used)
+    if hero:
+        key = picture_key(hero)
+        if key in used:
+            sys.exit('! grammar.html: %s would show the same picture as another card (%s)' % (t['name'], hero))
+        used.add(key)
     ink = colour[1] if colour else None
-    thumb = ('<span class="gh-thumb gh-plate"%s aria-hidden="true"><b>%s</b></span>'
-             % (' style="--k:%s"' % ink if ink else '', esc(plate_form(t))))
+    img = ('<img src="%s" alt="" loading="lazy" width="640" height="360">' % esc(web_copy(hero, t['slug']))
+           if hero else '')
+    thumb = ('<span class="gh-thumb gh-plate"%s aria-hidden="true">%s<b>%s</b></span>'
+             % (' style="--k:%s"' % ink if ink else '', img, esc(plate_form(t))))
     desc = t['desc'] or ('The IELTS Academic route: Writing, Speaking, Listening, Reading '
                          'and the vocabulary that feeds them.')
     desc = desc.split(': ', 1)[-1] if ': ' in desc else desc
@@ -1810,7 +1916,9 @@ def render(rows, images, allm):
   <div class="gh-hero-art" id="gh-hero-art">
     %s
     <canvas class="gh-hero-3d" aria-hidden="true"></canvas>
+    %s
   </div>
+  <script>%s</script>
   <div class="gh-hero-in">
     <div class="gh-hero-copy">
       <p class="gh-kicker">Grammar &middot; A1 to C2 &middot; %s</p>
@@ -1830,7 +1938,7 @@ def render(rows, images, allm):
     </div>
   </div>
 </header>''' % (hero_picture('gh-hero-img', esc(HERO_ALT), ' fetchpriority="high" crossorigin="anonymous"'),
-                plural(len(listed), 'topic'), len(files), len(listed), len(free_files)))
+                sky_layer(), SKY_JS, plural(len(listed), 'topic'), len(files), len(listed), len(free_files)))
 
     b.append(CHART_3D)
 
@@ -1870,6 +1978,8 @@ def render(rows, images, allm):
     b.append(maps_band(rows, allm))
 
     # ── every topic ──
+    charts = topic_charts(allm)
+    used_pictures = set()      # no two cards share a picture
     b.append('''<section class="gh-topics" id="topics" aria-labelledby="gh-topics-h">
   <div class="gh-wrap">
     <div class="gh-sechead">
@@ -1892,7 +2002,7 @@ def render(rows, images, allm):
                 solo = ' '.join('gh-solo%d' % c for c in (2, 3, 4) if spans[c][i] == 12)
                 li = ' style="--s2:%d;--s3:%d;--s4:%d"%s' % (
                     spans[2][i], spans[3][i], spans[4][i], ' class="%s"' % solo if solo else '')
-            b.append('        ' + _card(t, allm[t['slug']], colour, li))
+            b.append('        ' + _card(t, allm[t['slug']], images, charts, colour, li, used_pictures))
         b.append('      </ul>\n    </div>')
     # beyond grammar: one line of links, not a third shelf of cards (Innes,
     # 2026-11-21, phase 4 of docs/GRAMMAR-PAGE-PLAN.md: Business English,

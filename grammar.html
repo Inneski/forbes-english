@@ -668,6 +668,15 @@ body.gh {
   background: linear-gradient(180deg, var(--gh-cloud) 0%, var(--gh-sky) 100%);
 }
 .gh-hero-art { position: absolute; inset: 0; z-index: -2; overflow: hidden; }
+/* the sky over the chart (SKY_CLOUDS): clouds cross the hero by transform
+   only; 100cqw is the hero's width, so each leaves fully before it loops */
+.gh-hero-art { --gl-paper: var(--gh-ink-text); --gl-ink: var(--gh-ink); }
+.gh-sky { position: absolute; inset: 0; overflow: hidden; pointer-events: none; container-type: inline-size; }
+.gh-sky i { position: absolute; left: 0; background: 0 0 / 100% 100% no-repeat; will-change: transform;
+  animation: gh-drift linear infinite; }
+@keyframes gh-drift { from { transform: translateX(-100%); } to { transform: translateX(100cqw); } }
+@media (prefers-reduced-motion: reduce) { .gh-sky i { animation-play-state: paused; } }
+@media print { .gh-sky { display: none; } }
 .gh-hero-img, .gh-hero-3d { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .gh-hero-img { object-fit: cover; object-position: 50% 45%; opacity: .62; filter: saturate(.7) sepia(.12); }
 .gh-hero-3d { opacity: 0; transition: opacity 1.4s ease; touch-action: pan-y; }
@@ -678,13 +687,13 @@ body.gh {
    Over the map the words sat on its lettering: "Try Tarn" and "Go-On Gill"
    showed through the paragraph, under a wash across the left of the map and
    a pale halo on every line. Now the words sit on parchment, the card colour
-   at 85% with a blur, as on the chart pages, and the map keeps its colour
+   at 48% (Innes asked for it lighter twice) with a 10px blur, and the map keeps its colour
    everywhere else: no wash, no halo. */
 @media (min-width: 881px) {
   .gh-hero-copy {
     padding: clamp(24px, 2.6vw, 38px) clamp(26px, 2.8vw, 42px); border-radius: 18px;
-    background: color-mix(in srgb, var(--gh-card) 68%, transparent);
-    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+    background: color-mix(in srgb, var(--gh-card) 48%, transparent);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
     border: 1px solid var(--gh-line); box-shadow: 0 24px 60px var(--gh-shadow);
   }
 }
@@ -886,20 +895,22 @@ body.gh {
 .gh-thumb { aspect-ratio: 16 / 9; overflow: hidden; background: var(--gh-sky-deep); }
 .gh-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s ease; }
 .gh-card:hover .gh-thumb img { transform: scale(1.05); }
-/* THE PLATE (phase 4): the topic's tense colour, its form in large type, a
-   soft light from the top corner. --k is the tense's own ink from
-   tense_colours(); a topic with no tense keeps the accent and light ink. */
-.gh-plate {
-  --k: var(--gh-ink-text);
-  position: relative; display: flex; align-items: flex-end; padding: 16px 18px;
-  background: radial-gradient(120% 90% at 0% 0%, color-mix(in srgb, var(--gh-ink-text) 20%, transparent), transparent 60%), var(--c);
-  color: var(--k);
-}
+/* THE PLATE (phase 4): the topic's chart, and along its foot a band in the
+   tense colour with the form in large type, in the tense's own ink (--k,
+   from tense_colours()); a topic with no tense keeps the accent and light
+   ink. A short fade above the band joins it to the picture; the words sit
+   on the solid colour only, so their contrast is the measured pair. */
+.gh-plate { --k: var(--gh-ink-text); position: relative; display: flex; align-items: flex-end; color: var(--k); }
+.gh-plate img { position: absolute; inset: 0; }
 .gh-plate b {
+  position: relative; width: 100%; padding: 10px 16px 9px; background: var(--c);
   font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .05em;
-  font-size: clamp(1.3rem, 2vw, 1.9rem); line-height: 1.02; transition: transform .3s ease;
+  font-size: clamp(1.15rem, 1.6vw, 1.5rem); line-height: 1.05;
 }
-.gh-card:hover .gh-plate b { transform: translateY(-3px); }
+.gh-plate b::before {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 100%; height: 28px;
+  background: linear-gradient(to top, var(--c), transparent); pointer-events: none;
+}
 .gh-card-body { display: flex; flex-direction: column; gap: 6px; padding: 14px 16px 16px; flex: 1; }
 .gh-card-body h4 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.14rem; line-height: 1.25; margin: 0; }
 .gh-card-body p { font-size: .92rem; line-height: 1.5; color: var(--gh-text-dim); margin: 0; }
@@ -1100,7 +1111,227 @@ body.gh {
   <div class="gh-hero-art" id="gh-hero-art">
     <picture><source type="image/webp" srcset="grammar-hub/hero-chart-0dc9a6dc.webp 1536w, grammar-hub/hero-chart-ca9edb05.webp 1080w" sizes="(max-width: 880px) 94vw, 100vw"><img class="gh-hero-img" src="sailing-the-seas-of-grammar/hero.jpg" width="1536" height="1024" alt="A hand-drawn sea chart: the orange coast of Gerundia, the green coast of Infinitivia, and Twofold Isle in the channel between them" fetchpriority="high" crossorigin="anonymous"></picture>
     <canvas class="gh-hero-3d" aria-hidden="true"></canvas>
+    <div class="gh-sky" aria-hidden="true"><i style="top:4%;width:30%;aspect-ratio:1035/575;background-image:url(&quot;Sherpa%20Tensing/cloud-1.webp&quot;);animation-duration:110s;animation-delay:-16s;opacity:0.8"></i><i style="top:50%;width:34%;aspect-ratio:1033/564;background-image:url(&quot;Sherpa%20Tensing/cloud-3.webp&quot;);animation-duration:95s;animation-delay:-57s;opacity:0.8"></i><i style="top:26%;width:26%;aspect-ratio:1088/590;background-image:url(&quot;Sherpa%20Tensing/cloud-2.webp&quot;);animation-duration:125s;animation-delay:-106s;opacity:0.75"></i><i style="top:70%;width:18%;aspect-ratio:1055/568;background-image:url(&quot;Sherpa%20Tensing/cloud-5.webp&quot;);animation-duration:170s;animation-delay:-59s;opacity:0.5"></i><i style="top:14%;width:16%;aspect-ratio:1022/584;background-image:url(&quot;Sherpa%20Tensing/cloud-6.webp&quot;);animation-duration:185s;animation-delay:-130s;opacity:0.45"></i><i style="top:84%;width:20%;aspect-ratio:1038/555;background-image:url(&quot;Sherpa%20Tensing/cloud-4.webp&quot;);animation-duration:160s;animation-delay:-8s;opacity:0.5"></i></div>
   </div>
+  <script>/* Gulls seen from above, flying across a picture.
+ *
+ * The idea is English Heritage's Myths Map (mythsmap.english-heritage.org.uk):
+ * cut-out birds (a body and two wings), wings that beat and then glide, and
+ * small flocks that cross the whole picture, leave, and come round again.
+ * They drew theirs as PNGs and animated them in After Effects (Lottie); these
+ * are drawn in SVG and moved with CSS and the Web Animations API, so there is
+ * no library and nothing to download. Seen from directly above, a beating wing
+ * does not swing, it foreshortens: raised or lowered, it looks shorter. So the
+ * beat is a scaleY about the shoulder, with a little sweep back on the upstroke.
+ * A soft shadow a little way below each bird is what reads as height.
+ *
+ * Shared: the Sailing the Seas hero (build_sailing.py inlines this file) and
+ * the illustrated map on folkloreexplorer.com. Keep it dependency-free.
+ *
+ *   flyGulls(container, {
+ *     aspect: 1.5,              // container width / height (the picture's)
+ *     size: 4.6,                // bird wingspan, % of container width
+ *     seed: 7,                  // for the small per-bird variations
+ *     flocks: [{
+ *       from: [70, 115], to: [62.5, -15],   // % of the container
+ *       flight: 13, cycle: 40,  // seconds crossing; seconds per round
+ *       at: 1,                  // where in its cycle the flock is on load (s)
+ *       birds: [[0, 0, 1.05], [-1.6, 1.3, .95]]  // [ahead, across, scale],
+ *     }],                       //   offsets in wingspans
+ *   })
+ *
+ * For a sky the size of the screen use skyGulls(container, opts) with
+ * px: 34 (a wingspan in CSS px, or a function of the screen's width): it
+ * rebuilds the flocks when the screen's width changes.
+ *
+ * from/to are where the LEADER crosses in and out; the route is lengthened
+ * so the whole flock, shadows included, is out of the picture at both ends
+ * (at the same speed), and a flock waiting for its turn is never seen.
+ *
+ * The container must be positioned and exactly cover the picture; the birds
+ * go in a new child layer, made of spans (a picture inside a <button> may
+ * hold only phrasing content), and are clipped to it. Colours come from
+ * --gl-paper / --gl-ink if the page sets them, else --paper / --ink.
+ * Nothing is drawn for prefers-reduced-motion, or without color-mix().
+ */
+(function (root) {
+  'use strict';
+
+  // One bird, heading +x (right), in a 40 x 40 box centred on 0,0. A gull
+  // from above is mostly wing: span about two and a half times its length,
+  // an arm that reaches slightly forward to the wrist, then a long narrow hand
+  // swept back to a black tip (the M a child draws). A short body, a round
+  // head, a small square tail.
+  var BODY = 'M6.2,0C6.2,-.9 5.5,-1.3 4.6,-1.3C3.8,-1.3 3.2,-1.1 2.6,-1.5C1.4,-2.2 -1.2,-2.2 -3,-1.6' +
+             'L-4.6,-1.2C-5.6,-1.5 -6.8,-1.9 -7.6,-1.7C-7.9,-.6 -7.9,.6 -7.6,1.7C-6.8,1.9 -5.6,1.5 -4.6,1.2' +
+             'L-3,1.6C-1.2,2.2 1.4,2.2 2.6,1.5C3.2,1.1 3.8,1.3 4.6,1.3C5.5,1.3 6.2,.9 6.2,0Z';
+  var BILL = 'M6.1,-.35L7.9,0L6.1,.35Z';
+  // the right wing (+y); the left is the same group mirrored, so one set of
+  // keyframes beats both symmetrically. The tip is the outer half of the hand.
+  var WING = 'M2.3,1C3.3,3.6 3.9,6.2 3.6,8.4C2.9,12.6 -1,16.6 -4.8,19.8' +
+             'C-3.7,16.8 -2.3,13.6 -1.4,11C-1.9,7.8 -2.8,4.4 -2.6,1Z';
+  var TIP = 'M.56,14.48C-.98,16.4 -2.9,18.2 -4.8,19.8C-4.25,18.3 -3.63,16.75 -3.03,15.25Z';
+
+  function birdSVG(cls) {
+    var wing = '<g class="gw"><path class="w" d="' + WING + '"/><path class="t" d="' + TIP + '"/></g>';
+    return '<svg class="' + cls + '" viewBox="-20 -20 40 40" focusable="false">' +
+      wing + '<g transform="scale(1,-1)">' + wing + '</g>' +
+      '<path class="b" d="' + BODY + '"/><path class="t" d="' + BILL + '"/></svg>';
+  }
+
+  var CSS = [
+    '.gulls{position:absolute;inset:0;overflow:hidden;pointer-events:none;border-radius:inherit;',
+    '  --gl-p:var(--gl-paper,var(--paper));--gl-i:var(--gl-ink,var(--ink));}',
+    '.gl-flock{position:absolute;inset:0;will-change:transform;}',
+    '.gl-bird{position:absolute;aspect-ratio:1;',
+    '  animation:gl-wander var(--wd,8s) ease-in-out var(--wdl,0s) infinite alternate;}',
+    '.gl-bird svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;}',
+    '.gl-bird .bd{transform:rotate(var(--hd));}',
+    /* the sun is up and to the left, as on the chart: the shadow falls down-right */
+    '.gl-bird .sh{transform:translate(30%,38%) rotate(var(--hd));opacity:.22;filter:blur(.7px);}',
+    '.gl-bird .b{fill:var(--gl-p);}',
+    '.gl-bird .w{fill:color-mix(in srgb,var(--gl-i) 24%,var(--gl-p));}',
+    '.gl-bird .t{fill:var(--gl-i);}',
+    '.gl-bird .b,.gl-bird .w{stroke:color-mix(in srgb,var(--gl-i) 62%,transparent);stroke-width:.8;stroke-linejoin:round;}',
+    '.gl-bird .sh path{fill:var(--gl-i);stroke:none;}',
+    '.gl-bird .gw{transform-box:fill-box;transform-origin:50% 0;',
+    '  animation:gl-beat var(--fd,3.2s) ease-in-out var(--fdl,0s) infinite;}',
+    /* four beats, then a glide: raised (short, swept back), level, lowered, level */
+    '@keyframes gl-beat{0%,15%,30%,45%,60%,100%{transform:none}',
+    '  5%,20%,35%,50%{transform:rotate(7deg) scaleY(.46)}',
+    '  10%,25%,40%,55%{transform:rotate(-3deg) scaleY(.8)}}',
+    '@keyframes gl-wander{to{transform:translate(var(--wx,0),var(--wy,0))}}',
+    '@media (prefers-reduced-motion:reduce){.gulls{display:none}}',
+    '@media print{.gulls{display:none}}',
+    '@supports not (color:color-mix(in srgb,red 50%,blue)){.gulls{display:none}}'
+  ].join('\n');
+
+  function rng(seed) {                  // small deterministic generator
+    var s = (seed >>> 0) || 1;
+    return function () { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; };
+  }
+  function pct(v) { return (Math.round(v * 1000) / 1000) + '%'; }
+
+  function flyGulls(container, opts) {
+    opts = opts || {};
+    if (!container || !opts.flocks) return null;
+    if (root.matchMedia && root.matchMedia('(prefers-reduced-motion: reduce)').matches) return null;
+    var doc = container.ownerDocument;
+    if (!doc.getElementById('gulls-css')) {
+      var st = doc.createElement('style');
+      st.id = 'gulls-css';
+      st.textContent = CSS;
+      doc.head.appendChild(st);
+    }
+    var aspect = opts.aspect || (container.clientWidth / Math.max(1, container.clientHeight)) || 1.5;
+    // px: a wingspan in CSS pixels (or a function of the container's width)
+    // instead of a share of the container, for a screen-sized sky
+    var px = typeof opts.px === 'function' ? opts.px(container.clientWidth) : opts.px;
+    var size = px ? px / Math.max(1, container.clientWidth) * 100 : (opts.size || 4.6);
+    var rand = rng(opts.seed || 7);
+    var bw = size / 100 * aspect;       // wingspan in units where the height is 1
+
+    var layer = doc.createElement('span');
+    layer.className = 'gulls';
+    layer.setAttribute('aria-hidden', 'true');
+
+    opts.flocks.forEach(function (f) {
+      var birds = f.birds || [[0, 0, 1]];
+      var dx = (f.to[0] - f.from[0]) / 100 * aspect, dy = (f.to[1] - f.from[1]) / 100;
+      var hd = Math.atan2(dy, dx);
+      var ux = Math.cos(hd), uy = Math.sin(hd), nx = -uy, ny = ux;
+      // A flock is longer than one bird: while it waits for its next crossing
+      // no straggler may be left inside the picture. So the route starts far
+      // enough back that the leader is out, and ends far enough on that the
+      // last bird is out, with a wingspan to spare for size, shadow and
+      // wander. The flight time stretches with it, so the speed is as given.
+      var ahead = 0, behind = 0;
+      birds.forEach(function (b) { ahead = Math.max(ahead, b[0]); behind = Math.max(behind, -b[0]); });
+      var len = Math.sqrt(dx * dx + dy * dy);
+      var pre = (ahead + 1) * bw, post = (behind + 1) * bw;
+      var from = [f.from[0] - pre * ux / aspect * 100, f.from[1] - pre * uy * 100];
+      var to = [f.to[0] + post * ux / aspect * 100, f.to[1] + post * uy * 100];
+      var flight = f.flight * (len + pre + post) / len;
+      var flock = doc.createElement('span');
+      flock.className = 'gl-flock';
+      flock.style.setProperty('--hd', (hd * 180 / Math.PI).toFixed(2) + 'deg');
+      birds.forEach(function (b) {
+        var sc = b[2] || 1;
+        var ox = (b[0] * ux + b[1] * nx) * bw, oy = (b[0] * uy + b[1] * ny) * bw;
+        var w = size * sc;                               // % of the width
+        var el = doc.createElement('span');
+        el.className = 'gl-bird';
+        el.style.width = pct(w);
+        el.style.left = pct(ox / aspect * 100 - w / 2);
+        el.style.top = pct(oy * 100 - w * aspect / 2);  // square: its height is w% of the width
+        el.style.setProperty('--fd', (2.7 + rand() * 0.9).toFixed(2) + 's');
+        el.style.setProperty('--fdl', (-rand() * 3).toFixed(2) + 's');
+        el.style.setProperty('--wd', (6 + rand() * 4).toFixed(2) + 's');
+        el.style.setProperty('--wdl', (-rand() * 8).toFixed(2) + 's');
+        el.style.setProperty('--wx', ((rand() - 0.5) * 70).toFixed(0) + '%');
+        el.style.setProperty('--wy', ((rand() - 0.5) * 70).toFixed(0) + '%');
+        el.innerHTML = birdSVG('sh') + birdSVG('bd');
+        flock.appendChild(el);
+      });
+      layer.appendChild(flock);
+      var a = 'translate(' + pct(from[0]) + ',' + pct(from[1]) + ')';
+      var z = 'translate(' + pct(to[0]) + ',' + pct(to[1]) + ')';
+      var cycle = Math.max(f.cycle || 0, flight * 1.25) * 1000;
+      if (flock.animate) {
+        flock.animate([{ transform: a, offset: 0 }, { transform: z, offset: flight * 1000 / cycle },
+                       { transform: z, offset: 1 }],
+                      { duration: cycle, delay: -(f.at || 0) * 1000, iterations: Infinity, easing: 'linear' });
+      } else {
+        flock.style.display = 'none';
+      }
+    });
+    container.appendChild(layer);
+    return { layer: layer, stop: function () { layer.remove(); } };
+  }
+
+  // For a layer the size of the screen: the same flocks, rebuilt when the
+  // screen's width changes (headings depend on its shape), each flock picking
+  // up where it was. A change of height alone (a phone's address bar coming
+  // and going) is ignored, or the birds would jump on every scroll.
+  function skyGulls(container, opts) {
+    var now = function () { return root.performance ? root.performance.now() : Date.now(); };
+    var t0 = now(), cur = null, width = -1, timer = null;
+    function build() {
+      if (container.clientWidth === width) return;
+      width = container.clientWidth;
+      var el = (now() - t0) / 1000;
+      var o = {};
+      for (var k in opts) o[k] = opts[k];
+      o.aspect = container.clientWidth / Math.max(1, container.clientHeight);
+      o.flocks = opts.flocks.map(function (f) {
+        var g = {};
+        for (var k in f) g[k] = f[k];
+        g.at = (f.at || 0) + el;
+        return g;
+      });
+      if (cur) cur.stop();
+      cur = flyGulls(container, o);
+    }
+    build();
+    root.addEventListener('resize', function () { clearTimeout(timer); timer = setTimeout(build, 250); });
+    return { stop: function () { if (cur) cur.stop(); } };
+  }
+
+  root.flyGulls = flyGulls;
+  root.skyGulls = skyGulls;
+  if (typeof module !== 'undefined' && module.exports) module.exports = { flyGulls: flyGulls, skyGulls: skyGulls };
+})(typeof window !== 'undefined' ? window : this);
+
+skyGulls(document.getElementById("gh-hero-art"), {
+  px: function (w) { return w < 880 ? 22 : 30; }, seed: 9,
+  flocks: [
+    {from: [-6, 70], to: [106, 30], flight: 19, cycle: 48, at: 4,
+     birds: [[0, 0, 1], [-1.5, 1.1, .95], [-1.1, -1.3, 1.05]]},
+    {from: [106, 18], to: [-6, 52], flight: 17, cycle: 48, at: 28,
+     birds: [[0, 0, 1], [-1.4, -1, .92]]}
+  ]
+});
+</script>
   <div class="gh-hero-in">
     <div class="gh-hero-copy">
       <p class="gh-kicker">Grammar &middot; A1 to C2 &middot; 19 topics</p>
@@ -1557,27 +1788,27 @@ if (cv && img) new THREE.TextureLoader().load(img.currentSrc || img.src, go);
     <div class="gh-group">
       <div class="gh-group-h"><h3>Tenses</h3><span>96 lessons &middot; in teaching order &middot; the colour is the tense</span></div>
       <ul class="gh-cards">
-        <li style="--s2:6;--s3:4;--s4:4"><a class="gh-card" href="present-simple.html" style="--c:#7A93B5"><span class="gh-thumb gh-plate" style="--k:#0A131F" aria-hidden="true"><b>I BUILD</b></span><span class="gh-card-body"><h4><span class="gh-swatch" aria-hidden="true"></span>Present Simple</h4><p>habits, facts, timetables and states, with the third-person -s, questions with do/does, and time signals like always, usually and never.</p><span class="gh-card-meta"><span class="gh-pill">A1&ndash;B2</span><span class="gh-pill">11 lessons</span><span class="gh-pill gh-pill-free">7 free</span></span></span></a></li>
-        <li style="--s2:6;--s3:4;--s4:4"><a class="gh-card" href="present-continuous.html" style="--c:#F2ADBF"><span class="gh-thumb gh-plate" style="--k:#1A1206" aria-hidden="true"><b>I AM BUILDING</b></span><span class="gh-card-body"><h4><span class="gh-swatch" aria-hidden="true"></span>Present Continuous</h4><p>what is happening now, temporary situations, plans that are already arranged, and the difference from the Present Simple.</p><span class="gh-card-meta"><span class="gh-pill">A1&ndash;B2</span><span class="gh-pill">9 lessons</span><span class="gh-pill gh-pill-free">5 free</span></span></span></a></li>
-        <li style="--s2:6;--s3:4;--s4:4"><a class="gh-card" href="past-simple.html" style="--c:#B08968"><span class="gh-thumb gh-plate" style="--k:#1A1206" aria-hidden="true"><b>I BUILT</b></span><span class="gh-card-body"><h4><span class="gh-swatch" aria-hidden="true"></span>Past Simple</h4><p>finished actions at a finished time, regular -ed and the irregular verbs, questions and negatives with did, and how it differs from the Present…</p><span class="gh-card-meta"><span class="gh-pill">A1&ndash;B2</span><span class="gh-pill">14 lessons</span><span class="gh-pill gh-pill-free">6 free</span></span></span></a></li>
-        <li style="--s2:6;--s3:4;--s4:4"><a class="gh-card" href="past-continuous.html" style="--c:#F1D779"><span class="gh-thumb gh-plate" style="--k:#1A1206" aria-hidden="true"><b>I WAS BUILDING</b></span><span class="gh-card-body"><h4><span class="gh-swatch" aria-hidden="true"></span>Past Continuous</h4><p>an action in progress in the past, interrupted by a Past Simple event, with while, when and as.</p><span class="gh-card-meta"><span class="gh-pill">A1&ndash;B1</span><span class="gh-pill">7 lessons</span><span class="gh-pill gh-pill-free">1 free</span></span></span></a></li>
-        <li style="--s2:6;--s3:4;--s4:4"><a class="gh-card" href="present-perfect.html" style="--c:#689497"><span class="gh-thumb gh-plate" style="--k:#1A1206" aria-hidden="true"><b>I HAVE BUILT</b></span><span class="gh-card-body"><h4><span class="gh-swatch" aria-hidden="true"></span>Present Perfect</h4><p>past actions with a present result, life experience with ever and never, unfinished time with since and for, and the difference from the Past Simple.</p><span class="gh-card-meta"><span class="gh-pill">A1&ndash;B2</span><span class="gh-pill">13 lessons</span><span class="gh-pill gh-pill-free">4 free</span></span></span></a></li>
-        <li style="--s2:6;--s3:4;--s4:4"><a class="gh-card" href="present-perfect-continuous.html" style="--c:#97D0E5"><span class="gh-thumb gh-plate" style="--k:#1A1206" aria-hidden="true"><b>I HAVE BEEN BUILDING</b></span><span class="gh-card-body"><h4><span class="gh-swatch" aria-hidden="true"></span>Present Perfect Continuous</h4><p>have been doing, for how long, and activities whose effects you can still see, against the Present Perfect Simple.</p><span class="gh-card-meta"><span class="gh-pill">A1&ndash;B1</span><span class="gh-pill">4 lessons</span><span class="gh-pill gh-pill-free">1 free</span></span></span></a></li>
-        <li style="--s2:6;--s3:4;--s4:4"><a class="gh-card" href="past-perfect.html" style="--c:#8D5358"><span class="gh-thumb gh-plate" style="--k:#FFFFFF" aria-hidden="true"><b>I HAD BUILT</b></span><span class="gh-card-body"><h4><span class="gh-swatch" aria-hidden="true"></span>Past Perfect</h4><p>had done for the earlier of two past events, with by the time, before, after and already, plus the Past Perfect Continuous.</p><span class="gh-card-meta"><span class="gh-pill">B1&ndash;B2</span><span class="gh-pill">7 lessons</span><span class="gh-pill gh-pill-free">1 free</span></span></span></a></li>
-        <li style="--s2:6;--s3:4;--s4:4"><a class="gh-card" href="future-tenses.html" style="--c:#DB815F"><span class="gh-thumb gh-plate" style="--k:#1A1206" aria-hidden="true"><b>I WILL BUILD</b></span><span class="gh-card-body"><h4><span class="gh-swatch" aria-hidden="true"></span>Future Tenses</h4><p>will for decisions and predictions, going to for plans and evidence, the Present Continuous for arrangements, and the Future Continuous and Future…</p><span class="gh-card-meta"><span class="gh-pill">A1&ndash;C1</span><span class="gh-pill">17 lessons</span><span class="gh-pill gh-pill-free">3 free</span></span></span></a></li>
-        <li style="--s2:12;--s3:4;--s4:4" class="gh-solo2"><a class="gh-card" href="tense-review.html"><span class="gh-thumb gh-plate" aria-hidden="true"><b>EVERY TENSE</b></span><span class="gh-card-body"><h4>Tense Review and Grammar Tests</h4><p>every tense side by side, the time signals that choose between them, and scored tests that show which lesson to go back to.</p><span class="gh-card-meta"><span class="gh-pill">A1&ndash;C1</span><span class="gh-pill">32 lessons</span><span class="gh-pill gh-pill-free">16 free</span></span></span></a></li>
+        <li style="--s2:6;--s3:4;--s4:4"><a class="gh-card" href="present-simple.html" style="--c:#7A93B5"><span class="gh-thumb gh-plate" style="--k:#0A131F" aria-hidden="true"><img src="grammar-hub/present-simple-89f9b446.jpg" alt="" loading="lazy" width="640" height="360"><b>I BUILD</b></span><span class="gh-card-body"><h4><span class="gh-swatch" aria-hidden="true"></span>Present Simple</h4><p>habits, facts, timetables and states, with the third-person -s, questions with do/does, and time signals like always, usually and never.</p><span class="gh-card-meta"><span class="gh-pill">A1&ndash;B2</span><span class="gh-pill">11 lessons</span><span class="gh-pill gh-pill-free">7 free</span></span></span></a></li>
+        <li style="--s2:6;--s3:4;--s4:4"><a class="gh-card" href="present-continuous.html" style="--c:#F2ADBF"><span class="gh-thumb gh-plate" style="--k:#1A1206" aria-hidden="true"><img src="grammar-hub/present-continuous-f410dc83.jpg" alt="" loading="lazy" width="640" height="360"><b>I AM BUILDING</b></span><span class="gh-card-body"><h4><span class="gh-swatch" aria-hidden="true"></span>Present Continuous</h4><p>what is happening now, temporary situations, plans that are already arranged, and the difference from the Present Simple.</p><span class="gh-card-meta"><span class="gh-pill">A1&ndash;B2</span><span class="gh-pill">9 lessons</span><span class="gh-pill gh-pill-free">5 free</span></span></span></a></li>
+        <li style="--s2:6;--s3:4;--s4:4"><a class="gh-card" href="past-simple.html" style="--c:#B08968"><span class="gh-thumb gh-plate" style="--k:#1A1206" aria-hidden="true"><img src="grammar-hub/past-simple-31a65d9a.jpg" alt="" loading="lazy" width="640" height="360"><b>I BUILT</b></span><span class="gh-card-body"><h4><span class="gh-swatch" aria-hidden="true"></span>Past Simple</h4><p>finished actions at a finished time, regular -ed and the irregular verbs, questions and negatives with did, and how it differs from the Present…</p><span class="gh-card-meta"><span class="gh-pill">A1&ndash;B2</span><span class="gh-pill">14 lessons</span><span class="gh-pill gh-pill-free">6 free</span></span></span></a></li>
+        <li style="--s2:6;--s3:4;--s4:4"><a class="gh-card" href="past-continuous.html" style="--c:#F1D779"><span class="gh-thumb gh-plate" style="--k:#1A1206" aria-hidden="true"><img src="grammar-hub/past-continuous-e70661fa.jpg" alt="" loading="lazy" width="640" height="360"><b>I WAS BUILDING</b></span><span class="gh-card-body"><h4><span class="gh-swatch" aria-hidden="true"></span>Past Continuous</h4><p>an action in progress in the past, interrupted by a Past Simple event, with while, when and as.</p><span class="gh-card-meta"><span class="gh-pill">A1&ndash;B1</span><span class="gh-pill">7 lessons</span><span class="gh-pill gh-pill-free">1 free</span></span></span></a></li>
+        <li style="--s2:6;--s3:4;--s4:4"><a class="gh-card" href="present-perfect.html" style="--c:#689497"><span class="gh-thumb gh-plate" style="--k:#1A1206" aria-hidden="true"><img src="grammar-hub/present-perfect-ba2aa93a.jpg" alt="" loading="lazy" width="640" height="360"><b>I HAVE BUILT</b></span><span class="gh-card-body"><h4><span class="gh-swatch" aria-hidden="true"></span>Present Perfect</h4><p>past actions with a present result, life experience with ever and never, unfinished time with since and for, and the difference from the Past Simple.</p><span class="gh-card-meta"><span class="gh-pill">A1&ndash;B2</span><span class="gh-pill">13 lessons</span><span class="gh-pill gh-pill-free">4 free</span></span></span></a></li>
+        <li style="--s2:6;--s3:4;--s4:4"><a class="gh-card" href="present-perfect-continuous.html" style="--c:#97D0E5"><span class="gh-thumb gh-plate" style="--k:#1A1206" aria-hidden="true"><img src="grammar-hub/present-perfect-continuous-cc4685d9.jpg" alt="" loading="lazy" width="640" height="360"><b>I HAVE BEEN BUILDING</b></span><span class="gh-card-body"><h4><span class="gh-swatch" aria-hidden="true"></span>Present Perfect Continuous</h4><p>have been doing, for how long, and activities whose effects you can still see, against the Present Perfect Simple.</p><span class="gh-card-meta"><span class="gh-pill">A1&ndash;B1</span><span class="gh-pill">4 lessons</span><span class="gh-pill gh-pill-free">1 free</span></span></span></a></li>
+        <li style="--s2:6;--s3:4;--s4:4"><a class="gh-card" href="past-perfect.html" style="--c:#8D5358"><span class="gh-thumb gh-plate" style="--k:#FFFFFF" aria-hidden="true"><img src="grammar-hub/past-perfect-8d201210.jpg" alt="" loading="lazy" width="640" height="360"><b>I HAD BUILT</b></span><span class="gh-card-body"><h4><span class="gh-swatch" aria-hidden="true"></span>Past Perfect</h4><p>had done for the earlier of two past events, with by the time, before, after and already, plus the Past Perfect Continuous.</p><span class="gh-card-meta"><span class="gh-pill">B1&ndash;B2</span><span class="gh-pill">7 lessons</span><span class="gh-pill gh-pill-free">1 free</span></span></span></a></li>
+        <li style="--s2:6;--s3:4;--s4:4"><a class="gh-card" href="future-tenses.html" style="--c:#DB815F"><span class="gh-thumb gh-plate" style="--k:#1A1206" aria-hidden="true"><img src="grammar-hub/future-tenses-5b838358.jpg" alt="" loading="lazy" width="640" height="360"><b>I WILL BUILD</b></span><span class="gh-card-body"><h4><span class="gh-swatch" aria-hidden="true"></span>Future Tenses</h4><p>will for decisions and predictions, going to for plans and evidence, the Present Continuous for arrangements, and the Future Continuous and Future…</p><span class="gh-card-meta"><span class="gh-pill">A1&ndash;C1</span><span class="gh-pill">17 lessons</span><span class="gh-pill gh-pill-free">3 free</span></span></span></a></li>
+        <li style="--s2:12;--s3:4;--s4:4" class="gh-solo2"><a class="gh-card" href="tense-review.html"><span class="gh-thumb gh-plate" aria-hidden="true"><img src="grammar-hub/tense-review-d090670d.jpg" alt="" loading="lazy" width="640" height="360"><b>EVERY TENSE</b></span><span class="gh-card-body"><h4>Tense Review and Grammar Tests</h4><p>every tense side by side, the time signals that choose between them, and scored tests that show which lesson to go back to.</p><span class="gh-card-meta"><span class="gh-pill">A1&ndash;C1</span><span class="gh-pill">32 lessons</span><span class="gh-pill gh-pill-free">16 free</span></span></span></a></li>
       </ul>
     </div>
     <div class="gh-group">
       <div class="gh-group-h"><h3>Grammar</h3><span>77 lessons &middot; the points that sit alongside the tenses</span></div>
       <ul class="gh-cards">
-        <li style="--s2:6;--s3:4;--s4:3"><a class="gh-card" href="passive-voice.html"><span class="gh-thumb gh-plate" aria-hidden="true"><b>IT IS BUILT</b></span><span class="gh-card-body"><h4>Passive Voice</h4><p>be + past participle in every tense, when to leave out the agent, by-phrases, and the causative have something done.</p><span class="gh-card-meta"><span class="gh-pill">A2&ndash;C1</span><span class="gh-pill">30 lessons</span><span class="gh-pill gh-pill-free">6 free</span></span></span></a></li>
-        <li style="--s2:6;--s3:4;--s4:3"><a class="gh-card" href="modal-verbs.html"><span class="gh-thumb gh-plate" aria-hidden="true"><b>I MUST BUILD</b></span><span class="gh-card-body"><h4>Modal Verbs</h4><p>must, have to, should, can, could, might and may for obligation, advice, ability and possibility, and the past modals should have and must have.</p><span class="gh-card-meta"><span class="gh-pill">A2&ndash;C1</span><span class="gh-pill">19 lessons</span><span class="gh-pill gh-pill-free">5 free</span></span></span></a></li>
-        <li style="--s2:6;--s3:4;--s4:3"><a class="gh-card" href="prepositions.html"><span class="gh-thumb gh-plate" aria-hidden="true"><b>IN · ON · AT</b></span><span class="gh-card-body"><h4>Prepositions</h4><p>in, on and at for time and place, dependent prepositions after verbs and adjectives, and the advanced pairs that separate B2 from C1.</p><span class="gh-card-meta"><span class="gh-pill">A2&ndash;B1</span><span class="gh-pill">14 lessons</span><span class="gh-pill gh-pill-free">5 free</span></span></span></a></li>
-        <li style="--s2:6;--s3:6;--s4:3"><a class="gh-card" href="gerunds-and-infinitives.html"><span class="gh-thumb gh-plate" aria-hidden="true"><b>BUILDING · TO BUILD</b></span><span class="gh-card-body"><h4>Gerunds and Infinitives</h4><p>verbs followed by -ing, verbs followed by to, the ones that take both with a change of meaning, and gerunds as subjects and after prepositions.</p><span class="gh-card-meta"><span class="gh-pill">B1</span><span class="gh-pill">3 lessons</span><span class="gh-pill gh-pill-free">1 free</span></span></span></a></li>
-        <li style="--s2:6;--s3:6;--s4:4"><a class="gh-card" href="conditionals.html"><span class="gh-thumb gh-plate" aria-hidden="true"><b>IF I BUILT</b></span><span class="gh-card-body"><h4>Conditionals</h4><p>zero, first, second and third conditionals, mixed conditionals, and if-clauses in business and argument.</p><span class="gh-card-meta"><span class="gh-pill">B2&ndash;C1</span><span class="gh-pill">6 lessons</span><span class="gh-pill gh-pill-free">3 free</span></span></span></a></li>
-        <li style="--s2:6;--s3:6;--s4:4"><a class="gh-card" href="used-to.html"><span class="gh-thumb gh-plate" aria-hidden="true"><b>I USED TO BUILD</b></span><span class="gh-card-body"><h4>Used To and Be Used To</h4><p>used to + verb for past habits that have stopped, be used to + -ing for what is familiar, and get used to for what is becoming familiar.</p><span class="gh-card-meta"><span class="gh-pill">A2&ndash;B1</span><span class="gh-pill">3 lessons</span><span class="gh-pill gh-pill-free">1 free</span></span></span></a></li>
-        <li style="--s2:12;--s3:6;--s4:4" class="gh-solo2"><a class="gh-card" href="phrasal-verbs.html"><span class="gh-thumb gh-plate" aria-hidden="true"><b>BUILD UP</b></span><span class="gh-card-body"><h4>Phrasal Verbs and Collocations</h4><p>take, put, make and do, separable and inseparable verbs, and the collocations native speakers reach for.</p><span class="gh-card-meta"><span class="gh-pill">A2&ndash;B2</span><span class="gh-pill">6 lessons</span><span class="gh-pill gh-pill-free">3 free</span></span></span></a></li>
+        <li style="--s2:6;--s3:4;--s4:3"><a class="gh-card" href="passive-voice.html"><span class="gh-thumb gh-plate" aria-hidden="true"><img src="grammar-hub/passive-voice-63c2b7d4.jpg" alt="" loading="lazy" width="640" height="360"><b>IT IS BUILT</b></span><span class="gh-card-body"><h4>Passive Voice</h4><p>be + past participle in every tense, when to leave out the agent, by-phrases, and the causative have something done.</p><span class="gh-card-meta"><span class="gh-pill">A2&ndash;C1</span><span class="gh-pill">30 lessons</span><span class="gh-pill gh-pill-free">6 free</span></span></span></a></li>
+        <li style="--s2:6;--s3:4;--s4:3"><a class="gh-card" href="modal-verbs.html"><span class="gh-thumb gh-plate" aria-hidden="true"><img src="grammar-hub/modal-verbs-7970a56a.jpg" alt="" loading="lazy" width="640" height="360"><b>I MUST BUILD</b></span><span class="gh-card-body"><h4>Modal Verbs</h4><p>must, have to, should, can, could, might and may for obligation, advice, ability and possibility, and the past modals should have and must have.</p><span class="gh-card-meta"><span class="gh-pill">A2&ndash;C1</span><span class="gh-pill">19 lessons</span><span class="gh-pill gh-pill-free">5 free</span></span></span></a></li>
+        <li style="--s2:6;--s3:4;--s4:3"><a class="gh-card" href="prepositions.html"><span class="gh-thumb gh-plate" aria-hidden="true"><img src="grammar-hub/prepositions-658f2813.jpg" alt="" loading="lazy" width="640" height="360"><b>IN · ON · AT</b></span><span class="gh-card-body"><h4>Prepositions</h4><p>in, on and at for time and place, dependent prepositions after verbs and adjectives, and the advanced pairs that separate B2 from C1.</p><span class="gh-card-meta"><span class="gh-pill">A2&ndash;B1</span><span class="gh-pill">14 lessons</span><span class="gh-pill gh-pill-free">5 free</span></span></span></a></li>
+        <li style="--s2:6;--s3:6;--s4:3"><a class="gh-card" href="gerunds-and-infinitives.html"><span class="gh-thumb gh-plate" aria-hidden="true"><img src="grammar-hub/gerunds-and-infinitives-40332a5d.jpg" alt="" loading="lazy" width="640" height="360"><b>BUILDING · TO BUILD</b></span><span class="gh-card-body"><h4>Gerunds and Infinitives</h4><p>verbs followed by -ing, verbs followed by to, the ones that take both with a change of meaning, and gerunds as subjects and after prepositions.</p><span class="gh-card-meta"><span class="gh-pill">B1</span><span class="gh-pill">3 lessons</span><span class="gh-pill gh-pill-free">1 free</span></span></span></a></li>
+        <li style="--s2:6;--s3:6;--s4:4"><a class="gh-card" href="conditionals.html"><span class="gh-thumb gh-plate" aria-hidden="true"><img src="grammar-hub/conditionals-90ebb349.jpg" alt="" loading="lazy" width="640" height="360"><b>IF I BUILT</b></span><span class="gh-card-body"><h4>Conditionals</h4><p>zero, first, second and third conditionals, mixed conditionals, and if-clauses in business and argument.</p><span class="gh-card-meta"><span class="gh-pill">B2&ndash;C1</span><span class="gh-pill">6 lessons</span><span class="gh-pill gh-pill-free">3 free</span></span></span></a></li>
+        <li style="--s2:6;--s3:6;--s4:4"><a class="gh-card" href="used-to.html"><span class="gh-thumb gh-plate" aria-hidden="true"><img src="grammar-hub/used-to-8488a61e.jpg" alt="" loading="lazy" width="640" height="360"><b>I USED TO BUILD</b></span><span class="gh-card-body"><h4>Used To and Be Used To</h4><p>used to + verb for past habits that have stopped, be used to + -ing for what is familiar, and get used to for what is becoming familiar.</p><span class="gh-card-meta"><span class="gh-pill">A2&ndash;B1</span><span class="gh-pill">3 lessons</span><span class="gh-pill gh-pill-free">1 free</span></span></span></a></li>
+        <li style="--s2:12;--s3:6;--s4:4" class="gh-solo2"><a class="gh-card" href="phrasal-verbs.html"><span class="gh-thumb gh-plate" aria-hidden="true"><img src="grammar-hub/phrasal-verbs-e843f497.jpg" alt="" loading="lazy" width="640" height="360"><b>BUILD UP</b></span><span class="gh-card-body"><h4>Phrasal Verbs and Collocations</h4><p>take, put, make and do, separable and inseparable verbs, and the collocations native speakers reach for.</p><span class="gh-card-meta"><span class="gh-pill">A2&ndash;B2</span><span class="gh-pill">6 lessons</span><span class="gh-pill gh-pill-free">3 free</span></span></span></a></li>
       </ul>
     </div>
     <p class="gh-beyond"><b>Beyond grammar</b><a href="business-english.html">Business English</a> <small>(66)</small> &middot; <a href="ielts.html">IELTS Academic</a> <small>(28)</small> &middot; <a href="english-vocabulary.html">Vocabulary and Topic Lessons</a> <small>(98)</small></p>

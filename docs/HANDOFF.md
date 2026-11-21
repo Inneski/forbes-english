@@ -15,14 +15,17 @@ stale copy.
 - On a phone the topic shelves are compact rows: 2.1 screens instead of 9.7.
 - Business English, IELTS and Vocabulary are one "Beyond grammar" line, not a
   third shelf.
-- On desktop each topic card shows a **colour plate**, not a lesson's
-  picture. The plate is the tense colour with the form in large type, and
-  non-tense topics take the accent. Innes chose this from rendered options.
+- On desktop each topic card shows **its own sea chart**, with a band in the
+  tense colour carrying the form (I HAVE BUILT). Plain colour plates came
+  first, and Innes said "needs images". Four topics have no chart yet
+  (Past Continuous, Present Perfect Continuous, Past Perfect, Used To), so
+  they show a lesson picture. Commission charts for them.
+- The hero has drifting clouds and gulls over the chart (`SKY_CLOUDS`,
+  `SKY_JS`). The panel is at 48%.
   The code is `plate_form()` / `PLATE_FORM` in `tools/build_grammar_hub.py`.
   A new grammar topic needs a `PLATE_FORM` line, or its plate shows its name
   in capitals.
-- The hero panel is now at 68%, and the edge line on the rolls is at 94% (it
-  had crossed the text).
+- The edge line on the rolls is at 94% (it had crossed the text).
 - Details: `docs/GRAMMAR-PAGE-PLAN.md`, phase 4.
 
 ## 2026-11-21 — Job 1: only the site ships; 65 old lessons and two paid games were outside the paywall
